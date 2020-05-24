@@ -27,14 +27,16 @@
 
           <loading-spinner *ngIf="showSpinner"></loading-spinner>
 
-          <div *ngIf="!showSpinner" class="card-content table-responsive">
+          <div *ngIf="!showSpinner" class="card-content table-responsive" style="overflow:visible;">
             <table class="table table-hover">
               <thead>
                 <tr>
+                  <th></th>
+
                   <th>
                     <span class="column-th-span">
-                      <!-- {{ "BotsPage.Name" | translate }} -->
-                      Bot
+                      {{ "BotsPage.Name" | translate }}
+                      <!-- Bot -->
                     </span>
                   </th>
 
@@ -94,9 +96,11 @@
               <tbody>
                 <!-- IF THERE ISN'T BOT -->
                 <tr *ngIf="faqkbList && faqkbList?.length === 0">
-                  <td colspan="3" style="text-align: center; padding-top: 16px;">
+                  <td colspan="4" style="text-align: center; padding-top: 16px;">
                     <!-- color: #ff5252   -->
                     <p style="font-size:1em; margin-bottom: 0px; color:#7695a5; font-weight: 400">
+                      <i class="material-icons" style="vertical-align: middle; margin-bottom: 2px;color: #00bcd4;"> info
+                      </i>
                       {{ 'BotsPage.NoBot' | translate }}
                     </p>
                   </td>
@@ -104,33 +108,37 @@
 
                 <tr *ngFor="let faqkb of faqkbList; let i = index">
                   <!--  style="width: 1%; white-space: nowrap;" -->
-                  <td>
-                    <span class="tooltipx">
-                      <img style="vertical-align: middle; width: 42px; height: 42px; border-radius: 50%; border: 1px solid #eee; margin-right: 6px;" 
-                      class="user-img" src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{faqkb?._id}}%2Fphoto.jpg?alt=media" 
-                      onerror="this.src='assets/img/avatar_bot_tiledesk.svg'"/>
+                  <td style="white-space: nowrap; width: 1%;">
+                    <span class="tool_tip"  (click)='goToFaqPage(faqkb?._id, faqkb?.type)'>
+                      <img
+                        style="vertical-align: middle; width: 42px; height: 42px; border-radius: 50%; border: 1px solid #eee; margin-right: 6px;"
+                        class="user-img"
+                        src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{faqkb?._id}}%2Fphoto.jpg?alt=media"
+                        onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
 
-                      <span *ngIf="faqkb.type === 'internal'"> 
-                        <img class="bot-type-logo" src="assets/img/tiledesk_logo_no_text.png"/>
+                      <span *ngIf="faqkb.type === 'internal'">
+                        <img class="bot-type-logo" src="assets/img/tiledesk_logo_no_text.png" />
                       </span>
 
-                      <span *ngIf="faqkb.type === 'external'"> 
-                        <img class="bot-type-logo" src="assets/img/external_bot_logo.png"/>
+                      <span *ngIf="faqkb.type === 'external'">
+                        <img class="bot-type-logo" src="assets/img/external_bot_logo.png" />
                       </span>
 
-                      <span *ngIf="faqkb.type === 'dialogflow'"> 
-                        <img class="bot-type-logo" src="assets/img/Dialogflow_logo_no_text.png"/>
+                      <span *ngIf="faqkb.type === 'dialogflow'">
+                        <img class="bot-type-logo" src="assets/img/Dialogflow_logo_no_text.png" />
                       </span>
 
-
-                      <span style="font-weight:400; cursor: pointer;"
-                        (click)='goToFaqPage(faqkb?._id, faqkb?.type)'>
-                        {{ faqkb?.name }}
-                      </span>
-
-                      <span class="tooltiptext">
+                      <!-- <span class="tooltiptext">
                         {{ 'BotsPage.BotId' | translate }}: <br> {{ faqkb?._id  }}
-                      </span>
+                      </span> -->
+
+                      <div class="top">
+                        <h4>{{ 'BotsPage.BotId' | translate }}</h4>
+
+                        {{ faqkb?._id  }}
+                        <i></i>
+                      </div>
+
                     </span>
 
 
@@ -196,9 +204,39 @@
                     </span> -->
                   </td>
 
+                  <!-- 
+                  // -----------------------------------------------------
+                  // Bot name & truncated description
+                  // ----------------------------------------------------- -->
+                  <td>
+                    <span style="font-weight:400; cursor: pointer;font-size:13px"
+                      (click)='goToFaqPage(faqkb?._id, faqkb?.type)'>
+                      {{ faqkb?.name }}
+                    </span>
+
+                    <div *ngIf="faqkb?.description" class="tool_tip"
+                      style="color: #7695a5; font-weight: 400; line-height:18px; font-size:12px; display: block;">
+                      
+                      <div> {{ faqkb?.truncated_desc}} </div> 
+
+                      <div class="top">
+                        <h4>{{ 'Description' | translate }}</h4>
+
+                       <div class="line-clamp" style="display: -webkit-box;
+                       -webkit-line-clamp: 3;
+                       -webkit-box-orient: vertical;
+                       overflow: hidden;
+                       text-overflow: ellipsis;">{{ faqkb?.description}}  </div> 
+                        <i></i>
+                      </div>
+                    </div>
+
+
+                  </td>
+
                   <td>
 
-                   <span style="text-transform: capitalize;font-weight:400;"> {{ faqkb?.type}} </span>
+                    <span style="text-transform: capitalize;font-weight:400;"> {{ faqkb?.type}} </span>
                     <!-- <div class="checkbox">
                       <label>
                         <input style="opacity: 0.5!important;" type="checkbox" name="optionsCheckboxes"

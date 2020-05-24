@@ -72,7 +72,8 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
   dlgflwSelectedLang = this.dialogflowLanguage[5];
   dlgflwSelectedLangCode = 'en';
   dlgflwKnowledgeBaseID: string;
-  filetypeNotSupported: string
+  filetypeNotSupported: string;
+  bot_description: string;
 
   constructor(
     private faqKbService: FaqKbService,
@@ -195,9 +196,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
       } else {
         this.btn_create_bot_is_disabled = true;
       }
-
     }
-
   }
 
 
@@ -212,6 +211,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     console.log('BOT-CREATE-COMP Create Bot - URL ', this.faqKbUrl);
     console.log('BOT-CREATE-COMP Create Bot - PROJ ID ', this.project._id);
     console.log('BOT-CREATE-COMP Create Bot - Bot Type ', this.botType);
+    console.log('BOT-CREATE-COMP Create Bot - Bot DESCRIPTION ', this.bot_description);
 
     let _botType = ''
     if (this.botType === 'native') {
@@ -225,7 +225,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     // ------------------------------------------------------------------------------------------------------------------------------
     // Create bot - note for the creation of a dialogflow bot see the bottom uploaddialogflowBotCredential() called in the complete() 
     // ------------------------------------------------------------------------------------------------------------------------------
-    this.faqKbService.addMongoDbFaqKb(this.faqKbName, this.faqKbUrl, _botType)
+    this.faqKbService.addMongoDbFaqKb(this.faqKbName, this.faqKbUrl, _botType , this.bot_description)
 
       .subscribe((faqKb) => {
         console.log('»»»»»»»» »»»»»»»» »»»»»»»» CREATE FAQKB - POST DATA ', faqKb);

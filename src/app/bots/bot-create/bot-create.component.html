@@ -108,7 +108,7 @@
             // External bot - external bot url
             // ------------------------------------------------------ -->
             <section *ngIf="botType === 'external'">
-              <div class="row">
+              <div class="row" style="margin-top: 8px;">
                 <label class="col-sm-2 custom-label">Url</label>
                 <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
                   <textarea [(ngModel)]="faqKbUrl" class="input" type="text" rows="2"
@@ -117,6 +117,21 @@
                 </div>
               </div>
             </section>
+
+            <!-- 
+            // ------------------------------------------------------
+            // Bot description - common for native and external
+            // ------------------------------------------------------ -->
+            <div class="row" *ngIf="botType !== 'dialogflow'" style="margin-top: 4px;">
+              <label class="col-sm-2 custom-label">
+
+                {{ "Description" | translate }}
+              </label>
+              <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+                <textarea [(ngModel)]="bot_description" placeholder="{{ 'Description' | translate }}" 
+                  class="input" type="text" rows="3" style="margin-bottom: 0px;"></textarea>
+              </div>
+            </div>
 
 
             <section *ngIf="botType === 'dialogflow'" style="padding-left: 30px; padding-right: 30px;">
@@ -243,6 +258,20 @@
                       <i class="material-icons" style="vertical-align: middle;font-size: 14px;"> open_in_new </i>
                     </span>
                   </span>
+                </div>
+              </div>
+
+              <!--
+              // ---------------------------------------------------------
+              // Dialogflow description
+              // --------------------------------------------------------- -->
+              <div class="row" style="margin-bottom: 18px;">
+                <label class="col-sm-12 custom-label__dlgflowbot">
+                  {{ 'Description' | translate }}
+
+                </label>
+                <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+                  <textarea [(ngModel)]="bot_description" placeholder="{{ 'Description' | translate }}" class="input" type="text" rows="3" style="margin-bottom: 0px;"></textarea>
                 </div>
               </div>
 

@@ -62,6 +62,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   faqKbUrlToUpdate: string;
   faqKb_id: string;
   faqKb_created_at: any;
+  faqKb_description: string;
   faq_lenght: number;
   showSpinner = true;
   showSpinnerInUpdateBotCard = true;
@@ -200,7 +201,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
       this.dlgflwSelectedLang = this.dialogflowLanguage[this.getIndexOfdialogflowLanguage(res.language)]
       console.log('getDialogFlowBotData (FaqComponent) - RES > dlgflwSelectedLang ', this.dlgflwSelectedLang);
 
-      if (res.kbs !== 'undefined' && res.kbs !== 'null' && res.kbs !== null) {
+      if (res.kbs && res.kbs !== 'undefined' && res.kbs !== 'null' && res.kbs !== null) {
         this.dlgflwKnowledgeBaseID = res.kbs.trim();
         console.log('getDialogFlowBotData (FaqComponent) - RES > dlgflwKnowledgeBaseID (kbs) ', this.dlgflwKnowledgeBaseID);
       } else {
@@ -444,6 +445,8 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
       this.faqKb_created_at = faqkb.createdAt;
       console.log('GET FAQ-KB (DETAILS) BY ID - CREATED AT ', this.faqKb_created_at);
 
+      this.faqKb_description = faqkb.description;
+      console.log('GET FAQ-KB (DETAILS) BY ID - Description ', this.faqKb_description);
       // ---------------------------------------------------------------------------------------------------------------
       // Bot internal ed external
       // ---------------------------------------------------------------------------------------------------------------
@@ -505,7 +508,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
       _botType = this.botType
     }
     // this.faqKbService.updateMongoDbFaqKb(this.id_faq_kb, this.faqKb_name, this.faqKbUrlToUpdate, this.is_external_bot)
-    this.faqKbService.updateMongoDbFaqKb(this.id_faq_kb, this.faqKb_name, this.faqKbUrlToUpdate, _botType)
+    this.faqKbService.updateMongoDbFaqKb(this.id_faq_kb, this.faqKb_name, this.faqKbUrlToUpdate, _botType, this.faqKb_description)
       .subscribe((faqKb) => {
         console.log('EDIT BOT - FAQ KB UPDATED ', faqKb);
       },

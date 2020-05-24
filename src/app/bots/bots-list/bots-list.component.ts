@@ -139,6 +139,12 @@ export class BotListComponent implements OnInit {
             this.faqkbList[i].external = false;
           }
 
+
+          if (this.faqkbList[i].description) { 
+            let stripHere = 40;
+            this.faqkbList[i]['truncated_desc'] = this.faqkbList[i].description.substring(0, stripHere) + '...';
+          }
+
         }
       }
 
