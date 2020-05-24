@@ -854,7 +854,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
                         // const currentUserIsInMembers = membersArray.includes(this.user._id);  // old used with firestore 
                         const currentUserIsInParticipants = participantsArray.includes(this.user._id); // new used with ws 
-                        console.log('»» WIDGET notifyLastUnservedRequest REQUEST currentUserIsInParticipants ', currentUserIsInParticipants);
+                        // console.log('»» WIDGET notifyLastUnservedRequest REQUEST currentUserIsInParticipants ', currentUserIsInParticipants);
 
                         // if (r.support_status === 100 && !this.shown_requests[r.id] && this.user !== null) { // old used with firestore 
                         if (r.status === 100 && !this.shown_requests[r.id] && this.user !== null) {
@@ -885,15 +885,19 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                             if (dateDiff < 24) {
                                 // const url = '#/project/' + this.projectId + '/request/' + r.id + '/messages'
                                 const url = '#/project/' + this.projectId + '/wsrequest/' + r.request_id + '/messages'
-
+                                
+                              
+                               
                                 let contact_fullname = ''
-                                if (r.lead) {
+                                if (r.lead && r.lead.fullname) {
+                                   
                                     contact_fullname = r.lead.fullname
                                 } else {
-                                    contact_fullname = "n.a."
+                             
+                                    contact_fullname = ""
                                 }
 
-                                console.log('NAV (showNotification) before to show notification (my) this.notify ', this.notify)
+                                // console.log('NAV (showNotification) before to show notification (my) this.notify ', this.notify)
                                 // if (this.notify === undefined) {
                                 this.showNotification(
                                     '<span style="font-weight: 400; font-family: Google Sans, sans-serif; color:#2d323e!important">' + contact_fullname + '</span>' +
@@ -960,8 +964,15 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
             console.log('NAV NOTIFICATION_SOUND (showNotification) before to show notification (unserved) this.notify ', this.notify)
 
+            let contact_fullname = ''
+            if (r.lead && r.lead.fullname) {
+                contact_fullname = r.lead.fullname
+            } else {
+                contact_fullname = ""
+            }
+
             this.showNotification(
-                '<span style="font-weight: 400; font-family: Google Sans, sans-serif;color:#2d323e!important">' + r.lead.fullname + '</span>' +
+                '<span style="font-weight: 400; font-family: Google Sans, sans-serif;color:#2d323e!important">' + contact_fullname + '</span>' +
                 '<em style="font-family: Google Sans, sans-serif;color:#7695a5!important">' + r.first_text +
                 '</em>' + `<a href="${url}" target="_self" data-notify="url" style="height: 100%; left: 0px; position: absolute; top: 0px; width: 100%; z-index: 1032;"></a>`,
                 3,
@@ -978,7 +989,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
 
     showNotification(text: string, notificationColor: number, borderColor: string, chatIcon: string) {
-        console.log('show notification')
+        // console.log('show notification' )
         const type = ['', 'info', 'success', 'warning', 'danger'];
 
         // const color = Math.floor((Math.random() * 4) + 1);
@@ -1064,7 +1075,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
         }
         this.hasPlayed = true
-        console.log('NAV NOTIFICATION_SOUND (showNotification) hasPlayed ', this.hasPlayed)
+        // console.log('NAV NOTIFICATION_SOUND (showNotification) hasPlayed ', this.hasPlayed)
         setTimeout(() => {
             this.hasPlayed = false
         }, 3000);
@@ -1082,7 +1093,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     }
 
     setNoticationSoundUserPreference(value) {
-        console.log('NAV NOTIFICATION_SOUND (setNoticationSoundUserPreference)', value)
+        // console.log('NAV NOTIFICATION_SOUND (setNoticationSoundUserPreference)', value)
         localStorage.setItem(this.storedValuePrefix + 'sound', value);
     }
 
