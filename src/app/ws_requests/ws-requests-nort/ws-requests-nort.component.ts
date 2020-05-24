@@ -23,7 +23,7 @@ import { UAParser } from 'ua-parser-js';
 import { Location } from '@angular/common';
 import { WsSharedComponent } from '../ws-shared/ws-shared.component';
 import { ActivatedRoute } from '@angular/router';
-
+import { SelectOptionsTranslatePipe } from '../../selectOptionsTranslate.pipe';
 @Component({
   selector: 'appdashboard-ws-requests-nort',
   templateUrl: './ws-requests-nort.component.html',
@@ -115,12 +115,15 @@ export class WsRequestsNortComponent extends WsSharedComponent implements OnInit
   requests_status: any;
   operator = '='
 
+  // loadingOptions = true
+
   status = [
-    {id: '100', name: 'Unserved'},
-    {id: '200', name: 'Served'},
-    {id: '1000', name: 'All requests'},
-  
-];
+    { id: '100', name: 'Unserved' },
+    { id: '200', name: 'Served' },
+    { id: '1000', name: 'All' },
+  ];
+
+
 
   constructor(
     // private requestsService: RequestsService,
@@ -138,7 +141,8 @@ export class WsRequestsNortComponent extends WsSharedComponent implements OnInit
     public wsRequestsService: WsRequestsService,
     public location: Location,
     private route: ActivatedRoute,
-  ) { super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService);}
+    public selectOptionsTranslatePipe: SelectOptionsTranslatePipe
+  ) { super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService); }
 
   ngOnInit() {
     this.getParamsRequestStatus();
@@ -156,15 +160,25 @@ export class WsRequestsNortComponent extends WsSharedComponent implements OnInit
     this.getBrowserLang();
     // this.createBotsAndUsersArray();
     this.getStorageBucket();
+
+    // this.status = this.selectOptionsTranslatePipe.transform(this.init_status)
+    // if(this.status) { 
+    //   console.log('WsRequests NO-RT - PARAMS test', this.status);
+    //   setTimeout(() => {
+    //     this.loadingOptions = false;
+    //   }, 1000);
+    //   console.log('WsRequests NO-RT - PARAMS this.loadingOptions', this.loadingOptions);
+    // }
+
   }
 
 
- 
+
   getParamsRequestStatus() {
     this.route.params.subscribe((params) => {
       this.requests_status = params.requeststatus;
 
-    
+
       console.log('WsRequests NO-RT - PARAMS requests_status', this.requests_status);
     });
   }
@@ -174,7 +188,7 @@ export class WsRequestsNortComponent extends WsSharedComponent implements OnInit
     console.log('WsRequests NO-RT - requestsStatusSelect', request_status);
     if (request_status === '200') {
       this.getServedRequests();
-    } else if (request_status === '100'){
+    } else if (request_status === '100') {
       this.getUnservedRequests();
     } else if (request_status === '1000') {
       this.getAllRequests();
@@ -183,24 +197,24 @@ export class WsRequestsNortComponent extends WsSharedComponent implements OnInit
   }
 
   getAllRequests() {
-  
+
     this.operator = '<'
     this.requests_status = '1000'
-    console.log('WsRequests NO-RT - getAllRequests', this.requests_status ,  'operator ', this.operator);
+    console.log('WsRequests NO-RT - getAllRequests', this.requests_status, 'operator ', this.operator);
     this.getRequests()
   }
 
   getServedRequests() {
     this.operator = '='
     this.requests_status = '200'
-    console.log('WsRequests NO-RT - getServedRequests status ', this.requests_status ,  'operator ', this.operator);
+    console.log('WsRequests NO-RT - getServedRequests status ', this.requests_status, 'operator ', this.operator);
     this.getRequests()
   }
 
   getUnservedRequests() {
     this.operator = '='
     this.requests_status = '100'
-    console.log('WsRequests NO-RT - getUnservedRequests status ', this.requests_status ,  'operator ', this.operator);
+    console.log('WsRequests NO-RT - getUnservedRequests status ', this.requests_status, 'operator ', this.operator);
     this.getRequests()
   }
 
@@ -250,7 +264,7 @@ export class WsRequestsNortComponent extends WsSharedComponent implements OnInit
     }
   }
 
-    // --------------------------------------------------
+  // --------------------------------------------------
   // @ Tags - display more tags
   // --------------------------------------------------
   displayMoreTags(requestid) {
@@ -283,7 +297,7 @@ export class WsRequestsNortComponent extends WsSharedComponent implements OnInit
     // const lessTagsBtn = <HTMLElement>document.querySelector(`#less_tags_btn_for_request_${requestid}`);
     // console.log("% »»» WebSocketJs WF +++++ ws-requests--- served ----- displayMoreTags - lessTagsBtn ", lessTagsBtn);
     // lessTagsBtn.style.display = "none";
-  } 
+  }
 
   openModalSubsExpiredOrGoToPricing() {
     if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
@@ -718,8 +732,8 @@ export class WsRequestsNortComponent extends WsSharedComponent implements OnInit
               newFillColour = getColorBck(request.lead.fullname)
             } else {
 
-              newInitials = 'n.a.';
-              newFillColour = '#eeeeee';
+              newInitials = 'N/A';
+              newFillColour = 'rgb(98, 100, 167)';
             }
 
             request.requester_fullname_initial = newInitials;
@@ -804,9 +818,12 @@ export class WsRequestsNortComponent extends WsSharedComponent implements OnInit
       const user = this.usersLocalDbService.getMemberFromStorage(member_id);
       if (user) {
         // console.log('user ', user)
-        const lastnameInizial = user['lastname'].charAt(0);
-        // '- ' +
-        return member_id = user['firstname'] + ' ' + lastnameInizial + '.'
+
+        if (user['lastname']) {
+          const lastnameInizial = user['lastname'].charAt(0);
+          // '- ' +
+          return member_id = user['firstname'] + ' ' + lastnameInizial + '.'
+        }
       } else {
         // '- ' +
         return member_id
@@ -881,9 +898,9 @@ export class WsRequestsNortComponent extends WsSharedComponent implements OnInit
   onCloseArchiveRequestModal() {
     this.displayArchiveRequestModal = 'none'
     console.log('WsRequests NO-RT  displayArchiveRequestModal ', this.displayArchiveRequestModal);
-   
+
   }
- 
+
   onArchiveRequestCompleted() {
     console.log('WsRequests NO-RT onArchiveRequestCompleted ');
     this.getRequests();

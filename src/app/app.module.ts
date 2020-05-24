@@ -94,6 +94,8 @@ import { GroupNamePipe } from './groupname.pipe';
 import { SortByPipe } from './sortby.pipe';
 import { SortByDesPipe } from './sortbydes.pipe';
 import { MapToIterable } from './map-to-iterable-pipe';
+import { SelectOptionsTranslatePipe } from './selectOptionsTranslate.pipe';
+
 
 import { HoursComponent } from './hours/hours.component';
 
@@ -240,6 +242,7 @@ const appInitializerFn = (appConfig: AppConfigService) => {
     SortByPipe,
     SortByDesPipe,
     MapToIterable,
+    SelectOptionsTranslatePipe,
     ChangePasswordComponent,
     HoursComponent,
     ResetPswComponent,
@@ -361,6 +364,7 @@ const appInitializerFn = (appConfig: AppConfigService) => {
     SubscriptionService,
     LegendService, TooltipService, AdaptorService, AnalyticsService, HttpClientModule,
     TriggerService,
+    SelectOptionsTranslatePipe,
     { provide: LocationStrategy, useClass: HashLocationStrategy }
   ],
   bootstrap: [
