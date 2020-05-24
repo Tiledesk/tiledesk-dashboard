@@ -12,4 +12,5 @@ export interface FaqKb {
     faqs_number?: number;
     external?: boolean;
     type?: string;
+    description?: string;
 }
