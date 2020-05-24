@@ -22,19 +22,33 @@
     <a> {{ "YourRequests" | translate }} </a>
   </li>
 
-  <li class="right-li" style="float: right !important;padding-top: 10px!important">
-    <button #testwidgetbtn style="margin-top:0px;padding:6px 12px;" (click)="testWidgetPage()" class="btn btn-success">
+  <li class="right-li right-li-simulate-visitor" style="float: right !important;padding-top: 10px!important">
+    <button #testwidgetbtn (click)="testWidgetPage()" class="btn btn-success navbar-btn">
       {{ 'VisitorsPage.SimulateVisitor' | translate }}
     </button>
   </li>
 
   <li class="right-li" style="float: right !important;padding-top: 10px!important">
-    <button #createticket style="margin-top:0px;padding:6px 12px;" (click)="presentCreateInternalRequestModal()"
-      class="btn btn-primary">
+    <button #createticket (click)="presentCreateInternalRequestModal()"
+      class="btn btn-primary navbar-btn">
       {{ 'CreateTicket' | translate }}
     </button>
   </li>
 
+</ul>
+
+<ul class="bottom-bottom-nav" style="display: none;"> 
+  <li style="display: none;" class="" style="padding-top: 10px!important; padding-left: 10px!important">
+    <button #createticket (click)="presentCreateInternalRequestModal()"
+      class="btn btn-primary navbar-btn">
+      {{ 'CreateTicket' | translate }}
+    </button>
+  </li>
+  <li style="display: none;" style="padding-top: 10px!important">
+    <button #testwidgetbtn (click)="testWidgetPage()" class="btn btn-success navbar-btn">
+      {{ 'VisitorsPage.SimulateVisitor' | translate }}
+    </button>
+  </li>
 </ul>
 
 <div class="main-content" style="padding-top:0px; margin-top: 25px;padding-left: 0px;padding-right: 0px;">
@@ -268,12 +282,14 @@
 
                     <ng-select class="custom" name="dept" [(ngModel)]="selectedDeptId" (change)="onChangeDepts()"
                       (clear)="clearDeptFilter()" placeholder="{{ 'HistoryPage.AllDepts' | translate }}">
-                      <!-- <ng-option [value]="''">{{ 'HistoryPage.AllDepts' | translate }}</ng-option> -->
-                      <!-- departments -->
-                      <ng-option *ngFor="let dept of depts_array_noduplicate" [value]="dept?._id">
-                        <!-- {{dept?.name}}  -->
+                      
+                      
+                      <!-- <ng-option *ngFor="let dept of depts_array_noduplicate" [value]="dept?._id"> -->
+                        <ng-option *ngFor="let dept of departments" [value]="dept?._id">
                         <!-- // use this if do the for with departments -->
-                        {{dept?.deptName}}
+                          {{dept?.name}} 
+                         <!-- // use this if do the for with depts_array_noduplicate -->
+                        <!-- {{dept?.deptName}} -->
                       </ng-option>
                     </ng-select>
                   </div>
@@ -815,5 +831,6 @@ l-4.9-13l18-14.8L22.1,34.4z" />
   </div>
 </div>
 
-<app-department-edit-add *ngIf='display_dept_sidebar === true'
- [display_dept_sidebar]="display_dept_sidebar" [ws_requestslist_deptIdSelected]="ws_requestslist_deptIdSelected"> </app-department-edit-add> 
+<!-- <app-department-edit-add *ngIf='display_dept_sidebar === true'
+ [display_dept_sidebar]="display_dept_sidebar" [ws_requestslist_deptIdSelected]="ws_requestslist_deptIdSelected"> 
+</app-department-edit-add>  -->

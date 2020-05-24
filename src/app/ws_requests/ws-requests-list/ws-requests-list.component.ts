@@ -209,7 +209,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         takeUntil(this.unsubscribe$)
       )
       .subscribe((user_role) => {
-        console.log('% »»» WebSocketJs WF - WsRequestsList USER ROLE ', user_role);
+        console.log('% »»» WebSocketJs WF +++++ ws-requests---  WsRequestsList USER ROLE ', user_role);
         if (user_role) {
           if (user_role === 'agent') {
             this.ROLE_IS_AGENT = true
@@ -614,7 +614,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       this.getDeptsAndCountOfDeptsInRequests(wsrequests);
     });
   }
- // DEPTS_LAZY: add this 
+  // DEPTS_LAZY: add this 
   getDeptObj(departmentid: string, deparments: any) {
     // const deptObjct =  this.departments.findIndex((e) => e.department === departmentid);
     const deptObjct = deparments.filter((obj: any) => {
@@ -634,7 +634,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         takeUntil(this.unsubscribe$)
       )
       .subscribe((wsrequests) => {
-        
+
         // DEPTS_LAZY: add this 
         this.addDeptObject(wsrequests)
 
@@ -809,7 +809,38 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
           //  replace this.currentUserID with this.auth.user_bs.value._id  because at the go back from the request's details this.currentUserID at the moment in which is passed in currentUserIdIsInParticipants is undefined 
           request['currentUserIsJoined'] = this.currentUserIdIsInParticipants(request.participants, this.auth.user_bs.value._id, request.request_id);
 
-          // request["test"] = this.createFullParticipacipantsArray(request.participants)
+
+
+
+
+          if (request.status === 200) {
+            // USE CASE L'ARRAY new_participants è UNDEFINED x es al refresh o quando si entra nella pagina (anche al back dal dettaglio) o all' UPDATE
+            // console.log('!! Ws SHARED  (from request list) PARTICIPATING-AGENTS  ', request['participantingAgents']);
+
+            if (!request['participanting_Agents']) {
+
+              console.log('!! Ws SHARED  (from request list) PARTICIPATING-AGENTS IS ', request['participanting_Agents'], ' - RUN DO ');
+
+              request['participanting_Agents'] = this.doParticipatingAgentsArray(request.participants, request.first_text)
+
+            } else {
+
+              console.log('!! Ws SHARED  (from request list) PARTICIPATING-AGENTS IS DEFINED');
+              // USE CASE L'ARRAY new_participants è definito per es arriva un nuova richiesta: new_participants x le richieste già esistenti
+
+              // const participantingAgentsIds = []
+
+              // request['participanting_Agents'].forEach(participant => {
+              //   participantingAgentsIds.push(participant['_id'])
+              // });
+              // console.log('!! Ws SHARED (from request list) PARTICIPATING-AGENTS IDS ARRAY ', participantingAgentsIds);
+              // console.log('!! Ws SHARED (from request list) PARTICIPANTS ', request.participants);
+            }
+          }
+          // this.createFullParticipacipantsArray(request, request.participants)
+
+
+          // request["test"] = this.newParticipants
           // console.log('!! Ws SHARED  (from) »»»»»»» createFullParticipacipantsArray request["test"] ' , request["test"]);
 
           if (request.lead && request.lead.fullname) {
@@ -821,28 +852,36 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
             request['requester_fullname_fillColour'] = '#6264a7';
           }
 
-          if (request.lead
-            && request.lead.attributes
-            && request.lead.attributes.senderAuthInfo
-            && request.lead.attributes.senderAuthInfo.authVar
-            && request.lead.attributes.senderAuthInfo.authVar.token
-            && request.lead.attributes.senderAuthInfo.authVar.token.firebase
-            && request.lead.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider
-          ) {
-            if (request.lead.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider === 'custom') {
+          //   if (request.lead
+          //     && request.lead.attributes
+          //     && request.lead.attributes.senderAuthInfo
+          //     && request.lead.attributes.senderAuthInfo.authVar
+          //     && request.lead.attributes.senderAuthInfo.authVar.token
+          //     && request.lead.attributes.senderAuthInfo.authVar.token.firebase
+          //     && request.lead.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider
+          //   ) {
+          //     if (request.lead.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider === 'custom') {
 
-              // console.log('- lead sign_in_provider ',  request.lead.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider);
-              request['requester_is_verified'] = true;
-            } else {
-              // console.log('- lead sign_in_provider ',  request.lead.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider);
-              request['requester_is_verified'] = false;
-            }
+          //       // console.log('- lead sign_in_provider ',  request.lead.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider);
+          //       request['requester_is_verified'] = true;
+          //     } else {
+          //       // console.log('- lead sign_in_provider ',  request.lead.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider);
+          //       request['requester_is_verified'] = false;
+          //     }
 
-          } else {
-            request['requester_is_verified'] = false;
-          }
+          //   } else {
+          //     request['requester_is_verified'] = false;
+          //   }
+
+          // if (request.requester && request.requester.isAuthenticated === true) {
+          //   request['requester_is_verified'] = true;
+          // } else {
+          //   request['requester_is_verified'] = false;
+          // }
 
         });
+
+
 
 
         /**
