@@ -1,6 +1,45 @@
 
 # tiledesk-dashboard
 
+### 2.0.46
+- Disables the ability to owner and to current user to delete themselves from the project
+
+### 2.0.45
+- Fixes the scroll in the modal window add agent to a request / assign request
+
+### 2.0.44
+- Disables the ability to agent to add another agent to a request, to reassign a request and to close a request of which he not is a participant
+- Makes the surname field mandatory during registration
+- Fixes the layout on mobile of the list of the requests
+
+### 2.0.43
+- Minor improvements
+
+### 2.0.42
+- Adds the lazy loading of agents and bots in the request list
+
+### 2.0.41
+- Minor improvements
+
+### 2.0.40
+- Changes the endpoint of the "bot credential" service
+
+### 2.0.39
+- Changes the id and the condition of the trigger "available agents"
+
+### 2.0.38
+- Adds the lazy loading of departments in the request list
+
+### 2.0.37
+- Minor improvements
+
+### 2.0.36
+- Minor improvements and bug fixing
+
+### 2.0.31
+- Adds the ability to reset the prebuilt triggers
+- Adds the ability to edit the "Offices are closed" widget message
+
 ### 2.0.26
 - Adds the ability to add or edit a description for bots
 - Improves departments list page, department create and edit page and the routing page
@@ -22,7 +61,7 @@
 
 ### 2.0.8
 - Adds mimor improvements
-- Merges pull request 'German language support'
+- Merges pull request 'German language support'. Many thanks Michael
 
 ### 2.0.4
 - Adds the ability to remove the account
