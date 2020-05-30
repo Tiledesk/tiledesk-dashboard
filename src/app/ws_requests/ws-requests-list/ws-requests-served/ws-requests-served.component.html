@@ -428,7 +428,7 @@
             <!-- REQUESTER VERIFIED ICON (SERVED REQUEST SECTION) -->
             <span class="requester-avatar-wrapper">
               <span class="requester-avatar" [ngStyle]="{'background-color': request?.requester_fullname_fillColour }"
-                [ngClass]="{'requester_fullname-undefined' : !request?.lead?.fullname}">
+                [ngClass]="{'requester_fullname-undefined' : !request?.lead?.fullname, requester_avatar_not_has_email: !request?.lead?.email }">
                 <span style="color: #ffffff"> {{ request?.requester_fullname_initial }} </span>
               </span>
               <span *ngIf="request?.requester_is_verified === true" class="tooltipx">
@@ -467,7 +467,8 @@
 
               <span class="lead_data">
 
-                {{ request?.lead?.fullname}}
+                <span  [ngClass]="{'requester_not_has_email' : !request?.lead?.email}"> {{ request?.lead?.fullname}} </span>   
+                
                 <span *ngIf="!request?.lead?.fullname" [ngClass]="{'requester_fullname_initial-undefined' : !request?.lead?.fullname}">
                   n/a
                 </span>

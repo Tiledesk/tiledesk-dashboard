@@ -438,9 +438,19 @@ span .switch-agent-admin-requests-btn {
   position: relative;
   top: 4px;
 }
+
+.requester_avatar_not_has_email {
+  top: -5px;
+}
+
 .lead_data {
   position: relative;
   top: -2px;
+}
+
+.requester_not_has_email {
+  top: -2px;
+  position: relative;
 }
 
 .requester-email {
@@ -473,9 +483,9 @@ span .switch-agent-admin-requests-btn {
   font-size: 11px;
 }
 
-.requester_fullname_initial-undefined{
+.requester_fullname_initial-undefined {
   position: relative;
-  top: -3px;
+  top: -2px;
 }
 
 .requester-verified {
