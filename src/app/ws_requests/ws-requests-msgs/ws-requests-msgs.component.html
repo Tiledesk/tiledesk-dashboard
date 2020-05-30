@@ -1336,9 +1336,9 @@
                 // ----------------------------------------------------------------------------- -->
                 <!-- <div class="card right-card" style="padding-top:5px; padding-bottom:5px; margin-top: 5px;margin-bottom: 5px;">
                 <div class="card-content" style="padding-top: 5px;padding-bottom: 5px;"> -->
-                <div class="row" style="">
+                <div class="row">
                   <div class="col-sm-12" style="border-bottom: 1px solid #dadde1; border-top: 1px solid #dadde1;">
-                    <p class="row-header" style="">
+                    <p class="row-header">
                       <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
                       <span style="vertical-align: middle">
                         {{ "RequestMsgsPage.Agents" | translate }}
@@ -2041,7 +2041,7 @@
 <div class="modal" tabindex="-1" role="dialog"
   [ngStyle]="{'display': displayUsersListModal , 'height': users_list_modal_height}"
   style="background-color: rgba(90,90,90,0.5);">
-  <div class="modal-dialog modal-lg users-list-modal" role="document"
+  <div class="modal-dialog modal-lg users-list-modal"  [ngClass]="{'users-list-modal-dashboard-mode' : CHAT_PANEL_MODE === false, 'users-list-modal-chat-panel-mode' : CHAT_PANEL_MODE === true}" role="document"
     style="width: 100%; height: 100%; margin:0; padding: 0;">
     <div class="modal-content" style="height: auto; min-height: 100%; border-radius: 0; border:none;">
 
