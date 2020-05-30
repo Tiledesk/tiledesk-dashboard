@@ -243,7 +243,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
     const elemMainContent = <HTMLElement>document.querySelector('.main-content');
     this.main_content_height = elemMainContent.clientHeight
-    // console.log('%%% Ws-REQUESTS-Msgs - ON RESIZE -> MAIN CONTENT HEIGHT', this.main_content_height);
+    console.log('%%% Ws-REQUESTS-Msgs - ON RESIZE -> MAIN CONTENT HEIGHT', this.main_content_height);
 
     // determine the height of the modal when the width of the window is <= of 991px when the window is resized
     // RESOLVE THE BUG: @media screen and (max-width: 992px) THE HEIGHT OF THE  MODAL 'USERS LIST' IS NOT 100%
@@ -1633,25 +1633,29 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   goToMemberProfile(member_id: any) {
     console.log('%%% Ws-REQUESTS-Msgs - has clicked GO To MEMBER ', member_id);
-    if (member_id.indexOf('bot_') !== -1) {
-      console.log('IS A BOT !');
 
-      const id_bot = member_id.substring(4);
-      // this.router.navigate(['project/' + this.id_project + '/botprofile/' + member_id]);
-      const bot = this.botLocalDbService.getBotFromStorage(id_bot);
-      console.log('%%% Ws-REQUESTS-Msgs BOT FROM STORAGE ', bot)
+    if (this.CHAT_PANEL_MODE === false) {
+      if (member_id.indexOf('bot_') !== -1) {
+        console.log('IS A BOT !');
 
-      let botType = ''
-      if (bot.type === 'internal') {
-        botType = 'native'
+        const id_bot = member_id.substring(4);
+        // this.router.navigate(['project/' + this.id_project + '/botprofile/' + member_id]);
+        const bot = this.botLocalDbService.getBotFromStorage(id_bot);
+        console.log('%%% Ws-REQUESTS-Msgs BOT FROM STORAGE ', bot)
+
+        let botType = ''
+        if (bot.type === 'internal') {
+          botType = 'native'
+        } else {
+          botType = bot.type
+        }
+        this.router.navigate(['project/' + this.id_project + '/bots', id_bot, botType]);
       } else {
-        botType = bot.type
+        // this.router.navigate(['project/' + this.id_project + '/member/' + member_id]);
+        this.getProjectuserbyUseridAndGoToEditProjectuser(member_id);
       }
-      this.router.navigate(['project/' + this.id_project + '/bots', id_bot, botType]);
-    } else {
-      // this.router.navigate(['project/' + this.id_project + '/member/' + member_id]);
-      this.getProjectuserbyUseridAndGoToEditProjectuser(member_id);
     }
+
   }
 
   getBaseUrl() {
