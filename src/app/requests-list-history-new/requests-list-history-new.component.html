@@ -839,9 +839,9 @@
                   </td>
 
                   <td>
-                    <button type="button" rel="tooltip" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}"
+                    <button type="button"
                       class="btn btn-danger btn-simple btn-xs tool_tip"
-                      (click)='deleteArchivedRequest(request?.request_id)'>
+                      (click)='deleteArchivedRequest(request?.request_id)' [disabled]="CURRENT_USER_ROLE !== 'owner'">
 
                       <i class="material-icons">delete_forever</i>
 

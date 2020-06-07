@@ -21,6 +21,9 @@ import { WsRequestsService } from '../services/websocket/ws-requests.service';
 import { UAParser } from 'ua-parser-js';
 
 import { WsSharedComponent } from '../ws_requests/ws-shared/ws-shared.component';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators'
+
 // import swal from 'sweetalert';
 // https://github.com/t4t5/sweetalert/issues/890 <- issue ERROR in node_modules/sweetalert/typings/sweetalert.d.ts(4,9): error TS2403
 
@@ -60,6 +63,8 @@ const swal = require('sweetalert');
 
 
 export class RequestsListHistoryNewComponent extends WsSharedComponent implements OnInit, OnDestroy {
+
+  private unsubscribe$: Subject<any> = new Subject<any>();
 
   @ViewChild('advancedoptionbtn') private advancedoptionbtnRef: ElementRef;
   @ViewChild('searchbtn') private searchbtnRef: ElementRef;
@@ -113,6 +118,7 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
   requestWasSuccessfullyDeleted: string;
   errorDeleting: string;
   pleaseTryAgain: string;
+  CURRENT_USER_ROLE: string;
 
   public myDatePickerOptions: IMyDpOptions = {
     // other options...
@@ -157,6 +163,7 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
     // this.createBotsAndUsersArray();
     this.getStorageBucket();
     this.getTranslations();
+    this.getProjectUserRole()
   }
 
   getTranslations() {
@@ -167,18 +174,28 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
         this.errorDeleting = text["ErrorDeleting"];
         this.pleaseTryAgain = text["PleaseTryAgain"];
         this.done_msg = text["Done"];
-        console.log('+ + + DeleteRequestForever', text)
+        // console.log('+ + + DeleteRequestForever', text)
       });
 
     this.translate.get('AreYouSure')
       .subscribe((text: string) => {
         this.areYouSure = text;
-        console.log('+ + + areYouSure', text)
+        // console.log('+ + + areYouSure', text)
       });
+  }
 
 
-
-
+  getProjectUserRole() {
+    this.usersService.project_user_role_bs
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((user_role) => {
+        console.log('!!! NEW REQUESTS HISTORY - USER ROLE ', user_role);
+        if (user_role) {
+          this.CURRENT_USER_ROLE = user_role
+        }
+      });
   }
 
 
@@ -325,6 +342,8 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
       // console.log('No user is signed in');
     }
   }
+
+
 
 
   getDepartments() {
@@ -673,7 +692,7 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
         for (const request of this.requestList) {
 
           if (request) {
-            console.log('!!! NEW REQUESTS HISTORY - request ', request);
+            // console.log('!!! NEW REQUESTS HISTORY - request ', request);
 
             // -------------------------------------------------------------------
             // User Agent
@@ -934,15 +953,15 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
           }, () => {
             console.log('in swal deleteRequest res* COMPLETE *');
 
-            
+
 
             swal(this.done_msg, this.requestWasSuccessfullyDeleted, {
               icon: "success",
-            }).then((okpressed) => { 
+            }).then((okpressed) => {
               this.getRequests();
             });
 
-           
+
 
           });
 
