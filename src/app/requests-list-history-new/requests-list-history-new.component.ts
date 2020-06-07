@@ -20,6 +20,13 @@ import * as moment from 'moment';
 import { WsRequestsService } from '../services/websocket/ws-requests.service';
 import { UAParser } from 'ua-parser-js';
 
+import { WsSharedComponent } from '../ws_requests/ws-shared/ws-shared.component';
+// import swal from 'sweetalert';
+// https://github.com/t4t5/sweetalert/issues/890 <- issue ERROR in node_modules/sweetalert/typings/sweetalert.d.ts(4,9): error TS2403
+
+// https://www.npmjs.com/package/sweetalert
+const swal = require('sweetalert');
+
 @Component({
   selector: 'appdashboard-requests-list-history-new',
   templateUrl: './requests-list-history-new.component.html',
@@ -52,7 +59,7 @@ import { UAParser } from 'ua-parser-js';
 })
 
 
-export class RequestsListHistoryNewComponent implements OnInit, OnDestroy {
+export class RequestsListHistoryNewComponent extends WsSharedComponent implements OnInit, OnDestroy {
 
   @ViewChild('advancedoptionbtn') private advancedoptionbtnRef: ElementRef;
   @ViewChild('searchbtn') private searchbtnRef: ElementRef;
@@ -99,6 +106,14 @@ export class RequestsListHistoryNewComponent implements OnInit, OnDestroy {
 
   date_picker_is_disabled: boolean;
   projectUsersArray: any;
+  requestWillBePermanentlyDeleted: string;
+  areYouSure: string;
+  done_msg: string;
+  error_msg: string;
+  requestWasSuccessfullyDeleted: string;
+  errorDeleting: string;
+  pleaseTryAgain: string;
+
   public myDatePickerOptions: IMyDpOptions = {
     // other options...
     dateFormat: 'dd/mm/yyyy',
@@ -109,21 +124,24 @@ export class RequestsListHistoryNewComponent implements OnInit, OnDestroy {
 
   constructor(
     // private requestsService: RequestsService,
-    private router: Router,
+    public router: Router,
     public auth: AuthService,
-    private usersLocalDbService: UsersLocalDbService,
-    private botLocalDbService: BotLocalDbService,
+    public usersLocalDbService: UsersLocalDbService,
+    public botLocalDbService: BotLocalDbService,
     private departmentService: DepartmentService,
-    private usersService: UsersService,
-    private faqKbService: FaqKbService,
+    public usersService: UsersService,
+    public faqKbService: FaqKbService,
     private prjctPlanService: ProjectPlanService,
     private translate: TranslateService,
     private notify: NotifyService,
     public appConfigService: AppConfigService,
-    private wsRequestsService: WsRequestsService
-  ) { }
+    public wsRequestsService: WsRequestsService
+  ) {
+    super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService);
+  }
 
   ngOnInit() {
+    this.showSpinner = true;
     // this.auth.checkRoleForCurrentProject();
     // selectedDeptId is assigned to empty so in the template will be selected the custom option ALL DEPARTMENTS
     this.selectedDeptId = '';
@@ -138,7 +156,33 @@ export class RequestsListHistoryNewComponent implements OnInit, OnDestroy {
     this.getBrowserLang();
     // this.createBotsAndUsersArray();
     this.getStorageBucket();
+    this.getTranslations();
   }
+
+  getTranslations() {
+    this.translate.get('DeleteRequestForever')
+      .subscribe((text: string) => {
+        this.requestWillBePermanentlyDeleted = text["TheRequestWillBePermanentlyDeleted"];
+        this.requestWasSuccessfullyDeleted = text["TheRequestWasSuccessfullyDeleted"];
+        this.errorDeleting = text["ErrorDeleting"];
+        this.pleaseTryAgain = text["PleaseTryAgain"];
+        this.done_msg = text["Done"];
+        console.log('+ + + DeleteRequestForever', text)
+      });
+
+    this.translate.get('AreYouSure')
+      .subscribe((text: string) => {
+        this.areYouSure = text;
+        console.log('+ + + areYouSure', text)
+      });
+
+
+
+
+  }
+
+
+  // requestWillBePermanentlyDeleted
 
   getStorageBucket() {
     const firebase_conf = this.appConfigService.getConfig().firebase;
@@ -595,7 +639,7 @@ export class RequestsListHistoryNewComponent implements OnInit, OnDestroy {
   }
 
   getRequests() {
-    this.showSpinner = true;
+
     this.wsRequestsService.getNodeJsHistoryRequests(this.queryString, this.pageNo).subscribe((requests: any) => {
       console.log('!!! NEW REQUESTS HISTORY - GET REQUESTS ', requests['requests']);
       console.log('!!! NEW REQUESTS HISTORY - GET REQUESTS COUNT ', requests['count']);
@@ -629,7 +673,7 @@ export class RequestsListHistoryNewComponent implements OnInit, OnDestroy {
         for (const request of this.requestList) {
 
           if (request) {
-            // console.log('!!! NEW REQUESTS HISTORY - request ', request);
+            console.log('!!! NEW REQUESTS HISTORY - request ', request);
 
             // -------------------------------------------------------------------
             // User Agent
@@ -663,39 +707,57 @@ export class RequestsListHistoryNewComponent implements OnInit, OnDestroy {
             // .authVar.token.firebase.sign_in_provider
             // console.log('---- lead sign_in_provider ',  request.lead.attributes.senderAuthInfo);
 
+            const date = moment.localeData().longDateFormat(request.createdAt);
+            request.fulldate = date;
+            // if (this.browserLang === 'it') {
+            //   // moment.locale('it')
+            //   const date = moment(request.createdAt).format('dddd, DD MMM YYYY - HH:mm:ss');
+            //   console.log('!!! NEW REQUESTS HISTORY - createdAt date', date);
+            //   request.fulldate = date;
+            // } else {
+            //   const date = moment(request.createdAt).format('dddd, MMM DD, YYYY - HH:mm:ss');
+            //   console.log('!!! NEW REQUESTS HISTORY - createdAt date', date);
+            //   request.fulldate = date;
+            // }
 
-            if (this.browserLang === 'it') {
-              // moment.locale('it')
-              const date = moment(request.createdAt).format('dddd, DD MMM YYYY - HH:mm:ss');
-              console.log('!!! NEW REQUESTS HISTORY - createdAt date', date);
-              request.fulldate = date;
-            } else {
-              const date = moment(request.createdAt).format('dddd, MMM DD, YYYY - HH:mm:ss');
-              console.log('!!! NEW REQUESTS HISTORY - createdAt date', date);
-              request.fulldate = date;
-            }
 
+            if (request.participants.length > 0) {
+              console.log('!! Ws SHARED  (from request list history) participants length', request.participants.length);
+              if (!request['participanting_Agents']) {
 
-            if (request.lead
-              && request.lead.attributes
-              && request.lead.attributes.senderAuthInfo
-              && request.lead.attributes.senderAuthInfo.authVar
-              && request.lead.attributes.senderAuthInfo.authVar.token
-              && request.lead.attributes.senderAuthInfo.authVar.token.firebase
-              && request.lead.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider
-            ) {
-              if (request.lead.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider === 'custom') {
+                console.log('!! Ws SHARED  (from request list history) PARTICIPATING-AGENTS IS ', request['participanting_Agents'], ' - RUN DO ');
 
-                // console.log('- lead sign_in_provider ',  request.lead.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider);
-                this.REQUESTER_IS_VERIFIED = true;
+                request['participanting_Agents'] = this.doParticipatingAgentsArray(request.participants, request.first_text)
+
               } else {
-                // console.log('- lead sign_in_provider ',  request.lead.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider);
-                this.REQUESTER_IS_VERIFIED = false;
+
+                console.log('!! Ws SHARED  (from request list history) PARTICIPATING-AGENTS IS DEFINED');
               }
             } else {
-              this.REQUESTER_IS_VERIFIED = false;
+              console.log('!! Ws SHARED  (from request list history) participants length', request.participants.length);
+              request['participanting_Agents'] = [{ _id: 'no_agent', email: 'NoAgent', firstname: 'NoAgent', lastname: 'NoAgent' }]
             }
-            request.requester_is_verified = this.REQUESTER_IS_VERIFIED
+
+            // if (request.lead
+            //   && request.lead.attributes
+            //   && request.lead.attributes.senderAuthInfo
+            //   && request.lead.attributes.senderAuthInfo.authVar
+            //   && request.lead.attributes.senderAuthInfo.authVar.token
+            //   && request.lead.attributes.senderAuthInfo.authVar.token.firebase
+            //   && request.lead.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider
+            // ) {
+            //   if (request.lead.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider === 'custom') {
+
+            //     // console.log('- lead sign_in_provider ',  request.lead.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider);
+            //     this.REQUESTER_IS_VERIFIED = true;
+            //   } else {
+            //     // console.log('- lead sign_in_provider ',  request.lead.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider);
+            //     this.REQUESTER_IS_VERIFIED = false;
+            //   }
+            // } else {
+            //   this.REQUESTER_IS_VERIFIED = false;
+            // }
+            // request.requester_is_verified = this.REQUESTER_IS_VERIFIED
           }
         }
       }
@@ -708,6 +770,42 @@ export class RequestsListHistoryNewComponent implements OnInit, OnDestroy {
     });
   }
 
+  goToAgentProfile(member_id) {
+    console.log('WsRequestsServedComponent goToAgentProfile ', member_id)
+    // this.router.navigate(['project/' + this.projectId + '/member/' + member_id]);
+
+    this.getProjectuserbyUseridAndGoToEditProjectuser(member_id);
+  }
+
+  // SERVED_BY: add this if not exist -->
+  getProjectuserbyUseridAndGoToEditProjectuser(member_id: string) {
+    this.usersService.getProjectUserByUserId(member_id)
+      .subscribe((projectUser: any) => {
+        console.log('% Ws-REQUESTS-Msgs GET projectUser by USER-ID ', projectUser)
+        if (projectUser) {
+          console.log('% Ws-REQUESTS-Msgs projectUser id', projectUser[0]._id);
+
+          this.router.navigate(['project/' + this.projectId + '/user/edit/' + projectUser[0]._id]);
+        }
+      }, (error) => {
+        console.log('% Ws-REQUESTS-Msgs GET projectUser by USER-ID - ERROR ', error);
+      }, () => {
+        console.log('% Ws-REQUESTS-Msgs GET projectUser by USER-ID * COMPLETE *');
+      });
+  }
+
+  goToBotProfile(bot_id, bot_type) {
+    let botType = ''
+    if (bot_type === 'internal') {
+      botType = 'native'
+    } else {
+      botType = bot_type
+    }
+    this.router.navigate(['project/' + this.projectId + '/bots', bot_id, botType]);
+
+  }
+
+  // NO more used
   members_replace(member_id) {
     // console.log('!!! NEW REQUESTS HISTORY  - SERVED BY ID ', member_id)
     // console.log(' !!! NEW REQUESTS HISTORY underscore found in the participant id  ', member_id, member_id.includes('bot_'));
@@ -753,6 +851,7 @@ export class RequestsListHistoryNewComponent implements OnInit, OnDestroy {
     }
   }
 
+  // no more used
   goToMemberProfile(member_id: any) {
     console.log('!!! NEW REQUESTS HISTORY has clicked GO To MEMBER ', member_id);
     if (member_id.indexOf('bot_') !== -1) {
@@ -804,6 +903,58 @@ export class RequestsListHistoryNewComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+  }
+
+  deleteArchivedRequest(request_id) {
+    console.log('NEW REQUEST-LIST HISTORY - deleteArchivedRequest request_id ', request_id)
+
+
+    swal({
+      title: this.areYouSure + "?",
+      text: this.requestWillBePermanentlyDeleted,
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+      .then((willDelete) => {
+        if (willDelete) {
+          console.log('swal willDelete', willDelete)
+
+          this.wsRequestsService.deleteRequest(request_id).subscribe((res: any) => {
+            console.log('in swal deleteRequest res ', res)
+
+          }, (error) => {
+            console.log('in swal deleteRequest res - ERROR ', error);
+
+            swal(this.errorDeleting, this.pleaseTryAgain, {
+              icon: "error",
+            });
+
+
+          }, () => {
+            console.log('in swal deleteRequest res* COMPLETE *');
+
+            
+
+            swal(this.done_msg, this.requestWasSuccessfullyDeleted, {
+              icon: "success",
+            }).then((okpressed) => { 
+              this.getRequests();
+            });
+
+           
+
+          });
+
+        } else {
+          console.log('swal willDelete', willDelete)
+          // swal("Your imaginary file is safe!");
+        }
+      });
+
+
+
+
   }
 
 }

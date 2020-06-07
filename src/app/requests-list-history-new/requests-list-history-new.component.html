@@ -30,7 +30,7 @@
 
     <div class="row">
       <div class="col-md-12">
-        <div class="card" style="margin-bottom: 0px;margin-top: 15px;">
+        <div class="card" style="margin-bottom: 0px;margin-top: 15px; padding-top: 15px;">
           <div class="card-content" style="padding-top: 0px;padding-bottom: 15px;">
             <!-- <div class="card-header" style="background-color:#ffffff; padding: 8px;"> -->
 
@@ -73,12 +73,49 @@
               <!-- ------====== INPUT 'FULL TEXT' + CLEAR FULL-TEXT SEARCH BTN + BTNS SEARCH & OPEN ADVANCED OPTION  ======------ -->
               <div class="row">
                 <div class="col-sm-12">
+                  <!-- start test -->
                   <div class="input-group">
+                    <!-- // SEARCH FULL-TEXT BTN -->
+                    <span class="input-group-btn" style="padding-right: 2px;">
+                      <button class="custom-input-group---btn" type="submit">
+                        <i class="fa fa-search fa-search-btn" (click)="search()"
+                          style="color:grey; font-size: 18px;"></i>
+                      </button>
+                    </span>
 
+                    <input name="fullText" [(ngModel)]="fullText" autocomplete="off" class="search-field"
+                      placeholder="{{ 'HistoryPage.ContainsTheWords' | translate }}">
+
+                    <!-- // CLEAR SEARCH FULL-TEXT BTN -->
+                    <span *ngIf="fullText?.length > 0 && showAdvancedSearchOption === false" class="input-group-btn"
+                      style="padding-right: 2px;">
+                      <button class="custom-input-group---btn" type="button">
+                        <i class="fa fa-times fa-clear-search-btn" (click)="clearFullText()"
+                          style="color:grey; font-size: 18px;"></i>
+                      </button>
+                    </span>
+
+                    <!-- // OPEN ADVANCED OPTION BTN -->
+                    <span class="input-group-btn" style="padding-left: 2px;">
+                      <button class="custom-input-group---btn" type="button">
+                        <i class="fa fa-caret-down fa-advanced-option-btn" (click)="toggle()"
+                          style="color:grey; font-size: 18px;"></i>
+                      </button>
+                    </span>
+                  </div><!-- /input-group -->
+
+
+                  <!-- end test -->
+
+                  <!-- 
+                  // ------------------------------------------------------------------------------------------------------
+                  // old serach full text - !!!! display none
+                  // ------------------------------------------------------------------------------------------------------ -->
+                  <div class="input-group" style="display: none;">
                     <div class="buttonInside">
                       <!-- INPUT 'FULL TEXT' -->
                       <!-- padding-bottom: 16px; padding-left: 6px; -->
-                      <input name="fullText" type="text" [(ngModel)]="fullText" class="form-control" autocomplete="off"
+                      <input name="fullText" [(ngModel)]="fullText" class="form-control" autocomplete="off"
                         style="margin-bottom: 20px;border-bottom-right-radius: 0px !important;border-top-right-radius: 0px !important;"
                         placeholder="{{ 'HistoryPage.ContainsTheWords' | translate }}">
 
@@ -122,7 +159,7 @@
               <!-- @ngIfAnimation -->
               <div *ngIf="showAdvancedSearchOption">
                 <!-- @easeInOut -->
-                <div>
+                <div style="margin-top: 6px;">
 
                   <!-- -------====== SELECT OPTIONS: DEPARTMENTS & DATE RANGE ======------ -->
                   <div class="row">
@@ -133,7 +170,7 @@
                         <label class="col-sm-12" style="text-align: left; color:#7695a5;">
                           {{ 'HistoryPage.FilterByDepartment' | translate }}
                         </label>
-                        <div class="col-sm-12" style="margin-bottom: 20px;">
+                        <div class="col-sm-12" style="margin-bottom: 6px;">
                           <ng-select class="custom" name="dept" [(ngModel)]="selectedDeptId" [clearable]="false">
                             <ng-option [value]="''">{{ 'HistoryPage.AllDepts' | translate }}</ng-option>
                             <ng-option *ngFor="let dept of departments" [value]="dept._id">
@@ -161,7 +198,7 @@
                   </div>
 
                   <!-- -------====== SELECT OPTIONS USERS/BOTS & SEARCH FOR EMAIL======------ -->
-                  <div class="row" style="margin-bottom: 20px;">
+                  <div class="row" style="margin-bottom: 6px;">
                     <!-- // SELECT OPTIONS USERS/BOTS -->
                     <div class="col-sm-6">
                       <div class="section-select-dept">
@@ -172,7 +209,7 @@
                           <ng-option [value]="''">{{ 'HistoryPage.AllAgents' | translate }}</ng-option>
                           <ng-option *ngFor="let agent of user_and_bot_array" [value]="agent._id">
                             {{ agent.firstname }} {{ agent.lastname }}
-                            
+
                           </ng-option>
                         </ng-select>
                       </div>
@@ -299,13 +336,23 @@
                     </span>
                   </th>
 
+                  <!-- 
+                  // -----------------------------
+                  // Actions 
+                  // ----------------------------- -->
+                  <th>
+                    <span class="column-th-span">
+                      {{ 'Actions' | translate }}
+                    </span>
+                  </th>
+
                 </tr>
               </thead>
               <tbody>
 
                 <!-- ===== IF THERE ISN'T HISTORY REQUEST ===== -->
                 <tr *ngIf="requestList && requestList?.length === 0">
-                  <td colspan="7" style="text-align: center; padding-top: 16px; cursor: pointer">
+                  <td colspan="8" style="text-align: center; padding-top: 16px; cursor: pointer">
 
                     <p style="font-size:1em; color:#7695a5; font-weight: 400">
 
@@ -484,9 +531,10 @@
                         <span style="color: #ffffff"> {{ request?.requester_fullname_initial }} </span>
                       </span>
                       <span *ngIf="request?.requester_is_verified === true" class="tooltipx">
-                        <svg [ngClass]="{'verified-icon-requester-undefined': !request?.lead?.fullname }" version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
-                          xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 26.6 26.6" width="17"
-                          height="17" style="position: relative;left: -41px;top: 1px;" xml:space="preserve">
+                        <svg [ngClass]="{'verified-icon-requester-undefined': !request?.lead?.fullname }" version="1.1"
+                          id="Livello_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                          x="0px" y="0px" viewBox="0 0 26.6 26.6" width="17" height="17"
+                          style="position: relative;left: -41px;top: 1px;" xml:space="preserve">
                           <style type="text/css">
                             .st0 {
                               fill: none;
@@ -517,7 +565,8 @@
 
                       <span class="lead_data">
                         {{ request?.lead?.fullname }}
-                        <span *ngIf="!request?.lead?.fullname" [ngClass]="{'requester_fullname_initial-undefined' : !request?.lead?.fullname}">
+                        <span *ngIf="!request?.lead?.fullname"
+                          [ngClass]="{'requester_fullname_initial-undefined' : !request?.lead?.fullname}">
                           n/a
                         </span>
 
@@ -671,42 +720,93 @@
                     </p>
                   </td>
 
-                  <!-- ===== NEW SERVED BY ===== -->
+                  <!-- 
+                  // ------------------------------------------------------------------------------------------------------
+                  // @ Served By
+                  // ------------------------------------------------------------------------------------------------------ -->
                   <td>
-                    <div *ngFor="let participant of request?.participants" style="font-size:0.8em;">
+                    <!-- <div *ngFor="let participant of request?.participants" style="font-size:0.8em;">
                       <span
                         *ngIf="participant !== request?.requester_id && participant !== 'system' && participant !== currentUserID"
                         class="tooltipx">
                         <span (click)="goToMemberProfile( participant )" style="cursor:pointer; display: block">
-
-                          <!-- IF IS A BOT bot_image.png -->
                           <img *ngIf="participant.indexOf('bot_') !== -1" class="user_profile_in_history"
                             src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{participant | slice:4}}%2Fphoto.jpg?alt=media"
-                            onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
-
-                          <!-- IF IS A HUMAN -->
+                            onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />                
                           <img *ngIf="participant.indexOf('bot_') === -1" class="user_profile_in_history"
                             src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{participant}}%2Fphoto.jpg?alt=media"
                             onerror="this.src='assets/img/no_image_user.png'" />
-
                           <span class="member" [innerHTML]="members_replace( participant )"></span>
-
                         </span>
-
                         <span class="tooltiptext"> {{ "ViewProfile" | translate }} </span>
                       </span>
-
-
                       <span style="cursor:pointer;" (click)="goToMemberProfile( participant )"
                         *ngIf="participant === currentUserID">
-                        <!-- IF IS THE LOGGED USER -->
                         <img class="user_profile_in_history"
                           src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{participant}}%2Fphoto.jpg?alt=media"
                           onerror="this.src='assets/img/no_image_user.png'" />
                         <span class="current-user-member" [innerHTML]="members_replace(participant)"></span>
                       </span>
+                    </div> -->
 
+                    <!-- 
+                  // ------------------------------------------------------------------------------------------------------
+                  // @ Served By (new)
+                  // ------------------------------------------------------------------------------------------------------ -->
+
+                    <div style="min-width: 105px; position: relative;">
+                      <div *ngFor="let agent of request?.participanting_Agents">
+
+                        <span *ngIf="agent.is_bot === true">
+
+                          <span (click)="goToBotProfile(agent?._id, agent?.type)" style="cursor:pointer">
+                            <img class="user-img ws-requests-list-servedby-avatar"
+                              src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fphoto.jpg?alt=media"
+                              onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
+                            <span class="served-by-agent">
+                              {{ agent.name}}
+                            </span>
+                            <div *ngIf="agent.type === 'internal'">
+                              <img class="served-by-bot-type-logo" src="assets/img/tiledesk_logo_no_text.png" />
+                            </div>
+                            <div *ngIf="agent.type === 'external'">
+                              <img class="served-by-bot-type-logo" src="assets/img/external_bot_logo.png" />
+                            </div>
+                            <div *ngIf="agent.type === 'dialogflow'">
+                              <img class="served-by-bot-type-logo" src="assets/img/Dialogflow_logo_no_text.png" />
+                            </div>
+                          </span>
+                        </span>
+
+
+                        <span *ngIf="agent.is_bot === false">
+                          <span (click)="goToAgentProfile(agent?._id)" style="cursor:pointer">
+                            <img class="user-img ws-requests-list-servedby-avatar"
+                              src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fphoto.jpg?alt=media"
+                              onerror="this.src='assets/img/no_image_user.png'" />
+                            <span [ngClass]="{'current-user-member' : agent._id === currentUserID}"
+                              class="served-by-agent">
+                              {{ agent?.firstname }}
+                              <span *ngIf="agent?.lastname">
+                                {{ agent?.lastname | slice:0:1 }}.
+                              </span>
+                            </span>
+                          </span>
+                        </span>
+
+                        <span *ngIf="agent._id === 'no_agent'">
+
+                          <img class="user-img ws-requests-list-servedby-avatar"
+                            src="assets/img/user-alt-slash-solid.svg" />
+                          <span class="served-by-agent">
+                            {{ "RequestMsgsPage." + agent?.firstname | translate }}
+
+                          </span>
+
+                        </span>
+                      </div>
                     </div>
+
                   </td>
 
 
@@ -732,10 +832,27 @@
                       <!-- {{ request?.request_date_fromnow }} -->
                       <!-- {{ request?.created_on | date: 'd/M/y HH:mm:ss' }} -->
                       <span> {{ request?.createdAt | amTimeAgo }} </span> <br>
-                      <!-- <span style="font-size: 11px;color: #7695a5;">
+                      <span style="font-size: 11px;color: #7695a5;">
                         {{ request?.fulldate }}
-                      </span> -->
+                      </span>
                     </p>
+                  </td>
+
+                  <td>
+                    <button type="button" rel="tooltip" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}"
+                      class="btn btn-danger btn-simple btn-xs tool_tip"
+                      (click)='deleteArchivedRequest(request?.request_id)'>
+
+                      <i class="material-icons">delete_forever</i>
+
+                      <!-- // tooltip text 'Archive' -->
+                      <span style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px;"
+                        class="top">
+                        <span style="text-transform: capitalize;"> {{ 'Delete' | translate }} </span>
+                        <i></i>
+                      </span>
+
+                    </button>
                   </td>
 
                 </tr>
