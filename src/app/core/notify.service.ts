@@ -267,7 +267,7 @@ export class NotifyService {
       type: type[color],
       // timer: 1500,
       delay: 1500,
-     
+
       placement: {
         from: 'top',
         align: 'right'
@@ -307,7 +307,7 @@ export class NotifyService {
         align: 'right'
       },
       // tslint:disable-next-line:max-line-length
-      
+
       // col-xs-12 col-sm-8 <- used with from: 'bottom', align: 'center' (toast)
       template: '<div data-notify="container" class="col-xs-11 col-sm-3  alert alert-{0}" style="text-align: left; padding-top: 8px;padding-bottom: 8px; background-color: #131313; color:#a9afbb" role="alert">' +
         '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
@@ -368,7 +368,7 @@ export class NotifyService {
         align: 'center'
       },
       // tslint:disable-next-line:max-line-length
-      template: '<div data-notify="container" class="col-xs-12 col-sm-8 alert alert-{0}" style="text-align: center; background-color:' +color+'; color:rgb(66, 77, 87);font-size: 15px;font-weight: 600;" role="alert">' +
+      template: '<div data-notify="container" class="col-xs-12 col-sm-8 alert alert-{0}" style="text-align: center; background-color:' + color + '; color:rgb(66, 77, 87);font-size: 15px;font-weight: 600;" role="alert">' +
         '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
         // '<span data-notify="title" style="max-width: 100%; font-size:1.1em; ">TileDesk</span> ' +
         // tslint:disable-next-line:max-line-length
@@ -395,6 +395,16 @@ export class NotifyService {
       allow_dismiss: true,
       showProgressbar: false,
       // timer: 55000,
+      template: '<div data-notify="container" style="padding:8px 15px " class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
+        '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+        '<span data-notify="icon"></span> ' +
+        '<span data-notify="title">{1}</span> ' +
+        '<span data-notify="message">{2}</span>' +
+        '<div class="progress" data-notify="progressbar">' +
+        '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+        '</div>' +
+        '<a href="{3}" target="{4}" data-notify="url"></a>' +
+        '</div>'
     });
   }
 
@@ -402,9 +412,11 @@ export class NotifyService {
   showRequestIsArchivedNotification(msg_part1) {
     // tslint:disable-next-line:max-line-length
     // this.notifyArchivingRequest.update({ 'type': 'success', 'message': '<i class="material-icons" style="vertical-align: middle;"> done </i> <span style="vertical-align: middle; display: inline-block; padding-right:5px">' + msg_part1 + request_id + msg_part2 + '</span> <span style="padding-left:28px">' + '</span>' })
-    this.notifyArchivingRequest.update({ 'type': 'success', 'message': 
-    `<span data-notify="icon" style="display: inline;"><i style="vertical-align: middle; padding: 3px;background-color: #449d48; border-radius: 50%; font-size:16px " class="material-icons">` + 'done' + '</i> </span> ' +
-    '<span data-notify="message" style="display: inline; vertical-align: middle; padding-left:8px">' + msg_part1 + '</span>'  })
+    this.notifyArchivingRequest.update({
+      'type': 'success', 'message':
+        `<span data-notify="icon" style="display: inline;"><i style="vertical-align: middle; padding: 3px;background-color: #449d48; border-radius: 50%; font-size:16px " class="material-icons">` + 'done' + '</i> </span> ' +
+        '<span data-notify="message" style="display: inline; vertical-align: middle; padding-left:8px">' + msg_part1 + '</span>'
+    })
   }
 
   operationinprogress(msg) {
@@ -414,12 +426,13 @@ export class NotifyService {
       // timer: 55000,
     });
   }
-  
+
   operationcompleted(msg) {
     // tslint:disable-next-line:max-line-length
-    this.notifyArchivingRequest.update({ 
-      'type': 'success', 
-      'message': '<i class="material-icons" style="vertical-align: middle;padding: 3px;background-color: #449d48; border-radius: 50%; font-size:16px"> done </i> <span style="vertical-align: middle; display: inline-block; padding-right:5px">' + msg + '</span> <span style="padding-left:28px">' + '</span>' })
+    this.notifyArchivingRequest.update({
+      'type': 'success',
+      'message': '<i class="material-icons" style="vertical-align: middle;padding: 3px;background-color: #449d48; border-radius: 50%; font-size:16px"> done </i> <span style="vertical-align: middle; display: inline-block; padding-right:5px">' + msg + '</span> <span style="padding-left:28px">' + '</span>'
+    })
   }
 
 
