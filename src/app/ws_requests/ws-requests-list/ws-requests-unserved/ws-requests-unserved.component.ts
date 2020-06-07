@@ -13,6 +13,9 @@ import { UsersService } from '../../../services/users.service';
 import { browserRefresh } from '../../../app.component';
 import { FaqKbService } from '../../../services/faq-kb.service';
 import { DepartmentService } from '../../../services/mongodb-department.service';
+import { NotifyService } from '../../../core/notify.service';
+import { TranslateService } from '@ngx-translate/core';
+
 @Component({
   selector: 'appdashboard-ws-requests-unserved',
   templateUrl: './ws-requests-unserved.component.html',
@@ -36,6 +39,11 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
   displayNoRequestString = false;
   depts: any;
 
+  archivingRequestNoticationMsg: string;
+  archivingRequestErrorNoticationMsg: string;
+  requestHasBeenArchivedNoticationMsg_part1: string;
+  requestHasBeenArchivedNoticationMsg_part2: string;
+
   constructor(
     public botLocalDbService: BotLocalDbService,
     public auth: AuthService,
@@ -45,7 +53,9 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     public wsRequestsService: WsRequestsService,
     public usersService: UsersService,
     public faqKbService: FaqKbService,
-    private departmentService: DepartmentService
+    private departmentService: DepartmentService,
+    private notify: NotifyService,
+    private translate: TranslateService
   ) {
 
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService);
@@ -61,6 +71,54 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     // this.getProjectUserRole()
     // this.getCount();
     this.detectBrowserRefresh();
+
+    this.getTranslations();
+  }
+
+  getTranslations() {
+    this.translateArchivingRequestErrorMsg();
+    this.translateArchivingRequestMsg();
+    this.translateRequestHasBeenArchivedNoticationMsg_part1();
+    this.translateRequestHasBeenArchivedNoticationMsg_part2();
+
+  }
+
+  // TRANSLATION
+  translateArchivingRequestMsg() {
+    this.translate.get('ArchivingRequestNoticationMsg')
+      .subscribe((text: string) => {
+        this.archivingRequestNoticationMsg = text;
+        // console.log('+ + + ArchivingRequestNoticationMsg', text)
+      });
+  }
+
+  // TRANSLATION
+  translateArchivingRequestErrorMsg() {
+    this.translate.get('ArchivingRequestErrorNoticationMsg')
+      .subscribe((text: string) => {
+
+        this.archivingRequestErrorNoticationMsg = text;
+        // console.log('+ + + ArchivingRequestErrorNoticationMsg', text)
+      });
+  }
+
+  // TRANSLATION
+  translateRequestHasBeenArchivedNoticationMsg_part1() {
+    // this.translate.get('RequestHasBeenArchivedNoticationMsg_part1')
+    this.translate.get('RequestSuccessfullyClosed')
+      .subscribe((text: string) => {
+        this.requestHasBeenArchivedNoticationMsg_part1 = text;
+        // console.log('+ + + RequestHasBeenArchivedNoticationMsg_part1', text)
+      });
+  }
+
+  // TRANSLATION
+  translateRequestHasBeenArchivedNoticationMsg_part2() {
+    this.translate.get('RequestHasBeenArchivedNoticationMsg_part2')
+      .subscribe((text: string) => {
+        this.requestHasBeenArchivedNoticationMsg_part2 = text;
+        // console.log('+ + + RequestHasBeenArchivedNoticationMsg_part2', text)
+      });
   }
 
   getDepartments() {
@@ -248,19 +306,48 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     this.router.navigate(['project/' + this.projectId + '/wsrequests-all/' + '100']);
   }
 
-  // ======================== ARCHIVE A REQUEST ========================
-  openDeleteRequestModal(request_recipient: string) {
-    console.log('ID OF REQUEST TO ARCHIVE ', request_recipient)
+ // ------------------------------------------------------
+  // open / close MODAL ARCHIVE A REQUEST ! NO MORE USED 
+  // ------------------------------------------------------
 
-    this.id_request_to_archive = request_recipient;
-    this.displayArchiveRequestModal = 'block'
+  // openDeleteRequestModal(request_recipient: string) {
+  //   console.log('ID OF REQUEST TO ARCHIVE ', request_recipient)
+  //   this.id_request_to_archive = request_recipient;
+  //   this.displayArchiveRequestModal = 'block'
+  // }
 
+  // onCloseArchiveRequestModal() {
+  //   console.log('onCloseArchiveRequestModal displayArchiveRequestModal', this.displayArchiveRequestModal)
+  //   this.displayArchiveRequestModal = 'none'
+  // }
+
+  archiveRequest(request_id) {
+    this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg);
+    console.log('WS-REQUESTS-UNSERVED - HAS CLICKED ARCHIVE REQUEST ');
+
+
+    this.wsRequestsService.closeSupportGroup(request_id)
+      .subscribe((data: any) => {
+        console.log('WS-REQUESTS-UNSERVED - CLOSE SUPPORT GROUP - DATA ', data);
+      }, (err) => {
+        console.log('WS-REQUESTS-UNSERVED - CLOSE SUPPORT GROUP - ERROR ', err);
+
+   
+        // =========== NOTIFY ERROR ===========
+        // this.notify.showNotification('An error has occurred archiving the request', 4, 'report_problem');
+        this.notify.showNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
+      }, () => {
+        // this.ngOnInit();
+        console.log('CLOSE SUPPORT GROUP - COMPLETE');  
+
+        // =========== NOTIFY SUCCESS===========
+        // this.notify.showNotification(`request with id: ${this.id_request_to_archive} has been moved to History`, 2, 'done');
+        this.notify.showRequestIsArchivedNotification(this.requestHasBeenArchivedNoticationMsg_part1);
+       
+        // this.onArchiveRequestCompleted()
+      });
   }
 
-  onCloseArchiveRequestModal() {
-    console.log('onCloseArchiveRequestModal displayArchiveRequestModal', this.displayArchiveRequestModal)
-    this.displayArchiveRequestModal = 'none'
-  }
 
   trackByFn(index, request) {
     // console.log('% »»» WebSocketJs WF WS-RL - trackByFn ', request );
