@@ -19,7 +19,7 @@
             "assets": [
               "src/assets",
               "src/firebase-config.json",
-              "src/dashboard-config.json",
+              "src/dashboard-config-template.json",
               "src/dashboard-pre-config.json"
             ],
             "styles": [
