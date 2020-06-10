@@ -1,0 +1,18 @@
+{
+  "t2y12PruGU9wUtEGzBJfolMIgK": "${FEATURES_TOKEN}",
+  "widgetUrl": "${WIDGET_LOCATION}",
+  "botcredendialsURL": "${BOT_CREDENTIAL_URL}",
+  "SERVER_BASE_URL": "${SERVER_BASE_URL}",
+  "CHAT_BASE_URL": "${CHAT_BASE_URL}",
+  "testsiteBaseUrl": "${WIDGET_TEST_LOCATION}",
+  "wsUrl": "${WS_URL}",
+  "wsUrlRel": "${WS_URL_RELATIVE}",
+  "firebase": {
+      "apiKey": "${FIREBASE_APIKEY}",
+      "authDomain": "${FIREBASE_AUTHDOMAIN}",
+      "databaseURL": "${FIREBASE_DATABASEURL}",
+      "projectId": "${FIREBASE_PROJECT_ID}",
+      "storageBucket": "${FIREBASE_STORAGEBUCKET}",
+      "messagingSenderId": "${FIREBASE_MESSAGINGSENDERID}"
+  }
+}
