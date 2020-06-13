@@ -1519,5 +1519,6 @@
 		"TheRequestWasSuccessfullyDeleted": "Die Anfrage wurde erfolgreich gelöscht",
 		"ErrorDeleting":"Fehler beim Löschen!",
         "PleaseTryAgain": "Bitte versuche es erneut"
-	}
+	},
+    "MoveToTrash": "Ab in den Müll"
 }

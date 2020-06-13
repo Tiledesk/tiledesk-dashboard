@@ -1512,5 +1512,6 @@
         "TheRequestWasSuccessfullyDeleted": "la richiesta è stata eliminata correttamente",
         "ErrorDeleting":"Errore durante l'eliminazione!",
         "PleaseTryAgain": "Per favore riprova"
-    }
+    },
+    "MoveToTrash": "Sposta nel cestino"
 }
