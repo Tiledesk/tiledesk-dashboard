@@ -97,6 +97,23 @@ export class ContactsService {
       .map((response) => response.json());
   }
 
+  getLeadsTrashed(): Observable<Contact[]> {
+  
+    const url = this.SERVER_BASE_PATH + this.projectId + '/leads?page=0&status=1000';
+    // use this to test
+    // 5bcf51dbc375420015542b5f is the id og the project (in production ) progetto test 23 ott of the user lanzilottonicola74@gmail.com
+    // const url = 'https://api.tiledesk.com/v1/5bcf51dbc375420015542b5f/leads?page=' + pagenumber + _querystring;
+    console.log('!!!! CONTACTS SERVICE - GET TRASHED CONTACTS URL', url);
+
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.json());
+  }
+
 
   public exportLeadToCsv(querystring, pagenumber) {
     let _querystring = '&' + querystring
