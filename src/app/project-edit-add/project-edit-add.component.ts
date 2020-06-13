@@ -123,6 +123,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   SHOW_CIRCULAR_SPINNER = false;
   DISPLAY_DELETE_PRJCT_BTN: boolean;
   DISPLAY_ADVANCED_TAB: boolean;
+  isUNIS: boolean = false;
 
   constructor(
     private projectService: ProjectService,
@@ -269,6 +270,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           this.isVisibleAdvancedTab = true;
         }
       }
+
     });
 
     if (!this.public_Key.includes("PAY")) {
@@ -292,6 +294,28 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     console.log('%ProjectEditAddComponent PROJECT_SETTINGS_PAYMENTS_ROUTE ', currentUrl.indexOf('/project-settings/payments'));
     console.log('%ProjectEditAddComponent PROJECT_SETTINGS_AUTH_ROUTE ', currentUrl.indexOf('/project-settings/auth'));
     console.log('%ProjectEditAddComponent PROJECT_SETTINGS_AUTH_ROUTE ', currentUrl.indexOf('/project-settings/advanced'));
+
+    const url_segments = currentUrl.split('/');
+    console.log('%ProjectEditAddComponent url_segments ', url_segments);
+
+    const nav_project_id = url_segments[2];
+    console.log('%ProjectEditAddComponent nav_project_id ', nav_project_id);
+
+
+
+    if (nav_project_id === '5ec688ed13400f0012c2edc2') {
+
+      this.isUNIS = true;
+      
+      // this.isVisibleAdvancedTab = true;
+      // this.DISPLAY_ADVANCED_TAB = true;
+      console.log('%ProjectEditAddComponent isUNIS ', this.isUNIS);
+    } else {
+      this.isUNIS = false;
+      console.log('%ProjectEditAddComponent isUNIS ', this.isUNIS);
+      // this.isVisibleAdvancedTab = false;
+      // this.DISPLAY_ADVANCED_TAB = false;
+    }
 
 
     /** THE ACTIVE ROUTE IS /project-settings */

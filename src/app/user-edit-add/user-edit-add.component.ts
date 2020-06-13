@@ -76,6 +76,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
 
   public_Key: string;
   isVisibleAdvancedFeatureChatLimit: boolean
+  isUNIS: boolean = false;
 
   constructor(
     private router: Router,
@@ -119,6 +120,30 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
     this.getUserRole();
     this.hasChangedAvailabilityStatusInSidebar();
     this.getOSCODE();
+    this.getCurrentUrl();
+  }
+
+
+  getCurrentUrl() {
+
+    const currentUrl = this.router.url;
+    console.log('%ProjectEditAddComponent (user-edit-add) current_url ', currentUrl);
+
+    const url_segments = currentUrl.split('/');
+    console.log('%ProjectEditAddComponent (user-edit-add) url_segments ', url_segments);
+
+    const nav_project_id = url_segments[2];
+    console.log('%ProjectEditAddComponent (user-edit-add) nav_project_id ', nav_project_id);
+
+
+
+    if (nav_project_id === '5ec688ed13400f0012c2edc2') {
+      this.isUNIS = true;
+      console.log('%ProjectEditAddComponent (user-edit-add) isUNIS ', this.isUNIS);
+    } else {
+      this.isUNIS = false;
+      console.log('%ProjectEditAddComponent (user-edit-add) isUNIS ', this.isUNIS);
+    }
   }
 
   getOSCODE() {
@@ -321,7 +346,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
       this.projectUser = projectUser;
 
       console.log('PROJECT-USER DETAILS (GET getProjectUsersById): ', projectUser);
-      
+
       this.user_id = projectUser.id_user._id;
       this.user_fullname = projectUser.id_user.firstname + ' ' + projectUser.id_user.lastname
 
