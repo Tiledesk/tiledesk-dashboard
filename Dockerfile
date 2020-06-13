@@ -35,4 +35,4 @@ RUN rm -rf /usr/share/nginx/html/*
 COPY --from=builder /ng-app/dist /usr/share/nginx/html
 
 ##CMD ["nginx", "-g", "daemon off;"]
-CMD ["/bin/sh",  "-c",  "envsubst < /usr/share/nginx/html/dashboard-config.json > /usr/share/nginx/html/dashboard-config.json && exec nginx -g 'daemon off;'"]
+CMD ["/bin/sh",  "-c",  "envsubst < /usr/share/nginx/html/dashboard-config-template.json > /usr/share/nginx/html/dashboard-config.json && exec nginx -g 'daemon off;'"]
