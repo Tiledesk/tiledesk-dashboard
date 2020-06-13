@@ -90,6 +90,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
     this.getCurrentProject();
     this.getProjectUserRole();
     this.getProjectPlan();
+    // this.getTrashedContacts();
   }
 
 
@@ -274,6 +275,14 @@ export class ContactsComponent implements OnInit, OnDestroy {
     });
   }
 
+  getTrashedContacts() {
+    this.contactsService.getLeadsTrashed().subscribe((trashedleads: any) => {
+      console.log('!!!! CONTACTS - GET TRASHED LEADS RESPONSE ', trashedleads);
+  
+    });
+
+  }
+
 
   exportContactsToCsv() {
 
@@ -364,8 +373,8 @@ export class ContactsComponent implements OnInit, OnDestroy {
 
           // initial = 'n.a.';
           // fillColour = '#eeeeee';
-          newInitials = 'n.a.';
-          newFillColour = '#eeeeee';
+          newInitials =  'N/A';
+          newFillColour = '#6264a7';
 
         }
 

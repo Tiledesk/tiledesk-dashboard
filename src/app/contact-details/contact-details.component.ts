@@ -342,8 +342,8 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
             this.fillColour = getColorBck(this.contact_details.fullname);
           } else {
 
-            this.contact_fullname_initial = 'n.a.';
-            this.fillColour = '#eeeeee';
+            this.contact_fullname_initial = 'N/A';
+            this.fillColour = '#6264a7';
           }
 
           if (this.contact_details.attributes
