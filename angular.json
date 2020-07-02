@@ -20,7 +20,8 @@
               "src/assets",
               "src/firebase-config.json",
               "src/dashboard-config-template.json",
-              "src/dashboard-pre-config.json"
+              "src/dashboard-pre-config.json",
+              "src/dashboard-prod-config.json"
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.css",
