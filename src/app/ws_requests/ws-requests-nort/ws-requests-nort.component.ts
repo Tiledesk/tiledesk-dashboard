@@ -198,7 +198,7 @@ export class WsRequestsNortComponent extends WsSharedComponent implements OnInit
 
   getAllRequests() {
 
-    this.operator = '<'
+    // this.operator = '<'
     this.requests_status = '1000'
     console.log('WsRequests NO-RT - getAllRequests', this.requests_status, 'operator ', this.operator);
     this.getRequests()

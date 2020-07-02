@@ -11,6 +11,11 @@
     <div class="row">
       <div class="col-md-12">
         <div class="card" style="margin-bottom: 0px;margin-top: 15px;">
+
+          <div class="card-header card-header-custom-bkgrnd">
+          <span></span>
+     
+          </div>
           <div class="card-content" style="padding-top: 25px;padding-bottom: 15px;padding-left: 40px;
           padding-right: 40px;">
 
@@ -41,8 +46,8 @@
                           <!--[loading]=loadingOptions loadingText='Loading...'  -->
                           <ng-select name="requeststatus" [(ngModel)]="requests_status"
                             (change)="requestsStatusSelect(requests_status)" 
-                            [items]="status | selectOptionsTranslate" bindLabel="name"
-                            bindValue="id" placeholder="Select status">
+                            [items]="status | selectOptionsTranslate" bindLabel="name" [clearable]='false'
+                            [searchable]="false" bindValue="id" placeholder="Select status">
                           </ng-select>
 
 

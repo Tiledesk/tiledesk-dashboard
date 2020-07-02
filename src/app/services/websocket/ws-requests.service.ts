@@ -199,166 +199,166 @@ export class WsRequestsService implements OnDestroy {
         // this.getDepartments()
         // this.departmentService.getDeptsByProjectIdToPromise().then((_departments: any) => {
 
-          // console.log('% »»» WebSocketJs WF +++++ ws-requests--- service - GET DEPTS TO PROMISE RESPONSE ', _departments);
-          // self.departments = _departments
+        // console.log('% »»» WebSocketJs WF +++++ ws-requests--- service - GET DEPTS TO PROMISE RESPONSE ', _departments);
+        // self.departments = _departments
 
-          // this.subsToWS_Requests(this.project_id)
-          // this.webSocketJs.subscribe('/' + this.project_id + '/requests');
+        // this.subsToWS_Requests(this.project_id)
+        // this.webSocketJs.subscribe('/' + this.project_id + '/requests');
 
-          // console.log('% »»» WebSocketJs WF ****** WS-REQUESTS-SERVICE - WS_IS_CONNECTED ****** ', this.WS_IS_CONNECTED );
+        // console.log('% »»» WebSocketJs WF ****** WS-REQUESTS-SERVICE - WS_IS_CONNECTED ****** ', this.WS_IS_CONNECTED );
 
-          // if (this.WS_IS_CONNECTED === 1) {
-          this.webSocketJs.ref('/' + this.project_id + '/requests',
+        // if (this.WS_IS_CONNECTED === 1) {
+        this.webSocketJs.ref('/' + this.project_id + '/requests',
 
-            function (data, notification) {
+          function (data, notification) {
 
-              // console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- HERE ON-CREATE !");
+            // console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- HERE ON-CREATE !");
 
-              // if (self.wsRequestsList.length > 0) {
+            // if (self.wsRequestsList.length > 0) {
 
-              console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-CREATE - DATA ", data);
-              // data['dept'] = self.getDeptObj(data.department)
-              
-              // console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-CREATE - WS-REQUESTS ARRAY ", self.wsRequestsList);
+            console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-CREATE - DATA ", data);
+            // data['dept'] = self.getDeptObj(data.department)
 
-              // const hasFound = self.wsRequestsList.filter((obj: any) => {
-              //   if (data && obj) {
-              //     return obj._id === data._id;
+            // console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-CREATE - WS-REQUESTS ARRAY ", self.wsRequestsList);
+
+            // const hasFound = self.wsRequestsList.filter((obj: any) => {
+            //   if (data && obj) {
+            //     return obj._id === data._id;
+            //   }
+            // });
+
+            // if (hasFound.length === 0) {
+            //   self.addWsRequests(data)
+
+            //   // console.log("% »»» WebSocketJs WF - WsRequestsService Not Found - <<<<<<<<<<<<<<< add request >>>>>>>>>>>>>>>", data);
+            // } else {
+            //   // console.log("% »»» WebSocketJs WF - WsRequestsService hasFound - not added", hasFound);
+            // }
+
+            // https://stackoverflow.com/questions/36719477/array-push-and-unique-items
+            const index = self.wsRequestsList.findIndex((e) => e.id === data.id);
+
+            if (index === -1) {
+              self.addWsRequests(data)
+
+              console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- CREATE the request not exist - addWsRequests!");
+            } else {
+              console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- CREATE the request exist - NOT addWsRequests!");
+            }
+
+            // }
+          }, function (data, notification) {
+            // data['dept'] = self.getDeptObj(data.department)
+            console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-UPDATE", data);
+            // this.wsRequestsList.push(data);
+
+            // self.addOrUpdateWsRequestsList(data);
+            self.updateWsRequests(data)
+
+
+          }, function (data, notification) {
+            // console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- HERE ON-DATA !");
+            // console.log("% »»» WebSocketJs WF - WsRequestsService ON-DATA REQUESTS *** notification *** ", notification);
+
+            // && data.length !== undefined
+
+            // setTimeout(() => {
+            //   // behaviorSubject.next('Angular 8');
+            //   // replaySubject.next('Angular 8');
+            //   self.ws_All_RequestsLength$$.next(data.length);
+            // }, 1000);
+
+            // && data.length > 0
+            // setTimeout(() => { 
+            if (data) {
+
+
+              console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-DATA - WS-REQUESTS ARRAY ", self.wsRequestsList);
+
+              // if (self.wsRequestsList && self.wsRequestsList.length === 0 && Array.isArray(data)) {
+
+              //   console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-DATA - DATA LENGHT ", data.length);
+              //   self.wsRequestsList = data;
+              //   self.wsRequestsList$.next(self.wsRequestsList);
+              //   console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-DATA ----- NEXT ", data);
+
+              //   /**
+              //    * USE CASE : INIZIALMENTE DATA è VUOTO (NN CI SONO RICHIESTE) E POI ARRIVA UNA RICHIESTA - ARRIVANDO SINGOLA ARRIVA COME UN JSON *
+              //    */
+              // } else if (self.wsRequestsList && self.wsRequestsList.length === 0 && !Array.isArray(data)) {
+
+
+              //   self.wsRequestsList$.next([data]);
+              //   self.wsRequestsList.push(data);
+
+              // }
+
+              // console.log("% »»» WebSocketJs WF - onData (ws-requests.serv) ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ data is ARRAY", Array.isArray(data));
+              /**
+               * data.map works only with array
+               * 
+               */
+              if (Array.isArray(data)) {
+
+                // https://stackoverflow.com/questions/18983138/callback-after-all-asynchronous-foreach-callbacks-are-completed
+                let requests = data.map((item) => {
+                  return new Promise((resolve) => {
+                    self.asyncFunction(item, resolve);
+                  });
+                })
+                Promise.all(requests).then(() => {
+
+                  // console.log('% »»» WebSocketJs WF +++++ ws-requests--- service ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ done -> data.length ', data.length)
+                  // console.log('% »»» WebSocketJs WF +++++ ws-requests--- service ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ done -> data ', data)
+
+                  // var served = data.filter(r => {
+                  //   if (r['status'] !== 100) {
+                  //     return true
+                  //   }
+                  // })
+
+                  // var unserved = data.filter(r => {
+                  //   if (r['status'] === 100) {
+                  //     return true
+                  //   }
+                  // })
+                  // console.log('% »»» WebSocketJs WF +++++ ws-requests--- service ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ done -> served length ', served.length)
+                  // console.log('% »»» WebSocketJs WF +++++ ws-requests--- service ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ done -> unserved length ', unserved.length)
+
+
+                  self.ws_All_RequestsLength$.next(data.length);
+                  // self.ws_Served_RequestsLength$.next(served.length);
+                  // self.ws_Unserved_RequestsLength$.next(unserved.length);
+                });
+
+              }
+              // this.requesTtotal = data.length
+              // if (this.requesTtotal) {
+              // self.getRequestsTotalCount()
+              // }
+
+              // this.requesTtotal = data
+              // self.getTotalRequestLength();
+
+              // var promise = new Promise(function(resolve, reject) {
+              //   if (data) {
+              //     resolve(data);
+              //   } else {
+              //     reject('motivo');
               //   }
               // });
 
-              // if (hasFound.length === 0) {
-              //   self.addWsRequests(data)
+              // self.getTotalRequestLength(data.length)
 
-              //   // console.log("% »»» WebSocketJs WF - WsRequestsService Not Found - <<<<<<<<<<<<<<< add request >>>>>>>>>>>>>>>", data);
-              // } else {
-              //   // console.log("% »»» WebSocketJs WF - WsRequestsService hasFound - not added", hasFound);
-              // }
-
-              // https://stackoverflow.com/questions/36719477/array-push-and-unique-items
-              const index = self.wsRequestsList.findIndex((e) => e.id === data.id);
-
-              if (index === -1) {
-                self.addWsRequests(data)
-
-                console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- CREATE the request not exist - addWsRequests!");
-              } else {
-                console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- CREATE the request exist - NOT addWsRequests!");
-              }
-
-              // }
-            }, function (data, notification) {
-              // data['dept'] = self.getDeptObj(data.department)
-              console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-UPDATE", data);
-              // this.wsRequestsList.push(data);
-
-              // self.addOrUpdateWsRequestsList(data);
-              self.updateWsRequests(data)
-
-
-            }, function (data, notification) {
-              // console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- HERE ON-DATA !");
-              // console.log("% »»» WebSocketJs WF - WsRequestsService ON-DATA REQUESTS *** notification *** ", notification);
-
-              // && data.length !== undefined
-
-              // setTimeout(() => {
-              //   // behaviorSubject.next('Angular 8');
-              //   // replaySubject.next('Angular 8');
-              //   self.ws_All_RequestsLength$$.next(data.length);
-              // }, 1000);
-
-              // && data.length > 0
-              // setTimeout(() => { 
-              if (data) {
-
-
-                console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-DATA - WS-REQUESTS ARRAY ", self.wsRequestsList);
-
-                // if (self.wsRequestsList && self.wsRequestsList.length === 0 && Array.isArray(data)) {
-
-                //   console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-DATA - DATA LENGHT ", data.length);
-                //   self.wsRequestsList = data;
-                //   self.wsRequestsList$.next(self.wsRequestsList);
-                //   console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-DATA ----- NEXT ", data);
-
-                //   /**
-                //    * USE CASE : INIZIALMENTE DATA è VUOTO (NN CI SONO RICHIESTE) E POI ARRIVA UNA RICHIESTA - ARRIVANDO SINGOLA ARRIVA COME UN JSON *
-                //    */
-                // } else if (self.wsRequestsList && self.wsRequestsList.length === 0 && !Array.isArray(data)) {
-
-
-                //   self.wsRequestsList$.next([data]);
-                //   self.wsRequestsList.push(data);
-
-                // }
-
-                // console.log("% »»» WebSocketJs WF - onData (ws-requests.serv) ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ data is ARRAY", Array.isArray(data));
-                /**
-                 * data.map works only with array
-                 * 
-                 */
-                if (Array.isArray(data)) {
-
-                  // https://stackoverflow.com/questions/18983138/callback-after-all-asynchronous-foreach-callbacks-are-completed
-                  let requests = data.map((item) => {
-                    return new Promise((resolve) => {
-                      self.asyncFunction(item, resolve);
-                    });
-                  })
-                  Promise.all(requests).then(() => {
-
-                    // console.log('% »»» WebSocketJs WF +++++ ws-requests--- service ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ done -> data.length ', data.length)
-                    // console.log('% »»» WebSocketJs WF +++++ ws-requests--- service ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ done -> data ', data)
-
-                    // var served = data.filter(r => {
-                    //   if (r['status'] !== 100) {
-                    //     return true
-                    //   }
-                    // })
-
-                    // var unserved = data.filter(r => {
-                    //   if (r['status'] === 100) {
-                    //     return true
-                    //   }
-                    // })
-                    // console.log('% »»» WebSocketJs WF +++++ ws-requests--- service ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ done -> served length ', served.length)
-                    // console.log('% »»» WebSocketJs WF +++++ ws-requests--- service ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ done -> unserved length ', unserved.length)
-
-
-                    self.ws_All_RequestsLength$.next(data.length);
-                    // self.ws_Served_RequestsLength$.next(served.length);
-                    // self.ws_Unserved_RequestsLength$.next(unserved.length);
-                  });
-
-                }
-                // this.requesTtotal = data.length
-                // if (this.requesTtotal) {
-                // self.getRequestsTotalCount()
-                // }
-
-                // this.requesTtotal = data
-                // self.getTotalRequestLength();
-
-                // var promise = new Promise(function(resolve, reject) {
-                //   if (data) {
-                //     resolve(data);
-                //   } else {
-                //     reject('motivo');
-                //   }
-                // });
-
-                // self.getTotalRequestLength(data.length)
-
-              }
-              // }, 100);
-              // else if (data.length === 0) {
-              //   self.wsRequestsListLength$.next(0);
-              //   console.log("% »»» WebSocketJs WF - WsRequestsService  >>>>>>> HERE 2 <<<<<<< ");
-
-              // }
             }
-          );
+            // }, 100);
+            // else if (data.length === 0) {
+            //   self.wsRequestsListLength$.next(0);
+            //   console.log("% »»» WebSocketJs WF - WsRequestsService  >>>>>>> HERE 2 <<<<<<< ");
+
+            // }
+          }
+        );
         // });
       }
     });
@@ -632,7 +632,7 @@ export class WsRequestsService implements OnDestroy {
     headers.append('Content-type', 'application/json');
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
-  
+
     const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + request_id
     console.log('DELETE REQUEST URL ', url)
 
@@ -640,7 +640,7 @@ export class WsRequestsService implements OnDestroy {
       .delete(url, options)
       .map((res) => res.json());
   }
- 
+
 
 
   joinDept(departmentid, requestid) {
@@ -888,11 +888,26 @@ export class WsRequestsService implements OnDestroy {
   // WS Requests no-realtime
   // -------------------------------------------------------------
   public getNodeJsWSRequests(operator: string, status: string, querystring: string, pagenumber: number) {
-    let _querystring = '&' + querystring
+
+    let _querystring = ''
+    if (status === '100' || status === '200') {
+      _querystring = '&' + querystring
+    }
+
     if (querystring === undefined || !querystring) {
       _querystring = ''
     }
-    const url = this.SERVER_BASE_PATH + this.project_id + '/requests?status' + operator + status + _querystring + '&page=' + pagenumber;
+
+    if (status === '1000') {
+      _querystring = querystring
+    }
+
+    let url = '';
+    if (status !== '1000') {
+      url = this.SERVER_BASE_PATH + this.project_id + '/requests?status' + operator + status + _querystring + '&page=' + pagenumber;
+    } else {
+      url = this.SERVER_BASE_PATH + this.project_id + '/requests?' + _querystring + '&page=' + pagenumber;
+    }
 
     console.log('!!! NEW REQUESTS HISTORY - REQUESTS SERVICE URL ', url);
 
