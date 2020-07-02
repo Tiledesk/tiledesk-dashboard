@@ -927,7 +927,6 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
   deleteArchivedRequest(request_id) {
     console.log('NEW REQUEST-LIST HISTORY - deleteArchivedRequest request_id ', request_id)
 
-
     swal({
       title: this.areYouSure + "?",
       text: this.requestWillBePermanentlyDeleted,
@@ -961,19 +960,12 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
               this.getRequests();
             });
 
-
-
           });
-
         } else {
           console.log('swal willDelete', willDelete)
           // swal("Your imaginary file is safe!");
         }
       });
-
-
-
-
   }
 
 }
