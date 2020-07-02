@@ -11,7 +11,7 @@ import { AuthService } from '../core/auth.service';
 import { avatarPlaceholder, getColorBck } from '../utils/util';
 import { NotifyService } from '../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
-
+const swal = require('sweetalert');
 @Component({
   selector: 'appdashboard-contact-details',
   templateUrl: './contact-details.component.html',
@@ -68,6 +68,13 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
   zipcode: string;
   country: string;
 
+  moveContactToTrash_msg: string;
+  moveToTrash_msg: string;
+
+  errorDeleting: string;
+  done_msg: string;
+  pleaseTryAgain: string;
+  contactHasBeenMovedToTheTrash: string;
   constructor(
     public location: Location,
     private route: ActivatedRoute,
@@ -97,13 +104,106 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.translateDeleteLeadSuccessMsg();
-    this.translateDeleteLeadErrorMsg();
+
     // this.auth.checkRoleForCurrentProject();
     this.getRequesterIdParam();
     this.getCurrentProject();
     this.getCurrentUser();
+    this.getTranslation();
   }
+
+  getTranslation() {
+
+    this.translateDeleteLeadSuccessMsg();
+    this.translateDeleteLeadErrorMsg();
+
+    this.translate.get('MoveToTrash')
+      .subscribe((text: string) => {
+        this.moveToTrash_msg = text;
+      });
+
+    this.translate.get('ErrorDeleting')
+      .subscribe((text: string) => {
+        this.errorDeleting = text;
+      });
+
+    this.translate.get('PleaseTryAgain')
+      .subscribe((text: string) => {
+        this.pleaseTryAgain = text;
+      });
+
+    this.translate.get('Done')
+      .subscribe((text: string) => {
+        this.done_msg = text;
+      });
+
+    this.translate.get('TheContactHasBeenMovedToTheTrash')
+      .subscribe((text: string) => {
+        this.contactHasBeenMovedToTheTrash = text;
+      });
+  }
+
+
+  // --------------------------------------------------
+  // MOVE TO TRASH
+  // --------------------------------------------------
+  moveContactToTrash(contactid: string, fullName: string) {
+    // console.log('!!!!! CONTACTS - ON MODAL DELETE OPEN -> USER ID ', id);
+
+    // this.displayDeleteModal = 'block';
+
+    // this.id_toDelete = id;
+    // this.fullName_toDelete = fullName;
+
+    this.translate.get('MoveTheContactToTheTrash', { contactname: fullName }).subscribe((text: string) => {
+
+      this.moveContactToTrash_msg = text
+    })
+    console.log('!!!!! CONTACTS DTLS - moveContactToTrash ', this.moveContactToTrash_msg);
+
+    swal({
+      title: this.moveToTrash_msg,
+      text: this.moveContactToTrash_msg,
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+      .then((willDelete) => {
+        if (willDelete) {
+          console.log('swal willDelete', willDelete)
+
+          this.contactsService.deleteLead(contactid).subscribe((res: any) => {
+            console.log('in swal deleteRequest res ', res)
+
+          }, (error) => {
+            console.log('in swal deleteRequest res - ERROR ', error);
+
+            swal(this.errorDeleting, this.pleaseTryAgain, {
+              icon: "error",
+            });
+
+          }, () => {
+            console.log('in swal deleteRequest res* COMPLETE *');
+
+            swal(this.done_msg + "!", this.contactHasBeenMovedToTheTrash, {
+              icon: "success",
+            }).then((okpressed) => {
+              this.goToContactList();
+            });
+
+          });
+        } else {
+          console.log('swal willDelete', willDelete)
+          // swal("Your imaginary file is safe!");
+        }
+      });
+  }
+
+  goToContactList() {
+    this.router.navigate(['project/' + this.projectId + '/contacts']);
+    // project/{{ project._id }}/contacts
+  }
+
 
   ngAfterViewInit() {
     // -----------------------------------
@@ -268,9 +368,6 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
   }
 
   toggleAttributes() {
-
-    
-
     this.showAttributes = !this.showAttributes;
     console.log('!!!!! CONTACTS DETAILS SHOW ALL ATTRIBUTES ', this.showAttributes);
 
@@ -282,7 +379,6 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
     if (this.showAttributes === false) {
       attributesArrowIconElem.className = attributesArrowIconElem.className.replace(/\bup\b/g, "");
     }
-
   }
 
   getContactById() {
@@ -592,6 +688,8 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
   //     this.router.navigate(['project/' + this.projectId + '/member/' + member_id]);
   //   }
   // }
+
+
 
 
   openDeleteContactModal(id: string, fullName: string) {

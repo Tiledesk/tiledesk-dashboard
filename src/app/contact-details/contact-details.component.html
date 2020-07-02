@@ -31,7 +31,6 @@
                 <!-- ===== IF THERE ISN'T CONTACT REQUEST ===== -->
                 <tr *ngIf="requests_list && requests_list.length === 0">
                   <td colspan="2" style="text-align: center; padding-top: 16px; cursor: pointer">
-
                     <p style="font-size:1em; color:#7695a5; font-weight: 400">
                       {{ 'HistoryPage.NoRequests' | translate }}
                     </p>
@@ -246,11 +245,7 @@
 
             <span *ngIf="!showSpinner">
               <div class="col-xs-9">
-
-
-
                 <span class="contact-avatar-wrapper">
-
                   <span class="contact-avatar" [ngStyle]="{'background-color': fillColour }"
                     style="float: left; margin-right: 8px;">
                     <span style="color: #ffffff;font-size: 18px;font-weight: 400; position: relative;
@@ -319,8 +314,9 @@
                     </li>
 
                     <li>
-                      <a (click)='openDeleteContactModal(contact_details?._id, contact_details?.fullname)'>
-                        {{ 'DeleteContact' | translate}}
+                      <!-- <a (click)='openDeleteContactModal(contact_details?._id, contact_details?.fullname)'> -->
+                        <a (click)='moveContactToTrash(contact_details?._id, contact_details?.fullname)'>
+                        {{ 'MoveToTrash' | translate}}
                       </a>
                     </li>
                   </ul>
