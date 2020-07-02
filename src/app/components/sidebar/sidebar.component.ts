@@ -557,7 +557,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         // this.usersService.updateProjectUser(this.projectUser_id, IS_AVAILABLE).subscribe((projectUser: any) => {
         // DONE - WORKS NK-TO-TEST - da implementare quando viene implementato il servizio - serve per cambiare lo stato di disponibilità dell'utente corrente
         // anche in USER & GROUP bisogna cambiare per la riga dell'utente corrente   
-        this.usersService.updateCurrentUserAvailability(IS_AVAILABLE).subscribe((projectUser: any) => { // non 
+        this.usersService.updateCurrentUserAvailability( this.projectId, IS_AVAILABLE).subscribe((projectUser: any) => { // non 
 
             console.log('PROJECT-USER UPDATED ', projectUser)
 
