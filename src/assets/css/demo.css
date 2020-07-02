@@ -125,6 +125,7 @@ my-app .main-panel .main-content .card {
   padding: 10px 10px;
   color: #ffffff;
   background-color: #394f5a;
+  opacity: 1;
   font-weight: normal;
   font-size: 12px;
   border-radius: 8px;
@@ -157,5 +158,9 @@ my-app .main-panel .main-content .card {
   left: 50%;
   transform: translate(-50%, -50%) rotate(45deg);
   background-color: #394f5a;
+  opacity: 1;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
 }
+
+
+
