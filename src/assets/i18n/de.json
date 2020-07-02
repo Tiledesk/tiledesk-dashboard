@@ -1520,5 +1520,22 @@
 		"ErrorDeleting":"Fehler beim Löschen!",
         "PleaseTryAgain": "Bitte versuche es erneut"
 	},
-    "MoveToTrash": "Ab in den Müll"
+	"MoveToTrash": "Ab in den Müll",
+	"_Active": "aktiv",
+	"TrashContacts": "Müllkontakte",
+	"inTheTrash": "im Müll",
+	"CloseTrash": "Müll schließen",
+	"SearchInTrash": "Suche im Müll",
+	"Done":"Gemacht",
+	"TheContactWillBePermanentlyDeleted": "Der Kontakt wird dauerhaft gelöscht",
+	"ErrorDeleting":"Fehler beim Löschen!",
+	"PleaseTryAgain": "Bitte versuche es erneut",
+	"TheContactWasSuccessfullyDeleted": "Der Kontakt wurde erfolgreich gelöscht",
+	"YouCannotDeleteThisContact":"Sie können diesen Kontakt nicht löschen, da ihm Anforderungen zugeordnet sind",
+	"MoveTheContactToTheTrash": "Den Kontakt {{ contactname }} in den Papierkorb verschieben?",
+	"TheContactHasBeenMovedToTheTrash":"Der Kontakt wurde in den Papierkorb verschoben",
+	"TheRequestHasBeenMovedToHistory":"Die Anforderung wurde in den Verlauf verschoben",
+	"AnErrorHasOccurredArchivingTheRequest":"Beim Archivieren der Anforderung ist ein Fehler aufgetreten",
+	"RestoreContact":"Kontakt wiederherstellen"
+	
 }

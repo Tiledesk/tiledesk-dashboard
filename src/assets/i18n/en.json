@@ -1515,10 +1515,26 @@
     },
     "DeleteRequestForever": {
         "TheRequestWillBePermanentlyDeleted": "the request will be permanently deleted",
-        "Done":"Done!",
+        "Done": "Done!",
         "TheRequestWasSuccessfullyDeleted": "the request was successfully deleted",
-        "ErrorDeleting":"Error deleting!",
+        "ErrorDeleting": "Error deleting!",
         "PleaseTryAgain": "Please try again"
     },
-    "MoveToTrash": "Move to trash"
+    "MoveToTrash": "Move to trash",
+    "_Active": "active",
+    "TrashContacts": "Trash contacts",
+    "inTheTrash": "in the trash",
+    "CloseTrash": "Close trash",
+    "SearchInTrash": "Search in trash",
+    "Done": "Done",
+    "TheContactWillBePermanentlyDeleted": "the contact will be permanently deleted",
+    "ErrorDeleting": "Error deleting!",
+    "PleaseTryAgain": "Please try again",
+    "TheContactWasSuccessfullyDeleted": "the contact was successfully deleted",
+    "YouCannotDeleteThisContact":"You cannot delete this contact because there are requests associated with it",
+    "MoveTheContactToTheTrash": "Move the contact {{ contactname }} to the trash?",
+    "TheContactHasBeenMovedToTheTrash":"The contact has been moved to the trash",
+    "TheRequestHasBeenMovedToHistory":"the request has been moved to history",
+    "AnErrorHasOccurredArchivingTheRequest":"An error has occurred archiving the request",
+    "RestoreContact":"restore contact"
 }

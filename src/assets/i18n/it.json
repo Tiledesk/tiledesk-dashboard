@@ -1513,5 +1513,21 @@
         "ErrorDeleting":"Errore durante l'eliminazione!",
         "PleaseTryAgain": "Per favore riprova"
     },
-    "MoveToTrash": "Sposta nel cestino"
+    "MoveToTrash": "Sposta nel cestino",
+    "_Active": "attivi",
+    "TrashContacts": "Cestino contatti",
+    "inTheTrash": "nel cestino",
+    "CloseTrash": "Chiudi cestino",
+    "SearchInTrash": "Cerca nel cestino",
+    "Done":"Fatto",
+    "TheContactWillBePermanentlyDeleted": "il contatto verrà eliminato definitivamente",
+    "ErrorDeleting":"Errore durante l'eliminazione!",
+    "PleaseTryAgain": "Per favore riprova",
+    "TheContactWasSuccessfullyDeleted": "il contatto è stata eliminato correttamente",
+    "YouCannotDeleteThisContact":"Non è possibile eliminare questo contatto perché vi sono richieste associate",
+    "MoveTheContactToTheTrash": "Spostare il contatto {{ contactname }} nel cestino?",
+    "TheContactHasBeenMovedToTheTrash":"Il contatto è stato spostato nel cestino",
+    "TheRequestHasBeenMovedToHistory":"la richiesta è stata spostata in cronologia",
+    "AnErrorHasOccurredArchivingTheRequest":"Si è verificato un errore durante l'archiviazione della richiesta",
+    "RestoreContact":"ripristina contatto"
 }
