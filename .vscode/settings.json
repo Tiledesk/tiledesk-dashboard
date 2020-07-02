@@ -1,0 +1,59 @@
+{
+    
+    "todohighlight.keywords": [
+        
+        {
+            "text": "NOTE:",
+            "color": "#ecf0f1",
+            "border": "1px solid #2980b9",
+            "borderRadius": "4px",
+            "backgroundColor": "#3498db",
+        },
+        {
+            "text": "NOTE_nk:",
+            "color": "#ffffff",
+            "border": "1px solid #bf1ece",
+            "backgroundColor": "#bf1ece",
+        },
+        {
+            "text": "DEPTS_LAZY:",
+            "color": "#ffffff",
+            "border": "1px solid #ff00b0",
+            "backgroundColor": "#ff00b0",
+        },
+        {
+            "text": "SERVED_BY:",
+            "color": "#ffffff",
+            "border": "1px solid #ff00b0",
+            "backgroundColor": "#ff00b0",
+        },
+        {
+            "text": "HACK:",
+            "color": "#ffffff",
+            "border": "1px solid #2bd6f1",
+            "borderRadius": "4px",
+            "backgroundColor": "#2bd6f1",
+        },
+        {
+            "text": "FIXME:",
+            "color": "#ecf0f1",
+            "border": "1px solid #f39c12",
+            "borderRadius": "4px",
+            "backgroundColor": "#f1c40f",
+        },
+        {
+            "text": "BUG:",
+            "color": "#ecf0f1",
+            "border": "1px solid #c0392b",
+            "borderRadius": "4px",
+            "backgroundColor": "#e74c3c",
+        },
+        {
+            "text": "TODO:",
+            "color": "#ecf0f1",
+            "border": "1px solid #27ae60",
+            "borderRadius": "4px",
+            "backgroundColor": "#2ecc71",
+        }
+    ],
+}
