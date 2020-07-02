@@ -14,7 +14,12 @@
 
 ng build  --prod --c=pre --base-href ./
 cd dist
+####### tiledesk
 aws s3 sync . s3://tiledesk-dashboard-pre/dashboard/
 aws cloudfront create-invalidation --distribution-id E2DTAKWHWQ7C3J --paths "/*"
 echo new version deployed on s3://tiledesk-dashboard-pre/dashboard/
 echo available on https://support-pre.tiledesk.com/dashboard/index.html
+
+####### demo1
+# aws s3 sync . s3://pypestream-dashboard/dashboard/
+# aws cloudfront create-invalidation --distribution-id E2DTAKWHWQ7C3J --paths "/*"
