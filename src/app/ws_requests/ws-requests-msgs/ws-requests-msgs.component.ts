@@ -179,6 +179,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   DISABLE_ADD_NOTE_AND_TAGS = false;
   DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS = false;
+
+  request_archived_msg: string;
+  request_archived_err_msg: string;
+  archivingRequestNoticationMsg: string;
+  requestHasBeenArchivedNoticationMsg_part1: string;
   // @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
 
   //   cities3 = [
@@ -327,13 +332,36 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       .subscribe((translation: any) => {
         console.log('% »»» WebSocketJs WF >>> ws-m  translateNotificationMsgs text', translation)
         this.notifyProcessingMsg = translation;
+      });
 
+    this.translate.get('TheRequestHasBeenMovedToHistory')
+      .subscribe((translation: any) => {
+        console.log('% »»» WebSocketJs WF >>> ws-m  translateNotificationMsgs text', translation)
+        this.request_archived_msg = translation;
+      });
+
+    this.translate.get('AnErrorHasOccurredArchivingTheRequest')
+      .subscribe((translation: any) => {
+        console.log('% »»» WebSocketJs WF >>> ws-m  translateNotificationMsgs text', translation)
+        this.request_archived_err_msg = translation;
       });
 
 
+      this.translate.get('ArchivingRequestNoticationMsg')
+      .subscribe((text: string) => {
+        this.archivingRequestNoticationMsg = text;
+        // console.log('+ + + ArchivingRequestNoticationMsg', text)
+      });
+
+      this.translate.get('RequestSuccessfullyClosed')
+      .subscribe((text: string) => {
+        this.requestHasBeenArchivedNoticationMsg_part1 = text;
+        // console.log('+ + + RequestHasBeenArchivedNoticationMsg_part1', text)
+      });
 
   }
 
+ 
   getAppConfig() {
     this.SERVER_BASE_PATH = this.appConfigService.getConfig().SERVER_BASE_URL;
     this.CHAT_BASE_URL = this.appConfigService.getConfig().CHAT_BASE_URL;
@@ -1457,14 +1485,17 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // });
   }
 
-  // ARCHIVE REQUEST - OPEN THE POPUP
+  // ARCHIVE REQUEST - OPEN THE POPUP !!! NO MORE USED
   openArchiveRequestModal(request_recipient: string) {
     console.log('%%% Ws-REQUESTS-Msgs - ID OF REQUEST TO ARCHIVE ', request_recipient)
     this.id_request_to_archive = request_recipient;
 
     this.displayArchiveRequestModal = 'block'
+
+
   }
 
+  // MODAL ArchiveRequest !!! NO MORE USED
   onCloseArchiveRequestModal() {
     this.displayArchiveRequestModal = 'none'
   }
@@ -1494,7 +1525,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           this.ARCHIVE_REQUEST_ERROR = true;
           // =========== NOTIFY ERROR ===========
           // tslint:disable-next-line:quotemark
-          this.notify.showNotification("An error has occurred archiving the request", 4, 'report_problem')
+          this.notify.showNotification(this.request_archived_err_msg, 4, 'report_problem')
         },
         () => {
           // this.ngOnInit();
@@ -1504,9 +1535,35 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
           // =========== NOTIFY SUCCESS===========
           // with id: ${this.id_request_to_archive}
-          this.notify.showNotification(`the request has been moved to History`, 2, 'done');
+          this.notify.showNotification(this.request_archived_msg, 2, 'done');
         });
 
+  }
+
+
+  archiveRequest(requestid) {
+    this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg);
+
+    this.wsRequestsService.closeSupportGroup(requestid)
+      .subscribe((data: any) => {
+        console.log('%%% Ws-REQUESTS-Msgs - CLOSE SUPPORT GROUP - DATA ', data);
+      },
+        (err) => {
+          console.log('%%% Ws-REQUESTS-Msgs - CLOSE SUPPORT GROUP - ERROR ', err);
+
+          // =========== NOTIFY ERROR ===========
+          // tslint:disable-next-line:quotemark
+          this.notify.showWidgetStyleUpdateNotification(this.request_archived_err_msg, 4, 'report_problem')
+        }, () => {
+          // this.ngOnInit();
+          console.log('%%% Ws-REQUESTS-Msgs - CLOSE SUPPORT GROUP - COMPLETE');
+
+
+          // =========== NOTIFY SUCCESS===========
+          // with id: ${this.id_request_to_archive}
+          // this.notify.showWidgetStyleUpdateNotification(this.request_archived_msg, 2, 'done');
+          this.notify.showRequestIsArchivedNotification(this.requestHasBeenArchivedNoticationMsg_part1);
+        });
   }
 
   // JOIN TO CHAT GROUP
