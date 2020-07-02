@@ -224,22 +224,57 @@
               <!-- <div class="card-header card-header-custom-bkgrnd-project"> </div> -->
 
               <div class="card-content card-content-custom-height">
-                <h3 class="title"
-                [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}"
+                <h3 class="title" [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}"
                   style="color: #566787; font-size:20px; margin-bottom: 0px;font-family: 'Google Sans',sans-serif!important">
                   {{ project?.id_project?.name }}
                 </h3>
 
-                <p class="category" 
-                [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}"
-                style="font-size:14px !important; color:#7695a5">
+                <p class="category" [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}"
+                  style="font-size:14px !important; color:#7695a5">
                   {{ project?.id_project?._id }}
                 </p>
-                <h4 class="category"
-                [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}"
+                <h4 class="category" [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}"
                   style="font-size:16px; margin-top: 16px;font-family: 'Google Sans',sans-serif!important; color: #7695a5">
                   {{ project?.role }}
                 </h4>
+
+                <div class="project-user-status" style="width: fit-content;"
+                 (click)="$event.stopPropagation(); changeAvailabilityState(project?.id_project?._id, project?.ws_projct_user_available)">
+
+                  <div class="project-user-status-icon"
+                    [ngClass]="{'is-user-online' : project?.ws_projct_user_available === true, 'is-user-offline' : project?.ws_projct_user_available === false }">
+                  </div>
+
+                  <span class="project-user-status-text" *ngIf="project?.ws_projct_user_available === true">
+                    {{ 'Available' | translate }}
+                  </span>
+                  <span class="project-user-status-text" *ngIf="project?.ws_projct_user_available === false">
+                    {{ 'Unavailable' | translate }}
+                  </span>
+
+                </div>
+
+                <div class="project-user-isBusy" *ngIf="project?.ws_projct_user_isBusy === true">
+                  <span class="material-icons" style="font-size: 20px; color:#fedd00;">
+                    access_time
+                    </span>
+                   <span class="project-user-isBusyTest"  style=""> 
+                    {{ 'Busy' | translate }} 
+                  </span> 
+                  <!-- <div class="isBusyClockHands">   </div> -->
+                </div>
+
+
+
+                <!-- <div class="onoffswitch">
+                  <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" tabindex="0" checked>
+                  <label class="onoffswitch-label" for="myonoffswitch">
+                      <span class="onoffswitch-inner"></span>
+                      <span class="onoffswitch-switch"></span>
+                  </label>
+              </div> -->
+
+
               </div>
               <!-- <div class="project-deleted-msg-in-card-wrap" style=""> 
               
@@ -248,9 +283,8 @@
                 </div>
               </div> -->
               <div class="card-footer">
-                <div
-                  [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}"
-                  class="stats" style="color:#7695a5">
+                <div [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}" class="stats"
+                  style="color:#7695a5">
                   <i class="material-icons">date_range</i> {{ project?.id_project?.createdAt | date: 'dd/MM/yyyy'}}
 
                   <!-- <button type="button" rel="tooltip" title="Modifica Progetto" class="btn btn-primary btn-simple btn-xs" (click)='goToEditAddPage_EDIT(project?._id)'> -->

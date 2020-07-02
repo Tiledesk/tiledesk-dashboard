@@ -104,7 +104,7 @@ input[type="text"] {
 
 .custom-card-box-shadow:hover {
   // background-color: #fafafa;
-  box-shadow: 0 7px 8px -4px rgba(0,0,0,.2), 0 12px 17px 2px rgba(0,0,0,.14), 0 5px 22px 4px rgba(0,0,0,.12) !important;
+  box-shadow: 0 7px 8px -4px rgba(0, 0, 0, 0.2), 0 12px 17px 2px rgba(0, 0, 0, 0.14), 0 5px 22px 4px rgba(0, 0, 0, 0.12) !important;
 }
 
 .card-header-custom-bkgrnd-project {
@@ -125,27 +125,26 @@ input[type="text"] {
 }
 
 .card-content-custom-height {
-  height:160px !important;
+  height: 160px !important;
 }
 
 .project-deleted-card {
   background-color: #eee;
-  
 }
 
 .project-deleted-card-text-color {
-  color:#999 !important;
+  color: #999 !important;
   opacity: 0.4;
 }
 .delete-image-bckground {
-  background-image: url('../../assets/img/deleted.svg');
+  background-image: url("../../assets/img/deleted.svg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
 }
 
 .project-deleted-card:hover {
-  box-shadow:unset !important;
+  box-shadow: unset !important;
   cursor: not-allowed !important;
 }
 
@@ -153,7 +152,8 @@ input[type="text"] {
   position: relative;
 }
 .project-deleted-msg-in-card {
-  position: absolute;margin-left: auto;
+  position: absolute;
+  margin-left: auto;
   margin-right: auto;
   left: 0;
   right: 0;
@@ -331,7 +331,7 @@ input[type="text"] {
   width: 100%;
   transform: skewY(-12deg);
   transform-origin: 0px center;
-  background: $brand-recent-project-bckgrnd; 
+  background: $brand-recent-project-bckgrnd;
   // background: linear-gradient(90deg,#0e2a3b 0,#34306b); // new
   height: 500px;
   left: 0;
@@ -376,8 +376,141 @@ input[type="text"] {
   font-size: 24px;
 }
 
-// @media (max-width: 468px){
-//     .alert-pending-email-prjct-page {
-//         width: 180px;
-//     }
+.project-user-status-icon {
+  width: 16px;
+  height: 16px;
+  float: left;
+  border-radius: 50%;
+  margin-right: 2px;
+}
+.project-user-status-text {
+  color: #7695a5;
+  font-size: 12px;
+  position: relative;
+  top: -3px;
+}
+
+.is-user-online {
+  background-color: #4caf50;
+}
+.is-user-offline {
+  background-color: #f44336;
+}
+
+.project-user-isBusy {
+  position: relative;
+  left: -2px;
+  width: fit-content;
+}
+
+
+.project-user-isBusyTest {
+  color: #fedd00;
+  animation: myfirst 5s;
+  -moz-animation: myfirst 5s infinite; /* Firefox */
+  -webkit-animation: myfirst 5s infinite; /* Safari and Chrome */
+  font-size: 12px;
+  position: relative;
+  top: -6px;
+  left: -2px;
+}
+
+@keyframes myfirst {
+  0% {
+    // background: #4caf50;
+    color: rgba(255, 255, 255, 0.5);
+  }
+  50% {
+    // background: #fedd00;
+    color: #fedd00;
+  }
+  100% {
+    // background: #4caf50;
+    // color: #1e2129;
+    color: rgba(255, 255, 255, 0.5);
+  }
+}
+/* Firefox */
+@-moz-keyframes myfirst {
+  0% {
+    // background: #4caf50;
+    // color: #1e2129;
+    color: rgba(255, 255, 255, 0.5);
+  }
+  50% {
+    // background: #fedd00;
+    color: #fedd00;
+  }
+  100% {
+    // background: #4caf50;
+    // color: #1e2129;
+    color: rgba(255, 255, 255, 0.5);
+  }
+}
+/* Safari and Chrome */
+@-webkit-keyframes myfirst {
+  0% {
+    // background: #4caf50;
+    // color: #1e2129;
+    color: rgba(255, 255, 255, 0.5);
+  }
+  50% {
+    // background: #fedd00;
+    color: #fedd00;
+  }
+  100% {
+    // background: #4caf50;
+    // color: #1e2129;
+    color: rgba(255, 255, 255, 0.5);
+  }
+}
+
+// onoffswitch https://proto.io/freebies/onoff/
+// .onoffswitch {
+//   position: relative; width: 104px;
+//   -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+// }
+// .onoffswitch-checkbox {
+//   position: absolute;
+//   opacity: 0;
+//   pointer-events: none;
+// }
+// .onoffswitch-label {
+//   display: block; overflow: hidden; cursor: pointer;
+//   border: 2px solid #999999; border-radius: 20px;
+// }
+// .onoffswitch-inner {
+//   display: block; width: 200%; margin-left: -100%;
+//   transition: margin 0.3s ease-in 0s;
+// }
+// .onoffswitch-inner:before, .onoffswitch-inner:after {
+//   display: block; float: left; width: 50%; height: 20px; padding: 0; line-height: 20px;
+//   font-size: 12px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+//   box-sizing: border-box;
+// }
+// .onoffswitch-inner:before {
+//   content: "Available";
+//   padding-left: 10px;
+//   background-color: #FFFFFF; color: #4CAF50;
+// }
+// .onoffswitch-inner:after {
+//   content: "Unavailable";
+//   padding-right: 10px;
+//   background-color: #FFFFFF; color: #F44336;
+//   text-align: right;
+// }
+// .onoffswitch-switch {
+//   display: block; width: 18px; margin: 1px;
+//   background: #F44336;
+//   position: absolute; top: 0; bottom: 0;
+//   right: 80px;
+//   border: 2px solid #999999; border-radius: 20px;
+//   transition: all 0.3s ease-in 0s;
+// }
+// .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+//   margin-left: 0;
+// }
+// .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+//   right: 0px;
+//   background-color: #4CAF50;
 // }

@@ -12,6 +12,10 @@ import { UploadImageService } from '../services/upload-image.service';
 import { Subscription } from 'rxjs/Subscription';
 import { AppConfigService } from '../services/app-config.service';
 import brand from 'assets/brand/brand.json';
+
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 @Component({
   selector: 'projects',
   templateUrl: './projects.component.html',
@@ -53,6 +57,9 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   subscription: Subscription;
 
   storageBucket: string;
+  currentUserId: string
+
+  private unsubscribe$: Subject<any> = new Subject<any>();
 
   constructor(
     private projectService: ProjectService,
@@ -83,7 +90,11 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
     // this.subscribeToLogoutPressedinSidebarNavMobilePrjctUndefined();
     this.getStorageBucket();
+
+
   }
+
+
 
   getStorageBucket() {
     const firebase_conf = this.appConfigService.getConfig().firebase;
@@ -107,10 +118,18 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
   getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
-      console.log('USER GET IN PROJECT COMP ', user)
+      console.log('PROJECT COMP - USER  ', user)
       this.user = user;
+
+      if (user) {
+        this.currentUserId = user._id;
+        console.log('Current USER ID ', this.currentUserId)
+      }
+
     });
   }
+
+
 
   // project/:projectid/home
   // , available: boolean
@@ -164,6 +183,31 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   //   this.router.navigate(['project/edit', project_id]);
   // }
 
+  //   subsTo_WsCurrentUser(currentuserprjctuserid) {
+  //     console.log('SB - SUBSCRIBE TO WS CURRENT-USER AVAILABILITY  prjct user id of current user ', currentuserprjctuserid);
+  //     this.usersService.subscriptionToWsCurrentUser(this.projectId, currentuserprjctuserid);
+  //     this.getWsCurrentUserAvailability$();
+  //     // this.getWsCurrentUserIsBusy$();
+  // }
+
+
+  getWsCurrentUserAvailability$() {
+    this.usersService.currentUserWsAvailability$
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((currentuser_availability) => {
+        console.log('WS-CURRENT-USER - IS AVAILABLE? ', currentuser_availability);
+        if (currentuser_availability !== null) {
+          // this.IS_AVAILABLE = currentuser_availability;
+        }
+      }, error => {
+        console.log('WS-CURRENT-USER AVAILABILITY * error * ', error)
+      }, () => {
+        console.log('WS-CURRENT-USER AVAILABILITY *** complete *** ')
+      });
+  }
+
   /**
    * GET PROJECTS AND SAVE IN THE STORAGE: PROJECT ID - PROJECT NAME - USE ROLE   */
   getProjectsAndSaveInStorage() {
@@ -179,6 +223,8 @@ export class ProjectsComponent implements OnInit, OnDestroy {
         // WHEN IS REFRESHED A PAGE THE AUTSERVICE USE THE NAVIGATION PROJECT ID TO GET FROM STORAGE THE NAME OF THE PROJECT
         // AND THEN PUBLISH PROJECT ID AND PROJECT NAME
         let countOfcurrentUserAvailabilityInProjects = 0
+
+
         this.projects.forEach(project => {
           console.log('!!! SET PROJECT IN STORAGE')
           if (project.id_project) {
@@ -193,6 +239,24 @@ export class ProjectsComponent implements OnInit, OnDestroy {
               subscription_is_active: project.id_project.isActiveSubscription
             }
 
+            // this.subsTo_WsCurrentUser( project.id_project._id)
+            // this.getProjectUsersIdByCurrentUserId(project.id_project._id)
+
+            /**
+             * project.id_project._id is the id of the project
+             * project._id is the id of the project user
+             */
+            this.usersService.subscriptionToWsCurrentUser_allProject(project.id_project._id, project._id);
+            this.listenTocurrentUserWSAvailabilityAndBusyStatustForProject$()
+
+            // .then((data) => {
+
+            //     console.log("PROJECT COMP SUBSCR TO WS CURRENT USERS - RES ", data);
+            //     project['ws_projct_user_available'] = data['user_available']
+            //     project['ws_projct_user_isBusy'] = data['isBusy']
+            //   })
+
+
             /***  ADDED TO KNOW IF THE CURRENT USER IS AVAILABLE IN SOME PROJECT
              *    ID USED TO DISPLAY OR NOT THE MSG 'Attention, if you don't want to receive requests...' IN THE LOGOUT MODAL  ***/
             if (project.user_available === true) {
@@ -202,6 +266,8 @@ export class ProjectsComponent implements OnInit, OnDestroy {
             localStorage.setItem(project.id_project._id, JSON.stringify(prjct));
           }
         });
+        console.log('!!! GET PROJECTS AFTER', projects);
+
         this.myAvailabilityCount = countOfcurrentUserAvailabilityInProjects;
         this.projectService.countOfMyAvailability(this.myAvailabilityCount);
         console.log('!!! GET PROJECTS - I AM AVAILABLE IN # ', this.myAvailabilityCount, 'PROJECTS');
@@ -213,6 +279,87 @@ export class ProjectsComponent implements OnInit, OnDestroy {
       console.log('GET PROJECTS - COMPLETE')
     });
   }
+
+  changeAvailabilityState(projectid, available) {
+    console.log('PROJECT COMP changeAvailabilityState projectid', projectid, ' available: ', available);
+
+    available = !available
+    console.log('PROJECT COMP changeAvailabilityState projectid', projectid, ' available: ', available);
+
+    this.usersService.updateCurrentUserAvailability(projectid, available).subscribe((projectUser: any) => { // non 
+
+      console.log('PROJECT COMP PROJECT-USER UPDATED ', projectUser)
+
+      // NOTIFY TO THE USER SERVICE WHEN THE AVAILABLE / UNAVAILABLE BUTTON IS CLICKED
+      // this.usersService.availability_btn_clicked(true)
+
+      this.projects.forEach(project => {
+        if (project.id_project._id === projectUser.id_project) {
+          project['ws_projct_user_available'] = projectUser.user_available;
+          project['ws_projct_user_isBusy'] = projectUser['isBusy']
+        }
+      });
+
+    }, (error) => {
+      console.log('PROJECT COMP PROJECT-USER UPDATED ERR  ', error);
+
+    }, () => {
+      console.log('PROJECT COMP PROJECT-USER UPDATED  * COMPLETE *');
+
+    });
+  }
+
+  listenTocurrentUserWSAvailabilityAndBusyStatustForProject$() {
+    this.usersService.currentUserWsBusyAndAvailabilityForProject$
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((projectUser) => {
+        console.log('PROJECT COMP $UBSC  TO WS USER AVAILABILITY & BUSY STATUS DATA (listenTo)', projectUser);
+        this.projects.forEach(project => {
+          if (project.id_project._id === projectUser['id_project']) {
+            project['ws_projct_user_available'] = projectUser['user_available'];
+            project['ws_projct_user_isBusy'] = projectUser['isBusy']
+          }
+        });
+
+      }, (error) => {
+        console.log('PROJECT COMP $UBSC TO WS USER AVAILABILITY & BUSY STATUS error ', error);
+      }, () => {
+        console.log('PROJECT COMP $UBSC TO WS USER AVAILABILITY & BUSY STATUS * COMPLETE *');
+      })
+
+  }
+
+
+  ngOnDestroy() {
+    this.projects.forEach(project => {
+      this.usersService.unsubsToWS_CurrentUser_allProject(project.id_project._id, project._id)
+    });
+
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  // getProjectUsersIdByCurrentUserId(projectid) {
+
+  //   this.usersService.getProjectUserByUser_AllProjects(projectid, this.currentUserId).subscribe((projectUser: any) => {
+  //     console.log('PROJECT COMP - PROJECT-USER GET IN  RES ', projectUser)
+
+  //     if (projectUser) {
+  //       this.usersService.subscriptionToWsCurrentUser_allProject(projectid, projectUser[0]._id)
+  //     }
+
+  //   }, error => {
+  //     console.log('PROJECT COMP PROJECT-USER GET * error * ', error)
+  //   }, () => {
+  //     console.log('PROJECT COMP PROJECT-USER GET *** complete *** ')
+  //   });
+  // }
+
+
+
+
 
   /**
    * MODAL DELETE PROJECT
@@ -357,10 +504,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   //     })
   // };
 
-  ngOnDestroy() {
-    // console.log('NAV-BAR  - unsubscribe ');
-    // this.subscription.unsubscribe();
-  }
+
 
   openLogoutModal() {
     this.displayLogoutModal = 'block';

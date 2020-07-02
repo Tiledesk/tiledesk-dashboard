@@ -44,7 +44,7 @@ export class UsersService {
   public userProfileImageExist: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   public currentUserWsAvailability$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   public currentUserWsIsBusy$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
-
+  public currentUserWsBusyAndAvailabilityForProject$: BehaviorSubject<[]> = new BehaviorSubject<[]>([]);
   // public has_clicked_logoutfrom_mobile_sidebar: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   // public has_clicked_logoutfrom_mobile_sidebar_project_undefined: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
@@ -125,9 +125,34 @@ export class UsersService {
 
     this.getAppConfigAndBuildUrl();
     this.getCurrentProject();
-
-
   }
+
+  // public sumUpAuth() {
+  //   const headers = new Headers();
+  //   headers.append('Accept', 'application/json');
+  //   headers.append('Content-type', 'application/x-www-form-urlencoded');
+  //   // headers.append(' Authorization': 'Basic ' + btoa('yourClientId' + ':' + 'yourClientSecret')');
+
+
+  //   const options = new RequestOptions({ headers });
+
+  //   // , 'id_project': this.project_id, 'project_name': this.project_name
+  //   const body =  {
+  //     "grant_type": "password",
+  //     "client_id": "mNQskKOqbZ0VL0NmI9hk30gDjzTX",
+  //     "username": "lorenzo@prinzsrl.it",
+  //     "password": "PosPrinz$20"
+  //   }
+
+  //   console.log('POST INVITE USER - REQUEST BODY ', body);
+
+  //   const url = 'https://api.sumup.com/token';
+
+  //   return this.http
+  //     .post(url, JSON.stringify(body), options)
+  //     .map((res) => res.json());
+
+  // }
 
   getAppConfigAndBuildUrl() {
 
@@ -163,7 +188,7 @@ export class UsersService {
         // this.MONGODB_BASE_URL = this.SERVER_BASE_PATH + this.project._id + '/project_users/';
 
         this.PROJECT_USER_URL = this.SERVER_BASE_PATH + this.project._id + '/project_users/';
-        
+
         this.INVITE_USER_URL = this.SERVER_BASE_PATH + this.project._id + '/project_users/invite';
         this.PENDING_INVITATION_URL = this.SERVER_BASE_PATH + this.project._id + '/pendinginvitations';
         this.AVAILABLE_USERS_URL = this.PROJECTS_URL + this.project._id + '/users/availables';
@@ -465,7 +490,7 @@ export class UsersService {
     const options = new RequestOptions({ headers });
 
     // , 'id_project': this.project_id, 'project_name': this.project_name
-    const body = { 'email': email, 'role': role , 'user_available': false};
+    const body = { 'email': email, 'role': role, 'user_available': false };
 
     console.log('POST INVITE USER - REQUEST BODY ', body);
 
@@ -532,6 +557,20 @@ export class UsersService {
       .get(url, { headers })
       .map((response) => response.json());
   }
+
+  // public getProjectUserByUser_AllProjects(project_id: string, user_id: string): Observable<ProjectUser[]> {
+
+
+  //   const url = this.SERVER_BASE_PATH + project_id + '/project_users/users/' + user_id;
+  //   console.log('GET PROJECT USERS BY PROJECT-ID & CURRENT-USER-ID (All Projects) URL', url);
+  //   const headers = new Headers();
+  //   headers.append('Content-Type', 'application/json');
+  //   headers.append('Authorization', this.TOKEN);
+  //   // console.log('TOKEN TO COPY ', this.TOKEN)
+  //   return this.http
+  //     .get(url, { headers })
+  //     .map((response) => response.json());
+  // }
 
 
 
@@ -630,7 +669,7 @@ export class UsersService {
   // NEW 22 AGO - GET AND SAVE ALL USERS OF CURRENT PROJECT IN LOCAL STORAGE
   getAllUsersOfCurrentProjectAndSaveInStorage() {
     console.log('!! USER SERVICE  - PROJECT-USERS FILTERED FOR PROJECT ID ', this.project_id);
- 
+
     this.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
       console.log('!! USER SERVICE  - PROJECT-USERS (FILTERED FOR PROJECT ID ', this.project_id, ')', projectUsers);
 
@@ -715,6 +754,54 @@ export class UsersService {
 
   }
 
+
+  // -----------------------------------------------------------------------------------------------------
+  // Availability - subscribe to WS Current user availability
+  // -----------------------------------------------------------------------------------------------------
+  subscriptionToWsCurrentUser_allProject(projectid, prjctuserid) {
+    var self = this;
+
+    console.log('PROJECT COMP (user-service) SUBSCR TO WS CURRENT USERS projectid: ', projectid, ' prjctuserid: ', prjctuserid);
+    const path = '/' + projectid + '/project_users/' + prjctuserid
+    
+    return new Promise(function (resolve, reject) {
+
+      self.webSocketJs.ref(path, function (data, notification) {
+        // console.log("SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - CREATE - data ", data , ' path ', path);
+        // console.log("PROJECT COMP (user-service) SUBSCR TO WS CURRENT USERS - CREATE - data ", data);
+        // console.log("PROJECT COMP (user-service) SUBSCR TO WS CURRENT USERS - CREATE - data  user_available ", data.user_available);
+        // console.log("PROJECT COMP (user-service) SUBSCR TO WS CURRENT USERS - CREATE - data  isBusy ", data.isBusy);
+
+
+        resolve(data)
+        // self.currentUserWsAvailability$.next(data.user_available);
+
+        self.currentUserWsBusyAndAvailabilityForProject$.next(data)
+        
+
+      }, function (data, notification) {
+        resolve(data)
+        console.log("PROJECT COMP (user-service) SUBSCR TO WS CURRENT USERS - UPDATE - data ", data);
+
+
+      }, function (data, notification) {
+        resolve(data)
+        if (data) {
+          console.log("PROJECT COMP (user-service) SUBSCR TO WS CURRENT USERS - ON-DATA - data", data);
+
+        }
+      });
+
+    })
+  }
+
+  unsubsToWS_CurrentUser_allProject(projectid, prjctuserid) {
+
+    this.webSocketJs.unsubscribe('/' + projectid + '/project_users/' + prjctuserid);
+    console.log("PROJECT COMP (user-service) UN-SUBSCR TO WS CURRENT USERS  projectid: ", projectid, ' prjctuserid:', prjctuserid);
+  }
+
+
   // -----------------------------------------------------------------------------------------------------
   // Availability - subscribe to WS Current user availability
   // -----------------------------------------------------------------------------------------------------
@@ -754,10 +841,6 @@ export class UsersService {
       }
     );
   }
-
-
-
-
 
 
 
@@ -866,10 +949,10 @@ export class UsersService {
   // DONE - WORKS NK-TO-TEST - da fare e da testare dopo che L. esegue il commit del servizio aggiornato (lo puo fare solo l'admin)
   // this is a service equal to updateProjectUser() in which project User_id was not passed
   // must be implemented for to change the availability status (available / unavailable) of the current user
-  public updateCurrentUserAvailability(user_is_available: boolean) {
+  public updateCurrentUserAvailability(projectId: string, user_is_available: boolean) {
 
     // let url = this.MONGODB_BASE_URL;
-    let url = this.SERVER_BASE_PATH + this.project._id + '/project_users/';
+    let url = this.SERVER_BASE_PATH + projectId + '/project_users/';
 
     console.log('PROJECT-USER UPDATE (PUT) URL ', url);
 
