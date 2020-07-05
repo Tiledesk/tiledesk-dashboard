@@ -1536,6 +1536,7 @@
 	"TheContactHasBeenMovedToTheTrash":"Der Kontakt wurde in den Papierkorb verschoben",
 	"TheRequestHasBeenMovedToHistory":"Die Anforderung wurde in den Verlauf verschoben",
 	"AnErrorHasOccurredArchivingTheRequest":"Beim Archivieren der Anforderung ist ein Fehler aufgetreten",
-	"RestoreContact":"Kontakt wiederherstellen"
+	"RestoreContact":"Kontakt wiederherstellen",
+	"NoProjects": "Keine Projekte"
 	
 }

@@ -1529,5 +1529,6 @@
     "TheContactHasBeenMovedToTheTrash":"Il contatto è stato spostato nel cestino",
     "TheRequestHasBeenMovedToHistory":"la richiesta è stata spostata in cronologia",
     "AnErrorHasOccurredArchivingTheRequest":"Si è verificato un errore durante l'archiviazione della richiesta",
-    "RestoreContact":"ripristina contatto"
+    "RestoreContact":"ripristina contatto",
+    "NoProjects": "Nessun progetto"
 }

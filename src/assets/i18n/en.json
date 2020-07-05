@@ -1536,5 +1536,6 @@
     "TheContactHasBeenMovedToTheTrash":"The contact has been moved to the trash",
     "TheRequestHasBeenMovedToHistory":"the request has been moved to history",
     "AnErrorHasOccurredArchivingTheRequest":"An error has occurred archiving the request",
-    "RestoreContact":"restore contact"
+    "RestoreContact":"restore contact",
+    "NoProjects": "No Projects"
 }
