@@ -404,7 +404,7 @@
     // ------------------------------------------------------- 
     // Tags (menu item name 'Labels') 
     // ------------------------------------------------------- -->
-    <ng-container>
+    <ng-container *ngIf="isVisibleLBS">
       <li *ngIf="SHOW_SETTINGS_SUBMENU && USER_ROLE !== 'agent'" routerLinkActive="active" (click)="stopScroll()">
         <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/labels">
           <p class="onBlackBckgrnd">

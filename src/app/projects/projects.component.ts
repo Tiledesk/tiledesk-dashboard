@@ -58,6 +58,8 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
   storageBucket: string;
   currentUserId: string
+  public_Key: string;
+  MT: boolean;
 
   private unsubscribe$: Subject<any> = new Subject<any>();
 
@@ -90,10 +92,44 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
     // this.subscribeToLogoutPressedinSidebarNavMobilePrjctUndefined();
     this.getStorageBucket();
+    this.getOSCODE();
+  }
+
+  getOSCODE() {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    console.log('AppConfigService getAppConfig (PROJECTS-LIST) public_Key', this.public_Key)
+    console.log('NavbarComponent public_Key', this.public_Key)
+
+    let keys = this.public_Key.split("-");
+    console.log('PUBLIC-KEY (PROJECTS-LIST) - public_Key keys', keys)
+
+    console.log('PUBLIC-KEY (PROJECTS-LIST) - public_Key Arry includes MTT', this.public_Key.includes("MTT"));
+
+    if (this.public_Key.includes("MTT") === true) {
+
+      keys.forEach(key => {
+        // console.log('NavbarComponent public_Key key', key)
+        if (key.includes("MTT")) {
+          console.log('PUBLIC-KEY (PROJECTS-LIST) - key', key);
+          let mt = key.split(":");
+          console.log('PUBLIC-KEY (PROJECTS-LIST) - mt key&value', mt);
+          if (mt[1] === "F") {
+            this.MT = false;
+            console.log('PUBLIC-KEY (PROJECTS-LIST) - mt is', this.MT);
+          } else {
+            this.MT = true;
+            console.log('PUBLIC-KEY (PROJECTS-LIST) - mt is', this.MT);
+          }
+        }
+      });
+
+    } else {
+      this.MT = false;
+      console.log('PUBLIC-KEY (PROJECTS-LIST) - mt is', this.MT);
+    }
 
 
   }
-
 
 
   getStorageBucket() {
@@ -315,7 +351,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((projectUser) => {
-        console.log('PROJECT COMP $UBSC  TO WS USER AVAILABILITY & BUSY STATUS DATA (listenTo)', projectUser);
+        // console.log('PROJECT COMP $UBSC  TO WS USER AVAILABILITY & BUSY STATUS DATA (listenTo)', projectUser);
         this.projects.forEach(project => {
           if (project.id_project._id === projectUser['id_project']) {
             project['ws_projct_user_available'] = projectUser['user_available'];

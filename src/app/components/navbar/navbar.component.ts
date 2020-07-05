@@ -122,7 +122,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     NOTIFICATION_SOUND: string;
     storedValuePrefix = 'dshbrd----'
     hasPlayed = false
-
+    MT: boolean
     constructor(
         location: Location,
         private element: ElementRef,
@@ -289,7 +289,25 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                     console.log('PUBLIC-KEY (Navbar) - pay isVisible', this.isVisible);
                 }
             }
+
+            if (key.includes("MTT")) {
+                console.log('PUBLIC-KEY (Navbar) - key', key);
+                let mt = key.split(":");
+                console.log('PUBLIC-KEY (Navbar) - mt key&value', mt);
+                if (mt[1] === "F") {
+                  this.MT = false;
+                  console.log('PUBLIC-KEY (Navbar) - mt is', this.MT);
+                } else {
+                  this.MT = true;
+                  console.log('PUBLIC-KEY (Navbar) - mt is', this.MT);
+                }
+              }
         });
+
+        if (!this.public_Key.includes("MTT")) {
+            this.MT = false;
+            console.log('PUBLIC-KEY (Navbar) - mt is', this.MT);
+        }
         // console.log('NavbarComponent eoscode', this.eos);
         // if (this.eos && this.eos === publicKey) {
         //     this.isVisible = true;

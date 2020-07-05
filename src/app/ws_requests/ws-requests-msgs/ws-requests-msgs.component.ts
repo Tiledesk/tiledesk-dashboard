@@ -184,6 +184,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   request_archived_err_msg: string;
   archivingRequestNoticationMsg: string;
   requestHasBeenArchivedNoticationMsg_part1: string;
+
+  isVisibleLBS: boolean;
+  public_Key: string;
   // @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
 
   //   cities3 = [
@@ -287,7 +290,42 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
     this.getRouteUrl();
     this.getBaseUrl();
+    this.getOSCODE();
   }
+
+
+  getOSCODE() {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    console.log('AppConfigService getAppConfig (WS-REQUETS-MSGS) public_Key', this.public_Key)
+    console.log('NavbarComponent public_Key', this.public_Key)
+
+    let keys = this.public_Key.split("-");
+    console.log('PUBLIC-KEY (WS-REQUETS-MSGS) - public_Key keys', keys)
+
+    keys.forEach(key => {
+      // console.log('NavbarComponent public_Key key', key)
+      if (key.includes("LBS")) {
+        console.log('PUBLIC-KEY (WS-REQUETS-MSGS) - key', key);
+        let lbs = key.split(":");
+        console.log('PUBLIC-KEY (WS-REQUETS-MSGS) - lbs key&value', lbs);
+
+        if (lbs[1] === "F") {
+          this.isVisibleLBS = false;
+          console.log('PUBLIC-KEY (WS-REQUETS-MSGS) - lbs is', this.isVisibleLBS);
+        } else {
+          this.isVisibleLBS = true;
+          console.log('PUBLIC-KEY (WS-REQUETS-MSGS) - lbs is', this.isVisibleLBS);
+        }
+      }
+    });
+
+    if (!this.public_Key.includes("LBS")) {
+      console.log('PUBLIC-KEY (SIDEBAR) - key.includes("LBS")', this.public_Key.includes("LBS"));
+      this.isVisibleLBS = false;
+    }
+
+  }
+
   getRouteUrl() {
     this.CHAT_PANEL_MODE = false
     if (this.router.url.indexOf('/request-for-panel') !== -1) {
@@ -347,13 +385,13 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       });
 
 
-      this.translate.get('ArchivingRequestNoticationMsg')
+    this.translate.get('ArchivingRequestNoticationMsg')
       .subscribe((text: string) => {
         this.archivingRequestNoticationMsg = text;
         // console.log('+ + + ArchivingRequestNoticationMsg', text)
       });
 
-      this.translate.get('RequestSuccessfullyClosed')
+    this.translate.get('RequestSuccessfullyClosed')
       .subscribe((text: string) => {
         this.requestHasBeenArchivedNoticationMsg_part1 = text;
         // console.log('+ + + RequestHasBeenArchivedNoticationMsg_part1', text)
@@ -361,7 +399,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   }
 
- 
+
   getAppConfig() {
     this.SERVER_BASE_PATH = this.appConfigService.getConfig().SERVER_BASE_URL;
     this.CHAT_BASE_URL = this.appConfigService.getConfig().CHAT_BASE_URL;

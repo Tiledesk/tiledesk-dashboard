@@ -174,7 +174,7 @@
             </li>
 
             <!-- ------------ ADD PROJECT ------------ -->
-            <li (click)="goToCreateProject()">
+            <li *ngIf="MT === true" (click)="goToCreateProject()">
               <a style="cursor: pointer">
                 <i class="material-icons"
                   style="padding-right: 5px; margin-bottom: 2px; font-size: 20px">add_circle_outline </i>

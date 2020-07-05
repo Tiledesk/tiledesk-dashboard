@@ -149,7 +149,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     isVisibleGRO: boolean;
     isVisibleDEP: boolean;
     isVisibleOPH: boolean;
-    isVisibleCAR: boolean; // canned responses
+    isVisibleCAR: boolean;
+    isVisibleLBS: boolean; 
 
     storageBucket: string;
     default_dept_id: string;
@@ -218,25 +219,19 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.brandLog();
         this.getHasOpenBlogKey()
         this.getChatUrl();
-
     }
-
 
     getChatUrl() {
         this.CHAT_BASE_URL = this.appConfigService.getConfig().CHAT_BASE_URL;
         console.log('AppConfigService getAppConfig (SIDEBAR) CHAT_BASE_URL', this.CHAT_BASE_URL);
     }
 
-
-
     getHasOpenBlogKey() {
         const hasOpenedBlog = this.usersLocalDbService.getStoredChangelogDate();
         console.log('SIDEBAR  »»»»»»»»» hasOpenedBlog ', hasOpenedBlog);
-
         if (hasOpenedBlog === true) {
             this.hidechangelogrocket = true;
         }
-
     }
 
     brandLog() {
@@ -359,16 +354,31 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 }
             }
 
-            /* this generates bugs: the loop goes into the false until the "key" matches "CAR" */
-            // else {
-            //     this.isVisibleCAR = false;
-            //     console.log('PUBLIC-KEY (SIDEBAR) - car isVisible', this.isVisibleCAR);
-            // }
+
+            if (key.includes("LBS")) {
+                console.log('PUBLIC-KEY (SIDEBAR) - key', key);
+                let lbs = key.split(":");
+                console.log('PUBLIC-KEY (SIDEBAR) - car key&value', lbs);
+
+                if (lbs[1] === "F") {
+                    this.isVisibleLBS = false;
+                    console.log('PUBLIC-KEY (SIDEBAR) - lbs isVisible', this.isVisibleLBS);
+                } else {
+                    this.isVisibleLBS = true;
+                    console.log('PUBLIC-KEY (SIDEBAR) - lbs isVisible', this.isVisibleLBS);
+                }
+            }
+
         });
 
         if (!this.public_Key.includes("CAR")) {
             console.log('PUBLIC-KEY (SIDEBAR) - key.includes("CAR")', this.public_Key.includes("CAR"));
             this.isVisibleCAR = false;
+        }
+
+        if (!this.public_Key.includes("LBS")) {
+            console.log('PUBLIC-KEY (SIDEBAR) - key.includes("LBS")', this.public_Key.includes("LBS"));
+            this.isVisibleLBS = false;
         }
 
 

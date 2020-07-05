@@ -192,7 +192,7 @@
 
     <div class="projects-cards" style="position: relative;top: -57px;">
       <div class="row">
-        <div class="col-lg-4 col-md-4 col-sm-6" style="cursor:pointer">
+        <div *ngIf="MT === true" class="col-lg-4 col-md-4 col-sm-6" style="cursor:pointer">
 
           <!-- CARD ADD PROJECT -->
           <!-- style="max-width: 256px;" -->
@@ -200,10 +200,10 @@
           <div class="card custom-card-box-shadow" (click)='goToCreateProject()' style="border-radius:3px">
             <div class="card-content" style="height:203px">
               <!-- #55b9d1 -->
-              <h3 class="card-add-project-icon" style="">
+              <h3 class="card-add-project-icon">
                 <i class="material-icons" style="font-size:48px">add</i>
               </h3>
-              <h4 class="card-add-project-text" style="">
+              <h4 class="card-add-project-text">
                 {{ 'ProjectsPage.AddProject' | translate }}
               </h4>
             </div>
@@ -212,7 +212,27 @@
         </div>
 
         <loading-spinner *ngIf="showSpinner"></loading-spinner>
+
         <span *ngIf="!showSpinner">
+
+          <div *ngIf="projects?.length === 0 && MT === false">
+            <div class="col-xs-4 col-xs-offset-4" style="cursor:pointer">
+
+              <div class="card custom-card-box-shadow" style="border-radius:3px">
+                <div class="card-content" style="height:203px">
+                  <!-- #55b9d1 -->
+                  <h3 class="card-add-project-icon">
+                    😱
+                  </h3>
+                  <h4 class="card-add-project-text">
+                    {{ 'NoProjects' | translate }}
+                  </h4>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- [ngClass]="{'col-lg-4 col-md-4 col-sm-6' : projects?.length >= 1 && 'MT' === true, 'col-md-4 col-md-offset-4' : projects?.length === 1 && 'MT' === false}" -->
           <div *ngFor="let project of projects" class="col-lg-4 col-md-4 col-sm-6" style="cursor:pointer">
 
             <!-- CARDS FROM THE PROJECT 'FOR' -->
@@ -239,7 +259,7 @@
                 </h4>
 
                 <div class="project-user-status" style="width: fit-content;"
-                 (click)="$event.stopPropagation(); changeAvailabilityState(project?.id_project?._id, project?.ws_projct_user_available)">
+                  (click)="$event.stopPropagation(); changeAvailabilityState(project?.id_project?._id, project?.ws_projct_user_available)">
 
                   <div class="project-user-status-icon"
                     [ngClass]="{'is-user-online' : project?.ws_projct_user_available === true, 'is-user-offline' : project?.ws_projct_user_available === false }">
@@ -257,10 +277,10 @@
                 <div class="project-user-isBusy" *ngIf="project?.ws_projct_user_isBusy === true">
                   <span class="material-icons" style="font-size: 20px; color:#fedd00;">
                     access_time
-                    </span>
-                   <span class="project-user-isBusyTest"  style=""> 
-                    {{ 'Busy' | translate }} 
-                  </span> 
+                  </span>
+                  <span class="project-user-isBusyTest" style="">
+                    {{ 'Busy' | translate }}
+                  </span>
                   <!-- <div class="isBusyClockHands">   </div> -->
                 </div>
 

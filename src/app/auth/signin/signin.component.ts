@@ -32,6 +32,7 @@ export class SigninComponent implements OnInit {
 
   isVisibleV1L: boolean;
   public_Key: string;
+  SUP: boolean;
 
   // newUser = false; // to toggle login or signup form
   // passReset = false; // set to true when password reset is triggered
@@ -88,7 +89,7 @@ export class SigninComponent implements OnInit {
   redirectIfLogged() {
 
     const storedUser = localStorage.getItem('user')
-   
+
     if (storedUser) {
       console.log('SIGN-IN - REDIRECT TO DASHBORD IF USER IS LOGGED-IN - STORED USER', storedUser);
       this.router.navigate(['/projects']);
@@ -115,6 +116,20 @@ export class SigninComponent implements OnInit {
           console.log('PUBLIC-KEY (SIGN-IN) - v1l isVisible', this.isVisibleV1L);
         }
       }
+
+      if (key.includes("SUP")) {
+        console.log('PUBLIC-KEY (SIGN-IN) - key', key);
+        let sup = key.split(":");
+        console.log('PUBLIC-KEY (SIGN-IN) - sup key&value ', sup);
+
+        if (sup[1] === "F") {
+          this.SUP = false;
+          console.log('PUBLIC-KEY (SIGN-IN) - sup is ', this.SUP);
+        } else {
+          this.SUP = true;
+          console.log('PUBLIC-KEY (SIGN-IN) - sup is ', this.SUP);
+        }
+      }
       /* this generates bugs: the loop goes into the false until the "key" matches "V1L" */
       // else {
       //   this.isVisibleV1L = false;
@@ -122,8 +137,13 @@ export class SigninComponent implements OnInit {
     });
 
     if (!this.public_Key.includes("V1L")) {
-      console.log('PUBLIC-KEY (SIDEBAR) - key.includes("V1L")', this.public_Key.includes("V1L"));
+      console.log('PUBLIC-KEY (SIGN-IN) - key.includes("V1L")', this.public_Key.includes("V1L"));
       this.isVisibleV1L = false;
+    }
+
+    if (!this.public_Key.includes("SUP")) {
+      this.SUP = false;
+      console.log('PUBLIC-KEY (SIGN-IN) - SUP is', this.SUP);
     }
 
   }
@@ -133,10 +153,14 @@ export class SigninComponent implements OnInit {
     console.log('SIGN-IN - ACTUAL INNER WIDTH ', window.innerWidth);
     console.log('SIGN-IN - ACTUAL INNER HEIGHT ', window.innerHeight);
 
-    if (window.innerHeight <= 680) {
-      this.bckgndImageSize = 50 + '%'
+    if (this.SUP === true) {
+      if (window.innerHeight <= 680) {
+        this.bckgndImageSize = 50 + '%'
+      } else {
+        this.bckgndImageSize = 60 + '%'
+      }
     } else {
-      this.bckgndImageSize = 60 + '%'
+      this.bckgndImageSize = 80 + '%'
     }
 
     if (window.innerWidth < 992) {
@@ -156,12 +180,15 @@ export class SigninComponent implements OnInit {
     // console.log('SIGN-IN - ACTUAL INNER WIDTH elem Left Panel Signin div offsetTop ', elemLeftPanelSignin.getBoundingClientRect());
     // console.log('SIGN-IN - NEW INNER WIDTH ', event.target.innerWidth);
     // console.log('SIGN-IN - NEW INNER HEIGHT ', event.target.innerHeight);
+    if (this.SUP === true) {
+      if (event.target.innerHeight <= 680) {
 
-    if (event.target.innerHeight <= 680) {
-
-      this.bckgndImageSize = 50 + '%'
+        this.bckgndImageSize = 50 + '%'
+      } else {
+        this.bckgndImageSize = 60 + '%'
+      }
     } else {
-      this.bckgndImageSize = 60 + '%'
+      this.bckgndImageSize = 80 + '%'
     }
 
     if (event.target.innerWidth < 992) {

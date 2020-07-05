@@ -6,6 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
 import brand from 'assets/brand/brand.json';
 import { NotifyService } from '../../core/notify.service';
+import { AppConfigService } from '../../services/app-config.service';
 
 type UserFields = 'email' | 'password' | 'firstName' | 'lastName' | 'terms';
 type FormErrors = { [u in UserFields]: string };
@@ -28,7 +29,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
   terms_and_conditions_url = brand.terms_and_conditions_url;
   privacy_policy_url = brand.privacy_policy_url;
   display_terms_and_conditions_link = brand.signup_page.display_terms_and_conditions_link;
- 
+
 
   showSpinnerInLoginBtn = false;
   public signin_errormsg = '';
@@ -40,6 +41,8 @@ export class SignupComponent implements OnInit, AfterViewInit {
   hide_left_panel: boolean;
   bckgndImageSize = 60 + '%'
 
+  public_Key: string;
+  MT: boolean;
   userForm: FormGroup;
   // newUser = false; // to toggle login or signup form
   // passReset = false; // set to true when password reset is triggered
@@ -78,30 +81,67 @@ export class SignupComponent implements OnInit, AfterViewInit {
     private router: Router,
     private translate: TranslateService,
     private route: ActivatedRoute,
-    private notify: NotifyService
+    private notify: NotifyService,
+    public appConfigService: AppConfigService
   ) { }
 
   ngOnInit() {
     this.redirectIfLogged();
     this.buildForm();
     this.getBrowserLang();
-    this.checkCurrentUrlAndSkipWizard()
+   
+    this.getOSCODE();
+  }
+
+  getOSCODE() {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    console.log('AppConfigService getAppConfig (SIGNUP) public_Key', this.public_Key)
+    console.log('NavbarComponent public_Key', this.public_Key)
+
+    let keys = this.public_Key.split("-");
+    console.log('PUBLIC-KEY (SIGNUP) - public_Key keys', keys)
+
+    console.log('PUBLIC-KEY (SIGNUP) - public_Key Arry includes MTT', this.public_Key.includes("MTT"));
+
+    if (this.public_Key.includes("MTT") === true) {
+
+      keys.forEach(key => {
+        // console.log('NavbarComponent public_Key key', key)
+        if (key.includes("MTT")) {
+          console.log('PUBLIC-KEY (SIGNUP) - key', key);
+          let mt = key.split(":");
+          console.log('PUBLIC-KEY (SIGNUP) - mt key&value', mt);
+          if (mt[1] === "F") {
+            this.MT = false;
+            console.log('PUBLIC-KEY (SIGNUP) - mt is', this.MT);
+          } else {
+            this.MT = true;
+            console.log('PUBLIC-KEY (SIGNUP) - mt is', this.MT);
+          }
+        }
+      });
+
+    } else {
+      this.MT = false;
+      console.log('PUBLIC-KEY (SIGNUP) - mt is', this.MT);
+    }
+
+    this.checkCurrentUrlAndSkipWizard();
   }
 
   redirectIfLogged() {
-
     const storedUser = localStorage.getItem('user');
-    if(storedUser) { 
-    console.log('SIGN-UP - REDIRECT TO DASHBORD IF USER IS LOGGED-IN - STORED USER', storedUser);
-    this.router.navigate(['/projects']);
-  }
+    if (storedUser) {
+      console.log('SIGN-UP - REDIRECT TO DASHBORD IF USER IS LOGGED-IN - STORED USER', storedUser);
+      this.router.navigate(['/projects']);
+    }
   }
 
   getWindowWidthAndHeight() {
     console.log('SIGN-UP - ACTUAL INNER WIDTH ', window.innerWidth);
     console.log('SIGN-UP - ACTUAL INNER HEIGHT ', window.innerHeight);
 
-    if( window.innerHeight <= 680) {
+    if (window.innerHeight <= 680) {
 
       this.bckgndImageSize = 50 + '%'
     } else {
@@ -109,15 +149,15 @@ export class SignupComponent implements OnInit, AfterViewInit {
     }
 
 
-    if(window.innerWidth < 992) {
+    if (window.innerWidth < 992) {
 
       this.hide_left_panel = true;
-      console.log('SIGN-IN - ACTUAL INNER WIDTH hide_left_panel ',  this.hide_left_panel);
+      console.log('SIGN-IN - ACTUAL INNER WIDTH hide_left_panel ', this.hide_left_panel);
     } else {
       this.hide_left_panel = false;
-      console.log('SIGN-IN - ACTUAL INNER WIDTH hide_left_panel ',  this.hide_left_panel);
+      console.log('SIGN-IN - ACTUAL INNER WIDTH hide_left_panel ', this.hide_left_panel);
     }
-    
+
   }
 
 
@@ -129,10 +169,16 @@ export class SignupComponent implements OnInit, AfterViewInit {
       this.SKIP_WIZARD = true;
       console.log('SignupComponent checkCurrentUrlAndSkipWizard SKIP_WIZARD ', this.SKIP_WIZARD)
       this.getAndPatchInvitationEmail();
-    } else {
-      console.log('SignupComponent checkCurrentUrlAndSkipWizard SKIP_WIZARD ', this.SKIP_WIZARD)
-      this.SKIP_WIZARD = false;
 
+    } else if (this.router.url.indexOf('/signup-on-invitation') === -1 && this.MT === false) {
+
+      this.SKIP_WIZARD = true;
+      console.log('SignupComponent checkCurrentUrlAndSkipWizard SKIP_WIZARD ', this.SKIP_WIZARD)
+    }
+    else if (this.router.url.indexOf('/signup-on-invitation') === -1 && this.MT === true) {
+
+      this.SKIP_WIZARD = false;
+      console.log('SignupComponent checkCurrentUrlAndSkipWizard SKIP_WIZARD ', this.SKIP_WIZARD)
     }
   }
 
@@ -298,7 +344,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
       // alert('signin reinit');
     }
   }
-  
+
 
   // 'email': [{ value: '', disabled: true }, [
   buildForm() {
@@ -367,12 +413,12 @@ export class SignupComponent implements OnInit, AfterViewInit {
     // , '_blank'
   }
 
- 
+
 
   goToSigninPage() {
-      this.router.navigate(['login']);
-    }
-  
+    this.router.navigate(['login']);
+  }
+
 
   onChange($event) {
     const checkModel = $event.target.checked;

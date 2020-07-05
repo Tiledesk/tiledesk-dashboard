@@ -153,7 +153,7 @@ export class WebSocketJs {
   // -----------------------------------------------------------------------------------------------------
   unsubscribe(topic) {
     console.log('% »»» WebSocketJs WF ****** CALLING UN-SUBSCRIBE ****** ');
-    console.log("% »»» WebSocketJs WF *** UNSUBSCRIBE *** - this.topics ", this.topics);
+    // console.log("% »»» WebSocketJs WF *** UNSUBSCRIBE *** - this.topics ", this.topics);
     console.log("% »»» WebSocketJs WF *** UNSUBSCRIBE *** - topic ", topic);
     console.log("% »»» WebSocketJs WF *** UNSUBSCRIBE *** - callbacks ", this.callbacks);
     //this.topics.delete(topic);
@@ -164,7 +164,7 @@ export class WebSocketJs {
       this.topics.splice(index, 1);
     }
 
-    console.log("% »»» WebSocketJs WF *** UNSUBSCRIBE *** - topics after splice ", this.topics);
+    // console.log("% »»» WebSocketJs WF *** UNSUBSCRIBE *** - topics after splice ", this.topics);
     console.log("% »»» WebSocketJs WF *** UNSUBSCRIBE *** - topic  ", topic);
     console.log('% »»» WebSocketJs WF *** UNSUBSCRIBE *** this.ws.readyState ', this.ws.readyState);
 
