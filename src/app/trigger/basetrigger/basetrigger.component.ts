@@ -56,7 +56,7 @@ export class BasetriggerComponent implements OnInit {
 
     // this.projectUserAndBotsArray 
     const projectUsers = this.usersService.getProjectUsersByProjectId();
-    const bots = this.faqKbService.getFaqKbByProjectId();
+    const bots = this.faqKbService.getAllBotByProjectId();
 
     Observable
       .zip(projectUsers, bots, (_projectUsers: any, _bots: any) => ({ _projectUsers, _bots }))

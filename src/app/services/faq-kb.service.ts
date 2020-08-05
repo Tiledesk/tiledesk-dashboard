@@ -21,7 +21,6 @@ export class FaqKbService {
   SERVER_BASE_PATH: string;
   DLGFLW_BOT_CREDENTIAL_BASE_URL: string;
 
-
   FAQKB_URL: any;
 
   TOKEN: string;
@@ -149,6 +148,43 @@ export class FaqKbService {
           return data;
         })
   }
+
+  // -----------------------------------------------------------------------------------------------------------
+  // with all=true the response return also the identity bot (used in bot-list.comp and and in basetrigger.comp)
+  // -----------------------------------------------------------------------------------------------------------
+  public getAllBotByProjectId(): Observable<FaqKb[]> {
+    const url = this.FAQKB_URL + '?all=true';
+    // url += '?id_project=' + `${id_project}`;
+    // const url = `http://localhost:3000/${id_project}/faq_kb/`;
+    console.log('GET *ALL* FAQ-KB BY PROJECT ID URL', url);
+
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    return this.http
+      .get(url, { headers })
+      .map(
+        (response) => {
+          const data = response.json();
+          // Does something on data.data
+          console.log('GET *ALL* FAQ-KB BY PROJECT ID URL data', data);
+
+          data.forEach(d => {
+            console.log('GET *ALL* FAQ-KB BY PROJECT ID URL data d', d);
+            if (d.description) {
+              let stripHere = 20;
+              d['truncated_desc'] = d.description.substring(0, stripHere) + '...';
+            }
+          });
+
+
+          // return the modified data:
+          return data;
+        })
+  }
+
+
+
 
 
 

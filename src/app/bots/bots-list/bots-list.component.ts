@@ -114,7 +114,8 @@ export class BotListComponent implements OnInit {
    * NOTE: THE CURRENT PROJECT-ID IS OBTAINED IN THE FAQ-KB SERVICE
    */
   getFaqKbByProjectId() {
-    this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
+    // this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
+    this.faqKbService.getAllBotByProjectId().subscribe((faqKb: any) => {
       console.log('»»» »»» FAQs-KB GET BY PROJECT ID', faqKb);
       this.faqkbList = faqKb;
 
@@ -140,7 +141,7 @@ export class BotListComponent implements OnInit {
           }
 
 
-          if (this.faqkbList[i].description) { 
+          if (this.faqkbList[i].description) {
             let stripHere = 40;
             this.faqkbList[i]['truncated_desc'] = this.faqkbList[i].description.substring(0, stripHere) + '...';
           }
@@ -366,9 +367,9 @@ export class BotListComponent implements OnInit {
     }, () => {
       console.log('deleteDlflwBotCredentialAndUpdateBotAsTrashed * COMPLETE *');
 
-    // ------------------------------------------------------------------
-    // Update as trashed the bot on our db
-    // ------------------------------------------------------------------
+      // ------------------------------------------------------------------
+      // Update as trashed the bot on our db
+      // ------------------------------------------------------------------
       this.updateBotAsTrashed()
     });
   }
@@ -516,7 +517,7 @@ export class BotListComponent implements OnInit {
   goToFaqPage(idFaqKb: string, botType: string) {
 
     let _botType = ""
-    if(botType === 'internal') {
+    if (botType === 'internal') {
       _botType = 'native'
     } else {
       _botType = botType
