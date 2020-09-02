@@ -1,7 +1,7 @@
 
 # tiledesk-dashboard
 
-### 2.0.51
+### 2.0.53
 - Fixes the external docs urls 
 
 ### 2.0.46
