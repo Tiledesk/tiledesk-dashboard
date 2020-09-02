@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.0.51
+- Fixes the external docs urls 
+
 ### 2.0.46
 - Disables the ability to owner and to current user to delete themselves from the project
 
