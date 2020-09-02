@@ -380,14 +380,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             console.log('PUBLIC-KEY (SIDEBAR) - key.includes("LBS")', this.public_Key.includes("LBS"));
             this.isVisibleLBS = false;
         }
-
-
-
     }
 
 
     getCurrentRoute() {
-
         this.router.events.filter((event: any) => event instanceof NavigationEnd)
             .subscribe(event => {
                 console.log('SIDEBAR NavigationEnd ', event.url);
@@ -610,10 +606,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     getProjectUser() {
         console.log('!!! SIDEBAR CALL GET-PROJECT-USER')
         this.usersService.getProjectUserByUserId(this.currentUserId).subscribe((projectUser: any) => {
-            console.log('SB PROJECT-USER GET BY PROJECT-ID ', this.projectId);
-            console.log('SB PROJECT-USER GET BY CURRENT-USER-ID ', this.user._id);
-            console.log('SB PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID ', projectUser);
-            console.log('SB PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID LENGTH', projectUser.length);
+            console.log('SB PROJECT-USER GET BY USER-ID - PROJECT-ID ', this.projectId);
+            console.log('SB PROJECT-USER GET BY USER-ID - CURRENT-USER-ID ', this.user._id);
+            console.log('SB PROJECT-USER GET BY USER-ID - PROJECT USER ', projectUser);
+            console.log('SB PROJECT-USER GET BY USER-ID - PROJECT USER LENGTH', projectUser.length);
             if ((projectUser) && (projectUser.length !== 0)) {
                 console.log('SB PROJECT-USER ID ', projectUser[0]._id)
                 console.log('SB USER IS AVAILABLE ', projectUser[0].user_available)

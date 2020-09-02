@@ -322,11 +322,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         // const elemContentainerFluid = <HTMLElement>document.querySelector('.container-fluid');
 
         const elemNavbarToogle = <HTMLElement>document.querySelector('.navbar-toggle');
-
         const elemSidebarWrapper = <HTMLElement>document.querySelector('.sidebar-wrapper')
-
-
-
         /**
          * DETECT IF IS THE LOGIN PAGE - SIGNUP - WELCOME - VERIFY-EMAIL - ...
          * the path /create-project and /create-new-project they both lead to the same component (CreateProjectComponent)
@@ -353,7 +349,10 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     (this.route.indexOf('/create-new-project') !== -1) ||
                     (this.route.indexOf('/handle-invitation') !== -1) ||
                     (this.route.indexOf('/install-tiledesk') !== -1) ||
-                    (this.route.indexOf('/request-for-panel') !== -1)
+                    (this.route.indexOf('/request-for-panel') !== -1) ||
+                    (this.route.indexOf('/projects-for-panel') !== -1) ||
+                    (this.route.indexOf('/unserved-request-for-panel') !== -1)
+                   
                 ) {
 
                     elemNavbar.setAttribute('style', 'display:none;');
@@ -429,16 +428,15 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     (this.route.indexOf('/install-tiledesk') !== -1) ||
                     (this.route.indexOf('/handle-invitation') !== -1) ||
                     (this.route.indexOf('/chat') !== -1) ||
-                    (this.route.indexOf('/request-for-panel') !== -1)
+                    (this.route.indexOf('/request-for-panel') !== -1) ||
+                    (this.route.indexOf('/projects-for-panel') !== -1) ||
+                    (this.route.indexOf('/unserved-request-for-panel') !== -1)
                 ) {
-
                     elemFooter.setAttribute('style', 'display:none;');
                     // console.log('DETECT LOGIN PAGE')
                     // tslint:disable-next-line:max-line-length
                 } else {
-
                     elemFooter.setAttribute('style', '');
-
                 }
 
                 // WIDGET HIDDEN IF THE ROUTE IS request-for-panel

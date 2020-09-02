@@ -1,0 +1,300 @@
+<div class="main-content main-content-projects-for-panel">
+  <div class="container-fluid container-projects-for-panel">
+
+
+    <div class="row">
+      <!-- ; trackBy: trackByFn -->
+      <div *ngFor="let request of wsRequestsUnserved" class="col-xs-12" style="cursor:pointer; padding-right: 5px;
+      padding-left: 5px;">
+
+
+        <div class="card" style="margin-top:5px ;margin-bottom:5px ;" (click)="displayDetails(request)">
+
+
+          <div class="card-content" style="padding: 8px 20px;">
+
+            <div class="row">
+              <div class="col-xs-8">
+
+                <div class="row">
+
+                  <div class="col-xs-12" style="margin-bottom: 8px; padding-left: 5px;">
+                    <!-- user-agent-wrapper--for-panel -->
+                    <span class="user-agent-section">
+                      <span *ngIf="request?.userAgent" class="tool_tip">
+                        <!-- 
+                        // ----------------------------------------------------------------
+                        // @ OS - if not is
+                        // ---------------------------------------------------------------- -->
+                        <span *ngIf="(request?.ua_os?.indexOf('Android') === -1) && 
+                                      (request?.ua_os?.indexOf('Mac OS') === -1) && 
+                                      (request?.ua_os?.indexOf('iOS') === -1) &&
+                                      (request?.ua_os?.indexOf('Windows') === -1) &&
+                                      (request?.ua_os?.indexOf('Ubuntu') === -1)">
+
+                          <img class="ua-os-icon" style="margin-top: 2px;" src="assets/img/user_agent/laptop.svg" />
+                        </span>
+
+                        <!-- <i class="material-icons user-agent-icon">
+                      computer
+                    </i> -->
+
+                        <!-- 
+                        // ----------------------------------------------------------------
+                        // if is Android
+                        // ---------------------------------------------------------------- -->
+                        <span *ngIf="request?.ua_os.indexOf('Android') !== -1">
+                          <img class="ua-os-icon" src="assets/img/user_agent/android.svg" />
+                        </span>
+
+                        <!-- 
+                        // ----------------------------------------------------------------
+                        // if is Mac OS or iOS
+                        // ---------------------------------------------------------------- -->
+                        <span *ngIf="request?.ua_os.indexOf('Mac OS') !== -1 || request?.ua_os.indexOf('iOS') !== -1">
+                          <img class="ua-os-icon" style="margin-bottom: 2px;" src="assets/img/user_agent/apple.svg" />
+                        </span>
+
+                        <!-- 
+                        // ----------------------------------------------------------------
+                        // if is Windows
+                        // ---------------------------------------------------------------- -->
+                        <span *ngIf="request?.ua_os.indexOf('Windows') !== -1">
+                          <img class="ua-os-icon" style="margin-top: 2px;" src="assets/img/user_agent/windows.svg" />
+                        </span>
+
+                        <!-- 
+                        // ----------------------------------------------------------------
+                        // if is Ubuntu
+                        // ---------------------------------------------------------------- -->
+                        <span *ngIf="request?.ua_os.indexOf('Ubuntu') !== -1">
+                          <img class="ua-os-icon" src="assets/img/user_agent/ubuntu.svg" />
+                        </span>
+
+                        <span class="top"
+                          style="min-width: 100px;text-align: center ; top:-8px; border-radius: 3px; padding: 3px 10px; font-size: 10px; line-height: 14px;">
+                          <span *ngIf="request?.ua_os !== 'undefined undefined'"> {{ request?.ua_os }} </span>
+                          <span *ngIf="request?.ua_os === 'undefined undefined'"> not defined </span>
+
+                          <i></i>
+                        </span>
+                      </span>
+
+                      <span *ngIf="request?.userAgent" class="tool_tip">
+                        <!-- 
+                        // ----------------------------------------------------------------
+                        // @ Browser - if not is
+                        // ---------------------------------------------------------------- -->
+                        <span *ngIf="(request?.ua_browser.indexOf('Chrome') === -1) && 
+                                      (request?.ua_browser.indexOf('Chromium') === -1) &&
+                                      (request?.ua_browser.indexOf('Firefox') === -1) &&
+                                      (request?.ua_browser.indexOf('Edge') === -1) &&
+                                      (request?.ua_browser.indexOf('Opera') === -1) &&
+                                      (request?.ua_browser.indexOf('Safari') === -1) &&
+                                      (request?.ua_browser.indexOf('IE') === -1)">
+
+                          <img class="ua_browser_icon" src="assets/img/user_agent/globe.svg" />
+
+                        </span>
+
+                        <!-- 
+                    // ----------------------------------------------------------------
+                    // Chrome or Chromium
+                    // ---------------------------------------------------------------- -->
+                        <span
+                          *ngIf="request?.ua_browser.indexOf('Chrome') !== -1 || request?.ua_browser.indexOf('Chromium') !== -1">
+                          <img class="ua_browser_icon" src="assets/img/user_agent/chrome.svg" />
+                        </span>
+
+                        <!-- 
+                    // ----------------------------------------------------------------
+                    // Firefox
+                    // ---------------------------------------------------------------- -->
+                        <span *ngIf="request?.ua_browser.indexOf('Firefox') !== -1">
+                          <img class="ua_browser_icon" src="assets/img/user_agent/firefox.svg" />
+                        </span>
+
+                        <!-- 
+                    // ----------------------------------------------------------------
+                    // Edge
+                    // ---------------------------------------------------------------- -->
+                        <span *ngIf="request?.ua_browser.indexOf('Edge') !== -1">
+                          <img class="ua_browser_icon" src="assets/img/user_agent/edge.svg" />
+                        </span>
+
+                        <!-- 
+                    // ----------------------------------------------------------------
+                    // Opera
+                    // ---------------------------------------------------------------- -->
+                        <span *ngIf="request?.ua_browser.indexOf('Opera') !== -1">
+                          <img class="ua_browser_icon" src="assets/img/user_agent/opera.svg" />
+                        </span>
+
+                        <!-- 
+                    // ----------------------------------------------------------------
+                    // Safari
+                    // ---------------------------------------------------------------- -->
+                        <span *ngIf="request?.ua_browser.indexOf('Safari') !== -1">
+                          <img class="ua_browser_icon" src="assets/img/user_agent/safari.svg" />
+                        </span>
+
+                        <!-- 
+                    // ----------------------------------------------------------------
+                    // Explorer
+                    // ---------------------------------------------------------------- -->
+                        <span *ngIf="request?.ua_browser.indexOf('IE') !== -1">
+                          <img class="ua_browser_icon" src="assets/img/user_agent/explorer.svg" />
+                        </span>
+
+
+
+                        <span class="top"
+                          style="min-width: 100px;text-align: center ; top:-8px; border-radius: 3px; padding: 3px 10px; font-size: 10px; line-height: 14px;">
+                          <span *ngIf="request?.ua_browser !== 'undefined undefined'"> {{ request?.ua_browser }} </span>
+                          <span *ngIf="request?.ua_browser === 'undefined undefined'"> not defined </span>
+
+                          <i></i>
+                        </span>
+                      </span>
+                    </span>
+
+                    <span class="dept-info-wrap tool_tip">
+                      <span class="material-icons unserved-request-for-panel-icon">
+                        account_balance
+                      </span>
+                      <span>
+                        <span class="dept-avatar--for-panel"
+                          [ngStyle]="{'background-color': request?.dept?.dept_name_fillcolour }">
+
+                          {{ request?.dept?.dept_name_initial }}
+                        </span>
+
+                        <span class="top"
+                          style="min-width: 100px;text-align: center ; top:-8px; border-radius: 3px; padding: 3px 10px; font-size: 10px; line-height: 14px;">
+                          {{'Department' | translate}}: <br> {{ request?.dept?.name   }}
+
+                          <i></i>
+                        </span>
+                      </span>
+                    </span>
+
+
+                    <span class="created-at">
+
+                      <span class="material-icons unserved-request-for-panel-icon">
+                        schedule
+                      </span>
+
+                      <span style="font-size: 12px; font-weight: 400;"> {{ request?.createdAt | amTimeAgo }} </span>
+                    </span>
+
+
+                  </div>
+
+
+                  <div class="col-xs-12" style="padding-left: 5px;">
+
+                    <span class="requester-avatar-wrapper">
+                      <span class="requester-avatar-for-panel"
+                        [ngStyle]="{'background-color': request?.requester_fullname_fillColour }"
+                        [ngClass]="{'requester_fullname-undefined' : !request?.lead?.fullname }">
+                        <span style="color: #ffffff"> {{ request?.requester_fullname_initial }} </span>
+                      </span>
+                    </span>
+
+                    <span class="lead_data-for-panel">
+                      <!-- [ngClass]="{'requester_not_has_email' : !request?.lead?.email}" -->
+
+                      <span>
+                        <span class="requester-name--for-panel">
+                          {{ request?.lead?.fullname }}</span>
+
+                        <span *ngIf="!request?.lead?.fullname"
+                          [ngClass]="{'requester_fullname_initial-undefined' : !request?.lead?.fullname}">
+                          n/a
+                        </span>
+                      </span>
+
+                      <!-- <span class="requester-email"
+                        [ngClass]="{'requester-verified-email' : request?.requester_is_verified === true}">
+                        {{ request?.lead?.email }}
+                      </span>
+                      <span class="requester-email" *ngIf="!request?.lead?.email"
+                        [ngClass]="{'requester-verified-email' : request?.requester_is_verified === true}">
+                
+                      </span> -->
+
+                      <!-- <span class="first-messages-for-panel" [innerHTML]="cutFirstMessage(request?.first_text)"> </span> -->
+
+
+                
+
+                      <span class="first-messages-for-panel text-truncated" [innerHTML]="request?.first_text"> </span>
+                    </span>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+              <div class="col-xs-4">
+
+                <div class="row">
+
+                  <div class="col-xs-6 col-sm-6">
+                    <button #testwidgetbtn (click)="archiveChat()" class="btn btn-default"
+                      style=" border-radius: 50px 50px 50px 50px;padding-left: 11px;padding-right: 9px;">
+                      <!-- ARCHIVIA -->
+                      <i class="material-icons"> archive </i>
+
+                      <span>New result</span>
+                    </button>
+
+
+
+
+                  </div>
+
+
+                  <div class="col-xs-6 col-sm-6">
+                    <button #testwidgetbtn (click)="joinToChat()" class="btn btn-primary" style="padding-left: 12px;
+                    padding-right: 12px;
+                    border-radius: 50%;">
+                      <!-- PARTECIPA -->
+
+                      <span class="material-icons">
+                        login
+                      </span>
+                    </button>
+
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<div *ngIf="OPEN_REQUEST_DETAILS === true" class="view-side">
+  <appdashboard-ws-request-detail-for-panel [ngStyle]="{'height':train_bot_sidebar_height }"
+    (valueChange)='handleCloseRightSidebar($event)' [selectedRequest]="selectedRequest">
+  </appdashboard-ws-request-detail-for-panel>
+</div>
+
+
+
+
+
+
+
+
+

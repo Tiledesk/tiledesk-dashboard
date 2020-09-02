@@ -109,7 +109,9 @@ import { LoadingPageComponent } from './loading-page/loading-page.component';
 import { CannedResponsesListComponent } from './canned-responses/canned-responses-list.component';
 import { TagsComponent } from './tags/tags.component';
 import { WsRequestsNortComponent } from './ws_requests/ws-requests-nort/ws-requests-nort.component';
+import { ProjectsForPanelComponent } from './projects/for-panel/projects-for-panel/projects-for-panel.component';
 
+import { WsRequestsUnservedForPanelComponent } from './ws_requests/for-panel/ws-requests-unserved-for-panel/ws-requests-unserved-for-panel.component';
 
 const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
@@ -127,10 +129,13 @@ const routes: Routes = [
   { path: 'upgrade', component: UpgradeComponent },
   // { path: '',               redirectTo: 'dashboard', pathMatch: 'full' }
 
-  // CHAT 21
+ 
   // PROJECTS IS THE NEW HOME
   { path: 'projects', component: ProjectsComponent, canActivate: [AuthGuard] },
   { path: '', redirectTo: 'projects', pathMatch: 'full' },
+
+  // is used in the left panel of the chat
+  { path: 'projects-for-panel', component: ProjectsForPanelComponent, canActivate: [AuthGuard] },
   // **** NEW - WIZARD CREATE PROJECT ****
   // { path: 'project/create-project', component: CreateProjectComponent, canActivate: [AuthGuard] },
   
@@ -182,6 +187,9 @@ const routes: Routes = [
   { path: 'project/:projectid/request-for-panel/:requestid', component: WsRequestsMsgsComponent, canActivate: [AuthGuard] },
 
   { path: 'project/:projectid/wsrequests-all/:requeststatus', component: WsRequestsNortComponent, canActivate: [AuthGuard] },
+
+  { path: 'project/:projectid/unserved-request-for-panel', component: WsRequestsUnservedForPanelComponent, canActivate: [AuthGuard] },
+  
 
 
   // is the dummy component used in ws-requests-msgs: when the user is in the request' details page and 

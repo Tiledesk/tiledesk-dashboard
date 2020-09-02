@@ -83,22 +83,22 @@ export class WebSocketJs {
   //     WsRequestsMsgsComponent onInit() is got the request id from url params
 
   ref(topic, onCreate, onUpdate, onData) {
-    console.log('% »»» WebSocketJs ****** CALLING REF ****** ');
+    // console.log('% »»» WebSocketJs ****** CALLING REF ****** ');
     //this.callbacks.set(topic, {onCreate:onCreate, onUpdate:onUpdate});
     this.callbacks.set(topic, { onCreate: onCreate, onUpdate: onUpdate, onData: onData });
 
-    console.log('% »»» WebSocketJs WF *** REF *** callbacks *** ', this.callbacks);
+    // console.log('% »»» WebSocketJs WF *** REF *** callbacks *** ', this.callbacks);
     // this.callbacks
 
 
     console.log('% »»» WebSocketJs WF *** REF *** topic ***', topic);
-    console.log('% »»» WebSocketJs WF *** REF *** this.topics ***', this.topics);
+    // console.log('% »»» WebSocketJs WF *** REF *** this.topics ***', this.topics);
     // console.log('% »»» WebSocketJs WF *** REF *** READY STATE *** ws.readyState ', this.ws.readyState);
     // console.log('% »»» WebSocketJs WF *** REF *** READY STATE *** this.readyState ', this.readyState);
 
     if (this.ws && this.ws.readyState == 1) {
 
-      console.log('% »»» WebSocketJs WF *** REF *** READY STATE 2 ', this.ws.readyState)
+      // console.log('% »»» WebSocketJs WF *** REF *** READY STATE 2 ', this.ws.readyState)
       this.subscribe(topic);
 
     } else {
@@ -120,14 +120,14 @@ export class WebSocketJs {
   // @ subscribe - is called by 'ref' & call 'send'
   // -----------------------------------------------------------------------------------------------------
   subscribe(topic) {
-    console.log('% »»» WebSocketJs ****** CALLING SUBSCRIBE ****** ');
+    // console.log('% »»» WebSocketJs ****** CALLING SUBSCRIBE ****** ');
     //this.topics.set(topic,1);
-    console.log('% »»» WebSocketJs ****** CALLING SUBSCRIBE ****** to topic ', topic);
+    // console.log('% »»» WebSocketJs ****** CALLING SUBSCRIBE ****** to topic ', topic);
 
     if (this.topics.indexOf(topic) === -1) {
       this.topics.push(topic);
     }
-    console.log("% »»» WebSocketJs *** SUBSCRIBE *** topics ", this.topics);
+    // console.log("% »»» WebSocketJs *** SUBSCRIBE *** topics ", this.topics);
 
     var message = {
       action: 'subscribe',
@@ -538,7 +538,7 @@ export class WebSocketJs {
         } else {
           //let insUp = that.insertOrUpdate(json.payload.message);
           let insUp = json.payload.method;
-          console.log("insUp", insUp);
+          // console.log("insUp", insUp);
           var object = { event: json.payload, data: json };
           var callbackObj = that.callbacks.get(object.event.topic);
           // console.log('% »»» WebSocketJs - INIT callbackObj when object (1)', callbackObj)

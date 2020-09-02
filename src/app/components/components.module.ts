@@ -7,7 +7,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { SmallSidebarComponent } from './small-sidebar/small-sidebar.component';
-
+import { NavbarForPanelComponent } from './navbar-for-panel/navbar-for-panel.component';
 
 @NgModule({
   imports: [
@@ -19,13 +19,15 @@ import { SmallSidebarComponent } from './small-sidebar/small-sidebar.component';
     FooterComponent,
     NavbarComponent,
     SidebarComponent,
-    SmallSidebarComponent
+    SmallSidebarComponent,
+    NavbarForPanelComponent
   ],
   exports: [
     FooterComponent,
     NavbarComponent,
     SidebarComponent,
     SmallSidebarComponent,
+    NavbarForPanelComponent,
     TranslateModule
   ]
 })

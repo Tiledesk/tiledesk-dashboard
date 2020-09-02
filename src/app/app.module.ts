@@ -181,6 +181,10 @@ import { TagsEditComponent } from './tags/tags-edit/tags-edit.component';
 import { TriggerStaticComponent } from './static-pages/trigger-static/trigger-static.component';
 import { AccountSettingsComponent } from './user-profile/account-settings/account-settings.component';
 import { WsRequestsNortComponent } from './ws_requests/ws-requests-nort/ws-requests-nort.component';
+import { ProjectsForPanelComponent } from './projects/for-panel/projects-for-panel/projects-for-panel.component';
+import { WsRequestsUnservedForPanelComponent } from './ws_requests/for-panel/ws-requests-unserved-for-panel/ws-requests-unserved-for-panel.component';
+import { WsRequestDetailForPanelComponent } from './ws_requests/for-panel//ws-request-detail-for-panel/ws-request-detail-for-panel.component';
+
 
 
 console.log('************** APPMODULE ******************');
@@ -297,7 +301,11 @@ const appInitializerFn = (appConfig: AppConfigService) => {
     TagsEditComponent,
     TriggerStaticComponent,
     AccountSettingsComponent,
-    WsRequestsNortComponent
+    WsRequestsNortComponent,
+    ProjectsForPanelComponent,
+    WsRequestsUnservedForPanelComponent,
+    WsRequestDetailForPanelComponent,
+   
   ],
   imports: [
     /* PRIVATE */

@@ -258,7 +258,7 @@ export class AuthService {
                 url_segments[1] !== 'user' &&
                 url_segments[1] !== 'handle-invitation' &&
                 url_segments[1] !== 'signup-on-invitation' &&
-                url_segments[1] !== 'resetpassword'  &&
+                url_segments[1] !== 'resetpassword' &&
                 current_url !== '/projects'
               ) {
 
@@ -792,9 +792,9 @@ export class AuthService {
   }
 
 
-/**
- * OLD CODE NOT USED
- */
+  /**
+   * OLD CODE NOT USED
+   */
   // // Sends email allowing user to reset password
   // resetPassword(email: string) {
   //   const fbAuth = firebase.auth();
