@@ -427,11 +427,12 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   goToTiledeskMobileAppPage() {
+    
     let url = ''
     if (this.browserLang === 'it') {
-      url = 'https://www.tiledesk.com/it/mobile-live-chat-android-iphone-app/';
+      url = 'https://tiledesk.com/mobile-live-chat-android-e-iphone-apps/';
     } else {
-      url = 'https://www.tiledesk.com/mobile-live-chat-android-iphone-app-en/';
+      url = 'https://tiledesk.com/mobile-live-chat-android-e-iphone-apps/';
     }
     window.open(url, '_blank');
   }
@@ -439,9 +440,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   goToAdminDocs() {
     let url = ''
     if (this.browserLang === 'it') {
-      url = 'https://www.tiledesk.com/it/guida-introduttiva/guida-introduttiva-per-amministratori/';
+      url = 'https://docs.tiledesk.com/knowledge-base-category/getting-started-for-admins/';
     } else {
-      url = 'https://www.tiledesk.com/getting-started/getting-started-for-admins/';
+      url = 'https://docs.tiledesk.com/knowledge-base-category/getting-started-for-admins/';
     }
     window.open(url, '_blank');
   }
@@ -450,9 +451,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   goToAgentDocs() {
     let url = ''
     if (this.browserLang === 'it') {
-      url = 'https://www.tiledesk.com/it/guida-introduttiva/guida-introduttiva-per-agenti/';
+      url = 'https://docs.tiledesk.com/knowledge-base-category/getting-started-for-agents/';
     } else {
-      url = 'https://www.tiledesk.com/getting-started/getting-started-for-agents/';
+      url = 'https://docs.tiledesk.com/knowledge-base-category/getting-started-for-agents/';
     }
     window.open(url, '_blank');
   }
@@ -468,9 +469,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   goToInstallWithTagManagerDocs() {
     let url = ''
     if (this.browserLang === 'it') {
-      url = 'https://www.tiledesk.com/it/google-tag-manager-aggiungi-tiledesk-ai-tuoi-siti/';
+      url = 'https://docs.tiledesk.com/knowledge-base/google-tag-manager-add-tiledesk-to-your-sites/';
     } else {
-      url = 'https://www.tiledesk.com/google-tag-manager-add-tiledesk-to-your-sites/';
+      url = 'https://docs.tiledesk.com/knowledge-base/google-tag-manager-add-tiledesk-to-your-sites/';
     }
     window.open(url, '_blank');
 

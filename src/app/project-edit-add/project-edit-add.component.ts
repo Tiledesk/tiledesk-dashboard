@@ -1180,7 +1180,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
 
   goToWidgetAuthenticationDocs() {
-    const url = 'https://docs.tiledesk.com/widget/auth'
+    const url = 'https://developer.tiledesk.com/widget/auth'
     window.open(url, '_blank');
   }
 
