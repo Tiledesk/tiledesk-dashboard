@@ -56,7 +56,7 @@
 
     .card-header{
         @include shadow-big();
-        margin: -20px $margin-base 0;
+        // margin: -20px $margin-base 0; // nk commented 8sett20
         border-radius: $border-radius-base;
         padding: $padding-base;
         background-color: $gray-color;
