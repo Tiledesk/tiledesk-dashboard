@@ -257,6 +257,16 @@ export class FaqEditAddComponent implements OnInit {
     });
   }
 
+  goToKBArticle_AdvancedChatbotStyling() {
+    console.log('goToKBArticle_AdvancedChatbotStyling');
+    const url = 'https://docs.tiledesk.com/knowledge-base/advanced-chatbot-styling-buttons/';
+    window.open(url, '_blank');
+  }
 
+  goToKBArticle_StylingYourChatbotReplies() {
+    console.log('goToKBArticle_StylingYourChatbotReplies');
+    const url = 'https://docs.tiledesk.com/knowledge-base/styling-your-chatbot-replies/';
+    window.open(url, '_blank');
+  }
 
 }
