@@ -554,6 +554,13 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     console.log('»»» »»» GO TO EDIT BOT ', goToEditBot)
   }
 
+
+  goToKBArticle_Connect_your_Dialogflow_Agent() {
+    console.log('goToKBArticle_Connect_your_Dialogflow_Agent');
+    const url = 'https://docs.tiledesk.com/knowledge-base/connect-your-dialogflow-agent/';
+    window.open(url, '_blank');
+  }
+
   // !!! NO MORE USED IN THIS COMPONENT - MOVED IN faq.component.html
   // edit() {
   //   console.log('FAQ KB NAME TO UPDATE ', this.faqKbNameToUpdate);
