@@ -82,6 +82,27 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     this.detectBrowserRefresh();
     // this.getProjectUserRole()
     this.getTranslations();
+    this.getProjectUserRole(); 
+  }
+
+  getProjectUserRole() {
+    this.usersService.project_user_role_bs
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((user_role) => {
+        console.log('% »»» WebSocketJs WF +++++ ws-requests---  WsRequestsList USER ROLE ', user_role);
+        if (user_role) {
+          if (user_role === 'agent') {
+            this.ROLE_IS_AGENT = true
+          
+     
+          } else {
+            this.ROLE_IS_AGENT = false
+          
+          }
+        }
+      });
   }
 
   getTranslations() {
@@ -440,7 +461,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   //   }
   // }
 
-  // SERVED_BY: add this
+  // SERVED_BY: add this !!! NO MORE USED
   members_replace(member_id) {
     const participantIsBot = member_id.includes('bot_')
 

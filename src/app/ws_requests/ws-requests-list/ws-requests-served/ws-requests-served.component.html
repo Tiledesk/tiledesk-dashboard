@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card" style="margin: 5px 0;">
   <div class="card-header card-header-custom">
 
 
@@ -468,7 +468,7 @@
 
               <span class="lead_data">
 
-                <span [ngClass]="{'requester_not_has_email' : !request?.lead?.email}"> {{ request?.lead?.fullname}}
+                <span class="contact-fullname" [ngClass]="{'requester_not_has_email' : !request?.lead?.email}"> {{ request?.lead?.fullname}}
                 </span>
 
                 <span *ngIf="!request?.lead?.fullname"
@@ -806,8 +806,10 @@
           <!-- ------ ====== ARCHIVE Action ====== ------ -->
           <!-- (click)='openDeleteRequestModal(request?.request_id)' // <- open the modal "confirm archive request"  -->
           <td>
+            
             <button type="button" rel="tooltip" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}"
-              class="btn btn-tdblu btn-simple btn-xs tool_tip" (click)='archiveRequest(request?.request_id)'>
+              class="btn btn-tdblu btn-simple btn-xs tool_tip" (click)='archiveRequest(request?.request_id)' 
+              [disabled]="request?.currentUserIsJoined === false && ROLE_IS_AGENT === true">
 
               <i class="material-icons">archive</i>
 
