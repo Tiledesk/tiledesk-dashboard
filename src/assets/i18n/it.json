@@ -953,7 +953,11 @@
         "UpdateFaq": "Aggiorna Risposta",
         "FaqAttributes": "Attributi Risposta",
         "FaqID": "Id Risposta",
-        "CreationDate": "Data creazione"
+        "CreationDate": "Data creazione",
+        "TheRequestWillBeAssignedToAHumanAgent":"la richiesta verrà assegnata a un agente umano",
+        "DisplayTheButtonWithNameButton_1": "visualizza il pulsante con il nome button_1",
+        "DisplayTheImageWithTheSpecifiedURL":"visualizza l'immagine con l'URL specificato",
+        "CallTheExternalWebhookToTheSpecifiedEndpoint":"chiama il webhook esterno all'endpoint specificato"
     },
     "FaqTestPage": {
         "Question": "Domanda",
@@ -1530,5 +1534,6 @@
     "TheRequestHasBeenMovedToHistory":"la richiesta è stata spostata in cronologia",
     "AnErrorHasOccurredArchivingTheRequest":"Si è verificato un errore durante l'archiviazione della richiesta",
     "RestoreContact":"ripristina contatto",
-    "NoProjects": "Nessun progetto"
+    "NoProjects": "Nessun progetto",
+    "RelatedKnowledgeBase":"Knowledge Base correlata"
 }
