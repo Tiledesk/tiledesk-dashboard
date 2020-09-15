@@ -13,9 +13,11 @@ import { Department } from '../../models/department-model';
 import { DepartmentService } from '../../services/mongodb-department.service';
 import { NotifyService } from '../../core/notify.service';
 import { environment } from '../../../environments/environment';
-import brand from 'assets/brand/brand.json';
 import { WidgetDesignBaseComponent } from './widget-design-base/widget-design-base.component';
 import { AppConfigService } from '../../services/app-config.service';
+
+import brand from 'assets/brand/brand.json';
+import { BrandService } from '../../services/brand.service';
 
 @Component({
   selector: 'appdashboard-widget-design',
@@ -26,9 +28,12 @@ import { AppConfigService } from '../../services/app-config.service';
 
 export class WidgetDesignComponent extends WidgetDesignBaseComponent implements OnInit, AfterViewInit, OnDestroy {
   // '#2889e9'
-  tparams = brand;
-  company_name = brand.company_name;
-  company_site_url = brand.company_site_url;
+  // tparams = brand;
+  // company_name = brand.company_name;
+  // company_site_url = brand.company_site_url;
+  tparams: any;
+  company_name: any;
+  company_site_url: any;
 
   // TESTSITE_BASE_URL = environment.testsite.testsiteBaseUrl; // moved
   // TESTSITE_BASE_URL = environment.testsiteBaseUrl; // now get from appconfig
@@ -84,7 +89,6 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
 
   defaultdept_id: string;
 
-
   newInnerWidth: any;
   initInnerWidth: any;
   custom_breakpoint: boolean;
@@ -96,7 +100,6 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   HAS_SELECTED_GREENTINGS = false;
   HAS_SELECTED_CALLOUT = false;
   HAS_SELECTED_APPEARANCE = false;
-
 
   calloutContainerWidth: any;
   IMAGE_EXIST: boolean;
@@ -134,9 +137,15 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     public translate: TranslateService,
     private departmentService: DepartmentService,
     private router: Router,
-    public appConfigService: AppConfigService
+    public appConfigService: AppConfigService,
+    public brandService: BrandService
   ) {
     super(translate);
+    const brand = brandService.getBrand();
+
+    this.tparams = brand;
+    this.company_name = brand['company_name'];
+    this.company_site_url = brand['company_site_url'];
   }
 
   ngOnInit() {
@@ -332,7 +341,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     console.log('Multilanguage (widget-design) - OFFICE CLOSED MSG CHANGE: ', this.officeClosedMsg);
     // if (event.length === 0 || event) {  }
   }
-  
+
 
 
   // ------------------------------------------------------------------------------------
@@ -365,7 +374,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     this.selected_translation["LABEL_FIRST_MSG"] = this.onlineMsg;
     this.selected_translation["LABEL_FIRST_MSG_NO_AGENTS"] = this.offlineMsg;
     this.selected_translation["LABEL_FIRST_MSG_OPERATING_HOURS_CLOSED"] = this.officeClosedMsg;
-  
+
     console.log('Multilanguage (widget-design) ***** saveTranslation: ', this.selected_translation);
 
     this.saveLabels()

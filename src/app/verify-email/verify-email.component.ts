@@ -3,7 +3,10 @@ import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../core/auth.service';
 import { Router } from '@angular/router';
 import { User } from '../models/user-model';
-import brand from 'assets/brand/brand.json';
+// import brand from 'assets/brand/brand.json';
+import { BrandService } from '../services/brand.service';
+
+
 @Component({
   selector: 'app-verify-email',
   templateUrl: './verify-email.component.html',
@@ -11,8 +14,10 @@ import brand from 'assets/brand/brand.json';
 })
 export class VerifyEmailComponent implements OnInit {
 
-  company_logo_black__url = brand.company_logo_black__url;
-  company_site_url = brand.company_site_url;
+  // company_logo_black__url = brand.company_logo_black__url;
+  // company_site_url = brand.company_site_url;
+  company_logo_black__url: string;
+  company_site_url: string;
 
   user_id: string;
   error_msg_title: string;
@@ -22,8 +27,13 @@ export class VerifyEmailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private auth: AuthService,
-    private router: Router
-  ) { }
+    private router: Router,
+    public brandService: BrandService
+  ) { 
+    const brand = brandService.getBrand();
+    this.company_logo_black__url = brand['company_logo_black__url'];
+    this.company_site_url = brand['company_site_url'];
+  }
 
   ngOnInit() {
 

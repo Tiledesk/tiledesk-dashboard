@@ -9,11 +9,10 @@ import { ProjectService } from '../../services/project.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs/Subscription';
 import { AppConfigService } from '../../services/app-config.service';
-
-
 // import { public_Key } from './../utils/util';
 import { environment } from '../../../environments/environment';
-import brand from 'assets/brand/brand.json';
+// import brand from 'assets/brand/brand.json';
+import { BrandService } from '../../services/brand.service';
 
 @Component({
   selector: 'appdashboard-widget',
@@ -23,7 +22,9 @@ import brand from 'assets/brand/brand.json';
 export class WidgetComponent implements OnInit, OnDestroy {
   @ViewChild('testwidgetbtn') private elementRef: ElementRef;
 
-  tparams = brand;
+  // tparams = brand;
+  tparams: any;
+
   // public_Key = environment.t2y12PruGU9wUtEGzBJfolMIgK; // now get from appconfig 
   public_Key: string;
 
@@ -106,6 +107,7 @@ export class WidgetComponent implements OnInit, OnDestroy {
   showSpinner = true;
   has_copied = false;
   isVisible: boolean;
+  
   constructor(
     http: Http,
     private auth: AuthService,
@@ -114,8 +116,14 @@ export class WidgetComponent implements OnInit, OnDestroy {
     private notify: NotifyService,
     private projectService: ProjectService,
     private translate: TranslateService,
-    public appConfigService: AppConfigService
-  ) { this.http = http }
+    public appConfigService: AppConfigService,
+    public brandService: BrandService
+  ) { 
+    this.http = http; 
+  
+    const brand = brandService.getBrand();
+    this.tparams = brand;
+  }
 
   ngOnInit() {
     this.auth.checkRoleForCurrentProject();
