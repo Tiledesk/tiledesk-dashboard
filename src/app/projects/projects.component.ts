@@ -11,10 +11,11 @@ import { UsersService } from '../services/users.service';
 import { UploadImageService } from '../services/upload-image.service';
 import { Subscription } from 'rxjs/Subscription';
 import { AppConfigService } from '../services/app-config.service';
-import brand from 'assets/brand/brand.json';
-
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+// import brand from 'assets/brand/brand.json';
+import { BrandService } from '../services/brand.service';
 
 @Component({
   selector: 'projects',
@@ -22,12 +23,16 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./projects.component.scss']
 })
 export class ProjectsComponent implements OnInit, OnDestroy {
-  tparams = brand;
-
-  companyLogoBlack_Url = brand.company_logo_black__url;
   // companyLogoBlack_Url = brand.company_logo_allwhite__url
-  companyLogoBlack_width = brand.recent_project_page.company_logo_black__width;
   // pageBackgroundColor = brand.recent_project_page.background_color;
+
+  // tparams = brand;
+  // companyLogoBlack_Url = brand.company_logo_black__url;
+  // companyLogoBlack_width = brand.recent_project_page.company_logo_black__width;
+
+  tparams: any;
+  companyLogoBlack_Url: string;
+  companyLogoBlack_width: string;
 
   projects: Project[];
 
@@ -72,8 +77,16 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     private departmentService: DepartmentService,
     private usersService: UsersService,
     private uploadImageService: UploadImageService,
-    public appConfigService: AppConfigService
+    public appConfigService: AppConfigService,
+    public brandService: BrandService
   ) {
+    const brand = brandService.getBrand();
+
+    this.tparams = brand;
+    this.companyLogoBlack_Url = brand['company_logo_black__url'];
+    this.companyLogoBlack_width = brand['recent_project_page']['company_logo_black__width'];
+
+
     console.log('IS DEV MODE ', isDevMode());
     this.APP_IS_DEV_MODE = isDevMode()
   }

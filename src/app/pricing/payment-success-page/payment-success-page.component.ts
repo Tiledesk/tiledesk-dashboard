@@ -21,6 +21,7 @@ export class PaymentSuccessPageComponent implements OnInit {
     public brandService: BrandService
   ) {
     const brand = brandService.getBrand();
+    
     this.contact_us_email = brand['contact_us_email'];
    }
 

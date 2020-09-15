@@ -14,11 +14,14 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { UsersService } from '../services/users.service';
 import * as moment from 'moment';
-import brand from 'assets/brand/brand.json';
+
 import { environment } from './../../environments/environment';
 import { AppConfigService } from '../services/app-config.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
+
+// import brand from 'assets/brand/brand.json';
+import { BrandService } from '../services/brand.service';
 
 @Component({
   selector: 'app-project-edit-add',
@@ -28,7 +31,9 @@ import { takeUntil } from 'rxjs/operators'
 export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   private unsubscribe$: Subject<any> = new Subject<any>();
-  tparams = brand;
+  // tparams = brand;
+  tparams: any;
+
   // public_Key = environment.t2y12PruGU9wUtEGzBJfolMIgK; // now get from appconfig
   public_Key: string;
   CREATE_VIEW = false;
@@ -135,9 +140,14 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     private notify: NotifyService,
     private usersService: UsersService,
     private translate: TranslateService,
-    public appConfigService: AppConfigService
+    public appConfigService: AppConfigService,
+    public brandService: BrandService
 
-  ) { }
+  ) {  
+    const brand = brandService.getBrand();
+    this.tparams = brand;
+  
+  }
 
   ngOnInit() {
     this.auth.checkRoleForCurrentProject();
