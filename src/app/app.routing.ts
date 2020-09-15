@@ -45,11 +45,14 @@ import { ProjectEditAddComponent } from './project-edit-add/project-edit-add.com
 // import { RequestsListHistoryComponent } from './requests-list-history/requests-list-history.component';
 import { RequestsListHistoryNewComponent } from './requests-list-history-new/requests-list-history-new.component';
 
+// --------------------------------------------------------------------------------------------
 // AUTH PAGES
+// --------------------------------------------------------------------------------------------
 import { SigninComponent } from './auth/signin/signin.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { UnauthorizedComponent } from './auth/unauthorized/unauthorized.component';
 import { HandleInvitationComponent } from './auth/handle-invitation/handle-invitation.component';
+import { AutologinComponent } from './auth/autologin/autologin.component';
 
 import { WidgetComponent } from './widget_components/widget/widget.component';
 import { WidgetDesignComponent } from './widget_components/widget-design/widget-design.component';
@@ -112,6 +115,9 @@ import { WsRequestsNortComponent } from './ws_requests/ws-requests-nort/ws-reque
 import { ProjectsForPanelComponent } from './projects/for-panel/projects-for-panel/projects-for-panel.component';
 
 import { WsRequestsUnservedForPanelComponent } from './ws_requests/for-panel/ws-requests-unserved-for-panel/ws-requests-unserved-for-panel.component';
+import { AppStoreComponent } from './app-store/app-store.component';
+import { AppStoreInstallComponent } from './app-store/app-store-install/app-store-install.component';
+
 
 const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
@@ -129,7 +135,7 @@ const routes: Routes = [
   { path: 'upgrade', component: UpgradeComponent },
   // { path: '',               redirectTo: 'dashboard', pathMatch: 'full' }
 
- 
+
   // PROJECTS IS THE NEW HOME
   { path: 'projects', component: ProjectsComponent, canActivate: [AuthGuard] },
   { path: '', redirectTo: 'projects', pathMatch: 'full' },
@@ -138,18 +144,18 @@ const routes: Routes = [
   { path: 'projects-for-panel', component: ProjectsForPanelComponent, canActivate: [AuthGuard] },
   // **** NEW - WIZARD CREATE PROJECT ****
   // { path: 'project/create-project', component: CreateProjectComponent, canActivate: [AuthGuard] },
-  
+
   // FOR CreateProjectComponent I HAVE CREATE TO PATH TO HIDE THE BUTTON 'close' WHEN THE
   // COMPONENT IS CALLED AFTER THE SIGNUP
   // USED AFTER THE SIGNUP
   { path: 'create-project', component: CreateProjectComponent, canActivate: [AuthGuard] },
   // USED WHEN THE USER CLICK ON 'ADD NEW PROJECT' FROM THE NAVBAR
   { path: 'create-new-project', component: CreateProjectComponent, canActivate: [AuthGuard] },
-  
+
   { path: 'project/:projectid/cannedresponses', component: CannedResponsesListComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/labels', component: TagsComponent, canActivate: [AuthGuard] },
-  
- 
+
+
   { path: 'project/:projectid/install-tiledesk', component: InstallTiledeskComponent, canActivate: [AuthGuard] },
 
   { path: 'project/create', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
@@ -168,9 +174,16 @@ const routes: Routes = [
   { path: 'signup-on-invitation/:pendinginvitationemail', component: SignupComponent },
   { path: 'verify/email/:user_id', component: VerifyEmailComponent },
 
+  // -------------------------------------------------
+  // Autologin 
+  // -------------------------------------------------
+  { path: 'autologin/:route/:token', component: AutologinComponent },
+
+
+
   { path: 'handle-invitation/:pendinginvitationid/:projectname/:adminfirstname/:adminsurname', component: HandleInvitationComponent },
   // added to resolve the error Cannot match any routes when the surname is not available  
-  { path: 'handle-invitation/:pendinginvitationid/:projectname/:adminfirstname', component: HandleInvitationComponent }, 
+  { path: 'handle-invitation/:pendinginvitationid/:projectname/:adminfirstname', component: HandleInvitationComponent },
 
   { path: 'project/:projectid/unauthorized', component: UnauthorizedComponent },
 
@@ -189,7 +202,7 @@ const routes: Routes = [
   { path: 'project/:projectid/wsrequests-all/:requeststatus', component: WsRequestsNortComponent, canActivate: [AuthGuard] },
 
   { path: 'project/:projectid/unserved-request-for-panel', component: WsRequestsUnservedForPanelComponent, canActivate: [AuthGuard] },
-  
+
 
 
   // is the dummy component used in ws-requests-msgs: when the user is in the request' details page and 
@@ -236,7 +249,7 @@ const routes: Routes = [
   /* path /faqkb commented and duplicated RENAMED IN /bots */
   // { path: 'project/:projectid/faqkb', component: FaqKbComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/bots', component: BotListComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/bots/bot-select-type', component: BotTypeSelectComponent, canActivate: [AuthGuard] }, 
+  { path: 'project/:projectid/bots/bot-select-type', component: BotTypeSelectComponent, canActivate: [AuthGuard] },
   // { path: 'project/:projectid/bots/createfaqkb', component: BotCreateComponent, canActivate: [AuthGuard] }, // replaced by the bottom path
   { path: 'project/:projectid/bots/create/:type', component: BotCreateComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/editfaqkb/:faqkbid', component: BotCreateComponent, canActivate: [AuthGuard] },
@@ -273,7 +286,7 @@ const routes: Routes = [
   { path: 'project/:projectid/department/edit/:deptid', component: DepartmentEditAddComponent, canActivate: [AuthGuard] },
 
   { path: 'project/:projectid/routing', component: RoutingPageComponent, canActivate: [AuthGuard] }, // no more used
-  
+
   // new routing page is the edit department
   { path: 'project/:projectid/routing/:deptid', component: DepartmentEditAddComponent, canActivate: [AuthGuard] }, // new
 
@@ -302,13 +315,13 @@ const routes: Routes = [
   { path: 'project/:projectid/widget/callout', component: WidgetDesignComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/widget/appearance', component: WidgetDesignComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/widget/translations', component: WidgetMultilanguageComponent, canActivate: [AuthGuard] },
-  
+
 
   { path: 'project/:projectid/script', component: ScriptComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/channels', component: ChannelsComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/social', component: SocialComponent, canActivate: [AuthGuard] },
 
-  
+
 
   // CHANGE PSWRD if project is defined (use case: THE USER SELECTED A PROJECT)
   { path: 'project/:projectid/user/:userid/password/change', component: ChangePasswordComponent, canActivate: [AuthGuard] },
@@ -319,7 +332,7 @@ const routes: Routes = [
   { path: 'project/:projectid/user/:userid/settings', component: AccountSettingsComponent, canActivate: [AuthGuard] },
   // Account settings if project is undefined (use case: THE USER HAS NOT YET SELECTED A PROJECT)
   { path: 'user/:userid/settings', component: AccountSettingsComponent, canActivate: [AuthGuard] },
-  
+
 
 
   // HOURS
@@ -335,7 +348,8 @@ const routes: Routes = [
   { path: 'project/:projectid/contact/edit/:requesterid', component: ContactEditComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/payments', component: PaymentsListComponent, canActivate: [AuthGuard] },
 
-  
+  { path: 'project/:projectid/app-store', component: AppStoreComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/app-store-install/:url/:apptitle', component: AppStoreInstallComponent, canActivate: [AuthGuard] },
   
   { path: 'dashboard', component: DashboardComponent },
 
