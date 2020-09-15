@@ -1,4 +1,4 @@
-import { DepartmentService } from './../../../services/mongodb-department.service';
+import { DepartmentService } from '../../../services/department.service';
 
 import { AnalyticsService } from './../../../services/analytics.service';
 import { Component, OnInit } from '@angular/core';

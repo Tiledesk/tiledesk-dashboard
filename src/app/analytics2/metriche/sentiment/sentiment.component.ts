@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
 import { Chart } from 'chart.js';
 import * as moment from 'moment';
-import { DepartmentService } from 'app/services/mongodb-department.service';
+import { DepartmentService } from 'app/services/department.service';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({

@@ -7,7 +7,7 @@ import { UsersService } from '../services/users.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import * as Chartist from 'chartist';
-import { DepartmentService } from '../services/mongodb-department.service';
+import { DepartmentService } from '../services/department.service';
 import * as moment from 'moment';
 import { AnalyticsService } from 'app/services/analytics.service';
 import { ITooltipEventArgs } from '@syncfusion/ej2-heatmap/src';

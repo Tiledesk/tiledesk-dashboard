@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { RequestsService } from 'app/services/requests.service';
 import { UsersService } from 'app/services/users.service';
 import { AuthService } from 'app/core/auth.service';
-import { DepartmentService } from 'app/services/mongodb-department.service';
+import { DepartmentService } from 'app/services/department.service';
 import { Router } from '@angular/router';
 import { WsRequestsService } from '../../services/websocket/ws-requests.service';
 import { AppConfigService } from '../../services/app-config.service';
