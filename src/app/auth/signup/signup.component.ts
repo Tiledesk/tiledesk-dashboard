@@ -40,7 +40,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
   privacy_policy_link_text: string;
   terms_and_conditions_url: string;
   privacy_policy_url: string;
-  display_terms_and_conditions_link: string;
+  display_terms_and_conditions_link: boolean;
 
 
   showSpinnerInLoginBtn = false;
@@ -99,6 +99,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
   ) { 
 
     const brand = brandService.getBrand();
+    
     this.tparams = brand;
     this.companyLogoBlack_Url = brand['company_logo_black__url'];
     this.companyLogoAllWithe_Url = brand['company_logo_allwhite__url'];

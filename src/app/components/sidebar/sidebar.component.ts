@@ -18,12 +18,15 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { AppConfigService } from '../../services/app-config.service';
-import brand from 'assets/brand/brand.json';
+
 import { DepartmentService } from '../../services/mongodb-department.service';
 
 // import { publicKey } from '../../utils/util';
 // import { public_Key } from '../../utils/util';
 import { environment } from '../../../environments/environment';
+// import brand from 'assets/brand/brand.json';
+import { BrandService } from '../../services/brand.service';
+
 declare const $: any;
 
 declare interface RouteInfo {
@@ -59,9 +62,16 @@ declare interface RouteInfo {
 })
 export class SidebarComponent implements OnInit, AfterViewInit {
 
-    tparams = brand;
-    sidebarLogoWhite_Url = brand.company_logo_white__url;
-    hidechangelogrocket = brand.sidebar__hide_changelog_rocket;
+    // tparams = brand;
+    // sidebarLogoWhite_Url = brand.company_logo_white__url;
+    // hidechangelogrocket = brand.sidebar__hide_changelog_rocket;
+
+    tparams: any;
+    sidebarLogoWhite_Url: string;
+    hidechangelogrocket: boolean;
+
+
+
     // background_bottom_section = brand.sidebar.background_bottom_section
 
     // public_Key = environment.t2y12PruGU9wUtEGzBJfolMIgK; // now get from appconfig
@@ -150,8 +160,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     isVisibleDEP: boolean;
     isVisibleOPH: boolean;
     isVisibleCAR: boolean;
-    isVisibleLBS: boolean; 
-
+    isVisibleLBS: boolean;
+    isVisibleAPP: boolean;
     storageBucket: string;
     default_dept_id: string;
 
@@ -170,8 +180,18 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         private uploadImageService: UploadImageService,
         private translate: TranslateService,
         public appConfigService: AppConfigService,
-        private deptService: DepartmentService
-    ) { console.log('!!!!! HELLO SIDEBAR') }
+        private deptService: DepartmentService,
+        public brandService: BrandService
+    ) {
+        console.log('!!!!! HELLO SIDEBAR')
+
+        const brand = brandService.getBrand();
+
+        this.tparams = brand;
+        this.sidebarLogoWhite_Url = brand['company_logo_white__url'];
+        this.hidechangelogrocket = brand['sidebar__hide_changelog_rocket'];
+
+    }
 
     ngOnInit() {
         this.translateChangeAvailabilitySuccessMsg();
@@ -219,6 +239,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.brandLog();
         this.getHasOpenBlogKey()
         this.getChatUrl();
+        this.isMac();
     }
 
     getChatUrl() {
@@ -235,7 +256,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
 
     brandLog() {
-        console.log('BRAND_JSON - SIDEBAR ', brand);
+        // console.log('BRAND_JSON - SIDEBAR ', brand);
         console.log('BRAND_JSON - SIDEBAR sidebarlogourl ', this.sidebarLogoWhite_Url);
         console.log('BRAND_JSON - SIDEBAR hidechangelogrocket ', this.hidechangelogrocket);
     }
@@ -369,6 +390,20 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 }
             }
 
+            if (key.includes("APP")) {
+                console.log('PUBLIC-KEY (SIDEBAR) - key', key);
+                let lbs = key.split(":");
+                console.log('PUBLIC-KEY (SIDEBAR) - app key&value', lbs);
+
+                if (lbs[1] === "F") {
+                    this.isVisibleAPP = false;
+                    console.log('PUBLIC-KEY (SIDEBAR) - app isVisible', this.isVisibleAPP);
+                } else {
+                    this.isVisibleAPP = true;
+                    console.log('PUBLIC-KEY (SIDEBAR) - app isVisible', this.isVisibleAPP);
+                }
+            }
+
         });
 
         if (!this.public_Key.includes("CAR")) {
@@ -379,6 +414,11 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         if (!this.public_Key.includes("LBS")) {
             console.log('PUBLIC-KEY (SIDEBAR) - key.includes("LBS")', this.public_Key.includes("LBS"));
             this.isVisibleLBS = false;
+        }
+
+        if (!this.public_Key.includes("APP")) {
+            console.log('PUBLIC-KEY (SIDEBAR) - key.includes("APP")', this.public_Key.includes("APP"));
+            this.isVisibleAPP = false;
         }
     }
 
@@ -563,7 +603,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         // this.usersService.updateProjectUser(this.projectUser_id, IS_AVAILABLE).subscribe((projectUser: any) => {
         // DONE - WORKS NK-TO-TEST - da implementare quando viene implementato il servizio - serve per cambiare lo stato di disponibilità dell'utente corrente
         // anche in USER & GROUP bisogna cambiare per la riga dell'utente corrente   
-        this.usersService.updateCurrentUserAvailability( this.projectId, IS_AVAILABLE).subscribe((projectUser: any) => { // non 
+        this.usersService.updateCurrentUserAvailability(this.projectId, IS_AVAILABLE).subscribe((projectUser: any) => { // non 
 
             console.log('PROJECT-USER UPDATED ', projectUser)
 
@@ -879,6 +919,15 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
         return true;
     };
+
+    isMac(): boolean {
+        console.log('SIDEBAR NAVIGATOR ', navigator.platform)
+        let bool = false;
+        if (navigator.platform.toUpperCase().indexOf('MAC') >= 0 || navigator.platform.toUpperCase().indexOf('IPAD') >= 0) {
+            bool = true;
+        }
+        return bool;
+    }
 
     @HostListener('window:resize', ['$event'])
     onResize(event: any) {

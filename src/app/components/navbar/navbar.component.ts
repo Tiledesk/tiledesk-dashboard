@@ -22,7 +22,7 @@ import { ProjectService } from '../../services/project.service';
 
 import { WsRequestsService } from '../../services/websocket/ws-requests.service';
 import { AppConfigService } from '../../services/app-config.service';
-import brand from 'assets/brand/brand.json';
+
 
 // import { publicKey } from '../../utils/util';
 // import { public_Key } from '../../utils/util';
@@ -30,6 +30,9 @@ import { environment } from '../../../environments/environment';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { Subscription } from 'rxjs/Subscription';
+
+// import brand from 'assets/brand/brand.json';
+import { BrandService } from './../../services/brand.service';
 
 @Component({
     selector: 'app-navbar',
@@ -41,7 +44,9 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     // used to unsuscribe from behaviour subject
     private unsubscribe$: Subject<any> = new Subject<any>();
 
-    tparams = brand;
+    // tparams = brand;
+    tparams: any;
+
     // public_Key = environment.t2y12PruGU9wUtEGzBJfolMIgK; // now get from appconfig
     public_Key: string;
 
@@ -137,8 +142,15 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         private prjctPlanService: ProjectPlanService,
         private projectService: ProjectService,
         public wsRequestsService: WsRequestsService,
-        public appConfigService: AppConfigService
+        public appConfigService: AppConfigService,
+        public brandService: BrandService
     ) {
+
+
+        const brand = brandService.getBrand();
+        this.tparams = brand;
+
+        
         this.location = location;
         this.sidebarVisible = false;
         // this.unservedRequestCount = 0
