@@ -34,7 +34,7 @@ import { RequestsListComponent } from './requests-list/requests-list.component';
 
 import { ContactsService } from './services/contacts.service';
 import { ContactsComponent } from './contacts/contacts.component';
-import { DepartmentService } from './services/mongodb-department.service';
+import { DepartmentService } from './services/department.service';
 import { DepartmentsComponent } from './departments/departments.component';
 
 import { MongodbFaqService } from './services/mongodb-faq.service';
