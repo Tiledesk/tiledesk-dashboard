@@ -465,6 +465,7 @@
     "All": "Tutte",
     "Save": "Salva",
     "Update": "Aggiorna",
+    "Warning":"Attenzione!",
     "CannedResponses": {
         "QuickTips": {
             "1": "Le Risposte Predefinite sono messaggi predefiniti che è possibile richiamare facilmente durante la chat.",
@@ -886,7 +887,10 @@
         "DialogflowQuickTips_4": "Nella scheda generale, cerca GOOGLE PROJECTS e fai clic sul link Account di servizio.",
         "DialogflowQuickTips_5": "Dopo essere stato reindirizzato alla console SERVICE ACCOUNT, crea una chiave premendo '+ CREATE SERVICE ACCOUNT' nel menu in alto. Viene creato il file JSON (.json) delle credenziali che verrà scaricato automaticamente.",
         "DialogflowQuickTips_6": "Ora carica il file .json delle credenziali.",
-        "DialogflowQuickTips_7": "Se hai bisogno di un tutorial dettagliato su come creare un file di credenziali, per favore"
+        "DialogflowQuickTips_7": "Se hai bisogno di un tutorial dettagliato su come creare un file di credenziali, per favore",
+        "TheBotIsAssociatedWithTheDepartment": "Il bot è associato al dipartimento",
+        "TheBotIsAssociatedWithDepartments": "Il bot è associato ai dipartimenti",
+        "DisassociateTheBot":"Dissocia il bot da Routing o Dipartimenti prima di eliminarlo."
     },
     "BotsAddEditPage": {
         "AddBot": "Aggiungi Bot",

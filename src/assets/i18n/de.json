@@ -470,6 +470,7 @@
 	"All": "Alle",
 	"Save": "Speichern",
 	"Update": "Aktualisieren",
+	"Warning":"Vorsicht!",
 	"CannedResponses": {
 		"QuickTips": {
 			"1": "Vordefinierte Antworten sind Nachrichten, die es Ihnen ermöglichen schneller auf oft gestellte Fragen zu reagieren.",
@@ -884,14 +885,17 @@
 		"TheBotHasBeenTrashed": "Der Bot wurde verworfen",
 		"SelectAndConfigureABot": "Wählen und konfigurieren Sie einen Bot und weisen Sie ihn anschließend Ihrer Abteilung zu.",
 		"ExternabotQuickTips": "{{ company_name }} wurde so geplant, dass externe Bots die Kommunikation mit Ihren Agenten und Besuchern erleichtern können.",
-		"DialogflowQuickTips_1A": "Login to",
-		"DialogflowQuickTips_1B": "Dialogflow console.",
-		"DialogflowQuickTips_2": "Select your Agent from the dropdown in left panel.",
-		"DialogflowQuickTips_3": "Click on setting button. It will open the agent setting page.",
-		"DialogflowQuickTips_4": "Inside general tab search for GOOGLE PROJECTS and click in your Service Account link.",
-		"DialogflowQuickTips_5": "After getting redirected to your SERVICE ACCOUNT console, create a key pressing '+ CREATE SERVICE ACCOUNT' on the top menu, create a JSON key that will be automatically downloaded.",
-		"DialogflowQuickTips_6": "Now upload the key .json credentials file.",
-		"DialogflowQuickTips_7": "If you need a detailed tutorial on how to create a credentials file please"
+		"DialogflowQuickTips_1A": "Einloggen in",
+		"DialogflowQuickTips_1B": "Dialogflow-Konsole.",
+		"DialogflowQuickTips_2": "Wählen Sie Ihren Agenten aus der Dropdown-Liste im linken Bereich aus.",
+		"DialogflowQuickTips_3": "Klicken Sie auf die Einstellungsschaltfläche. Die Seite mit den Agenteneinstellungen wird geöffnet.",
+		"DialogflowQuickTips_4": "Suchen Sie auf der Registerkarte Allgemein nach GOOGLE PROJECTS und klicken Sie auf den Link Dienstkonto",
+		"DialogflowQuickTips_5": "Nachdem Sie zu Ihrer SERVICE ACCOUNT-Konsole umgeleitet wurden, erstellen Sie im oberen Menü eine Taste, indem Sie '+ CREATE SERVICE ACCOUNT' drücken. Erstellen Sie eine JSON-Taste, die automatisch heruntergeladen wird.",
+		"DialogflowQuickTips_6": "Laden Sie nun die .json-Anmeldeinformationsdatei des Schlüssels hoch.",
+		"DialogflowQuickTips_7": "Wenn Sie ein detailliertes Tutorial zum Erstellen einer Anmeldeinformationsdatei benötigen, wenden Sie sich bitte an",
+		"TheBotIsAssociatedWithTheDepartment": "Der Bot ist der Abteilung zugeordnet",
+		"TheBotIsAssociatedWithDepartments": "Der Bot ist Abteilungen zugeordnet",
+		"DisassociateTheBot":"Trennen Sie den Bot vom Routing oder den Abteilungen, bevor Sie ihn löschen."
 	},
 	"BotsAddEditPage": {
 		"AddBot": "Bot hinzufügen",

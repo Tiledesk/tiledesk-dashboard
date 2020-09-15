@@ -470,6 +470,7 @@
     "All": "All",
     "Save": "Save",
     "Update": "Update",
+    "Warning":"Attention!",
     "CannedResponses": {
         "QuickTips": {
             "1": "Canned responses are pre-made messages you can recall easily during chat.",
@@ -891,7 +892,10 @@
         "DialogflowQuickTips_4": "Inside general tab search for GOOGLE PROJECTS and click in your Service Account link.",
         "DialogflowQuickTips_5": "After getting redirected to your SERVICE ACCOUNT console, create a key pressing '+ CREATE SERVICE ACCOUNT' on the top menu, create a JSON key that will be automatically downloaded.",
         "DialogflowQuickTips_6": "Now upload the key .json credentials file.",
-        "DialogflowQuickTips_7": "If you need a detailed tutorial on how to create a credentials file please"
+        "DialogflowQuickTips_7": "If you need a detailed tutorial on how to create a credentials file please",
+        "TheBotIsAssociatedWithTheDepartment": "The bot is associated with the department",
+        "TheBotIsAssociatedWithDepartments": "The bot is associated with departments",
+        "DisassociateTheBot":"Disassociate the bot from Routing or Departments before deleting it."
     },
     "BotsAddEditPage": {
         "AddBot": "Add Bot",
