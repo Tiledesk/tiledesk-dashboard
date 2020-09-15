@@ -54,7 +54,7 @@
 
           <div *ngIf="!showSpinner" class="card-content table-responsive" style="overflow:visible;">
 
-            <table class="table">
+            <table class="table depts-tabe">
               <thead>
                 <tr>
                   <th></th>
@@ -140,9 +140,9 @@
                 </tr>
 
                 <tr *ngFor="let dept of departments">
-                  <td *ngIf="dept?.default !== true"
+                  <td class="dept-td" *ngIf="dept?.default !== true"
                     style="text-align: center;white-space: nowrap; width: 1%;padding-top: 4px;">
-                    <span class="dept-avatar-wrapper" (click)='goToEditAddPage_EDIT(dept?._id, dept?.name)'>
+                    <span class="dept-avatar-wrapper"  style="position: relative; top: -4px;" (click)='goToEditAddPage_EDIT(dept?._id, dept?.name)'>
                       <span class="tooltipx">
                         <span class="dept-avatar" [ngStyle]="{'background-color': dept?.dept_name_fillcolour }">
 
@@ -155,7 +155,7 @@
                     </span>
                   </td>
 
-                  <td *ngIf="dept?.default !== true">
+                  <td class="dept-td" *ngIf="dept?.default !== true">
                     <span (click)='goToEditAddPage_EDIT(dept?._id, dept?.name)'>
 
                       <span style="font-weight: 400;font-size:13px">
@@ -178,13 +178,11 @@
                           <i></i>
                         </div>
                       </div>
-
-
                     </span>
 
                   </td>
 
-                  <td *ngIf="dept?.default !== true">
+                  <td class="dept-td" *ngIf="dept?.default !== true">
 
                     <div class="checkbox">
                       <label>
@@ -200,7 +198,7 @@
                   </td> -->
 
                   <!-- // BOT -->
-                  <td *ngIf="dept?.default !== true">
+                  <td class="dept-td" *ngIf="dept?.default !== true">
                     <!-- {{ dept?.id_bot }}  -->
                     <span *ngIf="dept?.id_bot">
                       <span style="color: #7695a5; font-size: 12px; font-weight:400">
@@ -236,14 +234,14 @@
                     </span>
                   </td>
 
-                  <td *ngIf="dept?.default !== true" style="text-transform: capitalize;">
+                  <td class="dept-td" *ngIf="dept?.default !== true" style="text-transform: capitalize;">
                     <!-- *ngIf="dept?.routing !== 'fixed'" -->
                     <span style="font-weight:400;font-size:13px"> {{ dept?.routing }}</span>
                     <!-- <span *ngIf="dept?.routing === 'fixed'"> Bot </span> -->
                   </td>
 
                   <!-- // OPERATORS -->
-                  <td *ngIf="dept?.default !== true" style="font-weight:400">
+                  <td class="dept-td" *ngIf="dept?.default !== true" style="font-weight:400">
 
                     <!-- USE CASE 1: ROUTING ASSIGNED or POOLED + THE DEPT HAS A GROUP ID NOT NULL AND NOT UNDEFINED + THE GROUP NOT HAS TRASHED VALUE -->
                     <!-- dept?.routing !== 'fixed' &&  -->
@@ -292,8 +290,8 @@
                   </td> -->
 
                   <!-- NEW EDIT ADD -->
-                  <td *ngIf="dept?.default !== true" class="td-actions text-right"
-                    style="padding-bottom: 6px;padding-top: 18px;">
+                  <td class="dept-td" *ngIf="dept?.default !== true" class="td-actions text-right"
+                    style="padding-bottom: 6px !important;padding-top: 18px !important;">
                     <button type="button" rel="tooltip" title="{{ 'DepartmentsPage.tooltipEditDept' | translate }}"
                       class="btn btn-primary btn-simple btn-xs" (click)='goToEditAddPage_EDIT(dept?._id, dept?.name)'>
                       <i class="material-icons">edit</i>
