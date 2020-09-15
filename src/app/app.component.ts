@@ -24,11 +24,14 @@ import { WsMsgsService } from './services/websocket/ws-msgs.service';
 
 import { WebSocketJs } from './services/websocket/websocket-js';
 import { Title } from '@angular/platform-browser';
-import brand from 'assets/brand/brand.json';
-
 // import { webSocket } from "rxjs/webSocket";
 export let browserRefresh = false;
 import * as moment from 'moment';
+
+// import brand from 'assets/brand/brand.json';
+import { BrandService } from './services/brand.service';
+
+
 
 @Component({
     selector: 'appdashboard-root',
@@ -45,7 +48,9 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     LOGIN_PAGE: boolean;
 
     userIsSignedIn: boolean;
-    IS_REQUEST_X_PANEL_ROUTE: boolean
+    IS_REQUEST_X_PANEL_ROUTE: boolean;
+    IS_PROJECTS_FOR_PANEL: boolean;
+    BRAND: any;
 
     @ViewChild(NavbarComponent) navbar: NavbarComponent;
 
@@ -53,9 +58,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     isPageWithNav: boolean;
 
     // wsbasepath = environment.websocket.wsUrl; // moved
-
     // wsbasepath = environment.wsUrl;
-
 
     subscription: Subscription;
     // background_bottom_section = brand.sidebar.background_bottom_section
@@ -70,21 +73,23 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         public wsRequestsService: WsRequestsService,
         public wsMsgsService: WsMsgsService,
         public webSocketJs: WebSocketJs,
-        private metaTitle: Title
+        private metaTitle: Title,
+        public brandService: BrandService
         // private faqKbService: FaqKbService,
     ) {
+        // this.getBrand();
 
 
-        // wsRequestsService.messages.subscribe(msg => {
-        //     console.log("Response from websocket: ", msg);
 
-        // });
+        const brand = brandService.getBrand();
+        this.metaTitle.setTitle(brand['metaTitle']); // here used with: "import brand from ..." now see in getBrand()
+        this.setFavicon(brand); // here used with "import brand from ..." now see in getBrand()
+        console.log('APP-COMPONENT - GET BRAND brandService > brand ', brand)
 
-        /**
-         * *** ---------------------- ***
-         * *** FIREBASE initializeApp ***
-         * *** ---------------------- ***
-         */
+        // ----------------------------
+        // FIREBASE initializeApp 
+        // ---------------------------- 
+
         // firebase.initializeApp(firebaseConfig);
 
         if (!appConfigService.getConfig().firebase || appConfigService.getConfig().firebase.apiKey === 'CHANGEIT') {
@@ -127,6 +132,16 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         });
     }
 
+    setFavicon(brand) {
+        var link = document.querySelector("link[rel*='icon']") || document.createElement('link');
+        console.log('APP.COMP setFavicon ', link)
+        link['type'] = 'image/x-icon';
+        link['rel'] = 'shortcut icon';
+        link['href'] = brand.favicon__url;
+        document.getElementsByTagName('head')[0].appendChild(link);
+
+    }
+
 
     ngOnDestroy() {
         this.subscription.unsubscribe();
@@ -137,19 +152,10 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
 
-    setFavicon() {
-        var link = document.querySelector("link[rel*='icon']") || document.createElement('link');
-        console.log('APP.COMP setFavicon ', link)
-        link['type'] = 'image/x-icon';
-        link['rel'] = 'shortcut icon';
-        link['href'] = brand.favicon__url;
-        document.getElementsByTagName('head')[0].appendChild(link);
 
-    }
 
     ngOnInit() {
-        this.metaTitle.setTitle(brand.metaTitle);
-        this.setFavicon();
+
 
         console.log(' ====== >>> HELLO APP.COMP (ngOnInit) <<< ====== ')
         console.log('!! FIREBASE  ', firebase);
@@ -205,6 +211,32 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         // -----------------------------------------------------------------------------------------------------
         this.getCurrentUserAndConnectToWs();
     }
+
+
+    // ---------------------------
+    // GET BRAND
+    // ---------------------------
+    // getBrand() {
+    //     this.brandService.getBrand().subscribe((_brand: any) => {
+
+    //         this.BRAND = _brand;
+    //         console.log('APP-COMPONENT - GET BRAND ', this.BRAND);
+
+    //         if (this.BRAND) {
+    //             this.metaTitle.setTitle(this.BRAND.metaTitle);
+    //             this.setFavicon();
+    //         }
+
+    //     }, (error) => {
+    //         console.log('APP-COMPONENT GET BRAND - ERROR  ', error);
+
+    //     }, () => {
+    //         console.log('APP-COMPONENT GET BRAND * COMPLETE *');
+
+    //     });
+    // }
+
+
 
     getCurrentUserAndConnectToWs() {
 
@@ -351,8 +383,9 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     (this.route.indexOf('/install-tiledesk') !== -1) ||
                     (this.route.indexOf('/request-for-panel') !== -1) ||
                     (this.route.indexOf('/projects-for-panel') !== -1) ||
-                    (this.route.indexOf('/unserved-request-for-panel') !== -1)
-                   
+                    (this.route.indexOf('/unserved-request-for-panel') !== -1) ||
+                    (this.route.indexOf('/autologin') !== -1)
+
                 ) {
 
                     elemNavbar.setAttribute('style', 'display:none;');
@@ -389,6 +422,22 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     }
                 } else {
                     this.IS_REQUEST_X_PANEL_ROUTE = false
+                }
+
+
+                if (this.route.indexOf('/projects-for-panel') !== -1) {
+                    this.IS_PROJECTS_FOR_PANEL = true
+
+                    const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
+                    console.log('APP COMP IS_PROJECTS_FOR_PANEL .main-panel ', elemMainPanel)
+                    if (this.IS_PROJECTS_FOR_PANEL === true) {
+                        let ps = new PerfectScrollbar(elemMainPanel);
+                    }
+
+
+
+                } else {
+                    this.IS_PROJECTS_FOR_PANEL = false
                 }
 
 
@@ -430,7 +479,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     (this.route.indexOf('/chat') !== -1) ||
                     (this.route.indexOf('/request-for-panel') !== -1) ||
                     (this.route.indexOf('/projects-for-panel') !== -1) ||
-                    (this.route.indexOf('/unserved-request-for-panel') !== -1)
+                    (this.route.indexOf('/unserved-request-for-panel') !== -1) ||
+                    (this.route.indexOf('/autologin') !== -1)
                 ) {
                     elemFooter.setAttribute('style', 'display:none;');
                     // console.log('DETECT LOGIN PAGE')
