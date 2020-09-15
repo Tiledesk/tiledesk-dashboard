@@ -28,7 +28,7 @@ export class FooterComponent implements OnInit {
   companySiteUrl: string;
   privacyPolicyLinkName: string;
   privacyPolicyUrl: string;
-  displayTermsAndConditionsLink: string;
+  displayTermsAndConditionsLink: boolean;
   termsAndConditionsUrl: string;
   display_contact_us_email: string;
   contactUsEmail: string;
