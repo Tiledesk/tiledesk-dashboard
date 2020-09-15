@@ -16,8 +16,10 @@ import { ProjectPlanService } from '../services/project-plan.service';
 import { Subscription } from 'rxjs';
 
 import { environment } from '../../environments/environment';
-import brand from 'assets/brand/brand.json';
 import { AppConfigService } from '../services/app-config.service';
+
+// import brand from 'assets/brand/brand.json';
+import { BrandService } from '../services/brand.service';
 
 @Component({
   selector: 'home',
@@ -26,8 +28,10 @@ import { AppConfigService } from '../services/app-config.service';
 })
 export class HomeComponent implements OnInit, OnDestroy {
 
-  company_name = brand.company_name;
-  tparams = brand;
+  // company_name = brand.company_name;
+  // tparams = brand;
+  company_name: string;
+  tparams: any;
 
   // public_Key = environment.t2y12PruGU9wUtEGzBJfolMIgK; // now get from appconfig
   public_Key: string;
@@ -75,8 +79,13 @@ export class HomeComponent implements OnInit, OnDestroy {
     private notify: NotifyService,
     private translate: TranslateService,
     private prjctPlanService: ProjectPlanService,
-    public appConfigService: AppConfigService
-  ) { }
+    public appConfigService: AppConfigService,
+    public brandService: BrandService
+  ) {
+    const brand = brandService.getBrand();
+    this.company_name = brand['company_name'];
+    this.tparams = brand;
+  }
 
   ngOnInit() {
     console.log('!!! Hello HomeComponent! ');
@@ -427,7 +436,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   goToTiledeskMobileAppPage() {
-    
+
     let url = ''
     if (this.browserLang === 'it') {
       url = 'https://tiledesk.com/mobile-live-chat-android-e-iphone-apps/';
@@ -461,7 +470,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   goToDeveloperDocs() {
     // const url = 'https://docs.tiledesk.com/';
     const url = 'https://developer.tiledesk.com';
-   
+
     window.open(url, '_blank');
   }
 
