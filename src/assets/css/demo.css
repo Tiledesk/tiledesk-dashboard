@@ -163,4 +163,29 @@ my-app .main-panel .main-content .card {
 }
 
 
+/* table style overwrite */
+.table > thead > tr > th,
+.table > tbody > tr > th,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > td,
+.table > tfoot > tr > td {
 
+  border-top: unset !important;
+}
+
+.table td {
+  padding-top: 6px !important;
+  padding-bottom: 6px !important;
+}
+
+.table > thead > tr > th {
+  padding-bottom: 12px !important;
+  border-bottom: 1px solid #e5effe !important;
+}
+
+/* table style overwrite */
+.card {
+  box-shadow: unset !important;
+  border: 1px solid #e5effe !important;
+}
