@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { AuthService } from './auth.service';
 import { AdminGuard } from './admin.guard';
 import { NotifyService } from './notify.service';
+import { SsoService } from './sso.service';
 
 
 @NgModule({
@@ -10,7 +11,8 @@ import { NotifyService } from './notify.service';
   providers: [
     AuthService,
     NotifyService,
-    AdminGuard
+    AdminGuard,
+    SsoService
   ],
 })
 export class CoreModule { }
