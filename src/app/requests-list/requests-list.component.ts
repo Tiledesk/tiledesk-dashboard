@@ -13,7 +13,7 @@ import { UsersLocalDbService } from '../services/users-local-db.service';
 import { environment } from '../../environments/environment';
 import { NotifyService } from '../core/notify.service';
 import { BotLocalDbService } from '../services/bot-local-db.service';
-import { DepartmentService } from '../services/mongodb-department.service';
+import { DepartmentService } from '../services/department.service';
 import { UsersService } from '../services/users.service';
 
 import { avatarPlaceholder, getColorBck } from '../utils/util';
