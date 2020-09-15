@@ -138,7 +138,7 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
      
       <div class="col-md-6" [ngClass]="{'hide-when-is-open-PaymentReport' : displayPaymentReport === 'block'}" > 
          
-        <div class="card" style="box-shadow: 0 14px 30px 0 rgba(60,72,91,0.22); border-radius:10px ">
+        <div class="card" style="box-shadow: 0 14px 30px 0 rgba(60,72,91,0.22) !important; border-radius:10px ">
 
           <div class="card-header"  *ngIf="selectedPlanName === 'pro'" 
             [ngClass]="{'pro-plan-card-bckgrnd' : selectedPlanName === 'pro', 'enterprise-plan-card-bckgrnd' : selectedPlanName === 'enterprise'}"
