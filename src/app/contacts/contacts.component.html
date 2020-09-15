@@ -419,11 +419,11 @@
                       <!-- <td (click)='goToContactDetails(contact?._id)' style="text-align:left; padding-top: 15px; padding-left: 22px;" > -->
 
                       <td *ngIf="hasClickedTrashed === false" class="td-actions text-right"
-                        style="padding-left: 0px;padding-top: 17px;">
+                        style="padding-left: 0px;padding-top: 17px!important;">
 
-                        <button style="margin-left: 8px;margin-right: 8px;" type="button"
-                          class="btn btn-info btn-simple btn-xs tooltipx" (click)='goToContactDetails(contact?._id)'>
-                          <i class="material-icons">chat</i>
+                        <button style="" type="button"
+                          class="btn btn-primary btn-simple btn-xs tooltipx" (click)='goToContactDetails(contact?._id)'>
+                          <i class="material-icons">view_list</i>
                           <span class="tooltiptext-custom" style="text-transform:none">
                             {{ 'ViewContactRequests' | translate }}
                           </span>
