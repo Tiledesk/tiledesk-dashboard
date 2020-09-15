@@ -4,8 +4,10 @@ import { AuthService } from '../core/auth.service';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { slideInAnimation } from '../_animations/index';
-import brand from 'assets/brand/brand.json';
 import { AppConfigService } from '../services/app-config.service';
+
+// import brand from 'assets/brand/brand.json';
+import { BrandService } from '../services/brand.service';
 
 @Component({
   selector: 'appdashboard-install-tiledesk',
@@ -16,8 +18,11 @@ import { AppConfigService } from '../services/app-config.service';
   host: { '[@slideInAnimation]': '' }
 })
 export class InstallTiledeskComponent implements OnInit, OnDestroy {
-  tparams = brand;
-  logo_on_rocket = brand.wizard_install_widget_page.logo_on_rocket
+  // tparams = brand;
+  // logo_on_rocket = brand.wizard_install_widget_page.logo_on_rocket
+
+  tparams: any;
+  logo_on_rocket: string;
 
   projectName: string;
   projectId: string;
@@ -30,8 +35,14 @@ export class InstallTiledeskComponent implements OnInit, OnDestroy {
   constructor(
     private auth: AuthService,
     private router: Router,
-    public appConfigService: AppConfigService
-  ) { }
+    public appConfigService: AppConfigService,
+    public brandService: BrandService
+  ) { 
+    const brand = brandService.getBrand();
+
+    this.tparams = brand;
+    this.logo_on_rocket = brand['wizard_install_widget_page']['logo_on_rocket'];
+  }
 
   ngOnInit() {
     this.getCurrentProject();

@@ -1,3 +1,4 @@
+
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
 import { AuthService } from '../core/auth.service';
@@ -9,15 +10,19 @@ import { switchMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 declare var Stripe: any;
 import { Subscription } from 'rxjs';
-import brand from 'assets/brand/brand.json';
+// import brand from 'assets/brand/brand.json';
+import { BrandService } from '../services/brand.service';
+
+
 @Component({
   selector: 'appdashboard-pricing',
   templateUrl: './pricing.component.html',
   styleUrls: ['./pricing.component.scss']
 })
 export class PricingComponent implements OnInit, OnDestroy {
-  
-  company_name = brand.company_name;
+
+  // company_name = brand.company_name;
+  company_name: string;
 
   projectId: string;
   projectName: string;
@@ -32,7 +37,8 @@ export class PricingComponent implements OnInit, OnDestroy {
   selectedPlanName: string;
   proPlanPerAgentPrice = 5;
 
-  yearlyProPlanPerAgentPrice = 4.16
+  yearlyProPlanPerAgentPrice = 4.16;
+  // yearlyProPlanPerAgentPrice = 4;
   enterprisePlanPerAgentPrice = 59;
 
   displayStipeCheckoutError: any;
@@ -50,14 +56,27 @@ export class PricingComponent implements OnInit, OnDestroy {
   subscription_id: string;
   subscription: Subscription;
 
+  STRIPE_LIVE_PK: string;
+
+  LIVE_PLAN_X_DAY_20CENTS_PLAN_CODE: string;
+  LIVE_PLAN_X_YEAR_PLAN_CODE: string;
+  LIVE_PLAN_X_MONTH_PLAN_CODE: string;
+
+  TILEDESK_V2 = true;
+
   constructor(
     public location: Location,
     public auth: AuthService,
     private router: Router,
     private usersService: UsersService,
     public projectService: ProjectService,
-    private prjctPlanService: ProjectPlanService
-  ) { }
+    private prjctPlanService: ProjectPlanService,
+    public brandService: BrandService
+  ) { 
+
+    const brand = brandService.getBrand();
+    this.company_name = brand['company_name'];
+  }
 
   /**
    *  PER I PIANI DI TEST IN Stripe > Sviluppatori > Webhook > Dettagli Webhook clicca Aggiorna dettagli ed inserisci
@@ -70,7 +89,7 @@ export class PricingComponent implements OnInit, OnDestroy {
    *  https://tiledesk-server-pre.herokuapp.com/modules/payments/stripe/webhook
    * 
    */
- 
+
 
   ngOnInit() {
     this.auth.checkRoleForCurrentProject();
@@ -86,8 +105,29 @@ export class PricingComponent implements OnInit, OnDestroy {
 
     this.getProjectPlan();
 
+    this.setPlansPKandCode();
   }
 
+
+  setPlansPKandCode() {
+
+    if (this.TILEDESK_V2 === true) {
+      console.log('PricingComponent - TILEDESK_V2 ?', this.TILEDESK_V2)
+      this.STRIPE_LIVE_PK = 'pk_live_ED4EiI7FHgu0rv4lEHAl8pff00n2qPazOn';
+      this.LIVE_PLAN_X_MONTH_PLAN_CODE = 'plan_H3i8qRroJqwO6K';
+      this.LIVE_PLAN_X_YEAR_PLAN_CODE = 'plan_H3iDFGtPN8coKT';
+      this.LIVE_PLAN_X_DAY_20CENTS_PLAN_CODE = 'plan_H3iIUMonLu2jIW';
+
+    } else {
+      console.log('PricingComponent - TILEDESK_V2 ?', this.TILEDESK_V2)
+      this.STRIPE_LIVE_PK = 'pk_live_XcOe1UfJm9GkSgreETF7WGsc';
+      this.LIVE_PLAN_X_MONTH_PLAN_CODE = 'plan_FrXJ00oxr0akaF';
+      this.LIVE_PLAN_X_YEAR_PLAN_CODE = 'plan_FrXjIcRD20tsAN';
+      this.LIVE_PLAN_X_DAY_20CENTS_PLAN_CODE = 'plan_FqRflmxFPy6AOn';
+
+
+    }
+  }
 
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
@@ -278,11 +318,12 @@ export class PricingComponent implements OnInit, OnDestroy {
     console.log('clicked on stripeProPlanPerMonthCheckout ');
 
     // const stripe = Stripe('pk_test_lurAeBj5B7n7JGvE1zIPIFwV');
-    const stripe = Stripe('pk_live_XcOe1UfJm9GkSgreETF7WGsc');
+    // const stripe = Stripe('pk_live_XcOe1UfJm9GkSgreETF7WGsc');
+    const stripe = Stripe(this.STRIPE_LIVE_PK);
 
     // ID OF THE TEST MONTHLY PLAN plan_EjFHNnzJXE3jul
     stripe.redirectToCheckout({
-      items: [{ plan: 'plan_FrXJ00oxr0akaF', quantity: that.operatorNo }],
+      items: [{ plan: this.LIVE_PLAN_X_MONTH_PLAN_CODE, quantity: that.operatorNo }],
 
       clientReferenceId: that.currentUserID + '|' + that.projectId,
       customerEmail: that.currentUserEmail,
@@ -315,14 +356,13 @@ export class PricingComponent implements OnInit, OnDestroy {
   stripeProPlanPerYearCheckout() {
     const that = this;
     // const stripe = Stripe('pk_test_lurAeBj5B7n7JGvE1zIPIFwV');
-    const stripe = Stripe('pk_live_XcOe1UfJm9GkSgreETF7WGsc');
-
+    const stripe = Stripe(this.STRIPE_LIVE_PK);
 
     // When the customer clicks on the button, redirect
     // them to Checkout.
     // ID OF THE TEST yearly PLAN plan_FHYWzhwbGermkq
     stripe.redirectToCheckout({
-      items: [{ plan: 'plan_FrXjIcRD20tsAN', quantity: that.operatorNo }],
+      items: [{ plan: this.LIVE_PLAN_X_YEAR_PLAN_CODE, quantity: that.operatorNo }],
       clientReferenceId: that.currentUserID + '|' + that.projectId,
       customerEmail: that.currentUserEmail,
 
@@ -345,7 +385,42 @@ export class PricingComponent implements OnInit, OnDestroy {
           that.displayStipeCheckoutError = result.error.message;
         }
       });
+  }
 
+  /**
+  **! *** *** *** *** *** *** *** *** *** *** *** !*
+  **!     LIVE PLAN 0,20 €/giorno MIN 3 QTY       !*
+  **! *** *** *** *** *** *** *** *** *** *** *** !*
+  */
+  stripeLiveProDailyCheckout() {
+    const that = this;
+    const stripe = Stripe(this.STRIPE_LIVE_PK);
+
+    // When the customer clicks on the button, redirect
+    // them to Checkout.
+    stripe.redirectToCheckout({
+      items: [{ plan: this.LIVE_PLAN_X_DAY_20CENTS_PLAN_CODE, quantity: that.operatorNo }],
+      clientReferenceId: that.currentUserID + '|' + that.projectId,
+      customerEmail: that.currentUserEmail,
+
+      // Do not rely on the redirect to the successUrl for fulfilling
+      // purchases, customers may not always reach the success_url after
+      // a successful payment.
+      // Instead use one of the strategies described in
+      // https://stripe.com/docs/payments/checkout/fulfillment
+      successUrl: this.dshbrdBaseUrl + '/#/project/' + this.projectId + '/success',
+      cancelUrl: this.dshbrdBaseUrl + '/#/project/' + this.projectId + '/canceled',
+    })
+      .then(function (result) {
+        if (result.error) {
+          // If `redirectToCheckout` fails due to a browser or network
+          // error, display the localized error message to your customer.
+
+          // var displayError = document.getElementById('error-message');
+          // displayError.textContent = result.error.message;
+          that.displayStipeCheckoutError = result.error.message;
+        }
+      });
   }
 
 
@@ -422,41 +497,7 @@ export class PricingComponent implements OnInit, OnDestroy {
       });
   }
 
-  /**
-  **! *** *** *** *** *** *** *** *** *** *** *** !*
-  **!     LIVE PLAN 0,20 €/giorno MIN 3 QTY       !*
-  **! *** *** *** *** *** *** *** *** *** *** *** !*
-  */
-  stripeLiveProDailyCheckout() {
-    const that = this;  
-    const stripe = Stripe('pk_live_XcOe1UfJm9GkSgreETF7WGsc');
 
-    // When the customer clicks on the button, redirect
-    // them to Checkout.
-    stripe.redirectToCheckout({
-      items: [{ plan: 'plan_FqRflmxFPy6AOn', quantity: that.operatorNo }],
-      clientReferenceId: that.currentUserID + '|' + that.projectId,
-      customerEmail: that.currentUserEmail,
-
-      // Do not rely on the redirect to the successUrl for fulfilling
-      // purchases, customers may not always reach the success_url after
-      // a successful payment.
-      // Instead use one of the strategies described in
-      // https://stripe.com/docs/payments/checkout/fulfillment
-      successUrl: this.dshbrdBaseUrl + '/#/project/' + this.projectId + '/success',
-      cancelUrl: this.dshbrdBaseUrl + '/#/project/' + this.projectId + '/canceled',
-    })
-      .then(function (result) {
-        if (result.error) {
-          // If `redirectToCheckout` fails due to a browser or network
-          // error, display the localized error message to your customer.
-
-          // var displayError = document.getElementById('error-message');
-          // displayError.textContent = result.error.message;
-          that.displayStipeCheckoutError = result.error.message;
-        }
-      });
-  }
 
 
 
