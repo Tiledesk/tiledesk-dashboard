@@ -126,16 +126,16 @@
       style="z-index: 5; position: relative; top: 15px; background-color: rgba(45,50,62,0.7); padding: 15px;border-radius: 50%; opacity:0;"
       [ngClass]="{'small-sidebar-camera-icon' : SIDEBAR_IS_SMALL === true }"> camera_alt </i>
 
-      <!--  -->
-      <div class="isBusy" *ngIf="IS_BUSY === true">
-        <span class="material-icons" style="font-size: 16px; color:#fedd00;">
-          access_time
-          </span>
-         <span class="isBusyTest"  style="position: relative; top: -25px;left: 18px;font-size: 11px;"> 
-          {{ 'Busy' | translate }} 
-        </span> 
-        <!-- <div class="isBusyClockHands">   </div> -->
-      </div>
+    <!--  -->
+    <div class="isBusy" *ngIf="IS_BUSY === true">
+      <span class="material-icons" style="font-size: 16px; color:#fedd00;">
+        access_time
+      </span>
+      <span class="isBusyTest" style="position: relative; top: -25px;left: 18px;font-size: 11px;">
+        {{ 'Busy' | translate }}
+      </span>
+      <!-- <div class="isBusyClockHands">   </div> -->
+    </div>
   </div>
 
   <!-- <div class="middle"> -->
@@ -319,6 +319,15 @@
         </a>
       </li>
 
+      <!-- APPS  -->
+      <ng-container *ngIf="isVisibleAPP">
+        <li *ngIf="project" routerLinkActive="active">
+          <a class="customAncor" routerLink="project/{{ project._id }}/app-store">
+            <i class="material-icons sidebar-icons">apps</i>
+            <p class="onBlackBckgrnd">Apps</p>
+          </a>
+        </li>
+      </ng-container>
 
 
 
@@ -383,7 +392,7 @@
 
 
 
-    <!--
+      <!--
     // ------------------------------------------------------- 
     // Canned responses
     // ------------------------------------------------------- -->
@@ -400,22 +409,22 @@
         </li>
       </ng-container>
 
-    <!--
+      <!--
     // ------------------------------------------------------- 
     // Tags (menu item name 'Labels') 
     // ------------------------------------------------------- -->
-    <ng-container *ngIf="isVisibleLBS">
-      <li *ngIf="SHOW_SETTINGS_SUBMENU && USER_ROLE !== 'agent'" routerLinkActive="active" (click)="stopScroll()">
-        <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/labels">
-          <p class="onBlackBckgrnd">
-            <span class="sidebar-mini">
-              L
-            </span>
-            {{'Tags.Tags' | translate}}
-          </p>
-        </a>
-      </li>
-    </ng-container>
+      <ng-container *ngIf="isVisibleLBS">
+        <li *ngIf="SHOW_SETTINGS_SUBMENU && USER_ROLE !== 'agent'" routerLinkActive="active" (click)="stopScroll()">
+          <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/labels">
+            <p class="onBlackBckgrnd">
+              <span class="sidebar-mini">
+                L
+              </span>
+              {{'Tags.Tags' | translate}}
+            </p>
+          </a>
+        </li>
+      </ng-container>
 
 
       <!-- SECTION OF SETTINGS SUBMENU -->
@@ -580,6 +589,25 @@
         </a>
       </li>
 
+
+
+
+      <!-- 
+      // ------------------------------------------------ 
+      // Logout 
+      // ------------------------------------------------ -->
+      <li *ngIf="isMobileMenu()" (click)="openLogoutModal()" style="background-color: #1e2129 !important;
+      text-align: center;
+      margin-left: 15px;
+      margin-right: 15px;
+      border-radius: 10px;
+      margin-top: 25px;">
+        <a class="customAncor">
+          <i class="material-icons sidebar-icons" style="color:#fff; margin-right: 0px;">exit_to_app</i>
+          <p class="onBlackBckgrnd" style="color:#fff"> {{ 'NavBar.LogOut' | translate }}</p>
+        </a>
+      </li>
+
       <!-- <li *ngIf="SHOW_SETTINGS_SUBMENU"></li> -->
 
       <!-- // SCRIPT -->
@@ -620,12 +648,10 @@
           </li> -->
     </ul>
   </div>
-
-
 </div>
-<!-- ////// SIDEBAR FOOTER -->
 
-<div *ngIf="isMobileMenu()" class="sidebar-footer">
+<!-- ////// SIDEBAR FOOTER START-->
+<!-- <div *ngIf="isMobileMenu()" class="sidebar-footer">
   <div class="row">
 
     <div class="col-sm-12" (click)="openLogoutModal()">
@@ -637,7 +663,11 @@
       </span>
     </div>
   </div>
-</div>
+</div> -->
+<!-- ////// SIDEBAR FOOTER end-->
+
+
+
 <!--
 <div class="sidebar-footer">
   <div class="row">
