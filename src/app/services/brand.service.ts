@@ -8,7 +8,7 @@ export class BrandService {
 
   // "brandSrc":"https://tiledeskbrand.nicolan74.repl.co/mybrand",
 
-  public brand: string;
+  public brand: any;
   // public brand = brand
   local_url = '/assets/brand/brand.json';
 
@@ -41,14 +41,16 @@ export class BrandService {
           url = environment['brandSrc']
           // this.setBrand(url)
         } else {
-          console.log('BrandService loadBrand remoteConfig is false - env brandSrc is empty ? ', remoteBrandUrl , ' -> load from assets');
-          url = this.local_url
+          console.log('BrandService loadBrand remoteConfig is false - env brandSrc is empty ? ', remoteBrandUrl, ' -> load from assets');
+          // url = this.local_url
+          this.brand = brand;
           // this.setBrand(this.local_url)
         }
       } else {
         console.log('BrandService loadBrand remoteConfig is false - env NOT has Property brandSrc -> load from assets');
 
-        url = this.local_url
+        // url = this.local_url
+        this.brand = brand;
         // this.setBrand(this.local_url)
       }
 
@@ -66,8 +68,8 @@ export class BrandService {
         console.log('BrandService loadBrand remoteConfig is true - remoteConfigData has Property brandSrc');
 
         const remoteBrandUrl = this.isEmpty(remoteConfigData.brandSrc);
-        
-   
+
+
         if (!remoteBrandUrl) {
 
           console.log('BrandService loadBrand remoteConfig is true - remoteConfigData brandSrc is empty ?', remoteBrandUrl);
@@ -78,37 +80,40 @@ export class BrandService {
         } else {
           console.log('BrandService loadBrand remoteConfig is true - remoteConfigData brandSrc is empty ?', remoteBrandUrl, ' -> load from assets');
           // this.setBrand(this.local_url)
-          url = this.local_url
+          // url = this.local_url
+          this.brand = brand;
         }
 
       } else {
         console.log('BrandService loadBrand remoteConfig is true - remoteConfigData NOT has Property brandSrc -> load from assets');
         // this.setBrand(this.local_url)
-        url = this.local_url
+        // url = this.local_url
+        this.brand = brand;
 
       }
     }
 
-    // try {
-      const data = await this.http.get(url).toPromise();
-  
-      console.log('BrandService **** GET BRAND FROM URL ****', url);
-  
-      this.brand = JSON.parse(data['_body'])
-     
-      console.log('BrandService loadBrand - brand: ', this.brand);
-  
-  
-    // } catch (err) {
-    //   console.log('BrandService setBrand error : ', err);
-    // }
+    try {
+      if (url) {
+        const data = await this.http.get(url).toPromise();
 
-   
+        console.log('BrandService **** GET BRAND FROM URL ****', url);
+
+        this.brand = JSON.parse(data['_body'])
+
+        console.log('BrandService loadBrand - brand: ', this.brand);
+      }
+
+    } catch (err) {
+      console.log('BrandService setBrand error : ', err);
+    }
+
+
   }
 
-//   async setBrand(url) {
- 
-// }
+  //   async setBrand(url) {
+
+  // }
 
 
 
