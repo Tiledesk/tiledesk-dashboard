@@ -240,6 +240,7 @@ Edit the file brand.json in the folder `src/assets/brand/` or load an external j
 - contact email and more
 
 
+
 #### dashboard-config.json
 
 ```typescript
