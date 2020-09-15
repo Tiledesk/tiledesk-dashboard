@@ -1,6 +1,26 @@
 
 # tiledesk-dashboard
 
+### 2.0.58
+- Adds the ability to customize the brand from an external json
+
+### 2.0.57
+- Adds the ability to join a request from the requests list
+- Changes in the request list the orientation of agent avatars to horizontal on desktop devices
+- Improves UI
+
+### 2.0.56
+- Adds links in "Create a dialogflow bot" page to related Knowledge Base 
+
+### 2.0.55
+- Fixes the logout button visibility on small device
+- Adds links in edit / add FAQs pages to related Knowledge Base 
+- Adds widget pre-translated languages: German, Portuguese, Russian, Spanish, Turkish
+- Disabled the ability to agents to archive a request of which they aren't "participants"
+
+### 2.0.54
+- Adds SSO service
+
 ### 2.0.53
 - Fixes the external docs urls 
 
