@@ -8,8 +8,9 @@ import { environment } from '../../../environments/environment';
 import { TranslateService } from '@ngx-translate/core';
 import { ProjectPlanService } from '../../services/project-plan.service';
 import { Subscription } from 'rxjs';
-import brand from 'assets/brand/brand.json';
 import { AppConfigService } from '../../services/app-config.service';
+// import brand from 'assets/brand/brand.json';
+import { BrandService } from '../../services/brand.service';
 
 @Component({
   selector: 'notification-message',
@@ -19,8 +20,10 @@ import { AppConfigService } from '../../services/app-config.service';
 })
 export class NotificationMessageComponent implements OnInit, OnDestroy {
 
-  tparams = brand;
-  company_name = brand.company_name;
+  // tparams = brand;
+  // company_name = brand.company_name;
+  tparams: any;
+  company_name: string;
 
   displayExpiredSessionModal: string;
   projectId: string;
@@ -53,8 +56,13 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
     private router: Router,
     private translate: TranslateService,
     private prjctPlanService: ProjectPlanService,
-    public appConfigService: AppConfigService
-  ) { }
+    public appConfigService: AppConfigService,
+    public brandService: BrandService
+  ) {
+    const brand = brandService.getBrand();
+    this.tparams = brand;
+    this.company_name = brand['company_name'];
+  }
 
   ngOnInit() {
     this.getBrowserLang();
