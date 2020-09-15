@@ -20,6 +20,7 @@ import 'firebase/messaging';
 import 'firebase/database'
 import { AppConfigService } from '../services/app-config.service';
 import { WebSocketJs } from '../services/websocket/websocket-js';
+// import { SsoService } from './sso.service';
 
 // start SUPER USER
 export class SuperUser {
@@ -90,6 +91,8 @@ export class AuthService {
   current_project_trial_expired: boolean;
 
   URL_last_fragment: string;
+  HAS_JWT: boolean;
+
 
   constructor(
     http: Http,
@@ -100,7 +103,8 @@ export class AuthService {
     private route: ActivatedRoute,
     public location: Location,
     public appConfigService: AppConfigService,
-    public webSocketJs: WebSocketJs
+    public webSocketJs: WebSocketJs,
+    // public ssoService: SsoService
   ) {
     this.http = http;
     console.log('version (AuthService)  ', this.version);
@@ -156,6 +160,61 @@ export class AuthService {
       resolve(this.project_trial_expired);
 
     });
+  }
+
+
+
+
+  // GET THE USER OBJECT FROM LOCAL STORAGE AND PASS IT IN user_bs
+  checkCredentials() {
+    const storedUser = localStorage.getItem('user')
+    console.log('SSO AUTH SERVICE - CHECK CREDENTIAL - STORED USER  ', storedUser)
+
+
+    this.subscription = this.router.events
+      .subscribe((e) => {
+        if (e instanceof NavigationEnd) {
+          console.log('SSO - AUTH SERVICE - CHECK CREDENTIAL - params e ', e);
+          console.log('SSO - AUTH SERVICE - CHECK CREDENTIAL - params e.url ', e.url);
+
+          const current_url = e.url;
+          this.HAS_JWT = current_url.includes('JWT');
+          console.log('SSO - AUTH SERVICE - CHECK CREDENTIAL - current url HAS_JWT ', this.HAS_JWT);
+
+        }
+      })
+    // console.log('USER BS VALUE', this.user_bs.value)
+    if (storedUser !== null) {
+
+      // /**
+      //  * *** WIDGET - pass data to the widget function setTiledeskWidgetUser in index.html ***
+      //  */
+      // const _storedUser = JSON.parse(storedUser);
+      // console.log('SetTiledeskWidgetUserSignin (AUTH-SERVICE) - storedUser', _storedUser)
+      // const userFullname = _storedUser['firstname'] + ' ' + _storedUser['lastname'];
+      // console.log('SetTiledeskWidgetUserSignin (AUTH-SERVICE) - userFullname', userFullname);
+      // const userEmail = _storedUser['email']
+      // console.log('SetTiledeskWidgetUserSignin (AUTH-SERVICE) - userEmail', userEmail);
+      // const userId = _storedUser['_id']
+      // console.log('SetTiledeskWidgetUserSignin (AUTH-SERVICE) - userId', userId);
+      // console.log('SetTiledeskWidgetUserSignin (AUTH-SERVICE) - window', window);
+      // // window['setTiledeskWidgetUser'](userFullname, userEmail, userId)
+
+
+      this.user_bs.next(JSON.parse(storedUser));
+      // this.user_bs.next(null);
+      // this.router.navigate(['/home']);
+    }
+  }
+
+
+  publishSSOloggedUser() {
+    const storedUser = localStorage.getItem('user')
+    if (storedUser !== null) { 
+
+      this.user_bs.next(JSON.parse(storedUser));
+    }
+
   }
 
 
@@ -230,6 +289,23 @@ export class AuthService {
               console.log('% »»» WebSocketJs WF +++++ ws-requests--- auth service checkStoredProjectAndPublish NavigationEnd current_url (4)', current_url)
               console.log('!!C-U »»»»» AUTH SERV - CURRENT URL ', current_url);
 
+
+              // ------------------------------------------------------------------
+              // SINGLE SIGN-ON - STEP 1 - Check if the current url contains "?JWT" 
+              // ------------------------------------------------------------------
+
+              // const string_to_check = '?JWT';
+              // if (current_url.includes(string_to_check)) {
+              //   console.log('SSO (AUTH SERV) - ⚡️⚡️⚡️ HEY THERE IS A JWT IN THE CURRENT URL > SET USER TO NULL');
+
+              //   this.user_bs.next(null);
+              //   // this.router.navigate(['/autologin']);
+              //   // this.ssoService.current_url_has_JWT_token(decodeURI(current_url));
+
+              //   // this.subscription.unsubscribe();
+              // }
+
+
               const url_segments = current_url.split('/');
               console.log('!!C-U »»»»» AUTH SERV - CURRENT URL SEGMENTS ', url_segments);
 
@@ -253,17 +329,22 @@ export class AuthService {
                * the url_segments[2] (that is the project id) is undefined)
                * and the Workflow not proceed with the below code
                */
+              // -----------------------------------------------------------------
+              // this check is in auth.guard - auth.service - project-plan.service
+              // -----------------------------------------------------------------
               if (this.nav_project_id &&
                 this.nav_project_id !== 'email' &&
                 url_segments[1] !== 'user' &&
                 url_segments[1] !== 'handle-invitation' &&
                 url_segments[1] !== 'signup-on-invitation' &&
                 url_segments[1] !== 'resetpassword' &&
+                url_segments[1] !== 'autologin' &&
                 current_url !== '/projects'
               ) {
 
                 console.log('!!C-U »»»»» QUI ENTRO ', this.nav_project_id);
                 console.log('% »»» WebSocketJs WF +++++ ws-requests--- auth service --- QUI ENTRO 2 --- checkStoredProjectAndPublish this.nav_project_id (7)', this.nav_project_id)
+
                 this.subscription.unsubscribe();
 
                 const storedProjectJson = localStorage.getItem(this.nav_project_id);
@@ -394,32 +475,7 @@ export class AuthService {
   //   this.project_bs.next(JSON.parse(storedProject));
   // }
 
-  // GET THE USER OBJECT FROM LOCAL STORAGE AND PASS IT IN user_bs
-  checkCredentials() {
-    const storedUser = localStorage.getItem('user')
-    console.log('AUTH SERVICE - CHECK CREDENTIAL - STORED USER  ', storedUser)
-    // console.log('USER BS VALUE', this.user_bs.value)
-    if (storedUser !== null) {
 
-      // /**
-      //  * *** WIDGET - pass data to the widget function setTiledeskWidgetUser in index.html ***
-      //  */
-      // const _storedUser = JSON.parse(storedUser);
-      // console.log('SetTiledeskWidgetUserSignin (AUTH-SERVICE) - storedUser', _storedUser)
-      // const userFullname = _storedUser['firstname'] + ' ' + _storedUser['lastname'];
-      // console.log('SetTiledeskWidgetUserSignin (AUTH-SERVICE) - userFullname', userFullname);
-      // const userEmail = _storedUser['email']
-      // console.log('SetTiledeskWidgetUserSignin (AUTH-SERVICE) - userEmail', userEmail);
-      // const userId = _storedUser['_id']
-      // console.log('SetTiledeskWidgetUserSignin (AUTH-SERVICE) - userId', userId);
-      // console.log('SetTiledeskWidgetUserSignin (AUTH-SERVICE) - window', window);
-      // // window['setTiledeskWidgetUser'](userFullname, userEmail, userId)
-
-
-      this.user_bs.next(JSON.parse(storedUser));
-      // this.router.navigate(['/home']);
-    }
-  }
 
   /**
    *  //// NODEJS SIGNUP //// CREATE (POST)
@@ -495,8 +551,6 @@ export class AuthService {
         // ASSIGN THE RETURNED TOKEN TO THE USER OBJECT
         user.token = jsonRes.token
 
-
-
         // PUBLISH THE USER OBJECT
         this.user_bs.next(user);
 
@@ -504,25 +558,23 @@ export class AuthService {
         localStorage.setItem('user', JSON.stringify(user));
         console.log('++ USER ', user)
 
-
         ///////////////////
-        console.log('1. POST DATA ', jsonRes);
+        console.log('SSO - LOGIN 1. POST DATA ', jsonRes);
         if (jsonRes['success'] === true) {
-
-
+          
           // '/chat21/firebase/auth/createCustomToken'
           this.chat21CreateFirebaseCustomToken(jsonRes['token']).subscribe(fbtoken => {
 
             // this.firebaseSignin(email, password).subscribe(fbtoken => {
-
-            console.log('2. FIREBASE SIGNIN RESPO ', fbtoken)
+            console.log('SSO - LOGIN 2. FIREBASE SIGNIN RESPO ', fbtoken)
+            
             if (fbtoken) {
 
               // Firebase Sign in using custom token
 
               firebase.auth().signInWithCustomToken(fbtoken)
                 .then(firebase_user => {
-                  console.log('3. FIREBASE CUSTOM AUTH DATA ', firebase_user);
+                  console.log('SSO - LOGIN - 3. FIREBASE CUSTOM AUTH DATA ', firebase_user);
 
                   /* UPDATE THE THE USER CREATE ON FIREBASE WITH THE CUSTOM TOKEN WITH THE EMAIL AND THE PASSWORD */
                   // firebase_user.updatePassword(password).then(function () {
@@ -554,7 +606,7 @@ export class AuthService {
                   callback(error);
                   // Handle Errors here.
                   // const errorCode = error.code;
-                  // console.log('FIREBASE CUSTOM AUTH ERROR CODE ', errorCode)
+                  console.log('SSO - LOGIN - FIREBASE CUSTOM AUTH ERROR CODE ', error)
                   // const errorMessage = error.message;
                   // console.log('FIREBASE CUSTOM AUTH ERROR MSG ', errorMessage)
                 });
@@ -723,6 +775,7 @@ export class AuthService {
     headers.append('Content-type', 'application/json');
     headers.append('Authorization', JWT_token);
     const options = new RequestOptions({ headers });
+    
     const url = this.CREATE_CUSTOM_TOKEN_URL;
 
     console.log('chat21CreateFirebaseCustomToken ', url)
@@ -735,16 +788,11 @@ export class AuthService {
       .map((res) => {
         // tslint:disable-next-line:no-debugger
         // debugger
-        console.log('chat21CreateFirebaseCustomToken RES: ', res)
+        console.log('SSO - chat21CreateFirebaseCustomToken RES: ', res)
         // const firebaseToken = res.text()
         return res.text()
-
       });
-
   }
-
-
-
 
 
   /// ===================== VERIFY EMAIL ===================== ///
@@ -963,11 +1011,17 @@ export class AuthService {
       .then(function () {
         console.log('Signed Out');
         that.widgetReInit()
-        that.router.navigate(['/login']);
+
+        if (!that.HAS_JWT) {
+          that.router.navigate(['/login']);
+        }
       }, function (error) {
         console.error('Sign Out Error', error);
         that.widgetReInit()
-        that.router.navigate(['/login']);
+
+        if (!that.HAS_JWT) {
+          that.router.navigate(['/login']);
+        }
       });
   }
 

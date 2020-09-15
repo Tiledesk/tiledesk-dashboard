@@ -45,6 +45,8 @@ export class AuthGuard implements CanActivate {
   IS_ANALYTICS_PAGE: boolean;
   IS_ANALYTICS_DEMO_PAGE: boolean;
   current_project_trial_expired: boolean;
+  URL_HAS_JWT: boolean
+
 
   constructor(
     private auth: AuthService,
@@ -68,7 +70,7 @@ export class AuthGuard implements CanActivate {
     this.detectVerifyEmailRoute();
     this.detectSignUpRoute();
     this.detectResetPswRoute();
-    this.canActivate();
+
 
     // this.router.events.pairwise().subscribe((event) => {
     //   console.log('-» -» -» AUTH GUARD EVENT ', event);
@@ -79,7 +81,15 @@ export class AuthGuard implements CanActivate {
      * NEW: initialize the new project when the id of the project get from url does not match with the current project id  */
     // this.getCurrentProject();
     this.getProjectIdFromUrl();
+
+
+    // this.canActivate();
+
+
   }
+
+
+
 
   // canDeactivate(
   //   component: RequestsMsgsComponent | HomeComponent,
@@ -118,6 +128,22 @@ export class AuthGuard implements CanActivate {
         this.nav_project_id = url_segments[2];
         console.log('!! AUTH WF in auth.guard - CURRENT URL SEGMENTS > NAVIGATION PROJECT ID: ', this.nav_project_id);
 
+
+        // -----------------------------------------------------------------
+        // SINGLE SIGN-ON - STEP 1 - Check if the current url contains "?JWT" 
+        // -----------------------------------------------------------------
+        // const string_to_check = '?JWT';
+        // if (current_url.includes(string_to_check)) {
+        //   console.log('SSO (AUTH GUARD) - ⚡️⚡️⚡️ HEY THERE IS A JWT IN THE CURRENT URL');
+        //   this.URL_HAS_JWT = true;
+        //   // this.router.navigate(['/autologin']);
+        //   // this.ssoService.current_url_has_JWT_token(decodeURI(current_url));
+
+        //   // this.subscription.unsubscribe();
+        // } else {
+        //   this.URL_HAS_JWT = false;
+        // }
+
         /**
          * !!! NO MORE USED checkIf_NavPrjctIdMatchesCurrentPrjctId()
          * *** CHECK IF THE PROJECT ID GET FROM THE CURRENT URL IS THE SAME OF THE CURRENT PROJECT ***
@@ -141,12 +167,17 @@ export class AuthGuard implements CanActivate {
          * and the Workflow not proceed with the below code
          */
         // tslint:disable-next-line:max-line-length
-        if (this.nav_project_id && 
-          this.nav_project_id !== 'email' && 
+
+        // -----------------------------------------------------------------
+        // this check is in auth.guard - auth.service - project-plan.service
+        // -----------------------------------------------------------------
+        if (this.nav_project_id &&
+          this.nav_project_id !== 'email' &&
           url_segments[1] !== 'user' &&
-          url_segments[1] !== 'handle-invitation' && 
+          url_segments[1] !== 'handle-invitation' &&
           url_segments[1] !== 'signup-on-invitation' &&
           url_segments[1] !== 'resetpassword' &&
+          url_segments[1] !== 'autologin' &&
           current_url !== '/projects') {
 
           this.subscription.unsubscribe();
@@ -169,7 +200,7 @@ export class AuthGuard implements CanActivate {
       this.getProjectPublishAndSaveInStorage();
 
 
-      
+
     }
 
     // else {
@@ -349,7 +380,6 @@ export class AuthGuard implements CanActivate {
   }
 
   // 
-
   detectRoute() {
     if (this.location.path() !== '') {
       this.route = this.location.path();
@@ -362,24 +392,17 @@ export class AuthGuard implements CanActivate {
       } else {
         this.is_handleinvitation_page = false;
         console.log('%AUTH GUARD - IS HANDLE-INVITATION PAGE »> »> ', this.is_handleinvitation_page);
-
       }
-
 
       if (this.route.indexOf('/signup-on-invitation') !== -1) {
         // this.router.navigate([`${this.route}`]);
         this.is_signup_on_invitation_page = true;
         console.log('%AUTH GUARD - IS SIGNUP-ON-INVITATION PAGE »> »> ', this.is_signup_on_invitation_page);
-
       } else {
         this.is_signup_on_invitation_page = false;
         console.log('%AUTH GUARD - IS SIGNUP-ON-INVITATION  PAGE »> »> ', this.is_signup_on_invitation_page);
-
       }
-
-
     }
-
   }
 
   detectSignUpRoute() {
@@ -414,7 +437,73 @@ export class AuthGuard implements CanActivate {
     }
   }
 
-  canActivate() {
+ 
+
+
+  // ------------------------------------------------------------------------
+  // canActivate SSO 
+  // ------------------------------------------------------------------------
+  canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    console.log('!! AUTH WF in auth.guard - CAN ACTIVATE AlwaysAuthGuard');
+    console.log('SSO - CAN ACTIVATE user ', this.user);
+
+    console.log('SSO - CAN ACTIVATE next ', next);
+    console.log('SSO - CAN ACTIVATE state ', state);
+    const url = state.url;
+
+    console.log('SSO - CAN ACTIVATE state url  ', url);
+
+    const route = url.substring(0, url.indexOf('?token=')); 
+    console.log('SSO - CAN ACTIVATE route in url ', route);
+
+
+    let queryParams = next.queryParams
+    // console.log('SSO - CAN ACTIVATE queryParams ', queryParams);
+
+  
+
+    let stringifed_queryParams = JSON.stringify(queryParams)
+    console.log('SSO - CAN ACTIVATE queryParams stringified', stringifed_queryParams);
+
+    const HAS_JWT = stringifed_queryParams.includes('JWT');
+    console.log('SSO - CAN ACTIVATE queryParams HAS_JWT', HAS_JWT);
+
+
+    let token = next.queryParams.token
+    console.log('SSO - CAN ACTIVATE queryParams Token ', token);
+
+
+    // tslint:disable-next-line:max-line-length
+    if ((this.user && !HAS_JWT) ||
+      (this.is_verify_email_page === true) ||
+      (this.is_signup_page === true) ||
+      (this.is_reset_psw_page === true) ||
+      (this.is_handleinvitation_page === true) ||
+      (this.is_signup_on_invitation_page === true)) {
+      // this.router.navigate(['/home']);
+      return true;
+      // if ((!this.user) || (this.is_verify_email_page === false))
+    } else {
+      // tslint:disable-next-line:no-debugger
+      // debugger
+      if (!HAS_JWT) {
+        this.router.navigate(['/login']);
+        return false;
+      } else {
+        this.router.navigate(['/autologin', route, token]);
+        return false;
+      }
+    }
+    // else if ((this.is_verify_email_page === false)) {
+    //   this.router.navigate(['verify/email/']);
+    //   return false;
+    // }
+  }
+
+   // ------------------------------------------------------------------------
+  // l'esitente funzionante
+  // ------------------------------------------------------------------------
+  _canActivate() {
     console.log('!! AUTH WF in auth.guard - CAN ACTIVATE AlwaysAuthGuard');
 
     // tslint:disable-next-line:max-line-length
@@ -440,6 +529,17 @@ export class AuthGuard implements CanActivate {
   }
 
 
+
+
+
+
+
+
+
+
+  // ------------------------------------
+  // Already commented
+  // ------------------------------------
   // canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
 
   //   console.log('CAN ACTIVATE (auth.guard.ts) ', firebase.auth().currentUser);
