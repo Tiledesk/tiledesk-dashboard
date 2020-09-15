@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { WsRequestsService } from '../../services/websocket/ws-requests.service';
 import { FaqKbService } from '../../services/faq-kb.service';
 import { UsersService } from '../../services/users.service';
-
+import { NotifyService } from '../../core/notify.service';
 
 @Component({
   selector: 'appdashboard-ws-shared',
@@ -32,13 +32,15 @@ export class WsSharedComponent implements OnInit {
   train_bot_sidebar_height: any;
   newParticipants: any
   user: any;
+
   constructor(
     public botLocalDbService: BotLocalDbService,
     public usersLocalDbService: UsersLocalDbService,
     public router: Router,
     public wsRequestsService: WsRequestsService,
     public faqKbService: FaqKbService,
-    public usersService: UsersService
+    public usersService: UsersService,
+    public notify: NotifyService
   ) { }
 
   ngOnInit() {
@@ -722,5 +724,29 @@ export class WsSharedComponent implements OnInit {
         console.log('REQUEST-MSGS - JOIN DEPT - RES * COMPLETE *');
       });
   }
+
+
+
+    // JOIN TO CHAT GROUP
+    onJoinHandled(id_request: string, currentUserID: string) {
+      // this.getFirebaseToken(() => {
+      console.log('%%% Ws-REQUESTS-Msgs - JOIN PRESSED');
+     
+  
+      this.wsRequestsService.addParticipant(id_request, currentUserID)
+        .subscribe((data: any) => {
+  
+          console.log('%%% Ws-REQUESTS-Msgs - addParticipant TO CHAT GROUP ', data);
+        }, (err) => {
+          console.log('%%% Ws-REQUESTS-Msgs - addParticipant TO CHAT GROUP ERROR ', err);
+    
+        }, () => {
+          console.log('%%% Ws-REQUESTS-Msgs - addParticipant TO CHAT GROUP COMPLETE');
+  
+          this.notify.showNotification(`You are successfully added to the chat`, 2, 'done');
+         
+        });
+      // });
+    }
 
 }
