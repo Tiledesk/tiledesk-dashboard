@@ -5,7 +5,8 @@ import { AuthService } from '../core/auth.service';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { slideInAnimation } from '../_animations/index';
-import brand from 'assets/brand/brand.json';
+// import brand from 'assets/brand/brand.json';
+import { BrandService } from '../services/brand.service';
 
 @Component({
   selector: 'appdashboard-create-project',
@@ -20,7 +21,9 @@ import brand from 'assets/brand/brand.json';
 export class CreateProjectComponent implements OnInit {
 
   // company_logo_in_spinner = brand.wizard_create_project_page.company_logo_in_spinner; // no more used - removed from brand
-  logo_x_rocket = brand.wizard_create_project_page.logo_x_rocket
+
+  // logo_x_rocket = brand.wizard_create_project_page.logo_x_rocket
+  logo_x_rocket: string;
 
   projects: Project[];
   project_name: string;
@@ -33,8 +36,12 @@ export class CreateProjectComponent implements OnInit {
     private projectService: ProjectService,
     private auth: AuthService,
     private router: Router,
-    public location: Location
-  ) { }
+    public location: Location,
+    public brandService: BrandService
+  ) { 
+    const brand = brandService.getBrand();
+    this.logo_x_rocket = brand['wizard_create_project_page']['logo_x_rocket']
+  }
 
   ngOnInit() {
     console.log('CreateProjectComponent project_name ', this.project_name)
