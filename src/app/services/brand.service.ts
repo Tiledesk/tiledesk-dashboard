@@ -33,12 +33,12 @@ export class BrandService {
       if (environment.hasOwnProperty("brandSrc")) {
 
         console.log('BrandService loadBrand remoteConfig is false - env has Property brandSrc');
-        const remoteBrandUrl = this.isEmpty(environment.brandSrc);
+        const remoteBrandUrl = this.isEmpty(environment['brandSrc']);
 
         if (!remoteBrandUrl) {
 
           console.log('BrandService loadBrand remoteConfig is false - env brandSrc is empty ? ', remoteBrandUrl);
-          url = environment.brandSrc
+          url = environment['brandSrc']
           // this.setBrand(url)
         } else {
           console.log('BrandService loadBrand remoteConfig is false - env brandSrc is empty ? ', remoteBrandUrl , ' -> load from assets');
@@ -54,9 +54,9 @@ export class BrandService {
 
     } else {
 
-      console.log('BrandService loadBrand - remoteConfig is true - remoteConfigUrl ', environment.remoteConfigUrl);
+      console.log('BrandService loadBrand - remoteConfig is true - remoteConfigUrl ');
 
-      const res = await this.http.get(environment.remoteConfigUrl).toPromise();
+      const res = await this.http.get(environment['remoteConfigUrl']).toPromise();
       // console.log('BrandService loadBrand remoteConfig -> true get remoteConfig response ', res);
 
       const remoteConfigData = JSON.parse(res['_body'])
