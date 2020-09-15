@@ -145,7 +145,7 @@ import { TriggerEditComponent } from './trigger/trigger-edit/trigger-edit.compon
 import { PricingModule } from './pricing/pricing.module';
 import { StaticPageBaseComponent } from './static-pages/static-page-base/static-page-base.component';
 
-import {SlideshowModule} from 'ng-simple-slideshow';
+import { SlideshowModule } from 'ng-simple-slideshow';
 import { GroupsStaticComponent } from './static-pages/groups-static/groups-static.component';
 
 import { CreateProjectComponent } from './create-project/create-project.component';
@@ -184,7 +184,11 @@ import { WsRequestsNortComponent } from './ws_requests/ws-requests-nort/ws-reque
 import { ProjectsForPanelComponent } from './projects/for-panel/projects-for-panel/projects-for-panel.component';
 import { WsRequestsUnservedForPanelComponent } from './ws_requests/for-panel/ws-requests-unserved-for-panel/ws-requests-unserved-for-panel.component';
 import { WsRequestDetailForPanelComponent } from './ws_requests/for-panel//ws-request-detail-for-panel/ws-request-detail-for-panel.component';
-
+import { AutologinComponent } from './auth/autologin/autologin.component';
+import { AppStoreComponent } from './app-store/app-store.component';
+import { AppStoreService } from './services/app-store.service';
+import { BrandService } from './services/brand.service';
+import { AppStoreInstallComponent } from './app-store/app-store-install/app-store-install.component';
 
 
 console.log('************** APPMODULE ******************');
@@ -193,13 +197,25 @@ export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
-const appInitializerFn = (appConfig: AppConfigService) => {
+const appInitializerFn = (appConfig: AppConfigService, brandService: BrandService) => {
   return () => {
     if (environment.remoteConfig) {
-      return appConfig.loadAppConfig();
+      return appConfig.loadAppConfig(), brandService.loadBrand();
+    } else {
+      return brandService.loadBrand();
     }
   };
 };
+
+// const brandLoader = (brandService: BrandService) => {
+//   return () => {
+    
+//      brandService.loadBrand();
+   
+//   };
+// };
+
+
 
 @NgModule({
   declarations: [
@@ -305,7 +321,10 @@ const appInitializerFn = (appConfig: AppConfigService) => {
     ProjectsForPanelComponent,
     WsRequestsUnservedForPanelComponent,
     WsRequestDetailForPanelComponent,
-   
+    AutologinComponent,
+    AppStoreComponent,
+    AppStoreInstallComponent,
+
   ],
   imports: [
     /* PRIVATE */
@@ -342,14 +361,22 @@ const appInitializerFn = (appConfig: AppConfigService) => {
   ],
   providers: [
     AppConfigService, // https://juristr.com/blog/2018/01/ng-app-runtime-config/
+    BrandService,
     {
       provide: APP_INITIALIZER,
       useFactory: appInitializerFn,
       multi: true,
-      deps: [AppConfigService]
+      deps: [AppConfigService, BrandService]
     },
+    // {
+    //   provide: APP_INITIALIZER,
+    //   useFactory: brandLoader,
+    //   multi: true,
+    //   deps: [BrandService]
+    // },
     WsRequestsService,
     WsMsgsService,
+    AppStoreService,
     // WebsocketService,
     WebSocketJs,
     UsersService,
