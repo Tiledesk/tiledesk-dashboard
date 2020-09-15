@@ -102,8 +102,8 @@ export  const environment = {
 ```
 #### dashboard-config.json
 ```typescript
-t2y12PruGU9wUtEGzBJfolMIgK: 'PAY:F-ANA:F-ACT:F-TRI:F-GRO:F-DEP:F-OPH:F-MTL:F-DGF:F-NAT:F',
-widgetUrl: "https://<YOUR_CHAT21_WEB_WIDGET_URL>:4200/launch.js"
+
+widgetUrl: "https://<YOUR_CHAT21_WEB_WIDGET_URL>:4200/launch.js",
 
 botcredendialsURL: "https://<YOUR_BOT_CREDENTIALS_URL>",
 
@@ -229,7 +229,7 @@ tiledesk-dashboard
 # Brand
 
  
-Edit the file brand.json in the folder `src/assets/brand/` to customize
+Edit the file brand.json in the folder `src/assets/brand/` or put your API URL in environment.*.ts (or in the `dashboard-config.json`  if `remoteConfig` is set to `true`) to customize
 
 - company name,
 
@@ -238,6 +238,23 @@ Edit the file brand.json in the folder `src/assets/brand/` to customize
 - navigation,
 
 - contact email and more
+
+```
+#### dashboard-config.json
+```typescript
+
+widgetUrl: "https://<YOUR_CHAT21_WEB_WIDGET_URL>:4200/launch.js",
+
+botcredendialsURL: "https://<YOUR_BOT_CREDENTIALS_URL>",
+
+SERVER_BASE_URL: "https://<YOUR_TILEDESK_SERVER>/",
+
+...
+brandSrc :"https://<YOUR_BRAND_JSON>/",
+...
+
+};
+```
 
   
 
