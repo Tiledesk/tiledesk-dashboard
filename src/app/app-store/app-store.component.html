@@ -1,0 +1,55 @@
+<p style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px" class="navbar-brand">
+  App Store
+</p>
+
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+
+      <div *ngFor="let app of apps" class="col-lg-4 col-md-4 col-sm-6" style="cursor:pointer">
+
+        <div class="card card-app-store">
+
+          <div class="card-content">
+
+            <div class="app-icon">
+              <img [src]="app.logo" />
+
+            </div>
+
+            <h5 class="card-title">
+              {{ app.title}}
+            </h5>
+
+            <p class="card-content card-content-app-store">
+              {{ app.description}}
+            </p>
+          </div>
+
+          <div class="card-footer card-footer-app-store" style="">
+
+            <div class="row" style="display: block;">
+
+              <div class="col-xs-6 app-store-left-col-btn"
+              (click)="learnmore(app.learnmore)">
+                <a>
+                  Learn more
+                </a>
+              </div>
+
+              <div class="col-xs-6 app-store-right-col-btn" 
+                (click)="installApp(app.installActionType, app.installActionURL, app.title)">
+                <a>
+                  Install
+                </a>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,54 @@
+.app-icon img {
+    width: auto;
+    height: 50px;
+}
+
+.card-app-store {
+    box-shadow: unset;
+    border: 1px solid #e5effe;
+    // transition: border 0s,box-shadow 0.4s ease-out,transform 0.4s ease-out,opacity 0.4s ease-out;
+    // transition-delay: 0.1s;
+    // transform: translateZ(0);
+}
+
+// .card-app-store:hover { 
+//     box-shadow: 0 20px 50px 0 rgba(0,0,0,0.1);
+//     z-index: 1;
+// }
+
+.card-content-app-store {
+    color: #7695a5;
+    height: 72px;
+    overflow: hidden;
+}
+
+.app-store-right-col-btn {
+    display: block;
+    text-align: center;
+    padding: 10px 0;
+}
+
+.app-store-left-col-btn {
+    display: block;
+    text-align: center;
+    padding: 10px 0;
+    border-right: 0.5px solid #e5effe;
+}
+
+.app-store-right-col-btn:hover {
+    a {
+        color: #23527c;
+    }
+}
+
+.app-store-left-col-btn:hover {
+    a {
+        color: #23527c;
+    }
+}
+
+.card-footer-app-store {
+    margin: 0 15px 0px;
+    padding-top: 0px;
+    border-top: 1px solid #e5effe;
+}

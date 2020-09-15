@@ -1,0 +1,20 @@
+<div class="navbar-brand" style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px">
+  <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
+    (click)="goBack()">keyboard_arrow_left</i>
+  Install {{ app_title}}
+</div>
+
+
+<div class="main-content" style="padding-top: 0px;
+margin-top: -9px;
+padding-bottom: 0px;
+padding-left: 0px;
+padding-right: 0px;">
+
+  <div class="container-fluid" style="padding-right: 0px;  padding-left: 0px;">
+
+    <iframe [src]="URL" style="width:100%;" frameBorder="0" allowfullscreen
+      [ngStyle]="{ 'height': iframeHeight }"></iframe>
+  </div>
+
+</div>
