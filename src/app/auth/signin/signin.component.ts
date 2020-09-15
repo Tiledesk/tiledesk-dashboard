@@ -3,8 +3,11 @@ import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angula
 import { AppConfigService } from '../../services/app-config.service';
 import { AuthService } from '../../core/auth.service';
 import { Router } from '@angular/router';
-import brand from 'assets/brand/brand.json';
 import { NotifyService } from '../../core/notify.service';
+
+// import brand from 'assets/brand/brand.json';
+import { BrandService } from '../../services/brand.service';
+
 type UserFields = 'email' | 'password';
 type FormErrors = { [u in UserFields]: string };
 
@@ -15,10 +18,16 @@ type FormErrors = { [u in UserFields]: string };
   styleUrls: ['./signin.component.scss']
 })
 export class SigninComponent implements OnInit {
-  companyLogoBlack_Url = brand.company_logo_black__url;
-  companyLogoAllWithe_Url = brand.company_logo_allwhite__url;
-  company_name = brand.company_name;
-  company_site_url = brand.company_site_url;
+  // companyLogoBlack_Url = brand.company_logo_black__url;
+  // companyLogoAllWithe_Url = brand.company_logo_allwhite__url;
+  // company_name = brand.company_name;
+  // company_site_url = brand.company_site_url;
+  companyLogoBlack_Url:string;
+  companyLogoAllWithe_Url: string;
+  company_name:string;
+  company_site_url: string;
+
+
   showSpinnerInLoginBtn = false;
 
   hide_left_panel: boolean;
@@ -58,10 +67,22 @@ export class SigninComponent implements OnInit {
     private auth: AuthService,
     private router: Router,
     public appConfigService: AppConfigService,
-    private notify: NotifyService
-  ) { }
+    private notify: NotifyService,
+    public brandService: BrandService
+  ) { 
+    const brand = brandService.getBrand();
+
+    this.companyLogoBlack_Url = brand['company_logo_black__url'];
+    this.companyLogoAllWithe_Url = brand['company_logo_allwhite__url'];
+    this.company_name = brand['company_name'];
+    this.company_site_url = brand['company_site_url'];
+
+  }
 
   ngOnInit() {
+
+
+
     // this.redirectIfLogged();
     // this.widgetReInit()
 
@@ -262,6 +283,9 @@ export class SigninComponent implements OnInit {
       // tslint:disable-next-line:no-debugger
       // debugger
       if (!error) {
+
+        console.log('SSO (Signin) - user', user)
+
         self.router.navigate(['/projects']);
 
         self.widgetReInit();

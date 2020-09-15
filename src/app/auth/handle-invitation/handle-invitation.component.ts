@@ -4,7 +4,8 @@ import { UsersService } from '../../services/users.service';
 import { ProjectService } from '../../services/project.service';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import brand from 'assets/brand/brand.json';
+// import brand from 'assets/brand/brand.json';
+import { BrandService } from '../../services/brand.service';
 
 @Component({
   selector: 'appdashboard-handle-invitation',
@@ -23,16 +24,24 @@ export class HandleInvitationComponent implements OnInit {
   showSpinner: boolean;
   browser_lang: string;
   
-  tparams = brand;
-  company_logo_45x45 = brand.handle_invitation_page.company_logo_45x45;
+  // tparams = brand;
+  // company_logo_45x45 = brand.handle_invitation_page.company_logo_45x45;
+  tparams:any;
+  company_logo_45x45: any;
 
   constructor(
     private route: ActivatedRoute,
     public usersService: UsersService,
     public projectService: ProjectService,
     private router: Router,
-    private translate: TranslateService
-  ) { }
+    private translate: TranslateService,
+    public brandService: BrandService
+  ) { 
+
+    const brand = brandService.getBrand();
+    this.tparams = brand;
+    this.company_logo_45x45 = brand['handle_invitation_page']['company_logo_45x45'];
+  }
 
   ngOnInit() {
     this.get_PendingUserById();

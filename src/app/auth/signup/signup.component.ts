@@ -4,9 +4,11 @@ import { AuthService } from '../../core/auth.service';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
-import brand from 'assets/brand/brand.json';
 import { NotifyService } from '../../core/notify.service';
 import { AppConfigService } from '../../services/app-config.service';
+
+// import brand from 'assets/brand/brand.json';
+import { BrandService } from '../../services/brand.service';
 
 type UserFields = 'email' | 'password' | 'firstName' | 'lastName' | 'terms';
 type FormErrors = { [u in UserFields]: string };
@@ -18,17 +20,27 @@ type FormErrors = { [u in UserFields]: string };
 })
 export class SignupComponent implements OnInit, AfterViewInit {
 
-  // tparams = {value: 'world'};
-  tparams = brand;
+ 
+  // tparams = brand;
+  // companyLogoBlack_Url = brand.company_logo_black__url;
+  // companyLogoAllWithe_Url = brand.company_logo_allwhite__url;
+  // company_name = brand.company_name;
+  // company_site_url = brand.company_site_url;
+  // privacy_policy_link_text = brand.privacy_policy_link_text;
+  // terms_and_conditions_url = brand.terms_and_conditions_url;
+  // privacy_policy_url = brand.privacy_policy_url;
+  // display_terms_and_conditions_link = brand.signup_page.display_terms_and_conditions_link;
 
-  companyLogoBlack_Url = brand.company_logo_black__url;
-  companyLogoAllWithe_Url = brand.company_logo_allwhite__url;
-  company_name = brand.company_name;
-  company_site_url = brand.company_site_url;
-  privacy_policy_link_text = brand.privacy_policy_link_text;
-  terms_and_conditions_url = brand.terms_and_conditions_url;
-  privacy_policy_url = brand.privacy_policy_url;
-  display_terms_and_conditions_link = brand.signup_page.display_terms_and_conditions_link;
+
+  tparams: any;
+  companyLogoBlack_Url: string;
+  companyLogoAllWithe_Url: string;
+  company_name: string;
+  company_site_url: string;
+  privacy_policy_link_text: string;
+  terms_and_conditions_url: string;
+  privacy_policy_url: string;
+  display_terms_and_conditions_link: string;
 
 
   showSpinnerInLoginBtn = false;
@@ -82,8 +94,21 @@ export class SignupComponent implements OnInit, AfterViewInit {
     private translate: TranslateService,
     private route: ActivatedRoute,
     private notify: NotifyService,
-    public appConfigService: AppConfigService
-  ) { }
+    public appConfigService: AppConfigService,
+    public brandService: BrandService
+  ) { 
+
+    const brand = brandService.getBrand();
+    this.tparams = brand;
+    this.companyLogoBlack_Url = brand['company_logo_black__url'];
+    this.companyLogoAllWithe_Url = brand['company_logo_allwhite__url'];
+    this.company_name = brand['company_name'];
+    this.company_site_url = brand['company_site_url'];
+    this.privacy_policy_link_text = brand['privacy_policy_link_text'];
+    this.terms_and_conditions_url = brand['terms_and_conditions_url'];
+    this.privacy_policy_url = brand['privacy_policy_url'];
+    this.display_terms_and_conditions_link = brand['signup_page'].display_terms_and_conditions_link;
+  }
 
   ngOnInit() {
     this.redirectIfLogged();

@@ -8,9 +8,11 @@ import { AuthService } from '../../core/auth.service';
 import { TranslateService } from '@ngx-translate/core';
 import { BotLocalDbService } from '../../services/bot-local-db.service';
 import { Location } from '@angular/common';
-import brand from 'assets/brand/brand.json';
 import { BotsBaseComponent } from '../bots-base/bots-base.component';
 import { NotifyService } from '../../core/notify.service';
+
+// import brand from 'assets/brand/brand.json';
+import { BrandService } from '../../services/brand.service';
 
 @Component({
   selector: 'bot-create',
@@ -18,7 +20,9 @@ import { NotifyService } from '../../core/notify.service';
   styleUrls: ['./bot-create.component.scss']
 })
 export class BotCreateComponent extends BotsBaseComponent implements OnInit {
-  tparams = brand;
+  // tparams = brand;
+  tparams: any;
+
 
   faqKbName: string;
   faqKbUrl: string;
@@ -83,9 +87,13 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     private translate: TranslateService,
     public location: Location,
     private botLocalDbService: BotLocalDbService,
-    private notify: NotifyService
+    private notify: NotifyService,
+    public brandService: BrandService
   ) {
     super();
+
+    const brand = brandService.getBrand();
+    this.tparams = brand;
   }
 
   ngOnInit() {
