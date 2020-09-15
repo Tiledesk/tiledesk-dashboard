@@ -76,13 +76,15 @@
             </span>
           </th>
 
-          <!-- ------ ====== SERVED BY ====== ------ -->
+          <!-- ------ ====== SERVED BY  ====== ------ -->
           <th>
             <span class="column-th-span">
               <!-- Servita da -->
               {{ 'VisitorsPage.ServedBy' | translate }}
             </span>
           </th>
+
+
 
           <!-- <th>
           <span style="color: #566787">          
@@ -99,7 +101,7 @@
 
           <!-- <th>TEST</th> -->
 
-          <!-- ------ ====== ARCHIVE Action  ====== ------ -->
+          <!-- ------ ====== ARCHIVE & JOIN Action  ====== ------ -->
           <th>
             <span class="column-th-span">
               {{ 'VisitorsPage.Actions' | translate }}
@@ -468,7 +470,8 @@
 
               <span class="lead_data">
 
-                <span class="contact-fullname" [ngClass]="{'requester_not_has_email' : !request?.lead?.email}"> {{ request?.lead?.fullname}}
+                <span class="contact-fullname" [ngClass]="{'requester_not_has_email' : !request?.lead?.email}">
+                  {{ request?.lead?.fullname}}
                 </span>
 
                 <span *ngIf="!request?.lead?.fullname"
@@ -697,7 +700,9 @@
             </div>
           </td> -->
 
-          <td>
+
+          <!-- ------ ====== SERVED BY MOBILE ====== ------ -->
+          <td *ngIf="isMobile">
             <div style="min-width: 105px; position: relative;">
               <div *ngFor="let agent of request?.participanting_Agents">
 
@@ -735,9 +740,70 @@
                       </span>
                     </span>
                   </span>
+
                 </span>
               </div>
             </div>
+          </td>
+
+          <!-- ------ ====== SERVED BY DESKTOP ====== ------ -->
+          <td *ngIf="!isMobile">
+            <div class="served-by-desktop-a">
+              <div class="served-by-desktop-b" *ngFor="let agent of request?.participanting_Agents">
+
+                <span *ngIf="agent.is_bot === false">
+
+                  <div class="served-by-desktop-c tool_tip" (click)="goToAgentProfile(agent?._id)"
+                    style="cursor:pointer">
+                    <div class="served-by-desktop-d">
+                      <div size="32" class="served-by-desktop-e">
+                        <img [ngClass]="{'current-user-member-border' : agent._id === currentUserID}"
+                          src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fphoto.jpg?alt=media"
+                          alt="">
+                      </div>
+                    </div>
+
+                    <span style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px; white-space: nowrap;" class="top">
+                      <span style="text-transform: capitalize;"> {{ agent?.firstname }}
+                        <span *ngIf="agent?.lastname">
+                          {{ agent?.lastname | slice:0:1 }}.
+                        </span>
+
+                      </span>
+                      <i></i>
+                    </span>
+                  </div>
+                </span>
+
+
+                <span *ngIf="agent.is_bot === true">
+
+                  <span (click)="goToBotProfile(agent?._id, agent?.type)" style="cursor:pointer" class="tool_tip">
+                    <img class="user-img ws-requests-list-servedby-avatar"
+                      src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fphoto.jpg?alt=media"
+                      onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
+                    <!-- <span class="served-by-agent">
+                      {{ agent.name}}
+                    </span> -->
+
+                    <span style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px; white-space: nowrap;" class="top">
+                      <span style="text-transform: capitalize;"> {{ agent.name}}  </span>
+                      <i></i>
+                    </span>
+                    <div *ngIf="agent.type === 'internal'">
+                      <img class="served-by-bot-type-logo" src="assets/img/tiledesk_logo_no_text.png" />
+                    </div>
+                    <div *ngIf="agent.type === 'external'">
+                      <img class="served-by-bot-type-logo" src="assets/img/external_bot_logo.png" />
+                    </div>
+                    <div *ngIf="agent.type === 'dialogflow'">
+                      <img class="served-by-bot-type-logo" src="assets/img/Dialogflow_logo_no_text.png" />
+                    </div>
+                  </span>
+                </span>
+              </div>
+            </div>
+
           </td>
 
 
@@ -805,10 +871,9 @@
           <!-- class="td-actions text-right" -->
           <!-- ------ ====== ARCHIVE Action ====== ------ -->
           <!-- (click)='openDeleteRequestModal(request?.request_id)' // <- open the modal "confirm archive request"  -->
-          <td>
-            
+          <td class="td-actions text-right" style="padding-top: 9px !important;">
             <button type="button" rel="tooltip" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}"
-              class="btn btn-tdblu btn-simple btn-xs tool_tip" (click)='archiveRequest(request?.request_id)' 
+              class="btn btn-tdblu btn-simple btn-xs tool_tip" (click)='archiveRequest(request?.request_id)'
               [disabled]="request?.currentUserIsJoined === false && ROLE_IS_AGENT === true">
 
               <i class="material-icons">archive</i>
@@ -820,7 +885,30 @@
               </span>
 
             </button>
+
+            <button type="button" rel="tooltip" title="{{ 'RequestMsgsPage.Enter' | translate }}"
+              class="btn btn-tdblu btn-simple btn-xs tool_tip" (click)='joinRequest(request?.request_id)'
+              [disabled]="request?.currentUserIsJoined === true">
+
+              <!--
+              // ------------------------------------------------------------------------------------------------------
+              // SVG font-awesome link icon
+              // ------------------------------------------------------------------------------------------------------ -->
+              <svg style="height: 15px; width:auto;" aria-hidden="true" focusable="false" data-prefix="fas"
+                data-icon="link" class="svg-inline--fa fa-link fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 512 512">
+                <path fill="currentColor"
+                  d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z">
+                </path>
+              </svg>
+              <span style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px;" class="top">
+                <span style="text-transform: capitalize;"> {{ 'RequestMsgsPage.Enter' | translate }} </span>
+                <i></i>
+              </span>
+
+            </button>
           </td>
+
 
         </tr>
       </tbody>

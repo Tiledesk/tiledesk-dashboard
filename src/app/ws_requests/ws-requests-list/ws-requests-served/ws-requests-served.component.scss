@@ -758,8 +758,8 @@ $f21blue: #039be5;
 
 .ws-requests-list-servedby-avatar {
   vertical-align: middle;
-  width: 30px;
-  height: 30px;
+  width: 31px;
+  height: 31px;
   border-radius: 50%;
   border: 1px solid #eee;
   margin-top: 1px;
@@ -870,3 +870,64 @@ $f21blue: #039be5;
   padding-top: 8px !important;
   padding-bottom: 8px !important;
 }
+
+.contact-fullname {
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  line-height: 10px;
+}
+
+.served-by-desktop-a {
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  // margin-top: 12px;
+}
+
+.served-by-desktop-b {
+  // margin-right: 6px;
+  display: flex;
+  flex-flow: row nowrap;
+  -webkit-box-pack: start;
+  justify-content: flex-start;
+}
+
+.served-by-desktop-c {
+  padding: 0px;
+  display: inline-block;
+  flex: 1 1 32px;
+  margin-left: -2px;
+}
+
+.served-by-desktop-d {
+  position: relative;
+}
+.served-by-desktop-e {
+
+  margin: 0px auto;
+  border-radius: 50%;
+  display: inline-block;
+  vertical-align: middle;
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+  font-size: 28px;
+}
+
+.served-by-desktop-e img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid rgb(255, 255, 255);
+}
+
+
+.current-user-member-border {
+
+  border-color:#4caf50 !important;
+}
+
+
