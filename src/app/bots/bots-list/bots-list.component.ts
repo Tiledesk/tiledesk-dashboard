@@ -9,12 +9,12 @@ import { AuthService } from '../../core/auth.service';
 import { Location } from '@angular/common';
 import { NotifyService } from '../../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
-
 import { AppConfigService } from '../../services/app-config.service';
-
+import { DepartmentService } from '../../services/department.service';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../services/brand.service';
 
+const swal = require('sweetalert');
 @Component({
   selector: 'bots-list',
   templateUrl: './bots-list.component.html',
@@ -58,6 +58,14 @@ export class BotListComponent implements OnInit {
 
   storageBucket: string;
   _botType: string;
+
+  deptsNameAssociatedToBot: any
+
+  botIsAssociatedWithDepartments: string;
+  botIsAssociatedWithTheDepartment: string;
+  disassociateTheBot: string;
+  warning: string;
+
   constructor(
     private faqKbService: FaqKbService,
     private router: Router,
@@ -67,8 +75,9 @@ export class BotListComponent implements OnInit {
     private notify: NotifyService,
     public appConfigService: AppConfigService,
     private translate: TranslateService,
-    public brandService: BrandService
-  ) { 
+    public brandService: BrandService,
+    public departmentService: DepartmentService
+  ) {
 
     const brand = brandService.getBrand();
     this.tparams = brand;
@@ -85,6 +94,32 @@ export class BotListComponent implements OnInit {
     // this.getFaqKb();
     this.getFaqKbByProjectId();
     this.getStorageBucket();
+    this.getTranslations()
+  }
+
+  getTranslations() {
+    this.translate.get('BotsPage')
+      .subscribe((text: string) => {
+        // this.deleteContact_msg = text;
+        console.log('+ + + BotsPage translation: ', text)
+
+        this.botIsAssociatedWithDepartments = text['TheBotIsAssociatedWithDepartments'];
+        this.botIsAssociatedWithTheDepartment = text['TheBotIsAssociatedWithTheDepartment'];
+        this.disassociateTheBot = text['DisassociateTheBot'];
+      });
+
+
+      this.translate.get('Warning')
+      .subscribe((text: string) => {
+        // this.deleteContact_msg = text;
+        console.log('+ + + BotsPage translation: ', text)
+
+        this.warning = text;
+    
+      });
+
+
+      
   }
 
   getStorageBucket() {
@@ -141,22 +176,15 @@ export class BotListComponent implements OnInit {
         // ------------------------------------------------------------------------------------
         let i: number;
         for (i = 0; i < this.faqkbList.length; i++) {
-
           if (this.faqkbList[i].type === 'external') {
-
             this.faqkbList[i].external = true;
-
           } else if (this.faqkbList[i].type === 'internal') {
-
             this.faqkbList[i].external = false;
           }
-
-
           if (this.faqkbList[i].description) {
             let stripHere = 40;
             this.faqkbList[i]['truncated_desc'] = this.faqkbList[i].description.substring(0, stripHere) + '...';
           }
-
         }
       }
 
@@ -302,6 +330,10 @@ export class BotListComponent implements OnInit {
    */
   openDeleteModal(id: string, bot_name: string, HAS_FAQ_RELATED: boolean, botType: string) {
 
+    const deptsArray = this.getDepartments(id)
+    console.log('»» ON MODAL DELETE OPEN - deptsArray', deptsArray);
+
+
     // FIX THE BUG: WHEN THE MODAL IS OPENED, IF ANOTHER BOT HAS BEEN DELETED PREVIOUSLY, IS DISPLAYED THE ID OF THE BOT DELETED PREVIOUSLY
     this.bot_id_typed = '';
     // FIX THE BUG: WHEN THE MODAL IS OPENED, IF ANOTHER BOT HAS BEEN DELETED PREVIOUSLY, THE BUTTON 'DELETE BOT' IS ACTIVE
@@ -315,12 +347,76 @@ export class BotListComponent implements OnInit {
     this._botType = botType
     this.HAS_FAQ_RELATED = HAS_FAQ_RELATED;
 
-    // this.display = 'block'; // NO MORE USED (IS THE OLD MODAL USED TO DELETE THE BOT)
-
-    this.displayDeleteBotModal = 'block'; // THE NEW MODAL USED TO DELETE THE BOT
+    // this.display = 'block'; // NO MORE USED (IS THE OLD MODAL USED TO DELETE THE BOT
 
     this.id_toDelete = id;
     this.bot_name_to_delete = bot_name;
+  }
+
+
+  getDepartments(selectedBotId) {
+    this.departmentService.getDeptsByProjectId().subscribe((_departments: any) => {
+      console.log('ON MODAL DELETE OPEN - GET DEPTS RES', _departments);
+      // this.departments = _departments
+
+      const foundDeptsArray = _departments.filter((obj: any) => {
+        return obj.id_bot === selectedBotId;
+      });
+
+      // console.log('ON MODAL DELETE OPEN - foundBotArray', foundBotArray);
+
+      if (foundDeptsArray.length === 0) {
+        console.log('ON MODAL DELETE OPEN - BOT NOT ASSOCIATED');
+
+
+        this.displayDeleteBotModal = 'block'; // THE NEW MODAL USED TO DELETE THE BOT
+
+      } else {
+        console.log('ON MODAL DELETE OPEN - BOT !!! ASSOCIATED');
+        console.log('ON MODAL DELETE OPEN - foundDeptsArray', foundDeptsArray);
+
+        this.deptsNameAssociatedToBot = []
+
+        foundDeptsArray.forEach(dept => {
+          this.deptsNameAssociatedToBot.push(dept.name)
+        });
+
+        console.log('ON MODAL DELETE OPEN - depts Names Associated To Bot', this.deptsNameAssociatedToBot);
+
+        // this.botIsAssociatedWithDepartments = text['TheBotIsAssociatedWithDepartments'];
+        // this.botIsAssociatedWithTheDepartment = text['TheBotIsAssociatedWithTheDepartment'];
+        if (foundDeptsArray.length === 1) {
+
+          swal({
+            title: this.warning,
+            text: this.botIsAssociatedWithTheDepartment + ' ' + this.deptsNameAssociatedToBot+ '. ' + this.disassociateTheBot,
+            icon: "warning",
+            button: true,
+            dangerMode: false,
+          })
+        }
+
+        if (foundDeptsArray.length > 1) {
+
+          swal({
+            title: this.warning,
+            text: this.botIsAssociatedWithDepartments + ' ' + this.deptsNameAssociatedToBot + '. ' + this.disassociateTheBot,
+            icon: "warning",
+            button: true,
+            dangerMode: false,
+          })
+
+        }
+
+      }
+
+    }, error => {
+      console.log('ON MODAL DELETE OPEN - GET DEPTS - ERROR: ', error);
+    }, () => {
+      console.log('ON MODAL DELETE OPEN - GET DEPTS * COMPLETE *')
+    });
+
+
   }
 
   /**
@@ -353,16 +449,12 @@ export class BotListComponent implements OnInit {
 
       this.updateBotAsTrashed();
     } else {
-
       this.deleteDlflwBotCredentialAndUpdateBotAsTrashed();
     }
-
-
   }
 
 
   deleteDlflwBotCredentialAndUpdateBotAsTrashed() {
-
     // ------------------------------------------------------------------
     // Delete Dialogflow Bot Credetial
     // ------------------------------------------------------------------
@@ -387,7 +479,6 @@ export class BotListComponent implements OnInit {
 
 
   updateBotAsTrashed() {
-
     this.faqKbService.updateFaqKbAsTrashed(this.id_toDelete, true).subscribe((updatedFaqKb: any) => {
       console.log('TRASH THE BOT - UPDATED FAQ-KB ', updatedFaqKb);
     }, (error) => {
