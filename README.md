@@ -229,7 +229,7 @@ tiledesk-dashboard
 # Brand
 
  
-Edit the file brand.json in the folder `src/assets/brand/` or put your API URL in environment.*.ts (or in the `dashboard-config.json`  if `remoteConfig` is set to `true`) to customize
+Edit the file brand.json in the folder `src/assets/brand/` or load an external json by adding in environment.*.ts (or in the `dashboard-config.json`  if `remoteConfig` is set to `true`) `brandSrc :"https://<YOUR_BRAND_JSON>/` to customize:
 
 - company name,
 
@@ -239,8 +239,9 @@ Edit the file brand.json in the folder `src/assets/brand/` or put your API URL i
 
 - contact email and more
 
-```
+
 #### dashboard-config.json
+
 ```typescript
 
 widgetUrl: "https://<YOUR_CHAT21_WEB_WIDGET_URL>:4200/launch.js",
@@ -254,8 +255,8 @@ brandSrc :"https://<YOUR_BRAND_JSON>/",
 ...
 
 };
+
 ```
 
   
-
 Edit the file _variables.scss in the folder `src/assets/sass/md/` to customize the colors
