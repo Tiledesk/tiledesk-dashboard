@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { DepartmentService } from '../services/mongodb-department.service';
+import { DepartmentService } from '../services/department.service';
 import { Department } from '../models/department-model';
 import { FaqKbService } from '../services/faq-kb.service';
 import { Router } from '@angular/router';

@@ -2,7 +2,7 @@
 import { Component, OnInit, Input, Output, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
-import { DepartmentService } from '../services/mongodb-department.service';
+import { DepartmentService } from '../services/department.service';
 import { BotService } from '../services/bot.service'; // no more used
 import { FaqKbService } from '../services/faq-kb.service';
 import { Project } from '../models/project-model';
