@@ -1,15 +1,15 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { MongodbDepartmentService } from './mongodb-departemnt.service';
+import {DepartmentService } from './departemnt.service';
 
 describe('MongodbDepartemntService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [MongodbDepartmentService]
+      providers: [DepartmentService]
     });
   });
 
-  it('should be created', inject([MongodbDepartmentService], (service: MongodbDepartmentService) => {
+  it('should be created', inject([DepartmentService], (service: DepartmentService) => {
     expect(service).toBeTruthy();
   }));
 });

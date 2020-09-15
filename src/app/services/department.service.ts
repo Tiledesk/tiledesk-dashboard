@@ -8,7 +8,7 @@ import 'rxjs/add/operator/map';
 import { environment } from '../../environments/environment';
 import { AuthService } from '../core/auth.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { AppConfigService } from '../services/app-config.service';
+import { AppConfigService } from './app-config.service';
 
 @Injectable()
 export class DepartmentService {
@@ -88,7 +88,7 @@ export class DepartmentService {
   }
 
   /**
-   **! *** GET DEPTS AS THE OLD WIDGET VERSION (USED YET BY SOME PROJECT) ***
+   **! *** GET DEPTS AS THE OLD WIDGET VERSION (USED YET BY SOME PROJECTS) ***
    *  !!! USED ONLY FOR TESTING THE WIDGET CALLBACK
    *  * THAT GET THE DEPTS FILTERED FOR STATUS === 1 and WITHOUT AUTHENTICATION
    */
@@ -142,7 +142,7 @@ export class DepartmentService {
    * NOTE: THE CALLBACK TO GET THE DEPTS FILTERED FOR STATUS IS RUNNED BY THE WIDGET
    * NOTE: the DSBRD CALL /departments/allstatus  WHILE the WIDGET  CALL /departments
    * 
-   * NOTE: chat21-api-node.js READ THE CURRENT PROJECT ID FROM THE URL SO IT SO NO LONGER NECESSARY TO PASS THE PROJECT ID AS PARAMETER
+   * NOTE: chat21-api-node.js READ THE CURRENT PROJECT ID FROM THE URL SO IS NO LONGER NECESSARY TO PASS THE PROJECT ID AS PARAMETER
    */
   public getDeptsByProjectId(): Observable<Department[]> {
     const url = this.DEPTS_URL + 'allstatus';

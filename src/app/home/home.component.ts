@@ -7,7 +7,7 @@ import { Project } from '../models/project-model';
 import { Router } from '@angular/router';
 import { UsersService } from '../services/users.service';
 import { UsersLocalDbService } from '../services/users-local-db.service';
-import { DepartmentService } from '../services/mongodb-department.service';
+import { DepartmentService } from '../services/department.service';
 import { RequestsService } from '../services/requests.service';
 import { NotifyService } from '../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
