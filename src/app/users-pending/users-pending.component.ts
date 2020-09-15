@@ -4,7 +4,8 @@ import { Location } from '@angular/common';
 import { PendingInvitation } from '../models/pending-invitation-model';
 import { NotifyService } from '../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
-import brand from 'assets/brand/brand.json';
+// import brand from 'assets/brand/brand.json';
+import { BrandService } from '../services/brand.service';
 
 @Component({
   selector: 'appdashboard-users-pending',
@@ -13,7 +14,8 @@ import brand from 'assets/brand/brand.json';
 })
 
 export class UsersPendingComponent implements OnInit {
-  tparams = brand;
+  // tparams = brand;
+  tparams: any;
   
   pending_invites: PendingInvitation;
   pendingInvitationEmail: string;
@@ -24,9 +26,12 @@ export class UsersPendingComponent implements OnInit {
     private usersService: UsersService,
     private _location: Location,
     private notify: NotifyService,
-    private translate: TranslateService
-
-  ) { }
+    private translate: TranslateService,
+    public brandService: BrandService
+  ) { 
+    const brand = brandService.getBrand();
+    this.tparams = brand;
+  }
 
   ngOnInit() {
     this.translateResendInviteSuccessMsg();

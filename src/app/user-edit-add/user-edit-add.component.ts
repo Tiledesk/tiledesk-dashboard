@@ -11,7 +11,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { AppConfigService } from '../services/app-config.service';
 import { Location } from '@angular/common';
-import brand from 'assets/brand/brand.json';
+// import brand from 'assets/brand/brand.json';
+import { BrandService } from '../services/brand.service';
 
 @Component({
   selector: 'app-user-edit-add',
@@ -19,7 +20,8 @@ import brand from 'assets/brand/brand.json';
   styleUrls: ['./user-edit-add.component.scss']
 })
 export class UserEditAddComponent implements OnInit, OnDestroy {
-  tparams = brand;
+  // tparams = brand;
+  tparams: any;
 
   CREATE_VIEW = false;
   EDIT_VIEW = false;
@@ -87,8 +89,12 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
     private prjctPlanService: ProjectPlanService,
     private translate: TranslateService,
     public appConfigService: AppConfigService,
-    public location: Location
-  ) { }
+    public location: Location,
+    public brandService: BrandService
+  ) { 
+    const brand = brandService.getBrand();
+    this.tparams = brand;
+  }
 
   ngOnInit() {
     console.log('on init Selected Role ', this.role);
