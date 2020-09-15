@@ -3,8 +3,10 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../../core/auth.service';
 import { Location } from '@angular/common';
 import { environment } from '../../../../environments/environment';
-import brand from 'assets/brand/brand.json';
 import { AppConfigService } from '../../../services/app-config.service';
+
+// import brand from 'assets/brand/brand.json';
+import { BrandService } from '../../../services/brand.service';
 
 @Component({
   selector: 'appdashboard-bot-type-select',
@@ -19,14 +21,21 @@ export class BotTypeSelectComponent implements OnInit {
   projectId: string;
   dgfIsVisible: boolean;
   natIsVisible: boolean;
-  tparams = brand;
+
+  // tparams = brand;
+  tparams:any;
 
   constructor(
     private router: Router,
     public location: Location,
     public auth: AuthService,
-    public appConfigService: AppConfigService
-  ) { }
+    public appConfigService: AppConfigService,
+    public brandService: BrandService
+  ) {
+
+    const brand = brandService.getBrand();
+    this.tparams = brand;
+   }
 
   ngOnInit() {
     this.getCurrentProject()

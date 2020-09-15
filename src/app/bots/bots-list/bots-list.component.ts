@@ -9,8 +9,11 @@ import { AuthService } from '../../core/auth.service';
 import { Location } from '@angular/common';
 import { NotifyService } from '../../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
-import brand from 'assets/brand/brand.json';
+
 import { AppConfigService } from '../../services/app-config.service';
+
+// import brand from 'assets/brand/brand.json';
+import { BrandService } from '../../services/brand.service';
 
 @Component({
   selector: 'bots-list',
@@ -19,7 +22,8 @@ import { AppConfigService } from '../../services/app-config.service';
 })
 
 export class BotListComponent implements OnInit {
-  tparams = brand;
+  // tparams = brand;
+  tparams: any;
 
   faqkbList: FaqKb[];
 
@@ -62,8 +66,14 @@ export class BotListComponent implements OnInit {
     private _location: Location,
     private notify: NotifyService,
     public appConfigService: AppConfigService,
-    private translate: TranslateService
-  ) { }
+    private translate: TranslateService,
+    public brandService: BrandService
+  ) { 
+
+    const brand = brandService.getBrand();
+    this.tparams = brand;
+
+  }
 
   ngOnInit() {
     this.auth.checkRoleForCurrentProject();
@@ -76,6 +86,7 @@ export class BotListComponent implements OnInit {
     this.getFaqKbByProjectId();
     this.getStorageBucket();
   }
+
   getStorageBucket() {
     const firebase_conf = this.appConfigService.getConfig().firebase;
     this.storageBucket = firebase_conf['storageBucket'];

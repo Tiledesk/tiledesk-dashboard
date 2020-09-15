@@ -23,7 +23,6 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
   // tparams = brand;
   tparams: any;
 
-
   faqKbName: string;
   faqKbUrl: string;
 

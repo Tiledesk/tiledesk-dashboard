@@ -17,7 +17,8 @@ import { AppConfigService } from '../../services/app-config.service';
 import { UploadImageService } from '../../services/upload-image.service';
 import { UsersService } from '../../services/users.service';
 import { BotsBaseComponent } from '../bots-base/bots-base.component';
-import brand from 'assets/brand/brand.json';
+// import brand from 'assets/brand/brand.json';
+import { BrandService } from '../../services/brand.service';
 
 // import $ = require('jquery');
 // declare const $: any;
@@ -96,12 +97,13 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   dlgflwSelectedLangCode: any;
   dlgflwKnowledgeBaseID: string;
   uploadedFile: any;
-  tparams = brand;
-
   updateBotError: string;
   updateBotSuccess: string;
   notValidJson: string;
 
+  // tparams = brand;
+  tparams: any;
+  
   constructor(
     private mongodbFaqService: MongodbFaqService,
     private router: Router,
@@ -114,10 +116,14 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     private translate: TranslateService,
     private uploadImageService: UploadImageService,
     public appConfigService: AppConfigService,
-    private usersService: UsersService
+    private usersService: UsersService,
+    public brandService: BrandService
 
   ) {
     super();
+
+    const brand = brandService.getBrand();
+    this.tparams = brand;
   }
 
   ngOnInit() {
