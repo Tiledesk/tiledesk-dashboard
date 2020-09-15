@@ -12,7 +12,7 @@ import { takeUntil } from 'rxjs/operators'
 import { UsersService } from '../../../services/users.service';
 import { browserRefresh } from '../../../app.component';
 import { FaqKbService } from '../../../services/faq-kb.service';
-import { DepartmentService } from '../../../services/mongodb-department.service';
+import { DepartmentService } from '../../../services/department.service';
 import { NotifyService } from '../../../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -43,6 +43,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
   archivingRequestErrorNoticationMsg: string;
   requestHasBeenArchivedNoticationMsg_part1: string;
   requestHasBeenArchivedNoticationMsg_part2: string;
+  currentUserID: string;
 
   constructor(
     public botLocalDbService: BotLocalDbService,
@@ -54,11 +55,11 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     public usersService: UsersService,
     public faqKbService: FaqKbService,
     private departmentService: DepartmentService,
-    private notify: NotifyService,
+    public notify: NotifyService,
     private translate: TranslateService
   ) {
 
-    super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService);
+    super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify);
   }
 
   ngOnInit() {
@@ -73,6 +74,19 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     this.detectBrowserRefresh();
 
     this.getTranslations();
+    this.getLoggedUser();
+  }
+
+
+  getLoggedUser() {
+    this.auth.user_bs.subscribe((user) => {
+      console.log('WS-REQUESTS UNSERVED ', user)
+      // this.user = user;
+      if (user) {
+        this.currentUserID = user._id
+        console.log('WS-REQUESTS UNSERVEDcurrentUser ID', this.currentUserID);
+      }
+    });
   }
 
   getTranslations() {
@@ -354,6 +368,17 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     if (!request) return null
     return index; // unique id corresponding to the item
   }
+
+   // ------------------------------------------
+  // Join request
+  // ------------------------------------------
+  joinRequest (request_id:string) {
+    console.log('WS-REQUESTS-UNSERVED - joinRequest request_id', request_id);
+    console.log('WS-REQUESTS-UNSERVED - joinRequest currentUserID', this.currentUserID);
+
+    this.onJoinHandled(request_id, this.currentUserID); 
+  }
+
 
   dept_replace(deptid) {
     // console.log('% »»» WebSocketJs WF +++++ ws-requests--- unserved - dept_replace deptid', deptid)

@@ -19,7 +19,7 @@ import { AppConfigService } from '../../services/app-config.service';
 import { Subscription } from 'rxjs';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { DepartmentService } from '../../services/mongodb-department.service';
+import { DepartmentService } from '../../services/department.service';
 import { GroupService } from '../../services/group.service';
 import { Observable } from 'rxjs';
 import { UsersService } from '../../services/users.service';
@@ -221,7 +221,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     public botLocalDbService: BotLocalDbService,
     public usersLocalDbService: UsersLocalDbService,
     private requestsService: RequestsService,
-    private notify: NotifyService,
+    public notify: NotifyService,
     public auth: AuthService,
     public appConfigService: AppConfigService,
     private departmentService: DepartmentService,
@@ -232,7 +232,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     private tagsService: TagsService
 
   ) {
-    super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService)
+    super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify)
   }
 
   @ViewChild('cont') contEl: any;

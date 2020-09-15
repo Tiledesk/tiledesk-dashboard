@@ -5,7 +5,7 @@ import { Request } from '../../models/request-model';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
 import { IMyDpOptions, IMyDateModel, IMyDate } from 'mydatepicker';
-import { DepartmentService } from '../../services/mongodb-department.service';
+import { DepartmentService } from '../../services/department.service';
 import { trigger, state, style, animate, transition, query, animateChild } from '@angular/animations';
 import { UsersLocalDbService } from '../../services/users-local-db.service';
 import { BotLocalDbService } from '../../services/bot-local-db.service';
@@ -136,13 +136,13 @@ export class WsRequestsNortComponent extends WsSharedComponent implements OnInit
     public faqKbService: FaqKbService,
     private prjctPlanService: ProjectPlanService,
     private translate: TranslateService,
-    private notify: NotifyService,
+    public notify: NotifyService,
     public appConfigService: AppConfigService,
     public wsRequestsService: WsRequestsService,
     public location: Location,
     private route: ActivatedRoute,
     public selectOptionsTranslatePipe: SelectOptionsTranslatePipe
-  ) { super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService); }
+  ) { super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify); }
 
   ngOnInit() {
     this.getParamsRequestStatus();

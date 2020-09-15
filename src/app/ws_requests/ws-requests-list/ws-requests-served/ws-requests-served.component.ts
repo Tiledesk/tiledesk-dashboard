@@ -15,9 +15,10 @@ import { UsersService } from '../../../services/users.service';
 import { browserRefresh } from '../../../app.component';
 import { FaqKbService } from '../../../services/faq-kb.service';
 import { Request } from '../../../models/request-model';
-import { DepartmentService } from '../../../services/mongodb-department.service';
+import { DepartmentService } from '../../../services/department.service';
 import { NotifyService } from '../../../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
+
 @Component({
   selector: 'appdashboard-ws-requests-served',
   templateUrl: './ws-requests-served.component.html',
@@ -50,6 +51,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   archivingRequestErrorNoticationMsg: string;
   requestHasBeenArchivedNoticationMsg_part1: string;
   requestHasBeenArchivedNoticationMsg_part2: string;
+  isMobile: boolean;
 
   constructor(
     public botLocalDbService: BotLocalDbService,
@@ -61,12 +63,13 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     public usersService: UsersService,
     public faqKbService: FaqKbService,
     private departmentService: DepartmentService,
-    private notify: NotifyService,
-    private translate: TranslateService
+    public notify: NotifyService,
+    private translate: TranslateService,
+   
     // private cdr: ChangeDetectorRef
 
   ) {
-    super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService);
+    super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify);
   }
 
   ngOnInit() {
@@ -444,11 +447,25 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
       });
   }
 
+  // ------------------------------------------
+  // Join request
+  // ------------------------------------------
+  joinRequest (request_id:string) {
+    this.currentUserID
+    this.onJoinHandled(request_id, this.currentUserID); 
+  }
+
 
   trackByFn(index, request) {
     // console.log('% »»» WebSocketJs WF WS-RL - trackByFn ', request );
     if (!request) return null
     return index; // unique id corresponding to the item
+  }
+
+  detectMobile() {
+    // this.isMobile = true;
+    this.isMobile = /Android|iPhone/i.test(window.navigator.userAgent);
+    console.log('WS-REQUEST-SERVED - IS MOBILE ', this.isMobile);
   }
 
   // dept_replace(deptid) {

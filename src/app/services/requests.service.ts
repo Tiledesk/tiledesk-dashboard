@@ -14,7 +14,7 @@ import { currentUserUidIsInMembers } from '../utils/util';
 import { AuthService } from '../core/auth.service';
 import { Project } from '../models/project-model';
 import { Department } from '../models/department-model';
-import { DepartmentService } from '../services/mongodb-department.service';
+import { DepartmentService } from './department.service';
 import { UsersService } from '../services/users.service';
 import { environment } from '../../environments/environment';
 

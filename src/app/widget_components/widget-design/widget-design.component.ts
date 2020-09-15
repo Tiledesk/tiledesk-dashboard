@@ -10,13 +10,13 @@ import { Observable } from 'rxjs/Rx';
 import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
 import { Department } from '../../models/department-model';
-import { DepartmentService } from '../../services/mongodb-department.service';
+import { DepartmentService } from '../../services/department.service';
 import { NotifyService } from '../../core/notify.service';
 import { environment } from '../../../environments/environment';
 import { WidgetDesignBaseComponent } from './widget-design-base/widget-design-base.component';
 import { AppConfigService } from '../../services/app-config.service';
 
-import brand from 'assets/brand/brand.json';
+// import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../services/brand.service';
 
 @Component({

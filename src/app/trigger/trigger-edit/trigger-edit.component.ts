@@ -11,7 +11,7 @@ import { Location } from '@angular/common';
 import { TriggerService } from 'app/services/trigger.service';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import { DepartmentService } from './../../services/mongodb-department.service';
+import { DepartmentService } from '../../services/department.service';
 import { UsersService } from '../../services/users.service';
 import { FaqKbService } from '../../services/faq-kb.service';
 

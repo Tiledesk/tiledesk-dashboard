@@ -1,4 +1,4 @@
-import { DepartmentService } from './../services/mongodb-department.service';
+import { DepartmentService } from './department.service';
 import { Trigger } from './../models/trigger-model';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';

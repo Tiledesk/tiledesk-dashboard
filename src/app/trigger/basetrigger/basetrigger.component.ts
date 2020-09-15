@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
-import { DepartmentService } from 'app/services/mongodb-department.service'
+import { DepartmentService } from 'app/services/department.service'
 import { UsersService } from '../../services/users.service';
 import { FaqKbService } from '../../services/faq-kb.service';
 

@@ -1,7 +1,7 @@
 import { BasetriggerComponent } from './../basetrigger/basetrigger.component';
 
 import { NotifyService } from 'app/core/notify.service';
-import { DepartmentService } from './../../services/mongodb-department.service';
+import { DepartmentService } from '../../services/department.service';
 import { TriggerService } from 'app/services/trigger.service';
 import { Component, OnInit, trigger, ViewChild } from '@angular/core';
 import * as _ from 'lodash';

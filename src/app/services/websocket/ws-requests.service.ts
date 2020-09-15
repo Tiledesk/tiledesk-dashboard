@@ -13,7 +13,7 @@ import { Observable } from "rxjs/Observable";
 import 'rxjs/add/observable/of';
 import { Subscription } from 'rxjs/Subscription';
 import { AppConfigService } from '../../services/app-config.service';
-import { DepartmentService } from '../../services/mongodb-department.service';
+import { DepartmentService } from '../department.service';
 
 export interface Message {
   action: string;

@@ -20,7 +20,7 @@ import 'rxjs/add/observable/of';
 import { AppConfigService } from '../../services/app-config.service';
 import { Subscription } from 'rxjs/Subscription';
 import PerfectScrollbar from 'perfect-scrollbar';
-import { DepartmentService } from '../../services/mongodb-department.service';
+import { DepartmentService } from '../../services/department.service';
 import { environment } from '../../../environments/environment';
 import { distinctUntilChanged } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -128,9 +128,9 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     public faqKbService: FaqKbService,
     public appConfigService: AppConfigService,
     private departmentService: DepartmentService,
-
+    public notify: NotifyService
   ) {
-    super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService);
+    super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify);
     this.zone = new NgZone({ enableLongStackTrace: false });
   }
 
