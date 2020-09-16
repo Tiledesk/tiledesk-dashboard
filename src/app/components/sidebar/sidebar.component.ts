@@ -19,7 +19,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { AppConfigService } from '../../services/app-config.service';
 
-import { DepartmentService } from '../../services/mongodb-department.service';
+import { DepartmentService } from '../../services/department.service';
 
 // import { publicKey } from '../../utils/util';
 // import { public_Key } from '../../utils/util';
