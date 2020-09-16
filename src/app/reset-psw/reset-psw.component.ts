@@ -5,7 +5,9 @@ import { ActivatedRoute } from '@angular/router';
 import { ResetPswService } from '../services/reset-psw.service';
 import { Location } from '@angular/common';
 import { PasswordValidation } from './password-validation';
-import brand from 'assets/brand/brand.json';
+// import brand from 'assets/brand/brand.json';
+import { BrandService } from '../services/brand.service';
+
 
 type EmailField = 'email';
 type EmailFormErrors = { [u in EmailField]: string };
@@ -20,10 +22,13 @@ type PswFormErrors = { [u in PswFields]: string };
 })
 export class ResetPswComponent implements OnInit {
 
+  // companyLogoBlack_Url = brand.company_logo_black__url;
+  // contact_us_email = brand.contact_us_email;
+  // company_site_url = brand.company_site_url;
 
-  companyLogoBlack_Url = brand.company_logo_black__url;
-  contact_us_email = brand.contact_us_email;
-  company_site_url = brand.company_site_url;
+  companyLogoBlack_Url: string;
+  contact_us_email: string;
+  company_site_url: string;
 
 
   emailForm: FormGroup;
@@ -70,11 +75,19 @@ export class ResetPswComponent implements OnInit {
   CONFIRM_PSW_IS_SAME_OF_PWS: boolean
   constructor
     (
-    private fb: FormBuilder,
-    private resetPswService: ResetPswService,
-    private activetedRoute: ActivatedRoute,
-    public location: Location
-    ) { }
+      private fb: FormBuilder,
+      private resetPswService: ResetPswService,
+      private activetedRoute: ActivatedRoute,
+      public location: Location,
+      public brandService: BrandService
+    ) {
+
+    const brand = brandService.getBrand();
+
+    this.companyLogoBlack_Url = brand['company_logo_black__url'];
+    this.contact_us_email = brand['contact_us_email'];
+    this.company_site_url = brand['company_site_url'];
+  }
 
   ngOnInit() {
     this.detectResetPswRoute();
