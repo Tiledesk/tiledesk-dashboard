@@ -6,16 +6,17 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../../core/auth.service';
 
 import { RequestsService } from '../../../services/requests.service';
-import { DepartmentService } from '../../../services/mongodb-department.service';
+import { DepartmentService } from '../../../services/department.service';
 import { isDevMode } from '@angular/core';
 import { UsersService } from '../../../services/users.service';
 import { UploadImageService } from '../../../services/upload-image.service';
 import { Subscription } from 'rxjs/Subscription';
 import { AppConfigService } from '../../../services/app-config.service';
-import brand from 'assets/brand/brand.json';
-
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+// import brand from 'assets/brand/brand.json';
+import { BrandService } from '../../../services/brand.service';
 
 @Component({
   selector: 'appdashboard-projects-for-panel',
@@ -23,15 +24,19 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./projects-for-panel.component.scss']
 })
 export class ProjectsForPanelComponent implements OnInit, OnDestroy {
-  tparams = brand;
-
-  companyLogoBlack_Url = brand.company_logo_black__url;
+  
   // companyLogoBlack_Url = brand.company_logo_allwhite__url
-  companyLogoBlack_width = brand.recent_project_page.company_logo_black__width;
   // pageBackgroundColor = brand.recent_project_page.background_color;
 
-  projects: Project[];
+  // tparams = brand;
+  // companyLogoBlack_Url = brand.company_logo_black__url;
+  // companyLogoBlack_width = brand.recent_project_page.company_logo_black__width;
 
+  tparams:any;
+  companyLogoBlack_Url: string;
+  companyLogoBlack_width:string;
+
+  projects: Project[];
   id_project: string;
   project_name: string;
 
@@ -62,6 +67,8 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
   public_Key: string;
   MT: boolean;
 
+  window_width_is_60: boolean;
+
   private unsubscribe$: Subject<any> = new Subject<any>();
 
   constructor(
@@ -73,8 +80,15 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
     private departmentService: DepartmentService,
     private usersService: UsersService,
     private uploadImageService: UploadImageService,
-    public appConfigService: AppConfigService
+    public appConfigService: AppConfigService,
+    public brandService: BrandService
   ) {
+    const brand = brandService.getBrand();
+    this.tparams = brand;
+    this.companyLogoBlack_Url = brand['company_logo_black__url'];
+    this.companyLogoBlack_width = brand['recent_project_page']['company_logo_black__width'];
+
+
     console.log('IS DEV MODE ', isDevMode());
     this.APP_IS_DEV_MODE = isDevMode()
   }
@@ -94,6 +108,7 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
     // this.subscribeToLogoutPressedinSidebarNavMobilePrjctUndefined();
     this.getStorageBucket();
     this.getOSCODE();
+    this.onInitWindowWidth()
   }
 
   getOSCODE() {
@@ -180,6 +195,8 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
     console.log('NAVBAR-FOR-PANEL !!! GO TO UNSERVED-REQUEST - PROJECT status ', project_status)
 
     if (project_status !== 0) {
+
+      window.top.postMessage('open', '*')
 
       this.router.navigate([`/project/${project_id}/unserved-request-for-panel`]);
       // WHEN THE USER SELECT A PROJECT ITS ID and NAME IS SEND IN THE AUTH SERVICE THAT PUBLISHES IT
@@ -277,6 +294,10 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
               profile_type: project.id_project.profile.type,
               subscription_is_active: project.id_project.isActiveSubscription
             }
+
+            project['project_name_initial'] = project.id_project.name.charAt(0)
+
+
 
             // this.subsTo_WsCurrentUser( project.id_project._id)
             // this.getProjectUsersIdByCurrentUserId(project.id_project._id)
@@ -387,10 +408,31 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
     this.newInnerWidth = event.target.innerWidth;
     console.log('INNER WIDTH ', this.newInnerWidth)
 
-    if (this.newInnerWidth >= 992) {
-      const elemAppSidebar = <HTMLElement>document.querySelector('app-sidebar');
-      elemAppSidebar.setAttribute('style', 'display:none;');
+    // if (this.newInnerWidth >= 992) {
+    //   const elemAppSidebar = <HTMLElement>document.querySelector('app-sidebar');
+    //   elemAppSidebar.setAttribute('style', 'display:none;');
+    // }
+    // if (this.newInnerWidth <= 60) {
+    if (this.newInnerWidth <= 150) {
+      this.window_width_is_60 = true;
+    } else {
+      this.window_width_is_60 = false;
     }
+  }
+
+  onInitWindowWidth(): any {
+    const actualWidth = window.innerWidth;
+    console.log('ACTUAL Width ', actualWidth);
+
+
+    // if (actualWidth <= 60) {
+    if (actualWidth <= 150) {
+      this.window_width_is_60 = true;
+    } else {
+      this.window_width_is_60 = false;
+    }
+
+
   }
 
   sidebarOpen() {
@@ -427,7 +469,7 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
   };
 
 
-  
+
 
 
 

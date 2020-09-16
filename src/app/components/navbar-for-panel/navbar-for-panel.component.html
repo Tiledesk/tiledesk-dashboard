@@ -1,3 +1,31 @@
-<p>
-  navbar-for-panel works!
-</p>
+
+
+
+
+<div style="background-color: #1e2129 !important;
+color: #fff !important; position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  height: 80px;
+  min-height: 80px;
+  max-height: 80px;">
+
+  <div style="  position: absolute;
+  /* top: 92px; */
+  /* top: 80px; */
+  border-radius: 50%;
+  padding: 8px;
+  /* -webkit-transform: translateX(-50%); */
+  /* transform: translateX(-50%); */
+  /* left: 50%; */
+  ">
+    <img class="avatar" *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true"
+      [src]="getUserProfileImage()" />
+
+    <img class="avatar" *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true"
+      src="assets/img/no_image_user.png" />
+
+  </div>
+</div>

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../core/auth.service';
 import { UsersService } from '../../services/users.service';
+import { AppConfigService } from '../../services/app-config.service';
+
 @Component({
   selector: 'appdashboard-navbar-for-panel',
   templateUrl: './navbar-for-panel.component.html',
@@ -15,27 +17,27 @@ export class NavbarForPanelComponent implements OnInit {
   projectId: string;
 
 
+  userProfileImageExist: boolean;
+  userImageHasBeenUploaded: boolean;
+  userProfileImageurl: string;
+  storageBucket: string;
+  timeStamp: any;
+
+
   constructor(
     private auth: AuthService,
     private usersService: UsersService,
+    public appConfigService: AppConfigService
   ) { }
 
   ngOnInit() {
 
     this.getLoggedUser();
     this.getCurrentProject();
+    this.getStorageBucket();
+    this.checkUserImageExist();
     // this.getUserAvailability();
     // this.getUserUserIsBusy();
-  }
-
-  getCurrentProject() {
-    this.auth.project_bs.subscribe((project) => {
-
-      if (project) {
-        this.projectId = project._id
-        // console.log('00 -> !!!! CONTACTS project ID from AUTH service subscription  ', this.projectId)
-      }
-    });
   }
 
   getLoggedUser() {
@@ -51,13 +53,59 @@ export class NavbarForPanelComponent implements OnInit {
 
         if (this.currentUserId) {
 
-        
+
           // this.getProjectUserByCurrentUserIdAndProjectId()
         }
 
       }
     });
   }
+
+  getCurrentProject() {
+    this.auth.project_bs.subscribe((project) => {
+
+      if (project) {
+        this.projectId = project._id
+        // console.log('00 -> !!!! CONTACTS project ID from AUTH service subscription  ', this.projectId)
+      }
+    });
+  }
+
+  getStorageBucket() {
+    const firebase_conf = this.appConfigService.getConfig().firebase;
+    this.storageBucket = firebase_conf['storageBucket'];
+    console.log('STORAGE-BUCKET NAVBAR-FOR-PANEL ', this.storageBucket)
+  }
+
+
+  checkUserImageExist() {
+    this.usersService.userProfileImageExist.subscribe((image_exist) => {
+      console.log('NAVBAR-FOR-PANEL - USER PROFILE EXIST ? ', image_exist);
+      this.userProfileImageExist = image_exist;
+      if (this.storageBucket && this.userProfileImageExist === true) {
+        console.log('NAVBAR-FOR-PANEL - USER PROFILE EXIST - BUILD userProfileImageurl');
+        this.setImageProfileUrl(this.storageBucket)
+      }
+    });
+  }
+
+
+
+  setImageProfileUrl(storageBucket) {
+    this.userProfileImageurl = 'https://firebasestorage.googleapis.com/v0/b/' + storageBucket + '/o/profiles%2F' + this.currentUserId + '%2Fphoto.jpg?alt=media';
+    this.timeStamp = (new Date()).getTime();
+  }
+
+  getUserProfileImage() {
+    if (this.timeStamp) {
+        return this.userProfileImageurl + '&' + this.timeStamp;
+    }
+    return this.userProfileImageurl
+}
+
+
+
+
 
   // note: the project id is passed in the service
   getProjectUserByCurrentUserIdAndProjectId() {
@@ -106,7 +154,7 @@ export class NavbarForPanelComponent implements OnInit {
     this.usersService.subscriptionToWsCurrentUser(currentuserprjctuserid);
     // this.getWsCurrentUserAvailability$();
     // this.getWsCurrentUserIsBusy$();
-}
+  }
 
   // getUserAvailability() {
   //   this.usersService.user_is_available_bs.subscribe((user_available) => {
