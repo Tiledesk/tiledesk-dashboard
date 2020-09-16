@@ -1,0 +1,130 @@
+[
+    {
+        "logo": "assets/img/integrations_apps/saleforce_logo.svg",
+        "title": "Salesforce",
+        "description": "Connect to Salesforce to create new Contacts, Leads and Cases straight dd",
+        "learnmore": "",
+        "installActionType": "external",
+        "installActionURL": "https://login.salesforce.com/?locale=it"
+    },
+    {
+        "logo": "assets/img/integrations_apps/zendesk.svg",
+        "title": "Zendesk",
+        "description": "Integrate Zendesk with to create tickets directly from chat.",
+        "learnmore": "",
+        "installActionType": "internal",
+        "installActionURL": ""
+    },
+    {
+        "logo": "assets/img/integrations_apps/googletagmanager.svg",
+        "title": "Google Tag Manager",
+        "description": "Google Tag Manager it makes easy for marketers to add and update website",
+        "learnmore": "https://docs.tiledesk.com/knowledge-base/google-tag-manager-add-tiledesk-to-your-sites/",
+        "installActionType": "external",
+        "installActionURL": "https://docs.tiledesk.com/knowledge-base/google-tag-manager-add-tiledesk-to-your-sites/"
+    },
+    {
+        "logo": "assets/img/integrations_apps/zapier.svg",
+        "title": "Zapier",
+        "description": "Use your favorite zap and send recent ended chat transcript.",
+        "learnmore": "https://zapier.com/app/login?next=/developer/public-invite/6253/ec24c63d18ba72db605f37afcd0168a3/",
+        "installActionType": "internal",
+        "installActionURL": "https://zapier.com/app/login?next=/developer/public-invite/6253/ec24c63d18ba72db605f37afcd0168a3/"
+    },
+    {
+        "logo": "https://tiledesk.com/wordpress/",
+        "title": "Wordpress",
+        "description": "Use this integration to place a function on your Wordpress website.",
+        "learnmore": "",
+        "installActionType": "external",
+        "installActionURL": ""
+    },
+    {
+        "logo": "https://tiledesk.com/integrations-ios-tiledesk/",
+        "title": "iOS SDK",
+        "description": "Tiledesk Widget for iOS",
+        "learnmore": "https://developer.tiledesk.com/mobile-sdk/integrate-widget-for-ios-with-wkwebview",
+        "installActionType": "external",
+        "installActionURL": "https://developer.tiledesk.com/mobile-sdk/integrate-widget-for-ios-with-wkwebview"
+    },
+    {
+        "logo": "https://tiledesk.com/integrations-android-tiledesk/",
+        "title": "Android SDK",
+        "description": "Tiledesk Widget for Android",
+        "learnmore": "https://developer.tiledesk.com/mobile-sdk/integrate-widget-for-android-with-webview",
+        "installActionType": "external",
+        "installActionURL": "https://developer.tiledesk.com/mobile-sdk/integrate-widget-for-android-with-webview"
+    },
+    {
+        "logo": "https://tiledesk.com/integrations-kubernetes-logo-without-workmark-svg/",
+        "title": "Kubernetes",
+        "description": "Install Tiledesk on-premise with Kubernetes",
+        "learnmore": "https://github.com/Tiledesk/tiledesk-deployment",
+        "installActionType": "external",
+        "installActionURL": "https://github.com/Tiledesk/tiledesk-deployment"
+    },
+    {
+        "logo": "https://tiledesk.com/integrations-docker-logo-without-workmark/",
+        "title": "Docker",
+        "description": "Install Tiledesk on-premise with docker compose",
+        "learnmore": "https://developer.tiledesk.com/installation/running-tiledesk-with-docker-compose",
+        "installActionType": "external",
+        "installActionURL": "https://developer.tiledesk.com/installation/running-tiledesk-with-docker-compose"
+    },
+    {
+        "logo": "https://tiledesk.com/github-logo/",
+        "title": "GitHub",
+        "description": "Install Tiledesk from GitHub source code",
+        "learnmore": "https://github.com/tiledesk",
+        "installActionType": "external",
+        "installActionURL": "https://github.com/tiledesk"
+    },
+    {
+        "logo": "https://tiledesk.com/webhooks-2/",
+        "title": "WebHooks",
+        "description": "WebHooks integration",
+        "learnmore": "https://developer.tiledesk.com/apis/webhooks",
+        "installActionType": "external",
+        "installActionURL": "https://developer.tiledesk.com/apis/webhooks"
+    },
+    {
+        "logo": "https://tiledesk.com/integrations-ios-tiledesk/",
+        "title": "Tiledesk iOS native app",
+        "description": "Tiledesk mobile app",
+        "learnmore": "https://apps.apple.com/us/app/tiledesk/id1401218793",
+        "installActionType": "external",
+        "installActionURL": "https://apps.apple.com/us/app/tiledesk/id1401218793"
+    },
+    {
+        "logo": "https://tiledesk.com/integrations-android-tiledesk/",
+        "title": "Tiledesk Android native app",
+        "description": "Tiledesk mobile app",
+        "learnmore": "https://play.google.com/store/apps/details?id=tiledesk.android",
+        "installActionType": "external",
+        "installActionURL": "https://play.google.com/store/apps/details?id=tiledesk.android"
+    },
+    {
+        "logo": "https://tiledesk.com/facebook-v2/",
+        "title": "Facebook",
+        "description": "Connect to Facebook to chat with your pages visitors.",
+        "learnmore": "",
+        "installActionType": "external",
+        "installActionURL": ""
+    },
+    {
+        "logo": "https://tiledesk.com/whatsapp-v2/",
+        "title": "Whatsapp",
+        "description": "Connect to Whatsapp to chat with your Whatsapp's friends.",
+        "learnmore": "https://docs.tiledesk.com/?post_type=lsvr_kba&p=6220",
+        "installActionType": "external",
+        "installActionURL": "https://docs.tiledesk.com/?post_type=lsvr_kba&p=6220"
+    },
+    {
+        "logo": "https://tiledesk.com/websocket-logo/",
+        "title": "WebSocket",
+        "description": "Tiledesk Realtime API",
+        "learnmore": "https://developer.tiledesk.com/apis/realtime-api",
+        "installActionType": "external",
+        "installActionURL": "https://developer.tiledesk.com/apis/realtime-api"
+    }
+]
