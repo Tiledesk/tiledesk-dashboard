@@ -80,6 +80,9 @@ export class ProjectPlanService {
         const nav_project_id = url_segments[2];
         console.log('ProjectPlanService - nav_project_id ', nav_project_id);
 
+        // -----------------------------------------------------------------
+        // this check is in auth.guard - auth.service - project-plan.service
+        // -----------------------------------------------------------------
         if (
           nav_project_id &&
           nav_project_id !== 'email' &&
@@ -87,6 +90,7 @@ export class ProjectPlanService {
           url_segments[1] !== 'handle-invitation' &&
           url_segments[1] !== 'signup-on-invitation' &&
           url_segments[1] !== 'resetpassword' &&
+          url_segments[1] !== 'autologin' &&
           current_url !== '/projects'
         ) {
           this.getProjectByID(nav_project_id)

@@ -281,7 +281,6 @@ span .switch-agent-admin-requests-btn {
   top: -8px !important;
 }
 
-
 .requester-verified {
   position: relative;
   left: -20px;
@@ -642,4 +641,13 @@ $f21blue: #039be5;
 .padding_5 {
   padding-top: 8px !important;
   padding-bottom: 8px !important;
+}
+
+.contact-fullname {
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  line-height: 10px;
 }
