@@ -7,6 +7,7 @@
   "testsiteBaseUrl": "${WIDGET_TEST_LOCATION}",
   "wsUrl": "${WS_URL}",
   "wsUrlRel": "${WS_URL_RELATIVE}",
+  "brandSrc": "${BRAND_SRC}",
   "firebase": {
       "apiKey": "${FIREBASE_APIKEY}",
       "authDomain": "${FIREBASE_AUTHDOMAIN}",
