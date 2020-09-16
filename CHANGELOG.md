@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.0.60
+- Fixes brand service
+
 ### 2.0.59
 - Does not allow to delete a bot if it is associated with a department
 
