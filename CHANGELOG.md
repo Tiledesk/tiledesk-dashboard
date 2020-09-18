@@ -1,6 +1,12 @@
 
 # tiledesk-dashboard
 
+### 2.0.62
+- Improves scripts service
+
+### 2.0.61
+- Adds the ability to load external scripts
+
 ### 2.0.60
 - Fixes brand service
 

@@ -261,3 +261,28 @@ brandSrc :"https://<YOUR_BRAND_JSON>/",
 
   
 Edit the file _variables.scss in the folder `src/assets/sass/md/` to customize the colors
+
+
+
+
+# Load external scripts
+
+
+Load external scripts by adding in environment.*.ts (if `remoteConfig` is set to `false` or in the `dashboard-config.json` if `remoteConfig` is set to `true`) the key `globalRemoteJSSrc` with value your scripts separated by commas
+
+
+#### dashboard-config.json
+
+```typescript
+
+widgetUrl: "https://<YOUR_CHAT21_WEB_WIDGET_URL>:4200/launch.js",
+
+botcredendialsURL: "https://<YOUR_BOT_CREDENTIALS_URL>",
+
+SERVER_BASE_URL: "https://<YOUR_TILEDESK_SERVER>/",
+
+...
+globalRemoteJSSrc :"https://<MY_CUSTOM_SCRIPT_1>, https://<MY_CUSTOM_SCRIPT_2>",
+...
+
+};
