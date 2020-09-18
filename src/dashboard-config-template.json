@@ -8,6 +8,7 @@
   "wsUrl": "${WS_URL}",
   "wsUrlRel": "${WS_URL_RELATIVE}",
   "brandSrc": "${BRAND_SRC}",
+  "globalRemoteJSSrc":"${REMOTE_JS_SRC}",
   "firebase": {
       "apiKey": "${FIREBASE_APIKEY}",
       "authDomain": "${FIREBASE_AUTHDOMAIN}",
