@@ -1,8 +1,103 @@
+<appdashboard-navbar-for-panel></appdashboard-navbar-for-panel>
+
+<div class="selected-project" style="padding-right: 10px; padding-bottom: 0px !important;
+background: #2d323e;">
+  <div class="flex-container">
+    <!-- margin-left: 6px;margin-right: 2px; width: 60px; text-align: center;    border-right: 1px solid #eee; -->
+
+    <div class="flex-child-go-back" (click)="goBack()">
+      <!-- <span class="material-icons" style="vertical-align: middle; color: #a9abad">
+        view_list
+      </span> -->
+
+      <!-- <div id="arrow_1" class="arrow-wrapper">
+        <div class="arrow arrow--left">
+          <span></span>
+        </div>
+      </div> -->
+      <!-- <span style="color:#00d5ff; font-size:12px">
+        Go back
+      </span> -->
+
+      <span class="material-icons go-back-icon">
+        arrow_back_ios
+      </span>
+    </div>
+
+
+    <div class="flex-child-project-avatar" style="">
+      <div class="project-avatar-wrapper">
+
+        <div class="project-avatar">
+          {{ projectNameFirstLetter }}
+        </div>
+
+        <!-- <div class="status--icon"
+          [ngClass]="{'online' : project?.ws_projct_user_available === true, 'offline' : project?.ws_projct_user_available === false}">
+        </div>
+
+        <div class="busy--icon" *ngIf="project?.ws_projct_user_isBusy === true"></div> -->
+      </div>
+
+    </div>
+
+
+    <div class="flex-child-project-name">
+      <div class="project-name-in-unserved-top-bar">
+
+        {{ projectName }}
+      </div>
+
+
+
+      <!-- <div class="status--text"
+        (click)="$event.stopPropagation();changeAvailabilityState(project?.id_project?._id, project?.ws_projct_user_available)"
+        [ngClass]="{'online-text-color' : project?.ws_projct_user_available === true, 'offline-text-color' : project?.ws_projct_user_available === false}">
+        <span *ngIf="project?.ws_projct_user_available === true"> {{ 'Available' | translate }} </span>
+        <span *ngIf="project?.ws_projct_user_available === false"> Offline</span>
+      </div> -->
+
+      <!-- <div class="i_onoffswitch">
+        <input type="checkbox" name="i_onoffswitch" class="i_onoffswitch-checkbox" id="i_myonoffswitch" tabindex="0"
+          checked>
+        <label class="i_onoffswitch-label" for="i_myonoffswitch"></label>
+      </div> -->
+    </div>
+
+
+
+  </div>
+</div>
+
 <div class="main-content main-content-projects-for-panel">
   <div class="container-fluid container-projects-for-panel">
 
 
+
+
     <div class="row">
+
+      <div *ngIf="showSpinner && !SHOW_NO_REQUEST_MSG" class="stretchspinner">
+        <div class="rect1"></div>
+        <div class="rect2"></div>
+        <div class="rect3"></div>
+        <div class="rect4"></div>
+        <div class="rect5"></div>
+      </div>
+
+      <div *ngIf="SHOW_NO_REQUEST_MSG && !showSpinner">
+
+        <div class="" style="flex-direction: column; box-sizing: border-box; display: flex; place-content: center; align-items: center;;
+          height: 160px;
+          line-height: 40px;">
+          <span class="material-icons" style="vertical-align: middle; color: #a9abad ;font-size:48px">
+            sms_failed
+          </span>
+
+          <span class="1" style="font-weight: 600;
+          font-size: 22px;color: #a9abad"> {{'NoUnservedRequests' | translate}} </span>
+        </div>
+      </div>
       <!-- ; trackBy: trackByFn -->
       <div *ngFor="let request of wsRequestsUnserved" class="col-xs-12" style="cursor:pointer; padding-right: 5px;
       padding-left: 5px;">
@@ -227,7 +322,7 @@
                       <!-- <span class="first-messages-for-panel" [innerHTML]="cutFirstMessage(request?.first_text)"> </span> -->
 
 
-                
+
 
                       <span class="first-messages-for-panel text-truncated" [innerHTML]="request?.first_text"> </span>
                     </span>
@@ -289,12 +384,3 @@
     (valueChange)='handleCloseRightSidebar($event)' [selectedRequest]="selectedRequest">
   </appdashboard-ws-request-detail-for-panel>
 </div>
-
-
-
-
-
-
-
-
-

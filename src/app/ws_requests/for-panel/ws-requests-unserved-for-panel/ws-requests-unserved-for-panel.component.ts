@@ -28,8 +28,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { browserRefresh } from '../../../app.component';
-import * as uuid from 'uuid';
-import { Chart } from 'chart.js';
+import { Location } from '@angular/common';
 
 const swal = require('sweetalert');
 
@@ -90,6 +89,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
   // TESTSITE_BASE_URL = environment.testsiteBaseUrl;   // now get from appconfig
   TESTSITE_BASE_URL: string;
   projectName: string;
+  projectNameFirstLetter: any;
 
   participantsInRequests: any;
   deptsArrayBuildFromRequests: any;
@@ -114,8 +114,13 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
   archivingRequestErrorNoticationMsg: string;
   requestHasBeenArchivedNoticationMsg_part1: string;
   requestHasBeenArchivedNoticationMsg_part2: string;
-  OPEN_REQUEST_DETAILS:boolean = false;
+  OPEN_REQUEST_DETAILS: boolean = false;
   selectedRequest: any;
+
+
+  SHOW_NO_REQUEST_MSG: boolean
+
+
 
   /**
    * Constructor
@@ -140,7 +145,8 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
     public faqKbService: FaqKbService,
     public appConfigService: AppConfigService,
     private departmentService: DepartmentService,
-    public notify: NotifyService
+    public notify: NotifyService,
+    public location: Location
 
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify);
@@ -161,8 +167,6 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
     this.getLoggedUser();
     this.getProjectUserRole();
     this.getStorageBucket();
-
-
 
     // this.for1();
     // this.getRequestsTotalCount()  
@@ -514,8 +518,12 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
   // -----------------------------------------------------------------------------------------------------
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
-      console.log('WsRequestsList  project', project)
+      console.log('WS-REQUESTS-UNSERVED-X-PANEL project', project)
       if (project) {
+
+
+        this.projectNameFirstLetter = project.name.charAt(0)
+
         this.projectId = project._id;
         this.projectName = project.name;
       }
@@ -737,7 +745,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
   // @ Subscribe to get the published requests (called On init)
   // -----------------------------------------------------------------------------------------------------
   getWsRequests$() {
-    console.log("% »»» WebSocketJs WF +++++ ws-requests--- list - enter NOW in getWsRequests$");
+    console.log("WS-REQUESTS-UNSERVED-X-PANEL +++++ ws-requests--- list - enter NOW in getWsRequests$");
     this.wsRequestsService.wsRequestsList$
       .pipe(
         takeUntil(this.unsubscribe$)
@@ -750,7 +758,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
         // console.log("% »»» WebSocketJs WF +++++ ws-requests--- list - subscribe ", wsrequests);
 
         if (wsrequests) {
-          console.log("% »»» WebSocketJs WF +++++ ws-requests--- list - subscribe > if (wsrequests) ", wsrequests);
+          console.log("WS-REQUESTS-UNSERVED-X-PANEL +++++ ws-requests--- list - subscribe > if (wsrequests) ", wsrequests);
           this.browserRefresh = browserRefresh;
 
           // console.log("% »»» WebSocketJs WF +++++ ws-requests--- list subscribe > if (wsrequests) browserRefresh ", this.browserRefresh, 'wsRequestsList$.value length ', this.wsRequestsService.wsRequestsList$.value.length);
@@ -817,7 +825,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
         // this.ws_requests.forEach(request => {
         this.ws_requests.forEach((request) => {
 
-          console.log('WS-REQUESTS-UNSERVED-X-PANEL - WsRequestsList request ', request)
+          // console.log('WS-REQUESTS-UNSERVED-X-PANEL - WsRequestsList request ', request)
 
           const user_agent_result = this.parseUserAgent(request.userAgent)
           // console.log('% »»» WebSocketJs WF - WsRequestsList - USER-AGENT RESULT ', user_agent_result)      
@@ -886,11 +894,6 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
             request['requester_fullname_initial'] = 'N/A';
             request['requester_fullname_fillColour'] = '#6264a7';
           }
-
-
-
-
-
         });
 
 
@@ -941,8 +944,32 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
         } else {
           // this.showSpinner = false;
         }
-        console.log('% »»» WebSocketJs WF +++++ ws-requests--- list getWsRequests (served)', this.wsRequestsServed);
-        console.log('% »»» WebSocketJs WF +++++ ws-requests--- list getWsRequests (unserved)', this.wsRequestsUnserved);
+        console.log('WS-REQUESTS-UNSERVED-X-PANEL getWsRequests (served)', this.wsRequestsServed);
+        console.log('WS-REQUESTS-UNSERVED-X-PANEL list getWsRequests (unserved)', this.wsRequestsUnserved);
+
+
+        var time = 1;
+        // this = that
+        var interval = setInterval(() => {
+          if (time <= 3) {
+            console.log('WS-REQUESTS-UNSERVED-X-PANEL (unserved) TIME TIME TIME ', time);
+            time++;
+          }
+          else {
+            clearInterval(interval);
+            console.log('WS-REQUESTS-UNSERVED-X-PANEL (unserved) TIME TIME TIME COMPLETED Unserved LENGTH ' , this.wsRequestsUnserved.length);
+
+            if (this.wsRequestsUnserved.length > 0) {
+              this.SHOW_NO_REQUEST_MSG = false;
+              this.showSpinner = false;
+            } else {
+              this.SHOW_NO_REQUEST_MSG = true;
+              this.showSpinner = false;
+            }
+          }
+        }, 1000);
+
+
 
 
       }, error => {
@@ -953,6 +980,8 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
         console.log('% »»» WebSocketJs WF +++++ ws-requests--- list getWsRequests */* COMPLETE */*')
       })
   }
+
+
 
   cutFirstMessage(text: string): string {
     if (text) {
@@ -999,6 +1028,11 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
 
         // this.onArchiveRequestCompleted()
       });
+  }
+
+  goBack() {
+    this.location.back();
+
   }
 
 

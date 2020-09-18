@@ -1,8 +1,29 @@
+<div class="panel-left-sidebar-toolbar-a">
+  <div class="panel-left-sidebar-toolbar-b">
+    <div class="panel-left-sidebar-toolbar-c">
+ 
+      <div class="panel-left-sidebar-logged-in-user">
+        <div class="panel-left-sidebar-avatar-wrapper">
+        
+          <img class="panel-left-sidebar-avatar" *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true"  alt="{{user.firstname}} {{user.lastname}}" [src]="getUserProfileImage()">
+          <img class="panel-left-sidebar-avatar" *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true" src="assets/img/no_image_user.png" />
+         
+          <div *ngIf="!IS_PROJECTS_X_PANEL_ROUTE" class="panel-left-sidebar-logged-in-user-status"  
+            [ngClass]="{'logged-in-user-status-online' : IS_AVAILABLE === true, 'logged-in-user-status-offline' : IS_AVAILABLE === false}"> </div>
+        </div>
+
+        <div class="panel-left-sidebar-logged-in-user-name-and-email">
+          <div class="panel-left-sidebar-logged-in-user-name"> {{ user.firstname }} {{ user.lastname }} </div>
+          <div class="panel-left-sidebar-logged-in-user-email"> {{ user.email }} </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 
-
-<div style="background-color: #1e2129 !important;
+<!-- <div style="display: none; background-color: #1e2129 !important;
 color: #fff !important; position: relative;
   display: flex;
   align-items: center;
@@ -28,4 +49,4 @@ color: #fff !important; position: relative;
       src="assets/img/no_image_user.png" />
 
   </div>
-</div>
+</div> -->

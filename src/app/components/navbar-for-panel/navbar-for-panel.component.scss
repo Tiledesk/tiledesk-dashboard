@@ -1,0 +1,79 @@
+.panel-left-sidebar-toolbar-a {
+    flex-direction: row;
+    box-sizing: border-box;
+    display: flex;
+    background-color: #1e2129 !important;
+}
+
+.panel-left-sidebar-toolbar-b {
+    flex: 1 1 0%;
+    box-sizing: border-box;
+    flex-direction: row;
+    display: flex;
+    place-content: center space-between;
+    align-items: center;
+}
+
+.panel-left-sidebar-toolbar-d {
+    flex-direction: row;
+    box-sizing: border-box;
+    display: flex;
+    place-content: center flex-start;
+    align-items: center;
+}
+
+.panel-left-sidebar-logged-in-user {
+    flex-direction: row;
+    box-sizing: border-box;
+    display: flex;
+    place-content: center flex-start;
+    align-items: center;
+}
+
+.panel-left-sidebar-avatar-wrapper {
+    position: relative;
+}
+
+.panel-left-sidebar-avatar {
+    width: 52px;
+    min-width: 52px;
+    height: 52px;
+    line-height: 52px;
+    margin: 0 8px 0 0;
+    border-radius: 50%;
+    font-size: 17px;
+    font-weight: 600;
+    text-align: center;
+    margin-right: 16px;
+    margin-left: 4px;
+    margin-top: 6px;
+    margin-bottom: 6px;
+}
+
+.panel-left-sidebar-logged-in-user-status {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    bottom: 8px;
+    left: 43px;
+    border: 2px solid #2d323e;
+    border-radius: 50%;
+    
+}
+
+.logged-in-user-status-online {
+    background-color: #4caf50;
+}
+
+.logged-in-user-status-offline {
+    background-color: #f44336;
+}
+
+.panel-left-sidebar-logged-in-user-name {
+    color: #fff;
+}
+
+.panel-left-sidebar-logged-in-user-email {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 12px;
+}

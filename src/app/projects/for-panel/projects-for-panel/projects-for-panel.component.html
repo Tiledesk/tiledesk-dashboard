@@ -1,22 +1,17 @@
-<appdashboard-navbar-for-panel>
-
-</appdashboard-navbar-for-panel>
+<appdashboard-navbar-for-panel></appdashboard-navbar-for-panel>
 
 <div class="main-content main-content-projects-for-panel">
   <div class="container-fluid container-projects-for-panel">
 
 
-    <!-- //// HEADER START -->
-
-    <!-- //// HEADER END -->
-
+ 
 
     <!-- 
     // ------------------------------------
     // new 
     // ------------------------------------ -->
 
-    <div class="left-sidebar" style="">
+    <div class="left-sidebar">
 
 
       <loading-spinner *ngIf="showSpinner"></loading-spinner>
@@ -48,7 +43,7 @@
                     [ngClass]="{'online' : project?.ws_projct_user_available === true, 'offline' : project?.ws_projct_user_available === false}">
                   </div>
 
-                  <div class="busy--icon" *ngIf="project?.ws_projct_user_isBusy === false"></div>
+                  <div class="busy--icon" *ngIf="project?.ws_projct_user_isBusy === true"></div>
                 </div>
 
               </div>

@@ -1,19 +1,18 @@
 // @import url(https://fonts.googleapis.com/css?family=Google+Sans);
 @import "./src/assets/sass/md/_variables.scss";
 
-
 button span {
     max-width: 0;
-    -webkit-transition: max-width .5s;
-    transition: max-width .5s;
+    -webkit-transition: max-width 0.5s;
+    transition: max-width 0.5s;
     display: inline-block;
     vertical-align: top;
     white-space: nowrap;
     overflow: hidden;
-  }
-  button:hover span {
+}
+button:hover span {
     max-width: 7rem;
-  }
+}
 
 .main-content-projects-for-panel {
     padding-top: 0px;
@@ -22,7 +21,6 @@ button span {
     background: #fff;
     // height: 100vh;
 }
-
 
 .container-projects-for-panel {
     padding: 0px !important;
@@ -273,11 +271,10 @@ span .switch-agent-admin-requests-btn {
     margin-top: -21px;
 }
 
-
 .text-truncated {
     white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis; 
+    text-overflow: ellipsis;
     max-width: 80%;
 }
 
@@ -304,7 +301,7 @@ span .switch-agent-admin-requests-btn {
     border-radius: 3px;
     font-size: 10px;
     font-weight: 400;
-    color:#fff;
+    color: #fff;
     letter-spacing: 1px;
 }
 
@@ -720,4 +717,214 @@ $f21blue: #039be5;
 .padding_5 {
     padding-top: 8px !important;
     padding-bottom: 8px !important;
+}
+
+.project-avatar {
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: 400;
+    text-align: center;
+    padding-top: 5px;
+    padding-bottom: 3px;
+    display: inline-block;
+    width: 42px;
+    height: 42px;
+    line-height: 33px;
+    position: relative;
+    // top: 4px;
+    color: #1e2129;
+    background-color: #a9abad;
+    text-transform: uppercase;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 500;
+    // margin-top: 8px;
+    // margin-bottom: 8px;
+}
+
+.flex-container {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+}
+
+.flex-child-project-avatar {
+    // flex: 0 0 20%;
+    width: 60px;
+    text-align: center;
+    padding: 8px 0px;
+}
+// border: 2px solid yellow;
+
+.flex-child-project-name {
+    // flex: 0 0 80%;
+    flex: 1;
+    padding: 8px 0px;
+
+    // border: 2px solid yellow;
+}
+
+.flex-child-go-back {
+    // flex: 0 0 80%;
+    width: 45px;
+    padding: 8px 0px;
+
+    // border: 2px solid yellow;
+}
+
+.project-name-in-unserved-top-bar {
+    color: #dbddde;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 400;
+}
+
+.go-back-icon {
+    color: #dbddde;
+}
+
+
+/// ANIMATED ARROW
+.arrow-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+#arrow_1 .arrow {
+    $size: 30px;
+    $width: 2px;
+
+    cursor: pointer;
+    display: block;
+    width: $size / 1.414;
+    height: $size / 1.414 * 2;
+    position: relative;
+
+    & span,
+    &:before,
+    &:after {
+        background: #fff;
+        content: "";
+        display: block;
+        width: $size;
+        height: $width;
+        position: absolute;
+        top: calc(50% - (#{$width} / 2));
+    }
+
+    &:before {
+        transform: rotate(-45deg);
+    }
+    &:after {
+        transform: rotate(45deg);
+    }
+
+    & span {
+        width: 0;
+    }
+    &:hover span {
+        width: $size * 1.414;
+    }
+
+    @each $direction in "left" "right" {
+        &.arrow--#{$direction} {
+            & span,
+            &:before,
+            &:after {
+                #{$direction}: 0;
+                transform-origin: #{$direction} 50%;
+            }
+
+            &:before,
+            &:after {
+                transition: #{$direction} 0.3s 0.05s;
+            }
+
+            & span {
+                transition: width 0.3s, #{$direction} 0.3s 0.05s;
+            }
+
+            &:hover {
+                & span,
+                &:before,
+                &:after {
+                    #{$direction}: $size / 1.414 * -1;
+                }
+            }
+        }
+    }
+}
+
+/* 
+// -------------------------------------------------
+// stretch spinner https://tobiasahlin.com/spinkit/
+// ------------------------------------------------- */
+.stretchspinner {
+    margin: 100px auto;
+    width: 50px;
+    height: 40px;
+    text-align: center;
+    font-size: 10px;
+    position: absolute;
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+.stretchspinner > div {
+    background-color: $brand-primary;
+    height: 100%;
+    width: 6px;
+    display: inline-block;
+
+    -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
+    animation: sk-stretchdelay 1.2s infinite ease-in-out;
+}
+
+.stretchspinner .rect2 {
+    -webkit-animation-delay: -1.1s;
+    animation-delay: -1.1s;
+}
+
+.stretchspinner .rect3 {
+    -webkit-animation-delay: -1s;
+    animation-delay: -1s;
+}
+
+.stretchspinner .rect4 {
+    -webkit-animation-delay: -0.9s;
+    animation-delay: -0.9s;
+}
+
+.stretchspinner .rect5 {
+    -webkit-animation-delay: -0.8s;
+    animation-delay: -0.8s;
+}
+
+@-webkit-keyframes sk-stretchdelay {
+    0%,
+    40%,
+    100% {
+        -webkit-transform: scaleY(0.4);
+    }
+    20% {
+        -webkit-transform: scaleY(1);
+    }
+}
+
+@keyframes sk-stretchdelay {
+    0%,
+    40%,
+    100% {
+        transform: scaleY(0.4);
+        -webkit-transform: scaleY(0.4);
+    }
+    20% {
+        transform: scaleY(1);
+        -webkit-transform: scaleY(1);
+    }
 }

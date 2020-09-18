@@ -93,6 +93,10 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
     this.APP_IS_DEV_MODE = isDevMode()
   }
 
+  // -----------------------------------------------
+  // @ Lifehook
+  // -----------------------------------------------
+
   ngOnInit() {
     const navbar: HTMLElement = this.element.nativeElement;
     this.toggleButton = navbar.getElementsByClassName('navbar-toggle')[0];
@@ -110,6 +114,18 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
     this.getOSCODE();
     this.onInitWindowWidth()
   }
+
+  ngOnDestroy() {
+    this.projects.forEach(project => {
+      // console.log('PROJECTS-X-PANEL - unsubsToWS_CurrentUser_allProject ', project);
+      this.usersService.unsubsToWS_CurrentUser_allProject(project.id_project._id, project._id)
+    });
+
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+
 
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
@@ -218,51 +234,6 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
     // localStorage.setItem('project', JSON.stringify(project));
   }
 
-  // GO TO  PROJECT-EDIT-ADD COMPONENT
-  // goToEditAddPage_CREATE() {
-  //   this.router.navigate(['/project/create']);
-  // }
-
-
-
-
-  // TEST VERIFY-EMAIL
-  // testVerifyEmail() {
-  //   if (this.user) {
-  //     this.router.navigate(['/verify/email/', this.user._id]);
-  //   }
-  // }
-
-  // !NO MORE USED - GO TO PROJECT-EDIT-ADD COMPONENT AND PASS THE PROJECT ID (RECEIVED FROM THE VIEW)
-  // goToEditAddPage_EDIT(project_id: string) {
-  //   console.log('PROJECT ID ', project_id);
-  //   this.router.navigate(['project/edit', project_id]);
-  // }
-
-  //   subsTo_WsCurrentUser(currentuserprjctuserid) {
-  //     console.log('SB - SUBSCRIBE TO WS CURRENT-USER AVAILABILITY  prjct user id of current user ', currentuserprjctuserid);
-  //     this.usersService.subscriptionToWsCurrentUser(this.projectId, currentuserprjctuserid);
-  //     this.getWsCurrentUserAvailability$();
-  //     // this.getWsCurrentUserIsBusy$();
-  // }
-
-
-  // getWsCurrentUserAvailability$() {
-  //   this.usersService.currentUserWsAvailability$
-  //     .pipe(
-  //       takeUntil(this.unsubscribe$)
-  //     )
-  //     .subscribe((currentuser_availability) => {
-  //       console.log('WS-CURRENT-USER - IS AVAILABLE? ', currentuser_availability);
-  //       if (currentuser_availability !== null) {
-  //         // this.IS_AVAILABLE = currentuser_availability;
-  //       }
-  //     }, error => {
-  //       console.log('WS-CURRENT-USER AVAILABILITY * error * ', error)
-  //     }, () => {
-  //       console.log('WS-CURRENT-USER AVAILABILITY *** complete *** ')
-  //     });
-  // }
 
   /**
    * GET PROJECTS AND SAVE IN THE STORAGE: PROJECT ID - PROJECT NAME - USE ROLE   */
@@ -307,6 +278,7 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
              * project._id is the id of the project user
              */
             this.usersService.subscriptionToWsCurrentUser_allProject(project.id_project._id, project._id);
+
             this.listenTocurrentUserWSAvailabilityAndBusyStatustForProject$()
 
             // .then((data) => {
@@ -392,14 +364,7 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
   }
 
 
-  ngOnDestroy() {
-    this.projects.forEach(project => {
-      this.usersService.unsubsToWS_CurrentUser_allProject(project.id_project._id, project._id)
-    });
 
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
 
 
 
