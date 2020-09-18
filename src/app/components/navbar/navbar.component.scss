@@ -791,3 +791,10 @@ button.close.custom-hover:hover {
   color: rgb(66, 133, 244);
   background-color: #eee;
 }
+
+
+.disable-dropdown-menu-btn {
+  pointer-events: none;
+  opacity: 0.6;
+
+}

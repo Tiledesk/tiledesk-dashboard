@@ -214,7 +214,6 @@ export class AuthService {
 
       this.user_bs.next(JSON.parse(storedUser));
     }
-
   }
 
 
@@ -241,7 +240,8 @@ export class AuthService {
   // RECEIVE THE the project (name, id, profile_name, trial_expired and trial_days_left) AND PUBLISHES
   projectSelected(project: Project) {
     // PUBLISH THE project
-    console.log('!!C-U AUTH SERVICE: I PUBLISH THE PROJECT RECEIVED FROM PROJECT COMP ', project)
+    console.log('!!C-U AUTH SERVICE: I PUBLISH THE PROJECT RECEIVED FROM PROJECT COMP ', project);
+    console.log('NAVBAR-FOR-PANEL - PUBLISH THE PROJECT RECEIVED FROM PROJECTS X PANEL ', project);
     // tslint:disable-next-line:no-debugger
     // debugger
     console.log('% »»» WebSocketJs WF +++++ ws-requests--- auth service PUBLISH THE PROJECT RECEIVED FROM PROJECT COMP', project._id)

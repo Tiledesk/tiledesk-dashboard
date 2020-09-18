@@ -465,6 +465,11 @@ input[type="text"] {
   }
 }
 
+.disabled-card-add-project {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
 // onoffswitch https://proto.io/freebies/onoff/
 // .onoffswitch {
 //   position: relative; width: 104px;

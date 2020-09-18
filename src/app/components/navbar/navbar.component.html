@@ -155,7 +155,7 @@
             <p class="hidden-lg hidden-md">Projects</p>
           </a>
 
-          <ul class="dropdown-menu" style="max-height: 240px;overflow-y: auto;">
+          <ul id="navbar_dropdown" class="dropdown-menu" style="max-height: 240px;overflow-y: auto;">
 
             <!-- ------------ PROJECT SETTINGS ------------ -->
             <li *ngIf="ROLE_IS_AGENT === false">
@@ -174,7 +174,7 @@
             </li>
 
             <!-- ------------ ADD PROJECT ------------ -->
-            <li *ngIf="MT === true" (click)="goToCreateProject()">
+            <li id="navbar_create_prjct" *ngIf="MT === true" (click)="goToCreateProject()">
               <a style="cursor: pointer">
                 <i class="material-icons"
                   style="padding-right: 5px; margin-bottom: 2px; font-size: 20px">add_circle_outline </i>

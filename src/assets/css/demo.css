@@ -1,3 +1,5 @@
+
+
 my-app .main-panel .main-content .card {
   animation-duration: 750ms;
   opacity: 0;
@@ -189,3 +191,5 @@ my-app .main-panel .main-content .card {
   box-shadow: unset !important;
   border: 1px solid #e5effe !important;
 }
+
+
