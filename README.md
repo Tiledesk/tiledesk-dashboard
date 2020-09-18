@@ -282,7 +282,7 @@ botcredendialsURL: "https://<YOUR_BOT_CREDENTIALS_URL>",
 SERVER_BASE_URL: "https://<YOUR_TILEDESK_SERVER>/",
 
 ...
-globalRemoteJSSrc :"https://<MY_CUSTOM_SCRIPT_1>, https://<MY_CUSTOM_SCRIPT_2>",
+globalRemoteJSSrc :"https://<YOUR_CUSTOM_SCRIPT_1>, https://<YOUR_CUSTOM_SCRIPT_2>",
 ...
 
 };
