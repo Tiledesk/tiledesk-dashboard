@@ -772,13 +772,10 @@ export class UsersService {
         // console.log("PROJECT COMP (user-service) SUBSCR TO WS CURRENT USERS - CREATE - data  user_available ", data.user_available);
         // console.log("PROJECT COMP (user-service) SUBSCR TO WS CURRENT USERS - CREATE - data  isBusy ", data.isBusy);
 
-
         resolve(data)
         // self.currentUserWsAvailability$.next(data.user_available);
-
         self.currentUserWsBusyAndAvailabilityForProject$.next(data)
         
-
       }, function (data, notification) {
         resolve(data)
         console.log("PROJECT COMP (user-service) SUBSCR TO WS CURRENT USERS - UPDATE - data ", data);
@@ -796,7 +793,6 @@ export class UsersService {
   }
 
   unsubsToWS_CurrentUser_allProject(projectid, prjctuserid) {
-
     this.webSocketJs.unsubscribe('/' + projectid + '/project_users/' + prjctuserid);
     console.log("PROJECT COMP (user-service) UN-SUBSCR TO WS CURRENT USERS  projectid: ", projectid, ' prjctuserid:', prjctuserid);
   }
@@ -814,26 +810,21 @@ export class UsersService {
     this.webSocketJs.ref(path,
       function (data, notification) {
         // console.log("SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - CREATE - data ", data , ' path ', path);
-        console.log("SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - CREATE - data ", data);
-        console.log("SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - CREATE - data  user_available ", data.user_available);
+        console.log("NAVBAR-FOR-PANEL & SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - CREATE - data ", data);
+        console.log("NAVBAR-FOR-PANEL & SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - CREATE - data  user_available ", data.user_available);
 
         self.currentUserWsAvailability$.next(data.user_available);
-
         if (data.isBusy) {
           self.currentUserWsIsBusy$.next(data.isBusy)
         } else {
           self.currentUserWsIsBusy$.next(false)
         }
-
         self.availability_btn_clicked(true)
 
       }, function (data, notification) {
-
         console.log("SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - UPDATE - data ", data);
 
-
       }, function (data, notification) {
-
         if (data) {
           console.log("SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - ON-DATA - data", data);
 
@@ -843,6 +834,10 @@ export class UsersService {
   }
 
 
+  unsubscriptionToWsCurrentUser(prjctuserid) {
+    this.webSocketJs.unsubscribe('/' + this.project_id + '/project_users/' + prjctuserid);
+    console.log("NAVBAR-FOR-PANEL - UN-SUBSCR TO WS CURRENT USERS  projectid: ", this.project_id, ' prjctuserid:', prjctuserid);
+  }
 
 
 
