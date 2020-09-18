@@ -188,6 +188,7 @@ import { AutologinComponent } from './auth/autologin/autologin.component';
 import { AppStoreComponent } from './app-store/app-store.component';
 import { AppStoreService } from './services/app-store.service';
 import { BrandService } from './services/brand.service';
+import { ScriptService } from './services/script/script.service';
 import { AppStoreInstallComponent } from './app-store/app-store-install/app-store-install.component';
 
 
@@ -374,6 +375,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     //   multi: true,
     //   deps: [BrandService]
     // },
+    ScriptService,
     WsRequestsService,
     WsMsgsService,
     AppStoreService,

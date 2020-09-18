@@ -30,6 +30,7 @@ import * as moment from 'moment';
 
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from './services/brand.service';
+import { ScriptService } from './services/script/script.service';
 
 
 
@@ -74,12 +75,16 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         public wsMsgsService: WsMsgsService,
         public webSocketJs: WebSocketJs,
         private metaTitle: Title,
-        public brandService: BrandService
+        public brandService: BrandService,
+        public script: ScriptService,
         // private faqKbService: FaqKbService,
     ) {
         // this.getBrand();
 
-
+        // script.load('dummy').then(data => {
+        // script.load().then(data => {
+        //     console.log('APP.COMP - script loaded ', data);
+        // }).catch(error => console.log('APP.COMP - script error ', error));
 
         const brand = brandService.getBrand();
         this.metaTitle.setTitle(brand['metaTitle']); // here used with: "import brand from ..." now see in getBrand()
@@ -142,7 +147,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
     }
 
-
     ngOnDestroy() {
         this.subscription.unsubscribe();
     }
@@ -151,12 +155,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         this.translate.use(language);
     }
 
-
-
-
     ngOnInit() {
-
-
         console.log(' ====== >>> HELLO APP.COMP (ngOnInit) <<< ====== ')
         console.log('!! FIREBASE  ', firebase);
 
@@ -306,9 +305,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         this.webSocketJs.close()
     }
 
-
-
-
     // SET TO 'none' the box-shadow style of the navbar in the page in which is present the second navbar (i.e. the bottom-nav)
     unsetNavbarBoxShadow() {
         this.router.events.subscribe((val) => {
@@ -429,7 +425,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.IS_PROJECTS_FOR_PANEL = true
 
                     const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
-                    console.log('APP COMP IS_PROJECTS_FOR_PANEL .main-panel ', elemMainPanel)
+                    // console.log('APP COMP IS_PROJECTS_FOR_PANEL .main-panel ', elemMainPanel)
                     if (this.IS_PROJECTS_FOR_PANEL === true) {
                         let ps = new PerfectScrollbar(elemMainPanel);
                     }
