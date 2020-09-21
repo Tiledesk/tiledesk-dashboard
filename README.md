@@ -239,6 +239,8 @@ Edit the file brand.json in the folder `src/assets/brand/` or load an external j
 
 - contact email and more
 
+`Note: enable CORS if brand json is loaded from a different domain`
+
 
 
 #### dashboard-config.json
