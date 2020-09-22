@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import { environment } from '../../environments/environment';
 import brand from 'assets/brand/brand.json';
+import { TranslateService } from '@ngx-translate/core';
+// import { NotifyService } from './../core/notify.service';
+const swal = require('sweetalert');
 
 @Injectable()
 export class BrandService {
@@ -13,10 +16,40 @@ export class BrandService {
   local_url = '/assets/brand/brand.json';
 
   http: Http;
+
+  warning: string;
+  loadBrandError: string;
+
   constructor(
-    http: Http
+    http: Http,
+    private translate: TranslateService,
+    // private notify: NotifyService
   ) {
     this.http = http;
+    this.getTranslations()
+  }
+
+  getTranslations() {
+       this.translate.get('Warning')
+      .subscribe((text: string) => {
+        // this.deleteContact_msg = text;
+        console.log('+ + + BrandService translation text: ', text)
+
+        this.warning = text;
+    
+      });
+
+      this.translate.get('RelatedKnowledgeBase')
+      .subscribe((text: string) => {
+        // this.deleteContact_msg = text;
+        console.log('+ + + BrandService translation text: ', text)
+
+        this.loadBrandError = text;
+    
+      });
+
+
+      
   }
 
 
@@ -105,11 +138,25 @@ export class BrandService {
       }
 
     } catch (err) {
-      console.log('BrandService setBrand error : ', err);
+      console.log('BrandService loadBrand error : ', err);
+
+      this.brand = brand;
+      // this.notify.showNotificationChangeProject('ops', 2, 'done');
+      this.displaySwalAlert(err)
     }
 
 
   }
+
+  displaySwalAlert(err) {
+  swal({
+    title: this.warning,
+    text: 'An error occurred while uploading your brand. Error code: ' + err.status ,
+    icon: "warning",
+    button: true,
+    dangerMode: false,
+  })
+}
 
   //   async setBrand(url) {
 
