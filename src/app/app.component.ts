@@ -11,7 +11,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { RequestsService } from './services/requests.service';
 
-import { NotifyService } from './core/notify.service';
+// import { NotifyService } from './core/notify.service';
 declare const $: any;
 
 import { environment } from '../environments/environment';
@@ -69,7 +69,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         private translate: TranslateService,
         private requestsService: RequestsService,
         private auth: AuthService,
-        private notify: NotifyService,
+        // private notify: NotifyService,
         public appConfigService: AppConfigService,
         public wsRequestsService: WsRequestsService,
         public wsMsgsService: WsMsgsService,
@@ -87,9 +87,13 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         // }).catch(error => console.log('APP.COMP - script error ', error));
 
         const brand = brandService.getBrand();
+
+        console.log('APP-COMPONENT - GET BRAND brandService > brand ', brand)
+
+
         this.metaTitle.setTitle(brand['metaTitle']); // here used with: "import brand from ..." now see in getBrand()
         this.setFavicon(brand); // here used with "import brand from ..." now see in getBrand()
-        console.log('APP-COMPONENT - GET BRAND brandService > brand ', brand)
+        
 
         // ----------------------------
         // FIREBASE initializeApp 
