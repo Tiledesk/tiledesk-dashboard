@@ -1539,5 +1539,6 @@
     "AnErrorHasOccurredArchivingTheRequest":"Si è verificato un errore durante l'archiviazione della richiesta",
     "RestoreContact":"ripristina contatto",
     "NoProjects": "Nessun progetto",
-    "RelatedKnowledgeBase":"Knowledge Base correlata"
+    "RelatedKnowledgeBase":"Knowledge Base correlata",
+    "LoadBrandError":"Si è verificato un errore durante il caricamento del tuo marchio. Codice errore:"
 }

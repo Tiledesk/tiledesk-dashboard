@@ -1546,6 +1546,7 @@
 	"AnErrorHasOccurredArchivingTheRequest":"Beim Archivieren der Anforderung ist ein Fehler aufgetreten",
 	"RestoreContact":"Kontakt wiederherstellen",
 	"NoProjects": "Keine Projekte",
-	"RelatedKnowledgeBase":"Verwandte Wissensdatenbank"
+	"RelatedKnowledgeBase":"Verwandte Wissensdatenbank",
+	"LoadBrandError":"Beim Hochladen Ihrer Marke ist ein Fehler aufgetreten. Fehlercode:"
 	
 }

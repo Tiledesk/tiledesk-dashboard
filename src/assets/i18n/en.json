@@ -1546,5 +1546,6 @@
     "AnErrorHasOccurredArchivingTheRequest":"An error has occurred archiving the request",
     "RestoreContact":"restore contact",
     "NoProjects": "No Projects",
-    "RelatedKnowledgeBase":"Related Knowledge Base"
+    "RelatedKnowledgeBase":"Related Knowledge Base",
+    "LoadBrandError":"An error occurred while uploading your brand. Error code:"
 }
