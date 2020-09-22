@@ -8,8 +8,15 @@
           <img class="panel-left-sidebar-avatar" *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true"  alt="{{user.firstname}} {{user.lastname}}" [src]="getUserProfileImage()">
           <img class="panel-left-sidebar-avatar" *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true" src="assets/img/no_image_user.png" />
          
-          <div *ngIf="!IS_PROJECTS_X_PANEL_ROUTE" class="panel-left-sidebar-logged-in-user-status"  
+          <div (click)="changeAvailabilityState(IS_AVAILABLE = !IS_AVAILABLE)" *ngIf="!IS_PROJECTS_X_PANEL_ROUTE" class="panel-left-sidebar-logged-in-user-status"  
             [ngClass]="{'logged-in-user-status-online' : IS_AVAILABLE === true, 'logged-in-user-status-offline' : IS_AVAILABLE === false}"> </div>
+
+            <div *ngIf="IS_BUSY === true" class="user-is-busy">
+              <span class="material-icons" style="font-size: 16px; color: #fedd00; position: absolute;top: 7px;  background: #1e2129; border-radius: 50%;">
+                access_time
+              </span>
+            
+            </div>
         </div>
 
         <div class="panel-left-sidebar-logged-in-user-name-and-email">

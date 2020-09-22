@@ -239,6 +239,40 @@ export class NavbarForPanelComponent implements OnInit {
   }
 
 
+  changeAvailabilityState(IS_AVAILABLE) {
+    console.log('SB - CHANGE STATUS - USER IS AVAILABLE ? ', IS_AVAILABLE);
+    // console.log('SB - CHANGE STATUS - PROJECT USER ID: ', this.projectUser_id);
+
+
+    // this.usersService.updateProjectUser(this.projectUser_id, IS_AVAILABLE).subscribe((projectUser: any) => {
+    // DONE - WORKS NK-TO-TEST - da implementare quando viene implementato il servizio - serve per cambiare lo stato di disponibilità dell'utente corrente
+    // anche in USER & GROUP bisogna cambiare per la riga dell'utente corrente   
+    this.usersService.updateCurrentUserAvailability(this.projectId, IS_AVAILABLE).subscribe((projectUser: any) => { // non 
+
+        console.log('PROJECT-USER UPDATED ', projectUser)
+
+        // NOTIFY TO THE USER SERVICE WHEN THE AVAILABLE / UNAVAILABLE BUTTON IS CLICKED
+        // this.usersService.availability_btn_clicked(true)
+
+    }, (error) => {
+        console.log('PROJECT-USER UPDATED ERR  ', error);
+        // =========== NOTIFY ERROR ===========
+        // this.notify.showNotification('An error occurred while updating status', 4, 'report_problem');
+        // this.notify.showWidgetStyleUpdateNotification(this.changeAvailabilityErrorNoticationMsg, 4, 'report_problem');
+
+    }, () => {
+        console.log('PROJECT-USER UPDATED  * COMPLETE *');
+
+        // =========== NOTIFY SUCCESS===========
+        // this.notify.showNotification('status successfully updated', 2, 'done');
+        // this.notify.showWidgetStyleUpdateNotification(this.changeAvailabilitySuccessNoticationMsg, 2, 'done');
+
+
+        // this.getUserAvailability()
+        this.getProjectUser();
+    });
+}
+
 
 
 

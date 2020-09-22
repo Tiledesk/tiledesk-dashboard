@@ -3,29 +3,36 @@ position: absolute;
 z-index: 100;
 top: 0;
 right: 0;
-width: 90%;
+/* width: 90%; */
+width: 100%;
 height: 100%;
 overflow-y: auto;
 overflow-x: hidden;
 background: #fff;
 padding-top:10px;
 padding-left: 15px;
-padding-right: 15px;
+/* padding-right: 15px; */
+padding-right: 0px;
 padding-bottom: 15px;">
 
 
     <!-- background-color: #3c4252!important;color: #fff!important; margin-left:-20px; margin-right:-20px; margin-top:-15px" -->
     <div style="border-bottom: 1px solid #eeeeee;height: 50px;">
-        <!-- <h5  style="font-weight: 400; text-transform: none; margin-top:0px; font-size: 16px; padding-top: 15px;padding-left: 21px;">
-</h5>  -->
-        <i class="material-icons" style="cursor:pointer; background-color: #e4e6eb;padding: 8px;border-radius: 50%;"
-            (click)="closeRightSideBar()">
-            close
-        </i>
 
+        <div class="row">
+            <div class="col-xs-8">
+                <h4>{{'RequestMsgsPage.RequestDetails' | translate}}</h4>
+            </div>
+            <div class="col-xs-4" style="text-align: right;">
 
+                <i class="material-icons"
+                    style="cursor:pointer; background-color: #e4e6eb;padding: 8px;border-radius: 50%; margin-right: 12px;"
+                    (click)="closeRightSideBar()">
+                    close
+                </i>
+            </div>
+        </div>
     </div>
-
 
 
     <div class="row" style="margin-top:5px">
@@ -46,10 +53,7 @@ padding-bottom: 15px;">
                 </span>
 
                 <span style="position: relative;top: 1px;">
-                    <!-- <span
-          style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
-          {{ "ContactEmail" | translate }}
-        </span> -->
+
                     <a style="font-size: 12px;font-weight: 500;" target="_blank" *ngIf="request?.lead?.email"
                         href="mailto:{{request?.lead?.email}}">
                         {{request?.lead?.email}}
@@ -157,7 +161,7 @@ padding-bottom: 15px;">
                         <span *ngIf="request?.dept">
                             {{request?.dept?.name  }}
                         </span>
-                        <span *ngIf="!request?.dept" style="text-transform: lowercase;">
+                        <span *ngIf="!request?.dept" style="text-transform: lowercase;padding-left: 0px;margin-left: 0px;">
                             {{'DepartmentsPage.NoDept' | translate}}
                         </span>
 
@@ -394,7 +398,7 @@ padding-bottom: 15px;">
 
     <!-- https://stackoverflow.com/questions/42256877/how-to-create-chat-bubbles-like-facebook-messenger -->
 
-    <div class="chat-messages-header" style=" ">
+    <div class="chat-messages-header">
 
         <!-- <span class="requester-avatar-wrapper">
             <span class="requester-avatar-request-detail-for-panel"
@@ -404,10 +408,8 @@ padding-bottom: 15px;">
             </span>
         </span> -->
 
-
-
-        <div class="contact-avatar---chat0-wrapper">
-            <div class="contact-avatar---chat1">
+        <div class="contact-avatar---chat0-wrapper" style="position: relative;">
+            <div class="contact-avatar---chat1" >
                 <div class="contact-avatar---chat2">
                     <div [ngStyle]="{'background-color': request?.requester_fullname_fillColour }"
                         class="contact-avatar---chat3">
@@ -417,7 +419,7 @@ padding-bottom: 15px;">
 
                         </span>
                     </div>
-                    <span class="e1qzs7wo2 css-1mi8udo ey4f9bj0"></span>
+                    <!-- <span class="e1qzs7wo2 css-1mi8udo ey4f9bj0"></span> -->
                 </div>
             </div>
             <div class="contact-name">
@@ -431,30 +433,52 @@ padding-bottom: 15px;">
                 </span>
             </div>
 
+
+            <div class="request-dtls---requester-status-icon" style=" "
+            [ngClass]="{'requester_is_online' : REQUESTER_IS_ONLINE, 'requester_is_offline' : !REQUESTER_IS_ONLINE}">
+           
+          </div>
+
+         
+          
         </div>
-
-
     </div>
 
-    <div class="chat-messages-container">
+    <div #scrollMe  class="chat-messages-container" [ngStyle]="{ 'height': chat_content_height }">
+        <!-- CHAT CONTENT -->
+        <div id="chat-content" fxFlex="1 1 auto" fusePerfectScrollbar>
 
-        <ul>
-            <!-- <li [ngClass]="{'him' : requester_id === message.sender, 'me': requester_id !== message.sender, 'first-of-group': isFirstMessageOfGroup(message, i), 'last-of-group': isLastMessageOfGroup(message, i)}">
-                {{ message?.text }}
+            <!-- CHAT MESSAGES -->
+            <div class="chat-messages">
 
-            </li>  -->
+                <!-- MESSAGE -->
+                <div *ngFor="let message of messagesList; let i = index" class="message-row" [ngClass]="{
+                            'me': requester_id !== message.sender,
+                            'contact': requester_id === message.sender,
+                            'first-of-group': isFirstMessageOfGroup(message, i),
+                            'last-of-group': isLastMessageOfGroup(message, i)
+                            }">
 
-            <!-- <li *ngFor="let message of messagesList; let i = index; let first = first ;let last = last;"
-            [ngClass]="{'him' : requester_id === message.sender, 
-            'me': requester_id !== message.sender && messagesList[i-1]?.sender === requester_id && messagesList[i+1]?.sender === requester_id, 
-            'first-of-group': requester_id !== message.sender && messagesList[i-1]?.sender === requester_id && messagesList[i+1]?.sender !== requester_id,
-            'last-of-group': requester_id !== message.sender && messagesList[i-1]?.sender !== requester_id && messagesList[i+1]?.sender === requester_id }">
-
-                {{ message?.text }}
-
-            </li>  -->
+                    <img *ngIf="shouldShowContactAvatar(message, i)" src="{{message.avatar_url}}"
+                        onerror="this.src='assets/img/no_image_user.png'" class="avatar">
 
 
+                    <div class="bubble">
+                        <div class="message">{{message?.text}}</div>
+                        <div class="time secondary-text">{{message.createdAt | date:'short'}}</div>
+                    </div>
+
+                </div>
+                <!-- / MESSAGE -->
+
+            </div>
+            <!-- CHAT MESSAGES -->
+
+        </div>
+        <!-- / CHAT CONTENT -->
+
+
+        <!-- <ul>
             <li *ngFor="let message of messagesList; let i = index; let first = first ;let last = last;"
                 [ngClass]="{
             'him' : requester_id === message.sender && messagesList[i-1]?.sender !== requester_id && messagesList[i+1]?.sender !== requester_id, 
@@ -464,49 +488,40 @@ padding-bottom: 15px;">
             'me': requester_id !== message.sender && messagesList[i-1]?.sender === requester_id && messagesList[i+1]?.sender === requester_id, 
             'me-first-of-group': requester_id !== message.sender && messagesList[i-1]?.sender === requester_id && messagesList[i+1]?.sender !== requester_id,
             'me-last-of-group': requester_id !== message.sender && messagesList[i-1]?.sender !== requester_id && messagesList[i+1]?.sender === requester_id }">
-
-                <!-- <div class="contact-avatar-in-chat-messages---wrapper"
-                    *ngIf="(requester_id === message.sender && messagesList[i-1]?.sender !== requester_id && messagesList[i+1]?.sender !== requester_id) || 
-                          (requester_id === message.sender && messagesList[i-1]?.sender !== requester_id && messagesList[i+1]?.sender === requester_id)">
-                    <div class="contact-avatar-in-chat-messages" style="position: absolute;left: 2px; ">
-                        <div class="contact-avatar---messages">
-                            <div class="contact-avatar---chat1">
-                                <div class="contact-avatar---chat2">
-                                    <div [ngStyle]="{'background-color': request?.requester_fullname_fillColour }"
-                                        class="contact-avatar---chat3">
-                                        <span class="contact-avatar---chat4">
-
-                                            {{ request?.requester_fullname_initial }}
-
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
+      
                 {{ message?.text }}
-
             </li>
+        </ul> -->
 
-
-            <!-- <li *ngIf="requester_id === message.sender" class="him">{{ message?.text }}</li> 
-            <li *ngIf="requester_id !== message.sender" class="me">{{ message?.text }}</li>  -->
-            <!-- <li [ngClass]="{'him' : requester_id === message.sender, 'me': requester_id !== message.sender}"> 
-{{first }} {{last}}
-            {{ message?.text }}
-           </li>  -->
-            <!-- <li class="him">By Other User</li>
-            <li class="me">By this User, first message</li>
-            <li class="me">By this User, secondmessage</li>
-            <li class="me">By this User, third message</li>
-            <li class="me">By this User, fourth message</li> -->
-        </ul>
 
 
     </div>
 
+  
 
+    <div class="StickyFooter">
+        <div class="row">
+            <div class="col-xs-6">
+                <button class="btn btn-primary btn-no-boxshadow" 
+                    (click)='joinRequest(request?.request_id)' style="padding: 6px 27px;" [disabled]="IS_CURRENT_USER_JOINED === true">
+                    {{ 'RequestMsgsPage.Enter' | translate }}
+                </button>
+            </div>
+            <div class="col-xs-6">
+                <button class="btn btn-primary btn-no-boxshadow" (click)='archiveRequest(request?.request_id)'
+                [disabled]="REQUEST_STATUS == 1000"  style="padding: 6px 27px;background-color: #e4e6eb; color: #050505;">
+                    {{ 'VisitorsPage.Archive' | translate }}
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- 
+    // ----------------------------------------------------------------
+    // Note - the following is set to DISPLAY NONE
+    // ---------------------------------------------------------------- -->
     <div #scrollMe class="card-content"
         style="height: 500px; overflow-y: auto; padding: 0px; padding-left:25px; padding-right:25px; display: none;"
         (scroll)="onScroll($event)">
@@ -514,7 +529,6 @@ padding-bottom: 15px;">
 
         <div *ngIf="!showSpinner" class="chat-body" style="vertical-align:baseline;">
 
-            <!-- style="padding-bottom: 3px;" class="answer left" -->
             <div *ngFor="let message of messagesList">
 
                 <div class="parent">
@@ -522,29 +536,17 @@ padding-bottom: 15px;">
 
                         <div class="speech-wrapper">
 
-                            <!-- ////// REQUESTER -->
-                            <div *ngIf="requester_id === message.sender" class="bubble">
-                                <!-- <div class="avatar"
-                  style="  width: 35px; height: 35px; position: absolute; left: -50px; bottom: 36px;">
-                  <div class="requester-avatar-wrapper"
-                    style="display: block;border-radius: 50%; height: 100%; margin-top: 35px;"
-                    [ngStyle]="{'background-color': fillColour }">
-                   
-                    <span class="_requester-avatar-inchat">
-                    
-                      {{ requester_fullname_initial }}
 
-                    </span>
-                  </div>
-                </div> -->
+                            <div *ngIf="requester_id === message.sender" class="bubble">
+
 
                                 <div class="txt">
                                     <p class="name" [ngStyle]="{'color': fillColour }">{{ message.senderFullname }}
-                                        <!-- margin-right: -45px; -->
+
                                         <span
                                             style="float:right; cursor:pointer; color: #00bcf8; text-decoration: underline;"
                                             (click)="openRightSideBar(message?.text)">
-                                            <!-- Addestra -->
+
                                             {{ 'Train' | translate }}
 
                                         </span>
@@ -556,61 +558,14 @@ padding-bottom: 15px;">
                                 </div>
                                 <div class="bubble-arrow"></div>
                             </div>
-                            <!-- ////////////////// Speech Bubble alternative ////////////////// -->
+
                             <div *ngIf="requester_id !== message.sender" class="bubble alt">
 
-                                <!-- <div class="avatar"
-                  style="width: 35px; height: 35px; position: absolute; left: 254px; bottom: 36px;">
-                  <div
-                    style="display: block;border-radius: 50%; height: 100%; margin-top: 35px; background-color: #fff; border:1px solid #ebebeb;">
-
-                   
-                    <span *ngIf="message?.sender !== 'system' && message?.sender.indexOf('bot_') === -1"
-                      style="position: absolute; top:43px; margin-left:13px;">
-                   
-                      <img
-                        style="vertical-align: middle; width: 36px; height: 36px; border-radius: 50%; border: 1px solid #eee; margin-top: 1px; margin-bottom: 1px;position: relative;top: -9px; left: -14px;"
-                        class="user-img"
-                        src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{message?.sender}}%2Fphoto.jpg?alt=media"
-                        onerror="this.src='assets/img/no_image_user.png'" />
-                    </span>
-
-                   
-                    <span *ngIf="message?.sender.indexOf('bot_') !== -1"
-                      style="position: absolute; top:43px; margin-left:13px;">
-                      <img
-                        style="vertical-align: middle; width: 36px; height: 36px; border-radius: 50%; border: 1px solid #eee; position:relative;top: -9px;left: -14px;"
-                        class="user-img"
-                        src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{message?.sender | slice:4 }}%2Fphoto.jpg?alt=media"
-                        onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
-                    </span>
-
-                  
-                    <span *ngIf="message?.sender === 'system' && message?.senderFullname === 'Bot'"
-                      style="position: absolute; top:43px; margin-left:13px;color: #999999;">
-                   
-                      <img
-                        style="vertical-align: middle; width: 36px; height: 36px; border-radius: 50%; border: 1px solid #eee; position:relative;top: -9px;left: -14px;"
-                        class="user-img" src="assets/img/bot_image_as_human.jpg"
-                        onerror="this.src='assets/img/no_image_user.png'" />
-                    </span>
-
-                   
-                    <span *ngIf="message?.sender === 'system' && message?.senderFullname !== 'Bot'"
-                      style="position: absolute; top:43px; margin-left:13px;color: #999999;">
-                    
-                      <i class="material-icons"
-                        style="position: relative;left: -9px;top: -3px;font-size:26px">
-                        code
-                      </i>
-                    </span>
-                  </div>
-                </div> -->
 
                                 <div class="txt">
                                     <p class="name alt">
                                         {{ message.senderFullname }}
-                                        <!-- +353 87 1234 567<span> ~ John</span> -->
+
                                     </p>
                                     <p class="message ow">{{ message.text }}</p>
                                     <span class="timestamp"> {{ message.createdAt | date: 'd/M/y HH:mm:ss'}}</span>

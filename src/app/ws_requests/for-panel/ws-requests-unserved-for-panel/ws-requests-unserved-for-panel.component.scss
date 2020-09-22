@@ -782,79 +782,306 @@ $f21blue: #039be5;
 
 .go-back-icon {
     color: #dbddde;
+    vertical-align: middle;
+}
+
+.no-request-msg-wrapper {
+    flex-direction: column;
+    box-sizing: border-box;
+    display: flex;
+    place-content: center;
+    align-items: center;
+    height: 160px;
+    line-height: 40px;
+}
+
+.no-request-icon {
+    vertical-align: middle;
+    color: #a9abad;
+    font-size: 48px;
+}
+
+.no-request-msg {
+    font-weight: 600;
+    font-size: 22px;
+    color: #a9abad;
+}
+
+.left-sidebar-unserved-requests-wrapper {
+    flex-direction: column;
+    box-sizing: border-box;
+    display: flex;
 }
 
 
-/// ANIMATED ARROW
-.arrow-wrapper {
+
+.left-sidebar-unserved-requests {
+    white-space: normal;
+    text-align: left;
+    letter-spacing: 0.01em;
+    min-height: 88px;
+    // border-bottom: 1px solid;
+    padding: 8px 6px;
+    font-weight: 400;
+    border-radius: 0;
+    -moz-transition: all 0.2s ease-in;
+    -o-transition: all 0.2s ease-in;
+    -webkit-transition: all 0.2s ease-in;
+    transition: all 0.2s ease-in;
+    cursor:pointer;
+}
+
+.left-sidebar-unserved-requests:hover {
+    background: rgb(245,245,245);
+}
+
+.left-sidebar-unserved-requests-row {
+    flex-direction: row;
+    box-sizing: border-box;
     display: flex;
+    place-content: center flex-start;
     align-items: center;
 }
 
-#arrow_1 .arrow {
-    $size: 30px;
-    $width: 2px;
 
+
+.left-sidebar-requester-avatar-wrapper {
+    place-content: center;
+    align-items: center;
+    flex-direction: row;
+    box-sizing: border-box;
+    display: flex;
+    flex: 0 1 auto;
+    margin-top: 5px;
+    position: relative;
+}
+
+.left-sidebar-requester-avatar {
+    width: 60px;
+    min-width: 60px;
+    height: 60px;
+    line-height: 61px;
+    margin: 0 8px 0 0;
+    border-radius: 50%;
+    font-size: 17px;
+    font-weight: 400;
+    text-align: center;
+    font-family: "Google Sans";
+}
+
+.left-sidebar--lead-name-and-request-wrapper {
+    flex-direction: row;
+    box-sizing: border-box;
+    display: flex;
+    flex: 1 1 0%;
+    margin-top: -17px;
+}
+
+.left-sidebar--lead-name-and-request {
+    flex-direction: column;
+    box-sizing: border-box;
+    display: flex;
+    place-content: flex-start center;
+    align-items: flex-start;
+    flex: 1 1 0%;
+    padding-right: 4px !important;
+}
+
+.left-sidebar--lead-name {
+    font-size: 15px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-weight: 600;
+    font-family: "Google Sans", sans-serif;
+}
+
+.requester-status-in-unserved-list {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    bottom: 4px;
+    left: 45px;
+    border: 1px solid #fff;
+    border-radius: 50%;
+}
+
+.requester-is-online {
+    background-color: #4caf50;;
+}
+
+.requester-is-offline {
+    background-color: #f44336;
+}
+
+.left-sidebar--request-first-message {
+    line-height: normal;
+    font-size: 12px;
+    color: #7695a5;
+    margin-top: 4px;
+    width: 270px;
+}
+
+.left-sidebar--request-time-wrapper {
+    flex-direction: column;
+    box-sizing: border-box;
+    display: flex;
+    place-content: flex-end flex-start;
+    align-items: flex-end;
+}
+
+.left-sidebar--request-time {
+    font-size: 12px;
+    margin-right: 7px;
+}
+
+.left-sidebar--btns-container {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin-top: -9px;
+}
+
+.left-sidebar--btns-left-column {
+    width: 68px;
+    text-align: center;
+    padding: 8px 0px;
+}
+
+.left-sidebar--btns-center-column {
+    flex: 1;
+    padding: 0px 0px;
+}
+
+.left-sidebar--btns-right-column {
+    width: 130px;
+}
+
+.left-sidebar-btn {
+    margin: 0px;
+    box-shadow: unset;
+    text-transform: none;
+    // min-width: 105px;
+    width: 40px;
+    height: 40px;
+    padding:8px;
+    border-radius:50px
+}
+
+.left-sidebar-btn:hover {
+    box-shadow: unset;
+    opacity: 0.6;
+}
+
+.left-sidebar--btns-right-column:hover #arrow_3 .arrow span {
+    //  display: none;
+    $size: 16px;
+    $width: 2px;
+  
+    width: $size * 1.414;
+  
+  }
+
+// --------------------------------------------------
+// ANIMATED ARROW https://codepen.io/cbrst/pen/ebxwLJ
+// --------------------------------------------------
+.arrow-wrapper {
+    display: flex;
+    align-items: center;
+  }
+
+  .block {
+    // width: 300px;
+    // height: 100px;
+    // background: #eee;
+    margin:0px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .h1---custom {
+    color: rgb(0,20,50);
+    opacity: 0.6;
+    text-align: center;
+    // text-transform: uppercase;
+    transition: opacity 0.3s;
+    font-size:12px;
+    margin-top:10px;
+    font-weight: 400;
+  }
+  
+  .arrow-wrapper:hover h1 {
+    opacity: 1;
+  }
+  
+  #arrow_3 .arrow {
+    $size: 16px;
+    $width: 2px;
+  
     cursor: pointer;
     display: block;
     width: $size / 1.414;
     height: $size / 1.414 * 2;
     position: relative;
-
+  
     & span,
     &:before,
     &:after {
-        background: #fff;
-        content: "";
-        display: block;
-        width: $size;
-        height: $width;
-        position: absolute;
-        top: calc(50% - (#{$width} / 2));
+      background: #000;
+      content: "";
+      display: block;
+      width: $size;
+      height: $width;
+      position: absolute;
+      top: calc(50% - (#{$width} / 2));
     }
-
+  
     &:before {
-        transform: rotate(-45deg);
+      transform: rotate(-45deg);
     }
     &:after {
-        transform: rotate(45deg);
+      transform: rotate(45deg);
     }
-
+  
     & span {
-        width: 0;
+      width: 0;
     }
     &:hover span {
-        width: $size * 1.414;
+      width: $size * 1.414;
     }
-
+  
     @each $direction in "left" "right" {
-        &.arrow--#{$direction} {
-            & span,
-            &:before,
-            &:after {
-                #{$direction}: 0;
-                transform-origin: #{$direction} 50%;
-            }
-
-            &:before,
-            &:after {
-                transition: #{$direction} 0.3s 0.05s;
-            }
-
-            & span {
-                transition: width 0.3s, #{$direction} 0.3s 0.05s;
-            }
-
-            &:hover {
-                & span,
-                &:before,
-                &:after {
-                    #{$direction}: $size / 1.414 * -1;
-                }
-            }
+      &.arrow--#{$direction} {
+        & span,
+        &:before,
+        &:after {
+          #{$direction}: 0;
+          transform-origin: #{$direction} 50%;
         }
+  
+        &:before,
+        &:after {
+          transition: #{$direction} 0.3s 0.05s;
+        }
+  
+        & span {
+          transition: width 0.3s, #{$direction} 0.3s 0.05s;
+        }
+  
+        // &:hover {
+        //   & span,
+        //   &:before,
+        //   &:after {
+        //     #{$direction}: $size / 1.414 * -1;
+        //   }
+        // }
+      }
     }
-}
+  }
+
+
 
 /* 
 // -------------------------------------------------
@@ -928,3 +1155,44 @@ $f21blue: #039be5;
         -webkit-transform: scaleY(1);
     }
 }
+
+// TOOLTIP START
+.White__Tooltip {
+    position: relative;
+    display: inline-block;
+    // border-bottom: 1px dotted black;
+  }
+    
+  .White__Tooltip .White__Tooltiptext {
+    visibility: hidden;
+    width: fit-content;
+    // background-color: #fff;
+    // color: rgba(0,0,0, 0.87);
+    text-align: center;
+    border-radius: 6px;
+    padding: 4px 6px;
+    position: absolute;
+    z-index: 1;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -60px;
+    // min-height: 41px;
+    line-height: 1.9;
+    // font-size: 16px;
+    // border: 1px solid #eee;
+    
+    /* Fade in tooltip - takes 1 second to go from 0% to 100% opac: */
+    opacity: 0;
+    transition: opacity 1s;
+  
+    // NEW
+    color: #fff;
+    font-size: 14px;
+    box-shadow: 0 1em 2em -0.5em rgba(0, 0, 0, 0.35);
+    background-color: #394f5a;
+  }
+    
+  .White__Tooltip:hover .White__Tooltiptext {
+    visibility: visible;
+    opacity: 1;
+  }

@@ -1,5 +1,4 @@
-
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap");
 
 .main-content-projects-for-panel {
   padding-top: 0px;
@@ -10,6 +9,7 @@
 
   padding-left: 0px;
   padding-right: 10px;
+  min-height: calc(100% - 63px);
   // height: 100vh;
 }
 
@@ -1623,7 +1623,7 @@ button.close {
   color: #1e2129;
   background-color: #a9abad;
   text-transform: uppercase;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-weight: 500;
   // margin-top: 8px;
   // margin-bottom: 8px;
@@ -1636,6 +1636,14 @@ button.close {
   align-items: center;
   position: relative;
   cursor: pointer;
+  -moz-transition: all 0.2s ease-in;
+  -o-transition: all 0.2s ease-in;
+  -webkit-transition: all 0.2s ease-in;
+  transition: all 0.2s ease-in;
+}
+
+.flex-container:hover {
+  background-color: rgba(200, 200, 200, 0.2);
 }
 
 .flex-child-left {
@@ -1650,7 +1658,7 @@ button.close {
   // flex: 0 0 80%;
   flex: 1;
   padding: 8px 0px;
-  
+
   // border: 2px solid yellow;
 }
 
@@ -1658,7 +1666,7 @@ button.close {
   // flex: 0 0 80%;
   width: 20px;
   padding: 8px 0px;
-  
+
   // border: 2px solid yellow;
 }
 
@@ -1696,14 +1704,13 @@ button.close {
 .status--text {
   color: #7695a5;
   font-size: 12px;
- 
+
   // font-weight: 300;
   text-transform: capitalize;
   width: fit-content;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-weight: 400;
 }
-
 
 .online-text-color {
   color: #4caf50;
@@ -1714,21 +1721,19 @@ button.close {
   // font-weight: 600;
 }
 
-
 .project-name {
   color: #dbddde;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   // font-weight: 500;
-  
-    // font-weight: 600;
-    // font-size: 14px;
-    // font-family: 'Google Sans',sans-serif!important;
+
+  // font-weight: 600;
+  // font-size: 14px;
+  // font-family: 'Google Sans',sans-serif!important;
 }
 
 .im-available {
   color: #fff;
 }
-
 
 @keyframes busypulse {
   0% {
@@ -1781,13 +1786,98 @@ button.close {
 }
 
 
+.small-projects-sidebar:hover #arrow_1 .arrow span {
+  //  display: none;
+  $size: 16px;
+  $width: 2px;
+
+  width: $size * 1.414;
+
+}
+
+// --------------------------------------------------
+// ANIMATED ARROW https://codepen.io/cbrst/pen/ebxwLJ
+// --------------------------------------------------
+.arrow-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+#arrow_1 .arrow {
+  $size: 16px;
+  $width: 2px;
+
+  cursor: pointer;
+  display: block;
+  width: $size / 1.414;
+  height: $size / 1.414 * 2;
+  position: relative;
+
+  & span,
+  &:before,
+  &:after {
+    background: #fff;
+    content: "";
+    display: block;
+    width: $size;
+    height: $width;
+    position: absolute;
+    top: calc(50% - (#{$width} / 2));
+  }
+
+  &:before {
+    transform: rotate(-45deg);
+  }
+  &:after {
+    transform: rotate(45deg);
+  }
+
+  & span {
+    width: 0;
+  }
+  &:hover span {
+    width: $size * 1.414;
+  }
+
+  @each $direction in "left" "right" {
+    &.arrow--#{$direction} {
+      & span,
+      &:before,
+      &:after {
+        #{$direction}: 0;
+        transform-origin: #{$direction} 50%;
+      }
+
+      &:before,
+      &:after {
+        transition: #{$direction} 0.3s 0.05s;
+      }
+
+      & span {
+        transition: width 0.3s, #{$direction} 0.3s 0.05s;
+      }
+
+      // &:hover {
+      //   & span,
+      //   &:before,
+      //   &:after {
+      //     #{$direction}: $size / 1.414 * -1;
+      //   }
+      // }
+    }
+  }
+}
+
 // -----------------------
 // i on-off switch
 // -----------------------
 
 .i_onoffswitch {
-  position: relative; width: 33px;
-  -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+  position: relative;
+  width: 33px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 .i_onoffswitch-checkbox {
   position: absolute;
@@ -1795,27 +1885,38 @@ button.close {
   pointer-events: none;
 }
 .i_onoffswitch-label {
-  display: block; overflow: hidden; cursor: pointer;
-  height: 18px; padding: 0; line-height: 18px;
-  border: 1px solid #E3E3E3; border-radius: 18px;
+  display: block;
+  overflow: hidden;
+  cursor: pointer;
+  height: 18px;
+  padding: 0;
+  line-height: 18px;
+  border: 1px solid #e3e3e3;
+  border-radius: 18px;
   background-color: #2d323e;
   transition: background-color 0.3s ease-in;
 }
 .i_onoffswitch-label:before {
   content: "";
-  display: block; width: 18px; margin: 0px;
-  background: #FFFFFF;
-  position: absolute; top: 0; bottom: 0;
+  display: block;
+  width: 18px;
+  margin: 0px;
+  background: #ffffff;
+  position: absolute;
+  top: 0;
+  bottom: 0;
   right: 13px;
-  border: 1px solid #E3E3E3; border-radius: 18px;
-  transition: all 0.3s ease-in 0s; 
+  border: 1px solid #e3e3e3;
+  border-radius: 18px;
+  transition: all 0.3s ease-in 0s;
 }
 .i_onoffswitch-checkbox:checked + .i_onoffswitch-label {
-  background-color: #4CAF50;
+  background-color: #4caf50;
 }
-.i_onoffswitch-checkbox:checked + .i_onoffswitch-label, .i_onoffswitch-checkbox:checked + .i_onoffswitch-label:before {
- border-color: #4CAF50;
+.i_onoffswitch-checkbox:checked + .i_onoffswitch-label,
+.i_onoffswitch-checkbox:checked + .i_onoffswitch-label:before {
+  border-color: #4caf50;
 }
 .i_onoffswitch-checkbox:checked + .i_onoffswitch-label:before {
-  right: 0px; 
+  right: 0px;
 }

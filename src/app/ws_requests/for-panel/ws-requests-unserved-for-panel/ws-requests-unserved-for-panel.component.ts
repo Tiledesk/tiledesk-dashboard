@@ -29,13 +29,16 @@ import { takeUntil } from 'rxjs/operators'
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { browserRefresh } from '../../../app.component';
 import { Location } from '@angular/common';
-
+// import { fadeInAnimation } from '../../../_animations/index';
 const swal = require('sweetalert');
 
 @Component({
   selector: 'appdashboard-ws-requests-unserved-for-panel',
   templateUrl: './ws-requests-unserved-for-panel.component.html',
   styleUrls: ['./ws-requests-unserved-for-panel.component.scss']
+  // animations: [fadeInAnimation],
+  // tslint:disable-next-line:use-host-property-decorator
+  // host: { '[@fadeInAnimation]': '' }
 })
 export class WsRequestsUnservedForPanelComponent extends WsSharedComponent implements OnInit, AfterViewInit, OnDestroy {
 
@@ -161,7 +164,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
    * On init
    */
   ngOnInit() {
-    this.getDepartments();
+    // this.getDepartments();
     // this.getWsRequests$();
     this.getCurrentProject();
     this.getLoggedUser();
@@ -178,20 +181,50 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
     // this.selectedAgentId = '';
     this.detectBrowserRefresh();
 
-    this.getChatUrl();
-    this.getTestSiteUrl();
+    // this.getChatUrl();
+    // this.getTestSiteUrl();
     this.getTranslations();
+
+    
+  }
+
+
+    // ------------------------------------------
+  // Join request
+  // ------------------------------------------
+  joinRequest (request_id:string) {
+    this.currentUserID
+    this.onJoinHandled(request_id, this.currentUserID); 
+  }
+
+  archiveRequest(request_id) {
+    this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg);
+    console.log('WS-REQUESTS-SERVED - HAS CLICKED ARCHIVE REQUEST ');
+
+
+    this.wsRequestsService.closeSupportGroup(request_id)
+      .subscribe((data: any) => {
+        console.log('WS-REQUESTS-SERVED - CLOSE SUPPORT GROUP - DATA ', data);
+      }, (err) => {
+        console.log('WS-REQUESTS-SERVED - CLOSE SUPPORT GROUP - ERROR ', err);
+
+
+        // =========== NOTIFY ERROR ===========
+        // this.notify.showNotification('An error has occurred archiving the request', 4, 'report_problem');
+        this.notify.showNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
+      }, () => {
+        // this.ngOnInit();
+        console.log('CLOSE SUPPORT GROUP - COMPLETE');
+
+        // =========== NOTIFY SUCCESS===========
+        // this.notify.showNotification(`request with id: ${this.id_request_to_archive} has been moved to History`, 2, 'done');
+        this.notify.showRequestIsArchivedNotification(this.requestHasBeenArchivedNoticationMsg_part1);
+
+        // this.onArchiveRequestCompleted()
+      });
   }
 
   displayDetails(request) {
-    // const wrapper = document.createElement('div');
-    // wrapper.innerHTML = 'YOUR_DYNAMIC_HTML';
-
-    // swal({
-    //   title: 'Test Title',
-    //   text: 'Test Text',
-    //   content: wrapper
-    // });
 
     this.OPEN_REQUEST_DETAILS = true;
     this.selectedRequest = request
@@ -263,7 +296,10 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
     console.log('AppConfigService getAppConfig (WS-REQUESTS-LIST COMP.) CHAT_BASE_URL', this.CHAT_BASE_URL);
   }
 
-  ngAfterViewInit() { }
+  ngAfterViewInit() { 
+    const leftsidebarbtn = <HTMLElement>document.querySelector('.left-sidebar--btns-container')
+    console.log('WS-REQUESTS-SERVED - leftsidebarbtn ', leftsidebarbtn);
+  }
 
   ngOnDestroy() {
     console.log('% »»» WebSocketJs WF +++++ ws-requests--- list ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ ngOnDestroy')
@@ -313,16 +349,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
       });
   }
 
-  getDepartments() {
-    this.departmentService.getDeptsByProjectId().subscribe((_departments: any) => {
-      console.log('% »»» WebSocketJs WF WS-RL - GET DEPTS RESPONSE ', _departments);
-      this.departments = _departments
-    }, error => {
-      console.log('% »»» WebSocketJs WF WS-RL - GET DEPTS - ERROR: ', error);
-    }, () => {
-      console.log('% »»» WebSocketJs WF WS-RL - GET DEPTS * COMPLETE *')
-    });
-  }
+
 
   getStorageBucket() {
     const firebase_conf = this.appConfigService.getConfig().firebase;
@@ -345,40 +372,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
   //   console.log('% »»» WebSocketJs WF >>>>>>>>> >>>>>>>  L FROM PROMISE ',totalR);
   // }
 
-  for1() {
-    // this.Xlength = this.wsRequestsService.wsRequestsListLength$.value
-    this.wsRequestsService.ws_All_RequestsLength$.subscribe((totalrequests: number) => {
 
-      this.Xlength = totalrequests
-    })
-
-    console.log('% »»» WebSocketJs WF >>>>>>>>> >>>>>>> FOR 1 Lenght ', this.Xlength);
-    // console.log('% »»» WebSocketJs WF >>>>>>>>> >>>>>>> FOR 1 ', this.i);
-
-    if (this.Xlength !== undefined) {
-
-      this.for2();
-
-    } else if (this.Xlength === undefined) {
-      setTimeout(() => {
-        // this.showSpinner = false;
-
-      }, 100);
-    }
-  }
-
-  for2() {
-    // var length = 10;
-    if (this.i == this.Xlength) {
-      console.log('% »»» WebSocketJs WF >>>>>>>>> >>>>>>> FOR 1 == Xlength ');
-      // this.showSpinner = false;
-      return false;
-    }
-    setTimeout(() => {
-      this.i++;
-      this.for1();
-    }, 50);
-  }
 
 
   getAllProjectUsersAndBot() {
@@ -599,25 +593,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
     console.log('% »»» WebSocketJs WF WS-RL - clear Dept Filter selectedDeptId', this.selectedDeptId)
   }
 
-  onChangeAgent() {
-    this.hasFiltered = true
-    // this.filter['agentId'] = this.selectedAgentId
-    // this.filter.push({ 'agentId': this.selectedAgentId }) 
-    // console.log('% »»» WebSocketJs WF WS-RL - on Change Agent filter', this.filter)
-    this.filter[1]['agentId'] = this.selectedAgentId;
-    // console.log('% »»» WebSocketJs WF WS-RL - on Change Agent - selected Agent Id', this.selectedAgentId);
-    // console.log('% »»» WebSocketJs WF WS-RL - on Change Agent - filter', this.filter)
-    this.getWsRequests$();
 
-    // console.log('% »»» WebSocketJs WF WS-RL - on Change Agent - ws Requests Unserved ', this.wsRequestsUnserved.length);
-    // console.log('% »»» WebSocketJs WF WS-RL - on Change Agent - ws Requests Served ', this.wsRequestsServed.length)
-  }
-
-  clearAgentFilter() {
-    // console.log('% »»» WebSocketJs WF WS-RL - clear Agent Filter selectedAgentId', this.selectedAgentId)
-    this.filter[1]['agentId'] = null;
-    this.hasFiltered = false
-  }
 
   // countRequestsLength(wsrequests) {
   //   console.log('% »»» WebSocketJs WF WS-RL - WsRequestsList  ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ CALLING NOW countRequestsLength ',wsrequests.length);
@@ -669,8 +645,238 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
 
   }
 
-  // DEPTS_LAZY: add this 
-  addDeptObject(wsrequests) {
+ 
+
+  // -----------------------------------------------------------------------------------------------------
+  // @ Subscribe to get the published requests (called On init)
+  // -----------------------------------------------------------------------------------------------------
+  getWsRequests$() {
+    console.log("WS-REQUESTS-UNSERVED-X-PANEL +++++ ws-requests--- list - enter NOW in getWsRequests$");
+    this.wsRequestsService.wsRequestsList$
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((wsrequests) => {
+
+        if (wsrequests) {
+          console.log("WS-REQUESTS-UNSERVED-X-PANEL +++++ ws-requests--- list - subscribe > if (wsrequests) ", wsrequests);
+          this.browserRefresh = browserRefresh;
+
+          if ((this.browserRefresh === false) || (this.browserRefresh === true && this.wsRequestsService.wsRequestsList$.value.length > 0)) {
+            if (wsrequests.length > 0) {
+
+              this.SHOW_SIMULATE_REQUEST_BTN = false;
+              console.log('% »»» WebSocketJs WF +++++ ws-requests--- list ----- SHOW_SIMULATE_REQUEST_BTN ', this.SHOW_SIMULATE_REQUEST_BTN)
+              this.showSpinner = false;
+              console.log('% »»» WebSocketJs WF +++++ ws-requests--- list ----- SHOW_SPINNER ', this.showSpinner)
+
+
+            } else if (wsrequests.length === 0) {
+              this.SHOW_SIMULATE_REQUEST_BTN = true;
+              console.log('% »»» WebSocketJs WF +++++ ws-requests--- list ----- SHOW_SIMULATE_REQUEST_BTN ', this.SHOW_SIMULATE_REQUEST_BTN)
+              this.showSpinner = false;
+              console.log('% »»» WebSocketJs WF +++++ ws-requests--- list ----- SHOW_SPINNER ', this.showSpinner)
+            }
+          }
+
+          if (this.ONLY_MY_REQUESTS === false) {
+            this.ws_requests = wsrequests;
+          }
+
+          if (this.ONLY_MY_REQUESTS === true) {
+            this.ws_requests = [];
+            wsrequests.forEach(wsrequest => {
+             
+
+              if (wsrequest !== null && wsrequest !== undefined) {
+                if (this.hasmeInAgents(wsrequest.agents, wsrequest) === true || this.hasmeInParticipants(wsrequest.participants) === true) {
+                  this.ws_requests.push(wsrequest);
+                }
+              }
+            });
+          }
+
+          this.getParticipantsInRequests(this.ws_requests);
+
+        }
+
+        // this.ws_requests.forEach(request => {
+        this.ws_requests.forEach((request) => {
+
+          const user_agent_result = this.parseUserAgent(request.userAgent)
+          const ua_browser = user_agent_result.browser.name + ' ' + user_agent_result.browser.version
+          request['ua_browser'] = ua_browser;
+          const ua_os = user_agent_result.os.name + ' ' + user_agent_result.os.version
+          request['ua_os'] = ua_os;
+
+          request['currentUserIsJoined'] = this.currentUserIdIsInParticipants(request.participants, this.auth.user_bs.value._id, request.request_id);
+
+          if (request.status === 200) {
+            // USE CASE L'ARRAY new_participants è UNDEFINED x es al refresh o quando si entra nella pagina (anche al back dal dettaglio) o all' UPDATE
+            // console.log('!! Ws SHARED  (from request list) PARTICIPATING-AGENTS  ', request['participantingAgents']);
+
+            if (!request['participanting_Agents']) {
+              console.log('!! Ws SHARED  (from request list) PARTICIPATING-AGENTS IS ', request['participanting_Agents'], ' - RUN DO ');
+              request['participanting_Agents'] = this.doParticipatingAgentsArray(request.participants, request.first_text)
+
+            } else {
+
+              console.log('!! Ws SHARED  (from request list) PARTICIPATING-AGENTS IS DEFINED');
+   
+            }
+          }
+ 
+
+          if (request.lead && request.lead.fullname) {
+            request['requester_fullname_initial'] = avatarPlaceholder(request.lead.fullname);
+            request['requester_fullname_fillColour'] = getColorBck(request.lead.fullname)
+          } else {
+
+            request['requester_fullname_initial'] = 'N/A';
+            request['requester_fullname_fillColour'] = '#6264a7';
+          }
+
+
+          if (request.lead && request.lead.lead_id) { 
+
+            this.getRequesterAvailabilityStatus(request.lead.lead_id, request)
+          }
+        });
+
+
+
+
+        /**
+         * Sort requests and manage spinner
+         */
+        if (this.ws_requests) {
+          console.log('% »»» WebSocketJs WF +++++ ws-requests--- list getWsRequests *** ws_requests ***', this.ws_requests);
+          this.wsRequestsUnserved = this.ws_requests
+            .filter(r => {
+              if (r['status'] === 100) {
+
+                return true
+              } else {
+                return false
+              }
+            }).sort(function compare(a: Request, b: Request) {
+              if (a['createdAt'] > b['createdAt']) {
+                return 1;
+              }
+              if (a['createdAt'] < b['createdAt']) {
+                return -1;
+              }
+              return 0;
+            });
+
+          this.wsRequestsServed = this.ws_requests
+            .filter(r => {
+              if (r['status'] !== 100) {
+
+                return true
+              } else {
+                return false
+              }
+            }).sort(function compare(a: Request, b: Request) {
+              if (a['createdAt'] > b['createdAt']) {
+                return -1;
+              }
+              if (a['createdAt'] < b['createdAt']) {
+                return 1;
+              }
+              return 0;
+            });
+
+
+        } else {
+          // this.showSpinner = false;
+        }
+        console.log('WS-REQUESTS-UNSERVED-X-PANEL getWsRequests (served)', this.wsRequestsServed);
+        console.log('WS-REQUESTS-UNSERVED-X-PANEL list getWsRequests (unserved)', this.wsRequestsUnserved);
+
+        var time = 1;
+        // this = that
+        var interval = setInterval(() => {
+          if (time <= 3) {
+            console.log('WS-REQUESTS-UNSERVED-X-PANEL (unserved) TIME TIME TIME ', time);
+            time++;
+          }
+          else {
+            clearInterval(interval);
+            console.log('WS-REQUESTS-UNSERVED-X-PANEL (unserved) TIME TIME TIME COMPLETED Unserved LENGTH ' , this.wsRequestsUnserved.length);
+
+            if (this.wsRequestsUnserved.length > 0) {
+              this.SHOW_NO_REQUEST_MSG = false;
+              this.showSpinner = false;
+            } else {
+              this.SHOW_NO_REQUEST_MSG = true;
+              this.showSpinner = false;
+            }
+          }
+        }, 1000);
+
+      }, error => {
+        console.log('% WsRequestsList getWsRequests$ * error * ', error)
+      }, () => {
+
+
+        console.log('% »»» WebSocketJs WF +++++ ws-requests--- list getWsRequests */* COMPLETE */*')
+      })
+  }
+
+  getRequesterAvailabilityStatus(requester_id: string, request:any) {
+    // const firebaseRealtimeDbUrl = `/apps/tilechat/presence/LmBT2IKjMzeZ3wqyU8up8KIRB6J3/connections`
+    const firebaseRealtimeDbUrl = `/apps/tilechat/presence/` + requester_id + `/connections`
+    const connectionsRef = firebase.database().ref().child(firebaseRealtimeDbUrl);
+    console.log('REQUEST-DTLS-X-PANEL »» REQUEST DETAILS - CALLING REQUESTER AVAILABILITY VALUE ');
+
+    connectionsRef.on('value', (child) => {
+      if (child.val()) {
+        // this.REQUESTER_IS_ONLINE = true;
+        // console.log('REQUEST-DTLS-X-PANEL »»» REQUEST DETAILS - REQUESTER is ONLINE ', this.REQUESTER_IS_ONLINE);
+        request['REQUESTER_IS_ONLINE'] = true;
+      } else {
+
+        request['REQUESTER_IS_ONLINE'] = false;
+        // this.REQUESTER_IS_ONLINE = false;
+        // console.log('REQUEST-DTLS-X-PANEL »»» REQUEST DETAILS - REQUESTER is ONLINE ', this.REQUESTER_IS_ONLINE);
+      }
+    })
+  }
+
+
+
+  cutFirstMessage(text: string): string {
+    if (text) {
+      return text.length >= 20 ?
+        text.slice(0, 20) + '...' :
+        text;
+    }
+  }
+
+  checkIfFinished(wsRequestsServed) {
+    return (wsRequestsServed.length > 0);
+  }
+
+  goBack() {
+    this.location.back();
+  }
+
+
+
+  getDepartments() {
+    this.departmentService.getDeptsByProjectId().subscribe((_departments: any) => {
+      console.log('% »»» WebSocketJs WF WS-RL - GET DEPTS RESPONSE ', _departments);
+      this.departments = _departments
+    }, error => {
+      console.log('% »»» WebSocketJs WF WS-RL - GET DEPTS - ERROR: ', error);
+    }, () => {
+      console.log('% »»» WebSocketJs WF WS-RL - GET DEPTS * COMPLETE *')
+    });
+  }
+
+   // DEPTS_LAZY: add this 
+   addDeptObject(wsrequests) {
     this.departmentService.getDeptsByProjectIdToPromise().then((_departments: any) => {
 
       console.log('WS-REQUESTS-UNSERVED-X-PANEL % »»» WebSocketJs WF +++++ ws-requests--- service -  X-> DEPTS <-X', _departments)
@@ -741,298 +947,25 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
     return deptObjct[0]
   }
 
-  // -----------------------------------------------------------------------------------------------------
-  // @ Subscribe to get the published requests (called On init)
-  // -----------------------------------------------------------------------------------------------------
-  getWsRequests$() {
-    console.log("WS-REQUESTS-UNSERVED-X-PANEL +++++ ws-requests--- list - enter NOW in getWsRequests$");
-    this.wsRequestsService.wsRequestsList$
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((wsrequests) => {
 
-        // DEPTS_LAZY: add this 
-        this.addDeptObject(wsrequests)
-
-        // console.log("% »»» WebSocketJs WF +++++ ws-requests--- list - subscribe ", wsrequests);
-
-        if (wsrequests) {
-          console.log("WS-REQUESTS-UNSERVED-X-PANEL +++++ ws-requests--- list - subscribe > if (wsrequests) ", wsrequests);
-          this.browserRefresh = browserRefresh;
-
-          // console.log("% »»» WebSocketJs WF +++++ ws-requests--- list subscribe > if (wsrequests) browserRefresh ", this.browserRefresh, 'wsRequestsList$.value length ', this.wsRequestsService.wsRequestsList$.value.length);
-
-
-          if ((this.browserRefresh === false) || (this.browserRefresh === true && this.wsRequestsService.wsRequestsList$.value.length > 0)) {
-            if (wsrequests.length > 0) {
-
-              this.SHOW_SIMULATE_REQUEST_BTN = false;
-              console.log('% »»» WebSocketJs WF +++++ ws-requests--- list ----- SHOW_SIMULATE_REQUEST_BTN ', this.SHOW_SIMULATE_REQUEST_BTN)
-              this.showSpinner = false;
-              console.log('% »»» WebSocketJs WF +++++ ws-requests--- list ----- SHOW_SPINNER ', this.showSpinner)
-
-
-            } else if (wsrequests.length === 0) {
-              this.SHOW_SIMULATE_REQUEST_BTN = true;
-              console.log('% »»» WebSocketJs WF +++++ ws-requests--- list ----- SHOW_SIMULATE_REQUEST_BTN ', this.SHOW_SIMULATE_REQUEST_BTN)
-              this.showSpinner = false;
-              console.log('% »»» WebSocketJs WF +++++ ws-requests--- list ----- SHOW_SPINNER ', this.showSpinner)
-            }
-          }
-
-
-
-          if (this.ONLY_MY_REQUESTS === false) {
-            this.ws_requests = wsrequests;
-            // console.log('% »»» WebSocketJs WF +++++ ws-requests--- list - ONLY_MY_REQUESTS: ', this.ONLY_MY_REQUESTS, ' - this.ws_requests: ', this.ws_requests)
-          }
-
-          if (this.ONLY_MY_REQUESTS === true) {
-            this.ws_requests = [];
-            wsrequests.forEach(wsrequest => {
-              // console.log('% »»» WebSocketJs WF +++++ ws-requests--- list - ONLY_MY_REQUESTS: ', this.ONLY_MY_REQUESTS, ' - (forEach) wsrequest: ', wsrequest);
-
-              // const imInParticipants = this.hasmeInParticipants(wsrequest.participants)
-              // console.log("% »»» WebSocketJs - WsRequestsService imInParticipants ", imInParticipants, 'for the request ', wsrequest.participants);
-
-              if (wsrequest !== null && wsrequest !== undefined) {
-                // || wsrequest.status === 100
-                // console.log("% »»» WebSocketJs WF +++++ ws-requests--- list - »»» »»» hasmeInAgents ONLY_MY_REQUESTS forEach hasmeInAgents", this.hasmeInAgents(wsrequest.agents, wsrequest));
-
-                if (this.hasmeInAgents(wsrequest.agents, wsrequest) === true || this.hasmeInParticipants(wsrequest.participants) === true) {
-
-                  this.ws_requests.push(wsrequest);
-                }
-              }
-            });
-
-            // console.log('% »»» WebSocketJs WF +++++ ws-requests--- list - ONLY_MY_REQUESTS  ', this.ONLY_MY_REQUESTS, 'this.ws_requests', this.ws_requests)
-          }
-
-          // DEPTS_LAZY: comment this 2 lines
-          // var ws_requests_clone = JSON.parse(JSON.stringify(this.ws_requests));
-          // this.getDeptsAndCountOfDeptsInRequests(ws_requests_clone);
-
-          this.getParticipantsInRequests(this.ws_requests);
-
-
-        }
-
-        // console.log('% »»» WebSocketJs WF - WsRequestsList getWsRequests$ ws_request ', wsrequests)
-
-
-        // this.ws_requests.forEach(request => {
-        this.ws_requests.forEach((request) => {
-
-          // console.log('WS-REQUESTS-UNSERVED-X-PANEL - WsRequestsList request ', request)
-
-          const user_agent_result = this.parseUserAgent(request.userAgent)
-          // console.log('% »»» WebSocketJs WF - WsRequestsList - USER-AGENT RESULT ', user_agent_result)      
-
-          const ua_browser = user_agent_result.browser.name + ' ' + user_agent_result.browser.version
-          // console.log('% »»» WebSocketJs WF - WsRequestsList - USER-AGENT BROWSER ', ua_browser)
-          request['ua_browser'] = ua_browser;
-
-          const ua_os = user_agent_result.os.name + ' ' + user_agent_result.os.version
-          // console.log('% »»» WebSocketJs WF - WsRequestsList - USER-AGENT OPERATING SYSTEM ', ua_os)
-          request['ua_os'] = ua_os;
-
-          // console.log("% »»» currentUserID WebSocketJs WF - WsRequestsList in ws_requests.forEach ", this.currentUserID);
-          // console.log("% »»» currentUserID WebSocketJs WF - WsRequestsList in ws_requests.forEach 2 ", this.auth.user_bs.value._id);
-
-
-          //  console.log('% »»» WebSocketJs WF - WsRequestsList - department id ', request.department)
-          // if (this.departments) {
-          //   this.departments.forEach(dept => {
-          //     if (dept.id === request.department) {
-          //       request['dept'] = dept;
-          //     }
-          //   });
-          // }
-
-
-
-          //  replace this.currentUserID with this.auth.user_bs.value._id  because at the go back from the request's details this.currentUserID at the moment in which is passed in currentUserIdIsInParticipants is undefined 
-          request['currentUserIsJoined'] = this.currentUserIdIsInParticipants(request.participants, this.auth.user_bs.value._id, request.request_id);
-
-          if (request.status === 200) {
-            // USE CASE L'ARRAY new_participants è UNDEFINED x es al refresh o quando si entra nella pagina (anche al back dal dettaglio) o all' UPDATE
-            // console.log('!! Ws SHARED  (from request list) PARTICIPATING-AGENTS  ', request['participantingAgents']);
-
-            if (!request['participanting_Agents']) {
-
-              console.log('!! Ws SHARED  (from request list) PARTICIPATING-AGENTS IS ', request['participanting_Agents'], ' - RUN DO ');
-
-              request['participanting_Agents'] = this.doParticipatingAgentsArray(request.participants, request.first_text)
-
-            } else {
-
-              console.log('!! Ws SHARED  (from request list) PARTICIPATING-AGENTS IS DEFINED');
-              // USE CASE L'ARRAY new_participants è definito per es arriva un nuova richiesta: new_participants x le richieste già esistenti
-
-              // const participantingAgentsIds = []
-
-              // request['participanting_Agents'].forEach(participant => {
-              //   participantingAgentsIds.push(participant['_id'])
-              // });
-              // console.log('!! Ws SHARED (from request list) PARTICIPATING-AGENTS IDS ARRAY ', participantingAgentsIds);
-              // console.log('!! Ws SHARED (from request list) PARTICIPANTS ', request.participants);
-            }
-          }
-          // this.createFullParticipacipantsArray(request, request.participants)
-
-
-          // request["test"] = this.newParticipants
-          // console.log('!! Ws SHARED  (from) »»»»»»» createFullParticipacipantsArray request["test"] ' , request["test"]);
-
-          if (request.lead && request.lead.fullname) {
-            request['requester_fullname_initial'] = avatarPlaceholder(request.lead.fullname);
-            request['requester_fullname_fillColour'] = getColorBck(request.lead.fullname)
-          } else {
-
-            request['requester_fullname_initial'] = 'N/A';
-            request['requester_fullname_fillColour'] = '#6264a7';
-          }
-        });
-
-
-
-
-        /**
-         * Sort requests and manage spinner
-         */
-        if (this.ws_requests) {
-          console.log('% »»» WebSocketJs WF +++++ ws-requests--- list getWsRequests *** ws_requests ***', this.ws_requests);
-          this.wsRequestsUnserved = this.ws_requests
-            .filter(r => {
-              if (r['status'] === 100) {
-
-                return true
-              } else {
-                return false
-              }
-            }).sort(function compare(a: Request, b: Request) {
-              if (a['createdAt'] > b['createdAt']) {
-                return 1;
-              }
-              if (a['createdAt'] < b['createdAt']) {
-                return -1;
-              }
-              return 0;
-            });
-
-          this.wsRequestsServed = this.ws_requests
-            .filter(r => {
-              if (r['status'] !== 100) {
-
-                return true
-              } else {
-                return false
-              }
-            }).sort(function compare(a: Request, b: Request) {
-              if (a['createdAt'] > b['createdAt']) {
-                return -1;
-              }
-              if (a['createdAt'] < b['createdAt']) {
-                return 1;
-              }
-              return 0;
-            });
-
-
-        } else {
-          // this.showSpinner = false;
-        }
-        console.log('WS-REQUESTS-UNSERVED-X-PANEL getWsRequests (served)', this.wsRequestsServed);
-        console.log('WS-REQUESTS-UNSERVED-X-PANEL list getWsRequests (unserved)', this.wsRequestsUnserved);
-
-
-        var time = 1;
-        // this = that
-        var interval = setInterval(() => {
-          if (time <= 3) {
-            console.log('WS-REQUESTS-UNSERVED-X-PANEL (unserved) TIME TIME TIME ', time);
-            time++;
-          }
-          else {
-            clearInterval(interval);
-            console.log('WS-REQUESTS-UNSERVED-X-PANEL (unserved) TIME TIME TIME COMPLETED Unserved LENGTH ' , this.wsRequestsUnserved.length);
-
-            if (this.wsRequestsUnserved.length > 0) {
-              this.SHOW_NO_REQUEST_MSG = false;
-              this.showSpinner = false;
-            } else {
-              this.SHOW_NO_REQUEST_MSG = true;
-              this.showSpinner = false;
-            }
-          }
-        }, 1000);
-
-
-
-
-      }, error => {
-        console.log('% WsRequestsList getWsRequests$ * error * ', error)
-      }, () => {
-
-
-        console.log('% »»» WebSocketJs WF +++++ ws-requests--- list getWsRequests */* COMPLETE */*')
-      })
+  onChangeAgent() {
+    this.hasFiltered = true
+    // this.filter['agentId'] = this.selectedAgentId
+    // this.filter.push({ 'agentId': this.selectedAgentId }) 
+    // console.log('% »»» WebSocketJs WF WS-RL - on Change Agent filter', this.filter)
+    this.filter[1]['agentId'] = this.selectedAgentId;
+    // console.log('% »»» WebSocketJs WF WS-RL - on Change Agent - selected Agent Id', this.selectedAgentId);
+    // console.log('% »»» WebSocketJs WF WS-RL - on Change Agent - filter', this.filter)
+    this.getWsRequests$();
+
+    // console.log('% »»» WebSocketJs WF WS-RL - on Change Agent - ws Requests Unserved ', this.wsRequestsUnserved.length);
+    // console.log('% »»» WebSocketJs WF WS-RL - on Change Agent - ws Requests Served ', this.wsRequestsServed.length)
   }
 
-
-
-  cutFirstMessage(text: string): string {
-    if (text) {
-      return text.length >= 20 ?
-        text.slice(0, 20) + '...' :
-        text;
-    }
-  }
-
-
-  checkIfFinished(wsRequestsServed) {
-    return (wsRequestsServed.length > 0);
-  }
-
-
-
-
-
-
-
-
-  archiveRequest(request_id) {
-    this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg);
-    console.log('WS-REQUESTS-UNSERVED - HAS CLICKED ARCHIVE REQUEST ');
-
-
-    this.wsRequestsService.closeSupportGroup(request_id)
-      .subscribe((data: any) => {
-        console.log('WS-REQUESTS-UNSERVED - CLOSE SUPPORT GROUP - DATA ', data);
-      }, (err) => {
-        console.log('WS-REQUESTS-UNSERVED - CLOSE SUPPORT GROUP - ERROR ', err);
-
-
-        // =========== NOTIFY ERROR ===========
-        // this.notify.showNotification('An error has occurred archiving the request', 4, 'report_problem');
-        this.notify.showNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
-      }, () => {
-        // this.ngOnInit();
-        console.log('CLOSE SUPPORT GROUP - COMPLETE');
-
-        // =========== NOTIFY SUCCESS===========
-        // this.notify.showNotification(`request with id: ${this.id_request_to_archive} has been moved to History`, 2, 'done');
-        this.notify.showRequestIsArchivedNotification(this.requestHasBeenArchivedNoticationMsg_part1);
-
-        // this.onArchiveRequestCompleted()
-      });
-  }
-
-  goBack() {
-    this.location.back();
-
+  clearAgentFilter() {
+    // console.log('% »»» WebSocketJs WF WS-RL - clear Agent Filter selectedAgentId', this.selectedAgentId)
+    this.filter[1]['agentId'] = null;
+    this.hasFiltered = false
   }
 
 

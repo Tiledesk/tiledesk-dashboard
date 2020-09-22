@@ -16,24 +16,17 @@
 
       <loading-spinner *ngIf="showSpinner"></loading-spinner>
 
-      <div class="left-sidebar-projects" style="" *ngIf="!showSpinner">
+      <div class="left-sidebar-projects" style="margin-right: -10px;" *ngIf="!showSpinner">
 
 
         <div *ngFor="let project of projects; let i = index" style="cursor:pointer">
 
-          <!-- <div *ngIf="window_width_is_60" class="small-projects-sidebar" style="max-width: 60px; text-align: center; display: none;">
-            <div class="project-avatar-wrapper" (click)='goToEditAddPage_EDIT(dept?._id, dept?.name)'>
-              <div class="project-avatar">
-                {{ project?.project_name_initial }}
-              </div>
-            </div>
-          </div> -->
-
-          <div class="small-projects-sidebar" (click)='goToUnservedRequests(project?.id_project?._id, project?.id_project?.name, project?.id_project?.profile?.name, project?.id_project?.trialExpired, project?.id_project?.trialDaysLeft, project?.id_project?.status)'>
+          <div class="small-projects-sidebar" 
+          (click)='goToUnservedRequests(project?.id_project?._id, project?.id_project?.name, project?.id_project?.profile?.name, project?.id_project?.trialExpired, project?.id_project?.trialDaysLeft, project?.id_project?.status)'>
             <div class="flex-container">
-              <!-- margin-left: 6px;margin-right: 2px; width: 60px; text-align: center;    border-right: 1px solid #eee; -->
-              <div class="flex-child-left" style="">
-                <div class="project-avatar-wrapper">
+           
+              <div class="flex-child-left">
+                <div class="project-avatar-wrapper"  (click)="$event.stopPropagation();changeAvailabilityState(project?.id_project?._id, project?.ws_projct_user_available)">
 
                   <div class="project-avatar">
                     {{ project?.project_name_initial }}
@@ -76,9 +69,15 @@
               </div>
 
               <div class="flex-child--right" *ngIf="!window_width_is_60" >
-                <span class="material-icons" style="vertical-align: middle; color: #a9abad">
+                <!-- <span class="material-icons" style="vertical-align: middle; color: #a9abad">
                   east
-                </span>
+                </span> -->
+
+                <div id="arrow_1" class="arrow-wrapper">
+                  <div class="arrow arrow--right">
+                    <span></span>
+                  </div>
+                </div>
               </div>
 
 
@@ -100,19 +99,12 @@
 
 
 
-    <div class="projects-cards" style="">
+    <!-- <div class="projects-cards" style="">
       <div class="row">
-
-
         <loading-spinner *ngIf="showSpinner"></loading-spinner>
-
         <div *ngIf="!showSpinner">
-
-
           <div *ngFor="let project of projects; let i = index" class="col-xs-12" style="cursor:pointer">
 
-            <!-- CARDS FROM THE PROJECT 'FOR' -->
-            <!-- style="max-width: 256px;" -->
             <div class="card projects-for-panel-project-card" id="{{'project_card_'+ 1 }}"
               [ngClass]="{'project-deleted-card' : project?.id_project?.status === 0, 'delete-image-bckground':project?.id_project?.status === 0}"
               style="border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; margin: 8px 0;"
@@ -124,28 +116,18 @@
                     style="color: #050505;font-weight: 600; font-size:14px; font-family: 'Google Sans',sans-serif!important">
                     {{ project?.id_project?.name }}
                   </h3>
-
-                  <!-- <p class="category" [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}"
-                  style="font-size:14px !important; color:#7695a5">
-                  {{ project?.id_project?._id }}
-                </p> -->
-
                   <div style="display: flex;">
                     <span class="user--icon"> </span>
-
                     <span class="project-user---role"
                       [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}">
                       {{ project?.role | translate }}
-
                       <span *ngIf="project?.ws_projct_user_isBusy === false"
                         class="project-card-project-user-isBusyTest">
                         {{ 'Busy' | translate }}
                       </span>
                     </span>
                   </div>
-
                   <div class="project-card-project-user-isBusy" *ngIf="project?.ws_projct_user_isBusy === false">
-
                     <svg style="width: 11px; height: auto; background: #fff; padding: 1px; border-radius: 50%;"
                       aria-hidden="true" focusable="false" data-prefix="fas" data-icon="clock"
                       class="svg-inline--fa fa-clock fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg"
@@ -154,24 +136,8 @@
                         d="M256,8C119,8,8,119,8,256S119,504,256,504,504,393,504,256,393,8,256,8Zm92.49,313h0l-20,25a16,16,0,0,1-22.49,2.5h0l-67-49.72a40,40,0,0,1-15-31.23V112a16,16,0,0,1,16-16h32a16,16,0,0,1,16,16V256l58,42.5A16,16,0,0,1,348.49,321Z">
                       </path>
                     </svg>
-                    <!-- <span class="material-icons" style="font-size: 20px; color:#fedd00;">
-                    access_time
-                  </span> -->
-                    <!-- <span class="project-card-project-user-isBusyTest">
-                    {{ 'Busy' | translate }}
-                  </span>
-                   -->
-
                   </div>
-
-                  <!-- <h4 class="project-user---role"
-                  [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}" style="">
-                  {{ project?.role }}
-                </h4> -->
-
-
                   <div class="project-user-availability-status">
-
                     <div class="user-availability-text-wrapper" style="display: inline-block;">
                       <span class="project-user-availability-status-text"
                         [ngClass]="{'is-user-online-text-color' : project?.ws_projct_user_available === true}">
@@ -179,11 +145,9 @@
                       </span>
                       <span class="project-user-availability-status-text"
                         [ngClass]="{'is-user-offline-text-color' : project?.ws_projct_user_available === false }">
-                        <!-- {{ 'Unavailable' | translate }} -->
                         Offline
                       </span>
                     </div>
-
                     <div class="onoffswitch_wrapper" (click)="$event.stopPropagation();"
                       style="padding: 10px 6px;display: inline-block;">
                       <div class="onoffswitch"
@@ -196,50 +160,18 @@
                     </div>
 
                   </div>
-
-
-                  <!-- <div class="project-user-status" style="width: fit-content;"
-                  (click)="$event.stopPropagation(); changeAvailabilityState(project?.id_project?._id, project?.ws_projct_user_available)">
-
-                  <div class="project-user-status-icon"
-                    [ngClass]="{'is-user-online' : project?.ws_projct_user_available === true, 'is-user-offline' : project?.ws_projct_user_available === false }">
-                  </div>
-
-                  <span class="project-user-status-text" *ngIf="project?.ws_projct_user_available === true">
-                    {{ 'Available' | translate }}
-                  </span>
-                  <span class="project-user-status-text" *ngIf="project?.ws_projct_user_available === false">
-                    {{ 'Unavailable' | translate }}
-                  </span>
-
-                </div> -->
-
-
-
                 </div>
-
                 <div class="col-xs-2" style="line-height: 81px;">
                   <span class="material-icons" style="vertical-align: middle;">
                     east
                   </span>
                 </div>
-
-              </div> <!-- ./end card-content -->
-
-              <!-- <div class="card-footer">
-                <div [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}" class="stats"
-                  style="color: #7695a5; font-size: 11px; font-weight: 400;">
-                  <i style="color:#7695a5;" class="fa fa-calendar"></i>
-                  {{ project?.id_project?.createdAt | date: 'dd/MM/yyyy'}}
-                </div>
-              </div> -->
+              </div> 
             </div>
           </div>
-
         </div>
-
       </div>
-    </div>
+    </div> -->
 
   </div>
 </div>

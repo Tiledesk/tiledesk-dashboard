@@ -1,20 +1,33 @@
-import { Component, OnInit, EventEmitter, Output, Input, OnDestroy, ElementRef, ViewChild } from '@angular/core';
-import { slideInOutAnimation } from '../../../_animations/index';
+import { Component, OnInit, EventEmitter, Output, Input, OnDestroy, ElementRef, ViewChild, HostListener } from '@angular/core';
+import { slideInOutForPanelAnimation } from '../../../_animations/index';
 import { WsMsgsService } from '../../../services/websocket/ws-msgs.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AppConfigService } from '../../../services/app-config.service';
 import { avatarPlaceholder, getColorBck } from '../../../utils/util';
+import { AuthService } from '../../../core/auth.service';
+import { TranslateService } from '@ngx-translate/core';
+
+import { WsSharedComponent } from '../../ws-shared/ws-shared.component';
+
+import { BotLocalDbService } from '../../../services/bot-local-db.service';
+import { UsersLocalDbService } from '../../../services/users-local-db.service';
+import { Router } from '@angular/router';
+import { WsRequestsService } from '../../../services/websocket/ws-requests.service';
+import { FaqKbService } from '../../../services/faq-kb.service';
+import { UsersService } from '../../../services/users.service';
+import { NotifyService } from '../../../core/notify.service';
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'appdashboard-ws-request-detail-for-panel',
   templateUrl: './ws-request-detail-for-panel.component.html',
   styleUrls: ['./ws-request-detail-for-panel.component.scss'],
-  animations: [slideInOutAnimation],
+  animations: [slideInOutForPanelAnimation],
   // tslint:disable-next-line:use-host-property-decorator
-  host: { '[@slideInOutAnimation]': '' }
+  host: { '[@slideInOutForPanelAnimation]': '' }
 })
-export class WsRequestDetailForPanelComponent implements OnInit , OnDestroy {
+export class WsRequestDetailForPanelComponent extends WsSharedComponent implements OnInit, OnDestroy {
   private unsubscribe$: Subject<any> = new Subject<any>();
 
   @ViewChild('scrollMe')
@@ -34,14 +47,35 @@ export class WsRequestDetailForPanelComponent implements OnInit , OnDestroy {
   storageBucket: string;
   requestid: string;
   requester_id: string;
+  chat_content_height: any;
+  currentUserID: string;
+
+  archivingRequestNoticationMsg: string;
+  archivingRequestErrorNoticationMsg: string;
+  requestHasBeenArchivedNoticationMsg_part1: string;
+  requestHasBeenArchivedNoticationMsg_part2: string;
+  REQUESTER_IS_ONLINE = false;
+  IS_CURRENT_USER_JOINED: boolean;
+  REQUEST_STATUS:number;
+
   constructor(
     private wsMsgsService: WsMsgsService,
-    public appConfigService: AppConfigService
-  ) { }
+    public appConfigService: AppConfigService,
+    public botLocalDbService: BotLocalDbService,
+    public usersLocalDbService: UsersLocalDbService,
+    public router: Router,
+    public wsRequestsService: WsRequestsService,
+    public faqKbService: FaqKbService,
+    public usersService: UsersService,
+    public notify: NotifyService,
+    public auth: AuthService,
+    private translate: TranslateService
+  ) { super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify); }
 
   ngOnInit() {
     this.getStorageBucket();
-    console.log('REQUEST-DETAIL-FOR-PANEL REQUEST ', this.selectedRequest)
+    this.getLoggedUser()
+    console.log('REQUEST-DTLS-X-PANEL REQUEST ', this.selectedRequest)
     this.request = this.selectedRequest
 
     if (this.request) {
@@ -49,32 +83,180 @@ export class WsRequestDetailForPanelComponent implements OnInit , OnDestroy {
 
       this.requester_id = this.request.lead.lead_id;
 
+      this.getRequesterAvailabilityStatus(this.requester_id);
 
+      if (this.request.lead && this.request.lead.fullname) {
+        this.request['requester_fullname_initial'] = avatarPlaceholder(this.request.lead.fullname);
+        this.request['requester_fullname_fillColour'] = getColorBck(this.request.lead.fullname)
+      } else {
 
-          if (this.request.lead && this.request.lead.fullname) {
-            this.request['requester_fullname_initial'] = avatarPlaceholder( this.request.lead.fullname);
-            this.request['requester_fullname_fillColour'] = getColorBck( this.request.lead.fullname)
-          } else {
-
-            this.request['requester_fullname_initial'] = 'N/A';
-            this.request['requester_fullname_fillColour'] = '#6264a7';
-          }
+        this.request['requester_fullname_initial'] = 'N/A';
+        this.request['requester_fullname_fillColour'] = '#6264a7';
+      }
     }
-    
-    this.unsuscribeMessages(this.requestid);
-    
-    this.subscribeToWs_MsgsByRequestId(this.requestid);
+
+    if (this.requestid) {
+      console.log('REQUEST-DTLS-X-PANEL- UNSUB-REQUEST-BY-ID - id_request ', this.requestid);
+      console.log('REQUEST-DTLS-X-PANEL- UNSUB-MSGS - id_request ', this.requestid);
+      this.unsuscribeRequestById(this.requestid);
+      this.unsuscribeMessages(this.requestid);
+    }
+
+    if (this.requestid) {
+      this.subscribeToWs_RequestById(this.requestid);
+      this.subscribeToWs_MsgsByRequestId(this.requestid);
+    }
+
+    this.onInitUsersListModalHeight();
+    this.getTranslations();
+  }
+
+  subscribeToWs_RequestById(id_request) {
+    console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp »»»»»»»»»» CALLING SUBSCRIBE Request-By-Id: ', id_request)
+    // Start websocket subscription
+    // NOTE_nk: comment  this.wsRequestsService.subscribeTo_wsRequestById(id_request)
+    this.wsRequestsService.subscribeTo_wsRequestById(id_request);
+    // Get request
+    this.getWsRequestById$();
+  }
+
+  getWsRequestById$() {
+    // this.subscribe = 
+    this.wsRequestsService.wsRequest$
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((wsrequest) => {
+
+        // console.log('% !!!!!!!!!!!! Ws-REQUESTS-Msgs - getWsRequestById$ *** wsrequest *** ', wsrequest)
+        // this.request = wsrequest;
+
+        if (wsrequest) {
+          console.log('REQUEST-DTLS-X-PANEL - wsrequest FROM SUBSCRIPTION ', wsrequest);
+          this.IS_CURRENT_USER_JOINED = this.currentUserIdIsInParticipants(wsrequest['participants'], this.currentUserID, this.request.request_id);
+          console.log('REQUEST-DTLS-X-PANEL - wsrequest IS_CURRENT_USER_JOINED ',  this.IS_CURRENT_USER_JOINED);
+          
+          this.REQUEST_STATUS = wsrequest['status']
+        }
+      })
+  }
+
+/**
+ * Unsuscribe Request-by-id
+ * @param idrequest 
+ */
+  unsuscribeRequestById(idrequest) {
+    this.wsRequestsService.unsubscribeTo_wsRequestById(idrequest);
+  }
+
+  unsuscribeMessages(idrequest) {
+    this.wsMsgsService.unsubsToWS_MsgsByRequestId(idrequest);
+  }
+
+
+  getRequesterAvailabilityStatus(requester_id: string) {
+    // const firebaseRealtimeDbUrl = `/apps/tilechat/presence/LmBT2IKjMzeZ3wqyU8up8KIRB6J3/connections`
+    const firebaseRealtimeDbUrl = `/apps/tilechat/presence/` + requester_id + `/connections`
+    const connectionsRef = firebase.database().ref().child(firebaseRealtimeDbUrl);
+    console.log('REQUEST-DTLS-X-PANEL »» REQUEST DETAILS - CALLING REQUESTER AVAILABILITY VALUE ');
+
+    connectionsRef.on('value', (child) => {
+      if (child.val()) {
+        this.REQUESTER_IS_ONLINE = true;
+        console.log('REQUEST-DTLS-X-PANEL »»» REQUEST DETAILS - REQUESTER is ONLINE ', this.REQUESTER_IS_ONLINE);
+      } else {
+        this.REQUESTER_IS_ONLINE = false;
+
+        console.log('REQUEST-DTLS-X-PANEL »»» REQUEST DETAILS - REQUESTER is ONLINE ', this.REQUESTER_IS_ONLINE);
+      }
+    })
+  }
+
+  getTranslations() {
+    this.translateArchivingRequestErrorMsg();
+    this.translateArchivingRequestMsg();
+    this.translateRequestHasBeenArchivedNoticationMsg_part1();
+    this.translateRequestHasBeenArchivedNoticationMsg_part2();
+
+  }
+
+  getLoggedUser() {
+    this.auth.user_bs.subscribe((user) => {
+      console.log('REQUEST-DTLS-X-PANEL  USER ', user)
+      // this.user = user;
+      if (user) {
+        this.currentUserID = user._id
+        console.log('REQUEST-DTLS-X-PANELD currentUserID ', this.currentUserID);
+      }
+    });
+  }
+
+  joinRequest(request_id: string) {
+    console.log('REQUEST-DTLS-X-PANEL currentUserID ', this.currentUserID);
+    this.currentUserID
+    this.onJoinHandled(request_id, this.currentUserID);
+  }
+
+  archiveRequest(request_id) {
+    this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg);
+    console.log('REQUEST-DTLS-X-PANEL - HAS CLICKED ARCHIVE REQUEST ');
+
+
+    this.wsRequestsService.closeSupportGroup(request_id)
+      .subscribe((data: any) => {
+        console.log('REQUEST-DTLS-X-PANEL - CLOSE SUPPORT GROUP - DATA ', data);
+      }, (err) => {
+        console.log('REQUEST-DTLS-X-PANEL - CLOSE SUPPORT GROUP - ERROR ', err);
+
+
+        // =========== NOTIFY ERROR ===========
+        // this.notify.showNotification('An error has occurred archiving the request', 4, 'report_problem');
+        this.notify.showNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
+      }, () => {
+        // this.ngOnInit();
+        console.log('REQUEST-DTLS-X-PANEL CLOSE SUPPORT GROUP - COMPLETE');
+
+        // =========== NOTIFY SUCCESS===========
+        // this.notify.showNotification(`request with id: ${this.id_request_to_archive} has been moved to History`, 2, 'done');
+        this.notify.showRequestIsArchivedNotification(this.requestHasBeenArchivedNoticationMsg_part1);
+
+        // this.onArchiveRequestCompleted()
+      });
+  }
+
+  onInitUsersListModalHeight() {
+    const windowActualHeight = window.innerHeight;
+    console.log('REQUEST-DTLS-X-PANEL - ACTUAL HEIGHT ', windowActualHeight);
+
+    this.chat_content_height = windowActualHeight - 490
+    console.log('REQUEST-DTLS-X-PANEL CHAT CONTENT HEIGHT ', this.chat_content_height);
+
+    return { 'height': this.chat_content_height += 'px' };
+  }
+
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    // this.newInnerWidth = event.target.innerWidth;
+    const newInnerHeight = event.target.innerHeight;
+    this.chat_content_height = newInnerHeight - 490
+
+    // console.log('REQUEST-DTLS-X-PANEL - NEW INNER HEIGHT ', newInnerHeight);
+    // console.log('REQUEST-DTLS-X-PANEL - ON RESIZE CHAT CONTENT HEIGHT ', this.chat_content_height);
+
+    return { 'height': this.chat_content_height += 'px' };
+
   }
 
   getStorageBucket() {
     const firebase_conf = this.appConfigService.getConfig().firebase;
     this.storageBucket = firebase_conf['storageBucket'];
-    console.log('STORAGE-BUCKET Ws-Requests-Lists ', this.storageBucket)
+    console.log('STORAGE-BUCKET REQUEST-DTLS-X-PANEL ', this.storageBucket)
   }
 
 
   ngOnDestroy() {
-    console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - ngOnDestroy')
+    console.log('REQUEST-DTLS-X-PANEL - ngOnDestroy')
     // this.subscribe.unsubscribe();
     // the two snippet bottom replace  this.subscribe.unsubscribe()
     this.unsubscribe$.next();
@@ -83,18 +265,14 @@ export class WsRequestDetailForPanelComponent implements OnInit , OnDestroy {
     // this.wsRequestsService.unsubscribeTo_wsRequestById(this.id_request)
     // this.wsMsgsService.unsubsToWS_MsgsByRequestId(this.id_request)
     if (this.request._id) {
-     
+      this.unsuscribeRequestById(this.requestid);
       this.unsuscribeMessages(this.requestid);
     }
   }
 
-  unsuscribeMessages(idrequest) {
-    this.wsMsgsService.unsubsToWS_MsgsByRequestId(idrequest);
-  }
-
 
   subscribeToWs_MsgsByRequestId(id_request: string) {
-    console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - subscribe To Ws Msgs ByRequestId ', id_request)
+    console.log('REQUEST-DTLS-X-PANEL subscribe To Ws Msgs ByRequestId ', id_request)
     this.wsMsgsService.subsToWS_MsgsByRequestId(id_request);
     this.getWsMsgs$();
   }
@@ -109,14 +287,49 @@ export class WsRequestDetailForPanelComponent implements OnInit , OnDestroy {
         // console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsMsgs$ *** wsmsgs *** ', wsmsgs)
 
         this.messagesList = wsmsgs;
-        console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsMsgs$ *** this.messagesList *** ', this.messagesList)
+        console.log('REQUEST-DTLS-X-PANEL - getWsMsgs$ *** this.messagesList *** ', this.messagesList)
+
+
+        // let sender_in_next_msg: string
+        // let sender_in_prev_msg: string
+        // let sender_in_curr_msg: string
+        let i: number
+        for (i = 0; i < this.messagesList.length; i++) {
+          console.log('MSG - i: ', i, ' - requester_id ', this.requester_id)
+          console.log('MSG - i: ', i, ' - message.sender ', this.messagesList[i].sender)
+
+          if (this.messagesList[i].sender === 'system') {
+
+            this.messagesList[i]['avatar_url'] = 'assets/img/code-24px.svg'
+
+          } else {
+
+            this.messagesList[i]['avatar_url'] = 'https://firebasestorage.googleapis.com/v0/b/' + this.storageBucket + '/o/profiles%2F' + this.messagesList[i].sender + '%2Fphoto.jpg?alt=media'
+          }
+
+          // sender_in_curr_msg = this.messagesList[i].sender
+          // if (i === 0 || this.messagesList[i - 1] && this.messagesList[i - 1].sender !== sender_in_curr_msg) {
+          //   this.messagesList[i]['isFirstMsgOfGroup'] = true;
+          // }
+          // if (i === this.messagesList.length - 1 || this.messagesList[i + 1] && this.messagesList[i + 1].sender !== sender_in_curr_msg) {
+          //   this.messagesList[i]['isLastMsgOfGroup'] = true;
+          // }
+          // if (this.messagesList[i + 1]) {
+          //   console.log('MSG - i: ', i, ' -messagesList[i+1]?.sender ', this.messagesList[i + 1].sender)
+          //   sender_in_next_msg = this.messagesList[i + 1].sender
+          // }
+          // if (this.messagesList[i - 1]) {
+          //   console.log('MSG - i: ', i, ' - messagesList[i-1]?.sender ', this.messagesList[i - 1].sender)
+          //   sender_in_prev_msg = this.messagesList[i - 1].sender
+          // }
+        }
 
         if (this.timeout) {
           clearTimeout(this.timeout);
         }
 
         this.timeout = setTimeout(() => {
-          console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsMsgs$ *** messagesList *** completed ')
+          console.log('REQUEST-DTLS-X-PANEL - getWsMsgs$ *** messagesList *** completed ')
           this.showSpinner = false;
 
           this.scrollCardContetToBottom();
@@ -125,29 +338,26 @@ export class WsRequestDetailForPanelComponent implements OnInit , OnDestroy {
 
       }, error => {
         this.showSpinner = false;
-        console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsMsgs$ * error * ', error)
+        console.log('REQUEST-DTLS-X-PANEL - getWsMsgs$ * error * ', error)
       }, () => {
-        console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsMsgs$ *** complete *** ')
+        console.log('REQUEST-DTLS-X-PANEL - getWsMsgs$ *** complete *** ')
       });
 
   }
 
-  // isFirstMessageOfGroup(message, i) {
+  isFirstMessageOfGroup(message, i): boolean {
+    return (i === 0 || this.messagesList[i - 1] && this.messagesList[i - 1].sender !== message.sender);
+  }
 
-  //   console.log('REQUEST-DETAIL-X-PANEL message', message)
-  //   console.log('REQUEST-DETAIL-X-PANEL this.messagesList[i]', this.messagesList[i])
+  isLastMessageOfGroup(message, i): boolean {
+    return (i === this.messagesList.length - 1 || this.messagesList[i + 1] && this.messagesList[i + 1].sender !== message.sender);
+  }
 
-  //   this.messagesList[i]
-  //   {
-  //     return (i === 0 || this.messagesList[i - 1] && this.messagesList[i - 1].sender !== this.requester_id);
-  //   }
-  // }
-
-
-  // isLastMessageOfGroup(message, i): boolean
-  // {
-  //     return (i === this.messagesList.length - 1 || this.messagesList[i + 1] && this.messagesList[i + 1].sender !== this.requester_id);
-  // }
+  shouldShowContactAvatar(message, i): boolean {
+    return (
+      message.sender !== this.requester_id && ((this.messagesList[i + 1] && this.messagesList[i + 1].sender !== message.sender) || !this.messagesList[i + 1])
+    );
+  }
 
 
   // -------------------------------------------------------------------------
@@ -164,8 +374,8 @@ export class WsRequestDetailForPanelComponent implements OnInit , OnDestroy {
     }, 100);
   }
 
-   // LISTEN TO SCROLL POSITION
-   onScroll(event: any): void {
+  // LISTEN TO SCROLL POSITION
+  onScroll(event: any): void {
     // console.log('RICHIAMO ON SCROLL ')
     const scrollPosition = this.myScrollContainer.nativeElement.scrollTop;
 
@@ -188,17 +398,9 @@ export class WsRequestDetailForPanelComponent implements OnInit , OnDestroy {
       // tslint:disable-next-line:max-line-length
       // console.log('RUN SCROLL TO BOTTOM - SCROLL TOP ', this.myScrollContainer.nativeElement.scrollHeight, ' SCROLL HEIGHT ', this.myScrollContainer.nativeElement.scrollHeight);
     } catch (err) {
-      console.log('%%% Ws-REQUESTS-Msgs - scrollToBottom ERROR ', err);
+      console.log('REQUEST-DTLS-X-PANEL - scrollToBottom ERROR ', err);
     }
   }
-
-
-
-
-
-
-
-
 
 
   closeRightSideBar() {
@@ -216,6 +418,45 @@ export class WsRequestDetailForPanelComponent implements OnInit , OnDestroy {
       }
     );
 
+  }
+
+
+  // TRANSLATION
+  translateArchivingRequestMsg() {
+    this.translate.get('ArchivingRequestNoticationMsg')
+      .subscribe((text: string) => {
+        this.archivingRequestNoticationMsg = text;
+        // console.log('+ + + ArchivingRequestNoticationMsg', text)
+      });
+  }
+
+  // TRANSLATION
+  translateArchivingRequestErrorMsg() {
+    this.translate.get('ArchivingRequestErrorNoticationMsg')
+      .subscribe((text: string) => {
+
+        this.archivingRequestErrorNoticationMsg = text;
+        // console.log('+ + + ArchivingRequestErrorNoticationMsg', text)
+      });
+  }
+
+  // TRANSLATION
+  translateRequestHasBeenArchivedNoticationMsg_part1() {
+    // this.translate.get('RequestHasBeenArchivedNoticationMsg_part1')
+    this.translate.get('RequestSuccessfullyClosed')
+      .subscribe((text: string) => {
+        this.requestHasBeenArchivedNoticationMsg_part1 = text;
+        // console.log('+ + + RequestHasBeenArchivedNoticationMsg_part1', text)
+      });
+  }
+
+  // TRANSLATION
+  translateRequestHasBeenArchivedNoticationMsg_part2() {
+    this.translate.get('RequestHasBeenArchivedNoticationMsg_part2')
+      .subscribe((text: string) => {
+        this.requestHasBeenArchivedNoticationMsg_part2 = text;
+        // console.log('+ + + RequestHasBeenArchivedNoticationMsg_part2', text)
+      });
   }
 
 }
