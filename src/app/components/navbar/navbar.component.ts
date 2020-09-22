@@ -123,6 +123,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     subscription: Subscription;
     ROLE_IS_AGENT: boolean;
     IS_REQUEST_FOR_PANEL_ROUTE: boolean;
+    IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE: boolean;
 
     NOTIFICATION_SOUND: string;
     storedValuePrefix = 'dshbrd----'
@@ -476,6 +477,16 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                     this.IS_REQUEST_FOR_PANEL_ROUTE = false;
                     // console.log('NAVBAR NavigationEnd - IS_REQUEST_FOR_PANEL_ROUTE  ', this.IS_REQUEST_FOR_PANEL_ROUTE);
                 }
+
+                if (event.url.indexOf('/unserved-request-for-panel') !== -1) {
+                    this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE = true;
+                    console.log('NAVBAR NavigationEnd - IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE  ', this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE);
+                } else {
+                    this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE = false;
+                    console.log('NAVBAR NavigationEnd - IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE  ', this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE);
+                }
+
+                
             })
     }
 
@@ -561,6 +572,16 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                     this.IS_REQUEST_FOR_PANEL_ROUTE = false;
                     // console.log('NAVBAR route detected - IS_REQUEST_FOR_PANEL_ROUTE  ', this.IS_REQUEST_FOR_PANEL_ROUTE);
                 }
+
+                if (this.route.indexOf('/unserved-request-for-panel') !== -1) {
+                    this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE = true;
+                    console.log('NAVBAR route detected - IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE  ', this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE);
+                } else {
+                    this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE = false;
+                    console.log('NAVBAR route detected - IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE  ', this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE);
+                }
+
+                
 
             }
         });
@@ -1030,7 +1051,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         // const color = '#ffffff';
 
         // the in-app notifications are not displayed if the route is /request-for-panel
-        if (this.IS_REQUEST_FOR_PANEL_ROUTE === false) {
+        if (this.IS_REQUEST_FOR_PANEL_ROUTE === false && this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE === false) {
 
 
             // const elemNotificationAlert = $('#request-notify');
