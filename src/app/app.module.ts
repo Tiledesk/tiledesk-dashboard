@@ -190,6 +190,7 @@ import { AppStoreService } from './services/app-store.service';
 import { BrandService } from './services/brand.service';
 import { ScriptService } from './services/script/script.service';
 import { AppStoreInstallComponent } from './app-store/app-store-install/app-store-install.component';
+import { PerfectScrollbarTdDirective } from './perfect-scrollbar-td.directive';
 
 
 console.log('************** APPMODULE ******************');
@@ -325,6 +326,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     AutologinComponent,
     AppStoreComponent,
     AppStoreInstallComponent,
+    PerfectScrollbarTdDirective,
 
   ],
   imports: [
