@@ -743,7 +743,7 @@ export class WsSharedComponent implements OnInit {
         }, () => {
           console.log('%%% Ws-REQUESTS-Msgs - addParticipant TO CHAT GROUP COMPLETE');
   
-          this.notify.showNotification(`You are successfully added to the chat`, 2, 'done');
+          this.notify.showWidgetStyleUpdateNotification(`You are successfully added to the chat`, 2, 'done');
          
         });
       // });
