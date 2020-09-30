@@ -1,0 +1,266 @@
+/* TABLE CONTENT VERTICAL ALIGNMENT */
+.table td,
+.table th {
+  vertical-align: middle;
+}
+
+// .depts-tabe .dept-td {
+//   padding-top: 14px !important;
+// }
+
+/* MODAL START */
+
+// MODAL BOOTSTRAP BREAKPOINTS
+// from 992 to 1020px
+// @media (min-width: 992px) and (max-width: 1019px){
+//     .modal-dialog {
+//             margin-left: 33%;
+//         }
+//     }
+
+//     @media (min-width: 1020px) and (max-width: 1199px) {
+//         .modal-dialog {
+//             margin-left: 35%;
+//         }
+//     }
+
+//     @media (min-width: 1200px) and (max-width: 1469px)  {
+//         .modal-dialog {
+//             margin-left: 37%;
+//         }
+//     }
+
+//     @media (min-width: 1470px) and (max-width: 1549px) {
+//         .modal-dialog {
+//             margin-left: 38%;
+//         }
+//     }
+
+//     @media (min-width: 1550px) and (max-width: 1649px){
+//         .modal-dialog {
+//             margin-left: 39%;
+//         }
+//     }
+//     @media (min-width: 1650px) {
+//         .modal-dialog {
+//             margin-left: 40%;
+//         }
+//     }
+
+.modal {
+  top: 0;
+}
+.modal-content {
+  position: relative;
+  background-color: #fff;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  border: 1px solid #999;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  outline: 0;
+  -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+}
+
+.modal-header {
+  padding: 15px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.modal-title {
+  margin: 0;
+  line-height: 1.42857143;
+}
+
+button.close {
+  -webkit-appearance: none;
+  padding: 0;
+  cursor: pointer;
+  background: 0 0;
+  border: 0;
+}
+.close {
+  float: right;
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 1;
+  color: #000;
+  text-shadow: 0 1px 0 #fff;
+  filter: alpha(opacity=20);
+  opacity: 0.2;
+}
+
+.modal-body {
+  position: relative;
+  padding-top: 35px;
+  padding-bottom: 35px;
+  padding-right: 0px;
+  padding-left: 15px;
+}
+
+.modal-footer {
+  // padding: 15px;
+  text-align: right;
+  border-top: 1px solid #e5e5e5;
+  // background-color: #edf0f1;
+  background-color: #eeeeee;
+  padding-top: 10px !important;
+}
+
+/* MODAL END */
+
+/* REMOVE THE BORDER THAT IS USED TO SHOW THAT THE ELEMENT IS FOCUSED */
+*:focus {
+  outline: none;
+}
+
+// start TOOLTIP
+/* Tooltip container */
+.tooltipx {
+  position: relative;
+  display: inline-block;
+  // border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.tooltipx .tooltiptext {
+  visibility: hidden;
+  // width: 120px;
+  background-color: black;
+  // background-color: rgba(0,0,0,0.6);
+  color: #fff;
+  text-align: center;
+  padding: 5px 5px;
+  border-radius: 5px;
+  font-size: 12px !important;
+
+  /* Position the tooltip text */
+  position: absolute;
+  z-index: 1;
+  /* Position the tooltip text - TOP */
+  bottom: 100%;
+  left: 50%;
+  margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
+
+  // NEW
+  box-shadow: 0 1em 2em -0.5em rgba(0, 0, 0, 0.35);
+  background-color: #394f5a;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltipx:hover .tooltiptext {
+  visibility: visible;
+}
+// end TOOLTIP
+
+// CUSTOM TOOLTIP FOR THE COLUMN VISIBLE
+.tooltip_custom {
+  cursor: pointer;
+  position: relative;
+  display: inline-block;
+  // border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.tooltip_custom .tooltiptext_custom {
+  visibility: hidden;
+  width: 150px;
+  // background-color: rgba(0,0,0,0.6);
+  color: #fff;
+  text-align: center;
+  padding: 5px 5px;
+  border-radius: 5px;
+  font-size: 12px !important;
+
+  /* Position the tooltip text */
+  position: absolute;
+  z-index: 1050;
+  /* Position the tooltip text - TOP */
+  // bottom: 100%;
+  // left: 50%;
+  margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
+
+  // NEW
+  box-shadow: 0 1em 2em -0.5em rgba(0, 0, 0, 0.35);
+  background-color: #394f5a;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip_custom:hover .tooltiptext_custom {
+  visibility: visible;
+}
+
+.card-header-custom-bkgrnd {
+  box-shadow: none;
+  -webkit-box-shadow: none;
+  margin: 0px;
+  border-radius: 3px 3px 0px 0px;
+  // background-color: #f2f6f8;
+  background-color: #ffffff;
+  border-bottom: 1px solid #eff3f5;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.column-th-span {
+  font-size: 14px;
+  font-weight: 500;
+  color: #353f45;
+  // color: #566787;
+}
+
+.dept-avatar-wrapper {
+  cursor: pointer;
+}
+.dept-avatar {
+  border-radius: 5px;
+  font-size: 18px;
+  font-weight: 400;
+  text-align: center;
+  padding-top: 5px;
+  padding-bottom: 3px;
+  display: inline-block;
+  width: 42px;
+  height: 42px;
+  line-height: 33px;
+  position: relative;
+  top: 4px;
+  color: #fff;
+}
+
+.line-clamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// new for depts
+.special-edit {
+  position: relative;
+}
+.special-edit input {
+  // font-family: 'FontAwesome';
+  font-size: 2rem;
+  padding: .5rem 0 .5rem 2.5rem;
+  width: 100%;
+  border: none;
+  border-bottom: transparent 3px solid;
+  outline: 0;
+  transition: .35s ease;
+}
+.special-edit input:hover, .special-edit input:focus {
+  background-color: #f1f1f1;
+  border-bottom: #ddd 3px dotted;
+}
+.special-edit:after {
+  font-family: 'FontAwesome';
+  content: '\f044';
+  position: absolute;
+  top: 1rem;
+  left: .5rem;
+  color: gray;
+  font-size: 1.5rem;
+}

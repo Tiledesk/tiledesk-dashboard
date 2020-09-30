@@ -26,9 +26,12 @@ import { RequestsListComponent } from './requests-list/requests-list.component';
 /*** WEBSOCKET ***/
 import { WsRequestsListComponent } from './ws_requests/ws-requests-list/ws-requests-list.component';
 import { WsRequestsMsgsComponent } from './ws_requests/ws-requests-msgs/ws-requests-msgs.component';
+
 import { DepartmentsComponent } from './departments/departments.component';
 import { DepartmentEditAddComponent } from './department-edit-add/department-edit-add.component';
 import { RoutingPageComponent } from './routing-page/routing-page.component';
+
+import { DeptsComponent } from './depts/depts.component'; 
 
 import { ProjectsComponent } from './projects/projects.component';
 import { UsersComponent } from './users/users.component';
@@ -284,6 +287,9 @@ const routes: Routes = [
   { path: 'project/:projectid/departments', component: DepartmentsComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
   { path: 'project/:projectid/department/create', component: DepartmentEditAddComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/department/edit/:deptid', component: DepartmentEditAddComponent, canActivate: [AuthGuard] },
+
+  { path: 'project/:projectid/depts', component: DeptsComponent, canActivate: [AuthGuard] },
+  
 
   { path: 'project/:projectid/routing', component: RoutingPageComponent, canActivate: [AuthGuard] }, // no more used
 

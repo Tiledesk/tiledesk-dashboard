@@ -11,6 +11,7 @@ export interface Department {
     hasGroupName: string;
     routing: string;
     description?: string;
+    default?: boolean;
     __v: any;
     // custom
     groupHasBeenTrashed?: boolean;
