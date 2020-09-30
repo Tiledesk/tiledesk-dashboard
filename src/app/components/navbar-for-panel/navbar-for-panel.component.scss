@@ -35,28 +35,34 @@
 }
 
 .panel-left-sidebar-avatar {
-    width: 52px;
-    min-width: 52px;
-    height: 52px;
-    line-height: 52px;
+    width: 42px;
+    min-width: 42px;
+    height: 42px;
+    line-height: 42px;
     margin: 0 8px 0 0;
     border-radius: 50%;
     font-size: 17px;
     font-weight: 600;
     text-align: center;
-    margin-right: 16px;
-    margin-left: 4px;
+    // margin-right: 16px;
+    // margin-left: 4px;
+    margin-right: 9px;
+    margin-left: 9px;
     margin-top: 6px;
     margin-bottom: 6px;
 }
 
 .panel-left-sidebar-logged-in-user-status {
     position: absolute;
-    width: 14px;
-    height: 14px;
+    // width: 14px;
+    // height: 14px;
+    // bottom: 8px;
+    // left: 43px;
+    width: 12px;
+    height: 12px;
     bottom: 8px;
-    left: 43px;
-    border: 2px solid #2d323e;
+    left: 35px;
+    border: 1px solid #2d323e;
     border-radius: 50%;
     
 }

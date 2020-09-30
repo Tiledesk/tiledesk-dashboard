@@ -9,7 +9,10 @@
 
   padding-left: 0px;
   padding-right: 10px;
-  min-height: calc(100% - 63px);
+  min-height: calc(100% - 64px);
+  position: relative; // requirements for perfect scrollbar
+  height: 400px; // requirements for perfect scrollbar
+  // width: 300px;
   // height: 100vh;
 }
 

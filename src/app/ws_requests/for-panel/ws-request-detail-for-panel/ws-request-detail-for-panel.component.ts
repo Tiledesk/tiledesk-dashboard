@@ -18,7 +18,7 @@ import { FaqKbService } from '../../../services/faq-kb.service';
 import { UsersService } from '../../../services/users.service';
 import { NotifyService } from '../../../core/notify.service';
 import * as firebase from 'firebase';
-
+import PerfectScrollbar from 'perfect-scrollbar';
 @Component({
   selector: 'appdashboard-ws-request-detail-for-panel',
   templateUrl: './ws-request-detail-for-panel.component.html',
@@ -109,6 +109,18 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
 
     this.onInitUsersListModalHeight();
     this.getTranslations();
+
+    // chat-messages-container
+    this.setPerfectScrollbar()
+  }
+
+
+  setPerfectScrollbar() {
+    const messages_container = <HTMLElement>document.querySelector('.chat-messages-container');
+    console.log('REQUEST-DTLS-X-PANEL messages_container', messages_container);
+    let ps = new PerfectScrollbar(messages_container, {
+      suppressScrollX: true
+    });
   }
 
   subscribeToWs_RequestById(id_request) {

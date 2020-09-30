@@ -1,5 +1,5 @@
 
-import { Component, OnInit, ElementRef, HostListener, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ElementRef, HostListener, OnDestroy, ViewChildren, QueryList} from '@angular/core';
 import { ProjectService } from '../../../services/project.service';
 import { Project } from '../../../models/project-model';
 import { Router } from '@angular/router';
@@ -17,6 +17,8 @@ import { takeUntil } from 'rxjs/operators';
 
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../../services/brand.service';
+import PerfectScrollbar from 'perfect-scrollbar';
+// import { PerfectScrollbarTdDirective } from '../../../_directives/td-perfect-scrollbar/perfect-scrollbar-td.directive';
 
 @Component({
   selector: 'appdashboard-projects-for-panel',
@@ -24,6 +26,9 @@ import { BrandService } from '../../../services/brand.service';
   styleUrls: ['./projects-for-panel.component.scss']
 })
 export class ProjectsForPanelComponent implements OnInit, OnDestroy {
+
+  // @ViewChildren(PerfectScrollbarTdDirective)
+  // perfectScrollbarTdDirective: QueryList<PerfectScrollbarTdDirective>;
   
   // companyLogoBlack_Url = brand.company_logo_allwhite__url
   // pageBackgroundColor = brand.recent_project_page.background_color;
@@ -113,6 +118,18 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
     this.getStorageBucket();
     this.getOSCODE();
     this.onInitWindowWidth()
+
+    this.setPerfectScrollbar();
+   
+  }
+  setPerfectScrollbar() {
+ const container_projects_for_panel = <HTMLElement>document.querySelector('.main-content-projects-for-panel');
+    console.log('PROJECTS-X-PANEL main-content-projects-for-panel', container_projects_for_panel);
+    let ps = new PerfectScrollbar(container_projects_for_panel);
+  }
+
+  ngAfterViewInit() {
+   
   }
 
   ngOnDestroy() {
@@ -130,7 +147,7 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
     console.log('AppConfigService getAppConfig (PROJECTS-X-PANEL) public_Key', this.public_Key)
-    console.log('NavbarComponent public_Key', this.public_Key)
+    console.log('PROJECTS-X-PANEL public_Key', this.public_Key)
 
     let keys = this.public_Key.split("-");
     console.log('PUBLIC-KEY (PROJECTS-X-PANEL) - public_Key keys', keys)
@@ -266,7 +283,10 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
               subscription_is_active: project.id_project.isActiveSubscription
             }
 
-            project['project_name_initial'] = project.id_project.name.charAt(0)
+            if (project && project.id_project &&  project.id_project.name ) {
+              project['project_name_initial'] = project.id_project.name.charAt(0)
+            }
+            
 
 
 

@@ -10,7 +10,7 @@ export const slideInOutForPanelAnimation =
             // the view covers the whole screen with a semi tranparent background
             // position: 'fixed',
             position: 'absolute',
-            top: 104 + 'px',
+            top: 0 + 'px',
             left: 0,
             right: 0,
             bottom: 0,

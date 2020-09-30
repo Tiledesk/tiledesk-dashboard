@@ -1,5 +1,5 @@
 
-import { Component, OnInit, OnDestroy, AfterViewInit, NgZone, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, NgZone, ViewChild, ElementRef, HostListener, ChangeDetectorRef } from '@angular/core';
 import { WsRequestsService } from '../../../services/websocket/ws-requests.service';
 import { UsersLocalDbService } from '../../../services/users-local-db.service';
 import { BotLocalDbService } from '../../../services/bot-local-db.service';
@@ -149,7 +149,8 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
     public appConfigService: AppConfigService,
     private departmentService: DepartmentService,
     public notify: NotifyService,
-    public location: Location
+    public location: Location,
+    private cdref: ChangeDetectorRef 
 
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify);
@@ -168,7 +169,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
     // this.getWsRequests$();
     this.getCurrentProject();
     this.getLoggedUser();
-    this.getProjectUserRole();
+    // this.getProjectUserRole();
     this.getStorageBucket();
 
     // this.for1();
@@ -184,17 +185,42 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
     // this.getChatUrl();
     // this.getTestSiteUrl();
     this.getTranslations();
+    this.setPerfectScrollbar();
 
+  }
+
+  ngAfterViewInit() {
+    const leftsidebarbtn = <HTMLElement>document.querySelector('.left-sidebar--btns-container')
+    console.log('WS-REQUESTS-SERVED - leftsidebarbtn ', leftsidebarbtn);
     
+    this.getProjectUserRole();
+    this.cdref.detectChanges();
+  }
+
+  ngOnDestroy() {
+    console.log('% »»» WebSocketJs WF +++++ ws-requests--- list ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ ngOnDestroy')
+    if (this.subscription) {
+      this.subscription.unsubscribe()
+    }
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  setPerfectScrollbar() {
+    const container_projects_for_panel = <HTMLElement>document.querySelector('.main-content-projects-for-panel');
+    console.log('WS-REQUESTS-SERVED main-content-projects-for-panel', container_projects_for_panel);
+    let ps = new PerfectScrollbar(container_projects_for_panel, {
+      suppressScrollX: true
+    });
   }
 
 
-    // ------------------------------------------
+  // ------------------------------------------
   // Join request
   // ------------------------------------------
-  joinRequest (request_id:string) {
+  joinRequest(request_id: string) {
     this.currentUserID
-    this.onJoinHandled(request_id, this.currentUserID); 
+    this.onJoinHandled(request_id, this.currentUserID);
   }
 
   archiveRequest(request_id) {
@@ -296,19 +322,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
     console.log('AppConfigService getAppConfig (WS-REQUESTS-LIST COMP.) CHAT_BASE_URL', this.CHAT_BASE_URL);
   }
 
-  ngAfterViewInit() { 
-    const leftsidebarbtn = <HTMLElement>document.querySelector('.left-sidebar--btns-container')
-    console.log('WS-REQUESTS-SERVED - leftsidebarbtn ', leftsidebarbtn);
-  }
 
-  ngOnDestroy() {
-    console.log('% »»» WebSocketJs WF +++++ ws-requests--- list ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ ngOnDestroy')
-    if (this.subscription) {
-      this.subscription.unsubscribe()
-    }
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
 
 
   detectBrowserRefresh() {
@@ -645,7 +659,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
 
   }
 
- 
+
 
   // -----------------------------------------------------------------------------------------------------
   // @ Subscribe to get the published requests (called On init)
@@ -686,7 +700,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
           if (this.ONLY_MY_REQUESTS === true) {
             this.ws_requests = [];
             wsrequests.forEach(wsrequest => {
-             
+
 
               if (wsrequest !== null && wsrequest !== undefined) {
                 if (this.hasmeInAgents(wsrequest.agents, wsrequest) === true || this.hasmeInParticipants(wsrequest.participants) === true) {
@@ -722,10 +736,10 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
             } else {
 
               console.log('!! Ws SHARED  (from request list) PARTICIPATING-AGENTS IS DEFINED');
-   
+
             }
           }
- 
+
 
           if (request.lead && request.lead.fullname) {
             request['requester_fullname_initial'] = avatarPlaceholder(request.lead.fullname);
@@ -737,11 +751,25 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
           }
 
 
-          if (request.lead && request.lead.lead_id) { 
+          if (request.lead && request.lead.lead_id) {
 
             this.getRequesterAvailabilityStatus(request.lead.lead_id, request)
           }
-        });
+
+          if (request && request.first_text) {
+            const length = 45
+        
+            if (request.first_text.length > length) {
+              request['trimmedFirst_text']  = request.first_text.substring(0, length - 3) + "..."
+            } else {
+              request['trimmedFirst_text']  = request.first_text
+            }
+
+          }
+            // var trimmedString = string.length > length ? 
+            //           string.substring(0, length - 3) + "..." : 
+            //           string;
+          });
 
 
 
@@ -803,7 +831,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
           }
           else {
             clearInterval(interval);
-            console.log('WS-REQUESTS-UNSERVED-X-PANEL (unserved) TIME TIME TIME COMPLETED Unserved LENGTH ' , this.wsRequestsUnserved.length);
+            console.log('WS-REQUESTS-UNSERVED-X-PANEL (unserved) TIME TIME TIME COMPLETED Unserved LENGTH ', this.wsRequestsUnserved.length);
 
             if (this.wsRequestsUnserved.length > 0) {
               this.SHOW_NO_REQUEST_MSG = false;
@@ -824,7 +852,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
       })
   }
 
-  getRequesterAvailabilityStatus(requester_id: string, request:any) {
+  getRequesterAvailabilityStatus(requester_id: string, request: any) {
     // const firebaseRealtimeDbUrl = `/apps/tilechat/presence/LmBT2IKjMzeZ3wqyU8up8KIRB6J3/connections`
     const firebaseRealtimeDbUrl = `/apps/tilechat/presence/` + requester_id + `/connections`
     const connectionsRef = firebase.database().ref().child(firebaseRealtimeDbUrl);
@@ -875,8 +903,8 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
     });
   }
 
-   // DEPTS_LAZY: add this 
-   addDeptObject(wsrequests) {
+  // DEPTS_LAZY: add this 
+  addDeptObject(wsrequests) {
     this.departmentService.getDeptsByProjectIdToPromise().then((_departments: any) => {
 
       console.log('WS-REQUESTS-UNSERVED-X-PANEL % »»» WebSocketJs WF +++++ ws-requests--- service -  X-> DEPTS <-X', _departments)

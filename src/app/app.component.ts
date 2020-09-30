@@ -425,20 +425,20 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
 
 
-                if (this.route.indexOf('/projects-for-panel') !== -1) {
-                    this.IS_PROJECTS_FOR_PANEL = true
+                // if (this.route.indexOf('/projects-for-panel') !== -1) {
+                //     this.IS_PROJECTS_FOR_PANEL = true
 
-                    const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
-                    // console.log('APP COMP IS_PROJECTS_FOR_PANEL .main-panel ', elemMainPanel)
-                    if (this.IS_PROJECTS_FOR_PANEL === true) {
-                        let ps = new PerfectScrollbar(elemMainPanel);
-                    }
+                //     const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
+                //     console.log('APP COMP IS_PROJECTS_FOR_PANEL .main-panel ', elemMainPanel)
+                //     if (this.IS_PROJECTS_FOR_PANEL === true) {
+                //         let ps = new PerfectScrollbar(elemMainPanel);
+                //     }
 
 
 
-                } else {
-                    this.IS_PROJECTS_FOR_PANEL = false
-                }
+                // } else {
+                //     this.IS_PROJECTS_FOR_PANEL = false
+                // }
 
 
             } else {

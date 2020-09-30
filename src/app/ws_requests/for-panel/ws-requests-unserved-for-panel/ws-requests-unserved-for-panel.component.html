@@ -67,7 +67,7 @@ background: #2d323e;">
   </div>
 </div>
 
-<div class="main-content main-content-projects-for-panel">
+<div class="main-content main-content-projects-for-panel" style="min-height: calc(100% - 160px);">
   <div class="container-fluid container-projects-for-panel">
 
     <div class="row">
@@ -91,18 +91,97 @@ background: #2d323e;">
           <span class="material-icons no-request-icon">
             sms_failed
           </span>
-
           <span class="no-request-msg" style="">
             {{'NoUnservedRequests' | translate}}
           </span>
         </div>
       </div>
-
       <div *ngIf="!SHOW_NO_REQUEST_MSG" class="left-sidebar-unserved-requests-wrapper">
+        <div class="row">
+          <div class="col-xs-12">
+            <h4 class="unserved-for-panel-title">
+              {{wsRequestsUnserved?.length }} {{'VisitorsPage.UnservedRequests' | translate}}
+            </h4>
+          </div>
+        </div>
+        <div class="left-sidebar-unserved-requests" *ngFor="let request of wsRequestsUnserved" >
 
-        <div *ngFor="let request of wsRequestsUnserved" class="left-sidebar-unserved-requests">
+          <!-- GRID ---------------------------------------------------------------- -->
+          <div class="grid-container">
+            <div class="lead-avatar-column"  (click)="displayDetails(request)">
 
-          <div class="left-sidebar-unserved-requests-row" (click)="displayDetails(request)">
+              <div class="lead-avatar-wrap" style="position:relative">
+                <div class="lead--avatar" [ngStyle]="{'background-color': request?.requester_fullname_fillColour }"
+                  [ngClass]="{'requester_fullname-undefined' : !request?.lead?.fullname }">
+                  <span style="color: #ffffff"> {{ request?.requester_fullname_initial }} </span>
+                  <div class="requester-status-in-unserved-list"
+                    [ngClass]="{'requester-is-online' : request?.REQUESTER_IS_ONLINE, 'requester-is-offline' : !request?.REQUESTER_IS_ONLINE }">
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <div class="right-column"  (click)="displayDetails(request)">
+              <div class="lead-name">
+                <div class="lead--name ">
+                  {{ request?.lead?.fullname }}
+                  <span *ngIf="!request?.lead?.fullname">
+                    N/A
+                  </span>
+                </div>
+              </div>
+              <div class="time">
+                <div class="request--creation-time">
+                  {{ request?.createdAt | amTimeAgo }}
+                </div>
+              </div>
+              <div class="first-msg">
+                <div class="request--first-message text-truncated" [innerHTML]="request?.first_text">
+                </div>
+              </div>
+              <div class="actions-btns">
+                <div class="join-btn-col">
+                  <div class="tool_tip" style="width: 100%;">
+                    <button class="btn btn-block btn-primary action--btn"
+                      (click)='$event.stopPropagation();joinRequest(request?.request_id)'>
+                      Join
+                    </button>
+                    <span class="top"
+                      style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px; white-space: nowrap;">
+                      <span style="text-transform: capitalize;"> {{ 'RequestMsgsPage.Enter' | translate }} </span>
+                      <i></i>
+                    </span>
+                  </div>
+                </div>
+                <div class="archive-btn-col">
+                  <div class="tool_tip" style="width: 100%;">
+                    <!-- padding: 4px 8px!important; -->
+                    <button class="btn btn-block btn-primary action--btn"
+                      (click)='$event.stopPropagation();archiveRequest(request?.request_id)'
+                      style="background-color: #e4e6eb; color: #050505;">
+                      Archive
+                    </button>
+                    <span
+                      style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px; white-space: nowrap;"
+                      class="top">
+                      <span style="text-transform: capitalize;"> {{ 'VisitorsPage.Archive' | translate }} </span>
+                      <i></i>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="arrow-container"  (click)="displayDetails(request)">
+                <div id="arrow_3" class="arrow-wrapper">
+                  <div class="arrow arrow--right">
+                    <span></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+           <!-- ./ GRID ---------------------------------------------------------------- -->
+
+          <!-- <div class="left-sidebar-unserved-requests-row" (click)="displayDetails(request)">
             <div class="left-sidebar-requester-avatar-wrapper">
               <span class="left-sidebar-requester-avatar"
                 [ngStyle]="{'background-color': request?.requester_fullname_fillColour }"
@@ -119,8 +198,6 @@ background: #2d323e;">
             <div class="left-sidebar--lead-name-and-request-wrapper">
               <div class="left-sidebar--lead-name-and-request">
                 <div class="left-sidebar--lead-name">
-
-                  <!-- requester-name--for-panel -->
                   <span class="">
                     {{ request?.lead?.fullname }}
                   </span>
@@ -130,15 +207,15 @@ background: #2d323e;">
                     n/a
                   </span>
                 </div>
-                <!-- first-messages-for-panel  -->
-
-                <!--
+                <!- -
                 // ----------------------------------------------------------------
                 // First message
-                // ---------------------------------------------------------------- -->
-                <!-- color: rgba(0,0,0,.54);  -->
-                <div class="left-sidebar--request-first-message text-truncated" [innerHTML]="request?.first_text"></div>
+                // ---------------------------------------------------------------- - ->
+                <div class="left-sidebar--request-first-message  text-truncated" [innerHTML]="request?.first_text">
+                </div>
               </div>
+
+
               <div class="left-sidebar--request-time-wrapper">
 
                 <div class="left-sidebar--request-time">
@@ -147,30 +224,23 @@ background: #2d323e;">
 
               </div>
             </div>
+          </div> -->
 
-          </div>
-
-          <div class="left-sidebar--btns-container">
+          <!-- <div class="left-sidebar--btns-container">
             <div class="left-sidebar--btns-left-column"> </div>
 
             <div class="left-sidebar--btns-center-column">
-              <!-- padding: 6px 38px -->
               <div class="tool_tip">
                 <button class="btn btn-primary left-sidebar-btn "
                   (click)='$event.stopPropagation();joinRequest(request?.request_id)' style="">
-
-
-                  <!-- Join  -->
-                  <svg style="height: 15px; width:auto;margin-top: 3px;" aria-hidden="true" focusable="false"
+                  <!- - <svg style="height: 15px; width:auto;margin-top: 3px;" aria-hidden="true" focusable="false"
                     data-prefix="fas" data-icon="link" class="svg-inline--fa fa-link fa-w-16" role="img"
                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                     <path fill="currentColor"
                       d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z">
                     </path>
-                  </svg>
-
-
-
+                  </svg> - ->
+                  Join
                 </button>
                 <span
                   style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px; white-space: nowrap;"
@@ -178,46 +248,37 @@ background: #2d323e;">
                   <span style="text-transform: capitalize;"> {{ 'RequestMsgsPage.Enter' | translate }} </span>
                   <i></i>
                 </span>
-
               </div>
-
               <div class="tool_tip">
                 <button class="btn btn-primary left-sidebar-btn"
                   (click)='$event.stopPropagation();archiveRequest(request?.request_id)'
-                  style="background-color: #e4e6eb; color: #050505;     padding: 4px 8px!important;">
-                  <!-- Archive -->
-                  <svg style="height: 22px; width:auto;margin-top: 3px;" xmlns="http://www.w3.org/2000/svg"
+                  style="background-color: #e4e6eb; color: #050505;">
+               
+                  <!- - <svg style="height: 22px; width:auto;margin-top: 3px;" xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24" fill="black">
                     <path d="M0 0h24v24H0z" fill="none" />
                     <path
                       d="M20.54 5.23l-1.39-1.68C18.88 3.21 18.47 3 18 3H6c-.47 0-.88.21-1.16.55L3.46 5.23C3.17 5.57 3 6.02 3 6.5V19c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6.5c0-.48-.17-.93-.46-1.27zM12 17.5L6.5 12H10v-2h4v2h3.5L12 17.5zM5.12 5l.81-1h12l.94 1H5.12z" />
-                  </svg>
-
-
-        
+                  </svg> - ->
+                  Archive
                 </button>
-                <span
-                style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px; white-space: nowrap;"
-                class="top">
-                <span style="text-transform: capitalize;"> {{ 'VisitorsPage.Archive' | translate }} </span>
-                <i></i>
-              </span>
 
+                <span
+                  style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px; white-space: nowrap;"
+                  class="top">
+                  <span style="text-transform: capitalize;"> {{ 'VisitorsPage.Archive' | translate }} </span>
+                  <i></i>
+                </span>
               </div>
             </div>
-
             <div class="left-sidebar--btns-right-column" (click)="displayDetails(request)">
               <div id="arrow_3" class="arrow-wrapper">
-                <div class="block">
-                  <h1 class="h1---custom">{{'ViewDetails' | translate}}</h1>
-                </div>
                 <div class="arrow arrow--right">
                   <span></span>
                 </div>
-
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
 
 
