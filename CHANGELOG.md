@@ -1,6 +1,15 @@
 
 # tiledesk-dashboard
 
+### 2.0.67
+- Updates the Dockerfile with the commands to bundle the dashboard for production 
+
+### 2.0.64
+- Adds a navigable sidebar (projects, unserved requests, request details) that will be integrated in the chat
+
+### 2.0.63
+- Adds in README the explanation on how to load external script 
+
 ### 2.0.62
 - Improves scripts service
 
