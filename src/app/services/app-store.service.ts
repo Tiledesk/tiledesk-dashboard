@@ -20,7 +20,8 @@ export class AppStoreService {
 
   getApps() {
     // const url = '/assets/mock-data/apps.json';
-    const url =  "https://lightgreymountainousscreenscraper--five-nine.repl.co/apps"
+    // const url =  "https://lightgreymountainousscreenscraper--five-nine.repl.co/apps"
+    const url =  "https://tiledesk-apps.herokuapp.com/api/apps?sort=score"
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
 
