@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.0.68
+- Displays in requests list name initials if profile picture is not provided
+
 ### 2.0.67
 - Updates the Dockerfile with the commands to bundle the dashboard for production 
 
