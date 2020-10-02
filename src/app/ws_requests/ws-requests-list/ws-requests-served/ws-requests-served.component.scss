@@ -906,7 +906,6 @@ $f21blue: #039be5;
   position: relative;
 }
 .served-by-desktop-e {
-
   margin: 0px auto;
   border-radius: 50%;
   display: inline-block;
@@ -924,10 +923,26 @@ $f21blue: #039be5;
   border: 2px solid rgb(255, 255, 255);
 }
 
-
-.current-user-member-border {
-
-  border-color:#4caf50 !important;
+.served-by-desktop-e .altenative-avatar-wrap {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid rgb(255, 255, 255);
+  // margin-top: 2px;
+  position: relative;
+    top: 2px;
+}
+.altenative-avatar {
+  color: #ffffff;
+  line-height: 30px;
+  margin: auto;
+  display: block;
+  font-weight: 400;
+  font-size: 12px;
+  // padding-left: 10px;
+  text-align: center;
 }
 
-
+.current-user-member-border {
+  border-color: #4caf50 !important;
+}

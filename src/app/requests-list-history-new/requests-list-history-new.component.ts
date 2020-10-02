@@ -746,7 +746,7 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
 
                 console.log('!! Ws SHARED  (from request list history) PARTICIPATING-AGENTS IS ', request['participanting_Agents'], ' - RUN DO ');
 
-                request['participanting_Agents'] = this.doParticipatingAgentsArray(request.participants, request.first_text)
+                request['participanting_Agents'] = this.doParticipatingAgentsArray(request.participants, request.first_text, this.storageBucket)
 
               } else {
 

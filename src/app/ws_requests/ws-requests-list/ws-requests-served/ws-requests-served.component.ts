@@ -18,6 +18,7 @@ import { Request } from '../../../models/request-model';
 import { DepartmentService } from '../../../services/department.service';
 import { NotifyService } from '../../../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
+import { request } from 'http';
 
 @Component({
   selector: 'appdashboard-ws-requests-served',
@@ -65,7 +66,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     private departmentService: DepartmentService,
     public notify: NotifyService,
     private translate: TranslateService,
-   
+
     // private cdr: ChangeDetectorRef
 
   ) {
@@ -85,8 +86,35 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     this.detectBrowserRefresh();
     // this.getProjectUserRole()
     this.getTranslations();
-    this.getProjectUserRole(); 
+    this.getProjectUserRole();
+  
   }
+
+  getStorageBucket() {
+    const firebase_conf = this.appConfigService.getConfig().firebase;
+    this.storageBucket = firebase_conf['storageBucket'];
+    console.log('STORAGE-BUCKET Ws Requests served ', this.storageBucket)
+
+    this.checkImage(this.wsRequestsServed)
+  }
+
+  checkImage(wsRequestsServed) {
+
+    wsRequestsServed.forEach(request => {
+
+      if (request) {
+        console.log('STORAGE-BUCKET  +++++ ws-requests--- served - request ', request)
+        // request.participanting_Agents.forEach(agent => {
+        //   console.log('% »»» WebSocketJs WF +++++ ws-requests--- served - participanting_Agents agent ', agent)
+        // });
+
+      }
+
+    });
+
+  }
+
+
 
   getProjectUserRole() {
     this.usersService.project_user_role_bs
@@ -98,11 +126,11 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
         if (user_role) {
           if (user_role === 'agent') {
             this.ROLE_IS_AGENT = true
-          
-     
+
+
           } else {
             this.ROLE_IS_AGENT = false
-          
+
           }
         }
       });
@@ -283,11 +311,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   }
 
 
-  getStorageBucket() {
-    const firebase_conf = this.appConfigService.getConfig().firebase;
-    this.storageBucket = firebase_conf['storageBucket'];
-    // console.log('STORAGE-BUCKET Ws Requests List ', this.storageBucket)
-  }
+
 
   getCurrentProject() {
     this.auth.project_bs
@@ -370,7 +394,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
 
   }
 
- 
+
   goToAgentProfile(member_id) {
     console.log('WsRequestsServedComponent goToAgentProfile ', member_id)
     // this.router.navigate(['project/' + this.projectId + '/member/' + member_id]);
@@ -450,9 +474,9 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   // ------------------------------------------
   // Join request
   // ------------------------------------------
-  joinRequest (request_id:string) {
+  joinRequest(request_id: string) {
     this.currentUserID
-    this.onJoinHandled(request_id, this.currentUserID); 
+    this.onJoinHandled(request_id, this.currentUserID);
   }
 
 
@@ -512,6 +536,12 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
         // this._getProjectUserByUserId(member_id)
       }
     }
+  }
+
+  updateUrl($event, agent) {
+    console.log('% Ws-REQUESTS-served IMAGE ERROR  event ', $event)
+    console.log('% Ws-REQUESTS-served IMAGE ERROR  agent ', agent)
+    agent['has__image'] = false
   }
 
 

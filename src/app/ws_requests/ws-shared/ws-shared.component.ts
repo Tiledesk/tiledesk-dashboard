@@ -44,7 +44,7 @@ export class WsSharedComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-
+   
   }
 
 
@@ -101,6 +101,9 @@ export class WsSharedComponent implements OnInit {
 
     console.log('%%% WsRequestsMsgsComponent - AGENT ARRAY ', this.agents_array)
   }
+
+
+
 
 
   // -----------------------------------------------------------------------------------------------------
@@ -188,41 +191,42 @@ export class WsSharedComponent implements OnInit {
 
 
 
-  doParticipatingAgentsArray(participants, first_text) {
+  doParticipatingAgentsArray(participants, first_text, storageBucket) {
+    
+    console.log('STORAGE-BUCKET Users service  Ws SHARED ', storageBucket);
+    console.log('!! Ws SHARED »»»»»»» doParticipatingAgentsArray - first_text ', first_text, ' participants', participants, ' storageBucket', storageBucket);
 
-    console.log('!! Ws SHARED »»»»»»» doParticipatingAgentsArray - first_text ', first_text, ' participants', participants);
-  
     const newpartarray = []
     participants.forEach(participantid => {
 
       const participantIsBot = participantid.includes('bot_');
-      
+
       if (participantIsBot === true) {
         console.log('!! Ws SHARED »»»»»»» THE PARTICIP IS A BOT?', participantIsBot, 'GET BOT FROM STORAGE');
-       
+
         const bot_id = participantid.slice(4);
 
         const bot = this.botLocalDbService.getBotFromStorage(bot_id);
-        if (bot) { 
+        if (bot) {
           console.log('!! Ws SHARED »»»»»»» STORED BOT ', bot);
-         
+
           bot['is_bot'] = true;
           newpartarray.push(bot)
-       
+
         } else {
           console.log('!! Ws SHARED »»»»»»» BOT IS NOT IN STORAGE  - RUN GET FROM SERVICE');
-         
+
           this.faqKbService.getMongDbFaqKbById(bot_id).subscribe((bot: any) => {
             console.log('!! Ws SHARED »»»»»»» GET BOT BY ID - RES', bot);
-      
+
 
             bot['is_bot'] = true;
             newpartarray.push(bot)
-      
+
             this.botLocalDbService.saveBotsInStorage(bot_id, bot);
 
           }, (error) => {
-      
+
             console.log('!! Ws SHARED »»»»»»» GET BOT BY ID - ERR', error);
           }, () => {
             console.log('!! Ws SHARED »»»»»»» GET BOT BY ID - COMPLETE');
@@ -233,32 +237,73 @@ export class WsSharedComponent implements OnInit {
         console.log('!! Ws SHARED »»»»»»» THE PARTICIP IS A BOT?', participantIsBot, 'GET USER FROM STORAGE');
         const user = this.usersLocalDbService.getMemberFromStorage(participantid);
 
-        if (user) { 
+        // check if user iamge exist  
+        const imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + storageBucket + "/o/profiles%2F" + participantid + "%2Fphoto.jpg?alt=media"
+
+        this.checkImageExists(imgUrl, (existsImage) => {
+          if (existsImage == true) {
+            user.hasImage = true
+          }
+          else {
+            user.hasImage = false
+          }
+        });
+
+
+        if (user) {
           console.log('!! Ws SHARED »»»»»»» STORED USER ', user);
-         
+          this.createAgentAvatar(user)
           user['is_bot'] = false
           newpartarray.push(user)
-       
-        } else{
+
+        } else {
           console.log('!! Ws SHARED »»»»»»» USER IS NOT IN STORAGE - RUN GET FROM SERVICE');
           this.usersService.getProjectUserById(participantid)
-          .subscribe((projectuser) => {
-            console.log('!! Ws SHARED »»»»»»» GET PROJECT-USER BY ID - RES', projectuser);
-            const user = projectuser[0].id_user;
-            
-            user['is_bot'] = false
-            newpartarray.push(user)
-         
-            this.usersLocalDbService.saveMembersInStorage(user['_id'], user);
+            .subscribe((projectuser) => {
+              console.log('!! Ws SHARED »»»»»»» GET PROJECT-USER BY ID - RES', projectuser);
+              const user = projectuser[0].id_user;
 
-          })
+              user['is_bot'] = false
+
+              this.createAgentAvatar(user)
+
+              newpartarray.push(user)
+
+              this.usersLocalDbService.saveMembersInStorage(user['_id'], user);
+
+            })
         }
       }
-
-   
-     
     });
     return newpartarray
+  }
+
+  createAgentAvatar(agent) {
+
+    let fullname = '';
+    if (agent && agent.firstname && agent.lastname) {
+
+
+      fullname = agent.firstname + ' ' + agent.lastname
+      agent['fullname_initial'] = avatarPlaceholder(fullname);
+      agent['fillColour'] = getColorBck(fullname)
+    } else {
+
+      agent['fullname_initial'] = 'N/A';
+      agent['fillColour'] = 'rgb(98, 100, 167)';
+    }
+
+  }
+
+  checkImageExists(imageUrl, callBack) {
+    var imageData = new Image();
+    imageData.onload = function () {
+      callBack(true);
+    };
+    imageData.onerror = function () {
+      callBack(false);
+    };
+    imageData.src = imageUrl;
   }
 
   createFullParticipacipantsArray(request, participants: any) {
@@ -727,26 +772,26 @@ export class WsSharedComponent implements OnInit {
 
 
 
-    // JOIN TO CHAT GROUP
-    onJoinHandled(id_request: string, currentUserID: string) {
-      // this.getFirebaseToken(() => {
-      console.log('%%% Ws-REQUESTS-Msgs - JOIN PRESSED');
-     
-  
-      this.wsRequestsService.addParticipant(id_request, currentUserID)
-        .subscribe((data: any) => {
-  
-          console.log('%%% Ws-REQUESTS-Msgs - addParticipant TO CHAT GROUP ', data);
-        }, (err) => {
-          console.log('%%% Ws-REQUESTS-Msgs - addParticipant TO CHAT GROUP ERROR ', err);
-    
-        }, () => {
-          console.log('%%% Ws-REQUESTS-Msgs - addParticipant TO CHAT GROUP COMPLETE');
-  
-          this.notify.showWidgetStyleUpdateNotification(`You are successfully added to the chat`, 2, 'done');
-         
-        });
-      // });
-    }
+  // JOIN TO CHAT GROUP
+  onJoinHandled(id_request: string, currentUserID: string) {
+    // this.getFirebaseToken(() => {
+    console.log('%%% Ws-REQUESTS-Msgs - JOIN PRESSED');
+
+
+    this.wsRequestsService.addParticipant(id_request, currentUserID)
+      .subscribe((data: any) => {
+
+        console.log('%%% Ws-REQUESTS-Msgs - addParticipant TO CHAT GROUP ', data);
+      }, (err) => {
+        console.log('%%% Ws-REQUESTS-Msgs - addParticipant TO CHAT GROUP ERROR ', err);
+
+      }, () => {
+        console.log('%%% Ws-REQUESTS-Msgs - addParticipant TO CHAT GROUP COMPLETE');
+
+        this.notify.showWidgetStyleUpdateNotification(`You are successfully added to the chat`, 2, 'done');
+
+      });
+    // });
+  }
 
 }

@@ -731,7 +731,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
 
             if (!request['participanting_Agents']) {
               console.log('!! Ws SHARED  (from request list) PARTICIPATING-AGENTS IS ', request['participanting_Agents'], ' - RUN DO ');
-              request['participanting_Agents'] = this.doParticipatingAgentsArray(request.participants, request.first_text)
+              request['participanting_Agents'] = this.doParticipatingAgentsArray(request.participants, request.first_text, this.storageBucket)
 
             } else {
 

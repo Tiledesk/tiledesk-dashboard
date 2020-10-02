@@ -45,6 +45,7 @@ export class UsersService {
   public currentUserWsAvailability$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   public currentUserWsIsBusy$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   public currentUserWsBusyAndAvailabilityForProject$: BehaviorSubject<[]> = new BehaviorSubject<[]>([]);
+  public storageBucket$: BehaviorSubject<string> = new BehaviorSubject<string>('');
   // public has_clicked_logoutfrom_mobile_sidebar: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   // public has_clicked_logoutfrom_mobile_sidebar_project_undefined: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
@@ -220,6 +221,10 @@ export class UsersService {
       console.log('STORAGE-BUCKET Users service ', storageBucket)
 
       if (storageBucket) {
+
+        this.storageBucket$.next(storageBucket)
+
+
         this.verifyUserProfileImageOnFirebaseStorage(this.currentUserId, storageBucket);
       }
 

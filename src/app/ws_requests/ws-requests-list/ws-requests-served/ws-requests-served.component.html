@@ -757,13 +757,30 @@
                     style="cursor:pointer">
                     <div class="served-by-desktop-d">
                       <div size="32" class="served-by-desktop-e">
-                        <img [ngClass]="{'current-user-member-border' : agent._id === currentUserID}"
+                        <!-- {{  agent.hasImage }} -->
+                        <img *ngIf="agent.hasImage"
+                          [ngClass]="{'current-user-member-border' : agent._id === currentUserID}"
                           src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fphoto.jpg?alt=media"
-                          alt="">
+                          alt="" onerror="this.src='assets/img/no_image_user.png'" (error)="updateUrl($event, agent)">
+
+                        <div class="altenative-avatar-wrap" [ngStyle]="{'background-color': agent?.fillColour }"
+                          *ngIf="!agent.hasImage">
+
+                          <!-- <span class="requester-avatar-wrapper"> requester-avatar -->
+                          <!-- <span class="" "> -->
+                          <span class="altenative-avatar" style="">
+                            {{ agent?.fullname_initial }}
+                          </span>
+                          <!-- </span> -->
+
+                          <!-- </span> -->
+                        </div>
                       </div>
                     </div>
 
-                    <span style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px; white-space: nowrap;" class="top">
+                    <span
+                      style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px; white-space: nowrap;"
+                      class="top">
                       <span style="text-transform: capitalize;"> {{ agent?.firstname }}
                         <span *ngIf="agent?.lastname">
                           {{ agent?.lastname | slice:0:1 }}.
@@ -786,8 +803,10 @@
                       {{ agent.name}}
                     </span> -->
 
-                    <span style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px; white-space: nowrap;" class="top">
-                      <span style="text-transform: capitalize;"> {{ agent.name}}  </span>
+                    <span
+                      style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px; white-space: nowrap;"
+                      class="top">
+                      <span style="text-transform: capitalize;"> {{ agent.name}} </span>
                       <i></i>
                     </span>
                     <div *ngIf="agent.type === 'internal'">

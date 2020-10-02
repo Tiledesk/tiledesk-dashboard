@@ -105,6 +105,8 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   deptIdSelectedInRequuestsXDepts
   ws_requestslist_deptIdSelected: string
   display_dept_sidebar = false;
+  storagebucket$: string;
+
   /**
    * Constructor
    * 
@@ -142,12 +144,14 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
    * On init
    */
   ngOnInit() {
+    // this.getStorageBucketFromUserServiceSubscription();
+    this.getStorageBucket();
     this.getDepartments();
     // this.getWsRequests$();
     this.getCurrentProject();
     this.getLoggedUser();
     this.getProjectUserRole();
-    this.getStorageBucket();
+    
 
 
 
@@ -163,7 +167,32 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
     this.getChatUrl();
     this.getTestSiteUrl();
+   
+  }
 
+  getStorageBucketFromUserServiceSubscription() {
+    
+   
+    this.usersService.storageBucket$
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((storagebucket) => {
+      console.log('STORAGE-BUCKET - from sub in ws-request-list ', storagebucket);
+      if (storagebucket) {
+        this.storagebucket$ = storagebucket;
+      }
+    })
+  }
+
+  getStorageBucket() {
+ // storage bucket from user service subscription 
+    this.storagebucket$ = this.usersService.storageBucket$.value;
+    console.log('STORAGE-BUCKET - from sub in ws-request-list value',  this.storagebucket$);
+
+    const firebase_conf = this.appConfigService.getConfig().firebase;
+    this.storageBucket = firebase_conf['storageBucket'];
+    console.log('STORAGE-BUCKET Ws Requests List ', this.storageBucket)
   }
 
   getTestSiteUrl() {
@@ -237,11 +266,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     });
   }
 
-  getStorageBucket() {
-    const firebase_conf = this.appConfigService.getConfig().firebase;
-    this.storageBucket = firebase_conf['storageBucket'];
-    // console.log('STORAGE-BUCKET Ws Requests List ', this.storageBucket)
-  }
+
 
   public scrollRight(): void {
     this.teamContent.nativeElement.scrollTo({ left: (this.teamContent.nativeElement.scrollLeft + 150), behavior: 'smooth' });
@@ -810,9 +835,6 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
           request['currentUserIsJoined'] = this.currentUserIdIsInParticipants(request.participants, this.auth.user_bs.value._id, request.request_id);
 
 
-
-
-
           if (request.status === 200) {
             // USE CASE L'ARRAY new_participants è UNDEFINED x es al refresh o quando si entra nella pagina (anche al back dal dettaglio) o all' UPDATE
             // console.log('!! Ws SHARED  (from request list) PARTICIPATING-AGENTS  ', request['participantingAgents']);
@@ -821,7 +843,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
               console.log('!! Ws SHARED  (from request list) PARTICIPATING-AGENTS IS ', request['participanting_Agents'], ' - RUN DO ');
 
-              request['participanting_Agents'] = this.doParticipatingAgentsArray(request.participants, request.first_text)
+              request['participanting_Agents'] = this.doParticipatingAgentsArray(request.participants, request.first_text, this.storagebucket$)
 
             } else {
 
