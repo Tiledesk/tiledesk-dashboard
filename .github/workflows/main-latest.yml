@@ -21,3 +21,5 @@ jobs:
         dockerfile: Dockerfile-prod
         repository: tiledesk/tiledesk-dashboard
         tags: latest
+
+
