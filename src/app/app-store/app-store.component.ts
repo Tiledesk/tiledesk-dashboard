@@ -14,6 +14,8 @@ export class AppStoreComponent implements OnInit {
   apps: any;
   subscription: Subscription;
   projectId: string;
+  showSpinner: boolean = true;
+
   constructor(
     public appStoreService: AppStoreService,
     private router: Router,
@@ -21,8 +23,6 @@ export class AppStoreComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-
-
     this.getApps();
     this.getCurrentProject();
   }
@@ -47,7 +47,7 @@ export class AppStoreComponent implements OnInit {
   getApps() {
     this.appStoreService.getApps().subscribe((_apps: any) => {
 
-      this.apps = _apps;
+      this.apps = _apps.apps;
       console.log('APP-STORE - APPS ', this.apps);
 
       this.apps.forEach(app => {
@@ -70,10 +70,10 @@ export class AppStoreComponent implements OnInit {
 
     }, (error) => {
       console.log('APP-STORE - ERROR  ', error);
-
+    this.showSpinner = false
     }, () => {
       console.log('APP-STORE * COMPLETE *');
-
+      this.showSpinner = false
     });
   }
 

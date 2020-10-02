@@ -6,9 +6,12 @@
   <div class="container-fluid">
     <div class="row">
 
+
       <div *ngFor="let app of apps" class="col-lg-4 col-md-4 col-sm-6" style="cursor:pointer">
 
-        <div class="card card-app-store">
+        <loading-spinner *ngIf="showSpinner"></loading-spinner>
+
+        <div *ngIf="!showSpinner" class="card card-app-store">
 
           <div class="card-content">
 
@@ -31,7 +34,7 @@
             <div class="row" style="display: block;">
 
               <div class="col-xs-6 app-store-left-col-btn"
-              (click)="learnmore(app.learnmore)">
+              (click)="learnmore(app.learnMore)">
                 <a>
                   Learn more
                 </a>
