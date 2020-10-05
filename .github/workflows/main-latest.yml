@@ -18,7 +18,7 @@ jobs:
       with:	    
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-        dockerfile: Dockerfile-prod
+        dockerfile: Dockerfile
         repository: tiledesk/tiledesk-dashboard
         tags: latest
 
