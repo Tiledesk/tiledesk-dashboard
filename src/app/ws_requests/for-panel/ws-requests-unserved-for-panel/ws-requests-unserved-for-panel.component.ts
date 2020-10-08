@@ -1,7 +1,7 @@
 
 import { Component, OnInit, OnDestroy, AfterViewInit, NgZone, ViewChild, ElementRef, HostListener, ChangeDetectorRef } from '@angular/core';
 import { WsRequestsService } from '../../../services/websocket/ws-requests.service';
-import { UsersLocalDbService } from '../../../services/users-local-db.service';
+import { LocalDbService } from '../../../services/users-local-db.service';
 import { BotLocalDbService } from '../../../services/bot-local-db.service';
 import { Router, NavigationStart, NavigationEnd } from '@angular/router';
 import { AuthService } from '../../../core/auth.service';
@@ -31,6 +31,7 @@ import { browserRefresh } from '../../../app.component';
 import { Location } from '@angular/common';
 // import { fadeInAnimation } from '../../../_animations/index';
 const swal = require('sweetalert');
+import { ContactsService } from '../../../services/contacts.service';
 
 @Component({
   selector: 'appdashboard-ws-requests-unserved-for-panel',
@@ -120,17 +121,14 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
   OPEN_REQUEST_DETAILS: boolean = false;
   selectedRequest: any;
 
-
   SHOW_NO_REQUEST_MSG: boolean
-
-
 
   /**
    * Constructor
    * 
    * @param {WsRequestsService} wsRequestsService 
    * @param {Router} router 
-   * @param {UsersLocalDbService} usersLocalDbService 
+   * @param {LocalDbService} usersLocalDbService 
    * @param {BotLocalDbService} botLocalDbService 
    * @param {AuthService} auth 
    * @param {RequestsService} requestsService
@@ -139,7 +137,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
   constructor(
     public wsRequestsService: WsRequestsService,
     public router: Router,
-    public usersLocalDbService: UsersLocalDbService,
+    public usersLocalDbService: LocalDbService,
     public botLocalDbService: BotLocalDbService,
     public auth: AuthService,
     private requestsService: RequestsService,
@@ -150,7 +148,8 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
     private departmentService: DepartmentService,
     public notify: NotifyService,
     public location: Location,
-    private cdref: ChangeDetectorRef 
+    private cdref: ChangeDetectorRef,
+    public contactsService: ContactsService
 
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify);
@@ -191,19 +190,34 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
 
   ngAfterViewInit() {
     const leftsidebarbtn = <HTMLElement>document.querySelector('.left-sidebar--btns-container')
-    console.log('WS-REQUESTS-SERVED - leftsidebarbtn ', leftsidebarbtn);
-    
+    console.log('WS-REQUESTS-UNSERVED-X-PANEL - leftsidebarbtn ', leftsidebarbtn);
+
     this.getProjectUserRole();
     this.cdref.detectChanges();
   }
 
   ngOnDestroy() {
-    console.log('% »»» WebSocketJs WF +++++ ws-requests--- list ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ ngOnDestroy')
+    console.log('WS-REQUESTS-UNSERVED-X-PANEL - ngOnDestroy')
     if (this.subscription) {
       this.subscription.unsubscribe()
     }
+
+    this.wsRequestsUnserved.forEach(request => {
+
+      console.log('WS-REQUESTS-UNSERVED-X-PANEL - ngOnDestroy request', request)
+      if (request && request.lead) {
+
+        this.unsuscribeRequesterPresence(request.lead.lead_id)
+      }
+
+    });
+
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+  unsuscribeRequesterPresence(requester_id) {
+    this.contactsService.unsubscribeToWS_RequesterPresence(requester_id);
   }
 
   setPerfectScrollbar() {
@@ -310,8 +324,6 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
       });
   }
 
-
-
   getTestSiteUrl() {
     this.TESTSITE_BASE_URL = this.appConfigService.getConfig().testsiteBaseUrl;
     console.log('AppConfigService getAppConfig (WS-REQUESTS-LIST COMP.) TESTSITE_BASE_URL', this.TESTSITE_BASE_URL);
@@ -321,8 +333,6 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
     this.CHAT_BASE_URL = this.appConfigService.getConfig().CHAT_BASE_URL;
     console.log('AppConfigService getAppConfig (WS-REQUESTS-LIST COMP.) CHAT_BASE_URL', this.CHAT_BASE_URL);
   }
-
-
 
 
   detectBrowserRefresh() {
@@ -362,7 +372,6 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
         }
       });
   }
-
 
 
   getStorageBucket() {
@@ -528,10 +537,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
     this.auth.project_bs.subscribe((project) => {
       console.log('WS-REQUESTS-UNSERVED-X-PANEL project', project)
       if (project) {
-
-
         this.projectNameFirstLetter = project.name.charAt(0)
-
         this.projectId = project._id;
         this.projectName = project.name;
       }
@@ -566,12 +572,10 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
   // }
 
   goToDept(deptid) {
-
     this.router.navigate(['project/' + this.projectId + '/department/edit/' + deptid]);
 
     // this.display_dept_sidebar = true;
     // this.ws_requestslist_deptIdSelected = deptid
-
   }
 
 
@@ -624,7 +628,6 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
   }
 
   hasmeInAgents(agents, wsrequest) {
-
 
     for (let j = 0; j < agents.length; j++) {
       // console.log("% »»» WebSocketJs WF - WsRequestsList »»» »»» hasmeInAgents agent", agents[j]);
@@ -709,9 +712,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
               }
             });
           }
-
           this.getParticipantsInRequests(this.ws_requests);
-
         }
 
         // this.ws_requests.forEach(request => {
@@ -734,18 +735,14 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
               request['participanting_Agents'] = this.doParticipatingAgentsArray(request.participants, request.first_text, this.storageBucket)
 
             } else {
-
               console.log('!! Ws SHARED  (from request list) PARTICIPATING-AGENTS IS DEFINED');
-
             }
           }
-
 
           if (request.lead && request.lead.fullname) {
             request['requester_fullname_initial'] = avatarPlaceholder(request.lead.fullname);
             request['requester_fullname_fillColour'] = getColorBck(request.lead.fullname)
           } else {
-
             request['requester_fullname_initial'] = 'N/A';
             request['requester_fullname_fillColour'] = '#6264a7';
           }
@@ -753,23 +750,26 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
 
           if (request.lead && request.lead.lead_id) {
 
-            this.getRequesterAvailabilityStatus(request.lead.lead_id, request)
+
+            if (request.status === 100) {
+              this.getRequesterAvailabilityStatus(request.lead.lead_id, request)
+            }
           }
 
           if (request && request.first_text) {
             const length = 45
-        
+
             if (request.first_text.length > length) {
-              request['trimmedFirst_text']  = request.first_text.substring(0, length - 3) + "..."
+              request['trimmedFirst_text'] = request.first_text.substring(0, length - 3) + "..."
             } else {
-              request['trimmedFirst_text']  = request.first_text
+              request['trimmedFirst_text'] = request.first_text
             }
 
           }
-            // var trimmedString = string.length > length ? 
-            //           string.substring(0, length - 3) + "..." : 
-            //           string;
-          });
+          // var trimmedString = string.length > length ? 
+          //           string.substring(0, length - 3) + "..." : 
+          //           string;
+        });
 
 
 
@@ -854,22 +854,56 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
 
   getRequesterAvailabilityStatus(requester_id: string, request: any) {
     // const firebaseRealtimeDbUrl = `/apps/tilechat/presence/LmBT2IKjMzeZ3wqyU8up8KIRB6J3/connections`
-    const firebaseRealtimeDbUrl = `/apps/tilechat/presence/` + requester_id + `/connections`
-    const connectionsRef = firebase.database().ref().child(firebaseRealtimeDbUrl);
-    console.log('REQUEST-DTLS-X-PANEL »» REQUEST DETAILS - CALLING REQUESTER AVAILABILITY VALUE ');
+    // -----------------------------------------------------------------------------------------
+    // No more used - replaced by Get Lead presence from websocket
+    // -----------------------------------------------------------------------------------------
+    // const firebaseRealtimeDbUrl = `/apps/tilechat/presence/` + requester_id + `/connections`
+    // const connectionsRef = firebase.database().ref().child(firebaseRealtimeDbUrl);
+    // console.log('REQUEST-DTLS-X-PANEL »» REQUEST DETAILS - CALLING REQUESTER AVAILABILITY VALUE ');
 
-    connectionsRef.on('value', (child) => {
-      if (child.val()) {
-        // this.REQUESTER_IS_ONLINE = true;
-        // console.log('REQUEST-DTLS-X-PANEL »»» REQUEST DETAILS - REQUESTER is ONLINE ', this.REQUESTER_IS_ONLINE);
-        request['REQUESTER_IS_ONLINE'] = true;
-      } else {
+    // connectionsRef.on('value', (child) => {
+    //   if (child.val()) {
+    //           request['REQUESTER_IS_ONLINE'] = true;
+    //   } else {
+    //     request['REQUESTER_IS_ONLINE'] = false;
 
-        request['REQUESTER_IS_ONLINE'] = false;
-        // this.REQUESTER_IS_ONLINE = false;
-        // console.log('REQUEST-DTLS-X-PANEL »»» REQUEST DETAILS - REQUESTER is ONLINE ', this.REQUESTER_IS_ONLINE);
-      }
-    })
+    //   }
+    // })
+
+
+    // -----------------------------------------------------------------------------------------
+    // New - Get Lead presence from websocket subscription (replace firebaseRealtimeDb)
+    // -----------------------------------------------------------------------------------------
+    this.contactsService.subscribeToWS_RequesterPresence(requester_id);
+    this.getWsRequesterPresence(request, requester_id);
+  }
+
+  getWsRequesterPresence(request, requester_id) {
+    this.contactsService.wsRequesterStatus$
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((data) => {
+        const user = data
+
+        console.log("wsRequesterPresence (ws-requests-unserved-x-panel) - getWsRequesterPresence user uuid_user ", user.uuid_user);
+        console.log("wsRequesterPresence (ws-requests-unserved-x-panel) - getWsRequesterPresence user ", user);
+        if (user && user.presence) {
+          if (requester_id === user.uuid_user) {
+            if (user.presence.status === "offline") {
+
+              request['REQUESTER_IS_ONLINE'] = false;
+            } else {
+              request['REQUESTER_IS_ONLINE'] = true;
+            }
+          }
+        }
+      }, error => {
+
+        console.log('wsRequesterPresence (ws-requests-unserved-x-panel) - getWsRequesterPresence user * error * ', error)
+      }, () => {
+        console.log('wsRequesterPresence (ws-requests-unserved-x-panel) - getWsRequesterPresence user *** complete *** ')
+      });
   }
 
 

@@ -11,14 +11,16 @@ import { TranslateService } from '@ngx-translate/core';
 import { WsSharedComponent } from '../../ws-shared/ws-shared.component';
 
 import { BotLocalDbService } from '../../../services/bot-local-db.service';
-import { UsersLocalDbService } from '../../../services/users-local-db.service';
+import { LocalDbService } from '../../../services/users-local-db.service';
 import { Router } from '@angular/router';
 import { WsRequestsService } from '../../../services/websocket/ws-requests.service';
 import { FaqKbService } from '../../../services/faq-kb.service';
 import { UsersService } from '../../../services/users.service';
 import { NotifyService } from '../../../core/notify.service';
-import * as firebase from 'firebase';
+// import * as firebase from 'firebase';
 import PerfectScrollbar from 'perfect-scrollbar';
+import { ContactsService } from '../../../services/contacts.service';
+
 @Component({
   selector: 'appdashboard-ws-request-detail-for-panel',
   templateUrl: './ws-request-detail-for-panel.component.html',
@@ -56,20 +58,21 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
   requestHasBeenArchivedNoticationMsg_part2: string;
   REQUESTER_IS_ONLINE = false;
   IS_CURRENT_USER_JOINED: boolean;
-  REQUEST_STATUS:number;
+  REQUEST_STATUS: number;
 
   constructor(
     private wsMsgsService: WsMsgsService,
     public appConfigService: AppConfigService,
     public botLocalDbService: BotLocalDbService,
-    public usersLocalDbService: UsersLocalDbService,
+    public usersLocalDbService: LocalDbService,
     public router: Router,
     public wsRequestsService: WsRequestsService,
     public faqKbService: FaqKbService,
     public usersService: UsersService,
     public notify: NotifyService,
     public auth: AuthService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    public contactsService: ContactsService
   ) { super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify); }
 
   ngOnInit() {
@@ -114,6 +117,27 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
     this.setPerfectScrollbar()
   }
 
+  ngOnDestroy() {
+    console.log('REQUEST-DTLS-X-PANEL - ngOnDestroy')
+    // this.subscribe.unsubscribe();
+    // the two snippet bottom replace  this.subscribe.unsubscribe()
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+
+    this.unsuscribeRequesterPresence(this.requester_id)
+
+    // this.wsRequestsService.unsubscribeTo_wsRequestById(this.id_request)
+    // this.wsMsgsService.unsubsToWS_MsgsByRequestId(this.id_request)
+    if (this.request._id) {
+      this.unsuscribeRequestById(this.requestid);
+      this.unsuscribeMessages(this.requestid);
+    }
+  }
+
+  unsuscribeRequesterPresence(requester_id) {
+    this.contactsService.unsubscribeToWS_RequesterPresence(requester_id);
+  }
+
 
   setPerfectScrollbar() {
     const messages_container = <HTMLElement>document.querySelector('.chat-messages-container');
@@ -146,17 +170,17 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
         if (wsrequest) {
           console.log('REQUEST-DTLS-X-PANEL - wsrequest FROM SUBSCRIPTION ', wsrequest);
           this.IS_CURRENT_USER_JOINED = this.currentUserIdIsInParticipants(wsrequest['participants'], this.currentUserID, this.request.request_id);
-          console.log('REQUEST-DTLS-X-PANEL - wsrequest IS_CURRENT_USER_JOINED ',  this.IS_CURRENT_USER_JOINED);
-          
+          console.log('REQUEST-DTLS-X-PANEL - wsrequest IS_CURRENT_USER_JOINED ', this.IS_CURRENT_USER_JOINED);
+
           this.REQUEST_STATUS = wsrequest['status']
         }
       })
   }
 
-/**
- * Unsuscribe Request-by-id
- * @param idrequest 
- */
+  /**
+   * Unsuscribe Request-by-id
+   * @param idrequest 
+   */
   unsuscribeRequestById(idrequest) {
     this.wsRequestsService.unsubscribeTo_wsRequestById(idrequest);
   }
@@ -168,21 +192,61 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
 
   getRequesterAvailabilityStatus(requester_id: string) {
     // const firebaseRealtimeDbUrl = `/apps/tilechat/presence/LmBT2IKjMzeZ3wqyU8up8KIRB6J3/connections`
-    const firebaseRealtimeDbUrl = `/apps/tilechat/presence/` + requester_id + `/connections`
-    const connectionsRef = firebase.database().ref().child(firebaseRealtimeDbUrl);
-    console.log('REQUEST-DTLS-X-PANEL »» REQUEST DETAILS - CALLING REQUESTER AVAILABILITY VALUE ');
 
-    connectionsRef.on('value', (child) => {
-      if (child.val()) {
-        this.REQUESTER_IS_ONLINE = true;
-        console.log('REQUEST-DTLS-X-PANEL »»» REQUEST DETAILS - REQUESTER is ONLINE ', this.REQUESTER_IS_ONLINE);
-      } else {
-        this.REQUESTER_IS_ONLINE = false;
+    // -----------------------------------------------------------------------------------------
+    // No more used - replaced by Get Lead presence from websocket
+    // -----------------------------------------------------------------------------------------
+    // const firebaseRealtimeDbUrl = `/apps/tilechat/presence/` + requester_id + `/connections`
+    // const connectionsRef = firebase.database().ref().child(firebaseRealtimeDbUrl);
+    // console.log('REQUEST-DTLS-X-PANEL »» REQUEST DETAILS - CALLING REQUESTER AVAILABILITY VALUE ');
 
-        console.log('REQUEST-DTLS-X-PANEL »»» REQUEST DETAILS - REQUESTER is ONLINE ', this.REQUESTER_IS_ONLINE);
-      }
-    })
+    // connectionsRef.on('value', (child) => {
+    //   if (child.val()) {
+    //     this.REQUESTER_IS_ONLINE = true;
+    //     console.log('REQUEST-DTLS-X-PANEL »»» REQUEST DETAILS - REQUESTER is ONLINE ', this.REQUESTER_IS_ONLINE);
+    //   } else {
+    //     this.REQUESTER_IS_ONLINE = false;
+
+    //     console.log('REQUEST-DTLS-X-PANEL »»» REQUEST DETAILS - REQUESTER is ONLINE ', this.REQUESTER_IS_ONLINE);
+    //   }
+    // })
+
+    // -----------------------------------------------------------------------------------------
+    // New - Get Lead presence from websocket subscription (replace firebaseRealtimeDb)
+    // -----------------------------------------------------------------------------------------
+    this.contactsService.subscribeToWS_RequesterPresence(requester_id);
+    this.getWsRequesterPresence();
+
   }
+
+  getWsRequesterPresence() {
+    this.contactsService.wsRequesterStatus$
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((data) => {
+
+
+        const user = data
+        console.log("wsRequesterPresence (ws-requests-dtl-for-panel) - getWsRequesterPresence user ", user);
+        if (user && user.presence) {
+
+          if (user.presence.status === "offline") {
+            this.REQUESTER_IS_ONLINE = false;
+          } else {
+            this.REQUESTER_IS_ONLINE = true;
+          }
+        }
+      }, error => {
+
+        console.log('wsRequesterPresence (ws-requests-dtl-for-panel) - getWsRequesterPresence user * error * ', error)
+      }, () => {
+        console.log('wsRequesterPresence (ws-requests-dtl-for-panel) - getWsRequesterPresence user *** complete *** ')
+      });
+  }
+
+
+
 
   getTranslations() {
     this.translateArchivingRequestErrorMsg();
@@ -267,20 +331,7 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
   }
 
 
-  ngOnDestroy() {
-    console.log('REQUEST-DTLS-X-PANEL - ngOnDestroy')
-    // this.subscribe.unsubscribe();
-    // the two snippet bottom replace  this.subscribe.unsubscribe()
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
 
-    // this.wsRequestsService.unsubscribeTo_wsRequestById(this.id_request)
-    // this.wsMsgsService.unsubsToWS_MsgsByRequestId(this.id_request)
-    if (this.request._id) {
-      this.unsuscribeRequestById(this.requestid);
-      this.unsuscribeMessages(this.requestid);
-    }
-  }
 
 
   subscribeToWs_MsgsByRequestId(id_request: string) {

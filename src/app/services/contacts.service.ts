@@ -9,10 +9,13 @@ import 'rxjs/add/operator/map';
 import { environment } from '../../environments/environment';
 import { AuthService } from '../core/auth.service';
 import { AppConfigService } from '../services/app-config.service';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { WebSocketJs } from "./websocket/websocket-js";
 
 @Injectable()
 export class ContactsService {
 
+  public wsRequesterStatus$: BehaviorSubject<any> = new BehaviorSubject<any>({});
   // Contact: Contact[];
   http: Http;
   projectId: string;
@@ -27,7 +30,8 @@ export class ContactsService {
   constructor(
     http: Http,
     public auth: AuthService,
-    public appConfigService: AppConfigService
+    public appConfigService: AppConfigService,
+    public webSocketJs: WebSocketJs
 
   ) {
 
@@ -70,6 +74,42 @@ export class ContactsService {
       console.log('No user is signed in');
     }
   }
+
+  subscribeToWS_RequesterPresence(requesterid) {
+    var self = this;
+    console.log("wsRequesterPresence - HERE ");
+    const path = '/' + this.projectId + '/project_users/users/' + requesterid;
+    // const path = "/5f61efc28f90f300345edd75/project_users/5f623d5c56065e0034fce69c";
+    console.log('wsRequesterPresence PATH ', path);
+    this.webSocketJs.ref(path,
+      function (data, notification) {
+        console.log("wsRequesterPresence (contacts service) - CREATE - data ", data);
+        // console.log("% WsMsgsService notification", notification);
+        
+        self.wsRequesterStatus$.next(data);
+
+      }, function (data, notification) {
+
+        console.log("wsRequesterPresence (contacts service) - UPDATE - data ", data);
+        // console.log("% WsMsgsService notification", notification);
+      }, function (data, notification) {
+
+        if (data) {
+          console.log("wsRequesterPresence (contacts service) - ON-DATA - data", data);
+
+        }
+      }
+    );
+
+  }
+
+  unsubscribeToWS_RequesterPresence(requesterid) {
+    const path = '/' + this.projectId + '/project_users/users/' + requesterid;
+    this.webSocketJs.unsubscribe(path);
+    console.log("wsRequesterPresence UNSUBSCRIBE To WS Requester Presence (contacts service) ");
+
+  }
+
 
   // GET LEADS
   public getLeadsActiveOrTrashed(querystring, pagenumber, hasclickedtrash): Observable<Contact[]> {
@@ -319,7 +359,7 @@ export class ContactsService {
     // headers.append('Authorization', 'JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIkX18iOnsic3RyaWN0TW9kZSI6dHJ1ZSwic2VsZWN0ZWQiOnsiZW1haWwiOjEsImZpcnN0bmFtZSI6MSwibGFzdG5hbWUiOjEsInBhc3N3b3JkIjoxLCJlbWFpbHZlcmlmaWVkIjoxLCJpZCI6MX0sImdldHRlcnMiOnt9LCJfaWQiOiI1YWFhOTJmZjRjM2IxMTAwMTRiNDc4Y2IiLCJ3YXNQb3B1bGF0ZWQiOmZhbHNlLCJhY3RpdmVQYXRocyI6eyJwYXRocyI6eyJwYXNzd29yZCI6ImluaXQiLCJlbWFpbCI6ImluaXQiLCJlbWFpbHZlcmlmaWVkIjoiaW5pdCIsImxhc3RuYW1lIjoiaW5pdCIsImZpcnN0bmFtZSI6ImluaXQiLCJfaWQiOiJpbml0In0sInN0YXRlcyI6eyJpZ25vcmUiOnt9LCJkZWZhdWx0Ijp7fSwiaW5pdCI6eyJlbWFpbHZlcmlmaWVkIjp0cnVlLCJsYXN0bmFtZSI6dHJ1ZSwiZmlyc3RuYW1lIjp0cnVlLCJwYXNzd29yZCI6dHJ1ZSwiZW1haWwiOnRydWUsIl9pZCI6dHJ1ZX0sIm1vZGlmeSI6e30sInJlcXVpcmUiOnt9fSwic3RhdGVOYW1lcyI6WyJyZXF1aXJlIiwibW9kaWZ5IiwiaW5pdCIsImRlZmF1bHQiLCJpZ25vcmUiXX0sInBhdGhzVG9TY29wZXMiOnt9LCJlbWl0dGVyIjp7ImRvbWFpbiI6bnVsbCwiX2V2ZW50cyI6e30sIl9ldmVudHNDb3VudCI6MCwiX21heExpc3RlbmVycyI6MH0sIiRvcHRpb25zIjp0cnVlfSwiaXNOZXciOmZhbHNlLCJfZG9jIjp7ImVtYWlsdmVyaWZpZWQiOnRydWUsImxhc3RuYW1lIjoiTGFuemlsb3R0byIsImZpcnN0bmFtZSI6Ik5pY29sYTc0IiwicGFzc3dvcmQiOiIkMmEkMTAkcFVnaHE1SXJYMTM4UzlwRGNaZGxtZXJzY1U3VTlyYjZRSmlZYjF5RHJJYzhyQzBYenNoVHEiLCJlbWFpbCI6ImxhbnppbG90dG9uaWNvbGE3NEBnbWFpbC5jb20iLCJfaWQiOiI1YWFhOTJmZjRjM2IxMTAwMTRiNDc4Y2IifSwiJGluaXQiOnRydWUsImlhdCI6MTU0MDMxMzUzN30.LLjXOB21KFL1DFXCrulh5HmzMS40LETqyLrJlwtwYvQ');
 
     const options = new RequestOptions({ headers });
-    
+
     const body = { 'status': 100, };
 
     console.log('UPDATE CONTACT REQUEST BODY ', body);

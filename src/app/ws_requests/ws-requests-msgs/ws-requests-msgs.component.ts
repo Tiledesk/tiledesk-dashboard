@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { WsRequestsService } from '../../services/websocket/ws-requests.service';
 import { WsMsgsService } from '../../services/websocket/ws-msgs.service';
 import { Location } from '@angular/common';
-import { UsersLocalDbService } from '../../services/users-local-db.service';
+import { LocalDbService } from '../../services/users-local-db.service';
 import { BotLocalDbService } from '../../services/bot-local-db.service';
 import { WsSharedComponent } from '../ws-shared/ws-shared.component';
 import { RequestsService } from '../../services/requests.service';
@@ -28,6 +28,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { TagsService } from '../../services/tags.service';
 import PerfectScrollbar from 'perfect-scrollbar';
 import { UAParser } from 'ua-parser-js';
+import { ContactsService } from '../../services/contacts.service';
 
 @Component({
   selector: 'appdashboard-ws-requests-msgs',
@@ -206,7 +207,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
    * @param {WsMsgsService} wsMsgsService 
    * @param {Location} _location 
    * @param {BotLocalDbService} botLocalDbService 
-   * @param {UsersLocalDbService} usersLocalDbService
+   * @param {LocalDbService} usersLocalDbService
    * @param {UsersService} usersService 
    * @param {RequestsService} requestsService 
    * @param {NotifyService} requestsService  
@@ -219,7 +220,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     private wsMsgsService: WsMsgsService,
     private _location: Location,
     public botLocalDbService: BotLocalDbService,
-    public usersLocalDbService: UsersLocalDbService,
+    public usersLocalDbService: LocalDbService,
     private requestsService: RequestsService,
     public notify: NotifyService,
     public auth: AuthService,
@@ -229,7 +230,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     public usersService: UsersService,
     public faqKbService: FaqKbService,
     public translate: TranslateService,
-    private tagsService: TagsService
+    private tagsService: TagsService,
+    public contactsService: ContactsService
 
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify)
@@ -291,6 +293,40 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.getRouteUrl();
     this.getBaseUrl();
     this.getOSCODE();
+  }
+
+  ngAfterViewInit() {
+    // -----------------------------------
+    // Right sidebar width after view init
+    // -----------------------------------
+    const rightSidebar = <HTMLElement>document.querySelector(`.right-card`);
+    this.rightSidebarWidth = rightSidebar.offsetWidth
+    console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES attributeValueElem offsetWidth:`, this.rightSidebarWidth);
+
+  }
+
+  /**
+   * On destroy
+   */
+  ngOnDestroy() {
+    console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - ngOnDestroy')
+    // this.subscribe.unsubscribe();
+    // the two snippet bottom replace  this.subscribe.unsubscribe()
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+
+    this.unsuscribeRequesterPresence(this.requester_id)
+
+    // this.wsRequestsService.unsubscribeTo_wsRequestById(this.id_request)
+    // this.wsMsgsService.unsubsToWS_MsgsByRequestId(this.id_request)
+    if (this.id_request) {
+      this.unsuscribeRequestById(this.id_request);
+      this.unsuscribeMessages(this.id_request);
+    }
+  }
+
+  unsuscribeRequesterPresence(requester_id) {
+    this.contactsService.unsubscribeToWS_RequesterPresence(requester_id);
   }
 
 
@@ -396,7 +432,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.requestHasBeenArchivedNoticationMsg_part1 = text;
         // console.log('+ + + RequestHasBeenArchivedNoticationMsg_part1', text)
       });
-
   }
 
 
@@ -446,6 +481,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       this.subscribeToWs_RequestById(this.id_request);
     }
   }
+
   // https://stackoverflow.com/questions/40983055/how-to-reload-the-current-route-with-the-angular-2-router
   redirectTo(uri: string, projectid: string) {
     this.router.navigateByUrl('project/' + projectid + '/wsrequest/loading', { skipLocationChange: true }).then(() =>
@@ -458,23 +494,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     console.log('STORAGE-BUCKET Ws-Requests-Lists ', this.storageBucket)
   }
 
-  /**
-   * On destroy
-   */
-  ngOnDestroy() {
-    console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - ngOnDestroy')
-    // this.subscribe.unsubscribe();
-    // the two snippet bottom replace  this.subscribe.unsubscribe()
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
 
-    // this.wsRequestsService.unsubscribeTo_wsRequestById(this.id_request)
-    // this.wsMsgsService.unsubsToWS_MsgsByRequestId(this.id_request)
-    if (this.id_request) {
-      this.unsuscribeRequestById(this.id_request);
-      this.unsuscribeMessages(this.id_request);
-    }
-  }
 
 
   // -----------------------------------------------------------------------------------------------------
@@ -492,7 +512,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   //     }
   //   })
   // }
-
 
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
@@ -534,6 +553,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   unsuscribeMessages(idrequest) {
     this.wsMsgsService.unsubsToWS_MsgsByRequestId(idrequest);
   }
+
+
 
   // -----------------------------------------------------------------------------------------------------
   // @ Request-by-id ws-subscription (called On init > getParamRequestId) and get 
@@ -591,16 +612,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     }
   }
 
-
-  ngAfterViewInit() {
-    // -----------------------------------
-    // Right sidebar width after view init
-    // -----------------------------------
-    const rightSidebar = <HTMLElement>document.querySelector(`.right-card`);
-    this.rightSidebarWidth = rightSidebar.offsetWidth
-    console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES attributeValueElem offsetWidth:`, this.rightSidebarWidth);
-
-  }
 
   toggleShowAllString(elementAttributeValueId: any, elementArrowIconId: any, index) {
     console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES - element Attribute Value Id:`, elementAttributeValueId);
@@ -1116,21 +1127,58 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   getRequesterAvailabilityStatus(requester_id: string) {
     // const firebaseRealtimeDbUrl = `/apps/tilechat/presence/LmBT2IKjMzeZ3wqyU8up8KIRB6J3/connections`
-    const firebaseRealtimeDbUrl = `/apps/tilechat/presence/` + requester_id + `/connections`
-    const connectionsRef = firebase.database().ref().child(firebaseRealtimeDbUrl);
-    console.log('%%% Ws-REQUESTS-Msgs »»» REQUEST DETAILS - CALLING REQUESTER AVAILABILITY VALUE ');
 
-    connectionsRef.on('value', (child) => {
-      if (child.val()) {
-        this.REQUESTER_IS_ONLINE = true;
-        console.log('%%% Ws-REQUESTS-Msgs »»» REQUEST DETAILS - REQUESTER is ONLINE ', this.REQUESTER_IS_ONLINE);
-      } else {
-        this.REQUESTER_IS_ONLINE = false;
+    // -----------------------------------------------------------------------------------------
+    // No more used - replaced by Get Lead presence from websocket
+    // -----------------------------------------------------------------------------------------
+    // const firebaseRealtimeDbUrl = `/apps/tilechat/presence/` + requester_id + `/connections`
+    // const connectionsRef = firebase.database().ref().child(firebaseRealtimeDbUrl);
+    // console.log('%%% Ws-REQUESTS-Msgs »»» REQUEST DETAILS - CALLING REQUESTER AVAILABILITY VALUE ');
 
-        console.log('%%% Ws-REQUESTS-Msgs »»» REQUEST DETAILS - REQUESTER is ONLINE ', this.REQUESTER_IS_ONLINE);
-      }
-    })
+    // connectionsRef.on('value', (child) => {
+    //   if (child.val()) {
+    //     this.REQUESTER_IS_ONLINE = true;
+    //     console.log('%%% Ws-REQUESTS-Msgs »»» REQUEST DETAILS - REQUESTER is ONLINE ', this.REQUESTER_IS_ONLINE);
+    //   } else {
+    //     this.REQUESTER_IS_ONLINE = false;
+
+    //     console.log('%%% Ws-REQUESTS-Msgs »»» REQUEST DETAILS - REQUESTER is ONLINE ', this.REQUESTER_IS_ONLINE);
+    //   }
+    // })
+
+    // -----------------------------------------------------------------------------------------
+    // New - Get Lead presence from websocket subscription (replace firebaseRealtimeDb)
+    // -----------------------------------------------------------------------------------------
+    this.contactsService.subscribeToWS_RequesterPresence(requester_id);
+    this.getWsRequesterPresence();
   }
+
+  getWsRequesterPresence() {
+    this.contactsService.wsRequesterStatus$
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((data) => {
+
+
+        const user = data
+        console.log("wsRequesterPresence (ws-requests-msg) - getWsRequesterPresence user ", user);
+        if (user && user.presence) {
+
+          if (user.presence.status === "offline") {
+            this.REQUESTER_IS_ONLINE = false;
+          } else {
+            this.REQUESTER_IS_ONLINE = true;
+          }
+        }
+      }, error => {
+
+        console.log('wsRequesterPresence (ws-requests-msg) - getWsRequesterPresence user * error * ', error)
+      }, () => {
+        console.log('wsRequesterPresence (ws-requests-msg) - getWsRequesterPresence user *** complete *** ')
+      });
+  }
+
 
 
   openRightSideBar(message: string) {
