@@ -64,7 +64,6 @@
     left: 35px;
     border: 1px solid #2d323e;
     border-radius: 50%;
-    
 }
 
 .logged-in-user-status-online {
@@ -82,4 +81,53 @@
 .panel-left-sidebar-logged-in-user-email {
     color: rgba(255, 255, 255, 0.5);
     font-size: 12px;
+}
+// .dark-style-icon{
+//     color: #dbddde;
+//     background-color: rgba(255, 255, 255, 0.1);
+//     border-radius: 50%;
+//     padding: 6px;
+//     margin-right: 6px;
+//     height: 36px;
+//     width: 36px;
+// }
+
+.dark-style-dropdown-menu {
+    background: #1e212a;
+}
+
+.dark-style-dropdown-menu > li > a {
+    color: #e4e6eb;
+}
+
+.dark-style-dropdown-menu li a:hover,
+.dark-style-dropdown-menu li a:focus,
+.dark-style-dropdown-menu li a:active {
+    background-color: unset;
+    // color: #FFFFFF;
+}
+
+.dark-style-icon {
+    color: #dbddde;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    padding: 6px;
+    margin-right: 6px;
+    height: 36px;
+    width: 36px;
+}
+
+.dark-style-icon:hover {
+    background-color: rgba(45, 136, 255, 0.2);
+    color: #3491ff;
+}
+
+.dark-style-icon-selected {
+    background-color: rgba(45, 136, 255, 0.2);
+    color: #3491ff;
+}
+
+.icon-in-dropdown {
+    margin-left: -10px;
+    margin-right: 16px;
 }
