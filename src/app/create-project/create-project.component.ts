@@ -147,7 +147,7 @@ export class CreateProjectComponent implements OnInit {
               _id: project.id_project._id,
               name: project.id_project.name,
               role: project.role,
-
+              operatingHours: project.id_project.activeOperatingHours
             }
 
             localStorage.setItem(project.id_project._id, JSON.stringify(prjct));
