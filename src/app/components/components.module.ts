@@ -8,6 +8,8 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { SmallSidebarComponent } from './small-sidebar/small-sidebar.component';
 import { NavbarForPanelComponent } from './navbar-for-panel/navbar-for-panel.component';
+import { NavbarForPanelService } from './navbar-for-panel/navbar-for-panel.service';
+
 
 @NgModule({
   imports: [
@@ -29,6 +31,9 @@ import { NavbarForPanelComponent } from './navbar-for-panel/navbar-for-panel.com
     SmallSidebarComponent,
     NavbarForPanelComponent,
     TranslateModule
+  ],
+  providers: [
+    NavbarForPanelService
   ]
 })
 export class ComponentsModule { }
