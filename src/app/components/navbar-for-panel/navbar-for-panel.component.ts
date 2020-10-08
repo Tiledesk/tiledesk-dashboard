@@ -5,6 +5,9 @@ import { AppConfigService } from '../../services/app-config.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Router, NavigationEnd, NavigationStart } from '@angular/router';
+import { LocalDbService } from '../../services/users-local-db.service';
+import { NavbarForPanelService } from './navbar-for-panel.service';
+
 @Component({
   selector: 'appdashboard-navbar-for-panel',
   templateUrl: './navbar-for-panel.component.html',
@@ -25,15 +28,20 @@ export class NavbarForPanelComponent implements OnInit {
   timeStamp: any;
   PROJECT_USER_ID: string;
   IS_PROJECTS_X_PANEL_ROUTE: boolean;
-
+  dkmode: string;
   private unsubscribe$: Subject<any> = new Subject<any>();
 
   constructor(
     private auth: AuthService,
     private usersService: UsersService,
     public appConfigService: AppConfigService,
-    private router: Router
-  ) {  this.getCurrentRoute();}
+    private router: Router,
+    public usersLocalDbService: LocalDbService,
+    public navbarForPanelService: NavbarForPanelService
+
+  ) {
+    this.getCurrentRoute();
+  }
 
   ngOnInit() {
 
@@ -44,8 +52,11 @@ export class NavbarForPanelComponent implements OnInit {
     // this.getUserAvailability();
     // this.getUserUserIsBusy();
 
-   
+    this.setInitialDisplayPreferences();
   }
+
+
+
 
   getCurrentRoute() {
     this.router.events
@@ -56,10 +67,15 @@ export class NavbarForPanelComponent implements OnInit {
 
           const current_url = e.url;
           if (current_url === '/projects-for-panel') {
-            this.usersService.unsubscriptionToWsCurrentUser(this.PROJECT_USER_ID)
+
+            // GENERA BUG: QUANDO DAL DETTAGLI PROGETTO (LISTA DELLE UNSERVED) SI TORNA ALLA LISTA DEI PROGETTI IL PROGETTO 
+            // PER CUI SI è SELEZIONATO IL DETTAGLIO NON VISULAIZZA LO STATO DI DISPONIBILITA'
+            // this.usersService.unsubscriptionToWsCurrentUser(this.PROJECT_USER_ID)
+
+
             this.IS_AVAILABLE = null;
             this.IS_PROJECTS_X_PANEL_ROUTE = true;
-            console.log('NAVBAR-X-PANEL ROUTE is', e.url ,' - IS AVAILABLE ',  this.IS_AVAILABLE);
+            console.log('NAVBAR-X-PANEL ROUTE is', e.url, ' - IS AVAILABLE ', this.IS_AVAILABLE);
           } else {
             this.IS_PROJECTS_X_PANEL_ROUTE = false;
           }
@@ -165,7 +181,7 @@ export class NavbarForPanelComponent implements OnInit {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((currentuser_availability) => {
-        console.log('NAVBAR-X-PANEL - IS AVAILABLE (from SUBSCR) ', currentuser_availability);
+        // console.log('NAVBAR-X-PANEL - IS AVAILABLE (from SUBSCR) ', currentuser_availability);
         if (currentuser_availability !== null) {
           this.IS_AVAILABLE = currentuser_availability;
         }
@@ -182,10 +198,10 @@ export class NavbarForPanelComponent implements OnInit {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((currentuser_isbusy) => {
-        console.log('NAVBAR-X-PANEL - GET WS CURRENT-USER - currentuser_isbusy? ', currentuser_isbusy);
+        // console.log('NAVBAR-X-PANEL - GET WS CURRENT-USER - currentuser_isbusy? ', currentuser_isbusy);
         if (currentuser_isbusy !== null) {
           this.IS_BUSY = currentuser_isbusy;
-          console.log('NAVBAR-X-PANEL - GET WS CURRENT-USER (from ws)- this.IS_BUSY? ', this.IS_BUSY);
+          // console.log('NAVBAR-X-PANEL - GET WS CURRENT-USER (from ws)- this.IS_BUSY? ', this.IS_BUSY);
         }
       }, error => {
         console.log('NAVBAR-X-PANEL - GET WS CURRENT-USER IS BUSY * error * ', error)
@@ -249,34 +265,57 @@ export class NavbarForPanelComponent implements OnInit {
     // anche in USER & GROUP bisogna cambiare per la riga dell'utente corrente   
     this.usersService.updateCurrentUserAvailability(this.projectId, IS_AVAILABLE).subscribe((projectUser: any) => { // non 
 
-        console.log('PROJECT-USER UPDATED ', projectUser)
+      console.log('PROJECT-USER UPDATED ', projectUser)
 
-        // NOTIFY TO THE USER SERVICE WHEN THE AVAILABLE / UNAVAILABLE BUTTON IS CLICKED
-        // this.usersService.availability_btn_clicked(true)
+      // NOTIFY TO THE USER SERVICE WHEN THE AVAILABLE / UNAVAILABLE BUTTON IS CLICKED
+      // this.usersService.availability_btn_clicked(true)
 
     }, (error) => {
-        console.log('PROJECT-USER UPDATED ERR  ', error);
-        // =========== NOTIFY ERROR ===========
-        // this.notify.showNotification('An error occurred while updating status', 4, 'report_problem');
-        // this.notify.showWidgetStyleUpdateNotification(this.changeAvailabilityErrorNoticationMsg, 4, 'report_problem');
+      console.log('PROJECT-USER UPDATED ERR  ', error);
+      // =========== NOTIFY ERROR ===========
+      // this.notify.showNotification('An error occurred while updating status', 4, 'report_problem');
+      // this.notify.showWidgetStyleUpdateNotification(this.changeAvailabilityErrorNoticationMsg, 4, 'report_problem');
 
     }, () => {
-        console.log('PROJECT-USER UPDATED  * COMPLETE *');
+      console.log('PROJECT-USER UPDATED  * COMPLETE *');
 
-        // =========== NOTIFY SUCCESS===========
-        // this.notify.showNotification('status successfully updated', 2, 'done');
-        // this.notify.showWidgetStyleUpdateNotification(this.changeAvailabilitySuccessNoticationMsg, 2, 'done');
+      // =========== NOTIFY SUCCESS===========
+      // this.notify.showNotification('status successfully updated', 2, 'done');
+      // this.notify.showWidgetStyleUpdateNotification(this.changeAvailabilitySuccessNoticationMsg, 2, 'done');
 
 
-        // this.getUserAvailability()
-        this.getProjectUser();
+      // this.getUserAvailability()
+      this.getProjectUser();
     });
-}
+  }
 
 
+  setInitialDisplayPreferences() {
+    this.dkmode = this.usersLocalDbService.getStoredAppearanceDisplayPreferences();
+    console.log('NAVBAR-X-PANEL -  dkmode  ', this.dkmode);
+
+    if (this.dkmode === null) {
+      this.dkmode = 'true'
+      this.usersLocalDbService.storeAppearanceDisplayPreferences(this.dkmode)
+    }
+  }
 
 
+  selectAppearance(dkm) {
+    console.log('NAVBAR-X-PANEL -  dkm  ', dkm);
+    // if (this.dkmode === 'true') {
+      this.dkmode = dkm;
+      this.navbarForPanelService.publishDisplayPreferences(dkm);
+      this.usersLocalDbService.storeAppearanceDisplayPreferences(dkm);
+      console.log('NAVBAR-X-PANEL -  dkmode  ', this.dkmode);
+    // }
 
+    // if (this.dkmode === 'false') {
+    //   this.dkmode = 'true';
+    //   this.navbarForPanelService.publishDisplayPreferences(this.dkmode);
+    //   this.usersLocalDbService.storeAppearanceDisplayPreferences(this.dkmode);
+    // }
 
+  }
 
 }
