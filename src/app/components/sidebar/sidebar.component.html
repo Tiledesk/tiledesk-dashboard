@@ -306,7 +306,7 @@
       <li *ngIf="project" routerLinkActive="active">
         <!-- <a class="customAncor" routerLink="project/{{ project._id }}/requests"> -->
         <a class="customAncor" routerLink="project/{{ project._id }}/wsrequests">
-          <i class="material-icons sidebar-icons">group</i>
+          <i class="material-icons sidebar-icons">forum</i>
           <p class="onBlackBckgrnd">{{ 'Requests' | translate }}</p>
         </a>
       </li>
@@ -459,6 +459,7 @@
       <ng-container *ngIf="isVisibleTRI">
         <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
           <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/trigger">
+            <span class="_badge" style="font-size: 9px;" [ngClass]="{'change-badge-bckgrnd' : TRIGGER_ROUTE_IS_ACTIVE === true}">BETA</span>
             <p class="onBlackBckgrnd">
               <span class="sidebar-mini">T </span>
               {{ 'Trigger.Trigger' | translate }}
