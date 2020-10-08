@@ -253,6 +253,7 @@ botcredendialsURL: "https://<YOUR_BOT_CREDENTIALS_URL>",
 
 SERVER_BASE_URL: "https://<YOUR_TILEDESK_SERVER>/",
 
+
 ...
 
 brandSrc :"https://<YOUR_BRAND_JSON>/",
@@ -260,6 +261,23 @@ brandSrc :"https://<YOUR_BRAND_JSON>/",
 ...
 
 };
+
+```
+
+#### docker env.sample file
+
+```typescript
+
+SERVER_BASE_URL=YOUR_TILEDESK_SERVER_URL
+
+
+...
+
+
+BRAND_SRC=https:YOUR_BRAND_SCRIPT_URL
+
+...
+
 
 ```
 
@@ -285,10 +303,31 @@ botcredendialsURL: "https://<YOUR_BOT_CREDENTIALS_URL>",
 
 SERVER_BASE_URL: "https://<YOUR_TILEDESK_SERVER>/",
 
+
 ...
+
 
 globalRemoteJSSrc :"https://<YOUR_CUSTOM_SCRIPT_1>, https://<YOUR_CUSTOM_SCRIPT_2>",
 
 ...
 
 };
+
+```
+
+#### docker env.sample file
+
+```typescript
+
+SERVER_BASE_URL=YOUR_TILEDESK_SERVER_URL
+
+
+...
+
+
+REMOTE_JS_SRC=YOUR_CUSTOM_SCRIPT_URL
+
+...
+
+
+```
