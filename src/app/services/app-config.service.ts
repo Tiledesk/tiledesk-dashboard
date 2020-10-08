@@ -21,10 +21,10 @@ export class AppConfigService {
       const data = await this.http.get(this.appConfig.remoteConfigUrl)
         .toPromise();
       // console.log('AppConfigService loadAppConfig data: ', data['_body']['firebase']);
-      console.log('AppConfigService loadAppConfig data: ', data);
+      // console.log('AppConfigService loadAppConfig data: ', data);
 
       const dataObject = JSON.parse(data['_body'])
-      console.log('AppConfigService loadAppConfig data as Object: ', dataObject);
+      // console.log('AppConfigService loadAppConfig data as Object: ', dataObject);
 
 
 
@@ -32,25 +32,25 @@ export class AppConfigService {
       // console.log('AppConfigService loadAppConfig firebaseConfig: ', firebaseConfig);
 
       const allconfig = dataObject
-      console.log('AppConfigService loadAppConfig allconfig: ', allconfig);
+      // console.log('AppConfigService loadAppConfig allconfig: ', allconfig);
 
       // this.appConfig.firebase = JSON.parse(data['_body']);
 
       // this.appConfig.firebase = firebaseConfig;
       if (allconfig.hasOwnProperty('wsUrlRel')) {
-        console.log('AppConfigService loadAppConfig allconfig !!!! exist wsUrlRel -> ', allconfig.wsUrlRel);
+        // console.log('AppConfigService loadAppConfig allconfig !!!! exist wsUrlRel -> ', allconfig.wsUrlRel);
 
         var wsUrlRelIsEmpty = this.isEmpty(allconfig.wsUrlRel)
-        console.log('AppConfigService loadAppConfig allconfig !!!! exist wsUrlRel -> wsUrlRelIsEmpty ?', wsUrlRelIsEmpty);
+        // console.log('AppConfigService loadAppConfig allconfig !!!! exist wsUrlRel -> wsUrlRelIsEmpty ?', wsUrlRelIsEmpty);
 
         if (wsUrlRelIsEmpty === false) {
-          console.log('AppConfigService loadAppConfig allconfig !!!! exist - SERVER_BASE_URL', allconfig.SERVER_BASE_URL);
+          // console.log('AppConfigService loadAppConfig allconfig !!!! exist - SERVER_BASE_URL', allconfig.SERVER_BASE_URL);
 
 
           if (allconfig.SERVER_BASE_URL.indexOf("http://") !== -1) {
 
             const ws_url = allconfig.SERVER_BASE_URL.replace("http://", "ws://").slice(0, -1) + allconfig.wsUrlRel;
-            console.log('AppConfigService loadAppConfig allconfig !!!! exist - SERVER_BASE_URL protocol is HTTP - wsUrl', ws_url);
+            // console.log('AppConfigService loadAppConfig allconfig !!!! exist - SERVER_BASE_URL protocol is HTTP - wsUrl', ws_url);
 
             allconfig.wsUrl = ws_url
 
@@ -60,9 +60,9 @@ export class AppConfigService {
 
             allconfig.wsUrl = ws_url
 
-            console.log('AppConfigService loadAppConfig allconfig !!!! exist - SERVER_BASE_URL protocol is HTTPS - wsUrl', ws_url);
+            // console.log('AppConfigService loadAppConfig allconfig !!!! exist - SERVER_BASE_URL protocol is HTTPS - wsUrl', ws_url);
           } else {
-            console.log('AppConfigService loadAppConfig allconfig !!!! exist - SERVER_BASE_URL !!! IS RELATIVE - window.location ', window.location);
+            // console.log('AppConfigService loadAppConfig allconfig !!!! exist - SERVER_BASE_URL !!! IS RELATIVE - window.location ', window.location);
 
             // console.log(window.location)
 
@@ -79,11 +79,11 @@ export class AppConfigService {
           }
 
         } else {
-          console.log('AppConfigService loadAppConfig allconfig !!!! exist wsUrlRel but IS EMPTY');
+          // console.log('AppConfigService loadAppConfig allconfig !!!! exist wsUrlRel but IS EMPTY');
         }
 
       } else {
-        console.log('AppConfigService loadAppConfig allconfig !!!! does not exist wsUrlRel');
+        // console.log('AppConfigService loadAppConfig allconfig !!!! does not exist wsUrlRel');
       }
 
       this.appConfig = allconfig;
