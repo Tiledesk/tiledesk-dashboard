@@ -33,6 +33,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from './../../services/brand.service';
+import { LocalDbService } from '../../services/users-local-db.service';
 
 @Component({
     selector: 'app-navbar',
@@ -144,14 +145,15 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         private projectService: ProjectService,
         public wsRequestsService: WsRequestsService,
         public appConfigService: AppConfigService,
-        public brandService: BrandService
+        public brandService: BrandService,
+        public LocalDbService: LocalDbService
     ) {
 
 
         const brand = brandService.getBrand();
         this.tparams = brand;
 
-        
+
         this.location = location;
         this.sidebarVisible = false;
         // this.unservedRequestCount = 0
@@ -256,11 +258,10 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                 console.log('% »»» WebSocketJs WF +++++ ws-requests--- navbar - USER ROLE ', user_role);
                 if (user_role) {
                     if (user_role === 'agent') {
-                        this.ROLE_IS_AGENT = true
+                        this.ROLE_IS_AGENT = true;
 
                     } else {
-                        this.ROLE_IS_AGENT = false
-
+                        this.ROLE_IS_AGENT = false;
                     }
                 }
             });
@@ -308,13 +309,13 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                 let mt = key.split(":");
                 console.log('PUBLIC-KEY (Navbar) - mt key&value', mt);
                 if (mt[1] === "F") {
-                  this.MT = false;
-                  console.log('PUBLIC-KEY (Navbar) - mt is', this.MT);
+                    this.MT = false;
+                    console.log('PUBLIC-KEY (Navbar) - mt is', this.MT);
                 } else {
-                  this.MT = true;
-                  console.log('PUBLIC-KEY (Navbar) - mt is', this.MT);
+                    this.MT = true;
+                    console.log('PUBLIC-KEY (Navbar) - mt is', this.MT);
                 }
-              }
+            }
         });
 
         if (!this.public_Key.includes("MTT")) {
@@ -486,7 +487,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                     console.log('NAVBAR NavigationEnd - IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE  ', this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE);
                 }
 
-                
+
             })
     }
 
@@ -509,7 +510,9 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                     (this.route.indexOf('/signup-on-invitation') !== -1) ||
                     (this.route.indexOf('/create-new-project') !== -1) ||
                     (this.route.indexOf('/success') !== -1) ||
-                    (this.route.indexOf('/request-for-panel') !== -1)
+                    (this.route.indexOf('/request-for-panel') !== -1) ||
+                    (this.route.indexOf('/projects-for-panel') !== -1) ||
+                    (this.route.indexOf('/unserved-request-for-panel') !== -1)
                 ) {
                     // console.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route)
                     // this.DETECTED_PROJECT_PAGE = true;
@@ -581,7 +584,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                     console.log('NAVBAR route detected - IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE  ', this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE);
                 }
 
-                
+
 
             }
         });
@@ -859,15 +862,25 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                 takeUntil(this.unsubscribe$)
             )
             .subscribe((requests) => {
+                // const storedRequest = []
                 if (requests) {
                     requests.forEach(r => {
-                        // if (r.support_status !== 100) {
+                        console.log('IN-APP-NOTIFICATION request ', r)
+
+                        // storedRequest.push(r.id + '_' + r.updatedAt)
+                        // localStorage.setItem(r.id + '_' + r.updatedAt, 'false');
+
                         if (r.status !== 100) {
                             // console.log('REQUEST WITH STATUS != 100 ', r.status)
                             this.shown_requests[r.id] = false;
                             // this.shown_requests[r.request_id] = false;
+                            console.log('REQUEST WITH STATUS != 100 ', r.status)
                         }
                     });
+
+                    // localStorage.setItem('request', JSON.stringify(storedRequest));
+
+                    // console.log('IN-APP-NOTIFICATION shown_requests ', this.shown_requests)
                 }
             }, error => {
                 console.log('% »»» WebSocketJs WF +++++ ws-requests--- navbar checkRequestStatusInShown_requests * error * ', error)
@@ -907,8 +920,16 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                         const currentUserIsInParticipants = participantsArray.includes(this.user._id); // new used with ws 
                         // console.log('»» WIDGET notifyLastUnservedRequest REQUEST currentUserIsInParticipants ', currentUserIsInParticipants);
 
-                        // if (r.support_status === 100 && !this.shown_requests[r.id] && this.user !== null) { // old used with firestore 
-                        if (r.status === 100 && !this.shown_requests[r.id] && this.user !== null) {
+
+                        // --------------------------------------------------------------------------
+                        // @ get stored request
+                        // --------------------------------------------------------------------------
+                        const storedRequest = localStorage.getItem(r.id + '_' + r.status);
+                        console.log('IN-APP-NOTIFICATION >> get storedRequest served >> ', r.id + '_' + r.updatedAt, ' - ', storedRequest);
+
+                        // if (r.status === 100 && !this.shown_requests[r.id] && this.user !== null) {
+                        if (r.status === 100 && !storedRequest && this.user !== null) {
+
 
                             // *bug fix: when the user is an agent also for the unserved we have to consider if he is present in agents
                             if (this.ROLE_IS_AGENT === true) {
@@ -922,57 +943,64 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                             }
                         }
 
-                        // if current user is in particioants means that is a request served by the current user
-                        if (this.user !== null && !this.shown_my_requests[r.id] && currentUserIsInParticipants === true) {
 
-                            // const requestCreationDate = moment(r.created_on);
-                            const requestCreationDate = moment(r.createdAt);
+                        // if current user is in particioants means that is a request served by the current user
+                        // if (this.user !== null && !this.shown_my_requests[r.id] && currentUserIsInParticipants === true) {
+
+                        if (this.user !== null && !storedRequest && currentUserIsInParticipants === true) {
+                            // const requestCreationDate = moment(r.createdAt);
+                            const requestUpdatedTime = moment(r.updatedAt);
 
                             const currentTime = moment();
 
-                            const dateDiff = currentTime.diff(requestCreationDate, 'h');
-                            // console.log('»» WIDGET notifyLastUnservedRequest currentUserIsInParticipants DATE DIFF ', dateDiff);
+                            // const dateDiff = currentTime.diff(requestCreationDate, 'h');
+                            const dateDiff = currentTime.diff(requestUpdatedTime, 's');
+                            console.log('IN-APP-NOTIFICATION currentUserIsInParticipants DATE DIFF (s) ', dateDiff);
 
-                            if (dateDiff < 24) {
-                                // const url = '#/project/' + this.projectId + '/request/' + r.id + '/messages'
-                                const url = '#/project/' + this.projectId + '/wsrequest/' + r.request_id + '/messages'
-                                
-                              
-                               
-                                let contact_fullname = ''
-                                if (r.lead && r.lead.fullname) {
-                                   
-                                    contact_fullname = r.lead.fullname
-                                } else {
-                             
-                                    contact_fullname = ""
-                                }
 
-                                // console.log('NAV (showNotification) before to show notification (my) this.notify ', this.notify)
-                                // if (this.notify === undefined) {
-                                this.showNotification(
-                                    '<span style="font-weight: 400; font-family: Google Sans, sans-serif; color:#2d323e!important">' + contact_fullname + '</span>' +
-                                    '<em style="font-family: Google Sans, sans-serif;color:#7695a5!important">' + r.first_text +
-                                    '</em>' + `<a href="${url}" target="_self" data-notify="url" style="height: 100%; left: 0px; position: absolute; top: 0px; width: 100%; z-index: 1032;"></a>`,
-                                    4,
-                                    'border-left-color: rgb(77, 175, 79)',
-                                    'new-chat-icon-served-by-me.png'
-                                );
-                                // } 
-                                // else {
-                                //     setTimeout(() => {
-                                //     this.notify.update({'message': '<span style="font-weight: 400; font-family: Google Sans, sans-serif; color:#2d323e!important">' + contact_fullname + '</span>' +
-                                //     '<em style="font-family: Google Sans, sans-serif;color:#7695a5!important">' + r.first_text +
-                                //     '</em>' + `<a href="${url}" target="_self" data-notify="url" style="height: 100%; left: 0px; position: absolute; top: 0px; width: 100%; z-index: 1032;"></a>`});
-                                // }, 1500);
 
-                                // }
+                            // if (dateDiff < 5) {
+                            // const url = '#/project/' + this.projectId + '/request/' + r.id + '/messages'
+                            const url = '#/project/' + this.projectId + '/wsrequest/' + r.request_id + '/messages'
 
-                                this.shown_my_requests[r.id] = true;
-                                // console.log('»» NAVBAR shown_my_requests object notifyLastUnservedRequest ', this.shown_my_requests)
-                                // this.shown_my_requests[r.request_id] = true;
+                            let contact_fullname = ''
+                            if (r.lead && r.lead.fullname) {
 
+                                contact_fullname = r.lead.fullname
+                            } else {
+
+                                contact_fullname = ""
                             }
+
+                            // console.log('NAV (showNotification) before to show notification (my) this.notify ', this.notify)
+                            // if (this.notify === undefined) {
+                            this.showNotification(
+                                '<span style="font-weight: 400; font-family: Google Sans, sans-serif; color:#2d323e!important">' + contact_fullname + '</span>' +
+                                '<em style="font-family: Google Sans, sans-serif;color:#7695a5!important">' + r.first_text +
+                                '</em>' + `<a href="${url}" target="_self" data-notify="url" style="height: 100%; left: 0px; position: absolute; top: 0px; width: 100%; z-index: 1032;"></a>`,
+                                4,
+                                'border-left-color: rgb(77, 175, 79)',
+                                'new-chat-icon-served-by-me.png'
+                            );
+                            // } 
+                            // else {
+                            //     setTimeout(() => {
+                            //     this.notify.update({'message': '<span style="font-weight: 400; font-family: Google Sans, sans-serif; color:#2d323e!important">' + contact_fullname + '</span>' +
+                            //     '<em style="font-family: Google Sans, sans-serif;color:#7695a5!important">' + r.first_text +
+                            //     '</em>' + `<a href="${url}" target="_self" data-notify="url" style="height: 100%; left: 0px; position: absolute; top: 0px; width: 100%; z-index: 1032;"></a>`});
+                            // }, 1500);
+
+                            // }
+
+                            this.shown_my_requests[r.id] = true;
+                            console.log('IN-APP-NOTIFICATION shown_my_requests ', this.shown_my_requests)
+                            // this.shown_my_requests[r.request_id] = true;
+
+                            // --------------------------------------------------------------------------
+                            // @ set request to store
+                            // --------------------------------------------------------------------------
+                            localStorage.setItem(r.id + '_' + r.status, 'true');
+                            // }
                         }
 
                     });
@@ -988,53 +1016,57 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     }
 
     doUnservedDateDiffAndShowNotification(r) {
-        // const requestCreationDate = moment(r.created_on);
-        const requestCreationDate = moment(r.createdAt);
-
-        // console.log('notifyLastUnservedRequest REQUEST', r);
-        // console.log('notifyLastUnservedRequest REQUEST ID', r.id, ' CREATED AT ', requestCreationDate);
-        // const today = new Date();
+        // const requestCreationDate = moment(r.createdAt);
+        const requestUpdatedTime = moment(r.updatedAt);
         const currentTime = moment();
-        // console.log('notifyLastUnservedRequest REQUEST TODAY ', currentTime);
+        console.log('notifyLastUnservedRequest REQUEST TODAY ', currentTime);
 
-        const dateDiff = currentTime.diff(requestCreationDate, 'h');
-        // console.log('»» WIDGET notifyLastUnservedRequest DATE DIFF ', dateDiff);
+        // const dateDiff = currentTime.diff(requestCreationDate, 'h');
+        const dateDiff = currentTime.diff(requestUpdatedTime, 's');
+        console.log('IN-APP-NOTIFICATION  notifyLastUnservedRequest DATE DIFF (second)', dateDiff);
 
         /**
          * *** NEW 29JAN19: the unserved requests notifications are not displayed if it is older than one day ***
          */
-        if (dateDiff < 24) {
 
-            // this.lastRequest = requests[requests.length - 1];
-            // console.log('!!! »»» LAST UNSERVED REQUEST ', this.lastRequest)
 
-            // console.log('!!! »»» UNSERVED REQUEST IN BOOTSTRAP NOTIFY ', r)
-            // const url = '#/project/' + this.projectId + '/request/' + r.id + '/messages'
-            const url = '#/project/' + this.projectId + '/wsrequest/' + r.request_id + '/messages'
-            console.log('% »»» WebSocketJs WF +++++ ws-requests--- navbar unserved request url ', url);
+        // if (dateDiff < 5) {
 
-            console.log('NAV NOTIFICATION_SOUND (showNotification) before to show notification (unserved) this.notify ', this.notify)
+        // this.lastRequest = requests[requests.length - 1];
+        // console.log('!!! »»» LAST UNSERVED REQUEST ', this.lastRequest)
 
-            let contact_fullname = ''
-            if (r.lead && r.lead.fullname) {
-                contact_fullname = r.lead.fullname
-            } else {
-                contact_fullname = ""
-            }
+        // console.log('!!! »»» UNSERVED REQUEST IN BOOTSTRAP NOTIFY ', r)
+        // const url = '#/project/' + this.projectId + '/request/' + r.id + '/messages'
+        const url = '#/project/' + this.projectId + '/wsrequest/' + r.request_id + '/messages'
+        console.log('% »»» WebSocketJs WF +++++ ws-requests--- navbar unserved request url ', url);
 
-            this.showNotification(
-                '<span style="font-weight: 400; font-family: Google Sans, sans-serif;color:#2d323e!important">' + contact_fullname + '</span>' +
-                '<em style="font-family: Google Sans, sans-serif;color:#7695a5!important">' + r.first_text +
-                '</em>' + `<a href="${url}" target="_self" data-notify="url" style="height: 100%; left: 0px; position: absolute; top: 0px; width: 100%; z-index: 1032;"></a>`,
-                3,
-                'border-left-color: rgb(237, 69, 55)',
-                'new-chat-icon-unserved.png'
-            );
+        console.log('NAV NOTIFICATION_SOUND (showNotification) before to show notification (unserved) this.notify ', this.notify)
 
-            this.shown_requests[r.id] = true;
-            // console.log('»» NAVBAR shown_requests object notifyLastUnservedRequest ', this.shown_requests)
-            // r.notification_already_shown = true;
+        let contact_fullname = ''
+        if (r.lead && r.lead.fullname) {
+            contact_fullname = r.lead.fullname
+        } else {
+            contact_fullname = ""
         }
+
+        this.showNotification(
+            '<span style="font-weight: 400; font-family: Google Sans, sans-serif;color:#2d323e!important">' + contact_fullname + '</span>' +
+            '<em style="font-family: Google Sans, sans-serif;color:#7695a5!important">' + r.first_text +
+            '</em>' + `<a href="${url}" target="_self" data-notify="url" style="height: 100%; left: 0px; position: absolute; top: 0px; width: 100%; z-index: 1032;"></a>`,
+            3,
+            'border-left-color: rgb(237, 69, 55)',
+            'new-chat-icon-unserved.png'
+        );
+
+        this.shown_requests[r.id] = true;
+        console.log('IN-APP-NOTIFICATION shown_requests ', this.shown_requests)
+        // r.notification_already_shown = true;
+
+        // --------------------------------------------------------------------------
+        // @ set request to store
+        // --------------------------------------------------------------------------
+        localStorage.setItem(r.id + '_' + r.status, 'true');
+        // }
 
     }
 
