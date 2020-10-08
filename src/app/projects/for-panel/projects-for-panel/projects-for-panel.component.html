@@ -3,16 +3,11 @@
 <div class="main-content main-content-projects-for-panel">
   <div class="container-fluid container-projects-for-panel">
 
-
- 
-
     <!-- 
     // ------------------------------------
     // new 
     // ------------------------------------ -->
-
     <div class="left-sidebar">
-
 
       <loading-spinner *ngIf="showSpinner"></loading-spinner>
 
@@ -21,15 +16,18 @@
 
         <div *ngFor="let project of projects; let i = index" style="cursor:pointer">
 
-          <div class="small-projects-sidebar" 
-          (click)='goToUnservedRequests(project?.id_project?._id, project?.id_project?.name, project?.id_project?.profile?.name, project?.id_project?.trialExpired, project?.id_project?.trialDaysLeft, project?.id_project?.status)'>
-            <div class="flex-container">
-           
+          <div class="small-projects-sidebar"
+            (click)='goToUnservedRequests(project?.id_project?._id, project?.id_project?.name, project?.id_project?.profile?.name, project?.id_project?.trialExpired, project?.id_project?.trialDaysLeft, project?.id_project?.status)'>
+            
+            <div *ngIf="project?.id_project?.status !== 0"  class="flex-container project-row">
               <div class="flex-child-left">
-                <div class="project-avatar-wrapper"  (click)="$event.stopPropagation();changeAvailabilityState(project?.id_project?._id, project?.ws_projct_user_available)">
+                <div class="project-avatar-wrapper"
+                  (click)="$event.stopPropagation();changeAvailabilityState(project?.id_project?._id, project?.ws_projct_user_available)">
 
                   <div class="project-avatar">
                     {{ project?.project_name_initial }}
+
+                    <!-- {{project?.ws_projct_user_available}} -->
                   </div>
 
                   <div class="status--icon"
@@ -38,23 +36,28 @@
 
                   <div class="busy--icon" *ngIf="project?.ws_projct_user_isBusy === true"></div>
                 </div>
-
               </div>
 
-
-              <div class="flex-child-right" *ngIf="!window_width_is_60" >
+              <div class="flex-child-right" *ngIf="!window_width_is_60">
                 <div class="project-name" [ngClass]="{'im-available' : project?.ws_projct_user_available === true}">
-
                   {{ project?.id_project?.name }}
                 </div>
-
-
 
                 <div class="status--text"
                   (click)="$event.stopPropagation();changeAvailabilityState(project?.id_project?._id, project?.ws_projct_user_available)"
                   [ngClass]="{'online-text-color' : project?.ws_projct_user_available === true, 'offline-text-color' : project?.ws_projct_user_available === false}">
-                  <span *ngIf="project?.ws_projct_user_available === true"> {{ 'Available' | translate }} </span>
+                  <span *ngIf="project?.ws_projct_user_available === true">
+                    <!-- {{ 'Available' | translate }}  -->
+                    Online
+                  </span>
                   <span *ngIf="project?.ws_projct_user_available === false"> Offline</span>
+
+                  <span *ngIf="project?.ws_projct_user_available === true" class="material-icons icon-as-btn">
+                    notifications
+                  </span>
+                  <span *ngIf="project?.ws_projct_user_available === false" class="material-icons icon-as-btn">
+                    notifications_off
+                  </span>
                 </div>
 
                 <!-- <div class="i_onoffswitch">
@@ -64,11 +67,9 @@
                 </div> -->
 
 
-               
-
               </div>
 
-              <div class="flex-child--right" *ngIf="!window_width_is_60" >
+              <div class="flex-child--right" *ngIf="!window_width_is_60">
                 <!-- <span class="material-icons" style="vertical-align: middle; color: #a9abad">
                   east
                 </span> -->

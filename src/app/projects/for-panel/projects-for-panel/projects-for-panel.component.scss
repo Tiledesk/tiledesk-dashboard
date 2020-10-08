@@ -1707,12 +1707,17 @@ button.close {
 .status--text {
   color: #7695a5;
   font-size: 12px;
-
   // font-weight: 300;
   text-transform: capitalize;
   width: fit-content;
   font-family: "Montserrat", sans-serif;
   font-weight: 400;
+  padding-right: 18px;
+}
+
+.status--text:hover {
+
+
 }
 
 .online-text-color {
@@ -1736,6 +1741,15 @@ button.close {
 
 .im-available {
   color: #fff;
+}
+.icon-as-btn {
+  font-size: 12px;
+  vertical-align: middle;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  padding: 5px;
+  height: 22px;
+    width: 22px;
 }
 
 @keyframes busypulse {
@@ -1788,14 +1802,12 @@ button.close {
   }
 }
 
-
 .small-projects-sidebar:hover #arrow_1 .arrow span {
   //  display: none;
-  $size: 16px;
-  $width: 2px;
+  // $size: 16px;
+  // $width: 2px;
 
-  width: $size * 1.414;
-
+  // width: $size * 1.414;
 }
 
 // --------------------------------------------------
@@ -1819,7 +1831,8 @@ button.close {
   & span,
   &:before,
   &:after {
-    background: #fff;
+    // background: #fff;
+    background: #b1b4b8;
     content: "";
     display: block;
     width: $size;
