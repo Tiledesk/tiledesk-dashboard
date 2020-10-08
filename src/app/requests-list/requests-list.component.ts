@@ -9,7 +9,7 @@ import 'moment/locale/it.js';
 import { AuthService } from '../core/auth.service';
 import { Project } from '../models/project-model';
 import { Router } from '@angular/router';
-import { UsersLocalDbService } from '../services/users-local-db.service';
+import { LocalDbService } from '../services/users-local-db.service';
 import { environment } from '../../environments/environment';
 import { NotifyService } from '../core/notify.service';
 import { BotLocalDbService } from '../services/bot-local-db.service';
@@ -133,7 +133,7 @@ export class RequestsListComponent implements OnInit {
     private elRef: ElementRef,
     public auth: AuthService,
     private router: Router,
-    private usersLocalDbService: UsersLocalDbService,
+    private usersLocalDbService: LocalDbService,
     private notify: NotifyService,
     private botLocalDbService: BotLocalDbService,
     private departmentService: DepartmentService,

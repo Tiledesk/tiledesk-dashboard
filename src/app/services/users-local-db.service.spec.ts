@@ -1,15 +1,15 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { UsersLocalDbService } from './users-local-db.service';
+import { LocalDbService } from './users-local-db.service';
 
-describe('UsersLocalDbService', () => {
+describe('LocalDbService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [UsersLocalDbService]
+      providers: [LocalDbService]
     });
   });
 
-  it('should be created', inject([UsersLocalDbService], (service: UsersLocalDbService) => {
+  it('should be created', inject([LocalDbService], (service: LocalDbService) => {
     expect(service).toBeTruthy();
   }));
 });

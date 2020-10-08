@@ -3,7 +3,7 @@ import { Request } from '../../../models/request-model';
 import { WsSharedComponent } from '../../ws-shared/ws-shared.component';
 import { BotLocalDbService } from '../../../services/bot-local-db.service';
 import { AuthService } from '../../../core/auth.service';
-import { UsersLocalDbService } from '../../../services/users-local-db.service';
+import { LocalDbService } from '../../../services/users-local-db.service';
 import { Router } from '@angular/router';
 import { AppConfigService } from '../../../services/app-config.service';
 import { WsRequestsService } from '../../../services/websocket/ws-requests.service';
@@ -48,7 +48,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
   constructor(
     public botLocalDbService: BotLocalDbService,
     public auth: AuthService,
-    public usersLocalDbService: UsersLocalDbService,
+    public usersLocalDbService: LocalDbService,
     public router: Router,
     public appConfigService: AppConfigService,
     public wsRequestsService: WsRequestsService,

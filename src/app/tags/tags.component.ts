@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { NotifyService } from '../core/notify.service';
 import { TagsService } from '../services/tags.service';
-import { UsersLocalDbService } from '../services/users-local-db.service';
+import { LocalDbService } from '../services/users-local-db.service';
 import { UsersService } from '../services/users.service';
 import { AppConfigService } from '../services/app-config.service';
 import { AuthService } from '../core/auth.service';
@@ -46,7 +46,7 @@ export class TagsComponent implements OnInit, AfterViewInit {
     public translate: TranslateService,
     private notify: NotifyService,
     private tagsService: TagsService,
-    private usersLocalDbService: UsersLocalDbService,
+    private usersLocalDbService: LocalDbService,
     public appConfigService: AppConfigService,
     private usersService: UsersService,
     private auth: AuthService

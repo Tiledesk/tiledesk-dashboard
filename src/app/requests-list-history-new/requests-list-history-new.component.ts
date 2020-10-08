@@ -5,7 +5,7 @@ import { AuthService } from '../core/auth.service';
 import { IMyDpOptions, IMyDateModel, IMyDate } from 'mydatepicker';
 import { DepartmentService } from '../services/department.service';
 import { trigger, state, style, animate, transition, query, animateChild } from '@angular/animations';
-import { UsersLocalDbService } from '../services/users-local-db.service';
+import { LocalDbService } from '../services/users-local-db.service';
 import { BotLocalDbService } from '../services/bot-local-db.service';
 import { UsersService } from '../services/users.service';
 import { FaqKbService } from '../services/faq-kb.service';
@@ -132,7 +132,7 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
     // private requestsService: RequestsService,
     public router: Router,
     public auth: AuthService,
-    public usersLocalDbService: UsersLocalDbService,
+    public usersLocalDbService: LocalDbService,
     public botLocalDbService: BotLocalDbService,
     private departmentService: DepartmentService,
     public usersService: UsersService,

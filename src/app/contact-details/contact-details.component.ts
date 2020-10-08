@@ -5,7 +5,7 @@ import { RequestsService } from '../services/requests.service';
 
 import { ContactsService } from '../services/contacts.service';
 import { BotLocalDbService } from '../services/bot-local-db.service';
-import { UsersLocalDbService } from '../services/users-local-db.service';
+import { LocalDbService } from '../services/users-local-db.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../core/auth.service';
 import { avatarPlaceholder, getColorBck } from '../utils/util';
@@ -79,7 +79,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
     public location: Location,
     private route: ActivatedRoute,
     private requestsService: RequestsService,
-    private usersLocalDbService: UsersLocalDbService,
+    private usersLocalDbService: LocalDbService,
     private botLocalDbService: BotLocalDbService,
     private router: Router,
     public auth: AuthService,

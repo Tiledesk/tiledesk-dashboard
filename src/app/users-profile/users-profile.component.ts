@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../core/auth.service';
 import { Project } from '../models/project-model';
 import { ActivatedRoute } from '@angular/router';
-import { UsersLocalDbService } from '../services/users-local-db.service';
+import { LocalDbService } from '../services/users-local-db.service';
 import { BotLocalDbService } from '../services/bot-local-db.service';
 import { FaqKbService } from '../services/faq-kb.service';
 import * as moment from 'moment';
@@ -45,7 +45,7 @@ export class UsersProfileComponent implements OnInit {
     private auth: AuthService,
     private route: ActivatedRoute,
     private _location: Location,
-    private usersLocalDbService: UsersLocalDbService,
+    private usersLocalDbService: LocalDbService,
     private faqKbService: FaqKbService,
     private botLocalDbService: BotLocalDbService,
     public appConfigService: AppConfigService

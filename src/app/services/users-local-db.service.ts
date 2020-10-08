@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 @Injectable()
-export class UsersLocalDbService {
+export class LocalDbService {
 
   prefix = 'dshbrd----'
   constructor() { }
@@ -74,6 +74,19 @@ export class UsersLocalDbService {
       hasOpenBlog = true
     }
     return hasOpenBlog
+  }
+
+  getStoredAppearanceDisplayPreferences() {
+    const darkmode = localStorage.getItem(this.prefix + 'dkmode');
+    return darkmode
+  }
+
+  storeAppearanceDisplayPreferences(dkm): void {
+    if (dkm) {
+      localStorage.setItem(this.prefix + 'dkmode', dkm);
+      console.log('HEY - SAVE IN STORAGE !!! ');
+    }
+
   }
 
 

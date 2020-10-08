@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, NgZone, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { WsRequestsService } from '../../services/websocket/ws-requests.service';
-import { UsersLocalDbService } from '../../services/users-local-db.service';
+import { LocalDbService } from '../../services/users-local-db.service';
 import { BotLocalDbService } from '../../services/bot-local-db.service';
 import { Router, NavigationStart, NavigationEnd } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
@@ -112,7 +112,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
    * 
    * @param {WsRequestsService} wsRequestsService 
    * @param {Router} router 
-   * @param {UsersLocalDbService} usersLocalDbService 
+   * @param {LocalDbService} usersLocalDbService 
    * @param {BotLocalDbService} botLocalDbService 
    * @param {AuthService} auth 
    * @param {RequestsService} requestsService
@@ -121,7 +121,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   constructor(
     public wsRequestsService: WsRequestsService,
     public router: Router,
-    public usersLocalDbService: UsersLocalDbService,
+    public usersLocalDbService: LocalDbService,
     public botLocalDbService: BotLocalDbService,
     public auth: AuthService,
     private requestsService: RequestsService,

@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { IMyDpOptions, IMyDateModel } from 'mydatepicker';
-import { UsersLocalDbService } from '../services/users-local-db.service';
+import { LocalDbService } from '../services/users-local-db.service';
 import { BotLocalDbService } from '../services/bot-local-db.service';
 
 import 'moment/locale/it.js';
@@ -71,7 +71,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
     public auth: AuthService,
     private translate: TranslateService,
     private router: Router,
-    private usersLocalDbService: UsersLocalDbService,
+    private usersLocalDbService: LocalDbService,
     private botLocalDbService: BotLocalDbService
   ) { }
 

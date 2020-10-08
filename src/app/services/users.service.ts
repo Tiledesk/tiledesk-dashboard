@@ -4,7 +4,6 @@ import { Injectable } from '@angular/core';
 
 import { User } from '../models/user-model';
 import { Activity } from '../models/activity-model';
-
 import { PendingInvitation } from '../models/pending-invitation-model';
 import { ProjectUser } from '../models/project-user';
 
@@ -17,7 +16,7 @@ import { environment } from '../../environments/environment';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import * as firebase from 'firebase/app';
 
-import { UsersLocalDbService } from '../services/users-local-db.service';
+import { LocalDbService } from '../services/users-local-db.service';
 import { Router } from '@angular/router';
 import { Project } from '../models/project-model';
 import { FaqKbService } from '../services/faq-kb.service';
@@ -102,7 +101,7 @@ export class UsersService {
     http: Http,
     // private afs: AngularFirestore,
     private auth: AuthService,
-    private usersLocalDbService: UsersLocalDbService,
+    private usersLocalDbService: LocalDbService,
     private router: Router,
     private faqKbService: FaqKbService,
     private botLocalDbService: BotLocalDbService,
@@ -127,6 +126,9 @@ export class UsersService {
     this.getAppConfigAndBuildUrl();
     this.getCurrentProject();
   }
+
+
+
 
   // public sumUpAuth() {
   //   const headers = new Headers();
@@ -862,6 +864,7 @@ export class UsersService {
       const storedUserRole = projectObject['role'];
       const storedProjectName = projectObject['name'];
       const storedProjectId = projectObject['_id'];
+      const storedProjectOH = projectObject['operatingHours'];
       console.log('!! »»»»» USER SERVICE USER ROLE FROM STORAGE >>', storedUserRole, '<<');
       console.log('!! »»»»» USER SERVICE PROJECT NAME FROM STORAGE ', storedProjectName);
       console.log('!! »»»»» USER SERVICE PROJECT ID FROM STORAGE ', storedProjectId);
@@ -872,7 +875,8 @@ export class UsersService {
         const projectForStorage: Project = {
           _id: storedProjectId,
           name: storedProjectName,
-          role: projectUser_role
+          role: projectUser_role,
+          operatingHours: storedProjectOH
         }
 
         // RE-SET THE PROJECT IN THE STORAGE WITH THE UPDATED ROLE

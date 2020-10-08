@@ -10,7 +10,7 @@ import { UsersService } from '../../services/users.service';
 import { Project } from '../../models/project-model';
 // import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 // import { SharedModule } from '../../shared/shared.module';
-import { UsersLocalDbService } from '../../services/users-local-db.service';
+import { LocalDbService } from '../../services/users-local-db.service';
 import { NotifyService } from '../../core/notify.service';
 import { UploadImageService } from '../../services/upload-image.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -149,6 +149,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     WIDGET_ROUTE_IS_ACTIVE: boolean;
     ANALITYCS_ROUTE_IS_ACTIVE: boolean;
     HOME_ROUTE_IS_ACTIVE: boolean;
+    TRIGGER_ROUTE_IS_ACTIVE: boolean;
     prjct_profile_name: string;
     prjct_trial_expired: boolean;
     prjc_trial_days_left: number
@@ -175,7 +176,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         private projectService: ProjectService,
         private auth: AuthService,
         private usersService: UsersService,
-        private usersLocalDbService: UsersLocalDbService,
+        private usersLocalDbService: LocalDbService,
         private notify: NotifyService,
         private uploadImageService: UploadImageService,
         private translate: TranslateService,
@@ -475,6 +476,14 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 } else {
                     // console.log('SIDEBAR NavigationEnd - THE home route IS NOT ACTIVE  ', event.url);
                     this.HOME_ROUTE_IS_ACTIVE = false;
+                }
+
+                if (event.url.indexOf('/trigger') !== -1) {
+                    // console.log('SIDEBAR NavigationEnd - THE home route IS ACTIVE  ', event.url);
+                    this.TRIGGER_ROUTE_IS_ACTIVE = true;
+                } else {
+                    // console.log('SIDEBAR NavigationEnd - THE home route IS NOT ACTIVE  ', event.url);
+                    this.TRIGGER_ROUTE_IS_ACTIVE = false;
                 }
             });
     }

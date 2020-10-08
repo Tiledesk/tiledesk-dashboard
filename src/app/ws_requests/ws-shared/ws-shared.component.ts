@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UsersLocalDbService } from '../../services/users-local-db.service';
+import { LocalDbService } from '../../services/users-local-db.service';
 import { BotLocalDbService } from '../../services/bot-local-db.service';
 import { avatarPlaceholder, getColorBck } from '../../utils/util';
 import { Router } from '@angular/router';
@@ -35,7 +35,7 @@ export class WsSharedComponent implements OnInit {
 
   constructor(
     public botLocalDbService: BotLocalDbService,
-    public usersLocalDbService: UsersLocalDbService,
+    public usersLocalDbService: LocalDbService,
     public router: Router,
     public wsRequestsService: WsRequestsService,
     public faqKbService: FaqKbService,
@@ -44,7 +44,7 @@ export class WsSharedComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-   
+
   }
 
 
@@ -192,7 +192,7 @@ export class WsSharedComponent implements OnInit {
 
 
   doParticipatingAgentsArray(participants, first_text, storageBucket) {
-    
+
     console.log('STORAGE-BUCKET Users service  Ws SHARED ', storageBucket);
     console.log('!! Ws SHARED »»»»»»» doParticipatingAgentsArray - first_text ', first_text, ' participants', participants, ' storageBucket', storageBucket);
 
@@ -287,8 +287,12 @@ export class WsSharedComponent implements OnInit {
       fullname = agent.firstname + ' ' + agent.lastname
       agent['fullname_initial'] = avatarPlaceholder(fullname);
       agent['fillColour'] = getColorBck(fullname)
-    } else {
+    } else if (agent && agent.firstname) {
 
+      fullname = agent.firstname
+      agent['fullname_initial'] = avatarPlaceholder(fullname);
+      agent['fillColour'] = getColorBck(fullname)
+    } else {
       agent['fullname_initial'] = 'N/A';
       agent['fillColour'] = 'rgb(98, 100, 167)';
     }
