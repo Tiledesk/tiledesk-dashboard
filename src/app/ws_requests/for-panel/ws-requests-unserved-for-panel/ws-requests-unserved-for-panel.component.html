@@ -1,69 +1,20 @@
 <appdashboard-navbar-for-panel></appdashboard-navbar-for-panel>
+<!-- border-bottom: 1px solid #3f3f40; -->
 
-<div class="selected-project" style="padding-right: 10px; padding-bottom: 0px !important;
-background: #2d323e;">
+<div class="selected-project-bar" style="">
+
   <div class="flex-container">
-    <!-- margin-left: 6px;margin-right: 2px; width: 60px; text-align: center;    border-right: 1px solid #eee; -->
-
-    <!-- <div class="flex-child-go-back" (click)="goBack()"> -->
-    <!-- <span class="material-icons" style="vertical-align: middle; color: #a9abad">
-        view_list
-      </span> -->
-
-    <!-- <div id="arrow_1" class="arrow-wrapper">
-        <div class="arrow arrow--left">
-          <span></span>
-        </div>
-      </div> -->
-    <!-- <span style="color:#00d5ff; font-size:12px">
-        Go back
-      </span> -->
-
-    <!-- <span class="material-icons go-back-icon">
-        arrow_back_ios
-      </span> -->
-    <!-- </div> -->
-
-
     <div class="flex-child-project-avatar" style="" (click)="goBack()">
-      <!-- <div class="project-avatar-wrapper">
-
-        <div class="project-avatar">
-          {{ projectNameFirstLetter }}
-        </div>
-
-      </div> -->
       <span class="material-icons go-back-icon">
         arrow_back_ios
       </span>
-
     </div>
-
 
     <div class="flex-child-project-name">
       <div class="project-name-in-unserved-top-bar">
-
         {{ projectName }}
       </div>
-
-
-
-      <!-- <div class="status--text"
-        (click)="$event.stopPropagation();changeAvailabilityState(project?.id_project?._id, project?.ws_projct_user_available)"
-        [ngClass]="{'online-text-color' : project?.ws_projct_user_available === true, 'offline-text-color' : project?.ws_projct_user_available === false}">
-        <span *ngIf="project?.ws_projct_user_available === true"> {{ 'Available' | translate }} </span>
-        <span *ngIf="project?.ws_projct_user_available === false"> Offline</span>
-      </div> -->
-
-      <!-- <div class="i_onoffswitch">
-        <input type="checkbox" name="i_onoffswitch" class="i_onoffswitch-checkbox" id="i_myonoffswitch" tabindex="0"
-          checked>
-        <label class="i_onoffswitch-label" for="i_myonoffswitch"></label>
-      </div> -->
     </div>
-
-
-
   </div>
 </div>
 
@@ -119,12 +70,13 @@ background: #2d323e;">
                   </div>
                 </div>
               </div>
-
             </div>
+
             <div class="right-column"  (click)="displayDetails(request)">
               <div class="lead-name">
-                <div class="lead--name ">
+                <div class="lead--name">
                   {{ request?.lead?.fullname }}
+                  {{ request?.lead?.lead_id }}
                   <span *ngIf="!request?.lead?.fullname">
                     N/A
                   </span>

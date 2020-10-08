@@ -84,6 +84,7 @@ export class WebSocketJs {
 
   ref(topic, onCreate, onUpdate, onData) {
     // console.log('% »»» WebSocketJs ****** CALLING REF ****** ');
+    console.log('wsRequesterPresence ****** CALLING REF ****** TOPIC ' , topic);
     //this.callbacks.set(topic, {onCreate:onCreate, onUpdate:onUpdate});
     this.callbacks.set(topic, { onCreate: onCreate, onUpdate: onUpdate, onData: onData });
 
@@ -98,7 +99,7 @@ export class WebSocketJs {
 
     if (this.ws && this.ws.readyState == 1) {
 
-      // console.log('% »»» WebSocketJs WF *** REF *** READY STATE 2 ', this.ws.readyState)
+      console.log('% »»» WebSocketJs WF *** REF *** READY STATE 2 ', this.ws.readyState)
       this.subscribe(topic);
 
     } else {

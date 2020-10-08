@@ -17,7 +17,7 @@ export class WsMsgsService {
 
   public wsMsgsList$: BehaviorSubject<[]> = new BehaviorSubject<[]>([]);
   public wsMsgsGotAllData$: BehaviorSubject<boolean> = new BehaviorSubject(false);
-
+ 
   // public _wsMsgsList = new Subject<any>();
 
   constructor(
@@ -79,7 +79,6 @@ export class WsMsgsService {
   // -----------------------------------------------------------------------------------------------------
   // methods for Request's Messages 
   // -----------------------------------------------------------------------------------------------------
-
   /**
    * 
    * Subscribe to websocket messages by request id service 
