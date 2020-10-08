@@ -805,8 +805,9 @@ $f21blue: #039be5;
 
 .no-request-msg {
     // font-weight: 600;
-    font-size: 22px;
+    font-size: 18px;
     color: #a9abad;
+    text-align: center;
 }
 
 .left-sidebar-unserved-requests-wrapper {
@@ -988,8 +989,13 @@ $f21blue: #039be5;
     //  display: none;
     $size: 16px;
     $width: 2px;
-
     width: $size * 1.414;
+}
+
+.selected-project-bar {
+    padding-right: 10px;
+    padding-bottom: 0px !important;
+    background: #2d323e;
 }
 
 // --------------------------------------------------
@@ -1030,7 +1036,6 @@ $f21blue: #039be5;
 .arrow-wrapper:hover h1 {
     opacity: 1;
 }
-
 
 .arrow-container .arrow-wrapper .arrow span:hover {
     $size: 16px;

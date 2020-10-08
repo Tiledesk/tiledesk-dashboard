@@ -6,7 +6,7 @@ import { RequestsService } from '../services/requests.service';
 import { AuthService } from '../core/auth.service';
 import { environment } from '../../environments/environment';
 
-import { UsersLocalDbService } from '../services/users-local-db.service';
+import { LocalDbService } from '../services/users-local-db.service';
 // USED FOR go back last page
 import { Location } from '@angular/common';
 import { NotifyService } from '../core/notify.service';
@@ -139,7 +139,7 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
     private route: ActivatedRoute,
     private requestsService: RequestsService,
     private auth: AuthService,
-    private usersLocalDbService: UsersLocalDbService,
+    private usersLocalDbService: LocalDbService,
     private _location: Location,
     private notify: NotifyService,
     private platformLocation: PlatformLocation,
@@ -759,40 +759,26 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getRequesterAvailabilityStatus(requester_id: string) {
+
     // const firebaseRealtimeDbUrl = `/apps/tilechat/presence/LmBT2IKjMzeZ3wqyU8up8KIRB6J3/connections`
+    // const firebaseRealtimeDbUrl = `/apps/tilechat/presence/` + requester_id + `/connections`
 
-    const firebaseRealtimeDbUrl = `/apps/tilechat/presence/` + requester_id + `/connections`
+    // const connectionsRef = firebase.database().ref().child(firebaseRealtimeDbUrl);
 
-    const connectionsRef = firebase.database().ref().child(firebaseRealtimeDbUrl);
+    // console.log('»»» REQUEST DETAILS - CALLING REQUESTER AVAILABILITY VALUE ');
 
-    console.log('»»» REQUEST DETAILS - CALLING REQUESTER AVAILABILITY VALUE ');
+    // connectionsRef.on('value', (child) => {
+    //   if (child.val()) {
+    //     this.REQUESTER_IS_ONLINE = true;
+    //     console.log('»»» REQUEST DETAILS - REQUESTER is ONLINE ', this.REQUESTER_IS_ONLINE);
+    //   } else {
+    //     this.REQUESTER_IS_ONLINE = false;
 
-    connectionsRef.on('value', (child) => {
-      if (child.val()) {
-        this.REQUESTER_IS_ONLINE = true;
-        console.log('»»» REQUEST DETAILS - REQUESTER is ONLINE ', this.REQUESTER_IS_ONLINE);
-      } else {
-        this.REQUESTER_IS_ONLINE = false;
+    //     console.log('»»» REQUEST DETAILS - REQUESTER is ONLINE ', this.REQUESTER_IS_ONLINE);
+    //   }
 
-        console.log('»»» REQUEST DETAILS - REQUESTER is ONLINE ', this.REQUESTER_IS_ONLINE);
-      }
+    // })
 
-    })
-    // userIsOnline(userid){
-    //   //this.lastOnlineForUser(userid);
-    //   const that = this;
-    //   let myConnectionsRefURL = this.urlNodeFirebase+"/presence/"+userid+"/connections";
-    //   const connectionsRef = firebase.database().ref().child(myConnectionsRefURL);
-    //   connectionsRef.on("value", (child) => {
-    //     if(child.val()){
-    //       that.events.publish('statusUser:online-'+userid, userid, true);
-    //     }
-    //     else {
-    //       that.events.publish('statusUser:online-'+userid, userid, false);
-    //       //that.events.publish('statusUser:offline-'+userid, userid,'offline');
-    //     }
-    //   })
-    // }
   }
 
 
