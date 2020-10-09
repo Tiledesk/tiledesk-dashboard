@@ -8,7 +8,7 @@
 - Fixes widget logo
 - Adds, on the navigation bar, a link to the simulate visitor page
 - Adds, on the navigation bar, the ability to know if the operating hours are enabled
-- Fixes the loading display in app-store page
+- Fixes the loading spinner display in app-store page
 
 ### 2.0.68
 - Displays in requests list name initials if profile picture is not provided
