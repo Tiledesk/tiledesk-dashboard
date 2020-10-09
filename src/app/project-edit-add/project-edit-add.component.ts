@@ -970,13 +970,15 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
             console.log('PRJCT-EDIT-ADD - STORED PROJECT OBJ - PRJ NAME ', storedProjectName);
             const storedProjectId = projectObject['_id'];
             console.log('PRJCT-EDIT-ADD - STORED PROJECT OBJ - PRJ ID ', storedProjectId);
+            const storedProjectOH = projectObject['operatingHours'];   
 
             if (storedProjectName !== prjct.name) {
 
               const updatedProjectForStorage: Project = {
                 _id: storedProjectId,
                 name: prjct.name,
-                role: storedUserRole
+                role: storedUserRole,
+                operatingHours: storedProjectOH
               }
 
               // RE-SET THE PROJECT IN THE STORAGE WITH THE UPDATED NAME

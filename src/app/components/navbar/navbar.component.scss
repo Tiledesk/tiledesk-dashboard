@@ -257,7 +257,7 @@ button.close.custom-hover:hover {
   background-color: #fff;
   margin-bottom: 15px;
   // box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0);
-  border:unset !important;
+  border: unset !important;
 }
 
 .user-profile-avatar {
@@ -304,7 +304,6 @@ button.close.custom-hover:hover {
   font-size: 0.9em;
   color: #7695a5;
   margin-top: 10px;
-  
 }
 
 /* // CIRCULAR PROGRESS BAR  */
@@ -793,9 +792,21 @@ button.close.custom-hover:hover {
   background-color: #eee;
 }
 
-
 .disable-dropdown-menu-btn {
   pointer-events: none;
   opacity: 0.6;
+}
 
+.navbar-test-site-btn {
+  vertical-align: middle;
+  color: #fff;
+  font-size: 20px;
+  background: #3ecf8e;
+  border-radius: 50%;
+  height: 20px;
+  width: 20px;
+}
+
+.navbar-test-site-btn:hover {
+  opacity: 0.6;
 }

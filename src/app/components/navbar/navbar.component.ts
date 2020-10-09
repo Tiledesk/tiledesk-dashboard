@@ -130,6 +130,10 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     storedValuePrefix = 'dshbrd----'
     hasPlayed = false
     MT: boolean
+    OPERATING_HOURS_ACTIVE:boolean;
+    TESTSITE_BASE_URL: string;
+    projectName: string;
+
     constructor(
         location: Location,
         private element: ElementRef,
@@ -221,7 +225,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         this.getStorageBucket();
 
         this.setNotificationSound();
-
+        this.getTestSiteUrl();
 
     } // OnInit
 
@@ -597,7 +601,10 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                 this.project = project
                 console.log('!!C-U 00 -> NAVBAR project from AUTH service subscription ', this.project);
                 this.projectId = project._id;
+                this.projectName= project.name;
+                this.OPERATING_HOURS_ACTIVE = this.project.operatingHours
 
+                console.log('!!C-U 00 -> NAVBAR OPERATING_HOURS_ACTIVE ', this.OPERATING_HOURS_ACTIVE);
                 // this.prjct_profile_name = this.project.profile_name;
                 // this.prjct_trial_expired = this.project.trial_expired;
                 // this.prjc_trial_days_left = this.project.trial_days_left;
@@ -738,7 +745,12 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     }
 
     // WHEN A USER CLICK ON A PROJECT IN THE NAVBAR DROPDOWN 
-    goToHome(id_project: string, project_name: string) {
+    goToHome(id_project: string, project_name: string  ,
+        project_profile_name: string,
+        project_trial_expired: string,
+        project_trial_days_left: number,
+       
+        activeOperatingHours: boolean) {
         console.log('!NAVBAR  goToHome id_project ', id_project, 'project_name', project_name)
         // RUNS ONLY IF THE THE USER CLICK OVER A PROJECT WITH THE ID DIFFERENT FROM THE CURRENT PROJECT ID
         if (id_project !== this.projectId) {
@@ -752,6 +764,10 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
             const project: Project = {
                 _id: id_project,
                 name: project_name,
+                profile_name: project_profile_name,
+                trial_expired: project_trial_expired,
+                trial_days_left: project_trial_days_left,
+                operatingHours: activeOperatingHours
             }
             this.auth.projectSelected(project)
             console.log('!!! GO TO HOME - PROJECT ', project)
@@ -773,6 +789,21 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
         }
     }
+
+
+    goToOperatingHours() {
+        this.router.navigate(['project/' + this.projectId + '/hours']);
+    }
+
+    getTestSiteUrl() {
+        this.TESTSITE_BASE_URL = this.appConfigService.getConfig().testsiteBaseUrl;
+        console.log('AppConfigService getAppConfig (WS-REQUESTS-LIST COMP.) TESTSITE_BASE_URL', this.TESTSITE_BASE_URL);
+      }
+
+    testWidgetPage() {
+        const url = this.TESTSITE_BASE_URL + '?tiledesk_projectid=' + this.projectId + '&project_name=' + this.projectName + '&isOpen=true'
+        window.open(url, '_blank');
+      }
 
 
     hasmeInAgents(agents) {
@@ -1187,6 +1218,9 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     ngAfterViewChecked() {
         // console.log('++ ++ +++ ngAfterViewChecked');
     }
+
+    
+
 
     sidebarOpen() {
         if (this.toggleButton) {

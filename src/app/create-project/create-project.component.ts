@@ -91,7 +91,8 @@ export class CreateProjectComponent implements OnInit {
         // THE SIDEBAR SIGNS UP FOR ITS PUBLICATION
         const newproject: Project = {
           _id: project._id,
-          name: project.name
+          name: project.name,
+          operatingHours: project.activeOperatingHours
         }
 
         // SENT THE NEW PROJECT TO THE AUTH SERVICE THAT PUBLISH

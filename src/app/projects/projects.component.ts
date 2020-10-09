@@ -108,6 +108,16 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     this.getOSCODE();
   }
 
+
+  ngOnDestroy() {
+    this.projects.forEach(project => {
+      this.usersService.unsubsToWS_CurrentUser_allProject(project.id_project._id, project._id)
+    });
+
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
     console.log('AppConfigService getAppConfig (PROJECTS-LIST) public_Key', this.public_Key)
@@ -135,13 +145,10 @@ export class ProjectsComponent implements OnInit, OnDestroy {
           }
         }
       });
-
     } else {
       this.MT = false;
       console.log('PUBLIC-KEY (PROJECTS-LIST) - mt is', this.MT);
     }
-
-
   }
 
 
@@ -188,7 +195,8 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     project_profile_name: string,
     project_trial_expired: string,
     project_trial_days_left: number,
-    project_status: number) {
+    project_status: number,
+    activeOperatingHours: boolean) {
 
     console.log('!!! GO TO HOME - PROJECT status ', project_status)
 
@@ -201,7 +209,8 @@ export class ProjectsComponent implements OnInit, OnDestroy {
         name: project_name,
         profile_name: project_profile_name,
         trial_expired: project_trial_expired,
-        trial_days_left: project_trial_days_left
+        trial_days_left: project_trial_days_left,
+        operatingHours: activeOperatingHours
       }
 
       this.auth.projectSelected(project)
@@ -285,7 +294,8 @@ export class ProjectsComponent implements OnInit, OnDestroy {
               trial_expired: project.id_project.trialExpired,
               trial_days_left: project.id_project.trialDaysLeft,
               profile_type: project.id_project.profile.type,
-              subscription_is_active: project.id_project.isActiveSubscription
+              subscription_is_active: project.id_project.isActiveSubscription,
+              operatingHours: project.id_project.activeOperatingHours
             }
 
             // this.subsTo_WsCurrentUser( project.id_project._id)
@@ -381,14 +391,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   }
 
 
-  ngOnDestroy() {
-    this.projects.forEach(project => {
-      this.usersService.unsubsToWS_CurrentUser_allProject(project.id_project._id, project._id)
-    });
 
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
 
   // getProjectUsersIdByCurrentUserId(projectid) {
 
@@ -457,6 +460,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
         const newproject: Project = {
           _id: project._id,
           name: project.name
+          
         }
 
         // SENT THE NEW PROJECT TO THE AUTH SERVICE THAT PUBLISH

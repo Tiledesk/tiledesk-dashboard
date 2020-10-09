@@ -125,7 +125,7 @@
   <!-- <img style="width:100px" src="assets/img/tiledesk-logo.png"/> -->
   <img [ngStyle]="{'width':companyLogoBlack_width}" [src]="companyLogoBlack_Url"
     style="z-index: 1;position: relative;" />
-  
+
 </a>
 
 
@@ -136,11 +136,11 @@
 
 <div class="main-content" style="">
 
-   <!--  TEST EMAIL VERIFY -->
-   <!-- <div>
+  <!--  TEST EMAIL VERIFY -->
+  <!-- <div>
     <a (click)="testVerifyEmail()">VERIFY EMAIL</a>
    </div> -->
-   
+
 
   <!-- text-white bg-primary -->
   <!-- [ngStyle]="{'background':pageBackgroundColor}" -->
@@ -203,7 +203,8 @@
           <!-- CARD ADD PROJECT -->
           <!-- style="max-width: 256px;" -->
           <!-- openCreateModal()  -->
-          <div id="create-prjct-card" class="card custom-card-box-shadow" (click)='goToCreateProject()' style="border-radius:3px;">
+          <div id="create-prjct-card" class="card custom-card-box-shadow" (click)='goToCreateProject()'
+            style="border-radius:3px;">
             <div class="card-content" style="height:203px;">
               <!-- #55b9d1 -->
               <h3 class="card-add-project-icon">
@@ -245,8 +246,14 @@
             <!-- style="max-width: 256px;" -->
             <div class="card custom-card-box-shadow"
               [ngClass]="{'project-deleted-card' : project?.id_project?.status === 0, 'delete-image-bckground':project?.id_project?.status === 0}"
-              style="border-bottom-left-radius: 3px; border-bottom-right-radius: 3px;"
-              (click)='goToHome(project?.id_project?._id, project?.id_project?.name, project?.id_project?.profile?.name, project?.id_project?.trialExpired, project?.id_project?.trialDaysLeft, project?.id_project?.status)'>
+              style="border-bottom-left-radius: 3px; border-bottom-right-radius: 3px;" (click)='goToHome(
+                project?.id_project?._id, 
+              project?.id_project?.name, 
+              project?.id_project?.profile?.name, 
+              project?.id_project?.trialExpired, 
+              project?.id_project?.trialDaysLeft, 
+              project?.id_project?.status, 
+              project?.id_project?.activeOperatingHours)'>
               <!-- <div class="card-header card-header-custom-bkgrnd-project"> </div> -->
 
               <div class="card-content card-content-custom-height">

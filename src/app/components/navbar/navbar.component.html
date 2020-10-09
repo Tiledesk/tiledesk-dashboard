@@ -41,13 +41,46 @@
           </a>
         </li>
 
+        <ng-container class="test-site">
+          <li *ngIf="project">
+            <a class="tool_tip" style="cursor: pointer;" (click)="testWidgetPage()">
+              <i class="material-icons navbar-test-site-btn">play_arrow</i>
+              <p class="hidden-lg hidden-md">testwidget</p>
+              <div class="bottom" style="text-align: center; padding: 4px; border-radius: 3px; text-transform: none;  min-width: fit-content; white-space: nowrap;">
+                {{ 'VisitorsPage.SimulateVisitor' | translate }}
+                <i></i>
+              </div>
+            </a>
+          </li>
+        </ng-container>
 
+        <ng-container class="operating-hours">
+          <li *ngIf="project">
+            <a class="tool_tip" style="cursor: pointer;" *ngIf="!OPERATING_HOURS_ACTIVE" (click)="goToOperatingHours()">
+              <i class="material-icons" style="color:#AAA">access_time</i>
+          
+              <p class="hidden-lg hidden-md">operatinghoursoff</p>
+              <div class="bottom" style="text-align: center; padding: 4px; border-radius: 3px; text-transform: none; min-width: fit-content; white-space: nowrap;">
+                {{ 'OperatingHoursAreDisabled' | translate }}
+                <i></i>
+              </div>
+            </a>
+            <a class="tool_tip" style="cursor: pointer;" *ngIf="OPERATING_HOURS_ACTIVE" (click)="goToOperatingHours()">
+              <i class="material-icons" style="color:#3ea9f5">access_time</i>
+              <p class="hidden-lg hidden-md">operatinghourson</p>
+              <div class="bottom" style="text-align: center; padding: 4px; border-radius: 3px;">
+                {{ 'OperatingHoursAreEnabled' | translate }}
+
+                <i></i>
+              </div>
+            </a>
+          </li>
+        </ng-container>
 
         <!-- 
-            ------------ ============================= ------------
-            ************ UPGRADE (PROFILE TYPE = FREE) ************
-            ------------ ============================= ------------ 
-            -->
+        ------------ ============================= ------------
+        ************ UPGRADE (PROFILE TYPE = FREE) ************
+        ------------ ============================= ------------    -->
         <ng-container *ngIf="isVisible">
           <li *ngIf="project && prjct_profile_type === 'free'">
 
@@ -150,7 +183,7 @@
         <!-- ------------ ============ PROJECTS ============ ------------ -->
         <li *ngIf="project">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <i class="material-icons">view_module</i>
+            <i class="material-icons" style="margin-right: 3px;">arrow_drop_down_circle</i>
             <span style="text-transform: none"> {{ project.name }} </span>
             <p class="hidden-lg hidden-md">Projects</p>
           </a>
@@ -200,7 +233,11 @@
             -->
             <!-- *ngFor="let prjct of projects?.slice().reverse() | slice:0:5; let i=index" -->
             <li *ngFor="let prjct of projects?.slice() | slice:0:5; let i=index" style="cursor: pointer">
-              <a (click)="goToHome(prjct?.id_project?._id, prjct?.id_project?.name)"
+              <a (click)="goToHome(prjct?.id_project?._id, prjct?.id_project?.name,
+              project?.id_project?.profile?.name, 
+              project?.id_project?.trialExpired, 
+              project?.id_project?.trialDaysLeft, 
+              project?.id_project?.activeOperatingHours)"
                 [ngClass]="{'li-selected' : prjct?.id_project?._id === projectId }">
 
                 <span> {{ prjct?.id_project?.name }} </span>
@@ -299,16 +336,15 @@
                   {{ user?.email }}
                 </h4>
 
-                
-                <button *ngIf="project" class="btn btn-primary view-user-profile-btn" 
-                routerLink="project/{{ project._id }}/user-profile">
+
+                <button *ngIf="project" class="btn btn-primary view-user-profile-btn"
+                  routerLink="project/{{ project._id }}/user-profile">
                   {{ 'NavBar.UserProfile' | translate }}
                 </button>
               </div>
 
               <li class="divider"></li>
-              <button type="submit" class="btn btn-white logout-user-profile-btn"
-                (click)="openLogoutModal()">
+              <button type="submit" class="btn btn-white logout-user-profile-btn" (click)="openLogoutModal()">
                 <!-- Log Out -->
                 {{ 'NavBar.LogOut' | translate }}
               </button>

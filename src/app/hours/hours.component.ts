@@ -12,7 +12,7 @@ import * as moment from 'moment-timezone'
 import { NotifyService } from '../core/notify.service';
 
 import { Router, NavigationEnd, RoutesRecognized, NavigationStart, ActivatedRoute } from '@angular/router';
-
+import { Project } from './../models/project-model';
 @Component({
   selector: 'appdashboard-hours',
   templateUrl: './hours.component.html',
@@ -444,7 +444,9 @@ export class HoursComponent implements OnInit, OnDestroy {
     this.projectService
       .updateProjectOperatingHours(this.activeOperatingHours, this.operatingHours)
       .subscribe(project => {
-        console.log('»»»»»»» UPDATED PROJECT ', project);
+        console.log('HO »»»»»» UPDATED PROJECT ', project);
+
+
       });
   }
 
@@ -566,12 +568,27 @@ export class HoursComponent implements OnInit, OnDestroy {
         .updateProjectOperatingHours(this.activeOperatingHours, operatingHoursUpdatedStr)
         .subscribe(project => {
           console.log('HOURS COMP »»»»»»» UPDATED PROJECT ', project);
+
+          const _project: Project = {
+            _id: project['_id'],
+            name: project['name'],
+            profile_name: project['profile'].name,
+            trial_expired: project['trialExpired'],
+            trial_days_left: project['trialDaysLeft'],
+            operatingHours: project['activeOperatingHours']
+          }
+
+          localStorage.setItem(project['_id'], JSON.stringify(_project));
+
+          this.auth.projectSelected(_project)
+
+
         },
           (error) => {
             console.log('HOURS COMP »»»»»»» UPDATE PROJECT - ERROR ', error);
             this.SHOW_CIRCULAR_SPINNER = false;
             this.UPDATE_HOURS_ERROR = true;
-            this.notify.showNotification('An error has occurred updating operating hours', 4, 'report_problem')
+            this.notify.showWidgetStyleUpdateNotification('An error has occurred updating operating hours', 4, 'report_problem')
           },
           () => {
             console.log('HOURS COMP »»»»»»» UPDATE PROJECT * COMPLETE *');
@@ -581,7 +598,7 @@ export class HoursComponent implements OnInit, OnDestroy {
             }, 300);
 
             this.UPDATE_HOURS_ERROR = false;
-            this.notify.showNotification('operating hours has been successfully updated', 2, 'done');
+            this.notify.showWidgetStyleUpdateNotification('operating hours has been successfully updated', 2, 'done');
           });
 
     } else {

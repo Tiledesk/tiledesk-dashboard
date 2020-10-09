@@ -255,6 +255,7 @@ export class AuthGuard implements CanActivate {
           profile_name: prjct[0].id_project.profile.name,
           trial_expired: prjct[0].id_project.trialExpired,
           trial_days_left: prjct[0].id_project.trialDaysLeft,
+          operatingHours: prjct[0].id_project.activeOperatingHours
         }
         // PROJECT ID and NAME ARE SENT TO THE AUTH SERVICE THAT PUBLISHES
         this.auth.projectSelected(project);
@@ -267,7 +268,8 @@ export class AuthGuard implements CanActivate {
           role: prjct[0].role,
           profile_name: prjct[0].id_project.profile.name,
           trial_expired: prjct[0].id_project.trialExpired,
-          trial_days_left: prjct[0].id_project.trialDaysLeft
+          trial_days_left: prjct[0].id_project.trialDaysLeft,
+          operatingHours: prjct[0].id_project.activeOperatingHours
         }
         // SET THE ID, the NAME OF THE PROJECT and THE USER ROLE IN THE LOCAL STORAGE.
         console.log('!! »»»»» AUTH GUARD - PROJECT THAT IS STORED', projectForStorage);

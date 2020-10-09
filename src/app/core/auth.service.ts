@@ -11,7 +11,7 @@ import { User } from '../models/user-model';
 import { Project } from '../models/project-model';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/toPromise';
-import { UsersLocalDbService } from '../services/users-local-db.service';
+import { LocalDbService } from '../services/users-local-db.service';
 import { Location } from '@angular/common';
 import { Subscription } from 'rxjs/Subscription';
 import { isDevMode } from '@angular/core';
@@ -99,7 +99,7 @@ export class AuthService {
     // private afAuth: AngularFireAuth,
     private router: Router,
     private notify: NotifyService,
-    private usersLocalDbService: UsersLocalDbService,
+    private usersLocalDbService: LocalDbService,
     private route: ActivatedRoute,
     public location: Location,
     public appConfigService: AppConfigService,
@@ -362,6 +362,8 @@ export class AuthService {
                   const project_trial_expired = storedProjectObject['trial_expired'];
                   const project_trial_days_left = storedProjectObject['trial_days_left'];
                   this.project_trial_expired = storedProjectObject['trial_expired'];
+                  const storedProjectOH = storedProjectObject['operatingHours'];   
+                 
                   // tslint:disable-next-line:max-line-length
                   // console.log('»> »> PROJECT-PROFILE GUARD (WF in AUTH SERV checkStoredProjectAndPublish) TRIAL expired 2', this.project_trial_expired);
 
@@ -372,7 +374,8 @@ export class AuthService {
                     name: project_name,
                     profile_name: project_profile_name,
                     trial_expired: project_trial_expired,
-                    trial_days_left: project_trial_days_left
+                    trial_days_left: project_trial_days_left,
+                    operatingHours: storedProjectOH
                   }
                   // console.log('!! AUTH in auth.serv  - 1) PROJECT THAT IS PUBLISHED: ', project);
                   // SE NN C'è IL PROJECT NAME COMUNQUE PUBBLICO PERCHè CON L'ID DEL PROGETTO VENGONO EFFETTUATE DIVERSE CALLBACK

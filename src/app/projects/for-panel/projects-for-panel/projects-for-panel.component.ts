@@ -19,7 +19,7 @@ import { takeUntil } from 'rxjs/operators';
 import { BrandService } from '../../../services/brand.service';
 import PerfectScrollbar from 'perfect-scrollbar';
 // import { PerfectScrollbarTdDirective } from '../../../_directives/td-perfect-scrollbar/perfect-scrollbar-td.directive';
-
+declare const ngDevMode: boolean;
 @Component({
   selector: 'appdashboard-projects-for-panel',
   templateUrl: './projects-for-panel.component.html',
@@ -103,6 +103,9 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
   // -----------------------------------------------
 
   ngOnInit() {
+    if (ngDevMode) {
+      console.log('PROJECTS-X-PANEL DEV MODE');
+    }
     const navbar: HTMLElement = this.element.nativeElement;
     this.toggleButton = navbar.getElementsByClassName('navbar-toggle')[0];
 
@@ -271,7 +274,8 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
 
         this.projects.forEach(project => {
           console.log('PROJECTS-X-PANEL !!! SET PROJECT IN STORAGE')
-          if (project.id_project) {
+          
+          if (project.id_project) {      
             const prjct: Project = {
               _id: project.id_project._id,
               name: project.id_project.name,
@@ -280,16 +284,14 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
               trial_expired: project.id_project.trialExpired,
               trial_days_left: project.id_project.trialDaysLeft,
               profile_type: project.id_project.profile.type,
-              subscription_is_active: project.id_project.isActiveSubscription
+              subscription_is_active: project.id_project.isActiveSubscription,
+              operatingHours: project.id_project.activeOperatingHours
             }
 
             if (project && project.id_project &&  project.id_project.name ) {
               project['project_name_initial'] = project.id_project.name.charAt(0)
             }
-            
-
-
-
+ 
             // this.subsTo_WsCurrentUser( project.id_project._id)
             // this.getProjectUsersIdByCurrentUserId(project.id_project._id)
 
@@ -299,7 +301,7 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
              */
             this.usersService.subscriptionToWsCurrentUser_allProject(project.id_project._id, project._id);
 
-            this.listenTocurrentUserWSAvailabilityAndBusyStatustForProject$()
+            this.listenTocurrentUserWSAvailabilityAndBusyStatustForProject$(project)
 
             // .then((data) => {
 
@@ -361,19 +363,19 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
     });
   }
 
-  listenTocurrentUserWSAvailabilityAndBusyStatustForProject$() {
+  listenTocurrentUserWSAvailabilityAndBusyStatustForProject$(project) {
     this.usersService.currentUserWsBusyAndAvailabilityForProject$
       .pipe(
         takeUntil(this.unsubscribe$)
       )
       .subscribe((projectUser) => {
         // console.log('PROJECT COMP $UBSC  TO WS USER AVAILABILITY & BUSY STATUS DATA (listenTo)', projectUser);
-        this.projects.forEach(project => {
+        // this.projects.forEach(project => {
           if (project.id_project._id === projectUser['id_project']) {
             project['ws_projct_user_available'] = projectUser['user_available'];
             project['ws_projct_user_isBusy'] = projectUser['isBusy']
           }
-        });
+        // });
 
       }, (error) => {
         console.log('PROJECTS-X-PANEL $UBSC TO WS USER AVAILABILITY & BUSY STATUS error ', error);
