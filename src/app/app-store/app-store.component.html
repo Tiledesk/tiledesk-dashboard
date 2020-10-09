@@ -4,14 +4,17 @@
 
 <div class="main-content">
   <div class="container-fluid">
-    <div class="row">
 
+    <loading-spinner *ngIf="showSpinner"></loading-spinner>
+   
+    <div *ngIf="!showSpinner" class="row">
+      
 
       <div *ngFor="let app of apps" class="col-lg-4 col-md-4 col-sm-6" style="cursor:pointer">
 
-        <loading-spinner *ngIf="showSpinner"></loading-spinner>
+        
 
-        <div *ngIf="!showSpinner" class="card card-app-store">
+        <div class="card card-app-store">
 
           <div class="card-content">
 

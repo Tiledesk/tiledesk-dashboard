@@ -14,7 +14,7 @@ export class AppStoreComponent implements OnInit {
   apps: any;
   subscription: Subscription;
   projectId: string;
-  showSpinner: boolean = true;
+  showSpinner = true;
 
   constructor(
     public appStoreService: AppStoreService,
@@ -52,9 +52,9 @@ export class AppStoreComponent implements OnInit {
 
       this.apps.forEach(app => {
         
-        if (app.description.length > 70) {
+        if (app.description.length > 118) {
 
-          app.description = app.description.slice(0, 64) + '...'
+          app.description = app.description.slice(0, 118) + '...'
         }
 
         // getRequestText(text: string): string {
@@ -70,10 +70,10 @@ export class AppStoreComponent implements OnInit {
 
     }, (error) => {
       console.log('APP-STORE - ERROR  ', error);
-    this.showSpinner = false
+    this.showSpinner = false;
     }, () => {
       console.log('APP-STORE * COMPLETE *');
-      this.showSpinner = false
+      this.showSpinner = false;
     });
   }
 
