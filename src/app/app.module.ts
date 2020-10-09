@@ -77,7 +77,7 @@ import { SocialComponent } from './social/social.component';
 
 import { UserEditAddComponent } from './user-edit-add/user-edit-add.component';
 import { UsersProfileComponent } from './users-profile/users-profile.component';
-import { UsersLocalDbService } from './services/users-local-db.service';
+import { LocalDbService } from './services/users-local-db.service';
 import { RoutingPageComponent } from './routing-page/routing-page.component';
 import { VerifyEmailComponent } from './verify-email/verify-email.component';
 import { RequestsMsgsComponent } from './requests-msgs/requests-msgs.component';
@@ -347,7 +347,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     RouterModule,
     HeatMapModule,
     // AngularFireModule.initializeApp(firebaseConfig),
-    HttpModule,
+    // HttpModule,
     HttpClientModule,
     MomentModule,
     AmazingTimePickerModule,
@@ -395,7 +395,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     BotService,
     FaqKbService,
     ProjectService,
-    UsersLocalDbService,
+    LocalDbService,
     GroupService,
     BotLocalDbService,
     ResetPswService,
