@@ -1,6 +1,14 @@
 
 # tiledesk-dashboard
 
+### 2.0.71
+- Displays the in-app notifications only once
+- Renames occurrences of 'requests' to 'conversations'
+- Gets contacts presence from websocket subscription (no longer from firebase)
+- Fixes widget logo
+- Adds on the navigation a link to the widget test page
+- Adds on the navigation bar the ability to know if the operating hours are enabled
+
 ### 2.0.68
 - Displays in requests list name initials if profile picture is not provided
 
