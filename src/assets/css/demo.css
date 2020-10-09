@@ -118,6 +118,10 @@ my-app .main-panel .main-content .card {
   margin-top: 0px;
 }
 
+/* 
+// -----------------
+// tooltip top
+// ----------------- */
 .tool_tip .top {
   min-width: 200px;
   max-width: 400px;
@@ -163,6 +167,62 @@ my-app .main-panel .main-content .card {
   opacity: 1;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
 }
+
+/* ./end tootip top  */
+
+/* tootip bottom  */
+
+
+.tool_tip .bottom {
+  min-width:200px;
+  /*max-width:400px;*/
+  top:40px;
+  left:50%;
+  transform:translate(-50%, 0);
+  padding:10px;
+  color:#ffffff;
+  background-color:#394f5a;
+  font-weight:normal;
+  font-size:12px;
+  border-radius:8px;
+  position:absolute;
+  z-index:99999999;
+  box-sizing:border-box;
+  box-shadow:0 1px 8px rgba(0,0,0,0.5);
+  display:none;
+}
+
+.tool_tip:hover .bottom {
+  display:block;
+}
+
+.tool_tip .bottom img {
+  width:400px;
+}
+
+.tool_tip .bottom i {
+  position:absolute;
+  bottom:100%;
+  left:50%;
+  margin-left:-12px;
+  width:24px;
+  height:12px;
+  overflow:hidden;
+}
+
+.tool_tip .bottom i::after {
+  content:'';
+  position:absolute;
+  width:12px;
+  height:12px;
+  left:50%;
+  transform:translate(-50%,50%) rotate(45deg);
+  background-color:#394f5a;
+  box-shadow:0 1px 8px rgba(0,0,0,0.5);
+}
+
+
+
 
 
 /* table style overwrite */
