@@ -528,8 +528,8 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
         // case logoChat = 'userCompanyLogoUrl' > display the userCompanyLogoUrl
         // logoChat (WIDGET AND LOGOCHAT DEFINED - USER HAS SETTED HIS LOGO)
         // ------------------------------------------------------------------------
-        if (project.widget.logoChat && project.widget.logoChat !== 'nologo' && project.widget.logoChat !== 'tiledesklogo') {
-
+        // if (project.widget.logoChat && project.widget.logoChat !== 'nologo' && project.widget.logoChat !== 'tiledesklogo') {
+        if (project.widget.logoChat && project.widget.logoChat !== 'nologo' && project.widget.logoChat !== 'https://tiledesk.com/tiledesk-logo-white.png') {
           this.logoUrl = project.widget.logoChat;
           this.hasOwnLogo = true;
           this.LOGO_IS_ON = true;
@@ -543,7 +543,8 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
           // case logoChat = 'nologo' > no logo is displayed
           // logoChat (WIDGET AND LOGOCHAT DEFINED - USER HAS SELECTED 'NO LOGO')
           // ------------------------------------------------------------------------
-        } else if (project.widget.logoChat && project.widget.logoChat === 'nologo' && project.widget.logoChat !== 'tiledesklogo') {
+        // } else if (project.widget.logoChat && project.widget.logoChat === 'nologo' && project.widget.logoChat !== 'tiledesklogo') {
+        } else if (project.widget.logoChat && project.widget.logoChat === 'nologo' && project.widget.logoChat !== 'https://tiledesk.com/tiledesk-logo-white.png') {
           this.logoUrl = 'No Logo';
           this.hasOwnLogo = false;
           this.LOGO_IS_ON = false;
@@ -559,7 +560,8 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
           // logoChat (WIDGET DEFINED BUT NOT LOGOCHAT - SET DEFAULT)
           // ------------------------------------------------------------------------
         } else {
-          this.logoUrl = 'tiledesklogo'
+          // this.logoUrl = 'tiledesklogo'
+          this.logoUrl = 'https://tiledesk.com/tiledesk-logo-white.png'
           this.hasOwnLogo = false;
           this.LOGO_IS_ON = true
 
@@ -642,7 +644,8 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
         // @ LogoChat
         // WIDGET UNDEFINED
         // -----------------------------------------------------------------------
-        this.logoUrl = 'tiledesklogo'
+        // this.logoUrl = 'tiledesklogo'
+        this.logoUrl = 'https://tiledesk.com/tiledesk-logo-white.png'
         this.hasOwnLogo = false;
         this.LOGO_IS_ON = true
 
@@ -891,7 +894,8 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
 
     } else if ($event.target.checked === true) {
 
-      this.logoUrl = 'tiledesklogo'
+      // this.logoUrl = 'tiledesklogo'
+      this.logoUrl = 'https://tiledesk.com/tiledesk-logo-white.png'
       this.LOGO_IS_ON = true;
       console.log('»» WIDGET DESIGN LOGO_IS_ON ', this.LOGO_IS_ON)
       this.hasOwnLogo = false;
@@ -927,7 +931,8 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     /// LOGO
     if (this.logoUrl && this.LOGO_IS_ON === true) {
 
-      if (this.logoUrl !== 'tiledesklogo') {
+      // if (this.logoUrl !== 'tiledesklogo') {
+      if (this.logoUrl !== 'https://tiledesk.com/tiledesk-logo-white.png') {
         this.hasOwnLogo = true;
         console.log('»» WIDGET DESIGN - HAS OWN LOGO ', this.hasOwnLogo, 'LOGO IS ON ', this.LOGO_IS_ON, ' logoUrl: ', this.logoUrl);
       } else {
@@ -949,7 +954,8 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
       // *** REMOVE PROPERTY
       delete this.widgetObj['logoChat'];
 
-      this.logoUrl = 'tiledesklogo'
+      // this.logoUrl = 'tiledesklogo'
+      this.logoUrl = 'https://tiledesk.com/tiledesk-logo-white.png'
       this.hasOwnLogo = false;
       console.log('»» WIDGET DESIGN - HAS OWN LOGO ', this.hasOwnLogo, 'LOGO IS ON ', this.LOGO_IS_ON, ' logoUrl: ', this.logoUrl);
     }

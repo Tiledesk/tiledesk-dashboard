@@ -28,7 +28,7 @@ export class WidgetDesignBaseComponent extends WidgetSharedComponent implements 
     'preChatForm': false,
     'calloutTimer': -1,
     'align': 'right',
-    'logoChat': 'tiledesklogo',
+    'logoChat': 'https://tiledesk.com/tiledesk-logo-white.png',
     'themeColor': '#2a6ac1',
     'themeForegroundColor': '#ffffff',
     'en': {

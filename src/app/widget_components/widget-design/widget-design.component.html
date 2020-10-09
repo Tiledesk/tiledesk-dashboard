@@ -1248,7 +1248,7 @@
 										<input class="custom-input" (ngModelChange)="logoChange($event)"
 											[(ngModel)]="logoUrl" style="font-weight: 400;margin-bottom: 16px;"
 											[ngClass]="{'image-not-exist-input-border' : IMAGE_EXIST === false, 'input-is-disabled': LOGO_IS_ON === false}"
-											placeholder="tiledesklogo" [disabled]="LOGO_IS_ON === false">
+											placeholder="{{ 'YourLogoURL' | translate }}" [disabled]="LOGO_IS_ON === false">
 
 										<span *ngIf="IMAGE_EXIST === false"
 											style="color:#f44336; display: block;font-size: 12px;">
@@ -1490,7 +1490,7 @@
 																		<img *ngIf="!hasOwnLogo"
 																			style="height: 32px; width: auto;margin-bottom: 20px;"
 																			alt="logo"
-																			src="https://tiledesk.com/tiledesk-logo-white/">
+																			src="https://tiledesk.com/tiledesk-logo-white.png/">
 																		<img *ngIf="hasOwnLogo"
 																			style="height: 32px; width: auto;margin-bottom: 20px;"
 																			alt="myLogo" [src]="logoUrl">
