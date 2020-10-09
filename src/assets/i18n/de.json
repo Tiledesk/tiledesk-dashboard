@@ -1547,6 +1547,7 @@
 	"RestoreContact":"Kontakt wiederherstellen",
 	"NoProjects": "Keine Projekte",
 	"RelatedKnowledgeBase":"Verwandte Wissensdatenbank",
-	"LoadBrandError":"Beim Hochladen Ihrer Marke ist ein Fehler aufgetreten. Fehlercode:"
-	
+	"LoadBrandError":"Beim Hochladen Ihrer Marke ist ein Fehler aufgetreten. Fehlercode:",
+	"OperatingHoursAreEnabled":"Betriebsstunden sind aktiviert",
+	"OperatingHoursAreDisabled":"Betriebsstunden sind deaktiviert"
 }
