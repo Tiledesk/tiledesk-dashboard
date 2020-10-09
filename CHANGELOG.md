@@ -6,8 +6,8 @@
 - Renames occurrences of 'requests' to 'conversations'
 - Gets contacts presence from websocket subscription (no longer from firebase)
 - Fixes widget logo
-- Adds, on the navigation bar, a link to the simulate visitor page
-- Adds, on the navigation bar, the ability to know if the operating hours are enabled
+- Adds a link to the simulate visitor page on the navigation bar
+- Adds the ability to know if the operating hours are enabled on the navigation bar
 - Fixes the loading spinner display in app-store page
 
 ### 2.0.68
