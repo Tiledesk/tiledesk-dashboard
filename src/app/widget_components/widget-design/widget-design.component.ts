@@ -386,11 +386,13 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
       .subscribe((labels: any) => {
         console.log('Multilanguage (widget-design) - saveTranslation RES ', labels);
 
-
       }, error => {
         console.log('Multilanguage (widget-design) - saveTranslation - ERROR ', error)
       }, () => {
-        this.notify.showWidgetStyleUpdateNotification(this.updateWidgetSuccessNoticationMsg, 2, 'done');
+
+        if (!this.HAS_SELECTED_APPEARANCE) {
+          this.notify.showWidgetStyleUpdateNotification(this.updateWidgetSuccessNoticationMsg, 2, 'done');
+        }
         console.log('Multilanguage (widget-design) - saveTranslation * COMPLETE *')
       });
   }
@@ -543,7 +545,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
           // case logoChat = 'nologo' > no logo is displayed
           // logoChat (WIDGET AND LOGOCHAT DEFINED - USER HAS SELECTED 'NO LOGO')
           // ------------------------------------------------------------------------
-        // } else if (project.widget.logoChat && project.widget.logoChat === 'nologo' && project.widget.logoChat !== 'tiledesklogo') {
+          // } else if (project.widget.logoChat && project.widget.logoChat === 'nologo' && project.widget.logoChat !== 'tiledesklogo') {
         } else if (project.widget.logoChat && project.widget.logoChat === 'nologo' && project.widget.logoChat !== 'https://tiledesk.com/tiledesk-logo-white.png') {
           this.logoUrl = 'No Logo';
           this.hasOwnLogo = false;
