@@ -228,6 +228,28 @@ input[type="checkbox"]:disabled {
   left: -4px;
   border-radius: 50%;
   border: 1px solid #eee;
-  padding:  1px;
+  padding: 1px;
   background: #fff;
 }
+
+
+@media (min-width: 768px) {
+  .bot--full--desc {
+    display: block;
+  }
+  .bot--truncated--desc {
+    display: none;
+  }
+
+}
+
+@media (max-width: 768px) {
+  .bot--truncated--desc {
+    display: block;
+  }
+  .bot--full--desc {
+    display: none;
+  }
+
+}
+

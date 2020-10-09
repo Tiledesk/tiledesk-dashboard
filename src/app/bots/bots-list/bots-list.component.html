@@ -26,8 +26,8 @@
           </div>
 
           <loading-spinner *ngIf="showSpinner"></loading-spinner>
-
-          <div *ngIf="!showSpinner" class="card-content table-responsive" style="overflow:visible;">
+          <!-- style="overflow:visible;" -->
+          <div *ngIf="!showSpinner" class="card-content table-responsive" >
             <table class="table table-hover">
               <thead>
                 <tr>
@@ -215,11 +215,18 @@
                     </span>
 
                     <div *ngIf="faqkb?.description" class="tool_tip"
-                      style="color: #7695a5; font-weight: 400; line-height:18px; font-size:12px; display: block;">
+                      style="color: #7695a5; font-weight: 400; line-height:18px; font-size:12px; 
+                      display: block; display: -webkit-box;
+                      -webkit-line-clamp: 2;
+                      -webkit-box-orient: vertical;
+                      overflow: hidden;
+                      text-overflow: ellipsis;">
                       
-                      <div> {{ faqkb?.truncated_desc}} </div> 
+                      <div class="bot--truncated--desc"> {{ faqkb?.truncated_desc}} </div> 
+                      <div class="bot--full--desc"> {{ faqkb?.description}} </div> 
+                      
 
-                      <div class="top">
+                      <!-- <div class="top">
                         <h4>{{ 'Description' | translate }}</h4>
 
                        <div class="line-clamp" style="display: -webkit-box;
@@ -228,7 +235,7 @@
                        overflow: hidden;
                        text-overflow: ellipsis;">{{ faqkb?.description}}  </div> 
                         <i></i>
-                      </div>
+                      </div> -->
                     </div>
 
 
@@ -252,7 +259,7 @@
                       <i class="material-icons">edit</i>
                     </button>
 
-                    <button type="button" rel="tooltip" title="{{ 'BotsPage.tooltipDeleteBot' | translate }}"
+                    <button *ngIf="!faqkb?.is_system_identity_bot" type="button" rel="tooltip" title="{{ 'BotsPage.tooltipDeleteBot' | translate }}"
                       class="btn btn-danger btn-simple btn-xs"
                       (click)='openDeleteModal(faqkb?._id, faqkb?.name, faqkb?.has_faq, faqkb?.type)'>
                       <i class="material-icons">close</i>

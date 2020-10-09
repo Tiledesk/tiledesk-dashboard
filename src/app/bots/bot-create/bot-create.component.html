@@ -60,7 +60,7 @@
 
             <!-- 
             // ------------------------------------------------------
-            // Bot name - common for native and external
+            // Bot name - common for native and external and identity
             // ------------------------------------------------------ -->
             <div class="row" *ngIf="botType !== 'dialogflow'" style="margin-top: 18px;">
               <label class="col-sm-2 custom-label">
@@ -326,6 +326,14 @@
                 </span>
               </p>
             </section>
+
+            <section *ngIf="botType === 'identity'">
+              <p style="color:#7695a5">
+                {{ "AnIdentityBotRepresents" | translate }}
+              </p>
+            </section>
+
+            
 
             <section *ngIf="botType === 'dialogflow'">
               <p style="color:#7695a5">

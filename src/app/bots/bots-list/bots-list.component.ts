@@ -185,6 +185,9 @@ export class BotListComponent implements OnInit {
             let stripHere = 40;
             this.faqkbList[i]['truncated_desc'] = this.faqkbList[i].description.substring(0, stripHere) + '...';
           }
+          if(this.faqkbList[i].createdBy === 'system' && this.faqkbList[i].type === 'identity') {
+            this.faqkbList[i]['is_system_identity_bot'] = true;
+          }
         }
       }
 

@@ -436,6 +436,7 @@
     "UseDialogflowToTrainYourBot...": "Use Dialogflow to train your bot with our native and innovative Dialogflow integration",
     "UseYourFavouriteTechnology...": "Use your favourite technology to embed your chatbot with {{ company_name }}. Take a look at our",
     "GetStartedTutorial": "Get Started Tutorial",
+    "AnIdentityBotRepresents":"An identity bot represents a virtual profile used for automatic messages sent by the system (e.g. sending messages in triggers)",    
     "DialogflowKnowledgeBaseID": "Dialogflow knowledge base ID",
     "FillTheFieldOnlyIfYouWantToUseDialogflowKB": "Fill the field only if you want to use the Dialogflow's Knowledge-base feature",
     "HereTheTutorial": "Here the tutorial on how connect your chatbots to {{ company_name }}.",
