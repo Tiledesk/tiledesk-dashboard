@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.0.72 
+- Adds the ability in conversations list to filter for Human Agents only and for Bots Only
+
 ### 2.0.71
 - Displays the in-app notifications only once
 - Renames occurrences of 'requests' to 'conversations'
@@ -9,6 +12,7 @@
 - Adds a link to the simulate visitor page on the navigation bar
 - Adds the ability to know if the operating hours are enabled on the navigation bar
 - Fixes the loading spinner display in app-store page
+
 
 ### 2.0.68
 - Displays in requests list name initials if profile picture is not provided
