@@ -2,7 +2,7 @@
 # tiledesk-dashboard
 
 ### 2.0.72 
-- Adds the ability in conversations list to filter for Human Agents only and for Bots Only
+- Adds the ability in conversations list to filter for "Human Agents only" and for "Bots Only"
 
 ### 2.0.71
 - Displays the in-app notifications only once
