@@ -26,6 +26,7 @@ export class WsSharedComponent implements OnInit {
   department_id: string;
   source_page: string;
   participantsInRequests: any;
+
   depts_array_noduplicate = [];
   OPEN_RIGHT_SIDEBAR = false;
   selectedQuestion: string;
@@ -33,6 +34,10 @@ export class WsSharedComponent implements OnInit {
   newParticipants: any
   user: any;
 
+  // humanAgents: any;
+  // botAgents: any;
+  humanAgentsIdArray: any;
+  botAgentsIdArray: any;
   constructor(
     public botLocalDbService: BotLocalDbService,
     public usersLocalDbService: LocalDbService,
@@ -495,10 +500,14 @@ export class WsSharedComponent implements OnInit {
 
     this.participantsInRequests = [];
 
+    // this.humanAgents = [];
+    // this.botAgents = [];
+    this.botAgentsIdArray  = [];
+    this.humanAgentsIdArray = [];
+
     ws_requests.forEach(request => {
 
       request.participants.forEach(participant => {
-
 
         // WITH THE PURPOSE OF DISPLAYING IN THE "FILTER FOR AGENTS" ONLY THE AGENTS (WITHOUT DUPLICATES) THAT ARE PRESENT IN THE REQUESTS BELOW THE FILTER
         // I CREATE AN ARRAY OF IDS OF PARTICIPANTS:  participantsId
@@ -520,8 +529,14 @@ export class WsSharedComponent implements OnInit {
 
             if (bot) {
               this.participantsInRequests.push({ '_id': participant, 'firstname': bot.name });
+
+              this.botAgentsIdArray.push(participant);
+
+
             } else {
+
               this.participantsInRequests.push({ '_id': participant, 'firstname': participant });
+              this.botAgentsIdArray.push(participant);
             }
 
           } else {
@@ -531,9 +546,15 @@ export class WsSharedComponent implements OnInit {
 
             if (user) {
               this.participantsInRequests.push({ '_id': participant, 'firstname': user.firstname, 'lastname': user.lastname })
+
+              // this.humanAgents.push({ '_id': participant, 'firstname': user.firstname, 'lastname': user.lastname });
+
+              this.humanAgentsIdArray.push(participant);
             } else {
 
-              this.participantsInRequests.push({ '_id': participant, 'firstname': participant, })
+              this.participantsInRequests.push({ '_id': participant, 'firstname': participant, });
+
+              this.humanAgentsIdArray.push(participant);
               // this._getProjectUserByUserId(participant) 
             }
 

@@ -81,7 +81,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
   departments: any;
   selectedDeptId: string;
-  selectedAgentId: string;
+  selectedAgentId: any;
 
   // TESTSITE_BASE_URL = environment.testsite.testsiteBaseUrl; // moved
   // TESTSITE_BASE_URL = environment.testsiteBaseUrl;   // now get from appconfig
@@ -151,7 +151,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     this.getCurrentProject();
     this.getLoggedUser();
     this.getProjectUserRole();
-    
+
 
 
 
@@ -167,28 +167,28 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
     this.getChatUrl();
     this.getTestSiteUrl();
-   
+
   }
 
   getStorageBucketFromUserServiceSubscription() {
-    
-   
+
+
     this.usersService.storageBucket$
-    .pipe(
-      takeUntil(this.unsubscribe$)
-    )
-    .subscribe((storagebucket) => {
-      console.log('STORAGE-BUCKET - from sub in ws-request-list ', storagebucket);
-      if (storagebucket) {
-        this.storagebucket$ = storagebucket;
-      }
-    })
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((storagebucket) => {
+        console.log('STORAGE-BUCKET - from sub in ws-request-list ', storagebucket);
+        if (storagebucket) {
+          this.storagebucket$ = storagebucket;
+        }
+      })
   }
 
   getStorageBucket() {
- // storage bucket from user service subscription 
+    // storage bucket from user service subscription 
     this.storagebucket$ = this.usersService.storageBucket$.value;
-    console.log('STORAGE-BUCKET - from sub in ws-request-list value',  this.storagebucket$);
+    console.log('STORAGE-BUCKET - from sub in ws-request-list value', this.storagebucket$);
 
     const firebase_conf = this.appConfigService.getConfig().firebase;
     this.storageBucket = firebase_conf['storageBucket'];
@@ -513,45 +513,6 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   //   return Observable.of(wsrequests);
   // }
 
-  onChangeDepts() {
-    this.hasFiltered = true
-    // console.log('% »»» WebSocketJs WF WS-RL - on Change Depts - dept id', this.selectedDeptId);
-
-    this.filter[0]['deptId'] = this.selectedDeptId
-
-    console.log('% »»» WebSocketJs WF WS-RL - on Change Depts - filter', this.filter)
-    this.getWsRequests$();
-    // console.log('% »»» WebSocketJs WF WS-RL - on Change Depts - ws Requests Unserved ', this.wsRequestsUnserved.length);
-    // console.log('% »»» WebSocketJs WF WS-RL - on Change Depts - ws Requests Served length', this.wsRequestsServed.length)
-
-  }
-
-  clearDeptFilter() {
-    this.filter[0]['deptId'] = null;
-    this.hasFiltered = false
-    // this.getWsRequests$();
-    console.log('% »»» WebSocketJs WF WS-RL - clear Dept Filter selectedDeptId', this.selectedDeptId)
-  }
-
-  onChangeAgent() {
-    this.hasFiltered = true
-    // this.filter['agentId'] = this.selectedAgentId
-    // this.filter.push({ 'agentId': this.selectedAgentId }) 
-    // console.log('% »»» WebSocketJs WF WS-RL - on Change Agent filter', this.filter)
-    this.filter[1]['agentId'] = this.selectedAgentId;
-    // console.log('% »»» WebSocketJs WF WS-RL - on Change Agent - selected Agent Id', this.selectedAgentId);
-    // console.log('% »»» WebSocketJs WF WS-RL - on Change Agent - filter', this.filter)
-    this.getWsRequests$();
-
-    // console.log('% »»» WebSocketJs WF WS-RL - on Change Agent - ws Requests Unserved ', this.wsRequestsUnserved.length);
-    // console.log('% »»» WebSocketJs WF WS-RL - on Change Agent - ws Requests Served ', this.wsRequestsServed.length)
-  }
-
-  clearAgentFilter() {
-    // console.log('% »»» WebSocketJs WF WS-RL - clear Agent Filter selectedAgentId', this.selectedAgentId)
-    this.filter[1]['agentId'] = null;
-    this.hasFiltered = false
-  }
 
   // countRequestsLength(wsrequests) {
   //   console.log('% »»» WebSocketJs WF WS-RL - WsRequestsList  ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ CALLING NOW countRequestsLength ',wsrequests.length);
@@ -649,6 +610,63 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     return deptObjct[0]
   }
 
+
+  onChangeDepts() {
+    this.hasFiltered = true
+    // console.log('% »»» WebSocketJs WF WS-RL - on Change Depts - dept id', this.selectedDeptId);
+
+    this.filter[0]['deptId'] = this.selectedDeptId
+
+    console.log('% »»» WebSocketJs WF WS-RL - on Change Depts - filter', this.filter)
+    this.getWsRequests$();
+    // console.log('% »»» WebSocketJs WF WS-RL - on Change Depts - ws Requests Unserved ', this.wsRequestsUnserved.length);
+    // console.log('% »»» WebSocketJs WF WS-RL - on Change Depts - ws Requests Served length', this.wsRequestsServed.length)
+
+  }
+
+  clearDeptFilter() {
+    this.filter[0]['deptId'] = null;
+    this.hasFiltered = false
+    // this.getWsRequests$();
+    console.log('% »»» WebSocketJs WF WS-RL - clear Dept Filter selectedDeptId', this.selectedDeptId)
+  }
+
+  onChangeAgent() {
+    this.hasFiltered = true
+    // this.filter['agentId'] = this.selectedAgentId
+    // this.filter.push({ 'agentId': this.selectedAgentId }) 
+    console.log('% »»» WebSocketJs WF WS-RL - on Change Agent filter', this.filter)
+    this.filter[1]['agentId'] = this.selectedAgentId;
+    console.log('% »»» WebSocketJs WF WS-RL - on Change Agent - selected Agent Id', this.selectedAgentId);
+
+
+    if (this.selectedAgentId === 1) {
+
+      console.log('% »»» WebSocketJs WF WS-RL - on Change Agent >> HUMAN Agents Id Array', this.humanAgentsIdArray)
+
+    }
+
+    if (this.selectedAgentId === 2) {
+
+      console.log('% »»» WebSocketJs WF WS-RL - on Change Agent >> BOT Agents Id Array', this.botAgentsIdArray)
+
+    }
+
+
+
+    // console.log('% »»» WebSocketJs WF WS-RL - on Change Agent - filter', this.filter)
+    this.getWsRequests$();
+
+    // console.log('% »»» WebSocketJs WF WS-RL - on Change Agent - ws Requests Unserved ', this.wsRequestsUnserved.length);
+    // console.log('% »»» WebSocketJs WF WS-RL - on Change Agent - ws Requests Served ', this.wsRequestsServed.length)
+  }
+
+  clearAgentFilter() {
+    // console.log('% »»» WebSocketJs WF WS-RL - clear Agent Filter selectedAgentId', this.selectedAgentId)
+    this.filter[1]['agentId'] = null;
+    this.hasFiltered = false
+  }
+
   // -----------------------------------------------------------------------------------------------------
   // @ Subscribe to get the published requests (called On init)
   // -----------------------------------------------------------------------------------------------------
@@ -722,6 +740,9 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
           // var ws_requests_clone = JSON.parse(JSON.stringify(this.ws_requests));
           // this.getDeptsAndCountOfDeptsInRequests(ws_requests_clone);
 
+
+
+
           this.getParticipantsInRequests(this.ws_requests);
 
           if (this.hasFiltered === true) {
@@ -755,12 +776,47 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
               if (this.filter[1] !== undefined && this.filter[1]['agentId'] !== null && this.filter[0]['deptId'] === null) {
                 console.log('% »»» WebSocketJs WF WS-RL - <<<<<<<<<<<<<< FILTER USECASE 2  >>>>>>>>>>>>>> filter only for participant');
                 console.log('% »»» WebSocketJs WF WS-RL - WsRequestsList >>> filter[agentId] <<< ', this.filter[1]['agentId']);
-                if (r['participants'].includes(this.filter[1]['agentId'])) {
+                // console.log('% »»» WebSocketJs WF WS-RL - WsRequestsList >>> filter[agentId] IS ARRAY <<< ', Array.isArray(this.filter[1]['agentId']));
+
+                // -----------------------------------------------------------------------------------------------------------
+                // USECASE: filter only for participant --- only all human 
+                // -----------------------------------------------------------------------------------------------------------
+
+                if (this.filter[1]['agentId'] === 1) {
+
+                  // note  some is equivalent to r['participants'].includes('5dd278b8989ecd00174f9d6b') || r['participants'].includes('5e05f5c07be85e0017e4fc92') || r['participants'].includes('5ddd30bff0195f0017f72c6d')
+                  if (this.humanAgentsIdArray.some(participantid => r['participants'].includes(participantid))) {
+                    return true
+
+                  } else {
+                    return false
+                  }
+
+
+                  // -----------------------------------------------------------------------------------------------------------
+                  // USECASE: filter only for participant --- only all bot 
+                  // -----------------------------------------------------------------------------------------------------------
+                } else if (this.filter[1]['agentId'] === 2) {
+                  console.log('% »»» WebSocketJs WF WS-RL - WsRequestsList >>> FILTER AGENT ID 2 <<< r[participants] ', r['participants']);
+                  if (this.botAgentsIdArray.some(participantid => r['participants'].includes(participantid))) {
+
+                    return true
+
+                  } else {
+                    return false
+                  }
+
+                  // -----------------------------------------------------------------------------------------------------------
+                  // USECASE: filter only for participant --- only one participant (human or bot)
+                  // -----------------------------------------------------------------------------------------------------------
+                } else if (r['participants'].includes(this.filter[1]['agentId'])) {
                   return true
                 } else {
                   return false
                 }
+
               }
+
 
 
               // -----------------------------------------------------------------------------------------------------------
@@ -770,11 +826,28 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
                 console.log('% »»» WebSocketJs WF WS-RL - <<<<<<<<<<<<<< FILTER USECASE 3 >>>>>>>>>>>>>> filter for dept & participant');
                 console.log('% »»» WebSocketJs WF WS-RL - WsRequestsList >>> filter[agentId] <<< ', this.filter[1]['agentId']);
                 // if (r['participants'].includes(this.filter[1]['agentId']) && (r['department']['_id'] === this.filter[0]['deptId'])) {
-                if (r['participants'].includes(this.filter[1]['agentId']) && (r['dept']['_id'] === this.filter[0]['deptId'])) {
+
+                if (this.filter[1]['agentId'] === 1) {
+                  if (this.humanAgentsIdArray.some(participantid => r['participants'].includes(participantid)) && (r['dept']['_id'] === this.filter[0]['deptId'])) {
+                    return true
+                  } else {
+                    return false
+                  }
+
+                } else if (this.filter[1]['agentId'] === 2) {
+                  if (this.botAgentsIdArray.some(participantid => r['participants'].includes(participantid)) && (r['dept']['_id'] === this.filter[0]['deptId'])) {
+                    return true
+                  } else {
+                    return false
+                  }
+
+
+                } else if (r['participants'].includes(this.filter[1]['agentId']) && (r['dept']['_id'] === this.filter[0]['deptId'])) {
                   return true
                 } else {
                   return false
                 }
+
               }
 
               // -----------------------------------------------------------------------------------------------------------

@@ -1550,5 +1550,7 @@
     "RelatedKnowledgeBase":"Related Knowledge Base",
     "LoadBrandError":"An error occurred while uploading your brand. Error code:",
     "OperatingHoursAreEnabled":"Operating hours are enabled",
-    "OperatingHoursAreDisabled":"Operating hours are disabled"
+    "OperatingHoursAreDisabled":"Operating hours are disabled",
+    "HumanAgentsOnly":"Human Agents only",
+    "BotsOnly": "Bots Only"
 }

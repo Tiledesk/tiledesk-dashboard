@@ -1545,5 +1545,8 @@
     "RelatedKnowledgeBase":"Knowledge Base correlata",
     "LoadBrandError":"Si è verificato un errore durante il caricamento del tuo marchio. Codice errore:",
     "OperatingHoursAreEnabled":"Orari di attività abilitati",
-    "OperatingHoursAreDisabled":"Orari di attività disabilitati"
+    "OperatingHoursAreDisabled":"Orari di attività disabilitati",
+    "HumanAgentsOnly":"Solo agenti umani",
+    "BotsOnly": "Solo bot"
+
 }

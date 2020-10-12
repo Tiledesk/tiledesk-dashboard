@@ -274,15 +274,18 @@
               <div class="card-content" style="">
 
                 <div class="row">
-                  <div class="col-sm-6">
 
+                  <!-- 
+                  // --------------------------------------------------------
+                  // @ Department filter
+                  // -------------------------------------------------------- -->
+                  <div class="col-sm-6">
                     <label class="col-sm-12" style="text-align: left; color:#7695a5;padding-left:0px">
                       {{ 'HistoryPage.FilterByDepartment' | translate }}
                     </label>
 
                     <ng-select class="custom" name="dept" [(ngModel)]="selectedDeptId" (change)="onChangeDepts()"
                       (clear)="clearDeptFilter()" placeholder="{{ 'HistoryPage.AllDepts' | translate }}">
-                      
                       
                       <!-- <ng-option *ngFor="let dept of depts_array_noduplicate" [value]="dept?._id"> -->
                         <ng-option *ngFor="let dept of departments" [value]="dept?._id">
@@ -294,6 +297,10 @@
                     </ng-select>
                   </div>
 
+                  <!-- 
+                  // --------------------------------------------------------
+                  // @ Angent filter
+                  // -------------------------------------------------------- -->
                   <div class="col-sm-6">
                     <label class="col-sm-12" style="text-align: left; color: #7695a5 !important;padding-left:0px">
                       {{ 'HistoryPage.Agent' | translate }}
@@ -303,6 +310,8 @@
                       (change)="onChangeAgent()">
                       <!-- <ng-option [value]="''">{{ 'HistoryPage.AllAgents' | translate }}</ng-option> -->
                       <!-- user_and_bot_array -->
+                      <ng-option [value]="1">{{ 'HumanAgentsOnly' | translate }}</ng-option>
+                      <ng-option [value]="2">{{ 'BotsOnly' | translate }}</ng-option>
                       <ng-option *ngFor="let agent of participantsInRequests" [value]="agent?._id">
                         {{ agent.firstname }} {{ agent.lastname }}
                       </ng-option>
