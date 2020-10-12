@@ -1547,6 +1547,8 @@
     "OperatingHoursAreEnabled":"Orari di attività abilitati",
     "OperatingHoursAreDisabled":"Orari di attività disabilitati",
     "HumanAgentsOnly":"Solo agenti umani",
-    "BotsOnly": "Solo bot"
+    "BotsOnly": "Solo bot",
+    "AnErrorOccurredWhileSendingTheEmail":"Si é verificato un errore nell'invio dell'email",
+    "UserNotFound":"Utente non trovato"
 
 }

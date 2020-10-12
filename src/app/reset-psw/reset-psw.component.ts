@@ -71,8 +71,12 @@ export class ResetPswComponent implements OnInit {
   showSpinner = true;
   PSW_HAS_BEEN_CHANGED = false;
   HAS_REQUEST_NEW_PSW = false;
-
   CONFIRM_PSW_IS_SAME_OF_PWS: boolean
+
+  ERROR_SENDING_EMAIL_RESET_PSW: boolean;
+  ERROR_SENDING_EMAIL_RESET_PSW_USER_NOT_FOUND: boolean;
+  ERROR_SENDING_EMAIL_RESET_PSW_OTHER_ERROR: boolean;
+  OTHER_ERROR_MSG: string;
   constructor
     (
       private fb: FormBuilder,
@@ -257,6 +261,23 @@ export class ResetPswComponent implements OnInit {
     this.resetPswService.sendResetPswEmailAndUpdateUserWithResetPswRequestId(this.emailForm.value['email']).subscribe((user) => {
       console.log('REQUEST RESET PSW - UPDATED USER ', user);
 
+      if (user['success'] === false) {
+        this.ERROR_SENDING_EMAIL_RESET_PSW = true;
+        console.log('REQUEST RESET PSW - UPDATED USER - success false > MSG', user['msg']);
+        if (user['msg'] === 'User not found.') {
+        
+          this.ERROR_SENDING_EMAIL_RESET_PSW_USER_NOT_FOUND = true;
+          this.ERROR_SENDING_EMAIL_RESET_PSW_OTHER_ERROR = false;
+        } else { 
+
+          this.ERROR_SENDING_EMAIL_RESET_PSW_OTHER_ERROR = true;
+          this.ERROR_SENDING_EMAIL_RESET_PSW_USER_NOT_FOUND = false;
+          this.OTHER_ERROR_MSG = user['msg'];
+        }
+      } else if (user['success'] === true) {
+        this.ERROR_SENDING_EMAIL_RESET_PSW = false;
+      }
+
     },
       (error) => {
         this.HAS_REQUEST_NEW_PSW = false
@@ -264,7 +285,12 @@ export class ResetPswComponent implements OnInit {
         console.log('REQUEST RESET PSW - ERROR ', error);
         this.showSpinnerInRequestNewPswBtn = false;
         if (error.status === 0) {
-          this.signin_errormsg = 'Sorry, there was an error connecting to the server'
+          this.ERROR_SENDING_EMAIL_RESET_PSW_OTHER_ERROR = true;
+          this.OTHER_ERROR_MSG = 'Sorry, there was an error connecting to the server'
+          this.display = 'block';
+        } else {
+          this.ERROR_SENDING_EMAIL_RESET_PSW_OTHER_ERROR = true;
+          this.OTHER_ERROR_MSG = this.OTHER_ERROR_MSG;
           this.display = 'block';
         }
         // const signin_errorbody = JSON.parse(error._body);

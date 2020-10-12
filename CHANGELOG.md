@@ -3,6 +3,7 @@
 
 ### 2.0.72 
 - Adds the ability in conversations list to filter for "Human Agents only" and for "Bots Only"
+- Fixes the message displayed when occurs an error sending the password recovery email
 
 ### 2.0.71
 - Displays the in-app notifications only once

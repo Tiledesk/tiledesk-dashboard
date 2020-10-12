@@ -1552,5 +1552,7 @@
 	"OperatingHoursAreEnabled":"Betriebsstunden sind aktiviert",
 	"OperatingHoursAreDisabled":"Betriebsstunden sind deaktiviert",
 	"HumanAgentsOnly":"Nur menschliche Agenten",
-    "BotsOnly": "Nur Bots"
+	"BotsOnly": "Nur Bots",
+	"AnErrorOccurredWhileSendingTheEmail":"Beim Senden der E-Mail ist ein Fehler aufgetreten",
+	"UserNotFound":"Benutzer nicht gefunden"
 }
