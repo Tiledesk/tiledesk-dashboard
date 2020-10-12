@@ -95,7 +95,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
   projectName: string;
   projectNameFirstLetter: any;
 
-  participantsInRequests: any;
+ 
   deptsArrayBuildFromRequests: any;
 
   filter: any[] = [{ 'deptId': null }, { 'agentId': null }];
@@ -166,10 +166,9 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
   ngOnInit() {
     // this.getDepartments();
     // this.getWsRequests$();
-    this.getCurrentProject();
-    this.getLoggedUser();
+
     // this.getProjectUserRole();
-    this.getStorageBucket();
+ 
 
     // this.for1();
     // this.getRequestsTotalCount()  
@@ -179,10 +178,14 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
     // const perfs = new PerfectScrollbar(teamContentEl);
     // this.selectedDeptId = '';
     // this.selectedAgentId = '';
-    this.detectBrowserRefresh();
+    
 
     // this.getChatUrl();
     // this.getTestSiteUrl();
+    this.getStorageBucket();
+    this.detectBrowserRefresh();
+    this.getCurrentProject();
+    this.getLoggedUser();
     this.getTranslations();
     this.setPerfectScrollbar();
 
@@ -380,103 +383,9 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
     // console.log('STORAGE-BUCKET Ws Requests List ', this.storageBucket)
   }
 
-  public scrollRight(): void {
-    this.teamContent.nativeElement.scrollTo({ left: (this.teamContent.nativeElement.scrollLeft + 150), behavior: 'smooth' });
-  }
-
-  public scrollLeft(): void {
-    this.teamContent.nativeElement.scrollTo({ left: (this.teamContent.nativeElement.scrollLeft - 150), behavior: 'smooth' });
-  }
-
-  // async getRequestsTotalCount() {
-  //   // this.wsRequestsService.getTotalRequestLength(requestTotal).then((resultImage) => {  })
-
-  //   const totalR = await this.wsRequestsService.getTotalRequestLength();
-  //   console.log('% »»» WebSocketJs WF >>>>>>>>> >>>>>>>  L FROM PROMISE ',totalR);
-  // }
 
 
-
-
-  getAllProjectUsersAndBot() {
-    // createBotsAndUsersArray() {
-    this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
-      // console.log('% »»» WebSocketJs WF WS-RL - +++ GET PROJECT-USERS ', projectUsers);
-      if (projectUsers) {
-        projectUsers.forEach(user => {
-
-          if (user) {
-            this.user_and_bot_array.push({ '_id': user.id_user._id, 'firstname': user.id_user.firstname, 'lastname': user.id_user.lastname });
-            this.team_ids_array.push(user.id_user._id);
-          }
-        });
-
-        // console.log('% »»» WebSocketJs WF WS-RL - +++ USERS & BOTS ARRAY (1) ', this.user_and_bot_array);
-      }
-    }, (error) => {
-      console.log('% »»» WebSocketJs WF WS-RL - +++ GET PROJECT-USERS ', error);
-    }, () => {
-      console.log('% »»» WebSocketJs WF WS-RL - +++ GET PROJECT-USERS * COMPLETE *');
-      this.getAllBot();
-    });
-  }
-
-  getAllBot() {
-    this.faqKbService.getFaqKbByProjectId().subscribe((bots: any) => {
-      console.log('% »»» WebSocketJs WF - +++ GET  BOT ', bots);
-
-      if (bots) {
-        bots.forEach(bot => {
-          if (bot) {
-            this.user_and_bot_array.push({ '_id': 'bot_' + bot._id, 'firstname': bot.name + ' (bot)' });
-            this.team_ids_array.push('bot_' + bot._id);
-          }
-        });
-      }
-      // console.log('% »»» WebSocketJs WF WS-RL - +++ TEAM IDs ARRAY (2) ', this.team_ids_array);
-      console.log('% »»» WebSocketJs WF WS-RL - +++ TEAM ARRAY (2) ', this.user_and_bot_array);
-      // this.doFlatParticipantsArray()
-
-    }, (error) => {
-      console.log('% »»» WebSocketJs WF WS-RL - +++ GET  BOT ', error);
-    }, () => {
-      console.log('% »»» WebSocketJs WF WS-RL - +++ GET  BOT * COMPLETE *');
-    });
-  }
-
-  doFlatParticipantsArray() {
-    this.subscription = this.wsRequestsService.wsRequestsList$.subscribe((wsrequests) => {
-      if (wsrequests) {
-        let flat_participants_array = [];
-
-        for (let i = 0; i < wsrequests.length; i++) {
-          flat_participants_array = flat_participants_array.concat(wsrequests[i].participants);
-        }
-
-        // console.log('% »»» WebSocketJs WF WS-RL - +++ FLAT PARTICIPANTS IDs ARRAY ', flat_participants_array);
-        if (flat_participants_array) {
-          for (let i = 0; i < this.team_ids_array.length; i++) {
-            // console.log('% »»» WebSocketJs WF WS-RL -  TEAM IDs ARRAY LENGTH ', this.team_ids_array.length);
-            this.getAgentIdOccurrencesinFlatParticipantsArray(flat_participants_array, this.team_ids_array[i])
-          }
-        }
-      }
-    })
-  }
-
-  getAgentIdOccurrencesinFlatParticipantsArray(array, value) {
-    // console.log('% »»» WebSocketJs WF WS-RL - CALLING GET OCCURRENCE REQUESTS FOR AGENT AND ASSIGN TO PROJECT USERS');
-    let count = 0;
-    array.forEach((v) => (v === value && count++));
-    // console.log('% »»» WebSocketJs WF WS-RL - #', count, ' REQUESTS ASSIGNED TO AGENT WITH ID ', value);
-
-    for (const agent of this.user_and_bot_array) {
-      if (value === agent._id) {
-        agent.value = count
-      }
-    }
-    return count;
-  }
+ 
 
 
   listenToRequestsLength() {
@@ -712,7 +621,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
               }
             });
           }
-          this.getParticipantsInRequests(this.ws_requests);
+        
         }
 
         // this.ws_requests.forEach(request => {
