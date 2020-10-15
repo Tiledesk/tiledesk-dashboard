@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.0.74
+- Changes in the conversations in the column 'served by' the color of the border that highlights the logged user
+
 ### 2.0.73 
 - Fixes the message displayed when occurs an error sending the password recovery email
 - Updates the preview of the callout in the callout customization page

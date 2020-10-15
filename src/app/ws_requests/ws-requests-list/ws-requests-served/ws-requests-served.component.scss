@@ -949,5 +949,20 @@ $f21blue: #039be5;
 
 .current-user-member-border {
   // border-color: #4caf50 !important;
-  box-shadow: 0 0 0 2px #4caf50;
+  box-shadow: 0 0 0 2px #1877f2;
+}
+
+// .current-user-member-border:hover {position: relative;
+//   top: -5px;
+
+// }
+
+.served-by-desktop-e:hover {
+  position: relative;
+  top: -3px;
+}
+
+.bot---avatar:hover {
+  position: relative;
+  top: -3px;
 }
