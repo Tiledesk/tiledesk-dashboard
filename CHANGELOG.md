@@ -4,7 +4,7 @@
 ### 2.0.73 
 - Fixes the message displayed when occurs an error sending the password recovery email
 - Updates in Widget callout page the callout preview
-- Adds in Triggers page the tabs that filter for custom and for system triggers
+- Adds in Triggers page the tabs to filter the triggers for type custom and for type system 
 - Removes the ability to delete system trigger
 - Adds in the chat details page the ability to open the chat transcript
 - Adds widget Appearance page the notes on the properties that the custom logo must have
