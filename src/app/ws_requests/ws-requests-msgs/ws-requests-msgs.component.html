@@ -869,8 +869,9 @@
                           </a>
                         </li>
 
-                        <li *ngIf="CHAT_PANEL_MODE === false" class="divider"></li>
-                        <li *ngIf="CHAT_PANEL_MODE === false">
+                        <!-- *ngIf="CHAT_PANEL_MODE === false" -->
+                        <li class="divider"></li>
+                        <li>
                           <a (click)='openTranscript()' style="padding-left: 15px; padding-right: 15px;">
                             <i class="material-icons" style="padding-right: 5px;">open_in_new</i>
                             <span style="position: relative; top: 1px; cursor:pointer">
@@ -1313,7 +1314,7 @@
               // ------------------------------------------------------------------
               // Go to request details - dispalyed only if CHAT_PANEL_MODE === true
               // ------------------------------------------------------------------ -->
-                <div class="row" style="margin-top:5px" *ngIf="CHAT_PANEL_MODE === true">
+                <!-- <div class="row" style="margin-top:5px" *ngIf="CHAT_PANEL_MODE === true">
                   <div class="col-sm-12">
                     <p class="" style="">
                       <i (click)="goToRequestInNewTab()" class="material-icons"
@@ -1321,8 +1322,6 @@
                       <span style="position: relative;top: 0px;">
                         <span
                           style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
-                          <!-- routerLink="project/{{ project._id }}/wsrequests" -->
-                          <!-- target="_blank" routerLink="project/{{id_project}}/wsrequest/{{id_request}}/messages" -->
                           <a style="cursor: pointer;" (click)="goToRequestInNewTab()"> {{ 'GoToRequest' | translate }}
                           </a>
                         </span>
@@ -1330,12 +1329,8 @@
                       </span>
                     </p>
                   </div>
-                </div>
-                <!-- </div>
                 </div> -->
-                <!-- end card icon -->
-
-
+      
 
                 <!-- 
                 // -----------------------------------------------------------------------------

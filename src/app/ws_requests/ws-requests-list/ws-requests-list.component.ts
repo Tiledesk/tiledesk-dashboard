@@ -106,7 +106,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   ws_requestslist_deptIdSelected: string
   display_dept_sidebar = false;
   storagebucket$: string;
-
+  OPERATING_HOURS_ACTIVE:boolean;
   /**
    * Constructor
    * 
@@ -215,6 +215,10 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
+
+  goToOperatingHours() {
+    this.router.navigate(['project/' + this.projectId + '/hours']);
+}
 
 
   detectBrowserRefresh() {
@@ -460,6 +464,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       if (project) {
         this.projectId = project._id;
         this.projectName = project.name;
+        this.OPERATING_HOURS_ACTIVE = project.operatingHours
       }
     });
   }
@@ -497,7 +502,6 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
     // this.display_dept_sidebar = true;
     // this.ws_requestslist_deptIdSelected = deptid
-
   }
 
 

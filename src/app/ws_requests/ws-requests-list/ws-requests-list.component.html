@@ -21,26 +21,49 @@
       }">
     <a> {{ "YourRequests" | translate }} </a>
   </li>
-<!-- 
+  <!-- 
   <li class="right-li right-li-simulate-visitor" style="float: right !important;padding-top: 10px!important">
     <button #testwidgetbtn (click)="testWidgetPage()" class="btn btn-success navbar-btn">
       {{ 'VisitorsPage.SimulateVisitor' | translate }}
     </button>
   </li> -->
-
   <li class="right-li" style="float: right !important;padding-top: 10px!important; margin-right: 10px;">
-    <button #createticket (click)="presentCreateInternalRequestModal()"
-      class="btn btn-primary navbar-btn">
+    <button #createticket (click)="presentCreateInternalRequestModal()" class="btn btn-primary navbar-btn">
       {{ 'CreateTicket' | translate }}
     </button>
   </li>
 
+  <li class="operating-hours" style="float: right;">
+    <a class="tool_tip" style="cursor: pointer; display: unset;" *ngIf="!OPERATING_HOURS_ACTIVE"
+      (click)="goToOperatingHours()">
+      <i class="material-icons" style="color:#AAA">access_time</i>
+
+      <p class="hidden-lg hidden-md">operatinghoursoff</p>
+      <div class="bottom"
+        style="text-align: center; padding: 4px; border-radius: 3px; text-transform: none; min-width: fit-content; white-space: nowrap;">
+        {{ 'OperatingHoursAreDisabled' | translate }}
+        <i></i>
+      </div>
+    </a>
+    <a class="tool_tip" style="cursor: pointer;display: unset;" *ngIf="OPERATING_HOURS_ACTIVE" (click)="goToOperatingHours()">
+      <i class="material-icons" style="color:#3ea9f5">access_time</i>
+      <p class="hidden-lg hidden-md">operatinghourson</p>
+      <div class="bottom" style="text-align: center; padding: 4px; border-radius: 3px;">
+        {{ 'OperatingHoursAreEnabled' | translate }}
+
+        <i></i>
+      </div>
+    </a>
+  </li>
+
+
+
+
 </ul>
 
-<ul class="bottom-bottom-nav" style="display: none;"> 
+<ul class="bottom-bottom-nav" style="display: none;">
   <li style="display: none;" class="" style="padding-top: 10px!important; padding-left: 10px!important">
-    <button #createticket (click)="presentCreateInternalRequestModal()"
-      class="btn btn-primary navbar-btn">
+    <button #createticket (click)="presentCreateInternalRequestModal()" class="btn btn-primary navbar-btn">
       {{ 'CreateTicket' | translate }}
     </button>
   </li>
@@ -74,27 +97,35 @@
               top: 50%;
               transform: translate(0,-50%); -->
               <div class="aadvanced-pie-legend-wrapper" style="display: inline-block;height: 161px;">
-                <div class="advanced-legend" style="width: 420px;float: left;position: relative;top: 50%;transform: translate(0,-50%);">
+                <div class="advanced-legend"
+                  style="width: 420px;float: left;position: relative;top: 50%;transform: translate(0,-50%);">
                   <div class="total-value" style="font-size: 36px;">21.140.000</div>
-                  <div class="total-label" style="color: #192038;font-size: 0.9375rem; font-weight: 400; line-height: 1.25rem;"> 
-                    Total 
+                  <div class="total-label"
+                    style="color: #192038;font-size: 0.9375rem; font-weight: 400; line-height: 1.25rem;">
+                    Total
                   </div>
                   <div class="legend-items-container" style="width: 100%;">
                     <div class="legend-items" style="white-space: nowrap; overflow: auto;">
                       <div class="legend-item" style="margin-right: 20px;display: inline-block;cursor: pointer;">
-                        <div class="item-color" style="border-left: 4px solid; rgb(89, 139, 255); width: 4px; height: 42px;float: left; margin-right: 7px;"></div>
+                        <div class="item-color"
+                          style="border-left: 4px solid; rgb(89, 139, 255); width: 4px; height: 42px;float: left; margin-right: 7px;">
+                        </div>
                         <div class="item-value">8.940.000</div>
                         <div class="item-label">Germany</div>
                         <div class="item-percent">42%</div>
                       </div>
                       <div class="legend-item" style="margin-right: 20px;display: inline-block;cursor: pointer;">
-                        <div class="item-color" style="border-left: 4px solid rgb(66, 170, 255); width: 4px;height: 42px;float: left; margin-right: 7px;"></div>
+                        <div class="item-color"
+                          style="border-left: 4px solid rgb(66, 170, 255); width: 4px;height: 42px;float: left; margin-right: 7px;">
+                        </div>
                         <div class="item-value">5.000.000</div>
                         <div class="item-label">USA</div>
                         <div class="item-percent">23%</div>
                       </div>
                       <div class="legend-item" style="margin-right: 20px;display: inline-block;cursor: pointer;">
-                        <div class="item-color" style="border-left: 4px solid rgb(44, 230, 155); width: 4px; height: 42px; float: left; margin-right: 7px;"></div>
+                        <div class="item-color"
+                          style="border-left: 4px solid rgb(44, 230, 155); width: 4px; height: 42px; float: left; margin-right: 7px;">
+                        </div>
                         <div class="item-value ">7.200.000</div>
                         <div class="item-label">France</div>
                         <div class="item-percent">34%</div>
@@ -286,12 +317,12 @@
 
                     <ng-select class="custom" name="dept" [(ngModel)]="selectedDeptId" (change)="onChangeDepts()"
                       (clear)="clearDeptFilter()" placeholder="{{ 'HistoryPage.AllDepts' | translate }}">
-                      
+
                       <!-- <ng-option *ngFor="let dept of depts_array_noduplicate" [value]="dept?._id"> -->
-                        <ng-option *ngFor="let dept of departments" [value]="dept?._id">
+                      <ng-option *ngFor="let dept of departments" [value]="dept?._id">
                         <!-- // use this if do the for with departments -->
-                          {{dept?.name}} 
-                         <!-- // use this if do the for with depts_array_noduplicate -->
+                        {{dept?.name}}
+                        <!-- // use this if do the for with depts_array_noduplicate -->
                         <!-- {{dept?.deptName}} -->
                       </ng-option>
                     </ng-select>
