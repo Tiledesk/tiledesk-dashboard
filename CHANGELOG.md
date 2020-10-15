@@ -1,9 +1,17 @@
 
 # tiledesk-dashboard
 
+### 2.0.73 
+- Fixes the message displayed when occurs an error sending the password recovery email
+- Updates in Widget callout page the callout preview
+- Adds in Triggers page the tabs that filter for custom and for system triggers
+- Removes the ability to delete system trigger
+- Adds in the chat details page the ability to open the chat transcript
+- Adds widget Appearance page the notes on the properties that the custom logo must have
+- Fixes in the app service the call to get the apps
+
 ### 2.0.72 
 - Adds the ability in conversations list to filter for "Human Agents only" and for "Bots Only"
-- Fixes the message displayed when occurs an error sending the password recovery email
 
 ### 2.0.71
 - Displays the in-app notifications only once
@@ -106,11 +114,11 @@
 - Improves departments list page, department create and edit page and the routing page
 
 ### 2.0.23
--  Adds the labels in requests list and history
+- Adds the labels in requests list and history
 
 ### 2.0.16
--  Adds to history and request's details custom icons for browser and operating system data retrieved from the "User-agent"
--  Adds the ability to add or edit a description for departments
+- Adds to history and request's details custom icons for browser and operating system data retrieved from the "User-agent"
+- Adds the ability to add or edit a description for departments
 
 ### 2.0.14
 - Adds to requests list custom icons for browser and operating system data retrieved from the "User-agent"
