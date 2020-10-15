@@ -3,13 +3,15 @@
 
 ### 2.0.73 
 - Fixes the message displayed when occurs an error sending the password recovery email
-- Updates in Widget callout page the callout preview
-- Adds in Widget callout page the ability to enable the callout with a "switch button"
-- Adds in Triggers page the tabs to filter the triggers for type custom and for type system 
-- Removes the ability to delete system trigger
-- Adds in the chat details page the ability to open the chat transcript
-- Removes in the chat details page the button 'go to request'
-- Adds widget Appearance page the notes on the properties that the custom logo must have
+- Updates the preview of the callout in the callout customization page
+- Adds in the callout customization page the ability to enable the callout with a "toggle switch"
+- Adds in the callout customization page the ability to customize the emoticon
+- Adds in Triggers list page the tabs to filter the triggers for type custom / system 
+- Adds in Triggers list page a link to the trigger documentation 
+- Removes in Triggers list page the ability to delete triggers of "system type"
+- Adds in the request details visible in the chat the ability to open the chat transcript
+- Removes in the request details visible in the chat the button 'go to request'
+- Adds in the widget customization page the notes on the properties that the image of custom logo must have
 - Fixes in the app service the call to get the apps
 
 ### 2.0.72 
