@@ -80,4 +80,6 @@ export function getColorBck(requester_fullname) {
     return arrayBckColor[num];
 }
 
+export const helpdocurl_triggers = 'https://docs.tiledesk.com/knowledge-base/getting-started-with-triggers/'
+
 
