@@ -7,6 +7,7 @@ import { AuthService } from 'app/core/auth.service';
 import { NotifyService } from 'app/core/notify.service';
 import { Trigger } from 'app/models/trigger-model';
 import { TranslateService } from '@ngx-translate/core';
+import { helpdocurl_triggers } from '../utils/util';
 
 @Component({
   selector: 'appdashboard-trigger',
@@ -33,7 +34,8 @@ export class TriggerComponent implements OnInit {
   displayMODAL = 'none';
   has_selected_system: boolean;
   query: any;
-
+  trigger_docs_url = helpdocurl_triggers;
+  trigger_docs_title = 'Trigger';
   constructor(
     private auth: AuthService,
     private triggerService: TriggerService,
@@ -51,6 +53,8 @@ export class TriggerComponent implements OnInit {
   //  this.query = 'internal'
    this.query = 'custom';
    this.has_selected_system = false;
+
+   
   }
 
 
