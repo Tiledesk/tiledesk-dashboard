@@ -30,23 +30,27 @@ export class TriggerComponent implements OnInit {
   messageServerError: string;
   messageDeleteTriggerError: string;
   messageTriggerSuccessDelete: string;
-
-
   displayMODAL = 'none';
+  has_selected_system: boolean;
+  query: any;
 
-  constructor(  private auth: AuthService,
-                private triggerService: TriggerService,
-                private router: Router,
-                private notify: NotifyService,
-                private translate: TranslateService ) { }
+  constructor(
+    private auth: AuthService,
+    private triggerService: TriggerService,
+    private router: Router,
+    private notify: NotifyService,
+    private translate: TranslateService
+  ) { }
 
   ngOnInit() {
     this.showSpinner = true;
     this.getCurrentProject();
     this.getAllTrigger();
     this.translateNotifyMsg();
-    
-
+   
+  //  this.query = 'internal'
+   this.query = 'custom';
+   this.has_selected_system = false;
   }
 
 
@@ -74,7 +78,7 @@ export class TriggerComponent implements OnInit {
 
   goToAddTrigger() {
     console.log('ADD TRIGGER')
-    this.router.navigate(['project/' + this.id_project + '/trigger/add' ])
+    this.router.navigate(['project/' + this.id_project + '/trigger/add'])
   }
 
   getAllTrigger() {
@@ -83,6 +87,8 @@ export class TriggerComponent implements OnInit {
       console.log('TRIGGER', res);
       if (res) {
         this.triggers = res;
+
+
       }
     }, (error) => {
       this.notify.showNotification(this.messageServerError, 4, 'report_problem')
@@ -99,23 +105,23 @@ export class TriggerComponent implements OnInit {
 
   translateNotifyMsg() {
     this.translate.get('Trigger.ServerError')
-    .subscribe((text: string) => {
+      .subscribe((text: string) => {
 
-      this.messageServerError = text;
-      // console.log('+ + + DeleteLeadSuccessNoticationMsg', text)
-    });
+        this.messageServerError = text;
+        // console.log('+ + + DeleteLeadSuccessNoticationMsg', text)
+      });
     this.translate.get('Trigger.DeleteServerError')
-    .subscribe((text: string) => {
+      .subscribe((text: string) => {
 
-      this.messageDeleteTriggerError = text;
-      // console.log('+ + + DeleteLeadSuccessNoticationMsg', text)
-    });
+        this.messageDeleteTriggerError = text;
+        // console.log('+ + + DeleteLeadSuccessNoticationMsg', text)
+      });
     this.translate.get('Trigger.DeleteTriggerSuccess')
-    .subscribe((text: string) => {
+      .subscribe((text: string) => {
 
-      this.messageTriggerSuccessDelete = text;
-      // console.log('+ + + DeleteLeadSuccessNoticationMsg', text)
-    });
+        this.messageTriggerSuccessDelete = text;
+        // console.log('+ + + DeleteLeadSuccessNoticationMsg', text)
+      });
   }
 
 
@@ -138,7 +144,7 @@ export class TriggerComponent implements OnInit {
       console.log('TRIGGER DELETE', res);
 
     }, (error) => {
-      this.notify.showNotification(this.messageDeleteTriggerError , 4, 'report_problem');
+      this.notify.showNotification(this.messageDeleteTriggerError, 4, 'report_problem');
       console.log('»» !!! TRIGGER -  DELETE TRIGGER REQUESTS  - ERROR ', error);
     }, () => {
       this.notify.showNotification(this.messageTriggerSuccessDelete, 2, 'done');
@@ -146,6 +152,43 @@ export class TriggerComponent implements OnInit {
       console.log('»» !!! TRIGGER -  DELETE TRIGGER REQUESTS * COMPLETE *');
 
     });
+  }
+
+
+  triggerTabSelected(tabselected) {
+
+
+
+    if (tabselected === 'systemtrigger') {
+      console.log('»» !!! TRIGGER -  triggerTabSelected ', tabselected);
+      this.has_selected_system = true
+
+      this.query = 'internal'
+      // this.triggers = this.triggers.filter(t => {
+      //   console.log('»» !!! TRIGGER FILTER ', t)
+      //   if (t.type === "internal") {
+      //     return true
+      //   }
+      // })
+    }
+
+    if (tabselected === 'customtrigger') {
+
+      console.log('»» !!! TRIGGER -  triggerTabSelected ', tabselected);
+      this.has_selected_system = false;
+
+      this.query = 'custom'
+
+      // this.triggers = this.triggers.filter(t => {
+      //   console.log('»» !!! TRIGGER FILTER ', t)
+      //   if (t.type !== "internal") {
+      //     return true
+      //   }
+      // })
+
+    }
+
+
   }
 
 }
