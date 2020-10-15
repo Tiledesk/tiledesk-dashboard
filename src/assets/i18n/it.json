@@ -431,7 +431,7 @@
     "UseDialogflowToTrainYourBot...": "Usa Dialogflow per addestrare il tuo bot con la nostra integrazione nativa e innovativa di Dialogflow",
     "UseYourFavouriteTechnology...": "Usa la tua tecnologia preferita per incorporare il tuo chatbot con {{ company_name }}. Dai un'occhiata al nostro",
     "GetStartedTutorial": "Tutorial",
-    "AnIdentityBotRepresents":"Un identity bot è un profilo virtuale utilizzato per i messaggi automatici inviati dal sistema (e.g. invio di messaggi in trigger)",    
+    "AnIdentityBotRepresents": "Un identity bot è un profilo virtuale utilizzato per i messaggi automatici inviati dal sistema (e.g. invio di messaggi in trigger)",
     "DialogflowKnowledgeBaseID": "ID della knowledge base di Dialogflow",
     "FillTheFieldOnlyIfYouWantToUseDialogflowKB": "Compila il campo solo se si desideri utilizzare la funzionalità della Knowledge-base di Dialogflow",
     "HereTheTutorial": "Qui il tutorial su come connettere i tuoi chatbot a {{ company_name }}.",
@@ -466,7 +466,7 @@
     "All": "Tutte",
     "Save": "Salva",
     "Update": "Aggiorna",
-    "Warning":"Attenzione!",
+    "Warning": "Attenzione!",
     "CannedResponses": {
         "QuickTips": {
             "1": "Le Risposte Predefinite sono messaggi predefiniti che è possibile richiamare facilmente durante la chat.",
@@ -891,7 +891,7 @@
         "DialogflowQuickTips_7": "Se hai bisogno di un tutorial dettagliato su come creare un file di credenziali, per favore",
         "TheBotIsAssociatedWithTheDepartment": "Il bot è associato al dipartimento",
         "TheBotIsAssociatedWithDepartments": "Il bot è associato ai dipartimenti",
-        "DisassociateTheBot":"Dissocia il bot da Routing o Dipartimenti prima di eliminarlo."
+        "DisassociateTheBot": "Dissocia il bot da Routing o Dipartimenti prima di eliminarlo."
     },
     "BotsAddEditPage": {
         "AddBot": "Aggiungi Bot",
@@ -959,10 +959,10 @@
         "FaqAttributes": "Attributi Risposta",
         "FaqID": "Id Risposta",
         "CreationDate": "Data creazione",
-        "TheRequestWillBeAssignedToAHumanAgent":"la conversazione verrà assegnata a un agente umano",
+        "TheRequestWillBeAssignedToAHumanAgent": "la conversazione verrà assegnata a un agente umano",
         "DisplayTheButtonWithNameButton_1": "visualizza il pulsante con il nome button_1",
-        "DisplayTheImageWithTheSpecifiedURL":"visualizza l'immagine con l'URL specificato",
-        "CallTheExternalWebhookToTheSpecifiedEndpoint":"chiama il webhook esterno all'endpoint specificato"
+        "DisplayTheImageWithTheSpecifiedURL": "visualizza l'immagine con l'URL specificato",
+        "CallTheExternalWebhookToTheSpecifiedEndpoint": "chiama il webhook esterno all'endpoint specificato"
     },
     "FaqTestPage": {
         "Question": "Domanda",
@@ -1396,7 +1396,7 @@
         "OrAddItWith...": "o aggiungilo con",
         "HereHow": "Ecco come.",
         "IncludeThePreChatForm_1": "Includi il form Pre-Chat",
-        "ActivateThePreChatForm": "Activate the Pre-Chat form",
+        "ActivateThePreChatForm": "Attiva il Pre-Chat form",
         "RequiresVisitorsToCompleteForm": "Richiedi ai visitatori di completare un form (nome dell'utente ed email) prima di iniziare una chat",
         "IncludeTheCalloutTimer_1": "Includi il CALLOUT TIMER: ",
         "MakeTheFirstStep": "Fai il primo passo verso una conversazione invitando i visitatori a chattare",
@@ -1519,9 +1519,9 @@
     },
     "DeleteRequestForever": {
         "TheRequestWillBePermanentlyDeleted": "la conversazione verrà eliminata definitivamente",
-        "Done":"Fatto!",
+        "Done": "Fatto!",
         "TheRequestWasSuccessfullyDeleted": "la conversazione è stata eliminata correttamente",
-        "ErrorDeleting":"Errore durante l'eliminazione!",
+        "ErrorDeleting": "Errore durante l'eliminazione!",
         "PleaseTryAgain": "Per favore riprova"
     },
     "MoveToTrash": "Sposta nel cestino",
@@ -1530,25 +1530,29 @@
     "inTheTrash": "nel cestino",
     "CloseTrash": "Chiudi cestino",
     "SearchInTrash": "Cerca nel cestino",
-    "Done":"Fatto",
+    "Done": "Fatto",
     "TheContactWillBePermanentlyDeleted": "il contatto verrà eliminato definitivamente",
-    "ErrorDeleting":"Errore durante l'eliminazione!",
+    "ErrorDeleting": "Errore durante l'eliminazione!",
     "PleaseTryAgain": "Per favore riprova",
     "TheContactWasSuccessfullyDeleted": "il contatto è stata eliminato correttamente",
-    "YouCannotDeleteThisContact":"Non è possibile eliminare questo contatto perché vi sono conversazioni associate",
+    "YouCannotDeleteThisContact": "Non è possibile eliminare questo contatto perché vi sono conversazioni associate",
     "MoveTheContactToTheTrash": "Spostare il contatto {{ contactname }} nel cestino?",
-    "TheContactHasBeenMovedToTheTrash":"Il contatto è stato spostato nel cestino",
-    "TheRequestHasBeenMovedToHistory":"la conversazione è stata spostata in cronologia",
-    "AnErrorHasOccurredArchivingTheRequest":"Si è verificato un errore durante l'archiviazione della conversazione",
-    "RestoreContact":"ripristina contatto",
+    "TheContactHasBeenMovedToTheTrash": "Il contatto è stato spostato nel cestino",
+    "TheRequestHasBeenMovedToHistory": "la conversazione è stata spostata in cronologia",
+    "AnErrorHasOccurredArchivingTheRequest": "Si è verificato un errore durante l'archiviazione della conversazione",
+    "RestoreContact": "ripristina contatto",
     "NoProjects": "Nessun progetto",
-    "RelatedKnowledgeBase":"Knowledge Base correlata",
-    "LoadBrandError":"Si è verificato un errore durante il caricamento del tuo marchio. Codice errore:",
-    "OperatingHoursAreEnabled":"Orari di attività abilitati",
-    "OperatingHoursAreDisabled":"Orari di attività disabilitati",
-    "HumanAgentsOnly":"Solo agenti umani",
+    "RelatedKnowledgeBase": "Knowledge Base correlata",
+    "LoadBrandError": "Si è verificato un errore durante il caricamento del tuo marchio. Codice errore:",
+    "OperatingHoursAreEnabled": "Orari di attività abilitati",
+    "OperatingHoursAreDisabled": "Orari di attività disabilitati",
+    "HumanAgentsOnly": "Solo agenti umani",
     "BotsOnly": "Solo bot",
-    "AnErrorOccurredWhileSendingTheEmail":"Si é verificato un errore nell'invio dell'email",
-    "UserNotFound":"Utente non trovato"
-
+    "AnErrorOccurredWhileSendingTheEmail": "Si é verificato un errore nell'invio dell'email",
+    "UserNotFound": "Utente non trovato",
+    "SystemTrigger": "Trigger di sistema",
+    "CustomTrigger": "Trigger custom",
+    "YourLogoMustBeSmallerThan50kB": "Il tuo logo deve essere inferiore a 50 KB",
+    "TheOptimumImageSizeIs78x78": "La dimensione ottimale dell'immagine è 78px x 78px",
+    "PNGorGIFwithTransparentBackgroundWorksBest": "Un immagine in formato PNG o GIF con uno sfondo trasparente è preferibile"
 }

@@ -879,7 +879,7 @@
         "Error": "Error",
         "AnErrorHasOccurred": "An error has occurred",
         "Continue": "Continue",
-        "BotQuickTipsText": "When a customer chats in through {{ company_name }}, you may not always be around to respond. Luckily, you can configure a Bot to help you and then activates it in a Department",
+        "BotQuickTipsText": "When a customer chats in through {{ company_name }}, you may not always be around to respond. Luckily, you can configure a Bot to help you and then activate it in a Department",
         "ExternalBot": "External Bot",
         "NoUrlProvided": "No url provided",
         "EnterExternalBotUrl": "enter external Bot Url",
@@ -1400,7 +1400,7 @@
         "OrAddItWith...": "or add it with",
         "HereHow": "Here's how.",
         "IncludeThePreChatForm_1": "Include the Pre-Chat form",
-        "ActivateThePreChatForm": "Attiva il Pre-Chat form",
+        "ActivateThePreChatForm": "Enable the Pre-Chat form",
         "PreChatForm": "Pre-Chat form",
         "RequiresVisitorsToCompleteForm": "Requires visitors to complete a form (full name and email) before starting a chat",
         "IncludeTheCalloutTimer_1": "Include the CALLOUT TIMER: ",
@@ -1554,5 +1554,10 @@
     "HumanAgentsOnly":"Human Agents only",
     "BotsOnly": "Bots Only",
     "AnErrorOccurredWhileSendingTheEmail":"An error occurred while sending the email",
-    "UserNotFound":"User not found"
+    "UserNotFound":"User not found",
+    "SystemTrigger":"System trigger",
+    "CustomTrigger":"Custom trigger",
+    "YourLogoMustBeSmallerThan50kB" : "Your logo must be smaller than 50 KB",
+    "TheOptimumImageSizeIs78x78": "The optimum image size is 78px x 78px",
+    "PNGorGIFwithTransparentBackgroundWorksBest" : "A PNG or GIF with a transparent background works best"
 }
