@@ -1554,5 +1554,6 @@
     "CustomTrigger": "Trigger custom",
     "YourLogoMustBeSmallerThan50kB": "Il tuo logo deve essere inferiore a 50 KB",
     "TheOptimumImageSizeIs78x78": "La dimensione ottimale dell'immagine è 78px x 78px",
-    "PNGorGIFwithTransparentBackgroundWorksBest": "Un immagine in formato PNG o GIF con uno sfondo trasparente è preferibile"
+    "PNGorGIFwithTransparentBackgroundWorksBest": "Un immagine in formato PNG o GIF con uno sfondo trasparente è preferibile",
+    "HowWorks":"Come funzionano i {{ helpdoc }}"
 }

@@ -1559,5 +1559,7 @@
 	"CustomTrigger":"Benutzerdefinierter Auslöser",
 	"YourLogoMustBeSmallerThan50kB": "Ihr Logo muss kleiner als 50 KB sein",
     "TheOptimumImageSizeIs78x78": "Die optimale Bildgröße beträgt 78 x 78 Pixel",
-    "PNGorGIFwithTransparentBackgroundWorksBest": "Ein PNG oder GIF mit transparentem Hintergrund funktioniert am besten"
+	"PNGorGIFwithTransparentBackgroundWorksBest": "Ein PNG oder GIF mit transparentem Hintergrund funktioniert am besten",
+	"HowWorks":"Wie {{ helpdoc }} funktionieren"
+	
 }
