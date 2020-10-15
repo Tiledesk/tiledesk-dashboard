@@ -8,8 +8,8 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class WidgetDesignBaseComponent extends WidgetSharedComponent implements OnInit {
 
+  // { seconds: 'disabled', value: -1 },
   calloutTimerOptions = [
-    { seconds: 'disabled', value: -1 },
     { seconds: '5', value: 5 },
     { seconds: '10', value: 10 },
     { seconds: '15', value: 15 },
@@ -28,7 +28,7 @@ export class WidgetDesignBaseComponent extends WidgetSharedComponent implements 
     'preChatForm': false,
     'calloutTimer': -1,
     'align': 'right',
-    'logoChat': 'https://tiledesk.com/tiledesk-logo-white.png',
+    'logoChat': 'tiledesklogo',
     'themeColor': '#2a6ac1',
     'themeForegroundColor': '#ffffff',
     'en': {

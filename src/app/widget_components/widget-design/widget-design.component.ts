@@ -126,6 +126,9 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   placeholderCalloutMsg: string;
   isVisible: boolean;
 
+  callout_emoticon: string;
+  calloutTitleForPreview: string;
+
   constructor(
     private notify: NotifyService,
     public location: Location,
@@ -282,6 +285,10 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
         // @ Callout title & msg
         // ---------------------------------------------------------------
         this.calloutTitle = this.selected_translation["CALLOUT_TITLE_PLACEHOLDER"];
+        // this.calloutTitleForPreview =  this.calloutTitle.trim();
+        this.checkIsEmoji(this.calloutTitle.trim());
+        console.log('checkIsEmoji calloutTitleForPreview (on getCurrentTranslation)', this.calloutTitleForPreview);
+
         this.calloutMsg = this.selected_translation["CALLOUT_MSG_PLACEHOLDER"];
         console.log('Multilanguage (widget-design) ***** selected translation CALLOUT_TITLE_PLACEHOLDER : ', this.calloutTitle, '- CALLOUT_MSG: ', this.calloutMsg);
 
@@ -316,7 +323,87 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     this.calloutTitle = event;
     console.log('Multilanguage (widget-design) - CALLOUT TITLE CHANGE: ', this.calloutTitle);
     // if (event.length === 0) {   }
+    this.checkIsEmoji(this.calloutTitle.trim())
   }
+
+
+
+  checkIsEmoji(calloutTitle) {
+    this.calloutTitleForPreview = calloutTitle;
+    this.callout_emoticon = null;
+    const emojiRegex = require('emoji-regex');
+
+    const regex = emojiRegex();
+    let match;
+    while (match = regex.exec(this.calloutTitleForPreview)) {
+      const emoji = match[0];
+      console.log(`checkIsEmoji emoji ${emoji} — code points: ${[emoji].length}`);
+
+      console.log(`checkIsEmoji emoji: ${emoji} — position: `, this.calloutTitleForPreview.indexOf(emoji));
+
+      //  const  cutstr = calloutTitle.slice(0) 
+      //  console.log(`Matched sequence ${emoji} — cutstr: `, cutstr);
+      // let cutCalloutTitle = this.calloutTitleForPreview.replace(emoji, "");
+
+      // this.calloutTitleForPreview = cutCalloutTitle;
+
+      // console.log('checkIsEmoji calloutTitleForPreview (on calloutTitleChange)',this.calloutTitleForPreview);
+      // cutCalloutTitle = calloutTitle;
+      if (this.calloutTitleForPreview.indexOf(emoji) === 0) {
+
+        let cutCalloutTitle = this.calloutTitleForPreview.replace(emoji, "");
+        console.log(`checkIsEmoji emoji ${emoji} —  at position 0: `, emoji);
+
+        console.log(`checkIsEmoji — CUTTED CalloutTitle: `, cutCalloutTitle);
+
+        this.callout_emoticon = emoji;
+        this.calloutTitleForPreview = cutCalloutTitle;
+
+        // break;
+      }
+
+      // else {
+      //   if (calloutTitle.indexOf(emoji) === 0) { 
+
+
+      //   }
+
+      //   this.calloutTitleForPreview =  calloutTitle.replace(emoji, "");
+      // }
+
+
+    }
+  }
+
+
+
+
+  // checkIsEmoji(calloutTitle) {
+  //   let title = calloutTitle
+  //   // if (this.g.calloutTitle && this.g.calloutTitle !== '') {
+  //   //   title = this.g.calloutTitle;
+  //   // }
+  //   let index = 0;
+  //   const codepoint = title.trim().codePointAt(0);
+  //   const fistChar = String.fromCodePoint(codepoint);
+  //   const isEm = isEmoji(fistChar);
+  //   if (!isEm) {
+  //     this.emoticon = null;
+  //     this.title = title;
+  //     return;
+  //   }
+  //   for (let i = 0; i <= title.trim().length; i++) {
+  //     const point = title.trim().codePointAt(i);
+  //     const char = String.fromCodePoint(point);
+  //     const isEmot = isEmoji(char);
+  //     if (isEmot === false) {
+  //       index = i + 1;
+  //       break;
+  //     }
+  //   }
+  //   this.emoticon = fistChar;
+  //   this.title = title.slice(index);
+  // }
 
   calloutMsgChange(event) {
     this.calloutMsg = event
@@ -341,8 +428,6 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     console.log('Multilanguage (widget-design) - OFFICE CLOSED MSG CHANGE: ', this.officeClosedMsg);
     // if (event.length === 0 || event) {  }
   }
-
-
 
   // ------------------------------------------------------------------------------------
   // Select language
@@ -390,7 +475,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
         console.log('Multilanguage (widget-design) - saveTranslation - ERROR ', error)
       }, () => {
 
-        if (!this.HAS_SELECTED_APPEARANCE) {
+        if (!this.HAS_SELECTED_APPEARANCE && !this.HAS_SELECTED_CALLOUT) {
           this.notify.showWidgetStyleUpdateNotification(this.updateWidgetSuccessNoticationMsg, 2, 'done');
         }
         console.log('Multilanguage (widget-design) - saveTranslation * COMPLETE *')
@@ -424,10 +509,6 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
       console.log('»» WIDGET DESIGN  url - HAS_SELECTED_CALLOUT  ', this.HAS_SELECTED_CALLOUT);
     }
   }
-
-
-
-
 
   testWidgetPage() {
     // const url = 'http://testwidget.tiledesk.com/testsitenw3?projectname=' + this.projectName + '&projectid=' + this.id_project
@@ -516,12 +597,11 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
           // @ calloutTimer
           // WIDGET DEFINED BUT NOT CALLOUT-TIMER - SET DEFAULT
           // ------------------------------------------------------------------------
-          console.log('»» WIDGET DESIGN - onInit WIDGET DEFINED BUT CALLOUT-TIMER IS: ', this.calloutTimerSecondSelected,
-            ' > SET DEFAULT ')
-          this.calloutTimerSecondSelected = -1;
+          console.log('»» WIDGET DESIGN - onInit WIDGET DEFINED BUT CALLOUT-TIMER IS: ', this.calloutTimerSecondSelected, ' > SET DEFAULT ')
+          // this.calloutTimerSecondSelected = -1;
+          this.calloutTimerSecondSelected = 5;
           this.CALLOUT_IS_DISABLED = true;
-          console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) CALLOUT-TIMER: ', this.calloutTimerSecondSelected,
-            ' - IS DISABLED ', this.CALLOUT_IS_DISABLED);
+          console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) CALLOUT-TIMER: ', this.calloutTimerSecondSelected, ' - IS DISABLED ', this.CALLOUT_IS_DISABLED);
 
         }
 
@@ -674,7 +754,8 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
         // @ calloutTimer
         // WIDGET UNDEFINED
         // -----------------------------------------------------------------------
-        this.calloutTimerSecondSelected = -1;
+        // this.calloutTimerSecondSelected = -1;
+        this.calloutTimerSecondSelected = 5;
         this.CALLOUT_IS_DISABLED = true;
 
       }
@@ -968,10 +1049,28 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   // ===========================================================================
   // ============== *** CALLOUT TIMER (calloutTimer) ***  ==============
   // ===========================================================================
-  setSelectedCalloutTimer() {
-    if (this.calloutTimerSecondSelected !== -1) {
-      console.log('»» WIDGET DESIGN CALLOUT TIMER - TIMER SELECTED', this.calloutTimerSecondSelected);
+
+  toggleCallout($event) {
+    if ($event.target.checked) {
+      // this.calloutTimerSecondSelected = 5;
       this.CALLOUT_IS_DISABLED = false;
+      this.widgetObj['calloutTimer'] = this.calloutTimerSecondSelected;
+
+      console.log('»» WIDGET DESIGN CALLOUT TIMER - toggleCallout calloutTimerSecondSelected', this.calloutTimerSecondSelected);
+    } else {
+
+      // this.calloutTimerSecondSelected = -1;
+      this.CALLOUT_IS_DISABLED = true;
+      delete this.widgetObj['calloutTimer'];
+      console.log('»» WIDGET DESIGN CALLOUT TIMER - toggleCallout calloutTimerSecondSelected', this.calloutTimerSecondSelected);
+    }
+  }
+
+  setSelectedCalloutTimer() {
+    // if (this.calloutTimerSecondSelected !== -1) {
+    // if (this.CALLOUT_IS_DISABLED = false) {
+      console.log('»» WIDGET DESIGN CALLOUT TIMER - TIMER SELECTED', this.calloutTimerSecondSelected);
+      // this.CALLOUT_IS_DISABLED = false;
       // *** ADD PROPERTY
       this.widgetObj['calloutTimer'] = this.calloutTimerSecondSelected;
       // UPDATE WIDGET PROJECT
@@ -983,14 +1082,17 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
       // COMMENT AS FOR CALLOUT TITLE
       // this.widgetService.publishCalloutTimerSelected(this.calloutTimerSecondSelected)
 
-    } else if (this.calloutTimerSecondSelected === -1) {
-      console.log('»» WIDGET DESIGN CALLOUT TIMER - TIMER SELECTED', this.calloutTimerSecondSelected);
-      this.CALLOUT_IS_DISABLED = true;
-      // *** REMOVE PROPERTIES
+      // } else if (this.calloutTimerSecondSelected === -1) {
+    } 
+    
+    // else if (this.CALLOUT_IS_DISABLED = true) {
+    //   console.log('»» WIDGET DESIGN CALLOUT TIMER - TIMER SELECTED', this.calloutTimerSecondSelected);
+    //   // this.CALLOUT_IS_DISABLED = true;
+    //   // *** REMOVE PROPERTIES
 
-      delete this.widgetObj['calloutTimer'];
-    }
-  }
+    //   delete this.widgetObj['calloutTimer'];
+    // }
+  // }
 
 
   saveCalloutSettings() {
