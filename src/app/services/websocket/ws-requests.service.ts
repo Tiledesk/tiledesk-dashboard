@@ -662,7 +662,7 @@ export class WsRequestsService implements OnDestroy {
       .put(url, body, options)
   }
 
-  public leaveTheGroup(requestid: string, userid: string, ) {
+  public leaveTheGroup(requestid: string, userid: string,) {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
@@ -802,7 +802,7 @@ export class WsRequestsService implements OnDestroy {
   // -----------------------------------------------------------------------------------------
   // Create note
   // -----------------------------------------------------------------------------------------
-  public createNote(note: string, request_id: string, ) {
+  public createNote(note: string, request_id: string,) {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
@@ -821,7 +821,7 @@ export class WsRequestsService implements OnDestroy {
   }
 
 
-  public deleteNote(requestid: string, noteid: string, ) {
+  public deleteNote(requestid: string, noteid: string,) {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
@@ -835,6 +835,29 @@ export class WsRequestsService implements OnDestroy {
       .delete(url, options)
       .map((res) => res.json());
   }
+
+
+  public downloadNodeJsHistoryRequestsAsCsv(querystring: string, pagenumber: number) {
+    let _querystring = '&' + querystring
+    if (querystring === undefined || !querystring) {
+      _querystring = ''
+    }
+    const url = this.SERVER_BASE_PATH + this.project_id + '/requests/csv?status=1000' + _querystring + '&page=' + pagenumber;
+    console.log('!!! NEW REQUESTS HISTORY - DOWNLOAD REQUESTS AS CSV URL ', url);
+
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/csv');
+    /* *** USED TO TEST IN LOCALHOST (note: this service doesn't work in localhost) *** */
+    // headers.append('Authorization', 'JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIkX18iOnsic3RyaWN0TW9kZSI6dHJ1ZSwic2VsZWN0ZWQiOnsiZW1haWwiOjEsImZpcnN0bmFtZSI6MSwibGFzdG5hbWUiOjEsInBhc3N3b3JkIjoxLCJlbWFpbHZlcmlmaWVkIjoxLCJpZCI6MX0sImdldHRlcnMiOnt9LCJfaWQiOiI1YWFhOTJmZjRjM2IxMTAwMTRiNDc4Y2IiLCJ3YXNQb3B1bGF0ZWQiOmZhbHNlLCJhY3RpdmVQYXRocyI6eyJwYXRocyI6eyJwYXNzd29yZCI6ImluaXQiLCJlbWFpbCI6ImluaXQiLCJsYXN0bmFtZSI6ImluaXQiLCJmaXJzdG5hbWUiOiJpbml0IiwiX2lkIjoiaW5pdCJ9LCJzdGF0ZXMiOnsiaWdub3JlIjp7fSwiZGVmYXVsdCI6e30sImluaXQiOnsibGFzdG5hbWUiOnRydWUsImZpcnN0bmFtZSI6dHJ1ZSwicGFzc3dvcmQiOnRydWUsImVtYWlsIjp0cnVlLCJfaWQiOnRydWV9LCJtb2RpZnkiOnt9LCJyZXF1aXJlIjp7fX0sInN0YXRlTmFtZXMiOlsicmVxdWlyZSIsIm1vZGlmeSIsImluaXQiLCJkZWZhdWx0IiwiaWdub3JlIl19LCJwYXRoc1RvU2NvcGVzIjp7fSwiZW1pdHRlciI6eyJkb21haW4iOm51bGwsIl9ldmVudHMiOnt9LCJfZXZlbnRzQ291bnQiOjAsIl9tYXhMaXN0ZW5lcnMiOjB9LCIkb3B0aW9ucyI6dHJ1ZX0sImlzTmV3IjpmYWxzZSwiX2RvYyI6eyJsYXN0bmFtZSI6IkxhbnppbG90dG8iLCJmaXJzdG5hbWUiOiJOaWNvbGEgNzQiLCJwYXNzd29yZCI6IiQyYSQxMCRwVWdocTVJclgxMzhTOXBEY1pkbG1lcnNjVTdVOXJiNlFKaVliMXlEckljOHJDMFh6c2hUcSIsImVtYWlsIjoibGFuemlsb3R0b25pY29sYTc0QGdtYWlsLmNvbSIsIl9pZCI6IjVhYWE5MmZmNGMzYjExMDAxNGI0NzhjYiJ9LCIkaW5pdCI6dHJ1ZSwiaWF0IjoxNTM4MTIzNTcyfQ.CYnxkLbg5XWk2JWAxQg1QNGDpNgNbZAzs5PEQpLCCnI');
+    /* *** USED IN PRODUCTION *** */
+    headers.append('Authorization', this.TOKEN);
+
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.text());
+    // .map((response) => JSON.stringify(response.text()));
+  }
+
 
   // ---------------------------------------------------------------------
   // HISTORY  Requests (used in history)
@@ -863,51 +886,65 @@ export class WsRequestsService implements OnDestroy {
       .map((response) => response.json());
   }
 
-  public downloadNodeJsHistoryRequestsAsCsv(querystring: string, pagenumber: number) {
-    let _querystring = '&' + querystring
-    if (querystring === undefined || !querystring) {
-      _querystring = ''
-    }
-    const url = this.SERVER_BASE_PATH + this.project_id + '/requests/csv?status=1000' + _querystring + '&page=' + pagenumber;
-    console.log('!!! NEW REQUESTS HISTORY - DOWNLOAD REQUESTS AS CSV URL ', url);
 
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/csv');
-    /* *** USED TO TEST IN LOCALHOST (note: this service doesn't work in localhost) *** */
-    // headers.append('Authorization', 'JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIkX18iOnsic3RyaWN0TW9kZSI6dHJ1ZSwic2VsZWN0ZWQiOnsiZW1haWwiOjEsImZpcnN0bmFtZSI6MSwibGFzdG5hbWUiOjEsInBhc3N3b3JkIjoxLCJlbWFpbHZlcmlmaWVkIjoxLCJpZCI6MX0sImdldHRlcnMiOnt9LCJfaWQiOiI1YWFhOTJmZjRjM2IxMTAwMTRiNDc4Y2IiLCJ3YXNQb3B1bGF0ZWQiOmZhbHNlLCJhY3RpdmVQYXRocyI6eyJwYXRocyI6eyJwYXNzd29yZCI6ImluaXQiLCJlbWFpbCI6ImluaXQiLCJsYXN0bmFtZSI6ImluaXQiLCJmaXJzdG5hbWUiOiJpbml0IiwiX2lkIjoiaW5pdCJ9LCJzdGF0ZXMiOnsiaWdub3JlIjp7fSwiZGVmYXVsdCI6e30sImluaXQiOnsibGFzdG5hbWUiOnRydWUsImZpcnN0bmFtZSI6dHJ1ZSwicGFzc3dvcmQiOnRydWUsImVtYWlsIjp0cnVlLCJfaWQiOnRydWV9LCJtb2RpZnkiOnt9LCJyZXF1aXJlIjp7fX0sInN0YXRlTmFtZXMiOlsicmVxdWlyZSIsIm1vZGlmeSIsImluaXQiLCJkZWZhdWx0IiwiaWdub3JlIl19LCJwYXRoc1RvU2NvcGVzIjp7fSwiZW1pdHRlciI6eyJkb21haW4iOm51bGwsIl9ldmVudHMiOnt9LCJfZXZlbnRzQ291bnQiOjAsIl9tYXhMaXN0ZW5lcnMiOjB9LCIkb3B0aW9ucyI6dHJ1ZX0sImlzTmV3IjpmYWxzZSwiX2RvYyI6eyJsYXN0bmFtZSI6IkxhbnppbG90dG8iLCJmaXJzdG5hbWUiOiJOaWNvbGEgNzQiLCJwYXNzd29yZCI6IiQyYSQxMCRwVWdocTVJclgxMzhTOXBEY1pkbG1lcnNjVTdVOXJiNlFKaVliMXlEckljOHJDMFh6c2hUcSIsImVtYWlsIjoibGFuemlsb3R0b25pY29sYTc0QGdtYWlsLmNvbSIsIl9pZCI6IjVhYWE5MmZmNGMzYjExMDAxNGI0NzhjYiJ9LCIkaW5pdCI6dHJ1ZSwiaWF0IjoxNTM4MTIzNTcyfQ.CYnxkLbg5XWk2JWAxQg1QNGDpNgNbZAzs5PEQpLCCnI');
-    /* *** USED IN PRODUCTION *** */
-    headers.append('Authorization', this.TOKEN);
-
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.text());
-    // .map((response) => JSON.stringify(response.text()));
-  }
 
   // -------------------------------------------------------------
   // WS Requests no-realtime
   // -------------------------------------------------------------
   public getNodeJsWSRequests(operator: string, status: string, querystring: string, pagenumber: number) {
 
-    let _querystring = ''
-    if (status === '100' || status === '200') {
-      _querystring = '&' + querystring
-    }
+    console.log('!!! NEW REQUESTS HISTORY - REQUESTS SERVICE Get NodeREQUEST - operator  ', operator);
+    console.log('!!! NEW REQUESTS HISTORY - REQUESTS SERVICE Get NodeREQUEST - status  ', status);
+    console.log('!!! NEW REQUESTS HISTORY - REQUESTS SERVICE Get NodeREQUEST - querystring  ', querystring);
+    console.log('!!! NEW REQUESTS HISTORY - REQUESTS SERVICE Get NodeREQUEST - pagenumber  ', pagenumber);
 
-    if (querystring === undefined || !querystring) {
+    let _querystring = ''
+    if (querystring && querystring !== undefined) {
+      if (status === '100' || status === '200' || status === '1000') {
+        _querystring = '&' + querystring
+      } else if (status === 'all') {
+        _querystring = querystring + '&'
+      }
+    } else {
       _querystring = ''
     }
 
-    if (status === '1000') {
-      _querystring = querystring
-    }
+    // if (querystring === undefined || !querystring) {
+    //   _querystring = ''
+    // }
+
+    // if (status === '1000') {
+    //   _querystring = querystring
+    // }
 
     let url = '';
-    if (status !== '1000') {
+    if (status !== 'all') {
       url = this.SERVER_BASE_PATH + this.project_id + '/requests?status' + operator + status + _querystring + '&page=' + pagenumber;
     } else {
-      url = this.SERVER_BASE_PATH + this.project_id + '/requests?' + _querystring + '&page=' + pagenumber;
+      url = this.SERVER_BASE_PATH + this.project_id + '/requests?' + _querystring + 'page=' + pagenumber;
     }
+
+
+
+    // let _querystring = ''
+    // if (status === '100' || status === '200') {
+    //   _querystring = '&' + querystring
+    // }
+
+    // if (querystring === undefined || !querystring) {
+    //   _querystring = ''
+    // }
+
+    // if (status === '1000') {
+    //   _querystring = querystring
+    // }
+
+    // let url = '';
+    // if (status !== '1000') {
+    //   url = this.SERVER_BASE_PATH + this.project_id + '/requests?status' + operator + status + _querystring + '&page=' + pagenumber;
+    // } else {
+    //   url = this.SERVER_BASE_PATH + this.project_id + '/requests?' + _querystring + '&page=' + pagenumber;
+    // }
 
     console.log('!!! NEW REQUESTS HISTORY - REQUESTS SERVICE URL ', url);
 
