@@ -106,7 +106,9 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   ws_requestslist_deptIdSelected: string
   display_dept_sidebar = false;
   storagebucket$: string;
-  OPERATING_HOURS_ACTIVE:boolean;
+  OPERATING_HOURS_ACTIVE: boolean;
+  served_unserved_sum: any;
+
   /**
    * Constructor
    * 
@@ -218,7 +220,13 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
   goToOperatingHours() {
     this.router.navigate(['project/' + this.projectId + '/hours']);
-}
+  }
+
+  goToNoRealtimeConversations() {
+    this.router.navigate(['project/' + this.projectId + '/all-conversations']);
+  }
+
+
 
 
   detectBrowserRefresh() {
@@ -1030,7 +1038,13 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         }
         console.log('% »»» WebSocketJs WF +++++ ws-requests--- list getWsRequests (served)', this.wsRequestsServed);
         console.log('% »»» WebSocketJs WF +++++ ws-requests--- list getWsRequests (unserved)', this.wsRequestsUnserved);
+        console.log('% »»» WebSocketJs WF +++++ ws-requests--- list getWsRequests (served length)', this.wsRequestsServed.length);
+        console.log('% »»» WebSocketJs WF +++++ ws-requests--- list getWsRequests (unserved length)', this.wsRequestsUnserved.length);
+        const sum = this.wsRequestsServed.length + this.wsRequestsUnserved.length
+        console.log('% »»» WebSocketJs WF +++++ ws-requests--- list getWsRequests sum)', sum);
 
+        this.served_unserved_sum = sum;
+        console.log('% »»» WebSocketJs WF +++++ ws-requests--- list unserved + served sum', this.wsRequestsUnserved);
         this.initRequestsDoughnutChart();
         // var self = this
         // // https://stackoverflow.com/questions/8267857/how-to-wait-until-array-is-filled-asynchronous

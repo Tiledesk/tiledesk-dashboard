@@ -27,25 +27,33 @@
       {{ 'VisitorsPage.SimulateVisitor' | translate }}
     </button>
   </li> -->
-  <li class="right-li" style="float: right !important;padding-top: 10px!important; margin-right: 10px;">
-    <button #createticket (click)="presentCreateInternalRequestModal()" class="btn btn-primary navbar-btn">
-      {{ 'CreateTicket' | translate }}
+  <!-- CREATE TICKET -->
+  <li class="right-li" style="float: right !important;padding-top: 3px!important; margin-right: 10px;">
+    <button #createticket (click)="presentCreateInternalRequestModal()" class="btn btn-tdblu-no-boxshadow" 
+    style="font-size: 12px;  margin-left: 15px;">
+     
+      <span class="material-icons" style="vertical-align: middle; margin-bottom: 0px; margin-top: 0px;">
+        add_circle
+      </span>
+       <!-- {{ 'CreateTicket' | translate }} -->
+      {{ 'Ticket' | translate }}
     </button>
   </li>
 
-  <li class="operating-hours" style="float: right;">
+  <!--OPERATING HOURS -->
+  <li class="operating-hours right-li" style="float: right;padding-left: 5px;">
     <a class="tool_tip" style="cursor: pointer; display: unset;" *ngIf="!OPERATING_HOURS_ACTIVE"
       (click)="goToOperatingHours()">
-      <i class="material-icons" style="color:#AAA">access_time</i>
+      <i class="material-icons" style="color:#AAA; margin-top: 3px;">access_time</i>
 
-      <p class="hidden-lg hidden-md">operatinghoursoff</p>
       <div class="bottom"
         style="text-align: center; padding: 4px; border-radius: 3px; text-transform: none; min-width: fit-content; white-space: nowrap;">
         {{ 'OperatingHoursAreDisabled' | translate }}
         <i></i>
       </div>
     </a>
-    <a class="tool_tip" style="cursor: pointer;display: unset;" *ngIf="OPERATING_HOURS_ACTIVE" (click)="goToOperatingHours()">
+    <a class="tool_tip" style="cursor: pointer;display: unset;" *ngIf="OPERATING_HOURS_ACTIVE"
+      (click)="goToOperatingHours()">
       <i class="material-icons" style="color:#3ea9f5">access_time</i>
       <p class="hidden-lg hidden-md">operatinghourson</p>
       <div class="bottom" style="text-align: center; padding: 4px; border-radius: 3px;">
@@ -56,21 +64,104 @@
     </a>
   </li>
 
+   <!-- NO REALTIME REQUESTS -->
+  <li class="see-no-realtime-request right-li" style="float: right; padding-right: 5px;"
+    (click)='goToNoRealtimeConversations()'>
+    <a class="tool_tip" style="cursor: pointer; display: unset;"
+      [ngClass]="{ 'has-reached-100' : served_unserved_sum >= 16 }">
+      <span class="material-icons" style="margin-top: 3px;">
+        view_list
+      </span>
+      <div class="bottom"
+        style="text-align: center; padding: 4px; border-radius: 3px; text-transform: none; min-width: 200px;">
+        {{ 'ThisScreenDisplayAMaximumOf100RealTime' | translate }}
+        <i></i>
+      </div>
+    </a>
 
-
+    <span *ngIf="served_unserved_sum >= 16" class="served-unserved-sum">
+      <span>
+        {{ served_unserved_sum }}
+      </span>
+    </span>
+  </li>
 
 </ul>
 
+<!-- 
+// ---------------------------------------------------------
+// FOR SMALL SCREEN 
+// --------------------------------------------------------- -->
+
+<!-- CREATE TICKET -->
 <ul class="bottom-bottom-nav" style="display: none;">
-  <li style="display: none;" class="" style="padding-top: 10px!important; padding-left: 10px!important">
-    <button #createticket (click)="presentCreateInternalRequestModal()" class="btn btn-primary navbar-btn">
-      {{ 'CreateTicket' | translate }}
+  <li style="display: none;" class="" style="padding-top: 3px!important; padding-left: 10px!important">
+    <!-- btn-primary navbar-btn  -->
+    <button #createticket (click)="presentCreateInternalRequestModal()" class="btn btn-tdblu-no-boxshadow" style="font-size: 12px;">
+     
+      <span class="material-icons" style="vertical-align: middle; margin-bottom: 0px; margin-top: 0px;">
+        add_circle
+      </span>
+       <!-- {{ 'CreateTicket' | translate }} -->
+      {{ 'Ticket' | translate }}
+     
     </button>
   </li>
-  <li style="display: none;" style="padding-top: 10px!important">
-    <button #testwidgetbtn (click)="testWidgetPage()" class="btn btn-success navbar-btn">
+
+  <!-- SIMULATE VISITOR -->
+  <li style="display: none;" style="padding-top: 3px!important;     margin-left: 15px;">
+    <button #testwidgetbtn (click)="testWidgetPage()" class="btn btn-success-no-boxshadow" style="font-size: 12px;">
+      <span class="material-icons" style="vertical-align: middle; margin-bottom: 0px; margin-top: 0px;">
+        play_circle_filled
+      </span>
       {{ 'VisitorsPage.SimulateVisitor' | translate }}
     </button>
+  </li>
+
+    <!-- NO REALTIME REQUESTS -->
+    <li style="display: none;" class="see-no-realtime-request" style="float: right; padding-right: 5px;"
+    (click)='goToNoRealtimeConversations()'>
+    <a class="tool_tip" style="cursor: pointer; display: unset; color: #797979;"
+      [ngClass]="{ 'has-reached-100' : served_unserved_sum >= 16 }">
+      <span class="material-icons">
+        view_list
+      </span>
+      <div class="bottom"
+        style="text-align: center; padding: 4px; border-radius: 3px; text-transform: none; min-width: 200px;">
+        {{ 'ThisScreenDisplayAMaximumOf100RealTime' | translate }}
+        <i></i>
+      </div>
+    </a>
+    <span *ngIf="served_unserved_sum >= 16" class="served-unserved-sum">
+      <span>
+        {{ served_unserved_sum }}
+      </span>
+    </span>
+  </li>
+
+  <!--OPERATING HOURS -->
+  <li style="display: none;"  class="operating-hours" style="float: right;padding-left: 5px;">
+    <a class="tool_tip" style="cursor: pointer; display: unset;" *ngIf="!OPERATING_HOURS_ACTIVE"
+      (click)="goToOperatingHours()">
+      <i class="material-icons" style="color:#AAA">access_time</i>
+
+      <!-- <p class="hidden-lg hidden-md">operatinghoursoff</p> -->
+      <div class="bottom"
+        style="text-align: center; padding: 4px; border-radius: 3px; text-transform: none; min-width: fit-content; white-space: nowrap;">
+        {{ 'OperatingHoursAreDisabled' | translate }}
+        <i></i>
+      </div>
+    </a>
+    <a class="tool_tip" style="cursor: pointer;display: unset;" *ngIf="OPERATING_HOURS_ACTIVE"
+      (click)="goToOperatingHours()">
+      <i class="material-icons" style="color:#3ea9f5">access_time</i>
+      <p class="hidden-lg hidden-md">operatinghourson</p>
+      <div class="bottom" style="text-align: center; padding: 4px; border-radius: 3px;">
+        {{ 'OperatingHoursAreEnabled' | translate }}
+
+        <i></i>
+      </div>
+    </a>
   </li>
 </ul>
 

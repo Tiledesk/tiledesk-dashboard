@@ -1,17 +1,17 @@
-<div class="card" style="margin: 5px 0;">
+<div class="card card--no-border" style="margin: 5px 0;">
   <div class="card-header card-header-custom">
-
 
     <div class="row">
 
       <div class="col-xs-6">
+
         <h4 class="title customh4" style="margin-bottom:2px;">
           {{ 'VisitorsPage.ServedRequests' | translate }}
         </h4>
       </div>
 
       <div class="col-xs-6">
-        <div class="dropdown pull-right">
+        <!-- <div class="dropdown pull-right">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <span class="material-icons" style="color:rgba(0, 0, 0, 0.87);">
               more_vert
@@ -24,7 +24,7 @@
               </a>
             </li>
           </ul>
-        </div>
+        </div> -->
       </div>
 
     </div>
@@ -112,26 +112,23 @@
       </thead>
       <tbody>
 
-
+        <!-- 
+        // ------------------------------
+        // IF THERE ISN'T SERVED REQUEST 
+        // ------------------------------ -->
         <tr *ngIf="wsRequestsServed?.length === 0">
-          <!-- <tr *ngIf="displayNoRequestString"> -->
-
           <td colspan="8" style="text-align: center; padding-top: 16px;">
             <p style="font-size:1em; color:#737376; font-weight: 100">
 
-              <!-- {{ 'VisitorsPage.NoVisitor' | translate }} -->
               {{ 'NoRequests' | translate }}
-
-              <!-- <button class="btn btn-white" style="padding: 8px; color: rgb(118,149,165)">
-                {{ 'VisitorsPage.ClickHereToSimulate' | translate }}
-              </button> -->
             </p>
           </td>
         </tr>
 
-        <!-- ****************************************
-        ------ ====== SERVED FOR ====== ------
-      ********************************************* -->
+        <!-- 
+        // ------------------------------
+        // SERVED FOR
+        // ------------------------------ -->
         <tr *ngFor="let request of wsRequestsServed; trackBy: trackByFn">
 
           <!-- FOR DEBUG: SHOW 'J' IF THE CURRENT USER UID IS BETWEEN 
@@ -142,60 +139,12 @@
           </span>
         </td> -->
 
-          <!-- ------ ====== VISIBILITY ICONS ====== ------ -->
+          <!-- 
+          // ------------------------------
+          // ICONS
+          // ------------------------------ -->
           <td style="text-align:center; white-space: nowrap; width: 1%;">
             <!-- IF THE REQUEST SUPPORT STATUS IS 0 (??? REQUEST) -->
-            <span *ngIf="request?.status == 0">
-              <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" rel="tooltip"
-                title="{{ 'VisitorsPage.ViewRequestDetails' | translate}}: {{request?.request_id}}">
-
-                <span *ngIf="!request?.subject">
-                  <svg viewBox="0 0 58.1 53.9" style="width: 25px; position: relative; top: 3px;" xml:space="preserve">
-                    <style type="text/css">
-                      .st0 {
-                        fill: none;
-                        stroke: #999999;
-                        stroke-width: 2;
-                        stroke-miterlimit: 10;
-                      }
-                    </style>
-                    <path class="st0" d="M30.1,2.7c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3c-0.3,4.1-1.3,9.9-4.1,12.7c0,0,8.6-1.2,14.4-4.7
-                  c3.2,1.4,6.8,2.1,10.6,2.1c13.8,0,25-10,25-22.4S43.9,2.7,30.1,2.7z" />
-                  </svg>
-                </span>
-
-                <!-- 
-                // ------------------------------------------------------------------------------------------------------
-                // If is internal request
-                // ------------------------------------------------------------------------------------------------------ -->
-                <span *ngIf="request?.subject">
-
-                  <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 58.1 53.9"
-                    style="width: 25px; position: relative; top: 3px;" xml:space="preserve">
-                    <style type="text/css">
-                      .status0_Internal_st0 {
-                        fill: none;
-                        stroke: #999999;
-                        stroke-width: 2;
-                        stroke-miterlimit: 10;
-                      }
-
-                      .status0_Internal_st1 {
-                        fill: #999999;
-                      }
-                    </style>
-                    <path class="status0_Internal_st0" d="M29,3.2c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3C7.8,42,6.8,47.9,4,50.7c0,0,8.6-1.2,14.4-4.7
-               C21.6,47.4,25.2,48,29,48c13.8,0,25-10,25-22.4S42.8,3.2,29,3.2z" />
-                    <path class="status0_Internal_st1" d="M22.8,22.4h12.5v9.1H22.8V22.4z M38.5,27c0,1.3,0.8,2.3,1.9,2.3v4.5c0,1.3-0.8,2.3-1.9,2.3H19.6
-               c-1,0-1.9-1-1.9-2.3v-4.5c1,0,1.9-1,1.9-2.3s-0.8-2.3-1.9-2.3v-4.5c0-1.3,0.8-2.3,1.9-2.3h18.8c1,0,1.9,1,1.9,2.3v4.5
-               C39.3,24.7,38.5,25.7,38.5,27z M36.6,22c0-0.6-0.4-1.1-0.9-1.1H22.5c-0.5,0-0.9,0.5-0.9,1.1v9.8c0,0.6,0.4,1.1,0.9,1.1h13.2
-               c0.5,0,0.9-0.5,0.9-1.1V22z" />
-                  </svg>
-
-                </span>
-              </span>
-            </span>
 
 
             <!-- 
@@ -206,26 +155,9 @@
                 title="{{ 'VisitorsPage.ViewRequestDetails' | translate}}: {{request?.request_id}}">
 
                 <span *ngIf="!request?.subject">
-                  <svg viewBox="0 0 58.1 53.9" style="width: 25px; position: relative; top: 3px;" xml:space="preserve">
-                    <style type="text/css">
-                      .st0-served-by-cu {
-                        fill: none;
-                        stroke: #4DAF4F;
-                        stroke-width: 2;
-                        stroke-miterlimit: 10;
-                      }
 
-                      .st1-served-by-cu {
-                        fill: #4DAF4F;
-                      }
-                    </style>
-                    <path class="st0-served-by-cu" d="M29.8,3.7c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3c-0.3,4.1-1.3,9.9-4.1,12.7c0,0,8.6-1.2,14.4-4.7
-                    c3.2,1.4,6.8,2.1,10.6,2.1c13.8,0,25-10,25-22.4S43.6,3.7,29.8,3.7z" />
-                    <g id="XMLID_146_">
-                      <path id="XMLID_158_" class="st1-served-by-cu" d="M25.8,36.5l-8.4-7.4c-1.1-0.9-1.1-2.4,0-3.3c1.1-0.9,2.8-0.9,3.8,0l4.6,4.1l12.6-10.9
-                      c1.1-0.9,2.8-0.9,3.8,0c1,0.9,1,2.4,0,3.3L25.8,36.5z" />
-                    </g>
-                  </svg>
+                  <img style="width: 30px;" src="assets/img/request_icons/status200_joined.svg" class="img-fluid">
+
                 </span>
 
                 <!-- 
@@ -233,32 +165,10 @@
                 // If is internal request
                 // ------------------------------------------------------------------------------------------------------ -->
                 <span *ngIf="request?.subject">
-                  <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 58.1 53.9"
-                    style="width: 25px; position: relative; top: 3px;" xml:space="preserve">
-                    <style type="text/css">
-                      .servedbyCurrentUser_Internal_st0 {
-                        fill: none;
-                        stroke: #4DAF4F;
-                        stroke-width: 2;
-                        stroke-miterlimit: 10;
-                      }
-
-                      .servedbyCurrentUser_Internal_st1 {
-                        fill: #4DAF4F;
-                      }
-                    </style>
-                    <path class="servedbyCurrentUser_Internal_st0" d="M29,3.2c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3C7.8,42,6.8,47.9,4,50.7c0,0,8.6-1.2,14.4-4.7
-                 C21.6,47.4,25.2,48,29,48c13.8,0,25-10,25-22.4S42.8,3.2,29,3.2z" />
-                    <path class="servedbyCurrentUser_Internal_st1" d="M22.8,22.4h12.5v9.1H22.8V22.4z M38.5,27c0,1.3,0.8,2.3,1.9,2.3v4.5c0,1.3-0.8,2.3-1.9,2.3H19.6
-                 c-1,0-1.9-1-1.9-2.3v-4.5c1,0,1.9-1,1.9-2.3s-0.8-2.3-1.9-2.3v-4.5c0-1.3,0.8-2.3,1.9-2.3h18.8c1,0,1.9,1,1.9,2.3v4.5
-                 C39.3,24.7,38.5,25.7,38.5,27z M36.6,22c0-0.6-0.4-1.1-0.9-1.1H22.5c-0.5,0-0.9,0.5-0.9,1.1v9.8c0,0.6,0.4,1.1,0.9,1.1h13.2
-                 c0.5,0,0.9-0.5,0.9-1.1V22z" />
-                  </svg>
+                  <img style="width: 30px;" src="assets/img/request_icons/status200_joined_internal.svg"
+                    class="img-fluid">
 
                 </span>
-
-
               </span>
             </span>
 
@@ -270,29 +180,8 @@
                 title="{{ 'VisitorsPage.ViewRequestDetails' | translate}}: {{request?.request_id}}">
 
                 <span *ngIf="!request?.subject">
-                  <svg viewBox="0 0 58.1 53.9" style="width: 25px; position: relative; top: 3px;" xml:space="preserve">
-                    <style type="text/css">
-                      .st0-served {
-                        fill: none;
-                        stroke: #05BDD4;
-                        stroke-width: 2;
-                        stroke-miterlimit: 10;
-                      }
+                  <img style="width: 30px;" src="assets/img/request_icons/status200_no_joined.svg" class="img-fluid">
 
-                      .st1-served {
-                        fill: #05BDD4;
-                      }
-                    </style>
-                    <g>
-                      <path class="st0-served" d="M30.5,3c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3c-0.3,4.1-1.3,9.9-4.1,12.7c0,0,8.6-1.2,14.4-4.7
-                    c3.2,1.4,6.8,2.1,10.6,2.1c13.8,0,25-10,25-22.4S44.3,3,30.5,3z" />
-                      <g>
-                        <circle class="st1-served" cx="17.5" cy="26.7" r="3" />
-                        <circle class="st1-served" cx="30.5" cy="26.7" r="3" />
-                        <circle class="st1-served" cx="43.5" cy="26.7" r="3" />
-                      </g>
-                    </g>
-                  </svg>
                 </span>
 
                 <!-- 
@@ -301,29 +190,8 @@
                 // ------------------------------------------------------------------------------------------------------ -->
                 <span *ngIf="request?.subject">
 
-                  <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 58.1 53.9"
-                    style="width: 25px; position: relative; top: 3px;" xml:space="preserve">
-                    <style type="text/css">
-                      .served_Internal_st0 {
-                        fill: none;
-                        stroke: #05BDD4;
-                        stroke-width: 2;
-                        stroke-miterlimit: 10;
-                      }
-
-                      .served_Internal_st1 {
-                        fill: #05BDD4;
-                      }
-                    </style>
-                    <path class="served_Internal_st0" d="M29,3.2c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3C7.8,42,6.8,47.9,4,50.7c0,0,8.6-1.2,14.4-4.7
-               C21.6,47.4,25.2,48,29,48c13.8,0,25-10,25-22.4S42.8,3.2,29,3.2z" />
-                    <path class="served_Internal_st1" d="M22.8,22.4h12.5v9.1H22.8V22.4z M38.5,27c0,1.3,0.8,2.3,1.9,2.3v4.5c0,1.3-0.8,2.3-1.9,2.3H19.6
-               c-1,0-1.9-1-1.9-2.3v-4.5c1,0,1.9-1,1.9-2.3s-0.8-2.3-1.9-2.3v-4.5c0-1.3,0.8-2.3,1.9-2.3h18.8c1,0,1.9,1,1.9,2.3v4.5
-               C39.3,24.7,38.5,25.7,38.5,27z M36.6,22c0-0.6-0.4-1.1-0.9-1.1H22.5c-0.5,0-0.9,0.5-0.9,1.1v9.8c0,0.6,0.4,1.1,0.9,1.1h13.2
-               c0.5,0,0.9-0.5,0.9-1.1V22z" />
-                  </svg>
-
+                  <img style="width: 30px;" src="assets/img/request_icons/status200_no_joined_internal.svg"
+                    class="img-fluid">
                 </span>
 
               </span>
@@ -701,7 +569,10 @@
           </td> -->
 
 
-          <!-- ------ ====== SERVED BY MOBILE ====== ------ -->
+          <!-- 
+          // --------------------------------------------
+          // SERVED BY MOBILE
+          // -------------------------------------------- -->
           <td *ngIf="isMobile">
             <div style="min-width: 105px; position: relative;">
               <div *ngFor="let agent of request?.participanting_Agents">
@@ -746,15 +617,18 @@
             </div>
           </td>
 
-          <!-- ------ ====== SERVED BY DESKTOP ====== ------ -->
+          <!-- 
+          // --------------------------------------------
+          // SERVED BY DESKTOP
+          // -------------------------------------------- -->
           <td *ngIf="!isMobile">
             <div class="served-by-desktop-a">
               <div class="served-by-desktop-b" *ngFor="let agent of request?.participanting_Agents; let first = first;">
 
                 <span *ngIf="agent.is_bot === false">
 
-                  <div [ngClass]="{ 'first-served-by': first }" class="served-by-desktop-c tool_tip" (click)="goToAgentProfile(agent?._id)"
-                    style="cursor:pointer">
+                  <div [ngClass]="{ 'first-served-by': first }" class="served-by-desktop-c tool_tip"
+                    (click)="goToAgentProfile(agent?._id)" style="cursor:pointer">
                     <div class="served-by-desktop-d">
                       <div size="32" class="served-by-desktop-e">
                         <!-- {{  agent.hasImage }} -->
@@ -763,17 +637,14 @@
                           src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fphoto.jpg?alt=media"
                           alt="" onerror="this.src='assets/img/no_image_user.png'" (error)="updateUrl($event, agent)">
 
-                        <div [ngClass]="{'current-user-member-border' : agent._id === currentUserID}" class="altenative-avatar-wrap" [ngStyle]="{'background-color': agent?.fillColour }"
+                        <div [ngClass]="{'current-user-member-border' : agent._id === currentUserID}"
+                          class="altenative-avatar-wrap" [ngStyle]="{'background-color': agent?.fillColour }"
                           *ngIf="!agent.hasImage">
 
-                          <!-- <span class="requester-avatar-wrapper"> requester-avatar -->
-                          <!-- <span class="" "> -->
-                          <span class="altenative-avatar" style="">
+                          <span class="altenative-avatar">
                             {{ agent?.fullname_initial }}
                           </span>
-                          <!-- </span> -->
 
-                          <!-- </span> -->
                         </div>
                       </div>
                     </div>
@@ -794,8 +665,8 @@
 
 
                 <span *ngIf="agent.is_bot === true">
-
-                  <span (click)="goToBotProfile(agent?._id, agent?.type)" style="cursor:pointer" class="bot---avatar tool_tip">
+                  <span (click)="goToBotProfile(agent?._id, agent?.type)" style="cursor:pointer"
+                    class="bot---avatar tool_tip">
                     <img class="user-img ws-requests-list-servedby-avatar"
                       src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fphoto.jpg?alt=media"
                       onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
@@ -820,6 +691,7 @@
                     </div>
                   </span>
                 </span>
+
               </div>
             </div>
 
@@ -902,7 +774,6 @@
                 <span style="text-transform: capitalize;"> {{ 'VisitorsPage.Archive' | translate }} </span>
                 <i></i>
               </span>
-
             </button>
 
             <button type="button" rel="tooltip" title="{{ 'RequestMsgsPage.Enter' | translate }}"
@@ -920,7 +791,8 @@
                   d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z">
                 </path>
               </svg>
-              <span style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px; left: -16px;" class="top">
+              <span style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px; left: -16px;"
+                class="top">
                 <span style="text-transform: capitalize;"> {{ 'RequestMsgsPage.Enter' | translate }} </span>
                 <i style="left: 54%;"></i>
               </span>

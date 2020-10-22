@@ -554,11 +554,29 @@ span .switch-agent-admin-requests-btn {
   }
 
   .bottom-bottom-nav li {
-    float: left;
+    float: left !important;
     // padding: 15px;
     list-style: none;
     display: block !important;
   }
+
+  .operating-hours{
+    margin-top: 12px;
+    margin-right: 6px;
+  }
+
+  .see-no-realtime-request {
+    margin-top: 13px;
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+
+  .served-unserved-sum {
+    left: 324px  !important;
+    top: 16px !important;
+
+  }
+
 }
 
 @media (max-width: 650px) {
@@ -568,9 +586,9 @@ span .switch-agent-admin-requests-btn {
 }
 
 .navbar-btn {
-  margin-top:0px;
-  padding:8px 12px;
-  font-size:10px
+  margin-top: 0px;
+  padding: 8px 12px;
+  font-size: 10px;
 }
 /*
 .a-active {
@@ -757,6 +775,22 @@ $f21blue: #039be5;
   text-align: center;
 }
 
+.has-reached-100 {
+  color: #f44336 !important;
+}
+
+.served-unserved-sum {
+  position: absolute;
+  left: 29px;
+  top: 12px;
+  font-size: 12px;
+  font-weight: 400;
+  background: #fff;
+  line-height: 12px;
+  color: #797979;
+  padding-left: 2px;
+  color: #f44336 !important;
+}
 // --------------------------------------------------------------
 // @ Skeleton
 // --------------------------------------------------------------

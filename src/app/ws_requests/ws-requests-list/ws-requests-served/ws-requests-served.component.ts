@@ -87,7 +87,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     // this.getProjectUserRole()
     this.getTranslations();
     this.getProjectUserRole();
-  
+    this.detectMobile();
   }
 
   getStorageBucket() {
