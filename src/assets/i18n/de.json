@@ -1560,6 +1560,14 @@
 	"YourLogoMustBeSmallerThan50kB": "Ihr Logo muss kleiner als 50 KB sein",
     "TheOptimumImageSizeIs78x78": "Die optimale Bildgröße beträgt 78 x 78 Pixel",
 	"PNGorGIFwithTransparentBackgroundWorksBest": "Ein PNG oder GIF mit transparentem Hintergrund funktioniert am besten",
-	"HowWorks":"Wie {{ helpdoc }} funktionieren"
+	"HowWorks":"Wie {{ helpdoc }} funktionieren",
+	"ThisScreenDisplayAMaximumOf100RealTime": "Auf dieser Seite werden maximal 100 Konversationen in Echtzeit angezeigt. Klicken Sie hier, um alle Konversationen anzuzeigen oder eine erweiterte Suche durchzuführen.",
+	"AllConversations": "Alle Gespräche",
+	"FilterFor":"Filter für",
+	"NotInRealTime": "nicht in Echtzeit",
+	"ResetFilters": "Filter zurücksetzen",
+	"AppliedFilters": "Angewandte Filter",
+	"Ticket": "Interne Anfrage",
+	"EnableDisable":"Aktivieren / deaktivieren"
 	
 }

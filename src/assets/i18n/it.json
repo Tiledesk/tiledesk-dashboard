@@ -1555,5 +1555,13 @@
     "YourLogoMustBeSmallerThan50kB": "Il tuo logo deve essere inferiore a 50 KB",
     "TheOptimumImageSizeIs78x78": "La dimensione ottimale dell'immagine è 78px x 78px",
     "PNGorGIFwithTransparentBackgroundWorksBest": "Un immagine in formato PNG o GIF con uno sfondo trasparente è preferibile",
-    "HowWorks":"Come funzionano i {{ helpdoc }}"
+    "HowWorks":"Come funzionano i {{ helpdoc }}",
+    "ThisScreenDisplayAMaximumOf100RealTime": "questa pagina visualizza un massimo di 100 conversazioni in tempo reale. Per vedere tutte le conversazioni o per una ricerca più avanzata clicca qui.",
+    "AllConversations": "Tutte le conversazioni",
+    "FilterFor":"Filtra per",
+    "NotInRealTime": "non in tempo reale",
+    "ResetFilters": "Rimuovi filtri",
+    "AppliedFilters": "Filtri applicati",
+    "Ticket": "Richiesta interna",
+    "EnableDisable":"Abilita / disabilita"
 }
