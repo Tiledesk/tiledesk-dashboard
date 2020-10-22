@@ -93,7 +93,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.metaTitle.setTitle(brand['metaTitle']); // here used with: "import brand from ..." now see in getBrand()
         this.setFavicon(brand); // here used with "import brand from ..." now see in getBrand()
-        
+
 
         // ----------------------------
         // FIREBASE initializeApp 
@@ -417,9 +417,12 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.IS_REQUEST_X_PANEL_ROUTE = true
 
                     const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
-                    if (this.IS_REQUEST_X_PANEL_ROUTE === true) {
+
+                    if (this.IS_REQUEST_X_PANEL_ROUTE === true && !this.isMobile() ) {
                         let ps = new PerfectScrollbar(elemMainPanel);
                     }
+
+
                 } else {
                     this.IS_REQUEST_X_PANEL_ROUTE = false
                 }
@@ -574,6 +577,14 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     isMac(): boolean {
         let bool = false;
         if (navigator.platform.toUpperCase().indexOf('MAC') >= 0 || navigator.platform.toUpperCase().indexOf('IPAD') >= 0) {
+            bool = true;
+        }
+        return bool;
+    }
+
+    isMobile() {
+        let bool = false;
+        if (/Android|iPhone/i.test(window.navigator.userAgent)) {
             bool = true;
         }
         return bool;
