@@ -23,6 +23,8 @@ import { UAParser } from 'ua-parser-js';
 import { WsSharedComponent } from '../ws_requests/ws-shared/ws-shared.component';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
+import { Location } from '@angular/common';
+import { SelectOptionsTranslatePipe } from '../selectOptionsTranslate.pipe';
 
 // import swal from 'sweetalert';
 // https://github.com/t4t5/sweetalert/issues/890 <- issue ERROR in node_modules/sweetalert/typings/sweetalert.d.ts(4,9): error TS2403
@@ -66,17 +68,24 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
 
   private unsubscribe$: Subject<any> = new Subject<any>();
 
-  @ViewChild('advancedoptionbtn') private advancedoptionbtnRef: ElementRef;
-  @ViewChild('searchbtn') private searchbtnRef: ElementRef;
+  // @ViewChild('advancedoptionbtn') private advancedoptionbtnRef: ElementRef;
+  // @ViewChild('searchbtn') private searchbtnRef: ElementRef;
   @ViewChild('searchbtnbottom') private searchbtnbottomRef?: ElementRef;
 
   requestList: Request[];
   projectId: string;
   showSpinner: boolean;
   startDate: any;
+  startDateFormatted: string;
+  startDateFormatted_temp: string;
+
   endDate: any;
+  endDateFormatted: string;
+  endDateFormatted_temp: string;
   deptName: string;
   fullText: string;
+  fullText_applied_filter: string
+  fullText_temp: string;
   queryString: string;
   startDateValue: any;
   endDateValue: any;
@@ -119,6 +128,7 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
   errorDeleting: string;
   pleaseTryAgain: string;
   CURRENT_USER_ROLE: string;
+  IS_HERE_FOR_HISTORY: boolean;
 
   public myDatePickerOptions: IMyDpOptions = {
     // other options...
@@ -126,7 +136,42 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
     // dateFormat: 'yyyy, mm , dd',
   };
 
+
+  public endDatePickerOptions: IMyDpOptions = {
+    // other options...
+    dateFormat: 'dd/mm/yyyy',
+    disableUntil: { year: 0, month: 0, day: 0 },
+    // dateFormat: 'yyyy, mm , dd',
+  };
+
+
   storageBucket: string;
+  isMobile: boolean;
+
+  operator: string;
+  requests_status: any;
+  selectedDeptName: string;
+  selectedDeptName_temp: string;
+  selectedAgentFirstname: string;
+  selectedAgentLastname: string;
+  selectedAgentFirstname_temp: string;
+  selectedAgentLastname_temp: string;
+
+  disableUntilDate: any;
+
+  status = [
+    { id: '100', name: 'Unserved' },
+    { id: '200', name: 'Served' },
+    { id: 'all', name: 'All' },
+  ];
+  start_date_is_null = true
+
+
+  archivingRequestNoticationMsg: string;
+  archivingRequestErrorNoticationMsg: string;
+  requestHasBeenArchivedNoticationMsg_part1: string;
+  requestHasBeenArchivedNoticationMsg_part2: string;
+  ROLE_IS_AGENT: boolean;
 
   constructor(
     // private requestsService: RequestsService,
@@ -141,20 +186,23 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
     private translate: TranslateService,
     public notify: NotifyService,
     public appConfigService: AppConfigService,
-    public wsRequestsService: WsRequestsService
+    public wsRequestsService: WsRequestsService,
+    public location: Location,
+    public selectOptionsTranslatePipe: SelectOptionsTranslatePipe
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify);
   }
 
   ngOnInit() {
-    this.showSpinner = true;
+    this.getCurrentUrlLoadRequests();
+
     // this.auth.checkRoleForCurrentProject();
     // selectedDeptId is assigned to empty so in the template will be selected the custom option ALL DEPARTMENTS
     this.selectedDeptId = '';
     // selectedAgentId is assigned to empty so in the template will be selected the custom option ALL AGENTS
     this.selectedAgentId = '';
     this.getCurrentUser();
-    this.getRequests();
+    // this.getRequests();
     this.getCurrentProject();
     this.getDepartments();
     this.getAllProjectUsers();
@@ -163,8 +211,11 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
     // this.createBotsAndUsersArray();
     this.getStorageBucket();
     this.getTranslations();
-    this.getProjectUserRole()
+    this.getProjectUserRole();
+    this.detectMobile();
+
   }
+
 
   getTranslations() {
     this.translate.get('DeleteRequestForever')
@@ -182,7 +233,326 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
         this.areYouSure = text;
         // console.log('+ + + areYouSure', text)
       });
+
+    this.translateArchivingRequestErrorMsg();
+    this.translateArchivingRequestMsg();
+    this.translateRequestHasBeenArchivedNoticationMsg_part1();
+    this.translateRequestHasBeenArchivedNoticationMsg_part2();
   }
+
+
+  // TRANSLATION
+  translateArchivingRequestMsg() {
+    this.translate.get('ArchivingRequestNoticationMsg')
+      .subscribe((text: string) => {
+        this.archivingRequestNoticationMsg = text;
+        // console.log('+ + + ArchivingRequestNoticationMsg', text)
+      });
+  }
+
+  // TRANSLATION
+  translateArchivingRequestErrorMsg() {
+    this.translate.get('ArchivingRequestErrorNoticationMsg')
+      .subscribe((text: string) => {
+
+        this.archivingRequestErrorNoticationMsg = text;
+        // console.log('+ + + ArchivingRequestErrorNoticationMsg', text)
+      });
+  }
+
+  // TRANSLATION
+  translateRequestHasBeenArchivedNoticationMsg_part1() {
+    // this.translate.get('RequestHasBeenArchivedNoticationMsg_part1')
+    this.translate.get('RequestSuccessfullyClosed')
+      .subscribe((text: string) => {
+        this.requestHasBeenArchivedNoticationMsg_part1 = text;
+        // console.log('+ + + RequestHasBeenArchivedNoticationMsg_part1', text)
+      });
+  }
+
+  // TRANSLATION
+  translateRequestHasBeenArchivedNoticationMsg_part2() {
+    this.translate.get('RequestHasBeenArchivedNoticationMsg_part2')
+      .subscribe((text: string) => {
+        this.requestHasBeenArchivedNoticationMsg_part2 = text;
+        // console.log('+ + + RequestHasBeenArchivedNoticationMsg_part2', text)
+      });
+  }
+
+
+  // ------------------------------------------
+  // Join request
+  // ------------------------------------------
+  joinRequest(request_id: string) {
+    this.currentUserID
+    this._onJoinHandled(request_id, this.currentUserID);
+
+    this.getRequests();
+  }
+
+  _onJoinHandled(id_request: string, currentUserID: string) {
+    // this.getFirebaseToken(() => {
+    console.log('%%% Ws-REQUESTS-Msgs - JOIN PRESSED');
+
+
+    this.wsRequestsService.addParticipant(id_request, currentUserID)
+      .subscribe((data: any) => {
+
+        console.log('%%% Ws-REQUESTS-Msgs - addParticipant TO CHAT GROUP ', data);
+      }, (err) => {
+        console.log('%%% Ws-REQUESTS-Msgs - addParticipant TO CHAT GROUP ERROR ', err);
+
+      }, () => {
+        console.log('%%% Ws-REQUESTS-Msgs - addParticipant TO CHAT GROUP COMPLETE');
+
+        this.notify.showWidgetStyleUpdateNotification(`You are successfully added to the chat`, 2, 'done');
+        this.getRequests();
+      });
+    // });
+  }
+
+  archiveRequest(request_id) {
+    this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg);
+    console.log('WS-REQUESTS-SERVED - HAS CLICKED ARCHIVE REQUEST ');
+
+
+    this.wsRequestsService.closeSupportGroup(request_id)
+      .subscribe((data: any) => {
+        console.log('WS-REQUESTS-SERVED - CLOSE SUPPORT GROUP - DATA ', data);
+      }, (err) => {
+        console.log('WS-REQUESTS-SERVED - CLOSE SUPPORT GROUP - ERROR ', err);
+
+
+        // =========== NOTIFY ERROR ===========
+        // this.notify.showNotification('An error has occurred archiving the request', 4, 'report_problem');
+        this.notify.showNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
+      }, () => {
+        // this.ngOnInit();
+        console.log('CLOSE SUPPORT GROUP - COMPLETE');
+
+        // =========== NOTIFY SUCCESS===========
+        // this.notify.showNotification(`request with id: ${this.id_request_to_archive} has been moved to History`, 2, 'done');
+        this.notify.showRequestIsArchivedNotification(this.requestHasBeenArchivedNoticationMsg_part1);
+
+        // this.onArchiveRequestCompleted()
+
+        this.getRequests();
+      });
+  }
+
+
+
+  getCurrentUrlLoadRequests() {
+    const currentUrl = this.router.url;
+    console.log('!!! NEW REQUESTS HISTORY  current_url ', currentUrl);
+
+    if (currentUrl.indexOf('/all-conversations') !== -1) {
+      this.IS_HERE_FOR_HISTORY = false;
+
+      this.requests_status = 'all'
+      this.getRequests();
+
+    } else {
+      this.IS_HERE_FOR_HISTORY = true;
+      this.operator = '='
+      this.requests_status = '1000'
+      this.getRequests();
+    }
+  }
+
+  requestsStatusSelect(request_status) {
+
+    console.log('WsRequests NO-RT - requestsStatusSelect', request_status);
+    if (request_status === '200') {
+      this.getServedRequests();
+    } else if (request_status === '100') {
+      this.getUnservedRequests();
+    } else if (request_status === 'all') {
+      this.getAllRequests();
+    }
+  }
+
+  requestsStatusSelectFromAdvancedOption(request_status) {
+    if (request_status === 'all') {
+
+      this.requests_status = 'all'
+
+    } else if (request_status === '100') {
+      this.operator = '='
+      this.requests_status = '100'
+    } else if (request_status === '200') {
+      this.operator = '='
+      this.requests_status = '200'
+    }
+
+  }
+
+
+  getAllRequests() {
+    // this.operator = '<'
+    this.requests_status = 'all'
+    console.log('WsRequests NO-RT - getAllRequests', this.requests_status, 'operator ', this.operator);
+    this.getRequests()
+  }
+
+  getServedRequests() {
+    this.operator = '='
+    this.requests_status = '200'
+    console.log('WsRequests NO-RT - getServedRequests status ', this.requests_status, 'operator ', this.operator);
+    this.getRequests()
+  }
+
+  getUnservedRequests() {
+    this.operator = '='
+    this.requests_status = '100'
+    console.log('WsRequests NO-RT - getUnservedRequests status ', this.requests_status, 'operator ', this.operator);
+    this.getRequests()
+  }
+
+
+  getRequests() {
+    this.showSpinner = true;
+    // this.wsRequestsService.getNodeJsHistoryRequests(this.queryString, this.pageNo).subscribe((requests: any) => {
+    this.wsRequestsService.getNodeJsWSRequests(this.operator, this.requests_status, this.queryString, this.pageNo).subscribe((requests: any) => {
+
+      console.log('!!! NEW REQUESTS HISTORY - GET REQUESTS ', requests['requests']);
+      console.log('!!! NEW REQUESTS HISTORY - GET REQUESTS COUNT ', requests['count']);
+      if (requests) {
+
+        // this.requestsCount = 18; // for test
+        this.requestsCount = requests['count'];
+        console.log('!!! NEW REQUESTS HISTORY - GET REQUESTS COUNT ', this.requestsCount);
+
+        this.displayHideFooterPagination();
+
+        const requestsPerPage = requests['perPage'];
+        console.log('!!! NEW REQUESTS HISTORY - TOTAL PAGES REQUESTS X PAGE', requestsPerPage);
+
+        const totalPagesNo = this.requestsCount / requestsPerPage;
+        console.log('!!! NEW REQUESTS HISTORY - TOTAL PAGES NUMBER', totalPagesNo);
+
+        this.totalPagesNo_roundToUp = Math.ceil(totalPagesNo);
+        console.log('!!! NEW REQUESTS HISTORY - TOTAL PAGES No ROUND TO UP ', this.totalPagesNo_roundToUp);
+
+
+
+        // const firstIndex = requestsPerPage * this.pageNo;
+        // console.log('!!! NEW REQUESTS HISTORY - firstIndex ', firstIndex);
+
+        // const lastIndex = requestsPerPage * (this.pageNo + 1) - 1
+        // console.log('!!! NEW REQUESTS HISTORY - lastIndex ', lastIndex);
+
+        this.requestList = requests['requests'];
+
+        for (const request of this.requestList) {
+
+          if (request) {
+            // console.log('!!! NEW REQUESTS HISTORY - request ', request);
+
+            request['currentUserIsJoined'] = this.currentUserIdIsInParticipants(request.participants, this.auth.user_bs.value._id, request.request_id);
+
+            // -------------------------------------------------------------------
+            // User Agent
+            // -------------------------------------------------------------------
+            const user_agent_result = this.parseUserAgent(request.userAgent);
+            const ua_browser = user_agent_result.browser.name + ' ' + user_agent_result.browser.version
+            // console.log('!!! NEW REQUESTS HISTORY  - USER-AGENT BROWSER ', ua_browser)
+            request['ua_browser'] = ua_browser;
+
+            const ua_os = user_agent_result.os.name + ' ' + user_agent_result.os.version
+            // console.log('!!! NEW REQUESTS HISTORY - USER-AGENT OPERATING SYSTEM ', ua_os)
+            request['ua_os'] = ua_os;
+
+            // -------------------------------------------------------------------
+            // Contact's avatar
+            // -------------------------------------------------------------------
+            let newInitials = '';
+            let newFillColour = '';
+
+            if (request.lead && request.lead.fullname) {
+              newInitials = avatarPlaceholder(request.lead.fullname);
+              newFillColour = getColorBck(request.lead.fullname)
+            } else {
+
+              newInitials = 'N/A';
+              newFillColour = 'rgb(98, 100, 167)';
+            }
+
+            request.requester_fullname_initial = newInitials;
+            request.requester_fullname_fillColour = newFillColour;
+            // .authVar.token.firebase.sign_in_provider
+            // console.log('---- lead sign_in_provider ',  request.lead.attributes.senderAuthInfo);
+
+            const date = moment.localeData().longDateFormat(request.createdAt);
+            request.fulldate = date;
+            // if (this.browserLang === 'it') {
+            //   // moment.locale('it')
+            //   const date = moment(request.createdAt).format('dddd, DD MMM YYYY - HH:mm:ss');
+            //   console.log('!!! NEW REQUESTS HISTORY - createdAt date', date);
+            //   request.fulldate = date;
+            // } else {
+            //   const date = moment(request.createdAt).format('dddd, MMM DD, YYYY - HH:mm:ss');
+            //   console.log('!!! NEW REQUESTS HISTORY - createdAt date', date);
+            //   request.fulldate = date;
+            // }
+
+
+            if (request.participants.length > 0) {
+              console.log('!! Ws SHARED  (from request list history) participants length', request.participants.length);
+              if (!request['participanting_Agents']) {
+
+                console.log('!! Ws SHARED  (from request list history) PARTICIPATING-AGENTS IS ', request['participanting_Agents'], ' - RUN DO ');
+
+                request['participanting_Agents'] = this.doParticipatingAgentsArray(request.participants, request.first_text, this.storageBucket)
+
+              } else {
+
+                console.log('!! Ws SHARED  (from request list history) PARTICIPATING-AGENTS IS DEFINED');
+              }
+            } else {
+              console.log('!! Ws SHARED  (from request list history) participants length', request.participants.length);
+              request['participanting_Agents'] = [{ _id: 'no_agent', email: 'NoAgent', firstname: 'NoAgent', lastname: 'NoAgent' }]
+            }
+
+            // if (request.lead
+            //   && request.lead.attributes
+            //   && request.lead.attributes.senderAuthInfo
+            //   && request.lead.attributes.senderAuthInfo.authVar
+            //   && request.lead.attributes.senderAuthInfo.authVar.token
+            //   && request.lead.attributes.senderAuthInfo.authVar.token.firebase
+            //   && request.lead.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider
+            // ) {
+            //   if (request.lead.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider === 'custom') {
+
+            //     // console.log('- lead sign_in_provider ',  request.lead.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider);
+            //     this.REQUESTER_IS_VERIFIED = true;
+            //   } else {
+            //     // console.log('- lead sign_in_provider ',  request.lead.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider);
+            //     this.REQUESTER_IS_VERIFIED = false;
+            //   }
+            // } else {
+            //   this.REQUESTER_IS_VERIFIED = false;
+            // }
+            // request.requester_is_verified = this.REQUESTER_IS_VERIFIED
+          }
+        }
+      }
+    }, error => {
+      this.showSpinner = false;
+      console.log('!!! NEW REQUESTS HISTORY  - GET REQUESTS - ERROR: ', error);
+    }, () => {
+      this.showSpinner = false;
+      console.log('!!! NEW REQUESTS HISTORY  - GET REQUESTS * COMPLETE *')
+    });
+  }
+
+
+  detectMobile() {
+    this.isMobile = /Android|iPhone/i.test(window.navigator.userAgent);
+    console.log('WS-REQUEST-SERVED - IS MOBILE ', this.isMobile);
+  }
+
+
 
 
   getProjectUserRole() {
@@ -194,6 +564,16 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
         console.log('!!! NEW REQUESTS HISTORY - USER ROLE ', user_role);
         if (user_role) {
           this.CURRENT_USER_ROLE = user_role
+        }
+        if (user_role) {
+          if (user_role === 'agent') {
+            this.ROLE_IS_AGENT = true
+
+
+          } else {
+            this.ROLE_IS_AGENT = false
+
+          }
         }
       });
   }
@@ -330,6 +710,8 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
     });
   }
 
+
+
   getCurrentUser() {
     const user = this.auth.user_bs.value
     console.log('!!! NEW REQUESTS HISTORY - LOGGED USER ', user);
@@ -344,8 +726,9 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
   }
 
 
-
-
+  // ------------------------------------------------------------------------------
+  // @ Departments - get Departments
+  // ------------------------------------------------------------------------------
   getDepartments() {
     this.departmentService.getDeptsByProjectId().subscribe((_departments: any) => {
       console.log('!!! NEW REQUESTS HISTORY - GET DEPTS RESPONSE ', _departments);
@@ -358,26 +741,131 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
     });
   }
 
-  /// PAGINATION
-  decreasePageNumber() {
-    this.pageNo -= 1;
+  // ------------------------------------------------------------------------------
+  // @ Departments - get selected department name
+  // ------------------------------------------------------------------------------
+  depSelected(deptid) {
+    console.log('!!! NEW REQUESTS HISTORY - selectedDeptId ', this.selectedDeptId);
 
-    console.log('!!! NEW REQUESTS HISTORY - DECREASE PAGE NUMBER ', this.pageNo);
-    this.getRequests()
+    const selectedDept = this.departments.filter((dept: any) => {
+
+      return dept._id === deptid;
+    });
+    console.log('!!! NEW REQUESTS HISTORY - selectedDept ', selectedDept);
+    if (selectedDept.length > 0) {
+
+      this.selectedDeptName_temp = selectedDept[0].name
+      console.log('!!! NEW REQUESTS HISTORY - selectedDeptName ', this.selectedDeptName);
+    } else {
+      // this.selectedDeptName = null;
+      this.selectedDeptId = '';
+    }
   }
 
-  increasePageNumber() {
-    this.pageNo += 1;
-    console.log('!!! NEW REQUESTS HISTORY - INCREASE PAGE NUMBER ', this.pageNo);
-    this.getRequests()
+  // ------------------------------------------------------------------------------
+  // @ Agents (project-users + bots) - on change agent get selected agent name
+  // ------------------------------------------------------------------------------
+  agentSelected(selectedagentid) {
+    const selectedAgent = this.user_and_bot_array.filter((agent: any) => {
+
+      return agent._id === selectedagentid;
+    });
+
+    console.log('!!! NEW REQUESTS HISTORY - selectedAgent ', selectedAgent);
+    if (selectedAgent.length > 0) {
+      this.selectedAgentFirstname_temp = selectedAgent[0].firstname
+      this.selectedAgentLastname_temp = selectedAgent[0].lastname
+      console.log('!!! NEW REQUESTS HISTORY - selectedAgentFirstname TEMP ', this.selectedAgentFirstname_temp, ' selectedAgentLastname TEMP: ', this.selectedAgentLastname_temp);
+    } else {
+      this.selectedAgentId = ''
+    }
   }
+
+  fulltextChange($event) {
+    console.log('!!! NEW REQUESTS HISTORY - fulltextChange ', $event);
+    this.fullText_temp = $event
+  }
+
+
+  // ------------------------------------------------------------------------------
+  // @ Date - on change start date get selected start date formatted
+  // ------------------------------------------------------------------------------
+  startDateSelected($event) {
+    console.log('!!! NEW REQUESTS HISTORY - startDateSelected ', $event);
+    this.startDateFormatted_temp = $event['formatted'];
+
+    console.log('!!! NEW REQUESTS HISTORY - startDateFormatted TEMP ', this.startDateFormatted_temp);
+
+    // const startDateLessOneDay =  moment($event['jsdate']).subtract(1, 'days').format('DD/MM/YYYY'); 
+    const startDateLessOneDay = moment($event['jsdate']).subtract(1, 'days').format('DD/MM/YYYY');
+
+    const startDateLessOneDaySegment = startDateLessOneDay.split('/');
+
+    console.log('!!! NEW REQUESTS HISTORY - startDateLessOneDay ', startDateLessOneDay);
+    console.log('!!! NEW REQUESTS HISTORY - startDateLessOneDaySegment ', startDateLessOneDaySegment);
+
+
+    // this.disableUntilDate = $event.date;
+    this.disableUntilDate = { year: startDateLessOneDaySegment[2], month: startDateLessOneDaySegment[1], day: startDateLessOneDaySegment[0] }
+
+    console.log('!!! NEW REQUESTS HISTORY - disableUntilDate ', this.disableUntilDate);
+
+    let copy = this.getCopyOfOptions();
+
+    copy.disableUntil = this.disableUntilDate;
+
+    this.endDatePickerOptions = copy;
+
+    console.log('!!! NEW REQUESTS HISTORY - endDatePickerOptions ', this.endDatePickerOptions);
+
+    if (this.startDateFormatted_temp) {
+      this.start_date_is_null = false;
+    } else {
+      this.start_date_is_null = true;
+      this.startDate = ''
+      this.endDate = ''
+      // this.search()
+    }
+
+
+  }
+
+  // ------------------------------------------------------------------------------
+  // @ Date - on change end date get selected end date formatted
+  // ------------------------------------------------------------------------------
+  endDateSelected($event) {
+    console.log('!!! NEW REQUESTS HISTORY - endDateSelected ', $event);
+
+    this.endDateFormatted_temp = $event['formatted'];
+    console.log('!!! NEW REQUESTS HISTORY - endDateFormatted TEMP', this.endDateFormatted_temp);
+
+    // this.endDatePickerOptions.disableUntil = this.disableUntilDate;
+
+    // let copy = this.getCopyOfOptions();
+    // copy.disableUntil = this.disableUntilDate;
+    // this.endDatePickerOptions = copy;
+    // console.log('!!! NEW REQUESTS HISTORY - endDatePickerOptions ', this.endDatePickerOptions);
+
+    if (!this.endDateFormatted_temp) {
+      this.endDate = ''
+    }
+  }
+
+  getCopyOfOptions(): IMyDpOptions {
+    return JSON.parse(JSON.stringify(this.endDatePickerOptions));
+  }
+
+
 
   toggle() {
-    this.advancedoptionbtnRef.nativeElement.blur();
+    // this.advancedoptionbtnRef.nativeElement.blur();
     this.showAdvancedSearchOption = !this.showAdvancedSearchOption;
     console.log('!!! NEW REQUESTS HISTORY - TOGGLE DIV ', this.showAdvancedSearchOption);
     this.displayHideFooterPagination();
   }
+
+
+
 
   // onDateStartChanged(event: IMyDateModel) {
   //   // event properties are: event.date, event.jsdate, event.formatted and event.epoc
@@ -398,31 +886,170 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
   //   // event.stopPropagation();​
   // }
 
+  search() {
+    this.pageNo = 0
+
+    // RESOLVE THE BUG: THE BUTTON CLEAR-SEARCH REMAIN FOCUSED AFTER PRESSED (doesn't works - so is used the below code)
+    // this.searchbtnRef.nativeElement.blur();
+
+    // RESOLVE THE BUG: THE BUTTON SEARCH REMAIN FOCUSED AFTER PRESSED
+    // const searchTopBtn = <HTMLElement>document.querySelector('.searchTopBtn');
+    // console.log('!!! NEW REQUESTS HISTORY - TOP SEARCH BTN ', searchTopBtn)
+    // searchTopBtn.blur()
+
+    // if (this.searchbtnbottomRef) {
+    //   this.searchbtnbottomRef.nativeElement.blur();
+    // }
+
+    if (this.fullText) {
+
+      this.fullTextValue = this.fullText;
+      this.fullText_applied_filter = this.fullText_temp;
+      console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR FULL TEXT ', this.fullTextValue);
+    } else {
+      console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR DEPT TEXT ', this.fullText);
+      this.fullTextValue = '';
+      this.fullText_applied_filter = null;
+    }
+
+    if (this.selectedDeptId) {
+      console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR DEPT ID selectedDeptId', this.selectedDeptId);
+      this.deptIdValue = this.selectedDeptId;
+      console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR DEPT ID ', this.deptIdValue);
+      this.selectedDeptName = this.selectedDeptName_temp;
+    } else {
+      console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR DEPT ID ', this.selectedDeptId);
+      this.deptIdValue = ''
+      this.selectedDeptName = null;
+    }
+
+    if (this.startDate) {
+      console.log('!!! NEW REQUESTS HISTORY - START DATE ', this.startDate);
+      console.log('!!! NEW REQUESTS HISTORY - START DATE - FORMATTED ', this.startDate['formatted']);
+      console.log('!!! NEW REQUESTS HISTORY - START DATE - EPOC ', this.startDate['epoc']);
+      // console.log('!!! NEW REQUESTS HISTORY - START DATE - GETS TIME ', new Date((this.startDate['jsdate'].getTime())));
+
+
+      // this.startDateValue = this.startDate['epoc']
+      // this.startDateValue = this.startDate['epoc'] * 1000
+      this.startDateValue = this.startDate['formatted']
+
+      this.startDateFormatted = this.startDateFormatted_temp;
+
+      // console.log('!!! NEW REQUESTS HISTORY - START DATE - TIMESTAMP ', new Date(this.startDate['formatted']).getTime());
+      // this.startDateValue = this.startDate['jsdate'].getTime()
+      console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR START DATE ', this.startDateValue);
+    } else {
+      this.startDateValue = '';
+      this.startDateFormatted = null
+      console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR START DATE ', this.startDate);
+    }
+
+    if (this.endDate) {
+      console.log('!!! NEW REQUESTS HISTORY - END DATE ', this.endDate);
+      console.log('!!! NEW REQUESTS HISTORY - END DATE - FORMATTED ', this.endDate['formatted']);
+      console.log('!!! NEW REQUESTS HISTORY - END DATE - EPOC ', this.endDate['epoc']);
+
+      // this.endDateValue = this.endDate['epoc'];
+      // this.endDateValue = this.endDate['epoc'] * 1000;
+      this.endDateValue = this.endDate['formatted']
+      this.endDateFormatted = this.endDateFormatted_temp;
+      // this.endDateValue = this.endDate['jsdate'].getTime()
+      console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR END DATE ', this.endDateValue);
+    } else {
+      this.endDateValue = '';
+      this.endDateFormatted = null
+      console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR END DATE ', this.endDate)
+    }
+
+
+    if (this.selectedAgentId) {
+
+      this.selectedAgentValue = this.selectedAgentId;
+      console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR selectedAgentId ', this.selectedAgentValue);
+
+      this.selectedAgentFirstname = this.selectedAgentFirstname_temp;
+      this.selectedAgentLastname = this.selectedAgentLastname_temp;
+    } else {
+      console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR selectedAgentId ', this.selectedAgentId);
+      this.selectedAgentValue = '';
+
+      this.selectedAgentFirstname = null;
+      this.selectedAgentLastname = null;
+    }
+
+    // if (this.selectedAgentId) {
+    //   this.selectedAgentValue = this.selectedAgentId;
+    //   console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR selectedAgentId ', this.selectedAgentValue);
+    // } else {
+    //   console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR selectedAgentId ', this.selectedAgentId);
+    //   this.selectedAgentValue = ''
+
+    // }
+
+    if (this.requester_email) {
+      this.emailValue = this.requester_email;
+      console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR email ', this.emailValue);
+    } else {
+      console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR email ', this.requester_email);
+      this.emailValue = ''
+    }
+    // console.log('!!! NEW REQUESTS HISTORY - DEPT NAME ', this.deptame);
+
+
+    // if (this.fullText !== undefined && this.deptName !== undefined && this.startDate !== undefined || this.endDate !== undefined) {
+    // tslint:disable-next-line:max-line-length
+    this.queryString =
+      'full_text=' + this.fullTextValue + '&'
+      + 'dept_id=' + this.deptIdValue + '&'
+      + 'start_date=' + this.startDateValue + '&'
+      + 'end_date=' + this.endDateValue + '&'
+      + 'participant=' + this.selectedAgentValue + '&'
+      + 'requester_email=' + this.emailValue
+
+    console.log('!!! NEW REQUESTS HISTORY - QUERY STRING ', this.queryString);
+
+    // REOPEN THE ADVANCED OPTION DIV IF IT IS CLOSED BUT ONE OF SEARCH FIELDS IN IT CONTAINED ARE VALORIZED
+    if (this.showAdvancedSearchOption === false) {
+      if (this.selectedDeptId || this.startDate || this.endDate || this.selectedAgentId || this.requester_email) {
+        this.showAdvancedSearchOption = true;
+      }
+    }
+    this.getRequests()
+  }
+
   clearFullText() {
     this.fullText = '';
+    this.fullText_applied_filter = null;
 
     if (this.selectedDeptId) {
       this.deptIdValue = this.selectedDeptId;
     } else {
       this.deptIdValue = ''
+      this.selectedDeptName = null;
     }
 
     if (this.startDate) {
       this.startDateValue = this.startDate['formatted']
     } else {
-      this.startDateValue = ''
+      this.startDateValue = '';
+      this.startDateFormatted = null;
     }
 
     if (this.endDate) {
       this.endDateValue = this.endDate['formatted']
     } else {
       this.endDateValue = ''
+      this.endDateFormatted = null;
     }
 
     if (this.selectedAgentId) {
       this.selectedAgentValue = this.selectedAgentId;
     } else {
       this.selectedAgentValue = ''
+      this.selectedAgentFirstname = null;
+      this.selectedAgentLastname = null;
+
     }
 
     if (this.requester_email) {
@@ -462,10 +1089,22 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
     this.endDate = '';
     this.selectedAgentId = '';
     this.requester_email = '';
+
     // this.fullTextValue = '';
     // this.deptIdValue = '';
     // this.startDateValue = '';
     // this.endDateValue = '';
+
+    // ------------------------------------
+    // used in APPLIED FILTERS
+    // ------------------------------------
+    this.selectedAgentFirstname = null;
+    this.selectedAgentLastname = null;
+    this.selectedDeptName = null;
+    this.startDateFormatted = null;
+    this.endDateFormatted = null;
+    this.fullText_applied_filter = null;
+
     // tslint:disable-next-line:max-line-length
     this.queryString = 'full_text=' + '&' + 'dept_id=' + '&' + 'start_date=' + '&' + 'end_date=' + '&' + 'participant=' + '&' + 'requester_email=';
     this.pageNo = 0;
@@ -475,123 +1114,22 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
 
   }
 
-  search() {
-    this.pageNo = 0
 
-    // RESOLVE THE BUG: THE BUTTON CLEAR-SEARCH REMAIN FOCUSED AFTER PRESSED (doesn't works - so is used the below code)
-    // this.searchbtnRef.nativeElement.blur();
+  // ------------------------------------------------------------------------------
+  // PAGINATION
+  // ------------------------------------------------------------------------------
+  decreasePageNumber() {
+    this.pageNo -= 1;
 
-    // RESOLVE THE BUG: THE BUTTON SEARCH REMAIN FOCUSED AFTER PRESSED
-    const searchTopBtn = <HTMLElement>document.querySelector('.searchTopBtn');
-    console.log('!!! NEW REQUESTS HISTORY - TOP SEARCH BTN ', searchTopBtn)
-    searchTopBtn.blur()
-
-    if (this.searchbtnbottomRef) {
-      this.searchbtnbottomRef.nativeElement.blur();
-    }
-
-    if (this.fullText) {
-
-      this.fullTextValue = this.fullText;
-      console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR FULL TEXT ', this.fullTextValue);
-    } else {
-      console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR DEPT TEXT ', this.fullText);
-      this.fullTextValue = ''
-    }
-
-    if (this.selectedDeptId) {
-
-      this.deptIdValue = this.selectedDeptId;
-      console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR DEPT ID ', this.deptIdValue);
-    } else {
-      console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR DEPT ID ', this.selectedDeptId);
-      this.deptIdValue = ''
-    }
-
-    if (this.startDate) {
-      console.log('!!! NEW REQUESTS HISTORY - START DATE ', this.startDate);
-      console.log('!!! NEW REQUESTS HISTORY - START DATE - FORMATTED ', this.startDate['formatted']);
-      console.log('!!! NEW REQUESTS HISTORY - START DATE - EPOC ', this.startDate['epoc']);
-      // console.log('!!! NEW REQUESTS HISTORY - START DATE - GETS TIME ', new Date((this.startDate['jsdate'].getTime())));
-
-
-      // this.startDateValue = this.startDate['epoc']
-      // this.startDateValue = this.startDate['epoc'] * 1000
-      this.startDateValue = this.startDate['formatted']
-
-      // console.log('!!! NEW REQUESTS HISTORY - START DATE - TIMESTAMP ', new Date(this.startDate['formatted']).getTime());
-      // this.startDateValue = this.startDate['jsdate'].getTime()
-      console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR START DATE ', this.startDateValue);
-    } else {
-      this.startDateValue = '';
-      console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR START DATE ', this.startDate);
-    }
-
-    if (this.endDate) {
-      console.log('!!! NEW REQUESTS HISTORY - END DATE ', this.endDate);
-      console.log('!!! NEW REQUESTS HISTORY - END DATE - FORMATTED ', this.endDate['formatted']);
-      console.log('!!! NEW REQUESTS HISTORY - END DATE - EPOC ', this.endDate['epoc']);
-
-      // this.endDateValue = this.endDate['epoc'];
-      // this.endDateValue = this.endDate['epoc'] * 1000;
-      this.endDateValue = this.endDate['formatted']
-
-      // this.endDateValue = this.endDate['jsdate'].getTime()
-      console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR END DATE ', this.endDateValue);
-    } else {
-      this.endDateValue = '';
-      console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR END DATE ', this.endDate)
-    }
-
-
-    if (this.selectedAgentId) {
-
-      this.selectedAgentValue = this.selectedAgentId;
-      console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR selectedAgentId ', this.selectedAgentValue);
-    } else {
-      console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR selectedAgentId ', this.selectedAgentId);
-      this.selectedAgentValue = ''
-    }
-
-    if (this.selectedAgentId) {
-      this.selectedAgentValue = this.selectedAgentId;
-      console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR selectedAgentId ', this.selectedAgentValue);
-    } else {
-      console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR selectedAgentId ', this.selectedAgentId);
-      this.selectedAgentValue = ''
-    }
-
-    if (this.requester_email) {
-      this.emailValue = this.requester_email;
-      console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR email ', this.emailValue);
-    } else {
-      console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR email ', this.requester_email);
-      this.emailValue = ''
-    }
-    // console.log('!!! NEW REQUESTS HISTORY - DEPT NAME ', this.deptame);
-
-
-    // if (this.fullText !== undefined && this.deptName !== undefined && this.startDate !== undefined || this.endDate !== undefined) {
-    // tslint:disable-next-line:max-line-length
-    this.queryString =
-      'full_text=' + this.fullTextValue + '&'
-      + 'dept_id=' + this.deptIdValue + '&'
-      + 'start_date=' + this.startDateValue + '&'
-      + 'end_date=' + this.endDateValue + '&'
-      + 'participant=' + this.selectedAgentValue + '&'
-      + 'requester_email=' + this.emailValue
-
-    console.log('!!! NEW REQUESTS HISTORY - QUERY STRING ', this.queryString);
-
-    // REOPEN THE ADVANCED OPTION DIV IF IT IS CLOSED BUT ONE OF SEARCH FIELDS IN IT CONTAINED ARE VALORIZED
-    if (this.showAdvancedSearchOption === false) {
-      if (this.selectedDeptId || this.startDate || this.endDate || this.selectedAgentId || this.requester_email) {
-        this.showAdvancedSearchOption = true;
-      }
-    }
+    console.log('!!! NEW REQUESTS HISTORY - DECREASE PAGE NUMBER ', this.pageNo);
     this.getRequests()
   }
 
+  increasePageNumber() {
+    this.pageNo += 1;
+    console.log('!!! NEW REQUESTS HISTORY - INCREASE PAGE NUMBER ', this.pageNo);
+    this.getRequests()
+  }
 
   displayHideFooterPagination() {
     // DISPLAY / HIDE PAGINATION IN THE FOOTER
@@ -657,137 +1195,6 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
     return parser.getResult();
   }
 
-  getRequests() {
-
-    this.wsRequestsService.getNodeJsHistoryRequests(this.queryString, this.pageNo).subscribe((requests: any) => {
-      console.log('!!! NEW REQUESTS HISTORY - GET REQUESTS ', requests['requests']);
-      console.log('!!! NEW REQUESTS HISTORY - GET REQUESTS COUNT ', requests['count']);
-      if (requests) {
-
-        // this.requestsCount = 18; // for test
-        this.requestsCount = requests['count'];
-        console.log('!!! NEW REQUESTS HISTORY - GET REQUESTS COUNT ', this.requestsCount);
-
-        this.displayHideFooterPagination();
-
-        const requestsPerPage = requests['perPage'];
-        console.log('!!! NEW REQUESTS HISTORY - TOTAL PAGES REQUESTS X PAGE', requestsPerPage);
-
-        const totalPagesNo = this.requestsCount / requestsPerPage;
-        console.log('!!! NEW REQUESTS HISTORY - TOTAL PAGES NUMBER', totalPagesNo);
-
-        this.totalPagesNo_roundToUp = Math.ceil(totalPagesNo);
-        console.log('!!! NEW REQUESTS HISTORY - TOTAL PAGES No ROUND TO UP ', this.totalPagesNo_roundToUp);
-
-
-
-        // const firstIndex = requestsPerPage * this.pageNo;
-        // console.log('!!! NEW REQUESTS HISTORY - firstIndex ', firstIndex);
-
-        // const lastIndex = requestsPerPage * (this.pageNo + 1) - 1
-        // console.log('!!! NEW REQUESTS HISTORY - lastIndex ', lastIndex);
-
-        this.requestList = requests['requests'];
-
-        for (const request of this.requestList) {
-
-          if (request) {
-            // console.log('!!! NEW REQUESTS HISTORY - request ', request);
-
-            // -------------------------------------------------------------------
-            // User Agent
-            // -------------------------------------------------------------------
-            const user_agent_result = this.parseUserAgent(request.userAgent);
-            const ua_browser = user_agent_result.browser.name + ' ' + user_agent_result.browser.version
-            // console.log('!!! NEW REQUESTS HISTORY  - USER-AGENT BROWSER ', ua_browser)
-            request['ua_browser'] = ua_browser;
-
-            const ua_os = user_agent_result.os.name + ' ' + user_agent_result.os.version
-            // console.log('!!! NEW REQUESTS HISTORY - USER-AGENT OPERATING SYSTEM ', ua_os)
-            request['ua_os'] = ua_os;
-
-            // -------------------------------------------------------------------
-            // Contact's avatar
-            // -------------------------------------------------------------------
-            let newInitials = '';
-            let newFillColour = '';
-
-            if (request.lead && request.lead.fullname) {
-              newInitials = avatarPlaceholder(request.lead.fullname);
-              newFillColour = getColorBck(request.lead.fullname)
-            } else {
-
-              newInitials = 'N/A';
-              newFillColour = 'rgb(98, 100, 167)';
-            }
-
-            request.requester_fullname_initial = newInitials;
-            request.requester_fullname_fillColour = newFillColour;
-            // .authVar.token.firebase.sign_in_provider
-            // console.log('---- lead sign_in_provider ',  request.lead.attributes.senderAuthInfo);
-
-            const date = moment.localeData().longDateFormat(request.createdAt);
-            request.fulldate = date;
-            // if (this.browserLang === 'it') {
-            //   // moment.locale('it')
-            //   const date = moment(request.createdAt).format('dddd, DD MMM YYYY - HH:mm:ss');
-            //   console.log('!!! NEW REQUESTS HISTORY - createdAt date', date);
-            //   request.fulldate = date;
-            // } else {
-            //   const date = moment(request.createdAt).format('dddd, MMM DD, YYYY - HH:mm:ss');
-            //   console.log('!!! NEW REQUESTS HISTORY - createdAt date', date);
-            //   request.fulldate = date;
-            // }
-
-
-            if (request.participants.length > 0) {
-              console.log('!! Ws SHARED  (from request list history) participants length', request.participants.length);
-              if (!request['participanting_Agents']) {
-
-                console.log('!! Ws SHARED  (from request list history) PARTICIPATING-AGENTS IS ', request['participanting_Agents'], ' - RUN DO ');
-
-                request['participanting_Agents'] = this.doParticipatingAgentsArray(request.participants, request.first_text, this.storageBucket)
-
-              } else {
-
-                console.log('!! Ws SHARED  (from request list history) PARTICIPATING-AGENTS IS DEFINED');
-              }
-            } else {
-              console.log('!! Ws SHARED  (from request list history) participants length', request.participants.length);
-              request['participanting_Agents'] = [{ _id: 'no_agent', email: 'NoAgent', firstname: 'NoAgent', lastname: 'NoAgent' }]
-            }
-
-            // if (request.lead
-            //   && request.lead.attributes
-            //   && request.lead.attributes.senderAuthInfo
-            //   && request.lead.attributes.senderAuthInfo.authVar
-            //   && request.lead.attributes.senderAuthInfo.authVar.token
-            //   && request.lead.attributes.senderAuthInfo.authVar.token.firebase
-            //   && request.lead.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider
-            // ) {
-            //   if (request.lead.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider === 'custom') {
-
-            //     // console.log('- lead sign_in_provider ',  request.lead.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider);
-            //     this.REQUESTER_IS_VERIFIED = true;
-            //   } else {
-            //     // console.log('- lead sign_in_provider ',  request.lead.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider);
-            //     this.REQUESTER_IS_VERIFIED = false;
-            //   }
-            // } else {
-            //   this.REQUESTER_IS_VERIFIED = false;
-            // }
-            // request.requester_is_verified = this.REQUESTER_IS_VERIFIED
-          }
-        }
-      }
-    }, error => {
-      this.showSpinner = false;
-      console.log('!!! NEW REQUESTS HISTORY  - GET REQUESTS - ERROR: ', error);
-    }, () => {
-      this.showSpinner = false;
-      console.log('!!! NEW REQUESTS HISTORY  - GET REQUESTS * COMPLETE *')
-    });
-  }
 
   goToAgentProfile(member_id) {
     console.log('WsRequestsServedComponent goToAgentProfile ', member_id)
@@ -919,6 +1326,11 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
   goToRequestMsgs(request_recipient: string) {
     this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/messages']);
   }
+
+  goBack() {
+    this.location.back();
+  }
+
 
   ngOnDestroy() {
     this.subscription.unsubscribe();

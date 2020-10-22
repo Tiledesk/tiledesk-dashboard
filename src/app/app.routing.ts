@@ -202,9 +202,7 @@ const routes: Routes = [
   { path: 'project/:projectid/wsrequest/:requestid/messages', component: WsRequestsMsgsComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/request-for-panel/:requestid', component: WsRequestsMsgsComponent, canActivate: [AuthGuard] },
 
-  { path: 'project/:projectid/wsrequests-all/:requeststatus', component: WsRequestsNortComponent, canActivate: [AuthGuard] },
-
-  { path: 'project/:projectid/unserved-request-for-panel', component: WsRequestsUnservedForPanelComponent, canActivate: [AuthGuard] },
+   { path: 'project/:projectid/unserved-request-for-panel', component: WsRequestsUnservedForPanelComponent, canActivate: [AuthGuard] },
 
 
 
@@ -304,6 +302,9 @@ const routes: Routes = [
   // HISTORY
   // { path: 'project/:projectid/historyrt', component: RequestsListHistoryComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/history', component: RequestsListHistoryNewComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/all-conversations', component: RequestsListHistoryNewComponent, canActivate: [AuthGuard] },
+  
+  { path: 'project/:projectid/wsrequests-all/:requeststatus', component: WsRequestsNortComponent, canActivate: [AuthGuard] },
 
   // TRIGGER
   { path: 'project/:projectid/trigger', component: TriggerComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
