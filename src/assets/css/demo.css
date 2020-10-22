@@ -252,4 +252,156 @@ my-app .main-panel .main-content .card {
   border: 1px solid #e5effe !important;
 }
 
+.card--no-border {
+  border: unset !important;
+}
+
+
+/*
+// -------------------------
+// BTN TD-BLU NO BOX-SHADOW
+// ------------------------- */
+.btn-tdblu-no-boxshadow {
+  box-shadow: unset !important;
+  text-transform: none !important;
+  padding: 9px 15px !important;
+  background: #3ea9f5 !important; 
+  font-size: 14px;
+}
+
+.btn-tdblu-no-boxshadow:hover {
+  box-shadow: unset !important;
+  background: #399ce2 !important;
+}
+
+/*
+// -------------------------
+// BTN TD-SUCCESS NO BOX-SHADOW
+// ------------------------- */
+.btn-success-no-boxshadow {
+  box-shadow: unset !important;
+  text-transform: none !important;
+  padding: 9px 15px !important;
+  background: #3ecf8e !important; 
+  font-size: 14px;
+}
+
+.btn-success-no-boxshadow:hover {
+  box-shadow: unset !important;
+  background: #3ecf8e !important;
+}
+
+
+/*
+// -------------------------
+// BTN GRAY NO BOX-SHADOW
+// ------------------------- */
+.btn-gray-no-boxshadow {
+  background: #e4e6eb;
+  box-shadow: unset;
+  color: #050505;
+  text-transform: none;
+  padding: 9px 15px;
+  font-size: 14px;
+}
+
+.btn-gray-no-boxshadow:hover{
+  background: #d2d4d9;
+  box-shadow: unset;
+  color: #050505;
+}
+
+.label-7695a5 {
+  text-align: left; color: #7695a5 !important;
+  font-weight: 100;
+}
+
+
+/*
+// ---------------------------------------------------------------------------
+// inline avatars (used in conversation - history - no real-time conversation)
+// --------------------------------------------------------------------------- 
+*/
+.served-by-desktop-a {
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  /* // margin-top: 12px; */
+}
+
+.served-by-desktop-b {
+  /* // margin-right: 6px; */
+  display: flex;
+  flex-flow: row nowrap;
+  -webkit-box-pack: start;
+  justify-content: flex-start;
+}
+
+.served-by-desktop-c {
+  padding: 0px;
+  display: inline-block;
+  flex: 1 1 32px;
+  margin-left: -5px;
+}
+
+.first-served-by {
+  margin-left: 0px !important;
+}
+
+.served-by-desktop-d {
+  position: relative;
+}
+.served-by-desktop-e {
+  margin: 0px auto;
+  border-radius: 50%;
+  display: inline-block;
+  vertical-align: middle;
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+  font-size: 28px;
+}
+
+.served-by-desktop-e img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid rgb(255, 255, 255);
+}
+
+.served-by-desktop-e .altenative-avatar-wrap {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid rgb(255, 255, 255);
+  /* // margin-top: 2px; */
+  position: relative;
+  top: 2px;
+}
+.altenative-avatar {
+  color: #ffffff;
+  line-height: 30px;
+  margin: auto;
+  display: block;
+  font-weight: 400;
+  font-size: 12px;
+  /* // padding-left: 10px; */
+  text-align: center;
+}
+
+.current-user-member-border {
+  /* // border-color: #4caf50 !important; */
+  box-shadow: 0 0 0 2px #1877f2;
+}
+
+
+.served-by-desktop-e:hover {
+  position: relative;
+  top: -3px;
+}
+
+.bot---avatar:hover {
+  position: relative;
+  top: -3px;
+}
 
