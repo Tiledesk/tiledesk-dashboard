@@ -17,7 +17,7 @@ export class AutologinComponent implements OnInit {
   subscription: Subscription;
   FCM_Supported: boolean;
   APP_IS_DEV_MODE: boolean;
-
+  isMobile: boolean;
   constructor(
     private route: ActivatedRoute,
     public auth: AuthService,
@@ -36,6 +36,13 @@ export class AutologinComponent implements OnInit {
     console.log('SSO - autologin page');
 
     this.checkIfFCMIsSupported();
+  }
+
+
+  detectMobile() {
+    // this.isMobile = true;
+    this.isMobile = /Android|iPhone/i.test(window.navigator.userAgent);
+    console.log('WS-REQUEST-SERVED - IS MOBILE ', this.isMobile);
   }
 
 
