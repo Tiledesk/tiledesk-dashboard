@@ -24,6 +24,7 @@ import { Location } from '@angular/common';
 import { WsSharedComponent } from '../ws-shared/ws-shared.component';
 import { ActivatedRoute } from '@angular/router';
 import { SelectOptionsTranslatePipe } from '../../selectOptionsTranslate.pipe';
+
 @Component({
   selector: 'appdashboard-ws-requests-nort',
   templateUrl: './ws-requests-nort.component.html',
@@ -754,26 +755,26 @@ export class WsRequestsNortComponent extends WsSharedComponent implements OnInit
             }
 
 
-            if (request.lead
-              && request.lead.attributes
-              && request.lead.attributes.senderAuthInfo
-              && request.lead.attributes.senderAuthInfo.authVar
-              && request.lead.attributes.senderAuthInfo.authVar.token
-              && request.lead.attributes.senderAuthInfo.authVar.token.firebase
-              && request.lead.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider
-            ) {
-              if (request.lead.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider === 'custom') {
+            // if (request.lead
+            //   && request.lead.attributes
+            //   && request.lead.attributes.senderAuthInfo
+            //   && request.lead.attributes.senderAuthInfo.authVar
+            //   && request.lead.attributes.senderAuthInfo.authVar.token
+            //   && request.lead.attributes.senderAuthInfo.authVar.token.firebase
+            //   && request.lead.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider
+            // ) {
+            //   if (request.lead.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider === 'custom') {
 
-                // console.log('- lead sign_in_provider ',  request.lead.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider);
-                this.REQUESTER_IS_VERIFIED = true;
-              } else {
-                // console.log('- lead sign_in_provider ',  request.lead.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider);
-                this.REQUESTER_IS_VERIFIED = false;
-              }
-            } else {
-              this.REQUESTER_IS_VERIFIED = false;
-            }
-            request.requester_is_verified = this.REQUESTER_IS_VERIFIED
+            //     // console.log('- lead sign_in_provider ',  request.lead.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider);
+            //     this.REQUESTER_IS_VERIFIED = true;
+            //   } else {
+            //     // console.log('- lead sign_in_provider ',  request.lead.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider);
+            //     this.REQUESTER_IS_VERIFIED = false;
+            //   }
+            // } else {
+            //   this.REQUESTER_IS_VERIFIED = false;
+            // }
+            // request.requester_is_verified = this.REQUESTER_IS_VERIFIED
           }
         }
       }

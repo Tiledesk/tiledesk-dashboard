@@ -498,8 +498,7 @@
 								</div>
 
 								<div class="col-xs-6">
-									<h3 class="card-title onoffswitch_container_first_line">
-
+									<!-- <h3 class="card-title onoffswitch_container_first_line">
 										<div class="onoffswitch">
 											<input (change)="toggleCallout($event)" [checked]="CALLOUT_IS_DISABLED === false"
 												type="checkbox" name="callout_onoffswitch" class="onoffswitch-checkbox"
@@ -509,7 +508,7 @@
 												<span class="onoffswitch-switch"></span>
 											</label>
 										</div>
-									</h3>
+									</h3> -->
 								</div>
 
 								<div class="col-md-12">
@@ -560,6 +559,8 @@
 								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4"
 									[ngClass]="{'breakpoint' : custom_breakpoint === true}">
 
+					
+
 									<!-- 
 									// --------------------------------------------------- 
 									// COMBO TO SELECT THE LANGUAGE PREVIEW - (CALLOUT)
@@ -593,6 +594,23 @@
 											</h5>
 										</li>
 									</div>
+
+								
+									<div style="color: #566787; font-weight: 400; margin-top: 8px; margin-bottom: 4px;">
+										{{ 'EnableDisable' | translate }} {{ 'Callout' | translate }}
+									</div>
+
+									<h3 class="card-title onoffswitch_container_first_line">
+										<div class="onoffswitch">
+											<input (change)="toggleCallout($event)" [checked]="CALLOUT_IS_DISABLED === false"
+												type="checkbox" name="callout_onoffswitch" class="onoffswitch-checkbox"
+												id="callout_onoffswitch">
+											<label class="onoffswitch-label" for="callout_onoffswitch">
+												<span class="onoffswitch-inner"></span>
+												<span class="onoffswitch-switch"></span>
+											</label>
+										</div>
+									</h3>
 
 
 									<div style="color: #566787; font-weight: 400; margin-top: 8px; margin-bottom: 4px;">

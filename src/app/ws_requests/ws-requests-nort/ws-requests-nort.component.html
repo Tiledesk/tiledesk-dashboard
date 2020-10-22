@@ -12,10 +12,10 @@
       <div class="col-md-12">
         <div class="card" style="margin-bottom: 0px;margin-top: 15px;">
 
-          <div class="card-header card-header-custom-bkgrnd">
+          <!-- <div class="card-header card-header-custom-bkgrnd">
           <span></span>
      
-          </div>
+          </div> -->
           <div class="card-content" style="padding-top: 25px;padding-bottom: 15px;padding-left: 40px;
           padding-right: 40px;">
 
@@ -620,22 +620,23 @@
                       </span>
                     </span>
 
+                    <!-- [ngClass]="{'requester-verified' : request?.requester_is_verified === true}" -->
+                    <span class="column-td" style="white-space: nowrap;">
 
-                    <span class="column-td" style="white-space: nowrap;"
-                      [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
-
+                      <!-- [ngClass]="{'requester_fullname_initial-undefined' : !request?.lead?.fullname}" -->
                       <span class="lead_data">
                         {{ request?.lead?.fullname }}
-                        <span *ngIf="!request?.lead?.fullname"  [ngClass]="{'requester_fullname_initial-undefined' : !request?.lead?.fullname}">
-                          n/a
+                        <span *ngIf="!request?.lead?.fullname">
+                          N/A
                         </span>
 
-                        <span class="requester-email"
-                          [ngClass]="{'requester-verified-email' : request?.requester_is_verified === true}">
+                        <!-- [ngClass]="{'requester-verified-email' : request?.requester_is_verified === true}" -->
+                        <span class="requester-email">
                           {{ request?.lead?.email }}
                         </span>
-                        <span class="requester-email" *ngIf="!request?.lead?.email"
-                          [ngClass]="{'requester-verified-email' : request?.requester_is_verified === true}">
+
+                        <!-- [ngClass]="{'requester-verified-email' : request?.requester_is_verified === true}" -->
+                        <span class="requester-email" *ngIf="!request?.lead?.email">
                           <!-- n.a. -->
                         </span>
                       </span>
