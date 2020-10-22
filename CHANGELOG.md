@@ -2,7 +2,13 @@
 # tiledesk-dashboard
 
 ### 2.0.74
-- Changes in the conversations in the column 'served by' the color of the border that highlights the logged user
+- Change the color of the border highlighting that it is the registered user serving the conversation
+- Changes the bot avatar in the bot test page 
+- Fixes the display of the 'verified contact' icon on the 'not real-time' conversations page
+- Adds in the 'not real-time' conversation page the evidence of the filter applied
+- Improves in the 'not real-time' conversation page and in the history page the filters box and adds the evidence of the applied filters
+- Moves in the top bar of the conversations page the link to the 'not real-time' conversations
+- Displays a custom loading when the conversation detail page "for the chat" is running on mobile devices
 
 ### 2.0.73 
 - Fixes the message displayed when occurs an error sending the password recovery email
