@@ -36,6 +36,7 @@ export class AutologinComponent implements OnInit {
     console.log('SSO - autologin page');
 
     this.checkIfFCMIsSupported();
+    this.detectMobile();
   }
 
 
