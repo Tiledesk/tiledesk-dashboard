@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.0.76
+- Adds events and visitors (test)
+
 ### 2.0.75
 - Displays in the conversation list a badge over the link to the not real-time conversations if the total count of conversation is >=100
 
