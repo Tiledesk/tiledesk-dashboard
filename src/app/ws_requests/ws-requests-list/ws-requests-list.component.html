@@ -68,7 +68,7 @@
   <li class="see-no-realtime-request right-li" style="float: right; padding-right: 5px;"
     (click)='goToNoRealtimeConversations()'>
     <a class="tool_tip" style="cursor: pointer; display: unset;"
-      [ngClass]="{ 'has-reached-100' : served_unserved_sum >= 16 }">
+      [ngClass]="{ 'has-reached-100' : served_unserved_sum >= 100 }">
       <span class="material-icons" style="margin-top: 3px;">
         view_list
       </span>
@@ -79,7 +79,7 @@
       </div>
     </a>
 
-    <span *ngIf="served_unserved_sum >= 16" class="served-unserved-sum">
+    <span *ngIf="served_unserved_sum >= 100" class="served-unserved-sum">
       <span>
         {{ served_unserved_sum }}
       </span>
