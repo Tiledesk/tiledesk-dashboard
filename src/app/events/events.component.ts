@@ -13,7 +13,8 @@ import { ActivatedRoute } from '@angular/router';
 export class EventsComponent implements OnInit {
   project_id: string;
   contact_id: string;
-events: any;
+  events: any;
+  showSpinner = false;
   private unsubscribe$: Subject<any> = new Subject<any>();
 
   constructor(
@@ -38,8 +39,8 @@ events: any;
       this.contact_id = params['requesterid']
 
 
-        this.usersService.subscriptionToWsContactEvents(this.project_id, this.contact_id);
-        this.getContactsEvents$()
+      this.usersService.subscriptionToWsContactEvents(this.project_id, this.contact_id);
+      this.getContactsEvents$()
     });
   }
 
@@ -50,7 +51,7 @@ events: any;
         // this.projectId = project._id
         // console.log('00 -> !!!! CONTACTS project ID from AUTH service subscription  ', this.projectId)
 
-      
+
 
       }
     });
@@ -72,13 +73,13 @@ events: any;
         //   const index = this.events.findIndex((e) => e.id === contactevent['_id']);
 
         //   if (index === -1) { 
-  
+
         //     this.events.push({ 'name': contactevent['name'], 'createdAt': contactevent['createdAt']})
-  
+
         //   }
-          
+
         // });
-    
+
 
       }, (error) => {
         console.log('EVENTS COMP $UBSC TO WS CONTACT EVENT ', error);
