@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.0.75
+- Displays in the conversation link a badge over the link to the not real-time conversations if the total count of conversation is >=100
+
 ### 2.0.74
 - Change the color of the border highlighting that it is the registered user serving the conversation
 - Changes the bot avatar in the bot test page 
@@ -31,8 +34,8 @@
 - Renames occurrences of 'requests' to 'conversations'
 - Gets contacts presence from websocket subscription (no longer from firebase)
 - Fixes widget logo
-- Adds a link to the simulate visitor page on the navigation bar
-- Adds the ability to know if the operating hours are enabled on the navigation bar
+- Adds on the navigation bar a link to the simulate visitor page 
+- Adds on the navigation bar the ability to know if the operating hours are enabled 
 - Fixes the loading spinner display in app-store page
 
 
