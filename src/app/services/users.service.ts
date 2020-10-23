@@ -44,6 +44,8 @@ export class UsersService {
   public currentUserWsAvailability$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   public currentUserWsIsBusy$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   public currentUserWsBusyAndAvailabilityForProject$: BehaviorSubject<[]> = new BehaviorSubject<[]>([]);
+  public contactsEvents$: BehaviorSubject<[]> = new BehaviorSubject<[]>([]);
+  
   public storageBucket$: BehaviorSubject<string> = new BehaviorSubject<string>('');
   // public has_clicked_logoutfrom_mobile_sidebar: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   // public has_clicked_logoutfrom_mobile_sidebar_project_undefined: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -96,7 +98,7 @@ export class UsersService {
   project_id: string;
   project_name: string;
   storageBucket: string;
-
+  eventlist: any;
   constructor(
     http: Http,
     // private afs: AngularFirestore,
@@ -460,6 +462,18 @@ export class UsersService {
       .map((response) => response.json());
   }
 
+  public getProjectUsersByProjectId_GuestRole(): Observable<ProjectUser[]> {
+    const url = this.PROJECT_USER_URL + '?role=guest&presencestatus=online';
+
+    console.log('»» VISITOR SERV - GET VISITOR - URL', url);
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.json());
+  }
+
   /// ================ TEST FUNCTION -- ALL AVAILABLE PROJECT-USER (OF CURRENT PROJECT) ====================== ///
   public getAvailableProjectUsersByProjectId(): Observable<ProjectUser[]> {
     // const url = this.MONGODB_BASE_URL + 'availables';
@@ -798,6 +812,57 @@ export class UsersService {
 
     })
   }
+
+
+    // -----------------------------------------------------------------------------------------------------
+  // Contact Events
+  // -----------------------------------------------------------------------------------------------------
+  subscriptionToWsContactEvents(projectid, leadid) {
+    
+    var self = this;
+    self.eventlist = []
+    console.log('EVENTS SERV (user-service) SUBSCR TO WS CONTACT EVENTS projectid: ', projectid, ' prjctuserid: ', leadid);
+    const path = '/' + projectid + '/events/' + leadid
+    
+    return new Promise(function (resolve, reject) {
+
+      self.webSocketJs.ref(path, function (data, notification) {
+        console.log('EVENTS SERV (user-service) SUBSCR TO WS CONTACT EVENTS data: ', data);
+        // console.log("PROJECT COMP (user-service) SUBSCR TO WS CURRENT USERS - CREATE - data ", data);
+        // console.log("PROJECT COMP (user-service) SUBSCR TO WS CURRENT USERS - CREATE - data  user_available ", data.user_available);
+        // console.log("PROJECT COMP (user-service) SUBSCR TO WS CURRENT USERS - CREATE - data  isBusy ", data.isBusy);
+
+       
+        const index = self.eventlist.findIndex((e) => e._id === data._id);
+        if (index === -1) {
+         
+          
+          console.log("EVENTS SERV (user-service) SUBSCR TO WS CONTACT EVENTS CREATE the event not exist - ADD");
+          self.eventlist.push(data)
+
+          self.contactsEvents$.next(self.eventlist)
+        }
+
+        // resolve(data)
+        // self.currentUserWsAvailability$.next(data.user_available);
+        
+        
+      }, function (data, notification) {
+        resolve(data)
+        console.log("EVENTS SERV (user-service) SUBSCR TO WS CONTACT EVENTS - UPDATE - data ", data);
+
+
+      }, function (data, notification) {
+        resolve(data)
+        if (data) {
+          console.log("EVENTS SERV (user-service) SUBSCR TO WS CONTACT EVENTS - ON-DATA - data", data);
+
+        }
+      });
+
+    })
+  }
+
 
   unsubsToWS_CurrentUser_allProject(projectid, prjctuserid) {
     this.webSocketJs.unsubscribe('/' + projectid + '/project_users/' + prjctuserid);
