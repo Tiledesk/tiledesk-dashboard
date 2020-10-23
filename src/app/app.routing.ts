@@ -21,6 +21,10 @@ import { HomeComponent } from './home/home.component';
 
 // NK
 import { ContactsComponent } from './contacts/contacts.component';
+import { VisitorsComponent } from './visitors/visitors.component';
+import { EventsComponent } from './events/events.component';
+
+
 import { RequestsListComponent } from './requests-list/requests-list.component';
 
 /*** WEBSOCKET ***/
@@ -351,6 +355,10 @@ const routes: Routes = [
   { path: 'resetpassword/:resetpswrequestid', component: ResetPswComponent },
 
   { path: 'project/:projectid/contacts', component: ContactsComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/visitors', component: VisitorsComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/events/:requesterid', component: EventsComponent, canActivate: [AuthGuard] },
+  
+  
   { path: 'project/:projectid/contact/:requesterid', component: ContactDetailsComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/contact/edit/:requesterid', component: ContactEditComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/payments', component: PaymentsListComponent, canActivate: [AuthGuard] },
