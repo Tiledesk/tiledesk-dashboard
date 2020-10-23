@@ -2,7 +2,7 @@
 # tiledesk-dashboard
 
 ### 2.0.75
-- Displays in the conversation link a badge over the link to the not real-time conversations if the total count of conversation is >=100
+- Displays in the conversation list a badge over the link to the not real-time conversations if the total count of conversation is >=100
 
 ### 2.0.74
 - Change the color of the border highlighting that it is the registered user serving the conversation
