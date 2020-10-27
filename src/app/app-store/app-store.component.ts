@@ -15,6 +15,7 @@ export class AppStoreComponent implements OnInit {
   subscription: Subscription;
   projectId: string;
   showSpinner = true;
+  TOKEN: string;
 
   constructor(
     public appStoreService: AppStoreService,
@@ -25,10 +26,18 @@ export class AppStoreComponent implements OnInit {
   ngOnInit() {
     this.getApps();
     this.getCurrentProject();
+    this.getToken()
+  }
+
+  getToken() {
+    this.auth.user_bs.subscribe((user) => {
+      if (user) {
+        this.TOKEN = user.token
+      }
+    });
   }
 
   ngOnDestroy() {
-
     this.subscription.unsubscribe();
   }
 
@@ -51,7 +60,7 @@ export class AppStoreComponent implements OnInit {
       console.log('APP-STORE - APPS ', this.apps);
 
       this.apps.forEach(app => {
-        
+
         if (app.description.length > 118) {
 
           app.description = app.description.slice(0, 118) + '...'
@@ -70,7 +79,7 @@ export class AppStoreComponent implements OnInit {
 
     }, (error) => {
       console.log('APP-STORE - ERROR  ', error);
-    this.showSpinner = false;
+      this.showSpinner = false;
     }, () => {
       console.log('APP-STORE * COMPLETE *');
       this.showSpinner = false;
@@ -82,10 +91,21 @@ export class AppStoreComponent implements OnInit {
 
     console.log('APP-STORE installationUrl ', installationUrl);
 
-    if (installationType === 'internal') {
-      this.router.navigate(['project/' + this.projectId + '/app-store-install', installationUrl, appTitle]);
+    const urlHasQueryString = this.detectQueryString(installationUrl)
+    console.log('APP-STORE installationUrl Has QueryString ', urlHasQueryString);
+
+
+let installationUrlWithQueryString = ''
+    if (urlHasQueryString ===  false) {
+      installationUrlWithQueryString = installationUrl + '?project_id=' + this.projectId + '&jwt=' + this.TOKEN
     } else {
-      const url = installationUrl;
+      installationUrlWithQueryString = installationUrl + '&project_id=' + this.projectId + '&jwt=' + this.TOKEN
+    }
+
+    if (installationType === 'internal') {
+      this.router.navigate(['project/' + this.projectId + '/app-store-install', installationUrlWithQueryString, appTitle]);
+    } else {
+      const url = installationUrlWithQueryString;
       window.open(url, '_blank');
     }
   }
@@ -95,6 +115,13 @@ export class AppStoreComponent implements OnInit {
     const url = learnmoreUrl;
 
     window.open(url, '_blank');
+  }
+
+  detectQueryString(url) {
+    // regex pattern for detecting querystring
+    var pattern = new RegExp(/\?.+=.*/g);
+    console.log('APP-STORE PATTERN TEST USRL ')
+    return pattern.test(url);
   }
 
 }
