@@ -336,7 +336,7 @@ export class DepartmentService {
     console.log('UPDATE DEPT STATUS - REQUEST BODY ', body);
 
     return this.http
-      .put(url, JSON.stringify(body), options)
+      .patch(url, JSON.stringify(body), options)
       .map((res) => res.json());
   }
 
