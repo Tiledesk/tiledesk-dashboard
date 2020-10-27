@@ -1,6 +1,12 @@
 
 # tiledesk-dashboard
 
+### 2.0.78
+- Fixes the departments status updating service
+
+### 2.0.77
+- Adds query string with the fields "project_id" and "jwt" of to the app store apps installation url
+
 ### 2.0.76
 - Adds events and visitors (test)
 
