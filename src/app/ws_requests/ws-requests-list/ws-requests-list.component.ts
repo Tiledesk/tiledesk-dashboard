@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, AfterViewInit, NgZone, ViewChild, Element
 import { WsRequestsService } from '../../services/websocket/ws-requests.service';
 import { LocalDbService } from '../../services/users-local-db.service';
 import { BotLocalDbService } from '../../services/bot-local-db.service';
-import { Router, NavigationStart, NavigationEnd } from '@angular/router';
+import { Router, NavigationStart, NavigationEnd, NavigationExtras, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
 import { avatarPlaceholder, getColorBck } from '../../utils/util';
 import { NotifyService } from '../../core/notify.service';
@@ -108,6 +108,11 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   storagebucket$: string;
   OPERATING_HOURS_ACTIVE: boolean;
   served_unserved_sum: any;
+
+  displayRequestsMap: boolean = false;
+  OPEN_RIGHT_SIDEBAR: boolean = false;
+  map_sidebar_height: any; 
+
 
   /**
    * Constructor
@@ -226,7 +231,32 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     this.router.navigate(['project/' + this.projectId + '/all-conversations']);
   }
 
+  showRequestsMap() {
+    this.displayRequestsMap = true;
+  }
 
+  openRightSideBar() {
+    this.OPEN_RIGHT_SIDEBAR = true;
+    console.log('%%% Ws-REQUESTS-Map »»»» OPEN RIGHT SIDEBAR ', this.OPEN_RIGHT_SIDEBAR);
+
+    const elemMainContent = <HTMLElement>document.querySelector('.main-content');
+    this.map_sidebar_height = elemMainContent.clientHeight + 10 + 'px';
+    console.log('%%% Ws-REQUESTS-Map - REQUEST-MAP - ON OPEN RIGHT SIDEBAR -> RIGHT SIDEBAR HEIGHT', this.map_sidebar_height);
+
+  }
+
+  handleCloseRightSidebar(event) {
+    console.log('%%% Ws-REQUESTS-Map »»»» CLOSE RIGHT SIDEBAR ', event);
+    this.OPEN_RIGHT_SIDEBAR = false;
+
+    // const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
+    // _elemMainPanel.setAttribute('style', 'overflow-x: hidden !important;');
+  }
+
+  // showRequestsMap() {
+  //   console.log('OPEN REQUESTS MAP')
+  //   this.router.navigate(['project/' + this.projectId + '/map-request'], {queryParams: {wsRequestsServed: this.wsRequestsServed}});
+  // }
 
 
   detectBrowserRefresh() {
@@ -1238,6 +1268,8 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     this.internalRequest_deptId = undefined;
     this.internalRequest_subject = undefined;
   }
+
+
 
 
 

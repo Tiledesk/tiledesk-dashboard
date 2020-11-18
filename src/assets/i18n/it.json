@@ -1515,7 +1515,8 @@
         "SentimentMedianValueHEART": "Il feedback clienti medio del tuo team è di:",
         "UpgradeYourAccounttoTrackTheChatsYouHaveWithCustomers": "Aggiorna il tuo account per tenere traccia delle chat che hai con i clienti",
         "DailyMedianResponseTime": "Tempo di risposta medio giornaliero",
-        "DailyConvDurationTime": "Durata conversazione media giornaliera"
+        "DailyConvDurationTime": "Durata conversazione media giornaliera",
+        "VisitorsComponentTitle": "Visitatori"
     },
     "DeleteRequestForever": {
         "TheRequestWillBePermanentlyDeleted": "la conversazione verrà eliminata definitivamente",
@@ -1563,5 +1564,33 @@
     "ResetFilters": "Rimuovi filtri",
     "AppliedFilters": "Filtri applicati",
     "Ticket": "Richiesta interna",
-    "EnableDisable":"Abilita / disabilita"
+    "EnableDisable":"Abilita / disabilita",
+    "Webhook": {
+        "AddSubscription": "Aggiungi Sottoscrizione",
+        "Subscriptions": "Sottoscrizioni",
+        "Actions": "Azioni",
+        "NoWebhookSubscriptions": "Non sono presenti sottoscrizioni al webhook",
+        "CreateSubscription": "Crea sottoscrizione",
+        "UpdateSubscription": "Modifica sottoscrizione",
+        "RequiredFiled": "*Campo obbligatorio",
+        "SelectEvent": "Seleziona evento",
+        "SharedSecretGenerated": "Shared Secret Generato",
+        "ThisIsYourSharedSecret": "Questo è il tuo shared secret",
+        "Copy": "Copia",
+        "NoteThatWillBeDisplayedOnce": "Nota che questo shared secret verrà visualizzato solo una volta",
+        "ConfirmSubscriptionDeleteTitle": "Cancella Sottoscrizione",
+        "ConfirmSubscriptionDeleteBody" : "Sei sicuro di voler cancellare la sottoscrizione? Questa azione è irreversibile.",
+        "ConfirmButton": "Conferma",
+        "CancelButton": "Annulla",
+        "MoreInfoWebhook": "Per maggiori informazioni sull'uso di Webhook visita la pagina ",
+        "NotificationMsgs": {
+            "DeleteSubscriptionSuccess": "Sottoscrizione cancellata correttamente",
+            "DeleteSubscriptionError": "Si è verificato un errore durante la cancellazione della sottoscrizione",
+            "CreateSubscriptionSuccess": "Sottoscrizione effettuata correttamente",
+            "CreateSubscriptionError": "Si è verificato un errore durante la sottoscrizione",
+            "UpdateSubscriptionSuccess": "Sottoscrizione aggiornata con successo",
+            "UpdateSubscriptionError": "Si è verificato un errore durante l'aggiornamento della sottoscrizione",
+            "ShowSecretError": "Si è verificato un errore durante la generazione del secret"
+        }
+    }
 }

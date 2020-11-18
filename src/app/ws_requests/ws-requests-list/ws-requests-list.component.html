@@ -3,7 +3,7 @@
 </p>
 
 
-<ul class="bottom-nav">
+<ul class="bottom-nav" *ngIf="OPEN_RIGHT_SIDEBAR === false">
   <li *ngIf="ROLE_IS_AGENT === false" (click)="seeIamAgentRequests(seeAll = !seeAll)" class="btn-with-border-effect"
     [ngClass]="
           { 'disabled-li' : displayBtnLabelSeeYourRequets === false, 
@@ -85,6 +85,28 @@
       </span>
     </span>
   </li>
+
+   <!-- SHOW REQUEST MAP -->
+   <li class="see-no-realtime-request right-li" style="float: right; padding-right: 5px;"
+   (click)='openRightSideBar()'>
+   <a class="tool_tip" style="cursor: pointer; display: unset;"
+     [ngClass]="{ 'has-reached-100' : served_unserved_sum >= 100 }">
+     <span class="material-icons" style="margin-top: 3px;">
+       pin_drop
+     </span>
+     <div class="bottom"
+       style="text-align: center; padding: 4px; border-radius: 3px; text-transform: none; min-width: 200px;">
+          Visualizza le richieste servite su mappa
+       <i></i>
+     </div>
+   </a>
+
+   <span *ngIf="served_unserved_sum >= 100" class="served-unserved-sum">
+     <span>
+       {{ served_unserved_sum }}
+     </span>
+   </span>
+ </li>
 
 </ul>
 
@@ -199,7 +221,7 @@
                     <div class="legend-items" style="white-space: nowrap; overflow: auto;">
                       <div class="legend-item" style="margin-right: 20px;display: inline-block;cursor: pointer;">
                         <div class="item-color"
-                          style="border-left: 4px solid; rgb(89, 139, 255); width: 4px; height: 42px;float: left; margin-right: 7px;">
+                          style="border-left: 4px solid; color: rgb(89, 139, 255); width: 4px; height: 42px;float: left; margin-right: 7px;">
                         </div>
                         <div class="item-value">8.940.000</div>
                         <div class="item-label">Germany</div>
@@ -633,6 +655,7 @@ l-4.9-13l18-14.8L22.1,34.4z" />
           <appdashboard-ws-requests-served *ngIf="wsRequestsServed" [wsRequestsServed]="wsRequestsServed"
             [ws_requests_length]="ws_requests?.length">
           </appdashboard-ws-requests-served>
+          <!-- Chiamare il componente qui -->
         </div>
       </div>
     </section>
@@ -965,3 +988,8 @@ l-4.9-13l18-14.8L22.1,34.4z" />
 <!-- <app-department-edit-add *ngIf='display_dept_sidebar === true'
  [display_dept_sidebar]="display_dept_sidebar" [ws_requestslist_deptIdSelected]="ws_requestslist_deptIdSelected"> 
 </app-department-edit-add>  -->
+
+<div *ngIf="OPEN_RIGHT_SIDEBAR === true" class="view-side">
+  <appdashboard-map-request [ngStyle]="{'height':train_bot_sidebar_height }" [wsRequestsServed]="wsRequestsServed"
+    (closeMapsView)='handleCloseRightSidebar($event)'></appdashboard-map-request>
+</div>

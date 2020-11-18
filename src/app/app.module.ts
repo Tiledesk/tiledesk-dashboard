@@ -1,3 +1,6 @@
+import { PopupService } from './services/popup.service';
+import { MarkerService } from './services/marker.service';
+import { MapRequestComponent } from './map-request/map-request.component';
 import { MetricheComponent } from './analytics2/metriche/metriche.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
@@ -194,6 +197,10 @@ import { AppStoreInstallComponent } from './app-store/app-store-install/app-stor
 import { DeptsComponent } from './depts/depts.component';
 import { DocsUrlRowComponent } from './components/docs-url-row/docs-url-row.component';
 
+import { WebhookComponent } from './webhook/webhook.component';
+import { WebhookAddEditComponent } from './webhook/webhook-add-edit/webhook-add-edit.component';
+import { WebhookService } from './services/webhook.service';
+import { VisitorsComponent } from './analytics2/visitors/visitors.component';
 
 console.log('************** APPMODULE ******************');
 // AoT requires an exported function for factories
@@ -332,7 +339,10 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     // PerfectScrollbarTdDirective,
     DeptsComponent,
     DocsUrlRowComponent,
-
+    WebhookComponent,
+    WebhookAddEditComponent,
+    MapRequestComponent,
+    VisitorsComponent
   ],
   imports: [
     /* PRIVATE */
@@ -404,12 +414,15 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     ResetPswService,
     UploadImageService,
     WidgetService,
+    WebhookService,
     ProjectPlanService,
     SubscriptionService,
     LegendService, TooltipService, AdaptorService, AnalyticsService, HttpClientModule,
     TriggerService,
     SelectOptionsTranslatePipe,
     FilterArrayPipe,
+    MarkerService,
+    PopupService,
     { provide: LocationStrategy, useClass: HashLocationStrategy }
   ],
   bootstrap: [

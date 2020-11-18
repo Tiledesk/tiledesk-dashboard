@@ -1520,7 +1520,8 @@
 		"SentimentMedianValueHEART": "Die durchschnittliche Kundenzufriedenheit Ihres Teams liegt bei :",
 		"UpgradeYourAccounttoTrackTheChatsYouHaveWithCustomers": " Upgraden Sie Ihren Account um ihre Chats zu tracken",
 		"DailyMedianResponseTime": "Tägliche durchschnittliche Reaktionszeit",
-		"DailyConvDurationTime": "Tägliche durchschnittliche Unterhaltungslänge"
+		"DailyConvDurationTime": "Tägliche durchschnittliche Unterhaltungslänge",
+		"VisitorsComponentTitle": "Besucher"
 	},
 	"DeleteRequestForever": {
 		"TheRequestWillBePermanentlyDeleted": "Die Anfrage wird dauerhaft gelöscht",
@@ -1568,6 +1569,34 @@
 	"ResetFilters": "Filter zurücksetzen",
 	"AppliedFilters": "Angewandte Filter",
 	"Ticket": "Interne Anfrage",
-	"EnableDisable":"Aktivieren / deaktivieren"
+	"EnableDisable":"Aktivieren / deaktivieren",
+	"Webhook": {
+		"AddSubscription": "Abonnement hinzufügen",
+		"Subscriptions": "Abonnements",
+		"Actions": "Aktionen",
+		"NoWebhookSubscriptions": "Es gibt keine Webhook-Abonnements",
+		"CreateSubscription": "Abonnement erstellen",
+		"UpdateSubscription": "Abonnement ändern",
+		"RequiredFiled": "*Pflichtfeld",
+		"SelectEvent": "Ereignis auswählen",
+		"SharedSecretGenerated": "Shared Secret generiert",
+		"ThisIsYourSharedSecret": "Hier ist Ihr Shared Secret",
+		"Copy": "Kopieren",
+		"NoteThatWillBeDisplayedOnce": "Beachten Sie, dass das Shared Secret nur einmal angezeigt wird",
+		"ConfirmSubscriptionDeleteTitle": "Löschen Abo",
+		"ConfirmSubscriptionDeleteBody" : "Möchten Sie sich wirklich abmelden? Diese Aktion ist irreversibel.",
+		"ConfirmButton": "Bestätigung",
+		"CancelButton": "stornieren",
+		"MoreInfoWebhook": "Weitere Informationen zu Webhook finden Sie auf ",
+		"NotificationMsgs": {
+            "DeleteSubscriptionError": "Beim Abbrechen des Abo ist ein Fehler aufgetreten",
+            "DeleteSubscriptionSuccess": "Abo erfolgreich entfernt",
+            "CreateSubscriptionSuccess": "Abo erfolgreich erstellt",
+            "CreateSubscriptionError": "Beim Abo ist ein Fehler aufgetreten",
+            "UpdateSubscriptionSuccess": "Abo erfolgreich aktualisiert",
+			"UpdateSubscriptionError": "Beim Aktualisieren des Abo ist ein Fehler aufgetreten",
+			"ShowSecretError": "Beim Generieren des Geheimnisses ist ein Fehler aufgetreten"
+        }
+    }
 	
 }

@@ -23,14 +23,20 @@
 	      "src/dashboard-config.json",
               "src/dashboard-pre-config.json",
               "src/dashboard-prod-config.json",
-              "src/dashboard-pre-config-nofb.json"
+              "src/dashboard-pre-config-nofb.json",
+              {
+                "glob": "**/*",
+                "input": "node_modules/leaflet/dist/images/",
+                "output": "./assets"
+              }
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "node_modules/perfect-scrollbar/css/perfect-scrollbar.css",
               "src/assets/sass/material-dashboard.scss",
               "src/assets/css/demo.css",
-              "node_modules/@ng-select/ng-select/themes/default.theme.css"
+              "node_modules/@ng-select/ng-select/themes/default.theme.css",
+              "node_modules/leaflet/dist/leaflet.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.js",
@@ -127,7 +133,12 @@
               "node_modules/@ng-select/ng-select/themes/default.theme.css"
             ],
             "assets": [
-              "src/assets"
+              "src/assets",
+              {
+                "glob": "**/*",
+                "input": "node_modules/leaflet/dist/images/",
+                "output": "./assets"
+              }
             ]
           }
         },

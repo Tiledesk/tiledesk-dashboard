@@ -1520,7 +1520,8 @@
         "SentimentMedianValueHEART": "Your team's overall Median Customer Satisfaction is :",
         "UpgradeYourAccounttoTrackTheChatsYouHaveWithCustomers": " Upgrade your account to track the chats you have with customers",
         "DailyMedianResponseTime": "Daily Median Response Time",
-        "DailyConvDurationTime": "Daily Median Conversation Length"
+        "DailyConvDurationTime": "Daily Median Conversation Length",
+        "VisitorsComponentTitle": "Visitors"
     },
     "DeleteRequestForever": {
         "TheRequestWillBePermanentlyDeleted": "the conversation will be permanently deleted",
@@ -1568,5 +1569,33 @@
     "ResetFilters": "Reset filters",
     "AppliedFilters": "Applied Filters",
     "Ticket": "Internal request",
-    "EnableDisable":"Enable / disable"
+    "EnableDisable":"Enable / disable",
+    "Webhook": {
+        "AddSubscription": "Add Subscription",
+        "Subscriptions": "Subscriptions",
+        "Actions": "Actions",
+        "NoWebhookSubscriptions": "There are no webhook subscriptions",
+        "CreateSubscription": "Create subscription",
+        "UpdateSubscription": "Update sottoscrizione",
+        "RequiredFiled": "*Required field",
+        "SelectEvent": "Select event",
+        "SharedSecretGenerated": "Shared Secret Generated",
+        "ThisIsYourSharedSecret": "This is your shared secret",
+        "Copy": "Copy",
+        "NoteThatWillBeDisplayedOnce": "Note that this shared secret will only be displayed once",
+        "ConfirmSubscriptionDeleteTitle": "Delete Subscription",
+        "ConfirmSubscriptionDeleteBody" : "Are you sure you want to unsubscribe? This action is irreversible.",
+        "ConfirmButton": "Confirm",
+        "CancelButton": "Cancel",
+        "MoreInfoWebhook": "For more information about Webhook please visit ",
+        "NotificationMsgs": {
+            "DeleteSubscriptionError": "An error occurred while deleting subscription",
+            "DeleteSubscriptionSuccess": "Subscription successfully deleted",
+            "CreateSubscriptionSuccess": "Subscription successfully created",
+            "CreateSubscriptionError": "An error occurred while creating subscription",
+            "UpdateSubscriptionSuccess": "Subscription successfully updated",
+            "UpdateSubscriptionError": "An error occurred while updating subscription",
+            "ShowSecretError": "An error occurred while secret generation"
+        }
+    }
 }
