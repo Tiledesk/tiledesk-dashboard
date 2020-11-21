@@ -83,6 +83,8 @@ Install the latest stable release. Check on Github page the last release under t
 
 You can put your API URL and the other settings directly in the environment.*.ts  if `remoteConfig` is set to `false` or in the `dashboard-config.json`  if `remoteConfig` is set to `true`.
 
+If `remoteConfig` is set to `true` create a file name `dashboard-config.json` and put it into `src` folder.
+
 An example of the configuration of the  `environment.ts` file in  `src/environments/`
 
 #### environment.ts
