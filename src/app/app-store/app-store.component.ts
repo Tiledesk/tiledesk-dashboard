@@ -97,9 +97,9 @@ export class AppStoreComponent implements OnInit {
 
 let installationUrlWithQueryString = ''
     if (urlHasQueryString ===  false) {
-      installationUrlWithQueryString = installationUrl + '?project_id=' + this.projectId + '&jwt=' + this.TOKEN
+      installationUrlWithQueryString = installationUrl + '?project_id=' + this.projectId + '&token=' + this.TOKEN
     } else {
-      installationUrlWithQueryString = installationUrl + '&project_id=' + this.projectId + '&jwt=' + this.TOKEN
+      installationUrlWithQueryString = installationUrl + '&project_id=' + this.projectId + '&token=' + this.TOKEN
     }
 
     if (installationType === 'internal') {
