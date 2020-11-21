@@ -518,14 +518,20 @@ span .switch-agent-admin-requests-btn {
 }
 
 .bottom-nav li a {
-  padding: 18px 15px;
+  padding: 20px 15px;
   color: #797979;
   line-height: 20px;
 }
 
 .bottom-nav li a:hover {
-  text-decoration: none;
-  //  background-color: #eee;
+  background-color: #eee;
+  -webkit-transition: background-color 200ms linear;
+  -ms-transition: background-color 200ms linear;
+  transition: background-color 200ms linear;
+}
+
+.bottom-nav li a:focus {
+  background-color: #eee;
 }
 
 .li-active {
@@ -560,7 +566,7 @@ span .switch-agent-admin-requests-btn {
     display: block !important;
   }
 
-  .operating-hours{
+  .operating-hours {
     margin-top: 12px;
     margin-right: 6px;
   }
@@ -572,11 +578,9 @@ span .switch-agent-admin-requests-btn {
   }
 
   .served-unserved-sum {
-    left: 324px  !important;
+    left: 324px !important;
     top: 16px !important;
-
   }
-
 }
 
 @media (max-width: 650px) {
@@ -791,6 +795,21 @@ $f21blue: #039be5;
   padding-left: 2px;
   color: #f44336 !important;
 }
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+  gap: 0px 0px;
+  grid-template-areas: "requests-graph graph-legend";
+}
+.requests-graph {
+  grid-area: requests-graph;
+}
+.graph-legend {
+  grid-area: graph-legend;
+}
+
 // --------------------------------------------------------------
 // @ Skeleton
 // --------------------------------------------------------------

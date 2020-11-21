@@ -1,4 +1,4 @@
-<div class="card card--no-border" style="margin: 5px 0;">
+<div role="main" class="card card--no-border" style="margin: 5px 0;">
   <div class="card-header card-header-custom">
 
     <div class="row">
@@ -35,9 +35,9 @@
   <!-- *ngIf="!showSpinner" -->
 
   <!--  -->
-  <div class="card-content table-responsive" style="padding-top: 0px;">
+  <div role="tabpanel" class="card-content table-responsive" style="padding-top: 0px;">
     <!-- style="overflow-x:auto;" -->
-    <table class="table table-hover served_requests_table">
+    <table role="grid" aria-readonly="true" class="table table-hover served_requests_table">
       <thead class="text">
         <tr>
           <!-- <th></th> -->
@@ -116,7 +116,7 @@
         // ------------------------------
         // IF THERE ISN'T SERVED REQUEST 
         // ------------------------------ -->
-        <tr *ngIf="wsRequestsServed?.length === 0">
+        <tr role="row" *ngIf="wsRequestsServed?.length === 0">
           <td colspan="8" style="text-align: center; padding-top: 16px;">
             <p style="font-size:1em; color:#737376; font-weight: 100">
 
@@ -129,35 +129,27 @@
         // ------------------------------
         // SERVED FOR
         // ------------------------------ -->
-        <tr *ngFor="let request of wsRequestsServed; trackBy: trackByFn">
-
-          <!-- FOR DEBUG: SHOW 'J' IF THE CURRENT USER UID IS BETWEEN 
-        THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has joined to the request) -->
-          <!-- <td>
-          <span *ngIf="request?.currentUserIsJoined === true"> 
-            J
-          </span>
-        </td> -->
+        <tr (keypress)="keypressHandler($event.keyCode, request?.request_id)" (keyup.arrowup)="moveup(index)"
+          (keyup.arrowdown)="movedown(index)" id="request_served_{{index}}" tabindex="0" role="row"
+          *ngFor="let request of wsRequestsServed; let index = index; trackBy: trackByFn">
+          <!-- aria-labelledby="request-served-status-icon served-first-msg requester-in-served dept-in-served served-by-bot--mobile served-by-human-agent--mobile served-by-bot--desktop served-by-human-agent--desktop request-served-created-at" -->
 
           <!-- 
           // ------------------------------
           // ICONS
           // ------------------------------ -->
-          <td style="text-align:center; white-space: nowrap; width: 1%;">
-            <!-- IF THE REQUEST SUPPORT STATUS IS 0 (??? REQUEST) -->
-
-
+          <td attr.aria-label="{{ 'ConversationStatus' | translate }} {{ 'Served' | translate }}" id="request-served-status-icon" 
+             style="text-align:center; white-space: nowrap; width: 1%;">
+  
             <!-- 
             IF THE REQUEST SUPPORT STATUS IS 200 (SERVED REQUEST) AND THE CURRENT USER UID IS BETWEEN 
             THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has joined to the request) -->
-            <span *ngIf="request?.status == 200 && request?.currentUserIsJoined === true">
+            <span  *ngIf="request?.status == 200 && request?.currentUserIsJoined === true">
               <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" rel="tooltip"
                 title="{{ 'VisitorsPage.ViewRequestDetails' | translate}}: {{request?.request_id}}">
 
                 <span *ngIf="!request?.subject">
-
                   <img style="width: 30px;" src="assets/img/request_icons/status200_joined.svg" class="img-fluid">
-
                 </span>
 
                 <!-- 
@@ -181,7 +173,6 @@
 
                 <span *ngIf="!request?.subject">
                   <img style="width: 30px;" src="assets/img/request_icons/status200_no_joined.svg" class="img-fluid">
-
                 </span>
 
                 <!-- 
@@ -189,17 +180,15 @@
                 // If is internal request
                 // ------------------------------------------------------------------------------------------------------ -->
                 <span *ngIf="request?.subject">
-
                   <img style="width: 30px;" src="assets/img/request_icons/status200_no_joined_internal.svg"
                     class="img-fluid">
                 </span>
-
               </span>
             </span>
           </td>
 
           <!-- ------ ====== MESSAGE  ====== ------ -->
-          <td [ngClass]="{'padding_5' : request?.tags?.length > 0}" (click)='goToRequestMsgs(request?.request_id)'
+          <td id="served-first-msg" attr.aria-label="{{ 'Message' | translate }} {{ request?.first_text }}" [ngClass]="{'padding_5' : request?.tags?.length > 0}" (click)='goToRequestMsgs(request?.request_id)'
             style="cursor:pointer">
             <!-- max-width: 400px -->
             <p class="column-td" [innerHTML]="getRequestText(request?.first_text)">
@@ -289,9 +278,9 @@
             </section>
           </td>
 
-
           <!-- ------ ====== REQUESTER ====== ------ -->
-          <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer;white-space: nowrap; width: 1%;"
+          <td id="requester-in-served" attr.aria-label="{{ 'VisitorsPage.Requester' | translate }} {{ request?.lead?.fullname }}"
+            (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer;white-space: nowrap; width: 1%;"
             rel="tooltip" title="{{ request?.lead?.lead_id }}">
             <!-- <p style="font-size:0.9em">{{ request.sender_fullname }}</p> -->
 
@@ -363,7 +352,7 @@
           </td>
 
           <!-- ------ ====== USER AGENT BROWSER & OPERATING SYSTEM (in served requests)====== ------ -->
-          <td>
+          <td aria-hidden="true">
             <span *ngIf="request?.userAgent" class="tooltipx">
               <!-- 
               // ----------------------------------------------------------------
@@ -504,9 +493,9 @@
           </td>
 
           <!-- ------ ============== DEPARTMENT  ============== ------ -->
-          <!-- // DEPTS_LAZY: edit the existing one as this -->
-          <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer; font-size: 12px;
-          font-weight: 400;">
+          <!-- // DE PTS_LAZY: edit the existing one as this -->
+          <td id="dept-in-served" attr.aria-label="{{ 'Department' | translate }} {{ request?.dept?.name }}" 
+           (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer; font-size: 12px;font-weight: 400;">
 
             <!-- // DEPTS_LAZY: edit the existing one as this -->
             <p *ngIf="request?.dept?.name" class="column-td">
@@ -515,10 +504,8 @@
             <p *ngIf="!request?.dept?.name" class="column-td">
               n/a
             </p>
-
             <!-- <p *ngIf="request?.department" class="column-td"
              [innerHTML]="dept_replace( request?.department )"></p> -->
-
           </td>
 
 
@@ -568,7 +555,6 @@
             </div>
           </td> -->
 
-
           <!-- 
           // --------------------------------------------
           // SERVED BY MOBILE
@@ -579,7 +565,8 @@
 
                 <span *ngIf="agent.is_bot === true">
 
-                  <span (click)="goToBotProfile(agent?._id, agent?.type)" style="cursor:pointer">
+                  <span id="served-by-bot--mobile" attr.aria-label="{{ 'ServedBy' | translate }} chatbot {{ agent?.name }}"
+                     (click)="goToBotProfile(agent?._id, agent?.type)" style="cursor:pointer">
                     <img class="user-img ws-requests-list-servedby-avatar"
                       src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fphoto.jpg?alt=media"
                       onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
@@ -600,7 +587,9 @@
 
 
                 <span *ngIf="agent.is_bot === false">
-                  <span (click)="goToAgentProfile(agent?._id)" style="cursor:pointer">
+                  <!-- attr.aria-label="{{ 'ServedBy' | translate }} {{ agent?.firstname }} {{ agent?.lastname | slice:0:1 }}" -->
+                  <span id="served-by-human-agent--mobile"  
+                    (click)="goToAgentProfile(agent?._id)" style="cursor:pointer">
                     <img class="user-img ws-requests-list-servedby-avatar"
                       src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fphoto.jpg?alt=media"
                       onerror="this.src='assets/img/no_image_user.png'" />
@@ -622,7 +611,9 @@
           // SERVED BY DESKTOP
           // -------------------------------------------- -->
           <td *ngIf="!isMobile">
-            <div class="served-by-desktop-a">
+            <!-- attr.aria-label="{{ 'ServedBy' | translate }} {{ agent?.firstname }}  {{ agent?.lastname | slice:0:1 }}" -->
+            <div id="served-by-human-agent--desktop"  
+              class="served-by-desktop-a">
               <div class="served-by-desktop-b" *ngFor="let agent of request?.participanting_Agents; let first = first;">
 
                 <span *ngIf="agent.is_bot === false">
@@ -641,7 +632,7 @@
                           class="altenative-avatar-wrap" [ngStyle]="{'background-color': agent?.fillColour }"
                           *ngIf="!agent.hasImage">
 
-                          <span class="altenative-avatar">
+                          <span aria-hidden="true" class="altenative-avatar">
                             {{ agent?.fullname_initial }}
                           </span>
 
@@ -652,7 +643,7 @@
                     <span
                       style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px; white-space: nowrap;"
                       class="top">
-                      <span style="text-transform: capitalize;"> {{ agent?.firstname }}
+                      <span aria-hidden="true" style="text-transform: capitalize;"> {{ agent?.firstname }}
                         <span *ngIf="agent?.lastname">
                           {{ agent?.lastname | slice:0:1 }}.
                         </span>
@@ -665,7 +656,8 @@
 
 
                 <span *ngIf="agent.is_bot === true">
-                  <span (click)="goToBotProfile(agent?._id, agent?.type)" style="cursor:pointer"
+                  <span id="served-by-bot--desktop" attr.aria-label="{{ 'ServedBy' | translate }} chatbot {{ agent?.name }}"
+                   (click)="goToBotProfile(agent?._id, agent?.type)" style="cursor:pointer"
                     class="bot---avatar tool_tip">
                     <img class="user-img ws-requests-list-servedby-avatar"
                       src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fphoto.jpg?alt=media"
@@ -696,7 +688,6 @@
             </div>
 
           </td>
-
 
           <!-- 
           // ------------------------------------------------------------------------------------------------------
@@ -746,7 +737,8 @@
 
 
           <!-- ------ ====== CREATED ON ====== ------ -->
-          <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
+          <td id="request-served-created-at" attr.aria-label="{{ 'VisitorsPage.Published' | translate }} {{ request?.createdAt | amTimeAgo }}"
+             (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
             <p class="column-td">
               <!-- {{ request?.timestamp | date: 'd/M/y HH:mm:ss'}} -->
               <!-- {{ request?.request_date_fromnow }} -->
@@ -763,11 +755,11 @@
           <!-- ------ ====== ARCHIVE Action ====== ------ -->
           <!-- (click)='openDeleteRequestModal(request?.request_id)' // <- open the modal "confirm archive request"  -->
           <td class="td-actions text-right" style="padding-top: 9px !important;">
-            <button type="button" rel="tooltip" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}"
+            <button attr.aria-label="{{ 'VisitorsPage.Archive' | translate }}" type="button" rel="tooltip" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}"
               class="btn btn-tdblu btn-simple btn-xs tool_tip" (click)='archiveRequest(request?.request_id)'
               [disabled]="request?.currentUserIsJoined === false && ROLE_IS_AGENT === true">
 
-              <i class="material-icons">archive</i>
+              <i aria-hidden="true" class="material-icons">archive</i>
 
               <!-- // tooltip text 'Archive' -->
               <span style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px;" class="top">
@@ -776,7 +768,7 @@
               </span>
             </button>
 
-            <button type="button" rel="tooltip" title="{{ 'RequestMsgsPage.Enter' | translate }}"
+            <button attr.aria-label="{{ 'RequestMsgsPage.Enter' | translate }}" type="button" rel="tooltip" title="{{ 'RequestMsgsPage.Enter' | translate }}"
               class="btn btn-tdblu btn-simple btn-xs tool_tip" (click)='joinRequest(request?.request_id)'
               [disabled]="request?.currentUserIsJoined === true">
 

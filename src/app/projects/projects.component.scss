@@ -102,8 +102,16 @@ input[type="text"] {
   border: solid 1px #ddd;
 }
 
+.custom-card-box-shadow {
+  text-align: left;
+}
+
 .custom-card-box-shadow:hover {
   // background-color: #fafafa;
+  box-shadow: 0 7px 8px -4px rgba(0, 0, 0, 0.2), 0 12px 17px 2px rgba(0, 0, 0, 0.14), 0 5px 22px 4px rgba(0, 0, 0, 0.12) !important;
+}
+
+.custom-card-box-shadow:focus {
   box-shadow: 0 7px 8px -4px rgba(0, 0, 0, 0.2), 0 12px 17px 2px rgba(0, 0, 0, 0.14), 0 5px 22px 4px rgba(0, 0, 0, 0.12) !important;
 }
 
@@ -402,7 +410,6 @@ input[type="text"] {
   left: -2px;
   width: fit-content;
 }
-
 
 .project-user-isBusyTest {
   color: #fedd00;

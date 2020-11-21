@@ -3,7 +3,7 @@
  <!-- <button (click)="sumuptest()" type="button">  test  </button> -->
 </p>
 
-<div class="main-content" style="padding-top: 8px;margin-top: 0px;">
+<div  tabindex="-1" class="main-content" style="padding-top: 8px;margin-top: 0px;">
 
  
 
@@ -40,19 +40,20 @@
        //////////// GETTING STARTED ////////////////
        ///////////////////////////////////////////// -->
   <!-- background-image: url(assets/img/tiledesk-login-background.jpg); background-size: contain; background-repeat:no-repeat -->
-  <div class="row">
+  <div  role="main" tabindex="0" class="row">
     <div class="col-md-12">
       <loading-spinner *ngIf="showSpinner"></loading-spinner>
       <div class="home-banner" *ngIf="!showSpinner" style="min-height:538px">
         <div class="row" style="background-color:#ffffff;">
 
+         
 
           <!-- PROJECT NAME AND PLAN -->
           <div class="col-md-12">
             <div class="project-name-and-plan">
-              <span class="project-name">
+              <a style="cursor: unset; color:#3C4858;" attr.aria-label="{{ 'ProjectName' | translate }} {{ project?.name }}"  href="javascript:;" role="text" class="project-name" id="home-head-title">
                 {{ prjct_name }}
-              </span>
+              </a>
               <span *ngIf="isVisible">
                 <span class="project-plan" (click)="goToPricingOrOpenModalSubsExpired()"
                   style="text-transform:capitalize">
@@ -201,7 +202,7 @@
 
     <div class="row">  </div> -->
 
-  <div class="row">
+  <div role="grid" class="row">
     <div class="col-sm-6 col-md-3">
       <div class="card-wrapper">
         <div class="card" style="border-radius:10px; cursor:pointer" (click)="goToAdminDocs()">

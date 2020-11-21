@@ -47,8 +47,8 @@
         // ------------------------------------------------------   -->
         <ng-container class="test-site">
           <li *ngIf="project">
-            <a class="tool_tip" style="cursor: pointer;padding-top: 13px; padding-bottom: 9px;" (click)="testWidgetPage()">
-              <i class="material-icons navbar-test-site-btn" style="padding: 5px;">play_arrow</i>
+            <a attr.aria-label="{{ 'VisitorsPage.SimulateVisitor' | translate }}" href="javascript:;" role="button" class="tool_tip test-site-page-anchor" style="cursor: pointer;padding-top: 13px; padding-bottom: 9px;" (click)="testWidgetPage()">
+              <i aria-hidden="true" class="material-icons navbar-test-site-btn" style="padding: 5px;">play_arrow</i>
               <p class="hidden-lg hidden-md">testwidget</p>
               <div class="bottom"
                 style="text-align: center; padding: 4px; border-radius: 3px; text-transform: none;  min-width: fit-content; white-space: nowrap;">
@@ -127,8 +127,8 @@
             ------------ ================================= ------------ 
             -->
         <ng-container *ngIf="isVisible">
-          <li *ngIf="project && prjct_profile_type === 'free'">
-            <a class="upgrade-btn-trial-expired" (click)="goToPricing()"> {{ "Pricing.UpgradePlan" | translate }} </a>
+          <li  *ngIf="project && prjct_profile_type === 'free'">
+            <a href="javascript:;" role="button" class="upgrade-btn-trial-expired" (click)="goToPricing()"> {{ "Pricing.UpgradePlan" | translate }} </a>
           </li>
         </ng-container>
 
@@ -140,7 +140,7 @@
 
         <ng-container *ngIf="isVisible">
           <li *ngIf="project && prjct_profile_type === 'payment' && HOME_ROUTE_IS_ACTIVE === false">
-            <a>
+            <a href="javascript:;" role="button">
               <span class="project-plan-nav" style="text-transform:capitalize;padding-right: 8px;padding-left: 14px;">
                 {{ prjct_profile_name }}
               </span>
@@ -193,8 +193,8 @@
 
         <!-- ------------ ============ PROJECTS ============ ------------ -->
         <li *ngIf="project">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <i class="material-icons" style="margin-right: 3px;">keyboard_arrow_down</i>
+          <a  attr.aria-label="{{ 'ProjectSelected' | translate }} {{ project?.name }}"   role="button" href="#" class="dropdown-toggle project-dropdown-toggle" data-toggle="dropdown">
+            <i  aria-hidden="true" class="material-icons" style="margin-right: 3px;">keyboard_arrow_down</i>
             <span style="text-transform: none"> {{ project.name }} </span>
             <p class="hidden-lg hidden-md">Projects</p>
           </a>
@@ -204,23 +204,23 @@
             <!-- ------------ PROJECT SETTINGS ------------ -->
             <li *ngIf="ROLE_IS_AGENT === false">
               <a routerLink="/project/{{ project?._id }}/project-settings/general">
-                <i class="material-icons" style="padding-right: 5px; margin-bottom: 2px; font-size: 20px">settings</i>
+                <i aria-hidden="true" class="material-icons" style="padding-right: 5px; margin-bottom: 2px; font-size: 20px">settings</i>
                 {{ 'NavBar.ProjectSettings' | translate }}
               </a>
             </li>
 
             <!-- ------------ ALL PROJECTS ------------ -->
             <li (click)="goToProjects()">
-              <a style="cursor: pointer">
-                <i class="material-icons" style="padding-right: 5px; margin-bottom: 2px; font-size: 20px">view_list</i>
+              <a  href="javascript:;" role="button" style="cursor: pointer">
+                <i aria-hidden="true" class="material-icons" style="padding-right: 5px; margin-bottom: 2px; font-size: 20px">view_list</i>
                 {{ 'NavBar.ViewAllProjects' | translate }}
               </a>
             </li>
 
             <!-- ------------ ADD PROJECT ------------ -->
             <li id="navbar_create_prjct" *ngIf="MT === true" (click)="goToCreateProject()">
-              <a style="cursor: pointer">
-                <i class="material-icons"
+              <a href="javascript:;" role="button" style="cursor: pointer">
+                <i aria-hidden="true" class="material-icons"
                   style="padding-right: 5px; margin-bottom: 2px; font-size: 20px">add_circle_outline </i>
                 {{ 'AddProject' | translate }}
               </a>
@@ -244,7 +244,7 @@
             -->
             <!-- *ngFor="let prjct of projects?.slice().reverse() | slice:0:5; let i=index" -->
             <li *ngFor="let prjct of projects?.slice() | slice:0:5; let i=index" style="cursor: pointer">
-              <a (click)="goToHome(prjct?.id_project?._id, prjct?.id_project?.name,
+              <a href="javascript:;" role="button" (click)="goToHome(prjct?.id_project?._id, prjct?.id_project?.name,
               project?.id_project?.profile?.name, 
               project?.id_project?.trialExpired, 
               project?.id_project?.trialDaysLeft, 
@@ -265,7 +265,7 @@
 
               <!-- *ngFor="let prjct of projects?.slice().reverse() | slice:5:10; let i=index" -->
               <li *ngFor="let prjct of projects?.slice() | slice:5:10; let i=index" style="cursor: pointer">
-                <a (click)="goToHome(prjct?.id_project?._id, prjct?.id_project?.name)">
+                <a  href="javascript:;" role="button" (click)="goToHome(prjct?.id_project?._id, prjct?.id_project?.name)">
                   {{ prjct?.id_project?.name }}
                 </a>
               </li>
@@ -285,19 +285,20 @@
         // Sound on / off
         // --------------------------------------------------------------------- -->
         <li *ngIf="project">
-          <a style="cursor: pointer;" *ngIf="NOTIFICATION_SOUND === 'enabled'" (click)="soundOFF()">
-            <i class="material-icons">volume_up</i>
+          <a  href="javascript:;" role="button" attr.aria-label="{{ 'SoundEnabled' | translate }}"  href="javascript:;" role="button" style="cursor: pointer;" *ngIf="NOTIFICATION_SOUND === 'enabled'" (click)="soundOFF()">
+            <i aria-hidden="true" class="material-icons">volume_up</i>
             <p class="hidden-lg hidden-md">soundon</p>
           </a>
-          <a style="cursor: pointer;" *ngIf="NOTIFICATION_SOUND === 'disabled'" (click)="soundON()">
-            <i class="material-icons">volume_off</i>
+          <a  href="javascript:;" role="button" attr.aria-label="{{ 'SoundDisabled' | translate }}" style="cursor: pointer;" *ngIf="NOTIFICATION_SOUND === 'disabled'" (click)="soundON()">
+            <i aria-hidden="true" class="material-icons">volume_off</i>
             <p class="hidden-lg hidden-md">soundoff</p>
           </a>
         </li>
+        
         <!-- ------------ ============ NOTIFICATION ============ ------------ -->
-        <li *ngIf="project" class="dropdown">
-          <a routerLink="project/{{ project._id }}/wsrequests" class="dropdown-toggle" data-toggle="dropdown">
-            <i class="material-icons">notifications</i>
+        <li *ngIf="project">
+          <a attr.aria-label="{{ 'NumberOfRequestsAssignedToMe' | translate }} {{currentUserRequestCount}} {{ 'NumberOfUnservedRequests' | translate }} {{unservedRequestCount}}" href="javascript:;" role="button" routerLink="project/{{ project._id }}/wsrequests">
+            <i aria-hidden="true" class="material-icons">notifications</i>
 
             <!-- SHOW THE BADGE OVER NOTIFICATION IF THE COUNT OF UNSERVED OR TO ASSIGNED TO CURRENT USER REQUESTS IS > 0 -->
             <span *ngIf="unservedRequestCount > 0 || currentUserRequestCount > 0 ">
@@ -310,7 +311,7 @@
 
         <!-- ------------ ============ USER ============ ------------ -->
         <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+          <a href="#" class="dropdown-toggle user-dropdown-toggle" data-toggle="dropdown">
             <i class="material-icons">person</i>
             <span class="tooltipx">
               <span *ngIf="user?.emailverified == false" class="notification"

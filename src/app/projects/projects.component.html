@@ -134,7 +134,7 @@
 <!-- http://www.frontiere21.com/wp-content/uploads/2016/08/chat21-frontiere21-head-.png -->
 
 
-<div class="main-content" style="">
+<div class="main-content" tabindex="-1">
 
   <!--  TEST EMAIL VERIFY -->
   <!-- <div>
@@ -171,7 +171,7 @@
   <div class="container">
     <div class="row text-center" style="margin-bottom:90px ">
       <div class="col-md-12 text-center align-self-center my-5">
-        <h1 class="display-1 head-title">
+        <h1 class="display-1 head-title" tabindex="-1">
           <!-- {{ 'ProjectsPage.Welcome' | translate }} {{ 'to' | translate}} tiledesk.  -->
           {{ 'RecentProjects' | translate }}
         </h1>
@@ -196,25 +196,27 @@
       </div>
     </div> -->
 
-    <div class="projects-cards" style="position: relative;top: -57px;">
+    <div role="main" tabindex="0" attr.aria-label="{{ 'RecentProjects' | translate }}" class="projects-cards"
+      style="position: relative;top: -57px;">
+
       <div class="row">
         <div *ngIf="MT === true" class="col-lg-4 col-md-4 col-sm-6" style="cursor:pointer">
 
           <!-- CARD ADD PROJECT -->
           <!-- style="max-width: 256px;" -->
           <!-- openCreateModal()  -->
-          <div id="create-prjct-card" class="card custom-card-box-shadow" (click)='goToCreateProject()'
+          <button id="create-prjct-card" class="card custom-card-box-shadow" (click)='goToCreateProject()'
             style="border-radius:3px;">
             <div class="card-content" style="height:203px;">
               <!-- #55b9d1 -->
-              <h3 class="card-add-project-icon">
+              <h3 aria-hidden="true" class="card-add-project-icon">
                 <i class="material-icons" style="font-size:48px">add</i>
               </h3>
               <h4 class="card-add-project-text">
                 {{ 'ProjectsPage.AddProject' | translate }}
               </h4>
             </div>
-          </div>
+          </button>
 
         </div>
 
@@ -244,7 +246,7 @@
 
             <!-- CARDS FROM THE PROJECT 'FOR' -->
             <!-- style="max-width: 256px;" -->
-            <div class="card custom-card-box-shadow"
+            <button role="button" class="card custom-card-box-shadow"
               [ngClass]="{'project-deleted-card' : project?.id_project?.status === 0, 'delete-image-bckground':project?.id_project?.status === 0}"
               style="border-bottom-left-radius: 3px; border-bottom-right-radius: 3px;" (click)='goToHome(
                 project?.id_project?._id, 
@@ -257,18 +259,21 @@
               <!-- <div class="card-header card-header-custom-bkgrnd-project"> </div> -->
 
               <div class="card-content card-content-custom-height">
-                <h3 class="title" [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}"
+                <h3 attr.aria-label="{{ 'ProjectName' | translate }} {{project?.id_project?.name}}" class="title"
+                  [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}"
                   style="color: #566787; font-size:20px; margin-bottom: 0px;font-family: 'Google Sans',sans-serif!important">
                   {{ project?.id_project?.name }}
                 </h3>
 
-                <p class="category" [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}"
-                  style="font-size:14px !important; color:#7695a5">
+                <p aria-hidden="true" class="category"
+                  [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}"
+                  style="font-size:12px !important; color:#7695a5;">
                   {{ project?.id_project?._id }}
                 </p>
-                <h4 class="category" [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}"
+                <h4 attr.aria-label="{{ 'UserRole' | translate }} {{project?.role | translate}}" class="category"
+                  [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}"
                   style="font-size:16px; margin-top: 16px;font-family: 'Google Sans',sans-serif!important; color: #7695a5">
-                  {{ project?.role }}
+                  {{ project?.role | translate }}
                 </h4>
 
                 <div class="project-user-status" style="width: fit-content;"
@@ -278,10 +283,12 @@
                     [ngClass]="{'is-user-online' : project?.ws_projct_user_available === true, 'is-user-offline' : project?.ws_projct_user_available === false }">
                   </div>
 
-                  <span class="project-user-status-text" *ngIf="project?.ws_projct_user_available === true">
+                  <span attr.aria-label="{{ 'AvailabilityStatus' | translate }} {{ 'Available' | translate }}"
+                    class="project-user-status-text" *ngIf="project?.ws_projct_user_available === true">
                     {{ 'Available' | translate }}
                   </span>
-                  <span class="project-user-status-text" *ngIf="project?.ws_projct_user_available === false">
+                  <span attr.aria-label="{{ 'AvailabilityStatus' | translate }} {{ 'Available' | translate }}"
+                    class="project-user-status-text" *ngIf="project?.ws_projct_user_available === false">
                     {{ 'Unavailable' | translate }}
                   </span>
 
@@ -316,16 +323,19 @@
                 </div>
               </div> -->
               <div class="card-footer">
-                <div [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}" class="stats"
-                  style="color:#7695a5">
-                  <i class="material-icons">date_range</i> {{ project?.id_project?.createdAt | date: 'dd/MM/yyyy'}}
+                <div class="stats" style="color:#7695a5"
+                  attr.aria-label="{{ 'CreationDate' | translate }}  {{ project?.id_project?.createdAt | date: 'dd/MM/yyyy'}}"
+                  [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}">
+                  <i class="material-icons">date_range</i>
+                  {{ project?.id_project?.createdAt | date: 'dd/MM/yyyy'}}
 
                   <!-- <button type="button" rel="tooltip" title="Modifica Progetto" class="btn btn-primary btn-simple btn-xs" (click)='goToEditAddPage_EDIT(project?._id)'> -->
                   <!-- <i class="material-icons">edit</i> -->
                   <!-- </button> -->
                 </div>
               </div>
-            </div>
+
+            </button>
           </div>
         </span>
 

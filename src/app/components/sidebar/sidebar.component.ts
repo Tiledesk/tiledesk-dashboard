@@ -192,9 +192,11 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.sidebarLogoWhite_Url = brand['company_logo_white__url'];
         this.hidechangelogrocket = brand['sidebar__hide_changelog_rocket'];
 
+
     }
 
     ngOnInit() {
+      
         this.translateChangeAvailabilitySuccessMsg();
         this.translateChangeAvailabilityErrorMsg();
 
@@ -241,6 +243,75 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.getHasOpenBlogKey()
         this.getChatUrl();
         this.isMac();
+
+    }
+
+    ngAfterViewInit() { }
+
+    isMobileMenu() {
+        if ($(window).width() > 991) {
+            this.IS_MOBILE_MENU = false
+            // console.log('SIDEBAR - IS MOBILE MENU ', this.IS_MOBILE_MENU);
+            return false;
+        }
+        this.IS_MOBILE_MENU = true
+        // console.log('SIDEBAR - IS MOBILE MENU ', this.IS_MOBILE_MENU);
+        return true;
+
+    };
+
+    isMac(): boolean {
+        console.log('SIDEBAR NAVIGATOR ', navigator.platform)
+        let bool = false;
+        if (navigator.platform.toUpperCase().indexOf('MAC') >= 0 || navigator.platform.toUpperCase().indexOf('IPAD') >= 0) {
+            bool = true;
+        }
+        return bool;
+    }
+
+    onInitWindowWidth(): any {
+        const initInnerWidth = window.innerWidth;
+        console.log('SIDEBAR_IS_SMALL - INIT WIDTH ', initInnerWidth);
+        if (initInnerWidth >= 992 && initInnerWidth < 1200) {
+            if (this.WIDGET_ROUTE_IS_ACTIVE) {
+                // this.smallSidebar(true)
+            } else {
+                // this.smallSidebar(false)
+            }
+        } else {
+
+            if (this.SIDEBAR_IS_SMALL === true) {
+                // this.smallSidebar(false)
+            }
+        }
+    }
+
+    @HostListener('window:resize', ['$event'])
+    onResize(event: any) {
+        // console.log('SIDEBAR - WINDOW WIDTH ON RESIZE', event.target.innerWidth);
+        if (event.target.innerWidth > 991) {
+
+            this.IS_MOBILE_MENU = false
+
+        } else {
+            this.IS_MOBILE_MENU = true
+        }
+
+        if (event.target.innerWidth >= 992 &&  event.target.innerWidth < 1200) {
+
+            if (this.WIDGET_ROUTE_IS_ACTIVE) {
+                // this.smallSidebar(true)
+            } else {
+                // this.smallSidebar(false)
+            }
+            // widget/appearance
+        } else {
+
+            if ( this.SIDEBAR_IS_SMALL === true) {
+                // this.smallSidebar(false)
+            }
+        }
+
     }
 
     getChatUrl() {
@@ -457,9 +528,14 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 if (event.url.indexOf('/widget') !== -1) {
                     // console.log('SIDEBAR NavigationEnd - THE widget route IS ACTIVE  ', event.url);
                     this.WIDGET_ROUTE_IS_ACTIVE = true;
+                   
+                    this.onInitWindowWidth();
+
                 } else {
                     // console.log('SIDEBAR NavigationEnd - THE widget route IS NOT ACTIVE  ', event.url);
                     this.WIDGET_ROUTE_IS_ACTIVE = false;
+
+                    this.onInitWindowWidth();
                 }
 
                 if (event.url.indexOf('/analytics') !== -1) {
@@ -486,6 +562,11 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                     this.TRIGGER_ROUTE_IS_ACTIVE = false;
                 }
             });
+
+          
+
+
+
     }
 
 
@@ -668,8 +749,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 // NOTE_nk: comment this this.subsTo_WsCurrentUser(projectUser[0]._id)
                 this.subsTo_WsCurrentUser(projectUser[0]._id)
 
-
-
                 if (projectUser[0].user_available !== undefined) {
                     this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available, projectUser[0].isBusy)
                 }
@@ -683,8 +762,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
                     // SEND THE ROLE TO USER SERVICE THAT PUBLISH
                     this.usersService.user_role(projectUser[0].role);
-
-
 
                     // save the user role in storage - then the value is get by auth.service:
                     // the user with agent role can not access to the pages under the settings sub-menu
@@ -848,7 +925,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     getDeptsAndFilterDefaultDept() {
         this.deptService.getDeptsByProjectId().subscribe((departments: any) => {
             //   console.log('SIDEBAR - DEPTS (FILTERED FOR PROJECT ID)', departments);
-
             if (departments) {
                 departments.forEach(dept => {
                     if (dept.default === true) {
@@ -873,30 +949,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         return x % 5 < 3 ? (x % 5 === 0 ? x : Math.floor(x / 5) * 5) : Math.ceil(x / 5) * 5
     }
 
-    ngAfterViewInit() {
-        // const elemProgressBar = <HTMLElement>document.querySelector('.progress');
-        // const elemProgressBarDataset = elemProgressBar.dataset.percentage
-        // console.log('SIDEBAR project ELEMENT PROGRESS', elemProgressBar);
-        // console.log('SIDEBAR project ELEMENT PROGRESS elemProgressBarDataset', elemProgressBarDataset);
-        // elemProgressBarDataset = '80'
-
-
-        // this.checkForUnathorizedRoute();
-
-        //     this.SETTINGS_SUBMENU_WAS_OPEN = localStorage.getItem('show_settings_submenu')
-        //     console.log('LOCAL STORAGE VALUE OF KEY show_settings_submenu: ', localStorage.getItem('show_settings_submenu'))
-
-        //     if (this.SETTINGS_SUBMENU_WAS_OPEN === 'true') {
-        //         console.log(' XXXXX ', this.SETTINGS_SUBMENU_WAS_OPEN)
-        //         this.trasform = 'rotate(180deg)';
-
-        //     } else {
-        //         this.trasform = 'none';
-        //         console.log(' XXXXX ', this.SETTINGS_SUBMENU_WAS_OPEN)
-        //     }
-
-    }
-
     getLoggedUser() {
         this.auth.user_bs.subscribe((user) => {
             console.log('USER GET IN SIDEBAR ', user)
@@ -912,42 +964,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
 
 
-
-
-    isMobileMenu() {
-        if ($(window).width() > 991) {
-            this.IS_MOBILE_MENU = false
-
-            // console.log('SIDEBAR - IS MOBILE MENU ', this.IS_MOBILE_MENU);
-
-            return false;
-        }
-        this.IS_MOBILE_MENU = true
-
-        // console.log('SIDEBAR - IS MOBILE MENU ', this.IS_MOBILE_MENU);
-
-        return true;
-    };
-
-    isMac(): boolean {
-        console.log('SIDEBAR NAVIGATOR ', navigator.platform)
-        let bool = false;
-        if (navigator.platform.toUpperCase().indexOf('MAC') >= 0 || navigator.platform.toUpperCase().indexOf('IPAD') >= 0) {
-            bool = true;
-        }
-        return bool;
-    }
-
-    @HostListener('window:resize', ['$event'])
-    onResize(event: any) {
-        // console.log('SIDEBAR - WINDOW WIDTH ON RESIZE', event.target.innerWidth);
-        if (event.target.innerWidth > 991) {
-            this.IS_MOBILE_MENU = false
-
-        } else {
-            this.IS_MOBILE_MENU = true
-        }
-    }
 
     onScroll(event: any): void {
         // console.log('SIDEBAR RICHIAMO ON SCROLL ');
@@ -1145,11 +1161,17 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     smallSidebar(IS_SMALL) {
         this.SIDEBAR_IS_SMALL = IS_SMALL;
-        console.log('smallSidebar ', IS_SMALL)
+        console.log('SIDEBAR IS SMALL  ', IS_SMALL);
+        console.log('SIDEBAR IS SMALL - WIDGET_ROUTE_IS_ACTIVE  ',  this.WIDGET_ROUTE_IS_ACTIVE)
+        
 
         const elemSidebarWrapper = <HTMLElement>document.querySelector('.sidebar-wrapper');
         const elemSidebar = <HTMLElement>document.querySelector('.sidebar');
         const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
+        console.log('SIDEBAR IS SMALL - ELEM SIDEBAR WRAPPER: ', elemSidebarWrapper);
+        console.log('SIDEBAR IS SMALL - ELEM SIDEBAR: ', elemSidebar);
+        console.log('SIDEBAR IS SMALL - ELEM MAIN PANEL: ', elemMainPanel);
+
         // console.log('elemAppSidebar', elemAppSidebar)
 
         if (IS_SMALL === true) {
@@ -1157,38 +1179,42 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
             elemSidebar.setAttribute('style', 'width: 70px;');
             elemSidebarWrapper.setAttribute('style', 'width: 70px; background-color: #2d323e!important');
-            elemMainPanel.setAttribute('style', 'width:calc(100% - 70px);');
+            elemMainPanel.setAttribute('style', 'width:calc(100% - 74px); overflow-x: hidden !important;');
 
-            [].forEach.call(
-                document.querySelectorAll('.nav-container ul li a p'),
-                function (el) {
-                    console.log('footer > ul > li > a element: ', el);
-                    el.setAttribute('style', 'display: none');
-                }
-            );
 
-            [].forEach.call(
-                document.querySelectorAll('.nav-container ul li a'),
-                function (el) {
-                    console.log('footer > ul > li > a element: ', el);
-                    el.setAttribute('style', 'height: 40px');
-                }
-            );
+
+            // [].forEach.call(
+            //     document.querySelectorAll('.nav-container ul li a p'),
+            //     function (el) {
+            //         console.log('footer > ul > li > a element: ', el);
+            //         el.setAttribute('style', 'display: none');
+            //     }
+            // );
+
+            // [].forEach.call(
+            //     document.querySelectorAll('.nav-container ul li a'),
+            //     function (el) {
+            //         console.log('footer > ul > li > a element: ', el);
+            //         el.setAttribute('style', 'height: 40px');
+            //     }
+            // );
 
         } else {
+           
             elemSidebar.setAttribute('style', 'width: 260px;');
             elemSidebarWrapper.setAttribute('style', 'width: 260px;background-color: #2d323e!important');
-            elemMainPanel.setAttribute('style', 'width:calc(100% - 260px);');
+         
+            elemMainPanel.setAttribute('style', 'overflow-x: hidden !important;');
 
+            console.log('SIDEBAR IS SMALL - ELEM MAIN PANEL else: ', elemMainPanel);
 
-
-            [].forEach.call(
-                document.querySelectorAll('.nav-container ul li a p'),
-                function (el) {
-                    console.log('footer > ul > li > a element: ', el);
-                    el.setAttribute('style', 'display: block');
-                }
-            );
+            // [].forEach.call(
+            //     document.querySelectorAll('.nav-container ul li a p'),
+            //     function (el) {
+            //         console.log('footer > ul > li > a element: ', el);
+            //         el.setAttribute('style', 'display: block');
+            //     }
+            // );
         }
     }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { AuthService, SuperUser } from '../core/auth.service';
 
 import { ActivatedRoute } from '@angular/router';
@@ -26,7 +26,7 @@ import { BrandService } from '../services/brand.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent implements OnInit, OnDestroy {
+export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // company_name = brand.company_name;
   // tparams = brand;
@@ -125,6 +125,20 @@ export class HomeComponent implements OnInit, OnDestroy {
     // this.getVisitorCounter();
     this.getOSCODE();
     this.getChatUrl();
+
+
+  }
+
+  ngAfterViewInit() {
+    // this.setFocusOnHeadTitle();
+  }
+
+  setFocusOnHeadTitle() {
+    const H1elements = document.getElementsByTagName('h1')
+    console.log('HOME H1elements', H1elements);
+    for (var i = 0; i < H1elements.length; i++) {
+      console.log('HOME H1elements H1 ', H1elements[i]);
+    }
   }
 
   getChatUrl() {

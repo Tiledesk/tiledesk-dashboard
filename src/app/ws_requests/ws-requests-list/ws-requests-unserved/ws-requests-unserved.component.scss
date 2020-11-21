@@ -16,6 +16,11 @@
   margin-bottom: 0px;
 }
 
+
+.table > tbody > tr:focus {
+  background-color: #f5f5f5;
+}
+
 button {
   padding-top: 2px;
   padding-bottom: 1px;

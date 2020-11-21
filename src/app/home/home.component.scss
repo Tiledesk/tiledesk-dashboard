@@ -217,8 +217,12 @@
 .project-name {
   display: flex;
   flex-direction: row;
-  min-width: 0;
   min-width: 100px;
+  font-size: 23px;
+  float: left;
+  font-weight: 400;
+  font-family: 'Google Sans', sans-serif !important;
+  margin-top:0px
 }
 
 .project-plan {
@@ -386,6 +390,14 @@
   outline: 0;
   position: relative;
   text-align: left;
+}
+
+.homeBanner__item:focus {
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.3);
+}
+
+.homeBanner__item:hover {
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.3);
 }
 
 .homeBanner__item-round:before {

@@ -84,6 +84,7 @@
     "Department": "Department",
     "SelectADepartment": "Select a department",
     "DepartmentId": "Department id",
+    "ProjectName": "Project name",
     "ProjectId": "Project id",
     "Message": "Message",
     "ServedBy": "Served by",
@@ -117,6 +118,7 @@
     "HiWelcomeToTiledesk": "Hi, welcome to {{company_name}}",
     "HowCanWeHelp": "How can we help?",
     "PreviousConversations": "Previous conversations",
+    "YourConversations": "Your conversations",
     "NewConversation": "New conversation",
     "WidgetAppearance": "Widget Appearance",
     "OnlineMessage": "Online message",
@@ -225,6 +227,7 @@
     "HisStatus": "his status",
     "Status": "Status",
     "TheAvailabilityStatusOf": "the availability status of",
+    "AvailabilityStatus": "availability status",
     "TheRoleOf": "the role of",
     "Into": "into",
     "HasRemoved": "has removed",
@@ -406,7 +409,7 @@
     "Delete": "Delete",
     "NoUnservedRequests": "No Unserved conversations",
     "NoServedRequests": "No Served conversations",
-    "NoRequests": "No Conversation",
+    "NoRequests": "No conversation",
     "MultiLanguagePreview": "Change preview language",
     "RequiredField": "Required field",
     "Text": "Text",
@@ -472,6 +475,7 @@
     "Save": "Save",
     "Update": "Update",
     "Warning":"Attention!",
+    "CreationDate": "Creation date",
     "CannedResponses": {
         "QuickTips": {
             "1": "Canned responses are pre-made messages you can recall easily during chat.",
@@ -1568,5 +1572,25 @@
     "ResetFilters": "Reset filters",
     "AppliedFilters": "Applied Filters",
     "Ticket": "Internal request",
-    "EnableDisable":"Enable / disable"
+    "EnableDisable":"Enable / disable",
+    "SoundEnabled": "Sound enabled",
+    "SoundDisabled":"Sound disabled",
+    "NumberOfRequestsAssignedToMe":"Number of conversation assigned to me",
+    "NumberOfUnservedRequests":"Number of unserved conversation",
+    "User":"User",
+    "ProjectSelected": "Project selected",
+    "GoToNotRealTimeRequests": "go to the non-real-time conversations page",
+    "FilterBy": "Filter By",
+    "ConversationStatus":"Conversation status",
+    "IntroGreetings": "Intro greetings",
+    "ReplyTimeMsg": "Reply time",
+    "SayHowSoonYourTeamUsuallyReplies":"Say how soon your team usually replies",
+    "IsDisplayedWhenAverageTeamResponseTimeIsNotAvailable":"This message will appear when the team's average response time is unavailable in the last 4 hours",
+    "DynamicallySharingAverageResponseTime":"Dynamically, sharing the team's average response time",
+    "YourContactsSeeThisMessageIfARTIsNotAvailable":"Your contacts see this message if the team's average response time isn't available",
+    "ConfigureWidget":"Configure widget",
+    "WidgetAppearanceAndDefaultLanguage":"Widget appearance and default language",
+    "AlwaysWithTheFollowingMessage":"Always with the following message"
+
+    
 }
