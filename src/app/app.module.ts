@@ -195,7 +195,7 @@ import { DeptsComponent } from './depts/depts.component';
 import { DocsUrlRowComponent } from './components/docs-url-row/docs-url-row.component';
 import { VisitorsComponent } from './visitors/visitors.component';
 import { EventsComponent } from './events/events.component';
-import { WidgetHomeComponent } from './widget-home-preview/widget-home.component';
+// import { WidgetHomeComponent } from './widget-home-preview/widget-home.component';
 
 
 console.log('************** APPMODULE ******************');
@@ -337,7 +337,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     DocsUrlRowComponent,
     VisitorsComponent,
     EventsComponent,
-    WidgetHomeComponent,
+    // WidgetHomeComponent,
 
   ],
   imports: [
