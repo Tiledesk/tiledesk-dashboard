@@ -94,7 +94,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   SUBSCRIPTION_BUFFER_DAYS: boolean;
 
   isVisiblePaymentTab: boolean;
-  isVisibleAdvancedTab: boolean
+  isVisibleAdvancedTab: boolean;
+  isVisibleDeveloperTab: boolean;
   max_agent_served_chat: number
   reassignment_delay: number
   automatic_idle_chats: number
@@ -281,6 +282,17 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         }
       }
 
+      if(key.includes("DEV")) {
+        console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
+        let dev = key.split(":");
+        console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - dev key&value', dev);
+        if (dev[1] === "F") {
+          this.isVisibleDeveloperTab = false;
+        } else {
+          this.isVisibleDeveloperTab = true;
+        }
+      }
+
     });
 
     if (!this.public_Key.includes("PAY")) {
@@ -291,6 +303,11 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     if (!this.public_Key.includes("PSA")) {
       console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("PSA")', this.public_Key.includes("PSA"));
       this.isVisibleAdvancedTab = false;
+    }
+
+    if (!this.public_Key.includes("DEV")) { 
+      console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("DEV")', this.public_Key.includes("DEV"));
+      this.isVisibleDeveloperTab = false;
     }
 
   }
