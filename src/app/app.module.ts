@@ -201,6 +201,7 @@ import { WebhookComponent } from './webhook/webhook.component';
 import { WebhookAddEditComponent } from './webhook/webhook-add-edit/webhook-add-edit.component';
 import { WebhookService } from './services/webhook.service';
 import { VisitorsComponent } from './analytics2/visitors/visitors.component';
+import { MessagesComponent } from './analytics2/messages/messages.component';
 
 console.log('************** APPMODULE ******************');
 // AoT requires an exported function for factories
@@ -342,7 +343,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     WebhookComponent,
     WebhookAddEditComponent,
     MapRequestComponent,
-    VisitorsComponent
+    VisitorsComponent,
+    MessagesComponent
   ],
   imports: [
     /* PRIVATE */

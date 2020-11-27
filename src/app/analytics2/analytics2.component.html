@@ -3,7 +3,7 @@
 </p>
 
 <ul class="bottom-nav-analytics">
-        <li class="btn-with-border-effect "  [ngClass]="{'li-active' : selected === 'panoramica', 'border-from-center': selected !== 'panoramica'}" (click)="goTo('panoramica')" >
+        <li class="btn-with-border-effect " [ngClass]="{'li-active' : selected === 'panoramica', 'border-from-center': selected !== 'panoramica'}" (click)="goTo('panoramica')" >
             <a>{{ 'Analytics.PanoramicaComponentTitle' | translate }}</a>
         </li>
         <li class="btn-with-border-effect " [ngClass]="{'li-active' : selected === 'metriche', 'border-from-center': selected !== 'metriche'}" (click)="goTo('metriche')">
@@ -14,6 +14,9 @@
         </li>
         <li class="btn-with-border-effect " [ngClass]="{'li-active' : selected === 'visitors', 'border-from-center': selected !== 'visitors'}" (click)="goTo('visitors')">
             <a>{{ 'Analytics.VisitorsComponentTitle' | translate }}</a>
+        </li>
+        <li class="bnt-with-border-effect " [ngClass]="{'li-active' : selected === 'messages', 'border-from-center': selected !== 'visitors'}" (click)="goTo('messages')">
+            <a>{{ 'Analytics.MessagesComponentTitle' | translate }}</a>
         </li>
 </ul>
 
@@ -28,6 +31,7 @@
     <appdashboard-metriche *ngIf="selected=='metriche'"></appdashboard-metriche>
     <appdashboard-realtime *ngIf="selected=='realtime'"></appdashboard-realtime>
     <appdashboard-visitors *ngIf="selected=='visitors'"></appdashboard-visitors>
+    <appdashboard-messages *ngIf="selected=='messages'"></appdashboard-messages>
       <!-- ============------- COUNT OF TOTAL ACTIVE, SERVED & UNSERVED REQUESTS ------============ -->
       <!-- == (NOTE THE COUNT IS COMPUTED ONLY ON THE REQUEST IN WICH THERE IS THE CURRENT USER) == -->
       <!-- <div class="row" style="text-align: center">
