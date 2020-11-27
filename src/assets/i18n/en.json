@@ -1344,7 +1344,9 @@
                         "VisitorInformation": "Visitor information"
                     },
                     "label_key": {
-                        "EventName": "Event name"
+                        "EventName": "Event name",
+                        "EventCode": "Event code",
+                        "EventSourcePage": "Source page"
                     },
                     "placeholder": {
                         "SelectDepartment": "Select department",
@@ -1521,7 +1523,17 @@
         "UpgradeYourAccounttoTrackTheChatsYouHaveWithCustomers": " Upgrade your account to track the chats you have with customers",
         "DailyMedianResponseTime": "Daily Median Response Time",
         "DailyConvDurationTime": "Daily Median Conversation Length",
-        "VisitorsComponentTitle": "Visitors"
+        "VisitorsComponentTitle": "Visitors",
+        "Visitors" : {
+            "NumberOfVisitors": "Number of visitors",
+            "VisitorsChartTitle": "Number of visitors last "
+        },
+        "MessagesComponentTitle": "Messages",
+        "Messages": {
+            "MessagesChartTitle": "Number of messages last",
+            "NumberOfMessages": "Number of messages"
+        }
+
     },
     "DeleteRequestForever": {
         "TheRequestWillBePermanentlyDeleted": "the conversation will be permanently deleted",
@@ -1543,6 +1555,7 @@
     "TheContactWasSuccessfullyDeleted": "the contact was successfully deleted",
     "YouCannotDeleteThisContact":"You cannot delete this contact because there are conversations associated with it",
     "MoveTheContactToTheTrash": "Move the contact {{ contactname }} to the trash?",
+    "MoveTheContactToTheTrashNoName": "Move the contact to the trash?",
     "TheContactHasBeenMovedToTheTrash":"The contact has been moved to the trash",
     "TheRequestHasBeenMovedToHistory":"the conversation has been moved to history",
     "AnErrorHasOccurredArchivingTheRequest":"An error has occurred archiving the conversation",
