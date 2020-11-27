@@ -701,15 +701,42 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           // User Agent
           // -------------------------------------------------------------------
           const user_agent_result = this.parseUserAgent(this.request.userAgent);
-          const ua_browser = user_agent_result.browser.name + ' ' + user_agent_result.browser.version
+
+          // Possible same issue than operating system
+          //const ua_browser = user_agent_result.browser.name + ' ' + user_agent_result.browser.version
           // console.log(''% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsRequestById$ - USER-AGENT BROWSER ', ua_browser)
-          this.request['ua_browser'] = ua_browser;
+          //this.request['ua_browser'] = ua_browser;
+          if (user_agent_result.browser.name) {
+            if (user_agent_result.browser.version) {
+              const ua_browser = user_agent_result.browser.name + ' ' + user_agent_result.browser.version
+              this.request['ua_browser'] = ua_browser;
+            } else {
+              const ua_browser = user_agent_result.browser.name;
+              this.request['ua_browser'] = ua_browser;
+            }
+          } else {
+            const ua_browser = "N/A";
+            this.request['ua_browser'] = ua_browser;
+          }
 
-          const ua_os = user_agent_result.os.name + ' ' + user_agent_result.os.version
+          // 'Ubuntu undefined' issue on operating system field. Check if os.version is undefined
+          //const ua_os = user_agent_result.os.name + ' ' + user_agent_result.os.version
           // console.log(''% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsRequestById$ - USER-AGENT OPERATING SYSTEM ', ua_os)
-          this.request['ua_os'] = ua_os;
+          //this.request['ua_os'] = ua_os; 
+          if (user_agent_result.os.name) {
+            if (user_agent_result.os.version) {
+              const ua_os = user_agent_result.os.name + ' ' + user_agent_result.os.version;
+              this.request['ua_os'] = ua_os;
+            } else {
+              const ua_os = user_agent_result.os.name;
+              this.request['ua_os'] = ua_os;
+            }
+          } else {
+            const ua_os = "N/A"
+            this.request['ua_os'] = ua_os
+          }
 
-
+          
           // -------------------------------------------------------------------
           // Members array
           // -------------------------------------------------------------------

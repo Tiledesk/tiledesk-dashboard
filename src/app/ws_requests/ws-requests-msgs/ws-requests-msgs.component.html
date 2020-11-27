@@ -1250,8 +1250,9 @@
                           Browser</span>
 
                         <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
-                          <span *ngIf="request?.ua_browser !== 'undefined undefined'"> {{ request?.ua_browser }} </span>
-                          <span *ngIf="request?.ua_browser === 'undefined undefined'"> N/A </span>
+                          <!-- <span *ngIf="request?.ua_browser !== 'undefined undefined'"> {{ request?.ua_browser }} </span> -->
+                          <!-- <span *ngIf="request?.ua_browser === 'undefined undefined'"> N/A </span> -->
+                          <span>{{ request?.ua_browser }}</span>
                         </span>
                       </span>
                     </p>
@@ -1319,10 +1320,14 @@
                           {{ 'OperatingSystem' | translate }}
                         </span>
 
+
+                        <!-- 'Ubuntu undefined' problem in operating system -->
                         <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
-                          <span *ngIf="request?.ua_os !== 'undefined undefined'"> {{ request?.ua_os }} </span>
-                          <span *ngIf="request?.ua_os === 'undefined undefined'"> N/A </span>
+                          <!-- <span *ngIf="request?.ua_os !== 'undefined undefined'"> {{ request?.ua_os }} </span> -->
+                          <!-- <span *ngIf="request?.ua_os === 'undefined undefined'"> N/A </span> -->
+                          <span>{{ request?.ua_os }}</span>
                         </span>
+
                       </span>
                     </p>
                   </div>
