@@ -14,6 +14,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ProjectPlanService } from '../services/project-plan.service';
 import { Subscription } from 'rxjs';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { text } from '@angular/core/src/render3/instructions';
 declare const $: any;
 const swal = require('sweetalert');
 
@@ -645,10 +646,16 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     // this.id_toDelete = id;
     // this.fullName_toDelete = fullName;
 
-    this.translate.get('MoveTheContactToTheTrash', { contactname: fullName }).subscribe((text: string) => {
-
-      this.moveContactToTrash_msg = text
-    })
+    if (fullName) {
+      this.translate.get('MoveTheContactToTheTrash', { contactname: fullName }).subscribe((text: string) => {
+        this.moveContactToTrash_msg = text
+      })
+    } else {
+      this.translate.get('MoveTheContactToTheTrashNoName').subscribe((text: string) => {
+        this.moveContactToTrash_msg = text
+      })
+    }
+    
     console.log('!!!!! CONTACTS - moveContactToTrash ', this.moveContactToTrash_msg);
 
     swal({
