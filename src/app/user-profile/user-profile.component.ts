@@ -340,4 +340,13 @@ export class UserProfileComponent implements OnInit {
       this.router.navigate(['project/' + this.projectId + '/user/' + this.userId + '/settings']);
     }
   }
+
+  goToNotificationSettings() {
+    console.log('»» GO TO USER  NOTIFICATION SETTINGS - PROJECT ID ', this.projectId)
+    if (this.project === undefined) {
+      this.router.navigate(['user/' + this.userId + '/notifications']);
+    } else {
+      this.router.navigate(['project/' + this.projectId + '/user/' + this.userId + '/notifications']);
+    }
+  }
 }

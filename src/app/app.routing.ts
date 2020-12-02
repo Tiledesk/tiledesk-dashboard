@@ -123,6 +123,7 @@ import { AppStoreComponent } from './app-store/app-store.component';
 import { AppStoreInstallComponent } from './app-store/app-store-install/app-store-install.component';
 
 import { WebhookComponent } from './webhook/webhook.component';
+import { NotificationSettingsComponent } from './user-profile/notification-settings/notification-settings.component';
 
 
 
@@ -344,7 +345,10 @@ const routes: Routes = [
   // Account settings if project is undefined (use case: THE USER HAS NOT YET SELECTED A PROJECT)
   { path: 'user/:userid/settings', component: AccountSettingsComponent, canActivate: [AuthGuard] },
 
-
+  // Notification settings if project is defined (use cae: THE USER SELECTED A PROJECT)
+  { path: 'project/:projectid/user/:userid/notifications', component: NotificationSettingsComponent, canActivate: [AuthGuard] },
+  // Account settings if project is undefined (use case: THE USER HAS NOT YET SELECTED A PROJECT)
+  { path: 'user/:userid/notifications', component: NotificationSettingsComponent, canActivate: [AuthGuard] },
 
   // HOURS
   { path: 'project/:projectid/hours', component: HoursComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
