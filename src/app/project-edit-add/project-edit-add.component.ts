@@ -42,6 +42,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   PROJECT_SETTINGS_PAYMENTS_ROUTE: boolean;
   PROJECT_SETTINGS_AUTH_ROUTE: boolean;
   PROJECT_SETTINGS_ADVANCED_ROUTE: boolean;
+  PROJECT_SETTINGS_NOTIFICATION_ROUTE: boolean;
 
   showSpinner = true;
 
@@ -96,6 +97,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   isVisiblePaymentTab: boolean;
   isVisibleAdvancedTab: boolean;
   isVisibleDeveloperTab: boolean;
+  isVisibleNotificationTab: boolean;
   max_agent_served_chat: number
   reassignment_delay: number
   automatic_idle_chats: number
@@ -293,6 +295,17 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         }
       }
 
+      if(key.includes("NOT")) {
+        console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
+        let not = key.split(":");
+        console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - not key&value', not);
+        if(not[1] === "F") {
+          this.isVisibleNotificationTab = false;
+        } else {
+          this.isVisibleNotificationTab = true;
+        }
+      }
+
     });
 
     if (!this.public_Key.includes("PAY")) {
@@ -310,6 +323,11 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.isVisibleDeveloperTab = false;
     }
 
+    if(!this.public_Key.includes("NOT")) {
+      console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("NOT")', this.public_Key.includes("NOT"));
+      this.isVisibleNotificationTab = false;
+    }
+
   }
 
   getCurrentUrlAndSwitchView() {
@@ -321,6 +339,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     console.log('%ProjectEditAddComponent PROJECT_SETTINGS_PAYMENTS_ROUTE ', currentUrl.indexOf('/project-settings/payments'));
     console.log('%ProjectEditAddComponent PROJECT_SETTINGS_AUTH_ROUTE ', currentUrl.indexOf('/project-settings/auth'));
     console.log('%ProjectEditAddComponent PROJECT_SETTINGS_AUTH_ROUTE ', currentUrl.indexOf('/project-settings/advanced'));
+    console.log('%ProjectEditAddComponent PROJECT_SETTINGS_NOTIFICATION ', currentUrl.indexOf('/project-settings/notification'));
 
     const url_segments = currentUrl.split('/');
     console.log('%ProjectEditAddComponent url_segments ', url_segments);
@@ -350,7 +369,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       (currentUrl.indexOf('/project-settings/general') !== -1) &&
       (currentUrl.indexOf('/project-settings/payments') === -1) &&
       (currentUrl.indexOf('/project-settings/auth') === -1) &&
-      (currentUrl.indexOf('/project-settings/advanced') === -1)
+      (currentUrl.indexOf('/project-settings/advanced') === -1) &&
+      (currentUrl.indexOf('/project-settings/notification') === -1)
     ) {
       console.log('%ProjectEditAddComponent router.url', this.router.url);
 
@@ -358,23 +378,27 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.PROJECT_SETTINGS_PAYMENTS_ROUTE = false;
       this.PROJECT_SETTINGS_AUTH_ROUTE = false;
       this.PROJECT_SETTINGS_ADVANCED_ROUTE = false;
+      this.PROJECT_SETTINGS_NOTIFICATION_ROUTE = false;
       console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_ROUTE ', this.PROJECT_SETTINGS_ROUTE);
       console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_PAYMENTS_ROUTE ', this.PROJECT_SETTINGS_PAYMENTS_ROUTE);
       console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_AUTH_ROUTE ', this.PROJECT_SETTINGS_AUTH_ROUTE);
       console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_ADVANCED_ROUTE ', this.PROJECT_SETTINGS_ADVANCED_ROUTE);
+      console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_NOTIFICATION ', this.PROJECT_SETTINGS_NOTIFICATION_ROUTE);
 
       /** THE ACTIVE ROUTE IS /project-settings/payments */
     } else if (
       (currentUrl.indexOf('/project-settings/general') === -1) &&
       (currentUrl.indexOf('/project-settings/payments') !== -1) &&
       (currentUrl.indexOf('/project-settings/auth') === -1) &&
-      (currentUrl.indexOf('/project-settings/advanced') === -1)
+      (currentUrl.indexOf('/project-settings/advanced') === -1) &&
+      (currentUrl.indexOf('/project-settings/notification') === -1)
 
     ) {
       this.PROJECT_SETTINGS_ROUTE = false;
       this.PROJECT_SETTINGS_PAYMENTS_ROUTE = true;
       this.PROJECT_SETTINGS_AUTH_ROUTE = false;
       this.PROJECT_SETTINGS_ADVANCED_ROUTE = false;
+      this.PROJECT_SETTINGS_NOTIFICATION_ROUTE = false;
 
       // console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_ROUTE ', this.PROJECT_SETTINGS_ROUTE);
       // console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_PAYMENTS_ROUTE ', this.PROJECT_SETTINGS_PAYMENTS_ROUTE);
@@ -386,12 +410,14 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       (currentUrl.indexOf('/project-settings/general') === -1) &&
       (currentUrl.indexOf('/project-settings/payments') === -1) &&
       (currentUrl.indexOf('/project-settings/auth') !== -1) &&
-      (currentUrl.indexOf('/project-settings/advanced') === -1)
+      (currentUrl.indexOf('/project-settings/advanced') === -1) &&
+      (currentUrl.indexOf('/project-settings/notification') === -1)
     ) {
       this.PROJECT_SETTINGS_ROUTE = false;
       this.PROJECT_SETTINGS_PAYMENTS_ROUTE = false;
       this.PROJECT_SETTINGS_AUTH_ROUTE = true;
       this.PROJECT_SETTINGS_ADVANCED_ROUTE = false;
+      this.PROJECT_SETTINGS_NOTIFICATION_ROUTE = false;
       // console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_ROUTE ', this.PROJECT_SETTINGS_ROUTE);
       // console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_PAYMENTS_ROUTE ', this.PROJECT_SETTINGS_PAYMENTS_ROUTE);
       // console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_AUTH_ROUTE ', this.PROJECT_SETTINGS_AUTH_ROUTE);
@@ -402,16 +428,32 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       (currentUrl.indexOf('/project-settings/general') === -1) &&
       (currentUrl.indexOf('/project-settings/payments') === -1) &&
       (currentUrl.indexOf('/project-settings/auth') === -1) &&
-      (currentUrl.indexOf('/project-settings/advanced') !== -1)
+      (currentUrl.indexOf('/project-settings/advanced') !== -1) &&
+      (currentUrl.indexOf('/project-settings/notification') === -1)
     ) {
       this.PROJECT_SETTINGS_ROUTE = false;
       this.PROJECT_SETTINGS_PAYMENTS_ROUTE = false;
       this.PROJECT_SETTINGS_AUTH_ROUTE = false;
       this.PROJECT_SETTINGS_ADVANCED_ROUTE = true;
+      this.PROJECT_SETTINGS_NOTIFICATION_ROUTE = false;
       // console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_ROUTE ', this.PROJECT_SETTINGS_ROUTE);
       // console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_PAYMENTS_ROUTE ', this.PROJECT_SETTINGS_PAYMENTS_ROUTE);
       // console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_AUTH_ROUTE ', this.PROJECT_SETTINGS_AUTH_ROUTE);
       // console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_ADVANCED_ROUTE ', this.PROJECT_SETTINGS_ADVANCED_ROUTE);
+    } 
+
+    else if(
+      (currentUrl.indexOf('/project-settings/general') === -1) &&
+      (currentUrl.indexOf('/project-settings/payments') === -1) &&
+      (currentUrl.indexOf('/project-settings/auth') === -1) &&
+      (currentUrl.indexOf('/project-settings/advanced') === -1) &&
+      (currentUrl.indexOf('/project-settings/notification') !== -1)
+    ) {
+      this.PROJECT_SETTINGS_ROUTE = false;
+      this.PROJECT_SETTINGS_PAYMENTS_ROUTE = false;
+      this.PROJECT_SETTINGS_AUTH_ROUTE = false;
+      this.PROJECT_SETTINGS_ADVANCED_ROUTE = false;
+      this.PROJECT_SETTINGS_NOTIFICATION_ROUTE = true;
     }
 
   }
@@ -435,6 +477,11 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   goToProjectSettings_Advanced() {
     console.log('%ProjectEditAddComponent HAS CLICKED goToProjectSettings_Advanced');
     this.router.navigate(['project/' + this.id_project + '/project-settings/advanced']);
+  }
+
+  goToProjectSettings_Notification() {
+    console.log('%ProjectEditAddComponent HAS CLICKED goToProjectSettings_Notification');
+    this.router.navigate(['project/' + this.id_project + '/project-settings/notification'])
   }
 
   // "SubscriptionSuccessfullyCanceled":"Abbonamento annullato correttamente",

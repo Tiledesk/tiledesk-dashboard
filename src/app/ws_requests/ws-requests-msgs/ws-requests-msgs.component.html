@@ -1,22 +1,20 @@
-<div *ngIf="CHAT_PANEL_MODE === false" class="navbar-brand" id="request-details-title"
+<div *ngIf="CHAT_PANEL_MODE === false" class="navbar-brand"
   style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px">
   <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
     (click)="goBack()">keyboard_arrow_left</i>
-  <!-- <a class="request-details-title" href="javascript:;" role="button"> -->
+  <!-- Request  -->
   {{ "RequestMsgsPage.RequestDetails" | translate }}
-  <!-- </a> -->
   <!-- <code style="color:#3f87a6; border: 1px solid #cee9f9; font-size:0.8em"> {{cut_support_group_from_request_id(id_request)}} </code> -->
 </div>
-<!-- tabindex="0" role="main"  -->
+
 <div class="main-content" style="padding-top:0px"
   [ngClass]="{'main-content-chat-panel-mode' : CHAT_PANEL_MODE === true, 'main-content-normal-mode': CHAT_PANEL_MODE === false}">
- 
   <div class="container-fluid" [ngClass]="{'container-fluid-no-padding' : CHAT_PANEL_MODE === true}">
 
     <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner>
     *ngIf="!showSpinner" -->
 
-    
+    <div>
       <div class="row">
         <div class="col-sm-7 chat-col"
           [ngClass]="{'hidden-if-chat-panel-mode' : CHAT_PANEL_MODE === true, 'chat-col-normal-mode': CHAT_PANEL_MODE === false }">
@@ -79,15 +77,15 @@
 
                       <!-- <span style="color:#394f5a;"> {{ "RequestMsgsPage.RequesterName" | translate }}: </span>  -->
                       <div class="contact_info">
-                        <h1 tabindex="-1" [ngClass]="{'requester-verified' : REQUESTER_IS_VERIFIED === true}"
+                        <span [ngClass]="{'requester-verified' : REQUESTER_IS_VERIFIED === true}"
                           style="margin-top: 20px; display: block; font-size: 18px;white-space: nowrap;">
                           <!-- {{ requester_fullname }} -->
                           {{request?.lead?.fullname}}
-                        </h1>
-                        <h1 tabindex="-1" *ngIf="!request?.lead?.fullname"
-                          [ngClass]="{'requester-verified' : REQUESTER_IS_VERIFIED === true}" style="margin-left: 2px;font-size: 18px;">
+                        </span>
+                        <span *ngIf="!request?.lead?.fullname"
+                          [ngClass]="{'requester-verified' : REQUESTER_IS_VERIFIED === true}" style="margin-left: 2px;">
                           n.a.
-                        </h1>
+                        </span>
 
                         <!-- <span style="position: relative; top: -4px;"
                           [ngClass]="{'requester-verified' : REQUESTER_IS_VERIFIED === true}">
@@ -219,7 +217,7 @@
               <div class="rect5"></div>
             </div>
 
-            <div  #scrollMe class="card-content" id="dshbrd-chat"
+            <div #scrollMe class="card-content"
               style="height: 500px; overflow-y: auto; padding: 0px; padding-left:25px; padding-right:25px "
               (scroll)="onScroll($event)">
 
@@ -227,7 +225,7 @@
               <div *ngIf="!showSpinner" class="chat-body" style="vertical-align:baseline;">
 
                 <!-- style="padding-bottom: 3px;" class="answer left" -->
-                <div role="main" tabindex="0" attr.aria-label="{{ request?.lead?.fullname }}"  *ngFor="let message of messagesList">
+                <div *ngFor="let message of messagesList">
 
                   <div class="parent">
                     <div [ngClass]="{'child' : requester_id !== message.sender}">
@@ -241,9 +239,9 @@
                             <div class="requester-avatar-wrapper"
                               style="display: block;border-radius: 50%; height: 100%; margin-top: 35px;"
                               [ngStyle]="{'background-color': fillColour }">
-
+                           
                               <span class="_requester-avatar-inchat">
-
+                             
                                 {{ requester_fullname_initial }}
                               </span>
                             </div>
@@ -448,9 +446,9 @@
               <div class="rect4"></div>
               <div class="rect5"></div>
             </div>
-
+    
             <div *ngIf="showSpinner && isMobile && CHAT_PANEL_MODE === true" class="spinner-for-mobile">
-              <div class="sk-fading-circle">
+              <div  class="sk-fading-circle" >
                 <div class="sk-circle1 sk-circle"></div>
                 <div class="sk-circle2 sk-circle"></div>
                 <div class="sk-circle3 sk-circle"></div>
@@ -844,9 +842,9 @@
                             style="padding-left: 15px; padding-right: 15px;">
                             <i class="material-icons" style="padding-right: 5px;">archive</i>
                             <span style="position: relative; top: 1px; cursor:pointer">
-                              <!-- {{ 'RequestMsgsPage.CloseTheRequest' | translate }} THIS WAS ALREADY COMMENTED -->
-
-
+                              <!-- {{ 'RequestMsgsPage.CloseTheRequest' | translate }} THIS WAS ALREADY COMMENTED --> 
+                              
+                             
                               <!-- {{ 'RequestMsgsPage.Close' | translate }} -->
 
                               {{ 'VisitorsPage.Archive' | translate }}
@@ -1336,26 +1334,6 @@
                 </div>
 
                 <!-- 
-                // -------------------------------------------------------
-                // NEW - EVENTS
-                // ------------------------------------------------------- -->
-                <!-- <div class="row" style="margin-top:5px; cursor: pointer;" (click)='goToEvents()' >
-                  <div class="col-sm-12">
-                    <p style="color: crimson;">
-                      <i class="material-icons"
-                        style="vertical-align: middle; color: crimson;font-size:16px">perm_contact_calendar</i>
-                      <span style="position: relative;top: 1px;">
-                        <span
-                          style="font-size: 12px; color: crimson; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
-                         EVENTS TEST
-                        </span>
-           
-                      </span>
-                    </p>
-                  </div>
-                </div> -->
-
-                <!-- 
               // ------------------------------------------------------------------
               // Go to request details - dispalyed only if CHAT_PANEL_MODE === true
               // ------------------------------------------------------------------ -->
@@ -1375,7 +1353,7 @@
                     </p>
                   </div>
                 </div> -->
-
+      
 
                 <!-- 
                 // -----------------------------------------------------------------------------
@@ -1862,9 +1840,9 @@
               // ------------------------------------------------------ -->
                 <!-- <div class="card right-card" style="padding-top:5px; padding-bottom:5px; margin-top: 5px;margin-bottom: 5px;">
             <div class="card-content" style="padding-top: 5px;padding-bottom: 5px;"> -->
-                <div class="row">
+                <div class="row" style="">
                   <div class="col-sm-12" style="border-bottom: 1px solid #dadde1;">
-                    <p class="row-header">
+                    <p class="row-header" style="">
                       <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
                       <span style="vertical-align: middle">
                         {{ "RequestMsgsPage.Rating" | translate }}
@@ -1927,8 +1905,6 @@
 
                 <!-- <div class="card right-card" style="padding-top:5px; padding-bottom:5px; margin-top: 5px;margin-bottom: 5px;">
             <div class="card-content" style="padding-top: 5px;padding-bottom: 5px;"> -->
-
-
 
                 <!-- 
               // ----------------------------------------------------------------
@@ -2020,7 +1996,7 @@
           </div> -->
         </div>
       </div>
-    
+    </div>
 
   </div>
 </div>

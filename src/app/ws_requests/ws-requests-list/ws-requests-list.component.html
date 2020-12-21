@@ -47,7 +47,7 @@
     <a attr.aria-label="{{ 'OperatingHoursAreDisabled' | translate }}" href="javascript:;" role="button"
       class="tool_tip" style="cursor: pointer; display: unset;" *ngIf="!OPERATING_HOURS_ACTIVE"
       (click)="goToOperatingHours()">
-      <i aria-hidden="true" class="material-icons" style="color:#AAA; margin-top: 3px;">access_time</i>
+      <i class="material-icons" style="color:#AAA; margin-top: 3px;">access_time</i>
 
       <div class="bottom"
         style="text-align: center; padding: 4px; border-radius: 3px; text-transform: none; min-width: fit-content; white-space: nowrap;">
@@ -194,7 +194,7 @@
   </li>
 </ul>
 
-<div role="main" class="main-content" style="padding-top:0px; margin-top: 25px;padding-left: 0px;padding-right: 0px;">
+<div class="main-content" style="padding-top:0px; margin-top: 25px;padding-left: 0px;padding-right: 0px;">
   <div class="container-fluid">
     <!-- ------====== CARDS COUNT OF REQUESTS: ACTIVE, SERVED & UNSERVED  and requests for depts ======------ -->
     <!-- <div class="row"> -->
@@ -203,7 +203,7 @@
       <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="padding-left: 10px !important;">
 
 
-        <!-- // --- NEW - COUNT OF REQUESTS: ACTIVE, SERVED & UNSERVED as GRAPH - display: none; -->
+        <!-- // --- Test - COUNT OF REQUESTS: ACTIVE, SERVED & UNSERVED as graph -->
         <div class="row" style="display: none;">
           <div class="col-xs-12">
             <div class="card" style="margin-top:0px">
@@ -284,6 +284,9 @@
                               </div> -->
                           </div>
                         </div>
+                        <div class="item-value ">7.200.000</div>
+                        <div class="item-label">France</div>
+                        <div class="item-percent">34%</div>
                       </div>
                     </div>
                   </div>
@@ -291,11 +294,6 @@
 
                 <!-- </div> -->
               </div>
-
-              <!-- position: relative;
-              top: 50%;
-              transform: translate(0,-50%); -->
-
             </div>
           </div>
         </div>
@@ -474,7 +472,7 @@
                   // -------------------------------------------------------- -->
                   <div class="col-sm-6">
                     <label class="col-sm-12" style="text-align: left; color:#7695a5;padding-left:0px">
-                      {{ 'FilterBy' | translate }} {{ 'HistoryPage.FilterByDepartment' | translate }}
+                      {{ 'HistoryPage.FilterByDepartment' | translate }}
                     </label>
 
                     <ng-select attr.aria-label="{{ 'FilterBy' | translate }} {{ 'Department' | translate }}"
@@ -497,7 +495,7 @@
                   // -------------------------------------------------------- -->
                   <div class="col-sm-6">
                     <label class="col-sm-12" style="text-align: left; color: #7695a5 !important;padding-left:0px">
-                      {{ 'FilterBy' | translate }} {{ 'HistoryPage.Agent' | translate }}
+                      {{ 'HistoryPage.Agent' | translate }}
                     </label>
                     <ng-select attr.aria-label="{{ 'FilterBy' | translate }} {{ 'HistoryPage.Agent' | translate }}"
                       name="agent" [(ngModel)]="selectedAgentId" placeholder="{{ 'HistoryPage.AllAgents' | translate }}"

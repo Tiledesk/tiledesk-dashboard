@@ -1,3 +1,4 @@
+import { NotificationService } from './services/notification.service';
 import { PopupService } from './services/popup.service';
 import { MarkerService } from './services/marker.service';
 import { MapRequestComponent } from './map-request/map-request.component';
@@ -204,13 +205,15 @@ import { WidgetCalloutComponent } from './widget-callout/widget-callout.componen
 import { WidgetChatComponent } from './widget-chat/widget-chat.component';
 
 
+
 import { WebhookComponent } from './webhook/webhook.component';
 import { WebhookAddEditComponent } from './webhook/webhook-add-edit/webhook-add-edit.component';
 import { WebhookService } from './services/webhook.service';
 
-import { MessagesComponent } from './analytics2/messages/messages.component';
-// import { NotificationSettingsComponent } from './user-profile/notification-settings/notification-settings.component';
 
+import { VisitorsAnalyticsComponent } from './analytics2/metriche/visitors/visitors-analytics.component';
+import { MessagesComponent } from './analytics2/metriche/messages/messages.component';
+import { NotificationSettingsComponent } from './user-profile/notification-settings/notification-settings.component';
 
 console.log('************** APPMODULE ******************');
 // AoT requires an exported function for factories
@@ -360,6 +363,12 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     MapRequestComponent,
     MessagesComponent,
     // NotificationSettingsComponent
+    WebhookComponent,
+    WebhookAddEditComponent,
+    MapRequestComponent,
+    MessagesComponent,
+    NotificationSettingsComponent,
+    VisitorsAnalyticsComponent
   ],
   imports: [
     /* PRIVATE */
@@ -440,6 +449,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     FilterArrayPipe,
     MarkerService,
     PopupService,
+    NotificationService,
     { provide: LocationStrategy, useClass: HashLocationStrategy }
   ],
   bootstrap: [

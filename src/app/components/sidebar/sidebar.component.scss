@@ -52,10 +52,6 @@ li.active a p.onBlackBckgrnd .sidebar-mini {
   color: $brand-sidebar-active-item-icon-color !important;
 }
 
-.settings-toggle:focus {
-  background-color: unset;
-}
-
 // .sidebar-wrapper-in-projects {
 //   height: 100vh !important;
 // }
@@ -277,7 +273,7 @@ button.close {
 @keyframes myfirst {
   0% {
     // background: #4caf50;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255,255,255,.5);
   }
   50% {
     // background: #fedd00;
@@ -286,15 +282,15 @@ button.close {
   100% {
     // background: #4caf50;
     // color: #1e2129;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255,255,255,.5);
   }
 }
-/* Firefox */
+ /* Firefox */
 @-moz-keyframes myfirst {
   0% {
     // background: #4caf50;
     // color: #1e2129;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255,255,255,.5);
   }
   50% {
     // background: #fedd00;
@@ -303,15 +299,15 @@ button.close {
   100% {
     // background: #4caf50;
     // color: #1e2129;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255,255,255,.5);
   }
 }
 /* Safari and Chrome */
-@-webkit-keyframes myfirst {
+@-webkit-keyframes myfirst  {
   0% {
     // background: #4caf50;
     // color: #1e2129;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255,255,255,.5);
   }
   50% {
     // background: #fedd00;
@@ -320,7 +316,7 @@ button.close {
   100% {
     // background: #4caf50;
     // color: #1e2129;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255,255,255,.5);
   }
 }
 
@@ -339,13 +335,13 @@ button.close {
 }
 
 /* *** SMALL SIDEBAR STYLE ***  */
-.small-sidebar-avatar-container {
-  top: 0px !important;
-}
-
-.small-sidebar-avatar-container .avatar {
+.small-sidebar-avatar .avatar {
   width: 50px;
   height: 50px;
+}
+
+.small-sidebar-email {
+  display: none;
 }
 
 .small-sidebar-status-icon {
@@ -356,30 +352,12 @@ button.close {
   display: none;
 }
 
-.small-sidebar-user {
-  height: 35px;
-  min-height: 35px;
-  max-height: 35px;
-}
-
 .small-sidebar-userfullname {
   display: none;
 }
 
-.small-sidebar-email {
-  display: none;
-}
-
 .small-sidebar-camera-icon {
-  top: 6px !important;
-}
-
-.small-sidebar-nav {
-  margin-top: 30px;
-}
-
-.small-sidebar-nav > li > a {
-  height: 40px;
+  top: 86px !important;
 }
 
 /* OVERWRITE THE DEFAULT STYLE */

@@ -594,6 +594,16 @@
 		"AnErrorHasOccurred": "Ein Fehler ist aufgetreten",
 		"PasswordMustBe": "Passwort muss aus mindestens 6 Zeichen bestehen."
 	},
+	"NotificationSettings": {
+        "AssignedConversations": "Zugewiesene Gespräche",
+        "AssignedConversationsSubtitle": "Erhalten Sie eine E-Mail, wenn Ihnen eine neue Konversation zugewiesen wird.",
+        "UnassignedConversations": "Nicht zugewiesene Gespräche",
+		"UnassignedConversationsSubtitle": "Erhalten Sie eine E-Mail, wenn eine Konversation nicht zugewiesen ist.",
+		"NotificationMsgs": {
+            "UpdateSuccess": "Aktualisierte Einstellungen.",
+            "UpdateError": "Beim Aktualisieren der Einstellungen ist ein Fehler aufgetreten."
+        }
+    },
 	"NavBar": {
 		"ViewAllProjects": "Alle Projekte anzeigen",
 		"ProjectSettings": "Projekt Einstellungen",
@@ -724,7 +734,8 @@
 		"QuickTips": "Quick Tips",
 		"Processing": "Verarbeiten...",
 		"Completed": "Abgeschlossen",
-		"RoutingRulesSuccessfullyUpdated": "Routing-Regeln erfolgreich aktualisiert"
+		"RoutingRulesSuccessfullyUpdated": "Routing-Regeln erfolgreich aktualisiert",
+		"GroupLabel" : "(Gruppe)"
 	},
 	"UsersPage": {
 		"Invites": "Benutzer einladen",
@@ -1496,7 +1507,7 @@
 		"PanoramicaComponentTitle": "Panoramica",
 		"MetricsComponentTitle": "Metriken",
 		"Metrics": {
-			"Requests": "Anfragen",
+			"Requests": "Gespräche",
 			"Sentiment": "Empfindung",
 			"ResponseTime": "Reaktionszeit",
 			"ConversationLenght": "Unterhaltungslänge"
@@ -1587,6 +1598,34 @@
 	"AppliedFilters": "Angewandte Filter",
 	"Ticket": "Interne Anfrage",
 	"EnableDisable":"Aktivieren / deaktivieren",
+	"Webhook": {
+		"AddSubscription": "Abonnement hinzufügen",
+		"Subscriptions": "Abonnements",
+		"Actions": "Aktionen",
+		"NoWebhookSubscriptions": "Es gibt keine Webhook-Abonnements",
+		"CreateSubscription": "Abonnement erstellen",
+		"UpdateSubscription": "Abonnement ändern",
+		"RequiredFiled": "*Pflichtfeld",
+		"SelectEvent": "Ereignis auswählen",
+		"SharedSecretGenerated": "Shared Secret generiert",
+		"ThisIsYourSharedSecret": "Hier ist Ihr Shared Secret",
+		"Copy": "Kopieren",
+		"NoteThatWillBeDisplayedOnce": "Beachten Sie, dass das Shared Secret nur einmal angezeigt wird",
+		"ConfirmSubscriptionDeleteTitle": "Löschen Abo",
+		"ConfirmSubscriptionDeleteBody" : "Möchten Sie sich wirklich abmelden? Diese Aktion ist irreversibel.",
+		"ConfirmButton": "Bestätigung",
+		"CancelButton": "stornieren",
+		"MoreInfoWebhook": "Weitere Informationen zu Webhook finden Sie auf ",
+		"NotificationMsgs": {
+            "DeleteSubscriptionError": "Beim Abbrechen des Abo ist ein Fehler aufgetreten",
+            "DeleteSubscriptionSuccess": "Abo erfolgreich entfernt",
+            "CreateSubscriptionSuccess": "Abo erfolgreich erstellt",
+            "CreateSubscriptionError": "Beim Abo ist ein Fehler aufgetreten",
+            "UpdateSubscriptionSuccess": "Abo erfolgreich aktualisiert",
+			"UpdateSubscriptionError": "Beim Aktualisieren des Abo ist ein Fehler aufgetreten",
+			"ShowSecretError": "Beim Generieren des Geheimnisses ist ein Fehler aufgetreten"
+        }
+    },
 	"SoundEnabled": "Sound aktiviert",
 	"SoundDisabled":"Ton deaktiviert",
 	"NumberOfRequestsAssignedToMe":"Anzahl der mir zugewiesenen Gespräche",
@@ -1613,5 +1652,6 @@
 	"OnlineOfflineGreetings": "Online Offline-Grüße",
 	"WidgetPreviewIsDisplayedIn": "Die Widget-Vorschau wird derzeit in angezeigt",
 	"ChangePreviewToCustomizeTheFollowingFieldsInAnotherLanguage": "Ändern Sie die Vorschau im Abschnitt Mehrsprachig, um die folgenden Felder in einer anderen Sprache anzupassen"
+
 	
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit, ElementRef, HostListener, OnDestroy } from '@angular/core';
 import { ProjectService } from '../services/project.service';
 import { Project } from '../models/project-model';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthService } from '../core/auth.service';
 
 import { RequestsService } from '../services/requests.service';
@@ -13,7 +13,6 @@ import { Subscription } from 'rxjs/Subscription';
 import { AppConfigService } from '../services/app-config.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-
 
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../services/brand.service';
@@ -61,7 +60,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   userImageHasBeenUploaded: boolean;
   myAvailabilityCount: number;
   subscription: Subscription;
-  // navSubscription: Subscription = null;
+
   storageBucket: string;
   currentUserId: string
   public_Key: string;
@@ -87,6 +86,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     this.companyLogoBlack_Url = brand['company_logo_black__url'];
     this.companyLogoBlack_width = brand['recent_project_page']['company_logo_black__width'];
 
+
     console.log('IS DEV MODE ', isDevMode());
     this.APP_IS_DEV_MODE = isDevMode()
   }
@@ -106,8 +106,6 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     // this.subscribeToLogoutPressedinSidebarNavMobilePrjctUndefined();
     this.getStorageBucket();
     this.getOSCODE();
-
-    this.setFocusOnHeadTitle();
   }
 
 
@@ -118,28 +116,6 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
-
-    // for setFocusOnHeadTitle()
-    // this.navSubscription.unsubscribe();
-    console.log('PROJECT COMPO ON DESTRIY CALLED');
-  }
-  // this.subscription = 
-  setFocusOnHeadTitle() {
-    console.log('PROJECT COMPO setFocusOnHeadTitle ');
-    // this.navSubscription =  
-    this.router.events.subscribe((event: any) => {
-    
-      if (event instanceof NavigationEnd) {
-        // for accessibility
-        const head_title = document.getElementsByTagName('h1')[0]
-        // <HTMLElement>document.querySelector('head-title').focus();
-        if (head_title)  {
-          head_title.focus();
-          console.log('PROJECT COMPO HEAD TITLE ', document.getElementsByTagName('h1')[0]);
-        }
-        
-      }
-    });
   }
 
   getOSCODE() {
@@ -329,9 +305,6 @@ export class ProjectsComponent implements OnInit, OnDestroy {
              * project.id_project._id is the id of the project
              * project._id is the id of the project user
              */
-
-             console.log('HERE CALL subscriptionToWsCurrentUser_allProject PROJECT ID: ', project.id_project._id, ' PROJECT USER ID ', project._id) 
-
             this.usersService.subscriptionToWsCurrentUser_allProject(project.id_project._id, project._id);
             this.listenTocurrentUserWSAvailabilityAndBusyStatustForProject$()
 
@@ -487,7 +460,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
         const newproject: Project = {
           _id: project._id,
           name: project.name
-
+          
         }
 
         // SENT THE NEW PROJECT TO THE AUTH SERVICE THAT PUBLISH

@@ -318,29 +318,31 @@
                     <tr>
 
                       <!-- ===== CONTACT NAME ===== -->
-                      <th>
+                      <th style="width: 20%;">
                         <span class="column-th-span">
                           {{ 'Contact' | translate }}
                         </span>
                       </th>
 
+                      <!-- ===== CHAT WITH ===== -->
+                      <th style="width: 20%;"> </th>
+
                       <!-- ===== CONTACT EMAIL ===== -->
-                      <th>
+                      <th style="width: 20%;">
                         <span class="column-th-span">
                           Email
                         </span>
                       </th>
 
-
                       <!-- ===== CREATED ===== -->
-                      <th>
+                      <th style="width: 20%;">
                         <span class="column-th-span">
                           {{ 'Created' | translate }}
                         </span>
                       </th>
 
                       <!-- ========== ICON VIEW CONTACT DETAILS ========== -->
-                      <th>
+                      <th style="width: 20%;">
                         <span class="column-th-span">
                           {{ 'Actions' | translate }}
                         </span>
@@ -396,7 +398,7 @@
                           <span class="tooltiptext-custom"> {{ "VisitorsPage.AuthenticatedUser" | translate }} </span>
                         </span>
 
-                        <span class="column-td"
+                        <span class="column-td" style="margin-left: 10px;"
                           [ngClass]="{'contact-verified' : contact?.contact_is_verified === true}">
                           {{ contact?.fullname }}
                         </span>
@@ -406,6 +408,24 @@
                           n.a
                         </span>
 
+                      </td>
+
+                      <!-- ========== CHAT WITH ========== -->
+                      <td>
+                        <span>
+                          <span class="White__Tooltip">
+                            <i class="material-icons chat-with-agent"
+                              (click)="chatWithAgent(contact)">
+                              chat
+                            </i>
+                            <span class="White__Tooltiptext" style="font-size: 12px; white-space: nowrap;font-weight: 100;">
+                              {{"ChatWith" | translate }}:
+                              <span style="display:block">
+                                {{contact?.fullname}}
+                              </span>
+                            </span>
+                          </span>
+                        </span>
                       </td>
 
                       <!-- ========== CONTACT EMAIL ========== -->
@@ -437,14 +457,16 @@
                       <td *ngIf="hasClickedTrashed === false" class="td-actions text-right"
                         style="padding-left: 0px;padding-top: 17px!important;">
 
-                        <button style="" type="button" class="btn btn-primary btn-simple btn-xs tooltipx"
-                          (click)='goToContactDetails(contact?._id)'>
+                        <!-- VIEW CONVERSATIONS -->
+                        <button style="" type="button"
+                          class="btn btn-primary btn-simple btn-xs tooltipx" (click)='goToContactDetails(contact?._id)'>
                           <i class="material-icons">view_list</i>
                           <span class="tooltiptext-custom" style="text-transform:none">
                             {{ 'ViewContactRequests' | translate }}
                           </span>
                         </button>
 
+                        <!-- EDIT CONTACT -->
                         <button type="button" class="btn btn-primary btn-simple btn-xs tooltipx"
                           (click)='goToEditContact(contact?._id)'>
                           <i class="material-icons">edit</i>
@@ -453,6 +475,7 @@
                           </span>
                         </button>
 
+                        <!-- DELETE CONTACT -->
                         <button type="button" class="btn btn-danger btn-simple btn-xs tooltipx"
                           [disabled]="IS_CURRENT_USER_AGENT === true"
                           (click)='moveContactToTrash(contact?._id, contact?.fullname)'>

@@ -594,6 +594,16 @@
         "AnErrorHasOccurred": "An error has occurred",
         "PasswordMustBe": "Password must be at least 6 characters long."
     },
+    "NotificationSettings": {
+        "AssignedConversations": "Assigned Conversations",
+        "AssignedConversationsSubtitle": "Receive an email when a new conversation is assigned to you.",
+        "UnassignedConversations": "Unassigned Conversations",
+        "UnassignedConversationsSubtitle": "Receive an email when a conversation is unassigned.",
+        "NotificationMsgs": {
+            "UpdateSuccess": "Preferences updated",
+            "UpdateError": "An error occurred while preferences updating"
+        }
+    },
     "NavBar": {
         "ViewAllProjects": "View all projects",
         "ProjectSettings": "Project settings",
@@ -724,7 +734,8 @@
         "QuickTips": "Quick tips",
         "Processing": "Processing...",
         "Completed": "Completed",
-        "RoutingRulesSuccessfullyUpdated": "Routing rules successfully updated"
+        "RoutingRulesSuccessfullyUpdated": "Routing rules successfully updated",
+        "GroupLabel" : "(Group)"
     },
     "UsersPage": {
         "Invites": "Invite user",
@@ -1093,7 +1104,7 @@
         "AreYouSureLeftTheChat": "Are you sure you want to left the chat?",
         "ChatLeft": "Chat left",
         "AuthenticatedUser": "Authenticated User",
-        "ViewRequestDetails": "view conversation details",
+        "ViewRequestDetails": "View conversation details",
         "Open": "Open"
     },
     "RequestMsgsPage": {
@@ -1496,7 +1507,7 @@
         "PanoramicaComponentTitle": "Panoramic",
         "MetricsComponentTitle": "Metrics",
         "Metrics": {
-            "Requests": "Requests",
+            "Requests": "Conversations",
             "Sentiment": "Sentiment",
             "ResponseTime": "Response time",
             "ConversationLenght": "Conversation Length"
@@ -1587,31 +1598,53 @@
     "ResetFilters": "Reset filters",
     "AppliedFilters": "Applied Filters",
     "Ticket": "Internal request",
-    "EnableDisable": "Enable / disable",
+    "EnableDisable":"Enable / disable",
+    "Webhook": {
+        "AddSubscription": "Add Subscription",
+        "Subscriptions": "Subscriptions",
+        "Actions": "Actions",
+        "NoWebhookSubscriptions": "There are no webhook subscriptions",
+        "CreateSubscription": "Create subscription",
+        "UpdateSubscription": "Update sottoscrizione",
+        "RequiredFiled": "*Required field",
+        "SelectEvent": "Select event",
+        "SharedSecretGenerated": "Shared Secret Generated",
+        "ThisIsYourSharedSecret": "This is your shared secret",
+        "Copy": "Copy",
+        "NoteThatWillBeDisplayedOnce": "Note that this shared secret will only be displayed once",
+        "ConfirmSubscriptionDeleteTitle": "Delete Subscription",
+        "ConfirmSubscriptionDeleteBody" : "Are you sure you want to unsubscribe? This action is irreversible.",
+        "ConfirmButton": "Confirm",
+        "CancelButton": "Cancel",
+        "MoreInfoWebhook": "For more information about Webhook please visit ",
+        "NotificationMsgs": {
+            "DeleteSubscriptionError": "An error occurred while deleting subscription",
+            "DeleteSubscriptionSuccess": "Subscription successfully deleted",
+            "CreateSubscriptionSuccess": "Subscription successfully created",
+            "CreateSubscriptionError": "An error occurred while creating subscription",
+            "UpdateSubscriptionSuccess": "Subscription successfully updated",
+            "UpdateSubscriptionError": "An error occurred while updating subscription",
+            "ShowSecretError": "An error occurred while secret generation"
+        }
+    },
     "SoundEnabled": "Sound enabled",
-    "SoundDisabled": "Sound disabled",
-    "NumberOfRequestsAssignedToMe": "Number of conversation assigned to me",
-    "NumberOfUnservedRequests": "Number of unserved conversation",
-    "User": "User",
+    "SoundDisabled":"Sound disabled",
+    "NumberOfRequestsAssignedToMe":"Number of conversation assigned to me",
+    "NumberOfUnservedRequests":"Number of unserved conversation",
+    "User":"User",
     "ProjectSelected": "Project selected",
     "GoToNotRealTimeRequests": "go to the non-real-time conversations page",
     "FilterBy": "Filter By",
-    "ConversationStatus": "Conversation status",
+    "ConversationStatus":"Conversation status",
     "IntroGreetings": "Intro greetings",
     "ReplyTimeMsg": "Reply time",
-    "SayHowSoonYourTeamUsuallyReplies": "Say how soon your team usually replies",
-    "IsDisplayedWhenAverageTeamResponseTimeIsNotAvailable": "This message will appear when the team's average response time is unavailable in the last 4 hours",
-    "DynamicallySharingAverageResponseTime": "Dynamically, sharing the team's average response time",
-    "YourContactsSeeThisMessageIfARTIsNotAvailable": "Your contacts see this message if the team's average response time isn't available",
-    "ConfigureWidget": "Configure widget",
-    "WidgetAppearanceAndDefaultLanguage": "Widget appearance and default language",
-    "AlwaysWithTheFollowingMessage": "Always with the following message",
-    "ReadyThemes": "Ready themes",
-    "CustomColors": "Custom colors",
-    "HeaderLogo": "Header Logo",
-    "UpdateWidget": "UPDATE WIDGET",
-    "WelcomeGreetings": "Welcome greetings",
-    "OnlineOfflineGreetings": "Online / Offline Greetings",
-    "WidgetPreviewIsDisplayedIn": "Widget preview is currently displayed in",
-    "ChangePreviewToCustomizeTheFollowingFieldsInAnotherLanguage": "Change preview in the Multilanguage section to customize the following fields in another language"
+    "SayHowSoonYourTeamUsuallyReplies":"Say how soon your team usually replies",
+    "IsDisplayedWhenAverageTeamResponseTimeIsNotAvailable":"This message will appear when the team's average response time is unavailable in the last 4 hours",
+    "DynamicallySharingAverageResponseTime":"Dynamically, sharing the team's average response time",
+    "YourContactsSeeThisMessageIfARTIsNotAvailable":"Your contacts see this message if the team's average response time isn't available",
+    "ConfigureWidget":"Configure widget",
+    "WidgetAppearanceAndDefaultLanguage":"Widget appearance and default language",
+    "AlwaysWithTheFollowingMessage":"Always with the following message"
+
+    
 }

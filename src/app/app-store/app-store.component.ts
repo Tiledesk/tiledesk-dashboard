@@ -86,7 +86,7 @@ export class AppStoreComponent implements OnInit {
     });
   }
 
-  installApp(installationType: string, installationUrl: string, appTitle: string) {
+  installApp(installationType: string, installationUrl: string, appTitle: string, appId: string) {
     console.log('APP-STORE installationType ', installationType);
 
     console.log('APP-STORE installationUrl ', installationUrl);
@@ -103,7 +103,9 @@ let installationUrlWithQueryString = ''
     }
 
     if (installationType === 'internal') {
-      this.router.navigate(['project/' + this.projectId + '/app-store-install', installationUrlWithQueryString, appTitle]);
+      console.log("Navigation to: " + 'project/' + this.projectId + '/app-store-install', installationUrlWithQueryString, appTitle)
+      //this.router.navigate(['project/' + this.projectId + '/app-store-install', installationUrlWithQueryString, appTitle]);
+      this.router.navigate(['project/' + this.projectId + '/app-store-install/' + appId])
     } else {
       const url = installationUrlWithQueryString;
       window.open(url, '_blank');

@@ -589,6 +589,16 @@
         "AnErrorHasOccurred": "Si è verificato un errore",
         "PasswordMustBe": "La password deve essere lunga almeno 6 caratteri."
     },
+    "NotificationSettings": {
+        "AssignedConversations": "Conversazioni assegnate",
+        "AssignedConversationsSubtitle": "Ricevi una email quando una nuova conversazione è stata assegnata a te.",
+        "UnassignedConversations": "Conversazioni non assegnate",
+        "UnassignedConversationsSubtitle": "Ricevi un'email quando una conversazione è non assegnata.",
+        "NotificationMsgs": {
+            "UpdateSuccess": "Preferenze aggiornate",
+            "UpdateError": "Si è verificato un errore durante l'aggiornamento delle preferenze"
+        }
+    },
     "NavBar": {
         "ViewAllProjects": "Visualizza tutti i progetti",
         "ProjectSettings": "Impostazioni progetto",
@@ -719,7 +729,9 @@
         "QuickTips": "Consigli veloci",
         "Processing": "Elaborazione...",
         "Completed": "Completato",
-        "RoutingRulesSuccessfullyUpdated": "Regole di routing aggiornate con successo"
+        "RoutingRulesSuccessfullyUpdated": "Regole di routing aggiornate con successo",
+        "GroupLabel" : "(Gruppo)"
+
     },
     "UsersPage": {
         "Invites": "Invita utente",
@@ -1088,7 +1100,7 @@
         "AreYouSureLeftTheChat": "Sei sicuro di voler abbandonare la chat?",
         "ChatLeft": "Chat abbandonata",
         "AuthenticatedUser": "Utente autenticato",
-        "ViewRequestDetails": "visualizza i dettagli della conversazione",
+        "ViewRequestDetails": "Visualizza i dettagli della conversazione",
         "Open": "Apri"
     },
     "RequestMsgsPage": {
@@ -1584,7 +1596,35 @@
     "ResetFilters": "Rimuovi filtri",
     "AppliedFilters": "Filtri applicati",
     "Ticket": "Richiesta interna",
-    "EnableDisable": "Abilita / disabilita",
+    "EnableDisable":"Abilita / disabilita",
+    "Webhook": {
+        "AddSubscription": "Aggiungi Sottoscrizione",
+        "Subscriptions": "Sottoscrizioni",
+        "Actions": "Azioni",
+        "NoWebhookSubscriptions": "Non sono presenti sottoscrizioni al webhook",
+        "CreateSubscription": "Crea sottoscrizione",
+        "UpdateSubscription": "Modifica sottoscrizione",
+        "RequiredFiled": "*Campo obbligatorio",
+        "SelectEvent": "Seleziona evento",
+        "SharedSecretGenerated": "Shared Secret Generato",
+        "ThisIsYourSharedSecret": "Questo è il tuo shared secret",
+        "Copy": "Copia",
+        "NoteThatWillBeDisplayedOnce": "Nota che questo shared secret verrà visualizzato solo una volta",
+        "ConfirmSubscriptionDeleteTitle": "Cancella Sottoscrizione",
+        "ConfirmSubscriptionDeleteBody" : "Sei sicuro di voler cancellare la sottoscrizione? Questa azione è irreversibile.",
+        "ConfirmButton": "Conferma",
+        "CancelButton": "Annulla",
+        "MoreInfoWebhook": "Per maggiori informazioni sull'uso di Webhook visita la pagina ",
+        "NotificationMsgs": {
+            "DeleteSubscriptionSuccess": "Sottoscrizione cancellata correttamente",
+            "DeleteSubscriptionError": "Si è verificato un errore durante la cancellazione della sottoscrizione",
+            "CreateSubscriptionSuccess": "Sottoscrizione effettuata correttamente",
+            "CreateSubscriptionError": "Si è verificato un errore durante la sottoscrizione",
+            "UpdateSubscriptionSuccess": "Sottoscrizione aggiornata con successo",
+            "UpdateSubscriptionError": "Si è verificato un errore durante l'aggiornamento della sottoscrizione",
+            "ShowSecretError": "Si è verificato un errore durante la generazione del secret"
+        }
+    },
     "SoundEnabled": "Suono abilitato",
     "SoundDisabled": "Suono disabilitato",
     "NumberOfRequestsAssignedToMe": "Numero conversazioni assegnate a me",

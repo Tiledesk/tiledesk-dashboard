@@ -1,10 +1,10 @@
 <footer>
     <div class="container-fluid">
-        <nav  class="pull-left">
+        <nav class="pull-left">
             <ul>
                 <li>
                     <!-- <a target="_blank" href="http://www.tiledesk.com" style="text-transform: none"> -->
-                    <a tabindex="-1" target="_blank" [href]="companySiteUrl" style="text-transform: none">
+                    <a target="_blank" [href]="companySiteUrl" style="text-transform: none">
                         <!-- tiledesk.com -->
                         {{ companySiteName }}
                     </a>
@@ -12,21 +12,21 @@
 
                 <li>
                     <!-- <a target="_blank" href="http://www.tiledesk.com/privacy.html" style="text-transform: none"> -->
-                    <a tabindex="-1" target="_blank" [href]="privacyPolicyUrl" style="text-transform: none">
+                    <a target="_blank" [href]="privacyPolicyUrl" style="text-transform: none">
                         {{ privacyPolicyLinkName }}
                     </a>
                 </li>
 
                 <li *ngIf="displayTermsAndConditionsLink">
                     <!-- <a target="_blank" href="http://www.tiledesk.com/termsofservice.html" style="text-transform: none"> -->
-                    <a tabindex="-1"target="_blank" [href]="termsAndConditionsUrl" style="text-transform: none">
+                    <a target="_blank" [href]="termsAndConditionsUrl" style="text-transform: none">
                         {{ "TermsAndConditions" | translate }}
                     </a>
                 </li>
 
                 <li *ngIf="display_contact_us_email">
                     <!-- <a target="_blank" href="mailto:info@tiledesk.com" style="text-transform: none"> -->
-                    <a tabindex="-1" target="_blank" href="mailto:{{contactUsEmail}}" style="text-transform: none">
+                    <a target="_blank" href="mailto:{{contactUsEmail}}" style="text-transform: none">
                         <!-- Need help? write to   -->
                         {{ 'NeedHelpWriteTo' | translate }} <span style="font-weight:800">
                             {{contactUsEmail}}

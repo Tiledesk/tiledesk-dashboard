@@ -509,11 +509,10 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                     (this.route === '/signup') ||
                     (this.route === '/create-project') ||
                     (this.route === '/forgotpsw') ||
+                    (this.route.indexOf('/install-tiledesk') !== -1) ||
                     (this.route.indexOf('/handle-invitation') !== -1) ||
                     (this.route.indexOf('/signup-on-invitation') !== -1) ||
                     (this.route.indexOf('/create-new-project') !== -1) ||
-                    (this.route.indexOf('/configure-widget') !== -1) ||
-                    (this.route.indexOf('/install-widget') !== -1) ||
                     (this.route.indexOf('/success') !== -1) ||
                     (this.route.indexOf('/request-for-panel') !== -1) ||
                     (this.route.indexOf('/projects-for-panel') !== -1) ||
@@ -897,7 +896,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                 // const storedRequest = []
                 if (requests) {
                     requests.forEach(r => {
-                        // console.log('IN-APP-NOTIFICATION request ', r)
+                        console.log('IN-APP-NOTIFICATION request ', r)
 
                         // storedRequest.push(r.id + '_' + r.updatedAt)
                         // localStorage.setItem(r.id + '_' + r.updatedAt, 'false');
@@ -906,7 +905,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                             // console.log('REQUEST WITH STATUS != 100 ', r.status)
                             this.shown_requests[r.id] = false;
                             // this.shown_requests[r.request_id] = false;
-                            // console.log('REQUEST WITH STATUS != 100 ', r.status)
+                            console.log('REQUEST WITH STATUS != 100 ', r.status)
                         }
                     });
 
@@ -957,7 +956,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                         // @ get stored request
                         // --------------------------------------------------------------------------
                         const storedRequest = localStorage.getItem(r.id + '_' + r.status);
-                        // console.log('IN-APP-NOTIFICATION >> get storedRequest served >> ', r.id + '_' + r.updatedAt, ' - ', storedRequest);
+                        console.log('IN-APP-NOTIFICATION >> get storedRequest served >> ', r.id + '_' + r.updatedAt, ' - ', storedRequest);
 
                         // if (r.status === 100 && !this.shown_requests[r.id] && this.user !== null) {
                         if (r.status === 100 && !storedRequest && this.user !== null) {

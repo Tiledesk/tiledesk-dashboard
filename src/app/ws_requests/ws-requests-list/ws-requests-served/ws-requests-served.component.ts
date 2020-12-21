@@ -561,31 +561,5 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
       });
   }
 
-  // shiftFocusDown(index) {
-
-  // }
-
-  movedown(index) {
-    if (index + 1 < this.wsRequestsServed.length) {
-      const tablerow = <HTMLElement>document.querySelector(`#request_served_${index + 1}`);
-      tablerow.focus()
-      console.log('moveDown tablerow ', tablerow)
-    }
-  }
-
-  moveup(index) {
-    if (index > 0) {
-      const tablerow = <HTMLElement>document.querySelector(`#request_served_${index - 1}`);
-      tablerow.focus()
-      console.log('moveDown tablerow ', tablerow)
-    }
-  }
-
-  keypressHandler($event, requestid) {
-    console.log('keypressHandler ', $event, 'requestid ', requestid)
-    if ($event === 13) {
-      this.goToRequestMsgs(requestid);
-    }
-  }
 
 }

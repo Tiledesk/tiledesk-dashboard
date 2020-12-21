@@ -1075,12 +1075,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
         this.served_unserved_sum = sum;
         console.log('% »»» WebSocketJs WF +++++ ws-requests--- list unserved + served sum', this.wsRequestsUnserved);
-
-        //------------------------------------
-        // NEW - COUNT OF REQUESTS: ACTIVE, SERVED & UNSERVED as GRAPH
-         //------------------------------------
-        // this.initRequestsDoughnutChart();
-
+        this.initRequestsDoughnutChart();
         // var self = this
         // // https://stackoverflow.com/questions/8267857/how-to-wait-until-array-is-filled-asynchronous
         // var isFinished = false;
@@ -1110,114 +1105,31 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
   // And for a doughnut chart
   initRequestsDoughnutChart() {
-    // var myDoughnutChart = new Chart('doughnutChart', {
-    //   type: 'doughnut',
-    //   data: {
-    //     labels: ["Served", "Unserved"],
-    //     datasets: [
-    //       {
-
-    //         backgroundColor: ["#05BDD4", "#ED4537"],
-    //         data: [this.wsRequestsServed.length, this.wsRequestsUnserved.length]
-    //       }
-    //     ]
-    //   },
-
-    //   options: {
-    //     aspectRatio: 1,
-    //     cutoutPercentage: 60,
-    //     legend: {
-    //       display: false,
-    //     },
-    //     title: {
-    //       display: false,
-    //       text: 'Requests'
-    //     }
-    //   }
-    // });
-
-    var stackedBar = new Chart('stacked', {
-      type: 'bar',
+    var myDoughnutChart = new Chart('doughnutChart', {
+      type: 'doughnut',
       data: {
-        labels: ["Conversations"],
-        datasets: [{
-          label: 'Served',
-          backgroundColor: "#05BDD4",
-          data: [this.wsRequestsServed.length],
-        }, {
-          label: 'Unserved',
-          backgroundColor: "#ED4537",
-          data: [this.wsRequestsUnserved.length],
-        }],
-      },
-    options: {
-        tooltips: {
-          displayColors: true,
-          callbacks:{
-            mode: 'x',
-          },
-        },
-        scales: {
-          xAxes: [{
-            stacked: true,
-            gridLines: {
-              display: false,
-            }
-          }],
-          yAxes: [{
-            stacked: true,
-            ticks: {
-              beginAtZero: true,
-            },
-            type: 'linear',
-          }]
-        },
-        responsive: true,
-        maintainAspectRatio: false,
-        legend: { display: false },
-      }
-   
-    });
+        labels: ["Served", "Unserved"],
+        datasets: [
+          {
 
-    // new Chart(document.getElementById("MyChart"), {
-    //   type: 'bar',
-    //   data: {
-    //     labels: [],
-    //     datasets: [{
-    //       label: "Served",
-    //       type: "bar",
-    //       stack: "Base",
-    //       backgroundColor: "#05BDD4",
-    //       data: [this.wsRequestsServed.length],
-    //       // barThickness: 6,
-    //       // maxBarThickness: 8,
-    //     }, {
-    //       label: "Unserved",
-    //       type: "bar",
-    //       stack: "Base",
-    //       backgroundColor: "#ED4537",
-    //       data: [this.wsRequestsUnserved.length],
-    //       // barThickness: 6,
-    //       // maxBarThickness: 8,
-    //     }]
-    //   },
-    //   options: {
-    //     scales: {
-    //       xAxes: [{
-    //         //stacked: true,
-    //         stacked: true,
-    //         ticks: {
-    //           beginAtZero: true,
-    //           maxRotation: 0,
-    //           minRotation: 0
-    //         }
-    //       }],
-    //       yAxes: [{
-    //         stacked: true,
-    //       }]
-    //     },
-    //   }
-    // });
+            backgroundColor: ["#05BDD4", "#ED4537"],
+            data: [this.wsRequestsServed.length, this.wsRequestsUnserved.length]
+          }
+        ]
+      },
+
+      options: {
+        aspectRatio: 1,
+        cutoutPercentage: 60,
+        legend: {
+          display: false,
+        },
+        title: {
+          display: false,
+          text: 'Requests'
+        }
+      }
+    });
   }
 
   checkIfFinished(wsRequestsServed) {

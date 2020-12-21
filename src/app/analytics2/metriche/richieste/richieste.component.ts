@@ -54,6 +54,8 @@ export class RichiesteComponent implements OnInit {
     
     this.initDay=moment().subtract(6, 'd').format('D/M/YYYY')
     this.endDay=moment().subtract(0, 'd').format('D/M/YYYY')
+    console.log("INIT", this.initDay, "END", this.endDay);
+
     this.getRequestByLastNDay(this.selectedDaysId, this.selectedDeptId);
     this.getDepartments();
     
@@ -139,7 +141,6 @@ export class RichiesteComponent implements OnInit {
       
 
       last7days_initarray.reverse()
-
       console.log('»» !!! ANALYTICS - REQUESTS BY lastDAY - MOMENT LAST N DATE (init array)', last7days_initarray);
 
       const requestsByDay_series_array = [];

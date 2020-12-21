@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit, ElementRef, ViewChild, HostListener, OnDestroy } from '@angular/core';
-import { Router, NavigationEnd, NavigationStart } from '@angular/router';
+import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { WsRequestsService } from '../../services/websocket/ws-requests.service';
 import { WsMsgsService } from '../../services/websocket/ws-msgs.service';
@@ -30,12 +30,10 @@ import PerfectScrollbar from 'perfect-scrollbar';
 import { UAParser } from 'ua-parser-js';
 import { ContactsService } from '../../services/contacts.service';
 
-
 @Component({
   selector: 'appdashboard-ws-requests-msgs',
   templateUrl: './ws-requests-msgs.component.html',
-  styleUrls: ['./ws-requests-msgs.component.scss'],
-  host: { 'tabindex': '0' },
+  styleUrls: ['./ws-requests-msgs.component.scss']
 })
 export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit, OnDestroy, AfterViewInit {
   objectKeys = Object.keys;
@@ -236,15 +234,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     public contactsService: ContactsService
 
   ) {
-    super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify);
-    this.router.events.filter((event: any) => event instanceof NavigationStart)
-      .subscribe(event => {
-        event
-        console.log('WS-REQUETS-MSGS - ELEM REQUEST DTLS - event', event);
-          const H1 = document.getElementsByTagName('h1')[0]
-          console.log('WS-REQUETS-MSGS - ELEM REQUEST DTLS - H1', H1);
-        // document.getElementsByTagName('h1');
-      });
+    super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify)
   }
 
   @ViewChild('cont') contEl: any;
@@ -303,7 +293,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.getRouteUrl();
     this.getBaseUrl();
     this.getOSCODE();
-
   }
 
   ngAfterViewInit() {
@@ -313,8 +302,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     const rightSidebar = <HTMLElement>document.querySelector(`.right-card`);
     this.rightSidebarWidth = rightSidebar.offsetWidth
     console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES attributeValueElem offsetWidth:`, this.rightSidebarWidth);
-    this.setFocus();
-    // this.myScrollContainer.nativeElement.focus()
+
   }
 
   /**
@@ -335,41 +323,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       this.unsuscribeRequestById(this.id_request);
       this.unsuscribeMessages(this.id_request);
     }
-  }
-
-  setFocus() {
-    // const H1 = document.getElementsByTagName('h1')[0]
-    // document.getElementsByTagName('h1')[0].focus();
-    // console.log('WS-REQUETS-MSGS - ELEM REQUEST DTLS - H1', H1);
-
-
-
-
-    const request_details_title_elem = <HTMLElement>document.querySelector('#request-details-title');
-    console.log('WS-REQUETS-MSGS - ELEM REQUEST DTLS - NAV BRAND', request_details_title_elem);
-    request_details_title_elem.focus()
-
-
-
-    const dshbrd_chat = <HTMLElement>document.querySelector('#dshbrd-chat');
-    console.log('WS-REQUETS-MSGS - ELEM REQUEST DTLS - CHAT DIV', dshbrd_chat);
-    dshbrd_chat.focus();
-
-    // this.router.events.subscribe((event: any) => {
-
-    //   if (event instanceof NavigationStart) {
-    //     // for accessibility
-    //     // const request_details_title = document.getElementsByTagName('h1')[0]
-    //     const request_details_title_elem = <HTMLElement>document.querySelector('#request-details-title');
-    //     console.log('WS-REQUETS-MSGS - ELEM REQUEST DTLS TITLE', request_details_title_elem);
-    //     // <HTMLElement>document.querySelector('head-title').focus();
-    //     // if (head_title) {
-    //     //   head_title.focus();
-    //     //   console.log('PROJECT COMPO HEAD TITLE ', document.getElementsByTagName('h1')[0]);
-    //     // }
-
-    //   }
-    // });
   }
 
   unsuscribeRequesterPresence(requester_id) {
@@ -1908,12 +1861,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     if (this.NODEJS_REQUEST_CNTCT_FOUND === true) {
       const url = this.dshbrdBaseUrl + '/#/project/' + this.id_project + '/contact/' + this.contact_id
       window.open(url, '_blank');
-    }
-  }
-
-  goToEvents() {
-    if (this.request.requester) {
-      this.router.navigate(['project/' + this.id_project + '/events/', this.request.requester.id]);
     }
   }
 

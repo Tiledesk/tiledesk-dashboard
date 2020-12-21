@@ -177,6 +177,7 @@ const routes: Routes = [
   { path: 'project/:projectid/project-settings/payments', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/project-settings/auth', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/project-settings/advanced', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/project-settings/notification', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
 
   // { path: 'home', component: HomeComponent, canActivate: [AuthGuard]}, // , canDeactivate: [AuthGuard]
   { path: 'project/:projectid/home', component: HomeComponent, canActivate: [AuthGuard] },
@@ -372,13 +373,15 @@ const routes: Routes = [
   { path: 'project/:projectid/payments', component: PaymentsListComponent, canActivate: [AuthGuard] },
 
   { path: 'project/:projectid/app-store', component: AppStoreComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/app-store-install/:url/:apptitle', component: AppStoreInstallComponent, canActivate: [AuthGuard] },
-  
+  //{ path: 'project/:projectid/app-store-install/:url/:apptitle', component: AppStoreInstallComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/app-store-install/:appid', component: AppStoreInstallComponent, canActivate: [AuthGuard]},
+
   { path: 'dashboard', component: DashboardComponent },
 
   // Webhook
   { path: 'project/:projectid/webhook', component: WebhookComponent, canActivate: [AuthGuard]},
-  { path: 'project/:projectid/map-request', component: MapRequestComponent, canActivate: [AuthGuard]}
+  { path: 'project/:projectid/map-request', component: MapRequestComponent, canActivate: [AuthGuard]},
+
 
 
 

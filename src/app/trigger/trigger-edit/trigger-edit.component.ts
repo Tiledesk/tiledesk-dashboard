@@ -506,7 +506,8 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
     if (value) {
       this.temp_cond = this.condition.filter(b => b.triggerType === value);
     } else {
-      this.temp_cond = this.condition.filter(b => b.triggerType === 'message.received');
+      //this.temp_cond = this.condition.filter(b => b.triggerType === 'message.received');
+      this.temp_cond = this.condition.filter(b => b.triggerType === 'message.create.from.requester');
     }
 
     // ------------------------------------------------------------------------------------
@@ -926,7 +927,8 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
       // ALL FIELD IS CORRECTLY ADDED
 
       // add trigger.name value
-      if (this.triggerForm.value.trigger.key === 'message.received') {
+      // if (this.triggerForm.value.trigger.key === 'message.received') {
+        if (this.triggerForm.value.trigger.key === 'message.create.from.requester') {
         this.triggerForm.value.trigger.name = 'message create event';
 
       } else if (this.triggerForm.value.trigger.key === 'request.create') {

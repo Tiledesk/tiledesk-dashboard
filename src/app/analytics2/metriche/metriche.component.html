@@ -1,7 +1,13 @@
 
 <ul class="bottom-nav-metrics">
-  <li class="btn-with-border-effect "  [ngClass]="{'li-active' : selected === 'richieste', 'border-from-center': selected !== 'richieste'}" (click)="goTo('richieste')" >
+  <li class="btn-with-border-effect " [ngClass]="{'li-active' : selected === 'richieste', 'border-from-center': selected !== 'richieste'}" (click)="goTo('richieste')" >
       <a>{{ 'Analytics.Metrics.Requests' | translate }}</a>
+  </li>
+  <li class="btn-with-border-effect " [ngClass]="{'li-active' : selected === 'visitors', 'border-from-center': selected !== 'visitors'}" (click)="goTo('visitors')">
+    <a>{{ 'Analytics.VisitorsComponentTitle' | translate }}</a>
+  </li>
+  <li class="bnt-with-border-effect " [ngClass]="{'li-active' : selected === 'messages', 'border-from-center': selected !== 'visitors'}" (click)="goTo('messages')">
+    <a>{{ 'Analytics.MessagesComponentTitle' | translate }}</a>
   </li>
   <!-- <li class="btn-with-border-effect " [ngClass]="{'li-active' : selected === 'sentiment', 'border-from-center': selected !== 'sentiment'}" (click)="goTo('sentiment')">
       <a>{{ 'Analytics.Metrics.Sentiment' | translate }}</a>
@@ -16,6 +22,8 @@
 <div class="main-content" style="padding-top:0px">
   <div class="container-fluid">
     <appdashboard-richieste *ngIf="selected=='richieste'"></appdashboard-richieste>
+    <appdashboard-visitors-analytics *ngIf="selected=='visitors'"></appdashboard-visitors-analytics>
+    <appdashboard-messages *ngIf="selected=='messages'"></appdashboard-messages>
     <appdashboard-sentiment *ngIf="selected=='sentiment'"></appdashboard-sentiment>
     <appdashboard-tempirisposta *ngIf="selected=='tempiRisposta'"></appdashboard-tempirisposta>
     <appdashboard-durataconv *ngIf="selected=='durataConv'"></appdashboard-durataconv>
