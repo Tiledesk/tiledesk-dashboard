@@ -1,3 +1,6 @@
+import { NotificationService } from './services/notification.service';
+import { EventsComponent } from './events/events.component';
+import { VisitorsComponent } from './visitors/visitors.component';
 import { PopupService } from './services/popup.service';
 import { MarkerService } from './services/marker.service';
 import { MapRequestComponent } from './map-request/map-request.component';
@@ -197,13 +200,14 @@ import { AppStoreInstallComponent } from './app-store/app-store-install/app-stor
 import { DeptsComponent } from './depts/depts.component';
 import { DocsUrlRowComponent } from './components/docs-url-row/docs-url-row.component';
 
+
+
 import { WebhookComponent } from './webhook/webhook.component';
 import { WebhookAddEditComponent } from './webhook/webhook-add-edit/webhook-add-edit.component';
 import { WebhookService } from './services/webhook.service';
-import { VisitorsComponent } from './analytics2/visitors/visitors.component';
-import { MessagesComponent } from './analytics2/messages/messages.component';
+import { VisitorsAnalyticsComponent } from './analytics2/metriche/visitors/visitors-analytics.component';
+import { MessagesComponent } from './analytics2/metriche/messages/messages.component';
 import { NotificationSettingsComponent } from './user-profile/notification-settings/notification-settings.component';
-
 
 console.log('************** APPMODULE ******************');
 // AoT requires an exported function for factories
@@ -346,8 +350,10 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     WebhookAddEditComponent,
     MapRequestComponent,
     VisitorsComponent,
+    EventsComponent,
     MessagesComponent,
-    NotificationSettingsComponent
+    NotificationSettingsComponent,
+    VisitorsAnalyticsComponent
   ],
   imports: [
     /* PRIVATE */
@@ -428,6 +434,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     FilterArrayPipe,
     MarkerService,
     PopupService,
+    NotificationService,
     { provide: LocationStrategy, useClass: HashLocationStrategy }
   ],
   bootstrap: [

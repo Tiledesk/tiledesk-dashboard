@@ -11,6 +11,7 @@ import { AuthService } from '../core/auth.service';
 import { avatarPlaceholder, getColorBck } from '../utils/util';
 import { NotifyService } from '../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
+import { AppConfigService } from 'app/services/app-config.service';
 const swal = require('sweetalert');
 @Component({
   selector: 'appdashboard-contact-details',
@@ -75,6 +76,9 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
   done_msg: string;
   pleaseTryAgain: string;
   contactHasBeenMovedToTheTrash: string;
+
+  CHAT_BASE_URL: string;
+
   constructor(
     public location: Location,
     private route: ActivatedRoute,
@@ -85,7 +89,8 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
     public auth: AuthService,
     private contactsService: ContactsService,
     private notify: NotifyService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private appConfigService: AppConfigService
   ) { }
 
   // -----------------------------------------------------------------------------------------------------
@@ -110,6 +115,12 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
     this.getCurrentProject();
     this.getCurrentUser();
     this.getTranslation();
+    this.getChatUrl();
+  }
+
+  getChatUrl() {
+    this.CHAT_BASE_URL = this.appConfigService.getConfig().CHAT_BASE_URL;
+    console.log('AppConfigService getAppConfig (USERS COMP.) CHAT_BASE_URL', this.CHAT_BASE_URL);
   }
 
   getTranslation() {
@@ -667,6 +678,14 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
         text.slice(0, 95) + '...' :
         text;
     }
+  }
+
+  chatWithAgent() {
+    console.log("CONTACT: ", this.contact_details);
+
+    const url = this.CHAT_BASE_URL + '?' + 'recipient=' + this.contact_details._id + '&recipientFullname=' + this.contact_details.fullname;
+    console.log("CONTACT-DETAIL-COMP - CHAT URL ", url);
+    window.open(url, '_blank');
   }
 
   goToRequestMsgs(request_recipient: string) {

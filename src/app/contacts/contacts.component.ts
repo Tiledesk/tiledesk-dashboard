@@ -1,3 +1,4 @@
+import { AppConfigService } from './../services/app-config.service';
 // tslint:disable:max-line-length
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 // import { HttpClient } from '@angular/common/http';
@@ -13,8 +14,6 @@ import { UsersService } from '../services/users.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ProjectPlanService } from '../services/project-plan.service';
 import { Subscription } from 'rxjs';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-import { text } from '@angular/core/src/render3/instructions';
 declare const $: any;
 const swal = require('sweetalert');
 
@@ -96,6 +95,9 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   moveToTrash_msg: string;
   countOfActiveContacts: number;
 
+  CHAT_BASE_URL: string;
+  id_request: string;
+
   constructor(
     private http: Http,
     private contactsService: ContactsService,
@@ -104,7 +106,8 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     private notify: NotifyService,
     private usersService: UsersService,
     private translate: TranslateService,
-    private prjctPlanService: ProjectPlanService
+    private prjctPlanService: ProjectPlanService,
+    private appConfigService: AppConfigService
   ) { }
 
   ngOnInit() {
@@ -116,6 +119,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getProjectUserRole();
     this.getProjectPlan();
 
+    this.CHAT_BASE_URL = this.appConfigService.getConfig().CHAT_BASE_URL;
 
     // this.getTrashedContactsCount();
     // this.getActiveContactsCount();
@@ -131,6 +135,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
   }
+
 
   getTranslation() {
 
@@ -874,6 +879,14 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       }
     });
+  }
+
+  chatWithAgent(contact) {
+    console.log("CONTACT: ", contact);
+
+    const url = this.CHAT_BASE_URL + '?' + 'recipient=' + contact._id + '&recipientFullname=' + contact.fullname;
+    console.log("CONTACT-COMP - CHAT URL ", url);
+    window.open(url, '_blank');
   }
 
   goToContactDetails(requester_id) {

@@ -464,7 +464,7 @@ export class BasetriggerComponent implements OnInit {
         },
         {
           groupId: translateConditions.event.groupId.VisitorInformation,
-          id: 'code',
+          id: 'attributes.event.code',
           key: 'event.attributes.code',
           label_key: translateConditions.event.label_key.EventCode,
           triggerType: 'event.emit',
@@ -472,7 +472,7 @@ export class BasetriggerComponent implements OnInit {
         },
         {
           groupId: translateConditions.event.groupId.VisitorInformation,
-          id: 'sourcePage',
+          id: 'attributes.attributes.sourcePage',
           key: 'event.attributes.attributes.sourcePage',
           label_key: translateConditions.event.label_key.EventSourcePage,
           triggerType: 'event.emit',
@@ -756,8 +756,8 @@ export class BasetriggerComponent implements OnInit {
             { groupId: translateConditions.user.groupId.VisitorInformation, id: 'lastname', label_key: translateConditions.user.label_key.VisitorLastName, triggerType: 'user.login', type: 'string' },
             { groupId: translateConditions.user.groupId.VisitorInformation, id: 'email', label_key: translateConditions.user.label_key.VisitorMail, triggerType: 'user.login', type: 'string' },
             { groupId: translateConditions.event.groupId.VisitorInformation, id: 'name', key: 'event.name', label_key: translateConditions.event.label_key.EventName, triggerType: 'event.emit', type: 'string' },
-            { groupId: translateConditions.event.groupId.VisitorInformation, id: 'code', key: 'event.attributes.code', label_key: translateConditions.event.label_key.EventCode, triggerType: 'event.emit', type: 'int' },
-            { groupId: translateConditions.event.groupId.VisitorInformation, id: 'sourcePage', key: 'event.attributes.attributes.sourcePage', label_key: translateConditions.event.label_key.EventSourcePage, triggerType: 'event.emit', type: 'string' }
+            { groupId: translateConditions.event.groupId.VisitorInformation, id: 'attributes.event.code', key: 'event.attributes.code', label_key: translateConditions.event.label_key.EventCode, triggerType: 'event.emit', type: 'int' },
+            { groupId: translateConditions.event.groupId.VisitorInformation, id: 'attributes.attributes.sourcePage', key: 'event.attributes.attributes.sourcePage', label_key: translateConditions.event.label_key.EventSourcePage, triggerType: 'event.emit', type: 'string' }
 
           ]
 

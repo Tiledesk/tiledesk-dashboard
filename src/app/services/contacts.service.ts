@@ -373,7 +373,7 @@ export class ContactsService {
     /* *** USED TO TEST IN LOCALHOST (note: this service doen't work in localhost) *** */
     // const url = 'https://api.tiledesk.com/v1/' + '5ba35f0b9acdd40015d350b6' + '/requests?requester_id=' + requesterid + '&page=' + pagenumber;
     /* *** USED IN PRODUCTION *** */
-    const url = this.SERVER_BASE_PATH + this.projectId + '/requests?lead=' + requesterid + '&page=' + pagenumber;
+    const url = this.SERVER_BASE_PATH + this.projectId + '/requests?lead=' + requesterid + '&page=' + pagenumber + '&status=all';
 
     console.log('!!!! CONTACT DETAILS - REQUESTS SERVICE URL ', url);
 

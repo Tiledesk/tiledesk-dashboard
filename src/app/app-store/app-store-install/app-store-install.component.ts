@@ -1,7 +1,9 @@
+import { AuthService } from './../../core/auth.service';
 import { Component, OnInit, HostListener } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser'
 import { Location } from '@angular/common';
+import { AppStoreService } from 'app/services/app-store.service';
 
 @Component({
   selector: 'appdashboard-app-store-install',
@@ -16,11 +18,15 @@ export class AppStoreInstallComponent implements OnInit {
   navbarAndFooterHeight = 67;
   newInnerHeight: any;
   app_title: string;
+  result: any;
+  TOKEN: string;
 
   constructor(
     public route: ActivatedRoute,
     private sanitizer: DomSanitizer,
     public location: Location,
+    private appStoreService: AppStoreService,
+    private auth: AuthService
   ) {
 
     this.getRouteParams();
@@ -37,10 +43,30 @@ export class AppStoreInstallComponent implements OnInit {
 
       console.log('APP-STORE-INSTALL - PARAMS ', params);
 
-      this.app_title = params.apptitle;
-      console.log('APP-STORE-INSTALL - APP TITLE ',   this.app_title);
+      this.appStoreService.getAppDetail(params.appid).subscribe((res) => {
+        console.log("APP-STORE-INSTALL - GET APP DETAIL RESULT: ", res);
+        this.result = res;
+        //console.log(this.result._body);
+        let parsed_json = JSON.parse(this.result._body); 
+        console.log("PARSED JSON: ", parsed_json);
 
-      this.URL = this.sanitizer.bypassSecurityTrustResourceUrl(params.url);
+        this.auth.user_bs.subscribe((user) => {
+          if (user) {
+            this.TOKEN = user.token
+            this.URL = this.sanitizer.bypassSecurityTrustResourceUrl(parsed_json.installActionURL + '?project_id=' + params.projectid + '&token=' + this.TOKEN);
+            console.log("URL IFRAME: ", this.URL)
+          } else {
+            console.log("GET USER TOKEN: FAILED");
+          }
+        });
+        
+      })
+
+      //this.app_title = params.apptitle;
+      //console.log('APP-STORE-INSTALL - APP TITLE ',   this.app_title);
+
+      //this.URL = this.sanitizer.bypassSecurityTrustResourceUrl(params.url);
+      //console.log("URL IFRAME: ", this.URL)
     })
   }
 

@@ -85,6 +85,7 @@
     "Department": "Department",
     "SelectADepartment": "Select a department",
     "DepartmentId": "Department id",
+    "ProjectName": "Project name",
     "ProjectId": "Project id",
     "Message": "Message",
     "ServedBy": "Served by",
@@ -118,6 +119,7 @@
     "HiWelcomeToTiledesk": "Hi, welcome to {{company_name}}",
     "HowCanWeHelp": "How can we help?",
     "PreviousConversations": "Previous conversations",
+    "YourConversations": "Your conversations",
     "NewConversation": "New conversation",
     "WidgetAppearance": "Widget Appearance",
     "OnlineMessage": "Online message",
@@ -226,6 +228,7 @@
     "HisStatus": "his status",
     "Status": "Status",
     "TheAvailabilityStatusOf": "the availability status of",
+    "AvailabilityStatus": "availability status",
     "TheRoleOf": "the role of",
     "Into": "into",
     "HasRemoved": "has removed",
@@ -407,7 +410,7 @@
     "Delete": "Delete",
     "NoUnservedRequests": "No Unserved conversations",
     "NoServedRequests": "No Served conversations",
-    "NoRequests": "No Conversation",
+    "NoRequests": "No conversation",
     "MultiLanguagePreview": "Change preview language",
     "RequiredField": "Required field",
     "Text": "Text",
@@ -473,6 +476,7 @@
     "Save": "Save",
     "Update": "Update",
     "Warning":"Attention!",
+    "CreationDate": "Creation date",
     "CannedResponses": {
         "QuickTips": {
             "1": "Canned responses are pre-made messages you can recall easily during chat.",
@@ -589,6 +593,16 @@
         "CurrentPasswordIsInvalid": "Current password is invalid",
         "AnErrorHasOccurred": "An error has occurred",
         "PasswordMustBe": "Password must be at least 6 characters long."
+    },
+    "NotificationSettings": {
+        "AssignedConversations": "Assigned Conversations",
+        "AssignedConversationsSubtitle": "Receive an email when a new conversation is assigned to you.",
+        "UnassignedConversations": "Unassigned Conversations",
+        "UnassignedConversationsSubtitle": "Receive an email when a conversation is unassigned.",
+        "NotificationMsgs": {
+            "UpdateSuccess": "Preferences updated",
+            "UpdateError": "An error occurred while preferences updating"
+        }
     },
     "NavBar": {
         "ViewAllProjects": "View all projects",
@@ -720,7 +734,8 @@
         "QuickTips": "Quick tips",
         "Processing": "Processing...",
         "Completed": "Completed",
-        "RoutingRulesSuccessfullyUpdated": "Routing rules successfully updated"
+        "RoutingRulesSuccessfullyUpdated": "Routing rules successfully updated",
+        "GroupLabel" : "(Group)"
     },
     "UsersPage": {
         "Invites": "Invite user",
@@ -1089,7 +1104,7 @@
         "AreYouSureLeftTheChat": "Are you sure you want to left the chat?",
         "ChatLeft": "Chat left",
         "AuthenticatedUser": "Authenticated User",
-        "ViewRequestDetails": "view conversation details",
+        "ViewRequestDetails": "View conversation details",
         "Open": "Open"
     },
     "RequestMsgsPage": {
@@ -1492,7 +1507,7 @@
         "PanoramicaComponentTitle": "Panoramic",
         "MetricsComponentTitle": "Metrics",
         "Metrics": {
-            "Requests": "Requests",
+            "Requests": "Conversations",
             "Sentiment": "Sentiment",
             "ResponseTime": "Response time",
             "ConversationLenght": "Conversation Length"
@@ -1611,5 +1626,25 @@
             "UpdateSubscriptionError": "An error occurred while updating subscription",
             "ShowSecretError": "An error occurred while secret generation"
         }
-    }
+    },
+    "SoundEnabled": "Sound enabled",
+    "SoundDisabled":"Sound disabled",
+    "NumberOfRequestsAssignedToMe":"Number of conversation assigned to me",
+    "NumberOfUnservedRequests":"Number of unserved conversation",
+    "User":"User",
+    "ProjectSelected": "Project selected",
+    "GoToNotRealTimeRequests": "go to the non-real-time conversations page",
+    "FilterBy": "Filter By",
+    "ConversationStatus":"Conversation status",
+    "IntroGreetings": "Intro greetings",
+    "ReplyTimeMsg": "Reply time",
+    "SayHowSoonYourTeamUsuallyReplies":"Say how soon your team usually replies",
+    "IsDisplayedWhenAverageTeamResponseTimeIsNotAvailable":"This message will appear when the team's average response time is unavailable in the last 4 hours",
+    "DynamicallySharingAverageResponseTime":"Dynamically, sharing the team's average response time",
+    "YourContactsSeeThisMessageIfARTIsNotAvailable":"Your contacts see this message if the team's average response time isn't available",
+    "ConfigureWidget":"Configure widget",
+    "WidgetAppearanceAndDefaultLanguage":"Widget appearance and default language",
+    "AlwaysWithTheFollowingMessage":"Always with the following message"
+
+    
 }

@@ -34,7 +34,7 @@
       </div>
 
       <!-- Controllare se è possibile eliminare qualcosa -->
-      <div class="modal-body" [ngClass]="{hidden_elem: displayAddcustomizationView === true}"
+      <div class="modal-body" 
         style="padding-top: 0px; padding-bottom: 0px;">
 
         <div *ngIf="showSkeleton === true" class="edit-response_view" style="min-height: 200px;">
@@ -49,19 +49,7 @@
 
         <div *ngIf="showSkeleton === false" class="edit-response_view">
 
-          <div class="row">
-            <div class="col-xs-12">
-              <div class="form-group" style="margin-top: 0px;">
-                <input id="webhook-title" name="webhook-title" [(ngModel)]="webhookTarget" value=""
-                  placeholder='Enter Webhook Target (example: "https://www.yourwebsite.com/")' class="form-control" />
-                <span *ngIf="targetIsEmpty === true" class="error-message" style="color: #f6303a;font-size: 14px;">
-                  {{ "Webhook.RequiredFiled" | translate }}
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div class="form-group row">
+          <div class="form-group row" style="margin-top: 15px;">
             <label for="webhookEvent" class="col-xs-3 custom-label">
               {{ "Webhook.SelectEvent" | translate }}
             </label>
@@ -96,6 +84,18 @@
               {{ "Webhook.RequiredFiled" | translate }}
             </span>
 
+          </div>
+
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="form-group" style="margin-top: 20px;">
+                <input id="webhook-title" name="webhook-title" [(ngModel)]="webhookTarget" value=""
+                  placeholder='Enter Webhook Target (example: "https://www.yourwebsite.com/")' class="form-control" />
+                <span *ngIf="targetIsEmpty === true" class="error-message" style="color: #f6303a;font-size: 14px;">
+                  {{ "Webhook.RequiredFiled" | translate }}
+                </span>
+              </div>
+            </div>
           </div>
 
         </div>

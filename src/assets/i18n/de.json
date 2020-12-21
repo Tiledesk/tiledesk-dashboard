@@ -85,6 +85,7 @@
 	"Department": "Abteilung",
 	"SelectADepartment": "Abteilung auswählen",
 	"DepartmentId": "Abteilung Id",
+	"ProjectName": "Projektname",
 	"ProjectId": "Projekt id",
 	"Message": "Nachricht",
 	"ServedBy": "Bearbeitet von",
@@ -118,6 +119,7 @@
 	"HiWelcomeToTiledesk": "Hallo, willkommen zu {{company_name}}",
 	"HowCanWeHelp": "Wie können wir behilflich sein?",
 	"PreviousConversations": "Vorherige Unterhaltungen",
+	"YourConversations": "Ihre Gespräche",
 	"NewConversation": "Unterhaltung",
 	"WidgetAppearance": "Widget Aussehen",
 	"OnlineMessage": "Online Nachricht",
@@ -226,6 +228,7 @@
 	"HisStatus": "den eigenen Status",
 	"Status": "Status",
 	"TheAvailabilityStatusOf": "den Verfügbarkeitsstatus von",
+	"AvailabilityStatus": "Verfügbarkeitsstatus",
 	"TheRoleOf": "die Rolle von",
 	"Into": "zu",
 	"HasRemoved": "entfernte",
@@ -407,7 +410,7 @@
 	"Delete": "Löschen",
 	"NoUnservedRequests": "Keine offenen Anfragen",
 	"NoServedRequests": "Keine bearbeiteten Anfragen",
-	"NoRequests": "Keine Anfragen",
+	"NoRequests": "Keine anfragen",
 	"MultiLanguagePreview": "Preview Sprache ändern",
 	"RequiredField": "Pflichtfeld",
 	"Text": "Text",
@@ -473,6 +476,7 @@
 	"Save": "Speichern",
 	"Update": "Aktualisieren",
 	"Warning":"Vorsicht!",
+	"CreationDate": "Erstellungsdatum",
 	"CannedResponses": {
 		"QuickTips": {
 			"1": "Vordefinierte Antworten sind Nachrichten, die es Ihnen ermöglichen schneller auf oft gestellte Fragen zu reagieren.",
@@ -590,6 +594,16 @@
 		"AnErrorHasOccurred": "Ein Fehler ist aufgetreten",
 		"PasswordMustBe": "Passwort muss aus mindestens 6 Zeichen bestehen."
 	},
+	"NotificationSettings": {
+        "AssignedConversations": "Zugewiesene Gespräche",
+        "AssignedConversationsSubtitle": "Erhalten Sie eine E-Mail, wenn Ihnen eine neue Konversation zugewiesen wird.",
+        "UnassignedConversations": "Nicht zugewiesene Gespräche",
+		"UnassignedConversationsSubtitle": "Erhalten Sie eine E-Mail, wenn eine Konversation nicht zugewiesen ist.",
+		"NotificationMsgs": {
+            "UpdateSuccess": "Aktualisierte Einstellungen.",
+            "UpdateError": "Beim Aktualisieren der Einstellungen ist ein Fehler aufgetreten."
+        }
+    },
 	"NavBar": {
 		"ViewAllProjects": "Alle Projekte anzeigen",
 		"ProjectSettings": "Projekt Einstellungen",
@@ -720,7 +734,8 @@
 		"QuickTips": "Quick Tips",
 		"Processing": "Verarbeiten...",
 		"Completed": "Abgeschlossen",
-		"RoutingRulesSuccessfullyUpdated": "Routing-Regeln erfolgreich aktualisiert"
+		"RoutingRulesSuccessfullyUpdated": "Routing-Regeln erfolgreich aktualisiert",
+		"GroupLabel" : "(Gruppe)"
 	},
 	"UsersPage": {
 		"Invites": "Benutzer einladen",
@@ -1492,7 +1507,7 @@
 		"PanoramicaComponentTitle": "Panoramica",
 		"MetricsComponentTitle": "Metriken",
 		"Metrics": {
-			"Requests": "Anfragen",
+			"Requests": "Gespräche",
 			"Sentiment": "Empfindung",
 			"ResponseTime": "Reaktionszeit",
 			"ConversationLenght": "Unterhaltungslänge"
@@ -1610,6 +1625,24 @@
 			"UpdateSubscriptionError": "Beim Aktualisieren des Abo ist ein Fehler aufgetreten",
 			"ShowSecretError": "Beim Generieren des Geheimnisses ist ein Fehler aufgetreten"
         }
-    }
+    },
+	"SoundEnabled": "Sound aktiviert",
+	"SoundDisabled":"Ton deaktiviert",
+	"NumberOfRequestsAssignedToMe":"Anzahl der mir zugewiesenen Gespräche",
+	"NumberOfUnservedRequests":"Anzahl der nicht verdienten Gespräche",
+	"User":"Nutzer",
+	"ProjectSelected": "Projekt ausgewählt",
+	"GoToNotRealTimeRequests": "Gehen Sie zur Seite für Nicht-Echtzeit-Konversationen",
+	"FilterBy": "Filtern nach",
+	"ConversationStatus":"Gesprächsstatus",
+	"IntroGreetings": "Intro-Grüße",
+	"ReplyTimeMsg": "Antwortzeit",
+	"SayHowSoonYourTeamUsuallyReplies":"Sagen Sie, wie schnell Ihr Team normalerweise antwortet",
+	"IsDisplayedWhenAverageTeamResponseTimeIsNotAvailable":"Diese Meldung wird angezeigt, wenn die durchschnittliche Antwortzeit des Teams nicht verfügbar ist",
+	"DynamicallySharingAverageResponseTime":"Dynamische Freigabe der durchschnittlichen Antwortzeit des Teams",
+	"YourContactsSeeThisMessageIfARTIsNotAvailable":"Ihre Kontakte sehen diese Nachricht, wenn die durchschnittliche Antwortzeit des Teams nicht verfügbar ist",
+	"ConfigureWidget":"Konfigurieren Sie das Widget",
+	"WidgetAppearanceAndDefaultLanguage":"Widget-Erscheinungsbild und Standardsprache",
+	"AlwaysWithTheFollowingMessage":"Immer mit der folgenden Nachricht"
 	
 }

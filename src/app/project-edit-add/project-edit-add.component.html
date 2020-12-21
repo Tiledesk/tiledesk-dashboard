@@ -38,11 +38,17 @@
     <a> {{ "ProjectEditPage.Authentication" | translate }}</a>
   </li>
 
-  <li *ngIf="(isVisibleAdvancedTab && DISPLAY_ADVANCED_TAB === true) || (isUNIS === true)" (click)="goToProjectSettings_Advanced()"
-    class="btn-with-border-effect"
+  <li *ngIf="(isVisibleAdvancedTab && DISPLAY_ADVANCED_TAB === true) || (isUNIS === true)"
+    (click)="goToProjectSettings_Advanced()" class="btn-with-border-effect"
     [ngClass]="{ 'li-active' : PROJECT_SETTINGS_ADVANCED_ROUTE === true, 'border-from-center': PROJECT_SETTINGS_ADVANCED_ROUTE === false }">
 
     <a> {{ "ProjectEditPage.Advanced" | translate }}</a>
+  </li>
+
+  <li *ngIf="isVisibleNotificationTab" (click)="goToProjectSettings_Notification()" class="btn-with-border-effect"
+    [ngClass]="{'li-active': PROJECT_SETTINGS_NOTIFICATION_ROUTE, 'border-from-center': PROJECT_SETTINGS_NOTIFICATION_ROUTE === false }">
+
+    <a> {{ "Notification" | translate }}</a>
   </li>
 
 </ul>
@@ -1018,6 +1024,84 @@
 
 
             </span> <!-- /. ADVANCED ROUTE -->
+
+            <!-- 
+            // --------------------------------------------------------
+            // Notification
+            // -------------------------------------------------------- -->
+
+            <span *ngIf="PROJECT_SETTINGS_NOTIFICATION_ROUTE">
+
+              <!-- ASSIGNED CONVERSATION -->
+              <div class="row">
+                <div class="col-md-6">
+                  <h3 class="card_title__underlined">
+                    <span class="card_title__underline">
+                      {{ "NotificationSettings.AssignedConversations" | translate }}
+                    </span>
+                  </h3>
+                </div>
+
+                <!-- SWITCH BUTTON -->
+                <div class="col-md-6">
+                  <h3 class="card-title onoffswitch_container_first_line">
+
+                    <div class="onoffswitch">
+                      <input (change)="toggleProjectAssignedConversation($event)" [checked]="assigned_conv_on === true"
+                        type="checkbox" name="assigned_conv_onoffswitch" class="onoffswitch-checkbox"
+                        id="assigned_conv_onoffswitch">
+                      <label class="onoffswitch-label" for="assigned_conv_onoffswitch">
+                        <span class="onoffswitch-inner"></span>
+                        <span class="onoffswitch-switch"></span>
+                      </label>
+                    </div>
+                  </h3>
+                </div>
+
+                <div class="col-md-12">
+                  <div class="section-subtitle"></div>
+                  <p style="margin-top: -10px;">
+                    {{ "NotificationSettings.AssignedConversationsSubtitle" | translate }}</p>
+                </div>
+
+              </div>
+
+              <!-- UNASSIGNED CONVERSATION -->
+              <div class="row" style="margin-top: 60px;">
+                <div class="col-md-6">
+                  <h3 class="card_title__underlined">
+                    <span class="card_title__underline">
+                      {{ "NotificationSettings.UnassignedConversations" | translate }}
+                    </span>
+                  </h3>
+                </div>
+
+                <!-- SWITCH BUTTON -->
+                <div class="col-md-6">
+                  <h3 class="card-title onoffswitch_container_first_line">
+
+                    <div class="onoffswitch">
+                      <input (change)="toggleProjectUnassignedConversation($event)" [checked]="unassigned_conv_on === true"
+                        type="checkbox" name="unassigned_conv_onoffswitch" class="onoffswitch-checkbox"
+                        id="unassigned_conv_onoffswitch">
+                      <label class="onoffswitch-label" for="unassigned_conv_onoffswitch">
+                        <span class="onoffswitch-inner"></span>
+                        <span class="onoffswitch-switch"></span>
+                      </label>
+                    </div>
+                  </h3>
+                </div>
+
+                <div class="col-md-12">
+                  <div class="section-subtitle"></div>
+                  <p style="margin-top: -10px;">
+                    {{ "NotificationSettings.UnassignedConversationsSubtitle" | translate }}</p>
+                </div>
+
+              </div>
+              <!-- </div>
+              </div> -->
+            </span>
 
           </div>
           <!-- ./ card-content -->

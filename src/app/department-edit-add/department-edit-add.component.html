@@ -156,7 +156,7 @@
 
                         </option>
                         <option *ngIf="bot.truncated_desc" disabled style="font-style:italic">
-                          &nbsp;&nbsp;&nbsp;{{ bot.truncated_desc}}</option>
+                          &nbsp;&nbsp;&nbsp;{{ bot.description}}</option>
                       </ng-container>
                     </select>
 
@@ -300,7 +300,7 @@
 
                         <option *ngFor="let group of groupsList" [value]="group?._id"
                           [selected]="selectedGroupId === group?._id">
-                          {{group?.name}}
+                          {{group?.name}} {{ "RoutingPage.GroupLabel" | translate }}
                         </option>
                       </select>
 

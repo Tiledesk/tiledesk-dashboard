@@ -57,4 +57,15 @@ export class AppStoreService {
       .map((response) => response.json());
   }
 
+  public getAppDetail(appId) {
+
+    const headers = new Headers({
+      'Content-Type': 'application/json',
+      'Authorization': this.TOKEN
+    })
+
+    return this.http.get("https://tiledesk-apps.herokuapp.com/api/apps/" + appId)
+  }
+
+
 }

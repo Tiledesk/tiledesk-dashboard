@@ -1,0 +1,100 @@
+<div class="navbar-brand" style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px">
+  <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
+    (click)="goBack()">keyboard_arrow_left</i>
+  {{ "Notification" | translate }}
+</div>
+
+<ul class="bottom-nav" style="top: 5px;">
+  <li class="btn-with-border-effect border-from-center" (click)="goToUserProfile()">
+    <a> {{ "UserProfile.Profile" | translate }} </a>
+  </li>
+  <li class="btn-with-border-effect border-from-center" (click)="goToChangePsw()">
+    <a>{{ "UserProfile.ChangePsw" | translate }} </a>
+  </li>
+  <li class="btn-with-border-effect" (click)="goToAccountSettings()">
+    <a>{{ "Settings" | translate }} </a>
+  </li>
+  <li class="btn-with-border-effect li-active">
+    <a>{{ "Notification" | translate }} </a>
+  </li>
+</ul>
+
+<div class="main-content" style="padding-top:0px">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+
+        <div class="card" style="min-height: 225px;">
+          <loading-spinner *ngIf="showSpinner"></loading-spinner>
+
+          <div *ngIf="!showSpinner" class="card-content">
+
+            <!-- ASSIGNED CONVERSATION -->
+            <div class="row">
+              <div class="col-md-6">
+                <h3 class="card_title__underlined">
+                  <span class="card_title__underline">
+                    {{ "NotificationSettings.AssignedConversations" | translate }}
+                  </span>
+                </h3>
+              </div>
+
+              <!-- SWITCH BUTTON -->
+              <div class="col-md-6">
+                <h3 class="card-title onoffswitch_container_first_line">
+
+                  <div class="onoffswitch">
+                    <input (change)="toggleAssignedConversation($event)" [checked]="assigned_conv_on === true" type="checkbox"
+                      name="assigned_conv_onoffswitch" class="onoffswitch-checkbox" id="assigned_conv_onoffswitch">
+                    <label class="onoffswitch-label" for="assigned_conv_onoffswitch">
+                      <span class="onoffswitch-inner"></span>
+                      <span class="onoffswitch-switch"></span>
+                    </label>
+                  </div>
+                </h3>
+              </div>
+
+              <div class="col-md-12">
+                <div class="section-subtitle"></div>
+                <p style="margin-top: -10px;">{{ "NotificationSettings.AssignedConversationsSubtitle" | translate }}</p>
+              </div>
+
+            </div>
+
+            <!-- UNASSIGNED CONVERSATION -->
+            <div class="row" style="margin-top: 60px;">
+              <div class="col-md-6">
+                <h3 class="card_title__underlined">
+                  <span class="card_title__underline">
+                    {{ "NotificationSettings.UnassignedConversations" | translate }}
+                  </span>
+                </h3>
+              </div>
+
+              <!-- SWITCH BUTTON -->
+              <div class="col-md-6">
+                <h3 class="card-title onoffswitch_container_first_line">
+
+                  <div class="onoffswitch">
+                    <input (change)="toggleUnassignedConversation($event)" [checked]="unassigned_conv_on === true" type="checkbox"
+                      name="unassigned_conv_onoffswitch" class="onoffswitch-checkbox" id="unassigned_conv_onoffswitch">
+                    <label class="onoffswitch-label" for="unassigned_conv_onoffswitch">
+                      <span class="onoffswitch-inner"></span>
+                      <span class="onoffswitch-switch"></span>
+                    </label>
+                  </div>
+                </h3>
+              </div>
+
+              <div class="col-md-12">
+                <div class="section-subtitle"></div>
+                <p style="margin-top: -10px;">{{ "NotificationSettings.UnassignedConversationsSubtitle" | translate }}</p>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
