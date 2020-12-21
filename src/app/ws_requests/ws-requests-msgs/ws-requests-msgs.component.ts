@@ -1864,7 +1864,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     }
   }
 
-
+  goToEvents() {
+    if (this.request.requester) {
+      this.router.navigate(['project/' + this.id_project + '/events/', this.request.requester.id]);
+    }
+  }
 
 
   getProjectuserbyUseridAndGoToEditProjectuser(member_id: string) {
