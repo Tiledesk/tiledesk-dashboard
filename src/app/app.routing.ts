@@ -1,3 +1,4 @@
+import { MapRequestComponent } from './map-request/map-request.component';
 import { NgModule } from '@angular/core';
 import { CommonModule, } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
@@ -125,6 +126,9 @@ import { ProjectsForPanelComponent } from './projects/for-panel/projects-for-pan
 import { WsRequestsUnservedForPanelComponent } from './ws_requests/for-panel/ws-requests-unserved-for-panel/ws-requests-unserved-for-panel.component';
 import { AppStoreComponent } from './app-store/app-store.component';
 import { AppStoreInstallComponent } from './app-store/app-store-install/app-store-install.component';
+
+import { WebhookComponent } from './webhook/webhook.component';
+
 
 
 const routes: Routes = [
@@ -367,6 +371,10 @@ const routes: Routes = [
   { path: 'project/:projectid/app-store-install/:url/:apptitle', component: AppStoreInstallComponent, canActivate: [AuthGuard] },
   
   { path: 'dashboard', component: DashboardComponent },
+
+  // Webhook
+  { path: 'project/:projectid/webhook', component: WebhookComponent, canActivate: [AuthGuard]},
+  { path: 'project/:projectid/map-request', component: MapRequestComponent, canActivate: [AuthGuard]}
 
 
 

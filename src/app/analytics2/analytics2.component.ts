@@ -116,7 +116,6 @@ export class Analytics2Component implements OnInit , OnDestroy {
   goTo(selected){
     this.selected=selected;
     console.log("Move to:", selected);
-
   }
 
   

@@ -13,7 +13,6 @@ import { UsersService } from '../services/users.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ProjectPlanService } from '../services/project-plan.service';
 import { Subscription } from 'rxjs';
-
 declare const $: any;
 const swal = require('sweetalert');
 
@@ -645,10 +644,16 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     // this.id_toDelete = id;
     // this.fullName_toDelete = fullName;
 
-    this.translate.get('MoveTheContactToTheTrash', { contactname: fullName }).subscribe((text: string) => {
-
-      this.moveContactToTrash_msg = text
-    })
+    if (fullName) {
+      this.translate.get('MoveTheContactToTheTrash', { contactname: fullName }).subscribe((text: string) => {
+        this.moveContactToTrash_msg = text
+      })
+    } else {
+      this.translate.get('MoveTheContactToTheTrashNoName').subscribe((text: string) => {
+        this.moveContactToTrash_msg = text
+      })
+    }
+    
     console.log('!!!!! CONTACTS - moveContactToTrash ', this.moveContactToTrash_msg);
 
     swal({

@@ -1,0 +1,200 @@
+<p style="z-index: 1050; position:relative; margin-top: 6px;padding-left: 30px;" class="navbar-brand">
+  Webhook
+</p>
+
+<div class="main-content main-content-no-padding">
+  <div class="container-fluid">
+
+    <div class="row">
+      <div class="col-sm-7 left-col-custom-padding">
+        <div class="card card-custom-margin">
+          <div class="card-header card-header-custom-bkgrnd">
+
+            <button class="btn btn-primary" style="padding: 8px 16px; margin: 0px;min-width: 146px;"
+              (click)="presentWebhookModal_inAddMode()">
+              <span class="icon" style="padding-right: 8px;">
+                <i class="material-icons">add_circle</i>
+              </span>
+              {{ "Webhook.AddSubscription" | translate }}
+            </button>
+          </div>
+
+          <loading-spinner *ngIf="showSpinner"></loading-spinner>
+          <div *ngIf="!showSpinner" class="card-content table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>
+                    <span class="column-th-span">
+                      {{ "Webhook.Subscriptions" | translate }}
+                    </span>
+                  </th>
+                  <th>
+                    <span class="column-th-span">
+                      {{ "Webhook.Actions" | translate }}
+                    </span>
+                  </th>
+                </tr>
+              </thead>
+
+              <tbody>
+
+                <!-- NO SUBSCRIPTION FOUND FOR SELECTED PROJECT ID -->
+                <tr *ngIf="subscriptionsList && subscriptionsList?.length === 0">
+                  <td colspan="2" style="text-align: center; padding-top: 24px;">
+                    <p style="font-size:1em; margin-bottom: 0px; color:#7695a5; font-weight: 400">
+                      <i class="material-icons" style="vertical-align: middle; margin-bottom: 2px;color: #00bcd4;"> info
+                      </i>
+                      {{ "Webhook.NoWebhookSubscriptions" | translate }}
+                    </p>
+                  </td>
+                </tr>
+
+                <tr *ngFor="let subscription of subscriptionsList; let id = index">
+
+                  <td>
+                    <span style="display: block; font-weight: 500; font-size: 14px; color: rgba(0, 0,0, 0.87);">
+                      {{subscription?.target}}
+                    </span>
+                    <span style="display: block; color:#7695a5; font-size: 13px;">
+                      {{subscription?.event}}
+                    </span>
+                  </td>
+
+                  <td class="td-actions text-right" style="padding-top:20px">
+                    <button type="button" rel="tooltip" title="" class="btn btn-primary btn-simple btn-xs"
+                      (click)='presentWebhookModal_inEditMode(subscription?._id)'>
+                      <i class="material-icons">edit</i>
+                    </button>
+
+                    <button type="button" rel="tooltip" title="" class="btn btn-danger btn-simple btn-xs"
+                      (click)='showModal_ConfirmDeleteSubscription(subscription?._id)'>
+                      <i class="material-icons">close</i>
+                    </button>
+                  </td>
+
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- // RIGHT SIDEBAR -->
+      <div class="col-sm-5 right-col-custom-padding">
+        <div class="card card-custom-margin">
+          <div class="card-content">
+            <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 15px">
+              Webhook
+            </h4>
+
+            <p style="color:#7695a5">
+              {{ "Webhook.MoreInfoWebhook" | translate }} <a href="https://developer.tiledesk.com/apis/webhooks" target="_blank">https://developer.tiledesk.com/apis/webhooks</a>
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- SHOW SECRET MODAL -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayModal_SecretGeneratedModal}"
+  style="background-color: rgba(90,90,90,0.5);">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="background-color:#00bcd4; padding-bottom:24px">
+        <button type="button" class="close" aria-label="Close" (click)="closeModal_JwtSecretGenerated()"
+          style="color: #ffffff;">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" style="color: #fff">
+          <i class="material-icons" style="vertical-align: middle">info</i>
+          <span style="vertical-align: middle; padding-left:8px">
+            {{ "Webhook.SharedSecretGenerated" | translate }}
+          </span>
+        </h4>
+        <!-- <h4 class="modal-title" style="color: #fff; padding-top:10px; font-size: 1.1em ">
+            {{ "ProjectEditPage.TheProjectWillBeDeleted" | translate }}
+        </h4> -->
+      </div>
+      <div class="modal-body">
+        <label style="color: rgb(118, 149, 165); font-weight:100; text-align: left;" class="col-sm-10 ">
+          {{ "Webhook.ThisIsYourSharedSecret" | translate }}:
+        </label>
+        <div class="col-sm-10">
+          <div class="input-group">
+            <input id="sharedSecretInput" readonly [(ngModel)]="sharedSecret" class="" type="text"
+              style="border-top-right-radius: 0px; border-bottom-right-radius: 0px;">
+            <span class="input-group-btn" style="padding-right: 0px;padding-left: 0px;">
+              <button class="btn btn-white" (click)="copySharedSecret()"
+                style="padding-bottom: 9px; margin-bottom: 9px; padding-top: 10px; border-top-right-radius: 5px; border-bottom-right-radius: 5px">
+                {{ "Webhook.Copy" | translate }}
+              </button>
+            </span>
+          </div>
+        </div>
+        <label style="color:#f44336; text-align: left; margin-top: 5px;" class="col-sm-10 ">
+          {{ "Webhook.NoteThatWillBeDisplayedOnce" | translate }}.
+        </label>
+      </div>
+      <div class="modal-footer" style="margin-top: 75px; text-align: center">
+        <button class="btn btn-primary" (click)="closeModal_JwtSecretGenerated()" style="padding:12px 16px;">
+          Ok
+        </button>
+        <!-- <button style="margin-top:0px" class="btn btn-danger" disabled (click)="createProject()">
+
+          {{ "ProjectEditPage.DeleteProject" | translate }}
+        </button> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRM DELETE MODAL -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayModal_ConfirmDeleteModal}"
+  style="background-color: rgba(90,90,90,0.5);">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="background-color:#00bcd4; padding-bottom:24px">
+        <button type="button" class="close" aria-label="Close" (click)="closeModal_ConfirmDeleteModal()"
+          style="color: #ffffff;">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" style="color: #fff">
+          <i class="material-icons" style="vertical-align: middle">info</i>
+          <span style="vertical-align: middle; padding-left:8px">
+            {{ "Webhook.ConfirmSubscriptionDeleteTitle" | translate }}
+          </span>
+        </h4>
+        <!-- <h4 class="modal-title" style="color: #fff; padding-top:10px; font-size: 1.1em ">
+            {{ "ProjectEditPage.TheProjectWillBeDeleted" | translate }}
+        </h4> -->
+      </div>
+      <div class="modal-body">
+        {{ "Webhook.ConfirmSubscriptionDeleteBody" | translate }}
+      </div>
+      <div class="modal-footer" style="margin-top: 25px; text-align: center">
+        <button class="btn btn-secondary" (click)="closeModal_ConfirmDeleteModal()" style="padding:12px 16px;">
+          {{ "Webhook.CancelButton" | translate }}
+        </button>
+        <button class="btn btn-primary" (click)="deleteSubscription()" style="padding:12px 16px;">
+          {{ "Webhook.ConfirmButton" | translate }}
+        </button>
+        <!-- <button style="margin-top:0px" class="btn btn-danger" disabled (click)="createProject()">
+
+          {{ "ProjectEditPage.DeleteProject" | translate }}
+        </button> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<appdashboard-webhook-add-edit *ngIf="displayModal_AddEditWebhook === 'block'"
+  (closeModal)="closeModal_AddEditWebhook()" (createdWebhook)="showSecretModal($event)" (hasSavedSubscription)='onSaveSubscription()' [modalMode]="modalMode"
+  [selectWebhookId]="selectWebhookId">
+</appdashboard-webhook-add-edit>
+

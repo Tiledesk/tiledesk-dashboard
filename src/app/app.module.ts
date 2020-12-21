@@ -1,3 +1,6 @@
+import { PopupService } from './services/popup.service';
+import { MarkerService } from './services/marker.service';
+import { MapRequestComponent } from './map-request/map-request.component';
 import { MetricheComponent } from './analytics2/metriche/metriche.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
@@ -201,6 +204,11 @@ import { WidgetCalloutComponent } from './widget-callout/widget-callout.componen
 import { WidgetChatComponent } from './widget-chat/widget-chat.component';
 
 
+import { WebhookComponent } from './webhook/webhook.component';
+import { WebhookAddEditComponent } from './webhook/webhook-add-edit/webhook-add-edit.component';
+import { WebhookService } from './services/webhook.service';
+
+import { MessagesComponent } from './analytics2/messages/messages.component';
 
 console.log('************** APPMODULE ******************');
 // AoT requires an exported function for factories
@@ -345,7 +353,10 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     WidgetCalloutComponent,
     ConfigureWidgetComponent,
     WidgetChatComponent,
-
+    WebhookComponent,
+    WebhookAddEditComponent,
+    MapRequestComponent,
+    MessagesComponent
   ],
   imports: [
     /* PRIVATE */
@@ -417,12 +428,15 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     ResetPswService,
     UploadImageService,
     WidgetService,
+    WebhookService,
     ProjectPlanService,
     SubscriptionService,
     LegendService, TooltipService, AdaptorService, AnalyticsService, HttpClientModule,
     TriggerService,
     SelectOptionsTranslatePipe,
     FilterArrayPipe,
+    MarkerService,
+    PopupService,
     { provide: LocationStrategy, useClass: HashLocationStrategy }
   ],
   bootstrap: [

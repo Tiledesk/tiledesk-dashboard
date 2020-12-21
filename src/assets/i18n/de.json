@@ -1348,7 +1348,9 @@
 						"VisitorInformation": "Besucher Information"
 					},
 					"label_key": {
-						"EventName": "Ereignis Name"
+						"EventName": "Ereignis Name",
+						"EventCode": "Ereigniscode",
+                        "EventSourcePage": "Quellseite"
 					},
 					"placeholder": {
 						"SelectDepartment": "Abteilung auswählen",
@@ -1524,7 +1526,17 @@
 		"SentimentMedianValueHEART": "Die durchschnittliche Kundenzufriedenheit Ihres Teams liegt bei :",
 		"UpgradeYourAccounttoTrackTheChatsYouHaveWithCustomers": " Upgraden Sie Ihren Account um ihre Chats zu tracken",
 		"DailyMedianResponseTime": "Tägliche durchschnittliche Reaktionszeit",
-		"DailyConvDurationTime": "Tägliche durchschnittliche Unterhaltungslänge"
+		"DailyConvDurationTime": "Tägliche durchschnittliche Unterhaltungslänge",
+		"VisitorsComponentTitle": "Besucher",
+		"Visitors" : {
+			"NumberOfVisitors": "Besucherzahl",
+			"VisitorsChartTitle": "Anzahl von besucher letzte "
+		},
+		"MessagesComponentTitle": "Mitteilungen",
+		"Messages": {
+            "MessagesChartTitle": "Anzahl der Nachrichten in den letzten",
+            "NumberOfMessages": "Anzahl der nachrichten"
+        }
 	},
 	"DeleteRequestForever": {
 		"TheRequestWillBePermanentlyDeleted": "Die Anfrage wird dauerhaft gelöscht",
@@ -1546,6 +1558,7 @@
 	"TheContactWasSuccessfullyDeleted": "Der Kontakt wurde erfolgreich gelöscht",
 	"YouCannotDeleteThisContact":"Sie können diesen Kontakt nicht löschen, da ihm Anforderungen zugeordnet sind",
 	"MoveTheContactToTheTrash": "Den Kontakt {{ contactname }} in den Papierkorb verschieben?",
+	"MoveTheContactToTheTrashNoName": "Den Kontakt in den Papierkorb verschieben?",
 	"TheContactHasBeenMovedToTheTrash":"Der Kontakt wurde in den Papierkorb verschoben",
 	"TheRequestHasBeenMovedToHistory":"Die Anforderung wurde in den Verlauf verschoben",
 	"AnErrorHasOccurredArchivingTheRequest":"Beim Archivieren der Anforderung ist ein Fehler aufgetreten",

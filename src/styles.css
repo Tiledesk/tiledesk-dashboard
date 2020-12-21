@@ -3,3 +3,6 @@
 /* Angular ng-select themes */
 /* @import "~@ng-select/ng-select/themes/default.theme.css"; */
 /* @import "~@ng-select/ng-select/themes/material.theme.css"; */
+@import '../node_modules/leaflet/dist/leaflet.css';
+
+

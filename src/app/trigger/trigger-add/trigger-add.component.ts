@@ -80,7 +80,7 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
       name: ['', Validators.required],
       description: '',
       trigger: this.formBuilder.group({
-        key: ['message.received', Validators.required], // by default trigger.key is set to message.receiveed
+        key: ['message.create.from.requester', Validators.required], // by default trigger.key is set to message.create.from.requester
         name: 'message create event',
       }),
       conditionALL_ANY: 'all', // by default condition dropdown is set to all
@@ -99,7 +99,7 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
 
     // because the trigger.key is set to default to message.received temp_cond filter
     // the condition in order of this key value
-    this.temp_cond = this.condition.filter(b => b.triggerType === 'message.received');
+    this.temp_cond = this.condition.filter(b => b.triggerType === 'message.create.from.requester');
     this.temp_act = this.action
 
     // set the initial value to action to the first element of this.action array
@@ -222,7 +222,7 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
   // get dropdown ANY/ALL condition value
   conditionTriggerValue(value: string) {
 
-    // this.temp_cond = this.condition;
+    // this.temp_cond = this.condition; 
     // this.temp_act = this.action;
     this.conditionType = 'conditions.' + value;
     console.log('Cond-value', this.conditionType);
@@ -261,7 +261,7 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
     if (value) {
       this.temp_cond = this.condition.filter(b => b.triggerType === value);
     } else {
-      this.temp_cond = this.condition.filter(b => b.triggerType === 'message.received');
+      this.temp_cond = this.condition.filter(b => b.triggerType === 'message.create.from.requester');
     }
 
 
@@ -696,7 +696,7 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
       // ALL FIELD IS CORRECTLY ADDED
 
       // add trigger.name value
-      if (this.triggerForm.value.trigger.key === 'message.received') {
+      if (this.triggerForm.value.trigger.key === 'message.create.from.requester') {
         this.triggerForm.value.trigger.name = 'message create event';
 
       } else if (this.triggerForm.value.trigger.key === 'request.create') {

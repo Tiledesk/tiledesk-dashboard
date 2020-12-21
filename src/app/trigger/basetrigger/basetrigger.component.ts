@@ -167,7 +167,7 @@ export class BasetriggerComponent implements OnInit {
           id: 'text',
           key: 'message.text',
           label_key: translateConditions.message.label_key.VisitorSearchTerm,
-          triggerType: 'message.received', 
+          triggerType: 'message.create.from.requester', 
           type: 'string'
         },
         {
@@ -175,7 +175,7 @@ export class BasetriggerComponent implements OnInit {
           id: 'senderFullname',
           key: 'message.senderFullname',
           label_key: translateConditions.message.label_key.VisitorName,
-          triggerType: 'message.received',
+          triggerType: 'message.create.from.requester',
           type: 'string'
         },
         {
@@ -183,7 +183,7 @@ export class BasetriggerComponent implements OnInit {
           id: 'attributes.userEmail',
           key: 'message.userEmail',
           label_key: translateConditions.message.label_key.VisitorMail,
-          triggerType: 'message.received',
+          triggerType: 'message.create.from.requester',
           type: 'string'
         },
         // {
@@ -201,7 +201,7 @@ export class BasetriggerComponent implements OnInit {
           id: 'attributes.departmentId',
           key: 'message.attributes.departmentId',
           label_key: translateConditions.message.label_key.Department,
-          triggerType: 'message.received',
+          triggerType: 'message.create.from.requester',
           type: 'boolean',
           operator: this.departments,
           placeholder: translateConditions.message.placeholder.SelectDepartment
@@ -219,7 +219,7 @@ export class BasetriggerComponent implements OnInit {
           id: 'attributes.sourcePage',
           key: 'message.attributes.sourcePageUrl',
           label_key: translateConditions.message.label_key.VisitorURL,
-          triggerType: 'message.received',
+          triggerType: 'message.create.from.requester',
           type: 'string'
         },
         // {
@@ -235,7 +235,7 @@ export class BasetriggerComponent implements OnInit {
           id: 'attributes.client',
           key: 'message.attributes.clientBrowser',
           label_key: translateConditions.message.label_key.VisitorBrowser,
-          triggerType: 'message.received',
+          triggerType: 'message.create.from.requester',
           type: 'string'
         },
         {
@@ -243,7 +243,7 @@ export class BasetriggerComponent implements OnInit {
           id: 'attributes.client',
           key: 'message.attributes.clientPlatform',
           label_key: translateConditions.message.label_key.VisitorPlatform,
-          triggerType: 'message.received',
+          triggerType: 'message.create.from.requester',
           type: 'string'
         },
 
@@ -252,7 +252,7 @@ export class BasetriggerComponent implements OnInit {
           id: 'status',
           key: 'message.status',
           label_key: translateConditions.message.label_key.VisitorServed,
-          triggerType: 'message.received',
+          triggerType: 'message.create.from.requester',
           type: 'boolean',
           operator: [
             { id: 200, label_key: 'True' },
@@ -459,6 +459,22 @@ export class BasetriggerComponent implements OnInit {
           id: 'name',
           key: 'event.name',
           label_key: translateConditions.event.label_key.EventName,
+          triggerType: 'event.emit',
+          type: 'string'
+        },
+        {
+          groupId: translateConditions.event.groupId.VisitorInformation,
+          id: 'code',
+          key: 'event.attributes.code',
+          label_key: translateConditions.event.label_key.EventCode,
+          triggerType: 'event.emit',
+          type: 'int'
+        },
+        {
+          groupId: translateConditions.event.groupId.VisitorInformation,
+          id: 'sourcePage',
+          key: 'event.attributes.attributes.sourcePage',
+          label_key: translateConditions.event.label_key.EventSourcePage,
           triggerType: 'event.emit',
           type: 'string'
         }
@@ -671,26 +687,26 @@ export class BasetriggerComponent implements OnInit {
           const translateAction = pair.translateArray.ActionArray;
           this.condition = [
             // message.received conditions start
-            { groupId: translateConditions.message.groupId.VisitorInformation, id: 'text', label_key: translateConditions.message.label_key.VisitorSearchTerm, triggerType: 'message.received', type: 'string' },
-            { groupId: translateConditions.message.groupId.VisitorInformation, id: 'senderFullname', label_key: translateConditions.message.label_key.VisitorName, triggerType: 'message.received', type: 'string' },
-            { groupId: translateConditions.message.groupId.VisitorInformation, id: 'attributes.userEmail', label_key: translateConditions.message.label_key.VisitorMail, triggerType: 'message.received', type: 'string' },
+            { groupId: translateConditions.message.groupId.VisitorInformation, id: 'text', label_key: translateConditions.message.label_key.VisitorSearchTerm, triggerType: 'message.create.from.requester', type: 'string' },
+            { groupId: translateConditions.message.groupId.VisitorInformation, id: 'senderFullname', label_key: translateConditions.message.label_key.VisitorName, triggerType: 'message.create.from.requester', type: 'string' },
+            { groupId: translateConditions.message.groupId.VisitorInformation, id: 'attributes.userEmail', label_key: translateConditions.message.label_key.VisitorMail, triggerType: 'message.create.from.requester', type: 'string' },
             {
               groupId: translateConditions.message.groupId.VisitorInformation, id: 'attributes.departmentId', label_key: translateConditions.message.label_key.VisitorDepartment,
-              triggerType: 'message.received', type: 'boolean', operator: this.departments, placeholder: translateConditions.message.placeholder.SelectDepartment
+              triggerType: 'message.create.from.requester', type: 'boolean', operator: this.departments, placeholder: translateConditions.message.placeholder.SelectDepartment
             },
-            { groupId: translateConditions.message.groupId.VisitorInformation, id: 'attributes.client', label_key: translateConditions.message.label_key.VisitorReferrer, triggerType: 'message.received', type: 'string' },
-            { groupId: translateConditions.message.groupId.PageInformation, id: 'attributes.sourcePage', label_key: translateConditions.message.label_key.VisitorURL, triggerType: 'message.received', type: 'string' },
-            { groupId: translateConditions.message.groupId.PageInformation, id: 'attributes.sourcePage', label_key: translateConditions.message.label_key.VisitorPageTitle, triggerType: 'message.received', type: 'string' },
-            { groupId: translateConditions.message.groupId.SoftwareOfVisitor, id: 'attributes.client', label_key: translateConditions.message.label_key.VisitorBrowser, triggerType: 'message.received', type: 'string' },
-            { groupId: translateConditions.message.groupId.SoftwareOfVisitor, id: 'attributes.client', label_key: translateConditions.message.label_key.VisitorPlatform, triggerType: 'message.received', type: 'string' },
+            { groupId: translateConditions.message.groupId.VisitorInformation, id: 'attributes.client', label_key: translateConditions.message.label_key.VisitorReferrer, triggerType: 'message.create.from.requester', type: 'string' },
+            { groupId: translateConditions.message.groupId.PageInformation, id: 'attributes.sourcePage', label_key: translateConditions.message.label_key.VisitorURL, triggerType: 'message.create.from.requester', type: 'string' },
+            { groupId: translateConditions.message.groupId.PageInformation, id: 'attributes.sourcePage', label_key: translateConditions.message.label_key.VisitorPageTitle, triggerType: 'message.create.from.requester', type: 'string' },
+            { groupId: translateConditions.message.groupId.SoftwareOfVisitor, id: 'attributes.client', label_key: translateConditions.message.label_key.VisitorBrowser, triggerType: 'message.create.from.requester', type: 'string' },
+            { groupId: translateConditions.message.groupId.SoftwareOfVisitor, id: 'attributes.client', label_key: translateConditions.message.label_key.VisitorPlatform, triggerType: 'message.create.from.requester', type: 'string' },
             {
               groupId: translateConditions.message.groupId.ChatInformation, id: 'attributes.departmentId', label_key: translateConditions.message.label_key.Department,
-              triggerType: 'message.received', type: 'boolean', operator: this.departments, placeholder: translateConditions.message.placeholder.SelectDepartment
+              triggerType: 'message.create.from.requester', type: 'boolean', operator: this.departments, placeholder: translateConditions.message.placeholder.SelectDepartment
             },
             {
               groupId: translateConditions.message.groupId.ChatInformation,
               id: 'status', label_key: translateConditions.message.label_key.VisitorServed,
-              triggerType: 'message.received', type: 'boolean', operator: [{ id: 200, label_key: 'True' },
+              triggerType: 'message.create.from.requester', type: 'boolean', operator: [{ id: 200, label_key: 'True' },
               { id: 100, label_key: 'False' }
               ], placeholder: translateConditions.message.placeholder.SelectStatus
             },
@@ -739,7 +755,10 @@ export class BasetriggerComponent implements OnInit {
             { groupId: translateConditions.user.groupId.VisitorInformation, id: 'firstname', label_key: translateConditions.user.label_key.VisitorName, triggerType: 'user.login', type: 'string' },
             { groupId: translateConditions.user.groupId.VisitorInformation, id: 'lastname', label_key: translateConditions.user.label_key.VisitorLastName, triggerType: 'user.login', type: 'string' },
             { groupId: translateConditions.user.groupId.VisitorInformation, id: 'email', label_key: translateConditions.user.label_key.VisitorMail, triggerType: 'user.login', type: 'string' },
-            { groupId: translateConditions.event.groupId.VisitorInformation, id: 'name', key: 'event.name', label_key: translateConditions.event.label_key.EventName, triggerType: 'event.emit', type: 'string' }
+            { groupId: translateConditions.event.groupId.VisitorInformation, id: 'name', key: 'event.name', label_key: translateConditions.event.label_key.EventName, triggerType: 'event.emit', type: 'string' },
+            { groupId: translateConditions.event.groupId.VisitorInformation, id: 'code', key: 'event.attributes.code', label_key: translateConditions.event.label_key.EventCode, triggerType: 'event.emit', type: 'int' },
+            { groupId: translateConditions.event.groupId.VisitorInformation, id: 'sourcePage', key: 'event.attributes.attributes.sourcePage', label_key: translateConditions.event.label_key.EventSourcePage, triggerType: 'event.emit', type: 'string' }
+
           ]
 
           this.options = {

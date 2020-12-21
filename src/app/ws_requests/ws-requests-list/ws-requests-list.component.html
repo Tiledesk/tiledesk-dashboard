@@ -3,7 +3,7 @@
 </p>
 
 
-<ul class="bottom-nav">
+<ul class="bottom-nav" *ngIf="OPEN_RIGHT_SIDEBAR === false">
   <li *ngIf="ROLE_IS_AGENT === false" (click)="seeIamAgentRequests(seeAll = !seeAll)" class="btn-with-border-effect"
     [ngClass]="
           { 'disabled-li' : displayBtnLabelSeeYourRequets === false, 
@@ -11,7 +11,7 @@
             'li-active' : displayBtnLabelSeeYourRequets === false
           }">
 
-    <a  href="javascript:;" role="button"> {{ "AllAgentsRequests" | translate }} </a>
+    <a href="javascript:;" role="button"> {{ "AllAgentsRequests" | translate }} </a>
   </li>
 
   <li (click)="seeIamAgentRequests(seeAll = !seeAll)" class="btn-with-border-effect" [ngClass]="
@@ -19,7 +19,7 @@
         'border-from-center' : displayBtnLabelSeeYourRequets === false, 
         'li-active' : displayBtnLabelSeeYourRequets === true
       }">
-    <a  href="javascript:;" role="button"> {{ "YourRequests" | translate }} </a>
+    <a href="javascript:;" role="button"> {{ "YourRequests" | translate }} </a>
   </li>
   <!-- 
   <li class="right-li right-li-simulate-visitor" style="float: right !important;padding-top: 10px!important">
@@ -29,20 +29,23 @@
   </li> -->
   <!-- CREATE TICKET -->
   <li class="right-li" style="float: right !important;padding-top: 3px!important; margin-right: 10px;">
-    <button attr.aria-label="{{ 'CreateTicket' | translate }}" #createticket (click)="presentCreateInternalRequestModal()" class="btn btn-tdblu-no-boxshadow" 
-    style="font-size: 12px;  margin-left: 15px;">
-     
-      <span aria-hidden="true" class="material-icons" style="vertical-align: middle; margin-bottom: 0px; margin-top: 0px;">
+    <button attr.aria-label="{{ 'CreateTicket' | translate }}" #createticket
+      (click)="presentCreateInternalRequestModal()" class="btn btn-tdblu-no-boxshadow"
+      style="font-size: 12px;  margin-left: 15px;">
+
+      <span aria-hidden="true" class="material-icons"
+        style="vertical-align: middle; margin-bottom: 0px; margin-top: 0px;">
         add_circle
       </span>
-       <!-- {{ 'CreateTicket' | translate }} -->
+      <!-- {{ 'CreateTicket' | translate }} -->
       {{ 'Ticket' | translate }}
     </button>
   </li>
 
   <!--OPERATING HOURS -->
   <li class="operating-hours right-li" style="float: right;padding-left: 5px;">
-    <a attr.aria-label="{{ 'OperatingHoursAreDisabled' | translate }}"  href="javascript:;" role="button" class="tool_tip" style="cursor: pointer; display: unset;" *ngIf="!OPERATING_HOURS_ACTIVE"
+    <a attr.aria-label="{{ 'OperatingHoursAreDisabled' | translate }}" href="javascript:;" role="button"
+      class="tool_tip" style="cursor: pointer; display: unset;" *ngIf="!OPERATING_HOURS_ACTIVE"
       (click)="goToOperatingHours()">
       <i aria-hidden="true" class="material-icons" style="color:#AAA; margin-top: 3px;">access_time</i>
 
@@ -52,9 +55,9 @@
         <i></i>
       </div>
     </a>
-    <a  attr.aria-label="{{ 'OperatingHoursAreEnabled' | translate }}" href="javascript:;" role="button" class="tool_tip" style="cursor: pointer;display: unset;" *ngIf="OPERATING_HOURS_ACTIVE"
-      (click)="goToOperatingHours()">
-      <i  aria-hidden="true" class="material-icons" style="color:#3ea9f5">access_time</i>
+    <a attr.aria-label="{{ 'OperatingHoursAreEnabled' | translate }}" href="javascript:;" role="button" class="tool_tip"
+      style="cursor: pointer;display: unset;" *ngIf="OPERATING_HOURS_ACTIVE" (click)="goToOperatingHours()">
+      <i aria-hidden="true" class="material-icons" style="color:#3ea9f5">access_time</i>
       <p class="hidden-lg hidden-md">operatinghourson</p>
       <div class="bottom" style="text-align: center; padding: 4px; border-radius: 3px;">
         {{ 'OperatingHoursAreEnabled' | translate }}
@@ -64,17 +67,38 @@
     </a>
   </li>
 
-   <!-- NO REALTIME REQUESTS -->
+  <!-- NO REALTIME REQUESTS -->
   <li class="see-no-realtime-request right-li" style="float: right; padding-right: 5px;"
     (click)='goToNoRealtimeConversations()'>
-    <a attr.aria-label="{{ 'GoToNotRealTimeRequests' | translate }}"  href="javascript:;" role="button" class="tool_tip" style="cursor: pointer; display: unset;"
-      [ngClass]="{ 'has-reached-100' : served_unserved_sum >= 100 }">
+    <a attr.aria-label="{{ 'GoToNotRealTimeRequests' | translate }}" href="javascript:;" role="button" class="tool_tip"
+      style="cursor: pointer; display: unset;" [ngClass]="{ 'has-reached-100' : served_unserved_sum >= 100 }">
       <span aria-hidden="true" class="material-icons" style="margin-top: 3px;">
         view_list
       </span>
       <div class="bottom"
         style="text-align: center; padding: 4px; border-radius: 3px; text-transform: none; min-width: 200px;">
         {{ 'ThisScreenDisplayAMaximumOf100RealTime' | translate }}
+        <i></i>
+      </div>
+    </a>
+
+    <span *ngIf="served_unserved_sum >= 100" class="served-unserved-sum">
+      <span>
+        {{ served_unserved_sum }}
+      </span>
+    </span>
+  </li>
+
+  <!-- SHOW REQUEST MAP -->
+  <li class="see-no-realtime-request right-li" style="float: right; padding-right: 5px;" (click)='openRightSideBar()'>
+    <a class="tool_tip" style="cursor: pointer; display: unset;"
+      [ngClass]="{ 'has-reached-100' : served_unserved_sum >= 100 }">
+      <span class="material-icons" style="margin-top: 3px;">
+        pin_drop
+      </span>
+      <div class="bottom"
+        style="text-align: center; padding: 4px; border-radius: 3px; text-transform: none; min-width: 200px;">
+        Visualizza le richieste servite su mappa
         <i></i>
       </div>
     </a>
@@ -97,20 +121,23 @@
 <ul class="bottom-bottom-nav" style="display: none;">
   <li style="display: none;" class="" style="padding-top: 3px!important; padding-left: 10px!important">
     <!-- btn-primary navbar-btn  -->
-    <button  attr.aria-label="{{ 'CreateTicket' | translate }}"  #createticket (click)="presentCreateInternalRequestModal()" class="btn btn-tdblu-no-boxshadow" style="font-size: 12px;">
-     
-      <span aria-hidden="true" class="material-icons" style="vertical-align: middle; margin-bottom: 0px; margin-top: 0px;">
+    <button attr.aria-label="{{ 'CreateTicket' | translate }}" #createticket
+      (click)="presentCreateInternalRequestModal()" class="btn btn-tdblu-no-boxshadow" style="font-size: 12px;">
+
+      <span aria-hidden="true" class="material-icons"
+        style="vertical-align: middle; margin-bottom: 0px; margin-top: 0px;">
         add_circle
       </span>
-       <!-- {{ 'CreateTicket' | translate }} -->
+      <!-- {{ 'CreateTicket' | translate }} -->
       {{ 'Ticket' | translate }}
-     
+
     </button>
   </li>
 
   <!-- SIMULATE VISITOR -->
-  <li  style="display: none;" style="padding-top: 3px!important;     margin-left: 15px;">
-    <button attr.aria-label="{{ 'VisitorsPage.SimulateVisitor' | translate }}" #testwidgetbtn (click)="testWidgetPage()" class="btn btn-success-no-boxshadow" style="font-size: 12px;">
+  <li style="display: none;" style="padding-top: 3px!important;     margin-left: 15px;">
+    <button attr.aria-label="{{ 'VisitorsPage.SimulateVisitor' | translate }}" #testwidgetbtn (click)="testWidgetPage()"
+      class="btn btn-success-no-boxshadow" style="font-size: 12px;">
       <span class="material-icons" style="vertical-align: middle; margin-bottom: 0px; margin-top: 0px;">
         play_circle_filled
       </span>
@@ -118,10 +145,11 @@
     </button>
   </li>
 
-    <!-- NO REALTIME REQUESTS -->
-    <li style="display: none;" class="see-no-realtime-request" style="float: right; padding-right: 5px;"
+  <!-- NO REALTIME REQUESTS -->
+  <li style="display: none;" class="see-no-realtime-request" style="float: right; padding-right: 5px;"
     (click)='goToNoRealtimeConversations()'>
-    <a attr.aria-label="{{ 'GoToNotRealTimeRequests' | translate }}" href="javascript:;" role="button" class="tool_tip" style="cursor: pointer; display: unset; color: #797979;"
+    <a attr.aria-label="{{ 'GoToNotRealTimeRequests' | translate }}" href="javascript:;" role="button" class="tool_tip"
+      style="cursor: pointer; display: unset; color: #797979;"
       [ngClass]="{ 'has-reached-100' : served_unserved_sum >= 16 }">
       <span class="material-icons">
         view_list
@@ -140,8 +168,9 @@
   </li>
 
   <!--OPERATING HOURS -->
-  <li style="display: none;"  class="operating-hours" style="float: right;padding-left: 5px;">
-    <a attr.aria-label="{{ 'OperatingHoursAreDisabled' | translate }}" href="javascript:;" role="button" class="tool_tip" style="cursor: pointer; display: unset;" *ngIf="!OPERATING_HOURS_ACTIVE"
+  <li style="display: none;" class="operating-hours" style="float: right;padding-left: 5px;">
+    <a attr.aria-label="{{ 'OperatingHoursAreDisabled' | translate }}" href="javascript:;" role="button"
+      class="tool_tip" style="cursor: pointer; display: unset;" *ngIf="!OPERATING_HOURS_ACTIVE"
       (click)="goToOperatingHours()">
       <i class="material-icons" style="color:#AAA">access_time</i>
 
@@ -152,8 +181,8 @@
         <i></i>
       </div>
     </a>
-    <a attr.aria-label="{{ 'OperatingHoursAreEnabled' | translate }}"  href="javascript:;" role="button" class="tool_tip" style="cursor: pointer;display: unset;" *ngIf="OPERATING_HOURS_ACTIVE"
-      (click)="goToOperatingHours()">
+    <a attr.aria-label="{{ 'OperatingHoursAreEnabled' | translate }}" href="javascript:;" role="button" class="tool_tip"
+      style="cursor: pointer;display: unset;" *ngIf="OPERATING_HOURS_ACTIVE" (click)="goToOperatingHours()">
       <i class="material-icons" style="color:#3ea9f5">access_time</i>
       <p class="hidden-lg hidden-md">operatinghourson</p>
       <div class="bottom" style="text-align: center; padding: 4px; border-radius: 3px;">
@@ -180,13 +209,13 @@
             <div class="card" style="margin-top:0px">
               <div class="card-content">
                 <!-- <div class="requests-chart-container" style="  width: 150px; height: 150px;float: left;"> -->
-                  <!-- <canvas id="doughnutChart"></canvas> -->
+                <!-- <canvas id="doughnutChart"></canvas> -->
 
-                  <!-- <canvas id="MyChart" width="200" height="100"></canvas> -->
+                <!-- <canvas id="MyChart" width="200" height="100"></canvas> -->
 
-                  <div class="grid-container">
-                    <div class="requests-graph">
-                      <div class="graph-wrapper" style=" width:50%;
+                <div class="grid-container">
+                  <div class="requests-graph">
+                    <div class="graph-wrapper" style=" width:50%;
                       display:block;
                       overflow:hidden;
                       /* margin:0 auto; */
@@ -197,53 +226,55 @@
                       <canvas id="stacked"></canvas>
                     </div>
 
-                    </div>
-                    <div class="graph-legend">
-                      <div class="advanced-pie-legend-wrapper" style="display: inline-block;height: 161px;">
-                        <!--  width: 420px;float: left; -->
-                        <div class="advanced-legend" style="position: relative;top: 50%;transform: translate(0,-50%);">
-                          <div class="total-value" style="font-family: 'Lato', sans-serif; font-weight: 400;font-size: 40px; color: rgba(0, 0, 0, 0.54) !important;">
+                  </div>
+                  <div class="graph-legend">
+                    <div class="advanced-pie-legend-wrapper" style="display: inline-block;height: 161px;">
+                      <!--  width: 420px;float: left; -->
+                      <div class="advanced-legend" style="position: relative;top: 50%;transform: translate(0,-50%);">
+                        <div class="total-value"
+                          style="font-family: 'Lato', sans-serif; font-weight: 400;font-size: 40px; color: rgba(0, 0, 0, 0.54) !important;">
 
-                            {{ wsRequestsServed?.length +  wsRequestsUnserved?.length }}
-                          </div>
-                          <div class="total-label"
-                            style="font-family: 'Google Sans', sans-serif !important;
+                          {{ wsRequestsServed?.length +  wsRequestsUnserved?.length }}
+                        </div>
+                        <div class="total-label" style="font-family: 'Google Sans', sans-serif !important;
                             font-size: 24px;
                             font-weight: 400;
                             color: rgba(0, 0, 0, 0.54) !important; margin-bottom: 10px; margin-top: 14px">
-                            Total
-                          </div>
-                          <div class="legend-items-container" style="width: 100%;">
-                            <div class="legend-items" style="white-space: nowrap; overflow: auto;">
-                              <div class="legend-item" style="margin-right: 20px;display: inline-block;cursor: pointer;">
-                                <div class="item-color"
-                                  style="border-left: 4px solid #05BDD4; width: 4px; height: 42px;float: left; margin-right: 7px;">
-                                </div>
-                                <div class="item-value" style="font-family: 'Lato', sans-serif; font-weight: 400;font-size: 24px; color: rgba(0, 0, 0, 0.54) !important;">
-                                   {{ wsRequestsServed?.length }} 
-                                  </div>
-                                <div class="item-label" style="font-size: 14px;
+                          Total
+                        </div>
+                        <div class="legend-items-container" style="width: 100%;">
+                          <div class="legend-items" style="white-space: nowrap; overflow: auto;">
+                            <div class="legend-item" style="margin-right: 20px;display: inline-block;cursor: pointer;">
+                              <div class="item-color"
+                                style="border-left: 4px solid #05BDD4; width: 4px; height: 42px;float: left; margin-right: 7px;">
+                              </div>
+                              <div class="item-value"
+                                style="font-family: 'Lato', sans-serif; font-weight: 400;font-size: 24px; color: rgba(0, 0, 0, 0.54) !important;">
+                                {{ wsRequestsServed?.length }}
+                              </div>
+                              <div class="item-label" style="font-size: 14px;
                                 font-family: 'Google Sans', sans-serif !important;
                                 font-weight: 400;
                                 color: rgba(0, 0, 0, 0.54);
                                 line-height: 2;">Served</div>
-                                <!-- <div class="item-percent">42%</div> -->
+                              <!-- <div class="item-percent">42%</div> -->
+                            </div>
+                            <div class="legend-item" style="margin-right: 20px;display: inline-block;cursor: pointer;">
+                              <div class="item-color"
+                                style="border-left: 4px solid #ED4537; width: 4px;height: 42px;float: left; margin-right: 7px;">
                               </div>
-                              <div class="legend-item" style="margin-right: 20px;display: inline-block;cursor: pointer;">
-                                <div class="item-color"
-                                  style="border-left: 4px solid #ED4537; width: 4px;height: 42px;float: left; margin-right: 7px;">
-                                </div>
-                                <div class="item-value" style="font-family: 'Lato', sans-serif; font-weight: 400;font-size: 24px; color: rgba(0, 0, 0, 0.54) !important;">
-                                  {{ wsRequestsUnserved?.length }}
-                                </div>
-                                <div class="item-label" style="font-size: 14px;
+                              <div class="item-value"
+                                style="font-family: 'Lato', sans-serif; font-weight: 400;font-size: 24px; color: rgba(0, 0, 0, 0.54) !important;">
+                                {{ wsRequestsUnserved?.length }}
+                              </div>
+                              <div class="item-label" style="font-size: 14px;
                                 font-family: 'Google Sans', sans-serif !important;
                                 font-weight: 400;
                                 color: rgba(0, 0, 0, 0.54);
                                 line-height: 2;">Unserved</div>
-                                <!-- <div class="item-percent">23%</div> -->
-                              </div>
-                              <!-- <div class="legend-item" style="margin-right: 20px;display: inline-block;cursor: pointer;">
+                              <!-- <div class="item-percent">23%</div> -->
+                            </div>
+                            <!-- <div class="legend-item" style="margin-right: 20px;display: inline-block;cursor: pointer;">
                                 <div class="item-color"
                                   style="border-left: 4px solid rgb(44, 230, 155); width: 4px; height: 42px; float: left; margin-right: 7px;">
                                 </div>
@@ -251,13 +282,13 @@
                                 <div class="item-label">France</div>
                                 <div class="item-percent">34%</div>
                               </div> -->
-                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-        
+                </div>
+
                 <!-- </div> -->
               </div>
 
@@ -446,7 +477,8 @@
                       {{ 'FilterBy' | translate }} {{ 'HistoryPage.FilterByDepartment' | translate }}
                     </label>
 
-                    <ng-select attr.aria-label="{{ 'FilterBy' | translate }} {{ 'Department' | translate }}" class="custom" name="dept" [(ngModel)]="selectedDeptId" (change)="onChangeDepts()"
+                    <ng-select attr.aria-label="{{ 'FilterBy' | translate }} {{ 'Department' | translate }}"
+                      class="custom" name="dept" [(ngModel)]="selectedDeptId" (change)="onChangeDepts()"
                       (clear)="clearDeptFilter()" placeholder="{{ 'HistoryPage.AllDepts' | translate }}">
 
                       <!-- <ng-option *ngFor="let dept of depts_array_noduplicate" [value]="dept?._id"> -->
@@ -467,9 +499,9 @@
                     <label class="col-sm-12" style="text-align: left; color: #7695a5 !important;padding-left:0px">
                       {{ 'FilterBy' | translate }} {{ 'HistoryPage.Agent' | translate }}
                     </label>
-                    <ng-select attr.aria-label="{{ 'FilterBy' | translate }} {{ 'HistoryPage.Agent' | translate }}" name="agent" [(ngModel)]="selectedAgentId"
-                      placeholder="{{ 'HistoryPage.AllAgents' | translate }}" (clear)="clearAgentFilter()"
-                      (change)="onChangeAgent()">
+                    <ng-select attr.aria-label="{{ 'FilterBy' | translate }} {{ 'HistoryPage.Agent' | translate }}"
+                      name="agent" [(ngModel)]="selectedAgentId" placeholder="{{ 'HistoryPage.AllAgents' | translate }}"
+                      (clear)="clearAgentFilter()" (change)="onChangeAgent()">
                       <!-- <ng-option [value]="''">{{ 'HistoryPage.AllAgents' | translate }}</ng-option> -->
                       <!-- user_and_bot_array -->
                       <ng-option [value]="1">{{ 'HumanAgentsOnly' | translate }}</ng-option>
@@ -673,6 +705,7 @@ l-4.9-13l18-14.8L22.1,34.4z" />
           <appdashboard-ws-requests-served *ngIf="wsRequestsServed" [wsRequestsServed]="wsRequestsServed"
             [ws_requests_length]="ws_requests?.length">
           </appdashboard-ws-requests-served>
+          <!-- Chiamare il componente qui -->
         </div>
       </div>
     </section>
@@ -1005,3 +1038,9 @@ l-4.9-13l18-14.8L22.1,34.4z" />
 <!-- <app-department-edit-add *ngIf='display_dept_sidebar === true'
  [display_dept_sidebar]="display_dept_sidebar" [ws_requestslist_deptIdSelected]="ws_requestslist_deptIdSelected"> 
 </app-department-edit-add>  -->
+
+<div *ngIf="OPEN_RIGHT_SIDEBAR === true" class="view-side">
+  <appdashboard-map-request [ngStyle]="{'height':train_bot_sidebar_height }" [wsRequestsServed]="wsRequestsServed"
+    [wsRequestsUnserved]="wsRequestsUnserved" (closeMapsView)='handleCloseRightSidebar($event)'>
+  </appdashboard-map-request>
+</div>

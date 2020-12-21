@@ -654,7 +654,7 @@
         "ToDeleteTheProject": "Per eliminare il progetto, digita l'ID del progetto",
         "Calcel": "Annulla",
         "VisitorAuthentication": "Autenticazione visitatore",
-        "Authentication": "Autenticazione",
+        "Authentication": "Developer",
         "EnableVisitorAuthentication": "Abilita l'autenticazione del visitatore",
         "GenerateSharedSecret": "Genera Shared Secret",
         "NoteThatWillBeSubscribed": "Nota che generando un nuovo shared secret il precedente verrà sovrascritto",
@@ -1344,7 +1344,9 @@
                         "VisitorInformation": "Info visitatore"
                     },
                     "label_key": {
-                        "EventName": "Nome evento"
+                        "EventName": "Nome evento",
+                        "EventCode": "Codice evento",
+                        "EventSourcePage": "Pagina Sorgente"
                     },
                     "placeholder": {
                         "SelectDepartment": "Seleziona dipartimento",
@@ -1519,7 +1521,20 @@
         "SentimentMedianValueHEART": "Il feedback clienti medio del tuo team è di:",
         "UpgradeYourAccounttoTrackTheChatsYouHaveWithCustomers": "Aggiorna il tuo account per tenere traccia delle chat che hai con i clienti",
         "DailyMedianResponseTime": "Tempo di risposta medio giornaliero",
-        "DailyConvDurationTime": "Durata conversazione media giornaliera"
+        "DailyConvDurationTime": "Durata conversazione media giornaliera",
+        "VisitorsComponentTitle": "Visitatori",
+        "Visitors" : {
+            "NumberOfVisitors": "Numero di visitatori",
+            "VisitorsChartTitle": "Numero di visitatori negli ultimi"
+        },
+        "MessagesComponentTitle": "Messaggi",
+        "Messages": {
+            "MessagesChartTitle": "Numero di messaggi negli ultimi",
+            "NumberOfMessages": "Numero di messaggi"
+        }
+
+
+
     },
     "DeleteRequestForever": {
         "TheRequestWillBePermanentlyDeleted": "la conversazione verrà eliminata definitivamente",
@@ -1541,6 +1556,7 @@
     "TheContactWasSuccessfullyDeleted": "il contatto è stata eliminato correttamente",
     "YouCannotDeleteThisContact": "Non è possibile eliminare questo contatto perché vi sono conversazioni associate",
     "MoveTheContactToTheTrash": "Spostare il contatto {{ contactname }} nel cestino?",
+    "MoveTheContactToTheTrashNoName": "Spostare il contatto nel cestino?",
     "TheContactHasBeenMovedToTheTrash": "Il contatto è stato spostato nel cestino",
     "TheRequestHasBeenMovedToHistory": "la conversazione è stata spostata in cronologia",
     "AnErrorHasOccurredArchivingTheRequest": "Si è verificato un errore durante l'archiviazione della conversazione",
