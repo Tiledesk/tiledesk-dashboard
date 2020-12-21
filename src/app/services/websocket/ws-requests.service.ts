@@ -180,10 +180,11 @@ export class WsRequestsService implements OnDestroy {
       // Unsubscribe to websocket requests with the old project id  
       // ---------------------------------------------------------------------------------
       if (this.project_id) {
-        console.log('% »»» WebSocketJs WF +++++ ws-requests--- service getWsRequests */* ref */* this.project_id ', this.project_id)
+        // console.log('% »»» WebSocketJs WF +++++ ws-requests--- service getWsRequests */* ref */* this.project_id ', this.project_id)
         // console.log('%% WsRequestsService THIS.PROJECT_ID ', this.project_id)
         //this.unsubsToWS_Requests(this.project_id);
-
+     
+        console.log('% »»» WebSocketJs WF +++++ ws-requests--- service getWsRequests unsubscribe project._id', this.project_id)
         this.webSocketJs.unsubscribe('/' + this.project_id + '/requests');
         this.resetWsRequestList();
       }
@@ -208,7 +209,7 @@ export class WsRequestsService implements OnDestroy {
         // console.log('% »»» WebSocketJs WF ****** WS-REQUESTS-SERVICE - WS_IS_CONNECTED ****** ', this.WS_IS_CONNECTED );
 
         // if (this.WS_IS_CONNECTED === 1) {
-        this.webSocketJs.ref('/' + this.project_id + '/requests',
+        this.webSocketJs.ref('/' + this.project_id + '/requests', 'getCurrentProjectAndSubscribeTo_WsRequests',
 
           function (data, notification) {
 
@@ -509,7 +510,7 @@ export class WsRequestsService implements OnDestroy {
 
     // this.webSocketJs.ref('/' + this.project_id + '/requests/' + id_request,
     console.log('% »»» WebSocketJs WF >>> ws-msgs--- r-service - SUBSCR To WS REQUEST-BY-ID ****** CALLING REF ******');
-    this.webSocketJs.ref('/' + this.project_id + '/requests/' + id_request,
+    this.webSocketJs.ref('/' + this.project_id + '/requests/' + id_request, 'subscribeTo_wsRequestById',
 
       function (data, notification) {
 

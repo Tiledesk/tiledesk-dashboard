@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.0.79
+- New widget settings page (in progress)
+
 ### 2.0.78
 - Fixes the departments status updating service
 

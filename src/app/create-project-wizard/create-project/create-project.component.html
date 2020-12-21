@@ -189,7 +189,7 @@
 
 
 
-    <div *ngIf="!DISPLAY_SPINNER" class="wizard-success-container" style="">
+    <div *ngIf="!DISPLAY_SPINNER" class="wizard-success-container">
 
       <div class="success-label" style="color:#70b665">
         <!-- <i class="material-icons" style="vertical-align: middle; padding: 3px; background: #70b665; border-radius: 50%;color: #fff;">done</i> -->
@@ -203,7 +203,8 @@
         </p>
       </div>
 
-      <button class="btn btn-lg btn-primary" style="margin-top: 64px;" (click)="continueToInstallScript()">
+      <!-- (click)="continueToInstallScript()" -->
+      <button class="btn btn-lg btn-primary" style="margin-top: 64px;" (click)="continueToConfigureScript()" >
 
         {{ "ProjectsPage.Continue" | translate }}
       </button>

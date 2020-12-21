@@ -13,7 +13,7 @@ import { UsersService } from '../services/users.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ProjectPlanService } from '../services/project-plan.service';
 import { Subscription } from 'rxjs';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+
 declare const $: any;
 const swal = require('sweetalert');
 
@@ -837,24 +837,24 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
         }
 
-        if (contact.attributes
-          && contact.attributes.senderAuthInfo
-          && contact.attributes.senderAuthInfo.authVar
-          && contact.attributes.senderAuthInfo.authVar.token
-          && contact.attributes.senderAuthInfo.authVar.token.firebase
-          && contact.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider) {
+        // if (contact.attributes
+        //   && contact.attributes.senderAuthInfo
+        //   && contact.attributes.senderAuthInfo.authVar
+        //   && contact.attributes.senderAuthInfo.authVar.token
+        //   && contact.attributes.senderAuthInfo.authVar.token.firebase
+        //   && contact.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider) {
 
-          if (contact.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider === 'custom') {
-            this.CONTACT_IS_VERIFIED = true;
-            // console.log('!!!! CONTACTS  - CONTACT_IS_VERIFIED ', this.CONTACT_IS_VERIFIED, 'for id_contact ', id_contact)
-          } else {
-            this.CONTACT_IS_VERIFIED = false;
-            // console.log('!!!! CONTACTS  - CONTACT_IS_VERIFIED ', this.CONTACT_IS_VERIFIED, 'for id_contact ', id_contact)
-          }
-        } else {
-          this.CONTACT_IS_VERIFIED = false;
-          // console.log('!!!! CONTACTS  - CONTACT_IS_VERIFIED ', this.CONTACT_IS_VERIFIED, 'for id_contact ', id_contact)
-        }
+        //   if (contact.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider === 'custom') {
+        //     this.CONTACT_IS_VERIFIED = true;
+        //     // console.log('!!!! CONTACTS  - CONTACT_IS_VERIFIED ', this.CONTACT_IS_VERIFIED, 'for id_contact ', id_contact)
+        //   } else {
+        //     this.CONTACT_IS_VERIFIED = false;
+        //     // console.log('!!!! CONTACTS  - CONTACT_IS_VERIFIED ', this.CONTACT_IS_VERIFIED, 'for id_contact ', id_contact)
+        //   }
+        // } else {
+        //   this.CONTACT_IS_VERIFIED = false;
+        //   // console.log('!!!! CONTACTS  - CONTACT_IS_VERIFIED ', this.CONTACT_IS_VERIFIED, 'for id_contact ', id_contact)
+        // }
 
         for (const c of contacts_list) {
 
@@ -878,6 +878,9 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.router.navigate(['project/' + this.projectId + '/contact/edit', requester_id]);
   }
 
+  goToVisitors() {
+    this.router.navigate(['project/' + this.projectId + '/visitors']);
+  }
 
 
   toggleAdvancedOption() {

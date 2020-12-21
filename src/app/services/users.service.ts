@@ -787,7 +787,7 @@ export class UsersService {
     
     return new Promise(function (resolve, reject) {
 
-      self.webSocketJs.ref(path, function (data, notification) {
+      self.webSocketJs.ref(path, 'subscriptionToWsCurrentUser_allProject', function (data, notification) {
         // console.log("SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - CREATE - data ", data , ' path ', path);
         // console.log("PROJECT COMP (user-service) SUBSCR TO WS CURRENT USERS - CREATE - data ", data);
         // console.log("PROJECT COMP (user-service) SUBSCR TO WS CURRENT USERS - CREATE - data  user_available ", data.user_available);
@@ -818,7 +818,7 @@ export class UsersService {
   // Contact Events
   // -----------------------------------------------------------------------------------------------------
   subscriptionToWsContactEvents(projectid, leadid) {
-    
+
     var self = this;
     self.eventlist = []
     console.log('EVENTS SERV (user-service) SUBSCR TO WS CONTACT EVENTS projectid: ', projectid, ' prjctuserid: ', leadid);
@@ -826,7 +826,7 @@ export class UsersService {
     
     return new Promise(function (resolve, reject) {
 
-      self.webSocketJs.ref(path, function (data, notification) {
+      self.webSocketJs.ref(path, 'subscriptionToWsContactEvents', function (data, notification) {
         console.log('EVENTS SERV (user-service) SUBSCR TO WS CONTACT EVENTS data: ', data);
         // console.log("PROJECT COMP (user-service) SUBSCR TO WS CURRENT USERS - CREATE - data ", data);
         // console.log("PROJECT COMP (user-service) SUBSCR TO WS CURRENT USERS - CREATE - data  user_available ", data.user_available);
@@ -879,7 +879,7 @@ export class UsersService {
     console.log('% »»» WebSocketJs WF >>> ws-msgs--- m-service - SUBSCR To WS MSGS ****** CALLING REF ****** ');
     const path = '/' + this.project_id + '/project_users/' + prjctuserid
 
-    this.webSocketJs.ref(path,
+    this.webSocketJs.ref(path, 'subscriptionToWsCurrentUser',
       function (data, notification) {
         // console.log("SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - CREATE - data ", data , ' path ', path);
         console.log("NAVBAR-FOR-PANEL & SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - CREATE - data ", data);

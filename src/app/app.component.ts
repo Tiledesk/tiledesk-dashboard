@@ -379,8 +379,9 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     (this.route.indexOf('/success') !== -1) ||
                     (this.route.indexOf('/create-project') !== -1) ||
                     (this.route.indexOf('/create-new-project') !== -1) ||
+                    (this.route.indexOf('/configure-widget') !== -1) || 
+                    (this.route.indexOf('/install-widget') !== -1) ||
                     (this.route.indexOf('/handle-invitation') !== -1) ||
-                    (this.route.indexOf('/install-tiledesk') !== -1) ||
                     (this.route.indexOf('/request-for-panel') !== -1) ||
                     (this.route.indexOf('/projects-for-panel') !== -1) ||
                     (this.route.indexOf('/unserved-request-for-panel') !== -1) ||
@@ -477,7 +478,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     (this.route.indexOf('/resetpassword') !== -1) ||
                     (this.route.indexOf('/create-project') !== -1) ||
                     (this.route.indexOf('/create-new-project') !== -1) ||
-                    (this.route.indexOf('/install-tiledesk') !== -1) ||
+                    (this.route.indexOf('/configure-widget') !== -1) ||
+                    (this.route.indexOf('/install-widget') !== -1) ||
                     (this.route.indexOf('/handle-invitation') !== -1) ||
                     (this.route.indexOf('/chat') !== -1) ||
                     (this.route.indexOf('/request-for-panel') !== -1) ||

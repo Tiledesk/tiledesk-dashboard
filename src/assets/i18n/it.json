@@ -1578,12 +1578,21 @@
     "FilterBy": "Filtra per",
     "ConversationStatus": "Conversation status",
     "IntroGreetings": "Saluti introduttivi",
-    "ReplyTimeMsg": "tempo di risposta",
+    "ReplyTimeMsg": "Tempo di risposta",
     "SayHowSoonYourTeamUsuallyReplies":"Di quanto presto risponde normalmente il tuo team",
     "IsDisplayedWhenAverageTeamResponseTimeIsNotAva ilable":"Questo messaggio viene visualizzato quando il tempo medio di risposta del team non è disponibile",
     "DynamicallySharingAverageResponseTime":"Dinamicamente, condividendo il tempo medio di risposta del team",
     "YourContactsSeeThisMessageIfARTIsNotAvailable":"I tuoi contatti vedono questo messaggio se il tempo medio di risposta del team non è disponibile",
     "ConfigureWidget":"Configura il widget",
     "WidgetAppearanceAndDefaultLanguage":"Aspetto del widget e lingua predefinita",
-    "AlwaysWithTheFollowingMessage":"Sempre con il seguente messaggio"
+    "AlwaysWithTheFollowingMessage":"Sempre con il seguente messaggio",
+    "ReadyThemes":"Temi pronti",
+    "CustomColors":"Colori personalizzati",
+    "HeaderLogo":"Logo dell'intestazione",
+    "UpdateWidget":"AGGIORNA WIDGET",
+    "WelcomeGreetings":"Saluti di benvenuto",
+    "OnlineOfflineGreetings": "Online / Offline Greetings",
+    "WidgetPreviewIsDisplayedIn": "L'anteprima del widget è attualmente visualizzata in",
+    "ChangePreviewToCustomizeTheFollowingFieldsInAnotherLanguage": "Cambia anteprima nella sezione Multilanguage per personalizzare i seguenti campi in un'altra lingua"
+    
 }

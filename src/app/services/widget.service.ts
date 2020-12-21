@@ -126,6 +126,39 @@ export class WidgetService {
   // Get a label by lang code
   // https://tiledesk-server-pre.herokuapp.com/5df26badde7e1c001743b63c/labels2/EN
 
+
+  public getAllDefaultLabels(): Observable<[]> {
+    // https://tiledesk-server-pre.herokuapp.com/5fa12801d41fef0034f646e8/labels/default/EN
+
+    const url = this.SERVER_BASE_PATH + this.projectID + '/labels/default'
+
+    console.log('Multilanguage »» WIDGET SERVICE - GET ALL DEFAULT LABEL URL', url);
+
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.json());
+  }
+
+
+
+  public getEnDefaultLabels(): Observable<[]> {
+    // https://tiledesk-server-pre.herokuapp.com/5fa12801d41fef0034f646e8/labels/default/EN
+
+    const url = this.SERVER_BASE_PATH + this.projectID + '/labels/default/EN'
+
+    console.log('Multilanguage »» WIDGET SERVICE - GET DEFAULT LABEL URL', url);
+
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.json());
+  }
+
   /**
    * Get all labels
    */
@@ -145,6 +178,27 @@ export class WidgetService {
       .map((response) => response.json());
   }
 
+  public setDefaultLanguage(languagecode: string) {
+    const _languagecode = languagecode.toUpperCase();
+    // https://api.tiledesk.com/v2/:project_id/labels/:lang/default
+    const url = this.SERVER_BASE_PATH + this.projectID + '/labels/' +_languagecode +'/default';
+    console.log('Multilanguage »» WIDGET SERVICE - SET DEFAULT LANGUAGE URL', url);
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+
+    const body = { 'lang': _languagecode };
+    console.log('Multilanguage »» WIDGET SERVICE - SET DEFAULT LANGUAGE ', body);
+
+    return this.http
+      .patch(url, null, options)
+      .map((res) => res.json());
+  }
+
+
+
 
 
   public cloneLabel(langCode) {
@@ -152,6 +206,7 @@ export class WidgetService {
     headers.append('Content-type', 'application/json');
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
+
 
     const body = { "lang": langCode };
 
@@ -237,6 +292,10 @@ export class WidgetService {
       .map((res) => res.json());
   }
 
+
+  windowWidthmatchMedia(innerWidth) {
+
+  }
 
 
 

@@ -148,8 +148,9 @@ import { StaticPageBaseComponent } from './static-pages/static-page-base/static-
 import { SlideshowModule } from 'ng-simple-slideshow';
 import { GroupsStaticComponent } from './static-pages/groups-static/groups-static.component';
 
-import { CreateProjectComponent } from './create-project/create-project.component';
-import { InstallTiledeskComponent } from './install-tiledesk/install-tiledesk.component';
+import { CreateProjectComponent } from './create-project-wizard/create-project/create-project.component';
+import { InstallWidgetComponent } from './create-project-wizard/install-widget/install-widget.component';
+import { ConfigureWidgetComponent } from './create-project-wizard/configure-widget/configure-widget.component';
 import { HandleInvitationComponent } from './auth/handle-invitation/handle-invitation.component';
 
 import { environment } from '../environments/environment';
@@ -196,6 +197,9 @@ import { DocsUrlRowComponent } from './components/docs-url-row/docs-url-row.comp
 import { VisitorsComponent } from './visitors/visitors.component';
 import { EventsComponent } from './events/events.component';
 import { WidgetHomeComponent } from './widget-home-preview/widget-home.component';
+import { WidgetCalloutComponent } from './widget-callout/widget-callout.component';
+import { WidgetChatComponent } from './widget-chat/widget-chat.component';
+
 
 
 console.log('************** APPMODULE ******************');
@@ -302,7 +306,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     BasetriggerComponent,
     FaqSidebarComponent,
     CreateProjectComponent,
-    InstallTiledeskComponent,
+    InstallWidgetComponent,
     HandleInvitationComponent,
     WsRequestsListComponent,
     WsRequestsMsgsComponent,
@@ -338,6 +342,9 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     VisitorsComponent,
     EventsComponent,
     WidgetHomeComponent,
+    WidgetCalloutComponent,
+    ConfigureWidgetComponent,
+    WidgetChatComponent,
 
   ],
   imports: [

@@ -82,10 +82,19 @@ export class WebSocketJs {
   //  - in subsToWS_MsgsByRequestId() called when in 
   //     WsRequestsMsgsComponent onInit() is got the request id from url params
 
-  ref(topic, onCreate, onUpdate, onData) {
+  ref(topic, calledby, onCreate, onUpdate, onData) {
     // console.log('% »»» WebSocketJs ****** CALLING REF ****** ');
-    console.log('wsRequesterPresence ****** CALLING REF ****** TOPIC ' , topic);
+    console.log('Web_SocketJs ****** CALLING REF ****** calledby ', calledby);
+    console.log('Web_SocketJs ****** CALLING REF ****** TOPIC ', topic);
+    console.log('Web_SocketJs ****** CALLING REF ****** CALLBACKS', this.callbacks);
     //this.callbacks.set(topic, {onCreate:onCreate, onUpdate:onUpdate});
+
+
+    if (!this.callbacks) {
+      console.log('% »»» WebSocketJs WF *** REF *** OOOOPS! NOT CALLBACKS ***', topic);
+      return
+    }
+    
     this.callbacks.set(topic, { onCreate: onCreate, onUpdate: onUpdate, onData: onData });
 
     // console.log('% »»» WebSocketJs WF *** REF *** callbacks *** ', this.callbacks);
@@ -330,7 +339,7 @@ export class WebSocketJs {
   // @ init
   // -----------------------------------------------------------------------------------------------------
   init(url, onCreate, onUpdate, onData, onOpen = undefined, onOpenCallback = undefined, _topics = [], _callbacks = new Map()) {
-    console.log('% »»» WebSocketJs WF ****** CALLING INIT ****** ');
+    console.log('Web_SocketJs ****** CALLING INIT ****** ');
     // console.log('% »»» WebSocketJs - INIT url ', url);
     console.log('% »»» WebSocketJs - INIT onCreate ', onCreate);
     console.log('% »»» WebSocketJs - INIT onUpdate ', onUpdate);
@@ -376,7 +385,7 @@ export class WebSocketJs {
       // @ onopen
       // -----------------------------------------------------------------------------------------------------
       that.ws.onopen = function (e) {
-        console.log('% »»» WebSocketJs - websocket is connected ...', e);
+        console.log('Web_SocketJs - websocket is connected ...', e);
 
         // -----------------
         // @ heartCheck
@@ -399,7 +408,7 @@ export class WebSocketJs {
       // -----------------------------------------------------------------------------------------------------
 
       that.ws.onclose = function (e) {
-        console.log('% »»» WebSocketJs - websocket IS CLOSED ... Try to reconnect in 5 seconds ', e);
+        console.log('Web_SocketJs - websocket IS CLOSED ... Try to reconnect in 5 seconds ', e);
 
         // console.log('% »»» WebSocketJs - websocket onclose this.userHasClosed ', that.userHasClosed);
         // https://stackoverflow.com/questions/3780511/reconnection-of-client-when-server-reboots-in-websocket
@@ -421,7 +430,7 @@ export class WebSocketJs {
       // -----------------------------------------------------------------------------------------------------
 
       that.ws.onerror = function () {
-        console.log('% »»» WebSocketJs - websocket error ...')
+        console.log('Web_SocketJs - websocket error ...')
       }
 
       // -----------------------------------------------------------------------------------------------------
@@ -503,7 +512,7 @@ export class WebSocketJs {
             if (insUp == "CREATE") {
 
               if (that.onCreate) {
-                // console.log("% »»» WebSocketJs - INIT > CREATE when array (general)");
+                console.log("Web_SocketJs - INIT > CREATE when array (general)");
                 that.onCreate(element, object);
               }
 
@@ -516,7 +525,7 @@ export class WebSocketJs {
 
             if (insUp == "UPDATE") {
 
-              console.log('% »»» WebSocketJs WF - INIT > UPDATE  callbackObj when array (1)', callbackObj)
+              console.log('Web_SocketJs WF - INIT > UPDATE  callbackObj when array (1)', callbackObj)
 
               if (that.onUpdate) {
 

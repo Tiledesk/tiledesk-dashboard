@@ -132,6 +132,29 @@ export class AnalyticsService {
     return this.http.get<[]>(this.SERVER_BASE_PATH + this.projectID + '/analytics/requests/waiting', httpOptions);
   }
 
+
+  // public getCurrent(projectId): Observable<any> {
+  //   const url = this.SERVER_BASE_PATH + projectId + '/publicanalytics/waiting/current';
+  //   const headers = new Headers();
+  //   headers.append('Content-Type', 'application/json');
+  //   // headers.append('Authorization', TOKEN);
+  //   return this.http
+  //     .get(url, { headers })
+  //     .map((response) => response.json());
+  // }
+
+  getCurrentWaitingTime(): Observable<[]> {
+    
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+    
+    return this.http.get<[]>(this.SERVER_BASE_PATH + this.projectID + '/publicanalytics/waiting/current', httpOptions);
+  }
+
   getavarageWaitingTimeDataCHART(lastdays, department_id?): Observable<[]> {
     
     console.log("PARAM",lastdays,department_id);

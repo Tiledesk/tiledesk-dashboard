@@ -210,7 +210,7 @@ export class AuthService {
 
   publishSSOloggedUser() {
     const storedUser = localStorage.getItem('user')
-    if (storedUser !== null) { 
+    if (storedUser !== null) {
 
       this.user_bs.next(JSON.parse(storedUser));
     }
@@ -362,8 +362,8 @@ export class AuthService {
                   const project_trial_expired = storedProjectObject['trial_expired'];
                   const project_trial_days_left = storedProjectObject['trial_days_left'];
                   this.project_trial_expired = storedProjectObject['trial_expired'];
-                  const storedProjectOH = storedProjectObject['operatingHours'];   
-                 
+                  const storedProjectOH = storedProjectObject['operatingHours'];
+
                   // tslint:disable-next-line:max-line-length
                   // console.log('»> »> PROJECT-PROFILE GUARD (WF in AUTH SERV checkStoredProjectAndPublish) TRIAL expired 2', this.project_trial_expired);
 
@@ -564,55 +564,47 @@ export class AuthService {
         ///////////////////
         console.log('SSO - LOGIN 1. POST DATA ', jsonRes);
         if (jsonRes['success'] === true) {
-          
+
           // '/chat21/firebase/auth/createCustomToken'
           this.chat21CreateFirebaseCustomToken(jsonRes['token']).subscribe(fbtoken => {
 
             // this.firebaseSignin(email, password).subscribe(fbtoken => {
             console.log('SSO - LOGIN 2. FIREBASE SIGNIN RESPO ', fbtoken)
-            
-            if (fbtoken) {
 
+            if (fbtoken) {
               // Firebase Sign in using custom token
 
-              firebase.auth().signInWithCustomToken(fbtoken)
-                .then(firebase_user => {
-                  console.log('SSO - LOGIN - 3. FIREBASE CUSTOM AUTH DATA ', firebase_user);
+            
+              // firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE).then(() => {
 
-                  /* UPDATE THE THE USER CREATE ON FIREBASE WITH THE CUSTOM TOKEN WITH THE EMAIL AND THE PASSWORD */
-                  // firebase_user.updatePassword(password).then(function () {
-                  //   firebase_user.updateEmail(email);
-                  //   // Update successful.
-                  //   console.log('// Firebase credentials - Update successful.')
-                  // }).catch(function (error) {
-                  //   // An error happened.
-                  //   console.log('// Firebase credentials - An error happened.', error)
-                  // });
+                console.log('SSO - LOGIN - 3. FIREBASE CUSTOM AUTH setPersistence ');
 
-                  //   const credential = firebase.auth.EmailAuthProvider.credential(
-                  //     user.email,
-                  //     userProvidedPassword
-                  // );
+                firebase.auth().signInWithCustomToken(fbtoken)
+                  .then(firebase_user => {
+                    console.log('SSO - LOGIN - 4. FIREBASE CUSTOM AUTH DATA ', firebase_user);
 
-                  if (!this.APP_IS_DEV_MODE && this.FCM_Supported === true) {
-                    this.getPermission();
-                  }
+                    if (!this.APP_IS_DEV_MODE && this.FCM_Supported === true) {
+                      this.getPermission();
+                    }
 
+                    callback(null, user);
+                  })
+                  .catch(function (error) {
+                    // return error;
+                    callback(error);
+                    // Handle Errors here.
+                    // const errorCode = error.code;
+                    console.log('SSO - LOGIN - FIREBASE CUSTOM AUTH ERROR CODE ', error)
+                    // const errorMessage = error.message;
+                    // console.log('FIREBASE CUSTOM AUTH ERROR MSG ', errorMessage)
+                  });
 
-                  /* !!!! NO MORE USED - CHAT21-CLOUD-FUNCTIONS - CREATE CONTACT */
-                  // this.cloudFunctionsCreateContact(user.firstname, user.lastname, user.email);
+                  
+              // }).catch(function (error) {
+              //   callback(error);
+              //   console.log('SSO - LOGIN - SET PERSISTENCE ERR ', error)
+              // });
 
-                  callback(null, user);
-                })
-                .catch(function (error) {
-                  // return error;
-                  callback(error);
-                  // Handle Errors here.
-                  // const errorCode = error.code;
-                  console.log('SSO - LOGIN - FIREBASE CUSTOM AUTH ERROR CODE ', error)
-                  // const errorMessage = error.message;
-                  // console.log('FIREBASE CUSTOM AUTH ERROR MSG ', errorMessage)
-                });
             } else {
               callback({ code: '4569', message: 'Error token not generated' });
             }
@@ -631,11 +623,12 @@ export class AuthService {
 
 
   getPermission() {
+    console.log('SSO - LOGIN - 5. getPermission ')
     const messaging = firebase.messaging();
     if (firebase.messaging.isSupported()) {
       messaging.requestPermission()
         .then(() => {
-          console.log('>>>> getPermission Notification permission granted.');
+          console.log('SSO - LOGIN - 5B. >>>> getPermission Notification permission granted.');
           return messaging.getToken()
         })
         .then(FCMtoken => {
@@ -645,7 +638,7 @@ export class AuthService {
           this.updateToken(FCMtoken)
         })
         .catch((err) => {
-          console.log('>>>> getPermission Unable to get permission to notify.', err);
+          console.log('SSO - LOGIN - 5C. >>>> getPermission Unable to get permission to notify.', err);
         });
     }
   }
@@ -778,7 +771,7 @@ export class AuthService {
     headers.append('Content-type', 'application/json');
     headers.append('Authorization', JWT_token);
     const options = new RequestOptions({ headers });
-    
+
     const url = this.CREATE_CUSTOM_TOKEN_URL;
 
     console.log('chat21CreateFirebaseCustomToken ', url)

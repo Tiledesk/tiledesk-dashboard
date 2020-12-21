@@ -205,7 +205,7 @@ export class WidgetSharedComponent implements OnInit {
 
 
   doAvailableLanguageArray(languagesCodes) {
-    console.log('Multilanguage Calling doAvailableLanguageArray in Widget-shared ')
+    // console.log('Multilanguage Calling doAvailableLanguageArray in Widget-shared ')
     for (let i = 0; i < this.languages.length; i++) {
       // console.log('Multilanguage Calling doAvailableLanguageArray languages[i] ', this.languages[i])
       // Loop for array2 
@@ -234,6 +234,22 @@ export class WidgetSharedComponent implements OnInit {
     }
 
     console.log('Multilanguage (widget-shared) availableTranslations - ARRAY: ', this.availableTranslations)
+  }
+
+  getLanguageNameFromCode(langCode) {
+    console.log('Multilanguage (widget-shared) getLanguageNameFromCode - langCode: ', langCode)
+    const index = this.languages.findIndex(x => x.code === langCode );
+    console.log('Multilanguage (widget-shared) getLanguageNameFromCode - index: ', index)
+    console.log('Multilanguage (widget-shared) delault lang - : ', this.languages[index])
+
+ return  this.languages[index].name;
+//     a = [
+//   {prop1:"abc",prop2:"qwe"},
+//   {prop1:"bnmb",prop2:"yutu"},
+//   {prop1:"zxvz",prop2:"qwrq"}];
+    
+// index = a.findIndex(x => x.prop2 ==="yutu");
+
 
   }
 

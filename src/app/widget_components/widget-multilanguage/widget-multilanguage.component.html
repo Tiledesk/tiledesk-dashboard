@@ -28,6 +28,8 @@
               'li-active' : selectedTranslationCode === lang.code}">
         <a style="height:52px"> {{ lang?.name  }} </a>
 
+        <!-- defaultLangName   {{defaultLangName }} -->
+        <span *ngIf="defaultLangName === lang?.name"> (default) </span>
       </li>
     </span>
 
@@ -108,20 +110,31 @@
                 // --------------------------------------------------------------
                 // @ Delete translation
                 // -------------------------------------------------------------- -->
-                <button *ngIf="selectedTranslationCode !== 'add' && selectedTranslationCode !== 'en'" 
-                  class="btn btn-danger btn_delete_lang"
-                  style="margin-top: 2px; margin-bottom: 1px; float: right;" (click)="deleteLang()">
+                <!-- <button *ngIf="selectedTranslationCode !== 'add' && selectedTranslationCode !== 'en'" -->
+                <button *ngIf="selectedTranslationCode !== 'add' && selectedTranslationCode !== defaultLangCode"
+                  class="btn btn-danger btn_delete_lang" style="margin-top: 2px; margin-bottom: 1px; float: right;"
+                  (click)="deleteLang()">
                   {{ 'Delete' | translate }}
                 </button>
 
-                <!--
+               
+                <button *ngIf="selectedTranslationCode !== 'add'" class="btn btn-primary btn_edit_lang"
+                  style="margin-top: 2px; margin-bottom: 1px; float: right;" (click)="editLang()"
+                  [disabled]="currentTraslationClone === undefined">
+                  {{ 'ScriptPage.Save' | translate }}
+                </button>
+
+                 <!--
                 // --------------------------------------------------------------
                 // @ Save modified translation
                 // -------------------------------------------------------------- -->
-                <button *ngIf="selectedTranslationCode !== 'add'" class="btn btn-primary btn_edit_lang"
-                  style="margin-top: 2px; margin-bottom: 1px; float: right;" (click)="editLang()" [disabled]="currentTraslationClone === undefined">
-                  {{ 'ScriptPage.Save' | translate }}
+
+                <button *ngIf="selectedTranslationCode !== 'add' && selectedTranslationCode !== defaultLangCode" class="btn btn-primary btn_edit_lang"
+                  style="margin-top: 2px; margin-bottom: 1px; float: right;" (click)="makeDefaultLanguage(selectedTranslationCode)"
+                  >
+                 Make default
                 </button>
+
               </div>
             </div>
             <div class="row">
@@ -162,15 +175,10 @@
               <div class="row" style="padding-bottom: 25px;">
                 <div class="col-md-4">
 
-                  <ng-select id="language_option" style="margin-top: 11px;" 
-                    [clearable]="true"
-                    [(ngModel)]="selectedLang" 
-                    [items]="languages" 
-                    bindLabel="name" 
-                    groupBy="type"
-                    placeholder="{{ 'ChooseALanguage' | translate }}" 
-                    (clear)="onClearSelectedLanguage()"
-                    (change)="onSelectlang(selectedLang)">
+                  <ng-select id="language_option" style="margin-top: 11px;" [clearable]="true"
+                    [(ngModel)]="selectedLang" [items]="languages" bindLabel="name" groupBy="type"
+                    placeholder="{{ 'ChooseALanguage' | translate }}" (clear)="onClearSelectedLanguage()"
+                    (change)="onSelectlang(selectedLang)" (focus)="onFocusSelectLang()">
                   </ng-select>
 
                 </div>
@@ -180,10 +188,8 @@
                 // @ Add language
                 // ----------------------------------------------------------------------------- -->
                 <div class="col-md-5">
-                  <button class="btn btn-primary" 
-                    style="padding-top: 10px; padding-bottom: 10px;"
-                    (click)="addNewLanguage()"
-                    [disabled]="disableAddBtn">
+                  <button class="btn btn-primary" style="padding-top: 10px; padding-bottom: 10px;"
+                    (click)="addNewLanguage()" [disabled]="disableAddBtn">
                     {{ 'Add' | translate }}
                   </button>
 

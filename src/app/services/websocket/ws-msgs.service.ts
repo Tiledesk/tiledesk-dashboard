@@ -110,7 +110,7 @@ export class WsMsgsService {
     console.log('% »»» WebSocketJs WF >>> ws-msgs--- m-service - SUBSCR To WS MSGS ****** CALLING REF ****** ');
     const path =  '/' + this.project_id + '/requests/' + request_id + '/messages'
     
-    this.webSocketJs.ref(path,
+    this.webSocketJs.ref(path, 'subsToWS_MsgsByRequestId',
       function (data, notification) {
         console.log("% »»» WebSocketJs WF >>> ws-msgs--- m-service - SUBSCR To WS MSGS - CREATE - data ", data , ' path ', path);
         // console.log("% WsMsgsService notification", notification);

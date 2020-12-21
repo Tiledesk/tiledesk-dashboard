@@ -1462,8 +1462,9 @@
 									<div class="wrapper-welcome-title">
 										<label class="widget-label" style="color: #566787; display: block">
 											{{ 'Resourcepage.WidgetAlignment' | translate }}:
-											<span
-												*ngIf="hasSelectedLeftAlignment === true">{{ 'BottomLeft' | translate}}
+										
+											<span *ngIf="hasSelectedLeftAlignment === true">
+												{{ 'BottomLeft' | translate}}
 											</span>
 											<span *ngIf="hasSelectedRightAlignment === true">
 												{{ 'BottomRight' | translate}} </span>
@@ -1570,30 +1571,10 @@
 															<div class="c21-header-container">
 
 																<div class="c21-header-button" style="display: block;">
-																	<div class="c21-close-button" style="position: absolute;
-																	width: 50px;
-																	height: 50px;
-																	top: 0;
-																	right: 0;
-																	margin: 10px;
-																	z-index: 10;">
+																	<div class="c21-close-button" style="position: absolute;width: 50px;height: 50px;top: 0;right: 0;margin: 10px;z-index: 10;">
 																		<button aria-label="chiudi chat"
 																			class="c21-close-button-body"
-																			tabindex="2001" style="    cursor: pointer;
-																		width: 51px;
-																		height: 51px;
-																		border-radius: 8px;
-																		padding: 0;
-																		margin: 0;
-																		display: -webkit-box;
-																		display: -ms-flexbox;
-																		display: flex;
-																		-webkit-box-align: center;
-																		-ms-flex-align: center;
-																		align-items: center;
-																		-webkit-appearance: initial;
-																		border: none;
-																		background-color: rgba(0,0,0,0);">
+																			tabindex="2001" style=" cursor: pointer;width: 51px;height: 51px;border-radius: 8px;padding: 0;margin: 0;	display: -ms-flexbox;display: flex;-webkit-box-align: center;-ms-flex-align: center;align-items: center;-webkit-appearance: initial;	background-color: rgba(0,0,0,0);">
 																			<svg aria-labelledby="altIconTitle"
 																				height="20px" role="img"
 																				viewBox="0 0 24 24" width="20px"
@@ -1676,17 +1657,14 @@
 																							<div class="c21-right-conv">
 																								<div
 																									class="c21-last-time">
-																									2
-																									{{ 'MinutesAgo' | translate }}
+																									2 {{ 'MinutesAgo' | translate }}
 																								</div>
-																								<div
-																									class="truncate c21-name">
-																									Nicola</div>
-																								<div
-																									class="truncate c21-msg">
-																									{{company_name}},
-																									chat
-																									different!</div>
+																								<div class="truncate c21-name">
+																									Nicola
+																								</div>
+																								<div class="truncate c21-msg">
+																									{{company_name}}, chat 	different!
+																								</div>
 																							</div>
 																						</div>
 																						<div class="clear"></div>

@@ -1,0 +1,70 @@
+<div class="widget-container" style="">
+  <div class="card td-widget-preview-card"
+    style="box-shadow: rgba(0, 0, 0, 0.18) 0 0 38px!important; border: unset; min-height: 547px;">
+    <div class="card-content td-widget-preview-card-content" [ngStyle]="{'background-color': primaryColor}">
+
+      <!-- <span class="card-header-center">
+        {{company_name}} {{ selected_translation?.AGENT_AVAILABLE }}
+      </span> -->
+
+      <span class="card-header-left">
+        <!-- style="fill: rgb(255, 255, 255);"  -->
+        <svg aria-labelledby="altIconTitle" height="20px" role="img" viewBox="0 0 24 24" width="24px"
+          xmlns="http://www.w3.org/2000/svg" [ngStyle]="{'fill': secondaryColor }">
+          <path d="M0 0h24v24H0V0z" fill="none"></path>
+          <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59z">
+          </path>
+        </svg>
+
+        <span [ngStyle]="{'color': secondaryColor }"
+          style="position: relative; top: -4px;  font-weight: 500; font-size: 16px;">
+          {{projectName}}
+        </span>
+      </span>
+
+      <span class="card-header-right">
+        <span class="option-icon">
+          <!-- style="fill: rgb(255, 255, 255);" -->
+          <svg aria-labelledby="altIconTitle" height="21" viewBox="0 0 24 24" width="21"
+            xmlns="http://www.w3.org/2000/svg" [ngStyle]="{'fill': secondaryColor }">
+            <path d="M0 0h24v24H0V0z" fill="none"></path>
+            <path
+              d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z">
+            </path>
+          </svg>
+        </span>
+        <span class="td-preview-close-icon">
+          <!-- style="fill: rgb(255, 255, 255);"  -->
+          <svg aria-labelledby="altIconTitle" height="21px" role="img" viewBox="0 0 24 24" width="21px"
+            xmlns="http://www.w3.org/2000/svg" [ngStyle]="{'fill': secondaryColor }">
+            <path d="M0 0h24v24H0V0z" fill="none"></path>
+            <path
+              d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z">
+            </path>
+          </svg>
+        </span>
+      </span>
+    </div>
+
+    <div class="card-footer td-widget-preview-card-footer">
+      <div class="td-widget-preview-slide-in-left" role="messaggio">Bot</div>
+
+      <div class="td-widget-preview-avatar-image">
+        <img src="assets/img/avatar_bot_tiledesk.svg">
+      </div>
+
+      <div *ngIf="HAS_FOCUSED_ONLINE_MSG" class="td-widget-preview-msg_receive">
+        <p [innerHTML]="onlineMsg" class="td-widget-preview-msg_receive-p"></p>
+      </div>
+
+      <div *ngIf="HAS_FOCUSED_OFFLINE_MSG" class="td-widget-preview-msg_receive">
+        <p [innerHTML]="offlineMsg" class="td-widget-preview-msg_receive-p"></p>
+      </div>
+
+
+      <div *ngIf="HAS_FOCUSED_OFFICE_CLOSED_MSG" class="td-widget-preview-msg_receive">
+        <p [innerHTML]="officeClosedMsg" class="td-widget-preview-msg_receive-p"></p>
+      </div>
+    </div>
+  </div>
+</div>

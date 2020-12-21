@@ -1,23 +1,22 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
-import { AuthService } from '../core/auth.service';
+import { AuthService } from '../../core/auth.service';
 import { Router } from '@angular/router';
-import { environment } from '../../environments/environment';
-import { slideInAnimation } from '../_animations/index';
-import { AppConfigService } from '../services/app-config.service';
+import { slideInAnimation } from '../../_animations/index';
+import { AppConfigService } from '../../services/app-config.service';
 
 // import brand from 'assets/brand/brand.json';
-import { BrandService } from '../services/brand.service';
+import { BrandService } from '../../services/brand.service';
 
 @Component({
-  selector: 'appdashboard-install-tiledesk',
-  templateUrl: './install-tiledesk.component.html',
-  styleUrls: ['./install-tiledesk.component.scss'],
+  selector: 'appdashboard-install-widget',
+  templateUrl: './install-widget.component.html',
+  styleUrls: ['./install-widget.component.scss'],
   animations: [slideInAnimation],
   // tslint:disable-next-line:use-host-property-decorator
   host: { '[@slideInAnimation]': '' }
 })
-export class InstallTiledeskComponent implements OnInit, OnDestroy {
+export class InstallWidgetComponent implements OnInit, OnDestroy {
   // tparams = brand;
   // logo_on_rocket = brand.wizard_install_widget_page.logo_on_rocket
 

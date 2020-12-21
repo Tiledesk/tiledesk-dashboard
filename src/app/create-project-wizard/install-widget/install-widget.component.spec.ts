@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { InstallTiledeskComponent } from './install-tiledesk.component';
+import { InstallWidgetComponent } from './install-widget.component';
 
-describe('InstallTiledeskComponent', () => {
-  let component: InstallTiledeskComponent;
-  let fixture: ComponentFixture<InstallTiledeskComponent>;
+describe('InstallWidgetComponent', () => {
+  let component: InstallWidgetComponent;
+  let fixture: ComponentFixture<InstallWidgetComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ InstallTiledeskComponent ]
+      declarations: [ InstallWidgetComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(InstallTiledeskComponent);
+    fixture = TestBed.createComponent(InstallWidgetComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

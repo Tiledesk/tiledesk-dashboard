@@ -14,8 +14,9 @@ import { TranslateService } from '@ngx-translate/core';
 export class WidgetMultilanguageComponent extends BaseTranslationComponent implements OnInit {
   objectKeys = Object.keys;
   selectedTranslationCode: string;
-  selectedLang: string
   selectedTranslationLabel: string;
+  selectedLang: string
+
   mock_labels: any;
   eng_labels: any;
 
@@ -36,7 +37,8 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
   disableAddBtn: boolean;
   updateWidgetSuccessNoticationMsg: string;
   translationDeleted: string;
-
+  defaultLangName: string;
+  defaultLangCode: string;
   constructor(
     public location: Location,
     public widgetService: WidgetService,
@@ -49,19 +51,17 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
   ngOnInit() {
     this.selectedTranslationCode = 'en'
 
-
-
     this.getTranslation()
-    this.getLabels();
+    this.getEnDefaultTranslation();
+    // this.getLabels();
     // this.getMockLabels()
 
   }
 
+
+
   getTranslation() {
-
     this.translateGetTranslationErrorMsg();
-
-
   }
 
   translateGetTranslationErrorMsg() {
@@ -74,11 +74,6 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
   }
 
 
-
-
-
-
-
   public generateFake(count: number): Array<number> {
     const indexes = [];
     for (let i = 0; i < count; i++) {
@@ -88,6 +83,31 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
   }
 
 
+  getEnDefaultTranslation() {
+
+    this.widgetService.getEnDefaultLabels().subscribe((labels: any) => {
+      console.log('WIZARD - CONFIGURE WIDGET ***** GET labels ***** - RES', labels);
+      if (labels) {
+        // this.translation = labels[0].data[0];
+
+        this.engTraslationClone = Object.assign({}, labels['data']);
+        // console.log('Multilanguage ***** GET labels ***** - RES > TRANSLATIONS ', labels[0].data[0]);
+        console.log('WIZARD - CONFIGURE WIDGET ***** GET labels ***** - RES > DEFAULT TRANSLATION ', this.engTraslationClone);
+
+
+      }
+
+    }, error => {
+      console.log('WIZARD - CONFIGURE WIDGET ***** GET labels ***** - ERROR ', error)
+    }, () => {
+      console.log('WIZARD - CONFIGURE WIDGET ***** GET labels ***** * COMPLETE *')
+      // this.showSheleton = false;
+      // this.getLabels(labels.lang.toLowerCase(), );
+      this.getLabels()
+    });
+  }
+
+  // langSelectedCode, langSelectedName
   getLabels() {
     const self = this
     this.widgetService.getLabels().subscribe((labels: any) => {
@@ -100,37 +120,55 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
 
         this.languages_codes = [];
 
-        if (this.translations.filter(e => e.lang === 'EN').length > 0) {
-          /* vendors contains the element we're looking for */
-          console.log('Multilanguage ***** EN EXIST');
 
-        } else {
-          console.log('Multilanguage ***** ENGLISH TRANSLATION NOT EXIST');
-          this.notify.showNotification(this.errorNoticationMsg, 4, 'report_problem');
-        }
+
+        // if (this.translations.filter(e => e.lang === 'EN').length > 0) {
+        //   /* vendors contains the element we're looking for */
+        //   console.log('Multilanguage ***** EN EXIST');
+
+        // } else {
+        //   console.log('Multilanguage ***** ENGLISH TRANSLATION NOT EXIST');
+        //   this.notify.showNotification(this.errorNoticationMsg, 4, 'report_problem');
+        // }
 
         this.translations.forEach(translation => {
           console.log('Multilanguage ***** GET labels ***** - RES >>> TRANSLATION ', translation);
 
           if (translation) {
-            // se c'è inglese eseguo subito il push in languages_codes perle altre lang verifico se è presente _id
+
+            // UNA LINGUA  FA PARTE DEL PROGETTO SE HA UN ID ED  L'AGGIUNGO TRA LE DISPONIBILI
+            if (translation._id !== undefined) {
+              this.languages_codes.push(translation.lang.toLowerCase())
+            }
+
+            if (translation.default === true) {
+              this.defaultLangCode = translation.lang.toLowerCase()
+              this.defaultLangName = this.getLanguageNameFromCode(translation.lang.toLowerCase());
+              console.log('Multilanguage ***** GET labels ***** - RES >>> TRANSLATION defaultLangName', this.defaultLangName);
+              console.log('Multilanguage ***** GET labels ***** - RES >>> TRANSLATION defaultLangCode', this.defaultLangCode);
+              this._selectTranslationTab(translation.lang.toLowerCase(), this.defaultLangName);
+            }
+
+
+            /* old */
+            // se c'è inglese eseguo subito il push in languages_codes per le altre lang verifico se è presente _id
             // prima di eseguire il push
 
-            if (translation.lang === 'EN') {
-              this.languages_codes.push(translation.lang.toLowerCase());
+            // if (translation.lang === 'EN') {
+            //   this.languages_codes.push(translation.lang.toLowerCase());
 
-              this.engTraslationClone = Object.assign({}, translation['data']);
-              // console.log('Multilanguage ***** GET labels ***** >>> engTraslationClone', this.engTraslationClone);
-            }
-            if (translation.lang !== 'EN') {
-              console.log('Multilanguage ***** GET labels ***** - RES >>> TRANSLATION _id', translation._id);
+            //   this.engTraslationClone = Object.assign({}, translation['data']);
+            //   // console.log('Multilanguage ***** GET labels ***** >>> engTraslationClone', this.engTraslationClone);
+            // }
+            // if (translation.lang !== 'EN') {
+            //   console.log('Multilanguage ***** GET labels ***** - RES >>> TRANSLATION _id', translation._id);
 
-              // UNA LINGUA DIVERSA DALL'INGLESE FA PARTE DEL PROGETTO SE HA UN ID ED è IN QUESTO CASO CHE L'AGGIUNGO TRA LE DISPONIBILI
-              // (INFATTI LE LINGUE CON L'ID SONO QUELLE CHE AGGIUNGE L'UTENTE - ANCHE L'INGLESE AVRA' L'ID SE VIENE MODIFICATA)
-              if (translation._id !== undefined) {
-                this.languages_codes.push(translation.lang.toLowerCase())
-              }
-            }
+            //   // UNA LINGUA DIVERSA DALL'INGLESE FA PARTE DEL PROGETTO SE HA UN ID ED è IN QUESTO CASO CHE L'AGGIUNGO TRA LE DISPONIBILI
+            //   // (INFATTI LE LINGUE CON L'ID SONO QUELLE CHE AGGIUNGE L'UTENTE - ANCHE L'INGLESE AVRA' L'ID SE VIENE MODIFICATA)
+            //   if (translation._id !== undefined) {
+            //     this.languages_codes.push(translation.lang.toLowerCase())
+            //   }
+            // }
           }
         });
         console.log('Multilanguage ***** GET labels ***** - Array of LANG CODE ', this.languages_codes);
@@ -142,7 +180,31 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
     }, () => {
       console.log('Multilanguage ***** GET labels ***** * COMPLETE *')
       this.showSheleton = false;
-      this._selectTranslationTab('en', 'English')
+
+      /* old */
+      // if (this.translations) {
+      //   this._selectTranslationTab('en', 'English');
+      // }
+    });
+  }
+
+  makeDefaultLanguage(languageCode) {
+    console.log('Multilanguage (widget-design) - MAKE DAFAULT LANG - languageCode: ', languageCode);
+
+    this.widgetService.setDefaultLanguage(languageCode).subscribe((translation: any) => { 
+      console.log('Multilanguage (widget-design) - MAKE DAFAULT LANG - RES ', translation);
+
+      if (translation.default === true) {
+        this.defaultLangCode = translation.lang.toLowerCase()
+        this.defaultLangName = this.getLanguageNameFromCode(languageCode);
+      }
+    }, error => {
+      console.log('Multilanguage (widget-design) - MAKE DAFAULT LANG - ERROR ', error);
+    }, () => {
+      console.log('Multilanguage (widget-design) - MAKE DAFAULT LANG ***** * COMPLETE *');
+
+      // this.getLabels()
+     
     });
   }
 
@@ -163,6 +225,7 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
 
           if (translation.lang.toLowerCase() === this.selectedTranslationCode) {
             console.log('Multilanguage _selectTranslationTab traslation selected ', translation['data'])
+
             for (let [key, value] of Object.entries(translation['data'])) {
               // console.log(`Multilanguage selectTranslationTab key : ${key} - value ${value}`);
 
@@ -297,6 +360,10 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
       });
   }
 
+  onFocusSelectLang () {
+    console.log('Multilanguage onFocusSelectLang translations ', this.translations);
+  }
+
 
   onSelectlang(selectedLang) {
     if (selectedLang) {
@@ -382,7 +449,7 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
         this.notify.showWidgetStyleUpdateNotification(this.translationDeleted, 2, 'done');
 
 
-        
+
       });
 
 

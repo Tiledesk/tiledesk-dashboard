@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ProjectService } from '../services/project.service';
-import { Project } from '../models/project-model';
-import { AuthService } from '../core/auth.service';
+import { ProjectService } from '../../services/project.service';
+import { Project } from '../../models/project-model';
+import { AuthService } from '../../core/auth.service';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { slideInAnimation } from '../_animations/index';
+import { slideInAnimation } from '../../_animations/index';
 // import brand from 'assets/brand/brand.json';
-import { BrandService } from '../services/brand.service';
+import { BrandService } from '../../services/brand.service';
 
 @Component({
   selector: 'appdashboard-create-project',
@@ -163,15 +163,13 @@ export class CreateProjectComponent implements OnInit {
   }
 
 
-  continueToInstallScript() {
 
-    this.router.navigate([`/project/${this.id_project}/install-tiledesk`]);
-    
-    // if (this.router.url === '/create-project') {
-    //   this.router.navigate([`/project/${this.id_project}/install-tiledesk`]);
-    // } else {
-    //   this.router.navigate([`/project/${this.id_project}/home`]);
-    // }
+
+  continueToConfigureScript() {
+    this.router.navigate([`/project/${this.id_project}/configure-widget`]);
   }
+
+
+ 
 
 }

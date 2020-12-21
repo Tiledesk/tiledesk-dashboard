@@ -81,7 +81,7 @@ export class ContactsService {
     const path = '/' + this.projectId + '/project_users/users/' + requesterid;
     // const path = "/5f61efc28f90f300345edd75/project_users/5f623d5c56065e0034fce69c";
     console.log('wsRequesterPresence PATH ', path);
-    this.webSocketJs.ref(path,
+    this.webSocketJs.ref(path, 'subscribeToWS_RequesterPresence',
       function (data, notification) {
         console.log("wsRequesterPresence (contacts service) - CREATE - data ", data);
         // console.log("% WsMsgsService notification", notification);

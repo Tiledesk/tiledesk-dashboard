@@ -113,8 +113,9 @@ import { PricingComponent } from './pricing/pricing.component';
 import { PaymentSuccessPageComponent } from './pricing/payment-success-page/payment-success-page.component';
 import { PaymentCanceledPageComponent } from './pricing/payment-canceled-page/payment-canceled-page.component';
 import { PaymentsListComponent } from './pricing/payments-list/payments-list.component';
-import { CreateProjectComponent } from './create-project/create-project.component';
-import { InstallTiledeskComponent } from './install-tiledesk/install-tiledesk.component';
+import { CreateProjectComponent } from './create-project-wizard/create-project/create-project.component';
+import { InstallWidgetComponent } from './create-project-wizard/install-widget/install-widget.component';
+import { ConfigureWidgetComponent } from './create-project-wizard/configure-widget/configure-widget.component';
 import { LoadingPageComponent } from './loading-page/loading-page.component';
 import { CannedResponsesListComponent } from './canned-responses/canned-responses-list.component';
 import { TagsComponent } from './tags/tags.component';
@@ -155,15 +156,14 @@ const routes: Routes = [
   // FOR CreateProjectComponent I HAVE CREATE TO PATH TO HIDE THE BUTTON 'close' WHEN THE
   // COMPONENT IS CALLED AFTER THE SIGNUP
   // USED AFTER THE SIGNUP
-  { path: 'create-project', component: CreateProjectComponent, canActivate: [AuthGuard] },
+  { path: 'create-project', component: CreateProjectComponent, canActivate: [AuthGuard] }, // wizard 
   // USED WHEN THE USER CLICK ON 'ADD NEW PROJECT' FROM THE NAVBAR
-  { path: 'create-new-project', component: CreateProjectComponent, canActivate: [AuthGuard] },
+  { path: 'create-new-project', component: CreateProjectComponent, canActivate: [AuthGuard] }, // wizard 
+  { path: 'project/:projectid/configure-widget', component: ConfigureWidgetComponent, canActivate: [AuthGuard] }, // wizard step 2
+  { path: 'project/:projectid/install-widget', component: InstallWidgetComponent, canActivate: [AuthGuard] }, // wizard step 3
 
   { path: 'project/:projectid/cannedresponses', component: CannedResponsesListComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/labels', component: TagsComponent, canActivate: [AuthGuard] },
-
-
-  { path: 'project/:projectid/install-tiledesk', component: InstallTiledeskComponent, canActivate: [AuthGuard] },
 
   { path: 'project/create', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
 

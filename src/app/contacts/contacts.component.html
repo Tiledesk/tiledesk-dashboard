@@ -216,6 +216,22 @@
                   <span style="float: right; margin-right: 20px;"> {{ trashedContanctCount }}</span>
                 </span>
               </li>
+
+              <!--
+              // -------------------------------------------------------
+              // NEW - Visitors
+              // ------------------------------------------------------- -->
+          
+              <!-- <li class="nav-contacts-li" (click)="goToVisitors()">
+                <span>
+                  <i style="vertical-align: middle; color:rgba(32, 33, 36, 0.54); padding-left: 10px;"
+                    class="material-icons">group</i>
+                  <span style="padding-left: 15px;"> {{'Visitors' | translate}}</span>
+                </span>
+              </li> -->
+
+
+
             </ul>
           </div>
         </div>
@@ -421,8 +437,8 @@
                       <td *ngIf="hasClickedTrashed === false" class="td-actions text-right"
                         style="padding-left: 0px;padding-top: 17px!important;">
 
-                        <button style="" type="button"
-                          class="btn btn-primary btn-simple btn-xs tooltipx" (click)='goToContactDetails(contact?._id)'>
+                        <button style="" type="button" class="btn btn-primary btn-simple btn-xs tooltipx"
+                          (click)='goToContactDetails(contact?._id)'>
                           <i class="material-icons">view_list</i>
                           <span class="tooltiptext-custom" style="text-transform:none">
                             {{ 'ViewContactRequests' | translate }}
@@ -446,6 +462,10 @@
                             {{ 'MoveToTrash' | translate }}
                           </span>
                         </button>
+
+                  
+
+
                       </td>
 
                       <td *ngIf="hasClickedTrashed === true" class="td-actions text-right"
@@ -461,15 +481,14 @@
                         </button>
 
                         <button type="button" class="btn btn-default btn-simple btn-xs tooltipx"
-                        [disabled]="IS_CURRENT_USER_OWNER !== true"
-                        (click)='restore_contact(contact?._id)'>
-                        <!-- {{ 'RestoreContact' | translate }} -->
-                        <i class="material-icons">forward</i>
-                        <span class="tooltiptext-custom" style="text-transform:none">
-                          {{ 'RestoreContact' | translate }}
+                          [disabled]="IS_CURRENT_USER_OWNER !== true" (click)='restore_contact(contact?._id)'>
+                          <!-- {{ 'RestoreContact' | translate }} -->
+                          <i class="material-icons">forward</i>
+                          <span class="tooltiptext-custom" style="text-transform:none">
+                            {{ 'RestoreContact' | translate }}
 
-                        </span>
-                      </button>
+                          </span>
+                        </button>
 
                       </td>
 

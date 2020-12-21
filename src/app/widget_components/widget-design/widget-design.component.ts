@@ -15,13 +15,16 @@ import { NotifyService } from '../../core/notify.service';
 import { environment } from '../../../environments/environment';
 import { WidgetDesignBaseComponent } from './widget-design-base/widget-design-base.component';
 import { AppConfigService } from '../../services/app-config.service';
+import { AnalyticsService } from './../../services/analytics.service';
 
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../services/brand.service';
+import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
 
 @Component({
   selector: 'appdashboard-widget-design',
-  templateUrl: './widget-design.component.html',
+  // templateUrl: './widget-design.component.html',
+  templateUrl: './new-widget-design.component.html',
   styleUrls: ['./widget-design.component.scss']
 })
 
@@ -51,6 +54,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   public logoUrl: string;
   public hasOwnLogo = false;
   public id_project: string;
+  
   default_dept: Department[];
   public widgetObj = {};
   hasSelectedLeftAlignment = false
@@ -110,7 +114,10 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
 
   selectedLang: string;
   selectedLangCode: string;
+  selectedLangName: string;
   wd_availableTranslations: Array<any> = []
+
+  defaultLangCode: string;
 
   public welcomeTitle: string;
   public placeholderWelcomeTitle: string;
@@ -119,6 +126,9 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   public onlineMsg: string; // LABEL_FIRST_MSG
   public offlineMsg: string; // LABEL_FIRST_MSG_NO_AGENTS
   public officeClosedMsg: string; // LABEL_FIRST_MSG_OPERATING_HOURS_CLOSED
+  public newConversation: string // LABEL_START_NW_CONV
+  public waitingTimeNotFoundMsg: string; // WAITING_TIME_NOT_FOUND
+  public waitingTimeFoundMsg: string; //  WAITING_TIME_FOUND
   placeholderOnlineMsg: string;
   placeholderOfflineMsg: string;
   placeholderofficeClosedMsg: string;
@@ -129,6 +139,34 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   callout_emoticon: string;
   calloutTitleForPreview: string;
 
+  DISPLAY_WIDGET_HOME = true;
+  DISPLAY_CALLOUT = false;
+  DISPLAY_WIDGET_CHAT = false;
+
+  HAS_FOCUSED_ONLINE_MSG= false;
+  HAS_FOCUSED_OFFLINE_MSG= false;
+  HAS_FOCUSED_OFFICE_CLOSED_MSG= false;
+
+  widget_home_has_conversation = false;
+
+  C21_BODY_HOME = true
+  storageBucket: string;
+  currentUserId: string;
+
+  widget_preview_selected = '0000';
+  widget_preview_status = [
+    { id: '0000', name: 'Home' },
+    { id: '0001', name: 'Home with converations' }
+  ];
+
+  lang: any;
+  responseAVGtime: String;
+
+  langService: HumanizeDurationLanguage = new HumanizeDurationLanguage();
+  humanizer: HumanizeDuration = new HumanizeDuration(this.langService);
+
+  HAS_SELECT_DYMANIC_REPLY_TIME_MSG: boolean;
+  HAS_SELECT_STATIC_REPLY_TIME_MSG = true;
   constructor(
     private notify: NotifyService,
     public location: Location,
@@ -141,7 +179,8 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     private departmentService: DepartmentService,
     private router: Router,
     public appConfigService: AppConfigService,
-    public brandService: BrandService
+    public brandService: BrandService,
+    private analyticsService: AnalyticsService
   ) {
     super(translate);
     const brand = brandService.getBrand();
@@ -152,7 +191,9 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   }
 
   ngOnInit() {
-    this.onInitframeHeight();
+    this.getStorageBucket();
+    this.getLoggedUser();
+    this.onInitWindowWidth();
     this.getCurrentProject();
     this.getBrowserLang();
 
@@ -169,7 +210,142 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     this.getLabels();
     this.getOSCODE();
     this.getTestSiteUrl();
+
+    this.getAndManageAccordion();
+    // this.avarageWaitingTimeCLOCK(); // as dashboard
+    // this.showWaitingTime(); // as dario
+
+
+    console.log('WIDGET DESIGN window.matchMedia ', window.matchMedia)
+    this.lang = this.translate.getBrowserLang();
+    console.log('LANGUAGE ', this.lang);
   }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.newInnerWidth = event.target.innerWidth;
+    console.log('»» WIDGET DESIGN - NEW INNER WIDTH ', this.newInnerWidth);
+
+    if (this.newInnerWidth <= 668) {
+      console.log('»» >>>> WIDGET DESIGN - NEW INNER WIDTH ', this.newInnerWidth);
+
+      // let innerWidthLess368 = this.newInnerWidth - 368
+      // this.calloutContainerWidth =  innerWidthLess368 += 'px'
+
+      this.custom_breakpoint = true;
+    } else {
+      this.custom_breakpoint = false;
+    }
+
+    // ---------------------------------
+    // New - small sidebar @media < 1200 
+    // ---------------------------------
+
+  }
+
+  onInitWindowWidth(): any {
+    this.initInnerWidth = window.innerWidth;
+    console.log('»» WIDGET DESIGN - INIT WIDTH ', this.initInnerWidth);
+    if (this.newInnerWidth <= 668) {
+      console.log('»» >>>> WIDGET DESIGN - NEW INNER WIDTH ', this.newInnerWidth);
+      this.custom_breakpoint = true;
+    } else {
+      this.custom_breakpoint = false;
+    }
+  }
+
+  onChangeWidgetPreview(previewselected) {
+    console.log('»» WIDGET DESIGN - PREVIEW SELECTED ', previewselected);
+
+    if (previewselected === '0001') {
+      this.C21_BODY_HOME = false;
+    } else {
+      this.C21_BODY_HOME = true;
+    }
+
+  }
+
+  getStorageBucket() {
+    const firebase_conf = this.appConfigService.getConfig().firebase;
+    this.storageBucket = firebase_conf['storageBucket'];
+    console.log('STORAGE-BUCKET Sidebar ', this.storageBucket)
+  }
+
+  getLoggedUser() {
+    this.auth.user_bs.subscribe((user) => {
+      console.log('USER GET IN »» WIDGET DESIGN ', user)
+      if (user) {
+        this.currentUserId = user._id;
+        console.log('Current USER ID ', this.currentUserId)
+      }
+    });
+  }
+
+  selectSidebar() {
+    const elemAppSidebar = <HTMLElement>document.querySelector('app-sidebar');
+    console.log('USER PROFILE  elemAppSidebar ', elemAppSidebar)
+    elemAppSidebar.setAttribute('style', 'display:none;');
+
+    const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
+    console.log('USER PROFILE  elemMainPanel ', elemMainPanel)
+    elemMainPanel.setAttribute('style', 'width:100% !important; overflow-x: hidden !important;');
+  }
+
+
+  getAndManageAccordion() {
+    var acc = document.getElementsByClassName("widget-section-accordion");
+    console.log('WIDGET DESIGN ACCORDION', acc);
+    var i;
+
+    for (i = 0; i < acc.length; i++) {
+
+      // Open the first accordion https://codepen.io/fpavision/details/xxxONGv
+      var firstAccordion = acc[0];
+      var firstPanel = <HTMLElement>firstAccordion.nextElementSibling;
+      console.log('WIDGET DESIGN ACCORDION FIRST PANEL', firstPanel);
+
+      firstAccordion.classList.add("active");
+      firstPanel.style.maxHeight = firstPanel.scrollHeight + "px";
+
+      var arrow_icon_div = firstAccordion.children[1];
+      console.log('WIDGET DESIGN ACCORDION ARROW ICON WRAP DIV', arrow_icon_div);
+
+      var arrow_icon = arrow_icon_div.children[0]
+      console.log('WIDGET DESIGN ACCORDION ARROW ICON', arrow_icon);
+      arrow_icon.classList.add("arrow-up");
+
+      acc[i].addEventListener("click", function () {
+        this.classList.toggle("active");
+        var panel = this.nextElementSibling;
+        console.log('WIDGET DESIGN ACCORDION PANEL', panel);
+
+        var arrow_icon_div = this.children[1];
+        console.log('WIDGET DESIGN ACCORDION ARROW ICON WRAP DIV', arrow_icon_div);
+
+        var arrow_icon = arrow_icon_div.children[0]
+        console.log('WIDGET DESIGN ACCORDION ARROW ICON', arrow_icon);
+        arrow_icon.classList.toggle("arrow-up");
+
+        // var arrow_icon_div = acc[i].children[1];
+        // console.log('WIDGET DESIGN ACCORDION ARROW ICON WRAP DIV', arrow_icon_div);
+        // var arrow_icon = arrow_icon_div.children[0];
+        // console.log('WIDGET DESIGN ACCORDION ARROW ICON', arrow_icon);
+        // arrow_icon.classList.toggle("arrow-up");
+
+        if (panel.style.maxHeight) {
+          panel.style.maxHeight = null;
+        } else {
+          panel.style.maxHeight = panel.scrollHeight + "px";
+        }
+      });
+    }
+  }
+
+
 
   getTestSiteUrl() {
     this.TESTSITE_BASE_URL = this.appConfigService.getConfig().testsiteBaseUrl;
@@ -197,7 +373,6 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   }
 
   getLabels() {
-
     this.widgetService.getLabels().subscribe((labels: any) => {
       console.log('Multilanguage (widget-design) ***** GET labels ***** - RES', labels);
       if (labels) {
@@ -208,34 +383,45 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
 
         this.languages_codes = [];
 
-        if (this.translations.filter(e => e.lang === 'EN').length > 0) {
-          /* vendors contains the element we're looking for */
-          console.log('Multilanguage (widget-design) ***** EN EXIST');
+        // if (this.translations.filter(e => e.lang === 'EN').length > 0) {
+        //   /* vendors contains the element we're looking for */
+        //   console.log('Multilanguage (widget-design) ***** EN EXIST');
 
-        } else {
-          console.log('Multilanguage (widget-design) ***** ENGLISH TRANSLATION NOT EXIST');
-          this.notify.showNotification(this.errorNoticationMsg, 4, 'report_problem');
-        }
+        // } else {
+        //   console.log('Multilanguage (widget-design) ***** ENGLISH TRANSLATION NOT EXIST');
+        //   this.notify.showNotification(this.errorNoticationMsg, 4, 'report_problem');
+        // }
 
         this.translations.forEach(translation => {
           console.log('Multilanguage (widget-design) ***** GET labels ***** - RES >>> TRANSLATION ', translation);
+
+
 
           if (translation) {
             // se c'è inglese eseguo subito il push in languages_codes perle altre lang verifico se è presente _id
             // prima di eseguire il push
 
-            if (translation.lang === 'EN') {
-              this.languages_codes.push(translation.lang.toLowerCase());
+            if (translation._id !== undefined) {
+              this.languages_codes.push(translation.lang.toLowerCase())
+            }
 
-              // this.engTraslationClone = Object.assign({}, translation['data']);
-              // console.log('Multilanguage ***** GET labels ***** >>> engTraslationClone', this.engTraslationClone);
+            if (translation.default === true) {
+              this.defaultLangCode = translation.lang.toLowerCase()
+              console.log('Multilanguage (widget-design) ***** GET labels ***** defaultLangCode ', translation);
             }
-            if (translation.lang !== 'EN') {
-              console.log('Multilanguage (widget-design) ***** GET labels ***** - RES >>> TRANSLATION _id', translation._id);
-              if (translation._id !== undefined) {
-                this.languages_codes.push(translation.lang.toLowerCase())
-              }
-            }
+
+            // if (translation.lang === 'EN') {
+            //   this.languages_codes.push(translation.lang.toLowerCase());
+
+            //   // this.engTraslationClone = Object.assign({}, translation['data']);
+            //   // console.log('Multilanguage ***** GET labels ***** >>> engTraslationClone', this.engTraslationClone);
+            // }
+            // if (translation.lang !== 'EN') {
+            //   console.log('Multilanguage (widget-design) ***** GET labels ***** - RES >>> TRANSLATION _id', translation._id);
+            //   if (translation._id !== undefined) {
+            //     this.languages_codes.push(translation.lang.toLowerCase())
+            //   }
+            // }
           }
         });
 
@@ -247,10 +433,12 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
 
         // IN THE SELECT LANGUAGE COMBO DISPLAY AS SELECTED THE FIRST LANGUAGE IN ALPHABETICAL ORDER
         this.wd_availableTranslations = availableTranslations.sort(this.compare);
-        console.log('Multilanguage (widget-design) ***** GET labels *****  ordered availableTranslations ', this.wd_availableTranslations);
+        console.log('Multilanguage (widget-design) ***** GET labels *****  ordered wd_availableTranslations', this.wd_availableTranslations);
 
         this.selectedLang = this.wd_availableTranslations[0].name;
         this.selectedLangCode = this.wd_availableTranslations[0].code;
+        this.selectedLangName = this.wd_availableTranslations[0].name;
+
         console.log('Multilanguage (widget-design) ***** GET labels *****  selectedLangCode ', this.selectedLangCode);
 
         this.getCurrentTranslation(this.selectedLangCode);
@@ -274,6 +462,12 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
         console.log('Multilanguage (widget-design) ***** selected translation: ', this.selected_translation)
 
         // ---------------------------------------------------------------
+        // @ New Conversation (not editable in the widhet setting page but only from multilanguage page)
+        // ---------------------------------------------------------------
+        this.newConversation = this.selected_translation["LABEL_START_NW_CONV"];
+        console.log('Multilanguage (widget-design) ***** selected translation newConversation: ', this.newConversation);
+
+        // ---------------------------------------------------------------
         // @ Welcome title and company intro
         // ---------------------------------------------------------------
         this.welcomeTitle = this.selected_translation["WELLCOME_TITLE"];
@@ -281,8 +475,10 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
         console.log('Multilanguage (widget-design) ***** selected translation WELLCOME_TITLE: ', this.welcomeTitle, '- WELLCOME_MSG: ', this.welcomeMsg);
 
 
+
+
         // ---------------------------------------------------------------
-        // @ Callout title & msg
+        // @ Callout title, msg and emoji
         // ---------------------------------------------------------------
         this.calloutTitle = this.selected_translation["CALLOUT_TITLE_PLACEHOLDER"];
         // this.calloutTitleForPreview =  this.calloutTitle.trim();
@@ -303,7 +499,34 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
         // @ Office closed msgs
         // ---------------------------------------------------------------
         this.officeClosedMsg = this.selected_translation["LABEL_FIRST_MSG_OPERATING_HOURS_CLOSED"];
+
+        // -----------------------------------------------------------------------------------------------------------------------
+        // @ waitingTimeNotFoundMsg & waitingTimeFoundMsg are displayed in widget preview when the variable C21_BODY_HOME is false 
+        // this to simulate the presence of at least one conversation
+        // -----------------------------------------------------------------------------------------------------------------------
+        this.waitingTimeNotFoundMsg = this.selected_translation["WAITING_TIME_NOT_FOUND"];
+        this.waitingTimeFoundMsg = this.selected_translation["WAITING_TIME_FOUND"] + '$reply_time';
       }
+    });
+  }
+
+  makeDefaultLanguage(languageCode) {
+    console.log('Multilanguage (widget-design) - MAKE DAFAULT LANG - languageCode: ', languageCode);
+
+    this.widgetService.setDefaultLanguage(languageCode).subscribe((translation: any) => { 
+      console.log('Multilanguage (widget-design) - MAKE DAFAULT LANG - RES ', translation);
+
+      if (translation.default === true) {
+        this.defaultLangCode = translation.lang.toLowerCase()
+
+      }
+    }, error => {
+      console.log('Multilanguage (widget-design) - MAKE DAFAULT LANG - ERROR ', error);
+    }, () => {
+      console.log('Multilanguage (widget-design) - MAKE DAFAULT LANG ***** * COMPLETE *');
+
+      // this.getLabels()
+     
     });
   }
 
@@ -318,6 +541,79 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     console.log('Multilanguage (widget-design) - WELCOME MSG CHANGE: ', this.welcomeMsg);
     // if (event.length === 0) {  }
   }
+
+
+  onChangeReplyTimeTypeMsg(value) {
+    console.log('Multilanguage (widget-design) - ON CHANGE REPLY TIME TYPE MSG : ', value);
+
+    if (value === 'reply_time_dynamic_msg') {
+      this.HAS_SELECT_DYMANIC_REPLY_TIME_MSG = true;
+      this.HAS_SELECT_STATIC_REPLY_TIME_MSG = false;
+    }
+    if (value === 'reply_time_fixed_msg') {
+      this.HAS_SELECT_DYMANIC_REPLY_TIME_MSG = false;
+      this.HAS_SELECT_STATIC_REPLY_TIME_MSG = true;
+    }
+ 
+  }
+
+  waitingTimeNotFoundMsgChange(event) {
+    this.waitingTimeNotFoundMsg = event;
+    console.log('Multilanguage (widget-design) - WAITING TIME NOT FOUND CHANGE: ', this.waitingTimeFoundMsg);
+  }
+
+  waitingTimeFoundMsgChange(event) {
+    this.waitingTimeFoundMsg = event;
+    console.log('Multilanguage (widget-design) - WAITING TIME FOUND CHANGE: ', this.waitingTimeFoundMsg);
+  }
+
+  setReplyTimePlaceholder() {
+    const elInput = <HTMLElement>document.querySelector('.waiting-time-found-msg-input');
+    console.log('Multilanguage (widget-design) - setReplyTimePlaceholder INPUT ELEM: ', elInput);
+    this.insertAtCursor(elInput, '$reply_time')
+  }
+
+  insertAtCursor(myField, myValue) {
+    console.log('Multilanguage (widget-design) - insertAtCursor - myValue ', myValue );
+    // this.waitingTimeFoundMsg = myValue
+    // if (this.addWhiteSpaceBefore === true) {
+    //   myValue = ' ' + myValue;
+    //   console.log('CANNED-RES-CREATE.COMP - GET TEXT AREA - QUI ENTRO myValue ', myValue );
+    // }
+   
+    //IE support
+    if (myField.selection) {
+      myField.focus();
+      let sel = myField.selection.createRange();
+      sel.text = myValue;
+      // this.cannedResponseMessage = sel.text;
+    }
+    //MOZILLA and others
+    else if (myField.selectionStart || myField.selectionStart == '0') {
+      var startPos = myField.selectionStart;
+      console.log('Multilanguage (widget-design) - insertAtCursor - startPos ', startPos);
+      
+      var endPos = myField.selectionEnd;
+      console.log('Multilanguage (widget-design) - insertAtCursor - endPos ', endPos);
+      
+      myField.value = myField.value.substring(0, startPos) + myValue + myField.value.substring(endPos, myField.value.length);
+  
+      // place cursor at end of text in text input element
+      myField.focus();
+      var val = myField.value; //store the value of the element
+      myField.value = ''; //clear the value of the element
+      myField.value = val + ' '; //set that value back. 
+  
+      // this.cannedResponseMessage = myField.value;
+
+      // this.texareaIsEmpty = false;
+      // myField.select();
+    } else {
+      myField.value += myValue;
+      // this.cannedResponseMessage = myField.value;
+    }
+  }
+
 
   calloutTitleChange(event) {
     this.calloutTitle = event;
@@ -435,6 +731,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   onSelectlang(selectedLang) {
     console.log('Multilanguage (widget-design) onSelectlang selectedLang ', selectedLang);
     this.selectedLangCode = selectedLang.code;
+    this.selectedLangName = selectedLang.name;
     if (selectedLang) {
       this.getCurrentTranslation(selectedLang.code);
     }
@@ -459,6 +756,10 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     this.selected_translation["LABEL_FIRST_MSG"] = this.onlineMsg;
     this.selected_translation["LABEL_FIRST_MSG_NO_AGENTS"] = this.offlineMsg;
     this.selected_translation["LABEL_FIRST_MSG_OPERATING_HOURS_CLOSED"] = this.officeClosedMsg;
+
+    this.selected_translation["WAITING_TIME_NOT_FOUND"] = this.waitingTimeNotFoundMsg;
+    this.selected_translation["WAITING_TIME_FOUND"] = this.waitingTimeFoundMsg;
+
 
     console.log('Multilanguage (widget-design) ***** saveTranslation: ', this.selected_translation);
 
@@ -519,37 +820,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     window.open(url, '_blank');
   }
 
-  ngOnDestroy() {
-    this.sub.unsubscribe();
-  }
 
-  @HostListener('window:resize', ['$event'])
-  onResize(event: any) {
-    this.newInnerWidth = event.target.innerWidth;
-    console.log('»» WIDGET DESIGN - NEW INNER WIDTH ', this.newInnerWidth);
-
-    if (this.newInnerWidth <= 668) {
-      console.log('»» >>>> WIDGET DESIGN - NEW INNER WIDTH ', this.newInnerWidth);
-
-      // let innerWidthLess368 = this.newInnerWidth - 368
-      // this.calloutContainerWidth =  innerWidthLess368 += 'px'
-
-      this.custom_breakpoint = true;
-    } else {
-      this.custom_breakpoint = false;
-    }
-  }
-
-  onInitframeHeight(): any {
-    this.initInnerWidth = window.innerWidth;
-    console.log('»» WIDGET DESIGN - INIT WIDTH ', this.initInnerWidth);
-    if (this.newInnerWidth <= 668) {
-      console.log('»» >>>> WIDGET DESIGN - NEW INNER WIDTH ', this.newInnerWidth);
-      this.custom_breakpoint = true;
-    } else {
-      this.custom_breakpoint = false;
-    }
-  }
 
 
   getBrowserLang() {
@@ -797,6 +1068,11 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
    * @param $event
    */
   onChangePrimaryColor($event) {
+
+    this.DISPLAY_WIDGET_HOME = true;
+    this.DISPLAY_CALLOUT = false;
+    this.DISPLAY_WIDGET_CHAT = false;
+
     this.primaryColor = $event
 
     // console.log('+ WIDGET DESIGN - ON CHANGE PRIMARY COLOR ', $event);
@@ -805,6 +1081,18 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     console.log('»» WIDGET DESIGN - ON CHANGE PRIMARY COLOR - PRIMARY COLOR RGB ', this.primaryColorRgb);
     this.generateRgbaGradientAndBorder(this.primaryColorRgb);
 
+  }
+
+  onFocusChangePrimaryColor() {
+    this.DISPLAY_WIDGET_HOME = true;
+    this.DISPLAY_CALLOUT = false;
+    this.DISPLAY_WIDGET_CHAT = false;
+  }
+
+  onOpenPrimaryColorDialog($event) {
+    this.DISPLAY_WIDGET_HOME = true;
+    this.DISPLAY_CALLOUT = false;
+    this.DISPLAY_WIDGET_CHAT = false;
   }
 
   hexToRgb(hex) {
@@ -865,16 +1153,12 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     if (this.secondaryColor !== this.widgetDefaultSettings.themeForegroundColor) {
       // *** ADD PROPERTY
       this.widgetObj['themeForegroundColor'] = this.secondaryColor
-
       /**
        * *** WidgetProject IS UPDATED WHEN THE USER CLICK ON SAVE ***   */
       // this.widgetService.updateWidgetProject(this.widgetObj)
     } else {
       // *** REMOVE PROPERTY
       delete this.widgetObj['themeForegroundColor'];
-
-
-
     }
   }
 
@@ -895,11 +1179,71 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
       /**
        * *** WidgetProject IS UPDATED WHEN THE USER CLICK ON SAVE ***   */
       // this.widgetService.updateWidgetProject(this.widgetObj)
-
     }
   }
 
+  onOpenSecondaryColorDialog($event) {
+    this.DISPLAY_WIDGET_HOME = true;
+    this.DISPLAY_CALLOUT = false;
+    this.DISPLAY_WIDGET_CHAT = false;
+  }
+
+  onFocusChangeSecondaryColor() {
+    this.DISPLAY_WIDGET_HOME = true;
+    this.DISPLAY_CALLOUT = false;
+    this.DISPLAY_WIDGET_CHAT = false;
+  }
+
+  onFocusWelcomeMsg() {
+    this.DISPLAY_WIDGET_HOME = true;
+    this.DISPLAY_CALLOUT = false;
+    this.DISPLAY_WIDGET_CHAT = false;
+  }
+
+  onFocusWelcomeTitle() {
+    this.DISPLAY_WIDGET_HOME = true;
+    this.DISPLAY_CALLOUT = false;
+    this.DISPLAY_WIDGET_CHAT = false;
+  }
+
+  // ---- NEW
+  onFocusOnlineGreetings() {
+    this.DISPLAY_WIDGET_HOME = false;
+    this.DISPLAY_CALLOUT = false;
+    this.DISPLAY_WIDGET_CHAT = true
+
+    this.HAS_FOCUSED_ONLINE_MSG= true;
+    this.HAS_FOCUSED_OFFLINE_MSG= false;
+    this.HAS_FOCUSED_OFFICE_CLOSED_MSG= false;
+  }
+
+  onFocusOfflineGreetings() {
+    this.DISPLAY_WIDGET_HOME = false;
+    this.DISPLAY_CALLOUT = false;
+    this.DISPLAY_WIDGET_CHAT = true;
+
+    this.HAS_FOCUSED_ONLINE_MSG= false;
+    this.HAS_FOCUSED_OFFLINE_MSG= true;
+    this.HAS_FOCUSED_OFFICE_CLOSED_MSG= false;
+
+  }
+
+  onFocusOfficeClosedGreetings () {
+    this.DISPLAY_WIDGET_HOME = false;
+    this.DISPLAY_CALLOUT = false;
+    this.DISPLAY_WIDGET_CHAT = true
+
+    this.HAS_FOCUSED_ONLINE_MSG= false;
+    this.HAS_FOCUSED_OFFLINE_MSG= false;
+    this.HAS_FOCUSED_OFFICE_CLOSED_MSG= true;
+  }
+
+
+
   setPresetColorComb(primaryColor: string, secondaryColor: string) {
+    this.DISPLAY_WIDGET_HOME = true;
+    this.DISPLAY_CALLOUT = false;
+    this.DISPLAY_WIDGET_CHAT = false;
 
     console.log('»» WIDGET DESIGN - setPresetCombOne ', primaryColor, secondaryColor);
     this.primaryColor = primaryColor;
@@ -1051,6 +1395,11 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   // ===========================================================================
 
   toggleCallout($event) {
+    this.DISPLAY_WIDGET_HOME = false;
+    this.DISPLAY_CALLOUT = true;
+    this.DISPLAY_WIDGET_CHAT = false;
+
+
     if ($event.target.checked) {
       // this.calloutTimerSecondSelected = 5;
       this.CALLOUT_IS_DISABLED = false;
@@ -1066,32 +1415,37 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     }
   }
 
+
   setSelectedCalloutTimer() {
+
+    this.DISPLAY_WIDGET_HOME = false;
+    this.DISPLAY_CALLOUT = true;
+    this.DISPLAY_WIDGET_CHAT = false;
     // if (this.calloutTimerSecondSelected !== -1) {
     // if (this.CALLOUT_IS_DISABLED = false) {
-      console.log('»» WIDGET DESIGN CALLOUT TIMER - TIMER SELECTED', this.calloutTimerSecondSelected);
-      // this.CALLOUT_IS_DISABLED = false;
-      // *** ADD PROPERTY
-      this.widgetObj['calloutTimer'] = this.calloutTimerSecondSelected;
-      // UPDATE WIDGET PROJECT
+    console.log('»» WIDGET DESIGN CALLOUT TIMER - TIMER SELECTED', this.calloutTimerSecondSelected);
+    // this.CALLOUT_IS_DISABLED = false;
+    // *** ADD PROPERTY
+    this.widgetObj['calloutTimer'] = this.calloutTimerSecondSelected;
+    // UPDATE WIDGET PROJECT
 
-      /**
-       * *** WidgetProject IS UPDATED WHEN THE USER CLICK ON SAVE ***  */
-      // this.widgetService.updateWidgetProject(this.widgetObj)
+    /**
+     * *** WidgetProject IS UPDATED WHEN THE USER CLICK ON SAVE ***  */
+    // this.widgetService.updateWidgetProject(this.widgetObj)
 
-      // COMMENT AS FOR CALLOUT TITLE
-      // this.widgetService.publishCalloutTimerSelected(this.calloutTimerSecondSelected)
+    // COMMENT AS FOR CALLOUT TITLE
+    // this.widgetService.publishCalloutTimerSelected(this.calloutTimerSecondSelected)
 
-      // } else if (this.calloutTimerSecondSelected === -1) {
-    } 
-    
-    // else if (this.CALLOUT_IS_DISABLED = true) {
-    //   console.log('»» WIDGET DESIGN CALLOUT TIMER - TIMER SELECTED', this.calloutTimerSecondSelected);
-    //   // this.CALLOUT_IS_DISABLED = true;
-    //   // *** REMOVE PROPERTIES
+    // } else if (this.calloutTimerSecondSelected === -1) {
+  }
 
-    //   delete this.widgetObj['calloutTimer'];
-    // }
+  // else if (this.CALLOUT_IS_DISABLED = true) {
+  //   console.log('»» WIDGET DESIGN CALLOUT TIMER - TIMER SELECTED', this.calloutTimerSecondSelected);
+  //   // this.CALLOUT_IS_DISABLED = true;
+  //   // *** REMOVE PROPERTIES
+
+  //   delete this.widgetObj['calloutTimer'];
+  // }
   // }
 
 
@@ -1108,6 +1462,11 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   // ============== *** WIDGET ALIGNMENT (alias for align) ***  ==============
   // =======================================================================================
   aligmentLeftSelected(left_selected: boolean) {
+
+    this.DISPLAY_WIDGET_HOME = false;
+    this.DISPLAY_CALLOUT = true;
+    this.DISPLAY_WIDGET_CHAT = false;
+
     console.log('»» WIDGET DESIGN - LEFT ALIGNMENT SELECTED ', left_selected);
     this.hasSelectedLeftAlignment = true;
     this.hasSelectedRightAlignment = false;
@@ -1117,6 +1476,9 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   }
 
   aligmentRightSelected(right_selected: boolean) {
+    this.DISPLAY_CALLOUT = true;
+    this.DISPLAY_WIDGET_HOME = false;
+    this.DISPLAY_WIDGET_CHAT = false;
     console.log('»» WIDGET DESIGN - RIGHT ALIGNMENT SELECTED ', right_selected);
     this.hasSelectedLeftAlignment = false;
     this.hasSelectedRightAlignment = true;
@@ -1135,6 +1497,66 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     this.router.navigate(['project/' + this.id_project + '/widget/translations']);
   }
 
+
+  avarageWaitingTimeCLOCK() {
+    this.subscription = this.analyticsService.getDataAVGWaitingCLOCK().subscribe((res: any) => {
+
+
+
+      if (res && res.length > 0) {
+        if (res[0].waiting_time_avg) {
+          if (res[0].waiting_time_avg !== null || res[0].waiting_time_avg !== undefined) {
+
+            this.responseAVGtime = this.humanizer.humanize(res[0].waiting_time_avg, { round: true, language: this.lang })
+
+            console.log('»» WIDGET DESIGN  Waiting time: humanize  this.responseAVGtime', this.responseAVGtime)
+            // console.log('waiting time funtion:', this.humanizeDurations(res[0].waiting_time_avg));
+
+          } else {
+
+          }
+
+        }
+      }
+
+    }, (error) => {
+
+    }, () => {
+      console.log('»» WIDGET DESIGN  - AVERAGE TIME CLOCK REQUEST * COMPLETE *');
+    });
+  }
+
+  showWaitingTime() {
+    // const projectid = this.g.projectid;
+    this.analyticsService.getCurrentWaitingTime()
+      .subscribe((res: any) => {
+
+        console.log('»» WIDGET DESIGN  Waiting time: humanize  responseAVGtimeDario res', res)
+        // that.g.wdLog(['response waiting', response]);
+        // console.log('response waiting ::::', response);
+        if (res && res.length > 0 && res[0].waiting_time_avg) {
+          // const wt = response[0].waiting_time_avg;
+
+          // that.waitingTime = wt;
+          // that.g.wdLog([' that.waitingTime',  that.waitingTime]);
+          // console.log('that.waitingTime', that.waitingTime);
+
+          // const lang = that.translatorService.getLanguage();
+          // console.log('lang', lang);
+          // that.humanWaitingTime = this.humanizer.humanize(wt, {language: lang});
+
+          const responseAVGtimeDario = this.humanizer.humanize(res[0].waiting_time_avg, { round: true, language: this.lang })
+
+          console.log('»» WIDGET DESIGN  Waiting time: humanize  responseAVGtimeDario', responseAVGtimeDario)
+          // console.log('xxx', this.humanizer.humanize(wt));
+          // 'The team typically replies in ' + moment.duration(response[0].waiting_time_avg).format();
+        }
+        //  else {
+        //   that.waitingTimeMessage = 'waiting_time_not_found';
+        //   // that.waitingTimeMessage = 'Will reply as soon as they can';
+        //  }
+      });
+  }
 
 
 

@@ -1590,6 +1590,14 @@
 	"YourContactsSeeThisMessageIfARTIsNotAvailable":"Ihre Kontakte sehen diese Nachricht, wenn die durchschnittliche Antwortzeit des Teams nicht verfügbar ist",
 	"ConfigureWidget":"Konfigurieren Sie das Widget",
 	"WidgetAppearanceAndDefaultLanguage":"Widget-Erscheinungsbild und Standardsprache",
-	"AlwaysWithTheFollowingMessage":"Immer mit der folgenden Nachricht"
+	"AlwaysWithTheFollowingMessage":"Immer mit der folgenden Nachricht",
+	"ReadyThemes":"Fertige Themen",
+	"CustomColors":"Benutzerdefinierte Farben",
+	"HeaderLogo":"Header-Logo",
+	"UpdateWidget":"Aktualisierungs-Widget",
+	"WelcomeGreetings":"Willkommene Grüße",
+	"OnlineOfflineGreetings": "Online Offline-Grüße",
+	"WidgetPreviewIsDisplayedIn": "Die Widget-Vorschau wird derzeit in angezeigt",
+	"ChangePreviewToCustomizeTheFollowingFieldsInAnotherLanguage": "Ändern Sie die Vorschau im Abschnitt Mehrsprachig, um die folgenden Felder in einer anderen Sprache anzupassen"
 	
 }
