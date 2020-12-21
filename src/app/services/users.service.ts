@@ -44,6 +44,7 @@ export class UsersService {
   public currentUserWsAvailability$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   public currentUserWsIsBusy$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   public currentUserWsBusyAndAvailabilityForProject$: BehaviorSubject<[]> = new BehaviorSubject<[]>([]);
+  public contactsEvents$: BehaviorSubject<[]> = new BehaviorSubject<[]>([]);
   public storageBucket$: BehaviorSubject<string> = new BehaviorSubject<string>('');
   // public has_clicked_logoutfrom_mobile_sidebar: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   // public has_clicked_logoutfrom_mobile_sidebar_project_undefined: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -96,7 +97,7 @@ export class UsersService {
   project_id: string;
   project_name: string;
   storageBucket: string;
-
+  eventlist: any;
   constructor(
     http: Http,
     // private afs: AngularFirestore,
@@ -452,6 +453,18 @@ export class UsersService {
     const url = this.PROJECT_USER_URL;
 
     console.log('!! GET PROJECT USERS BY PROJECT ID - URL', url);
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.json());
+  }
+
+  public getProjectUsersByProjectId_GuestRole(): Observable<ProjectUser[]> {
+    const url = this.PROJECT_USER_URL + '?role=guest&presencestatus=online';
+
+    console.log('»» VISITOR SERV - GET VISITOR - URL', url);
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append('Authorization', this.TOKEN);

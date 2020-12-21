@@ -1,0 +1,229 @@
+<p style="z-index: 1050;position: relative; margin-top:6px; padding-left:30px" class="navbar-brand">
+  {{ 'Visitors' | translate }}
+</p>
+
+<div class="main-content" style="padding-top:0px;padding-left:0px; padding-right:0px">
+  <div class="container-fluid">
+
+
+    <!-- 
+    // -------------------------------------------------------
+    // Contacts sidebar
+    // ------------------------------------------------------- -->
+    <div id="contacts-page">
+      <!-- <div id="contacts-sideBar">
+        <div class="card nav-card" style="margin-bottom: 0px;margin-top: 0px; padding: 15px 0px;">
+          <div class="card-content" style="padding-top: 0px;padding-bottom: 0px;padding-left: 0px;padding-right: 0px;">
+
+            <ul style="padding-left: 0px;    list-style: none;">
+              <li class="nav-contacts-li" [ngClass]="{'nav-contacts-li-active' : hasClickedTrashed === false}"
+                (click)="closeTrashContacts()">
+
+                <i style="vertical-align: middle; color:rgba(32, 33, 36, 0.54); padding-left: 10px;"
+                  class="material-icons">contacts</i>
+                <span style="padding-left: 15px;">{{'Contacts'| translate}} </span>
+
+                <span style="float: right; margin-right: 20px;"> {{ countOfActiveContacts }}</span>
+              </li>
+              <li class="nav-contacts-li" [ngClass]="{'nav-contacts-li-active' : hasClickedTrashed === true}"
+                (click)="openTrashedContact()">
+                <span>
+                  <i style="vertical-align: middle; color:rgba(32, 33, 36, 0.54); padding-left: 10px;"
+                    class="material-icons">delete</i>
+               
+                  <span style="padding-left: 15px;"> {{'TrashContacts' | translate}}</span>
+
+                  <span style="float: right; margin-right: 20px;"> {{ trashedContanctCount }}</span>
+                </span>
+              </li>
+
+              <!- -
+              // -------------------------------------------------------
+              // @ Visitors
+              // ------------------------------------------------------- - ->
+              <li class="nav-contacts-li" [ngClass]="{'nav-contacts-li-active' : hasClickedTrashed === true}"
+                (click)="openTrashedContact()">
+                <span>
+                  <i style="vertical-align: middle; color:rgba(32, 33, 36, 0.54); padding-left: 10px;"
+                    class="material-icons">group</i>
+           
+                  <span style="padding-left: 15px;"> {{'Visitors' | translate}}</span>
+
+                  <span style="float: right; margin-right: 20px;"> {{ trashedContanctCount }}</span>
+                </span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div> -->
+
+      <!-- 
+    // -------------------------------------------------------
+    // Contacts list
+    // ------------------------------------------------------- -->
+      <div id="contacts-content">
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="card contact-list" style="margin-top:0px">
+              <!-- <div class="card-header card-header-custom-bkgrnd" [ngClass]="{'gray-bckgnd': hasClickedTrashed === true}">
+
+                <div class="row">
+                  <div class="col-xs-6">
+                    <span *ngIf="hasClickedTrashed === false">
+                      <button style="padding: 6px 14px; margin-top: 0px; margin-bottom: 0px;"
+                        class="btn btn-primary btn-simple export-to-csv-btn" (click)="exportContactsToCsv()">
+                        {{ 'ExportToCSV' | translate }}
+                        <span class="material-icons">
+                          save_alt
+                        </span>
+                      </button>
+                    </span>
+                    <span *ngIf="hasClickedTrashed === true" style="font-weight: 400;margin-right: 16px;">
+                      <i style="vertical-align: middle; color:rgba(32, 33, 36, 0.54)" class="material-icons">delete</i>
+                      {{'TrashContacts' | translate}}
+                    </span>
+                  </div>
+
+                  <div *ngIf="hasClickedTrashed === false" class="col-xs-6" style="text-align: right;">
+                    <div class="mobile-trash-contacs-btn">
+                      <span style="cursor:pointer" (click)="openTrashedContact()">
+                        <span style="font-weight: 400;">
+                          {{'TrashContacts' | translate}}
+                        </span>
+                        <span>
+                          <i style="vertical-align: middle; color:rgba(32, 33, 36, 0.54)"
+                            class="material-icons">delete</i>
+                          <span class="notification_on_trash">{{ trashedContanctCount }}</span>
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+
+                  <div *ngIf="hasClickedTrashed === true" class="col-xs-6" style="text-align: right;">
+                    <div class="mobile-trash-contacs-btn" (click)="closeTrashContacts()">
+                      <i class="material-icons" style="vertical-align: middle;">
+                        clear
+                      </i>
+                      <span style="vertical-align: middle;">
+                        {{ 'CloseTrash' |translate}}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div> -->
+
+              <loading-spinner *ngIf="showSpinner"></loading-spinner>
+              <div *ngIf="!showSpinner" class="card-content table-responsive">
+
+                <table class="table table-hover">
+                  <thead class="text">
+                    <tr>
+
+                      <th>
+                        <span class="column-th-span">
+                          Visitor Id
+                        </span>
+                      </th>
+
+                      <th>
+                        <span class="column-th-span">
+                          Status
+                        </span>
+                      </th>
+
+                      <th>
+                        <span class="column-th-span">
+                          Last login at
+                        </span>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                    <!-- ===== IF THERE ISN'T CONTACTS ===== -->
+                    <tr *ngIf="visitors && visitors?.length === 0">
+                      <td colspan="4" style="text-align: center; padding-top: 16px; cursor: pointer">
+
+                        <p style="font-size:1em; color:#7695a5; font-weight: 400">
+                          No Visitors
+                        </p>
+                      </td>
+                    </tr>
+
+                    <tr *ngFor="let visitor of visitors">
+
+                      <td>
+                        <span class="column-td">
+                          {{ visitor?._id }}
+                        </span>
+                      </td>
+
+                      <td>
+                        <p class="column-td">
+                          {{ visitor?.presence?.status }}
+                        </p>
+                      </td>
+
+                      <td>
+                        <p class="column-td">
+                          {{ visitor?.last_login_at | amTimeAgo }}
+                        </p>
+                      </td>
+
+                    </tr>
+                  </tbody>
+                </table>
+              </div> <!-- ./ card-content table-responsive -->
+
+            </div> <!-- ./ card -->
+          </div>
+        </div>
+      </div>
+
+
+
+
+      <!-- 
+    // -------------------------------------------------------
+    // Right sidebar & Contact list
+    // ------------------------------------------------------- -->
+
+      <!-- <div class="row">
+        <div class="col-xs-12" style="padding-right: 5px;padding-left: 0px;">
+
+          <div class="card nav-card" style="margin-bottom: 0px;margin-top: 0px; padding: 15px 0px;">
+            <div class="card-content"
+              style="padding-top: 0px;padding-bottom: 0px;padding-left: 0px;padding-right: 0px;">
+
+              <ul style="padding-left: 0px;    list-style: none;">
+                <li class="nav-contacts-li" [ngClass]="{'nav-contacts-li-active' : hasClickedTrashed === false}"
+                  (click)="closeTrashContacts()">
+                  <span style="padding-left: 15px;">Contacts </span>
+                </li>
+                <li class="nav-contacts-li" [ngClass]="{'nav-contacts-li-active' : hasClickedTrashed === true}"
+                  (click)="openTrashedContact()">
+                  <span>
+                    <i style="vertical-align: middle; color:rgba(32, 33, 36, 0.54); padding-left: 10px;"
+                      class="material-icons">delete</i>
+                    <span class="notification_on_trash">{{ trashedContanctCount }}</span>
+                    <span> {{'TrashContacts' | translate}}</span>
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-9 col-md-9" style="padding-right: 0px;padding-left: 5px;">
+
+
+
+        </div>
+
+      </div> -->
+
+
+
+    </div> <!-- ./ container-fluid -->
+  </div> <!-- ./ main-content -->
+
