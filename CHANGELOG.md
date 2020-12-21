@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### Master - untagged
+- Updated Firebase dependency to 7.24.0
+
 ### 2.0.79
 - New widget settings page (in progress)
 

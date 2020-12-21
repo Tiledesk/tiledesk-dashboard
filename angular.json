@@ -20,7 +20,7 @@
               "src/assets",
               "src/firebase-config.json",
               "src/dashboard-config-template.json",
-	      "src/dashboard-config.json",
+              "src/dashboard-config.json",
               "src/dashboard-pre-config.json",
               "src/dashboard-prod-config.json",
               "src/dashboard-pre-config-nofb.json"
