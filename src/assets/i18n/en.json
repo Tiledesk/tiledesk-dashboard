@@ -1644,7 +1644,15 @@
     "YourContactsSeeThisMessageIfARTIsNotAvailable":"Your contacts see this message if the team's average response time isn't available",
     "ConfigureWidget":"Configure widget",
     "WidgetAppearanceAndDefaultLanguage":"Widget appearance and default language",
-    "AlwaysWithTheFollowingMessage":"Always with the following message"
+    "AlwaysWithTheFollowingMessage":"Always with the following message",
+    "ReadyThemes": "Ready themes",
+    "CustomColors": "Custom colors",
+    "HeaderLogo": "Header Logo",
+    "UpdateWidget": "UPDATE WIDGET",
+    "WelcomeGreetings": "Welcome greetings",
+    "OnlineOfflineGreetings": "Online / Offline Greetings",
+    "WidgetPreviewIsDisplayedIn": "Widget preview is currently displayed in",
+    "ChangePreviewToCustomizeTheFollowingFieldsInAnotherLanguage": "Change preview in the Multilanguage section to customize the following fields in another language"
 
     
 }
