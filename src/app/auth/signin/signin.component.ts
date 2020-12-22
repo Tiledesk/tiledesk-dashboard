@@ -52,7 +52,7 @@ export class SigninComponent implements OnInit {
   validationMessages = {
     'email': {
       'required': 'Email is required.',
-      'email': 'Email must be a valid email',
+      'pattern': 'Email must be a valid email',
     },
     'password': {
       'required': 'Password is required.',
@@ -228,7 +228,8 @@ export class SigninComponent implements OnInit {
     this.userForm = this.fb.group({
       'email': ['', [
         Validators.required,
-        Validators.email,
+        // Validators.email,
+        Validators.pattern(/^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(\.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(\.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)+$/),
       ]],
       'password': ['', [
         // Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$'),

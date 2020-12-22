@@ -173,18 +173,19 @@
             <input type="email" class="input" formControlName="email" id="email" required autocapitalize="off"
               spellcheck="false">
 
-            <!-- <div *ngIf="formErrors.email" class="is-danger">
-          {{ formErrors.email }}
-        </div> -->
+              <div *ngIf="formErrors.email" class="is-danger" translate>
+
+                {{ formErrors.email }}
+              </div>
 
             <label for="password">Password</label>
             <input type="password" id="password" class="input" formControlName="password" required>
 
-            <!-- <div *ngIf="formErrors.password" class="is-danger">
-          {{ formErrors.password }}
-        </div> -->
-
-            <button type="submit" class="btn signin-button" [disabled]="!userForm.valid">
+            <div *ngIf="formErrors.password" class="is-danger" translate>
+              {{ formErrors.password }}
+            </div>
+            <!-- [disabled]="!userForm.valid" -->
+            <button type="submit" class="btn signin-button" >
               <span *ngIf="!showSpinnerInLoginBtn">
                 <!-- Login  -->
                 {{ 'Login' | translate}}
@@ -278,16 +279,16 @@
             <input type="email" class="input" formControlName="email" id="email_old" required autocapitalize="off"
               spellcheck="false">
 
-            <!-- <div *ngIf="formErrors.email" class="is-danger">
-              {{ formErrors.email }}
-            </div> -->
+              <div *ngIf="formErrors.email" class="is-danger" translate>
+                {{ formErrors.email }}
+              </div>
 
             <label for="password">Password</label>
             <input type="password" id="password_old" class="input" formControlName="password" required>
 
-            <!-- <div *ngIf="formErrors.password" class="is-danger">
+            <div *ngIf="formErrors.password" class="is-danger" translate>
               {{ formErrors.password }}
-            </div> -->
+            </div>
 
             <button type="submit" class="btn signin-button" [disabled]="!userForm.valid">
               <span *ngIf="!showSpinnerInLoginBtn">
