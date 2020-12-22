@@ -103,6 +103,7 @@ export class NotificationSettingsComponent implements OnInit {
   checkCurrentStatus() {
     this.usersService.project_user_id_bs.subscribe((project_user_id) => {
 
+      console.log("################ CHECK NOTIFICATION checkCurrentStatus: ", project_user_id);
       this.notificationService.checkNotificationsStatus(project_user_id).subscribe((result: any) => {
         console.log("################ CHECK NOTIFICATION STATUS RESULT: ", result);
 
@@ -130,6 +131,10 @@ export class NotificationSettingsComponent implements OnInit {
             this.showSpinner = false;
           }
 
+        }  else {
+          this.assigned_conv_on = true;
+          this.unassigned_conv_on = true;
+          this.showSpinner = false;
         }
 
       })
