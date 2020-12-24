@@ -4,8 +4,15 @@
 ### Master - untagged
 - Updated Firebase dependency to 7.24.0
 
+### 2.1.0
+- Adds the ability to integrate Webhooks 
+- Adds in Analytics > Metrics the graphs Visitors and Messages
+- Adds in user profile the ability to disable / enable to receive emails when the conversation is assigned to the logged in user
+- Adds in user profile the ability to disable / enable to receive emails when a conversation is unassigned.
+
 ### 2.0.79
 - New widget settings page (in progress)
+- Fixes block in loading conversation details
 
 ### 2.0.78
 - Fixes the departments status updating service
