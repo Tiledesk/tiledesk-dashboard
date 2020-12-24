@@ -1,6 +1,12 @@
 
 # tiledesk-dashboard
 
+### 2.0.80
+- Fixes production environment settings
+
+### 2.0.79
+- Fixes block in loading conversation details
+
 ### 2.0.78
 - Fixes the departments status updating service
 
