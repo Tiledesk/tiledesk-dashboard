@@ -48,3 +48,4 @@ Thumbs.db
 # Firebase
 .firebaserc
 
+src/dashboard-config.json
