@@ -84,9 +84,9 @@ export class WebSocketJs {
 
   ref(topic, calledby, onCreate, onUpdate, onData) {
     // console.log('% »»» WebSocketJs ****** CALLING REF ****** ');
-    console.log('Web_SocketJs ****** CALLING REF ****** calledby ', calledby);
-    console.log('Web_SocketJs ****** CALLING REF ****** TOPIC ', topic);
-    console.log('Web_SocketJs ****** CALLING REF ****** CALLBACKS', this.callbacks);
+    console.log('% »»» WebSocketJs WF ****** CALLING REF ****** calledby ', calledby);
+    console.log('% »»» WebSocketJs WF ****** CALLING REF ****** TOPIC ', topic);
+    console.log('% »»» WebSocketJs WF ****** CALLING REF ****** CALLBACKS', this.callbacks);
     //this.callbacks.set(topic, {onCreate:onCreate, onUpdate:onUpdate});
 
 
@@ -94,9 +94,9 @@ export class WebSocketJs {
       console.log('% »»» WebSocketJs WF *** REF *** OOOOPS! NOT CALLBACKS ***', topic);
       return
     }
-    
+   
     this.callbacks.set(topic, { onCreate: onCreate, onUpdate: onUpdate, onData: onData });
-
+    console.log('% »»» WebSocketJs WF ****** this.callbacks.set ', this.callbacks);
     // console.log('% »»» WebSocketJs WF *** REF *** callbacks *** ', this.callbacks);
     // this.callbacks
 
@@ -105,23 +105,26 @@ export class WebSocketJs {
     // console.log('% »»» WebSocketJs WF *** REF *** this.topics ***', this.topics);
     // console.log('% »»» WebSocketJs WF *** REF *** READY STATE *** ws.readyState ', this.ws.readyState);
     // console.log('% »»» WebSocketJs WF *** REF *** READY STATE *** this.readyState ', this.readyState);
-
+    console.log('% »»» WebSocketJs WF *** REF *** WS 1 ', this.ws)
     if (this.ws && this.ws.readyState == 1) {
 
-      console.log('% »»» WebSocketJs WF *** REF *** READY STATE 2 ', this.ws.readyState)
+      console.log('% »»» WebSocketJs WF *** REF *** READY STATE 1 ', this.ws.readyState)
       this.subscribe(topic);
 
     } else {
+      console.log('% »»» WebSocketJs WF *** REF *** READY STATE 2 ', this.ws.readyState);
+      console.log('% »»» WebSocketJs WF *** REF *** WS 2 ', this.ws);
 
       var that = this;
-
       if (this.ws) {
         this.ws.addEventListener("open", function (event) {
-
           console.log('% »»» WebSocketJs WF *** REF *** OPEN EVENT *** ', event);
           that.subscribe(topic);
-
         });
+      }
+
+      if (this.topics.indexOf(topic) === -1) {
+        this.topics.push(topic);
       }
     }
   }
@@ -137,7 +140,7 @@ export class WebSocketJs {
     if (this.topics.indexOf(topic) === -1) {
       this.topics.push(topic);
     }
-    // console.log("% »»» WebSocketJs *** SUBSCRIBE *** topics ", this.topics);
+    console.log("% »»» WebSocketJs *** SUBSCRIBE *** topics ", this.topics);
 
     var message = {
       action: 'subscribe',
@@ -169,7 +172,7 @@ export class WebSocketJs {
     //this.topics.delete(topic);
 
     var index = this.topics.indexOf(topic);
-    // console.log("% »»» WebSocketJs *** UNSUBSCRIBE *** - topic  (1C)" , topic, ' index ', index);
+    console.log("% »»» WebSocketJs *** UNSUBSCRIBE *** - topic  (1C)", topic, ' index ', index);
     if (index > -1) {
       this.topics.splice(index, 1);
     }
@@ -197,8 +200,11 @@ export class WebSocketJs {
 
     if (this.ws.readyState == 1) {
       this.send(str, `calling method - UNSUSCRIBE from ${topic}`);
+
     } else {
-      console.log('% »»» WebSocketJs WF -  UNSUSCRIBE try send but this.ws.readyState is = ', this.ws.readyState)
+      console.log('% »»» WebSocketJs WF -  UNSUSCRIBE try send but this.ws.readyState is = ', this.ws.readyState);
+
+
     }
   }
 
@@ -212,7 +218,7 @@ export class WebSocketJs {
     // console.log('% »»» WebSocketJs WF  SEND - initialMessageObj', initialMessageObj);
 
     // nk 
-    // console.log('% »»» WebSocketJs WF *** >>>>> >>>>> >>>>> >>>>> SEND -  sender: ', calling_method ,'- message: ' , initialMessage );
+    console.log('% »»» WebSocketJs WF *** >>>>> >>>>> >>>>> >>>>> SEND -  sender: ', calling_method, '- message: ', initialMessage);
     this.ws.send(initialMessage);
   }
 
@@ -242,7 +248,7 @@ export class WebSocketJs {
     if (this.topics.length > 0) {
       this.topics.forEach(topic => {
         console.log('% »»» WebSocketJs *** RESUBSCRIBE *** to topic ', topic);
-        this.subscribe(topic);
+        this.subscribe(topic); // nn fa sudbcribe 
       });
     }
   }
@@ -255,27 +261,27 @@ export class WebSocketJs {
     this.heartStart();
   }
 
-  _heartStart() {
-    // if(this.forbidReconnect) return;//Non ricollegare o eseguire il battito cardiaco
-    this.pingTimeoutId = setTimeout(() => {
-      // Qui viene inviato un battito cardiaco Dopo averlo ricevuto, viene restituito un messaggio di battito cardiaco.
-      // onmessage Ottieni il battito cardiaco restituito per indicare che la connessione è normale
-      try {
-        console.log('% »»» WebSocketJs - HEARTBEAT send MSG ', JSON.stringify(this.pingMsg));
-        this.ws.send(JSON.stringify(this.pingMsg));
-        // Se non viene ripristinato dopo un determinato periodo di tempo, il backend viene attivamente disconnesso
-        this.pongTimeoutId = setTimeout(() => {
-          // se onclose Si esibirà reconnect，Eseguiamo ws.close() Bene, se lo esegui direttamente reconnect Si innescherà onclose Causa riconnessione due volte
-          this.ws.close();
-        }, this.pongTimeout);
+  // _heartStart() {
+  //   // if(this.forbidReconnect) return;//Non ricollegare o eseguire il battito cardiaco
+  //   this.pingTimeoutId = setTimeout(() => {
+  //     // Qui viene inviato un battito cardiaco Dopo averlo ricevuto, viene restituito un messaggio di battito cardiaco.
+  //     // onmessage Ottieni il battito cardiaco restituito per indicare che la connessione è normale
+  //     try {
+  //       console.log('% »»» WebSocketJs - HEARTBEAT send MSG ', JSON.stringify(this.pingMsg));
+  //       this.ws.send(JSON.stringify(this.pingMsg));
+  //       // Se non viene ripristinato dopo un determinato periodo di tempo, il backend viene attivamente disconnesso
+  //       this.pongTimeoutId = setTimeout(() => {
+  //         // se onclose Si esibirà reconnect，Eseguiamo ws.close() Bene, se lo esegui direttamente reconnect Si innescherà onclose Causa riconnessione due volte
+  //         this.ws.close();
+  //       }, this.pongTimeout);
 
-      } catch (e) {
+  //     } catch (e) {
 
-        console.log('% »»» WebSocketJs - HEARTBEAT err ', e);
-      }
+  //       console.log('% »»» WebSocketJs - HEARTBEAT err ', e);
+  //     }
 
-    }, this.pingTimeout);
-  }
+  //   }, this.pingTimeout);
+  // }
 
 
   getRemainingTime() {
@@ -306,14 +312,16 @@ export class WebSocketJs {
       // Qui viene inviato un battito cardiaco Dopo averlo ricevuto, viene restituito un messaggio di battito cardiaco.
       // onmessage Ottieni il battito cardiaco restituito per indicare che la connessione è normale
       if (this.ws.readyState == 1) {
-        // console.log('% »»» WebSocketJs - heartStart WS OK - readyState ', this.ws.readyState);
-        // console.log('% »»» WebSocketJs - HEART-START send PING MSG ', JSON.stringify(this.pingMsg));
+        console.log('% »»» WebSocketJs - heartStart WS OK - readyState ', this.ws.readyState);
+        console.log('% »»» WebSocketJs - HEART-START send PING MSG ', JSON.stringify(this.pingMsg));
 
         // this.ws.send(JSON.stringify(this.pingMsg));
         this.send(JSON.stringify(this.pingMsg), 'HEART-START')
 
       } else {
         console.log('% »»» WebSocketJs - heartStart WS KO - readyState ', this.ws.readyState);
+
+
       }
 
       // Se non viene ripristinato dopo un determinato periodo di tempo, il backend viene attivamente disconnesso
@@ -330,7 +338,7 @@ export class WebSocketJs {
   // @ heartReset
   // -----------------------------------------------------------------------------------------------------
   heartReset() {
-    // console.log('% »»» WebSocketJs - HEART-START RESET ');
+    console.log('% »»» WebSocketJs - HEART-START RESET ');
     clearTimeout(this.pingTimeoutId);
     clearTimeout(this.pongTimeoutId);
   }
@@ -408,7 +416,7 @@ export class WebSocketJs {
       // -----------------------------------------------------------------------------------------------------
 
       that.ws.onclose = function (e) {
-        console.log('Web_SocketJs - websocket IS CLOSED ... Try to reconnect in 5 seconds ', e);
+        console.log('Web_SocketJs - websocket IS CLOSED ... Try to reconnect in 3 seconds ', e);
 
         // console.log('% »»» WebSocketJs - websocket onclose this.userHasClosed ', that.userHasClosed);
         // https://stackoverflow.com/questions/3780511/reconnection-of-client-when-server-reboots-in-websocket
