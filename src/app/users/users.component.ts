@@ -9,6 +9,7 @@ import { ProjectPlanService } from '../services/project-plan.service';
 import { Subscription } from 'rxjs';
 import { AppConfigService } from '../services/app-config.service';
 import { environment } from '../../environments/environment';
+import { avatarPlaceholder, getColorBck } from '../utils/util';
 
 @Component({
   selector: 'appdashboard-users',
@@ -67,7 +68,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   canceledInviteErrorMsg: string;
   subscription: Subscription;
   isVisible: boolean;
-  
+
 
   storageBucket: string;
   // CHAT_BASE_URL = environment.chat.CHAT_BASE_URL; // moved
@@ -86,6 +87,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    this.getStorageBucketAndThenProjectUser();
     console.log('=========== USERS COMP ============')
     this.translateChangeAvailabilitySuccessMsg();
     this.translateChangeAvailabilityErrorMsg();
@@ -95,7 +97,7 @@ export class UsersComponent implements OnInit, OnDestroy {
 
     this.auth.checkRoleForCurrentProject();
 
-    this.getAllUsersOfCurrentProject();
+    // this.getAllUsersOfCurrentProject(); // MOVED IN GET STORAGE BUCKET
     this.getCurrentProject();
     this.getProjectUserRole();
     this.getLoggedUser();
@@ -109,7 +111,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.translateCanceledInviteSuccessMsg();
     this.translateCanceledInviteErrorMsg();
     this.getOSCODE();
-    this.getStorageBucket();
+    
     this.getChatUrl();
   }
 
@@ -131,10 +133,12 @@ export class UsersComponent implements OnInit, OnDestroy {
     window.open(url, '_blank');
   }
 
-  getStorageBucket() {
+  getStorageBucketAndThenProjectUser() {
     const firebase_conf = this.appConfigService.getConfig().firebase;
     this.storageBucket = firebase_conf['storageBucket'];
     console.log('STORAGE-BUCKET Users ', this.storageBucket)
+    this.getAllUsersOfCurrentProject(this.storageBucket)
+
   }
 
   getOSCODE() {
@@ -331,11 +335,34 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
   }
 
-  getAllUsersOfCurrentProject() {
+  getAllUsersOfCurrentProject(storagebucket) {
     this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
       console.log('»» USERS COMP - PROJECT USERS (FILTERED FOR PROJECT ID)', projectUsers);
       if (projectUsers) {
         this.projectUsersList = projectUsers;
+
+
+        this.projectUsersList.forEach(projectuser => {
+          console.log('»» USERS COMP - PROJECT USERS', projectuser);
+
+          const imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + storagebucket + "/o/profiles%2F" + projectuser['id_user']['_id'] + "%2Fphoto.jpg?alt=media"
+
+          this.checkImageExists(imgUrl, (existsImage) => {
+            if (existsImage == true) {
+              console.log('»» USERS COMP - IMAGE EXIST X PROJECT USERS', projectuser);
+              projectuser.hasImage = true;
+            }
+            else {
+              console.log('»» USERS COMP - IMAGE NOT EXIST X PROJECT USERS', projectuser);
+              projectuser.hasImage = false;
+            }
+          });
+
+          if (projectuser && projectuser['id_user']) 
+          this.createProjectUserAvatar(projectuser['id_user'])
+     
+        });
+
         this.projectUsersLength = projectUsers.length;
         console.log('»» USERS COMP - PROJECT USERS Length  (FILTERED FOR PROJECT ID)', this.projectUsersLength);
       }
@@ -350,6 +377,40 @@ export class UsersComponent implements OnInit, OnDestroy {
 
       // this.getPendingInvitation();
     });
+  }
+
+  createProjectUserAvatar(user) {
+    console.log('»» USERS COMP - createProjectUserAvatar ', user);
+    let fullname = '';
+    if (user && user.firstname && user.lastname) {
+
+
+      fullname = user.firstname + ' ' + user.lastname
+      user['fullname_initial'] = avatarPlaceholder(fullname);
+      user['fillColour'] = getColorBck(fullname)
+    } else if (user && user.firstname) {
+
+      fullname = user.firstname
+      user['fullname_initial'] = avatarPlaceholder(fullname);
+      user['fillColour'] = getColorBck(fullname)
+    } else {
+      user['fullname_initial'] = 'N/A';
+      user['fillColour'] = 'rgb(98, 100, 167)';
+    }
+
+  
+
+  } 
+
+  checkImageExists(imageUrl, callBack) {
+    var imageData = new Image();
+    imageData.onload = function () {
+      callBack(true);
+    };
+    imageData.onerror = function () {
+      callBack(false);
+    };
+    imageData.src = imageUrl;
   }
 
   getPendingInvitation() {
@@ -521,7 +582,7 @@ export class UsersComponent implements OnInit, OnDestroy {
       this.notify.showWidgetStyleUpdateNotification(this.changeAvailabilitySuccessNoticationMsg, 2, 'done');
 
       // RE-RUNS getAllUsersOfCurrentProject TO UPDATE THE TABLE
-      this.getAllUsersOfCurrentProject();
+      // this.getAllUsersOfCurrentProject(this.storageBucket);
     });
   }
 
@@ -531,9 +592,14 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.usersService.has_changed_availability_in_sidebar.subscribe((has_changed_availability) => {
       console.log('»»USER COMP SUBSCRIBES TO HAS CHANGED AVAILABILITY FROM THE SIDEBAR', has_changed_availability)
       if (has_changed_availability === true) {
-        this.getAllUsersOfCurrentProject();
+        this.getAllUsersOfCurrentProject(this.storageBucket);
       }
     })
+  }
+
+  trackByFn(index, item) {
+    return index; // or 
+    // return item._id
   }
 
 
