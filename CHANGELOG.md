@@ -1,6 +1,12 @@
 
 # tiledesk-dashboard
 
+### 2.0.82
+- updated dashboard-config.json
+
+### 2.0.81
+- fixes excessive loading time when refreshing the conversation list
+
 ### 2.0.80
 - Fixes production environment settings
 
