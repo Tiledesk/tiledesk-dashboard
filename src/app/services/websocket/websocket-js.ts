@@ -105,15 +105,17 @@ export class WebSocketJs {
     } else {
 
       var that = this;
-
       if (this.ws) {
         this.ws.addEventListener("open", function (event) {
-
           console.log('% »»» WebSocketJs WF *** REF *** OPEN EVENT *** ', event);
           that.subscribe(topic);
-
         });
       }
+      
+      if (this.topics.indexOf(topic) === -1) {
+        this.topics.push(topic);
+      }
+
     }
   }
 
