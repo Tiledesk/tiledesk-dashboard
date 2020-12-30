@@ -16,7 +16,7 @@
       overflow-x: hidden;">
         <div class="toDoBar" style="    width: 100%;
         min-width: 964px;
-        min-height: 80px;
+        min-height: 90px;
         background-color: #fff;
         display: flex;
         flex-direction: row;
@@ -36,7 +36,7 @@
           font-weight: 700;
           line-height: normal;
           color: #303f9f;
-          margin: 0 32px 0 0;" class="toDoBar__title">
+          margin: 0 32px 0 0; position: relative; top: -5px;" class="toDoBar__title">
 
             {{ prjct_name }}
 
@@ -65,44 +65,146 @@
           top: 1px;
           min-width: 304px;" class="toDoBar__description"> -->
 
-          <div class="served-by-desktop-a">
+
+
+          <!-- // HUMAN AGENTS -->
+          <div class="served-by-desktop-a" style="margin-right: 105px;">
+
+            <div style="position: absolute;top: 10px;font-size: 12px;font-weight: 400;"
+              [ngClass]="{'top_zero': projectUsers?.length === 1 }">
+
+              <div class="homeheader-links-container">
+                <div class="homeheader-link-title-first">
+                  <span *ngIf="projectUsers?.length > 1"> Teammates </span>
+                  <span *ngIf="projectUsers?.length === 1"> No teammates to help you? </span>
+                  <span class="material-icons"
+                    style="vertical-align: middle; color: #3c4858;font-size:18px; position: relative; left: -4px;">
+                    keyboard_arrow_right
+                  </span>
+                </div>
+                <div class="homeheader-link-title-second" (click)="goToUsersList()">
+                  <span *ngIf="projectUsers?.length > 1" style="color: #0f62ff;width: 150px !important;">Add new
+                    teammates </span>
+                  <span *ngIf="projectUsers?.length === 1" style="color: #0f62ff;">Invite your first teammate</span>
+
+                  <span class="material-icons"
+                    style="vertical-align: middle;color: #0f62ff; font-size:18px; position: relative; left: -4px;">
+                    keyboard_arrow_right
+                  </span>
+                </div>
+              </div>
+
+            </div>
+
             <div class="served-by-desktop-b" *ngFor="let projectUser of projectUsers; let first = first;">
-
-
-
               <div [ngClass]="{ 'first-served-by': first }" class="served-by-desktop-c tool_tip"
-                (click)="goToAgentProfile(projectUser?._id)" style="cursor:pointer">
+                (click)="goToAgentProfile(projectUser?.id_user?._id)" style="cursor:pointer">
                 <div class="served-by-desktop-d">
                   <div size="32" class="served-by-desktop-e">
 
                     <img *ngIf="projectUser?.hasImage"
                       src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media"
-                      alt="" onerror="this.src='assets/img/no_image_user.png'">
+                      alt="" onerror="this.src='assets/img/no_image_user.png'" style="width: 42px;height: 42px;">
 
-                    <div *ngIf="!projectUser.hasImage"
-                      class="altenative-avatar-wrap" [ngStyle]="{'background-color': projectUser?.fillColour }">
+                    <!-- // AVATAR WITH USER INITILAS IF DOES NOT EXIST PROFILE IMAGE -->
+                    <div *ngIf="!projectUser.hasImage" class="altenative-avatar-wrap"
+                      [ngStyle]="{'background-color': projectUser?.fillColour }"
+                      style="width: 42px;height: 42px;top: 0px;">
 
-                      <span class="altenative-avatar">
+                      <span class="altenative-avatar" style="line-height: 39px;font-size:16px">
                         {{ projectUser?.fullname_initial }}
                       </span>
 
                     </div>
                   </div>
                 </div>
-
-                <span
-                  style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px; white-space: nowrap;"
-                  class="top">
-                  <span style="text-transform: capitalize;"> {{ projectUser?.firstname }}
-                    <span *ngIf="projectUser?.lastname">
-                      {{ projectUser?.lastname | slice:0:1 }}.
+                <span style="min-width: fit-content;
+                  top: 31px;
+                  border-radius: 3px;
+                  padding: 0px 6px;
+                  font-size: 11px; white-space: nowrap;" class="bottom">
+                  <span style="text-transform: capitalize;"> {{ projectUser?.id_user?.firstname }}
+                    <span *ngIf="projectUser?.id_user?.lastname">
+                      {{ projectUser?.id_user?.lastname | slice:0:1 }}.
                     </span>
-
                   </span>
-                  <i></i>
+                  <i style="height:6px"></i>
                 </span>
               </div>
             </div>
+          </div>
+
+          <!-- /// CHATBOT AGENTS -->
+          <div class="served-by-desktop-a">
+            <div style="position: absolute;top: 10px;font-size: 12px;font-weight: 400;"
+              [ngClass]="{'top_zero': chatbots?.length === 1 }">
+              <div class="homeheader-links-container" style="width: 165px;">
+                <div class="homeheader-link-title-first">
+                  <span *ngIf="chatbots?.length === 1"> There are no Chatbots set up yet</span>
+                  <span *ngIf="chatbots?.length > 1"> Chatbots</span>
+                  <span class="material-icons"
+                    style="vertical-align: middle; color: #3c4858;font-size:18px;position: relative; left: -4px;">
+                    keyboard_arrow_right
+                  </span>
+                </div>
+                <div class="homeheader-link-title-second" (click)="goToBotsList()">
+                  <span *ngIf="chatbots?.length === 1" style="color: #0f62ff;">Add your first chatbot</span>
+                  <span *ngIf="chatbots?.length > 1" style="color: #0f62ff;">Add a chatbot</span>
+                  <span class="material-icons"
+                    style="vertical-align: middle;color: #0f62ff;font-size:18px;position: relative; left: -4px;">
+                    keyboard_arrow_right
+                  </span>
+                </div>
+              </div>
+
+            </div>
+            <div class="served-by-desktop-b" *ngFor="let bot of chatbots; let first = first;">
+              <div [ngClass]="{ 'first-served-by': first }" class="served-by-desktop-c tool_tip"
+                (click)="goToBotProfile(bot?._id, bot?.type)" style="cursor:pointer">
+
+
+                <div class="served-by-desktop-d" *ngIf="bot?.type !== 'identity'">
+                  <div size="32" class="served-by-desktop-e">
+
+                    <img [ngClass]="{'bot-img-gray-bckgrnd': bot.hasImage === false}"
+                      src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{bot?._id}}%2Fphoto.jpg?alt=media"
+                      alt="" onerror="this.src='assets/img/avatar_bot_tiledesk_white.svg'"
+                      style="width: 42px;height: 42px;">
+                  </div>
+
+                  <div *ngIf="bot.type === 'internal'">
+                    <img class="home-served-by-bot-type-logo" src="assets/img/tiledesk_logo_no_text.png" />
+                  </div>
+                  <div *ngIf="bot.type === 'external'">
+                    <img class="home-served-by-bot-type-logo" src="assets/img/external_bot_logo.png" />
+                  </div>
+                  <div *ngIf="bot.type === 'dialogflow'">
+                    <img class="home-served-by-bot-type-logo" src="assets/img/Dialogflow_logo_no_text.png" />
+                  </div>
+                </div>
+
+
+                <!-- // USECASE: THERE IS ONLY A CHATBOT e.g. the identity bot IN THIS CASE DISPLAY THE ICON ON "NO-BOT" -->
+                <div class="served-by-desktop-d" *ngIf="bot?.type === 'identity' && chatbots?.length === 1">
+                  <div size="32" class="served-by-desktop-e">
+
+                    <img src="assets/img/bot_alt_slash_white.svg" alt="no-chatbot-icon"
+                      style="width: 42px;height: 42px;background: #aaa !important">
+                  </div>
+
+                </div>
+
+                <span *ngIf="bot?.type !== 'identity'" style="min-width: fit-content;
+                  top: 31px;
+                  border-radius: 3px;
+                  padding: 0px 6px;
+                  font-size: 11px; white-space: nowrap;" class="bottom">
+                  <span style="text-transform: capitalize;"> {{ bot?.name }} </span>
+                  <i style="height:6px"></i>
+                </span>
+              </div>
+            </div>
+
           </div>
 
 
@@ -143,7 +245,7 @@
       // ---------------------------------------------------------
       // @ Active contacts count
       // --------------------------------------------------------- -->
-        <div class="col-md-3">
+        <div class="col-sm-6 col-md-3">
 
           <div class="statistis-count-container" style="text-align:center ;">
 
@@ -151,16 +253,15 @@
               <span class="active-contacts-count"> {{ countOfActiveContacts }} </span>
             </div>
 
-            <div class="links-container" style="">
-              <div class="link-title-first" style="">
+            <div class="links-container">
+              <div class="link-title-first">
                 <span> Total leads acquired </span>
                 <span class="material-icons" style="vertical-align: middle; color: #3c4858;">
                   keyboard_arrow_right
                 </span>
               </div>
-              <div class="link-title-second" style="">
-                <span style="color: #0f62ff;">Go to
-                  contact list</span>
+              <div class="link-title-second">
+                <span style="color: #0f62ff;">Go to contact list</span>
                 <span class="material-icons" style="vertical-align: middle;color: #0f62ff;">
                   keyboard_arrow_right
                 </span>
@@ -204,7 +305,7 @@
         // ---------------------------------------------------------
         // @ Msgs count (last 30 days)
         // --------------------------------------------------------- -->
-        <div class="col-md-3">
+        <div class="col-sm-6 col-md-3">
           <div class="statistis-count-container" style="text-align:center ;">
 
             <div class="statistis-count-number">
@@ -268,7 +369,7 @@
       // ---------------------------------------------------------
       // @ Conversation count (Last 30 days) 
       // --------------------------------------------------------- -->
-        <div class="col-md-3">
+        <div class="col-sm-6 col-md-3">
           <div class="statistis-count-container" style="text-align:center ;">
             <div class="statistis-count-number">
               <span class="depts-count">
@@ -296,7 +397,7 @@
       // ---------------------------------------------------------
       // @ Operating hours
       // --------------------------------------------------------- -->
-        <div class="col-md-3">
+        <div class="col-sm-6 col-md-3">
 
           <div class="row">
             <div class="col-md-8">
@@ -376,14 +477,14 @@
 
   <div class="row">
     <div class="col-md-12">
-      <div class="visitors-graph-title-container" style="">
-        <div class="visitors-graph-title-1" style="">
+      <div class="visitors-graph-title-container">
+        <div class="visitors-graph-title-1">
           <span> Visitor on your page in the last 7 days </span>
           <span class="material-icons" style="vertical-align: middle; color: #3c4858;">
             keyboard_arrow_right
           </span>
         </div>
-        <div class="visitors-graph-title-2" style="">
+        <div class="visitors-graph-title-2">
           <span style="color: #0f62ff;">Go to visitors analytics to filter the report</span>
           <span class="material-icons" style="vertical-align: middle;color: #0f62ff;">
             keyboard_arrow_right
@@ -399,6 +500,61 @@
         <canvas id="last7dayVisitors"></canvas>
       </div>
     </div>
+  </div>
+
+
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="card">
+        <div class="card-content">
+          <div class="row">
+            <div class="col-xs-3">
+
+              <svg viewBox="0 0 130 130">
+                <path class="hover-fillDark" fill="#3297D3"
+                  d="M117 113H65.36a6.25 6.25 0 0 1-5.27-3.28C58 105.32 50.46 103 41 103H9a5 5 0 0 1-5-5V26a5 5 0 0 1 5-5h33c11.05 0 20 4.48 20 10v37h60v40a5 5 0 0 1-5 5z">
+                </path>
+                <path class="hover-fillLight" fill="#68D4F8"
+                  d="M126 94c0 6-12.37 11-27.4 11H71.54c-1.82 0-5.27.64-6.81 1.63-.6.38-1.29.55-1.9.2-.5-.3-.82-.83-.81-1.42v-74.9c0-4.15 4.81-7.5 10.75-7.5h10.51l.23-.02h13.17c8.92 0 20.68-2.23 25.62-5.57 1.58-1.07 3.7-.09 3.7 1.82V94z">
+                </path>
+                <path stroke="#FFF" stroke-width="3" d="M77.5 87.5h33m-33-10h33m-33-17h33m-33-10h33m-33-10h33"
+                  stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+
+
+              <!-- <a href="https://stripe.com/it/connect/eu-guide" class="common-Button common-Button--default">Leggi la
+              guida</a> -->
+
+            </div>
+            <div class="col-xs-9">
+
+              <h3 class="common-BodyTitle">Getting started</h3>
+              <p class="common-BodyText">Here’s a list of pages we highly recommend going over before you start having conversations</p>
+
+              <ul style="list-style: none; padding-left:0px">
+                <li style="font-size: 18px; color: #0f62ff; font-weight: 400;">
+                  
+                  <div id="arrow_1" class="arrow-wrapper">
+                    <div class="text-block" style="margin-right: 16px;">Getting started for admin</div>
+                    <div class="arrow arrow--right">
+                      <span></span>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-6">
+
+
+
+    </div>
+
   </div>
 
 
