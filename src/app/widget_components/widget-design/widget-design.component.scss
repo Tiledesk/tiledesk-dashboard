@@ -2093,3 +2093,152 @@ button.buttonRounded:hover {
   text-align: left;
   padding-left: 15px;
 }
+
+.preview-dropdown-label {
+  padding-right: 0 !important;
+  font-size: 16px !important;
+  color: #566787 !important;
+}
+
+ // start accordion-install-widget
+.accordion-install-widget {
+  background-color: rgba(241,241,241,1);
+  color: #444;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+  transition: 0.4s;
+  margin-bottom: 16px;
+  padding-left: 42px;
+  padding-right: 42px;
+  font-size: 18px;
+  font-weight: 600;
+  font-family: Google Sans, sans-serif;
+ 
+    padding-top: 30px;
+    padding-bottom: 21px;
+}
+
+.active-install-widget, .accordion-install-widget:hover {
+  // background-color: #ccc;
+  background-color: rgba(241,241,241,1);
+  
+}
+
+.accordion-install-widget:after {
+  content: '\f077';
+  font-family: FontAwesome;
+  // color: #777;
+  // font-weight: bold;
+  float: right;
+  margin-left: 5px;
+}
+
+.active-install-widget:after {
+  content: "\f078";
+  font-family: FontAwesome;
+}
+
+.panel-install-widget {
+  padding: 0 35px;
+  background-color: white;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+
+
+// install widget
+
+
+pre {
+  font-family: monospace;
+  background-color: #fff;
+
+  // margin: 4em auto;
+  // padding: 0.5em;
+  border: none;
+  // border-radius: 0.25em;
+  border-radius: 0.25em 0.25em 0px 0px;
+  // box-shadow: .1em .1em .5em rgba(0,0,0,.45);
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);
+  line-height: 0;
+  counter-reset: line;
+
+  span {
+    display: block;
+    line-height: 2.1rem;
+
+    &:before {
+      counter-increment: line;
+      content: counter(line);
+      display: inline-block;
+      border-right: 1px solid #ddd;
+      padding: 0 0.5em;
+      margin-right: 0.5em;
+      color: #039be5;
+      // background: #f2feef;
+      background: rgba(3, 155, 229, 0.1);
+      width: 30px;
+      text-align: end;
+    }
+  }
+}
+
+.copy-script {
+  margin-top: 0px;
+  color: #039be5;
+  margin: 0px;
+  border-radius: 0em 0em 0.25px 0.25px;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);
+  position: relative;
+  // bottom: 94px;
+  bottom: 144px;
+  padding: 6px 7px;
+  float: right;
+  margin-right: 25px;
+}
+
+/// START COPY TO CLIPBOARD TOOLTIP EFFECT
+@-moz-keyframes fadeinout {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+@-webkit-keyframes fadeinout {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+@keyframes fadeinout {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.has-copied-text {
+  background-color: #555;
+  color: white;
+  -moz-animation: fadeinout 1s linear forwards;
+  -webkit-animation: fadeinout 1s linear forwards;
+  animation: fadeinout 2s linear forwards;
+}
+/// end COPY TO CLIPBOARD TOOLTIP EFFECT
