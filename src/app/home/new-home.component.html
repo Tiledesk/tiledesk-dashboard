@@ -82,7 +82,7 @@
                     keyboard_arrow_right
                   </span>
                 </div>
-                <div class="homeheader-link-title-second" (click)="goToUsersList()">
+                <div class="homeheader-link-title-second" (click)="goToUsersList()" style="width: 150px !important;">
                   <span *ngIf="projectUsers?.length > 1" style="color: #0f62ff;width: 150px !important;">Add new
                     teammates </span>
                   <span *ngIf="projectUsers?.length === 1" style="color: #0f62ff;">Invite your first teammate</span>
@@ -314,14 +314,14 @@
               </span>
             </div>
 
-            <div class="links-container" style="">
-              <div class="link-title-first" style="">
+            <div class="links-container">
+              <div class="link-title-first">
                 <span> Last 30 days messages </span>
                 <span class="material-icons" style="vertical-align: middle; color: #3c4858;">
                   keyboard_arrow_right
                 </span>
               </div>
-              <div class="link-title-second" style="" (click)="goToMessagesAnalytics()">
+              <div class="link-title-second" (click)="goToMessagesAnalytics()">
                 <span style="color: #0f62ff;">Filter report in analytics</span>
                 <span class="material-icons" style="vertical-align: middle;color: #0f62ff;">
                   keyboard_arrow_right
@@ -376,14 +376,14 @@
                 {{ countOfLastMonthRequests }}
               </span>
             </div>
-            <div class="links-container" style="">
-              <div class="link-title-first" style="">
+            <div class="links-container">
+              <div class="link-title-first">
                 <span> Last 30 days conversations </span>
                 <span class="material-icons" style="vertical-align: middle; color: #3c4858;">
                   keyboard_arrow_right
                 </span>
               </div>
-              <div class="link-title-second" style="" (click)="goToRequestsAnalytics()">
+              <div class="link-title-second" (click)="goToRequestsAnalytics()">
                 <span style="color: #0f62ff;">Filter report in analytics</span>
                 <span class="material-icons" style="vertical-align: middle;color: #0f62ff;">
                   keyboard_arrow_right
@@ -528,20 +528,72 @@
             </div>
             <div class="col-xs-9">
 
-              <h3 class="common-BodyTitle">Getting started</h3>
-              <p class="common-BodyText">Here’s a list of pages we highly recommend going over before you start having conversations</p>
+              <h3 class="getting-started-card-title">{{ 'GettingStartedWith' | translate }} {{company_name}}</h3>
+              <p class="getting-started-card-subtitle">{{ 'HereIsAListOfPagesAndLinks' | translate}}</p>
 
-              <ul style="list-style: none; padding-left:0px">
-                <li style="font-size: 18px; color: #0f62ff; font-weight: 400;">
-                  
+              <ul style="list-style: none; padding-left:0px; line-height: 33px;">
+
+                <li class="arrow-container" style="font-size: 18px; color: #0f62ff; font-weight: 400;"
+                  (click)="goToAdminDocs()">
                   <div id="arrow_1" class="arrow-wrapper">
-                    <div class="text-block" style="margin-right: 16px;">Getting started for admin</div>
+                    <div class="text-block" style="margin-right: 16px;position: relative;top: -2px;">
+                      {{ 'GettingStartedForAdmin' | translate }}
+                    </div>
                     <div class="arrow arrow--right">
                       <span></span>
                     </div>
                   </div>
                 </li>
+
+                <li class="arrow-container" style="font-size: 18px; color: #0f62ff; font-weight: 400;"
+                  (click)="goToAgentDocs()">
+                  <div id="arrow_1" class="arrow-wrapper">
+                    <div class="text-block" style="margin-right: 16px;position: relative;top: -2px;">
+                      {{ 'GettingStartedForAgents' | translate }}
+                    </div>
+                    <div class="arrow arrow--right">
+                      <span></span>
+                    </div>
+                  </div>
+                </li>
+
+                <li class="arrow-container" style="font-size: 18px; color: #0f62ff; font-weight: 400;"
+                  (click)="goToDeveloperDocs()">
+                  <div id="arrow_1" class="arrow-wrapper">
+                    <div class="text-block" style="margin-right: 16px;position: relative;top: -2px;">
+                      {{ 'DeveloperDocs' | translate }}
+                    </div>
+                    <div class="arrow arrow--right">
+                      <span></span>
+                    </div>
+                  </div>
+                </li>
+
+                <li class="arrow-container" style="font-size: 18px; color: #0f62ff; font-weight: 400;"
+                  (click)="goToInstallWithTagManagerDocs()">
+                  <div id="arrow_1" class="arrow-wrapper">
+                    <div class="text-block" style="margin-right: 16px;position: relative;top: -2px;">
+                      {{ 'InstallWithGoogleTagManager' | translate }}
+                    </div>
+                    <div class="arrow arrow--right">
+                      <span></span>
+                    </div>
+                  </div>
+                </li>
+
+
+
+
               </ul>
+
+              <!-- <div class="arrow-container"  style="font-size: 18px; color: #0f62ff; font-weight: 400;">
+                <div id="arrow_1" class="arrow-wrapper">
+                  <div class="text-block" style="margin-right: 16px;">Getting started for admin</div>
+                  <div class="arrow arrow--right">
+                    <span></span>
+                  </div>
+                </div>
+              </div> -->
 
             </div>
           </div>
@@ -550,9 +602,138 @@
     </div>
 
     <div class="col-sm-6">
+      <div class="card">
+        <div class="card-content">
+
+          <h3 class="getting-started-card-title">Take a shortcut</h3>
+          <p class="getting-started-card-subtitle">Jump straight to the most popular settings in the Dashboard.</p>
+          <div class="row">
+            <div class="col-xs-3">
+
+              <!-- // CHAT -->
+              <div class="wrap-shortcut-icon">
+                <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 75.8 75.8"
+                  style="enable-background:new 0 0 75.8 75.8;" xml:space="preserve">
+                  <style type="text/css">
+                    .st0_chat {
+                      opacity: 0.2;
+                      fill: #3696CF;
+                      enable-background: new;
+                    }
+
+                    .st1_chat {
+                      fill: #3696CF;
+                    }
+                  </style>
+                  <g transform="translate(7717.829 6141.832)">
+                    <path class="st0_chat" d="M-7642-6103.9c0,20.9-17,37.9-37.9,37.9s-37.9-17-37.9-37.9s17-37.9,37.9-37.9l0,0
+                 C-7659-6141.8-7642-6124.9-7642-6103.9L-7642-6103.9z" />
+                  </g>
+                  <path class="st1_chat"
+                    d="M37.9,18.6c-10.8,0-19.5,8-19.5,17.9c0,4.3,1.6,8.2,4.3,11.3c-1,4.3-4.1,8.2-4.2,8.2c-0.2,0.2-0.2,0.5-0.1,0.7
+               c0.1,0.3,0.3,0.4,0.6,0.4c5,0,8.8-2.7,10.7-4.4c2.5,1.1,5.2,1.7,8.2,1.7c10.8,0,19.5-8,19.5-17.9S48.7,18.6,37.9,18.6z M28.2,39.3
+               c-1.3,0-2.4-1.2-2.4-2.8s1.1-2.8,2.4-2.8s2.4,1.2,2.4,2.8S29.5,39.3,28.2,39.3z M37.9,39.3c-1.3,0-2.4-1.2-2.4-2.8s1.1-2.8,2.4-2.8
+               s2.4,1.2,2.4,2.8S39.3,39.3,37.9,39.3z M47.6,39.3c-1.3,0-2.4-1.2-2.4-2.8s1.1-2.8,2.4-2.8s2.4,1.2,2.4,2.8S49,39.3,47.6,39.3z" />
+                </svg>
+              </div>
+
+            </div>
 
 
+            <div class="col-xs-3">
+              <!-- // CUSTOMIZE WIDGET -->
+              <div class="wrap-shortcut-icon">
+                <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 75.8 75.8"
+                  style="enable-background:new 0 0 75.8 75.8;" xml:space="preserve">
+                  <style type="text/css">
+                    .st0_customize_widget {
+                      opacity: 0.2;
+                      fill: #159570;
+                      enable-background: new;
+                    }
 
+                    .st1_customize_widget {
+                      fill: #159570;
+                    }
+                  </style>
+                  <path class="st0_customize_widget" d="M75.8,37.9c0,20.9-17,37.9-37.9,37.9S0,58.9,0,37.9S17,0,37.9,0c0,0,0,0,0,0C58.9,0,75.8,17,75.8,37.9
+               C75.8,37.9,75.8,37.9,75.8,37.9z" />
+                  <path class="st1_customize_widget" d="M33.7,18.4c-8,1.5-14.5,7.7-16,15.5c-3,14.6,10.6,25.4,20.9,23.9c3.3-0.5,4.9-4.3,3.4-7.1
+               c-1.9-3.5,0.8-7.7,4.9-7.7h6.4c2.9,0,5.2-2.3,5.2-5.1C58.5,25.5,46.9,15.9,33.7,18.4z M25,42.9c-1.4,0-2.6-1.1-2.6-2.5
+               s1.2-2.5,2.6-2.5c1.4,0,2.6,1.1,2.6,2.5S26.4,42.9,25,42.9z M27.6,32.9c-1.4,0-2.6-1.1-2.6-2.5c0-1.4,1.2-2.5,2.6-2.5
+               c1.4,0,2.6,1.1,2.6,2.5C30.2,31.8,29,32.9,27.6,32.9z M37.9,27.9c-1.4,0-2.6-1.1-2.6-2.5s1.2-2.5,2.6-2.5c1.4,0,2.6,1.1,2.6,2.5
+               S39.3,27.9,37.9,27.9z M48.2,32.9c-1.4,0-2.6-1.1-2.6-2.5c0-1.4,1.2-2.5,2.6-2.5c1.4,0,2.6,1.1,2.6,2.5
+               C50.8,31.8,49.7,32.9,48.2,32.9z" />
+                </svg>
+
+              </div>
+
+            </div>
+
+
+            <div class="col-xs-3">
+              <!-- // GET MOBILE APPS -->
+              <div class="wrap-shortcut-icon">
+                <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 75.8 75.8"
+                  style="enable-background:new 0 0 75.8 75.8;" xml:space="preserve">
+                  <style type="text/css">
+                    .st0_mobile_apps {
+                      opacity: 0.2;
+                      fill: #635BFF;
+                      enable-background: new;
+                    }
+
+                    .st1_mobile_apps {
+                      fill: #635BFF;
+                    }
+                  </style>
+                  <path class="st0_mobile_apps"
+                    d="M75.8,37.9c0,20.9-17,37.9-37.9,37.9S0,58.9,0,37.9S17,0,37.9,0l0,0C58.9,0,75.8,17,75.8,37.9L75.8,37.9z" />
+                  <path class="st1_mobile_apps" d="M48.7,16.4L28.1,16c-2.4-0.1-4.5,1.7-4.5,4l-0.8,35.3c-0.1,2.2,1.9,4.1,4.3,4.2L47.8,60c2.4,0.1,4.5-1.7,4.5-4
+               l0.8-35.3C53.1,18.4,51.2,16.5,48.7,16.4z M37.5,56.9c-1.6,0-2.9-1.3-2.9-2.8s1.4-2.7,3-2.6c1.6,0,2.9,1.3,2.9,2.8
+               C40.5,55.8,39.1,56.9,37.5,56.9z M48,48c0,0.6-0.5,1-1.1,1l-18.5-0.4c-0.6,0-1.1-0.5-1.1-1l0.6-26.5c0-0.6,0.5-1,1.1-1l18.5,0.4
+               c0.6,0,1.1,0.5,1.1,1L48,48z" />
+                </svg>
+              </div>
+
+            </div>
+
+            <div class="col-xs-3">
+              <!-- // INSTALL WIDGET -->
+              <div class="wrap-shortcut-icon" >
+                <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 75.8 75.8"
+                  style="enable-background:new 0 0 75.8 75.8;" xml:space="preserve">
+                  <style type="text/css">
+                    .st0_install_widget {
+                      opacity: 0.2;
+                      fill: #F50036;
+                      enable-background: new;
+                    }
+
+                    .st1_install_widget {
+                      fill: #F50036;
+                    }
+                  </style>
+                  <path class="st0_install_widget" d="M75.8,37.9c0,20.9-17,37.9-37.9,37.9S0,58.9,0,37.9S17,0,37.9,0c0,0,0,0,0,0C58.9,0,75.8,17,75.8,37.9
+               C75.8,37.9,75.8,37.9,75.8,37.9z" />
+                  <path class="st1_install_widget" d="M35,57.9l-4.3-1.4c-0.4-0.1-0.7-0.7-0.6-1.2l9.6-36.7c0.1-0.5,0.6-0.8,1-0.6l4.3,1.4c0.4,0.1,0.7,0.7,0.6,1.2
+               l-9.6,36.7C35.9,57.7,35.5,58,35,57.9z M27,49.1l3.1-3.6c0.3-0.4,0.3-1-0.1-1.3l-6.4-6.2l6.4-6.2c0.4-0.4,0.4-1,0.1-1.3L27,26.7
+               c-0.3-0.4-0.8-0.4-1.2,0L15.7,37.2c-0.4,0.4-0.4,1,0,1.4l10.1,10.5C26.2,49.5,26.7,49.5,27,49.1L27,49.1z M50,49.1l10.1-10.5
+               c0.4-0.4,0.4-1,0-1.4L50,26.7c-0.3-0.4-0.9-0.3-1.2,0l-3.1,3.6c-0.3,0.4-0.3,1,0.1,1.3l6.4,6.2l-6.4,6.2c-0.4,0.4-0.4,1-0.1,1.3
+               l3.1,3.6C49.1,49.5,49.6,49.5,50,49.1L50,49.1z" />
+                </svg>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+      </div>
     </div>
 
   </div>
