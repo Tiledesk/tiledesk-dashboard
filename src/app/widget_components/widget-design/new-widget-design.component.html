@@ -22,66 +22,111 @@
 
 		<div class="row">
 			<div class="col-xs-12" style="padding-left: 0px;padding-right: 0px;margin-top: -15px;">
-				<button class="accordion-install-widget">Add chat to your website</button>
+				<button class="accordion-install-widget">
+					Add chat to your website
+
+					<span style="display: block;
+					font-size: 14px;
+					font-weight: 100;
+					margin-top: 6px;">Setting up the Widget for visitors lets you chat with people when they're on your
+						website.</span>
+
+
+					<span style="display: block;
+					font-size: 16px;
+					font-weight: 100;
+					margin-top: 6px; color: #0f62ff;"> Install widget just now!</span>
+
+				</button>
 				<div class="panel-install-widget">
 					<!-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p> -->
 					<div class="row">
-						<div class="col-xs-6">
+						<div class="col-xs-12">
 
 							<div class="card" style="margin-top:0px">
-								<div class="card-content">
-									<div class="card-icon" style="width: 50px;height: 50px;margin: auto;">
-										<svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
-											xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-											viewBox="0 0 75.8 75.8" style="enable-background:new 0 0 75.8 75.8;"
-											xml:space="preserve">
-											<style type="text/css">
-												.st0_install_with_code {
-													opacity: 0.2;
-													fill: #F50036;
-													enable-background: new;
-												}
 
-												.st1_install_with_code {
-													fill: none;
-													stroke: #F50036;
-													stroke-width: 5;
-													stroke-linecap: round;
-													stroke-linejoin: round;
-												}
-											</style>
-											<path class="st0_install_with_code"
-												d="M75.8,37.9c0,20.9-17,37.9-37.9,37.9S0,58.9,0,37.9S17,0,37.9,0l0,0C58.9,0,75.8,17,75.8,37.9L75.8,37.9z" />
-											<path class="st1_install_with_code"
-												d="M28.4,49.3L15.8,37.9l12.6-11.4 M47.4,49.3L60,37.9L47.4,26.5 M42.6,21.6l-9.5,32.5" />
-										</svg>
+
+								<div class="card-content" style="padding: 15px 180px;">
+									<div class="choose-installation-type"
+										style="text-align: center;font-size: 16px;font-weight: 400;">
+										Choose how you'd like to get set up
+
 									</div>
-								</div>
+
+									<div class="row">
+										<div class="col-xs-6">
+
+											<div class="card">
+												<div class="card-content" (click)="installWithCode()">
+													<div class="card-icon"
+														style="width: 50px;height: 50px;margin: auto;">
+														<img *ngIf="HAS_SELECT_INSTALL_WITH_CODE"
+															src="assets/img/install-with-code.svg">
+														<img *ngIf="!HAS_SELECT_INSTALL_WITH_CODE"
+															src="assets/img/install-with-code_disabled.svg">
+													</div>
+
+													<div class="card--subtitle"
+														style="text-align: center;margin-top: 16px;font-weight: 400;">
+														With code
+													</div>
+
+												</div>
+											</div>
+
+										</div>
+
+										<div class="col-xs-6">
+
+											<div class="card">
+												<div class="card-content" (click)="installWithGTM()">
+													<div class="card-icon"
+														style="width: 50px;height: 50px;margin: auto;">
+														<img *ngIf="HAS_SELECT_INSTALL_WITH_GTM"
+															src="assets/img/install-with-tag-manager.svg">
+														<img *ngIf="!HAS_SELECT_INSTALL_WITH_GTM"
+															src="assets/img/install-with-tag-manager_disabled.svg">
+													</div>
+
+													<div class="card--subtitle"
+														style="text-align: center;margin-top: 16px;font-weight: 400;">
+
+														With Google Tag Manager
+
+													</div>
+												</div>
+
+											</div>
+										</div>
+									</div>
 
 
-								<div class="install-widget-step-one" style="display: table;padding: 12px;">
-									<span style="display: table-cell;vertical-align: top;"> 
-										<span style="background: #eee;
+									<div *ngIf="HAS_SELECT_INSTALL_WITH_CODE" class="install-with-code">
+										<!-- https://stackoverflow.com/questions/34820524/how-to-align-multi-line-text-after-icon -->
+										<div class="install-widget-step-one" style="display: table;padding: 12px;">
+											<span style="display: table-cell;vertical-align: top;">
+												<span style="background: #eee;
 										padding: 6px 9px;
 										border-radius: 50%;
 										font-size: 12px;
 										font-weight: 600;
-										margin-right: 8px;"> 1 </span> 
-									</span>
-									<span style="display: table-cell;vertical-align: top;">
-										{{ 'Resourcepage.ToChatWithYourVisitors...' | translate }} 
-										{{'Resourcepage.CopyTheFollowingScript...' | translate }}
-										<code><em>&lt;head&gt;</em></code> tags.
-									</span>
-								</div>
-								<!-- 
-								// -----------------------------------------------------------------------------------------------------------------------	
-								// REMEMBER TO UPDATE TEXAREA CODE IF UPDATE SCRIPT CODE IN PRE TAG
-								// !!!!!!! NOTE THAT: WHEN IS CLICKED THE BUTTON "COPY CODE" IS COPIED THE CODE IN THE ABOVE TEXAREA
-								// -----------------------------------------------------------------------------------------------------------------------	-->
-								<div class="script-wrap" style="padding-left: 46px;padding-right: 20px;">
-									<pre class="widget-design-pre"
-										style="padding-left:0px; margin-bottom: 0px;font-size: 12px !important;">
+										margin-right: 8px;"> 1 </span>
+											</span>
+											<span style="display: table-cell;vertical-align: top;">
+												<!-- {{ 'Resourcepage.ToChatWithYourVisitors...' | translate }}  -->
+												{{'Resourcepage.CopyTheFollowingScript...' | translate }}
+												<code><em>&lt;head&gt;</em></code> tags.
+											</span>
+										</div>
+
+										<!-- 
+									// -----------------------------------------------------------------------------------------------------------------------	
+									// REMEMBER TO UPDATE TEXAREA CODE IF UPDATE SCRIPT CODE IN PRE TAG
+									// !!!!!!! NOTE THAT: WHEN IS CLICKED THE BUTTON "COPY CODE" IS COPIED THE CODE IN THE ABOVE TEXAREA
+									// -----------------------------------------------------------------------------------------------------------------------	-->
+										<div class="script-wrap" style="padding-left: 46px;padding-right: 20px;">
+											<pre class="widget-design-pre"
+												style="padding-left:0px; margin-bottom: 0px;font-size: 12px !important;">
 										<span>&lt;script type=&quot;application/javascript&quot;&gt;</span>
 										<span>  window.tiledeskSettings =</span>
 										<span>   {{'{'}}</span>
@@ -98,69 +143,51 @@
 									</pre>
 
 
-									<button
-										style="margin-top:0px; color: #039be5; margin: 0px; border-radius: 0em 0em 0.25px 0.25px;box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);"
-										(click)="copyToClipboard()" class="btn btn-white btn-block">
-										<span> <i class="material-icons"
-												style="vertical-align: middle; color: #039be5">file_copy</i> </span>
-										{{ 'Resourcepage.CopyScript' | translate }}
-									</button>
+											<button
+												style="margin-top:0px; color: #039be5; margin: 0px; border-radius: 0em 0em 0.25px 0.25px;box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);"
+												(click)="copyToClipboard()" class="btn btn-white btn-block">
+												<span> <i class="material-icons"
+														style="vertical-align: middle; color: #039be5">file_copy</i>
+												</span>
+												{{ 'Resourcepage.CopyScript' | translate }}
+											</button>
 
-									<div class="copied-to-clipboard-tooltip" style="opacity: 0; text-align: center;
-					position: relative;top: -78px; max-width: 360px;left: 50%;transform: translateX(-50%);padding: 5px"
-										[ngClass]="{'has-copied-text' : has_copied}" class="control-label">
-										{{ 'Copied' | translate }}
-									</div>
+											<div class="copied-to-clipboard-tooltip"
+												style="opacity: 0; text-align: center;	position: relative;top: -78px; max-width: 360px;left: 50%;transform: translateX(-50%);padding: 5px"
+												[ngClass]="{'has-copied-text' : has_copied}" class="control-label">
+												{{ 'Copied' | translate }}
+											</div>
 
-								</div>
+										</div>
 
+										<!-- 
+// -----------------------------------------------------------------------------------------------------------------------
+// REMEMBER TO UPDATE THIS TEXAREA CODE IF UPDATE SCRIPT CODE IN PRE TAG
+// !!!!!!! NOTE THAT TEXT AREA IS HIDDEN - IS USED ONLY TO COPY THE CODE WHEN THE USER CLICK ON THE BUTTON COPY CODE
+// ----------------------------------------------------------------------------------------------------------------------- -->
+										<textarea name="exampleClipboard" class="textarea" readonly rows="18" value=""
+											type="text" style="opacity: .01;height:0; position:absolute; z-index: -1;">
+&lt;script type=&quot;application/javascript&quot;&gt;
+window.tiledeskSettings = 
+	{
+	projectid: &quot;{{ id_project }}&quot;
+	};
+	(function(d, s, id) {
+	var js, fjs = d.getElementsByTagName(s)[0];
+	if (d.getElementById(id)) return;
+	js = d.createElement(s); js.id = id;
+	js.src = &quot;{{WIDGET_URL}}&quot;;
+	fjs.parentNode.insertBefore(js, fjs);
+	}(document, &#39;script&#39;, &#39;tiledesk-jssdk&#39;));
+&lt;/script&gt;</textarea>
 
-								<!-- 
-								// -----------------------------------------------------------------------------------------------------------------------
-								// REMEMBER TO UPDATE THIS TEXAREA CODE IF UPDATE SCRIPT CODE IN PRE TAG
-								// !!!!!!! NOTE THAT TEXT AREA IS HIDDEN - IS USED ONLY TO COPY THE CODE WHEN THE USER CLICK ON THE BUTTON COPY CODE
-								// ----------------------------------------------------------------------------------------------------------------------- -->
-								<textarea name="exampleClipboard" class="textarea" readonly rows="18" value=""
-									type="text" style="opacity: .01;height:0; position:absolute; z-index: -1;">
-    &lt;script type=&quot;application/javascript&quot;&gt;
-      window.tiledeskSettings = 
-        {
-        projectid: &quot;{{ id_project }}&quot;
-        };
-        (function(d, s, id) {
-          var js, fjs = d.getElementsByTagName(s)[0];
-          if (d.getElementById(id)) return;
-          js = d.createElement(s); js.id = id;
-          js.src = &quot;{{WIDGET_URL}}&quot;;
-          fjs.parentNode.insertBefore(js, fjs);
-        }(document, &#39;script&#39;, &#39;tiledesk-jssdk&#39;));
-    &lt;/script&gt;</textarea>
-							</div>
-						</div>
-
-
-						<div class="col-xs-6">
-
-							<div class="card" style="margin-top:0px">
-								<div class="card-content">
-									<div class="card-icon" style="width: 50px;height: 50px;margin: auto;">
-										<img src="assets/img/install-with-tag-manager.svg">
-
-									</div>
-								</div>
-
-
-
-
-							</div>
-
+									</div> <!-- /. install-with-code -->
+								</div> <!-- /. card content -->
+							</div> <!-- /. card -->
 						</div>
 					</div>
-
 				</div>
-
 			</div>
-
 		</div>
 
 

@@ -54,7 +54,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   public logoUrl: string;
   public hasOwnLogo = false;
   public id_project: string;
-  
+
   default_dept: Department[];
   public widgetObj = {};
   hasSelectedLeftAlignment = false
@@ -143,9 +143,9 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   DISPLAY_CALLOUT = false;
   DISPLAY_WIDGET_CHAT = false;
 
-  HAS_FOCUSED_ONLINE_MSG= false;
-  HAS_FOCUSED_OFFLINE_MSG= false;
-  HAS_FOCUSED_OFFICE_CLOSED_MSG= false;
+  HAS_FOCUSED_ONLINE_MSG = false;
+  HAS_FOCUSED_OFFLINE_MSG = false;
+  HAS_FOCUSED_OFFICE_CLOSED_MSG = false;
 
   widget_home_has_conversation = false;
 
@@ -167,6 +167,11 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
 
   HAS_SELECT_DYMANIC_REPLY_TIME_MSG: boolean;
   HAS_SELECT_STATIC_REPLY_TIME_MSG = true;
+  has_copied = false;
+  WIDGET_URL: string;
+  HAS_SELECT_INSTALL_WITH_CODE: boolean = true
+  HAS_SELECT_INSTALL_WITH_GTM: boolean = false
+
   constructor(
     private notify: NotifyService,
     public location: Location,
@@ -192,6 +197,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
 
   ngOnInit() {
     this.getStorageBucket();
+    this.getWidgetUrl();
     this.getLoggedUser();
     this.onInitWindowWidth();
     this.getCurrentProject();
@@ -210,7 +216,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     this.getLabels();
     this.getOSCODE();
     this.getTestSiteUrl();
-
+    this.getAndManageAccordionInstallWidget();
     this.getAndManageAccordion();
     // this.avarageWaitingTimeCLOCK(); // as dashboard
     // this.showWaitingTime(); // as dario
@@ -219,6 +225,12 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     console.log('WIDGET DESIGN window.matchMedia ', window.matchMedia)
     this.lang = this.translate.getBrowserLang();
     console.log('LANGUAGE ', this.lang);
+  }
+
+  getWidgetUrl() {
+    this.WIDGET_URL = this.appConfigService.getConfig().widgetUrl;
+    console.log('AppConfigService getAppConfig (Install Tiledesk) WIDGET_URL ', this.WIDGET_URL)
+
   }
 
   ngOnDestroy() {
@@ -293,6 +305,47 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
     console.log('USER PROFILE  elemMainPanel ', elemMainPanel)
     elemMainPanel.setAttribute('style', 'width:100% !important; overflow-x: hidden !important;');
+  }
+
+  getAndManageAccordionInstallWidget() {
+    var acc = document.getElementsByClassName("accordion-install-widget");
+
+    console.log('WIDGET DESIGN ACCORDION INSTALL WIDGET', acc);
+
+    var i;
+
+    for (i = 0; i < acc.length; i++) {
+      acc[i].addEventListener("click", function () {
+        this.classList.toggle("active-install-widget");
+        var panel = this.nextElementSibling;
+        if (panel.style.maxHeight) {
+          panel.style.maxHeight = null;
+        } else {
+          panel.style.maxHeight = panel.scrollHeight + "px";
+        }
+      });
+    }
+  }
+
+  copyToClipboard() {
+    document.querySelector('textarea').select();
+    document.execCommand('copy');
+
+    this.has_copied = true;
+    setTimeout(() => {
+      this.has_copied = false;
+    }, 2000);
+  }
+
+  installWithCode() {
+    this.HAS_SELECT_INSTALL_WITH_CODE = true;
+    this.HAS_SELECT_INSTALL_WITH_GTM = false;
+  } 
+
+  installWithGTM() {
+    this.HAS_SELECT_INSTALL_WITH_CODE = false;
+    this.HAS_SELECT_INSTALL_WITH_GTM = true;
+
   }
 
 
@@ -513,7 +566,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   makeDefaultLanguage(languageCode) {
     console.log('Multilanguage (widget-design) - MAKE DAFAULT LANG - languageCode: ', languageCode);
 
-    this.widgetService.setDefaultLanguage(languageCode).subscribe((translation: any) => { 
+    this.widgetService.setDefaultLanguage(languageCode).subscribe((translation: any) => {
       console.log('Multilanguage (widget-design) - MAKE DAFAULT LANG - RES ', translation);
 
       if (translation.default === true) {
@@ -526,7 +579,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
       console.log('Multilanguage (widget-design) - MAKE DAFAULT LANG ***** * COMPLETE *');
 
       // this.getLabels()
-     
+
     });
   }
 
@@ -554,7 +607,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
       this.HAS_SELECT_DYMANIC_REPLY_TIME_MSG = false;
       this.HAS_SELECT_STATIC_REPLY_TIME_MSG = true;
     }
- 
+
   }
 
   waitingTimeNotFoundMsgChange(event) {
@@ -574,13 +627,13 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   }
 
   insertAtCursor(myField, myValue) {
-    console.log('Multilanguage (widget-design) - insertAtCursor - myValue ', myValue );
+    console.log('Multilanguage (widget-design) - insertAtCursor - myValue ', myValue);
     // this.waitingTimeFoundMsg = myValue
     // if (this.addWhiteSpaceBefore === true) {
     //   myValue = ' ' + myValue;
     //   console.log('CANNED-RES-CREATE.COMP - GET TEXT AREA - QUI ENTRO myValue ', myValue );
     // }
-   
+
     //IE support
     if (myField.selection) {
       myField.focus();
@@ -592,18 +645,18 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     else if (myField.selectionStart || myField.selectionStart == '0') {
       var startPos = myField.selectionStart;
       console.log('Multilanguage (widget-design) - insertAtCursor - startPos ', startPos);
-      
+
       var endPos = myField.selectionEnd;
       console.log('Multilanguage (widget-design) - insertAtCursor - endPos ', endPos);
-      
+
       myField.value = myField.value.substring(0, startPos) + myValue + myField.value.substring(endPos, myField.value.length);
-  
+
       // place cursor at end of text in text input element
       myField.focus();
       var val = myField.value; //store the value of the element
       myField.value = ''; //clear the value of the element
       myField.value = val + ' '; //set that value back. 
-  
+
       // this.cannedResponseMessage = myField.value;
 
       // this.texareaIsEmpty = false;
@@ -1212,9 +1265,9 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     this.DISPLAY_CALLOUT = false;
     this.DISPLAY_WIDGET_CHAT = true
 
-    this.HAS_FOCUSED_ONLINE_MSG= true;
-    this.HAS_FOCUSED_OFFLINE_MSG= false;
-    this.HAS_FOCUSED_OFFICE_CLOSED_MSG= false;
+    this.HAS_FOCUSED_ONLINE_MSG = true;
+    this.HAS_FOCUSED_OFFLINE_MSG = false;
+    this.HAS_FOCUSED_OFFICE_CLOSED_MSG = false;
   }
 
   onFocusOfflineGreetings() {
@@ -1222,20 +1275,20 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     this.DISPLAY_CALLOUT = false;
     this.DISPLAY_WIDGET_CHAT = true;
 
-    this.HAS_FOCUSED_ONLINE_MSG= false;
-    this.HAS_FOCUSED_OFFLINE_MSG= true;
-    this.HAS_FOCUSED_OFFICE_CLOSED_MSG= false;
+    this.HAS_FOCUSED_ONLINE_MSG = false;
+    this.HAS_FOCUSED_OFFLINE_MSG = true;
+    this.HAS_FOCUSED_OFFICE_CLOSED_MSG = false;
 
   }
 
-  onFocusOfficeClosedGreetings () {
+  onFocusOfficeClosedGreetings() {
     this.DISPLAY_WIDGET_HOME = false;
     this.DISPLAY_CALLOUT = false;
     this.DISPLAY_WIDGET_CHAT = true
 
-    this.HAS_FOCUSED_ONLINE_MSG= false;
-    this.HAS_FOCUSED_OFFLINE_MSG= false;
-    this.HAS_FOCUSED_OFFICE_CLOSED_MSG= true;
+    this.HAS_FOCUSED_ONLINE_MSG = false;
+    this.HAS_FOCUSED_OFFLINE_MSG = false;
+    this.HAS_FOCUSED_OFFICE_CLOSED_MSG = true;
   }
 
 
