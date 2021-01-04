@@ -129,6 +129,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   public newConversation: string // LABEL_START_NW_CONV
   public waitingTimeNotFoundMsg: string; // WAITING_TIME_NOT_FOUND
   public waitingTimeFoundMsg: string; //  WAITING_TIME_FOUND
+  preChatForm: boolean;
   placeholderOnlineMsg: string;
   placeholderOfflineMsg: string;
   placeholderofficeClosedMsg: string;
@@ -169,8 +170,8 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   HAS_SELECT_STATIC_REPLY_TIME_MSG = true;
   has_copied = false;
   WIDGET_URL: string;
-  HAS_SELECT_INSTALL_WITH_CODE: boolean = true
-  HAS_SELECT_INSTALL_WITH_GTM: boolean = false
+  HAS_SELECT_INSTALL_WITH_CODE: boolean = false;
+  HAS_SELECT_INSTALL_WITH_GTM: boolean = false;
 
   constructor(
     private notify: NotifyService,
@@ -196,6 +197,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   }
 
   ngOnInit() {
+    // this.HAS_SELECT_INSTALL_WITH_CODE = false
     this.getStorageBucket();
     this.getWidgetUrl();
     this.getLoggedUser();
@@ -337,16 +339,39 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     }, 2000);
   }
 
-  installWithCode() {
-    this.HAS_SELECT_INSTALL_WITH_CODE = true;
-    this.HAS_SELECT_INSTALL_WITH_GTM = false;
-  } 
-
-  installWithGTM() {
+  close_panel_install_widget() {
     this.HAS_SELECT_INSTALL_WITH_CODE = false;
-    this.HAS_SELECT_INSTALL_WITH_GTM = true;
+    this.HAS_SELECT_INSTALL_WITH_GTM = false
+    console.log('close_panel_install_widget HAS_SELECT_INSTALL_WITH_CODE', this.HAS_SELECT_INSTALL_WITH_CODE)
 
   }
+
+  installWithCode() {
+    // this.HAS_SELECT_INSTALL_WITH_CODE = true;
+    // this.HAS_SELECT_INSTALL_WITH_GTM = false;
+    this.HAS_SELECT_INSTALL_WITH_GTM = false;
+    if (this.HAS_SELECT_INSTALL_WITH_CODE === false) {
+      this.HAS_SELECT_INSTALL_WITH_CODE = true;
+    } else if (this.HAS_SELECT_INSTALL_WITH_CODE === true) {
+      this.HAS_SELECT_INSTALL_WITH_CODE = false;
+    }
+
+    console.log('installWithCode HAS_SELECT_INSTALL_WITH_CODE', this.HAS_SELECT_INSTALL_WITH_CODE)
+  }
+
+  installWithGTM() {
+    // this.HAS_SELECT_INSTALL_WITH_CODE = false;
+    // this.HAS_SELECT_INSTALL_WITH_GTM = true;
+    this.HAS_SELECT_INSTALL_WITH_CODE = false;
+    if (this.HAS_SELECT_INSTALL_WITH_GTM === false) {
+      this.HAS_SELECT_INSTALL_WITH_GTM = true;
+    } else if (this.HAS_SELECT_INSTALL_WITH_GTM === true) {
+      this.HAS_SELECT_INSTALL_WITH_GTM = false;
+    }
+
+    console.log('installWithCode HAS_SELECT_INSTALL_WITH_GTM', this.HAS_SELECT_INSTALL_WITH_GTM)
+  }
+
 
 
   getAndManageAccordion() {
@@ -559,6 +584,8 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
         // -----------------------------------------------------------------------------------------------------------------------
         this.waitingTimeNotFoundMsg = this.selected_translation["WAITING_TIME_NOT_FOUND"];
         this.waitingTimeFoundMsg = this.selected_translation["WAITING_TIME_FOUND"] + '$reply_time';
+        console.log('Multilanguage (widget-design) - ***** selected translation waitingTimeNotFoundMsg: ', this.waitingTimeNotFoundMsg);
+        console.log('Multilanguage (widget-design) - ***** selected translation waitingTimeFoundMsg: ', this.waitingTimeFoundMsg);
       }
     });
   }
@@ -602,10 +629,18 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     if (value === 'reply_time_dynamic_msg') {
       this.HAS_SELECT_DYMANIC_REPLY_TIME_MSG = true;
       this.HAS_SELECT_STATIC_REPLY_TIME_MSG = false;
+      console.log('Multilanguage (widget-design) - HAS_SELECT_DYMANIC_REPLY_TIME_MSG : ', this.HAS_SELECT_DYMANIC_REPLY_TIME_MSG);
+
+      this.widgetObj['dynamicWaitTimeReply'] = this.HAS_SELECT_DYMANIC_REPLY_TIME_MSG;
+      this.widgetService.updateWidgetProject(this.widgetObj)
+
     }
     if (value === 'reply_time_fixed_msg') {
       this.HAS_SELECT_DYMANIC_REPLY_TIME_MSG = false;
       this.HAS_SELECT_STATIC_REPLY_TIME_MSG = true;
+      this.widgetObj['dynamicWaitTimeReply'] = this.HAS_SELECT_DYMANIC_REPLY_TIME_MSG;
+      this.widgetService.updateWidgetProject(this.widgetObj)
+      console.log('Multilanguage (widget-design) - HAS_SELECT_DYMANIC_REPLY_TIME_MSG : ', this.HAS_SELECT_DYMANIC_REPLY_TIME_MSG);
     }
 
   }
@@ -710,17 +745,11 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
 
         // break;
       }
-
       // else {
       //   if (calloutTitle.indexOf(emoji) === 0) { 
-
-
       //   }
-
       //   this.calloutTitleForPreview =  calloutTitle.replace(emoji, "");
       // }
-
-
     }
   }
 
@@ -874,8 +903,6 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   }
 
 
-
-
   getBrowserLang() {
     this.browserLang = this.translate.getBrowserLang();
     console.log('WIDGET DESIGN - BROWSER LANG ', this.browserLang)
@@ -974,6 +1001,13 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
           console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) LOGO URL: ', project.widget.logoChat,
             ' HAS HOWN LOGO ', this.hasOwnLogo,
             ' LOGO IS ON', this.LOGO_IS_ON);
+        }
+
+        if (project.widget.preChatForm) {
+
+          this.preChatForm = true;
+        } else {
+          this.preChatForm = false;
         }
 
 
@@ -1082,6 +1116,11 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
         this.calloutTimerSecondSelected = 5;
         this.CALLOUT_IS_DISABLED = true;
 
+        // -----------------------------------------------------------------------
+        // @ preChatForm
+        // WIDGET UNDEFINED
+        // -----------------------------------------------------------------------
+        this.preChatForm = false;
       }
 
     }, (error) => {
@@ -1510,10 +1549,31 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     }
     this.widgetService.updateWidgetProject(this.widgetObj)
   }
+  // -----------------------------------------------------------------------
+  //  @ Pre-chat form  
+  // -----------------------------------------------------------------------
 
-  // =======================================================================================
-  // ============== *** WIDGET ALIGNMENT (alias for align) ***  ==============
-  // =======================================================================================
+  togglePrechatformCheckBox(event) {
+    if (event.target.checked) {
+      this.preChatForm = true;
+      // *** ADD PROPERTY
+      this.widgetObj['preChatForm'] = this.preChatForm;
+      this.widgetService.updateWidgetProject(this.widgetObj)
+      console.log('»» WIDGET - INCLUDE PRE CHAT FORM ', event.target.checked)
+    } else {
+      this.preChatForm = false;
+      // *** REMOVE PROPERTY
+      delete this.widgetObj['preChatForm'];
+      this.widgetService.updateWidgetProject(this.widgetObj)
+  
+      console.log('»» WIDGET - INCLUDE PRE CHAT FORM ', event.target.checked)
+    }
+  }
+
+
+  // -----------------------------------------------------------------------
+  //  @ WIDGET ALIGNMENT (alias for align)   
+  // -----------------------------------------------------------------------
   aligmentLeftSelected(left_selected: boolean) {
 
     this.DISPLAY_WIDGET_HOME = false;
@@ -1548,6 +1608,11 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
 
   goToWidgetMultilanguage() {
     this.router.navigate(['project/' + this.id_project + '/widget/translations']);
+  }
+
+  goToInstallWithTagManagerDocs() {
+    const url = 'https://docs.tiledesk.com/knowledge-base/google-tag-manager-add-tiledesk-to-your-sites/';
+    window.open(url, '_blank');
   }
 
 

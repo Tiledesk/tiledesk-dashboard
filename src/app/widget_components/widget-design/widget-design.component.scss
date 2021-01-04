@@ -1798,8 +1798,8 @@ button.buttonRounded:hover {
   color: #566787 !important;
   text-align: left;
   padding-bottom: 12px;
-  font-family: 'Google Sans', sans-serif;
-  font-weight:500 !important;;
+  font-family: "Google Sans", sans-serif;
+  font-weight: 500 !important;
 }
 
 .padding-top-2 {
@@ -2060,7 +2060,6 @@ button.buttonRounded:hover {
 #custom-colors-primary {
   width: 146px;
   // background: lightblue;
- 
 }
 #custom-colors-secondary {
   width: 146px;
@@ -2070,14 +2069,12 @@ button.buttonRounded:hover {
   // /* Just so it's visible */
 }
 
-
 #widget-settings-logo-section {
   display: flex;
 }
 #logo-settings-display-logo {
   width: 146px;
   // background: lightblue;
- 
 }
 #logo-settings-logo-url {
   // width: 146px;
@@ -2086,7 +2083,6 @@ button.buttonRounded:hover {
   // background: lightgreen;
   // /* Just so it's visible */
 }
-
 
 .logo-note-in-tooltip {
   font-size: 11px;
@@ -2100,9 +2096,9 @@ button.buttonRounded:hover {
   color: #566787 !important;
 }
 
- // start accordion-install-widget
+// start accordion-install-widget
 .accordion-install-widget {
-  background-color: rgba(241,241,241,1);
+  background-color: rgba(241, 241, 241, 1);
   color: #444;
   cursor: pointer;
   padding: 18px;
@@ -2118,24 +2114,26 @@ button.buttonRounded:hover {
   font-size: 18px;
   font-weight: 600;
   font-family: Google Sans, sans-serif;
- 
-    padding-top: 30px;
-    padding-bottom: 21px;
+
+  padding-top: 30px;
+  padding-bottom: 21px;
 }
 
-.active-install-widget, .accordion-install-widget:hover {
+.active-install-widget,
+.accordion-install-widget:hover {
   // background-color: #ccc;
-  background-color: rgba(241,241,241,1);
-  
+  background-color: rgba(241, 241, 241, 1);
 }
 
 .accordion-install-widget:after {
-  content: '\f077';
+  content: "\f077";
   font-family: FontAwesome;
-  // color: #777;
-  // font-weight: bold;
-  float: right;
-  margin-left: 5px;
+  //  float: right;
+  // margin-left: 5px;
+  position: absolute;
+  right: 25px;
+  top: 81px;
+  color: #0f62ff;
 }
 
 .active-install-widget:after {
@@ -2151,9 +2149,14 @@ button.buttonRounded:hover {
   transition: max-height 0.2s ease-out;
 }
 
-
 // install widget
+.panel-install-widget-whith-code-height {
+  max-height: 703px !important;
+}
 
+.panel-install-widget-whith-gtm-height {
+  max-height: 769px !important;
+}
 
 pre {
   font-family: monospace;
@@ -2187,6 +2190,32 @@ pre {
       text-align: end;
     }
   }
+}
+
+.install-widget-steps {
+  display: table;
+  padding: 12px;
+}
+.install-widget-step-number-wrapper {
+  display: table-cell;
+  vertical-align: top;
+}
+
+.install-widget-step-number {
+  background: #eee;
+  padding: 6px 9px;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: 600;
+  margin-right: 8px;
+}
+
+.install-widget-step-text {
+  display: table-cell;
+  vertical-align: top;
+  color: #525f7f;
+  font-size: 14px;
+  font-weight: 400;
 }
 
 .copy-script {

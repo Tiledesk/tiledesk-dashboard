@@ -22,7 +22,7 @@
 
 		<div class="row">
 			<div class="col-xs-12" style="padding-left: 0px;padding-right: 0px;margin-top: -15px;">
-				<button class="accordion-install-widget">
+				<button class="accordion-install-widget" (click)="close_panel_install_widget()">
 					Add chat to your website
 
 					<span style="display: block;
@@ -35,11 +35,27 @@
 					<span style="display: block;
 					font-size: 16px;
 					font-weight: 100;
-					margin-top: 6px; color: #0f62ff;"> Install widget just now!</span>
+					margin-top: 6px; color: #0f62ff;"> Install widget just now! </span>
+
+					<div class="row" style="margin-top: 16px;"
+						(click)="$event.stopPropagation();goToInstallWithTagManagerDocs()">
+						<div class="col-xs-12" style="width: fit-content;">
+							<span class="material-icons" style="vertical-align: middle;color: #0f62ff"> link
+							</span>
+							<span style="vertical-align: middle;color: #0f62ff; font-size: 14px;font-weight: 200;"
+								(click)="$event.stopPropagation();goToInstallWithTagManagerDocs()">
+								Learn about advanced widget configuration
+							</span>
+
+						</div>
+					</div>
 
 				</button>
-				<div class="panel-install-widget">
-					<!-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p> -->
+
+				<!--  -->
+				<div class="panel-install-widget"
+					[ngClass]="{'panel-install-widget-whith-code-height': HAS_SELECT_INSTALL_WITH_CODE === true, 'panel-install-widget-whith-gtm-height': HAS_SELECT_INSTALL_WITH_GTM === true}">
+
 					<div class="row">
 						<div class="col-xs-12">
 
@@ -101,29 +117,42 @@
 									</div>
 
 
-									<div *ngIf="HAS_SELECT_INSTALL_WITH_CODE" class="install-with-code">
+									<div *ngIf="HAS_SELECT_INSTALL_WITH_CODE || HAS_SELECT_INSTALL_WITH_GTM"
+										class="install-widget-instructions">
 										<!-- https://stackoverflow.com/questions/34820524/how-to-align-multi-line-text-after-icon -->
-										<div class="install-widget-step-one" style="display: table;padding: 12px;">
-											<span style="display: table-cell;vertical-align: top;">
-												<span style="background: #eee;
-										padding: 6px 9px;
-										border-radius: 50%;
-										font-size: 12px;
-										font-weight: 600;
-										margin-right: 8px;"> 1 </span>
+										<div *ngIf="HAS_SELECT_INSTALL_WITH_CODE" class="install-widget-steps">
+											<span class="install-widget-step-number-wrapper">
+												<span class="install-widget-step-number">
+													1
+												</span>
 											</span>
-											<span style="display: table-cell;vertical-align: top;">
+											<span class="install-widget-step-text">
 												<!-- {{ 'Resourcepage.ToChatWithYourVisitors...' | translate }}  -->
 												{{'Resourcepage.CopyTheFollowingScript...' | translate }}
 												<code><em>&lt;head&gt;</em></code> tags.
 											</span>
 										</div>
 
+										<div *ngIf="HAS_SELECT_INSTALL_WITH_GTM" class="install-widget-steps">
+											<span class="install-widget-step-number-wrapper">
+												<span class="install-widget-step-number">
+													1
+												</span>
+											</span>
+											<span class="install-widget-step-text">
+												Google Tag Manager is the easiest way to install the Widget <span
+													style="color:#cf2e2e;font-style: italic;"> but note that AdBlocker
+													can block Google Tag Manger as well as Google Analytics, so use it
+													with care</span>.
+												<br> Start by copying the following script.
+											</span>
+										</div>
+
 										<!-- 
-									// -----------------------------------------------------------------------------------------------------------------------	
-									// REMEMBER TO UPDATE TEXAREA CODE IF UPDATE SCRIPT CODE IN PRE TAG
-									// !!!!!!! NOTE THAT: WHEN IS CLICKED THE BUTTON "COPY CODE" IS COPIED THE CODE IN THE ABOVE TEXAREA
-									// -----------------------------------------------------------------------------------------------------------------------	-->
+										// -----------------------------------------------------------------------------------------------------------------------	
+										// REMEMBER TO UPDATE TEXAREA CODE IF UPDATE SCRIPT CODE IN PRE TAG
+										// !!!!!!! NOTE THAT: WHEN IS CLICKED THE BUTTON "COPY CODE" IS COPIED THE CODE IN THE ABOVE TEXAREA
+										// -----------------------------------------------------------------------------------------------------------------------	-->
 										<div class="script-wrap" style="padding-left: 46px;padding-right: 20px;">
 											<pre class="widget-design-pre"
 												style="padding-left:0px; margin-bottom: 0px;font-size: 12px !important;">
@@ -140,7 +169,7 @@
 										<span>    fjs.parentNode.insertBefore(js, fjs);</span>
 										<span>  {{'}'}}(document, &#39;script&#39;, &#39;tiledesk-jssdk&#39;));</span>
 										<span>&lt;/script&gt;</span>	
-									</pre>
+										</pre>
 
 
 											<button
@@ -161,14 +190,14 @@
 										</div>
 
 										<!-- 
-// -----------------------------------------------------------------------------------------------------------------------
-// REMEMBER TO UPDATE THIS TEXAREA CODE IF UPDATE SCRIPT CODE IN PRE TAG
-// !!!!!!! NOTE THAT TEXT AREA IS HIDDEN - IS USED ONLY TO COPY THE CODE WHEN THE USER CLICK ON THE BUTTON COPY CODE
-// ----------------------------------------------------------------------------------------------------------------------- -->
+											// -----------------------------------------------------------------------------------------------------------------------
+											// REMEMBER TO UPDATE THIS TEXAREA CODE IF UPDATE SCRIPT CODE IN PRE TAG
+											// !!!!!!! NOTE THAT TEXT AREA IS HIDDEN - IS USED ONLY TO COPY THE CODE WHEN THE USER CLICK ON THE BUTTON COPY CODE
+											// ----------------------------------------------------------------------------------------------------------------------- -->
 										<textarea name="exampleClipboard" class="textarea" readonly rows="18" value=""
 											type="text" style="opacity: .01;height:0; position:absolute; z-index: -1;">
 &lt;script type=&quot;application/javascript&quot;&gt;
-window.tiledeskSettings = 
+	window.tiledeskSettings = 
 	{
 	projectid: &quot;{{ id_project }}&quot;
 	};
@@ -181,6 +210,57 @@ window.tiledeskSettings =
 	}(document, &#39;script&#39;, &#39;tiledesk-jssdk&#39;));
 &lt;/script&gt;</textarea>
 
+
+										<!-- https://stackoverflow.com/questions/34820524/how-to-align-multi-line-text-after-icon -->
+										<div *ngIf="HAS_SELECT_INSTALL_WITH_CODE" class="install-widget-steps">
+											<span class="install-widget-step-number-wrapper">
+												<span class="install-widget-step-number">
+													2
+												</span>
+											</span>
+											<span class="install-widget-step-text">
+												Once you’ve completed your changes, open your website. Your Widget
+												should appear in the bottom right corner.
+											</span>
+										</div>
+
+										<div *ngIf="HAS_SELECT_INSTALL_WITH_CODE" class="install-widget-steps">
+											<span class="install-widget-step-number-wrapper">
+												<span class="install-widget-step-number">
+													3
+												</span>
+											</span>
+											<span class="install-widget-step-text">
+												Once you’ve completed your changes, open your website. Your Widget
+												should appear in the bottom right corner.
+											</span>
+										</div>
+
+										<div *ngIf="HAS_SELECT_INSTALL_WITH_GTM" class="install-widget-steps">
+											<span class="install-widget-step-number-wrapper">
+												<span class="install-widget-step-number">
+													2
+												</span>
+											</span>
+											<span class="install-widget-step-text">
+												Go to Google Tag Manager and <span
+													style="color: #0f62ff;text-decoration: underline;"
+													(click)="goToInstallWithTagManagerDocs()"> follow these instructions
+												</span>
+											</span>
+										</div>
+
+										<div *ngIf="HAS_SELECT_INSTALL_WITH_GTM" class="install-widget-steps">
+											<span class="install-widget-step-number-wrapper">
+												<span class="install-widget-step-number">
+													3
+												</span>
+											</span>
+											<span class="install-widget-step-text">
+												Open your website. Your Widget should appear in the bottom right corner.
+											</span>
+										</div>
+
 									</div> <!-- /. install-with-code -->
 								</div> <!-- /. card content -->
 							</div> <!-- /. card -->
@@ -192,7 +272,7 @@ window.tiledeskSettings =
 
 
 
-		<div class="widget-all-settings-wrap" role="main" style="">
+		<div class="widget-all-settings-wrap" role="main">
 			<div class="row no-gap" style="margin-left: 0; margin-right: 0;">
 				<div class="col-xs-7" id="widget-settings-manage">
 					<div id="widget-all-settings-form" class="form-horizontal">
@@ -1017,10 +1097,7 @@ window.tiledeskSettings =
 								<div class="form-group"
 									style="max-width: 640px; margin-left: -15px; 	margin-right: -15px;">
 									<label class="col-sm-12 control-label widget-settings-control-head-label">
-
 										{{'SayHowSoonYourTeamUsuallyReplies' | translate}}
-
-
 									</label>
 									<div class="col-sm-12">
 
@@ -1147,9 +1224,6 @@ window.tiledeskSettings =
 								</i>
 							</div>
 						</button>
-
-
-
 						<div class="widget-section-container" style="height: auto; transition-duration: 0.613s;">
 							<div class="section-offset">
 								<div class="form-group"
@@ -1297,6 +1371,83 @@ window.tiledeskSettings =
 
 							</div>
 						</div>
+
+						<!--
+						// ----------------------------------------------------------------------------
+						// @ Pre-chat form SECTION 
+						// ---------------------------------------------------------------------------- -->
+
+						<button type="button" class="widget-section-accordion widget-section-header">
+							<div class="widget-section-title">
+								<div class="widget-setting-icon-wrap">
+									<svg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'>
+										<title>Reader</title>
+										<rect x='96' y='48' width='320' height='416' rx='48' ry='48' fill='none'
+											stroke='currentColor' stroke-linejoin='round' stroke-width='32' />
+										<path fill='none' stroke='currentColor' stroke-linecap='round'
+											stroke-linejoin='round' stroke-width='32'
+											d='M176 128h160M176 208h160M176 288h80' />
+									</svg>
+								</div>
+								<h4 class="widget-section-header__title-underlined">
+									Pre-Chat form
+								</h4>
+							</div>
+
+							<div class="widget-section-arrow">
+								<i class="material-icons widget-section-arrow-icon">
+									keyboard_arrow_down
+								</i>
+							</div>
+						</button>
+						<div class="widget-section-container" style="height: auto; transition-duration: 0.613s;">
+							<div class="section-offset">
+								<div class="form-group"
+									style="max-width: 640px; margin-left: -15px; margin-right: -15px; margin-top: 0px;">
+									
+									<label class="col-sm-12 control-label widget-settings-control-head-label">
+										Ask your visitor for their name and email before starting a chat
+									</label>
+									
+									
+									<label class="col-sm-12 control-label widget-settings-control-label"
+										style="padding-top: 14px;">
+										{{ 'EnableDisable' | translate }}  Pre-Chat form
+									</label>
+
+									<div class="col-sm-12">
+										<div class="nw-onoffswitch-wrapper" style="clear: both;">
+											<div class="nw-onoffswitch">
+												<input (change)="togglePrechatformCheckBox($event)" type="checkbox"
+													name="nw-prechatform-switch" class="nw-onoffswitch-checkbox"
+													id="nw-prechatform-switch" tabindex="0"
+													[checked]="preChatForm">
+												<label class="nw-onoffswitch-label" for="nw-prechatform-switch"></label>
+											</div>
+										</div>
+									</div>
+								</div>
+
+
+
+								<!-- 
+								// -------------------------------------
+								// Save
+								// ------------------------------------- -->
+								<!-- <div class="form-group"
+									style="max-width: 640px; margin-left: -15px; 	margin-right: -15px;">
+									<div class="col-sm-12">
+										<button class="btn btn-success-no-boxshadow  callout-settings-save-btn"
+											style="margin-top: 15px; margin-bottom: 15px;font-size: 12px; letter-spacing: 1px;"
+											(click)="savePrechatFormSettings()">
+											{{ 'UpdateWidget' | translate }}
+										</button>
+									</div>
+								</div> -->
+
+							</div>
+						</div>
+
 						<!--
 						// ----------------------------------------------------------------------------
 						// @ Multilanguage SECTION 
