@@ -92,6 +92,8 @@ export class ContactsService {
 
         console.log("wsRequesterPresence (contacts service) - UPDATE - data ", data);
         // console.log("% WsMsgsService notification", notification);
+        self.wsRequesterStatus$.next(data);
+
       }, function (data, notification) {
 
         if (data) {
