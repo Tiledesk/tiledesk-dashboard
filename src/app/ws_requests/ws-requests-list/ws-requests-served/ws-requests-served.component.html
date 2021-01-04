@@ -151,7 +151,7 @@
             IF THE REQUEST SUPPORT STATUS IS 200 (SERVED REQUEST) AND THE CURRENT USER UID IS BETWEEN 
             THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has joined to the request) -->
             <span *ngIf="request?.status == 200 && request?.currentUserIsJoined === true">
-              <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" rel="tooltip"
+              <span (click)='goToRequestMsgs(request?.request_id, request)' style="cursor:pointer" rel="tooltip"
                 title="{{ 'VisitorsPage.ViewRequestDetails' | translate}}: {{request?.request_id}}">
 
                 <span *ngIf="!request?.subject">
@@ -677,7 +677,7 @@
                     <span
                       style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px; white-space: nowrap;"
                       class="top">
-                      <span style="text-transform: capitalize;"> {{ agent.name}} </span>
+                      <span style="text-transform: capitalize;"> {{ agent.name}} (bot)</span>
                       <i></i>
                     </span>
                     <div *ngIf="agent.type === 'internal'">

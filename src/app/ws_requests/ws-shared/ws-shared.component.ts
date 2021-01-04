@@ -546,14 +546,14 @@ export class WsSharedComponent implements OnInit {
             // console.log('% »»» WebSocketJs WF agentsArrayBuildFromRequests bot', bot);
 
             if (bot) {
-              this.participantsInRequests.push({ '_id': participant, 'firstname': bot.name });
+              this.participantsInRequests.push({ '_id': participant, 'firstname': bot.name + " (bot)" });
 
               this.botAgentsIdArray.push(participant);
 
 
             } else {
 
-              this.participantsInRequests.push({ '_id': participant, 'firstname': participant });
+              this.participantsInRequests.push({ '_id': participant, 'firstname': participant + " (bot)"});
               this.botAgentsIdArray.push(participant);
             }
 
