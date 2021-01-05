@@ -1652,7 +1652,7 @@
     "WelcomeGreetings": "Welcome greetings",
     "OnlineOfflineGreetings": "Online / Offline Greetings",
     "WidgetPreviewIsDisplayedIn": "Widget preview is currently displayed in",
-    "ChangePreviewToCustomizeTheFollowingFieldsInAnotherLanguage": "Change preview in the Multilanguage section to customize the following fields in another language"
-
+    "ChangePreviewToCustomizeTheFollowingFieldsInAnotherLanguage": "Change preview in the Multilanguage section to customize the following fields in another language",
+    "ViewServedRequestsMap": "View served requests map"
     
 }

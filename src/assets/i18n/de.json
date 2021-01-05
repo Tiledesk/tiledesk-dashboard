@@ -1651,5 +1651,6 @@
 	"WelcomeGreetings":"Willkommene Grüße",
 	"OnlineOfflineGreetings": "Online Offline-Grüße",
 	"WidgetPreviewIsDisplayedIn": "Die Widget-Vorschau wird derzeit in angezeigt",
-	"ChangePreviewToCustomizeTheFollowingFieldsInAnotherLanguage": "Ändern Sie die Vorschau im Abschnitt Mehrsprachig, um die folgenden Felder in einer anderen Sprache anzupassen"
+	"ChangePreviewToCustomizeTheFollowingFieldsInAnotherLanguage": "Ändern Sie die Vorschau im Abschnitt Mehrsprachig, um die folgenden Felder in einer anderen Sprache anzupassen",
+	"ViewServedRequestsMap": "Karte für bediente Anfragen anzeigen"
 }
