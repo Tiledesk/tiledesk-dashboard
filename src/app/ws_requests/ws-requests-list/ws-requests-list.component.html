@@ -149,7 +149,7 @@
     (click)='goToNoRealtimeConversations()'>
     <a attr.aria-label="{{ 'GoToNotRealTimeRequests' | translate }}" href="javascript:;" role="button" class="tool_tip"
       style="cursor: pointer; display: unset; color: #797979;"
-      [ngClass]="{ 'has-reached-100' : served_unserved_sum >= 16 }">
+      [ngClass]="{ 'has-reached-100' : served_unserved_sum >= 100 }">
       <span class="material-icons">
         view_list
       </span>
@@ -159,7 +159,7 @@
         <i></i>
       </div>
     </a>
-    <span *ngIf="served_unserved_sum >= 16" class="served-unserved-sum">
+    <span *ngIf="served_unserved_sum >= 100" class="served-unserved-sum">
       <span>
         {{ served_unserved_sum }}
       </span>
