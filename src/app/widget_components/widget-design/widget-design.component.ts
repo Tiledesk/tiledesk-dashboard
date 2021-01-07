@@ -167,11 +167,12 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   humanizer: HumanizeDuration = new HumanizeDuration(this.langService);
 
   HAS_SELECT_DYMANIC_REPLY_TIME_MSG: boolean;
-  HAS_SELECT_STATIC_REPLY_TIME_MSG = true;
+  HAS_SELECT_STATIC_REPLY_TIME_MSG: boolean;
   has_copied = false;
   WIDGET_URL: string;
   HAS_SELECT_INSTALL_WITH_CODE: boolean = false;
   HAS_SELECT_INSTALL_WITH_GTM: boolean = false;
+  addWhiteSpaceBefore: boolean;
 
   constructor(
     private notify: NotifyService,
@@ -227,6 +228,22 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     console.log('WIDGET DESIGN window.matchMedia ', window.matchMedia)
     this.lang = this.translate.getBrowserLang();
     console.log('LANGUAGE ', this.lang);
+  }
+
+  scroll(el: HTMLElement) {
+    el.scrollIntoView();
+    var acc = document.getElementsByClassName("widget-section-accordion");
+    // console.log('WIDGET DESIGN ACCORDION', acc);
+    var i;
+    for (i = 0; i < acc.length; i++) { 
+      var lastAccordion = acc[5];
+      var lastPanel = <HTMLElement>lastAccordion.nextElementSibling;
+      lastAccordion.classList.add("active");
+      lastPanel.style.maxHeight = lastPanel.scrollHeight + "px";
+      var arrow_icon_div = lastAccordion.children[1];
+      var arrow_icon = arrow_icon_div.children[0]
+      arrow_icon.classList.add("arrow-up");
+    }
   }
 
   getWidgetUrl() {
@@ -315,11 +332,22 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     console.log('WIDGET DESIGN ACCORDION INSTALL WIDGET', acc);
 
     var i;
-
     for (i = 0; i < acc.length; i++) {
+      console.log('WIDGET DESIGN ACCORDION ARROW - INSTALL WIDGET - QUI ENTRO');
+      console.log('WIDGET DESIGN ACCORDION ARROW - INSTALL WIDGET - acc[i]', acc[i]);
       acc[i].addEventListener("click", function () {
         this.classList.toggle("active-install-widget");
+
         var panel = this.nextElementSibling;
+        // console.log('WIDGET DESIGN ACCORDION ARROW - INSTALL WIDGET - panel', panel);
+
+        var arrow_icon_div = this.children[1];
+        console.log('WIDGET DESIGN ACCORDION ARROW - INSTALL WIDGET - ICON WRAP DIV', arrow_icon_div);
+
+        var arrow_icon = arrow_icon_div.children[0]
+        console.log('WIDGET DESIGN ACCORDION ARROW ICON', arrow_icon);
+        arrow_icon.classList.toggle("arrow-up-install-widget");
+
         if (panel.style.maxHeight) {
           panel.style.maxHeight = null;
         } else {
@@ -376,36 +404,35 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
 
   getAndManageAccordion() {
     var acc = document.getElementsByClassName("widget-section-accordion");
-    console.log('WIDGET DESIGN ACCORDION', acc);
+    // console.log('WIDGET DESIGN ACCORDION', acc);
     var i;
-
     for (i = 0; i < acc.length; i++) {
-
+      console.log('WIDGET DESIGN ACCORDION i', i, 'acc[i]', acc[i]);
       // Open the first accordion https://codepen.io/fpavision/details/xxxONGv
       var firstAccordion = acc[0];
       var firstPanel = <HTMLElement>firstAccordion.nextElementSibling;
-      console.log('WIDGET DESIGN ACCORDION FIRST PANEL', firstPanel);
+      // console.log('WIDGET DESIGN ACCORDION FIRST PANEL', firstPanel);
 
       firstAccordion.classList.add("active");
       firstPanel.style.maxHeight = firstPanel.scrollHeight + "px";
 
       var arrow_icon_div = firstAccordion.children[1];
-      console.log('WIDGET DESIGN ACCORDION ARROW ICON WRAP DIV', arrow_icon_div);
+      // console.log('WIDGET DESIGN ACCORDION ARROW ICON WRAP DIV', arrow_icon_div);
 
       var arrow_icon = arrow_icon_div.children[0]
-      console.log('WIDGET DESIGN ACCORDION ARROW ICON', arrow_icon);
+      // console.log('WIDGET DESIGN ACCORDION ARROW ICON', arrow_icon);
       arrow_icon.classList.add("arrow-up");
 
       acc[i].addEventListener("click", function () {
         this.classList.toggle("active");
         var panel = this.nextElementSibling;
-        console.log('WIDGET DESIGN ACCORDION PANEL', panel);
+        // console.log('WIDGET DESIGN ACCORDION PANEL', panel);
 
         var arrow_icon_div = this.children[1];
-        console.log('WIDGET DESIGN ACCORDION ARROW ICON WRAP DIV', arrow_icon_div);
+        // console.log('WIDGET DESIGN ACCORDION ARROW ICON WRAP DIV', arrow_icon_div);
 
         var arrow_icon = arrow_icon_div.children[0]
-        console.log('WIDGET DESIGN ACCORDION ARROW ICON', arrow_icon);
+        // console.log('WIDGET DESIGN ACCORDION ARROW ICON', arrow_icon);
         arrow_icon.classList.toggle("arrow-up");
 
         // var arrow_icon_div = acc[i].children[1];
@@ -472,13 +499,9 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
 
         this.translations.forEach(translation => {
           console.log('Multilanguage (widget-design) ***** GET labels ***** - RES >>> TRANSLATION ', translation);
-
-
-
           if (translation) {
             // se c'è inglese eseguo subito il push in languages_codes perle altre lang verifico se è presente _id
             // prima di eseguire il push
-
             if (translation._id !== undefined) {
               this.languages_codes.push(translation.lang.toLowerCase())
             }
@@ -583,7 +606,14 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
         // this to simulate the presence of at least one conversation
         // -----------------------------------------------------------------------------------------------------------------------
         this.waitingTimeNotFoundMsg = this.selected_translation["WAITING_TIME_NOT_FOUND"];
-        this.waitingTimeFoundMsg = this.selected_translation["WAITING_TIME_FOUND"] + '$reply_time';
+
+        console.log('Multilanguage (widget-design) - ***** this.selected_translation["WAITING_TIME_FOUND"] contains $reply_time ', this.selected_translation["WAITING_TIME_FOUND"].includes("$reply_time"));
+
+        if (this.selected_translation["WAITING_TIME_FOUND"].includes("$reply_time") === false) {
+          this.waitingTimeFoundMsg = this.selected_translation["WAITING_TIME_FOUND"] + '$reply_time';
+        } else {
+          this.waitingTimeFoundMsg = this.selected_translation["WAITING_TIME_FOUND"]
+        }
         console.log('Multilanguage (widget-design) - ***** selected translation waitingTimeNotFoundMsg: ', this.waitingTimeNotFoundMsg);
         console.log('Multilanguage (widget-design) - ***** selected translation waitingTimeFoundMsg: ', this.waitingTimeFoundMsg);
       }
@@ -623,6 +653,10 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   }
 
 
+
+
+
+
   onChangeReplyTimeTypeMsg(value) {
     console.log('Multilanguage (widget-design) - ON CHANGE REPLY TIME TYPE MSG : ', value);
 
@@ -631,18 +665,34 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
       this.HAS_SELECT_STATIC_REPLY_TIME_MSG = false;
       console.log('Multilanguage (widget-design) - HAS_SELECT_DYMANIC_REPLY_TIME_MSG : ', this.HAS_SELECT_DYMANIC_REPLY_TIME_MSG);
 
-      this.widgetObj['dynamicWaitTimeReply'] = this.HAS_SELECT_DYMANIC_REPLY_TIME_MSG;
-      this.widgetService.updateWidgetProject(this.widgetObj)
+      // this.widgetObj['dynamicWaitTimeReply'] = this.HAS_SELECT_DYMANIC_REPLY_TIME_MSG;
+      // this.widgetService.updateWidgetProject(this.widgetObj)
 
     }
     if (value === 'reply_time_fixed_msg') {
       this.HAS_SELECT_DYMANIC_REPLY_TIME_MSG = false;
       this.HAS_SELECT_STATIC_REPLY_TIME_MSG = true;
-      this.widgetObj['dynamicWaitTimeReply'] = this.HAS_SELECT_DYMANIC_REPLY_TIME_MSG;
-      this.widgetService.updateWidgetProject(this.widgetObj)
+
       console.log('Multilanguage (widget-design) - HAS_SELECT_DYMANIC_REPLY_TIME_MSG : ', this.HAS_SELECT_DYMANIC_REPLY_TIME_MSG);
     }
 
+  }
+
+  saveReplyTime() {
+    const save_replytime_btn = <HTMLElement>document.querySelector('.save_replytime_btn');
+    console.log('Multilanguage (widget-design) - save_replytime_btn: ', save_replytime_btn);
+    if (save_replytime_btn) {
+      save_replytime_btn.blur()
+    }
+
+    this.widgetObj['dynamicWaitTimeReply'] = this.HAS_SELECT_DYMANIC_REPLY_TIME_MSG;
+    this.widgetService.updateWidgetProject(this.widgetObj)
+  }
+
+  setReplyTimePlaceholder() {
+    const elInput = <HTMLElement>document.querySelector('.waiting-time-found-msg-input');
+    console.log('Multilanguage (widget-design) - setReplyTimePlaceholder INPUT ELEM: ', elInput);
+    this.insertAtCursor(elInput, '$reply_time')
   }
 
   waitingTimeNotFoundMsgChange(event) {
@@ -653,20 +703,27 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   waitingTimeFoundMsgChange(event) {
     this.waitingTimeFoundMsg = event;
     console.log('Multilanguage (widget-design) - WAITING TIME FOUND CHANGE: ', this.waitingTimeFoundMsg);
-  }
 
-  setReplyTimePlaceholder() {
-    const elInput = <HTMLElement>document.querySelector('.waiting-time-found-msg-input');
-    console.log('Multilanguage (widget-design) - setReplyTimePlaceholder INPUT ELEM: ', elInput);
-    this.insertAtCursor(elInput, '$reply_time')
+    if (/\s$/.test(event)) {
+
+      console.log('Multilanguage (widget-design) - WAITING TIME FOUND CHANGE - string contains space at last');
+      this.addWhiteSpaceBefore = false;
+    } else {
+
+      console.log('Multilanguage (widget-design) - WAITING TIME FOUND CHANGE - string does not contain space at last');
+
+      // IS USED TO ADD A WHITE SPACE TO THE 'PERSONALIZATION' VALUE IF THE STRING DOES NOT CONTAIN SPACE AT LAST
+      this.addWhiteSpaceBefore = true;
+    }
   }
 
   insertAtCursor(myField, myValue) {
     console.log('Multilanguage (widget-design) - insertAtCursor - myValue ', myValue);
     // this.waitingTimeFoundMsg = myValue
+
     // if (this.addWhiteSpaceBefore === true) {
     //   myValue = ' ' + myValue;
-    //   console.log('CANNED-RES-CREATE.COMP - GET TEXT AREA - QUI ENTRO myValue ', myValue );
+    //   console.log('Multilanguage (widget-design) - insertAtCursor - myValue addWhiteSpaceBefore ', myValue );
     // }
 
     //IE support
@@ -692,15 +749,18 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
       myField.value = ''; //clear the value of the element
       myField.value = val + ' '; //set that value back. 
 
-      // this.cannedResponseMessage = myField.value;
+      this.waitingTimeFoundMsg = myField.value;
 
       // this.texareaIsEmpty = false;
       // myField.select();
     } else {
       myField.value += myValue;
-      // this.cannedResponseMessage = myField.value;
+      this.waitingTimeFoundMsg = myField.value;
     }
   }
+
+
+
 
 
   calloutTitleChange(event) {
@@ -1076,10 +1136,24 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
           this.hasSelectedRightAlignment = true;
         }
 
+        // -----------------------------------------------------------------------
+        // @ Reply time
+        // WIDGET DEFINED
+        // -----------------------------------------------------------------------
+        console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) DYNAMIC REPLY TIME: ', project.widget.dynamicWaitTimeReply);
+
+        if (project.widget.dynamicWaitTimeReply === true) {
+          this.HAS_SELECT_DYMANIC_REPLY_TIME_MSG = true;
+          this.HAS_SELECT_STATIC_REPLY_TIME_MSG = false;
+        } else {
+          this.HAS_SELECT_DYMANIC_REPLY_TIME_MSG = false;
+          this.HAS_SELECT_STATIC_REPLY_TIME_MSG = true;
+        }
+
       } else {
 
         this.widgetObj = {}
-
+        console.log('»» WIDGET DESIGN - (onInit WIDGET UNDEFINED)');
         // -----------------------------------------------------------------------
         // @ LogoChat
         // WIDGET UNDEFINED
@@ -1121,6 +1195,13 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
         // WIDGET UNDEFINED
         // -----------------------------------------------------------------------
         this.preChatForm = false;
+
+        // -----------------------------------------------------------------------
+        // @ Reply time
+        // WIDGET UNDEFINED
+        // -----------------------------------------------------------------------
+        this.HAS_SELECT_DYMANIC_REPLY_TIME_MSG = false;
+        this.HAS_SELECT_STATIC_REPLY_TIME_MSG = true;
       }
 
     }, (error) => {
@@ -1565,7 +1646,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
       // *** REMOVE PROPERTY
       delete this.widgetObj['preChatForm'];
       this.widgetService.updateWidgetProject(this.widgetObj)
-  
+
       console.log('»» WIDGET - INCLUDE PRE CHAT FORM ', event.target.checked)
     }
   }

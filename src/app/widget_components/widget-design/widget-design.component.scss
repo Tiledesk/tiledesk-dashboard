@@ -1203,6 +1203,7 @@ input {
   opacity: 0;
   transition: opacity 1s;
   font-size: 12px;
+  font-weight: 400;
 }
 
 .widget_design__Tooltip:hover .widget_design__Tooltiptext {
@@ -1693,7 +1694,7 @@ button.buttonRounded:hover {
 
 .widget-setting-icon-wrap {
   position: absolute;
-  margin-top: 15px;
+  margin-top: 12px;
   margin-left: 5px;
   width: 22px;
   height: auto;
@@ -1704,6 +1705,11 @@ button.buttonRounded:hover {
 }
 
 .arrow-up {
+  transform: rotate(180deg);
+  transition: all 0.3s ease-in-out;
+}
+
+.arrow-up-install-widget {
   transform: rotate(180deg);
   transition: all 0.3s ease-in-out;
 }
@@ -1791,6 +1797,8 @@ button.buttonRounded:hover {
   color: #566787 !important;
   text-align: left;
   padding-bottom: 3px;
+  font-weight: 600 !important;
+  letter-spacing: 0.2px;
 }
 
 .widget-settings-control-head-label {
@@ -1800,6 +1808,19 @@ button.buttonRounded:hover {
   padding-bottom: 12px;
   font-family: "Google Sans", sans-serif;
   font-weight: 500 !important;
+}
+
+.widget-settings-control-head-label-info {
+  font-family: "Google Sans", sans-serif;
+  color: #566787 !important;
+  text-align: left;
+  padding: 6px 12px;
+  background: #e7f3ff;
+  font-weight: 400 !important;
+  line-height: 20px !important;
+  font-size: 12px !important;
+  cursor: pointer;
+  margin-bottom: 12px !important;
 }
 
 .padding-top-2 {
@@ -1821,7 +1842,8 @@ button.buttonRounded:hover {
 .active-language-label {
   display: block;
   font-weight: 400;
-  font-size: 12px;
+  font-size: 11px;
+  color: #7695a5;
 }
 
 // .widget-section-accordion:after {
@@ -2098,51 +2120,56 @@ button.buttonRounded:hover {
 
 // start accordion-install-widget
 .accordion-install-widget {
-  background-color: rgba(241, 241, 241, 1);
+  background-color: #ffffff;
   color: #444;
   cursor: pointer;
-  padding: 18px;
+  // padding: 18px;
   width: 100%;
   border: none;
   text-align: left;
   outline: none;
   font-size: 15px;
   transition: 0.4s;
-  margin-bottom: 16px;
-  padding-left: 42px;
-  padding-right: 42px;
+  // margin-bottom: 16px;
+  // padding-left: 42px;
+  // padding-right: 42px;
   font-size: 18px;
   font-weight: 600;
   font-family: Google Sans, sans-serif;
-
-  padding-top: 30px;
-  padding-bottom: 21px;
+  padding-left: 0px;
+  border-bottom-color: #ececec;
+  // padding-top: 30px;
+  // padding-bottom: 21px;
 }
 
-.active-install-widget,
-.accordion-install-widget:hover {
-  // background-color: #ccc;
-  background-color: rgba(241, 241, 241, 1);
+.active-install-widget {
+  border-bottom: 1px solid #ececec;
 }
 
-.accordion-install-widget:after {
-  content: "\f077";
-  font-family: FontAwesome;
-  //  float: right;
-  // margin-left: 5px;
-  position: absolute;
-  right: 25px;
-  top: 81px;
-  color: #0f62ff;
-}
+// .active-install-widget,
+// .accordion-install-widget:hover {
+//   // background-color: #ccc;
+//   // background-color: rgba(241, 241, 241, 1);
+// }
 
-.active-install-widget:after {
-  content: "\f078";
-  font-family: FontAwesome;
-}
+// .accordion-install-widget:after {
+//   content: "\f077";
+//   font-family: FontAwesome;
+//   //  float: right;
+//   // margin-left: 5px;
+//   position: absolute;
+//   right: 25px;
+//   top: 81px;
+//   color: #0f62ff;
+// }
+
+// .active-install-widget:after {
+//   content: "\f078";
+//   font-family: FontAwesome;
+// }
 
 .panel-install-widget {
-  padding: 0 35px;
+  // padding: 0 35px;
   background-color: white;
   max-height: 0;
   overflow: hidden;
@@ -2230,6 +2257,10 @@ pre {
   padding: 6px 7px;
   float: right;
   margin-right: 25px;
+}
+
+.highlight-text {
+  color: #0f62ff !important;
 }
 
 /// START COPY TO CLIPBOARD TOOLTIP EFFECT
