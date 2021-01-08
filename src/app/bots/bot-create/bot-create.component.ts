@@ -531,7 +531,8 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
   }
 
   openExternalBotIntegrationTutorial() {
-    const url = 'https://developer.tiledesk.com/apis/tutorials/connect-your-own-chatbot';
+    // const url = 'https://developer.tiledesk.com/apis/tutorials/connect-your-own-chatbot';
+    const url = 'https://developer.tiledesk.com/external-chatbot/connect-your-own-chatbot';
     window.open(url, '_blank');
   }
 
