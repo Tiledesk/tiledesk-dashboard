@@ -2,7 +2,7 @@
 	<i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
 		(click)="goBack()">keyboard_arrow_left</i>
 
-		{{'WidgetSetUp' | translate}}
+	{{'WidgetSetUp' | translate}}
 
 
 </div>
@@ -25,8 +25,9 @@
 					<span class="material-icons" style="vertical-align: middle;color: #0f62ff">
 						menu_book
 					</span>
-					<span style="vertical-align: middle;color: #0f62ff; font-size: 14px;font-weight: 400;"
-						(click)="goToInstallWithTagManagerDocs()">
+					<span
+						style="vertical-align: middle;color: #0f62ff; font-size: 14px;font-weight: 400; cursor: pointer;"
+						(click)="goToWidgetWebSdk()">
 						{{'LearnAboutAdvancedWidgetConfiguration'| translate}}
 					</span>
 				</div>
@@ -88,7 +89,8 @@
 										<div class="row">
 											<div class="col-xs-6">
 												<div class="card">
-													<div class="card-content" (click)="installWithCode()" style="cursor: pointer;">
+													<div class="card-content" (click)="installWithCode()"
+														style="cursor: pointer;">
 														<div class="card-icon"
 															style="width: 50px;height: 50px;margin: auto;">
 															<img *ngIf="HAS_SELECT_INSTALL_WITH_CODE"
@@ -110,7 +112,8 @@
 
 											<div class="col-xs-6">
 												<div class="card">
-													<div class="card-content" (click)="installWithGTM()" style="cursor: pointer;">
+													<div class="card-content" (click)="installWithGTM()"
+														style="cursor: pointer;">
 														<div class="card-icon"
 															style="width: 50px;height: 50px;margin: auto;">
 															<img *ngIf="HAS_SELECT_INSTALL_WITH_GTM"
@@ -153,8 +156,8 @@
 													</span>
 												</span>
 												<span class="install-widget-step-text">
-													{{'GoogleTagManagerIsTheEasiestWayToInstallTheWidget' | translate}} 
-													<span style="color:#cf2e2e;font-style: italic;"> 
+													{{'GoogleTagManagerIsTheEasiestWayToInstallTheWidget' | translate}}
+													<span style="color:#cf2e2e;font-style: italic;">
 														{{'ButNoteThatAdBlockerCanBlockGoogleTagManger' | translate}}.
 													</span>
 													<br> {{'StartByCopyingTheFollowingScript' | translate}}.
@@ -202,14 +205,14 @@
 
 											</div>
 
-<!-- 
+											<!-- 
 // -----------------------------------------------------------------------------------------------------------------------
 // REMEMBER TO UPDATE THIS TEXAREA CODE IF UPDATE SCRIPT CODE IN PRE TAG
 // !!!!!!! NOTE THAT TEXT AREA IS HIDDEN - IS USED ONLY TO COPY THE CODE WHEN THE USER CLICK ON THE BUTTON COPY CODE
 // ----------------------------------------------------------------------------------------------------------------------- -->
-<textarea name="exampleClipboard" class="textarea" readonly rows="18"
-	value="" type="text"
-	style="opacity: .01;height:0; position:absolute; z-index: -1;">
+											<textarea name="exampleClipboard" class="textarea" readonly rows="18"
+												value="" type="text"
+												style="opacity: .01;height:0; position:absolute; z-index: -1;">
 &lt;script type=&quot;application/javascript&quot;&gt;
 	window.tiledeskSettings = 
 	{
@@ -259,7 +262,7 @@
 												<span class="install-widget-step-text">
 													{{'GoToGoogleTagManagerAnd' | translate}}
 													<span style="color: #0f62ff;text-decoration: underline;"
-														(click)="goToInstallWithTagManagerDocs()"> 
+														(click)="goToInstallWithTagManagerDocs()">
 														{{'FollowTheseInstructions' | translate}}
 													</span>
 												</span>
@@ -272,7 +275,8 @@
 													</span>
 												</span>
 												<span class="install-widget-step-text">
-													{{'OpenYourWebsite'| translate}}. {{'YourWidgetShouldAppearInTheBottomRightCorner' | translate}}.
+													{{'OpenYourWebsite'| translate}}.
+													{{'YourWidgetShouldAppearInTheBottomRightCorner' | translate}}.
 												</span>
 											</div>
 
@@ -838,10 +842,15 @@
 								<div class="form-group"
 									style="max-width: 640px; margin-left: -15px; 	margin-right: -15px;">
 
-									<label class="col-sm-12 control-label widget-settings-control-head-label-info" (click)="scroll(multilanguage)">
-										<!-- Background Color: -->
-										{{ 'WidgetPreviewIsDisplayedIn' | translate }} {{selectedLangName}}.<br>
-										{{'ChangePreviewToCustomizeTheFollowingFieldsInAnotherLanguage' | translate}}
+									<label class="col-sm-12 control-label widget-settings-control-head-label-info"
+										(click)="scroll(multilanguage)">
+
+										{{ 'WidgetPreviewIsDisplayedIn' | translate }} <span
+											style="font-weight: bold;">{{selectedLangName}} </span>.<br>
+										<!-- {{'ChangePreviewToCustomizeTheFollowingFieldsInAnotherLanguage' | translate}} -->
+										{{'ChangePreviewIn' | translate}} <span style="color:#0f62ff">
+											{{'MultilanguageSection' | translate}}</span>
+										{{'ToCustomizeTheFollowingFieldsInAnotherLanguage' | translate}}
 									</label>
 
 
@@ -967,7 +976,8 @@
 											</span>
 										</span>
 									</label>
-									<span class="active-language-label" style="margin-left: 15px;">{{selectedLangName}} </span>
+									<span class="active-language-label" style="margin-left: 15px;">{{selectedLangName}}
+									</span>
 									<div class="col-sm-12">
 										<textarea (focus)="onFocusOnlineGreetings()" [(ngModel)]="onlineMsg"
 											(ngModelChange)="onChangeOnlineMsg($event)" rows="3"
@@ -1002,7 +1012,8 @@
 											</span>
 										</span>
 									</label>
-									<span class="active-language-label" style="margin-left: 15px;">{{selectedLangName}} </span>
+									<span class="active-language-label" style="margin-left: 15px;">{{selectedLangName}}
+									</span>
 									<div class="col-sm-12">
 										<textarea (focus)="onFocusOfflineGreetings()" [(ngModel)]="offlineMsg"
 											(ngModelChange)="onChangeOfflineMsg($event)" rows="4"
@@ -1037,7 +1048,8 @@
 											</span>
 										</span>
 									</label>
-									<span class="active-language-label" style="margin-left: 15px;">{{selectedLangName}} </span>
+									<span class="active-language-label" style="margin-left: 15px;">{{selectedLangName}}
+									</span>
 									<div class="col-sm-12">
 										<textarea (focus)="onFocusOfficeClosedGreetings()" [(ngModel)]="officeClosedMsg"
 											(ngModelChange)="onChangeOfficeClosedMsg($event)" rows="3"
@@ -1113,6 +1125,18 @@
 
 								<div class="form-group"
 									style="max-width: 640px; margin-left: -15px; 	margin-right: -15px;">
+
+
+									<label class="col-sm-12 control-label widget-settings-control-head-label-info"
+										(click)="scroll(multilanguage)">
+										{{ 'WidgetPreviewIsDisplayedIn' | translate }} <span
+											style="font-weight: bold;">{{selectedLangName}} </span>.<br>
+										<!-- {{'ChangePreviewToCustomizeTheFollowingFieldsInAnotherLanguage' | translate}} -->
+										{{'ChangePreviewIn' | translate}} <span style="color:#0f62ff">
+											{{'MultilanguageSection' | translate}}</span>
+										{{'ToCustomizeTheFollowingFieldsInAnotherLanguage' | translate}}
+									</label>
+
 									<label class="col-sm-12 control-label widget-settings-control-head-label">
 										{{'SayHowSoonYourTeamUsuallyReplies' | translate}}
 									</label>
@@ -1143,6 +1167,7 @@
 											<span class="active-language-label">{{selectedLangName}} </span>
 
 											<input class="custom-input" [(ngModel)]="waitingTimeNotFoundMsg"
+												(focus)="onFocusReplyTime()"
 												(ngModelChange)="waitingTimeNotFoundMsgChange($event)"
 												style="font-weight: 400;margin-bottom:3px">
 
@@ -1157,7 +1182,8 @@
 											<label style="color: #566787 !important;">
 												<input type="radio" name="replyTime" value="reply_time_dynamic_msg"
 													(change)="onChangeReplyTimeTypeMsg($event.target.value)"
-													[checked]="HAS_SELECT_DYMANIC_REPLY_TIME_MSG">
+													[checked]="HAS_SELECT_DYMANIC_REPLY_TIME_MSG"
+													(focus)="onFocusReplyTime()">
 												{{'DynamicallySharingAverageResponseTime' | translate}}
 											</label>
 										</div>
@@ -1178,10 +1204,11 @@
 													<span class="widget_design__Tooltiptext"
 														style="margin-left: -108px;min-width: 212px;height:auto">
 														{{'AverageReplyTimeIsCalculatedOverLastFourHours' | translate}}.
-														{{ 'IfYouHavenNotHadConversationsInTheLastFourHours' | translate}}
+														{{ 'IfYouHavenNotHadConversationsInTheLastFourHours' |
+														translate}}
 
 														<span style="font-style: italic;">
-															 {{waitingTimeNotFoundMsg}}
+															{{waitingTimeNotFoundMsg}}
 														</span>
 													</span>
 												</span>
@@ -1191,7 +1218,7 @@
 											<input class="custom-input waiting-time-found-msg-input"
 												[(ngModel)]="waitingTimeFoundMsg"
 												(ngModelChange)="waitingTimeFoundMsgChange($event)"
-												style="font-weight: 400;margin-bottom:3px">
+												style="font-weight: 400;margin-bottom:3px" (focus)="onFocusReplyTime()">
 
 											<button class="btn btn-tdblu-no-boxshadow"
 												(click)="setReplyTimePlaceholder()"
@@ -1208,7 +1235,8 @@
 
 										<!-- --- average reply time is not available --- -->
 										<div class="wrapper-reply-time-not-found" style="margin-top: 3px;">
-											<label class="col-sm-12 control-label widget-settings-control-label" style="padding-left: 0px;">
+											<label class="col-sm-12 control-label widget-settings-control-label"
+												style="padding-left: 0px;">
 												{{ 'AverageReplyTimeNotAvailable' | translate }}
 											</label>
 											<span class="active-language-label">{{selectedLangName}} </span>
@@ -1282,6 +1310,19 @@
 							<div class="section-offset">
 								<div class="form-group"
 									style="max-width: 640px; margin-left: -15px; margin-right: -15px; margin-top: 0px;">
+
+
+									<label class="col-sm-12 control-label widget-settings-control-head-label-info"
+										(click)="scroll(multilanguage)">
+
+										{{ 'WidgetPreviewIsDisplayedIn' | translate }} <span
+											style="font-weight: bold;">{{selectedLangName}} </span>.<br>
+										<!-- {{'ChangePreviewToCustomizeTheFollowingFieldsInAnotherLanguage' | translate}} -->
+										{{'ChangePreviewIn' | translate}} <span style="color:#0f62ff">
+											{{'MultilanguageSection' | translate}}</span>
+										{{'ToCustomizeTheFollowingFieldsInAnotherLanguage' | translate}}
+									</label>
+
 									<label class="col-sm-12 control-label widget-settings-control-label"
 										style="padding-top: 14px;">
 										{{ 'EnableDisable' | translate }} {{ 'Callout' | translate }}
@@ -1303,6 +1344,7 @@
 
 								<div class="form-group"
 									style="max-width: 640px; margin-left: -15px; margin-right: -15px; margin-top: 0px;">
+
 									<label class="col-sm-12 control-label widget-settings-control-label"
 										style="padding-top: 14px;">
 										{{ 'Resourcepage.CalloutTimer' | translate }}
@@ -1357,7 +1399,7 @@
 									</label>
 
 									<div class="col-sm-12">
-
+										<span class="active-language-label">{{selectedLangName}} </span>
 										<input class="custom-input"
 											[ngClass]="{'callout-disabled' : CALLOUT_IS_DISABLED === true, 'required-field' : calloutTitle?.length <= 0}"
 											[disabled]="CALLOUT_IS_DISABLED === true" [(ngModel)]="calloutTitle"
@@ -1391,6 +1433,7 @@
 									</label>
 
 									<div class="col-sm-12">
+										<span class="active-language-label">{{selectedLangName}} </span>
 										<input class="custom-input"
 											[ngClass]="{'callout-disabled' : CALLOUT_IS_DISABLED === true, 'required-field' : calloutTitle?.length <= 0}"
 											[disabled]="CALLOUT_IS_DISABLED === true" [(ngModel)]="calloutMsg"
@@ -1504,7 +1547,7 @@
 						// ----------------------------------------------------------------------------
 						// @ Multilanguage SECTION 
 						// ---------------------------------------------------------------------------- -->
-						<button #multilanguage  type="button" class="widget-section-accordion widget-section-header">
+						<button #multilanguage type="button" class="widget-section-accordion widget-section-header">
 							<div class="widget-section-title">
 								<div class="widget-setting-icon-wrap">
 									<svg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'>
@@ -1570,14 +1613,15 @@
 										<div *ngIf="translation?.code === selectedLangCode" class="current-language">
 											<span class="material-icons current-language-icon"> check </span>
 
-											<span class="current-language-text">{{'CurrentlySelected' | translate}}</span>
+											<span class="current-language-text">{{'CurrentlySelected' |
+												translate}}</span>
 										</div>
 										<!-- <i (change)="onSelectlang(selectedLang)" role="button" class="ion-close-round" data-placement="left" tabindex="0"></i> -->
 										<a *ngIf="translation?.code !== selectedLangCode"
 											(click)="onSelectlang(translation)" class="preview-button">
 											<span role="button" class="material-icons preview-language-icon"
 												style="vertical-align: middle;"> visibility </span>
-											<span class="preview-button-text">{{ 'Preview' | translate }}  </span>
+											<span class="preview-button-text">{{ 'Preview' | translate }} </span>
 										</a>
 									</div>
 								</div>
@@ -1632,8 +1676,10 @@
 									[hasSelectedRightAlignment]="hasSelectedRightAlignment"
 									[hasSelectedLeftAlignment]="hasSelectedLeftAlignment"
 									[C21_BODY_HOME]="C21_BODY_HOME" [waitingTimeNotFoundMsg]="waitingTimeNotFoundMsg"
+									[DISPLAY_LAUNCER_BUTTON]="DISPLAY_LAUNCER_BUTTON"
 									[waitingTimeFoundMsg]="waitingTimeFoundMsg" [currentUserId]="currentUserId"
 									[storageBucket]="storageBucket" [newConversation]="newConversation"
+									[noConversation]="noConversation"
 									[HAS_SELECT_DYMANIC_REPLY_TIME_MSG]="HAS_SELECT_DYMANIC_REPLY_TIME_MSG"
 									[HAS_SELECT_STATIC_REPLY_TIME_MSG]="HAS_SELECT_STATIC_REPLY_TIME_MSG">
 								</appdashboard-widget-home>
@@ -1653,7 +1699,9 @@
 									[HAS_FOCUSED_OFFLINE_MSG]="HAS_FOCUSED_OFFLINE_MSG"
 									[HAS_FOCUSED_OFFICE_CLOSED_MSG]="HAS_FOCUSED_OFFICE_CLOSED_MSG"
 									[selected_translation]="selected_translation" [officeClosedMsg]="officeClosedMsg"
-									[onlineMsg]="onlineMsg" [offlineMsg]="offlineMsg" [projectName]="projectName">
+									[onlineMsg]="onlineMsg" [offlineMsg]="offlineMsg" [projectName]="projectName"
+									[storageBucket]="storageBucket" [currentUserId]="currentUserId"
+									[current_user_name]="current_user_name">
 								</appdashboard-widget-chat>
 							</div>
 
@@ -1662,55 +1710,51 @@
 
 						<!-- min-height: 320px; -->
 						<!-- !!!!!! display none !!!!! -->
-						<div class="appearance-state-switcher"
-							style="background: #fff;
+						<div class="appearance-state-switcher" style="background: #fff;
 							/* padding: 10px 54px 10px 40px; */
 							padding: 10px 94px 10px 32px;
 							min-height: 150px;">
 
 							<form class="form-horizontal">
-								<div class="form-group" style="max-width: 640px;">
-									<label class="col-md-3 control-label preview-dropdown-label"
-										style="padding-right: 0;" for="stateSwitcherPreview">{{ 'Preview' | translate }}:</label>
-									<div class="col-sm-9">
-
+								<div class="form-group" style="max-width: 640px;margin-top: 12px;">
+									<label class="col-md-12 control-label preview-dropdown-label"
+										style="text-align: left;padding-top: 0px;padding-bottom: 4px;font-size: 14px !important;"
+										for="stateSwitcherPreview">
+										{{ 'SelectAPreview' | translate }}</label>
+									<div class="col-sm-12">
 										<ng-select name="requeststatus" [(ngModel)]="widget_preview_selected"
+											dropdownPosition='top'
 											(change)="onChangeWidgetPreview(widget_preview_selected)"
 											[items]="widget_preview_status" bindLabel="name" [clearable]='false'
 											[searchable]="false" bindValue="id" placeholder="Select preview">
 										</ng-select>
+									</div>
+								</div>
 
+								<div class="form-group" style="max-width: 640px;margin-top: 12px;">
+									<label class="col-md-12 control-label preview-dropdown-label"
+										style="text-align: left;padding-top: 0px;padding-bottom: 4px;font-size: 14px !important;"
+										for="stateSwitcherPreview">
+										{{ 'WidgetLiveTest' | translate }}</label>
+									<div class="col-sm-12">
+										<button class="btn btn-tdgreen" #testwidgetbtn
+											style="margin-top:0px; margin-bottom:2px;  background: #3ecf8e;text-shadow: 0 1px 3px rgba(36,180,126,.4);padding-left: 16px;"
+											(click)="testWidgetPage()">
 
-										<!-- <div class="type-secondary size-m select-container css-2b097c-container"
-											id="stateSwitcherPreview"
-											style="position: relative; box-sizing: border-box;">
-											<div class="type-secondary size-m select-content__control css-1bi0jn-control"
-												style="height: 34px;">
-												<div
-													class="type-secondary size-m select-content__value-container type-secondary size-m select-content__value-container--has-value css-1hwfws3">
-													<div
-														class="type-secondary size-m select-content__single-value css-1uccc91-singleValue">
-														Online</div><input id="react-select-10-input" readonly=""
-														tabindex="0" aria-autocomplete="list"
-														class="css-62g3xt-dummyInput" value="">
-												</div>
-												<div
-													class="type-secondary size-m select-content__indicators css-1wy0on6">
-													<span
-														class="type-secondary size-m select-content__indicator-separator css-1okebmr-indicatorSeparator"></span>
-													<div aria-hidden="true"
-														class="type-secondary size-m select-content__indicator type-secondary size-m select-content__dropdown-indicator css-tlfecz-indicatorContainer">
-														<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-															viewBox="0 0 24 24">
-															<path d="M7 10l5 5 5-5z"></path>
-															<path d="M0 0h24v24H0z" fill="none"></path>
-														</svg></div>
-												</div>
-											</div>
-										</div> -->
+											<span aria-hidden="true" class="material-icons"
+												style="vertical-align: middle;margin-right: 12px;font-size: 21px;">
+												play_arrow
+											</span>
+											<span>{{ 'WidgetLiveTest' | translate }}</span>
+										</button>
+										<span
+											style="display: block; color: #7695a5; font-weight:400; font-size:11px; line-height: 16px;">
+											{{ 'TestWidgetAllowYou' | translate }}.
+										</span>
 									</div>
 								</div>
 							</form>
+
 						</div>
 					</div>
 				</div>

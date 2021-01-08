@@ -393,9 +393,10 @@ $col-msg-sent: #ffffff;
     cursor: pointer;
     position: relative;
     // bottom: -16px;
-    bottom: -8px;
+    // bottom: -8px;
+    top: 500px;
     float: right;
-    display: none;
+    // display: none;
 }
 
 .chat21-launcher-button--align-left {

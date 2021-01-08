@@ -30,8 +30,11 @@ export class WidgetHomeComponent implements OnInit {
   @Input() currentUserId: string;
   @Input() storageBucket: string;
   @Input() newConversation: string;
+  @Input() noConversation: string;
   @Input() HAS_SELECT_DYMANIC_REPLY_TIME_MSG: boolean;
   @Input() HAS_SELECT_STATIC_REPLY_TIME_MSG: boolean;
+  @Input() DISPLAY_LAUNCER_BUTTON: boolean;
+  
   
   constructor() { }
 

@@ -17,9 +17,10 @@ export class WidgetChatComponent implements OnInit {
   @Input() onlineMsg: string;
   @Input() offlineMsg: string;
   @Input() projectName: string;
+  @Input() storageBucket: string;
+  @Input() currentUserId: string;
+  @Input() current_user_name: string;
   
- 
- 
   constructor() { }
 
   ngOnInit() {

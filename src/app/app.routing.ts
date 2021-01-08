@@ -129,9 +129,11 @@ import { AppStoreInstallComponent } from './app-store/app-store-install/app-stor
 
 import { WebhookComponent } from './webhook/webhook.component';
 import { NotificationSettingsComponent } from './user-profile/notification-settings/notification-settings.component';
+import { MessagesComponent } from './analytics2/metriche/messages/messages.component';
+import { RichiesteComponent } from './analytics2/metriche/richieste/richieste.component';
 
 
-
+// /Users/nicola/TILEDESK-DSHBRD-ENTP/src/app/analytics2/metriche/messages/messages.component.ts
 const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
 
@@ -285,6 +287,10 @@ const routes: Routes = [
   { path: 'project/:projectid/analytics/old', component: AnalyticsComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/analytics', component: Analytics2Component, canActivate: [AuthGuard, ProjectProfileGuard] },
   { path: 'project/:projectid/analytics-demo', component: AnalyticsStaticComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/messages-analytics', component: MessagesComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/conversation-analytics', component: RichiesteComponent, canActivate: [AuthGuard] },
+  
+  
 
   // , ProjectProfileGuard
   { path: 'project/:projectid/activities', component: ActivitiesComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
@@ -328,11 +334,11 @@ const routes: Routes = [
   { path: 'project/:projectid/widget', component: WidgetComponent, canActivate: [AuthGuard] },
 
   // { path: 'project/:projectid/widget/design', component: WidgetDesignComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/widget/greetings', component: WidgetDesignComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/widget/callout', component: WidgetDesignComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/widget/appearance', component: WidgetDesignComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/widget/translations', component: WidgetMultilanguageComponent, canActivate: [AuthGuard] },
-
+  { path: 'project/:projectid/widget/greetings', component: WidgetDesignComponent, canActivate: [AuthGuard] }, // old
+  { path: 'project/:projectid/widget/callout', component: WidgetDesignComponent, canActivate: [AuthGuard] }, // old
+  { path: 'project/:projectid/widget/appearance', component: WidgetDesignComponent, canActivate: [AuthGuard] }, // old
+  { path: 'project/:projectid/widget/translations', component: WidgetMultilanguageComponent, canActivate: [AuthGuard] }, // old
+  { path: 'project/:projectid/widget-set-up', component: WidgetDesignComponent, canActivate: [AuthGuard] },
 
   { path: 'project/:projectid/script', component: ScriptComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/channels', component: ChannelsComponent, canActivate: [AuthGuard] },

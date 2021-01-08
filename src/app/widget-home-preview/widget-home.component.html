@@ -59,8 +59,8 @@
 </div> -->
 
 <!-- [ngStyle]="{'width':  (newInnerWidth < 490 ) ? 'auto' : '375px' }" -->
-<div class="widget-container" style="">
-  <div id="chat21-container">
+<div class="widget-container">
+  <div id="chat21-container" *ngIf="!DISPLAY_LAUNCER_BUTTON">
     <!-- height':  (LOGO_IS_ON === true ) ? '480px' : '428px' -->
     <div class="chat21-window chat21-sheet" id="chat21-conversations" style="border-radius: 10px; z-index:1029"
       [ngStyle]="{'height':  (LOGO_IS_ON === true ) ? '577px' : '527px' }">
@@ -127,7 +127,7 @@
                       <div class="c21-header">
                       
                         <div class="c21-title" *ngIf="C21_BODY_HOME">
-                          {{ 'NoRequests' | translate}}
+                          {{ noConversation }}
                         </div>
                       
                         <div class="c21-title" *ngIf="!C21_BODY_HOME">
@@ -234,21 +234,24 @@
                                   style="background-image: url(&quot;https://user-images.githubusercontent.com/32448495/39111365-214552a0-46d5-11e8-9878-e5c804adfe6a.png&quot;);">
                                 </div> -->
 
-                                <div class="c21-ball" style="background-color: rgb(115, 205, 208);">
-                                  <span  class="c21-ball-label" sty>T</span>
+                                <div class="c21-ball" style="background-color:#ffffff;">
+                                  <!-- <span  class="c21-ball-label" sty>T</span> -->
+                                    <div class="c21-avatar-image contact-avatar" *ngIf="!C21_BODY_HOME"
+                                  style="background-image: url(&quot;https://firebasestorage.googleapis.com/v0/b/tiledesk-prod-v2.appspot.com/o/profiles%2F5f971a7021d065001241949a%2Fthumb_photo.jpg?alt=media&quot;);">
+                                </div>
                                 </div>
                               </div>
                             </div>
 
                             <div class="c21-right-conv" *ngIf="!C21_BODY_HOME">
                               <div class="c21-last-time">
-                                2           {{ 'MinutesAgo' | translate }}
+                                4  {{ 'MinutesAgo' | translate }}
                               </div>
                               <div class="truncate c21-name">
-                                You</div>
+                                Tily - welcome bot</div>
                               <div class="truncate c21-msg">
                                 <!-- {{company_name}}, chat different! -->
-                                Hi, i have a question about ...
+                                Please choose a Team.
                               </div>
                             </div>
                           </div>
@@ -332,7 +335,7 @@
 
   </div> <!-- chat21-container -->
   <!-- z-index:1029 -->
-  <div id="chat21-launcher-button" [ngClass]="
+  <div *ngIf="DISPLAY_LAUNCER_BUTTON" id="chat21-launcher-button" [ngClass]="
   {'chat21-launcher-button--align-left' : hasSelectedLeftAlignment === true}"
     [ngStyle]="{'background-color': primaryColor}">
     <div style="width:100%; height:100%; padding:0px; margin: 0px;">

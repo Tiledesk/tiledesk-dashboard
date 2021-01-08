@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, HostListener, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterViewInit, HostListener, OnDestroy,ElementRef, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
 import { ColorPickerService, Cmyk } from 'ngx-color-picker';
 import { WidgetService } from '../../services/widget.service';
@@ -34,6 +34,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   // tparams = brand;
   // company_name = brand.company_name;
   // company_site_url = brand.company_site_url;
+  @ViewChild('testwidgetbtn') private elementRef: ElementRef;
   tparams: any;
   company_name: any;
   company_site_url: any;
@@ -127,6 +128,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   public offlineMsg: string; // LABEL_FIRST_MSG_NO_AGENTS
   public officeClosedMsg: string; // LABEL_FIRST_MSG_OPERATING_HOURS_CLOSED
   public newConversation: string // LABEL_START_NW_CONV
+  public noConversation: string // NO_CONVERSATION
   public waitingTimeNotFoundMsg: string; // WAITING_TIME_NOT_FOUND
   public waitingTimeFoundMsg: string; //  WAITING_TIME_FOUND
   preChatForm: boolean;
@@ -143,6 +145,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   DISPLAY_WIDGET_HOME = true;
   DISPLAY_CALLOUT = false;
   DISPLAY_WIDGET_CHAT = false;
+  DISPLAY_LAUNCER_BUTTON = false
 
   HAS_FOCUSED_ONLINE_MSG = false;
   HAS_FOCUSED_OFFLINE_MSG = false;
@@ -157,7 +160,10 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   widget_preview_selected = '0000';
   widget_preview_status = [
     { id: '0000', name: 'Home' },
-    { id: '0001', name: 'Home with converations' }
+    { id: '0001', name: 'Home with converations' },
+    { id: '0002', name: 'Chat' },
+    { id: '0003', name: 'Callout' },
+    { id: '0004', name: 'Closed' }
   ];
 
   lang: any;
@@ -173,6 +179,8 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   HAS_SELECT_INSTALL_WITH_CODE: boolean = false;
   HAS_SELECT_INSTALL_WITH_GTM: boolean = false;
   addWhiteSpaceBefore: boolean;
+
+  current_user_name: string
 
   constructor(
     private notify: NotifyService,
@@ -235,7 +243,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     var acc = document.getElementsByClassName("widget-section-accordion");
     // console.log('WIDGET DESIGN ACCORDION', acc);
     var i;
-    for (i = 0; i < acc.length; i++) { 
+    for (i = 0; i < acc.length; i++) {
       var lastAccordion = acc[5];
       var lastPanel = <HTMLElement>lastAccordion.nextElementSibling;
       lastAccordion.classList.add("active");
@@ -293,9 +301,39 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     console.log('»» WIDGET DESIGN - PREVIEW SELECTED ', previewselected);
 
     if (previewselected === '0001') {
+      this.DISPLAY_WIDGET_HOME = true;
+      this.DISPLAY_LAUNCER_BUTTON = false;
+      this.DISPLAY_WIDGET_CHAT = false;
+      this.DISPLAY_CALLOUT = false;
       this.C21_BODY_HOME = false;
-    } else {
+    } else if (previewselected === '0000'){
+      this.DISPLAY_WIDGET_HOME = true;
+      this.DISPLAY_LAUNCER_BUTTON = false;
+      this.DISPLAY_WIDGET_CHAT = false;
+      this.DISPLAY_CALLOUT = false;
       this.C21_BODY_HOME = true;
+    } else if (previewselected === '0004') {
+      this.DISPLAY_WIDGET_HOME = true;
+      this.DISPLAY_LAUNCER_BUTTON = true
+      this.DISPLAY_WIDGET_CHAT = false;
+      this.DISPLAY_CALLOUT = false;
+
+    }
+
+    if (previewselected === '0002') {
+      this.DISPLAY_WIDGET_CHAT = true;
+      this.DISPLAY_WIDGET_HOME = false;
+      this.DISPLAY_CALLOUT = false;
+      this.HAS_FOCUSED_ONLINE_MSG = true;
+      this.HAS_FOCUSED_OFFLINE_MSG = false;
+      this.HAS_FOCUSED_OFFICE_CLOSED_MSG = false;
+
+    }
+
+    if (previewselected === '0003') {
+      this.DISPLAY_WIDGET_CHAT = false;
+      this.DISPLAY_WIDGET_HOME = false;
+      this.DISPLAY_CALLOUT = true;
     }
 
   }
@@ -310,6 +348,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     this.auth.user_bs.subscribe((user) => {
       console.log('USER GET IN »» WIDGET DESIGN ', user)
       if (user) {
+        this.current_user_name = user.firstname + ' ' +  user.lastname
         this.currentUserId = user._id;
         console.log('Current USER ID ', this.currentUserId)
       }
@@ -567,6 +606,11 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
         // ---------------------------------------------------------------
         this.newConversation = this.selected_translation["LABEL_START_NW_CONV"];
         console.log('Multilanguage (widget-design) ***** selected translation newConversation: ', this.newConversation);
+
+        // ---------------------------------------------------------------
+        // @ No Conversation (not editable in the widhet setting page but only from multilanguage page)
+        // ---------------------------------------------------------------
+        this.noConversation = this.selected_translation["NO_CONVERSATION"];
 
         // ---------------------------------------------------------------
         // @ Welcome title and company intro
@@ -953,14 +997,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     }
   }
 
-  testWidgetPage() {
-    // const url = 'http://testwidget.tiledesk.com/testsitenw3?projectname=' + this.projectName + '&projectid=' + this.id_project
-    // const url = this.TESTSITE_BASE_URL + '?projectname=' + this.projectName + '&projectid=' + this.id_project + '&isOpen=true'
-    const url = this.TESTSITE_BASE_URL + '?tiledesk_projectid=' + this.id_project + '&project_name=' + this.projectName + '&isOpen=true'
-
-    console.log('»» WIDGET - TEST WIDGET URL ', url);
-    window.open(url, '_blank');
-  }
+ 
 
 
   getBrowserLang() {
@@ -1379,6 +1416,12 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     this.DISPLAY_WIDGET_CHAT = false;
   }
 
+  onFocusReplyTime() {
+    this.DISPLAY_WIDGET_HOME = true;
+    this.DISPLAY_CALLOUT = false;
+    this.DISPLAY_WIDGET_CHAT = false;
+  }
+
   // ---- NEW
   onFocusOnlineGreetings() {
     this.DISPLAY_WIDGET_HOME = false;
@@ -1695,12 +1738,25 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     const url = 'https://docs.tiledesk.com/knowledge-base/google-tag-manager-add-tiledesk-to-your-sites/';
     window.open(url, '_blank');
   }
+  goToWidgetWebSdk () {
+    const url = 'https://developer.tiledesk.com/widget/web-sdk';
+    window.open(url, '_blank');
+  }
+
+  testWidgetPage() {
+    this.elementRef.nativeElement.blur();
+    // const url = 'http://testwidget.tiledesk.com/testsitenw3?projectname=' + this.projectName + '&projectid=' + this.id_project
+    // const url = this.TESTSITE_BASE_URL + '?projectname=' + this.projectName + '&projectid=' + this.id_project + '&isOpen=true'
+    const url = this.TESTSITE_BASE_URL + '?tiledesk_projectid=' + this.id_project + '&project_name=' + this.projectName + '&isOpen=true'
+
+    console.log('»» WIDGET - TEST WIDGET URL ', url);
+    window.open(url, '_blank');
+  }
+  
 
 
   avarageWaitingTimeCLOCK() {
     this.subscription = this.analyticsService.getDataAVGWaitingCLOCK().subscribe((res: any) => {
-
-
 
       if (res && res.length > 0) {
         if (res[0].waiting_time_avg) {
