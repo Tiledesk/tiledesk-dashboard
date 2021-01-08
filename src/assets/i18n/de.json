@@ -1652,6 +1652,9 @@
 	"OnlineOfflineGreetings": "Online Offline-Grüße",
 	"WidgetPreviewIsDisplayedIn": "Die Widget-Vorschau und die folgenden Sätze werden derzeit in angezeigt",
 	"ChangePreviewToCustomizeTheFollowingFieldsInAnotherLanguage": "Ändern Sie die Vorschau im Abschnitt Mehrsprachig, um sie in einer anderen Sprache anzupassen",
+	"ChangePreviewIn": "Ändern Sie die Vorschau im",
+    "MultilanguageSection":"Abschnitt Mehrsprachig",
+    "ToCustomizeTheFollowingFieldsInAnotherLanguage": "um sie in einer anderen Sprache anzupassen",
 	"ViewServedRequestsMap": "Karte für bediente Anfragen anzeigen",
 	"TileDeskChatWidgetInstallation": "Installation des {{ company_name }} Chat Widget",
 	"CustomizeTheExperience":"Passen Sie die Erfahrung an",
@@ -1678,5 +1681,6 @@
 	"MakeDefault":"Machen Standard",
 	"CurrentlyDisplayedInThePreview":"Wird derzeit in der Vorschau angezeigt",
 	"CurrentlySelected":"Zurzeit ausgewählt",
-	"Preview":"Vorschau"
+	"Preview":"Vorschau",
+	"SelectAPreview":"Wählen Sie eine Vorschau"
 }

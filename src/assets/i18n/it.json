@@ -1651,6 +1651,9 @@
     "OnlineOfflineGreetings": "Online / Offline Greetings",
     "WidgetPreviewIsDisplayedIn": "L'anteprima del widget e le seguenti frasi sono attualmente visualizzate in",
     "ChangePreviewToCustomizeTheFollowingFieldsInAnotherLanguage": "Cambia anteprima nella sezione Multilanguage per personalizzare un'altra lingua",
+    "ChangePreviewIn": "Cambia l'anteprima nella",
+    "MultilanguageSection":"sezione Multilanguage",
+    "ToCustomizeTheFollowingFieldsInAnotherLanguage": "per personalizzare un'altra lingua",
     "ViewServedRequestsMap": "Visualizza le richieste servite su mappa",
     "TileDeskChatWidgetInstallation": "Installazione {{ company_name }} chat widget",
     "CustomizeTheExperience":"Personalizza l'esperienza",
@@ -1677,6 +1680,6 @@
     "MakeDefault":"Rendi predefinita",
     "CurrentlyDisplayedInThePreview":"Attualmente visualizzata nell'anteprima",
     "CurrentlySelected":"Attualmente selezionato",
-    "Preview":"Anteprima"
-
+    "Preview":"Anteprima",
+    "SelectAPreview":"Seleziona un'anteprima"
 }
