@@ -1682,5 +1682,14 @@
 	"CurrentlyDisplayedInThePreview":"Wird derzeit in der Vorschau angezeigt",
 	"CurrentlySelected":"Zurzeit ausgewählt",
 	"Preview":"Vorschau",
-	"SelectAPreview":"Wählen Sie eine Vorschau"
+	"SelectAPreview":"Wählen Sie eine Vorschau",
+	"NoDefaultLanguageIsSetUp":"Es ist keine Standardsprache eingerichtet",
+	"NoDefaultLanguage": {
+		"Warning": "Vorsicht!",
+		"NoLanguagesAreSetUp": "Es sind keine Sprachen eingerichtet",
+		"NoDefaultLanguageIsSetUp": "Es ist keine Standardsprache eingerichtet",
+		"GoToMultilanguagePage":"Gehen Sie zur mehrsprachigen Seite",
+		"toAddLanguagesToYourProject":"um Ihrem Projekt Sprachen hinzuzufügen",
+		"Cancel": "Abbrechen"
+    }
 }
