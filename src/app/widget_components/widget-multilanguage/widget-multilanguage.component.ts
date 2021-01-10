@@ -149,6 +149,10 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
               this._selectTranslationTab(translation.lang.toLowerCase(), this.defaultLangName);
             }
 
+            if (this.languages_codes.length === 0) {
+              this._selectTranslationTab('add', '');
+            } 
+
 
             /* old */
             // se c'è inglese eseguo subito il push in languages_codes per le altre lang verifico se è presente _id

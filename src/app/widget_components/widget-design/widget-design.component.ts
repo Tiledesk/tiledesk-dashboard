@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, HostListener, OnDestroy,ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, HostListener, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
 import { ColorPickerService, Cmyk } from 'ngx-color-picker';
 import { WidgetService } from '../../services/widget.service';
@@ -20,6 +20,7 @@ import { AnalyticsService } from './../../services/analytics.service';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../services/brand.service';
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
+const swal = require('sweetalert');
 
 @Component({
   selector: 'appdashboard-widget-design',
@@ -179,9 +180,14 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   HAS_SELECT_INSTALL_WITH_CODE: boolean = false;
   HAS_SELECT_INSTALL_WITH_GTM: boolean = false;
   addWhiteSpaceBefore: boolean;
-
   current_user_name: string
 
+  warningMsg: string;
+  noDefaultLanguageIsSetUpMsg: string;
+  noLanguagesAreSetUpMsg: string;
+  goToMultilanguagePageMsg: string;
+  toAddLanguagesToYourProjectMsg: string;
+  cancelMsg: string;
   constructor(
     private notify: NotifyService,
     public location: Location,
@@ -219,11 +225,15 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
       console.log('+ WIDGET DESIGN - FRAGMENT ', this.fragment)
     });
 
-    this.translateOnlineMsgSuccessNoticationMsg();
-    this.translateOfflineMsgSuccessNoticationMsg();
-    this.translateOfficeClosedSuccessNoticationMsg();
+
+
+
+    this.translateTextBaseComp();
+    // this.translateOnlineMsgSuccessNoticationMsg();
+    // this.translateOfflineMsgSuccessNoticationMsg();
+    // this.translateOfficeClosedSuccessNoticationMsg();
+    // this.translateGetTranslationErrorMsg();
     this.getSectionSelected();
-    this.translateGetTranslationErrorMsg();
     this.getLabels();
     this.getOSCODE();
     this.getTestSiteUrl();
@@ -237,6 +247,15 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     this.lang = this.translate.getBrowserLang();
     console.log('LANGUAGE ', this.lang);
   }
+
+
+  // il testo della modale '"Non è impostata nessuna lingua predefinita' e dato che potrebbe essere visualizzata 
+  // all'init della pagina nn può stare nel base compo
+
+
+
+
+
 
   scroll(el: HTMLElement) {
     el.scrollIntoView();
@@ -306,7 +325,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
       this.DISPLAY_WIDGET_CHAT = false;
       this.DISPLAY_CALLOUT = false;
       this.C21_BODY_HOME = false;
-    } else if (previewselected === '0000'){
+    } else if (previewselected === '0000') {
       this.DISPLAY_WIDGET_HOME = true;
       this.DISPLAY_LAUNCER_BUTTON = false;
       this.DISPLAY_WIDGET_CHAT = false;
@@ -348,7 +367,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     this.auth.user_bs.subscribe((user) => {
       console.log('USER GET IN »» WIDGET DESIGN ', user)
       if (user) {
-        this.current_user_name = user.firstname + ' ' +  user.lastname
+        this.current_user_name = user.firstname + ' ' + user.lastname
         this.currentUserId = user._id;
         console.log('Current USER ID ', this.currentUserId)
       }
@@ -548,6 +567,10 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
             if (translation.default === true) {
               this.defaultLangCode = translation.lang.toLowerCase()
               console.log('Multilanguage (widget-design) ***** GET labels ***** defaultLangCode ', translation);
+            } else {
+              console.log('Multilanguage (widget-design) ***** GET labels ***** No default Lang  ', translation);
+
+
             }
 
             // if (translation.lang === 'EN') {
@@ -567,21 +590,30 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
 
         console.log('Multilanguage (widget-design) ***** GET labels ***** - Array of LANG CODE ', this.languages_codes);
 
+
+       
+
+
         // const availableTranslations = [{ code: "it", name: "Italian" }, { code: "fr", name: "French" }, { code: "en", name: "English" }];
         const availableTranslations = this.doAvailableLanguageArray(this.languages_codes);
         console.log('Multilanguage (widget-design) ***** GET labels ***** - availableTranslations ', availableTranslations);
+        if (availableTranslations && availableTranslations.length > 0) {
+          // IN THE SELECT LANGUAGE COMBO DISPLAY AS SELECTED THE FIRST LANGUAGE IN ALPHABETICAL ORDER
+          this.wd_availableTranslations = availableTranslations.sort(this.compare);
+          console.log('Multilanguage (widget-design) ***** GET labels *****  ordered wd_availableTranslations', this.wd_availableTranslations);
 
-        // IN THE SELECT LANGUAGE COMBO DISPLAY AS SELECTED THE FIRST LANGUAGE IN ALPHABETICAL ORDER
-        this.wd_availableTranslations = availableTranslations.sort(this.compare);
-        console.log('Multilanguage (widget-design) ***** GET labels *****  ordered wd_availableTranslations', this.wd_availableTranslations);
+          if (this.wd_availableTranslations && this.wd_availableTranslations[0]) {
+            this.selectedLang = this.wd_availableTranslations[0].name;
+            this.selectedLangCode = this.wd_availableTranslations[0].code;
+            this.selectedLangName = this.wd_availableTranslations[0].name;
+          }
 
-        this.selectedLang = this.wd_availableTranslations[0].name;
-        this.selectedLangCode = this.wd_availableTranslations[0].code;
-        this.selectedLangName = this.wd_availableTranslations[0].name;
+          console.log('Multilanguage (widget-design) ***** GET labels *****  selectedLangCode ', this.selectedLangCode);
 
-        console.log('Multilanguage (widget-design) ***** GET labels *****  selectedLangCode ', this.selectedLangCode);
-
-        this.getCurrentTranslation(this.selectedLangCode);
+          this.getCurrentTranslation(this.selectedLangCode);
+        } else {
+          this.translateLanguagesAreSetUpAndDisplayModal()
+        }
       }
 
     }, error => {
@@ -591,6 +623,56 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
 
       // this._selectTranslationTab('en', 'English')
     });
+  }
+
+  translateLanguagesAreSetUpAndDisplayModal() {
+    this.translate.get('NoDefaultLanguage')
+      .subscribe((text: any) => {
+        this.warningMsg = text['Warning'];
+        this.noDefaultLanguageIsSetUpMsg = text['NoDefaultLanguageIsSetUp'];
+        this.goToMultilanguagePageMsg = text['GoToMultilanguagePage'];
+        this.toAddLanguagesToYourProjectMsg = text['toAddLanguagesToYourProject'];
+        this.cancelMsg = text['Cancel'];
+        this.noLanguagesAreSetUpMsg = text['NoLanguagesAreSetUp'];
+        // this.noDefaultLanguageIsSetUpMsg = text;
+        // console.log('WIDGET DESIGN - translateNoDefaultLanguageIsSetUp warningMsg', this.warningMsg);
+        // console.log('WIDGET DESIGN - translateNoDefaultLanguageIsSetUp noDefaultLanguageIsSetUpMsg', this.noDefaultLanguageIsSetUpMsg)
+      }, (error) => {
+        // console.log('WIDGET DESIGN - translateNoDefaultLanguageIsSetUp - ERROR ', error);
+      }, () => {
+        // console.log('WIDGET DESIGN - translateNoDefaultLanguageIsSetUp * COMPLETE *');
+
+        this.displayModalNoDefaultLanguage()
+      });
+  }
+
+  displayModalNoDefaultLanguage() {
+    const el = document.createElement('div');
+    const url = '#/project/' + this.id_project + '/widget-set-up'
+    el.innerHTML = `${this.noDefaultLanguageIsSetUpMsg} <a href="${url}"> ${this.goToMultilanguagePageMsg}</a>  ${this.toAddLanguagesToYourProjectMsg}</a>`
+    swal({
+      title: this.warningMsg,
+      text: this.noLanguagesAreSetUpMsg + '. ' + this.goToMultilanguagePageMsg + ' ' + this.toAddLanguagesToYourProjectMsg + '.',
+      // content: el,
+      icon: "warning",
+      buttons: {
+        cancel: `${this.cancelMsg}`,
+        catch: {
+          text: `${this.goToMultilanguagePageMsg}`,
+          value: "catch",
+        },
+      },
+
+      // `"Cancel", ${this.goToMultilanguagePageMsg}`],
+      dangerMode: false,
+    })
+      .then((value) => {
+        console.log('displayModalNoDefaultLanguage value', value)
+
+        if (value === 'catch') {
+          this.goToWidgetMultilanguage()
+        }
+      })
   }
 
   getCurrentTranslation(selectedLangCode: string) {
@@ -997,7 +1079,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     }
   }
 
- 
+
 
 
   getBrowserLang() {
@@ -1738,7 +1820,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     const url = 'https://docs.tiledesk.com/knowledge-base/google-tag-manager-add-tiledesk-to-your-sites/';
     window.open(url, '_blank');
   }
-  goToWidgetWebSdk () {
+  goToWidgetWebSdk() {
     const url = 'https://developer.tiledesk.com/widget/web-sdk';
     window.open(url, '_blank');
   }
@@ -1752,7 +1834,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     console.log('»» WIDGET - TEST WIDGET URL ', url);
     window.open(url, '_blank');
   }
-  
+
 
 
   avarageWaitingTimeCLOCK() {
