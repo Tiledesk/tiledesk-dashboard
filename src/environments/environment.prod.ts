@@ -18,5 +18,6 @@ export const environment = {
         projectId: "CHANGE-IT",
         storageBucket: "CHANGE-IT",
         messagingSenderId: "CHANGE-IT",
+        appId: 'CHANGEIT'
     },
 };
