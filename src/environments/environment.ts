@@ -19,6 +19,7 @@ export const environment = {
         databaseURL: 'CHANGEIT',
         projectId: 'CHANGEIT',
         storageBucket: 'CHANGEIT',
-        messagingSenderId: 'CHANGEIT'
+        messagingSenderId: 'CHANGEIT',
+        appId: 'CHANGEIT'
     }
 };
