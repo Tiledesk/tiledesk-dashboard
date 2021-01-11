@@ -1,8 +1,13 @@
 
 # tiledesk-dashboard
 
+### 2.0.83
+- Add the property "appId" in dashboard-config-template
+- Updated Firebase dependency to 7.24.0
+
 ### 2.0.82
 - updated dashboard-config.json
+- Updated Firebase dependency to 7.24.0
 
 ### 2.0.81
 - fixes excessive loading time when refreshing the conversation list
