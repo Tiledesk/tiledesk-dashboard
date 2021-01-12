@@ -5,9 +5,281 @@
 
 <div class="main-content" style="padding-top: 8px;margin-top: 0px;">
 
-  <!-- ----- new -->
+  <!-- ----- new  2 -->
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12" style="padding-left: 0px; padding-right: 0px;  margin-top: -25px;">
+      <div class="n-header-home" style="background-color:#1a73e8; padding: 12px 30px 18px 30px;">
+        <h2
+          style="font-family: 'Google Sans', sans-serif !important;color: #fff; font-weight: 400; font-size:32px; margin-bottom: 18px;">
+          {{ prjct_name }}
+
+          <span *ngIf="isVisible" style="font-family: roboto;">
+            <span class="project-plan" (click)="goToPricingOrOpenModalSubsExpired()"
+              style="text-transform:capitalize; margin-left: 0px !important;top: -4px!important; box-shadow: 0 0 0 1px rgb(255 255 255 / 50%) inset">
+              {{ prjct_profile_name }}
+            </span>
+            <span *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false"
+              style="color:#f44336; position:relative; top: -3px;" (click)="goToPricingOrOpenModalSubsExpired()"
+              class="expired__Tooltip">
+              <i class="material-icons" style="vertical-align: middle; color:#f44336; cursor:pointer">
+                error_outline
+              </i>
+              <span class="expired__Tooltiptext" style="font-size:14px">
+                {{ 'Pricing.SubscriptionPaymentProblem' | translate }} </span>
+            </span>
+          </span>
+
+        </h2>
+
+        <!-- // HUMAN AGENTS -->
+        <div class="project-temmates" style="align-items: center;display: flex; flex-wrap: wrap;">
+          <div class="served-by-desktop-a"
+            style="margin-right: 16px; background: #144FCA; padding-left: 2px; padding-bottom: 3px; padding-top: 0px; padding-right: 8px; border-radius: 18px;">
+
+            <!-- <div style="position: absolute;top: 10px;font-size: 12px;font-weight: 400;"
+              [ngClass]="{'top_zero': projectUsers?.length === 1 }">
+
+              <div class="homeheader-links-container">
+                <div class="homeheader-link-title-first">
+                  <span *ngIf="projectUsers?.length > 1"> Teammates </span>
+                  <span *ngIf="projectUsers?.length === 1"> No teammates to help you? </span>
+                  <span class="material-icons"
+                    style="vertical-align: middle; color: #3c4858;font-size:18px; position: relative; left: -4px;">
+                    keyboard_arrow_right
+                  </span>
+                </div>
+                <div class="homeheader-link-title-second" (click)="goToUsersList()" style="width: 150px !important;">
+                  <span *ngIf="projectUsers?.length > 1" style="color: #0f62ff;width: 150px !important;">Add new
+                    teammates </span>
+                  <span *ngIf="projectUsers?.length === 1" style="color: #0f62ff;">Invite your first teammate</span>
+
+                  <span class="material-icons"
+                    style="vertical-align: middle;color: #0f62ff; font-size:18px; position: relative; left: -4px;">
+                    keyboard_arrow_right
+                  </span>
+                </div>
+              </div>
+            </div> -->
+
+            <div class="served-by-desktop-b" *ngFor="let projectUser of projectUsers; let first = first;">
+              <div [ngClass]="{ 'first-served-by': first }" class="served-by-desktop-c tool_tip"
+                (click)="goToAgentProfile(projectUser?.id_user?._id)" style="cursor:pointer">
+                <div class="served-by-desktop-d">
+                  <div size="32" class="served-by-desktop-e">
+
+                    <img *ngIf="projectUser?.hasImage"
+                      src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media"
+                      alt="" onerror="this.src='assets/img/no_image_user.png'" style="width: 32px;height: 32px;">
+
+                    <!-- // AVATAR WITH USER INITILAS IF DOES NOT EXIST PROFILE IMAGE -->
+                    <div *ngIf="!projectUser.hasImage" class="altenative-avatar-wrap"
+                      [ngStyle]="{'background-color': projectUser?.fillColour }" style="width: 32px;height: 32px;">
+
+                      <span class="altenative--avatar">
+                        {{ projectUser?.fullname_initial }}
+                      </span>
+
+                    </div>
+                  </div>
+                </div>
+                <span class="bottom" style="min-width: fit-content;
+                  top: 40px;
+                  border-radius: 3px;
+                  padding: 0px 6px;
+                  font-size: 11px; white-space: nowrap;">
+                  <span style="text-transform: capitalize;"> {{ projectUser?.id_user?.firstname }}
+                    <span *ngIf="projectUser?.id_user?.lastname">
+                      {{ projectUser?.id_user?.lastname | slice:0:1 }}.
+                    </span>
+                  </span>
+                  <i style="height:6px"></i>
+                </span>
+              </div>
+            </div>
+            <span style="padding-left: 4px;color: rgba(255,255,255,0.8);font-size: 13px;font-weight: 400;">
+
+              {{projectUsers?.length}} temmate
+
+              <span class="tool_tip">
+                <span class="material-icons add-operators-icons tool_tip" (click)="goToUsersList()"
+                  style="vertical-align: middle;color:  rgba(255,255,255,0.8); font-size:18px; position: relative;cursor: pointer;">
+                  add_circle_outline
+                </span>
+
+                <span class="bottom" style="min-width: fit-content;
+              top: 34px;
+              border-radius: 3px;
+              padding: 0px 6px;
+              font-size: 11px; white-space: nowrap;">
+                  <span *ngIf="projectUsers?.length > 1">Add new teammates </span>
+                  <span *ngIf="projectUsers?.length === 1">Invite your first teammate</span>
+                  <i style="height:6px"></i>
+                </span>
+              </span>
+
+              <!-- <div class="homeheader-links--container">
+                <div class="homeheader-link-title--first">
+                  <span *ngIf="projectUsers?.length === 1"> No teammates to help you? </span>
+                  <span class="material-icons"
+                    style="vertical-align: middle; color: rgba(255,255,255,0.8);font-size:18px; position: relative; left: -4px;">
+                    keyboard_arrow_right
+                  </span>
+                </div>
+              </div> -->
+              <!-- <div class="homeheader-link-title--second" (click)="goToUsersList()" style="width: 150px !important;">
+                <span *ngIf="projectUsers?.length > 1" style="color: #0f62ff;width: 150px !important;">Add new
+                  teammates </span>
+                <span *ngIf="projectUsers?.length === 1" style="color: #0f62ff;">Invite your first teammate</span>
+
+                <span class="material-icons"
+                  style="vertical-align: middle;color: #0f62ff; font-size:18px; position: relative; left: -4px;">
+                  keyboard_arrow_right
+                </span>
+              </div> -->
+            </span>
+
+
+          </div>
+
+          <!-- /// CHATBOT AGENTS -->
+          <div class="served-by-desktop-a"
+            style="margin-right: 16px; background: #144FCA; padding-left: 2px; padding-bottom: 3px; padding-top: 0px; padding-right: 8px; border-radius: 18px;">
+            <!-- <div style="position: absolute;top: 10px;font-size: 12px;font-weight: 400;"
+              [ngClass]="{'top_zero': chatbots?.length === 1 }">
+              <div class="homeheader-links-container" style="width: 165px;">
+                <div class="homeheader-link-title-first">
+                  <span *ngIf="chatbots?.length === 1"> There are no Chatbots set up yet</span>
+                  <span *ngIf="chatbots?.length > 1"> Chatbots</span>
+                  <span class="material-icons"
+                    style="vertical-align: middle; color: #3c4858;font-size:18px;position: relative; left: -4px;">
+                    keyboard_arrow_right
+                  </span>
+                </div>
+                <div class="homeheader-link-title-second" (click)="goToBotsList()">
+                  <span *ngIf="chatbots?.length === 1" style="color: #0f62ff;">Add your first chatbot</span>
+                  <span *ngIf="chatbots?.length > 1" style="color: #0f62ff;">Add a chatbot</span>
+                  <span class="material-icons"
+                    style="vertical-align: middle;color: #0f62ff;font-size:18px;position: relative; left: -4px;">
+                    keyboard_arrow_right
+                  </span>
+                </div>
+              </div>
+            </div> -->
+            <div class="served-by-desktop-b" *ngFor="let bot of chatbots; let first = first;">
+              <div [ngClass]="{ 'first-served-by': first }" class="served-by-desktop-c tool_tip"
+                (click)="goToBotProfile(bot?._id, bot?.type)" style="cursor:pointer">
+
+
+                <div class="served-by-desktop-d" *ngIf="bot?.type !== 'identity'">
+                  <div size="32" class="served-by-desktop-e">
+
+                    <img [ngClass]="{'bot-img-gray-bckgrnd': bot.hasImage === false}"
+                      src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{bot?._id}}%2Fphoto.jpg?alt=media"
+                      alt="" onerror="this.src='assets/img/avatar_bot_tiledesk_white.svg'"
+                      style="width: 32px;height: 32px;">
+                  </div>
+
+                  <div *ngIf="bot.type === 'internal'">
+                    <img class="home-served-by-bot-type-logo" style="left: -1px;top: 3px;"
+                      src="assets/img/tiledesk_logo_no_text.png" />
+                  </div>
+                  <div *ngIf="bot.type === 'external'">
+                    <img class="home-served-by-bot-type-logo" style="left: -1px;top: 3px;"
+                      src="assets/img/external_bot_logo.png" />
+                  </div>
+                  <div *ngIf="bot.type === 'dialogflow'">
+                    <img class="home-served-by-bot-type-logo" style="left: -1px;top: 3px;"
+                      src="assets/img/Dialogflow_logo_no_text.png" />
+                  </div>
+                </div>
+
+
+                <!-- // USECASE: THERE IS ONLY A CHATBOT e.g. the identity bot IN THIS CASE DISPLAY THE ICON ON "NO-BOT" -->
+                <div class="served-by-desktop-d" *ngIf="bot?.type === 'identity' && chatbots?.length === 1">
+                  <div size="32" class="served-by-desktop-e">
+
+                    <img src="assets/img/bot_alt_slash_white.svg" alt="no-chatbot-icon"
+                      style="width: 32px;height: 32px;background: #aaa !important">
+                  </div>
+
+                </div>
+
+                <span class="bottom" *ngIf="bot?.type !== 'identity'" style="min-width: fit-content;
+                  top: 40px;
+                  border-radius: 3px;
+                  padding: 0px 6px;
+                  font-size: 11px; white-space: nowrap;">
+                  <span style="text-transform: capitalize;"> {{ bot?.name }} </span>
+                  <i style="height:6px"></i>
+                </span>
+              </div>
+            </div>
+
+            <span style="padding-left: 4px;color: rgba(255,255,255,0.8);font-size: 13px;font-weight: 400;">
+              {{chatbots?.length - 1}} chatbot
+              <span class="tool_tip">
+                <span class="material-icons add-operators-icons" (click)="goToBotsList()"
+                  style="vertical-align: middle;color:  rgba(255,255,255,0.8); font-size:18px; position: relative; cursor: pointer;">
+                  add_circle_outline
+                </span>
+
+                <span class="bottom"
+                  style="min-width: fit-content; top: 34px;  border-radius: 3px;  padding: 0px 6px;    font-size: 11px; white-space: nowrap;">
+                  <span *ngIf="chatbots?.length === 1">Add your first chatbot</span>
+                  <span *ngIf="chatbots?.length > 1">Add a chatbot</span>
+                  <i style="height:6px"></i>
+                </span>
+              </span>
+            </span>
+          </div>
+
+          <!-- // OPERATING HOURS -->
+          <div class="served-by-desktop-a"
+            style="margin-right: 105px; background: #144FCA; padding-left: 0px;padding-bottom: 0px; padding-top: 1px; padding-right: 0px; border-radius: 18px; height: 35px;">
+
+            <div class="served-by-desktop-b">
+              <!-- #4caf50 -->
+              <span class="material-icons" style="font-size: 36px; line-height: unset;"
+                [ngClass]="{'operating-hours-active-color': OPERATING_HOURS_ACTIVE, 'operating-hours-no-active-color': !OPERATING_HOURS_ACTIVE}">
+                access_time
+              </span>
+
+            </div>
+
+
+            <span (click)="goToOperatingHours()" class="operating-hours-status-text"
+              style="position: relative;top: 1px;">
+              <span *ngIf="!OPERATING_HOURS_ACTIVE"
+                style="padding-left: 4px;color: rgba(255,255,255,0.8);font-size: 13px;font-weight: 400; cursor: pointer;"
+                class="link-to-oh">
+                {{ 'OperatingHoursAreDisabled' | translate }}
+                <span class="material-icons"
+                  style="vertical-align: middle;color: rgba(255,255,255,0.8); position: relative;left: -4px;top: -1px;">
+                  keyboard_arrow_right
+                </span>
+              </span>
+              <span *ngIf="OPERATING_HOURS_ACTIVE"
+                style="padding-left: 4px;color: rgba(255,255,255,0.8);font-size: 13px;font-weight: 400;cursor: pointer;"
+                class="link-to-oh">
+                {{ 'OperatingHoursAreEnabled' | translate }}
+                <span class="material-icons"
+                  style="vertical-align: middle;color: rgba(255,255,255,0.8); position: relative;left: -4px;top: -1px;">
+                  keyboard_arrow_right
+                </span>
+              </span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ----- ./ new  2 -->
+
+
+
+  <!-- ----- new  !!!! DISPLAY NONE-->
+  <div class="row" style="display: none;">
+    <div class="col-md-12" style="">
 
       <div class="toDoBar-wrap" style="width: 100%;
       height: 100%;
@@ -118,11 +390,11 @@
                     </div>
                   </div>
                 </div>
-                <span style="min-width: fit-content;
+                <span class="bottom" style="min-width: fit-content;
                   top: 31px;
                   border-radius: 3px;
                   padding: 0px 6px;
-                  font-size: 11px; white-space: nowrap;" class="bottom">
+                  font-size: 11px; white-space: nowrap;">
                   <span style="text-transform: capitalize;"> {{ projectUser?.id_user?.firstname }}
                     <span *ngIf="projectUser?.id_user?.lastname">
                       {{ projectUser?.id_user?.lastname | slice:0:1 }}.
@@ -260,7 +532,7 @@
                   keyboard_arrow_right
                 </span>
               </div>
-              <div class="link-title-second">
+              <div (click)="goToContacts()" class="link-title-second">
                 <span style="color: #0f62ff;">Go to contact list</span>
                 <span class="material-icons" style="vertical-align: middle;color: #0f62ff;">
                   keyboard_arrow_right
@@ -395,9 +667,37 @@
 
         <!-- 
       // ---------------------------------------------------------
-      // @ Operating hours
+      // @ Visitor count (Last 30 days) 
       // --------------------------------------------------------- -->
         <div class="col-sm-6 col-md-3">
+          <div class="statistis-count-container" style="text-align:center ;">
+            <div class="statistis-count-number">
+              <span class="visitors-count">
+                {{ countOfVisitors }}
+              </span>
+            </div>
+            <div class="links-container">
+              <div class="link-title-first">
+                <span> Last 30 days visitors </span>
+                <span class="material-icons" style="vertical-align: middle; color: #3c4858;">
+                  keyboard_arrow_right
+                </span>
+              </div>
+              <div class="link-title-second" (click)="goToVisitorsAnalytics()">
+                <span style="color: #0f62ff;">Filter report in analytics</span>
+                <span class="material-icons" style="vertical-align: middle;color: #0f62ff;">
+                  keyboard_arrow_right
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 
+      // ---------------------------------------------------------
+      // @ Operating hours
+      // --------------------------------------------------------- -->
+        <!-- <div class="col-sm-6 col-md-3">
 
           <div class="row">
             <div class="col-md-8">
@@ -414,10 +714,10 @@
             <div class="col-md-4">
               <div class="operating-hours-icon-wrap" style="text-align: center;">
 
-                <!-- 
-      // ---------------------------------------------------------
-      // @ Icon Operating hours no set up icom
-      // --------------------------------------------------------- -->
+                  <!- - 
+                  // ---------------------------------------------------------
+                  // @ Icon Operating hours no set up icom
+                  // --------------------------------------------------------- - ->
                 <svg *ngIf="!OPERATING_HOURS_ACTIVE" version="1.1" id="Livello_1" focusable="false"
                   xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                   viewBox="0 0 448 512" style="enable-background:new 0 0 448 512;width: 50px; margin-top: 8px;"
@@ -428,18 +728,18 @@
                     }
                   </style>
                   <path class="st0" d="M311.7,374.7l-17,17c-4.7,4.7-12.3,4.7-17,0L224,337.9l-53.7,53.7c-4.7,4.7-12.3,4.7-17,0l-17-17
-	c-4.7-4.7-4.7-12.3,0-17l53.7-53.7l-53.7-53.7c-4.7-4.7-4.7-12.3,0-17l17-17c4.7-4.7,12.3-4.7,17,0l53.7,53.7l53.7-53.7
-	c4.7-4.7,12.3-4.7,17,0l17,17c4.7,4.7,4.7,12.3,0,17L257.9,304l53.7,53.7C316.4,362.4,316.4,370,311.7,374.7z M448,112v352
-	c0,26.5-21.5,48-48,48H48c-26.5,0-48-21.5-48-48V112c0-26.5,21.5-48,48-48h48V12c0-6.6,5.4-12,12-12h40c6.6,0,12,5.4,12,12v52h128
-	V12c0-6.6,5.4-12,12-12h40c6.6,0,12,5.4,12,12v52h48C426.5,64,448,85.5,448,112z M400,458V160H48v298c0,3.3,2.7,6,6,6h340
-	C397.3,464,400,461.3,400,458z" />
+                    c-4.7-4.7-4.7-12.3,0-17l53.7-53.7l-53.7-53.7c-4.7-4.7-4.7-12.3,0-17l17-17c4.7-4.7,12.3-4.7,17,0l53.7,53.7l53.7-53.7
+                    c4.7-4.7,12.3-4.7,17,0l17,17c4.7,4.7,4.7,12.3,0,17L257.9,304l53.7,53.7C316.4,362.4,316.4,370,311.7,374.7z M448,112v352
+                    c0,26.5-21.5,48-48,48H48c-26.5,0-48-21.5-48-48V112c0-26.5,21.5-48,48-48h48V12c0-6.6,5.4-12,12-12h40c6.6,0,12,5.4,12,12v52h128
+                    V12c0-6.6,5.4-12,12-12h40c6.6,0,12,5.4,12,12v52h48C426.5,64,448,85.5,448,112z M400,458V160H48v298c0,3.3,2.7,6,6,6h340
+                    C397.3,464,400,461.3,400,458z" />
                 </svg>
 
 
-                <!-- 
-      // ---------------------------------------------------------
-      // @ Icon Operating hours setted
-      // --------------------------------------------------------- -->
+                <!- - 
+                  // ---------------------------------------------------------
+                  // @ Icon Operating hours setted
+                  // --------------------------------------------------------- - ->
                 <svg *ngIf="OPERATING_HOURS_ACTIVE" version="1.1" id="Livello_1" focusable="false"
                   xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                   viewBox="0 0 448 512" style="enable-background:new 0 0 448 512;width: 50px; margin-top: 8px;"
@@ -450,10 +750,10 @@
                     }
                   </style>
                   <path class="st0" d="M400,64h-48V12c0-6.6-5.4-12-12-12h-40c-6.6,0-12,5.4-12,12v52H160V12c0-6.6-5.4-12-12-12h-40
-         c-6.6,0-12,5.4-12,12v52H48C21.5,64,0,85.5,0,112v352c0,26.5,21.5,48,48,48h352c26.5,0,48-21.5,48-48V112C448,85.5,426.5,64,400,64z
-          M394,464H54c-3.3,0-6-2.7-6-6V160h352v298C400,461.3,397.3,464,394,464z M341.2,263.4L198.8,404.5c-4.7,4.7-12.3,4.6-17-0.1
-         l-75.1-75.7c-4.7-4.7-4.6-12.3,0.1-17l22.7-22.5c4.7-4.7,12.3-4.6,17,0.1l44.1,44.5l111.1-110.2c4.7-4.7,12.3-4.6,17,0.1l22.5,22.7
-         C345.9,251.1,345.9,258.7,341.2,263.4L341.2,263.4z" />
+                  c-6.6,0-12,5.4-12,12v52H48C21.5,64,0,85.5,0,112v352c0,26.5,21.5,48,48,48h352c26.5,0,48-21.5,48-48V112C448,85.5,426.5,64,400,64z
+                    M394,464H54c-3.3,0-6-2.7-6-6V160h352v298C400,461.3,397.3,464,394,464z M341.2,263.4L198.8,404.5c-4.7,4.7-12.3,4.6-17-0.1
+                  l-75.1-75.7c-4.7-4.7-4.6-12.3,0.1-17l22.7-22.5c4.7-4.7,12.3-4.6,17,0.1l44.1,44.5l111.1-110.2c4.7-4.7,12.3-4.6,17,0.1l22.5,22.7
+                  C345.9,251.1,345.9,258.7,341.2,263.4L341.2,263.4z" />
                 </svg>
               </div>
             </div>
@@ -469,8 +769,8 @@
             </div>
           </div>
 
-        </div>
-        <!-- </div> -->
+        </div> -->
+
       </div>
     </div>
   </div>
@@ -484,7 +784,7 @@
             keyboard_arrow_right
           </span>
         </div>
-        <div class="visitors-graph-title-2">
+        <div class="visitors-graph-title-2" (click)="goToVisitorsAnalytics()">
           <span style="color: #0f62ff;">Go to visitors analytics to filter the report</span>
           <span class="material-icons" style="vertical-align: middle;color: #0f62ff;">
             keyboard_arrow_right
@@ -504,7 +804,7 @@
 
 
   <div class="row">
-    <div class="col-sm-6">
+    <div class="col-sm-12 col-md-12 col-lg-6">
       <div class="card">
         <div class="card-content">
           <div class="row">
@@ -601,14 +901,14 @@
       </div>
     </div>
 
-    <div class="col-sm-6">
+    <div class="col-sm-12 col-md-12 col-lg-6">
       <div class="card">
         <div class="card-content">
 
           <h3 class="getting-started-card-title">Take a shortcut</h3>
           <p class="getting-started-card-subtitle">Jump straight to the most popular settings in the Dashboard.</p>
           <div class="row">
-            <div class="col-xs-3">
+            <div class="col-xs-3" (click)="openChat()" style="cursor: pointer;">
 
               <!-- // CHAT -->
               <div class="wrap-shortcut-icon">
@@ -638,10 +938,18 @@
                 </svg>
               </div>
 
+              
+              <div class="wrap-shortcut-title">
+                Chat
+              </div>
+              <div class="wrap-shortcut-subtitle">
+                {{ 'OpenTheChatToHandleTheIncomingRequests' | translate }}
+              </div>
+
             </div>
 
 
-            <div class="col-xs-3">
+            <div class="col-xs-3" (click)="goToWidgetSetup()" style="cursor: pointer;">
               <!-- // CUSTOMIZE WIDGET -->
               <div class="wrap-shortcut-icon">
                 <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
@@ -667,13 +975,18 @@
                S39.3,27.9,37.9,27.9z M48.2,32.9c-1.4,0-2.6-1.1-2.6-2.5c0-1.4,1.2-2.5,2.6-2.5c1.4,0,2.6,1.1,2.6,2.5
                C50.8,31.8,49.7,32.9,48.2,32.9z" />
                 </svg>
-
               </div>
 
+              <div class="wrap-shortcut-title">
+                Widget
+              </div>
+              <div class="wrap-shortcut-subtitle">
+                {{ 'HomePage.WidgetSubtitle1' | translate }}
+              </div>
             </div>
 
 
-            <div class="col-xs-3">
+            <div class="col-xs-3" (click)="goToTiledeskMobileAppPage()" style="cursor: pointer;">
               <!-- // GET MOBILE APPS -->
               <div class="wrap-shortcut-icon">
                 <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
@@ -699,33 +1012,47 @@
                 </svg>
               </div>
 
+              <div class="wrap-shortcut-title">
+                {{ 'GetTheMobileApp' | translate }}
+              </div>
+              <div class="wrap-shortcut-subtitle">
+                {{ 'KeepSupportGoingWhenAgentsAreOnTheMove' | translate }}
+              </div>
+
             </div>
 
-            <div class="col-xs-3">
-              <!-- // INSTALL WIDGET -->
-              <div class="wrap-shortcut-icon" >
+            <div class="col-xs-3" (click)="goToAppStore()" style="cursor: pointer;">
+              <!-- // App Store -->
+              <div class="wrap-shortcut-icon">
                 <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
                   xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 75.8 75.8"
                   style="enable-background:new 0 0 75.8 75.8;" xml:space="preserve">
                   <style type="text/css">
-                    .st0_install_widget {
+                    .st0 {
                       opacity: 0.2;
                       fill: #F50036;
                       enable-background: new;
                     }
 
-                    .st1_install_widget {
+                    .st1 {
                       fill: #F50036;
                     }
                   </style>
-                  <path class="st0_install_widget" d="M75.8,37.9c0,20.9-17,37.9-37.9,37.9S0,58.9,0,37.9S17,0,37.9,0c0,0,0,0,0,0C58.9,0,75.8,17,75.8,37.9
-               C75.8,37.9,75.8,37.9,75.8,37.9z" />
-                  <path class="st1_install_widget" d="M35,57.9l-4.3-1.4c-0.4-0.1-0.7-0.7-0.6-1.2l9.6-36.7c0.1-0.5,0.6-0.8,1-0.6l4.3,1.4c0.4,0.1,0.7,0.7,0.6,1.2
-               l-9.6,36.7C35.9,57.7,35.5,58,35,57.9z M27,49.1l3.1-3.6c0.3-0.4,0.3-1-0.1-1.3l-6.4-6.2l6.4-6.2c0.4-0.4,0.4-1,0.1-1.3L27,26.7
-               c-0.3-0.4-0.8-0.4-1.2,0L15.7,37.2c-0.4,0.4-0.4,1,0,1.4l10.1,10.5C26.2,49.5,26.7,49.5,27,49.1L27,49.1z M50,49.1l10.1-10.5
-               c0.4-0.4,0.4-1,0-1.4L50,26.7c-0.3-0.4-0.9-0.3-1.2,0l-3.1,3.6c-0.3,0.4-0.3,1,0.1,1.3l6.4,6.2l-6.4,6.2c-0.4,0.4-0.4,1-0.1,1.3
-               l3.1,3.6C49.1,49.5,49.6,49.5,50,49.1L50,49.1z" />
+                  <path class="st0"
+                    d="M75.8,37.9c0,20.9-17,37.9-37.9,37.9S0,58.9,0,37.9S17,0,37.9,0l0,0C58.9,0,75.8,17,75.8,37.9L75.8,37.9z" />
+                  <path class="st1" d="M41.4,18.2h16.9c1.2,0,2.1,0.9,2.1,2.1v14.1c0,1.2-0.9,2.1-2.1,2.1H41.4c-1.2,0-2.1-0.9-2.1-2.1V20.3
+               C39.3,19.2,40.3,18.2,41.4,18.2z M34.4,18.2H17.5c-1.2,0-2.1,0.9-2.1,2.1v14.1c0,1.2,0.9,2.1,2.1,2.1h16.9c1.2,0,2.1-0.9,2.1-2.1
+               V20.3C36.5,19.2,35.5,18.2,34.4,18.2z M15.4,41.4v14.1c0,1.2,0.9,2.1,2.1,2.1h16.9c1.2,0,2.1-0.9,2.1-2.1V41.4
+               c0-1.2-0.9-2.1-2.1-2.1H17.5C16.3,39.3,15.4,40.3,15.4,41.4z M41.4,57.6h16.9c1.2,0,2.1-0.9,2.1-2.1V41.4c0-1.2-0.9-2.1-2.1-2.1
+               H41.4c-1.2,0-2.1,0.9-2.1,2.1v14.1C39.3,56.6,40.3,57.6,41.4,57.6z" />
                 </svg>
+              </div>
+
+              <div class="wrap-shortcut-title">
+                {{ 'Integrations' | translate }}
+              </div>
+              <div class="wrap-shortcut-subtitle">
+                Engage and retain more customers with apps and integrations
               </div>
 
             </div>
@@ -738,7 +1065,7 @@
 
   </div>
 
-
+</div>
 
   <!-- start new-bckgrnd -->
   <!-- https://stripe.com/img/v3/home/app-illustrations/catawiki.svg -->
@@ -768,114 +1095,7 @@
 </div> -->
   <!-- ./end new-bckgrnd -->
 
-  <!-- /////////////////////////////////////////////
-       //////////// GETTING STARTED ////////////////
-       ///////////////////////////////////////////// -->
-  <!-- background-image: url(assets/img/tiledesk-login-background.jpg); background-size: contain; background-repeat:no-repeat -->
-  <div class="row">
-    <div class="col-md-12">
-      <loading-spinner *ngIf="showSpinner"></loading-spinner>
-      <div class="home-banner" *ngIf="!showSpinner" style="min-height:538px">
-        <div class="row" style="background-color:#ffffff;">
-
-
-          <!-- PROJECT NAME AND PLAN -->
-          <div class="col-md-12">
-            <div class="project-name-and-plan">
-              <span class="project-name">
-                {{ prjct_name }}
-              </span>
-              <span *ngIf="isVisible">
-                <span class="project-plan" (click)="goToPricingOrOpenModalSubsExpired()"
-                  style="text-transform:capitalize">
-                  {{ prjct_profile_name }}
-                </span>
-                <span *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false"
-                  style="color:#f44336; position:relative; top: -3px;" (click)="goToPricingOrOpenModalSubsExpired()"
-                  class="expired__Tooltip">
-                  <i class="material-icons" style="vertical-align: middle; color:#f44336; cursor:pointer">
-                    error_outline
-                  </i>
-                  <span class="expired__Tooltiptext" style="font-size:14px">
-                    {{ 'Pricing.SubscriptionPaymentProblem' | translate }} </span>
-                </span>
-              </span>
-            </div>
-          </div>
-
-          <div class="homeBanner">
-            <div class="homeBanner__leftSideContent">
-              <div class="homeBanner__texts">
-                <h2 class="homeBanner__textsHeader">
-                  {{ 'GettingStartedWith' | translate }} <br> {{company_name}}.
-                </h2>
-                <p class="homeBanner__textsSubheader">
-                  <!-- Here’s a list of pages and links we highly recommend going over before you start having conversations -->
-                  {{ 'HereIsAListOfPagesAndLinks' | translate}}
-                </p>
-              </div>
-
-              <div class="homeBanner__itemContainer">
-                <ul class="homeBannerItems">
-
-                  <!-- <div class="img-wrapper">
-                    <img  src="assets/img/chat-client-1.svg" alt=""	/>
-                  </div> -->
-
-                  <!-- <span class="highlighter"> Just released a new version!</span> -->
-                  <!-- <li> <img src="assets/img/arrow.svg" class="img-fluid" style="max-width: 150px; height: auto; transform: scaleX(1) rotate(50deg); position: relative;
-                      left: 74px;   top: -25px;"/></li>  -->
-                  <li style="display: block;" *ngIf="USER_ROLE !== 'agent'" class="homeBanner__itemContainer">
-                    <button (click)="goToResources()" type="button"
-                      class="homeBanner__item homeBanner__item-round homeBanner__widget__item">
-
-                      <span class="homeBanner__itemText">
-                        Widget
-                        <p class="homeBanner__itemTextSubtitle">
-                          {{ 'HomePage.WidgetSubtitle1' | translate }} {{ 'HomePage.WidgetSubtitle2' | translate }}
-                        </p>
-                      </span>
-                    </button>
-                  </li>
-
-                  <li class="homeBanner__itemContainer">
-                    <button (click)="openChat()" type="button"
-                      class="homeBanner__item homeBanner__item-round homeBanner__chat__item">
-                      <span class="homeBanner__itemText">
-                        Chat
-                        <p class="homeBanner__itemTextSubtitle">
-                          <!-- Open the Chat to handle the incoming requests -->
-                          {{ 'OpenTheChatToHandleTheIncomingRequests' | translate }}
-                        </p>
-                      </span>
-                    </button>
-                  </li>
-
-                  <li class="homeBanner__itemContainer">
-                    <!-- target="_blank" href="https://www.tiledesk.com/it/mobile-live-chat-android-iphone-app/" -->
-                    <button (click)="goToTiledeskMobileAppPage()" type="button"
-                      class="homeBanner__item homeBanner__item-round homeBanner__mobileApp__item">
-                      <span class="homeBanner__itemText">
-                        <!-- Get the Mobile App -->
-                        {{ 'GetTheMobileApp' | translate }}
-                        <p class="homeBanner__itemTextSubtitle">
-                          <!-- Keep support going when agents are on the move -->
-                          {{ 'KeepSupportGoingWhenAgentsAreOnTheMove' | translate }}
-                        </p>
-                      </span>
-                    </button>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-  <!-- <div class="row">  -->
+ 
   <!-- 
       ////////////////////////////////////////////////////////
       /////////// BUTTON TO TEST USER ACTIVITY LOG ///////////
@@ -933,395 +1153,5 @@
 
     <div class="row">  </div> -->
 
-  <div class="row">
-    <div class="col-sm-6 col-md-3">
-      <div class="card-wrapper">
-        <div class="card" style="border-radius:10px; cursor:pointer" (click)="goToAdminDocs()">
-          <div class="card-content " style="padding:0px; text-align: center;">
-            <div class="background-admin" style="border-top-right-radius:10px; border-top-left-radius:10px	">
-              <div class="container"> </div>
-            </div>
-          </div>
-
-          <div class="card-footer" style="margin-left:0px; margin-right:0px; text-align: center; min-height: 103px;">
-            <div class="stats" style="padding:15px;">
-              <h3 class="custom_title">
-                <!-- Getting started for admin -->
-                {{ 'GettingStartedForAdmin' | translate }}
-              </h3>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-md-3">
-      <div class="card-wrapper">
-        <div class="card" style="border-radius:10px; cursor:pointer" (click)="goToAgentDocs()">
-          <div class="card-content " style="padding:0px; text-align: center;">
-            <div class="background-agent" style="border-top-right-radius:10px; border-top-left-radius:10px	">
-              <div class="container"> </div>
-            </div>
-          </div>
-
-          <div class="card-footer" style="margin-left:0px; margin-right:0px; text-align: center; min-height: 103px;">
-            <div class="stats" style="padding:15px; ">
-              <h3 class="custom_title">
-                <!-- Getting started for agents -->
-                {{ 'GettingStartedForAgents' | translate }}
-              </h3>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
 
 
-    <!-- </div> -->
-    <div class="col-sm-6 col-md-3">
-      <div class="card-wrapper">
-        <div class="card" style="border-radius:10px;cursor:pointer" (click)="goToDeveloperDocs()">
-          <div class="card-content " style="padding:0px; text-align: center;">
-            <div class="background-developer" style="border-top-right-radius:10px; border-top-left-radius:10px	">
-              <div class="container"> </div>
-            </div>
-          </div>
-
-          <div class="card-footer" style="margin-left:0px; margin-right:0px; text-align: center; min-height: 103px;">
-            <div class="stats" style="padding:15px; ">
-              <h3 class="custom_title">
-                <!-- Developers docs -->
-                {{ 'DeveloperDocs' | translate }}
-              </h3>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- </div> -->
-    <div class="col-sm-6 col-md-3">
-      <div class="card-wrapper">
-        <div class="card" style="border-radius:10px; cursor:pointer" (click)="goToInstallWithTagManagerDocs()">
-          <div class="card-content " style="padding:0px; text-align: center;">
-            <div class="background-google-tag-manager"
-              style="border-top-right-radius:10px; border-top-left-radius:10px	">
-              <div class="container"> </div>
-            </div>
-          </div>
-
-          <div class="card-footer" style="margin-left:0px; margin-right:0px; text-align: center; min-height: 103px;">
-            <div class="stats" style="padding:15px; ">
-              <h3 class="custom_title">
-                <!-- Install with Google Tag Manager -->
-                {{ 'InstallWithGoogleTagManager' | translate }}
-
-              </h3>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- </div> -->
-  </div>
-
-  <!--           <div class="col-xs-4 col-sm-4 col-md-4">
-            <div class="card"  style="text-align:center">
-              <div class="card-content">
-                    
-                <h2 class="custom_title"> 2/3 </h2>
-                <h4>tasks completed</h4>
-
-                <div style="text-align:center">
-                  <ul class="nav nav-pills nav-pills-info custom">
-                    <li class="active" (click)="displayCheckListModal()">
-                      <a href="#pill1" data-toggle="tab" style="padding-left: 33px;padding-right: 35px;">
-                        View Tasks 
-                      </a>
-                    </li>
-                  
-                  </ul>
-                </div>
-                    
-                </div>
-              </div>
-            </div> -->
-
-  <!-- <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-              <div class="home-banner-left-side" style="
-              padding-top: 140px;
-                padding-left:25px;">
-                <h2 class="custom_title" style="font-weight:600;    font-size: 56px;    line-height: 1.14;"> 
-                  Getting Started <br>with tiledesk 
-                </h2>
-                <p class="custom_subtitle" style="color: #7695a5; font-size: 18px; line-height: 1.56;"> 
-                  Are you just starting out? <br> Our checklists guide you from before starting.
-                </p>
-              </div>        
-            </div>            
-            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                <div class="home-banner-right-side" style="    
-                background-image:url(assets/img/home-bckgnd-v2.png);
-                background-repeat: no-repeat;
-                background-size: contain;
-                /* background-size: 475px 449px, 188px 100%, 179px 100%; */
-                background-position: right -12px bottom,right,calc(100% - 179px);
-                height: 517px;">
-
-              <div class="home-list" style="padding-top:100px">
-                <div class="row">
-                  <div class="col-12">
-                      <i style="background: #c51162; font-size:25px; padding: 15px; color: #fff; border-radius:50%" class="material-icons">
-                          code
-                      </i>
-                      <span class="custom_subtitle" style="font-size:18px; position: relative;
-                      top: -21px;
-                      padding-left: 25px;">Widget </span> 
-                      <span style="    display: block;
-                      padding-left: 83px; position: relative;top: -28px;"> 
-                       {{ 'HomePage.WidgetSubtitle1' | translate }} <br> {{ 'HomePage.WidgetSubtitle2' | translate }}</span>
-                  </div>
-
-                  <div class="col-12">
-                  </div>
-                </div>
-                </div>
-                </div>
-            </div>
-          </div>
-          </div>
-        </div>
-      </div> -->
-
-  <!-- <div class="red-logo">
-          <img src="http://www.frontiere21.it/images/frontiere21-tiledesk.jpg" width="220" style="    border-radius: 50% ">
-      </div> -->
-  <!-- custom_title -->
-  <!-- font-family: 'Alfa Slab One'; -->
-  <!-- 'Open Sans', sans-serif; -->
-  <!-- font-family: 'Montserrat', sans-serif; -->
-
-  <!-- height: 220px; -->
-  <!-- background-image: url(assets/img/PBQUS70.jpg); background-size: cover; background-size: 351px 220px;background-repeat: no-repeat;background-position: top right; margin-top: 0px; -->
-  <!-- <div class="card" style=""> -->
-  <!-- <div class="card-header" data-background-color="orange">
-                <i class="material-icons">content_copy</i>
-              </div> -->
-  <!-- <div class="card-content"> -->
-  <!-- <p class="category">Used Space</p> -->
-
-
-
-
-
-  <!-- <div class="row" style="background-color:#ffffff"> 
-
-                  <div class="col-xs-5 col-sm-5 col-md-5">
-                                   <h2 class="title custom_title" style="font-weight:600;"> 
-                      Getting Started with tiledesk 
-                    </h2> 
-                  </div>
-                  <div class="col-xs-7 col-sm-7 col-md-7">
-                        <ul class="nav nav-pills nav-pills-icons nav-pills-primary custom" role="tablist">
-                          <li class="active">
-                            <a href="#tasks" role="tab" data-toggle="tab">
-                              
-                              <div style="padding: 15px 0;    font-size: 30px;" >  2/5 </div>
-                              Tasks Completed
-                            </a>
-                          </li>
-                        </ul>
-
-                  </div>
-                </div>   -->
-
-  <!-- <div class="row" style="background-color: #ffffff"> 
-                  <div class="col-xs-5 col-sm-5 col-md-5">
-                    <p class="custom_subtitle" style="color:rgb(57, 79, 90); font-size: 18px"> 
-                       Are you just starting out? <br> Our checklists guide you from before starting.
-                    </p>
-                  
-                  </div>
-                  <div class="col-xs-7 col-sm-7 col-md-7">
-                    
-                    <ul class="nav nav-pills nav-pills-info custom">
-                      <li class="active" (click)="displayCheckListModal()">
-                        <a href="#pill1" data-toggle="tab" style="padding-left: 33px;padding-right: 35px;">
-                          View Tasks 
-                        </a>
-                      </li>
-              
-                    </ul>
-                  </div>
-                </div> -->
-
-  <!-- </div> -->
-  <!-- <div class="card-footer">
-                <div class="stats">
-                  <i class="material-icons text-danger">warning</i> <a href="#pablo">Get More Space...</a>
-                </div>
-              </div> -->
-  <!-- </div> -->
-
-
-
-  <!-- <div (click)="displayCheckListModal()">
-    DISPLAY CHECK LIST MODAL
-    <div style="height: 211px;background-image: url(assets/img/PBQUS70.jpg); background-size: cover; background-size: 351px 220px;background-repeat: no-repeat;background-position: top right;">
-
-    </div>
-  
-  </div> -->
-
-  <!-- start CALLOUT TOOLTIP -->
-  <!-- <div class="callout right">Your Favourite HTML,CSS,JS Playground!</div> -->
-  <!-- .\end CALLOUT TOOLTIP -->
-
-  <!-- <div class="row">
-    <div class="col-lg-12  col-md-12 col-sm-12"> 
-      <div *ngIf="user">
-        <h4 style="padding-left:15px; font-weight: 500">{{ "Howdy" | translate }}, {{ user?.firstname }}</h4>
-      </div>
-    </div>
-    <div class="col-lg-12 col-md-12 col-sm-12" style="padding-left:25px; padding-right:25px"> 
-      <hr style="border-color:#aaaeba; margin-top:0px; margin-bottom:40px">
-    </div>
-  </div> -->
-
-
-
-
-  <!-- ARROW MODAL -->
-  <!-- <div class="modal fade in" style="display:block;background-color: rgba(90,90,90,0.5);" id="test">
-  <div class="col-xs-2">
-    <div class="modal-arrow">
-      <i style="color: rgb(244,0,161); font-size:60px" id="arrow" class="material-icons">
-        keyboard_arrow_left
-        </i>
-    </div>
-  </div>
- <div class="col-xs-10" id="right">
-    <div class="modal-dialog" >
-      <div class="modal-content">
-        <div class="modal-header">
-          <a data-dismiss="modal" class="pull-right">
-	            Close
-	          </a>
-        </div>
-       Clicca sulla Chat e vinci un iPhone!!!!
-      </div>
-    </div>
-  </div>
-</div> -->
-  <!-- /.modal -->
-
-  <!-- NEW - AS ZENDESK CHAT !!! FOR DEBUG -->
-  <!-- <div class="sandbox">
-    <div class="tile is-ancestor" > -->
-
-  <!-- FIRESTORE USERS -->
-  <!-- <div class="tile is-parent" style="display:table" routerLink="/users">
-        <div class="avatar">
-          <i class="fa fa-users"></i>
-        </div>
-        <div class="address" style=" display: table-cell; vertical-align: middle; padding-left: 10px ">
-          <div class="name" style="font-size: 16px; font-weight: bold;">
-            Firestore Users
-          </div> 
-          <div class="email">
-              List of Firestore users
-          </div>
-        </div>
-      </div> -->
-
-  <!-- MONGO DB Contacts -->
-  <!-- <div class="tile is-parent" style="display:table" routerLink="/contacts">
-        <div class="avatar">
-          <i class="fa fa-users"></i>
-        </div>
-        <div class="address" style="display:table-cell; vertical-align: middle; padding-left: 10px ">
-          <div class="name" style="font-size: 16px; font-weight: bold;">
-            MongoDb Contacts
-          </div> 
-          <div class="email">
-            List of MongoDb contacts
-          </div>
-        </div>
-      </div> -->
-
-  <!-- FIRESTORE REQUESTS -->
-  <!-- <div class="tile is-parent" style="display:table" routerLink="/requests">
-        <div class="avatar">
-          <i class="fa fa-commenting-o"></i>
-        </div>
-        <div class="address" style="display:table-cell; vertical-align: middle; padding-left: 10px ">
-          <div class="name" style="font-size: 16px; font-weight: bold;">
-            Firestore Requests
-          </div> 
-          <div class="email">
-            List of Firestore requests
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </div>   -->
-
-  <!-- NEW LINE -->
-
-  <!-- <div class="sandbox">
-      <div class="tile is-ancestor" > -->
-
-  <!-- MONGO DB DEPT -->
-  <!-- <div class="tile is-parent" style="display:table" routerLink="/departments">
-  
-          <div class="avatar">
-            <i class="fa fa-university"></i>
-          </div>
-          <div class="address" style=" display: table-cell; vertical-align: middle; padding-left: 10px ">
-            <div class="name" style="font-size: 16px; font-weight: bold;">
-              MongoDb Dept.
-            </div> 
-            <div class="email">
-                
-              List of mongo db departments
-            </div>
-          </div>
-  
-        </div> -->
-
-  <!-- MONGO DB FAQ -->
-  <!-- <div class="tile is-parent" style="display:table" routerLink="/faq">
-  
-          <div class="avatar">
-            <i class="fa fa-question" style="padding-left:18px; padding-right:18px"></i>
-          </div>
-          <div class="address" style="display:table-cell; vertical-align: middle; padding-left: 10px ">
-            <div class="name" style="font-size: 16px; font-weight: bold;">
-              MongoDb FAQ
-            </div> 
-            <div class="email">
-              List of MongoDb contacts
-            </div>
-          </div>
-  
-        </div> -->
-
-  <!-- CHAT -->
-  <!-- <div class="tile is-parent" style="display:table" routerLink="/chat">
-  
-          <div class="avatar">
-            <i class="fa fa-comments-o"></i>
-           </div>
-          <div class="address" style="display:table-cell; vertical-align: middle; padding-left: 10px ">
-            <div class="name" style="font-size: 16px; font-weight: bold;">
-              Chat
-            </div> 
-            <div class="email">
-              Chat21 support chat
-            </div>
-          </div>
-  
-        </div>
-      </div> 
-    </div>   -->
