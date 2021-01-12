@@ -286,9 +286,15 @@ const routes: Routes = [
   // , ProjectProfileGuard
   { path: 'project/:projectid/analytics/old', component: AnalyticsComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/analytics', component: Analytics2Component, canActivate: [AuthGuard, ProjectProfileGuard] },
+  { path: 'project/:projectid/analytics/metrics', component: Analytics2Component, canActivate: [AuthGuard, ProjectProfileGuard] },
+  { path: 'project/:projectid/analytics/metrics/visitors', component: Analytics2Component, canActivate: [AuthGuard, ProjectProfileGuard] },
+  { path: 'project/:projectid/analytics/metrics/messages', component: Analytics2Component, canActivate: [AuthGuard, ProjectProfileGuard] },
+
+
   { path: 'project/:projectid/analytics-demo', component: AnalyticsStaticComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/messages-analytics', component: MessagesComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/conversation-analytics', component: RichiesteComponent, canActivate: [AuthGuard] },
+ 
+  { path: 'project/:projectid/messages-analytics', component: MessagesComponent, canActivate: [AuthGuard] }, // doesn't works
+  { path: 'project/:projectid/conversation-analytics', component: RichiesteComponent, canActivate: [AuthGuard] }, // doesn't works
   
   
 
