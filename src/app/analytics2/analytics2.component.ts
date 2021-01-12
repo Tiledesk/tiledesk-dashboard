@@ -22,9 +22,9 @@ import { AppConfigService } from '../services/app-config.service';
   styleUrls: ['./analytics2.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class Analytics2Component implements OnInit , OnDestroy {
+export class Analytics2Component implements OnInit, OnDestroy {
 
-  selected:any;
+  selected: any;
 
   activeRequestsCount: number;
   unservedRequestsCount: number;
@@ -93,7 +93,7 @@ export class Analytics2Component implements OnInit , OnDestroy {
   dataRangeDuration: string;
 
   storageBucket: string;
-
+  childToSelect: string
   constructor(
     private auth: AuthService,
     private requestsService: RequestsService,
@@ -105,21 +105,41 @@ export class Analytics2Component implements OnInit , OnDestroy {
     public wsRequestsService: WsRequestsService,
     public appConfigService: AppConfigService
   ) {
-    this.selected='panoramica';//-> default active component
+    this.selected = 'panoramica';//-> default active component
     console.log('!!! »»» HELLO ANALYTICS »»» ');
     // this.getAllUsersOfCurrentProject();
     this.getBrowserLangAndSwitchMonthName();
-    
+    this.getCurrentUrl();
+  }
+
+  getCurrentUrl() {
+
+    const currentUrl = this.router.url;
+    console.log('!!! ANALYTICS  - currentUrl ', currentUrl)
+    const url_segments = currentUrl.split('/');
+    console.log('!!! ANALYTICS  - url_segments ', url_segments)
+    if (url_segments.length === 5 ) {
+      if (url_segments[4] === "metrics") {
+        this.selected = 'metriche';
+      }
+    }
+
+    if (url_segments.length === 6 ) {
+      if (url_segments[4] === "metrics") {
+        this.selected = 'metriche';
+        this.childToSelect = url_segments[5]
+      }
+    }
   }
 
   //go to different component passed throw arg of method
-  goTo(selected){
-    this.selected=selected;
+  goTo(selected) {
+    this.selected = selected;
     console.log("Move to:", selected);
   }
 
-  
-    
+
+
 
   getBrowserLangAndSwitchMonthName() {
     const browserLang = this.translate.getBrowserLang();
@@ -142,14 +162,14 @@ export class Analytics2Component implements OnInit , OnDestroy {
     // this.durationConversationTimeCHART(); // --> duration conversation bar chart
     // this.auth.checkProjectProfile('analytics');
     // this.getRequestByLast7Day();
-    
-    this.analyticsService.richieste_bs.subscribe((hasClickedOnGraph)=>{
-      console.log("CLICK:",hasClickedOnGraph)
+
+    this.analyticsService.richieste_bs.subscribe((hasClickedOnGraph) => {
+      console.log("CLICK:", hasClickedOnGraph)
       console.log("Has click graph title... move to METRICHE");
-      if(hasClickedOnGraph){
-        this.selected='metriche';
+      if (hasClickedOnGraph) {
+        this.selected = 'metriche';
       }
-      
+
     })
 
     /* ----------==========    NUMBER OF REQUEST for DEPARTMENT ** PIE CHART ** ==========---------- */
@@ -493,8 +513,8 @@ export class Analytics2Component implements OnInit , OnDestroy {
   //               fontColor: 'white',
   //               stepSize: 1,
   //               suggestedMax: higherCount + 2,
-                
-        
+
+
   //               // callback: function (value, index, values) {
   //               //   let hours = Math.floor(value / 3600000) // 1 Hour = 36000 Milliseconds
   //               //   let minutes = Math.floor((value % 3600000) / 60000) // 1 Minutes = 60000 Milliseconds
@@ -525,7 +545,7 @@ export class Analytics2Component implements OnInit , OnDestroy {
   //             }
   //           }
   //         }
-          
+
   //       }
   //       ,
   //       plugins:[{
@@ -549,7 +569,7 @@ export class Analytics2Component implements OnInit , OnDestroy {
   //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY * COMPLETE *');
   //   });
   // }
-    
+
   // NOT USED
   // getRequestsByDay() {
   //   this.requestsService.requestsByDay().subscribe((requestsByDay: any) => {
@@ -911,7 +931,7 @@ export class Analytics2Component implements OnInit , OnDestroy {
   globalServedAndUnservedRequestsCount() {
 
     // this.subscription = this.requestsService.allRequestsList_bs.subscribe((global_requests) => {
-    this.subscription = this.wsRequestsService.wsRequestsList$.subscribe((global_requests)  => {
+    this.subscription = this.wsRequestsService.wsRequestsList$.subscribe((global_requests) => {
       this.date = new Date();
       console.log('!!! ANALYTICS - CURRENT DATE : ', this.date);
       console.log('!!! ANALYTICS - SUBSCRIBE TO REQUEST SERVICE - GLOBAL REQUESTS LIST: ', global_requests);
@@ -1111,118 +1131,118 @@ export class Analytics2Component implements OnInit , OnDestroy {
   // convert number from millisecond to humanizer form 
   humanizeDurations(timeInMillisecond) {
     let result;
-    if (timeInMillisecond) {  
-      if(this.lang=='en'){
+    if (timeInMillisecond) {
+      if (this.lang == 'en') {
         if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24 * 30 * 12))) > 0) {//year
-            result = result === 1 ? result + " Year" : result + " Years";
+          result = result === 1 ? result + " Year" : result + " Years";
         } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24 * 30))) > 0) {//months
-            result = result === 1 ? result + " Month" : result + " Months";
+          result = result === 1 ? result + " Month" : result + " Months";
         } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24))) > 0) {//days
-            result = result === 1 ? result + " Day" : result + " Days";
+          result = result === 1 ? result + " Day" : result + " Days";
         } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60))) > 0) {//Hours
-            result = result === 1 ? result + " Hours" : result + " Hours";
+          result = result === 1 ? result + " Hours" : result + " Hours";
         } else if ((result = Math.round(timeInMillisecond / (1000 * 60))) > 0) {//minute
-            result = result === 1 ? result + " Minute" : result + " Minutes";
+          result = result === 1 ? result + " Minute" : result + " Minutes";
         } else if ((result = Math.round(timeInMillisecond / 1000)) > 0) {//second
-            result = result === 1 ? result + " Second" : result + " Seconds";
+          result = result === 1 ? result + " Second" : result + " Seconds";
         } else {
-            result = timeInMillisecond + " Millisec";
+          result = timeInMillisecond + " Millisec";
         }
       }
-      else{
-          if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24 * 30 * 12))) > 0) {//year
-            result = result === 1 ? result + " Anno" : result + " Anni";
+      else {
+        if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24 * 30 * 12))) > 0) {//year
+          result = result === 1 ? result + " Anno" : result + " Anni";
         } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24 * 30))) > 0) {//months
-            result = result === 1 ? result + " Mese" : result + " Mesi";
+          result = result === 1 ? result + " Mese" : result + " Mesi";
         } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24))) > 0) {//days
-            result = result === 1 ? result + " Giorno" : result + " Giorni";
+          result = result === 1 ? result + " Giorno" : result + " Giorni";
         } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60))) > 0) {//Hours
-            result = result === 1 ? result + " Ora" : result + " Ore";
+          result = result === 1 ? result + " Ora" : result + " Ore";
         } else if ((result = Math.round(timeInMillisecond / (1000 * 60))) > 0) {//minute
-            result = result === 1 ? result + " Minuto" : result + " Minuti";
+          result = result === 1 ? result + " Minuto" : result + " Minuti";
         } else if ((result = Math.round(timeInMillisecond / 1000)) > 0) {//second
-            result = result === 1 ? result + " Secondo" : result + " Secondi";
+          result = result === 1 ? result + " Secondo" : result + " Secondi";
         } else {
-            result = timeInMillisecond + " Millisecondi";
+          result = timeInMillisecond + " Millisecondi";
         }
       }
-        return result;
+      return result;
 
-      }
+    }
   }
 
 
-  avarageWaitingTimeCLOCK(){
-    this.analyticsService.getDataAVGWaitingCLOCK().subscribe((res:any)=>{
+  avarageWaitingTimeCLOCK() {
+    this.analyticsService.getDataAVGWaitingCLOCK().subscribe((res: any) => {
       let avarageWaitingTimestring;
       var splitString;
 
-      if(res && res.length!=0){
+      if (res && res.length != 0) {
         //this.avarageWaitingTimestring= this.msToTime(res[0].waiting_time_avg)
-        
-        //this.humanizer.setOptions({round: true, units:['m']});
-        
-      
-        //this.avarageWaitingTimestring = this.humanizer.humanize(res[0].waiting_time_avg);
-        avarageWaitingTimestring=this.humanizeDurations(res[0].waiting_time_avg)
-        splitString= this.humanizeDurations(res[0].waiting_time_avg).split(" ");
-        this.numberAVGtime= splitString[0];
-        this.unitAVGtime= splitString[1];
 
-        this.responseAVGtime=this.humanizer.humanize(res[0].waiting_time_avg, {round: true, language:this.lang})
-        
+        //this.humanizer.setOptions({round: true, units:['m']});
+
+
+        //this.avarageWaitingTimestring = this.humanizer.humanize(res[0].waiting_time_avg);
+        avarageWaitingTimestring = this.humanizeDurations(res[0].waiting_time_avg)
+        splitString = this.humanizeDurations(res[0].waiting_time_avg).split(" ");
+        this.numberAVGtime = splitString[0];
+        this.unitAVGtime = splitString[1];
+
+        this.responseAVGtime = this.humanizer.humanize(res[0].waiting_time_avg, { round: true, language: this.lang })
+
         console.log('Waiting time: humanize', this.humanizer.humanize(res[0].waiting_time_avg))
         console.log('waiting time funtion:', avarageWaitingTimestring);
-        
-        
+
+
       }
-      else{
-       
-        this.numberAVGtime= 'n.a'
-        this.unitAVGtime= ''
-        this.responseAVGtime='n.a.'
-        
+      else {
+
+        this.numberAVGtime = 'n.a'
+        this.unitAVGtime = ''
+        this.responseAVGtime = 'n.a.'
+
         console.log('Waiting time: humanize', this.humanizer.humanize(0))
         console.log('waiting time funtion:', avarageWaitingTimestring);
       }
 
-     
+
     }, (error) => {
       console.log('!!! ANALYTICS - AVERAGE WAITING TIME REQUEST - ERROR ', error);
     }, () => {
       console.log('!!! ANALYTICS - AVERAGE TIME REQUEST * COMPLETE *');
     });
-    
+
   }
 
 
-  avgTimeResponsechart(){
-    this.analyticsService.getavarageWaitingTimeDataCHART(30,'').subscribe((res:any)=>{
-      console.log('chart data:',res);
-      if(res){
-        
+  avgTimeResponsechart() {
+    this.analyticsService.getavarageWaitingTimeDataCHART(30, '').subscribe((res: any) => {
+      console.log('chart data:', res);
+      if (res) {
+
         //build a 30 days array of date with value 0--> is the init array
         const last30days_initarray = []
         for (let i = 0; i <= 30; i++) {
           // console.log('»» !!! ANALYTICS - LOOP INDEX', i);
-          last30days_initarray.push({ date: moment().subtract(i, 'd').format('D/M/YYYY'), value: 0  });
+          last30days_initarray.push({ date: moment().subtract(i, 'd').format('D/M/YYYY'), value: 0 });
         }
 
         last30days_initarray.reverse()
-        this.dateRangeAvg= last30days_initarray[0].date.split(-4) +' - '+last30days_initarray[30].date;
+        this.dateRangeAvg = last30days_initarray[0].date.split(-4) + ' - ' + last30days_initarray[30].date;
         console.log('»» !!! ANALYTICS - REQUESTS BY DAY - MOMENT LAST 30 DATE (init array)', last30days_initarray);
 
         //build a custom array with che same structure of "init array" but with key value of serviceData
         //i'm using time_convert function that return avg_time always in hour 
-        const customDataLineChart= [];
-        for(let j = 0; j < customDataLineChart.length; j++){
-          
-          if(customDataLineChart[j]){
-            if(res[j].waiting_time_avg==null){
-              res[j].waiting_time_avg=0;  //substitute null point with 0 value
+        const customDataLineChart = [];
+        for (let j = 0; j < customDataLineChart.length; j++) {
+
+          if (customDataLineChart[j]) {
+            if (res[j].waiting_time_avg == null) {
+              res[j].waiting_time_avg = 0;  //substitute null point with 0 value
             }
-                                                                                                  // to locale string allow format type dd/mm/yyyy
-            customDataLineChart.push({ date: new Date(res[j]._id.year, res[j]._id.month -1 , res[j]._id.day).toLocaleDateString(), value: res[j].waiting_time_avg});
+            // to locale string allow format type dd/mm/yyyy
+            customDataLineChart.push({ date: new Date(res[j]._id.year, res[j]._id.month - 1, res[j]._id.day).toLocaleDateString(), value: res[j].waiting_time_avg });
           }
         }
         console.log('Custom data:', customDataLineChart);
@@ -1230,44 +1250,44 @@ export class Analytics2Component implements OnInit , OnDestroy {
         //build a final array that compars value between the two arrray before builded with respect to date key value
         const requestByDays_final_array = last30days_initarray.map(obj => customDataLineChart.find(o => o.date === obj.date) || obj);
         console.log('»» !!! ANALYTICS - REQUESTS BY DAY - FINAL ARRAY ', requestByDays_final_array);
-      
-      
-      
-      
-      // this.xValue = this.customDataLineChart.map(function(e) {
-      //   let date =new Date(e.date); 
-      //   var dd=date.toISOString().substring(0,10); stampa nel formato yyyy/mm/dd   
-      //   return date.toLocaleDateString();  
-      //   return e.date
-      // });
-  
-      // this.yValue = this.customDataLineChart.map(function(e) {
-      //     return e.value;
-      // });
 
-        this.xValueAVGchart=requestByDays_final_array.map(function(e){
+
+
+
+        // this.xValue = this.customDataLineChart.map(function(e) {
+        //   let date =new Date(e.date); 
+        //   var dd=date.toISOString().substring(0,10); stampa nel formato yyyy/mm/dd   
+        //   return date.toLocaleDateString();  
+        //   return e.date
+        // });
+
+        // this.yValue = this.customDataLineChart.map(function(e) {
+        //     return e.value;
+        // });
+
+        this.xValueAVGchart = requestByDays_final_array.map(function (e) {
           return e.date
         })
-        this.yValueAVGchart=requestByDays_final_array.map(function(e){
+        this.yValueAVGchart = requestByDays_final_array.map(function (e) {
           return e.value
         })
-  
+
         console.log('Xlabel-AVERAGE TIME', this.xValueAVGchart);
         console.log('Ylabel-AVERAGE TIME', this.yValueAVGchart);
       }
       else
         console.log('!!!ERROR!!! while get data from resouces for waiting avg time graph')
 
-        // Chart.plugins.register({
-        //   beforeDraw: function(chartInstance, easing) {
-        //     var ctx = chartInstance.chart.ctx;
-        //     console.log("chart istance",chartInstance);
-        //     ctx.fillStyle = 'red'; // your color here
-        
-        //     var chartArea = chartInstance.chartArea;
-        //     ctx.fillRect(chartArea.left, chartArea.top, chartArea.right - chartArea.left, chartArea.bottom - chartArea.top);
-        //   }
-        // });
+      // Chart.plugins.register({
+      //   beforeDraw: function(chartInstance, easing) {
+      //     var ctx = chartInstance.chart.ctx;
+      //     console.log("chart istance",chartInstance);
+      //     ctx.fillStyle = 'red'; // your color here
+
+      //     var chartArea = chartInstance.chartArea;
+      //     ctx.fillRect(chartArea.left, chartArea.top, chartArea.right - chartArea.left, chartArea.bottom - chartArea.top);
+      //   }
+      // });
 
       var lineChart = new Chart('avgTimeResponse', {
         type: 'line',
@@ -1301,16 +1321,16 @@ export class Analytics2Component implements OnInit , OnDestroy {
               },
               gridLines: {
                 display: true,
-                color:'rgba(255, 255, 255, 0.5)',
-                borderDash:[3,1]
+                color: 'rgba(255, 255, 255, 0.5)',
+                borderDash: [3, 1]
               }
 
             }],
             yAxes: [{
               gridLines: {
-                display: true ,
-                color:'rgba(255, 255, 255, 0.5)',
-                borderDash:[3,1]
+                display: true,
+                color: 'rgba(255, 255, 255, 0.5)',
+                borderDash: [3, 1]
               },
               ticks: {
                 beginAtZero: true,
@@ -1346,15 +1366,15 @@ export class Analytics2Component implements OnInit , OnDestroy {
               }
             }
           }
-          
+
         }
         ,
-        plugins:[{
-          beforeDraw: function(chartInstance, easing) {
+        plugins: [{
+          beforeDraw: function (chartInstance, easing) {
             var ctx = chartInstance.chart.ctx;
             //console.log("chartistance",chartInstance)
             //ctx.fillStyle = 'red'; // your color here
-            ctx.font="Google Sans"
+            ctx.font = "Google Sans"
             var chartArea = chartInstance.chartArea;
             //ctx.fillRect(chartArea.left, chartArea.top, chartArea.right - chartArea.left, chartArea.bottom - chartArea.top);
           }
@@ -1401,7 +1421,7 @@ export class Analytics2Component implements OnInit , OnDestroy {
   }
 
   durationConversationTimeCHART() {
-    this.analyticsService.getDurationConversationTimeDataCHART(30,'').subscribe((resp: any) => {
+    this.analyticsService.getDurationConversationTimeDataCHART(30, '').subscribe((resp: any) => {
       if (resp) {
         console.log("Duration time", resp)
 

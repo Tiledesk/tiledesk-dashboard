@@ -31,7 +31,7 @@
   <div class="container-fluid">
 
     <appdashboard-panoramica *ngIf="selected=='panoramica'"></appdashboard-panoramica>
-    <appdashboard-metriche *ngIf="selected=='metriche'"></appdashboard-metriche>
+    <appdashboard-metriche [autoselected]="childToSelect" *ngIf="selected=='metriche'"></appdashboard-metriche>
     <appdashboard-realtime *ngIf="selected=='realtime'"></appdashboard-realtime>
     <!-- Moved to Metrics -->
     <!-- 
