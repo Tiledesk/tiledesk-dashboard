@@ -7,6 +7,7 @@ import { Subject } from 'rxjs';
 import { Router, NavigationEnd, NavigationStart } from '@angular/router';
 import { LocalDbService } from '../../services/users-local-db.service';
 import { NavbarForPanelService } from './navbar-for-panel.service';
+import { WsRequestsService } from './../../services/websocket/ws-requests.service';
 
 @Component({
   selector: 'appdashboard-navbar-for-panel',
@@ -37,7 +38,8 @@ export class NavbarForPanelComponent implements OnInit {
     public appConfigService: AppConfigService,
     private router: Router,
     public usersLocalDbService: LocalDbService,
-    public navbarForPanelService: NavbarForPanelService
+    public navbarForPanelService: NavbarForPanelService,
+    public wsRequestsService: WsRequestsService
 
   ) {
     this.getCurrentRoute();
@@ -170,13 +172,16 @@ export class NavbarForPanelComponent implements OnInit {
 
   subsTo_WsCurrentUser(currentuserprjctuserid) {
     console.log('NAVBAR-X-PANEL - SUBSCRIBE TO WS CURRENT-USER AVAILABILITY  prjct user id of current user ', currentuserprjctuserid);
-    this.usersService.subscriptionToWsCurrentUser(currentuserprjctuserid);
+    // this.usersService.subscriptionToWsCurrentUser(currentuserprjctuserid);
+    this.wsRequestsService.subscriptionToWsCurrentUser(currentuserprjctuserid);
     this.getWsCurrentUserAvailability$();
     this.getWsCurrentUserIsBusy$();
   }
 
   getWsCurrentUserAvailability$() {
-    this.usersService.currentUserWsAvailability$
+    // this.usersService.currentUserWsAvailability$
+    this.wsRequestsService.currentUserWsAvailability$
+
       .pipe(
         takeUntil(this.unsubscribe$)
       )
@@ -193,7 +198,8 @@ export class NavbarForPanelComponent implements OnInit {
   }
 
   getWsCurrentUserIsBusy$() {
-    this.usersService.currentUserWsIsBusy$
+    // this.usersService.currentUserWsIsBusy$
+    this.wsRequestsService.currentUserWsIsBusy$
       .pipe(
         takeUntil(this.unsubscribe$)
       )
