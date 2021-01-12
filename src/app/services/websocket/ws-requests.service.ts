@@ -14,7 +14,7 @@ import 'rxjs/add/observable/of';
 import { Subscription } from 'rxjs/Subscription';
 import { AppConfigService } from '../../services/app-config.service';
 import { DepartmentService } from '../department.service';
-
+import { UsersService } from '../users.service';
 export interface Message {
   action: string;
   payload: {
@@ -27,7 +27,9 @@ export interface Message {
 @Injectable()
 
 export class WsRequestsService implements OnDestroy {
-
+  public wsRequesterStatus$: BehaviorSubject<any> = new BehaviorSubject<any>({});
+  public currentUserWsAvailability$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null); // Moved here from user.service 
+  public currentUserWsIsBusy$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null); // Moved here from user.service 
   http: Http;
   public messages: Subject<Message>;
 
@@ -77,6 +79,9 @@ export class WsRequestsService implements OnDestroy {
   timeout: any;
   subscription: Subscription;
   departments: any;
+  subscribed_request_id: string;
+  subscribed_requester_id: string;
+  subscribed_projectuser_id: string;
   /**
    * Constructor
    * 
@@ -87,7 +92,8 @@ export class WsRequestsService implements OnDestroy {
     public auth: AuthService,
     public webSocketJs: WebSocketJs,
     public appConfigService: AppConfigService,
-    private departmentService: DepartmentService
+    private departmentService: DepartmentService,
+    private usersService: UsersService
   ) {
     this.http = http;
     console.log("% HI WsRequestsService wsjsRequestsService  ", this.wsjsRequestsService);
@@ -183,17 +189,36 @@ export class WsRequestsService implements OnDestroy {
         // console.log('% »»» WebSocketJs WF +++++ ws-requests--- service getWsRequests */* ref */* this.project_id ', this.project_id)
         // console.log('%% WsRequestsService THIS.PROJECT_ID ', this.project_id)
         //this.unsubsToWS_Requests(this.project_id);
-     
+
+        console.log('% »»» WebSocketJs WF +++++ ws-requests--- service getWsRequests ACTUALLY SUBSCRIBED TO THE REQUEST ID', this.subscribed_request_id)
         console.log('% »»» WebSocketJs WF +++++ ws-requests--- service getWsRequests unsubscribe project._id', this.project_id)
         this.webSocketJs.unsubscribe('/' + this.project_id + '/requests');
+
+        // per risolvere: se il cambio progetto vien effettuato quando si è nella pagina del dettaglio conversazioni unsuscibe da request by id viene fatto con un path sbagliato
+        // id-nuovo-progetto/requests/id-richiesta invece che con - id-vecchio-progetto/requests/id-richiesta (vedi in ws-msgs.service unsubsToWS_MsgsByRequestId e unsubscribeTo_wsRequestById in questo componente)
+        if (this.subscribed_request_id) {
+          this.webSocketJs.unsubscribe('/' + this.project_id + '/requests/' + this.subscribed_request_id); // AL CAMBIO PROGETTO ESEGUO UNSUSCIBE DALLA RICHIESTA BY ID A CUI EVENTUALMENTE è SOTTOSCRITTO
+          this.webSocketJs.unsubscribe('/' + this.project_id + '/requests/' + this.subscribed_request_id + '/messages'); // COME SOPRA MA PER I MESSAGGI
+        }
+        //  unsuscribe requester presence al cambio progetto
+        if (this.subscribed_requester_id) {
+          this.webSocketJs.unsubscribe('/' + this.project_id + '/project_users/users/' + this.subscribed_requester_id);
+        }
+        //  unsuscribe current user availability al cambio progetto
+        if (this.subscribed_projectuser_id) {
+          this.webSocketJs.unsubscribe('/' + this.project_id + '/project_users/' + this.subscribed_projectuser_id);
+        }
+
+
+
         this.resetWsRequestList();
       }
 
 
       if (project) {
         // console.log('% »»» WebSocketJs WF ****** WsRequestsService PROJECT._ID 2', project._id)
-        console.log('% »»» WebSocketJs WF +++++ ws-requests--- service getWsRequests */* ref */* project._id', project._id)
-        console.log('% »»» WebSocketJs WF +++++ ws-requests--- service getWsRequests */* ref */* this.project_id ', this.project_id)
+        console.log('% »»» WebSocketJs WF +++++ ws-requests--- service getWsRequests */* ref */* project._id (NEW)', project._id)
+        console.log('% »»» WebSocketJs WF +++++ ws-requests--- service getWsRequests */* ref */* this.project_id (OLD)', this.project_id)
 
         this.project_id = project._id;
 
@@ -490,6 +515,10 @@ export class WsRequestsService implements OnDestroy {
    * @param id_request 
    */
   subscribeTo_wsRequestById(id_request) {
+    console.log('% »»» WebSocketJs WF >>> r-service - SUBSCR To WS REQUEST-BY-ID ****** CALLING REF  x id_request', id_request);
+    this.subscribed_request_id = id_request
+
+
     var self = this;
     // var message = {
     //   action: 'subscribe',
@@ -509,13 +538,13 @@ export class WsRequestsService implements OnDestroy {
     // this.wsjsRequestByIdService.send(str);
 
     // this.webSocketJs.ref('/' + this.project_id + '/requests/' + id_request,
-    console.log('% »»» WebSocketJs WF >>> ws-msgs--- r-service - SUBSCR To WS REQUEST-BY-ID ****** CALLING REF ******');
+    console.log('% % »»» WebSocketJs WF >>> r-service ****** CALLING REF ******');
     this.webSocketJs.ref('/' + this.project_id + '/requests/' + id_request, 'subscribeTo_wsRequestById',
 
       function (data, notification) {
 
-        console.log("% »»» WebSocketJs WF - WsMsgsService REQUEST-BY-ID CREATE ", data);
-        console.log("% »»» WebSocketJs WF >>> ws-msgs--- r-service - SUBSCR To WS REQUEST-BY-ID - CREATE - data ", data);
+        console.log("% »»» WebSocketJs WF >>> r-service REQUEST-BY-ID CREATE ", data);
+        console.log("% »»» WebSocketJs WF >>> r-service - SUBSCR To WS REQUEST-BY-ID - CREATE - data ", data);
         /**
          *  HERE MANAGE IF ALREADY HAS EMIT THE REQUEST BY ID
          */
@@ -536,7 +565,7 @@ export class WsRequestsService implements OnDestroy {
       }, function (data, notification) {
 
         // console.log("% »»» WebSocketJs WF - WsMsgsService REQUEST-BY-ID UPDATE ", data);
-        console.log("% »»» WebSocketJs WF >>> ws-msgs--- r-service - SUBSCR To WS REQUEST-BY-ID - UPDATE - data ", data);
+        console.log("% »»» WebSocketJs WF >>> r-service - SUBSCR To WS REQUEST-BY-ID - UPDATE - data ", data);
         self.updateWsRequest(data)
         // this.wsRequestsList.push(data);
 
@@ -557,7 +586,7 @@ export class WsRequestsService implements OnDestroy {
    * @param request 
    */
   addWsRequest(request) {
-    console.log("% »»» WebSocketJs WF >>> ws-msgs--- r-service - ADD WS REQUEST-BT-ID (PUBLISH) ", request);
+    console.log("% »»» WebSocketJs WF >>> r-service - ADD WS REQUEST-BT-ID (PUBLISH) ", request);
     this.wsRequest$.next(request);
 
   }
@@ -569,7 +598,7 @@ export class WsRequestsService implements OnDestroy {
    * @param request 
    */
   updateWsRequest(request) {
-    console.log("% »»» WebSocketJs WF >>> ws-msgs--- r-service - UPDATE WS REQUEST-BT-ID (PUBLISH) ", request);
+    console.log("% »»» WebSocketJs WF >>> r-service - UPDATE WS REQUEST-BT-ID (PUBLISH) ", request);
     this.wsRequest$.next(request);
   }
 
@@ -592,14 +621,105 @@ export class WsRequestsService implements OnDestroy {
     // var str = JSON.stringify(message);
     // console.log("%% str " + str);
 
-    // ----------------------------------------------
-    // SUBSCRIPTION START (send subscription message)
-    // ----------------------------------------------
     // this.wsjsRequestByIdService.send(str);
     this.webSocketJs.unsubscribe('/' + this.project_id + '/requests/' + id_request);
-    console.log("% »»» WebSocketJs WF >>> ws-msgs--- r-service - UN-SUBS REQUEST-BY-ID FROM WS »»»»»»» request_id ", id_request);
+    console.log("% »»» WebSocketJs WF >>> r-service - UN-SUBS REQUEST-BY-ID FROM WS »»»»»»» request_id ", id_request, ' project_id ', this.project_id);
 
   }
+
+
+  // -----------------------------------------------
+  //  @ Subscribe to Requester Presence
+  // -----------------------------------------------
+  subscribeToWS_RequesterPresence(requesterid) {
+    this.subscribed_requester_id = requesterid
+    var self = this;
+    console.log("wsRequesterPresence - HERE ");
+    const path = '/' + this.project_id + '/project_users/users/' + requesterid;
+    // const path = "/5f61efc28f90f300345edd75/project_users/5f623d5c56065e0034fce69c";
+    console.log('% »»» WebSocketJs WF >>> r-service - wsRequesterPresence PATH ', path);
+    this.webSocketJs.ref(path, 'subscribeToWS_RequesterPresence',
+      function (data, notification) {
+        console.log("% »»» WebSocketJs WF >>> r-service wsRequesterPresence - CREATE - data ", data);
+        // console.log("% WsMsgsService notification", notification);
+
+        self.wsRequesterStatus$.next(data);
+
+      }, function (data, notification) {
+
+        console.log("% »»» WebSocketJs WF >>> r-service wsRequesterPresence - UPDATE - data ", data);
+        // console.log("% WsMsgsService notification", notification);
+        self.wsRequesterStatus$.next(data);
+
+      }, function (data, notification) {
+
+        if (data) {
+          console.log("% »»» WebSocketJs WF >>> r-service wsRequesterPresence - ON-DATA - data", data);
+
+        }
+      }
+    );
+  }
+
+  // -----------------------------------------------
+  //  @ Un-Subscribe to Requester Presence
+  // -----------------------------------------------
+  unsubscribeToWS_RequesterPresence(requesterid) {
+    const path = '/' + this.project_id + '/project_users/users/' + requesterid;
+    this.webSocketJs.unsubscribe(path);
+    console.log("% »»» WebSocketJs WF >>> r-service wsRequesterPresence UNSUBSCRIBE To WS Requester Presence (contacts service) ");
+
+  }
+
+
+  // -----------------------------------------------------------------------------------------------------
+  // Availability - subscribe to WS Current user availability !! // Moved here from user.service 
+  // -----------------------------------------------------------------------------------------------------
+  subscriptionToWsCurrentUser(prjctuserid) {
+    this.subscribed_projectuser_id = prjctuserid
+
+    var self = this;
+
+    console.log('NAVBAR-FOR-PANEL & SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY ****** CALLING REF ****** prjctuserid', prjctuserid);
+    const path = '/' + this.project_id + '/project_users/' + prjctuserid
+
+    this.webSocketJs.ref(path, 'subscriptionToWsCurrentUser',
+      function (data, notification) {
+        // console.log("SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - CREATE - data ", data , ' path ', path);
+        console.log("NAVBAR-FOR-PANEL & SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - CREATE - data ", data);
+        console.log("NAVBAR-FOR-PANEL & SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - CREATE - data  user_available ", data.user_available);
+
+        self.currentUserWsAvailability$.next(data.user_available);
+        if (data.isBusy) {
+          self.currentUserWsIsBusy$.next(data.isBusy)
+        } else {
+          self.currentUserWsIsBusy$.next(false)
+        }
+        // self.availability_btn_clicked(true) // NK LO COMMENTO 11 GEN PRIMA DI SPOSTARLO IN ws-requests.service da users.service
+
+      }, function (data, notification) {
+        console.log("SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - UPDATE - data ", data);
+
+      }, function (data, notification) {
+        if (data) {
+          console.log("SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - ON-DATA - data", data);
+
+        }
+      }
+    );
+  }
+
+  // -----------------------------------------------------------------------------------------------------
+  // Availability - umsubscribe to WS Current user availability !! // Moved here from user.service 
+  // -----------------------------------------------------------------------------------------------------
+  // Nota unsubscriptionToWsCurrentUser nn viene mai richiamato cmq eseguo unsubscribe('/' + this.project_id + '/project_users/' + prjctuserid); in questo
+  // componente al cambio di progetto
+  unsubscriptionToWsCurrentUser(prjctuserid) {
+    this.webSocketJs.unsubscribe('/' + this.project_id + '/project_users/' + prjctuserid);
+    console.log("NAVBAR-FOR-PANEL - UN-SUBSCR TO WS CURRENT USERS  projectid: ", this.project_id, ' prjctuserid:', prjctuserid);
+  }
+
+
 
 
   // CLOSE SUPPORT GROUP
