@@ -349,6 +349,12 @@
   }
 }
 
+.message-img {
+  width: unset !important;
+  max-width: 100%;
+  max-height: 100%;
+}
+
 // @media (max-width: 453px){
 //   .speech-wrapper .bubble.alt{
 //     float: none !important;
@@ -1961,6 +1967,8 @@ and also iPads specifically.
   margin-left: 1px;
   margin-right: 1px;
 }
+
+
 
 
 // SPINNER USED WHEN THE DASHBOARD RUN ON MOBILE

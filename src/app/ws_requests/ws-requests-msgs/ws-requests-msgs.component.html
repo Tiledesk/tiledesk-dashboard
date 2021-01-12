@@ -250,16 +250,21 @@
                           <div class="txt">
                             <p class="name" [ngStyle]="{'color': fillColour }">{{ message.senderFullname }}
                               <!-- margin-right: -45px; -->
-                              <span style="float:right; cursor:pointer; color: #00bcf8; text-decoration: underline;"
+                              <span *ngIf="message?.type === 'text'" style="float:right; cursor:pointer; color: #00bcf8; text-decoration: underline;"
                                 (click)="openRightSideBar(message?.text)">
                                 <!-- Addestra -->
                                 {{ 'Train' | translate }}
 
                               </span>
                             </p>
-                            <p class="message ow">
+                            <p *ngIf="message?.type === 'text'" class="message ow">
                               {{ message?.text }}
                             </p>
+                            <div *ngIf="message?.type === 'image'" class="message ow">
+                              <div class="image-container" style="height:200px; width:200px;" >
+                                <img src={{message.metadata.src}} class="message-img"/>
+                              </div>
+                            </div>
                             <span class="timestamp"> {{ message?.createdAt | date: 'd/M/y HH:mm:ss'}} </span>
                           </div>
                           <div class="bubble-arrow"></div>
@@ -321,11 +326,18 @@
                           </div>
                           <div class="txt">
                             <p class="name alt">
-                              {{ message.senderFullname }}
+                              {{ message?.senderFullname }}
                               <!-- +353 87 1234 567<span> ~ John</span> -->
                             </p>
-                            <p class="message ow">{{ message.text }}</p>
-                            <span class="timestamp"> {{ message.createdAt | date: 'd/M/y HH:mm:ss'}}</span>
+                            <p *ngIf="message?.type === 'text'" class="message ow">
+                              {{ message?.text }}
+                            </p>
+                            <div *ngIf="message?.type === 'image'" class="message ow">
+                              <div class="image-container" style="height:200px; width:200px;" >
+                                <img src={{message.metadata.src}} class="message-img"/>
+                              </div>
+                            </div>
+                            <span class="timestamp"> {{ message?.createdAt | date: 'd/M/y HH:mm:ss'}}</span>
                           </div>
                           <div class="bubble-arrow alt"></div>
                         </div>
