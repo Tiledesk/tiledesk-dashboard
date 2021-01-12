@@ -12,12 +12,12 @@ export class WsMsgsService {
   wsService: WebSocketJs;
   project_id: string;
   wsMsgsList: any;
- 
+
   WS_IS_CONNECTED: number;
 
   public wsMsgsList$: BehaviorSubject<[]> = new BehaviorSubject<[]>([]);
   public wsMsgsGotAllData$: BehaviorSubject<boolean> = new BehaviorSubject(false);
- 
+
   // public _wsMsgsList = new Subject<any>();
 
   constructor(
@@ -108,16 +108,16 @@ export class WsMsgsService {
     // console.log('% »»» WebSocketJs WF - WS-MESSAGES-SERVICE - this.WS_IS_CONNECTED  ', this.WS_IS_CONNECTED );
 
     console.log('% »»» WebSocketJs WF >>> ws-msgs--- m-service - SUBSCR To WS MSGS ****** CALLING REF ****** ');
-    const path =  '/' + this.project_id + '/requests/' + request_id + '/messages'
-    
+    const path = '/' + this.project_id + '/requests/' + request_id + '/messages'
+
     this.webSocketJs.ref(path, 'subsToWS_MsgsByRequestId',
       function (data, notification) {
-        console.log("% »»» WebSocketJs WF >>> ws-msgs--- m-service - SUBSCR To WS MSGS - CREATE - data ", data , ' path ', path);
+        console.log("% »»» WebSocketJs WF >>> ws-msgs--- m-service - SUBSCR To WS MSGS - CREATE - data ", data, ' path ', path);
         // console.log("% WsMsgsService notification", notification);
 
         // Check if upcoming messages already exist in the messasges list
         const msgFound = self.wsMsgsList.filter((obj: any) => {
-         
+
           return obj._id === data._id;
         });
 
@@ -139,7 +139,7 @@ export class WsMsgsService {
         if (data) {
           console.log("% »»» WebSocketJs WF >>> ws-msgs--- m-service - SUBSCR To WS MSGS - ON-DATA - data", data);
           self.wsMsgsGotAllData$.next(true);
-        }  
+        }
       }
     );
   }
@@ -166,7 +166,7 @@ export class WsMsgsService {
         this.wsMsgsList[i] = msg
 
         if (this.wsMsgsList) {
-          
+
           this.wsMsgsList$.next(msg);
         }
       }
@@ -195,9 +195,9 @@ export class WsMsgsService {
 
     // this.wsService.send(str);
 
-   
+
     this.webSocketJs.unsubscribe('/' + this.project_id + '/requests/' + request_id + '/messages');
-    console.log("% »»» WebSocketJs WF >>> ws-msgs--- m-service - UN-SUBS MSGS FROM WS »»»»»»» request_id ", request_id);
+    console.log("% »»» WebSocketJs WF >>> ws-msgs--- m-service - UN-SUBS MSGS FROM WS »»»»»»» request_id ", request_id, ' project_id ', this.project_id);
     // this.messages.next(message);
     // console.log("% SUB (UN) UN-subsToWS_ Msgs By RequestId new message from client to websocket: ", message);
   }
