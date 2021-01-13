@@ -1686,5 +1686,23 @@
         "GoToMultilanguagePage":"Vai alla pagina Multilanguage",
         "toAddLanguagesToYourProject":"per aggiungere lingue al tuo progetto",
         "Cancel": "Annulla"
-    }
+    },
+    "ViewChatbot":"Visualizza chatbot",
+    "ViewChatbots":"Visualizza i chatbot",
+    "AddYourFirstChatbot":"Aggiungi il tuo primo chatbot",
+    "AddChatbot":"Aggiungi un chatbot",
+    "Hide":"Nascondi",
+    "OperatingHoursDisabled":"Orari di attività disabilitati",
+    "OperatingHoursEnabled":"Orari di attività attivi",
+    "AdjustOperatingHours":"Regola gli orari di attività",
+    "TotalLeadsAcquired":"Totale contatti acquisiti",
+    "GoToContactList":"Vai all'elenco dei contatti",
+    "Last30DaysMessages":"Messaggi degli ultimi 30 giorni",
+    "Last30DaysConversations":"Conversazioni degli ultimi 30 giorni",
+    "Last30DaysVisitors":"Visitatori degli ultimi 30 giorni",
+    "FilterReportInAnalytics":"Filtra il rapporto in analisi",
+    "VisitorsOnYourPageInTheLast7Days":"Visitatori sulla tua pagina negli ultimi 7 giorni",
+    "TakeAShortcut":"Prendi una scorciatoia",
+    "JumpStraightToTheMostPopularSettingsInTheDashboard":"Passa direttamente alle impostazioni più popolari nella Dashboard",
+    "EngageAndRetainMoreCustomersWithAppsAndIntegrations":"Coinvolgi e fidelizza più clienti con app e integrazioni"
 }
