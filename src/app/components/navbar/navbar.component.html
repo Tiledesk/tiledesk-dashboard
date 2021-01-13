@@ -37,7 +37,7 @@
         <li *ngIf="DETECTED_CHAT_PAGE">
           <a target="_blank" href="{{ CHAT_BASE_URL }}">
             <i class="material-icons">open_in_new</i>
-            {{ "NavBar.RunChatInAStandAloneTab"  | translate }}
+            {{ "NavBar.RunChatInAStandAloneTab" | translate }}
           </a>
         </li>
 
@@ -47,7 +47,8 @@
         // ------------------------------------------------------   -->
         <ng-container class="test-site">
           <li *ngIf="project">
-            <a class="tool_tip" style="cursor: pointer;padding-top: 13px; padding-bottom: 9px;" (click)="testWidgetPage()">
+            <a class="tool_tip" style="cursor: pointer;padding-top: 13px; padding-bottom: 9px;"
+              (click)="testWidgetPage()">
               <i class="material-icons navbar-test-site-btn" style="padding: 5px;">play_arrow</i>
               <p class="hidden-lg hidden-md">testwidget</p>
               <div class="bottom"
@@ -232,7 +233,7 @@
 
             <li>
               <span style="padding-left: 24px;font-size: 12px; color: rgb(118,149,165);font-weight: 400">
-                {{ 'RecentProjects' | translate  }}
+                {{ 'RecentProjects' | translate }}
               </span>
             </li>
 
@@ -244,11 +245,12 @@
             -->
             <!-- *ngFor="let prjct of projects?.slice().reverse() | slice:0:5; let i=index" -->
             <li *ngFor="let prjct of projects?.slice() | slice:0:5; let i=index" style="cursor: pointer">
-              <a (click)="goToHome(prjct?.id_project?._id, prjct?.id_project?.name,
-              project?.id_project?.profile?.name, 
-              project?.id_project?.trialExpired, 
-              project?.id_project?.trialDaysLeft, 
-              project?.id_project?.activeOperatingHours)"
+              <a (click)="goToHome(
+              prjct?.id_project?._id, prjct?.id_project?.name,
+              prjct?.id_project?.profile?.name, 
+              prjct?.id_project?.trialExpired, 
+              prjct?.id_project?.trialDaysLeft, 
+              prjct?.id_project?.activeOperatingHours)"
                 [ngClass]="{'li-selected' : prjct?.id_project?._id === projectId }">
 
                 <span> {{ prjct?.id_project?.name }} </span>
