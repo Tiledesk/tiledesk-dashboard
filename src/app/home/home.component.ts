@@ -89,6 +89,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   projectUsers: any // TO DISPLAY THE PROJECT USERS IN THE NEW HOME HEADER
   storageBucket: string;
   chatbots: any // TO DISPLAY THE CHATVOT IN THE NEW HOME HEADER
+  DISPLAY_TEAMMATES: boolean = false;
+  DISPLAY_CHATBOTS: boolean = false;
   constructor(
     public auth: AuthService,
     private route: ActivatedRoute,
@@ -113,19 +115,18 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.getStorageBucket();
+    this.getCurrentProjectAndInit();
+    // this.getStorageBucket(); // moved in getCurrentProject()
     console.log('!!! Hello HomeComponent! ');
     this.getVisitorsByLastNDays(this.selectedDaysId); /// VISITOR GRAPH FOR THE NEW HOME
     this.initDay = moment().subtract(6, 'd').format('D/M/YYYY') /// VISITOR GRAPH FOR THE NEW HOME
     this.endDay = moment().subtract(0, 'd').format('D/M/YYYY') /// VISITOR GRAPH FOR THE NEW HOME
     console.log("INIT", this.initDay, "END", this.endDay); /// VISITOR GRAPH FOR THE NEW HOME
-    this.getActiveContactsCount()  /// COUNT OF ACTIVE CONTACTS FOR THE NEW HOME
-    this.getVisitorsCount() /// COUNT OF VISITORS FOR THE NEW HOME
+
 
     // this.getDeptsByProjectId(); // USED FOR COUNT OF DEPTS FOR THE NEW HOME
 
-    this.getLastMounthMessagesCount() // USED TO GET THE MESSAGES OF THE LAST 30 DAYS
-    this.getLastMounthRequestsCount(); // USED TO GET THE REQUESTS OF THE LAST 30 DAYS
+
 
     this.getBrowserLanguage();
     this.translateInstallWidget();
@@ -146,7 +147,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     // }
     this.getLoggedUser()
     // this.getProjectId()
-    this.getCurrentProject()
+
 
     // get the PROJECT-USER BY CURRENT-PROJECT-ID AND CURRENT-USER-ID
     // IS USED TO DETERMINE IF THE USER IS AVAILABLE OR NOT AVAILABLE
@@ -165,7 +166,57 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.getChatUrl();
   }
 
-  getStorageBucket() {
+
+
+  getCurrentProjectAndInit() {
+    this.subscription = this.auth.project_bs.subscribe((project) => {
+
+      console.log('HOME project from AUTH service subscription  ', project)
+      if (project) {
+        this.project = project
+        this.projectId = this.project._id
+        this.OPERATING_HOURS_ACTIVE = this.project.operatingHours
+        console.log('HOME > OPERATING_HOURS_ACTIVE', this.OPERATING_HOURS_ACTIVE)
+
+        this.init()
+      }
+    });
+  }
+
+
+  init() {
+
+    this.getStorageBucketThenUserAndBots();
+    this.getLastMounthMessagesCount() // USED TO GET THE MESSAGES OF THE LAST 30 DAYS
+    this.getLastMounthRequestsCount(); // USED TO GET THE REQUESTS OF THE LAST 30 DAYS
+    this.getActiveContactsCount()  /// COUNT OF ACTIVE CONTACTS FOR THE NEW HOME
+    this.getVisitorsCount() /// COUNT OF VISITORS FOR THE NEW HOME
+
+  }
+
+  toggleDisplayTeammates() {
+    if (this.DISPLAY_TEAMMATES === false) {
+      this.DISPLAY_TEAMMATES = true;
+      console.log('HOME > DISPLAY_TEAMMATES', this.DISPLAY_TEAMMATES)
+    } else if (this.DISPLAY_TEAMMATES === true) {
+      this.DISPLAY_TEAMMATES = false;
+      console.log('HOME > DISPLAY_TEAMMATES', this.DISPLAY_TEAMMATES)
+    }
+  }
+
+  toggleDisplayChatbots () {
+
+    if (this.DISPLAY_CHATBOTS === false) {
+      this.DISPLAY_CHATBOTS = true;
+      console.log('HOME > DISPLAY_CHATBOTS', this.DISPLAY_CHATBOTS)
+    } else if (this.DISPLAY_CHATBOTS === true) {
+      this.DISPLAY_CHATBOTS = false;
+      console.log('HOME > DISPLAY_CHATBOTS', this.DISPLAY_CHATBOTS)
+    }
+  }
+  
+
+  getStorageBucketThenUserAndBots() {
     const firebase_conf = this.appConfigService.getConfig().firebase;
     this.storageBucket = firebase_conf['storageBucket'];
     console.log('STORAGE-BUCKET HOME ', this.storageBucket)
@@ -287,10 +338,22 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.faqKbService.getAllBotByProjectId().subscribe((faqKb: any) => {
       console.log('HOME - GET FAQKB RES', faqKb);
       if (faqKb) {
-        this.chatbots = faqKb;
 
 
-        this.chatbots.forEach(bot => {
+
+        faqKb.forEach(bot => {
+
+          console.log('HOME - GET FAQKB forEach bot: ', bot)
+
+          if (bot && bot['type'] === "identity") {
+
+            const index = faqKb.indexOf(bot);
+            console.log('HOME - GET FAQKB INDEX OF IDENTITY BOT', index);
+            if (index > -1) {
+              faqKb.splice(index, 1);
+            }
+          }
+
           const imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + storagebucket + "/o/profiles%2F" + bot['_id'] + "%2Fphoto.jpg?alt=media"
           this.checkImageExists(imgUrl, (existsImage) => {
             if (existsImage == true) {
@@ -303,7 +366,8 @@ export class HomeComponent implements OnInit, OnDestroy {
             }
           });
         });
-
+        this.chatbots = faqKb;
+        console.log('HOME - GET FAQKB RES this.chatbots', this.chatbots);
 
         // this.countOfBots = faqKb.length;
         // console.log('HOME - GET FAQKB RES', this.countOfBots);
@@ -386,6 +450,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     // }
   }
 
+  // OLD - NOW NOT WORKS
   getVisitorCounter() {
     this.departmentService.getVisitorCounter()
       .subscribe((visitorCounter: any) => {
@@ -539,9 +604,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
-  goToPricing() {
-    this.router.navigate(['project/' + this.projectId + '/pricing']);
-  }
 
 
 
@@ -571,18 +633,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     })
   }
 
-  getCurrentProject() {
-    this.subscription = this.auth.project_bs.subscribe((project) => {
-      this.project = project
-      console.log('00 -> HOME project from AUTH service subscription  ', project)
 
-      if (this.project) {
-        this.projectId = this.project._id
-        this.OPERATING_HOURS_ACTIVE = this.project.operatingHours
-        console.log('HOME > OPERATING_HOURS_ACTIVE', this.OPERATING_HOURS_ACTIVE)
-      }
-    });
-  }
 
   // <!-- RESOUCES (link renamed in WIDGET) -->
   goToResources() {
@@ -612,6 +663,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.router.navigate(['project/' + this.projectId + '/hours-demo']);
   }
 
+  // test link
+  goToPricing() {
+    this.router.navigate(['project/' + this.projectId + '/pricing']);
+  }
+
+
   goToOperatingHours() {
     this.router.navigate(['project/' + this.projectId + '/hours']);
   }
@@ -623,7 +680,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   goToVisitorsAnalytics() {
     this.router.navigate(['project/' + this.projectId + '/analytics/metrics/visitors']);
-  } 
+  }
 
   // Analytics > Metrics > Conversation
   goToRequestsAnalytics() {
@@ -633,7 +690,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   goToContacts() {
     this.router.navigate(['project/' + this.projectId + '/contacts']);
-  } 
+  }
 
   goToBotsList() {
     this.router.navigate(['project/' + this.projectId + '/bots']);

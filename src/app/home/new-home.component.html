@@ -5,14 +5,70 @@
 
 <div class="main-content" style="padding-top: 8px;margin-top: 0px;">
 
+
+  <!-- <div class="stripeContainer" style="-webkit-box-pack: end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;     display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-transform: skewY(-12deg);
+    transform: skewY(-12deg);">
+    <div class="grid" style="height: 200%; --content-column-width: minmax(0,calc(1040px / var(--content-columns)));
+    --gutter-column-width: 1fr;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-rows: repeat(auto-fill,var(--stripe-height));
+    grid-template-columns: [viewport-start] 1fr [left-gutter-start] repeat(var(--gutter-columns),var(--gutter-column-width)) [left-gutter-end content-start] repeat(var(--content-columns),var(--content-column-width)) [content-end right-gutter-start] repeat(var(--gutter-columns),var(--gutter-column-width)) [right-gutter-end] 1fr [viewport-end];">
+           
+      <div class="stripe" style="grid-row-start: -11;
+      grid-column: 3/span 2;
+      -webkit-box-shadow: inset 0 0 0 1.5px #e6ebf1;
+      box-shadow: inset 0 0 0 1.5px #e6ebf1;"></div>
+      <div class="stripe" style="grid-row-start: -7;
+      grid-column: span 2/-5;
+      -webkit-box-shadow: inset 0 0 0 1.5px #e6ebf1;
+      box-shadow: inset 0 0 0 1.5px #e6ebf1;"></div>
+      <div class="stripe" style="    grid-row-start: -5;
+      grid-column: span 5/-4;
+      background-color: #ffbf74;"></div>
+      <div class="stripe" style="grid-row-start: -4;
+      grid-column: viewport-start/span 6;
+      background-color: #ffbf74;"></div>
+      <div class="stripe" style="    grid-row-start: -4;
+      grid-column: 7/span 1;
+      background-color: #e6ebf1;"></div>
+      <div class="stripe" style="    grid-row-start: -4;
+      grid-column: span 7/viewport-end;
+      background-color: #8f6ed5;"></div>
+      <div class="stripe"></div>
+      <div class="stripe"></div>
+      <div class="stripe" style="">
+
+      </div>
+
+    </div>
+  </div> -->
+
   <!-- ----- new  2 -->
   <div class="row">
     <div class="col-md-12" style="padding-left: 0px; padding-right: 0px;  margin-top: -25px;">
-      <div class="n-header-home" style="background-color:#1a73e8; padding: 12px 30px 18px 30px;">
-        <h2
-          style="font-family: 'Google Sans', sans-serif !important;color: #fff; font-weight: 400; font-size:32px; margin-bottom: 18px;">
+      <div class="n-header-home">
+        <h2 class="n-header-home-title">
           {{ prjct_name }}
 
+          <!-- // PLAN TYPE BADGE -->
           <span *ngIf="isVisible" style="font-family: roboto;">
             <span class="project-plan" (click)="goToPricingOrOpenModalSubsExpired()"
               style="text-transform:capitalize; margin-left: 0px !important;top: -4px!important; box-shadow: 0 0 0 1px rgb(255 255 255 / 50%) inset">
@@ -28,79 +84,72 @@
                 {{ 'Pricing.SubscriptionPaymentProblem' | translate }} </span>
             </span>
           </span>
-
         </h2>
 
         <!-- // HUMAN AGENTS -->
         <div class="project-temmates" style="align-items: center;display: flex; flex-wrap: wrap;">
-          <div class="served-by-desktop-a"
-            style="margin-right: 16px; background: #144FCA; padding-left: 2px; padding-bottom: 3px; padding-top: 0px; padding-right: 8px; border-radius: 18px;">
+          <div class="served-by-desktop-a--home-header">
 
-            <!-- <div style="position: absolute;top: 10px;font-size: 12px;font-weight: 400;"
-              [ngClass]="{'top_zero': projectUsers?.length === 1 }">
-
-              <div class="homeheader-links-container">
-                <div class="homeheader-link-title-first">
-                  <span *ngIf="projectUsers?.length > 1"> Teammates </span>
-                  <span *ngIf="projectUsers?.length === 1"> No teammates to help you? </span>
-                  <span class="material-icons"
-                    style="vertical-align: middle; color: #3c4858;font-size:18px; position: relative; left: -4px;">
-                    keyboard_arrow_right
-                  </span>
-                </div>
-                <div class="homeheader-link-title-second" (click)="goToUsersList()" style="width: 150px !important;">
-                  <span *ngIf="projectUsers?.length > 1" style="color: #0f62ff;width: 150px !important;">Add new
-                    teammates </span>
-                  <span *ngIf="projectUsers?.length === 1" style="color: #0f62ff;">Invite your first teammate</span>
-
-                  <span class="material-icons"
-                    style="vertical-align: middle;color: #0f62ff; font-size:18px; position: relative; left: -4px;">
-                    keyboard_arrow_right
-                  </span>
-                </div>
-              </div>
-            </div> -->
-
-            <div class="served-by-desktop-b" *ngFor="let projectUser of projectUsers; let first = first;">
-              <div [ngClass]="{ 'first-served-by': first }" class="served-by-desktop-c tool_tip"
-                (click)="goToAgentProfile(projectUser?.id_user?._id)" style="cursor:pointer">
+            <ng-container *ngIf="!DISPLAY_TEAMMATES">
+              <div class="served-by-desktop-b">
                 <div class="served-by-desktop-d">
                   <div size="32" class="served-by-desktop-e">
-
-                    <img *ngIf="projectUser?.hasImage"
-                      src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media"
-                      alt="" onerror="this.src='assets/img/no_image_user.png'" style="width: 32px;height: 32px;">
-
-                    <!-- // AVATAR WITH USER INITILAS IF DOES NOT EXIST PROFILE IMAGE -->
-                    <div *ngIf="!projectUser.hasImage" class="altenative-avatar-wrap"
-                      [ngStyle]="{'background-color': projectUser?.fillColour }" style="width: 32px;height: 32px;">
-
-                      <span class="altenative--avatar">
-                        {{ projectUser?.fullname_initial }}
-                      </span>
-
-                    </div>
+                    <img src="assets/img/user_white.svg" style="width: 32px;height: 32px; padding: 5px;">
                   </div>
                 </div>
-                <span class="bottom" style="min-width: fit-content;
-                  top: 40px;
-                  border-radius: 3px;
-                  padding: 0px 6px;
-                  font-size: 11px; white-space: nowrap;">
-                  <span style="text-transform: capitalize;"> {{ projectUser?.id_user?.firstname }}
-                    <span *ngIf="projectUser?.id_user?.lastname">
-                      {{ projectUser?.id_user?.lastname | slice:0:1 }}.
-                    </span>
-                  </span>
-                  <i style="height:6px"></i>
-                </span>
               </div>
-            </div>
+            </ng-container>
+
+            <ng-container *ngIf="DISPLAY_TEAMMATES">
+              <div class="served-by-desktop-b" *ngFor="let projectUser of projectUsers; let first = first;let i=index">
+                <div [ngClass]="{ 'first-served-by': first }" class="served-by-desktop-c tool_tip"
+                  (click)="goToAgentProfile(projectUser?.id_user?._id)" style="cursor:pointer">
+                  <div class="served-by-desktop-d">
+                    <div size="32" class="served-by-desktop-e">
+
+                      <img *ngIf="projectUser?.hasImage"
+                        src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media"
+                        alt="" onerror="this.src='assets/img/no_image_user.png'" style="width: 32px;height: 32px;">
+
+                      <!-- // AVATAR WITH USER INITILAS IF DOES NOT EXIST PROFILE IMAGE -->
+                      <div *ngIf="!projectUser.hasImage" class="altenative-avatar-wrap"
+                        [ngStyle]="{'background-color': projectUser?.fillColour }" style="width: 32px;height: 32px;">
+
+                        <span class="altenative--avatar">
+                          {{ projectUser?.fullname_initial }}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <span class="bottom-home-header">
+                    <span style="text-transform: capitalize;"> {{ projectUser?.id_user?.firstname }}
+                      <span *ngIf="projectUser?.id_user?.lastname">
+                        {{ projectUser?.id_user?.lastname | slice:0:1 }}.
+                      </span>
+                    </span>
+                    <i style="height:6px"></i>
+                  </span>
+                </div>
+              </div>
+            </ng-container>
             <span style="padding-left: 4px;color: rgba(255,255,255,0.8);font-size: 13px;font-weight: 400;">
 
-              {{projectUsers?.length}} temmate
+              {{projectUsers?.length}} teammate
 
-              <span class="tool_tip">
+
+              <span class="tool_tip" *ngIf="!DISPLAY_TEAMMATES">
+                <span class="material-icons add-operators-icons tool_tip" (click)="toggleDisplayTeammates()"
+                  style="vertical-align: middle;color:  rgba(255,255,255,0.8); font-size:18px; position: relative;cursor: pointer;transform: rotate(-90deg);">
+                  filter_list
+                </span>
+
+                <span class="bottom-home-header">
+                  <span>Display teammates </span>
+                  <i style="height:6px"></i>
+                </span>
+              </span>
+
+              <span class="tool_tip" *ngIf="DISPLAY_TEAMMATES">
                 <span class="material-icons add-operators-icons tool_tip" (click)="goToUsersList()"
                   style="vertical-align: middle;color:  rgba(255,255,255,0.8); font-size:18px; position: relative;cursor: pointer;">
                   add_circle_outline
@@ -116,6 +165,23 @@
                   <i style="height:6px"></i>
                 </span>
               </span>
+
+
+
+              <span class="tool_tip" *ngIf="DISPLAY_TEAMMATES">
+                <span class="material-icons add-operators-icons tool_tip" (click)="toggleDisplayTeammates()"
+                  style="vertical-align: middle;color:  rgba(255,255,255,0.8); font-size:18px; position: relative;cursor: pointer;transform: rotate(90deg);">
+                  filter_list
+                </span>
+
+                <span class="bottom-home-header">
+                  <span>Hide teammates </span>
+
+                  <i style="height:6px"></i>
+                </span>
+              </span>
+
+
 
               <!-- <div class="homeheader-links--container">
                 <div class="homeheader-link-title--first">
@@ -142,8 +208,7 @@
           </div>
 
           <!-- /// CHATBOT AGENTS -->
-          <div class="served-by-desktop-a"
-            style="margin-right: 16px; background: #144FCA; padding-left: 2px; padding-bottom: 3px; padding-top: 0px; padding-right: 8px; border-radius: 18px;">
+          <div class="served-by-desktop-a--home-header">
             <!-- <div style="position: absolute;top: 10px;font-size: 12px;font-weight: 400;"
               [ngClass]="{'top_zero': chatbots?.length === 1 }">
               <div class="homeheader-links-container" style="width: 165px;">
@@ -165,109 +230,158 @@
                 </div>
               </div>
             </div> -->
-            <div class="served-by-desktop-b" *ngFor="let bot of chatbots; let first = first;">
-              <div [ngClass]="{ 'first-served-by': first }" class="served-by-desktop-c tool_tip"
-                (click)="goToBotProfile(bot?._id, bot?.type)" style="cursor:pointer">
 
-
-                <div class="served-by-desktop-d" *ngIf="bot?.type !== 'identity'">
+            <ng-container *ngIf="!DISPLAY_CHATBOTS">
+              <div class="served-by-desktop-b">
+                <div class="served-by-desktop-d">
                   <div size="32" class="served-by-desktop-e">
-
-                    <img [ngClass]="{'bot-img-gray-bckgrnd': bot.hasImage === false}"
-                      src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{bot?._id}}%2Fphoto.jpg?alt=media"
-                      alt="" onerror="this.src='assets/img/avatar_bot_tiledesk_white.svg'"
-                      style="width: 32px;height: 32px;">
-                  </div>
-
-                  <div *ngIf="bot.type === 'internal'">
-                    <img class="home-served-by-bot-type-logo" style="left: -1px;top: 3px;"
-                      src="assets/img/tiledesk_logo_no_text.png" />
-                  </div>
-                  <div *ngIf="bot.type === 'external'">
-                    <img class="home-served-by-bot-type-logo" style="left: -1px;top: 3px;"
-                      src="assets/img/external_bot_logo.png" />
-                  </div>
-                  <div *ngIf="bot.type === 'dialogflow'">
-                    <img class="home-served-by-bot-type-logo" style="left: -1px;top: 3px;"
-                      src="assets/img/Dialogflow_logo_no_text.png" />
+                    <img src="assets/img/avatar_bot_tiledesk_white.svg" style="width: 32px;height: 32px; padding: 2px;">
                   </div>
                 </div>
-
-
-                <!-- // USECASE: THERE IS ONLY A CHATBOT e.g. the identity bot IN THIS CASE DISPLAY THE ICON ON "NO-BOT" -->
-                <div class="served-by-desktop-d" *ngIf="bot?.type === 'identity' && chatbots?.length === 1">
-                  <div size="32" class="served-by-desktop-e">
-
-                    <img src="assets/img/bot_alt_slash_white.svg" alt="no-chatbot-icon"
-                      style="width: 32px;height: 32px;background: #aaa !important">
-                  </div>
-
-                </div>
-
-                <span class="bottom" *ngIf="bot?.type !== 'identity'" style="min-width: fit-content;
-                  top: 40px;
-                  border-radius: 3px;
-                  padding: 0px 6px;
-                  font-size: 11px; white-space: nowrap;">
-                  <span style="text-transform: capitalize;"> {{ bot?.name }} </span>
-                  <i style="height:6px"></i>
-                </span>
               </div>
-            </div>
+            </ng-container>
+
+            <ng-container *ngIf="DISPLAY_CHATBOTS">
+              <div class="served-by-desktop-b" *ngFor="let bot of chatbots; let first = first;">
+                <div [ngClass]="{ 'first-served-by': first }" class="served-by-desktop-c tool_tip"
+                  (click)="goToBotProfile(bot?._id, bot?.type)" style="cursor:pointer">
+
+
+                  <div class="served-by-desktop-d" *ngIf="bot?.type !== 'identity'">
+                    <div size="32" class="served-by-desktop-e">
+
+                      <img [ngClass]="{'bot-img-gray-bckgrnd': bot.hasImage === false}"
+                        src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{bot?._id}}%2Fphoto.jpg?alt=media"
+                        alt="" onerror="this.src='assets/img/avatar_bot_tiledesk_white.svg'"
+                        style="width: 32px;height: 32px;">
+                    </div>
+
+                    <div *ngIf="bot.type === 'internal'">
+                      <img class="home-served-by-bot-type-logo" style="left: -1px;top: 3px;"
+                        src="assets/img/tiledesk_logo_no_text.png" />
+                    </div>
+                    <div *ngIf="bot.type === 'external'">
+                      <img class="home-served-by-bot-type-logo" style="left: -1px;top: 3px;"
+                        src="assets/img/external_bot_logo.png" />
+                    </div>
+                    <div *ngIf="bot.type === 'dialogflow'">
+                      <img class="home-served-by-bot-type-logo" style="left: -1px;top: 3px;"
+                        src="assets/img/Dialogflow_logo_no_text.png" />
+                    </div>
+                  </div>
+
+
+                  <!-- // USECASE: THERE IS ONLY A CHATBOT e.g. the identity bot IN THIS CASE DISPLAY THE ICON ON "NO-BOT" -->
+                  <div class="served-by-desktop-d" *ngIf="bot?.type === 'identity' && chatbots?.length === 1">
+                    <div size="32" class="served-by-desktop-e">
+
+                      <img src="assets/img/bot_alt_slash_white.svg" alt="no-chatbot-icon"
+                        style="width: 32px;height: 32px;background: #aaa !important">
+                    </div>
+
+                  </div>
+
+                  <span class="bottom-home-header" *ngIf="bot?.type !== 'identity'">
+                    <span style="text-transform: capitalize;"> {{ bot?.name }} </span>
+                    <i style="height:6px"></i>
+                  </span>
+                </div>
+              </div>
+            </ng-container>
 
             <span style="padding-left: 4px;color: rgba(255,255,255,0.8);font-size: 13px;font-weight: 400;">
-              {{chatbots?.length - 1}} chatbot
-              <span class="tool_tip">
+
+              {{chatbots?.length}}
+              <span *ngIf="chatbots?.length === 1"> chatbot </span>
+              <span *ngIf="chatbots?.length > 1 || chatbots?.length === 0"> chatbots </span>
+
+              <span class="tool_tip" *ngIf="!DISPLAY_CHATBOTS && chatbots?.length > 0">
+                <span class="material-icons add-operators-icons tool_tip" (click)="toggleDisplayChatbots()"
+                  style="vertical-align: middle;color:  rgba(255,255,255,0.8); font-size:18px; position: relative;cursor: pointer;transform: rotate(-90deg);">
+                  filter_list
+                </span>
+
+                <span class="bottom-home-header">
+                  <span *ngIf="chatbots?.length > 1">{{'ViewChatbots' | translate}} </span>
+                  <span *ngIf="chatbots?.length === 1">{{'ViewChatbot' | translate}} </span>
+                  <i style="height:6px"></i>
+                </span>
+              </span>
+
+              <span class="tool_tip" *ngIf="!DISPLAY_CHATBOTS && chatbots?.length === 0">
                 <span class="material-icons add-operators-icons" (click)="goToBotsList()"
                   style="vertical-align: middle;color:  rgba(255,255,255,0.8); font-size:18px; position: relative; cursor: pointer;">
                   add_circle_outline
                 </span>
 
-                <span class="bottom"
-                  style="min-width: fit-content; top: 34px;  border-radius: 3px;  padding: 0px 6px;    font-size: 11px; white-space: nowrap;">
-                  <span *ngIf="chatbots?.length === 1">Add your first chatbot</span>
-                  <span *ngIf="chatbots?.length > 1">Add a chatbot</span>
+                <span class="bottom-home-header">
+                  <span *ngIf="chatbots?.length === 0">{{'AddYourFirstChatbot' | translate}}</span>
+                  <i style="height:6px"></i>
+                </span>
+              </span>
+
+
+              <span class="tool_tip" *ngIf="DISPLAY_CHATBOTS">
+                <span class="material-icons add-operators-icons" (click)="goToBotsList()"
+                  style="vertical-align: middle;color:  rgba(255,255,255,0.8); font-size:18px; position: relative; cursor: pointer;">
+                  add_circle_outline
+                </span>
+
+                <span class="bottom-home-header">
+                  <!-- <span *ngIf="chatbots?.length === 0">{{'AddYourFirstChatbot' | translate}}</span> -->
+                  <span *ngIf="chatbots?.length > 0">{{'AddChatbot' | translate}}</span>
+                  <i style="height:6px"></i>
+                </span>
+              </span>
+
+              <span class="tool_tip" *ngIf="DISPLAY_CHATBOTS">
+                <span class="material-icons add-operators-icons tool_tip" (click)="toggleDisplayChatbots()"
+                  style="vertical-align: middle;color:  rgba(255,255,255,0.8); font-size:18px; position: relative;cursor: pointer;transform: rotate(90deg);">
+                  filter_list
+                </span>
+
+                <span class="bottom-home-header">
+                  <span>{{'Close' | translate}}</span>
                   <i style="height:6px"></i>
                 </span>
               </span>
             </span>
           </div>
-
-          <!-- // OPERATING HOURS -->
-          <div class="served-by-desktop-a"
-            style="margin-right: 105px; background: #144FCA; padding-left: 0px;padding-bottom: 0px; padding-top: 1px; padding-right: 0px; border-radius: 18px; height: 35px;">
-
+          <!-- clock-solid-green.svg -->
+          <!-- clock-solid-red.svg -->
+          <!-- // OPERATING HOURS  !!!!! DISPLAY NONE-->
+          <div class="served-by-desktop-a--home-header-operating-hours">
             <div class="served-by-desktop-b">
-              <!-- #4caf50 -->
-              <span class="material-icons" style="font-size: 36px; line-height: unset;"
-                [ngClass]="{'operating-hours-active-color': OPERATING_HOURS_ACTIVE, 'operating-hours-no-active-color': !OPERATING_HOURS_ACTIVE}">
-                access_time
-              </span>
-
+              <div class="served-by-desktop-d">
+                <div size="32" class="served-by-desktop-e" style="position: relative;top: -2px;">
+                  <img *ngIf="!OPERATING_HOURS_ACTIVE" src="assets/img/clock-solid-white.svg"
+                    style="width: 32px;height: 32px; padding: 6px;">
+                  <img *ngIf="OPERATING_HOURS_ACTIVE" src="assets/img/clock-solid-green.svg"
+                    style="width: 32px;height: 32px; padding: 6px;">
+                </div>
+              </div>
             </div>
 
+            <span style="padding-left: 4px;color: rgba(255,255,255,0.8);font-size: 13px;font-weight: 400;">
 
-            <span (click)="goToOperatingHours()" class="operating-hours-status-text"
-              style="position: relative;top: 1px;">
-              <span *ngIf="!OPERATING_HOURS_ACTIVE"
-                style="padding-left: 4px;color: rgba(255,255,255,0.8);font-size: 13px;font-weight: 400; cursor: pointer;"
-                class="link-to-oh">
-                {{ 'OperatingHoursAreDisabled' | translate }}
-                <span class="material-icons"
-                  style="vertical-align: middle;color: rgba(255,255,255,0.8); position: relative;left: -4px;top: -1px;">
-                  keyboard_arrow_right
+
+              <span *ngIf="!OPERATING_HOURS_ACTIVE"> {{'OperatingHoursDisabled' | translate }}</span>
+              <span *ngIf="OPERATING_HOURS_ACTIVE"> {{'OperatingHoursEnabled' | translate}} </span>
+
+
+              <span class="tool_tip">
+                <span class="material-icons add-operators-icons tool_tip" (click)="goToOperatingHours()"
+                  style="vertical-align: middle;color:  rgba(255,255,255,0.8); font-size:18px; position: relative;cursor: pointer;transform: rotate(-90deg);top: -1px;">
+                  filter_list
                 </span>
-              </span>
-              <span *ngIf="OPERATING_HOURS_ACTIVE"
-                style="padding-left: 4px;color: rgba(255,255,255,0.8);font-size: 13px;font-weight: 400;cursor: pointer;"
-                class="link-to-oh">
-                {{ 'OperatingHoursAreEnabled' | translate }}
-                <span class="material-icons"
-                  style="vertical-align: middle;color: rgba(255,255,255,0.8); position: relative;left: -4px;top: -1px;">
-                  keyboard_arrow_right
+
+                <span class="bottom-home-header">
+                  <span>{{'AdjustOperatingHours' | translate }}</span>
+                  <i style="height:6px"></i>
                 </span>
               </span>
             </span>
+
           </div>
         </div>
       </div>
@@ -527,13 +641,13 @@
 
             <div class="links-container">
               <div class="link-title-first">
-                <span> Total leads acquired </span>
+                <span> {{'TotalLeadsAcquired' | translate}} </span>
                 <span class="material-icons" style="vertical-align: middle; color: #3c4858;">
                   keyboard_arrow_right
                 </span>
               </div>
               <div (click)="goToContacts()" class="link-title-second">
-                <span style="color: #0f62ff;">Go to contact list</span>
+                <span style="color: #0f62ff;">{{'GoToContactList' | translate}}</span>
                 <span class="material-icons" style="vertical-align: middle;color: #0f62ff;">
                   keyboard_arrow_right
                 </span>
@@ -588,13 +702,13 @@
 
             <div class="links-container">
               <div class="link-title-first">
-                <span> Last 30 days messages </span>
+                <span> {{'Last30DaysMessages' | translate}} </span>
                 <span class="material-icons" style="vertical-align: middle; color: #3c4858;">
                   keyboard_arrow_right
                 </span>
               </div>
               <div class="link-title-second" (click)="goToMessagesAnalytics()">
-                <span style="color: #0f62ff;">Filter report in analytics</span>
+                <span style="color: #0f62ff;">{{'FilterReportInAnalytics' | translate}}</span>
                 <span class="material-icons" style="vertical-align: middle;color: #0f62ff;">
                   keyboard_arrow_right
                 </span>
@@ -602,11 +716,6 @@
             </div>
           </div>
         </div>
-
-
-
-
-
 
         <!-- 
       // ---------------------------------------------------------
@@ -650,13 +759,13 @@
             </div>
             <div class="links-container">
               <div class="link-title-first">
-                <span> Last 30 days conversations </span>
+                <span> {{'Last30DaysConversations' | translate}} </span>
                 <span class="material-icons" style="vertical-align: middle; color: #3c4858;">
                   keyboard_arrow_right
                 </span>
               </div>
               <div class="link-title-second" (click)="goToRequestsAnalytics()">
-                <span style="color: #0f62ff;">Filter report in analytics</span>
+                <span style="color: #0f62ff;">{{'FilterReportInAnalytics' | translate}}</span>
                 <span class="material-icons" style="vertical-align: middle;color: #0f62ff;">
                   keyboard_arrow_right
                 </span>
@@ -678,13 +787,13 @@
             </div>
             <div class="links-container">
               <div class="link-title-first">
-                <span> Last 30 days visitors </span>
+                <span> {{'Last30DaysVisitors' | translate }} </span>
                 <span class="material-icons" style="vertical-align: middle; color: #3c4858;">
                   keyboard_arrow_right
                 </span>
               </div>
               <div class="link-title-second" (click)="goToVisitorsAnalytics()">
-                <span style="color: #0f62ff;">Filter report in analytics</span>
+                <span style="color: #0f62ff;">{{'FilterReportInAnalytics' | translate}}</span>
                 <span class="material-icons" style="vertical-align: middle;color: #0f62ff;">
                   keyboard_arrow_right
                 </span>
@@ -779,13 +888,13 @@
     <div class="col-md-12">
       <div class="visitors-graph-title-container">
         <div class="visitors-graph-title-1">
-          <span> Visitor on your page in the last 7 days </span>
+          <span> {{'VisitorsOnYourPageInTheLast7Days' | translate}}</span>
           <span class="material-icons" style="vertical-align: middle; color: #3c4858;">
             keyboard_arrow_right
           </span>
         </div>
         <div class="visitors-graph-title-2" (click)="goToVisitorsAnalytics()">
-          <span style="color: #0f62ff;">Go to visitors analytics to filter the report</span>
+          <span style="color: #0f62ff;">{{'FilterReportInAnalytics' | translate}}</span>
           <span class="material-icons" style="vertical-align: middle;color: #0f62ff;">
             keyboard_arrow_right
           </span>
@@ -905,8 +1014,8 @@
       <div class="card">
         <div class="card-content">
 
-          <h3 class="getting-started-card-title">Take a shortcut</h3>
-          <p class="getting-started-card-subtitle">Jump straight to the most popular settings in the Dashboard.</p>
+          <h3 class="getting-started-card-title">{{'TakeAShortcut' | translate}}</h3>
+          <p class="getting-started-card-subtitle">{{'JumpStraightToTheMostPopularSettingsInTheDashboard' | translate}}.</p>
           <div class="row">
             <div class="col-xs-3" (click)="openChat()" style="cursor: pointer;">
 
@@ -938,7 +1047,7 @@
                 </svg>
               </div>
 
-              
+
               <div class="wrap-shortcut-title">
                 Chat
               </div>
@@ -1052,7 +1161,7 @@
                 {{ 'Integrations' | translate }}
               </div>
               <div class="wrap-shortcut-subtitle">
-                Engage and retain more customers with apps and integrations
+                {{'EngageAndRetainMoreCustomersWithAppsAndIntegrations' | translate}}
               </div>
 
             </div>
@@ -1067,9 +1176,9 @@
 
 </div>
 
-  <!-- start new-bckgrnd -->
-  <!-- https://stripe.com/img/v3/home/app-illustrations/catawiki.svg -->
-  <!-- <div class="row">
+<!-- start new-bckgrnd -->
+<!-- https://stripe.com/img/v3/home/app-illustrations/catawiki.svg -->
+<!-- <div class="row">
   <div class="col-md-12">
 
 		<div class="block">
@@ -1093,65 +1202,62 @@
 
   </div>
 </div> -->
-  <!-- ./end new-bckgrnd -->
+<!-- ./end new-bckgrnd -->
 
- 
-  <!-- 
+
+<!-- 
       ////////////////////////////////////////////////////////
       /////////// BUTTON TO TEST USER ACTIVITY LOG ///////////
       ////////////////////////////////////////////////////////  -->
-  <!-- <div class="col-md-3">
+<!-- <div class="col-md-3">
         <button class="btn btn-primary" (click)="goToUserActivitiesLog()">
           Activities
         </button>
       </div> -->
 
-  <!-- 
+<!-- 
       ////////////////////////////////////////////////////////
       ///////////////// BUTTON TO TEST PRICING ///////////////
       ////////////////////////////////////////////////////////  -->
 
-  <!-- <div class="col-md-3">
+<!-- <div class="col-md-3">
         <button class="btn btn-primary" (click)="goToPricing()">
           Pricing
         </button>
       </div> -->
 
-  <!-- 
+<!-- 
       ////////////////////////////////////////////////////////
       ///////////////// BUTTON TO TEST Analytics Static Page ///////////////
       ////////////////////////////////////////////////////////  -->
-  <!-- <div class="col-md-3">
+<!-- <div class="col-md-3">
         <button class="btn btn-primary" (click)="goToAnalyticsStaticPage()">
             Analytics Static Page
         </button>
       </div> -->
 
-  <!-- 
+<!-- 
       ////////////////////////////////////////////////////////
       ///////////////// BUTTON TO TEST Activities Static Page ///////////////
       ////////////////////////////////////////////////////////  -->
-  <!-- <div class="col-md-3">
+<!-- <div class="col-md-3">
         <button class="btn btn-primary" (click)="goToActivitiesStaticPage()">
             Activities Static Page
         </button>
       </div> -->
 
-  <!-- 
+<!-- 
       ////////////////////////////////////////////////////////
       ///////////////// BUTTON TO TEST Hours Static Page ///////////////
       ////////////////////////////////////////////////////////  -->
-  <!-- <div class="col-md-3">
+<!-- <div class="col-md-3">
           <button class="btn btn-primary" (click)="goToHoursStaticPage()">
               Hours Static Page
           </button>
         </div> -->
 
-  <!-- </div> -->
+<!-- </div> -->
 
-  <!-- <div class="row">   </div>
+<!-- <div class="row">   </div>
 
     <div class="row">  </div> -->
-
-
-

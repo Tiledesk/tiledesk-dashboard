@@ -1,5 +1,3 @@
-
-
 my-app .main-panel .main-content .card {
   animation-duration: 750ms;
   opacity: 0;
@@ -170,60 +168,114 @@ my-app .main-panel .main-content .card {
 
 /* ./end tootip top  */
 
+/* tootip bottom for home header */
+
+.tool_tip .bottom-home-header {
+  /* min-width: 200px; */
+  /* max-width: 400px; */
+  /* top: 40px; */
+  left: 50%;
+  -webkit-transform: translate(-50%, 0);
+  transform: translate(-50%, 0);
+  /* padding: 10px; */
+  color: #ffffff;
+  background-color: #394f5a;
+  font-weight: normal;
+  /* font-size: 12px; */
+  /* border-radius: 8px; */
+  position: absolute;
+  z-index: 99999999;
+  box-sizing: border-box;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+  min-width: fit-content;
+  top: 34px;
+  border-radius: 3px;
+  padding: 0px 6px;
+  font-size: 11px;
+  white-space: nowrap;
+  display: none;
+}
+
+
+.tool_tip:hover .bottom-home-header {
+  display: block;
+}
+
+.tool_tip .bottom-home-header img {
+  width: 400px;
+}
+
+.tool_tip .bottom-home-header i {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -12px;
+  width: 24px;
+  height: 12px;
+  overflow: hidden;
+}
+
+.tool_tip .bottom-home-header i::after {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  left: 50%;
+  transform: translate(-50%, 50%) rotate(45deg);
+  background-color: #394f5a;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+}
+/* /. tootip bottom for home header */
+
 /* tootip bottom  */
-
-
 .tool_tip .bottom {
-  min-width:200px;
+  min-width: 200px;
   /*max-width:400px;*/
-  top:40px;
-  left:50%;
-  transform:translate(-50%, 0);
-  padding:10px;
-  color:#ffffff;
-  background-color:#394f5a;
-  font-weight:normal;
-  font-size:12px;
-  border-radius:8px;
-  position:absolute;
-  z-index:99999999;
-  box-sizing:border-box;
-  box-shadow:0 1px 8px rgba(0,0,0,0.5);
-  display:none;
+  top: 40px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  padding: 10px;
+  color: #ffffff;
+  background-color: #394f5a;
+  font-weight: normal;
+  font-size: 12px;
+  border-radius: 8px;
+  position: absolute;
+  z-index: 99999999;
+  box-sizing: border-box;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+  display: none;
 }
 
 .tool_tip:hover .bottom {
-  display:block;
+  display: block;
 }
 
 .tool_tip .bottom img {
-  width:400px;
+  width: 400px;
 }
 
 .tool_tip .bottom i {
-  position:absolute;
-  bottom:100%;
-  left:50%;
-  margin-left:-12px;
-  width:24px;
-  height:12px;
-  overflow:hidden;
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -12px;
+  width: 24px;
+  height: 12px;
+  overflow: hidden;
 }
 
 .tool_tip .bottom i::after {
-  content:'';
-  position:absolute;
-  width:12px;
-  height:12px;
-  left:50%;
-  transform:translate(-50%,50%) rotate(45deg);
-  background-color:#394f5a;
-  box-shadow:0 1px 8px rgba(0,0,0,0.5);
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  left: 50%;
+  transform: translate(-50%, 50%) rotate(45deg);
+  background-color: #394f5a;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
 }
-
-
-
-
+/* ./tootip bottom  */
 
 /* table style overwrite */
 .table > thead > tr > th,
@@ -232,7 +284,6 @@ my-app .main-panel .main-content .card {
 .table > thead > tr > td,
 .table > tbody > tr > td,
 .table > tfoot > tr > td {
-
   border-top: unset !important;
 }
 
@@ -256,7 +307,6 @@ my-app .main-panel .main-content .card {
   border: unset !important;
 }
 
-
 /*
 // -------------------------
 // BTN TD-BLU NO BOX-SHADOW
@@ -265,7 +315,7 @@ my-app .main-panel .main-content .card {
   box-shadow: unset !important;
   text-transform: none !important;
   padding: 9px 15px !important;
-  background: #3ea9f5 !important; 
+  background: #3ea9f5 !important;
   font-size: 14px;
 }
 
@@ -282,18 +332,18 @@ my-app .main-panel .main-content .card {
   box-shadow: unset !important;
   text-transform: none !important;
   padding: 9px 15px !important;
-  background: #3ecf8e !important; 
+  background: #3ecf8e !important;
   font-size: 14px;
 }
 
 .btn-success-no-boxshadow:hover {
   box-shadow: unset !important;
   background: #3ecf8e !important;
-  opacity: 0.6
+  opacity: 0.6;
 }
 .btn-success-no-boxshadow:focus {
   background: #3ecf8e !important;
-  opacity: 0.6
+  opacity: 0.6;
 }
 
 /*
@@ -309,17 +359,51 @@ my-app .main-panel .main-content .card {
   font-size: 14px;
 }
 
-.btn-gray-no-boxshadow:hover{
+.btn-gray-no-boxshadow:hover {
   background: #d2d4d9;
   box-shadow: unset;
   color: #050505;
 }
 
 .label-7695a5 {
-  text-align: left; color: #7695a5 !important;
+  text-align: left;
+  color: #7695a5 !important;
   font-weight: 100;
 }
 
+/*
+// ---------------------------------------------------------------------------
+// inline avatars (used in home header)
+// --------------------------------------------------------------------------- 
+*/
+.served-by-desktop-a--home-header {
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  margin-right: 16px;
+  /* background: #144fca; */
+  background: rgba(17, 54, 190, 0.2);
+  padding-left: 2px;
+  padding-bottom: 3px;
+  padding-top: 0px;
+  padding-right: 8px;
+  border-radius: 18px;
+  margin-bottom: 16px;
+}
+
+.served-by-desktop-a--home-header-operating-hours {
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  background: rgba(17, 54, 190, 0.3);
+  padding-left: 0px;
+  padding-bottom: 0px;
+  /* padding-top: 1px; */
+  padding-right: 5px;
+  border-radius: 18px;
+  height: 35px;
+  margin-bottom: 16px;
+}
 
 /*
 // ---------------------------------------------------------------------------
@@ -398,7 +482,6 @@ my-app .main-panel .main-content .card {
   box-shadow: 0 0 0 2px #1877f2;
 }
 
-
 .served-by-desktop-e:hover {
   position: relative;
   top: -3px;
@@ -408,4 +491,3 @@ my-app .main-panel .main-content .card {
   position: relative;
   top: -3px;
 }
-

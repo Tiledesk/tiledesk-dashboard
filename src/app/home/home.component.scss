@@ -224,9 +224,9 @@
 .project-plan {
   /* background-color: rgba(0,0,0,.14); */
   cursor: pointer;
-  
+
   // background-color: $brand-primary;
-  background-color: #144FCA;
+  background-color: #144fca;
   color: #fff;
   border-radius: 30px;
   font-size: 12px;
@@ -932,7 +932,6 @@
   top: 0;
 }
 
-
 .homeheader-link-title--first {
   transition: all 0.2s ease-in-out;
   opacity: 1;
@@ -951,7 +950,6 @@
     opacity: 1;
   }
 }
-
 
 .homeheader-link-title-second {
   // padding-left: 30px;
@@ -996,19 +994,19 @@
 }
 
 .add-operators-icons:hover {
-  color:#ffffff !important;
+  color: #ffffff !important;
 }
 
-.operating-hours-active-color{
-    color: #4caf50!important;
+.operating-hours-active-color {
+  color: #4caf50 !important;
 }
 
 .operating-hours-no-active-color {
-  color: #f44336!important;
+  color: #f44336 !important;
 }
 
 .link-to-oh:hover {
-  color:#ffffff !important;
+  color: #ffffff !important;
 }
 
 .altenative--avatar {
@@ -1020,9 +1018,8 @@
   // font-size: 12px;
   text-align: center;
   line-height: 30px;
-    font-size: 14px;
+  font-size: 14px;
 }
-
 
 // visitors graph
 .visitors-graph-title-container {
@@ -1087,7 +1084,7 @@
   margin-bottom: 2px !important;
   color: #303f9f !important;
   font-weight: 400 !important;
-  font-family: 'Google Sans', sans-serif !important;
+  font-family: "Google Sans", sans-serif !important;
 }
 
 .getting-started-card-subtitle {
@@ -1104,7 +1101,7 @@
   text-align: center;
   color: #303f9f !important;
   font-weight: 400 !important;
-  font-family: 'Google Sans', sans-serif !important;
+  font-family: "Google Sans", sans-serif !important;
   font-size: 16px;
 }
 
@@ -1274,4 +1271,19 @@
       }
     }
   }
+}
+
+.n-header-home {
+  background-color: #1a73e8;
+  padding: 25px 140px 65px 197px;
+}
+
+.n-header-home-title {
+  font-family: "Google Sans", sans-serif !important;
+  color: #fff;
+  // color: #1a73e8;
+  font-weight: 400;
+  font-size: 32px;
+  margin-bottom: 16px;
+  margin-top: 40px;
 }
