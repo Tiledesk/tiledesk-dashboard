@@ -4,7 +4,7 @@ import { Project } from '../models/project-model';
 import { Router } from '@angular/router';
 import { AuthService } from '../core/auth.service';
 
-import { RequestsService } from '../services/requests.service';
+// import { RequestsService } from '../services/requests.service';
 import { DepartmentService } from '../services/department.service';
 import { isDevMode } from '@angular/core';
 import { UsersService } from '../services/users.service';
@@ -16,7 +16,7 @@ import { takeUntil } from 'rxjs/operators';
 
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../services/brand.service';
-
+import { WsRequestsService } from '../services/websocket/ws-requests.service';
 @Component({
   selector: 'projects',
   templateUrl: './projects.component.html',
@@ -72,13 +72,14 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     private projectService: ProjectService,
     private router: Router,
     private auth: AuthService,
-    private requestsService: RequestsService,
+    // private requestsService: RequestsService,
     private element: ElementRef,
     private departmentService: DepartmentService,
     private usersService: UsersService,
     private uploadImageService: UploadImageService,
     public appConfigService: AppConfigService,
-    public brandService: BrandService
+    public brandService: BrandService,
+    public wsRequestsService: WsRequestsService
   ) {
     const brand = brandService.getBrand();
 
@@ -250,7 +251,8 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
 
   getWsCurrentUserAvailability$() {
-    this.usersService.currentUserWsAvailability$
+    // this.usersService.currentUserWsAvailability$
+    this.wsRequestsService.currentUserWsAvailability$
       .pipe(
         takeUntil(this.unsubscribe$)
       )
