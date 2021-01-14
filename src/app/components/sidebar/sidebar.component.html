@@ -474,12 +474,13 @@
 
           <p class="onBlackBckgrnd">
             <span *ngIf="isVisibleGRO">
-              <span class="sidebar-mini">UG </span> {{ 'UsersAndGroups' | translate }}
+              <span class="sidebar-mini">{{'UsersAndGroupsInitials' | translate}} </span>
+              {{ 'UsersAndGroups' | translate }}
             </span>
 
 
             <span *ngIf="!isVisibleGRO">
-              <span class="sidebar-mini">U </span> {{ 'Users' | translate }}
+              <span class="sidebar-mini">{{'UsersInitial' | translate }} </span> {{ 'Users' | translate }}
 
             </span>
           </p>
