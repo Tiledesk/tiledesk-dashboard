@@ -151,7 +151,7 @@
             IF THE REQUEST SUPPORT STATUS IS 200 (SERVED REQUEST) AND THE CURRENT USER UID IS BETWEEN 
             THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has joined to the request) -->
             <span *ngIf="request?.status == 200 && request?.currentUserIsJoined === true">
-              <span (click)='goToRequestMsgs(request?.request_id, request)' style="cursor:pointer" rel="tooltip"
+              <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" rel="tooltip"
                 title="{{ 'VisitorsPage.ViewRequestDetails' | translate}}: {{request?.request_id}}">
 
                 <span *ngIf="!request?.subject">

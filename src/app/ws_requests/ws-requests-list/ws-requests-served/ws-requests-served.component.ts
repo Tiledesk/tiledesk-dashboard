@@ -1,6 +1,5 @@
 import {
-  Component, OnInit, Input, OnChanges, AfterViewInit,
-  ChangeDetectionStrategy, ChangeDetectorRef, SimpleChange
+  Component, OnInit, Input, OnChanges, AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, SimpleChange
 } from '@angular/core';
 import { WsSharedComponent } from '../../ws-shared/ws-shared.component';
 import { BotLocalDbService } from '../../../services/bot-local-db.service';
@@ -18,7 +17,7 @@ import { Request } from '../../../models/request-model';
 import { DepartmentService } from '../../../services/department.service';
 import { NotifyService } from '../../../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
-import { request } from 'http';
+
 
 @Component({
   selector: 'appdashboard-ws-requests-served',
@@ -421,6 +420,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
 
 
   goToRequestMsgs(request_id: string) {
+     console.log("% Ws-REQUESTS-Msgs goToRequestMsgs")
     this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_id + '/messages']);
   }
 
