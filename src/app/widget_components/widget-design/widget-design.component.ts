@@ -591,9 +591,6 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
         console.log('Multilanguage (widget-design) ***** GET labels ***** - Array of LANG CODE ', this.languages_codes);
 
 
-       
-
-
         // const availableTranslations = [{ code: "it", name: "Italian" }, { code: "fr", name: "French" }, { code: "en", name: "English" }];
         const availableTranslations = this.doAvailableLanguageArray(this.languages_codes);
         console.log('Multilanguage (widget-design) ***** GET labels ***** - availableTranslations ', availableTranslations);
@@ -612,8 +609,14 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
 
           this.getCurrentTranslation(this.selectedLangCode);
         } else {
-          this.translateLanguagesAreSetUpAndDisplayModal()
+
+          // ci sono le lebels ma nessuna assegnata al progetto
+          this.translateLangAreNotSetNotAndDisplayModal();
         }
+      } else {
+
+        // labels is null
+        this.translateLangAreNotSetNotAndDisplayModal();
       }
 
     }, error => {
@@ -625,7 +628,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     });
   }
 
-  translateLanguagesAreSetUpAndDisplayModal() {
+  translateLangAreNotSetNotAndDisplayModal() {
     this.translate.get('NoDefaultLanguage')
       .subscribe((text: any) => {
         this.warningMsg = text['Warning'];
@@ -642,14 +645,14 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
       }, () => {
         // console.log('WIDGET DESIGN - translateNoDefaultLanguageIsSetUp * COMPLETE *');
 
-        this.displayModalNoDefaultLanguage()
+        this.displayModalNoLangAreSetUp()
       });
   }
 
-  displayModalNoDefaultLanguage() {
-    const el = document.createElement('div');
-    const url = '#/project/' + this.id_project + '/widget-set-up'
-    el.innerHTML = `${this.noDefaultLanguageIsSetUpMsg} <a href="${url}"> ${this.goToMultilanguagePageMsg}</a>  ${this.toAddLanguagesToYourProjectMsg}</a>`
+  displayModalNoLangAreSetUp() {
+    // const el = document.createElement('div');
+    // const url = '#/project/' + this.id_project + '/widget-set-up'
+    // el.innerHTML = `${this.noDefaultLanguageIsSetUpMsg} <a href="${url}"> ${this.goToMultilanguagePageMsg}</a>  ${this.toAddLanguagesToYourProjectMsg}</a>`
     swal({
       title: this.warningMsg,
       text: this.noLanguagesAreSetUpMsg + '. ' + this.goToMultilanguagePageMsg + ' ' + this.toAddLanguagesToYourProjectMsg + '.',
@@ -667,7 +670,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
       dangerMode: false,
     })
       .then((value) => {
-        console.log('displayModalNoDefaultLanguage value', value)
+        console.log('displayModalNoLangAreSetUp value', value)
 
         if (value === 'catch') {
           this.goToWidgetMultilanguage()
