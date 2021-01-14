@@ -1079,6 +1079,40 @@
   // top: 21px;
 }
 
+// take shortcut in home header
+.getting-started-card-title-home-header {
+  margin-top: 6px !important;
+  margin-bottom: 2px !important;
+  color: #ffffff !important;
+  font-weight: 200 !important;
+  font-family: "Google Sans", sans-serif !important;
+  font-size: 21px;
+}
+.getting-started-card-subtitle-home-header {
+  color: rgba(255,255,255,0.8);
+  font-weight: 100 !important;
+  margin-bottom: 16px;
+}
+
+
+.wrap-shortcut-title-home-header{
+  text-align: center;
+  color: #ffffff !important;
+  font-weight: 400 !important;
+  font-family: "Google Sans", sans-serif !important;
+  font-size: 16px;
+}
+
+
+.wrap-shortcut-subtitle-home-header {
+  text-align: center;
+  color: rgba(255,255,255,0.8);
+  font-weight: 100 !important;
+  font-size: 14px;
+  line-height: 16px;
+}
+// /. take shortcut in home header
+
 .getting-started-card-title {
   margin-top: 6px !important;
   margin-bottom: 2px !important;
@@ -1091,6 +1125,7 @@
   color: #7695a5 !important;
   font-weight: 400 !important;
 }
+
 
 .wrap-shortcut-icon {
   width: 90px;
@@ -1275,8 +1310,28 @@
 
 .n-header-home {
   background-color: #1a73e8;
-  padding: 25px 140px 65px 197px;
+  // padding: 25px 140px 65px 197px;
+  padding: 25px 190px 35px 190px
 }
+
+@media (max-width: 1440px){
+  .n-header-home { 
+    padding: 25px 160px 55px 160px
+  }
+} 
+
+@media (max-width: 1281px){
+  .n-header-home { 
+    padding: 25px 100px 55px 100px;
+  }
+} 
+
+@media (max-width: 1161px){
+  .n-header-home { 
+    padding: 25px 40px 55px 40px;
+  }
+} 
+
 
 .n-header-home-title {
   font-family: "Google Sans", sans-serif !important;
