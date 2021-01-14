@@ -87,7 +87,6 @@ export class AnalyticsService {
   // }
 
   requestsByDay(lastdays, department_id?): Observable<[]> {
-
     if (!department_id) {
       department_id = ''
     }
@@ -105,28 +104,22 @@ export class AnalyticsService {
   }
 
   getDataHeatMap(): Observable<[]> {
-
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': this.TOKEN
       })
     };
-
     return this.http.get<[]>(this.SERVER_BASE_PATH + this.projectID + '/analytics/requests/aggregate/dayoftheweek/hours', httpOptions);
-
-
   }
 
   getDataAVGWaitingCLOCK(): Observable<[]> {
-
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': this.TOKEN
       })
     };
-
     return this.http.get<[]>(this.SERVER_BASE_PATH + this.projectID + '/analytics/requests/waiting', httpOptions);
   }
 
@@ -142,19 +135,16 @@ export class AnalyticsService {
   // }
 
   getCurrentWaitingTime(): Observable<[]> {
-    
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': this.TOKEN
       })
     };
-    
     return this.http.get<[]>(this.SERVER_BASE_PATH + this.projectID + '/publicanalytics/waiting/current', httpOptions);
   }
 
   getavarageWaitingTimeDataCHART(lastdays, department_id?): Observable<[]> {
-
     console.log("PARAM", lastdays, department_id);
 
     if (!department_id) {
@@ -169,27 +159,21 @@ export class AnalyticsService {
     let params = new HttpParams()
       .set('lastdays', lastdays)
       .set('department_id', department_id);
-
-
     return this.http.get<[]>(this.SERVER_BASE_PATH + this.projectID + '/analytics/requests/waiting/day', { headers: headers, params: params });
   }
 
   getDurationConversationTimeDataCLOCK(): Observable<[]> {
-
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': this.TOKEN
       })
     };
-
     return this.http.get<[]>(this.SERVER_BASE_PATH + this.projectID + '/analytics/requests/duration', httpOptions);
   }
 
   getDurationConversationTimeDataCHART(lastdays, department_id?): Observable<[]> {
-
     console.log("PARAM", lastdays, department_id);
-
     if (!department_id) {
       department_id = ''
     }
@@ -208,19 +192,14 @@ export class AnalyticsService {
   }
 
   getSatisfactionDataHEART(): Observable<[]> {
-
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': this.TOKEN
     });
-
-
-
     return this.http.get<[]>(this.SERVER_BASE_PATH + this.projectID + '/analytics/requests/satisfaction', { headers: headers });
   }
 
   getSatisfactionDataCHART(lastdays, department_id?): Observable<[]> {
-
     console.log("PARAM", lastdays, department_id);
 
     if (!department_id) {
@@ -235,8 +214,6 @@ export class AnalyticsService {
     let params = new HttpParams()
       .set('lastdays', lastdays)
       .set('department_id', department_id);
-
-
     return this.http.get<[]>(this.SERVER_BASE_PATH + this.projectID + '/analytics/requests/satisfaction/day', { headers: headers, params: params });
   }
 
@@ -255,7 +232,7 @@ export class AnalyticsService {
     //             .set('lastdays', lastdays)
     //             .set('department_id', department_id);
 
-    return this.http.get<[]>(this.SERVER_BASE_PATH + this.projectID + '/analytics/project_users/count', { headers: headers})
+    return this.http.get<[]>(this.SERVER_BASE_PATH + this.projectID + '/analytics/project_users/count', { headers: headers })
   }
 
   getVisitorsByDay(): Observable<[]> {
@@ -263,8 +240,7 @@ export class AnalyticsService {
       'Content-Type': 'application/json',
       'Authorization': this.TOKEN
     })
-
-    return this.http.get<[]>(this.SERVER_BASE_PATH + this.projectID + '/analytics/project_users/aggregate/day', { headers: headers})
+    return this.http.get<[]>(this.SERVER_BASE_PATH + this.projectID + '/analytics/project_users/aggregate/day', { headers: headers })
   }
 
   getVisitorsByLast7Days(): Observable<[]> {
@@ -272,7 +248,7 @@ export class AnalyticsService {
       'Content-Type': 'application/json',
       'Authorization': this.TOKEN
     })
-    return this.http.get<[]>(this.SERVER_BASE_PATH + this.projectID + '/analytics/project_users/aggregate/week', { headers: headers})
+    return this.http.get<[]>(this.SERVER_BASE_PATH + this.projectID + '/analytics/project_users/aggregate/week', { headers: headers })
   }
 
   getVisitorsByLastMonth(): Observable<[]> {
@@ -280,7 +256,7 @@ export class AnalyticsService {
       'Content-Type': 'application/json',
       'Authorization': this.TOKEN
     })
-    return this.http.get<[]>(this.SERVER_BASE_PATH + this.projectID + '/analytics/project_users/aggregate/month', { headers: headers})
+    return this.http.get<[]>(this.SERVER_BASE_PATH + this.projectID + '/analytics/project_users/aggregate/month', { headers: headers })
   }
 
   getMessagesByDay(): Observable<[]> {
@@ -289,6 +265,22 @@ export class AnalyticsService {
       'Authorization': this.TOKEN
     })
     return this.http.get<[]>(this.SERVER_BASE_PATH + this.projectID + '/analytics/messages/aggregate/day', { headers: headers })
+  }
+
+  getLastMountMessagesCount(): Observable<[]> {
+    let headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Authorization': this.TOKEN
+    })
+    return this.http.get<[]>(this.SERVER_BASE_PATH + this.projectID + '/analytics/messages/count', { headers: headers })
+  }
+
+  getLastMountConversationsCount(): Observable<[]> {
+    let headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Authorization': this.TOKEN
+    })
+    return this.http.get<[]>(this.SERVER_BASE_PATH + this.projectID + '/analytics/requests/count', { headers: headers })
   }
 
 
