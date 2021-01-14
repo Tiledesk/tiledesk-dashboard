@@ -621,7 +621,7 @@
 
 
 
-  <div class="home-statistics-row" style="border-bottom: 1px solid #e5effe !important;">
+  <div *ngIf="isVisibleANA" class="home-statistics-row" style="border-bottom: 1px solid #e5effe !important;">
     <div class="row">
 
       <div class="col-md-12" style="padding-top: 36px; padding-bottom: 36px;">
@@ -884,29 +884,31 @@
     </div>
   </div>
 
-  <div class="row">
-    <div class="col-md-12">
-      <div class="visitors-graph-title-container">
-        <div class="visitors-graph-title-1">
-          <span> {{'VisitorsOnYourPageInTheLast7Days' | translate}}</span>
-          <span class="material-icons" style="vertical-align: middle; color: #3c4858;">
-            keyboard_arrow_right
-          </span>
+  <div *ngIf="isVisibleANA" class="home-statistics-row-visitors-graph">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="visitors-graph-title-container">
+          <div class="visitors-graph-title-1">
+            <span> {{'VisitorsOnYourPageInTheLast7Days' | translate}}</span>
+            <span class="material-icons" style="vertical-align: middle; color: #3c4858;">
+              keyboard_arrow_right
+            </span>
+          </div>
+          <div class="visitors-graph-title-2" (click)="goToVisitorsAnalytics()">
+            <span style="color: #0f62ff;">{{'FilterReportInAnalytics' | translate}}</span>
+            <span class="material-icons" style="vertical-align: middle;color: #0f62ff;">
+              keyboard_arrow_right
+            </span>
+          </div>
         </div>
-        <div class="visitors-graph-title-2" (click)="goToVisitorsAnalytics()">
-          <span style="color: #0f62ff;">{{'FilterReportInAnalytics' | translate}}</span>
-          <span class="material-icons" style="vertical-align: middle;color: #0f62ff;">
-            keyboard_arrow_right
-          </span>
-        </div>
-      </div>
 
+      </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="col-md-12">
-      <div class="chart-container" style="position: relative; margin:12px 12px; height:35vh;">
-        <canvas id="last7dayVisitors"></canvas>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="chart-container" style="position: relative; margin:12px 12px; height:35vh;">
+          <canvas id="last7dayVisitors"></canvas>
+        </div>
       </div>
     </div>
   </div>
@@ -1015,7 +1017,8 @@
         <div class="card-content">
 
           <h3 class="getting-started-card-title">{{'TakeAShortcut' | translate}}</h3>
-          <p class="getting-started-card-subtitle">{{'JumpStraightToTheMostPopularSettingsInTheDashboard' | translate}}.</p>
+          <p class="getting-started-card-subtitle">{{'JumpStraightToTheMostPopularSettingsInTheDashboard' | translate}}.
+          </p>
           <div class="row">
             <div class="col-xs-3" (click)="openChat()" style="cursor: pointer;">
 

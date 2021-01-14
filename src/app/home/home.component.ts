@@ -91,6 +91,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   chatbots: any // TO DISPLAY THE CHATVOT IN THE NEW HOME HEADER
   DISPLAY_TEAMMATES: boolean = false;
   DISPLAY_CHATBOTS: boolean = false;
+
+  isVisibleANA: boolean;
   constructor(
     public auth: AuthService,
     private route: ActivatedRoute,
@@ -204,7 +206,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
-  toggleDisplayChatbots () {
+  toggleDisplayChatbots() {
 
     if (this.DISPLAY_CHATBOTS === false) {
       this.DISPLAY_CHATBOTS = true;
@@ -214,7 +216,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       console.log('HOME > DISPLAY_CHATBOTS', this.DISPLAY_CHATBOTS)
     }
   }
-  
+
 
   getStorageBucketThenUserAndBots() {
     const firebase_conf = this.appConfigService.getConfig().firebase;
@@ -435,8 +437,25 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.isVisible = true;
         }
       }
+      if (key.includes("ANA")) {
+        // console.log('PUBLIC-KEY (SIDEBAR) - key', key);
+        let ana = key.split(":");
+        // console.log('PUBLIC-KEY (SIDEBAR) - ana key&value', ana);
+
+        if (ana[1] === "F") {
+          this.isVisibleANA = false;
+          // console.log('PUBLIC-KEY (SIDEBAR) - ana isVisible', this.isVisibleANA);
+        } else {
+          this.isVisibleANA = true;
+          // console.log('PUBLIC-KEY (SIDEBAR) - ana isVisible', this.isVisibleANA);
+        }
+      }
     });
 
+    if (!this.public_Key.includes("ANA")) {
+      console.log('PUBLIC-KEY (SIGN-IN) - key.includes("V1L")', this.public_Key.includes("ANA"));
+      this.isVisibleANA = false;
+    }
 
     // console.log('eoscode', this.eos)
     // if (this.eos && this.eos === publicKey) {
