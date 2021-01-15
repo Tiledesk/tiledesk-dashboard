@@ -61,6 +61,7 @@ export class ConfigureWidgetComponent extends WidgetDesignBaseComponent implemen
   public waitingTimeNotFoundMsg: string; // WAITING_TIME_NOT_FOUND
   public waitingTimeFoundMsg: string; //  WAITING_TIME_FOUND
   public newConversation: string // LABEL_START_NW_CONV
+  public noConversation: string // NO_CONVERSATION
 
   selectedLang: string;
   selectedLangCode: string;
@@ -73,7 +74,7 @@ export class ConfigureWidgetComponent extends WidgetDesignBaseComponent implemen
   temp_SelectedLangName: string;
 
   allDefaultTranslations: any
-
+  HAS_SELECT_STATIC_REPLY_TIME_MSG: boolean = true;
   constructor(
     private auth: AuthService,
     private router: Router,
@@ -446,6 +447,8 @@ export class ConfigureWidgetComponent extends WidgetDesignBaseComponent implemen
         this.waitingTimeFoundMsg = this.defaultTranslation["WAITING_TIME_FOUND"];
 
         this.newConversation = this.defaultTranslation["LABEL_START_NW_CONV"];
+
+        this.noConversation = this.defaultTranslation["NO_CONVERSATION"];
 
         // // USED TO PRESELECT ENGLISH LANGUAGE AVLUE IN THE SELECT LANGUAGE COMBO BOX
         // this.selectedLang = 'English'
