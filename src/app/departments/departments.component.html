@@ -14,10 +14,10 @@
       </button>
     </div> -->
 
-    <!-- MOMGO DB DEPARTMENTS LIST -->
+    <!-- Depts  LIST -->
     <div class="row">
-      <div class="col-md-12">
-        <div class="card">
+      <div class="col-md-8">
+        <div class="card" style="margin-top: 5px;">
 
           <div class="card-header card-header-custom-bkgrnd">
             <button class="btn btn-primary" style="padding: 8px 16px;margin:0px;" (click)="goToEditAddPage_CREATE()">
@@ -52,7 +52,8 @@
 
           <loading-spinner *ngIf="showSpinner"></loading-spinner>
 
-          <div *ngIf="!showSpinner" class="card-content table-responsive" style="overflow:visible;">
+          <!-- style="overflow:visible;" -->
+          <div *ngIf="!showSpinner" class="card-content table-responsive">
 
             <table class="table depts-tabe">
               <thead>
@@ -76,8 +77,8 @@
                             help_outline
                           </i>
                         </span>
-                        <span class="tooltiptext_custom"
-                          style="white-space: normal;">{{ "DepartmentsPage.VisibleColumnTooltip" | translate}}</span>
+                        <span class="tooltiptext_custom" style="white-space: normal;">
+                          {{"DepartmentsPage.VisibleColumnTooltip" | translate}}</span>
                       </span>
                     </span>
                   </th>
@@ -103,8 +104,8 @@
                   </th>
 
                   <th>
-                    <span class="column-th-span">
-                      {{ "Agents" | translate }}
+                    <span class="column-th-span" style="text-transform: capitalize;">
+                      {{ "Teammates" | translate }}
                     </span>
                   </th>
 
@@ -128,7 +129,7 @@
               <tbody>
 
                 <!-- IF THERE ISN'T DEPARTMENTS -->
-                <tr *ngIf="departments?.length === 1">
+                <tr *ngIf="departments?.length === 0">
                   <td colspan="8" style="text-align: center; padding-top: 16px;">
                     <!-- color: #ff5252   -->
                     <p style="font-size:1em; color:#7695a5; font-weight: 400">
@@ -139,25 +140,46 @@
                   </td>
                 </tr>
 
-                <tr *ngFor="let dept of departments">
-                  <td class="dept-td" *ngIf="dept?.default !== true"
-                    style="text-align: center;white-space: nowrap; width: 1%;padding-top: 4px;">
-                    <span class="dept-avatar-wrapper"  style="position: relative; top: -4px;" (click)='goToEditAddPage_EDIT(dept?._id, dept?.name)'>
-                      <span class="tooltipx">
-                        <span class="dept-avatar" [ngStyle]="{'background-color': dept?.dept_name_fillcolour }">
+                <tr *ngFor="let dept of departments"
+                  [ngClass]="{'default-dept-disabled': dept?.default === true && COUNT_OF_VISIBLE_DEPT > 0  }">
+                  <!-- *ngIf="dept?.default !== true" -->
 
-                          {{ dept?.dept_name_initial }}
+                  <td class="dept-td" style="text-align: center;white-space: nowrap; width: 1%;padding-top: 4px;"
+                    (click)='goToEditAddPage_EDIT(dept?._id, dept?.default)'>
+                    <!--  -->
+                    <span class="dept-avatar-wrapper" style="position: relative; top: -4px;">
+                      <!-- <span class="tooltipx"> -->
+                      <span class="dept-avatar" [ngStyle]="{'background-color': dept?.dept_name_fillcolour }">
+                        {{ dept?.dept_name_initial }}
+                      </span>
+
+                      <!-- <span class="tooltiptext" style="margin-left: -43px;">
+                          {{'DeptId' | translate}}: <br> {{ dept?._id }}
+                         </span>
+                      </span> -->
+                      <!-- dept?.default === true && departments?.length > 1 -->
+                      <span class="default-dept-disabled-badge"
+                        *ngIf="dept?.default === true && COUNT_OF_VISIBLE_DEPT > 0">
+                        <span class="tool_tip">
+                          <span class="material-icons">
+                            error
+                          </span>
+                          <span class="right" style="white-space: normal;padding: 5px;">
+                            {{'TheDefaulDeptIsDisabledBecause' | translate}}
+                            <i></i>
+                          </span>
+
                         </span>
 
-                        <span class="tooltiptext" style="margin-left: -43px;">
-                          {{'DeptId' | translate}}: <br> {{ dept?._id   }} </span>
+
                       </span>
                     </span>
+
                   </td>
 
-                  <td class="dept-td" *ngIf="dept?.default !== true">
-                    <span (click)='goToEditAddPage_EDIT(dept?._id, dept?.name)'>
-
+                  <!-- *ngIf="dept?.default !== true" (click)='goToEditAddPage_EDIT(dept?._id, dept?.name)'-->
+                  <td class="dept-td" (click)='goToEditAddPage_EDIT(dept?._id, dept?.default)'>
+                    <span>
                       <span style="font-weight: 400;font-size:13px">
                         {{ dept?.name }}
                       </span>
@@ -170,27 +192,35 @@
 
                         <div class="top">
                           <h4>{{ 'Description' | translate }}</h4>
-                         <div class="line-clamp" style="display: -webkit-box;
+                          <div class="line-clamp" style="display: -webkit-box;
                          -webkit-line-clamp: 3;
                          -webkit-box-orient: vertical;
                          overflow: hidden;
-                         text-overflow: ellipsis;"> {{ dept?.description}} </div> 
+                         text-overflow: ellipsis;"> {{ dept?.description}} </div>
                           <i></i>
                         </div>
                       </div>
                     </span>
-
                   </td>
+                  <!-- *ngIf="dept?.default !== true" -->
 
-                  <td class="dept-td" *ngIf="dept?.default !== true">
-
-                    <div class="checkbox">
+                  <td class="dept-td">
+                    <div *ngIf="dept?.default !== true" class="checkbox">
                       <label>
                         <input [checked]="dept?.status" type="checkbox" name="optionsCheckboxes"
                           (change)="updateDeptStatus($event, dept?._id)">
 
                       </label>
                     </div>
+
+                    <div *ngIf="dept?.default === true">
+                      <span *ngIf="COUNT_OF_VISIBLE_DEPT === 0" style="font-weight:400;font-size:13px"> {{ 'Enabled' |
+                        translate }}</span>
+                      <span *ngIf="COUNT_OF_VISIBLE_DEPT > 0" style="font-weight:400;font-size:13px"> {{ 'Disabled' |
+                        translate }}</span>
+                    </div>
+
+
                   </td>
 
                   <!-- <td *ngIf="dept?.default !== true">
@@ -198,8 +228,8 @@
                   </td> -->
 
                   <!-- // BOT -->
-                  <td class="dept-td" *ngIf="dept?.default !== true">
-                    <!-- {{ dept?.id_bot }}  -->
+                  <!-- *ngIf="dept?.default !== true" -->
+                  <td class="dept-td">
                     <span *ngIf="dept?.id_bot">
                       <span style="color: #7695a5; font-size: 12px; font-weight:400">
                         {{ 'DepartmentsPage.ActivatedBot' | translate }}
@@ -229,19 +259,19 @@
                       </span>  -->
                     </span>
 
-                    <span *ngIf="!dept?.id_bot" style="color: #7695a5; font-size: 12px; font-weight:400">
+                    <span *ngIf="!dept?.id_bot" style="font-size: 13px; font-weight:400">
                       {{ 'DepartmentsPage.NoBotActivated' | translate }}
                     </span>
                   </td>
 
-                  <td class="dept-td" *ngIf="dept?.default !== true" style="text-transform: capitalize;">
-                    <!-- *ngIf="dept?.routing !== 'fixed'" -->
+                  <!-- *ngIf="dept?.default !== true" -->
+                  <td class="dept-td" style="text-transform: capitalize;">
                     <span style="font-weight:400;font-size:13px"> {{ dept?.routing }}</span>
-                    <!-- <span *ngIf="dept?.routing === 'fixed'"> Bot </span> -->
                   </td>
 
                   <!-- // OPERATORS -->
-                  <td class="dept-td" *ngIf="dept?.default !== true" style="font-weight:400">
+                  <!-- *ngIf="dept?.default !== true" -->
+                  <td class="dept-td" style="font-weight:400">
 
                     <!-- USE CASE 1: ROUTING ASSIGNED or POOLED + THE DEPT HAS A GROUP ID NOT NULL AND NOT UNDEFINED + THE GROUP NOT HAS TRASHED VALUE -->
                     <!-- dept?.routing !== 'fixed' &&  -->
@@ -254,13 +284,14 @@
                     <!-- USE CASE 2: ROUTING ASSIGNED or POOLED + THE DEPT HAS A GROUP ID NOT NULL AND NOT UNDEFINED + THE GROUP HAS TRASHED VALUE = TRUE -->
                     <!-- dept?.routing !== 'fixed' &&  -->
                     <span *ngIf="dept?.hasGroupName && dept?.groupHasBeenTrashed === true">
-                      <span style="color: #aaaaaa; vertical-align: middle; "> {{ 'DepartmentsPage.Group' | translate }}
+                      <span style="color: #aaaaaa; vertical-align: middle; "> {{ 'DepartmentsPage.Group' | translate
+                        }}
                       </span>
                       <span style="vertical-align: middle;font-size:13px"> {{ dept?.hasGroupName }} </span>
                       <i class="material-icons"
                         style="vertical-align: middle; font-size:12px; color: #ff5252; padding-left: 8px">report_problem</i>
-                      <span
-                        style="color: #ff5252; vertical-align: middle; font-size:12px;">{{ 'DepartmentsPage.TheGroupHasBeenTrashed' | translate }}
+                      <span style="color: #ff5252; vertical-align: middle; font-size:12px;">{{
+                        'DepartmentsPage.TheGroupHasBeenTrashed' | translate }}
                       </span>
                     </span>
 
@@ -290,26 +321,90 @@
                   </td> -->
 
                   <!-- NEW EDIT ADD -->
-                  <td class="dept-td" *ngIf="dept?.default !== true" class="td-actions text-right"
+                  <!-- *ngIf="dept?.default !== true"   [disabled]="dept?.default === true && departments?.length > 1"-->
+                  <td class="dept-td" class="td-actions text-right"
                     style="padding-bottom: 6px !important;padding-top: 18px !important;">
                     <button type="button" rel="tooltip" title="{{ 'DepartmentsPage.tooltipEditDept' | translate }}"
-                      class="btn btn-primary btn-simple btn-xs" (click)='goToEditAddPage_EDIT(dept?._id, dept?.name)'>
+                      class="btn btn-primary btn-simple btn-xs"
+                      (click)='$event.stopPropagation();goToEditAddPage_EDIT(dept?._id,dept?.default)'>
                       <i class="material-icons">edit</i>
                     </button>
+                    <!-- *ngIf="dept?.default !== true" -->
                     <button *ngIf="dept?.default !== true" type="button" rel="tooltip"
                       title="{{ 'DepartmentsPage.tooltipDeleteDept' | translate }}"
-                      class="btn btn-danger btn-simple btn-xs" (click)='openDeleteModal(dept?._id, dept?.name)'>
+                      class="btn btn-danger btn-simple btn-xs"
+                      (click)='$event.stopPropagation(); openDeleteModal(dept?._id, dept?.name)'>
                       <i class="material-icons">close</i>
                     </button>
                   </td>
+
                 </tr>
               </tbody>
             </table>
 
           </div>
         </div>
+      </div> <!-- /. col-md-12 -->
+
+
+      <!-- 
+      // ---------------------------------------------------
+      // @ Right sidebar
+      // --------------------------------------------------- -->
+
+      <div class="col-md-4">
+
+        <div class="card" style="padding-top: 8px;margin-top: 5px;">
+          <div class="card-content" style="padding-top: 0px;">
+            <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 15px">
+              {{ "RoutingPage.QuickTips" | translate }}
+            </h4>
+
+            <p style="color:#7695a5">
+              {{ "DeptQuickTips_1" | translate }}
+            </p>
+            <p style="color:#7695a5">
+              {{ "DeptQuickTips_2" | translate }}
+            </p>
+            <p class="title-attribute" style="margin-bottom: 3px">
+              Default Department
+            </p>
+            <p style="color:#7695a5">
+              {{ "DeptQuickTips_3" | translate }}
+            </p>
+            <p style="color:#7695a5">
+              {{ "DeptQuickTips_4" | translate }}
+            </p>
+            <p style="color:#7695a5">
+              {{ "DeptQuickTips_5" | translate }}
+            </p>
+
+            <p class="title-attribute" style="margin-bottom: 3px">
+             Widget & Routing
+            </p>
+            <p style="color:#7695a5">
+              {{ "DeptQuickTips_6" | translate }}
+            </p>
+            <p style="color:#7695a5">
+              {{ "DeptQuickTips_7" | translate }}
+            </p>
+            <p style="color:#7695a5">
+              {{ "DeptQuickTips_8" | translate }}
+            </p>
+            <div>
+              <img src="assets/img/select_a_topic.png">
+            </div>
+
+
+          </div>
+        </div>
+
       </div>
-    </div>
+    </div> <!-- /. row -->
+
+
+
+
   </div>
 </div>
 
@@ -348,10 +443,10 @@
       </div>
 
       <div class="modal-footer" style="margin-top: 0px;">
-        <button class="btn btn-white" (click)="onCloseModal()"
-          style="padding:12px 16px;">{{ "DepartmentsPage.Cancel" | translate }}</button>
-        <button type="button" class="btn btn-danger"
-          (click)="onCloseDeleteModalHandled()">{{ "DepartmentsPage.Confirm" | translate }}</button>
+        <button class="btn btn-white" (click)="onCloseModal()" style="padding:12px 16px;">{{ "DepartmentsPage.Cancel" |
+          translate }}</button>
+        <button type="button" class="btn btn-danger" (click)="onCloseDeleteModalHandled()">{{ "DepartmentsPage.Confirm"
+          | translate }}</button>
       </div>
 
     </div>

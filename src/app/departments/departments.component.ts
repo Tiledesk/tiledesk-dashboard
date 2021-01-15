@@ -48,6 +48,9 @@ export class DepartmentsComponent implements OnInit {
   updateErrorMsg: string;
   browser_lang: string;
 
+  COUNT_OF_VISIBLE_DEPT: number
+
+
   constructor(
     private mongodbDepartmentService: DepartmentService,
     private router: Router,
@@ -70,7 +73,7 @@ export class DepartmentsComponent implements OnInit {
   getBrowserLanguage() {
     this.browser_lang = this.translate.getBrowserLang();
     console.log('Depts - browser_lang ', this.browser_lang)
-    var userLang = navigator.language; 
+    var userLang = navigator.language;
     console.log('Depts - browser_lang ', userLang)
   }
 
@@ -99,9 +102,18 @@ export class DepartmentsComponent implements OnInit {
   }
 
   // GO TO BOT-EDIT-ADD COMPONENT AND PASS THE BOT ID (RECEIVED FROM THE VIEW)
-  goToEditAddPage_EDIT(dept_id: string) {
-    console.log('DEPT ID ', dept_id);
+  goToEditAddPage_EDIT(dept_id: string , dept_default: boolean) {
+    console.log('goToEditAddPage_EDIT DEPT ID ', dept_id);
+    console.log('goToEditAddPage_EDIT DEPT DEFAULT ', dept_default);
+    console.log('goToEditAddPage_EDIT DEPTS LENGHT ', this.departments.length);
+   
     this.router.navigate(['project/' + this.project._id + '/department/edit', dept_id]);
+
+    // if (dept_default === true && this.departments.length ===  1 ) {
+    // this.router.navigate(['project/' + this.project._id + '/department/edit', dept_id]);
+    // } else if (dept_default !== true && this.departments.length >  1) { 
+    //   this.router.navigate(['project/' + this.project._id + '/department/edit', dept_id]);
+    // }
   }
 
 
@@ -115,36 +127,47 @@ export class DepartmentsComponent implements OnInit {
       if (departments) {
         this.departments = departments;
 
-
+        let count = 0;
 
         this.departments.forEach(dept => {
+          console.log('»»» »»» DEPTS PAGE - DEPT)', dept);
 
-            // -------------------------------------------------------------------
-            // Dept's avatar
-            // -------------------------------------------------------------------
-            let newInitials = '';
-            let newFillColour = '';
+          if (dept.default === false && dept.status === 1)  {
+            count = count + 1;
+          }
+          // -------------------------------------------------------------------
+          // Dept's avatar
+          // -------------------------------------------------------------------
+          let newInitials = '';
+          let newFillColour = '';
 
-            if (dept.name) {
-              newInitials = avatarPlaceholder(dept.name);
-              newFillColour = getColorBck(dept.name)
-            } else {
 
-              newInitials = 'n.a.';
-              newFillColour = '#eeeeee';
+          if (dept.name) {
+            newInitials = avatarPlaceholder(dept.name);
+            if (dept.default !== true) {
+              newFillColour = getColorBck(dept.name);
+            } else  if (dept.default === true && this.departments.length === 1) {
+              newFillColour = '#6264A7'
+            } else if (dept.default === true && this.departments.length > 1) {
+              newFillColour = 'rgba(98, 100, 167, 0.6) '
             }
+          } else {
 
-            dept['dept_name_initial'] = newInitials;
-            dept['dept_name_fillcolour'] = newFillColour;
+            newInitials = 'N/A.';
+            newFillColour = '#eeeeee';
+          }
 
-            // -------------------------------------------------------------------
-            // Dept's description
-            // -------------------------------------------------------------------
+          dept['dept_name_initial'] = newInitials;
+          dept['dept_name_fillcolour'] = newFillColour;
 
-            if (dept.description) { 
-              let stripHere = 20;
-              dept['truncated_desc'] = dept.description.substring(0, stripHere) + '...';
-            }
+          // -------------------------------------------------------------------
+          // Dept's description
+          // -------------------------------------------------------------------
+
+          if (dept.description) {
+            let stripHere = 20;
+            dept['truncated_desc'] = dept.description.substring(0, stripHere) + '...';
+          }
 
           if (dept.routing === 'assigned' || dept.routing === 'pooled') {
 
@@ -157,6 +180,9 @@ export class DepartmentsComponent implements OnInit {
             }
           }
         });
+
+        this.COUNT_OF_VISIBLE_DEPT =  count;
+        console.log('»»» »»» DEPTS PAGE - COUNT_OF_VISIBLE_DEPT', this.COUNT_OF_VISIBLE_DEPT);
       }
     }, error => {
       this.showSpinner = false;
@@ -182,15 +208,15 @@ export class DepartmentsComponent implements OnInit {
     this.mongodbDepartmentService.updateDeptStatus(dept_id, this.deptStatus)
       .subscribe((department: any) => {
         console.log('»»» »»» DEPTS PAGE - UPDATE DEPT STATUS - UPDATED DEPT ', department)
-  
+
       }, error => {
         this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem');
         console.log('»»» »»» DEPTS PAGE - UPDATE DEPT STATUS - ERROR', error);
       }, () => {
         this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done');
         console.log('»»» »»» DEPTS PAGE - UPDATE DEPT STATUS - COMPLETE')
-
-     });
+         this.getDeptsByProjectId(); 
+      });
 
 
 
@@ -356,7 +382,7 @@ export class DepartmentsComponent implements OnInit {
     this.mongodbDepartmentService.deleteMongoDbDeparment(this.id_toDelete).subscribe((data) => {
       console.log('DELETE DATA ', data);
 
-     
+
       this.getDeptsByProjectId();
       // this.ngOnInit();
 

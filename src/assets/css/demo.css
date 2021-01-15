@@ -116,10 +116,9 @@ my-app .main-panel .main-content .card {
   margin-top: 0px;
 }
 
-/* 
-// -----------------
-// tooltip top
-// ----------------- */
+/* ------------------------
+/ tootip top  
+/ ---------------------- */
 .tool_tip .top {
   min-width: 200px;
   max-width: 400px;
@@ -165,11 +164,12 @@ my-app .main-panel .main-content .card {
   opacity: 1;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
 }
-
 /* ./end tootip top  */
 
-/* tootip bottom for home header */
 
+/* ----------------------------
+/ tootip bottom for home header  
+/ -------------------------- */
 .tool_tip .bottom-home-header {
   /* min-width: 200px; */
   /* max-width: 400px; */
@@ -227,7 +227,9 @@ my-app .main-panel .main-content .card {
 }
 /* /. tootip bottom for home header */
 
-/* tootip bottom  */
+/* ------------------------
+/ tootip bottom  
+/ ---------------------- */
 .tool_tip .bottom {
   min-width: 200px;
   /*max-width:400px;*/
@@ -276,6 +278,72 @@ my-app .main-panel .main-content .card {
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
 }
 /* ./tootip bottom  */
+
+/* -----------
+/ tootip right  
+/ ---------- */
+/* .tooltip {
+  display:inline-block;
+  position:relative;
+  border-bottom:1px dotted #666;
+  text-align:left;
+}
+
+.tooltip h3 {margin:12px 0;} */
+
+.tool_tip .right {
+  min-width:200px;
+  max-width:400px;
+  top:50%;
+  left:100%;
+  margin-left:20px;
+  transform:translate(0, -50%);
+  padding:0;
+  color:#EEEEEE;
+  background-color:#444444;
+  font-weight:normal;
+  font-size:13px;
+  border-radius:8px;
+  position:absolute;
+  z-index:99999999;
+  box-sizing:border-box;
+  box-shadow:0 1px 8px rgba(0,0,0,0.5);
+  visibility:hidden; opacity:0; transition:opacity 0.8s;
+}
+
+.tool_tip:hover .right {
+  visibility:visible; opacity:1;
+}
+
+.tool_tip .right img {
+  width:400px;
+  border-radius:8px 8px 0 0;
+}
+.tool_tip .text-content {
+  padding:10px 20px;
+}
+
+.tool_tip .right i {
+  position:absolute;
+  top:50%;
+  right:100%;
+  margin-top:-12px;
+  width:12px;
+  height:24px;
+  overflow:hidden;
+}
+.tool_tip .right i::after {
+  content:'';
+  position:absolute;
+  width:12px;
+  height:12px;
+  left:0;
+  top:50%;
+  transform:translate(50%,-50%) rotate(-45deg);
+  background-color:#444444;
+  box-shadow:0 1px 8px rgba(0,0,0,0.5);
+}
+/* ./tootip right  */
 
 /* table style overwrite */
 .table > thead > tr > th,
