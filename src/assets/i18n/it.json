@@ -714,8 +714,8 @@
         "DownloadTiledesk": "Scarica le app {{ company_name }} per iPhone e Android"
     },
     "RoutingPage": {
-        "SettingUpTileDeskRoutingRules": "Imposta le regole di routing",
-        "TheFollowingRules": "Le seguenti regole saranno ignorate se esiste almeno un dipartimento",
+        "SettingUpTileDeskRoutingRules": "Imposta le regole di routing per il 'Default Dept'",
+        "TheFollowingRules": "Le seguenti regole verranno ignorate se esiste almeno un altro dipartimento e il suo stato è impostato su 'Visibile'",
         "SelectABotThatWill": "Seleziona un bot che risponderà alle conversazioni del visitatore prima dell'ingaggio di un agente",
         "ActivateBOT": "Attiva BOT",
         "SelectABot": "Select a Bot",
@@ -1012,7 +1012,7 @@
         "Confirm": "Conferma",
         "tooltipDeleteDept": "Elimina Dipartimento",
         "tooltipEditDept": "Modifica Dipartimento",
-        "VisibleColumnTooltip": "Solo i dipartimenti selezionati verranno visualizzati nell'elenco dei dipartimenti del widget",
+        "VisibleColumnTooltip": "Solo se almeno due dipartimenti hanno lo stato di visibilità impostato su 'Visibile', verranno visualizzati nel menu di selezione dei dipartimenti del widget",
         "DepartmentsAreAGreatWayToSeparateChats": "I dipartimenti sono un ottimo modo per separare le chat e gli utenti in gruppi di supporto logici",
         "DirectUsersToTheTeamWhoCanAnswerTheUsersQuestionsBest": "Indirizza gli utenti al team che può rispondere meglio alle domande degli utenti.",
         "DeptId": "Id dipartimento"
@@ -1712,5 +1712,19 @@
     "Teammates":"collaboratori",
     "ViewTeammates":"Visualizza collaboratori",
     "AddNewTeammate": "Aggiungi collaboratore",
-    "InviteYourFirstTeammate":"Invita il tuo primo collaboratore"
+    "InviteYourFirstTeammate":"Invita il tuo primo collaboratore",
+    "Enabled": "Attivo",
+    "Disabled": "Disabilitato",
+    "TheDefaulDeptIsDisabledBecause":"Il 'Default dept' è disabilitato perchè esiste almeno un altro dipartimento ed il suo stato è impostato su 'Visibile'",
+    "WidgetDefaultLanguage":"Lingua predefinita del widget",
+    "WidgetStyle":"Stile widget",
+    "ThisStepOfTheWizardGuidesYouThroughTheBasicSetup":"Questo passaggio della procedura guidata guida l'utente attraverso la configurazione di base. È possibile modificare lo stile del widget, la lingua predefinita e altro in qualsiasi momento tramite le impostazioni del widget",
+    "DeptQuickTips_1":"I dipartimenti sono le varie divisioni aziendali all'interno dell'organizzazione.",
+    "DeptQuickTips_2":"Ogni dipartimento può avere i propri agenti, chabot e regole di instradamento; ciò consente di personalizzare un processo di supporto indipendente dagli altri reparti.",
+    "DeptQuickTips_3":"Il Default Department viene creato immediatamente dopo la creazione del progetto.",
+    "DeptQuickTips_4":"Questo reparto non può essere cancellato ma può sempre essere modificato.",
+    "DeptQuickTips_5":"Il Default Department verrà automaticamente disabilitato se è presente almeno un altro reparto il cui stato di visibilità è impostato su visibile",
+    "DeptQuickTips_6":"Se esiste solo il Default Department o se sono presenti altri dipartimenti ma con stato di visibilità impostato su 'Non visibile', le richieste dei visitatori verranno instradate secondo le regole del Default Department.",
+    "DeptQuickTips_7":"Se sono presenti più dipartimenti ma solo uno ha lo stato di visibilità impostato su 'Visibile', le richieste dei visitatori verranno indirizzate implicitamente secondo le regole di questo reparto (è comunque possibile instradare le richieste tramite API ai dipartimenti 'Non visibili')",
+    "DeptQuickTips_8":"Se almeno due dipartimenti hanno lo stato di visibilità impostato su 'Visibile', i visitatori potranno scegliere a quale dipartimento indirizzare le richieste tramite l'apposito menu di selezione del widget."
 }

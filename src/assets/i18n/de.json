@@ -719,8 +719,8 @@
 		"DownloadTiledesk": "Laden Sie {{ company_name }} Live Chat Apps für Android and iPhone herunter"
 	},
 	"RoutingPage": {
-		"SettingUpTileDeskRoutingRules": "Routing-Regeln konfigurieren",
-		"TheFollowingRules": "Die folgenden Regeln werden ignoriert wenn mindestens eine Abteilung existiert",
+		"SettingUpTileDeskRoutingRules": "Einrichten von Routing-Regeln für die 'Standardabteilung'",
+		"TheFollowingRules": "Die folgenden Regeln werden ignoriert, wenn mindestens eine andere Abteilung vorhanden ist und sein Status auf 'Sichtbar' gesetzt ist.",
 		"SelectABotThatWill": "Wählen Sie einen Bot aus, der auf die Anfragen Ihrer Besucher antwortet, bevor Ihr Personal die Anfrage entgegennimmt",
 		"ActivateBOT": "Bot aktivieren",
 		"SelectABot": "Bot auswählen",
@@ -1017,7 +1017,7 @@
 		"Confirm": "Bestätigen",
 		"tooltipDeleteDept": "Abteilung löschen",
 		"tooltipEditDept": "Abteilung bearbeiten",
-		"VisibleColumnTooltip": "Nur ausgewählte Abteilungen werden in der Liste der verfügbaren Widget Abteilungen angezeigt",
+		"VisibleColumnTooltip": "Nur wenn für mindestens zwei Abteilungen der Sichtbarkeitsstatus auf Sichtbar gesetzt ist, werden sie im Auswahlmenü der Abteilungen des Widgets angezeigt",
 		"DepartmentsAreAGreatWayToSeparateChats": "Abteilungen sind ein praktisches Mittel, um Chats und Teambesetzung in logische Selbsthilfegruppen aufzuteilen",
 		"DirectUsersToTheTeamWhoCanAnswerTheUsersQuestionsBest": "Leiten Sie Benutzer an das Team weiter, das die Fragen der Benutzer am besten beantworten kann..",
 		"DeptId": "Abteilung Id"
@@ -1717,6 +1717,19 @@
 	"Teammates":"Teamkollegen",
 	"ViewTeammates":"Teamkollegen anzeigen",
 	"AddNewTeammate": "Neuen Teamkollegen hinzufügen",
-	"InviteYourFirstTeammate":"Laden Sie Ihren ersten Teamkollegen ein"
-
+	"InviteYourFirstTeammate":"Laden Sie Ihren ersten Teamkollegen ein",
+	"Enabled": "Aktiviert",
+	"Disabled": "Inaktiv",
+	"TheDefaulDeptIsDisabledBecause":"Die 'Standardabteilung' ist deaktiviert, da mindestens eine andere Abteilung vorhanden ist und ihr Status auf 'Sichtbar' gesetzt ist",
+	"WidgetDefaultLanguage":"Widget Standardsprache",
+	"WidgetStyle":"Widget-Stil",
+	"ThisStepOfTheWizardGuidesYouThroughTheBasicSetup":"Dieser Schritt des Assistenten führt Sie durch die Grundeinstellungen. Sie können den Widget-Stil, die Standardsprache und mehr jederzeit über die Widget-Einstellungen ändern",
+	"DeptQuickTips_1":"Abteilungen sind die verschiedenen Geschäftsbereiche innerhalb Ihrer Organisation.",
+	"DeptQuickTips_2":"Jede Abteilung kann ihre eigenen Agenten-, Chabot- und Routing-Regeln haben. Auf diese Weise können Sie einen Supportprozess unabhängig von Ihren anderen Abteilungen anpassen.",
+	"DeptQuickTips_3":"Die Standardabteilung wird unmittelbar nach dem Erstellen des Projekts erstellt.",
+    "DeptQuickTips_4":"Diese Abteilung kann nicht gelöscht, sondern jederzeit geändert werden.",
+	"DeptQuickTips_5":"Die Standardabteilung wird automatisch deaktiviert, wenn mindestens eine andere Abteilung vorhanden ist, deren Sichtbarkeitsstatus auf sichtbar gesetzt ist.",
+	"DeptQuickTips_6":"Wenn nur die Standardabteilung vorhanden ist oder wenn andere Abteilungen vorhanden sind, der Sichtbarkeitsstatus jedoch auf 'Nicht sichtbar' gesetzt ist, werden die Anforderungen der Besucher gemäß den Regeln der Standardabteilung weitergeleitet.",
+	"DeptQuickTips_7":"Wenn es mehr als eine Abteilung gibt, aber nur eine den Sichtbarkeitsstatus auf 'Sichtbar' gesetzt hat, werden Besucheranfragen implizit gemäß den Regeln dieser Abteilung weitergeleitet (es ist weiterhin möglich, Anfragen über die API an 'Nicht sichtbar' -Abteilungen weiterzuleiten).",
+	"DeptQuickTips_8":"Wenn für mindestens zwei Abteilungen der Sichtbarkeitsstatus auf Sichtbar festgelegt ist, können Besucher über das entsprechende Widget-Auswahlmenü auswählen, an welche Abteilung Anforderungen weitergeleitet werden sollen."
 }
