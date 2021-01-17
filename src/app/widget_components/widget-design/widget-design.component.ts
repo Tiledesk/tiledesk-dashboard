@@ -212,6 +212,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   }
 
   ngOnInit() {
+    this.auth.checkRoleForCurrentProject();
     // this.HAS_SELECT_INSTALL_WITH_CODE = false
     this.getStorageBucket();
     this.getWidgetUrl();
