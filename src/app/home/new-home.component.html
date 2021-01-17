@@ -84,10 +84,6 @@
 
               <span *ngIf="projectUsers?.length === 1"> {{'Teammate' | translate}} </span>
               <span *ngIf="projectUsers?.length > 1 || projectUsers?.length === 0"> {{'Teammates' | translate}} </span>
-
-
-
-
               <span class="tool_tip" *ngIf="!DISPLAY_TEAMMATES">
                 <span class="material-icons add-operators-icons tool_tip" (click)="toggleDisplayTeammates()"
                   style="vertical-align: middle;color:  rgba(255,255,255,0.8); font-size:18px; position: relative;cursor: pointer;transform: rotate(-90deg);">
@@ -124,12 +120,12 @@
                   <i style="height:6px"></i>
                 </span>
               </span>
-           </span>
-         </div>
+            </span>
+          </div>
 
           <!-- /// CHATBOT AGENTS -->
           <div class="served-by-desktop-a--home-header">
-      
+
             <ng-container *ngIf="!DISPLAY_CHATBOTS">
               <div class="served-by-desktop-b">
                 <div class="served-by-desktop-d">
@@ -284,16 +280,17 @@
 
         <!-- 
         // ---------------------------------------------------
-        // @ Take A Shortcut  
+        // @ Take A Shortcut for Owner And Admin 
         // --------------------------------------------------- -->
         <div class="row">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <div class="card" style="border: unset !important;  background: #1a73e8;margin-top: 45px;">
+            <div class="card" style="border: unset !important;  background: #1a73e8;margin-top: 18px;margin-bottom: 18px;">
               <div class="card-content" style="padding-left:0px; padding-right:0px">
                 <!-- <h3 class="getting-started-card-title-home-header">{{'TakeAShortcut' | translate}}</h3>
-        <p class="getting-started-card-subtitle-home-header">{{'JumpStraightToTheMostPopularSettingsInTheDashboard' | translate}}. </p> -->
+                  <p class="getting-started-card-subtitle-home-header">{{'JumpStraightToTheMostPopularSettingsInTheDashboard' | translate}}. </p> -->
                 <div class="row">
-                  <div class="col-xs-3" (click)="openChat()" style="cursor: pointer;">
+
+                  <div [ngClass]="{'col-xs-3': isVisibleAPP && USER_ROLE !== 'agent', 'col-xs-4': !isVisibleAPP || USER_ROLE === 'agent'}" (click)="openChat()" style="cursor: pointer;">
                     <!-- // CHAT -->
                     <div class="wrap-shortcut-icon">
                       <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
@@ -330,7 +327,8 @@
                     </div>
                   </div>
 
-                  <div class="col-xs-3" (click)="goToWidgetSetup()" style="cursor: pointer;">
+                  <!-- // SE NON è AGENTE VISUALIZZO WIDGET -->
+                  <div [ngClass]="{'col-xs-3': isVisibleAPP, 'col-xs-4': !isVisibleAPP}" (click)="goToWidgetSetup()" style="cursor: pointer;" *ngIf="USER_ROLE !== 'agent'">
                     <!-- // CUSTOMIZE WIDGET -->
                     <div class="wrap-shortcut-icon">
                       <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
@@ -366,8 +364,48 @@
                     </div>
                   </div>
 
+                  <!-- // SE È AGENTE VISUALIZZO CONVERSAZIONI -->
+                  <div [ngClass]="{'col-xs-3': isVisibleAPP && USER_ROLE !== 'agent',  'col-xs-4': !isVisibleAPP  || USER_ROLE === 'agent'}" (click)="goToWidgetConversations()" style="cursor: pointer;" *ngIf="USER_ROLE === 'agent'">
+                    <div class="wrap-shortcut-icon">
+                      <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 75.8 75.8"
+                        style="enable-background:new 0 0 75.8 75.8;" xml:space="preserve">
+                        <style type="text/css">
+                          .st0_conversations {
+                            opacity: 1;
+                            fill: #ffffff;
+                            enable-background: new;
+                          }
 
-                  <div class="col-xs-3" (click)="goToTiledeskMobileAppPage()" style="cursor: pointer;">
+                          .st1_conversations {
+                            fill: #FB8B19;
+                          }
+                        </style>
+                        <g transform="translate(7717.829 6141.832)">
+                          <path class="st0_conversations" d="M-7642-6103.9c0,20.9-17,37.9-37.9,37.9s-37.9-17-37.9-37.9s17-37.9,37.9-37.9l0,0
+		C-7659-6141.8-7642-6124.9-7642-6103.9L-7642-6103.9z" />
+                        </g>
+                        <path class="st1_conversations" d="M47.3,33.2c0-6.5-6.9-11.8-15.4-11.8s-15.4,5.3-15.4,11.8c0,2.5,1,4.9,2.8,6.8c-1,2.2-2.6,4-2.6,4
+	c-0.2,0.2-0.2,0.4-0.1,0.6c0.1,0.2,0.3,0.4,0.5,0.4c2.7,0,4.9-0.9,6.5-1.8C26.2,44.3,29,45,32,45C40.5,45,47.3,39.7,47.3,33.2z
+	 M56.4,49.4c1.8-1.9,2.8-4.3,2.8-6.8c0-4.9-3.9-9.2-9.5-10.9c0.1,0.5,0.1,1,0.1,1.5c0,7.8-8,14.2-17.7,14.2c-0.8,0-1.6-0.1-2.3-0.1
+	c2.3,4.2,7.8,7.2,14.2,7.2c3,0,5.8-0.7,8.2-1.8c1.6,0.9,3.8,1.8,6.5,1.8c0.2,0,0.5-0.1,0.5-0.4c0.1-0.2,0.1-0.5-0.1-0.6
+	C59,53.4,57.3,51.7,56.4,49.4z" />
+                      </svg>
+
+
+                    </div>
+
+                    <div class="wrap-shortcut-title-home-header">
+                      {{'Requests' | translate}}
+                    </div>
+                    <div class="wrap-shortcut-subtitle-home-header">
+                      {{ 'ReadManageAssignAndReplyToCustomerConversations' | translate }}
+                    </div>
+                  </div>
+
+
+                  <div [ngClass]="{'col-xs-3': isVisibleAPP && USER_ROLE !== 'agent', 'col-xs-4': !isVisibleAPP  || USER_ROLE === 'agent'}" (click)="goToTiledeskMobileAppPage()"
+                    style="cursor: pointer;">
                     <!-- // GET MOBILE APPS -->
                     <div class="wrap-shortcut-icon">
                       <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
@@ -401,7 +439,7 @@
                     </div>
                   </div>
 
-                  <div class="col-xs-3" (click)="goToAppStore()" style="cursor: pointer;">
+                  <div [ngClass]="{'col-xs-3': isVisibleAPP }" (click)="goToAppStore()" style="cursor: pointer;" *ngIf="isVisibleAPP && USER_ROLE !== 'agent'">
                     <!-- // App Store -->
                     <div class="wrap-shortcut-icon">
                       <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
@@ -431,9 +469,12 @@
                       {{ 'Integrations' | translate }}
                     </div>
                     <div class="wrap-shortcut-subtitle-home-header">
-                      {{'EngageAndRetainMoreCustomersWithAppsAndIntegrations' | translate}}
+                      {{'EngageMoreCustomersWithAppsAndIntegrations' | translate}}
                     </div>
                   </div>
+
+
+
                 </div>
               </div>
             </div>

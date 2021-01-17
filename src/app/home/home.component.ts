@@ -93,6 +93,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   DISPLAY_CHATBOTS: boolean = false;
 
   isVisibleANA: boolean;
+  isVisibleAPP: boolean;
   constructor(
     public auth: AuthService,
     private route: ActivatedRoute,
@@ -450,11 +451,30 @@ export class HomeComponent implements OnInit, OnDestroy {
           // console.log('PUBLIC-KEY (SIDEBAR) - ana isVisible', this.isVisibleANA);
         }
       }
+
+      if (key.includes("APP")) {
+        console.log('PUBLIC-KEY (SIDEBAR) - key', key);
+        let lbs = key.split(":");
+        console.log('PUBLIC-KEY (SIDEBAR) - app key&value', lbs);
+
+        if (lbs[1] === "F") {
+          this.isVisibleAPP = false;
+          console.log('PUBLIC-KEY (SIDEBAR) - app isVisible', this.isVisibleAPP);
+        } else {
+          this.isVisibleAPP = true;
+          console.log('PUBLIC-KEY (SIDEBAR) - app isVisible', this.isVisibleAPP);
+        }
+      }
     });
 
     if (!this.public_Key.includes("ANA")) {
       console.log('PUBLIC-KEY (SIGN-IN) - key.includes("V1L")', this.public_Key.includes("ANA"));
       this.isVisibleANA = false;
+    }
+
+    if (!this.public_Key.includes("APP")) {
+      console.log('PUBLIC-KEY (SIDEBAR) - key.includes("APP")', this.public_Key.includes("APP"));
+      this.isVisibleAPP = false;
     }
 
     // console.log('eoscode', this.eos)
@@ -721,6 +741,9 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   goToWidgetSetup() {
     this.router.navigate(['project/' + this.projectId + '/widget-set-up']);
+  }
+  goToWidgetConversations() {
+    this.router.navigate(['project/' + this.projectId + '/wsrequests']);
   }
 
   goToAppStore() {
