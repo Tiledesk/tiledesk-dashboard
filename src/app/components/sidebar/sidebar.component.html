@@ -320,7 +320,7 @@
       </li>
 
       <!-- APPS  -->
-      <ng-container *ngIf="isVisibleAPP">
+      <ng-container *ngIf="isVisibleAPP && USER_ROLE !== 'agent'">
         <li *ngIf="project" routerLinkActive="active">
           <a class="customAncor" routerLink="project/{{ project._id }}/app-store">
             <i class="material-icons sidebar-icons">apps</i>
@@ -445,13 +445,6 @@
           <p class="onBlackBckgrnd">
             <span class="sidebar-mini">R </span> Routing
           </p>
-
-          <!-- <span class="sidebar-mini">
-              R 
-            </span>
-            <span class="sidebar-normal">
-              Routing 
-            </span>  -->
         </a>
       </li>
 
@@ -528,13 +521,6 @@
             <p class="onBlackBckgrnd">
               <span class="sidebar-mini">D </span>{{ 'Departments' | translate }}
             </p>
-
-            <!-- <span class="sidebar-mini">
-                  D
-                </span>
-                <span class="sidebar-normal">
-                  {{ 'Departments' | translate }}
-                </span>  -->
           </a>
         </li>
 
