@@ -1159,7 +1159,6 @@ and also iPads specifically.
   }
 }
 
-
 .spinner-for-mobile {
   display: flex;
   justify-content: center;
@@ -1423,6 +1422,54 @@ and also iPads specifically.
   overflow-y: auto;
   // transition: max-height 0.2s ease-out;
 }
+/* ./ Notes Accordion */
+
+/* Attributes Accordion */
+.attributes-accordion {
+  // background-color: #eee;
+  color: #444;
+  cursor: pointer;
+  padding: 8px 0px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+  transition: 0.4s;
+}
+
+// .active,
+.attributes-accordion:hover {
+  // background-color: #ccc;
+  background-color: #f7f8fc;
+}
+
+.attributes-accordion:after {
+  content: "\002B";
+  // color: #777;
+  color: #039be5;
+  font-weight: bold;
+  float: right;
+  // margin-left: 5px;
+  font-size: 20px;
+  padding-right: 4px;
+}
+
+.active:after {
+  content: "\2212";
+  // content: "\f107";
+}
+.attributes-panel {
+  padding: 0 18px;
+  background-color: white;
+  max-height: 0;
+  // overflow: hidden;
+  overflow-y: auto;
+  // transition: max-height 0.2s ease-out;
+}
+/* ./ Attributes Accordion */
+
+
 
 .ws_request_notes__container {
   margin-bottom: 12px;
@@ -1968,9 +2015,6 @@ and also iPads specifically.
   margin-right: 1px;
 }
 
-
-
-
 // SPINNER USED WHEN THE DASHBOARD RUN ON MOBILE
 .sk-fading-circle {
   margin: 100px auto;
@@ -2102,10 +2146,10 @@ and also iPads specifically.
   0%,
   39%,
   100% {
-      opacity: 0;
+    opacity: 0;
   }
   40% {
-      opacity: 1;
+    opacity: 1;
   }
 }
 
@@ -2113,11 +2157,25 @@ and also iPads specifically.
   0%,
   39%,
   100% {
-      opacity: 0;
+    opacity: 0;
   }
   40% {
-      opacity: 1;
+    opacity: 1;
   }
+}
+
+.source-page-wrap {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.id_request-wrap {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 
 // --------------------------------
