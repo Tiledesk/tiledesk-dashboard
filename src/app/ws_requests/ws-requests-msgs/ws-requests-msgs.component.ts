@@ -527,21 +527,21 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
       // if (project) {
-        console.log('% Ws-REQUESTS-Msgs >>>>> project <<<<<', project)
-       
+      console.log('% Ws-REQUESTS-Msgs >>>>> project <<<<<', project)
 
-        // if (this.id_project) { 
-        //   this.unsuscribeRequesterPresence(this.requester_id)
-        // }
 
-        if (project) { 
-          console.log('% »»» WebSocketJs WF +++++ ws-requests--- service getWsRequests MSG */* ref */* project._id (NEW)', project._id)
-          console.log('% »»» WebSocketJs WF +++++ ws-requests--- service getWsRequests MSG */* ref */* this.project_id (OLD)', this.id_project)
+      // if (this.id_project) { 
+      //   this.unsuscribeRequesterPresence(this.requester_id)
+      // }
 
-          this.id_project = project._id;
-          this.project_name = project.name;
+      if (project) {
+        console.log('% »»» WebSocketJs WF +++++ ws-requests--- service getWsRequests MSG */* ref */* project._id (NEW)', project._id)
+        console.log('% »»» WebSocketJs WF +++++ ws-requests--- service getWsRequests MSG */* ref */* this.project_id (OLD)', this.id_project)
 
-        }
+        this.id_project = project._id;
+        this.project_name = project.name;
+
+      }
 
 
       // }
@@ -1203,7 +1203,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // -----------------------------------------------------------------------------------------
     // this.contactsService.subscribeToWS_RequesterPresence(requester_id);
     this.wsRequestsService.subscribeToWS_RequesterPresence(requester_id);
-    
+
     this.getWsRequesterPresence();
   }
 
@@ -2096,6 +2096,37 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       //   panel.scrollTop = 0;
       // }, 500);
     }
+  }
+
+
+  // ---------------------------------------------------------------------------------------
+  // @ Arttributes
+  // ---------------------------------------------------------------------------------------
+  openAttributesAccordion() {
+
+    // var acc = document.getElementsByClassName("accordion");
+    var acc = <HTMLElement>document.querySelector('.attributes-accordion');
+    console.log('% Ws-REQUESTS-Msgs - open attributes-accordion -  accordion elem ', acc);
+    acc.classList.toggle("active");
+    // var panel = acc.nextElementSibling ;
+    var panel = <HTMLElement>document.querySelector('.attributes-panel')
+    console.log('% Ws-REQUESTS-Msgs -  open attributes-accordion  -  panel ', panel);
+
+    // this.thisIsCalledWhenNewItemISAdded();
+    // let ps = new PerfectScrollbar(panel);
+    // if (panel.style.maxHeight) {
+    //   panel.style.maxHeight = null;
+    // } else {
+    //   panel.style.maxHeight = "300px";
+    //   panel.scrollTop = 0;
+    // }
+
+    if (panel.style.maxHeight) {
+      panel.style.maxHeight = null;
+    } else {
+      panel.style.maxHeight = panel.scrollHeight + "px";
+    }
+
   }
 
   thisIsCalledWhenNewItemISAdded() {

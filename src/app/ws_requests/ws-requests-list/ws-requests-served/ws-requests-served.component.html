@@ -199,9 +199,10 @@
           </td>
 
           <!-- ------ ====== MESSAGE  ====== ------ -->
-          <td [ngClass]="{'padding_5' : request?.tags?.length > 0}" (click)='goToRequestMsgs(request?.request_id)'
+          <td class="td-first-text" [ngClass]="{'padding_5' : request?.tags?.length > 0}" (click)='goToRequestMsgs(request?.request_id)'
             style="cursor:pointer">
             <!-- max-width: 400px -->
+            <!-- [innerHTML]="getRequestText(request?.first_text)" -->
             <p class="column-td" [innerHTML]="getRequestText(request?.first_text)">
               <!-- {{ request?.text }} -->
               <!-- {{ request?.first_text }} -->

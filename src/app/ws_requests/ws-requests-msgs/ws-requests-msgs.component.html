@@ -239,9 +239,9 @@
                             <div class="requester-avatar-wrapper"
                               style="display: block;border-radius: 50%; height: 100%; margin-top: 35px;"
                               [ngStyle]="{'background-color': fillColour }">
-                           
+
                               <span class="_requester-avatar-inchat">
-                             
+
                                 {{ requester_fullname_initial }}
                               </span>
                             </div>
@@ -250,7 +250,8 @@
                           <div class="txt">
                             <p class="name" [ngStyle]="{'color': fillColour }">{{ message.senderFullname }}
                               <!-- margin-right: -45px; -->
-                              <span *ngIf="message?.type === 'text'" style="float:right; cursor:pointer; color: #00bcf8; text-decoration: underline;"
+                              <span *ngIf="message?.type === 'text'"
+                                style="float:right; cursor:pointer; color: #00bcf8; text-decoration: underline;"
                                 (click)="openRightSideBar(message?.text)">
                                 <!-- Addestra -->
                                 {{ 'Train' | translate }}
@@ -261,8 +262,8 @@
                               {{ message?.text }}
                             </p>
                             <div *ngIf="message?.type === 'image'" class="message ow">
-                              <div class="image-container" style="height:200px; width:200px;" >
-                                <img src={{message.metadata.src}} class="message-img"/>
+                              <div class="image-container" style="height:200px; width:200px;">
+                                <img src={{message.metadata.src}} class="message-img" />
                               </div>
                             </div>
                             <span class="timestamp"> {{ message?.createdAt | date: 'd/M/y HH:mm:ss'}} </span>
@@ -333,8 +334,8 @@
                               {{ message?.text }}
                             </p>
                             <div *ngIf="message?.type === 'image'" class="message ow">
-                              <div class="image-container" style="height:200px; width:200px;" >
-                                <img src={{message.metadata.src}} class="message-img"/>
+                              <div class="image-container" style="height:200px; width:200px;">
+                                <img src={{message.metadata.src}} class="message-img" />
                               </div>
                             </div>
                             <span class="timestamp"> {{ message?.createdAt | date: 'd/M/y HH:mm:ss'}}</span>
@@ -458,9 +459,9 @@
               <div class="rect4"></div>
               <div class="rect5"></div>
             </div>
-    
+
             <div *ngIf="showSpinner && isMobile && CHAT_PANEL_MODE === true" class="spinner-for-mobile">
-              <div  class="sk-fading-circle" >
+              <div class="sk-fading-circle">
                 <div class="sk-circle1 sk-circle"></div>
                 <div class="sk-circle2 sk-circle"></div>
                 <div class="sk-circle3 sk-circle"></div>
@@ -854,9 +855,9 @@
                             style="padding-left: 15px; padding-right: 15px;">
                             <i class="material-icons" style="padding-right: 5px;">archive</i>
                             <span style="position: relative; top: 1px; cursor:pointer">
-                              <!-- {{ 'RequestMsgsPage.CloseTheRequest' | translate }} THIS WAS ALREADY COMMENTED --> 
-                              
-                             
+                              <!-- {{ 'RequestMsgsPage.CloseTheRequest' | translate }} THIS WAS ALREADY COMMENTED -->
+
+
                               <!-- {{ 'RequestMsgsPage.Close' | translate }} -->
 
                               {{ 'VisitorsPage.Archive' | translate }}
@@ -1085,19 +1086,22 @@
                     <span style="position: relative;top: 1px;">
                       <div class="row">
                         <div class="col-xs-10" style="padding-right:10px">
-                          <i class="material-icons"
-                            style="vertical-align: middle; color: #394f5a;font-size:16px">code</i>
-                          <span
-                            style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
-                            {{ "RequestMsgsPage.RequestId" | translate }}</span>
-                          <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
-                            <span *ngIf="showAllIdRequest" style="">
-                              {{id_request}}
+                          <div class="" [ngClass]="{'id_request-wrap': !showAllIdRequest}">
+                            <i class="material-icons"
+                              style="vertical-align: middle; color: #394f5a;font-size:16px">code</i>
+                            <span
+                              style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
+                              {{ "RequestMsgsPage.RequestId" | translate }}</span>
+                            <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
+                              <span *ngIf="showAllIdRequest">
+                                {{id_request}}
+                              </span>
+                              <span *ngIf="!showAllIdRequest">
+                                <!-- {{requestidCutted}} -->
+                                {{id_request}}
+                              </span>
                             </span>
-                            <span *ngIf="!showAllIdRequest">
-                              {{requestidCutted}}
-                            </span>
-                          </span>
+                          </div>
                         </div>
 
                         <div class="col-xs-2" style="text-align: right;">
@@ -1154,20 +1158,23 @@
                         <div class="row">
                           <div class="col-xs-10" style="padding-right:10px">
                             <!-- <i class="material-icons" style="vertical-align: middle; color: #394f5a;font-size:16px">language</i> -->
+                            <div [ngClass]="{'source-page-wrap': !showAllSourcePageString}">
+                              <img class="request_details___ua_browser_icon"
+                                src="assets/img/user_agent/source_page.svg" />
+                              <span
+                                style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
+                                {{ "RequestMsgsPage.SourcePage" | translate }}</span>
+                              <span style=" font-weight: 500; font-size: 12px;">
+                                <span *ngIf="showAllSourcePageString" style="word-wrap: break-word;">
+                                  <a href="{{request?.sourcePage}}" target="_blank">{{request?.sourcePage}}</a>
+                                </span>
+                                <span *ngIf="!showAllSourcePageString">
+                                  <!-- {{sourcePageCutted}} -->
+                                  <a href="{{request?.sourcePage}}" target="_blank">{{request?.sourcePage}}</a>
+                                </span>
+                              </span>
+                            </div>
 
-                            <img class="request_details___ua_browser_icon"
-                              src="assets/img/user_agent/source_page.svg" />
-                            <span
-                              style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
-                              {{ "RequestMsgsPage.SourcePage" | translate }}</span>
-                            <span style=" font-weight: 500; font-size: 12px;">
-                              <span *ngIf="showAllSourcePageString" style="word-wrap: break-word;">
-                                <a href="{{request?.sourcePage}}" target="_blank">{{request?.sourcePage}}</a>
-                              </span>
-                              <span *ngIf="!showAllSourcePageString">
-                                <a href="{{request?.sourcePage}}" target="_blank">{{sourcePageCutted}}</a>
-                              </span>
-                            </span>
                           </div>
 
                           <div class="col-xs-2" style="text-align: right;">
@@ -1385,7 +1392,7 @@
                     </p>
                   </div>
                 </div> -->
-      
+
 
                 <!-- 
                 // -----------------------------------------------------------------------------
@@ -1936,15 +1943,16 @@
 
 
                 <!-- <div class="card right-card" style="padding-top:5px; padding-bottom:5px; margin-top: 5px;margin-bottom: 5px;">
-            <div class="card-content" style="padding-top: 5px;padding-bottom: 5px;"> -->
+                <div class="card-content" style="padding-top: 5px;padding-bottom: 5px;"> -->
 
                 <!-- 
               // ----------------------------------------------------------------
               // @ attributes
               // ---------------------------------------------------------------- -->
                 <div *ngIf="request?.attributes" class="row">
-                  <div class="col-sm-12">
-                    <p class="row-header">
+                  <div class="col-sm-12" style="padding-left: 0px; padding-right: 0px;">
+                    <p class="row-header  attributes-accordion" (click)="openAttributesAccordion()"
+                      style="padding-left: 15px; padding-right: 15px;font-size: 14px;">
                       <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
                       <span style="vertical-align: middle">
                         {{ "Attributes" | translate }}
@@ -1956,42 +1964,44 @@
                     // ------------------------------------------------------
                     // new attributes
                     // ------------------------------------------------------ -->
-                    <div *ngFor="let attribute of attributesArray; let i = index">
-                      <div class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
+                    <div class="attributes-panel">
+                      <div *ngFor="let attribute of attributesArray; let i = index">
+                        <div class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
 
-                        <div class="row">
-                          <div class="col-xs-10" style="padding-right: 1px;padding-bottom: 5px;">
-                            <div style="float: left; margin-right: 4px;" class="ws_requets_msgs__attributes">
-                              {{attribute?.attributeName }}:
+                          <div class="row">
+                            <div class="col-xs-10" style="padding-right: 1px;padding-bottom: 5px;">
+                              <div style="float: left; margin-right: 4px;" class="ws_requets_msgs__attributes">
+                                {{attribute?.attributeName }}:
+                              </div>
+
+                              <div aria-expanded="false" [id]="attribute?.attributeName +'_value'"
+                                class="attribute attribute_cutted_text">
+                                {{attribute?.attributeValue }}
+                              </div>
+
                             </div>
+                            <!-- [id]="attribute?.attributeName +'_arrow_icon'" -->
+                            <!-- [ngClass]="{'down' : attributeFullText === true}" -->
+                            <!-- white-space: nowrap;width: 1%; -->
+                            <div *ngIf="attribute?.attributeValueL + 180 > rightSidebarWidth" class="col-xs-2"
+                              style="text-align: right;">
+                              <i [id]="attribute?.attributeName +'_arrow_icon'" class="material-icons rotate"
+                                style="cursor: pointer; color: #039be5; font-size:18px;"
+                                (click)="toggleShowAllString(attribute?.attributeName +'_value', attribute?.attributeName +'_arrow_icon', 'isActive_' + i)">
+                                keyboard_arrow_down
+                              </i>
 
-                            <div aria-expanded="false" [id]="attribute?.attributeName +'_value'"
-                              class="attribute attribute_cutted_text">
-                              {{attribute?.attributeValue }}
                             </div>
-
                           </div>
-                          <!-- [id]="attribute?.attributeName +'_arrow_icon'" -->
-                          <!-- [ngClass]="{'down' : attributeFullText === true}" -->
-                          <!-- white-space: nowrap;width: 1%; -->
-                          <div *ngIf="attribute?.attributeValueL + 180 > rightSidebarWidth" class="col-xs-2"
-                            style="text-align: right;">
-                            <i [id]="attribute?.attributeName +'_arrow_icon'" class="material-icons rotate"
-                              style="cursor: pointer; color: #039be5; font-size:18px;"
-                              (click)="toggleShowAllString(attribute?.attributeName +'_value', attribute?.attributeName +'_arrow_icon', 'isActive_' + i)">
-                              keyboard_arrow_down
-                            </i>
 
-                          </div>
-                        </div>
-
-                        <!-- 
+                          <!-- 
                     <div class="debug_div">
                       L : {{attribute?.attributeValueL}} <br>
                       L + 180 : {{attribute?.attributeValueL + 180}} <br>
                       SB WIDTH : {{rightSidebarWidth}} 
                     </div> -->
 
+                        </div>
                       </div>
                     </div>
                     <!-- 
@@ -2367,7 +2377,7 @@
                         <!-- line-height:10px; -->
                         <td style="cursor:pointer" (click)="selectBot(bot?._id, bot?.name)">
                           <p style="font-size:14px; font-weight: 500; margin-bottom: 0px;">
-                            {{  bot?.name }}
+                            {{ bot?.name }}
                           </p>
                           <span style="color: #7695a5; line-height:18px; font-size:12px">
                             {{ 'BotType' | translate }}:
@@ -2557,8 +2567,8 @@
                                   <span *ngIf="dept.botHasBeenTrashed == true">
                                     <i class="material-icons"
                                       style="vertical-align: middle; font-size:12px; color: #ff5252; padding-left: 8px">report_problem</i>
-                                    <span
-                                      style="color: #ff5252; vertical-align: middle; font-size:12px;">{{ 'BotsPage.TheBotHasBeenTrashed' | translate }}
+                                    <span style="color: #ff5252; vertical-align: middle; font-size:12px;">{{
+                                      'BotsPage.TheBotHasBeenTrashed' | translate }}
                                     </span>
                                   </span>
                                 </span>
@@ -2620,8 +2630,8 @@
                               <span *ngIf="dept.botHasBeenTrashed == true">
                                 <i class="material-icons"
                                   style="vertical-align: middle; font-size:12px; color: #ff5252; padding-left: 8px">report_problem</i>
-                                <span
-                                  style="color: #ff5252; vertical-align: middle; font-size:12px;">{{ 'BotsPage.TheBotHasBeenTrashed' | translate }}
+                                <span style="color: #ff5252; vertical-align: middle; font-size:12px;">{{
+                                  'BotsPage.TheBotHasBeenTrashed' | translate }}
                                 </span>
                               </span>
                             </span>
