@@ -59,9 +59,10 @@
                   {{ prjct_profile_name }}
                 </span>
                 <span *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false"
-                  style="color:#f44336; position:relative; top: -3px;" (click)="goToPricingOrOpenModalSubsExpired()"
+                  style="color:#f44336;" (click)="goToPricingOrOpenModalSubsExpired()"
                   class="expired__Tooltip">
-                  <i class="material-icons" style="vertical-align: middle; color:#f44336; cursor:pointer">
+                  <i class="material-icons" style="vertical-align: middle; color:#f44336; cursor:pointer; position: relative;
+                  top: -3px;">
                     error_outline
                   </i>
                   <span class="expired__Tooltiptext" style="font-size:14px">

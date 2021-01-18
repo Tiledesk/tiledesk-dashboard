@@ -342,10 +342,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       console.log('HOME - GET FAQKB RES', faqKb);
       if (faqKb) {
 
-
-
         faqKb.forEach(bot => {
-
           console.log('HOME - GET FAQKB forEach bot: ', bot)
 
           if (bot && bot['type'] === "identity") {
