@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit, NgModule, ElementRef, ViewChild, HostListener } from '@angular/core';
-import { RequestsService } from '../../services/requests.service';
+// import { RequestsService } from '../../services/requests.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
@@ -26,7 +26,7 @@ import { DepartmentService } from '../../services/department.service';
 import { environment } from '../../../environments/environment';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../services/brand.service';
-
+import { WsRequestsService } from './../../services/websocket/ws-requests.service';
 declare const $: any;
 
 declare interface RouteInfo {
@@ -169,7 +169,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     private unsubscribe$: Subject<any> = new Subject<any>();
 
     constructor(
-        private requestsService: RequestsService,
+        // private requestsService: RequestsService,
         private router: Router,
         public location: Location,
         private route: ActivatedRoute,
@@ -182,7 +182,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         private translate: TranslateService,
         public appConfigService: AppConfigService,
         private deptService: DepartmentService,
-        public brandService: BrandService
+        public brandService: BrandService,
+        public wsRequestsService: WsRequestsService
     ) {
         console.log('!!!!! HELLO SIDEBAR')
 
@@ -576,7 +577,17 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     getProjectUserId() {
         this.usersService.project_user_id_bs.subscribe((projectUser_id) => {
             console.log('SIDEBAR - PROJECT-USER-ID ', projectUser_id);
-            this.projectUser_id = projectUser_id;
+
+
+            // if (this.projectUser_id) {
+            //     console.log('SIDEBAR - PROJECT-USER-ID (THIS)  ', this.projectUser_id);
+            //     console.log('SIDEBAR - PROJECT-USER-ID ', projectUser_id);
+
+            //     this.usersService.unsubscriptionToWsCurrentUser(projectUser_id)
+            // }
+            if (projectUser_id) {
+                this.projectUser_id = projectUser_id;
+            }
         });
     }
 
@@ -707,13 +718,17 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     subsTo_WsCurrentUser(currentuserprjctuserid) {
         console.log('SB - SUBSCRIBE TO WS CURRENT-USER AVAILABILITY  prjct user id of current user ', currentuserprjctuserid);
-        this.usersService.subscriptionToWsCurrentUser(currentuserprjctuserid);
+        // this.usersService.subscriptionToWsCurrentUser(currentuserprjctuserid);
+        this.wsRequestsService.subscriptionToWsCurrentUser(currentuserprjctuserid);
+
+        
         this.getWsCurrentUserAvailability$();
         this.getWsCurrentUserIsBusy$();
     }
 
     getWsCurrentUserAvailability$() {
-        this.usersService.currentUserWsAvailability$
+        // this.usersService.currentUserWsAvailability$
+        this.wsRequestsService.currentUserWsAvailability$
             .pipe(
                 takeUntil(this.unsubscribe$)
             )
@@ -730,7 +745,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
 
     getWsCurrentUserIsBusy$() {
-        this.usersService.currentUserWsIsBusy$
+        // this.usersService.currentUserWsIsBusy$
+        this.wsRequestsService.currentUserWsIsBusy$
             .pipe(
                 takeUntil(this.unsubscribe$)
             )
@@ -776,6 +792,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
 
 
+            // if (this.project) {
             if (this.project) {
                 // ------------------------------------------------------------------------------------
                 // Get Depts & filter defautt dept id to use in the path ../routing/:deptid

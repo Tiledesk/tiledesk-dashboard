@@ -320,7 +320,7 @@
       </li>
 
       <!-- APPS  -->
-      <ng-container *ngIf="isVisibleAPP">
+      <ng-container *ngIf="isVisibleAPP && USER_ROLE !== 'agent'">
         <li *ngIf="project" routerLinkActive="active">
           <a class="customAncor" routerLink="project/{{ project._id }}/app-store">
             <i class="material-icons sidebar-icons">apps</i>
@@ -445,13 +445,6 @@
           <p class="onBlackBckgrnd">
             <span class="sidebar-mini">R </span> Routing
           </p>
-
-          <!-- <span class="sidebar-mini">
-              R 
-            </span>
-            <span class="sidebar-normal">
-              Routing 
-            </span>  -->
         </a>
       </li>
 
@@ -474,12 +467,13 @@
 
           <p class="onBlackBckgrnd">
             <span *ngIf="isVisibleGRO">
-              <span class="sidebar-mini">UG </span> {{ 'UsersAndGroups' | translate }}
+              <span class="sidebar-mini">{{'UsersAndGroupsInitials' | translate}} </span>
+              {{ 'UsersAndGroups' | translate }}
             </span>
 
 
             <span *ngIf="!isVisibleGRO">
-              <span class="sidebar-mini">U </span> {{ 'Users' | translate }}
+              <span class="sidebar-mini">{{'UsersInitial' | translate }} </span> {{ 'Users' | translate }}
 
             </span>
           </p>
@@ -527,13 +521,6 @@
             <p class="onBlackBckgrnd">
               <span class="sidebar-mini">D </span>{{ 'Departments' | translate }}
             </p>
-
-            <!-- <span class="sidebar-mini">
-                  D
-                </span>
-                <span class="sidebar-normal">
-                  {{ 'Departments' | translate }}
-                </span>  -->
           </a>
         </li>
 
@@ -555,7 +542,7 @@
 
       <li style="display: block;" *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active"
         (click)="stopScroll()">
-        <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/widget">
+        <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/widget-set-up">
           <!-- <span class="_badge" [ngClass]="{'change-badge-bckgrnd' : WIDGET_ROUTE_IS_ACTIVE === true}">New</span> -->
           <p class="onBlackBckgrnd">
             <span class="sidebar-mini">W </span>Widget

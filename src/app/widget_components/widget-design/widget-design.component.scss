@@ -1203,6 +1203,7 @@ input {
   opacity: 0;
   transition: opacity 1s;
   font-size: 12px;
+  font-weight: 400;
 }
 
 .widget_design__Tooltip:hover .widget_design__Tooltiptext {
@@ -1693,7 +1694,7 @@ button.buttonRounded:hover {
 
 .widget-setting-icon-wrap {
   position: absolute;
-  margin-top: 15px;
+  margin-top: 12px;
   margin-left: 5px;
   width: 22px;
   height: auto;
@@ -1704,6 +1705,11 @@ button.buttonRounded:hover {
 }
 
 .arrow-up {
+  transform: rotate(180deg);
+  transition: all 0.3s ease-in-out;
+}
+
+.arrow-up-install-widget {
   transform: rotate(180deg);
   transition: all 0.3s ease-in-out;
 }
@@ -1791,6 +1797,8 @@ button.buttonRounded:hover {
   color: #566787 !important;
   text-align: left;
   padding-bottom: 3px;
+  font-weight: 600 !important;
+  letter-spacing: 0.2px;
 }
 
 .widget-settings-control-head-label {
@@ -1798,8 +1806,21 @@ button.buttonRounded:hover {
   color: #566787 !important;
   text-align: left;
   padding-bottom: 12px;
-  font-family: 'Google Sans', sans-serif;
-  font-weight:500 !important;;
+  font-family: "Google Sans", sans-serif;
+  font-weight: 500 !important;
+}
+
+.widget-settings-control-head-label-info {
+  font-family: "Google Sans", sans-serif;
+  color: #566787 !important;
+  text-align: left;
+  padding: 6px 12px;
+  background: #e7f3ff;
+  font-weight: 400 !important;
+  line-height: 20px !important;
+  font-size: 12px !important;
+  cursor: pointer;
+  margin-bottom: 12px !important;
 }
 
 .padding-top-2 {
@@ -1821,7 +1842,8 @@ button.buttonRounded:hover {
 .active-language-label {
   display: block;
   font-weight: 400;
-  font-size: 12px;
+  font-size: 11px;
+  color: #7695a5;
 }
 
 // .widget-section-accordion:after {
@@ -2060,7 +2082,6 @@ button.buttonRounded:hover {
 #custom-colors-primary {
   width: 146px;
   // background: lightblue;
- 
 }
 #custom-colors-secondary {
   width: 146px;
@@ -2070,14 +2091,12 @@ button.buttonRounded:hover {
   // /* Just so it's visible */
 }
 
-
 #widget-settings-logo-section {
   display: flex;
 }
 #logo-settings-display-logo {
   width: 146px;
   // background: lightblue;
- 
 }
 #logo-settings-logo-url {
   // width: 146px;
@@ -2087,9 +2106,199 @@ button.buttonRounded:hover {
   // /* Just so it's visible */
 }
 
-
 .logo-note-in-tooltip {
   font-size: 11px;
   text-align: left;
   padding-left: 15px;
 }
+
+.preview-dropdown-label {
+  padding-right: 0 !important;
+  font-size: 16px !important;
+  color: #566787 !important;
+}
+
+// start accordion-install-widget
+.accordion-install-widget {
+  background-color: #ffffff;
+  color: #444;
+  cursor: pointer;
+  // padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+  transition: 0.4s;
+  // margin-bottom: 16px;
+  // padding-left: 42px;
+  // padding-right: 42px;
+  font-size: 18px;
+  font-weight: 600;
+  font-family: Google Sans, sans-serif;
+  padding-left: 0px;
+  border-bottom-color: #ececec;
+  // padding-top: 30px;
+  // padding-bottom: 21px;
+}
+
+.active-install-widget {
+  border-bottom: 1px solid #ececec;
+}
+
+// .active-install-widget,
+// .accordion-install-widget:hover {
+//   // background-color: #ccc;
+//   // background-color: rgba(241, 241, 241, 1);
+// }
+
+// .accordion-install-widget:after {
+//   content: "\f077";
+//   font-family: FontAwesome;
+//   //  float: right;
+//   // margin-left: 5px;
+//   position: absolute;
+//   right: 25px;
+//   top: 81px;
+//   color: #0f62ff;
+// }
+
+// .active-install-widget:after {
+//   content: "\f078";
+//   font-family: FontAwesome;
+// }
+
+.panel-install-widget {
+  // padding: 0 35px;
+  background-color: white;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+
+// install widget
+.panel-install-widget-whith-code-height {
+  max-height: 703px !important;
+}
+
+.panel-install-widget-whith-gtm-height {
+  max-height: 769px !important;
+}
+
+pre {
+  font-family: monospace;
+  background-color: #fff;
+
+  // margin: 4em auto;
+  // padding: 0.5em;
+  border: none;
+  // border-radius: 0.25em;
+  border-radius: 0.25em 0.25em 0px 0px;
+  // box-shadow: .1em .1em .5em rgba(0,0,0,.45);
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);
+  line-height: 0;
+  counter-reset: line;
+
+  span {
+    display: block;
+    line-height: 2.1rem;
+
+    &:before {
+      counter-increment: line;
+      content: counter(line);
+      display: inline-block;
+      border-right: 1px solid #ddd;
+      padding: 0 0.5em;
+      margin-right: 0.5em;
+      color: #039be5;
+      // background: #f2feef;
+      background: rgba(3, 155, 229, 0.1);
+      width: 30px;
+      text-align: end;
+    }
+  }
+}
+
+.install-widget-steps {
+  display: table;
+  padding: 12px;
+}
+.install-widget-step-number-wrapper {
+  display: table-cell;
+  vertical-align: top;
+}
+
+.install-widget-step-number {
+  background: #eee;
+  padding: 6px 9px;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: 600;
+  margin-right: 8px;
+}
+
+.install-widget-step-text {
+  display: table-cell;
+  vertical-align: top;
+  color: #525f7f;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.copy-script {
+  margin-top: 0px;
+  color: #039be5;
+  margin: 0px;
+  border-radius: 0em 0em 0.25px 0.25px;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);
+  position: relative;
+  // bottom: 94px;
+  bottom: 144px;
+  padding: 6px 7px;
+  float: right;
+  margin-right: 25px;
+}
+
+.highlight-text {
+  color: #0f62ff !important;
+}
+
+/// START COPY TO CLIPBOARD TOOLTIP EFFECT
+@-moz-keyframes fadeinout {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+@-webkit-keyframes fadeinout {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+@keyframes fadeinout {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.has-copied-text {
+  background-color: #555;
+  color: white;
+  -moz-animation: fadeinout 1s linear forwards;
+  -webkit-animation: fadeinout 1s linear forwards;
+  animation: fadeinout 2s linear forwards;
+}
+/// end COPY TO CLIPBOARD TOOLTIP EFFECT

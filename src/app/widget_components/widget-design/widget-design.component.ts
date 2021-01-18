@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, HostListener, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterViewInit, HostListener, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
 import { ColorPickerService, Cmyk } from 'ngx-color-picker';
 import { WidgetService } from '../../services/widget.service';
@@ -20,6 +20,7 @@ import { AnalyticsService } from './../../services/analytics.service';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../services/brand.service';
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
+const swal = require('sweetalert');
 
 @Component({
   selector: 'appdashboard-widget-design',
@@ -34,6 +35,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   // tparams = brand;
   // company_name = brand.company_name;
   // company_site_url = brand.company_site_url;
+  @ViewChild('testwidgetbtn') private elementRef: ElementRef;
   tparams: any;
   company_name: any;
   company_site_url: any;
@@ -54,7 +56,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   public logoUrl: string;
   public hasOwnLogo = false;
   public id_project: string;
-  
+
   default_dept: Department[];
   public widgetObj = {};
   hasSelectedLeftAlignment = false
@@ -127,8 +129,10 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   public offlineMsg: string; // LABEL_FIRST_MSG_NO_AGENTS
   public officeClosedMsg: string; // LABEL_FIRST_MSG_OPERATING_HOURS_CLOSED
   public newConversation: string // LABEL_START_NW_CONV
+  public noConversation: string // NO_CONVERSATION
   public waitingTimeNotFoundMsg: string; // WAITING_TIME_NOT_FOUND
   public waitingTimeFoundMsg: string; //  WAITING_TIME_FOUND
+  preChatForm: boolean;
   placeholderOnlineMsg: string;
   placeholderOfflineMsg: string;
   placeholderofficeClosedMsg: string;
@@ -142,10 +146,11 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   DISPLAY_WIDGET_HOME = true;
   DISPLAY_CALLOUT = false;
   DISPLAY_WIDGET_CHAT = false;
+  DISPLAY_LAUNCER_BUTTON = false
 
-  HAS_FOCUSED_ONLINE_MSG= false;
-  HAS_FOCUSED_OFFLINE_MSG= false;
-  HAS_FOCUSED_OFFICE_CLOSED_MSG= false;
+  HAS_FOCUSED_ONLINE_MSG = false;
+  HAS_FOCUSED_OFFLINE_MSG = false;
+  HAS_FOCUSED_OFFICE_CLOSED_MSG = false;
 
   widget_home_has_conversation = false;
 
@@ -156,7 +161,10 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   widget_preview_selected = '0000';
   widget_preview_status = [
     { id: '0000', name: 'Home' },
-    { id: '0001', name: 'Home with converations' }
+    { id: '0001', name: 'Home with converations' },
+    { id: '0002', name: 'Chat' },
+    { id: '0003', name: 'Callout' },
+    { id: '0004', name: 'Closed' }
   ];
 
   lang: any;
@@ -166,7 +174,20 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   humanizer: HumanizeDuration = new HumanizeDuration(this.langService);
 
   HAS_SELECT_DYMANIC_REPLY_TIME_MSG: boolean;
-  HAS_SELECT_STATIC_REPLY_TIME_MSG = true;
+  HAS_SELECT_STATIC_REPLY_TIME_MSG: boolean;
+  has_copied = false;
+  WIDGET_URL: string;
+  HAS_SELECT_INSTALL_WITH_CODE: boolean = false;
+  HAS_SELECT_INSTALL_WITH_GTM: boolean = false;
+  addWhiteSpaceBefore: boolean;
+  current_user_name: string
+
+  warningMsg: string;
+  noDefaultLanguageIsSetUpMsg: string;
+  noLanguagesAreSetUpMsg: string;
+  goToMultilanguagePageMsg: string;
+  toAddLanguagesToYourProjectMsg: string;
+  cancelMsg: string;
   constructor(
     private notify: NotifyService,
     public location: Location,
@@ -191,7 +212,10 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   }
 
   ngOnInit() {
+    this.auth.checkRoleForCurrentProject();
+    // this.HAS_SELECT_INSTALL_WITH_CODE = false
     this.getStorageBucket();
+    this.getWidgetUrl();
     this.getLoggedUser();
     this.onInitWindowWidth();
     this.getCurrentProject();
@@ -202,15 +226,19 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
       console.log('+ WIDGET DESIGN - FRAGMENT ', this.fragment)
     });
 
-    this.translateOnlineMsgSuccessNoticationMsg();
-    this.translateOfflineMsgSuccessNoticationMsg();
-    this.translateOfficeClosedSuccessNoticationMsg();
+
+
+
+    this.translateTextBaseComp();
+    // this.translateOnlineMsgSuccessNoticationMsg();
+    // this.translateOfflineMsgSuccessNoticationMsg();
+    // this.translateOfficeClosedSuccessNoticationMsg();
+    // this.translateGetTranslationErrorMsg();
     this.getSectionSelected();
-    this.translateGetTranslationErrorMsg();
     this.getLabels();
     this.getOSCODE();
     this.getTestSiteUrl();
-
+    this.getAndManageAccordionInstallWidget();
     this.getAndManageAccordion();
     // this.avarageWaitingTimeCLOCK(); // as dashboard
     // this.showWaitingTime(); // as dario
@@ -219,6 +247,37 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     console.log('WIDGET DESIGN window.matchMedia ', window.matchMedia)
     this.lang = this.translate.getBrowserLang();
     console.log('LANGUAGE ', this.lang);
+  }
+
+
+  // il testo della modale '"Non è impostata nessuna lingua predefinita' e dato che potrebbe essere visualizzata 
+  // all'init della pagina nn può stare nel base compo
+
+
+
+
+
+
+  scroll(el: HTMLElement) {
+    el.scrollIntoView();
+    var acc = document.getElementsByClassName("widget-section-accordion");
+    // console.log('WIDGET DESIGN ACCORDION', acc);
+    var i;
+    for (i = 0; i < acc.length; i++) {
+      var lastAccordion = acc[5];
+      var lastPanel = <HTMLElement>lastAccordion.nextElementSibling;
+      lastAccordion.classList.add("active");
+      lastPanel.style.maxHeight = lastPanel.scrollHeight + "px";
+      var arrow_icon_div = lastAccordion.children[1];
+      var arrow_icon = arrow_icon_div.children[0]
+      arrow_icon.classList.add("arrow-up");
+    }
+  }
+
+  getWidgetUrl() {
+    this.WIDGET_URL = this.appConfigService.getConfig().widgetUrl;
+    console.log('AppConfigService getAppConfig (Install Tiledesk) WIDGET_URL ', this.WIDGET_URL)
+
   }
 
   ngOnDestroy() {
@@ -262,9 +321,39 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     console.log('»» WIDGET DESIGN - PREVIEW SELECTED ', previewselected);
 
     if (previewselected === '0001') {
+      this.DISPLAY_WIDGET_HOME = true;
+      this.DISPLAY_LAUNCER_BUTTON = false;
+      this.DISPLAY_WIDGET_CHAT = false;
+      this.DISPLAY_CALLOUT = false;
       this.C21_BODY_HOME = false;
-    } else {
+    } else if (previewselected === '0000') {
+      this.DISPLAY_WIDGET_HOME = true;
+      this.DISPLAY_LAUNCER_BUTTON = false;
+      this.DISPLAY_WIDGET_CHAT = false;
+      this.DISPLAY_CALLOUT = false;
       this.C21_BODY_HOME = true;
+    } else if (previewselected === '0004') {
+      this.DISPLAY_WIDGET_HOME = true;
+      this.DISPLAY_LAUNCER_BUTTON = true
+      this.DISPLAY_WIDGET_CHAT = false;
+      this.DISPLAY_CALLOUT = false;
+
+    }
+
+    if (previewselected === '0002') {
+      this.DISPLAY_WIDGET_CHAT = true;
+      this.DISPLAY_WIDGET_HOME = false;
+      this.DISPLAY_CALLOUT = false;
+      this.HAS_FOCUSED_ONLINE_MSG = true;
+      this.HAS_FOCUSED_OFFLINE_MSG = false;
+      this.HAS_FOCUSED_OFFICE_CLOSED_MSG = false;
+
+    }
+
+    if (previewselected === '0003') {
+      this.DISPLAY_WIDGET_CHAT = false;
+      this.DISPLAY_WIDGET_HOME = false;
+      this.DISPLAY_CALLOUT = true;
     }
 
   }
@@ -279,6 +368,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     this.auth.user_bs.subscribe((user) => {
       console.log('USER GET IN »» WIDGET DESIGN ', user)
       if (user) {
+        this.current_user_name = user.firstname + ' ' + user.lastname
         this.currentUserId = user._id;
         console.log('Current USER ID ', this.currentUserId)
       }
@@ -295,39 +385,113 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     elemMainPanel.setAttribute('style', 'width:100% !important; overflow-x: hidden !important;');
   }
 
+  getAndManageAccordionInstallWidget() {
+    var acc = document.getElementsByClassName("accordion-install-widget");
+
+    console.log('WIDGET DESIGN ACCORDION INSTALL WIDGET', acc);
+
+    var i;
+    for (i = 0; i < acc.length; i++) {
+      console.log('WIDGET DESIGN ACCORDION ARROW - INSTALL WIDGET - QUI ENTRO');
+      console.log('WIDGET DESIGN ACCORDION ARROW - INSTALL WIDGET - acc[i]', acc[i]);
+      acc[i].addEventListener("click", function () {
+        this.classList.toggle("active-install-widget");
+
+        var panel = this.nextElementSibling;
+        // console.log('WIDGET DESIGN ACCORDION ARROW - INSTALL WIDGET - panel', panel);
+
+        var arrow_icon_div = this.children[1];
+        console.log('WIDGET DESIGN ACCORDION ARROW - INSTALL WIDGET - ICON WRAP DIV', arrow_icon_div);
+
+        var arrow_icon = arrow_icon_div.children[0]
+        console.log('WIDGET DESIGN ACCORDION ARROW ICON', arrow_icon);
+        arrow_icon.classList.toggle("arrow-up-install-widget");
+
+        if (panel.style.maxHeight) {
+          panel.style.maxHeight = null;
+        } else {
+          panel.style.maxHeight = panel.scrollHeight + "px";
+        }
+      });
+    }
+  }
+
+  copyToClipboard() {
+    document.querySelector('textarea').select();
+    document.execCommand('copy');
+
+    this.has_copied = true;
+    setTimeout(() => {
+      this.has_copied = false;
+    }, 2000);
+  }
+
+  close_panel_install_widget() {
+    this.HAS_SELECT_INSTALL_WITH_CODE = false;
+    this.HAS_SELECT_INSTALL_WITH_GTM = false
+    console.log('close_panel_install_widget HAS_SELECT_INSTALL_WITH_CODE', this.HAS_SELECT_INSTALL_WITH_CODE)
+
+  }
+
+  installWithCode() {
+    // this.HAS_SELECT_INSTALL_WITH_CODE = true;
+    // this.HAS_SELECT_INSTALL_WITH_GTM = false;
+    this.HAS_SELECT_INSTALL_WITH_GTM = false;
+    if (this.HAS_SELECT_INSTALL_WITH_CODE === false) {
+      this.HAS_SELECT_INSTALL_WITH_CODE = true;
+    } else if (this.HAS_SELECT_INSTALL_WITH_CODE === true) {
+      this.HAS_SELECT_INSTALL_WITH_CODE = false;
+    }
+
+    console.log('installWithCode HAS_SELECT_INSTALL_WITH_CODE', this.HAS_SELECT_INSTALL_WITH_CODE)
+  }
+
+  installWithGTM() {
+    // this.HAS_SELECT_INSTALL_WITH_CODE = false;
+    // this.HAS_SELECT_INSTALL_WITH_GTM = true;
+    this.HAS_SELECT_INSTALL_WITH_CODE = false;
+    if (this.HAS_SELECT_INSTALL_WITH_GTM === false) {
+      this.HAS_SELECT_INSTALL_WITH_GTM = true;
+    } else if (this.HAS_SELECT_INSTALL_WITH_GTM === true) {
+      this.HAS_SELECT_INSTALL_WITH_GTM = false;
+    }
+
+    console.log('installWithCode HAS_SELECT_INSTALL_WITH_GTM', this.HAS_SELECT_INSTALL_WITH_GTM)
+  }
+
+
 
   getAndManageAccordion() {
     var acc = document.getElementsByClassName("widget-section-accordion");
-    console.log('WIDGET DESIGN ACCORDION', acc);
+    // console.log('WIDGET DESIGN ACCORDION', acc);
     var i;
-
     for (i = 0; i < acc.length; i++) {
-
+      console.log('WIDGET DESIGN ACCORDION i', i, 'acc[i]', acc[i]);
       // Open the first accordion https://codepen.io/fpavision/details/xxxONGv
       var firstAccordion = acc[0];
       var firstPanel = <HTMLElement>firstAccordion.nextElementSibling;
-      console.log('WIDGET DESIGN ACCORDION FIRST PANEL', firstPanel);
+      // console.log('WIDGET DESIGN ACCORDION FIRST PANEL', firstPanel);
 
       firstAccordion.classList.add("active");
       firstPanel.style.maxHeight = firstPanel.scrollHeight + "px";
 
       var arrow_icon_div = firstAccordion.children[1];
-      console.log('WIDGET DESIGN ACCORDION ARROW ICON WRAP DIV', arrow_icon_div);
+      // console.log('WIDGET DESIGN ACCORDION ARROW ICON WRAP DIV', arrow_icon_div);
 
       var arrow_icon = arrow_icon_div.children[0]
-      console.log('WIDGET DESIGN ACCORDION ARROW ICON', arrow_icon);
+      // console.log('WIDGET DESIGN ACCORDION ARROW ICON', arrow_icon);
       arrow_icon.classList.add("arrow-up");
 
       acc[i].addEventListener("click", function () {
         this.classList.toggle("active");
         var panel = this.nextElementSibling;
-        console.log('WIDGET DESIGN ACCORDION PANEL', panel);
+        // console.log('WIDGET DESIGN ACCORDION PANEL', panel);
 
         var arrow_icon_div = this.children[1];
-        console.log('WIDGET DESIGN ACCORDION ARROW ICON WRAP DIV', arrow_icon_div);
+        // console.log('WIDGET DESIGN ACCORDION ARROW ICON WRAP DIV', arrow_icon_div);
 
         var arrow_icon = arrow_icon_div.children[0]
-        console.log('WIDGET DESIGN ACCORDION ARROW ICON', arrow_icon);
+        // console.log('WIDGET DESIGN ACCORDION ARROW ICON', arrow_icon);
         arrow_icon.classList.toggle("arrow-up");
 
         // var arrow_icon_div = acc[i].children[1];
@@ -394,13 +558,9 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
 
         this.translations.forEach(translation => {
           console.log('Multilanguage (widget-design) ***** GET labels ***** - RES >>> TRANSLATION ', translation);
-
-
-
           if (translation) {
             // se c'è inglese eseguo subito il push in languages_codes perle altre lang verifico se è presente _id
             // prima di eseguire il push
-
             if (translation._id !== undefined) {
               this.languages_codes.push(translation.lang.toLowerCase())
             }
@@ -408,6 +568,10 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
             if (translation.default === true) {
               this.defaultLangCode = translation.lang.toLowerCase()
               console.log('Multilanguage (widget-design) ***** GET labels ***** defaultLangCode ', translation);
+            } else {
+              console.log('Multilanguage (widget-design) ***** GET labels ***** No default Lang  ', translation);
+
+
             }
 
             // if (translation.lang === 'EN') {
@@ -427,21 +591,33 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
 
         console.log('Multilanguage (widget-design) ***** GET labels ***** - Array of LANG CODE ', this.languages_codes);
 
+
         // const availableTranslations = [{ code: "it", name: "Italian" }, { code: "fr", name: "French" }, { code: "en", name: "English" }];
         const availableTranslations = this.doAvailableLanguageArray(this.languages_codes);
         console.log('Multilanguage (widget-design) ***** GET labels ***** - availableTranslations ', availableTranslations);
+        if (availableTranslations && availableTranslations.length > 0) {
+          // IN THE SELECT LANGUAGE COMBO DISPLAY AS SELECTED THE FIRST LANGUAGE IN ALPHABETICAL ORDER
+          this.wd_availableTranslations = availableTranslations.sort(this.compare);
+          console.log('Multilanguage (widget-design) ***** GET labels *****  ordered wd_availableTranslations', this.wd_availableTranslations);
 
-        // IN THE SELECT LANGUAGE COMBO DISPLAY AS SELECTED THE FIRST LANGUAGE IN ALPHABETICAL ORDER
-        this.wd_availableTranslations = availableTranslations.sort(this.compare);
-        console.log('Multilanguage (widget-design) ***** GET labels *****  ordered wd_availableTranslations', this.wd_availableTranslations);
+          if (this.wd_availableTranslations && this.wd_availableTranslations[0]) {
+            this.selectedLang = this.wd_availableTranslations[0].name;
+            this.selectedLangCode = this.wd_availableTranslations[0].code;
+            this.selectedLangName = this.wd_availableTranslations[0].name;
+          }
 
-        this.selectedLang = this.wd_availableTranslations[0].name;
-        this.selectedLangCode = this.wd_availableTranslations[0].code;
-        this.selectedLangName = this.wd_availableTranslations[0].name;
+          console.log('Multilanguage (widget-design) ***** GET labels *****  selectedLangCode ', this.selectedLangCode);
 
-        console.log('Multilanguage (widget-design) ***** GET labels *****  selectedLangCode ', this.selectedLangCode);
+          this.getCurrentTranslation(this.selectedLangCode);
+        } else {
 
-        this.getCurrentTranslation(this.selectedLangCode);
+          // ci sono le lebels ma nessuna assegnata al progetto
+          this.translateLangAreNotSetNotAndDisplayModal();
+        }
+      } else {
+
+        // labels is null
+        this.translateLangAreNotSetNotAndDisplayModal();
       }
 
     }, error => {
@@ -451,6 +627,56 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
 
       // this._selectTranslationTab('en', 'English')
     });
+  }
+
+  translateLangAreNotSetNotAndDisplayModal() {
+    this.translate.get('NoDefaultLanguage')
+      .subscribe((text: any) => {
+        this.warningMsg = text['Warning'];
+        this.noDefaultLanguageIsSetUpMsg = text['NoDefaultLanguageIsSetUp'];
+        this.goToMultilanguagePageMsg = text['GoToMultilanguagePage'];
+        this.toAddLanguagesToYourProjectMsg = text['toAddLanguagesToYourProject'];
+        this.cancelMsg = text['Cancel'];
+        this.noLanguagesAreSetUpMsg = text['NoLanguagesAreSetUp'];
+        // this.noDefaultLanguageIsSetUpMsg = text;
+        // console.log('WIDGET DESIGN - translateNoDefaultLanguageIsSetUp warningMsg', this.warningMsg);
+        // console.log('WIDGET DESIGN - translateNoDefaultLanguageIsSetUp noDefaultLanguageIsSetUpMsg', this.noDefaultLanguageIsSetUpMsg)
+      }, (error) => {
+        // console.log('WIDGET DESIGN - translateNoDefaultLanguageIsSetUp - ERROR ', error);
+      }, () => {
+        // console.log('WIDGET DESIGN - translateNoDefaultLanguageIsSetUp * COMPLETE *');
+
+        this.displayModalNoLangAreSetUp()
+      });
+  }
+
+  displayModalNoLangAreSetUp() {
+    // const el = document.createElement('div');
+    // const url = '#/project/' + this.id_project + '/widget-set-up'
+    // el.innerHTML = `${this.noDefaultLanguageIsSetUpMsg} <a href="${url}"> ${this.goToMultilanguagePageMsg}</a>  ${this.toAddLanguagesToYourProjectMsg}</a>`
+    swal({
+      title: this.warningMsg,
+      text: this.noLanguagesAreSetUpMsg + '. ' + this.goToMultilanguagePageMsg + ' ' + this.toAddLanguagesToYourProjectMsg + '.',
+      // content: el,
+      icon: "warning",
+      buttons: {
+        cancel: `${this.cancelMsg}`,
+        catch: {
+          text: `${this.goToMultilanguagePageMsg}`,
+          value: "catch",
+        },
+      },
+
+      // `"Cancel", ${this.goToMultilanguagePageMsg}`],
+      dangerMode: false,
+    })
+      .then((value) => {
+        console.log('displayModalNoLangAreSetUp value', value)
+
+        if (value === 'catch') {
+          this.goToWidgetMultilanguage()
+        }
+      })
   }
 
   getCurrentTranslation(selectedLangCode: string) {
@@ -466,6 +692,11 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
         // ---------------------------------------------------------------
         this.newConversation = this.selected_translation["LABEL_START_NW_CONV"];
         console.log('Multilanguage (widget-design) ***** selected translation newConversation: ', this.newConversation);
+
+        // ---------------------------------------------------------------
+        // @ No Conversation (not editable in the widhet setting page but only from multilanguage page)
+        // ---------------------------------------------------------------
+        this.noConversation = this.selected_translation["NO_CONVERSATION"];
 
         // ---------------------------------------------------------------
         // @ Welcome title and company intro
@@ -505,7 +736,16 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
         // this to simulate the presence of at least one conversation
         // -----------------------------------------------------------------------------------------------------------------------
         this.waitingTimeNotFoundMsg = this.selected_translation["WAITING_TIME_NOT_FOUND"];
-        this.waitingTimeFoundMsg = this.selected_translation["WAITING_TIME_FOUND"] + '$reply_time';
+
+        console.log('Multilanguage (widget-design) - ***** this.selected_translation["WAITING_TIME_FOUND"] contains $reply_time ', this.selected_translation["WAITING_TIME_FOUND"].includes("$reply_time"));
+
+        if (this.selected_translation["WAITING_TIME_FOUND"].includes("$reply_time") === false) {
+          this.waitingTimeFoundMsg = this.selected_translation["WAITING_TIME_FOUND"] + '$reply_time';
+        } else {
+          this.waitingTimeFoundMsg = this.selected_translation["WAITING_TIME_FOUND"]
+        }
+        console.log('Multilanguage (widget-design) - ***** selected translation waitingTimeNotFoundMsg: ', this.waitingTimeNotFoundMsg);
+        console.log('Multilanguage (widget-design) - ***** selected translation waitingTimeFoundMsg: ', this.waitingTimeFoundMsg);
       }
     });
   }
@@ -513,7 +753,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   makeDefaultLanguage(languageCode) {
     console.log('Multilanguage (widget-design) - MAKE DAFAULT LANG - languageCode: ', languageCode);
 
-    this.widgetService.setDefaultLanguage(languageCode).subscribe((translation: any) => { 
+    this.widgetService.setDefaultLanguage(languageCode).subscribe((translation: any) => {
       console.log('Multilanguage (widget-design) - MAKE DAFAULT LANG - RES ', translation);
 
       if (translation.default === true) {
@@ -526,7 +766,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
       console.log('Multilanguage (widget-design) - MAKE DAFAULT LANG ***** * COMPLETE *');
 
       // this.getLabels()
-     
+
     });
   }
 
@@ -543,18 +783,46 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   }
 
 
+
+
+
+
   onChangeReplyTimeTypeMsg(value) {
     console.log('Multilanguage (widget-design) - ON CHANGE REPLY TIME TYPE MSG : ', value);
 
     if (value === 'reply_time_dynamic_msg') {
       this.HAS_SELECT_DYMANIC_REPLY_TIME_MSG = true;
       this.HAS_SELECT_STATIC_REPLY_TIME_MSG = false;
+      console.log('Multilanguage (widget-design) - HAS_SELECT_DYMANIC_REPLY_TIME_MSG : ', this.HAS_SELECT_DYMANIC_REPLY_TIME_MSG);
+
+      // this.widgetObj['dynamicWaitTimeReply'] = this.HAS_SELECT_DYMANIC_REPLY_TIME_MSG;
+      // this.widgetService.updateWidgetProject(this.widgetObj)
+
     }
     if (value === 'reply_time_fixed_msg') {
       this.HAS_SELECT_DYMANIC_REPLY_TIME_MSG = false;
       this.HAS_SELECT_STATIC_REPLY_TIME_MSG = true;
+
+      console.log('Multilanguage (widget-design) - HAS_SELECT_DYMANIC_REPLY_TIME_MSG : ', this.HAS_SELECT_DYMANIC_REPLY_TIME_MSG);
     }
- 
+
+  }
+
+  saveReplyTime() {
+    const save_replytime_btn = <HTMLElement>document.querySelector('.save_replytime_btn');
+    console.log('Multilanguage (widget-design) - save_replytime_btn: ', save_replytime_btn);
+    if (save_replytime_btn) {
+      save_replytime_btn.blur()
+    }
+
+    this.widgetObj['dynamicWaitTimeReply'] = this.HAS_SELECT_DYMANIC_REPLY_TIME_MSG;
+    this.widgetService.updateWidgetProject(this.widgetObj)
+  }
+
+  setReplyTimePlaceholder() {
+    const elInput = <HTMLElement>document.querySelector('.waiting-time-found-msg-input');
+    console.log('Multilanguage (widget-design) - setReplyTimePlaceholder INPUT ELEM: ', elInput);
+    this.insertAtCursor(elInput, '$reply_time')
   }
 
   waitingTimeNotFoundMsgChange(event) {
@@ -565,22 +833,29 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   waitingTimeFoundMsgChange(event) {
     this.waitingTimeFoundMsg = event;
     console.log('Multilanguage (widget-design) - WAITING TIME FOUND CHANGE: ', this.waitingTimeFoundMsg);
-  }
 
-  setReplyTimePlaceholder() {
-    const elInput = <HTMLElement>document.querySelector('.waiting-time-found-msg-input');
-    console.log('Multilanguage (widget-design) - setReplyTimePlaceholder INPUT ELEM: ', elInput);
-    this.insertAtCursor(elInput, '$reply_time')
+    if (/\s$/.test(event)) {
+
+      console.log('Multilanguage (widget-design) - WAITING TIME FOUND CHANGE - string contains space at last');
+      this.addWhiteSpaceBefore = false;
+    } else {
+
+      console.log('Multilanguage (widget-design) - WAITING TIME FOUND CHANGE - string does not contain space at last');
+
+      // IS USED TO ADD A WHITE SPACE TO THE 'PERSONALIZATION' VALUE IF THE STRING DOES NOT CONTAIN SPACE AT LAST
+      this.addWhiteSpaceBefore = true;
+    }
   }
 
   insertAtCursor(myField, myValue) {
-    console.log('Multilanguage (widget-design) - insertAtCursor - myValue ', myValue );
+    console.log('Multilanguage (widget-design) - insertAtCursor - myValue ', myValue);
     // this.waitingTimeFoundMsg = myValue
+
     // if (this.addWhiteSpaceBefore === true) {
     //   myValue = ' ' + myValue;
-    //   console.log('CANNED-RES-CREATE.COMP - GET TEXT AREA - QUI ENTRO myValue ', myValue );
+    //   console.log('Multilanguage (widget-design) - insertAtCursor - myValue addWhiteSpaceBefore ', myValue );
     // }
-   
+
     //IE support
     if (myField.selection) {
       myField.focus();
@@ -592,27 +867,30 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     else if (myField.selectionStart || myField.selectionStart == '0') {
       var startPos = myField.selectionStart;
       console.log('Multilanguage (widget-design) - insertAtCursor - startPos ', startPos);
-      
+
       var endPos = myField.selectionEnd;
       console.log('Multilanguage (widget-design) - insertAtCursor - endPos ', endPos);
-      
+
       myField.value = myField.value.substring(0, startPos) + myValue + myField.value.substring(endPos, myField.value.length);
-  
+
       // place cursor at end of text in text input element
       myField.focus();
       var val = myField.value; //store the value of the element
       myField.value = ''; //clear the value of the element
       myField.value = val + ' '; //set that value back. 
-  
-      // this.cannedResponseMessage = myField.value;
+
+      this.waitingTimeFoundMsg = myField.value;
 
       // this.texareaIsEmpty = false;
       // myField.select();
     } else {
       myField.value += myValue;
-      // this.cannedResponseMessage = myField.value;
+      this.waitingTimeFoundMsg = myField.value;
     }
   }
+
+
+
 
 
   calloutTitleChange(event) {
@@ -657,17 +935,11 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
 
         // break;
       }
-
       // else {
       //   if (calloutTitle.indexOf(emoji) === 0) { 
-
-
       //   }
-
       //   this.calloutTitleForPreview =  calloutTitle.replace(emoji, "");
       // }
-
-
     }
   }
 
@@ -811,15 +1083,6 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     }
   }
 
-  testWidgetPage() {
-    // const url = 'http://testwidget.tiledesk.com/testsitenw3?projectname=' + this.projectName + '&projectid=' + this.id_project
-    // const url = this.TESTSITE_BASE_URL + '?projectname=' + this.projectName + '&projectid=' + this.id_project + '&isOpen=true'
-    const url = this.TESTSITE_BASE_URL + '?tiledesk_projectid=' + this.id_project + '&project_name=' + this.projectName + '&isOpen=true'
-
-    console.log('»» WIDGET - TEST WIDGET URL ', url);
-    window.open(url, '_blank');
-  }
-
 
 
 
@@ -923,6 +1186,13 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
             ' LOGO IS ON', this.LOGO_IS_ON);
         }
 
+        if (project.widget.preChatForm) {
+
+          this.preChatForm = true;
+        } else {
+          this.preChatForm = false;
+        }
+
 
         // ------------------------------------------------------------------------
         // @ themeColor
@@ -989,10 +1259,24 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
           this.hasSelectedRightAlignment = true;
         }
 
+        // -----------------------------------------------------------------------
+        // @ Reply time
+        // WIDGET DEFINED
+        // -----------------------------------------------------------------------
+        console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) DYNAMIC REPLY TIME: ', project.widget.dynamicWaitTimeReply);
+
+        if (project.widget.dynamicWaitTimeReply === true) {
+          this.HAS_SELECT_DYMANIC_REPLY_TIME_MSG = true;
+          this.HAS_SELECT_STATIC_REPLY_TIME_MSG = false;
+        } else {
+          this.HAS_SELECT_DYMANIC_REPLY_TIME_MSG = false;
+          this.HAS_SELECT_STATIC_REPLY_TIME_MSG = true;
+        }
+
       } else {
 
         this.widgetObj = {}
-
+        console.log('»» WIDGET DESIGN - (onInit WIDGET UNDEFINED)');
         // -----------------------------------------------------------------------
         // @ LogoChat
         // WIDGET UNDEFINED
@@ -1029,6 +1313,18 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
         this.calloutTimerSecondSelected = 5;
         this.CALLOUT_IS_DISABLED = true;
 
+        // -----------------------------------------------------------------------
+        // @ preChatForm
+        // WIDGET UNDEFINED
+        // -----------------------------------------------------------------------
+        this.preChatForm = false;
+
+        // -----------------------------------------------------------------------
+        // @ Reply time
+        // WIDGET UNDEFINED
+        // -----------------------------------------------------------------------
+        this.HAS_SELECT_DYMANIC_REPLY_TIME_MSG = false;
+        this.HAS_SELECT_STATIC_REPLY_TIME_MSG = true;
       }
 
     }, (error) => {
@@ -1206,15 +1502,21 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     this.DISPLAY_WIDGET_CHAT = false;
   }
 
+  onFocusReplyTime() {
+    this.DISPLAY_WIDGET_HOME = true;
+    this.DISPLAY_CALLOUT = false;
+    this.DISPLAY_WIDGET_CHAT = false;
+  }
+
   // ---- NEW
   onFocusOnlineGreetings() {
     this.DISPLAY_WIDGET_HOME = false;
     this.DISPLAY_CALLOUT = false;
     this.DISPLAY_WIDGET_CHAT = true
 
-    this.HAS_FOCUSED_ONLINE_MSG= true;
-    this.HAS_FOCUSED_OFFLINE_MSG= false;
-    this.HAS_FOCUSED_OFFICE_CLOSED_MSG= false;
+    this.HAS_FOCUSED_ONLINE_MSG = true;
+    this.HAS_FOCUSED_OFFLINE_MSG = false;
+    this.HAS_FOCUSED_OFFICE_CLOSED_MSG = false;
   }
 
   onFocusOfflineGreetings() {
@@ -1222,20 +1524,20 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     this.DISPLAY_CALLOUT = false;
     this.DISPLAY_WIDGET_CHAT = true;
 
-    this.HAS_FOCUSED_ONLINE_MSG= false;
-    this.HAS_FOCUSED_OFFLINE_MSG= true;
-    this.HAS_FOCUSED_OFFICE_CLOSED_MSG= false;
+    this.HAS_FOCUSED_ONLINE_MSG = false;
+    this.HAS_FOCUSED_OFFLINE_MSG = true;
+    this.HAS_FOCUSED_OFFICE_CLOSED_MSG = false;
 
   }
 
-  onFocusOfficeClosedGreetings () {
+  onFocusOfficeClosedGreetings() {
     this.DISPLAY_WIDGET_HOME = false;
     this.DISPLAY_CALLOUT = false;
     this.DISPLAY_WIDGET_CHAT = true
 
-    this.HAS_FOCUSED_ONLINE_MSG= false;
-    this.HAS_FOCUSED_OFFLINE_MSG= false;
-    this.HAS_FOCUSED_OFFICE_CLOSED_MSG= true;
+    this.HAS_FOCUSED_ONLINE_MSG = false;
+    this.HAS_FOCUSED_OFFLINE_MSG = false;
+    this.HAS_FOCUSED_OFFICE_CLOSED_MSG = true;
   }
 
 
@@ -1457,10 +1759,31 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     }
     this.widgetService.updateWidgetProject(this.widgetObj)
   }
+  // -----------------------------------------------------------------------
+  //  @ Pre-chat form  
+  // -----------------------------------------------------------------------
 
-  // =======================================================================================
-  // ============== *** WIDGET ALIGNMENT (alias for align) ***  ==============
-  // =======================================================================================
+  togglePrechatformCheckBox(event) {
+    if (event.target.checked) {
+      this.preChatForm = true;
+      // *** ADD PROPERTY
+      this.widgetObj['preChatForm'] = this.preChatForm;
+      this.widgetService.updateWidgetProject(this.widgetObj)
+      console.log('»» WIDGET - INCLUDE PRE CHAT FORM ', event.target.checked)
+    } else {
+      this.preChatForm = false;
+      // *** REMOVE PROPERTY
+      delete this.widgetObj['preChatForm'];
+      this.widgetService.updateWidgetProject(this.widgetObj)
+
+      console.log('»» WIDGET - INCLUDE PRE CHAT FORM ', event.target.checked)
+    }
+  }
+
+
+  // -----------------------------------------------------------------------
+  //  @ WIDGET ALIGNMENT (alias for align)   
+  // -----------------------------------------------------------------------
   aligmentLeftSelected(left_selected: boolean) {
 
     this.DISPLAY_WIDGET_HOME = false;
@@ -1497,11 +1820,29 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     this.router.navigate(['project/' + this.id_project + '/widget/translations']);
   }
 
+  goToInstallWithTagManagerDocs() {
+    const url = 'https://docs.tiledesk.com/knowledge-base/google-tag-manager-add-tiledesk-to-your-sites/';
+    window.open(url, '_blank');
+  }
+  goToWidgetWebSdk() {
+    const url = 'https://developer.tiledesk.com/widget/web-sdk';
+    window.open(url, '_blank');
+  }
+
+  testWidgetPage() {
+    this.elementRef.nativeElement.blur();
+    // const url = 'http://testwidget.tiledesk.com/testsitenw3?projectname=' + this.projectName + '&projectid=' + this.id_project
+    // const url = this.TESTSITE_BASE_URL + '?projectname=' + this.projectName + '&projectid=' + this.id_project + '&isOpen=true'
+    const url = this.TESTSITE_BASE_URL + '?tiledesk_projectid=' + this.id_project + '&project_name=' + this.projectName + '&isOpen=true'
+
+    console.log('»» WIDGET - TEST WIDGET URL ', url);
+    window.open(url, '_blank');
+  }
+
+
 
   avarageWaitingTimeCLOCK() {
     this.subscription = this.analyticsService.getDataAVGWaitingCLOCK().subscribe((res: any) => {
-
-
 
       if (res && res.length > 0) {
         if (res[0].waiting_time_avg) {

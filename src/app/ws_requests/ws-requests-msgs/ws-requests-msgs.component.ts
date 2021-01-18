@@ -280,6 +280,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
    */
   ngOnInit() {
     this.getParamRequestId();
+    // this.getQueryParam();
     this.getCurrentProject();
     this.getLoggedUser();
     this.detectMobile();
@@ -326,7 +327,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   unsuscribeRequesterPresence(requester_id) {
-    this.contactsService.unsubscribeToWS_RequesterPresence(requester_id);
+    // this.contactsService.unsubscribeToWS_RequesterPresence(requester_id);
+    this.wsRequestsService.unsubscribeToWS_RequesterPresence(requester_id);
   }
 
 
@@ -386,7 +388,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   translateNotificationMsgs() {
     this.translate.get('Tags.NotificationMsgs')
       .subscribe((translation: any) => {
-        console.log('% »»» WebSocketJs WF >>> ws-m  translateNotificationMsgs text', translation)
+        // console.log('% »»» WebSocketJs WF >>> ws-m  translateNotificationMsgs text', translation)
         this.create_label_success = translation.AddLabelSuccess;
         this.create_label_error = translation.AddLabelError;
         this.delete_label_success = translation.DeleteLabelSuccess;
@@ -395,7 +397,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
     this.translate.get('Notes.NotificationMsgs')
       .subscribe((translation: any) => {
-        console.log('% »»» WebSocketJs WF >>> ws-m  translateNotificationMsgs text', translation)
+        // console.log('% »»» WebSocketJs WF >>> ws-m  translateNotificationMsgs text', translation)
         this.create_note_success = translation.CreateNoteSuccess;
         this.create_note_error = translation.CreateNoteError;
         this.delete_note_success = translation.DeleteNoteSuccess;
@@ -404,19 +406,19 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
     this.translate.get('Processing')
       .subscribe((translation: any) => {
-        console.log('% »»» WebSocketJs WF >>> ws-m  translateNotificationMsgs text', translation)
+        // console.log('% »»» WebSocketJs WF >>> ws-m  translateNotificationMsgs text', translation)
         this.notifyProcessingMsg = translation;
       });
 
     this.translate.get('TheRequestHasBeenMovedToHistory')
       .subscribe((translation: any) => {
-        console.log('% »»» WebSocketJs WF >>> ws-m  translateNotificationMsgs text', translation)
+        // console.log('% »»» WebSocketJs WF >>> ws-m  translateNotificationMsgs text', translation)
         this.request_archived_msg = translation;
       });
 
     this.translate.get('AnErrorHasOccurredArchivingTheRequest')
       .subscribe((translation: any) => {
-        console.log('% »»» WebSocketJs WF >>> ws-m  translateNotificationMsgs text', translation)
+        // console.log('% »»» WebSocketJs WF >>> ws-m  translateNotificationMsgs text', translation)
         this.request_archived_err_msg = translation;
       });
 
@@ -442,6 +444,15 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     console.log('AppConfigService getAppConfig (WsRequestsMsgsComponent) CHAT_BASE_URL: ', this.CHAT_BASE_URL);
   }
 
+
+
+  // getQueryParam() {
+  //   this.route.queryParams.subscribe(params => {
+  //     console.log('WS-REQUESTS-MSGS - getQueryParam  ', params);
+  //   });
+  // }
+
+
   /**
  * Get the request id from url params and then with this
  * start the subscription to websocket messages and to websocket request by id
@@ -456,7 +467,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // }
 
     this.route.params.subscribe((params) => {
-
+      console.log('WS-REQUESTS-MSGS - getParamRequestId  ', params);
       if (this.id_request) {
         console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - UNSUB-REQUEST-BY-ID - id_request ', this.id_request);
         console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - UNSUB-MSGS - id_request ', this.id_request);
@@ -515,11 +526,25 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
+      // if (project) {
+      console.log('% Ws-REQUESTS-Msgs >>>>> project <<<<<', project)
+
+
+      // if (this.id_project) { 
+      //   this.unsuscribeRequesterPresence(this.requester_id)
+      // }
+
       if (project) {
-        console.log('% Ws-REQUESTS-Msgs >>>>> project <<<<<', project)
-        this.id_project = project._id
-        this.project_name = project.name
+        console.log('% »»» WebSocketJs WF +++++ ws-requests--- service getWsRequests MSG */* ref */* project._id (NEW)', project._id)
+        console.log('% »»» WebSocketJs WF +++++ ws-requests--- service getWsRequests MSG */* ref */* this.project_id (OLD)', this.id_project)
+
+        this.id_project = project._id;
+        this.project_name = project.name;
+
       }
+
+
+      // }
     });
   }
 
@@ -736,7 +761,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             this.request['ua_os'] = ua_os
           }
 
-          
+
           // -------------------------------------------------------------------
           // Members array
           // -------------------------------------------------------------------
@@ -1176,12 +1201,15 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // -----------------------------------------------------------------------------------------
     // New - Get Lead presence from websocket subscription (replace firebaseRealtimeDb)
     // -----------------------------------------------------------------------------------------
-    this.contactsService.subscribeToWS_RequesterPresence(requester_id);
+    // this.contactsService.subscribeToWS_RequesterPresence(requester_id);
+    this.wsRequestsService.subscribeToWS_RequesterPresence(requester_id);
+
     this.getWsRequesterPresence();
   }
 
   getWsRequesterPresence() {
-    this.contactsService.wsRequesterStatus$
+    // this.contactsService.wsRequesterStatus$
+    this.wsRequestsService.wsRequesterStatus$
       .pipe(
         takeUntil(this.unsubscribe$)
       )
@@ -2068,6 +2096,37 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       //   panel.scrollTop = 0;
       // }, 500);
     }
+  }
+
+
+  // ---------------------------------------------------------------------------------------
+  // @ Arttributes
+  // ---------------------------------------------------------------------------------------
+  openAttributesAccordion() {
+
+    // var acc = document.getElementsByClassName("accordion");
+    var acc = <HTMLElement>document.querySelector('.attributes-accordion');
+    console.log('% Ws-REQUESTS-Msgs - open attributes-accordion -  accordion elem ', acc);
+    acc.classList.toggle("active");
+    // var panel = acc.nextElementSibling ;
+    var panel = <HTMLElement>document.querySelector('.attributes-panel')
+    console.log('% Ws-REQUESTS-Msgs -  open attributes-accordion  -  panel ', panel);
+
+    // this.thisIsCalledWhenNewItemISAdded();
+    // let ps = new PerfectScrollbar(panel);
+    // if (panel.style.maxHeight) {
+    //   panel.style.maxHeight = null;
+    // } else {
+    //   panel.style.maxHeight = "300px";
+    //   panel.scrollTop = 0;
+    // }
+
+    if (panel.style.maxHeight) {
+      panel.style.maxHeight = null;
+    } else {
+      panel.style.maxHeight = panel.scrollHeight + "px";
+    }
+
   }
 
   thisIsCalledWhenNewItemISAdded() {

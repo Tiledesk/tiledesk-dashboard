@@ -24,6 +24,7 @@ export class AppStoreComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.auth.checkRoleForCurrentProject();
     this.getApps();
     this.getCurrentProject();
     this.getToken()

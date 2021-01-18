@@ -211,7 +211,7 @@ import { WebhookAddEditComponent } from './webhook/webhook-add-edit/webhook-add-
 import { WebhookService } from './services/webhook.service';
 
 
-import { VisitorsAnalyticsComponent } from './analytics2/metriche/visitors/visitors-analytics.component';
+import { VisitorsAnalyticsComponent } from './analytics2/metriche/visitors-analytics/visitors-analytics.component';
 import { MessagesComponent } from './analytics2/metriche/messages/messages.component';
 import { NotificationSettingsComponent } from './user-profile/notification-settings/notification-settings.component';
 
@@ -361,8 +361,6 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     WebhookComponent,
     WebhookAddEditComponent,
     MapRequestComponent,
-    MessagesComponent,
-    // NotificationSettingsComponent
     WebhookComponent,
     WebhookAddEditComponent,
     MapRequestComponent,

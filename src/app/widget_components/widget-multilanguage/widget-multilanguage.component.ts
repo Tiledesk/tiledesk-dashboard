@@ -86,21 +86,21 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
   getEnDefaultTranslation() {
 
     this.widgetService.getEnDefaultLabels().subscribe((labels: any) => {
-      console.log('WIZARD - CONFIGURE WIDGET ***** GET labels ***** - RES', labels);
+      console.log('Multilanguage  ***** GET labels DEFAULT TRANSLATION ***** - RES', labels);
       if (labels) {
         // this.translation = labels[0].data[0];
 
         this.engTraslationClone = Object.assign({}, labels['data']);
         // console.log('Multilanguage ***** GET labels ***** - RES > TRANSLATIONS ', labels[0].data[0]);
-        console.log('WIZARD - CONFIGURE WIDGET ***** GET labels ***** - RES > DEFAULT TRANSLATION ', this.engTraslationClone);
+        console.log('Multilanguage  ***** GET labels DEFAULT TRANSLATION ***** - engTraslationClone >  ', this.engTraslationClone);
 
 
       }
 
     }, error => {
-      console.log('WIZARD - CONFIGURE WIDGET ***** GET labels ***** - ERROR ', error)
+      console.log('Multilanguage - ***** GET labels DEFAULT TRANSLATION ***** - ERROR ', error)
     }, () => {
-      console.log('WIZARD - CONFIGURE WIDGET ***** GET labels ***** * COMPLETE *')
+      console.log('Multilanguage - ***** GET labels DEFAULT TRANSLATION ***** * COMPLETE *')
       // this.showSheleton = false;
       // this.getLabels(labels.lang.toLowerCase(), );
       this.getLabels()
@@ -148,6 +148,10 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
               console.log('Multilanguage ***** GET labels ***** - RES >>> TRANSLATION defaultLangCode', this.defaultLangCode);
               this._selectTranslationTab(translation.lang.toLowerCase(), this.defaultLangName);
             }
+
+            if (this.languages_codes.length === 0) {
+              this._selectTranslationTab('add', '');
+            } 
 
 
             /* old */

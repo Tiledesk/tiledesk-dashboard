@@ -21,9 +21,15 @@ import { AppConfigService } from '../services/app-config.service';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../services/brand.service';
 
+import { Chart } from 'chart.js'; /// VISITOR GRAPH FOR THE NEW NOME
+import { AnalyticsService } from 'app/services/analytics.service'; /// VISITOR GRAPH FOR THE NEW NOME
+import * as moment from 'moment'; /// VISITOR GRAPH FOR THE NEW NOME
+import { ContactsService } from '../services/contacts.service'; // USED FOR COUNT OF ACTIVE CONTACTS FOR THE NEW HOME
+import { FaqKbService } from '../services/faq-kb.service'; // USED FOR COUNT OF BOTS FOR THE NEW HOME
+import { avatarPlaceholder, getColorBck } from '../utils/util';
 @Component({
   selector: 'home',
-  templateUrl: './home.component.html',
+  templateUrl: './new-home.component.html',
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit, OnDestroy {
@@ -68,6 +74,26 @@ export class HomeComponent implements OnInit, OnDestroy {
   isVisible: boolean;
   installWidgetText: string;
 
+  //** FOR THE NEW DASHBOARD **//
+  monthNames: any; /// VISITOR GRAPH FOR THE NEW HOME
+  initDay: string; /// VISITOR GRAPH FOR THE NEW HOME
+  endDay: string; /// VISITOR GRAPH FOR THE NEW HOME
+  selectedDaysId: number /// VISITOR GRAPH FOR THE NEW HOME
+  countOfActiveContacts: number; /// COUNT OF ACTIVE CONTACT FOR THE NEW HOME
+  countOfVisitors: number; /// COUNT OF ACTIVE CONTACT FOR THE NEW HOME
+  countOfBots: number; /// USED FOR COUNT OF BOTS FOR THE NEW HOME !!! *** Not used - replaced with LAST 30 DAYS MESSAGES COUNT
+  countOfDepts: number; /// USED FOR COUNT OF DEPTS FOR THE NEW HOME !!! *** Not used - replaced with LAST 30 DAYS REQUEST COUNT
+  OPERATING_HOURS_ACTIVE: boolean; /// USED TO DISPLAY OPERATING HOURS ENABLED / DISABLED
+  countOfLastMonthMsgs: number; /// USED FOR COUNT OF LAST 30 DAYS MSGS FOR THE NEW HOME
+  countOfLastMonthRequests: number; // USED FOR COUNT OF LAST 30 DAYS REQUESTS FOR THE NEW HOME 
+  projectUsers: any // TO DISPLAY THE PROJECT USERS IN THE NEW HOME HEADER
+  storageBucket: string;
+  chatbots: any // TO DISPLAY THE CHATVOT IN THE NEW HOME HEADER
+  DISPLAY_TEAMMATES: boolean = false;
+  DISPLAY_CHATBOTS: boolean = false;
+
+  isVisibleANA: boolean;
+  isVisibleAPP: boolean;
   constructor(
     public auth: AuthService,
     private route: ActivatedRoute,
@@ -80,18 +106,34 @@ export class HomeComponent implements OnInit, OnDestroy {
     private translate: TranslateService,
     private prjctPlanService: ProjectPlanService,
     public appConfigService: AppConfigService,
-    public brandService: BrandService
+    public brandService: BrandService,
+    private analyticsService: AnalyticsService,
+    private contactsService: ContactsService,
+    private faqKbService: FaqKbService
   ) {
     const brand = brandService.getBrand();
     this.company_name = brand['company_name'];
     this.tparams = brand;
+    this.selectedDaysId = 7;
   }
 
   ngOnInit() {
+    this.getCurrentProjectAndInit();
+    // this.getStorageBucket(); // moved in getCurrentProject()
     console.log('!!! Hello HomeComponent! ');
+    this.getVisitorsByLastNDays(this.selectedDaysId); /// VISITOR GRAPH FOR THE NEW HOME
+    this.initDay = moment().subtract(6, 'd').format('D/M/YYYY') /// VISITOR GRAPH FOR THE NEW HOME
+    this.endDay = moment().subtract(0, 'd').format('D/M/YYYY') /// VISITOR GRAPH FOR THE NEW HOME
+    console.log("INIT", this.initDay, "END", this.endDay); /// VISITOR GRAPH FOR THE NEW HOME
+
+
+    // this.getDeptsByProjectId(); // USED FOR COUNT OF DEPTS FOR THE NEW HOME
+
+
 
     this.getBrowserLanguage();
     this.translateInstallWidget();
+
 
     // console.log(environment.firebaseConfig.projectId);
     // this.firebaseProjectId = environment.firebaseConfig.projectId;
@@ -108,7 +150,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     // }
     this.getLoggedUser()
     // this.getProjectId()
-    this.getCurrentProject()
+
 
     // get the PROJECT-USER BY CURRENT-PROJECT-ID AND CURRENT-USER-ID
     // IS USED TO DETERMINE IF THE USER IS AVAILABLE OR NOT AVAILABLE
@@ -126,6 +168,243 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.getOSCODE();
     this.getChatUrl();
   }
+
+
+
+  getCurrentProjectAndInit() {
+    this.subscription = this.auth.project_bs.subscribe((project) => {
+
+      console.log('HOME project from AUTH service subscription  ', project)
+      if (project) {
+        this.project = project
+        this.projectId = this.project._id
+        this.OPERATING_HOURS_ACTIVE = this.project.operatingHours
+        console.log('HOME > OPERATING_HOURS_ACTIVE', this.OPERATING_HOURS_ACTIVE)
+
+        this.init()
+      }
+    });
+  }
+
+
+  init() {
+
+    this.getStorageBucketThenUserAndBots();
+    this.getLastMounthMessagesCount() // USED TO GET THE MESSAGES OF THE LAST 30 DAYS
+    this.getLastMounthRequestsCount(); // USED TO GET THE REQUESTS OF THE LAST 30 DAYS
+    this.getActiveContactsCount()  /// COUNT OF ACTIVE CONTACTS FOR THE NEW HOME
+    this.getVisitorsCount() /// COUNT OF VISITORS FOR THE NEW HOME
+
+  }
+
+  toggleDisplayTeammates() {
+    if (this.DISPLAY_TEAMMATES === false) {
+      this.DISPLAY_TEAMMATES = true;
+      console.log('HOME > DISPLAY_TEAMMATES', this.DISPLAY_TEAMMATES)
+    } else if (this.DISPLAY_TEAMMATES === true) {
+      this.DISPLAY_TEAMMATES = false;
+      console.log('HOME > DISPLAY_TEAMMATES', this.DISPLAY_TEAMMATES)
+    }
+  }
+
+  toggleDisplayChatbots() {
+
+    if (this.DISPLAY_CHATBOTS === false) {
+      this.DISPLAY_CHATBOTS = true;
+      console.log('HOME > DISPLAY_CHATBOTS', this.DISPLAY_CHATBOTS)
+    } else if (this.DISPLAY_CHATBOTS === true) {
+      this.DISPLAY_CHATBOTS = false;
+      console.log('HOME > DISPLAY_CHATBOTS', this.DISPLAY_CHATBOTS)
+    }
+  }
+
+
+  getStorageBucketThenUserAndBots() {
+    const firebase_conf = this.appConfigService.getConfig().firebase;
+    this.storageBucket = firebase_conf['storageBucket'];
+    console.log('STORAGE-BUCKET HOME ', this.storageBucket)
+
+    this.getAllUsersOfCurrentProject(this.storageBucket)  // USED TO DISPLAY THE HUMAN AGENT FOR THE NEW HOME
+    this.getFaqKbByProjectId(this.storageBucket) // USED FOR COUNT OF BOTS FOR THE NEW HOME
+  }
+
+  // USED FOR COUNT OF ACTIVE CONTACTS FOR THE NEW HOME 
+  getActiveContactsCount() {
+    this.contactsService.getLeadsActive().subscribe((activeleads: any) => {
+      console.log('HOME - GET ACTIVE LEADS RESPONSE ', activeleads)
+      if (activeleads) {
+
+        this.countOfActiveContacts = activeleads['count'];
+        console.log('HOME - ACTIVE LEADS COUNT ', this.countOfActiveContacts)
+      }
+    });
+  }
+
+
+
+  getLastMounthMessagesCount() {
+    this.analyticsService.getLastMountMessagesCount().subscribe((msgscount: any) => {
+      console.log('HOME - GET LAST 30 DAYS MESSAGE COUNT RES', msgscount);
+      if (msgscount && msgscount.length > 0) {
+        this.countOfLastMonthMsgs = msgscount[0]['totalCount']
+
+        console.log('HOME - GET LAST 30 DAYS MESSAGE COUNT ', this.countOfLastMonthMsgs);
+      } else {
+        this.countOfLastMonthMsgs = 0;
+      }
+    });
+  }
+
+  getLastMounthRequestsCount() {
+    this.analyticsService.getLastMountConversationsCount().subscribe((convcount: any) => {
+      console.log('HOME - GET LAST 30 DAYS CONVERSATION COUNT RES', convcount);
+
+      if (convcount && convcount.length > 0) {
+        this.countOfLastMonthRequests = convcount[0]['totalCount'];
+        console.log('HOME - GET LAST 30 DAYS CONVERSATION COUNT ', this.countOfLastMonthRequests);
+      } else {
+        this.countOfLastMonthRequests = 0;
+      }
+    });
+  }
+
+  getVisitorsCount() {
+    this.analyticsService.getVisitors().subscribe((visitorcounts: any) => {
+      console.log("HOME - GET VISITORS COUNT RES: ", visitorcounts)
+      this.countOfVisitors
+
+      if (visitorcounts && visitorcounts.length > 0) {
+        this.countOfVisitors = visitorcounts[0]['totalCount']
+        console.log("HOME - GET VISITORS COUNT: ", this.countOfVisitors)
+      } else {
+        this.countOfVisitors = 0
+      }
+
+
+    })
+  }
+
+  // USED TO DISPLAY THE HUMAN AGENT FOR THE NEW HOME
+  getAllUsersOfCurrentProject(storagebucket) {
+    this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
+      console.log('HOME - PROJECT-USERS ', projectUsers);
+
+      if (projectUsers) {
+        this.projectUsers = projectUsers
+
+        this.projectUsers.forEach(user => {
+
+          const imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + storagebucket + "/o/profiles%2F" + user['id_user']['_id'] + "%2Fphoto.jpg?alt=media"
+
+          this.checkImageExists(imgUrl, (existsImage) => {
+            if (existsImage == true) {
+              console.log('»» USERS COMP - IMAGE EXIST X USERS', user);
+              user.hasImage = true;
+            }
+            else {
+              console.log('»» USERS COMP - IMAGE NOT EXIST X USERS', user);
+              user.hasImage = false;
+            }
+          });
+          let fullname = '';
+          if (user && user['id_user'] && user['id_user'].firstname && user['id_user'].lastname) {
+
+
+            fullname = user['id_user']['firstname'] + ' ' + user['id_user']['lastname']
+            user['fullname_initial'] = avatarPlaceholder(fullname);
+            user['fillColour'] = getColorBck(fullname)
+          } else if (user && user['id_user'] && user['id_user'].firstname) {
+
+            fullname = user['id_user'].firstname
+            user['fullname_initial'] = avatarPlaceholder(fullname);
+            user['fillColour'] = getColorBck(fullname)
+          } else {
+            user['fullname_initial'] = 'N/A';
+            user['fillColour'] = 'rgb(98, 100, 167)';
+          }
+
+
+        });
+
+      }
+
+    }, error => {
+      // this.showSpinner = false;
+      console.log('HOME - PROJECT-USERS  - ERROR', error);
+    }, () => {
+      console.log('HOME - PROJECT-USERS  - COMPLETE')
+    });
+  }
+
+  // USED FOR COUNT OF BOTS FOR THE NEW HOME !!! *** Not used - replaced with GET LAST 30 DAYS MESSAGE COUNT ***
+  getFaqKbByProjectId(storagebucket) {
+    this.faqKbService.getAllBotByProjectId().subscribe((faqKb: any) => {
+      console.log('HOME - GET FAQKB RES', faqKb);
+      if (faqKb) {
+
+
+
+        faqKb.forEach(bot => {
+
+          console.log('HOME - GET FAQKB forEach bot: ', bot)
+
+          if (bot && bot['type'] === "identity") {
+
+            const index = faqKb.indexOf(bot);
+            console.log('HOME - GET FAQKB INDEX OF IDENTITY BOT', index);
+            if (index > -1) {
+              faqKb.splice(index, 1);
+            }
+          }
+
+          const imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + storagebucket + "/o/profiles%2F" + bot['_id'] + "%2Fphoto.jpg?alt=media"
+          this.checkImageExists(imgUrl, (existsImage) => {
+            if (existsImage == true) {
+              console.log('»» USERS COMP - IMAGE EXIST X bot', bot);
+              bot.hasImage = true;
+            }
+            else {
+              console.log('»» USERS COMP - IMAGE NOT EXIST X bot', bot);
+              bot.hasImage = false;
+            }
+          });
+        });
+        this.chatbots = faqKb;
+        console.log('HOME - GET FAQKB RES this.chatbots', this.chatbots);
+
+        // this.countOfBots = faqKb.length;
+        // console.log('HOME - GET FAQKB RES', this.countOfBots);
+      }
+    });
+  }
+
+  checkImageExists(imageUrl, callBack) {
+    var imageData = new Image();
+    imageData.onload = function () {
+      callBack(true);
+    };
+    imageData.onerror = function () {
+      callBack(false);
+    };
+    imageData.src = imageUrl;
+  }
+
+
+
+
+  // USED FOR COUNT OF DEPTS FOR THE NEW HOME  !!! *** Not used - replaced with LAST 30 DAYS REQUEST COUNT ***
+  // getDeptsByProjectId() {
+  //   this.departmentService.getDeptsByProjectId().subscribe((depts: any) => {
+  //     console.log('HOME - GET DEPTS (tes)', depts);
+
+  //     if (depts) {
+  //       this.countOfDepts = depts.length;
+  //       console.log('HOME - GET DEPTS (tes)', this.countOfDepts);
+  //     }
+  //   });
+  // }
+
+
 
   getChatUrl() {
     this.CHAT_BASE_URL = this.appConfigService.getConfig().CHAT_BASE_URL;
@@ -159,8 +438,44 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.isVisible = true;
         }
       }
+      if (key.includes("ANA")) {
+        // console.log('PUBLIC-KEY (SIDEBAR) - key', key);
+        let ana = key.split(":");
+        // console.log('PUBLIC-KEY (SIDEBAR) - ana key&value', ana);
+
+        if (ana[1] === "F") {
+          this.isVisibleANA = false;
+          // console.log('PUBLIC-KEY (SIDEBAR) - ana isVisible', this.isVisibleANA);
+        } else {
+          this.isVisibleANA = true;
+          // console.log('PUBLIC-KEY (SIDEBAR) - ana isVisible', this.isVisibleANA);
+        }
+      }
+
+      if (key.includes("APP")) {
+        console.log('PUBLIC-KEY (SIDEBAR) - key', key);
+        let lbs = key.split(":");
+        console.log('PUBLIC-KEY (SIDEBAR) - app key&value', lbs);
+
+        if (lbs[1] === "F") {
+          this.isVisibleAPP = false;
+          console.log('PUBLIC-KEY (SIDEBAR) - app isVisible', this.isVisibleAPP);
+        } else {
+          this.isVisibleAPP = true;
+          console.log('PUBLIC-KEY (SIDEBAR) - app isVisible', this.isVisibleAPP);
+        }
+      }
     });
 
+    if (!this.public_Key.includes("ANA")) {
+      console.log('PUBLIC-KEY (SIGN-IN) - key.includes("V1L")', this.public_Key.includes("ANA"));
+      this.isVisibleANA = false;
+    }
+
+    if (!this.public_Key.includes("APP")) {
+      console.log('PUBLIC-KEY (SIDEBAR) - key.includes("APP")', this.public_Key.includes("APP"));
+      this.isVisibleAPP = false;
+    }
 
     // console.log('eoscode', this.eos)
     // if (this.eos && this.eos === publicKey) {
@@ -174,6 +489,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     // }
   }
 
+  // OLD - NOW NOT WORKS
   getVisitorCounter() {
     this.departmentService.getVisitorCounter()
       .subscribe((visitorCounter: any) => {
@@ -186,7 +502,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
           let count = 0;
           visitorCounter.forEach(visitor => {
-            // console.log('getVisitorCounter visitor origin ', visitor.origin);
+            console.log('getVisitorCounter visitor origin ', visitor.origin);
             if (
               visitor.origin !== "https://s3.eu-west-1.amazonaws.com" &&
               visitor.origin !== "http://testwidget.tiledesk.it" &&
@@ -235,7 +551,21 @@ export class HomeComponent implements OnInit, OnDestroy {
   getBrowserLanguage() {
     this.browserLang = this.translate.getBrowserLang();
     console.log('!!! ===== HELLO HOME COMP ===== BRS LANG ', this.browserLang)
+
+
+    this.switchMonthName(); /// VISITOR GRAPH FOR THE NEW NOME
   }
+  switchMonthName() {
+    if (this.browserLang) {
+      if (this.browserLang === 'it') {
+        this.monthNames = { '1': 'Gen', '2': 'Feb', '3': 'Mar', '4': 'Apr', '5': 'Mag', '6': 'Giu', '7': 'Lug', '8': 'Ago', '9': 'Set', '10': 'Ott', '11': 'Nov', '12': 'Dic' }
+      } else {
+        this.monthNames = { '1': 'Jan', '2': 'Feb', '3': 'Mar', '4': 'Apr', '5': 'May', '6': 'Jun', '7': 'Jul', '8': 'Aug', '9': 'Sep', '10': 'Oct', '11': 'Nov', '12': 'Dec' }
+      }
+    }
+  }
+
+
 
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
@@ -313,9 +643,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
-  goToPricing() {
-    this.router.navigate(['project/' + this.projectId + '/pricing']);
-  }
 
 
 
@@ -345,16 +672,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     })
   }
 
-  getCurrentProject() {
-    this.subscription = this.auth.project_bs.subscribe((project) => {
-      this.project = project
-      console.log('00 -> HOME project from AUTH service subscription  ', project)
 
-      if (this.project) {
-        this.projectId = this.project._id
-      }
-    });
-  }
 
   // <!-- RESOUCES (link renamed in WIDGET) -->
   goToResources() {
@@ -369,17 +687,107 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.router.navigate(['project/' + this.projectId + '/analytics']);
   }
 
+  // test link
   goToAnalyticsStaticPage() {
     this.router.navigate(['project/' + this.projectId + '/analytics-demo']);
   }
 
+  // test link
   goToActivitiesStaticPage() {
     this.router.navigate(['project/' + this.projectId + '/activities-demo']);
   }
 
+  // test link
   goToHoursStaticPage() {
     this.router.navigate(['project/' + this.projectId + '/hours-demo']);
   }
+
+  // test link
+  goToPricing() {
+    this.router.navigate(['project/' + this.projectId + '/pricing']);
+  }
+
+
+  goToOperatingHours() {
+    this.router.navigate(['project/' + this.projectId + '/hours']);
+  }
+
+  goToMessagesAnalytics() {
+    // this.router.navigate(['project/' + this.projectId + '/messages-analytics']);
+    this.router.navigate(['project/' + this.projectId + '/analytics/metrics/messages']);
+  }
+
+  goToVisitorsAnalytics() {
+    this.router.navigate(['project/' + this.projectId + '/analytics/metrics/visitors']);
+  }
+
+  // Analytics > Metrics > Conversation
+  goToRequestsAnalytics() {
+    // this.router.navigate(['project/' + this.projectId + '/conversation-analytics']);
+    this.router.navigate(['project/' + this.projectId + '/analytics/metrics']);
+  }
+
+  goToContacts() {
+    this.router.navigate(['project/' + this.projectId + '/contacts']);
+  }
+
+  goToBotsList() {
+    this.router.navigate(['project/' + this.projectId + '/bots']);
+  }
+
+  goToUsersList() {
+    this.router.navigate(['project/' + this.projectId + '/users']);
+  }
+
+  goToWidgetSetup() {
+    this.router.navigate(['project/' + this.projectId + '/widget-set-up']);
+  }
+  goToWidgetConversations() {
+    this.router.navigate(['project/' + this.projectId + '/wsrequests']);
+  }
+
+  goToAppStore() {
+    this.router.navigate(['project/' + this.projectId + '/app-store']);
+  }
+
+
+
+  goToBotProfile(bot_id, bot_type) {
+    let botType = ''
+    if (bot_type === 'internal') {
+      botType = 'native'
+    } else {
+      botType = bot_type
+    }
+    if (botType !== 'identity') {
+      this.router.navigate(['project/' + this.projectId + '/bots', bot_id, botType]);
+    }
+  }
+
+  goToAgentProfile(member_id) {
+    console.log('WsRequestsServedComponent goToAgentProfile ', member_id)
+    // this.router.navigate(['project/' + this.projectId + '/member/' + member_id]);
+
+    this.getProjectuserbyUseridAndGoToEditProjectuser(member_id);
+  }
+
+  // SERVED_BY: add this if not exist -->
+  getProjectuserbyUseridAndGoToEditProjectuser(member_id: string) {
+    this.usersService.getProjectUserByUserId(member_id)
+      .subscribe((projectUser: any) => {
+        console.log('% Ws-REQUESTS-Msgs GET projectUser by USER-ID ', projectUser)
+        if (projectUser) {
+          console.log('% Ws-REQUESTS-Msgs projectUser id', projectUser[0]._id);
+
+          this.router.navigate(['project/' + this.projectId + '/user/edit/' + projectUser[0]._id]);
+        }
+      }, (error) => {
+        console.log('% Ws-REQUESTS-Msgs GET projectUser by USER-ID - ERROR ', error);
+      }, () => {
+        console.log('% Ws-REQUESTS-Msgs GET projectUser by USER-ID * COMPLETE *');
+      });
+  }
+
 
 
   openChat() {
@@ -525,9 +933,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   // IS SELECTED THE SIDEBAR HAS BEEN ALREADY CALLED)
   // *** NOTE: THE SAME CALLBACK IS RUNNED IN THE SIDEBAR.COMP ***
   getProjectUser() {
-    console.log('!!! HOME CALL GET-PROJECT-USER')
+    console.log('HOME CALL GET-PROJECT-USER')
     this.usersService.getProjectUserByUserId(this.user._id).subscribe((projectUser: any) => {
-      console.log('!!! H PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID ', projectUser)
+      console.log('HOME PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID ', projectUser)
       if (projectUser) {
         console.log('H PROJECT-USER ID ', projectUser[0]._id)
         console.log('H USER IS AVAILABLE ', projectUser[0].user_available)
@@ -562,33 +970,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
 
 
-  // !!!! NO MORE USED - MOVED IN USER SERVICE
-  getAllUsersOfCurrentProject() {
-    this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
-      console.log('HOME COMP - PROJECT-USERS (FILTERED FOR PROJECT ID)', projectUsers);
 
-      if (projectUsers) {
-        projectUsers.forEach(projectUser => {
-          if (projectUser && projectUser !== null) {
-            if (projectUser.id_user) {
-              console.log('HOME COMP - PROJECT-USERS - USER ', projectUser.id_user, projectUser.id_user._id)
-
-              // localStorage.setItem(projectUser.id_user._id, JSON.stringify(projectUser.id_user));
-              this.usersLocalDbService.saveMembersInStorage(projectUser.id_user._id, projectUser.id_user);
-            }
-          }
-        });
-      }
-      // localStorage.setItem('project', JSON.stringify(project));
-      //   this.showSpinner = false;
-      //   this.projectUsersList = projectUsers;
-    }, error => {
-      // this.showSpinner = false;
-      console.log('PROJECT-USERS (FILTERED FOR PROJECT ID) - ERROR', error);
-    }, () => {
-      console.log('PROJECT-USERS (FILTERED FOR PROJECT ID) - COMPLETE')
-    });
-  }
 
   // NOT YET USED
   superUserAuth() {
@@ -610,6 +992,142 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.router.navigate(['project/' + this.projectId + '/activities']);
   }
 
+
+  /// VISITOR GRAPH FOR THE NEW NOME
+  getVisitorsByLastNDays(lastdays) {
+    this.analyticsService.getVisitorsByDay().subscribe((visitorsByDay) => {
+      console.log("»» VISITORS BY DAY RESULT: ", visitorsByDay)
+
+      const last7days_initarray = [];
+      for (let i = 0; i < lastdays; i++) {
+        last7days_initarray.push({ 'count': 0, day: moment().subtract(i, 'd').format('D/M/YYYY') })
+      }
+
+      last7days_initarray.reverse();
+      console.log("»» LAST 7 DAYS VISITORS - INIT ARRAY: ", last7days_initarray)
+
+      const visitorsByDay_series_array = [];
+      const visitorsByDay_labels_array = [];
+
+      // CREATES A NEW ARRAY FROM THE ARRAY RETURNED FROM THE SERVICE SO THAT IT IS COMPARABLE WITH last7days_initarray
+      const visitorsByDay_array = [];
+      for (let j = 0; j < visitorsByDay.length; j++) {
+        if (visitorsByDay[j]) {
+          visitorsByDay_array.push({ 'count': visitorsByDay[j]['count'], day: visitorsByDay[j]['_id']['day'] + '/' + visitorsByDay[j]['_id']['month'] + '/' + visitorsByDay[j]['_id']['year'] })
+        }
+      }
+
+      // MERGE last7days_initarray & visitorsByDay_array
+      const visitorsByDays_final_array = last7days_initarray.map(obj => visitorsByDay_array.find(o => o.day === obj.day) || obj);
+
+      this.initDay = visitorsByDays_final_array[0].day;
+      this.endDay = visitorsByDays_final_array[lastdays - 1].day;
+      console.log("INIT", this.initDay, "END", this.endDay);
+
+      visitorsByDays_final_array.forEach((visitByDay) => {
+        visitorsByDay_series_array.push(visitByDay.count)
+        const splitted_date = visitByDay.day.split('/');
+        visitorsByDay_labels_array.push(splitted_date[0] + ' ' + this.monthNames[splitted_date[1]])
+      })
+
+      console.log('»» VISITORS BY DAY - SERIES (+ NEW + ARRAY OF COUNT)', visitorsByDay_series_array);
+      console.log('»» VISITORS BY DAY - LABELS (+ NEW + ARRAY OF DAY)', visitorsByDay_labels_array);
+
+      const higherCount = this.getMaxOfArray(visitorsByDay_series_array);
+
+      let lang = this.browserLang;
+
+      var lineChart = new Chart('last7dayVisitors', {
+        type: 'line',
+        data: {
+          labels: visitorsByDay_labels_array,
+          datasets: [{
+            label: 'Number of visitors in last 7 days ',
+            data: visitorsByDay_series_array,
+            fill: true,
+            lineTension: 0.0,
+            backgroundColor: 'rgba(30, 136, 229, 0.6)',
+            borderColor: 'rgba(30, 136, 229, 1)',
+            borderWidth: 3,
+            borderDash: [],
+            borderDashOffset: 0.0,
+            pointBackgroundColor: 'rgba(255, 255, 255, 0.8)',
+            pointBorderColor: '#1e88e5'
+          }]
+        },
+        options: {
+          maintainAspectRatio: false,
+          title: {
+            text: 'TITLE',
+            display: false
+          },
+          legend: {
+            display: false
+          },
+          scales: {
+            xAxes: [{
+              ticks: {
+                beginAtZero: true,
+                display: true,
+                fontColor: 'black'
+              },
+              gridLines: {
+                display: true,
+                borderDash: [8, 4]
+              }
+            }],
+            yAxes: [{
+              gridLines: {
+                display: true,
+                borderDash: [8, 4]
+              },
+              ticks: {
+                beginAtZero: true,
+                userCallback: function (label, index, labels) {
+                  if (Math.floor(label) === label) {
+                    return label;
+                  }
+                },
+                display: true,
+                fontColor: 'black',
+                suggestedMax: higherCount + 2
+              }
+            }]
+          },
+          tooltips: {
+            callbacks: {
+              label: function (tooltipItem, data) {
+                const currentItemValue = tooltipItem.yLabel
+
+                if (lang == 'it') {
+                  return 'Visitatori: ' + currentItemValue;
+                } else {
+                  return 'Visitors: ' + currentItemValue;
+                }
+              }
+            }
+          }
+        },
+        plugins: [{
+          beforeDraw: function (chartInstance, easing) {
+            var ctx = chartInstance.chart.ctx;
+            ctx.height = 128
+            ctx.font = "Google Sans"
+            var chartArea = chartInstance.chartArea;
+          }
+        }]
+      })
+
+    }, (error) => {
+      console.log('»» VISITORS BY DAY - ERROR ', error);
+    }, () => {
+      console.log('»» VISITORS BY DAY - * COMPLETE * ');
+    })
+  }
+
+  getMaxOfArray(requestsByDay_series_array) {
+    return Math.max.apply(null, requestsByDay_series_array);
+  }
 
 
 

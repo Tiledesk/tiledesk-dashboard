@@ -199,9 +199,10 @@
           </td>
 
           <!-- ------ ====== MESSAGE  ====== ------ -->
-          <td [ngClass]="{'padding_5' : request?.tags?.length > 0}" (click)='goToRequestMsgs(request?.request_id)'
+          <td class="td-first-text" [ngClass]="{'padding_5' : request?.tags?.length > 0}" (click)='goToRequestMsgs(request?.request_id)'
             style="cursor:pointer">
             <!-- max-width: 400px -->
+            <!-- [innerHTML]="getRequestText(request?.first_text)" -->
             <p class="column-td" [innerHTML]="getRequestText(request?.first_text)">
               <!-- {{ request?.text }} -->
               <!-- {{ request?.first_text }} -->
@@ -677,7 +678,7 @@
                     <span
                       style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px; white-space: nowrap;"
                       class="top">
-                      <span style="text-transform: capitalize;"> {{ agent.name}} </span>
+                      <span style="text-transform: capitalize;"> {{ agent.name}} (bot)</span>
                       <i></i>
                     </span>
                     <div *ngIf="agent.type === 'internal'">

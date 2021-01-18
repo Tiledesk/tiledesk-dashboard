@@ -135,7 +135,8 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
   }
 
   unsuscribeRequesterPresence(requester_id) {
-    this.contactsService.unsubscribeToWS_RequesterPresence(requester_id);
+    // this.contactsService.unsubscribeToWS_RequesterPresence(requester_id);
+    this.wsRequestsService.unsubscribeToWS_RequesterPresence(requester_id);
   }
 
 
@@ -214,13 +215,16 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
     // -----------------------------------------------------------------------------------------
     // New - Get Lead presence from websocket subscription (replace firebaseRealtimeDb)
     // -----------------------------------------------------------------------------------------
-    this.contactsService.subscribeToWS_RequesterPresence(requester_id);
+    // this.contactsService.subscribeToWS_RequesterPresence(requester_id);
+    this.wsRequestsService.subscribeToWS_RequesterPresence(requester_id);
+    
     this.getWsRequesterPresence();
 
   }
 
   getWsRequesterPresence() {
-    this.contactsService.wsRequesterStatus$
+    // this.contactsService.wsRequesterStatus$
+    this.wsRequestsService.wsRequesterStatus$
       .pipe(
         takeUntil(this.unsubscribe$)
       )

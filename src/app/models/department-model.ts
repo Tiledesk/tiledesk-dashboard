@@ -17,4 +17,5 @@ export interface Department {
     groupHasBeenTrashed?: boolean;
     botHasBeenTrashed?: boolean;
     hasDeptName?: string;
+    status?: number;
 }

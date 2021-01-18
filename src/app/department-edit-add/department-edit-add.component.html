@@ -34,14 +34,14 @@
             // ------------------------------------------------------------------- -->
             <!-- <span *ngIf="EDIT_VIEW"> -->
 
-            <section *ngIf="ROUTING_PAGE_MODE === false">
+            <!-- <section *ngIf="ROUTING_PAGE_MODE === false"> -->
               <div class="row" style="margin-bottom: 15px;">
                 <label class="col-sm-2 custom-label">
                   {{ "Name" | translate}}
                 </label>
-                <div class="col-xs-12 col-sm-6 col-md-12 col-lg-6">
+                <div class="col-xs-12 col-sm-6 col-md-12 col-lg-6 dept-name-input-wrap">
                   <input [(ngModel)]="deptName_toUpdate" placeholder='{{ "DeptsAddEditPage.DeptName" | translate}}'
-                    class="input" type="text" style="margin-top: 2px;margin-bottom: 5px;">
+                    class="input" type="text" style="margin-top: 2px;margin-bottom: 5px;" [ngClass]="{'input-dept-name-disbled': IS_DEFAULT_DEPT === true}" [disabled]="IS_DEFAULT_DEPT === true" >
                 </div>
               </div>
 
@@ -58,8 +58,10 @@
                     placeholder='{{ "DeptsAddEditPage.Description" | translate}}' style="margin-top: 2px"> </textarea>
                 </div>
               </div>
-            </section>
-            <section *ngIf="ROUTING_PAGE_MODE === true">
+            <!-- </section> -->
+
+            <!-- *ngIf="ROUTING_PAGE_MODE === true" -->
+            <section *ngIf="IS_DEFAULT_DEPT === true">
               <div class="row">
                 <div class="col-xs-12">
                   <h4 style="text-transform: none; color: rgba(0,0,0,.54);

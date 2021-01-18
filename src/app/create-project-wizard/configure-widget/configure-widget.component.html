@@ -16,14 +16,11 @@
     </div>
 
     <div class="container">
-
       <div class="row">
         <div class="col-md-12">
           <div style="margin-top: 50px;">
             <h1 style="font-size: 20px; line-height: 28px; color: rgba(0,0,0,.54); padding-bottom: 50px">
-
               {{ 'ConfigureWidget' | translate }}
-
             </h1>
           </div>
         </div>
@@ -32,9 +29,7 @@
       <div class="row">
         <div class="col-md-12">
           <h1 class="install-widget-page-title" style="max-width: 750px">
-
             {{ 'WidgetAppearanceAndDefaultLanguage' | translate: tparams }}
-
           </h1>
         </div>
         <div class="col-md-8">
@@ -42,20 +37,14 @@
           <div class="row">
             <div class="col-md-12">
               <div class="wrap-description" style="margin-top: 16px; color: #525f7f; font-size:14px; font-weight: 400;">
-            
-
-                This step of the wizard guides you through the basic setup. You can change the widget style, default language and more at any time via the widget settings
+                {{'ThisStepOfTheWizardGuidesYouThroughTheBasicSetup' | translate}}
               </div>
             </div>
           </div>
 
-
           <div class="row">
             <div class="col-md-12">
-              
-<h4 style="font-weight: 400;"> Widget style </h4>
-              
-              
+              <h4 style="font-weight: 400;"> {{'WidgetStyle' | translate}} </h4>
             </div>
           </div>
 
@@ -66,12 +55,12 @@
           <div class="row">
             <div class="col-md-12">
               <div class="col-md-12">
-                <div class="form-group no-top-padding" style="max-width: 640px; margin-left: -15px; margin-right: -15px;">
+                <div class="form-group no-top-padding"
+                  style="max-width: 640px; margin-left: -15px; margin-right: -15px;">
                   <!-- style="padding-top:12px" -->
                   <label class="control-label wizard-control-label">
                     <!-- Background Color: -->
                     {{ 'ReadyThemes' | translate }}
-                  
                   </label>
 
                   <!-- <div class="col-sm-9"> -->
@@ -172,7 +161,6 @@
                       </div>
                     </div>
                   </div>
-                  <!-- </div> -->
                 </div>
               </div>
             </div>
@@ -180,13 +168,14 @@
 
 
           <!--
-								// ----------------------------------------
-								// Custom color - Select Primary color
-                // ---------------------------------------- -->
+          // ----------------------------------------
+          // Custom color - Select Primary color
+          // ---------------------------------------- -->
           <div class="row">
             <div class="col-md-12">
               <div class="col-md-3">
-                <div class="form-group no-top-padding" style="max-width: 640px; margin-left: -15px; 	margin-right: -15px;">
+                <div class="form-group no-top-padding"
+                  style="max-width: 640px; margin-left: -15px; 	margin-right: -15px;">
 
                   <label class="control-label wizard-control-label" for="primaryColor">
                     {{ 'Primary' | translate}}
@@ -202,25 +191,15 @@
                     </span>
                   </label>
 
-                  <!-- <div class="col-sm-9"> -->
                   <div class="primary-color-selection-and-input"
                     style="display: flex;flex-direction: row; position: relative;">
                     <div class="primary-color-selection" style="position: relative;">
-                      <!-- [cpOutputFormat]="'hex'" -->
-                      <!-- (colorPickerChange)="onChangePrimaryColor($event)" -->
-                      <!-- [cpOKButton]="true" -->
-                      <!-- (colorPickerSelect)="onSelectPrimaryColor($event)" -->
-                      <!-- [cpOKButtonClass]= "'btn btn-primary btn-xs'" -->
                       <div style="position: absolute;" class="configure-widget-palette"
                         (colorPickerChange)="onChangePrimaryColor($event)" [style.background-color]="primaryColor"
                         [(colorPicker)]="primaryColor" [cpAlphaChannel]="'disabled'"
                         (colorPickerClose)="onClosePrimaryColorDialog($event)"
                         (colorPickerOpen)="onOpenPrimaryColorDialog($event)">
                       </div>
-
-                      <!-- <div> {{ primaryColor }} </div>	 -->
-                      <!-- padding-left: 30px; -->
-
                     </div>
 
                     <input class="custom-input" class="custom-input" (focus)="onFocusChangePrimaryColor()"
@@ -228,23 +207,19 @@
                       style="font-weight: 400;height: 36px; max-width: 120px;    padding-left: 35px;border: 1px solid #e5effe!important"
                       (colorPickerChange)="onChangePrimaryColor($event)" [colorPicker]="primaryColor"
                       [cpPosition]="'bottom'" (colorPickerClose)="onClosePrimaryColorDialog($event)">
-                    <!-- <span class="custom-input" style="color: rgb(118, 149, 165)"> 
-                      {{ 'PrimarySubtitle' | translate}}
-                    </span> -->
-
                   </div>
                 </div>
               </div>
-              <!-- </div> -->
-              <!--  </div> -->
+
+
 
               <!--
               // ----------------------------------------
               //  Custom color - Select secondary color
               // ---------------------------------------- -->
-              <!-- <div class="row">  -->
               <div class="col-md-3">
-                <div class="form-group no-top-padding" style="max-width: 640px; margin-left: -15px; 	margin-right: -15px;">
+                <div class="form-group no-top-padding"
+                  style="max-width: 640px; margin-left: -15px; 	margin-right: -15px;">
                   <label class="control-label wizard-control-label">
                     {{ 'Secondary' | translate}}
 
@@ -259,67 +234,43 @@
                       </span>
                     </span>
                   </label>
-                  <!-- <div class="col-sm-9"> -->
-
-
+                 
                   <div class="secondary-color-selection-and-input"
                     style="display: flex;flex-direction: row; position: relative;">
 
                     <div class="primary-secondary-selection" style="position: relative;">
-                      <!-- [cpOutputFormat]="'hex'" -->
-                      <!-- (colorPickerChange)="onChangeSecondaryColor($event)" -->
-                      <!-- [cpOKButton]="true" -->
-                      <!-- [cpOKButtonClass]= "'btn btn-primary btn-xs'" -->
-                      <!-- (colorPickerSelect)="onSelectSecondaryColor($event)" -->
-                      <!-- (colorPickerOpen)="onOpenSecondaryColorDialog($event)" -->
                       <div style="position: absolute;" class="configure-widget-palette"
                         [style.background-color]="secondaryColor" [cpAlphaChannel]="'disabled'"
-                        (colorPickerClose)="onCloseSecondaryColorDialog($event)" [(colorPicker)]="secondaryColor"
-                        >
+                        (colorPickerClose)="onCloseSecondaryColorDialog($event)" [(colorPicker)]="secondaryColor">
                       </div>
-
-                      <!-- <div> {{secondaryColor}} </div> -->
-
                     </div>
-                    <!-- (focus)="onFocusChangeSecondaryColor()" -->
-                    <input class="custom-input" [value]="secondaryColor" 
+                    
+                    <input class="custom-input" [value]="secondaryColor"
                       style="font-weight: 400;  max-width: 120px;margin-bottom: 8px; height: 36px;    padding-left: 35px; border: 1px solid #e5effe!important"
                       [colorPicker]="secondaryColor" (colorPickerChange)="onChangeSecondaryColor($event)"
                       [cpPosition]="'bottom'" (colorPickerClose)="onCloseSecondaryColorDialog($event)">
-
-                    <!-- <p class="custom-input" style="color: rgb(118, 149, 165)"> 
-                      {{ 'SecondarySubtitle' | translate}}
-                    </p> -->
-
                   </div>
-                  <!-- </div> -->
                 </div>
               </div>
             </div>
           </div>
 
-
-
           <!-- 
           // --------------------------------------------------------------------------------
           // Select default language
           // -------------------------------------------------------------------------------- -->
-
           <div class="row">
             <div class="col-md-12">
-              
-<h4 style="font-weight: 400;"> Widget default language </h4>
-              
-              
+              <h4 style="font-weight: 400;"> {{'WidgetDefaultLanguage' | translate}} </h4>
             </div>
-          </div> 
+          </div>
           <div class="row">
             <div class="col-md-12">
               <!-- (clear)="onClearSelectedLanguage()" -->
               <ng-select class="select-language-in-wizard" id="language_option"
                 style="margin-top: 11px; max-width: 500px;" [clearable]="false" [(ngModel)]="selectedLang"
                 [items]="languages" bindLabel="name" groupBy="type" placeholder="{{ 'ChooseALanguage' | translate }}"
-                 (change)="onSelectlang(selectedLang)">
+                (change)="onSelectlang(selectedLang)">
               </ng-select>
             </div>
           </div>
@@ -335,7 +286,9 @@
             [hasSelectedLeftAlignment]="hasSelectedLeftAlignment" [C21_BODY_HOME]="C21_BODY_HOME"
             [welcomeTitle]="welcomeTitle" [welcomeMsg]="welcomeMsg" [waitingTimeNotFoundMsg]="waitingTimeNotFoundMsg"
             [waitingTimeFoundMsg]="waitingTimeFoundMsg" [newConversation]="newConversation"
-            [currentUserId]="currentUserId" [storageBucket]="storageBucket">
+            [noConversation]="noConversation" [currentUserId]="currentUserId" [storageBucket]="storageBucket"
+            [waitingTimeNotFoundMsg]="waitingTimeNotFoundMsg"
+            [HAS_SELECT_STATIC_REPLY_TIME_MSG]="HAS_SELECT_STATIC_REPLY_TIME_MSG">
           </appdashboard-widget-home>
 
         </div>

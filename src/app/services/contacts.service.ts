@@ -15,7 +15,7 @@ import { WebSocketJs } from "./websocket/websocket-js";
 @Injectable()
 export class ContactsService {
 
-  public wsRequesterStatus$: BehaviorSubject<any> = new BehaviorSubject<any>({});
+  // public wsRequesterStatus$: BehaviorSubject<any> = new BehaviorSubject<any>({});
   // Contact: Contact[];
   http: Http;
   projectId: string;
@@ -75,40 +75,41 @@ export class ContactsService {
     }
   }
 
-  subscribeToWS_RequesterPresence(requesterid) {
-    var self = this;
-    console.log("wsRequesterPresence - HERE ");
-    const path = '/' + this.projectId + '/project_users/users/' + requesterid;
-    // const path = "/5f61efc28f90f300345edd75/project_users/5f623d5c56065e0034fce69c";
-    console.log('wsRequesterPresence PATH ', path);
-    this.webSocketJs.ref(path, 'subscribeToWS_RequesterPresence',
-      function (data, notification) {
-        console.log("wsRequesterPresence (contacts service) - CREATE - data ", data);
-        // console.log("% WsMsgsService notification", notification);
+  // subscribeToWS_RequesterPresence(requesterid) {
+  //   var self = this;
+  //   console.log("wsRequesterPresence - HERE ");
+  //   const path = '/' + this.projectId + '/project_users/users/' + requesterid;
+  //   // const path = "/5f61efc28f90f300345edd75/project_users/5f623d5c56065e0034fce69c";
+  //   console.log('wsRequesterPresence PATH ', path);
+  //   this.webSocketJs.ref(path, 'subscribeToWS_RequesterPresence',
+  //     function (data, notification) {
+  //       console.log("wsRequesterPresence (contacts service) - CREATE - data ", data);
+  //       // console.log("% WsMsgsService notification", notification);
         
-        self.wsRequesterStatus$.next(data);
+  //       self.wsRequesterStatus$.next(data);
 
-      }, function (data, notification) {
+  //     }, function (data, notification) {
 
-        console.log("wsRequesterPresence (contacts service) - UPDATE - data ", data);
-        // console.log("% WsMsgsService notification", notification);
-      }, function (data, notification) {
+  //       console.log("wsRequesterPresence (contacts service) - UPDATE - data ", data);
+  //       // console.log("% WsMsgsService notification", notification);
+  //       self.wsRequesterStatus$.next(data);
 
-        if (data) {
-          console.log("wsRequesterPresence (contacts service) - ON-DATA - data", data);
+  //     }, function (data, notification) {
 
-        }
-      }
-    );
+  //       if (data) {
+  //         console.log("wsRequesterPresence (contacts service) - ON-DATA - data", data);
 
-  }
+  //       }
+  //     }
+  //   );
+  // }
 
-  unsubscribeToWS_RequesterPresence(requesterid) {
-    const path = '/' + this.projectId + '/project_users/users/' + requesterid;
-    this.webSocketJs.unsubscribe(path);
-    console.log("wsRequesterPresence UNSUBSCRIBE To WS Requester Presence (contacts service) ");
+  // unsubscribeToWS_RequesterPresence(requesterid) {
+  //   const path = '/' + this.projectId + '/project_users/users/' + requesterid;
+  //   this.webSocketJs.unsubscribe(path);
+  //   console.log("wsRequesterPresence UNSUBSCRIBE To WS Requester Presence (contacts service) ");
 
-  }
+  // }
 
 
   // GET LEADS

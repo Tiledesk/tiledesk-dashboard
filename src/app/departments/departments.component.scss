@@ -236,3 +236,29 @@ button.close {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.default-dept-disabled {
+  background-color: #eee;
+}
+
+table > tbody > tr.default-dept-disabled > td {
+  color: #aaa;
+}
+
+.default-dept-disabled-badge {
+  position: absolute;
+  left: -6px;
+}
+
+.default-dept-disabled-badge > span > .material-icons {
+  color: #f44336;
+  background: #fff;
+  border-radius: 50%;
+  font-size: 18px;
+}
+
+.title-attribute {
+  font-family: "Google Sans", sans-serif !important;
+  color: #394f5a;
+  font-weight: 500;
+}

@@ -41,8 +41,8 @@ export class UsersService {
   public has_changed_availability_in_sidebar: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   public has_changed_availability_in_users: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   public userProfileImageExist: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
-  public currentUserWsAvailability$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
-  public currentUserWsIsBusy$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
+  // public currentUserWsAvailability$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null); // Moved to ws-requests.sercice
+  // public currentUserWsIsBusy$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null); // Moved to ws-requests.sercice
   public currentUserWsBusyAndAvailabilityForProject$: BehaviorSubject<[]> = new BehaviorSubject<[]>([]);
   public contactsEvents$: BehaviorSubject<[]> = new BehaviorSubject<[]>([]);
   public storageBucket$: BehaviorSubject<string> = new BehaviorSubject<string>('');
@@ -760,7 +760,9 @@ export class UsersService {
   // NOTE: USER COMP SUBSCRIBES TO has_changed_availability TO RE-RUN getAllUsersOfCurrentProject
   // WITCH UPDATE THE LIST OF THE PROJECT' MEMBER
   public availability_btn_clicked(clicked: boolean) {
+   
     this.has_changed_availability_in_sidebar.next(clicked)
+    console.log('NAVBAR-FOR-PANEL & SB >>> user-service SUBSCR To CURRENT-USER AVAILABILITY  availability_btn_clicked ', clicked) 
   }
 
 
@@ -869,46 +871,48 @@ export class UsersService {
   }
 
 
-  // -----------------------------------------------------------------------------------------------------
-  // Availability - subscribe to WS Current user availability
-  // -----------------------------------------------------------------------------------------------------
-  subscriptionToWsCurrentUser(prjctuserid) {
-    var self = this;
+  // // -----------------------------------------------------------------------------------------------------
+  // // Availability - subscribe to WS Current user availability !!!! MOVED IN wsRequestsService
+  // // -----------------------------------------------------------------------------------------------------
+  // subscriptionToWsCurrentUser(prjctuserid) {
+  //   var self = this;
 
-    console.log('% »»» WebSocketJs WF >>> ws-msgs--- m-service - SUBSCR To WS MSGS ****** CALLING REF ****** ');
-    const path = '/' + this.project_id + '/project_users/' + prjctuserid
+  //   console.log('NAVBAR-FOR-PANEL & SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY ****** CALLING REF ****** prjctuserid', prjctuserid);
+  //   const path = '/' + this.project_id + '/project_users/' + prjctuserid
 
-    this.webSocketJs.ref(path, 'subscriptionToWsCurrentUser',
-      function (data, notification) {
-        // console.log("SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - CREATE - data ", data , ' path ', path);
-        console.log("NAVBAR-FOR-PANEL & SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - CREATE - data ", data);
-        console.log("NAVBAR-FOR-PANEL & SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - CREATE - data  user_available ", data.user_available);
+  //   this.webSocketJs.ref(path, 'subscriptionToWsCurrentUser',
+  //     function (data, notification) {
+  //       // console.log("SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - CREATE - data ", data , ' path ', path);
+  //       console.log("NAVBAR-FOR-PANEL & SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - CREATE - data ", data);
+  //       console.log("NAVBAR-FOR-PANEL & SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - CREATE - data  user_available ", data.user_available);
 
-        self.currentUserWsAvailability$.next(data.user_available);
-        if (data.isBusy) {
-          self.currentUserWsIsBusy$.next(data.isBusy)
-        } else {
-          self.currentUserWsIsBusy$.next(false)
-        }
-        self.availability_btn_clicked(true)
+  //       self.currentUserWsAvailability$.next(data.user_available);
+  //       if (data.isBusy) {
+  //         self.currentUserWsIsBusy$.next(data.isBusy)
+  //       } else {
+  //         self.currentUserWsIsBusy$.next(false)
+  //       }
+  //       // self.availability_btn_clicked(true) // NK LO COMMENTO 11 GEN PRIMA DI SPOSTARLO IN ws-requests.service
 
-      }, function (data, notification) {
-        console.log("SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - UPDATE - data ", data);
+  //     }, function (data, notification) {
+  //       console.log("SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - UPDATE - data ", data);
 
-      }, function (data, notification) {
-        if (data) {
-          console.log("SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - ON-DATA - data", data);
+  //     }, function (data, notification) {
+  //       if (data) {
+  //         console.log("SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - ON-DATA - data", data);
 
-        }
-      }
-    );
-  }
+  //       }
+  //     }
+  //   );
+  // }
 
-
-  unsubscriptionToWsCurrentUser(prjctuserid) {
-    this.webSocketJs.unsubscribe('/' + this.project_id + '/project_users/' + prjctuserid);
-    console.log("NAVBAR-FOR-PANEL - UN-SUBSCR TO WS CURRENT USERS  projectid: ", this.project_id, ' prjctuserid:', prjctuserid);
-  }
+  // // -----------------------------------------------------------------------------------------------------
+  // // Availability - unsubscribe to WS Current user availability !!!! MOVED IN wsRequestsService
+  // // -----------------------------------------------------------------------------------------------------
+  // unsubscriptionToWsCurrentUser(prjctuserid) {
+  //   this.webSocketJs.unsubscribe('/' + this.project_id + '/project_users/' + prjctuserid);
+  //   console.log("NAVBAR-FOR-PANEL - UN-SUBSCR TO WS CURRENT USERS  projectid: ", this.project_id, ' prjctuserid:', prjctuserid);
+  // }
 
 
 

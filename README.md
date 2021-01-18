@@ -54,7 +54,7 @@ Feel free to ask for support on https://tiledesk.com, using the live chat widget
 
   
 
-- Install Node and NPM (https://nodejs.org/en)
+- Install Node and NPM (https://nodejs.org/en). Suggested: 10.X or 11.X. Some issues are experienced with > 12.X
 
 - Install angular-cli v7.3.5 with `npm install -g @angular/cli@7.3.5`
 

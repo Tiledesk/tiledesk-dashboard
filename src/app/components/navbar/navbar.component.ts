@@ -130,7 +130,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     storedValuePrefix = 'dshbrd----'
     hasPlayed = false
     MT: boolean
-    OPERATING_HOURS_ACTIVE:boolean;
+    OPERATING_HOURS_ACTIVE: boolean;
     TESTSITE_BASE_URL: string;
     projectName: string;
 
@@ -601,7 +601,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                 this.project = project
                 console.log('!!C-U 00 -> NAVBAR project from AUTH service subscription ', this.project);
                 this.projectId = project._id;
-                this.projectName= project.name;
+                this.projectName = project.name;
                 this.OPERATING_HOURS_ACTIVE = this.project.operatingHours
 
                 console.log('!!C-U 00 -> NAVBAR OPERATING_HOURS_ACTIVE ', this.OPERATING_HOURS_ACTIVE);
@@ -745,13 +745,13 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     }
 
     // WHEN A USER CLICK ON A PROJECT IN THE NAVBAR DROPDOWN 
-    goToHome(id_project: string, project_name: string  ,
+    goToHome(id_project: string, project_name: string,
         project_profile_name: string,
         project_trial_expired: string,
         project_trial_days_left: number,
-       
         activeOperatingHours: boolean) {
-        console.log('!NAVBAR  goToHome id_project ', id_project, 'project_name', project_name)
+        // console.log('!NAVBAR  goToHome prjct ', prjct)
+        console.log('!NAVBAR  goToHome id_project ', id_project, 'project_name', project_name, 'project_trial_expired ', project_trial_expired , 'project_trial_days_left ', project_trial_days_left, ' activeOperatingHours ', activeOperatingHours)
         // RUNS ONLY IF THE THE USER CLICK OVER A PROJECT WITH THE ID DIFFERENT FROM THE CURRENT PROJECT ID
         if (id_project !== this.projectId) {
             // this.subscription.unsubscribe();
@@ -798,12 +798,12 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     getTestSiteUrl() {
         this.TESTSITE_BASE_URL = this.appConfigService.getConfig().testsiteBaseUrl;
         console.log('AppConfigService getAppConfig (WS-REQUESTS-LIST COMP.) TESTSITE_BASE_URL', this.TESTSITE_BASE_URL);
-      }
+    }
 
     testWidgetPage() {
         const url = this.TESTSITE_BASE_URL + '?tiledesk_projectid=' + this.projectId + '&project_name=' + this.projectName + '&isOpen=true'
         window.open(url, '_blank');
-      }
+    }
 
 
     hasmeInAgents(agents) {
@@ -1219,7 +1219,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         // console.log('++ ++ +++ ngAfterViewChecked');
     }
 
-    
+
 
 
     sidebarOpen() {

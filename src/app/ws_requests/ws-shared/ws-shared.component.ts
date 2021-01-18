@@ -241,32 +241,46 @@ export class WsSharedComponent implements OnInit {
       } else {
         console.log('!! Ws SHARED »»»»»»» THE PARTICIP IS A BOT?', participantIsBot, 'GET USER FROM STORAGE');
         const user = this.usersLocalDbService.getMemberFromStorage(participantid);
-
-        // check if user iamge exist  
-        const imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + storageBucket + "/o/profiles%2F" + participantid + "%2Fphoto.jpg?alt=media"
-
-        this.checkImageExists(imgUrl, (existsImage) => {
-          if (existsImage == true) {
-            user.hasImage = true
-          }
-          else {
-            user.hasImage = false
-          }
-        });
-
-
+        console.log('!! Ws SHARED »»»»»»» USER GET FROM STORAGE ', user);
         if (user) {
+          // check if user iamge exist  
+          const imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + storageBucket + "/o/profiles%2F" + participantid + "%2Fphoto.jpg?alt=media"
+
+          this.checkImageExists(imgUrl, (existsImage) => {
+            if (existsImage == true) {
+              user.hasImage = true
+            }
+            else {
+              user.hasImage = false
+            }
+          });
+          // }
+
+          // if (user) {
           console.log('!! Ws SHARED »»»»»»» STORED USER ', user);
           this.createAgentAvatar(user)
           user['is_bot'] = false
           newpartarray.push(user)
 
         } else {
-          console.log('!! Ws SHARED »»»»»»» USER IS NOT IN STORAGE - RUN GET FROM SERVICE');
+          console.log('!! Ws SHARED »»»»»»» USER IS NOT IN STORAGE - RUN GET FROM SERVICE participantid ', participantid);
           this.usersService.getProjectUserById(participantid)
             .subscribe((projectuser) => {
-              console.log('!! Ws SHARED »»»»»»» GET PROJECT-USER BY ID - RES', projectuser);
-              const user = projectuser[0].id_user;
+              console.log('!! Ws SHARED »»»»»»» USER IS NOT IN STORAGE GET PROJECT-USER BY ID - RES', projectuser);
+              const user:any = projectuser[0].id_user;
+              console.log('!! Ws SHARED »»»»»»» USER IS NOT IN STORAGE GET PROJECT-USER BY ID - RES > user ', user);
+
+              const imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + storageBucket + "/o/profiles%2F" + participantid + "%2Fphoto.jpg?alt=media"
+
+              this.checkImageExists(imgUrl, (existsImage) => {
+                if (existsImage == true) {
+                  user.hasImage = true
+                }
+                else {
+                  user.hasImage = false
+                }
+              });
+
 
               user['is_bot'] = false
 
@@ -276,7 +290,11 @@ export class WsSharedComponent implements OnInit {
 
               this.usersLocalDbService.saveMembersInStorage(user['_id'], user);
 
-            })
+            }, (error) => {
+              console.log('!! Ws SHARED »»»»»»» USER IS NOT IN STORAGE - GET PROJECT-USER BY ID - ERROR ', error);
+            }, () => {
+              console.log('!! Ws SHARED »»»»»»» USER IS NOT IN STORAGE - GET PROJECT-USER BY ID * COMPLETE *');
+            });
         }
       }
     });
@@ -502,7 +520,7 @@ export class WsSharedComponent implements OnInit {
 
     // this.humanAgents = [];
     // this.botAgents = [];
-    this.botAgentsIdArray  = [];
+    this.botAgentsIdArray = [];
     this.humanAgentsIdArray = [];
 
     ws_requests.forEach(request => {
@@ -528,14 +546,14 @@ export class WsSharedComponent implements OnInit {
             // console.log('% »»» WebSocketJs WF agentsArrayBuildFromRequests bot', bot);
 
             if (bot) {
-              this.participantsInRequests.push({ '_id': participant, 'firstname': bot.name });
+              this.participantsInRequests.push({ '_id': participant, 'firstname': bot.name + " (bot)" });
 
               this.botAgentsIdArray.push(participant);
 
 
             } else {
 
-              this.participantsInRequests.push({ '_id': participant, 'firstname': participant });
+              this.participantsInRequests.push({ '_id': participant, 'firstname': participant + " (bot)"});
               this.botAgentsIdArray.push(participant);
             }
 

@@ -84,9 +84,9 @@ export class WebSocketJs {
 
   ref(topic, calledby, onCreate, onUpdate, onData) {
     // console.log('% »»» WebSocketJs ****** CALLING REF ****** ');
-    console.log('Web_SocketJs ****** CALLING REF ****** calledby ', calledby);
-    console.log('Web_SocketJs ****** CALLING REF ****** TOPIC ', topic);
-    console.log('Web_SocketJs ****** CALLING REF ****** CALLBACKS', this.callbacks);
+    console.log('% »»» WebSocketJs WF ****** CALLING REF ****** calledby ', calledby);
+    console.log('% »»» WebSocketJs WF ****** CALLING REF ****** TOPIC ', topic);
+    console.log('% »»» WebSocketJs WF ****** CALLING REF ****** CALLBACKS', this.callbacks);
     //this.callbacks.set(topic, {onCreate:onCreate, onUpdate:onUpdate});
 
 
@@ -94,9 +94,9 @@ export class WebSocketJs {
       console.log('% »»» WebSocketJs WF *** REF *** OOOOPS! NOT CALLBACKS ***', topic);
       return
     }
-    
-    this.callbacks.set(topic, { onCreate: onCreate, onUpdate: onUpdate, onData: onData });
 
+    this.callbacks.set(topic, { onCreate: onCreate, onUpdate: onUpdate, onData: onData });
+    console.log('% »»» WebSocketJs WF ****** this.callbacks.set ', this.callbacks);
     // console.log('% »»» WebSocketJs WF *** REF *** callbacks *** ', this.callbacks);
     // this.callbacks
 
@@ -105,23 +105,31 @@ export class WebSocketJs {
     // console.log('% »»» WebSocketJs WF *** REF *** this.topics ***', this.topics);
     // console.log('% »»» WebSocketJs WF *** REF *** READY STATE *** ws.readyState ', this.ws.readyState);
     // console.log('% »»» WebSocketJs WF *** REF *** READY STATE *** this.readyState ', this.readyState);
-
+    console.log('% »»» WebSocketJs WF *** REF *** WS 1 ', this.ws)
     if (this.ws && this.ws.readyState == 1) {
 
-      console.log('% »»» WebSocketJs WF *** REF *** READY STATE 2 ', this.ws.readyState)
+      console.log('% »»» WebSocketJs WF *** REF *** READY STATE 1 ', this.ws.readyState)
       this.subscribe(topic);
 
     } else {
+      // this.ws =  new WebSocket("wss://tiledesk-server-pre.herokuapp.com/?token=JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZGRkMzBiZmYwMTk1ZjAwMTdmNzJjNmQiLCJlbWFpbCI6InByZWdpbm9AZjIxdGVzdC5pdCIsImZpcnN0bmFtZSI6Ikdpbm8iLCJsYXN0bmFtZSI6IlByZSIsImVtYWlsdmVyaWZpZWQiOnRydWUsImlhdCI6MTYwODgwNjY0MCwiYXVkIjoiaHR0cHM6Ly90aWxlZGVzay5jb20iLCJpc3MiOiJodHRwczovL3RpbGVkZXNrLmNvbSIsInN1YiI6InVzZXIiLCJqdGkiOiI1YmVmMDcxYy00ODBlLTQzYzQtOTRhYS05ZjQxYzMyNDcxMGQifQ.wv6uBn2P6H9wGb5WCYQkpPEScMU9PB1pBUzFouhJk20");
+
+      console.log('% »»» WebSocketJs WF *** REF *** READY STATE 2 ', this.ws.readyState);
+      console.log('% »»» WebSocketJs WF *** REF *** WS 2 ', this.ws);
 
       var that = this;
-
       if (this.ws) {
-        this.ws.addEventListener("open", function (event) {
 
+
+
+        this.ws.addEventListener("open", function (event) {
           console.log('% »»» WebSocketJs WF *** REF *** OPEN EVENT *** ', event);
           that.subscribe(topic);
-
         });
+      }
+
+      if (this.topics.indexOf(topic) === -1) {
+        this.topics.push(topic);
       }
     }
   }
@@ -137,7 +145,7 @@ export class WebSocketJs {
     if (this.topics.indexOf(topic) === -1) {
       this.topics.push(topic);
     }
-    // console.log("% »»» WebSocketJs *** SUBSCRIBE *** topics ", this.topics);
+    console.log("% »»» WebSocketJs *** SUBSCRIBE *** topics ", this.topics);
 
     var message = {
       action: 'subscribe',
@@ -169,18 +177,20 @@ export class WebSocketJs {
     //this.topics.delete(topic);
 
     var index = this.topics.indexOf(topic);
-    // console.log("% »»» WebSocketJs *** UNSUBSCRIBE *** - topic  (1C)" , topic, ' index ', index);
+    console.log("% »»» WebSocketJs WF *** UNSUBSCRIBE *** - topic  (1C)", topic, ' index ', index);
     if (index > -1) {
       this.topics.splice(index, 1);
     }
 
-    // console.log("% »»» WebSocketJs WF *** UNSUBSCRIBE *** - topics after splice ", this.topics);
+    console.log("% »»» WebSocketJs WF *** UNSUBSCRIBE *** - topics after splice ", this.topics);
     console.log("% »»» WebSocketJs WF *** UNSUBSCRIBE *** - topic  ", topic);
     console.log('% »»» WebSocketJs WF *** UNSUBSCRIBE *** this.ws.readyState ', this.ws.readyState);
+    console.log("% »»» WebSocketJs WF *** UNSUBSCRIBE *** - callback size ", this.callbacks.size);
 
-    if (this.callbacks.length > 0) {
+    // if (this.callbacks.length > 0) {
+    if (this.callbacks.size > 0) {
       this.callbacks.delete(topic);
-      console.log("% »»» WebSocketJs *** UNSUBSCRIBE *** - callback after delete ", this.callbacks);
+      console.log("% »»» WebSocketJs WF *** UNSUBSCRIBE *** - callback after delete ", this.callbacks);
     }
 
     var message = {
@@ -197,8 +207,11 @@ export class WebSocketJs {
 
     if (this.ws.readyState == 1) {
       this.send(str, `calling method - UNSUSCRIBE from ${topic}`);
+
     } else {
-      console.log('% »»» WebSocketJs WF -  UNSUSCRIBE try send but this.ws.readyState is = ', this.ws.readyState)
+      console.log('% »»» WebSocketJs WF *** UNSUSCRIBE try send but this.ws.readyState is = ', this.ws.readyState);
+
+
     }
   }
 
@@ -212,7 +225,7 @@ export class WebSocketJs {
     // console.log('% »»» WebSocketJs WF  SEND - initialMessageObj', initialMessageObj);
 
     // nk 
-    // console.log('% »»» WebSocketJs WF *** >>>>> >>>>> >>>>> >>>>> SEND -  sender: ', calling_method ,'- message: ' , initialMessage );
+    console.log('% »»» WebSocketJs WF *** UNSUSCRIBE  sender: ', calling_method, '- message: ', initialMessage);
     this.ws.send(initialMessage);
   }
 
@@ -221,7 +234,7 @@ export class WebSocketJs {
   // @ close (to find where is used search for x webSocketClose()) 
   // -----------------------------------------------------------------------------------------------------
   close() {
-    console.log('% »»» WebSocketJs ****** CALLING CLOSE ****** ');
+    console.log('% »»» WebSocketJs WF *** CALLING CLOSE ****** ');
     this.topics = [];
     this.callbacks = [];
     if (this.ws) {
@@ -235,14 +248,14 @@ export class WebSocketJs {
   // @ resubscribe
   // -----------------------------------------------------------------------------------------------------
   resubscribe() {
-    console.log('% »»» WebSocketJs ****** CALLING RESUBSCRIBE ****** ');
-    console.log('% »»» WebSocketJs ****** CALLING RESUBSCRIBE ****** TOPICS ', this.topics);
-    console.log('% »»» WebSocketJs ****** CALLING RESUBSCRIBE ****** CALLBACKS  444 ', this.callbacks);
-    console.log('% »»» WebSocketJs ****** CALLING RESUBSCRIBE ****** TOPICS LENGTH ', this.topics.length);
+    console.log('% »»» WebSocketJs WF *** CALLING RESUBSCRIBE ****** ');
+    console.log('% »»» WebSocketJs WF *** CALLING RESUBSCRIBE ****** TOPICS ', this.topics);
+    console.log('% »»» WebSocketJs WF *** CALLING RESUBSCRIBE ****** CALLBACKS  444 ', this.callbacks);
+    console.log('% »»» WebSocketJs WF *** CALLING RESUBSCRIBE ****** TOPICS LENGTH ', this.topics.length);
     if (this.topics.length > 0) {
       this.topics.forEach(topic => {
-        console.log('% »»» WebSocketJs *** RESUBSCRIBE *** to topic ', topic);
-        this.subscribe(topic);
+        console.log('% »»» WebSocketJs WF *** RESUBSCRIBE *** to topic ', topic);
+        this.subscribe(topic); // nn fa sudbcribe 
       });
     }
   }
@@ -255,27 +268,27 @@ export class WebSocketJs {
     this.heartStart();
   }
 
-  _heartStart() {
-    // if(this.forbidReconnect) return;//Non ricollegare o eseguire il battito cardiaco
-    this.pingTimeoutId = setTimeout(() => {
-      // Qui viene inviato un battito cardiaco Dopo averlo ricevuto, viene restituito un messaggio di battito cardiaco.
-      // onmessage Ottieni il battito cardiaco restituito per indicare che la connessione è normale
-      try {
-        console.log('% »»» WebSocketJs - HEARTBEAT send MSG ', JSON.stringify(this.pingMsg));
-        this.ws.send(JSON.stringify(this.pingMsg));
-        // Se non viene ripristinato dopo un determinato periodo di tempo, il backend viene attivamente disconnesso
-        this.pongTimeoutId = setTimeout(() => {
-          // se onclose Si esibirà reconnect，Eseguiamo ws.close() Bene, se lo esegui direttamente reconnect Si innescherà onclose Causa riconnessione due volte
-          this.ws.close();
-        }, this.pongTimeout);
+  // _heartStart() {
+  //   // if(this.forbidReconnect) return;//Non ricollegare o eseguire il battito cardiaco
+  //   this.pingTimeoutId = setTimeout(() => {
+  //     // Qui viene inviato un battito cardiaco Dopo averlo ricevuto, viene restituito un messaggio di battito cardiaco.
+  //     // onmessage Ottieni il battito cardiaco restituito per indicare che la connessione è normale
+  //     try {
+  //       console.log('% »»» WebSocketJs - HEARTBEAT send MSG ', JSON.stringify(this.pingMsg));
+  //       this.ws.send(JSON.stringify(this.pingMsg));
+  //       // Se non viene ripristinato dopo un determinato periodo di tempo, il backend viene attivamente disconnesso
+  //       this.pongTimeoutId = setTimeout(() => {
+  //         // se onclose Si esibirà reconnect，Eseguiamo ws.close() Bene, se lo esegui direttamente reconnect Si innescherà onclose Causa riconnessione due volte
+  //         this.ws.close();
+  //       }, this.pongTimeout);
 
-      } catch (e) {
+  //     } catch (e) {
 
-        console.log('% »»» WebSocketJs - HEARTBEAT err ', e);
-      }
+  //       console.log('% »»» WebSocketJs - HEARTBEAT err ', e);
+  //     }
 
-    }, this.pingTimeout);
-  }
+  //   }, this.pingTimeout);
+  // }
 
 
   getRemainingTime() {
@@ -306,14 +319,16 @@ export class WebSocketJs {
       // Qui viene inviato un battito cardiaco Dopo averlo ricevuto, viene restituito un messaggio di battito cardiaco.
       // onmessage Ottieni il battito cardiaco restituito per indicare che la connessione è normale
       if (this.ws.readyState == 1) {
-        // console.log('% »»» WebSocketJs - heartStart WS OK - readyState ', this.ws.readyState);
-        // console.log('% »»» WebSocketJs - HEART-START send PING MSG ', JSON.stringify(this.pingMsg));
+        console.log('% »»» WebSocketJs - heartStart WS OK - readyState ', this.ws.readyState);
+        console.log('% »»» WebSocketJs - HEART-START send PING MSG ', JSON.stringify(this.pingMsg));
 
         // this.ws.send(JSON.stringify(this.pingMsg));
         this.send(JSON.stringify(this.pingMsg), 'HEART-START')
 
       } else {
         console.log('% »»» WebSocketJs - heartStart WS KO - readyState ', this.ws.readyState);
+
+
       }
 
       // Se non viene ripristinato dopo un determinato periodo di tempo, il backend viene attivamente disconnesso
@@ -330,7 +345,7 @@ export class WebSocketJs {
   // @ heartReset
   // -----------------------------------------------------------------------------------------------------
   heartReset() {
-    // console.log('% »»» WebSocketJs - HEART-START RESET ');
+    console.log('% »»» WebSocketJs - HEART-START RESET ');
     clearTimeout(this.pingTimeoutId);
     clearTimeout(this.pongTimeoutId);
   }
@@ -339,12 +354,12 @@ export class WebSocketJs {
   // @ init
   // -----------------------------------------------------------------------------------------------------
   init(url, onCreate, onUpdate, onData, onOpen = undefined, onOpenCallback = undefined, _topics = [], _callbacks = new Map()) {
-    console.log('Web_SocketJs ****** CALLING INIT ****** ');
+    console.log('% »»» WebSocketJs WF ***  ****** CALLING INIT ****** ');
     // console.log('% »»» WebSocketJs - INIT url ', url);
-    console.log('% »»» WebSocketJs - INIT onCreate ', onCreate);
-    console.log('% »»» WebSocketJs - INIT onUpdate ', onUpdate);
-    console.log('% »»» WebSocketJs - INIT onOpen ', onOpen);
-    console.log('% »»» WebSocketJs - INIT onOpenCallback ', onOpenCallback);
+    console.log('% »»» WebSocketJs WF *** - INIT onCreate ', onCreate);
+    console.log('% »»» WebSocketJs WF *** - INIT onUpdate ', onUpdate);
+    console.log('% »»» WebSocketJs WF *** - INIT onOpen ', onOpen);
+    console.log('% »»» WebSocketJs WF *** - INIT onOpenCallback ', onOpenCallback);
     this.url = url;
     this.onCreate = onCreate;
     this.onUpdate = onUpdate;
@@ -358,7 +373,7 @@ export class WebSocketJs {
     // this.sendingMessages = [];//new Map();
     // this.data = [];
     // this.init(this.sendMesagesInSendingArray);
-    console.log('% »»» WebSocketJs - INIT topics ', this.topics);
+    console.log('% »»» WebSocketJs WF *** - INIT topics ', this.topics);
 
     var that = this;
     return new Promise(function (resolve, reject) {
@@ -377,6 +392,7 @@ export class WebSocketJs {
       // @ new WebSocket
       // -----------------------------------------------------------------------------------------------------
 
+      console.log('Web_SocketJs url', that.url)
       // 'ws://localhost:40510'
       that.ws = new WebSocket(that.url);
       // var ws = new WebSocket(that.url, options);
@@ -385,7 +401,7 @@ export class WebSocketJs {
       // @ onopen
       // -----------------------------------------------------------------------------------------------------
       that.ws.onopen = function (e) {
-        console.log('Web_SocketJs - websocket is connected ...', e);
+        console.log('% »»» WebSocketJs WF *** - websocket is connected ...', e);
 
         // -----------------
         // @ heartCheck
@@ -408,7 +424,7 @@ export class WebSocketJs {
       // -----------------------------------------------------------------------------------------------------
 
       that.ws.onclose = function (e) {
-        console.log('Web_SocketJs - websocket IS CLOSED ... Try to reconnect in 5 seconds ', e);
+        console.log('% »»» WebSocketJs WF *** - websocket IS CLOSED ... Try to reconnect in 3 seconds ', e);
 
         // console.log('% »»» WebSocketJs - websocket onclose this.userHasClosed ', that.userHasClosed);
         // https://stackoverflow.com/questions/3780511/reconnection-of-client-when-server-reboots-in-websocket
@@ -430,7 +446,7 @@ export class WebSocketJs {
       // -----------------------------------------------------------------------------------------------------
 
       that.ws.onerror = function () {
-        console.log('Web_SocketJs - websocket error ...')
+        console.log('% »»» WebSocketJs WF *** - websocket error ...')
       }
 
       // -----------------------------------------------------------------------------------------------------
@@ -443,7 +459,7 @@ export class WebSocketJs {
         try {
           var json = JSON.parse(message.data);
         } catch (e) {
-          console.log('This doesn\'t look like a valid JSON: ', message.data);
+          console.log('% »»» WebSocketJs WF ***  This doesn\'t look like a valid JSON: ', message.data);
           return;
         }
 
@@ -480,7 +496,7 @@ export class WebSocketJs {
 
         var object = { event: json.payload, data: json };
 
-        console.log("% »»» WebSocketJs WF - WsRequestsService - WebSocketJs onData object ", object);
+        console.log("% »»» WebSocketJs WF *** - WsRequestsService - WebSocketJs onData object ", object);
 
         if (that.onData) {
           that.onData(json.payload.message, object);
@@ -500,7 +516,7 @@ export class WebSocketJs {
             // console.log("element", element);
             //let insUp = that.insertOrUpdate(element);
             let insUp = json.payload.method;
-            console.log("% »»» WebSocketJs WF - insUp", insUp);
+            console.log("% »»» WebSocketJs WF *** - insUp", insUp);
 
             var object = { event: json.payload, data: element };
 
@@ -512,7 +528,7 @@ export class WebSocketJs {
             if (insUp == "CREATE") {
 
               if (that.onCreate) {
-                console.log("Web_SocketJs - INIT > CREATE when array (general)");
+                console.log("% »»» WebSocketJs WF *** - INIT > CREATE when array (general)");
                 that.onCreate(element, object);
               }
 
@@ -525,7 +541,7 @@ export class WebSocketJs {
 
             if (insUp == "UPDATE") {
 
-              console.log('Web_SocketJs WF - INIT > UPDATE  callbackObj when array (1)', callbackObj)
+              console.log('% »»» WebSocketJs WF *** - INIT > UPDATE  callbackObj when array (1)', callbackObj)
 
               if (that.onUpdate) {
 
@@ -556,7 +572,7 @@ export class WebSocketJs {
           if (insUp == "CREATE") {
 
             if (that.onCreate) {
-              // console.log("% »»» WebSocketJs - INIT > CREATE when object (general)");
+              console.log("% »»» WebSocketJs WF *** - INIT > CREATE when object (general)");
               that.onCreate(json.payload.message, object);
             }
 
@@ -566,7 +582,7 @@ export class WebSocketJs {
           }
 
           if (insUp == "UPDATE") {
-            console.log('% »»» WebSocketJs WF - INIT > UPDATE  when object callbackObj (1)', callbackObj)
+            console.log('% »»» WebSocketJs WF *** - INIT > UPDATE  when object callbackObj (1)', callbackObj)
 
             if (that.onUpdate) {
               // console.log('% »»» WebSocketJs - INIT > UPDATE when object (general)')

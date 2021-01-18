@@ -16,6 +16,7 @@ import { slideInOutAnimation } from '../_animations/index';
 import { UsersService } from '../services/users.service';
 import { avatarPlaceholder, getColorBck } from '../utils/util';
 import { AppConfigService } from '../services/app-config.service';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 declare const $: any;
 
 @Component({
@@ -79,9 +80,10 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit {
   group_name: string;
   bot_description: string;
   ROUTING_PAGE_MODE: boolean;
+  IS_DEFAULT_DEPT: boolean;
 
   display_btn_read_all_descr: boolean;
-read_all: boolean
+  read_all: boolean
 
   constructor(
     private router: Router,
@@ -492,26 +494,29 @@ read_all: boolean
   getDeptById() {
     this.mongodbDepartmentService.getMongDbDeptById(this.id_dept).subscribe((dept: any) => {
       console.log('++ > GET DEPT (DETAILS) BY ID - DEPT OBJECT: ', dept);
+      if (dept) {
+        this.IS_DEFAULT_DEPT = dept.default
+        this.deptName_toUpdate = dept.name;
+        this.dept_description_toUpdate = dept.description;
+        this.botId = dept.id_bot;
+        this.dept_routing = dept.routing;
+        this.selectedGroupId = dept.id_group;
+        this.dept_created_at = dept.createdAt;
+        this.dept_ID = dept.id;
+        this.bot_only = dept.bot_only
 
-      this.deptName_toUpdate = dept.name;
-      this.dept_description_toUpdate = dept.description;
-      this.botId = dept.id_bot;
-      this.dept_routing = dept.routing;
-      this.selectedGroupId = dept.id_group;
-      this.dept_created_at = dept.createdAt;
-      this.dept_ID = dept.id;
-      this.bot_only = dept.bot_only
+      }
 
       if (this.dept_routing === 'pooled') {
         this.SHOW_OPTION_FORM = false;
         this.dept_routing = 'pooled'
         this.BOT_NOT_SELECTED = true;
-     
+
       } else if (this.dept_routing === 'assigned') {
         this.SHOW_OPTION_FORM = false;
         this.dept_routing = 'assigned'
         this.BOT_NOT_SELECTED = true;
-      } 
+      }
       // else if (this.dept_routing === 'fixed') {
       //   this.SHOW_OPTION_FORM = true;
       //   this.dept_routing = 'fixed'
@@ -628,42 +633,42 @@ read_all: boolean
           const elemSidebarDescription = <HTMLElement>document.querySelector('.sidebar-description');
           console.log(' DEPT EDIT-ADD elem Sidebar Description', elemSidebarDescription)
 
-       
-       
+
+
           let lines = undefined;
           if (this.bot_description) {
             if (elemSidebarDescription) {
-            setTimeout(() => {
-             
-              const divHeight = elemSidebarDescription.offsetHeight
-              const lineHeight = parseInt(elemSidebarDescription.style.lineHeight);
-              console.log(' DEPT EDIT-ADD elem Sidebar Description divHeight', divHeight);
-              console.log(' DEPT EDIT-ADD elem Sidebar Description lineHeight', lineHeight)
-  
-             
-              if (divHeight && lineHeight) {
-                lines = divHeight / lineHeight;
-                console.log(' DEPT EDIT-ADD elem Sidebar Description lines', lines)
-              }
+              setTimeout(() => {
 
-              // const elemDescription = <HTMLElement>document.querySelector('.sidebar-description .description-icon-and-text .bot-description')
-              // console.log(' DEPT EDIT-ADD elem Sidebar Description elemDescription', elemDescription)
-              const textInDescription =  elemSidebarDescription.textContent.replace(/(<.*?>)|\s+/g, (m, $1) => $1 ? $1 : ' ')
-              console.log(' DEPT EDIT-ADD elem Sidebar Description elemDescription text', textInDescription)
-              const lastThree = textInDescription.substr(textInDescription.length - 3);
-              console.log(' DEPT EDIT-ADD elem Sidebar Description elemDescription text lastThree', lastThree)
+                const divHeight = elemSidebarDescription.offsetHeight
+                const lineHeight = parseInt(elemSidebarDescription.style.lineHeight);
+                console.log(' DEPT EDIT-ADD elem Sidebar Description divHeight', divHeight);
+                console.log(' DEPT EDIT-ADD elem Sidebar Description lineHeight', lineHeight)
 
-              if (lines && lines > 3) {
-                console.log(' DEPT EDIT-ADD elem Sidebar Description lines is > 3', lines)
-                // elemSidebarDescription.setAttribute('style', ' display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;');
-                elemSidebarDescription.classList.add("sidebar-description-cropped");
-                this.display_btn_read_all_descr = true;
-                this.read_all = true;
-              } else {
-                this.display_btn_read_all_descr = false
-              }
-            }, 300);
-          }
+
+                if (divHeight && lineHeight) {
+                  lines = divHeight / lineHeight;
+                  console.log(' DEPT EDIT-ADD elem Sidebar Description lines', lines)
+                }
+
+                // const elemDescription = <HTMLElement>document.querySelector('.sidebar-description .description-icon-and-text .bot-description')
+                // console.log(' DEPT EDIT-ADD elem Sidebar Description elemDescription', elemDescription)
+                const textInDescription = elemSidebarDescription.textContent.replace(/(<.*?>)|\s+/g, (m, $1) => $1 ? $1 : ' ')
+                console.log(' DEPT EDIT-ADD elem Sidebar Description elemDescription text', textInDescription)
+                const lastThree = textInDescription.substr(textInDescription.length - 3);
+                console.log(' DEPT EDIT-ADD elem Sidebar Description elemDescription text lastThree', lastThree)
+
+                if (lines && lines > 3) {
+                  console.log(' DEPT EDIT-ADD elem Sidebar Description lines is > 3', lines)
+                  // elemSidebarDescription.setAttribute('style', ' display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;');
+                  elemSidebarDescription.classList.add("sidebar-description-cropped");
+                  this.display_btn_read_all_descr = true;
+                  this.read_all = true;
+                } else {
+                  this.display_btn_read_all_descr = false
+                }
+              }, 300);
+            }
           }
         } else {
           this.bot_description = 'n/a'
@@ -687,30 +692,30 @@ read_all: boolean
 
   }
 
-  toggleDescriptionReadAll () {
+  toggleDescriptionReadAll() {
     const elemSidebarDescription = <HTMLElement>document.querySelector('.sidebar-description');
     console.log(' DEPT EDIT-ADD elem Sidebar Description toggleDescriptionReadAll', elemSidebarDescription)
     if (elemSidebarDescription.classList) {
       elemSidebarDescription.classList.toggle("sidebar-description-cropped");
-     
+
       const hasClassCropped = elemSidebarDescription.classList.contains("sidebar-description-cropped")
       console.log(' DEPT EDIT-ADD elem Sidebar Description toggleDescriptionReadAll hasClassCropped', hasClassCropped)
-     if( hasClassCropped === false) {
-      this.read_all = false;
-     } else {
-      this.read_all = true;
-     }
+      if (hasClassCropped === false) {
+        this.read_all = false;
+      } else {
+        this.read_all = true;
+      }
 
     } else {
       // For IE9
       var classes = elemSidebarDescription.className.split(" ");
       var i = classes.indexOf("sidebar-description-cropped");
-    
+
       if (i >= 0)
         classes.splice(i, 1);
       else
         classes.push("sidebar-description-cropped");
-        elemSidebarDescription.className = classes.join(" ");
+      elemSidebarDescription.className = classes.join(" ");
     }
   }
 

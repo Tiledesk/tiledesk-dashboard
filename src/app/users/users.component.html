@@ -1,5 +1,5 @@
 <p style="margin-top:6px; padding-left:30px;position: relative;z-index: 1050;" class="navbar-brand">
- {{ 'Users' | translate }}
+  {{ 'Users' | translate }}
 </p>
 
 
@@ -224,7 +224,8 @@ class="navbar-brand">
               </thead>
 
               <tbody>
-                <tr *ngFor="let projectUser of projectUsersList">
+                <!-- trackBy: trackByFn  -- trackBy: trackImageId-->
+                <tr #divItem  *ngFor="let projectUser of projectUsersList;let i = index;">
                   <!-- FOR DEBUG: ID OF THE PROJECT-USER  -->
                   <!-- <td>
                     {{ projectUser?._id }}
@@ -232,13 +233,20 @@ class="navbar-brand">
                   <!-- goToMemberProfile(projectUser?.id_user?._id) -->
                   <td (click)="goToEditUser(projectUser?._id)"
                     style="cursor:pointer; width:1%;white-space:nowrap; text-align: center">
-                    
+
                     <div class="user-avatar-wrap">
-                      <img
+                      <img *ngIf="projectUser?.hasImage"
                         style="vertical-align: middle; width: 52px; height: 52px; border-radius: 50%; border: 1px solid #eee;"
                         class="user-img"
                         src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media"
                         onerror="this.src='assets/img/no_image_user.png'" />
+
+                      <div *ngIf="projectUser.hasImage === false"  style="vertical-align: middle; width: 52px; height: 52px; border-radius: 50%; border: 1px solid #eee;"
+                        [ngStyle]="{'background-color': projectUser?.id_user?.fillColour }">
+                        <span class="altenative-projetuser-avatar">
+                          {{ projectUser?.id_user?.fullname_initial }}
+                        </span>
+                      </div>
 
                       <div *ngIf="projectUser?.isBusy" class="user-is-busy">
                         <img src="assets/img/clock_hands.svg" class="img-fluid" style="width:16px;" />
@@ -247,8 +255,8 @@ class="navbar-brand">
 
                     </div>
 
-                    <div *ngIf="projectUser?.isBusy" class="is-busy-text is-busy-color-transition"> 
-                      {{ 'Busy' | translate }} 
+                    <div *ngIf="projectUser?.isBusy" class="is-busy-text is-busy-color-transition">
+                      {{ 'Busy' | translate }}
                     </div>
                   </td>
 
@@ -330,7 +338,7 @@ class="navbar-brand">
                   </td> -->
 
                   <!-- ACTIONS -->
-                  <td class="td-actions text-right" >
+                  <td class="td-actions text-right">
                     <!-- *ngIf="projectUser?.role !== 'owner' && CURRENT_USER_ID !== projectUser?.id_user?._id" -->
                     <span style="position: relative;top: 15px;">
                       <button type="button" rel="tooltip" title=""
@@ -342,7 +350,8 @@ class="navbar-brand">
                       </button>
 
 
-                      <button *ngIf="projectUser?.role !== 'owner' && CURRENT_USER_ID !== projectUser?.id_user?._id" type="button" rel="tooltip" title="{{ 'UsersPage.tootipDeleteUser' | translate }}"
+                      <button *ngIf="projectUser?.role !== 'owner' && CURRENT_USER_ID !== projectUser?.id_user?._id"
+                        type="button" rel="tooltip" title="{{ 'UsersPage.tootipDeleteUser' | translate }}"
                         class="btn btn-danger btn-simple btn-xs"
                         (click)='openDeleteModal(projectUser?._id, projectUser?.id_user?._id, projectUser?.id_user?.firstname, projectUser?.id_user?.lastname)'>
                         <i class="material-icons">close</i>

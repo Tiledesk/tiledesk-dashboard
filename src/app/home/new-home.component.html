@@ -1,0 +1,1363 @@
+<p style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px" class="navbar-brand">
+  Home
+  <!-- <button (click)="sumuptest()" type="button">  test  </button> -->
+</p>
+
+<div class="main-content" style="padding-top: 8px;margin-top: 0px;">
+
+
+
+  <!-- ----- new  2 -->
+  <div class="row">
+    <div class="col-md-12" style="padding-left: 0px; padding-right: 0px;  margin-top: -25px;">
+      <div class="n-header-home">
+        <h2 class="n-header-home-title">
+          {{ prjct_name }}
+
+          <!-- // PLAN TYPE BADGE -->
+          <span *ngIf="isVisible" style="font-family: roboto;">
+            <span class="project-plan" (click)="goToPricingOrOpenModalSubsExpired()"
+              style="text-transform:capitalize; margin-left: 0px !important;top: -4px!important; box-shadow: 0 0 0 1px rgb(255 255 255 / 50%) inset">
+              {{ prjct_profile_name }}
+            </span>
+            <span *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false"
+              style="color:#f44336; position:relative; top: -3px;" (click)="goToPricingOrOpenModalSubsExpired()"
+              class="expired__Tooltip">
+              <i class="material-icons" style="vertical-align: middle; color:#f44336; cursor:pointer">
+                error_outline
+              </i>
+              <span class="expired__Tooltiptext" style="font-size:14px">
+                {{ 'Pricing.SubscriptionPaymentProblem' | translate }} </span>
+            </span>
+          </span>
+        </h2>
+
+        <!-- // HUMAN AGENTS -->
+        <div class="project-temmates" style="align-items: center;display: flex; flex-wrap: wrap;">
+          <div class="served-by-desktop-a--home-header">
+
+            <ng-container *ngIf="!DISPLAY_TEAMMATES">
+              <div class="served-by-desktop-b">
+                <div class="served-by-desktop-d">
+                  <div size="32" class="served-by-desktop-e">
+                    <img src="assets/img/user_white.svg" style="width: 32px;height: 32px; padding: 5px;">
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+
+            <ng-container *ngIf="DISPLAY_TEAMMATES">
+              <div class="served-by-desktop-b" *ngFor="let projectUser of projectUsers; let first = first;let i=index">
+                <div [ngClass]="{ 'first-served-by': first }" class="served-by-desktop-c tool_tip"
+                  (click)="goToAgentProfile(projectUser?.id_user?._id)" style="cursor:pointer">
+                  <div class="served-by-desktop-d">
+                    <div size="32" class="served-by-desktop-e">
+
+                      <img *ngIf="projectUser?.hasImage"
+                        src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media"
+                        alt="" onerror="this.src='assets/img/no_image_user.png'" style="width: 32px;height: 32px;">
+
+                      <!-- // AVATAR WITH USER INITILAS IF DOES NOT EXIST PROFILE IMAGE -->
+                      <div *ngIf="!projectUser.hasImage" class="altenative-avatar-wrap"
+                        [ngStyle]="{'background-color': projectUser?.fillColour }" style="width: 32px;height: 32px;">
+
+                        <span class="altenative--avatar">
+                          {{ projectUser?.fullname_initial }}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <span class="bottom-home-header">
+                    <span style="text-transform: capitalize;"> {{ projectUser?.id_user?.firstname }}
+                      <span *ngIf="projectUser?.id_user?.lastname">
+                        {{ projectUser?.id_user?.lastname | slice:0:1 }}.
+                      </span>
+                    </span>
+                    <i style="height:6px"></i>
+                  </span>
+                </div>
+              </div>
+            </ng-container>
+            <span style="padding-left: 4px;color: rgba(255,255,255,0.8);font-size: 13px;font-weight: 400;">
+
+              {{projectUsers?.length}}
+
+              <span *ngIf="projectUsers?.length === 1"> {{'Teammate' | translate}} </span>
+              <span *ngIf="projectUsers?.length > 1 || projectUsers?.length === 0"> {{'Teammates' | translate}} </span>
+              <span class="tool_tip" *ngIf="!DISPLAY_TEAMMATES">
+                <span class="material-icons add-operators-icons tool_tip" (click)="toggleDisplayTeammates()"
+                  style="vertical-align: middle;color:  rgba(255,255,255,0.8); font-size:18px; position: relative;cursor: pointer;transform: rotate(-90deg);">
+                  filter_list
+                </span>
+
+                <span class="bottom-home-header">
+                  <span>{{'ViewTeammates' | translate}} </span>
+                  <i style="height:6px"></i>
+                </span>
+              </span>
+
+              <span class="tool_tip" *ngIf="DISPLAY_TEAMMATES">
+                <span class="material-icons add-operators-icons tool_tip" (click)="goToUsersList()"
+                  style="vertical-align: middle;color:  rgba(255,255,255,0.8); font-size:18px; position: relative;cursor: pointer;">
+                  add_circle_outline
+                </span>
+
+                <span class="bottom-home-header">
+                  <span *ngIf="projectUsers?.length > 1">{{'AddNewTeammate' | translate}}</span>
+                  <span *ngIf="projectUsers?.length === 1">{{'InviteYourFirstTeammate' | translate}}</span>
+                  <i style="height:6px"></i>
+                </span>
+              </span>
+
+              <span class="tool_tip" *ngIf="DISPLAY_TEAMMATES">
+                <span class="material-icons add-operators-icons tool_tip" (click)="toggleDisplayTeammates()"
+                  style="vertical-align: middle;color:  rgba(255,255,255,0.8); font-size:18px; position: relative;cursor: pointer;transform: rotate(90deg);">
+                  filter_list
+                </span>
+
+                <span class="bottom-home-header">
+                  <span>{{'Close' | translate}}</span>
+                  <i style="height:6px"></i>
+                </span>
+              </span>
+            </span>
+          </div>
+
+          <!-- /// CHATBOT AGENTS -->
+          <div class="served-by-desktop-a--home-header">
+
+            <ng-container *ngIf="!DISPLAY_CHATBOTS">
+              <div class="served-by-desktop-b">
+                <div class="served-by-desktop-d">
+                  <div size="32" class="served-by-desktop-e">
+                    <img src="assets/img/avatar_bot_tiledesk_white.svg" style="width: 32px;height: 32px; padding: 2px;">
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+
+            <ng-container *ngIf="DISPLAY_CHATBOTS">
+              <div class="served-by-desktop-b" *ngFor="let bot of chatbots; let first = first;">
+                <div [ngClass]="{ 'first-served-by': first }" class="served-by-desktop-c tool_tip"
+                  (click)="goToBotProfile(bot?._id, bot?.type)" style="cursor:pointer">
+
+
+                  <div class="served-by-desktop-d" *ngIf="bot?.type !== 'identity'">
+                    <div size="32" class="served-by-desktop-e">
+
+                      <img [ngClass]="{'bot-img-gray-bckgrnd': bot.hasImage === false}"
+                        src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{bot?._id}}%2Fphoto.jpg?alt=media"
+                        alt="" onerror="this.src='assets/img/avatar_bot_tiledesk_white.svg'"
+                        style="width: 32px;height: 32px;">
+                    </div>
+
+                    <div *ngIf="bot.type === 'internal'">
+                      <img class="home-served-by-bot-type-logo" style="left: -1px;top: 3px;"
+                        src="assets/img/tiledesk_logo_no_text.png" />
+                    </div>
+                    <div *ngIf="bot.type === 'external'">
+                      <img class="home-served-by-bot-type-logo" style="left: -1px;top: 3px;"
+                        src="assets/img/external_bot_logo.png" />
+                    </div>
+                    <div *ngIf="bot.type === 'dialogflow'">
+                      <img class="home-served-by-bot-type-logo" style="left: -1px;top: 3px;"
+                        src="assets/img/Dialogflow_logo_no_text.png" />
+                    </div>
+                  </div>
+
+
+                  <!-- // USECASE: THERE IS ONLY A CHATBOT e.g. the identity bot IN THIS CASE DISPLAY THE ICON ON "NO-BOT" -->
+                  <div class="served-by-desktop-d" *ngIf="bot?.type === 'identity' && chatbots?.length === 1">
+                    <div size="32" class="served-by-desktop-e">
+
+                      <img src="assets/img/bot_alt_slash_white.svg" alt="no-chatbot-icon"
+                        style="width: 32px;height: 32px;background: #aaa !important">
+                    </div>
+
+                  </div>
+
+                  <span class="bottom-home-header" *ngIf="bot?.type !== 'identity'">
+                    <span style="text-transform: capitalize;"> {{ bot?.name }} </span>
+                    <i style="height:6px"></i>
+                  </span>
+                </div>
+              </div>
+            </ng-container>
+
+            <span style="padding-left: 4px;color: rgba(255,255,255,0.8);font-size: 13px;font-weight: 400;">
+
+              {{chatbots?.length}}
+              <span *ngIf="chatbots?.length === 1"> chatbot </span>
+              <span *ngIf="chatbots?.length > 1 || chatbots?.length === 0"> chatbots </span>
+
+              <span class="tool_tip" *ngIf="!DISPLAY_CHATBOTS && chatbots?.length > 0">
+                <span class="material-icons add-operators-icons tool_tip" (click)="toggleDisplayChatbots()"
+                  style="vertical-align: middle;color:  rgba(255,255,255,0.8); font-size:18px; position: relative;cursor: pointer;transform: rotate(-90deg);">
+                  filter_list
+                </span>
+
+                <span class="bottom-home-header">
+                  <span *ngIf="chatbots?.length > 1">{{'ViewChatbots' | translate}} </span>
+                  <span *ngIf="chatbots?.length === 1">{{'ViewChatbot' | translate}} </span>
+                  <i style="height:6px"></i>
+                </span>
+              </span>
+
+              <span class="tool_tip" *ngIf="!DISPLAY_CHATBOTS && chatbots?.length === 0">
+                <span class="material-icons add-operators-icons" (click)="goToBotsList()"
+                  style="vertical-align: middle;color:  rgba(255,255,255,0.8); font-size:18px; position: relative; cursor: pointer;">
+                  add_circle_outline
+                </span>
+
+                <span class="bottom-home-header">
+                  <span *ngIf="chatbots?.length === 0">{{'AddYourFirstChatbot' | translate}}</span>
+                  <i style="height:6px"></i>
+                </span>
+              </span>
+
+
+              <span class="tool_tip" *ngIf="DISPLAY_CHATBOTS">
+                <span class="material-icons add-operators-icons" (click)="goToBotsList()"
+                  style="vertical-align: middle;color:  rgba(255,255,255,0.8); font-size:18px; position: relative; cursor: pointer;">
+                  add_circle_outline
+                </span>
+
+                <span class="bottom-home-header">
+                  <!-- <span *ngIf="chatbots?.length === 0">{{'AddYourFirstChatbot' | translate}}</span> -->
+                  <span *ngIf="chatbots?.length > 0">{{'AddChatbot' | translate}}</span>
+                  <i style="height:6px"></i>
+                </span>
+              </span>
+
+              <span class="tool_tip" *ngIf="DISPLAY_CHATBOTS">
+                <span class="material-icons add-operators-icons tool_tip" (click)="toggleDisplayChatbots()"
+                  style="vertical-align: middle;color:  rgba(255,255,255,0.8); font-size:18px; position: relative;cursor: pointer;transform: rotate(90deg);">
+                  filter_list
+                </span>
+
+                <span class="bottom-home-header">
+                  <span>{{'Close' | translate}}</span>
+                  <i style="height:6px"></i>
+                </span>
+              </span>
+            </span>
+          </div>
+          <!-- clock-solid-green.svg -->
+          <!-- clock-solid-red.svg -->
+          <!-- 
+          // ---------------------------------------------------
+          // @ Operating Hours  
+          // --------------------------------------------------- -->
+          <div class="served-by-desktop-a--home-header-operating-hours">
+            <div class="served-by-desktop-b">
+              <div class="served-by-desktop-d">
+                <div size="32" class="served-by-desktop-e" style="position: relative;top: -2px;">
+                  <img *ngIf="!OPERATING_HOURS_ACTIVE" src="assets/img/clock-solid-white.svg"
+                    style="width: 32px;height: 32px; padding: 6px;">
+                  <img *ngIf="OPERATING_HOURS_ACTIVE" src="assets/img/clock-solid-green.svg"
+                    style="width: 32px;height: 32px; padding: 6px;">
+                </div>
+              </div>
+            </div>
+
+            <span style="padding-left: 4px;color: rgba(255,255,255,0.8);font-size: 13px;font-weight: 400;">
+              <span *ngIf="!OPERATING_HOURS_ACTIVE"> {{'OperatingHoursDisabled' | translate }}</span>
+              <span *ngIf="OPERATING_HOURS_ACTIVE"> {{'OperatingHoursEnabled' | translate}} </span>
+              <span class="tool_tip">
+                <span class="material-icons add-operators-icons tool_tip" (click)="goToOperatingHours()"
+                  style="vertical-align: middle;color:  rgba(255,255,255,0.8); font-size:18px; position: relative;cursor: pointer;transform: rotate(-90deg);top: -1px;">
+                  filter_list
+                </span>
+                <span class="bottom-home-header">
+                  <span>{{'AdjustOperatingHours' | translate }}</span>
+                  <i style="height:6px"></i>
+                </span>
+              </span>
+            </span>
+
+          </div>
+        </div>
+
+        <!-- 
+        // ---------------------------------------------------
+        // @ Take A Shortcut for Owner And Admin 
+        // --------------------------------------------------- -->
+        <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="card" style="border: unset !important;  background: #1a73e8;margin-top: 18px;margin-bottom: 18px;">
+              <div class="card-content" style="padding-left:0px; padding-right:0px">
+                <!-- <h3 class="getting-started-card-title-home-header">{{'TakeAShortcut' | translate}}</h3>
+                  <p class="getting-started-card-subtitle-home-header">{{'JumpStraightToTheMostPopularSettingsInTheDashboard' | translate}}. </p> -->
+                <div class="row">
+
+                  <div [ngClass]="{'col-xs-3': isVisibleAPP && USER_ROLE !== 'agent', 'col-xs-4': !isVisibleAPP || USER_ROLE === 'agent'}" (click)="openChat()" style="cursor: pointer;">
+                    <!-- // CHAT -->
+                    <div class="wrap-shortcut-icon">
+                      <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 75.8 75.8"
+                        style="enable-background:new 0 0 75.8 75.8;" xml:space="preserve">
+                        <style type="text/css">
+                          .st0_chat_in_header {
+                            opacity: 1;
+                            fill: #ffffff;
+                            enable-background: new;
+                          }
+
+                          .st1_chat_in_header {
+                            fill: #A221FE;
+                          }
+                        </style>
+                        <g transform="translate(7717.829 6141.832)">
+                          <path class="st0_chat_in_header" d="M-7642-6103.9c0,20.9-17,37.9-37.9,37.9s-37.9-17-37.9-37.9s17-37.9,37.9-37.9l0,0
+               C-7659-6141.8-7642-6124.9-7642-6103.9L-7642-6103.9z" />
+                        </g>
+                        <path class="st1_chat_in_header"
+                          d="M37.9,18.6c-10.8,0-19.5,8-19.5,17.9c0,4.3,1.6,8.2,4.3,11.3c-1,4.3-4.1,8.2-4.2,8.2c-0.2,0.2-0.2,0.5-0.1,0.7
+             c0.1,0.3,0.3,0.4,0.6,0.4c5,0,8.8-2.7,10.7-4.4c2.5,1.1,5.2,1.7,8.2,1.7c10.8,0,19.5-8,19.5-17.9S48.7,18.6,37.9,18.6z M28.2,39.3
+             c-1.3,0-2.4-1.2-2.4-2.8s1.1-2.8,2.4-2.8s2.4,1.2,2.4,2.8S29.5,39.3,28.2,39.3z M37.9,39.3c-1.3,0-2.4-1.2-2.4-2.8s1.1-2.8,2.4-2.8
+             s2.4,1.2,2.4,2.8S39.3,39.3,37.9,39.3z M47.6,39.3c-1.3,0-2.4-1.2-2.4-2.8s1.1-2.8,2.4-2.8s2.4,1.2,2.4,2.8S49,39.3,47.6,39.3z" />
+                      </svg>
+                    </div>
+
+                    <div class="wrap-shortcut-title-home-header">
+                      Chat
+                    </div>
+                    <div class="wrap-shortcut-subtitle-home-header">
+                      {{ 'OpenTheChatToHandleTheIncomingRequests' | translate }}
+                    </div>
+                  </div>
+
+                  <!-- // SE NON è AGENTE VISUALIZZO WIDGET -->
+                  <div [ngClass]="{'col-xs-3': isVisibleAPP, 'col-xs-4': !isVisibleAPP}" (click)="goToWidgetSetup()" style="cursor: pointer;" *ngIf="USER_ROLE !== 'agent'">
+                    <!-- // CUSTOMIZE WIDGET -->
+                    <div class="wrap-shortcut-icon">
+                      <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 75.8 75.8"
+                        style="enable-background:new 0 0 75.8 75.8;" xml:space="preserve">
+                        <style type="text/css">
+                          .st0_customize_widget_in_header {
+                            opacity: 1;
+                            fill: #ffffff;
+                            enable-background: new;
+                          }
+
+                          .st1_customize_widget_in_header {
+                            fill: #FB8B19;
+                          }
+                        </style>
+                        <path class="st0_customize_widget_in_header" d="M75.8,37.9c0,20.9-17,37.9-37.9,37.9S0,58.9,0,37.9S17,0,37.9,0c0,0,0,0,0,0C58.9,0,75.8,17,75.8,37.9
+             C75.8,37.9,75.8,37.9,75.8,37.9z" />
+                        <path class="st1_customize_widget_in_header" d="M33.7,18.4c-8,1.5-14.5,7.7-16,15.5c-3,14.6,10.6,25.4,20.9,23.9c3.3-0.5,4.9-4.3,3.4-7.1
+             c-1.9-3.5,0.8-7.7,4.9-7.7h6.4c2.9,0,5.2-2.3,5.2-5.1C58.5,25.5,46.9,15.9,33.7,18.4z M25,42.9c-1.4,0-2.6-1.1-2.6-2.5
+             s1.2-2.5,2.6-2.5c1.4,0,2.6,1.1,2.6,2.5S26.4,42.9,25,42.9z M27.6,32.9c-1.4,0-2.6-1.1-2.6-2.5c0-1.4,1.2-2.5,2.6-2.5
+             c1.4,0,2.6,1.1,2.6,2.5C30.2,31.8,29,32.9,27.6,32.9z M37.9,27.9c-1.4,0-2.6-1.1-2.6-2.5s1.2-2.5,2.6-2.5c1.4,0,2.6,1.1,2.6,2.5
+             S39.3,27.9,37.9,27.9z M48.2,32.9c-1.4,0-2.6-1.1-2.6-2.5c0-1.4,1.2-2.5,2.6-2.5c1.4,0,2.6,1.1,2.6,2.5
+             C50.8,31.8,49.7,32.9,48.2,32.9z" />
+                      </svg>
+                    </div>
+
+                    <div class="wrap-shortcut-title-home-header">
+                      Widget
+                    </div>
+                    <div class="wrap-shortcut-subtitle-home-header">
+                      {{ 'HomePage.WidgetSubtitle1' | translate }}
+                    </div>
+                  </div>
+
+                  <!-- // SE È AGENTE VISUALIZZO CONVERSAZIONI -->
+                  <div [ngClass]="{'col-xs-3': isVisibleAPP && USER_ROLE !== 'agent',  'col-xs-4': !isVisibleAPP  || USER_ROLE === 'agent'}" (click)="goToWidgetConversations()" style="cursor: pointer;" *ngIf="USER_ROLE === 'agent'">
+                    <div class="wrap-shortcut-icon">
+                      <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 75.8 75.8"
+                        style="enable-background:new 0 0 75.8 75.8;" xml:space="preserve">
+                        <style type="text/css">
+                          .st0_conversations {
+                            opacity: 1;
+                            fill: #ffffff;
+                            enable-background: new;
+                          }
+
+                          .st1_conversations {
+                            fill: #FB8B19;
+                          }
+                        </style>
+                        <g transform="translate(7717.829 6141.832)">
+                          <path class="st0_conversations" d="M-7642-6103.9c0,20.9-17,37.9-37.9,37.9s-37.9-17-37.9-37.9s17-37.9,37.9-37.9l0,0
+		C-7659-6141.8-7642-6124.9-7642-6103.9L-7642-6103.9z" />
+                        </g>
+                        <path class="st1_conversations" d="M47.3,33.2c0-6.5-6.9-11.8-15.4-11.8s-15.4,5.3-15.4,11.8c0,2.5,1,4.9,2.8,6.8c-1,2.2-2.6,4-2.6,4
+	c-0.2,0.2-0.2,0.4-0.1,0.6c0.1,0.2,0.3,0.4,0.5,0.4c2.7,0,4.9-0.9,6.5-1.8C26.2,44.3,29,45,32,45C40.5,45,47.3,39.7,47.3,33.2z
+	 M56.4,49.4c1.8-1.9,2.8-4.3,2.8-6.8c0-4.9-3.9-9.2-9.5-10.9c0.1,0.5,0.1,1,0.1,1.5c0,7.8-8,14.2-17.7,14.2c-0.8,0-1.6-0.1-2.3-0.1
+	c2.3,4.2,7.8,7.2,14.2,7.2c3,0,5.8-0.7,8.2-1.8c1.6,0.9,3.8,1.8,6.5,1.8c0.2,0,0.5-0.1,0.5-0.4c0.1-0.2,0.1-0.5-0.1-0.6
+	C59,53.4,57.3,51.7,56.4,49.4z" />
+                      </svg>
+
+
+                    </div>
+
+                    <div class="wrap-shortcut-title-home-header">
+                      {{'Requests' | translate}}
+                    </div>
+                    <div class="wrap-shortcut-subtitle-home-header">
+                      {{ 'ReadManageAssignAndReplyToCustomerConversations' | translate }}
+                    </div>
+                  </div>
+
+
+                  <div [ngClass]="{'col-xs-3': isVisibleAPP && USER_ROLE !== 'agent', 'col-xs-4': !isVisibleAPP  || USER_ROLE === 'agent'}" (click)="goToTiledeskMobileAppPage()"
+                    style="cursor: pointer;">
+                    <!-- // GET MOBILE APPS -->
+                    <div class="wrap-shortcut-icon">
+                      <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 75.8 75.8"
+                        style="enable-background:new 0 0 75.8 75.8;" xml:space="preserve">
+                        <style type="text/css">
+                          .st0_mobile_apps_in_header {
+                            opacity: 1;
+                            fill: #ffffff;
+                            enable-background: new;
+                          }
+
+                          .st1_mobile_apps_in_header {
+                            fill: #635BFF;
+                          }
+                        </style>
+                        <path class="st0_mobile_apps_in_header"
+                          d="M75.8,37.9c0,20.9-17,37.9-37.9,37.9S0,58.9,0,37.9S17,0,37.9,0l0,0C58.9,0,75.8,17,75.8,37.9L75.8,37.9z" />
+                        <path class="st1_mobile_apps_in_header" d="M48.7,16.4L28.1,16c-2.4-0.1-4.5,1.7-4.5,4l-0.8,35.3c-0.1,2.2,1.9,4.1,4.3,4.2L47.8,60c2.4,0.1,4.5-1.7,4.5-4
+             l0.8-35.3C53.1,18.4,51.2,16.5,48.7,16.4z M37.5,56.9c-1.6,0-2.9-1.3-2.9-2.8s1.4-2.7,3-2.6c1.6,0,2.9,1.3,2.9,2.8
+             C40.5,55.8,39.1,56.9,37.5,56.9z M48,48c0,0.6-0.5,1-1.1,1l-18.5-0.4c-0.6,0-1.1-0.5-1.1-1l0.6-26.5c0-0.6,0.5-1,1.1-1l18.5,0.4
+             c0.6,0,1.1,0.5,1.1,1L48,48z" />
+                      </svg>
+                    </div>
+
+                    <div class="wrap-shortcut-title-home-header">
+                      {{ 'GetTheMobileApp' | translate }}
+                    </div>
+                    <div class="wrap-shortcut-subtitle-home-header">
+                      {{ 'KeepSupportGoingWhenAgentsAreOnTheMove' | translate }}
+                    </div>
+                  </div>
+
+                  <div [ngClass]="{'col-xs-3': isVisibleAPP }" (click)="goToAppStore()" style="cursor: pointer;" *ngIf="isVisibleAPP && USER_ROLE !== 'agent'">
+                    <!-- // App Store -->
+                    <div class="wrap-shortcut-icon">
+                      <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 75.8 75.8"
+                        style="enable-background:new 0 0 75.8 75.8;" xml:space="preserve">
+                        <style type="text/css">
+                          .st0_appstore_in_header {
+                            opacity: 1;
+                            fill: #ffffff;
+                            enable-background: new;
+                          }
+
+                          .st1_appstore_in_header {
+                            fill: #F50036;
+                          }
+                        </style>
+                        <path class="st0_appstore_in_header"
+                          d="M75.8,37.9c0,20.9-17,37.9-37.9,37.9S0,58.9,0,37.9S17,0,37.9,0l0,0C58.9,0,75.8,17,75.8,37.9L75.8,37.9z" />
+                        <path class="st1_appstore_in_header" d="M41.4,18.2h16.9c1.2,0,2.1,0.9,2.1,2.1v14.1c0,1.2-0.9,2.1-2.1,2.1H41.4c-1.2,0-2.1-0.9-2.1-2.1V20.3
+             C39.3,19.2,40.3,18.2,41.4,18.2z M34.4,18.2H17.5c-1.2,0-2.1,0.9-2.1,2.1v14.1c0,1.2,0.9,2.1,2.1,2.1h16.9c1.2,0,2.1-0.9,2.1-2.1
+             V20.3C36.5,19.2,35.5,18.2,34.4,18.2z M15.4,41.4v14.1c0,1.2,0.9,2.1,2.1,2.1h16.9c1.2,0,2.1-0.9,2.1-2.1V41.4
+             c0-1.2-0.9-2.1-2.1-2.1H17.5C16.3,39.3,15.4,40.3,15.4,41.4z M41.4,57.6h16.9c1.2,0,2.1-0.9,2.1-2.1V41.4c0-1.2-0.9-2.1-2.1-2.1
+             H41.4c-1.2,0-2.1,0.9-2.1,2.1v14.1C39.3,56.6,40.3,57.6,41.4,57.6z" />
+                      </svg>
+                    </div>
+                    <div class="wrap-shortcut-title-home-header">
+                      {{ 'Integrations' | translate }}
+                    </div>
+                    <div class="wrap-shortcut-subtitle-home-header">
+                      {{'EngageMoreCustomersWithAppsAndIntegrations' | translate}}
+                    </div>
+                  </div>
+
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- // ./test -->
+
+
+      </div>
+    </div>
+  </div>
+  <!-- ----- ./ new  2 -->
+
+
+
+  <!-- ----- new  !!!! DISPLAY NONE-->
+  <div class="row" style="display: none;">
+    <div class="col-md-12" style="">
+
+      <div class="toDoBar-wrap" style="width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;">
+        <div class="toDoBar" style="    width: 100%;
+        min-width: 964px;
+        min-height: 90px;
+        background-color: #fff;
+        display: flex;
+        flex-direction: row;
+       
+        background-repeat: no-repeat;
+        background-position: bottom right 160px;
+        position: relative;
+        align-items: center;
+        /* padding: 0 360px 0 86px; */
+        padding-left: 16px;
+        border-bottom: 1px solid #e0e4eb;">
+          <h2 style=" min-width: 320px;
+          /* max-height: 23px; */
+          display: block;
+          font-family: 'Google Sans', sans-serif !important;
+          font-size: 19px;
+          font-weight: 700;
+          line-height: normal;
+          color: #303f9f;
+          margin: 0 32px 0 0; position: relative; top: -5px;" class="toDoBar__title">
+
+            {{ prjct_name }}
+
+
+            <span *ngIf="isVisible" style="display: block;">
+              <span class="project-plan" (click)="goToPricingOrOpenModalSubsExpired()"
+                style="text-transform:capitalize; margin-left: 0px !important;top: 0px!important">
+                {{ prjct_profile_name }}
+              </span>
+              <span *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false"
+                style="color:#f44336; position:relative; top: -3px;" (click)="goToPricingOrOpenModalSubsExpired()"
+                class="expired__Tooltip">
+                <i class="material-icons" style="vertical-align: middle; color:#f44336; cursor:pointer">
+                  error_outline
+                </i>
+                <span class="expired__Tooltiptext" style="font-size:14px">
+                  {{ 'Pricing.SubscriptionPaymentProblem' | translate }} </span>
+              </span>
+            </span>
+
+          </h2>
+          <!-- <p style="    margin: 0;
+          padding: 0;
+          position: relative;
+          height: auto;
+          top: 1px;
+          min-width: 304px;" class="toDoBar__description"> -->
+
+
+
+          <!-- // HUMAN AGENTS -->
+          <div class="served-by-desktop-a" style="margin-right: 105px;">
+
+            <div style="position: absolute;top: 10px;font-size: 12px;font-weight: 400;"
+              [ngClass]="{'top_zero': projectUsers?.length === 1 }">
+
+              <div class="homeheader-links-container">
+                <div class="homeheader-link-title-first">
+                  <span *ngIf="projectUsers?.length > 1"> Teammates </span>
+                  <span *ngIf="projectUsers?.length === 1"> No teammates to help you? </span>
+                  <span class="material-icons"
+                    style="vertical-align: middle; color: #3c4858;font-size:18px; position: relative; left: -4px;">
+                    keyboard_arrow_right
+                  </span>
+                </div>
+                <div class="homeheader-link-title-second" (click)="goToUsersList()" style="width: 150px !important;">
+                  <span *ngIf="projectUsers?.length > 1" style="color: #0f62ff;width: 150px !important;">Add new
+                    teammates </span>
+                  <span *ngIf="projectUsers?.length === 1" style="color: #0f62ff;">Invite your first teammate</span>
+
+                  <span class="material-icons"
+                    style="vertical-align: middle;color: #0f62ff; font-size:18px; position: relative; left: -4px;">
+                    keyboard_arrow_right
+                  </span>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="served-by-desktop-b" *ngFor="let projectUser of projectUsers; let first = first;">
+              <div [ngClass]="{ 'first-served-by': first }" class="served-by-desktop-c tool_tip"
+                (click)="goToAgentProfile(projectUser?.id_user?._id)" style="cursor:pointer">
+                <div class="served-by-desktop-d">
+                  <div size="32" class="served-by-desktop-e">
+
+                    <img *ngIf="projectUser?.hasImage"
+                      src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media"
+                      alt="" onerror="this.src='assets/img/no_image_user.png'" style="width: 42px;height: 42px;">
+
+                    <!-- // AVATAR WITH USER INITILAS IF DOES NOT EXIST PROFILE IMAGE -->
+                    <div *ngIf="!projectUser.hasImage" class="altenative-avatar-wrap"
+                      [ngStyle]="{'background-color': projectUser?.fillColour }"
+                      style="width: 42px;height: 42px;top: 0px;">
+
+                      <span class="altenative-avatar" style="line-height: 39px;font-size:16px">
+                        {{ projectUser?.fullname_initial }}
+                      </span>
+
+                    </div>
+                  </div>
+                </div>
+                <span class="bottom" style="min-width: fit-content;
+                  top: 31px;
+                  border-radius: 3px;
+                  padding: 0px 6px;
+                  font-size: 11px; white-space: nowrap;">
+                  <span style="text-transform: capitalize;"> {{ projectUser?.id_user?.firstname }}
+                    <span *ngIf="projectUser?.id_user?.lastname">
+                      {{ projectUser?.id_user?.lastname | slice:0:1 }}.
+                    </span>
+                  </span>
+                  <i style="height:6px"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- /// CHATBOT AGENTS -->
+          <div class="served-by-desktop-a">
+            <div style="position: absolute;top: 10px;font-size: 12px;font-weight: 400;"
+              [ngClass]="{'top_zero': chatbots?.length === 1 }">
+              <div class="homeheader-links-container" style="width: 165px;">
+                <div class="homeheader-link-title-first">
+                  <span *ngIf="chatbots?.length === 1"> There are no Chatbots set up yet</span>
+                  <span *ngIf="chatbots?.length > 1"> Chatbots</span>
+                  <span class="material-icons"
+                    style="vertical-align: middle; color: #3c4858;font-size:18px;position: relative; left: -4px;">
+                    keyboard_arrow_right
+                  </span>
+                </div>
+                <div class="homeheader-link-title-second" (click)="goToBotsList()">
+                  <span *ngIf="chatbots?.length === 1" style="color: #0f62ff;">Add your first chatbot</span>
+                  <span *ngIf="chatbots?.length > 1" style="color: #0f62ff;">Add a chatbot</span>
+                  <span class="material-icons"
+                    style="vertical-align: middle;color: #0f62ff;font-size:18px;position: relative; left: -4px;">
+                    keyboard_arrow_right
+                  </span>
+                </div>
+              </div>
+
+            </div>
+            <div class="served-by-desktop-b" *ngFor="let bot of chatbots; let first = first;">
+              <div [ngClass]="{ 'first-served-by': first }" class="served-by-desktop-c tool_tip"
+                (click)="goToBotProfile(bot?._id, bot?.type)" style="cursor:pointer">
+
+
+                <div class="served-by-desktop-d" *ngIf="bot?.type !== 'identity'">
+                  <div size="32" class="served-by-desktop-e">
+
+                    <img [ngClass]="{'bot-img-gray-bckgrnd': bot.hasImage === false}"
+                      src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{bot?._id}}%2Fphoto.jpg?alt=media"
+                      alt="" onerror="this.src='assets/img/avatar_bot_tiledesk_white.svg'"
+                      style="width: 42px;height: 42px;">
+                  </div>
+
+                  <div *ngIf="bot.type === 'internal'">
+                    <img class="home-served-by-bot-type-logo" src="assets/img/tiledesk_logo_no_text.png" />
+                  </div>
+                  <div *ngIf="bot.type === 'external'">
+                    <img class="home-served-by-bot-type-logo" src="assets/img/external_bot_logo.png" />
+                  </div>
+                  <div *ngIf="bot.type === 'dialogflow'">
+                    <img class="home-served-by-bot-type-logo" src="assets/img/Dialogflow_logo_no_text.png" />
+                  </div>
+                </div>
+
+
+                <!-- // USECASE: THERE IS ONLY A CHATBOT e.g. the identity bot IN THIS CASE DISPLAY THE ICON ON "NO-BOT" -->
+                <div class="served-by-desktop-d" *ngIf="bot?.type === 'identity' && chatbots?.length === 1">
+                  <div size="32" class="served-by-desktop-e">
+
+                    <img src="assets/img/bot_alt_slash_white.svg" alt="no-chatbot-icon"
+                      style="width: 42px;height: 42px;background: #aaa !important">
+                  </div>
+
+                </div>
+
+                <span *ngIf="bot?.type !== 'identity'" style="min-width: fit-content;
+                  top: 31px;
+                  border-radius: 3px;
+                  padding: 0px 6px;
+                  font-size: 11px; white-space: nowrap;" class="bottom">
+                  <span style="text-transform: capitalize;"> {{ bot?.name }} </span>
+                  <i style="height:6px"></i>
+                </span>
+              </div>
+            </div>
+
+          </div>
+
+
+
+
+          <!-- <button style="    display: inline;
+            outline: 0;
+            border: 0;
+            padding: 0;
+            background: 0 0;
+            color: #3f88f6;
+            cursor: pointer;" class="toDoBar__showMeListBtn" type="button">Show me list »
+          </button>
+          </p> -->
+          <div class="toDoBar__counterContainer" style="width: 360px;
+          height: 100%;
+          padding-right: 50px;
+          float: right;
+          position: absolute;
+          right: 0;">
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <div *ngIf="isVisibleANA" class="home-statistics-row" style="border-bottom: 1px solid #e5effe !important;">
+    <div class="row">
+
+      <div class="col-md-12" style="padding-top: 36px; padding-bottom: 36px;">
+
+        <!-- <div class="home-statistics-row" style=""> -->
+        <!-- 
+      // ---------------------------------------------------------
+      // @ Active contacts count
+      // --------------------------------------------------------- -->
+        <div class="col-sm-6 col-md-3">
+
+          <div class="statistis-count-container" style="text-align:center ;">
+
+            <div class="statistis-count-number">
+              <span class="active-contacts-count"> {{ countOfActiveContacts }} </span>
+            </div>
+
+            <div class="links-container">
+              <div class="link-title-first">
+                <span> {{'TotalLeadsAcquired' | translate}} </span>
+                <span class="material-icons" style="vertical-align: middle; color: #3c4858;">
+                  keyboard_arrow_right
+                </span>
+              </div>
+              <div (click)="goToContacts()" class="link-title-second">
+                <span style="color: #0f62ff;">{{'GoToContactList' | translate}}</span>
+                <span class="material-icons" style="vertical-align: middle;color: #0f62ff;">
+                  keyboard_arrow_right
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 
+      // ---------------------------------------------------------
+      // @ Bots count
+      // --------------------------------------------------------- -->
+        <!-- <div class="col-md-3">
+          <div class="statistis-count-container" style="text-align:center ;">
+
+            <div class="statistis-count-number">
+              <span class="bots-count">
+                 {{ countOfBots }} 
+                </span>
+            </div>
+
+            <div class="links-container" style="">
+              <div class="link-title-first" style="">
+                <span> Total chatbot </span>
+                <span class="material-icons" style="vertical-align: middle; color: #3c4858;">
+                  keyboard_arrow_right
+                </span>
+              </div>
+              <div class="link-title-second" style="">
+                <span style="color: #0f62ff;">Go to
+                  chatbot list</span>
+                <span class="material-icons" style="vertical-align: middle;color: #0f62ff;">
+                  keyboard_arrow_right
+                </span>
+              </div>
+            </div>
+          </div>
+        </div> -->
+
+        <!-- 
+        // ---------------------------------------------------------
+        // @ Msgs count (last 30 days)
+        // --------------------------------------------------------- -->
+        <div class="col-sm-6 col-md-3">
+          <div class="statistis-count-container" style="text-align:center ;">
+
+            <div class="statistis-count-number">
+              <span class="bots-count">
+                {{ countOfLastMonthMsgs }}
+              </span>
+            </div>
+
+            <div class="links-container">
+              <div class="link-title-first">
+                <span> {{'Last30DaysMessages' | translate}} </span>
+                <span class="material-icons" style="vertical-align: middle; color: #3c4858;">
+                  keyboard_arrow_right
+                </span>
+              </div>
+              <div class="link-title-second" (click)="goToMessagesAnalytics()">
+                <span style="color: #0f62ff;">{{'FilterReportInAnalytics' | translate}}</span>
+                <span class="material-icons" style="vertical-align: middle;color: #0f62ff;">
+                  keyboard_arrow_right
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 
+      // ---------------------------------------------------------
+      // @ Depts count
+      // --------------------------------------------------------- -->
+        <!-- <div class="col-md-3">
+          <div class="statistis-count-container" style="text-align:center ;">
+            <div class="statistis-count-number">
+              <span class="depts-count"> 
+                {{ countOfDepts }} 
+              </span>
+            </div>
+            <div class="links-container" style="">
+              <div class="link-title-first" style="">
+                <span> Total departments </span>
+                <span class="material-icons" style="vertical-align: middle; color: #3c4858;">
+                  keyboard_arrow_right
+                </span>
+              </div>
+              <div class="link-title-second" style="">
+                <span style="color: #0f62ff;">Go to
+                  departments list</span>
+                <span class="material-icons" style="vertical-align: middle;color: #0f62ff;">
+                  keyboard_arrow_right
+                </span>
+              </div>
+            </div>
+          </div>
+        </div> -->
+
+        <!-- 
+      // ---------------------------------------------------------
+      // @ Conversation count (Last 30 days) 
+      // --------------------------------------------------------- -->
+        <div class="col-sm-6 col-md-3">
+          <div class="statistis-count-container" style="text-align:center ;">
+            <div class="statistis-count-number">
+              <span class="depts-count">
+                {{ countOfLastMonthRequests }}
+              </span>
+            </div>
+            <div class="links-container">
+              <div class="link-title-first">
+                <span> {{'Last30DaysConversations' | translate}} </span>
+                <span class="material-icons" style="vertical-align: middle; color: #3c4858;">
+                  keyboard_arrow_right
+                </span>
+              </div>
+              <div class="link-title-second" (click)="goToRequestsAnalytics()">
+                <span style="color: #0f62ff;">{{'FilterReportInAnalytics' | translate}}</span>
+                <span class="material-icons" style="vertical-align: middle;color: #0f62ff;">
+                  keyboard_arrow_right
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 
+      // ---------------------------------------------------------
+      // @ Visitor count (Last 30 days) 
+      // --------------------------------------------------------- -->
+        <div class="col-sm-6 col-md-3">
+          <div class="statistis-count-container" style="text-align:center ;">
+            <div class="statistis-count-number">
+              <span class="visitors-count">
+                {{ countOfVisitors }}
+              </span>
+            </div>
+            <div class="links-container">
+              <div class="link-title-first">
+                <span> {{'Last30DaysVisitors' | translate }} </span>
+                <span class="material-icons" style="vertical-align: middle; color: #3c4858;">
+                  keyboard_arrow_right
+                </span>
+              </div>
+              <div class="link-title-second" (click)="goToVisitorsAnalytics()">
+                <span style="color: #0f62ff;">{{'FilterReportInAnalytics' | translate}}</span>
+                <span class="material-icons" style="vertical-align: middle;color: #0f62ff;">
+                  keyboard_arrow_right
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 
+      // ---------------------------------------------------------
+      // @ Operating hours
+      // --------------------------------------------------------- -->
+        <!-- <div class="col-sm-6 col-md-3">
+
+          <div class="row">
+            <div class="col-md-8">
+              <div class="operating-hours-status-description" style="font-size: 18px;
+            line-height: 22px;
+            letter-spacing: -.32px;
+            margin-top: 23px;
+            font-weight: 400;">
+                <span *ngIf="!OPERATING_HOURS_ACTIVE"> There are no operating hours set up yet.</span>
+                <span *ngIf="OPERATING_HOURS_ACTIVE"> Operating hours are setted up </span>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="operating-hours-icon-wrap" style="text-align: center;">
+
+                  <!- - 
+                  // ---------------------------------------------------------
+                  // @ Icon Operating hours no set up icom
+                  // --------------------------------------------------------- - ->
+                <svg *ngIf="!OPERATING_HOURS_ACTIVE" version="1.1" id="Livello_1" focusable="false"
+                  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                  viewBox="0 0 448 512" style="enable-background:new 0 0 448 512;width: 50px; margin-top: 8px;"
+                  xml:space="preserve">
+                  <style type="text/css">
+                    .st0 {
+                      fill: #303F9F;
+                    }
+                  </style>
+                  <path class="st0" d="M311.7,374.7l-17,17c-4.7,4.7-12.3,4.7-17,0L224,337.9l-53.7,53.7c-4.7,4.7-12.3,4.7-17,0l-17-17
+                    c-4.7-4.7-4.7-12.3,0-17l53.7-53.7l-53.7-53.7c-4.7-4.7-4.7-12.3,0-17l17-17c4.7-4.7,12.3-4.7,17,0l53.7,53.7l53.7-53.7
+                    c4.7-4.7,12.3-4.7,17,0l17,17c4.7,4.7,4.7,12.3,0,17L257.9,304l53.7,53.7C316.4,362.4,316.4,370,311.7,374.7z M448,112v352
+                    c0,26.5-21.5,48-48,48H48c-26.5,0-48-21.5-48-48V112c0-26.5,21.5-48,48-48h48V12c0-6.6,5.4-12,12-12h40c6.6,0,12,5.4,12,12v52h128
+                    V12c0-6.6,5.4-12,12-12h40c6.6,0,12,5.4,12,12v52h48C426.5,64,448,85.5,448,112z M400,458V160H48v298c0,3.3,2.7,6,6,6h340
+                    C397.3,464,400,461.3,400,458z" />
+                </svg>
+
+
+                <!- - 
+                  // ---------------------------------------------------------
+                  // @ Icon Operating hours setted
+                  // --------------------------------------------------------- - ->
+                <svg *ngIf="OPERATING_HOURS_ACTIVE" version="1.1" id="Livello_1" focusable="false"
+                  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                  viewBox="0 0 448 512" style="enable-background:new 0 0 448 512;width: 50px; margin-top: 8px;"
+                  xml:space="preserve">
+                  <style type="text/css">
+                    .st0 {
+                      fill: #303F9F;
+                    }
+                  </style>
+                  <path class="st0" d="M400,64h-48V12c0-6.6-5.4-12-12-12h-40c-6.6,0-12,5.4-12,12v52H160V12c0-6.6-5.4-12-12-12h-40
+                  c-6.6,0-12,5.4-12,12v52H48C21.5,64,0,85.5,0,112v352c0,26.5,21.5,48,48,48h352c26.5,0,48-21.5,48-48V112C448,85.5,426.5,64,400,64z
+                    M394,464H54c-3.3,0-6-2.7-6-6V160h352v298C400,461.3,397.3,464,394,464z M341.2,263.4L198.8,404.5c-4.7,4.7-12.3,4.6-17-0.1
+                  l-75.1-75.7c-4.7-4.7-4.6-12.3,0.1-17l22.7-22.5c4.7-4.7,12.3-4.6,17,0.1l44.1,44.5l111.1-110.2c4.7-4.7,12.3-4.6,17,0.1l22.5,22.7
+                  C345.9,251.1,345.9,258.7,341.2,263.4L341.2,263.4z" />
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="sigle-link-container">
+            <div class="sigle-link" (click)="goToOperatingHours()">
+              <span *ngIf="!OPERATING_HOURS_ACTIVE" style="color: #0f62ff;">Set your Operating Hours</span>
+              <span *ngIf="OPERATING_HOURS_ACTIVE" style="color: #0f62ff;">Adjust your Operating Hours</span>
+              <span class="material-icons" style="vertical-align: middle;color: #0f62ff;">
+                keyboard_arrow_right
+              </span>
+            </div>
+          </div>
+
+        </div> -->
+
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="isVisibleANA" class="home-statistics-row-visitors-graph">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="visitors-graph-title-container">
+          <div class="visitors-graph-title-1">
+            <span> {{'VisitorsOnYourPageInTheLast7Days' | translate}}</span>
+            <span class="material-icons" style="vertical-align: middle; color: #3c4858;">
+              keyboard_arrow_right
+            </span>
+          </div>
+          <div class="visitors-graph-title-2" (click)="goToVisitorsAnalytics()">
+            <span style="color: #0f62ff;">{{'FilterReportInAnalytics' | translate}}</span>
+            <span class="material-icons" style="vertical-align: middle;color: #0f62ff;">
+              keyboard_arrow_right
+            </span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="chart-container" style="position: relative; margin:12px 12px; height:35vh;">
+          <canvas id="last7dayVisitors"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row">
+    <!-- 
+    // -------------------------------------------------------
+    // @ Getting started docs link
+    // ------------------------------------------------------- -->
+    <div class="col-sm-12 col-md-12 col-lg-12">
+      <div class="card">
+        <div class="card-content">
+          <div class="row">
+            <div class="col-xs-3">
+
+              <svg viewBox="0 0 130 130" style="width: 70%;">
+                <path class="hover-fillDark" fill="#1a73e8"
+                  d="M117 113H65.36a6.25 6.25 0 0 1-5.27-3.28C58 105.32 50.46 103 41 103H9a5 5 0 0 1-5-5V26a5 5 0 0 1 5-5h33c11.05 0 20 4.48 20 10v37h60v40a5 5 0 0 1-5 5z">
+                </path>
+                <path class="hover-fillLight" fill="#3ea9f5"
+                  d="M126 94c0 6-12.37 11-27.4 11H71.54c-1.82 0-5.27.64-6.81 1.63-.6.38-1.29.55-1.9.2-.5-.3-.82-.83-.81-1.42v-74.9c0-4.15 4.81-7.5 10.75-7.5h10.51l.23-.02h13.17c8.92 0 20.68-2.23 25.62-5.57 1.58-1.07 3.7-.09 3.7 1.82V94z">
+                </path>
+                <path stroke="#FFF" stroke-width="3" d="M77.5 87.5h33m-33-10h33m-33-17h33m-33-10h33m-33-10h33"
+                  stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+
+
+              <!-- <a href="https://stripe.com/it/connect/eu-guide" class="common-Button common-Button--default">Leggi la
+              guida</a> -->
+
+            </div>
+            <div class="col-xs-9">
+
+              <h3 class="getting-started-card-title">{{ 'GettingStartedWith' | translate }} {{company_name}}</h3>
+              <p class="getting-started-card-subtitle">{{ 'HereIsAListOfPagesAndLinks' | translate}}</p>
+
+              <ul style="list-style: none; padding-left:0px; line-height: 33px;">
+
+                <li class="arrow-container" style="font-size: 18px; color: #0f62ff; font-weight: 400;"
+                  (click)="goToAdminDocs()">
+                  <div id="arrow_1" class="arrow-wrapper">
+                    <div class="text-block" style="margin-right: 16px;position: relative;top: -2px;">
+                      {{ 'GettingStartedForAdmin' | translate }}
+                    </div>
+                    <div class="arrow arrow--right">
+                      <span></span>
+                    </div>
+                  </div>
+                </li>
+
+                <li class="arrow-container" style="font-size: 18px; color: #0f62ff; font-weight: 400;"
+                  (click)="goToAgentDocs()">
+                  <div id="arrow_1" class="arrow-wrapper">
+                    <div class="text-block" style="margin-right: 16px;position: relative;top: -2px;">
+                      {{ 'GettingStartedForAgents' | translate }}
+                    </div>
+                    <div class="arrow arrow--right">
+                      <span></span>
+                    </div>
+                  </div>
+                </li>
+
+                <li class="arrow-container" style="font-size: 18px; color: #0f62ff; font-weight: 400;"
+                  (click)="goToDeveloperDocs()">
+                  <div id="arrow_1" class="arrow-wrapper">
+                    <div class="text-block" style="margin-right: 16px;position: relative;top: -2px;">
+                      {{ 'DeveloperDocs' | translate }}
+                    </div>
+                    <div class="arrow arrow--right">
+                      <span></span>
+                    </div>
+                  </div>
+                </li>
+
+                <li class="arrow-container" style="font-size: 18px; color: #0f62ff; font-weight: 400;"
+                  (click)="goToInstallWithTagManagerDocs()">
+                  <div id="arrow_1" class="arrow-wrapper">
+                    <div class="text-block" style="margin-right: 16px;position: relative;top: -2px;">
+                      {{ 'InstallWithGoogleTagManager' | translate }}
+                    </div>
+                    <div class="arrow arrow--right">
+                      <span></span>
+                    </div>
+                  </div>
+                </li>
+
+
+
+
+              </ul>
+
+              <!-- <div class="arrow-container"  style="font-size: 18px; color: #0f62ff; font-weight: 400;">
+                <div id="arrow_1" class="arrow-wrapper">
+                  <div class="text-block" style="margin-right: 16px;">Getting started for admin</div>
+                  <div class="arrow arrow--right">
+                    <span></span>
+                  </div>
+                </div>
+              </div> -->
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 
+    // -------------------------------------------------------
+    // @ Take a shortcut !!!!! DISPLAY NONE - MOVED IN HEADER
+    // ------------------------------------------------------- -->
+    <div class="col-sm-12 col-md-12 col-lg-6" style="display: none;">
+      <div class="card">
+        <div class="card-content">
+          <h3 class="getting-started-card-title">{{'TakeAShortcut' | translate}}</h3>
+          <p class="getting-started-card-subtitle">{{'JumpStraightToTheMostPopularSettingsInTheDashboard' | translate}}.
+          </p>
+          <div class="row">
+            <div class="col-xs-3" (click)="openChat()" style="cursor: pointer;">
+              <!-- // CHAT -->
+              <div class="wrap-shortcut-icon">
+                <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 75.8 75.8"
+                  style="enable-background:new 0 0 75.8 75.8;" xml:space="preserve">
+                  <style type="text/css">
+                    .st0_chat {
+                      opacity: 0.2;
+                      fill: #3696CF;
+                      enable-background: new;
+                    }
+
+                    .st1_chat {
+                      fill: #3696CF;
+                    }
+                  </style>
+                  <g transform="translate(7717.829 6141.832)">
+                    <path class="st0_chat" d="M-7642-6103.9c0,20.9-17,37.9-37.9,37.9s-37.9-17-37.9-37.9s17-37.9,37.9-37.9l0,0
+                 C-7659-6141.8-7642-6124.9-7642-6103.9L-7642-6103.9z" />
+                  </g>
+                  <path class="st1_chat"
+                    d="M37.9,18.6c-10.8,0-19.5,8-19.5,17.9c0,4.3,1.6,8.2,4.3,11.3c-1,4.3-4.1,8.2-4.2,8.2c-0.2,0.2-0.2,0.5-0.1,0.7
+               c0.1,0.3,0.3,0.4,0.6,0.4c5,0,8.8-2.7,10.7-4.4c2.5,1.1,5.2,1.7,8.2,1.7c10.8,0,19.5-8,19.5-17.9S48.7,18.6,37.9,18.6z M28.2,39.3
+               c-1.3,0-2.4-1.2-2.4-2.8s1.1-2.8,2.4-2.8s2.4,1.2,2.4,2.8S29.5,39.3,28.2,39.3z M37.9,39.3c-1.3,0-2.4-1.2-2.4-2.8s1.1-2.8,2.4-2.8
+               s2.4,1.2,2.4,2.8S39.3,39.3,37.9,39.3z M47.6,39.3c-1.3,0-2.4-1.2-2.4-2.8s1.1-2.8,2.4-2.8s2.4,1.2,2.4,2.8S49,39.3,47.6,39.3z" />
+                </svg>
+              </div>
+
+              <div class="wrap-shortcut-title">
+                Chat
+              </div>
+              <div class="wrap-shortcut-subtitle">
+                {{ 'OpenTheChatToHandleTheIncomingRequests' | translate }}
+              </div>
+            </div>
+
+            <div class="col-xs-3" (click)="goToWidgetSetup()" style="cursor: pointer;">
+              <!-- // CUSTOMIZE WIDGET -->
+              <div class="wrap-shortcut-icon">
+                <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 75.8 75.8"
+                  style="enable-background:new 0 0 75.8 75.8;" xml:space="preserve">
+                  <style type="text/css">
+                    .st0_customize_widget {
+                      opacity: 0.2;
+                      fill: #159570;
+                      enable-background: new;
+                    }
+
+                    .st1_customize_widget {
+                      fill: #159570;
+                    }
+                  </style>
+                  <path class="st0_customize_widget" d="M75.8,37.9c0,20.9-17,37.9-37.9,37.9S0,58.9,0,37.9S17,0,37.9,0c0,0,0,0,0,0C58.9,0,75.8,17,75.8,37.9
+               C75.8,37.9,75.8,37.9,75.8,37.9z" />
+                  <path class="st1_customize_widget" d="M33.7,18.4c-8,1.5-14.5,7.7-16,15.5c-3,14.6,10.6,25.4,20.9,23.9c3.3-0.5,4.9-4.3,3.4-7.1
+               c-1.9-3.5,0.8-7.7,4.9-7.7h6.4c2.9,0,5.2-2.3,5.2-5.1C58.5,25.5,46.9,15.9,33.7,18.4z M25,42.9c-1.4,0-2.6-1.1-2.6-2.5
+               s1.2-2.5,2.6-2.5c1.4,0,2.6,1.1,2.6,2.5S26.4,42.9,25,42.9z M27.6,32.9c-1.4,0-2.6-1.1-2.6-2.5c0-1.4,1.2-2.5,2.6-2.5
+               c1.4,0,2.6,1.1,2.6,2.5C30.2,31.8,29,32.9,27.6,32.9z M37.9,27.9c-1.4,0-2.6-1.1-2.6-2.5s1.2-2.5,2.6-2.5c1.4,0,2.6,1.1,2.6,2.5
+               S39.3,27.9,37.9,27.9z M48.2,32.9c-1.4,0-2.6-1.1-2.6-2.5c0-1.4,1.2-2.5,2.6-2.5c1.4,0,2.6,1.1,2.6,2.5
+               C50.8,31.8,49.7,32.9,48.2,32.9z" />
+                </svg>
+              </div>
+
+              <div class="wrap-shortcut-title">
+                Widget
+              </div>
+              <div class="wrap-shortcut-subtitle">
+                {{ 'HomePage.WidgetSubtitle1' | translate }}
+              </div>
+            </div>
+
+
+            <div class="col-xs-3" (click)="goToTiledeskMobileAppPage()" style="cursor: pointer;">
+              <!-- // GET MOBILE APPS -->
+              <div class="wrap-shortcut-icon">
+                <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 75.8 75.8"
+                  style="enable-background:new 0 0 75.8 75.8;" xml:space="preserve">
+                  <style type="text/css">
+                    .st0_mobile_apps {
+                      opacity: 0.2;
+                      fill: #635BFF;
+                      enable-background: new;
+                    }
+
+                    .st1_mobile_apps {
+                      fill: #635BFF;
+                    }
+                  </style>
+                  <path class="st0_mobile_apps"
+                    d="M75.8,37.9c0,20.9-17,37.9-37.9,37.9S0,58.9,0,37.9S17,0,37.9,0l0,0C58.9,0,75.8,17,75.8,37.9L75.8,37.9z" />
+                  <path class="st1_mobile_apps" d="M48.7,16.4L28.1,16c-2.4-0.1-4.5,1.7-4.5,4l-0.8,35.3c-0.1,2.2,1.9,4.1,4.3,4.2L47.8,60c2.4,0.1,4.5-1.7,4.5-4
+               l0.8-35.3C53.1,18.4,51.2,16.5,48.7,16.4z M37.5,56.9c-1.6,0-2.9-1.3-2.9-2.8s1.4-2.7,3-2.6c1.6,0,2.9,1.3,2.9,2.8
+               C40.5,55.8,39.1,56.9,37.5,56.9z M48,48c0,0.6-0.5,1-1.1,1l-18.5-0.4c-0.6,0-1.1-0.5-1.1-1l0.6-26.5c0-0.6,0.5-1,1.1-1l18.5,0.4
+               c0.6,0,1.1,0.5,1.1,1L48,48z" />
+                </svg>
+              </div>
+
+              <div class="wrap-shortcut-title">
+                {{ 'GetTheMobileApp' | translate }}
+              </div>
+              <div class="wrap-shortcut-subtitle">
+                {{ 'KeepSupportGoingWhenAgentsAreOnTheMove' | translate }}
+              </div>
+            </div>
+
+            <div class="col-xs-3" (click)="goToAppStore()" style="cursor: pointer;">
+              <!-- // App Store -->
+              <div class="wrap-shortcut-icon">
+                <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 75.8 75.8"
+                  style="enable-background:new 0 0 75.8 75.8;" xml:space="preserve">
+                  <style type="text/css">
+                    .st0 {
+                      opacity: 0.2;
+                      fill: #F50036;
+                      enable-background: new;
+                    }
+
+                    .st1 {
+                      fill: #F50036;
+                    }
+                  </style>
+                  <path class="st0"
+                    d="M75.8,37.9c0,20.9-17,37.9-37.9,37.9S0,58.9,0,37.9S17,0,37.9,0l0,0C58.9,0,75.8,17,75.8,37.9L75.8,37.9z" />
+                  <path class="st1" d="M41.4,18.2h16.9c1.2,0,2.1,0.9,2.1,2.1v14.1c0,1.2-0.9,2.1-2.1,2.1H41.4c-1.2,0-2.1-0.9-2.1-2.1V20.3
+               C39.3,19.2,40.3,18.2,41.4,18.2z M34.4,18.2H17.5c-1.2,0-2.1,0.9-2.1,2.1v14.1c0,1.2,0.9,2.1,2.1,2.1h16.9c1.2,0,2.1-0.9,2.1-2.1
+               V20.3C36.5,19.2,35.5,18.2,34.4,18.2z M15.4,41.4v14.1c0,1.2,0.9,2.1,2.1,2.1h16.9c1.2,0,2.1-0.9,2.1-2.1V41.4
+               c0-1.2-0.9-2.1-2.1-2.1H17.5C16.3,39.3,15.4,40.3,15.4,41.4z M41.4,57.6h16.9c1.2,0,2.1-0.9,2.1-2.1V41.4c0-1.2-0.9-2.1-2.1-2.1
+               H41.4c-1.2,0-2.1,0.9-2.1,2.1v14.1C39.3,56.6,40.3,57.6,41.4,57.6z" />
+                </svg>
+              </div>
+              <div class="wrap-shortcut-title">
+                {{ 'Integrations' | translate }}
+              </div>
+              <div class="wrap-shortcut-subtitle">
+                {{'EngageAndRetainMoreCustomersWithAppsAndIntegrations' | translate}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- start new-bckgrnd -->
+<!-- https://stripe.com/img/v3/home/app-illustrations/catawiki.svg -->
+<!-- <div class="row">
+  <div class="col-md-12">
+
+		<div class="block">
+			<span style="top: -30px;"></span>
+			<span></span>
+			<span></span>
+			<span></span>
+    </div>
+   
+		<div class="img-wrapper">
+			<img  src="assets/img/chat-client-1.svg" alt=""	/>
+		</div>
+		<div class="text">
+			<h1>The new standard in online payments</h1>
+			<p>
+				Stripe is the best software platform for running an internet business.
+				We handle billions of dollars every year for forward-thinking businesses
+				around the world.
+			</p>
+		</div>
+
+  </div>
+</div> -->
+<!-- ./end new-bckgrnd -->
+
+
+<!-- 
+      ////////////////////////////////////////////////////////
+      /////////// BUTTON TO TEST USER ACTIVITY LOG ///////////
+      ////////////////////////////////////////////////////////  -->
+<!-- <div class="col-md-3">
+        <button class="btn btn-primary" (click)="goToUserActivitiesLog()">
+          Activities
+        </button>
+      </div> -->
+
+<!-- 
+      ////////////////////////////////////////////////////////
+      ///////////////// BUTTON TO TEST PRICING ///////////////
+      ////////////////////////////////////////////////////////  -->
+
+<!-- <div class="col-md-3">
+        <button class="btn btn-primary" (click)="goToPricing()">
+          Pricing
+        </button>
+      </div> -->
+
+<!-- 
+      ////////////////////////////////////////////////////////
+      ///////////////// BUTTON TO TEST Analytics Static Page ///////////////
+      ////////////////////////////////////////////////////////  -->
+<!-- <div class="col-md-3">
+        <button class="btn btn-primary" (click)="goToAnalyticsStaticPage()">
+            Analytics Static Page
+        </button>
+      </div> -->
+
+<!-- 
+      ////////////////////////////////////////////////////////
+      ///////////////// BUTTON TO TEST Activities Static Page ///////////////
+      ////////////////////////////////////////////////////////  -->
+<!-- <div class="col-md-3">
+        <button class="btn btn-primary" (click)="goToActivitiesStaticPage()">
+            Activities Static Page
+        </button>
+      </div> -->
+
+<!-- 
+      ////////////////////////////////////////////////////////
+      ///////////////// BUTTON TO TEST Hours Static Page ///////////////
+      ////////////////////////////////////////////////////////  -->
+<!-- <div class="col-md-3">
+          <button class="btn btn-primary" (click)="goToHoursStaticPage()">
+              Hours Static Page
+          </button>
+        </div> -->
+
+<!-- </div> -->
+
+<!-- <div class="row">   </div>
+
+    <div class="row">  </div> -->

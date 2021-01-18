@@ -57,8 +57,8 @@
     </a>
     <a attr.aria-label="{{ 'OperatingHoursAreEnabled' | translate }}" href="javascript:;" role="button" class="tool_tip"
       style="cursor: pointer;display: unset;" *ngIf="OPERATING_HOURS_ACTIVE" (click)="goToOperatingHours()">
-      <i aria-hidden="true" class="material-icons" style="color:#3ea9f5">access_time</i>
-      <p class="hidden-lg hidden-md">operatinghourson</p>
+      <i aria-hidden="true" class="material-icons" style="color:#3ea9f5; margin-top: 3px;">access_time</i>
+      
       <div class="bottom" style="text-align: center; padding: 4px; border-radius: 3px;">
         {{ 'OperatingHoursAreEnabled' | translate }}
 
@@ -89,16 +89,16 @@
     </span>
   </li>
 
-  <!-- SHOW REQUEST MAP -->
+  <!-- SHOW SERVED REQUEST MAP -->
   <li class="see-no-realtime-request right-li" style="float: right; padding-right: 5px;" (click)='openRightSideBar()'>
-    <a class="tool_tip" style="cursor: pointer; display: unset;"
+    <a attr.aria-label="{{ 'ViewServedRequestsMap' | translate }}" class="tool_tip" style="cursor: pointer; display: unset;"
       [ngClass]="{ 'has-reached-100' : served_unserved_sum >= 100 }">
       <span class="material-icons" style="margin-top: 3px;">
         pin_drop
       </span>
       <div class="bottom"
         style="text-align: center; padding: 4px; border-radius: 3px; text-transform: none; min-width: 200px;">
-        Visualizza le richieste servite su mappa
+        {{'ViewServedRequestsMap' | translate}}
         <i></i>
       </div>
     </a>
@@ -114,12 +114,11 @@
 
 <!-- 
 // ---------------------------------------------------------
-// FOR SMALL SCREEN 
+// @ FOR SMALL SCREEN 
 // --------------------------------------------------------- -->
-
-<!-- CREATE TICKET -->
+<!-- CREATE TICKET * FOR SMALL SCREEN  -->
 <ul class="bottom-bottom-nav" style="display: none;">
-  <li style="display: none;" class="" style="padding-top: 3px!important; padding-left: 10px!important">
+  <li class="" style="padding-top: 3px!important; padding-left: 10px!important">
     <!-- btn-primary navbar-btn  -->
     <button attr.aria-label="{{ 'CreateTicket' | translate }}" #createticket
       (click)="presentCreateInternalRequestModal()" class="btn btn-tdblu-no-boxshadow" style="font-size: 12px;">
@@ -134,8 +133,8 @@
     </button>
   </li>
 
-  <!-- SIMULATE VISITOR -->
-  <li style="display: none;" style="padding-top: 3px!important;     margin-left: 15px;">
+  <!-- SIMULATE VISITOR * FOR SMALL SCREEN  -->
+  <li  style="padding-top: 3px!important;margin-left: 15px;">
     <button attr.aria-label="{{ 'VisitorsPage.SimulateVisitor' | translate }}" #testwidgetbtn (click)="testWidgetPage()"
       class="btn btn-success-no-boxshadow" style="font-size: 12px;">
       <span class="material-icons" style="vertical-align: middle; margin-bottom: 0px; margin-top: 0px;">
@@ -145,12 +144,12 @@
     </button>
   </li>
 
-  <!-- NO REALTIME REQUESTS -->
-  <li style="display: none;" class="see-no-realtime-request" style="float: right; padding-right: 5px;"
+  <!-- NO REALTIME REQUESTS * FOR SMALL SCREEN -->
+  <li class="see-no-realtime-request" style="float: right; padding-right: 5px;"
     (click)='goToNoRealtimeConversations()'>
     <a attr.aria-label="{{ 'GoToNotRealTimeRequests' | translate }}" href="javascript:;" role="button" class="tool_tip"
       style="cursor: pointer; display: unset; color: #797979;"
-      [ngClass]="{ 'has-reached-100' : served_unserved_sum >= 16 }">
+      [ngClass]="{ 'has-reached-100' : served_unserved_sum >= 100 }">
       <span class="material-icons">
         view_list
       </span>
@@ -160,19 +159,19 @@
         <i></i>
       </div>
     </a>
-    <span *ngIf="served_unserved_sum >= 16" class="served-unserved-sum">
+    <span *ngIf="served_unserved_sum >= 100" class="served-unserved-sum">
       <span>
         {{ served_unserved_sum }}
       </span>
     </span>
   </li>
 
-  <!--OPERATING HOURS -->
-  <li style="display: none;" class="operating-hours" style="float: right;padding-left: 5px;">
+  <!--OPERATING HOURS * FOR SMALL SCREEN -->
+  <li class="operating-hours" style="float: right;padding-left: 5px;">
     <a attr.aria-label="{{ 'OperatingHoursAreDisabled' | translate }}" href="javascript:;" role="button"
-      class="tool_tip" style="cursor: pointer; display: unset;" *ngIf="!OPERATING_HOURS_ACTIVE"
+      class="tool_tip" style="cursor: pointer; display: unset;color: #797979;" *ngIf="!OPERATING_HOURS_ACTIVE"
       (click)="goToOperatingHours()">
-      <i class="material-icons" style="color:#AAA">access_time</i>
+      <i class="material-icons">access_time</i>
 
       <!-- <p class="hidden-lg hidden-md">operatinghoursoff</p> -->
       <div class="bottom"
@@ -183,14 +182,35 @@
     </a>
     <a attr.aria-label="{{ 'OperatingHoursAreEnabled' | translate }}" href="javascript:;" role="button" class="tool_tip"
       style="cursor: pointer;display: unset;" *ngIf="OPERATING_HOURS_ACTIVE" (click)="goToOperatingHours()">
-      <i class="material-icons" style="color:#3ea9f5">access_time</i>
-      <p class="hidden-lg hidden-md">operatinghourson</p>
+      <i class="material-icons" style="color:#3ea9f5; margin-top: 1px;">access_time</i>
+
       <div class="bottom" style="text-align: center; padding: 4px; border-radius: 3px;">
         {{ 'OperatingHoursAreEnabled' | translate }}
 
         <i></i>
       </div>
     </a>
+  </li>
+
+   <!-- SHOW SERVED REQUEST MAP * FOR SMALL SCREEN -->
+   <li  class="see-no-realtime-request" style="float: right; padding-right: 5px; " (click)='openRightSideBar()'>
+    <a attr.aria-label="{{ 'ViewServedRequestsMap' | translate }}" class="tool_tip" style="cursor: pointer; display: unset;"
+      [ngClass]="{ 'has-reached-100' : served_unserved_sum >= 100 }">
+      <span class="material-icons" style="margin-top: 0px;color:#797979">
+        pin_drop
+      </span>
+      <div class="bottom"
+        style="text-align: center; padding: 4px; border-radius: 3px; text-transform: none; min-width: 200px;">
+        {{ 'ViewServedRequestsMap' | translate }}
+        <i></i>
+      </div>
+    </a>
+
+    <span *ngIf="served_unserved_sum >= 100" class="served-unserved-sum">
+      <span>
+        {{ served_unserved_sum }}
+      </span>
+    </span>
   </li>
 </ul>
 
