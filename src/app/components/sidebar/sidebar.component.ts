@@ -65,15 +65,11 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     // tparams = brand;
     // sidebarLogoWhite_Url = brand.company_logo_white__url;
     // hidechangelogrocket = brand.sidebar__hide_changelog_rocket;
-
     tparams: any;
     sidebarLogoWhite_Url: string;
     hidechangelogrocket: boolean;
 
-
-
     // background_bottom_section = brand.sidebar.background_bottom_section
-
     // public_Key = environment.t2y12PruGU9wUtEGzBJfolMIgK; // now get from appconfig
     public_Key: string;
 
@@ -341,10 +337,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
                 if (dep[1] === "F") {
                     this.isVisibleDEP = false;
-                    // console.log('PUBLIC-KEY (SIDEBAR) - dep isVisible', this.isVisibleDEP);
+                    console.log('PUBLIC-KEY (SIDEBAR) - dep isVisible', this.isVisibleDEP);
                 } else {
                     this.isVisibleDEP = true;
-                    // console.log('PUBLIC-KEY (SIDEBAR) - dep isVisible', this.isVisibleDEP);
+                    console.log('PUBLIC-KEY (SIDEBAR) - dep isVisible', this.isVisibleDEP);
                 }
             }
 
