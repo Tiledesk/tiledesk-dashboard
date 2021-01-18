@@ -476,7 +476,47 @@ export class ProjectService {
       .map((res) => res.json());
   }
 
+  enableDisableAssignedNotification(status) {
+    let promise = new Promise((resolve, reject) => {
+      
+      // const headers = new Headers();
+      // headers.append('Content-type', 'application/json');
+      // headers.append('Authorization', this.TOKEN);
+      // const options = new RequestOptions({ headers });
 
+      let headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+      
+      //this.http.patch(this.SERVER_BASE_PATH + "projects/" + this.projectID, { "settings.email.notification.conversation.assigned": status }, options)
+      this.http_client.put(this.SERVER_BASE_PATH + "projects/" + this.projectID, { "settings.email.notification.conversation.assigned": status }, { headers: headers })
+        .toPromise().then((res) => {
+          resolve(res)
+        }).catch((err) => {
+          reject(err)
+        })
+    })
+    return promise;
+  }
+
+  enableDisableUnassignedNotification(status) {
+    let promise = new Promise((resolve, reject) => {
+
+      let headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+
+      this.http_client.put(this.SERVER_BASE_PATH + "projects/" + this.projectID, { "settings.email.notification.conversation.pooled": status }, { headers: headers })
+        .toPromise().then((res) => {
+          resolve(res)
+        }).catch((err) => {
+          reject(err)
+        })
+    })
+    return promise;
+  }
 
 
 

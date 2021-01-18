@@ -9,7 +9,7 @@
 <div class="row">
   <div class="col-md-12 card" style="border-radius: 11px">
     <!-- margin: auto -15px -->
-    <div class="chart-wrapper-visitors">
+    <div class="chart-wrapper-visitors" style="">
       <div class="row ">
         <div class="chart-title-visitors col-sm-12" style="margin-top: 0px;margin-bottom: 18px;text-align: center">
           <span
@@ -24,8 +24,8 @@
       <div class="row ">
         <!-- ------last n days filter--------- -->
         <div class="col-sm-3" style="margin-left: 53px;">
-          <div class="section-select-dept">
-            <label class="col-sm-12" style="text-align: left; color:black">
+          <div class="section-select-days">
+            <label class="col-sm-10" style="text-align: left; color:black">
               {{ 'Analytics.FilterReport' | translate }}
             </label>
             <!-- margin-bottom: 20px; -->
@@ -48,9 +48,9 @@
           </div>
         </div>
         <!-- ------ init-end days show--------- -->
-        <div class="col-sm-3">
-          <div class="section-select-dept">
-            <label class="col-sm-10" style="text-align: left; color:black; padding-right: 0px">
+        <div class="col-sm-4">
+          <div class="section-select-days">
+            <label class="col-sm-10" style="text-align: left; color:black; padding-right: 0px;">
               {{ 'Analytics.DataRangeRequest' | translate }} :
             </label>
             <div class="col-sm-10 boxdays" style="padding-top: 2px;">
@@ -63,7 +63,7 @@
       </div>
 
       <div class="card-content chart-container" style="position: relative; margin:12px 12px; height:35vh;">
-        <canvas id="last7dayVisitors"></canvas>
+        <canvas id="lastNdayVisitors"></canvas>
       </div>
 
     </div>

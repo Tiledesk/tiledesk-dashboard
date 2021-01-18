@@ -130,6 +130,10 @@
                 <div class="col-sm-12"></div>
               </div>
 
+
+              <!-- Moved under Notification Tab -->
+              <!-- TRANSCRIPT BY EMAIL -->
+              
               <!-- SECTION TITLE AND SUBTITLE -->
               <!-- <div class="row">
                   <div class="col-sm-12" style="">
@@ -141,8 +145,9 @@
                     </p>
                   </div>
                 </div> -->
-
-              <div class="row">
+              
+              
+              <!-- <div class="row">
                 <div class="col-md-12">
                   <h3 class="card_title__underlined" style="margin-top:30px">
                     <span class="card_title__underline">
@@ -150,18 +155,19 @@
                     </span>
                   </h3>
                 </div>
-                <div class="col-md-12">
+                <div class="col-md-12"> -->
 
+                  <!-- commentato -->
                   <!-- <span style="display: block; margin-bottom: 8px; color: #687882; font-size:13px; font-weight: 400">
                     {{ "ProjectEditPage.AutoSendTranscriptByEmail" | translate }}
                   </span> -->
 
-                  <div class="section-subtitle"> </div>
+                  <!-- <div class="section-subtitle"> </div>
                 </div>
-              </div>
+              </div> -->
 
               <!-- AUTO SEND TRANSCRIPT BY EMAIL ON / OFF BTN -->
-              <div class="input-wrapper" style="max-width: 992px;">
+              <!-- <div class="input-wrapper" style="max-width: 992px;">
                 <div class="row">
 
                   <div class="col-sm-8">
@@ -212,7 +218,7 @@
 
                   </div>
                 </div>
-              </div>
+              </div> -->
 
             </span> <!-- /. PROJECT_SETTINGS_ROUTE -->
 
@@ -758,6 +764,61 @@
                   </div>
                 </div>
               </div>
+
+              <!-- WEBHOOK -->
+              <div class="input-wrapper" style="max-width: 992px;">
+
+                <div class="row">
+                  <div class="col-md-12">
+                    <h3 class="card_title__underlined" style="margin-top:30px">
+                      <span class="card_title__underline">
+                        {{ "ProjectEditPage.Webhook" | translate }}
+                      </span>
+                    </h3>
+                  </div>
+                  <div class="col-md-12">
+
+                    <!-- <span style="display: block; margin-bottom: 8px; color: #687882; font-size:13px; font-weight: 400">
+                    {{ "ProjectEditPage.EnableVisitorAuthentication" | translate }}.
+                    <span class="link-to-widget-auth" (click)="goToWidgetAuthenticationDocs()">
+                      {{ 'Resourcepage.HereHow' | translate }}
+                    </span>
+                  </span> -->
+
+                    <div class="section-subtitle"> </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-8">
+                    <div class="alert"
+                      style="background-color: #fff; border: 1px solid #e8f0f5;box-shadow: none;padding: 10px">
+                      <i style="vertical-align: middle; display: inline-flex; color:#00bcd4" class="material-icons">info
+                      </i>
+                      <span style="vertical-align: middle; display: inline-flex;">
+                        {{ "ProjectEditPage.EnableWebhook" | translate }}.
+                        <span class="link-to-widget-auth" (click)="goToWebhookDocs()">
+                            {{ 'Resourcepage.HereHow' | translate }}
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <label class="col-xs-12 col-sm-2 custom-label custom-label-left" style="padding-top:7px">
+                    {{ "ProjectEditPage.GoToWebhookConsole" | translate }}
+                  </label>
+                  <div class="col-xs-12 col-sm-10">
+
+                    <button (click)="goToWebhookPage()" class="btn btn-primary" style="margin-top:5px; padding:6px 15px ">
+                      {{ "ProjectEditPage.Webhook" | translate }}
+                    </button>
+                  </div>
+                </div>
+
+              </div>
+
             </span> <!-- /. AUTH ROUTE -->
 
 
@@ -1058,16 +1119,17 @@
                   </h3>
                 </div>
 
+                <!-- SUBTITLE -->
                 <div class="col-md-12">
                   <div class="section-subtitle"></div>
                   <p style="margin-top: -10px;">
                     {{ "NotificationSettings.AssignedConversationsSubtitle" | translate }}</p>
                 </div>
-
               </div>
+              <!-- END ASSIGNED CONVERSATION -->
 
               <!-- UNASSIGNED CONVERSATION -->
-              <div class="row" style="margin-top: 60px;">
+              <div class="row" style="margin-top: 40px;">
                 <div class="col-md-6">
                   <h3 class="card_title__underlined">
                     <span class="card_title__underline">
@@ -1081,9 +1143,9 @@
                   <h3 class="card-title onoffswitch_container_first_line">
 
                     <div class="onoffswitch">
-                      <input (change)="toggleProjectUnassignedConversation($event)" [checked]="unassigned_conv_on === true"
-                        type="checkbox" name="unassigned_conv_onoffswitch" class="onoffswitch-checkbox"
-                        id="unassigned_conv_onoffswitch">
+                      <input (change)="toggleProjectUnassignedConversation($event)"
+                        [checked]="unassigned_conv_on === true" type="checkbox" name="unassigned_conv_onoffswitch"
+                        class="onoffswitch-checkbox" id="unassigned_conv_onoffswitch">
                       <label class="onoffswitch-label" for="unassigned_conv_onoffswitch">
                         <span class="onoffswitch-inner"></span>
                         <span class="onoffswitch-switch"></span>
@@ -1092,6 +1154,7 @@
                   </h3>
                 </div>
 
+                <!-- SUBTITLE -->
                 <div class="col-md-12">
                   <div class="section-subtitle"></div>
                   <p style="margin-top: -10px;">
@@ -1099,8 +1162,72 @@
                 </div>
 
               </div>
-              <!-- </div>
-              </div> -->
+              <!-- END UNASSIGNED CONVERSATION -->
+              
+              <!-- TRANSCRIPT BY EMAIL -->
+              <div class="row" style="margin-top: 40px;">
+                <div class="col-md-6">
+                  <h3 class="card_title__underlined">
+                    <span class="card_title__underline">
+                      {{ "ProjectEditPage.TranscriptByEmail" | translate }}
+                    </span>
+                  </h3>
+                </div>
+
+                <!-- SWITCH BUTTON -->
+                <div class="col-md-6">
+                  <h3 class="card-title onoffswitch_container_first_line">
+
+                    <div class="onoffswitch">
+                      <input (change)="autoSendTranscriptOnOff($event)" [checked]="AUTO_SEND_TRANSCRIPT_IS_ON === true"
+                        type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch"
+                        [disabled]="DISPLAY_ADVANCED_TAB === false">
+                      <label class="onoffswitch-label" for="myonoffswitch">
+                        <span class="onoffswitch-inner"></span>
+                        <span class="onoffswitch-switch"></span>
+                      </label>
+                    </div>
+                  </h3>
+                </div>
+
+                <!-- SUBTITLE -->
+                <div class="col-md-12">
+                  <div class="section-subtitle"></div>
+                  <p style="margin-top: -10px;">
+                    {{ "ProjectEditPage.AutoSendTranscriptByEmail" | translate  }}</p>
+                </div>
+              </div>
+
+              <!-- AUTO SEND TRANSCRIPT BY EMAIL BODY -->
+              <div class="input-wrapper" style="max-width: 992px;">
+      
+                <div class="row">
+                  <div class="col-xs-12 col-sm-10" style="margin-bottom: 12px;">
+                    
+                    <span *ngIf="DISPLAY_ADVANCED_TAB === false">
+                      <span
+                        style="display: block;  font-size: 12px;   font-weight: 100;  color: #7695a5;  line-height: 1.2em;   padding-top: 3px;">
+                        {{ "Pricing.AutoSendTranscriptByEmailIsUnavailable" | translate }}
+                      </span>
+
+                      <span *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false">
+                        <span style="color: #039be5; cursor:pointer; font-size: 12px; font-weight: 100;"
+                          (click)="openModalSubsExpired()">
+                          {{ "Pricing.UpgradeYourPlan" | translate }} {{ 'Pricing.ToEnableAllFeatures' | translate  }}.
+                        </span>
+                      </span>
+
+                      <span *ngIf="prjct_profile_type !== 'payment'"
+                        style="color: #039be5; cursor:pointer; font-size: 12px; font-weight: 400;"
+                        (click)="goToPricing()">
+                        {{ "Pricing.UpgradeYourPlan" | translate }} {{ 'Pricing.ToEnableAllFeatures' | translate  }}.
+                      </span>
+                    </span>
+
+                  </div>
+                </div>
+              </div>
+
             </span>
 
           </div>

@@ -41,8 +41,8 @@
 
                 <!-- NO SUBSCRIPTION FOUND FOR SELECTED PROJECT ID -->
                 <tr *ngIf="subscriptionsList && subscriptionsList?.length === 0">
-                  <td colspan="2" style="text-align: center; padding-top: 24px;">
-                    <p style="font-size:1em; margin-bottom: 0px; color:#7695a5; font-weight: 400">
+                  <td colspan="2" style="text-align: center;">
+                    <p style="font-size:1em; margin-bottom: 0px; margin-top: 10px; color:#7695a5; font-weight: 400">
                       <i class="material-icons" style="vertical-align: middle; margin-bottom: 2px;color: #00bcd4;"> info
                       </i>
                       {{ "Webhook.NoWebhookSubscriptions" | translate }}

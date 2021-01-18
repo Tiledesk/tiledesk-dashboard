@@ -71,7 +71,7 @@ export class VisitorsAnalyticsComponent implements OnInit {
     } else if (value == 360) {
       this.lastdays = 1;
     }
-    //this.lineChart.destroy();
+    this.lineChart.destroy();
     //this.subscription.unsubscribe();
     this.getVisitorsByLastNDays(value);
   }
@@ -117,9 +117,18 @@ export class VisitorsAnalyticsComponent implements OnInit {
 
       const higherCount = this.getMaxOfArray(visitorsByDay_series_array);
 
+      //set the stepsize 
+      var stepsize;
+      if(this.selectedDaysId>60){
+          stepsize=10;
+      }
+      else {
+        stepsize=this.selectedDaysId
+      }
+
       let lang = this.lang;
 
-      var lineChart = new Chart('last7dayVisitors', {
+      this.lineChart = new Chart('lastNdayVisitors', {
         type: 'line',
         data: {
           labels: visitorsByDay_labels_array,
@@ -151,6 +160,7 @@ export class VisitorsAnalyticsComponent implements OnInit {
               ticks: {
                 beginAtZero: true,
                 display: true,
+                maxTicksLimit: stepsize,
                 fontColor: 'black'
               },
               gridLines: {

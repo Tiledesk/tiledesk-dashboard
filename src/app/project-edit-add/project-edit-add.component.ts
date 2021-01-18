@@ -133,6 +133,9 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   DISPLAY_ADVANCED_TAB: boolean;
   isUNIS: boolean = false;
 
+  assigned_conv_on: boolean;
+  unassigned_conv_on: boolean;
+
   constructor(
     private projectService: ProjectService,
     private router: Router,
@@ -169,7 +172,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     this.getAllUsersOfCurrentProject();
     this.getPendingInvitation();
     this.translateNotificationMsgs();
-    this.getProjectUserRole()
+    this.getProjectUserRole();
+    //this.checkCurrentStatus();
   }
 
   getProjectUserRole() {
@@ -828,15 +832,43 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
               this.AUTO_SEND_TRANSCRIPT_IS_ON = false;
               console.log('PRJCT-EDIT-ADD - ON INIT AUTO SEND TRANSCRIPT IS ON ', this.AUTO_SEND_TRANSCRIPT_IS_ON);
             }
+
+            // Check Notification Status - START
+            if (project.settings.email.notification) {
+              if (project.settings.email.notification.conversation) {
+                
+                if (project.settings.email.notification.conversation.assigned === true) {
+                  this.assigned_conv_on = true;
+                } else {
+                  this.assigned_conv_on = false;
+                }
+    
+                if (project.settings.email.notification.conversation.pooled === true) {
+                  this.unassigned_conv_on = true;
+                } else {
+                  this.unassigned_conv_on = false;
+                }
+
+              }
+            } else {
+              this.assigned_conv_on = true;
+              this.unassigned_conv_on = true;
+            }
+            // END
+
           } else {
 
             this.AUTO_SEND_TRANSCRIPT_IS_ON = false;
+            this.assigned_conv_on = true;
+            this.unassigned_conv_on = true;
             console.log('PRJCT-EDIT-ADD - ON INIT AUTO SEND TRANSCRIPT IS ON ', this.AUTO_SEND_TRANSCRIPT_IS_ON);
           }
 
 
         } else {
           this.AUTO_SEND_TRANSCRIPT_IS_ON = false;
+          this.assigned_conv_on = true;
+          this.unassigned_conv_on = true;
           console.log('PRJCT-EDIT-ADD - ON INIT AUTO SEND TRANSCRIPT IS ON ', this.AUTO_SEND_TRANSCRIPT_IS_ON);
         }
 
@@ -953,6 +985,32 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       console.log('PRJCT-EDIT-ADD - toggleUnavailable_status_on ', this.automatic_unavailable_status_on);
     }
 
+  }
+
+  toggleProjectAssignedConversation($event) {
+    console.log("Event Toggle Assigned: ", $event.target.checked);
+    this.assigned_conv_on = $event.target.checked;
+
+    this.projectService.enableDisableAssignedNotification(this.assigned_conv_on).then((result) => {
+      console.log("ASSIGNED NOTIFICATION RESULT: ", result)
+      this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done')
+    }).catch((err) => {
+      console.log("Error during preferences updating: ", err)
+      this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem')
+    })
+  }
+
+  toggleProjectUnassignedConversation($event) {
+    console.log("Event Toggle Assigned: ", $event.target.checked);
+    this.unassigned_conv_on = $event.target.checked;
+
+    this.projectService.enableDisableUnassignedNotification(this.unassigned_conv_on).then((result) => {
+      console.log("ASSIGNED NOTIFICATION RESULT: ", result)
+      this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done')
+    }).catch((err) => {
+      console.log("Error during preferences updating: ", err)
+      this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem')
+    }) 
   }
 
 
@@ -1201,7 +1259,6 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     document.execCommand('copy');
   }
 
-
   /**
    * MODAL DELETE PROJECT
    * @param id
@@ -1260,10 +1317,18 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     window.open(url, '_blank');
   }
 
+  goToWebhookDocs() {
+    const url = 'https://developer.tiledesk.com/apis/webhooks'
+    window.open(url, '_blank');
+  }
+
+  goToWebhookPage() {
+    console.log("PRJCT-EDIT-ADD Navigate to Webhook console with ProjectID: ", this.id_project);
+    this.router.navigate(['project/' + this.id_project + '/webhook']);
+  }
+
   viewCancelSubscription() {
     this.notify.displayCancelSubscriptionModal(true);
   }
-
-
-
+  
 }

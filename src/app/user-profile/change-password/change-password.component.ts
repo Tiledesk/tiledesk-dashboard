@@ -198,6 +198,15 @@ export class ChangePasswordComponent implements OnInit, AfterViewInit {
     }
   }
 
+  goToNotificationSettings() {
+    console.log('»» GO TO USER  NOTIFICATION SETTINGS - PROJECT ID ', this.projectId)
+    if (this.projectId === undefined) {
+      this.router.navigate(['user/' + this.userId + '/notifications']);
+    } else {
+      this.router.navigate(['project/' + this.projectId + '/user/' + this.userId + '/notifications']);
+    }
+  }
+
   
 
 }

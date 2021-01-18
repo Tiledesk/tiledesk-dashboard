@@ -420,8 +420,11 @@
                             </i>
                             <span class="White__Tooltiptext" style="font-size: 12px; white-space: nowrap;font-weight: 100;">
                               {{"ChatWith" | translate }}:
-                              <span style="display:block">
+                              <span *ngIf="contact.fullname" style="display:block">
                                 {{contact?.fullname}}
+                              </span>
+                              <span *ngIf="!contact.fullname" style="display:block">
+                                Guest
                               </span>
                             </span>
                           </span>

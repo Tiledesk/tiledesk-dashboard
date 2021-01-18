@@ -78,12 +78,12 @@
                       <!-- <span style="color:#394f5a;"> {{ "RequestMsgsPage.RequesterName" | translate }}: </span>  -->
                       <div class="contact_info">
                         <span [ngClass]="{'requester-verified' : REQUESTER_IS_VERIFIED === true}"
-                          style="margin-top: 20px; display: block; font-size: 18px;white-space: nowrap;">
+                          style="cursor:pointer; margin-top: 20px; display: block; font-size: 18px;white-space: nowrap;" (click)="goToContactDetails()">
                           <!-- {{ requester_fullname }} -->
                           {{request?.lead?.fullname}}
                         </span>
                         <span *ngIf="!request?.lead?.fullname"
-                          [ngClass]="{'requester-verified' : REQUESTER_IS_VERIFIED === true}" style="margin-left: 2px;">
+                          [ngClass]="{'requester-verified' : REQUESTER_IS_VERIFIED === true}" style="cursor:pointer; margin-left: 2px;">
                           n.a.
                         </span>
 

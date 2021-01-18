@@ -18,6 +18,7 @@ export class MessagesComponent implements OnInit {
   initDay: string;
   endDay: string;
   lastdays = 7;
+  lineChart: any;
 
   constructor(private translate: TranslateService,
     private analyticsService: AnalyticsService) {
@@ -59,6 +60,7 @@ export class MessagesComponent implements OnInit {
     } else if (value == 360) {
       this.lastdays = 1;
     }
+    this.lineChart.destroy();
     this.getMessagesByLastNDays(value);
   }
 
@@ -102,9 +104,17 @@ export class MessagesComponent implements OnInit {
 
       const higherCount = this.getMaxOfArray(messagesByDay_series_array);
 
+      var stepsize;
+      if(this.selectedDaysId>60){
+          stepsize=10;
+      }
+      else {
+        stepsize=this.selectedDaysId
+      }
+
       let lang = this.lang;
 
-      var lineChart = new Chart('lastdaysMessages', {
+      this.lineChart = new Chart('lastdaysMessages', {
         type: 'line',
         data: {
           labels: messagesByDay_labels_array,
@@ -136,6 +146,7 @@ export class MessagesComponent implements OnInit {
               ticks: {
                 beginAtZero: true,
                 display: true,
+                maxTicksLimit: stepsize,
                 fontColor: 'black'
               },
               gridLines: {
