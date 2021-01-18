@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChildren, QueryList, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../core/auth.service';
 import { Project } from '../models/project-model';
@@ -75,6 +75,9 @@ export class UsersComponent implements OnInit, OnDestroy {
   // CHAT_BASE_URL = environment.CHAT_BASE_URL;  // now get from appconfig
   CHAT_BASE_URL: string;
   IS_BUSY: boolean;
+  @ViewChildren("divItem") divItems: QueryList<ElementRef>;
+  useTrackById = true;
+
 
   constructor(
     private usersService: UsersService,
@@ -111,7 +114,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.translateCanceledInviteSuccessMsg();
     this.translateCanceledInviteErrorMsg();
     this.getOSCODE();
-    
+
     this.getChatUrl();
   }
 
@@ -358,9 +361,9 @@ export class UsersComponent implements OnInit, OnDestroy {
             }
           });
 
-          if (projectuser && projectuser['id_user']) 
-          this.createProjectUserAvatar(projectuser['id_user'])
-     
+          if (projectuser && projectuser['id_user'])
+            this.createProjectUserAvatar(projectuser['id_user'])
+
         });
 
         this.projectUsersLength = projectUsers.length;
@@ -398,9 +401,9 @@ export class UsersComponent implements OnInit, OnDestroy {
       user['fillColour'] = 'rgb(98, 100, 167)';
     }
 
-  
 
-  } 
+
+  }
 
   checkImageExists(imageUrl, callBack) {
     var imageData = new Image();
@@ -565,18 +568,18 @@ export class UsersComponent implements OnInit, OnDestroy {
     }
 
     this.usersService.updateProjectUser(projectUser_id, this.IS_AVAILABLE).subscribe((projectUser: any) => {
-      console.log('PROJECT-USER UPDATED ', projectUser)
+      console.log('USERS COMP PROJECT-USER UPDATED ', projectUser)
 
       // NOTIFY TO THE USER SERVICE WHEN THE AVAILABLE / UNAVAILABLE BUTTON IS CLICKED
       this.usersService.availability_switch_clicked(true)
 
     }, (error) => {
-      console.log('PROJECT-USER UPDATED ERR  ', error);
+      console.log('USERS COMP PROJECT-USER UPDATED ERR  ', error);
       // =========== NOTIFY ERROR ============
       // this.notify.showNotification('An error occurred while updating status', 4, 'report_problem');
       this.notify.showWidgetStyleUpdateNotification(this.changeAvailabilityErrorNoticationMsg, 4, 'report_problem');
     }, () => {
-      console.log('PROJECT-USER UPDATED  * COMPLETE *');
+      console.log('USERS COMP PROJECT-USER UPDATED  * COMPLETE *');
       // =========== NOTIFY SUCCESS ==========
       // this.notify.showNotification('status successfully updated', 2, 'done');
       this.notify.showWidgetStyleUpdateNotification(this.changeAvailabilitySuccessNoticationMsg, 2, 'done');
@@ -590,17 +593,28 @@ export class UsersComponent implements OnInit, OnDestroy {
   // RE-RUN getAllUsersOfCurrentProject TO UPDATE THE LIST OF THE PROJECT' MEMBER
   hasChangedAvailabilityStatusInSidebar() {
     this.usersService.has_changed_availability_in_sidebar.subscribe((has_changed_availability) => {
-      console.log('»»USER COMP SUBSCRIBES TO HAS CHANGED AVAILABILITY FROM THE SIDEBAR', has_changed_availability)
+      console.log('USER COMP SUBSCRIBES TO HAS CHANGED AVAILABILITY FROM THE SIDEBAR', has_changed_availability)
       if (has_changed_availability === true) {
         this.getAllUsersOfCurrentProject(this.storageBucket);
       }
     })
   }
 
-  trackByFn(index, item) {
-    return index; // or 
-    // return item._id
-  }
+  // trackByFn(index, item) {
+  //   console.log('USER COMP ***** trackByFn ***** ', index)
+  //   return index; // or 
+  //   // return item._id
+  // }
+
+  // trackImageId(index: number, projectUser: any) {
+  //   console.log('USER COMP ***** trackImageId ***** ',  projectUser['user_available'])
+  //   return projectUser['user_available']
+  // }
+
+  // trackByIds = (index: number, item: any) => {
+  //   console.log('trackByIds', item)
+  //   return this.useTrackById ? item.id : item;
+  // }
 
 
 

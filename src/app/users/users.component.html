@@ -224,7 +224,8 @@ class="navbar-brand">
               </thead>
 
               <tbody>
-                <tr *ngFor="let projectUser of projectUsersList;let i = index; trackBy: trackByFn">
+                <!-- trackBy: trackByFn  -- trackBy: trackImageId-->
+                <tr #divItem  *ngFor="let projectUser of projectUsersList;let i = index;">
                   <!-- FOR DEBUG: ID OF THE PROJECT-USER  -->
                   <!-- <td>
                     {{ projectUser?._id }}
