@@ -19,7 +19,7 @@
       <div class="col-md-8">
         <div class="card" style="margin-top: 5px;">
 
-          <div class="card-header card-header-custom-bkgrnd">
+          <div class="card-header card-header-custom-bkgrnd" *ngIf="isVisibleDEP">
             <button class="btn btn-primary" style="padding: 8px 16px;margin:0px;" (click)="goToEditAddPage_CREATE()">
               <span class="icon" style="padding-right:8px">
                 <i class="material-icons">add_circle</i>
@@ -53,7 +53,7 @@
           <loading-spinner *ngIf="showSpinner"></loading-spinner>
 
           <!-- style="overflow:visible;" -->
-          <div *ngIf="!showSpinner" class="card-content table-responsive">
+          <div *ngIf="!showSpinner" class="card-content table-responsive" style="min-height: 200px;">
 
             <table class="table depts-tabe">
               <thead>
@@ -176,22 +176,12 @@
                   <!-- *ngIf="dept?.default !== true" (click)='goToEditAddPage_EDIT(dept?._id, dept?.name)'-->
                   <td class="dept-td" (click)='goToEditAddPage_EDIT(dept?._id, dept?.default)'>
                     <span>
-                      <span style="font-weight: 400;font-size:13px">
+                      <span style="font-weight: 400;font-size:13px" class="tool_tip">
                         {{ dept?.name }}
-                      </span>
 
-                      <div *ngIf="dept?.description" class="tool_tip" style="display: block;">
-                        <div
-                          style="color: #7695a5; font-weight: 400; line-height:18px; font-size:12px; display: block;">
-                          {{ dept?.truncated_desc}}
-                         <!-- {{ dept?.description }}  -->
-                        </div>
 
-                        <div class="top">
+                        <div class="right" style="padding: 5px;">
                           <h4>{{ 'Description' | translate }}</h4>
-
-                          <div> {{ dept?.description}} </div>
-
                           <div class="line-clamp" style="display: -webkit-box;
                          -webkit-line-clamp: 3;
                          -webkit-box-orient: vertical;
@@ -199,6 +189,28 @@
                          text-overflow: ellipsis;"> {{ dept?.description}} </div>
                           <i></i>
                         </div>
+                      </span>
+
+                      <!-- class="tool_tip" -->
+                      <div *ngIf="dept?.description"  style="display: block;">
+                        <div class="parent-div"
+                          style="color: #7695a5; font-weight: 400; line-height:18px; font-size:12px; ">
+                          {{ dept?.truncated_desc}}
+                          <!-- {{ dept?.description }} -->
+                          <!-- <div class="text-div">
+                            {{ dept?.description }}
+                          </div> -->
+                        </div>
+
+                        <!-- <div class="right">
+                          <h4>{{ 'Description' | translate }}</h4>
+                          <div class="line-clamp" style="display: -webkit-box;
+                         -webkit-line-clamp: 3;
+                         -webkit-box-orient: vertical;
+                         overflow: hidden;
+                         text-overflow: ellipsis;"> {{ dept?.description}} </div>
+                          <i></i>
+                        </div> -->
                       </div>
                     </span>
                   </td>
@@ -214,10 +226,10 @@
                     </div>
 
                     <div *ngIf="dept?.default === true">
-                      <span *ngIf="COUNT_OF_VISIBLE_DEPT === 0" style="font-weight:400;font-size:13px"> {{ 'Enabled' |
-                        translate }}</span>
-                      <span *ngIf="COUNT_OF_VISIBLE_DEPT > 0" style="font-weight:400;font-size:13px"> {{ 'Disabled' |
-                        translate }}</span>
+                      <span *ngIf="COUNT_OF_VISIBLE_DEPT === 0" style="font-weight:400;font-size:13px">
+                        {{ 'Enabled' | translate }}</span>
+                      <span *ngIf="COUNT_OF_VISIBLE_DEPT > 0" style="font-weight:400;font-size:13px">
+                        {{ 'Disabled' | translate }}</span>
                     </div>
 
 
@@ -379,22 +391,23 @@
               {{ "DeptQuickTips_5" | translate }}
             </p>
 
-            <p class="title-attribute" style="margin-bottom: 3px">
-             Widget & Routing
-            </p>
-            <p style="color:#7695a5">
-              {{ "DeptQuickTips_6" | translate }}
-            </p>
-            <p style="color:#7695a5">
-              {{ "DeptQuickTips_7" | translate }}
-            </p>
-            <p style="color:#7695a5">
-              {{ "DeptQuickTips_8" | translate }}
-            </p>
-            <div>
-              <img src="assets/img/select_a_topic.png">
-            </div>
-
+            <ng-container *ngIf="isVisibleDEP">
+              <p class="title-attribute" style="margin-bottom: 3px">
+                Widget & Routing
+              </p>
+              <p style="color:#7695a5">
+                {{ "DeptQuickTips_6" | translate }}
+              </p>
+              <p style="color:#7695a5">
+                {{ "DeptQuickTips_7" | translate }}
+              </p>
+              <p style="color:#7695a5">
+                {{ "DeptQuickTips_8" | translate }}
+              </p>
+              <div>
+                <img src="assets/img/select_a_topic.png">
+              </div>
+            </ng-container>
 
           </div>
         </div>

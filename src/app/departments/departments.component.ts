@@ -10,6 +10,8 @@ import { FaqKbService } from '../services/faq-kb.service';
 import { TranslateService } from '@ngx-translate/core';
 import { NotifyService } from '../core/notify.service';
 import { avatarPlaceholder, getColorBck } from '../utils/util';
+import { AppConfigService } from '../services/app-config.service';
+import { ProjectPlanService } from '../services/project-plan.service';
 
 @Component({
   selector: 'mongodb-departments',
@@ -19,7 +21,7 @@ import { avatarPlaceholder, getColorBck } from '../utils/util';
 
 export class DepartmentsComponent implements OnInit {
 
-  departments: Department[];
+  departments: Department[] = [];
 
   dept_name: string;
 
@@ -48,8 +50,13 @@ export class DepartmentsComponent implements OnInit {
   updateErrorMsg: string;
   browser_lang: string;
 
-  COUNT_OF_VISIBLE_DEPT: number
+  COUNT_OF_VISIBLE_DEPT: number;
 
+  isVisibleDEP: boolean;
+  public_Key: string;
+
+  prjct_profile_type: string;
+  subscription_is_active: boolean;
 
   constructor(
     private mongodbDepartmentService: DepartmentService,
@@ -58,18 +65,56 @@ export class DepartmentsComponent implements OnInit {
     private groupsService: GroupService,
     private faqKbService: FaqKbService,
     public translate: TranslateService,
-    private notify: NotifyService
+    private notify: NotifyService,
+    private prjctPlanService: ProjectPlanService,
+    public appConfigService: AppConfigService
   ) { }
 
   ngOnInit() {
     this.auth.checkRoleForCurrentProject();
+    this.getOSCODE();
     this.getCurrentProject();
 
     // this.getDepartments();
     this.getDeptsByProjectId();
     this.translateNotificationMsgs();
+    this.getProjectPlan();
     this.getBrowserLanguage();
   }
+
+
+  getOSCODE() {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    console.log('AppConfigService getAppConfig (DEPTS) public_Key', this.public_Key);
+
+    let keys = this.public_Key.split("-");
+    // console.log('PUBLIC-KEY (SIDEBAR) - public_Key keys', keys)
+
+    keys.forEach(key => {
+      // console.log('DEPTS public_Key key', key)
+
+      if (key.includes("DEP")) {
+        // console.log('PUBLIC-KEY (SIDEBAR) - key', key);
+        let dep = key.split(":");
+        // console.log('PUBLIC-KEY (SIDEBAR) - dep key&value', dep);
+
+        if (dep[1] === "F") {
+          this.isVisibleDEP = false;
+          // console.log('PUBLIC-KEY (SIDEBAR) - dep isVisible', this.isVisibleDEP);
+        } else {
+          this.isVisibleDEP = true;
+          // console.log('PUBLIC-KEY (SIDEBAR) - dep isVisible', this.isVisibleDEP);
+        }
+      }
+      // this.getDeptsByProjectId();
+    });
+
+    if (!this.public_Key.includes("DEP")) {
+      console.log('PUBLIC-KEY (SIDEBAR) - key.includes("DEP")', this.public_Key.includes("DEP"));
+      this.isVisibleDEP = false;
+    }
+  }
+
   getBrowserLanguage() {
     this.browser_lang = this.translate.getBrowserLang();
     console.log('Depts - browser_lang ', this.browser_lang)
@@ -80,7 +125,7 @@ export class DepartmentsComponent implements OnInit {
   translateNotificationMsgs() {
     this.translate.get('DeptsAddEditPage.NotificationMsgs')
       .subscribe((translation: any) => {
-        console.log('Depts - translateNotificationMsgs text', translation)
+        // console.log('Depts - translateNotificationMsgs text', translation)
         this.deleteErrorMsg = translation.DeleteDeptError;
         this.deleteSuccessMsg = translation.DeleteDeptSuccess;
         this.updateSuccessMsg = translation.UpdateDeptSuccess;
@@ -96,17 +141,14 @@ export class DepartmentsComponent implements OnInit {
     });
   }
 
-  // GO TO  BOT-EDIT-ADD COMPONENT
-  goToEditAddPage_CREATE() {
-    this.router.navigate(['project/' + this.project._id + '/department/create']);
-  }
+
 
   // GO TO BOT-EDIT-ADD COMPONENT AND PASS THE BOT ID (RECEIVED FROM THE VIEW)
-  goToEditAddPage_EDIT(dept_id: string , dept_default: boolean) {
+  goToEditAddPage_EDIT(dept_id: string, dept_default: boolean) {
     console.log('goToEditAddPage_EDIT DEPT ID ', dept_id);
     console.log('goToEditAddPage_EDIT DEPT DEFAULT ', dept_default);
     console.log('goToEditAddPage_EDIT DEPTS LENGHT ', this.departments.length);
-   
+
     this.router.navigate(['project/' + this.project._id + '/department/edit', dept_id]);
 
     // if (dept_default === true && this.departments.length ===  1 ) {
@@ -125,15 +167,35 @@ export class DepartmentsComponent implements OnInit {
       console.log('»»» »»» DEPTS PAGE - DEPTS (FILTERED FOR PROJECT ID)', departments);
 
       if (departments) {
-        this.departments = departments;
-
         let count = 0;
+        departments.forEach((dept: any) => {
+          // console.log('»»» »»» DEPTS PAGE - DEPT)', dept);
 
-        this.departments.forEach(dept => {
-          console.log('»»» »»» DEPTS PAGE - DEPT)', dept);
+          /// DI QUESTO NN C'E NE SAREBBE BISOGNO
+          if (!this.isVisibleDEP) {
+            if (dept && dept.default === true) {
+              console.log('»»» »»» DEPTS PAGE - this.isVisibleDEP ', this.isVisibleDEP, 'DEFAULT DEPT STATUS', dept.status);
 
-          if (dept.default === false && dept.status === 1)  {
-            count = count + 1;
+              if (dept.status === 0) {
+                this.updateDefaultDeptStatusIfIsZero(dept._id, 1)
+              }
+
+              const index = departments.indexOf(dept);
+              console.log('»»» »»» DEPTS PAGE - this.isVisibleDEP ', this.isVisibleDEP, 'INDEX OF DEFAULT DEPT', index);
+
+              this.departments.push(dept)
+              console.log('»»» »»» DEPTS PAGE - this.isVisibleDEP ', this.isVisibleDEP, 'this.departments ', this.departments);
+            }
+          } else {
+
+            this.departments = departments;
+            console.log('»»» »»» DEPTS PAGE - this.isVisibleDEP ', this.isVisibleDEP, 'this.departments ', this.departments);
+          }
+
+          if (this.isVisibleDEP) {
+            if (dept.default === false && dept.status === 1) {
+              count = count + 1;
+            }
           }
           // -------------------------------------------------------------------
           // Dept's avatar
@@ -146,9 +208,9 @@ export class DepartmentsComponent implements OnInit {
             newInitials = avatarPlaceholder(dept.name);
             if (dept.default !== true) {
               newFillColour = getColorBck(dept.name);
-            } else  if (dept.default === true && this.departments.length === 1) {
+            } else if (dept.default === true && departments.length === 1) {
               newFillColour = '#6264A7'
-            } else if (dept.default === true && this.departments.length > 1) {
+            } else if (dept.default === true && departments.length > 1) {
               newFillColour = 'rgba(98, 100, 167, 0.6) '
             }
           } else {
@@ -181,7 +243,9 @@ export class DepartmentsComponent implements OnInit {
           }
         });
 
-        this.COUNT_OF_VISIBLE_DEPT =  count;
+
+
+        this.COUNT_OF_VISIBLE_DEPT = count;
         console.log('»»» »»» DEPTS PAGE - COUNT_OF_VISIBLE_DEPT', this.COUNT_OF_VISIBLE_DEPT);
       }
     }, error => {
@@ -191,6 +255,22 @@ export class DepartmentsComponent implements OnInit {
       console.log('DEPARTMENTS (FILTERED FOR PROJECT ID) - COMPLETE')
       this.showSpinner = false;
     });
+  }
+
+
+  updateDefaultDeptStatusIfIsZero(dept_id, deptStatus) {
+    this.mongodbDepartmentService.updateDeptStatus(dept_id, deptStatus)
+      .subscribe((department: any) => {
+        console.log('»»» »»» DEPTS PAGE - updateDefaultDeptStatusIfIsZero - UPDATED DEPT ', department)
+
+      }, error => {
+        // this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem');
+        console.log('»»» »»» DEPTS PAGE - updateDefaultDeptStatusIfIsZero - ERROR', error);
+      }, () => {
+        // this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done');
+        console.log('»»» »»» DEPTS PAGE - updateDefaultDeptStatusIfIsZero - COMPLETE')
+
+      });
   }
 
   updateDeptStatus($event, dept_id) {
@@ -215,11 +295,36 @@ export class DepartmentsComponent implements OnInit {
       }, () => {
         this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done');
         console.log('»»» »»» DEPTS PAGE - UPDATE DEPT STATUS - COMPLETE')
-         this.getDeptsByProjectId(); 
+        this.getDeptsByProjectId();
       });
+  }
 
 
+  getProjectPlan() {
+    this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
+      console.log('»»» »»» DEPTS PAGE project Profile Data', projectProfileData)
+      if (projectProfileData) {
+        this.prjct_profile_type = projectProfileData.profile_type;
+        console.log('»»» »»» DEPTS PAGE prjct_profile_type', this.prjct_profile_type)
+        this.subscription_is_active = projectProfileData.subscription_is_active;
+        console.log('»»» »»» DEPTS PAGE subscription_is_active', this.subscription_is_active)
+      }
+    })
+  }
 
+
+  // GO TO  BOT-EDIT-ADD COMPONENT
+  goToEditAddPage_CREATE() {
+
+    if ( this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+
+      this.router.navigate(['project/' + this.project._id + '/departments-demo']);
+    } else {
+      this.router.navigate(['project/' + this.project._id + '/department/create']);
+    }
+
+
+    
   }
 
   /**
