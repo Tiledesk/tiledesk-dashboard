@@ -196,12 +196,17 @@ input:-webkit-autofill:active {
     font-weight: 400;
 }
 
-// test as
+// test as Googlr search
 .input-group {
     background: whitesmoke;
     transition: all 0.5s ease;
     border-radius: 5px;
     border: 0.1px solid lightgrey;
+}
+
+.contacts-paginantion > .input-group {
+    background: unset;
+    border: unset;
 }
 .search-field {
     border-radius: 0 !important;
