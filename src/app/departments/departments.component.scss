@@ -257,6 +257,18 @@ table > tbody > tr.default-dept-disabled > td {
   font-size: 18px;
 }
 
+.default-dept-active-badge {
+  position: absolute;
+  left: -6px;
+}
+
+.default-dept-active-badge > span > .material-icons {
+  color: #4caf50;
+  background: #fff;
+  border-radius: 50%;
+  font-size: 18px;
+}
+
 .title-attribute {
   font-family: "Google Sans", sans-serif !important;
   color: #394f5a;

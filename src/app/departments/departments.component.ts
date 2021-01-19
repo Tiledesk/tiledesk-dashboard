@@ -57,7 +57,8 @@ export class DepartmentsComponent implements OnInit {
 
   prjct_profile_type: string;
   subscription_is_active: boolean;
-
+  trialExpired: boolean;
+  subscriptionInactiveOrTrialExpired: boolean;
   constructor(
     private mongodbDepartmentService: DepartmentService,
     private router: Router,
@@ -308,6 +309,18 @@ export class DepartmentsComponent implements OnInit {
         console.log('»»» »»» DEPTS PAGE prjct_profile_type', this.prjct_profile_type)
         this.subscription_is_active = projectProfileData.subscription_is_active;
         console.log('»»» »»» DEPTS PAGE subscription_is_active', this.subscription_is_active)
+        this.trialExpired = projectProfileData.trial_expired;
+        console.log('»»» »»» DEPTS PAGE trialExpired', this.trialExpired)
+       
+        if ((this.prjct_profile_type === 'payment' && this.subscription_is_active === false ) || (this.prjct_profile_type === 'free' && this.trialExpired === true )) {
+          this.subscriptionInactiveOrTrialExpired = true;
+          console.log('»»» »»» DEPTS PAGE subscriptionInactiveOrTrialExpired', this.subscriptionInactiveOrTrialExpired)
+        } else {
+          this.subscriptionInactiveOrTrialExpired = false;
+          console.log('»»» »»» DEPTS PAGE subscriptionInactiveOrTrialExpired', this.subscriptionInactiveOrTrialExpired)
+        }
+
+       
       }
     })
   }
@@ -315,16 +328,11 @@ export class DepartmentsComponent implements OnInit {
 
   // GO TO  BOT-EDIT-ADD COMPONENT
   goToEditAddPage_CREATE() {
-
-    if ( this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-
+    if ((this.prjct_profile_type === 'payment' && this.subscription_is_active === false ) || (this.prjct_profile_type === 'free' && this.trialExpired === true )) {
       this.router.navigate(['project/' + this.project._id + '/departments-demo']);
     } else {
       this.router.navigate(['project/' + this.project._id + '/department/create']);
     }
-
-
-    
   }
 
   /**

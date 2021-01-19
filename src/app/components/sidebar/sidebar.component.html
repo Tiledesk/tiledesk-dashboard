@@ -439,11 +439,29 @@
             </a>
         </li> -->
 
-      <!-- ROUTING -->
-      <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
+      <!-- 
+      // --------------------------------------------------------
+      //  ROUTING  !!!! REPLACED WITH THE MERGE ROUTING / DEPT 
+      // -------------------------------------------------------- -->
+      <!-- <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
         <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/routing/{{default_dept_id}}">
           <p class="onBlackBckgrnd">
             <span class="sidebar-mini">R </span> Routing
+          </p>
+        </a>
+      </li> -->
+
+      <!--   
+      // -------------------------------------------------------
+      // New:MERGE ROUTING / DEPT - Routing & depts
+      // ------------------------------------------------------- -->
+      <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
+        <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/departments">
+          <p class="onBlackBckgrnd">
+            <span class="sidebar-mini">
+              <!-- R&D -->
+              {{'RoutingAndDeptsInitials' | translate}}
+            </span> {{'RoutingAndDepts' | translate}}
           </p>
         </a>
       </li>
@@ -452,7 +470,8 @@
       <ng-container *ngIf="isVisibleTRI">
         <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
           <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/trigger">
-            <span class="_badge" style="font-size: 9px;" [ngClass]="{'change-badge-bckgrnd' : TRIGGER_ROUTE_IS_ACTIVE === true}">BETA</span>
+            <span class="_badge" style="font-size: 9px;"
+              [ngClass]="{'change-badge-bckgrnd' : TRIGGER_ROUTE_IS_ACTIVE === true}">BETA</span>
             <p class="onBlackBckgrnd">
               <span class="sidebar-mini">T </span>
               {{ 'Trigger.Trigger' | translate }}
@@ -470,11 +489,8 @@
               <span class="sidebar-mini">{{'UsersAndGroupsInitials' | translate}} </span>
               {{ 'UsersAndGroups' | translate }}
             </span>
-
-
             <span *ngIf="!isVisibleGRO">
-              <span class="sidebar-mini">{{'UsersInitial' | translate }} </span> {{ 'Users' | translate }}
-
+              <span class="sidebar-mini">{{'TeammateInitial' | translate }} </span> {{ 'Users' | translate }}
             </span>
           </p>
 
@@ -514,8 +530,11 @@
         </a>
       </li>
 
-      <!-- *ngIf="isVisibleDEP" -->
-      <ng-container>
+      <!-- 
+      // --------------------------------------------------------
+      //  DEPARTMENT  !!!! REPLACED WITH THE MERGE ROUTING / DEPT
+      // -------------------------------------------------------- -->
+      <!-- <ng-container *ngIf="isVisibleDEP">
         <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
           <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/departments">
 
@@ -524,22 +543,7 @@
             </p>
           </a>
         </li>
-
-        <!-- 
-        // -------------------------------------------------------
-        // New: depts & routing
-        // ------------------------------------------------------- -->
-        <!-- <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
-          <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/depts">
-
-            <p class="onBlackBckgrnd">
-              <span class="sidebar-mini">D&R </span> New Depts
-            </p>
-
-      
-          </a>
-        </li> -->
-      </ng-container>
+      </ng-container> -->
 
       <li style="display: block;" *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active"
         (click)="stopScroll()">

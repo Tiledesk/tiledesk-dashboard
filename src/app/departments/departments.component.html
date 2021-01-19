@@ -162,14 +162,31 @@
                         *ngIf="dept?.default === true && COUNT_OF_VISIBLE_DEPT > 0">
                         <span class="tool_tip">
                           <span class="material-icons">
-                            error
+                            unpublished
                           </span>
-                          <span class="right" style="white-space: normal;padding: 5px;">
+                          <span class="right" style="white-space: normal;padding: 5px;font-weight: 200;">
+                            <h4 style="font-weight:400"> Default Dept {{ 'Disabled' | translate }}</h4>
                             {{'TheDefaulDeptIsDisabledBecause' | translate}}
                             <i></i>
                           </span>
                         </span>
                       </span>
+
+
+                      <span class="default-dept-active-badge"
+                        *ngIf="dept?.default === true && COUNT_OF_VISIBLE_DEPT === 0">
+                        <span class="tool_tip">
+                          <span class="material-icons">
+                            check_circle
+                          </span>
+                          <span class="right" style="white-space: normal;padding: 5px;font-weight: 200;">
+                            <h4 style="font-weight:400"> Default Dept {{ 'Enabled' | translate }}</h4>
+                            {{'TheDefaulDeptIsEnabledBecause' | translate}}
+                            <i></i>
+                          </span>
+                        </span>
+                      </span>
+
                     </span>
                   </td>
 
@@ -179,8 +196,17 @@
                       <span style="font-weight: 400;font-size:13px" class="tool_tip">
                         {{ dept?.name }}
 
+                        <span *ngIf="dept?.default === true">
+                          <span *ngIf="COUNT_OF_VISIBLE_DEPT === 0" style="font-weight:400;font-size: 11px;font-style: italic;color: #4caf50">
+                            ({{ 'Enabled' | translate }})
+                          </span>
+                          <span *ngIf="COUNT_OF_VISIBLE_DEPT > 0" style="font-weight:400;font-size: 11px;font-style: italic; color: #f44336;">
+                            ({{ 'Disabled' | translate }})
+                          </span>
+                        </span>
 
-                        <div class="right" style="padding: 5px;">
+
+                        <div class="right" style="padding: 5px;" *ngIf="dept?.description">
                           <h4>{{ 'Description' | translate }}</h4>
                           <div class="line-clamp" style="display: -webkit-box;
                          -webkit-line-clamp: 3;
@@ -192,7 +218,7 @@
                       </span>
 
                       <!-- class="tool_tip" -->
-                      <div *ngIf="dept?.description"  style="display: block;">
+                      <div *ngIf="dept?.description" style="display: block;">
                         <div class="parent-div"
                           style="color: #7695a5; font-weight: 400; line-height:18px; font-size:12px; ">
                           {{ dept?.truncated_desc}}
@@ -225,12 +251,12 @@
                       </label>
                     </div>
 
-                    <div *ngIf="dept?.default === true">
+                    <!-- <div *ngIf="dept?.default === true">
                       <span *ngIf="COUNT_OF_VISIBLE_DEPT === 0" style="font-weight:400;font-size:13px">
                         {{ 'Enabled' | translate }}</span>
                       <span *ngIf="COUNT_OF_VISIBLE_DEPT > 0" style="font-weight:400;font-size:13px">
                         {{ 'Disabled' | translate }}</span>
-                    </div>
+                    </div> -->
 
 
                   </td>
