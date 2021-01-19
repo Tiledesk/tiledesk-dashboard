@@ -181,7 +181,7 @@ export class WidgetService {
   public setDefaultLanguage(languagecode: string) {
     const _languagecode = languagecode.toUpperCase();
     // https://api.tiledesk.com/v2/:project_id/labels/:lang/default
-    const url = this.SERVER_BASE_PATH + this.projectID + '/labels/' +_languagecode +'/default';
+    const url = this.SERVER_BASE_PATH + this.projectID + '/labels/' + _languagecode + '/default';
     console.log('Multilanguage »» WIDGET SERVICE - SET DEFAULT LANGUAGE URL', url);
     const headers = new Headers();
     headers.append('Accept', 'application/json');
@@ -218,14 +218,14 @@ export class WidgetService {
       .map((res) => res.json());
   }
 
-  public editLabels(langCode, translationObjct) {
+  public editLabels(langCode, isdefault, translationObjct) {
     const headers = new Headers();
     headers.append('Content-type', 'application/json');
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
 
     // const body = { "lang": 'it', "data": translationObjct };
-    const body = { "lang": langCode, "data": translationObjct };
+    const body = { "lang": langCode, default: isdefault, "data": translationObjct };
     const url = this.SERVER_BASE_PATH + this.projectID + '/labels/'
     console.log('Multilanguage »» WIDGET SERVICE - SAVE LABELS URL', url);
     console.log('Multilanguage »» WIDGET SERVICE - SAVE LABELS Body', body);
