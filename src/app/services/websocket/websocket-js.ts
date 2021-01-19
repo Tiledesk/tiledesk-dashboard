@@ -87,6 +87,7 @@ export class WebSocketJs {
     console.log('% »»» WebSocketJs WF ****** CALLING REF ****** calledby ', calledby);
     console.log('% »»» WebSocketJs WF ****** CALLING REF ****** TOPIC ', topic);
     console.log('% »»» WebSocketJs WF ****** CALLING REF ****** CALLBACKS', this.callbacks);
+    console.log('% »»» WebSocketJs WF ****** CALLING REF ****** CALLBACKS typeof', typeof this.callbacks);
     //this.callbacks.set(topic, {onCreate:onCreate, onUpdate:onUpdate});
 
 
@@ -96,7 +97,7 @@ export class WebSocketJs {
     }
 
     this.callbacks.set(topic, { onCreate: onCreate, onUpdate: onUpdate, onData: onData });
-    console.log('% »»» WebSocketJs WF ****** this.callbacks.set ', this.callbacks);
+    console.log('% »»» WebSocketJs WF ****** CALLING REF ****** CALLBACKS this.callbacks.set ', this.callbacks);
     // console.log('% »»» WebSocketJs WF *** REF *** callbacks *** ', this.callbacks);
     // this.callbacks
 
@@ -236,7 +237,9 @@ export class WebSocketJs {
   close() {
     console.log('% »»» WebSocketJs WF *** CALLING CLOSE ****** ');
     this.topics = [];
-    this.callbacks = [];
+    // this.callbacks = []; // NK COMMENTET FOR THE BUG callback.set is not a function
+    this.callbacks = {}; 
+    console.log('% »»» WebSocketJs WF *** CALLING CLOSE ****** this.callbacks');
     if (this.ws) {
       this.ws.onclose = function () { }; // disable onclose handler first
       this.ws.close();
