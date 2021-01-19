@@ -1,6 +1,12 @@
 
 # tiledesk-dashboard
 
+### 2.1.3
+- Merges Routing and Departments in a single menu item
+- Fixes the default language is lost when its labels are updated (in widget set up page and in multilanguage page)
+- Adds in widget set up page an alert when translations are present but no default language is set
+- Minor bug fixing
+
 ### 2.1.2
 - Adds in conversation details the ability to open/close attributes details
 - Fixes the length of the text displayed in the right sidebar of conversation details for the 'source page' and for 'conversation id'
