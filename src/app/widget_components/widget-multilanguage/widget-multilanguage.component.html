@@ -119,21 +119,23 @@
                 </button>
 
                
+                <!--
+                // --------------------------------------------------------------
+                // @ Save modified translation
+                // -------------------------------------------------------------- -->
                 <button *ngIf="selectedTranslationCode !== 'add'" class="btn btn-primary btn_edit_lang"
                   style="margin-top: 2px; margin-bottom: 1px; float: right;" (click)="editLang()"
                   [disabled]="currentTraslationClone === undefined">
                   {{ 'ScriptPage.Save' | translate }}
                 </button>
 
-                 <!--
+                <!--
                 // --------------------------------------------------------------
-                // @ Save modified translation
+                // @ Make default language
                 // -------------------------------------------------------------- -->
-
                 <button *ngIf="selectedTranslationCode !== 'add' && selectedTranslationCode !== defaultLangCode" class="btn btn-primary btn_edit_lang"
-                  style="margin-top: 2px; margin-bottom: 1px; float: right;" (click)="makeDefaultLanguage(selectedTranslationCode)"
-                  >
-                 Make default
+                  style="margin-top: 2px; margin-bottom: 1px; float: right;" (click)="makeDefaultLanguage(selectedTranslationCode)">
+                 {{ 'MakeDefault' | translate }} 
                 </button>
 
               </div>
@@ -201,11 +203,11 @@
           </div>
 
           <div *ngIf="selectedTranslationCode !== 'add'" class="card-footer" style="border-color: #e8f0f5 !important;">
-            <button class="btn btn-primary btn_edit_lang" (click)="editLang()">
+            <button [disabled]="currentTraslationClone === undefined" class="btn btn-primary btn_edit_lang" (click)="editLang()">
               {{ 'ScriptPage.Save' | translate }}
             </button>
 
-            <button *ngIf="selectedTranslationCode !== 'en'" class="btn btn-danger" (click)="deleteLang()">
+            <button *ngIf="selectedTranslationCode !== defaultLangCode" class="btn btn-danger" (click)="deleteLang()">
               {{ 'Delete' | translate }}
             </button>
           </div>
