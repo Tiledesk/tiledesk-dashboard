@@ -542,7 +542,8 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   getLabels() {
     this.widgetService.getLabels().subscribe((labels: any) => {
       console.log('Multilanguage (widget-design) ***** GET labels ***** - RES', labels);
-      if (labels && labels.length > 0) {
+      // labels.length > 0 
+      if (labels && Object.keys(labels).length > 0) {
         // this.translation = labels[0].data[0];
         this.translations = labels['data']
         // console.log('Multilanguage ***** GET labels ***** - RES > TRANSLATIONS ', labels[0].data[0]);
