@@ -5,6 +5,7 @@
 - Merges Routing and Departments in a single menu item
 - Fixes the default language is lost when its labels are updated (in widget set up page and in multilanguage page)
 - Adds in widget set up page an alert when translations are present but no default language is set
+- Replaces in the method 'close' of the websocket this.callbacks = [] with this.callbacks = {} (for test of the error callbackSet is not a function)
 - Minor bug fixing
 
 ### 2.1.2
