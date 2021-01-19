@@ -36,6 +36,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   // company_name = brand.company_name;
   // company_site_url = brand.company_site_url;
   @ViewChild('testwidgetbtn') private elementRef: ElementRef;
+  @ViewChild("multilanguage") private multilanguageRef: ElementRef;
   tparams: any;
   company_name: any;
   company_site_url: any;
@@ -186,6 +187,8 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   noDefaultLanguageIsSetUpMsg: string;
   noLanguagesAreSetUpMsg: string;
   goToMultilanguagePageMsg: string;
+  goToMultilanguageSectionMsg : string;
+  setDefaultLangInMultilanguageSection: string;
   toAddLanguagesToYourProjectMsg: string;
   cancelMsg: string;
   constructor(
@@ -257,7 +260,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
 
 
 
-
+  // scroll to multilanguage section
   scroll(el: HTMLElement) {
     el.scrollIntoView();
     var acc = document.getElementsByClassName("widget-section-accordion");
@@ -539,7 +542,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   getLabels() {
     this.widgetService.getLabels().subscribe((labels: any) => {
       console.log('Multilanguage (widget-design) ***** GET labels ***** - RES', labels);
-      if (labels) {
+      if (labels && labels.length > 0) {
         // this.translation = labels[0].data[0];
         this.translations = labels['data']
         // console.log('Multilanguage ***** GET labels ***** - RES > TRANSLATIONS ', labels[0].data[0]);
@@ -565,13 +568,13 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
               this.languages_codes.push(translation.lang.toLowerCase())
             }
 
+            // IF DEFAULT LANGUAGE IS TRUE
             if (translation.default === true) {
               this.defaultLangCode = translation.lang.toLowerCase()
-              console.log('Multilanguage (widget-design) ***** GET labels ***** defaultLangCode ', translation);
+              console.log('Multilanguage (widget-design) ***** GET labels ***** defaultLangCode (onInit) ', this.defaultLangCode);
             } else {
-              console.log('Multilanguage (widget-design) ***** GET labels ***** No default Lang  ', translation);
-
-
+              console.log('Multilanguage (widget-design) ***** GET labels ***** No default Lang *****  ', translation);
+              // this.translateAndDisplayModalNoDefaultLangIsSet()
             }
 
             // if (translation.lang === 'EN') {
@@ -588,6 +591,13 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
             // }
           }
         });
+
+
+        console.log('Multilanguage (widget-design) ***** GET labels ***** defaultLangCode (onInit) 2', this.defaultLangCode);
+
+        if (this.defaultLangCode === undefined)  {
+          this.translateAndDisplayModalNoDefaultLangIsSet();
+        }
 
         console.log('Multilanguage (widget-design) ***** GET labels ***** - Array of LANG CODE ', this.languages_codes);
 
@@ -612,12 +622,12 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
         } else {
 
           // ci sono le lebels ma nessuna assegnata al progetto
-          this.translateLangAreNotSetNotAndDisplayModal();
+          this.translateAndDisplayModalNoLangAreSet();
         }
       } else {
 
         // labels is null
-        this.translateLangAreNotSetNotAndDisplayModal();
+        this.translateAndDisplayModalNoLangAreSet();
       }
 
     }, error => {
@@ -629,7 +639,80 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     });
   }
 
-  translateLangAreNotSetNotAndDisplayModal() {
+  translateAndDisplayModalNoDefaultLangIsSet() {
+    this.translate.get('NoDefaultLanguage')
+      .subscribe((text: any) => {
+        this.warningMsg = text['Warning'];
+        this.noDefaultLanguageIsSetUpMsg = text['NoDefaultLanguageIsSetUp'];
+        this.goToMultilanguagePageMsg = text['GoToMultilanguagePage'];
+        this.toAddLanguagesToYourProjectMsg = text['toAddLanguagesToYourProject'];
+        this.cancelMsg = text['Cancel'];
+        this.noLanguagesAreSetUpMsg = text['NoLanguagesAreSetUp'];
+        this.setDefaultLangInMultilanguageSection = text['SetYourDefaultLanguageInTheMultilanguageSection'];
+        this.goToMultilanguageSectionMsg = text['GoToMultilanguageSection'];
+        // this.noDefaultLanguageIsSetUpMsg = text;
+        // console.log('WIDGET DESIGN - translateNoDefaultLanguageIsSetUp warningMsg', this.warningMsg);
+        // console.log('WIDGET DESIGN - translateNoDefaultLanguageIsSetUp noDefaultLanguageIsSetUpMsg', this.noDefaultLanguageIsSetUpMsg)
+      }, (error) => {
+        // console.log('WIDGET DESIGN - translateNoDefaultLanguageIsSetUp - ERROR ', error);
+      }, () => {
+        // console.log('WIDGET DESIGN - translateNoDefaultLanguageIsSetUp * COMPLETE *');
+
+        this.displayModalNoDefaultLangIsSetUp()
+      });
+
+  }
+
+  displayModalNoDefaultLangIsSetUp() {
+    // const el = document.createElement('div');
+    // const url = '#/project/' + this.id_project + '/widget-set-up'
+    // el.innerHTML = `${this.noDefaultLanguageIsSetUpMsg} <a href="${url}"> ${this.goToMultilanguagePageMsg}</a>  ${this.toAddLanguagesToYourProjectMsg}</a>`
+    swal({
+      title: this.warningMsg,
+      text: this.noDefaultLanguageIsSetUpMsg + '. ' + this.setDefaultLangInMultilanguageSection,
+      // content: el,
+      icon: "warning",
+      buttons: {
+        cancel: `${this.cancelMsg}`,
+        catch: {
+          text: `${this.goToMultilanguageSectionMsg}`,
+          value: "catch",
+        },
+      },
+
+      // `"Cancel", ${this.goToMultilanguagePageMsg}`],
+      dangerMode: false,
+    })
+      .then((value) => {
+        console.log('displayModalNoDefaultLangAreSetUp value', value)
+
+        if (value === 'catch') {
+          this.scrollToMultilanguageSection()
+        }
+      })
+  }
+
+
+  scrollToMultilanguageSection() {
+    this.multilanguageRef.nativeElement.scrollIntoView({ behavior: "smooth", block: "start" });
+
+    var acc = document.getElementsByClassName("widget-section-accordion");
+    // console.log('WIDGET DESIGN ACCORDION', acc);
+    var i;
+    for (i = 0; i < acc.length; i++) {
+      var lastAccordion = acc[5];
+      var lastPanel = <HTMLElement>lastAccordion.nextElementSibling;
+      lastAccordion.classList.add("active");
+      lastPanel.style.maxHeight = lastPanel.scrollHeight + "px";
+      var arrow_icon_div = lastAccordion.children[1];
+      var arrow_icon = arrow_icon_div.children[0]
+      arrow_icon.classList.add("arrow-up");
+    }
+
+  } 
+
+
+  translateAndDisplayModalNoLangAreSet() {
     this.translate.get('NoDefaultLanguage')
       .subscribe((text: any) => {
         this.warningMsg = text['Warning'];
@@ -758,7 +841,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
 
       if (translation.default === true) {
         this.defaultLangCode = translation.lang.toLowerCase()
-
+        console.log('Multilanguage (widget-design) ***** GET labels ***** defaultLangCode (makeDefaultLanguage) ', this.defaultLangCode);
       }
     }, error => {
       console.log('Multilanguage (widget-design) - MAKE DAFAULT LANG - ERROR ', error);
@@ -781,10 +864,6 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     console.log('Multilanguage (widget-design) - WELCOME MSG CHANGE: ', this.welcomeMsg);
     // if (event.length === 0) {  }
   }
-
-
-
-
 
 
   onChangeReplyTimeTypeMsg(value) {
@@ -890,16 +969,12 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   }
 
 
-
-
-
   calloutTitleChange(event) {
     this.calloutTitle = event;
     console.log('Multilanguage (widget-design) - CALLOUT TITLE CHANGE: ', this.calloutTitle);
     // if (event.length === 0) {   }
     this.checkIsEmoji(this.calloutTitle.trim())
   }
-
 
 
   checkIsEmoji(calloutTitle) {
@@ -942,9 +1017,6 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
       // }
     }
   }
-
-
-
 
   // checkIsEmoji(calloutTitle) {
   //   let title = calloutTitle
@@ -1003,6 +1075,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   onSelectlang(selectedLang) {
     console.log('Multilanguage (widget-design) onSelectlang selectedLang ', selectedLang);
     this.selectedLangCode = selectedLang.code;
+    console.log('Multilanguage (widget-design) ***** GET labels ***** onSelectlang (onSelectlang) ', this.selectedLangCode);
     this.selectedLangName = selectedLang.name;
     if (selectedLang) {
       this.getCurrentTranslation(selectedLang.code);
@@ -1040,7 +1113,19 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   }
 
   saveLabels() {
-    this.widgetService.editLabels(this.selectedLangCode.toUpperCase(), this.selected_translation)
+    console.log('Multilanguage (widget-design) ***** selectedLangCode (saveLabels) ', this.selectedLangCode);
+    console.log('Multilanguage (widget-design) ***** defaultLangCode (saveLabels) ', this.defaultLangCode);
+
+    let isdefault = null
+
+    if (this.selectedLangCode === this.defaultLangCode) {
+      isdefault = true
+    }  else {
+      isdefault = false
+    }
+
+
+    this.widgetService.editLabels(this.selectedLangCode.toUpperCase(), isdefault, this.selected_translation)
       .subscribe((labels: any) => {
         console.log('Multilanguage (widget-design) - saveTranslation RES ', labels);
 
