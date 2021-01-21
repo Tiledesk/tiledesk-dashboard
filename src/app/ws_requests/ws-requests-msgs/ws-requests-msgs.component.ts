@@ -2099,35 +2099,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
 
-  // ---------------------------------------------------------------------------------------
-  // @ Arttributes
-  // ---------------------------------------------------------------------------------------
-  openAttributesAccordion() {
 
-    // var acc = document.getElementsByClassName("accordion");
-    var acc = <HTMLElement>document.querySelector('.attributes-accordion');
-    console.log('% Ws-REQUESTS-Msgs - open attributes-accordion -  accordion elem ', acc);
-    acc.classList.toggle("active");
-    // var panel = acc.nextElementSibling ;
-    var panel = <HTMLElement>document.querySelector('.attributes-panel')
-    console.log('% Ws-REQUESTS-Msgs -  open attributes-accordion  -  panel ', panel);
-
-    // this.thisIsCalledWhenNewItemISAdded();
-    // let ps = new PerfectScrollbar(panel);
-    // if (panel.style.maxHeight) {
-    //   panel.style.maxHeight = null;
-    // } else {
-    //   panel.style.maxHeight = "300px";
-    //   panel.scrollTop = 0;
-    // }
-
-    if (panel.style.maxHeight) {
-      panel.style.maxHeight = null;
-    } else {
-      panel.style.maxHeight = panel.scrollHeight + "px";
-    }
-
-  }
 
   thisIsCalledWhenNewItemISAdded() {
 
@@ -2308,6 +2280,35 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       });
   }
 
+  // ---------------------------------------------------------------------------------------
+  // @ Attributes accordion
+  // ---------------------------------------------------------------------------------------
+  openAttributesAccordion() {
+
+    // var acc = document.getElementsByClassName("accordion");
+    var acc = <HTMLElement>document.querySelector('.attributes-accordion');
+    console.log('% Ws-REQUESTS-Msgs - open attributes-accordion -  accordion elem ', acc);
+    acc.classList.toggle("active");
+    // var panel = acc.nextElementSibling ;
+    var panel = <HTMLElement>document.querySelector('.attributes-panel')
+    console.log('% Ws-REQUESTS-Msgs -  open attributes-accordion  -  panel ', panel);
+
+    // this.thisIsCalledWhenNewItemISAdded();
+    // let ps = new PerfectScrollbar(panel);
+    // if (panel.style.maxHeight) {
+    //   panel.style.maxHeight = null;
+    // } else {
+    //   panel.style.maxHeight = "300px";
+    //   panel.scrollTop = 0;
+    // }
+
+    if (panel.style.maxHeight) {
+      panel.style.maxHeight = null;
+    } else {
+      panel.style.maxHeight = panel.scrollHeight + "px";
+    }
+
+  }
 
 
 
