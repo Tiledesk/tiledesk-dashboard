@@ -3,6 +3,7 @@
 
 ### 2.1.4
 - Adds the ability in 'Routing and Depts' to create a new group 'on the fly'
+- Adds a link in "Routing and Depts" next to the name of the group assigned to the department that directs to the group editing page
 
 ### 2.1.3
 - Merges Routing and Departments in a single menu item
