@@ -185,6 +185,8 @@
 	"RequestHasBeenArchivedNoticationMsg_part1": "Anfrage mit id: ",
 	"RequestSuccessfullyClosed": "Anfrage erfolgreich geschlossen",
 	"RequestHasBeenArchivedNoticationMsg_part2": " wurde in den Verlauf verschoben",
+	"CreatedGroupSuccessMsg": "Gruppe erfolgreich erstellt",
+	"CreatedGroupErrorMsg": "Beim Erstellen der Gruppe ist ein Fehler aufgetreten",
 	"UpdateGroupSuccessNoticationMsg": "Gruppe erfolgreich aktualisiert",
 	"UpdateGroupErrorNoticationMsg": "Ein Fehler ist während der Aktualisierung der Gruppe aufgetreten",
 	"RemoveGroupMemberSuccessNoticationMsg": "Mitglied erfolgreich entfernt",
@@ -839,6 +841,8 @@
 		"AddGroup": "Gruppe hinzufügen",
 		"EditGroup": "Gruppe bearbeiten",
 		"GroupName": "Name",
+		"Group_Name": "Gruppenname",
+		"AddTeammatesToGroup":"Füge Teamkollegen zur Gruppe hinzu",
 		"UpdateGroup": "Gruppe aktualisieren",
 		"Processing": "Verarbeiten...",
 		"Completed": "Abgeschlossen",
@@ -1040,6 +1044,7 @@
 		"Trashed": "gelöscht",
 		"SelectABot": "Bot auswählen",
 		"orCreateABot": "neuen Bot erstellen",
+		"orCreateAGroup": "neuen Gruppe erstellen",
 		"SelectAnExistingOne": "wählen Sie eine vorhandene oder",
 		"CreateDept": "Abteilung erstellen",
 		"UpdateDept": "Abteilung aktualisieren",
@@ -1741,5 +1746,6 @@
 	"DeptQuickTips_5":"Die Standardabteilung wird automatisch deaktiviert, wenn mindestens eine andere Abteilung vorhanden ist, deren Sichtbarkeitsstatus auf sichtbar gesetzt ist.",
 	"DeptQuickTips_6":"Wenn nur die Standardabteilung vorhanden ist oder wenn andere Abteilungen vorhanden sind, der Sichtbarkeitsstatus jedoch auf 'Nicht sichtbar' gesetzt ist, werden die Anforderungen der Besucher gemäß den Regeln der Standardabteilung weitergeleitet.",
 	"DeptQuickTips_7":"Wenn es mehr als eine Abteilung gibt, aber nur eine den Sichtbarkeitsstatus auf 'Sichtbar' gesetzt hat, werden Besucheranfragen implizit gemäß den Regeln dieser Abteilung weitergeleitet (es ist weiterhin möglich, Anfragen über die API an 'Nicht sichtbar' -Abteilungen weiterzuleiten).",
-	"DeptQuickTips_8":"Wenn für mindestens zwei Abteilungen der Sichtbarkeitsstatus auf Sichtbar festgelegt ist, können Besucher über das entsprechende Widget-Auswahlmenü auswählen, an welche Abteilung Anforderungen weitergeleitet werden sollen."
+	"DeptQuickTips_8":"Wenn für mindestens zwei Abteilungen der Sichtbarkeitsstatus auf Sichtbar festgelegt ist, können Besucher über das entsprechende Widget-Auswahlmenü auswählen, an welche Abteilung Anforderungen weitergeleitet werden sollen.",
+	"Edit":"bearbeiten"
 }

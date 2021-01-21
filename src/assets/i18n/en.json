@@ -185,6 +185,8 @@
     "RequestHasBeenArchivedNoticationMsg_part1": "Conversation with id: ",
     "RequestSuccessfullyClosed": "Conversation successfully closed",
     "RequestHasBeenArchivedNoticationMsg_part2": " has been moved to History",
+    "CreatedGroupSuccessMsg": "Group successfully created",
+    "CreatedGroupErrorMsg": "An error occurred while creating the group",
     "UpdateGroupSuccessNoticationMsg": "Group successfully updated",
     "UpdateGroupErrorNoticationMsg": "An error occurred while updating the group",
     "RemoveGroupMemberSuccessNoticationMsg": "Member successfully removed",
@@ -839,6 +841,8 @@
         "AddGroup": "Add Group",
         "EditGroup": "Edit Group",
         "GroupName": "Name",
+        "Group_Name": "Group name",
+        "AddTeammatesToGroup":"Add teammates to group",
         "UpdateGroup": "Update Group",
         "Processing": "Processing...",
         "Completed": "Completed",
@@ -1040,6 +1044,7 @@
         "Trashed": "trashed",
         "SelectABot": "Select a Bot",
         "orCreateABot": "create a new Bot",
+        "orCreateAGroup": "create a new group",
         "SelectAnExistingOne": "select an existing one or",
         "CreateDept": "Create Department",
         "UpdateDept": "Update Department",
@@ -1741,5 +1746,6 @@
     "DeptQuickTips_5":"The Default Department will be automatically disabled if there is at least one other department whose visibility status is set to visible",
     "DeptQuickTips_6":"If exists only the Default Department or if there are other departments but with visibility status set to 'Not Visible', the visitors' requests will be routed according to the rules of the Default Department.",
     "DeptQuickTips_7":"If there are more than one department but only one has the visibility status set to 'Visible', visitor's requests will be implicitly routed according to the rules of this department (it is still possible to route requests via API to 'Not Visible' departments)",
-    "DeptQuickTips_8":"If at least two departments have the visibility status set to 'Visible', visitors will be able to choose which department to route requests to through the appropriate widget selection menu."
+    "DeptQuickTips_8":"If at least two departments have the visibility status set to 'Visible', visitors will be able to choose which department to route requests to through the appropriate widget selection menu.",
+    "Edit":"edit"
 }
