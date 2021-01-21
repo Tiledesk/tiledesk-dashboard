@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.1.4
+- Adds the ability in 'Routing and Depts' to create a new group 'on the fly'
+
 ### 2.1.3
 - Merges Routing and Departments in a single menu item
 - Fixes the default language is lost when its labels are updated (in widget set up page and in multilanguage page)
