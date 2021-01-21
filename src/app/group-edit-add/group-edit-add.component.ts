@@ -7,7 +7,7 @@ import { UsersService } from '../services/users.service';
 import { NotifyService } from '../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AppConfigService } from '../services/app-config.service';
-
+import { Location } from '@angular/common';
 @Component({
   selector: 'app-group-edit-add',
   templateUrl: './group-edit-add.component.html',
@@ -70,6 +70,7 @@ export class GroupEditAddComponent implements OnInit {
     private usersService: UsersService,
     private notify: NotifyService,
     private translate: TranslateService,
+    public location: Location,
     public appConfigService: AppConfigService
   ) { }
 
@@ -393,6 +394,10 @@ export class GroupEditAddComponent implements OnInit {
 
   goBackGroupList() {
     this.router.navigate(['project/' + this.project_id + '/groups']);
+  }
+
+  goBack() {
+    this.location.back();
   }
 
   open_users_list_modal() {
