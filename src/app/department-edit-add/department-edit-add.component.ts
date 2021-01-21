@@ -1,5 +1,5 @@
 // tslint:disable:max-line-length
-import { Component, OnInit, Input, Output, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, Output, AfterViewInit, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { DepartmentService } from '../services/department.service';
@@ -16,7 +16,7 @@ import { slideInOutAnimation } from '../_animations/index';
 import { UsersService } from '../services/users.service';
 import { avatarPlaceholder, getColorBck } from '../utils/util';
 import { AppConfigService } from '../services/app-config.service';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+
 declare const $: any;
 
 @Component({
@@ -31,6 +31,8 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit {
 
   @Input() ws_requestslist_deptIdSelected: string;
   @Input() display_dept_sidebar: boolean;
+
+  @ViewChild("navbarbrand") private navbarbrandRef: ElementRef;
 
   CREATE_VIEW = false;
   EDIT_VIEW = false;
@@ -85,6 +87,14 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit {
   display_btn_read_all_descr: boolean;
   read_all: boolean
 
+  OPEN_CREATE_GROUP_RIGHT_SIDEBAR = false;
+  train_bot_sidebar_height: any;
+  newInnerWidth: any;
+  newInnerHeight: any;
+  main_content_height: any
+new_group_created_id: string;
+
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -99,6 +109,35 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit {
     private usersService: UsersService,
     public appConfigService: AppConfigService
   ) { }
+
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+
+    this.newInnerWidth = event.target.innerWidth;
+    console.log('DEPT-EDIT-ADD - ON RESIZE -> WINDOW WITH ', this.newInnerWidth);
+
+
+    this.newInnerHeight = event.target.innerHeight;
+    console.log('DEPT-EDIT-ADD - ON RESIZE -> WINDOW HEIGHT ', this.newInnerHeight);
+
+    const elemMainContent = <HTMLElement>document.querySelector('.main-content');
+    this.main_content_height = elemMainContent.clientHeight
+    console.log('DEPT-EDIT-ADD - ON RESIZE -> MAIN CONTENT HEIGHT', this.main_content_height);
+
+    // determine the height of the modal when the width of the window is <= of 991px when the window is resized
+    // RESOLVE THE BUG: @media screen and (max-width: 992px) THE HEIGHT OF THE  MODAL 'USERS LIST' IS NOT 100%
+    // if (this.newInnerWidth <= 991) { // nk gli tolgo la condizione dato che il bug si verifica anche pima del @media < 992
+    this.train_bot_sidebar_height = elemMainContent.clientHeight + 'px'
+    // console.log('%%% Ws-REQUESTS-Msgs - *** MODAL HEIGHT ***', this.users_list_modal_height);
+    // }
+
+    // ------------------------------
+    // Right sidebar width on resize
+    // ------------------------------
+    // const rightSidebar = <HTMLElement>document.querySelector(`.right-card`);
+    // this.rightSidebarWidth = rightSidebar.offsetWidth
+  }
 
   ngOnInit() {
     this.auth.checkRoleForCurrentProject();
@@ -180,9 +219,41 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit {
     this.translateNotificationMsgs()
   }
 
+
+  // CREATE GROUP RIGHT SIDEBAR
+  openCreateGroupRightSideBar() {
+    this.navbarbrandRef.nativeElement.scrollIntoView({ behavior: "smooth", block: "start" });
+
+    this.OPEN_CREATE_GROUP_RIGHT_SIDEBAR = true
+    console.log('DEPT EDIT-ADD - OPEN CREATE GROUP SIDEBAR ', this.OPEN_CREATE_GROUP_RIGHT_SIDEBAR);
+
+    const elemMainContent = <HTMLElement>document.querySelector('.main-content');
+    this.train_bot_sidebar_height = elemMainContent.clientHeight + 10 + 'px'
+    console.log('DEPT EDIT-ADD  - OPEN CREATE GROUP SIDEBAR -> RIGHT SIDEBAR HEIGHT', this.train_bot_sidebar_height);
+    // const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
+    const elemFooter = <HTMLElement>document.querySelector('footer');
+    elemFooter.setAttribute('style', 'display:none;');
+    // _elemMainPanel.setAttribute('style', 'overflow-x: unset !important;');
+  }
+
+  handleCloseCreateGroupSidebar(event) {
+    this.OPEN_CREATE_GROUP_RIGHT_SIDEBAR = event;
+    console.log('DEPT EDIT-ADD - CLOSE CREATE GROUP SIDEBAR ', this.OPEN_CREATE_GROUP_RIGHT_SIDEBAR);
+    const elemFooter = <HTMLElement>document.querySelector('footer');
+    elemFooter.setAttribute('style', '');
+  }
+
+  handleNewGroupCreatedFromSidebar(event) {
+    console.log('DEPT EDIT-ADD - handleNewGroupCreatedFromSidebar ', event);
+    if (event) {
+      this.new_group_created_id = event
+      this.getGroupsByProjectId();
+    }
+  }
+
   getParamsAndDeptById() {
     this.id_dept = this.route.snapshot.params['deptid'];
-    console.log('DEPATMENT COMPONENT HAS PASSED id_DEPT ', this.id_dept);
+    console.log('DEPT EDIT-ADD - DEPATMENT COMPONENT HAS PASSED id_DEPT ', this.id_dept);
     if (this.id_dept) {
       this.getDeptById();
 
@@ -208,7 +279,7 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit {
   getStorageBucket() {
     const firebase_conf = this.appConfigService.getConfig().firebase;
     this.storageBucket = firebase_conf['storageBucket'];
-    console.log('STORAGE-BUCKET DEPT EDIT-ADD ', this.storageBucket)
+    console.log('STORAGE-BUCKET (DEPT EDIT-ADD) ', this.storageBucket)
   }
 
   getUsersAndGroup() {
@@ -733,7 +804,10 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit {
 
   goToMemberProfile(memberid) {
     this.getProjectuserbyUseridAndGoToEditProjectuser(memberid)
+  }
 
+  goToEditGroup() {
+    this.router.navigate(['project/' + this.project._id + '/group/edit/' + this.selectedGroupId]);
   }
 
   getProjectuserbyUseridAndGoToEditProjectuser(member_id: string) {

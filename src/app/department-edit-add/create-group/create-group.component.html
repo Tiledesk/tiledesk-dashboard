@@ -1,53 +1,56 @@
 <!-- [ngStyle]="{ 'width': newInnerWidth + px }" -->
-<div #scrollMe  class="create-group-right-side-bar">
+<div #scrollMe class="create-group-right-side-bar">
 
 
-  <div class="create-group-right-side-bar-title-wrap" style="">
-    <h5 class="create-group-right-side-bar-title" style="">
+  <div class="create-group-right-side-bar-title-wrap">
+    <h5 class="create-group-right-side-bar-title">
 
       {{ "DeptsAddEditPage.orCreateAGroup" | translate }}
-      <i class="material-icons close-right-side-bar" style="" (click)="closeCreateGroupRightSideBar()">close</i>
+      <i class="material-icons close-right-side-bar" (click)="closeCreateGroupRightSideBar()">close</i>
     </h5>
   </div>
-  
+
   <div class="row" style="margin-bottom: 15px;">
-    <label class="col-xs-12 custom-label">
-      {{ "Name" | translate}}
+    <label class="col-xs-12 custom-label-in-sidebar" side>
+      {{ "GroupsAddEditPage.Group_Name" | translate}}
     </label>
     <div class="col-xs-12">
-      <input [(ngModel)]="group_name" placeholder='{{ "DeptsAddEditPage.DeptName" | translate}}'
-        class="input" type="text" style="margin-top: 2px;margin-bottom: 5px;">
+      <div class="group-name-input-wrap">
+      <input [(ngModel)]="group_name" class="input" (ngModelChange)="onChangeGroupName($event)"
+        type="text" style="margin-top: 2px;margin-bottom: 5px;">
+      </div>
     </div>
   </div>
-  
-  <div class="row" >
+
+  <div class="row">
     <div class="col-md-12">
-      <div class="card card--no-border " style="margin-top: 0px; margin-bottom: 0px;width:unset !important ;">
+      <div class="card" style="margin-top: 0px; margin-bottom: 0px;">
 
         <loading-spinner *ngIf="showSpinner"></loading-spinner>
 
-        <div *ngIf="!showSpinner" class="card-content table-responsive" style="overflow-y: auto;  padding: 15px 10px;">
-          <table class="table table-hover">
+        <div *ngIf="!showSpinner" class="card-content table-responsive "
+          style="padding: 10px 10px;">
+          <table class="table table-hover teammates-list-table" >
             <!-- style="color: #f9f9f9" -->
             <thead>
               <tr>
                 <th style="text-align: center;">
-                  <span class="th-right-sidebar">
+                  <span class="th-right-sidebar-col-title">
                     {{ "GroupsAddEditPage.Select" | translate }}
                   </span>
                 </th>
                 <th>
-                  <span class="th-right-sidebar">
+                  <span class="th-right-sidebar-col-title" style="text-transform: capitalize;">
                     {{ "Teammate" | translate }}
                   </span>
                 </th>
                 <th>
-                  <span class="th-right-sidebar">
+                  <span class="th-right-sidebar-col-title">
                     {{ "GroupsAddEditPage.Role" | translate }}
                   </span>
                 </th>
                 <th>
-                  <span class="th-right-sidebar">
+                  <span class="th-right-sidebar-col-title">
                     Email
                   </span>
                 </th>
@@ -62,7 +65,7 @@
                     <label>
                       <input [disabled]="project_user?.is_group_member" [checked]="project_user?.is_group_member"
                         type="checkbox" class="form-check-input" style="width: 16px;height: 16px;"
-                        value="{{project_user?.id_user?._id}}" (click)="createGroup(project_user?.id_user?._id)">
+                        value="{{project_user?.id_user?._id}}" (click)="addMembersToArray(project_user?.id_user?._id)">
                     </label>
                   </div>
                 </td>
@@ -93,18 +96,20 @@
 
         </div>
 
-      
+
       </div>
     </div>
   </div>
 
-<div class="div-save-group" style="    background: beige;
-position: fixed;
-bottom: 0px;
-/* left: 50%; */
-/* margin-left: -104.5px; */
+  <div class="row">
+    <div class="col-md-12">
+      <div class="add-teammates-to-group-wrap">
+        <button #searchbtnbottom type="submit" class="btn btn-tdblu-no-boxshadow pull-right" (click)="createGroupAndAddMembers()"
+          style="padding:9px 30px; width: 100%;" [disabled]="create_group_and_add_members_btn_disabled">
 
-width: 100%;"> SAVE</div>
-
-
+          {{'GroupsAddEditPage.AddTeammatesToGroup' | translate}}
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

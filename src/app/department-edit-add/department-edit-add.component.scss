@@ -18,25 +18,23 @@ input[type="text"] {
   border: solid 1px #ddd;
 }
 
-
-.dept-name-input-wrap > input[type="text"]{
+.dept-name-input-wrap > input[type="text"] {
   height: 36px;
   font-size: 14px;
   width: 100%;
   margin-bottom: 10px;
   -webkit-appearance: none;
-   padding: 0 8px;
+  padding: 0 8px;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   border-radius: 5px;
-  background-color: #fff ;
+  background-color: #fff;
   border: solid 1px #ddd;
 }
 
 .dept-name-input-wrap > .input-dept-name-disbled {
   background-color: #eee !important;
 }
-
 
 textarea[type="text"] {
   // min-width: 307px !important;
@@ -63,7 +61,7 @@ select {
   height: 36px;
   // height: 26px;
   background: #fff;
-  border-radius: 0px;
+  border-radius: 5px;
   border-color: #d9d9d9;
   width: 100%;
   // max-width: 253px;
@@ -236,9 +234,10 @@ input[type="radio"] {
 .selected-routing-info {
   vertical-align: middle;
   display: inline-flex;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 400;
-  color: rgba(0, 0, 0, 0.54);
+  // color: rgba(0, 0, 0, 0.54);
+  color: #7695a5;
 }
 
 .no_padding_left_col {
@@ -577,3 +576,14 @@ select[disabled] {
 }
 // ./end SWITCH BTN
 
+@media (max-width: 768px) {
+  .sidebar-hidden-767 {
+    display: none;
+  }
+}
+
+.edit-group-link {
+  color: #03a5e8;
+  cursor: pointer;
+  text-transform: lowercase;
+}

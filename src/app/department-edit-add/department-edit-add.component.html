@@ -1,4 +1,5 @@
-<div *ngIf="ROUTING_PAGE_MODE === false" class="navbar-brand"
+<!-- *ngIf="ROUTING_PAGE_MODE === false"  -->
+<div #navbarbrand class="navbar-brand"
   style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px">
 
   <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
@@ -13,16 +14,16 @@
   </span>
 </div>
 
-<p *ngIf="ROUTING_PAGE_MODE === true" class="navbar-brand"
+<!-- <p *ngIf="ROUTING_PAGE_MODE === true" class="navbar-brand"
   style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px">
   Routing
-</p>
+</p> -->
 
 <div class="main-content main_content_no_left_right_padding" style="padding-top:0px">
   <div class="container-fluid">
 
     <div class="row">
-      <div class="col-md-8 no_padding_left_col">
+      <div class="col-sm-8 col-md-8 no_padding_left_col">
         <div class="card card-padding" style="padding-top:12px; padding-bottom:12px; margin-top: 5px;">
           <loading-spinner *ngIf="showSpinner"></loading-spinner>
           <div *ngIf="!showSpinner" class="card-content">
@@ -60,7 +61,12 @@
               </div>
             <!-- </section> -->
 
-            <!-- *ngIf="ROUTING_PAGE_MODE === true" -->
+           
+            <!--
+            // ------------------------------------------------------------------------------
+            // Section of info displayed if the selected department is the default department
+            // ------------------------------------------------------------------------------ -->
+             <!-- *ngIf="ROUTING_PAGE_MODE === true" -->
             <section *ngIf="IS_DEFAULT_DEPT === true">
               <div class="row">
                 <div class="col-xs-12">
@@ -83,7 +89,6 @@
                   </div>
                 </div>
               </div>
-
             </section>
 
 
@@ -131,7 +136,7 @@
                       style="background-color: #fff;box-shadow: none; padding: 0px; margin-bottom:10px">
 
                       <span
-                        style="vertical-align: middle; display: inline-flex;font-size: 12px; color: rgba(0,0,0,.54);">
+                        style="vertical-align: middle; display: inline-flex;font-size: 12px; color: rgba(0,0,0,.54);font-weight: 400;">
                         {{ "DeptsAddEditPage.SelectABotThatWill" | translate  }}
                       </span>
                     </div>
@@ -168,7 +173,7 @@
                     // Create a new bot link
                     // ------------------------------------------------------------------- -->
                     <span
-                      style="display: block;font-size: 12px;font-weight: 100; color: #7695a5; line-height: 1.2em; padding-top: 3px;">
+                      style="display: block;font-size: 12px;font-weight: 400; color: #7695a5; line-height: 1.2em; padding-top: 3px;">
                       {{ "DeptsAddEditPage.SelectAnExistingOne" | translate }}
                       <span style="color: #03a5e8; cursor:pointer;" (click)="goTo_BotEditAddPage_CREATE()">
 
@@ -191,7 +196,6 @@
                       </label>
                     </div> -->
                   </div>
-
                 </div>
 
 
@@ -217,16 +221,15 @@
 
                 <!-- 
                 // -------------------------------------------------------------------
-                // Alert set routing rules
+                // Description set routing rules
                 // ------------------------------------------------------------------- -->
-
                 <section [ngClass]="{'disabled-label' : onlybot_disable_routing}">
                   <div class="row">
                     <div class="col-sm-12">
                       <div class="alert"
                         style="background-color: #fff;  box-shadow: none;padding: 0px; margin-bottom:10px">
                         <span
-                          style="vertical-align: middle; display: inline-flex;font-size: 12px; color: rgba(0,0,0,.54);">
+                          style="vertical-align: middle; display: inline-flex;font-size: 12px; color: rgba(0,0,0,.54); font-weight: 400;">
                           {{ "DeptsAddEditPage.SetRoutingRules" | translate  }}
                         </span>
                       </div>
@@ -274,7 +277,7 @@
 
                   <!-- 
                 // -------------------------------------------------------------------
-                // Combo box Assign to 
+                // Combo box Assign to Group
                 // ------------------------------------------------------------------- -->
                   <div class="row" style="margin-top: 12px;">
                     <label class="col-sm-2 custom-label" style="white-space: nowrap;">
@@ -306,9 +309,24 @@
                         </option>
                       </select>
 
+                          <!-- 
+                    // -------------------------------------------------------------------
+                    // Create a new group link
+                    // ------------------------------------------------------------------- -->
+                    <span
+                    style="display: block;font-size: 12px;font-weight: 400; color: #7695a5; line-height: 1.2em; padding-top: 3px;">
+                    {{ "DeptsAddEditPage.SelectAnExistingOne" | translate }}
+                    <span style="color: #03a5e8; cursor:pointer;" (click)="openCreateGroupRightSideBar()">
+
+                      {{ "DeptsAddEditPage.orCreateAGroup" | translate }}
+                    </span>
+                  </span>
+
                     </div>
                   </div>
                 </section>
+
+               
 
 
                 <!-- 
@@ -490,7 +508,7 @@
       // ---------------------------------------------------
       // RIGHT SIDEBAR in CREATE VIEW
       // --------------------------------------------------- -->
-      <div *ngIf="CREATE_VIEW" class="col-md-4 no_padding_right_col">
+      <div *ngIf="CREATE_VIEW" class="col-sm-4 col-md-4 no_padding_right_col" [ngClass]="{'sidebar-hidden-767': OPEN_CREATE_GROUP_RIGHT_SIDEBAR}">
         <div class="card" style="padding-top: 8px;margin-top: 5px;">
           <div class="card-content" style="padding-top: 0px;">
             <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 15px">
@@ -594,7 +612,7 @@
       // ---------------------------------------------------
       // RIGHT SIDEBAR in edit view
       // --------------------------------------------------- -->
-      <div id="right_edit_card" *ngIf="EDIT_VIEW" class="col-md-4 no_padding_right_col">
+      <div id="right_edit_card" *ngIf="EDIT_VIEW" class="col-sm-4 col-md-4 no_padding_right_col" [ngClass]="{'sidebar-hidden-767': OPEN_CREATE_GROUP_RIGHT_SIDEBAR}">
         <div class="card" style="padding-top: 8px;margin-top: 5px;">
           <!-- <div class="card-content" style="padding-top: 8px;"> -->
           <!-- <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 15px">
@@ -682,7 +700,7 @@
             <div class="row" style="margin-top:5px">
               <div class="col-sm-12" style="border-top: 1px solid #dadde1;">
 
-                <p class="row-header" style="">
+                <p class="row-header">
                   <span style="vertical-align: middle;">
                     {{ 'DeptsAddEditPage.DeptBot' | translate }}
                   </span>
@@ -779,7 +797,7 @@
               <!-- border-bottom: 1px solid #dadde1; -->
               <div class="col-sm-12" style="border-top: 1px solid #dadde1;">
 
-                <p class="row-header" style="">
+                <p class="row-header">
                   <span style="vertical-align: middle;">
                     {{ 'DeptsAddEditPage.DeptAgents' | translate }}
                   </span>
@@ -797,9 +815,21 @@
                     {{ 'DepartmentsPage.Group' | translate }}
                     <span style="text-transform: uppercase;">
                       {{ group_name }}
+                     
+                      <span class="edit-group-link tool_tip" (click)="goToEditGroup()">
+                        ({{'Edit' | translate}}) 
+
+                        <span class="bottom" style="min-width: fit-content; text-align: center;top: 30px;line-height: 15px;"> 
+                         
+                         <span style="white-space: nowrap; text-transform: capitalize;"> {{ 'GroupsPage.tooltipEditGroup' | translate }} </span> 
+                         <span style="display: block; white-space: nowrap; text-transform: none;">{{ group_name }} </span>  
+                          
+                          <i></i>
+                        </span>
+                      </span>
                     </span>
                   </span>
-
+                  
                 </p>
 
 
@@ -890,3 +920,10 @@
 
 </div>
 <!-- /. main-content -->
+
+<!-- [ngStyle]="{'height':train_bot_sidebar_height }" [selectedQuestion]="selectedQuestion" -->
+<div *ngIf="OPEN_CREATE_GROUP_RIGHT_SIDEBAR === true" class="view-side">
+  <!-- [ngStyle]="{'height':train_bot_sidebar_height }" [newInnerWidth]="newInnerWidth" -->
+  <appdashboard-create-group [ngStyle]="{'height':train_bot_sidebar_height }" [newInnerWidth]="newInnerWidth" [deptName_toUpdate]="deptName_toUpdate"
+    (valueChange)='handleCloseCreateGroupSidebar($event)' (groupcreated)='handleNewGroupCreatedFromSidebar($event)' ></appdashboard-create-group>
+</div>
