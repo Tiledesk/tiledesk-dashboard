@@ -88,11 +88,12 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit {
   read_all: boolean
 
   OPEN_CREATE_GROUP_RIGHT_SIDEBAR = false;
+  OPEN_CREATE_BOT_RIGHT_SIDEBAR = false;
   train_bot_sidebar_height: any;
   newInnerWidth: any;
   newInnerHeight: any;
   main_content_height: any
-new_group_created_id: string;
+  new_group_created_id: string;
 
 
   constructor(
@@ -220,8 +221,15 @@ new_group_created_id: string;
   }
 
 
-  // CREATE GROUP RIGHT SIDEBAR
+
+  // -----------------------------------------------------------------------------
+  // @ CREATE GROUP RIGHT SIDEBAR
+  // -----------------------------------------------------------------------------
+
+  // OPEN * CREATE GROUP RIGHT SIDEBAR *
   openCreateGroupRightSideBar() {
+
+    // SCOLL TO TOP WHEN THE USER CLICK 'CREATE A NEW GROUP'
     this.navbarbrandRef.nativeElement.scrollIntoView({ behavior: "smooth", block: "start" });
 
     this.OPEN_CREATE_GROUP_RIGHT_SIDEBAR = true
@@ -236,6 +244,7 @@ new_group_created_id: string;
     // _elemMainPanel.setAttribute('style', 'overflow-x: unset !important;');
   }
 
+  // HALDLE OUTPUT 'CLOSE SIDEBAR' * CREATE GROUP RIGHT SIDEBAR *
   handleCloseCreateGroupSidebar(event) {
     this.OPEN_CREATE_GROUP_RIGHT_SIDEBAR = event;
     console.log('DEPT EDIT-ADD - CLOSE CREATE GROUP SIDEBAR ', this.OPEN_CREATE_GROUP_RIGHT_SIDEBAR);
@@ -243,6 +252,7 @@ new_group_created_id: string;
     elemFooter.setAttribute('style', '');
   }
 
+  // HALDLE OUTPUT 'GROUP CREATED' * CREATE GROUP RIGHT SIDEBAR *
   handleNewGroupCreatedFromSidebar(event) {
     console.log('DEPT EDIT-ADD - handleNewGroupCreatedFromSidebar ', event);
     if (event) {
@@ -250,6 +260,40 @@ new_group_created_id: string;
       this.getGroupsByProjectId();
     }
   }
+
+  // -----------------------------------------------------------------------------
+  // @ CREATE BOT RIGHT SIDEBAR
+  // -----------------------------------------------------------------------------
+  // OPEN * CREATE GROUP RIGHT SIDEBAR *
+  openCreateBotRightSideBar() {
+
+    // SCOLL TO TOP WHEN THE USER CLICK 'CREATE A NEW BOT'
+    this.navbarbrandRef.nativeElement.scrollIntoView({ behavior: "smooth", block: "start" });
+
+    this.OPEN_CREATE_BOT_RIGHT_SIDEBAR = true
+    console.log('DEPT EDIT-ADD - OPEN CREATE BOT SIDEBAR ', this.OPEN_CREATE_BOT_RIGHT_SIDEBAR);
+
+    const elemMainContent = <HTMLElement>document.querySelector('.main-content');
+    this.train_bot_sidebar_height = elemMainContent.clientHeight + 10 + 'px'
+    console.log('DEPT EDIT-ADD  - OPEN CREATE BOT SIDEBAR -> RIGHT SIDEBAR HEIGHT', this.train_bot_sidebar_height);
+    // const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
+    const elemFooter = <HTMLElement>document.querySelector('footer');
+    elemFooter.setAttribute('style', 'display:none;');
+    // _elemMainPanel.setAttribute('style', 'overflow-x: unset !important;');
+  }
+
+
+  // HALDLE OUTPUT 'CLOSE SIDEBAR' * CREATE BOT RIGHT SIDEBAR *
+  handleCloseCreateBotSidebar(event) {
+    this.OPEN_CREATE_BOT_RIGHT_SIDEBAR = event;
+    console.log('DEPT EDIT-ADD - CLOSE CREATE BOT SIDEBAR ', this.OPEN_CREATE_BOT_RIGHT_SIDEBAR);
+    const elemFooter = <HTMLElement>document.querySelector('footer');
+    elemFooter.setAttribute('style', '');
+  }
+
+
+
+
 
   getParamsAndDeptById() {
     this.id_dept = this.route.snapshot.params['deptid'];

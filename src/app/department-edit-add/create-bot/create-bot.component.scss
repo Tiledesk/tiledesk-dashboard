@@ -1,0 +1,67 @@
+.create-bot-right-side-bar {
+    position: absolute;
+    z-index: 100;
+    top: 0;
+    right: 0;
+    // width: 33%;
+    // min-width: 33%;
+    max-width: 90%;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: #fff;
+    padding-top: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-bottom: 15px;
+}
+
+.create-bot-right-side-bar-title-wrap {
+    border-bottom: 1px solid #eeeeee;
+    background-color: #3c4252 !important;
+    color: #fff !important;
+    margin-left: -20px;
+    margin-right: -20px;
+    margin-top: -15px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.create-bot-right-side-bar-title {
+    font-weight: 400;
+    text-transform: none;
+    margin-top: 0px;
+    font-size: 16px;
+    padding-top: 15px;
+    padding-left: 8px;
+    text-transform: uppercase;
+}
+
+.close-right-side-bar {
+    float: right;
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.1);
+    margin-right: 11px;
+    border-radius: 50%;
+    padding: 5px;
+    position: relative;
+    top: -5px;
+}
+
+.close-right-side-bar:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.bot-type-title {
+    font-family: "Google Sans", sans-serif;
+    font-weight: 400;
+    margin-top: 8px;
+    font-size: 16px;
+}
+
+.is_hidden {
+    display: none;
+}
+
+.bot-card {
+    width: 130px;
+}

@@ -128,7 +128,7 @@
 
                 <!-- 
                 // -------------------------------------------------------------------
-                // Alert select a bot that ..
+                // Description select a bot that ..
                 // ------------------------------------------------------------------- -->
                 <div class="row">
                   <div class="col-sm-12">
@@ -175,7 +175,8 @@
                     <span
                       style="display: block;font-size: 12px;font-weight: 400; color: #7695a5; line-height: 1.2em; padding-top: 3px;">
                       {{ "DeptsAddEditPage.SelectAnExistingOne" | translate }}
-                      <span style="color: #03a5e8; cursor:pointer;" (click)="goTo_BotEditAddPage_CREATE()">
+                      <!-- goTo_BotEditAddPage_CREATE() -->
+                      <span style="color: #03a5e8; cursor:pointer;" (click)="openCreateBotRightSideBar()">
 
                         {{ "DeptsAddEditPage.orCreateABot" | translate }}
                       </span>
@@ -921,9 +922,14 @@
 </div>
 <!-- /. main-content -->
 
-<!-- [ngStyle]="{'height':train_bot_sidebar_height }" [selectedQuestion]="selectedQuestion" -->
+
 <div *ngIf="OPEN_CREATE_GROUP_RIGHT_SIDEBAR === true" class="view-side">
-  <!-- [ngStyle]="{'height':train_bot_sidebar_height }" [newInnerWidth]="newInnerWidth" -->
   <appdashboard-create-group [ngStyle]="{'height':train_bot_sidebar_height }" [newInnerWidth]="newInnerWidth" [deptName_toUpdate]="deptName_toUpdate"
     (valueChange)='handleCloseCreateGroupSidebar($event)' (groupcreated)='handleNewGroupCreatedFromSidebar($event)' ></appdashboard-create-group>
+</div>
+
+<div *ngIf="OPEN_CREATE_BOT_RIGHT_SIDEBAR === true" class="view-side">
+  <!-- (groupcreated)='handleNewGroupCreatedFromSidebar($event)' -->
+  <appdashboard-create-bot [ngStyle]="{'height':train_bot_sidebar_height }"
+    (valueChange)='handleCloseCreateBotSidebar($event)'></appdashboard-create-bot>
 </div>
