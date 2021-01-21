@@ -95,7 +95,6 @@ export class AppStoreInstallComponent implements OnInit {
 
   goBack() {
     this.location.back();
-
   }
 
 
