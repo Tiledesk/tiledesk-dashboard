@@ -47,18 +47,30 @@
         // ------------------------------------------------------   -->
         <ng-container class="test-site">
           <li *ngIf="project">
+            <button class="btn btn-success-no-boxshadow"
+            style="font-size: 12px;margin-top: 14px;padding: 0px 11px 0px 4px !important; max-height:24px; border-radius: 30px;
+            font-family: 'Google Sans', sans-serif !important;"
+            (click)="testWidgetPage()">
+            <i class="material-icons" style="padding-top: 0px;font-size: 24px;">play_arrow</i>
+            <span>{{ 'VisitorsPage.SimulateVisitor' | translate }} </span> 
+          </button>
+          </li>
+        </ng-container>
+
+        <!-- <ng-container class="test-site">
+          <li *ngIf="project">
             <a class="tool_tip" style="cursor: pointer;padding-top: 13px; padding-bottom: 9px;"
               (click)="testWidgetPage()">
               <i class="material-icons navbar-test-site-btn" style="padding: 5px;">play_arrow</i>
               <p class="hidden-lg hidden-md">testwidget</p>
               <div class="bottom"
-                style="text-align: center; padding: 4px; border-radius: 3px; text-transform: none;  min-width: fit-content; white-space: nowrap;">
+                style="text-align: center; padding: 4px; border-radius: 3px; text-transform: none;  min-width: fit-content; white-space: nowrap; top: 50px;">
                 {{ 'VisitorsPage.SimulateVisitor' | translate }}
                 <i></i>
               </div>
             </a>
           </li>
-        </ng-container>
+        </ng-container> -->
 
 
         <!-- 
