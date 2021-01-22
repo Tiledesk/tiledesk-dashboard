@@ -21,8 +21,8 @@ export class CreateGroupComponent implements OnInit {
   @Input() newInnerWidth
   @Input() deptName_toUpdate
 
-  @ViewChild('scrollMe')
-  private myScrollContainer: ElementRef;
+  // @ViewChild('scrollMe')
+  // private myScrollContainer: ElementRef;
 
   showSpinner = true;
   projectUsersList: any;
