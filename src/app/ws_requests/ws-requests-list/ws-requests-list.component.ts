@@ -1108,7 +1108,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     var myDoughnutChart = new Chart('doughnutChart', {
       type: 'doughnut',
       data: {
-        labels: ["Served", "Unserved"],
+        labels: ["Assigned", "Unassigned"],
         datasets: [
           {
 

@@ -21,7 +21,7 @@ export class PopupService {
       "<div>Message: <b>" + request.first_text + "</b></div>" +
       "<div>Requester: <b>" + requester + "</b></div>" +
       "<div>Department: <b>" + request.department.name + "</b></div>" +
-      "<div>Served by: <b>" + request.participanting_Agents[0].firstname + request.participanting_Agents[0].lastname.slice(0, 1) + "." + "</b></div>" +
+      "<div>Assigned to: <b>" + request.participanting_Agents[0].firstname + request.participanting_Agents[0].lastname.slice(0, 1) + "." + "</b></div>" +
       "<div>Created: <b>" + createdAt + "</b></div>" +
       "<div><button class='btn btn-primary btn-xs goToRequestDetail' value=" + request.request_id + ">Request Detail</button></div>"
 

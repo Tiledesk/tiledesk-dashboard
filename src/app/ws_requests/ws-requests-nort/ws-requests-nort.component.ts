@@ -119,8 +119,8 @@ export class WsRequestsNortComponent extends WsSharedComponent implements OnInit
   // loadingOptions = true
 
   status = [
-    { id: '100', name: 'Unserved' },
-    { id: '200', name: 'Served' },
+    { id: '100', name: 'Unassigned' },
+    { id: '200', name: 'Assigned' },
     { id: '1000', name: 'All' },
   ];
 
