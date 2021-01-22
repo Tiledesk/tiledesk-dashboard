@@ -1,6 +1,5 @@
 <!-- *ngIf="ROUTING_PAGE_MODE === false"  -->
-<div #navbarbrand class="navbar-brand"
-  style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px">
+<div #navbarbrand class="navbar-brand" style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px">
 
   <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
     (click)="goBack()">keyboard_arrow_left</i>
@@ -36,44 +35,46 @@
             <!-- <span *ngIf="EDIT_VIEW"> -->
 
             <!-- <section *ngIf="ROUTING_PAGE_MODE === false"> -->
-              <div class="row" style="margin-bottom: 15px;">
-                <label class="col-sm-2 custom-label">
-                  {{ "Name" | translate}}
-                </label>
-                <div class="col-xs-12 col-sm-6 col-md-12 col-lg-6 dept-name-input-wrap">
-                  <input [(ngModel)]="deptName_toUpdate" placeholder='{{ "DeptsAddEditPage.DeptName" | translate}}'
-                    class="input" type="text" style="margin-top: 2px;margin-bottom: 5px;" [ngClass]="{'input-dept-name-disbled': IS_DEFAULT_DEPT === true}" [disabled]="IS_DEFAULT_DEPT === true" >
-                </div>
+            <div class="row" style="margin-bottom: 15px;">
+              <label class="col-sm-2 custom-label">
+                {{ "Name" | translate}}
+              </label>
+              <div class="col-xs-12 col-sm-6 col-md-12 col-lg-6 dept-name-input-wrap">
+                <input [(ngModel)]="deptName_toUpdate" placeholder='{{ "DeptsAddEditPage.DeptName" | translate}}'
+                  class="input" type="text" style="margin-top: 2px;margin-bottom: 5px;"
+                  [ngClass]="{'input-dept-name-disbled': IS_DEFAULT_DEPT === true}"
+                  [disabled]="IS_DEFAULT_DEPT === true">
               </div>
+            </div>
 
-              <!--
+            <!--
             // -------------------------------------------------------------------
             // Dept description 
             // ------------------------------------------------------------------- -->
-              <div class="row">
-                <label class="col-sm-2 custom-label">
-                  {{ "DeptsAddEditPage.Description" | translate}}
-                </label>
-                <div class="col-xs-12 col-sm-6 col-md-12 col-lg-6">
-                  <textarea [(ngModel)]="dept_description_toUpdate" class="" type="text" rows="2"
-                    placeholder='{{ "DeptsAddEditPage.Description" | translate}}' style="margin-top: 2px"> </textarea>
-                </div>
+            <div class="row">
+              <label class="col-sm-2 custom-label">
+                {{ "DeptsAddEditPage.Description" | translate}}
+              </label>
+              <div class="col-xs-12 col-sm-6 col-md-12 col-lg-6">
+                <textarea [(ngModel)]="dept_description_toUpdate" class="" type="text" rows="2"
+                  placeholder='{{ "DeptsAddEditPage.Description" | translate}}' style="margin-top: 2px"> </textarea>
               </div>
+            </div>
             <!-- </section> -->
 
-           
+
             <!--
             // ------------------------------------------------------------------------------
             // Section of info displayed if the selected department is the default department
             // ------------------------------------------------------------------------------ -->
-             <!-- *ngIf="ROUTING_PAGE_MODE === true" -->
+            <!-- *ngIf="ROUTING_PAGE_MODE === true" -->
             <section *ngIf="IS_DEFAULT_DEPT === true">
               <div class="row">
                 <div class="col-xs-12">
                   <h4 style="text-transform: none; color: rgba(0,0,0,.54);
                     font-size: 20px;">
                     <!-- Setting up Tile Desk routing rules -->
-                    {{ "RoutingPage.SettingUpTileDeskRoutingRules" | translate  }}
+                    {{ "RoutingPage.SettingUpTileDeskRoutingRules" | translate }}
                   </h4>
                 </div>
               </div>
@@ -85,7 +86,7 @@
                     <i style="vertical-align: middle; display: inline-flex; color:#00bcd4" class="material-icons">info
                     </i>
                     <span style="vertical-align: middle; display: inline-flex;">
-                      {{ "RoutingPage.TheFollowingRules" | translate  }}</span>
+                      {{ "RoutingPage.TheFollowingRules" | translate }}</span>
                   </div>
                 </div>
               </div>
@@ -102,7 +103,7 @@
                   <div class="col-xs-6 col-sm-6 col-md-6">
                     <h3 class="card_title__underlined" style="margin-top: 5px;">
                       <span class="card_title__underline">
-                        {{ "DeptsAddEditPage.ActivateBOT" | translate  }}
+                        {{ "DeptsAddEditPage.ActivateBOT" | translate }}
                       </span>
                     </h3>
                   </div>
@@ -137,7 +138,7 @@
 
                       <span
                         style="vertical-align: middle; display: inline-flex;font-size: 12px; color: rgba(0,0,0,.54);font-weight: 400;">
-                        {{ "DeptsAddEditPage.SelectABotThatWill" | translate  }}
+                        {{ "DeptsAddEditPage.SelectABotThatWill" | translate }}
                       </span>
                     </div>
                   </div>
@@ -210,7 +211,7 @@
                     <h3 class="card_title__underlined" style="margin-top: 25px;">
                       <span class="card_title__underline">
 
-                        {{ "RoutingPage.RoutingRules" | translate  }}
+                        {{ "RoutingPage.RoutingRules" | translate }}
                       </span>
                     </h3>
                   </div>
@@ -227,12 +228,32 @@
                 <section [ngClass]="{'disabled-label' : onlybot_disable_routing}">
                   <div class="row">
                     <div class="col-sm-12">
-                      <div class="alert"
+                      <div class="routing-rules-qyuick-tips"
                         style="background-color: #fff;  box-shadow: none;padding: 0px; margin-bottom:10px">
                         <span
                           style="vertical-align: middle; display: inline-flex;font-size: 12px; color: rgba(0,0,0,.54); font-weight: 400;">
-                          {{ "DeptsAddEditPage.SetRoutingRules" | translate  }}
+                          {{ "DeptsAddEditPage.SetRoutingRules" | translate }}
                         </span>
+
+                        <!-- // quick tips -->
+                        <div class="quick-tips" style="line-height: 1.1;">
+                          <span style="font-size: 12px; color: rgba(0,0,0,.8); font-weight: 400;">
+                            Assigned:
+                          </span>
+                          <span
+                            style="vertical-align: middle; font-size: 12px; color: rgba(0,0,0,.54); font-weight: 400;">
+                            {{ "QuickTipsAssigned" | translate }}
+                          </span>
+                        </div>
+                        <div class="quick-tips"  style="line-height: 1.1;margin-bottom: 16px;">
+                          <span style="font-size: 12px; color: rgba(0,0,0,.8); font-weight: 400;">
+                            Pooled:
+                          </span>
+                          <span
+                            style="vertical-align: middle; font-size: 12px; color: rgba(0,0,0,.54); font-weight: 400;">
+                            {{ "QuickTipsPooled" | translate }}
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -266,10 +287,10 @@
                   // ------------------------------------------------------------------- -->
                     <div class="col-xs-12">
                       <span class="selected-routing-info" *ngIf="dept_routing === 'assigned'">
-                        {{ "DeptsAddEditPage.AutomaticallyAssign" | translate  }}
+                        {{ "DeptsAddEditPage.AutomaticallyAssign" | translate }}
                       </span>
                       <span class="selected-routing-info" *ngIf="dept_routing === 'pooled'">
-                        {{ "DeptsAddEditPage.AgentsAreNotified" | translate  }}
+                        {{ "DeptsAddEditPage.AgentsAreNotified" | translate }}
                       </span>
                     </div>
 
@@ -282,7 +303,7 @@
                 // ------------------------------------------------------------------- -->
                   <div class="row" style="margin-top: 12px;">
                     <label class="col-sm-2 custom-label" style="white-space: nowrap;">
-                      {{ "DeptsAddEditPage.AssignTo" | translate  }}
+                      {{ "DeptsAddEditPage.AssignTo" | translate }}
                     </label>
                     <div class="col-xs-12 col-sm-6 col-md-12 col-lg-6">
 
@@ -301,7 +322,7 @@
 
                         <option class="not_selected" value="ALL_USERS_SELECTED">
 
-                          {{ "DeptsAddEditPage.AllUsers" | translate  }}
+                          {{ "DeptsAddEditPage.AllUsers" | translate }}
                         </option>
 
                         <option *ngFor="let group of groupsList" [value]="group?._id"
@@ -310,24 +331,24 @@
                         </option>
                       </select>
 
-                          <!-- 
+                      <!-- 
                     // -------------------------------------------------------------------
                     // Create a new group link
                     // ------------------------------------------------------------------- -->
-                    <span
-                    style="display: block;font-size: 12px;font-weight: 400; color: #7695a5; line-height: 1.2em; padding-top: 3px;">
-                    {{ "DeptsAddEditPage.SelectAnExistingOne" | translate }}
-                    <span style="color: #03a5e8; cursor:pointer;" (click)="openCreateGroupRightSideBar()">
+                      <span
+                        style="display: block;font-size: 12px;font-weight: 400; color: #7695a5; line-height: 1.2em; padding-top: 3px;">
+                        {{ "DeptsAddEditPage.SelectAnExistingOne" | translate }}
+                        <span style="color: #03a5e8; cursor:pointer;" (click)="openCreateGroupRightSideBar()">
 
-                      {{ "DeptsAddEditPage.orCreateAGroup" | translate }}
-                    </span>
-                  </span>
+                          {{ "DeptsAddEditPage.orCreateAGroup" | translate }}
+                        </span>
+                      </span>
 
                     </div>
                   </div>
                 </section>
 
-               
+
 
 
                 <!-- 
@@ -351,7 +372,7 @@
                           help_outline
                         </i>
                         <span class="top" style="left: 92px;top:-53px">
-                          {{ "QuickTipsAssigned" | translate  }}
+                          {{ "QuickTipsAssigned" | translate }}
                           <i></i>
                         </span>
                       </span>
@@ -402,7 +423,7 @@
                           help_outline
                         </i>
                         <span class="top" style="left: 3px;top: -32px;">
-                          {{ "QuickTipsPooled" | translate  }}
+                          {{ "QuickTipsPooled" | translate }}
                           <i></i>
                         </span>
                       </span>
@@ -481,7 +502,7 @@
                       {{ "DeptsAddEditPage.UpdateDept" | translate }}
                     </span>
                     <span *ngIf="ROUTING_PAGE_MODE === true">
-                      {{ "RoutingPage.UpdateRoutingRules" | translate  }}
+                      {{ "RoutingPage.UpdateRoutingRules" | translate }}
                     </span>
                   </button>
                 </span>
@@ -492,7 +513,7 @@
                       {{ "DeptsAddEditPage.UpdateDept" | translate }}
                     </span>
                     <span *ngIf="ROUTING_PAGE_MODE === true">
-                      {{ "RoutingPage.UpdateRoutingRules" | translate  }}
+                      {{ "RoutingPage.UpdateRoutingRules" | translate }}
                     </span>
 
                   </button>
@@ -509,30 +530,31 @@
       // ---------------------------------------------------
       // RIGHT SIDEBAR in CREATE VIEW
       // --------------------------------------------------- -->
-      <div *ngIf="CREATE_VIEW" class="col-sm-4 col-md-4 no_padding_right_col" [ngClass]="{'sidebar-hidden-767': OPEN_CREATE_GROUP_RIGHT_SIDEBAR}">
+      <div *ngIf="CREATE_VIEW" class="col-sm-4 col-md-4 no_padding_right_col"
+        [ngClass]="{'sidebar-hidden-767': OPEN_CREATE_GROUP_RIGHT_SIDEBAR}">
         <div class="card" style="padding-top: 8px;margin-top: 5px;">
           <div class="card-content" style="padding-top: 0px;">
             <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 15px">
-              {{ "RoutingPage.QuickTips" | translate  }}
+              {{ "RoutingPage.QuickTips" | translate }}
             </h4>
 
             <p class="title-attribute" style="margin-bottom: 3px">
               Assigned
             </p>
             <p class="attribute">
-              {{ "QuickTipsAssigned" | translate  }}
+              {{ "QuickTipsAssigned" | translate }}
             </p>
             <p class="title-attribute" style="margin-bottom: 3px">
               Pooled
             </p>
             <p class="attribute">
-              {{ "QuickTipsPooled" | translate  }}
+              {{ "QuickTipsPooled" | translate }}
             </p>
             <p class="title-attribute" style="margin-bottom: 3px">
               Bot
             </p>
             <p class="attribute">
-              {{ "QuickTipsBot" | translate  }}
+              {{ "QuickTipsBot" | translate }}
             </p>
 
 
@@ -613,42 +635,71 @@
       // ---------------------------------------------------
       // RIGHT SIDEBAR in edit view
       // --------------------------------------------------- -->
-      <div id="right_edit_card" *ngIf="EDIT_VIEW" class="col-sm-4 col-md-4 no_padding_right_col" [ngClass]="{'sidebar-hidden-767': OPEN_CREATE_GROUP_RIGHT_SIDEBAR}">
+      <div id="right_edit_card" *ngIf="EDIT_VIEW" class="col-sm-4 col-md-4 no_padding_right_col"
+        [ngClass]="{'sidebar-hidden-767': OPEN_CREATE_GROUP_RIGHT_SIDEBAR}">
         <div class="card" style="padding-top: 8px;margin-top: 5px;">
-          <!-- <div class="card-content" style="padding-top: 8px;"> -->
-          <!-- <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 15px">
 
-              {{ "DeptsAddEditPage.QuickTips" | translate }}
-            </h4> -->
+
           <!-- border-bottom: 1px solid #eeeeee;  -->
-          <div class="row" style="height: 50px;padding-left: 16px;
-            padding-right: 16px;">
-            <div class="col-xs-12">
 
-              <span class="dept-avatar-wrapper" style="float:left; margin-right: 5px;">
-                <span class="dept-avatar" [ngStyle]="{'background-color': dept_name_fillcolour }">
-                  {{ dept_name_initial }}
-                </span>
-              </span>
-
-              <span style=" margin-top: 15px; display: block; font-size: 18px; margin-left: 5px; white-space: nowrap;">
-                {{ deptName_toUpdate}}
-              </span>
-
-            </div>
-
-          </div>
 
           <loading-spinner *ngIf="showSpinner"></loading-spinner>
           <div *ngIf="!showSpinner" class="card-content" style="padding-top: 0px;">
+
+            <!-- <div class="row">
+              <div class="col-xs-12" style="border-bottom: 1px solid #dadde1;">
+                <h4 class="card-title"
+                  style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 15px">
+
+                  {{ "DeptsAddEditPage.QuickTips" | translate }}
+                </h4>
+
+                <p class="title-attribute" style="margin-bottom: 3px">
+                  Assigned
+                </p>
+                <p class="attribute">
+                  {{ "QuickTipsAssigned" | translate }}
+                </p>
+                <p class="title-attribute" style="margin-bottom: 3px">
+                  Pooled
+                </p>
+                <p class="attribute">
+                  {{ "QuickTipsPooled" | translate }}
+                </p>
+                <p class="title-attribute" style="margin-bottom: 3px">
+                  Bot
+                </p>
+                <p class="attribute">
+                  {{ "QuickTipsBot" | translate }}
+                </p>
+              </div>
+            </div> -->
+
+            <div class="row" style="height: 50px;">
+              <div class="col-xs-12">
+
+                <span class="dept-avatar-wrapper" style="float:left; margin-right: 5px;">
+                  <span class="dept-avatar" [ngStyle]="{'background-color': dept_name_fillcolour }">
+                    {{ dept_name_initial }}
+                  </span>
+                </span>
+
+                <span
+                  style=" margin-top: 15px; display: block; font-size: 18px; margin-left: 5px; white-space: nowrap;">
+                  {{ deptName_toUpdate}}
+                </span>
+
+              </div>
+
+            </div>
 
             <!-- 
             // ---------------------------------------------------------------------
             // Dept Created At
             // --------------------------------------------------------------------- -->
             <div class="row" style="margin-top:5px; margin-bottom: 5px;">
-
-              <div class="col-sm-12" style="padding-top: 4px; border-top: 1px solid #dadde1;">
+              <!-- border-top: 1px solid #dadde1; -->
+              <div class="col-sm-12" style="padding-top: 4px;">
 
                 <p style="margin-bottom: 0px;">
                   <i class="material-icons"
@@ -816,21 +867,24 @@
                     {{ 'DepartmentsPage.Group' | translate }}
                     <span style="text-transform: uppercase;">
                       {{ group_name }}
-                     
-                      <span class="edit-group-link tool_tip" (click)="goToEditGroup()">
-                        ({{'Edit' | translate}}) 
 
-                        <span class="bottom" style="min-width: fit-content; text-align: center;top: 30px;line-height: 15px;"> 
-                         
-                         <span style="white-space: nowrap; text-transform: capitalize;"> {{ 'GroupsPage.tooltipEditGroup' | translate }} </span> 
-                         <span style="display: block; white-space: nowrap; text-transform: none;">{{ group_name }} </span>  
-                          
+                      <span class="edit-group-link tool_tip" (click)="goToEditGroup()">
+                        ({{'Edit' | translate}})
+
+                        <span class="bottom"
+                          style="min-width: fit-content; text-align: center;top: 30px;line-height: 15px;">
+
+                          <span style="white-space: nowrap; text-transform: capitalize;"> {{
+                            'GroupsPage.tooltipEditGroup' | translate }} </span>
+                          <span style="display: block; white-space: nowrap; text-transform: none;">{{ group_name }}
+                          </span>
+
                           <i></i>
                         </span>
                       </span>
                     </span>
                   </span>
-                  
+
                 </p>
 
 
@@ -924,8 +978,9 @@
 
 
 <div *ngIf="OPEN_CREATE_GROUP_RIGHT_SIDEBAR === true" class="view-side">
-  <appdashboard-create-group [ngStyle]="{'height':train_bot_sidebar_height }" [newInnerWidth]="newInnerWidth" [deptName_toUpdate]="deptName_toUpdate"
-    (valueChange)='handleCloseCreateGroupSidebar($event)' (groupcreated)='handleNewGroupCreatedFromSidebar($event)' ></appdashboard-create-group>
+  <appdashboard-create-group [ngStyle]="{'height':train_bot_sidebar_height }" [newInnerWidth]="newInnerWidth"
+    [deptName_toUpdate]="deptName_toUpdate" (valueChange)='handleCloseCreateGroupSidebar($event)'
+    (groupcreated)='handleNewGroupCreatedFromSidebar($event)'></appdashboard-create-group>
 </div>
 
 <div *ngIf="OPEN_CREATE_BOT_RIGHT_SIDEBAR === true" class="view-side">
