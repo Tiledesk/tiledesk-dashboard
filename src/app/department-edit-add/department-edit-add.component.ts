@@ -239,17 +239,19 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit {
     this.train_bot_sidebar_height = elemMainContent.clientHeight + 10 + 'px'
     console.log('DEPT EDIT-ADD  - OPEN CREATE GROUP SIDEBAR -> RIGHT SIDEBAR HEIGHT', this.train_bot_sidebar_height);
     // const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
-    const elemFooter = <HTMLElement>document.querySelector('footer');
-    elemFooter.setAttribute('style', 'display:none;');
-    // _elemMainPanel.setAttribute('style', 'overflow-x: unset !important;');
+   
+    // const elemFooter = <HTMLElement>document.querySelector('footer');
+    // elemFooter.setAttribute('style', 'display:none;');
+   
   }
 
   // HALDLE OUTPUT 'CLOSE SIDEBAR' * CREATE GROUP RIGHT SIDEBAR *
   handleCloseCreateGroupSidebar(event) {
     this.OPEN_CREATE_GROUP_RIGHT_SIDEBAR = event;
     console.log('DEPT EDIT-ADD - CLOSE CREATE GROUP SIDEBAR ', this.OPEN_CREATE_GROUP_RIGHT_SIDEBAR);
-    const elemFooter = <HTMLElement>document.querySelector('footer');
-    elemFooter.setAttribute('style', '');
+   
+    // const elemFooter = <HTMLElement>document.querySelector('footer');
+    // elemFooter.setAttribute('style', '');
   }
 
   // HALDLE OUTPUT 'GROUP CREATED' * CREATE GROUP RIGHT SIDEBAR *
@@ -262,7 +264,7 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit {
   }
 
   // -----------------------------------------------------------------------------
-  // @ CREATE BOT RIGHT SIDEBAR
+  // @ CREATE BOT RIGHT SIDEBAR --- IN SOSPESO
   // -----------------------------------------------------------------------------
   // OPEN * CREATE GROUP RIGHT SIDEBAR *
   openCreateBotRightSideBar() {
