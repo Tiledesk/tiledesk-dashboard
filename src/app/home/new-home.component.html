@@ -284,13 +284,16 @@
         // --------------------------------------------------- -->
         <div class="row">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <div class="card" style="border: unset !important;  background: #1a73e8;margin-top: 18px;margin-bottom: 18px;">
+            <div class="card"
+              style="border: unset !important;  background: #1a73e8;margin-top: 18px;margin-bottom: 18px;">
               <div class="card-content" style="padding-left:0px; padding-right:0px">
                 <!-- <h3 class="getting-started-card-title-home-header">{{'TakeAShortcut' | translate}}</h3>
                   <p class="getting-started-card-subtitle-home-header">{{'JumpStraightToTheMostPopularSettingsInTheDashboard' | translate}}. </p> -->
                 <div class="row">
 
-                  <div [ngClass]="{'col-xs-3': isVisibleAPP && USER_ROLE !== 'agent', 'col-xs-4': !isVisibleAPP || USER_ROLE === 'agent'}" (click)="openChat()" style="cursor: pointer;">
+                  <div
+                    [ngClass]="{'col-xs-3': isVisibleAPP && USER_ROLE !== 'agent', 'col-xs-4': !isVisibleAPP || USER_ROLE === 'agent'}"
+                    (click)="openChat()" style="cursor: pointer;">
                     <!-- // CHAT -->
                     <div class="wrap-shortcut-icon">
                       <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
@@ -328,7 +331,8 @@
                   </div>
 
                   <!-- // SE NON è AGENTE VISUALIZZO WIDGET -->
-                  <div [ngClass]="{'col-xs-3': isVisibleAPP, 'col-xs-4': !isVisibleAPP}" (click)="goToWidgetSetup()" style="cursor: pointer;" *ngIf="USER_ROLE !== 'agent'">
+                  <div [ngClass]="{'col-xs-3': isVisibleAPP, 'col-xs-4': !isVisibleAPP}" (click)="goToWidgetSetup()"
+                    style="cursor: pointer;" *ngIf="USER_ROLE !== 'agent'">
                     <!-- // CUSTOMIZE WIDGET -->
                     <div class="wrap-shortcut-icon">
                       <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
@@ -365,7 +369,9 @@
                   </div>
 
                   <!-- // SE È AGENTE VISUALIZZO CONVERSAZIONI -->
-                  <div [ngClass]="{'col-xs-3': isVisibleAPP && USER_ROLE !== 'agent',  'col-xs-4': !isVisibleAPP  || USER_ROLE === 'agent'}" (click)="goToWidgetConversations()" style="cursor: pointer;" *ngIf="USER_ROLE === 'agent'">
+                  <div
+                    [ngClass]="{'col-xs-3': isVisibleAPP && USER_ROLE !== 'agent',  'col-xs-4': !isVisibleAPP  || USER_ROLE === 'agent'}"
+                    (click)="goToWidgetConversations()" style="cursor: pointer;" *ngIf="USER_ROLE === 'agent'">
                     <div class="wrap-shortcut-icon">
                       <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
                         xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 75.8 75.8"
@@ -404,8 +410,9 @@
                   </div>
 
 
-                  <div [ngClass]="{'col-xs-3': isVisibleAPP && USER_ROLE !== 'agent', 'col-xs-4': !isVisibleAPP  || USER_ROLE === 'agent'}" (click)="goToTiledeskMobileAppPage()"
-                    style="cursor: pointer;">
+                  <div
+                    [ngClass]="{'col-xs-3': isVisibleAPP && USER_ROLE !== 'agent', 'col-xs-4': !isVisibleAPP  || USER_ROLE === 'agent'}"
+                    (click)="goToTiledeskMobileAppPage()" style="cursor: pointer;">
                     <!-- // GET MOBILE APPS -->
                     <div class="wrap-shortcut-icon">
                       <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
@@ -439,7 +446,8 @@
                     </div>
                   </div>
 
-                  <div [ngClass]="{'col-xs-3': isVisibleAPP }" (click)="goToAppStore()" style="cursor: pointer;" *ngIf="isVisibleAPP && USER_ROLE !== 'agent'">
+                  <div [ngClass]="{'col-xs-3': isVisibleAPP }" (click)="goToAppStore()" style="cursor: pointer;"
+                    *ngIf="isVisibleAPP && USER_ROLE !== 'agent'">
                     <!-- // App Store -->
                     <div class="wrap-shortcut-icon">
                       <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
@@ -466,7 +474,8 @@
                       </svg>
                     </div>
                     <div class="wrap-shortcut-title-home-header">
-                      {{ 'Integrations' | translate }}
+                      <!-- {{ 'Integrations' | translate }} -->
+                      Apps
                     </div>
                     <div class="wrap-shortcut-subtitle-home-header">
                       {{'EngageMoreCustomersWithAppsAndIntegrations' | translate}}
@@ -723,14 +732,14 @@
   <div *ngIf="isVisibleANA" class="home-statistics-row" style="border-bottom: 1px solid #e5effe !important;">
     <div class="row">
 
-      <div class="col-md-12" style="padding-top: 36px; padding-bottom: 36px;">
+      <div class="col-md-12" style="padding-top: 25px; padding-bottom: 25px;padding-left: 5px;padding-right: 5px;">
 
         <!-- <div class="home-statistics-row" style=""> -->
         <!-- 
       // ---------------------------------------------------------
       // @ Active contacts count
       // --------------------------------------------------------- -->
-        <div class="col-sm-6 col-md-3">
+        <div class="col-xs-6 col-sm-6 col-md-3" style="padding-left: 5px;padding-right: 5px;">
 
           <div class="statistis-count-container" style="text-align:center ;">
 
@@ -757,8 +766,94 @@
 
         <!-- 
       // ---------------------------------------------------------
-      // @ Bots count
+      // @ Visitor count (Last 30 days) 
       // --------------------------------------------------------- -->
+        <div class="col-xs-6 col-sm-6 col-md-3" style="padding-left: 5px;padding-right: 5px;">
+          <div class="statistis-count-container" style="text-align:center ;">
+            <div class="statistis-count-number">
+              <span class="visitors-count">
+                {{ countOfVisitors }}
+              </span>
+            </div>
+            <div class="links-container">
+              <div class="link-title-first">
+                <span> {{'Last30DaysVisitors' | translate }} </span>
+                <span class="material-icons" style="vertical-align: middle; color: #3c4858;">
+                  keyboard_arrow_right
+                </span>
+              </div>
+              <div class="link-title-second" (click)="goToVisitorsAnalytics()">
+                <span style="color: #0f62ff;">{{'FilterReportInAnalytics' | translate}}</span>
+                <span class="material-icons" style="vertical-align: middle;color: #0f62ff;">
+                  keyboard_arrow_right
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 
+        // ---------------------------------------------------------
+        // @ Conversation count (Last 30 days) 
+        // --------------------------------------------------------- -->
+        <div class="col-xs-6 col-sm-6 col-md-3" style="padding-left: 5px;padding-right: 5px;">
+          <div class="statistis-count-container" style="text-align:center ;">
+            <div class="statistis-count-number">
+              <span class="depts-count">
+                {{ countOfLastMonthRequests }}
+              </span>
+            </div>
+            <div class="links-container">
+              <div class="link-title-first">
+                <span> {{'Last30DaysConversations' | translate}} </span>
+                <span class="material-icons" style="vertical-align: middle; color: #3c4858;">
+                  keyboard_arrow_right
+                </span>
+              </div>
+              <div class="link-title-second" (click)="goToRequestsAnalytics()">
+                <span style="color: #0f62ff;">{{'FilterReportInAnalytics' | translate}}</span>
+                <span class="material-icons" style="vertical-align: middle;color: #0f62ff;">
+                  keyboard_arrow_right
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 
+        // ---------------------------------------------------------
+        // @ Msgs count (last 30 days)
+        // --------------------------------------------------------- -->
+        <div class="col-xs-6 col-sm-6 col-md-3" style="padding-left: 5px;padding-right: 5px;">
+          <div class="statistis-count-container" style="text-align:center ;">
+
+            <div class="statistis-count-number">
+              <span class="bots-count">
+                {{ countOfLastMonthMsgs }}
+              </span>
+            </div>
+
+            <div class="links-container">
+              <div class="link-title-first">
+                <span> {{'Last30DaysMessages' | translate}} </span>
+                <span class="material-icons" style="vertical-align: middle; color: #3c4858;">
+                  keyboard_arrow_right
+                </span>
+              </div>
+              <div class="link-title-second" (click)="goToMessagesAnalytics()">
+                <span style="color: #0f62ff;">{{'FilterReportInAnalytics' | translate}}</span>
+                <span class="material-icons" style="vertical-align: middle;color: #0f62ff;">
+                  keyboard_arrow_right
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 
+        // ---------------------------------------------------------
+        // @ Bots count
+        // --------------------------------------------------------- -->
         <!-- <div class="col-md-3">
           <div class="statistis-count-container" style="text-align:center ;">
 
@@ -785,36 +880,6 @@
             </div>
           </div>
         </div> -->
-
-        <!-- 
-        // ---------------------------------------------------------
-        // @ Msgs count (last 30 days)
-        // --------------------------------------------------------- -->
-        <div class="col-sm-6 col-md-3">
-          <div class="statistis-count-container" style="text-align:center ;">
-
-            <div class="statistis-count-number">
-              <span class="bots-count">
-                {{ countOfLastMonthMsgs }}
-              </span>
-            </div>
-
-            <div class="links-container">
-              <div class="link-title-first">
-                <span> {{'Last30DaysMessages' | translate}} </span>
-                <span class="material-icons" style="vertical-align: middle; color: #3c4858;">
-                  keyboard_arrow_right
-                </span>
-              </div>
-              <div class="link-title-second" (click)="goToMessagesAnalytics()">
-                <span style="color: #0f62ff;">{{'FilterReportInAnalytics' | translate}}</span>
-                <span class="material-icons" style="vertical-align: middle;color: #0f62ff;">
-                  keyboard_arrow_right
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
 
         <!-- 
       // ---------------------------------------------------------
@@ -845,61 +910,9 @@
           </div>
         </div> -->
 
-        <!-- 
-      // ---------------------------------------------------------
-      // @ Conversation count (Last 30 days) 
-      // --------------------------------------------------------- -->
-        <div class="col-sm-6 col-md-3">
-          <div class="statistis-count-container" style="text-align:center ;">
-            <div class="statistis-count-number">
-              <span class="depts-count">
-                {{ countOfLastMonthRequests }}
-              </span>
-            </div>
-            <div class="links-container">
-              <div class="link-title-first">
-                <span> {{'Last30DaysConversations' | translate}} </span>
-                <span class="material-icons" style="vertical-align: middle; color: #3c4858;">
-                  keyboard_arrow_right
-                </span>
-              </div>
-              <div class="link-title-second" (click)="goToRequestsAnalytics()">
-                <span style="color: #0f62ff;">{{'FilterReportInAnalytics' | translate}}</span>
-                <span class="material-icons" style="vertical-align: middle;color: #0f62ff;">
-                  keyboard_arrow_right
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
 
-        <!-- 
-      // ---------------------------------------------------------
-      // @ Visitor count (Last 30 days) 
-      // --------------------------------------------------------- -->
-        <div class="col-sm-6 col-md-3">
-          <div class="statistis-count-container" style="text-align:center ;">
-            <div class="statistis-count-number">
-              <span class="visitors-count">
-                {{ countOfVisitors }}
-              </span>
-            </div>
-            <div class="links-container">
-              <div class="link-title-first">
-                <span> {{'Last30DaysVisitors' | translate }} </span>
-                <span class="material-icons" style="vertical-align: middle; color: #3c4858;">
-                  keyboard_arrow_right
-                </span>
-              </div>
-              <div class="link-title-second" (click)="goToVisitorsAnalytics()">
-                <span style="color: #0f62ff;">{{'FilterReportInAnalytics' | translate}}</span>
-                <span class="material-icons" style="vertical-align: middle;color: #0f62ff;">
-                  keyboard_arrow_right
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
+
+
 
         <!-- 
       // ---------------------------------------------------------
@@ -1005,7 +1018,7 @@
     </div>
     <div class="row">
       <div class="col-md-12">
-        <div class="chart-container" style="position: relative; margin:12px 12px; height:35vh;">
+        <div class="chart-container" style="position: relative; margin:12px 12px; height:25vh;">
           <canvas id="last7dayVisitors"></canvas>
         </div>
       </div>
