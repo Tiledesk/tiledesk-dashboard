@@ -1,6 +1,17 @@
 
 # tiledesk-dashboard
 
+### 2.1.5
+- Changes all occurrences of 'served conversations' to 'assigned conversations' and of 'unserved conversations' to 'unassigned conversations' and of 'Served by' in 'Assigned to'
+- Changes the display order of the count 'Last 30 days ...' statistics on the home page
+- Changes all occurrences of 'teammates seats' in 'seats'
+- Changes the "icon only" "Simulate Visitor" button in the navigation bar to one that displays its text
+- Fixes graphical errors in the home and resize the graph
+- Changes the 'Routing & Depts' sidebar menu item to Routing
+- Changes the title of the department list from 'Departments' to 'Routing'
+- Improves widget preview: vertically centered the icon 'settings' 
+- Adds quick tips in the "Routing Rules" section of the edit department page
+
 ### 2.1.4
 - Adds the ability in 'Routing and Depts' to create a new group 'on the fly'
 - Adds a link in "Routing and Depts" next to the name of the group assigned to the department that directs to the group editing page
