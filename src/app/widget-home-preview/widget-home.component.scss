@@ -739,17 +739,21 @@ div.clear {
     // -webkit-box-shadow: 0 -10px 10px 1px rgba(0, 0, 0, 0.03);
     // box-shadow: 0 -10px 10px 1px rgba(0, 0, 0, 0.03);
 
-    -webkit-box-shadow: 0 0 10px 0 rgba(191, 191, 191, 0.2);
-    box-shadow: 0 0 10px 0 rgba(191, 191, 191, 0.2);
+    // -webkit-box-shadow: 0 0 10px 0 rgba(191, 191, 191, 0.2);
+    // box-shadow: 0 0 10px 0 rgba(191, 191, 191, 0.2);
 }
 
 #chat21-home-component .c21-footer_nk #c21-powered-by {
     width: 100%;
-    height: 30px;
+    height: 31px;
     text-align: center;
     padding: 0;
-    margin: 5px 0;
+    margin: 2px 0;
     color: #777;
+    border-top: 1px solid rgba(191,191,191,.2);
+    -webkit-box-shadow: 0 0 10px 0 rgba(191,191,191,.2);
+    box-shadow: 0 0 10px 0 rgba(191,191,191,.2);
+    z-index: 20;
 }
 #chat21-home-component .c21-header-container {
     // position: absolute;
