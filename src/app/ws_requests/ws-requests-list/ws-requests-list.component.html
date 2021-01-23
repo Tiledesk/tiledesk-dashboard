@@ -72,7 +72,7 @@
     (click)='goToNoRealtimeConversations()'>
     <a attr.aria-label="{{ 'GoToNotRealTimeRequests' | translate }}" href="javascript:;" role="button" class="tool_tip"
       style="cursor: pointer; display: unset;" [ngClass]="{ 'has-reached-100' : served_unserved_sum >= 100 }">
-      <span aria-hidden="true" class="material-icons" style="margin-top: 3px;">
+      <span aria-hidden="true" class="material-icons" style="margin-top: 3px; color:#3ea9f5">
         view_list
       </span>
       <div class="bottom"
@@ -93,7 +93,7 @@
   <li class="see-no-realtime-request right-li" style="float: right; padding-right: 5px;" (click)='openRightSideBar()'>
     <a attr.aria-label="{{ 'ViewServedRequestsMap' | translate }}" class="tool_tip" style="cursor: pointer; display: unset;"
       [ngClass]="{ 'has-reached-100' : served_unserved_sum >= 100 }">
-      <span class="material-icons" style="margin-top: 3px;">
+      <span class="material-icons" style="margin-top: 3px; color:#3ea9f5">
         pin_drop
       </span>
       <div class="bottom"
@@ -148,7 +148,7 @@
   <li class="see-no-realtime-request" style="float: right; padding-right: 5px;"
     (click)='goToNoRealtimeConversations()'>
     <a attr.aria-label="{{ 'GoToNotRealTimeRequests' | translate }}" href="javascript:;" role="button" class="tool_tip"
-      style="cursor: pointer; display: unset; color: #797979;"
+      style="cursor: pointer; display: unset; color:#3ea9f5;"
       [ngClass]="{ 'has-reached-100' : served_unserved_sum >= 100 }">
       <span class="material-icons">
         view_list
@@ -196,7 +196,7 @@
    <li  class="see-no-realtime-request" style="float: right; padding-right: 5px; " (click)='openRightSideBar()'>
     <a attr.aria-label="{{ 'ViewServedRequestsMap' | translate }}" class="tool_tip" style="cursor: pointer; display: unset;"
       [ngClass]="{ 'has-reached-100' : served_unserved_sum >= 100 }">
-      <span class="material-icons" style="margin-top: 0px;color:#797979">
+      <span class="material-icons" style="margin-top: 0px;color:#3ea9f5">
         pin_drop
       </span>
       <div class="bottom"
