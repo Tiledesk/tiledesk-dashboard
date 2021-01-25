@@ -16,6 +16,7 @@ import { slideInOutAnimation } from '../_animations/index';
 import { UsersService } from '../services/users.service';
 import { avatarPlaceholder, getColorBck } from '../utils/util';
 import { AppConfigService } from '../services/app-config.service';
+import { threadId } from 'worker_threads';
 
 declare const $: any;
 
@@ -94,8 +95,9 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit {
   newInnerHeight: any;
   main_content_height: any
   new_group_created_id: string;
-
-
+  SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR = false
+  
+  HAS_COMPLETED_GET_GROUPS: boolean; 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -239,27 +241,30 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit {
     this.train_bot_sidebar_height = elemMainContent.clientHeight + 10 + 'px'
     console.log('DEPT EDIT-ADD  - OPEN CREATE GROUP SIDEBAR -> RIGHT SIDEBAR HEIGHT', this.train_bot_sidebar_height);
     // const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
-   
+
     // const elemFooter = <HTMLElement>document.querySelector('footer');
     // elemFooter.setAttribute('style', 'display:none;');
-   
+
   }
 
   // HALDLE OUTPUT 'CLOSE SIDEBAR' * CREATE GROUP RIGHT SIDEBAR *
   handleCloseCreateGroupSidebar(event) {
     this.OPEN_CREATE_GROUP_RIGHT_SIDEBAR = event;
     console.log('DEPT EDIT-ADD - CLOSE CREATE GROUP SIDEBAR ', this.OPEN_CREATE_GROUP_RIGHT_SIDEBAR);
-   
+
     // const elemFooter = <HTMLElement>document.querySelector('footer');
     // elemFooter.setAttribute('style', '');
   }
 
   // HALDLE OUTPUT 'GROUP CREATED' * CREATE GROUP RIGHT SIDEBAR *
   handleNewGroupCreatedFromSidebar(event) {
-    console.log('DEPT EDIT-ADD - handleNewGroupCreatedFromSidebar ', event);
+    console.log('DEPT EDIT-ADD - handleNewGroupCreatedFromSidebar ID GROUP ', event);
     if (event) {
       this.new_group_created_id = event
+      this.SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR = true
       this.getGroupsByProjectId();
+      // this.HAS_COMPLETED_GET_GROUPS = true
+      // console.log('DEPT EDIT-ADD - handleNewGroupCreatedFromSidebar tHAS_COMPLETED_GET_GROUPS  ', this.HAS_COMPLETED_GET_GROUPS );
     }
   }
 
@@ -423,6 +428,7 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit {
    * USED TO POPULATE THE DROP-DOWN LIST 'GROUPS' ASSOCIATED TO THE ASSIGNED ANF POOLED ROUTING
    */
   getGroupsByProjectId() {
+    // this.HAS_COMPLETED_GET_GROUPS = false
     this.groupService.getGroupsByProjectId().subscribe((groups: any) => {
       console.log('DEPT EDIT-ADD - GROUPS GET BY PROJECT ID', groups);
 
@@ -468,17 +474,27 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit {
       }
     },
       (error) => {
-        console.log('+ + GET GROUPS - ERROR ', error);
-
+        console.log('DEPT EDIT-ADD + + GET GROUPS - ERROR ', error);
+        // this.HAS_COMPLETED_GET_GROUPS = false
         // this.showSpinner = false;
       },
       () => {
-        console.log('+ + GET GROUPS * COMPLETE');
+        console.log('DEPT EDIT-ADD + + GET GROUPS * COMPLETE');
+        // this.HAS_COMPLETED_GET_GROUPS = true
+        //   this.new_group_created_id = event
+        // this.SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR = true
+
+        if (this.SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR === true) {
+          console.log('DEPT EDIT-ADD -  + + GET GROUPS  SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR', this.new_group_created_id );
+          
+          this.selectedGroupId = this.new_group_created_id;
+        }
 
       });
   }
 
   checkGroupId(groupIdSelected, groups_list) {
+    console.log('DEPT EDIT-ADD - checkGroupId: groupIdSelected', this.selectedGroupId, 'groups_list ', groups_list);
     this.GROUP_ID_NOT_EXIST = true;
 
     for (let i = 0; i < groups_list.length; i++) {
@@ -493,8 +509,12 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit {
   }
 
   setSelectedGroup(id: any): void {
+    this.SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR = false;
     this.selectedGroupId = id;
-    console.log('GROUP ID SELECTED: ', this.selectedGroupId);
+    console.log('DEPT EDIT-ADD - GROUP ID SELECTED: ', this.selectedGroupId);
+    console.log('DEPT EDIT-ADD - GROUP_ID_NOT_EXIST: ', this.GROUP_ID_NOT_EXIST);
+
+    // this.SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR = false;
 
     // IF THE GROUP ASSIGNED TO THE DEPT HAS BEEN DELETED,
     // this.GROUP_ID_NOT_EXIST IS SET TO TRUE - IN THIS USE-CASE IS SHOWED THE SELECT OPTION
@@ -502,8 +522,9 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit {
     // - IF THE USER SELECT ANOTHER OPTION this.GROUP_ID_NOT_EXIST IS SET TO false
     if (this.selectedGroupId !== 'Group error') {
       this.GROUP_ID_NOT_EXIST = false
-
+      
       this.getGroupsByProjectId()
+      console.log('DEPT EDIT-ADD - setSelectedGroup this.selectedGroupId !== Group error', );
     }
 
     // if (this.selectedGroupId !== 'ALL_USERS_SELECTED') {
@@ -511,7 +532,6 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit {
 
     // SET TO null THE ID OF GROUP IF IS SELECTED 'ALL USER'
     if (this.selectedGroupId === 'ALL_USERS_SELECTED') {
-
       this.selectedGroupId = null;
     }
   }
@@ -610,7 +630,7 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit {
    */
   getDeptById() {
     this.mongodbDepartmentService.getMongDbDeptById(this.id_dept).subscribe((dept: any) => {
-      console.log('++ > GET DEPT (DETAILS) BY ID - DEPT OBJECT: ', dept);
+      console.log('DEPT EDIT-ADD ++ > GET DEPT (DETAILS) BY ID - DEPT OBJECT: ', dept);
       if (dept) {
         this.IS_DEFAULT_DEPT = dept.default
         this.deptName_toUpdate = dept.name;
@@ -811,12 +831,12 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit {
 
   toggleDescriptionReadAll() {
     const elemSidebarDescription = <HTMLElement>document.querySelector('.sidebar-description');
-    console.log(' DEPT EDIT-ADD elem Sidebar Description toggleDescriptionReadAll', elemSidebarDescription)
+    console.log('DEPT EDIT-ADD elem Sidebar Description toggleDescriptionReadAll', elemSidebarDescription)
     if (elemSidebarDescription.classList) {
       elemSidebarDescription.classList.toggle("sidebar-description-cropped");
 
       const hasClassCropped = elemSidebarDescription.classList.contains("sidebar-description-cropped")
-      console.log(' DEPT EDIT-ADD elem Sidebar Description toggleDescriptionReadAll hasClassCropped', hasClassCropped)
+      console.log('DEPT EDIT-ADD elem Sidebar Description toggleDescriptionReadAll hasClassCropped', hasClassCropped)
       if (hasClassCropped === false) {
         this.read_all = false;
       } else {
@@ -859,16 +879,16 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit {
   getProjectuserbyUseridAndGoToEditProjectuser(member_id: string) {
 
     this.usersService.getProjectUserByUserId(member_id).subscribe((projectUser: any) => {
-      console.log('% Ws-REQUESTS-Msgs GET projectUser by USER-ID ', projectUser)
+      console.log('DEPT EDIT-ADD GET projectUser by USER-ID ', projectUser)
       if (projectUser) {
-        console.log('% Ws-REQUESTS-Msgs projectUser id', projectUser[0]._id);
+        console.log('DEPT EDIT-ADD - ADDprojectUser id', projectUser[0]._id);
 
         this.router.navigate(['project/' + this.project._id + '/user/edit/' + projectUser[0]._id]);
       }
     }, (error) => {
-      console.log('% Ws-REQUESTS-Msgs GET projectUser by USER-ID - ERROR ', error);
+      console.log('DEPT EDIT-ADD GET projectUser by USER-ID - ERROR ', error);
     }, () => {
-      console.log('% Ws-REQUESTS-Msgs GET projectUser by USER-ID * COMPLETE *');
+      console.log('DEPT EDIT-ADD GET projectUser by USER-ID * COMPLETE *');
     });
   }
 
@@ -878,9 +898,9 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit {
     this.dept_description,
  */
   createDepartment() {
-    console.log('createDepartment DEPT NAME  ', this.deptName_toUpdate);
-    console.log('createDepartment DEPT DESCRIPTION DIGIT BY USER ', this.dept_description_toUpdate);
-    console.log('createDepartment GROUP ID WHEN CREATE IS PRESSED ', this.selectedGroupId);
+    console.log('DEPT EDIT-ADD createDepartment DEPT NAME  ', this.deptName_toUpdate);
+    console.log('DEPT EDIT-ADD createDepartment DEPT DESCRIPTION DIGIT BY USER ', this.dept_description_toUpdate);
+    console.log('DEPT EDIT-ADD createDepartment GROUP ID WHEN CREATE IS PRESSED ', this.selectedGroupId);
     this.mongodbDepartmentService.addDept(
       this.deptName_toUpdate,
       this.dept_description_toUpdate,
@@ -888,15 +908,15 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit {
       this.bot_only,
       this.selectedGroupId,
       this.ROUTING_SELECTED).subscribe((department) => {
-        console.log('+++ ++++ POST DATA DEPT', department);
+        console.log('DEPT EDIT-ADD +++ ++++ POST DATA DEPT', department);
       },
         (error) => {
-          console.log('DEPT POST REQUEST ERROR ', error);
+          console.log('DEPT EDIT-ADD createDepartment ERROR ', error);
           this.notify.showWidgetStyleUpdateNotification(this.createErrorMsg, 4, 'report_problem');
         },
         () => {
           this.notify.showWidgetStyleUpdateNotification(this.createSuccessMsg, 2, 'done');
-          console.log('DEPT POST REQUEST * COMPLETE *');
+          console.log('DEPT EDIT-ADD createDepartment * COMPLETE *');
           this.router.navigate(['project/' + this.project._id + '/departments']);
 
         });
@@ -904,13 +924,13 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit {
 
 
   edit() {
-    console.log('DEPT ID WHEN EDIT IS PRESSED ', this.id_dept);
-    console.log('DEPT FULL-NAME WHEN EDIT IS PRESSED ', this.deptName_toUpdate);
-    console.log('DEPT DESCRIPTION WHEN EDIT IS PRESSED ', this.dept_description_toUpdate);
-    console.log('BOT ID WHEN EDIT IS PRESSED IF USER HAS SELECT ANOTHER BOT', this.selectedBotId);
-    console.log('BOT ID WHEN EDIT IS PRESSED IF USER ! DOES NOT SELECT A ANOTHER BOT', this.botId);
-    console.log('* DEPT_ROUTING WHEN EDIT IS PRESSED ', this.dept_routing);
-    console.log('* ROUTING_SELECTED WHEN EDIT IS PRESSED ', this.ROUTING_SELECTED);
+    console.log('DEPT EDIT-ADD - EDIT - ID WHEN EDIT IS PRESSED ', this.id_dept);
+    console.log('DEPT EDIT-ADD - EDIT - FULL-NAME WHEN EDIT IS PRESSED ', this.deptName_toUpdate);
+    console.log('DEPT EDIT-ADD - EDIT - DESCRIPTION WHEN EDIT IS PRESSED ', this.dept_description_toUpdate);
+    console.log('DEPT EDIT-ADD - EDIT - BOT ID WHEN EDIT IS PRESSED IF USER HAS SELECT ANOTHER BOT', this.selectedBotId);
+    console.log('DEPT EDIT-ADD - EDIT - BOT ID WHEN EDIT IS PRESSED IF USER ! DOES NOT SELECT A ANOTHER BOT', this.botId);
+    console.log('DEPT EDIT-ADD - EDIT - DEPT_ROUTING WHEN EDIT IS PRESSED ', this.dept_routing);
+    console.log('DEPT EDIT-ADD - EDIT - ROUTING_SELECTED WHEN EDIT IS PRESSED ', this.ROUTING_SELECTED);
 
     // selectedFaqKbId
     // 'FIXED' (NOW, IN THE HTML, RENAMED IN 'BOT') OPTION WORK-FLOW:
@@ -935,20 +955,20 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit {
       this.bot_only,
       this.selectedGroupId,
       this.dept_routing).subscribe((data) => {
-        console.log('PUT DATA ', data);
+        console.log('DEPT EDIT-ADD - EDIT - RES ', data);
 
         // RE-RUN GET CONTACT TO UPDATE THE TABLE
         // this.getDepartments();
         // this.ngOnInit();
       },
         (error) => {
-          console.log('PUT REQUEST ERROR ', error);
+          console.log('DEPT EDIT-ADD - EDIT - ERROR ', error);
 
           this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem');
 
         },
         () => {
-          console.log('PUT REQUEST * COMPLETE *');
+          console.log('DEPT EDIT-ADD - EDIT * COMPLETE *');
           this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done');
 
           // this.router.navigate(['project/' + this.project._id + '/departments']);
