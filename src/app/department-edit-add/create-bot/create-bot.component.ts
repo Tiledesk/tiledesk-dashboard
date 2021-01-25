@@ -96,4 +96,11 @@ export class CreateBotComponent implements OnInit {
     this.valueChange.emit(false);
   }
 
+
+  goToCreateBot(type) {
+
+  }
+
+
+
 }
