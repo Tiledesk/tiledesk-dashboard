@@ -203,10 +203,11 @@ button.close {
   padding-bottom: 12px;
 }
 
-.column-th-span {
-  font-size: 14px;
+.r-d--column-th-span {
+  font-size: 12px;
   font-weight: 500;
   color: #353f45;
+  font-family: "Google Sans", sans-serif !important;
   // color: #566787;
 }
 
@@ -227,6 +228,24 @@ button.close {
   position: relative;
   top: 4px;
   color: #fff;
+}
+
+.dept-avatar-add-dept {
+  border-radius: 5px;
+  font-size: 18px;
+  font-weight: 400;
+  text-align: center;
+  padding-top: 5px;
+  padding-bottom: 3px;
+  display: inline-block;
+  width: 42px;
+  height: 42px;
+  line-height: 33px;
+  position: relative;
+  top: 4px;
+  color: #3ea9f5;
+  background: rgba(62, 169, 245, 0.1);
+  border-style: dotted;
 }
 
 .line-clamp {
@@ -269,6 +288,10 @@ table > tbody > tr.default-dept-disabled > td {
   font-size: 18px;
 }
 
+.dept-not-visible {
+  opacity: 0.6 !important;
+}
+
 .title-attribute {
   font-family: "Google Sans", sans-serif !important;
   color: #394f5a;
@@ -284,3 +307,87 @@ table > tbody > tr.default-dept-disabled > td {
 //   overflow: hidden;
 //   text-overflow: ellipsis;
 // }
+.table-title--underlined {
+  text-transform: none;
+  color: #566787;
+  margin-bottom: 0px;
+  height: 40px !important;
+  position: relative;
+  font-family: Google Sans, sans-serif;
+  height: 30px;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+.table-title--underline {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: -1px;
+  border-bottom: 2px solid #3ea9f5;
+  z-index: 1;
+}
+
+.table-subtitle {
+  height: 5px;
+  border-top: 1px solid #ddd;
+}
+
+// --------- start new on-off btn logo ---------
+.nw-onoffswitch {
+  position: relative;
+  width: 45px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+.nw-onoffswitch-checkbox {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.nw-onoffswitch-label {
+  display: block;
+  overflow: hidden;
+  cursor: pointer;
+  height: 25px;
+  padding: 0;
+  line-height: 25px;
+  border: 2px solid #e3e3e3;
+  border-radius: 25px;
+  background-color: #ffffff;
+  transition: background-color 0.3s ease-in;
+}
+.nw-onoffswitch-label:before {
+  content: "";
+  display: block;
+  width: 25px;
+  margin: 0px;
+  background: #ffffff;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 20px;
+  border: 2px solid #e3e3e3;
+  border-radius: 25px;
+  transition: all 0.3s ease-in 0s;
+}
+.nw-onoffswitch-checkbox:checked + .nw-onoffswitch-label {
+  background-color: #3ea9f5;
+}
+.nw-onoffswitch-checkbox:checked + .nw-onoffswitch-label,
+.nw-onoffswitch-checkbox:checked + .nw-onoffswitch-label:before {
+  border-color: #3ea9f5;
+}
+.nw-onoffswitch-checkbox:checked + .nw-onoffswitch-label:before {
+  right: 0px;
+}
+// --------- ./end new on-off btn logo ---------
+
+.line-clamp-dept-description-in-tooltip {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

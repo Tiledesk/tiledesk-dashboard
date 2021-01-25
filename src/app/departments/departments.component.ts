@@ -171,6 +171,10 @@ export class DepartmentsComponent implements OnInit {
         let count = 0;
         departments.forEach((dept: any) => {
           // console.log('»»» »»» DEPTS PAGE - DEPT)', dept);
+          if (dept && dept.default === true) {
+            console.log('»»» »»» DEPTS PAGE - DEFAULT DEPT ', dept);
+            dept['display_name'] = "Default Routing"
+          }
 
           /// DI QUESTO NN C'E NE SAREBBE BISOGNO
           if (!this.isVisibleDEP) {
@@ -275,6 +279,7 @@ export class DepartmentsComponent implements OnInit {
   }
 
   updateDeptStatus($event, dept_id) {
+    console.log('»»» »»» DEPTS PAGE - ON CHANGE DEPT STATUS - event ', $event)
     const checkModel = $event.target.checked;
     console.log('»»» »»» DEPTS PAGE - ON CHANGE DEPT STATUS - DEPT ID ', dept_id, 'CHECHED ', checkModel)
 
@@ -297,6 +302,11 @@ export class DepartmentsComponent implements OnInit {
         this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done');
         console.log('»»» »»» DEPTS PAGE - UPDATE DEPT STATUS - COMPLETE')
         this.getDeptsByProjectId();
+
+        console.log('»»» »»» DEPTS PAGE - UPDATE DEPT STATUS - COMPLETE DEPTS - ', this.departments)
+
+        
+
       });
   }
 
