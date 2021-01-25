@@ -67,6 +67,7 @@ export class ProjectProfileGuard implements CanActivate {
 
       return true
     } else {
+      console.log('»> »> PROJECT-PROFILE GUARD USER NOT AUTHORIZED - URL ',url);
       this.router.navigate([url + '-demo']);
       return false
     }

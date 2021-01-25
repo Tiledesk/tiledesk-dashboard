@@ -729,7 +729,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 takeUntil(this.unsubscribe$)
             )
             .subscribe((currentuser_availability) => {
-                console.log('SB - GET WS CURRENT-USER AVAILABILITY - IS AVAILABLE? ', currentuser_availability);
+                console.log('WS-REQUESTS-SERVICE - SB - GET WS CURRENT-USER AVAILABILITY - IS AVAILABLE? ', currentuser_availability);
                 if (currentuser_availability !== null) {
                     this.IS_AVAILABLE = currentuser_availability;
                 }
@@ -747,7 +747,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 takeUntil(this.unsubscribe$)
             )
             .subscribe((currentuser_isbusy) => {
-                console.log('SB - GET WS CURRENT-USER - currentuser_isbusy? ', currentuser_isbusy);
+                console.log('WS-REQUESTS-SERVICE SB - GET WS CURRENT-USER - currentuser_isbusy? ', currentuser_isbusy);
                 if (currentuser_isbusy !== null) {
                     this.IS_BUSY = currentuser_isbusy;
                     console.log('SB - GET WS CURRENT-USER (from ws)- this.IS_BUSY? ', this.IS_BUSY);
