@@ -1046,7 +1046,7 @@ export class UsersService {
   /**
    * UPDATE PROJECT-USER ROLE (PUT) */
   // DONE - WORKS NK-TO-TEST - da testare dopo che L. esegue il commit del servizio aggiornato (lo puo fare solo l'admin)
-  public updateProjectUserRoleAndMaxchat(projectUser_id: string, user_role: string, max_served_chat: number) {
+  public updateProjectUserRoleAndMaxchat(projectUser_id: string, user_role: string, max_assigned_chat: number) {
 
     let url = this.PROJECT_USER_URL + projectUser_id;
     console.log('PROJECT-USER DETAILS (calling from) - PROJECT-USER UPDATE ROLE & MAX-CHAT (PUT) URL ', url);
@@ -1057,7 +1057,9 @@ export class UsersService {
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
 
-    const body = { 'role': user_role, 'max_served_chat': max_served_chat };
+    // const body = { 'role': user_role, 'max_served_chat': max_served_chat };
+    const body = { 'role': user_role, 'max_assigned_chat': max_assigned_chat };
+    
 
     console.log('PROJECT-USER DETAILS (calling from) - PROJECT-USER UPDATE ROLE & MAX-CHAT BODY ', body);
 

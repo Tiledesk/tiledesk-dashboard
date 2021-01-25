@@ -238,7 +238,7 @@
                   {{'ChatLimit' | translate}}
                 </label>
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                  <input style="margin-bottom: 1px;" [(ngModel)]="max_served_chat" type="number" [disabled]="CURRENT_USER_ROLE === 'agent'">
+                  <input style="margin-bottom: 1px;" [(ngModel)]="max_assigned_chat" type="number" [disabled]="CURRENT_USER_ROLE === 'agent'">
                   <span
                   style="display: block; font-size: 12px; font-weight: 100;color: #7695a5;line-height: 1.2em;padding-top: 3px;">
                   {{ "UserEditAddPage.NumberOfChatsAgentIsAllowedToTake" | translate  }}

@@ -70,7 +70,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
   changeAvailabilitySuccessNoticationMsg: string;
   changeAvailabilityErrorNoticationMsg: string;
   CURRENT_USER_ROLE: string;
-  max_served_chat: number;
+  max_assigned_chat: number;
   currentUser_projectUserID: string;
 
   anErrorOccurredWhileUpdatingNoticationMsg: string;
@@ -362,8 +362,8 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
       this.user_role = projectUser.role;
       console.log('PROJECT-USER DETAILS - ROLE: ', this.user_role);
 
-      if (projectUser && projectUser.max_served_chat) {
-        this.max_served_chat = projectUser.max_served_chat;
+      if (projectUser && projectUser.max_assigned_chat) {
+        this.max_assigned_chat = projectUser.max_assigned_chat;
       }
 
     },
@@ -417,15 +417,15 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
     console.log('!!! CONTACTS - SEARCH BTN ', update_project_user_btn)
     update_project_user_btn.blur();
 
-    console.log('PROJECT-USER DETAILS - updateUserRole this.max_served_chat', this.max_served_chat)
+    console.log('PROJECT-USER DETAILS - updateUserRole this.max_assigned_chat', this.max_assigned_chat)
     console.log('PROJECT-USER DETAILS - updateUserRole current user id', this.CURRENT_USER_ID)
     console.log('PROJECT-USER DETAILS - updateUserRole project_user_id', this.project_user_id)
     console.log('PROJECT-USER DETAILS - updateUserRole  user_id  from project-user object', this.user_id)
 
 
-    let maxservedchat = -1
-    if (this.max_served_chat !== null && this.max_served_chat !== undefined) {
-      maxservedchat = this.max_served_chat;
+    let maxassignedchat = -1
+    if (this.max_assigned_chat !== null && this.max_assigned_chat !== undefined) {
+      maxassignedchat = this.max_assigned_chat;
     }
 
     if (this.role === undefined) {
@@ -442,7 +442,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
       console.log('PROJECT-USER DETAILS - THE CURRENT USER IS UPDATING HIS PROJECT-USER PROFILE ')
     }
 
-    this.usersService.updateProjectUserRoleAndMaxchat(projectuserid, this.role, maxservedchat)
+    this.usersService.updateProjectUserRoleAndMaxchat(projectuserid, this.role, maxassignedchat)
       .subscribe((projectUser: any) => {
         console.log('PROJECT-USER DETAILS - PROJECT-USER UPDATED ', projectUser)
 
