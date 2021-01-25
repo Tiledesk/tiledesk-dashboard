@@ -941,8 +941,6 @@
 									</div>
 								</div>
 
-
-
 								<!--
 								// --------------------------
 								//  Online Message
@@ -1242,7 +1240,7 @@
 											</label>
 											<span class="active-language-label">{{selectedLangName}} </span>
 											<input class="custom-input" [(ngModel)]="waitingTimeNotFoundMsg"
-												(ngModelChange)="waitingTimeNotFoundMsgChange($event)"
+												(ngModelChange)="waitingTimeNotFoundMsgChange($event)" (focus)="onFocusReplyTime()"
 												style="font-weight: 400;margin-bottom:3px">
 											<ul class="custom-logo-note"
 												style="margin-bottom:0px;list-style-type: none;padding-left: 0px;max-width: 300px;">
@@ -1404,7 +1402,7 @@
 										<input class="custom-input"
 											[ngClass]="{'callout-disabled' : CALLOUT_IS_DISABLED === true, 'required-field' : calloutTitle?.length <= 0}"
 											[disabled]="CALLOUT_IS_DISABLED === true" [(ngModel)]="calloutTitle"
-											(ngModelChange)="calloutTitleChange($event)"
+											(ngModelChange)="calloutTitleChange($event)" (focus)="onFocusCalloutTitle()"
 											style="font-weight: 400; margin-bottom:3px">
 
 										<div *ngIf="calloutTitle?.length <= 0" style="font-size: 11px; color: #f44336;">
@@ -1438,7 +1436,7 @@
 										<input class="custom-input"
 											[ngClass]="{'callout-disabled' : CALLOUT_IS_DISABLED === true, 'required-field' : calloutTitle?.length <= 0}"
 											[disabled]="CALLOUT_IS_DISABLED === true" [(ngModel)]="calloutMsg"
-											(ngModelChange)="calloutMsgChange($event)"
+											(ngModelChange)="calloutMsgChange($event)" (focus)="onFocusCalloutMsg()"
 											style="font-weight: 400; margin-bottom:3px">
 										<div *ngIf="calloutMsg?.length <= 0" style="font-size: 11px; color: #f44336;">
 											{{ 'RequiredField' | translate}}

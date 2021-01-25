@@ -191,6 +191,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   setDefaultLangInMultilanguageSection: string;
   toAddLanguagesToYourProjectMsg: string;
   cancelMsg: string;
+  HAS_CHANGED_GREETINGS = false;
   constructor(
     private notify: NotifyService,
     public location: Location,
@@ -857,13 +858,36 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   welcomeTitleChange(event) {
     this.welcomeTitle = event;
     console.log('Multilanguage (widget-design) - WELCOME TITLE CHANGE: ', this.welcomeTitle);
+    this.HAS_CHANGED_GREETINGS = true;
     // if (event.length === 0) {    }
   }
 
   welcomeMsgChange(event) {
     this.welcomeMsg = event;
     console.log('Multilanguage (widget-design) - WELCOME MSG CHANGE: ', this.welcomeMsg);
+    this.HAS_CHANGED_GREETINGS = true;
     // if (event.length === 0) {  }
+  }
+
+  onChangeOnlineMsg(event) {
+    this.onlineMsg = event;
+    console.log('Multilanguage (widget-design) - ONLINE MSG CHANGE: ', this.onlineMsg);
+    this.HAS_CHANGED_GREETINGS = true;
+    // if (event.length === 0) {  }
+  }
+
+  onChangeOfflineMsg(event) {
+    this.offlineMsg = event;
+    console.log('Multilanguage (widget-design) - OFFLINE MSG CHANGE: ', this.offlineMsg);
+    this.HAS_CHANGED_GREETINGS = true;
+    // if (event.length === 0 || event) {  }
+  }
+
+  onChangeOfficeClosedMsg(event) {
+    this.officeClosedMsg = event;
+    console.log('Multilanguage (widget-design) - OFFICE CLOSED MSG CHANGE: ', this.officeClosedMsg);
+    this.HAS_CHANGED_GREETINGS = true;
+    // if (event.length === 0 || event) {  }
   }
 
 
@@ -889,6 +913,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   }
 
   saveReplyTime() {
+    this.HAS_CHANGED_GREETINGS = false;
     const save_replytime_btn = <HTMLElement>document.querySelector('.save_replytime_btn');
     console.log('Multilanguage (widget-design) - save_replytime_btn: ', save_replytime_btn);
     if (save_replytime_btn) {
@@ -1052,23 +1077,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     // if (event.length === 0) {  }
   }
 
-  onChangeOnlineMsg(event) {
-    this.onlineMsg = event;
-    console.log('Multilanguage (widget-design) - ONLINE MSG CHANGE: ', this.onlineMsg);
-    // if (event.length === 0) {  }
-  }
-
-  onChangeOfflineMsg(event) {
-    this.offlineMsg = event;
-    console.log('Multilanguage (widget-design) - OFFLINE MSG CHANGE: ', this.offlineMsg);
-    // if (event.length === 0 || event) {  }
-  }
-
-  onChangeOfficeClosedMsg(event) {
-    this.officeClosedMsg = event;
-    console.log('Multilanguage (widget-design) - OFFICE CLOSED MSG CHANGE: ', this.officeClosedMsg);
-    // if (event.length === 0 || event) {  }
-  }
+ 
 
   // ------------------------------------------------------------------------------------
   // Select language
@@ -1134,8 +1143,12 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
         console.log('Multilanguage (widget-design) - saveTranslation - ERROR ', error)
       }, () => {
 
-        if (!this.HAS_SELECTED_APPEARANCE && !this.HAS_SELECTED_CALLOUT) {
-          this.notify.showWidgetStyleUpdateNotification(this.updateWidgetSuccessNoticationMsg, 2, 'done');
+        // if (!this.HAS_SELECTED_APPEARANCE && !this.HAS_SELECTED_CALLOUT && !this.HAS_SELECTED_CALLOUT) {
+        //   // this.notify.showWidgetStyleUpdateNotification(this.updateWidgetSuccessNoticationMsg, 2, 'done');
+        // }
+
+        if (this.HAS_CHANGED_GREETINGS === true) {
+           this.notify.showWidgetStyleUpdateNotification(this.updateWidgetSuccessNoticationMsg, 2, 'done');
         }
         console.log('Multilanguage (widget-design) - saveTranslation * COMPLETE *')
       });
@@ -1803,6 +1816,18 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     }
   }
 
+  onFocusCalloutTitle () {
+    this.DISPLAY_WIDGET_HOME = false;
+    this.DISPLAY_CALLOUT = true;
+    this.DISPLAY_WIDGET_CHAT = false;
+  }
+
+  onFocusCalloutMsg() {
+    this.DISPLAY_WIDGET_HOME = false;
+    this.DISPLAY_CALLOUT = true;
+    this.DISPLAY_WIDGET_CHAT = false;
+  }
+
 
   setSelectedCalloutTimer() {
 
@@ -1838,6 +1863,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
 
 
   saveCalloutSettings() {
+    this.HAS_CHANGED_GREETINGS = false;
     const callout_settings_save_btn = <HTMLElement>document.querySelector('.callout-settings-save-btn');
 
     if (callout_settings_save_btn) {
