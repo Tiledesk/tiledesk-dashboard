@@ -885,7 +885,7 @@
                     // Maximum chats input
                     // -------------------------------------------------------- -->
                     <div class="chat-limit">
-                      <input type="number" [(ngModel)]="max_agent_served_chat"
+                      <input type="number" [(ngModel)]="max_agent_assigned_chat"
                         (ngModelChange)="onChangeMaximum_chats($event)" class="input" id="chat_limit" name="chat_limit"
                         min="1" max="10000000" style="margin-bottom: 1px;" [disabled]="chat_limit_on === false">
                     </div>

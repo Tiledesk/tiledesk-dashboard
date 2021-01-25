@@ -98,7 +98,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   isVisibleAdvancedTab: boolean;
   isVisibleDeveloperTab: boolean;
   isVisibleNotificationTab: boolean;
-  max_agent_served_chat: number
+  max_agent_assigned_chat: number
   reassignment_delay: number
   automatic_idle_chats: number
 
@@ -887,10 +887,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
         if (project.settings) {
           // Chat limit
-          if (project.settings.max_agent_served_chat) {
-            this.max_agent_served_chat = project.settings.max_agent_served_chat
+          if (project.settings.max_agent_assigned_chat) {
+            this.max_agent_assigned_chat = project.settings.max_agent_assigned_chat
           } else {
-            this.max_agent_served_chat = 3
+            this.max_agent_assigned_chat = 3
           }
 
           if (project.settings.chat_limit_on) {
@@ -927,7 +927,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
 
         } else {
-          this.max_agent_served_chat = 3;
+          this.max_agent_assigned_chat = 3;
           this.reassignment_delay = 300;
           this.automatic_idle_chats = 3;
           this.chat_limit_on = false;
@@ -1146,13 +1146,13 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     const updateAdvancedSettingBtn = <HTMLElement>document.querySelector('.btn_edit_advanced_settings');
     console.log('!!! PRJCT-EDIT-ADD  - SEARCH BTN ', updateAdvancedSettingBtn)
     updateAdvancedSettingBtn.blur();
-    console.log('PRJCT-EDIT-ADD UPDATE ADVANCED SETTINGS - max_agent_served_chat ', this.max_agent_served_chat, ' reassignment_delay ', this.reassignment_delay, ' automatic_idle_chats ', this.automatic_idle_chats);
+    console.log('PRJCT-EDIT-ADD UPDATE ADVANCED SETTINGS - max_agent_assigned_chat ', this.max_agent_assigned_chat, ' reassignment_delay ', this.reassignment_delay, ' automatic_idle_chats ', this.automatic_idle_chats);
 
     console.log('PRJCT-EDIT-ADD UPDATE ADVANCED SETTINGS - chat_limit_on ', this.chat_limit_on, ' reassignment_on ', this.reassignment_on, ' automatic_unavailable_status_on ', this.automatic_unavailable_status_on);
 
 
     // if (this.chat_limit_on === true || this.reassignment_on === true || this.automatic_unavailable_status_on === true) {
-    this.projectService.updateAdvancedSettings(this.max_agent_served_chat, this.reassignment_delay, this.automatic_idle_chats, this.chat_limit_on, this.reassignment_on, this.automatic_unavailable_status_on)
+    this.projectService.updateAdvancedSettings(this.max_agent_assigned_chat, this.reassignment_delay, this.automatic_idle_chats, this.chat_limit_on, this.reassignment_on, this.automatic_unavailable_status_on)
       .subscribe((prjct) => {
         console.log('PRJCT-EDIT-ADD UPDATE ADVANCED SETTINGS - RES ', prjct);
       }, (error) => {

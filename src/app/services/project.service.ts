@@ -334,7 +334,7 @@ export class ProjectService {
     const options = new RequestOptions({ headers });
 
     const body = {
-      'settings.max_agent_served_chat': chatlimit,
+      'settings.max_agent_assigned_chat': chatlimit,
       'settings.reassignment_delay': reassignmenttimeout,
       'settings.automatic_idle_chats': automaticidlechats,
       'settings.chat_limit_on': chat_limit_on,
