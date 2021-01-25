@@ -3,14 +3,22 @@
 
 ### 2.1.5
 - Changes all occurrences of 'served conversations' to 'assigned conversations' and of 'unserved conversations' to 'unassigned conversations' and of 'Served by' in 'Assigned to'
-- Changes the display order of the count 'Last 30 days ...' statistics on the home page
+- Changes the display order of the 'Last 30 days ...' statistics on the home page
 - Changes all occurrences of 'teammates seats' in 'seats'
 - Changes the "icon only" "Simulate Visitor" button in the navigation bar to one that displays its text
 - Fixes graphical errors in the home and resize the graph
-- Changes the 'Routing & Depts' sidebar menu item to Routing
-- Changes the title of the department list from 'Departments' to 'Routing'
+- Creates two sections in the 'Routing & Departments' page to separate the Default routing from the list of departments
 - Improves widget preview: vertically centered the icon 'settings' 
 - Adds quick tips in the "Routing Rules" section of the edit department page
+- Change the color of the "view map" and "view no realtime conversations" buttons in the conversations list
+- Fixes subscription to the availability of the current user (adds publication of the status in the websocket's callback 'update')
+- Manages the links of the 'Last 30 days ...' statistics available in the home to the reports in analytics when the plan has expired or the trial period has expired
+- Changes all occurrences of "Default Department" to "Default Routing"
+- Replaces in the department list the visibility checkbox with a toggle switch button and adds a badge over the department avatar to indicate the status visible / not visible
+- Adds the ability to create a group on the fly when creating or editing a department and automatically selects the new group created
+- Change the occurrence of the project-user's property max_served_chat to max_assigned_chat
+- Change the occurrence of the project's property max_agent_served_chat to max_agent_assigned_chat
+- Fix the display of double in-app notifications displayed when saving settings on the widget settings page and other minor bugs
 
 ### 2.1.4
 - Adds the ability in 'Routing and Depts' to create a new group 'on the fly'
