@@ -680,14 +680,14 @@ export class WsRequestsService implements OnDestroy {
 
     var self = this;
 
-    console.log('NAVBAR-FOR-PANEL & SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY ****** CALLING REF ****** prjctuserid', prjctuserid);
+    console.log('WS-REQUESTS-SERVICE - SUBSCR To CURRENT-USER AVAILABILITY ****** CALLING REF ****** prjctuserid', prjctuserid);
     const path = '/' + this.project_id + '/project_users/' + prjctuserid
 
     this.webSocketJs.ref(path, 'subscriptionToWsCurrentUser',
       function (data, notification) {
         // console.log("SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - CREATE - data ", data , ' path ', path);
-        console.log("NAVBAR-FOR-PANEL & SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - CREATE - data ", data);
-        console.log("NAVBAR-FOR-PANEL & SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - CREATE - data  user_available ", data.user_available);
+        console.log("WS-REQUESTS-SERVICE - SUBSCR To CURRENT-USER AVAILABILITY - CREATE - data ", data);
+        console.log("WS-REQUESTS-SERVICE - SUBSCR To CURRENT-USER AVAILABILITY - CREATE - data  user_available ", data.user_available);
 
         self.currentUserWsAvailability$.next(data.user_available);
         if (data.isBusy) {
@@ -698,11 +698,18 @@ export class WsRequestsService implements OnDestroy {
         // self.availability_btn_clicked(true) // NK LO COMMENTO 11 GEN PRIMA DI SPOSTARLO IN ws-requests.service da users.service
 
       }, function (data, notification) {
-        console.log("SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - UPDATE - data ", data);
+        console.log("WS-REQUESTS-SERVICE - SUBSCR To CURRENT-USER AVAILABILITY - UPDATE - data ", data);
+
+        self.currentUserWsAvailability$.next(data.user_available);
+        if (data.isBusy) {
+          self.currentUserWsIsBusy$.next(data.isBusy)
+        } else {
+          self.currentUserWsIsBusy$.next(false)
+        }
 
       }, function (data, notification) {
         if (data) {
-          console.log("SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - ON-DATA - data", data);
+          console.log("WS-REQUESTS-SERVICE - SUBSCR To CURRENT-USER AVAILABILITY - ON-DATA - data", data);
 
         }
       }
