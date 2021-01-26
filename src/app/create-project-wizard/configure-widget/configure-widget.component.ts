@@ -404,7 +404,7 @@ export class ConfigureWidgetComponent extends WidgetDesignBaseComponent implemen
 
   getALLDefaultTranslations() {
 
-    // USED TO PRESELECT ENGLISH LANGUAGE AVLUE IN THE SELECT LANGUAGE COMBO BOX
+    // USED TO PRESELECT ENGLISH LANGUAGE VALUE IN THE SELECT LANGUAGE COMBO BOX
     this.selectedLang = 'English'
     // this.selectedTranslationLabel = 'en'
 

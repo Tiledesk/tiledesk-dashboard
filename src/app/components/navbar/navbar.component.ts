@@ -801,6 +801,9 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     }
 
     testWidgetPage() {
+        const simulateVisitorBtnElem = <HTMLElement>document.querySelector('.simulate-visitor-btn');
+        simulateVisitorBtnElem.blur();
+        
         const url = this.TESTSITE_BASE_URL + '?tiledesk_projectid=' + this.projectId + '&project_name=' + this.projectName + '&isOpen=true'
         window.open(url, '_blank');
     }
