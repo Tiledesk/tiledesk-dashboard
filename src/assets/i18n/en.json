@@ -1161,15 +1161,15 @@
         "NoAgent": "No agent"
     },
     "Tags": {
-        "Tags": "Labels",
-        "Tag": "Label",
-        "TagName": "Label name",
-        "ManageTags": "Manage Labels",
-        "AddTags": "Add Label",
-        "DeleteLabel": "Delete Label",
-        "TypeALabelAndPressEnter": "Type a label and press Enter",
-        "YouHaveNotAddedAnyTags": "You have not added any labels",
-        "DoYouReallyWantToCancelTheTag": "Do you really want to cancel the label",
+        "Tags": "Tags",
+        "Tag": "Tag",
+        "TagName": "Tag name",
+        "ManageTags": "Manage Tags",
+        "AddTags": "Add tag",
+        "DeleteLabel": "Delete tag",
+        "TypeALabelAndPressEnter": "Type a tag and press Enter",
+        "YouHaveNotAddedAnyTags": "You have not added any tags",
+        "DoYouReallyWantToCancelTheTag": "Do you really want to delete the tag?",
         "Color": {
             "red": "Red",
             "orange": "Orange",
@@ -1179,14 +1179,14 @@
             "violet": "Violet"
         },
         "NotificationMsgs": {
-            "CreateLabelSuccess": "Label successfully created",
-            "CreateLabelError": "An error occurred while creating label",
-            "DeleteLabelSuccess": "Label successfully deleted",
-            "DeleteLabelError": "An error occurred while deleting label",
-            "UpdateLabelSuccess": "Label successfully updated",
-            "UpdateLabelError": "An error occurred while updating label",
-            "AddLabelSuccess": "Label successfully added",
-            "AddLabelError": "An error occurred while adding label"
+            "CreateLabelSuccess": "Tag successfully created",
+            "CreateLabelError": "An error occurred while creating tag",
+            "DeleteLabelSuccess": "Tag successfully deleted",
+            "DeleteLabelError": "An error occurred while deleting tag",
+            "UpdateLabelSuccess": "Tag successfully updated",
+            "UpdateLabelError": "An error occurred while updating tag",
+            "AddLabelSuccess": "Tag successfully added",
+            "AddLabelError": "An error occurred while adding tag"
         }
     },
     "Notes": {

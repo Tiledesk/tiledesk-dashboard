@@ -1161,15 +1161,15 @@
 		"NoAgent": "Kein Agent"
 	},
 	"Tags": {
-		"Tags": "Etiketten",
-		"Tag": "Etikett",
-		"TagName": "Markenname",
-		"ManageTags": "Etiketten verwalten",
-		"AddTags": "Etiketten hinzufügen",
-		"DeleteLabel": "Etiketten löschen",
-		"TypeALabelAndPressEnter": "Geben Sie eine Bezeichnung ein und drücken Sie die Eingabetaste",
-		"YouHaveNotAddedAnyTags": "Sie haben keine Beschriftungen hinzugefügt",
-		"DoYouReallyWantToCancelTheTag": "Möchten Sie das Etikett wirklich stornieren",
+		"Tags": "Tags",
+		"Tag": "Tag",
+		"TagName": "Tag-Name",
+		"ManageTags": "Tags verwalten",
+		"AddTags": "Tag hinzufügen",
+		"DeleteLabel": "Tag löschen",
+		"TypeALabelAndPressEnter": "Geben Sie ein Tag ein und drücken Sie die Eingabetaste",
+		"YouHaveNotAddedAnyTags": "Sie haben keine Tags hinzugefügt",
+		"DoYouReallyWantToCancelTheTag": "Möchten Sie das Tag wirklich löschen?",
 		"Color": {
 			"red": "Rot",
 			"orange": "Orange",
@@ -1179,14 +1179,14 @@
 			"violet": "Violett"
 		},
 		"NotificationMsgs": {
-			"CreateLabelSuccess": "Etikette erfolgreich erstellt",
-			"CreateLabelError": "Ein Fehler ist während der Erstellung des Etiketten aufgetreten",
-			"DeleteLabelSuccess": "Label erfolgreich gelöscht",
-			"DeleteLabelError": "Ein Fehler ist während dem Entfernen des Etiketten aufgetreten",
-			"UpdateLabelSuccess": "Label erfolgreich aktualisiert",
-			"UpdateLabelError": "Ein Fehler ist während der Aktualisierung des Etiketten aufgetreten",
-			"AddLabelSuccess": "Label erfolgreich erstellet",
-			"AddLabelError": "Ein Fehler ist während des Hinzufügens des Etiketten aufgetreten"
+			"CreateLabelSuccess": "Tag erfolgreich erstellt",
+			"CreateLabelError": "Beim Erstellen des Tags ist ein Fehler aufgetreten",
+			"DeleteLabelSuccess": "Tag erfolgreich gelöscht",
+			"DeleteLabelError": "Beim Löschen des Tags ist ein Fehler aufgetreten",
+			"UpdateLabelSuccess": "Tag erfolgreich aktualisiert",
+			"UpdateLabelError": "Beim Aktualisieren des Tags ist ein Fehler aufgetreten",
+			"AddLabelSuccess": "Tag erfolgreich hinzugefügt",
+			"AddLabelError": "Beim Hinzufügen eines Tags ist ein Fehler aufgetreten"
 		}
 	},
 	"Notes": {

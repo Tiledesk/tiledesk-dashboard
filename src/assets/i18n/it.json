@@ -1158,15 +1158,15 @@
         "NoAgent": "Nessun agente"
     },
     "Tags": {
-        "Tags": "Etichette",
-        "Tag": "Etichetta",
-        "TagName": "Nome Etichetta",
-        "ManageTags": "Gestisci Etichette",
-        "AddTags": "Aggiungi Etichetta",
-        "DeleteLabel": "Elimina etichetta",
-        "TypeALabelAndPressEnter": "Digita un'etichetta e premi Invio",
-        "YouHaveNotAddedAnyTags": "Non hai ancora aggiunto etichette",
-        "DoYouReallyWantToCancelTheTag": "Vuoi davvero cancellare l'etichetta",
+        "Tags": "Tag",
+        "Tag": "Tag",
+        "TagName": "Nome tag",
+        "ManageTags": "Gestisci Tag",
+        "AddTags": "Aggiungi tag",
+        "DeleteLabel": "Elimina tag",
+        "TypeALabelAndPressEnter": "Digita una tag e premi Invio",
+        "YouHaveNotAddedAnyTags": "Non hai ancora aggiunto tag",
+        "DoYouReallyWantToCancelTheTag": "Vuoi davvero cancellare la tag?",
         "Color": {
             "red": "Rosso",
             "orange": "Arancio",
@@ -1176,14 +1176,14 @@
             "violet": "Viola"
         },
         "NotificationMsgs": {
-            "CreateLabelSuccess": "Etichetta creata correttamente",
-            "CreateLabelError": "Si è verificato un errore durante la creazione dell'etichetta",
-            "DeleteLabelSuccess": "Etichetta eliminata correttamente",
-            "DeleteLabelError": "Si è verificato un errore durante l'eliminazione dell'etichetta",
-            "UpdateLabelSuccess": "Etichetta aggiornata con successo",
-            "UpdateLabelError": "Si è verificato un errore durante l'aggiornamento dell'etichetta",
-            "AddLabelSuccess": "Etichetta aggiunta con successo",
-            "AddLabelError": "Si è verificato un errore durante l'aggiunta dell'etichetta"
+            "CreateLabelSuccess": "Tag creata correttamente",
+            "CreateLabelError": "Si è verificato un errore durante la creazione della tag",
+            "DeleteLabelSuccess": "Tag eliminata correttamente",
+            "DeleteLabelError": "Si è verificato un errore durante l'eliminazione della tag",
+            "UpdateLabelSuccess": "Tag aggiornata con successo",
+            "UpdateLabelError": "Si è verificato un errore durante l'aggiornamento della tag",
+            "AddLabelSuccess": "Tag aggiunta con successo",
+            "AddLabelError": "Si è verificato un errore durante l'aggiunta della tag"
         }
     },
     "Notes": {
