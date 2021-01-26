@@ -112,7 +112,9 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.projects.forEach(project => {
-      this.usersService.unsubsToWS_CurrentUser_allProject(project.id_project._id, project._id)
+      if (project.id_project.status !== 0) {
+        this.usersService.unsubsToWS_CurrentUser_allProject(project.id_project._id, project._id)
+      }
     });
 
     this.unsubscribe$.next();
@@ -307,7 +309,9 @@ export class ProjectsComponent implements OnInit, OnDestroy {
              * project.id_project._id is the id of the project
              * project._id is the id of the project user
              */
-            this.usersService.subscriptionToWsCurrentUser_allProject(project.id_project._id, project._id);
+            if (project.id_project.status !== 0) {
+              this.usersService.subscriptionToWsCurrentUser_allProject(project.id_project._id, project._id);
+            }
             this.listenTocurrentUserWSAvailabilityAndBusyStatustForProject$()
 
             // .then((data) => {
@@ -462,7 +466,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
         const newproject: Project = {
           _id: project._id,
           name: project.name
-          
+
         }
 
         // SENT THE NEW PROJECT TO THE AUTH SERVICE THAT PUBLISH
