@@ -117,6 +117,7 @@
               {{ "LastName" | translate }}<span style="color:#ff5252">*</span>
             </label>
             <input type="text" id="lastName" class="input" formControlName="lastName" required>
+          
             <div *ngIf="formErrors.lastName" class="is-danger">
               {{ formErrors.lastName }}
             </div>

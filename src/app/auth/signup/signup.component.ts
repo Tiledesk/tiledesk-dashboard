@@ -20,7 +20,7 @@ type FormErrors = { [u in UserFields]: string };
 })
 export class SignupComponent implements OnInit, AfterViewInit {
 
- 
+
   // tparams = brand;
   // companyLogoBlack_Url = brand.company_logo_black__url;
   // companyLogoAllWithe_Url = brand.company_logo_allwhite__url;
@@ -96,10 +96,10 @@ export class SignupComponent implements OnInit, AfterViewInit {
     private notify: NotifyService,
     public appConfigService: AppConfigService,
     public brandService: BrandService
-  ) { 
+  ) {
 
     const brand = brandService.getBrand();
-    
+
     this.tparams = brand;
     this.companyLogoBlack_Url = brand['company_logo_black__url'];
     this.companyLogoAllWithe_Url = brand['company_logo_allwhite__url'];
@@ -115,7 +115,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
     this.redirectIfLogged();
     this.buildForm();
     this.getBrowserLang();
-   
+
     this.getOSCODE();
   }
 
@@ -299,8 +299,19 @@ export class SignupComponent implements OnInit, AfterViewInit {
         console.log('CREATE NEW USER - POST REQUEST ERROR ', error);
         this.showSpinnerInLoginBtn = false;
         this.display = 'block';
-        this.signin_errormsg = 'An error occurred while creating the account';
-        this.notify.showToast(this.signin_errormsg, 4, 'report_problem')
+        // const errorObj = JSON.parse(error);
+        console.log('CREATE NEW USER - POST REQUEST ERROR STATUS', error.status);
+        
+        if (error.status === 422) {
+          this.signin_errormsg = 'Form validation error. Please fill in every fields.';
+          this.notify.showToast(this.signin_errormsg, 4, 'report_problem')
+
+        } else {
+          this.signin_errormsg = 'An error occurred while creating the account';
+          this.notify.showToast(this.signin_errormsg, 4, 'report_problem')
+        }
+
+
       }, () => {
         console.log('CREATE NEW USER  - POST REQUEST COMPLETE ');
       });
