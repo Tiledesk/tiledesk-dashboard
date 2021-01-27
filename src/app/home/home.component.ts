@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy , AfterViewInit} from '@angular/core';
 import { AuthService, SuperUser } from '../core/auth.service';
 
 import { ActivatedRoute } from '@angular/router';
@@ -32,7 +32,7 @@ import { avatarPlaceholder, getColorBck } from '../utils/util';
   templateUrl: './new-home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent implements OnInit, OnDestroy {
+export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // company_name = brand.company_name;
   // tparams = brand;
@@ -121,10 +121,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.getCurrentProjectAndInit();
     // this.getStorageBucket(); // moved in getCurrentProject()
     console.log('!!! Hello HomeComponent! ');
-    this.getVisitorsByLastNDays(this.selectedDaysId); /// VISITOR GRAPH FOR THE NEW HOME
-    this.initDay = moment().subtract(6, 'd').format('D/M/YYYY') /// VISITOR GRAPH FOR THE NEW HOME
-    this.endDay = moment().subtract(0, 'd').format('D/M/YYYY') /// VISITOR GRAPH FOR THE NEW HOME
-    console.log("INIT", this.initDay, "END", this.endDay); /// VISITOR GRAPH FOR THE NEW HOME
+   
 
 
     // this.getDeptsByProjectId(); // USED FOR COUNT OF DEPTS FOR THE NEW HOME
@@ -181,10 +178,19 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.OPERATING_HOURS_ACTIVE = this.project.operatingHours
         console.log('HOME > OPERATING_HOURS_ACTIVE', this.OPERATING_HOURS_ACTIVE)
 
-        this.init()
+        
       }
     });
   }
+
+  ngAfterViewInit() { 
+    
+    this.init()
+  }
+
+  // ngAfterViewChecked() {
+   
+  // }
 
 
   init() {
@@ -194,6 +200,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.getLastMounthRequestsCount(); // USED TO GET THE REQUESTS OF THE LAST 30 DAYS
     this.getActiveContactsCount()  /// COUNT OF ACTIVE CONTACTS FOR THE NEW HOME
     this.getVisitorsCount() /// COUNT OF VISITORS FOR THE NEW HOME
+    this.getVisitorsByLastNDays(this.selectedDaysId); /// VISITOR GRAPH FOR THE NEW HOME
+    this.initDay = moment().subtract(6, 'd').format('D/M/YYYY') /// VISITOR GRAPH FOR THE NEW HOME
+    this.endDay = moment().subtract(0, 'd').format('D/M/YYYY') /// VISITOR GRAPH FOR THE NEW HOME
+    console.log("INIT", this.initDay, "END", this.endDay); /// VISITOR GRAPH FOR THE NEW HOME
 
   }
 

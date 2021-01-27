@@ -243,17 +243,18 @@
           <div *ngFor="let project of projects" class="col-lg-4 col-md-4 col-sm-6" style="cursor:pointer">
 
             <!-- CARDS FROM THE PROJECT 'FOR' -->
-            <!-- style="max-width: 256px;" -->
+            <!-- style="max-width: 256px;" display_loading(project?.id_project?._id);  -->
             <div class="card custom-card-box-shadow"
               [ngClass]="{'project-deleted-card' : project?.id_project?.status === 0, 'delete-image-bckground':project?.id_project?.status === 0}"
               style="border-bottom-left-radius: 3px; border-bottom-right-radius: 3px;" (click)='goToHome(
+                project,
                 project?.id_project?._id, 
-              project?.id_project?.name, 
-              project?.id_project?.profile?.name, 
-              project?.id_project?.trialExpired, 
-              project?.id_project?.trialDaysLeft, 
-              project?.id_project?.status, 
-              project?.id_project?.activeOperatingHours)'>
+                project?.id_project?.name, 
+                project?.id_project?.profile?.name, 
+                project?.id_project?.trialExpired, 
+                project?.id_project?.trialDaysLeft, 
+                project?.id_project?.status, 
+                project?.id_project?.activeOperatingHours)'>
               <!-- <div class="card-header card-header-custom-bkgrnd-project"> </div> -->
 
               <div class="card-content card-content-custom-height">
@@ -262,8 +263,8 @@
                   {{ project?.id_project?.name }}
                 </h3>
 
-                <p class="category" [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}"
-                  style="font-size:14px !important; color:#7695a5">
+                <p class="id-project"
+                  [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}">
                   {{ project?.id_project?._id }}
                 </p>
                 <h4 class="category" [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}"
@@ -286,6 +287,18 @@
                   </span>
 
                 </div>
+                <!-- class="loading"   -->
+                <div id="{{'loading_'+ project?.id_project?._id}}" *ngIf="project?.is_selected === true">
+                  <!-- Loading project data -->
+                  <!-- <div class="dot-flashing-spinner-wpr"> -->
+                    <div class="spinner">
+                      <div class="bounce1"></div>
+                      <div class="bounce2"></div>
+                      <div class="bounce3"></div>
+                    </div>
+                  <!-- </div> -->
+                </div>
+
 
                 <div class="project-user-isBusy" *ngIf="project?.ws_projct_user_isBusy === true">
                   <span class="material-icons" style="font-size: 20px; color:#fedd00;">

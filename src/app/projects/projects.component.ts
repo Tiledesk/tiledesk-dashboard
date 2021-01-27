@@ -90,7 +90,11 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
     console.log('IS DEV MODE ', isDevMode());
     this.APP_IS_DEV_MODE = isDevMode()
+
   }
+
+
+
 
   ngOnInit() {
     const navbar: HTMLElement = this.element.nativeElement;
@@ -189,10 +193,16 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   }
 
 
+  display_loading(project_id) {
+    // const loadingInProjectCardEle = <HTMLElement>document.querySelector('#loading_' + project_id);
+    // console.log('!!! GO TO HOME >  display_loading - loadingInProjectCardEle ', loadingInProjectCardEle)
+    // loadingInProjectCardEle.style.color = "red";
 
+  }
   // project/:projectid/home
   // , available: boolean
   goToHome(
+    project: any,
     project_id: string,
     project_name: string,
     project_profile_name: string,
@@ -200,12 +210,21 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     project_trial_days_left: number,
     project_status: number,
     activeOperatingHours: boolean) {
-
+    console.log('!!! GO TO HOME - PROJECT ', project)
     console.log('!!! GO TO HOME - PROJECT status ', project_status)
+   
+    project['is_selected'] = true
 
+    // const loadingInProjectCardEle = <HTMLElement>document.querySelector('#loading_' + project_id);
+    // loadingInProjectCardEle.classList.add("display_loading")
+    // console.log('!!! GO TO HOME - exist_class ', loadingInProjectCardEle.classList.contains("display_loading"))
+
+    // const requestIdArrowIconElem = <HTMLElement>document.querySelector('#request_id_arrow_down');
+    // requestIdArrowIconElem.classList.add("up");
     if (project_status !== 0) {
 
-      this.router.navigate([`/project/${project_id}/home`]);
+
+
       // WHEN THE USER SELECT A PROJECT ITS ID and NAME IS SEND IN THE AUTH SERVICE THAT PUBLISHES IT
       const project: Project = {
         _id: project_id,
@@ -219,6 +238,9 @@ export class ProjectsComponent implements OnInit, OnDestroy {
       this.auth.projectSelected(project)
       console.log('!!! GO TO HOME - PROJECT ', project)
 
+      setTimeout(() => {
+        this.router.navigate([`/project/${project_id}/home`]);
+      }, 0);
     }
     /* !!! NO MORE USED - NOW THE ALL PROJECTS ARE SETTED IN THE STORAGE IN getProjectsAndSaveInStorage()
      * SET THE project_id IN THE LOCAL STORAGE
@@ -289,6 +311,8 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
         this.projects.forEach(project => {
           console.log('!!! SET PROJECT IN STORAGE')
+          project['is_selected'] = false
+
           if (project.id_project) {
             const prjct: Project = {
               _id: project.id_project._id,
