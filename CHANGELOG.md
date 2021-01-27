@@ -1,6 +1,11 @@
 
 # tiledesk-dashboard
 
+### 2.1.6
+- Manages the signup form validation error when the user try to signup but not all fields are filled in 
+- Changes all occurrences of 'Labels' to 'Tags'
+- Runs the subscription to the websocket for the project user availability only for the active projects
+
 ### 2.1.5
 - Changes all occurrences of 'served conversations' to 'assigned conversations' and of 'unserved conversations' to 'unassigned conversations' and of 'Served by' in 'Assigned to'
 - Changes the display order of the 'Last 30 days ...' statistics on the home page
