@@ -238,7 +238,7 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
             console.log('Multilanguage (widget-multilanguage) _selectTranslationTab traslation selected ', translation['data'])
 
             for (let [key, value] of Object.entries(translation['data'])) {
-              // console.log(`Multilanguage selectTranslationTab key : ${key} - value ${value}`);
+              // console.log(`Multilanguage (widget-multilanguage) selectTranslationTab key : ${key} - value ${value}`);
 
               let enLabel = this.engTraslationClone[key]
 
