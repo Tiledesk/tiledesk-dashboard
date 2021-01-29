@@ -576,6 +576,11 @@ input {
   margin-bottom: 6px;
 }
 
+input[type="text"]:disabled {
+  background: #f8f9f9;
+  cursor: not-allowed;
+}
+
 .image-not-exist-input-border {
   border: 1px solid #f44336 !important;
 }

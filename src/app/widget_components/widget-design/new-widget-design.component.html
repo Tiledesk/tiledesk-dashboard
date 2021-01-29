@@ -1116,7 +1116,7 @@
 
 
 						<div class="widget-section-container" style="height: auto; transition-duration: 0.613s;">
-							<div class="section-offset">
+							<div class="section-offset"  style="height: 556px;">
 								<!--
 								// ---------------------------------------------------
 								// Reply time messages
@@ -1165,10 +1165,11 @@
 
 											<span class="active-language-label">{{selectedLangName}} </span>
 
-											<input class="custom-input" [(ngModel)]="waitingTimeNotFoundMsg"
+											<input type="text" class="custom-input" [(ngModel)]="waitingTimeNotFoundMsg"
 												(focus)="onFocusReplyTime()"
 												(ngModelChange)="waitingTimeNotFoundMsgChange($event)"
-												style="font-weight: 400;margin-bottom:3px">
+												style="font-weight: 400;margin-bottom:3px" 
+												[disabled]='!HAS_SELECT_STATIC_REPLY_TIME_MSG || HAS_SELECT_DYMANIC_REPLY_TIME_MSG '>
 
 										</div>
 
@@ -1182,7 +1183,7 @@
 												<input type="radio" name="replyTime" value="reply_time_dynamic_msg"
 													(change)="onChangeReplyTimeTypeMsg($event.target.value)"
 													[checked]="HAS_SELECT_DYMANIC_REPLY_TIME_MSG"
-													(focus)="onFocusReplyTime()">
+													(focus)="onFocusReplyTime()" >
 												{{'DynamicallySharingAverageResponseTime' | translate}}
 											</label>
 										</div>
@@ -1214,14 +1215,16 @@
 
 											</label>
 											<span class="active-language-label">{{selectedLangName}} </span>
-											<input class="custom-input waiting-time-found-msg-input"
+											<input type="text" class="custom-input waiting-time-found-msg-input"
 												[(ngModel)]="waitingTimeFoundMsg"
 												(ngModelChange)="waitingTimeFoundMsgChange($event)"
-												style="font-weight: 400;margin-bottom:3px" (focus)="onFocusReplyTime()">
+												style="font-weight: 400;margin-bottom:3px" (focus)="onFocusReplyTime()" 
+												[disabled]='!HAS_SELECT_DYMANIC_REPLY_TIME_MSG || HAS_SELECT_STATIC_REPLY_TIME_MSG'>
 
 											<button class="btn btn-tdblu-no-boxshadow"
 												(click)="setReplyTimePlaceholder()"
-												style="font-size: 12px;padding:4px!important; display: block;">
+												style="font-size: 12px;padding:4px!important; display: block;" 
+												[disabled]='!HAS_SELECT_DYMANIC_REPLY_TIME_MSG || HAS_SELECT_STATIC_REPLY_TIME_MSG'>
 
 												<span aria-hidden="true" class="material-icons"
 													style="vertical-align: middle; margin-bottom: 0px; margin-top: 0px;">
@@ -1239,10 +1242,11 @@
 												{{ 'AverageReplyTimeNotAvailable' | translate }}
 											</label>
 											<span class="active-language-label">{{selectedLangName}} </span>
-											<input class="custom-input" [(ngModel)]="waitingTimeNotFoundMsg"
+											<input type="text" class="custom-input" [(ngModel)]="waitingTimeNotFoundMsg"
 												(ngModelChange)="waitingTimeNotFoundMsgChange($event)" (focus)="onFocusReplyTime()"
-												style="font-weight: 400;margin-bottom:3px">
-											<ul class="custom-logo-note"
+												style="font-weight: 400;margin-bottom:3px" [disabled]='!HAS_SELECT_DYMANIC_REPLY_TIME_MSG || HAS_SELECT_STATIC_REPLY_TIME_MSG'>
+											
+												<ul class="custom-logo-note"
 												style="margin-bottom:0px;list-style-type: none;padding-left: 0px;max-width: 300px;">
 												<li>
 													{{ 'YourContactsSeeThisMessageIfARTIsNotAvailable' | translate }}
@@ -1612,8 +1616,8 @@
 										<div *ngIf="translation?.code === selectedLangCode" class="current-language">
 											<span class="material-icons current-language-icon"> check </span>
 
-											<span class="current-language-text">{{'CurrentlySelected' |
-												translate}}</span>
+											<span class="current-language-text">
+												{{'CurrentlySelected' |	translate}}</span>
 										</div>
 										<!-- <i (change)="onSelectlang(selectedLang)" role="button" class="ion-close-round" data-placement="left" tabindex="0"></i> -->
 										<a *ngIf="translation?.code !== selectedLangCode"
