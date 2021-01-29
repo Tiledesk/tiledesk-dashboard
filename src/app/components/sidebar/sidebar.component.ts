@@ -645,7 +645,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         });
     }
 
-    // IF THE AVAILABILITY STATUS IS CHANGED from THE USER.COMP AVAILABLE / UNAVAILABLE TOGGLE BTN
+     // IF THE AVAILABILITY STATUS IS CHANGED from THE USER.COMP AVAILABLE / UNAVAILABLE TOGGLE BTN
     // RE-RUN getAllUsersOfCurrentProject TO UPDATE AVAILABLE / UNAVAILABLE BTN ON THE TOP OF THE SIDEBAR
     hasChangedAvailabilityStatusInUsersComp() {
         this.usersService.has_changed_availability_in_users.subscribe((has_changed_availability) => {
@@ -654,18 +654,21 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             if (this.project) {
                 this.getProjectUser()
             }
+            // this.getWsCurrentUserAvailability$()
         })
     }
+
+   
 
 
     // *** NOTE: THE SAME CALLBACK IS RUNNED IN THE HOME.COMP ***
     getProjectUser() {
-        console.log('!!! SIDEBAR CALL GET-PROJECT-USER')
+        console.log('SB  !!! SIDEBAR CALL GET-PROJECT-USER')
         this.usersService.getProjectUserByUserId(this.currentUserId).subscribe((projectUser: any) => {
 
             console.log('SB PROJECT-USER GET BY USER-ID - PROJECT-ID ', this.projectId);
             console.log('SB PROJECT-USER GET BY USER-ID - CURRENT-USER-ID ', this.user._id);
-            console.log('SB PROJECT-USER GET BY USER-ID - PROJECT USERS ', projectUser);
+            console.log('SB PROJECT-USER GET BY USER-ID - PROJECT USER ', projectUser);
             console.log('SB PROJECT-USER GET BY USER-ID - PROJECT USER LENGTH', projectUser.length);
             if ((projectUser) && (projectUser.length !== 0)) {
                 console.log('SB PROJECT-USER ID ', projectUser[0]._id)
