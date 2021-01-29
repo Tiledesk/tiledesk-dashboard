@@ -621,6 +621,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
           console.log('Multilanguage (widget-design) ***** GET labels *****  selectedLangCode ', this.selectedLangCode);
 
           this.getCurrentTranslation(this.selectedLangCode);
+
         } else {
 
           // ci sono le lebels ma nessuna assegnata al progetto
@@ -822,10 +823,21 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
         // -----------------------------------------------------------------------------------------------------------------------
         this.waitingTimeNotFoundMsg = this.selected_translation["WAITING_TIME_NOT_FOUND"];
 
-        console.log('Multilanguage (widget-design) - ***** this.selected_translation["WAITING_TIME_FOUND"] contains $reply_time ', this.selected_translation["WAITING_TIME_FOUND"].includes("$reply_time"));
+        console.log('Multilanguage (widget-design) - ***** ["WAITING_TIME_FOUND"] contains $reply_time ', this.selected_translation["WAITING_TIME_FOUND"].includes("$reply_time"));
 
         if (this.selected_translation["WAITING_TIME_FOUND"].includes("$reply_time") === false) {
-          this.waitingTimeFoundMsg = this.selected_translation["WAITING_TIME_FOUND"] + '$reply_time';
+
+          var hasSpaceAtEnds = this.selected_translation["WAITING_TIME_FOUND"].slice(-1);
+          
+          if (hasSpaceAtEnds == " ") {
+            console.log("Multilanguage (widget-design) WAITING_TIME_FOUND ends with space");
+            this.waitingTimeFoundMsg = this.selected_translation["WAITING_TIME_FOUND"] + '$reply_time';
+          } else {
+            console.log("Multilanguage (widget-design) WAITING_TIME_FOUND not ends with space");
+            this.waitingTimeFoundMsg = this.selected_translation["WAITING_TIME_FOUND"] + ' ' + '$reply_time';
+          }
+
+          
         } else {
           this.waitingTimeFoundMsg = this.selected_translation["WAITING_TIME_FOUND"]
         }
@@ -1102,7 +1114,6 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     if (save_online_offline_msgs) {
       save_online_offline_msgs.blur()
     }
-
 
     this.selected_translation["WELLCOME_TITLE"] = this.welcomeTitle;
     this.selected_translation["WELLCOME_MSG"] = this.welcomeMsg;
