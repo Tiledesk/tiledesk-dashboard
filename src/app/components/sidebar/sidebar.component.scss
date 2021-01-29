@@ -237,17 +237,16 @@ button.close {
   background-color: #4caf50;
 }
 .isBusy {
-  // border-radius: 50%;
-  // background-color: #fedd00;
+  // width: 16px;
+  // height: 16px;
+  // position: absolute;
+  // top: 109px;
+  // right: 60px;
   width: 16px;
   height: 16px;
   position: absolute;
-  top: 109px;
-  right: 60px;
-  // background-image: url('../../../assets/img/clock_hands.svg');
-  // background-position: center;
-  // background-repeat: no-repeat;
-  // background-size: cover;
+  top: 94px;
+  right: 150px;
 }
 
 // .isBusyClockHands {

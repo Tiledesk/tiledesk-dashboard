@@ -662,9 +662,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     getProjectUser() {
         console.log('!!! SIDEBAR CALL GET-PROJECT-USER')
         this.usersService.getProjectUserByUserId(this.currentUserId).subscribe((projectUser: any) => {
+
             console.log('SB PROJECT-USER GET BY USER-ID - PROJECT-ID ', this.projectId);
             console.log('SB PROJECT-USER GET BY USER-ID - CURRENT-USER-ID ', this.user._id);
-            console.log('SB PROJECT-USER GET BY USER-ID - PROJECT USER ', projectUser);
+            console.log('SB PROJECT-USER GET BY USER-ID - PROJECT USERS ', projectUser);
             console.log('SB PROJECT-USER GET BY USER-ID - PROJECT USER LENGTH', projectUser.length);
             if ((projectUser) && (projectUser.length !== 0)) {
                 console.log('SB PROJECT-USER ID ', projectUser[0]._id)

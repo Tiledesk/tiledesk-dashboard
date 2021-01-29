@@ -82,10 +82,16 @@
       {{ user.firstname }} {{ user.lastname }}
     </div>
     <div *ngIf="user" class="h5 email hint-text mt-8"
-      style="color: rgba(255,255,255,.5)!important;font-size: 13px;margin-top: 5px!important;font-weight: 400;"
+      style="color: rgba(255,255,255,.5)!important;font-size: 13px;margin-top: 0px!important;font-weight: 400;"
       [ngClass]="{'small-sidebar-email' : SIDEBAR_IS_SMALL === true }">
 
       {{ user.email }}
+
+      <div style="text-align: center;" *ngIf="IS_BUSY === true">
+        <span class="isBusyTest" style="font-size: 11px;">
+          {{ 'Busy' | translate }}
+        </span>
+      </div>
     </div>
 
     <!-- routerLink="project/{{ project._id }}/user-profile" -->
@@ -128,13 +134,13 @@
 
     <!--  -->
     <div class="isBusy" *ngIf="IS_BUSY === true">
-      <span class="material-icons" style="font-size: 16px; color:#fedd00;">
+      <span class="material-icons" style="font-size: 16px; color:#fedd00;background-color: #2d323e; border-radius:50%">
         access_time
       </span>
-      <span class="isBusyTest" style="position: relative; top: -25px;left: 18px;font-size: 11px;">
+      <!-- <span class="isBusyTest" style="position: relative; top: -25px;left: 18px;font-size: 11px;">
         {{ 'Busy' | translate }}
-      </span>
-      <!-- <div class="isBusyClockHands">   </div> -->
+      </span> -->
+     
     </div>
   </div>
 
