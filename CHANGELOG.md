@@ -1,7 +1,7 @@
 
 # tiledesk-dashboard
 
-### 2.1.7
+### 2.1.8
 - Manages the signup form validation error when the user try to signup but not all fields are filled in 
 - Changes all occurrences of 'Labels' to 'Tags'
 - Runs the subscription to the websocket for the project user availability only for the active projects
