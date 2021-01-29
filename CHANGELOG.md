@@ -5,6 +5,11 @@
 - Manages the signup form validation error when the user try to signup but not all fields are filled in 
 - Changes all occurrences of 'Labels' to 'Tags'
 - Runs the subscription to the websocket for the project user availability only for the active projects
+- Improves the display of "the user is busy" in the sidebar
+- Adds a spinner to the "project" cards in the project list and improves the loading time of the selected project
+- Disables in widget settings page, section "Reply time" the option not selected
+- Adds an ends space, if it does not exist, to the translation label "WAITING_TIME_FOUND" to prevent the placeholder "$reply_time" from being merged with the string
+- Fixes bug: changing the availability status in the user list does not update the status in the sidebar and vice versa
 
 ### 2.1.5
 - Changes all occurrences of 'served conversations' to 'assigned conversations' and of 'unserved conversations' to 'unassigned conversations' and of 'Served by' in 'Assigned to'
