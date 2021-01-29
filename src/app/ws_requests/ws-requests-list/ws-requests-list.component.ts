@@ -111,7 +111,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
   displayRequestsMap: boolean = false;
   OPEN_RIGHT_SIDEBAR: boolean = false;
-  map_sidebar_height: any; 
+  map_sidebar_height: any;
 
 
   /**
@@ -1075,7 +1075,12 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
         this.served_unserved_sum = sum;
         console.log('% »»» WebSocketJs WF +++++ ws-requests--- list unserved + served sum', this.wsRequestsUnserved);
-        this.initRequestsDoughnutChart();
+
+        // ---------------------------------------------
+        // @ Init dognut chart - to do 
+        // ---------------------------------------------
+        // this.initRequestsDoughnutChart();
+
         // var self = this
         // // https://stackoverflow.com/questions/8267857/how-to-wait-until-array-is-filled-asynchronous
         // var isFinished = false;
@@ -1093,12 +1098,9 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         //   }, 100);
         // }
 
-
       }, error => {
         console.log('% WsRequestsList getWsRequests$ * error * ', error)
       }, () => {
-
-
         console.log('% »»» WebSocketJs WF +++++ ws-requests--- list getWsRequests */* COMPLETE */*')
       })
   }
