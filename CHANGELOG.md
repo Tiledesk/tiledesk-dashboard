@@ -1,6 +1,12 @@
 
 # tiledesk-dashboard
 
+### 2.1.10
+Fixes the endpoint of the configuration property 'testsiteBaseUrl'
+
+### 2.1.9
+Changes the endpoint of the configuration properties 'widgetUrl' and 'testsiteBaseUrl'
+
 ### 2.1.8
 - Manages the signup form validation error when the user try to signup but not all fields are filled in 
 - Changes all occurrences of 'Labels' to 'Tags'
