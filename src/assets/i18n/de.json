@@ -1751,5 +1751,10 @@
 	"DeptQuickTips_8":"Wenn für mindestens zwei Abteilungen der Sichtbarkeitsstatus auf Sichtbar festgelegt ist, können Besucher über das entsprechende Widget-Auswahlmenü auswählen, an welche Abteilung Anforderungen weitergeleitet werden sollen.",
 	"Edit":"bearbeiten",
 	"IsSetToVisible":"ist auf sichtbar gesetzt",
-	"IsSetToNotVisible":"ist auf nicht sichtbar gesetzt"
+	"IsSetToNotVisible":"ist auf nicht sichtbar gesetzt",
+	"LatestUpdates":"Letzte aktualisierung", 
+	"ReadMoreOnOurBlog": "Lesen Sie mehr in unserem Blog",
+	"WhatsNew":"Was gibt's Neues",
+	"ReadLatestUpdatesOnOurBlog":"Lesen Sie die neuesten Updates in unserem Blog" 
+	
 }

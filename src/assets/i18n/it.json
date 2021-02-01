@@ -1747,5 +1747,9 @@
     "DeptQuickTips_8":"Se almeno due dipartimenti hanno lo stato di visibilità impostato su 'Visibile', i visitatori potranno scegliere a quale dipartimento indirizzare le richieste tramite l'apposito menu di selezione del widget.",
     "Edit":"edit",
     "IsSetToVisible":"è impostato a visibile",
-    "IsSetToNotVisible":"è impostato a non visibile"
+    "IsSetToNotVisible":"è impostato a non visibile",
+    "LatestUpdates":"Ultimi aggiornamenti",
+    "ReadMoreOnOurBlog": "Leggi di più sul nostro blog",
+    "WhatsNew":"Cosa c'è di nuovo",
+    "ReadLatestUpdatesOnOurBlog":"Leggi gli ultimi aggiornamenti sul nostro blog"
 }
