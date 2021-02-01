@@ -39,6 +39,8 @@ import 'classlist.js';  // Run `npm install --save classlist.js`.
 /** IE10 and IE11 requires the following to support `@angular/animation`. */
 import 'web-animations-js';  // Run `npm install --save webå-animations-js`.
 
+/** IE11 requires the following to support Object.entries. */
+import 'core-js/es7/object';
 
 /** Evergreen browsers require these. **/
 import 'core-js/es6/reflect';
