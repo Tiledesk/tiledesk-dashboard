@@ -1,8 +1,14 @@
 
 # tiledesk-dashboard
 
+### 2.1.11
+- Adds the navigation item "what's new" in the header of the home page through which is possible to access to the blog changelog
+- Adds in the home page the section latest updates
+- Adds in the home page a blog articles carousel
+- Adds in polifills.ts an inport for the support of Object.entries in IE11
+
 ### 2.1.10
-Fixes the endpoint of the configuration property 'testsiteBaseUrl'
+- Fixes the endpoint of the configuration property 'testsiteBaseUrl'
 
 ### 2.1.9
 Changes the endpoint of the configuration properties 'widgetUrl' and 'testsiteBaseUrl'
@@ -72,8 +78,8 @@ Changes the endpoint of the configuration properties 'widgetUrl' and 'testsiteBa
 - Adds the ability to integrate Webhooks 
 - Adds in Analytics > Metrics the graphs Visitors and Messages
 - Adds in teammate profile the ability to disable / enable to receive emails when the conversation is assigned to the logged in user
-- Adds in teammate profile the ability to disable / enable to receive emails when a conversation is unassigned
-- Adds in teammate profile the ability to disable / enable to receive emails when a conversation is unassigned
+- Adds in current logged teammate profile the ability to disable / enable to receive emails when a conversation is assigned
+- Adds in current logged teammate profile the ability to disable / enable to receive emails when a conversation is unassigned
 - Adds in the conversation list page the ability to know served requests geolocation
 
 ### 2.0.83
