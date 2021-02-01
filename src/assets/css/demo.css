@@ -466,11 +466,77 @@ my-app .main-panel .main-content .card {
   background: rgba(17, 54, 190, 0.3);
   padding-left: 0px;
   padding-bottom: 0px;
+  margin-right: 16px;
   /* padding-top: 1px; */
   padding-right: 5px;
   border-radius: 18px;
   height: 35px;
   margin-bottom: 16px;
+}
+
+/**
+ * ==============================================
+ * What's new in home header - link to changelog
+ * ==============================================
+*/
+.home-header-whats-new-a{ 
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  background: rgba(17, 54, 190, 0.3);
+  padding-left: 0px;
+  padding-bottom: 0px;
+  /* padding-top: 1px; */
+  padding-right: 5px;
+  border-radius: 18px;
+  height: 35px;
+  margin-bottom: 16px;
+
+}
+
+.home-header-whats-new-b{ 
+  display: flex;
+  flex-flow: row nowrap;
+  -webkit-box-pack: start;
+  justify-content: flex-start;
+}
+
+.home-header-whats-new-b{ 
+  display: flex;
+  flex-flow: row nowrap;
+  -webkit-box-pack: start;
+  justify-content: flex-start;
+}
+
+.home-header-whats-new-c{  
+  padding: 0px;
+  display: inline-block;
+  flex: 1 1 32px;
+  margin-left: -5px;
+}
+
+.home-header-whats-new-d {
+  position: relative;
+}
+.home-header-whats-new-e {
+  margin: 0px auto;
+  display: inline-block;
+  vertical-align: middle;
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+  font-size: 28px;
+  border-radius: 50%;
+  border: 2px solid rgb(255, 255, 255);
+}
+
+.home-header-whats-new-e img {
+  width: 30px;
+  height: 30px;
+  padding: 6px;
+  position: relative;
+  top: -2px;
+  left: -2px;
 }
 
 /*

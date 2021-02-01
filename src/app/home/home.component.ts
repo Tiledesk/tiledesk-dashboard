@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy , AfterViewInit} from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { AuthService, SuperUser } from '../core/auth.service';
 
 import { ActivatedRoute } from '@angular/router';
@@ -27,6 +27,7 @@ import * as moment from 'moment'; /// VISITOR GRAPH FOR THE NEW NOME
 import { ContactsService } from '../services/contacts.service'; // USED FOR COUNT OF ACTIVE CONTACTS FOR THE NEW HOME
 import { FaqKbService } from '../services/faq-kb.service'; // USED FOR COUNT OF BOTS FOR THE NEW HOME
 import { avatarPlaceholder, getColorBck } from '../utils/util';
+import { forEach } from '@angular/router/src/utils/collection';
 @Component({
   selector: 'home',
   templateUrl: './new-home.component.html',
@@ -34,6 +35,7 @@ import { avatarPlaceholder, getColorBck } from '../utils/util';
 })
 export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
+  @ViewChild('widgetsContent', { read: ElementRef }) public widgetsContent;
   // company_name = brand.company_name;
   // tparams = brand;
   company_name: string;
@@ -121,7 +123,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getCurrentProjectAndInit();
     // this.getStorageBucket(); // moved in getCurrentProject()
     console.log('!!! Hello HomeComponent! ');
-   
+
 
 
     // this.getDeptsByProjectId(); // USED FOR COUNT OF DEPTS FOR THE NEW HOME
@@ -164,6 +166,106 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     // this.getVisitorCounter();
     this.getOSCODE();
     this.getChatUrl();
+
+    // this.startChabgelogAnimation()
+  }
+
+
+  startChabgelogAnimation() {
+    // function(t, e, n) {
+    // var u = n(62),
+    //     c = n(292),
+    //     s = document.querySelector("#futureproof figure"),
+    //     l = u.a.queryArray(".entries li", s),
+    //     f = new c.a({
+    //         container: s.querySelector("ul"),
+    //         toggleable: [l],
+    //         onActivate: function(t) {
+    //             var e = this,
+    //                 n = this.__toggleable[0][t].offsetHeight;
+    //             this.__toggleable[0].forEach(function(r, i) {
+    //                 var o = u.a.mod(i - t + 1, e.__itemCount);
+    //                 r.className = "card".concat(o);
+    //                 var a = n,
+    //                     c = 1;
+    //                 0 === o ? (a -= 30, c *= 1.07) : 2 === o ? (a += 30, c /= 1.07) : 3 === o ? (a += 60, c /= 1.1449) : 1 !== o && (a += 120, c /= 1.225043), r.style.transform = "translateY(".concat(a, "px) scale(").concat(c, ")")
+    //             })
+    //         }
+    //     })
+    //   }
+
+    var a = document.querySelector("#futureproof figure");
+    console.log('HOME entriesElme a', a)
+    // var b = a.childNodes[1]
+    // console.log('HOME entriesElme b ', b)
+
+   var ulEl = a.querySelector("ul")
+   console.log('HOME entriesElme ulEl ',ulEl)
+
+  //  var x = ulEl.childNodes
+   var liArray = Array.from(ulEl.getElementsByTagName("li"))
+   console.log('HOME entriesElme liArray ', liArray)
+
+    console.log('HOME entriesElme typeof liArray  ', typeof liArray)
+   
+    // var liElme = entriesElme.getElementsByTagName("li")
+    // console.log('HOME liElme ', liElme)
+
+
+
+    this.setAttribute(liArray)
+ 
+
+    // liArray.unshift(liArray.pop());
+
+  }
+
+  setAttribute(liArray) {
+    // liArray.unshift(liArray.pop());
+    liArray.forEach((element, index) => {
+      console.log('HOME entriesElme element ',element, ' index ', index)
+      
+      element.className = "card" + index;
+
+     
+      if (index === 0 ) {
+        element.setAttribute("style", "transform: translateY(122px) scale(1.07);");
+      }
+
+      if (index === 1 ) {
+        element.setAttribute("style", "transform: translateY(152px) scale(1);");
+      }
+      if (index === 2 ) {
+        element.setAttribute("style", "transform: translateY(182px) scale(0.934579);");
+      }
+
+      if (index === 3 ) {
+        element.setAttribute("style", "transform: translateY(237px) scale(0.873439);");
+      }
+
+      if (index === 4 ) {
+        element.setAttribute("style", "transform: translateY(297px) scale(0.816298);");
+
+        // this.setAttribute(liArray)
+      }
+
+    });
+  }
+
+  
+
+
+
+
+  public scrollRight(): void {
+    console.log('scrollRight widgetsContent', this.widgetsContent)
+
+    this.widgetsContent.nativeElement.scrollTo({ left: (this.widgetsContent.nativeElement.scrollLeft + 150), behavior: 'smooth' });
+  }
+
+  public scrollLeft(): void {
+    console.log('scrollLeft widgetsContent', this.widgetsContent)
+    this.widgetsContent.nativeElement.scrollTo({ left: (this.widgetsContent.nativeElement.scrollLeft - 150), behavior: 'smooth' });
   }
 
 
@@ -178,18 +280,18 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         this.OPERATING_HOURS_ACTIVE = this.project.operatingHours
         console.log('HOME > OPERATING_HOURS_ACTIVE', this.OPERATING_HOURS_ACTIVE)
 
-        
+
       }
     });
   }
 
-  ngAfterViewInit() { 
-    
+  ngAfterViewInit() {
+
     this.init()
   }
 
   // ngAfterViewChecked() {
-   
+
   // }
 
 
