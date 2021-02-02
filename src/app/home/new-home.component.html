@@ -285,14 +285,14 @@
                 <div size="32" class="home-header-whats-new-e">
                   <img src="assets/img/rocket-solid_white.svg">
               </div>
-              <div class="flame-icon-in-header">1 </div>
+              <div *ngIf="!hidechangelogrocket" class="flame-icon-in-header">1 </div>
             </div>
 
             <span style="padding-left: 4px;color: rgba(255,255,255,0.8);font-size: 13px;font-weight: 400;position: relative;top: 5px;">
               <span> {{'WhatsNew' | translate}} </span>
               <span class="tool_tip">
-                <span class="material-icons add-operators-icons tool_tip" (click)="goToOperatingHours()"
-                  style="vertical-align: middle;color:  rgba(255,255,255,0.8); font-size:18px; position: relative;cursor: pointer;transform: rotate(-90deg);top: -1px;">
+                <span class="material-icons add-operators-icons tool_tip" (click)="goToChangelogBlog()"
+                  style="vertical-align: middle;color:  rgba(255,255,255,0.8); font-size:18px; position: relative;cursor: pointer;transform: rotate(-90deg);top: 0px;">
                   filter_list
                 </span>
                 <span class="bottom-home-header">
@@ -302,8 +302,6 @@
               </span>
             </span>
           </div>
-
-
 
         </div>
 

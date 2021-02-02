@@ -96,6 +96,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   isVisibleANA: boolean;
   isVisibleAPP: boolean;
+  hidechangelogrocket: boolean;
   constructor(
     public auth: AuthService,
     private route: ActivatedRoute,
@@ -166,9 +167,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     // this.getVisitorCounter();
     this.getOSCODE();
     this.getChatUrl();
-
+    this.getHasOpenBlogKey()
     // this.startChabgelogAnimation()
   }
+
+
 
 
   startChabgelogAnimation() {
@@ -199,22 +202,22 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     // var b = a.childNodes[1]
     // console.log('HOME entriesElme b ', b)
 
-   var ulEl = a.querySelector("ul")
-   console.log('HOME entriesElme ulEl ',ulEl)
+    var ulEl = a.querySelector("ul")
+    console.log('HOME entriesElme ulEl ', ulEl)
 
-  //  var x = ulEl.childNodes
-   var liArray = Array.from(ulEl.getElementsByTagName("li"))
-   console.log('HOME entriesElme liArray ', liArray)
+    //  var x = ulEl.childNodes
+    var liArray = Array.from(ulEl.getElementsByTagName("li"))
+    console.log('HOME entriesElme liArray ', liArray)
 
     console.log('HOME entriesElme typeof liArray  ', typeof liArray)
-   
+
     // var liElme = entriesElme.getElementsByTagName("li")
     // console.log('HOME liElme ', liElme)
 
 
 
     this.setAttribute(liArray)
- 
+
 
     // liArray.unshift(liArray.pop());
 
@@ -223,27 +226,27 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   setAttribute(liArray) {
     // liArray.unshift(liArray.pop());
     liArray.forEach((element, index) => {
-      console.log('HOME entriesElme element ',element, ' index ', index)
-      
+      console.log('HOME entriesElme element ', element, ' index ', index)
+
       element.className = "card" + index;
 
-     
-      if (index === 0 ) {
+
+      if (index === 0) {
         element.setAttribute("style", "transform: translateY(122px) scale(1.07);");
       }
 
-      if (index === 1 ) {
+      if (index === 1) {
         element.setAttribute("style", "transform: translateY(152px) scale(1);");
       }
-      if (index === 2 ) {
+      if (index === 2) {
         element.setAttribute("style", "transform: translateY(182px) scale(0.934579);");
       }
 
-      if (index === 3 ) {
+      if (index === 3) {
         element.setAttribute("style", "transform: translateY(237px) scale(0.873439);");
       }
 
-      if (index === 4 ) {
+      if (index === 4) {
         element.setAttribute("style", "transform: translateY(297px) scale(0.816298);");
 
         // this.setAttribute(liArray)
@@ -252,7 +255,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  
+
 
 
 
@@ -755,6 +758,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
 
+
   // RISOLVE lo USE-CASE: L'UTENTE è NELLA HOME DEL PROGETTO A (DI CUI è OWNER)
   // SEGUE UN LINK CHE LO PORTA (AD ESEMPIO) AL DETTAGLIO DI UNA RICHIESTA DEL PROGETTO B (DI CUI è AGENT)
   // AVVIENE IL CAMBIO DAL PROGETTO A AL PROGETTO B 'ON THE FLY'
@@ -1001,6 +1005,23 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     window.open(url, '_blank');
 
+  }
+
+  goToChangelogBlog() {
+    const url = 'https://tiledesk.com/tiledesk-changelog'
+    window.open(url, '_blank');
+    this.usersLocalDbService.savChangelogDate()
+    this.hidechangelogrocket = true;
+  }
+
+  getHasOpenBlogKey() {
+    const hasOpenedBlog = this.usersLocalDbService.getStoredChangelogDate();
+    console.log('SIDEBAR  »»»»»»»»» hasOpenedBlog ', hasOpenedBlog);
+    if (hasOpenedBlog === true) {
+      this.hidechangelogrocket = true;
+    } else {
+      this.hidechangelogrocket = false;
+    }
   }
 
 
