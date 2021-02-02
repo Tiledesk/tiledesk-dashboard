@@ -1012,6 +1012,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.hidechangelogrocket = true;
   }
 
+  
+
   getHasOpenBlogKey() {
     const hasOpenedBlog = this.usersLocalDbService.getStoredChangelogDate();
     console.log('SIDEBAR  »»»»»»»»» hasOpenedBlog ', hasOpenedBlog);
