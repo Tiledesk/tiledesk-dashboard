@@ -17,7 +17,7 @@ import { Request } from '../../../models/request-model';
 import { DepartmentService } from '../../../services/department.service';
 import { NotifyService } from '../../../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
-
+const swal = require('sweetalert');
 
 @Component({
   selector: 'appdashboard-ws-requests-served',
@@ -30,7 +30,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   @Input() wsRequestsServed: Request[];
   @Input() ws_requests_length: number
   // @Input() showSpinner: boolean;
-
+  CHAT_BASE_URL: string;
   storageBucket: string;
   projectId: string;
   id_request_to_archive: string;
@@ -51,6 +51,11 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   archivingRequestErrorNoticationMsg: string;
   requestHasBeenArchivedNoticationMsg_part1: string;
   requestHasBeenArchivedNoticationMsg_part2: string;
+  youAreAboutToJoinMsg: string;
+  warningMsg: string;
+  cancelMsg: string;
+  joinToChatMsg: string
+  areYouSureMsg: string
   isMobile: boolean;
 
   constructor(
@@ -73,7 +78,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   }
 
   ngOnInit() {
-    this.getStorageBucket();
+    this.getStorageBucketAndChatBaseUrl();
     this.getCurrentProject();
     this.getDepartments();
 
@@ -89,28 +94,24 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     this.detectMobile();
   }
 
-  getStorageBucket() {
+  getStorageBucketAndChatBaseUrl() {
     const firebase_conf = this.appConfigService.getConfig().firebase;
     this.storageBucket = firebase_conf['storageBucket'];
     console.log('STORAGE-BUCKET Ws Requests served ', this.storageBucket)
-
     this.checkImage(this.wsRequestsServed)
+
+    this.CHAT_BASE_URL = this.appConfigService.getConfig().CHAT_BASE_URL;
   }
 
   checkImage(wsRequestsServed) {
-
     wsRequestsServed.forEach(request => {
-
       if (request) {
         console.log('STORAGE-BUCKET  +++++ ws-requests--- served - request ', request)
         // request.participanting_Agents.forEach(agent => {
         //   console.log('% »»» WebSocketJs WF +++++ ws-requests--- served - participanting_Agents agent ', agent)
         // });
-
       }
-
     });
-
   }
 
 
@@ -140,7 +141,49 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     this.translateArchivingRequestMsg();
     this.translateRequestHasBeenArchivedNoticationMsg_part1();
     this.translateRequestHasBeenArchivedNoticationMsg_part2();
+    this.translateYouAreAboutToJoin();
+    this.translateWarning();
+    this.translateCancel();
+    this.translateJoinToChat();
+    this.translateAreYouSure();
+  }
 
+  translateAreYouSure() {
+    this.translate.get('AreYouSure')
+      .subscribe((text: string) => {
+        this.areYouSureMsg = text;
+      });
+  }
+
+
+  translateJoinToChat() {
+    this.translate.get('RequestMsgsPage.Enter')
+      .subscribe((text: string) => {
+        this.joinToChatMsg = text;
+      });
+  }
+
+  translateCancel() {
+    this.translate.get('Cancel')
+      .subscribe((text: string) => {
+        this.cancelMsg = text;
+      });
+  }
+
+  translateWarning() {
+    this.translate.get('Warning')
+      .subscribe((text: string) => {
+        this.warningMsg = text;
+      });
+  }
+
+
+  translateYouAreAboutToJoin() {
+    this.translate.get('YouAreAboutToJoinThisChatAlreadyAssignedTo')
+      .subscribe((text: string) => {
+        this.youAreAboutToJoinMsg = text;
+
+      });
   }
 
   // TRANSLATION
@@ -420,7 +463,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
 
 
   goToRequestMsgs(request_id: string) {
-     console.log("% Ws-REQUESTS-Msgs goToRequestMsgs")
+    console.log("% Ws-REQUESTS-Msgs goToRequestMsgs")
     this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_id + '/messages']);
   }
 
@@ -474,9 +517,86 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   // ------------------------------------------
   // Join request
   // ------------------------------------------
-  joinRequest(request_id: string) {
-    this.currentUserID
-    this.onJoinHandled(request_id, this.currentUserID);
+  joinRequest(currentuserisjoined, participantingagents, request_id: string) {
+    console.log('WS-REQUESTS-SERVED - joinRequest current user is joined', currentuserisjoined);
+    console.log('WS-REQUESTS-SERVED - joinRequest participanting agents', participantingagents);
+
+    const participantingagentslength = participantingagents.length
+    console.log('WS-REQUESTS-SERVED - joinRequest participanting agents length', participantingagentslength);
+
+    let chatAgent = '';
+
+    participantingagents.forEach((agent, index) => {
+      let stringEnd = ' '
+
+      // if (participantingagentslength === 1) {
+      //   stringEnd = '.';
+      // }
+
+      if (participantingagentslength - 1 === index) {
+        stringEnd = '.';
+      } else {
+        stringEnd = ', ';
+      }
+
+      // if (participantingagentslength > 2 ) {
+      //   // console.log('WS-REQUESTS-SERVED - joinRequest index length > 2', index);
+      //   if (participantingagentslength - 1 === index) {
+      //     console.log('WS-REQUESTS-SERVED - joinRequest index length > 2 posizione lenght = index ', participantingagentslength - 1 === index ,'metto punto ');
+      //     stringEnd = '.';
+      //   } else if (participantingagentslength - 2) {
+      //     console.log('WS-REQUESTS-SERVED - joinRequest index length > 2 index lenght - 2 ', index , 'participantingagentslength - 2', participantingagentslength - 2, 'metto and ');
+      //     stringEnd = ' and ';
+      //   } else {
+      //     console.log('WS-REQUESTS-SERVED - joinRequest index length > 2 index', index ,'metto , ');
+      //     stringEnd = ', ';
+      //   }
+      // }
+
+      chatAgent += agent.firstname + ' ' + agent.lastname + stringEnd
+
+    });
+
+
+    console.log('WS-REQUESTS-SERVED - joinRequest chatAgent', chatAgent);
+
+    if (currentuserisjoined === false) {
+      this.displayModalAreYouSureToJoinThisChatAlreadyAassigned(chatAgent, request_id);
+    }
+  }
+
+
+  displayModalAreYouSureToJoinThisChatAlreadyAassigned(chatAgent, request_id) {
+
+    swal({
+      title: this.areYouSureMsg,
+      text: this.youAreAboutToJoinMsg + ': ' + chatAgent,
+
+      icon: "info",
+      buttons: {
+        cancel: this.cancelMsg,
+        catch: {
+          text: this.joinToChatMsg,
+          value: "catch",
+        },
+      },
+
+      // `"Cancel", ${this.goToMultilanguagePageMsg}`],
+      dangerMode: false,
+    })
+      .then((value) => {
+        console.log('displayModalNoDefaultLangAreSetUp value', value)
+
+        if (value === 'catch') {
+          this.onJoinHandled(request_id, this.currentUserID);
+        }
+      })
+  }
+
+
+  openChatInNewWindow(requestid) {
+    const url = this.CHAT_BASE_URL + '?recipient=' + requestid;
+    window.open(url, '_blank');
   }
 
 
