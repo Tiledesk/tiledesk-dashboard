@@ -39,7 +39,7 @@
             <ng-container *ngIf="!DISPLAY_TEAMMATES">
               <div class="served-by-desktop-b">
                 <div class="served-by-desktop-d">
-                  <div size="32" class="served-by-desktop-e">
+                  <div size="32" class="served-by-desktop-e-no-hover-effect">
                     <img src="assets/img/user_white.svg" style="width: 32px;height: 32px; padding: 5px;">
                   </div>
                 </div>
@@ -73,7 +73,7 @@
                         {{ projectUser?.id_user?.lastname | slice:0:1 }}.
                       </span>
                     </span>
-                    <i style="height:6px"></i>
+                    <i></i>
                   </span>
                 </div>
               </div>
@@ -90,9 +90,9 @@
                   filter_list
                 </span>
 
-                <span class="bottom-home-header">
+                <span class="bottom-home-header" style="top: 34px;">
                   <span>{{'ViewTeammates' | translate}} </span>
-                  <i style="height:6px"></i>
+                  <i></i>
                 </span>
               </span>
 
@@ -102,10 +102,10 @@
                   add_circle_outline
                 </span>
 
-                <span class="bottom-home-header">
+                <span class="bottom-home-header" style="top: 34px;">
                   <span *ngIf="projectUsers?.length > 1">{{'AddNewTeammate' | translate}}</span>
                   <span *ngIf="projectUsers?.length === 1">{{'InviteYourFirstTeammate' | translate}}</span>
-                  <i style="height:6px"></i>
+                  <i></i>
                 </span>
               </span>
 
@@ -115,9 +115,9 @@
                   filter_list
                 </span>
 
-                <span class="bottom-home-header">
+                <span class="bottom-home-header" style="top: 34px;">
                   <span>{{'Close' | translate}}</span>
-                  <i style="height:6px"></i>
+                  <i></i>
                 </span>
               </span>
             </span>
@@ -129,7 +129,7 @@
             <ng-container *ngIf="!DISPLAY_CHATBOTS">
               <div class="served-by-desktop-b">
                 <div class="served-by-desktop-d">
-                  <div size="32" class="served-by-desktop-e">
+                  <div size="32" class="served-by-desktop-e-no-hover-effect ">
                     <img src="assets/img/avatar_bot_tiledesk_white.svg" style="width: 32px;height: 32px; padding: 2px;">
                   </div>
                 </div>
@@ -142,7 +142,7 @@
                   (click)="goToBotProfile(bot?._id, bot?.type)" style="cursor:pointer">
 
 
-                  <div class="served-by-desktop-d" *ngIf="bot?.type !== 'identity'">
+                  <div class="served-by-desktop-d">
                     <div size="32" class="served-by-desktop-e">
 
                       <img [ngClass]="{'bot-img-gray-bckgrnd': bot.hasImage === false}"
@@ -168,16 +168,16 @@
 
                   <!-- -- verificare se viene usato -- -->
                   <!-- // USECASE: THERE IS ONLY A CHATBOT e.g. the identity bot IN THIS CASE DISPLAY THE ICON ON "NO-BOT" -->
-                  <div class="served-by-desktop-d" *ngIf="bot?.type === 'identity' && chatbots?.length === 1">
+                  <!-- <div class="served-by-desktop-d" *ngIf="bot?.type === 'identity' && chatbots?.length === 1">
                     <div size="32" class="served-by-desktop-e">
                       <img src="assets/img/bot_alt_slash_white.svg" alt="no-chatbot-icon"
                         style="width: 32px;height: 32px;background: #aaa !important">
                     </div>
-                  </div>
+                  </div> -->
 
-                  <span class="bottom-home-header" *ngIf="bot?.type !== 'identity'">
+                  <span class="bottom-home-header">
                     <span style="text-transform: capitalize;"> {{ bot?.name }} </span>
-                    <i style="height:6px"></i>
+                    <i></i>
                   </span>
                 </div>
               </div>
@@ -195,10 +195,10 @@
                   filter_list
                 </span>
 
-                <span class="bottom-home-header">
+                <span class="bottom-home-header" style="top: 34px">
                   <span *ngIf="chatbots?.length > 1">{{'ViewChatbots' | translate}} </span>
                   <span *ngIf="chatbots?.length === 1">{{'ViewChatbot' | translate}} </span>
-                  <i style="height:6px"></i>
+                  <i></i>
                 </span>
               </span>
 
@@ -208,7 +208,7 @@
                   add_circle_outline
                 </span>
 
-                <span class="bottom-home-header">
+                <span class="bottom-home-header" style="top: 34px">
                   <span *ngIf="chatbots?.length === 0">{{'AddYourFirstChatbot' | translate}}</span>
                   <i style="height:6px"></i>
                 </span>
@@ -221,10 +221,10 @@
                   add_circle_outline
                 </span>
 
-                <span class="bottom-home-header">
+                <span class="bottom-home-header" style="top: 34px">
                   <!-- <span *ngIf="chatbots?.length === 0">{{'AddYourFirstChatbot' | translate}}</span> -->
                   <span *ngIf="chatbots?.length > 0">{{'AddChatbot' | translate}}</span>
-                  <i style="height:6px"></i>
+                  <i></i>
                 </span>
               </span>
 
@@ -234,9 +234,9 @@
                   filter_list
                 </span>
 
-                <span class="bottom-home-header">
+                <span class="bottom-home-header" style="top: 34px">
                   <span>{{'Close' | translate}}</span>
-                  <i style="height:6px"></i>
+                  <i></i>
                 </span>
               </span>
             </span>
@@ -267,9 +267,9 @@
                   style="vertical-align: middle;color:  rgba(255,255,255,0.8); font-size:18px; position: relative;cursor: pointer;transform: rotate(-90deg);top: -1px;">
                   filter_list
                 </span>
-                <span class="bottom-home-header">
+                <span class="bottom-home-header" style="top:34px">
                   <span>{{'AdjustOperatingHours' | translate }}</span>
-                  <i style="height:6px"></i>
+                  <i></i>
                 </span>
               </span>
             </span>
@@ -295,9 +295,9 @@
                   style="vertical-align: middle;color:  rgba(255,255,255,0.8); font-size:18px; position: relative;cursor: pointer;transform: rotate(-90deg);top: 0px;">
                   filter_list
                 </span>
-                <span class="bottom-home-header">
+                <span class="bottom-home-header"  style="top:34px">
                   <span>{{'ReadLatestUpdatesOnOurBlog' | translate }}</span>
-                  <i style="height:6px"></i>
+                  <i></i>
                 </span>
               </span>
             </span>
@@ -523,236 +523,6 @@
     </div>
   </div>
   <!-- ----- ./ new  2 -->
-
-
-
-  <!-- ----- new  !!!! DISPLAY NONE-->
-  <div class="row" style="display: none;">
-    <div class="col-md-12" style="">
-
-      <div class="toDoBar-wrap" style="width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      overflow-x: hidden;">
-        <div class="toDoBar" style="    width: 100%;
-        min-width: 964px;
-        min-height: 90px;
-        background-color: #fff;
-        display: flex;
-        flex-direction: row;
-       
-        background-repeat: no-repeat;
-        background-position: bottom right 160px;
-        position: relative;
-        align-items: center;
-        /* padding: 0 360px 0 86px; */
-        padding-left: 16px;
-        border-bottom: 1px solid #e0e4eb;">
-          <h2 style=" min-width: 320px;
-          /* max-height: 23px; */
-          display: block;
-          font-family: 'Google Sans', sans-serif !important;
-          font-size: 19px;
-          font-weight: 700;
-          line-height: normal;
-          color: #303f9f;
-          margin: 0 32px 0 0; position: relative; top: -5px;" class="toDoBar__title">
-
-            {{ prjct_name }}
-
-
-            <span *ngIf="isVisible" style="display: block;">
-              <span class="project-plan" (click)="goToPricingOrOpenModalSubsExpired()"
-                style="text-transform:capitalize; margin-left: 0px !important;top: 0px!important">
-                {{ prjct_profile_name }}
-              </span>
-              <span *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false"
-                style="color:#f44336; position:relative; top: -3px;" (click)="goToPricingOrOpenModalSubsExpired()"
-                class="expired__Tooltip">
-                <i class="material-icons" style="vertical-align: middle; color:#f44336; cursor:pointer">
-                  error_outline
-                </i>
-                <span class="expired__Tooltiptext" style="font-size:14px">
-                  {{ 'Pricing.SubscriptionPaymentProblem' | translate }} </span>
-              </span>
-            </span>
-
-          </h2>
-          <!-- <p style="    margin: 0;
-          padding: 0;
-          position: relative;
-          height: auto;
-          top: 1px;
-          min-width: 304px;" class="toDoBar__description"> -->
-
-
-
-          <!-- // HUMAN AGENTS -->
-          <div class="served-by-desktop-a" style="margin-right: 105px;">
-
-            <div style="position: absolute;top: 10px;font-size: 12px;font-weight: 400;"
-              [ngClass]="{'top_zero': projectUsers?.length === 1 }">
-
-              <div class="homeheader-links-container">
-                <div class="homeheader-link-title-first">
-                  <span *ngIf="projectUsers?.length > 1"> Teammates </span>
-                  <span *ngIf="projectUsers?.length === 1"> No teammates to help you? </span>
-                  <span class="material-icons"
-                    style="vertical-align: middle; color: #3c4858;font-size:18px; position: relative; left: -4px;">
-                    keyboard_arrow_right
-                  </span>
-                </div>
-                <div class="homeheader-link-title-second" (click)="goToUsersList()" style="width: 150px !important;">
-                  <span *ngIf="projectUsers?.length > 1" style="color: #0f62ff;width: 150px !important;">Add new
-                    teammates </span>
-                  <span *ngIf="projectUsers?.length === 1" style="color: #0f62ff;">Invite your first teammate</span>
-
-                  <span class="material-icons"
-                    style="vertical-align: middle;color: #0f62ff; font-size:18px; position: relative; left: -4px;">
-                    keyboard_arrow_right
-                  </span>
-                </div>
-              </div>
-
-            </div>
-
-            <div class="served-by-desktop-b" *ngFor="let projectUser of projectUsers; let first = first;">
-              <div [ngClass]="{ 'first-served-by': first }" class="served-by-desktop-c tool_tip"
-                (click)="goToAgentProfile(projectUser?.id_user?._id)" style="cursor:pointer">
-                <div class="served-by-desktop-d">
-                  <div size="32" class="served-by-desktop-e">
-
-                    <img *ngIf="projectUser?.hasImage"
-                      src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media"
-                      alt="" onerror="this.src='assets/img/no_image_user.png'" style="width: 42px;height: 42px;">
-
-                    <!-- // AVATAR WITH USER INITILAS IF DOES NOT EXIST PROFILE IMAGE -->
-                    <div *ngIf="!projectUser.hasImage" class="altenative-avatar-wrap"
-                      [ngStyle]="{'background-color': projectUser?.fillColour }"
-                      style="width: 42px;height: 42px;top: 0px;">
-
-                      <span class="altenative-avatar" style="line-height: 39px;font-size:16px">
-                        {{ projectUser?.fullname_initial }}
-                      </span>
-
-                    </div>
-                  </div>
-                </div>
-                <span class="bottom" style="min-width: fit-content;
-                  top: 31px;
-                  border-radius: 3px;
-                  padding: 0px 6px;
-                  font-size: 11px; white-space: nowrap;">
-                  <span style="text-transform: capitalize;"> {{ projectUser?.id_user?.firstname }}
-                    <span *ngIf="projectUser?.id_user?.lastname">
-                      {{ projectUser?.id_user?.lastname | slice:0:1 }}.
-                    </span>
-                  </span>
-                  <i style="height:6px"></i>
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <!-- /// CHATBOT AGENTS -->
-          <div class="served-by-desktop-a">
-            <div style="position: absolute;top: 10px;font-size: 12px;font-weight: 400;"
-              [ngClass]="{'top_zero': chatbots?.length === 1 }">
-              <div class="homeheader-links-container" style="width: 165px;">
-                <div class="homeheader-link-title-first">
-                  <span *ngIf="chatbots?.length === 1"> There are no Chatbots set up yet</span>
-                  <span *ngIf="chatbots?.length > 1"> Chatbots</span>
-                  <span class="material-icons"
-                    style="vertical-align: middle; color: #3c4858;font-size:18px;position: relative; left: -4px;">
-                    keyboard_arrow_right
-                  </span>
-                </div>
-                <div class="homeheader-link-title-second" (click)="goToBotsList()">
-                  <span *ngIf="chatbots?.length === 1" style="color: #0f62ff;">Add your first chatbot</span>
-                  <span *ngIf="chatbots?.length > 1" style="color: #0f62ff;">Add a chatbot</span>
-                  <span class="material-icons"
-                    style="vertical-align: middle;color: #0f62ff;font-size:18px;position: relative; left: -4px;">
-                    keyboard_arrow_right
-                  </span>
-                </div>
-              </div>
-
-            </div>
-            <div class="served-by-desktop-b" *ngFor="let bot of chatbots; let first = first;">
-              <div [ngClass]="{ 'first-served-by': first }" class="served-by-desktop-c tool_tip"
-                (click)="goToBotProfile(bot?._id, bot?.type)" style="cursor:pointer">
-
-
-                <div class="served-by-desktop-d" *ngIf="bot?.type !== 'identity'">
-                  <div size="32" class="served-by-desktop-e">
-
-                    <img [ngClass]="{'bot-img-gray-bckgrnd': bot.hasImage === false}"
-                      src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{bot?._id}}%2Fphoto.jpg?alt=media"
-                      alt="" onerror="this.src='assets/img/avatar_bot_tiledesk_white.svg'"
-                      style="width: 42px;height: 42px;">
-                  </div>
-
-                  <div *ngIf="bot.type === 'internal'">
-                    <img class="home-served-by-bot-type-logo" src="assets/img/tiledesk_logo_no_text.png" />
-                  </div>
-                  <div *ngIf="bot.type === 'external'">
-                    <img class="home-served-by-bot-type-logo" src="assets/img/external_bot_logo.png" />
-                  </div>
-                  <div *ngIf="bot.type === 'dialogflow'">
-                    <img class="home-served-by-bot-type-logo" src="assets/img/Dialogflow_logo_no_text.png" />
-                  </div>
-                </div>
-
-
-                <!-- // USECASE: THERE IS ONLY A CHATBOT e.g. the identity bot IN THIS CASE DISPLAY THE ICON ON "NO-BOT" -->
-                <div class="served-by-desktop-d" *ngIf="bot?.type === 'identity' && chatbots?.length === 1">
-                  <div size="32" class="served-by-desktop-e">
-
-                    <img src="assets/img/bot_alt_slash_white.svg" alt="no-chatbot-icon"
-                      style="width: 42px;height: 42px;background: #aaa !important">
-                  </div>
-
-                </div>
-
-                <span *ngIf="bot?.type !== 'identity'" style="min-width: fit-content;
-                  top: 31px;
-                  border-radius: 3px;
-                  padding: 0px 6px;
-                  font-size: 11px; white-space: nowrap;" class="bottom">
-                  <span style="text-transform: capitalize;"> {{ bot?.name }} </span>
-                  <i style="height:6px"></i>
-                </span>
-              </div>
-            </div>
-
-          </div>
-
-
-
-
-          <!-- <button style="    display: inline;
-            outline: 0;
-            border: 0;
-            padding: 0;
-            background: 0 0;
-            color: #3f88f6;
-            cursor: pointer;" class="toDoBar__showMeListBtn" type="button">Show me list »
-          </button>
-          </p> -->
-          <div class="toDoBar__counterContainer" style="width: 360px;
-          height: 100%;
-          padding-right: 50px;
-          float: right;
-          position: absolute;
-          right: 0;">
-
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
 
 
 
@@ -1026,7 +796,7 @@
   <div *ngIf="isVisibleANA" class="home-statistics-row-visitors-graph">
     <div class="row">
       <div class="col-md-12">
-        <div class="visitors-graph-title-container">
+        <div class="visitors-graph-title-container" style="cursor:pointer">
           <div class="visitors-graph-title-1">
             <span> {{'VisitorsOnYourPageInTheLast7Days' | translate}}</span>
             <span class="material-icons" style="vertical-align: middle; color: #3c4858;">

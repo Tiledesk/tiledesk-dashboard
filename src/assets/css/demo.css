@@ -188,7 +188,7 @@ my-app .main-panel .main-content .card {
   box-sizing: border-box;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
   min-width: fit-content;
-  top: 34px;
+  top: 44px;
   border-radius: 3px;
   padding: 0px 6px;
   font-size: 11px;
@@ -472,6 +472,24 @@ my-app .main-panel .main-content .card {
   border-radius: 18px;
   height: 35px;
   margin-bottom: 16px;
+}
+
+.served-by-desktop-e-no-hover-effect {
+  margin: 0px auto;
+  border-radius: 50%;
+  display: inline-block;
+  vertical-align: middle;
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+  font-size: 28px;
+}
+
+.served-by-desktop-e-no-hover-effect img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid rgb(255, 255, 255);
 }
 
 /**

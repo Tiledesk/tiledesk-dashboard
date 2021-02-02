@@ -172,7 +172,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
 
+  ngAfterViewInit() {
 
+    this.init()
+  }
 
   startChabgelogAnimation() {
     // function(t, e, n) {
@@ -217,9 +220,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
     this.setAttribute(liArray)
-
-
-    // liArray.unshift(liArray.pop());
+   
 
   }
 
@@ -288,10 +289,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  ngAfterViewInit() {
-
-    this.init()
-  }
+ 
 
   // ngAfterViewChecked() {
 
@@ -1175,7 +1173,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
             label: 'Number of visitors in last 7 days ',
             data: visitorsByDay_series_array,
             fill: true,
-            lineTension: 0.0,
+            lineTension: 0.4,
             backgroundColor: 'rgba(30, 136, 229, 0.6)',
             borderColor: 'rgba(30, 136, 229, 1)',
             borderWidth: 3,
