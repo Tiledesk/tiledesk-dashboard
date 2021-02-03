@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.1.14
+- Minor improvements
+
 ### 2.1.13
 - Fixes the pre environoment
 
@@ -37,7 +40,6 @@
 - Creates two sections in the 'Routing & Departments' page to separate the Default routing from the list of departments
 - Improves widget preview: vertically centered the icon 'settings' 
 - Adds quick tips in the "Routing Rules" section of the edit department page
-- Change the color of the "view map" and "view no realtime conversations" buttons in the conversations list
 - Fixes subscription to the availability of the current user (adds publication of the status in the websocket's callback 'update')
 - Manages the links of the 'Last 30 days ...' statistics available in the home to the reports in analytics when the plan has expired or the trial period has expired
 - Replaces in the department list the visibility checkbox with a toggle switch button and adds a badge over the department avatar to indicate the status visible / not visible
@@ -84,7 +86,6 @@
 - Adds in teammate profile the ability to disable / enable to receive emails when the conversation is assigned to the logged in user
 - Adds in current logged teammate profile the ability to disable / enable to receive emails when a conversation is assigned
 - Adds in current logged teammate profile the ability to disable / enable to receive emails when a conversation is unassigned
-- Adds in the conversation list page the ability to know served requests geolocation
 
 ### 2.0.83
 - Add the property "appId" in dashboard-config-template
