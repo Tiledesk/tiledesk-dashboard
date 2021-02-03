@@ -133,7 +133,7 @@
 
                           <span class="dept-avatar" [ngStyle]="{'background-color': dept?.dept_name_fillcolour }">
                             <!-- {{ dept?.dept_name_initial }} -->
-                            DR
+                            DD
                           </span>
 
 
@@ -144,8 +144,9 @@
                                 unpublished
                               </span>
                               <span class="right" style="white-space: normal;padding: 5px;font-weight: 200;">
-                                <h4 style="font-weight:400"> Default Routing {{ 'Disabled' | translate }}</h4>
-                                {{'TheDefaulDeptIsDisabledBecause' | translate}}
+                                <h4 style="font-weight:400"> Default Department {{ 'Disabled' | translate }}</h4>
+                                <!-- {{'TheDefaulDeptIsDisabledBecause' | translate}} -->
+                                {{'TheDefaulDeptIsDisabledBecause_2' | translate}}
                                 <i></i>
                               </span>
                             </span>
@@ -159,8 +160,9 @@
                                 check_circle
                               </span>
                               <span class="right" style="white-space: normal;padding: 5px;font-weight: 200;">
-                                <h4 style="font-weight:400"> Default Routing {{ 'Enabled' | translate }}</h4>
-                                {{'TheDefaulDeptIsEnabledBecause' | translate}}
+                                <h4 style="font-weight:400"> Default Department {{ 'Enabled' | translate }}</h4>
+                                <!-- {{'TheDefaulDeptIsEnabledBecause' | translate}} -->
+                                {{'TheDefaulDeptIsEnabledBecause_2' | translate}}
                                 <i></i>
                               </span>
                             </span>
@@ -172,7 +174,8 @@
                       <td class="dept-td" (click)='goToEditAddPage_EDIT(dept?._id, dept?.default)'>
                         <span>
                           <span style="font-weight: 400;font-size:13px" class="tool_tip">
-                            {{ dept?.display_name }}
+                            <!-- {{ dept?.display_name }} -->
+                            {{ dept?.name }}
 
                             <span *ngIf="dept?.default === true">
                               <span *ngIf="COUNT_OF_VISIBLE_DEPT === 0"
