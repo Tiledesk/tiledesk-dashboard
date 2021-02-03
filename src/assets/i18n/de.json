@@ -728,6 +728,7 @@
 	},
 	"RoutingPage": {
 		"SettingUpTileDeskRoutingRules": "Einrichten von Routing-Regeln für das 'Standard-Routing'",
+		"SettingUpTileDeskRoutingRules_2": "Einrichten von Routing-Regeln für das Standardabteilung",
 		"TheFollowingRules": "Die folgenden Regeln werden ignoriert, wenn mindestens eine andere Abteilung vorhanden ist und sein Status auf 'Sichtbar' gesetzt ist.",
 		"SelectABotThatWill": "Wählen Sie einen Bot aus, der auf die Anfragen Ihrer Besucher antwortet, bevor Ihr Personal die Anfrage entgegennimmt",
 		"ActivateBOT": "Bot aktivieren",
@@ -1737,7 +1738,9 @@
 	"Enabled": "Aktiviert",
 	"Disabled": "Inaktiv",
 	"TheDefaulDeptIsDisabledBecause":"Das Standardrouting ist deaktiviert, da mindestens eine andere Abteilung vorhanden ist und deren Status auf 'Sichtbar' gesetzt ist.",
+	"TheDefaulDeptIsDisabledBecause_2":"Das Standardabteilung ist deaktiviert, da mindestens eine andere Abteilung vorhanden ist und deren Status auf 'Sichtbar' gesetzt ist.",
 	"TheDefaulDeptIsEnabledBecause":"Das Standardrouting ist aktiviert, da keine andere Abteilung sichtbar ist.",
+	"TheDefaulDeptIsEnabledBecause_2":"Die Standardabteilung und ihre Routing-Regeln sind aktiviert, da keine andere Abteilung sichtbar ist.",
 	"WidgetDefaultLanguage":"Widget Standardsprache",
 	"WidgetStyle":"Widget-Stil",
 	"ThisStepOfTheWizardGuidesYouThroughTheBasicSetup":"Dieser Schritt des Assistenten führt Sie durch die Grundeinstellungen. Sie können den Widget-Stil, die Standardsprache und mehr jederzeit über die Widget-Einstellungen ändern",

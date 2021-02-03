@@ -723,6 +723,7 @@
     },
     "RoutingPage": {
         "SettingUpTileDeskRoutingRules": "Imposta le regole di routing per il 'Default Routing'",
+        "SettingUpTileDeskRoutingRules_2": "Imposta le regole di routing per il 'Default Department'",
         "TheFollowingRules": "Le seguenti regole verranno ignorate se esiste almeno un altro dipartimento e il suo stato è impostato su 'Visibile'",
         "SelectABotThatWill": "Seleziona un bot che risponderà alle conversazioni del visitatore prima dell'ingaggio di un agente",
         "ActivateBOT": "Attiva BOT",
@@ -1733,7 +1734,9 @@
     "Enabled": "Attivo",
     "Disabled": "Disabilitato",
     "TheDefaulDeptIsDisabledBecause":"Il Routing predefinito è disabilitato perché esiste almeno un altro dipartimento e il suo stato è impostato su 'Visibile'",
+    "TheDefaulDeptIsDisabledBecause_2":"Il Dipartimento Predefinito è disabilitato perché esiste almeno un altro dipartimento e il suo stato è impostato su 'Visibile'",
     "TheDefaulDeptIsEnabledBecause":"Il Routing predefinito è abilitato perché nessun altro reparto è 'Visibile'",
+    "TheDefaulDeptIsEnabledBecause_2":"Il Dipartimento Predefinito e le sue regole di instradamento sono abilitate perché nessun altro dipartimento è 'Visibile'",
     "WidgetDefaultLanguage":"Lingua predefinita del widget",
     "WidgetStyle":"Stile widget",
     "ThisStepOfTheWizardGuidesYouThroughTheBasicSetup":"Questo passaggio della procedura guidata guida l'utente attraverso la configurazione di base. È possibile modificare lo stile del widget, la lingua predefinita e altro in qualsiasi momento tramite le impostazioni del widget",

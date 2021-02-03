@@ -728,6 +728,7 @@
     },
     "RoutingPage": {
         "SettingUpTileDeskRoutingRules": "Setting up routing rules for the 'Default Routing'",
+        "SettingUpTileDeskRoutingRules_2": "Setting up routing rules for the 'Default Department'",
         "TheFollowingRules": "The following rules will be ignored if at least another department exists and his status is set on 'Visible'",
         "SelectABotThatWill": "Select a bot that will respond to visitor's conversations before agent's commitment",
         "ActivateBOT": "Activate Bot",
@@ -1737,7 +1738,9 @@
     "Enabled": "Enabled",
     "Disabled": "Disabled",
     "TheDefaulDeptIsDisabledBecause": "The Default Routing is disabled because at least one other department exists and its status is set to 'Visible'",
+    "TheDefaulDeptIsDisabledBecause_2": "The Default Department is disabled because at least one other department exists and its status is set to 'Visible'",
     "TheDefaulDeptIsEnabledBecause": "The Default Routing is enabled because no other department is 'Visible'",
+    "TheDefaulDeptIsEnabledBecause_2":"The Default Department and its routing rules are enabled because no other department is 'Visible'",
     "WidgetDefaultLanguage": "Widget default language",
     "WidgetStyle": "Widget style",
     "ThisStepOfTheWizardGuidesYouThroughTheBasicSetup": "This step of the wizard guides you through the basic setup. You can change the widget style, default language and more at any time via the widget settings",
