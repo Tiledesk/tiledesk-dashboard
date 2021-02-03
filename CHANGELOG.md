@@ -1,6 +1,14 @@
 
 # tiledesk-dashboard
 
+
+### 2.1.15
+- Minor improvements
+- Rename in the project settings the tab 'Advanced' in "Smart assign"
+- Set "sharing the team's average response time" to true by default
+- Adds in the home page the section latest updates
+- Adds the navigation item "what's new" in the header of the home page through which is possible to access to the CHANGELOG
+
 ### 2.1.14
 - Minor improvements
 
