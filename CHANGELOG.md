@@ -2,10 +2,9 @@
 # tiledesk-dashboard
 
 ### 2.1.11
-- Adds the navigation item "what's new" in the header of the home page through which is possible to access to the blog changelog
-- Adds in the home page the section latest updates
-- Adds in the home page a blog articles carousel
 - Adds in polifills.ts an inport for the support of Object.entries in IE11
+- Adds in the conversations list page the ability to open the chats
+- Adds an alert on the conversation list page that trigger on click to 'join chat' button to notify the user if they are sure they want to join the conversation already served by others
 
 ### 2.1.10
 - Fixes the endpoint of the configuration property 'testsiteBaseUrl'
