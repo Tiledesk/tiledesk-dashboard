@@ -825,22 +825,23 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
 
         console.log('Multilanguage (widget-design) - ***** ["WAITING_TIME_FOUND"] contains $reply_time ', this.selected_translation["WAITING_TIME_FOUND"].includes("$reply_time"));
 
-        if (this.selected_translation["WAITING_TIME_FOUND"].includes("$reply_time") === false) {
-
-          var hasSpaceAtEnds = this.selected_translation["WAITING_TIME_FOUND"].slice(-1);
+        // -------------------------------------------------------------------------------------------------------
+        // @ for new projects $ reply_time is set by the server so it does not need to be added on the client side
+        // ------------------------------------------------------------------------------------------------------- 
+        // if (this.selected_translation["WAITING_TIME_FOUND"].includes("$reply_time") === false) {
+        //   var hasSpaceAtEnds = this.selected_translation["WAITING_TIME_FOUND"].slice(-1);
           
-          if (hasSpaceAtEnds == " ") {
-            console.log("Multilanguage (widget-design) WAITING_TIME_FOUND ends with space");
-            this.waitingTimeFoundMsg = this.selected_translation["WAITING_TIME_FOUND"] + '$reply_time';
-          } else {
-            console.log("Multilanguage (widget-design) WAITING_TIME_FOUND not ends with space");
-            this.waitingTimeFoundMsg = this.selected_translation["WAITING_TIME_FOUND"] + ' ' + '$reply_time';
-          }
-
-          
-        } else {
-          this.waitingTimeFoundMsg = this.selected_translation["WAITING_TIME_FOUND"]
-        }
+        //   if (hasSpaceAtEnds == " ") {
+        //     console.log("Multilanguage (widget-design) WAITING_TIME_FOUND ends with space");
+        //     this.waitingTimeFoundMsg = this.selected_translation["WAITING_TIME_FOUND"] + '$reply_time';
+        //   } else {
+        //     console.log("Multilanguage (widget-design) WAITING_TIME_FOUND not ends with space");
+        //     this.waitingTimeFoundMsg = this.selected_translation["WAITING_TIME_FOUND"] + ' ' + '$reply_time';
+        //   }
+        // } else {
+        //   this.waitingTimeFoundMsg = this.selected_translation["WAITING_TIME_FOUND"]
+        // }
+        this.waitingTimeFoundMsg = this.selected_translation["WAITING_TIME_FOUND"]
         console.log('Multilanguage (widget-design) - ***** selected translation waitingTimeNotFoundMsg: ', this.waitingTimeNotFoundMsg);
         console.log('Multilanguage (widget-design) - ***** selected translation waitingTimeFoundMsg: ', this.waitingTimeFoundMsg);
       }
@@ -1433,8 +1434,8 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
         // @ Reply time
         // WIDGET UNDEFINED
         // -----------------------------------------------------------------------
-        this.HAS_SELECT_DYMANIC_REPLY_TIME_MSG = false;
-        this.HAS_SELECT_STATIC_REPLY_TIME_MSG = true;
+        this.HAS_SELECT_DYMANIC_REPLY_TIME_MSG = true;
+        this.HAS_SELECT_STATIC_REPLY_TIME_MSG = false;
       }
 
     }, (error) => {
