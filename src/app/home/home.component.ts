@@ -169,6 +169,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getChatUrl();
     this.getHasOpenBlogKey()
     // this.startChabgelogAnimation()
+    // this.pauseResumeLastUpdateSlider()
   }
 
 
@@ -176,6 +177,25 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.init()
   }
+
+  // pauseResumeLastUpdateSlider() {
+  //   // var slide = document.querySelectorAll('.slide');
+  //   // console.log('HOME slide ', slide)
+  //   // console.log('HOME slide Array', Array.from(slide)) ;
+
+  //   var slide =   Array.from(document.getElementsByClassName('slide') as HTMLCollectionOf<HTMLElement>)
+  //   const slideArray = Array.from(slide)
+
+  //   for (var i = 0; i < slide.length; i++) {
+  //     slide[i].onclick = this.toggleAnimation();
+  //     slide[i].style.animationPlayState = 'running';
+  //   }
+  // }
+
+  toggleAnimation() {
+
+  }
+
 
   startChabgelogAnimation() {
     // function(t, e, n) {
