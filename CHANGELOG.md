@@ -1,16 +1,19 @@
 
 # tiledesk-dashboard
 
-### 2.1.11
+### 2.1.12
 - Adds in polifills.ts an inport for the support of Object.entries in IE11
 - Adds in the conversations list page the ability to open the chats
 - Adds an alert on the conversation list page that trigger on click to 'join chat' button to notify the user if they are sure they want to join the conversation already served by others
+
+### 2.1.11
+- Minor improvements
 
 ### 2.1.10
 - Fixes the endpoint of the configuration property 'testsiteBaseUrl'
 
 ### 2.1.9
-Changes the endpoint of the configuration properties 'widgetUrl' and 'testsiteBaseUrl'
+- Changes the endpoint of the configuration properties 'widgetUrl' and 'testsiteBaseUrl'
 
 ### 2.1.8
 - Manages the signup form validation error when the user try to signup but not all fields are filled in 
@@ -34,7 +37,6 @@ Changes the endpoint of the configuration properties 'widgetUrl' and 'testsiteBa
 - Change the color of the "view map" and "view no realtime conversations" buttons in the conversations list
 - Fixes subscription to the availability of the current user (adds publication of the status in the websocket's callback 'update')
 - Manages the links of the 'Last 30 days ...' statistics available in the home to the reports in analytics when the plan has expired or the trial period has expired
-- Changes all occurrences of "Default Department" to "Default Routing"
 - Replaces in the department list the visibility checkbox with a toggle switch button and adds a badge over the department avatar to indicate the status visible / not visible
 - Adds the ability to create a group on the fly when creating or editing a department and automatically selects the new group created
 - Change the occurrence of the project-user's property max_served_chat to max_assigned_chat
