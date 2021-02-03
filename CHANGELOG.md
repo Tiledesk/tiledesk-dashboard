@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.1.13
+- Fixes the pre environoment
+
 ### 2.1.12
 - Adds in polifills.ts an inport for the support of Object.entries in IE11
 - Adds in the conversations list page the ability to open the chats
