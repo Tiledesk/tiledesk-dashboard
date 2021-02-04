@@ -1,6 +1,8 @@
 
 # tiledesk-dashboard
 
+### 2.1.16
+Makes the "Smart assign" tab visible in project settings
 
 ### 2.1.15
 - Minor improvements
