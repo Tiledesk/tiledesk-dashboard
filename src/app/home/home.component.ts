@@ -187,13 +187,25 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   //   const slideArray = Array.from(slide)
 
   //   for (var i = 0; i < slide.length; i++) {
-  //     slide[i].onclick = this.toggleAnimation();
+
+     
+  //     slide[i].onclick = this.toggleAnimation(slide);
   //     slide[i].style.animationPlayState = 'running';
   //   }
   // }
 
-  toggleAnimation() {
-
+  toggleAnimation(slide) {
+    var style;
+    for (var i = 0; i < slide.length; i++) {
+      style = slide[i].style;
+      if (style.animationPlayState === 'running') {
+        style.animationPlayState = 'paused';
+        document.body.className = 'paused';
+      } else {
+        style.animationPlayState = 'running';
+        document.body.className = '';
+      }
+    }
   }
 
 
