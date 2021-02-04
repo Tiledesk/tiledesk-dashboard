@@ -9,7 +9,8 @@
 #     npm publish
 # fi
 
-ng build --prod --base-href ./
+# ng build --prod --base-href ./
+node --max_old_space_size=8192 node_modules/@angular/cli/bin/ng build --prod --output-path=dist --base-href ./
 cd dist
 # aws s3 sync . s3://tiledesk-dashboard/dashboard/
 # aws cloudfront create-invalidation --distribution-id E2DTAKWHWQ7C3J --paths "/*"
