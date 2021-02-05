@@ -1,8 +1,14 @@
 
 # tiledesk-dashboard
 
+### 2.1.17
+- Fixes: on the home page the statistics and the other insights on the current project do not change when the user change project from the navbar combobox
+- Fixes: project id is in some cases undefined when the "checkRoleForCurrentProject" method is called
+- Fixes: pages with limited access to the users with administrator or owner roles can also be visited by users with agent role
+- Fixes department visibility status update service
+
 ### 2.1.16
-Makes the "Smart assign" tab visible in project settings
+- Makes the "Smart assign" tab visible in project settings
 
 ### 2.1.15
 - Minor improvements
