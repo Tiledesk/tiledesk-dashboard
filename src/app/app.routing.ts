@@ -16,6 +16,7 @@ import { UpgradeComponent } from './upgrade/upgrade.component';
 import { AuthGuard } from './core/auth.guard';
 import { AdminGuard } from './core/admin.guard';
 import { ProjectProfileGuard } from './core/project-profile.guard';
+import { PendingChangesGuard } from './core/pending-changes.guard';
 import { CoreModule } from './core/core.module';
 import { ReadmePageComponent } from './ui/readme-page/readme-page.component';
 import { HomeComponent } from './home/home.component';
@@ -308,8 +309,10 @@ const routes: Routes = [
 
   // , ProjectProfileGuard
   { path: 'project/:projectid/departments', component: DepartmentsComponent, canActivate: [AuthGuard] },
+  // , canDeactivate: [PendingChangesGuard]
   { path: 'project/:projectid/department/create', component: DepartmentEditAddComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/department/edit/:deptid', component: DepartmentEditAddComponent, canActivate: [AuthGuard] },
+  // , canDeactivate: [PendingChangesGuard]
+  { path: 'project/:projectid/department/edit/:deptid', component: DepartmentEditAddComponent, canActivate: [AuthGuard]},
 
   { path: 'project/:projectid/depts', component: DeptsComponent, canActivate: [AuthGuard] },
   
@@ -409,6 +412,6 @@ const routes: Routes = [
     RouterModule.forRoot(routes)
   ],
   exports: [RouterModule],
-  providers: [AuthGuard, AdminGuard, ProjectProfileGuard]
+  providers: [AuthGuard, AdminGuard, ProjectProfileGuard, PendingChangesGuard]
 })
 export class AppRoutingModule { }

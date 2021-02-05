@@ -16,8 +16,8 @@ import { slideInOutAnimation } from '../_animations/index';
 import { UsersService } from '../services/users.service';
 import { avatarPlaceholder, getColorBck } from '../utils/util';
 import { AppConfigService } from '../services/app-config.service';
-import { threadId } from 'worker_threads';
-
+import { ComponentCanDeactivate } from '../core/pending-changes.guard';
+import { Observable } from 'rxjs/Observable';
 declare const $: any;
 
 @Component({
@@ -28,7 +28,16 @@ declare const $: any;
   // tslint:disable-next-line:use-host-property-decorator
   // host: { '[@slideInOutAnimation]': '' }
 })
+// , ComponentCanDeactivate
 export class DepartmentEditAddComponent implements OnInit, AfterViewInit {
+
+
+  // @HostListener('window:beforeunload')
+  // canDeactivate(): Observable<boolean> | boolean {
+  //   // insert logic to check if there are pending changes here;
+  //   // returning true will navigate without confirmation
+  //   // returning false will show a confirm dialog before navigating away
+  // }
 
   @Input() ws_requestslist_deptIdSelected: string;
   @Input() display_dept_sidebar: boolean;

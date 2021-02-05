@@ -263,6 +263,7 @@ export class DepartmentsComponent implements OnInit {
   }
 
 
+  // da controllare sembra nn usato
   updateDefaultDeptStatusIfIsZero(dept_id, deptStatus) {
     this.mongodbDepartmentService.updateDeptStatus(dept_id, deptStatus)
       .subscribe((department: any) => {
