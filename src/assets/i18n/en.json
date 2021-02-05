@@ -1556,8 +1556,8 @@
         "DailyConvDurationTime": "Daily Median Conversation Length",
         "VisitorsComponentTitle": "Visitors",
         "Visitors": {
-            "NumberOfVisitors": "Number of visitors",
-            "VisitorsChartTitle": "Number of visitors last "
+            "NumberOfVisitors": "Number of unique visitors",
+            "VisitorsChartTitle": "Number of unique visitors last "
         },
         "MessagesComponentTitle": "Messages",
         "Messages": {
@@ -1723,7 +1723,7 @@
     "Last30DaysConversations": "Last 30 days conversations",
     "Last30DaysVisitors": "Last 30 days visitors",
     "FilterReportInAnalytics": "Filter report in analytics",
-    "VisitorsOnYourPageInTheLast7Days": "Visitors on your page in the last 7 days",
+    "VisitorsOnYourPageInTheLast7Days": "Unique visitors on your page in the last 7 days",
     "TakeAShortcut": "Take a shortcut",
     "JumpStraightToTheMostPopularSettingsInTheDashboard": "Jump straight to the most popular settings in the Dashboard",
     "EngageAndRetainMoreCustomersWithAppsAndIntegrations": "Engage and retain more customers with apps and integrations",

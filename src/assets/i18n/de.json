@@ -1556,8 +1556,8 @@
 		"DailyConvDurationTime": "Tägliche durchschnittliche Unterhaltungslänge",
 		"VisitorsComponentTitle": "Besucher",
 		"Visitors" : {
-			"NumberOfVisitors": "Besucherzahl",
-			"VisitorsChartTitle": "Anzahl von besucher letzte "
+			"NumberOfVisitors": "Anzahl der eindeutigen Besucher",
+			"VisitorsChartTitle": "Anzahl der eindeutigen Besucher in den letzten "
 		},
 		"MessagesComponentTitle": "Mitteilungen",
 		"Messages": {
@@ -1723,7 +1723,7 @@
 	"Last30DaysConversations":"Gespräche der letzten 30 Tage",
 	"Last30DaysVisitors":"Letzte 30 Tage Besucher",
 	"FilterReportInAnalytics":"Filterbericht in Analytics",
-	"VisitorsOnYourPageInTheLast7Days":"Besucher auf Ihrer Seite in den letzten 7 Tagen",
+	"VisitorsOnYourPageInTheLast7Days":"Einzigartige Besucher auf Ihrer Seite in den letzten 7 Tagen",
 	"TakeAShortcut":"Eine Abkürzung nehmen",
 	"JumpStraightToTheMostPopularSettingsInTheDashboard":"Wechseln Sie direkt zu den beliebtesten Einstellungen im Dashboard",
 	"EngageAndRetainMoreCustomersWithAppsAndIntegrations":"Binden Sie mehr Kunden mit Apps und Integrationen ein und binden Sie sie",
