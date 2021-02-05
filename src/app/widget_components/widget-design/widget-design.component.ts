@@ -1379,9 +1379,13 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
         if (project.widget.dynamicWaitTimeReply === true) {
           this.HAS_SELECT_DYMANIC_REPLY_TIME_MSG = true;
           this.HAS_SELECT_STATIC_REPLY_TIME_MSG = false;
+          console.log('»» WIDGET DESIGN - (onInit WIDGET UNDEFINED) >  HAS_SELECT_DYMANIC_REPLY_TIME_MSG: ', this.HAS_SELECT_DYMANIC_REPLY_TIME_MSG);
+          console.log('»» WIDGET DESIGN - (onInit WIDGET UNDEFINED) >  HAS_SELECT_DYMANIC_REPLY_TIME_MSG: ', this.HAS_SELECT_STATIC_REPLY_TIME_MSG);
         } else {
           this.HAS_SELECT_DYMANIC_REPLY_TIME_MSG = false;
           this.HAS_SELECT_STATIC_REPLY_TIME_MSG = true;
+          console.log('»» WIDGET DESIGN - (onInit WIDGET UNDEFINED) >  HAS_SELECT_DYMANIC_REPLY_TIME_MSG: ', this.HAS_SELECT_DYMANIC_REPLY_TIME_MSG);
+          console.log('»» WIDGET DESIGN - (onInit WIDGET UNDEFINED) >  HAS_SELECT_DYMANIC_REPLY_TIME_MSG: ', this.HAS_SELECT_STATIC_REPLY_TIME_MSG);
         }
 
       } else {
@@ -1436,6 +1440,8 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
         // -----------------------------------------------------------------------
         this.HAS_SELECT_DYMANIC_REPLY_TIME_MSG = true;
         this.HAS_SELECT_STATIC_REPLY_TIME_MSG = false;
+        console.log('»» WIDGET DESIGN - (onInit WIDGET UNDEFINED) >  HAS_SELECT_DYMANIC_REPLY_TIME_MSG: ', this.HAS_SELECT_DYMANIC_REPLY_TIME_MSG);
+        console.log('»» WIDGET DESIGN - (onInit WIDGET UNDEFINED) >  HAS_SELECT_DYMANIC_REPLY_TIME_MSG: ', this.HAS_SELECT_STATIC_REPLY_TIME_MSG);
       }
 
     }, (error) => {
