@@ -93,6 +93,8 @@ export class AuthService {
   URL_last_fragment: string;
   HAS_JWT: boolean;
 
+  selected_project_id: string;
+
 
   constructor(
     http: Http,
@@ -245,6 +247,7 @@ export class AuthService {
     // tslint:disable-next-line:no-debugger
     // debugger
     console.log('% »»» WebSocketJs WF +++++ ws-requests--- auth service PUBLISH THE PROJECT RECEIVED FROM PROJECT COMP', project._id)
+    this.selected_project_id = project._id // used in checkRoleForCurrentProject if nav_project_id is undefined
     this.project_bs.next(project);
 
   }
@@ -445,8 +448,17 @@ export class AuthService {
 
     // const nav_project_id = url_segments[2];
     // console.log('!! »»»»» AUTH SERV - CHECK ROLE - NAVIGATION PROJECT ID: ', nav_project_id);
+    // this.selected_project_id
 
-    const storedProjectJson = localStorage.getItem(this.nav_project_id);
+    let project_id = ''
+    if (this.nav_project_id !== undefined) {
+      project_id = this.nav_project_id
+    } else {
+      project_id = this.selected_project_id
+    }
+
+    const storedProjectJson = localStorage.getItem(project_id);
+    console.log('!! »»»»» AUTH SERV - CHECK ROLE - JSON OF STORED PROJECT iD', project_id);
     console.log('!! »»»»» AUTH SERV - CHECK ROLE - JSON OF STORED PROJECT', storedProjectJson);
     if (storedProjectJson) {
 
@@ -459,15 +471,17 @@ export class AuthService {
         if (this._user_role === 'agent' || this._user_role === undefined) {
           console.log('!! »»»»» AUTH SERV - CHECK ROLE (GOT FROM STORAGE) »»» ', this._user_role);
 
-          this.router.navigate([`project/${this.nav_project_id}/unauthorized`]);
+          this.router.navigate([`project/${project_id}/unauthorized`]);
           // this.router.navigate(['/unauthorized']);
         } else {
           console.log('!! »»»»» AUTH SERV - CHECK ROLE (GOT FROM STORAGE) »»» ', this._user_role)
         }
       }
     }
-    //   }
-    // });
+    //  else {
+
+    // }
+ 
   }
 
   // !!! NO MORE USED
@@ -574,32 +588,32 @@ export class AuthService {
             if (fbtoken) {
               // Firebase Sign in using custom token
 
-            
+
               // firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE).then(() => {
 
-                console.log('SSO - LOGIN - 3. FIREBASE CUSTOM AUTH setPersistence ');
+              console.log('SSO - LOGIN - 3. FIREBASE CUSTOM AUTH setPersistence ');
 
-                firebase.auth().signInWithCustomToken(fbtoken)
-                  .then(firebase_user => {
-                    console.log('SSO - LOGIN - 4. FIREBASE CUSTOM AUTH DATA ', firebase_user);
+              firebase.auth().signInWithCustomToken(fbtoken)
+                .then(firebase_user => {
+                  console.log('SSO - LOGIN - 4. FIREBASE CUSTOM AUTH DATA ', firebase_user);
 
-                    if (!this.APP_IS_DEV_MODE && this.FCM_Supported === true) {
-                      this.getPermission();
-                    }
+                  if (!this.APP_IS_DEV_MODE && this.FCM_Supported === true) {
+                    this.getPermission();
+                  }
 
-                    callback(null, user);
-                  })
-                  .catch(function (error) {
-                    // return error;
-                    callback(error);
-                    // Handle Errors here.
-                    // const errorCode = error.code;
-                    console.log('SSO - LOGIN - FIREBASE CUSTOM AUTH ERROR CODE ', error)
-                    // const errorMessage = error.message;
-                    // console.log('FIREBASE CUSTOM AUTH ERROR MSG ', errorMessage)
-                  });
+                  callback(null, user);
+                })
+                .catch(function (error) {
+                  // return error;
+                  callback(error);
+                  // Handle Errors here.
+                  // const errorCode = error.code;
+                  console.log('SSO - LOGIN - FIREBASE CUSTOM AUTH ERROR CODE ', error)
+                  // const errorMessage = error.message;
+                  // console.log('FIREBASE CUSTOM AUTH ERROR MSG ', errorMessage)
+                });
 
-                  
+
               // }).catch(function (error) {
               //   callback(error);
               //   console.log('SSO - LOGIN - SET PERSISTENCE ERR ', error)
