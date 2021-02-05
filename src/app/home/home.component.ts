@@ -169,13 +169,13 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getChatUrl();
     this.getHasOpenBlogKey()
     // this.startChabgelogAnimation()
-    // this.pauseResumeLastUpdateSlider()
+    // this.pauseResumeLastUpdateSlider() // https://stackoverflow.com/questions/5804444/how-to-pause-and-resume-css3-animation-using-javascript
   }
 
 
   ngAfterViewInit() {
 
-    this.init()
+   
   }
 
   // pauseResumeLastUpdateSlider() {
@@ -316,7 +316,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         this.OPERATING_HOURS_ACTIVE = this.project.operatingHours
         console.log('HOME > OPERATING_HOURS_ACTIVE', this.OPERATING_HOURS_ACTIVE)
 
-
+        this.init()
       }
     });
   }
