@@ -20,6 +20,7 @@ import { ComponentCanDeactivate } from '../core/pending-changes.guard';
 import { Observable } from 'rxjs/Observable';
 declare const $: any;
 
+
 @Component({
   selector: 'app-department-edit-add',
   templateUrl: './department-edit-add.component.html',
@@ -29,15 +30,10 @@ declare const $: any;
   // host: { '[@slideInOutAnimation]': '' }
 })
 // , ComponentCanDeactivate
-export class DepartmentEditAddComponent implements OnInit, AfterViewInit {
+export class DepartmentEditAddComponent implements OnInit, AfterViewInit, ComponentCanDeactivate {
 
 
-  // @HostListener('window:beforeunload')
-  // canDeactivate(): Observable<boolean> | boolean {
-  //   // insert logic to check if there are pending changes here;
-  //   // returning true will navigate without confirmation
-  //   // returning false will show a confirm dialog before navigating away
-  // }
+
 
   @Input() ws_requestslist_deptIdSelected: string;
   @Input() display_dept_sidebar: boolean;
@@ -105,8 +101,9 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit {
   main_content_height: any
   new_group_created_id: string;
   SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR = false
-  
-  HAS_COMPLETED_GET_GROUPS: boolean; 
+
+  HAS_COMPLETED_GET_GROUPS: boolean;
+  NOT_HAS_EDITED: boolean = true;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -122,6 +119,19 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit {
     public appConfigService: AppConfigService
   ) { }
 
+
+  @HostListener('window:beforeunload')
+  canDeactivate(): Observable<boolean> | boolean {
+    // insert logic to check if there are pending changes here;
+    // returning true will navigate without confirmation
+    // returning false will show a confirm dialog before navigating away
+
+    if (this.NOT_HAS_EDITED === true) {
+      return true;
+    } else if (this.NOT_HAS_EDITED === false) {
+      return false;
+    }
+  }
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
@@ -231,6 +241,19 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit {
     this.translateNotificationMsgs()
   }
 
+  // -------------------------------------------------------------------------------------
+  // @ canDeactivate NOT_HAS_EDITED is to canDeactivate if is false is displayed the alert
+  // -------------------------------------------------------------------------------------
+  onChangeDeptName($event) {
+    console.log('DEPT EDIT-ADD - onChangeDeptName ', $event);
+    this.NOT_HAS_EDITED = false
+  }
+
+
+  onChangeDeptDescription($event) {
+    console.log('DEPT EDIT-ADD - onChangeDeptDescription ', $event);
+    this.NOT_HAS_EDITED = false
+  }
 
 
   // -----------------------------------------------------------------------------
@@ -271,6 +294,9 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit {
     if (event) {
       this.new_group_created_id = event
       this.SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR = true
+
+      this.NOT_HAS_EDITED = false
+
       this.getGroupsByProjectId();
       // this.HAS_COMPLETED_GET_GROUPS = true
       // console.log('DEPT EDIT-ADD - handleNewGroupCreatedFromSidebar tHAS_COMPLETED_GET_GROUPS  ', this.HAS_COMPLETED_GET_GROUPS );
@@ -378,6 +404,8 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit {
   // ============ NEW - SUBSTITUTES has_clicked_fixed ============
   has_clicked_bot(has_selected_bot: boolean) {
     console.log('HAS CLICKED BOT - SHOW DROPDOWN ', has_selected_bot);
+
+
     if (has_selected_bot === false) {
       this.BOT_NOT_SELECTED = true;
       console.log('DEPT EDIT-ADD - HAS CLICKED BOT - BOT NOT SELECTED ', this.BOT_NOT_SELECTED);
@@ -413,8 +441,13 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit {
   // WHEN THE BTN 'EDIT DEPARTMENT' IS PRESSED THE VALUE OF THE ID OF THE SELECTED BOT IS MODIFIED IN THE DEPT'S FIELD id_bot
   // Note: is used also for the 'CREATE VIEW'
   setSelectedBot(id: any): void {
+
     this.selectedBotId = id;
     console.log('FAQ-KB ID SELECTED (SUBSTITUTE BOT): ', this.selectedBotId);
+
+    if (this.selectedBotId !== null) {
+      this.NOT_HAS_EDITED = false
+    }
 
 
 
@@ -494,8 +527,8 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit {
         // this.SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR = true
 
         if (this.SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR === true) {
-          console.log('DEPT EDIT-ADD -  + + GET GROUPS  SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR', this.new_group_created_id );
-          
+          console.log('DEPT EDIT-ADD -  + + GET GROUPS  SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR', this.new_group_created_id);
+
           this.selectedGroupId = this.new_group_created_id;
         }
 
@@ -519,9 +552,12 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit {
 
   setSelectedGroup(id: any): void {
     this.SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR = false;
+
+    this.NOT_HAS_EDITED = false
+    
     this.selectedGroupId = id;
-    console.log('DEPT EDIT-ADD - GROUP ID SELECTED: ', this.selectedGroupId);
-    console.log('DEPT EDIT-ADD - GROUP_ID_NOT_EXIST: ', this.GROUP_ID_NOT_EXIST);
+    console.log('DEPT-EDIT-ADD - GROUP ID SELECTED: ', this.selectedGroupId);
+    console.log('DEPT-EDIT-ADD - GROUP_ID_NOT_EXIST: ', this.GROUP_ID_NOT_EXIST);
 
     // this.SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR = false;
 
@@ -531,9 +567,9 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit {
     // - IF THE USER SELECT ANOTHER OPTION this.GROUP_ID_NOT_EXIST IS SET TO false
     if (this.selectedGroupId !== 'Group error') {
       this.GROUP_ID_NOT_EXIST = false
-      
+
       this.getGroupsByProjectId()
-      console.log('DEPT EDIT-ADD - setSelectedGroup this.selectedGroupId !== Group error', );
+      console.log('DEPT EDIT-ADD - setSelectedGroup this.selectedGroupId !== Group error',);
     }
 
     // if (this.selectedGroupId !== 'ALL_USERS_SELECTED') {
@@ -582,17 +618,21 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit {
 
 
   // GO BACK TO DEPARTMENTS COMPONENT
-  // goBackToDeptsList() {
-  //   this.router.navigate(['project/' + this.project._id + '/departments']);
-  // }
-
-  goBack() {
-    this.location.back();
+  goBackToDeptsList() {
+    this.router.navigate(['project/' + this.project._id + '/departments']);
   }
+
+  // goBack() {
+  //   this.location.back();
+  // }
 
 
 
   has_clicked_assigned(show_group_option_form: boolean, show_option_form: boolean, routing: string) {
+
+    if (this.dept_routing !== 'assigned') {
+      this.NOT_HAS_EDITED = false
+    }
 
     this.SHOW_GROUP_OPTION_FORM = show_group_option_form;
     this.SHOW_OPTION_FORM = show_option_form;
@@ -614,6 +654,10 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit {
   // }
 
   has_clicked_pooled(show_group_option_form: boolean, show_option_form: boolean, routing: string) {
+
+    if (this.dept_routing !== 'pooled') {
+      this.NOT_HAS_EDITED = false
+    }
     this.SHOW_GROUP_OPTION_FORM = show_group_option_form;
     this.SHOW_OPTION_FORM = show_option_form;
     this.ROUTING_SELECTED = routing
@@ -639,7 +683,7 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit {
    */
   getDeptById() {
     this.mongodbDepartmentService.getMongDbDeptById(this.id_dept).subscribe((dept: any) => {
-      console.log('DEPT EDIT-ADD ++ > GET DEPT (DETAILS) BY ID - DEPT OBJECT: ', dept);
+      console.log('DEPT-EDIT-ADD ++ > GET DEPT (DETAILS) BY ID - DEPT OBJECT: ', dept);
       if (dept) {
         this.IS_DEFAULT_DEPT = dept.default
         this.deptName_toUpdate = dept.name;
@@ -907,6 +951,7 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit {
     this.dept_description,
  */
   createDepartment() {
+    this.NOT_HAS_EDITED = true;
     console.log('DEPT EDIT-ADD createDepartment DEPT NAME  ', this.deptName_toUpdate);
     console.log('DEPT EDIT-ADD createDepartment DEPT DESCRIPTION DIGIT BY USER ', this.dept_description_toUpdate);
     console.log('DEPT EDIT-ADD createDepartment GROUP ID WHEN CREATE IS PRESSED ', this.selectedGroupId);
@@ -933,6 +978,7 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit {
 
 
   edit() {
+    this.NOT_HAS_EDITED = true;
     console.log('DEPT EDIT-ADD - EDIT - ID WHEN EDIT IS PRESSED ', this.id_dept);
     console.log('DEPT EDIT-ADD - EDIT - FULL-NAME WHEN EDIT IS PRESSED ', this.deptName_toUpdate);
     console.log('DEPT EDIT-ADD - EDIT - DESCRIPTION WHEN EDIT IS PRESSED ', this.dept_description_toUpdate);

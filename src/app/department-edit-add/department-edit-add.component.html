@@ -1,8 +1,8 @@
 <!-- *ngIf="ROUTING_PAGE_MODE === false"  -->
 <div #navbarbrand class="navbar-brand" style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px">
-
+  <!-- (click)="goBack()" -->
   <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
-    (click)="goBack()">keyboard_arrow_left</i>
+    (click)="goBackToDeptsList()">keyboard_arrow_left</i>
 
   <span *ngIf="CREATE_VIEW">
     {{ "DeptsAddEditPage.AddDept" | translate}}
@@ -43,7 +43,7 @@
                   <input [(ngModel)]="deptName_toUpdate" placeholder='{{ "DeptsAddEditPage.DeptName" | translate}}'
                     class="input" type="text" style="margin-top: 2px;margin-bottom: 5px;"
                     [ngClass]="{'input-dept-name-disbled': IS_DEFAULT_DEPT === true}"
-                    [disabled]="IS_DEFAULT_DEPT === true">
+                    [disabled]="IS_DEFAULT_DEPT === true" (ngModelChange)="onChangeDeptName($event)">
                 </div>
               </div>
 
@@ -56,7 +56,7 @@
                   {{ "DeptsAddEditPage.Description" | translate}}
                 </label>
                 <div class="col-xs-12 col-sm-6 col-md-12 col-lg-6">
-                  <textarea [(ngModel)]="dept_description_toUpdate" class="" type="text" rows="2"
+                  <textarea [(ngModel)]="dept_description_toUpdate" class="" type="text" rows="2" (ngModelChange)="onChangeDeptDescription($event)"
                     placeholder='{{ "DeptsAddEditPage.Description" | translate}}' style="margin-top: 2px"> </textarea>
                 </div>
               </div>
@@ -134,11 +134,9 @@
                 // ------------------------------------------------------------------- -->
                 <div class="row">
                   <div class="col-sm-12">
-                    <div class="alert"
-                      style="background-color: #fff;box-shadow: none; padding: 0px; margin-bottom:10px">
+                    <div class="description-wpr">
 
-                      <span
-                        style="vertical-align: middle; display: inline-flex;font-size: 12px; color: rgba(0,0,0,.54);font-weight: 400;">
+                      <span class="dea-description">
                         {{ "DeptsAddEditPage.SelectABotThatWill" | translate }}
                       </span>
                     </div>
@@ -229,10 +227,8 @@
                 <section [ngClass]="{'disabled-label' : onlybot_disable_routing}">
                   <div class="row">
                     <div class="col-sm-12">
-                      <div class="routing-rules-qyuick-tips"
-                        style="background-color: #fff;  box-shadow: none;padding: 0px; margin-bottom:10px">
-                        <span
-                          style="vertical-align: middle; display: inline-flex;font-size: 12px; color: rgba(0,0,0,.54); font-weight: 400;">
+                      <div class="description-wpr">
+                        <span class="dea-description">
                           {{ "DeptsAddEditPage.SetRoutingRules" | translate }}
                         </span>
 

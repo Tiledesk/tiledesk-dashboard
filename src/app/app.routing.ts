@@ -309,10 +309,10 @@ const routes: Routes = [
 
   // , ProjectProfileGuard
   { path: 'project/:projectid/departments', component: DepartmentsComponent, canActivate: [AuthGuard] },
-  // , canDeactivate: [PendingChangesGuard]
-  { path: 'project/:projectid/department/create', component: DepartmentEditAddComponent, canActivate: [AuthGuard] },
-  // , canDeactivate: [PendingChangesGuard]
-  { path: 'project/:projectid/department/edit/:deptid', component: DepartmentEditAddComponent, canActivate: [AuthGuard]},
+  // 
+  { path: 'project/:projectid/department/create', component: DepartmentEditAddComponent, canActivate: [AuthGuard], canDeactivate: [PendingChangesGuard] },
+
+  { path: 'project/:projectid/department/edit/:deptid', component: DepartmentEditAddComponent, canActivate: [AuthGuard], canDeactivate: [PendingChangesGuard]},
 
   { path: 'project/:projectid/depts', component: DeptsComponent, canActivate: [AuthGuard] },
   
