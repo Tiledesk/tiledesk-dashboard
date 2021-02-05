@@ -323,6 +323,28 @@ export class DepartmentService {
    * @param dept_id
    * @param status
    */
+  // public updateDeptStatus(dept_id: string, status: number) {
+  //   const url = this.DEPTS_URL + dept_id;
+  //   console.log('UPDATE DEPT STATUS - URL ', url);
+  //   const headers = new Headers();
+  //   headers.append('Accept', 'application/json');
+  //   headers.append('Content-type', 'application/json');
+  //   headers.append('Authorization', this.TOKEN);
+  //   const options = new RequestOptions({ headers });
+
+  //   const body = { 'status': status };
+  //   console.log('UPDATE DEPT STATUS - REQUEST BODY ', body);
+
+  //   return this.http
+  //     .put(url, JSON.stringify(body), options)
+  //     .map((res) => res.json());
+  // }
+
+  /**
+   * UPDATE DEPARTMENT STATUS
+   * @param dept_id
+   * @param status
+   */
   public updateDeptStatus(dept_id: string, status: number) {
     const url = this.DEPTS_URL + dept_id;
     console.log('UPDATE DEPT STATUS - URL ', url);
@@ -336,7 +358,7 @@ export class DepartmentService {
     console.log('UPDATE DEPT STATUS - REQUEST BODY ', body);
 
     return this.http
-      .put(url, JSON.stringify(body), options)
+      .patch(url, JSON.stringify(body), options)
       .map((res) => res.json());
   }
 
