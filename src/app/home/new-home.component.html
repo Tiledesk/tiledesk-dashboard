@@ -49,7 +49,7 @@
             <ng-container *ngIf="DISPLAY_TEAMMATES">
               <div class="served-by-desktop-b" *ngFor="let projectUser of projectUsers; let first = first;let i=index">
                 <div [ngClass]="{ 'first-served-by': first }" class="served-by-desktop-c tool_tip"
-                  (click)="goToAgentProfile(projectUser?.id_user?._id)" style="cursor:pointer">
+                  (click)="goToAgentProfile(projectUser?.id_user?._id)">
                   <div class="served-by-desktop-d">
                     <div size="32" class="served-by-desktop-e">
 
@@ -97,7 +97,8 @@
               </span>
 
               <span class="tool_tip" *ngIf="DISPLAY_TEAMMATES">
-                <span class="material-icons add-operators-icons tool_tip" (click)="goToUsersList()"
+                <span *ngIf="USER_ROLE !== 'agent'" class="material-icons add-operators-icons tool_tip"
+                  (click)="goToUsersList()"
                   style="vertical-align: middle;color:  rgba(255,255,255,0.8); font-size:18px; position: relative;cursor: pointer;">
                   add_circle_outline
                 </span>
@@ -138,8 +139,8 @@
 
             <ng-container *ngIf="DISPLAY_CHATBOTS">
               <div class="served-by-desktop-b" *ngFor="let bot of chatbots; let first = first;">
-                <div [ngClass]="{ 'first-served-by': first }" class="served-by-desktop-c tool_tip"
-                  (click)="goToBotProfile(bot?._id, bot?.type)" style="cursor:pointer">
+                <div [ngClass]="{ 'first-served-by': first, 'disable-link-if-is-agent': USER_ROLE === 'agent' }"
+                  class="served-by-desktop-c tool_tip" (click)="goToBotProfile(bot?._id, bot?.type)">
 
 
                   <div class="served-by-desktop-d">
@@ -203,7 +204,7 @@
               </span>
 
               <span class="tool_tip" *ngIf="!DISPLAY_CHATBOTS && chatbots?.length === 0">
-                <span class="material-icons add-operators-icons" (click)="goToBotsList()"
+                <span *ngIf="USER_ROLE !== 'agent'" class="material-icons add-operators-icons" (click)="goToBotsList()"
                   style="vertical-align: middle;color:  rgba(255,255,255,0.8); font-size:18px; position: relative; cursor: pointer;">
                   add_circle_outline
                 </span>
@@ -216,7 +217,7 @@
 
 
               <span class="tool_tip" *ngIf="DISPLAY_CHATBOTS">
-                <span class="material-icons add-operators-icons" (click)="goToBotsList()"
+                <span *ngIf="USER_ROLE !== 'agent'" class="material-icons add-operators-icons" (click)="goToBotsList()"
                   style="vertical-align: middle;color:  rgba(255,255,255,0.8); font-size:18px; position: relative; cursor: pointer;">
                   add_circle_outline
                 </span>
@@ -263,7 +264,8 @@
               <span *ngIf="!OPERATING_HOURS_ACTIVE"> {{'OperatingHoursDisabled' | translate }}</span>
               <span *ngIf="OPERATING_HOURS_ACTIVE"> {{'OperatingHoursEnabled' | translate}} </span>
               <span class="tool_tip">
-                <span class="material-icons add-operators-icons tool_tip" (click)="goToOperatingHours()"
+                <span *ngIf="USER_ROLE !== 'agent'" class="material-icons add-operators-icons tool_tip"
+                  (click)="goToOperatingHours()"
                   style="vertical-align: middle;color:  rgba(255,255,255,0.8); font-size:18px; position: relative;cursor: pointer;transform: rotate(-90deg);top: -1px;">
                   filter_list
                 </span>
@@ -275,7 +277,7 @@
             </span>
           </div>
 
-          
+
           <!-- --------------------------------------------------- -->
           <!-- @ What's new - Link to changelog  -->
           <!-- --------------------------------------------------- -->
@@ -305,7 +307,7 @@
             </div>
           </div>
 
-        <!-- 
+          <!-- 
         // ---------------------------------------------------
         // @ Take A Shortcut for Owner And Admin 
         // --------------------------------------------------- -->
@@ -572,7 +574,7 @@
                   {{ countOfVisitors }}
                 </span>
               </div>
-              <div class="links-container">
+              <div class="links-container" [ngClass]="{'disable-link-if-is-agent' : USER_ROLE === 'agent'}">
                 <div class="link-title-first">
                   <span> {{'Last30DaysVisitors' | translate }} </span>
                   <span class="material-icons" style="vertical-align: middle; color: #3c4858;">
@@ -600,7 +602,7 @@
                   {{ countOfLastMonthRequests }}
                 </span>
               </div>
-              <div class="links-container">
+              <div class="links-container"  [ngClass]="{'disable-link-if-is-agent' : USER_ROLE === 'agent'}">
                 <div class="link-title-first">
                   <span> {{'Last30DaysConversations' | translate}} </span>
                   <span class="material-icons" style="vertical-align: middle; color: #3c4858;">
@@ -630,7 +632,7 @@
                 </span>
               </div>
 
-              <div class="links-container">
+              <div class="links-container" [ngClass]="{'disable-link-if-is-agent' : USER_ROLE === 'agent'}">
                 <div class="link-title-first">
                   <span> {{'Last30DaysMessages' | translate}} </span>
                   <span class="material-icons" style="vertical-align: middle; color: #3c4858;">
@@ -796,7 +798,7 @@
     <div *ngIf="isVisibleANA" class="home-statistics-row-visitors-graph">
       <div class="row">
         <div class="col-md-12">
-          <div class="visitors-graph-title-container" style="cursor:pointer">
+          <div class="visitors-graph-title-container" [ngClass]="{'disable-link-if-is-agent' : USER_ROLE === 'agent'}">
             <div class="visitors-graph-title-1">
               <span> {{'VisitorsOnYourPageInTheLast7Days' | translate}}</span>
               <span class="material-icons" style="vertical-align: middle; color: #3c4858;">
@@ -1081,12 +1083,13 @@
                   </li>
                 </ul>
                 <div id=slideset6>
-                  <div class="slide"> 
+                  <div class="slide">
                     <p class="meta">
                       <strong>Multilanguage</strong>
                       <span>February 2021</span>
                     </p>
-                    <p>You can now choose the widget default language in the new wizard step 'configure widget' and change it in the new widget set up page 
+                    <p>You can now choose the widget default language in the new wizard step 'configure widget' and
+                      change it in the new widget set up page
                     </p>
                   </div>
                   <div class="slide">

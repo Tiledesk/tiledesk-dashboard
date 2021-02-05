@@ -629,7 +629,7 @@
                 <span *ngIf="agent.is_bot === false">
 
                   <div [ngClass]="{ 'first-served-by': first }" class="served-by-desktop-c tool_tip"
-                    (click)="goToAgentProfile(agent?._id)" style="cursor:pointer">
+                    (click)="goToAgentProfile(agent?._id)">
                     <div class="served-by-desktop-d">
                       <div size="32" class="served-by-desktop-e">
                         <!-- {{  agent.hasImage }} -->
@@ -666,7 +666,7 @@
 
 
                 <span *ngIf="agent.is_bot === true">
-                  <span (click)="goToBotProfile(agent?._id, agent?.type)" style="cursor:pointer"
+                  <span (click)="goToBotProfile(agent?._id, agent?.type)" [ngClass]="{'disable-link-if-is-agent' : ROLE_IS_AGENT}"
                     class="bot---avatar tool_tip">
                     <img class="user-img ws-requests-list-servedby-avatar"
                       src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fphoto.jpg?alt=media"

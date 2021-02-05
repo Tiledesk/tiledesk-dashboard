@@ -582,6 +582,11 @@ my-app .main-panel .main-content .card {
   display: inline-block;
   flex: 1 1 32px;
   margin-left: -5px;
+  cursor:pointer;
+}
+
+.disable-link-if-is-agent {
+  cursor:not-allowed !important;
 }
 
 .first-served-by {
@@ -637,6 +642,9 @@ my-app .main-panel .main-content .card {
 .served-by-desktop-e:hover {
   position: relative;
   top: -3px;
+}
+.bot---avatar {
+  cursor:pointer
 }
 
 .bot---avatar:hover {

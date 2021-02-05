@@ -1227,8 +1227,10 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
     } else {
       botType = bot_type
     }
-    this.router.navigate(['project/' + this.projectId + '/bots', bot_id, botType]);
 
+    if (this.ROLE_IS_AGENT === false) {
+      this.router.navigate(['project/' + this.projectId + '/bots', bot_id, botType]);
+    }
   }
 
   // NO more used

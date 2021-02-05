@@ -432,8 +432,10 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     } else {
       botType = bot_type
     }
-    this.router.navigate(['project/' + this.projectId + '/bots', bot_id, botType]);
 
+    if (this.ROLE_IS_AGENT === false) {
+      this.router.navigate(['project/' + this.projectId + '/bots', bot_id, botType]);
+    }
   }
 
 

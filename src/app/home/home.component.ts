@@ -175,7 +175,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngAfterViewInit() {
 
-   
+
   }
 
   // pauseResumeLastUpdateSlider() {
@@ -188,7 +188,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   //   for (var i = 0; i < slide.length; i++) {
 
-     
+
   //     slide[i].onclick = this.toggleAnimation(slide);
   //     slide[i].style.animationPlayState = 'running';
   //   }
@@ -252,7 +252,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
     this.setAttribute(liArray)
-   
+
 
   }
 
@@ -321,7 +321,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
- 
+
 
   // ngAfterViewChecked() {
 
@@ -857,17 +857,23 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   goToMessagesAnalytics() {
     // this.router.navigate(['project/' + this.projectId + '/messages-analytics']);
-    this.router.navigate(['project/' + this.projectId + '/analytics/metrics/messages']);
+    if (this.USER_ROLE !== 'agent') {
+      this.router.navigate(['project/' + this.projectId + '/analytics/metrics/messages']);
+    }
   }
 
   goToVisitorsAnalytics() {
-    this.router.navigate(['project/' + this.projectId + '/analytics/metrics/visitors']);
+    if (this.USER_ROLE !== 'agent') {
+      this.router.navigate(['project/' + this.projectId + '/analytics/metrics/visitors']);
+    }
   }
 
   // Analytics > Metrics > Conversation
   goToRequestsAnalytics() {
     // this.router.navigate(['project/' + this.projectId + '/conversation-analytics']);
-    this.router.navigate(['project/' + this.projectId + '/analytics/metrics']);
+    if (this.USER_ROLE !== 'agent') {
+      this.router.navigate(['project/' + this.projectId + '/analytics/metrics']);
+    }
   }
 
   goToContacts() {
@@ -902,7 +908,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     } else {
       botType = bot_type
     }
-    if (botType !== 'identity') {
+    if (this.USER_ROLE !== 'agent') {
       this.router.navigate(['project/' + this.projectId + '/bots', bot_id, botType]);
     }
   }
@@ -1044,7 +1050,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.hidechangelogrocket = true;
   }
 
-  
+
 
   getHasOpenBlogKey() {
     const hasOpenedBlog = this.usersLocalDbService.getStoredChangelogDate();

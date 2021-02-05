@@ -1430,7 +1430,7 @@
                       // Agent array for
                       // ------------------------------------------------------ -->
                       <div *ngFor="let agent of agents_array" class="row-body">
-                        <span (click)="goToMemberProfile( agent?._id )" style="cursor:pointer">
+                        <span class="agent-wrp" (click)="goToMemberProfile( agent?._id )" [ngClass]="{'disable-link-if-is-agent' : CURRENT_USER_ROLE === 'agent'}">
                           <img *ngIf="agent.isBot === false"
                             style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #eee; margin-right: 3px;"
                             class="user-img"
