@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.1.18
+- Adds an alert to the creation / modification of a department that prevents navigation if the changes have not been saved
+
 ### 2.1.17
 - Fixes: on the home page the statistics and the other insights on the current project do not change when the user change project from the navbar combobox
 - Fixes: project id is in some cases undefined when the "checkRoleForCurrentProject" method is called
