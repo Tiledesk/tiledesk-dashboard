@@ -97,6 +97,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.auth.checkRoleForCurrentProject();
     console.log('on init Selected Role ', this.role);
     this.selectedRole = 'ROLE_NOT_SELECTED';
 

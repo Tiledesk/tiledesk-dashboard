@@ -90,6 +90,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    this.auth.checkRoleForCurrentProject();
     this.getStorageBucketAndThenProjectUser();
     console.log('=========== USERS COMP ============')
     this.translateChangeAvailabilitySuccessMsg();
