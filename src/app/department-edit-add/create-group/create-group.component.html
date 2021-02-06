@@ -4,27 +4,33 @@
 
   <div class="create-group-right-side-bar-title-wrap">
     <h5 class="create-group-right-side-bar-title">
-
-      {{ "DeptsAddEditPage.orCreateAGroup" | translate }}
+    
+       {{ "DeptsAddEditPage.orCreateAGroup" | translate }}
+   
       <i class="material-icons close-right-side-bar" (click)="closeCreateGroupRightSideBar()">close</i>
     </h5>
   </div>
 
   <div class="row" style="margin-bottom: 15px;">
-    <label class="col-xs-12 custom-label-in-sidebar" side>
+    <label *ngIf="!deptName_toUpdate" class="col-xs-12 custom-label-in-sidebar" side>
       {{ "GroupsAddEditPage.Group_Name" | translate}}
+    </label>
+    <label *ngIf="deptName_toUpdate" class="col-xs-12 custom-label-in-sidebar" side>
+      {{ "GroupNameSuggested" | translate}}
     </label>
     <div class="col-xs-12">
       <div class="group-name-input-wrap">
       <input [(ngModel)]="group_name" class="input" (ngModelChange)="onChangeGroupName($event)"
-        type="text" style="margin-top: 2px;margin-bottom: 5px;">
+        type="text" style="margin-top: 2px;margin-bottom: 0px;" placeholder="{{'EnterTheGroupName' | translate}}">
+
+        <span *ngIf="group_name_already_exist" class="warning-msg">{{'GroupWithThisNameAlreadyExists' | translate}} </span>
       </div>
     </div>
   </div>
 
   <div class="row">
     <div class="col-md-12">
-      <div class="card" style="margin-top: 0px; margin-bottom: 0px;">
+      <div class="card" style="margin-top: 10px; margin-bottom: 0px;">
 
         <loading-spinner *ngIf="showSpinner"></loading-spinner>
 
@@ -105,7 +111,7 @@
     <div class="col-md-12">
       <div class="add-teammates-to-group-wrap">
         <button #searchbtnbottom type="submit" class="btn btn-tdblu-no-boxshadow pull-right" (click)="createGroupAndAddMembers()"
-          style="padding:9px 30px; width: 100%;" [disabled]="create_group_and_add_members_btn_disabled">
+          style="padding:9px 30px; width: 100%;" [disabled]="create_group_and_add_members_btn_disabled || group_name.length === 0">
 
           {{'GroupsAddEditPage.AddTeammatesToGroup' | translate}}
         </button>

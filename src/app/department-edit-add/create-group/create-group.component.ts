@@ -5,6 +5,7 @@ import { AppConfigService } from '../../services/app-config.service';
 import { GroupService } from '../../services/group.service';
 import { TranslateService } from '@ngx-translate/core';
 import { NotifyService } from '../../core/notify.service';
+
 @Component({
   selector: 'appdashboard-create-group',
   templateUrl: './create-group.component.html',
@@ -34,6 +35,7 @@ export class CreateGroupComponent implements OnInit {
   create_group_and_add_members_btn_disabled = true;
   group_created_success_msg: string;
   group_created_error_msg: string;
+  group_name_already_exist: boolean = false
   constructor(
     private usersService: UsersService,
     private groupsService: GroupService,
@@ -48,14 +50,40 @@ export class CreateGroupComponent implements OnInit {
 
 
   ngOnInit() {
-    this.group_name = this.deptName_toUpdate + ' ' + 'group'
+    if (this.deptName_toUpdate !== undefined) {
+     this.group_name = this.deptName_toUpdate + ' ' + 'group'
+    }
     this.getStorageBucket();
     this.getAllUsersOfCurrentProject();
     this.translateCreateGroupMsgs()
     // this.getScollPosition()
+    this.getGroupsByProjectId()
   }
 
-  
+  getGroupsByProjectId() {
+    // this.HAS_COMPLETED_GET_GROUPS = false
+    this.groupsService.getGroupsByProjectId().subscribe((groups: any) => {
+      console.log('CREATE GROUP SIDEBAR - GET GROUPS RES ', groups);
+
+      groups.forEach(group => {
+        if (this.deptName_toUpdate + ' ' + 'group' === group.name) {
+          console.log('CREATE GROUP SIDEBAR - GET GROUPS - this group name already exist ', this.deptName_toUpdate + ' ' + 'group');
+          this.group_name_already_exist = true
+        }
+      });
+
+
+    }, (error) => {
+      console.log('CREATE GROUP SIDEBAR - GET GROUPS - ERROR ', error);
+
+    }, () => {
+      console.log('CREATE GROUP SIDEBAR - GET GROUPS * COMPLETE');
+
+
+    });
+  }
+
+
   translateCreateGroupMsgs() {
     this.translate.get('CreatedGroupSuccessMsg')
       .subscribe((text: string) => {
@@ -64,7 +92,7 @@ export class CreateGroupComponent implements OnInit {
         console.log('+ + + CreatedGroupSuccessMsg', text)
       });
 
-      this.translate.get('CreatedGroupErrorMsg')
+    this.translate.get('CreatedGroupErrorMsg')
       .subscribe((text: string) => {
 
         this.group_created_error_msg = text;
@@ -233,7 +261,7 @@ export class CreateGroupComponent implements OnInit {
       console.log('CREATE GROUP SIDEBAR - UPDATED GROUP WITH THE USER SELECTED * COMPLETE *');
 
       this.notify.showWidgetStyleUpdateNotification(this.group_created_success_msg, 2, 'done');
-      
+
       this.closeCreateGroupRightSideBarAndEmitGroupCreated()
     });
   }
