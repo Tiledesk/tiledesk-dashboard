@@ -1756,5 +1756,13 @@
     "WhatsNew":"Cosa c'è di nuovo",
     "ReadLatestUpdatesOnOurBlog":"Leggi gli ultimi aggiornamenti sul nostro blog",
     "YouAreAboutToJoinThisChatAlreadyAssignedTo":"Stai per entrare in questa chat già assegnata a",
-    "SmartAssign":"Assegnazione intelligente"
+    "SmartAssign":"Assegnazione intelligente",
+    "CanDeactivateModalText": {
+        "AreYouSure":"Sei sicuro?",
+        "YouHaveUnsavedChanges":"Hai modifiche non salvate. Premere OK e salvare queste modifiche o Annulla per tornare indietro e perdere queste modifiche.",
+        "Cancel":"Annulla"
+    },
+    "GroupNameSuggested":"Nome gruppo suggerito",
+    "GroupWithThisNameAlreadyExists":"Esiste già un gruppo con questo nome",
+    "EnterTheGroupName":"Inserisci il nome del gruppo"
 }

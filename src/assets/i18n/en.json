@@ -1760,5 +1760,13 @@
     "WhatsNew":"What's new",
     "ReadLatestUpdatesOnOurBlog":"Read latest updates on our blog",
     "YouAreAboutToJoinThisChatAlreadyAssignedTo":"You are about to join this chat already assigned to",
-    "SmartAssign":"Smart assign"
+    "SmartAssign":"Smart assign",
+    "CanDeactivateModalText": {
+        "AreYouSure":"Are you sure?",
+        "YouHaveUnsavedChanges":"You have unsaved changes. Press OK and save these changes, or Cancel to go back and lose these changes.",
+        "Cancel":"Cancel"
+    },
+    "GroupNameSuggested":"Group name suggested",
+    "GroupWithThisNameAlreadyExists":"A group with this name already exists",
+    "EnterTheGroupName":"Enter the group name"
 }

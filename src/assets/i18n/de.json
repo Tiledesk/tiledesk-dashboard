@@ -1760,6 +1760,14 @@
 	"WhatsNew":"Was gibt's Neues",
 	"ReadLatestUpdatesOnOurBlog":"Lesen Sie die neuesten Updates in unserem Blog",
 	"YouAreAboutToJoinThisChatAlreadyAssignedTo":"Sie sind dabei, diesem bereits zugewiesenen Chat beizutreten",
-	"SmartAssign":"Smart zuweisen"
+	"SmartAssign":"Smart zuweisen",
+	"CanDeactivateModalText": {
+		"AreYouSure":"Bist du sicher?",
+		"YouHaveUnsavedChanges":"Du hast nicht gespeicherte Änderungen. Drücken Sie OK und speichern Sie diese Änderungen, oder Abbrechen, um wieder zu gehen und diese Änderungen zu verlieren.",
+		"Cancel":"Stornieren"
+	},
+	"GroupNameSuggested":"Gruppenname vorgeschlagen",
+	"GroupWithThisNameAlreadyExists":"Eine Gruppe mit diesem Namen existiert bereits",
+	"EnterTheGroupName":"Geben Sie den Gruppennamen ein"
 	
 }
