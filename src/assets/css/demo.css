@@ -166,7 +166,6 @@ my-app .main-panel .main-content .card {
 }
 /* ./end tootip top  */
 
-
 /* ----------------------------
 / tootip bottom for home header  
 / -------------------------- */
@@ -195,7 +194,6 @@ my-app .main-panel .main-content .card {
   white-space: nowrap;
   display: none;
 }
-
 
 .tool_tip:hover .bottom-home-header {
   display: block;
@@ -292,58 +290,169 @@ my-app .main-panel .main-content .card {
 .tooltip h3 {margin:12px 0;} */
 
 .tool_tip .right {
-  min-width:200px;
-  max-width:400px;
-  top:50%;
-  left:100%;
-  margin-left:20px;
-  transform:translate(0, -50%);
-  padding:0;
-  color:#EEEEEE;
-  background-color:#444444;
-  font-weight:normal;
-  font-size:13px;
-  border-radius:8px;
-  position:absolute;
-  z-index:99999999;
-  box-sizing:border-box;
-  box-shadow:0 1px 8px rgba(0,0,0,0.5);
-  visibility:hidden; opacity:0; transition:opacity 0.8s;
+  min-width: 200px;
+  max-width: 400px;
+  top: 50%;
+  left: 100%;
+  margin-left: 20px;
+  transform: translate(0, -50%);
+  padding: 0;
+  color: #eeeeee;
+  background-color: #444444;
+  font-weight: normal;
+  font-size: 13px;
+  border-radius: 8px;
+  position: absolute;
+  z-index: 99999999;
+  box-sizing: border-box;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.8s;
 }
 
 .tool_tip:hover .right {
-  visibility:visible; opacity:1;
+  visibility: visible;
+  opacity: 1;
 }
 
 .tool_tip .right img {
-  width:400px;
-  border-radius:8px 8px 0 0;
+  width: 400px;
+  border-radius: 8px 8px 0 0;
 }
 .tool_tip .text-content {
-  padding:10px 20px;
+  padding: 10px 20px;
 }
 
 .tool_tip .right i {
-  position:absolute;
-  top:50%;
-  right:100%;
-  margin-top:-12px;
-  width:12px;
-  height:24px;
-  overflow:hidden;
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  margin-top: -12px;
+  width: 12px;
+  height: 24px;
+  overflow: hidden;
 }
 .tool_tip .right i::after {
-  content:'';
-  position:absolute;
-  width:12px;
-  height:12px;
-  left:0;
-  top:50%;
-  transform:translate(50%,-50%) rotate(-45deg);
-  background-color:#444444;
-  box-shadow:0 1px 8px rgba(0,0,0,0.5);
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  left: 0;
+  top: 50%;
+  transform: translate(50%, -50%) rotate(-45deg);
+  background-color: #444444;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
 }
 /* ./tootip right  */
+
+/**
+  * ===============================================================================
+  * tooltip top using attribute // https://www.cssportal.com/css-tooltip-generator/
+  * =============================================================================== */
+[data-tooltip] {
+  position: relative;
+  cursor: pointer;
+}
+[data-tooltip]:before,
+[data-tooltip]:after {
+  line-height: 1;
+  font-size: 0.9em;
+  pointer-events: none;
+  position: absolute;
+  box-sizing: border-box;
+  display: none;
+  opacity: 0;
+}
+[data-tooltip]:before {
+  content: "";
+  border: 5px solid transparent;
+  z-index: 100;
+}
+[data-tooltip]:after {
+  content: attr(data-tooltip);
+  text-align: center;
+  min-width: 3em;
+  max-width: 21em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 6px 8px;
+  border-radius: 3px;
+  background: #394f5a;
+  color: #ffffff;
+  z-index: 99;
+}
+[data-tooltip]:hover:before,
+[data-tooltip]:hover:after {
+  display: block;
+  opacity: 1;
+}
+[data-tooltip]:not([data-flow])::before,
+[data-tooltip][data-flow="top"]::before {
+  bottom: 100%;
+  border-bottom-width: 0;
+  border-top-color: #394f5a;
+}
+[data-tooltip]:not([data-flow])::after,
+[data-tooltip][data-flow="top"]::after {
+  bottom: calc(100% + 5px);
+}
+[data-tooltip]:not([data-flow])::before,
+[tooltip]:not([data-flow])::after,
+[data-tooltip][data-flow="top"]::before,
+[data-tooltip][data-flow="top"]::after {
+  left: 50%;
+  -webkit-transform: translate(-50%, -4px);
+  transform: translate(-50%, -4px);
+}
+[data-tooltip][data-flow="bottom"]::before {
+  top: 100%;
+  border-top-width: 0;
+  border-bottom-color: #394f5a;
+}
+[data-tooltip][data-flow="bottom"]::after {
+  top: calc(100% + 5px);
+}
+[data-tooltip][data-flow="bottom"]::before,
+[data-tooltip][data-flow="bottom"]::after {
+  left: 50%;
+  -webkit-transform: translate(-50%, 8px);
+  transform: translate(-50%, 8px);
+}
+[data-tooltip][data-flow="left"]::before {
+  top: 50%;
+  border-right-width: 0;
+  border-left-color: #394f5a;
+  left: calc(0em - 5px);
+  -webkit-transform: translate(-8px, -50%);
+  transform: translate(-8px, -50%);
+}
+[data-tooltip][data-flow="left"]::after {
+  top: 50%;
+  right: calc(100% + 5px);
+  -webkit-transform: translate(-8px, -50%);
+  transform: translate(-8px, -50%);
+}
+[data-tooltip][data-flow="right"]::before {
+  top: 50%;
+  border-left-width: 0;
+  border-right-color: #394f5a;
+  right: calc(0em - 5px);
+  -webkit-transform: translate(8px, -50%);
+  transform: translate(8px, -50%);
+}
+[data-tooltip][data-flow="right"]::after {
+  top: 50%;
+  left: calc(100% + 5px);
+  -webkit-transform: translate(8px, -50%);
+  transform: translate(8px, -50%);
+}
+[data-tooltip=""]::after,
+[data-tooltip=""]::before {
+  display: none !important;
+}
+/* tooltip top using attribute */
 
 /* table style overwrite */
 .table > thead > tr > th,
@@ -497,7 +606,7 @@ my-app .main-panel .main-content .card {
  * What's new in home header - link to changelog
  * ==============================================
 */
-.home-header-whats-new-a{ 
+.home-header-whats-new-a {
   display: flex;
   -webkit-box-align: center;
   align-items: center;
@@ -509,24 +618,23 @@ my-app .main-panel .main-content .card {
   border-radius: 18px;
   height: 35px;
   margin-bottom: 16px;
-
 }
 
-.home-header-whats-new-b{ 
+.home-header-whats-new-b {
   display: flex;
   flex-flow: row nowrap;
   -webkit-box-pack: start;
   justify-content: flex-start;
 }
 
-.home-header-whats-new-b{ 
+.home-header-whats-new-b {
   display: flex;
   flex-flow: row nowrap;
   -webkit-box-pack: start;
   justify-content: flex-start;
 }
 
-.home-header-whats-new-c{  
+.home-header-whats-new-c {
   padding: 0px;
   display: inline-block;
   flex: 1 1 32px;
@@ -582,11 +690,11 @@ my-app .main-panel .main-content .card {
   display: inline-block;
   flex: 1 1 32px;
   margin-left: -5px;
-  cursor:pointer;
+  cursor: pointer;
 }
 
 .disable-link-if-is-agent {
-  cursor:not-allowed !important;
+  cursor: not-allowed !important;
 }
 
 .first-served-by {
@@ -644,10 +752,19 @@ my-app .main-panel .main-content .card {
   top: -3px;
 }
 .bot---avatar {
-  cursor:pointer
+  cursor: pointer;
 }
 
 .bot---avatar:hover {
   position: relative;
   top: -3px;
+}
+
+.right-sidebar--m-icon {
+  vertical-align: middle;
+  color: #394f5a;
+  font-size: 14px;
+  padding: 6px;
+  background: #e4e6eb;
+  border-radius: 50%;
 }
