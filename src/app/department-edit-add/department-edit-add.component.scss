@@ -234,10 +234,10 @@ input[type="radio"] {
 .selected-routing-info {
   vertical-align: middle;
   display: inline-flex;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 400;
   // color: rgba(0, 0, 0, 0.54);
-  color: #7695a5;
+  color: #222222;
 }
 
 .no_padding_left_col {
@@ -453,14 +453,41 @@ select[disabled] {
 /* IMAGE STYLES */
 [type="radio"] + img {
   cursor: pointer;
+  border-radius: 3px;
+  border: 1px solid #bbb;
+  background: #ebebeb;
+  margin-right: 6px;
 }
 
 /* CHECKED STYLES */
 [type="radio"]:checked + img {
   // outline: 2px solid #f00;
-  border-radius: 3px;
-  border: 1px solid #bbb;
-  background: #ebebeb;
+  // border-radius: 3px;
+  border: 1px solid #03a5e8;
+  background: rgba(3, 165, 232, 0.1);
+}
+
+.assigned-routing-check-icon {
+  position: absolute;
+    left: 81px;
+    top: -5px;
+    font-size: 18px;
+    color: #03a5e8;
+    border-radius: 50%;
+    background: #fff;
+    border: 1px solid #03a5e8;
+}
+
+
+.pooled-routing-check-icon {
+  position: absolute;
+  left: 170px;
+  top: -5px;
+  font-size: 18px;
+  color: #03a5e8;
+  border-radius: 50%;
+  background: #fff;
+  border: 1px solid #03a5e8;
 }
 
 .radio-btn-img:hover {
@@ -612,4 +639,19 @@ select[disabled] {
   font-size: 13px;
   color: #222222;
   font-weight: 400;
+}
+
+.aligned-row {
+  display: flex;
+  flex-flow: row wrap;
+
+  &::before {
+    display: block;
+  }
+}
+.vertical-align {
+  display: flex;
+  align-items: center;
+  // justify-content: center;
+  flex-direction: row;
 }

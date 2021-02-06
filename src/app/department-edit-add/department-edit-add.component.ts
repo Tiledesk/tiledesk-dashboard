@@ -19,7 +19,7 @@ import { AppConfigService } from '../services/app-config.service';
 import { ComponentCanDeactivate } from '../core/pending-changes.guard';
 import { Observable } from 'rxjs/Observable';
 declare const $: any;
-
+const swal = require('sweetalert');
 
 @Component({
   selector: 'app-department-edit-add',
@@ -31,9 +31,6 @@ declare const $: any;
 })
 // , ComponentCanDeactivate
 export class DepartmentEditAddComponent implements OnInit, AfterViewInit, ComponentCanDeactivate {
-
-
-
 
   @Input() ws_requestslist_deptIdSelected: string;
   @Input() display_dept_sidebar: boolean;
@@ -104,6 +101,10 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
 
   HAS_COMPLETED_GET_GROUPS: boolean;
   NOT_HAS_EDITED: boolean = true;
+
+  areYouSureMsg: string;
+  youHaveUnsavedChangesMsg: string;
+  cancelMsg: string;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -120,7 +121,19 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
   ) { }
 
 
-  @HostListener('window:beforeunload')
+  // ------------------------------------------------------------------------------------------------------------------------------------------------------
+  // @ canDeactivate 1st method  https://stackoverflow.com/questions/35922071/warn-user-of-unsaved-changes-before-leaving-page?rq=1
+  // modified to display a custom modal (see here https://stackoverflow.com/questions/55013903/angular-candeactivate-guard-not-working-with-sweet-alert-js)
+  // ------------------------------------------------------------------------------------------------------------------------------------------------------
+  // @HostListener('window:beforeunload')
+
+  @HostListener('window:beforeunload', ['$event'])
+  onbeforeunload(event) {
+    if (this.NOT_HAS_EDITED === false) {
+      event.preventDefault();
+      event.returnValue = false;
+    }
+  }
   canDeactivate(): Observable<boolean> | boolean {
     // insert logic to check if there are pending changes here;
     // returning true will navigate without confirmation
@@ -128,8 +141,33 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
 
     if (this.NOT_HAS_EDITED === true) {
       return true;
+
     } else if (this.NOT_HAS_EDITED === false) {
-      return false;
+
+      // areYouSureMsg
+      // youHaveUnsavedChangesMsg
+      // cancelMsg
+      // this.cancelMsg,
+      return swal({
+        title: this.areYouSureMsg,
+        text: this.youHaveUnsavedChangesMsg,
+        icon: "warning",
+        buttons: true,
+        // dangerMode: true,
+      })
+        .then((willRemain) => {
+          if (willRemain) {
+            console.log('showExitFromComponentConfirmation willRemain pressed OK')
+
+            return false;
+
+          } else {
+            console.log('showExitFromComponentConfirmation willRemain else')
+
+            return true;
+
+          }
+        });
     }
   }
 
@@ -238,7 +276,7 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
     this.getUsersAndGroup()
     // this.getProjectUsers();
 
-    this.translateNotificationMsgs()
+    this.translateLabels()
   }
 
   // -------------------------------------------------------------------------------------
@@ -390,7 +428,7 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
   }
 
 
-  translateNotificationMsgs() {
+  translateLabels() {
     this.translate.get('DeptsAddEditPage.NotificationMsgs')
       .subscribe((translation: any) => {
         // console.log('Depts Add Edit - translateNotificationMsgs text', translation)
@@ -399,6 +437,20 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
         this.updateSuccessMsg = translation.UpdateDeptSuccess;
         this.updateErrorMsg = translation.UpdateDeptError;
       });
+
+    this.translate.get('CanDeactivateModalText')
+      .subscribe((translation: any) => {  
+        this.areYouSureMsg = translation.AreYouSure;
+        this.youHaveUnsavedChangesMsg = translation.YouHaveUnsavedChanges;
+        this.cancelMsg = translation.Cancel;
+       
+      });
+
+
+    //       CanDeactivateModalText
+    // AreYouSure
+    // YouHaveUnsavedChanges
+    // Cancel
   }
 
   // ============ NEW - SUBSTITUTES has_clicked_fixed ============
@@ -554,7 +606,7 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
     this.SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR = false;
 
     this.NOT_HAS_EDITED = false
-    
+
     this.selectedGroupId = id;
     console.log('DEPT-EDIT-ADD - GROUP ID SELECTED: ', this.selectedGroupId);
     console.log('DEPT-EDIT-ADD - GROUP_ID_NOT_EXIST: ', this.GROUP_ID_NOT_EXIST);
