@@ -105,6 +105,8 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
   areYouSureMsg: string;
   youHaveUnsavedChangesMsg: string;
   cancelMsg: string;
+  areTouSureYouWantToNavigateAwayFromThisPageWithoutSaving: string
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -149,8 +151,8 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
       // cancelMsg
       // this.cancelMsg,
       return swal({
-        title: this.areYouSureMsg,
-        text: this.youHaveUnsavedChangesMsg,
+        // title: this.areYouSureMsg,
+        text: this.areTouSureYouWantToNavigateAwayFromThisPageWithoutSaving,
         icon: "warning",
         buttons: true,
         // dangerMode: true,
@@ -159,12 +161,12 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
           if (willRemain) {
             console.log('showExitFromComponentConfirmation willRemain pressed OK')
 
-            return false;
+            return true;
 
           } else {
             console.log('showExitFromComponentConfirmation willRemain else')
 
-            return true;
+            return false;
 
           }
         });
@@ -439,11 +441,12 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
       });
 
     this.translate.get('CanDeactivateModalText')
-      .subscribe((translation: any) => {  
+      .subscribe((translation: any) => {
         this.areYouSureMsg = translation.AreYouSure;
         this.youHaveUnsavedChangesMsg = translation.YouHaveUnsavedChanges;
         this.cancelMsg = translation.Cancel;
-       
+        this.areTouSureYouWantToNavigateAwayFromThisPageWithoutSaving = translation.AreTouSureYouWantToNavigateAwayFromThisPageWithoutSaving;
+
       });
 
 
