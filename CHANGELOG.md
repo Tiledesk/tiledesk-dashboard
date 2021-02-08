@@ -1,8 +1,14 @@
 
 # tiledesk-dashboard
 
+### 2.1.19
+- Fixes bug: does not disable the "Create group" button (available in the "create group on the fly" sidebar) if the group name does not exist
+
 ### 2.1.18
-- Adds an alert to the creation / modification of a department that prevents navigation if the changes have not been saved
+- Adds a custom modal that prevents navigation if the changes have not been saved after modification or a creation of a department
+- Displays an error message in the sidebar 'create group on the fly' if the group name already exists
+- Improves the page of creation / editing of a department
+- Improves the sidebar 'create group on the fly'
 
 ### 2.1.17
 - Fixes: on the home page the statistics and the other insights on the current project do not change when the user change project from the navbar combobox
