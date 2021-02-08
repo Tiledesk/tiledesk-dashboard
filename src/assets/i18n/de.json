@@ -1721,7 +1721,7 @@
 	"GoToContactList":"Zur Kontaktliste gehen",
 	"Last30DaysMessages":"Nachrichten der letzten 30 Tage",
 	"Last30DaysConversations":"Gespräche der letzten 30 Tage",
-	"Last30DaysVisitors":"Letzte 30 Tage Besucher",
+	"Last30DaysVisitors":"Einzigartige Besucher in den letzten 30 Tagen",
 	"FilterReportInAnalytics":"Filterbericht in Analytics",
 	"VisitorsOnYourPageInTheLast7Days":"Einzigartige Besucher auf Ihrer Seite in den letzten 7 Tagen",
 	"TakeAShortcut":"Eine Abkürzung nehmen",
@@ -1764,10 +1764,14 @@
 	"CanDeactivateModalText": {
 		"AreYouSure":"Bist du sicher?",
 		"YouHaveUnsavedChanges":"Du hast nicht gespeicherte Änderungen. Drücken Sie OK und speichern Sie diese Änderungen, oder Abbrechen, um wieder zu gehen und diese Änderungen zu verlieren.",
-		"Cancel":"Stornieren"
+		"Cancel":"Stornieren",
+		"AreTouSureYouWantToNavigateAwayFromThisPageWithoutSaving":"Möchten Sie wirklich von dieser Seite weg navigieren, ohne zu speichern?"
 	},
-	"GroupNameSuggested":"Gruppenname vorgeschlagen",
+	"GroupName":"Gruppenname",
+    "Suggested":"vorgeschlagen",
 	"GroupWithThisNameAlreadyExists":"Eine Gruppe mit diesem Namen existiert bereits",
-	"EnterTheGroupName":"Geben Sie den Gruppennamen ein"
+	"EnterTheGroupName":"Geben Sie den Gruppennamen ein (normalerweise derselbe wie der Abteilungsname)",
+	"TheNewGroupCreatedCanAlso": "Die neu erstellte Gruppe kann auch jeder anderen Abteilung zugeordnet werden"
+	
 	
 }
