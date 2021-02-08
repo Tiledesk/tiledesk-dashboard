@@ -28,7 +28,7 @@ export class CreateGroupComponent implements OnInit {
   showSpinner = true;
   projectUsersList: any;
   storageBucket: string;
-  groupMembersArray = [];
+  groupMembersArray: Array<any> = []
   sidebar_height: any;
   group_name: string;
   new_group_id: string;
@@ -51,7 +51,7 @@ export class CreateGroupComponent implements OnInit {
 
   ngOnInit() {
     if (this.deptName_toUpdate !== undefined) {
-     this.group_name = this.deptName_toUpdate + ' ' + 'group'
+      this.group_name = this.deptName_toUpdate + ' ' + 'group'
     }
     this.getStorageBucket();
     this.getAllUsersOfCurrentProject();
@@ -190,24 +190,43 @@ export class CreateGroupComponent implements OnInit {
   addMembersToArray(userid) {
     console.log('CREATE GROUP SIDEBAR - change - userid', userid);
 
-    const index = this.groupMembersArray.indexOf(userid);
+
+    // const index = this.groupMembersArray.indexOf(userid);
+    // console.log('CREATE GROUP SIDEBAR USERID INDEX ', index);
+
+    // if (index > -1) {
+    //   console.log('qui entro 1 ');
+    //   this.groupMembersArray.splice(index, 1);
+    // } else {
+    //   console.log('qui entro 1 ');
+    //   this.groupMembersArray.push(userid);
+    // }
+
+    let index = this.groupMembersArray.findIndex(x => x === userid);
     console.log('CREATE GROUP SIDEBAR USERID INDEX ', index);
 
-    if (index > -1) {
-      this.groupMembersArray.splice(index, 1);
-    } else {
+    if (index === -1) {
+      console.log('qui entro 1 push item');
       this.groupMembersArray.push(userid);
+    } else {
+      console.log('qui entro 2 splice item');
+      this.groupMembersArray.splice(index, 1);
     }
 
     console.log('CREATE GROUP SIDEBAR - ARRAY OF SELECTED USERS ', this.groupMembersArray);
-    console.log('CREATE GROUP SIDEBAR - ARRAY OF SELECTED USERS lenght ', this.groupMembersArray.length);
+
 
     // DISABLE THE CREATE GROUP AND THEN ADD MEMBERS BUTTON
-    if (this.groupMembersArray.length < 1) {
-      this.create_group_and_add_members_btn_disabled = true;
+    if (this.groupMembersArray) {
 
-    } else {
-      this.create_group_and_add_members_btn_disabled = false;
+      if (this.groupMembersArray.length === 0) {
+        console.log('CREATE GROUP SIDEBAR - ARRAY OF SELECTED USERS lenght ', this.groupMembersArray.length);
+        this.create_group_and_add_members_btn_disabled = true;
+
+      } else {
+        console.log('CREATE GROUP SIDEBAR - ARRAY OF SELECTED USERS lenght ', this.groupMembersArray.length);
+        this.create_group_and_add_members_btn_disabled = false;
+      }
     }
   }
 

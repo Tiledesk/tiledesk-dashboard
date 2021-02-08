@@ -101,3 +101,11 @@
     font-size: 12px;
     // font-weight: 400;
 }
+
+.create-new-group-note  {
+    display:table;
+}
+.create-new-group-note .material-icons,.create-new-group-note  h5{
+    display:table-cell;
+}
+
