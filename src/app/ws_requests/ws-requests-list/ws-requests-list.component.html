@@ -58,7 +58,7 @@
     <a attr.aria-label="{{ 'OperatingHoursAreEnabled' | translate }}" href="javascript:;" role="button" class="tool_tip"
       style="cursor: pointer;display: unset;" *ngIf="OPERATING_HOURS_ACTIVE" (click)="goToOperatingHours()">
       <i aria-hidden="true" class="material-icons" style="color:#3ea9f5; margin-top: 3px;">access_time</i>
-      
+
       <div class="bottom" style="text-align: center; padding: 4px; border-radius: 3px;">
         {{ 'OperatingHoursAreEnabled' | translate }}
 
@@ -133,7 +133,7 @@
   </li>
 
   <!-- SIMULATE VISITOR * FOR SMALL SCREEN  -->
-  <li  style="padding-top: 3px!important;margin-left: 15px;">
+  <li style="padding-top: 3px!important;margin-left: 15px;">
     <button attr.aria-label="{{ 'VisitorsPage.SimulateVisitor' | translate }}" #testwidgetbtn (click)="testWidgetPage()"
       class="btn btn-success-no-boxshadow" style="font-size: 12px;">
       <span class="material-icons" style="vertical-align: middle; margin-bottom: 0px; margin-top: 0px;">
@@ -144,8 +144,7 @@
   </li>
 
   <!-- NO REALTIME REQUESTS * FOR SMALL SCREEN -->
-  <li class="see-no-realtime-request" style="float: right; padding-right: 5px;"
-    (click)='goToNoRealtimeConversations()'>
+  <li class="see-no-realtime-request" style="float: right; padding-right: 5px;" (click)='goToNoRealtimeConversations()'>
     <a attr.aria-label="{{ 'GoToNotRealTimeRequests' | translate }}" href="javascript:;" role="button" class="tool_tip"
       style="cursor: pointer; display: unset; color:#3ea9f5;"
       [ngClass]="{ 'has-reached-100' : served_unserved_sum >= 100 }">
@@ -191,8 +190,8 @@
     </a>
   </li>
 
-   <!-- SHOW SERVED REQUEST MAP * FOR SMALL SCREEN -->
-   <!-- <li  class="see-no-realtime-request" style="float: right; padding-right: 5px; " (click)='openRightSideBar()'>
+  <!-- SHOW SERVED REQUEST MAP * FOR SMALL SCREEN -->
+  <!-- <li  class="see-no-realtime-request" style="float: right; padding-right: 5px; " (click)='openRightSideBar()'>
     <a attr.aria-label="{{ 'ViewServedRequestsMap' | translate }}" class="tool_tip" style="cursor: pointer; display: unset;"
       [ngClass]="{ 'has-reached-100' : served_unserved_sum >= 100 }">
       <span class="material-icons" style="margin-top: 0px;color:#3ea9f5">
@@ -223,13 +222,16 @@
 
 
         <!-- // --- Test - COUNT OF REQUESTS: ACTIVE, SERVED & UNSERVED as graph -->
+        <!-- style="display: none;" -->
         <div class="row" style="display: none;">
           <div class="col-xs-12">
             <div class="card" style="margin-top:0px">
               <div class="card-content">
                 <!-- <div class="requests-chart-container" style="  width: 150px; height: 150px;float: left;"> -->
                 <!-- <canvas id="doughnutChart"></canvas> -->
-
+                <div class="stackedbar-wpr" style="height:80px;">
+                  <canvas id="stackedbarChart"></canvas>
+                </div>
                 <!-- <canvas id="MyChart" width="200" height="100"></canvas> -->
 
                 <div class="grid-container">
@@ -253,7 +255,7 @@
                         <div class="total-value"
                           style="font-family: 'Lato', sans-serif; font-weight: 400;font-size: 40px; color: rgba(0, 0, 0, 0.54) !important;">
 
-                          {{ wsRequestsServed?.length +  wsRequestsUnserved?.length }}
+                          {{ wsRequestsServed?.length + wsRequestsUnserved?.length }}
                         </div>
                         <div class="total-label" style="font-family: 'Google Sans', sans-serif !important;
                             font-size: 24px;
@@ -351,7 +353,7 @@
                     </div>
                     <div class="col-xs-9 text-right">
                       <div class="huge" style=" font-size: 40px; line-height: 48px; color: #ff9800">
-                        {{ wsRequestsServed?.length +  wsRequestsUnserved?.length }}
+                        {{ wsRequestsServed?.length + wsRequestsUnserved?.length }}
                       </div>
                     </div>
                     <div class="col-xs-12 text-right">

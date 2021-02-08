@@ -1081,6 +1081,9 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         // ---------------------------------------------
         // this.initRequestsDoughnutChart();
 
+        // this.initStackedBarChart();
+        // this.initStackedBarChart_two();
+
         // var self = this
         // // https://stackoverflow.com/questions/8267857/how-to-wait-until-array-is-filled-asynchronous
         // var isFinished = false;
@@ -1105,7 +1108,112 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       })
   }
 
-  // And for a doughnut chart
+
+
+  initStackedBarChart_two() {
+    var config = {
+      type: 'horizontalBar',
+      data: {
+        labels: ['Conversations'],
+        datasets: [{
+          label: "Assigned",
+          backgroundColor: "#05BDD4",
+          // hoverBackgroundColor: "rgba(154,178,96,1)",
+          data: [this.wsRequestsServed.length],
+        }, {
+          label: "Unassigned",
+          backgroundColor: "#ED4537",
+          // hoverBackgroundColor: "rgba(197,213,167,1)",
+          data: [this.wsRequestsUnserved.length]
+        }]
+      },
+      options: {
+        scales: {
+          xAxes: [{
+            stacked: true
+          }],
+          yAxes: [{
+            stacked: true
+          }]
+        }
+      }
+    };
+
+    const canvas = <HTMLCanvasElement>document.getElementById('stackedbarChart');
+    const ctx = canvas.getContext('2d');
+    // var ctx =  <HTMLCanvasElement> document.getElementById("stackedbarChart").getContext("2d");;
+    new Chart(ctx, config);
+  }
+
+
+  initStackedBarChart() {
+    var ctx = document.getElementById("stackedbarChart");
+    var myChart = new Chart(ctx, {
+      type: 'horizontalBar',
+      data: {
+        // labels: ["2014", "2013", "2012", "2011"],
+
+        datasets: [{
+          label: "Dataset 1",
+          data: [this.wsRequestsServed.length,],
+          backgroundColor: "rgba(63,103,126,1)",
+          hoverBackgroundColor: "rgba(50,90,100,1)"
+        }, {
+          label: "Unassigned",
+          data: [this.wsRequestsUnserved.length],
+          backgroundColor: "rgba(163,103,126,1)",
+          hoverBackgroundColor: "rgba(140,85,100,1)"
+        }]
+      },
+
+      options: {
+        tooltips: {
+          enabled: true
+        },
+        hover: {
+          animationDuration: 0
+        },
+        scales: {
+          xAxes: [{
+            ticks: {
+              beginAtZero: true,
+              fontFamily: "'Open Sans Bold', sans-serif",
+              fontSize: 11
+            },
+            scaleLabel: {
+              display: false
+            },
+            gridLines: {
+            },
+            stacked: true
+          }],
+          yAxes: [{
+            gridLines: {
+              display: false,
+              color: "#fff",
+              zeroLineColor: "#fff",
+              zeroLineWidth: 0
+            },
+            ticks: {
+              fontFamily: "'Open Sans Bold', sans-serif",
+              fontSize: 11
+            },
+            stacked: true
+          }]
+        },
+        legend: {
+          display: false
+        }
+
+      }
+    });
+  }
+
+
+
+  // ----------------------------------------
+  // Doughnut chart
+  // ----------------------------------------
   initRequestsDoughnutChart() {
     var myDoughnutChart = new Chart('doughnutChart', {
       type: 'doughnut',
