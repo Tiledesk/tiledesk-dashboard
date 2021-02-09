@@ -429,18 +429,23 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
       if (res && res.length > 0) {
         this.countOfLastMonthRequestsHandledByBots = res[0]['totalCount']
-        console.log("HOME - getRequestsHasBotCount REQUESTS COUNT HANDLED BY BOT LAST 30 DAYS: ", this.countOfLastMonthRequestsHandledByBots)
+
       } else {
         this.countOfLastMonthRequestsHandledByBots = 0
       }
 
+      console.log("HOME - getRequestsHasBotCount REQUESTS COUNT HANDLED BY BOT LAST 30 DAYS: ", this.countOfLastMonthRequestsHandledByBots)
       console.log("HOME - getRequestsHasBotCount REQUESTS COUNT LAST 30 DAYS: ", this.countOfLastMonthRequests);
       // numero di conversazioni gestite da bot / numero di conversazioni totali (già calcolata) * 100
 
-      const _percentageOfLastMonthRequestsHandledByBots = (this.countOfLastMonthRequestsHandledByBots / this.countOfLastMonthRequests) * 100
-      console.log("HOME - getRequestsHasBotCount % REQUESTS HANDLED BY BOT LAST 30 DAYS: ", _percentageOfLastMonthRequestsHandledByBots);
-      console.log("HOME - getRequestsHasBotCount % REQUESTS HANDLED BY BOT LAST 30 DAYS typeof: ", typeof _percentageOfLastMonthRequestsHandledByBots);
-      this.percentageOfLastMonthRequestsHandledByBots = _percentageOfLastMonthRequestsHandledByBots.toFixed(2);
+      if (this.countOfLastMonthRequestsHandledByBots > 0) {
+        const _percentageOfLastMonthRequestsHandledByBots = (this.countOfLastMonthRequestsHandledByBots / this.countOfLastMonthRequests) * 100
+        console.log("HOME - getRequestsHasBotCount % REQUESTS HANDLED BY BOT LAST 30 DAYS: ", _percentageOfLastMonthRequestsHandledByBots);
+        console.log("HOME - getRequestsHasBotCount % REQUESTS HANDLED BY BOT LAST 30 DAYS typeof: ", typeof _percentageOfLastMonthRequestsHandledByBots);
+        this.percentageOfLastMonthRequestsHandledByBots = _percentageOfLastMonthRequestsHandledByBots.toFixed(2);
+      } else {
+        this.percentageOfLastMonthRequestsHandledByBots = 0
+      }
 
 
       // this.countOfVisitors
