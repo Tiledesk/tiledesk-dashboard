@@ -128,8 +128,8 @@
                 {{ "Description" | translate }}
               </label>
               <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
-                <textarea [(ngModel)]="bot_description" placeholder="{{ 'Description' | translate }}" 
-                  class="input" type="text" rows="3" style="margin-bottom: 0px;"></textarea>
+                <textarea [(ngModel)]="bot_description" placeholder="{{ 'Description' | translate }}" class="input"
+                  type="text" rows="3" style="margin-bottom: 0px;"></textarea>
               </div>
             </div>
 
@@ -271,7 +271,8 @@
 
                 </label>
                 <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
-                  <textarea [(ngModel)]="bot_description" placeholder="{{ 'Description' | translate }}" class="input" type="text" rows="3" style="margin-bottom: 0px;"></textarea>
+                  <textarea [(ngModel)]="bot_description" placeholder="{{ 'Description' | translate }}" class="input"
+                    type="text" rows="3" style="margin-bottom: 0px;"></textarea>
                 </div>
               </div>
 
@@ -289,7 +290,7 @@
                 <button [ngStyle]="{'margin-left':botType === 'dialogflow' ? '30px' : 0 }" class="btn btn-primary"
                   [disabled]="btn_create_bot_is_disabled" (click)="createBot()">
 
-                  {{ "BotsAddEditPage.CreateBot" | translate }}
+              {{ "BotsAddEditPage.CreateBot" | translate }}
                 </button>
               </div>
             </div>
@@ -310,7 +311,8 @@
               {{ "QuickTips" | translate }}
             </h4>
 
-            <section *ngIf="botType === 'native'">
+            <!-- <section *ngIf="botType === 'native'"> -->
+            <section *ngIf="botType === 'resolution'">
               <p style="color:#7695a5">
                 {{ "BotsPage.BotQuickTipsText" | translate: tparams }}
               </p>
@@ -333,7 +335,7 @@
               </p>
             </section>
 
-            
+
 
             <section *ngIf="botType === 'dialogflow'">
               <p style="color:#7695a5">
@@ -375,9 +377,8 @@
               </h4>
 
               <p>
-                
-                <span style="color: #03a5e8; cursor:pointer;"
-                  (click)="goToKBArticle_Connect_your_Dialogflow_Agent()">
+
+                <span style="color: #03a5e8; cursor:pointer;" (click)="goToKBArticle_Connect_your_Dialogflow_Agent()">
                   Connect your Dialogflow Agent
                 </span>
               </p>
@@ -502,8 +503,9 @@
             <h3 style="text-align: center;  color: #8894ab; font-size: 22px; margin-bottom: 20px;">
               {{ "BotsAddEditPage.AnErrorHasOccurred" | translate }}
 
-              <span *ngIf="DIALOGFLOW_BOT_ERROR_MSG === 'Not a valid JSON file.'" style="font-size: 16px;display: block;color: #f27474;"> 
-                {{ DIALOGFLOW_BOT_ERROR_MSG | translate}} 
+              <span *ngIf="DIALOGFLOW_BOT_ERROR_MSG === 'Not a valid JSON file.'"
+                style="font-size: 16px;display: block;color: #f27474;">
+                {{ DIALOGFLOW_BOT_ERROR_MSG | translate}}
               </span>
             </h3>
           </div>

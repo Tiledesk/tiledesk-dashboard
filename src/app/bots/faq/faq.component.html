@@ -311,7 +311,9 @@
             </p>
 
             <p class="attribute">
-              <span style="text-transform:capitalize"> {{ botType }} </span>
+            
+              <span *ngIf="botType !== 'native'" style="text-transform:capitalize"> {{ botType }} </span>
+              <span *ngIf="botType === 'native'" style="text-transform:capitalize"> Resolution </span>
             </p>
 
             <p class="title-attribute" style="margin-bottom: 3px; padding-top: 5px;">

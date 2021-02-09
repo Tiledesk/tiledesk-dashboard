@@ -125,6 +125,13 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
   getParamsBotType() {
     this.route.params.subscribe((params) => {
       this.botType = params.type;
+      console.log('Bot Create --->  PARAMS', params);
+      console.log('Bot Create --->  PARAMS botType', this.botType);
+
+
+      if (this.botType === 'native') {
+        this.botType = 'resolution'
+      }
 
       if (this.botType && this.botType === 'external') {
         this.is_external_bot = true
@@ -133,8 +140,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
       // used in the template for the translation of the card title 
       this.translateparam = { bottype: this.botType };
 
-      console.log('Bot Create --->  PARAMS', params);
-      console.log('Bot Create --->  PARAMS botType', this.botType);
+
     });
   }
 
@@ -221,7 +227,8 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     console.log('BOT-CREATE-COMP Create Bot - Bot DESCRIPTION ', this.bot_description);
 
     let _botType = ''
-    if (this.botType === 'native') {
+    // if (this.botType === 'native') {
+    if (this.botType === 'resolution') {
       // the type 'native' needs to be changed into 'internal' for the service
       _botType = 'internal'
     } else {
@@ -232,10 +239,10 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     // ------------------------------------------------------------------------------------------------------------------------------
     // Create bot - note for the creation of a dialogflow bot see the bottom uploaddialogflowBotCredential() called in the complete() 
     // ------------------------------------------------------------------------------------------------------------------------------
-    this.faqKbService.addMongoDbFaqKb(this.faqKbName, this.faqKbUrl, _botType , this.bot_description)
+    this.faqKbService.addMongoDbFaqKb(this.faqKbName, this.faqKbUrl, _botType, this.bot_description)
 
       .subscribe((faqKb) => {
-        console.log('»»»»»»»» »»»»»»»» »»»»»»»» CREATE FAQKB - POST DATA ', faqKb);
+        console.log('BOT-CREATE-COMPCREATE FAQKB - RES ', faqKb);
 
         if (faqKb) {
           this.newBot_name = faqKb.name;
@@ -322,9 +329,9 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     }, (error) => {
       console.log('CREATE FAQKB - uploadDialogflowBotCredetial - ERROR ', error);
       if (error) {
-       const objctErrorBody = JSON.parse(error._body)
+        const objctErrorBody = JSON.parse(error._body)
         this.DIALOGFLOW_BOT_ERROR_MSG = objctErrorBody.msg
-        console.log('CREATE FAQKB - DIALOGFLOW_BOT_ERROR_MSG ',  this.DIALOGFLOW_BOT_ERROR_MSG);
+        console.log('CREATE FAQKB - DIALOGFLOW_BOT_ERROR_MSG ', this.DIALOGFLOW_BOT_ERROR_MSG);
       }
 
       this.CREATE_DIALOGFLOW_BOT_ERROR = true;
@@ -348,7 +355,17 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
   }
 
   goTo_EditBot() {
-    this.router.navigate(['project/' + this.project._id + '/bots/' + this.newBot_Id + "/" + this.botType]);
+
+    let bot_type = ''
+    if (this.botType === 'resolution') {
+      bot_type = 'native'
+    } else {
+      bot_type = this.botType
+    }
+
+
+    // this.router.navigate(['project/' + this.project._id + '/bots/' + this.newBot_Id + "/" + this.botType]);
+    this.router.navigate(['project/' + this.project._id + '/bots/' + this.newBot_Id + "/" + bot_type]);
   }
 
   onCloseModal() {
