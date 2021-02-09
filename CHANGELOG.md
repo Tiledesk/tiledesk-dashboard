@@ -1,6 +1,10 @@
 
 # tiledesk-dashboard
 
+### 2.1.20
+- Adds in the home page the ability to know the count and the percentage of the conversations handled by bots
+- Rename "native bot" to "resolution bot"
+
 ### 2.1.19
 - Fixes bug: does not disable the "Create group" button (available in the "create group on the fly" sidebar) if the group name does not exist
 
