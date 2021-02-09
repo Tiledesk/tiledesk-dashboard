@@ -88,6 +88,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   OPERATING_HOURS_ACTIVE: boolean; /// USED TO DISPLAY OPERATING HOURS ENABLED / DISABLED
   countOfLastMonthMsgs: number; /// USED FOR COUNT OF LAST 30 DAYS MSGS FOR THE NEW HOME
   countOfLastMonthRequests: number; // USED FOR COUNT OF LAST 30 DAYS REQUESTS FOR THE NEW HOME 
+  countOfLastMonthRequestsHandledByBots: number;
+  percentageOfLastMonthRequestsHandledByBots: any;
   projectUsers: any // TO DISPLAY THE PROJECT USERS IN THE NEW HOME HEADER
   storageBucket: string;
   chatbots: any // TO DISPLAY THE CHATVOT IN THE NEW HOME HEADER
@@ -124,12 +126,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getCurrentProjectAndInit();
     // this.getStorageBucket(); // moved in getCurrentProject()
     console.log('!!! Hello HomeComponent! ');
-
-
-
-    // this.getDeptsByProjectId(); // USED FOR COUNT OF DEPTS FOR THE NEW HOME
-
-
 
     this.getBrowserLanguage();
     this.translateInstallWidget();
@@ -173,9 +169,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
 
-  ngAfterViewInit() {
+  ngAfterViewInit() { }
 
-
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   // pauseResumeLastUpdateSlider() {
@@ -248,8 +245,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // var liElme = entriesElme.getElementsByTagName("li")
     // console.log('HOME liElme ', liElme)
-
-
 
     this.setAttribute(liArray)
 
@@ -329,12 +324,13 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   init() {
-
+    // this.getDeptsByProjectId(); // USED FOR COUNT OF DEPTS FOR THE NEW HOME
     this.getStorageBucketThenUserAndBots();
     this.getLastMounthMessagesCount() // USED TO GET THE MESSAGES OF THE LAST 30 DAYS
     this.getLastMounthRequestsCount(); // USED TO GET THE REQUESTS OF THE LAST 30 DAYS
     this.getActiveContactsCount()  /// COUNT OF ACTIVE CONTACTS FOR THE NEW HOME
     this.getVisitorsCount() /// COUNT OF VISITORS FOR THE NEW HOME
+    this.getCountAndPercentageOfRequestsHandledByBotsLastMonth() /// 
     this.getVisitorsByLastNDays(this.selectedDaysId); /// VISITOR GRAPH FOR THE NEW HOME
     this.initDay = moment().subtract(6, 'd').format('D/M/YYYY') /// VISITOR GRAPH FOR THE NEW HOME
     this.endDay = moment().subtract(0, 'd').format('D/M/YYYY') /// VISITOR GRAPH FOR THE NEW HOME
@@ -424,9 +420,40 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       } else {
         this.countOfVisitors = 0
       }
-
-
     })
+  }
+
+  getCountAndPercentageOfRequestsHandledByBotsLastMonth() {
+    this.analyticsService.getRequestsHasBotCount().subscribe((res: any) => {
+      console.log("HOME - getRequestsHasBotCount RES GET REQUESTS COUNT HANDLED BY BOT LAST 30 DAYS: ", res)
+
+      if (res && res.length > 0) {
+        this.countOfLastMonthRequestsHandledByBots = res[0]['totalCount']
+        console.log("HOME - getRequestsHasBotCount REQUESTS COUNT HANDLED BY BOT LAST 30 DAYS: ", this.countOfLastMonthRequestsHandledByBots)
+      } else {
+        this.countOfLastMonthRequestsHandledByBots = 0
+      }
+
+      console.log("HOME - getRequestsHasBotCount REQUESTS COUNT LAST 30 DAYS: ", this.countOfLastMonthRequests);
+      // numero di conversazioni gestite da bot / numero di conversazioni totali (già calcolata) * 100
+
+      const _percentageOfLastMonthRequestsHandledByBots = (this.countOfLastMonthRequestsHandledByBots / this.countOfLastMonthRequests) * 100
+      console.log("HOME - getRequestsHasBotCount % REQUESTS HANDLED BY BOT LAST 30 DAYS: ", _percentageOfLastMonthRequestsHandledByBots);
+      console.log("HOME - getRequestsHasBotCount % REQUESTS HANDLED BY BOT LAST 30 DAYS typeof: ", typeof _percentageOfLastMonthRequestsHandledByBots);
+      this.percentageOfLastMonthRequestsHandledByBots = _percentageOfLastMonthRequestsHandledByBots.toFixed(2);
+
+
+      // this.countOfVisitors
+
+      // if (visitorcounts && visitorcounts.length > 0) {
+      //   this.countOfVisitors = visitorcounts[0]['totalCount']
+      //   console.log("HOME - GET VISITORS COUNT: ", this.countOfVisitors)
+      // } else {
+      //   this.countOfVisitors = 0
+      // }
+    })
+
+
   }
 
   // USED TO DISPLAY THE HUMAN AGENT FOR THE NEW HOME
@@ -765,9 +792,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     })
   }
 
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-  }
+
 
 
   goToPricingOrOpenModalSubsExpired() {
@@ -784,9 +809,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     }
   }
-
-
-
 
 
   // RISOLVE lo USE-CASE: L'UTENTE è NELLA HOME DEL PROGETTO A (DI CUI è OWNER)

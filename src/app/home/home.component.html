@@ -1,11 +1,11 @@
 <p style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px" class="navbar-brand">
   Home
- <!-- <button (click)="sumuptest()" type="button">  test  </button> -->
+  <!-- <button (click)="sumuptest()" type="button">  test  </button> -->
 </p>
 
 <div class="main-content" style="padding-top: 8px;margin-top: 0px;">
 
- 
+
 
 
   <!-- start new-bckgrnd -->
@@ -59,8 +59,7 @@
                   {{ prjct_profile_name }}
                 </span>
                 <span *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false"
-                  style="color:#f44336;" (click)="goToPricingOrOpenModalSubsExpired()"
-                  class="expired__Tooltip">
+                  style="color:#f44336;" (click)="goToPricingOrOpenModalSubsExpired()" class="expired__Tooltip">
                   <i class="material-icons" style="vertical-align: middle; color:#f44336; cursor:pointer; position: relative;
                   top: -3px;">
                     error_outline
@@ -594,3 +593,145 @@
         </div>
       </div> 
     </div>   -->
+
+
+  <!-- ===================================================================== -->
+  <!-- Spostato qui CODICE CHE ERA COMMMENTATO IN new-home.component.html -->
+  <!-- ===================================================================== -->
+
+  <!-- --------------------------------------------------------- -->
+  <!-- @ Bots count -->
+  <!-- --------------------------------------------------------- -->
+  <!-- <div class="col-md-3">
+            <div class="statistis-count-container" style="text-align:center ;">
+
+              <div class="statistis-count-number">
+                <span class="bots-count">
+                  {{ countOfBots }} 
+                  </span>
+              </div>
+
+              <div class="links-container" style="">
+                <div class="link-title-first" style="">
+                  <span> Total chatbot </span>
+                  <span class="material-icons" style="vertical-align: middle; color: #3c4858;">
+                    keyboard_arrow_right
+                  </span>
+                </div>
+                <div class="link-title-second" style="">
+                  <span style="color: #0f62ff;">Go to
+                    chatbot list</span>
+                  <span class="material-icons" style="vertical-align: middle;color: #0f62ff;">
+                    keyboard_arrow_right
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div> -->
+
+
+  <!--  --------------------------------------------------------- -->
+  <!--  @ Depts count -->
+  <!--  --------------------------------------------------------- -->
+  <!-- <div class="col-md-3">
+              <div class="statistis-count-container" style="text-align:center ;">
+                <div class="statistis-count-number">
+                  <span class="depts-count"> 
+                    {{ countOfDepts }} 
+                  </span>
+                </div>
+                <div class="links-container" style="">
+                  <div class="link-title-first" style="">
+                    <span> Total departments </span>
+                    <span class="material-icons" style="vertical-align: middle; color: #3c4858;">
+                      keyboard_arrow_right
+                    </span>
+                  </div>
+                  <div class="link-title-second" style="">
+                    <span style="color: #0f62ff;">Go to
+                      departments list</span>
+                    <span class="material-icons" style="vertical-align: middle;color: #0f62ff;">
+                      keyboard_arrow_right
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+
+
+  <!-- --------------------------------------------------------- -->
+  <!-- @ Operating hours -->
+  <!-- --------------------------------------------------------- -->
+  <!-- <div class="col-sm-6 col-md-3">
+
+          <div class="row">
+            <div class="col-md-8">
+              <div class="operating-hours-status-description" style="font-size: 18px;
+            line-height: 22px;
+            letter-spacing: -.32px;
+            margin-top: 23px;
+            font-weight: 400;">
+                <span *ngIf="!OPERATING_HOURS_ACTIVE"> There are no operating hours set up yet.</span>
+                <span *ngIf="OPERATING_HOURS_ACTIVE"> Operating hours are setted up </span>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="operating-hours-icon-wrap" style="text-align: center;">
+
+                  <!- - 
+                  // ---------------------------------------------------------
+                  // @ Icon Operating hours no set up icom
+                  // --------------------------------------------------------- - ->
+                <svg *ngIf="!OPERATING_HOURS_ACTIVE" version="1.1" id="Livello_1" focusable="false"
+                  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                  viewBox="0 0 448 512" style="enable-background:new 0 0 448 512;width: 50px; margin-top: 8px;"
+                  xml:space="preserve">
+                  <style type="text/css">
+                    .st0 {
+                      fill: #303F9F;
+                    }
+                  </style>
+                  <path class="st0" d="M311.7,374.7l-17,17c-4.7,4.7-12.3,4.7-17,0L224,337.9l-53.7,53.7c-4.7,4.7-12.3,4.7-17,0l-17-17
+                    c-4.7-4.7-4.7-12.3,0-17l53.7-53.7l-53.7-53.7c-4.7-4.7-4.7-12.3,0-17l17-17c4.7-4.7,12.3-4.7,17,0l53.7,53.7l53.7-53.7
+                    c4.7-4.7,12.3-4.7,17,0l17,17c4.7,4.7,4.7,12.3,0,17L257.9,304l53.7,53.7C316.4,362.4,316.4,370,311.7,374.7z M448,112v352
+                    c0,26.5-21.5,48-48,48H48c-26.5,0-48-21.5-48-48V112c0-26.5,21.5-48,48-48h48V12c0-6.6,5.4-12,12-12h40c6.6,0,12,5.4,12,12v52h128
+                    V12c0-6.6,5.4-12,12-12h40c6.6,0,12,5.4,12,12v52h48C426.5,64,448,85.5,448,112z M400,458V160H48v298c0,3.3,2.7,6,6,6h340
+                    C397.3,464,400,461.3,400,458z" />
+                </svg>
+
+
+                <!- - 
+                  // ---------------------------------------------------------
+                  // @ Icon Operating hours setted
+                  // --------------------------------------------------------- - ->
+                <svg *ngIf="OPERATING_HOURS_ACTIVE" version="1.1" id="Livello_1" focusable="false"
+                  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                  viewBox="0 0 448 512" style="enable-background:new 0 0 448 512;width: 50px; margin-top: 8px;"
+                  xml:space="preserve">
+                  <style type="text/css">
+                    .st0 {
+                      fill: #303F9F;
+                    }
+                  </style>
+                  <path class="st0" d="M400,64h-48V12c0-6.6-5.4-12-12-12h-40c-6.6,0-12,5.4-12,12v52H160V12c0-6.6-5.4-12-12-12h-40
+                  c-6.6,0-12,5.4-12,12v52H48C21.5,64,0,85.5,0,112v352c0,26.5,21.5,48,48,48h352c26.5,0,48-21.5,48-48V112C448,85.5,426.5,64,400,64z
+                    M394,464H54c-3.3,0-6-2.7-6-6V160h352v298C400,461.3,397.3,464,394,464z M341.2,263.4L198.8,404.5c-4.7,4.7-12.3,4.6-17-0.1
+                  l-75.1-75.7c-4.7-4.7-4.6-12.3,0.1-17l22.7-22.5c4.7-4.7,12.3-4.6,17,0.1l44.1,44.5l111.1-110.2c4.7-4.7,12.3-4.6,17,0.1l22.5,22.7
+                  C345.9,251.1,345.9,258.7,341.2,263.4L341.2,263.4z" />
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="sigle-link-container">
+            <div class="sigle-link" (click)="goToOperatingHours()">
+              <span *ngIf="!OPERATING_HOURS_ACTIVE" style="color: #0f62ff;">Set your Operating Hours</span>
+              <span *ngIf="OPERATING_HOURS_ACTIVE" style="color: #0f62ff;">Adjust your Operating Hours</span>
+              <span class="material-icons" style="vertical-align: middle;color: #0f62ff;">
+                keyboard_arrow_right
+              </span>
+            </div>
+          </div>
+
+          </div> -->

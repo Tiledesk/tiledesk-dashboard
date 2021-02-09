@@ -284,6 +284,17 @@ export class AnalyticsService {
   }
 
 
+
+  getRequestsHasBotCount() {
+    let headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Authorization': this.TOKEN
+    })
+    return this.http.get<[]>(this.SERVER_BASE_PATH + this.projectID + '/analytics/requests/hasBot/count', { headers: headers })
+  }
+
+
+
   goToRichieste() {
     this.richieste_bs.next("hasClickedNumberOfRequestLast7Days");
   }
