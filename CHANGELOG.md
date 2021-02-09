@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.1.21
+- Fixes the bug: displays 'NaN' as percentage when the count of the conversations handled by bots is zero
+
 ### 2.1.20
 - Adds in the home page the ability to know the count and the percentage of the conversations handled by bots
 - Rename "native bot" to "resolution bot"
