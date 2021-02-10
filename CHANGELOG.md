@@ -1,6 +1,10 @@
 
 # tiledesk-dashboard
 
+### 2.1.22
+- Improves the 'Widget Live Test' button on the widget settings page
+- Fixes the bug: in the widget settings page, tooltips do not display the entire text
+
 ### 2.1.21
 - Fixes the bug: displays 'NaN' as percentage when the count of the conversations handled by bots is zero
 
