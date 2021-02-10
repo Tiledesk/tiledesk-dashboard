@@ -481,9 +481,9 @@
 
                 </div> 
               -->
-            <div class="card" style="margin: 5px 0;">
+            <div class="card card--no-border" style="margin: 5px 0;">
               <!-- padding:0 6px -->
-              <div class="card-content" style="">
+              <div class="card-content" style="padding-top: 0px;">
 
                 <div class="row">
 
@@ -541,57 +541,37 @@
                   </div> -->
 
                 </div>
+                <!-- projectUserArray: {{ projectUserArray | json }} -->
+                <div class="team-container">
+                  <div style="float: left" class="side">
+                    <i class="material-icons" (click)="scrollLeft()">keyboard_arrow_left</i>
+                  </div>
+                  <div class="team-content middle" #teamContent>
+                    <div class="team-agent" *ngFor="let agent of projectUserArray">
+                      <!-- *ngIf="agent?._id.indexOf('bot_') === -1"  -->
+                      <img class="team-avatar" style=""
+                        src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?.id_user._id}}%2Fphoto.jpg?alt=media"
+                        onerror="this.src='assets/img/no_image_user.png'">
 
-                <!-- <div class="team-container">
-                    <div style="float: left" class="side">
-                      <i class="material-icons" (click)="scrollLeft()">keyboard_arrow_left</i>
-                    </div>
-                    <div class="team-content middle" #teamContent>
-                      <div class="team-agent" *ngFor="let agent of user_and_bot_array">
-                        <img *ngIf="agent?._id.indexOf('bot_') === -1" class="team-avatar" style="margin: 0; 
-                                  width: 32px; 
-                                  height: 32px;
-                                  min-width: 32px;border-radius: 50%;
-                                  font-size: 17px;
-                                  font-weight: 600;
-                                  text-align: center;"
-                          src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fphoto.jpg?alt=media"
-                          onerror="this.src='assets/img/no_image_user.png'">
-
-                        <img *ngIf="agent?._id.indexOf('bot_') !== -1" class="team-avatar" style="margin: 0;
+                      <!-- <img *ngIf="agent?._id.indexOf('bot_') !== -1" class="team-avatar" style="margin: 0;
                                   width: 32px;
                                   height: 32px;
                                   min-width: 32px;border-radius: 50%;
                                   font-size: 17px;
                                   font-weight: 600;
                                   text-align: center;" src="assets/img/bot_image_as_human.jpg"
-                          onerror="this.src='assets/img/no_image_user.png'">
+                          onerror="this.src='assets/img/no_image_user.png'"> -->
 
-                        <div class="count" style="position: absolute;
-                                  display: -webkit-box;
-                                  display: flex;
-                                  -webkit-box-align: center;
-                                  align-items: center;
-                                  -webkit-box-pack: center;
-                                  justify-content: center;
-                                  min-width: 18px;
-                                  height: 18px;
-                                  top: 8px;
-                                  left: 12px;
-                                  border-radius: 9px;
-                                  padding: 0 5px;
-                                  font-size: 11px;
-                                  text-align: center;
-                                  box-shadow: 0 2px 2px 0 rgba(0,0,0,.35);
-                                  background-color: #039be5;
-                                  color: #fff;">2</div>
-                        <div class="status-icon online"></div>
+                      <div class="assigned_requests_count">{{agent?.number_assigned_requests_rt}}</div>
+                      <div class="team-agent-status-icon"
+                        [ngClass]="{'is-user-online': agent?.user_available_rt === true, 'is-user-offline':agent?.user_available_rt === false   }">
                       </div>
                     </div>
-                    <div style="float: right" class="side">
-                      <i class="material-icons" (click)="scrollRight()">keyboard_arrow_right</i>
-                    </div>
-                  </div> -->
+                  </div>
+                  <div style="float: right" class="side">
+                    <i class="material-icons" (click)="scrollRight()">keyboard_arrow_right</i>
+                  </div>
+                </div>
                 <!-- ./ team-container -->
 
               </div> <!-- ./ card-content -->

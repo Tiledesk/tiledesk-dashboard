@@ -113,6 +113,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   OPEN_RIGHT_SIDEBAR: boolean = false;
   map_sidebar_height: any;
 
+  projectUserArray: Array<any> = [] 
 
   /**
    * Constructor
@@ -164,7 +165,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
     // this.for1();
     // this.getRequestsTotalCount()  
-    // this.getAllProjectUsersAndBot();
+    this.getAllProjectUsersAndBot();
 
     // const teamContentEl = <HTMLElement>document.querySelector('.team-content');
     // const perfs = new PerfectScrollbar(teamContentEl);
@@ -363,25 +364,65 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
   getAllProjectUsersAndBot() {
     // createBotsAndUsersArray() {
-    this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
+    this.usersService.getProjectUsersByProjectId().subscribe((_projectUsers: any) => {
       // console.log('% »»» WebSocketJs WF WS-RL - +++ GET PROJECT-USERS ', projectUsers);
-      if (projectUsers) {
-        projectUsers.forEach(user => {
+      console.log('WS-REQUESTS-LIST - GET PROJECT-USERS RES ', _projectUsers);
+      if (_projectUsers) {
 
-          if (user) {
-            this.user_and_bot_array.push({ '_id': user.id_user._id, 'firstname': user.id_user.firstname, 'lastname': user.id_user.lastname });
-            this.team_ids_array.push(user.id_user._id);
-          }
+        this.projectUserArray = _projectUsers;
+        this.projectUserArray.forEach(projectuser => {
+          this.wsRequestsService.subscriptionToWsAllProjectUsersOfTheProject(projectuser.id_user._id);
+
+          this.listenToAllProjectUsersOfProject$(projectuser)
+          //   if (user) {
+          //     this.user_and_bot_array.push({ '_id': user.id_user._id, 'firstname': user.id_user.firstname, 'lastname': user.id_user.lastname });
+          //     this.team_ids_array.push(user.id_user._id);
+          //   }
         });
 
         // console.log('% »»» WebSocketJs WF WS-RL - +++ USERS & BOTS ARRAY (1) ', this.user_and_bot_array);
       }
     }, (error) => {
-      console.log('% »»» WebSocketJs WF WS-RL - +++ GET PROJECT-USERS ', error);
+      console.log('WS-REQUESTS-LIST - GET PROJECT-USERS - ERROR ', error);
     }, () => {
-      console.log('% »»» WebSocketJs WF WS-RL - +++ GET PROJECT-USERS * COMPLETE *');
-      this.getAllBot();
+      console.log('WS-REQUESTS-LIST - GET PROJECT-USERS * COMPLETE *');
+      // this.getAllBot();
     });
+  }
+
+  listenToAllProjectUsersOfProject$(projectuser) {
+    this.wsRequestsService.projectUsersOfProjectFromWsSubscription$
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((projectUser_from_ws_subscription) => {
+        console.log('WS-REQUESTS-LIST $UBSC TO WS PROJECT-USERS (listenTo)', projectUser_from_ws_subscription);
+        // console.log('WS-REQUESTS-LIST PROJECT-USERS ', projectuser);
+
+        if (projectuser['_id'] === projectUser_from_ws_subscription['_id']) {
+          // projectUser_from_ws_subscription['email'] = projectuser['id_user']['email']
+          // projectUser_from_ws_subscription['firstname'] = projectuser['id_user']['firstname']
+          // projectUser_from_ws_subscription['lastname'] = projectuser['id_user']['lastname']
+
+          projectuser['number_assigned_requests_rt'] = projectUser_from_ws_subscription['number_assigned_requests'];
+          projectuser['user_available_rt'] = projectUser_from_ws_subscription['user_available'];
+          projectuser['isBusy_rt'] = projectUser_from_ws_subscription['isBusy'];
+          projectuser['updatedAt_rt'] = projectUser_from_ws_subscription['updatedAt'];
+
+        }
+        // this.projects.forEach(project => {
+        //   if (project.id_project._id === projectUser['id_project']) {
+        //     project['ws_projct_user_available'] = projectUser['user_available'];
+        //     project['ws_projct_user_isBusy'] = projectUser['isBusy']
+        //   }
+        // });
+
+      }, (error) => {
+        console.log('PROJECT COMP $UBSC TO WS USER AVAILABILITY & BUSY STATUS error ', error);
+      }, () => {
+        console.log('PROJECT COMP $UBSC TO WS USER AVAILABILITY & BUSY STATUS * COMPLETE *');
+      })
+
   }
 
   getAllBot() {

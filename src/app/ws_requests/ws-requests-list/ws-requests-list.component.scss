@@ -560,7 +560,7 @@ span .switch-agent-admin-requests-btn {
     display: block !important;
   }
 
-  .operating-hours{
+  .operating-hours {
     margin-top: 12px;
     margin-right: 6px;
   }
@@ -572,11 +572,9 @@ span .switch-agent-admin-requests-btn {
   }
 
   .served-unserved-sum {
-    left: 324px  !important;
+    left: 324px !important;
     top: 16px !important;
-
   }
-
 }
 
 @media (max-width: 724px) {
@@ -703,6 +701,9 @@ $f21blue: #039be5;
 //   white-space: nowrap;
 // }
 
+// ======================================================
+// teammates scroll div
+// ======================================================
 .team-container {
   display: flex;
   // height: 22.5vh !important;
@@ -733,7 +734,7 @@ $f21blue: #039be5;
   align-items: center;
   -webkit-box-pack: center;
 
-  padding: 8px 16px;
+  padding: 8px 8px;
   // height: 56px;
   cursor: pointer;
 }
@@ -751,6 +752,60 @@ $f21blue: #039be5;
   justify-content: center;
   display: flex;
 }
+
+.team-avatar {
+  margin: 0;
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  border-radius: 50%;
+  font-size: 17px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.assigned_requests_count {
+  position: absolute;
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  top: 8px;
+  left: 4px;
+  border-radius: 9px;
+  padding: 0 5px;
+  font-size: 11px;
+  text-align: center;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.35);
+  background-color: #039be5;
+  color: #fff;
+}
+.team-agent-status-icon {
+  width: 10px;
+  height: 10px;
+  float: left;
+  border-radius: 50%;
+  border: 1px solid #ffffff;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 39px;
+  left: 38px;
+}
+
+.is-user-online {
+  background-color: #4caf50;
+}
+.is-user-offline {
+  background-color: #f44336;
+}
+
+/* ./ teammates scroll div */
 
 .right-li {
   float: right !important;
