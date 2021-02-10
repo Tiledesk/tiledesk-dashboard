@@ -6,7 +6,7 @@
 
 <p style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px" class="navbar-brand">
 	Widget
-</p> 
+</p>
 
 <div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
 	<div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
@@ -584,8 +584,6 @@
 
 											</div>
 											<div id="custom-colors-secondary">
-
-
 												<div class="form-group"
 													style="max-width: 640px; margin-left: -15px; 	margin-right: -15px;margin-top: 0px;">
 													<label
@@ -970,7 +968,7 @@
 												</i>
 											</span>
 											<span class="widget_design__Tooltiptext"
-												style="margin-left: -108px;min-width: 225px;height:53px">
+												style="margin-left: -108px;min-width: 225px;height:auto">
 												{{ 'TheOnlineMessageIsWhatSiteVisitors' | translate: tparams }}
 											</span>
 										</span>
@@ -1006,7 +1004,7 @@
 												</i>
 											</span>
 											<span class="widget_design__Tooltiptext"
-												style="margin-left: -108px;min-width: 225px;height:55px">
+												style="margin-left: -108px;min-width: 225px;height:auto">
 												{{ 'TheOfflineMessageIsWhatSiteVisitors' | translate: tparams }}
 											</span>
 										</span>
@@ -1042,7 +1040,7 @@
 												</i>
 											</span>
 											<span class="widget_design__Tooltiptext"
-												style="margin-left: -108px;min-width: 225px;height:53px">
+												style="margin-left: -108px;min-width: 225px;height:auto">
 												{{ 'TheClosedOfficeMessageIsWhatSiteVisitors' | translate: tparams }}
 											</span>
 										</span>
@@ -1116,7 +1114,7 @@
 
 
 						<div class="widget-section-container" style="height: auto; transition-duration: 0.613s;">
-							<div class="section-offset"  style="height: 556px;">
+							<div class="section-offset" style="height: 556px;">
 								<!--
 								// ---------------------------------------------------
 								// Reply time messages
@@ -1168,7 +1166,7 @@
 											<input type="text" class="custom-input" [(ngModel)]="waitingTimeNotFoundMsg"
 												(focus)="onFocusReplyTime()"
 												(ngModelChange)="waitingTimeNotFoundMsgChange($event)"
-												style="font-weight: 400;margin-bottom:3px" 
+												style="font-weight: 400;margin-bottom:3px"
 												[disabled]='!HAS_SELECT_STATIC_REPLY_TIME_MSG || HAS_SELECT_DYMANIC_REPLY_TIME_MSG '>
 
 										</div>
@@ -1183,7 +1181,7 @@
 												<input type="radio" name="replyTime" value="reply_time_dynamic_msg"
 													(change)="onChangeReplyTimeTypeMsg($event.target.value)"
 													[checked]="HAS_SELECT_DYMANIC_REPLY_TIME_MSG"
-													(focus)="onFocusReplyTime()" >
+													(focus)="onFocusReplyTime()">
 												{{'DynamicallySharingAverageResponseTime' | translate}}
 											</label>
 										</div>
@@ -1218,12 +1216,12 @@
 											<input type="text" class="custom-input waiting-time-found-msg-input"
 												[(ngModel)]="waitingTimeFoundMsg"
 												(ngModelChange)="waitingTimeFoundMsgChange($event)"
-												style="font-weight: 400;margin-bottom:3px" (focus)="onFocusReplyTime()" 
+												style="font-weight: 400;margin-bottom:3px" (focus)="onFocusReplyTime()"
 												[disabled]='!HAS_SELECT_DYMANIC_REPLY_TIME_MSG || HAS_SELECT_STATIC_REPLY_TIME_MSG'>
 
 											<button class="btn btn-tdblu-no-boxshadow"
 												(click)="setReplyTimePlaceholder()"
-												style="font-size: 12px;padding:4px!important; display: block;" 
+												style="font-size: 12px;padding:4px!important; display: block;"
 												[disabled]='!HAS_SELECT_DYMANIC_REPLY_TIME_MSG || HAS_SELECT_STATIC_REPLY_TIME_MSG'>
 
 												<span aria-hidden="true" class="material-icons"
@@ -1243,10 +1241,11 @@
 											</label>
 											<span class="active-language-label">{{selectedLangName}} </span>
 											<input type="text" class="custom-input" [(ngModel)]="waitingTimeNotFoundMsg"
-												(ngModelChange)="waitingTimeNotFoundMsgChange($event)" (focus)="onFocusReplyTime()"
-												style="font-weight: 400;margin-bottom:3px" [disabled]='!HAS_SELECT_DYMANIC_REPLY_TIME_MSG || HAS_SELECT_STATIC_REPLY_TIME_MSG'>
-											
-												<ul class="custom-logo-note"
+												(ngModelChange)="waitingTimeNotFoundMsgChange($event)"
+												(focus)="onFocusReplyTime()" style="font-weight: 400;margin-bottom:3px"
+												[disabled]='!HAS_SELECT_DYMANIC_REPLY_TIME_MSG || HAS_SELECT_STATIC_REPLY_TIME_MSG'>
+
+											<ul class="custom-logo-note"
 												style="margin-bottom:0px;list-style-type: none;padding-left: 0px;max-width: 300px;">
 												<li>
 													{{ 'YourContactsSeeThisMessageIfARTIsNotAvailable' | translate }}
@@ -1617,7 +1616,7 @@
 											<span class="material-icons current-language-icon"> check </span>
 
 											<span class="current-language-text">
-												{{'CurrentlySelected' |	translate}}</span>
+												{{'CurrentlySelected' | translate}}</span>
 										</div>
 										<!-- <i (change)="onSelectlang(selectedLang)" role="button" class="ion-close-round" data-placement="left" tabindex="0"></i> -->
 										<a *ngIf="translation?.code !== selectedLangCode"
@@ -1740,18 +1739,52 @@
 										for="stateSwitcherPreview">
 										{{ 'WidgetLiveTest' | translate }}</label>
 									<div class="col-sm-12">
-										<button class="btn btn-tdgreen" #testwidgetbtn
+										<!-- <button class="btn btn-tdgreen" #testwidgetbtn
 											style="margin-top:0px; margin-bottom:2px;  background: #3ecf8e;text-shadow: 0 1px 3px rgba(36,180,126,.4);padding-left: 16px;padding-bottom: 6px;padding-top: 6px;"
 											(click)="testWidgetPage()">
 
-											<span aria-hidden="true" class="material-icons"
-												style="vertical-align: middle;margin-right: 12px;font-size: 21px;">
+											<span aria-hidden="true" class="material-icons icon-pulse icon-pulse-color"
+												style="vertical-align: middle;margin-right: 12px;font-size: 21px; border-radius:50%">
 												play_arrow
 											</span>
 											<span>{{ 'WidgetLiveTest' | translate }}</span>
-										</button>
+										</button> -->
+										<div class="row vcenter-row">
+											<div class="col-xs-2" (click)="testWidgetPage()">
+												<div class="circle-bg" id="play-icon" >
+													<svg id="tri-first" width="20" height="22" viewBox="0 0 20 22"
+														fill="none" xmlns="http://www.w3.org/2000/svg">
+														<path
+															d="M19.1626 9.42599C20.2791 10.0284 20.2791 11.9716 19.1626 12.574L1.96636 21.8525C1.03986 22.3524 -4.42439e-08 21.5201 0 20.2785L6.61299e-07 1.72148C7.05543e-07 0.479927 1.03986 -0.352444 1.96636 0.147468L19.1626 9.42599Z"
+															fill="#6ED69A" />
+													</svg>
+													<svg id="tri-second" width="20" height="22" viewBox="0 0 20 22"
+														fill="none" xmlns="http://www.w3.org/2000/svg">
+														<path
+															d="M19.1626 9.42599C20.2791 10.0284 20.2791 11.9716 19.1626 12.574L1.96636 21.8525C1.03986 22.3524 -4.42439e-08 21.5201 0 20.2785L6.61299e-07 1.72148C7.05543e-07 0.479927 1.03986 -0.352444 1.96636 0.147468L19.1626 9.42599Z"
+															fill="#1BB978" />
+													</svg>
+													<!-- <svg id="tri-third" width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+											  <path
+												d="M19.1626 9.42599C20.2791 10.0284 20.2791 11.9716 19.1626 12.574L1.96636 21.8525C1.03986 22.3524 -4.42439e-08 21.5201 0 20.2785L6.61299e-07 1.72148C7.05543e-07 0.479927 1.03986 -0.352444 1.96636 0.147468L19.1626 9.42599Z"
+												fill="#1BB978" />
+											</svg> -->
+												</div>
+											</div>
+											<div class="col-xs-10 vcenter-col" (click)="testWidgetPage()">
+												
+												<span class="widget-live-test-text" >
+													{{ 'WidgetLiveTest' | translate }}
+												</span>
+												<span class="material-icons widget-live-test-icon">
+													open_in_new
+												</span>
+
+											</div>
+										</div>
+
 										<span
-											style="display: block; color: #7695a5; font-weight:400; font-size:11px; line-height: 16px;">
+											style="display: block;color: #7695a5;font-size: 14px;line-height: 16px;margin-top: 6px;">
 											{{ 'TestWidgetAllowYou' | translate }}.
 										</span>
 									</div>

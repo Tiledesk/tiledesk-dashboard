@@ -1960,7 +1960,8 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   }
 
   testWidgetPage() {
-    this.elementRef.nativeElement.blur();
+    // this.elementRef.nativeElement.blur();
+    
     // const url = 'http://testwidget.tiledesk.com/testsitenw3?projectname=' + this.projectName + '&projectid=' + this.id_project
     // const url = this.TESTSITE_BASE_URL + '?projectname=' + this.projectName + '&projectid=' + this.id_project + '&isOpen=true'
     const url = this.TESTSITE_BASE_URL + '?tiledesk_projectid=' + this.id_project + '&project_name=' + this.projectName + '&isOpen=true'
