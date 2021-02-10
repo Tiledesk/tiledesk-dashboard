@@ -30,11 +30,14 @@ export class WsRequestsService implements OnDestroy {
   public wsRequesterStatus$: BehaviorSubject<any> = new BehaviorSubject<any>({});
   public currentUserWsAvailability$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null); // Moved here from user.service 
   public currentUserWsIsBusy$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null); // Moved here from user.service 
+ 
   http: Http;
   public messages: Subject<Message>;
 
   requesTtotal: number;
   public wsRequestsList$: BehaviorSubject<Request[]> = new BehaviorSubject<Request[]>([]);
+  public projectUsersOfProjectFromWsSubscription$: BehaviorSubject<[]> = new BehaviorSubject<[]>([]);
+  
   public ws__RequestsList$: any;
 
   public wsRequest$ = new Subject()
@@ -717,14 +720,55 @@ export class WsRequestsService implements OnDestroy {
   }
 
   // -----------------------------------------------------------------------------------------------------
-  // Availability - umsubscribe to WS Current user availability !! // Moved here from user.service 
+  // Availability - unsubscribe to WS Current user availability !! // Moved here from user.service 
   // -----------------------------------------------------------------------------------------------------
   // Nota unsubscriptionToWsCurrentUser nn viene mai richiamato cmq eseguo unsubscribe('/' + this.project_id + '/project_users/' + prjctuserid); in questo
   // componente al cambio di progetto
   unsubscriptionToWsCurrentUser(prjctuserid) {
     this.webSocketJs.unsubscribe('/' + this.project_id + '/project_users/' + prjctuserid);
-    console.log("NAVBAR-FOR-PANEL - UN-SUBSCR TO WS CURRENT USERS  projectid: ", this.project_id, ' prjctuserid:', prjctuserid);
+    console.log("WS-REQUESTS-SERVICE - UN-SUBSCR TO WS CURRENT USERS  projectid: ", this.project_id, ' prjctuserid:', prjctuserid);
   }
+
+
+
+  // -----------------------------------------------------------------------------------------------------------------------------
+  // Subscribe to WS PROJECT-USERS OF THE PROJECT
+  // -----------------------------------------------------------------------------------------------------------------------------
+  subscriptionToWsAllProjectUsersOfTheProject(userid) {
+    var self = this;
+
+    console.log('WS-REQUESTS-SERVICE SUBSCR TO WS PROJECT-USERS OF THE PROJECT - projectid: ', this.project_id, ' userid: ', userid);
+
+    const path = '/' + this.project_id + '/project_users/users/' + userid
+
+    return new Promise(function (resolve, reject) {
+
+      self.webSocketJs.ref(path, 'subscriptionToWsAllProjectUsersOfTheProject', function (data, notification) {
+        console.log("WS-REQUESTS-SERVICE SUBSCR TO WS PROJECT-USERS OF THE PROJEC - CREATE - data ", data , ' path ', path);
+        // console.log("PROJECT COMP (user-service) SUBSCR TO WS CURRENT USERS - CREATE - data ", data);
+        // console.log("PROJECT COMP (user-service) SUBSCR TO WS CURRENT USERS - CREATE - data  user_available ", data.user_available);
+        // console.log("PROJECT COMP (user-service) SUBSCR TO WS CURRENT USERS - CREATE - data  isBusy ", data.isBusy);
+
+        resolve(data)
+        self.projectUsersOfProjectFromWsSubscription$.next(data);
+        // self.currentUserWsBusyAndAvailabilityForProject$.next(data)
+
+      }, function (data, notification) {
+        resolve(data)
+        console.log("WS-REQUESTS-SERVICE SUBSCR TO WS PROJECT-USERS OF THE PROJEC - UPDATE - data ", data);
+        self.projectUsersOfProjectFromWsSubscription$.next(data);
+
+      }, function (data, notification) {
+        resolve(data)
+        if (data) {
+          // console.log("WS-REQUESTS-SERVICE SUBSCR TO WS PROJECT-USERS OF THE PROJEC - ON-DATA - data", data);
+
+        }
+      });
+
+    })
+  }
+
 
 
 
