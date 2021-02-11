@@ -15,17 +15,15 @@ import { UsersService } from '../../services/users.service';
 import { UAParser } from 'ua-parser-js'
 import { FaqKbService } from '../../services/faq-kb.service';
 
-import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import { AppConfigService } from '../../services/app-config.service';
 import { Subscription } from 'rxjs/Subscription';
-import PerfectScrollbar from 'perfect-scrollbar';
+
 import { DepartmentService } from '../../services/department.service';
-import { environment } from '../../../environments/environment';
-import { distinctUntilChanged } from 'rxjs/operators';
+
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+
 import { browserRefresh } from '../../app.component';
 import * as uuid from 'uuid';
 import { Chart } from 'chart.js';
@@ -113,7 +111,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   OPEN_RIGHT_SIDEBAR: boolean = false;
   map_sidebar_height: any;
 
-  projectUserArray: Array<any> = [] 
+  projectUserArray: Array<any> = []
 
   /**
    * Constructor
@@ -153,7 +151,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
    */
   ngOnInit() {
     // this.getStorageBucketFromUserServiceSubscription();
-    this.getStorageBucket();
+    this.getStorageBucketAndThenProjectUsers();
     this.getDepartments();
     // this.getWsRequests$();
     this.getCurrentProject();
@@ -165,7 +163,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
     // this.for1();
     // this.getRequestsTotalCount()  
-    this.getAllProjectUsersAndBot();
+    // this.getAllProjectUsersAndBot();
 
     // const teamContentEl = <HTMLElement>document.querySelector('.team-content');
     // const perfs = new PerfectScrollbar(teamContentEl);
@@ -193,14 +191,16 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       })
   }
 
-  getStorageBucket() {
+  getStorageBucketAndThenProjectUsers() {
     // storage bucket from user service subscription 
     this.storagebucket$ = this.usersService.storageBucket$.value;
     console.log('STORAGE-BUCKET - from sub in ws-request-list value', this.storagebucket$);
 
     const firebase_conf = this.appConfigService.getConfig().firebase;
     this.storageBucket = firebase_conf['storageBucket'];
-    console.log('STORAGE-BUCKET Ws Requests List ', this.storageBucket)
+    console.log('STORAGE-BUCKET Ws Requests List ', this.storageBucket);
+    
+    this.getAllProjectUsers(this.storageBucket);
   }
 
   getTestSiteUrl() {
@@ -362,7 +362,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   }
 
 
-  getAllProjectUsersAndBot() {
+  getAllProjectUsers(storageBucket) {
     // createBotsAndUsersArray() {
     this.usersService.getProjectUsersByProjectId().subscribe((_projectUsers: any) => {
       // console.log('% »»» WebSocketJs WF WS-RL - +++ GET PROJECT-USERS ', projectUsers);
@@ -370,10 +370,24 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       if (_projectUsers) {
 
         this.projectUserArray = _projectUsers;
+
         this.projectUserArray.forEach(projectuser => {
           this.wsRequestsService.subscriptionToWsAllProjectUsersOfTheProject(projectuser.id_user._id);
 
           this.listenToAllProjectUsersOfProject$(projectuser)
+
+          const imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + storageBucket + "/o/profiles%2F" + projectuser.id_user._id + "%2Fphoto.jpg?alt=media";
+         
+          this.checkImageExists(imgUrl, (existsImage) => {
+            if (existsImage == true) {
+              projectuser.hasImage = true
+            }
+            else {
+              projectuser.hasImage = false
+            }
+          });
+
+          this.createAgentAvatarInitialsAnfBckgrnd(projectuser.id_user)
           //   if (user) {
           //     this.user_and_bot_array.push({ '_id': user.id_user._id, 'firstname': user.id_user.firstname, 'lastname': user.id_user.lastname });
           //     this.team_ids_array.push(user.id_user._id);
@@ -390,13 +404,34 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     });
   }
 
+  createAgentAvatarInitialsAnfBckgrnd(agent) {
+
+    let fullname = '';
+    if (agent && agent.firstname && agent.lastname) {
+
+
+      fullname = agent.firstname + ' ' + agent.lastname
+      agent['fullname_initial'] = avatarPlaceholder(fullname);
+      agent['fillColour'] = getColorBck(fullname)
+    } else if (agent && agent.firstname) {
+
+      fullname = agent.firstname
+      agent['fullname_initial'] = avatarPlaceholder(fullname);
+      agent['fillColour'] = getColorBck(fullname)
+    } else {
+      agent['fullname_initial'] = 'N/A';
+      agent['fillColour'] = 'rgb(98, 100, 167)';
+    }
+
+  }
+
   listenToAllProjectUsersOfProject$(projectuser) {
     this.wsRequestsService.projectUsersOfProjectFromWsSubscription$
       .pipe(
         takeUntil(this.unsubscribe$)
       )
       .subscribe((projectUser_from_ws_subscription) => {
-        console.log('WS-REQUESTS-LIST $UBSC TO WS PROJECT-USERS (listenTo)', projectUser_from_ws_subscription);
+        // console.log('WS-REQUESTS-LIST $UBSC TO WS PROJECT-USERS (listenTo)', projectUser_from_ws_subscription);
         // console.log('WS-REQUESTS-LIST PROJECT-USERS ', projectuser);
 
         if (projectuser['_id'] === projectUser_from_ws_subscription['_id']) {
@@ -410,6 +445,20 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
           projectuser['updatedAt_rt'] = projectUser_from_ws_subscription['updatedAt'];
 
         }
+
+
+        // this.projectUserArray.sort((n1, n2) => {
+        //   if (n1.user_available_rt === true) {
+        //     return 1;
+        //   }
+
+        //   if (n2.user_available_rt === false) {
+        //     return -1;
+        //   }
+
+        //   return 0;
+        // });
+
         // this.projects.forEach(project => {
         //   if (project.id_project._id === projectUser['id_project']) {
         //     project['ws_projct_user_available'] = projectUser['user_available'];

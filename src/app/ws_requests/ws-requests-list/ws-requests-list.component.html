@@ -214,88 +214,69 @@
 
 <div class="main-content" style="padding-top:0px; margin-top: 25px;padding-left: 0px;padding-right: 0px;">
   <div class="container-fluid">
-    <!-- ------====== CARDS COUNT OF REQUESTS: ACTIVE, SERVED & UNSERVED  and requests for depts ======------ -->
+   
     <!-- <div class="row"> -->
     <div class="row">
-
-      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="padding-left: 10px !important;">
+      <!-- style="padding-left: 10px !important;" -->
+      <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
 
 
         <!-- // --- Test - COUNT OF REQUESTS: ACTIVE, SERVED & UNSERVED as graph -->
         <!-- style="display: none;" -->
-        <div class="row" style="display: none;">
-          <div class="col-xs-12">
-            <div class="card" style="margin-top:0px">
-              <div class="card-content">
-                <!-- <div class="requests-chart-container" style="  width: 150px; height: 150px;float: left;"> -->
-                <!-- <canvas id="doughnutChart"></canvas> -->
-                <div class="stackedbar-wpr" style="height:80px;">
-                  <canvas id="stackedbarChart"></canvas>
-                </div>
-                <!-- <canvas id="MyChart" width="200" height="100"></canvas> -->
+        <div class="row">
 
-                <div class="grid-container">
-                  <div class="requests-graph">
-                    <div class="graph-wrapper" style=" width:50%;
-                      display:block;
-                      overflow:hidden;
-                      /* margin:0 auto; */
-                      /* padding: 60px 50px; */
-                      max-height: 200px;
-                      background:#fff;
-                      border-radius:4px;">
-                      <canvas id="stacked"></canvas>
-                    </div>
+          <div class="col-xs-5">
+            <div class="graph-legend" style="padding-left: 10px;">
+              <div class="advanced-pie-legend-wrapper" style="display: inline-block;height: 116px;">
+                <!--  width: 420px;float: left; -->
+                <div class="advanced-legend" style="position: relative;top: 50%;transform: translate(0,-50%);">
+                  <div class="total-value"
+                    style="font-family: 'Lato', sans-serif; font-weight: 400;font-size: 40px; color: rgba(0, 0, 0, 0.54) !important; margin-bottom: 8px;">
 
+                    {{ wsRequestsServed?.length + wsRequestsUnserved?.length }}
+
+                    <span class="total-label" style="font-family: 'Google Sans', sans-serif !important;
+                          font-size: 18px;
+                          font-weight: 400;
+                          color: rgba(0, 0, 0, 0.54) !important; margin-bottom: 10px; margin-top: 14px">
+                      Total conversations
+                      <!-- conversations  -->
+                    </span>
                   </div>
-                  <div class="graph-legend">
-                    <div class="advanced-pie-legend-wrapper" style="display: inline-block;height: 161px;">
-                      <!--  width: 420px;float: left; -->
-                      <div class="advanced-legend" style="position: relative;top: 50%;transform: translate(0,-50%);">
-                        <div class="total-value"
-                          style="font-family: 'Lato', sans-serif; font-weight: 400;font-size: 40px; color: rgba(0, 0, 0, 0.54) !important;">
 
-                          {{ wsRequestsServed?.length + wsRequestsUnserved?.length }}
+                  <div class="legend-items-container" style="width: 100%;">
+                    <div class="legend-items" style="white-space: nowrap; overflow: auto;">
+                      <div class="legend-item" style="margin-right: 45px;display: inline-block;cursor: pointer;">
+                        <div class="item-color"
+                          style="border-left: 4px solid #05BDD4; width: 4px; height: 42px;float: left; margin-right: 7px;">
                         </div>
-                        <div class="total-label" style="font-family: 'Google Sans', sans-serif !important;
-                            font-size: 24px;
-                            font-weight: 400;
-                            color: rgba(0, 0, 0, 0.54) !important; margin-bottom: 10px; margin-top: 14px">
-                          Total
+                        <div class="item-value"
+                          style="font-family: 'Lato', sans-serif; font-weight: 400;font-size: 24px; color: rgba(0, 0, 0, 0.54) !important;">
+                          {{ wsRequestsServed?.length }}
                         </div>
-                        <div class="legend-items-container" style="width: 100%;">
-                          <div class="legend-items" style="white-space: nowrap; overflow: auto;">
-                            <div class="legend-item" style="margin-right: 20px;display: inline-block;cursor: pointer;">
-                              <div class="item-color"
-                                style="border-left: 4px solid #05BDD4; width: 4px; height: 42px;float: left; margin-right: 7px;">
-                              </div>
-                              <div class="item-value"
-                                style="font-family: 'Lato', sans-serif; font-weight: 400;font-size: 24px; color: rgba(0, 0, 0, 0.54) !important;">
-                                {{ wsRequestsServed?.length }}
-                              </div>
-                              <div class="item-label" style="font-size: 14px;
+                        <div class="item-label" style="font-size: 14px;
                                 font-family: 'Google Sans', sans-serif !important;
                                 font-weight: 400;
                                 color: rgba(0, 0, 0, 0.54);
                                 line-height: 2;">Assigned</div>
-                              <!-- <div class="item-percent">42%</div> -->
-                            </div>
-                            <div class="legend-item" style="margin-right: 20px;display: inline-block;cursor: pointer;">
-                              <div class="item-color"
-                                style="border-left: 4px solid #ED4537; width: 4px;height: 42px;float: left; margin-right: 7px;">
-                              </div>
-                              <div class="item-value"
-                                style="font-family: 'Lato', sans-serif; font-weight: 400;font-size: 24px; color: rgba(0, 0, 0, 0.54) !important;">
-                                {{ wsRequestsUnserved?.length }}
-                              </div>
-                              <div class="item-label" style="font-size: 14px;
+                        <!-- <div class="item-percent">42%</div> -->
+                      </div>
+                      <div class="legend-item" style="margin-right: 20px;display: inline-block;cursor: pointer;">
+                        <div class="item-color"
+                          style="border-left: 4px solid #ED4537; width: 4px;height: 42px;float: left; margin-right: 7px;">
+                        </div>
+                        <div class="item-value"
+                          style="font-family: 'Lato', sans-serif; font-weight: 400;font-size: 24px; color: rgba(0, 0, 0, 0.54) !important;">
+                          {{ wsRequestsUnserved?.length }}
+                        </div>
+                        <div class="item-label" style="font-size: 14px;
                                 font-family: 'Google Sans', sans-serif !important;
                                 font-weight: 400;
                                 color: rgba(0, 0, 0, 0.54);
                                 line-height: 2;">Unassigned</div>
-                              <!-- <div class="item-percent">23%</div> -->
-                            </div>
-                            <!-- <div class="legend-item" style="margin-right: 20px;display: inline-block;cursor: pointer;">
+                        <!-- <div class="item-percent">23%</div> -->
+                      </div>
+                      <!-- <div class="legend-item" style="margin-right: 20px;display: inline-block;cursor: pointer;">
                                 <div class="item-color"
                                   style="border-left: 4px solid rgb(44, 230, 155); width: 4px; height: 42px; float: left; margin-right: 7px;">
                                 </div>
@@ -303,245 +284,134 @@
                                 <div class="item-label">France</div>
                                 <div class="item-percent">34%</div>
                               </div> -->
-                          </div>
-                        </div>
-                        <div class="item-value ">7.200.000</div>
-                        <div class="item-label">France</div>
-                        <div class="item-percent">34%</div>
-                      </div>
                     </div>
                   </div>
+                  <!-- <div class="item-value ">7.200.000</div>
+                        <div class="item-label">France</div>
+                        <div class="item-percent">34%</div> -->
                 </div>
-
-                <!-- </div> -->
               </div>
             </div>
+          </div> <!-- ./ col-xs-4 -->
+
+          <div class="col-xs-7" style="margin-top: 8px;">
+            <!-- <div class="card" style="margin-top:0px"> -->
+            <!-- <div class="card-content"> -->
+            <!-- <div class="requests-chart-container" style="  width: 150px; height: 150px;float: left;"> -->
+            <!-- <canvas id="doughnutChart"></canvas> -->
+
+
+            <!-- // questo è buono -->
+            <!-- <div class="stackedbar-wpr" style="height:80px;">
+              <canvas id="stackedbarChart"></canvas>
+            </div> -->
+
+
+            <!-- <canvas id="MyChart" width="200" height="100"></canvas> -->
+
+            <!-- <div class="grid-container">
+                    <div class="requests-graph">
+                      <div class="graph-wrapper" style=" width:50%;
+                        display:block;
+                        overflow:hidden;
+                        /* margin:0 auto; */
+                        /* padding: 60px 50px; */
+                        max-height: 200px;
+                        background:#fff;
+                        border-radius:4px;">
+                        <canvas id="stacked"></canvas>
+                      </div>
+
+                  </div> -->
+
+            <div class="row" style="margin-bottom: 16px;">
+              <div class="col-sm-12">
+                <div
+                  style="font-family: 'Google Sans', sans-serif !important; font-size: 18px; font-weight: 400;  color: rgba(0, 0, 0, 0.54) !important; margin-bottom: 14px; margin-top: 16px;">
+                  Filter conversations
+                </div>
+              </div>
+              <!-- -------------------------------------------------------- -->
+              <!-- @ Department filter -->
+              <!-- -------------------------------------------------------- -->
+              <div class="col-sm-6">
+                <!-- <label class="col-sm-12" style="text-align: left; color:#7695a5;padding-left:0px; font-size: 12px; margin-bottom: 1px;">
+                  {{ 'HistoryPage.FilterByDepartment' | translate }}
+                </label> -->
+
+                <ng-select attr.aria-label="{{ 'FilterBy' | translate }} {{ 'Department' | translate }}" class="custom"
+                  name="dept" [(ngModel)]="selectedDeptId" (change)="onChangeDepts()" (clear)="clearDeptFilter()"
+                  placeholder="{{ 'HistoryPage.AllDepts' | translate }}">
+
+                  <!-- <ng-option *ngFor="let dept of depts_array_noduplicate" [value]="dept?._id"> -->
+                  <ng-option *ngFor="let dept of departments" [value]="dept?._id">
+                    <!-- // use this if do the for with departments -->
+                    {{dept?.name}}
+                    <!-- // use this if do the for with depts_array_noduplicate -->
+                    <!-- {{dept?.deptName}} -->
+                  </ng-option>
+                </ng-select>
+              </div>
+
+
+              <!-- -------------------------------------------------------- -->
+              <!-- @ Angent filter -->
+              <!-- -------------------------------------------------------- -->
+              <div class="col-sm-6">
+                <!-- <label class="col-sm-12" style="text-align: left; color: #7695a5;padding-left:0px; font-size: 12px; margin-bottom: 1px;">
+                  {{ 'HistoryPage.Agent' | translate }}
+                </label> -->
+                <ng-select attr.aria-label="{{ 'FilterBy' | translate }} {{ 'HistoryPage.Agent' | translate }}"
+                  name="agent" [(ngModel)]="selectedAgentId" placeholder="{{ 'HistoryPage.AllAgents' | translate }}"
+                  (clear)="clearAgentFilter()" (change)="onChangeAgent()">
+                  <!-- <ng-option [value]="''">{{ 'HistoryPage.AllAgents' | translate }}</ng-option> -->
+                  <!-- user_and_bot_array -->
+                  <ng-option [value]="1">{{ 'HumanAgentsOnly' | translate }}</ng-option>
+                  <ng-option [value]="2">{{ 'BotsOnly' | translate }}</ng-option>
+                  <ng-option *ngFor="let agent of participantsInRequests" [value]="agent?._id">
+                    {{ agent.firstname }} {{ agent.lastname }}
+                  </ng-option>
+                </ng-select>
+              </div>
+
+              <!--
+                      <div class="col-sm-4">                    
+                        <label></label>
+                        <button type="submit" class="btn btn-white" (click)="clearSearch()"
+                          style="color:#7695a5">
+                          {{ 'HistoryPage.ClearSearch' | translate }}
+                        </button>
+                      </div> -->
+
+            </div>
           </div>
-        </div>
-        <!-- // --- Test -->
+
+          <!-- </div>  -->
+          <!-- ./ card-content -->
+          <!-- </div>  -->
+          <!-- ./ card -->
+
+        </div> <!-- ./ row -->
+
+        <!-- </div>  -->
+
+
 
 
         <div class="row">
-
-          <!-- 
-          // -------------------------------------------------------------------------------------- 
-          // @ CARDS COUNT OF REQUESTS: ACTIVE, SERVED & UNSERVED
-          // -------------------------------------------------------------------------------------- -->
           <div class="col-xs-12" style="padding-right: 5px;">
-
-            <!-- // TOTAL ACTIVE -->
-            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4"
-              style="padding-left: 0px !important; padding-right: 5px !important;">
-              <div class="panel"
-                style="background-color: #fff; margin-bottom: 15px;box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);">
-                <div class="panel-heading">
-                  <div class="row">
-                    <div class="col-xs-3">
-
-                      <svg viewBox="0 0 58.1 53.9" style="width: 42px" xml:space="preserve">
-                        <style type="text/css">
-                          .st0 {
-                            fill: none;
-                            stroke: #ff9800;
-                            stroke-width: 3;
-                            stroke-miterlimit: 10;
-                          }
-                        </style>
-                        <path class="st0" d="M30.1,2.7c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3c-0.3,4.1-1.3,9.9-4.1,12.7c0,0,8.6-1.2,14.4-4.7
-                     c3.2,1.4,6.8,2.1,10.6,2.1c13.8,0,25-10,25-22.4S43.9,2.7,30.1,2.7z" />
-                      </svg>
-                    </div>
-                    <div class="col-xs-9 text-right">
-                      <div class="huge" style=" font-size: 40px; line-height: 48px; color: #ff9800">
-                        {{ wsRequestsServed?.length + wsRequestsUnserved?.length }}
-                      </div>
-                    </div>
-                    <div class="col-xs-12 text-right">
-                      <div class="ng-binding" style="color: #ff9800">
-                        {{ "Active" | translate }}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- // UNSERVED -->
-            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4"
-              style="padding-left: 5px !important; padding-right: 5px !important;">
-              <div class="panel"
-                style="background-color: #fff; margin-bottom: 15px;box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);">
-                <div class="panel-heading">
-                  <div class="row">
-                    <div class="col-xs-3">
-
-                      <svg viewBox="0 0 58.1 53.9" style="width: 42px" xml:space="preserve">
-                        <style type="text/css">
-                          .st0-unserved {
-                            fill: none;
-                            stroke: #ED4537;
-                            stroke-width: 3;
-                            stroke-miterlimit: 10;
-                          }
-
-                          .st1-unserved {
-                            fill: #ED4537;
-                          }
-                        </style>
-                        <path class="st0-unserved" d="M30.5,3.3c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3c-0.3,4.1-1.3,9.9-4.1,12.7c0,0,8.6-1.2,14.4-4.7
-                     c3.2,1.4,6.8,2.1,10.6,2.1c13.8,0,25-10,25-22.4S44.3,3.3,30.5,3.3z" />
-                        <g>
-                          <path class="st1-unserved"
-                            d="M30.6,38.9c-1.7,0-3.1-1.4-3.1-3c0-1.7,1.4-3,3.1-3c1.7,0,3.1,1.4,3.1,3C33.6,37.6,32.3,38.9,30.6,38.9z" />
-                          <path class="st1-unserved" d="M34.8,18l-1.5,10c-0.2,1.5-1.6,2.5-3.1,2.3c-1.2-0.2-2.1-1.1-2.3-2.2l-1.6-10c-0.4-2.3,1.2-4.5,3.6-4.9
-                       c2.4-0.4,4.6,1.2,5,3.5C34.9,17.1,34.9,17.6,34.8,18z" />
-                        </g>
-                      </svg>
-                    </div>
-                    <div class="col-xs-9 text-right">
-                      <div class="huge" style=" font-size: 40px; line-height: 48px; color: #f44336;">
-                        {{ wsRequestsUnserved?.length }}
-                      </div>
-                    </div>
-                    <div class="col-xs-12 text-right">
-                      <div class="ng-binding" style="color: #f44336;">
-                        {{ "Unserved" | translate }}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- // SERVED -->
-            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4"
-              style="padding-left: 5px !important; padding-right: 0px !important;">
-
-              <div class="panel"
-                style="background-color: #fff;margin-bottom: 15px; box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);">
-                <div class="panel-heading">
-                  <div class="row">
-                    <div class="col-xs-3">
-
-                      <svg viewBox="0 0 58.1 53.9" style="width: 42px" xml:space="preserve">
-                        <style type="text/css">
-                          .st0-served {
-                            fill: none;
-                            stroke: #05BDD4;
-                            stroke-width: 3;
-                            stroke-miterlimit: 10;
-                          }
-
-                          .st1-served {
-                            fill: #05BDD4;
-                          }
-                        </style>
-                        <g>
-                          <path class="st0-served" d="M30.5,3c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3c-0.3,4.1-1.3,9.9-4.1,12.7c0,0,8.6-1.2,14.4-4.7
-                       c3.2,1.4,6.8,2.1,10.6,2.1c13.8,0,25-10,25-22.4S44.3,3,30.5,3z" />
-                          <g>
-                            <circle class="st1-served" cx="17.5" cy="26.7" r="3" />
-                            <circle class="st1-served" cx="30.5" cy="26.7" r="3" />
-                            <circle class="st1-served" cx="43.5" cy="26.7" r="3" />
-                          </g>
-                        </g>
-                      </svg>
-                    </div>
-                    <div class="col-xs-9 text-right">
-                      <div class="huge" style=" font-size: 40px; line-height: 48px; color: #00bcd4;">
-                        {{ wsRequestsServed?.length }}
-                      </div>
-                    </div>
-                    <div class="col-xs-12 text-right">
-                      <div class="ng-binding" style="color: #00bcd4;">
-                        {{ "Served" | translate }}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-
-          <!-- 
-          // -------------------------------------------------------------------------------------- 
-          // @ TEAM (PROJECT-USERS & BOT WITH COUNT)
-          // -------------------------------------------------------------------------------------- -->
-          <div class="col-xs-12" style="padding-right: 5px;">
-            <!-- 
-              <div id="team-container">
-                    <div  #teamContent id="team-content">
-                        Lorem ipsum dolor sit amet.Lorem ipsum
-                    </div>
-
-                    <button id="slideBack" type="button">Prev</button>
-                    <button id="slide" type="button">Next</button>
-
-                </div> 
-              -->
             <div class="card card--no-border" style="margin: 5px 0;">
-              <!-- padding:0 6px -->
-              <div class="card-content" style="padding-top: 0px;">
+              <div class="card-content"
+                style="padding-top: 0px;padding-left: 0px;padding-right: 0px;padding-bottom: 0px;">
 
-                <div class="row">
-
-                  <!-- 
-                  // --------------------------------------------------------
-                  // @ Department filter
-                  // -------------------------------------------------------- -->
-                  <div class="col-sm-6">
-                    <label class="col-sm-12" style="text-align: left; color:#7695a5;padding-left:0px">
-                      {{ 'HistoryPage.FilterByDepartment' | translate }}
-                    </label>
-
-                    <ng-select attr.aria-label="{{ 'FilterBy' | translate }} {{ 'Department' | translate }}"
-                      class="custom" name="dept" [(ngModel)]="selectedDeptId" (change)="onChangeDepts()"
-                      (clear)="clearDeptFilter()" placeholder="{{ 'HistoryPage.AllDepts' | translate }}">
-
-                      <!-- <ng-option *ngFor="let dept of depts_array_noduplicate" [value]="dept?._id"> -->
-                      <ng-option *ngFor="let dept of departments" [value]="dept?._id">
-                        <!-- // use this if do the for with departments -->
-                        {{dept?.name}}
-                        <!-- // use this if do the for with depts_array_noduplicate -->
-                        <!-- {{dept?.deptName}} -->
-                      </ng-option>
-                    </ng-select>
-                  </div>
-
-                  <!-- 
-                  // --------------------------------------------------------
-                  // @ Angent filter
-                  // -------------------------------------------------------- -->
-                  <div class="col-sm-6">
-                    <label class="col-sm-12" style="text-align: left; color: #7695a5 !important;padding-left:0px">
-                      {{ 'HistoryPage.Agent' | translate }}
-                    </label>
-                    <ng-select attr.aria-label="{{ 'FilterBy' | translate }} {{ 'HistoryPage.Agent' | translate }}"
-                      name="agent" [(ngModel)]="selectedAgentId" placeholder="{{ 'HistoryPage.AllAgents' | translate }}"
-                      (clear)="clearAgentFilter()" (change)="onChangeAgent()">
-                      <!-- <ng-option [value]="''">{{ 'HistoryPage.AllAgents' | translate }}</ng-option> -->
-                      <!-- user_and_bot_array -->
-                      <ng-option [value]="1">{{ 'HumanAgentsOnly' | translate }}</ng-option>
-                      <ng-option [value]="2">{{ 'BotsOnly' | translate }}</ng-option>
-                      <ng-option *ngFor="let agent of participantsInRequests" [value]="agent?._id">
-                        {{ agent.firstname }} {{ agent.lastname }}
-                      </ng-option>
-                    </ng-select>
-                  </div>
-
-                  <!--
-                  <div class="col-sm-4">                    
-                    <label></label>
-                    <button type="submit" class="btn btn-white" (click)="clearSearch()"
-                      style="color:#7695a5">
-                      {{ 'HistoryPage.ClearSearch' | translate }}
-                    </button>
-                  </div> -->
-
-                </div>
+ 
                 <!-- projectUserArray: {{ projectUserArray | json }} -->
+
+
+                <!--  -------------------------------------------------------------------------------------- -->
+                <!--  @ TEAMMATES SCROLL DIV -->
+                <!--  -------------------------------------------------------------------------------------- -->
+
                 <div class="team-container">
                   <div style="float: left" class="side">
                     <i class="material-icons" (click)="scrollLeft()">keyboard_arrow_left</i>
@@ -580,8 +450,8 @@
         </div>
       </div>
 
-      <!-- // REQUESTS FOR DEPARTMENTS -->
-      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="padding-right: 10px !important;">
+      <!-- // REQUESTS FOR DEPARTMENTS style="padding-right: 10px !important;"-->
+      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
         <div class="card" style="margin: 5px 0;">
           <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -593,7 +463,7 @@
           <div class="card-content" style="padding-top:5px; padding-top: 5px;
             min-height: 120px;
             overflow: auto;
-            height: 163px;">
+            height: 130px;">
             <div class="row">
               <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <table class="table table-hover">

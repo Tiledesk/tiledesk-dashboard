@@ -737,6 +737,7 @@ $f21blue: #039be5;
   padding: 8px 8px;
   // height: 56px;
   cursor: pointer;
+  
 }
 
 .middle {
@@ -762,6 +763,19 @@ $f21blue: #039be5;
   font-size: 17px;
   font-weight: 600;
   text-align: center;
+  background: #f6f7f8
+}
+
+.team-avatar-initials {
+  margin: 0;
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  border-radius: 50%;
+  font-size: 17px;
+  font-weight: 600;
+  text-align: center;
+  background: #f6f7f8
 }
 
 .assigned_requests_count {
