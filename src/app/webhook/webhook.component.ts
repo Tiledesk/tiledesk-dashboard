@@ -2,6 +2,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { NotifyService } from './../core/notify.service';
 import { WebhookService } from './../services/webhook.service';
 import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'appdashboard-webhook',
@@ -26,7 +27,8 @@ export class WebhookComponent implements OnInit {
   constructor(
     private webhookService: WebhookService,
     public translate: TranslateService,
-    private notify: NotifyService
+    private notify: NotifyService,
+    private location: Location
   ) { }
 
   ngOnInit() {
@@ -113,6 +115,11 @@ export class WebhookComponent implements OnInit {
   closeModal_ConfirmDeleteModal() {
     this.displayModal_ConfirmDeleteModal = 'none';
   }
+
+  goBack() {
+    this.location.back();
+  }
+
 
   onSaveSubscription() {
     this.getSubscriptions();
