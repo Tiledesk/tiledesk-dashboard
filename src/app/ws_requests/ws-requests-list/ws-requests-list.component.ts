@@ -46,7 +46,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   // @ViewChild('teamContent', { read: ElementRef }) public teamContent: ElementRef<any>;
   @ViewChild('teamContent') private teamContent: ElementRef;
   @ViewChild('testwidgetbtn') private testwidgetbtnRef: ElementRef;
-  @ViewChild('widgetsContent')  public widgetsContent: ElementRef;
+  @ViewChild('widgetsContent') public widgetsContent: ElementRef;
   // wsRequestsUnserved: Observable<Request[]>;
   // wsRequestsServed: Observable<Request[]>;
   wsRequestsUnserved: any;
@@ -195,7 +195,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     const firebase_conf = this.appConfigService.getConfig().firebase;
     this.storageBucket = firebase_conf['storageBucket'];
     console.log('STORAGE-BUCKET Ws Requests List ', this.storageBucket);
-    
+
     this.getAllProjectUsers(this.storageBucket);
   }
 
@@ -235,7 +235,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   openRightSideBar() {
     this.OPEN_RIGHT_SIDEBAR = true;
     console.log('%%% Ws-REQUESTS-Map »»»» OPEN RIGHT SIDEBAR ', this.OPEN_RIGHT_SIDEBAR);
-    
+
     const elemMainContent = <HTMLElement>document.querySelector('.main-content');
     console.log('%%% Ws-REQUESTS-Map - REQUEST-MAP - ON OPEN RIGHT SIDEBAR -> RIGHT SIDEBAR HEIGHT (MAIN-CONTENT)', elemMainContent.clientHeight);
     this.map_sidebar_height = elemMainContent.clientHeight - 100 + 'px';
@@ -307,13 +307,22 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   }
 
 
+  // -------------------------------------------------------
+  // Used for the old scroll div
+  // -------------------------------------------------------
+  // public scrollRight(): void {
+  //   this.teamContent.nativeElement.scrollTo({ left: (this.teamContent.nativeElement.scrollLeft + 150), behavior: 'smooth' });
+  // }
+  // public scrollLeft(): void {
+  //   this.teamContent.nativeElement.scrollTo({ left: (this.teamContent.nativeElement.scrollLeft - 150), behavior: 'smooth' });
+  // }
 
-  public scrollRight(): void {
-    this.teamContent.nativeElement.scrollTo({ left: (this.teamContent.nativeElement.scrollLeft + 150), behavior: 'smooth' });
+  public scrollRightTeammates(): void {
+    this.widgetsContent.nativeElement.scrollTo({ left: (this.teamContent.nativeElement.scrollLeft + 150), behavior: 'smooth' });
   }
 
-  public scrollLeft(): void {
-    this.teamContent.nativeElement.scrollTo({ left: (this.teamContent.nativeElement.scrollLeft - 150), behavior: 'smooth' });
+  public scrollLeftTeammates(): void {
+    this.widgetsContent.nativeElement.scrollTo({ left: (this.teamContent.nativeElement.scrollLeft - 150), behavior: 'smooth' });
   }
 
   // async getRequestsTotalCount() {
@@ -374,7 +383,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
           this.listenToAllProjectUsersOfProject$(projectuser)
 
           const imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + storageBucket + "/o/profiles%2F" + projectuser.id_user._id + "%2Fphoto.jpg?alt=media";
-         
+
           this.checkImageExists(imgUrl, (existsImage) => {
             if (existsImage == true) {
               projectuser.hasImage = true
@@ -443,7 +452,8 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
         }
 
-
+        this.projectUserArray.sort(function(a,b){return a.user_available_rt-b.user_available_rt});
+        this.projectUserArray.reverse()
         // this.projectUserArray.sort((n1, n2) => {
         //   if (n1.user_available_rt === true) {
         //     return 1;

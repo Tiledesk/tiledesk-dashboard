@@ -706,11 +706,13 @@ $f21blue: #039be5;
 // ======================================================
 .middle-nw {
   float: left;
-  width: 90%;
-  overflow: auto;
+  // width: 90%;
+  width: 85%;
+  // overflow: auto;
+  overflow: hidden;
   /*will change this to hidden later to deny scolling to user*/
   white-space: nowrap;
-  height: 55px;
+  height: 60px;
 }
 
 .teammates-with-picture-assigned-requests-count {
@@ -723,13 +725,15 @@ $f21blue: #039be5;
   justify-content: center;
   min-width: 18px;
   height: 18px;
-  top: 8px;
-  left: 4px;
+  // top: 8px;
+  // left: 4px;
+  top: 0px;
+  left: -3px;
   border-radius: 9px;
   padding: 0 5px;
   font-size: 11px;
   text-align: center;
-  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.35);
+  // box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.35);
   background-color: #039be5;
   color: #fff;
 }
@@ -743,8 +747,10 @@ $f21blue: #039be5;
   display: flex;
   align-items: center;
   justify-content: center;
-  top: 39px;
-  left: 38px;
+  // top: 39px;
+  // left: 38px;
+  top: 30px;
+  left: 30px;
 }
 
 .teammates-no-picture-assigned_requests_count {
@@ -760,14 +766,15 @@ $f21blue: #039be5;
   // top: 8px;
   // left: 4px;
   top: -3px;
-  left: -5px;
+  left: -4px;
   border-radius: 9px;
   padding: 0 5px;
   font-size: 11px;
   text-align: center;
-  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.35);
+  // box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.35);
   background-color: #039be5;
   color: #fff;
+  line-height: 1;
 }
 .teammates-no-picture-status-icon {
   width: 10px;
@@ -779,8 +786,10 @@ $f21blue: #039be5;
   display: flex;
   align-items: center;
   justify-content: center;
-  top: 39px;
-  left: 38px;
+  // top: 39px;
+  // left: 38px;
+  top: 27px;
+  left: 27px;
 }
 
 .is-user-online {
@@ -790,9 +799,38 @@ $f21blue: #039be5;
   background-color: #f44336;
 }
 
+.scroll-div-side-btn {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  margin-top: 4px;
+  background: #e4e6eb;
+  border-radius: 50%;
+  padding: 2px;
+  cursor: pointer;
+}
 
+.scroll-div-side-btn:hover {
+  background: rgba(228, 230, 235, 0.6);
+}
 
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
 
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
 
 // ======================================================
 // teammates scroll div
@@ -830,7 +868,6 @@ $f21blue: #039be5;
   padding: 8px 8px;
   // height: 56px;
   cursor: pointer;
-  
 }
 
 .middle {
@@ -856,7 +893,7 @@ $f21blue: #039be5;
   font-size: 17px;
   font-weight: 600;
   text-align: center;
-  background: #f6f7f8
+  background: #f6f7f8;
 }
 
 .team-avatar-initials {
@@ -868,7 +905,7 @@ $f21blue: #039be5;
   font-size: 17px;
   font-weight: 600;
   text-align: center;
-  background: #f6f7f8
+  background: #f6f7f8;
 }
 
 .assigned_requests_count {
