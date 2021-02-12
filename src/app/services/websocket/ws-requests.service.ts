@@ -762,7 +762,30 @@ export class WsRequestsService implements OnDestroy {
       .map((res) => res.json());
   }
 
+  public deleteRequestOnPromise(request_id) {
 
+    let promise = new Promise((resolve, reject) => {
+
+      const headers = new Headers();
+      headers.append('Accept', 'application/json');
+      headers.append('Content-type', 'application/json');
+      headers.append('Authorization', this.TOKEN);
+      const options = new RequestOptions({ headers });
+
+      const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + request_id
+      console.log('DELETE REQUEST URL ', url)
+
+      this.http.delete(url, options)
+        .toPromise()
+        .then((res) => {
+          resolve(res);
+        }).catch((err) => {
+          reject(err);
+        })
+
+    })
+    return promise;
+  }
 
   joinDept(departmentid, requestid) {
     const headers = new Headers();

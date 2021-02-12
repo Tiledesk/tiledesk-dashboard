@@ -103,6 +103,9 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
   // tparams = brand;
   tparams: any;
+
+  isVisibleAnalytics: boolean;
+  public_Key: string;
   
   constructor(
     private mongodbFaqService: MongodbFaqService,
@@ -146,6 +149,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     this.getWindowWidth();
     this.getProjectPlan();
     this.getBrowserLang();
+    this.getOSCODE();
 
     this.checkUserImageUploadIsComplete();
     this.getParamsBotType();
@@ -349,6 +353,27 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
   getBrowserLang() {
     this.browserLang = this.translate.getBrowserLang();
+  }
+
+  getOSCODE() {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    console.log('AppConfigService getAppConfig (BOT LIST) public_Key', this.public_Key);
+    let keys = this.public_Key.split("-");
+    console.log('PUBLIC-KEY (BOT LIST) keys', keys)
+    keys.forEach(key => {
+      
+      if (key.includes("ANA")) {
+        console.log('PUBLIC-KEY (BOT LIST) - key', key);
+        let ana = key.split(":");
+        console.log('PUBLIC-KEY (BOT LIST) - ana key&value', ana);
+        if (ana[1] === "F") {
+          this.isVisibleAnalytics = false;
+        } else {
+          this.isVisibleAnalytics = true;
+        }
+
+      }
+    })
   }
 
   getProjectPlan() {
@@ -660,6 +685,25 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
       if (faq) {
         this.faq_lenght = faq.length
       }
+
+      // in aggiornamento
+      this.mongodbFaqService.getRepliesCount(this.faqKb_id).subscribe((res: any) => {
+        console.log("REPLIES COUNT RESPONSE: ", res);
+        
+        for (let fq of this.faq) {
+          console.log("FQ id: ", fq._id)
+          let reply: any;
+          for (reply of res) {
+            console.log("REPLY id: ", reply._id._answerid)
+            if (fq._id == reply._id._answerid) {
+              console.log("RES count: ", reply.count);
+              fq.message_count = reply.count;
+              console.log("MESSAGE COUNT: ", fq.message_count)
+            }
+          }
+        }
+      })
+
     }, (error) => {
       this.showSpinner = false;
       console.log('>> FAQs GOT BY FAQ-KB ID - ERROR', error);

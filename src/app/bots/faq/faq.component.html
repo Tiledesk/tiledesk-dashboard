@@ -537,6 +537,13 @@
                     </span>
                   </th>
 
+                  <th *ngIf="isVisibleAnalytics">
+                    <!-- Message count -->
+                    <span class="column-th-span">
+                      {{ "BotsAddEditPage.Messages" | translate }}
+                    </span>
+                  </th>
+
                   <th>
                     <!-- TOPIC -->
                     <span class="column-th-span">
@@ -602,6 +609,13 @@
                     <span class="tooltipx">
                       {{ faq?.answer }}
                       <span class="tooltiptext">{{ 'FaqPage.FaqId' | translate }}: <br> {{ faq?._id }} </span>
+                    </span>
+                  </td>
+
+                  <td *ngIf="isVisibleAnalytics" style="white-space: normal !important; word-wrap: break-word;font-size:13px; font-weight:400; word-break: break-all;">
+                    <span class="tooltipx">
+                      {{ faq?.message_count }}
+                      <span class="tooltiptext">Number of replies: <br> 13 </span>
                     </span>
                   </td>
 

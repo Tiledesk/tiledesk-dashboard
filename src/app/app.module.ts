@@ -214,6 +214,7 @@ import { WebhookService } from './services/webhook.service';
 import { VisitorsAnalyticsComponent } from './analytics2/metriche/visitors-analytics/visitors-analytics.component';
 import { MessagesComponent } from './analytics2/metriche/messages/messages.component';
 import { NotificationSettingsComponent } from './user-profile/notification-settings/notification-settings.component';
+import { SatisfactionComponent } from './analytics2/metriche/satisfaction/satisfaction.component';
 
 console.log('************** APPMODULE ******************');
 // AoT requires an exported function for factories
@@ -366,7 +367,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     MapRequestComponent,
     MessagesComponent,
     NotificationSettingsComponent,
-    VisitorsAnalyticsComponent
+    VisitorsAnalyticsComponent,
+    SatisfactionComponent
   ],
   imports: [
     /* PRIVATE */

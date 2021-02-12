@@ -995,7 +995,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   /// VISITOR GRAPH FOR THE NEW NOME
   getVisitorsByLastNDays(lastdays) {
-    this.analyticsService.getVisitorsByDay().subscribe((visitorsByDay) => {
+    this.analyticsService.getVisitorsByDay(lastdays).subscribe((visitorsByDay) => {
       console.log("»» VISITORS BY DAY RESULT: ", visitorsByDay)
 
       const last7days_initarray = [];

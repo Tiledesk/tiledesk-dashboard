@@ -54,15 +54,11 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   wsRequestsUnserved: any;
   wsRequestsServed: any;
   ws_requests: any;
-
   projectId: string;
   zone: NgZone;
   SHOW_SIMULATE_REQUEST_BTN = false;
   showSpinner = true;
-
-
   firebase_token: any;
-
   currentUserID: string;
   ONLY_MY_REQUESTS: boolean = false;
   ROLE_IS_AGENT: boolean;
@@ -238,9 +234,10 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   openRightSideBar() {
     this.OPEN_RIGHT_SIDEBAR = true;
     console.log('%%% Ws-REQUESTS-Map »»»» OPEN RIGHT SIDEBAR ', this.OPEN_RIGHT_SIDEBAR);
-
+    
     const elemMainContent = <HTMLElement>document.querySelector('.main-content');
-    this.map_sidebar_height = elemMainContent.clientHeight + 10 + 'px';
+    console.log('%%% Ws-REQUESTS-Map - REQUEST-MAP - ON OPEN RIGHT SIDEBAR -> RIGHT SIDEBAR HEIGHT (MAIN-CONTENT)', elemMainContent.clientHeight);
+    this.map_sidebar_height = elemMainContent.clientHeight - 100 + 'px';
     console.log('%%% Ws-REQUESTS-Map - REQUEST-MAP - ON OPEN RIGHT SIDEBAR -> RIGHT SIDEBAR HEIGHT', this.map_sidebar_height);
 
   }
