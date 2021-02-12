@@ -218,6 +218,12 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     }
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+
+    this.projectUserArray.forEach(projectuser => {
+      this.wsRequestsService.unsubsToToWsAllProjectUsersOfTheProject(projectuser.id_user._id)
+    });
+
+
   }
 
   goToOperatingHours() {
@@ -308,14 +314,14 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
 
   // -------------------------------------------------------
-  // Used for the old scroll div
+  // Used for the old scroll div (now is set to display none)
   // -------------------------------------------------------
-  // public scrollRight(): void {
-  //   this.teamContent.nativeElement.scrollTo({ left: (this.teamContent.nativeElement.scrollLeft + 150), behavior: 'smooth' });
-  // }
-  // public scrollLeft(): void {
-  //   this.teamContent.nativeElement.scrollTo({ left: (this.teamContent.nativeElement.scrollLeft - 150), behavior: 'smooth' });
-  // }
+  public scrollRight(): void {
+    this.teamContent.nativeElement.scrollTo({ left: (this.teamContent.nativeElement.scrollLeft + 150), behavior: 'smooth' });
+  }
+  public scrollLeft(): void {
+    this.teamContent.nativeElement.scrollTo({ left: (this.teamContent.nativeElement.scrollLeft - 150), behavior: 'smooth' });
+  }
 
   public scrollRightTeammates(): void {
     this.widgetsContent.nativeElement.scrollTo({ left: (this.teamContent.nativeElement.scrollLeft + 150), behavior: 'smooth' });
@@ -375,12 +381,12 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       console.log('WS-REQUESTS-LIST - GET PROJECT-USERS RES ', _projectUsers);
       if (_projectUsers) {
 
-        this.projectUserArray = _projectUsers;
+        // this.projectUserArray = _projectUsers;
 
-        this.projectUserArray.forEach(projectuser => {
-          this.wsRequestsService.subscriptionToWsAllProjectUsersOfTheProject(projectuser.id_user._id);
+        _projectUsers.forEach(projectuser => {
 
-          this.listenToAllProjectUsersOfProject$(projectuser)
+          console.log('WS-REQUESTS-LIST - GET PROJECT-USERS forEach projectuser ', projectuser);
+        
 
           const imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + storageBucket + "/o/profiles%2F" + projectuser.id_user._id + "%2Fphoto.jpg?alt=media";
 
@@ -392,6 +398,9 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
               projectuser.hasImage = false
             }
           });
+
+          this.wsRequestsService.subscriptionToWsAllProjectUsersOfTheProject(projectuser.id_user._id);
+          this.listenToAllProjectUsersOfProject$(projectuser)
 
           this.createAgentAvatarInitialsAnfBckgrnd(projectuser.id_user)
           //   if (user) {
@@ -452,8 +461,16 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
         }
 
-        this.projectUserArray.sort(function(a,b){return a.user_available_rt-b.user_available_rt});
-        this.projectUserArray.reverse()
+
+        // const index = this.projectUserArray((e) => e._id === projectuser._id);
+        this.projectUserArray.indexOf(projectuser) === -1 ? this.projectUserArray.push(projectuser) : console.log("This item already exists");
+        // this.projectUserArray.push(projectuser)
+
+        console.log('WS-REQUESTS-LIST - GET PROJECT-USERS RES projectUserArray ', this.projectUserArray);
+        // this.projectUserArray.sort(function (a, b) { return a.user_available_rt - b.user_available_rt });
+        // this.projectUserArray.reverse()
+
+
         // this.projectUserArray.sort((n1, n2) => {
         //   if (n1.user_available_rt === true) {
         //     return 1;

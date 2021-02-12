@@ -90,7 +90,7 @@
   </li>
 
   <!-- SHOW SERVED REQUEST MAP -->
-  <!-- <li class="see-no-realtime-request right-li" style="float: right; padding-right: 5px;" (click)='openRightSideBar()'>
+  <li class="see-no-realtime-request right-li" style="float: right; padding-right: 5px;" (click)='openRightSideBar()'>
     <a attr.aria-label="{{ 'ViewServedRequestsMap' | translate }}" class="tool_tip" style="cursor: pointer; display: unset;"
       [ngClass]="{ 'has-reached-100' : served_unserved_sum >= 100 }">
       <span class="material-icons" style="margin-top: 3px; color:#3ea9f5">
@@ -107,7 +107,7 @@
         {{ served_unserved_sum }}
       </span>
     </span>
-  </li> -->
+  </li>
 
 </ul>
 
@@ -191,7 +191,7 @@
   </li>
 
   <!-- SHOW SERVED REQUEST MAP * FOR SMALL SCREEN -->
-  <!-- <li  class="see-no-realtime-request" style="float: right; padding-right: 5px; " (click)='openRightSideBar()'>
+  <li  class="see-no-realtime-request" style="float: right; padding-right: 5px; " (click)='openRightSideBar()'>
     <a attr.aria-label="{{ 'ViewServedRequestsMap' | translate }}" class="tool_tip" style="cursor: pointer; display: unset;"
       [ngClass]="{ 'has-reached-100' : served_unserved_sum >= 100 }">
       <span class="material-icons" style="margin-top: 0px;color:#3ea9f5">
@@ -209,7 +209,7 @@
         {{ served_unserved_sum }}
       </span>
     </span>
-  </li> -->
+  </li>
 </ul>
 
 <div class="main-content" style="padding-top:0px; margin-top: 25px;padding-left: 0px;padding-right: 0px;">
@@ -400,7 +400,7 @@
 
         <div class="row">
           <!--  -------------------------------------------------------------------------------------- -->
-          <!--  @ OLD TEAMMATES SCROLL DIV  !!!! display none -->
+          <!--  @ OLD TEAMMATES SCROLL DIV  !!! display none  -->
           <!--  -------------------------------------------------------------------------------------- -->
           <div class="col-xs-12" style="padding-right: 5px; display: none;">
             <div class="card card--no-border" style="margin: 5px 0;">
@@ -447,7 +447,7 @@
           <!--  -------------------------------------------------------------------------------------- -->
           <!--  @ New TEAMMATES SCROLL DIV -->
           <!--  -------------------------------------------------------------------------------------- -->
-          <div class="col-xs-12" style="padding-right: 5px;">
+          <div class="col-xs-12" style="padding-right: 5px;" >
             <div class="card card--no-border" style="margin: 5px 0;margin-top: 8px;">
               <div class="card-content"
                 style="padding-top: 0px;padding-left: 0px;padding-right: 0px;padding-bottom: 0px;">
@@ -460,8 +460,10 @@
                   <div class="served-by-conv-a">
                     <div class="served-by-conv-b" *ngFor="let agent of projectUserArray">
 
-                      <div class="served-by-conv-c tool_tip" (click)="goToAgentProfile(agent?._id)">
+                      <div class="served-by-conv-c tool_tip">
                         <div class="served-by-conv-d">
+
+                         <!-- {{ agent?.id_user?.firstname }} hasImage {{agent.hasImage }} -->
                           <div *ngIf="agent.hasImage" size="42" class="served-by-conv-e">
                             <!-- {{  agent.hasImage }} -->
 
@@ -478,6 +480,7 @@
 
                           </div>
 
+                          <!-- {{agent.hasImage }} -->
                           <div *ngIf="!agent.hasImage" size="42" class="served-by-conv-e">
                             <div class="altenative-conv-avatar-wrap"
                               [ngStyle]="{'background-color': agent?.id_user?.fillColour }">

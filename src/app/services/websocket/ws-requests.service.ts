@@ -744,7 +744,7 @@ export class WsRequestsService implements OnDestroy {
     return new Promise(function (resolve, reject) {
 
       self.webSocketJs.ref(path, 'subscriptionToWsAllProjectUsersOfTheProject', function (data, notification) {
-        console.log("WS-REQUESTS-SERVICE SUBSCR TO WS PROJECT-USERS OF THE PROJEC - CREATE - data ", data , ' path ', path);
+        console.log("WS-REQUESTS-SERVICE SUBSCR TO WS PROJECT-USERS OF THE PROJECT - CREATE - data ", data , ' path ', path);
         // console.log("PROJECT COMP (user-service) SUBSCR TO WS CURRENT USERS - CREATE - data ", data);
         // console.log("PROJECT COMP (user-service) SUBSCR TO WS CURRENT USERS - CREATE - data  user_available ", data.user_available);
         // console.log("PROJECT COMP (user-service) SUBSCR TO WS CURRENT USERS - CREATE - data  isBusy ", data.isBusy);
@@ -755,7 +755,7 @@ export class WsRequestsService implements OnDestroy {
 
       }, function (data, notification) {
         resolve(data)
-        console.log("WS-REQUESTS-SERVICE SUBSCR TO WS PROJECT-USERS OF THE PROJEC - UPDATE - data ", data);
+        console.log("WS-REQUESTS-SERVICE SUBSCR TO WS PROJECT-USERS OF THE PROJECT - UPDATE - data ", data);
         self.projectUsersOfProjectFromWsSubscription$.next(data);
 
       }, function (data, notification) {
@@ -768,7 +768,13 @@ export class WsRequestsService implements OnDestroy {
 
     })
   }
-
+  // -----------------------------------------------------------------------------------------------------------------------------
+  // UN-Subscribe to WS PROJECT-USERS OF THE PROJECT
+  // -----------------------------------------------------------------------------------------------------------------------------
+  unsubsToToWsAllProjectUsersOfTheProject(userid) {
+    this.webSocketJs.unsubscribe('/' + this.project_id + '/project_users/users/' + userid);
+    console.log("WS-REQUESTS-SERVICE UN-SUBSCR TO WS PROJECT-USERS OF THE PROJECT  projectid: ", this.project_id, ' userid:', userid);
+  }
 
 
 
