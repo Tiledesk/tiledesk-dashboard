@@ -12,6 +12,7 @@
 - Improves the layout of the analytics pages
 - Adds, in the list of bots, the total number of messages sent by the bot
 - Adds, in the bot details, the number of times a response has been used
+- Adds in the conversation list page the ability to know served requests geolocation
 
 ### 2.1.21
 - Fixes the bug: displays 'NaN' as percentage when the count of the conversations handled by bots is zero
