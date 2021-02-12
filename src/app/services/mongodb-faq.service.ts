@@ -1,3 +1,4 @@
+import { HttpHeaders, HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs/Observable';
@@ -28,7 +29,8 @@ export class MongodbFaqService {
   constructor(
     http: Http,
     private auth: AuthService,
-    public appConfigService: AppConfigService
+    public appConfigService: AppConfigService,
+    private httpClient: HttpClient
   ) {
     this.http = http;
 
@@ -282,6 +284,17 @@ export class MongodbFaqService {
       .post(url, JSON.stringify(body), options)
       .map((res) => res.json());
 
+  }
+
+  getRepliesCount(botId) {
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': this.TOKEN
+    })
+
+    let params = new HttpParams().set('sender', 'bot_' + botId);
+
+    return this.httpClient.get(this.SERVER_BASE_PATH + this.project._id + '/analytics/requests/aggregate/attributes/_answerid', { headers: headers, params: params});
   }
 
 }

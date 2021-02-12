@@ -1,3 +1,4 @@
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { FaqKb } from '../models/faq_kb-model';
@@ -32,7 +33,8 @@ export class FaqKbService {
   constructor(
     http: Http,
     private auth: AuthService,
-    public appConfigService: AppConfigService
+    public appConfigService: AppConfigService,
+    private httpClient: HttpClient
   ) {
     // // tslint:disable-next-line:no-debugger
     // debugger
@@ -408,6 +410,18 @@ export class FaqKbService {
     return this.http
       .put(url, JSON.stringify(body), options)
       .map((res) => res.json());
+
+  }
+
+  getNumberOfMessages(idBot) {
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': this.TOKEN
+    })
+
+    let params = new HttpParams().set('sender', 'bot_' + idBot)
+
+    return this.httpClient.get(this.SERVER_BASE_PATH + this.project._id + "/analytics/messages/count", { headers: headers, params:params })
 
   }
 
