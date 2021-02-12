@@ -1,64 +1,120 @@
 <div class="row" style="text-align: center; margin-top:35px">
-  <div class="col-md-12" >
-      <h4 class="section-title">
-          {{ 'Analytics.Messages.NumberOfMessages' | translate }}
-      </h4>
+  <div class="col-md-12">
+    <h4 class="section-title">
+      {{ 'Analytics.Messages.NumberOfMessages' | translate }}
+    </h4>
   </div>
 </div>
 
-<div class="row">
-  <div class="col-md-12 card" style="border-radius: 11px;">
-    <div class="chart-wrapper-messages">
-      <div class="row">
-        <div class="chart-title-messages col-sm-12" style="margin-top: 0px; margin-bottom: 18px; text-align: center;">
-          <span
-            style="padding-bottom: 12px; padding-top:30px; font-size: 18px; font-family: 'Google Sans', sans-serif !important;">
-            {{ 'Analytics.Messages.MessagesChartTitle' | translate }} {{lastdays}}
-          </span>
+<div class="row" style="text-align: center; margin-top: 6px;">
+  <!-- left side card -->
+  <div class="col-md-3">
+    <div class="card" style="border-radius: 10px; min-height: 424px;">
+      <div
+        style="padding-bottom: 28px; padding-top: 30px; font-size: 18px; font-family: 'Google Sans', sans-serif !important;">
+        {{ "Last30DaysMessages" | translate }}
+      </div>
+      <div class="card-content">
+        <p *ngIf="messageCountLastMonth != null" class="number-analytics">{{ messageCountLastMonth }}</p>
+        <p *ngIf="messageCountLastMonth == null" class="number-analytics" style="font-size: 35px;">n.a.</p>
+      </div>
+
+      <!-- <div *ngIf="messageCountLastMonth != null" class="card-footer request_count_footer"
+        style="font-size: 16px; margin-top: 9px; padding-top: 21px;  padding-bottom: 19px;">
+        Footer Label 
+        <span style="display: block"><b>{{ messageCountLastMonth }}</b></span>
+      </div>
+
+      <div *ngIf="messageCountLastMonth == null" class="card-footer request_count_footer"
+        style="font-size: 16px; margin-top: 9px; padding-top: 21px;  padding-bottom: 19px;">
+        {{ "NoMessagesValue" | translate}} 
+        <span style="display: block"></span>
+      </div> -->
+    </div>
+  </div>
+
+  <!-- rigth side card -->
+  <div class="col-md-9">
+    <div class="card" style="border-radius: 10px;">
+      <div style="padding-top: 27px; padding-bottom: 10px">
+        <span
+          style="padding-bottom: 12px; padding-top:30px; font-size: 18px; font-family: 'Google Sans', sans-serif !important;">
+          {{ 'Analytics.Messages.MessagesChartTitle' | translate }} {{lastdays}}
           <span *ngIf="selectedDaysId <= 30">{{ 'Analytics.Days' | translate }}</span>
           <span *ngIf="selectedDaysId === 90 || selectedDaysId === 180  ">{{ 'Analytics.Months' | translate }}</span>
           <span *ngIf="selectedDaysId === 360">{{ 'Analytics.Year' | translate }}</span>
-        </div>
+          <span class="analytics-date-range-selected"> {{initDay}} <i class="material-icons arrow_forward-custom">
+              arrow_forward </i> {{endDay}}</span>
+        </span>
       </div>
 
-      <div class="row">
+      <div class="row" style="padding-left: 52px; padding-right: 38px;">
         <!-- ------last n days filter--------- -->
-        <div class="col-sm-3" style="margin-left: 53px">
-          <div class="section-select-days">
-            <label class="col-sm-10" style="text-align: left; color:black">
-              {{ 'Analytics.FilterReport' | translate }}
-            </label>
-
-            <div class="col-sm-12" style="margin-bottom: 6px;">
-              <ng-select class="custom" name="days" [(ngModel)]="selectedDaysId" [clearable]="false" (change)="daysSelect(selectedDaysId, $event)">
-                <ng-option [value]="7">{{ 'Analytics.Last' | translate}} 7 {{ 'Analytics.Days' | translate}}</ng-option>
-                <ng-option [value]="15">{{ 'Analytics.Last' | translate}} 15 {{ 'Analytics.Days' | translate}}
-                </ng-option>
-                <ng-option [value]="30">{{ 'Analytics.Last' | translate}} 30 {{ 'Analytics.Days' | translate}}
-                </ng-option>
-                <ng-option [value]="90">{{ 'Analytics.Last' | translate}} 3 {{ 'Analytics.Months' | translate}}
-                </ng-option>
-                <ng-option [value]="180">{{ 'Analytics.Last' | translate}} 6 {{ 'Analytics.Months' | translate}}
-                </ng-option>
-                <ng-option [value]="360">{{ 'Analytics.Last' | translate}} 1 {{ 'Analytics.Year' | translate}}
-                </ng-option>
-              </ng-select>
+        <div class="col-sm-4">
+          <div class="section-select-dept">
+            <div class="row">
+              <label class="col-sm-12" style="text-align: left; color:black">
+                {{ 'Analytics.FilterReport' | translate }} :
+              </label>
+              <div class="col-sm-12" style="margin-bottom: 6px; text-align: left">
+                <ng-select class="custom" name="days" [(ngModel)]="selectedDaysId" [clearable]="false"
+                  (change)="daysSelect(selectedDaysId)">
+                  <ng-option [value]="7">{{ 'Analytics.Last' | translate}} 7 {{ 'Analytics.Days' | translate}}
+                  </ng-option>
+                  <ng-option [value]="15">{{ 'Analytics.Last' | translate}} 15 {{ 'Analytics.Days' | translate}}
+                  </ng-option>
+                  <ng-option [value]="30">{{ 'Analytics.Last' | translate}} 30 {{ 'Analytics.Days' | translate}}
+                  </ng-option>
+                  <ng-option [value]="90">{{ 'Analytics.Last' | translate}} 3 {{ 'Analytics.Months' | translate}}
+                  </ng-option>
+                  <ng-option [value]="180">{{ 'Analytics.Last' | translate}} 6 {{ 'Analytics.Months' | translate}}
+                  </ng-option>
+                  <ng-option [value]="360">{{ 'Analytics.Last' | translate}} 1 {{ 'Analytics.Year' | translate}}
+                  </ng-option>
+                </ng-select>
+              </div>
             </div>
           </div>
         </div>
+
         <!-- ------ init-end days show--------- -->
-        <div class="col-sm-4">
+        <!-- <div class="col-sm-3" style="width: 18%;">
           <div class="section-select-days">
             <label class="col-sm-10" style="text-align: left; color: black; padding-right: 0px;">
-              {{ 'Analytics.DataRangeRequest' | translate }} : 
+              {{ 'Analytics.DataRangeRequest' | translate }} :
             </label>
             <div class="col-sm-10 boxdays" style="padding-top: 2px;">
               <p style="margin: 0 !important; "> {{initDay}} <i class="material-icons arrow_forward-custom">
-                arrow_forward </i> {{endDay}}</p>
+                  arrow_forward </i> {{endDay}}</p>
+            </div>
+          </div>
+        </div> -->
+
+        <!------ agent filter ------>
+        <div class="col-sm-4">
+          <div class="section-select-dept">
+            <div class="row">
+              <label class="col-sm-12" style="text-align: left; color:black">
+                {{ "Agent" | translate }}
+              </label>
+              <div class="col-sm-12" style="margin-bottom: 6px; text-align: left;">
+                <ng-select class="custom" name="agent" [(ngModel)]="selectedAgentId" [clearable]="false"
+                  (change)="agentSelected(selectedAgentId)">
+                  <ng-option [value]="''">Tutto</ng-option>
+                  <ng-option *ngFor="let agent of projectUserAndBotsArray" value="{{ agent.id }}">
+                    {{ agent.name }}
+                  </ng-option>
+
+                </ng-select>
+              </div>
             </div>
           </div>
         </div>
+
       </div>
+
+      <!------- agent filter -------->
+
 
       <div class="card-content chart-container" style="position: relative; margin:12px 12px; height:35vh;">
         <canvas id="lastdaysMessages"></canvas>

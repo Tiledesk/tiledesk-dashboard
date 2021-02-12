@@ -7,5 +7,6 @@ export interface Faq {
     answer: string;
     appId: string;
     createdBy: string;
+    message_count: number;
     __v: any;
 }

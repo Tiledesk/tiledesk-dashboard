@@ -1,3 +1,5 @@
+import { FaqKbService } from './../../../services/faq-kb.service';
+import { UsersService } from './../../../services/users.service';
 import { DepartmentService } from '../../../services/department.service';
 
 import { AnalyticsService } from './../../../services/analytics.service';
@@ -7,6 +9,7 @@ import { Chart } from 'chart.js';
 import * as moment from 'moment';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -36,17 +39,25 @@ export class TempirispostaComponent implements OnInit {
 
   departments: any;
 
-  selectedDaysId: number; //lastdays filter
-  selectedDeptId: string;  //department filter
+  selectedDaysId: number;   // lastdays filter
+  selectedDeptId: string;   // department filter
+  selectedAgentId: string;  // agent filter
 
   subscription: Subscription;
 
   langService: HumanizeDurationLanguage = new HumanizeDurationLanguage();
   humanizer: HumanizeDuration = new HumanizeDuration(this.langService);
 
+  projectUserAndBotsArray = []
+  projectUsersList: any;
+  projectBotsList: any;
+  bots: any;
+
   constructor(private analyticsService: AnalyticsService,
     private translate: TranslateService,
-    private departmentService: DepartmentService) {
+    private departmentService: DepartmentService,
+    private usersService: UsersService,
+    private faqKbService: FaqKbService) {
 
     this.lang = this.translate.getBrowserLang();
     console.log('LANGUAGE ', this.lang);
@@ -55,11 +66,12 @@ export class TempirispostaComponent implements OnInit {
 
   ngOnInit() {
     this.selectedDeptId = '';
-    this.selectedDaysId = 7
+    this.selectedDaysId = 7;
+    this.selectedAgentId = '';
     this.avarageWaitingTimeCLOCK();
-    this.avgTimeResponseCHART(this.selectedDaysId, this.selectedDeptId);
+    this.avgTimeResponseCHART(this.selectedDaysId, this.selectedDeptId, this.selectedAgentId);
     this.getDepartments();
-
+    this.getProjectUsersAndBots();
   }
 
   msToTIME(value) {
@@ -130,19 +142,25 @@ export class TempirispostaComponent implements OnInit {
     }
     this.barChart.destroy();
     this.subscription.unsubscribe();
-    this.avgTimeResponseCHART(value, this.selectedDeptId);
-    console.log('REQUEST:', value, this.selectedDeptId)
+    this.avgTimeResponseCHART(value, this.selectedDeptId, this.selectedAgentId);
+    console.log('REQUEST:', value, this.selectedDeptId, this.selectedAgentId)
   }
 
   depSelected(selectedDeptId) {
     console.log('dep', selectedDeptId);
     this.barChart.destroy();
     this.subscription.unsubscribe();
-    this.avgTimeResponseCHART(this.selectedDaysId, selectedDeptId)
-    console.log('REQUEST:', this.selectedDaysId, selectedDeptId)
+    this.avgTimeResponseCHART(this.selectedDaysId, selectedDeptId, this.selectedAgentId)
+    console.log('REQUEST:', this.selectedDaysId, selectedDeptId, this.selectedAgentId)
   }
 
-
+  agentSelected(selectedAgentId) {
+    console.log("Selected agent: ", selectedAgentId);
+    this.barChart.destroy();
+    this.subscription.unsubscribe();
+    this.avgTimeResponseCHART(this.selectedDaysId, this.selectedDeptId, selectedAgentId)
+    console.log('REQUEST:', this.selectedDaysId, this.selectedDeptId, selectedAgentId)
+  }
 
   getDepartments() {
     this.departmentService.getDeptsByProjectId().subscribe((_departments: any) => {
@@ -154,6 +172,50 @@ export class TempirispostaComponent implements OnInit {
     }, () => {
       console.log('!!! NEW REQUESTS HISTORY - GET DEPTS * COMPLETE *')
     });
+  }
+
+  getProjectUsersAndBots() {
+    // https://stackoverflow.com/questions/44004144/how-to-wait-for-two-observables-in-rxjs
+
+    const projectUsers = this.usersService.getProjectUsersByProjectId();
+    const bots = this.faqKbService.getAllBotByProjectId();
+
+    Observable
+      .zip(projectUsers, bots, (_projectUsers: any, _bots: any) => ({ _projectUsers, _bots }))
+      .subscribe(pair => {
+        console.log('CONV LENGTH ANALYTICS - GET P-USERS-&-BOTS - PROJECT USERS : ', pair._projectUsers);
+        console.log('CONV LENGTH ANALYTICS - GET P-USERS-&-BOTS - BOTS: ', pair._bots);
+
+        if (pair && pair._projectUsers) {
+          this.projectUsersList = pair._projectUsers;
+
+          this.projectUsersList.forEach(p_user => {
+            this.projectUserAndBotsArray.push({ id: p_user.id_user._id, name: p_user.id_user.firstname + ' ' + p_user.id_user.lastname });
+          });
+        }
+
+        if (pair && pair._bots) {
+          this.bots = pair._bots
+            .filter(bot => {
+              if (bot['trashed'] === false) {
+                return true
+              } else {
+                return false
+              }
+            })
+
+          this.bots.forEach(bot => {
+            this.projectUserAndBotsArray.push({ id: 'bot_' + bot._id, name: bot.name + ' (bot)' })
+          });
+        }
+
+        console.log('CONV LENGTH ANALYTICS - GET P-USERS-&-BOTS - PROJECT-USER & BOTS ARRAY : ', this.projectUserAndBotsArray);
+
+      }, error => {
+        console.log('CONV LENGTH ANALYTICS - GET P-USERS-&-BOTS - ERROR: ', error);
+      }, () => {
+        console.log('CONV LENGTH ANALYTICS - GET P-USERS-&-BOTS - COMPLETE');
+      });
   }
 
   getBrowserLangAndSwitchMonthName() {
@@ -220,8 +282,8 @@ export class TempirispostaComponent implements OnInit {
     this.responseAVGtime = 'N.a.'
   }
 
-  avgTimeResponseCHART(lastdays, depID) {
-    this.subscription = this.analyticsService.getavarageWaitingTimeDataCHART(lastdays, depID).subscribe((res: any) => {
+  avgTimeResponseCHART(lastdays, depID, participantID) {
+    this.subscription = this.analyticsService.getavarageWaitingTimeDataCHART(lastdays, depID, participantID).subscribe((res: any) => {
       console.log('chart data:', res);
       if (res) {
 

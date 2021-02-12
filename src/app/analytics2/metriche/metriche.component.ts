@@ -7,7 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class MetricheComponent implements OnInit {
   @Input()  autoselected
-
+ ì
   selected='richieste'
   constructor() { }
 

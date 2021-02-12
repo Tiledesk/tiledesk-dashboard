@@ -1,3 +1,5 @@
+import { FaqKbService } from './../../../services/faq-kb.service';
+import { UsersService } from './../../../services/users.service';
 import { DepartmentService } from '../../../services/department.service';
 import { AnalyticsService } from './../../../services/analytics.service';
 import { Component, OnInit } from '@angular/core';
@@ -6,6 +8,7 @@ import { Chart } from 'chart.js';
 import * as moment from 'moment';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'appdashboard-durataconv',
@@ -34,29 +37,39 @@ export class DurataconvComponent implements OnInit {
 
   departments: any;
 
-  selectedDaysId: number; // lastdays filter
-  selectedDeptId: string;  // department filter
+  selectedDaysId: number;   // lastdays filter
+  selectedDeptId: string;   // department filter
+  selectedAgentId: string;  // agent filter
 
   subscription: Subscription;
 
   langService: HumanizeDurationLanguage = new HumanizeDurationLanguage();
   humanizer: HumanizeDuration = new HumanizeDuration(this.langService);
 
-  constructor(  private analyticsService: AnalyticsService,
-                private translate: TranslateService,
-                private departmentService: DepartmentService) {
+  projectUserAndBotsArray = []
+  projectUsersList: any;
+  projectBotsList: any;
+  bots: any;
 
-                this.lang = this.translate.getBrowserLang();
-                console.log('LANGUAGE ', this.lang);
-                this.getBrowserLangAndSwitchMonthName();
-                }
+  constructor(private analyticsService: AnalyticsService,
+    private translate: TranslateService,
+    private departmentService: DepartmentService,
+    private usersService: UsersService,
+    private faqKbService: FaqKbService) {
+
+    this.lang = this.translate.getBrowserLang();
+    console.log('LANGUAGE ', this.lang);
+    this.getBrowserLangAndSwitchMonthName();
+  }
 
   ngOnInit() {
     this.selectedDeptId = '';
-    this.selectedDaysId = 7
+    this.selectedDaysId = 7;
+    this.selectedAgentId = '';
     this.durationConvTimeCLOCK();
-    this.durationConversationTimeCHART(this.selectedDaysId, this.selectedDeptId);
+    this.durationConversationTimeCHART(this.selectedDaysId, this.selectedDeptId, this.selectedAgentId);
     this.getDepartments();
+    this.getProjectUsersAndBots();
   }
 
   ngOnDestroy() {
@@ -64,89 +77,95 @@ export class DurataconvComponent implements OnInit {
     this.subscription.unsubscribe();
   }
 
-msToTIME(value){
+  msToTIME(value) {
     const hours = Math.floor(value / 3600000) // 1 Hour = 36000 Milliseconds
     const minutes = Math.floor((value % 3600000) / 60000) // 1 Minutes = 60000 Milliseconds
     const seconds = Math.round(((value % 360000) % 60000) / 1000) // 1 Second = 1000 Milliseconds
     // per i secondi prima era Math.floor ma non arrotonda i secondi --> Math.round
-   return hours + 'h:' + minutes + 'm:' + seconds + 's'
-}
+    return hours + 'h:' + minutes + 'm:' + seconds + 's'
+  }
 
-// not in use
-msToTime(duration) {
-  let hours = Math.floor(duration / 3600000) // 1 Hour = 36000 Milliseconds
-  let minutes = Math.floor((duration % 3600000) / 60000) // 1 Minutes = 60000 Milliseconds
-  const seconds = Math.round(((duration % 360000) % 60000) / 1000) // 1 Second = 1000 Milliseconds
+  // not in use
+  msToTime(duration) {
+    let hours = Math.floor(duration / 3600000) // 1 Hour = 36000 Milliseconds
+    let minutes = Math.floor((duration % 3600000) / 60000) // 1 Minutes = 60000 Milliseconds
+    const seconds = Math.round(((duration % 360000) % 60000) / 1000) // 1 Second = 1000 Milliseconds
 
-      if (minutes % 2 !== 0) {
-        minutes = minutes + 1
-        return (minutes) * 1000 * 60
-      } else {
-        if (minutes < 59) {
-          hours = hours + 1
-          return hours * 1000 * 60 * 60
-        }
+    if (minutes % 2 !== 0) {
+      minutes = minutes + 1
+      return (minutes) * 1000 * 60
+    } else {
+      if (minutes < 59) {
+        hours = hours + 1
+        return hours * 1000 * 60 * 60
       }
+    }
 
     console.log('H:M->', hours, minutes)
 
-  const hoursS = (hours < 10) ? '0' + hours : hours;
-  const minutesS = (minutes < 10) ? '0' + minutes : minutes;
-  const secondsS = (seconds < 10) ? '0' + seconds : seconds;
+    const hoursS = (hours < 10) ? '0' + hours : hours;
+    const minutesS = (minutes < 10) ? '0' + minutes : minutes;
+    const secondsS = (seconds < 10) ? '0' + seconds : seconds;
 
-  // return hoursS + ":" + minutesS + ":" + secondsS
-}
-
-stepSize(milliseconds) {
-  const hours = Math.floor(milliseconds / 3600000) // 1 Hour = 36000 Milliseconds
-  const minutes = Math.floor((milliseconds % 3600000) / 60000) // 1 Minutes = 60000 Milliseconds
-  const seconds = Math.round(((milliseconds % 360000) % 60000) / 1000) // 1 Second = 1000 Milliseconds
-
-  if (hours !== 0) {
-    return (Math.floor((milliseconds / 4) / (1000 * 60 * 60))) * 1000 * 60 * 60
-  } else {
-    return (Math.floor((milliseconds / 4) / (1000 * 60))) * 1000 * 60
+    // return hoursS + ":" + minutesS + ":" + secondsS
   }
-  // if(hours!=0){
-  //   let hourss= ((hours/4)%2==0)? hours/4 : (hours/4)+1;
-  //   console.log("H:",hourss);
-  //   return (hourss)*1000*60*60
-  // }else{
-  //   let minutess=(minutes%2==0)? minutes : minutes+1;
-  //   console.log("M:",minutess);
-  //   return (minutess/4)*1000*60
-  // }
 
-}
+  stepSize(milliseconds) {
+    const hours = Math.floor(milliseconds / 3600000) // 1 Hour = 36000 Milliseconds
+    const minutes = Math.floor((milliseconds % 3600000) / 60000) // 1 Minutes = 60000 Milliseconds
+    const seconds = Math.round(((milliseconds % 360000) % 60000) / 1000) // 1 Second = 1000 Milliseconds
 
-daysSelect(value) {
+    if (hours !== 0) {
+      return (Math.floor((milliseconds / 4) / (1000 * 60 * 60))) * 1000 * 60 * 60
+    } else {
+      return (Math.floor((milliseconds / 4) / (1000 * 60))) * 1000 * 60
+    }
+    // if(hours!=0){
+    //   let hourss= ((hours/4)%2==0)? hours/4 : (hours/4)+1;
+    //   console.log("H:",hourss);
+    //   return (hourss)*1000*60*60
+    // }else{
+    //   let minutess=(minutes%2==0)? minutes : minutes+1;
+    //   console.log("M:",minutess);
+    //   return (minutess/4)*1000*60
+    // }
 
-  this.selectedDaysId = value; // --> value to pass throw for graph method
+  }
+
+  daysSelect(value) {
+
+    this.selectedDaysId = value; // --> value to pass throw for graph method
     // check value for label in htlm
-  if (value <= 30) {
-    this.lastdays = value;
-  } else if ((value === 90) || (value === 180)) {
-    this.lastdays = value / 30;
-  } else if (value === 360) {
-    this.lastdays = 1;
+    if (value <= 30) {
+      this.lastdays = value;
+    } else if ((value === 90) || (value === 180)) {
+      this.lastdays = value / 30;
+    } else if (value === 360) {
+      this.lastdays = 1;
+    }
+    this.barChart.destroy();
+    this.subscription.unsubscribe();
+    this.durationConversationTimeCHART(value, this.selectedDeptId, this.selectedAgentId);
+    console.log('REQUEST:', value, this.selectedDeptId, this.selectedAgentId)
   }
-  this.barChart.destroy();
-  this.subscription.unsubscribe();
-  this.durationConversationTimeCHART(value, this.selectedDeptId);
-  console.log('REQUEST:', value, this.selectedDeptId)
-}
 
-depSelected(selectedDeptId: string) {
-  console.log('dep', selectedDeptId);
-  this.barChart.destroy();
-  this.subscription.unsubscribe();
-  this.durationConversationTimeCHART(this.selectedDaysId, selectedDeptId )
-  console.log('REQUEST:', this.selectedDaysId, selectedDeptId)
-}
+  depSelected(selectedDeptId: string) {
+    console.log('dep', selectedDeptId);
+    this.barChart.destroy();
+    this.subscription.unsubscribe();
+    this.durationConversationTimeCHART(this.selectedDaysId, selectedDeptId, this.selectedAgentId)
+    console.log('REQUEST:', this.selectedDaysId, selectedDeptId, this.selectedAgentId)
+  }
 
+  agentSelected(selectedAgentId) {
+    console.log("Selected agent: ", selectedAgentId);
+    this.barChart.destroy();
+    this.subscription.unsubscribe();
+    this.durationConversationTimeCHART(this.selectedDaysId, this.selectedDeptId, selectedAgentId)
+    console.log('REQUEST:', this.selectedDaysId, this.selectedDeptId, selectedAgentId)
+  }
 
-
-getDepartments() {
+  getDepartments() {
     this.departmentService.getDeptsByProjectId().subscribe((_departments: any) => {
       console.log('!!! NEW REQUESTS HISTORY - GET DEPTS RESPONSE by analitycs ', _departments);
       this.departments = _departments
@@ -156,48 +175,98 @@ getDepartments() {
     }, () => {
       console.log('!!! NEW REQUESTS HISTORY - GET DEPTS * COMPLETE *')
     });
-}
+  }
 
-getBrowserLangAndSwitchMonthName() {
+  getProjectUsersAndBots() {
+    // https://stackoverflow.com/questions/44004144/how-to-wait-for-two-observables-in-rxjs
 
-  if (this.lang) {
-    if (this.lang === 'it') {
-      this.monthNames = { '1': 'Gen', '2': 'Feb', '3': 'Mar', '4': 'Apr', '5': 'Mag', '6': 'Giu', '7': 'Lug', '8': 'Ago', '9': 'Set', '10': 'Ott', '11': 'Nov', '12': 'Dic' }
-    } else {
-      this.monthNames = { '1': 'Jan', '2': 'Feb', '3': 'Mar', '4': 'Apr', '5': 'May', '6': 'Jun', '7': 'Jul', '8': 'Aug', '9': 'Sep', '10': 'Oct', '11': 'Nov', '12': 'Dec' }
+    const projectUsers = this.usersService.getProjectUsersByProjectId();
+    const bots = this.faqKbService.getAllBotByProjectId();
+
+    Observable
+      .zip(projectUsers, bots, (_projectUsers: any, _bots: any) => ({ _projectUsers, _bots }))
+      .subscribe(pair => {
+        console.log('CONV LENGTH ANALYTICS - GET P-USERS-&-BOTS - PROJECT USERS : ', pair._projectUsers);
+        console.log('CONV LENGTH ANALYTICS - GET P-USERS-&-BOTS - BOTS: ', pair._bots);
+
+        if (pair && pair._projectUsers) {
+          this.projectUsersList = pair._projectUsers;
+
+          this.projectUsersList.forEach(p_user => {
+            this.projectUserAndBotsArray.push({ id: p_user.id_user._id, name: p_user.id_user.firstname + ' ' + p_user.id_user.lastname });
+          });
+        }
+
+        if (pair && pair._bots) {
+          this.bots = pair._bots
+            .filter(bot => {
+              if (bot['trashed'] === false) {
+                return true
+              } else {
+                return false
+              }
+            })
+
+          this.bots.forEach(bot => {
+            this.projectUserAndBotsArray.push({ id: 'bot_' + bot._id, name: bot.name + ' (bot)' })
+          });
+        }
+
+        console.log('CONV LENGTH ANALYTICS - GET P-USERS-&-BOTS - PROJECT-USER & BOTS ARRAY : ', this.projectUserAndBotsArray);
+
+      }, error => {
+        console.log('CONV LENGTH ANALYTICS - GET P-USERS-&-BOTS - ERROR: ', error);
+      }, () => {
+        console.log('CONV LENGTH ANALYTICS - GET P-USERS-&-BOTS - COMPLETE');
+      });
+  }
+
+  getBrowserLangAndSwitchMonthName() {
+
+    if (this.lang) {
+      if (this.lang === 'it') {
+        this.monthNames = { '1': 'Gen', '2': 'Feb', '3': 'Mar', '4': 'Apr', '5': 'Mag', '6': 'Giu', '7': 'Lug', '8': 'Ago', '9': 'Set', '10': 'Ott', '11': 'Nov', '12': 'Dic' }
+      } else {
+        this.monthNames = { '1': 'Jan', '2': 'Feb', '3': 'Mar', '4': 'Apr', '5': 'May', '6': 'Jun', '7': 'Jul', '8': 'Aug', '9': 'Sep', '10': 'Oct', '11': 'Nov', '12': 'Dec' }
+      }
     }
   }
-}
 
-durationConvTimeCLOCK() {
-  this.subscription = this.analyticsService.getDurationConversationTimeDataCLOCK().subscribe((res: any) => {
+  durationConvTimeCLOCK() {
+    this.subscription = this.analyticsService.getDurationConversationTimeDataCLOCK().subscribe((res: any) => {
 
-    let avarageWaitingTimestring: string;
-    let splitString: string;
+      let avarageWaitingTimestring: string;
+      let splitString: string;
 
-    if (res && res.length > 0) {
-      console.log('»»»» res[0].duration_avg ', res[0].duration_avg)
-      console.log('»»»» typeof res[0].duration_avg ', typeof res[0].duration_avg)
-      if (res[0].duration_avg) {
-        if ((res[0].duration_avg !== null) || (res[0].duration_avg !== undefined)) {
-          // this.humanizer.setOptions({round: true, units:['m']});
-          // this.avarageWaitingTimestring = this.humanizer.humanize(res[0].waiting_time_avg);
-          avarageWaitingTimestring = this.humanizeDurations(res[0].duration_avg)
-          splitString = this.humanizeDurations(res[0].duration_avg).split(' ');
-          // this.numberDurationCNVtime = splitString[0];
-          this.numberDurationCNVtime = this.msToTIME(res[0].duration_avg); // --> show in format h:m:s
-          this.unitDurationCNVtime = splitString[1];
-
-
-          this.responseDurationtime = this.humanizer.humanize(res[0].duration_avg, { round: true, language: this.lang });
+      if (res && res.length > 0) {
+        console.log('»»»» res[0].duration_avg ', res[0].duration_avg)
+        console.log('»»»» typeof res[0].duration_avg ', typeof res[0].duration_avg)
+        if (res[0].duration_avg) {
+          if ((res[0].duration_avg !== null) || (res[0].duration_avg !== undefined)) {
+            // this.humanizer.setOptions({round: true, units:['m']});
+            // this.avarageWaitingTimestring = this.humanizer.humanize(res[0].waiting_time_avg);
+            avarageWaitingTimestring = this.humanizeDurations(res[0].duration_avg)
+            splitString = this.humanizeDurations(res[0].duration_avg).split(' ');
+            // this.numberDurationCNVtime = splitString[0];
+            this.numberDurationCNVtime = this.msToTIME(res[0].duration_avg); // --> show in format h:m:s
+            this.unitDurationCNVtime = splitString[1];
 
 
-          console.log('Waiting time: humanize', this.humanizer.humanize(res[0].duration_avg))
-          console.log('waiting time funtion:', avarageWaitingTimestring);
+            this.responseDurationtime = this.humanizer.humanize(res[0].duration_avg, { round: true, language: this.lang });
 
+
+            console.log('Waiting time: humanize', this.humanizer.humanize(res[0].duration_avg))
+            console.log('waiting time funtion:', avarageWaitingTimestring);
+
+          } else {
+
+            this.setToNa();
+          }
         } else {
-
           this.setToNa();
+
+          console.log('Waiting time: humanize', this.humanizer.humanize(0))
+          console.log('waiting time funtion:', avarageWaitingTimestring);
         }
       } else {
         this.setToNa();
@@ -205,32 +274,26 @@ durationConvTimeCLOCK() {
         console.log('Waiting time: humanize', this.humanizer.humanize(0))
         console.log('waiting time funtion:', avarageWaitingTimestring);
       }
-    } else {
+
+    }, (error) => {
+      console.log('!!! ANALYTICS - DURATION CONVERSATION CLOCK REQUEST - ERROR ', error);
       this.setToNa();
 
-      console.log('Waiting time: humanize', this.humanizer.humanize(0))
-      console.log('waiting time funtion:', avarageWaitingTimestring);
-    }
+    }, () => {
+      console.log('!!! ANALYTICS - DURATION CONVERSATION CLOCK REQUEST * COMPLETE *');
+    });
+  }
 
-  }, (error) => {
-    console.log('!!! ANALYTICS - DURATION CONVERSATION CLOCK REQUEST - ERROR ', error);
-    this.setToNa();
-
-  }, () => {
-    console.log('!!! ANALYTICS - DURATION CONVERSATION CLOCK REQUEST * COMPLETE *');
-  });
-}
-
-setToNa() {
+  setToNa() {
 
     this.numberDurationCNVtime = 'N.a.'
     this.unitDurationCNVtime = '';
     this.responseDurationtime = 'N.a.'
 
-}
+  }
 
-  durationConversationTimeCHART(lastdays, depID) {
-    this.subscription = this.analyticsService.getDurationConversationTimeDataCHART(lastdays, depID).subscribe((resp: any) => {
+  durationConversationTimeCHART(lastdays, depID, participantId) {
+    this.subscription = this.analyticsService.getDurationConversationTimeDataCHART(lastdays, depID, participantId).subscribe((resp: any) => {
 
       if (resp) {
         console.log('Duration time', resp)
@@ -250,18 +313,18 @@ setToNa() {
         // i'm using time_convert function that return avg_time always in hour
         const customDurationCOnversationChart = [];
 
-          for (let j in resp) {
+        for (let j in resp) {
 
-            // this.humanizer.setOptions({round: true, units:['h']});
-            // const AVGtimevalue= this.humanizer.humanize(res[i].waiting_time_avg).split(" ")
-            // console.log("value humanizer:", this.humanizer.humanize(res[i].waiting_time_avg), "split:",AVGtimevalue)
+          // this.humanizer.setOptions({round: true, units:['h']});
+          // const AVGtimevalue= this.humanizer.humanize(res[i].waiting_time_avg).split(" ")
+          // console.log("value humanizer:", this.humanizer.humanize(res[i].waiting_time_avg), "split:",AVGtimevalue)
 
-            if (resp[j].duration_avg == null)
-              resp[j].duration_avg = 0;
+          if (resp[j].duration_avg == null)
+            resp[j].duration_avg = 0;
 
-            customDurationCOnversationChart.push({ date: new Date(resp[j]._id.year, resp[j]._id.month - 1, resp[j]._id.day).toLocaleDateString(), value: resp[j].duration_avg });
-          }
-        
+          customDurationCOnversationChart.push({ date: new Date(resp[j]._id.year, resp[j]._id.month - 1, resp[j]._id.day).toLocaleDateString(), value: resp[j].duration_avg });
+        }
+
 
         console.log('Custom Duration Conversation data:', customDurationCOnversationChart);
 
@@ -303,17 +366,17 @@ setToNa() {
         console.log('!!!ERROR!!! while get data from resouces for duration conversation time graph');
       }
 
-        // set the stepsize
-        let stepsize: number;
-        if (this.selectedDaysId > 60) {
-            stepsize = 10;
-        } else {
-          stepsize = this.selectedDaysId
-        }
-        const lang = this.lang;
-        const higherCount = this.getMaxOfArray(this.yValueDurationConversation);
-        console.log('MS', this.msToTime(higherCount))
-        console.log('STEPSIZE', this.stepSize(higherCount))
+      // set the stepsize
+      let stepsize: number;
+      if (this.selectedDaysId > 60) {
+        stepsize = 10;
+      } else {
+        stepsize = this.selectedDaysId
+      }
+      const lang = this.lang;
+      const higherCount = this.getMaxOfArray(this.yValueDurationConversation);
+      console.log('MS', this.msToTime(higherCount))
+      console.log('STEPSIZE', this.stepSize(higherCount))
 
       this.barChart = new Chart('durationConversationTimeResponse', {
         type: 'bar',
@@ -368,7 +431,7 @@ setToNa() {
             }],
             yAxes: [{
               gridLines: {
-                display: true ,
+                display: true,
                 borderDash: [8, 4],
                 // color:'rgba(255, 255, 255, 0.5)',
               },
@@ -415,9 +478,9 @@ setToNa() {
                 // //console.log("humanize", humanizer.humanize(currentItemValue))
                 // return data.datasets[tooltipItem.datasetIndex].label + ': ' + humanizer.humanize(currentItemValue)
                 if (lang === 'it') {
-                  return 'Lunghezza conversazione media: ' + humanizer.humanize(currentItemValue, { round: true, language: lang, units: ['y', 'mo', 'w', 'd', 'h', 'm', 's']  } );
+                  return 'Lunghezza conversazione media: ' + humanizer.humanize(currentItemValue, { round: true, language: lang, units: ['y', 'mo', 'w', 'd', 'h', 'm', 's'] });
                 } else {
-                  return 'Median Conversation Lenght: ' + humanizer.humanize(currentItemValue, { round: true, language: lang, units: ['y', 'mo', 'w', 'd', 'h', 'm', 's'] } );
+                  return 'Median Conversation Lenght: ' + humanizer.humanize(currentItemValue, { round: true, language: lang, units: ['y', 'mo', 'w', 'd', 'h', 'm', 's'] });
                 }
               }
             }
@@ -436,40 +499,40 @@ setToNa() {
     if (timeInMillisecond) {
       if (this.lang === 'en') {
         if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24 * 30 * 12))) > 0) {// year
-            result = result === 1 ? result + ' Year' : result + ' Years';
+          result = result === 1 ? result + ' Year' : result + ' Years';
         } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24 * 30))) > 0) {// months
-            result = result === 1 ? result + ' Month' : result + ' Months';
+          result = result === 1 ? result + ' Month' : result + ' Months';
         } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24))) > 0) {// days
-            result = result === 1 ? result + ' Day' : result + ' Days';
+          result = result === 1 ? result + ' Day' : result + ' Days';
         } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60))) > 0) {// Hours
-            result = result === 1 ? result + ' Hours' : result + ' Hours';
+          result = result === 1 ? result + ' Hours' : result + ' Hours';
         } else if ((result = Math.round(timeInMillisecond / (1000 * 60))) > 0) {// minute
-            result = result === 1 ? result + ' Minute' : result + ' Minutes';
+          result = result === 1 ? result + ' Minute' : result + ' Minutes';
         } else if ((result = Math.round(timeInMillisecond / 1000)) > 0) {// second
-            result = result === 1 ? result + ' Second' : result + ' Seconds';
+          result = result === 1 ? result + ' Second' : result + ' Seconds';
         } else {
-            result = timeInMillisecond + ' Millisec';
+          result = timeInMillisecond + ' Millisec';
         }
       } else {
-          if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24 * 30 * 12))) > 0) {// year
-            result = result === 1 ? result + ' Anno' : result + ' Anni';
+        if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24 * 30 * 12))) > 0) {// year
+          result = result === 1 ? result + ' Anno' : result + ' Anni';
         } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24 * 30))) > 0) {// months
-            result = result === 1 ? result + ' Mese' : result + ' Mesi';
+          result = result === 1 ? result + ' Mese' : result + ' Mesi';
         } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24))) > 0) {// days
-            result = result === 1 ? result + ' Giorno' : result + ' Giorni';
+          result = result === 1 ? result + ' Giorno' : result + ' Giorni';
         } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60))) > 0) {// Hours
-            result = result === 1 ? result + ' Ora' : result + ' Ore';
+          result = result === 1 ? result + ' Ora' : result + ' Ore';
         } else if ((result = Math.round(timeInMillisecond / (1000 * 60))) > 0) {// minute
-            result = result === 1 ? result + ' Minuto' : result + ' Minuti';
+          result = result === 1 ? result + ' Minuto' : result + ' Minuti';
         } else if ((result = Math.round(timeInMillisecond / 1000)) > 0) {// second
-            result = result === 1 ? result + ' Secondo' : result + ' Secondi';
+          result = result === 1 ? result + ' Secondo' : result + ' Secondi';
         } else {
-            result = timeInMillisecond + ' Millisecondi';
+          result = timeInMillisecond + ' Millisecondi';
         }
       }
-        return result;
+      return result;
 
-      }
+    }
   }
 
   getMaxOfArray(array) {

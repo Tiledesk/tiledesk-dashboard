@@ -840,3 +840,20 @@ my-app .main-panel .main-content .card {
   background: #e4e6eb;
   border-radius: 50%;
 }
+.analytics-date-range-selected {
+  margin: 8px !important;
+  color: rgba(0, 0, 0, 0.5);
+  font-family: 'Google Sans';
+  font-size: 16px;
+  display: block;
+
+  
+}
+
+.arrow_forward-custom {
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
+  font-size: 18px;
+}
+

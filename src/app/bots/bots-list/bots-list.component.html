@@ -45,6 +45,10 @@
                       <!-- {{ "BotsPage.ExternalBot" | translate }} -->
                       {{ "BotsAddEditPage.Type" | translate }}
                     </span>
+                  </th> 
+
+                  <th *ngIf="isVisibleAnalytics" class="column-th-span">
+                    {{ "BotsAddEditPage.Messages" | translate }}
                   </th>
 
                   <!-- <th style="">
@@ -251,6 +255,10 @@
                       </label>
                     </div>
                     <div class="overlay"></div> -->
+                  </td>
+
+                  <td *ngIf="isVisibleAnalytics" style="text-transform: capitalize;font-weight:400;">
+                    <span style="text-transform: capitalize;font-weight:400;"> {{ faqkb?.message_count}} </span>
                   </td>
 
                   <td class="td-actions text-right" style="padding-top:18px !important">

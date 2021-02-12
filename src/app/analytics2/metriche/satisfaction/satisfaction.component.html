@@ -1,40 +1,45 @@
+<!-- component title -->
 <div class="row" style="text-align: center; margin-top:35px">
   <div class="col-md-12">
     <h4 class="section-title">
-      {{ "Analytics.ConvDurationTitle" | translate }}
+      {{ "Analytics.SatisfactionComponentTitle" | translate }}
     </h4>
   </div>
 </div>
 
 <div class="row" style="text-align: center; margin-top:6px">
+  <!-- left side card -->
   <div class="col-md-3">
     <div class="card" style="border-radius: 10px; min-height: 445px;">
-      <!-- class="card-header card-header-custom" -->
-      <!-- padding-top: 12px; padding-bottom: 10px; -->
       <div
         style="padding-bottom: 28px; padding-top:30px; font-size: 18px; font-family: 'Google Sans', sans-serif !important;">
-        <!-- <p> -->
-        {{ "Analytics.MedianConvClock" | translate }}
-        <!-- </p> -->
+        {{ "Analytics.Satisfaction.SatisfactionStar" | translate }}
       </div>
-      <div class="card-content clock">
-        <p class="numberCLOCK">{{numberDurationCNVtime}}</p>
-        <!-- <p style="padding-top:25px">{{unitDurationCNVtime}}</p> -->
+      <div class="card-content star">
+        <p *ngIf="avgSatisfaction != null" class="number-stars">{{ avgSatisfaction }}</p>
+        <p *ngIf="avgSatisfaction == null" class="number-stars" style="font-size: 35px;">n.a.</p>
       </div>
-      <div class="card-footer request_count_footer"
+      <!-- rating available -->
+      <div *ngIf="avgSatisfaction != null" class="card-footer request_count_footer"
         style="font-size: 16px; margin-top: 9px; padding-top: 21px;  padding-bottom: 19px;">
-        {{ "Analytics.ResponseDurationtime" | translate}} <span
-          style="display: block"><b>{{responseDurationtime}}</b></span>
+        {{ "Analytics.Satisfaction.StatisfactionValueLabel" | translate}} <span
+          style="display: block"><b>{{ avgSatisfaction }}</b></span>
       </div>
+      <!-- no rating value -->
+      <div *ngIf="avgSatisfaction == null" class="card-footer request_count_footer"
+        style="font-size: 16px; margin-top: 9px; padding-top: 21px;  padding-bottom: 19px;">
+        {{ "Analytics.Satisfaction.NoSatisfactionValue" | translate}} <span style="display: block"></span>
+      </div>
+
     </div>
   </div>
+
   <div class="col-md-9">
     <div class="card" style="border-radius: 10px;">
-      <!-- class=" card-header card-header-custom" -->
       <div style="padding-top: 27px; padding-bottom: 10px">
         <span
           style="padding-bottom: 18px; display: block; font-size: 18px; font-family: 'Google Sans', sans-serif !important;">
-          {{'Analytics.DailyConvDurationTime' | translate}} {{lastdays}}
+          {{'Analytics.Satisfaction.DailySatisfactionTrend' | translate}} {{lastdays}}
           <span *ngIf="selectedDaysId <= 30">{{ 'Analytics.Days' | translate }}</span>
           <span *ngIf="selectedDaysId === 90 || selectedDaysId === 180  ">{{ 'Analytics.Months' | translate }}</span>
           <span *ngIf="selectedDaysId === 360">{{ 'Analytics.Year' | translate }}</span>
@@ -70,8 +75,9 @@
               </div>
             </div>
           </div>
+
           <!-- ------ init-end days show--------- -->
-          <!-- <div class="col-sm-3">
+          <!-- <div class="col-sm-4">
             <div class="section-select-dept">
               <div class="row">
                 <label class="col-sm-12" style="text-align: left; color:black; padding-right: 0px">
@@ -105,34 +111,14 @@
               </div>
             </div>
           </div>
-
-          <!------- agent filter -------->
-          <div class="col-sm-4">
-            <div class="section-select-dept">
-              <div class="row">
-                <label class="col-sm-12" style="text-align: left; color:black">
-                  {{ "Agent" | translate }}
-                </label>
-                <div class="col-sm-12" style="margin-bottom: 6px; text-align: left;">
-                  <ng-select class="custom" name="agent" [(ngModel)]="selectedAgentId" [clearable]="false"
-                    (change)="agentSelected(selectedAgentId)">
-                    <ng-option [value]="''">Tutto</ng-option>
-                    <ng-option *ngFor="let agent of projectUserAndBotsArray" value="{{ agent.id }}">
-                      {{ agent.name }}
-                    </ng-option>
-
-                  </ng-select>
-                </div>
-              </div>
-            </div>
-          </div>
-
         </div>
-      </div>
-      <!-- height: 30vh; -->
-      <div class="card-content chart-container" style="position: relative; margin:auto; min-height:260px">
-        <canvas id="durationConversationTimeResponse"></canvas>
+
+        <!-- height: 30vh; -->
+        <div class="card-content chart-container" style="position: relative; margin:auto; min-height:260px">
+          <canvas id="satisfactionRating"></canvas>
+        </div>
+
+
       </div>
     </div>
   </div>
-</div>

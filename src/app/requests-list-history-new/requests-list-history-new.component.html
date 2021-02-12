@@ -346,6 +346,33 @@
   </div>
 
 
+  <!-- <div
+    style="width: 96%; height: 40px; background-color: #b5bdc0; border-radius: 0px 30px 30px 0px; margin-left: -15px;">
+
+    <div class="row" style="padding-top: 7px">
+      <div class="col-sm-1" style="margin-left: 8vh;">
+        <div class="checkbox" style="margin: auto !important; margin-left: 5vh; width: auto;">
+          <label>
+            <input [disabled]="project_user?.is_group_member" [checked]="project_user?.is_group_member" type="checkbox"
+              class="form-check-input" style="width: 16px;height: 16px;" value="{{project_user?.id_user?._id}}"
+              (click)="change(project_user?.id_user?._id)">
+          </label>
+        </div>
+      </div>
+
+      <div class="col-sm-1" style="width: 6%;">
+        <span class="material-icons" style="vertical-align:middle; color: #000000; cursor: pointer;">
+          refresh
+        </span>
+      </div>
+    </div>
+  </div> -->
+  <!-- <div style="margin-left: auto;" *ngIf="request_selected.length > 0">
+    <button type="button" class="btn btn-danger">
+      Elimina Selezionati
+    </button>
+  </div> -->
+
   <div class="row">
     <div class="col-md-12 table-wrapper-col">
       <div class="card card--no-border" style="margin-top: 0px;">
@@ -356,14 +383,140 @@
           // Table
           // ---------------------------------------------------------------- -->
         <div *ngIf="!showSpinner" class="card-content table-responsive">
+          
+          <!-- OPTION TABLE -->
+          <table class="table">
+            <thead class="text">
+              <tr>
 
+                <th class="table-header-option">
+                  <div class="checkbox">
+                    <label>
+                      <input [disabled]="project_user?.is_group_member" [checked]="allChecked"
+                        type="checkbox" class="form-check-input" style="width: 16px;height: 16px;"
+                        (click)="selectAll()">
+                    </label>
+                  </div>
+                </th>
+
+                <th class="table-header-option" style="text-align: center;" (click)="search()">
+                  
+                  <span class="material-icons" style="vertical-align:middle; cursor: pointer;">
+                    refresh
+                  </span>
+
+                </th>
+
+                <th class="table-header-option" style="text-align: center;" (click)="deleteSelected()">
+                  
+                  <span *ngIf="request_selected.length > 0" rel="tooltip" class="material-icons" style="vertical-align:middle; cursor: pointer;">
+                    delete_forever
+                  </span>
+
+
+                  <!-- <button type="button" class="btn btn-danger btn-simple btn-xs tool_tip"
+                    [disabled]="CURRENT_USER_ROLE !== 'owner'">
+
+                    <i class="material-icons">delete_forever</i> -->
+
+                    <!-- // tooltip text 'Delete' -->
+                    <!-- <span style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px;" class="top">
+                      <span style="text-transform: capitalize;"> {{ 'Delete' | translate }} </span>
+                      <i></i>
+                    </span>
+
+                  </button> -->
+                  
+                </th>
+
+                <!-- ===== REQUEST FIRST TEXT ===== -->
+                <th class="table-header-text">
+                  <span class="column-th-span">
+                    <!-- {{ 'HistoryPage.Message' | translate }} -->
+                  </span>
+                </th>
+
+                <!-- ===== REQUESTER ===== -->
+                <th class="table-header-text">
+                  <span class="column-th-span">
+                    <!-- {{ 'HistoryPage.Requester' | translate }} -->
+                  </span>
+                </th>
+
+                <!-- ====== USER AGENT BROWSER & OPERATING SYSTEM ====== -->
+                <th></th>
+
+
+                <!-- ===== DEPARTMENT NAME ===== -->
+                <th class="table-header-text">
+                  <span class="column-th-span">
+                    <!-- {{ 'VisitorsPage.Department' | translate }} -->
+                  </span>
+                </th>
+
+                <!-- ===== SERVED BY ===== -->
+                <th class="table-header-text">
+                  <span class="column-th-span">
+                    <!-- {{ 'HistoryPage.ServedBy' | translate }} -->
+                  </span>
+                </th>
+
+                <!-- ===== RATING ===== -->
+                <!-- <th>
+                    <span style="color: #566787">
+                      <strong> 
+                        {{ 'HistoryPage.Rating' | translate }}
+                      </strong>
+                    </span>
+                  </th> -->
+
+                <!-- ===== MEMBERS ===== -->
+                <!-- <th>
+                    <span style="color: #566787">
+                      <strong> Membri </strong>
+                      </span>
+                  </th> -->
+
+                <!-- ===== PUBLISHED ===== -->
+                <th class="table-header-text">
+                  <span class="column-th-span">
+                    <!-- {{ 'HistoryPage.Published' | translate }} -->
+                  </span>
+                </th>
+
+                <!-- 
+                  // -----------------------------
+                  // Actions 
+                  // ----------------------------- -->
+                <th>
+                  <span class="column-th-span">
+                    <!-- {{ 'Actions' | translate }} -->
+                  </span>
+                </th>
+
+              </tr>
+            </thead>
+          </table>
+
+          <!-- REQUEST TABLE -->
           <table class="table table-hover">
             <thead class="text">
               <tr>
-                <th style="text-align: center;" (click)="search()">
-                  <span class="material-icons" style="vertical-align:middle; color: #1877f2; cursor: pointer;">
+
+                <th class="table-header-option">
+                  <!-- <div class="checkbox" style="margin: auto !important;">
+                    <label>
+                      <input [disabled]="project_user?.is_group_member" [checked]="project_user?.is_group_member"
+                        type="checkbox" class="form-check-input" style="width: 16px;height: 16px;"
+                        value="{{project_user?.id_user?._id}}" (click)="change(project_user?.id_user?._id)">
+                    </label>
+                  </div> -->
+                </th>
+
+                <th class="table-header-option" style="text-align: center;" (click)="search()">
+                  <!-- <span class="material-icons" style="vertical-align:middle; color: #1877f2; cursor: pointer;">
                     refresh
-                  </span>
+                  </span> -->
                 </th>
 
                 <!-- ===== REQUEST ID ===== -->
@@ -375,14 +528,14 @@
                     </span>  
                   </th> -->
                 <!-- ===== REQUEST FIRST TEXT ===== -->
-                <th>
+                <th class="table-header-text">
                   <span class="column-th-span">
                     {{ 'HistoryPage.Message' | translate }}
                   </span>
                 </th>
 
                 <!-- ===== REQUESTER ===== -->
-                <th>
+                <th class="table-header-text">
                   <span class="column-th-span">
                     {{ 'HistoryPage.Requester' | translate }}
                   </span>
@@ -393,14 +546,14 @@
 
 
                 <!-- ===== DEPARTMENT NAME ===== -->
-                <th>
+                <th class="table-header-text">
                   <span class="column-th-span">
                     {{ 'VisitorsPage.Department' | translate }}
                   </span>
                 </th>
 
                 <!-- ===== SERVED BY ===== -->
-                <th>
+                <th class="table-header-text">
                   <span class="column-th-span">
                     {{ 'HistoryPage.ServedBy' | translate }}
                   </span>
@@ -423,7 +576,7 @@
                   </th> -->
 
                 <!-- ===== PUBLISHED ===== -->
-                <th>
+                <th class="table-header-text">
                   <span class="column-th-span">
                     {{ 'HistoryPage.Published' | translate }}
                   </span>
@@ -461,6 +614,22 @@
               </tr>
 
               <tr *ngFor="let request of requestList">
+
+                <!-- 
+                  // ------------------------------
+                  // CHECKBOX
+                  // ------------------------------ -->
+                <td style="text-align: center;">
+
+                  <!-- *ngIf="!project_user?.is_group_member" -->
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox" class="form-check-input" [checked]="allChecked" style="width: 16px;height: 16px;"
+                        value="{{ request.request_id }}" (click)="change(request.request_id)">
+                    </label>
+                  </div>
+                </td>
+
 
                 <!-- 
                   // ------------------------------
@@ -1080,7 +1249,7 @@
                 </td>
 
                 <td *ngIf="IS_HERE_FOR_HISTORY">
-                  <button  type="button" class="btn btn-danger btn-simple btn-xs tool_tip"
+                  <button type="button" class="btn btn-danger btn-simple btn-xs tool_tip"
                     (click)='deleteArchivedRequest(request?.request_id)' [disabled]="CURRENT_USER_ROLE !== 'owner'">
 
                     <i class="material-icons">delete_forever</i>
@@ -1093,8 +1262,8 @@
 
                   </button>
                 </td>
-                <td class="td-actions text-right"  *ngIf="!IS_HERE_FOR_HISTORY">
-                  <button  type="button" rel="tooltip" style="padding-top: 9px !important;"
+                <td class="td-actions text-right" *ngIf="!IS_HERE_FOR_HISTORY">
+                  <button type="button" rel="tooltip" style="padding-top: 9px !important;"
                     title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}"
                     class="btn btn-tdblu btn-simple btn-xs tool_tip" (click)='archiveRequest(request?.request_id)'
                     [disabled]="request?.currentUserIsJoined === false && ROLE_IS_AGENT === true">

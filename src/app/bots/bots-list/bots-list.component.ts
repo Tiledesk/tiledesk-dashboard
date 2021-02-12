@@ -66,6 +66,9 @@ export class BotListComponent implements OnInit {
   disassociateTheBot: string;
   warning: string;
 
+  public_Key: string;
+  isVisibleAnalytics: boolean;
+
   constructor(
     private faqKbService: FaqKbService,
     private router: Router,
@@ -90,7 +93,7 @@ export class BotListComponent implements OnInit {
     this.translateTrashBotErrorMsg();
 
     this.getCurrentProject();
-
+    this.getOSCODE();
     // this.getFaqKb();
     this.getFaqKbByProjectId();
     this.getStorageBucket();
@@ -189,6 +192,17 @@ export class BotListComponent implements OnInit {
             this.faqkbList[i]['is_system_identity_bot'] = true;
           }
         }
+
+        for (let bot of this.faqkbList) {
+          this.faqKbService.getNumberOfMessages(bot._id).subscribe((res: any) => {
+            console.log("Messages sent from bot: ", res);
+            if (res.length == 0) {
+              bot.message_count = 0;
+            } else {
+              bot.message_count = res[0].totalCount;
+            }
+          })
+        }
       }
 
 
@@ -207,6 +221,27 @@ export class BotListComponent implements OnInit {
         this.getFaqByFaqKbId();
       });
 
+  }
+
+  getOSCODE() {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    console.log('AppConfigService getAppConfig (BOT LIST) public_Key', this.public_Key);
+    let keys = this.public_Key.split("-");
+    console.log('PUBLIC-KEY (BOT LIST) keys', keys)
+    keys.forEach(key => {
+      
+      if (key.includes("ANA")) {
+        console.log('PUBLIC-KEY (BOT LIST) - key', key);
+        let ana = key.split(":");
+        console.log('PUBLIC-KEY (BOT LIST) - ana key&value', ana);
+        if (ana[1] === "F") {
+          this.isVisibleAnalytics = false;
+        } else {
+          this.isVisibleAnalytics = true;
+        }
+
+      }
+    })
   }
 
   goToBotExternalUrl(botExternalUrl) {

@@ -25,6 +25,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { Location } from '@angular/common';
 import { SelectOptionsTranslatePipe } from '../selectOptionsTranslate.pipe';
+import { request } from 'http';
 
 // import swal from 'sweetalert';
 // https://github.com/t4t5/sweetalert/issues/890 <- issue ERROR in node_modules/sweetalert/typings/sweetalert.d.ts(4,9): error TS2403
@@ -121,6 +122,9 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
   date_picker_is_disabled: boolean;
   projectUsersArray: any;
   requestWillBePermanentlyDeleted: string;
+  selectedRequestWillBePermanentDeleted: string;
+  selectedRequestsWasSuccessfullyDeleted: string;
+  deletingException: string;
   areYouSure: string;
   done_msg: string;
   error_msg: string;
@@ -129,6 +133,8 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
   pleaseTryAgain: string;
   CURRENT_USER_ROLE: string;
   IS_HERE_FOR_HISTORY: boolean;
+  request_selected = [];
+  allChecked = false;
 
   public myDatePickerOptions: IMyDpOptions = {
     // other options...
@@ -221,7 +227,10 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
     this.translate.get('DeleteRequestForever')
       .subscribe((text: string) => {
         this.requestWillBePermanentlyDeleted = text["TheRequestWillBePermanentlyDeleted"];
+        this.selectedRequestWillBePermanentDeleted = text["SelectedRequestsWillBePermanentlyDeleted"];
         this.requestWasSuccessfullyDeleted = text["TheRequestWasSuccessfullyDeleted"];
+        //this.selectedRequestsWasSuccessfullyDeleted = text["SelectedRequestsWasSuccessfullyDeleted"];
+        //this.deletingException = text["DeletingException"];        
         this.errorDeleting = text["ErrorDeleting"];
         this.pleaseTryAgain = text["PleaseTryAgain"];
         this.done_msg = text["Done"];
@@ -409,8 +418,12 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
     this.getRequests()
   }
 
-
-  getRequests() {
+  /**
+   * Nota: la funzione seguente è stata sostituita dalla sua versione promise, quindi non è
+   * più usata.
+   * Verificare eventuali malfunzionamenti prima di eliminarla definitivamente.
+   */
+  _getRequests() {
     this.showSpinner = true;
     // this.wsRequestsService.getNodeJsHistoryRequests(this.queryString, this.pageNo).subscribe((requests: any) => {
     this.wsRequestsService.getNodeJsWSRequests(this.operator, this.requests_status, this.queryString, this.pageNo).subscribe((requests: any) => {
@@ -545,6 +558,97 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
       console.log('!!! NEW REQUESTS HISTORY  - GET REQUESTS * COMPLETE *')
     });
   }
+
+
+  // GET REQUEST COPY - START
+  getRequests() {
+    this.showSpinner = true;
+
+    let promise = new Promise((resolve, reject) => {
+
+
+      this.wsRequestsService.getNodeJsWSRequests(this.operator, this.requests_status, this.queryString, this.pageNo).subscribe((requests: any) => {
+
+        console.log('!!! NEW REQUESTS HISTORY - GET REQUESTS ', requests['requests']);
+        console.log('!!! NEW REQUESTS HISTORY - GET REQUESTS COUNT ', requests['count']);
+        if (requests) {
+          this.requestsCount = requests['count'];
+          console.log('!!! NEW REQUESTS HISTORY - GET REQUESTS COUNT ', this.requestsCount);
+          this.displayHideFooterPagination();
+          const requestsPerPage = requests['perPage'];
+          console.log('!!! NEW REQUESTS HISTORY - TOTAL PAGES REQUESTS X PAGE', requestsPerPage);
+          const totalPagesNo = this.requestsCount / requestsPerPage;
+          console.log('!!! NEW REQUESTS HISTORY - TOTAL PAGES NUMBER', totalPagesNo);
+          this.totalPagesNo_roundToUp = Math.ceil(totalPagesNo);
+          console.log('!!! NEW REQUESTS HISTORY - TOTAL PAGES No ROUND TO UP ', this.totalPagesNo_roundToUp);
+
+          this.requestList = requests['requests'];
+
+          for (const request of this.requestList) {
+
+            if (request) {
+              request['currentUserIsJoined'] = this.currentUserIdIsInParticipants(request.participants, this.auth.user_bs.value._id, request.request_id);
+
+              // -------------------------------------------------------------------
+              // User Agent
+              // -------------------------------------------------------------------
+              const user_agent_result = this.parseUserAgent(request.userAgent);
+              const ua_browser = user_agent_result.browser.name + ' ' + user_agent_result.browser.version
+              request['ua_browser'] = ua_browser;
+              const ua_os = user_agent_result.os.name + ' ' + user_agent_result.os.version
+              request['ua_os'] = ua_os;
+              // -------------------------------------------------------------------
+              // Contact's avatar
+              // -------------------------------------------------------------------
+              let newInitials = '';
+              let newFillColour = '';
+
+              if (request.lead && request.lead.fullname) {
+                newInitials = avatarPlaceholder(request.lead.fullname);
+                newFillColour = getColorBck(request.lead.fullname)
+              } else {
+                newInitials = 'N/A';
+                newFillColour = 'rgb(98, 100, 167)';
+              }
+              request.requester_fullname_initial = newInitials;
+              request.requester_fullname_fillColour = newFillColour;
+
+              const date = moment.localeData().longDateFormat(request.createdAt);
+              request.fulldate = date;
+
+              if (request.participants.length > 0) {
+                console.log('!! Ws SHARED  (from request list history) participants length', request.participants.length);
+                if (!request['participanting_Agents']) {
+
+                  console.log('!! Ws SHARED  (from request list history) PARTICIPATING-AGENTS IS ', request['participanting_Agents'], ' - RUN DO ');
+
+                  request['participanting_Agents'] = this.doParticipatingAgentsArray(request.participants, request.first_text, this.storageBucket)
+
+                } else {
+
+                  console.log('!! Ws SHARED  (from request list history) PARTICIPATING-AGENTS IS DEFINED');
+                }
+              } else {
+                console.log('!! Ws SHARED  (from request list history) participants length', request.participants.length);
+                request['participanting_Agents'] = [{ _id: 'no_agent', email: 'NoAgent', firstname: 'NoAgent', lastname: 'NoAgent' }]
+              }
+            }
+          }
+        }
+      }, error => {
+        this.showSpinner = false;
+        console.log('!!! NEW REQUESTS HISTORY  - GET REQUESTS - ERROR: ', error);
+        reject(error);
+      }, () => {
+        this.showSpinner = false;
+        console.log('!!! NEW REQUESTS HISTORY  - GET REQUESTS * COMPLETE *')
+        resolve(true);
+      });
+
+    }) // promise end
+    return promise;
+  }
+  // GET REQUEST COPY - END
 
 
   detectMobile() {
@@ -1015,7 +1119,7 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
         this.showAdvancedSearchOption = true;
       }
     }
-    this.getRequests()
+    this.getRequests();
   }
 
   clearFullText() {
@@ -1327,6 +1431,146 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
 
   goToRequestMsgs(request_recipient: string) {
     this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/messages']);
+  }
+
+  selectAll() {
+    this.allChecked = !this.allChecked;
+    console.log("All Checked Status: ", this.allChecked);
+
+    if (this.allChecked == true) {
+      // select all
+      for (let request of this.requestList) {
+        const index = this.request_selected.indexOf(request.request_id);
+        if (index > -1) {
+          console.log("Già presente")
+        } else {
+          console.log("Request Selected: ", request.request_id);
+          this.request_selected.push(request.request_id);
+        }
+      }
+
+    } else {
+      for (let request of this.requestList) {
+        const index = this.request_selected.indexOf(request.request_id);
+
+        if (index > -1) {
+          console.log("INDEX: ", index);
+          this.request_selected.splice(index, 1);
+        } else {
+          console.log("Non era già presente");
+        }
+      }
+    }
+
+    console.log('REQUEST-LIST-HISTORY-NEW - ARRAY OF SELECTED REQUEST ', this.request_selected);
+    console.log('REQUEST-LIST-HISTORY-NEW - ARRAY OF SELECTED REQUEST lenght ', this.request_selected.length);
+
+  }
+
+
+  change(requestId) {
+    console.log('SELECTED REQUEST ID: ', requestId);
+    const index = this.request_selected.indexOf(requestId);
+    console.log("INDEX: ", index);
+
+    if (index > -1) {
+      this.request_selected.splice(index, 1);
+      if (this.request_selected.length == 0) {
+        this.allChecked = false;
+      }
+    } else {
+      this.request_selected.push(requestId);
+      if (this.request_selected.length == this.requestList.length) {
+        this.allChecked = true;
+      }
+    }
+
+    console.log('REQUEST-LIST-HISTORY-NEW - ARRAY OF SELECTED REQUEST ', this.request_selected);
+    console.log('REQUEST-LIST-HISTORY-NEW - ARRAY OF SELECTED REQUEST lenght ', this.request_selected.length);
+
+  }
+
+  deleteSelected() {
+    console.log("REQUEST-LIST-HISTORY-NEW - REQUESTS TO DELETE: ", this.request_selected);
+    let nRequestsBefore = this.requestList.length;
+    //let correctnessCheck = (this.requestList.length - this.request_selected.length);
+
+    swal({
+      title: this.areYouSure + "?",
+      text: this.selectedRequestWillBePermanentDeleted,
+      icon: "warning",
+      buttons: true,
+      dangerMode: true
+    }).then((willDelete) => {
+      if (willDelete) {
+        console.log("swal willDelete", willDelete);
+        // loop to delete the selected request
+
+        const promises = [];
+
+        for (let requestId of this.request_selected) {
+          console.log("Delete request whit ID: ", requestId);
+          promises.push(this.wsRequestsService.deleteRequestOnPromise(requestId));
+        }
+
+        Promise.all(promises).then((res) => {
+          console.log("RESULT PROMISE ALL: ", res);
+          let deleted = res.length;
+
+          // if all request have been deleted
+          if (deleted == this.request_selected.length) {
+            this.translate.get('DeleteRequestForever.SelectedRequestsWasSuccessfullyDeleted', { num_conv: deleted }).subscribe((text: string) => {
+              this.selectedRequestsWasSuccessfullyDeleted = text;
+            })
+
+            swal(this.done_msg, this.selectedRequestsWasSuccessfullyDeleted, {
+              icon: "success",
+            }).then((okpressed) => {
+              this.getRequests();
+            })
+          }
+
+        }).catch((err) => {
+
+          console.log("Error Promise.all: ", err);
+
+          this.getRequests().then((res) => {
+
+            // if no requests have been deleted
+            if (this.requestList.length == nRequestsBefore) {
+              swal(this.errorDeleting, this.pleaseTryAgain, {
+                icon: "error",
+              });
+            } else if (this.requestList.length < nRequestsBefore) {
+
+              let deleted = (nRequestsBefore - this.requestList.length);
+              let remaining = (this.request_selected.length - deleted);
+              this.translate.get('DeleteRequestForever.SelectedRequestsWasPartiallyDeleted', { num_conv: deleted, num_conv_exc: remaining }).subscribe((text: string) => {
+                this.selectedRequestsWasSuccessfullyDeleted = text;
+
+                swal(this.done_msg, this.selectedRequestsWasSuccessfullyDeleted, {
+                  icon: "warning",
+                }).then((okpressed) => {
+                  // do something?
+                  //this.getRequests();
+                })
+
+              })
+            }
+
+          }).catch((err) => {
+            console.log("Error getting request.")
+          })
+
+
+        })
+
+      } else {
+        console.log('swal willDelete', willDelete)
+      }
+
+
+    })
   }
 
   goBack() {

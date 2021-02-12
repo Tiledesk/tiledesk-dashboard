@@ -1,8 +1,12 @@
+import { FaqKbService } from './../../../services/faq-kb.service';
+import { UsersService } from './../../../services/users.service';
 import { Chart } from 'chart.js';
 import { TranslateService } from '@ngx-translate/core';
 import { Component, OnInit } from '@angular/core';
 import moment from 'moment';
-import { AnalyticsService } from 'app/services/analytics.service';
+import { AnalyticsService } from './../../../services/analytics.service';
+import { Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'appdashboard-messages',
@@ -14,29 +18,44 @@ export class MessagesComponent implements OnInit {
   lang: string;
   monthNames: any;
   selected: string;
-  selectedDaysId: number;
   initDay: string;
   endDay: string;
   lastdays = 7;
+  lineChart: any;
+  subscription:Subscription;
+
+  selectedDaysId: number;   // lastdays filter
+  selectedAgentId: string;  // agent filter
+
+  projectUserAndBotsArray = []
+  projectUsersList: any;
+  projectBotsList: any;
+  bots: any;
+  messageCountLastMonth: any;
 
   constructor(private translate: TranslateService,
-    private analyticsService: AnalyticsService) {
+    private analyticsService: AnalyticsService,
+    private usersService: UsersService,
+    private faqKbService: FaqKbService) {
 
     this.lang = this.translate.getBrowserLang();
     console.log('LANGUAGE ', this.lang);
     this.switchMonthName();
+    this.getProjectUsersAndBots();
+    this.getAggregateValue();
 
   }
 
   ngOnInit() {
     this.selected = 'day';
     this.selectedDaysId = 7;
+    this.selectedAgentId = '';
 
     this.initDay = moment().subtract(6, 'd').format('D/M/YYYY')
     this.endDay = moment().subtract(0, 'd').format('D/M/YYYY')
     console.log("INIT", this.initDay, "END", this.endDay);
 
-    this.getMessagesByLastNDays(this.selectedDaysId);
+    this.getMessagesByLastNDays(this.selectedDaysId, this.selectedAgentId);
   }
 
   switchMonthName() {
@@ -47,6 +66,55 @@ export class MessagesComponent implements OnInit {
         this.monthNames = { '1': 'Jan', '2': 'Feb', '3': 'Mar', '4': 'Apr', '5': 'May', '6': 'Jun', '7': 'Jul', '8': 'Aug', '9': 'Sep', '10': 'Oct', '11': 'Nov', '12': 'Dec' }
       }
     }
+  }
+
+  getProjectUsersAndBots() {
+    // https://stackoverflow.com/questions/44004144/how-to-wait-for-two-observables-in-rxjs
+
+    const projectUsers = this.usersService.getProjectUsersByProjectId();
+    const bots = this.faqKbService.getAllBotByProjectId();
+
+    Observable
+      .zip(projectUsers, bots, (_projectUsers: any, _bots: any) => ({ _projectUsers, _bots }))
+      .subscribe(pair => {
+        console.log('CONV LENGTH ANALYTICS - GET P-USERS-&-BOTS - PROJECT USERS : ', pair._projectUsers);
+        console.log('CONV LENGTH ANALYTICS - GET P-USERS-&-BOTS - BOTS: ', pair._bots);
+
+        if (pair && pair._projectUsers) {
+          this.projectUsersList = pair._projectUsers;
+
+          this.projectUsersList.forEach(p_user => {
+            this.projectUserAndBotsArray.push({ id: p_user.id_user._id, name: p_user.id_user.firstname + ' ' + p_user.id_user.lastname });
+          });
+        }
+
+        if (pair && pair._bots) {
+          this.bots = pair._bots
+            .filter(bot => {
+              if (bot['trashed'] === false) {
+                return true
+              } else {
+                return false
+              }
+            })
+
+          this.bots.forEach(bot => {
+            this.projectUserAndBotsArray.push({ id: 'bot_' + bot._id, name: bot.name + ' (bot)' })
+          });
+        }
+
+        console.log('CONV LENGTH ANALYTICS - GET P-USERS-&-BOTS - PROJECT-USER & BOTS ARRAY : ', this.projectUserAndBotsArray);
+
+      }, error => {
+        console.log('CONV LENGTH ANALYTICS - GET P-USERS-&-BOTS - ERROR: ', error);
+      }, () => {
+        console.log('CONV LENGTH ANALYTICS - GET P-USERS-&-BOTS - COMPLETE');
+      });
+  }
+
+  ngOnDestroy() {
+    console.log('!!! ANALYTICS.RICHIESTE - !!!!! UN - SUBSCRIPTION TO REQUESTS');
+    this.subscription.unsubscribe();
   }
 
   daysSelect(value, event) {
@@ -60,11 +128,30 @@ export class MessagesComponent implements OnInit {
     } else if (value == 360) {
       this.lastdays = 1;
     }
-    this.getMessagesByLastNDays(value);
+    this.lineChart.destroy();
+    this.getMessagesByLastNDays(value, this.selectedAgentId);
   }
 
-  getMessagesByLastNDays(lastdays) {
-    this.analyticsService.getMessagesByDay().subscribe((messagesByDay) => {
+  agentSelected(selectedAgentId) {
+    console.log("Selected agent: ", selectedAgentId);
+    this.lineChart.destroy();
+    this.subscription.unsubscribe();
+    this.getMessagesByLastNDays(this.selectedDaysId, selectedAgentId)
+    console.log('REQUEST:', this.selectedDaysId, selectedAgentId)
+  }
+
+  getAggregateValue() {
+    this.analyticsService.getLastMountMessagesCount().subscribe((res: any) => {
+      console.log("LAST MONTH MESSAGES COUNT: ", res);
+      this.messageCountLastMonth = res[0].totalCount;
+      console.log("Message Count: ", this.messageCountLastMonth);
+    })
+  }
+
+  getMessagesByLastNDays(lastdays, senderID) {
+    console.log("Lastdays: ", lastdays);
+    
+    this.subscription = this.analyticsService.getMessagesByDay(lastdays, senderID).subscribe((messagesByDay) => {
       console.log("»» MESSAGES BY DAY RESULT: ", messagesByDay)
 
       const lastdays_initarray = [];
@@ -106,14 +193,22 @@ export class MessagesComponent implements OnInit {
 
       const higherCount = this.getMaxOfArray(messagesByDay_series_array);
 
+      var stepsize;
+      if(this.selectedDaysId>60){
+          stepsize=10;
+      }
+      else {
+        stepsize=this.selectedDaysId
+      }
+
       let lang = this.lang;
 
-      var lineChart = new Chart('lastdaysMessages', {
+      this.lineChart = new Chart('lastdaysMessages', {
         type: 'line',
         data: {
           labels: messagesByDay_labels_array,
           datasets: [{
-            label: 'Number of visitors in last 7 days ',
+            label: 'Number of messages',
             data: messagesByDay_series_array,
             fill: true,
             lineTension: 0.0,
@@ -140,6 +235,7 @@ export class MessagesComponent implements OnInit {
               ticks: {
                 beginAtZero: true,
                 display: true,
+                maxTicksLimit: stepsize,
                 fontColor: 'black'
               },
               gridLines: {
@@ -174,7 +270,7 @@ export class MessagesComponent implements OnInit {
                   return 'Messaggi: ' + currentItemValue;
                 } else {
                   return 'Messages: ' + currentItemValue;
-                }
+                } 
               }
             }
           }
