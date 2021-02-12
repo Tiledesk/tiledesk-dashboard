@@ -4,7 +4,7 @@
 ### 2.1.22
 - Improves the 'Widget Live Test' button on the widget settings page
 - Fixes the bug: in the widget settings page, tooltips do not display the entire text
-- Adds the list of the project teammates in the list of conversations  with the indicators of availability and number of requests assigned
+- Adds the list of the project teammates in the list of conversations with the indicators of availability and number of requests assigned
 - Adds the ability to simultaneously select and delete multiple conversations in the history
 - Adds in analytics a graph that represents the trend of customer satisfaction
 - Adds a counter of the total next to the conversations graph,  visitors graph and messages graph
