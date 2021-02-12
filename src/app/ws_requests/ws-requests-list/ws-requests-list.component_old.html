@@ -214,7 +214,7 @@
 
 <div class="main-content" style="padding-top:0px; margin-top: 25px;padding-left: 0px;padding-right: 0px;">
   <div class="container-fluid">
-
+    <!-- ------====== CARDS COUNT OF REQUESTS: ACTIVE, SERVED & UNSERVED  and requests for depts ======------ -->
     <!-- <div class="row"> -->
     <div class="row">
       <!-- style="padding-left: 10px !important;" -->
@@ -399,14 +399,224 @@
 
 
         <div class="row">
+
+          <!-- 
+          // -------------------------------------------------------------------------------------- 
+          // @ CARDS COUNT OF REQUESTS: ACTIVE, SERVED & UNSERVED !!!!! dispaly none
+          // -------------------------------------------------------------------------------------- -->
+          <div class="col-xs-12" style="padding-right: 5px; display: none;">
+
+            <!-- // TOTAL ACTIVE -->
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4"
+              style="padding-left: 0px !important; padding-right: 5px !important;">
+              <div class="panel"
+                style="background-color: #fff; margin-bottom: 6px;box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);">
+                <div class="panel-heading">
+                  <div class="row">
+                    <div class="col-xs-3">
+
+                      <svg viewBox="0 0 58.1 53.9" style="width: 42px" xml:space="preserve">
+                        <style type="text/css">
+                          .st0 {
+                            fill: none;
+                            stroke: #ff9800;
+                            stroke-width: 3;
+                            stroke-miterlimit: 10;
+                          }
+                        </style>
+                        <path class="st0" d="M30.1,2.7c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3c-0.3,4.1-1.3,9.9-4.1,12.7c0,0,8.6-1.2,14.4-4.7
+                     c3.2,1.4,6.8,2.1,10.6,2.1c13.8,0,25-10,25-22.4S43.9,2.7,30.1,2.7z" />
+                      </svg>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                      <div class="huge" style=" font-size: 40px; line-height: 48px; color: #ff9800">
+                        {{ wsRequestsServed?.length + wsRequestsUnserved?.length }}
+                      </div>
+                    </div>
+                    <div class="col-xs-12 text-right">
+                      <div class="ng-binding" style="color: #ff9800">
+                        {{ "Active" | translate }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- // UNSERVED -->
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4"
+              style="padding-left: 5px !important; padding-right: 5px !important;">
+              <div class="panel"
+                style="background-color: #fff; margin-bottom: 6px;box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);">
+                <div class="panel-heading">
+                  <div class="row">
+                    <div class="col-xs-3">
+
+                      <svg viewBox="0 0 58.1 53.9" style="width: 42px" xml:space="preserve">
+                        <style type="text/css">
+                          .st0-unserved {
+                            fill: none;
+                            stroke: #ED4537;
+                            stroke-width: 3;
+                            stroke-miterlimit: 10;
+                          }
+
+                          .st1-unserved {
+                            fill: #ED4537;
+                          }
+                        </style>
+                        <path class="st0-unserved" d="M30.5,3.3c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3c-0.3,4.1-1.3,9.9-4.1,12.7c0,0,8.6-1.2,14.4-4.7
+                     c3.2,1.4,6.8,2.1,10.6,2.1c13.8,0,25-10,25-22.4S44.3,3.3,30.5,3.3z" />
+                        <g>
+                          <path class="st1-unserved"
+                            d="M30.6,38.9c-1.7,0-3.1-1.4-3.1-3c0-1.7,1.4-3,3.1-3c1.7,0,3.1,1.4,3.1,3C33.6,37.6,32.3,38.9,30.6,38.9z" />
+                          <path class="st1-unserved" d="M34.8,18l-1.5,10c-0.2,1.5-1.6,2.5-3.1,2.3c-1.2-0.2-2.1-1.1-2.3-2.2l-1.6-10c-0.4-2.3,1.2-4.5,3.6-4.9
+                       c2.4-0.4,4.6,1.2,5,3.5C34.9,17.1,34.9,17.6,34.8,18z" />
+                        </g>
+                      </svg>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                      <div class="huge" style=" font-size: 40px; line-height: 48px; color: #f44336;">
+                        {{ wsRequestsUnserved?.length }}
+                      </div>
+                    </div>
+                    <div class="col-xs-12 text-right">
+                      <div class="ng-binding" style="color: #f44336;">
+                        {{ "Unserved" | translate }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- // SERVED -->
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4"
+              style="padding-left: 5px !important; padding-right: 0px !important;">
+
+              <div class="panel"
+                style="background-color: #fff;margin-bottom: 6px; box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);">
+                <div class="panel-heading">
+                  <div class="row">
+                    <div class="col-xs-3">
+
+                      <svg viewBox="0 0 58.1 53.9" style="width: 42px" xml:space="preserve">
+                        <style type="text/css">
+                          .st0-served {
+                            fill: none;
+                            stroke: #05BDD4;
+                            stroke-width: 3;
+                            stroke-miterlimit: 10;
+                          }
+
+                          .st1-served {
+                            fill: #05BDD4;
+                          }
+                        </style>
+                        <g>
+                          <path class="st0-served" d="M30.5,3c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3c-0.3,4.1-1.3,9.9-4.1,12.7c0,0,8.6-1.2,14.4-4.7
+                       c3.2,1.4,6.8,2.1,10.6,2.1c13.8,0,25-10,25-22.4S44.3,3,30.5,3z" />
+                          <g>
+                            <circle class="st1-served" cx="17.5" cy="26.7" r="3" />
+                            <circle class="st1-served" cx="30.5" cy="26.7" r="3" />
+                            <circle class="st1-served" cx="43.5" cy="26.7" r="3" />
+                          </g>
+                        </g>
+                      </svg>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                      <div class="huge" style=" font-size: 40px; line-height: 48px; color: #00bcd4;">
+                        {{ wsRequestsServed?.length }}
+                      </div>
+                    </div>
+                    <div class="col-xs-12 text-right">
+                      <div class="ng-binding" style="color: #00bcd4;">
+                        {{ "Served" | translate }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+
+
+
           <div class="col-xs-12" style="padding-right: 5px;">
+
             <div class="card card--no-border" style="margin: 5px 0;">
+              <!-- padding:0 6px -->
               <div class="card-content"
                 style="padding-top: 0px;padding-left: 0px;padding-right: 0px;padding-bottom: 0px;">
+
+                <!--  -------------------------------------------------------------------------------------- -->
+                <!--  @ DEPTS & AGENTS filters  !!!!! Display none -->
+                <!--  -------------------------------------------------------------------------------------- -->
+                <div class="row" style="margin-bottom: 16px;" style="display: none;">
+
+
+                  <!-- -------------------------------------------------------- -->
+                  <!-- @ Department filter -->
+                  <!-- -------------------------------------------------------- -->
+                  <div class="col-sm-6">
+                    <label class="col-sm-12" style="text-align: left; color:#7695a5;padding-left:0px">
+                      {{ 'HistoryPage.FilterByDepartment' | translate }}
+                    </label>
+
+                    <ng-select attr.aria-label="{{ 'FilterBy' | translate }} {{ 'Department' | translate }}"
+                      class="custom" name="dept" [(ngModel)]="selectedDeptId" (change)="onChangeDepts()"
+                      (clear)="clearDeptFilter()" placeholder="{{ 'HistoryPage.AllDepts' | translate }}">
+
+                      <!-- <ng-option *ngFor="let dept of depts_array_noduplicate" [value]="dept?._id"> -->
+                      <ng-option *ngFor="let dept of departments" [value]="dept?._id">
+                        <!-- // use this if do the for with departments -->
+                        {{dept?.name}}
+                        <!-- // use this if do the for with depts_array_noduplicate -->
+                        <!-- {{dept?.deptName}} -->
+                      </ng-option>
+                    </ng-select>
+                  </div>
+
+
+                  <!-- -------------------------------------------------------- -->
+                  <!-- @ Angent filter -->
+                  <!-- -------------------------------------------------------- -->
+                  <div class="col-sm-6">
+                    <label class="col-sm-12" style="text-align: left; color: #7695a5 !important;padding-left:0px">
+                      {{ 'HistoryPage.Agent' | translate }}
+                    </label>
+                    <ng-select attr.aria-label="{{ 'FilterBy' | translate }} {{ 'HistoryPage.Agent' | translate }}"
+                      name="agent" [(ngModel)]="selectedAgentId" placeholder="{{ 'HistoryPage.AllAgents' | translate }}"
+                      (clear)="clearAgentFilter()" (change)="onChangeAgent()">
+                      <!-- <ng-option [value]="''">{{ 'HistoryPage.AllAgents' | translate }}</ng-option> -->
+                      <!-- user_and_bot_array -->
+                      <ng-option [value]="1">{{ 'HumanAgentsOnly' | translate }}</ng-option>
+                      <ng-option [value]="2">{{ 'BotsOnly' | translate }}</ng-option>
+                      <ng-option *ngFor="let agent of participantsInRequests" [value]="agent?._id">
+                        {{ agent.firstname }} {{ agent.lastname }}
+                      </ng-option>
+                    </ng-select>
+                  </div>
+
+                  <!--
+                  <div class="col-sm-4">                    
+                    <label></label>
+                    <button type="submit" class="btn btn-white" (click)="clearSearch()"
+                      style="color:#7695a5">
+                      {{ 'HistoryPage.ClearSearch' | translate }}
+                    </button>
+                  </div> -->
+
+                </div>
+                <!-- projectUserArray: {{ projectUserArray | json }} -->
+
+
                 <!--  -------------------------------------------------------------------------------------- -->
                 <!--  @ TEAMMATES SCROLL DIV -->
                 <!--  -------------------------------------------------------------------------------------- -->
-                <!-- projectUserArray: {{ projectUserArray | json }} -->
+
                 <div class="team-container">
                   <div style="float: left" class="side">
                     <i class="material-icons" (click)="scrollLeft()">keyboard_arrow_left</i>
@@ -442,82 +652,6 @@
               </div> <!-- ./ card-content -->
             </div>
           </div>
-
-          <!-- new ********* -->
-          <div class="col-xs-12">
-
-            <div style="float: left">
-              <button (click)="scrollLeft()">left</button>
-          </div>
-
-          <div #widgetsContent class="middle-nw">
-            <div class="served-by-conv-a">
-              <div class="served-by-conv-b" *ngFor="let agent of projectUserArray">
-
-                  <div class="served-by-conv-c tool_tip"
-                    (click)="goToAgentProfile(agent?._id)">
-                    <div class="served-by-conv-d">
-                      <div size="42" class="served-by-conv-e">
-                        <!-- {{  agent.hasImage }} -->
-                        <img *ngIf="agent.hasImage"
-                          
-                          src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?.id_user._id}}%2Fphoto.jpg?alt=media"
-                          alt="" onerror="this.src='assets/img/no_image_user.png'" >
-
-                          <div class="teammates-with-picture-assigned-requests-count">{{agent?.number_assigned_requests_rt}}</div>
-                          <div class="teammates-with-picture-status-icon"
-                            [ngClass]="{'is-user-online': agent?.user_available_rt === true, 'is-user-offline':agent?.user_available_rt === false   }">
-                          </div>
-                        <div 
-                          class="altenative-conv-avatar-wrap" [ngStyle]="{'background-color': agent?.id_user?.fillColour }"
-                          *ngIf="!agent.hasImage">
-
-                          <span class="altenative-conv-avatar">
-                            {{ agent?.id_user?.fullname_initial }}
-                          </span>
-
-                          <div class="teammates-no-picture-assigned_requests_count">{{agent?.number_assigned_requests_rt}}</div>
-                          <div class="teammates-no-picture-status-icon"
-                            [ngClass]="{'is-user-online': agent?.user_available_rt === true, 'is-user-offline':agent?.user_available_rt === false   }">
-                          </div>
-
-                        </div>
-                      </div>
-                    </div>
-
-                    <span
-                      style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px; white-space: nowrap;"
-                      class="top">
-                      <span style="text-transform: capitalize;"> {{ agent?.firstname }}
-                        <span *ngIf="agent?.lastname">
-                          {{ agent?.lastname | slice:0:1 }}.
-                        </span>
-
-                      </span>
-                      <i></i>
-                    </span>
-                  </div>
-                
-
-
-             
-
-              </div>
-            </div>
-          </div>
-
-          <div style="float: right">
-              <button (click)="scrollRight()">right</button>
-          </div>
-
-
-
-
-          </div>
-
-
-          <!-- /.new ********* -->
-
         </div>
       </div>
 

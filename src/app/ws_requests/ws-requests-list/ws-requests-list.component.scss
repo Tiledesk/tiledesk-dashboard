@@ -702,6 +702,99 @@ $f21blue: #039be5;
 // }
 
 // ======================================================
+// teammates scroll div nw
+// ======================================================
+.middle-nw {
+  float: left;
+  width: 90%;
+  overflow: auto;
+  /*will change this to hidden later to deny scolling to user*/
+  white-space: nowrap;
+  height: 55px;
+}
+
+.teammates-with-picture-assigned-requests-count {
+  position: absolute;
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  top: 8px;
+  left: 4px;
+  border-radius: 9px;
+  padding: 0 5px;
+  font-size: 11px;
+  text-align: center;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.35);
+  background-color: #039be5;
+  color: #fff;
+}
+.teammates-with-picture-status-icon {
+  width: 10px;
+  height: 10px;
+  float: left;
+  border-radius: 50%;
+  border: 1px solid #ffffff;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 39px;
+  left: 38px;
+}
+
+.teammates-no-picture-assigned_requests_count {
+  position: absolute;
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  // top: 8px;
+  // left: 4px;
+  top: -3px;
+  left: -5px;
+  border-radius: 9px;
+  padding: 0 5px;
+  font-size: 11px;
+  text-align: center;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.35);
+  background-color: #039be5;
+  color: #fff;
+}
+.teammates-no-picture-status-icon {
+  width: 10px;
+  height: 10px;
+  float: left;
+  border-radius: 50%;
+  border: 1px solid #ffffff;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 39px;
+  left: 38px;
+}
+
+.is-user-online {
+  background-color: #4caf50;
+}
+.is-user-offline {
+  background-color: #f44336;
+}
+
+
+
+
+
+// ======================================================
 // teammates scroll div
 // ======================================================
 .team-container {

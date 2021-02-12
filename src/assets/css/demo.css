@@ -665,6 +665,78 @@ my-app .main-panel .main-content .card {
   left: -2px;
 }
 
+
+/*
+// ---------------------------------------------------------------------------
+// SCROLL DIV inline avatars  (used conversations scroll div)
+// --------------------------------------------------------------------------- 
+*/
+.served-by-conv-a {
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  /* // margin-top: 12px; */
+}
+
+.served-by-conv-b {
+  /* // margin-right: 6px; */
+  display: flex;
+  flex-flow: row nowrap;
+  -webkit-box-pack: start;
+  justify-content: flex-start;
+}
+
+.served-by-conv-c {
+  padding: 0px;
+  display: inline-block;
+  flex: 1 1 32px;
+  margin-left: 15px;
+  cursor: pointer;
+}
+
+.served-by-conv-d {
+  position: relative;
+}
+.served-by-conv-e {
+  margin: 0px auto;
+  border-radius: 50%;
+  display: inline-block;
+  vertical-align: middle;
+  width: 42px;
+  height: 42px;
+  line-height: 32px;
+  font-size: 28px;
+}
+
+.served-by-conv-e img {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 2px solid rgb(255, 255, 255);
+}
+
+.served-by-conv-e .altenative-conv-avatar-wrap {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 2px solid rgb(255, 255, 255);
+  /* // margin-top: 2px; */
+  position: relative;
+  top: 2px;
+}
+.altenative-conv-avatar {
+  color: #ffffff;
+  line-height: 38px;
+  margin: auto;
+  display: block;
+  font-weight: 400;
+  font-size: 16px;
+  /* // padding-left: 10px; */
+  text-align: center;
+}
+
+
+
 /*
 // ---------------------------------------------------------------------------
 // inline avatars (used in conversation - history - no real-time conversation)

@@ -760,9 +760,9 @@ export class UsersService {
   // NOTE: USER COMP SUBSCRIBES TO has_changed_availability TO RE-RUN getAllUsersOfCurrentProject
   // WITCH UPDATE THE LIST OF THE PROJECT' MEMBER
   public availability_btn_clicked(clicked: boolean) {
-   
+
     this.has_changed_availability_in_sidebar.next(clicked)
-    console.log('NAVBAR-FOR-PANEL & SB >>> user-service SUBSCR To CURRENT-USER AVAILABILITY  availability_btn_clicked ', clicked) 
+    console.log('NAVBAR-FOR-PANEL & SB >>> user-service SUBSCR To CURRENT-USER AVAILABILITY  availability_btn_clicked ', clicked)
   }
 
 
@@ -777,15 +777,15 @@ export class UsersService {
   }
 
 
-  // -----------------------------------------------------------------------------------------------------
-  // Availability - subscribe to WS Current user availability
-  // -----------------------------------------------------------------------------------------------------
+  // -----------------------------------------------------------------------------------------------------------------------------
+  // Subscribe to WS PROJECTS CURRENT USERS (used to get availability and is busy in the projects card of the recent project page)
+  // -----------------------------------------------------------------------------------------------------------------------------
   subscriptionToWsCurrentUser_allProject(projectid, prjctuserid) {
     var self = this;
 
     console.log('PROJECT COMP (user-service) SUBSCR TO WS CURRENT USERS projectid: ', projectid, ' prjctuserid: ', prjctuserid);
     const path = '/' + projectid + '/project_users/' + prjctuserid
-    
+
     return new Promise(function (resolve, reject) {
 
       self.webSocketJs.ref(path, 'subscriptionToWsCurrentUser_allProject', function (data, notification) {
@@ -797,7 +797,7 @@ export class UsersService {
         resolve(data)
         // self.currentUserWsAvailability$.next(data.user_available);
         self.currentUserWsBusyAndAvailabilityForProject$.next(data)
-        
+
       }, function (data, notification) {
         resolve(data)
         console.log("PROJECT COMP (user-service) SUBSCR TO WS CURRENT USERS - UPDATE - data ", data);
@@ -815,8 +815,8 @@ export class UsersService {
   }
 
 
-    // -----------------------------------------------------------------------------------------------------
-  // Contact Events
+  // -----------------------------------------------------------------------------------------------------
+  // Subscribe to WS Contact Events
   // -----------------------------------------------------------------------------------------------------
   subscriptionToWsContactEvents(projectid, leadid) {
 
@@ -824,7 +824,7 @@ export class UsersService {
     self.eventlist = []
     console.log('EVENTS SERV (user-service) SUBSCR TO WS CONTACT EVENTS projectid: ', projectid, ' prjctuserid: ', leadid);
     const path = '/' + projectid + '/events/' + leadid
-    
+
     return new Promise(function (resolve, reject) {
 
       self.webSocketJs.ref(path, 'subscriptionToWsContactEvents', function (data, notification) {
@@ -833,11 +833,11 @@ export class UsersService {
         // console.log("PROJECT COMP (user-service) SUBSCR TO WS CURRENT USERS - CREATE - data  user_available ", data.user_available);
         // console.log("PROJECT COMP (user-service) SUBSCR TO WS CURRENT USERS - CREATE - data  isBusy ", data.isBusy);
 
-       
+
         const index = self.eventlist.findIndex((e) => e._id === data._id);
         if (index === -1) {
-         
-          
+
+
           console.log("EVENTS SERV (user-service) SUBSCR TO WS CONTACT EVENTS CREATE the event not exist - ADD");
           self.eventlist.push(data)
 
@@ -846,8 +846,8 @@ export class UsersService {
 
         // resolve(data)
         // self.currentUserWsAvailability$.next(data.user_available);
-        
-        
+
+
       }, function (data, notification) {
         resolve(data)
         console.log("EVENTS SERV (user-service) SUBSCR TO WS CONTACT EVENTS - UPDATE - data ", data);
@@ -1059,7 +1059,7 @@ export class UsersService {
 
     // const body = { 'role': user_role, 'max_served_chat': max_served_chat };
     const body = { 'role': user_role, 'max_assigned_chat': max_assigned_chat };
-    
+
 
     console.log('PROJECT-USER DETAILS (calling from) - PROJECT-USER UPDATE ROLE & MAX-CHAT BODY ', body);
 

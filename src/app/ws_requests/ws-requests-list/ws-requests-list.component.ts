@@ -46,7 +46,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   // @ViewChild('teamContent', { read: ElementRef }) public teamContent: ElementRef<any>;
   @ViewChild('teamContent') private teamContent: ElementRef;
   @ViewChild('testwidgetbtn') private testwidgetbtnRef: ElementRef;
-
+  @ViewChild('widgetsContent')  public widgetsContent: ElementRef;
   // wsRequestsUnserved: Observable<Request[]>;
   // wsRequestsServed: Observable<Request[]>;
   wsRequestsUnserved: any;
