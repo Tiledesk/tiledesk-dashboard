@@ -18,6 +18,9 @@
   <li class="btn-with-border-effect " [ngClass]="{'li-active' : selected === 'durataConv', 'border-from-center': selected !== 'durataConv'}" (click)="goTo('durataConv')">
     <a>{{ 'Analytics.Metrics.ConversationLenght' | translate }}</a>
   </li>
+  <li class="btn-with-border-effect " [ngClass]="{'li-active' : selected === 'satisfaction', 'border-from-center': selected !== 'satisfaction'}" (click)="goTo('satisfaction')">
+    <a>{{ 'Analytics.Metrics.Satisfaction' | translate }}</a>
+  </li>
 </ul>
 <div class="main-content" style="padding-top:0px">
   <div class="container-fluid">
@@ -27,5 +30,6 @@
     <appdashboard-sentiment *ngIf="selected=='sentiment'"></appdashboard-sentiment>
     <appdashboard-tempirisposta *ngIf="selected=='tempiRisposta'"></appdashboard-tempirisposta>
     <appdashboard-durataconv *ngIf="selected=='durataConv'"></appdashboard-durataconv>
+    <appdashboard-satisfaction *ngIf="selected=='satisfaction'"></appdashboard-satisfaction>
   </div>
 </div>

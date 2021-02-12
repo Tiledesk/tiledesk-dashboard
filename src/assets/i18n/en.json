@@ -939,7 +939,8 @@
         "BackToBotsList": "Bots list",
         "AnErrorHasOccurred": "An error has occurred",
         "Continue": "Continue",
-        "Type": "Type"
+        "Type": "Type",
+        "Messages": "Messages"
     },
     "FaqPage": {
         "EditBOT": "Edit BOT",
@@ -1515,7 +1516,8 @@
             "Requests": "Conversations",
             "Sentiment": "Sentiment",
             "ResponseTime": "Response time",
-            "ConversationLenght": "Conversation Length"
+            "ConversationLenght": "Conversation Length",
+            "Satisfaction": "Satisfaction"
         },
         "RealTimeComponentTitle": "Real Time",
         "AvgTimeTitle": "Average Time Monitoring",
@@ -1524,7 +1526,7 @@
         "ConvDurationTitle": "Conversation Length Monitoring",
         "MedianConvClock": "Median Conversation Length",
         "ResponseDurationtime": "Your team's overall Median Conversation Length is ",
-        "RequestChartTitle": "Number of conversations last ",
+        "RequestChartTitle": "Number of Conversations Last ",
         "FilterReport": "Filter report",
         "FilterByAgent": "Agent",
         "FilterByDay": "Days",
@@ -1532,33 +1534,44 @@
         "FilterByMonth": "Months",
         "FilterBy": "Filter by",
         "Last": "Last",
-        "Days": "days",
-        "Month": "month",
-        "Months": "months",
-        "Year": "year",
+        "Days": "Days",
+        "Month": "Month",
+        "Months": "Months",
+        "Year": "Year",
         "DataRangeRequest": "Data range ",
         "RealTimeMonitoring": "Real-time Monitoring",
         "SentimentTitle": "Customer Satisfaction",
         "SentimentHEART": "Median Customer Satisfaction",
         "SentimentMedianValueHEART": "Your team's overall Median Customer Satisfaction is :",
         "UpgradeYourAccounttoTrackTheChatsYouHaveWithCustomers": " Upgrade your account to track the chats you have with customers",
-        "DailyMedianResponseTime": "Daily Median Response Time",
-        "DailyConvDurationTime": "Daily Median Conversation Length",
+        "DailyMedianResponseTime": "Daily Median Response Time Last",
+        "DailyConvDurationTime": "Daily Median Conversation Length Last",
         "VisitorsComponentTitle": "Visitors",
         "Visitors": {
             "NumberOfVisitors": "Number of visitors",
-            "VisitorsChartTitle": "Number of visitors last "
+            "VisitorsChartTitle": "Number of Visitors Last "
         },
         "MessagesComponentTitle": "Messages",
         "Messages": {
-            "MessagesChartTitle": "Number of messages last",
-            "NumberOfMessages": "Number of messages"
+            "MessagesChartTitle": "Number of Messages Last",
+            "NumberOfMessages": "Number of messages",
+            "NoMessagesValue": "Your team hasn't received any messages yet"
+        },
+        "SatisfactionComponentTitle": "Satisfaction Monitoring",
+        "Satisfaction": {
+            "SatisfactionStar": "Average Satisfaction",
+            "StatisfactionValueLabel": "The average rating for your team is ",
+            "NoSatisfactionValue" : "Your team hasn't received any ratings yet.",
+            "DailySatisfactionTrend": "Daily Satisfaction Trend Last"
         }
     },
     "DeleteRequestForever": {
         "TheRequestWillBePermanentlyDeleted": "the conversation will be permanently deleted",
+        "SelectedRequestsWillBePermanentlyDeleted": "selected conversations will be permanently deleted",
         "Done": "Done!",
         "TheRequestWasSuccessfullyDeleted": "the conversation was successfully deleted",
+        "SelectedRequestsWasSuccessfullyDeleted": "{{ num_conv }} conversations was successfully deleted",
+        "SelectedRequestsWasPartiallyDeleted": "{{ num_conv }} conversations was successfully deleted\n\nAttention, {{ num_conv_exc}} conversations was not deleted",
         "ErrorDeleting": "Error deleting!",
         "PleaseTryAgain": "Please try again"
     },

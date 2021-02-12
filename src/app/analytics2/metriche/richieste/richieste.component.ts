@@ -1,3 +1,4 @@
+import { FaqKbService } from './../../../services/faq-kb.service';
 import { AnalyticsService } from './../../../services/analytics.service';
 import { DepartmentService } from '../../../services/department.service';
 import { Component, OnInit } from '@angular/core';
@@ -6,6 +7,7 @@ import { Chart } from 'chart.js';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { UsersService } from 'app/services/users.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'appdashboard-richieste',
@@ -14,51 +16,58 @@ import { UsersService } from 'app/services/users.service';
 })
 export class RichiesteComponent implements OnInit {
 
-  lineChart:any;
-  
-
+  lineChart: any;
   lang: String;
 
-  monthNames:any;
-  lastdays=7;
+  monthNames: any;
+  lastdays = 7;
 
-  initDay:string;
-  endDay:string;
+  initDay: string;
+  endDay: string;
 
-  selectedDaysId:number; //lastdays filter
-  selectedDeptId:string;  //department filter
-  
+  selectedDaysId: number;   // lastdays filter
+  selectedDeptId: string;   // department filter
+  selectedAgentId: string;  // agent filter 
 
-  selected:string;
+  selected: string;
+  departments: any;
+  user_and_bot_array = [];
 
-  departments:any;
-  user_and_bot_array= [];
+  subscription: Subscription;
 
-  subscription:Subscription;
+  projectUserAndBotsArray = []
+  projectUsersList: any;
+  projectBotsList: any;
+  bots: any;
+  conversationsCountLastMonth: any;
 
-  constructor(private analyticsService:AnalyticsService,
-              private translate: TranslateService,
-              private departmentService:DepartmentService,
-              private usersService: UsersService,) {
-      
-          this.lang = this.translate.getBrowserLang();
-          console.log('LANGUAGE ', this.lang);
-          this.getBrowserLangAndSwitchMonthName();
-          
-    }
+  constructor(private analyticsService: AnalyticsService,
+    private translate: TranslateService,
+    private departmentService: DepartmentService,
+    private usersService: UsersService,
+    public faqKbService: FaqKbService) {
+
+    this.lang = this.translate.getBrowserLang();
+    console.log('LANGUAGE ', this.lang);
+    this.getBrowserLangAndSwitchMonthName();
+
+  }
 
   ngOnInit() {
-    this.selected='day'
+    this.selected = 'day'
     this.selectedDeptId = '';
-    this.selectedDaysId=7;
-    
-    this.initDay=moment().subtract(6, 'd').format('D/M/YYYY')
-    this.endDay=moment().subtract(0, 'd').format('D/M/YYYY')
+    this.selectedDaysId = 7;
+    this.selectedAgentId = '';
+
+    this.initDay = moment().subtract(6, 'd').format('D/M/YYYY')
+    this.endDay = moment().subtract(0, 'd').format('D/M/YYYY')
     console.log("INIT", this.initDay, "END", this.endDay);
 
-    this.getRequestByLastNDay(this.selectedDaysId, this.selectedDeptId);
+    this.getAggregateValue();
+    this.getRequestByLastNDayMerge(this.selectedDaysId, this.selectedDeptId);
     this.getDepartments();
-    
+    this.getProjectUsersAndBots();
+  
   }
 
   ngOnDestroy() {
@@ -66,29 +75,54 @@ export class RichiesteComponent implements OnInit {
     this.subscription.unsubscribe();
   }
 
-  daysSelect(value, event){
+  daysSelect(value, event) {
     console.log("EVENT", event)
-    this.selectedDaysId=value;//--> value to pass throw for graph method
-      //check value for label in htlm
-    if(value<=30){
-      this.lastdays=value;
-    }else if((value=== 90) || (value=== 180)){
-      this.lastdays=value/30;
-    }else if(value === 360){
-      this.lastdays=1;
+    this.selectedDaysId = value;//--> value to pass throw for graph method
+    //check value for label in htlm
+    if (value <= 30) {
+      this.lastdays = value;
+    } else if ((value === 90) || (value === 180)) {
+      this.lastdays = value / 30;
+    } else if (value === 360) {
+      this.lastdays = 1;
     }
     this.lineChart.destroy();
     this.subscription.unsubscribe();
-    this.getRequestByLastNDay(value, this.selectedDeptId);
-    console.log('REQUEST:', value, this.selectedDeptId)
+    console.log("++++++++++ SELECTED AGENT: ", this.selectedAgentId);
+    if (!this.selectedAgentId) {
+      this.getRequestByLastNDayMerge(this.selectedDaysId, this.selectedDeptId,)
+      console.log('REQUEST:', this.selectedDaysId, this.selectedDeptId)
+    } else {
+      this.getRequestByLastNDay(value, this.selectedDeptId, this.selectedAgentId)
+      console.log('REQUEST:', value, this.selectedDeptId, this.selectedAgentId)
+    }
   }
 
-  depSelected(selectedDeptId){
+  depSelected(selectedDeptId) {
     console.log('dep', selectedDeptId);
     this.lineChart.destroy();
     this.subscription.unsubscribe();
-    this.getRequestByLastNDay( this.selectedDaysId,selectedDeptId)
-    console.log('REQUEST:', this.selectedDaysId, selectedDeptId)
+    if (!this.selectedAgentId) {
+      this.getRequestByLastNDayMerge(this.selectedDaysId, this.selectedDeptId,)
+      console.log('REQUEST:', this.selectedDaysId, this.selectedDeptId)
+    } else {
+      this.getRequestByLastNDay(this.selectedDaysId, selectedDeptId, this.selectedAgentId)
+      console.log('REQUEST:', this.selectedDaysId, selectedDeptId, this.selectedAgentId)
+    }
+
+  }
+
+  agentSelected(selectedAgentId) {
+    console.log("Selected agent: ", selectedAgentId);
+    this.lineChart.destroy();
+    this.subscription.unsubscribe();
+    if (!this.selectedAgentId) {
+      this.getRequestByLastNDayMerge(this.selectedDaysId, this.selectedDeptId,)
+      console.log('REQUEST:', this.selectedDaysId, this.selectedDeptId)
+    } else {
+      this.getRequestByLastNDay(this.selectedDaysId, this.selectedDeptId, selectedAgentId)
+      console.log('REQUEST:', this.selectedDaysId, this.selectedDeptId, selectedAgentId)
+    }
   }
 
 
@@ -104,10 +138,66 @@ export class RichiesteComponent implements OnInit {
     });
   }
 
+  // getProjectUsersAndBots() {
+  //   const projectUsersSubscription = this.usersService.getProjectUsersByProjectId().subscribe((res) => {
+  //     this.projectUsersList = res;
+  //     console.log('!!! ANALYTICS.RICHIESTE - !!!  PROJECT USERS : ', this.projectUsersList);
+  //   })
+
+  //   const projectBotsSubscription = this.faqKbService.getAllBotByProjectId().subscribe((res) => {
+  //     this.projectBotsList = res;
+  //     console.log('!!! ANALYTICS.RICHIESTE - !!!  PROJECT BOTS : ', res);
+  //   })
+  // }
+
+  getProjectUsersAndBots() {
+    // https://stackoverflow.com/questions/44004144/how-to-wait-for-two-observables-in-rxjs
+
+    const projectUsers = this.usersService.getProjectUsersByProjectId();
+    const bots = this.faqKbService.getAllBotByProjectId();
+
+    Observable
+      .zip(projectUsers, bots, (_projectUsers: any, _bots: any) => ({ _projectUsers, _bots }))
+      .subscribe(pair => {
+        console.log('BASE-TRIGGER - GET P-USERS-&-BOTS - PROJECT USERS : ', pair._projectUsers);
+        console.log('BASE-TRIGGER - GET P-USERS-&-BOTS - BOTS: ', pair._bots);
+
+        if (pair && pair._projectUsers) {
+          this.projectUsersList = pair._projectUsers;
+
+          this.projectUsersList.forEach(p_user => {
+            this.projectUserAndBotsArray.push({ id: p_user.id_user._id, name: p_user.id_user.firstname + ' ' + p_user.id_user.lastname });
+          });
+        }
+
+        if (pair && pair._bots) {
+          this.bots = pair._bots
+            .filter(bot => {
+              if (bot['trashed'] === false) {
+                return true
+              } else {
+                return false
+              }
+            })
+
+          this.bots.forEach(bot => {
+            this.projectUserAndBotsArray.push({ id: 'bot_' + bot._id, name: bot.name + ' (bot)' })
+          });
+        }
+
+        console.log('BASE-TRIGGER - GET P-USERS-&-BOTS - PROJECT-USER & BOTS ARRAY : ', this.projectUserAndBotsArray);
+
+      }, error => {
+        console.log('BASE-TRIGGER - GET P-USERS-&-BOTS - ERROR: ', error);
+      }, () => {
+        console.log('BASE-TRIGGER - GET P-USERS-&-BOTS - COMPLETE');
+      });
+  }
+
 
 
   getBrowserLangAndSwitchMonthName() {
-    
+
     if (this.lang) {
       if (this.lang === 'it') {
         this.monthNames = { '1': 'Gen', '2': 'Feb', '3': 'Mar', '4': 'Apr', '5': 'Mag', '6': 'Giu', '7': 'Lug', '8': 'Ago', '9': 'Set', '10': 'Ott', '11': 'Nov', '12': 'Dic' }
@@ -117,7 +207,7 @@ export class RichiesteComponent implements OnInit {
     }
   }
 
-  getMinOfArray(request){
+  getMinOfArray(request) {
     return Math.min.apply(null, request);
   }
 
@@ -125,55 +215,66 @@ export class RichiesteComponent implements OnInit {
     return Math.max.apply(null, requestsByDay_series_array);
   }
 
-  //-----------LAST n DAYS GRAPH-----------------------
-  getRequestByLastNDay(lastdays, depID){
-    
-    this.subscription= this.analyticsService.requestsByDay(lastdays, depID).subscribe((requestsByDay: any) => {
+  getAggregateValue() {
+    this.analyticsService.getLastMountConversationsCount().subscribe((res: any) => {
+      console.log("LAST MONTH CONVERSATIONS COUNT: ", res);
+      this.conversationsCountLastMonth = res[0].totalCount;
+      console.log("Conversations Count: ", this.conversationsCountLastMonth);
+    })
+  }
+
+  getRequestByLastNDay(lastdays, depID, participantID) {
+
+    if (participantID.includes("bot")) {
+      console.log("Selected Agent is a BOT");
+      // try to change chart's colors
+    }
+    console.log("GET REQUEST TYPE: For Agent/Bot")
+    this.subscription = this.analyticsService.requestsByDay(lastdays, depID, participantID).subscribe((requestsByDay: any) => {
       console.log('»» !!! ANALYTICS - REQUESTS BY  N-DAY ', requestsByDay);
 
-      // CREATES THE INITIAL ARRAY WITH THE LAST SEVEN DAYS (calculated with moment) AND REQUESTS COUNT = O
       const last7days_initarray = []
       for (let i = 0; i < lastdays; i++) {
         // console.log('»» !!! ANALYTICS - LOOP INDEX', i);
         last7days_initarray.push({ 'count': 0, day: moment().subtract(i, 'd').format('D/M/YYYY') })
       }
 
-      
-
       last7days_initarray.reverse()
       console.log('»» !!! ANALYTICS - REQUESTS BY lastDAY - MOMENT LAST N DATE (init array)', last7days_initarray);
 
       const requestsByDay_series_array = [];
-      const requestsByDay_labels_array = []
+      const requestsByDay_labels_array = [];
 
       // CREATES A NEW ARRAY FROM THE ARRAY RETURNED FROM THE SERVICE SO THAT IT IS COMPARABLE WITH last7days_initarray
-      const requestsByDay_array = []
+      const requestsByDay_array = [];
+
       for (let j = 0; j < requestsByDay.length; j++) {
         if (requestsByDay[j]) {
           requestsByDay_array.push({ 'count': requestsByDay[j]['count'], day: requestsByDay[j]['_id']['day'] + '/' + requestsByDay[j]['_id']['month'] + '/' + requestsByDay[j]['_id']['year'] })
-
         }
-
       }
+
       console.log('»» !!! ANALYTICS - REQUESTS BY DAY FORMATTED ', requestsByDay_array);
-      
 
       /**
-       * MERGE THE ARRAY last7days_initarray WITH requestsByDay_array  */
+        * MERGE THE ARRAY last7days_initarray WITH requestsByDay_array  */
       // Here, requestsByDay_formatted_array.find(o => o.day === obj.day)
       // will return the element i.e. object from requestsByDay_formatted_array if the day is found in the requestsByDay_formatted_array.
       // If not, then the same element in last7days i.e. obj is returned.
+      // human
       const requestByDays_final_array = last7days_initarray.map(obj => requestsByDay_array.find(o => o.day === obj.day) || obj);
       console.log('»» !!! ANALYTICS - REQUESTS BY DAY - FINAL ARRAY ', requestByDays_final_array);
 
+      // human
       const _requestsByDay_series_array = [];
       const _requestsByDay_labels_array = [];
 
       //select init and end day to show on div
-      this.initDay=requestByDays_final_array[0].day;
-      this.endDay=requestByDays_final_array[lastdays-1].day;
+      this.initDay = requestByDays_final_array[0].day;
+      this.endDay = requestByDays_final_array[lastdays - 1].day;
       console.log("INIT", this.initDay, "END", this.endDay);
 
+      // human
       requestByDays_final_array.forEach(requestByDay => {
         //console.log('»» !!! ANALYTICS - REQUESTS BY DAY - requestByDay', requestByDay);
         _requestsByDay_series_array.push(requestByDay.count)
@@ -195,42 +296,48 @@ export class RichiesteComponent implements OnInit {
 
       //set the stepsize 
       var stepsize;
-      if(this.selectedDaysId>60){
-          stepsize=10;
+      if (this.selectedDaysId > 60) {
+        stepsize = 10;
       }
       else {
-        stepsize=this.selectedDaysId
+        stepsize = this.selectedDaysId
       }
-      let lang=this.lang;
-      
-      
+      let lang = this.lang;
+
       this.lineChart = new Chart('lastNdayChart', {
         type: 'line',
         data: {
-          labels: _requestsByDay_labels_array ,
-          datasets: [{
-            label: 'Number of request in last 7 days ',//active labet setting to true the legend value
-            data: _requestsByDay_series_array,
-            fill: true, //riempie zona sottostante dati
-            lineTension: 0.0,
-            backgroundColor: 'rgba(30, 136, 229, 0.6)',
-            borderColor: 'rgba(30, 136, 229, 1)',
-            borderWidth: 3,
-            borderDash: [],
-            borderDashOffset: 0.0,
-            pointBackgroundColor: 'rgba(255, 255, 255, 0.8)',
-            pointBorderColor: '#1e88e5'
-
-          }]
+          labels: _requestsByDay_labels_array,
+          datasets: [
+            {
+              label: 'Served by humans',//active labet setting to true the legend value
+              data: _requestsByDay_series_array,
+              fill: true, //riempie zona sottostante dati
+              lineTension: 0.0,
+              backgroundColor: 'rgba(30, 136, 229, 0.6)',
+              borderColor: 'rgba(30, 136, 229, 1)',
+              borderWidth: 3,
+              borderDash: [],
+              borderDashOffset: 0.0,
+              pointBackgroundColor: 'rgba(255, 255, 255, 0.8)',
+              pointBorderColor: '#1e88e5'
+            }]
         },
         options: {
-          maintainAspectRatio:false,
+          maintainAspectRatio: false,
           title: {
             text: 'AVERAGE TIME RESPONSE',
             display: false
           },
-          legend:{
-            display:false //do not show label title
+          legend: {
+            display: false,
+            position: 'bottom',
+            //align: "start",
+            fullWidth: false,
+            labels: {
+              usePointStyle: true,
+              padding: 10
+            }
           },
           scales: {
             xAxes: [{
@@ -244,38 +351,38 @@ export class RichiesteComponent implements OnInit {
                 //      console.log("XXXX",tickValue);
                 //      console.log("III", index)
                 //      console.log("TTT", ticks)
-                 
+
                 // }
 
               },
               gridLines: {
                 display: true,
-                borderDash:[8,4],
+                borderDash: [8, 4],
                 //color:'rgba(255, 255, 255, 0.5)',
-                
+
               }
 
             }],
             yAxes: [{
               gridLines: {
-                display: true ,
-                borderDash:[8,4],
+                display: true,
+                borderDash: [8, 4],
                 //color:'rgba(255, 255, 255, 0.5)',
-                
+
               },
               ticks: {
                 beginAtZero: true,
-                userCallback: function(label, index, labels) {
+                userCallback: function (label, index, labels) {
                   //userCallback is used to return integer value to ylabel
                   if (Math.floor(label) === label) {
-                      return label;
+                    return label;
                   }
                 },
                 display: true,
                 fontColor: 'black',
                 suggestedMax: higherCount + 2,
-                
-        
+
+
                 // callback: function (value, index, values) {
                 //   let hours = Math.floor(value / 3600000) // 1 Hour = 36000 Milliseconds
                 //   let minutes = Math.floor((value % 3600000) / 60000) // 1 Minutes = 60000 Milliseconds
@@ -289,7 +396,7 @@ export class RichiesteComponent implements OnInit {
           tooltips: {
             callbacks: {
               label: function (tooltipItem, data) {
-                
+
                 // var label = data.datasets[tooltipItem.datasetIndex].label || '';
                 // if (label) {
                 //     label += ': ';
@@ -303,27 +410,27 @@ export class RichiesteComponent implements OnInit {
                 // humanizer.setOptions({ round: true })
                 //console.log("humanize", humanizer.humanize(currentItemValue))
                 //return data.datasets[tooltipItem.datasetIndex].label + ': ' + currentItemValue
-                if(lang==='it'){
-                  return 'Richieste: '+currentItemValue;
-                }else{
-                  return 'Requests: ' +currentItemValue;
+                if (lang === 'it') {
+                  return 'Richieste: ' + currentItemValue;
+                } else {
+                  return 'Requests: ' + currentItemValue;
                 }
 
               }
             }
           }
-          
+
         }
         ,
-        plugins:[{
-          beforeDraw: function(chartInstance, easing) {
+        plugins: [{
+          beforeDraw: function (chartInstance, easing) {
             var ctx = chartInstance.chart.ctx;
             //console.log("chartistance",chartInstance)
             //ctx.fillStyle = 'red'; // your color here
-            ctx.height=128
+            ctx.height = 128
             //chartInstance.chart.canvas.parentNode.style.height = '128px';
-            ctx.font="Google Sans"
-            
+            ctx.font = "Google Sans"
+
             var chartArea = chartInstance.chartArea;
             //ctx.fillRect(chartArea.left, chartArea.top, chartArea.right - chartArea.left, chartArea.bottom - chartArea.top);
           }
@@ -331,13 +438,272 @@ export class RichiesteComponent implements OnInit {
       });
 
 
+
+    }, (error) => {
+      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - ERROR ', error);
+    }, () => {
+      console.log('»» !!! ANALYTICS - REQUESTS BY DAY * COMPLETE *');
+    })
+  }
+
+
+  //-----------LAST n DAYS GRAPH-----------------------
+  getRequestByLastNDayMerge(lastdays, depID) {
+
+    console.log("GET REQUEST TYPE: Merged")
+    this.subscription = this.analyticsService.requestsByDay(lastdays, depID).subscribe((requestsByDay: any) => {
+      console.log('»» !!! ANALYTICS - REQUESTS BY  N-DAY ', requestsByDay);
+
+      this.analyticsService.requestsByDayBotServed(lastdays, depID).subscribe((requestsByDayBotServed: any) => {
+        console.log('»» !!! ANALYTICS - REQUESTS BY N-DAY BOT SERVED ', requestsByDayBotServed);
+
+        // CREATES THE INITIAL ARRAY WITH THE LAST SEVEN DAYS (calculated with moment) AND REQUESTS COUNT = O
+        const last7days_initarray = []
+        for (let i = 0; i < lastdays; i++) {
+          // console.log('»» !!! ANALYTICS - LOOP INDEX', i);
+          last7days_initarray.push({ 'count': 0, day: moment().subtract(i, 'd').format('D/M/YYYY') })
+        }
+
+        last7days_initarray.reverse()
+        console.log('»» !!! ANALYTICS - REQUESTS BY lastDAY - MOMENT LAST N DATE (init array)', last7days_initarray);
+
+        const requestsByDay_series_array = [];
+        const requestsByDay_labels_array = [];
+
+        // CREATES A NEW ARRAY FROM THE ARRAY RETURNED FROM THE SERVICE SO THAT IT IS COMPARABLE WITH last7days_initarray
+        const requestsByDay_array = [];
+        const requestByDayBotServed_array = [];
+
+        // human
+        for (let j = 0; j < requestsByDay.length; j++) {
+          if (requestsByDay[j]) {
+            requestsByDay_array.push({ 'count': requestsByDay[j]['count'], day: requestsByDay[j]['_id']['day'] + '/' + requestsByDay[j]['_id']['month'] + '/' + requestsByDay[j]['_id']['year'] })
+          }
+        }
+
+        // bot
+        for (let j = 0; j < requestsByDayBotServed.length; j++) {
+          console.log("aaaaaaaaaa")
+          if (requestsByDayBotServed[j] && (requestsByDayBotServed[j]['_id']['hasBot'] == true)) {
+            requestByDayBotServed_array.push({ 'count': requestsByDayBotServed[j]['count'], day: requestsByDayBotServed[j]['_id']['day'] + '/' + requestsByDayBotServed[j]['_id']['month'] + '/' + requestsByDayBotServed[j]['_id']['year'] })
+          }
+        }
+
+        console.log('»» !!! ANALYTICS - REQUESTS BY DAY FORMATTED ', requestsByDay_array);
+        console.log('»» !!! ANALYTICS - REQUESTS BY DAY BOT SERVED FORMATTED ', requestByDayBotServed_array);
+
+        /**
+         * MERGE THE ARRAY last7days_initarray WITH requestsByDay_array  */
+        // Here, requestsByDay_formatted_array.find(o => o.day === obj.day)
+        // will return the element i.e. object from requestsByDay_formatted_array if the day is found in the requestsByDay_formatted_array.
+        // If not, then the same element in last7days i.e. obj is returned.
+        // human
+        const requestByDays_final_array = last7days_initarray.map(obj => requestsByDay_array.find(o => o.day === obj.day) || obj);
+        console.log('»» !!! ANALYTICS - REQUESTS BY DAY - FINAL ARRAY ', requestByDays_final_array);
+        // bot
+        const requestByDaysBotServed_final_array = last7days_initarray.map(obj => requestByDayBotServed_array.find(o => o.day === obj.day) || obj);
+        console.log('»» !!! ANALYTICS - REQUESTS BY DAY BOT SERVED - FINAL ARRAY ', requestByDaysBotServed_final_array);
+
+        // human
+        const _requestsByDay_series_array = [];
+        const _requestsByDay_labels_array = [];
+        // bot
+        const _requestsByDayBotServed_series_array = [];
+
+        //select init and end day to show on div
+        this.initDay = requestByDays_final_array[0].day;
+        this.endDay = requestByDays_final_array[lastdays - 1].day;
+        console.log("INIT", this.initDay, "END", this.endDay);
+
+        // human
+        requestByDays_final_array.forEach(requestByDay => {
+          //console.log('»» !!! ANALYTICS - REQUESTS BY DAY - requestByDay', requestByDay);
+          _requestsByDay_series_array.push(requestByDay.count)
+
+          const splitted_date = requestByDay.day.split('/');
+          //console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SPLITTED DATE', splitted_date);
+          _requestsByDay_labels_array.push(splitted_date[0] + ' ' + this.monthNames[splitted_date[1]])
+        });
+
+        // bot
+        requestByDaysBotServed_final_array.forEach(requestByDayBotServed => {
+          _requestsByDayBotServed_series_array.push(requestByDayBotServed.count);
+        })
+
+
+        console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SERIES (ARRAY OF COUNT - to use for debug)', requestsByDay_series_array);
+        console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SERIES (+ NEW + ARRAY OF COUNT)', _requestsByDay_series_array);
+        console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SERIES (+ NEW + ARRAY OF COUNT)', _requestsByDayBotServed_series_array);
+        console.log('»» !!! ANALYTICS - REQUESTS BY DAY - LABELS (ARRAY OF DAY - to use for debug)', requestsByDay_labels_array);
+        console.log('»» !!! ANALYTICS - REQUESTS BY DAY - LABELS (+ NEW + ARRAY OF DAY)', _requestsByDay_labels_array);
+
+        //get higher value of xvalue array 
+        const higherCount = this.getMaxOfArray(_requestsByDay_series_array);
+        console.log('»» !!! ANALYTICS - REQUESTS BY DAY - HIGHTER COUNT ', higherCount);
+
+        //set the stepsize 
+        var stepsize;
+        if (this.selectedDaysId > 60) {
+          stepsize = 10;
+        }
+        else {
+          stepsize = this.selectedDaysId
+        }
+        let lang = this.lang;
+
+        this.lineChart = new Chart('lastNdayChart', {
+          type: 'line',
+          data: {
+            labels: _requestsByDay_labels_array,
+            datasets: [
+              {
+                label: 'Served by bots',//active labet setting to true the legend value
+                data: _requestsByDayBotServed_series_array,
+                fill: true, //riempie zona sottostante dati
+                lineTension: 0.0,
+                backgroundColor: 'rgba(232, 32, 32, 0.6)',
+                borderColor: 'rgba(189, 16, 16, 1)',
+                borderWidth: 3,
+                borderDash: [],
+                borderDashOffset: 0.0,
+                pointBackgroundColor: 'rgba(255, 255, 255, 0.8)',
+                pointBorderColor: '#b00e0e'
+              },
+              {
+                label: 'Served by humans',//active labet setting to true the legend value
+                data: _requestsByDay_series_array,
+                fill: true, //riempie zona sottostante dati
+                lineTension: 0.0,
+                backgroundColor: 'rgba(30, 136, 229, 0.6)',
+                borderColor: 'rgba(30, 136, 229, 1)',
+                borderWidth: 3,
+                borderDash: [],
+                borderDashOffset: 0.0,
+                pointBackgroundColor: 'rgba(255, 255, 255, 0.8)',
+                pointBorderColor: '#1e88e5'
+              }]
+          },
+          options: {
+            maintainAspectRatio: false,
+            title: {
+              text: 'AVERAGE TIME RESPONSE',
+              display: false
+            },
+            legend: {
+              display: true,
+              position: 'bottom',
+              //align: "start",
+              fullWidth: false,
+              labels: {
+                usePointStyle: true,
+                padding: 10
+              }
+            },
+            scales: {
+              xAxes: [{
+                ticks: {
+                  beginAtZero: true,
+                  maxTicksLimit: stepsize,
+                  display: true,
+                  //minRotation: 30,
+                  fontColor: 'black',
+                  // callback: function(tickValue, index, ticks) {
+                  //      console.log("XXXX",tickValue);
+                  //      console.log("III", index)
+                  //      console.log("TTT", ticks)
+
+                  // }
+
+                },
+                gridLines: {
+                  display: true,
+                  borderDash: [8, 4],
+                  //color:'rgba(255, 255, 255, 0.5)',
+
+                }
+
+              }],
+              yAxes: [{
+                gridLines: {
+                  display: true,
+                  borderDash: [8, 4],
+                  //color:'rgba(255, 255, 255, 0.5)',
+
+                },
+                ticks: {
+                  beginAtZero: true,
+                  userCallback: function (label, index, labels) {
+                    //userCallback is used to return integer value to ylabel
+                    if (Math.floor(label) === label) {
+                      return label;
+                    }
+                  },
+                  display: true,
+                  fontColor: 'black',
+                  suggestedMax: higherCount + 2,
+
+
+                  // callback: function (value, index, values) {
+                  //   let hours = Math.floor(value / 3600000) // 1 Hour = 36000 Milliseconds
+                  //   let minutes = Math.floor((value % 3600000) / 60000) // 1 Minutes = 60000 Milliseconds
+                  //   let seconds = Math.floor(((value % 360000) % 60000) / 1000) // 1 Second = 1000 Milliseconds
+                  //   return hours + 'h:' + minutes + 'm:' + seconds + 's'
+                  // },
+
+                }
+              }]
+            },
+            tooltips: {
+              callbacks: {
+                label: function (tooltipItem, data) {
+
+                  // var label = data.datasets[tooltipItem.datasetIndex].label || '';
+                  // if (label) {
+                  //     label += ': ';
+                  // }
+                  // label += Math.round(tooltipItem.yLabel * 100) / 100;
+                  // return label + '';
+                  //console.log("data",data)
+                  const currentItemValue = tooltipItem.yLabel
+                  // let langService = new HumanizeDurationLanguage();
+                  // let humanizer = new HumanizeDuration(langService);
+                  // humanizer.setOptions({ round: true })
+                  //console.log("humanize", humanizer.humanize(currentItemValue))
+                  //return data.datasets[tooltipItem.datasetIndex].label + ': ' + currentItemValue
+                  if (lang === 'it') {
+                    return 'Richieste: ' + currentItemValue;
+                  } else {
+                    return 'Requests: ' + currentItemValue;
+                  }
+
+                }
+              }
+            }
+
+          }
+          ,
+          plugins: [{
+            beforeDraw: function (chartInstance, easing) {
+              var ctx = chartInstance.chart.ctx;
+              //console.log("chartistance",chartInstance)
+              //ctx.fillStyle = 'red'; // your color here
+              ctx.height = 128
+              //chartInstance.chart.canvas.parentNode.style.height = '128px';
+              ctx.font = "Google Sans"
+
+              var chartArea = chartInstance.chartArea;
+              //ctx.fillRect(chartArea.left, chartArea.top, chartArea.right - chartArea.left, chartArea.bottom - chartArea.top);
+            }
+          }]
+        });
+      })
+
     }, (error) => {
       console.log('»» !!! ANALYTICS - REQUESTS BY DAY - ERROR ', error);
     }, () => {
       console.log('»» !!! ANALYTICS - REQUESTS BY DAY * COMPLETE *');
     });
   }
-
 
 
 

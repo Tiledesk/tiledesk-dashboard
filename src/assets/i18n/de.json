@@ -939,7 +939,8 @@
 		"BackToBotsList": "Bot Übersicht",
 		"AnErrorHasOccurred": "Ein Fehler ist aufgetreten",
 		"Continue": "Weiter",
-		"Type": "Typ"
+		"Type": "Typ",
+		"Messages": "Nachrichten"
 	},
 	"FaqPage": {
 		"EditBOT": "Bot bearbeiten",
@@ -1515,7 +1516,8 @@
 			"Requests": "Gespräche",
 			"Sentiment": "Empfindung",
 			"ResponseTime": "Reaktionszeit",
-			"ConversationLenght": "Unterhaltungslänge"
+			"ConversationLenght": "Unterhaltungslänge",
+			"Satisfaction": "Befriedigung"
 		},
 		"RealTimeComponentTitle": "Echtzeit",
 		"AvgTimeTitle": "Durchschnittliche Zeit Überwachung",
@@ -1524,7 +1526,7 @@
 		"ConvDurationTitle": "Unterhaltungslänge Überwachung",
 		"MedianConvClock": "Durchschnittliche Unterhaltungslänge",
 		"ResponseDurationtime": "Die durchschnittliche Unterhaltungslänge Ihres Teams liegt bei ",
-		"RequestChartTitle": "Anzahl von Anfragen letzte ",
+		"RequestChartTitle": "Anzahl von Anfragen Letzte ",
 		"FilterReport": "Filter",
 		"FilterByAgent": "Agent",
 		"FilterByDay": "Tage",
@@ -1542,23 +1544,33 @@
 		"SentimentHEART": "Durchschnittliche Kundenzufriedenheit",
 		"SentimentMedianValueHEART": "Die durchschnittliche Kundenzufriedenheit Ihres Teams liegt bei :",
 		"UpgradeYourAccounttoTrackTheChatsYouHaveWithCustomers": " Upgraden Sie Ihren Account um ihre Chats zu tracken",
-		"DailyMedianResponseTime": "Tägliche durchschnittliche Reaktionszeit",
-		"DailyConvDurationTime": "Tägliche durchschnittliche Unterhaltungslänge",
+		"DailyMedianResponseTime": "Tägliche durchschnittliche Reaktionszeit Letzte",
+		"DailyConvDurationTime": "Tägliche durchschnittliche Unterhaltungslänge Letzte",
 		"VisitorsComponentTitle": "Besucher",
 		"Visitors" : {
 			"NumberOfVisitors": "Besucherzahl",
-			"VisitorsChartTitle": "Anzahl von besucher letzte "
+			"VisitorsChartTitle": "Anzahl von Besucher Letzte "
 		},
 		"MessagesComponentTitle": "Mitteilungen",
 		"Messages": {
-            "MessagesChartTitle": "Anzahl der Nachrichten in den letzten",
+            "MessagesChartTitle": "Anzahl der Nachrichten Letzten",
             "NumberOfMessages": "Anzahl der nachrichten"
+		},
+		"SatisfactionComponentTitle": "Zufriedenheit Überwachung",
+		"Satisfaction": {
+			"SatisfactionStar": "Durchschnittliche Zufriedenheit",
+			"StatisfactionValueLabel": "Die durchschnittliche Bewertung für Ihr Team ist ",
+			"NoSatisfactionValue": "Ihr Team hat noch keine Bewertungen erhalten.",
+			"DailySatisfactionTrend": "Täglicher Zufriedenheitstrend Letzte"
         }
 	},
 	"DeleteRequestForever": {
 		"TheRequestWillBePermanentlyDeleted": "Die Anfrage wird dauerhaft gelöscht",
+		"SelectedRequestsWillBePermanentlyDeleted": "Ausgewählte Konversationen werden dauerhaft gelöscht",
 		"Done":"Gemacht!",
 		"TheRequestWasSuccessfullyDeleted": "Die Anfrage wurde erfolgreich gelöscht",
+		"SelectedRequestsWasSuccessfullyDeleted": "{{ num_conv }} Anfrage wurden erfolgreich gelöscht",
+		"SelectedRequestsWasPartiallyDeleted": "{{ num_conv }} Anfrage wurden erfolgreich gelöscht\n\nVorsicht, {{ num_conv_exc}} Anfrage wurden nicht gelöscht",
 		"ErrorDeleting":"Fehler beim Löschen!",
         "PleaseTryAgain": "Bitte versuche es erneut"
 	},

@@ -934,7 +934,8 @@
         "BackToBotsList": "Bots list",
         "AnErrorHasOccurred": "Si è verificato un errore",
         "Continue": "Continua",
-        "Type": "Tipo"
+        "Type": "Tipo",
+        "Messages": "Messaggi"
     },
     "FaqPage": {
         "EditBOT": "Modifica BOT",
@@ -1510,7 +1511,8 @@
             "Requests": "Conversazioni",
             "Sentiment": "Sentiment",
             "ResponseTime": "Tempi risposta",
-            "ConversationLenght": "Durata conversazione"
+            "ConversationLenght": "Durata conversazione",
+            "Satisfaction": "Gradimento"
         },
         "RealTimeComponentTitle": "Tempo reale",
         "AvgTimeTitle": "Monitoraggio tempo medio",
@@ -1519,7 +1521,7 @@
         "ConvDurationTitle": "Monitoraggio durata conversazione",
         "MedianConvClock": "Durata media conversazione",
         "ResponseDurationtime": "La durata di conversazione media complessiva del tuo team è ",
-        "RequestChartTitle": "Numero di conversazioni negli ultimi",
+        "RequestChartTitle": "Numero di Conversazioni negli Ultimi",
         "FilterReport": "Filtra rapporto",
         "FilterByAgent": "Agenti",
         "FilterByWeek": "Settimane",
@@ -1527,33 +1529,43 @@
         "FilterByDay": "Giorni",
         "FilterBy": "Filtra per",
         "Last": "Ultimi",
-        "Days": "giorni",
-        "Month": "mese",
-        "Months": "mesi",
-        "Year": "anno",
+        "Days": "Giorni",
+        "Month": "Mese",
+        "Months": "Mesi",
+        "Year": "Anno",
         "DataRangeRequest": "Range date ",
         "RealTimeMonitoring": "Monitoraggio in tempo reale",
         "SentimentTitle": "Feedback cliente",
         "SentimentHEART": "Feedback cliente medio",
         "SentimentMedianValueHEART": "Il feedback clienti medio del tuo team è di:",
         "UpgradeYourAccounttoTrackTheChatsYouHaveWithCustomers": "Aggiorna il tuo account per tenere traccia delle chat che hai con i clienti",
-        "DailyMedianResponseTime": "Tempo di risposta medio giornaliero",
-        "DailyConvDurationTime": "Durata conversazione media giornaliera",
+        "DailyMedianResponseTime": "Tempo di Risposta Medio Giornaliero negli Ultimi",
+        "DailyConvDurationTime": "Durata Conversazione Media Giornaliera negli Ultimi",
         "VisitorsComponentTitle": "Visitatori",
         "Visitors": {
             "NumberOfVisitors": "Numero di visitatori",
-            "VisitorsChartTitle": "Numero di visitatori negli ultimi"
+            "VisitorsChartTitle": "Numero di Visitatori negli Ultimi"
         },
         "MessagesComponentTitle": "Messaggi",
         "Messages": {
-            "MessagesChartTitle": "Numero di messaggi negli ultimi",
+            "MessagesChartTitle": "Numero di Messaggi negli Ultimi",
             "NumberOfMessages": "Numero di messaggi"
+        },
+        "SatisfactionComponentTitle": "Monitoraggio Gradimento",
+        "Satisfaction": {
+            "SatisfactionStar": "Media Gradimento",
+            "StatisfactionValueLabel": "Il gradimento medio relativo al tuo team è ",
+            "NoSatisfactionValue" : "Il tuo team non ha ancora ricevuto valutazioni.",
+            "DailySatisfactionTrend": "Trend Giornaliero del Gradimento negli Ultimi"
         }
     },
     "DeleteRequestForever": {
         "TheRequestWillBePermanentlyDeleted": "la conversazione verrà eliminata definitivamente",
+        "SelectedRequestsWillBePermanentlyDeleted": "le conversazioni selezionate verranno eliminate definitivamente",    
         "Done": "Fatto!",
         "TheRequestWasSuccessfullyDeleted": "la conversazione è stata eliminata correttamente",
+        "SelectedRequestsWasSuccessfullyDeleted": "{{ num_conv }} conversazioni sono state eliminate correttamente",
+        "SelectedRequestsWasPartiallyDeleted": "{{ num_conv }} conversazioni sono state eliminate correttamente\n\nAttenzione, {{ num_conv_exc }} conversazioni non sono state eliminate",
         "ErrorDeleting": "Errore durante l'eliminazione!",
         "PleaseTryAgain": "Per favore riprova"
     },

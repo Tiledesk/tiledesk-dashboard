@@ -34,6 +34,7 @@ export class VisitorsAnalyticsComponent implements OnInit {
   initDay:string;
   endDay:string;
   selected:string;
+  visitorsCountLastMonth: any;
 
   constructor(private translate: TranslateService,
     private analyticsService: AnalyticsService) {
@@ -52,12 +53,13 @@ export class VisitorsAnalyticsComponent implements OnInit {
     this.initDay=moment().subtract(6, 'd').format('D/M/YYYY')
     this.endDay=moment().subtract(0, 'd').format('D/M/YYYY')
     console.log("INIT", this.initDay, "END", this.endDay);
-  
+    this.getAggregateValue();
     this.getVisitorsByLastNDays(this.selectedDaysId);
-    //this.getVisitors();
-    // this.getVisitorsByLast7Days();
-    // this.getVisitorsWeek();
-    // this.getVisitorsMonth();
+  }
+
+  ngOnDestroy() {
+    console.log('!!! ANALYTICS.RICHIESTE - !!!!! UN - SUBSCRIPTION TO REQUESTS');
+    this.subscription.unsubscribe();
   }
 
   daysSelect(value, event) {
@@ -72,12 +74,20 @@ export class VisitorsAnalyticsComponent implements OnInit {
       this.lastdays = 1;
     }
     this.lineChart.destroy();
-    //this.subscription.unsubscribe();
+    this.subscription.unsubscribe();
     this.getVisitorsByLastNDays(value);
   }
 
+  getAggregateValue() {
+    this.analyticsService.getVisitors().subscribe((res: any) => {
+      console.log("LAST MONTH VISITORS COUNT: ", res);
+      this.visitorsCountLastMonth = res[0].totalCount;
+      console.log("Visitors Count: ", this.visitorsCountLastMonth);
+    })
+  }
+
   getVisitorsByLastNDays(lastdays) {
-    this.analyticsService.getVisitorsByDay().subscribe((visitorsByDay) => {
+    this.subscription = this.analyticsService.getVisitorsByDay(lastdays).subscribe((visitorsByDay) => {
       console.log("»» VISITORS BY DAY RESULT: ", visitorsByDay)
 
       const last7days_initarray = [];
@@ -228,155 +238,8 @@ export class VisitorsAnalyticsComponent implements OnInit {
     }
   }
 
-
-
-  getVisitors() {
-    this.analyticsService.getVisitors().subscribe((res) => {
-      console.log("************* VISITORS API RESULT: ", res)
-    })
-  }
-
-  getVisitorsByLast7Days() {
-    this.analyticsService.getVisitorsByDay().subscribe((visitorsByDay) => {
-      console.log("»» VISITORS BY DAY RESULT: ", visitorsByDay)
-
-      const last7days_initarray = [];
-      for (let i = 0; i < 7; i++) {
-        last7days_initarray.push({ 'count': 0, day: moment().subtract(i, 'd').format('D-M-YYYY') })
-      }
-
-      last7days_initarray.reverse();
-      console.log("»» LAST 7 DAYS VISITORS - INIT ARRAY: ", last7days_initarray)
-
-      const visitorsByDay_series_array = [];
-      const visitorsByDay_labels_array = [];
-
-      // CREATES A NEW ARRAY FROM THE ARRAY RETURNED FROM THE SERVICE SO THAT IT IS COMPARABLE WITH last7days_initarray
-      const visitorsByDay_array = [];
-      for (let j = 0; j < visitorsByDay.length; j++) {
-        if (visitorsByDay[j]) {
-          visitorsByDay_array.push({ 'count': visitorsByDay[j]['count'], day: visitorsByDay[j]['_id']['day'] + '/' + visitorsByDay[j]['_id']['month'] + '/' + visitorsByDay[j]['_id']['year'] })
-        }
-      }
-
-      // MERGE last7days_initarray & visitorsByDay_array
-      const visitorsByDays_final_array = last7days_initarray.map(obj => visitorsByDay_array.find(o => o.day === obj.day) || obj);
-
-      visitorsByDays_final_array.forEach((visitByDay) => {
-        visitorsByDay_series_array.push(visitByDay.count)
-        const splitted_date = visitByDay.day.split('/');
-        visitorsByDay_labels_array.push(splitted_date[0] + ' ' + this.monthNames[splitted_date[1]])
-      })
-
-      console.log('»» VISITORS BY DAY - SERIES (+ NEW + ARRAY OF COUNT)', visitorsByDay_series_array);
-      console.log('»» VISITORS BY DAY - LABELS (+ NEW + ARRAY OF DAY)', visitorsByDay_labels_array);
-
-      const higherCount = this.getMaxOfArray(visitorsByDay_series_array);
-
-      let lang = this.lang;
-
-      var lineChart = new Chart('last7dayVisitors', {
-        type: 'line',
-        data: {
-          labels: visitorsByDay_labels_array,
-          datasets: [{
-            label: 'Number of visitors in last 7 days ',
-            data: visitorsByDay_series_array,
-            fill: true,
-            lineTension: 0.0,
-            backgroundColor: 'rgba(30, 136, 229, 0.6)',
-            borderColor: 'rgba(30, 136, 229, 1)',
-            borderWidth: 3,
-            borderDash: [],
-            borderDashOffset: 0.0,
-            pointBackgroundColor: 'rgba(255, 255, 255, 0.8)',
-            pointBorderColor: '#1e88e5'
-          }]
-        },
-        options: {
-          maintainAspectRatio: false,
-          title: {
-            text: 'TITLE',
-            display: false
-          },
-          legend: {
-            display: false
-          },
-          scales: {
-            xAxes: [{
-              ticks: {
-                beginAtZero: true,
-                display: true,
-                fontColor: 'black'
-              },
-              gridLines: {
-                display: true,
-                borderDash: [8, 4]
-              }
-            }],
-            yAxes: [{
-              gridLines: {
-                display: true,
-                borderDash: [8, 4]
-              },
-              ticks: {
-                beginAtZero: true,
-                userCallback: function (label, index, labels) {
-                  if (Math.floor(label) === label) {
-                    return label;
-                  }
-                },
-                display: true,
-                fontColor: 'black',
-                suggestedMax: higherCount + 2
-              }
-            }]
-          },
-          tooltips: {
-            callbacks: {
-              label: function (tooltipItem, data) {
-                const currentItemValue = tooltipItem.yLabel
-
-                if (lang == 'it') {
-                  return 'Visitatori: ' + currentItemValue;
-                } else {
-                  return 'Visitors: ' + currentItemValue;
-                }
-              }
-            }
-          }
-        },
-        plugins: [{
-          beforeDraw: function (chartInstance, easing) {
-            var ctx = chartInstance.chart.ctx;
-            ctx.height = 128
-            ctx.font = "Google Sans"
-            var chartArea = chartInstance.chartArea;
-          }
-        }]
-      })
-
-    }, (error) => {
-      console.log('»» VISITORS BY DAY - ERROR ', error);
-    }, () => {
-      console.log('»» VISITORS BY DAY - * COMPLETE * ');
-    })
-  }
-
   getMaxOfArray(requestsByDay_series_array) {
     return Math.max.apply(null, requestsByDay_series_array);
-  }
-
-  getVisitorsWeek() {
-    this.analyticsService.getVisitorsByLast7Days().subscribe((res) => {
-      console.log("************* VISITORS BY WEEK RESULT: ", res)
-    })
-  }
-
-  getVisitorsMonth() {
-    this.analyticsService.getVisitorsByLastMonth().subscribe((res) => {
-      console.log("************* VISITORS BY MONTH RESULT: ", res)
-    })
   }
 
 }
