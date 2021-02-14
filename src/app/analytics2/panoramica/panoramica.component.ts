@@ -78,11 +78,6 @@ export class PanoramicaComponent implements OnInit {
     this.heatMap();
     this.avarageWaitingTimeCLOCK();
     this.durationConvTimeCLOCK();
-
-
-
-
-
   }
 
   async showHideSpinner() {
@@ -101,8 +96,6 @@ export class PanoramicaComponent implements OnInit {
       }
 
     }, 1000)
-
-
 
   }
 
@@ -248,7 +241,7 @@ export class PanoramicaComponent implements OnInit {
             label: 'Number of request in last 7 days ',//active labet setting to true the legend value
             data: _requestsByDay_series_array,
             fill: true, //riempie zona sottostante dati
-            lineTension: 0.0,
+            lineTension: 0.4,
             backgroundColor: 'rgba(30, 136, 229, 0.6)',
             borderColor: 'rgba(30, 136, 229, 1)',
             borderWidth: 3,
@@ -334,9 +327,9 @@ export class PanoramicaComponent implements OnInit {
                 //console.log("humanize", humanizer.humanize(currentItemValue))
                 //return data.datasets[tooltipItem.datasetIndex].label + ': ' + currentItemValue
                 if (lang === 'it') {
-                  return 'Richieste: ' + currentItemValue;
+                  return 'Conversazioni: ' + currentItemValue;
                 } else {
-                  return 'Request:' + currentItemValue;
+                  return 'Conversations:' + currentItemValue;
                 }
 
               }
