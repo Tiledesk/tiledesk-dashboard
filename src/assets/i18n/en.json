@@ -1735,6 +1735,7 @@
     "GoToContactList": "Go to contact list",
     "Last30DaysMessages": "Last 30 days messages",
     "Last30DaysConversations": "Last 30 days conversations",
+    "Last7DaysConversations": "Last 7 days conversations",
     "Last30DaysVisitors": "Unique visitors in last 30 days",
     "Last30DaysConversationsHandledByBots":"Last 30 days conversations handled by bots",
     "Last30DaysConversationsHandledByBotsPercentage":"Percentage last 30 days conversations handled by bots",
@@ -1787,6 +1788,9 @@
     "Suggested":"suggested",
     "GroupWithThisNameAlreadyExists":"A group with this name already exists",
     "EnterTheGroupName":"Enter the group name (usually the same as the department name)",
-    "TheNewGroupCreatedCanAlso": "The new group created can also be assigned to any other department"
+    "TheNewGroupCreatedCanAlso": "The new group created can also be assigned to any other department",
+    "PercentageHandledByBots": "percentage handled by bots",
+    "HandledByBots": "handled by bots",
+    "ConversationsInLast30Days":"Conversations in last 30 days"
     
 }

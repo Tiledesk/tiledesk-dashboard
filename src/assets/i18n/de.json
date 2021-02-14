@@ -1734,6 +1734,7 @@
 	"GoToContactList":"Zur Kontaktliste gehen",
 	"Last30DaysMessages":"Nachrichten der letzten 30 Tage",
 	"Last30DaysConversations":"Gespräche der letzten 30 Tage",
+	"Last7DaysConversations":"Gespräche der letzten 7 Tage",
 	"Last30DaysVisitors":"Einzigartige Besucher in den letzten 30 Tagen",
 	"Last30DaysConversationsHandledByBots":"Letzte 30 Tage Gespräche von Bots geführt",
 	"Last30DaysConversationsHandledByBotsPercentage":"Prozentsatz der Gespräche der letzten 30 Tage, die von Bots geführt werden",
@@ -1786,7 +1787,10 @@
     "Suggested":"vorgeschlagen",
 	"GroupWithThisNameAlreadyExists":"Eine Gruppe mit diesem Namen existiert bereits",
 	"EnterTheGroupName":"Geben Sie den Gruppennamen ein (normalerweise derselbe wie der Abteilungsname)",
-	"TheNewGroupCreatedCanAlso": "Die neu erstellte Gruppe kann auch jeder anderen Abteilung zugeordnet werden"
+	"TheNewGroupCreatedCanAlso": "Die neu erstellte Gruppe kann auch jeder anderen Abteilung zugeordnet werden",
+	"PercentageHandledByBots": "prozentsatz von Bots behandelt",
+	"HandledByBots": "von Bots gehandhabt",
+	"ConversationsInLast30Days":"Gespräche in den letzten 30 Tagen"
 	
 	
 }
