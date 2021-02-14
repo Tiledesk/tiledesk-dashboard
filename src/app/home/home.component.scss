@@ -866,6 +866,23 @@
   margin-bottom: 7px;
 }
 
+.statistis-count-number-to-the-side{
+  font-size: 42px;
+  font-weight: 900;
+  line-height: 1.14;
+  color: #303f9f;
+  display: block;
+  margin-bottom: 7px;
+  float: left;
+  margin-right: 6px;
+}
+
+.statistis-count-description-to-the-side {
+  font-size: 18px;
+  font-weight: 400;
+  color: #222222;
+}
+
 .links-container {
   position: relative;
   height: 40px;
@@ -1040,40 +1057,43 @@
   font-size: 14px;
 }
 
-// visitors graph
-.visitors-graph-title-container {
+// graph on home page
+.home-graph-title-container {
   position: relative;
   height: 40px;
   cursor: pointer;
 }
 
-.visitors-graph-title-1 {
+.home-graph-title-1 {
   padding-left: 30px;
   padding-top: 19px;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 400;
   transition: all 0.2s ease-in-out;
   opacity: 1;
   position: absolute;
   top: 0;
+  font-family: "Google Sans", sans-serif !important;
+  color: #303f9f !important;
 }
 
-.visitors-graph-title-2 {
+.home-graph-title-2 {
   padding-left: 30px;
   padding-top: 19px;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 400;
   transition: all 0.2s ease-in-out;
   opacity: 0;
   position: absolute;
   top: 0;
+  font-family: "Google Sans", sans-serif !important;
 }
 
-.visitors-graph-title-container:hover {
-  .visitors-graph-title-1 {
+.home-graph-title-container:hover {
+  .home-graph-title-1 {
     opacity: 0;
   }
-  .visitors-graph-title-2 {
+  .home-graph-title-2 {
     opacity: 1;
   }
 }

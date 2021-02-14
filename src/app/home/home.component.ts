@@ -331,10 +331,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getActiveContactsCount()  /// COUNT OF ACTIVE CONTACTS FOR THE NEW HOME
     this.getVisitorsCount() /// COUNT OF VISITORS FOR THE NEW HOME
     this.getCountAndPercentageOfRequestsHandledByBotsLastMonth() /// 
-    this.getVisitorsByLastNDays(this.selectedDaysId); /// VISITOR GRAPH FOR THE NEW HOME
-    this.initDay = moment().subtract(6, 'd').format('D/M/YYYY') /// VISITOR GRAPH FOR THE NEW HOME
-    this.endDay = moment().subtract(0, 'd').format('D/M/YYYY') /// VISITOR GRAPH FOR THE NEW HOME
-    console.log("INIT", this.initDay, "END", this.endDay); /// VISITOR GRAPH FOR THE NEW HOME
+    // this.getVisitorsByLastNDays(this.selectedDaysId); /// VISITOR GRAPH FOR THE NEW HOME
+    // this.initDay = moment().subtract(6, 'd').format('D/M/YYYY') /// VISITOR GRAPH FOR THE NEW HOME
+    // this.endDay = moment().subtract(0, 'd').format('D/M/YYYY') /// VISITOR GRAPH FOR THE NEW HOME
+    // console.log("INIT", this.initDay, "END", this.endDay); /// VISITOR GRAPH FOR THE NEW HOME
+
+    this.getRequestByLast7Day()
 
   }
 
@@ -438,11 +440,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       console.log("HOME - getRequestsHasBotCount REQUESTS COUNT LAST 30 DAYS: ", this.countOfLastMonthRequests);
       // numero di conversazioni gestite da bot / numero di conversazioni totali (già calcolata) * 100
 
-      if (this.countOfLastMonthRequestsHandledByBots > 0) {
+      if (this.countOfLastMonthRequestsHandledByBots > 0 && this.countOfLastMonthRequests) {
         const _percentageOfLastMonthRequestsHandledByBots = (this.countOfLastMonthRequestsHandledByBots / this.countOfLastMonthRequests) * 100
+        console.log("HOME - getRequestsHasBotCount % COUNT OF LAST MONTH REQUESTS: ", this.countOfLastMonthRequests);
         console.log("HOME - getRequestsHasBotCount % REQUESTS HANDLED BY BOT LAST 30 DAYS: ", _percentageOfLastMonthRequestsHandledByBots);
         console.log("HOME - getRequestsHasBotCount % REQUESTS HANDLED BY BOT LAST 30 DAYS typeof: ", typeof _percentageOfLastMonthRequestsHandledByBots);
-        this.percentageOfLastMonthRequestsHandledByBots = _percentageOfLastMonthRequestsHandledByBots.toFixed(2);
+        this.percentageOfLastMonthRequestsHandledByBots = _percentageOfLastMonthRequestsHandledByBots.toFixed(1);
       } else {
         this.percentageOfLastMonthRequestsHandledByBots = 0
       }
@@ -1188,7 +1191,182 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
 
-  /// VISITOR GRAPH FOR THE NEW NOME
+
+    // ------------------------------------------------------------------
+  // LAST 7 DAYS CONVERSATIONS GRAPH
+  // ------------------------------------------------------------------
+  getRequestByLast7Day() {
+    this.subscription = this.analyticsService.requestsByDay(7).subscribe((requestsByDay: any) => {
+      console.log('HOME - REQUESTS BY DAY ', requestsByDay);
+
+      // CREATES THE INITIAL ARRAY WITH THE LAST SEVEN DAYS (calculated with moment) AND REQUESTS COUNT = O
+      const last7days_initarray = []
+      for (let i = 0; i <= 6; i++) {
+        // console.log('»» !!! ANALYTICS - LOOP INDEX', i);
+        last7days_initarray.push({ 'count': 0, day: moment().subtract(i, 'd').format('D-M-YYYY') })
+      }
+
+      last7days_initarray.reverse()
+
+      console.log('HOME - REQUESTS BY DAY - MOMENT LAST SEVEN DATE (init array)', last7days_initarray);
+
+      const requestsByDay_series_array = [];
+      const requestsByDay_labels_array = []
+
+      // CREATES A NEW ARRAY FROM THE ARRAY RETURNED FROM THE SERVICE SO THAT IT IS COMPARABLE WITH last7days_initarray
+      const requestsByDay_array = []
+      for (let j = 0; j < requestsByDay.length; j++) {
+        if (requestsByDay[j]) {
+          requestsByDay_array.push({ 'count': requestsByDay[j]['count'], day: requestsByDay[j]['_id']['day'] + '-' + requestsByDay[j]['_id']['month'] + '-' + requestsByDay[j]['_id']['year'] })
+
+        }
+
+      }
+      console.log('HOME - REQUESTS BY DAY FORMATTED ', requestsByDay_array);
+
+      /**
+       * MERGE THE ARRAY last7days_initarray WITH requestsByDay_array  */
+      // Here, requestsByDay_formatted_array.find(o => o.day === obj.day)
+      // will return the element i.e. object from requestsByDay_formatted_array if the day is found in the requestsByDay_formatted_array.
+      // If not, then the same element in last7days i.e. obj is returned.
+      const requestByDays_final_array = last7days_initarray.map(obj => requestsByDay_array.find(o => o.day === obj.day) || obj);
+      console.log('HOME - REQUESTS BY DAY - FINAL ARRAY ', requestByDays_final_array);
+
+      const _requestsByDay_series_array = [];
+      const _requestsByDay_labels_array = [];
+
+      requestByDays_final_array.forEach(requestByDay => {
+        //console.log('»» !!! ANALYTICS - REQUESTS BY DAY - requestByDay', requestByDay);
+        _requestsByDay_series_array.push(requestByDay.count)
+
+        const splitted_date = requestByDay.day.split('-');
+        //console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SPLITTED DATE', splitted_date);
+        _requestsByDay_labels_array.push(splitted_date[0] + ' ' + this.monthNames[splitted_date[1]])
+      });
+
+
+      console.log('HOME - REQUESTS BY DAY - SERIES (ARRAY OF COUNT - to use for debug)', requestsByDay_series_array);
+      console.log('HOME - REQUESTS BY DAY - SERIES (+ NEW + ARRAY OF COUNT)', _requestsByDay_series_array);
+      console.log('HOME - REQUESTS BY DAY - LABELS (ARRAY OF DAY - to use for debug)', requestsByDay_labels_array);
+      console.log('HOME - REQUESTS BY DAY - LABELS (+ NEW + ARRAY OF DAY)', _requestsByDay_labels_array);
+
+      const higherCount = this.getMaxOfArray(_requestsByDay_series_array);
+      console.log('HOME - REQUESTS BY DAY - HIGHTER COUNT ', higherCount);
+
+      let lang = this.browserLang;
+
+      var lineChart = new Chart('last7dayChart', {
+        type: 'line',
+        data: {
+          labels: _requestsByDay_labels_array,
+          datasets: [{
+            label: 'Number of conversations in last 7 days ',//active label setting to true the legend value
+            data: _requestsByDay_series_array,
+            fill: true, //riempie zona sottostante dati
+            lineTension: 0.4,
+            backgroundColor: 'rgba(30, 136, 229, 0.6)',
+            borderColor: 'rgba(30, 136, 229, 1)',
+            borderWidth: 3,
+            borderDash: [],
+            borderDashOffset: 0.0,
+            pointBackgroundColor: 'rgba(255, 255, 255, 0.8)',
+            pointBorderColor: '#1e88e5'
+
+          }]
+        },
+        options: {
+          maintainAspectRatio: false, //allow to resize chart
+          title: {
+            text: 'Last 7 days converdations',
+            display: false
+          },
+          legend: {
+            display: false //do not show label title
+          },
+          scales: {
+            xAxes: [{
+              ticks: {
+                beginAtZero: true,
+                display: true,
+                //minRotation: 30,
+                fontColor: 'black',
+
+              },
+              gridLines: {
+                display: true,
+                borderDash: [8, 4],
+                //color:'rgba(255, 255, 255, 0.5)',
+
+              }
+
+            }],
+            yAxes: [{
+              gridLines: {
+                display: true,
+                borderDash: [8, 4],
+
+
+              },
+              ticks: {
+                beginAtZero: true,
+                userCallback: function (label, index, labels) {
+                  //userCallback is used to return integer value to ylabel
+                  if (Math.floor(label) === label) {
+                    return label;
+                  }
+                },
+                display: true,
+                fontColor: 'black',
+                suggestedMax: higherCount + 2,
+
+              }
+            }]
+          },
+          tooltips: {
+            callbacks: {
+              label: function (tooltipItem, data) {
+
+                const currentItemValue = tooltipItem.yLabel
+     
+                if (lang === 'it') {
+                  return 'Conversazioni: ' + currentItemValue;
+                } else {
+                  return 'Conversations:' + currentItemValue;
+                }
+
+              }
+            }
+          }
+
+        }
+        ,
+        plugins: [{
+          beforeDraw: function (chartInstance, easing) {
+            var ctx = chartInstance.chart.ctx;
+            //console.log("chartistance",chartInstance)
+            //ctx.fillStyle = 'red'; // your color here
+            ctx.height = 128
+            //chartInstance.chart.canvas.parentNode.style.height = '128px';
+            ctx.font = "Google Sans"
+            var chartArea = chartInstance.chartArea;
+            //ctx.fillRect(chartArea.left, chartArea.top, chartArea.right - chartArea.left, chartArea.bottom - chartArea.top);
+          }
+        }]
+      });
+
+    }, (error) => {
+      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - ERROR ', error);
+
+    }, () => {
+      console.log('»» !!! ANALYTICS - REQUESTS BY DAY * COMPLETE *');
+
+    });
+  }
+
+
+  // ----------------------------------------------------------------------------------------------
+  // VISITOR GRAPH FOR THE NEW NOME - NOT MORE USED - REPLACED WITH LAST 7 DAYS CONVERSATIONS GRAPH
+  // ----------------------------------------------------------------------------------------------
   getVisitorsByLastNDays(lastdays) {
     this.analyticsService.getVisitorsByDay(lastdays).subscribe((visitorsByDay) => {
       console.log("»» VISITORS BY DAY RESULT: ", visitorsByDay)
@@ -1323,6 +1501,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   getMaxOfArray(requestsByDay_series_array) {
     return Math.max.apply(null, requestsByDay_series_array);
   }
+
+
+
 
 
 
