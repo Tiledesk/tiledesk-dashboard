@@ -1,6 +1,11 @@
 
 # tiledesk-dashboard
 
+### 2.1.23
+- Adds to teammates scroll div an "image skeleton spinner" an sorted the teammates by availability
+- Adds in 'select bot type' page, in the card 'Resolution bot' a link to the documentation
+- Fixed the link to the tutorial for external chatbots integration
+
 ### 2.1.22
 - Improves the 'Widget Live Test' button on the widget settings page
 - Fixes the bug: in the widget settings page, tooltips do not display the entire text
