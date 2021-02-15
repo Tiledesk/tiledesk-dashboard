@@ -108,6 +108,11 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   map_sidebar_height: any;
 
   projectUserArray: Array<any> = []
+  tempProjectUserArray: Array<any> = []
+
+  project_user_length: number;
+  display_teammates_in_scroll_div = false;
+  showRealTeammates = false
 
   /**
    * Constructor
@@ -197,7 +202,18 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     console.log('STORAGE-BUCKET Ws Requests List ', this.storageBucket);
 
     this.getAllProjectUsers(this.storageBucket);
+    this.displayProjectUserImageSkeleton()
   }
+
+  displayProjectUserImageSkeleton() {
+
+    setTimeout(() => {
+      this.showRealTeammates = true;
+
+    }, 2500);
+  }
+
+
 
   getTestSiteUrl() {
     this.TESTSITE_BASE_URL = this.appConfigService.getConfig().testsiteBaseUrl;
@@ -380,13 +396,14 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       // console.log('% »»» WebSocketJs WF WS-RL - +++ GET PROJECT-USERS ', projectUsers);
       console.log('WS-REQUESTS-LIST - GET PROJECT-USERS RES ', _projectUsers);
       if (_projectUsers) {
-
+        this.project_user_length = _projectUsers.length;
+        console.log('WS-REQUESTS-LIST - GET PROJECT-USERS LENGTH ', this.project_user_length);
         // this.projectUserArray = _projectUsers;
 
         _projectUsers.forEach(projectuser => {
 
           console.log('WS-REQUESTS-LIST - GET PROJECT-USERS forEach projectuser ', projectuser);
-        
+
 
           const imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + storageBucket + "/o/profiles%2F" + projectuser.id_user._id + "%2Fphoto.jpg?alt=media";
 
@@ -400,6 +417,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
           });
 
           this.wsRequestsService.subscriptionToWsAllProjectUsersOfTheProject(projectuser.id_user._id);
+
           this.listenToAllProjectUsersOfProject$(projectuser)
 
           this.createAgentAvatarInitialsAnfBckgrnd(projectuser.id_user)
@@ -463,12 +481,30 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
 
         // const index = this.projectUserArray((e) => e._id === projectuser._id);
-        this.projectUserArray.indexOf(projectuser) === -1 ? this.projectUserArray.push(projectuser) : console.log("This item already exists");
+        this.tempProjectUserArray.indexOf(projectuser) === -1 ? this.tempProjectUserArray.push(projectuser) : console.log("This item already exists");
         // this.projectUserArray.push(projectuser)
 
-        console.log('WS-REQUESTS-LIST - GET PROJECT-USERS RES projectUserArray ', this.projectUserArray);
-        // this.projectUserArray.sort(function (a, b) { return a.user_available_rt - b.user_available_rt });
-        // this.projectUserArray.reverse()
+        // console.log('WS-REQUESTS-LIST - GET PROJECT-USERS TEMP projectUserArray ', this.tempProjectUserArray);
+        this.tempProjectUserArray.sort(function (a, b) { return a.user_available_rt - b.user_available_rt });
+        this.tempProjectUserArray.reverse();
+        this.projectUserArray = this.tempProjectUserArray;
+
+        // this.tempProjectUserArray.forEach((element, index) => {
+        //     // console.log('WS-REQUESTS-LIST - GET PROJECT-USERS TEMP projectUserArray loop index ', index);
+
+        // this.projectUserArray = this.tempProjectUserArray;
+
+        //     // if ((index + 1) === this.project_user_length) {
+
+        //     //   this.display_teammates_in_scroll_div = true;
+
+        //     //   console.log('WS-REQUESTS-LIST - GET PROJECT-USERS TEMP qui entro ');
+        //     // }
+
+
+        // });
+
+
 
 
         // this.projectUserArray.sort((n1, n2) => {
