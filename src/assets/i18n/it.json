@@ -1786,6 +1786,9 @@
     "TheNewGroupCreatedCanAlso": "Il nuovo gruppo creato potrà essere assegnato anche a qualsiasi altro dipartimento",
     "PercentageHandledByBots": "percentuale gestita dai bot",
     "HandledByBots": "gestite dai bot",
-    "ConversationsInLast30Days":"Conversazioni negli ultimi 30 giorni"
+    "ConversationsInLast30Days":"Conversazioni negli ultimi 30 giorni",
+    "TotalConversations": "Conversazioni totali",
+    "FilterConversations": "Filtra le conversazioni",
+    "HereHowCreateABot":"Ecco come creare un bot"
     
 }

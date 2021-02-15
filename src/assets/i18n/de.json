@@ -1790,7 +1790,11 @@
 	"TheNewGroupCreatedCanAlso": "Die neu erstellte Gruppe kann auch jeder anderen Abteilung zugeordnet werden",
 	"PercentageHandledByBots": "prozentsatz von Bots behandelt",
 	"HandledByBots": "von Bots gehandhabt",
-	"ConversationsInLast30Days":"Gespräche in den letzten 30 Tagen"
+	"ConversationsInLast30Days":"Gespräche in den letzten 30 Tagen",
+	"TotalConversations": "Total Gespräche",
+	"FilterConversations": "Konversationen filtern",
+	"HereHowCreateABot":"Hier erstellen Sie einen Bot"
+
 	
 	
 }
