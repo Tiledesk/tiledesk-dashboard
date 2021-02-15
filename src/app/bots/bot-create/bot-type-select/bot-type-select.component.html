@@ -53,7 +53,8 @@
             </h4>
             <h5 style="color:#7695a5; font-size: 14px;">
               <!-- Our native, easy and powerful NPL (Natural Language Processing) chatbot -->
-              {{ 'ResolutionBotDescription' | translate}}
+              {{ 'ResolutionBotDescription' | translate}}. <span (click)="$event.stopPropagation();openTiledeskDocCreateABot()" 
+              style="color: #03a5e8; text-decoration: underline;"> {{'HereHowCreateABot' | translate}}</span>
             </h5>
           </div>
         </div>
