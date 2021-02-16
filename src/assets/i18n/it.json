@@ -1789,6 +1789,16 @@
     "ConversationsInLast30Days":"Conversazioni negli ultimi 30 giorni",
     "TotalConversations": "Conversazioni totali",
     "FilterConversations": "Filtra le conversazioni",
-    "HereHowCreateABot":"Ecco come creare un bot"
+    "HereHowCreateABot":"Ecco come creare un bot",
+    "HereHowConnectYourDialogflowAgents": "Ecco come connettere il tuo agente Dialogflow",
+    "ConnectToYourDialogflowAgent":"Connettiti al tuo agente Dialogflow",
+    "YouNeedAServiceAccountPrivateKeyFileToConnectTheDialogflowAgent":"Hai bisogno di un file di chiave privata dell'account di servizio per connettere l'agente Dialogflow a {{company_name}}",
+    "FollowThisGuideToFindOutHowToCreateThisFile": "Segui questa guida per scoprire come creare questo file",
+    "DoYouWantToSendImagesVideosButtonsAndMore":"Vuoi inviare immagini, video, pulsanti e altro?",
+    "FollowTheMicrolanguageGuide":"Segui la guida Microlanguage",
+    "Handoff":"Handoff",
+    "DoYouWantToHandoffToHumanAgentDuringAChatbotConversation":"Vuoi passare la conversazione ad un agente umano durante una conversazione con un chatbot?",
+    "SimplyReplyAgentOnTheLastResponseLine": "Rispondi semplicemente '\\agente' sull'ultima riga di risposta",
+    "HereHowToHandoffToTheHumanAgent":"Ecco come passare la conversazione all'agente umano"
     
 }
