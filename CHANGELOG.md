@@ -10,6 +10,7 @@
 - Changes, in the create bot page, the "Quick Tips" content text for the 'Dialogflow' type bots 
 - Fixes the link to the external script
 - Displays a placeholder image on the bot detail page if the bot image is not found
+- Improves the home page
 
 ### 2.1.22
 - Improves the 'Widget Live Test' button on the widget settings page
