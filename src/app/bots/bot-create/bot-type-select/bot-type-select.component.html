@@ -32,6 +32,7 @@
         'is_hidden' :  natIsVisible === false}">
 
         <div class="card bot-card" (click)="goToCreateBot('native')">
+          <div class="card---header card---header--resolution-bot"> </div>
           <div class="card-content" style="text-align: center">
             <div class="bot-image">
               <!-- <img style="width: 140px; height: auto" src="assets/img/bot_tiledesk.svg" class="img-fluid" /> -->
@@ -53,7 +54,7 @@
             </h4>
             <h5 style="color:#7695a5; font-size: 14px;">
               <!-- Our native, easy and powerful NPL (Natural Language Processing) chatbot -->
-              {{ 'ResolutionBotDescription' | translate}}. <span (click)="$event.stopPropagation();openTiledeskDocCreateABot()" 
+              {{ 'ResolutionBotDescription' | translate}}. <span (click)="$event.stopPropagation();openDocsTiledeskCreateABot()" 
               style="color: #03a5e8; text-decoration: underline;"> {{'HereHowCreateABot' | translate}}</span>
             </h5>
           </div>
@@ -69,6 +70,7 @@
         'col-sm-12 col-md-4' : dgfIsVisible === true && natIsVisible === false, 
         'is_hidden' : dgfIsVisible === false}">
         <div class="card bot-card" (click)="goToCreateBot('dialogflow')">
+          <div class="card---header card---header--dialogflow-bot"> </div>
           <div class="card-content" style="text-align: center">
             <div class="bot-image">
               <!-- <img style="width: 140px; height: auto" src="assets/img/bot_dialogflow.svg" class="img-fluid" /> -->
@@ -113,7 +115,11 @@
             </h4>
             <h5 style="color:#7695a5; font-size: 14px;">
               <!-- Use Dialogflow to train you bot with our native and innovative Dialogflow integration -->
-              {{ 'UseDialogflowToTrainYourBot...' | translate}}
+              {{ 'UseDialogflowToTrainYourBot...' | translate}}. 
+              <span style="color: #03a5e8; text-decoration: underline;" (click)="$event.stopPropagation();openDocsTiledeskDialogflowConnector()"> 
+                {{"HereHowConnectYourDialogflowAgents" | translate}} 
+              </span> 
+
             </h5>
           </div>
         </div>
@@ -130,6 +136,7 @@
                         'col-sm-6 col-md-6' : dgfIsVisible === false && natIsVisible === false 
                       }">
         <div class="card bot-card" (click)="goToCreateBot('external')">
+          <div class="card---header card---header--external-bot"> </div>
           <div class="card-content" style="text-align: center">
             <div class="bot-image">
               <!-- <img style="width: 140px; height: auto" src="assets/img/bot_external.svg" class="img-fluid" /> -->
@@ -187,6 +194,7 @@
                         'col-sm-6 col-md-6' : dgfIsVisible === false && natIsVisible === false 
                       }">
         <div class="card bot-card" (click)="goToCreateBot('identity')">
+          <div class="card---header card---header--identity-bot"> </div>
           <div class="card-content" style="text-align: center">
             <div class="bot-image">
 
