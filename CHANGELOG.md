@@ -2,9 +2,14 @@
 # tiledesk-dashboard
 
 ### 2.1.23
-- Adds to teammates scroll div an "image skeleton spinner" an sorted the teammates by availability
-- Adds in 'select bot type' page, in the card 'Resolution bot' a link to the documentation
-- Fixed the link to the tutorial for external chatbots integration
+- Adds, in conversations list page, an "image skeleton spinner" to the project's teammates list and sorts teammates based on availability
+- Adds, in the 'select bot type' page, in the card "Resolution bot" and in the card "Dialogflow bot" a link to the documentation
+- Fixes the link to the tutorial for external chatbots integration
+- Fixes the bug: in the bot list, in the type column, "internal" is displayed instead of "resolution"
+- Changes, in the create bot page, the "Quick Tips" content text for the 'Resolution' type bots 
+- Changes, in the create bot page, the "Quick Tips" content text for the 'Dialogflow' type bots 
+- Fixes the link to the external script
+- Displays a placeholder image on the bot detail page if the bot image is not found
 
 ### 2.1.22
 - Improves the 'Widget Live Test' button on the widget settings page
