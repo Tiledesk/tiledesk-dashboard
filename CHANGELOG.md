@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.1.24
+- Renames the title of the page 'Add teammate' in 'Invite teammate'
+
 ### 2.1.23
 - Adds, in conversations list page, an "image skeleton spinner" to the project's teammates list and sorts teammates based on availability
 - Adds, in the 'select bot type' page, in the card "Resolution bot" and in the card "Dialogflow bot" a link to the documentation
