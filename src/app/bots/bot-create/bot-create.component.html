@@ -313,8 +313,12 @@
 
             <!-- <section *ngIf="botType === 'native'"> -->
             <section *ngIf="botType === 'resolution'">
-              <p style="color:#7695a5">
+              <!-- <p style="color:#7695a5">
                 {{ "BotsPage.BotQuickTipsText" | translate: tparams }}
+              </p> -->
+              <p style="color:#7695a5">
+                {{ 'ResolutionBotDescription' | translate}}. <span (click)="$event.stopPropagation();openDocsTiledeskCreateABot()" 
+              style="color: #03a5e8; text-decoration: underline;"> {{'HereHowCreateABot' | translate}}</span>
               </p>
             </section>
 
