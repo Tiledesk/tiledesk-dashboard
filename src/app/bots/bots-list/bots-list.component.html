@@ -241,13 +241,12 @@
                         <i></i>
                       </div> -->
                     </div>
-
-
                   </td>
 
                   <td>
-
-                    <span style="text-transform: capitalize;font-weight:400;"> {{ faqkb?.type}} </span>
+                  
+                    <span *ngIf="faqkb?.type !== 'internal'" style="text-transform: capitalize;font-weight:400;"> {{ faqkb?.type}} </span>
+                    <span *ngIf="faqkb?.type === 'internal'" style="text-transform: capitalize;font-weight:400;"> resolution </span>
                     <!-- <div class="checkbox">
                       <label>
                         <input style="opacity: 0.5!important;" type="checkbox" name="optionsCheckboxes"
