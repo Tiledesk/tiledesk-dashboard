@@ -107,9 +107,16 @@ export class BotTypeSelectComponent implements OnInit {
     window.open(url, '_blank');
   }
 
-  openTiledeskDocCreateABot() {
+  openDocsTiledeskCreateABot() {
     const url = 'https://docs.tiledesk.com/knowledge-base/create-a-bot/';
     window.open(url, '_blank');
   }
+
+  openDocsTiledeskDialogflowConnector() {
+    const url = 'https://docs.tiledesk.com/knowledge-base/connect-your-dialogflow-agent/';
+    window.open(url, '_blank');
+  }
+
+
 
 }
