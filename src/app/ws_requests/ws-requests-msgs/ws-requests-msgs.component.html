@@ -78,12 +78,14 @@
                       <!-- <span style="color:#394f5a;"> {{ "RequestMsgsPage.RequesterName" | translate }}: </span>  -->
                       <div class="contact_info">
                         <span [ngClass]="{'requester-verified' : REQUESTER_IS_VERIFIED === true}"
-                          style="cursor:pointer; margin-top: 20px; display: block; font-size: 18px;white-space: nowrap;" (click)="goToContactDetails()">
+                          style="cursor:pointer; margin-top: 20px; display: block; font-size: 18px;white-space: nowrap;"
+                          (click)="goToContactDetails()">
                           <!-- {{ requester_fullname }} -->
                           {{request?.lead?.fullname}}
                         </span>
                         <span *ngIf="!request?.lead?.fullname"
-                          [ngClass]="{'requester-verified' : REQUESTER_IS_VERIFIED === true}" style="cursor:pointer; margin-left: 2px;">
+                          [ngClass]="{'requester-verified' : REQUESTER_IS_VERIFIED === true}"
+                          style="cursor:pointer; margin-left: 2px;">
                           n.a.
                         </span>
 
@@ -1190,10 +1192,10 @@
                   </div>
                 </div>
 
-                <!-- 
-                // ---------------------------------------------------------------------
-                // User Agent browser 
-                // --------------------------------------------------------------------- -->
+
+                <!--  --------------------------------------------------------------------- -->
+                <!--  User Agent browser -->
+                <!--  --------------------------------------------------------------------- -->
                 <div *ngIf="request?.userAgent" class="row" style="margin-top:5px">
                   <!-- border-top: 1px solid #e1eef4;" -->
                   <div class="col-sm-12">
@@ -1211,27 +1213,27 @@
 
                       </span>
 
-                      <!-- 
-                      // ----------------------------------------------------------------
-                      // Chrome or Chromium
-                      // ---------------------------------------------------------------- -->
+
+                      <!-- ---------------------------------------------------------------- -->
+                      <!--  Chrome or Chromium -->
+                      <!--  ---------------------------------------------------------------- -->
                       <span
                         *ngIf="request?.ua_browser.indexOf('Chrome') !== -1 || request?.ua_browser.indexOf('Chromium') !== -1">
                         <img class="request_details___ua_browser_icon" src="assets/img/user_agent/chrome.svg" />
                       </span>
 
-                      <!-- 
-                      // ----------------------------------------------------------------
-                      // Firefox
-                      // ---------------------------------------------------------------- -->
+
+                      <!--  ---------------------------------------------------------------- -->
+                      <!--  Firefox -->
+                      <!--  ---------------------------------------------------------------- -->
                       <span *ngIf="request?.ua_browser.indexOf('Firefox') !== -1">
                         <img class="request_details___ua_browser_icon" src="assets/img/user_agent/firefox.svg" />
                       </span>
 
-                      <!-- 
-                      // ----------------------------------------------------------------
-                      // Edge
-                      // ---------------------------------------------------------------- -->
+
+                      <!-- ---------------------------------------------------------------- -->
+                      <!-- Edge -->
+                      <!-- ---------------------------------------------------------------- -->
                       <span *ngIf="request?.ua_browser.indexOf('Edge') !== -1">
                         <img class="request_details___ua_browser_icon" src="assets/img/user_agent/edge.svg" />
                       </span>
@@ -1244,18 +1246,18 @@
                         <img class="request_details___ua_browser_icon" src="assets/img/user_agent/opera.svg" />
                       </span>
 
-                      <!-- 
-                      // ----------------------------------------------------------------
-                      // Safari
-                      // ---------------------------------------------------------------- -->
+
+                      <!--  ---------------------------------------------------------------- -->
+                      <!--  Safari -->
+                      <!--  ---------------------------------------------------------------- -->
                       <span *ngIf="request?.ua_browser.indexOf('Safari') !== -1">
                         <img class="request_details___ua_browser_icon" src="assets/img/user_agent/safari.svg" />
                       </span>
 
-                      <!-- 
-                      // ----------------------------------------------------------------
-                      // Explorer
-                      // ---------------------------------------------------------------- -->
+
+                      <!--  ---------------------------------------------------------------- -->
+                      <!--  Explorer -->
+                      <!--  ---------------------------------------------------------------- -->
                       <span *ngIf="request?.ua_browser.indexOf('IE') !== -1">
                         <img class="request_details___ua_browser_icon" src="assets/img/user_agent/explorer.svg" />
                       </span>
@@ -1278,19 +1280,20 @@
                   </div>
                 </div>
 
-                <!-- 
-                // ---------------------------------------------------------------------
-                // User Agent Operating system
-                // --------------------------------------------------------------------- -->
+
+                <!--  --------------------------------------------------------------------- -->
+                <!--  User Agent Operating system -->
+                <!--  --------------------------------------------------------------------- -->
                 <div *ngIf="request?.userAgent" class="row" style="margin-top:5px">
                   <!-- border-top: 1px solid #e1eef4;" -->
                   <div class="col-sm-12">
-                    <p [ngClass]="{'no-bottom-margin' : CHAT_PANEL_MODE === true}">
+                    <p
+                      [ngClass]="{'no-bottom-margin' : CHAT_PANEL_MODE === true || request?.channel?.name !== 'chat21'}">
 
-                      <!-- 
-                      // ----------------------------------------------------------------
-                      // @ OS - if not is
-                      // ---------------------------------------------------------------- -->
+
+                      <!-- ---------------------------------------------------------------- -->
+                      <!-- @ OS - if not is -->
+                      <!-- ---------------------------------------------------------------- -->
                       <span *ngIf="(request?.ua_os?.indexOf('Android') === -1) && 
                                    (request?.ua_os?.indexOf('Mac OS') === -1) && 
                                    (request?.ua_os?.indexOf('iOS') === -1) &&
@@ -1300,34 +1303,34 @@
                         <img class="request_details___os_icon" src="assets/img/user_agent/laptop.svg" />
                       </span>
 
-                      <!-- 
-                      // ----------------------------------------------------------------
-                      // if is Android
-                      // ---------------------------------------------------------------- -->
+
+                      <!-- ---------------------------------------------------------------- -->
+                      <!-- if is Android -->
+                      <!-- ---------------------------------------------------------------- -->
                       <span *ngIf="request?.ua_os.indexOf('Android') !== -1">
                         <img class="request_details___os_icon" src="assets/img/user_agent/android.svg" />
                       </span>
 
-                      <!-- 
-                      // ----------------------------------------------------------------
-                      // if is Mac OS or iOS
-                      // ---------------------------------------------------------------- -->
+
+                      <!-- ---------------------------------------------------------------- -->
+                      <!-- if is Mac OS or iOS -->
+                      <!-- ---------------------------------------------------------------- -->
                       <span *ngIf="request?.ua_os.indexOf('Mac OS') !== -1 || request?.ua_os.indexOf('iOS') !== -1">
                         <img class="request_details___os_icon" src="assets/img/user_agent/apple.svg" />
                       </span>
 
-                      <!-- 
-                      // ----------------------------------------------------------------
-                      // if is Windows
-                      // ---------------------------------------------------------------- -->
+
+                      <!--  ---------------------------------------------------------------- -->
+                      <!--  if is Windows -->
+                      <!--  ---------------------------------------------------------------- -->
                       <span *ngIf="request?.ua_os.indexOf('Windows') !== -1">
                         <img class="request_details___os_icon" src="assets/img/user_agent/windows.svg" />
                       </span>
 
-                      <!-- 
-                      // ----------------------------------------------------------------
-                      // if is Ubuntu
-                      // ---------------------------------------------------------------- -->
+
+                      <!--  ---------------------------------------------------------------- -->
+                      <!--  if is Ubuntu -->
+                      <!--  ---------------------------------------------------------------- -->
                       <span *ngIf="request?.ua_os.indexOf('Ubuntu') !== -1">
                         <img class="request_details___os_icon" src="assets/img/user_agent/ubuntu.svg" />
                       </span>
@@ -1348,6 +1351,93 @@
                         </span>
                       </span>
                     </p>
+                  </div>
+                </div>
+
+                <!-- ---------------------------------------- -->
+                <!-- Message Channel  -->
+                <!-- ---------------------------------------- -->
+                <div *ngIf="request?.channel?.name !== 'chat21'" class="row" style="margin-top:5px">
+                  <div class="col-sm-12">
+                    <p [ngClass]="{'no-bottom-margin' : CHAT_PANEL_MODE === true}">
+                      <!-- ---------------------------------------- -->
+                      <!-- Channel - Telegram -->
+                      <!-- ---------------------------------------- -->
+
+                      <span *ngIf="request?.channel?.name === 'telegram'">
+                        <img class="channel-icon" src="assets/img/channel_icons/telegram-logo_bn.svg" />
+                      </span>
+
+                      <span style="position: relative;top: 1px;">
+                        <span
+                          style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
+                          {{ 'MessageChannel' | translate }}
+                        </span>
+                        <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
+                          <span>Telegram</span>
+                        </span>
+                      </span>
+
+
+                      <!-- ---------------------------------------- -->
+                      <!-- Channel - WhatsApp -->
+                      <!-- ---------------------------------------- -->
+
+                      <span *ngIf="request?.channel?.name === 'whatsapp'">
+                        <img class="channel-icon" src="assets/img/channel_icons/whatsapp-logo_bn.svg" />
+                      </span>
+
+                      <span style="position: relative;top: 1px;">
+                        <span
+                          style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
+                          {{ 'MessageChannel' | translate }}
+                        </span>
+                        <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
+                          <span>WhatsApp</span>
+                        </span>
+                      </span>
+
+
+
+
+                      <!-- ---------------------------------------- -->
+                      <!-- Channel - Messenger -->
+                      <!-- ---------------------------------------- -->
+                      <span *ngIf="request?.channel?.name === 'messenger'">
+                        <img class="channel-icon" src="assets/img/channel_icons/messenger-logo_bn.svg" />
+                      </span>
+
+                      <span style="position: relative;top: 1px;">
+                        <span
+                          style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
+                          {{ 'MessageChannel' | translate }}
+                        </span>
+                        <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
+                          <span>Messenger</span>
+                        </span>
+                      </span>
+
+
+
+                      <!-- ---------------------------------------- -->
+                      <!-- Channel - Email -->
+                      <!-- ---------------------------------------- -->
+                      <span *ngIf="request?.channel?.name === 'email'">
+                        <img class="channel-icon" src="assets/img/channel_icons/email-logo_bn_v2.svg" />
+                      </span>
+
+                      <span style="position: relative;top: 1px;">
+                        <span
+                          style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
+                          {{ 'MessageChannel' | translate }}
+                        </span>
+                        <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
+                          <span>Email</span>
+                        </span>
+                      </span>
+
+                    </p>
+
                   </div>
                 </div>
 
@@ -1411,10 +1501,10 @@
 
                     <div class="served_by">
 
-                      <!-- 
-                      // ------------------------------------------------------
-                      // No Agent
-                      // ------------------------------------------------------ -->
+
+                      <!-- ------------------------------------------------------ -->
+                      <!-- No Agent -->
+                      <!-- ------------------------------------------------------ -->
                       <div *ngIf="agents_array?.length === 0" class="row-body" style="margin-bottom: 10px;">
                         <div class="ws_request_msgs___served_by">
                           <img style="height: auto; width: 22px;margin-left: 5px;margin-top: 5px;"
@@ -1425,12 +1515,13 @@
                         </span>
                       </div>
 
-                      <!-- 
-                      // ------------------------------------------------------
-                      // Agent array for
-                      // ------------------------------------------------------ -->
+
+                      <!--  ------------------------------------------------------ -->
+                      <!--  Agent array for -->
+                      <!--  ------------------------------------------------------ -->
                       <div *ngFor="let agent of agents_array" class="row-body">
-                        <span class="agent-wrp" (click)="goToMemberProfile( agent?._id )" [ngClass]="{'disable-link-if-is-agent' : CURRENT_USER_ROLE === 'agent'}">
+                        <span class="agent-wrp" (click)="goToMemberProfile( agent?._id )"
+                          [ngClass]="{'disable-link-if-is-agent' : CURRENT_USER_ROLE === 'agent'}">
                           <img *ngIf="agent.isBot === false"
                             style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #eee; margin-right: 3px;"
                             class="user-img"
@@ -1472,10 +1563,10 @@
           </div> -->
 
 
-                <!-- 
-                // -----------------------------------------------------------------------------
-                // Tags
-                // ----------------------------------------------------------------------------- -->
+
+                <!--  ----------------------------------------------------------------------------- -->
+                <!--  Tags -->
+                <!--  ----------------------------------------------------------------------------- -->
                 <!-- <div class="card right-card" style="padding-top:5px; padding-bottom:5px; margin-top: 5px;margin-bottom: 5px;">
                 <div class="card-content" style="padding-top: 5px;padding-bottom: 5px;"> -->
                 <div *ngIf="isVisibleLBS === true" class="row">
@@ -1490,10 +1581,10 @@
                       <div class="tags-container">
                         <div class="tag" *ngFor="let tag of request?.tags" role="button">
 
-                          <!-- 
-                        // ------------------------------------------------------------------------------------------------------------
-                        // Revove tag (note: the request to remove tag in is not called if the current user has agent role and is not among the participants)
-                        // ------------------------------------------------------------------------------------------------------------ -->
+
+                          <!-- --------------------------------------------------------------------------------------------------------------------------------------- -->
+                          <!-- Revove tag (note: the request to remove tag in is not called if the current user has agent role and is not among the participants) -->
+                          <!-- --------------------------------------------------------------------------------------------------------------------------------------- -->
                           <div (click)="removeTag(tag)">
                             <div class="icon-container" style="display: inline-block;">
                               <svg style="width: 13px; height: auto;position:absolute;margin-top: 6px;"
@@ -1515,10 +1606,10 @@
                         </div>
                       </div>
 
-                      <!-- 
-                      // ------------------------------------------------------------------------------------------------------------
-                      // Btn Add Labels (note: is disabled if the current user has agent role and is not among the participants)
-                      // ------------------------------------------------------------------------------------------------------------ -->
+
+                      <!--  ------------------------------------------------------------------------------------------------------------ -->
+                      <!--  Btn Add Labels (note: is disabled if the current user has agent role and is not among the participants) -->
+                      <!--  ------------------------------------------------------------------------------------------------------------ -->
                       <button class="btn btn-xs btn-primary ws_msgs_small_btn add_tag_btn"
                         style="margin-top: 4px;  margin-bottom: 6px;" (click)="toggleAddTagInputAndGetTags()"
                         [disabled]="DISABLE_ADD_NOTE_AND_TAGS === true">
@@ -1601,10 +1692,10 @@
                 </div> -->
 
 
-                <!-- 
-                // -----------------------------------------------------------------------------
-                // Notes
-                // ----------------------------------------------------------------------------- -->
+
+                <!-- ----------------------------------------------------------------------------- -->
+                <!-- Notes -->
+                <!--  ----------------------------------------------------------------------------- -->
                 <div class="row">
                   <div class="col-sm-12"
                     style="padding-left: 0px; padding-right: 0px; border-bottom: 1px solid #dadde1;">
@@ -1631,10 +1722,10 @@
                               margin-bottom: 8px;"> </textarea>
 
 
-                            <!-- 
-                            // ------------------------------------------------------------------------------------------------------------
-                            // Btn Add Notes (note: is disabled if if the current user has agent role and is not among the participants)
-                            // ------------------------------------------------------------------------------------------------------------ -->
+
+                            <!--  ------------------------------------------------------------------------------------------------------------ -->
+                            <!--  Btn Add Notes (note: is disabled if if the current user has agent role and is not among the participants) -->
+                            <!--  ------------------------------------------------------------------------------------------------------------ -->
                             <button type="button" class="btn btn-xs btn-primary ws_msgs_small_btn" #cont
                               (click)="addNote()"
                               [disabled]="!new_note || new_note?.length === 0 || DISABLE_ADD_NOTE_AND_TAGS === true">
@@ -1648,10 +1739,10 @@
 
                           <div *ngIf="notesArray?.length > 0" class="ws_request_notes__container">
 
-                            <!-- 
-                            // ------------------------------------------------------
-                            // @ Notes' cards
-                            // ------------------------------------------------------ -->
+
+                            <!--  ------------------------------------------------------ -->
+                            <!--  @ Notes' cards -->
+                            <!--  ------------------------------------------------------ -->
                             <div *ngFor="let note of notesArray;" class="ws_request_note">
                               <div class="ws_request_note__content">
                                 {{ note?.text }}
@@ -1663,10 +1754,10 @@
                               </div>
 
 
-                              <!-- 
-                              // ------------------------------------------------------
-                              // @ Remove note btn (click)="presentModalDeleteNote(note._id)"
-                              // ------------------------------------------------------ -->
+
+                              <!-- ------------------------------------------------------------ -->
+                              <!-- @ Remove note btn (click)="presentModalDeleteNote(note._id)" -->
+                              <!-- ------------------------------------------------------------ -->
                               <button *ngIf="currentUserID === note.createdBy " (click)="deleteNote(note._id)"
                                 type="button" class="note__delete">
                                 <i class="material-icons delete_note_icon" style="font-size:16px">close</i>
@@ -1700,10 +1791,10 @@
           </div> -->
 
 
-                <!-- 
-                // -----------------------------------------------------------------------------
-                // Requester  !! is not dispalyed (now is displayed as title of the left card)
-                // ----------------------------------------------------------------------------- -->
+
+                <!-- ----------------------------------------------------------------------------- -->
+                <!-- Requester  !! is not dispalyed (now is displayed as title of the left card) -->
+                <!-- ----------------------------------------------------------------------------- -->
                 <div class="card right-card"
                   style="padding-top:5px; padding-bottom:5px; margin-top: 5px;margin-bottom: 5px; display: none;">
                   <div class="card-content" style="padding-top: 5px;padding-bottom: 5px;">
@@ -1793,10 +1884,10 @@
 
                         <p class="row-body" style="margin-bottom:6px;padding-bottom:0px; margin-top:6px;">
 
-                          <!-- 
-                        // ------------------------------------------------------
-                        // no more get from request attributes but from lead 
-                        // ------------------------------------------------------ -->
+
+                          <!-- ------------------------------------------------------ -->
+                          <!-- no more get from request attributes but from lead -->
+                          <!-- ------------------------------------------------------ -->
 
                           <!-- <a *ngIf="user_email !== 'n.a.'" href="mailto:{{user_email}}">{{ user_email }}</a>
                      <a *ngIf="user_email === 'n.a.'" style="color:#7695a5;">{{ user_email }}</a> -->
@@ -1826,19 +1917,19 @@
                 </div>
 
 
-                <!-- 
-                // ------------------------------------------------------
-                // DEPARTMENT !! is not dispalyed (now is dispalyed in the first card)
-                // ------------------------------------------------------ -->
+
+                <!-- ------------------------------------------------------------------- -->
+                <!-- DEPARTMENT !! is not dispalyed (now is dispalyed in the first card) -->
+                <!-- ------------------------------------------------------------------- -->
                 <!-- <div class="card right-card" style="padding-top:5px; padding-bottom:5px; margin-top: 5px;margin-bottom: 5px;">
             <div class="card-content" style="padding-top: 5px;padding-bottom: 5px;"> -->
                 <div class="row" style="display: none;">
                   <div class="col-sm-12" style="">
                     <p class="row-header" style="">
-                      <!-- 
-                      // ------------------------------------------------------
-                      // no more get from request attributes but from DEPARTMENT 
-                      // ------------------------------------------------------ -->
+
+                      <!--  --------------------------------------------------------- -->
+                      <!--  no more get from request attributes but from DEPARTMENT -->
+                      <!--  --------------------------------------------------------- -->
                       <!-- {{ department_name }} -->
 
 

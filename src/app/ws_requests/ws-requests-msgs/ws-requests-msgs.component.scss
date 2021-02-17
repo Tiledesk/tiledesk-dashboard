@@ -1469,8 +1469,6 @@ and also iPads specifically.
 }
 /* ./ Attributes Accordion */
 
-
-
 .ws_request_notes__container {
   margin-bottom: 12px;
   background-color: #f7f8fc;
@@ -2179,7 +2177,12 @@ and also iPads specifically.
 }
 
 .agent-wrp {
-  cursor:pointer;
+  cursor: pointer;
+}
+
+.channel-icon {
+  width: 14px;
+  height: auto;
 }
 
 // --------------------------------
