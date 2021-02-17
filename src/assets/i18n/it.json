@@ -1799,6 +1799,7 @@
     "Handoff":"Handoff",
     "DoYouWantToHandoffToHumanAgentDuringAChatbotConversation":"Vuoi passare la conversazione ad un agente umano durante una conversazione con un chatbot?",
     "SimplyReplyAgentOnTheLastResponseLine": "Rispondi semplicemente '\\agente' sull'ultima riga di risposta",
-    "HereHowToHandoffToTheHumanAgent":"Ecco come passare la conversazione all'agente umano"
+    "HereHowToHandoffToTheHumanAgent":"Ecco come passare la conversazione all'agente umano",
+    "MessageChannel":"Canale"
     
 }
