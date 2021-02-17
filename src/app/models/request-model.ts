@@ -13,7 +13,7 @@ export interface Request {
   requester_fullname_initial?: string;
   requester_fullname_fillColour?: string;
   requester_is_verified?: boolean;
-  requester_id?: string;
+  requester_id?: any;
   projectid?: string;
 
   members_array?: any;
@@ -33,7 +33,6 @@ export interface Request {
   rating_message?: string;
   participants?: any;
   lead?: any;
-
   // wsrequet
   createdAt?: any;
   availableAgents?: any;
@@ -54,6 +53,20 @@ export interface Request {
   fulldate?: any;
   participatingAgents?:any;
   participatingBots?:any;
+
+  preflight?:boolean;
+  hasBot?:boolean;
+  participantsAgents?: any;
+  participantsBots?: any;
+  snapshot?: any;
+  notes?: any;
+  channelOutbound?: any;
+  __v?: number;
+  location?: any;
+  assigned_at?: string;
+  ua_browser?: string;
+  ua_os?: string;
+  participanting_Agents?: any;
   // ./wsrequet
 
   hasAgent?(user_id: string): boolean;
