@@ -3,6 +3,7 @@
 
 ### 2.1.24
 - Renames the title of the page 'Add teammate' in 'Invite teammate'
+- Adds icons to the conversations list and to conversation details to identify the channels from which messages are sent (whatsapp, telegram, messenger, email)
 
 ### 2.1.23
 - Adds, in conversations list page, an "image skeleton spinner" to the project's teammates list and sorts teammates based on availability
