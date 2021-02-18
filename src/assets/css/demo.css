@@ -474,6 +474,12 @@ my-app .main-panel .main-content .card {
   border-bottom: 1px solid #e5effe !important;
 }
 
+@media screen and (max-width: 767px) {
+  .table-responsive {
+    border: unset !important
+  }
+}
+
 /* table style overwrite */
 .card {
   box-shadow: unset !important;
@@ -665,7 +671,6 @@ my-app .main-panel .main-content .card {
   left: -2px;
 }
 
-
 /*
 // ---------------------------------------------------------------------------
 // SCROLL DIV inline avatars  (used conversations scroll div)
@@ -715,8 +720,6 @@ my-app .main-panel .main-content .card {
   border: 2px solid rgb(255, 255, 255);
 }
 
-
-
 .served-by-conv-e .altenative-conv-avatar-wrap {
   width: 42px;
   height: 42px;
@@ -737,10 +740,10 @@ my-app .main-panel .main-content .card {
   text-align: center;
 }
 
-.skeleton-img  {
+.skeleton-img {
   width: 42px;
   height: 42px;
-  background-image: linear-gradient(90deg, #ddd 0px, #e8e8e8 40px, #ddd 80px);;
+  background-image: linear-gradient(90deg, #ddd 0px, #e8e8e8 40px, #ddd 80px);
   animation: shine 1.6s infinite linear;
   background-size: 300px;
   border-radius: 50%;
@@ -755,7 +758,6 @@ my-app .main-panel .main-content .card {
     background-position: 200px;
   }
 }
-
 
 /*
 // ---------------------------------------------------------------------------
@@ -863,11 +865,9 @@ my-app .main-panel .main-content .card {
 .analytics-date-range-selected {
   margin: 8px !important;
   color: rgba(0, 0, 0, 0.5);
-  font-family: 'Google Sans';
+  font-family: "Google Sans";
   font-size: 16px;
   display: block;
-
-  
 }
 
 .arrow_forward-custom {
@@ -876,4 +876,3 @@ my-app .main-panel .main-content .card {
   top: -2px;
   font-size: 18px;
 }
-
