@@ -343,7 +343,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
   getUserProfileImage() {
     if (this.timeStamp) {
-      console.log('PROFILE IMAGE (USER-PROFILE ) - getUserProfileImage ', this.userProfileImageurl);
+      console.log('PROFILE IMAGE (BOT-PROFILE IN FAQ COMP) - getUserProfileImage ', this.userProfileImageurl);
       // setTimeout(() => {
       return this.userProfileImageurl + '&' + this.timeStamp;
       // }, 200);

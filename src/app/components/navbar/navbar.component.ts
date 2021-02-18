@@ -434,6 +434,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
     getUserProfileImage() {
         if (this.timeStamp) {
+            console.log('PROFILE IMAGE (USER-IMG IN NAV-COMP) - getUserProfileImage ', this.userProfileImageurl);
             return this.userProfileImageurl + '&' + this.timeStamp;
         }
         return this.userProfileImageurl
