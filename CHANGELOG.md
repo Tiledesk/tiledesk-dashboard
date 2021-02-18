@@ -1,9 +1,33 @@
 
 # tiledesk-dashboard
 
+### 2.1.24
+- Renames the title of the page 'Add teammate' in 'Invite teammate'
+- Adds icons to the conversations list and to conversation details to identify the channels from which messages are sent (whatsapp, telegram, messenger, email)
+
+### 2.1.23
+- Adds, in conversations list page, an "image skeleton spinner" to the project's teammates list and sorts teammates based on availability
+- Adds, in the 'select bot type' page, in the card "Resolution bot" and in the card "Dialogflow bot" a link to the documentation
+- Fixes the link to the tutorial for external chatbots integration
+- Fixes the bug: in the bot list, in the type column, "internal" is displayed instead of "resolution"
+- Changes, in the create bot page, the "Quick Tips" content text for the 'Resolution' type bots 
+- Changes, in the create bot page, the "Quick Tips" content text for the 'Dialogflow' type bots 
+- Fixes the link to the external script
+- Displays a placeholder image on the bot detail page if the bot image is not found
+- Improves the home page
+
 ### 2.1.22
 - Improves the 'Widget Live Test' button on the widget settings page
 - Fixes the bug: in the widget settings page, tooltips do not display the entire text
+- Adds the list of the project teammates in the list of conversations with the indicators of availability and number of requests assigned
+- Adds the ability to simultaneously select and delete multiple conversations in the history
+- Adds in analytics a graph that represents the trend of customer satisfaction
+- Adds a counter of the total next to the conversations graph,  visitors graph and messages graph
+- Adds in Analytics > Conversations a graph that compares the conversations managed by humans and those managed by bots with also the possibility to select the different datasets
+- Improves the layout of the analytics pages
+- Adds, in the list of bots, the total number of messages sent by the bot
+- Adds, in the bot details, the number of times a response has been used
+- Adds in the conversation list page the ability to know served requests geolocation
 
 ### 2.1.21
 - Fixes the bug: displays 'NaN' as percentage when the count of the conversations handled by bots is zero

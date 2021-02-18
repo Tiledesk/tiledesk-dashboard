@@ -58,6 +58,9 @@
             </span>
           </th>
 
+          <!-- ------ ====== CHANNNEL ====== ------ -->
+          <th> </th>
+
           <!-- ------ ====== REQUESTER ====== ------ -->
           <th>
             <span class="column-th-span">
@@ -208,6 +211,7 @@
               <!-- {{ request?.first_text }} -->
             </p>
 
+
             <!-- 
             // ---------------------------------------
             // Request Tag
@@ -288,6 +292,73 @@
 
 
             </section>
+          </td>
+
+          <!-- ---------------------------------------- -->
+          <!-- Message Channel  -->
+          <!-- ---------------------------------------- -->
+          <td style="width: 1%;">
+            <!-- ---------------------------------------- -->
+            <!-- Channel - Telegram -->
+            <!-- ---------------------------------------- -->
+            <span *ngIf="request?.channel?.name === 'telegram'" class="tool_tip">
+              <img style="width: 18px;height: 18px;" src="assets/img/channel_icons/512px-Telegram_logo.png"
+                class="img-fluid">
+              <span class="bottom tool-tip-bottom--custom">
+                <span style="display: block;">
+                  {{'MessageChannel' | translate}}
+                </span>
+                Telegram
+                <i></i>
+              </span>
+            </span>
+            <!-- ---------------------------------------- -->
+            <!-- Channel - WhatsApp -->
+            <!-- ---------------------------------------- -->
+            <span *ngIf="request?.channel?.name === 'whatsapp'" class="tool_tip">
+              <!-- src="assets/img/channel_icons/WhatsApp-Logo-512x512.png assets/img/channel_icons/600px-Whatsapp_logo_v2.png" -->
+              <img style="width: 18px;height: 18px;" src="assets/img/channel_icons/WhatsApp-Logo-512x512.png" 
+                class="img-fluid">
+              <span class="bottom tool-tip-bottom--custom">
+                <span style="display: block;">
+                  {{'MessageChannel' | translate}}
+                </span>
+                WhatsApp
+                <i></i>
+              </span>
+            </span>
+
+            <!-- ---------------------------------------- -->
+            <!-- Channel - Messenger -->
+            <!-- ---------------------------------------- -->
+            <span *ngIf="request?.channel?.name === 'messenger'" class="tool_tip">
+              <img style="width: 18px;height: 18px;"
+                src="assets/img/channel_icons/512px-Facebook_Messenger_logo_2020.png" class="img-fluid">
+
+              <span class="bottom tool-tip-bottom--custom">
+                <span style="display: block;">
+                  {{'MessageChannel' | translate}}
+                </span>
+                Messenger
+                <i></i>
+              </span>
+            </span>
+
+            <!-- ---------------------------------------- -->
+            <!-- Channel - Email -->
+            <!-- ---------------------------------------- -->
+            <span *ngIf="request?.channel?.name === 'email'" class="tool_tip">
+              <img style="width: 18px;height: 18px;" src="assets/img/channel_icons/516px-mail-icon.png"
+                class="img-fluid">
+
+              <span class="bottom tool-tip-bottom--custom">
+                <span style="display: block;">
+                  {{'MessageChannel' | translate}}
+                </span>
+                Email
+                <i></i>
+              </span>
+            </span>
           </td>
 
 
@@ -666,8 +737,8 @@
 
 
                 <span *ngIf="agent.is_bot === true">
-                  <span (click)="goToBotProfile(agent?._id, agent?.type)" [ngClass]="{'disable-link-if-is-agent' : ROLE_IS_AGENT}"
-                    class="bot---avatar tool_tip">
+                  <span (click)="goToBotProfile(agent?._id, agent?.type)"
+                    [ngClass]="{'disable-link-if-is-agent' : ROLE_IS_AGENT}" class="bot---avatar tool_tip">
                     <img class="user-img ws-requests-list-servedby-avatar"
                       src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fphoto.jpg?alt=media"
                       onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
@@ -777,8 +848,8 @@
               </span>
             </button>
 
-            <button *ngIf="request?.currentUserIsJoined === false" type="button" rel="tooltip" title="{{ 'RequestMsgsPage.Enter' | translate }}"
-              class="btn btn-tdblu btn-simple btn-xs tool_tip"
+            <button *ngIf="request?.currentUserIsJoined === false" type="button" rel="tooltip"
+              title="{{ 'RequestMsgsPage.Enter' | translate }}" class="btn btn-tdblu btn-simple btn-xs tool_tip"
               (click)='joinRequest(request?.currentUserIsJoined, request?.participanting_Agents, request?.request_id)'
               [disabled]="request?.currentUserIsJoined === true">
 
@@ -809,9 +880,9 @@
               // ------------------------------------------------------------------------------------------------------
               // SVG font-awesome chat icon icon
               // ------------------------------------------------------------------------------------------------------ -->
-              <svg  style="height: 15px; width:auto;" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="comments"
-                class="svg-inline--fa fa-comments fa-w-18" role="img" xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 576 512">
+              <svg style="height: 15px; width:auto;" aria-hidden="true" focusable="false" data-prefix="fas"
+                data-icon="comments" class="svg-inline--fa fa-comments fa-w-18" role="img"
+                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
                 <path fill="currentColor"
                   d="M416 192c0-88.4-93.1-160-208-160S0 103.6 0 192c0 34.3 14.1 65.9 38 92-13.4 30.2-35.5 54.2-35.8 54.5-2.2 2.3-2.8 5.7-1.5 8.7S4.8 352 8 352c36.6 0 66.9-12.3 88.7-25 32.2 15.7 70.3 25 111.3 25 114.9 0 208-71.6 208-160zm122 220c23.9-26 38-57.7 38-92 0-66.9-53.5-124.2-129.3-148.1.9 6.6 1.3 13.3 1.3 20.1 0 105.9-107.7 192-240 192-10.8 0-21.3-.8-31.7-1.9C207.8 439.6 281.8 480 368 480c41 0 79.1-9.2 111.3-25 21.8 12.7 52.1 25 88.7 25 3.2 0 6.1-1.9 7.3-4.8 1.3-2.9.7-6.3-1.5-8.7-.3-.3-22.4-24.2-35.8-54.5z">
                 </path>

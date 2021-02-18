@@ -103,8 +103,20 @@ export class BotTypeSelectComponent implements OnInit {
   }
 
   openExternalBotIntegrationTutorial() {
-    const url = 'https://developer.tiledesk.com/apis/tutorials/connect-your-own-chatbot';
+    const url = 'https://developer.tiledesk.com/external-chatbot/connect-your-own-chatbot';
     window.open(url, '_blank');
   }
+
+  openDocsTiledeskCreateABot() {
+    const url = 'https://docs.tiledesk.com/knowledge-base/create-a-bot/';
+    window.open(url, '_blank');
+  }
+
+  openDocsTiledeskDialogflowConnector() {
+    const url = 'https://docs.tiledesk.com/knowledge-base/connect-your-dialogflow-agent/';
+    window.open(url, '_blank');
+  }
+
+
 
 }

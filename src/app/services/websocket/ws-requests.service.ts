@@ -30,14 +30,14 @@ export class WsRequestsService implements OnDestroy {
   public wsRequesterStatus$: BehaviorSubject<any> = new BehaviorSubject<any>({});
   public currentUserWsAvailability$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null); // Moved here from user.service 
   public currentUserWsIsBusy$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null); // Moved here from user.service 
- 
+
   http: Http;
   public messages: Subject<Message>;
 
   requesTtotal: number;
   public wsRequestsList$: BehaviorSubject<Request[]> = new BehaviorSubject<Request[]>([]);
   public projectUsersOfProjectFromWsSubscription$: BehaviorSubject<[]> = new BehaviorSubject<[]>([]);
-  
+
   public ws__RequestsList$: any;
 
   public wsRequest$ = new Subject()
@@ -65,6 +65,8 @@ export class WsRequestsService implements OnDestroy {
   // public ws_All_RequestsLength$$: ReplaySubject<number> = new ReplaySubject(null);
 
   wsRequestsList: Request[]
+  fakeWsRequestsList: Request[]
+
   wsAllRequestsList: any
 
   wsjsRequestsService: WebSocketJs;
@@ -426,6 +428,13 @@ export class WsRequestsService implements OnDestroy {
       this.timeout = setTimeout(() => {
         this.wsRequestsList$.next(this.wsRequestsList);
         console.log('% »»» WebSocketJs WF +++++ ws-requests--- service ON-CREATE ----- NEXT wsRequestsList ', this.wsRequestsList)
+
+
+        /* the json fakeWsRequestsList (used to test the channel icon whatsapp|telegram|messenger|email) is in the folder nicola  */
+        //  this.wsRequestsList$.next(this.fakeWsRequestsList);
+        //  console.log('% »»» WebSocketJs WF +++++ ws-requests--- service ON-CREATE ----- NEXT fakeWsRequestsList ', this.fakeWsRequestsList)
+
+
         // this.ws_All_RequestsLength$.next(this.wsRequestsList.length);
         // console.log('% »»» WebSocketJs WF +++++ ws-requests--- service ON-CREATE ----- NEXT wsRequestsList LENGTH', this.wsRequestsList.length)
       }, 1000);
@@ -744,7 +753,7 @@ export class WsRequestsService implements OnDestroy {
     return new Promise(function (resolve, reject) {
 
       self.webSocketJs.ref(path, 'subscriptionToWsAllProjectUsersOfTheProject', function (data, notification) {
-        console.log("WS-REQUESTS-SERVICE SUBSCR TO WS PROJECT-USERS OF THE PROJEC - CREATE - data ", data , ' path ', path);
+        console.log("WS-REQUESTS-SERVICE SUBSCR TO WS PROJECT-USERS OF THE PROJECT - CREATE - data ", data, ' path ', path);
         // console.log("PROJECT COMP (user-service) SUBSCR TO WS CURRENT USERS - CREATE - data ", data);
         // console.log("PROJECT COMP (user-service) SUBSCR TO WS CURRENT USERS - CREATE - data  user_available ", data.user_available);
         // console.log("PROJECT COMP (user-service) SUBSCR TO WS CURRENT USERS - CREATE - data  isBusy ", data.isBusy);
@@ -755,7 +764,7 @@ export class WsRequestsService implements OnDestroy {
 
       }, function (data, notification) {
         resolve(data)
-        console.log("WS-REQUESTS-SERVICE SUBSCR TO WS PROJECT-USERS OF THE PROJEC - UPDATE - data ", data);
+        console.log("WS-REQUESTS-SERVICE SUBSCR TO WS PROJECT-USERS OF THE PROJECT - UPDATE - data ", data);
         self.projectUsersOfProjectFromWsSubscription$.next(data);
 
       }, function (data, notification) {
@@ -768,7 +777,13 @@ export class WsRequestsService implements OnDestroy {
 
     })
   }
-
+  // -----------------------------------------------------------------------------------------------------------------------------
+  // UN-Subscribe to WS PROJECT-USERS OF THE PROJECT
+  // -----------------------------------------------------------------------------------------------------------------------------
+  unsubsToToWsAllProjectUsersOfTheProject(userid) {
+    this.webSocketJs.unsubscribe('/' + this.project_id + '/project_users/users/' + userid);
+    console.log("WS-REQUESTS-SERVICE UN-SUBSCR TO WS PROJECT-USERS OF THE PROJECT  projectid: ", this.project_id, ' userid:', userid);
+  }
 
 
 

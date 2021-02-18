@@ -239,8 +239,8 @@ export class SatisfactionComponent implements OnInit {
     })
   }
 
-  daysSelect(value, event) {
-    console.log("EVENT: ", event)
+  daysSelect(value, $event) {
+    console.log("EVENT: ", $event)
     this.selectedDaysId = value;
 
     if (value <= 30) {

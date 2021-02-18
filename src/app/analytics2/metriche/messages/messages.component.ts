@@ -117,8 +117,8 @@ export class MessagesComponent implements OnInit {
     this.subscription.unsubscribe();
   }
 
-  daysSelect(value, event) {
-    console.log("EVENT: ", event)
+  daysSelect(value, $event) {
+    console.log("MSG COMP EVENT: ", $event)
     this.selectedDaysId = value;
 
     if (value <= 30) {

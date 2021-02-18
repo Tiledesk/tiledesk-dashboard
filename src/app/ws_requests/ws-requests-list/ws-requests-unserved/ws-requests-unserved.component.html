@@ -47,6 +47,8 @@
             </span>
           </th>
 
+          <th></th>
+
           <!-- ------ ====== REQUESTER ====== ------ -->
           <th>
             <span class="column-th-span">
@@ -88,7 +90,7 @@
         <!-- ------ ====== IF THERE ISN'T REQUEST (SERVED OR UNSERVED) ====== ------ -->
         <tr *ngIf="wsRequestsUnserved?.length === 0">
           <!-- <tr *ngIf="displayNoRequestString"> -->
-          <td colspan="7" style="text-align: center; padding-top: 16px;">
+          <td colspan="8" style="text-align: center; padding-top: 16px;">
             <p style="font-size:1em; color:#737376; font-weight: 100">
               {{ 'NoRequests' | translate }}
             </p>
@@ -103,13 +105,13 @@
 
           <!-- ------ ====== VISIBILITY ICON ====== ------ -->
           <td style="text-align:center; white-space: nowrap; width: 1%;">
-     
+
             <!-- IF THE REQUEST SUPPORT STATUS IS 100 (UNSERVED REQUEST) -->
             <div *ngIf="request?.status === 100 && !request?.subject ;else internal_unserved_request">
               <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
-        
-                <img style="width: 30px;" src="assets/img/request_icons/status100.svg" class="img-fluid" >
-                
+
+                <img style="width: 30px;" src="assets/img/request_icons/status100.svg" class="img-fluid">
+
               </span>
             </div>
 
@@ -119,7 +121,7 @@
             // ------------------------------------------------------------------------------------------------------ -->
             <ng-template #internal_unserved_request>
 
-              <img style="width: 30px;" src="assets/img/request_icons/status100_internal.svg" class="img-fluid" >
+              <img style="width: 30px;" src="assets/img/request_icons/status100_internal.svg" class="img-fluid">
 
             </ng-template>
 
@@ -129,10 +131,10 @@
           <td [ngClass]="{'padding_5' : request?.tags?.length > 0}" (click)='goToRequestMsgs(request?.request_id)'
             style="cursor:pointer; ">
             <p class="column-td" [innerHTML]="getRequestText(request?.first_text)"> </p>
-            <!-- 
-            // ---------------------------------------
-            // Request Tag
-            // --------------------------------------- -->
+             
+            <!-- --------------------------------------- -->
+            <!-- Request Tag -->
+            <!-- --------------------------------------- -->
             <section style="max-width: 210px;" *ngIf="request?.tags?.length > 0">
 
               <div style="display: inline-block;" *ngFor="let tag of request?.tags;  let i=index">
@@ -154,10 +156,10 @@
                 </div>
               </div>
 
-              <!-- 
-              // --------------------------------------------------------------------
-              // Display more tags
-              // -------------------------------------------------------------------- -->
+              
+              <!--  -------------------------------------------------------------------- -->
+              <!--  Display more tags -->
+              <!--  -------------------------------------------------------------------- -->
               <div [id]="'more_tags_btn_for_request_' + request?.request_id" style="display: inline-block;"
                 *ngIf="request?.tags?.length > 2">
                 <a (click)="$event.stopPropagation(); displayMoreTags(request?.request_id)" style="font-size: 11px;
@@ -167,10 +169,10 @@
                 </a>
               </div>
 
-              <!-- 
-              // --------------------------------------------------------------------
-              // Tag from 3 to ... 
-              // -------------------------------------------------------------------- -->
+              
+              <!--  -------------------------------------------------------------------- -->
+              <!--  Tag from 3 to ... -->
+              <!--  -------------------------------------------------------------------- -->
               <div (click)="$event.stopPropagation(); displayLessTag(request?.request_id)"
                 [id]="'more_tags_for_request_' + request?.request_id" style="display: none"
                 *ngIf="request?.tags?.length > 2">
@@ -195,10 +197,10 @@
                 </div>
               </div>
 
-              <!-- 
-              // --------------------------------------------------------------------
-              // Display more tags
-              // -------------------------------------------------------------------- -->
+               
+              <!-- -------------------------------------------------------------------- -->
+              <!-- Display more tags -->
+              <!-- -------------------------------------------------------------------- -->
               <!-- <div  [id]="'less_tags_btn_for_request_' + request?.request_id" style="display: none" *ngIf="request?.tags?.length > 2">
                 <a  (click)="$event.stopPropagation(); displayLessTag(request?.request_id)" style="font-size: 11px;
                 color: rgba(0, 0, 0, 0.54) !important;
@@ -207,8 +209,72 @@
                 </a>
                </div> -->
             </section>
+          </td>
 
+          <!-- ---------------------------------------- -->
+          <!-- Message Channel  -->
+          <!-- ---------------------------------------- -->
+          <td style="width: 1%;">
+            <!-- ---------------------------------------- -->
+            <!-- Channel - Telegram -->
+            <!-- ---------------------------------------- -->
+            <span *ngIf="request?.channel?.name === 'telegram'" class="tool_tip">
+              <img style="width: 18px;height: 18px;" src="assets/img/channel_icons/512px-Telegram_logo.png"
+                class="img-fluid">
+              <span class="bottom tool-tip-bottom--custom">
+                <span style="display: block;">
+                  {{'MessageChannel' | translate}}
+                </span>
+                Telegram
+                <i></i>
+              </span>
+            </span>
+            <!-- ---------------------------------------- -->
+            <!-- Channel - WhatsApp -->
+            <!-- ---------------------------------------- -->
+            <span *ngIf="request?.channel?.name === 'whatsapp'" class="tool_tip">
+              <img style="width: 18px;height: 18px;" src="assets/img/channel_icons/WhatsApp-Logo-512x512.png"
+                class="img-fluid">
+              <span class="bottom tool-tip-bottom--custom">
+                <span style="display: block;">
+                  {{'MessageChannel' | translate}}
+                </span>
+                WhatsApp
+                <i></i>
+              </span>
+            </span>
 
+            <!-- ---------------------------------------- -->
+            <!-- Channel - Messenger -->
+            <!-- ---------------------------------------- -->
+            <span *ngIf="request?.channel?.name === 'messenger'" class="tool_tip">
+              <img style="width: 18px;height: 18px;"
+                src="assets/img/channel_icons/512px-Facebook_Messenger_logo_2020.png" class="img-fluid">
+
+              <span class="bottom tool-tip-bottom--custom">
+                <span style="display: block;">
+                  {{'MessageChannel' | translate}}
+                </span>
+                Messenger
+                <i></i>
+              </span>
+            </span>
+
+            <!-- ---------------------------------------- -->
+            <!-- Channel - Email -->
+            <!-- ---------------------------------------- -->
+            <span *ngIf="request?.channel?.name === 'email'" class="tool_tip">
+              <img style="width: 18px;height: 18px;" src="assets/img/channel_icons/516px-mail-icon.png"
+                class="img-fluid">
+
+              <span class="bottom tool-tip-bottom--custom">
+                <span style="display: block;">
+                  {{'MessageChannel' | translate}}
+                </span>
+                Email
+                <i></i>
+              </span>
+            </span>
           </td>
 
           <!-- ------ ====== REQUESTER (in UNSERVED)====== ------ -->
@@ -476,7 +542,8 @@
                   d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z">
                 </path>
               </svg>
-              <span style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px; left: -16px;" class="top">
+              <span style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px; left: -16px;"
+                class="top">
                 <span style="text-transform: capitalize;"> {{ 'RequestMsgsPage.Enter' | translate }} </span>
                 <i style="left: 54%;"></i>
               </span>
