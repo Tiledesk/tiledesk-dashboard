@@ -1804,5 +1804,8 @@
 	"DoYouWantToHandoffToHumanAgentDuringAChatbotConversation":"Möchten Sie während eines Chatbot-Gesprächs an den menschlichen Agenten übergeben?",
 	"SimplyReplyAgentOnTheLastResponseLine": "Antworten Sie einfach '\\agent' in der letzten Antwortzeile",
 	"HereHowToHandoffToTheHumanAgent":"Hier erfahren Sie, wie Sie an den menschlichen Agenten übergeben",
-	"MessageChannel":"Kanal"
+	"MessageChannel":"Kanal",
+	"AdvancedSearch":"Erweiterte suche",
+	"Refresh":"Aktualisierung"
+	
 }

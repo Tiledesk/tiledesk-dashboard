@@ -1805,6 +1805,8 @@
     "DoYouWantToHandoffToHumanAgentDuringAChatbotConversation":"Do you want to handoff to human agent during a chatbot conversation?",
     "SimplyReplyAgentOnTheLastResponseLine": "Simply reply '\\agent' on the last response line",
     "HereHowToHandoffToTheHumanAgent":"Here's how to handoff to the human agent",
-    "MessageChannel":"Channel"
+    "MessageChannel":"Channel",
+    "AdvancedSearch":"Advanced search",
+    "Refresh":"Refresh"
     
 }
