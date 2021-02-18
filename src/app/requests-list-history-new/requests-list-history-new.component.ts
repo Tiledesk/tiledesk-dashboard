@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { Request } from '../models/request-model';
 import { Router } from '@angular/router';
 import { AuthService } from '../core/auth.service';
@@ -133,8 +133,12 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
   pleaseTryAgain: string;
   CURRENT_USER_ROLE: string;
   IS_HERE_FOR_HISTORY: boolean;
+
   request_selected = [];
   allChecked = false;
+  selectAllCheckbox = false;
+  indeterminateStatus = true;
+  showIndeterminate = false;
 
   public myDatePickerOptions: IMyDpOptions = {
     // other options...
@@ -221,7 +225,6 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
     this.detectMobile();
 
   }
-
 
   getTranslations() {
     this.translate.get('DeleteRequestForever')
@@ -1433,55 +1436,151 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
     this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/messages']);
   }
 
-  selectAll() {
-    this.allChecked = !this.allChecked;
-    console.log("All Checked Status: ", this.allChecked);
 
-    if (this.allChecked == true) {
-      // select all
+  // selectAll() {
+  //   console.log("*+*+ Starting All Checked Status: ", this.allChecked);
+  //   console.log("*+*+ Starting Select all checbok Status: ", this.selectAllCheckbox);
+  //   if (this.selectAllCheckbox == false) {
+  //     this.selectAllCheckbox = true;
+  //     this.allChecked = true;
+  //     console.log("*+*+ All Checked Status: ", this.allChecked);
+  //     console.log("*+*+ Select all checbok Status: ", this.selectAllCheckbox);
+
+  //     for (let request of this.requestList) {
+  //       const index = this.request_selected.indexOf(request.request_id);
+  //       if (index > -1) {
+  //         console.log("*+*+ Già presente")
+  //       } else {
+  //         console.log("*+*+ Request Selected: ", request.request_id);
+  //         this.request_selected.push(request.request_id);
+  //       }
+  //     }
+  //   } else {
+  //     this.request_selected = [];
+  //     this.selectAllCheckbox = false;
+  //     this.allChecked = false;
+  //     console.log("*+*+ All Checked Status: ", this.allChecked);
+  //     console.log("*+*+ Select all checbok Status: ", this.selectAllCheckbox);
+  //   }
+  //   console.log('*+*+ REQUEST-LIST-HISTORY-NEW - ARRAY OF SELECTED REQUEST ', this.request_selected);
+  //   console.log('*+*+ REQUEST-LIST-HISTORY-NEW - ARRAY OF SELECTED REQUEST lenght ', this.request_selected.length);
+
+  // }
+
+  selectAll(e) {
+    console.log("**++ Is checked: ", e.target.checked)
+    var checkbox = <HTMLInputElement>document.getElementById("allCheckbox");
+    console.log("**++ Indeterminate: ", checkbox.indeterminate);
+
+    if (e.target.checked == true) {
+      this.allChecked = true;
       for (let request of this.requestList) {
         const index = this.request_selected.indexOf(request.request_id);
         if (index > -1) {
-          console.log("Già presente")
+          console.log("**++ Già presente")
         } else {
-          console.log("Request Selected: ", request.request_id);
+          console.log("*+*+ Request Selected: ", request.request_id);
           this.request_selected.push(request.request_id);
         }
       }
-
+      console.log('**++ REQUEST-LIST-HISTORY-NEW - ARRAY OF SELECTED REQUEST ', this.request_selected);
+      console.log('**++ REQUEST-LIST-HISTORY-NEW - ARRAY OF SELECTED REQUEST lenght ', this.request_selected.length);
     } else {
-      for (let request of this.requestList) {
-        const index = this.request_selected.indexOf(request.request_id);
-
-        if (index > -1) {
-          console.log("INDEX: ", index);
-          this.request_selected.splice(index, 1);
-        } else {
-          console.log("Non era già presente");
-        }
-      }
+      this.allChecked = false;
+      this.request_selected = [];
+      console.log('**++ REQUEST-LIST-HISTORY-NEW - ARRAY OF SELECTED REQUEST ', this.request_selected);
+      console.log('**++ REQUEST-LIST-HISTORY-NEW - ARRAY OF SELECTED REQUEST lenght ', this.request_selected.length);
     }
 
-    console.log('REQUEST-LIST-HISTORY-NEW - ARRAY OF SELECTED REQUEST ', this.request_selected);
-    console.log('REQUEST-LIST-HISTORY-NEW - ARRAY OF SELECTED REQUEST lenght ', this.request_selected.length);
+
+    // if (checkbox.indeterminate == true) {
+    //   console.log("**++ Azzero l'array delle richieste selezionate")
+    //   checkbox.indeterminate = false;
+    //   this.allChecked = false;
+    //   this.request_selected = [];
+    //   console.log('**++ REQUEST-LIST-HISTORY-NEW - ARRAY OF SELECTED REQUEST ', this.request_selected);
+    //   console.log('**++ REQUEST-LIST-HISTORY-NEW - ARRAY OF SELECTED REQUEST lenght ', this.request_selected.length);
+    // } else {
+    //   if (e.target.checked == true) {
+    //     this.allChecked = true;
+    //     for (let request of this.requestList) {
+    //       const index = this.request_selected.indexOf(request.request_id);
+    //       if (index > -1) {
+    //         console.log("**++ Già presente")
+    //       } else {
+    //         console.log("*+*+ Request Selected: ", request.request_id);
+    //         this.request_selected.push(request.request_id);
+    //       }
+    //     }
+    //     console.log('**++ REQUEST-LIST-HISTORY-NEW - ARRAY OF SELECTED REQUEST ', this.request_selected);
+    //     console.log('**++ REQUEST-LIST-HISTORY-NEW - ARRAY OF SELECTED REQUEST lenght ', this.request_selected.length);
+    //   } else {
+    //     this.allChecked = false;
+    //     this.request_selected = [];
+    //     console.log('**++ REQUEST-LIST-HISTORY-NEW - ARRAY OF SELECTED REQUEST ', this.request_selected);
+    //     console.log('**++ REQUEST-LIST-HISTORY-NEW - ARRAY OF SELECTED REQUEST lenght ', this.request_selected.length);
+    //   }
+    // }
 
   }
 
-
   change(requestId) {
+    var checkbox = <HTMLInputElement>document.getElementById("allCheckbox");
+    console.log("**++  Indeterminate: ", checkbox.indeterminate);
+
+    console.log('**++ SELECTED REQUEST ID: ', requestId);
+    const index = this.request_selected.indexOf(requestId);
+    console.log("**++ INDEX: ", index);
+
+    if (index > -1) {
+      this.request_selected.splice(index, 1);
+      checkbox.indeterminate = true;
+      console.log("**++  Indeterminate: ", checkbox.indeterminate);
+      if (this.request_selected.length == 0) {
+        checkbox.indeterminate = false;
+        console.log("**++ Indeterminate: ", checkbox.indeterminate);
+        this.allChecked = false;
+      }
+    } else {
+      this.request_selected.push(requestId);
+      checkbox.indeterminate = true;
+      console.log("**++  Indeterminate: ", checkbox.indeterminate);
+      if (this.request_selected.length == this.requestList.length) {
+        checkbox.indeterminate = false;
+        console.log("**++  Indeterminate: ", checkbox.indeterminate);
+        this.allChecked = true;
+      }
+    }
+
+    console.log('**++ REQUEST-LIST-HISTORY-NEW - ARRAY OF SELECTED REQUEST ', this.request_selected);
+    console.log('**++ REQUEST-LIST-HISTORY-NEW - ARRAY OF SELECTED REQUEST lenght ', this.request_selected.length);
+
+  }
+
+  change2(requestId) {
     console.log('SELECTED REQUEST ID: ', requestId);
     const index = this.request_selected.indexOf(requestId);
     console.log("INDEX: ", index);
 
     if (index > -1) {
       this.request_selected.splice(index, 1);
+      var checkbox = document.getElementById("allCheckbox") as HTMLInputElement;
+      checkbox.indeterminate = true;
+      console.log("*** CB3: ", checkbox.indeterminate)
+
       if (this.request_selected.length == 0) {
         this.allChecked = false;
+        checkbox.indeterminate = false;
       }
+
     } else {
       this.request_selected.push(requestId);
+      var checkbox = document.getElementById("allCheckbox") as HTMLInputElement;
+      checkbox.indeterminate = true;
+      console.log("*** CB2: ", checkbox.indeterminate)
       if (this.request_selected.length == this.requestList.length) {
         this.allChecked = true;
+        checkbox.indeterminate = false;
       }
     }
 
@@ -1526,6 +1625,7 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
             swal(this.done_msg, this.selectedRequestsWasSuccessfullyDeleted, {
               icon: "success",
             }).then((okpressed) => {
+              this.allChecked = false;
               this.getRequests();
             })
           }

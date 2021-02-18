@@ -13,7 +13,6 @@
 </div>
 
 
-
 <div class="main-content" style="padding-top:0px">
   <div class="container-fluid">
 
@@ -383,24 +382,52 @@
           // Table
           // ---------------------------------------------------------------- -->
         <div *ngIf="!showSpinner" class="card-content table-responsive">
-          
+
           <!-- OPTION TABLE -->
           <table class="table">
             <thead class="text">
               <tr>
 
-                <th class="table-header-option">
-                  <div class="checkbox">
+                <th class="table-header-option" style="text-align: center;">
+
+                  <!-- <p>
+                    <input type="checkbox" id="c1" name="cb">
+                    <label for="c1">Option 01</label>
+                  </p> -->
+
+                  <!-- <div class="checkbox">  -->
+                  <label for="allCheckbox">
+                    <input id="allCheckbox" [disabled]="project_user?.is_group_member" [checked]="allChecked"
+                      type="checkbox" class="form-check-input"
+                      style="cursor: pointer; width: 20px; height: 20px; margin-top: 10px;" (click)="selectAll($event)">
+                  </label>
+                  <!-- </div> -->
+
+                  <!-- <div class="checkbox"> 
                     <label>
                       <input [disabled]="project_user?.is_group_member" [checked]="allChecked"
                         type="checkbox" class="form-check-input" style="width: 16px;height: 16px;"
                         (click)="selectAll()">
                     </label>
-                  </div>
+                  </div> -->
+
+
+
+                  <!-- <label>
+                    <input id="allCheckbox" type="checkbox" checked="checked" /> asd
+                  </label> -->
+                  <!-- <div *ngIf="request_selected.length !== requestList.length" class="checkbox custom-checkbox">
+                    <label>
+                      <input [disabled]="project_user?.is_group_member" [checked]="allChecked"
+                        type="checkbox" class="form-check-input" style="width: 16px;height: 16px; background-color: red;"
+                        (click)="deselectAll()">
+                    </label>
+                  </div> -->
+
                 </th>
 
                 <th class="table-header-option" style="text-align: center;" (click)="search()">
-                  
+
                   <span class="material-icons" style="vertical-align:middle; cursor: pointer;">
                     refresh
                   </span>
@@ -408,8 +435,9 @@
                 </th>
 
                 <th class="table-header-option" style="text-align: center;" (click)="deleteSelected()">
-                  
-                  <span *ngIf="request_selected.length > 0" rel="tooltip" class="material-icons" style="vertical-align:middle; cursor: pointer;">
+
+                  <span *ngIf="request_selected.length > 0" rel="tooltip" class="material-icons"
+                    style="vertical-align:middle; cursor: pointer;">
                     delete_forever
                   </span>
 
@@ -419,14 +447,14 @@
 
                     <i class="material-icons">delete_forever</i> -->
 
-                    <!-- // tooltip text 'Delete' -->
-                    <!-- <span style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px;" class="top">
+                  <!-- // tooltip text 'Delete' -->
+                  <!-- <span style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px;" class="top">
                       <span style="text-transform: capitalize;"> {{ 'Delete' | translate }} </span>
                       <i></i>
                     </span>
 
                   </button> -->
-                  
+
                 </th>
 
                 <!-- ===== REQUEST FIRST TEXT ===== -->
@@ -624,10 +652,14 @@
                   <!-- *ngIf="!project_user?.is_group_member" -->
                   <div class="checkbox">
                     <label>
-                      <input type="checkbox" class="form-check-input" [checked]="allChecked" style="width: 16px;height: 16px;"
-                        value="{{ request.request_id }}" (click)="change(request.request_id)">
+                      <input type="checkbox" class="form-check-input" [checked]="allChecked"
+                        style="width: 16px;height: 16px;" value="{{ request.request_id }}"
+                        (click)="change(request.request_id)">
                     </label>
                   </div>
+                  <!-- <mat-checkbox [(ngModel)]="subtask.completed" (ngModelChange)="updateAllComplete()">
+                    {{subtask.name}}
+                  </mat-checkbox> -->
                 </td>
 
 
@@ -1182,8 +1214,8 @@
 
 
                       <span *ngIf="agent.is_bot === true">
-                        <span (click)="goToBotProfile(agent?._id, agent?.type)" [ngClass]="{'disable-link-if-is-agent' : ROLE_IS_AGENT}"
-                          class="bot---avatar tool_tip">
+                        <span (click)="goToBotProfile(agent?._id, agent?.type)"
+                          [ngClass]="{'disable-link-if-is-agent' : ROLE_IS_AGENT}" class="bot---avatar tool_tip">
                           <img class="user-img ws-requests-list-servedby-avatar"
                             src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fphoto.jpg?alt=media"
                             onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />

@@ -615,9 +615,13 @@
                   </td>
 
                   <td *ngIf="isVisibleAnalytics" style="white-space: normal !important; word-wrap: break-word;font-size:13px; font-weight:400; word-break: break-all;">
-                    <span class="tooltipx">
+                    <span *ngIf="faq.message_count" class="tooltipx">
                       {{ faq?.message_count }}
-                      <span class="tooltiptext">Number of replies: <br> 13 </span>
+                      <span class="tooltiptext">Number of replies: <br> {{ faq?.message_count }} </span>
+                    </span>
+                    <span  *ngIf="!faq.message_count" class="tooltipx">
+                        0
+                      <span class="tooltiptext">Number of replies: <br> 0 </span>
                     </span>
                   </td>
 

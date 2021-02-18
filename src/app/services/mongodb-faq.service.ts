@@ -287,6 +287,7 @@ export class MongodbFaqService {
   }
 
   getRepliesCount(botId) {
+    console.log("REPLIES COUNT FOR BOT: ", botId);
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': this.TOKEN

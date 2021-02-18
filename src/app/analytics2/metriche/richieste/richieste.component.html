@@ -58,7 +58,7 @@
                 {{ 'Analytics.FilterReport' | translate }}
               </label>
               <!-- margin-bottom: 20px; -->
-              <div class="col-sm-12" style="margin-bottom: 6px;">
+              <div class="col-sm-12" style="margin-bottom: 6px; text-align: left;">
                 <ng-select class="custom" name="days" [(ngModel)]="selectedDaysId" [clearable]="false"
                   (change)="daysSelect(selectedDaysId, $event)">
                   <ng-option [value]="7">{{ 'Analytics.Last' | translate}} 7 {{ 'Analytics.Days' | translate}}
@@ -103,7 +103,7 @@
                 {{ 'HistoryPage.FilterByDepartment' | translate }} :
               </label>
               <!-- margin-bottom: 20px; -->
-              <div class="col-sm-12" style="margin-bottom: 6px;">
+              <div class="col-sm-12" style="margin-bottom: 6px; text-align: left;">
                 <ng-select class="custom" name="dept" [(ngModel)]="selectedDeptId" [clearable]="false"
                   (change)="depSelected(selectedDeptId)">
                   <ng-option [value]="''">{{ 'HistoryPage.AllDepts' | translate }}</ng-option>
@@ -123,7 +123,7 @@
               <label class="col-sm-12" style="text-align: left; color:black;">
                 {{ "Agent" | translate }}
               </label>
-              <div class="col-sm-12" style="margin-bottom: 6px;">
+              <div class="col-sm-12" style="margin-bottom: 6px; text-align: left;">
                 <ng-select class="custom" name="agent" [(ngModel)]="selectedAgentId" [clearable]="false"
                   (change)="agentSelected(selectedAgentId)">
                   <ng-option [value]="''">Tutto</ng-option>

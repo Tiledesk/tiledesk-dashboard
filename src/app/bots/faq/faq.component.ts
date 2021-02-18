@@ -684,25 +684,25 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
       if (faq) {
         this.faq_lenght = faq.length
-      }
-
-      // in aggiornamento
-      this.mongodbFaqService.getRepliesCount(this.faqKb_id).subscribe((res: any) => {
-        console.log("REPLIES COUNT RESPONSE: ", res);
-        
-        for (let fq of this.faq) {
-          console.log("FQ id: ", fq._id)
-          let reply: any;
-          for (reply of res) {
-            console.log("REPLY id: ", reply._id._answerid)
-            if (fq._id == reply._id._answerid) {
-              console.log("RES count: ", reply.count);
-              fq.message_count = reply.count;
-              console.log("MESSAGE COUNT: ", fq.message_count)
+        // in aggiornamento
+        this.mongodbFaqService.getRepliesCount(this.id_faq_kb).subscribe((res: any) => {
+          console.log("REPLIES COUNT RESPONSE: ", res);
+          
+          for (let fq of this.faq) {
+            console.log("FQ id: ", fq._id)
+            let reply: any;
+            for (reply of res) {
+              console.log("REPLY id: ", reply._id._answerid)
+              if (fq._id == reply._id._answerid) {
+                console.log("RES count: ", reply.count);
+                fq.message_count = reply.count;
+                console.log("MESSAGE COUNT: ", fq.message_count)
+              }
             }
           }
-        }
-      })
+        })
+      }
+
 
     }, (error) => {
       this.showSpinner = false;
