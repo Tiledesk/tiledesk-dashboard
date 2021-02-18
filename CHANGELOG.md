@@ -4,6 +4,11 @@
 ### 2.1.24
 - Renames the title of the page 'Add teammate' in 'Invite teammate'
 - Adds icons to the conversations list and to conversation details to identify the channels from which messages are sent (whatsapp, telegram, messenger, email)
+- Fixes the bug: in the history page the checkbox "select all" remains selected even if all the underlying checkboxes are not selected
+- Fixes the bug: on the Analytics> Conversations page, the dropdown list is not aligned to the left
+- Fixes the bug: in the detail page of the "Resolution" type bots, the count of how many times an answer is used is not always displayed
+- Add tooltips and hover effect to icon buttons on the conversation history page
+- Adds, on the conversation history page, the ability to perform a search by pressing the enter key on the keyboard
 
 ### 2.1.23
 - Adds, in conversations list page, an "image skeleton spinner" to the project's teammates list and sorts teammates based on availability
