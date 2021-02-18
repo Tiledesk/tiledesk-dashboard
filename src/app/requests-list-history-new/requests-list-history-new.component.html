@@ -104,28 +104,44 @@
               [ngClass]="{'full-text-search-full-width' : showAdvancedSearchOption}">
               <!-- // SEARCH FULL-TEXT BTN -->
               <span class="input-group-btn" style="padding-right: 2px;">
-                <button class="custom-input-group---btn" type="submit">
+                <button class="custom-input-group---btn tool_tip" type="submit">
                   <i class="fa fa-search fa-search-btn" (click)="search()" style="color:grey; font-size: 18px;"></i>
+                  <span class="bottom" style="min-width: fit-content; padding: 5px 10px;border-radius: 4px;">
+                    {{ 'Search' | translate}}
+                    <i></i>
+                  </span>
                 </button>
               </span>
 
               <input name="fullText" [(ngModel)]="fullText" (ngModelChange)="fulltextChange($event)" autocomplete="off"
-                class="search-field" placeholder="{{ 'HistoryPage.ContainsTheWords' | translate }}">
+                class="search-field" placeholder="{{ 'HistoryPage.ContainsTheWords' | translate }}"
+                (keypress)="searchOnEnterPressed($event)">
 
               <!-- // CLEAR SEARCH FULL-TEXT BTN -->
               <span *ngIf="fullText?.length > 0 && showAdvancedSearchOption === false" class="input-group-btn"
                 style="padding-right: 2px;">
-                <button class="custom-input-group---btn" type="button">
+                <button class="custom-input-group---btn tool_tip" type="button">
                   <i class="fa fa-times fa-clear-search-btn" (click)="clearFullText()"
                     style="color:grey; font-size: 18px;"></i>
+
+                  <span class="bottom" style="min-width: fit-content; padding: 5px 10px;border-radius: 4px;">
+                    {{ 'HistoryPage.ClearSearch' | translate }}
+                    <i></i>
+                  </span>
                 </button>
               </span>
 
               <!-- // OPEN ADVANCED OPTION BTN -->
               <span class="input-group-btn" style="padding-left: 2px;">
-                <button class="custom-input-group---btn" type="button">
+                <button class="custom-input-group---btn tool_tip" type="button">
                   <i class="fa fa-caret-down fa-advanced-option-btn" (click)="toggle()"
                     style="color:grey; font-size: 18px;"></i>
+
+                  <span class="bottom" style="min-width: fit-content; padding: 5px 10px;border-radius: 4px;">
+                    {{ 'AdvancedSearch' | translate }}
+                    <i></i>
+                  </span>
+
                 </button>
               </span>
             </div><!-- /input-group -->
@@ -280,8 +296,8 @@
             <span class="msg-alert">
               <!-- History is only available for the past 14 days. Renew your subscription for unlimited chat history -->
               {{ 'HistoryPage.HistoryIsOnlyAvailableForThePast14Days' | translate }}.
-              <span style="color: #039be5; cursor:pointer"
-                (click)="openModalSubsExpiredOrGoToPricing()">{{ "Pricing.UpgradeYourPlan" | translate }} </span>
+              <span style="color: #039be5; cursor:pointer" (click)="openModalSubsExpiredOrGoToPricing()">{{
+                "Pricing.UpgradeYourPlan" | translate }} </span>
               {{ 'HistoryPage.ForUnlimitedChatHistory' | translate }}
             </span>
 
@@ -383,12 +399,12 @@
           // ---------------------------------------------------------------- -->
         <div *ngIf="!showSpinner" class="card-content table-responsive">
 
-          <!-- OPTION TABLE -->
+          <!-- OPTION TABLE --> 
           <table class="table">
             <thead class="text">
               <tr>
 
-                <th class="table-header-option" style="text-align: center;">
+                <th class="table-header-option" style="text-align: center; width: 25px;">
 
                   <!-- <p>
                     <input type="checkbox" id="c1" name="cb">
@@ -396,11 +412,14 @@
                   </p> -->
 
                   <!-- <div class="checkbox">  -->
-                  <label for="allCheckbox">
-                    <input id="allCheckbox" [disabled]="project_user?.is_group_member" [checked]="allChecked"
-                      type="checkbox" class="form-check-input"
-                      style="cursor: pointer; width: 20px; height: 20px; margin-top: 10px;" (click)="selectAll($event)">
-                  </label>
+                  <div class="checkbox-wpr" *ngIf="CURRENT_USER_ROLE === 'owner'">
+                    <label for="allCheckbox">
+                      <input id="allCheckbox" [disabled]="project_user?.is_group_member" [checked]="allChecked"
+                        type="checkbox" class="form-check-input"
+                        style="cursor: pointer; width: 20px; height: 20px;"
+                        (click)="selectAll($event)">
+                    </label>
+                  </div>
                   <!-- </div> -->
 
                   <!-- <div class="checkbox"> 
@@ -426,20 +445,38 @@
 
                 </th>
 
-                <th class="table-header-option" style="text-align: center;" (click)="search()">
-
-                  <span class="material-icons" style="vertical-align:middle; cursor: pointer;">
-                    refresh
-                  </span>
-
+                <th class="table-header-option" style="text-align: center" (click)="search()">
+                  <div class="refresh-icon-wpr" [ngClass]="{'not_is_owner': CURRENT_USER_ROLE !== 'owner'}">
+                    <button class="custom-input-group---btn tool_tip" type="button" style="height: 37px;">
+                      <span class="material-icons refresh-page-icon" style="vertical-align:middle; cursor: pointer;position: relative;
+                    top: 1px; color:grey;">
+                        refresh
+                      </span>
+                      <span class="bottom" style="min-width: fit-content; padding: 5px 10px;border-radius: 4px;">
+                        {{ 'Refresh' | translate }}
+                       
+                        <i></i>
+                      </span>
+                    </button>
+                  </div>
                 </th>
 
                 <th class="table-header-option" style="text-align: center;" (click)="deleteSelected()">
-
-                  <span *ngIf="request_selected.length > 0" rel="tooltip" class="material-icons"
-                    style="vertical-align:middle; cursor: pointer;">
-                    delete_forever
-                  </span>
+                  <!--  -->
+                  <div *ngIf="request_selected.length > 0 && CURRENT_USER_ROLE === 'owner'" class="delete-selected-wpr">
+                    <button class="custom-input-group---btn tool_tip" type="button" style="height: 37px;">
+                      <!-- [ngClass]="{'is_visible-delete-selected': request_selected.length > 0}" -->
+                      <span
+                        class="material-icons delete-forever-icon" style="vertical-align:middle; cursor: pointer; color:grey;">
+                        delete_forever
+                      </span>
+                      <span class="bottom" style="min-width: fit-content; padding: 5px 10px;border-radius: 4px;">
+                        {{ 'Delete' | translate }}
+                        
+                        <i></i>
+                      </span>
+                    </button>
+                  </div>
 
 
                   <!-- <button type="button" class="btn btn-danger btn-simple btn-xs tool_tip"
@@ -541,7 +578,7 @@
                   </div> -->
                 </th>
 
-                <th class="table-header-option" style="text-align: center;" (click)="search()">
+                <th class="table-header-option" style="text-align: center;" *ngIf="CURRENT_USER_ROLE === 'owner'">
                   <!-- <span class="material-icons" style="vertical-align:middle; color: #1877f2; cursor: pointer;">
                     refresh
                   </span> -->
@@ -647,7 +684,7 @@
                   // ------------------------------
                   // CHECKBOX
                   // ------------------------------ -->
-                <td style="text-align: center;">
+                <td style="text-align: center;" *ngIf="CURRENT_USER_ROLE === 'owner'">
 
                   <!-- *ngIf="!project_user?.is_group_member" -->
                   <div class="checkbox">

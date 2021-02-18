@@ -993,6 +993,15 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
   //   // event.stopPropagation();​
   // }
 
+  searchOnEnterPressed(event: any) {
+    console.log('searchOnEnterPressed event', event);
+
+    if(event.key === "Enter"){ 
+      this.search()
+    }
+  }
+
+
   search() {
     this.pageNo = 0
 

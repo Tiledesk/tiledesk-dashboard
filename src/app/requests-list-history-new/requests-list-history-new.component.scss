@@ -22,7 +22,7 @@ input[type="text"] {
 
 //added from here
 .table-header-text {
-    width: 15%;
+  width: 15%;
 }
 
 .table-header-option {
@@ -143,6 +143,58 @@ input:-webkit-autofill:active {
   }
 }
 
+@media screen and (max-width: 739px) {
+  // .checkbox-wpr {
+  //   // position: absolute;
+  //   // // top: 20px;
+  //   // top: 0px !important;
+  //   // left: 39px;
+  // }
+
+  .refresh-icon-wpr {
+    position: absolute;
+    left: 73px;
+    // top: 28px;
+    top: 7px;
+  }
+  .delete-selected-wpr {
+    position: absolute;
+    left: 107px;
+    // top: 28px;
+    top: 8px;
+  }
+}
+
+// @media screen and (min-width: 740px) {
+
+// }
+
+.checkbox-wpr {
+  position: absolute;
+  top: 3px;
+  left: 39px;
+}
+
+.refresh-icon-wpr {
+  position: absolute;
+  left: 77px;
+  top: -3px;
+}
+
+.delete-selected-wpr {
+  position: absolute;
+  left: 123px;
+  top: -2px;
+}
+
+.not_is_owner {
+  left: 33px;
+}
+
+.is_visible-delete-selected {
+  opacity: 1 !important;
+}
+
 // PLACEHOLDER CUSTOM FONT-SIZE
 ::placeholder {
   /* Chrome, Firefox, Opera, Safari 10.1+ */
@@ -256,7 +308,6 @@ p.member:hover {
   top: 4px;
 }
 
-
 .ws-requests-list-servedby-avatar {
   vertical-align: middle;
   width: 30px;
@@ -323,7 +374,6 @@ p.member:hover {
   display: block;
   margin-left: 34px;
   margin-top: -10px;
-  
 }
 
 .requester-verified-email {
@@ -420,6 +470,29 @@ p.member:hover {
   background: transparent;
   border: none;
   border-radius: 50%;
+}
+
+.custom-input-group---btn:hover {
+  background-color: rgba(60, 64, 67, 0.08);
+  -webkit-transition: background-color 300ms linear;
+  -ms-transition: background-color 300ms linear;
+  transition: background-color 300ms linear;
+
+  .fa-search-btn {
+    color: black !important;
+  }
+  .fa-advanced-option-btn {
+    color: black !important;
+  }
+  .fa-clear-search-btn {
+    color: black !important;
+  }
+  .refresh-page-icon {
+    color: black !important;
+  }
+  .delete-forever-icon {
+    color: black !important;
+  }
 }
 
 .custom-input-group---btn:active {
@@ -629,7 +702,7 @@ p.member:hover {
 .applied-filter-title {
   -webkit-flex-shrink: 0;
   flex-shrink: 0;
- 
+
   color: #353f45;
   padding: 6px 12px;
   font-family: "Google Sans", sans-serif !important;
@@ -637,5 +710,4 @@ p.member:hover {
   font-weight: 500;
   height: 32px;
   margin-right: 3px;
-
 }
