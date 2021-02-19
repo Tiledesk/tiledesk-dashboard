@@ -555,7 +555,14 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
       //   }
       // }
 
-      chatAgent += agent.firstname + ' ' + agent.lastname + stringEnd
+      if (agent.firstname && agent.lastname) {
+
+        chatAgent += agent.firstname + ' ' + agent.lastname + stringEnd
+      }
+
+      if (agent.name) {
+        chatAgent += agent.name + stringEnd
+      }
 
     });
 
