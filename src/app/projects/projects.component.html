@@ -272,7 +272,7 @@
                   {{ project?.role }}
                 </h4>
 
-                <div class="project-user-status" style="width: fit-content;"
+                <div class="project-user-status" style="width: fit-content; display: inline-block;"
                   (click)="$event.stopPropagation(); changeAvailabilityState(project?.id_project?._id, project?.ws_projct_user_available)">
 
                   <div class="project-user-status-icon"
@@ -288,6 +288,16 @@
 
                 </div>
                 <!-- class="loading"   -->
+          
+                <div class="project-user-isBusy" *ngIf="project?.ws_projct_user_isBusy === true">
+                  <span class="material-icons" style="font-size: 20px; color:#fedd00;">
+                    access_time
+                  </span>
+                  <span class="project-user-isBusyTest" style="">
+                    {{ 'Busy' | translate }}
+                  </span>
+                  <!-- <div class="isBusyClockHands">   </div> -->
+                </div>
                 <div id="{{'loading_'+ project?.id_project?._id}}" *ngIf="project?.is_selected === true">
                   <!-- Loading project data -->
                   <!-- <div class="dot-flashing-spinner-wpr"> -->
@@ -297,17 +307,6 @@
                       <div class="bounce3"></div>
                     </div>
                   <!-- </div> -->
-                </div>
-
-
-                <div class="project-user-isBusy" *ngIf="project?.ws_projct_user_isBusy === true">
-                  <span class="material-icons" style="font-size: 20px; color:#fedd00;">
-                    access_time
-                  </span>
-                  <span class="project-user-isBusyTest" style="">
-                    {{ 'Busy' | translate }}
-                  </span>
-                  <!-- <div class="isBusyClockHands">   </div> -->
                 </div>
 
 
