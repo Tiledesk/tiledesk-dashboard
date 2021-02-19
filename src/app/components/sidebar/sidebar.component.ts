@@ -541,7 +541,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     getUserProfileImage() {
         if (this.timeStamp) {
-            console.log('PROFILE IMAGE (USER-PROFILE IN SIDEBAR-COMP) - getUserProfileImage ', this.userProfileImageurl);
+            // console.log('PROFILE IMAGE (USER-PROFILE IN SIDEBAR-COMP) - getUserProfileImage ', this.userProfileImageurl);
             return this.userProfileImageurl + '&' + this.timeStamp;
         }
         return this.userProfileImageurl

@@ -136,7 +136,7 @@ export class UserProfileComponent implements OnInit {
 
   getUserProfileImage() {
     if (this.timeStamp) {
-      console.log('PROFILE IMAGE (USER-IMG IN USER-LOG) - getUserProfileImage ', this.userProfileImageurl);
+      // console.log('PROFILE IMAGE (USER-IMG IN USER-LOG) - getUserProfileImage ', this.userProfileImageurl);
       // setTimeout(() => {
       return this.userProfileImageurl + '&' + this.timeStamp;
       // }, 200);
