@@ -27,6 +27,8 @@ import { takeUntil } from 'rxjs/operators'
 import { browserRefresh } from '../../app.component';
 import * as uuid from 'uuid';
 import { Chart } from 'chart.js';
+import { ContactsService } from '../../services/contacts.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'appdashboard-ws-requests-list',
@@ -114,6 +116,11 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   display_teammates_in_scroll_div = false;
   showRealTeammates = false
 
+  projectUserAndLeadsArray = []
+  cars: any
+  selectedRequester: any;
+  selectedCar: number;
+
   /**
    * Constructor
    * 
@@ -137,7 +144,8 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     public faqKbService: FaqKbService,
     public appConfigService: AppConfigService,
     private departmentService: DepartmentService,
-    public notify: NotifyService
+    public notify: NotifyService,
+    public contactsService: ContactsService
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify);
     this.zone = new NgZone({ enableLongStackTrace: false });
@@ -174,12 +182,10 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
     this.getChatUrl();
     this.getTestSiteUrl();
-
+    this.getProjectUsersAndContacts();
   }
 
   getStorageBucketFromUserServiceSubscription() {
-
-
     this.usersService.storageBucket$
       .pipe(
         takeUntil(this.unsubscribe$)
@@ -1480,6 +1486,72 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
   }
 
+
+  getProjectUsersAndContacts() {
+    const projectUsers = this.usersService.getProjectUsersByProjectId();
+    const leads = this.contactsService.getLeadsActive();
+
+    Observable
+      .zip(projectUsers, leads, (_projectUsers: any, _leads: any) => ({ _projectUsers, _leads }))
+      .subscribe(pair => {
+        console.log('Ws-REQUESTS-LIST GET P-USERS-&-LEADS - PROJECT USERS : ', pair._projectUsers);
+        console.log('Ws-REQUESTS-LIST - GET P-USERS-&-LEADS - LEADS RES: ', pair._leads);
+        console.log('Ws-REQUESTS-LIST - GET P-USERS-&-LEADS - LEADS: ', pair._leads['leads']);
+
+        // projectUserAndLeadsArray
+
+        if (pair && pair._projectUsers) {
+          pair._projectUsers.forEach(p_user => {
+            this.projectUserAndLeadsArray.push({ id: p_user.id_user._id, name: p_user.id_user.firstname + ' ' + p_user.id_user.lastname });
+
+          });
+        }
+
+        if (pair && pair._leads['leads']) {
+          pair._leads.leads.forEach(lead => {
+            this.projectUserAndLeadsArray.push({ id: lead.lead_id, name: lead.fullname });
+          });
+        }
+
+        console.log('Ws-REQUESTS-LIST - GET P-USERS-&-LEADS - PROJECT-USER-&-LEAD-ARRAY: ', this.projectUserAndLeadsArray);
+
+        this.projectUserAndLeadsArray = this.projectUserAndLeadsArray.slice(0);
+
+
+       
+
+        this.cars = [
+          { id: '1', name: 'Volvo' },
+          { id: '2', name: 'Saab' },
+          { id: '3', name: 'Opel' },
+          { id: '4', name: 'Audi' },
+        ];
+      }, error => {
+
+        console.log('Ws-REQUESTS-LIST - GET P-USERS-&-LEADS - ERROR: ', error);
+      }, () => {
+
+        console.log('Ws-REQUESTS-LIST - GET P-USERS-&-LEADS - COMPLETE');
+      });
+
+  }
+
+  customSearchFn(term: string, item: any) {
+    console.log('Ws-REQUESTS-LIST - GET P-USERS-&-LEADS - customSearchFn term : ', term);
+   
+    term = term.toLocaleLowerCase();
+    console.log('Ws-REQUESTS-LIST - GET P-USERS-&-LEADS - customSearchFn item : ', item);
+    
+    return item.id.toLocaleLowerCase().indexOf(term) > -1 || item.name.toLocaleLowerCase().indexOf(term) > -1;
+   }
+
+  selectRequester() {
+    console.log('Ws-REQUESTS-LIST - SELECT REQUESTER ', this.selectedRequester);
+  }
+
+  searchForUserAndLeads(event) {
+    console.log('Ws-REQUESTS-LIST - SELECT REQUESTER searchForUserAndLeads event', event);
+  }
 
   createNewInternalRequest() {
     this.hasClickedCreateNewInternalRequest = true
