@@ -1802,6 +1802,7 @@
     "HereHowToHandoffToTheHumanAgent":"Ecco come passare la conversazione all'agente umano",
     "MessageChannel":"Canale",
     "AdvancedSearch":"Ricerca avanzata",
-    "Refresh":"Aggiorna"
+    "Refresh":"Aggiorna",
+    "AllConversationsaveBeenArchived":"Tutte le conversazioni sono state archiviate"
     
 }
