@@ -1,6 +1,10 @@
 
 # tiledesk-dashboard
 
+### 2.1.25
+- Adds, on the non-real-time conversations page, the ability to archive multiple conversations at the same time
+- Fixes the bug: on the non-realtime conversations page, the applied filter is not displayed if the assigned conversations or the unassigned conversations are selected
+
 ### 2.1.24
 - Renames the title of the page 'Add teammate' in 'Invite teammate'
 - Adds icons to the conversations list and to conversation details to identify the channels from which messages are sent (whatsapp, telegram, messenger, email)
