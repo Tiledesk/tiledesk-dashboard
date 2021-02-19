@@ -181,6 +181,7 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
   archivingRequestErrorNoticationMsg: string;
   requestHasBeenArchivedNoticationMsg_part1: string;
   requestHasBeenArchivedNoticationMsg_part2: string;
+  allConversationsaveBeenArchivedMsg: string;
   ROLE_IS_AGENT: boolean;
 
   constructor(
@@ -250,6 +251,16 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
     this.translateArchivingRequestMsg();
     this.translateRequestHasBeenArchivedNoticationMsg_part1();
     this.translateRequestHasBeenArchivedNoticationMsg_part2();
+
+    this.translateAllConversationsHaveBeenArchived()
+  }
+
+  translateAllConversationsHaveBeenArchived() {
+    this.translate.get('AllConversationsaveBeenArchived')
+      .subscribe((text: string) => {
+        this.allConversationsaveBeenArchivedMsg = text
+      })
+
   }
 
 
@@ -323,34 +334,7 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
     // });
   }
 
-  archiveRequest(request_id) {
-    this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg);
-    console.log('WS-REQUESTS-SERVED - HAS CLICKED ARCHIVE REQUEST ');
 
-
-    this.wsRequestsService.closeSupportGroup(request_id)
-      .subscribe((data: any) => {
-        console.log('WS-REQUESTS-SERVED - CLOSE SUPPORT GROUP - DATA ', data);
-      }, (err) => {
-        console.log('WS-REQUESTS-SERVED - CLOSE SUPPORT GROUP - ERROR ', err);
-
-
-        // =========== NOTIFY ERROR ===========
-        // this.notify.showNotification('An error has occurred archiving the request', 4, 'report_problem');
-        this.notify.showNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
-      }, () => {
-        // this.ngOnInit();
-        console.log('CLOSE SUPPORT GROUP - COMPLETE');
-
-        // =========== NOTIFY SUCCESS===========
-        // this.notify.showNotification(`request with id: ${this.id_request_to_archive} has been moved to History`, 2, 'done');
-        this.notify.showRequestIsArchivedNotification(this.requestHasBeenArchivedNoticationMsg_part1);
-
-        // this.onArchiveRequestCompleted()
-
-        this.getRequests();
-      });
-  }
 
 
 
@@ -360,12 +344,13 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
 
     if (currentUrl.indexOf('/all-conversations') !== -1) {
       this.IS_HERE_FOR_HISTORY = false;
-
+      console.log('!!! NEW REQUESTS HISTORY  IS_HERE_FOR_HISTORY ', this.IS_HERE_FOR_HISTORY);
       this.requests_status = 'all'
       this.getRequests();
 
     } else {
       this.IS_HERE_FOR_HISTORY = true;
+      console.log('!!! NEW REQUESTS HISTORY  IS_HERE_FOR_HISTORY ', this.IS_HERE_FOR_HISTORY);
       this.operator = '='
       this.requests_status = '1000'
       this.getRequests();
@@ -373,7 +358,6 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
   }
 
   requestsStatusSelect(request_status) {
-
     console.log('WsRequests NO-RT - requestsStatusSelect', request_status);
     if (request_status === '200') {
       this.getServedRequests();
@@ -996,7 +980,7 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
   searchOnEnterPressed(event: any) {
     console.log('searchOnEnterPressed event', event);
 
-    if(event.key === "Enter"){ 
+    if (event.key === "Enter") {
       this.search()
     }
   }
@@ -1477,9 +1461,11 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
   // }
 
   selectAll(e) {
-    console.log("**++ Is checked: ", e.target.checked)
-    var checkbox = <HTMLInputElement>document.getElementById("allCheckbox");
-    console.log("**++ Indeterminate: ", checkbox.indeterminate);
+    
+      console.log("**++ Is checked: ", e.target.checked)
+      var checkbox = <HTMLInputElement>document.getElementById("allCheckbox");
+      console.log("**++ Indeterminate: ", checkbox.indeterminate);
+   
 
     if (e.target.checked == true) {
       this.allChecked = true;
@@ -1597,6 +1583,80 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
     console.log('REQUEST-LIST-HISTORY-NEW - ARRAY OF SELECTED REQUEST lenght ', this.request_selected.length);
 
   }
+
+
+
+  archiveRequest(request_id) {
+    this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg);
+    console.log('REQUEST-LIST-HISTORY-NEW - HAS CLICKED ARCHIVE REQUEST request_id ', request_id);
+
+
+    this.wsRequestsService.closeSupportGroup(request_id)
+      .subscribe((data: any) => {
+        console.log('REQUEST-LIST-HISTORY-NEW - CLOSE SUPPORT GROUP - DATA ', data);
+      }, (err) => {
+        console.log('REQUEST-LIST-HISTORY-NEW - CLOSE SUPPORT GROUP - ERROR ', err);
+
+
+        // =========== NOTIFY ERROR ===========
+        // this.notify.showNotification('An error has occurred archiving the request', 4, 'report_problem');
+        this.notify.showNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
+      }, () => {
+        // this.ngOnInit();
+        console.log('REQUEST-LIST-HISTORY-NEW  +- CLOSE SUPPORT GROUP - COMPLETE');
+
+        // =========== NOTIFY SUCCESS===========
+        // this.notify.showNotification(`request with id: ${this.id_request_to_archive} has been moved to History`, 2, 'done');
+        this.notify.showRequestIsArchivedNotification(this.requestHasBeenArchivedNoticationMsg_part1);
+
+        // this.onArchiveRequestCompleted()
+
+        this.getRequests();
+      });
+  }
+
+
+  archiveSelected() {
+
+    console.log("REQUEST-LIST-HISTORY-NEW - ARRAY OF ARCHIVE SELECTED: ", this.request_selected);
+    console.log("REQUEST-LIST-HISTORY-NEW - ARRAY OF ARCHIVE SELECTED INITILA LENGHT : ", this.request_selected.length);
+    let count = 0;
+    const promises = [];
+
+    this.request_selected.forEach((requestid, index) => {
+      promises.push(this.wsRequestsService.archiveRequestOnPromise(requestid)
+        .then((res) => {
+
+          console.log("REQUEST-LIST-HISTORY-NEW - then res : ", res);
+
+          console.log("REQUEST-LIST-HISTORY-NEW - then res _body : ", JSON.parse(res['_body']));
+          // console.log("REQUEST-LIST-HISTORY-NEW - ARRAY OF ARCHIVE SELECTED: ", this.request_selected);
+
+          // this.request_selected.forEach(el => {
+          //   if (requestid === el.request_id ) {
+
+          //   }
+
+          // });
+          count = index + 1;
+          console.log("REQUEST-LIST-HISTORY-NEW - count: ", count)
+          this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg + count + '/' + this.request_selected.length);
+
+        }).catch((error) => {
+
+          console.log('REQUEST-LIST-HISTORY-NEW PROMISE ERROR: ', error);
+        })
+      );
+    });
+
+    Promise.all(promises).then((res) => {
+      console.log("REQUEST-LIST-HISTORY-NEW - ALL PROMISE RESOLVED", res);
+      this.notify.showAllRequestHaveBeenArchivedNotification(this.allConversationsaveBeenArchivedMsg)
+      this.allChecked = false;
+      this.getRequests();
+    });
+  }
+
 
   deleteSelected() {
     console.log("REQUEST-LIST-HISTORY-NEW - REQUESTS TO DELETE: ", this.request_selected);

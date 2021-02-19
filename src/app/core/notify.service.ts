@@ -418,6 +418,16 @@ export class NotifyService {
         '<span data-notify="message" style="display: inline; vertical-align: middle; padding-left:8px">' + msg_part1 + '</span>'
     })
   }
+ 
+  showAllRequestHaveBeenArchivedNotification(msg_part1) {
+    // tslint:disable-next-line:max-line-length
+    // this.notifyArchivingRequest.update({ 'type': 'success', 'message': '<i class="material-icons" style="vertical-align: middle;"> done </i> <span style="vertical-align: middle; display: inline-block; padding-right:5px">' + msg_part1 + request_id + msg_part2 + '</span> <span style="padding-left:28px">' + '</span>' })
+    this.notifyArchivingRequest.update({
+      'type': 'success', 'message':
+        `<span data-notify="icon" style="display: inline;"><i style="vertical-align: middle; padding: 3px;background-color: #449d48; border-radius: 50%; font-size:16px " class="material-icons">` + 'done' + '</i> </span> ' +
+        '<span data-notify="message" style="display: inline; vertical-align: middle; padding-left:8px">' + msg_part1 + '</span>'
+    })
+  }
 
   operationinprogress(msg) {
     this.notifyArchivingRequest = $.notify(msg, {
