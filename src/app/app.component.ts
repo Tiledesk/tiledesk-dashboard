@@ -100,10 +100,10 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         // ---------------------------- 
 
         // firebase.initializeApp(firebaseConfig);
-
         if (!appConfigService.getConfig().firebase || appConfigService.getConfig().firebase.apiKey === 'CHANGEIT') {
             throw new Error('firebase config is not defined. Please create your dashboard-config.json. See the Dashboard Installation Page');
         }
+
 
         // const firebase_conf = JSON.parse(appConfigService.getConfig().firebase)
         const firebase_conf = appConfigService.getConfig().firebase;
@@ -139,6 +139,9 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 browserRefresh = !router.navigated;
             }
         });
+
+
+      
     }
 
     setFavicon(brand) {
@@ -379,7 +382,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     (this.route.indexOf('/success') !== -1) ||
                     (this.route.indexOf('/create-project') !== -1) ||
                     (this.route.indexOf('/create-new-project') !== -1) ||
-                    (this.route.indexOf('/configure-widget') !== -1) || 
+                    (this.route.indexOf('/configure-widget') !== -1) ||
                     (this.route.indexOf('/install-widget') !== -1) ||
                     (this.route.indexOf('/handle-invitation') !== -1) ||
                     (this.route.indexOf('/request-for-panel') !== -1) ||
@@ -419,7 +422,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
                     const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
 
-                    if (this.IS_REQUEST_X_PANEL_ROUTE === true && !this.isMobile() ) {
+                    if (this.IS_REQUEST_X_PANEL_ROUTE === true && !this.isMobile()) {
                         let ps = new PerfectScrollbar(elemMainPanel);
                     }
 
