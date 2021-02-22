@@ -4,7 +4,8 @@
 ### 2.1.26
 - Fixes the bug: on the conversations page, the 'You are about to join this chat ...' confirmation window doesn't handle the case when the conversation is assigned to a bot
 - Fixes the bug: on the Recent Projects page, the icon indicating that the user is busy appears too low in the card if the project name goes on a second line
-
+- Adds, when creating an internal request, the ability to select a requester and the ability to create a new one (in progress)
+- Connect the dashboard, when is deployed with the configuration of the 'pre' environment, to the v5 version of the widget
 
 ### 2.1.25
 - Adds, on the non-real-time conversations page, the ability to archive multiple conversations at the same time
