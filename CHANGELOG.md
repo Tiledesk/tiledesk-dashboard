@@ -3,6 +3,10 @@
 
 ### 2.1.28
 - Improves and fixes the "Create Internal Request" and "Add New Requester" modal windows bugs
+- Allows, in the conversations list > unassigned conversations section, to archive the conversations only to users with owner or admin role
+- Allows, in the non real time conversation list, to archive the unassigned conversations only to users with owner or admin role
+- Adds the ability for assigned users of a conversation to open the chat directly from the list of non-real-time conversations
+
 
 ### 2.1.27
 - Adds, during the creation of an internal request, the possibility to select a bot, a teammate or a department as assignee
