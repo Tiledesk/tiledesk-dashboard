@@ -712,7 +712,7 @@
                       <input type="checkbox" class="form-check-input" [checked]="allChecked"
                         style="width: 16px;height: 16px;" value="{{ request.request_id }}"
                         (click)="change(request.request_id)"
-                        [disabled]="request?.currentUserIsJoined === false || ROLE_IS_AGENT === true">
+                        [disabled]="request?.currentUserIsJoined === false && ROLE_IS_AGENT === true">
                     </label>
                   </div>
 
@@ -1363,7 +1363,7 @@
                   <button *ngIf="request?.participants.length > 0" type="button" rel="tooltip"
                     style="padding-top: 9px !important;" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}"
                     class="btn btn-tdblu btn-simple btn-xs tool_tip" (click)='archiveRequest(request?.request_id)'
-                    [disabled]="request?.currentUserIsJoined === false || ROLE_IS_AGENT === true">
+                    [disabled]="request?.currentUserIsJoined === false && ROLE_IS_AGENT === true">
                     <i class="material-icons">archive</i>
                     <span style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px;" class="top">
                       <span style="text-transform: capitalize;"> {{ 'VisitorsPage.Archive' | translate }} </span>

@@ -838,7 +838,7 @@
             
             <button type="button" rel="tooltip" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}"
               class="btn btn-tdblu btn-simple btn-xs tool_tip" (click)='archiveRequest(request?.request_id)'
-              [disabled]="request?.currentUserIsJoined === false || ROLE_IS_AGENT === true">
+              [disabled]="request?.currentUserIsJoined === false && ROLE_IS_AGENT === true">
 
               <i class="material-icons">archive</i>
 
