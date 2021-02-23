@@ -258,7 +258,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
       element.className = "card" + index;
 
-
       if (index === 0) {
         element.setAttribute("style", "transform: translateY(122px) scale(1.07);");
       }
@@ -284,10 +283,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
 
-
-
-
-
   public scrollRight(): void {
     console.log('scrollRight widgetsContent', this.widgetsContent)
 
@@ -298,7 +293,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     console.log('scrollLeft widgetsContent', this.widgetsContent)
     this.widgetsContent.nativeElement.scrollTo({ left: (this.widgetsContent.nativeElement.scrollLeft - 150), behavior: 'smooth' });
   }
-
 
 
   getCurrentProjectAndInit() {
@@ -315,8 +309,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
   }
-
-
 
   // ngAfterViewChecked() {
 
@@ -795,12 +787,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
             this.prjct_profile_name = projectProfileData.profile_name + ' Plan';
           }
         }
-
       }
     })
   }
-
-
 
 
   goToPricingOrOpenModalSubsExpired() {
