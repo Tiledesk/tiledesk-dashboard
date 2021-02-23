@@ -230,6 +230,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 const appInitializerFn = (appConfig: AppConfigService, brandService: BrandService) => {
   return () => {
     if (environment.remoteConfig) {
+      console.log('AppConfigService APP-MODULE-TS appInitializerFn environment.remoteConfig', environment.remoteConfig);
       return appConfig.loadAppConfig(), brandService.loadBrand();
     } else {
       return brandService.loadBrand();
@@ -239,9 +240,9 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
 
 // const brandLoader = (brandService: BrandService) => {
 //   return () => {
-    
+
 //      brandService.loadBrand();
-   
+
 //   };
 // };
 

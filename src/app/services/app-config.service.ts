@@ -8,8 +8,9 @@ export class AppConfigService {
   private appConfig: any;
 
   constructor(
-    http: Http,
+    http: Http
   ) {
+    console.log('AppConfigService HELLO !!!!');
     this.http = http;
     this.appConfig = environment;
   }
