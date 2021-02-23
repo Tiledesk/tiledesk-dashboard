@@ -183,6 +183,7 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
   requestHasBeenArchivedNoticationMsg_part2: string;
   allConversationsaveBeenArchivedMsg: string;
   ROLE_IS_AGENT: boolean;
+  CHAT_BASE_URL: string;
 
   constructor(
     // private requestsService: RequestsService,
@@ -220,7 +221,7 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
     this.getProjectPlan();
     this.getBrowserLang();
     // this.createBotsAndUsersArray();
-    this.getStorageBucket();
+    this.getStorageBucketAndChatBaseUrl();
     this.getTranslations();
     this.getProjectUserRole();
     this.detectMobile();
@@ -311,6 +312,11 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
     this._onJoinHandled(request_id, this.currentUserID);
 
     this.getRequests();
+  }
+
+  openChatInNewWindow(requestid) {
+    const url = this.CHAT_BASE_URL + '?recipient=' + requestid;
+    window.open(url, '_blank');
   }
 
   _onJoinHandled(id_request: string, currentUserID: string) {
@@ -660,10 +666,8 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
           if (user_role === 'agent') {
             this.ROLE_IS_AGENT = true
 
-
           } else {
             this.ROLE_IS_AGENT = false
-
           }
         }
       });
@@ -672,10 +676,12 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
 
   // requestWillBePermanentlyDeleted
 
-  getStorageBucket() {
+  getStorageBucketAndChatBaseUrl() {
     const firebase_conf = this.appConfigService.getConfig().firebase;
     this.storageBucket = firebase_conf['storageBucket'];
     console.log('STORAGE-BUCKET Requests-List-History-new ', this.storageBucket)
+
+    this.CHAT_BASE_URL = this.appConfigService.getConfig().CHAT_BASE_URL;
   }
 
   getBrowserLang() {
