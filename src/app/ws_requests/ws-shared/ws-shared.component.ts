@@ -115,7 +115,6 @@ export class WsSharedComponent implements OnInit {
   // @ Create the requester avatar
   // -----------------------------------------------------------------------------------------------------
   createRequesterAvatar(lead) {
-
     if (lead && lead.fullname) {
       this.requester_fullname_initial = avatarPlaceholder(lead.fullname);
       this.fillColour = getColorBck(lead.fullname)
