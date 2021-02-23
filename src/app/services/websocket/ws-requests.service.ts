@@ -839,12 +839,6 @@ export class WsRequestsService implements OnDestroy {
   }
 
 
-
-
-
-
-
-
   public deleteRequest(request_id: string) {
 
     const headers = new Headers();
@@ -977,20 +971,27 @@ export class WsRequestsService implements OnDestroy {
   // -----------------------------------------------------------------------------------------
   // Create internal request
   // -----------------------------------------------------------------------------------------
-  createInternalRequest(request_id: string, subject: string, message: string, departmentid: string) {
+  createInternalRequest(requester_id: string, request_id: string, subject: string, message: string, departmentid: string, participantid: string) {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
     // console.log('JOIN FUNCT OPTIONS  ', options);
+    let  body = {}
+    body = { 'sender': requester_id, 'subject': subject, 'text': message, 'departmentid': departmentid };
+    if (participantid !== undefined ) {
+      body['participants'] = [participantid]
+    } else {
+      body['participants'] = participantid
+    }
+    // , 'participants': [participantid]
+     
 
-    const body = { 'subject': subject, 'text': message, 'departmentid': departmentid };
-
-    console.log('createInternalRequest ', body);
+    console.log('CREATE INTERNAL REQUEST body ', body);
 
     const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + request_id + '/messages'
-    console.log('createInternalRequest URL ', url)
+    console.log('CREATE INTERNAL REQUEST URL ', url)
 
     return this.http
       .post(url, JSON.stringify(body), options)
