@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.1.27
+- Adds, during the creation of an internal request, the possibility to select a bot, a teammate or a department as assignee
+
 ### 2.1.26
 - Fixes the bug: on the conversations page, the 'You are about to join this chat ...' confirmation window doesn't handle the case when the conversation is assigned to a bot
 - Fixes the bug: on the Recent Projects page, the icon indicating that the user is busy appears too low in the card if the project name goes on a second line
