@@ -11,6 +11,7 @@ import { AuthService } from '../core/auth.service';
 import { AppConfigService } from '../services/app-config.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { WebSocketJs } from "./websocket/websocket-js";
+import 'rxjs/add/observable/forkJoin';
 
 @Injectable()
 export class ContactsService {
@@ -85,7 +86,7 @@ export class ContactsService {
   //     function (data, notification) {
   //       console.log("wsRequesterPresence (contacts service) - CREATE - data ", data);
   //       // console.log("% WsMsgsService notification", notification);
-        
+
   //       self.wsRequesterStatus$.next(data);
 
   //     }, function (data, notification) {
@@ -161,7 +162,8 @@ export class ContactsService {
   }
 
   getLeadsActive(): Observable<Contact[]> {
-    const url = this.SERVER_BASE_PATH + this.projectId + '/leads?page=0';
+    // const url = this.SERVER_BASE_PATH + this.projectId + '/leads?page=0';
+    const url = this.SERVER_BASE_PATH + this.projectId + '/leads';
     // use this to test
     // 5bcf51dbc375420015542b5f is the id og the project (in production ) progetto test 23 ott of the user lanzilottonicola74@gmail.com
     // const url = 'https://api.tiledesk.com/v1/5bcf51dbc375420015542b5f/leads?page=' + pagenumber + _querystring;
@@ -174,6 +176,77 @@ export class ContactsService {
     return this.http
       .get(url, { headers })
       .map((response) => response.json());
+  }
+
+
+  // NoT USED
+  getAllLeadsActive(pageNo): Observable<Contact[]> {
+    // const url = this.SERVER_BASE_PATH + this.projectId + '/leads?page=0';
+    const url = this.SERVER_BASE_PATH + this.projectId + '/leads/?page=' + pageNo;
+    // use this to test
+    // 5bcf51dbc375420015542b5f is the id og the project (in production ) progetto test 23 ott of the user lanzilottonicola74@gmail.com
+    // const url = 'https://api.tiledesk.com/v1/5bcf51dbc375420015542b5f/leads?page=' + pagenumber + _querystring;
+    console.log('!!!! CONTACTS SERVICE - GET ACIVE CONTACTS URL', url);
+
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.json());
+  }
+
+  getAllLeadsActiveWithLimit(limit): Observable<Contact[]> {
+    // const url = this.SERVER_BASE_PATH + this.projectId + '/leads?page=0';
+    const url = this.SERVER_BASE_PATH + this.projectId + '/leads?limit=' + limit;
+    // use this to test
+    // 5bcf51dbc375420015542b5f is the id og the project (in production ) progetto test 23 ott of the user lanzilottonicola74@gmail.com
+    // const url = 'https://api.tiledesk.com/v1/5bcf51dbc375420015542b5f/leads?page=' + pagenumber + _querystring;
+    console.log('!!!! CONTACTS SERVICE - GET ACIVE CONTACTS WITH LIMIT URL', url);
+
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.json());
+  }
+
+  public createNewProjectUserToGetNewLeadID() {
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+
+    const body = {};
+    const url = this.SERVER_BASE_PATH + this.projectId + '/project_users/'
+    console.log('CREATE NEW PROJECT USER TO GET NEW LEAD ID url ', url);
+    return this.http
+      .post(url, body, options)
+      .map((res) => res.json());
+
+  }
+
+  public createNewLead(leadid: string, fullname: string, leademail: string) {
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+
+    const body = { 'lead_id': leadid, 'fullname': fullname, 'email': leademail };
+
+    console.log('ADD BOT POST REQUEST BODY ', body);
+
+    const url = this.SERVER_BASE_PATH + this.projectId + '/leads/'
+
+    return this.http
+      .post(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+
   }
 
 
