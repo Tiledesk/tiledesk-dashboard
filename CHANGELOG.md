@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.1.28
+- Improves and fixes the "Create Internal Request" and "Add New Requester" modal windows bugs
+
 ### 2.1.27
 - Adds, during the creation of an internal request, the possibility to select a bot, a teammate or a department as assignee
 
