@@ -900,7 +900,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                 // const storedRequest = []
                 if (requests) {
                     requests.forEach(r => {
-                        console.log('IN-APP-NOTIFICATION request ', r)
+                        // console.log('IN-APP-NOTIFICATION request ', r)
 
                         // storedRequest.push(r.id + '_' + r.updatedAt)
                         // localStorage.setItem(r.id + '_' + r.updatedAt, 'false');
@@ -960,7 +960,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                         // @ get stored request
                         // --------------------------------------------------------------------------
                         const storedRequest = localStorage.getItem(r.id + '_' + r.status);
-                        console.log('IN-APP-NOTIFICATION >> get storedRequest served >> ', r.id + '_' + r.updatedAt, ' - ', storedRequest);
+                        // console.log('IN-APP-NOTIFICATION >> get storedRequest served >> ', r.id + '_' + r.updatedAt, ' - ', storedRequest);
 
                         // if (r.status === 100 && !this.shown_requests[r.id] && this.user !== null) {
                         if (r.status === 100 && !storedRequest && this.user !== null) {
@@ -990,7 +990,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
                             // const dateDiff = currentTime.diff(requestCreationDate, 'h');
                             const dateDiff = currentTime.diff(requestUpdatedTime, 's');
-                            console.log('IN-APP-NOTIFICATION currentUserIsInParticipants DATE DIFF (s) ', dateDiff);
+                            // console.log('IN-APP-NOTIFICATION currentUserIsInParticipants DATE DIFF (s) ', dateDiff);
 
 
 
@@ -1028,7 +1028,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                             // }
 
                             this.shown_my_requests[r.id] = true;
-                            console.log('IN-APP-NOTIFICATION shown_my_requests ', this.shown_my_requests)
+                            // console.log('IN-APP-NOTIFICATION shown_my_requests ', this.shown_my_requests)
                             // this.shown_my_requests[r.request_id] = true;
 
                             // --------------------------------------------------------------------------
@@ -1058,7 +1058,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
         // const dateDiff = currentTime.diff(requestCreationDate, 'h');
         const dateDiff = currentTime.diff(requestUpdatedTime, 's');
-        console.log('IN-APP-NOTIFICATION  notifyLastUnservedRequest DATE DIFF (second)', dateDiff);
+        // console.log('IN-APP-NOTIFICATION  notifyLastUnservedRequest DATE DIFF (second)', dateDiff);
 
         /**
          * *** NEW 29JAN19: the unserved requests notifications are not displayed if it is older than one day ***
@@ -1094,7 +1094,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         );
 
         this.shown_requests[r.id] = true;
-        console.log('IN-APP-NOTIFICATION shown_requests ', this.shown_requests)
+        // console.log('IN-APP-NOTIFICATION shown_requests ', this.shown_requests)
         // r.notification_already_shown = true;
 
         // --------------------------------------------------------------------------
