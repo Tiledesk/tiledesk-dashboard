@@ -418,7 +418,6 @@
 
 
                 <th *ngIf="IS_HERE_FOR_HISTORY" class="table-header-option" style="text-align: center; width: 25px;">
-
                   <div class="checkbox-wpr" *ngIf="CURRENT_USER_ROLE === 'owner'">
                     <label for="allCheckbox">
                       <input id="allCheckbox" [disabled]="project_user?.is_group_member" [checked]="allChecked"
@@ -429,7 +428,6 @@
                 </th>
 
                 <th *ngIf="!IS_HERE_FOR_HISTORY" class="table-header-option" style="text-align: center; width: 25px;">
-
                   <div class="checkbox-wpr" *ngIf="CURRENT_USER_ROLE !== 'agent'">
                     <label for="allCheckbox">
                       <input id="allCheckbox" [disabled]="project_user?.is_group_member" [checked]="allChecked"

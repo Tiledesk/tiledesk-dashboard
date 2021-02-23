@@ -517,7 +517,7 @@
           <td class="td-actions text-right" style="padding-top: 9px !important;">
           
             <button type="button" rel="tooltip" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}"
-              class="btn btn-tdblu btn-simple btn-xs tool_tip" (click)='archiveRequest(request?.request_id)' [disabled]="USER_ROLE !== 'owner'">
+              class="btn btn-tdblu btn-simple btn-xs tool_tip" (click)='archiveRequest(request?.request_id)' [disabled]="USER_ROLE === 'agent'">
               <i class="material-icons">archive</i>
               <span style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px;" class="top">
                 <span style="text-transform: capitalize;"> {{ 'VisitorsPage.Archive' | translate }} </span>
