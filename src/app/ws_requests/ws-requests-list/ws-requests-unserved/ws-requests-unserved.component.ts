@@ -15,6 +15,7 @@ import { FaqKbService } from '../../../services/faq-kb.service';
 import { DepartmentService } from '../../../services/department.service';
 import { NotifyService } from '../../../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'appdashboard-ws-requests-unserved',
@@ -44,7 +45,8 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
   requestHasBeenArchivedNoticationMsg_part1: string;
   requestHasBeenArchivedNoticationMsg_part2: string;
   currentUserID: string;
-
+  subscription: Subscription;
+  USER_ROLE: string;
   constructor(
     public botLocalDbService: BotLocalDbService,
     public auth: AuthService,
@@ -75,6 +77,16 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
 
     this.getTranslations();
     this.getLoggedUser();
+    this.getUserRole();
+  }
+
+  getUserRole() {
+    this.subscription = this.usersService.project_user_role_bs.subscribe((userRole) => {
+
+      console.log('WS-REQUESTS UNSERVED - USER ROLE »»» ', userRole)
+      
+      this.USER_ROLE = userRole;
+    })
   }
 
 
