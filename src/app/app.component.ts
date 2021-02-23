@@ -98,7 +98,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         // ----------------------------
         // FIREBASE initializeApp 
         // ---------------------------- 
-
+        console.log('AppConfigService - APP-COMPONENT-TS firebase_conf 1 ', appConfigService.getConfig().firebase)
         // firebase.initializeApp(firebaseConfig);
         if (!appConfigService.getConfig().firebase || appConfigService.getConfig().firebase.apiKey === 'CHANGEIT') {
             throw new Error('firebase config is not defined. Please create your dashboard-config.json. See the Dashboard Installation Page');
@@ -107,7 +107,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
         // const firebase_conf = JSON.parse(appConfigService.getConfig().firebase)
         const firebase_conf = appConfigService.getConfig().firebase;
-        console.log('AppConfigService - AppComponent firebase_conf ', firebase_conf)
+        console.log('AppConfigService - APP-COMPONENT-TS firebase_conf 2', firebase_conf)
         firebase.initializeApp(firebase_conf);
 
 
@@ -141,7 +141,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         });
 
 
-      
+
     }
 
     setFavicon(brand) {
