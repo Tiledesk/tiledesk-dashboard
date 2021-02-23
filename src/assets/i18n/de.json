@@ -1807,6 +1807,12 @@
 	"MessageChannel":"Kanal",
 	"AdvancedSearch":"Erweiterte suche",
 	"Refresh":"Aktualisierung",
-	"AllConversationsaveBeenArchived":"Alle Gespräche wurden archiviert"
+	"AllConversationsaveBeenArchived":"Alle Gespräche wurden archiviert",
+	"AddUser": "Nutzer hinzufügen",
+	"SelectRequester":"Anforderer auswählen",
+	"AddRequester":"Anforderer hinzufügen",
+	"SelectAssignee":"Wählen Sie den Empfänger aus",
+	"GoToTheRequestDetails": "Anfragedetails",
+	"CreateNewRequester": "Neuen Anforderer erstellen"
 	
 }

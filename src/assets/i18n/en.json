@@ -1808,5 +1808,11 @@
     "MessageChannel":"Channel",
     "AdvancedSearch":"Advanced search",
     "Refresh":"Refresh",
-    "AllConversationsaveBeenArchived":"All conversations have been archived"
+    "AllConversationsaveBeenArchived":"All conversations have been archived",
+    "AddUser": "Add user",
+    "SelectRequester":"Select requester",
+    "AddRequester":"Add requester",
+    "SelectAssignee":"Select assignee",
+    "GoToTheRequestDetails": "Go to the request's details",
+    "CreateNewRequester": "Create new requester"
 }

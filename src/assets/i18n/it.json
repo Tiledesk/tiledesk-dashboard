@@ -1803,6 +1803,12 @@
     "MessageChannel":"Canale",
     "AdvancedSearch":"Ricerca avanzata",
     "Refresh":"Aggiorna",
-    "AllConversationsaveBeenArchived":"Tutte le conversazioni sono state archiviate"
+    "AllConversationsaveBeenArchived":"Tutte le conversazioni sono state archiviate",
+    "AddUser": "Aggiungi utente",
+    "SelectRequester":"Seleziona richiedente",
+    "AddRequester": "Aggiungi richiedente",
+    "SelectAssignee":"Seleziona assegnatario",
+    "GoToTheRequestDetails": "Vai ai dettagli della richiesta",
+    "CreateNewRequester": "Crea nuovo richiedente"
     
 }
