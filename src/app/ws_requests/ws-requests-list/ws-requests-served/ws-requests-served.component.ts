@@ -39,6 +39,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   currentUserID: string;
   totalOf_servedRequests: number;
   ROLE_IS_AGENT: boolean;
+  USER_ROLE: string;
   timeout: any;
   projectUsersArray: any;
   depts: any;
@@ -124,6 +125,8 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
       .subscribe((user_role) => {
         console.log('% »»» WebSocketJs WF +++++ ws-requests---  WsRequestsList USER ROLE ', user_role);
         if (user_role) {
+          this.USER_ROLE = user_role;
+
           if (user_role === 'agent') {
             this.ROLE_IS_AGENT = true
 
