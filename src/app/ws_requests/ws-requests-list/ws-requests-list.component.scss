@@ -990,6 +990,19 @@ $f21blue: #039be5;
   padding-left: 2px;
   color: #f44336 !important;
 }
+
+/* moved in /node_modules/@ng-select/ng-select/themes/default.theme.css - in the template this style works only encapsulation: ViewEncapsulation.None 
+ but this this compromises the style of the other dropdowns */
+// .internal-request-custom-select > .ng-dropdown-panel .ng-dropdown-panel-items  {
+//   max-height: 65px !important;
+// }
+
+/* moved in /node_modules/@ng-select/ng-select/themes/default.theme.css - in the template this style works only encapsulation: ViewEncapsulation.None 
+ but this this compromises the style of the other dropdowns */
+// .internal-request-custom-select > .ng-dropdown-footer:hover {
+//   background: rgba(221,223,230, 0.5);
+// }
+
 // --------------------------------------------------------------
 // @ Skeleton
 // --------------------------------------------------------------

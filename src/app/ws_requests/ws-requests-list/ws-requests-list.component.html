@@ -778,80 +778,13 @@ l-4.9-13l18-14.8L22.1,34.4z" />
 
 
 
-<!-- 
-// --------------------------------------------------------
-// Create ticket modal v2 
-// -------------------------------------------------------- -->
-<!-- <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayInternalRequestModal }"
-  style="background-color: rgba(90,90,90,0.5);">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header" style="padding:16px!important; border-bottom:none!important;">
-        <button type="button" class="close" aria-label="Close" (click)="closeInternalRequestModal()"
-          style="position: absolute; right: 14px;">
-          <span aria-hidden="true">
 
-            <svg class="tide-icon" width="24" height="24" viewBox="0 0 24 24">
-              <path
-                d="M13.357 11.993l10.256 10.295c0.39 0.391 0.39 1.024 0 1.415-0.194 0.195-0.449 0.292-0.704 0.292s-0.51-0.097-0.705-0.292l-10.257-10.295-10.256 10.295c-0.194 0.195-0.449 0.292-0.704 0.292s-0.51-0.097-0.705-0.292c-0.39-0.391-0.39-1.024 0-1.415l10.256-10.295-10.256-10.294c-0.39-0.391-0.39-1.024 0-1.415s1.020-0.391 1.409 0l10.256 10.294 10.256-10.294c0.39-0.391 1.020-0.391 1.41 0 0.389 0.391 0.389 1.024 0 1.415l-10.256 10.294z">
-              </path>
-            </svg>
-          </span>
-        </button>
 
-        <h2 class="modal-title custom__modal__title">
-          <span style="vertical-align: middle;">
 
-            {{ "CreateTicket" | translate }}
-          </span>
-        </h2>
 
-      </div>
-      <hr class="custom-hr" style="margin-top:3px; margin-bottom:3px">
-      <div class="modal-body"
-        style="padding-top: 0px; padding-bottom: 0px; padding-right: 34px; padding-left: 34px; line-height: 1;min-height: 161px;">
-        <div class="row">
-          <label class="col-sm-12" style="text-align: left; color:#7695a5;">
-            {{ 'Subject' | translate }}
-          </label>
-          <div class="col-sm-12" style="margin-bottom: 20px;">
-            <input [(ngModel)]="createTicket_subject" (ngModelChange)="fullnameChange($event)" class="input"
-              type="text">
-          </div>
-
-          <label class="col-sm-12" style="text-align: left; color:#7695a5;">
-            {{ 'Department' | translate }}
-          </label>
-          <div class="col-sm-12" style="margin-bottom: 20px;">
-            <ng-select class="custom" name="dept" [(ngModel)]="createTicket_deptId" [clearable]="false"
-              placeholder="{{'SelectADepartment' | translate}}">
-              <ng-option *ngFor="let dept of departments" [value]="dept._id">
-                {{dept.name}}
-              </ng-option>
-            </ng-select>
-          </div>
-
-          <label class="col-sm-12" style="text-align: left; color:#7695a5;">
-            {{ 'Message' | translate }}
-          </label>
-          <div class="col-sm-12" style="margin-bottom: 20px;">
-            <textarea [(ngModel)]="createTicket_message" class="textarea" rows="4" placeholder=''>  </textarea>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer" style="text-align: center;" style="height: 60px;">
-        <button class="btn btn-primary" (click)="createTicket()">
-          <span> {{ "CreateTicket" | translate }} </span>
-        </button>
-      </div>
-    </div>
-  </div>
-</div> -->
-
-<!-- 
-// --------------------------------------------------------
-// Create ticket modal v1 
-// -------------------------------------------------------- -->
+<!-- -------------------------------------------------------- -->
+<!-- Create ticket modal -->
+<!-- -------------------------------------------------------- -->
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayInternalRequestModal}"
   style="background-color: rgba(90,90,90,0.5);">
   <div class="modal-dialog" role="document">
@@ -882,38 +815,35 @@ l-4.9-13l18-14.8L22.1,34.4z" />
       </div>
       <div class="modal-body" style="min-height: 217px;">
 
-        <!-- 
-        // -------------------------------------------------------------------------------
-        // Form create internal request 
-        // - button "create internal request" not yet clicked
-        // ------------------------------------------------------------------------------- -->
+        <!--  ------------------------------------------------------------------------------- -->
+        <!-- Form create internal request - button "create internal request" not yet clicked -->
+        <!--  ------------------------------------------------------------------------------- -->
         <div *ngIf="hasClickedCreateNewInternalRequest === false" class="row">
-
 
           <label class="col-sm-12" style="text-align: left; color:#7695a5;">
             {{ 'VisitorsPage.Requester' | translate }}
           </label>
-          <!-- ---- {{ projectUserAndLeadsArray | json}}
-          ---- {{ cars | json}} -->
-          <!-- [searchable]="true" -->
           <div class="col-sm-12" style="margin-bottom: 20px;">
-            <ng-select class="custom" name="users_and_leads" [items]="projectUserAndLeadsArray" bindLabel="name"
-              bindValue="id" [(ngModel)]="selectedRequester"  [searchFn]="customSearchFn" (change)="selectRequester()">
+
+            <!-- // with custom search -->
+            <ng-select class="internal-request-custom-select" name="users_and_leads" [items]="projectUserAndLeadsArray"
+              bindLabel="name" bindValue="id" [(ngModel)]="selectedRequester" [virtualScroll]="true"
+              [searchFn]="customSearchFn" (change)="selectRequester()" placeholder="{{'SelectRequester' | translate}}" [loading]=loadingRequesters loadingText='Loading...'>
 
               <ng-template ng-label-tmp let-item="item">
-                <span>{{ item.name + ' (' + item.id + ')' }}</span>
+                <span>{{ item.name }}</span>
               </ng-template>
               <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
-                <span>{{ item.name + ' (' + item.id + ')' }}</span>
+                <span>{{ item.name }}</span>
+              </ng-template>
+
+              <ng-template ng-footer-tmp>
+                <div style="cursor:pointer" (click)="addInternalRequestRequester()">
+                  <span class="material-icons" style="vertical-align: middle; color:#0f62ff"> add </span>
+                  <span style="color:#0f62ff"> {{'AddRequester' | translate}}</span>
+                </div>
               </ng-template>
             </ng-select>
-
-            <!-- <ng-select [items]="cars" 
-           bindLabel="name" 
-           bindValue="id" 
-           [(ngModel)]="selectedCar">
-</ng-select> -->
-
             <!-- <ng-select class="custom" name="users_and_leads" [(ngModel)]="selectedRequester" [searchable]="true"
               (change)="selectRequester()" [clearable]="true" placeholder="Select requester">
               <ng-option *ngFor="let item of projectUserAndLeadsArray" [value]="item.id">
@@ -939,13 +869,20 @@ l-4.9-13l18-14.8L22.1,34.4z" />
           </div>
 
           <label class="col-sm-12" style="text-align: left; color:#7695a5;">
-            {{ 'Department' | translate }}
+            {{ 'SelectAssignee' | translate }}
           </label>
           <div class="col-sm-12" style="margin-bottom: 20px;">
-            <ng-select class="custom" name="dept" [(ngModel)]="internalRequest_deptId" [searchable]="false"
+            <!-- <ng-select class="custom" name="dept" [(ngModel)]="internalRequest_deptId" [searchable]="false"
               [clearable]="false" placeholder="{{'SelectADepartment' | translate}}">
               <ng-option *ngFor="let dept of departments" [value]="dept._id">
                 {{dept.name}}
+              </ng-option>
+            </ng-select> -->
+
+            <ng-select class="custom" name="dept" [(ngModel)]="assignee_id" [searchable]="true" [clearable]="false"
+              placeholder="Select assignee" (change)="selectedAssignee()" [loading]=loadingAssignee loadingText='Loading...'>
+              <ng-option *ngFor="let assignee of projectUserBotsAndDeptsArray" [value]="assignee.id">
+                {{assignee.name}}
               </ng-option>
             </ng-select>
           </div>
@@ -955,7 +892,7 @@ l-4.9-13l18-14.8L22.1,34.4z" />
             {{ 'Message' | translate }}
           </label>
           <div class="col-sm-12" style="">
-            <textarea [(ngModel)]="internalRequest_message" type="text" class="textarea" rows="4"
+            <textarea [(ngModel)]="internalRequest_message" type="text" class="textarea" rows="3"
               placeholder=''>  </textarea>
           </div>
         </div>
@@ -1022,17 +959,12 @@ l-4.9-13l18-14.8L22.1,34.4z" />
             </h3>
           </div>
         </div>
-
       </div>
-      <!-- </ng-container> -->
-      <div class="modal-footer" style="margin-top: 0px; text-align: center;">
-        <!-- <button class="btn btn-white" (click)="closeInternalRequestModal()" style="padding:12px 16px;">
-          {{ "VisitorsPage.Cancel" | translate }}
-        </button> -->
 
+      <div class="modal-footer" style="margin-top: 0px; text-align: center;">
         <button *ngIf="hasClickedCreateNewInternalRequest === false" style="margin-top:0px" class="btn btn-primary"
           (click)="createNewInternalRequest()"
-          [disabled]="internalRequest_message === undefined || internalRequest_deptId === undefined || internalRequest_subject === undefined"
+          [disabled]="internalRequest_message === undefined || internalRequest_subject === undefined"
           style="padding:12px 16px;">
           {{ "CreateTicket" | translate }}
         </button>
@@ -1042,15 +974,87 @@ l-4.9-13l18-14.8L22.1,34.4z" />
           <i class="fa fa-spinner fa-spin" style="margin-right: 5px;"></i>
           {{ "Processing" | translate }}
         </button>
-
+        <!-- (click)="openTheChaForInternalRequest()" -->
         <button *ngIf="createNewInternalRequest_hasError === false" style="margin-top:0px" class="btn btn-primary"
-          style="padding:12px 16px;" (click)="openTheChaForInternalRequest()">
-          <i class="material-icons"
-            style="vertical-align: middle;  top:0px !important; padding-bottom: 2px;">open_in_new</i>
-          <span style="vertical-align: middle"> {{ 'RequestMsgsPage.OpenTheChat' | translate }}</span>
+          style="padding:12px 16px;" (click)="goToInternalRequestDetails()">
+          <!-- <i class="material-icons"
+            style="vertical-align: middle;  top:0px !important; padding-bottom: 2px;">open_in_new</i> -->
+          <span style="vertical-align: middle"> {{ 'ViewDetails' | translate }} </span>
+        </button>
+        <!-- {{ 'RequestMsgsPage.OpenTheChat' | translate }} -->
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--  -------------------------------------------------------- -->
+<!--  Create new user -->
+<!--  -------------------------------------------------------- -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayCreateNewUserModal}"
+  style="background-color: rgba(90,90,90,0.5);">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="padding-bottom:15px">
+
+        <button type="button" class="close" aria-label="Close" (click)="closeCreateNewUserModal()"
+          style="position: absolute; right: 14px;top:19px">
+          <span aria-hidden="true">
+
+            <svg class="tide-icon" width="24" height="24" viewBox="0 0 24 24">
+              <path
+                d="M13.357 11.993l10.256 10.295c0.39 0.391 0.39 1.024 0 1.415-0.194 0.195-0.449 0.292-0.704 0.292s-0.51-0.097-0.705-0.292l-10.257-10.295-10.256 10.295c-0.194 0.195-0.449 0.292-0.704 0.292s-0.51-0.097-0.705-0.292c-0.39-0.391-0.39-1.024 0-1.415l10.256-10.295-10.256-10.294c-0.39-0.391-0.39-1.024 0-1.415s1.020-0.391 1.409 0l10.256 10.294 10.256-10.294c0.39-0.391 1.020-0.391 1.41 0 0.389 0.391 0.389 1.024 0 1.415l-10.256 10.294z">
+              </path>
+            </svg>
+          </span>
+        </button>
+        <h4 class="modal-title" style="">
+          <!-- <i class="material-icons" style="vertical-align: middle">info</i> -->
+          <span style="vertical-align: middle; padding-left:8px">
+            {{'CreateNewRequester' | translate}}
+          </span>
+        </h4>
+
+      </div>
+      <div class="modal-body" style="min-height: 217px;">
+
+        <div class="row">
+
+          <label class="col-sm-12" style="text-align: left; color:#7695a5;">
+            {{ 'Name' | translate }}
+          </label>
+          <div class="col-sm-12" style="margin-bottom: 20px;">
+            <input [(ngModel)]="new_user_name" class="input" type="text">
+          </div>
+
+          <label class="col-sm-12" style="text-align: left; color:#7695a5;">
+            Email
+          </label>
+          <div class="col-sm-12" style="margin-bottom: 10px;">
+            <input [(ngModel)]="new_user_email" class="input" type="text">
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer" style="margin-top: 0px; text-align: center;">
+
+        <!-- [disabled]="internalRequest_message === undefined || internalRequest_deptId === undefined || internalRequest_subject === undefined" -->
+        <button *ngIf="HAS_CLICKED_CREATE_NEW_LEAD === false && HAS_COMPLETED_CREATE_NEW_LEAD === false"
+          style="margin-top:0px" class="btn btn-primary" (click)="createNewUser()" style="padding:12px 16px;" [disabled]="new_user_name?.length < 2">
+          {{'CreateNewRequester' | translate}}
+        </button>
+
+        <button *ngIf="HAS_CLICKED_CREATE_NEW_LEAD === true && HAS_COMPLETED_CREATE_NEW_LEAD === false"
+          style="margin-top:0px" class="btn btn-primary" style="padding:12px 16px;">
+          <i class="fa fa-spinner fa-spin" style="margin-right: 5px;"></i>
+          {{ "Processing" | translate }}
         </button>
 
 
+        <button *ngIf="HAS_CLICKED_CREATE_NEW_LEAD === true && HAS_COMPLETED_CREATE_NEW_LEAD === true"
+          style="margin-top:0px" class="btn btn-primary" (click)="closeCreateNewUserModal()" style="padding:12px 16px;">
+          {{'Close' | translate}}
+        </button>
       </div>
     </div>
   </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, NgZone, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, NgZone, ViewChild, ElementRef, HostListener, ViewEncapsulation } from '@angular/core';
 import { WsRequestsService } from '../../services/websocket/ws-requests.service';
 import { LocalDbService } from '../../services/users-local-db.service';
 import { BotLocalDbService } from '../../services/bot-local-db.service';
@@ -30,10 +30,15 @@ import { Chart } from 'chart.js';
 import { ContactsService } from '../../services/contacts.service';
 import { Observable } from 'rxjs';
 
+import { switchMap, mergeMap, expand, concatMap, reduce, tap, map, } from 'rxjs/operators'
+// import {Observable,of, empty} from 'rxjs'
+
 @Component({
   selector: 'appdashboard-ws-requests-list',
   templateUrl: './ws-requests-list.component.html',
   styleUrls: ['./ws-requests-list.component.scss']
+  // ,
+  // encapsulation: ViewEncapsulation.None
 })
 export class WsRequestsListComponent extends WsSharedComponent implements OnInit, AfterViewInit, OnDestroy {
 
@@ -92,13 +97,16 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   public browserRefresh: boolean;
   displayInternalRequestModal = 'none';
   internalRequest_subject: string;
-  internalRequest_deptId: string;
+  // internalRequest_deptId: string;
   internalRequest_message: string;
   showSpinner_createInternalRequest = false;
   hasClickedCreateNewInternalRequest = false;
   createNewInternalRequest_hasError: boolean;
   internal_request_id: string;
-  deptIdSelectedInRequuestsXDepts
+
+  displayCreateNewUserModal = 'none';
+
+  // deptIdSelectedInRequuestsXDepts
   ws_requestslist_deptIdSelected: string
   display_dept_sidebar = false;
   storagebucket$: string;
@@ -117,10 +125,22 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   showRealTeammates = false
 
   projectUserAndLeadsArray = []
+  projectUserBotsAndDeptsArray = []
   cars: any
   selectedRequester: any;
   selectedCar: number;
+  page_No = 0
+  items = [];
+  HAS_CLICKED_CREATE_NEW_LEAD: boolean = false;
+  HAS_COMPLETED_CREATE_NEW_LEAD: boolean = false;
+  new_user_name: string;
+  new_user_email: string;
+  assignee_id: string
 
+  assignee_participants_id: string;
+  assignee_dept_id: string;
+  loadingAssignee: boolean;
+  loadingRequesters: boolean;
   /**
    * Constructor
    * 
@@ -161,6 +181,8 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   ngOnInit() {
     // this.getStorageBucketFromUserServiceSubscription();
     this.getStorageBucketAndThenProjectUsers();
+    /* getDepartments da valutare se viene ancora usato (veniva usato di sicuro durante la creazione della richiesta interna ora sosstiuiyo con
+     // getProjectUserAndBotAndDepts x dare la possibilità di associare una richiesta interna oltre che ad un dept anche ad un bot o a un projct-user) */
     this.getDepartments();
     // this.getWsRequests$();
     this.getCurrentProject();
@@ -183,6 +205,9 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     this.getChatUrl();
     this.getTestSiteUrl();
     this.getProjectUsersAndContacts();
+    this.getProjectUserBotsAndDepts();
+
+    // this.getAllPaginatedContactsRecursevely(this.page_No)
   }
 
   getStorageBucketFromUserServiceSubscription() {
@@ -323,16 +348,6 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       });
   }
 
-  getDepartments() {
-    this.departmentService.getDeptsByProjectId().subscribe((_departments: any) => {
-      console.log('% »»» WebSocketJs WF WS-RL - GET DEPTS RESPONSE ', _departments);
-      this.departments = _departments
-    }, error => {
-      console.log('% »»» WebSocketJs WF WS-RL - GET DEPTS - ERROR: ', error);
-    }, () => {
-      console.log('% »»» WebSocketJs WF WS-RL - GET DEPTS * COMPLETE *')
-    });
-  }
 
 
   // -------------------------------------------------------
@@ -691,12 +706,12 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   // }
 
   goToDept(deptid) {
-
     this.router.navigate(['project/' + this.projectId + '/department/edit/' + deptid]);
-
     // this.display_dept_sidebar = true;
     // this.ws_requestslist_deptIdSelected = deptid
   }
+
+
 
 
   parseUserAgent(uastring) {
@@ -783,14 +798,16 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       console.log('% »»» WebSocketJs WF +++++ ws-requests--- service -  X-> DEPTS <-X', _departments)
 
       wsrequests.forEach(request => {
-        const deptHasName = request.department.hasOwnProperty('name')
-        if (deptHasName) {
-          // console.log('% »»» WebSocketJs WF +++++ ws-requests--- service -  X-> REQ DEPT HAS NAME', deptHasName)
-          request['dept'] = request.department
-        } else {
-          // console.log('% »»» WebSocketJs WF +++++ ws-requests--- service -  X-> REQ DEPT HAS NAME', deptHasName)
+        if (request.department) {
+          const deptHasName = request.department.hasOwnProperty('name')
+          if (deptHasName) {
+            // console.log('% »»» WebSocketJs WF +++++ ws-requests--- service -  X-> REQ DEPT HAS NAME', deptHasName)
+            request['dept'] = request.department
+          } else {
+            // console.log('% »»» WebSocketJs WF +++++ ws-requests--- service -  X-> REQ DEPT HAS NAME', deptHasName)
 
-          request['dept'] = this.getDeptObj(request.department, _departments)
+            request['dept'] = this.getDeptObj(request.department, _departments)
+          }
         }
 
       });
@@ -1472,6 +1489,256 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   }
 
 
+
+
+
+  getAllPaginatedContactsRecursevely(page_No) {
+    // https://stackoverflow.com/questions/56786261/recursively-combining-http-results-based-on-response
+    // https://dev.to/andre347/how-to-use-a-do-while-loop-for-api-pagination-375b
+    // https://stackoverflow.com/questions/44097231/rxjs-while-loop-for-pagination ****
+    this.contactsService.getAllLeadsActive(page_No).subscribe(res => {
+      this.items = this.items.concat(res['leads'])
+      console.log('Ws-REQUESTS-LIST getAllPaginatedContacts items concat ', this.items)
+
+      console.log('Ws-REQUESTS-LIST getAllPaginatedContacts  leads in page No ', page_No + ': ', res['leads'])
+      if (res['leads'].length > 0) {
+        this.getAllPaginatedContactsRecursevely(++page_No)
+      }
+    });
+  }
+
+
+  getDepartments() {
+    this.departmentService.getDeptsByProjectId().subscribe((_departments: any) => {
+      console.log('% »»» WebSocketJs WF WS-RL - GET DEPTS RESPONSE ', _departments);
+      this.departments = _departments
+    }, error => {
+      console.log('% »»» WebSocketJs WF WS-RL - GET DEPTS - ERROR: ', error);
+    }, () => {
+      console.log('% »»» WebSocketJs WF WS-RL - GET DEPTS * COMPLETE *')
+    });
+  }
+
+
+
+  getProjectUserBotsAndDepts() {
+    this.loadingAssignee = true;
+    const projectUsers = this.usersService.getProjectUsersByProjectId();
+    const bots = this.faqKbService.getAllBotByProjectId();
+    const depts = this.departmentService.getDeptsByProjectId();
+
+
+    Observable
+      .zip(projectUsers, bots, depts, (_projectUsers: any, _bots: any, _depts: any) => ({ _projectUsers, _bots, _depts }))
+      .subscribe(pair => {
+        console.log('Ws-REQUESTS-LIST - GET P-USERS-&-BOTS-&-DEPTS - PROJECT USERS : ', pair._projectUsers);
+        console.log('Ws-REQUESTS-LIST - GET P-USERS-&-BOTS-&-DEPTS - BOTS : ', pair._bots);
+        console.log('Ws-REQUESTS-LIST - GET P-USERS-&-BOTS-&-DEPTS - DEPTS: ', pair._depts);
+
+        // projectUserAndLeadsArray
+
+        if (pair && pair._projectUsers) {
+          pair._projectUsers.forEach(p_user => {
+            this.projectUserBotsAndDeptsArray.push({ id: p_user.id_user._id, name: p_user.id_user.firstname + ' ' + p_user.id_user.lastname + ' ('+ p_user.role +')' });
+          });
+        }
+
+        if (pair && pair._bots) {
+          pair._bots.forEach(bot => {
+            if (bot['trashed'] === false) {
+              this.projectUserBotsAndDeptsArray.push({ id: 'bot_' + bot._id, name: bot.name + ' (bot)' })
+            }
+          });
+        }
+
+        if (pair && pair._bots) {
+          pair._depts.forEach(dept => {
+            this.projectUserBotsAndDeptsArray.push({ id: dept._id, name: dept.name + ' (dept)' })
+          });
+        }
+
+        console.log('Ws-REQUESTS-LIST - GET P-USERS-&-BOTS-&-DEPTS ARRAY: ', this.projectUserBotsAndDeptsArray);
+
+        this.projectUserBotsAndDeptsArray = this.projectUserBotsAndDeptsArray.slice(0);
+
+      }, error => {
+        this.loadingAssignee = false;
+        console.log('Ws-REQUESTS-LIST - GET P-USERS-&-BOTS-&-DEPTS - ERROR: ', error);
+      }, () => {
+        this.loadingAssignee = false;
+        console.log('Ws-REQUESTS-LIST - GET P-USERS-&-BOTS-&-DEPTS - COMPLETE');
+      });
+
+  }
+
+  selectedAssignee() {
+    console.log('Ws-REQUESTS-LIST - SELECT ASSIGNEE: ', this.assignee_id);
+    console.log('Ws-REQUESTS-LIST - DEPTS: ', this.departments);
+    // this.departments
+    // const index = this.departments.findIndex((e) => e.id === this.assignee_id);
+    // console.log("Ws-REQUESTS-LIST - SELECT ASSIGNEE INDEX ", index);
+    // if (index === 1) {
+    //   console.log("Ws-REQUESTS-LIST - SELECT ASSIGNEE IS A DEPT");
+    // } else {
+    //   console.log("Ws-REQUESTS-LIST - SELECT ASSIGNEE NOT IS A DEPT");
+    // }
+
+    const hasFound = this.departments.filter((obj: any) => {
+
+      return obj.id === this.assignee_id;
+
+    });
+    console.log("Ws-REQUESTS-LIST - SELECT ASSIGNEE HAS FOUND IN DEPTS: ", hasFound);
+
+    if (hasFound.length === 0) {
+
+      this.assignee_dept_id = undefined
+      this.assignee_participants_id = this.assignee_id
+    } else {
+
+      this.assignee_dept_id = this.assignee_id
+      this.assignee_participants_id = undefined
+    }
+  }
+
+  getProjectUsersAndContacts() {
+    this.loadingRequesters = true;
+    const projectUsers = this.usersService.getProjectUsersByProjectId();
+    const leads = this.contactsService.getAllLeadsActiveWithLimit(10000);
+
+    Observable
+      .zip(projectUsers, leads, (_projectUsers: any, _leads: any) => ({ _projectUsers, _leads }))
+      .subscribe(pair => {
+        console.log('Ws-REQUESTS-LIST GET P-USERS-&-LEADS - PROJECT USERS : ', pair._projectUsers);
+        console.log('Ws-REQUESTS-LIST - GET P-USERS-&-LEADS - LEADS RES: ', pair._leads);
+        console.log('Ws-REQUESTS-LIST - GET P-USERS-&-LEADS - LEADS: ', pair._leads['leads']);
+
+        // projectUserAndLeadsArray
+
+        if (pair && pair._projectUsers) {
+          pair._projectUsers.forEach(p_user => {
+            this.projectUserAndLeadsArray.push({ id: p_user.id_user._id, name: p_user.id_user.firstname + ' ' + p_user.id_user.lastname + ' ('+ p_user.role +')' });
+
+          });
+        }
+
+        if (pair && pair._leads['leads']) {
+          pair._leads.leads.forEach(lead => {
+            this.projectUserAndLeadsArray.push({ id: lead.lead_id, name: lead.fullname + ' (lead)' });
+          });
+        }
+
+        console.log('Ws-REQUESTS-LIST - GET P-USERS-&-LEADS - PROJECT-USER-&-LEAD-ARRAY: ', this.projectUserAndLeadsArray);
+
+        this.projectUserAndLeadsArray = this.projectUserAndLeadsArray.slice(0);
+
+      }, error => {
+        this.loadingRequesters = false;
+        console.log('Ws-REQUESTS-LIST - GET P-USERS-&-LEADS - ERROR: ', error);
+      }, () => {
+        this.loadingRequesters = false;
+        console.log('Ws-REQUESTS-LIST - GET P-USERS-&-LEADS - COMPLETE');
+      });
+
+  }
+
+  addInternalRequestRequester() {
+    console.log('Ws-REQUESTS-LIST - open modal addInternalRequestRequester ');
+    this.displayCreateNewUserModal = 'block'
+    this.displayInternalRequestModal = 'none'
+    this.new_user_name = undefined;
+    this.new_user_email = undefined;
+    this.HAS_CLICKED_CREATE_NEW_LEAD = false
+    this.HAS_COMPLETED_CREATE_NEW_LEAD = false
+  }
+
+  closeCreateNewUserModal() {
+    this.displayCreateNewUserModal = 'none'
+    this.displayInternalRequestModal = 'block'
+  }
+
+  createNewUser() {
+    this.HAS_CLICKED_CREATE_NEW_LEAD = true;
+    console.log('Ws-REQUESTS-LIST - CREATE-NEW-USER name ', this.new_user_name);
+    console.log('Ws-REQUESTS-LIST - CREATE-NEW-USER email ', this.new_user_email);
+
+
+    this.contactsService.createNewProjectUserToGetNewLeadID().subscribe(res => {
+      console.log('Ws-REQUESTS-LIST - CREATE-NEW-USER - CREATE-PROJECT-USER ', res);
+      console.log('Ws-REQUESTS-LIST - CREATE-NEW-USER - CREATE-PROJECT-USER UUID ', res.uuid_user);
+      if (res) {
+        if (res.uuid_user) {
+          let new_lead_id = res.uuid_user
+          this.createNewContact(new_lead_id, this.new_user_name, this.new_user_email)
+        }
+      }
+    }, error => {
+
+      console.log('Ws-REQUESTS-LIST - CREATE-NEW-USER - CREATE-PROJECT-USER - ERROR: ', error);
+    }, () => {
+
+      console.log('Ws-REQUESTS-LIST - CREATE-NEW-USER - CREATE-PROJECT-USER - COMPLETE');
+    });
+  }
+
+
+  createNewContact(lead_id: string, lead_name: string, lead_email: string) {
+    this.contactsService.createNewLead(lead_id, lead_name, lead_email).subscribe(lead => {
+      console.log('Ws-REQUESTS-LIST - CREATE-NEW-USER - CREATE-NEW-LEAD -  RES ', lead);
+
+      this.projectUserAndLeadsArray.push({ id: lead.lead_id, name: lead.fullname + ' (lead)' });
+      this.projectUserAndLeadsArray = this.projectUserAndLeadsArray.slice(0);
+
+    }, error => {
+
+      console.log('Ws-REQUESTS-LIST - CREATE-NEW-USER - CREATE-NEW-LEAD - ERROR: ', error);
+    }, () => {
+      this.HAS_COMPLETED_CREATE_NEW_LEAD = true;
+
+      console.log('Ws-REQUESTS-LIST - CREATE-NEW-USER - CREATE-NEW-LEAD - COMPLETE');
+    });
+
+
+  }
+
+
+  // customSearchFn(term: string, item: any) {
+  //   console.log('Ws-REQUESTS-LIST - GET P-USERS-&-LEADS - customSearchFn term : ', term);
+
+  //   term = term.toLocaleLowerCase();
+  //   console.log('Ws-REQUESTS-LIST - GET P-USERS-&-LEADS - customSearchFn item : ', item);
+
+  //   console.log('Ws-REQUESTS-LIST - GET P-USERS-&-LEADS - customSearchFn item.id.toLocaleLowerCase().indexOf(term) : ', item.id.toLocaleLowerCase().indexOf(term));
+  //   console.log('Ws-REQUESTS-LIST - GET P-USERS-&-LEADS - customSearchFn item.name.toLocaleLowerCase().indexOf(term) : ', item.id.toLocaleLowerCase().indexOf(term));
+
+  //   return item.id.toLocaleLowerCase().indexOf(term) > -1 || item.name.toLocaleLowerCase().indexOf(term) > -1;
+  // }
+
+
+  // https://www.freakyjolly.com/ng-select-multiple-property-search-using-custom-filter-function/#.YDEDaJP0l7g
+  customSearchFn(term: string, item: any) {
+    console.log('Ws-REQUESTS-LIST - GET P-USERS-&-LEADS - customSearchFn term : ', term);
+
+    term = term.toLocaleLowerCase();
+    console.log('Ws-REQUESTS-LIST - GET P-USERS-&-LEADS - customSearchFn item : ', item);
+
+    // console.log('Ws-REQUESTS-LIST - GET P-USERS-&-LEADS - customSearchFn item.id.toLocaleLowerCase().indexOf(term) : ', item.id.toLocaleLowerCase().indexOf(term));
+    console.log('Ws-REQUESTS-LIST - GET P-USERS-&-LEADS - customSearchFn item.name.toLocaleLowerCase().indexOf(term) : ', item.name.toLocaleLowerCase().indexOf(term) > -1);
+
+    return item.name.toLocaleLowerCase().indexOf(term) > -1;
+  }
+
+
+
+  selectRequester() {
+    console.log('Ws-REQUESTS-LIST - SELECT REQUESTER ID', this.selectedRequester);
+  }
+
+  searchForUserAndLeads(event) {
+    console.log('Ws-REQUESTS-LIST - SELECT REQUESTER searchForUserAndLeads event', event);
+  }
+
+
   presentCreateInternalRequestModal() {
     this.displayInternalRequestModal = 'block'
     this.hasClickedCreateNewInternalRequest = false;
@@ -1486,78 +1753,12 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
   }
 
-
-  getProjectUsersAndContacts() {
-    const projectUsers = this.usersService.getProjectUsersByProjectId();
-    const leads = this.contactsService.getLeadsActive();
-
-    Observable
-      .zip(projectUsers, leads, (_projectUsers: any, _leads: any) => ({ _projectUsers, _leads }))
-      .subscribe(pair => {
-        console.log('Ws-REQUESTS-LIST GET P-USERS-&-LEADS - PROJECT USERS : ', pair._projectUsers);
-        console.log('Ws-REQUESTS-LIST - GET P-USERS-&-LEADS - LEADS RES: ', pair._leads);
-        console.log('Ws-REQUESTS-LIST - GET P-USERS-&-LEADS - LEADS: ', pair._leads['leads']);
-
-        // projectUserAndLeadsArray
-
-        if (pair && pair._projectUsers) {
-          pair._projectUsers.forEach(p_user => {
-            this.projectUserAndLeadsArray.push({ id: p_user.id_user._id, name: p_user.id_user.firstname + ' ' + p_user.id_user.lastname });
-
-          });
-        }
-
-        if (pair && pair._leads['leads']) {
-          pair._leads.leads.forEach(lead => {
-            this.projectUserAndLeadsArray.push({ id: lead.lead_id, name: lead.fullname });
-          });
-        }
-
-        console.log('Ws-REQUESTS-LIST - GET P-USERS-&-LEADS - PROJECT-USER-&-LEAD-ARRAY: ', this.projectUserAndLeadsArray);
-
-        this.projectUserAndLeadsArray = this.projectUserAndLeadsArray.slice(0);
-
-
-       
-
-        this.cars = [
-          { id: '1', name: 'Volvo' },
-          { id: '2', name: 'Saab' },
-          { id: '3', name: 'Opel' },
-          { id: '4', name: 'Audi' },
-        ];
-      }, error => {
-
-        console.log('Ws-REQUESTS-LIST - GET P-USERS-&-LEADS - ERROR: ', error);
-      }, () => {
-
-        console.log('Ws-REQUESTS-LIST - GET P-USERS-&-LEADS - COMPLETE');
-      });
-
-  }
-
-  customSearchFn(term: string, item: any) {
-    console.log('Ws-REQUESTS-LIST - GET P-USERS-&-LEADS - customSearchFn term : ', term);
-   
-    term = term.toLocaleLowerCase();
-    console.log('Ws-REQUESTS-LIST - GET P-USERS-&-LEADS - customSearchFn item : ', item);
-    
-    return item.id.toLocaleLowerCase().indexOf(term) > -1 || item.name.toLocaleLowerCase().indexOf(term) > -1;
-   }
-
-  selectRequester() {
-    console.log('Ws-REQUESTS-LIST - SELECT REQUESTER ', this.selectedRequester);
-  }
-
-  searchForUserAndLeads(event) {
-    console.log('Ws-REQUESTS-LIST - SELECT REQUESTER searchForUserAndLeads event', event);
-  }
-
   createNewInternalRequest() {
     this.hasClickedCreateNewInternalRequest = true
     this.showSpinner_createInternalRequest = true
-    console.log('% WsRequestsList create internalRequest - internalRequest_subject ', this.internalRequest_message);
-    console.log('% WsRequestsList create internalRequest - internalRequest_subject ', this.internalRequest_deptId);
+    console.log('% WsRequestsList create internalRequest - internalRequest_message ', this.internalRequest_message);
+    console.log('% WsRequestsList create internalRequest - assignee_dept_id ', this.assignee_dept_id);
+    console.log('% WsRequestsList create internalRequest - assignee_participants_id ', this.assignee_participants_id);
     console.log('% WsRequestsList create internalRequest - internalRequest_subject', this.internalRequest_subject);
 
 
@@ -1566,7 +1767,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     this.internal_request_id = 'support-group-' + uiid
     console.log('% WsRequestsList create internalRequest - this.internal_request_id', this.internal_request_id);
     // (request_id:string, subject: string, message:string, departmentid: string)
-    this.wsRequestsService.createInternalRequest(this.internal_request_id, this.internalRequest_subject, this.internalRequest_message, this.internalRequest_deptId).subscribe((newticket: any) => {
+    this.wsRequestsService.createInternalRequest(this.selectedRequester, this.internal_request_id, this.internalRequest_subject, this.internalRequest_message, this.assignee_dept_id, this.assignee_participants_id).subscribe((newticket: any) => {
       console.log('% WsRequestsList create internalRequest - RES ', this.internal_request_id);
 
 
@@ -1592,13 +1793,24 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     this.resetCreateInternalRequest();
   }
 
+
+  goToInternalRequestDetails() {
+    console.log("% WsRequestsList goToInternalRequestDetails")
+    this.router.navigate(['project/' + this.projectId + '/wsrequest/' + this.internal_request_id + '/messages']);
+
+    this.resetCreateInternalRequest();
+  }
+
   resetCreateInternalRequest() {
     this.hasClickedCreateNewInternalRequest = false
     this.showSpinner_createInternalRequest = false
     this.createNewInternalRequest_hasError = null;
     this.internalRequest_message = undefined;
-    this.internalRequest_deptId = undefined;
+    this.assignee_dept_id = undefined;
+    this.assignee_participants_id = undefined;
     this.internalRequest_subject = undefined;
+    this.assignee_id = undefined;
+    this.selectedRequester = undefined;
   }
 
 
