@@ -187,12 +187,25 @@ input:-webkit-autofill:active {
   top: -2px;
 }
 
+.archive-selected-wpr {
+  position: absolute;
+  left: 123px;
+  top: -2px;
+}
+
+.delete-selected-wpr-in-nort {
+  position: absolute;
+  left: 172px;
+  top: -2px;
+
+}
+
 .not_is_owner {
   left: 33px;
 }
 
 .is_agent{
-  left: 37px;
+  left: 27px;
 }
 
 .is_visible-delete-selected {

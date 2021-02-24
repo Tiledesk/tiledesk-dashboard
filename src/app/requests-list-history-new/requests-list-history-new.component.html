@@ -416,7 +416,9 @@
             <thead class="text">
               <tr>
 
-
+                <!-- --------------------------------------------------- -->
+                <!-- Checkbox select all displayed in HISTORY -->
+                <!-- --------------------------------------------------- -->
                 <th *ngIf="IS_HERE_FOR_HISTORY" class="table-header-option" style="text-align: center; width: 25px;">
                   <div class="checkbox-wpr" *ngIf="CURRENT_USER_ROLE === 'owner'">
                     <label for="allCheckbox">
@@ -427,12 +429,16 @@
                   </div>
                 </th>
 
+
+                <!-- --------------------------------------------------- -->
+                <!-- Checkbox select all displayed in NORT -->
+                <!-- --------------------------------------------------- -->
                 <th *ngIf="!IS_HERE_FOR_HISTORY" class="table-header-option" style="text-align: center; width: 25px;">
                   <div class="checkbox-wpr" *ngIf="CURRENT_USER_ROLE !== 'agent'">
                     <label for="allCheckbox">
                       <input id="allCheckbox" [disabled]="project_user?.is_group_member" [checked]="allChecked"
                         type="checkbox" class="form-check-input" style="cursor: pointer; width: 20px; height: 20px;"
-                        (click)="selectAll($event)" [disabled]="!IS_HERE_FOR_HISTORY">
+                        (click)="selectAll($event)">
                     </label>
                   </div>
                 </th>
@@ -454,21 +460,21 @@
                   </div>
                 </th>
 
-                <!-- --------------------------------------------------- -->
-                <!-- Action Delete selecterd if IS_HERE_FOR_HISTORY -->
-                <!-- --------------------------------------------------- -->
-                <th *ngIf="IS_HERE_FOR_HISTORY" class="table-header-option" style="text-align: center;"
-                  (click)="deleteSelected()">
+
+                <th *ngIf="IS_HERE_FOR_HISTORY" class="table-header-option" style="text-align: center;">
+                  <!-- --------------------------------------------------- -->
+                  <!-- Action Delete selected if IS_HERE_FOR_HISTORY -->
+                  <!-- --------------------------------------------------- -->
                   <div *ngIf="request_selected.length > 0 && CURRENT_USER_ROLE === 'owner'" class="delete-selected-wpr">
-                    <button class="custom-input-group---btn tool_tip" type="button" style="height: 37px;">
-                      <!-- [ngClass]="{'is_visible-delete-selected': request_selected.length > 0}" -->
+                    <button class="custom-input-group---btn tool_tip" type="button" style="height: 37px;"
+                      (click)="deleteSelected()">
+                      
                       <span class="material-icons delete-forever-icon"
                         style="vertical-align:middle; cursor: pointer; color:grey;">
                         delete_forever
                       </span>
                       <span class="bottom" style="min-width: fit-content; padding: 5px 10px;border-radius: 4px;">
                         {{ 'Delete' | translate }}
-
                         <i></i>
                       </span>
                     </button>
@@ -476,14 +482,15 @@
                 </th>
 
 
-                <!-- ---------------------------------------------------------------------------------------- -->
-                <!-- Action archive selectet if IS HERE FOR NO REAL TIME REQUESTS (!IS_HERE_FOR_HISTORY) -->
-                <!-- ---------------------------------------------------------------------------------------- -->
+
                 <th *ngIf="!IS_HERE_FOR_HISTORY" class="table-header-option" style="text-align: center;">
-                  <div *ngIf="request_selected.length > 0" class="delete-selected-wpr">
+                  <!-- ---------------------------------------------------------------------------------------- -->
+                  <!-- Action archive selected if IS HERE FOR NO REAL TIME REQUESTS (!IS_HERE_FOR_HISTORY) -->
+                  <!-- ---------------------------------------------------------------------------------------- -->
+                  <div *ngIf="request_selected.length > 0" class="archive-selected-wpr">
                     <button class="custom-input-group---btn tool_tip" type="button" style="height: 37px;"
                       (click)="archiveSelected()">
-                      <!-- [ngClass]="{'is_visible-delete-selected': request_selected.length > 0}" -->
+                     
                       <span class="material-icons delete-forever-icon"
                         style="vertical-align:middle; cursor: pointer; color:grey;">
                         archive
@@ -491,6 +498,25 @@
                       <span class="bottom" style="min-width: fit-content; padding: 5px 10px;border-radius: 4px;">
                         {{ 'VisitorsPage.Archive' | translate }}
 
+                        <i></i>
+                      </span>
+                    </button>
+                  </div>
+
+                  <!-- ---------------------------------------------------------------------------------------- -->
+                  <!-- Delete selected if IS HERE FOR NO REAL TIME REQUESTS (!IS_HERE_FOR_HISTORY) -->
+                  <!-- ---------------------------------------------------------------------------------------- -->
+                  <div *ngIf="request_selected.length > 0 && CURRENT_USER_ROLE === 'owner'"
+                    class="delete-selected-wpr-in-nort">
+                    <button class="custom-input-group---btn tool_tip" type="button" style="height: 37px;"
+                      (click)="deleteSelected()">
+                      <!-- [ngClass]="{'is_visible-delete-selected': request_selected.length > 0}" -->
+                      <span class="material-icons delete-forever-icon"
+                        style="vertical-align:middle; cursor: pointer; color:grey;">
+                        delete_forever
+                      </span>
+                      <span class="bottom" style="min-width: fit-content; padding: 5px 10px;border-radius: 4px;">
+                        {{ 'Delete' | translate }}
                         <i></i>
                       </span>
                     </button>
@@ -572,15 +598,7 @@
             <thead class="text">
               <tr>
 
-                <th class="table-header-option">
-                  <!-- <div class="checkbox" style="margin: auto !important;">
-                    <label>
-                      <input [disabled]="project_user?.is_group_member" [checked]="project_user?.is_group_member"
-                        type="checkbox" class="form-check-input" style="width: 16px;height: 16px;"
-                        value="{{project_user?.id_user?._id}}" (click)="change(project_user?.id_user?._id)">
-                    </label>
-                  </div> -->
-                </th>
+                <th class="table-header-option"> </th>
 
                 <th class="table-header-option" style="text-align: center;"
                   *ngIf="CURRENT_USER_ROLE === 'owner' && IS_HERE_FOR_HISTORY">
@@ -691,12 +709,14 @@
               </tr>
 
               <tr *ngFor="let request of requestList">
-                <!--  ------------------------------ -->
-                <!--  ******* CHECKBOX  ******* -->
-                <!--  ------------------------------ -->
-                <td style="text-align: center;" *ngIf="CURRENT_USER_ROLE === 'owner' && IS_HERE_FOR_HISTORY">
+                <!--  ----------------------------------------------- -->
+                <!--  ******* CHECKBOX in the REQUEST LIST ******* -->
+                <!--  ----------------------------------------------- -->
 
-                  <!-- *ngIf="!project_user?.is_group_member" -->
+                <!--  --------------------------------------------------------------------- -->
+                <!--  checkbox displayed in history  (only if user as role owner) -->
+                <!--  --------------------------------------------------------------------- -->
+                <td style="text-align: center;" *ngIf="CURRENT_USER_ROLE === 'owner' && IS_HERE_FOR_HISTORY">
                   <div class="checkbox">
                     <label>
                       <input type="checkbox" class="form-check-input" [checked]="allChecked"
@@ -706,8 +726,13 @@
                   </div>
                 </td>
 
+
+                <!--  --------------------------------------------------------------------- -->
+                <!--  checkbox displayed in NORT  (only if user as role owner or admin) -->
+                <!--  --------------------------------------------------------------------- -->
                 <td style="text-align: center;" *ngIf="!IS_HERE_FOR_HISTORY && CURRENT_USER_ROLE !== 'agent'">
-                  <div class="checkbox" *ngIf="request?.participants.length > 0">
+                  <!-- *ngIf="request?.participants.length > 0" -->
+                  <div class="checkbox">
                     <label>
                       <input type="checkbox" class="form-check-input" [checked]="allChecked"
                         style="width: 16px;height: 16px;" value="{{ request.request_id }}"
@@ -716,14 +741,14 @@
                     </label>
                   </div>
 
-                  <div class="checkbox" *ngIf="request?.participants.length === 0">
+                  <!-- <div class="checkbox" *ngIf="request?.participants.length === 0">
                     <label>
                       <input type="checkbox" class="form-check-input" [checked]="allChecked"
                         style="width: 16px;height: 16px;" value="{{ request.request_id }}"
                         (click)="change(request.request_id)"
                         [disabled]="ROLE_IS_AGENT === true">
                     </label>
-                  </div>
+                  </div> -->
                   <!-- <mat-checkbox [(ngModel)]="subtask.completed" (ngModelChange)="updateAllComplete()">
                     {{subtask.name}}
                   </mat-checkbox> -->
