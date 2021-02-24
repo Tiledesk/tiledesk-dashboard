@@ -47,13 +47,11 @@
         // ------------------------------------------------------   -->
         <ng-container class="test-site">
           <li *ngIf="project">
-            <button class="btn btn-success-no-boxshadow simulate-visitor-btn"
-            style="font-size: 12px;margin-top: 14px;padding: 0px 11px 0px 4px !important; max-height:24px; border-radius: 30px;
-            font-family: 'Google Sans', sans-serif !important;"
-            (click)="testWidgetPage()">
-            <i class="material-icons" style="padding-top: 0px;font-size: 24px;">play_arrow</i>
-            <span>{{ 'VisitorsPage.SimulateVisitor' | translate }} </span> 
-          </button>
+            <button class="btn btn-success-no-boxshadow simulate-visitor-btn" style="font-size: 12px;margin-top: 14px;padding: 0px 11px 0px 4px !important; max-height:24px; border-radius: 30px;
+            font-family: 'Google Sans', sans-serif !important;" (click)="testWidgetPage()">
+              <i class="material-icons" style="padding-top: 0px;font-size: 24px;">play_arrow</i>
+              <span>{{ 'VisitorsPage.SimulateVisitor' | translate }} </span>
+            </button>
           </li>
         </ng-container>
 
@@ -134,23 +132,20 @@
           </li>
         </ng-container>
 
-        <!-- 
-            ------------ ================================= ------------
-            ************ UPGRADE BTN (PROFILE TYPE = FREE) ************
-            ------------ ================================= ------------ 
-            -->
+
+        <!--  ------------------------------------------------ -->
+        <!--    UPGRADE BTN (PROFILE TYPE = FREE)  -->
+        <!--  ------------------------------------------------ -->
         <ng-container *ngIf="isVisible">
           <li *ngIf="project && prjct_profile_type === 'free'">
             <a class="upgrade-btn-trial-expired" (click)="goToPricing()"> {{ "Pricing.UpgradePlan" | translate }} </a>
           </li>
         </ng-container>
 
-        <!-- 
-            ------------ =================================== ------------
-            ************ PLAN NAME (PROFILE TYPE = PAYMENTS) ************
-            ------------ =================================== ------------ 
-            -->
 
+        <!--  ------------------------------------------------ -->
+        <!--   PLAN NAME (PROFILE TYPE = PAYMENTS) -->
+        <!--  ------------------------------------------------ -->
         <ng-container *ngIf="isVisible">
           <li *ngIf="project && prjct_profile_type === 'payment' && HOME_ROUTE_IS_ACTIVE === false">
             <a>
@@ -158,11 +153,10 @@
                 {{ prjct_profile_name }}
               </span>
 
-              <!-- 
-                  ------------ ============================================= ------------
-                  ************ TOOLTIP SUB EXPIRED (PROFILE TYPE = PAYMENTS) ************
-                  ------------ ============================================= ------------ 
-                  -->
+
+              <!--  ------------------------------------------------ -->
+              <!--  TOOLTIP SUB EXPIRED (PROFILE TYPE = PAYMENTS) -->
+              <!--  ------------------------------------------------ -->
               <span *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false" style="color:#f44336;"
                 (click)="openModalSubsExpired()" class="expired__Tooltip">
                 <i class="material-icons" style="vertical-align: middle; color:#f44336; cursor:pointer">
@@ -204,7 +198,10 @@
         </ng-container> -->
 
 
-        <!-- ------------ ============ PROJECTS ============ ------------ -->
+
+        <!--  ------------------------------------------------ -->
+        <!--  ------ PROJECTS  DROPDOWN ------ -->
+        <!--  ------------------------------------------------ -->
         <li *ngIf="project">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <i class="material-icons" style="margin-right: 3px;">keyboard_arrow_down</i>
@@ -214,7 +211,10 @@
 
           <ul id="navbar_dropdown" class="dropdown-menu" style="max-height: 240px;overflow-y: auto;">
 
-            <!-- ------------ PROJECT SETTINGS ------------ -->
+
+            <!--  ------------------------------------------------ -->
+            <!--  PROJECT SETTINGS  -->
+            <!--  ------------------------------------------------ -->
             <li *ngIf="ROLE_IS_AGENT === false">
               <a routerLink="/project/{{ project?._id }}/project-settings/general">
                 <i class="material-icons" style="padding-right: 5px; margin-bottom: 2px; font-size: 20px">settings</i>
@@ -222,7 +222,10 @@
               </a>
             </li>
 
-            <!-- ------------ ALL PROJECTS ------------ -->
+
+            <!--  ------------------------------------------------ -->
+            <!--  ALL PROJECTS -->
+            <!--  ------------------------------------------------ -->
             <li (click)="goToProjects()">
               <a style="cursor: pointer">
                 <i class="material-icons" style="padding-right: 5px; margin-bottom: 2px; font-size: 20px">view_list</i>
@@ -230,7 +233,10 @@
               </a>
             </li>
 
-            <!-- ------------ ADD PROJECT ------------ -->
+
+            <!--  ------------------------------------------------ -->
+            <!--  ADD PROJECT -->
+            <!--  ------------------------------------------------ -->
             <li id="navbar_create_prjct" *ngIf="MT === true" (click)="goToCreateProject()">
               <a style="cursor: pointer">
                 <i class="material-icons"
@@ -241,8 +247,11 @@
 
             <li class="divider"></li>
 
-            <!-- ------------ RECENT PROJECTS ------------ -->
 
+
+            <!--  ------------------------------------------------ -->
+            <!--  RECENT PROJECTS -->
+            <!--  ------------------------------------------------ -->
             <li>
               <span style="padding-left: 24px;font-size: 12px; color: rgb(118,149,165);font-weight: 400">
                 {{ 'RecentProjects' | translate }}
@@ -294,10 +303,10 @@
           </ul>
         </li>
 
-        <!-- 
-        // ---------------------------------------------------------------------
-        // Sound on / off
-        // --------------------------------------------------------------------- -->
+
+        <!--  ------------------------------------------------ -->
+        <!--  Sound on / off -->
+        <!--  ------------------------------------------------ -->
         <li *ngIf="project">
           <a style="cursor: pointer;" *ngIf="NOTIFICATION_SOUND === 'enabled'" (click)="soundOFF()">
             <i class="material-icons">volume_up</i>
@@ -308,7 +317,11 @@
             <p class="hidden-lg hidden-md">soundoff</p>
           </a>
         </li>
-        <!-- ------------ ============ NOTIFICATION ============ ------------ -->
+
+
+        <!--  ------------------------------------------------ -->
+        <!--  NOTIFICATION -->
+        <!--  ------------------------------------------------ -->
         <li *ngIf="project" class="dropdown">
           <a routerLink="project/{{ project._id }}/wsrequests" class="dropdown-toggle" data-toggle="dropdown">
             <i class="material-icons">notifications</i>
@@ -322,7 +335,10 @@
           </a>
         </li>
 
-        <!-- ------------ ============ USER ============ ------------ -->
+
+        <!--  ------------------------------------------------ -->
+        <!--  USER -->
+        <!--  ------------------------------------------------ -->
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <i class="material-icons">person</i>
@@ -360,6 +376,9 @@
                 <h4 class="card-title user-profile-email">
                   {{ user?.email }}
                 </h4>
+                <h6 class="card-title user-profile-role"> 
+                  {{ USER_ROLE | translate}}
+                </h6>
 
 
                 <button *ngIf="project" class="btn btn-primary view-user-profile-btn"

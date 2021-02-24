@@ -123,6 +123,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     currentUserId: string;
     subscription: Subscription;
     ROLE_IS_AGENT: boolean;
+    USER_ROLE: string;
     IS_REQUEST_FOR_PANEL_ROUTE: boolean;
     IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE: boolean;
 
@@ -261,6 +262,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
             .subscribe((user_role) => {
                 console.log('% »»» WebSocketJs WF +++++ ws-requests--- navbar - USER ROLE ', user_role);
                 if (user_role) {
+                    this.USER_ROLE = user_role
                     if (user_role === 'agent') {
                         this.ROLE_IS_AGENT = true;
 
