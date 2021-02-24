@@ -88,6 +88,8 @@ export class WebSocketJs {
     console.log('% »»» WebSocketJs WF ****** CALLING REF ****** TOPIC ', topic);
     console.log('% »»» WebSocketJs WF ****** CALLING REF ****** CALLBACKS', this.callbacks);
     console.log('% »»» WebSocketJs WF ****** CALLING REF ****** CALLBACKS typeof', typeof this.callbacks);
+    console.log('% »»» WebSocketJs WF ****** CALLING REF ****** CALLBACKS    Object.prototype.toString.call(this.callbacks)' ,  Object.prototype.toString.call(this.callbacks));
+
     //this.callbacks.set(topic, {onCreate:onCreate, onUpdate:onUpdate});
 
 
