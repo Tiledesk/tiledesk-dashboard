@@ -1173,6 +1173,7 @@
         "TypeALabelAndPressEnter": "Type a tag and press Enter",
         "YouHaveNotAddedAnyTags": "You have not added any tags",
         "DoYouReallyWantToCancelTheTag": "Do you really want to delete the tag?",
+        "SelectTag": "Select tag",
         "Color": {
             "red": "Red",
             "orange": "Orange",
@@ -1814,5 +1815,7 @@
     "AddRequester":"Add requester",
     "SelectAssignee":"Select assignee",
     "GoToTheRequestDetails": "Go to the request's details",
-    "CreateNewRequester": "Create new requester"
+    "CreateNewRequester": "Create new requester",
+    "ConversationsFound": "Conversations found"
+
 }

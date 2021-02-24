@@ -1170,6 +1170,7 @@
         "TypeALabelAndPressEnter": "Digita una tag e premi Invio",
         "YouHaveNotAddedAnyTags": "Non hai ancora aggiunto tag",
         "DoYouReallyWantToCancelTheTag": "Vuoi davvero cancellare la tag?",
+        "SelectTag": "Seleziona tag",
         "Color": {
             "red": "Rosso",
             "orange": "Arancio",
@@ -1809,6 +1810,7 @@
     "AddRequester": "Aggiungi richiedente",
     "SelectAssignee":"Seleziona assegnatario",
     "GoToTheRequestDetails": "Vai ai dettagli della richiesta",
-    "CreateNewRequester": "Crea nuovo richiedente"
+    "CreateNewRequester": "Crea nuovo richiedente",
+    "ConversationsFound": "Conversazioni trovate"
     
 }

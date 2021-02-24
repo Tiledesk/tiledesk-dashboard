@@ -1173,6 +1173,7 @@
 		"TypeALabelAndPressEnter": "Geben Sie ein Tag ein und drücken Sie die Eingabetaste",
 		"YouHaveNotAddedAnyTags": "Sie haben keine Tags hinzugefügt",
 		"DoYouReallyWantToCancelTheTag": "Möchten Sie das Tag wirklich löschen?",
+		"SelectTag": "Tag auswählen",
 		"Color": {
 			"red": "Rot",
 			"orange": "Orange",
@@ -1813,6 +1814,7 @@
 	"AddRequester":"Anforderer hinzufügen",
 	"SelectAssignee":"Wählen Sie den Empfänger aus",
 	"GoToTheRequestDetails": "Anfragedetails",
-	"CreateNewRequester": "Neuen Anforderer erstellen"
+	"CreateNewRequester": "Neuen Anforderer erstellen",
+	"ConversationsFound": "Gespräche gefunden"
 	
 }
