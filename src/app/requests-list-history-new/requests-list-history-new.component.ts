@@ -1256,7 +1256,7 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
     this.selectedAgentId = '';
     this.requester_email = '';
     this.selecteTagName = '';
-
+    this.requests_status = 'all'
     // this.fullTextValue = '';
     // this.deptIdValue = '';
     // this.startDateValue = '';
