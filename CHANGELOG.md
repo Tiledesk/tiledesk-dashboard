@@ -3,12 +3,12 @@
 
 ### 2.1.28
 - Improves and fixes the "Create Internal Request" and "Add New Requester" modal windows bugs
-- Allows, in the conversations list> unassigned conversations section and in the non-real-time conversations page, to archive conversations only to users with owner or administrator role
+- Allows, in the conversations list > unassigned conversations section and in the not in real time conversations page, to archive conversations only to users with owner or administrator role
 - Adds the ability for assigned users of a conversation to open the chat directly from the list of non-real-time conversations
 - Adds the user's role in the user profile drop-down menu of the navigation bar
 - Allows, in the non real time conversation list, to archive the unassigned conversations only to users with owner or admin role
-- Adds in the page of conversations not in relatime, the ability of archiving all conversations simultaneously if the user has an owner or administrator role
-- Adds in the page of conversations not in relatime, the ability to delete all the conversations at the same time if the user has an owner role
+- Adds in the page of conversations not in real time, the ability of archiving all conversations simultaneously if the user has an owner or administrator role
+- Adds in the page of conversations not in real time, the ability to delete all the conversations at the same time if the user has an owner role
 
 
 ### 2.1.27
