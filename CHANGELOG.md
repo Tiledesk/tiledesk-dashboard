@@ -2,7 +2,7 @@
 # tiledesk-dashboard
 
 ### 2.1.29
-Fixes the bug: in the non-real-time conversations page, resetting the applied filters does not change the value selected in the "conversation status" drop-down menu
+- Fixes the bug: in the non-real-time conversations page, resetting the applied filters does not change the value selected in the "status" drop-down menu
 
 ### 2.1.28
 - Improves and fixes the "Create Internal Request" and "Add New Requestor" modal windows bugs
