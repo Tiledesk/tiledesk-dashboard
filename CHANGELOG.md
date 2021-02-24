@@ -3,9 +3,12 @@
 
 ### 2.1.28
 - Improves and fixes the "Create Internal Request" and "Add New Requester" modal windows bugs
-- Allows, in the conversations list > unassigned conversations section, to archive the conversations only to users with owner or admin role
-- Allows, in the non real time conversation list, to archive the unassigned conversations only to users with owner or admin role
+- Allows, in the conversations list> unassigned conversations section and in the non-real-time conversations page, to archive conversations only to users with owner or administrator role
 - Adds the ability for assigned users of a conversation to open the chat directly from the list of non-real-time conversations
+- Adds the user's role in the user profile drop-down menu of the navigation bar
+- Allows, in the non real time conversation list, to archive the unassigned conversations only to users with owner or admin role
+- Adds in the page of conversations not in relatime, the ability of archiving all conversations simultaneously if the user has an owner or administrator role
+- Adds in the page of conversations not in relatime, the ability to delete all the conversations at the same time if the user has an owner role
 
 
 ### 2.1.27
@@ -25,7 +28,7 @@
 - Renames the title of the page 'Add teammate' in 'Invite teammate'
 - Adds icons to the conversations list and to conversation details to identify the channels from which messages are sent (whatsapp, telegram, messenger, email)
 - Fixes the bug: in the history page the checkbox "select all" remains selected even if all the underlying checkboxes are not selected
-- Fixes the bug: on the Analytics> Conversations page, the dropdown list is not aligned to the left
+- Fixes the bug: on the Analytics > Conversations page, the dropdown list is not aligned to the left
 - Fixes the bug: in the detail page of the "Resolution" type bots, the count of how many times an answer is used is not always displayed
 - Add tooltips and hover effect to icon buttons on the conversation history page
 - Adds, on the conversation history page, the ability to perform a search by pressing the enter key on the keyboard
