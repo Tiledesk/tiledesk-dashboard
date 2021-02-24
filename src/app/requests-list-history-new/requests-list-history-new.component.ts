@@ -26,6 +26,7 @@ import { takeUntil } from 'rxjs/operators'
 import { Location } from '@angular/common';
 import { SelectOptionsTranslatePipe } from '../selectOptionsTranslate.pipe';
 import { request } from 'http';
+import { TagsService } from '../services/tags.service';
 
 // import swal from 'sweetalert';
 // https://github.com/t4t5/sweetalert/issues/890 <- issue ERROR in node_modules/sweetalert/typings/sweetalert.d.ts(4,9): error TS2403
@@ -111,6 +112,13 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
   requester_email: string;
   REQUESTER_IS_VERIFIED = false;
 
+  tags_array = [];
+  selecteTagName: string;
+  selecteTagNameValue: string;
+  selecteTagColor: string; // used in applied filter
+  selecteTagColor_temp: string; // used in applied filter
+  selecteTagName_temp: string;  // used in applied filter
+
   subscription: Subscription;
   prjct_profile_type: string;
   subscription_is_active: any;
@@ -139,6 +147,7 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
   selectAllCheckbox = false;
   indeterminateStatus = true;
   showIndeterminate = false;
+  has_searched = false;
 
   public myDatePickerOptions: IMyDpOptions = {
     // other options...
@@ -184,6 +193,7 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
   allConversationsaveBeenArchivedMsg: string;
   ROLE_IS_AGENT: boolean;
   CHAT_BASE_URL: string;
+ 
 
   constructor(
     // private requestsService: RequestsService,
@@ -200,7 +210,8 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
     public appConfigService: AppConfigService,
     public wsRequestsService: WsRequestsService,
     public location: Location,
-    public selectOptionsTranslatePipe: SelectOptionsTranslatePipe
+    public selectOptionsTranslatePipe: SelectOptionsTranslatePipe,
+    private tagsService: TagsService
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify);
   }
@@ -225,6 +236,7 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
     this.getTranslations();
     this.getProjectUserRole();
     this.detectMobile();
+    this.getTag();
 
   }
 
@@ -304,6 +316,8 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
   }
 
 
+
+
   // ------------------------------------------
   // Join request
   // ------------------------------------------
@@ -321,18 +335,18 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
 
   _onJoinHandled(id_request: string, currentUserID: string) {
     // this.getFirebaseToken(() => {
-    console.log('%%% Ws-REQUESTS-Msgs - JOIN PRESSED');
+    console.log('!!! NEW REQUESTS HISTORY  - JOIN PRESSED');
 
 
     this.wsRequestsService.addParticipant(id_request, currentUserID)
       .subscribe((data: any) => {
 
-        console.log('%%% Ws-REQUESTS-Msgs - addParticipant TO CHAT GROUP ', data);
+        console.log('!!! NEW REQUESTS HISTORY - addParticipant TO CHAT GROUP ', data);
       }, (err) => {
-        console.log('%%% Ws-REQUESTS-Msgs - addParticipant TO CHAT GROUP ERROR ', err);
+        console.log('!!! NEW REQUESTS HISTORY  - addParticipant TO CHAT GROUP ERROR ', err);
 
       }, () => {
-        console.log('%%% Ws-REQUESTS-Msgs - addParticipant TO CHAT GROUP COMPLETE');
+        console.log('!!! NEW REQUESTS HISTORY  - addParticipant TO CHAT GROUP COMPLETE');
 
         this.notify.showWidgetStyleUpdateNotification(`You are successfully added to the chat`, 2, 'done');
         this.getRequests();
@@ -561,9 +575,11 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
 
 
       this.wsRequestsService.getNodeJsWSRequests(this.operator, this.requests_status, this.queryString, this.pageNo).subscribe((requests: any) => {
-
+        console.log('!!! NEW REQUESTS HISTORY - GET REQUESTS RES ', requests);
         console.log('!!! NEW REQUESTS HISTORY - GET REQUESTS ', requests['requests']);
         console.log('!!! NEW REQUESTS HISTORY - GET REQUESTS COUNT ', requests['count']);
+
+       
         if (requests) {
           this.requestsCount = requests['count'];
           console.log('!!! NEW REQUESTS HISTORY - GET REQUESTS COUNT ', this.requestsCount);
@@ -648,9 +664,6 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
     this.isMobile = /Android|iPhone/i.test(window.navigator.userAgent);
     console.log('WS-REQUEST-SERVED - IS MOBILE ', this.isMobile);
   }
-
-
-
 
   getProjectUserRole() {
     this.usersService.project_user_role_bs
@@ -839,6 +852,24 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
   }
 
   // ------------------------------------------------------------------------------
+  // @ Tags - get tags
+  // ------------------------------------------------------------------------------
+  getTag() {
+
+    this.tagsService.getTags().subscribe((tags: any) => {
+      console.log('!!! NEW REQUESTS HISTORY TAGS - GET TAGS - RES ', tags);
+
+      tags.forEach(tag => {
+        console.log('!!! NEW REQUESTS HISTORY TAGS - TAG', tag);
+
+        this.tags_array.push({ 'id': tag._id, 'name': tag.tag, 'color': tag.color })
+      });
+
+      console.log('!!! NEW REQUESTS HISTORY TAGS - TAG-ARRAY', this.tags_array);
+    })
+  }
+
+  // ------------------------------------------------------------------------------
   // @ Departments - get selected department name
   // ------------------------------------------------------------------------------
   depSelected(deptid) {
@@ -864,7 +895,6 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
   // ------------------------------------------------------------------------------
   agentSelected(selectedagentid) {
     const selectedAgent = this.user_and_bot_array.filter((agent: any) => {
-
       return agent._id === selectedagentid;
     });
 
@@ -875,6 +905,25 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
       console.log('!!! NEW REQUESTS HISTORY - selectedAgentFirstname TEMP ', this.selectedAgentFirstname_temp, ' selectedAgentLastname TEMP: ', this.selectedAgentLastname_temp);
     } else {
       this.selectedAgentId = ''
+    }
+  }
+
+  // tags_array = [];
+  // selecteTagName: string;
+  // ------------------------------------------------------------------------------
+  // @ Tags (project-users + bots) - on change tags get selected tag name
+  // ------------------------------------------------------------------------------
+  tagNameSelected() {
+    console.log('!!! NEW REQUESTS HISTORY TAGS - selecteTagName ', this.selecteTagName);
+    // this.selecteTagNameValue = this.selecteTagName
+
+    const selecteTag = this.tags_array.filter((tag: any) => {
+      return tag.name === this.selecteTagName;
+    });
+    console.log('!!! NEW REQUESTS HISTORY TAGS - selecteTag ', selecteTag);
+   
+    if (selecteTag.length > 0 ) {
+      this.selecteTagColor_temp = selecteTag[0]['color']
     }
   }
 
@@ -993,6 +1042,7 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
 
 
   search() {
+    this.has_searched = true;
     this.pageNo = 0
 
     // RESOLVE THE BUG: THE BUTTON CLEAR-SEARCH REMAIN FOCUSED AFTER PRESSED (doesn't works - so is used the below code)
@@ -1070,7 +1120,6 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
 
 
     if (this.selectedAgentId) {
-
       this.selectedAgentValue = this.selectedAgentId;
       console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR selectedAgentId ', this.selectedAgentValue);
 
@@ -1084,15 +1133,16 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
       this.selectedAgentLastname = null;
     }
 
-    // if (this.selectedAgentId) {
-    //   this.selectedAgentValue = this.selectedAgentId;
-    //   console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR selectedAgentId ', this.selectedAgentValue);
-    // } else {
-    //   console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR selectedAgentId ', this.selectedAgentId);
-    //   this.selectedAgentValue = ''
+    if (this.selecteTagName) {
+      this.selecteTagNameValue = this.selecteTagName
+      this.selecteTagColor = this.selecteTagColor_temp
+    } else {
+      this.selecteTagNameValue = '';
+      this.selecteTagColor = null
+    }
 
-    // }
 
+    // !!!!! NOT USED ????
     if (this.requester_email) {
       this.emailValue = this.requester_email;
       console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR email ', this.emailValue);
@@ -1100,7 +1150,7 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
       console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR email ', this.requester_email);
       this.emailValue = ''
     }
-    // console.log('!!! NEW REQUESTS HISTORY - DEPT NAME ', this.deptame);
+
 
 
     // if (this.fullText !== undefined && this.deptName !== undefined && this.startDate !== undefined || this.endDate !== undefined) {
@@ -1111,13 +1161,14 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
       + 'start_date=' + this.startDateValue + '&'
       + 'end_date=' + this.endDateValue + '&'
       + 'participant=' + this.selectedAgentValue + '&'
-      + 'requester_email=' + this.emailValue
+      + 'requester_email=' + this.emailValue + '&'
+      + 'tags=' + this.selecteTagNameValue
 
     console.log('!!! NEW REQUESTS HISTORY - QUERY STRING ', this.queryString);
 
     // REOPEN THE ADVANCED OPTION DIV IF IT IS CLOSED BUT ONE OF SEARCH FIELDS IN IT CONTAINED ARE VALORIZED
     if (this.showAdvancedSearchOption === false) {
-      if (this.selectedDeptId || this.startDate || this.endDate || this.selectedAgentId || this.requester_email) {
+      if (this.selectedDeptId || this.startDate || this.endDate || this.selectedAgentId || this.requester_email || this.selecteTagName) {
         this.showAdvancedSearchOption = true;
       }
     }
@@ -1155,7 +1206,14 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
       this.selectedAgentValue = ''
       this.selectedAgentFirstname = null;
       this.selectedAgentLastname = null;
+    }
 
+    if (this.selecteTagName) {
+      this.selecteTagNameValue = this.selecteTagName
+     
+    } else {
+      this.selecteTagNameValue = '';
+      this.selecteTagColor = null
     }
 
     if (this.requester_email) {
@@ -1177,6 +1235,8 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
       'participant=' + this.selectedAgentValue
       + '&' +
       'requester_email=' + this.emailValue
+      + '&' +
+      'tags=' + this.selecteTagNameValue
 
     this.pageNo = 0
     this.getRequests();
@@ -1195,6 +1255,7 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
     this.endDate = '';
     this.selectedAgentId = '';
     this.requester_email = '';
+    this.selecteTagName = '';
 
     // this.fullTextValue = '';
     // this.deptIdValue = '';
@@ -1210,9 +1271,12 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
     this.startDateFormatted = null;
     this.endDateFormatted = null;
     this.fullText_applied_filter = null;
+    this.selecteTagName = null
+    this.selecteTagColor = null
+   
 
     // tslint:disable-next-line:max-line-length
-    this.queryString = 'full_text=' + '&' + 'dept_id=' + '&' + 'start_date=' + '&' + 'end_date=' + '&' + 'participant=' + '&' + 'requester_email=';
+    this.queryString = 'full_text=' + '&' + 'dept_id=' + '&' + 'start_date=' + '&' + 'end_date=' + '&' + 'participant=' + '&' + 'requester_email=' + '&' + 'tags=';
     this.pageNo = 0;
     console.log('!!! NEW REQUESTS HISTORY - CLEAR SEARCH fullTextValue ', this.fullTextValue)
 
@@ -1467,11 +1531,11 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
   // }
 
   selectAll(e) {
-    
-      console.log("**++ Is checked: ", e.target.checked)
-      var checkbox = <HTMLInputElement>document.getElementById("allCheckbox");
-      console.log("**++ Indeterminate: ", checkbox.indeterminate);
-   
+
+    console.log("**++ Is checked: ", e.target.checked)
+    var checkbox = <HTMLInputElement>document.getElementById("allCheckbox");
+    console.log("**++ Indeterminate: ", checkbox.indeterminate);
+
 
     if (e.target.checked == true) {
       this.allChecked = true;

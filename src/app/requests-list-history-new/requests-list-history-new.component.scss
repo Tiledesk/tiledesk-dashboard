@@ -197,14 +197,13 @@ input:-webkit-autofill:active {
   position: absolute;
   left: 172px;
   top: -2px;
-
 }
 
 .not_is_owner {
   left: 33px;
 }
 
-.is_agent{
+.is_agent {
   left: 27px;
 }
 
@@ -727,4 +726,31 @@ p.member:hover {
   font-weight: 500;
   height: 32px;
   margin-right: 3px;
+}
+
+.conversations-count {
+  -webkit-flex-shrink: 0;
+  flex-shrink: 0;
+
+  color: #353f45;
+  padding: 6px 12px;
+  font-family: "Google Sans", sans-serif !important;
+  border-radius: 10px;
+  font-weight: 500;
+  height: 32px;
+  margin-left: 4px;
+  background: #e4e6eb;
+  margin-bottom: 16px;
+  // margin-top: 8px;
+}
+
+// applied in the div of the ng-select 'Tag'
+.tag--color {
+  background-color: rgb(102, 197, 73);
+  height: 15px;
+  width: 15px;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  top: 3px;
 }

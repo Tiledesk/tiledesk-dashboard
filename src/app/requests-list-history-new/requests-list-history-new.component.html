@@ -215,9 +215,8 @@
                 // ---------------------------------------------------------- 
                 // Select USERS/BOTS
                 // ---------------------------------------------------------- -->
-              <div class="row">
+              <div class="row" style="margin-bottom:8px">
                 <div class="col-sm-6">
-
                   <label class="col-sm-12 label-7695a5">
                     {{ 'HistoryPage.Agent' | translate }}
                   </label>
@@ -233,8 +232,31 @@
                   </div>
                 </div>
 
-                <div class="col-sm-6" *ngIf="!IS_HERE_FOR_HISTORY">
+                <div class="col-sm-6">
+                  <label class="col-sm-12 label-7695a5">
+                    {{ "Tags.Tags" | translate }}
+                  </label>
+                  <div class="col-sm-12">
+                    <ng-select [items]="tags_array" bindLabel="name" bindValue="name"
+                      placeholder="{{'Tags.SelectTag' | translate}}" [(ngModel)]="selecteTagName"
+                      (change)="tagNameSelected()">
+                      <ng-template ng-label-tmp let-item="item">
+                        <!-- <img height="15" width="15" [src]="item.avatar" /> -->
+                        <div class="tag--color" [ngStyle]="{'background-color': item.color }"></div>
+                        <span>{{item.name}}</span>
+                      </ng-template>
+                      <ng-template ng-option-tmp let-item="item" let-index="index">
+                        <!-- <img height="15" width="15" [src]="item.avatar" /> -->
+                        <div class="tag--color" [ngStyle]="{'background-color': item.color }"></div>
+                        <span>{{item.name}}</span>
+                      </ng-template>
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
 
+              <div class="row" *ngIf="!IS_HERE_FOR_HISTORY">
+                <div class="col-sm-6">
                   <label class="col-sm-12 label-7695a5">
                     {{ "Status" | translate }}
                   </label>
@@ -246,6 +268,7 @@
                     </ng-select>
                   </div>
                 </div>
+                <div class="col-sm-6"></div>
               </div>
 
               <!-- 
@@ -308,14 +331,15 @@
   </div>
 
 
-  <!-- 
-    // ----------------------------------------------------------------
-    // Applied filter
-    // ---------------------------------------------------------------- -->
-  <div style="margin-top: 16px; display: flex; position: relative;margin-bottom: 18px;">
+
+  <!--  ---------------------------------------------------------------- -->
+  <!--  Applied filter -->
+  <!--  ---------------------------------------------------------------- -->
+  <div style="margin-top: 16px; display: flex; position: relative;margin-bottom: 18px;" 
+    *ngIf="fullText_applied_filter || startDateFormatted || selectedAgentFirstname || selectedDeptName || requests_status === '200' || requests_status === '100' || selecteTagColor">
 
     <div
-      *ngIf="fullText_applied_filter || startDateFormatted || selectedAgentFirstname || selectedDeptName || requests_status === '200' || requests_status === '100'"
+      
       class="applied-filter-title">
       {{'AppliedFilters' | translate}}
     </div>
@@ -357,11 +381,6 @@
       {{selectedDeptName}}
     </div>
 
-
-    <div *ngIf="selectedDeptName" class="applied-filter">
-      {{selectedDeptName}}
-    </div>
-
     <div *ngIf="requests_status === '200'" class="applied-filter">
       {{'Served' | translate}}
     </div>
@@ -370,7 +389,57 @@
       {{'Unserved' | translate}}
     </div>
 
+    <div *ngIf="requests_status === '100'" class="applied-filter">
+      {{'Unserved' | translate}}
+    </div>
+
+
+    <div *ngIf="selecteTagColor" class="applied-filter">
+      <div class="tag--color" [ngStyle]="{'background-color': selecteTagColor }"> </div>
+      {{selecteTagNameValue}}
+    </div>
+
+
+    <!-- <div class="applied-filter">
+      <span
+        *ngIf="!fullText_applied_filter || !startDateFormatted || !selectedAgentFirstname || !selectedDeptName || !requests_status === '200' || !requests_status === '100' || !selecteTagColor">
+        {{ 'TotalConversations' | translate }}: {{requestsCount}}
+      </span>
+      <span
+      *ngIf="fullText_applied_filter || startDateFormatted || selectedAgentFirstname || selectedDeptName || requests_status === '200' || requests_status === '100' || selecteTagColor">
+      {{ 'ConversationsFound' | translate }}: {{requestsCount}}
+    </span>
+    </div> -->
+
   </div>
+
+  <div *ngIf="!IS_HERE_FOR_HISTORY" style="display: flex; position: relative; float: right;top: 51px;z-index: 99; ">
+    <div class="conversations-count"> 
+      <span *ngIf="requests_status === 'all' && !fullText_applied_filter && !startDateFormatted && !selectedAgentFirstname && !selectedDeptName && !selecteTagColor"> 
+      {{ 'TotalConversations' | translate }}: {{requestsCount}}
+    </span>
+
+    <span *ngIf="fullText_applied_filter || startDateFormatted || selectedAgentFirstname || selectedDeptName || requests_status === '200' || requests_status === '100' || selecteTagColor"> 
+      {{ 'ConversationsFound' | translate }}: {{requestsCount}}
+    </span>
+    </div>
+  </div>
+
+  <div *ngIf="IS_HERE_FOR_HISTORY" style="display: flex; position: relative; float: right;top: 51px;z-index: 99; ">
+    <div class="conversations-count"> 
+      <span *ngIf="!fullText_applied_filter && !startDateFormatted && !selectedAgentFirstname && !selectedDeptName && !selecteTagColor"> 
+      {{ 'TotalConversations' | translate }}: {{requestsCount}}
+    </span>
+
+    <span *ngIf="fullText_applied_filter || startDateFormatted || selectedAgentFirstname || selectedDeptName || selecteTagColor"> 
+      {{ 'ConversationsFound' | translate }}: {{requestsCount}}
+    </span>
+    </div>
+  </div>
+
+
+
+
 
 
   <!-- <div
@@ -468,7 +537,7 @@
                   <div *ngIf="request_selected.length > 0 && CURRENT_USER_ROLE === 'owner'" class="delete-selected-wpr">
                     <button class="custom-input-group---btn tool_tip" type="button" style="height: 37px;"
                       (click)="deleteSelected()">
-                      
+
                       <span class="material-icons delete-forever-icon"
                         style="vertical-align:middle; cursor: pointer; color:grey;">
                         delete_forever
@@ -490,7 +559,7 @@
                   <div *ngIf="request_selected.length > 0" class="archive-selected-wpr">
                     <button class="custom-input-group---btn tool_tip" type="button" style="height: 37px;"
                       (click)="archiveSelected()">
-                     
+
                       <span class="material-icons delete-forever-icon"
                         style="vertical-align:middle; cursor: pointer; color:grey;">
                         archive
@@ -523,75 +592,29 @@
                   </div>
                 </th>
 
-
-                <!-- ===== REQUEST FIRST TEXT ===== -->
-                <th class="table-header-text">
-                  <span class="column-th-span">
-                    <!-- {{ 'HistoryPage.Message' | translate }} -->
-                  </span>
-                </th>
-
-                <!-- ===== REQUESTER ===== -->
-                <th class="table-header-text">
-                  <span class="column-th-span">
-                    <!-- {{ 'HistoryPage.Requester' | translate }} -->
-                  </span>
-                </th>
-
-                <!-- ====== USER AGENT BROWSER & OPERATING SYSTEM ====== -->
+                <th class="table-header-text"> </th>
+                <th class="table-header-text"> </th>
                 <th></th>
-
-
-                <!-- ===== DEPARTMENT NAME ===== -->
-                <th class="table-header-text">
-                  <span class="column-th-span">
-                    <!-- {{ 'VisitorsPage.Department' | translate }} -->
-                  </span>
-                </th>
-
-                <!-- ===== SERVED BY ===== -->
-                <th class="table-header-text">
-                  <span class="column-th-span">
-                    <!-- {{ 'HistoryPage.ServedBy' | translate }} -->
-                  </span>
-                </th>
-
-                <!-- ===== RATING ===== -->
-                <!-- <th>
-                    <span style="color: #566787">
-                      <strong> 
-                        {{ 'HistoryPage.Rating' | translate }}
-                      </strong>
-                    </span>
-                  </th> -->
-
-                <!-- ===== MEMBERS ===== -->
-                <!-- <th>
-                    <span style="color: #566787">
-                      <strong> Membri </strong>
-                      </span>
-                  </th> -->
-
-                <!-- ===== PUBLISHED ===== -->
-                <th class="table-header-text">
-                  <span class="column-th-span">
-                    <!-- {{ 'HistoryPage.Published' | translate }} -->
-                  </span>
-                </th>
+                <!-- <th class="table-header-text"> </th> -->
+                <!-- <th class="table-header-text"> </th> -->
+                <!-- <th class="table-header-text"> </th> -->
 
 
                 <!-- ----------------------------- -->
-                <!-- Actions -->
+                <!-- Conversation count -->
                 <!-- ----------------------------- -->
-                <th>
-                  <span class="column-th-span">
-                    <!-- {{ 'Actions' | translate }} -->
-                  </span>
+                <th colspan="4">
+                  <!-- <div class="conversation-count-wpr">
+                    <div class="conversation-count-wpr" style="position: absolute; top: 7px; font-weight: 400;">
+                      {{ 'TotalConversations' | translate }}: {{requestsCount}}
+                    </div>
+                  </div> -->
                 </th>
-
               </tr>
             </thead>
           </table>
+
+
 
           <!-- REQUEST TABLE -->
           <table class="table table-hover">
