@@ -1,6 +1,12 @@
 
 # tiledesk-dashboard
 
+### 2.1.31
+- Renames, in the conversation list page, create internal request in create ticket
+- Displays, in the modal window Create Ticket> Requester drop-down menu, only the contacts with name
+- Displays, in the modal window Create Ticket> Requester drop-down menu, the email and profile avatar of the requester
+- Adds channel "form" in post request "Create ticket"
+
 ### 2.1.30
 - Adds, in conversation detail, the ability of creating a ticket on Jira, when the app is distributed with the 'pre' environment configuration
 
