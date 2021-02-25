@@ -199,7 +199,7 @@ export class ContactsService {
 
   getAllLeadsActiveWithLimit(limit): Observable<Contact[]> {
     // const url = this.SERVER_BASE_PATH + this.projectId + '/leads?page=0';
-    const url = this.SERVER_BASE_PATH + this.projectId + '/leads?limit=' + limit;
+    const url = this.SERVER_BASE_PATH + this.projectId + '/leads?limit=' + limit + '&with_fullname=true';
     // use this to test
     // 5bcf51dbc375420015542b5f is the id og the project (in production ) progetto test 23 ott of the user lanzilottonicola74@gmail.com
     // const url = 'https://api.tiledesk.com/v1/5bcf51dbc375420015542b5f/leads?page=' + pagenumber + _querystring;

@@ -204,8 +204,8 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
     this.getChatUrl();
     this.getTestSiteUrl();
-    this.getProjectUsersAndContacts();
-    this.getProjectUserBotsAndDepts();
+    // this.getProjectUsersAndContacts();
+    // this.getProjectUserBotsAndDepts();
 
     // this.getAllPaginatedContactsRecursevely(this.page_No)
   }
@@ -1539,7 +1539,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
         if (pair && pair._projectUsers) {
           pair._projectUsers.forEach(p_user => {
-            this.projectUserBotsAndDeptsArray.push({ id: p_user.id_user._id, name: p_user.id_user.firstname + ' ' + p_user.id_user.lastname + ' ('+ p_user.role +')' });
+            this.projectUserBotsAndDeptsArray.push({ id: p_user.id_user._id, name: p_user.id_user.firstname + ' ' + p_user.id_user.lastname + ' (' + p_user.role + ')' });
           });
         }
 
@@ -1614,17 +1614,23 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         console.log('Ws-REQUESTS-LIST - GET P-USERS-&-LEADS - LEADS: ', pair._leads['leads']);
 
         // projectUserAndLeadsArray
-
+        // + ' (' + p_user.role + ')'
         if (pair && pair._projectUsers) {
           pair._projectUsers.forEach(p_user => {
-            this.projectUserAndLeadsArray.push({ id: p_user.id_user._id, name: p_user.id_user.firstname + ' ' + p_user.id_user.lastname + ' ('+ p_user.role +')' });
+            this.projectUserAndLeadsArray.push({ id: p_user.id_user._id, name: p_user.id_user.firstname + ' ' + p_user.id_user.lastname, role: p_user.role, email: p_user.id_user.email, requestertype: 'agent' });
 
           });
         }
 
+        // + ' (' + 'lead' + ')'
         if (pair && pair._leads['leads']) {
           pair._leads.leads.forEach(lead => {
-            this.projectUserAndLeadsArray.push({ id: lead.lead_id, name: lead.fullname + ' (lead)' });
+
+            let e_mail = 'n/a'
+            if (lead.email) {
+              e_mail = lead.email
+            }
+            this.projectUserAndLeadsArray.push({ id: lead.lead_id, name: lead.fullname, role: 'lead' , email: e_mail, requestertype: 'lead' });
           });
         }
 
@@ -1716,6 +1722,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
 
   // https://www.freakyjolly.com/ng-select-multiple-property-search-using-custom-filter-function/#.YDEDaJP0l7g
+  // https://stackblitz.com/edit/so-angular-ng-select-searchfunc?file=app%2Fapp.component.ts
   customSearchFn(term: string, item: any) {
     console.log('Ws-REQUESTS-LIST - GET P-USERS-&-LEADS - customSearchFn term : ', term);
 
@@ -1742,6 +1749,9 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   presentCreateInternalRequestModal() {
     this.displayInternalRequestModal = 'block'
     this.hasClickedCreateNewInternalRequest = false;
+
+    this.getProjectUsersAndContacts();
+    this.getProjectUserBotsAndDepts();
 
   }
 
