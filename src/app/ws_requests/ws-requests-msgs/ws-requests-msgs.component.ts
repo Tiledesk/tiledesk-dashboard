@@ -188,6 +188,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   isVisibleLBS: boolean;
   public_Key: string;
+
+  DISPLAY_BTN_CREATE_JIRA_ISSUE: boolean
+  jira_issue_types: any
+  selectedJiraType: number;
   // @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
 
   //   cities3 = [
@@ -235,7 +239,17 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify)
+
+
+    this.jira_issue_types = [
+      { id: 10002, name: 'Task', avatar: 'https://tiledesk.atlassian.net/secure/viewavatar?size=medium&avatarId=10318&avatarType=issuetype' },
+      { id: 10004, name: 'Bug', avatar: 'https://tiledesk.atlassian.net/secure/viewavatar?size=medium&avatarId=10303&avatarType=issuetype' },
+    ];
+
   }
+
+
+
 
   @ViewChild('cont') contEl: any;
   // -----------------------------------------------------------------------------------------------------
@@ -294,6 +308,30 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.getRouteUrl();
     this.getBaseUrl();
     this.getOSCODE();
+  }
+
+  selectJiraType() {
+    console.log('REQUEST-MSGS - Selected jira type ', this.selectedJiraType);
+  }
+
+  createJiraTicket() {
+    
+    console.log('REQUEST-MSGS - createJiraTicket this.request', this.request);
+
+    const transcript_url = this.SERVER_BASE_PATH + 'public/requests/' + this.id_request + '/messages.html'
+ 
+    const url = `https://tiledesk.atlassian.net/secure/CreateIssueDetails!init.jspa?summary=${this.request.first_text}&description=${this.request.first_text}` + "%0A" + `${transcript_url}&pid=10000&issuetype=${this.selectedJiraType}&reporter=5e21d01f010b260ca87b14ba`
+    
+    window.open(url, '_blank');
+  }
+
+
+  _openTranscript() {
+    // const url = 'https://api.tiledesk.com/v1/public/requests/' + this.id_request + '/messages.html';
+    const url = this.SERVER_BASE_PATH + 'public/requests/' + this.id_request + '/messages.html';
+
+    console.log('openTranscript url ', url);
+    window.open(url, '_blank');
   }
 
   ngAfterViewInit() {
@@ -440,6 +478,17 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   getAppConfig() {
     this.SERVER_BASE_PATH = this.appConfigService.getConfig().SERVER_BASE_URL;
     this.CHAT_BASE_URL = this.appConfigService.getConfig().CHAT_BASE_URL;
+
+    const appID = this.appConfigService.getConfig().firebase.appId
+    console.log('AppConfigService getAppConfig (WsRequestsMsgsComponent) APP ID: ', appID);
+
+    if (appID === "1:269505353043:web:b82af070572669e3707da6") {
+      this.DISPLAY_BTN_CREATE_JIRA_ISSUE = true;
+    } else {
+      this.DISPLAY_BTN_CREATE_JIRA_ISSUE = false;
+    }
+
+
     console.log('AppConfigService getAppConfig (WsRequestsMsgsComponent) SERVER_BASE_PATH: ', this.SERVER_BASE_PATH);
     console.log('AppConfigService getAppConfig (WsRequestsMsgsComponent) CHAT_BASE_URL: ', this.CHAT_BASE_URL);
   }

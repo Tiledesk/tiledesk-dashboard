@@ -2033,13 +2033,73 @@
                 </div>
 
 
-                <!-- <div class="card right-card" style="padding-top:5px; padding-bottom:5px; margin-top: 5px;margin-bottom: 5px;">
-                <div class="card-content" style="padding-top: 5px;padding-bottom: 5px;"> -->
 
-                <!-- 
-              // ----------------------------------------------------------------
-              // @ attributes
-              // ---------------------------------------------------------------- -->
+
+                <!--  ---------------------------------------------------------------- -->
+                <!--  @ Create Jira issue -->
+                <!--  ---------------------------------------------------------------- -->
+                <div *ngIf="DISPLAY_BTN_CREATE_JIRA_ISSUE" class="row">
+                  <div class="col-sm-12" style="border-bottom: 1px solid #dadde1; min-height: 148px;">
+                    <p class="row-header">
+
+                      <span style="vertical-align: middle">
+                        {{'CreateTicketOnJira' | translate }}
+                      </span>
+
+                    </p>
+
+                    <p class="row-body" style="margin-bottom:0px">
+
+                      <label class="col-sm-12"
+                        style="text-align: left;color: #222222; padding-left: 0px;font-size: 12px; font-weight: 400;margin-top: 8px;margin-bottom: 1px;">
+                        {{ 'TicketType' | translate }} <span style="color:rgb(195,46,42)"> *</span>
+                      </label>
+                      <ng-select style="max-width: 180px;" [items]="jira_issue_types" bindLabel="name" bindValue="id"
+                        placeholder="{{'SelectTicketType' | translate}}" [(ngModel)]="selectedJiraType"
+                        (change)="selectJiraType()">
+                        <ng-template ng-label-tmp let-item="item">
+                          <img style="width: 15px;height: 15px;" height="15" width="15" [src]="item.avatar" />
+                          <b>{{item.name}}</b>
+                        </ng-template>
+                        <ng-template ng-option-tmp let-item="item" let-index="index">
+                          <img style="width: 15px;height: 15px;" height="15" width="15" [src]="item.avatar" />
+                          <b>{{item.name}}</b>
+                        </ng-template>
+                      </ng-select>
+
+                      <button class="btn btn-tdblu-no-boxshadow pull-left" (click)="createJiraTicket()"
+                        style="padding:9px 30px;" [disabled]="!selectedJiraType">
+                        {{'CreateJiraTicket' | translate}}
+
+                      </button>
+
+
+                      <!-- <div class="ticket-type-wpr">
+                      <label class="col-sm-12" style="text-align: left; color:#7695a5;">
+                        {{ 'TicketType' | translate }}
+                      </label>
+                      <ng-select [items]="jira_issue_types" bindLabel="name" bindValue="id"
+                        placeholder="{{'SelectTicketType' | translate}}" [(ngModel)]="selectedJiraType"
+                        (change)="selectJiraType()">
+                        <ng-template ng-label-tmp let-item="item">
+                          <img style="width: 15px;height: 15px;" height="15" width="15" [src]="item.avatar" />
+                          <span> {{item.name}}</span>
+                        </ng-template>
+                        <ng-template ng-option-tmp let-item="item" let-index="index">
+                          <img style="width: 15px;height: 15px;" height="15" width="15" [src]="item.avatar" />
+                          <span>{{item.name}}<span>
+                        </ng-template>
+                      </ng-select>
+                    </div> -->
+
+                    </p>
+                  </div>
+                </div>
+
+
+                <!--  ---------------------------------------------------------------- -->
+                <!--  @ attributes -->
+                <!--  ---------------------------------------------------------------- -->
                 <div *ngIf="request?.attributes" class="row">
                   <div class="col-sm-12" style="padding-left: 0px; padding-right: 0px;">
                     <p class="row-header  attributes-accordion" (click)="openAttributesAccordion()"
