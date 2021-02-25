@@ -439,7 +439,7 @@
 	"ToUpload": "und hochladen",
 	"CreateAnswers": "Antworten erstellen",
 	"CreateAFreeAccount": "Erstellen Sie einen kostenlosen Account",
-	"CreateTicket": "Interne Anfrage erstellen",
+	"CreateTicket": "Ticket erstellen",
 	"Ok": "Ok",
 	"Subject": "Betreff",
 	"DefaultBotLanguageInDialogflow": "Standard Bot Sprache in Dialogflow",

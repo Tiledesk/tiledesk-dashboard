@@ -439,7 +439,7 @@
     "ToUpload": "to upload",
     "CreateAnswers": "Create answers",
     "CreateAFreeAccount": "Create a free account",
-    "CreateTicket": "Create Internal Request",
+    "CreateTicket": "Create ticket",
     "Ok": "Ok",
     "Subject": "Subject",
     "DefaultBotLanguageInDialogflow": "Default bot language in Dialogflow",
@@ -1821,5 +1821,6 @@
     "TicketType":"Ticket type",
     "SelectTicketType":"Select ticket type",
     "CreateJiraTicket": "Create ticket"
+    
 
 }
