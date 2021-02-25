@@ -979,7 +979,7 @@ export class WsRequestsService implements OnDestroy {
     const options = new RequestOptions({ headers });
     // console.log('JOIN FUNCT OPTIONS  ', options);
     let  body = {}
-    body = { 'sender': requester_id, 'subject': subject, 'text': message, 'departmentid': departmentid };
+    body = { 'sender': requester_id, 'subject': subject, 'text': message, 'departmentid': departmentid, 'channel': {'name':'form'} };
     if (participantid !== undefined ) {
       body['participants'] = [participantid]
     } else {
