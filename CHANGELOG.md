@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.1.30
+Adds, in conversation detail, the ability of creating a ticket on Jira, when the app is distributed with the 'pre' environment configuration
+
 ### 2.1.29
 - Fixes the bug: in the non-real-time conversations page, resetting the applied filters does not change the value selected in the "status" drop-down menu
 
