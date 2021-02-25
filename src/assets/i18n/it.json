@@ -1811,6 +1811,10 @@
     "SelectAssignee":"Seleziona assegnatario",
     "GoToTheRequestDetails": "Vai ai dettagli della richiesta",
     "CreateNewRequester": "Crea nuovo richiedente",
-    "ConversationsFound": "Conversazioni trovate"
+    "ConversationsFound": "Conversazioni trovate",
+    "CreateTicketOnJira": "Crea ticket su Jira",
+    "TicketType":"Tipo Ticket",
+    "SelectTicketType":"Seleziona tipo ticket",
+    "CreateJiraTicket": "Crea ticket"
     
 }

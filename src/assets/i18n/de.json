@@ -1815,6 +1815,11 @@
 	"SelectAssignee":"Wählen Sie den Empfänger aus",
 	"GoToTheRequestDetails": "Anfragedetails",
 	"CreateNewRequester": "Neuen Anforderer erstellen",
-	"ConversationsFound": "Gespräche gefunden"
+	"ConversationsFound": "Gespräche gefunden",
+	"CreateTicketOnJira": "Erstellen Sie ein Ticket für Jira",
+	"TicketType":"Tickettyp",
+	"SelectTicketType":"Wählen Sie Billettart",
+	"CreateJiraTicket": "Ticket erstellen"
+	
 	
 }

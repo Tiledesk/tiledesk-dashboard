@@ -1816,6 +1816,10 @@
     "SelectAssignee":"Select assignee",
     "GoToTheRequestDetails": "Go to the request's details",
     "CreateNewRequester": "Create new requester",
-    "ConversationsFound": "Conversations found"
+    "ConversationsFound": "Conversations found",
+    "CreateTicketOnJira": "Create ticket on Jira",
+    "TicketType":"Ticket type",
+    "SelectTicketType":"Select ticket type",
+    "CreateJiraTicket": "Create ticket"
 
 }
