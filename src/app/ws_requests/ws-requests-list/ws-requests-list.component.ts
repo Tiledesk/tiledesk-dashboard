@@ -142,6 +142,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   loadingAssignee: boolean;
   loadingRequesters: boolean;
   new_requester_email_is_valid: boolean;
+  newRequesterCreatedSuccessfullyMsg: string;
   /**
    * Constructor
    * 
@@ -209,7 +210,20 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     // this.getProjectUserBotsAndDepts();
 
     // this.getAllPaginatedContactsRecursevely(this.page_No)
+    this.translateString()
   }
+
+
+  translateString() {
+
+    this.translate.get('NewRequesterCreatedSuccessfully')
+      .subscribe((translation: any) => {
+
+        this.newRequesterCreatedSuccessfullyMsg = translation;
+
+      });
+  }
+
 
   getStorageBucketFromUserServiceSubscription() {
     this.usersService.storageBucket$
@@ -1557,7 +1571,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
         if (pair && pair._bots) {
           pair._bots.forEach(bot => {
-            if (bot['trashed'] === false) {
+            if (bot['trashed'] === false && bot['type'] !== "identity") {
               this.projectUserBotsAndDeptsArray.push({ id: 'bot_' + bot._id, name: bot.name + ' (bot)' })
             }
           });
@@ -1660,8 +1674,9 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
   }
 
-  addInternalRequestRequester() {
-    console.log('Ws-REQUESTS-LIST - open modal addInternalRequestRequester ');
+  presentModalAddNewRequester() {
+    console.log('Ws-REQUESTS-LIST - open modal presentModalAddNewRequester ');
+    this.new_requester_email_is_valid = false;
     this.displayCreateNewUserModal = 'block'
     this.displayInternalRequestModal = 'none'
     this.new_user_name = undefined;
@@ -1675,7 +1690,8 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     this.displayInternalRequestModal = 'block'
   }
 
-  createNewUser() {
+
+  createProjectUserAndThenNewLead() {
     this.HAS_CLICKED_CREATE_NEW_LEAD = true;
     console.log('Ws-REQUESTS-LIST - CREATE-NEW-USER name ', this.new_user_name);
     console.log('Ws-REQUESTS-LIST - CREATE-NEW-USER email ', this.new_user_email);
@@ -1714,10 +1730,19 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     }, () => {
       this.HAS_COMPLETED_CREATE_NEW_LEAD = true;
 
+      // -------------------------------------------------
+      // When is cmpleted the creation of the new reqester
+      // -------------------------------------------------
+      this.displayCreateNewUserModal = 'none'
+      this.displayInternalRequestModal = 'block'
+
+      // Auto select the new lead crerated in the select Requester
+      this.selectedRequester = lead_id
+      
+      this.notify.showWidgetStyleUpdateNotification(this.newRequesterCreatedSuccessfullyMsg, 2, 'done');
+
       console.log('Ws-REQUESTS-LIST - CREATE-NEW-USER - CREATE-NEW-LEAD - COMPLETE');
     });
-
-
   }
 
 
@@ -1732,11 +1757,9 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
   validateEmail(mail) {
     if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(mail)) {
-
       return (true)
     }
     console.log('Ws-REQUESTS-LIST - CREATE-NEW-USER - CREATE-NEW-LEAD - validateEmail - You have entered an invalid email address! ');
-
     return (false)
   }
 
@@ -1765,7 +1788,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     // console.log('Ws-REQUESTS-LIST - GET P-USERS-&-LEADS - customSearchFn item.id.toLocaleLowerCase().indexOf(term) : ', item.id.toLocaleLowerCase().indexOf(term));
     console.log('Ws-REQUESTS-LIST - GET P-USERS-&-LEADS - customSearchFn item.name.toLocaleLowerCase().indexOf(term) : ', item.name.toLocaleLowerCase().indexOf(term) > -1);
 
-    return item.name.toLocaleLowerCase().indexOf(term) > -1;
+    return item.name.toLocaleLowerCase().indexOf(term) > -1 || item.email.toLocaleLowerCase().indexOf(term) > -1;
   }
 
 
@@ -1778,8 +1801,6 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     console.log('Ws-REQUESTS-LIST - SELECT REQUESTER searchForUserAndLeads event', event);
   }
 
-  // ----------------------------------------------------------------
-  // @  Create Ticket
 
 
   presentCreateInternalRequestModal() {
@@ -1830,6 +1851,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     });
   }
 
+  // NOT MORE USED  - REPLACED WITH goToInternalRequestDetails
   openTheChaForInternalRequest() {
     this.displayInternalRequestModal = 'none'
     // + '?recipient=' + this.internal_request_id;
