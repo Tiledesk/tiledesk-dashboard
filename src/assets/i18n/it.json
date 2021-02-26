@@ -1815,6 +1815,8 @@
     "CreateTicketOnJira": "Crea ticket su Jira",
     "TicketType":"Tipo Ticket",
     "SelectTicketType":"Seleziona tipo ticket",
-    "CreateJiraTicket": "Crea ticket"
+    "CreateJiraTicket": "Crea ticket",
+    "NameIsRequired": "Il nome è obbligatorio",
+    "NewRequesterCreatedSuccessfully":"Nuovo richiedente creato con successo"
     
 }

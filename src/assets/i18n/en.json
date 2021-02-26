@@ -1820,7 +1820,8 @@
     "CreateTicketOnJira": "Create ticket on Jira",
     "TicketType":"Ticket type",
     "SelectTicketType":"Select ticket type",
-    "CreateJiraTicket": "Create ticket"
+    "CreateJiraTicket": "Create ticket",
+    "NameIsRequired": "Name is required",
+    "NewRequesterCreatedSuccessfully":"New requester created successfully"
     
-
 }

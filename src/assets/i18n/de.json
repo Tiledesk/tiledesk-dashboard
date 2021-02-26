@@ -1819,7 +1819,9 @@
 	"CreateTicketOnJira": "Erstellen Sie ein Ticket für Jira",
 	"TicketType":"Tickettyp",
 	"SelectTicketType":"Wählen Sie Billettart",
-	"CreateJiraTicket": "Ticket erstellen"
+	"CreateJiraTicket": "Ticket erstellen",
+	"NameIsRequired": "Name ist erforderlich",
+	"NewRequesterCreatedSuccessfully":"Neuer Anforderer erfolgreich erstellt"
 	
 	
 }
