@@ -143,6 +143,10 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   loadingRequesters: boolean;
   new_requester_email_is_valid: boolean;
   newRequesterCreatedSuccessfullyMsg: string;
+
+  requester_type: string;
+  id_for_view_requeter_dtls: string
+
   /**
    * Constructor
    * 
@@ -1517,7 +1521,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
 
 
-
+  // NOT USED
   getAllPaginatedContactsRecursevely(page_No) {
     // https://stackoverflow.com/questions/56786261/recursively-combining-http-results-based-on-response
     // https://dev.to/andre347/how-to-use-a-do-while-loop-for-api-pagination-375b
@@ -1627,6 +1631,9 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     }
   }
 
+
+
+
   getProjectUsersAndContacts() {
     this.loadingRequesters = true;
     const projectUsers = this.usersService.getProjectUsersByProjectId();
@@ -1643,7 +1650,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         // + ' (' + p_user.role + ')'
         if (pair && pair._projectUsers) {
           pair._projectUsers.forEach(p_user => {
-            this.projectUserAndLeadsArray.push({ id: p_user.id_user._id, name: p_user.id_user.firstname + ' ' + p_user.id_user.lastname, role: p_user.role, email: p_user.id_user.email, requestertype: 'agent' });
+            this.projectUserAndLeadsArray.push({ id: p_user.id_user._id, name: p_user.id_user.firstname + ' ' + p_user.id_user.lastname, role: p_user.role, email: p_user.id_user.email, requestertype: 'agent', requester_id: p_user._id });
 
           });
         }
@@ -1656,7 +1663,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
             if (lead.email) {
               e_mail = lead.email
             }
-            this.projectUserAndLeadsArray.push({ id: lead.lead_id, name: lead.fullname, role: 'lead', email: e_mail, requestertype: 'lead' });
+            this.projectUserAndLeadsArray.push({ id: lead.lead_id, name: lead.fullname, role: 'lead', email: e_mail, requestertype: 'lead', requester_id: lead._id });
           });
         }
 
@@ -1674,6 +1681,59 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
   }
 
+  selectRequester() {
+    console.log('Ws-REQUESTS-LIST - SELECT REQUESTER ID', this.selectedRequester);
+    console.log('Ws-REQUESTS-LIST - SELECT REQUESTER ROLE',);
+
+    const hasFound = this.projectUserAndLeadsArray.filter((obj: any) => {
+
+      return obj.id === this.selectedRequester;
+
+    });
+
+    console.log('Ws-REQUESTS-LIST - hasFound REQUESTER ', hasFound);
+
+    if (hasFound.length > 0)
+
+      this.id_for_view_requeter_dtls = hasFound[0]['requester_id'],
+        console.log('Ws-REQUESTS-LIST - hasFound REQUESTER id_for_view_requeter_dtls', this.id_for_view_requeter_dtls);
+    if (hasFound[0]['requestertype'] === "agent") {
+
+      this.requester_type = "agent"
+      console.log('Ws-REQUESTS-LIST - hasFound REQUESTER requester_type', this.requester_type);
+    } else {
+      this.requester_type = "lead"
+      console.log('Ws-REQUESTS-LIST - hasFound REQUESTER requester_type', this.requester_type);
+    }
+
+  }
+
+
+  openRequesterDetails() {
+    if (this.selectedRequester) {
+      if (this.requester_type === "agent") {
+        // this.router.navigate(['project/' + this.projectId + '/user/edit/' + this.id_for_view_requeter_dtls]);
+        console.log('Ws-REQUESTS-LIST - hasFound go to ', this.requester_type, ' details')
+
+        const url = this.router.createUrlTree(['project/' + this.projectId + '/user/edit', this.id_for_view_requeter_dtls])
+        console.log('Ws-REQUESTS-LIST - hasFound go to url', url);
+        console.log('Ws-REQUESTS-LIST - hasFound go to url.toString()', url.toString());
+        window.open('#' + url.toString(), '_blank');
+
+      } else if (this.requester_type === "lead") {
+        // this.router.navigate(['project/' + this.projectId + '/contact', this.id_for_view_requeter_dtls]);
+        console.log('Ws-REQUESTS-LIST - hasFound  go to ', this.requester_type, ' details')
+
+        const url = this.router.createUrlTree(['project/' + this.projectId + '/contact', this.id_for_view_requeter_dtls])
+        console.log('Ws-REQUESTS-LIST - hasFound go to url.toString()', url.toString());
+        window.open('#' + url.toString(), '_blank');
+      }
+      // goToContactDetails(requester_id) {
+      //   this.router.navigate(['project/' + this.projectId + '/contact', requester_id]);
+      // }
+    }
+  }
+
   presentModalAddNewRequester() {
     console.log('Ws-REQUESTS-LIST - open modal presentModalAddNewRequester ');
     this.new_requester_email_is_valid = false;
@@ -1683,6 +1743,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     this.new_user_email = undefined;
     this.HAS_CLICKED_CREATE_NEW_LEAD = false
     this.HAS_COMPLETED_CREATE_NEW_LEAD = false
+    this.id_for_view_requeter_dtls = undefined;
   }
 
   closeCreateNewUserModal() {
@@ -1738,7 +1799,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
       // Auto select the new lead crerated in the select Requester
       this.selectedRequester = lead_id
-      
+
       this.notify.showWidgetStyleUpdateNotification(this.newRequesterCreatedSuccessfullyMsg, 2, 'done');
 
       console.log('Ws-REQUESTS-LIST - CREATE-NEW-USER - CREATE-NEW-LEAD - COMPLETE');
@@ -1793,13 +1854,11 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
 
 
-  selectRequester() {
-    console.log('Ws-REQUESTS-LIST - SELECT REQUESTER ID', this.selectedRequester);
-  }
 
-  searchForUserAndLeads(event) {
-    console.log('Ws-REQUESTS-LIST - SELECT REQUESTER searchForUserAndLeads event', event);
-  }
+
+  // searchForUserAndLeads(event) {
+  //   console.log('Ws-REQUESTS-LIST - SELECT REQUESTER searchForUserAndLeads event', event);
+  // }
 
 
 
@@ -1879,6 +1938,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     this.internalRequest_subject = undefined;
     this.assignee_id = undefined;
     this.selectedRequester = undefined;
+    this.id_for_view_requeter_dtls = undefined;
   }
 
 
