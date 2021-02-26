@@ -1821,7 +1821,8 @@
 	"SelectTicketType":"Wählen Sie Billettart",
 	"CreateJiraTicket": "Ticket erstellen",
 	"NameIsRequired": "Name ist erforderlich",
-	"NewRequesterCreatedSuccessfully":"Neuer Anforderer erfolgreich erstellt"
+	"NewRequesterCreatedSuccessfully":"Neuer Anforderer erfolgreich erstellt",
+	"ViewRequesterDetails":"Anfordererdetails anzeigen"
 	
 	
 }

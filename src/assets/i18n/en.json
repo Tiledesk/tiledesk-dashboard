@@ -1822,6 +1822,7 @@
     "SelectTicketType":"Select ticket type",
     "CreateJiraTicket": "Create ticket",
     "NameIsRequired": "Name is required",
-    "NewRequesterCreatedSuccessfully":"New requester created successfully"
+    "NewRequesterCreatedSuccessfully":"New requester created successfully",
+    "ViewRequesterDetails":"View requester details"
     
 }
