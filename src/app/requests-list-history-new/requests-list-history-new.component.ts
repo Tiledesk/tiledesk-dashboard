@@ -554,6 +554,13 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
             //   this.REQUESTER_IS_VERIFIED = false;
             // }
             // request.requester_is_verified = this.REQUESTER_IS_VERIFIED
+
+
+  
+
+
+
+
           }
         }
       }
@@ -641,6 +648,22 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
                 console.log('!! Ws SHARED  (from request list history) participants length', request.participants.length);
                 request['participanting_Agents'] = [{ _id: 'no_agent', email: 'NoAgent', firstname: 'NoAgent', lastname: 'NoAgent' }]
               }
+
+
+              if (request.snapshot && request.snapshot.requester && request.snapshot.requester.isAuthenticated) {
+
+                if (request.snapshot.requester.isAuthenticated === true) {
+                  request['requester_is_verified'] = true;
+                } else {
+                  request['requester_is_verified'] = false;
+                }
+              } else {
+                request['requester_is_verified'] = false;
+                console.log('!!! NEW REQUESTS HISTORY QUI ENTRO')
+              }
+
+
+
             }
           }
         }

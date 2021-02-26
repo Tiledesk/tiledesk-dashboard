@@ -1029,17 +1029,17 @@ l-4.9-13l18-14.8L22.1,34.4z" />
         <div class="row">
 
           <label class="col-sm-12" style="text-align: left; color:#7695a5;">
-            {{ 'Name' | translate }}
+            {{ 'Name' | translate }} <span style="color:rgb(195,46,42)"> *</span>
           </label>
           <div class="col-sm-12" style="margin-bottom: 20px;">
             <input [(ngModel)]="new_user_name" class="input" type="text">
           </div>
 
           <label class="col-sm-12" style="text-align: left; color:#7695a5;">
-            Email
+            Email <span style="color:rgb(195,46,42)"> *</span>
           </label>
           <div class="col-sm-12" style="margin-bottom: 10px;">
-            <input [(ngModel)]="new_user_email" class="input" type="text">
+            <input [(ngModel)]="new_user_email" (ngModelChange)="onChangeNewRequesterEmail($event)" class="input" type="text">
           </div>
         </div>
       </div>
@@ -1048,7 +1048,7 @@ l-4.9-13l18-14.8L22.1,34.4z" />
 
         <!-- [disabled]="internalRequest_message === undefined || internalRequest_deptId === undefined || internalRequest_subject === undefined" -->
         <button *ngIf="HAS_CLICKED_CREATE_NEW_LEAD === false && HAS_COMPLETED_CREATE_NEW_LEAD === false"
-          style="margin-top:0px" class="btn btn-primary" (click)="createNewUser()" style="padding:12px 16px;" [disabled]="new_user_name?.length < 2">
+          style="margin-top:0px" class="btn btn-primary" (click)="createNewUser()" style="padding:12px 16px;" [disabled]="new_user_name?.length < 2 ">
           {{'CreateNewRequester' | translate}}
         </button>
 

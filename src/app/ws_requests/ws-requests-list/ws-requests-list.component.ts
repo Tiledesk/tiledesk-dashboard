@@ -141,6 +141,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   assignee_dept_id: string;
   loadingAssignee: boolean;
   loadingRequesters: boolean;
+  new_requester_email_is_valid: boolean;
   /**
    * Constructor
    * 
@@ -1188,6 +1189,17 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
           // } else {
           //   request['requester_is_verified'] = false;
           // }
+          // request.snapshot.requester.isAuthenticated=true
+          if (request.snapshot && request.snapshot.requester && request.snapshot.requester.isAuthenticated) {
+
+            if (request.snapshot.requester.isAuthenticated === true) {
+              request['requester_is_verified'] = true;
+            } else {
+              request['requester_is_verified'] = false;
+            }
+          } else {
+            request['requester_is_verified'] = false;
+          }
 
         });
 
@@ -1630,7 +1642,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
             if (lead.email) {
               e_mail = lead.email
             }
-            this.projectUserAndLeadsArray.push({ id: lead.lead_id, name: lead.fullname, role: 'lead' , email: e_mail, requestertype: 'lead' });
+            this.projectUserAndLeadsArray.push({ id: lead.lead_id, name: lead.fullname, role: 'lead', email: e_mail, requestertype: 'lead' });
           });
         }
 
@@ -1676,6 +1688,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         if (res.uuid_user) {
           let new_lead_id = res.uuid_user
           this.createNewContact(new_lead_id, this.new_user_name, this.new_user_email)
+
         }
       }
     }, error => {
@@ -1691,8 +1704,8 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   createNewContact(lead_id: string, lead_name: string, lead_email: string) {
     this.contactsService.createNewLead(lead_id, lead_name, lead_email).subscribe(lead => {
       console.log('Ws-REQUESTS-LIST - CREATE-NEW-USER - CREATE-NEW-LEAD -  RES ', lead);
-
-      this.projectUserAndLeadsArray.push({ id: lead.lead_id, name: lead.fullname + ' (lead)' });
+      this.projectUserAndLeadsArray.push({ id: lead.lead_id, name: lead.fullname, role: 'lead', email: lead_email, requestertype: 'lead' });
+      // this.projectUserAndLeadsArray.push({ id: lead.lead_id, name: lead.fullname + ' (lead)' });
       this.projectUserAndLeadsArray = this.projectUserAndLeadsArray.slice(0);
 
     }, error => {
@@ -1705,6 +1718,26 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     });
 
 
+  }
+
+
+  onChangeNewRequesterEmail($event) {
+
+    console.log('Ws-REQUESTS-LIST - CREATE-NEW-USER - CREATE-NEW-LEAD ON CHANGE EMAIL: ', $event);
+
+    this.new_requester_email_is_valid = this.validateEmail($event)
+    console.log('Ws-REQUESTS-LIST - CREATE-NEW-USER - CREATE-NEW-LEAD ON CHANGE EMAIL - EMAIL IS VALID ', this.new_requester_email_is_valid);
+  }
+
+
+  validateEmail(mail) {
+    if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(mail)) {
+
+      return (true)
+    }
+    console.log('Ws-REQUESTS-LIST - CREATE-NEW-USER - CREATE-NEW-LEAD - validateEmail - You have entered an invalid email address! ');
+
+    return (false)
   }
 
 
@@ -1744,6 +1777,9 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   searchForUserAndLeads(event) {
     console.log('Ws-REQUESTS-LIST - SELECT REQUESTER searchForUserAndLeads event', event);
   }
+
+  // ----------------------------------------------------------------
+  // @  Create Ticket
 
 
   presentCreateInternalRequestModal() {

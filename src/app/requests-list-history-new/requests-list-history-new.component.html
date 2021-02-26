@@ -1022,22 +1022,22 @@
                     </span>
                   </span>
 
-                  <!-- [ngClass]="{'requester-verified' : request?.requester_is_verified === true}" -->
+                  <!--  -->
                   <span class="column-td" style="white-space: nowrap;">
 
-                    <span class="lead_data">
+                    <span class="lead_data" [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
                       {{ request?.lead?.fullname }}
                       <span *ngIf="!request?.lead?.fullname"
                         [ngClass]="{'requester_fullname_initial-undefined' : !request?.lead?.fullname}">
                         N/A
                       </span>
 
-                      <!-- [ngClass]="{'requester-verified-email' : request?.requester_is_verified === true}" -->
-                      <span class="requester-email">
+                      <!--  -->
+                      <span class="requester-email" [ngClass]="{'requester-verified-email' : request?.requester_is_verified === true}">
                         {{ request?.lead?.email }}
                       </span>
-                      <!-- [ngClass]="{'requester-verified-email' : request?.requester_is_verified === true}" -->
-                      <span class="requester-email-undefined" *ngIf="!request?.lead?.email">
+                    
+                      <span class="requester-email-undefined" *ngIf="!request?.lead?.email" [ngClass]="{'requester-verified-email' : request?.requester_is_verified === true}">
                         n/a
                       </span>
                     </span>
