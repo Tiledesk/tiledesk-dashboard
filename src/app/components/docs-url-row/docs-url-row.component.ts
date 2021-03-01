@@ -8,6 +8,7 @@ import { Component, OnInit , Input} from '@angular/core';
 export class DocsUrlRowComponent implements OnInit {
   @Input() doctitle: string;
   @Input() docurl: string;
+  @Input() customtext: boolean;
   translateparam: any; 
   constructor() { }
 
@@ -15,7 +16,7 @@ export class DocsUrlRowComponent implements OnInit {
     this.translateparam = { helpdoc: this.doctitle };
     console.log('Docs_Url_Row Component doctitle ', this.doctitle);
     console.log('Docs_Url_Row Component docurl ', this.docurl)  
-
+    console.log('Docs_Url_Row Component customtext ', this.docurl)  
   }
 
 }
