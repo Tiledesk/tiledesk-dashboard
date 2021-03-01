@@ -60,6 +60,7 @@ import { RequestsListHistoryNewComponent } from './requests-list-history-new/req
 import { SigninComponent } from './auth/signin/signin.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { UnauthorizedComponent } from './auth/unauthorized/unauthorized.component';
+import { UnauthorizedForPricingComponent } from './auth/unauthorized-for-pricing/unauthorized-for-pricing.component';
 import { HandleInvitationComponent } from './auth/handle-invitation/handle-invitation.component';
 import { AutologinComponent } from './auth/autologin/autologin.component';
 
@@ -202,6 +203,8 @@ const routes: Routes = [
   { path: 'handle-invitation/:pendinginvitationid/:projectname/:adminfirstname', component: HandleInvitationComponent },
 
   { path: 'project/:projectid/unauthorized', component: UnauthorizedComponent },
+  { path: 'project/:projectid/unauthorized-access', component: UnauthorizedForPricingComponent },
+  
 
   { path: 'userprofile', component: UserProfileComponent },
   // , canActivate: [AuthGuard]
