@@ -1818,6 +1818,8 @@
     "CreateJiraTicket": "Crea ticket",
     "NameIsRequired": "Il nome è obbligatorio",
     "NewRequesterCreatedSuccessfully":"Nuovo richiedente creato con successo",
-    "ViewRequesterDetails":"Vedi dettagli richiedente"
+    "ViewRequesterDetails":"Vedi dettagli richiedente",
+    "OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan":"Solo gli utenti con il ruolo di proprietario possono gestire il piano dell'account",
+    "LearnMoreAboutDefaultRoles":"Ulteriori informazioni sui ruoli predefiniti"
     
 }

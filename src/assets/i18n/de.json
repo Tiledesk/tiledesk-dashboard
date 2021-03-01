@@ -1822,7 +1822,9 @@
 	"CreateJiraTicket": "Ticket erstellen",
 	"NameIsRequired": "Name ist erforderlich",
 	"NewRequesterCreatedSuccessfully":"Neuer Anforderer erfolgreich erstellt",
-	"ViewRequesterDetails":"Anfordererdetails anzeigen"
+	"ViewRequesterDetails":"Anfordererdetails anzeigen",
+	"OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan":"Nur Benutzer mit der Eigentümerrolle können den Plan des Kontos verwalten",
+	"LearnMoreAboutDefaultRoles":"Weitere Informationen zu Standardrollen"
 	
 	
 }
