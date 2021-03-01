@@ -7,8 +7,8 @@
 - Displays, in the modal window Create Ticket > Requester drop-down menu, the email and profile avatar of the requester
 - Adds channel "form" in post request "Create ticket"
 - Improves icons indicating the message channel
-- Adds the icon indicating the form channel to the pages conversations, conversations not in real time, history and conversation details
-- Adds an icon on the requester's avatar to the History, Real-time Request List, and Non-Real Time Request List pages that highlights if the requester is authenticated
+- Adds the icon indicating the form channel to the pages Conversations, Conversations not in real time, History and conversation details
+- Adds an icon on the requester's avatar to the History, Real-time conversations list, and Non-Real-Time Conversations list pages that highlights if the requester is authenticated
 - Adds, in the "Create New Requester" modal window, the validation of the form to create a new contact
 - Adds, in the modal window 'Create ticket' > drop-down list 'Requester', the automatic selection of the new requester created
 - Adds the 'Unauthorized Access' page displayed in case the user attempting to access the 'Pricing' page does not have the owner role
