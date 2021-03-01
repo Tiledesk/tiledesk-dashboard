@@ -739,7 +739,7 @@ p.member:hover {
   font-weight: 500;
   height: 32px;
   margin-left: 4px;
-  background: #e4e6eb;
+  // background: #e4e6eb;
   margin-bottom: 16px;
   // margin-top: 8px;
 }
@@ -753,4 +753,18 @@ p.member:hover {
   display: inline-block;
   position: relative;
   top: 3px;
+}
+
+.email-wpr {
+  background: #bb001b;
+  border-radius: 50%;
+}
+.form-wpr {
+  background: #39988D;
+  border-radius: 50%;
+}
+
+.channel-img-in-conversations {
+  width: 24px;
+  height: 24px;
 }

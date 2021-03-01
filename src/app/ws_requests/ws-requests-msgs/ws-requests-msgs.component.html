@@ -1125,7 +1125,7 @@
               // ------------------------------------------------------ -->
                 <div class="row" style="margin-top:5px">
                   <div class="col-sm-12">
-                    <p [ngClass]="{'yes-margin' : !request?.sourcePage && CHAT_PANEL_MODE === false}"
+                    <p [ngClass]="{'yes-margin' : !request?.sourcePage && CHAT_PANEL_MODE === false, 'no-margin': request?.channel?.name !== 'chat21'}"
                       style="margin-bottom: 0px;">
                       <i class="material-icons"
                         style="vertical-align: middle; color: #394f5a;font-size:16px">account_balance</i>
@@ -1365,10 +1365,10 @@
                       <!-- ---------------------------------------- -->
 
                       <span *ngIf="request?.channel?.name === 'telegram'">
-                        <img class="channel-icon" src="assets/img/channel_icons/telegram-logo_bn.svg" />
+                        <img class="channel-icon" src="assets/img/channel_icons/telegram-logo.svg" />
                       </span>
 
-                      <span style="position: relative;top: 1px;">
+                      <span *ngIf="request?.channel?.name === 'telegram'" style="position: relative;top: 1px;">
                         <span
                           style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
                           {{ 'MessageChannel' | translate }}
@@ -1384,10 +1384,10 @@
                       <!-- ---------------------------------------- -->
 
                       <span *ngIf="request?.channel?.name === 'whatsapp'">
-                        <img class="channel-icon" src="assets/img/channel_icons/whatsapp-logo_bn.svg" />
+                        <img class="channel-icon" src="assets/img/channel_icons/whatsapp-logo.svg" />
                       </span>
 
-                      <span style="position: relative;top: 1px;">
+                      <span *ngIf="request?.channel?.name === 'whatsapp'" style="position: relative;top: 1px;">
                         <span
                           style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
                           {{ 'MessageChannel' | translate }}
@@ -1404,10 +1404,10 @@
                       <!-- Channel - Messenger -->
                       <!-- ---------------------------------------- -->
                       <span *ngIf="request?.channel?.name === 'messenger'">
-                        <img class="channel-icon" src="assets/img/channel_icons/messenger-logo_bn.svg" />
+                        <img class="channel-icon" src="assets/img/channel_icons/messenger-logo.svg" />
                       </span>
 
-                      <span style="position: relative;top: 1px;">
+                      <span *ngIf="request?.channel?.name === 'messenger'" style="position: relative;top: 1px;">
                         <span
                           style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
                           {{ 'MessageChannel' | translate }}
@@ -1423,10 +1423,10 @@
                       <!-- Channel - Email -->
                       <!-- ---------------------------------------- -->
                       <span *ngIf="request?.channel?.name === 'email'">
-                        <img class="channel-icon" src="assets/img/channel_icons/email-logo_bn_v2.svg" />
+                        <img class="channel-icon" src="assets/img/channel_icons/email-logo.svg" />
                       </span>
 
-                      <span style="position: relative;top: 1px;">
+                      <span *ngIf="request?.channel?.name === 'email'" style="position: relative;top: 1px;">
                         <span
                           style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
                           {{ 'MessageChannel' | translate }}
@@ -1436,10 +1436,30 @@
                         </span>
                       </span>
 
-                    </p>
+                      <!-- ---------------------------------------- -->
+                      <!-- Channel - Form -->
+                      <!-- ---------------------------------------- -->
 
+                      <span style="margin-left: 1px;" *ngIf="request?.channel?.name === 'form'">
+                        <img class="channel-icon" src="assets/img/channel_icons/form-logo_v2.svg" />
+                      </span>
+
+                      <span *ngIf="request?.channel?.name === 'form'" style="position: relative;top: 1px;">
+                        <span
+                          style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
+                          {{ 'MessageChannel' | translate }}
+                        </span>
+                        <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
+                          <span>Form</span>
+                        </span>
+                      </span>
+
+                    </p>
                   </div>
                 </div>
+
+
+             
 
 
                 <!-- 

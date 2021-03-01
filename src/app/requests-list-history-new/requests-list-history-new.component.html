@@ -335,12 +335,10 @@
   <!--  ---------------------------------------------------------------- -->
   <!--  Applied filter -->
   <!--  ---------------------------------------------------------------- -->
-  <div style="margin-top: 16px; display: flex; position: relative;margin-bottom: 18px;" 
+  <div style="margin-top: 16px; display: flex; position: relative;margin-bottom: 18px;"
     *ngIf="fullText_applied_filter || startDateFormatted || selectedAgentFirstname || selectedDeptName || requests_status === '200' || requests_status === '100' || selecteTagColor">
 
-    <div
-      
-      class="applied-filter-title">
+    <div class="applied-filter-title">
       {{'AppliedFilters' | translate}}
     </div>
 
@@ -410,26 +408,30 @@
   </div>
 
   <div *ngIf="!IS_HERE_FOR_HISTORY" style="display: flex; position: relative; float: right;top: 51px;z-index: 99; ">
-    <div class="conversations-count"> 
-      <span *ngIf="requests_status === 'all' && !fullText_applied_filter && !startDateFormatted && !selectedAgentFirstname && !selectedDeptName && !selecteTagColor"> 
-      {{ 'TotalConversations' | translate }}: {{requestsCount}}
-    </span>
+    <div class="conversations-count">
+      <span
+        *ngIf="requests_status === 'all' && !fullText_applied_filter && !startDateFormatted && !selectedAgentFirstname && !selectedDeptName && !selecteTagColor">
+        {{ 'TotalConversations' | translate }}: {{requestsCount}}
+      </span>
 
-    <span *ngIf="fullText_applied_filter || startDateFormatted || selectedAgentFirstname || selectedDeptName || requests_status === '200' || requests_status === '100' || selecteTagColor"> 
-      {{ 'ConversationsFound' | translate }}: {{requestsCount}}
-    </span>
+      <span
+        *ngIf="fullText_applied_filter || startDateFormatted || selectedAgentFirstname || selectedDeptName || requests_status === '200' || requests_status === '100' || selecteTagColor">
+        {{ 'ConversationsFound' | translate }}: {{requestsCount}}
+      </span>
     </div>
   </div>
 
   <div *ngIf="IS_HERE_FOR_HISTORY" style="display: flex; position: relative; float: right;top: 51px;z-index: 99; ">
-    <div class="conversations-count"> 
-      <span *ngIf="!fullText_applied_filter && !startDateFormatted && !selectedAgentFirstname && !selectedDeptName && !selecteTagColor"> 
-      {{ 'TotalConversations' | translate }}: {{requestsCount}}
-    </span>
+    <div class="conversations-count">
+      <span
+        *ngIf="!fullText_applied_filter && !startDateFormatted && !selectedAgentFirstname && !selectedDeptName && !selecteTagColor">
+        {{ 'TotalConversations' | translate }}: {{requestsCount}}
+      </span>
 
-    <span *ngIf="fullText_applied_filter || startDateFormatted || selectedAgentFirstname || selectedDeptName || selecteTagColor"> 
-      {{ 'ConversationsFound' | translate }}: {{requestsCount}}
-    </span>
+      <span
+        *ngIf="fullText_applied_filter || startDateFormatted || selectedAgentFirstname || selectedDeptName || selecteTagColor">
+        {{ 'ConversationsFound' | translate }}: {{requestsCount}}
+      </span>
     </div>
   </div>
 
@@ -648,6 +650,9 @@
                   </span>
                 </th>
 
+                <!-- ------ ====== CHANNNEL ====== ------ -->
+                <th> </th>
+
                 <!-- ===== REQUESTER ===== -->
                 <th class="table-header-text">
                   <span class="column-th-span">
@@ -714,7 +719,7 @@
               <!--  IF THERE ISN'T REQUEST -->
               <!--  ------------------------------ -->
               <tr *ngIf="requestList && requestList?.length === 0">
-                <td colspan="9" style="text-align: center; padding-top: 16px; height: 150px;">
+                <td colspan="10" style="text-align: center; padding-top: 16px; height: 150px;">
 
                   <span class="material-icons no-request-icon" style="vertical-align: middle;">
                     sms_failed
@@ -983,6 +988,96 @@
                   </section>
                 </td>
 
+                <!-- ---------------------------------------- -->
+                <!-- Message Channel  -->
+                <!-- ---------------------------------------- -->
+                <td style="width: 1%;">
+                  <!-- ---------------------------------------- -->
+                  <!-- Channel - Telegram -->
+                  <!-- ---------------------------------------- -->
+                  <span *ngIf="request?.channel?.name === 'telegram'" class="tool_tip">
+                  
+                    <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/Telegram-01.svg"
+                      class="img-fluid">
+                    <span class="bottom tool-tip-bottom--custom">
+                      <span style="font-weight: 200;">
+                        {{'MessageChannel' | translate}}:
+                      </span>
+                      <span style="font-weight: 400;">Telegram </span>
+                      <i></i>
+                    </span>
+                  </span>
+                  <!-- ---------------------------------------- -->
+                  <!-- Channel - WhatsApp -->
+                  <!-- ---------------------------------------- -->
+                  <span *ngIf="request?.channel?.name === 'whatsapp'" class="tool_tip">
+                   
+                    <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/whatsapp-logo_green.svg"
+                      class="img-fluid">
+                    <span class="bottom tool-tip-bottom--custom">
+                      <span style="font-weight: 200;">
+                        {{'MessageChannel' | translate}}:
+                      </span>
+                      <span style="font-weight: 400;">WhatsApp </span>
+                      <i></i>
+                    </span>
+                  </span>
+
+                  <!-- ---------------------------------------- -->
+                  <!-- Channel - Messenger -->
+                  <!-- ---------------------------------------- -->
+                  <span *ngIf="request?.channel?.name === 'messenger'" class="tool_tip">
+                  
+                    <img style="width: 24px;height: 24px;"
+                      src="assets/img/channel_icons/Facebook_Messenger_logo_2020.svg" class="img-fluid">
+
+                    <span class="bottom tool-tip-bottom--custom">
+                      <span style="font-weight: 200;">
+                        {{'MessageChannel' | translate}}:
+                      </span>
+
+                      <span style="font-weight: 400;">Messenger </span>
+                      <i></i>
+                    </span>
+                  </span>
+
+                  <!-- ---------------------------------------- -->
+                  <!-- Channel - Email -->
+                  <!-- ---------------------------------------- -->
+                  <span *ngIf="request?.channel?.name === 'email'" class="tool_tip email-wpr">
+                    
+                    <img style="padding:5px !important" src="assets/img/channel_icons/email-logo_white.svg"
+                      class="img-fluid channel-img-in-conversations">
+
+                    <span class="bottom tool-tip-bottom--custom">
+                      <span style="font-weight: 200;">
+                        {{'MessageChannel' | translate}}:
+                      </span>
+                      <span style="font-weight: 400;">Email </span>
+
+                      <i></i>
+                    </span>
+                  </span>
+
+                  <!-- ---------------------------------------- -->
+                  <!-- Channel - Form -->
+                  <!-- ---------------------------------------- -->
+                  <span *ngIf="request?.channel?.name === 'form'" class="tool_tip form-wpr">
+                    
+                    <img style="padding:4px !important" src="assets/img/channel_icons/form-logo_v2_white.svg"
+                      class="img-fluid channel-img-in-conversations">
+
+                    <span class="bottom tool-tip-bottom--custom">
+                      <span style="font-weight: 200;">
+                        {{'MessageChannel' | translate}}:
+                      </span>
+                      <span style="font-weight: 400;">Form </span>
+                      <i></i>
+                    </span>
+                  </span>
+                </td>
+
+
                 <!-- ===== REQUESTER FULL NAME ===== -->
                 <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer;white-space: nowrap;
                   width: 1%;" rel="tooltip" title="{{ request?.requester_id }}">
@@ -1025,7 +1120,8 @@
                   <!--  -->
                   <span class="column-td" style="white-space: nowrap;">
 
-                    <span class="lead_data" [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
+                    <span class="lead_data"
+                      [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
                       {{ request?.lead?.fullname }}
                       <span *ngIf="!request?.lead?.fullname"
                         [ngClass]="{'requester_fullname_initial-undefined' : !request?.lead?.fullname}">
@@ -1033,11 +1129,13 @@
                       </span>
 
                       <!--  -->
-                      <span class="requester-email" [ngClass]="{'requester-verified-email' : request?.requester_is_verified === true}">
+                      <span class="requester-email"
+                        [ngClass]="{'requester-verified-email' : request?.requester_is_verified === true}">
                         {{ request?.lead?.email }}
                       </span>
-                    
-                      <span class="requester-email-undefined" *ngIf="!request?.lead?.email" [ngClass]="{'requester-verified-email' : request?.requester_is_verified === true}">
+
+                      <span class="requester-email-undefined" *ngIf="!request?.lead?.email"
+                        [ngClass]="{'requester-verified-email' : request?.requester_is_verified === true}">
                         n/a
                       </span>
                     </span>

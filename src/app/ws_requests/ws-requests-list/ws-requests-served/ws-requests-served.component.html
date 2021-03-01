@@ -35,7 +35,7 @@
   <!-- *ngIf="!showSpinner" -->
 
   <!--  -->
-  <div class="card-content table-responsive" style="padding-top: 0px;">
+  <div class="card-content table-responsive" style="padding-top: 0px;padding-top: 0px;padding-bottom: 20px;">
     <!-- style="overflow-x:auto;" -->
     <table class="table table-hover served_requests_table">
       <thead class="text">
@@ -302,13 +302,14 @@
             <!-- Channel - Telegram -->
             <!-- ---------------------------------------- -->
             <span *ngIf="request?.channel?.name === 'telegram'" class="tool_tip">
-              <img style="width: 18px;height: 18px;" src="assets/img/channel_icons/512px-Telegram_logo.png"
+              
+              <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/Telegram-01.svg"
                 class="img-fluid">
               <span class="bottom tool-tip-bottom--custom">
-                <span style="display: block;">
-                  {{'MessageChannel' | translate}}
+                <span style="font-weight: 200;">
+                  {{'MessageChannel' | translate}}:
                 </span>
-                Telegram
+                <span style="font-weight: 400;">Telegram  </span> 
                 <i></i>
               </span>
             </span>
@@ -316,14 +317,14 @@
             <!-- Channel - WhatsApp -->
             <!-- ---------------------------------------- -->
             <span *ngIf="request?.channel?.name === 'whatsapp'" class="tool_tip">
-              <!-- src="assets/img/channel_icons/WhatsApp-Logo-512x512.png assets/img/channel_icons/600px-Whatsapp_logo_v2.png" -->
-              <img style="width: 18px;height: 18px;" src="assets/img/channel_icons/WhatsApp-Logo-512x512.png" 
+             
+              <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/whatsapp-logo_green.svg"  
                 class="img-fluid">
               <span class="bottom tool-tip-bottom--custom">
-                <span style="display: block;">
-                  {{'MessageChannel' | translate}}
+                <span style="font-weight: 200;">
+                  {{'MessageChannel' | translate}}:
                 </span>
-                WhatsApp
+                <span style="font-weight: 400;">WhatsApp  </span> 
                 <i></i>
               </span>
             </span>
@@ -332,14 +333,17 @@
             <!-- Channel - Messenger -->
             <!-- ---------------------------------------- -->
             <span *ngIf="request?.channel?.name === 'messenger'" class="tool_tip">
-              <img style="width: 18px;height: 18px;"
-                src="assets/img/channel_icons/512px-Facebook_Messenger_logo_2020.png" class="img-fluid">
+          
+              <img style="width: 24px;height: 24px;"
+              
+                src="assets/img/channel_icons/Facebook_Messenger_logo_2020.svg"   class="img-fluid">
 
               <span class="bottom tool-tip-bottom--custom">
-                <span style="display: block;">
-                  {{'MessageChannel' | translate}}
+                <span style="font-weight: 200;">
+                  {{'MessageChannel' | translate}}:
                 </span>
-                Messenger
+                
+                <span style="font-weight: 400;">Messenger  </span> 
                 <i></i>
               </span>
             </span>
@@ -347,15 +351,34 @@
             <!-- ---------------------------------------- -->
             <!-- Channel - Email -->
             <!-- ---------------------------------------- -->
-            <span *ngIf="request?.channel?.name === 'email'" class="tool_tip">
-              <img style="width: 18px;height: 18px;" src="assets/img/channel_icons/516px-mail-icon.png"
-                class="img-fluid">
+            <span *ngIf="request?.channel?.name === 'email'" class="tool_tip email-wpr">
+              
+              <img style="padding:5px !important" src="assets/img/channel_icons/email-logo_white.svg" 
+                class="img-fluid channel-img-in-conversations">
 
               <span class="bottom tool-tip-bottom--custom">
-                <span style="display: block;">
-                  {{'MessageChannel' | translate}}
+                <span style="font-weight: 200;">
+                  {{'MessageChannel' | translate}}:
                 </span>
-                Email
+                <span style="font-weight: 400;">Email  </span> 
+              
+                <i></i>
+              </span>
+            </span>
+
+                   <!-- ---------------------------------------- -->
+            <!-- Channel - Form -->
+            <!-- ---------------------------------------- -->
+            <span *ngIf="request?.channel?.name === 'form'" class="tool_tip form-wpr">
+              
+              <img style="padding:4px !important" src="assets/img/channel_icons/form-logo_v2_white.svg" 
+                class="img-fluid channel-img-in-conversations">
+
+              <span class="bottom tool-tip-bottom--custom">
+                <span style="font-weight: 200;">
+                  {{'MessageChannel' | translate}}: 
+                </span>
+               <span style="font-weight: 400;">Form  </span> 
                 <i></i>
               </span>
             </span>
