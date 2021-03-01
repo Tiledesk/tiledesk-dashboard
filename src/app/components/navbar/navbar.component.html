@@ -149,7 +149,7 @@
         <ng-container *ngIf="isVisible">
           <li *ngIf="project && prjct_profile_type === 'payment' && HOME_ROUTE_IS_ACTIVE === false">
             <a>
-              <span class="project-plan-nav" style="text-transform:capitalize;padding-right: 8px;padding-left: 14px;">
+              <span class="project-plan-nav" style="text-transform:capitalize;padding-right: 8px;padding-left: 14px;" (click)="goToPayment()">
                 {{ prjct_profile_name }}
               </span>
 
@@ -162,7 +162,7 @@
                 <i class="material-icons" style="vertical-align: middle; color:#f44336; cursor:pointer">
                   error_outline
                 </i>
-                <span class="expired__Tooltiptext" style="font-size:14px; top: 100%;text-transform:none">
+                <span class="expired__Tooltiptext" style="font-size:14px; top: 100%;text-transform:none; cursor: pointer; height: 44px;">
                   {{ 'Pricing.SubscriptionPaymentProblem' | translate }}
                 </span>
               </span>

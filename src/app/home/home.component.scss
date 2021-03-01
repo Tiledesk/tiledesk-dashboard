@@ -242,6 +242,15 @@
   min-width: 50px;
 }
 
+.project-plan-no-link {
+  cursor: unset
+}
+
+.project-plan-no-link:hover  { 
+  opacity: 1;
+
+}
+
 .project-plan:hover {
   opacity: 0.5;
 }

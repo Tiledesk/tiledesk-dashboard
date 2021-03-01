@@ -28,6 +28,7 @@ import { ContactsService } from '../services/contacts.service'; // USED FOR COUN
 import { FaqKbService } from '../services/faq-kb.service'; // USED FOR COUNT OF BOTS FOR THE NEW HOME
 import { avatarPlaceholder, getColorBck } from '../utils/util';
 import { forEach } from '@angular/router/src/utils/collection';
+const swal = require('sweetalert');
 @Component({
   selector: 'home',
   templateUrl: './new-home.component.html',
@@ -99,6 +100,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   isVisibleANA: boolean;
   isVisibleAPP: boolean;
   hidechangelogrocket: boolean;
+  onlyOwnerCanManageTheAccountPlanMsg: string;
+  learnMoreAboutDefaultRoles: string;
   constructor(
     public auth: AuthService,
     private route: ActivatedRoute,
@@ -128,7 +131,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     console.log('!!! Hello HomeComponent! ');
 
     this.getBrowserLanguage();
-    this.translateInstallWidget();
+    this.translateString();
 
 
     // console.log(environment.firebaseConfig.projectId);
@@ -581,12 +584,34 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   // TRANSLATION
+  translateString() {
+    this.translateInstallWidget();
+
+    this.translateModalOnlyOwnerCanManageProjectAccount()
+  }
+
   translateInstallWidget() {
     this.translate.get('InstallTiledeskNowAndStartChatting', this.tparams)
       .subscribe((text: string) => {
 
         this.installWidgetText = text;
         console.log('+ + + translateInstallWidget', text)
+      });
+  }
+
+
+  translateModalOnlyOwnerCanManageProjectAccount() {
+    this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
+      .subscribe((translation: any) => {
+        // console.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        this.onlyOwnerCanManageTheAccountPlanMsg = translation;
+      });
+
+
+    this.translate.get('LearnMoreAboutDefaultRoles')
+      .subscribe((translation: any) => {
+        // console.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        this.learnMoreAboutDefaultRoles = translation;
       });
   }
 
@@ -794,7 +819,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   goToPricingOrOpenModalSubsExpired() {
     console.log('HOME goToPricingOrOpenModalSubsExpired')
-    if (this.USER_ROLE !== 'agent') {
+    if (this.USER_ROLE === 'owner') {
       if (this.prjct_profile_type === 'free') {
 
         this.router.navigate(['project/' + this.projectId + '/pricing']);
@@ -803,9 +828,33 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
         // this.notify.showCheckListModal(true);
+      } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true) {
+        
+        this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
       }
+      
+    } else {
+      this.presentModalOnlyOwnerCanManageTheAccountPlan()
     }
   }
+
+  presentModalOnlyOwnerCanManageTheAccountPlan() {
+    const el = document.createElement('div')
+    el.innerHTML = this.onlyOwnerCanManageTheAccountPlanMsg + '. ' + "<a href='https://docs.tiledesk.com/knowledge-base/understanding-default-roles/' target='_blank'>" + this.learnMoreAboutDefaultRoles + "</a>"
+
+    swal({
+      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
+      content: el,
+      icon: "info",
+      // buttons: true,
+      button: {
+        text: "OK",
+      },
+      dangerMode: false,
+    })
+
+  }
+
 
 
   // RISOLVE lo USE-CASE: L'UTENTE è NELLA HOME DEL PROGETTO A (DI CUI è OWNER)
@@ -1181,7 +1230,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
 
-    // ------------------------------------------------------------------
+  // ------------------------------------------------------------------
   // LAST 7 DAYS CONVERSATIONS GRAPH
   // ------------------------------------------------------------------
   getRequestByLast7Day() {
@@ -1316,7 +1365,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
               label: function (tooltipItem, data) {
 
                 const currentItemValue = tooltipItem.yLabel
-     
+
                 if (lang === 'it') {
                   return 'Conversazioni: ' + currentItemValue;
                 } else {

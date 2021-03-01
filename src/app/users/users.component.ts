@@ -10,6 +10,7 @@ import { Subscription } from 'rxjs';
 import { AppConfigService } from '../services/app-config.service';
 import { environment } from '../../environments/environment';
 import { avatarPlaceholder, getColorBck } from '../utils/util';
+const swal = require('sweetalert');
 
 @Component({
   selector: 'appdashboard-users',
@@ -68,8 +69,6 @@ export class UsersComponent implements OnInit, OnDestroy {
   canceledInviteErrorMsg: string;
   subscription: Subscription;
   isVisible: boolean;
-
-
   storageBucket: string;
   // CHAT_BASE_URL = environment.chat.CHAT_BASE_URL; // moved
   // CHAT_BASE_URL = environment.CHAT_BASE_URL;  // now get from appconfig
@@ -78,6 +77,8 @@ export class UsersComponent implements OnInit, OnDestroy {
   @ViewChildren("divItem") divItems: QueryList<ElementRef>;
   useTrackById = true;
 
+  onlyOwnerCanManageTheAccountPlanMsg: string;
+  learnMoreAboutDefaultRoles: string;
 
   constructor(
     private usersService: UsersService,
@@ -93,11 +94,9 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.auth.checkRoleForCurrentProject();
     this.getStorageBucketAndThenProjectUser();
     console.log('=========== USERS COMP ============')
-    this.translateChangeAvailabilitySuccessMsg();
-    this.translateChangeAvailabilityErrorMsg();
 
-    this.translateRemoveProjectUserSuccessMsg();
-    this.translateRemoveProjectUserErrorMsg();
+    this.translateStrings();
+
 
     this.auth.checkRoleForCurrentProject();
 
@@ -110,13 +109,39 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.getPendingInvitation();
 
     this.getProjectPlan();
+
+    this.getOSCODE();
+
+    this.getChatUrl();
+  }
+
+
+  translateStrings() {
+    this.translateChangeAvailabilitySuccessMsg();
+    this.translateChangeAvailabilityErrorMsg();
+    this.translateRemoveProjectUserSuccessMsg();
+    this.translateRemoveProjectUserErrorMsg();
     this.translateResendInviteSuccessMsg();
     this.translateResendInviteErrorMsg();
     this.translateCanceledInviteSuccessMsg();
     this.translateCanceledInviteErrorMsg();
-    this.getOSCODE();
 
-    this.getChatUrl();
+    this.translateModalOnlyOwnerCanManageProjectAccount()
+  }
+
+  translateModalOnlyOwnerCanManageProjectAccount() {
+    this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
+      .subscribe((translation: any) => {
+        // console.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        this.onlyOwnerCanManageTheAccountPlanMsg = translation;
+      });
+
+
+    this.translate.get('LearnMoreAboutDefaultRoles')
+      .subscribe((translation: any) => {
+        // console.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        this.learnMoreAboutDefaultRoles = translation;
+      });
   }
 
   getChatUrl() {
@@ -298,6 +323,8 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
   goToGroups() {
+    console.log('UsersComponent - goToGroups')
+
     this.router.navigate(['project/' + this.id_project + '/groups']);
   }
 
@@ -336,7 +363,36 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
   openModalSubsExpired() {
-    this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+    if (this.USER_ROLE === 'owner') {
+      this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+    } else {
+      this.presentModalOnlyOwnerCanManageTheAccountPlan();
+    }
+  }
+
+  getMoreOperatorsSeats() {
+    if (this.USER_ROLE === 'owner') {
+      this.notify._displayContactUsModal(true, 'upgrade_plan');
+    } else {
+      this.presentModalOnlyOwnerCanManageTheAccountPlan();
+    }
+  }
+
+  presentModalOnlyOwnerCanManageTheAccountPlan() {
+    // https://github.com/t4t5/sweetalert/issues/845
+    const el = document.createElement('div')
+    el.innerHTML = this.onlyOwnerCanManageTheAccountPlanMsg + '. ' + "<a href='https://docs.tiledesk.com/knowledge-base/understanding-default-roles/' target='_blank'>" + this.learnMoreAboutDefaultRoles + "</a>"
+
+    swal({
+      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
+      content: el,
+      icon: "info",
+      // buttons: true,
+      button: {
+        text: "OK",
+      },
+      dangerMode: false,
+    })
   }
 
   getAllUsersOfCurrentProject(storagebucket) {
@@ -401,9 +457,6 @@ export class UsersComponent implements OnInit, OnDestroy {
       user['fullname_initial'] = 'N/A';
       user['fillColour'] = 'rgb(98, 100, 167)';
     }
-
-
-
   }
 
   checkImageExists(imageUrl, callBack) {
@@ -503,16 +556,18 @@ export class UsersComponent implements OnInit, OnDestroy {
         this.router.navigate(['project/' + this.id_project + '/user/add']);
       } else {
 
-        this.notify._displayContactUsModal(true, 'operators_seats_unavailable');
+        if (this.USER_ROLE === 'owner') {
+          this.notify._displayContactUsModal(true, 'operators_seats_unavailable');
+        } else {
+          this.presentModalOnlyOwnerCanManageTheAccountPlan();
+        }
       }
     } else {
       this.router.navigate(['project/' + this.id_project + '/user/add']);
     }
   }
 
-  getMoreOperatorsSeats() {
-    this.notify._displayContactUsModal(true, 'upgrade_plan');
-  }
+
 
   openDeleteModal(projectUser_id: string, userID: string, userFirstname: string, userLastname: string) {
     this.display = 'block';

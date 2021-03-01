@@ -7,6 +7,8 @@ import { NotifyService } from '../../core/notify.service';
 import { ProjectPlanService } from '../../services/project-plan.service';
 import { StaticPageBaseComponent } from './../static-page-base/static-page-base.component';
 import { Subscription } from 'rxjs';
+import { UsersService } from '../../services/users.service';
+const swal = require('sweetalert');
 
 @Component({
   selector: 'appdashboard-activities-static',
@@ -28,6 +30,10 @@ export class ActivitiesStaticComponent extends StaticPageBaseComponent implement
 
   subscription: Subscription;
 
+  USER_ROLE: string;
+  onlyOwnerCanManageTheAccountPlanMsg: string;
+  learnMoreAboutDefaultRoles: string;
+
   public myDatePickerOptions: IMyDpOptions = {
     // other options...
     dateFormat: 'dd/mm/yyyy',
@@ -39,7 +45,8 @@ export class ActivitiesStaticComponent extends StaticPageBaseComponent implement
     public auth: AuthService,
     private router: Router,
     private prjctPlanService: ProjectPlanService,
-    private notify: NotifyService
+    private notify: NotifyService,
+    private usersService: UsersService
   ) {
     super();
   }
@@ -49,7 +56,37 @@ export class ActivitiesStaticComponent extends StaticPageBaseComponent implement
     this.getCurrentProject();
     this.getBrowserLang();
     this.getProjectPlan();
+
+    this.getProjectUserRole();
+    this.getTranslationStrings();
   }
+
+  getProjectUserRole() {
+    this.usersService.project_user_role_bs.subscribe((user_role) => {
+      this.USER_ROLE = user_role;
+      console.log('USERS-COMP - PROJECT USER ROLE: ', this.USER_ROLE);
+    });
+  }
+
+  getTranslationStrings() {
+    this.translateModalOnlyOwnerCanManageProjectAccount()
+  }
+
+  translateModalOnlyOwnerCanManageProjectAccount() {
+    this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
+      .subscribe((translation: any) => {
+        // console.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        this.onlyOwnerCanManageTheAccountPlanMsg = translation;
+      });
+
+
+    this.translate.get('LearnMoreAboutDefaultRoles')
+      .subscribe((translation: any) => {
+        // console.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        this.learnMoreAboutDefaultRoles = translation;
+      });
+  }
+
   getBrowserLang() {
     this.browserLang = this.translate.getBrowserLang();
   }
@@ -58,8 +95,6 @@ export class ActivitiesStaticComponent extends StaticPageBaseComponent implement
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
       console.log('ProjectPlanService (ActivitiesStaticComponent) project Profile Data', projectProfileData)
       if (projectProfileData) {
-
-
 
         this.prjct_profile_type = projectProfileData.profile_type;
         this.subscription_is_active = projectProfileData.subscription_is_active;
@@ -70,12 +105,41 @@ export class ActivitiesStaticComponent extends StaticPageBaseComponent implement
 
         if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
 
-
-          this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date)
+          if (this.USER_ROLE === 'owner') {
+            this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date)
+          }
         }
-
-
       }
+    })
+  }
+
+
+  goToPricing() {
+    if (this.USER_ROLE === 'owner') {
+      if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+        this.notify._displayContactUsModal(true, 'upgrade_plan');
+      } else {
+        this.router.navigate(['project/' + this.projectId + '/pricing']);
+      }
+    } else {
+      this.presentModalOnlyOwnerCanManageTheAccountPlan();
+    }
+  }
+
+  presentModalOnlyOwnerCanManageTheAccountPlan() {
+    // https://github.com/t4t5/sweetalert/issues/845
+    const el = document.createElement('div')
+    el.innerHTML = this.onlyOwnerCanManageTheAccountPlanMsg + '. ' + "<a href='https://docs.tiledesk.com/knowledge-base/understanding-default-roles/' target='_blank'>" + this.learnMoreAboutDefaultRoles + "</a>"
+
+    swal({
+      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
+      content: el,
+      icon: "info",
+      // buttons: true,
+      button: {
+        text: "OK",
+      },
+      dangerMode: false,
     })
   }
 
@@ -141,12 +205,6 @@ export class ActivitiesStaticComponent extends StaticPageBaseComponent implement
   }
 
 
-  goToPricing() {
-    if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-      this.notify._displayContactUsModal(true, 'upgrade_plan');
-    } else {
-      this.router.navigate(['project/' + this.projectId + '/pricing']);
-    }
-  }
+
 
 }

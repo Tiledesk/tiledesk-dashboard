@@ -34,6 +34,8 @@ import { Subscription } from 'rxjs/Subscription';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from './../../services/brand.service';
 import { LocalDbService } from '../../services/users-local-db.service';
+const swal = require('sweetalert');
+
 
 @Component({
     selector: 'app-navbar',
@@ -135,6 +137,9 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     TESTSITE_BASE_URL: string;
     projectName: string;
 
+    onlyOwnerCanManageTheAccountPlanMsg: string;
+    learnMoreAboutDefaultRoles: string;
+
     constructor(
         location: Location,
         private element: ElementRef,
@@ -228,7 +233,28 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         this.setNotificationSound();
         this.getTestSiteUrl();
 
+        this.translateStrings()
+
     } // OnInit
+
+    translateStrings() {
+        this.translateModalOnlyOwnerCanManageProjectAccount()
+    }
+
+    translateModalOnlyOwnerCanManageProjectAccount() {
+        this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
+            .subscribe((translation: any) => {
+                // console.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
+                this.onlyOwnerCanManageTheAccountPlanMsg = translation;
+            });
+
+
+        this.translate.get('LearnMoreAboutDefaultRoles')
+            .subscribe((translation: any) => {
+                // console.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
+                this.learnMoreAboutDefaultRoles = translation;
+            });
+    }
 
     setNotificationSound() {
         // NOTIFICATION_SOUND = 'enabled';
@@ -255,12 +281,15 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     }
 
     getProjectUserRole() {
+        // const user___role =  this.usersService.project_user_role_bs.value;
+        // console.log('% »»» WebSocketJs WF +++++ ws-requests--- navbar - USER ROLE 1 ', user___role);
+
         this.usersService.project_user_role_bs
             .pipe(
                 takeUntil(this.unsubscribe$)
             )
             .subscribe((user_role) => {
-                console.log('% »»» WebSocketJs WF +++++ ws-requests--- navbar - USER ROLE ', user_role);
+                console.log('% »»» WebSocketJs WF +++++ ws-requests--- navbar - USER ROLE 2', user_role);
                 if (user_role) {
                     this.USER_ROLE = user_role
                     if (user_role === 'agent') {
@@ -691,7 +720,11 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
 
     openModalSubsExpired() {
-        this.notifyService.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+        if (this.USER_ROLE === 'owner') {
+            this.notifyService.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+        } else {
+            this.presentModalOnlyOwnerCanManageTheAccountPlan()
+        }
     }
 
     round5(x) {
@@ -702,9 +735,42 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     }
 
     goToPricing() {
-        if (this.ROLE_IS_AGENT === false) {
+        // if (this.ROLE_IS_AGENT === false) {
+        if (this.USER_ROLE === 'owner') {
             this.router.navigate(['project/' + this.projectId + '/pricing']);
+        } else {
+
+            this.presentModalOnlyOwnerCanManageTheAccountPlan()
         }
+    }
+
+    goToPayment() {
+
+        if (this.USER_ROLE === 'owner') {
+            if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true) {
+                this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
+            }
+        } else {
+            this.presentModalOnlyOwnerCanManageTheAccountPlan()
+        }
+    }
+
+
+    presentModalOnlyOwnerCanManageTheAccountPlan() {
+        const el = document.createElement('div')
+        el.innerHTML = this.onlyOwnerCanManageTheAccountPlanMsg + '. ' + "<a href='https://docs.tiledesk.com/knowledge-base/understanding-default-roles/' target='_blank'>" + this.learnMoreAboutDefaultRoles + "</a>"
+
+        swal({
+            // title: this.onlyOwnerCanManageTheAccountPlanMsg,
+            content: el,
+            icon: "info",
+            // buttons: true,
+            button: {
+                text: "OK",
+            },
+            dangerMode: false,
+        })
+
     }
 
     getLoggedUser() {
@@ -754,7 +820,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         project_trial_days_left: number,
         activeOperatingHours: boolean) {
         // console.log('!NAVBAR  goToHome prjct ', prjct)
-        console.log('!NAVBAR  goToHome id_project ', id_project, 'project_name', project_name, 'project_trial_expired ', project_trial_expired , 'project_trial_days_left ', project_trial_days_left, ' activeOperatingHours ', activeOperatingHours)
+        console.log('!NAVBAR  goToHome id_project ', id_project, 'project_name', project_name, 'project_trial_expired ', project_trial_expired, 'project_trial_days_left ', project_trial_days_left, ' activeOperatingHours ', activeOperatingHours)
         // RUNS ONLY IF THE THE USER CLICK OVER A PROJECT WITH THE ID DIFFERENT FROM THE CURRENT PROJECT ID
         if (id_project !== this.projectId) {
             // this.subscription.unsubscribe();
@@ -806,7 +872,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     testWidgetPage() {
         const simulateVisitorBtnElem = <HTMLElement>document.querySelector('.simulate-visitor-btn');
         simulateVisitorBtnElem.blur();
-        
+
         const url = this.TESTSITE_BASE_URL + '?tiledesk_projectid=' + this.projectId + '&project_name=' + this.projectName + '&isOpen=true'
         window.open(url, '_blank');
     }

@@ -526,3 +526,8 @@ $f21blue: #039be5;
   opacity: 0.4;
 }
 
+.payment-is-disabled {
+  pointer-events:none; //This makes it not clickable
+  opacity:0.6;  
+}
+

@@ -22,6 +22,7 @@ import { takeUntil } from 'rxjs/operators'
 
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../services/brand.service';
+const swal = require('sweetalert');
 
 @Component({
   selector: 'app-project-edit-add',
@@ -135,6 +136,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   assigned_conv_on: boolean;
   unassigned_conv_on: boolean;
+  USER_ROLE: string;
+
+  onlyOwnerCanManageTheAccountPlanMsg: string;
+  learnMoreAboutDefaultRoles : string;
 
   constructor(
     private projectService: ProjectService,
@@ -149,10 +154,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     public appConfigService: AppConfigService,
     public brandService: BrandService
 
-  ) {  
+  ) {
     const brand = brandService.getBrand();
     this.tparams = brand;
-  
+
   }
 
   ngOnInit() {
@@ -163,15 +168,16 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
     this.listenCancelSubscription();
 
-    this.translateMsgSubscriptionCanceledSuccessfully();
-    this.translateMsgSubscriptionCanceledError();
+    this.translateStrings()
+
+   
 
     this.getProjectId();
     this.getBrowserLanguage();
     this.getOSCODE();
     this.getAllUsersOfCurrentProject();
     this.getPendingInvitation();
-    this.translateNotificationMsgs();
+   
     this.getProjectUserRole();
     //this.checkCurrentStatus();
   }
@@ -184,6 +190,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       .subscribe((user_role) => {
         console.log('PROJECT-EDIT-ADD  USER ROLE ', user_role);
         if (user_role) {
+          this.USER_ROLE = user_role
           if (user_role === 'owner') {
 
             this.DISPLAY_DELETE_PRJCT_BTN = true
@@ -193,6 +200,13 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           }
         }
       });
+  }
+
+  translateStrings() {
+    this.translateNotificationMsgs();
+    this.translateMsgSubscriptionCanceledSuccessfully();
+    this.translateMsgSubscriptionCanceledError();
+    this.translateModalOnlyOwnerCanManageProjectAccount()
   }
 
 
@@ -210,14 +224,29 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
     this.translate.get('NotificationNothingToSave')
       .subscribe((translation: any) => {
-        console.log('PROJECT-EDIT-ADD  translateNotificationMsgs text', translation)
+        // console.log('PROJECT-EDIT-ADD  translateNotificationMsgs text', translation)
 
         this.notificationNothingToSave = translation;
 
       });
+
   }
 
 
+  translateModalOnlyOwnerCanManageProjectAccount() {
+    this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
+      .subscribe((translation: any) => {
+        // console.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        this.onlyOwnerCanManageTheAccountPlanMsg = translation;
+      });
+
+    
+    this.translate.get('LearnMoreAboutDefaultRoles')
+      .subscribe((translation: any) => {
+        // console.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        this.learnMoreAboutDefaultRoles = translation;
+      });
+  }
 
 
   getPendingInvitation() {
@@ -288,7 +317,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         }
       }
 
-      if(key.includes("DEV")) {
+      if (key.includes("DEV")) {
         console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
         let dev = key.split(":");
         console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - dev key&value', dev);
@@ -299,11 +328,11 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         }
       }
 
-      if(key.includes("NOT")) {
+      if (key.includes("NOT")) {
         console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
         let not = key.split(":");
         console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - not key&value', not);
-        if(not[1] === "F") {
+        if (not[1] === "F") {
           this.isVisibleNotificationTab = false;
         } else {
           this.isVisibleNotificationTab = true;
@@ -322,12 +351,12 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.isVisibleAdvancedTab = false;
     }
 
-    if (!this.public_Key.includes("DEV")) { 
+    if (!this.public_Key.includes("DEV")) {
       console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("DEV")', this.public_Key.includes("DEV"));
       this.isVisibleDeveloperTab = false;
     }
 
-    if(!this.public_Key.includes("NOT")) {
+    if (!this.public_Key.includes("NOT")) {
       console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("NOT")', this.public_Key.includes("NOT"));
       this.isVisibleNotificationTab = false;
     }
@@ -356,7 +385,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     if (nav_project_id === '5ec688ed13400f0012c2edc2') {
 
       this.isUNIS = true;
-      
+
       // this.isVisibleAdvancedTab = true;
       // this.DISPLAY_ADVANCED_TAB = true;
       console.log('%ProjectEditAddComponent isUNIS ', this.isUNIS);
@@ -444,9 +473,9 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       // console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_PAYMENTS_ROUTE ', this.PROJECT_SETTINGS_PAYMENTS_ROUTE);
       // console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_AUTH_ROUTE ', this.PROJECT_SETTINGS_AUTH_ROUTE);
       // console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_ADVANCED_ROUTE ', this.PROJECT_SETTINGS_ADVANCED_ROUTE);
-    } 
+    }
 
-    else if(
+    else if (
       (currentUrl.indexOf('/project-settings/general') === -1) &&
       (currentUrl.indexOf('/project-settings/payments') === -1) &&
       (currentUrl.indexOf('/project-settings/auth') === -1) &&
@@ -464,9 +493,38 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
 
   goToProjectSettings_Payments() {
-    console.log('%ProjectEditAddComponent HAS CLICKED goToProjectSettings_Payments ');
-    this.router.navigate(['project/' + this.id_project + '/project-settings/payments']);
+    console.log('%ProjectEditAddComponent HAS CLICKED goToProjectSettings_Payments USER_ROLE ', this.USER_ROLE);
+    if (this.USER_ROLE === 'owner') {
+
+      console.log('%ProjectEditAddComponent HAS CLICKED goToProjectSettings_Payments ');
+      this.router.navigate(['project/' + this.id_project + '/project-settings/payments']);
+
+    } else {
+
+      this.presentModalOnlyOwnerCanManageTheAccountPlan()
+
+
+    }
   }
+
+  presentModalOnlyOwnerCanManageTheAccountPlan() {
+    // https://github.com/t4t5/sweetalert/issues/845
+    const el = document.createElement('div')
+    el.innerHTML = this.onlyOwnerCanManageTheAccountPlanMsg + '. ' + "<a href='https://docs.tiledesk.com/knowledge-base/understanding-default-roles/' target='_blank'>" + this.learnMoreAboutDefaultRoles + "</a>"
+
+    swal({
+      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
+      content: el,
+      icon: "info",
+      // buttons: true,
+      button: {
+        text: "OK",
+      },
+      dangerMode: false,
+    })
+  }
+
+
 
   goToProjectSettings_General() {
     console.log('%ProjectEditAddComponent HAS CLICKED goToProjectSettings_General ');
@@ -836,13 +894,13 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
             // Check Notification Status - START
             if (project.settings.email.notification) {
               if (project.settings.email.notification.conversation) {
-                
+
                 if (project.settings.email.notification.conversation.assigned === true) {
                   this.assigned_conv_on = true;
                 } else {
                   this.assigned_conv_on = false;
                 }
-    
+
                 if (project.settings.email.notification.conversation.pooled === true) {
                   this.unassigned_conv_on = true;
                 } else {
@@ -1010,7 +1068,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     }).catch((err) => {
       console.log("Error during preferences updating: ", err)
       this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem')
-    }) 
+    })
   }
 
 
@@ -1092,7 +1150,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
             console.log('PRJCT-EDIT-ADD - STORED PROJECT OBJ - PRJ NAME ', storedProjectName);
             const storedProjectId = projectObject['_id'];
             console.log('PRJCT-EDIT-ADD - STORED PROJECT OBJ - PRJ ID ', storedProjectId);
-            const storedProjectOH = projectObject['operatingHours'];   
+            const storedProjectOH = projectObject['operatingHours'];
 
             if (storedProjectName !== prjct.name) {
 
@@ -1330,5 +1388,5 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   viewCancelSubscription() {
     this.notify.displayCancelSubscriptionModal(true);
   }
-  
+
 }

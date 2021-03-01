@@ -54,7 +54,8 @@
                 {{ prjct_name }}
               </span>
               <span *ngIf="isVisible">
-                <span class="project-plan" (click)="goToPricingOrOpenModalSubsExpired()"
+                <!-- [ngClass]="{'project-plan-no-link': prjct_profile_type === ''payment' && subscription_is_active !== false}" -->
+                <span class="project-plan"  (click)="goToPricingOrOpenModalSubsExpired()"
                   style="text-transform:capitalize">
                   {{ prjct_profile_name }}
                 </span>

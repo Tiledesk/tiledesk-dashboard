@@ -13,6 +13,7 @@ import { AppConfigService } from '../services/app-config.service';
 import { Location } from '@angular/common';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../services/brand.service';
+const swal = require('sweetalert');
 
 @Component({
   selector: 'app-user-edit-add',
@@ -80,6 +81,8 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
   isVisibleAdvancedFeatureChatLimit: boolean
   isUNIS: boolean = false;
 
+  onlyOwnerCanManageTheAccountPlanMsg: string;
+  learnMoreAboutDefaultRoles : string;
   constructor(
     private router: Router,
     private auth: AuthService,
@@ -132,7 +135,6 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
 
 
   getCurrentUrl() {
-
     const currentUrl = this.router.url;
     console.log('%ProjectEditAddComponent (user-edit-add) current_url ', currentUrl);
 
@@ -235,6 +237,23 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
         this.anErrorOccurredWhileUpdatingNoticationMsg = text;
         // console.log('+ + + change Availability Error Notication Msg', text)
       });
+
+      this.translateModalOnlyOwnerCanManageProjectAccount()
+  }
+
+  translateModalOnlyOwnerCanManageProjectAccount() {
+    this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
+      .subscribe((translation: any) => {
+        // console.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        this.onlyOwnerCanManageTheAccountPlanMsg = translation;
+      });
+
+    
+    this.translate.get('LearnMoreAboutDefaultRoles')
+      .subscribe((translation: any) => {
+        // console.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        this.learnMoreAboutDefaultRoles = translation;
+      });
   }
 
   getStorageBucket() {
@@ -297,7 +316,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
 
   // NOTE: IF THE PLAN IS OF FREE TYPE IN THE USER INTERFACE THE MODAL 'YOU SUBSCRIPTION HAS EXPIRED' IS NOT DISPLAYED
   buildPlanName(planName: string, browserLang: string, planType: string) {
-    console.log('StaticPageBaseComponent planName ', planName, ' browserLang  ', browserLang);
+    console.log('UserEditAddComponent planName ', planName, ' browserLang  ', browserLang);
 
     if (planType === 'payment') {
       if (browserLang === 'it') {
@@ -315,8 +334,34 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
   }
 
   openModalSubsExpired() {
+    console.log('UserEditAddComponent openModalSubsExpired ');
+
+    if (this.CURRENT_USER_ROLE === 'owner') {
     this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+    } else {
+      this.presentModalOnlyOwnerCanManageTheAccountPlan();
+    }
   }
+
+  presentModalOnlyOwnerCanManageTheAccountPlan() {
+    // https://github.com/t4t5/sweetalert/issues/845
+    const el = document.createElement('div')
+    el.innerHTML = this.onlyOwnerCanManageTheAccountPlanMsg + '. ' + "<a href='https://docs.tiledesk.com/knowledge-base/understanding-default-roles/' target='_blank'>" + this.learnMoreAboutDefaultRoles + "</a>"
+
+    swal({
+      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
+      content: el,
+      icon: "info",
+      // buttons: true,
+      button: {
+        text: "OK",
+      },
+      dangerMode: false,
+    })
+  }
+
+
+
 
   getPendingInvitation() {
     this.usersService.getPendingUsers()
@@ -413,7 +458,6 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
   }
 
   updateUserRoleAndMaxchat() {
-
     const update_project_user_btn = <HTMLElement>document.querySelector('.update-pu-btn');
     console.log('!!! CONTACTS - SEARCH BTN ', update_project_user_btn)
     update_project_user_btn.blur();

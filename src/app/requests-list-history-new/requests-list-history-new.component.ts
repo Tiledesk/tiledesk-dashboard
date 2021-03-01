@@ -149,6 +149,9 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
   showIndeterminate = false;
   has_searched = false;
 
+  onlyOwnerCanManageTheAccountPlanMsg: string;
+  learnMoreAboutDefaultRoles: string;
+
   public myDatePickerOptions: IMyDpOptions = {
     // other options...
     dateFormat: 'dd/mm/yyyy',
@@ -193,7 +196,7 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
   allConversationsaveBeenArchivedMsg: string;
   ROLE_IS_AGENT: boolean;
   CHAT_BASE_URL: string;
- 
+
 
   constructor(
     // private requestsService: RequestsService,
@@ -266,6 +269,23 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
     this.translateRequestHasBeenArchivedNoticationMsg_part2();
 
     this.translateAllConversationsHaveBeenArchived()
+
+    this.translateModalOnlyOwnerCanManageProjectAccount()
+  }
+
+  translateModalOnlyOwnerCanManageProjectAccount() {
+    this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
+      .subscribe((translation: any) => {
+        // console.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        this.onlyOwnerCanManageTheAccountPlanMsg = translation;
+      });
+
+
+    this.translate.get('LearnMoreAboutDefaultRoles')
+      .subscribe((translation: any) => {
+        // console.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        this.learnMoreAboutDefaultRoles = translation;
+      });
   }
 
   translateAllConversationsHaveBeenArchived() {
@@ -556,7 +576,7 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
             // request.requester_is_verified = this.REQUESTER_IS_VERIFIED
 
 
-  
+
 
 
 
@@ -586,7 +606,7 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
         console.log('!!! NEW REQUESTS HISTORY - GET REQUESTS ', requests['requests']);
         console.log('!!! NEW REQUESTS HISTORY - GET REQUESTS COUNT ', requests['count']);
 
-       
+
         if (requests) {
           this.requestsCount = requests['count'];
           console.log('!!! NEW REQUESTS HISTORY - GET REQUESTS COUNT ', this.requestsCount);
@@ -796,12 +816,36 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
   }
 
   openModalSubsExpiredOrGoToPricing() {
-    if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-      this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
-    }
-    if (this.prjct_profile_type === 'free' && this.trial_expired === true) {
-      this.router.navigate(['project/' + this.projectId + '/pricing']);
-    }
+    if (this.CURRENT_USER_ROLE === 'owner') {
+
+      if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+        this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+      }
+      if (this.prjct_profile_type === 'free' && this.trial_expired === true) {
+        this.router.navigate(['project/' + this.projectId + '/pricing']);
+      }
+    } else {
+
+      this.presentModalOnlyOwnerCanManageTheAccountPlan();
+     }
+  }
+
+
+  presentModalOnlyOwnerCanManageTheAccountPlan() {
+    // https://github.com/t4t5/sweetalert/issues/845
+    const el = document.createElement('div')
+    el.innerHTML = this.onlyOwnerCanManageTheAccountPlanMsg + '. ' + "<a href='https://docs.tiledesk.com/knowledge-base/understanding-default-roles/' target='_blank'>" + this.learnMoreAboutDefaultRoles + "</a>"
+
+    swal({
+      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
+      content: el,
+      icon: "info",
+      // buttons: true,
+      button: {
+        text: "OK",
+      },
+      dangerMode: false,
+    })
   }
 
 
@@ -944,8 +988,8 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
       return tag.name === this.selecteTagName;
     });
     console.log('!!! NEW REQUESTS HISTORY TAGS - selecteTag ', selecteTag);
-   
-    if (selecteTag.length > 0 ) {
+
+    if (selecteTag.length > 0) {
       this.selecteTagColor_temp = selecteTag[0]['color']
     }
   }
@@ -1233,7 +1277,7 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
 
     if (this.selecteTagName) {
       this.selecteTagNameValue = this.selecteTagName
-     
+
     } else {
       this.selecteTagNameValue = '';
       this.selecteTagColor = null
@@ -1296,7 +1340,7 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
     this.fullText_applied_filter = null;
     this.selecteTagName = null
     this.selecteTagColor = null
-   
+
 
     // tslint:disable-next-line:max-line-length
     this.queryString = 'full_text=' + '&' + 'dept_id=' + '&' + 'start_date=' + '&' + 'end_date=' + '&' + 'participant=' + '&' + 'requester_email=' + '&' + 'tags=';
