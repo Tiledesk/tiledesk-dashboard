@@ -478,11 +478,43 @@ export class AuthService {
         }
       }
     }
-    //  else {
-
-    // }
- 
   }
+
+  // USED FOR PRICING WHOSE ACCESS IS PERMITTED ONLY TO THE OWNERS
+  checkRoleForCurrentProjectAndRedirectAdminAndAgent() {
+    console.log('!! »»»»» AUTH SERV - CHECK ROLE »»»»» CALLING CHECK-ROLE-FOR-CURRENT-PRJCT AND BLOCK ADMIN AND AGEBT');
+ 
+    let project_id = ''
+    if (this.nav_project_id !== undefined) {
+      project_id = this.nav_project_id
+    } else {
+      project_id = this.selected_project_id
+    }
+
+    const storedProjectJson = localStorage.getItem(project_id);
+    console.log('!! »»»»» AUTH SERV - CHECK ROLE - JSON OF STORED PROJECT iD', project_id);
+    console.log('!! »»»»» AUTH SERV - CHECK ROLE - JSON OF STORED PROJECT', storedProjectJson);
+    if (storedProjectJson) {
+
+      const storedProjectObject = JSON.parse(storedProjectJson);
+      console.log('!! »»»»» AUTH SERV - CHECK ROLE - OBJECT OF STORED PROJECT', storedProjectObject);
+
+      this._user_role = storedProjectObject['role'];
+
+      if (this._user_role) {
+        if (this._user_role === 'agent' || this._user_role === 'admin' || this._user_role === undefined) {
+          console.log('!! »»»»» AUTH SERV - CHECK ROLE (GOT FROM STORAGE) »»» ', this._user_role);
+
+          this.router.navigate([`project/${project_id}/unauthorized-access`]);
+          // this.router.navigate(['/unauthorized']);
+        } else {
+          console.log('!! »»»»» AUTH SERV - CHECK ROLE (GOT FROM STORAGE) »»» ', this._user_role)
+        }
+      }
+    }
+  }
+
+  
 
   // !!! NO MORE USED
   // WHEN THE PAGE IS RELOADED THE project_id RETURNED FROM THE SUBSCRIPTION IS NULL SO IT IS GET FROM LOCAL STORAGE
