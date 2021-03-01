@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.1.32
+- Improves the shared component that contains links to documentation
+
 ### 2.1.31
 - Renames, in the conversation list page, create internal request in create ticket
 - Filter, in the modal window Create Ticket > Requester drop-down menu, only the contacts that have the name
