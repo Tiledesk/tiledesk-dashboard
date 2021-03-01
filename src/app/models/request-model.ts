@@ -67,6 +67,9 @@ export interface Request {
   ua_browser?: string;
   ua_os?: string;
   participanting_Agents?: any;
+  subject?: string;
+  first_response_at?: string;
+  waiting_time?: number;
   // ./wsrequet
 
   hasAgent?(user_id: string): boolean;
