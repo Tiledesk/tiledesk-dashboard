@@ -525,6 +525,12 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
    * USED TO POPULATE THE DROP-DOWN LIST 'GROUPS' ASSOCIATED TO THE ASSIGNED ANF POOLED ROUTING
    */
   getGroupsByProjectId() {
+
+    if (this.SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR === true) {
+      console.log('DEPT EDIT-ADD -  + + GET GROUPS  SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR', this.new_group_created_id);
+
+      this.selectedGroupId = this.new_group_created_id;
+    }
     // this.HAS_COMPLETED_GET_GROUPS = false
     this.groupService.getGroupsByProjectId().subscribe((groups: any) => {
       console.log('DEPT EDIT-ADD - GROUPS GET BY PROJECT ID', groups);
@@ -581,11 +587,11 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
         //   this.new_group_created_id = event
         // this.SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR = true
 
-        if (this.SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR === true) {
-          console.log('DEPT EDIT-ADD -  + + GET GROUPS  SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR', this.new_group_created_id);
+        // if (this.SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR === true) {
+        //   console.log('DEPT EDIT-ADD -  + + GET GROUPS  SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR', this.new_group_created_id);
 
-          this.selectedGroupId = this.new_group_created_id;
-        }
+        //   this.selectedGroupId = this.new_group_created_id;
+        // }
 
       });
   }

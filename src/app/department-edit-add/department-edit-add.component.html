@@ -538,17 +538,13 @@
       <!-- /. col-md-4 -->
 
 
-      <!-- 
-      // ---------------------------------------------------
-      // RIGHT SIDEBAR in EDIT VIEW
-      // --------------------------------------------------- -->
+      
+      <!--  --------------------------------------------------- -->
+      <!--  RIGHT SIDEBAR in EDIT VIEW -->
+      <!--  --------------------------------------------------- -->
       <div id="right_edit_card" *ngIf="EDIT_VIEW" class="col-sm-4 col-md-4 no_padding_right_col"
         [ngClass]="{'sidebar-hidden-767': OPEN_CREATE_GROUP_RIGHT_SIDEBAR}">
         <div class="card" style="padding-top: 8px;margin-top: 5px;">
-
-
-          <!-- border-bottom: 1px solid #eeeeee;  -->
-
 
           <loading-spinner *ngIf="showSpinner"></loading-spinner>
           <div *ngIf="!showSpinner" class="card-content" style="padding-top: 0px;">
