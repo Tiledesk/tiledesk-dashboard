@@ -10,6 +10,8 @@ import { Subscription } from 'rxjs';
 import { AppConfigService } from '../services/app-config.service';
 import { environment } from '../../environments/environment';
 import { avatarPlaceholder, getColorBck } from '../utils/util';
+import { helpdocurl_users_role } from '../utils/util';
+
 const swal = require('sweetalert');
 
 @Component({
@@ -79,6 +81,12 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
+
+    // input passed to docs-url-row
+    trigger_docs_url = helpdocurl_users_role;
+    trigger_docs_title = ''; // is diplayed if customtext = false
+    customtext = true;
+    text_to_display = "LearnMoreAboutDefaultRoles" // is diplayed if customtext = true
 
   constructor(
     private usersService: UsersService,
