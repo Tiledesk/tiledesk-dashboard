@@ -10,7 +10,7 @@ import { BotLocalDbService } from '../../services/bot-local-db.service';
 import { Location } from '@angular/common';
 import { BotsBaseComponent } from '../bots-base/bots-base.component';
 import { NotifyService } from '../../core/notify.service';
-
+import { DepartmentService } from '../../services/department.service';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../services/brand.service';
 
@@ -49,6 +49,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
 
   botType: string;
   translateparam: any;
+  translateparamBotName: any;
 
   isHovering: boolean;
   loadingFile: any;
@@ -77,6 +78,21 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
   dlgflwKnowledgeBaseID: string;
   filetypeNotSupported: string;
   bot_description: string;
+  depts_length: number;
+
+  DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV: boolean;
+  PRESENTS_MODAL_ATTACH_BOT_TO_DEPT: boolean = false;
+  displayModalAttacchBotToDept: string;
+  dept_id: string;
+  HAS_CLICKED_HOOK_BOOT_TO_DEPT: boolean = false;
+  HAS_COMPLETED_HOOK_BOOT_TO_DEPT: boolean = false;
+  HAS_COMPLETED_HOOK_BOOT_TO_DEPT_SUCCESS: boolean = false;
+  HAS_COMPLETED_HOOK_BOOT_TO_DEPT_ERROR: boolean = false;
+
+  depts_without_bot_array = [];
+
+  DISPLAY_SELECT_DEPTS_WITHOUT_BOT: boolean;
+  selected_bot_id: string;
 
   constructor(
     private faqKbService: FaqKbService,
@@ -87,7 +103,8 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     public location: Location,
     private botLocalDbService: BotLocalDbService,
     private notify: NotifyService,
-    public brandService: BrandService
+    public brandService: BrandService,
+    private departmentService: DepartmentService,
   ) {
     super();
 
@@ -120,8 +137,94 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
 
     this.getCurrentProject();
     this.getParamsBotType();
-    this.translateFileTypeNotSupported()
+    this.translateFileTypeNotSupported();
+    this.getDeptsByProjectId();
   }
+
+
+  getDeptsByProjectId() {
+    this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
+
+      console.log('Bot Create --->  DEPTS RES ', departments);
+
+      if (departments) {
+        this.depts_length = departments.length
+        console.log('Bot Create --->  DEPTS LENGHT ', this.depts_length);
+
+        if (this.depts_length === 1) {
+          this.DISPLAY_SELECT_DEPTS_WITHOUT_BOT = false
+          this.dept_id = departments[0]['_id']
+
+          console.log('Bot Create --->  DEFAULT DEPT HAS BOT ', departments[0].hasBot);
+          if (departments[0].hasBot === true) {
+
+            console.log('Bot Create --->  DEFAULT DEPT HAS BOT ');
+            // this.DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV = false;
+            // this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT = false
+
+            console.log('Bot Create --->  DEFAULT DEPT HAS BOT DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV ', this.DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV);
+            console.log('Bot Create --->  DEFAULT DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
+          } else {
+
+            this.DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV = true;
+            this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT = true
+            console.log('Bot Create --->  DEFAULT DEPT HAS BOT DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV ', this.DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV);
+            console.log('Bot Create --->  DEFAULT DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
+          }
+
+        }
+
+
+        if (this.depts_length > 1) {
+          this.DISPLAY_SELECT_DEPTS_WITHOUT_BOT = true;
+          departments.forEach(dept => {
+
+            // if (dept.default === false) {
+
+              if (dept.hasBot === true) {
+                console.log('Bot Create --->  DEPT HAS BOT ');
+                // this.DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV = false;
+                // this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT = false
+
+                console.log('Bot Create --->  DEPT HAS BOT DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV ', this.DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV);
+                console.log('Bot Create --->  DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
+              } else {
+
+                this.DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV = true;
+                this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT = true
+                console.log('Bot Create --->  DEPT HAS BOT DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV ', this.DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV);
+                console.log('Bot Create --->  DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
+
+                this.depts_without_bot_array.push({ id: dept._id, name: dept.name })
+              }
+            // }
+          });
+
+          console.log('Bot Create --->  DEPT ARRAY OF DEPT WITHOUT BOT ', this.depts_without_bot_array);
+        }
+
+        // departments.forEach((dept: any) => {
+        //   if (dept && dept.default === true) {
+        //     console.log('»»» »»» DEPTS PAGE - DEFAULT DEPT ', dept);
+        //     dept['display_name'] = "Default Routing"
+        //   }
+        // });
+      }
+    }, error => {
+
+      console.log('Bot Create --->  DEPTS RES - ERROR', error);
+    }, () => {
+      console.log('Bot Create --->  DEPTS RES - COMPLETE')
+
+    });
+  }
+
+  onSelectBotId() {
+    console.log('Bot Create --->  onSelectBotId ', this.selected_bot_id);
+    this.dept_id = this.selected_bot_id
+  }
+
+
   getParamsBotType() {
     this.route.params.subscribe((params) => {
       this.botType = params.type;
@@ -215,7 +318,6 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
 
   // CREATE (mongoDB)
   createBot() {
-
     this.displayInfoModal = 'block'
     this.SHOW_CIRCULAR_SPINNER = true;
 
@@ -247,6 +349,8 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
         if (faqKb) {
           this.newBot_name = faqKb.name;
           this.newBot_Id = faqKb._id;
+
+          this.translateparamBotName = { bot_name: this.newBot_name }
 
           if (faqKb.type === 'external') {
             this.newBot_External = true;
@@ -355,18 +459,60 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
   }
 
   goTo_EditBot() {
+    if (this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT === false) {
+      let bot_type = ''
+      if (this.botType === 'resolution') {
+        bot_type = 'native'
+      } else {
+        bot_type = this.botType
+      }
+      // this.router.navigate(['project/' + this.project._id + '/bots/' + this.newBot_Id + "/" + this.botType]);
+      this.router.navigate(['project/' + this.project._id + '/bots/' + this.newBot_Id + "/" + bot_type]);
+    } else {
+      this.present_modal_attacch_bot_to_dept()
+    }
+  }
 
+  present_modal_attacch_bot_to_dept() {
+    this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT = false
+    this.displayModalAttacchBotToDept = 'block'
+    this.onCloseModal();
+  }
+
+  onCloseModalAttacchBotToDept() {
     let bot_type = ''
     if (this.botType === 'resolution') {
       bot_type = 'native'
     } else {
       bot_type = this.botType
     }
-
-
     // this.router.navigate(['project/' + this.project._id + '/bots/' + this.newBot_Id + "/" + this.botType]);
     this.router.navigate(['project/' + this.project._id + '/bots/' + this.newBot_Id + "/" + bot_type]);
+
   }
+
+  hookBotToDept() {
+    this.HAS_CLICKED_HOOK_BOOT_TO_DEPT = true;
+    this.departmentService.updateExistingDeptWithSelectedBot(this.dept_id, this.newBot_Id).subscribe((res) => {
+      console.log('Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT - RES ', res);
+    }, (error) => {
+      console.log('Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT - ERROR ', error);
+
+      this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT = true
+
+
+      this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT_ERROR = true;
+
+      console.log('Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT - ERROR - HAS_COMPLETED_HOOK_BOOT_TO_DEPT', this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT);
+    }, () => {
+      console.log('Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT - COMPLETE ');
+
+      this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT = true
+      this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT_SUCCESS = true;
+      console.log('Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT - COMPLETE - HAS_COMPLETED_HOOK_BOOT_TO_DEPT', this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT);
+    });
+  }
+
 
   onCloseModal() {
     this.displayInfoModal = 'none';

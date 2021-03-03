@@ -19,7 +19,8 @@ import { UsersService } from '../../services/users.service';
 import { BotsBaseComponent } from '../bots-base/bots-base.component';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../services/brand.service';
-
+import { DepartmentService } from '../../services/department.service';
+import { avatarPlaceholder, getColorBck } from '../../utils/util';
 // import $ = require('jquery');
 // declare const $: any;
 @Component({
@@ -106,7 +107,9 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
   isVisibleAnalytics: boolean;
   public_Key: string;
-  
+  COUNT_DEPTS_BOT_IS_ASSOCIATED_WITH: number;
+  DEPTS_BOT_IS_ASSOCIATED_WITH = []
+
   constructor(
     private mongodbFaqService: MongodbFaqService,
     private router: Router,
@@ -120,7 +123,8 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     private uploadImageService: UploadImageService,
     public appConfigService: AppConfigService,
     private usersService: UsersService,
-    public brandService: BrandService
+    public brandService: BrandService,
+    private departmentService: DepartmentService,
 
   ) {
     super();
@@ -141,10 +145,6 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
     // GET ALL FAQ
     // this.getFaq();
-
-    // GET ONLY THE FAQ WITH THE FAQ-KB ID
-    this.getFaqByFaqKbId();
-
     this.getCurrentProject();
     this.getWindowWidth();
     this.getProjectPlan();
@@ -154,8 +154,15 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     this.checkUserImageUploadIsComplete();
     this.getParamsBotType();
 
-    this.getTranslations()
+    this.getTranslations();
+
   }
+
+
+
+
+
+
   getTranslations() {
     this.translate.get('UpdateBotError')
       .subscribe((text: string) => {
@@ -178,6 +185,8 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   getParamsBotType() {
 
     this.route.params.subscribe((params) => {
+
+
       this.botType = params.type;
 
       if (this.botType && this.botType === 'external') {
@@ -196,6 +205,8 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     });
 
   }
+
+
 
 
   getDialogFlowBotData(dlgflwbotid: string) {
@@ -271,7 +282,80 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     if (this.id_faq_kb) {
       this.getStorageBucket();
       this.getFaqKbById();
+      this.getFaqByFaqKbIdAndRepliesCount();
+      this.getDeptsByProjectId();
     }
+  }
+
+
+  getDeptsByProjectId() {
+    this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
+      console.log('FaqComponent - DEPT GET DEPTS ', departments);
+      console.log('FaqComponent - DEPT BOT ID ', this.id_faq_kb);
+
+      if (departments) {
+        
+        let count = 0;
+        departments.forEach((dept: any) => {
+          console.log('FaqComponent - DEPT)', dept);
+
+          if (dept.hasBot === true) {
+            if (this.id_faq_kb === dept.id_bot) {
+              console.log('FaqComponent - DEPT DEPT WITH CURRENT BOT ', dept);
+
+              count = count + 1;
+
+
+              // -------------------------------------------------------------------
+              // Dept's avatar
+              // -------------------------------------------------------------------
+              let newInitials = '';
+              let newFillColour = '';
+
+
+              if (dept.name) {
+                newInitials = avatarPlaceholder(dept.name);
+                if (dept.default !== true) {
+                  newFillColour = getColorBck(dept.name);
+                } else if (dept.default === true && departments.length === 1) {
+                  newFillColour = '#6264A7'
+                } else if (dept.default === true && departments.length > 1) {
+                  newFillColour = 'rgba(98, 100, 167, 0.6) '
+                }
+              } else {
+
+                newInitials = 'N/A.';
+                newFillColour = '#eeeeee';
+              }
+
+              dept['dept_name_initial'] = newInitials;
+              dept['dept_name_fillcolour'] = newFillColour;
+
+              // // -------------------------------------------------------------------
+              // // Dept's description
+              // // -------------------------------------------------------------------
+              // if (dept.description) {
+              //   let stripHere = 20;
+              //   dept['truncated_desc'] = dept.description.substring(0, stripHere) + '...';
+              // }
+              this.DEPTS_BOT_IS_ASSOCIATED_WITH.push(dept) 
+            }
+          }
+
+             });
+
+        console.log('FaqComponent - DEPT - DEPTS_BOT_IS_ASSOCIATED_WITH', this.DEPTS_BOT_IS_ASSOCIATED_WITH);
+       
+        this.COUNT_DEPTS_BOT_IS_ASSOCIATED_WITH = count;
+        console.log('FaqComponent - DEPT - COUNT_DEPTS_BOT_IS_ASSOCIATED_WITH', this.COUNT_DEPTS_BOT_IS_ASSOCIATED_WITH);
+      }
+    }, error => {
+     
+      console.log('FaqComponent - DEPT - GET DEPTS  - ERROR', error);
+    }, () => {
+      console.log('FaqComponent - DEPT - GET DEPTS - COMPLETE')
+      
+    });
   }
 
   getStorageBucket() {
@@ -361,7 +445,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     let keys = this.public_Key.split("-");
     console.log('PUBLIC-KEY (BOT LIST) keys', keys)
     keys.forEach(key => {
-      
+
       if (key.includes("ANA")) {
         console.log('PUBLIC-KEY (BOT LIST) - key', key);
         let ana = key.split(":");
@@ -663,21 +747,11 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     this.location.back();
   }
 
-  /**
-   * GET ALL FAQ
-   * !! NO MORE USED: NOW GET ONLY THE FAQ WITH THE FAQ-KB ID (getFaqByFaqKbId()) OF THE FAQ KB SELECTED IN FAQ-KB COMP
-   */
-  // getFaq() {
-  //   this.mongodbFaqService.getMongDbFaq().subscribe((faq: any) => {
-  //     console.log('MONGO DB FAQ', faq);
-  //     this.faq = faq;
-  //   });
-  // }
 
-  /**
-   * GET ONLY THE FAQ WITH THE FAQ-KB ID PASSED FROM FAQ-KB COMPONENT
-   */
-  getFaqByFaqKbId() {
+  // -----------------------------------------------------------------------------------------
+  // GET ONLY THE FAQ WITH THE FAQ-KB ID PASSED FROM FAQ-KB COMPONENT & THEN GET REPLIES COUNT
+  // -----------------------------------------------------------------------------------------
+  getFaqByFaqKbIdAndRepliesCount() {
     this.mongodbFaqService.getMongoDbFaqByFaqKbId(this.id_faq_kb).subscribe((faq: any) => {
       console.log('>> FAQs GOT BY FAQ-KB ID', faq);
       this.faq = faq;
@@ -687,7 +761,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
         // in aggiornamento
         this.mongodbFaqService.getRepliesCount(this.id_faq_kb).subscribe((res: any) => {
           console.log("REPLIES COUNT RESPONSE: ", res);
-          
+
           for (let fq of this.faq) {
             console.log("FQ id: ", fq._id)
             let reply: any;
@@ -695,15 +769,13 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
               console.log("REPLY id: ", reply._id._answerid)
               if (fq._id == reply._id._answerid) {
                 console.log("RES count: ", reply.count);
-                fq.message_count = reply.count;
-                console.log("MESSAGE COUNT: ", fq.message_count)
+                fq['message_count'] = reply.count;
+                console.log("MESSAGE COUNT: ", fq['message_count'])
               }
             }
           }
         })
       }
-
-
     }, (error) => {
       this.showSpinner = false;
       console.log('>> FAQs GOT BY FAQ-KB ID - ERROR', error);
@@ -840,8 +912,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     this.mongodbFaqService.deleteMongoDbFaq(this.id_toDelete).subscribe((data) => {
       console.log('DELETE FAQ ', data);
 
-      // RE-RUN GET FAQ BY FAQ KB ID TO UPDATE THE TABLE
-      // this.getFaqByFaqKbId();
+
       this.ngOnInit();
 
       /* https://stackoverflow.com/questions/21315306/how-to-stop-window-scroll-after-specific-event */
