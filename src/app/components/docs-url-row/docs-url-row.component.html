@@ -17,6 +17,9 @@ padding-bottom: 12px;">
       <span *ngIf="customtext === false">
         {{ 'HowWorks' | translate: translateparam }}
       </span>
+      <span *ngIf="customtext === true">
+        {{ text_to_display | translate }}
+      </span>
     </a>
   </div>
 </div>
