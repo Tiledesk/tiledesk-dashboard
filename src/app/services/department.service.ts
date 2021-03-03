@@ -152,14 +152,14 @@ export class DepartmentService {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append('Authorization', this.TOKEN);
-   
-    
+
+
     return this.http
       .get(url, { headers })
       .map((response) => response.json());
   }
 
-  public getDeptsByProjectIdToPromise():any {
+  public getDeptsByProjectIdToPromise(): any {
     const url = this.DEPTS_URL + 'allstatus';
     console.log('DEPARTMENTS URL', url);
     const headers = new Headers();
@@ -167,8 +167,8 @@ export class DepartmentService {
     headers.append('Authorization', this.TOKEN);
     return this.http
       .get(url, { headers })
-      .map((response) => { 
-      
+      .map((response) => {
+
         return response.json()
       })
       .toPromise();
@@ -290,7 +290,7 @@ export class DepartmentService {
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
 
-    const body = { 'name': deptName, 'description': deptDescription  ,'id_group': id_group, 'routing': routing };
+    const body = { 'name': deptName, 'description': deptDescription, 'id_group': id_group, 'routing': routing };
     if (id_bot) {
       body['id_bot'] = id_bot;
       body['bot_only'] = bot_only;
@@ -316,6 +316,27 @@ export class DepartmentService {
     //   console.log('PUT REQUEST * COMPLETE *');
     // });
 
+  }
+
+
+  public updateExistingDeptWithSelectedBot(deptid: string, id_bot: string) {
+
+    let url = this.DEPTS_URL + deptid;
+
+    console.log('Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT (SERVICE) url', url);
+
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+
+    const body = { 'id_bot': id_bot };
+    console.log('Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT (SERVICE) body', body);
+
+    return this.http
+      .patch(url, JSON.stringify(body), options)
+      .map((res) => res.json());
   }
 
   /**
