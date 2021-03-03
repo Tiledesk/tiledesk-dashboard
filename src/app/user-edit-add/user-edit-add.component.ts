@@ -13,6 +13,7 @@ import { AppConfigService } from '../services/app-config.service';
 import { Location } from '@angular/common';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../services/brand.service';
+import { helpdocurl_users_role } from '../utils/util';
 const swal = require('sweetalert');
 
 @Component({
@@ -83,6 +84,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
 
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles : string;
+  KNOWLEDGE_BASE_USER_ROLE_URL = helpdocurl_users_role
   constructor(
     private router: Router,
     private auth: AuthService,
