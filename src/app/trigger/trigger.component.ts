@@ -34,10 +34,12 @@ export class TriggerComponent implements OnInit {
   displayMODAL = 'none';
   has_selected_system: boolean;
   query: any;
-  
+
+  // input passed to docs-url-row
   trigger_docs_url = helpdocurl_triggers;
-  trigger_docs_title = 'trigger';
+  trigger_docs_title = 'trigger'; // is diplayed if customtext = false
   customtext = false;
+  text_to_display = '' // is diplayed if customtext = true
   constructor(
     private auth: AuthService,
     private triggerService: TriggerService,
