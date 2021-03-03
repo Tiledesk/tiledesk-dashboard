@@ -1824,7 +1824,13 @@
 	"NewRequesterCreatedSuccessfully":"Neuer Anforderer erfolgreich erstellt",
 	"ViewRequesterDetails":"Anfordererdetails anzeigen",
 	"OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan":"Nur Benutzer mit der Eigentümerrolle können den Plan des Kontos verwalten",
-	"LearnMoreAboutDefaultRoles":"Weitere Informationen zu Standardrollen"
-	
-	
+	"LearnMoreAboutDefaultRoles":"Weitere Informationen zu Standardrollen",
+	"HookTheBot": "Haken Sie den Bot ein",
+	"ActivateBotsForNewConversations": "Aktiviere den Bot für neue Gespräche",
+	"DoYouWantToActivateTheBotForNewConversations": "Möchten Sie den <span class='bot_name_bold'>{{ bot_name }}</span> -Bot für neue Gespräche aktivieren?",
+	"DoYouWantToActivateBotForOneOfTheFollowingDepts":"Möchten Sie bot <span class='bot_name_bold'>{{bot_name}}</span> für eine der folgenden Abteilungen aktivieren?",
+	"ActivateBot":"Bot aktivieren",
+	"BotSuccessfullyActivated":"Bot erfolgreich aktiviert",
+	"AnErroOccurredWhileActivatingTheBot":"Beim Aktivieren des Bots ist ein Fehler aufgetreten",
+	"SelectDepartment": "Abteilung auswählen"
 }

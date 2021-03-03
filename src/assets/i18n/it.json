@@ -1820,6 +1820,14 @@
     "NewRequesterCreatedSuccessfully":"Nuovo richiedente creato con successo",
     "ViewRequesterDetails":"Vedi dettagli richiedente",
     "OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan":"Solo gli utenti con il ruolo di proprietario possono gestire il piano dell'account",
-    "LearnMoreAboutDefaultRoles":"Ulteriori informazioni sui ruoli predefiniti"
+    "LearnMoreAboutDefaultRoles":"Ulteriori informazioni sui ruoli predefiniti",
+    "HookTheBot": "Aggancia il bot",
+    "ActivateBotsForNewConversations": "Attiva il bot per le nuove conversazioni",
+    "DoYouWantToActivateTheBotForNewConversations": "Vuoi attivare il bot <span class='bot_name_bold'>{{ bot_name }}</span> per le nuove conversazioni?",
+    "DoYouWantToActivateBotForOneOfTheFollowingDepts":"Vuoi attivare il bot <span class='bot_name_bold'>{{bot_name}}</span> per uno dei seguenti dipartmenti?",
+    "ActivateBot":"Attiva il bot",
+    "BotSuccessfullyActivated":"Bot attivato con successo",
+    "AnErroOccurredWhileActivatingTheBot":"Si è verificato un errore durante l'attivazione del bot",
+    "SelectDepartment": "Seleziona dipartimento"
     
 }
