@@ -80,7 +80,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
   bot_description: string;
   depts_length: number;
 
-  DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV: boolean;
+  // DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV: boolean;
   PRESENTS_MODAL_ATTACH_BOT_TO_DEPT: boolean = false;
   displayModalAttacchBotToDept: string;
   dept_id: string;
@@ -93,6 +93,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
 
   DISPLAY_SELECT_DEPTS_WITHOUT_BOT: boolean;
   selected_bot_id: string;
+  selected_bot_name: string;
 
   constructor(
     private faqKbService: FaqKbService,
@@ -136,11 +137,51 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     // }
 
     this.getCurrentProject();
-    this.getParamsBotType();
+    this.getParamsBotTypeAndDepts();
     this.translateFileTypeNotSupported();
-    this.getDeptsByProjectId();
+
   }
 
+
+
+
+  onSelectBotId() {
+    console.log('Bot Create --->  onSelectBotId ', this.selected_bot_id);
+    this.dept_id = this.selected_bot_id
+
+
+    const hasFound = this.depts_without_bot_array.filter((obj: any) => {
+      return obj.id === this.selected_bot_id;
+    });
+    console.log('Bot Create --->  onSelectBotId dept found', hasFound);
+
+    if (hasFound.length > 0) {
+      this.selected_bot_name = hasFound[0]['name']
+    }
+  }
+
+
+  getParamsBotTypeAndDepts() {
+    this.route.params.subscribe((params) => {
+      this.botType = params.type;
+      console.log('Bot Create --->  PARAMS', params);
+      console.log('Bot Create --->  PARAMS botType', this.botType);
+
+
+      if (this.botType === 'native') {
+        this.botType = 'resolution'
+      }
+
+      if (this.botType && this.botType === 'external') {
+        this.is_external_bot = true
+      }
+
+      // used in the template for the translation of the card title 
+      this.translateparam = { bottype: this.botType };
+
+      this.getDeptsByProjectId();
+    });
+  }
 
   getDeptsByProjectId() {
     this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
@@ -162,13 +203,16 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
             // this.DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV = false;
             // this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT = false
 
-            console.log('Bot Create --->  DEFAULT DEPT HAS BOT DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV ', this.DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV);
+            // console.log('Bot Create --->  DEFAULT DEPT HAS BOT DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV ', this.DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV);
             console.log('Bot Create --->  DEFAULT DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
           } else {
 
-            this.DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV = true;
-            this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT = true
-            console.log('Bot Create --->  DEFAULT DEPT HAS BOT DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV ', this.DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV);
+            // this.DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV = true;
+            console.log('Bot Create --->  DEFAULT DEPT botType selected ', this.botType);
+            if (this.botType !== 'identity') {
+              this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT = true;
+            }
+
             console.log('Bot Create --->  DEFAULT DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
           }
 
@@ -181,22 +225,25 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
 
             // if (dept.default === false) {
 
-              if (dept.hasBot === true) {
-                console.log('Bot Create --->  DEPT HAS BOT ');
-                // this.DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV = false;
-                // this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT = false
+            if (dept.hasBot === true) {
+              console.log('Bot Create --->  DEPT HAS BOT ');
+              // this.DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV = false;
+              // this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT = false
 
-                console.log('Bot Create --->  DEPT HAS BOT DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV ', this.DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV);
-                console.log('Bot Create --->  DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
-              } else {
+              // console.log('Bot Create --->  DEPT HAS BOT DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV ', this.DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV);
+              console.log('Bot Create --->  DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
+            } else {
 
-                this.DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV = true;
-                this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT = true
-                console.log('Bot Create --->  DEPT HAS BOT DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV ', this.DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV);
-                console.log('Bot Create --->  DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
-
-                this.depts_without_bot_array.push({ id: dept._id, name: dept.name })
+              console.log('Bot Create --->  DEPT botType selected ', this.botType);
+              if (this.botType !== 'identity') {
+                this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT = true;
               }
+
+             
+              console.log('Bot Create --->  DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
+
+              this.depts_without_bot_array.push({ id: dept._id, name: dept.name })
+            }
             // }
           });
 
@@ -219,33 +266,12 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     });
   }
 
-  onSelectBotId() {
-    console.log('Bot Create --->  onSelectBotId ', this.selected_bot_id);
-    this.dept_id = this.selected_bot_id
-  }
 
 
-  getParamsBotType() {
-    this.route.params.subscribe((params) => {
-      this.botType = params.type;
-      console.log('Bot Create --->  PARAMS', params);
-      console.log('Bot Create --->  PARAMS botType', this.botType);
 
 
-      if (this.botType === 'native') {
-        this.botType = 'resolution'
-      }
-
-      if (this.botType && this.botType === 'external') {
-        this.is_external_bot = true
-      }
-
-      // used in the template for the translation of the card title 
-      this.translateparam = { bottype: this.botType };
 
 
-    });
-  }
 
   // TRANSLATION
   translateFileTypeNotSupported() {
@@ -281,6 +307,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     this.browser_lang = this.translate.getBrowserLang();
     console.log('»» »» BOT-CREATE-COMP - BROWSER LANGUAGE ', this.browser_lang);
   }
+
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
       this.project = project

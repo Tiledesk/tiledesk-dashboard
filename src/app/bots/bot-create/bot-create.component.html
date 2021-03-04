@@ -610,11 +610,12 @@
 
       <hr class="custom-hr" style="margin-top:3px; margin-bottom:3px">
       <!-- padding-top: 0px; padding-bottom: 0px; padding-right: 34px; padding-left: 34px;  -->
-      <div class="modal-body" [ngClass]="{'modal-body-no-padding-top': DISPLAY_SELECT_DEPTS_WITHOUT_BOT && HAS_COMPLETED_HOOK_BOOT_TO_DEPT === false}"
+      <div class="modal-body"
+        [ngClass]="{'modal-body-no-padding-top': DISPLAY_SELECT_DEPTS_WITHOUT_BOT && HAS_COMPLETED_HOOK_BOOT_TO_DEPT === false}"
         style="line-height: 1 !important;height: 161px!important;text-align: center!important; margin: auto!important;">
 
         <span *ngIf="!DISPLAY_SELECT_DEPTS_WITHOUT_BOT">
-          <h4 *ngIf="HAS_COMPLETED_HOOK_BOOT_TO_DEPT === false"
+          <h4 *ngIf="HAS_COMPLETED_HOOK_BOOT_TO_DEPT === false" style="padding-left: 12px; padding-right: 12px;"
             [innerHTML]="'DoYouWantToActivateTheBotForNewConversations' | translate: translateparamBotName "> </h4>
           <!-- <h3> {{ 'DoYouWantToActivateTheBotForNewVonversations' | translate: translateparamBotName }} </h3> -->
         </span>
@@ -625,31 +626,37 @@
         </span>
 
         <span *ngIf="DISPLAY_SELECT_DEPTS_WITHOUT_BOT" style="text-align: left;">
-          <div class="select-dept-without-bot-wpr" *ngIf="HAS_COMPLETED_HOOK_BOOT_TO_DEPT === false">
-          <ng-select [items]="depts_without_bot_array"  bindValue="id" bindLabel="name" placeholder="{{'SelectDepartment'|translate}}" [(ngModel)]="selected_bot_id" (change)="onSelectBotId()">
-          </ng-select>
-          </div>
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="select-dept-without-bot-wpr" *ngIf="HAS_COMPLETED_HOOK_BOOT_TO_DEPT === false"
+                style="padding-right: 26px; padding-left: 26px;">
+                <ng-select [items]="depts_without_bot_array" bindValue="id" bindLabel="name"
+                  placeholder="{{'SelectDepartment'|translate}}" [(ngModel)]="selected_bot_id"
+                  (change)="onSelectBotId()">
+                </ng-select>
+              </div>
+            </div>
+            <!-- <div class="col-xs-4">
+              <button *ngIf="HAS_CLICKED_HOOK_BOOT_TO_DEPT === false" class="btn btn-tdblu-no-boxshadow"
+                (click)="hookBotToDept()" [disabled]="DISPLAY_SELECT_DEPTS_WITHOUT_BOT && !selected_bot_id">
+                <span> {{ "ActivateBot" | translate }} </span>
+              </button>
 
+            </div> -->
+          </div>
         </span>
 
 
-        <button *ngIf="HAS_CLICKED_HOOK_BOOT_TO_DEPT === false" class="btn btn-tdblu-no-boxshadow"
-          (click)="hookBotToDept()" [disabled]="DISPLAY_SELECT_DEPTS_WITHOUT_BOT && !selected_bot_id">
-          <span> {{ "ActivateBot" | translate }} </span>
-        </button>
-
-
-
-
-        <div *ngIf="HAS_CLICKED_HOOK_BOOT_TO_DEPT === true && HAS_COMPLETED_HOOK_BOOT_TO_DEPT === false">
-          <div class="stretchspinner" style="top: 50px;" [ngClass]="{'stretchspinner-more-top': DISPLAY_SELECT_DEPTS_WITHOUT_BOT }">
+        <!-- [ngClass]="{'stretchspinner-more-top': DISPLAY_SELECT_DEPTS_WITHOUT_BOT }" -->
+        <!-- <div *ngIf="HAS_CLICKED_HOOK_BOOT_TO_DEPT === true && HAS_COMPLETED_HOOK_BOOT_TO_DEPT === false">
+          <div class="stretchspinner" style="top: 50px;">
             <div class="rect1"></div>
             <div class="rect2"></div>
             <div class="rect3"></div>
             <div class="rect4"></div>
             <div class="rect5"></div>
           </div>
-        </div>
+        </div> -->
 
         <div *ngIf="HAS_COMPLETED_HOOK_BOOT_TO_DEPT === true">
 
@@ -680,17 +687,58 @@
           </span>
 
         </div>
-
-
-
         <!-- <span (click)="hookBotToDept()"> {{'ActivateBotsForNewConversations' | translate}}</span> -->
 
       </div> <!-- /.modal-body -->
 
-      <div class="modal-footer modal-footer-no-bkgrnd" style="">
-        <button class="btn btn-primary" (click)="goTo_EditBot()">
-          <span> {{ "BotsAddEditPage.Continue" | translate }} </span>
-        </button>
+      <div class="modal-footer modal-footer-no-bkgrnd">
+
+        <span *ngIf="DISPLAY_SELECT_DEPTS_WITHOUT_BOT">
+          <button *ngIf="!selected_bot_id && HAS_COMPLETED_HOOK_BOOT_TO_DEPT === false"
+            class="btn btn-gray-no-boxshadow" (click)="goTo_EditBot()" style="margin-right:8px">
+            <span> {{ 'Ignore' | translate}} </span>
+          </button>
+
+          <button *ngIf="selected_bot_id &&  HAS_COMPLETED_HOOK_BOOT_TO_DEPT === false"
+            class="btn btn-tdblu-no-boxshadow" (click)="hookBotToDept()" style="margin-right:8px">
+            <i *ngIf="HAS_CLICKED_HOOK_BOOT_TO_DEPT === true && HAS_COMPLETED_HOOK_BOOT_TO_DEPT === false"
+              class="fa fa-spinner fa-spin"></i>
+            <span> {{ 'ActivateFor' | translate}} {{selected_bot_name}} </span>
+          </button>
+
+          <button *ngIf="HAS_CLICKED_HOOK_BOOT_TO_DEPT === true && HAS_COMPLETED_HOOK_BOOT_TO_DEPT === true"
+            class="btn btn-tdblu-no-boxshadow" (click)="goTo_EditBot()" style="margin-right: 8px;">
+            <span> {{ "BotsAddEditPage.Continue" | translate }} </span>
+          </button>
+
+        </span>
+
+        <span *ngIf="!DISPLAY_SELECT_DEPTS_WITHOUT_BOT">
+
+          <button *ngIf="HAS_CLICKED_HOOK_BOOT_TO_DEPT === false && HAS_COMPLETED_HOOK_BOOT_TO_DEPT === false"
+            class="btn btn-gray-no-boxshadow" (click)="goTo_EditBot()" style="margin-right:8px">
+            <span> {{ 'Ignore' | translate}} </span>
+          </button>
+
+          <button *ngIf="HAS_CLICKED_HOOK_BOOT_TO_DEPT === false && HAS_COMPLETED_HOOK_BOOT_TO_DEPT === false"
+            class="btn btn-tdblu-no-boxshadow" (click)="hookBotToDept()" style="margin-right:8px">
+            <span> {{ 'ActivateBot' | translate}} </span>
+          </button>
+
+          <button *ngIf="HAS_CLICKED_HOOK_BOOT_TO_DEPT === true && HAS_COMPLETED_HOOK_BOOT_TO_DEPT === false"
+            class="btn btn-tdblu-no-boxshadow" style="margin-right: 8px;">
+            <i class="fa fa-spinner fa-spin"></i>
+            {{'Processing' | translate}}
+          </button>
+
+          <button *ngIf="HAS_CLICKED_HOOK_BOOT_TO_DEPT === true && HAS_COMPLETED_HOOK_BOOT_TO_DEPT === true"
+            class="btn btn-tdblu-no-boxshadow" (click)="goTo_EditBot()" style="margin-right: 8px;">
+            <span> {{ "BotsAddEditPage.Continue" | translate }} </span>
+          </button>
+
+
+        </span>
+
       </div>
 
 
