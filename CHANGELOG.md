@@ -3,6 +3,13 @@
 
 ### 2.1.32
 - Improves the shared component that contains links to documentation
+- Adds link to related knowledge base "Understanding default roles" on Teammates List page and Teammate Detail page
+- Adds, in the right sidebar of the bot detail page, the list of departments to which the bot is associated
+- Adds, when creating a bot, the ability of activating the bot for a department
+- Replaces, in the list of departments> "Bot" column, "no activated" with "no bot" when no bot is activated for the department
+- Deletes, in the list of departments > "Bot" column, the text "activated" before the bot name when for the department is activated bot 
+- Fixed bug: in the department details section> right sidebar> department agents section, the name and members of the "created on the fly" group are not displayed
+- Adds "Understanding default roles" knowledge base link on teammate detail page and teammates list page
 
 ### 2.1.31
 - Renames, in the conversation list page, create internal request in create ticket
