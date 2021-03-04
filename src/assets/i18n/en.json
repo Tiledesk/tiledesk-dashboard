@@ -1826,12 +1826,17 @@
     "ViewRequesterDetails":"View requester details",
     "OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan":"Only users with the owner role can manage the account’s plan",
     "LearnMoreAboutDefaultRoles":"Learn more about default roles",
-    "HookTheBot": "Hook the bot",
+    "HookTheBot": "Activate this bot",
     "ActivateBotsForNewConversations": "Activate bots for new conversations",
     "DoYouWantToActivateTheBotForNewConversations": "Do you want to activate the <span class='bot_name_bold'>{{ bot_name }}</span> bot for new conversations?",
     "DoYouWantToActivateBotForOneOfTheFollowingDepts":"Do you want to activate bot <span class='bot_name_bold'>{{bot_name}}</span> for one of the following departments?",
     "ActivateBot":"Activate bot",
     "BotSuccessfullyActivated":"Bot successfully activated",
     "AnErroOccurredWhileActivatingTheBot":"An error occurred while activating the bot",
-    "SelectDepartment": "Select department"
+    "SelectDepartment": "Select department",
+    "Ignore": "Ignore",
+    "ActivateFor":"Activate for",
+    "DepartmentsThisBotIsAssociatedWith":"Departments this bot is associated with",
+    "NoDeptsAreAssociatedWithThisBot":"No departments are associated with this bot",
+    "ManageTheBotIn":"Manage the bot in"
 }
