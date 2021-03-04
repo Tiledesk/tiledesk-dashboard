@@ -30,7 +30,7 @@
             //--------------------------------------------------------------------------------------------------- -->
             <div class="row">
               <label *ngIf="botType !== 'dialogflow'" class="col-sm-2 bot_avatar_label">
-              Avatar
+                Avatar
               </label>
               <!-- class="col-sm-10" -->
               <div [ngClass]="{'col-sm-10' : botType !== 'dialogflow', 'col-sm-12' : botType === 'dialogflow'}">
@@ -40,7 +40,8 @@
                     style="float: left;width: 80px; height: 80px;margin-right: 21px;">
                     <img *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true"
                       style="vertical-align: middle; width: 80px; height: 80px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;"
-                      class="user-img" [src]="getUserProfileImage()" onerror="this.src='assets/img/avatar_bot_tiledesk.svg'"/>
+                      class="user-img" [src]="getUserProfileImage()"
+                      onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
 
                     <img *ngIf="userProfileImageExist === false && userImageHasBeenUploaded !== true"
                       style="vertical-align: middle; width: 80px; height: 80px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;"
@@ -183,7 +184,7 @@
             // ------------------------------------------------------------------------------------------- -->
             <section *ngIf="botType === 'dialogflow'" style="padding-right: 35px; padding-left: 35px;">
 
-            <!-- 
+              <!-- 
             // -------------------------------------------------------------------------------------------
             //  Dialogflow bot - name
             // ------------------------------------------------------------------------------------------- -->
@@ -311,7 +312,7 @@
             </p>
 
             <p class="attribute">
-            
+
               <span *ngIf="botType !== 'native'" style="text-transform:capitalize"> {{ botType }} </span>
               <span *ngIf="botType === 'native'" style="text-transform:capitalize"> Resolution </span>
             </p>
@@ -335,13 +336,41 @@
             </p> -->
 
             <p class="title-attribute" style="margin-bottom: 3px; padding-top: 0px;">
-              <!-- <strong> -->
               {{ "BotsAddEditPage.CreationDate" | translate }}
-              <!-- </strong> -->
             </p>
             <p class="attribute" style="margin-bottom: 9px">
               {{ faqKb_created_at | date: 'd/M/y'}}
             </p>
+
+
+            <span *ngIf="isVisibleDEP === true">
+              <span *ngIf="botType !== 'identity'">
+                <p class="title-attribute" style="margin-bottom: 3px; padding-top: 0px;">
+                  {{ "DepartmentsThisBotIsAssociatedWith" | translate }}
+                </p>
+
+
+                <p class="attribute" *ngIf="COUNT_DEPTS_BOT_IS_ASSOCIATED_WITH === 0">
+                  {{ 'NoDeptsAreAssociatedWithThisBot' | translate}}
+
+                  <span style="display: block; color: #0f62ff; cursor:pointer" (click)="goToRoutingAndDepts()">
+                    {{'ManageTheBotIn' | translate}} {{'RoutingAndDepts' | translate}}
+                  </span>
+                </p>
+
+                <div *ngFor="let dept of DEPTS_BOT_IS_ASSOCIATED_WITH_ARRAY" style="margin-bottom: 8px;">
+                  <span class="dept-avatar-wrapper" (click)="goToEditAddPage_EDIT_DEPT(dept?._id, dept?.default)">
+
+                    <span class="dept-avatar-in-bot-dtl" [ngStyle]="{'background-color': dept?.dept_name_fillcolour }">
+                      {{ dept?.dept_name_initial }}
+                    </span>
+                    <span class="dept-name-in-bot-dtl">
+                      {{ dept?.name }}
+                    </span>
+                  </span>
+                </div>
+              </span>
+            </span>
           </div>
         </div>
       </div> <!-- ./ col-md-4 -->
@@ -453,8 +482,8 @@
                     {{ 'UploadAnswersFromCsv' | translate }}
                   </span>
                 </span>
-                <span *ngIf="windowWidthMore764 === false" class="tooltiptext"
-                  style="text-transform:none">{{ 'UploadAnswersFromCsv' | translate }}</span>
+                <span *ngIf="windowWidthMore764 === false" class="tooltiptext" style="text-transform:none">{{
+                  'UploadAnswersFromCsv' | translate }}</span>
               </button>
 
               <!-- 
@@ -474,8 +503,8 @@
                     {{ 'ExportAnswersToCsv' | translate }}
                   </span>
                 </span>
-                <span *ngIf="windowWidthMore764 === false" class="tooltiptext"
-                  style="text-transform:none">{{ 'ExportAnswersToCsv' | translate }}</span>
+                <span *ngIf="windowWidthMore764 === false" class="tooltiptext" style="text-transform:none">{{
+                  'ExportAnswersToCsv' | translate }}</span>
               </button>
 
 
@@ -614,13 +643,14 @@
                     </span>
                   </td>
 
-                  <td *ngIf="isVisibleAnalytics" style="white-space: normal !important; word-wrap: break-word;font-size:13px; font-weight:400; word-break: break-all;">
+                  <td *ngIf="isVisibleAnalytics"
+                    style="white-space: normal !important; word-wrap: break-word;font-size:13px; font-weight:400; word-break: break-all;">
                     <span *ngIf="faq.message_count" class="tooltipx">
                       {{ faq?.message_count }}
                       <span class="tooltiptext">Number of replies: <br> {{ faq?.message_count }} </span>
                     </span>
-                    <span  *ngIf="!faq.message_count" class="tooltipx">
-                        0
+                    <span *ngIf="!faq.message_count" class="tooltipx">
+                      0
                       <span class="tooltiptext">Number of replies: <br> 0 </span>
                     </span>
                   </td>

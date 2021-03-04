@@ -490,3 +490,30 @@ input[type="text"]:disabled::placeholder {
   font-size: 12px;
   text-transform: uppercase;
 }
+
+.dept-avatar-wrapper {
+  cursor: pointer;
+}
+.dept-avatar-in-bot-dtl {
+  border-radius: 5px;
+  font-size: 18px;
+  font-weight: 400;
+  text-align: center;
+  padding-top: 5px;
+  padding-bottom: 3px;
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  line-height: 22px;
+  position: relative;
+  top: 4px;
+  color: #fff;
+  cursor: pointer;
+  margin-right: 4px;
+}
+
+.dept-name-in-bot-dtl {
+  position: relative;
+  top: 2px;
+  font-weight: 400;
+}

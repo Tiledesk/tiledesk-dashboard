@@ -108,7 +108,9 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   isVisibleAnalytics: boolean;
   public_Key: string;
   COUNT_DEPTS_BOT_IS_ASSOCIATED_WITH: number;
-  DEPTS_BOT_IS_ASSOCIATED_WITH = []
+  DEPTS_BOT_IS_ASSOCIATED_WITH_ARRAY = [];
+  all_depts: any
+  isVisibleDEP: boolean;
 
   constructor(
     private mongodbFaqService: MongodbFaqService,
@@ -140,8 +142,12 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
     this.clearSearchedQuestionStored();
 
+    // ------------------------------------------------------------------------------------------------------------------------
     // GET ID_FAQ_KB FROM THE URL PARAMS (IS PASSED FROM THE FAQ-KB-COMPONENT WHEN THE USER CLICK ON EDIT FAQ IN THE TABLE )
-    this.getFaqKbId();
+    // and then call getStorageBucket() - getFaqKbById() - getFaqByFaqKbIdAndRepliesCount() - getDeptsByProjectId()
+    // ------------------------------------------------------------------------------------------------------------------------
+
+    this.getParamsBotIdAndThenInit();
 
     // GET ALL FAQ
     // this.getFaq();
@@ -155,12 +161,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     this.getParamsBotType();
 
     this.getTranslations();
-
   }
-
-
-
-
 
 
   getTranslations() {
@@ -183,10 +184,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   }
 
   getParamsBotType() {
-
     this.route.params.subscribe((params) => {
-
-
       this.botType = params.type;
 
       if (this.botType && this.botType === 'external') {
@@ -275,7 +273,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     }
   }
 
-  getFaqKbId() {
+  getParamsBotIdAndThenInit() {
     this.id_faq_kb = this.route.snapshot.params['faqkbid'];
     console.log('FAQ KB HAS PASSED id_faq_kb ', this.id_faq_kb);
 
@@ -294,7 +292,8 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
       console.log('FaqComponent - DEPT BOT ID ', this.id_faq_kb);
 
       if (departments) {
-        
+        this.all_depts = departments;
+
         let count = 0;
         departments.forEach((dept: any) => {
           console.log('FaqComponent - DEPT)', dept);
@@ -338,23 +337,23 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
               //   let stripHere = 20;
               //   dept['truncated_desc'] = dept.description.substring(0, stripHere) + '...';
               // }
-              this.DEPTS_BOT_IS_ASSOCIATED_WITH.push(dept) 
+              this.DEPTS_BOT_IS_ASSOCIATED_WITH_ARRAY.push(dept)
             }
           }
 
-             });
+        });
 
-        console.log('FaqComponent - DEPT - DEPTS_BOT_IS_ASSOCIATED_WITH', this.DEPTS_BOT_IS_ASSOCIATED_WITH);
-       
+        console.log('FaqComponent - DEPT - DEPTS_BOT_IS_ASSOCIATED_WITH_ARRAY', this.DEPTS_BOT_IS_ASSOCIATED_WITH_ARRAY);
+
         this.COUNT_DEPTS_BOT_IS_ASSOCIATED_WITH = count;
         console.log('FaqComponent - DEPT - COUNT_DEPTS_BOT_IS_ASSOCIATED_WITH', this.COUNT_DEPTS_BOT_IS_ASSOCIATED_WITH);
       }
     }, error => {
-     
+
       console.log('FaqComponent - DEPT - GET DEPTS  - ERROR', error);
     }, () => {
       console.log('FaqComponent - DEPT - GET DEPTS - COMPLETE')
-      
+
     });
   }
 
@@ -457,7 +456,29 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
         }
 
       }
-    })
+
+      if (key.includes("DEP")) {
+        let dep = key.split(":");
+        if (dep[1] === "F") {
+          this.isVisibleDEP = false;
+          console.log('PUBLIC-KEY (Faqcomponent) - isVisibleDEP', this.isVisibleDEP);
+        } else {
+          this.isVisibleDEP = true;
+          console.log('PUBLIC-KEY (Faqcomponent) - isVisibleDEP', this.isVisibleDEP);
+        }
+      }
+    });
+
+    if (!this.public_Key.includes("DEP")) {
+   
+      this.isVisibleDEP = false;
+    }
+
+    if (!this.public_Key.includes("ANA")) {
+    
+      this.isVisibleAnalytics = false;
+    }
+
   }
 
   getProjectPlan() {
@@ -726,6 +747,14 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     // if (this.faq_kb_remoteKey) {
     this.router.navigate(['project/' + this.project._id + '/faq/test', this.id_faq_kb]);
     // }
+  }
+
+  goToRoutingAndDepts() {
+    this.router.navigate(['project/' + this.project._id + '/departments']);
+  }
+
+  goToEditAddPage_EDIT_DEPT(deptid, deptdefaut) {
+    this.router.navigate(['project/' + this.project._id + '/department/edit', deptid]);
   }
 
 
