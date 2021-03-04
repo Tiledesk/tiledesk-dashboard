@@ -403,7 +403,7 @@
               <div class="col-sm-12">
 
                 <span *ngIf="has_selected_bot === true">
-                  <button class="btn btn-primary" (click)="edit()" [disabled]="BOT_NOT_SELECTED === true">
+                  <button class="btn btn-primary update-dept-btn" (click)="edit()" [disabled]="BOT_NOT_SELECTED === true">
                     <!-- <span *ngIf="ROUTING_PAGE_MODE === false"> -->
                     {{ "DeptsAddEditPage.UpdateDept" | translate }}
                     <!-- </span> -->
@@ -414,7 +414,7 @@
                 </span>
 
                 <span *ngIf="has_selected_bot !== true">
-                  <button class="btn btn-primary" (click)="edit()" [disabled]='GROUP_ID_NOT_EXIST'>
+                  <button class="btn btn-primary update-dept-btn" (click)="edit()" [disabled]='GROUP_ID_NOT_EXIST'>
                     <!-- <span *ngIf="ROUTING_PAGE_MODE === false"> -->
                     {{ "DeptsAddEditPage.UpdateDept" | translate }}
                     <!-- </span> -->
