@@ -335,7 +335,7 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
       this.new_group_created_id = event
       this.SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR = true
 
-      this.NOT_HAS_EDITED = false
+      this.NOT_HAS_EDITED = false;
 
       this.getGroupsByProjectId();
       // this.HAS_COMPLETED_GET_GROUPS = true
@@ -460,6 +460,7 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
   has_clicked_bot(has_selected_bot: boolean) {
     console.log('HAS CLICKED BOT - SHOW DROPDOWN ', has_selected_bot);
 
+    this.NOT_HAS_EDITED = false;
 
     if (has_selected_bot === false) {
       this.BOT_NOT_SELECTED = true;
@@ -1040,6 +1041,11 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
 
   edit() {
     this.NOT_HAS_EDITED = true;
+    // RESOLVE THE BUG: THE BUTTON UPDATE REMAIN FOCUSED AFTER PRESSED
+    const updated_btn = <HTMLElement>document.querySelector('.update-dept-btn');
+    updated_btn.blur();
+
+    console.log('DEPT EDIT-ADD - EDIT - updated_btn ', updated_btn);
     console.log('DEPT EDIT-ADD - EDIT - ID WHEN EDIT IS PRESSED ', this.id_dept);
     console.log('DEPT EDIT-ADD - EDIT - FULL-NAME WHEN EDIT IS PRESSED ', this.deptName_toUpdate);
     console.log('DEPT EDIT-ADD - EDIT - DESCRIPTION WHEN EDIT IS PRESSED ', this.dept_description_toUpdate);
