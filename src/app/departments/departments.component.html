@@ -217,9 +217,9 @@
                       <!-- *ngIf="dept?.default !== true" -->
                       <td class="dept-td">
                         <span *ngIf="dept?.id_bot">
-                          <span style="color: #7695a5; font-size: 12px; font-weight:400">
+                          <!-- <span style="color: #7695a5; font-size: 12px; font-weight:400">
                             {{ 'DepartmentsPage.ActivatedBot' | translate }}
-                          </span>
+                          </span> -->
 
                           <!-- use case: NO ERROR to get the bot -->
                           <span style="font-size:13px; font-weight:400">
@@ -241,7 +241,7 @@
 
                         </span>
 
-                        <span *ngIf="!dept?.id_bot" style="font-size: 13px; font-weight:400">
+                        <span *ngIf="!dept?.id_bot" class="no-bot">
                           {{ 'DepartmentsPage.NoBotActivated' | translate }}
                         </span>
                       </td>
@@ -532,9 +532,9 @@
                       <!-- *ngIf="dept?.default !== true" -->
                       <td class="dept-td">
                         <span *ngIf="dept?.id_bot">
-                          <span style="color: #7695a5; font-size: 12px; font-weight:400">
+                          <!-- <span style="color: #7695a5; font-size: 12px; font-weight:400">
                             {{ 'DepartmentsPage.ActivatedBot' | translate }}
-                          </span>
+                          </span> -->
 
                           <!-- use case: NO ERROR to get the bot -->
                           <span style="font-size:13px; font-weight:400">
@@ -560,7 +560,7 @@
                       </span>  -->
                         </span>
 
-                        <span *ngIf="!dept?.id_bot" style="font-size: 13px; font-weight:400">
+                        <span *ngIf="!dept?.id_bot" class="no-bot">
                           {{ 'DepartmentsPage.NoBotActivated' | translate }}
                         </span>
                       </td>
