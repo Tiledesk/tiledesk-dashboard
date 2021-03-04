@@ -429,6 +429,10 @@ export class WsRequestsService implements OnDestroy {
         this.wsRequestsList$.next(this.wsRequestsList);
         console.log('% »»» WebSocketJs WF +++++ ws-requests--- service ON-CREATE ----- NEXT wsRequestsList ', this.wsRequestsList)
 
+        // localStorage.setItem('fakerequest', JSON.stringify(this.wsRequestsList));
+
+   
+
 
         /* the json fakeWsRequestsList (used to test the channel icon whatsapp|telegram|messenger|email) is in the folder nicola  */
         //  this.wsRequestsList$.next(this.fakeWsRequestsList);
