@@ -172,14 +172,74 @@ export class MongodbFaqService {
    * CREATE (POST)
    * @param question
    */
-  public addMongoDbFaq(question: string, answer: string, id_faq_kb: string) {
+  public addMongoDbFaq(question: string, answer: string, id_faq_kb: string, intentname: string, faqwebhookenabled: boolean) {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
 
-    const body = { 'question': question, 'answer': `${answer}`, 'id_faq_kb': `${id_faq_kb}` };
+    const url = this.FAQ_URL;
+    console.log('addMongoDbFaq PUT URL ', url);
+
+
+    const body = { 'question': question, 'answer': answer, 'id_faq_kb': id_faq_kb, 'intent_display_name': intentname, 'webhook_enabled': faqwebhookenabled };
+
+    console.log('addMongoDbFaq ADD FAQ POST BODY ', body);
+
+    
+
+    return this.http
+      .post(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+
+  }
+
+  /**
+   * UPDATE (PUT)
+   * @param id
+   * @param question
+   * @param answer
+   */
+  public updateMongoDbFaq(id: string, question: string, answer: string, intentname: string, faqwebhookenabled: boolean) {
+    console.log('ID IN FAQ SERVICE ', id);
+    let url = this.FAQ_URL;
+    url = url += `${id}`;
+    console.log('updateMongoDbFaq PUT URL ', url);
+
+
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+
+    const body = { 'question': question, 'answer': answer, 'intent_display_name': intentname, 'webhook_enabled': faqwebhookenabled };
+
+    console.log('updateMongoDbFaq PUT REQUEST BODY ', body);
+
+    return this.http
+      .put(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+
+  }
+
+
+
+
+
+   /**
+   * CREATE (POST)
+   * @param question
+   */
+  public createTrainBotAnswer(question: string, answer: string, id_faq_kb: string) {
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+
+    const body = { 'question': question, 'answer': answer, 'id_faq_kb': id_faq_kb };
 
     console.log('ADD FAQ POST BODY ', body);
 
@@ -234,13 +294,9 @@ export class MongodbFaqService {
 
   }
 
-  /**
-   * UPDATE (PUT)
-   * @param id
-   * @param question
-   * @param answer
-   */
-  public updateMongoDbFaq(id: string, question: string, answer: string) {
+
+
+  public updateTrainBotAnswer(id: string, question: string, answer: string) {
     console.log('ID IN FAQ SERVICE ', id);
     let url = this.FAQ_URL;
     url = url += `${id}`;

@@ -18,445 +18,354 @@
 <div class="main-content" style="padding-top:0px">
   <div class="container-fluid">
 
-    <span *ngIf="CREATE_VIEW">
-      <div class="row">
-        <div class="col-md-8">
-          <div class="card" style="padding-top:25px; padding-bottom:25px">
-            <loading-spinner *ngIf="showSpinner"></loading-spinner>
-            <div *ngIf="!showSpinner" class="card-content">
 
-              <label class="col-sm-12 custom-label-left" style="margin-bottom: 0px;">
-                <!-- Domanda -->
-                {{ "Questions" | translate }}
-              </label>
-              <span style="display:block; font-size:12px; color: #7695a5;padding-left: 16px; ">
-                <!-- Type/Add your questtion here separated with a new line -->
-                {{ 'TypeAddYourQuesttionHere' | translate}}
-              </span>
-              <!-- col-sm-8 col-md-8 col-lg-6 -->
-              <div class="col-sm-12">
-                <textarea style="border-radius:5px" [(ngModel)]="question" class="textarea" rows="4"
-                  placeholder='{{ "Questions" | translate }}'>
-                </textarea>
-              </div>
+    <div class="row">
+      <!--  CREATE_VIEW -->
+      <div class="col-md-8" *ngIf="CREATE_VIEW">
+        <div class="card" style="padding-top:25px; padding-bottom:25px">
+          <loading-spinner *ngIf="showSpinner"></loading-spinner>
+          <div *ngIf="!showSpinner" class="card-content">
 
-              <!-- SPACER -->
-              <div class="col-sm-12" style="height:10px"></div>
-
-              <label class="col-sm-12 custom-label-left">
-                <!-- Risposta -->
-                {{ "FaqEditAddPage.Answer" | translate }}
-              </label>
-              <!-- col-sm-8 col-md-8 col-lg-6 -->
-              <div class="col-xs-12">
-                <textarea style="border-radius:5px" [(ngModel)]="answer" class="textarea" rows="4"
-                  placeholder='{{ "FaqEditAddPage.Answer" | translate }}'>
-                </textarea>
-              </div>
-
-              <!-- SPACER -->
-              <div class="col-sm-12" style="height:15px"></div>
-
-              <!-- <label style="" class="col-sm-2"></label> -->
-              <div class="col-sm-12">
-                <button class="btn btn-primary" [disabled]="question?.length < 2 || answer?.length < 2"
-                  (click)="create()">
-                  <!-- Crea FAQ  -->
-                  {{ "FaqEditAddPage.CreateFaq" | translate }}
-                </button>
-              </div>
-
+            <label class="col-sm-12 custom-label-left">
+              {{'IntentName' | translate}} <span style="color:#ff5252">*</span>
+            </label>
+            <div class="col-sm-12">
+              <input id="intent-name" name="intent-name" [(ngModel)]="intent_name" class="input" type="text"
+                style="margin-bottom: 3px;" placeholder="{{'EnterIntentName' | translate}}">
             </div>
+
+            <div class="col-sm-12" style="height:10px"></div>
+
+            <label class="col-sm-12 custom-label-left" style="margin-bottom: 0px;">
+              <!-- Domanda -->
+              {{ "Questions" | translate }}
+            </label>
+            <span style="display:block; font-size:12px; color: #7695a5;padding-left: 16px; ">
+              <!-- Type/Add your questtion here separated with a new line -->
+              {{ 'TypeAddYourQuesttionHere' | translate}}
+            </span>
+            <!-- col-sm-8 col-md-8 col-lg-6 -->
+            <div class="col-sm-12">
+              <textarea style="border-radius:5px" [(ngModel)]="question" class="textarea" rows="3"
+                placeholder='{{ "Questions" | translate }}'>
+                </textarea>
+            </div>
+
+            <!-- SPACER -->
+            <div class="col-sm-12" style="height:10px"></div>
+
+            <label class="col-sm-12 custom-label-left">
+              <!-- Risposta -->
+              {{ "FaqEditAddPage.Answer" | translate }}
+            </label>
+            <!-- col-sm-8 col-md-8 col-lg-6 -->
+            <div class="col-xs-12">
+              <textarea style="border-radius:5px" [(ngModel)]="answer" class="textarea" rows="3"
+                placeholder='{{ "FaqEditAddPage.Answer" | translate }}'>
+                </textarea>
+            </div>
+
+            <div class="col-sm-12" style="height:15px"></div>
+
+            <div class="col-sm-12">
+              <div class="nw-onoffswitch-wrapper" style="clear: both;display: inline-block;">
+                <div class="nw-onoffswitch">
+                  <input (change)="toggleFaqWebhook($event)" type="checkbox"
+                    name="webhook-createfaq-switch" class="nw-onoffswitch-checkbox"
+                    id="webhook-createfaq-switch"
+                    [checked]="faq_webhook_is_enabled === true">
+                  <label class="nw-onoffswitch-label" for="webhook-createfaq-switch"></label>
+                </div>
+              </div>
+            </div>
+
+            <!-- SPACER -->
+            <div class="col-sm-12" style="height:15px"></div>
+
+            <!-- <label style="" class="col-sm-2"></label> -->
+            <div class="col-sm-12">
+              <button class="btn btn-primary" [disabled]="question?.length < 2 || answer?.length < 2"
+                (click)="create()">
+                <!-- Crea FAQ  -->
+                {{ "FaqEditAddPage.CreateFaq" | translate }}
+              </button>
+            </div>
+
           </div>
         </div>
+      </div> <!-- /. CREATE_VIEW -->
 
-        <!-- 
-        // ----------------------------------------------
-        // RIGHT SIDEBAR 'FAQ ATTRIBUTES' & Quick tips
-        // ---------------------------------------------- -->
-        <div class="col-md-4">
-          <div class="card">
-            <div class="card-content">
-              <!--
-              // -----------------------------------------------------------
-              // Quick Tips
-              // ----------------------------------------------------------- -->
-              <div class="row" style="border-bottom: 1px solid #eeeeee;">
-                <div class="col-xs-12">
-                  <h4 class="right-sidebar-title" style="margin-top: 12px;">
-                    {{ "QuickTips" | translate }}
-                  </h4>
-                </div>
-              </div>
 
-              <div class="row" style="margin-top:5px">
-                <div class="col-sm-12" style="margin-top: 6px;">
-                  <div class="row">
-                    <div class="col-xs-6">
-                      <div style="line-height: 14px;">
-                        <span class="right-sidebar-attribute-name">
-                          \agent
-                        </span>
-                      </div>
-                    </div>
-                    <div class="col-xs-6">
-                      <div style="line-height: 14px;">
-                        <span class="right-sidebar-attribute-value">
-                          {{"FaqEditAddPage.TheRequestWillBeAssignedToAHumanAgent" | translate}}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
+      <!-- EDIT_VIEW -->
+      <div class="col-md-8" *ngIf="EDIT_VIEW">
+        <div class="card" style="padding-top:25px; padding-bottom:25px">
+          <loading-spinner *ngIf="showSpinner"></loading-spinner>
+          <div *ngIf="!showSpinner" class="card-content">
 
-                </div>
-              </div>
-
-              <div class="row" style="margin-top:5px">
-                <div class="col-sm-12">
-                  <div class="row" style="margin-top: 6px;">
-                    <div class="col-xs-6">
-                      <div style="line-height: 14px;">
-                        <span class="right-sidebar-attribute-name">
-                          <span style="display: block;"> answer </span>
-                          * button_1
-                        </span>
-                      </div>
-                    </div>
-                    <div class="col-xs-6">
-                      <div style="line-height: 14px;">
-                        <span class="right-sidebar-attribute-value">
-                          {{"FaqEditAddPage.DisplayTheButtonWithNameButton_1" | translate}}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row" style="margin-top:5px">
-                <div class="col-sm-12">
-                  <div class="row" style="margin-top: 6px;">
-                    <div class="col-xs-6">
-                      <div style="line-height: 14px;">
-                        <span class="right-sidebar-attribute-name">
-                          <span style="display: block;"> answer </span>
-                          \image:URL
-                        </span>
-                      </div>
-                    </div>
-                    <div class="col-xs-6">
-                      <div style="line-height: 14px;">
-                        <span class="right-sidebar-attribute-value">
-                          {{"FaqEditAddPage.DisplayTheImageWithTheSpecifiedURL" | translate}}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row" style="margin-top:5px">
-                <div class="col-sm-12">
-                  <div class="row" style="margin-top: 6px;">
-                    <div class="col-xs-6">
-                      <div style="line-height: 14px;">
-                        <span class="right-sidebar-attribute-name">
-                          <span style="display: block;"> \webhook:Endpoint </span>
-                        </span>
-                      </div>
-                    </div>
-                    <div class="col-xs-6">
-                      <div style="line-height: 14px;">
-                        <span class="right-sidebar-attribute-value">
-                          {{"FaqEditAddPage.CallTheExternalWebhookToTheSpecifiedEndpoint" | translate}}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!--
-              // -----------------------------------------------------------
-              // KNOWLEDGE BASE LINKS
-              // ----------------------------------------------------------- -->
-              <div class="row" style="border-bottom: 1px solid #eeeeee;">
-                <div class="col-xs-12">
-                  <h4 class="right-sidebar-title" style="margin-top: 12px;">
-                    {{ "RelatedKnowledgeBase" | translate }}
-                  </h4>
-                </div>
-              </div>
-
-              <div class="row" style="margin-top:5px">
-                <div class="col-sm-12" style="margin-top: 6px;">
-                  <span class="right-sidebar-attribute-value" style="color: #03a5e8; cursor: pointer;" (click)="goToKBArticle_AdvancedChatbotStyling()">
-                    Advanced chatbot styling: buttons
-                  </span>
-                </div>
-              </div>
-
-              <div class="row" style="margin-top:5px">
-                <div class="col-sm-12" style="margin-top: 6px;">
-                  <span class="right-sidebar-attribute-value" style="color: #03a5e8; cursor: pointer;" (click)="goToKBArticle_StylingYourChatbotReplies()">
-                    Styling your chatbot replies
-                  </span>
-                </div>
-              </div>
-
+            <label class="col-sm-12 custom-label-left">
+              {{'IntentName' | translate}} <span style="color:#ff5252">*</span>
+            </label>
+            <div class="col-sm-12">
+              <input id="intent-name" name="intent-name" [(ngModel)]="intent_name" class="input" type="text"
+                style="margin-bottom: 3px;" placeholder="{{'EnterIntentName' | translate}}">
             </div>
-          </div>
-        </div> <!-- ./ col-md-4 -->
 
-      </div>
-    </span>
-    <!-- /. CREATE_VIEW -->
+            <!-- SPACER -->
+            <div class="col-sm-12" style="height:10px"></div>
 
-    <span *ngIf="EDIT_VIEW">
-      <div class="row">
-        <div class="col-md-8">
-          <div class="card" style="padding-top:6px; padding-bottom:6px">
-            <loading-spinner *ngIf="showSpinner"></loading-spinner>
-            <div *ngIf="!showSpinner" class="card-content">
-              <!-- height: 36px; -->
-              <label
-                style="padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: left;color: #7695a5;margin-bottom: 0px;"
-                class="col-sm-12 ">
-                <!-- Domanda -->
-                {{ "Questions" | translate }}
-              </label>
-              <span style="display:block; font-size:12px; color: #7695a5;padding-left: 16px; ">
-                <!-- Type/Add your questtion here separated with a new line -->
-                {{ 'TypeAddYourQuesttionHere' | translate}}
-              </span>
-              <div class="col-sm-12">
-                <textarea [(ngModel)]="question_toUpdate" class="textarea" rows="4"
-                  placeholder='{{ "FaqEditAddPage.Question" | translate }}'>
+            <label
+              style="padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: left;color: #7695a5;margin-bottom: 0px;"
+              class="col-sm-12 ">
+              <!-- Domanda -->
+              {{ "Questions" | translate }}
+            </label>
+            <span style="display:block; font-size:12px; color: #7695a5;padding-left: 16px; ">
+              <!-- Type/Add your questtion here separated with a new line -->
+              {{ 'TypeAddYourQuesttionHere' | translate}}
+            </span>
+            <div class="col-sm-12">
+              <textarea [(ngModel)]="question_toUpdate" class="textarea" rows="3"
+                placeholder='{{ "FaqEditAddPage.Question" | translate }}'>
                 </textarea>
-              </div>
-
-              <!-- SPACER -->
-              <div class="col-sm-12" style="height:10px"></div>
-
-              <!-- height: 36px; -->
-              <label style="padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: left;color: #7695a5;"
-                class="col-sm-12 ">
-                <!-- Risposta -->
-                {{ "FaqEditAddPage.Answer" | translate }}
-              </label>
-              <div class="col-sm-12">
-                <textarea [(ngModel)]="answer_toUpdate" class="textarea" rows="4"
-                  placeholder='{{ "FaqEditAddPage.Answer" | translate }}'>
-                  </textarea>
-              </div>
-
-              <div class="col-sm-12" style="height:15px"></div>
-
-              <!-- <label style="" class="col-sm-2"></label> -->
-              <div class="col-sm-12">
-                <button class="btn btn-primary" (click)="edit()">
-                  <!-- Aggiorna FAQ -->
-                  {{ "FaqEditAddPage.UpdateFaq" | translate }}
-                </button>
-              </div>
-
             </div>
-          </div>
-        </div> <!-- col-md-8 -->
 
-        <!-- 
-        // ----------------------------------------------
-        // RIGHT SIDEBAR 'FAQ ATTRIBUTES' & Quick tips
-        // ---------------------------------------------- -->
-        <div class="col-md-4">
-          <div class="card">
-            <div class="card-content">
-              <!--
+            <!-- SPACER -->
+            <div class="col-sm-12" style="height:10px"></div>
+
+            <!-- height: 36px; -->
+            <label style="padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: left;color: #7695a5;"
+              class="col-sm-12 ">
+              <!-- Risposta -->
+              {{ "FaqEditAddPage.Answer" | translate }}
+            </label>
+            <div class="col-sm-12">
+              <textarea [(ngModel)]="answer_toUpdate" class="textarea" rows="3"
+                placeholder='{{ "FaqEditAddPage.Answer" | translate }}'>
+                  </textarea>
+            </div>
+
+            <div class="col-sm-12" style="height:15px"></div>
+
+            <div class="col-sm-12">
+              <div class="nw-onoffswitch-wrapper" style="clear: both;display: inline-block;">
+                <div class="nw-onoffswitch">
+                  <input (change)="toggleFaqWebhook($event)" type="checkbox"
+                    name="webhook-editfaq-switch" class="nw-onoffswitch-checkbox"
+                    id="webhook-editfaq-switch"
+                    [checked]="faq_webhook_is_enabled === true">
+                  <label class="nw-onoffswitch-label" for="webhook-editfaq-switch"></label>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-12" style="height:15px"></div>
+
+            <!-- <label style="" class="col-sm-2"></label> -->
+            <div class="col-sm-12">
+              <button class="btn btn-primary" (click)="edit()">
+                <!-- Aggiorna FAQ -->
+                {{ "FaqEditAddPage.UpdateFaq" | translate }}
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div> <!-- col-md-8 -->
+
+      <!-- ---------------------------------------------- -->
+      <!-- RIGHT SIDEBAR 'FAQ ATTRIBUTES' & Quick tips  -->
+      <!-- ---------------------------------------------- -->
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-content">
+            <!--
               // -----------------------------------------------------------
               // Attributes
               // ----------------------------------------------------------- -->
-              <div class="row" style="border-bottom: 1px solid #eeeeee;">
-                <div class="col-xs-12">
-                  <h4 class="right-sidebar-title" style="">
-                    {{ "FaqEditAddPage.FaqAttributes" | translate }}
-                  </h4>
-                </div>
+            <div class="row" style="border-bottom: 1px solid #eeeeee;">
+              <div class="col-xs-12">
+                <h4 class="right-sidebar-title" style="">
+                  {{ "FaqEditAddPage.FaqAttributes" | translate }}
+                </h4>
               </div>
+            </div>
 
-              <div class="row" style="margin-top:5px">
-                <div class="col-sm-12">
-                  <p style="margin-bottom: 0px; padding-top: 3px;">
-                    <i class="material-icons right-sidebar-icon" style="">code</i>
-                    <span style="position: relative;top: 1px;">
-                      <span class="right-sidebar-attribute-name" style="">
-                        {{ "FaqEditAddPage.FaqID" | translate }}
-                      </span>
-
-                      <span class="right-sidebar-attribute-value" style="">
-                        {{ id_faq }}
-                      </span>
-
+            <div class="row" style="margin-top:5px">
+              <div class="col-sm-12">
+                <p style="margin-bottom: 0px; padding-top: 3px;">
+                  <i class="material-icons right-sidebar-icon" style="">code</i>
+                  <span style="position: relative;top: 1px;">
+                    <span class="right-sidebar-attribute-name" style="">
+                      {{ "FaqEditAddPage.FaqID" | translate }}
                     </span>
-                  </p>
-                </div>
-              </div>
 
-              <div class="row" style="margin-top:5px">
-                <div class="col-sm-12">
-                  <p style="margin-bottom: 0px;">
-                    <i class="material-icons"
-                      style="vertical-align: middle; color: #394f5a;font-size:14px;  margin-top: 1px;">calendar_today</i>
-                    <span style="position: relative;top: 1px;">
-                      <span class="right-sidebar-attribute-name" style="">
-                        {{ "FaqEditAddPage.CreationDate" | translate }}
-                      </span>
-
-                      <span class="right-sidebar-attribute-value" style="">
-                        {{ faq_creationDate | date: 'd/M/y'}}
-                      </span>
-
+                    <span class="right-sidebar-attribute-value" style="">
+                      {{ id_faq }}
                     </span>
-                  </p>
-                </div>
-              </div>
 
-              <!--
+                  </span>
+                </p>
+              </div>
+            </div>
+
+            <div class="row" style="margin-top:5px">
+              <div class="col-sm-12">
+                <p style="margin-bottom: 0px;">
+                  <i class="material-icons"
+                    style="vertical-align: middle; color: #394f5a;font-size:14px;  margin-top: 1px;">calendar_today</i>
+                  <span style="position: relative;top: 1px;">
+                    <span class="right-sidebar-attribute-name" style="">
+                      {{ "FaqEditAddPage.CreationDate" | translate }}
+                    </span>
+
+                    <span class="right-sidebar-attribute-value" style="">
+                      {{ faq_creationDate | date: 'd/M/y'}}
+                    </span>
+
+                  </span>
+                </p>
+              </div>
+            </div>
+
+            <!--
               // -----------------------------------------------------------
               // Quick Tips
               // ----------------------------------------------------------- -->
-              <div class="row" style="border-bottom: 1px solid #eeeeee;">
-                <div class="col-xs-12">
-                  <h4 class="right-sidebar-title" style="margin-top: 12px;">
-                    {{ "QuickTips" | translate }}
-                  </h4>
-                </div>
+            <div class="row" style="border-bottom: 1px solid #eeeeee;">
+              <div class="col-xs-12">
+                <h4 class="right-sidebar-title" style="margin-top: 12px;">
+                  {{ "QuickTips" | translate }}
+                </h4>
               </div>
+            </div>
 
 
-              <div class="row" style="margin-top:5px">
-                <div class="col-sm-12" style="margin-top: 6px;">
-                  <div class="row">
-                    <div class="col-xs-6">
-                      <div style="line-height: 14px;">
-                        <span class="right-sidebar-attribute-name" style="">
-                          \agent
-                        </span>
-                      </div>
-                    </div>
-                    <div class="col-xs-6">
-                      <div style="line-height: 14px;">
-                        <span class="right-sidebar-attribute-value" style="">
-                          {{"FaqEditAddPage.TheRequestWillBeAssignedToAHumanAgent" | translate}}
-                        </span>
-                      </div>
+            <div class="row" style="margin-top:5px">
+              <div class="col-sm-12" style="margin-top: 6px;">
+                <div class="row">
+                  <div class="col-xs-6">
+                    <div style="line-height: 14px;">
+                      <span class="right-sidebar-attribute-name" style="">
+                        \agent
+                      </span>
                     </div>
                   </div>
-
-                </div>
-              </div>
-
-              <div class="row" style="margin-top:5px">
-                <div class="col-sm-12">
-                  <div class="row" style="margin-top: 6px;">
-                    <div class="col-xs-6">
-                      <div style="line-height: 14px;">
-                        <span class="right-sidebar-attribute-name" style="">
-                          <span style="display: block;"> answer </span>
-                          * button_1
-                        </span>
-                      </div>
-                    </div>
-                    <div class="col-xs-6">
-                      <div style="line-height: 14px;">
-                        <span class="right-sidebar-attribute-value" style="">
-                          {{"FaqEditAddPage.DisplayTheButtonWithNameButton_1" | translate}}
-                        </span>
-                      </div>
+                  <div class="col-xs-6">
+                    <div style="line-height: 14px;">
+                      <span class="right-sidebar-attribute-value" style="">
+                        {{"FaqEditAddPage.TheRequestWillBeAssignedToAHumanAgent" | translate}}
+                      </span>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <div class="row" style="margin-top:5px">
-                <div class="col-sm-12">
-                  <div class="row" style="margin-top: 6px;">
-                    <div class="col-xs-6">
-                      <div style="line-height: 14px;">
-                        <span class="right-sidebar-attribute-name" style="">
-                          <span style="display: block;"> answer </span>
-                          \image:URL
-                        </span>
-                      </div>
+              </div>
+            </div>
+
+            <div class="row" style="margin-top:5px">
+              <div class="col-sm-12">
+                <div class="row" style="margin-top: 6px;">
+                  <div class="col-xs-6">
+                    <div style="line-height: 14px;">
+                      <span class="right-sidebar-attribute-name" style="">
+                        <span style="display: block;"> answer </span>
+                        * button_1
+                      </span>
                     </div>
-                    <div class="col-xs-6">
-                      <div style="line-height: 14px;">
-                        <span class="right-sidebar-attribute-value" style="">
-                          {{"FaqEditAddPage.DisplayTheImageWithTheSpecifiedURL" | translate}}
-                        </span>
-                      </div>
+                  </div>
+                  <div class="col-xs-6">
+                    <div style="line-height: 14px;">
+                      <span class="right-sidebar-attribute-value" style="">
+                        {{"FaqEditAddPage.DisplayTheButtonWithNameButton_1" | translate}}
+                      </span>
                     </div>
                   </div>
                 </div>
               </div>
+            </div>
 
-              <div class="row" style="margin-top:5px">
-                <div class="col-sm-12">
-                  <div class="row" style="margin-top: 6px;">
-                    <div class="col-xs-6">
-                      <div style="line-height: 14px;">
-                        <span class="right-sidebar-attribute-name" style="">
-                          <span style="display: block;"> \webhook:Endpoint </span>
-                        </span>
-                      </div>
+            <div class="row" style="margin-top:5px">
+              <div class="col-sm-12">
+                <div class="row" style="margin-top: 6px;">
+                  <div class="col-xs-6">
+                    <div style="line-height: 14px;">
+                      <span class="right-sidebar-attribute-name" style="">
+                        <span style="display: block;"> answer </span>
+                        \image:URL
+                      </span>
                     </div>
-                    <div class="col-xs-6">
-                      <div style="line-height: 14px;">
-                        <span class="right-sidebar-attribute-value" style="">
-                        
-                          {{"FaqEditAddPage.CallTheExternalWebhookToTheSpecifiedEndpoint" | translate}}
-                          
-                        </span>
-                      </div>
+                  </div>
+                  <div class="col-xs-6">
+                    <div style="line-height: 14px;">
+                      <span class="right-sidebar-attribute-value" style="">
+                        {{"FaqEditAddPage.DisplayTheImageWithTheSpecifiedURL" | translate}}
+                      </span>
                     </div>
                   </div>
                 </div>
               </div>
+            </div>
 
-                            <!--
+            <div class="row" style="margin-top:5px">
+              <div class="col-sm-12">
+                <div class="row" style="margin-top: 6px;">
+                  <div class="col-xs-6">
+                    <div style="line-height: 14px;">
+                      <span class="right-sidebar-attribute-name" style="">
+                        <span style="display: block;"> \webhook:Endpoint </span>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="col-xs-6">
+                    <div style="line-height: 14px;">
+                      <span class="right-sidebar-attribute-value" style="">
+
+                        {{"FaqEditAddPage.CallTheExternalWebhookToTheSpecifiedEndpoint" | translate}}
+
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!--
               // -----------------------------------------------------------
               // KNOWLEDGE BASE LINKS
               // ----------------------------------------------------------- -->
-              <div class="row" style="border-bottom: 1px solid #eeeeee;">
-                <div class="col-xs-12">
-                  <h4 class="right-sidebar-title" style="margin-top: 12px;">
-                    {{ "RelatedKnowledgeBase" | translate }}
-                  </h4>
-                </div>
+            <div class="row" style="border-bottom: 1px solid #eeeeee;">
+              <div class="col-xs-12">
+                <h4 class="right-sidebar-title" style="margin-top: 12px;">
+                  {{ "RelatedKnowledgeBase" | translate }}
+                </h4>
               </div>
-
-              <div class="row" style="margin-top:5px">
-                <div class="col-sm-12" style="margin-top: 6px;">
-                  <span class="right-sidebar-attribute-value" style="color: #03a5e8; cursor: pointer;" (click)="goToKBArticle_AdvancedChatbotStyling()">
-                    Advanced chatbot styling: buttons
-                  </span>
-                </div>
-              </div>
-
-              <div class="row" style="margin-top:5px">
-                <div class="col-sm-12" style="margin-top: 6px;">
-                  <span class="right-sidebar-attribute-value" style="color: #03a5e8; cursor: pointer;" (click)="goToKBArticle_StylingYourChatbotReplies()">
-                    Styling your chatbot replies
-                  </span>
-                </div>
-              </div>
-
             </div>
+
+            <div class="row" style="margin-top:5px">
+              <div class="col-sm-12" style="margin-top: 6px;">
+                <span class="right-sidebar-attribute-value" style="color: #03a5e8; cursor: pointer;"
+                  (click)="goToKBArticle_AdvancedChatbotStyling()">
+                  Advanced chatbot styling: buttons
+                </span>
+              </div>
+            </div>
+
+            <div class="row" style="margin-top:5px">
+              <div class="col-sm-12" style="margin-top: 6px;">
+                <span class="right-sidebar-attribute-value" style="color: #03a5e8; cursor: pointer;"
+                  (click)="goToKBArticle_StylingYourChatbotReplies()">
+                  Styling your chatbot replies
+                </span>
+              </div>
+            </div>
+
           </div>
-        </div> <!-- ./ col-md-4 -->
+        </div>
+      </div> <!-- ./ col-md-4 -->
 
-
-      </div>
-    </span> <!-- /. EDIT_VIEW -->
+    </div> <!-- ./ row -->
 
   </div> <!-- /. container-fluid -->
+
+
 </div> <!-- /. main-content -->

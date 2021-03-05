@@ -39,6 +39,9 @@ export class FaqEditAddComponent implements OnInit {
   editFaqSuccessNoticationMsg: string;
   editFaqErrorNoticationMsg: string;
   botType: string;
+  intent_name: string;
+  faq_webhook_is_enabled: boolean;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -161,20 +164,22 @@ export class FaqEditAddComponent implements OnInit {
    */
   getFaqById() {
     this.mongodbFaqService.getMongDbFaqById(this.id_faq).subscribe((faq: any) => {
-      console.log('FAQ GET BY ID', faq);
+      console.log('FaqEditAddComponent - FAQ GET BY ID RES', faq);
       if (faq) {
         this.question_toUpdate = faq.question;
         this.answer_toUpdate = faq.answer;
-        this.faq_creationDate = faq.createdAt
-        console.log('FAQ QUESTION TO UPDATE', this.question_toUpdate);
+        this.faq_creationDate = faq.createdAt;
+        this.intent_name = faq.intent_display_name;
+        this.faq_webhook_is_enabled = faq.webhook_enabled;
+         console.log('FAQ QUESTION TO UPDATE', this.question_toUpdate);
         console.log('FAQ ANSWER TO UPDATE', this.answer_toUpdate);
       }
 
     }, (error) => {
-      console.log('FAQ GET BY ID - ERROR ', error);
+      console.log('FaqEditAddComponent - FAQ GET BY ID - ERROR ', error);
       this.showSpinner = false;
     }, () => {
-      console.log('FAQ GET BY ID - COMPLETE ');
+      console.log('FaqEditAddComponent - FAQ GET BY ID - COMPLETE ');
       this.showSpinner = false;
     });
   }
@@ -189,14 +194,19 @@ export class FaqEditAddComponent implements OnInit {
     this.location.back();
   }
 
+  toggleFaqWebhook($event) {
+    console.log('FaqEditAddComponent toggleFaqWebhook ', $event.target.checked);
+    this.faq_webhook_is_enabled = $event.target.checked
+  }
+
   /**
    * *** ADD FAQ ***
    */
   create() {
-    console.log('MONGO DB CREATE FAQ - QUESTION: ', this.question, ' - ANSWER: ', this.answer, ' - ID FAQ KB ', this.id_faq_kb);
-    this.mongodbFaqService.addMongoDbFaq(this.question, this.answer, this.id_faq_kb)
+    console.log('FaqEditAddComponent CREATE FAQ - QUESTION: ', this.question, ' - ANSWER: ', this.answer, ' - ID FAQ KB ', this.id_faq_kb, ' - INTENT NAME ',  this.intent_name , ' - FAQ WEBHOOK ENABLED ', this.faq_webhook_is_enabled);
+    this.mongodbFaqService.addMongoDbFaq(this.question, this.answer, this.id_faq_kb, this.intent_name, this.faq_webhook_is_enabled)
       .subscribe((faq) => {
-        console.log('CREATED FAQ ', faq);
+        console.log('FaqEditAddComponent CREATED FAQ RES ', faq);
 
         // this.question = '';
         // this.answer = '';
@@ -205,12 +215,12 @@ export class FaqEditAddComponent implements OnInit {
         // this.ngOnInit();
       }, (error) => {
 
-        console.log('CREATED FAQ - ERROR ', error);
+        console.log('FaqEditAddComponent CREATED FAQ - ERROR ', error);
         // =========== NOTIFY ERROR ===========
         // this.notify.showNotification('An error occurred while creating the FAQ', 4, 'report_problem');
         this.notify.showNotification(this.createFaqErrorNoticationMsg, 4, 'report_problem');
       }, () => {
-        console.log('CREATED FAQ * COMPLETE *');
+        console.log('FaqEditAddComponent CREATED FAQ * COMPLETE *');
         // =========== NOTIFY SUCCESS===========
         // this.notify.showNotification('FAQ successfully created', 2, 'done');
         this.notify.showNotification(this.createFaqSuccessNoticationMsg, 2, 'done');
@@ -225,21 +235,22 @@ export class FaqEditAddComponent implements OnInit {
    * *** EDIT FAQ ***
    */
   edit() {
-    console.log('FAQ QUESTION TO UPDATE ', this.question_toUpdate);
-    console.log('FAQ ANSWER TO UPDATE ', this.answer_toUpdate);
+    console.log('FaqEditAddComponent FAQ QUESTION TO UPDATE ', this.question_toUpdate);
+    console.log('FaqEditAddComponent FAQ ANSWER TO UPDATE ', this.answer_toUpdate);
 
-    this.mongodbFaqService.updateMongoDbFaq(this.id_faq, this.question_toUpdate, this.answer_toUpdate).subscribe((data) => {
-      console.log('PUT DATA (UPDATE FAQ)', data);
+    this.mongodbFaqService.updateMongoDbFaq(this.id_faq, this.question_toUpdate, this.answer_toUpdate, this.intent_name, this.faq_webhook_is_enabled)
+    .subscribe((data) => {
+      console.log('FaqEditAddComponent UPDATE FAQ RES', data);
 
       // RE-RUN TO UPDATE THE TABLE
       // this.ngOnInit();
     }, (error) => {
-      console.log('PUT (UPDATE FAQ) REQUEST ERROR ', error);
+      console.log('FaqEditAddComponent UPDATE FAQ - ERROR ', error);
       // =========== NOTIFY ERROR ===========
       // this.notify.showNotification('An error occurred while updating the FAQ', 4, 'report_problem');
       this.notify.showNotification(this.editFaqErrorNoticationMsg, 4, 'report_problem');
     }, () => {
-      console.log('PUT (UPDATE FAQ) REQUEST * COMPLETE *');
+      console.log('FaqEditAddComponent UPDATE FAQ * COMPLETE *');
       // =========== NOTIFY SUCCESS===========
       // this.notify.showNotification('FAQ successfully updated', 2, 'done');
       this.notify.showNotification(this.editFaqSuccessNoticationMsg, 2, 'done');
