@@ -288,8 +288,10 @@
     "at": "at",
     "CurrentAnswers": "Current answers",
     "NewAnswer": "New answer",
-    "UploadAnswersFromCsv": "Upload answers from Csv",
-    "ExportAnswersToCsv": "Export answers to Csv",
+    "UploadAnswersFromCsv": "Upload answers from CSV",
+    "UploadFromCsv": "Upload from Csv",
+    "ExportAnswersToCsv": "Export answers to CSV",
+    "ExportToCsv": "Export to CSV",
     "Close": "Close",
     "Period": "Period",
     "SubscriptionCreated": "Subscription created",
@@ -1838,5 +1840,11 @@
     "ActivateFor":"Activate for",
     "DepartmentsThisBotIsAssociatedWith":"Departments this bot is associated with",
     "NoDeptsAreAssociatedWithThisBot":"No departments are associated with this bot",
-    "ManageTheBotIn":"Manage the bot in"
+    "ManageTheBotIn":"Manage the bot in",
+    "YourWebServiceWillReceivePostRequestFrom":"Your web service will receive a POST request from {{ company_name }} in the form of the response to a user query matched by intents with webhook enabled.",
+    "ThisUrlWilReceiveAPostRequestFrom":"This url will receive a POST request from {{ company_name }} every time the webhook is triggered by an intent.",
+    "EnterWebhookURL":"Enter Webhook URL",
+    "IntentName": "Intent name",
+    "EnterIntentName":"Enter intent name",
+    "BotDetails":"Bot details"
 }

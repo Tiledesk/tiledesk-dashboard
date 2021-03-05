@@ -289,7 +289,9 @@
 	"CurrentAnswers": "Aktuelle Antworten",
 	"NewAnswer": "Neue Antwort",
 	"UploadAnswersFromCsv": "Antworten als CSV importieren",
+	"UploadFromCsv": "Hochladen von CSV",
 	"ExportAnswersToCsv": "Antworten als CSV exportieren",
+	"ExportToCsv": "Export nach CSV",
 	"Close": "Schließen",
 	"Period": "Zeitspanne",
 	"SubscriptionCreated": "Abo abgeschlossen",
@@ -1837,5 +1839,14 @@
 	"ActivateFor":"Aktivieren für",
 	"DepartmentsThisBotIsAssociatedWith":"Abteilungen, denen dieser Bot zugeordnet ist",
 	"NoDeptsAreAssociatedWithThisBot":"Diesem Bot sind keine Abteilungen zugeordnet",
-	"ManageTheBotIn":"Verwalten Sie den Bot in"
+	"ManageTheBotIn":"Verwalten Sie den Bot in",
+	"YourWebServiceWillReceivePostRequestFrom":"Ihr Webdienst erhält von {{ company_name }} eine POST-Anfrage in Form einer Antwort auf eine Benutzeranfrage, die mit Absichten mit aktiviertem Webhook übereinstimmt.",
+	"ThisUrlWilReceiveAPostRequestFrom":"Diese URL erhält jedes Mal eine POST-Anfrage von {{ company_name }}, wenn der Webhook durch eine Absicht ausgelöst wird.",
+	"EnterWebhookURL":"Geben Sie Webhook URL",
+	"IntentName": "Intent name",
+	"EnterIntentName":"Geben sie den namen intent ein.",
+	"BotDetails":"Bot einzelheiten"
+	
+
+	
 }
