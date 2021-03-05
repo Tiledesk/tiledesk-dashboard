@@ -196,7 +196,7 @@ export class TrainBotComponent implements OnInit, AfterViewInit {
     console.log('TrainBotComponent FAQ ANSWER TO UPDATE ', answer);
 
 
-    this.faqService.updateMongoDbFaq(faq_id, question + '\n\n' + this.selectedQuestion, answer)
+    this.faqService.updateTrainBotAnswer(faq_id, question + '\n\n' + this.selectedQuestion, answer)
       .subscribe((updatedFAQ) => {
         console.log('TrainBotComponent PUT DATA (UPDATED FAQs)', updatedFAQ);
         this.updatedFAQ = updatedFAQ;
