@@ -774,29 +774,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     window.open(url, '_blank');
   }
 
-  // !!! NO MORE USED IN THIS COMPONENT - MOVED IN faq.component.html
-  // edit() {
-  //   console.log('FAQ KB NAME TO UPDATE ', this.faqKbNameToUpdate);
-  //   console.log('FAQ KB URL TO UPDATE ', this.faqKbUrlToUpdate);
-
-  //   this.faqKbService.updateMongoDbFaqKb(this.id_faq_kb, this.faqKbNameToUpdate, this.faqKbUrlToUpdate).subscribe((data) => {
-  //     console.log('PUT DATA ', data);
-
-  //     // RE-RUN GET CONTACT TO UPDATE THE TABLE
-  //     // this.getDepartments();
-  //     this.ngOnInit();
-  //   },
-  //     (error) => {
-
-  //       console.log('PUT REQUEST ERROR ', error);
-
-  //     },
-  //     () => {
-  //       console.log('PUT REQUEST * COMPLETE *');
-
-  //       this.router.navigate(['project/' + this.project._id + '/faqkb']);
-  //     });
-  // }
+  
 
 
 
