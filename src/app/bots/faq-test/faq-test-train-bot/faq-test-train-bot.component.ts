@@ -81,7 +81,7 @@ export class FaqTestTrainBotComponent implements OnInit {
     console.log('MONGO DB CREATE FAQ - QUESTION: ', this.selectedQuestion, ' - ANSWER: ', this.answer, ' - ID FAQ KB ', this.idBot);
 
     if (this.answer) {
-      this.faqService.addMongoDbFaq(this.selectedQuestion, this.answer, this.idBot)
+      this.faqService.createTrainBotAnswer(this.selectedQuestion, this.answer, this.idBot)
         .subscribe((faq) => {
           console.log('FaqTestComponent - CREATED FAQ ', faq);
 
