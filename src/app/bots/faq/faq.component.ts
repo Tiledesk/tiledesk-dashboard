@@ -112,6 +112,9 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   all_depts: any
   isVisibleDEP: boolean;
 
+  webhook_is_enabled: any;
+  webhookUrl: string;
+
   constructor(
     private mongodbFaqService: MongodbFaqService,
     private router: Router,
@@ -202,6 +205,11 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
       console.log('Bot Create (FaqComponent)--->  PARAMS botType', this.botType);
     });
 
+  }
+
+  toggleWebhook($event) {
+    console.log('Faqcomponent toggleWebhook ', $event.target.checked);
+    this.webhook_is_enabled = $event.target.checked
   }
 
 
@@ -567,22 +575,28 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     this.showSpinnerInUpdateBotCard = true
     // this.botService.getMongDbBotById(this.botId).subscribe((bot: any) => { // NO MORE USED
     this.faqKbService.getMongDbFaqKbById(this.id_faq_kb).subscribe((faqkb: any) => {
-      console.log('GET FAQ-KB (DETAILS) BY ID (SUBSTITUTE BOT) ', faqkb);
+      console.log('Faqcomponent GET FAQ-KB (DETAILS) BY ID (SUBSTITUTE BOT) ', faqkb);
 
       this.faq_kb_remoteKey = faqkb.kbkey_remote
-      console.log('GET FAQ-KB (DETAILS) BY ID - FAQKB REMOTE KEY ', this.faq_kb_remoteKey);
+      console.log('Faqcomponent GET FAQ-KB (DETAILS) BY ID - FAQKB REMOTE KEY ', this.faq_kb_remoteKey);
 
       this.faqKb_name = faqkb.name;
-      console.log('GET FAQ-KB (DETAILS) BY ID - FAQKB NAME', this.faqKb_name);
+      console.log('Faqcomponent GET FAQ-KB (DETAILS) BY ID - FAQKB NAME', this.faqKb_name);
 
       this.faqKb_id = faqkb._id;
-      console.log('GET FAQ-KB (DETAILS) BY ID - FAQKB ID', this.faqKb_id);
+      console.log('Faqcomponent GET FAQ-KB (DETAILS) BY ID - FAQKB ID', this.faqKb_id);
 
       this.faqKb_created_at = faqkb.createdAt;
-      console.log('GET FAQ-KB (DETAILS) BY ID - CREATED AT ', this.faqKb_created_at);
+      console.log('Faqcomponent GET FAQ-KB (DETAILS) BY ID - CREATED AT ', this.faqKb_created_at);
 
       this.faqKb_description = faqkb.description;
-      console.log('GET FAQ-KB (DETAILS) BY ID - Description ', this.faqKb_description);
+      console.log('Faqcomponent GET FAQ-KB (DETAILS) BY ID - Description ', this.faqKb_description);
+
+      this.webhook_is_enabled = faqkb.webhook_enabled
+      console.log('Faqcomponent GET FAQ-KB (DETAILS) BY ID - webhook_is_enabled ', this.webhook_is_enabled);
+
+      this.webhookUrl = faqkb.webhook_url
+      console.log('Faqcomponent GET FAQ-KB (DETAILS) BY ID - webhookUrl ', this.webhookUrl);
       // ---------------------------------------------------------------------------------------------------------------
       // Bot internal ed external
       // ---------------------------------------------------------------------------------------------------------------
@@ -636,7 +650,6 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
     let _botType = ''
     if (this.botType === 'native') {
-
       // the type 'native' needs to be changed into 'internal' for the service
       _botType = 'internal'
     } else {
@@ -644,12 +657,12 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
       _botType = this.botType
     }
     // this.faqKbService.updateMongoDbFaqKb(this.id_faq_kb, this.faqKb_name, this.faqKbUrlToUpdate, this.is_external_bot)
-    this.faqKbService.updateMongoDbFaqKb(this.id_faq_kb, this.faqKb_name, this.faqKbUrlToUpdate, _botType, this.faqKb_description)
+    this.faqKbService.updateMongoDbFaqKb(this.id_faq_kb, this.faqKb_name, this.faqKbUrlToUpdate, _botType, this.faqKb_description, this.webhook_is_enabled, this.webhookUrl)
       .subscribe((faqKb) => {
-        console.log('EDIT BOT - FAQ KB UPDATED ', faqKb);
+        console.log('Faqcomponent EDIT BOT - FAQ KB UPDATED ', faqKb);
       },
         (error) => {
-          console.log('EDIT BOT -  ERROR ', error);
+          console.log('Faqcomponent EDIT BOT -  ERROR ', error);
 
           if (this.botType !== 'dialogflow') {
             // =========== NOTIFY ERROR ===========
@@ -1002,29 +1015,29 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
    * UPDATE FAQ (WHEN THE 'SAVE' BUTTON IN MODAL IS CLICKED)
    * !!! NO MORE USED: THE ACTION UPDATE IS IN FAQ- EDIT-ADD COMPONENT
    */
-  onCloseUpdateModalHandled() {
-    // HIDE THE MODAL
-    this.display = 'none';
+  // onCloseUpdateModalHandled() {
+   
+  //   this.display = 'none';
 
-    console.log('ON MODAL UPDATE CLOSE -> FAQ ID ', this.id_toUpdate);
-    console.log('ON MODAL UPDATE CLOSE -> FAQ QUESTION UPDATED ', this.question_toUpdate);
-    console.log('ON MODAL UPDATE CLOSE -> FAQ ANSWER UPDATED ', this.answer_toUpdate);
+  //   console.log('ON MODAL UPDATE CLOSE -> FAQ ID ', this.id_toUpdate);
+  //   console.log('ON MODAL UPDATE CLOSE -> FAQ QUESTION UPDATED ', this.question_toUpdate);
+  //   console.log('ON MODAL UPDATE CLOSE -> FAQ ANSWER UPDATED ', this.answer_toUpdate);
 
-    this.mongodbFaqService.updateMongoDbFaq(this.id_toUpdate, this.question_toUpdate, this.answer_toUpdate).subscribe((data) => {
-      console.log('PUT DATA ', data);
+  //   this.mongodbFaqService.updateMongoDbFaq(this.id_toUpdate, this.question_toUpdate, this.answer_toUpdate).subscribe((data) => {
+  //     console.log('PUT DATA ', data);
 
-      // RE-RUN GET CONTACT TO UPDATE THE TABLE
-      // this.getDepartments();
-      this.ngOnInit();
-    }, (error) => {
+  //     // RE-RUN GET CONTACT TO UPDATE THE TABLE
+  //     // this.getDepartments();
+  //     this.ngOnInit();
+  //   }, (error) => {
 
-      console.log('PUT REQUEST ERROR ', error);
+  //     console.log('PUT REQUEST ERROR ', error);
 
-    }, () => {
-      console.log('PUT REQUEST * COMPLETE *');
-    });
+  //   }, () => {
+  //     console.log('PUT REQUEST * COMPLETE *');
+  //   });
 
-  }
+  // }
 
   // CLOSE MODAL WITHOUT SAVE THE UPDATES OR WITHOUT CONFIRM THE DELETION
   onCloseModal() {

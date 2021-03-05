@@ -352,11 +352,11 @@ export class FaqKbService {
    * @param id
    * @param fullName
    */
-  public updateMongoDbFaqKb(id: string, name: string, urlfaqkb: string, bottype: string, faqKb_description: string) {
+  public updateMongoDbFaqKb(id: string, name: string, urlfaqkb: string, bottype: string, faqKb_description: string, webkookisenalbled: any, webhookurl) {
 
     let url = this.FAQKB_URL + id;
     // url = url += `${id}`;
-    console.log('PUT URL ', url);
+    console.log('update BOT - URL ', url);
 
     const headers = new Headers();
     headers.append('Accept', 'application/json');
@@ -364,8 +364,19 @@ export class FaqKbService {
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
 
-    const body = { 'name': name, 'url': urlfaqkb, 'type': bottype, 'description': faqKb_description };
+    let body = {}
 
+
+
+    body = { 'name': name, 'url': urlfaqkb, 'type': bottype, 'description': faqKb_description };
+
+    if (bottype === 'internal') {
+      body['webhook_enabled'] = webkookisenalbled;
+      body['webhook_url'] = webhookurl
+
+    }
+
+    console.log('update BOT - BODY ', body);
     // let botType = ''
     // if (is_external_bot === true) {
     //   botType = 'external'
@@ -421,7 +432,7 @@ export class FaqKbService {
 
     let params = new HttpParams().set('sender', 'bot_' + idBot)
 
-    return this.httpClient.get(this.SERVER_BASE_PATH + this.project._id + "/analytics/messages/count", { headers: headers, params:params })
+    return this.httpClient.get(this.SERVER_BASE_PATH + this.project._id + "/analytics/messages/count", { headers: headers, params: params })
 
   }
 

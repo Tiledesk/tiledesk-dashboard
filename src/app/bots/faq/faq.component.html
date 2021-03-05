@@ -17,17 +17,29 @@
     -->
     <div class="row">
       <div class="col-md-8">
-        <div class="card custom_card" style="padding-top:25px; padding-bottom:25px; margin-bottom: 5px;">
+        <div class="card custom_card card--no-border"
+          style="padding-top: 0px;padding-bottom:5px;margin-bottom: 5px;margin-top: 0px;">
           <!-- style="margin-top: 16px" -->
 
           <loading-spinner *ngIf="showSpinnerInUpdateBotCard"></loading-spinner>
           <div *ngIf="!showSpinnerInUpdateBotCard" class="card-content">
 
+            <div class="row">
+              <div class="col-md-10">
+                <h3 class="card_title__underlined">
+                  <span class="card_title__underline">
+                    {{ "BotDetails" | translate }}
+                  </span>
+                </h3>
+              </div>
+              <div class="col-md-10">
+                <div class="section-subtitle"> </div>
+              </div>
+            </div>
 
-            <!-- 
-            //---------------------------------------------------------------------------------------------------
-            // Bot avatar (for all bot type)
-            //--------------------------------------------------------------------------------------------------- -->
+            <!--  --------------------------------------------------------------------------------------------------- -->
+            <!--  Bot avatar (for all bot type) -->
+            <!--  --------------------------------------------------------------------------------------------------- -->
             <div class="row">
               <label *ngIf="botType !== 'dialogflow'" class="col-sm-2 bot_avatar_label">
                 Avatar
@@ -67,10 +79,10 @@
               </div>
             </div>
 
-            <!-- 
-            // -------------------------------------------------------------------------------------------
-            // Bot type (for external & native)
-            // ------------------------------------------------------------------------------------------- -->
+
+            <!-- ------------------------------------------------------------------------------------------- -->
+            <!-- Bot type (for external & native) -->
+            <!-- ------------------------------------------------------------------------------------------- -->
             <section *ngIf="botType !== 'dialogflow'">
 
               <!-- <div class="row">
@@ -89,10 +101,10 @@
               <!-- SPACER -->
               <!-- <div class="col-sm-12" style="height:10px"></div> -->
 
-              <!-- 
-            // -------------------------------------------------------------------------------------------
-            // Bot name (for external & native)
-            // ------------------------------------------------------------------------------------------- -->
+
+              <!-- ------------------------------------------------------------------------------------------- -->
+              <!-- Bot name (for external & native) -->
+              <!-- ------------------------------------------------------------------------------------------- -->
               <div class="row">
                 <label class="col-sm-2 custom-label">
                   {{ "BotsAddEditPage.BotName" | translate }}
@@ -137,12 +149,12 @@
 
             <!-- SPACER -->
             <div class="col-sm-12" style="height:10px"></div>
-            <!-- 
-            // -------------------------------------------------------------------------------------------
-            // Exernal bot url
-            // ------------------------------------------------------------------------------------------- -->
+
+            <!-- ------------------------------------------------------------------------------------------- -->
+            <!-- Exernal bot url -->
+            <!-- ------------------------------------------------------------------------------------------- -->
             <div class="row" *ngIf="botType === 'external'">
-              <label class="col-sm-2 custom-label">Url</label>
+              <label class="col-sm-2 custom-label">URL</label>
               <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
                 <!-- [disabled]="!is_external_bot" -->
                 <!-- <div class="row"> -->
@@ -164,10 +176,10 @@
               </div>
             </div>
 
-            <!-- 
-            // -------------------------------------------------------------------------------------------
-            // Description for internal and external bot
-            // ------------------------------------------------------------------------------------------- -->
+
+            <!-- ------------------------------------------------------------------------------------------- -->
+            <!-- Description for internal and external bot -->
+            <!-- ------------------------------------------------------------------------------------------- -->
             <div class="row" *ngIf="botType !== 'dialogflow'">
               <label class="col-sm-2 custom-label">{{ 'Description' | translate }}</label>
               <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
@@ -178,16 +190,16 @@
               </div>
             </div>
 
-            <!-- 
-            // -------------------------------------------------------------------------------------------
-            // ******* Dialogflow bot data ********
-            // ------------------------------------------------------------------------------------------- -->
+
+            <!-- ------------------------------------------------------------------------------------------- -->
+            <!--  Dialogflow bot data -->
+            <!-- ------------------------------------------------------------------------------------------- -->
             <section *ngIf="botType === 'dialogflow'" style="padding-right: 35px; padding-left: 35px;">
 
-              <!-- 
-            // -------------------------------------------------------------------------------------------
-            //  Dialogflow bot - name
-            // ------------------------------------------------------------------------------------------- -->
+
+              <!-- ------------------------------------------------------------------------------------------- -->
+              <!--  Dialogflow bot - name -->
+              <!-- ------------------------------------------------------------------------------------------- -->
               <div class="row" style="margin-bottom: 18px;">
                 <label class="col-sm-12 custom-label__dlgflowbot">
                   {{ "BotsAddEditPage.BotName" | translate }}
@@ -198,10 +210,10 @@
                 </div>
               </div>
 
-              <!-- 
-              // ---------------------------------------------------------
-              // Dilaogflow bot - Upload file (label service account private key)
-              // --------------------------------------------------------- -->
+
+              <!-- ------------------------------------------------------------------- -->
+              <!-- Dilaogflow bot - Upload file (label service account private key) -->
+              <!-- ------------------------------------------------------------------- -->
               <div class="row" style="margin-bottom: 18px;">
                 <label class="col-sm-12 custom-label__dlgflowbot">
                   {{ 'ServiceAccountPrivateKeyFile' | translate }}
@@ -228,10 +240,10 @@
               </div>
 
 
-              <!-- 
-              // ---------------------------------------------------------
-              //  Dialogflow bot - select Dialogflow bot language
-              // --------------------------------------------------------- -->
+
+              <!-- --------------------------------------------------------- -->
+              <!--  Dialogflow bot - select Dialogflow bot language -->
+              <!-- --------------------------------------------------------- -->
               <div class="row" style="margin-bottom: 18px;">
                 <label class="col-sm-12 custom-label__dlgflowbot">
                   {{ 'DefaultBotLanguageInDialogflow' | translate }}
@@ -246,10 +258,10 @@
               </div>
 
 
-              <!-- 
-              // ---------------------------------------------------------
-              //  Dialogflow bot - knowledge base ID
-              // --------------------------------------------------------- -->
+
+              <!-- --------------------------------------------------------- -->
+              <!--  Dialogflow bot - knowledge base ID -->
+              <!-- --------------------------------------------------------- -->
               <div class="row" style="margin-bottom: 18px;">
                 <label class="col-sm-12 custom-label__dlgflowbot">
                   {{ 'DialogflowKnowledgeBaseID' | translate }}
@@ -260,10 +272,10 @@
                 </div>
               </div>
 
-              <!-- 
-              // ---------------------------------------------------------
-              //  Dialogflow bot - description
-              // --------------------------------------------------------- -->
+
+              <!-- --------------------------------------------------------- -->
+              <!--  Dialogflow bot - description -->
+              <!-- --------------------------------------------------------- -->
               <div class="row" style="margin-bottom: 18px;">
                 <label class="col-sm-12 custom-label__dlgflowbot">
                   {{ 'Description' | translate }}
@@ -280,11 +292,116 @@
             <!-- SPACER -->
             <!-- <div class="col-sm-12 spacer_div" style="height:15px"></div> -->
 
+            <!-- -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
+            <!-- WEBHOOK -->
+            <section *ngIf="botType === 'native'">
+              <div class="row" style="margin-top: 16px;">
+                <div class="col-md-4">
+                  <h3 class="card_title__underlined">
+                    <span class="card_title__underline">
+                      Webhook
+                    </span>
+                  </h3>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="onoffswitch-wrapper" style="">
+                    <div style="display: inline-block;position: relative;top: -13px;margin-right: 12px;">
+
+                      <span *ngIf="webhook_is_enabled === true"
+                        style="color:#3ea9f5; text-transform: uppercase; font-weight: 400;">
+                        {{'Enabled' | translate}}
+                      </span>
+                      <span *ngIf="webhook_is_enabled === false"
+                        style="color:#818895; text-transform: uppercase; font-weight: 400;">
+                        {{'Disabled' | translate}}
+                      </span>
+
+                    </div>
+                    <div class="nw-onoffswitch-wrapper" style="clear: both;display: inline-block;">
+                      <div class="nw-onoffswitch">
+                        <input (change)="toggleWebhook($event)" type="checkbox" name="webhook-switch"
+                          class="nw-onoffswitch-checkbox" id="webhook-switch" [checked]="webhook_is_enabled === true">
+                        <label class="nw-onoffswitch-label" for="webhook-switch"></label>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="col-md-10">
+                  <div class="section-subtitle" style="height: 8px;"> </div>
+                </div>
+              </div>
+
+
+              <!-- <div class="row">
+                <label class="col-xs-2 custom-label">Webhook</label>
+                <div class="col-xs-10 col-sm-8 col-md-8 col-lg-8">
+
+                  <div class="onoffswitch-wrapper" style="float: right; position: relative; top: 4px;">
+                    <div style="display: inline-block;position: relative;top: -13px;margin-right: 12px;">
+
+                      <span *ngIf="webhook_is_enabled === true"
+                        style="color:#3ea9f5; text-transform: uppercase; font-weight: 400;">
+                        {{'Enabled' | translate}}
+                      </span>
+                      <span *ngIf="webhook_is_enabled === false"
+                        style="color:#818895; text-transform: uppercase; font-weight: 400;">
+                        {{'Disabled' | translate}}
+                      </span>
+
+                    </div>
+                    <div class="nw-onoffswitch-wrapper" style="clear: both;display: inline-block;">
+                      <div class="nw-onoffswitch">
+                        <input (change)="toggleWebhook($event)" type="checkbox" name="webhook-switch"
+                          class="nw-onoffswitch-checkbox" id="webhook-switch" [checked]="webhook_is_enabled === true">
+                        <label class="nw-onoffswitch-label" for="webhook-switch"></label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div> -->
+
+              <div class="row">
+
+                <!-- <label class="col-xs-2 custom-label"></label> -->
+                <!-- <div class="col-xs-10 col-sm-8 col-md-8 col-lg-8"> -->
+                <div class="col-xs-10">
+
+                  <p style="color:#2b313f; font-weight: 300;">
+
+                    {{'YourWebServiceWillReceivePostRequestFrom' | translate: tparams}}
+                  </p>
+
+                </div>
+              </div>
+
+              <div class="row" *ngIf="webhook_is_enabled">
+
+                <label class="col-xs-2 custom-label">
+                  <span>URL</span>
+                  <span style="color:#ff5252">*</span>
+                </label>
+                <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+                  <input id="weebhook-url" name="weebhook-url" [(ngModel)]="webhookUrl" class="input" type="text"
+                    style="margin-bottom: 3px;" placeholder="{{'EnterWebhookURL' | translate}}">
+
+                  <span class="webhook-url-description"
+                    style="color: rgb(118, 149, 165);font-size: 12px; font-weight: 400;line-height: 1em;">
+                    {{'ThisUrlWilReceiveAPostRequestFrom' | translate: tparams}}
+                  </span>
+                </div>
+              </div>
+            </section>
+
+
             <div class="row">
-              <label *ngIf="botType !== 'dialogflow'" class="col-sm-2"></label>
-              <div class="col-sm-10">
-                <button [ngStyle]="{'margin-left':botType === 'dialogflow' ? '35px' : 0 }" #editbotbtn
-                  class="btn btn-primary" (click)="editBot()" [disabled]="faqKb_name?.length < 2">
+              <label *ngIf="botType !== 'dialogflow'" class="col-xs-2"></label>
+              <!-- [ngStyle]="{'margin-left':botType === 'dialogflow' ? '35px' : 0 }" -->
+              <div class="col-xs-8" [ngStyle]="{'padding-right':botType === 'dialogflow' ? '27px' : '15px' }">
+                <button style="margin-top: 12px;margin-bottom: 5px;" #editbotbtn class="btn btn-primary  pull-right"
+                  (click)="editBot()"
+                  [disabled]="faqKb_name?.length < 2 || (botType === 'native' && webhook_is_enabled=== true && !webhookUrl) ">
                   {{ "BotsAddEditPage.UpdateBotName" | translate }}
                 </button>
               </div>
@@ -294,11 +411,10 @@
         </div> <!-- ./ card -->
       </div> <!-- ./ col-md-8 -->
 
-      <!-- 
-      ********************************************
-      ****** RIGHT SIDEBAR 'BOT ATTRIBUTES' ******
-      ********************************************
-      -->
+
+      <!-- -------------------------------------------- -->
+      <!-- RIGHT SIDEBAR 'BOT ATTRIBUTES' -->
+      <!-- -------------------------------------------- -->
       <div class="col-md-4">
         <div class="card">
           <div class="card-content">
@@ -419,101 +535,172 @@
     <!-- </div> -->
 
 
-    <!-- 
-    // ---------------------------------------------------------------------------------------------------
-    // Native bot FAQs
-    // --------------------------------------------------------------------------------------------------- -->
-    <div class="row" *ngIf="botType === 'native'">
-      <div class="col-md-12">
-        <div class="card">
 
-          <div class="card-header card-header-custom-bkgrnd">
-            <h4 class="faq-table-title" style="margin-bottom:2px;">
-              <!-- FAQs  -->
+    <!-- --------------------------------------------------------------------------------------------------- -->
+    <!-- Native bot FAQs -->
+    <!-- --------------------------------------------------------------------------------------------------- -->
+    <section *ngIf="botType === 'native'">
+
+
+      <!-- <div class="row">
+        <div class="col-md-12">
+          <h3 class="card_title__underlined">
+            <span class="card_title__underline">
               {{ 'Answers' | translate }}
-              <span style="font-weight: 500">({{ faq_lenght }})</span>
+            </span>
+          </h3>
+        </div>
+        <div class="col-md-12">
+          <div class="section-subtitle"> </div>
+        </div>
+      </div> -->
 
-              <!-- // ADD FAQ - CIRCLE BTN -->
-              <!-- <button type="button" rel="tooltip" title="" class="btn btn-success btn-simple btn-xs add_faq_btn tooltipx" 
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card card--no-border" style="margin-top: 0px;">
+
+            <div class="card-header card-header-custom-bkgrnd">
+
+              <div class="row">
+                <div class="col-md-12">
+                  <h3 class="card_title__underlined">
+                    <span class="card_title__underline">
+                      {{ 'Answers' | translate }} ({{ faq_lenght }})
+                    </span>
+                  </h3>
+
+                  <!-- text_primary -->
+                  <!-- --------------------------------------------------- -->
+                  <!-- button add answer -->
+                  <!-- --------------------------------------------------- -->
+                  <button class="btn btn-light-blu add-answer tooltipx"
+                    [ngClass]="{'add-padding' : windowWidthMore764 === true}" (click)="goToEditAddPage_CREATE()">
+                    <span class="icon" style="padding-right:0px">
+                      <i class="material-icons" style="font-size:18px; top:0px">add</i>
+                      <span *ngIf="windowWidthMore764"
+                        style="position: relative; top: 1px; text-transform: initial; text-transform: initial;">
+                        {{ 'NewAnswer' | translate }}
+                      </span>
+                    </span>
+                    <span *ngIf="windowWidthMore764 === false" class="tooltiptext" style="text-transform:none">
+                      {{ 'NewAnswer' | translate }} </span>
+                  </button> <!-- ./ button add answer -->
+
+                  <!-- --------------------------------------------------- -->
+                  <!-- BUTTON ADD FAQs FROM CSV FILE -->
+                  <!-- --------------------------------------------------- -->
+                  <button class="btn btn-light-blu upload-csv tooltipx"
+                  [ngClass]="{'add-padding' : windowWidthMore764 === true}"
+             
+                  (click)="openImportModal()">
+
+                  <span class="icon" style="padding-right:0px;">
+
+                    <i class="material-icons" style="font-size:18px; top:0px">file_upload</i>
+                    <span *ngIf="windowWidthMore764"
+                      style="position: relative; top: 1px; text-transform: initial; text-transform: initial;">
+                      {{ 'UploadFromCsv' | translate }}
+                    </span>
+                  </span>
+                  <span *ngIf="windowWidthMore764 === false" class="tooltiptext" style="text-transform:none">{{
+                    'UploadAnswersFromCsv' | translate }}</span>
+                </button>
+
+
+
+                </div>
+                <div class="col-md-12">
+                  <div class="section-subtitle"> </div>
+                </div>
+              </div> <!-- ./end row-->
+
+
+
+              <h4 class="faq-table-title" style="margin-bottom:2px;">
+                <!-- FAQs  -->
+                <!-- {{ 'Answers' | translate }}
+                <span style="font-weight: 500">({{ faq_lenght }})</span> -->
+
+                <!-- // ADD FAQ - CIRCLE BTN -->
+                <!-- <button type="button" rel="tooltip" title="" class="btn btn-success btn-simple btn-xs add_faq_btn tooltipx" 
               (click)="goToEditAddPage_CREATE()">
                 <i class="material-icons" style="font-size: 16px; font-weight: 600; padding-bottom: 2px">add</i>
                 <span class="tooltiptext">{{ 'FaqPage.AddFaq' | translate }}</span>
               </button> -->
 
-              <!-- 
+                <!-- 
               *********************************  
               BUTTON ADD FAQ 
               *********************************
               -->
-              <!-- btn-simple btn-xs  -->
-              <!--  -->
-              <button class="btn btn-white tooltipx text_primary"
-                [ngClass]="{'add-padding' : windowWidthMore764 === true}"
-                style="padding:4px;  margin-top: 0px; margin-bottom: 0px; margin-left: 15px; border-radius: 50px;"
-                (click)="goToEditAddPage_CREATE()">
-                <!-- is-small -->
-                <span class="icon" style="padding-right:0px">
-                  <i class="material-icons" style="font-size:18px; top:0px">add</i>
-                  <span *ngIf="windowWidthMore764"
-                    style="position: relative; top: 1px; text-transform: initial; text-transform: initial;">
-                    {{ 'NewAnswer' | translate }}
+                <!-- btn-simple btn-xs  -->
+                <!--  -->
+                <button class="btn btn-white tooltipx text_primary"
+                  [ngClass]="{'add-padding' : windowWidthMore764 === true}"
+                  style="padding:4px;  margin-top: 0px; margin-bottom: 0px; margin-left: 15px; border-radius: 50px;"
+                  (click)="goToEditAddPage_CREATE()">
+                  <!-- is-small -->
+                  <span class="icon" style="padding-right:0px">
+                    <i class="material-icons" style="font-size:18px; top:0px">add</i>
+                    <span *ngIf="windowWidthMore764"
+                      style="position: relative; top: 1px; text-transform: initial; text-transform: initial;">
+                      {{ 'NewAnswer' | translate }}
+                    </span>
                   </span>
-                </span>
-                <span *ngIf="windowWidthMore764 === false" class="tooltiptext" style="text-transform:none">
-                  {{ 'NewAnswer' | translate }} </span>
-              </button>
+                  <span *ngIf="windowWidthMore764 === false" class="tooltiptext" style="text-transform:none">
+                    {{ 'NewAnswer' | translate }} </span>
+                </button>
 
-              <!-- 
-              *********************************  
-              BUTTON ADD FAQs FROM CSV FILE
-              *********************************
-              -->
-              <!--  -->
-              <button class="btn btn-white tooltipx text_primary"
-                [ngClass]="{'add-padding' : windowWidthMore764 === true}"
-                style="padding:4px; text-transform:none; margin-top: 0px; margin-bottom: 0px; margin-left: 10px; border-radius: 50px;"
-                (click)="openImportModal()">
 
-                <span class="icon" style="padding-right:0px;">
+                <!-- ------------------------------- -->
+                <!-- BUTTON ADD FAQs FROM CSV FILE -->
+                <!-- ------------------------------- -->
+                <button class="btn btn-white tooltipx text_primary"
+                  [ngClass]="{'add-padding' : windowWidthMore764 === true}"
+                  style="padding:4px; text-transform:none; margin-top: 0px; margin-bottom: 0px; margin-left: 10px; border-radius: 50px;"
+                  (click)="openImportModal()">
 
-                  <i class="material-icons" style="font-size:18px; top:0px">file_upload</i>
-                  <span *ngIf="windowWidthMore764"
-                    style="position: relative; top: 1px; text-transform: initial; text-transform: initial;">
-                    {{ 'UploadAnswersFromCsv' | translate }}
+                  <span class="icon" style="padding-right:0px;">
+
+                    <i class="material-icons" style="font-size:18px; top:0px">file_upload</i>
+                    <span *ngIf="windowWidthMore764"
+                      style="position: relative; top: 1px; text-transform: initial; text-transform: initial;">
+                      {{ 'UploadAnswersFromCsv' | translate }}
+                    </span>
                   </span>
-                </span>
-                <span *ngIf="windowWidthMore764 === false" class="tooltiptext" style="text-transform:none">{{
-                  'UploadAnswersFromCsv' | translate }}</span>
-              </button>
+                  <span *ngIf="windowWidthMore764 === false" class="tooltiptext" style="text-transform:none">{{
+                    'UploadAnswersFromCsv' | translate }}</span>
+                </button>
 
-              <!-- 
+                <!-- 
               *********************************  
               BUTTON EXPORT FAQs TO CSV 
               ********************************* -->
-              <button class="btn btn-white tooltipx text_primary"
-                [ngClass]="{'add-padding' : windowWidthMore764 === true}"
-                style="padding:4px; text-transform:none; margin-top: 0px; margin-bottom: 0px; margin-left: 10px; border-radius: 50px;"
-                (click)="exportFaqsToCsv()">
+                <button class="btn btn-white tooltipx text_primary"
+                  [ngClass]="{'add-padding' : windowWidthMore764 === true}"
+                  style="padding:4px; text-transform:none; margin-top: 0px; margin-bottom: 0px; margin-left: 10px; border-radius: 50px;"
+                  (click)="exportFaqsToCsv()">
 
-                <span class="icon" style="padding-right:0px;">
+                  <span class="icon" style="padding-right:0px;">
 
-                  <i class="material-icons" style="font-size:18px; top:0px">save_alt</i>
-                  <span *ngIf="windowWidthMore764"
-                    style="position: relative; top: 1px; text-transform: initial; text-transform: initial;">
-                    {{ 'ExportAnswersToCsv' | translate }}
+                    <i class="material-icons" style="font-size:18px; top:0px">save_alt</i>
+                    <span *ngIf="windowWidthMore764"
+                      style="position: relative; top: 1px; text-transform: initial; text-transform: initial;">
+                      {{ 'ExportAnswersToCsv' | translate }}
+                    </span>
                   </span>
-                </span>
-                <span *ngIf="windowWidthMore764 === false" class="tooltiptext" style="text-transform:none">{{
-                  'ExportAnswersToCsv' | translate }}</span>
-              </button>
+                  <span *ngIf="windowWidthMore764 === false" class="tooltiptext" style="text-transform:none">{{
+                    'ExportAnswersToCsv' | translate }}</span>
+                </button>
 
 
-              <!-- 
+                <!-- 
               ****************************************  
               ** FAKE ** FOR DEMO - OPEN RIGHT SIDEBAR
               ****************************************
               -->
-              <!-- <button class="btn btn-info tooltipx" [ngClass]="{'add-padding' : windowWidthMore764 === true}" 
+                <!-- <button class="btn btn-info tooltipx" [ngClass]="{'add-padding' : windowWidthMore764 === true}" 
                 style="padding:4px; text-transform:none; margin-top: 0px; margin-bottom: 0px; margin-left: 10px; border-radius: 50px;" 
                 (click)="openRightSidebar()">
                 <span class="icon" style="padding-right:0px;">           
@@ -526,64 +713,64 @@
               </button> -->
 
 
-              <!-- 
+                <!-- 
               *********************************  
               BUTTON TEST BOT 
               ********************************* -->
-              <!-- tooltipx -->
-              <button class="btn btn-white text_primary"
-                style="padding:4px; margin-top: 0px; margin-bottom: 0px; margin-left: 10px; border-radius: 50px;float: right;"
-                (click)="goToTestFaqPage()">
-                <span class="icon" style="padding-right:0px; text-transform:none;padding-left: 9px;">
-                  <span style="position: relative; top: 1px;"> Bot test </span>
-                  <i class="material-icons" style="font-size:18px; top:0px;">play_arrow</i>
-                </span>
-                <!-- INTERROGA BOT -->
-                <!-- <span class="tooltiptext" style="text-transform:none">{{ 'FaqPage.BotQuery' | translate }} </span> -->
-              </button>
+                <!-- tooltipx -->
+                <button class="btn btn-white text_primary"
+                  style="padding:4px; margin-top: 0px; margin-bottom: 0px; margin-left: 10px; border-radius: 50px;float: right;"
+                  (click)="goToTestFaqPage()">
+                  <span class="icon" style="padding-right:0px; text-transform:none;padding-left: 9px;">
+                    <span style="position: relative; top: 1px;"> Bot test </span>
+                    <i class="material-icons" style="font-size:18px; top:0px;">play_arrow</i>
+                  </span>
+                  <!-- INTERROGA BOT -->
+                  <!-- <span class="tooltiptext" style="text-transform:none">{{ 'FaqPage.BotQuery' | translate }} </span> -->
+                </button>
 
-            </h4>
-            <!-- <p class="category">Here is a subtitle for this table</p> -->
-          </div>
+              </h4>
+              <!-- <p class="category">Here is a subtitle for this table</p> -->
+            </div>
 
-          <loading-spinner *ngIf="showSpinner"></loading-spinner>
+            <loading-spinner *ngIf="showSpinner"></loading-spinner>
 
-          <div *ngIf="!showSpinner" class="card-content table-responsive" style="padding-top:0px">
-            <table class="table table-hover">
-              <thead>
-                <tr>
+            <div *ngIf="!showSpinner" class="card-content table-responsive" style="padding-top:0px">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
 
-                  <th>
-                    <!-- Question -->
-                    <span class="column-th-span">
-                      <!-- {{ 'FaqPage.Question' | translate }} -->
-                      {{ 'Questions' | translate }}
+                    <th>
+                      <!-- Question -->
+                      <span class="column-th-span">
+                        <!-- {{ 'FaqPage.Question' | translate }} -->
+                        {{ 'Questions' | translate }}
 
-                    </span>
-                  </th>
-                  <th>
-                    <!-- Answer -->
-                    <span class="column-th-span">
-                      {{ 'FaqPage.Answer' | translate }}
-                    </span>
-                  </th>
+                      </span>
+                    </th>
+                    <th>
+                      <!-- Answer -->
+                      <span class="column-th-span">
+                        {{ 'FaqPage.Answer' | translate }}
+                      </span>
+                    </th>
 
-                  <th *ngIf="isVisibleAnalytics">
-                    <!-- Message count -->
-                    <span class="column-th-span">
-                      {{ "BotsAddEditPage.Messages" | translate }}
-                    </span>
-                  </th>
+                    <th *ngIf="isVisibleAnalytics">
+                      <!-- Message count -->
+                      <span class="column-th-span">
+                        {{ "BotsAddEditPage.Messages" | translate }}
+                      </span>
+                    </th>
 
-                  <th>
-                    <!-- TOPIC -->
-                    <span class="column-th-span">
-                      {{ 'FaqPage.Topic' | translate }}
-                    </span>
-                  </th>
+                    <th>
+                      <!-- TOPIC -->
+                      <span class="column-th-span">
+                        {{ 'FaqPage.Topic' | translate }}
+                      </span>
+                    </th>
 
-                  <!-- ******************* ID ******************* -->
-                  <!-- <th style="width: 280px !important">
+                    <!-- ******************* ID ******************* -->
+                    <!-- <th style="width: 280px !important">
                   <span style="color: #566787">
                     <strong>
                       Id
@@ -591,11 +778,11 @@
                   </span>
                 </th> -->
 
-                  <!-- 
+                    <!-- 
                 *******************  
                 Creation Date 
                 ******************* -->
-                  <!-- <th>
+                    <!-- <th>
                   <span style="color: #566787">
                     <strong>
                       {{ 'FaqPage.CreationDate' | translate }}
@@ -603,99 +790,100 @@
                   </span>
                 </th> -->
 
-                  <th>
-                    <!-- Actions -->
-                    <span class="column-th-span">
-                      {{ 'FaqPage.Actions' | translate }}
-                    </span>
-                  </th>
-                </tr>
-              </thead>
+                    <th>
+                      <!-- Actions -->
+                      <span class="column-th-span">
+                        {{ 'FaqPage.Actions' | translate }}
+                      </span>
+                    </th>
+                  </tr>
+                </thead>
 
-              <tbody>
+                <tbody>
 
-                <!-- IF THERE ISN'T FAQ -->
-                <tr *ngIf="faq?.length === 0">
-                  <td colspan="4" style="text-align: center; padding-top: 16px;">
-                    <!-- color: #ff5252   -->
-                    <p style="font-size:1em; color:#7695a5; font-weight: 400">
-                      <!-- NO FAQ   -->
-                      {{ 'FaqPage.NoFAQ' | translate }}
-                    </p>
-                  </td>
-                </tr>
+                  <!-- IF THERE ISN'T FAQ -->
+                  <tr *ngIf="faq?.length === 0">
+                    <td colspan="4" style="text-align: center; padding-top: 16px;">
+                      <!-- color: #ff5252   -->
+                      <p style="font-size:1em; color:#7695a5; font-weight: 400">
+                        <!-- NO FAQ   -->
+                        {{ 'FaqPage.NoFAQ' | translate }}
+                      </p>
+                    </td>
+                  </tr>
 
-                <tr *ngFor="let faq of faq">
-                  <td style="font-size:13px; font-weight:400">
-                    <span class="tooltipx">
-                      <!-- <span [innerHTML]="faq?.question"> </span> -->
-                      <!-- white-space: pre-wrap !important; -->
-                      <span style="white-space: pre-wrap; word-wrap: break-word">{{ faq?.question }}</span>
-                      <span class="tooltiptext">{{ 'FaqPage.FaqId' | translate }}: <br> {{ faq?._id }} </span>
-                    </span>
-                  </td>
+                  <tr *ngFor="let faq of faq">
+                    <td style="font-size:13px; font-weight:400">
+                      <span class="tooltipx">
+                        <!-- <span [innerHTML]="faq?.question"> </span> -->
+                        <!-- white-space: pre-wrap !important; -->
+                        <span style="white-space: pre-wrap; word-wrap: break-word">{{ faq?.question }}</span>
+                        <span class="tooltiptext">{{ 'FaqPage.FaqId' | translate }}: <br> {{ faq?._id }} </span>
+                      </span>
+                    </td>
 
-                  <td
-                    style="white-space: normal !important; word-wrap: break-word;font-size:13px; font-weight:400; word-break: break-all;">
-                    <span class="tooltipx">
-                      {{ faq?.answer }}
-                      <span class="tooltiptext">{{ 'FaqPage.FaqId' | translate }}: <br> {{ faq?._id }} </span>
-                    </span>
-                  </td>
+                    <td
+                      style="white-space: normal !important; word-wrap: break-word;font-size:13px; font-weight:400; word-break: break-all;">
+                      <span class="tooltipx">
+                        {{ faq?.answer }}
+                        <span class="tooltiptext">{{ 'FaqPage.FaqId' | translate }}: <br> {{ faq?._id }} </span>
+                      </span>
+                    </td>
 
-                  <td *ngIf="isVisibleAnalytics"
-                    style="white-space: normal !important; word-wrap: break-word;font-size:13px; font-weight:400; word-break: break-all;">
-                    <span *ngIf="faq.message_count" class="tooltipx">
-                      {{ faq?.message_count }}
-                      <span class="tooltiptext">Number of replies: <br> {{ faq?.message_count }} </span>
-                    </span>
-                    <span *ngIf="!faq.message_count" class="tooltipx">
-                      0
-                      <span class="tooltiptext">Number of replies: <br> 0 </span>
-                    </span>
-                  </td>
+                    <td *ngIf="isVisibleAnalytics"
+                      style="white-space: normal !important; word-wrap: break-word;font-size:13px; font-weight:400; word-break: break-all;">
+                      <span *ngIf="faq.message_count" class="tooltipx">
+                        {{ faq?.message_count }}
+                        <span class="tooltiptext">Number of replies: <br> {{ faq?.message_count }} </span>
+                      </span>
+                      <span *ngIf="!faq.message_count" class="tooltipx">
+                        0
+                        <span class="tooltiptext">Number of replies: <br> 0 </span>
+                      </span>
+                    </td>
 
-                  <td>
-                    <span class="tooltipx" style="font-size:13px; font-weight:400">
-                      {{ faq?.topic }}
-                      <span class="tooltiptext">{{ 'FaqPage.FaqId' | translate }}: <br> {{ faq?._id }} </span>
-                    </span>
-                  </td>
+                    <td>
+                      <span class="tooltipx" style="font-size:13px; font-weight:400">
+                        {{ faq?.topic }}
+                        <span class="tooltiptext">{{ 'FaqPage.FaqId' | translate }}: <br> {{ faq?._id }} </span>
+                      </span>
+                    </td>
 
-                  <!-- style="width: 280px !important" -->
+                    <!-- style="width: 280px !important" -->
 
-                  <!-- <td>
+                    <!-- <td>
                   {{ faq?._id }}
                 </td> -->
 
-                  <!-- <td>
+                    <!-- <td>
                   {{ faq?.createdAt | date: 'd/M/y'}}
                 </td> -->
 
 
-                  <!-- NEW -->
-                  <td class="td-actions text-right">
-                    <button style="padding-top:0px" type="button" rel="tooltip"
-                      title="{{ 'FaqPage.tooltipEditFaq' | translate }}" class="btn btn-primary btn-simple btn-xs"
-                      (click)='goToEditAddPage_EDIT(faq?._id)'>
-                      <i class="material-icons">edit</i>
-                    </button>
-                    <button style="padding-top:0px" type="button" rel="tooltip"
-                      title="{{ 'FaqPage.DeleteFaq' | translate }}" class="btn btn-danger btn-simple btn-xs"
-                      (click)='openDeleteModal(faq?._id)'>
-                      <i class="material-icons">close</i>
-                    </button>
-                  </td>
+                    <!-- NEW -->
+                    <td class="td-actions text-right">
+                      <button style="padding-top:0px" type="button" rel="tooltip"
+                        title="{{ 'FaqPage.tooltipEditFaq' | translate }}" class="btn btn-primary btn-simple btn-xs"
+                        (click)='goToEditAddPage_EDIT(faq?._id)'>
+                        <i class="material-icons">edit</i>
+                      </button>
+                      <button style="padding-top:0px" type="button" rel="tooltip"
+                        title="{{ 'FaqPage.DeleteFaq' | translate }}" class="btn btn-danger btn-simple btn-xs"
+                        (click)='openDeleteModal(faq?._id)'>
+                        <i class="material-icons">close</i>
+                      </button>
+                    </td>
 
 
-                </tr>
-              </tbody>
-            </table>
+                  </tr>
+                </tbody>
+              </table>
 
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
     <div>
       <div>
 

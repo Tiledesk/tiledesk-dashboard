@@ -426,6 +426,25 @@ input[type="text"]:disabled::placeholder {
   // font-style: italic;
 }
 
+::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #d9d9d9 !important;
+  font-weight: 200 !important;
+  opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: #d9d9d9 !important;
+  font-weight: 200 !important;
+}
+
+::-ms-input-placeholder {
+  /* Microsoft Edge */
+  color: #d9d9d9 !important;
+  font-weight: 200 !important;
+}
+
 .add-padding {
   padding-left: 8px !important;
   padding-right: 8px !important;
@@ -517,3 +536,138 @@ input[type="text"]:disabled::placeholder {
   top: 2px;
   font-weight: 400;
 }
+
+.webhook-url-description {
+  font-family: "Google Sans", sans-serif;
+  color: #566787 !important;
+  text-align: left;
+  padding: 6px 12px;
+  background: #e7f3ff;
+  font-weight: 400 !important;
+  line-height: 20px !important;
+  font-size: 12px !important;
+  margin-bottom: 12px !important;
+  display: block;
+}
+
+.card_title__underlined {
+  text-transform: none;
+  color: #566787;
+  margin-bottom: 0px;
+  height: 40px !important;
+  position: relative;
+  font-family: Google Sans, sans-serif;
+  height: 30px;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+.card_title__underline {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: -1px;
+  border-bottom: 2px solid $brand-primary;
+  z-index: 1;
+}
+
+.section-subtitle {
+  height: 20px;
+  border-top: 1px solid #ddd;
+  // width: calc((100% / 3) + 372px);
+}
+
+.onoffswitch-wrapper {
+  float: right;
+  position: relative;
+  top: 9px;
+}
+
+@media (max-width: 991px) {
+  .onoffswitch-wrapper {
+    top: -41px;
+  }
+  .btn-light-blu {
+    top: -2px !important;
+  }
+
+}
+
+.btn-light-blu {
+  padding: 4px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  position: absolute;
+  top: 9px;
+  background: #e7f3ff;
+  color: #1876f2;
+  box-shadow: unset;
+}
+.btn-light-blu:hover {
+  background: #D3E0EF;
+  box-shadow: unset;
+}
+
+.btn-light-blu.add-answer {
+  left: 130px;
+}
+
+.btn-light-blu.upload-csv  {
+  left: 242px;
+}
+
+
+
+// --------------------
+// SWITCH BTN
+// --------------------
+// --------- start new on-off btn logo ---------
+.nw-onoffswitch {
+  position: relative;
+  width: 45px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+.nw-onoffswitch-checkbox {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.nw-onoffswitch-label {
+  display: block;
+  overflow: hidden;
+  cursor: pointer;
+  height: 25px;
+  padding: 0;
+  line-height: 25px;
+  border: 2px solid #e3e3e3;
+  border-radius: 25px;
+  background-color: #ffffff;
+  transition: background-color 0.3s ease-in;
+}
+.nw-onoffswitch-label:before {
+  content: "";
+  display: block;
+  width: 25px;
+  margin: 0px;
+  background: #ffffff;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 20px;
+  border: 2px solid #e3e3e3;
+  border-radius: 25px;
+  transition: all 0.3s ease-in 0s;
+}
+.nw-onoffswitch-checkbox:checked + .nw-onoffswitch-label {
+  background-color: #3ea9f5;
+}
+.nw-onoffswitch-checkbox:checked + .nw-onoffswitch-label,
+.nw-onoffswitch-checkbox:checked + .nw-onoffswitch-label:before {
+  border-color: #3ea9f5;
+}
+.nw-onoffswitch-checkbox:checked + .nw-onoffswitch-label:before {
+  right: 0px;
+}
+// --------- ./end new on-off btn logo ---------
