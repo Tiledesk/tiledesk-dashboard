@@ -40,6 +40,21 @@ textarea[type="text"] {
   border: solid 1px #ddd;
 }
 
+/* =Dropdown hide / show answer table column
+----------------------------------------------- */
+.dropdown-menu {
+  input[type="checkbox"] {
+    margin-right: 4px;
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.dropdown-item {
+  position: relative;
+  top: -3px;
+}
+
 select {
   height: 36px;
   background: #fff;
@@ -446,8 +461,9 @@ input[type="text"]:disabled::placeholder {
 }
 
 .add-padding {
-  padding-left: 8px !important;
-  padding-right: 8px !important;
+  // padding-left: 8px !important;
+  // padding-right: 8px !important;
+  padding: 8px 8px !important;
 }
 
 .text_primary {
@@ -537,17 +553,39 @@ input[type="text"]:disabled::placeholder {
   font-weight: 400;
 }
 
-.webhook-url-description {
-  font-family: "Google Sans", sans-serif;
-  color: #566787 !important;
+.webhook-url-errors {
+  // font-family: "Google Sans", sans-serif;
+  // color: #566787 !important;
+  // text-align: left;
+  // padding: 6px 12px;
+  // background: #e7f3ff;
+  // font-weight: 400 !important;
+  // line-height: 20px !important;
+  // font-size: 12px !important;
+  // margin-bottom: 12px !important;
+  // display: block;
+  color: #fff !important;
   text-align: left;
   padding: 6px 12px;
-  background: #e7f3ff;
-  font-weight: 400 !important;
+  background: #f76949;
+  font-weight: 300 !important;
   line-height: 20px !important;
-  font-size: 12px !important;
+  font-size: 13px !important;
   margin-bottom: 12px !important;
+  margin-top: 5px;
   display: block;
+}
+
+.webhook-url-errors:before {
+  position: absolute;
+  top: 39px;
+  left: 30px;
+  content: "";
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 6px 6px 6px;
+  border-color: transparent transparent #f76949 transparent;
 }
 
 .card_title__underlined {
@@ -584,17 +622,44 @@ input[type="text"]:disabled::placeholder {
 }
 
 @media (max-width: 991px) {
-  .onoffswitch-wrapper {
-    top: -41px;
-  }
+  // .onoffswitch-wrapper {
+  //   top: -41px;
+  // }
   .btn-light-blu {
     top: -2px !important;
   }
-
 }
 
+@media (max-width: 767px) {
+  .onoffswitch-wrapper {
+    top: -41px;
+  }
+
+  .bot_avatar_label {
+    display: none !important;
+  }
+}
+
+@media (max-width: 764px) {
+  .btn-light-blu.upload-csv {
+    left: 170px !important;
+  }
+
+  .btn-light-blu.export-csv {
+    left: 210px !important;
+  }
+
+  .btn-light-blu.test-bot {
+    left: 251px !important;
+  }
+}
+@media (max-width: 1055px) {
+  .customize-table-btn-name {
+    display: none !important;
+  }
+}
 .btn-light-blu {
-  padding: 4px;
+  padding: 8px;
   margin-top: 0px;
   margin-bottom: 0px;
   position: absolute;
@@ -603,8 +668,25 @@ input[type="text"]:disabled::placeholder {
   color: #1876f2;
   box-shadow: unset;
 }
+
+.btn-light-grey {
+  padding: 8px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  position: absolute;
+  top: -41px;
+  background: #e4e6eb;
+  color: #050505;
+  box-shadow: unset;
+}
+
 .btn-light-blu:hover {
-  background: #D3E0EF;
+  background: #d3e0ef;
+  box-shadow: unset;
+}
+
+.btn-light-grey:hover {
+  background: #cfd2d7;
   box-shadow: unset;
 }
 
@@ -612,11 +694,55 @@ input[type="text"]:disabled::placeholder {
   left: 130px;
 }
 
-.btn-light-blu.upload-csv  {
+.btn-light-blu.upload-csv {
   left: 242px;
 }
 
+.btn-light-blu.export-csv {
+  left: 377px;
+}
 
+.btn-light-blu.test-bot {
+  left: 497px;
+}
+
+.btn-light-grey.customize-table {
+  right: 5px;
+}
+
+.blob.white {
+  background: white;
+  box-shadow: 0 0 0 0 rgba(255, 255, 255, 1);
+  animation: pulse-white 2s infinite;
+}
+
+@keyframes pulse-white {
+  0% {
+    // transform: scale(0.95);
+    // R: 24 G: 118 B: 242
+    // box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+    box-shadow: 0 0 0 0 rgba(24, 118, 242, 0.7);
+  }
+
+  70% {
+    // transform: scale(1);
+    box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+  }
+
+  100% {
+    // transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+  }
+}
+
+// .dialogflow-bot-data-section {
+//   padding-right: 35px;
+//   padding-left: 35px;
+// }
+
+.hide-bot-attribute {
+  display: none !important;
+}
 
 // --------------------
 // SWITCH BTN

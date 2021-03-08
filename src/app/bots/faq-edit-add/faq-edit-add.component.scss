@@ -1,3 +1,5 @@
+@import "./src/assets/sass/md/_variables.scss";
+
 input[type="text"] {
   // min-width: 307px !important;
   height: 36px;
@@ -89,6 +91,48 @@ textarea {
   /* Microsoft Edge */
   color: #d9d9d9 !important;
   font-weight: 200 !important;
+}
+
+.card_title__underlined {
+  text-transform: none;
+  color: #566787;
+  margin-bottom: 0px;
+  height: 40px !important;
+  position: relative;
+  font-family: Google Sans, sans-serif;
+  height: 30px;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+.card_title__underline {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: -1px;
+  border-bottom: 2px solid $brand-primary;
+  z-index: 1;
+}
+
+.section-subtitle {
+  height: 20px;
+  border-top: 1px solid #ddd;
+  // width: calc((100% / 3) + 372px);
+}
+
+.enable-webhook-description-wpr {
+  display: inline-block;
+  position: relative;
+  top: -12px;
+}
+
+
+.enable-webhook-description {
+  font-size: 14px;
+  font-weight: 300;
+  color: #2b313f;
+  line-height: 28px;
+  margin-left: 6px;
 }
 
 // --------------------

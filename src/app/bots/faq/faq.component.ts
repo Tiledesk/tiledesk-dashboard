@@ -1,7 +1,7 @@
 import { Component, OnInit, ElementRef, ViewChild, HostListener } from '@angular/core';
 import { MongodbFaqService } from '../../services/mongodb-faq.service';
 import { Faq } from '../../models/faq-model';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 // import { ActivatedRoute } from '@angular/router';
 
 import { Project } from '../../models/project-model';
@@ -21,6 +21,7 @@ import { BotsBaseComponent } from '../bots-base/bots-base.component';
 import { BrandService } from '../../services/brand.service';
 import { DepartmentService } from '../../services/department.service';
 import { avatarPlaceholder, getColorBck } from '../../utils/util';
+import { filter } from 'rxjs/operators';
 // import $ = require('jquery');
 // declare const $: any;
 @Component({
@@ -73,6 +74,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
 
   windowWidthMore764: boolean;
+  windowWidthMore991: boolean;
 
   subscription: Subscription;
   prjct_profile_type: string;
@@ -115,6 +117,16 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   webhook_is_enabled: any;
   webhookUrl: string;
 
+  WEBHOOK_URL_IS_EMPTY: boolean;
+  WEBHOOK_URL_IS_HTTPS: boolean;
+  WEBHOOK_URL_IS_HTTP: boolean;
+  WEBHOOK_URL_IS_HTTP_or_HTTPS: boolean;
+  WEBHOOK_URL_IS_VALID: boolean;
+  WEBHOOK_URL_HAS_ERROR: boolean;
+
+  display_intent_name_in_table: boolean = false;
+  previousUrl: string;
+  currentUrl: string;
   constructor(
     private mongodbFaqService: MongodbFaqService,
     private router: Router,
@@ -136,6 +148,15 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
     const brand = brandService.getBrand();
     this.tparams = brand;
+
+    // this.router.events.pipe(
+    //   filter((event) => event instanceof NavigationEnd)
+    // ).subscribe((event: NavigationEnd) => {
+    //   this.previousUrl = this.currentUrl;
+    //   console.log("FaqComponent NAVIGATION previousUrl", this.previousUrl);
+    //   this.currentUrl = event.url;
+    //   console.log("FaqComponent NAVIGATION currentUrl", this.currentUrl);
+    // });
   }
 
   ngOnInit() {
@@ -210,9 +231,79 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   toggleWebhook($event) {
     console.log('Faqcomponent toggleWebhook ', $event.target.checked);
     this.webhook_is_enabled = $event.target.checked
+
+    this.validateUrl(this.webhookUrl)
+
+    console.log('Faqcomponent validateUrl URL WEBHOOK_URL_IS_EMPTY (toggleWebhook) ', this.WEBHOOK_URL_IS_EMPTY);
+    console.log('Faqcomponent validateUrl URL WEBHOOK_URL_IS_HTTPS (toggleWebhook) ', this.WEBHOOK_URL_IS_HTTPS);
+    console.log('Faqcomponent validateUrl URL WEBHOOK_URL_IS_VALID (toggleWebhook) ', this.WEBHOOK_URL_IS_VALID);
+    if (this.webhook_is_enabled === false && this.WEBHOOK_URL_IS_EMPTY === false) {
+
+      if (this.WEBHOOK_URL_HAS_ERROR === true) {
+        this.webhookUrl = '';
+      }
+    }
   }
 
+  validateUrl(str) {
+    console.log('Faqcomponent validateUrl WEBHOOK URL ', str)
+    if (str && str.length > 0) {
+      this.WEBHOOK_URL_IS_EMPTY = false;
+      console.log('Faqcomponent validateUrl WEBHOOK URL is EMPTY ', this.WEBHOOK_URL_IS_EMPTY)
+      var url = str;
 
+      if (url.indexOf("http://") == 0 || (url.indexOf("https://") == 0)) {
+        this.WEBHOOK_URL_IS_HTTP_or_HTTPS = true
+        this.WEBHOOK_URL_IS_HTTPS = false
+        this.WEBHOOK_URL_HAS_ERROR = false;
+        console.log('Faqcomponent validateUrl URL START WITH HTTP ', this.WEBHOOK_URL_IS_HTTPS)
+        this.checkIfIsValidUrl(str)
+
+      } else {
+        this.WEBHOOK_URL_IS_HTTP_or_HTTPS = false
+      }
+      // else if (url.indexOf("https://") == 0) {
+      //   this.WEBHOOK_URL_IS_HTTPS = true
+      //   this.WEBHOOK_URL_HAS_ERROR = false;
+      //   console.log('Faqcomponent validateUrl URL START WITH HTTPS ', this.WEBHOOK_URL_IS_HTTPS)
+
+
+      //   this.checkIfIsValidUrl(str)
+      // }
+    } else {
+      this.WEBHOOK_URL_IS_EMPTY = true;
+      this.WEBHOOK_URL_HAS_ERROR = true;
+    }
+  }
+
+  checkIfIsValidUrl(str) {
+
+    var pattern = /^(http|https):\/\/(([a-zA-Z0-9$\-_.+!*'(),;:&=]|%[0-9a-fA-F]{2})+@)?(((25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9]|[1-9][0-9]|[0-9])(\.(25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9]|[1-9][0-9]|[0-9])){3})|localhost|([a-zA-Z0-9\-\u00C0-\u017F]+\.)+([a-zA-Z]{2,}))(:[0-9]+)?(\/(([a-zA-Z0-9$\-_.+!*'(),;:@&=]|%[0-9a-fA-F]{2})*(\/([a-zA-Z0-9$\-_.+!*'(),;:@&=]|%[0-9a-fA-F]{2})*)*)?(\?([a-zA-Z0-9$\-_.+!*'(),;:@&=\/?]|%[0-9a-fA-F]{2})*)?(\#([a-zA-Z0-9$\-_.+!*'(),;:@&=\/?]|%[0-9a-fA-F]{2})*)?)?$/; // fragment locator
+
+    console.log('Faqcomponent validateUrl URL - URL IS VALID (pattern.test)', pattern.test(str));
+
+    if (pattern.test(str) === true) {
+      this.WEBHOOK_URL_IS_VALID = true;
+      this.WEBHOOK_URL_HAS_ERROR = false;
+      console.log('Faqcomponent validateUrl URL - URL IS VALID ', this.WEBHOOK_URL_IS_VALID);
+    } else {
+      this.WEBHOOK_URL_IS_VALID = false;
+      this.WEBHOOK_URL_HAS_ERROR = true;
+      console.log('Faqcomponent validateUrl URL - URL IS VALID ', this.WEBHOOK_URL_IS_VALID);
+    }
+
+    // return !!pattern.test(str);
+  }
+
+  onChangeWebhookUrl($event) {
+    console.log('Faqcomponent validateUrl URL - onChangeWebhookUrl ', $event);
+    this.validateUrl($event)
+  }
+
+  checkValue(event: any) {
+    // console.log('Faqcomponent check value display_intent_name_in_table event' , event) 
+    console.log('Faqcomponent check value display_intent_name_in_table', this.display_intent_name_in_table)
+  }
 
 
   getDialogFlowBotData(dlgflwbotid: string) {
@@ -387,16 +478,11 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
       if (imageExists === true) {
         self.userProfileImageExist = imageExists
         console.log('PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists)
-
         self.setImageProfileUrl(storageBucket)
-
       } else {
         self.userProfileImageExist = imageExists
         console.log('PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists)
-
-
       }
-
     })
   }
 
@@ -478,12 +564,10 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     });
 
     if (!this.public_Key.includes("DEP")) {
-   
       this.isVisibleDEP = false;
     }
 
     if (!this.public_Key.includes("ANA")) {
-    
       this.isVisibleAnalytics = false;
     }
 
@@ -527,6 +611,12 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
       this.windowWidthMore764 = false;
     }
 
+    if (actualWidth > 991) {
+      this.windowWidthMore991 = true;
+    } else {
+      this.windowWidthMore991 = false;
+    }
+
   }
 
   @HostListener('window:resize', ['$event'])
@@ -537,6 +627,14 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
       this.windowWidthMore764 = true;
     } else {
       this.windowWidthMore764 = false;
+    }
+
+    if (newInnerWidth > 991) {
+      this.windowWidthMore991 = true;
+      console.log('FaqComponent - windowWidthMore991 ', this.windowWidthMore991);
+    } else {
+      this.windowWidthMore991 = false;
+      console.log('FaqComponent - windowWidthMore991 ', this.windowWidthMore991);
     }
   }
 
@@ -597,6 +695,12 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
       this.webhookUrl = faqkb.webhook_url
       console.log('Faqcomponent GET FAQ-KB (DETAILS) BY ID - webhookUrl ', this.webhookUrl);
+
+
+      if (faqkb.webhook_enabled) {
+        this.validateUrl(this.webhookUrl)
+      }
+
       // ---------------------------------------------------------------------------------------------------------------
       // Bot internal ed external
       // ---------------------------------------------------------------------------------------------------------------
@@ -795,7 +899,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   // -----------------------------------------------------------------------------------------
   getFaqByFaqKbIdAndRepliesCount() {
     this.mongodbFaqService.getMongoDbFaqByFaqKbId(this.id_faq_kb).subscribe((faq: any) => {
-      console.log('>> FAQs GOT BY FAQ-KB ID', faq);
+      console.log('FaqComponent - GET FAQS', faq);
       this.faq = faq;
 
       if (faq) {
@@ -937,11 +1041,8 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
    */
   // deptName: string,
   openDeleteModal(id: string) {
-
     console.log('ON OPEN MODAL TO DELETE FAQ -> FAQ ID ', id);
-
     this.display = 'block';
-
     this.id_toDelete = id;
     // this.faq_toDelete = deptName;
   }
@@ -992,31 +1093,31 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
    * @param answer
    * @param hasClickedUpdateModal
    */
-  openUpdateModal(id: string, question: string, answer: string, hasClickedUpdateModal: boolean) {
-    // display the modal windows (change the display value in the view)
-    console.log('HAS CLICKED OPEN MODAL TO UPDATE USER DATA ', hasClickedUpdateModal);
-    this.DISPLAY_DATA_FOR_UPDATE_MODAL = hasClickedUpdateModal;
-    this.DISPLAY_DATA_FOR_DELETE_MODAL = false;
+  // openUpdateModal(id: string, question: string, answer: string, hasClickedUpdateModal: boolean) {
 
-    if (hasClickedUpdateModal) {
-      this.display = 'block';
-    }
+  //   console.log('HAS CLICKED OPEN MODAL TO UPDATE USER DATA ', hasClickedUpdateModal);
+  //   this.DISPLAY_DATA_FOR_UPDATE_MODAL = hasClickedUpdateModal;
+  //   this.DISPLAY_DATA_FOR_DELETE_MODAL = false;
 
-    console.log('ON MODAL OPEN -> FAQ ID ', id);
-    console.log('ON MODAL OPEN -> FAQ QUESTION TO UPDATE', question);
-    console.log('ON MODAL OPEN -> FAQ ANSWER TO UPDATE', answer);
+  //   if (hasClickedUpdateModal) {
+  //     this.display = 'block';
+  //   }
 
-    this.id_toUpdate = id;
-    this.question_toUpdate = question;
-    this.answer_toUpdate = answer;
-  }
+  //   console.log('ON MODAL OPEN -> FAQ ID ', id);
+  //   console.log('ON MODAL OPEN -> FAQ QUESTION TO UPDATE', question);
+  //   console.log('ON MODAL OPEN -> FAQ ANSWER TO UPDATE', answer);
+
+  //   this.id_toUpdate = id;
+  //   this.question_toUpdate = question;
+  //   this.answer_toUpdate = answer;
+  // }
 
   /**
    * UPDATE FAQ (WHEN THE 'SAVE' BUTTON IN MODAL IS CLICKED)
    * !!! NO MORE USED: THE ACTION UPDATE IS IN FAQ- EDIT-ADD COMPONENT
    */
   // onCloseUpdateModalHandled() {
-   
+
   //   this.display = 'none';
 
   //   console.log('ON MODAL UPDATE CLOSE -> FAQ ID ', this.id_toUpdate);

@@ -7,7 +7,7 @@ import { AuthService } from '../../core/auth.service';
 import { NotifyService } from '../../core/notify.service';
 import { Location } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
-
+const swal = require('sweetalert');
 @Component({
   selector: 'faq-edit-add',
   templateUrl: './faq-edit-add.component.html',
@@ -41,6 +41,7 @@ export class FaqEditAddComponent implements OnInit {
   botType: string;
   intent_name: string;
   faq_webhook_is_enabled: boolean;
+  error_status: number;
 
   constructor(
     private router: Router,
@@ -203,6 +204,9 @@ export class FaqEditAddComponent implements OnInit {
    * *** ADD FAQ ***
    */
   create() {
+    const create_answer_btn = <HTMLElement>document.querySelector('.create-answer-btn');
+    create_answer_btn.blur();
+
     console.log('FaqEditAddComponent CREATE FAQ - QUESTION: ', this.question, ' - ANSWER: ', this.answer, ' - ID FAQ KB ', this.id_faq_kb, ' - INTENT NAME ',  this.intent_name , ' - FAQ WEBHOOK ENABLED ', this.faq_webhook_is_enabled);
     this.mongodbFaqService.addMongoDbFaq(this.question, this.answer, this.id_faq_kb, this.intent_name, this.faq_webhook_is_enabled)
       .subscribe((faq) => {
@@ -218,12 +222,12 @@ export class FaqEditAddComponent implements OnInit {
         console.log('FaqEditAddComponent CREATED FAQ - ERROR ', error);
         // =========== NOTIFY ERROR ===========
         // this.notify.showNotification('An error occurred while creating the FAQ', 4, 'report_problem');
-        this.notify.showNotification(this.createFaqErrorNoticationMsg, 4, 'report_problem');
+        this.notify.showWidgetStyleUpdateNotification(this.createFaqErrorNoticationMsg, 4, 'report_problem');
       }, () => {
         console.log('FaqEditAddComponent CREATED FAQ * COMPLETE *');
         // =========== NOTIFY SUCCESS===========
         // this.notify.showNotification('FAQ successfully created', 2, 'done');
-        this.notify.showNotification(this.createFaqSuccessNoticationMsg, 2, 'done');
+        this.notify.showWidgetStyleUpdateNotification(this.createFaqSuccessNoticationMsg, 2, 'done');
 
         // this.router.navigate(['project/' + this.project._id  + '/faq', this.id_faq_kb]);
         this.router.navigate(['project/' + this.project._id + '/bots', this.id_faq_kb, this.botType]);
@@ -235,6 +239,9 @@ export class FaqEditAddComponent implements OnInit {
    * *** EDIT FAQ ***
    */
   edit() {
+    const updated_answer_btn = <HTMLElement>document.querySelector('.update-answer-btn');
+    updated_answer_btn.blur();
+
     console.log('FaqEditAddComponent FAQ QUESTION TO UPDATE ', this.question_toUpdate);
     console.log('FaqEditAddComponent FAQ ANSWER TO UPDATE ', this.answer_toUpdate);
 
@@ -248,12 +255,21 @@ export class FaqEditAddComponent implements OnInit {
       console.log('FaqEditAddComponent UPDATE FAQ - ERROR ', error);
       // =========== NOTIFY ERROR ===========
       // this.notify.showNotification('An error occurred while updating the FAQ', 4, 'report_problem');
-      this.notify.showNotification(this.editFaqErrorNoticationMsg, 4, 'report_problem');
+      this.notify.showWidgetStyleUpdateNotification(this.editFaqErrorNoticationMsg, 4, 'report_problem');
+
+      if(error & error['status']) {
+        this.error_status = error['status']
+
+        if(this.error_status === 409) {
+
+        }
+      } 
+
     }, () => {
       console.log('FaqEditAddComponent UPDATE FAQ * COMPLETE *');
       // =========== NOTIFY SUCCESS===========
       // this.notify.showNotification('FAQ successfully updated', 2, 'done');
-      this.notify.showNotification(this.editFaqSuccessNoticationMsg, 2, 'done');
+      this.notify.showWidgetStyleUpdateNotification(this.editFaqSuccessNoticationMsg, 2, 'done');
 
       // this.router.navigate(['project/' + this.project._id  + '/faq', this.id_faq_kb]);
 
