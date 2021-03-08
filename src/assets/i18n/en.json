@@ -172,10 +172,10 @@
     "EditContactErrorNoticationMsg": "An error occurred while updating contact",
     "DeleteLeadSuccessNoticationMsg": "Contact successfully deleted",
     "DeleteLeadErrorNoticationMsg": "An error occurred while deleting contact",
-    "CreateFaqSuccessNoticationMsg": "FAQ successfully created",
-    "CreateFaqErrorNoticationMsg": "An error occurred while creating the FAQ",
-    "UpdateFaqSuccessNoticationMsg": "FAQ successfully updated",
-    "UpdateFaqErrorNoticationMsg": "An error occurred while updating the FAQ",
+    "CreateFaqSuccessNoticationMsg": "Answer successfully created",
+    "CreateFaqErrorNoticationMsg": "An error occurred while creating the Answer",
+    "UpdateFaqSuccessNoticationMsg": "Answer successfully updated",
+    "UpdateFaqErrorNoticationMsg": "An error occurred while updating the Answer",
     "TrashBotSuccessNoticationMsg": "Bot successfully deleted",
     "TrashBotErrorNoticationMsg": "An error occurred while deleting the bot",
     "UpdateBotError": "An error occurred while updating the bot",
@@ -1846,5 +1846,12 @@
     "EnterWebhookURL":"Enter Webhook URL",
     "IntentName": "Intent name",
     "EnterIntentName":"Enter intent name",
-    "BotDetails":"Bot details"
+    "BotDetails":"Bot details",
+    "AdvancedChatboStylingButtons": "Advanced chatbot styling: buttons",
+    "SylingYourChatbotReplies":"Styling your chatbot replies",
+    "WebhookmentUrlMustBeAHttpsUrl":"The webhook URL must be an https or http URL",
+    "WebhookmentUrlMustBeAValidUrl":"The webhook URL must be a valid URL",
+    "EnableWebhookCallForThisIntent":"Enable webhook call for this intent",
+    "HideShowColumns": "hide/show columns",
+    "AnswerWithTheIntentNameAlreadyExists":"Answer with the intent name {{ intent_name }} already exists"
 }

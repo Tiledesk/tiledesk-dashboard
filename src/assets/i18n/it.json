@@ -171,10 +171,10 @@
     "EditContactErrorNoticationMsg": "Si è verificato un errore durante l'aggiornamento del contatto",
     "DeleteLeadSuccessNoticationMsg": "Contatto cancellato con successo",
     "DeleteLeadErrorNoticationMsg": "Si è verificato un errore durante l'eliminazione del contatto",
-    "CreateFaqSuccessNoticationMsg": "FAQ create con successo",
-    "CreateFaqErrorNoticationMsg": "Si è verificato un errore durante la creazione delle FAQ",
-    "UpdateFaqSuccessNoticationMsg": "FAQ aggiornate con successo",
-    "UpdateFaqErrorNoticationMsg": "Si è verificato un errore durante l'aggiornamento delle FAQ",
+    "CreateFaqSuccessNoticationMsg": "Risposta creata con successo",
+    "CreateFaqErrorNoticationMsg": "Si è verificato un errore durante la creazione delle Risposta",
+    "UpdateFaqSuccessNoticationMsg": "Risposta aggiornata con successo",
+    "UpdateFaqErrorNoticationMsg": "Si è verificato un errore durante l'aggiornamento delle Risposta",
     "TrashBotSuccessNoticationMsg": "Bot cancellato con successo",
     "TrashBotErrorNoticationMsg": "Si è verificato un errore durante l'eliminazione del bot",
     "UpdateBotError": "Si è verificato un errore durante l'aggiornamento the bot",
@@ -1841,6 +1841,14 @@
     "EnterWebhookURL":"Inserisci Webhook URL",
     "IntentName": "Nome intent",
     "EnterIntentName":"Inserisci nome intent",
-    "BotDetails":"Dettagli bot"
+    "BotDetails":"Dettagli bot",
+    "AdvancedChatboStylingButtons": "Stile chatbot avanzato: pulsanti",
+    "SylingYourChatbotReplies":"Definire lo stile delle risposte del chatbot",
+    "WebhookmentUrlMustBeAHttpsUrl":"L'URL del webhook deve essere un URL https o http",
+    "WebhookmentUrlMustBeAValidUrl":"L'URL del webhook deve essere un URL valido",
+    "EnableWebhookCallForThisIntent":"Abilita la chiamata webhook per questo intent",
+    "HideShowColumns": "nascondi / mostra colonne",
+    "AnswerWithTheIntentNameAlreadyExists":"La risposta con nome intent {{intent_name}} esiste già"
+
     
 }
