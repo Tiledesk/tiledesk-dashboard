@@ -1,6 +1,10 @@
 
 # tiledesk-dashboard
 
+### 2.1.33
+- Adds, for the "Resolution" bot type, the ability to handle webhook requests
+- Improves the UI of bot details page and of the create / edit answer page
+
 ### 2.1.32
 - Improves the shared component that contains links to documentation
 - Adds, in the right sidebar of the bot detail page, the list of departments to which the bot is associated
