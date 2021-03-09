@@ -42,6 +42,8 @@ export class FaqEditAddComponent implements OnInit {
   intent_name: string;
   faq_webhook_is_enabled: boolean;
   error_status: number;
+  intentNameAlreadyExistsMsg: string;
+  warningMsg: string;
 
   constructor(
     private router: Router,
@@ -55,10 +57,8 @@ export class FaqEditAddComponent implements OnInit {
 
   ngOnInit() {
 
-    this.translateCreateFaqSuccessMsg();
-    this.translateCreateFaqErrorMsg();
-    this.translateUpdateFaqSuccessMsg();
-    this.translateUpdateFaqErrorMsg();
+    this.getTranslations()
+    
 
     this.auth.checkRoleForCurrentProject();
 
@@ -107,6 +107,14 @@ export class FaqEditAddComponent implements OnInit {
     console.log('FAQ HAS PASSED id_faq_kb ', this.id_faq_kb);
   }
 
+  getTranslations() {
+    this.translateCreateFaqSuccessMsg();
+    this.translateCreateFaqErrorMsg();
+    this.translateUpdateFaqSuccessMsg();
+    this.translateUpdateFaqErrorMsg();
+    this.translateWarningMsg()
+  }
+
   // TRANSLATION
   translateCreateFaqSuccessMsg() {
     this.translate.get('CreateFaqSuccessNoticationMsg')
@@ -145,9 +153,18 @@ export class FaqEditAddComponent implements OnInit {
         this.editFaqErrorNoticationMsg = text;
         console.log('+ + + UpdateFaqErrorNoticationMsg', text)
       });
-
   }
 
+  // TRANSLATION
+  translateWarningMsg() {
+    this.translate.get('Warning')
+    .subscribe((text: string) => {
+
+      this.warningMsg = text;
+      console.log('+ + + warningMsg', text)
+    });
+  }
+ 
 
 
   getCurrentProject() {
@@ -172,7 +189,7 @@ export class FaqEditAddComponent implements OnInit {
         this.faq_creationDate = faq.createdAt;
         this.intent_name = faq.intent_display_name;
         this.faq_webhook_is_enabled = faq.webhook_enabled;
-         console.log('FAQ QUESTION TO UPDATE', this.question_toUpdate);
+        console.log('FAQ QUESTION TO UPDATE', this.question_toUpdate);
         console.log('FAQ ANSWER TO UPDATE', this.answer_toUpdate);
       }
 
@@ -207,7 +224,7 @@ export class FaqEditAddComponent implements OnInit {
     const create_answer_btn = <HTMLElement>document.querySelector('.create-answer-btn');
     create_answer_btn.blur();
 
-    console.log('FaqEditAddComponent CREATE FAQ - QUESTION: ', this.question, ' - ANSWER: ', this.answer, ' - ID FAQ KB ', this.id_faq_kb, ' - INTENT NAME ',  this.intent_name , ' - FAQ WEBHOOK ENABLED ', this.faq_webhook_is_enabled);
+    console.log('FaqEditAddComponent CREATE FAQ - QUESTION: ', this.question, ' - ANSWER: ', this.answer, ' - ID FAQ KB ', this.id_faq_kb, ' - INTENT NAME ', this.intent_name, ' - FAQ WEBHOOK ENABLED ', this.faq_webhook_is_enabled);
     this.mongodbFaqService.addMongoDbFaq(this.question, this.answer, this.id_faq_kb, this.intent_name, this.faq_webhook_is_enabled)
       .subscribe((faq) => {
         console.log('FaqEditAddComponent CREATED FAQ RES ', faq);
@@ -220,6 +237,17 @@ export class FaqEditAddComponent implements OnInit {
       }, (error) => {
 
         console.log('FaqEditAddComponent CREATED FAQ - ERROR ', error);
+
+        if (error && error['status']) {
+          
+          this.error_status = error['status']
+          console.log('FaqEditAddComponent UPDATE FAQ - ERROR - ERROR-STATUS', this.error_status);
+         
+          if (this.error_status === 409) {
+            console.log('FaqEditAddComponent UPDATE FAQ - ERROR - ERROR-STATUS - TRANSLATE & PRESENT MODAL');
+            this.translateAndPresentModalIntentNameAlreadyExist(this.intent_name);
+          }
+        }
         // =========== NOTIFY ERROR ===========
         // this.notify.showNotification('An error occurred while creating the FAQ', 4, 'report_problem');
         this.notify.showWidgetStyleUpdateNotification(this.createFaqErrorNoticationMsg, 4, 'report_problem');
@@ -246,43 +274,73 @@ export class FaqEditAddComponent implements OnInit {
     console.log('FaqEditAddComponent FAQ ANSWER TO UPDATE ', this.answer_toUpdate);
 
     this.mongodbFaqService.updateMongoDbFaq(this.id_faq, this.question_toUpdate, this.answer_toUpdate, this.intent_name, this.faq_webhook_is_enabled)
-    .subscribe((data) => {
-      console.log('FaqEditAddComponent UPDATE FAQ RES', data);
+      .subscribe((data) => {
+        console.log('FaqEditAddComponent UPDATE FAQ RES', data);
 
-      // RE-RUN TO UPDATE THE TABLE
-      // this.ngOnInit();
-    }, (error) => {
-      console.log('FaqEditAddComponent UPDATE FAQ - ERROR ', error);
-      // =========== NOTIFY ERROR ===========
-      // this.notify.showNotification('An error occurred while updating the FAQ', 4, 'report_problem');
-      this.notify.showWidgetStyleUpdateNotification(this.editFaqErrorNoticationMsg, 4, 'report_problem');
+        // RE-RUN TO UPDATE THE TABLE
+        // this.ngOnInit();
+      }, (error) => {
+        console.log('FaqEditAddComponent UPDATE FAQ - ERROR ', error);
+        // =========== NOTIFY ERROR ===========
+        // this.notify.showNotification('An error occurred while updating the FAQ', 4, 'report_problem');
+        this.notify.showWidgetStyleUpdateNotification(this.editFaqErrorNoticationMsg, 4, 'report_problem');
 
-      if(error & error['status']) {
-        this.error_status = error['status']
-
-        if(this.error_status === 409) {
-
+     
+        if (error && error['status']) {
+          
+          this.error_status = error['status']
+          console.log('FaqEditAddComponent UPDATE FAQ - ERROR - ERROR-STATUS', this.error_status);
+         
+          if (this.error_status === 409) {
+            console.log('FaqEditAddComponent UPDATE FAQ - ERROR - ERROR-STATUS - TRANSLATE & PRESENT MODAL');
+            this.translateAndPresentModalIntentNameAlreadyExist(this.intent_name);
+          }
         }
-      } 
 
-    }, () => {
-      console.log('FaqEditAddComponent UPDATE FAQ * COMPLETE *');
-      // =========== NOTIFY SUCCESS===========
-      // this.notify.showNotification('FAQ successfully updated', 2, 'done');
-      this.notify.showWidgetStyleUpdateNotification(this.editFaqSuccessNoticationMsg, 2, 'done');
+      }, () => {
+        console.log('FaqEditAddComponent UPDATE FAQ * COMPLETE *');
+        // =========== NOTIFY SUCCESS===========
+        // this.notify.showNotification('FAQ successfully updated', 2, 'done');
+        this.notify.showWidgetStyleUpdateNotification(this.editFaqSuccessNoticationMsg, 2, 'done');
 
-      // this.router.navigate(['project/' + this.project._id  + '/faq', this.id_faq_kb]);
+        // this.router.navigate(['project/' + this.project._id  + '/faq', this.id_faq_kb]);
 
-      /**
-       * THE FAQ-TEST PAGE (THAT CAN BE ONE OF THE PAGES FROM WICH EDIT-FAQ IS CALLED)
-       * DISPLAY THE REMOTE FAQ AFTER A SEARCH BY THE QUESTION TYPED BY THE USER.
-       * TO AVOID THAT THE REMOTE FAQ DISPLAYED ARE NOT UPDATED COMMENT THE AUTOMATIC 'NAVIGATE'
-       * AFTER THE USER CLICK ON THE 'UPDATE BUTTON'
-       */
-      // this.router.navigate(['project/' + this.project._id + '/bots', this.id_faq_kb]);
-      // this.location.back();
-    });
+        /**
+         * THE FAQ-TEST PAGE (THAT CAN BE ONE OF THE PAGES FROM WICH EDIT-FAQ IS CALLED)
+         * DISPLAY THE REMOTE FAQ AFTER A SEARCH BY THE QUESTION TYPED BY THE USER.
+         * TO AVOID THAT THE REMOTE FAQ DISPLAYED ARE NOT UPDATED COMMENT THE AUTOMATIC 'NAVIGATE'
+         * AFTER THE USER CLICK ON THE 'UPDATE BUTTON'
+         */
+        // this.router.navigate(['project/' + this.project._id + '/bots', this.id_faq_kb]);
+        // this.location.back();
+      });
   }
+
+
+  translateAndPresentModalIntentNameAlreadyExist(intent_name) {
+    let parameter = { intent_name: intent_name };
+    this.translate.get('AnswerWithTheIntentNameAlreadyExists', parameter)
+      .subscribe((text: string) => {
+
+        this.intentNameAlreadyExistsMsg = text;
+        console.log('+ + + intentNameAlreadyExistsMsg', text)
+      }, (error) => {
+        
+      }, () => {
+        this.displayModalIntentNameAlreadyExist()
+      });
+  }
+
+  displayModalIntentNameAlreadyExist() {
+    swal({
+      title: this.warningMsg,
+      text: this.intentNameAlreadyExistsMsg,
+      icon: "warning",
+      button: "OK",
+      dangerMode: false,
+    })
+  }
+
 
   goToKBArticle_AdvancedChatbotStyling() {
     console.log('goToKBArticle_AdvancedChatbotStyling');

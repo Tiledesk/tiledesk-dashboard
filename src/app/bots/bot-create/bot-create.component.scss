@@ -589,6 +589,12 @@ input[type="text"]:disabled::placeholder {
   z-index: 1;
 }
 
+.section-subtitle {
+  height: 20px;
+  border-top: 1px solid #ddd;
+  // width: calc((100% / 3) + 372px);
+}
+
 .create-bot-section-subtitle {
   height: 20px;
   border-top: 1px solid #ddd;

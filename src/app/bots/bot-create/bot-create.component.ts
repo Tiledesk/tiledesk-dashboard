@@ -267,12 +267,6 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
   }
 
 
-
-
-
-
-
-
   // TRANSLATION
   translateFileTypeNotSupported() {
     this.translate.get('FiletypeNotSupported')
@@ -718,6 +712,11 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
 
       }
     };
+  }
+
+  openDocsTiledeskCreateABot () {
+    const url = 'https://docs.tiledesk.com/knowledge-base/create-a-bot/';
+    window.open(url, '_blank');
   }
 
   openExternalBotIntegrationTutorial() {

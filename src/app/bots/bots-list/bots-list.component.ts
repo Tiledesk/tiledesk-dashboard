@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FaqKbService } from '../../services/faq-kb.service';
 import { FaqKb } from '../../models/faq_kb-model';
-import { Router } from '@angular/router';
+import { Router , RoutesRecognized} from '@angular/router';
 import { MongodbFaqService } from '../../services/mongodb-faq.service';
 
 import { Project } from '../../models/project-model';
@@ -85,6 +85,28 @@ export class BotListComponent implements OnInit {
     const brand = brandService.getBrand();
     this.tparams = brand;
 
+    // this.router.events
+    // .filter(e => e instanceof RoutesRecognized)
+    // .pairwise()
+    // .subscribe((event: any[]) => {
+
+    //   console.log('FaqComponent NAVIGATION - event ', event);
+    //   console.log('FaqComponent NAVIGATION - urlAfterRedirects ', event[0].urlAfterRedirects);
+    //   // console.log('FaqComponent NAVIGATION - urlAfterRedirects PREVIOUS PAGE ', event[0].urlAfterRedirects.includes('create'));
+
+    //   if (event[0].urlAfterRedirects.includes('create') === true) {
+    //     // this.navigation_history.push('create')
+    //     const url_segment = event[0].urlAfterRedirects.split('/');
+    //     console.log('FaqComponent NAVIGATION - url_segment (bot list) ', url_segment);
+
+    //     // if (url_segment[3] === 'bots' && url_segment[4] === 'create') {
+    //     //   this.previousPageIsCreateBot = true
+    //     //   console.log('FaqComponent NAVIGATION - urlAfterRedirects PREVIOUS PAGE IS CREATE BOT', this.previousPageIsCreateBot);
+    //     // }
+    //   }
+
+    // });
+
   }
 
   ngOnInit() {
@@ -116,13 +138,9 @@ export class BotListComponent implements OnInit {
       .subscribe((text: string) => {
         // this.deleteContact_msg = text;
         console.log('+ + + BotsPage translation: ', text)
-
         this.warning = text;
-    
       });
 
-
-      
   }
 
   getStorageBucket() {

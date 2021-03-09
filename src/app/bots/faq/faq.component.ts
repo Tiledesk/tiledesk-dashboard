@@ -1,7 +1,7 @@
 import { Component, OnInit, ElementRef, ViewChild, HostListener } from '@angular/core';
 import { MongodbFaqService } from '../../services/mongodb-faq.service';
 import { Faq } from '../../models/faq-model';
-import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd, RoutesRecognized } from '@angular/router';
 // import { ActivatedRoute } from '@angular/router';
 
 import { Project } from '../../models/project-model';
@@ -22,6 +22,7 @@ import { BrandService } from '../../services/brand.service';
 import { DepartmentService } from '../../services/department.service';
 import { avatarPlaceholder, getColorBck } from '../../utils/util';
 import { filter } from 'rxjs/operators';
+import { pairwise } from 'rxjs/operators';
 // import $ = require('jquery');
 // declare const $: any;
 @Component({
@@ -127,6 +128,8 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   display_intent_name_in_table: boolean = false;
   previousUrl: string;
   currentUrl: string;
+  navigation_history = []
+  previousPageIsCreateBot: boolean;
   constructor(
     private mongodbFaqService: MongodbFaqService,
     private router: Router,
@@ -157,6 +160,29 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     //   this.currentUrl = event.url;
     //   console.log("FaqComponent NAVIGATION currentUrl", this.currentUrl);
     // });
+
+    // this.router.events
+    //   .filter(e => e instanceof RoutesRecognized)
+    //   .pairwise()
+    //   .subscribe((event: any[]) => {
+
+    //     console.log('FaqComponent NAVIGATION - event ', event);
+    //     console.log('FaqComponent NAVIGATION - urlAfterRedirects ', event[0].urlAfterRedirects);
+    //     // console.log('FaqComponent NAVIGATION - urlAfterRedirects PREVIOUS PAGE ', event[0].urlAfterRedirects.includes('create'));
+
+    //     if (event[0].urlAfterRedirects.includes('create') === true) {
+    //       // this.navigation_history.push('create')
+    //       const url_segment = event[0].urlAfterRedirects.split('/');
+    //       console.log('FaqComponent NAVIGATION - url_segment ', url_segment);
+    //       console.log('FaqComponent NAVIGATION - url_segment[3] ', url_segment[3]);
+    //       console.log('FaqComponent NAVIGATION - url_segment[4] ', url_segment[4]);
+    //       if (url_segment[3] === 'bots' && url_segment[4] === 'create') {
+    //         this.previousPageIsCreateBot = true
+    //         console.log('FaqComponent NAVIGATION - urlAfterRedirects PREVIOUS PAGE IS CREATE BOT', this.previousPageIsCreateBot);
+    //       }
+    //     }
+
+    //   });
   }
 
   ngOnInit() {
@@ -888,9 +914,16 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     this.router.navigate(['project/' + this.project._id + '/editfaq', this.id_faq_kb, faq_id, this.botType]);
   }
 
-  goBackToFaqKbList() {
+  goBack() {
+    // console.log('FaqComponent NAVIGATION - urlAfterRedirects PREVIOUS PAGE IS CREATE BOT (goBack) ', this.previousPageIsCreateBot);
     // this.router.navigate(['project/' + this.project._id + '/bots']);
     this.location.back();
+    // if (this.previousPageIsCreateBot === true) {
+    //   this.router.navigate(['project/' + this.project._id + '/bots']);
+    // } else {
+    //   this.location.back();
+    // }
+
   }
 
 

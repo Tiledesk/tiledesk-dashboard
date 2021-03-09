@@ -60,7 +60,7 @@
             </span>
             <!-- col-sm-8 col-md-8 col-lg-6 -->
             <div class="col-sm-12">
-              <textarea style="border-radius:5px" [(ngModel)]="question" class="textarea" rows="3" style="resize: vertical;"
+              <textarea [(ngModel)]="question" class="textarea" rows="3" style="resize: vertical; border-radius:5px"
                 placeholder='{{ "Questions" | translate }}'>
                 </textarea>
             </div>
@@ -74,7 +74,7 @@
             </label>
             <!-- col-sm-8 col-md-8 col-lg-6 -->
             <div class="col-xs-12">
-              <textarea style="border-radius:5px" [(ngModel)]="answer" class="textarea" rows="3" style="resize: vertical;"
+              <textarea [(ngModel)]="answer" class="textarea" rows="3" style="resize: vertical; border-radius:5px"
                 placeholder='{{ "FaqEditAddPage.Answer" | translate }}'>
                 </textarea>
             </div>
@@ -170,8 +170,8 @@
               <!-- Type/Add your questtion here separated with a new line -->
               {{ 'TypeAddYourQuesttionHere' | translate}}
             </span>
-            <div class="col-sm-12">
-              <textarea [(ngModel)]="question_toUpdate" class="textarea" rows="3" style="resize: vertical;"
+            <div class="col-sm-12"> 
+              <textarea [(ngModel)]="question_toUpdate" class="textarea" rows="3" style="resize: vertical; border-radius:5px"
                 placeholder='{{ "FaqEditAddPage.Question" | translate }}'>
                 </textarea>
             </div>
@@ -186,7 +186,7 @@
               {{ "FaqEditAddPage.Answer" | translate }}
             </label>
             <div class="col-sm-12">
-              <textarea [(ngModel)]="answer_toUpdate" class="textarea" rows="3" style="resize: vertical;"
+              <textarea [(ngModel)]="answer_toUpdate" class="textarea" rows="3" style="resize: vertical;border-radius:5px"
                 placeholder='{{ "FaqEditAddPage.Answer" | translate }}'>
                   </textarea>
             </div>
