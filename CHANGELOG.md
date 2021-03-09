@@ -4,7 +4,7 @@
 ### 2.1.34
 - Add the Events chart in Analytics > Metrics
 - Refactors, on the creation page and on the update page of the triggers, user interface and conditions
-- Adds, in Analytics> Metrics, the ability to filter the "Satisfaction" graph by agent
+- Adds, in Analytics > Metrics, the ability to filter the "Satisfaction" graph by agent
 
 ### 2.1.33
 - Adds, for the "Resolution" bot type, the ability to handle webhook requests
