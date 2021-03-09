@@ -1297,7 +1297,7 @@
                     },
                     "label_key": {
                         "VisitorSearchTerm": "Messaggio",
-                        "VisitorName": "Nome visitatore",
+                        "VisitorName": "Nome mittente",
                         "VisitorMail": "Indirizzo e-mail visitatore",
                         "VisitorDepartment": "Dipartimento visitatore",
                         "VisitorReferrer": "Referente visitatore",
@@ -1524,7 +1524,8 @@
             "Sentiment": "Sentiment",
             "ResponseTime": "Tempi risposta",
             "ConversationLenght": "Durata conversazione",
-            "Satisfaction": "Gradimento"
+            "Satisfaction": "Gradimento",
+            "Events": "Eventi"
         },
         "RealTimeComponentTitle": "Tempo reale",
         "AvgTimeTitle": "Monitoraggio tempo medio",
@@ -1569,6 +1570,11 @@
             "StatisfactionValueLabel": "Il gradimento medio relativo al tuo team è ",
             "NoSatisfactionValue" : "Il tuo team non ha ancora ricevuto valutazioni.",
             "DailySatisfactionTrend": "Trend Giornaliero del Gradimento negli Ultimi"
+        },
+        "Events": {
+            "EventsMonitoring": "Monitoraggio Eventi",
+            "EventsChartTitle": "Numeri di Eventi negli Ultimi",
+            "AllEvents": "Tutti gli Eventi"
         }
     },
     "DeleteRequestForever": {
@@ -1731,6 +1737,7 @@
     "Last30DaysMessages":"Messaggi degli ultimi 30 giorni",
     "Last30DaysConversations":"Conversazioni degli ultimi 30 giorni",
     "Last30DaysVisitors":"Visitatori unici negli ultimi 30 giorni",
+    "Last30DaysEvents": "Eventi degli ultimi 30 giorni",
     "Last30DaysConversationsHandledByBots":"Conversazioni degli ultimi 30 giorni gestite dai bot",
     "Last30DaysConversationsHandledByBotsPercentage":"Percentuale di conversazioni degli ultimi 30 giorni gestite dai bot",
     "FilterReportInAnalytics":"Filtra il rapporto in analisi",

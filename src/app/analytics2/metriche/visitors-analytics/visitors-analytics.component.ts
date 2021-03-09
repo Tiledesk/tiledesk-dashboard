@@ -83,6 +83,9 @@ export class VisitorsAnalyticsComponent implements OnInit {
       console.log("LAST MONTH VISITORS COUNT: ", res);
       this.visitorsCountLastMonth = res[0].totalCount;
       console.log("Visitors Count: ", this.visitorsCountLastMonth);
+    }, (error) => {
+      console.log("Impossible to retrieve monthly count")
+      this.visitorsCountLastMonth = 0;
     })
   }
 

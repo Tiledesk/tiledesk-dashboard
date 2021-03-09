@@ -1528,7 +1528,8 @@
 			"Sentiment": "Empfindung",
 			"ResponseTime": "Reaktionszeit",
 			"ConversationLenght": "Unterhaltungslänge",
-			"Satisfaction": "Befriedigung"
+			"Satisfaction": "Befriedigung",
+			"Events": "Veranstaltungen"
 		},
 		"RealTimeComponentTitle": "Echtzeit",
 		"AvgTimeTitle": "Durchschnittliche Zeit Überwachung",
@@ -1573,6 +1574,11 @@
 			"StatisfactionValueLabel": "Die durchschnittliche Bewertung für Ihr Team ist ",
 			"NoSatisfactionValue": "Ihr Team hat noch keine Bewertungen erhalten.",
 			"DailySatisfactionTrend": "Täglicher Zufriedenheitstrend Letzte"
+		},
+		"Events": {
+			"EventsMonitoring": "Ereignisüberwachung",
+			"EventsChartTitle": "Anzahl der Veranstaltungen in den etzten",
+			"AllEvents": "Alle Veranstaltungen"
         }
 	},
 	"DeleteRequestForever": {
@@ -1735,6 +1741,7 @@
 	"Last30DaysMessages":"Nachrichten der letzten 30 Tage",
 	"Last30DaysConversations":"Gespräche der letzten 30 Tage",
 	"Last30DaysVisitors":"Einzigartige Besucher in den letzten 30 Tagen",
+	"Last30DaysEvents": "Letzte 30 Tage Ereignisse",
 	"Last30DaysConversationsHandledByBots":"Letzte 30 Tage Gespräche von Bots geführt",
 	"Last30DaysConversationsHandledByBotsPercentage":"Prozentsatz der Gespräche der letzten 30 Tage, die von Bots geführt werden",
 	"FilterReportInAnalytics":"Filterbericht in Analytics",

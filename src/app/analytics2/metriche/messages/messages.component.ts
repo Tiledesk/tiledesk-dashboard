@@ -145,6 +145,9 @@ export class MessagesComponent implements OnInit {
       console.log("LAST MONTH MESSAGES COUNT: ", res);
       this.messageCountLastMonth = res[0].totalCount;
       console.log("Message Count: ", this.messageCountLastMonth);
+    }, (error) => {
+      console.log("Impossible to retrieve monthly count")
+      this.messageCountLastMonth = 0;
     })
   }
 
@@ -287,7 +290,7 @@ export class MessagesComponent implements OnInit {
     }, (error) => {
       console.log('»» MESSAGES BY DAY - ERROR ', error);
     }, () => {
-      console.log('»» VISITORS BY DAY - * COMPLETE * ');
+      console.log('»» MESSAGES BY DAY - * COMPLETE * ');
     })
   }
 

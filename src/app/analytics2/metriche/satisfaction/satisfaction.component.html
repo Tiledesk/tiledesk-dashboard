@@ -16,8 +16,8 @@
         {{ "Analytics.Satisfaction.SatisfactionStar" | translate }}
       </div>
       <div class="card-content star">
-        <p *ngIf="avgSatisfaction != null" class="number-stars">{{ avgSatisfaction }}</p>
-        <p *ngIf="avgSatisfaction == null" class="number-stars" style="font-size: 35px;">n.a.</p>
+        <p class="number-stars">{{ avgSatisfaction }}</p>
+        <!-- <p *ngIf="avgSatisfaction == null" class="number-stars" style="font-size: 35px;">0</p> -->
       </div>
       <!-- rating available -->
       <div *ngIf="avgSatisfaction != null" class="card-footer request_count_footer"
@@ -53,11 +53,11 @@
             <div class="section-select-dept">
               <div class="row">
                 <label class="col-sm-12" style="text-align: left; color:black">
-                  {{ 'Analytics.FilterReport' | translate }} :
+                  {{ 'Analytics.FilterReport' | translate }}
                 </label>
                 <div class="col-sm-12" style="margin-bottom: 6px; text-align: left">
                   <ng-select class="custom" name="days" [(ngModel)]="selectedDaysId" [clearable]="false"
-                    (change)="daysSelect(selectedDaysId)">
+                    (change)="daysSelect(selectedDaysId, $event)">
                     <ng-option [value]="7">{{ 'Analytics.Last' | translate}} 7 {{ 'Analytics.Days' | translate}}
                     </ng-option>
                     <ng-option [value]="15">{{ 'Analytics.Last' | translate}} 15 {{ 'Analytics.Days' | translate}}
@@ -97,7 +97,7 @@
               <div class="row">
                 <!-- color: rgba(0, 0, 0, 0.54); -->
                 <label class="col-sm-12" style="text-align: left; color:black">
-                  {{ 'HistoryPage.FilterByDepartment' | translate }} :
+                  {{ 'HistoryPage.FilterByDepartment' | translate }}
                 </label>
                 <div class="col-sm-12" style="margin-bottom: 6px; text-align: left">
                   <ng-select class="custom" name="dept" [(ngModel)]="selectedDeptId" [clearable]="false"
@@ -111,6 +111,34 @@
               </div>
             </div>
           </div>
+
+
+          <!-- ----- agent filter ------ -->
+          <div class="col-sm-4">
+            <div class="section-select-dept">
+              <div class="row">
+                <label class="col-sm-12" style="text-align: left; color:black;">
+                  {{ "Agent" | translate }}
+                </label>
+                <div class="col-sm-12" style="margin-bottom: 6px; text-align: left;">
+                  <ng-select class="custom" name="agent" [(ngModel)]="selectedAgentId" [clearable]="false"
+                    (change)="agentSelected(selectedAgentId)">
+                    <ng-option [value]="''">Tutto</ng-option>
+                    <ng-option *ngFor="let agent of projectUserAndBotsArray" value="{{ agent.id }}">
+                      {{ agent.name}}
+                    </ng-option>
+                    <!-- <ng-option *ngFor="let agent of projectUsersList" [value]="agent.id_user._id">
+                  {{ agent.id_user.firstname }} {{ agent.id_user.lastname }}
+                </ng-option>
+                <ng-option *ngFor="let bot of projectBotsList" [value]="bot._id">
+                  {{ bot.name }} (Bot)
+                </ng-option> -->
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+          </div>
+          
         </div>
 
         <!-- height: 30vh; -->

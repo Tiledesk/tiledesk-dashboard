@@ -195,7 +195,8 @@
                               style="padding-right: 3px;">
                               <ng-select class="custom-select" formControlName="value"
                                 [placeholder]="condition.value.placeholder" [searchable]="false" [clearable]="false">
-                                <ng-option *ngFor="let oper of operator[condition.value.path]" [value]="oper.id">
+                                <!-- <ng-option *ngFor="let oper of operator[condition.value.path]" [value]="oper.id"> -->
+                                  <ng-option *ngFor="let oper of operator[condition.value.path]" [value]="oper.id">
                                   {{oper.label_key}}</ng-option>
                               </ng-select>
                             </div>

@@ -277,9 +277,11 @@ export class TempirispostaComponent implements OnInit {
   }
 
   setToNa() {
-    this.numberAVGtime = 'N.a.'
+    // this.numberAVGtime = 'N.a.'
+    this.numberAVGtime = '0'
     this.unitAVGtime = ''
-    this.responseAVGtime = 'N.a.'
+    // this.responseAVGtime = 'N.a.'
+    this.responseAVGtime = '0'
   }
 
   avgTimeResponseCHART(lastdays, depID, participantID) {
