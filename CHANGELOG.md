@@ -4,6 +4,7 @@
 ### 2.1.33
 - Adds, for the "Resolution" bot type, the ability to handle webhook requests
 - Improves the UI of bot details page and of the create / edit answer page
+- Improves the UI of bot list page and of the create bot page
 
 ### 2.1.32
 - Improves the shared component that contains links to documentation
