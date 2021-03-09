@@ -29,6 +29,7 @@ import { TagsService } from '../../services/tags.service';
 import PerfectScrollbar from 'perfect-scrollbar';
 import { UAParser } from 'ua-parser-js';
 import { ContactsService } from '../../services/contacts.service';
+const swal = require('sweetalert');
 
 @Component({
   selector: 'appdashboard-ws-requests-msgs',
@@ -192,6 +193,13 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   DISPLAY_BTN_CREATE_JIRA_ISSUE: boolean
   jira_issue_types: any
   selectedJiraType: number;
+
+  reassignRequestMsg: string;
+  requestWillBeReassignedToMsg: string;
+  addAgentMsg: string;
+  requestWillBeAssignedToMsg: string;
+  anErrorHasOccurredMsg: string;
+  done_msg: string;
   // @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
 
   //   cities3 = [
@@ -315,13 +323,13 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   createJiraTicket() {
-    
+
     console.log('REQUEST-MSGS - createJiraTicket this.request', this.request);
 
     const transcript_url = this.SERVER_BASE_PATH + 'public/requests/' + this.id_request + '/messages.html'
- 
+
     const url = `https://tiledesk.atlassian.net/secure/CreateIssueDetails!init.jspa?summary=${this.request.first_text}&description=${this.request.first_text}` + "%0A" + `${transcript_url}&pid=10000&issuetype=${this.selectedJiraType}&reporter=5e21d01f010b260ca87b14ba`
-    
+
     window.open(url, '_blank');
   }
 
@@ -472,6 +480,42 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.requestHasBeenArchivedNoticationMsg_part1 = text;
         // console.log('+ + + RequestHasBeenArchivedNoticationMsg_part1', text)
       });
+
+
+    this.translate.get('VisitorsPage.ReassignRequest')
+      .subscribe((text: string) => {
+        this.reassignRequestMsg = text;
+
+      });
+
+    this.translate.get('VisitorsPage.TheRequestWillBeReassignedTo')
+      .subscribe((text: string) => {
+        this.requestWillBeReassignedToMsg = text;
+
+      });
+
+      this.translate.get('VisitorsPage.AddAgent')
+      .subscribe((text: string) => {
+        this.addAgentMsg = text;
+
+      });
+
+      this.translate.get('VisitorsPage.TheRequestWillBeAssignedTo')
+      .subscribe((text: string) => {
+        this.requestWillBeAssignedToMsg = text;
+
+      });
+
+    this.translate.get('UserEditAddPage.AnErrorHasOccurred')
+      .subscribe((text: string) => {
+        this.anErrorHasOccurredMsg = text;
+      });
+
+    this.translate.get('Done')
+      .subscribe((text: string) => {
+        this.done_msg = text;
+      });
+
   }
 
 
@@ -1544,10 +1588,103 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
     // const testDiv = <HTMLElement>document.querySelector('.swap_btn');
     // console.log('REQUEST-MSGS - SELECTED USER ROW TOP OFFSET ', testDiv.offsetTop);
-    this.displayConfirmReassignmentModal = 'block'
+    // this.displayConfirmReassignmentModal = 'block';
+
+    if (this.actionInModal === 'reassign') {
+      this.presentSwalModalConfirmReassignToUser(this.userid_selected, this.userfirstname_selected,  this.userlastname_selected);
+    }
+
+    if (this.actionInModal === 'invite') {
+      this.presentSwalModalConfirmAddToUser(this.userid_selected, this.userfirstname_selected,  this.userlastname_selected);
+    }
 
     // this.document.body.scrollTop = 0;
   }
+
+  presentSwalModalConfirmReassignToUser(userid, userfirstname, userlastname) {
+    swal({
+      title: this.reassignRequestMsg,
+      text: this.requestWillBeReassignedToMsg + ' ' + userfirstname + ' ' + userlastname,
+      icon: "info",
+      buttons: true,
+      dangerMode: false,
+    })
+      .then((willReassign) => {
+        if (willReassign) {
+          console.log('swal willReassign to User', willReassign)
+
+
+          this.wsRequestsService.setParticipants(this.id_request, userid).subscribe((res: any) => {
+            console.log('in swal willReassign to User setParticipants res ', res)
+
+          }, (error) => {
+            console.log('in swal willReassign to User setParticipants - ERROR ', error);
+
+            swal(this.anErrorHasOccurredMsg, {
+              icon: "error",
+            });
+
+          }, () => {
+            console.log('in swal willReassign to User setParticipants * COMPLETE *');
+
+            swal(this.done_msg + "!", {
+              icon: "success",
+            }).then((okpressed) => {
+              // this.goToContactList();
+              this.displayUsersListModal = 'none'
+            });
+
+          });
+        } else {
+          console.log('swal willReassign', willReassign)
+          // swal("Your imaginary file is safe!");
+        }
+      });
+  }
+
+
+  presentSwalModalConfirmAddToUser(userid, userfirstname,  userlastname) {
+    swal({
+      title: this.addAgentMsg,
+      text: this.requestWillBeAssignedToMsg + ' ' + userfirstname + ' ' + userlastname,
+      icon: "info",
+      buttons: true,
+      dangerMode: false,
+    })
+      .then((willBeAssigned) => {
+        if (willBeAssigned) {
+          console.log('swal willBeAssigned to User', willBeAssigned)
+
+
+          this.wsRequestsService.addParticipant(this.id_request, userid).subscribe((res: any) => {
+            console.log('in swal willBeAssigned to User addParticipant res ', res)
+
+          }, (error) => {
+            console.log('in swal willBeAssigned to User addParticipant - ERROR ', error);
+
+            swal(this.anErrorHasOccurredMsg, {
+              icon: "error",
+            });
+
+          }, () => {
+            console.log('in swal willBeAssigned to User addParticipant * COMPLETE *');
+
+            swal(this.done_msg + "!", {
+              icon: "success",
+            }).then((okpressed) => {
+              // this.goToContactList();
+              this.displayUsersListModal = 'none'
+            });
+
+          });
+        } else {
+          console.log('swal willReassign', willBeAssigned)
+          // swal("Your imaginary file is safe!");
+        }
+      });
+
+  }
+
 
   selectBot(botid: string, botname: string) {
     console.log('%%% Ws-REQUESTS-Msgs - SELECTED BOT ID ', botid);
@@ -1556,8 +1693,50 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.userfirstname_selected = botname;
     this.userlastname_selected = '';
     this.useremail_selected = '';
-    this.displayConfirmReassignmentModal = 'block'
+    // this.displayConfirmReassignmentModal = 'block'
+    this.presentSwalModalConfirmReassignToBot(this.userid_selected, this.userfirstname_selected)
+  }
 
+
+  presentSwalModalConfirmReassignToBot(botid, botname) {
+    swal({
+      title: this.reassignRequestMsg,
+      text: this.requestWillBeReassignedToMsg + ' ' + botname,
+      icon: "info",
+      buttons: true,
+      dangerMode: false,
+    })
+      .then((willReassign) => {
+        if (willReassign) {
+          console.log('swal willReassign to User', willReassign)
+
+
+          this.wsRequestsService.setParticipants(this.id_request, botid).subscribe((res: any) => {
+            console.log('in swal willReassign to Bot setParticipants res ', res)
+
+          }, (error) => {
+            console.log('in swal willReassign to Bot setParticipants - ERROR ', error);
+
+            swal(this.anErrorHasOccurredMsg, {
+              icon: "error",
+            });
+
+          }, () => {
+            console.log('in swal willReassign to Bot setParticipants * COMPLETE *');
+
+            swal(this.done_msg + "!", {
+              icon: "success",
+            }).then((okpressed) => {
+              // this.goToContactList();
+              this.displayUsersListModal = 'none'
+            });
+
+          });
+        } else {
+          console.log('swal willReassign', willReassign)
+          // swal("Your imaginary file is safe!");
+        }
+      });
   }
 
   selectDept(deptname: string, deptid: string) {
@@ -1567,8 +1746,55 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.deptid_selected = deptid
     this.deptname_selected = deptname
 
-    this.displayDeptConfirmReassignmentModal = 'block'
+    // this.displayDeptConfirmReassignmentModal = 'block'
+
+    this.presentSwalModalConfirmReassignToDept(deptid, deptname)
   }
+
+
+  presentSwalModalConfirmReassignToDept(deptid, deptname) {
+    swal({
+      title: this.reassignRequestMsg,
+      text: this.requestWillBeReassignedToMsg + ' ' + deptname,
+      icon: "info",
+      buttons: true,
+      dangerMode: false,
+    })
+      .then((willReassign) => {
+        if (willReassign) {
+          console.log('swal willReassign to dept', willReassign)
+
+
+          this.wsRequestsService.joinDept(deptid, this.id_request).subscribe((res: any) => {
+            console.log('in swal joinDept res ', res)
+
+          }, (error) => {
+            console.log('in swal joinDept - ERROR ', error);
+
+            swal(this.anErrorHasOccurredMsg, {
+              icon: "error",
+            });
+
+          }, () => {
+            console.log('in swal joinDept * COMPLETE *');
+
+            swal(this.done_msg + "!", {
+              icon: "success",
+            }).then((okpressed) => {
+              // this.goToContactList();
+              this.displayUsersListModal = 'none'
+            });
+
+          });
+        } else {
+          console.log('swal willReassign', willReassign)
+          // swal("Your imaginary file is safe!");
+        }
+      });
+  }
+
+
+
 
   closeConfirmReassignmentModal() {
     this.displayConfirmReassignmentModal = 'none'
@@ -1579,23 +1805,23 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
 
-  reassignRequest(userid_selected) {
-    console.log('%%% Ws-REQUESTS-Msgs - REASSIGN REQUEST TO USER ID ', userid_selected);
-    this.displayConfirmReassignmentModal = 'none';
-    this.displayUsersListModal = 'none'
+  // reassignRequest(userid_selected) {
+  //   console.log('%%% Ws-REQUESTS-Msgs - REASSIGN REQUEST TO USER ID ', userid_selected);
+  //   this.displayConfirmReassignmentModal = 'none';
+  //   this.displayUsersListModal = 'none'
 
-    this.joinAnotherAgentLeaveCurrentAgents(userid_selected);
-  }
+  //   this.joinAnotherAgentLeaveCurrentAgents(userid_selected);
+  // }
 
   // ---------------------------------------------------------------------------------------------
   // Reassign to department (joinDeptAndLeaveCurrentAgents in ws-shared) 
   // ---------------------------------------------------------------------------------------------
-  reassignRequestToDept(deptid_selected) {
-    console.log('%%% Ws-REQUESTS-Msgs - REASSIGN REQUEST TO DEPT ID ', deptid_selected);
-    this.displayUsersListModal = 'none'
-    this.displayDeptConfirmReassignmentModal = 'none';
-    this.joinDeptAndLeaveCurrentAgents(deptid_selected, this.id_request);
-  }
+  // reassignRequestToDept(deptid_selected) {
+  //   console.log('%%% Ws-REQUESTS-Msgs - REASSIGN REQUEST TO DEPT ID ', deptid_selected);
+  //   this.displayUsersListModal = 'none'
+  //   this.displayDeptConfirmReassignmentModal = 'none';
+  //   this.joinDeptAndLeaveCurrentAgents(deptid_selected, this.id_request);
+  // }
 
   assignRequest(userid_selected) {
     console.log('%%% Ws-REQUESTS-Msgs - ASSIGN REQUEST TO USER ID ', userid_selected);
@@ -1605,47 +1831,28 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
 
+ /// new RIASSIGN REQUEST
+ joinAnotherAgentLeaveCurrentAgents(userid_selected) {
+  // this.getFirebaseToken(() => {
+  this.wsRequestsService.setParticipants(this.id_request, userid_selected)
+    .subscribe((joinToGroupRes: any) => {
 
-  /// new RIASSIGN REQUEST
-  joinAnotherAgentLeaveCurrentAgents(userid_selected) {
-    // this.getFirebaseToken(() => {
-    this.wsRequestsService.setParticipants(this.id_request, userid_selected)
-      .subscribe((joinToGroupRes: any) => {
+      console.log('%%% Ws-REQUESTS-Msgs - RIASSIGN REQUEST - JOIN ANOTHER USER TO CHAT GROUP ', joinToGroupRes);
 
-        console.log('%%% Ws-REQUESTS-Msgs - RIASSIGN REQUEST - JOIN ANOTHER USER TO CHAT GROUP ', joinToGroupRes);
+    }, (err) => {
+      console.log('%%% Ws-REQUESTS-Msgs - RIASSIGN REQUEST - JOIN ANOTHER USER TO CHAT GROUP - ERROR ', err);
 
-      }, (err) => {
-        console.log('%%% Ws-REQUESTS-Msgs - RIASSIGN REQUEST - JOIN ANOTHER USER TO CHAT GROUP - ERROR ', err);
+      // =========== NOTIFY ERROR ===========
+      this.notify.showNotification('An error has occurred assigning the request', 4, 'report_problem')
+    }, () => {
+      console.log('%%% Ws-REQUESTS-Msgs- RIASSIGN REQUEST - JOIN ANOTHER USER TO CHAT GROUP - COMPLETE');
 
-        // =========== NOTIFY ERROR ===========
-        this.notify.showNotification('An error has occurred assigning the request', 4, 'report_problem')
-      }, () => {
-        console.log('%%% Ws-REQUESTS-Msgs- RIASSIGN REQUEST - JOIN ANOTHER USER TO CHAT GROUP - COMPLETE');
+      // =========== NOTIFY SUCCESS===========
+      this.notify.showNotification(`request reassigned to ${this.userfirstname_selected}  ${this.userlastname_selected}`, 2, 'done');
 
-        // =========== NOTIFY SUCCESS===========
-        this.notify.showNotification(`request reassigned to ${this.userfirstname_selected}  ${this.userlastname_selected}`, 2, 'done');
+       });
+   }
 
-        // this.cleaned_members_array.forEach(memberId => {
-
-        //   if (memberId !== userid_selected) {
-        //     console.log('%%% Ws-REQUESTS-Msgs - RIASSIGN REQUEST - USER ID OF THE USER THAT LEAVE THE GROUP ', memberId)
-        //     // this.requestsService.leaveTheGroup(this.id_request, this.firebase_token, memberId)
-        //     this.wsRequestsService.leaveTheGroup(this.id_request, memberId)
-        //       .subscribe((leaveTheGroupRes: any) => {
-
-        //         console.log('%%% Ws-REQUESTS-Msgs - RIASSIGN REQUEST - LEAVE THE GROUP - RESPONSE ', leaveTheGroupRes);
-        //       }, (err) => {
-        //         console.log('%%% Ws-REQUESTS-Msgs - RIASSIGN REQUEST - LEAVE THE GROUP - ERROR ', err);
-        //         // =========== NOTIFY ERROR ===========
-        //         this.notify.showNotification('An error has occurred reassigning the request', 4, 'report_problem')
-        //       }, () => {
-        //         console.log('%%% Ws-REQUESTS-Msgs -RIASSIGN REQUEST - LEAVE THE GROUP * COMPLETE');
-        //       });
-        //   }
-        // });
-      });
-    // });
-  }
   // end new
 
   // -----------------------------------------------------------------------------------------

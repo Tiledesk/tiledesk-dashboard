@@ -1459,7 +1459,7 @@
                 </div>
 
 
-             
+
 
 
                 <!-- 
@@ -2275,7 +2275,9 @@
   </div>
 </div> -->
 
-<!-- ------------============= USERS LIST MODAL - FULL WIDTH MODAL =============------------ -->
+<!-- ---------------------------------------------------------------------------------------- -->
+<!--  USERS - BOTS - DEPTS LIST MODAL - FULL WIDTH MODAL -->
+<!-- ---------------------------------------------------------------------------------------- -->
 <div class="modal" tabindex="-1" role="dialog"
   [ngStyle]="{'display': displayUsersListModal , 'height': users_list_modal_height}"
   style="background-color: rgba(90,90,90,0.5);">
@@ -2286,13 +2288,14 @@
 
       <div class="modal-header">
         <!-- class="close" -->
-        <button type="button" style="border: none !important; float: right" aria-label="Close"
+        <button type="button close-modal-btn" style="border: none !important; float: right !important; border-radius: 50%; color: rgb(235,234,235);  height: 36px; width: 36px;" 
+          aria-label="Close"
           (click)="closeSelectUsersModal()">
           <span aria-hidden="true" style="font-size:31px; color: rgb(60, 72, 88) !important;">&times;</span>
         </button>
 
         <h4 class="modal-title">
-          <div class="title-wrapper" style="max-width: 936px; margin:auto">
+          <div class="title-wpr">
             <span *ngIf="actionInModal === 'reassign'"> {{ "VisitorsPage.ReassignRequest" | translate }} </span>
             <span *ngIf="actionInModal === 'invite'"> {{ "VisitorsPage.AddAgent" | translate }} </span>
           </div>
@@ -2610,17 +2613,14 @@
             </div>
           </div>
 
-
-
-          <!-- 
-          // ------------------------------------------------------------------------------
-          // Reassign to a dept
-          // ------------------------------------------------------------------------------ -->
+          <!-- ------------------------------------------------------------------------------ -->
+          <!-- Reassign to a dept -->
+          <!-- ------------------------------------------------------------------------------ -->
           <section *ngIf="actionInModal === 'reassign' && departments?.length > 1">
-            <!-- 
-            // ---------------------------------------------------------------------------------------------
-            // modal subtitle
-            // --------------------------------------------------------------------------------------------- -->
+             
+            <!-- -------------------------------------- -->
+            <!-- modal subtitle -->
+            <!-- -------------------------------------- -->
             <div class="col-md-12" *ngIf="CHAT_PANEL_MODE === false">
               <span>
                 <h4 style="font-weight:400">
@@ -2830,7 +2830,6 @@
           </section>
 
           <!-- ----------------------------- depts ------------------------------------------------- -->
-
         </div>
 
       </div> <!-- /. modal-body -->
@@ -2843,8 +2842,9 @@
     </div> <!-- /.modal-content -->
   </div> <!-- /.modal-dialog -->
 </div>
+<!-- ./ USERS - BOTS - DEPTS LIST MODAL - FULL WIDTH MODAL -->
 
-<!-- ============= CONFIRM REQUEST REASSIGNMENT TO USER MODAL ============= -->
+<!-- ============= CONFIRM REQUEST REASSIGNMENT TO USER MODAL & Bot ============= -->
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayConfirmReassignmentModal}"
   style="background-color: rgba(90,90,90,0.5);">
   <div class="modal-dialog" role="document">

@@ -492,8 +492,23 @@
 }
 
 .modal-header {
-  padding: 15px;
+  padding: 6px 12px;
   border-bottom: 1px solid #e5e5e5 !important;
+}
+
+.close-modal-btn {
+  border: none !important;
+  float: right !important;
+  border-radius: 50%;
+  color: rgb(235,234,235);
+  height: 36px;
+  width: 36px;
+}
+
+.title-wpr {
+  max-width: 936px;
+  margin: auto;
+  padding-top: 5px;
 }
 
 .modal-title {
