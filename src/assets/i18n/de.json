@@ -1852,7 +1852,10 @@
 	"WebhookmentUrlMustBeAValidUrl":"Die Webhook-URL muss eine gültige URL sein",
 	"EnableWebhookCallForThisIntent":"Aktivieren Sie den Webhook-Aufruf für diese Absicht",
 	"HideShowColumns": "Spalten ausblenden / einblenden",
-	"AnswerWithTheIntentNameAlreadyExists":"Antwort mit dem Intent-Namen {{intent_name}} ist bereits vorhanden" 
+	"AnswerWithTheIntentNameAlreadyExists":"Antwort mit dem Intent-Namen {{intent_name}} ist bereits vorhanden",
+	"HowToGenerateDialogflowGoogleCredentialsFile": "So generieren Sie eine Dialogflow Google-Anmeldeinformationsdatei" ,
+	"MicrolanguageGuide": "Anleitung für Mikrosprache",
+	"HowHandlingImagesVideosButtonsAndMore": "Wie man mit Bildern, Videos, Schaltflächen und mehr umgeht"
 
 	
 

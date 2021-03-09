@@ -1853,5 +1853,8 @@
     "WebhookmentUrlMustBeAValidUrl":"The webhook URL must be a valid URL",
     "EnableWebhookCallForThisIntent":"Enable webhook call for this intent",
     "HideShowColumns": "hide/show columns",
-    "AnswerWithTheIntentNameAlreadyExists":"Answer with the intent name {{ intent_name }} already exists"
+    "AnswerWithTheIntentNameAlreadyExists":"Answer with the intent name {{ intent_name }} already exists",
+    "HowToGenerateDialogflowGoogleCredentialsFile": "How to generate Dialogflow Google credentials file",
+    "MicrolanguageGuide": "Microlanguage guide",
+    "HowHandlingImagesVideosButtonsAndMore": "How handling images, videos, buttons and more"
 }
