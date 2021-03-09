@@ -558,13 +558,28 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     window.open(url, '_blank');
   }
 
-  openDialogGenerateCredentialTutorial() {
-    const url = 'https://developer.tiledesk.com/apis/tutorials/generate-dialgoflow-google-credentials-file';
-    window.open(url, '_blank');
-  }
+  // openDialogGenerateCredentialTutorial() {
+  //   const url = 'https://developer.tiledesk.com/apis/tutorials/generate-dialgoflow-google-credentials-file';
+  //   window.open(url, '_blank');
+  // }
 
   openDialogflowKbFeatureTutorial() {
     const url = 'https://cloud.google.com/dialogflow/docs/knowledge-connectors';
+    window.open(url, '_blank');
+  }
+
+  openDeveloperTiledeskGenerateDFCredentialFile() {
+    const url = 'https://developer.tiledesk.com/external-chatbot/build-your-own-dialogflow-connnector/generate-dialgoflow-google-credentials-file';
+    window.open(url, '_blank');
+  }
+
+  openDocsTiledeskDialogflowConnector() {
+    const url = 'https://docs.tiledesk.com/knowledge-base/microlanguage-for-dialogflow-images-videos/';
+    window.open(url, '_blank');
+  }
+
+  openDocsTiledeskHandoffToHumanAgent() {
+    const url = 'https://docs.tiledesk.com/knowledge-base/dialogflow-connector-handoff-to-human-agent-example/';
     window.open(url, '_blank');
   }
 

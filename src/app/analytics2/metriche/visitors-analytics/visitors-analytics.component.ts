@@ -62,8 +62,8 @@ export class VisitorsAnalyticsComponent implements OnInit {
     this.subscription.unsubscribe();
   }
 
-  daysSelect(value, event) {
-    console.log("EVENT: ", event)
+  daysSelect(value, $event) {
+    console.log("EVENT: ", $event)
     this.selectedDaysId = value;
 
     if (value <= 30) {

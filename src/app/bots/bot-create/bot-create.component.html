@@ -304,23 +304,29 @@
       <!-- RIGHT SIDEBAR -->
       <div class="col-md-4">
         <!-- padding-top:25px; padding-bottom:25px -->
-        <div class="card" style="">
+        <div class="card">
           <div class="card-content">
 
-            <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 15px">
+            <h4 *ngIf="botType !== 'dialogflow'" class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 15px">
               {{ "QuickTips" | translate }}
             </h4>
 
             <!-- <section *ngIf="botType === 'native'"> -->
             <section *ngIf="botType === 'resolution'">
-              <p style="color:#7695a5">
+              <!-- <p style="color:#7695a5">
                 {{ "BotsPage.BotQuickTipsText" | translate: tparams }}
+              </p> -->
+              <p style="color:#7695a5">
+                {{ 'ResolutionBotDescription' | translate}}. <span (click)="$event.stopPropagation();openDocsTiledeskCreateABot()" 
+              style="color: #03a5e8; text-decoration: underline;"> {{'HereHowCreateABot' | translate}}</span>
               </p>
             </section>
 
             <section *ngIf="botType === 'external'">
               <p style="color:#7695a5">
                 {{ "BotsPage.ExternabotQuickTips" | translate: tparams }}
+
+               
 
                 <span style="color: #03a5e8; display: block; cursor:pointer"
                   (click)="openExternalBotIntegrationTutorial()">
@@ -338,7 +344,48 @@
 
 
             <section *ngIf="botType === 'dialogflow'">
+
+              <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 5px">
+                <!-- Connect to your Dialogflow Agent -->
+                {{'ConnectToYourDialogflowAgent' | translate}}
+              </h4>
+
               <p style="color:#7695a5">
+                {{'YouNeedAServiceAccountPrivateKeyFileToConnectTheDialogflowAgent' | translate: tparams}}. 
+                <span style="color: #03a5e8; text-decoration: underline;cursor: pointer;" (click)="openDeveloperTiledeskGenerateDFCredentialFile()"> 
+                  {{'FollowThisGuideToFindOutHowToCreateThisFile' | translate }}.
+                </span>
+              </p>
+
+              <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 5px; margin-top: 18px;">
+                {{'Train' | translate }}
+              </h4>
+
+              <p style="color:#7695a5">
+                {{'DoYouWantToSendImagesVideosButtonsAndMore' | translate }} 
+                <span style="color: #03a5e8; text-decoration: underline;cursor: pointer;" (click)="openDocsTiledeskDialogflowConnector()"> 
+                  {{'FollowTheMicrolanguageGuide' | translate }}.
+                </span>
+              </p>
+              <div (click)="openDocsTiledeskDialogflowConnector()" style="cursor: pointer;">
+                <img src="assets/img/Dialogflow-Microlanguage-v2.png">
+              </div>
+
+              <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 5px; margin-top: 18px;">
+                {{'Handoff' | translate}}
+              </h4>
+
+              <p style="color:#7695a5">
+                {{'DoYouWantToHandoffToHumanAgentDuringAChatbotConversation' | translate}} {{'SimplyReplyAgentOnTheLastResponseLine' | translate}}.
+                <span style="color: #03a5e8; text-decoration: underline;cursor: pointer;" (click)="openDocsTiledeskHandoffToHumanAgent()"> 
+                  {{'HereHowToHandoffToTheHumanAgent' | translate }}.
+                </span>
+
+                
+              </p>
+
+
+              <!-- <p style="color:#7695a5">
                 1) {{ "BotsPage.DialogflowQuickTips_1A" | translate }}
                 <span style="color: #03a5e8; cursor:pointer" (click)="openDialogflowConsole()">
                   {{ "BotsPage.DialogflowQuickTips_1B" | translate }}
@@ -381,7 +428,7 @@
                 <span style="color: #03a5e8; cursor:pointer;" (click)="goToKBArticle_Connect_your_Dialogflow_Agent()">
                   Connect your Dialogflow Agent
                 </span>
-              </p>
+              </p> -->
 
             </section>
 

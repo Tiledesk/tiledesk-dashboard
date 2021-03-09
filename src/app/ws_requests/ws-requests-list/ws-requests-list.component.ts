@@ -46,7 +46,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   // @ViewChild('teamContent', { read: ElementRef }) public teamContent: ElementRef<any>;
   @ViewChild('teamContent') private teamContent: ElementRef;
   @ViewChild('testwidgetbtn') private testwidgetbtnRef: ElementRef;
-  @ViewChild('widgetsContent')  public widgetsContent: ElementRef;
+  @ViewChild('widgetsContent') public widgetsContent: ElementRef;
   // wsRequestsUnserved: Observable<Request[]>;
   // wsRequestsServed: Observable<Request[]>;
   wsRequestsUnserved: any;
@@ -108,6 +108,11 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   map_sidebar_height: any;
 
   projectUserArray: Array<any> = []
+  tempProjectUserArray: Array<any> = []
+
+  project_user_length: number;
+  display_teammates_in_scroll_div = false;
+  showRealTeammates = false
 
   /**
    * Constructor
@@ -195,9 +200,20 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     const firebase_conf = this.appConfigService.getConfig().firebase;
     this.storageBucket = firebase_conf['storageBucket'];
     console.log('STORAGE-BUCKET Ws Requests List ', this.storageBucket);
-    
+
     this.getAllProjectUsers(this.storageBucket);
+    this.displayProjectUserImageSkeleton()
   }
+
+  displayProjectUserImageSkeleton() {
+
+    setTimeout(() => {
+      this.showRealTeammates = true;
+
+    }, 2500);
+  }
+
+
 
   getTestSiteUrl() {
     this.TESTSITE_BASE_URL = this.appConfigService.getConfig().testsiteBaseUrl;
@@ -218,6 +234,12 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     }
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+
+    this.projectUserArray.forEach(projectuser => {
+      this.wsRequestsService.unsubsToToWsAllProjectUsersOfTheProject(projectuser.id_user._id)
+    });
+
+
   }
 
   goToOperatingHours() {
@@ -235,7 +257,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   openRightSideBar() {
     this.OPEN_RIGHT_SIDEBAR = true;
     console.log('%%% Ws-REQUESTS-Map »»»» OPEN RIGHT SIDEBAR ', this.OPEN_RIGHT_SIDEBAR);
-    
+
     const elemMainContent = <HTMLElement>document.querySelector('.main-content');
     console.log('%%% Ws-REQUESTS-Map - REQUEST-MAP - ON OPEN RIGHT SIDEBAR -> RIGHT SIDEBAR HEIGHT (MAIN-CONTENT)', elemMainContent.clientHeight);
     this.map_sidebar_height = elemMainContent.clientHeight - 100 + 'px';
@@ -307,13 +329,22 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   }
 
 
-
+  // -------------------------------------------------------
+  // Used for the old scroll div (now is set to display none)
+  // -------------------------------------------------------
   public scrollRight(): void {
     this.teamContent.nativeElement.scrollTo({ left: (this.teamContent.nativeElement.scrollLeft + 150), behavior: 'smooth' });
   }
-
   public scrollLeft(): void {
     this.teamContent.nativeElement.scrollTo({ left: (this.teamContent.nativeElement.scrollLeft - 150), behavior: 'smooth' });
+  }
+
+  public scrollRightTeammates(): void {
+    this.widgetsContent.nativeElement.scrollTo({ left: (this.teamContent.nativeElement.scrollLeft + 150), behavior: 'smooth' });
+  }
+
+  public scrollLeftTeammates(): void {
+    this.widgetsContent.nativeElement.scrollTo({ left: (this.teamContent.nativeElement.scrollLeft - 150), behavior: 'smooth' });
   }
 
   // async getRequestsTotalCount() {
@@ -365,16 +396,17 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       // console.log('% »»» WebSocketJs WF WS-RL - +++ GET PROJECT-USERS ', projectUsers);
       console.log('WS-REQUESTS-LIST - GET PROJECT-USERS RES ', _projectUsers);
       if (_projectUsers) {
+        this.project_user_length = _projectUsers.length;
+        console.log('WS-REQUESTS-LIST - GET PROJECT-USERS LENGTH ', this.project_user_length);
+        // this.projectUserArray = _projectUsers;
 
-        this.projectUserArray = _projectUsers;
+        _projectUsers.forEach(projectuser => {
 
-        this.projectUserArray.forEach(projectuser => {
-          this.wsRequestsService.subscriptionToWsAllProjectUsersOfTheProject(projectuser.id_user._id);
+          console.log('WS-REQUESTS-LIST - GET PROJECT-USERS forEach projectuser ', projectuser);
 
-          this.listenToAllProjectUsersOfProject$(projectuser)
 
           const imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + storageBucket + "/o/profiles%2F" + projectuser.id_user._id + "%2Fphoto.jpg?alt=media";
-         
+
           this.checkImageExists(imgUrl, (existsImage) => {
             if (existsImage == true) {
               projectuser.hasImage = true
@@ -383,6 +415,10 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
               projectuser.hasImage = false
             }
           });
+
+          this.wsRequestsService.subscriptionToWsAllProjectUsersOfTheProject(projectuser.id_user._id);
+
+          this.listenToAllProjectUsersOfProject$(projectuser)
 
           this.createAgentAvatarInitialsAnfBckgrnd(projectuser.id_user)
           //   if (user) {
@@ -442,6 +478,33 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
           projectuser['updatedAt_rt'] = projectUser_from_ws_subscription['updatedAt'];
 
         }
+
+
+        // const index = this.projectUserArray((e) => e._id === projectuser._id);
+        this.tempProjectUserArray.indexOf(projectuser) === -1 ? this.tempProjectUserArray.push(projectuser) : console.log("This item already exists");
+        // this.projectUserArray.push(projectuser)
+
+        // console.log('WS-REQUESTS-LIST - GET PROJECT-USERS TEMP projectUserArray ', this.tempProjectUserArray);
+        this.tempProjectUserArray.sort(function (a, b) { return a.user_available_rt - b.user_available_rt });
+        this.tempProjectUserArray.reverse();
+        this.projectUserArray = this.tempProjectUserArray;
+
+        // this.tempProjectUserArray.forEach((element, index) => {
+        //     // console.log('WS-REQUESTS-LIST - GET PROJECT-USERS TEMP projectUserArray loop index ', index);
+
+        // this.projectUserArray = this.tempProjectUserArray;
+
+        //     // if ((index + 1) === this.project_user_length) {
+
+        //     //   this.display_teammates_in_scroll_div = true;
+
+        //     //   console.log('WS-REQUESTS-LIST - GET PROJECT-USERS TEMP qui entro ');
+        //     // }
+
+
+        // });
+
+
 
 
         // this.projectUserArray.sort((n1, n2) => {

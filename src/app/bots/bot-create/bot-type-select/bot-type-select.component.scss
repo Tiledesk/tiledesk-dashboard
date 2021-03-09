@@ -19,27 +19,55 @@
 }
 
 .bot-card:hover {
-  box-shadow: 0 4px 18px 0 rgba(60, 72, 91, 0.22);
 
-  .dflogo_st2 {
-    fill: #a6a6a6 !important;
-  }
-  .dflogo_st1 {
-    fill: #878787 !important;
+
+  /* old hover effect */
+
+  // .dflogo_st2 {
+  //   fill: #a6a6a6 !important;
+  // }
+  // .dflogo_st1 {
+  //   fill: #878787 !important;
+  // }
+
+  // .tdlogo_st0 {
+  //   fill: #9f9f9f !important;
+  // }
+
+  // .extlogo_st1  {
+  //   fill: #7c7c7c !important;
+  // }
+
+  // .identitybot_st0  {
+  //   fill: #7c7c7c !important;
+  // }
+
+
+  .card---header--external-bot {
+    background-image: linear-gradient(to right,#1391E1,#0f74b4);
   }
 
-  .tdlogo_st0 {
-    fill: #9f9f9f !important;
+  .card---header--dialogflow-bot {
+    background-image: linear-gradient(to right,#FD8509,#E95507);
   }
 
-  .extlogo_st1  {
-    fill: #7c7c7c !important;
+  .card---header--resolution-bot {
+    background-image: linear-gradient(to right,#E9695B,#b62819);
   }
 
-  .identitybot_st0  {
-    fill: #7c7c7c !important;
+  .card---header--identity-bot {
+    background-image: linear-gradient(to right,#D5400C,#aa330a);
   }
+
 }
+
+.card---header {
+  height: 7px;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+}
+
+
 
 .bot-image {
   height: 140px;

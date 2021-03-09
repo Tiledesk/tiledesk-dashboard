@@ -30,7 +30,7 @@
             //--------------------------------------------------------------------------------------------------- -->
             <div class="row">
               <label *ngIf="botType !== 'dialogflow'" class="col-sm-2 bot_avatar_label">
-                Avatar
+              Avatar
               </label>
               <!-- class="col-sm-10" -->
               <div [ngClass]="{'col-sm-10' : botType !== 'dialogflow', 'col-sm-12' : botType === 'dialogflow'}">
@@ -40,7 +40,7 @@
                     style="float: left;width: 80px; height: 80px;margin-right: 21px;">
                     <img *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true"
                       style="vertical-align: middle; width: 80px; height: 80px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;"
-                      class="user-img" [src]="getUserProfileImage()" />
+                      class="user-img" [src]="getUserProfileImage()" onerror="this.src='assets/img/avatar_bot_tiledesk.svg'"/>
 
                     <img *ngIf="userProfileImageExist === false && userImageHasBeenUploaded !== true"
                       style="vertical-align: middle; width: 80px; height: 80px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;"

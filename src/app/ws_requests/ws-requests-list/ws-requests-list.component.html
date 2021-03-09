@@ -90,9 +90,9 @@
   </li>
 
   <!-- SHOW SERVED REQUEST MAP -->
-  <!-- <li class="see-no-realtime-request right-li" style="float: right; padding-right: 5px;" (click)='openRightSideBar()'>
-    <a attr.aria-label="{{ 'ViewServedRequestsMap' | translate }}" class="tool_tip" style="cursor: pointer; display: unset;"
-      [ngClass]="{ 'has-reached-100' : served_unserved_sum >= 100 }">
+  <li class="see-no-realtime-request right-li" style="float: right; padding-right: 5px;" (click)='openRightSideBar()'>
+    <a attr.aria-label="{{ 'ViewServedRequestsMap' | translate }}" class="tool_tip"
+      style="cursor: pointer; display: unset;" [ngClass]="{ 'has-reached-100' : served_unserved_sum >= 100 }">
       <span class="material-icons" style="margin-top: 3px; color:#3ea9f5">
         pin_drop
       </span>
@@ -107,7 +107,7 @@
         {{ served_unserved_sum }}
       </span>
     </span>
-  </li> -->
+  </li>
 
 </ul>
 
@@ -191,9 +191,9 @@
   </li>
 
   <!-- SHOW SERVED REQUEST MAP * FOR SMALL SCREEN -->
-  <!-- <li  class="see-no-realtime-request" style="float: right; padding-right: 5px; " (click)='openRightSideBar()'>
-    <a attr.aria-label="{{ 'ViewServedRequestsMap' | translate }}" class="tool_tip" style="cursor: pointer; display: unset;"
-      [ngClass]="{ 'has-reached-100' : served_unserved_sum >= 100 }">
+  <li class="see-no-realtime-request" style="float: right; padding-right: 5px; " (click)='openRightSideBar()'>
+    <a attr.aria-label="{{ 'ViewServedRequestsMap' | translate }}" class="tool_tip"
+      style="cursor: pointer; display: unset;" [ngClass]="{ 'has-reached-100' : served_unserved_sum >= 100 }">
       <span class="material-icons" style="margin-top: 0px;color:#3ea9f5">
         pin_drop
       </span>
@@ -209,7 +209,7 @@
         {{ served_unserved_sum }}
       </span>
     </span>
-  </li> -->
+  </li>
 </ul>
 
 <div class="main-content" style="padding-top:0px; margin-top: 25px;padding-left: 0px;padding-right: 0px;">
@@ -218,14 +218,16 @@
     <!-- <div class="row"> -->
     <div class="row">
       <!-- style="padding-left: 10px !important;" -->
-      <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+      <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
 
 
         <!-- // --- Test - COUNT OF REQUESTS: ACTIVE, SERVED & UNSERVED as graph -->
         <!-- style="display: none;" -->
+        <!-- ---------------------------------------------------------- -->
+        <!-- LEGEND OF COUNT OF REQUESTS: ACTIVE, SERVED & UNSERVED -->
+        <!-- ---------------------------------------------------------- -->
         <div class="row">
-
-          <div class="col-xs-5">
+          <div class="col-xs-6">
             <div class="graph-legend" style="padding-left: 10px;">
               <div class="advanced-pie-legend-wrapper" style="display: inline-block;height: 116px;">
                 <!--  width: 420px;float: left; -->
@@ -239,7 +241,7 @@
                           font-size: 18px;
                           font-weight: 400;
                           color: rgba(0, 0, 0, 0.54) !important; margin-bottom: 10px; margin-top: 14px">
-                      Total conversations
+                      {{'TotalConversations' | translate}}
                       <!-- conversations  -->
                     </span>
                   </div>
@@ -258,7 +260,7 @@
                                 font-family: 'Google Sans', sans-serif !important;
                                 font-weight: 400;
                                 color: rgba(0, 0, 0, 0.54);
-                                line-height: 2;">Assigned</div>
+                                line-height: 2;">{{'Served' | translate}}</div>
                         <!-- <div class="item-percent">42%</div> -->
                       </div>
                       <div class="legend-item" style="margin-right: 20px;display: inline-block;cursor: pointer;">
@@ -273,7 +275,7 @@
                                 font-family: 'Google Sans', sans-serif !important;
                                 font-weight: 400;
                                 color: rgba(0, 0, 0, 0.54);
-                                line-height: 2;">Unassigned</div>
+                                line-height: 2;">{{'Unserved' | translate}}</div>
                         <!-- <div class="item-percent">23%</div> -->
                       </div>
                       <!-- <div class="legend-item" style="margin-right: 20px;display: inline-block;cursor: pointer;">
@@ -294,7 +296,7 @@
             </div>
           </div> <!-- ./ col-xs-4 -->
 
-          <div class="col-xs-7" style="margin-top: 8px;">
+          <div class="col-xs-6" style="margin-top: 8px;">
             <!-- <div class="card" style="margin-top:0px"> -->
             <!-- <div class="card-content"> -->
             <!-- <div class="requests-chart-container" style="  width: 150px; height: 150px;float: left;"> -->
@@ -328,7 +330,8 @@
               <div class="col-sm-12">
                 <div
                   style="font-family: 'Google Sans', sans-serif !important; font-size: 18px; font-weight: 400;  color: rgba(0, 0, 0, 0.54) !important; margin-bottom: 14px; margin-top: 16px;">
-                  Filter conversations
+                  <!-- Filter conversations -->
+                  {{ 'FilterConversations' | translate }}
                 </div>
               </div>
               <!-- -------------------------------------------------------- -->
@@ -399,13 +402,14 @@
 
 
         <div class="row">
-          <div class="col-xs-12" style="padding-right: 5px;">
+          <!--  -------------------------------------------------------------------------------------- -->
+          <!--  @ OLD TEAMMATES SCROLL DIV  !!! display none  -->
+          <!--  -------------------------------------------------------------------------------------- -->
+          <div class="col-xs-12" style="padding-right: 5px; display: none;">
             <div class="card card--no-border" style="margin: 5px 0;">
               <div class="card-content"
                 style="padding-top: 0px;padding-left: 0px;padding-right: 0px;padding-bottom: 0px;">
-                <!--  -------------------------------------------------------------------------------------- -->
-                <!--  @ TEAMMATES SCROLL DIV -->
-                <!--  -------------------------------------------------------------------------------------- -->
+
                 <!-- projectUserArray: {{ projectUserArray | json }} -->
                 <div class="team-container">
                   <div style="float: left" class="side">
@@ -440,89 +444,124 @@
                 <!-- ./ team-container -->
 
               </div> <!-- ./ card-content -->
-            </div>
+            </div> <!-- ./ card -->
           </div>
 
-          <!-- new ********* -->
-          <div class="col-xs-12">
+          <!--  -------------------------------------------------------------------------------------- -->
+          <!--  @ New TEAMMATES SCROLL DIV -->
+          <!--  -------------------------------------------------------------------------------------- -->
+          <div class="col-xs-12" style="padding-right: 5px;">
+            <div class="card card--no-border" style="margin: 5px 0;margin-top: 8px;">
+              <div class="card-content"
+                style="padding-top: 0px;padding-left: 0px;padding-right: 0px;padding-bottom: 0px;">
+                <div style="float: left" class="scroll-div-side-btn">
+                  <!-- <button (click)="scrollLeftTeammates()">left</button> -->
+                  <i class="material-icons" (click)="scrollLeftTeammates()">keyboard_arrow_left</i>
+                </div>
 
-            <div style="float: left">
-              <button (click)="scrollLeft()">left</button>
-          </div>
+                <div #widgetsContent class="middle-nw">
+                  <div class="served-by-conv-a" *ngIf="showRealTeammates === true">
+                    <div class="served-by-conv-b" *ngFor="let agent of projectUserArray">
 
-          <div #widgetsContent class="middle-nw">
-            <div class="served-by-conv-a">
-              <div class="served-by-conv-b" *ngFor="let agent of projectUserArray">
+                      <div class="served-by-conv-c tool_tip">
+                        <div class="served-by-conv-d">
 
-                  <div class="served-by-conv-c tool_tip"
-                    (click)="goToAgentProfile(agent?._id)">
-                    <div class="served-by-conv-d">
-                      <div size="42" class="served-by-conv-e">
-                        <!-- {{  agent.hasImage }} -->
-                        <img *ngIf="agent.hasImage"
-                          
-                          src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?.id_user._id}}%2Fphoto.jpg?alt=media"
-                          alt="" onerror="this.src='assets/img/no_image_user.png'" >
+                          <!-- {{ agent?.id_user?.firstname }} hasImage {{agent.hasImage }} -->
+                          <div *ngIf="agent.hasImage" size="42" class="served-by-conv-e">
+                            <!-- {{  agent.hasImage }} -->
 
-                          <div class="teammates-with-picture-assigned-requests-count">{{agent?.number_assigned_requests_rt}}</div>
-                          <div class="teammates-with-picture-status-icon"
-                            [ngClass]="{'is-user-online': agent?.user_available_rt === true, 'is-user-offline':agent?.user_available_rt === false   }">
+                            <img
+                              src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?.id_user._id}}%2Fphoto.jpg?alt=media"
+                              alt="" onerror="this.src='assets/img/no_image_user.png'">
+
+
+                            <div class="teammates-with-picture-assigned-requests-count">
+                              {{agent?.number_assigned_requests_rt}}</div>
+                            <div class="teammates-with-picture-status-icon"
+                              [ngClass]="{'is-user-online': agent?.user_available_rt === true, 'is-user-offline':agent?.user_available_rt === false   }">
+                            </div>
+
                           </div>
-                        <div 
-                          class="altenative-conv-avatar-wrap" [ngStyle]="{'background-color': agent?.id_user?.fillColour }"
-                          *ngIf="!agent.hasImage">
 
-                          <span class="altenative-conv-avatar">
-                            {{ agent?.id_user?.fullname_initial }}
+                          <!-- {{agent.hasImage }} -->
+                          <div *ngIf="!agent.hasImage" size="42" class="served-by-conv-e">
+                            <div class="altenative-conv-avatar-wrap"
+                              [ngStyle]="{'background-color': agent?.id_user?.fillColour }">
+
+                              <span class="altenative-conv-avatar">
+                                {{ agent?.id_user?.fullname_initial }}
+                              </span>
+
+                              <div class="teammates-no-picture-assigned_requests_count">
+                                {{agent?.number_assigned_requests_rt}}
+                              </div>
+                              <div class="teammates-no-picture-status-icon"
+                                [ngClass]="{'is-user-online': agent?.user_available_rt === true, 'is-user-offline':agent?.user_available_rt === false   }">
+                              </div>
+
+                            </div>
+                          </div>
+                        </div>
+
+                        <span style="min-width: fit-content;
+                          white-space: nowrap;
+                          top: 34px;
+                          padding: 1px 4px;
+                          box-shadow: unset;
+                          border-radius: 4px;
+                          font-size: 11px;" class="bottom">
+                          <span style="text-transform: capitalize;"> {{ agent?.id_user?.firstname }}
+                            <span *ngIf="agent?.id_user?.lastname">
+                              {{ agent?.id_user?.lastname | slice:0:1 }}.
+                            </span>
+
                           </span>
+                          <!-- <i></i> -->
+                        </span>
 
-                          <div class="teammates-no-picture-assigned_requests_count">{{agent?.number_assigned_requests_rt}}</div>
-                          <div class="teammates-no-picture-status-icon"
-                            [ngClass]="{'is-user-online': agent?.user_available_rt === true, 'is-user-offline':agent?.user_available_rt === false   }">
+                      </div>
+
+                    </div>
+                  </div>
+
+
+
+                  <!-- ---------------------------------------------- -->
+                  <!-- Skeleton -->
+                  <!-- ---------------------------------------------- -->
+
+                  <div class="served-by-conv-a" *ngIf="showRealTeammates === false">
+                    <div class="served-by-conv-b" *ngFor="let fake of generateFake(project_user_length)">
+
+                      <div class="served-by-conv-c tool_tip">
+                        <div class="served-by-conv-d">
+
+                          <!-- {{ agent?.id_user?.firstname }} hasImage {{agent.hasImage }} -->
+                          <div size="42" class="served-by-conv-e">
+                            <!-- {{  agent.hasImage }} -->
+                            <div class="skeleton-img"> </div>
+                          
                           </div>
-
                         </div>
                       </div>
                     </div>
-
-                    <span
-                      style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px; white-space: nowrap;"
-                      class="top">
-                      <span style="text-transform: capitalize;"> {{ agent?.firstname }}
-                        <span *ngIf="agent?.lastname">
-                          {{ agent?.lastname | slice:0:1 }}.
-                        </span>
-
-                      </span>
-                      <i></i>
-                    </span>
                   </div>
-                
+                </div>
 
-
-             
+                <div style="float: right" class="scroll-div-side-btn">
+                  <!-- <button (click)="scrollRightTeammates()">right</button> -->
+                  <i class="material-icons" (click)="scrollRightTeammates()">keyboard_arrow_right</i>
+                </div>
 
               </div>
             </div>
           </div>
-
-          <div style="float: right">
-              <button (click)="scrollRight()">right</button>
-          </div>
-
-
-
-
-          </div>
-
-
           <!-- /.new ********* -->
-
         </div>
       </div>
 
       <!-- // REQUESTS FOR DEPARTMENTS style="padding-right: 10px !important;"-->
-      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+      <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
         <div class="card" style="margin: 5px 0;">
           <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -532,7 +571,7 @@
             </div>
           </div>
           <div class="card-content" style="padding-top:5px; padding-top: 5px;
-            min-height: 120px;
+            min-height: 130px;
             overflow: auto;
             height: 130px;">
             <div class="row">
@@ -638,12 +677,12 @@ l-4.9-13l18-14.8L22.1,34.4z" />
       <div class="row">
         <div class="col-md-12" style="padding-left:10px !important; padding-right:10px !important;">
 
-          <appdashboard-ws-requests-unserved *ngIf="wsRequestsUnserved && OPEN_RIGHT_SIDEBAR === false" [wsRequestsUnserved]="wsRequestsUnserved"
-            [ws_requests_length]="ws_requests?.length">
+          <appdashboard-ws-requests-unserved *ngIf="wsRequestsUnserved && OPEN_RIGHT_SIDEBAR === false"
+            [wsRequestsUnserved]="wsRequestsUnserved" [ws_requests_length]="ws_requests?.length">
           </appdashboard-ws-requests-unserved>
           <!-- *ngIf="wsRequestsServed" -->
-          <appdashboard-ws-requests-served *ngIf="wsRequestsServed && OPEN_RIGHT_SIDEBAR === false" [wsRequestsServed]="wsRequestsServed"
-            [ws_requests_length]="ws_requests?.length">
+          <appdashboard-ws-requests-served *ngIf="wsRequestsServed && OPEN_RIGHT_SIDEBAR === false"
+            [wsRequestsServed]="wsRequestsServed" [ws_requests_length]="ws_requests?.length">
           </appdashboard-ws-requests-served>
           <!-- Chiamare il componente qui -->
         </div>

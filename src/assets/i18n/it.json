@@ -1736,6 +1736,7 @@
     "GoToContactList":"Vai all'elenco dei contatti",
     "Last30DaysMessages":"Messaggi degli ultimi 30 giorni",
     "Last30DaysConversations":"Conversazioni degli ultimi 30 giorni",
+    "Last7DaysConversations":"Conversazioni degli ultimi 7 giorni",
     "Last30DaysVisitors":"Visitatori unici negli ultimi 30 giorni",
     "Last30DaysEvents": "Eventi degli ultimi 30 giorni",
     "Last30DaysConversationsHandledByBots":"Conversazioni degli ultimi 30 giorni gestite dai bot",
@@ -1789,6 +1790,23 @@
     "Suggested":" suggerito",
     "GroupWithThisNameAlreadyExists":"Esiste già un gruppo con questo nome",
     "EnterTheGroupName":"Immettere il nome del gruppo (di solito lo stesso del nome del reparto)",
-    "TheNewGroupCreatedCanAlso": "Il nuovo gruppo creato potrà essere assegnato anche a qualsiasi altro dipartimento"
+    "TheNewGroupCreatedCanAlso": "Il nuovo gruppo creato potrà essere assegnato anche a qualsiasi altro dipartimento",
+    "PercentageHandledByBots": "percentuale gestita dai bot",
+    "HandledByBots": "gestite dai bot",
+    "ConversationsInLast30Days":"Conversazioni negli ultimi 30 giorni",
+    "TotalConversations": "Conversazioni totali",
+    "FilterConversations": "Filtra le conversazioni",
+    "HereHowCreateABot":"Ecco come creare un bot",
+    "HereHowConnectYourDialogflowAgents": "Ecco come connettere il tuo agente Dialogflow",
+    "ConnectToYourDialogflowAgent":"Connettiti al tuo agente Dialogflow",
+    "YouNeedAServiceAccountPrivateKeyFileToConnectTheDialogflowAgent":"Hai bisogno di un file di chiave privata dell'account di servizio per connettere l'agente Dialogflow a {{company_name}}",
+    "FollowThisGuideToFindOutHowToCreateThisFile": "Segui questa guida per scoprire come creare questo file",
+    "DoYouWantToSendImagesVideosButtonsAndMore":"Vuoi inviare immagini, video, pulsanti e altro?",
+    "FollowTheMicrolanguageGuide":"Segui la guida Microlanguage",
+    "Handoff":"Handoff",
+    "DoYouWantToHandoffToHumanAgentDuringAChatbotConversation":"Vuoi passare la conversazione ad un agente umano durante una conversazione con un chatbot?",
+    "SimplyReplyAgentOnTheLastResponseLine": "Rispondi semplicemente '\\agente' sull'ultima riga di risposta",
+    "HereHowToHandoffToTheHumanAgent":"Ecco come passare la conversazione all'agente umano",
+    "MessageChannel":"Canale"
     
 }
