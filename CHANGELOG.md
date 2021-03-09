@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.1.35
+- bug fixes: the modal window to reassign a conversation to another agent or bot and the modal window to add an agent to the conversation are not displayed correctly when the window width is less than 992px (in progress) 
+
 ### 2.1.34
 - Add the Events chart in Analytics > Metrics
 - Refactors, on the creation page and on the update page of the triggers, user interface and conditions
