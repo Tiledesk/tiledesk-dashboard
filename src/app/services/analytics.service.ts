@@ -413,6 +413,7 @@ export class AnalyticsService {
 
     return this.http.get<[]>(this.SERVER_BASE_PATH + this.projectID + '/analytics/events/aggregate/day', { headers: headers });
   }
+  
   getEventByDay(lastdays, eventName): Observable<[]>{
     
     let headers = new HttpHeaders({
