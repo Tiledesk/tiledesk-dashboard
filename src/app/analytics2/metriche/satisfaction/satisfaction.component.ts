@@ -251,6 +251,7 @@ export class SatisfactionComponent implements OnInit {
       this.lastdays = 1;
     }
     this.barChart.destroy();
+    this.subscription.unsubscribe();
     this.getSatisfactionByLastNDays(value, this.selectedDeptId);
   }
 
