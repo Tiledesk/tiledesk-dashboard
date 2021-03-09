@@ -1531,7 +1531,8 @@
 			"Sentiment": "Empfindung",
 			"ResponseTime": "Reaktionszeit",
 			"ConversationLenght": "Unterhaltungslänge",
-			"Satisfaction": "Befriedigung"
+			"Satisfaction": "Befriedigung",
+			"Events": "Veranstaltungen"
 		},
 		"RealTimeComponentTitle": "Echtzeit",
 		"AvgTimeTitle": "Durchschnittliche Zeit Überwachung",
@@ -1576,7 +1577,12 @@
 			"StatisfactionValueLabel": "Die durchschnittliche Bewertung für Ihr Team ist ",
 			"NoSatisfactionValue": "Ihr Team hat noch keine Bewertungen erhalten.",
 			"DailySatisfactionTrend": "Täglicher Zufriedenheitstrend Letzte"
-		}
+		},
+		"Events": {
+			"EventsMonitoring": "Ereignisüberwachung",
+			"EventsChartTitle": "Anzahl der Veranstaltungen in den etzten",
+			"AllEvents": "Alle Veranstaltungen"
+        }
 	},
 	"DeleteRequestForever": {
 		"TheRequestWillBePermanentlyDeleted": "Die Anfrage wird dauerhaft gelöscht",

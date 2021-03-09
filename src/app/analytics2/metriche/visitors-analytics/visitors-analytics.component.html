@@ -17,8 +17,9 @@
         {{ "Last30DaysVisitors" | translate }}
       </div>
       <div class="card-content">
-        <p *ngIf="visitorsCountLastMonth != null" class="number-analytics">{{ visitorsCountLastMonth }}</p>
-        <p *ngIf="visitorsCountLastMonth == null" class="number-analytics" style="font-size: 35px;">n.a.</p>
+        <p class="number-analytics">{{ visitorsCountLastMonth }}</p>
+        <!-- <p *ngIf="visitorsCountLastMonth != null" class="number-analytics">{{ visitorsCountLastMonth }}</p> -->
+        <!-- <p *ngIf="visitorsCountLastMonth == null" class="number-analytics">0</p> -->
       </div>
 
       <!-- <div *ngIf="messageCountLastMonth != null" class="card-footer request_count_footer"
@@ -56,7 +57,7 @@
           <div class="section-select-dept">
             <div class="row">
               <label class="col-sm-12" style="text-align: left; color:black">
-                {{ 'Analytics.FilterReport' | translate }} :
+                {{ 'Analytics.FilterReport' | translate }}
               </label>
               <div class="col-sm-12" style="margin-bottom: 6px; text-align: left">
                 <ng-select class="custom" name="days" [(ngModel)]="selectedDaysId" [clearable]="false"

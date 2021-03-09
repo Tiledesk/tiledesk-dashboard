@@ -1296,14 +1296,16 @@
             "ConditionArray": {
                 "message": {
                     "groupId": {
+                        "MessageInformation": "Message information",
+                        "RequestInformation": "Request information",
                         "VisitorInformation": "Visitor information",
                         "PageInformation": "Page information",
                         "SoftwareOfVisitor": "Software/Computer of visitor",
-                        "ChatInformation": "Char-related information"
+                        "ChatInformation": "Chat-related information"
                     },
                     "label_key": {
                         "VisitorSearchTerm": "Message text",
-                        "VisitorName": "Visitor name",
+                        "VisitorName": "Sender name",
                         "VisitorMail": "Visitor mail",
                         "VisitorDepartment": "Visitor department",
                         "VisitorReferrer": "Visitor referrer (Client)",
@@ -1312,11 +1314,23 @@
                         "VisitorBrowser": "Visitor browser",
                         "VisitorPlatform": "Visitor platform",
                         "Department": "Department",
-                        "VisitorServed": "Visitor served"
+                        "VisitorServed": "Visitor served",
+                        "VisitorFirstText": "First message text",
+                        "VisitoruserAgent": "Visitor user agent",
+                        "VisitoruserAgentAvailable": "Number of available agents",
+                        "NumberOfParticipatingBot": "Number of participating bots",
+                        "DepartmentHasBot": "Department has bot",
+                        "OfficesAreOpen": "Offices are open",
+                        "RequestStatus": "Conversation status",
+                        "ChannelName": "Channel name",
+                        "VisitorCountryRegion": "Visitor country region",
+                        "VisitorCountryCode": "Visitor country code",
+                        "VisitorCountryName": "Visitor country name"
                     },
                     "placeholder": {
                         "SelectDepartment": "Select department",
-                        "SelectStatus": "Select status"
+                        "SelectStatus": "Select status",
+                        "SelectLanguage": "Select language"
                     }
                 },
                 "chat": {
@@ -1324,7 +1338,7 @@
                         "VisitorInformation": "Visitor information",
                         "PageInformation": "Page information",
                         "SoftwareOfVisitor": "Software/Computer of visitor",
-                        "ChatInformation": "Char-related information",
+                        "ChatInformation": "Chat-related information",
                         "ChannelInformation": "Channel information",
                         "LocationVisitor": "Location of visitor"
                     },
@@ -1336,8 +1350,8 @@
                         "VisitorDepartment": "Visitor department",
                         "VisitorReferrer": "Visitor referrer (Client)",
                         "VisitoruserAgent": "Visitor user agent",
-                        "VisitoruserAgentAvailable": "Number of available agent",
-                        "NumberOfParticipatingBot": "Number of participating bot",
+                        "VisitoruserAgentAvailable": "Number of available agents",
+                        "NumberOfParticipatingBot": "Number of participating bots",
                         "VisitorURL": "Visitor page URL",
                         "VisitorPageTitle": "Visitor page title",
                         "VisitorBrowser": "Visitor browser",
@@ -1363,7 +1377,7 @@
                         "VisitorInformation": "Visitor information",
                         "PageInformation": "Page information",
                         "SoftwareOfVisitor": "Software/Computer of visitor",
-                        "ChatInformation": "Char-related information"
+                        "ChatInformation": "Chat-related information"
                     },
                     "label_key": {
                         "VisitorName": "Visitor name",
@@ -1531,7 +1545,8 @@
             "Sentiment": "Sentiment",
             "ResponseTime": "Response time",
             "ConversationLenght": "Conversation Length",
-            "Satisfaction": "Satisfaction"
+            "Satisfaction": "Satisfaction",
+            "Events": "Events"
         },
         "RealTimeComponentTitle": "Real Time",
         "AvgTimeTitle": "Average Time Monitoring",
@@ -1577,6 +1592,11 @@
             "StatisfactionValueLabel": "The average rating for your team is ",
             "NoSatisfactionValue" : "Your team hasn't received any ratings yet.",
             "DailySatisfactionTrend": "Daily Satisfaction Trend Last"
+        },
+        "Events": {
+            "EventsMonitoring": "Events Monitoring",
+            "EventsChartTitle": "Number of Events Last",
+            "AllEvents": "All Events"
         }
     },
     "DeleteRequestForever": {
@@ -1740,6 +1760,7 @@
     "Last30DaysConversations": "Last 30 days conversations",
     "Last7DaysConversations": "Last 7 days conversations",
     "Last30DaysVisitors": "Unique visitors in last 30 days",
+    "Last30DaysEvents": "Last 30 days events",
     "Last30DaysConversationsHandledByBots":"Last 30 days conversations handled by bots",
     "Last30DaysConversationsHandledByBotsPercentage":"Percentage last 30 days conversations handled by bots",
     "FilterReportInAnalytics": "Filter report in analytics",

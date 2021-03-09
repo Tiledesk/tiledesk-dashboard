@@ -220,6 +220,7 @@ import { CreateBotComponent } from './department-edit-add/create-bot/create-bot.
 
 import { SatisfactionComponent } from './analytics2/metriche/satisfaction/satisfaction.component';
 import { UnauthorizedForPricingComponent } from './auth/unauthorized-for-pricing/unauthorized-for-pricing.component';
+import { EventsAnalyticsComponent } from './analytics2/metriche/events-analytics/events-analytics.component';
 
 
 console.log('************** APPMODULE ******************');
@@ -378,7 +379,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     CreateGroupComponent,
     CreateBotComponent,
     SatisfactionComponent,
-    UnauthorizedForPricingComponent
+    UnauthorizedForPricingComponent,
+    EventsAnalyticsComponent
 
   ],
   imports: [

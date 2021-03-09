@@ -220,6 +220,9 @@ export class RichiesteComponent implements OnInit {
       console.log("LAST MONTH CONVERSATIONS COUNT: ", res);
       this.conversationsCountLastMonth = res[0].totalCount;
       console.log("Conversations Count: ", this.conversationsCountLastMonth);
+    }, (error) => {
+      console.log("Impossible to retrieve monthly count")
+      this.conversationsCountLastMonth = 0;
     })
   }
 

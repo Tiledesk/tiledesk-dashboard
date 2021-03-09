@@ -132,7 +132,7 @@ export class BasetriggerComponent implements OnInit {
         const index = this.departments.findIndex((d) => d.id === dept['id']);
         // console.log('BASE-TRIGGER - GET getDefaultDept DEPTS RESPONSE departments includes dept._id  ', index);
         if (index === -1) {
-          this.departments.push({ id: dept._id, label_key: dept.name , default: dept.default })
+          this.departments.push({ id: dept._id, label_key: dept.name, default: dept.default })
         }
         if (dept.default === true) {
           console.log('BASE-TRIGGER - GET getDefaultDept DEPTS RESPONSE default dept  ', dept);
@@ -161,106 +161,316 @@ export class BasetriggerComponent implements OnInit {
       const translateAction = translateArray.ActionArray;
 
       this.condition = [
-        // message.received conditions start
+
+        // ******* MESSAGE - When a chat message is sent - START *******
         {
-          groupId: translateConditions.message.groupId.VisitorInformation,
+          groupId: translateConditions.message.groupId.MessageInformation,
           id: 'text',
           key: 'message.text',
           label_key: translateConditions.message.label_key.VisitorSearchTerm,
-          triggerType: 'message.create.from.requester', 
+          triggerType: 'message.create.from.requester',
           type: 'string'
         },
         {
-          groupId: translateConditions.message.groupId.VisitorInformation,
+          groupId: translateConditions.message.groupId.MessageInformation,
           id: 'senderFullname',
           key: 'message.senderFullname',
           label_key: translateConditions.message.label_key.VisitorName,
           triggerType: 'message.create.from.requester',
           type: 'string'
         },
-        {
-          groupId: translateConditions.message.groupId.VisitorInformation,
-          id: 'attributes.userEmail',
-          key: 'message.userEmail',
-          label_key: translateConditions.message.label_key.VisitorMail,
-          triggerType: 'message.create.from.requester',
-          type: 'string'
-        },
         // {
-        //   groupId: translateConditions.message.groupId.VisitorInformation,
+        //   groupId: translateConditions.message.groupId.MessageInformation,
+        //   id: 'attributes.userEmail',
+        //   key: 'message.userEmail',
+        //   label_key: translateConditions.message.label_key.VisitorMail,
+        //   triggerType: 'message.create.from.requester',
+        //   type: 'string'
+        // },
+        // // {
+        // //   groupId: translateConditions.message.groupId.VisitorInformation,
+        // //   id: 'attributes.departmentId',
+        // //   key: 'message.attributes.departmentId',
+        // //   label_key: translateConditions.message.label_key.VisitorDepartment,
+        // //   triggerType: 'message.received',
+        // //   type: 'boolean',
+        // //   operator: this.departments,
+        // //   placeholder: translateConditions.message.placeholder.SelectDepartment
+        // // },
+        // {
+        //   groupId: translateConditions.message.groupId.MessageInformation,
         //   id: 'attributes.departmentId',
         //   key: 'message.attributes.departmentId',
-        //   label_key: translateConditions.message.label_key.VisitorDepartment,
-        //   triggerType: 'message.received',
+        //   label_key: translateConditions.message.label_key.Department,
+        //   triggerType: 'message.create.from.requester',
         //   type: 'boolean',
         //   operator: this.departments,
         //   placeholder: translateConditions.message.placeholder.SelectDepartment
         // },
+        // // {
+        // //   groupId: translateConditions.message.groupId.VisitorInformation,
+        // //   id: 'attributes.client',
+        // //   key: 'message.attributes.client',
+        // //   label_key: translateConditions.message.label_key.VisitorReferrer,
+        // //   triggerType: 'message.received',
+        // //   type: 'string'
+        // // },
+        // {
+        //   groupId: translateConditions.message.groupId.MessageInformation,
+        //   id: 'attributes.sourcePage',
+        //   key: 'message.attributes.sourcePageUrl',
+        //   label_key: translateConditions.message.label_key.VisitorURL,
+        //   triggerType: 'message.create.from.requester',
+        //   type: 'string'
+        // },
+        // // {
+        // //   groupId: translateConditions.message.groupId.PageInformation,
+        // //   id: 'attributes.sourcePage',
+        // //   key: 'message.attribute.sourcePageTitle',
+        // //   label_key: translateConditions.message.label_key.VisitorPageTitle,
+        // //   triggerType: 'message.received',
+        // //   type: 'string'
+        // // },
+        // {
+        //   groupId: translateConditions.message.groupId.MessageInformation,
+        //   id: 'attributes.client',
+        //   key: 'message.attributes.clientBrowser',
+        //   label_key: translateConditions.message.label_key.VisitorBrowser,
+        //   triggerType: 'message.create.from.requester',
+        //   type: 'string'
+        // },
+        // {
+        //   groupId: translateConditions.message.groupId.MessageInformation,
+        //   id: 'attributes.client',
+        //   key: 'message.attributes.clientPlatform',
+        //   label_key: translateConditions.message.label_key.VisitorPlatform,
+        //   triggerType: 'message.create.from.requester',
+        //   type: 'string'
+        // },
+
+        // {
+        //   groupId: translateConditions.message.groupId.MessageInformation,
+        //   id: 'status',
+        //   key: 'message.status',
+        //   label_key: translateConditions.message.label_key.VisitorServed,
+        //   triggerType: 'message.create.from.requester',
+        //   type: 'boolean',
+        //   operator: [
+        //     { id: 200, label_key: 'True' },
+        //     { id: 100, label_key: 'False' }
+        //   ],
+        //   placeholder: translateConditions.message.placeholder.SelectStatus
+        // },
+
+        // ******* MESSAGE - When a chat message is sent - START *******
+
+
+        // ******* REQUEST - When a chat message is sent - START *******
         {
-          groupId: translateConditions.message.groupId.ChatInformation,
-          id: 'attributes.departmentId',
-          key: 'message.attributes.departmentId',
+          groupId: translateConditions.message.groupId.RequestInformation,
+          id: 'request.sourcePage',
+          key: 'message.request.sourcePageUrl',
+          label_key: translateConditions.message.label_key.VisitorURL,
+          triggerType: 'message.create.from.requester',
+          type: 'string'
+        },
+        // {
+        //   groupId: translateConditions.chat.groupId.PageInformation,
+        //   id: 'sourcePage',
+        //   key: 'request.sourcePageTitle',
+        //   label_key: translateConditions.chat.label_key.VisitorPageTitle,
+        //   triggerType: 'request.create',
+        //   type: 'string'
+        // },
+        {
+          /**
+           * NON FUNZIONA
+           * Se l'utente è Guest, anche con il pre chat form abilitato, il campo lead.fullname non esiste.
+           * Il nome dell'utente si trova sotto attributes.
+           * Non dovrebbero esserci problemi se l'utente non è guest. (Da verificare)
+           */
+          groupId: translateConditions.message.groupId.RequestInformation,
+          // chiamare contact fullname (label)
+          id: 'request.lead.fullname',
+          key: 'message.request.lead.fullname',
+          label_key: translateConditions.message.label_key.VisitorName,
+          triggerType: 'message.create.from.requester',
+          type: 'string'
+        },
+        {
+          /**
+           * NON FUNZIONA
+           * Se l'utente è Guest, anche con il pre chat form abilitato, il campo lead.email non esiste.
+           * L'email dell'utente si trova sotto attributes.
+           * Non dovrebbero esserci problemi se l'utente non è guest. (Da verificare)
+           */
+          groupId: translateConditions.message.groupId.RequestInformation,
+          // chiamare contact email (label)
+          id: 'request.lead.email',
+          key: 'message.request.lead.email',
+          label_key: translateConditions.message.label_key.VisitorMail,
+          triggerType: 'message.create.from.requester',
+          type: 'string'
+        },
+        {
+          groupId: translateConditions.message.groupId.RequestInformation,
+          id: 'request.first_text',
+          key: 'message.request.first_text',
+          label_key: translateConditions.message.label_key.VisitorFirstText,
+          triggerType: 'message.create.from.requester',
+          type: 'string'
+        },
+        // {
+        //   groupId: translateConditions.chat.groupId.VisitorInformation,
+        //   id: 'lead.attributes.departmentId',
+        //   key: 'request.lead.attributes.departmentId',
+        //   label_key: translateConditions.chat.label_key.VisitorDepartment,
+        //   triggerType: 'request.create',
+        //   type: 'boolean',
+        //   operator: this.departments,
+        //   placeholder: translateConditions.chat.placeholder.SelectDepartment
+        // },
+        // {
+        //   groupId: translateConditions.chat.groupId.VisitorInformation,
+        //   id: 'lead.attributes.client',
+        //   key: 'request.lead.attributes.client',
+        //   label_key: translateConditions.chat.label_key.VisitorReferrer,
+        //   triggerType: 'request.create',
+        //   type: 'string'
+        // },
+        {
+          groupId: translateConditions.message.groupId.RequestInformation,
+          id: 'request.userAgent',
+          key: 'message.request.userAgentBrowser',
+          label_key: translateConditions.message.label_key.VisitorBrowser,
+          triggerType: 'message.create.from.requester',
+          type: 'string'
+        },
+        {
+          groupId: translateConditions.message.groupId.RequestInformation,
+          id: 'request.userAgent',
+          key: 'message.request.userAgentPlatform',
+          label_key: translateConditions.message.label_key.VisitorPlatform,
+          triggerType: 'message.create.from.requester',
+          type: 'string'
+        },
+        {
+          groupId: translateConditions.message.groupId.RequestInformation,
+          id: 'request.agents.length',
+          key: 'message.request.agents.length',
+          label_key: translateConditions.message.label_key.VisitoruserAgent,
+          triggerType: 'message.create.from.requester',
+          type: 'int'
+        },
+        {
+          groupId: translateConditions.message.groupId.RequestInformation,
+          /**
+           * NON FUNZIONA
+           * Il campo request.availableAgentsCount esiste nella richiesta, ma il trigger non funziona.
+           */
+          // id: 'availableAgents.length',
+          // key: 'request.availableAgents.length',
+          id: 'request.availableAgentsCount',
+          key: 'message.request.availableAgentsCount',
+          label_key: translateConditions.message.label_key.VisitoruserAgentAvailable,
+          triggerType: 'message.create.from.requester',
+          type: 'int'
+        },
+        {
+          groupId: translateConditions.message.groupId.RequestInformation,
+          id: 'request.participatingBots.length',
+          key: 'message.request.participatingBots.length',
+          label_key: translateConditions.message.label_key.NumberOfParticipatingBot,
+          triggerType: 'message.create.from.requester',
+          type: 'int'
+        },
+        {
+          groupId: translateConditions.message.groupId.RequestInformation,
+          id: 'request.channel.name',
+          key: 'message.request.channel.name',
+          label_key: translateConditions.message.label_key.ChannelName,
+          triggerType: 'message.create.from.requester',
+          type: 'string'
+        },
+        {
+          groupId: translateConditions.message.groupId.RequestInformation,
+          id: 'request.language',
+          key: 'message.request.language',
+          label_key: translateConditions.message.label_key.VisitorCountryRegion,
+          triggerType: 'message.create.from.requester',
+          type: 'boolean',
+          operator: [
+            { id: 'zh-CN', label_key: 'Chinese' },
+            { id: 'en-GB', label_key: 'English' },
+            { id: 'fr-FR', label_key: 'French' },
+            { id: 'it-IT', label_key: 'Italian' }
+          ],
+          placeholder: translateConditions.message.placeholder.SelectLanguage
+        },
+        {
+          /**
+           * NON FUNZIONA
+           * In request.department.name c'è il nome del dipartimento.
+           * Mentre il valore che si imposta al trigger è l'id del dipartimento.
+           * Cambiare path in request.department._id? (Non funziona uguale)
+           */
+          groupId: translateConditions.message.groupId.RequestInformation,
+          id: 'request.department._id',
+          key: 'message.request.department.name',
           label_key: translateConditions.message.label_key.Department,
           triggerType: 'message.create.from.requester',
           type: 'boolean',
           operator: this.departments,
           placeholder: translateConditions.message.placeholder.SelectDepartment
         },
-        // {
-        //   groupId: translateConditions.message.groupId.VisitorInformation,
-        //   id: 'attributes.client',
-        //   key: 'message.attributes.client',
-        //   label_key: translateConditions.message.label_key.VisitorReferrer,
-        //   triggerType: 'message.received',
-        //   type: 'string'
-        // },
         {
-          groupId: translateConditions.message.groupId.PageInformation,
-          id: 'attributes.sourcePage',
-          key: 'message.attributes.sourcePageUrl',
-          label_key: translateConditions.message.label_key.VisitorURL,
+          /**
+           * NON FUNZIONA
+           * In request.department.hasBot = false. Il valore della condizione del trigger è false, 
+           * ma non funziona ugualmente.
+           */
+          groupId: translateConditions.message.groupId.RequestInformation,
+          id: 'request.department.hasBot',
+          key: 'message.request.departmentHasBot',
+          label_key: translateConditions.message.label_key.DepartmentHasBot,
           triggerType: 'message.create.from.requester',
-          type: 'string'
-        },
-        // {
-        //   groupId: translateConditions.message.groupId.PageInformation,
-        //   id: 'attributes.sourcePage',
-        //   key: 'message.attribute.sourcePageTitle',
-        //   label_key: translateConditions.message.label_key.VisitorPageTitle,
-        //   triggerType: 'message.received',
-        //   type: 'string'
-        // },
-        {
-          groupId: translateConditions.message.groupId.SoftwareOfVisitor,
-          id: 'attributes.client',
-          key: 'message.attributes.clientBrowser',
-          label_key: translateConditions.message.label_key.VisitorBrowser,
-          triggerType: 'message.create.from.requester',
-          type: 'string'
+          type: 'boolean',
+          placeholder: translateConditions.message.placeholder.SelectStatus
         },
         {
-          groupId: translateConditions.message.groupId.SoftwareOfVisitor,
-          id: 'attributes.client',
-          key: 'message.attributes.clientPlatform',
-          label_key: translateConditions.message.label_key.VisitorPlatform,
+          /**
+           * NON FUNZIONA
+           * Il campo isOpen in request non sembra esserci.
+           */
+          groupId: translateConditions.message.groupId.RequestInformation,
+          id: 'request.isOpen',
+          key: 'message.request.isOpen',    // ***** NON FUNZIONA
+          label_key: translateConditions.message.label_key.OfficesAreOpen,
           triggerType: 'message.create.from.requester',
-          type: 'string'
+          type: 'boolean',
+          placeholder: translateConditions.message.placeholder.SelectStatus
         },
-
         {
-          groupId: translateConditions.message.groupId.ChatInformation,
-          id: 'status',
-          key: 'message.status',
+          groupId: translateConditions.message.groupId.RequestInformation,
+          id: 'request.status',
+          key: 'message.request.statusVisitorServed',
           label_key: translateConditions.message.label_key.VisitorServed,
           triggerType: 'message.create.from.requester',
           type: 'boolean',
-          operator: [
-            { id: 200, label_key: 'True' },
-            { id: 100, label_key: 'False' }
-          ],
           placeholder: translateConditions.message.placeholder.SelectStatus
         },
-        // request.create conditions start
+        {
+          groupId: translateConditions.message.groupId.RequestInformation,
+          id: 'request.status',
+          key: 'message.request.statusRequestStatus',
+          label_key: translateConditions.message.label_key.RequestStatus,
+          triggerType: 'message.create.from.requester',
+          type: 'int'
+        },
+        // ******* REQUEST - When a chat message is sent - END *******
+ 
+
+        // ******* REQUEST - When a visitor request a chat - START *******
         {
           groupId: translateConditions.chat.groupId.PageInformation,
           id: 'sourcePage',
@@ -424,12 +634,15 @@ export class BasetriggerComponent implements OnInit {
         {
           groupId: translateConditions.chat.groupId.ChatInformation,
           id: 'status',
-          key: 'request.statusRequestStatus',
+          key: ' ',
           label_key: translateConditions.chat.label_key.RequestStatus,
           triggerType: 'request.create',
           type: 'int'
         },
-        // user.login conditions start
+        // ******* REQUEST - When a visitor request a chat - END *******
+
+
+        // ******* USER - When user has logged in - START *******
         {
           groupId: translateConditions.user.groupId.VisitorInformation,
           id: 'firstname',
@@ -454,6 +667,10 @@ export class BasetriggerComponent implements OnInit {
           triggerType: 'user.login',
           type: 'string'
         },
+        // ******* USER - When user has logged in - END *******
+
+
+        // ******* EVENT - New event - START *******
         {
           groupId: translateConditions.event.groupId.VisitorInformation,
           id: 'name',
@@ -478,6 +695,7 @@ export class BasetriggerComponent implements OnInit {
           triggerType: 'event.emit',
           type: 'string'
         }
+        // ******* EVENT - New event - END *******
       ]
 
       this.options = {
@@ -570,10 +788,10 @@ export class BasetriggerComponent implements OnInit {
         }, // dropdown con elenco utenti e bot
         //{ key: 'request.create', label_key: translateAction.label_key.RequestCreate, type: 'input', placeholder: translateAction.placeholder.NameAgent, parameters: [{key:"fullname", placeholder: "placeholder", required:true}]}
         {
-          key: 'request.create', 
+          key: 'request.create',
           label_key: translateAction.label_key.RequestCreate,
-          type: 'select', 
-          placeholder: translateAction.placeholder.SelectDepartment 
+          type: 'select',
+          placeholder: translateAction.placeholder.SelectDepartment
           // type: 'input',
           // placeholder: translateAction.placeholder.NameAgent
         },
@@ -600,7 +818,13 @@ export class BasetriggerComponent implements OnInit {
         'attributes.departmentId': this.departments,
         'lead.attributes.departmentId': this.departments,
         'department.name': this.departments,
+        'request.department.name': this.departments,
+        'request.department._id': this.departments,
         'status': [
+          { id: 200, label_key: 'True' },
+          { id: 100, label_key: 'False' }
+        ],
+        'request.status': [
           { id: 200, label_key: 'True' },
           { id: 100, label_key: 'False' }
         ],
@@ -612,7 +836,15 @@ export class BasetriggerComponent implements OnInit {
           { id: true, label_key: 'True' },
           { id: false, label_key: 'False' }
         ],
+        'request.department.hasBot': [
+          { id: true, label_key: 'True' },
+          { id: false, label_key: 'False' }
+        ],
         'isOpen': [
+          { id: true, label_key: 'True' },
+          { id: false, label_key: 'False' }
+        ],
+        'request.isOpen': [
           { id: true, label_key: 'True' },
           { id: false, label_key: 'False' }
         ],
@@ -624,7 +856,23 @@ export class BasetriggerComponent implements OnInit {
           { id: 'de-DE', label_key: 'German' },
           { id: 'es-ES', label_key: 'Spanish' },
         ],
-        'message.send':this.projectUserAndBotsArray,
+        // 'request.language': [
+        //   { id: 'zh-CN', label_key: 'Chinese' },
+        //   { id: 'en-GB', label_key: 'English' },
+        //   { id: 'fr-FR', label_key: 'French' },
+        //   { id: 'it-IT', label_key: 'Italian' },
+        //   { id: 'de-DE', label_key: 'German' },
+        //   { id: 'es-ES', label_key: 'Spanish' },
+        // ],
+        'request.language': [
+          { id: 'zh', label_key: 'Chinese' },
+          { id: 'en', label_key: 'English' },
+          { id: 'fr', label_key: 'French' },
+          { id: 'it', label_key: 'Italian' },
+          { id: 'de', label_key: 'German' },
+          { id: 'es', label_key: 'Spanish' },
+        ],
+        'message.send': this.projectUserAndBotsArray,
         'request.department.route': this.departments,
         'request.department.route.self': [
           { id: true, label_key: 'True' },
@@ -652,8 +900,8 @@ export class BasetriggerComponent implements OnInit {
           { id: 100, label_key: 'Pooled' },
           { id: 200, label_key: 'Assigned' }
         ],
-        'request.create': this.departments,
-      }
+        'request.create': this.departments
+      },
       console.log('No pair_cond:', this.condition)
 
     }, (error) => {
@@ -678,7 +926,7 @@ export class BasetriggerComponent implements OnInit {
         if (pair) {
           const departments = pair._departments;
           departments.forEach(element => {
-            this.departments.push({ id: element._id, label_key: element.name })
+            this.departments.push({ id: element.name, label_key: element.name })
           });
 
           const translateConditions = pair.translateArray.ConditionArray;

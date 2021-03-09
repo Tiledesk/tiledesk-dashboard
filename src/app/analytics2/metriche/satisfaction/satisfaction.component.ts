@@ -1,5 +1,8 @@
+import { FaqKbService } from './../../../services/faq-kb.service';
+import { UsersService } from './../../../services/users.service';
 import { DepartmentService } from './../../../services/department.service';
 import { Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { AnalyticsService } from './../../../services/analytics.service';
 import { Component, OnInit } from '@angular/core';
@@ -14,8 +17,11 @@ import * as moment from 'moment';
 export class SatisfactionComponent implements OnInit {
 
   lang: string;
-  selectedDaysId: number;
-  selectedDeptId: string;
+
+  selectedDaysId: number;   // lastdays filter
+  selectedDeptId: string;   // department filter
+  selectedAgentId: string;  // agent filter 
+  
   avgSatisfaction: any;
   selected: string;
   departments: any;
@@ -29,9 +35,16 @@ export class SatisfactionComponent implements OnInit {
   xValueSatisfaction: any;
   yValueSatisfaction: any;
 
+  projectUserAndBotsArray = []
+  projectUsersList: any;
+  projectBotsList: any;
+  bots: any;
+
   constructor(private translate: TranslateService,
     private analyticsService: AnalyticsService,
-    private departmentService: DepartmentService) {
+    private departmentService: DepartmentService,
+    private usersService: UsersService,
+    private faqKbService: FaqKbService) {
 
     this.lang = this.translate.getBrowserLang();
     console.log('LANGUAGE ', this.lang);
@@ -43,14 +56,16 @@ export class SatisfactionComponent implements OnInit {
     this.selectedDaysId = 7;
     this.selectedDeptId = '';
     this.selected = 'day';
+    this.selectedAgentId = '';
 
     this.initDay = moment().subtract(6, 'd').format('D/M/YYYY');
     this.endDay = moment().subtract(0, 'd').format('D/M/YYYY');
     console.log("INIT", this.initDay, "END", this.endDay);
 
     this.getDepartments();
+    this.getProjectUsersAndBots();
     this.getAvgSatisfaction();
-    this.getSatisfactionByLastNDays(this.selectedDaysId, this.selectedDeptId);
+    this.getSatisfactionByLastNDays(this.selectedDaysId, this.selectedDeptId, this.selectedAgentId);
   }
 
   switchMonthName() {
@@ -63,11 +78,35 @@ export class SatisfactionComponent implements OnInit {
     }
   }
 
+  daysSelect(value, event) {
+    console.log("EVENT: ", event)
+    this.selectedDaysId = value;
+
+    if (value <= 30) {
+      this.lastdays = value;
+    } else if ((value == 90) || (value == 180)) {
+      this.lastdays = value / 30;
+    } else if (value == 360) {
+      this.lastdays = 1;
+    }
+    this.barChart.destroy();
+    this.subscription.unsubscribe();
+    this.getSatisfactionByLastNDays(value, this.selectedDeptId, this.selectedAgentId);
+  }
+
   depSelected(selectedDeptId: string) {
     console.log('Department selected: ', selectedDeptId);
     this.barChart.destroy();
     this.subscription.unsubscribe();
-    this.getSatisfactionByLastNDays(this.selectedDaysId, selectedDeptId);
+    this.getSatisfactionByLastNDays(this.selectedDaysId, selectedDeptId, this.selectedAgentId);
+  }
+
+  agentSelected(selectedAgentId) {
+    console.log("Selected agent: ", selectedAgentId);
+    this.barChart.destroy();
+    this.subscription.unsubscribe();
+    this.getSatisfactionByLastNDays(this.selectedDaysId, this.selectedDeptId, selectedAgentId)
+    console.log('REQUEST:', this.selectedDaysId, this.selectedDeptId, selectedAgentId)
   }
 
   getDepartments() {
@@ -82,17 +121,62 @@ export class SatisfactionComponent implements OnInit {
     });
   }
 
+  getProjectUsersAndBots() {
+    // https://stackoverflow.com/questions/44004144/how-to-wait-for-two-observables-in-rxjs
+
+    const projectUsers = this.usersService.getProjectUsersByProjectId();
+    const bots = this.faqKbService.getAllBotByProjectId();
+
+    Observable
+      .zip(projectUsers, bots, (_projectUsers: any, _bots: any) => ({ _projectUsers, _bots }))
+      .subscribe(pair => {
+        console.log('BASE-TRIGGER - GET P-USERS-&-BOTS - PROJECT USERS : ', pair._projectUsers);
+        console.log('BASE-TRIGGER - GET P-USERS-&-BOTS - BOTS: ', pair._bots);
+
+        if (pair && pair._projectUsers) {
+          this.projectUsersList = pair._projectUsers;
+
+          this.projectUsersList.forEach(p_user => {
+            this.projectUserAndBotsArray.push({ id: p_user.id_user._id, name: p_user.id_user.firstname + ' ' + p_user.id_user.lastname });
+          });
+        }
+
+        if (pair && pair._bots) {
+          this.bots = pair._bots
+            .filter(bot => {
+              if (bot['trashed'] === false) {
+                return true
+              } else {
+                return false
+              }
+            })
+
+          this.bots.forEach(bot => {
+            this.projectUserAndBotsArray.push({ id: 'bot_' + bot._id, name: bot.name + ' (bot)' })
+          });
+        }
+
+        console.log('BASE-TRIGGER - GET P-USERS-&-BOTS - PROJECT-USER & BOTS ARRAY : ', this.projectUserAndBotsArray);
+
+      }, error => {
+        console.log('BASE-TRIGGER - GET P-USERS-&-BOTS - ERROR: ', error);
+      }, () => {
+        console.log('BASE-TRIGGER - GET P-USERS-&-BOTS - COMPLETE');
+      });
+  }
+
   getAvgSatisfaction() {
     this.analyticsService.getAvgSatisfaction().then((res) => {
       console.log("!!! ANALYTICS STISFACTION !!! AVG Satisfaction: ", res);
       this.avgSatisfaction = res[0].satisfaction_avg;
     }).catch((err) => {
-      console.error("Errore durante getAvgSatisfaction: ", err);
+      console.error("Error during getAvgSatisfaction: ", err);
+      this.avgSatisfaction = 0;
     })
   }
 
-  getSatisfactionByLastNDays(lastdays, depId) {
-    this.subscription = this.analyticsService.getSatisfactionByDay(lastdays, depId).subscribe((satisfactionByDay: any) => {
+  getSatisfactionByLastNDays(lastdays, depId, participantId) {
+    this.subscription = this.analyticsService.getSatisfactionByDay(lastdays, depId, participantId).subscribe((satisfactionByDay: any) => {
       console.log("»» SATISFACTION BY DAY RESULT: ", satisfactionByDay);
 
       const requestSatisfactionByDays_series_array = [];
@@ -237,22 +321,6 @@ export class SatisfactionComponent implements OnInit {
       });
 
     })
-  }
-
-  daysSelect(value, $event) {
-    console.log("EVENT: ", $event)
-    this.selectedDaysId = value;
-
-    if (value <= 30) {
-      this.lastdays = value;
-    } else if ((value == 90) || (value == 180)) {
-      this.lastdays = value / 30;
-    } else if (value == 360) {
-      this.lastdays = 1;
-    }
-    this.barChart.destroy();
-    this.subscription.unsubscribe();
-    this.getSatisfactionByLastNDays(value, this.selectedDeptId);
   }
 
   getMaxOfArray(requestsByDay_series_array) {

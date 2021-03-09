@@ -286,9 +286,9 @@ export class DurataconvComponent implements OnInit {
 
   setToNa() {
 
-    this.numberDurationCNVtime = 'N.a.'
+    this.numberDurationCNVtime = '0'
     this.unitDurationCNVtime = '';
-    this.responseDurationtime = 'N.a.'
+    this.responseDurationtime = '0'
 
   }
 
