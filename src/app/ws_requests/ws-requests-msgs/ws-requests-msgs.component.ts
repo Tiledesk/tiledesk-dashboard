@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ElementRef, ViewChild, HostListener, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ElementRef, ViewChild, HostListener, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { WsRequestsService } from '../../services/websocket/ws-requests.service';
@@ -30,11 +30,13 @@ import PerfectScrollbar from 'perfect-scrollbar';
 import { UAParser } from 'ua-parser-js';
 import { ContactsService } from '../../services/contacts.service';
 const swal = require('sweetalert');
+import { avatarPlaceholder, getColorBck } from '../../utils/util';
 
 @Component({
   selector: 'appdashboard-ws-requests-msgs',
   templateUrl: './ws-requests-msgs.component.html',
-  styleUrls: ['./ws-requests-msgs.component.scss']
+  styleUrls: ['./ws-requests-msgs.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit, OnDestroy, AfterViewInit {
   objectKeys = Object.keys;
@@ -200,6 +202,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   requestWillBeAssignedToMsg: string;
   anErrorHasOccurredMsg: string;
   done_msg: string;
+  COUNT_OF_VISIBLE_DEPT: number;
+
   // @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
 
   //   cities3 = [
@@ -275,12 +279,14 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
     const elemMainContent = <HTMLElement>document.querySelector('.main-content');
     this.main_content_height = elemMainContent.clientHeight
-    console.log('%%% Ws-REQUESTS-Msgs - ON RESIZE -> MAIN CONTENT HEIGHT', this.main_content_height);
+    // console.log('%%% Ws-REQUESTS-Msgs - ON RESIZE -> MAIN CONTENT HEIGHT', this.main_content_height);
+    console.log('WS-REQUESTS-Msgs - USER LIST MODAL - ON RESIZE -> ACTUAL MAIN CONTENT HEIGHT', elemMainContent.clientHeight);
 
     // determine the height of the modal when the width of the window is <= of 991px when the window is resized
     // RESOLVE THE BUG: @media screen and (max-width: 992px) THE HEIGHT OF THE  MODAL 'USERS LIST' IS NOT 100%
     if (this.newInnerWidth <= 991) {
-      this.users_list_modal_height = elemMainContent.clientHeight + 70 + 'px'
+      this.users_list_modal_height = elemMainContent.clientHeight + 70 + 'px';
+      console.log('WS-REQUESTS-Msgs - USER LIST MODAL - ON RESIZE -> users_list_modal_height', this.users_list_modal_height);
 
       this.train_bot_sidebar_height = elemMainContent.clientHeight + 'px'
       // console.log('%%% Ws-REQUESTS-Msgs - *** MODAL HEIGHT ***', this.users_list_modal_height);
@@ -494,13 +500,13 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
       });
 
-      this.translate.get('VisitorsPage.AddAgent')
+    this.translate.get('VisitorsPage.AddAgent')
       .subscribe((text: string) => {
         this.addAgentMsg = text;
 
       });
 
-      this.translate.get('VisitorsPage.TheRequestWillBeAssignedTo')
+    this.translate.get('VisitorsPage.TheRequestWillBeAssignedTo')
       .subscribe((text: string) => {
         this.requestWillBeAssignedToMsg = text;
 
@@ -515,7 +521,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       .subscribe((text: string) => {
         this.done_msg = text;
       });
-
   }
 
 
@@ -619,25 +624,15 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
-      // if (project) {
+
       console.log('% Ws-REQUESTS-Msgs >>>>> project <<<<<', project)
-
-
-      // if (this.id_project) { 
-      //   this.unsuscribeRequesterPresence(this.requester_id)
-      // }
-
       if (project) {
         console.log('% »»» WebSocketJs WF +++++ ws-requests--- service getWsRequests MSG */* ref */* project._id (NEW)', project._id)
         console.log('% »»» WebSocketJs WF +++++ ws-requests--- service getWsRequests MSG */* ref */* this.project_id (OLD)', this.id_project)
 
         this.id_project = project._id;
         this.project_name = project.name;
-
       }
-
-
-      // }
     });
   }
 
@@ -1394,23 +1389,55 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
     const elemMainContent = <HTMLElement>document.querySelector('.main-content');
     this.main_content_height = elemMainContent.clientHeight
-    console.log('%%% Ws-REQUESTS-Msgs - ON OPEN USER LIST MODAL -> ACTUAL MAIN CONTENT HEIGHT', elemMainContent.clientHeight);
+    console.log('WS-REQUESTS-Msgs - USER LIST MODAL - ON OPEN -> ACTUAL MAIN CONTENT HEIGHT', elemMainContent.clientHeight);
+
+    console.log('WS-REQUESTS-Msgs - USER LIST MODAL - ON OPEN  > 991 - users_list_modal_height', this.users_list_modal_height);
 
     // determine the height of the modal when the width of the window is <= of 991px when is opened the modal
     // RESOLVE THE BUG: @media screen and (max-width: 992px) THE THE HEIGHT OF THE  MODAL 'USERS LIST' IS NOT 100%
     if (actualWidth <= 991) {
       this.users_list_modal_height = elemMainContent.clientHeight + 70 + 'px'
-      console.log('%%% Ws-REQUESTS-Msgs - *** MODAL HEIGHT ***', this.users_list_modal_height);
+      // console.log('%%% Ws-REQUESTS-Msgs - *** MODAL HEIGHT ***', this.users_list_modal_height);
+      console.log('WS-REQUESTS-Msgs - USER LIST MODAL - ON OPEN  <=991 - users_list_modal_height', this.users_list_modal_height);
     }
 
   }
 
   getDepartments() {
     this.departmentService.getDeptsByProjectId().subscribe((depts: any) => {
-      console.log('% »»» WebSocketJs WF WS-RL - GET DEPTS RESPONSE ', depts);
+      console.log('WS-REQUESTS-Msgs - GET DEPTS RESPONSE ', depts);
 
       this.departments = depts;
+
+      let count = 0;
       this.departments.forEach(dept => {
+
+        if (dept.default === false && dept.status === 1) {
+          count = count + 1;
+        }
+
+        let newInitials = '';
+        let newFillColour = '';
+
+
+        if (dept.name) {
+          newInitials = avatarPlaceholder(dept.name);
+          if (dept.default !== true) {
+            newFillColour = getColorBck(dept.name);
+          } else if (dept.default === true && this.departments.length === 1) {
+            newFillColour = '#6264A7'
+          } else if (dept.default === true && this.departments.length > 1) {
+            newFillColour = 'rgba(98, 100, 167, 0.6) '
+          }
+        } else {
+
+          newInitials = 'N/A.';
+          newFillColour = '#eeeeee';
+        }
+
+        dept['dept_name_initial'] = newInitials;
+        dept['dept_name_fillcolour'] = newFillColour;
+
 
         if (dept.routing === 'assigned' || dept.routing === 'pooled') {
 
@@ -1423,6 +1450,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           }
         }
       });
+
+      this.COUNT_OF_VISIBLE_DEPT = count;
+      console.log('WS-REQUESTS-Msgs - COUNT_OF_VISIBLE_DEPT', this.COUNT_OF_VISIBLE_DEPT);
 
     }, error => {
       console.log('% »»» WebSocketJs WF WS-RL - GET DEPTS - ERROR: ', error);
@@ -1469,7 +1499,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   /**
  * GET BOT BY ID  */
   getBotById(id_bot) {
-
     this.faqKbService.getMongDbFaqKbById(id_bot).subscribe((bot: any) => {
       if (bot) {
         console.log('% »»» WebSocketJs WF WS-RL BOT GET BY ID RES', bot);
@@ -1565,8 +1594,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
               }
             })
         }
-
-
       }, error => {
         this.showSpinner_inModalUserList = false;
         console.log('%% Ws-REQUESTS-Msgs - GET P-USERS-&-BOTS - ERROR: ', error);
@@ -1591,23 +1618,24 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // this.displayConfirmReassignmentModal = 'block';
 
     if (this.actionInModal === 'reassign') {
-      this.presentSwalModalConfirmReassignToUser(this.userid_selected, this.userfirstname_selected,  this.userlastname_selected);
+      this.presentSwalModalReassignConversationToAgent(this.userid_selected, this.userfirstname_selected, this.userlastname_selected);
     }
 
     if (this.actionInModal === 'invite') {
-      this.presentSwalModalConfirmAddToUser(this.userid_selected, this.userfirstname_selected,  this.userlastname_selected);
+      this.presentSwalModalAddAgentToConversation(this.userid_selected, this.userfirstname_selected, this.userlastname_selected);
     }
 
     // this.document.body.scrollTop = 0;
   }
 
-  presentSwalModalConfirmReassignToUser(userid, userfirstname, userlastname) {
+  presentSwalModalReassignConversationToAgent(userid, userfirstname, userlastname) {
     swal({
       title: this.reassignRequestMsg,
       text: this.requestWillBeReassignedToMsg + ' ' + userfirstname + ' ' + userlastname,
       icon: "info",
       buttons: true,
       dangerMode: false,
+      className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
     })
       .then((willReassign) => {
         if (willReassign) {
@@ -1627,8 +1655,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           }, () => {
             console.log('in swal willReassign to User setParticipants * COMPLETE *');
 
-            swal(this.done_msg + "!", {
+            swal({
+              title: this.done_msg + "!",
               icon: "success",
+              button: "OK",
+              className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
             }).then((okpressed) => {
               // this.goToContactList();
               this.displayUsersListModal = 'none'
@@ -1643,13 +1674,14 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
 
-  presentSwalModalConfirmAddToUser(userid, userfirstname,  userlastname) {
+  presentSwalModalAddAgentToConversation(userid, userfirstname, userlastname) {
     swal({
       title: this.addAgentMsg,
       text: this.requestWillBeAssignedToMsg + ' ' + userfirstname + ' ' + userlastname,
       icon: "info",
       buttons: true,
       dangerMode: false,
+      className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
     })
       .then((willBeAssigned) => {
         if (willBeAssigned) {
@@ -1669,8 +1701,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           }, () => {
             console.log('in swal willBeAssigned to User addParticipant * COMPLETE *');
 
-            swal(this.done_msg + "!", {
+            swal({
+              title: this.done_msg + "!",
               icon: "success",
+              button: "OK",
+              className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
             }).then((okpressed) => {
               // this.goToContactList();
               this.displayUsersListModal = 'none'
@@ -1694,17 +1729,18 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.userlastname_selected = '';
     this.useremail_selected = '';
     // this.displayConfirmReassignmentModal = 'block'
-    this.presentSwalModalConfirmReassignToBot(this.userid_selected, this.userfirstname_selected)
+    this.presentSwalModalReassignConversationToBot(this.userid_selected, this.userfirstname_selected)
   }
 
 
-  presentSwalModalConfirmReassignToBot(botid, botname) {
+  presentSwalModalReassignConversationToBot(botid, botname) {
     swal({
       title: this.reassignRequestMsg,
       text: this.requestWillBeReassignedToMsg + ' ' + botname,
       icon: "info",
       buttons: true,
       dangerMode: false,
+      className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
     })
       .then((willReassign) => {
         if (willReassign) {
@@ -1724,8 +1760,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           }, () => {
             console.log('in swal willReassign to Bot setParticipants * COMPLETE *');
 
-            swal(this.done_msg + "!", {
+            swal({
+              title: this.done_msg + "!",
               icon: "success",
+              button: "OK",
+              className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
             }).then((okpressed) => {
               // this.goToContactList();
               this.displayUsersListModal = 'none'
@@ -1759,6 +1798,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       icon: "info",
       buttons: true,
       dangerMode: false,
+      className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
     })
       .then((willReassign) => {
         if (willReassign) {
@@ -1778,8 +1818,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           }, () => {
             console.log('in swal joinDept * COMPLETE *');
 
-            swal(this.done_msg + "!", {
+            swal({
+              title: this.done_msg + "!",
               icon: "success",
+              button: "OK",
+              className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
             }).then((okpressed) => {
               // this.goToContactList();
               this.displayUsersListModal = 'none'
@@ -1831,27 +1874,27 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
 
- /// new RIASSIGN REQUEST
- joinAnotherAgentLeaveCurrentAgents(userid_selected) {
-  // this.getFirebaseToken(() => {
-  this.wsRequestsService.setParticipants(this.id_request, userid_selected)
-    .subscribe((joinToGroupRes: any) => {
+  /// new RIASSIGN REQUEST
+  joinAnotherAgentLeaveCurrentAgents(userid_selected) {
+    // this.getFirebaseToken(() => {
+    this.wsRequestsService.setParticipants(this.id_request, userid_selected)
+      .subscribe((joinToGroupRes: any) => {
 
-      console.log('%%% Ws-REQUESTS-Msgs - RIASSIGN REQUEST - JOIN ANOTHER USER TO CHAT GROUP ', joinToGroupRes);
+        console.log('%%% Ws-REQUESTS-Msgs - RIASSIGN REQUEST - JOIN ANOTHER USER TO CHAT GROUP ', joinToGroupRes);
 
-    }, (err) => {
-      console.log('%%% Ws-REQUESTS-Msgs - RIASSIGN REQUEST - JOIN ANOTHER USER TO CHAT GROUP - ERROR ', err);
+      }, (err) => {
+        console.log('%%% Ws-REQUESTS-Msgs - RIASSIGN REQUEST - JOIN ANOTHER USER TO CHAT GROUP - ERROR ', err);
 
-      // =========== NOTIFY ERROR ===========
-      this.notify.showNotification('An error has occurred assigning the request', 4, 'report_problem')
-    }, () => {
-      console.log('%%% Ws-REQUESTS-Msgs- RIASSIGN REQUEST - JOIN ANOTHER USER TO CHAT GROUP - COMPLETE');
+        // =========== NOTIFY ERROR ===========
+        this.notify.showNotification('An error has occurred assigning the request', 4, 'report_problem')
+      }, () => {
+        console.log('%%% Ws-REQUESTS-Msgs- RIASSIGN REQUEST - JOIN ANOTHER USER TO CHAT GROUP - COMPLETE');
 
-      // =========== NOTIFY SUCCESS===========
-      this.notify.showNotification(`request reassigned to ${this.userfirstname_selected}  ${this.userlastname_selected}`, 2, 'done');
+        // =========== NOTIFY SUCCESS===========
+        this.notify.showNotification(`request reassigned to ${this.userfirstname_selected}  ${this.userlastname_selected}`, 2, 'done');
 
-       });
-   }
+      });
+  }
 
   // end new
 

@@ -492,7 +492,7 @@
 }
 
 .modal-header {
-  padding: 6px 12px;
+  padding: 6px 12px !important;
   border-bottom: 1px solid #e5e5e5 !important;
 }
 
@@ -500,7 +500,7 @@
   border: none !important;
   float: right !important;
   border-radius: 50%;
-  color: rgb(235,234,235);
+  color: rgb(235, 234, 235);
   height: 36px;
   width: 36px;
 }
@@ -1067,8 +1067,8 @@ and also iPads specifically.
 }
 .ws_request_msgs___served_by {
   vertical-align: middle;
-  width: 32px;
-  height: 32px;
+  width: 32px !important;
+  height: 32px !important;
   border-radius: 50%;
   border: 1px solid #eee;
   background-color: #eee;
@@ -1079,8 +1079,8 @@ and also iPads specifically.
 
 .ws_requets_msgs__user-img-in-modal {
   vertical-align: middle;
-  width: 42px;
-  height: 42px;
+  width: 42px !important;
+  height: 42px !important;
   border-radius: 50%;
   border: 1px solid #eee;
   // margin-right: 15px;
@@ -1306,8 +1306,8 @@ and also iPads specifically.
 }
 
 .ws-request-msgs-bot-type-logo {
-  width: 18px;
-  height: 18px;
+  width: 18px !important;
+  height: 18px !important;
   position: absolute;
   // top: -4px;
   left: 24px;
@@ -1960,9 +1960,15 @@ and also iPads specifically.
 
 // modal add agent - reassign request
 
+.modal-header-chat-panel-mode {
+  padding-top: 12px !important;
+  padding-bottom: 12px !important;
+  padding-right: 6px !important;
+}
+
 .card-content-chat-panel-mode {
   overflow-x: hidden !important;
-  padding: 0px;
+  padding: 0px !important;
 }
 
 .modal-subtitle-chat-panel-mode {
@@ -1980,7 +1986,7 @@ and also iPads specifically.
 }
 
 .ws_request_msgs__status-icon-chat-panel-mode {
-  left: 37px;
+  left: 32px;
 }
 .ws-request-msgs-bot-type-logo-chat-panel-mode {
   left: 7px;
@@ -1992,11 +1998,95 @@ and also iPads specifically.
 }
 
 .modal-card-chat-panel-mode {
-  box-shadow: unset;
+  box-shadow: unset !important;
+  margin-left: -4px !important;
 }
 
 .no-bottom-margin {
   margin-bottom: 0px !important;
+}
+
+.dept---avatar-in-modal {
+  float: left;
+  padding: 8px 9px;
+  border-radius: 4px;
+  color: #fff;
+  // margin-right: 5px;
+  font-weight: 400;
+  position: relative;
+}
+
+.dept---name-in-chat-panel-mode {
+  margin-bottom: 4px;
+  margin-top: 5px;
+}
+
+// --------------------------------------------
+// Default dept disabled / enabled badge
+// --------------------------------------------
+.default-dept-disabled-badge-in-modal {
+  position: absolute;
+  left: -4px;
+  top: -4px;
+}
+
+.default-dept-disabled-badge-in-modal > span > .material-icons {
+  color: #f44336;
+  background: #fff;
+  border-radius: 50%;
+  font-size: 14px;
+}
+
+.default-dept-active-badge-in-modal {
+  position: absolute;
+  left: -4px;
+  top: -4px;
+}
+
+.default-dept-active-badge-in-modal > span > .material-icons {
+  color: #4caf50;
+  background: #fff;
+  border-radius: 50%;
+  font-size: 14px;
+}
+
+// --------------------------------------------
+// Dept visible / not visible badge
+// --------------------------------------------
+.dept-not-visible-badge-in-modal {
+  position: absolute;
+  left: -4px;
+  top: -4px;
+}
+
+.dept-not-visible-badge-in-modal> span > .material-icons {
+  color: #f44336;
+  background: #fff;
+  border-radius: 50%;
+  font-size: 14px;
+}
+
+.dept-visible-badge-in-modal {
+  position: absolute;
+  left: -4px;
+  top: -4px;
+}
+
+.dept-visible-badge-in-modal > span > .material-icons {
+  color: #4caf50;
+  background: #fff;
+  border-radius: 50%;
+  font-size: 14px;
+}
+
+
+
+.dept-not-visible {
+  opacity: 0.6 !important;
+}
+
+.top-alignment {
+  vertical-align: top !important;
 }
 
 .no-top-margin {
@@ -2006,7 +2096,7 @@ and also iPads specifically.
 .yes-margin {
   margin-bottom: 10px !important;
 }
-.no-margin{
+.no-margin {
   margin-bottom: 0px !important;
 }
 
@@ -2020,13 +2110,13 @@ and also iPads specifically.
 }
 
 .request_details___ua_browser_icon {
-  width: 13px;
+  width: 13px !important;
   margin-left: 1px;
   margin-right: 1px;
 }
 
 .request_details___os_icon {
-  width: 13px;
+  width: 13px !important;
   margin-left: 1px;
   margin-right: 1px;
 }
@@ -2201,6 +2291,30 @@ and also iPads specifically.
 .channel-icon {
   width: 14px;
   height: auto;
+}
+
+.swal-size-sm {
+  width: 260px !important;
+
+  // .swal-icon {
+  //   width: 60px !important;
+  //   height: 60px !important;
+  //   margin: 12px auto !important;
+  // }
+
+  // .swal-icon--info:after {
+  //   top: 5px !important;
+  // }
+
+  .swal-title {
+    font-size: 18px !important;
+    padding-top: 0px !important;
+  }
+
+  .swal-text {
+    font-size: 14px;
+    text-align: center;
+  }
 }
 
 // --------------------------------
