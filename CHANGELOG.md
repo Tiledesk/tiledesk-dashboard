@@ -4,7 +4,7 @@
 ### 2.1.35
 - bug fixes: the modal "reassign conversation" and the modal "add agent to the conversation" are not displayed correctly when the window width is less than 992px 
 - Customize the size of modal windows "Add agent to a conversation" and "Reassign conversation" when they are displayed in the right sidebar of chat
-- Adds, in modal windows "Add agent to a conversation" and "Reassign conversation", the avatars of the departments on which the is highlighted the status of the department (visible/not visible, active/ not active )
+- Adds, in modal windows "Add agent to a conversation" and "Reassign conversation", the avatars of the departments on which the is highlighted the status of the department (visible/not visible, active/ not active)
 - Adds the check mark of the assignee in modal windows "Add agent to a conversation" and "Reassign conversation" when viewed in the right sidebar of chat
 
 ### 2.1.34
