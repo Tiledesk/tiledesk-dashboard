@@ -1116,8 +1116,8 @@
 		"InviteAnotherUserToServe": "Einen anderen Teamkollegen einladen um die Anfrage zu bearbeiten",
 		"ReassignTo": "Neu zuweisen an:",
 		"AssignTo": "Zuweisen an:",
-		"TheRequestWillBeReassignedTo": "Die Anfrage wird neu zugewiesen an:",
-		"TheRequestWillBeAssignedTo": "Die Anfrage wird zugewiesen an:",
+		"TheRequestWillBeReassignedTo": "Die Anfrage wird neu zugewiesen an",
+		"TheRequestWillBeAssignedTo": "Die Anfrage wird zugewiesen an",
 		"LeaveChat": "Chat verlassen",
 		"Leave": "Verlassen",
 		"AreYouSureLeftTheChat": "Wollen Sie den Chat wirklich verlassen?",
@@ -1861,9 +1861,8 @@
 	"AnswerWithTheIntentNameAlreadyExists":"Antwort mit dem Intent-Namen {{intent_name}} ist bereits vorhanden",
 	"HowToGenerateDialogflowGoogleCredentialsFile": "So generieren Sie eine Dialogflow Google-Anmeldeinformationsdatei" ,
 	"MicrolanguageGuide": "Anleitung für Mikrosprache",
-	"HowHandlingImagesVideosButtonsAndMore": "Wie man mit Bildern, Videos, Schaltflächen und mehr umgeht"
+	"HowHandlingImagesVideosButtonsAndMore": "Wie man mit Bildern, Videos, Schaltflächen und mehr umgeht",
+	"TheRequestWillBeReassignedToTheAgent": "Das Gespräch wird an den Agenten zugewiesen werden",
+	"Type":"Typ"
 
-	
-
-	
 }

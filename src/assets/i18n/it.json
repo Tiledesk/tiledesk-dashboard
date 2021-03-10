@@ -1111,8 +1111,8 @@
         "InviteAnotherUserToServe": "Invita un altro collaboratore a servire la conversazione",
         "ReassignTo": "Riassegna a:",
         "AssignTo": "Assegna a:",
-        "TheRequestWillBeReassignedTo": "La conversazione sarà riassegnata a:",
-        "TheRequestWillBeAssignedTo": "La conversazione sarà assegnata a:",
+        "TheRequestWillBeReassignedTo": "La conversazione sarà riassegnata a",
+        "TheRequestWillBeAssignedTo": "La conversazione sarà assegnata a",
         "LeaveChat": "Abbandona chat",
         "Leave": "Abbandona",
         "AreYouSureLeftTheChat": "Sei sicuro di voler abbandonare la chat?",
@@ -1858,8 +1858,9 @@
     "AnswerWithTheIntentNameAlreadyExists":"La risposta con nome intent {{intent_name}} esiste già",
     "HowToGenerateDialogflowGoogleCredentialsFile": "Come generare il file delle credenziali di Google Dialogflow",
     "MicrolanguageGuide": "Guida microlingua",
-    "HowHandlingImagesVideosButtonsAndMore": "Come gestire immagini, video, pulsanti e altro"
-
+    "HowHandlingImagesVideosButtonsAndMore": "Come gestire immagini, video, pulsanti e altro",
+    "TheRequestWillBeReassignedToTheAgent": "La conversazione verrà riassegnata all'agente",
+    "Type":"Tipo"
 
     
 }
