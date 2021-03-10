@@ -29,7 +29,7 @@ import * as uuid from 'uuid';
 import { Chart } from 'chart.js';
 import { ContactsService } from '../../services/contacts.service';
 import { Observable } from 'rxjs';
-
+import { ProjectUser } from '../../models/project-user';
 import { switchMap, mergeMap, expand, concatMap, reduce, tap, map, } from 'rxjs/operators'
 // import {Observable,of, empty} from 'rxjs'
 
@@ -146,6 +146,8 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
   requester_type: string;
   id_for_view_requeter_dtls: string
+
+  project_users: ProjectUser[]
 
   /**
    * Constructor
@@ -436,6 +438,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       // console.log('% »»» WebSocketJs WF WS-RL - +++ GET PROJECT-USERS ', projectUsers);
       console.log('WS-REQUESTS-LIST - GET PROJECT-USERS RES ', _projectUsers);
       if (_projectUsers) {
+        this.project_users = _projectUsers
         this.project_user_length = _projectUsers.length;
         console.log('WS-REQUESTS-LIST - GET PROJECT-USERS LENGTH ', this.project_user_length);
         // this.projectUserArray = _projectUsers;
@@ -875,18 +878,12 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
 
     if (this.selectedAgentId === 1) {
-
       console.log('% »»» WebSocketJs WF WS-RL - on Change Agent >> HUMAN Agents Id Array', this.humanAgentsIdArray)
-
     }
 
     if (this.selectedAgentId === 2) {
-
       console.log('% »»» WebSocketJs WF WS-RL - on Change Agent >> BOT Agents Id Array', this.botAgentsIdArray)
-
     }
-
-
 
     // console.log('% »»» WebSocketJs WF WS-RL - on Change Agent - filter', this.filter)
     this.getWsRequests$();
@@ -973,8 +970,6 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
           // DEPTS_LAZY: comment this 2 lines
           // var ws_requests_clone = JSON.parse(JSON.stringify(this.ws_requests));
           // this.getDeptsAndCountOfDeptsInRequests(ws_requests_clone);
-
-
 
 
           this.getParticipantsInRequests(this.ws_requests);
@@ -1137,6 +1132,22 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
           // }
 
 
+          if (request.attributes && request.attributes && request.attributes.last_abandoned_by_project_user) {
+
+            const project_user_id = request.attributes.last_abandoned_by_project_user;
+            console.log('WS-REQUESTS-LIST - LAST PROJECT-USER THAT HAS ABANDONED project_user_id', project_user_id)
+            
+
+            const project_users_found = this.project_users.filter((obj: any) => {
+                return obj._id === project_user_id;
+            });
+
+            console.log('WS-REQUESTS-LIST - LAST PROJECT-USER THAT HAS ABANDONED project_users_found', project_users_found)
+            
+
+          }
+
+
 
           //  replace this.currentUserID with this.auth.user_bs.value._id  because at the go back from the request's details this.currentUserID at the moment in which is passed in currentUserIdIsInParticipants is undefined 
           request['currentUserIsJoined'] = this.currentUserIdIsInParticipants(request.participants, this.auth.user_bs.value._id, request.request_id);
@@ -1228,7 +1239,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
          * Sort requests and manage spinner
          */
         if (this.ws_requests) {
-          console.log('% »»» WebSocketJs WF +++++ ws-requests--- list getWsRequests *** ws_requests ***', this.ws_requests);
+          console.log('WS-REQUESTS-LIST *** ws_requests ***', this.ws_requests);
           this.wsRequestsUnserved = this.ws_requests
             .filter(r => {
               if (r['status'] === 100) {
