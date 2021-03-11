@@ -1863,6 +1863,7 @@
 	"MicrolanguageGuide": "Anleitung für Mikrosprache",
 	"HowHandlingImagesVideosButtonsAndMore": "Wie man mit Bildern, Videos, Schaltflächen und mehr umgeht",
 	"TheRequestWillBeReassignedToTheAgent": "Das Gespräch wird an den Agenten zugewiesen werden",
-	"Type":"Typ"
+	"Type":"Typ",
+	"ThisChatHasBeenAbandonedBy": "Dieser Chat wurde von abgebrochen"
 
 }

@@ -1860,7 +1860,8 @@
     "MicrolanguageGuide": "Guida microlingua",
     "HowHandlingImagesVideosButtonsAndMore": "Come gestire immagini, video, pulsanti e altro",
     "TheRequestWillBeReassignedToTheAgent": "La conversazione verrà riassegnata all'agente",
-    "Type":"Tipo"
+    "Type":"Tipo",
+    "ThisChatHasBeenAbandonedBy": "Questa chat è stata abbandonata da"
 
     
 }

@@ -1879,5 +1879,6 @@
     "MicrolanguageGuide": "Microlanguage guide",
     "HowHandlingImagesVideosButtonsAndMore": "How handling images, videos, buttons and more",
     "TheRequestWillBeReassignedToTheAgent": "The conversation will be reassigned to the agent",
-    "Type":"Type"
+    "Type":"Type",
+    "ThisChatHasBeenAbandonedBy": "This chat has been abandoned by"
 }
