@@ -1459,16 +1459,17 @@ and also iPads specifically.
   background-color: #f7f8fc;
 }
 
-.attributes-accordion:after {
-  content: "\002B";
-  // color: #777;
-  color: #039be5;
-  font-weight: bold;
-  float: right;
-  // margin-left: 5px;
-  font-size: 20px;
-  padding-right: 4px;
-}
+  .attributes-accordion:after {
+    content: "\002B";
+    // color: #777;
+    color: #039be5;
+    font-weight: bold;
+    float: right;
+    // margin-left: 5px;
+    font-size: 20px;
+    padding-right: 4px;
+  }
+
 
 .active:after {
   content: "\2212";
@@ -1999,7 +2000,7 @@ and also iPads specifically.
 
 .modal-card-chat-panel-mode {
   box-shadow: unset !important;
-  margin-left: -4px !important;
+  // margin-left: -4px !important;
 }
 
 .no-bottom-margin {
@@ -2059,7 +2060,7 @@ and also iPads specifically.
   top: -4px;
 }
 
-.dept-not-visible-badge-in-modal> span > .material-icons {
+.dept-not-visible-badge-in-modal > span > .material-icons {
   color: #f44336;
   background: #fff;
   border-radius: 50%;
@@ -2078,8 +2079,6 @@ and also iPads specifically.
   border-radius: 50%;
   font-size: 14px;
 }
-
-
 
 .dept-not-visible {
   opacity: 0.6 !important;

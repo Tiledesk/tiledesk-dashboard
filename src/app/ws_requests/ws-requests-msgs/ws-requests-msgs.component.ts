@@ -35,8 +35,9 @@ import { avatarPlaceholder, getColorBck } from '../../utils/util';
 @Component({
   selector: 'appdashboard-ws-requests-msgs',
   templateUrl: './ws-requests-msgs.component.html',
-  styleUrls: ['./ws-requests-msgs.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./ws-requests-msgs.component.scss']
+  // ,
+  // encapsulation: ViewEncapsulation.None
 })
 export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit, OnDestroy, AfterViewInit {
   objectKeys = Object.keys;
