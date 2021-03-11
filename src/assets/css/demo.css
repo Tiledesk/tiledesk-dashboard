@@ -476,7 +476,7 @@ my-app .main-panel .main-content .card {
 
 @media screen and (max-width: 767px) {
   .table-responsive {
-    border: unset !important
+    border: unset !important;
   }
 }
 
@@ -875,4 +875,27 @@ my-app .main-panel .main-content .card {
   position: relative;
   top: -2px;
   font-size: 18px;
+}
+
+.swal-size-sm {
+  width: 260px !important;
+
+  /* // .swal-icon {
+  //   width: 60px !important;
+  //   height: 60px !important;
+  //   margin: 12px auto !important;
+  // }
+
+  // .swal-icon--info:after {
+  //   top: 5px !important;
+  // } */
+}
+.swal-size-sm > .swal-title {
+  font-size: 18px !important;
+  padding-top: 0px !important;
+}
+
+.swal-size-sm > .swal-text {
+  font-size: 14px;
+  text-align: center;
 }
