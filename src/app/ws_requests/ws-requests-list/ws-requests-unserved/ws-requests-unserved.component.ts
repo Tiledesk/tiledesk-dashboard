@@ -218,6 +218,14 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     // lessTagsBtn.style.display = "inline-block";
   }
 
+  toggleTooltip(index) {
+    console.log("WS-REQUESTS-UNSERVED toggleTooltip index" ,index);
+    // const tooltipElem = <HTMLElement>document.querySelector('.right');
+    const tooltipElem = <HTMLElement>document.querySelector(`#tooltip_${index}`);
+    console.log("WS-REQUESTS-UNSERVED toggleTooltip tooltipElem" , tooltipElem);
+    tooltipElem.classList.toggle("tooltip-fixed");
+  }
+
   // --------------------------------------------------
   // @ Tags - display ledd tags
   // --------------------------------------------------

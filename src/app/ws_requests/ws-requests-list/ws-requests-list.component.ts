@@ -148,7 +148,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   id_for_view_requeter_dtls: string
 
   project_users: ProjectUser[]
-
+  other_project_users_that_has_abandoned_array: Array<any>
   /**
    * Constructor
    * 
@@ -1131,20 +1131,67 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
           //   });
           // }
 
+          // ------------------------------------------------------------------------------------------
+          // for the tooltip on the icon of unserved conversations showing users who have left the chat
+          // ------------------------------------------------------------------------------------------
+          if (request.attributes && request.attributes.last_abandoned_by_project_user) {
 
-          if (request.attributes && request.attributes && request.attributes.last_abandoned_by_project_user) {
+            console.log('WS-REQUESTS-LIST - request.attributes', request.attributes)
 
             const project_user_id = request.attributes.last_abandoned_by_project_user;
             console.log('WS-REQUESTS-LIST - LAST PROJECT-USER THAT HAS ABANDONED project_user_id', project_user_id)
-            
 
-            const project_users_found = this.project_users.filter((obj: any) => {
+
+            if (this.project_users) {
+              const project_users_found = this.project_users.filter((obj: any) => {
                 return obj._id === project_user_id;
-            });
+              });
 
-            console.log('WS-REQUESTS-LIST - LAST PROJECT-USER THAT HAS ABANDONED project_users_found', project_users_found)
-            
 
+              console.log('WS-REQUESTS-LIST - LAST PROJECT-USER THAT HAS ABANDONED project_users_found', project_users_found)
+
+              const imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + this.storageBucket + "/o/profiles%2F" + project_users_found[0]['id_user']['_id'] + "%2Fphoto.jpg?alt=media"
+
+             
+              const last_abandoned_by_project_user_array = []
+              last_abandoned_by_project_user_array.push(
+                {
+                  _id: project_users_found[0]['id_user']['_id'],
+                  firstname: project_users_found[0]['id_user']['firstname'],
+                  lastname: project_users_found[0]['id_user']['lastname'],
+                  has_image: project_users_found[0]['hasImage'],
+                  img_url: imgUrl, 
+                  fillColour: project_users_found[0]['id_user']['fillColour'],
+                  fullname_initial: project_users_found[0]['id_user']['fullname_initial']
+                }
+              )
+
+              request['attributes']['last_abandoned_by_project_user_array'] = last_abandoned_by_project_user_array
+
+
+              if (request.attributes && request.attributes && request.attributes.abandoned_by_project_users) {
+
+
+                this.other_project_users_that_has_abandoned_array = []
+                for (const [key, value] of Object.entries(request.attributes.abandoned_by_project_users)) {
+                  console.log('WS-REQUESTS-LIST - OTHERS PROJECT-USER THAT HAVE ABANDONED', `${key}: ${value}`);
+
+                  if (key !== project_user_id) {
+
+                    const other_project_users_found = this.project_users.filter((obj: any) => {
+                      return obj._id === key;
+                    });
+
+                    console.log('WS-REQUESTS-LIST - LAST PROJECT-USER THAT HAS ABANDONED other_project_users_found', other_project_users_found)
+
+                    this.other_project_users_that_has_abandoned_array.push({ _id: other_project_users_found[0]['id_user']['_id'], firstname: other_project_users_found[0]['id_user']['firstname'], lastname: other_project_users_found[0]['id_user']['lastname'] })
+                  }
+                }
+
+                console.log('WS-REQUESTS-LIST - LAST PROJECT-USER THAT HAS ABANDONED other_project_users_that_has_abandoned_array', this.other_project_users_that_has_abandoned_array)
+                request['attributes']['other_project_users_that_has_abandoned_array'] = this.other_project_users_that_has_abandoned_array
+              }
+            }
           }
 
 

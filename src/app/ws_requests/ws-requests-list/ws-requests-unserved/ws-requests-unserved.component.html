@@ -101,16 +101,57 @@
         <!-- ****************************************
             ------ ====== UNSERVED FOR ====== ------
           ********************************************* -->
-        <tr *ngFor="let request of wsRequestsUnserved; trackBy: trackByFn">
+        <tr *ngFor="let request of wsRequestsUnserved; trackBy: trackByFn; let i= index">
 
           <!-- ------ ====== VISIBILITY ICON ====== ------ -->
           <td style="text-align:center; white-space: nowrap; width: 1%;">
 
             <!-- IF THE REQUEST SUPPORT STATUS IS 100 (UNSERVED REQUEST) -->
-            <div *ngIf="request?.status === 100 && !request?.subject ;else internal_unserved_request">
+            <div *ngIf="request?.status === 100 && !request?.subject ;else internal_unserved_request"
+              style="position: relative;">
               <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
 
                 <img style="width: 30px;" src="assets/img/request_icons/status100.svg" class="img-fluid">
+
+                <!-- {{ request.attributes.last_abandoned_by_project_user_array | json }} -->
+                <!-- (click)="$event.stopPropagation();toggleTooltip()" -->
+                <div class="abandoned_chat-badge-wpr" (click)="$event.stopPropagation();toggleTooltip(i)"
+                  *ngIf="request?.attributes?.last_abandoned_by_project_user_array?.length > 0 ">
+                  <span class="tool_tip" >
+                    <span class="material-icons">
+                      priority_high
+                    </span>
+
+
+                   
+                    <span id="{{'tooltip_' + i}}" class="right" style="white-space: normal;padding: 6px 12px;;font-weight: 200; height: 100px;">
+                      <h4 style="font-weight:400" style="white-space: nowrap;"> {{'ThisChatHasBeenAbandonedBy' |
+                        translate}}</h4>
+
+
+                      <div *ngIf="request.attributes.last_abandoned_by_project_user_array[0].has_image === true">
+
+                        <div class="pu-user-avatar-wpr" style="width: 44px !important;height: 44px !important;">
+
+                          <img style="width: 24px !important;height: 24px !important; border-radius: 50%;"
+                            src={{request.attributes.last_abandoned_by_project_user_array[0].img_url}} />
+
+                          <div class="pu-user-name-wpr" style="white-space: nowrap;font-size: 12px">
+                            <span>{{request.attributes.last_abandoned_by_project_user_array[0].firstname}} </span>
+                            <span>{{request.attributes.last_abandoned_by_project_user_array[0].lastname | slice:0:1}}.
+                            </span>
+                          </div>
+                        </div>
+
+                      </div>
+
+                      <i></i>
+                    </span>
+
+
+
+                  </span>
+                </div>
 
               </span>
             </div>
@@ -131,7 +172,7 @@
           <td [ngClass]="{'padding_5' : request?.tags?.length > 0}" (click)='goToRequestMsgs(request?.request_id)'
             style="cursor:pointer; ">
             <p class="column-td" [innerHTML]="getRequestText(request?.first_text)"> </p>
-             
+
             <!-- --------------------------------------- -->
             <!-- Request Tag -->
             <!-- --------------------------------------- -->
@@ -156,7 +197,7 @@
                 </div>
               </div>
 
-              
+
               <!--  -------------------------------------------------------------------- -->
               <!--  Display more tags -->
               <!--  -------------------------------------------------------------------- -->
@@ -169,7 +210,7 @@
                 </a>
               </div>
 
-              
+
               <!--  -------------------------------------------------------------------- -->
               <!--  Tag from 3 to ... -->
               <!--  -------------------------------------------------------------------- -->
@@ -197,7 +238,7 @@
                 </div>
               </div>
 
-               
+
               <!-- -------------------------------------------------------------------- -->
               <!-- Display more tags -->
               <!-- -------------------------------------------------------------------- -->
@@ -211,7 +252,7 @@
             </section>
           </td>
 
-            <!-- ---------------------------------------- -->
+          <!-- ---------------------------------------- -->
           <!-- Message Channel  -->
           <!-- ---------------------------------------- -->
           <td style="width: 1%;">
@@ -219,14 +260,13 @@
             <!-- Channel - Telegram -->
             <!-- ---------------------------------------- -->
             <span *ngIf="request?.channel?.name === 'telegram'" class="tool_tip">
-             
-              <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/Telegram-01.svg"
-                class="img-fluid">
+
+              <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/Telegram-01.svg" class="img-fluid">
               <span class="bottom tool-tip-bottom--custom">
                 <span style="font-weight: 200;">
                   {{'MessageChannel' | translate}}:
                 </span>
-                <span style="font-weight: 400;">Telegram  </span> 
+                <span style="font-weight: 400;">Telegram </span>
                 <i></i>
               </span>
             </span>
@@ -234,14 +274,14 @@
             <!-- Channel - WhatsApp -->
             <!-- ---------------------------------------- -->
             <span *ngIf="request?.channel?.name === 'whatsapp'" class="tool_tip">
-           
-              <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/whatsapp-logo_green.svg"  
+
+              <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/whatsapp-logo_green.svg"
                 class="img-fluid">
               <span class="bottom tool-tip-bottom--custom">
                 <span style="font-weight: 200;">
                   {{'MessageChannel' | translate}}:
                 </span>
-                <span style="font-weight: 400;">WhatsApp  </span> 
+                <span style="font-weight: 400;">WhatsApp </span>
                 <i></i>
               </span>
             </span>
@@ -250,17 +290,16 @@
             <!-- Channel - Messenger -->
             <!-- ---------------------------------------- -->
             <span *ngIf="request?.channel?.name === 'messenger'" class="tool_tip">
-              
-              <img style="width: 24px;height: 24px;"
-              
-                src="assets/img/channel_icons/Facebook_Messenger_logo_2020.svg"   class="img-fluid">
+
+              <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/Facebook_Messenger_logo_2020.svg"
+                class="img-fluid">
 
               <span class="bottom tool-tip-bottom--custom">
                 <span style="font-weight: 200;">
                   {{'MessageChannel' | translate}}:
                 </span>
-                
-                <span style="font-weight: 400;">Messenger  </span> 
+
+                <span style="font-weight: 400;">Messenger </span>
                 <i></i>
               </span>
             </span>
@@ -269,33 +308,33 @@
             <!-- Channel - Email -->
             <!-- ---------------------------------------- -->
             <span *ngIf="request?.channel?.name === 'email'" class="tool_tip email-wpr">
-              
-              <img style="padding:5px !important" src="assets/img/channel_icons/email-logo_white.svg" 
+
+              <img style="padding:5px !important" src="assets/img/channel_icons/email-logo_white.svg"
                 class="img-fluid channel-img-in-conversations">
 
               <span class="bottom tool-tip-bottom--custom">
                 <span style="font-weight: 200;">
                   {{'MessageChannel' | translate}}:
                 </span>
-                <span style="font-weight: 400;">Email  </span> 
-              
+                <span style="font-weight: 400;">Email </span>
+
                 <i></i>
               </span>
             </span>
 
-                   <!-- ---------------------------------------- -->
+            <!-- ---------------------------------------- -->
             <!-- Channel - Form -->
             <!-- ---------------------------------------- -->
             <span *ngIf="request?.channel?.name === 'form'" class="tool_tip form-wpr">
-              
-              <img style="padding:4px !important" src="assets/img/channel_icons/form-logo_v2_white.svg" 
+
+              <img style="padding:4px !important" src="assets/img/channel_icons/form-logo_v2_white.svg"
                 class="img-fluid channel-img-in-conversations">
 
               <span class="bottom tool-tip-bottom--custom">
                 <span style="font-weight: 200;">
-                  {{'MessageChannel' | translate}}: 
+                  {{'MessageChannel' | translate}}:
                 </span>
-               <span style="font-weight: 400;">Form  </span> 
+                <span style="font-weight: 400;">Form </span>
                 <i></i>
               </span>
             </span>
@@ -539,9 +578,10 @@
           <!-- class="td-actions text-right" -->
           <!-- (click)='openDeleteRequestModal((request?.request_id))' -->
           <td class="td-actions text-right" style="padding-top: 9px !important;">
-          
+
             <button type="button" rel="tooltip" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}"
-              class="btn btn-tdblu btn-simple btn-xs tool_tip" (click)='archiveRequest(request?.request_id)' [disabled]="USER_ROLE === 'agent'">
+              class="btn btn-tdblu btn-simple btn-xs tool_tip" (click)='archiveRequest(request?.request_id)'
+              [disabled]="USER_ROLE === 'agent'">
               <i class="material-icons">archive</i>
               <span style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px;" class="top">
                 <span style="text-transform: capitalize;"> {{ 'VisitorsPage.Archive' | translate }} </span>
