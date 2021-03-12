@@ -854,6 +854,59 @@ my-app .main-panel .main-content .card {
   top: -3px;
 }
 
+
+/* =Avatar inline in unserved conversation tooltip
+---------------------------------------------------- */
+.served-by-desktop-a-in-tooltip {
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  /* // margin-top: 12px; */
+}
+
+.served-by-desktop-b-in-tooltip {
+  /* // margin-right: 6px; */
+  display: flex;
+  flex-flow: row nowrap;
+  -webkit-box-pack: start;
+  justify-content: flex-start;
+}
+
+.served-by-desktop-c-in-tooltip {
+  padding: 0px;
+  display: inline-block;
+  flex: 1 1 32px;
+  margin-left: -5px;
+  cursor: pointer;
+}
+
+.first-served-by {
+  margin-left: 0px !important;
+}
+
+.served-by-desktop-d-in-tooltip {
+  position: relative;
+}
+.served-by-desktop-e-in-tooltip {
+  margin: 0px auto;
+  border-radius: 50%;
+  display: inline-block;
+  vertical-align: middle;
+  width: 24px;
+  height: 24px;
+  line-height: 22px;
+  /* font-size: 28px; */
+}
+
+.served-by-desktop-e-in-tooltip img {
+  width: 24px !important;
+  height: 24px !important;
+  border-radius: 50% !important;
+  /* border: 2px solid rgb(255, 255, 255); */
+}
+/* /. Avatar inline in unserved conversation tooltip
+---------------------------------------------------- */
+
 .right-sidebar--m-icon {
   vertical-align: middle;
   color: #394f5a;
@@ -862,6 +915,9 @@ my-app .main-panel .main-content .card {
   background: #e4e6eb;
   border-radius: 50%;
 }
+
+
+
 .analytics-date-range-selected {
   margin: 8px !important;
   color: rgba(0, 0, 0, 0.5);

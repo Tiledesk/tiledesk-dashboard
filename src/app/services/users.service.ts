@@ -23,7 +23,7 @@ import { FaqKbService } from '../services/faq-kb.service';
 import { BotLocalDbService } from '../services/bot-local-db.service';
 import { AppConfigService } from '../services/app-config.service';
 import { WebSocketJs } from "../services/websocket/websocket-js";
-
+import { avatarPlaceholder, getColorBck } from '../utils/util';
 interface NewUser {
   displayName: string;
   email: string;
@@ -425,7 +425,20 @@ export class UsersService {
       .map((res) => res.json());
   }
 
+  
+  public getProjectUserByProjecUserId(project_user_id): Observable<ProjectUser[]> {
+  
+    const url = this.SERVER_BASE_PATH + this.project._id + '/project_users/' + project_user_id;;
 
+
+    console.log('!! GET PROJECT USER BY PROJECT USER ID - URL', url);
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.json());
+  }
 
   /// ================================== GET USER BY ID ================================== ///
 
@@ -686,6 +699,42 @@ export class UsersService {
     });
   }
 
+
+
+
+  checkImageExists(imageUrl, callBack) {
+    var imageData = new Image();
+    imageData.onload = function () {
+      callBack(true);
+    };
+    imageData.onerror = function () {
+      callBack(false);
+    };
+    imageData.src = imageUrl;
+  }
+
+  createAgentAvatarInitialsAnfBckgrnd(user) {
+
+    let fullname = '';
+    if (user && user.firstname && user.lastname) {
+
+
+      fullname = user.firstname + ' ' + user.lastname
+      user['fullname_initial'] = avatarPlaceholder(fullname);
+      user['fillColour'] = getColorBck(fullname)
+    } else if (user && user.firstname) {
+
+      fullname = user.firstname
+      user['fullname_initial'] = avatarPlaceholder(fullname);
+      user['fillColour'] = getColorBck(fullname)
+    } else {
+      user['fullname_initial'] = 'N/A';
+      user['fillColour'] = 'rgb(98, 100, 167)';
+    }
+
+  }
+
+
   // NEW 22 AGO - GET AND SAVE ALL USERS OF CURRENT PROJECT IN LOCAL STORAGE
   getAllUsersOfCurrentProjectAndSaveInStorage() {
     console.log('!! USER SERVICE  - PROJECT-USERS FILTERED FOR PROJECT ID ', this.project_id);
@@ -699,8 +748,22 @@ export class UsersService {
             if (projectUser.id_user) {
               console.log('!! USER SERVICE  - PROJECT-USERS - USER ', projectUser.id_user, projectUser.id_user._id)
 
+              const imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + this.storageBucket + "/o/profiles%2F" + projectUser.id_user._id + "%2Fphoto.jpg?alt=media"
+
+              this.checkImageExists(imgUrl, (existsImage) => {
+                if (existsImage == true) {
+                  projectUser.id_user.hasImage = true
+                }
+                else {
+                  projectUser.id_user.hasImage = false
+
+                  this.createAgentAvatarInitialsAnfBckgrnd(projectUser.id_user)
+                }
+
+                this.usersLocalDbService.saveMembersInStorage(projectUser.id_user._id, projectUser.id_user);
+                this.usersLocalDbService.saveUserInStorageWithProjectUserId(projectUser._id, projectUser.id_user);
+              });
               // localStorage.setItem(projectUser.id_user._id, JSON.stringify(projectUser.id_user));
-              this.usersLocalDbService.saveMembersInStorage(projectUser.id_user._id, projectUser.id_user);
             }
           }
         });

@@ -7,9 +7,10 @@ export interface ProjectUser {
     role?: string;
     createdBy?: string;
     is_group_member?: boolean;
-    id_user?: string;
+    // id_user?: string;
     isAuthenticated?: boolean;
     isBusy?: boolean;
     status?: string;
+    id_user?: any;
     __v: any;
 }

@@ -42,7 +42,22 @@ export class LocalDbService {
       localStorage.setItem(this.prefix + member_id, JSON.stringify(member_object));
       console.log('HEY - SAVE IN STORAGE !!! ');
     }
+  }
 
+  saveUserInStorageWithProjectUserId(projectuserid: string, userobj: any)  {
+    localStorage.setItem(this.prefix + projectuserid, JSON.stringify(userobj));
+    console.log('HEY - SAVE IN STORAGE !!! ');
+  }
+
+
+
+  getUserInStorageWithProjectUserId(projectuserid: string) {
+     if (projectuserid) {
+      const prefixedMemberId = this.prefix + projectuserid;
+      // console.log('HEY MEMBER prefixedMemberId !!! ', prefixedMemberId);
+      const member = JSON.parse((localStorage.getItem(prefixedMemberId)));
+      return member;
+    }
   }
 
 

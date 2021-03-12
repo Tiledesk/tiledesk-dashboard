@@ -1136,69 +1136,147 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
           // ------------------------------------------------------------------------------------------
           if (request.attributes && request.attributes.last_abandoned_by_project_user) {
 
-            console.log('WS-REQUESTS-LIST - request.attributes', request.attributes)
+            console.log('WS-REQUESTS-LIST - for the tooltip - request.attributes', request.attributes)
+            console.log('WS-REQUESTS-LIST - for the tooltip - project_users', this.project_users)
 
             const project_user_id = request.attributes.last_abandoned_by_project_user;
             console.log('WS-REQUESTS-LIST - LAST PROJECT-USER THAT HAS ABANDONED project_user_id', project_user_id)
 
+            const users_found_in_storage_by_projectuserid = this.usersLocalDbService.getMemberFromStorage(project_user_id);
+            console.log('WS-REQUESTS-LIST - LAST PROJECT-USER THAT HAS ABANDONED project_users_found_in_storage', users_found_in_storage_by_projectuserid)
 
-            if (this.project_users) {
-              const project_users_found = this.project_users.filter((obj: any) => {
-                return obj._id === project_user_id;
-              });
-
-
-              console.log('WS-REQUESTS-LIST - LAST PROJECT-USER THAT HAS ABANDONED project_users_found', project_users_found)
-
-              const imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + this.storageBucket + "/o/profiles%2F" + project_users_found[0]['id_user']['_id'] + "%2Fphoto.jpg?alt=media"
-
-             
-              const last_abandoned_by_project_user_array = []
-              last_abandoned_by_project_user_array.push(
-                {
-                  _id: project_users_found[0]['id_user']['_id'],
-                  firstname: project_users_found[0]['id_user']['firstname'],
-                  lastname: project_users_found[0]['id_user']['lastname'],
-                  has_image: project_users_found[0]['hasImage'],
-                  img_url: imgUrl, 
-                  fillColour: project_users_found[0]['id_user']['fillColour'],
-                  fullname_initial: project_users_found[0]['id_user']['fullname_initial']
-                }
-              )
-
-              request['attributes']['last_abandoned_by_project_user_array'] = last_abandoned_by_project_user_array
+            // const userid = users_found_in_storage_by_projectuserid['_id']
+            // console.log('WS-REQUESTS-LIST - LAST PROJECT-USER THAT HAS ABANDONED project_users_found_in_storage userid', userid)
 
 
-              if (request.attributes && request.attributes && request.attributes.abandoned_by_project_users) {
+            if (users_found_in_storage_by_projectuserid !== null) {
+              console.log('WS-REQUESTS-LIST - LAST PROJECT-USER THAT HAS ABANDONED project_users_found_in_storage 1', users_found_in_storage_by_projectuserid)
+              this.createArrayLast_abandoned_by_project_user(users_found_in_storage_by_projectuserid, request)
+            } else {
 
 
-                this.other_project_users_that_has_abandoned_array = []
-                for (const [key, value] of Object.entries(request.attributes.abandoned_by_project_users)) {
-                  console.log('WS-REQUESTS-LIST - OTHERS PROJECT-USER THAT HAVE ABANDONED', `${key}: ${value}`);
+              this.usersService.getProjectUserByProjecUserId(project_user_id)
+                .subscribe((projectuser) => {
+                  console.log('WS-REQUESTS-LIST - LAST PROJECT-USER THAT HAS ABANDONED getProjectUserById RES', projectuser)
 
-                  if (key !== project_user_id) {
 
-                    const other_project_users_found = this.project_users.filter((obj: any) => {
-                      return obj._id === key;
-                    });
+                  const imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + this.storageBucket + "/o/profiles%2F" + projectuser['id_user']._id + "%2Fphoto.jpg?alt=media"
 
-                    console.log('WS-REQUESTS-LIST - LAST PROJECT-USER THAT HAS ABANDONED other_project_users_found', other_project_users_found)
+                  this.checkImageExists(imgUrl, (existsImage) => {
+                    if (existsImage == true) {
+                      projectuser['id_user'].hasImage = true
+                    }
+                    else {
+                      projectuser['id_user'].hasImage = false
 
-                    this.other_project_users_that_has_abandoned_array.push({ _id: other_project_users_found[0]['id_user']['_id'], firstname: other_project_users_found[0]['id_user']['firstname'], lastname: other_project_users_found[0]['id_user']['lastname'] })
+                      this.createAgentAvatarInitialsAnfBckgrnd(projectuser['id_user'])
+                    }
+
+                    this.usersLocalDbService.saveMembersInStorage(projectuser['id_user']._id, projectuser['id_user']);
+                    this.usersLocalDbService.saveUserInStorageWithProjectUserId(projectuser['_id'], projectuser['id_user']);
+                  })
+                }, error => {
+                  // this.showSpinner = false;
+                  console.log('WS-REQUESTS-LIST - LAST PROJECT-USER THAT HAS ABANDONED getProjectUserById - ERROR', error);
+                }, () => {
+                  console.log('WS-REQUESTS-LIST - LAST PROJECT-USER THAT HAS ABANDONED getProjectUserById - COMPLETE')
+
+                  const _users_found_in_storage_by_projectuserid = this.usersLocalDbService.getMemberFromStorage(project_user_id);
+                  console.log('WS-REQUESTS-LIST - LAST PROJECT-USER THAT HAS ABANDONED project_users_found_in_storage 2', users_found_in_storage_by_projectuserid)
+
+                  if (_users_found_in_storage_by_projectuserid !== null) {
+                    this.createArrayLast_abandoned_by_project_user(_users_found_in_storage_by_projectuserid, request);
                   }
+
+                });
+              // this.usersService.getAllUsersOfCurrentProjectAndSaveInStorage();
+
+              // const _users_found_in_storage_by_projectuserid = this.usersLocalDbService.getMemberFromStorage(project_user_id);
+              // console.log('WS-REQUESTS-LIST - LAST PROJECT-USER THAT HAS ABANDONED project_users_found_in_storage 2', users_found_in_storage_by_projectuserid)
+
+              // if (_users_found_in_storage_by_projectuserid !== null) {
+              //   this.createArrayLast_abandoned_by_project_user(_users_found_in_storage_by_projectuserid, request);
+              // }
+            }
+
+          }
+
+          if (request.attributes && request.attributes && request.attributes.abandoned_by_project_users) {
+
+
+            this.other_project_users_that_has_abandoned_array = []
+            for (const [key, value] of Object.entries(request.attributes.abandoned_by_project_users)) {
+              console.log('WS-REQUESTS-LIST - OTHERS PROJECT-USER THAT HAVE ABANDONED', `${key}: ${value}`);
+
+              if (key !== request.attributes.last_abandoned_by_project_user) {
+
+                const other_project_users_found = this.usersLocalDbService.getMemberFromStorage(key);
+                // const other_project_users_found = this.project_users.filter((obj: any) => {
+                //   return obj._id === key;
+                // });
+                console.log('WS-REQUESTS-LIST - LAST PROJECT-USER THAT HAS ABANDONED other_project_users_found', other_project_users_found)
+                if (other_project_users_found !== null) {
+                  console.log('WS-REQUESTS-LIST - OTHER PROJECT-USER THAT HAS ABANDONED other_project_users_found 1', other_project_users_found)
+                  this.createArrayOther_project_users_that_has_abandoned(other_project_users_found)
+
+                } else {
+
+                  this.usersService.getProjectUserByProjecUserId(key)
+                    .subscribe((projectuser) => {
+                      console.log('WS-REQUESTS-LIST - OTHER PROJECT-USER THAT HAS ABANDONED getProjectUserById RES', projectuser)
+
+                      const imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + this.storageBucket + "/o/profiles%2F" + projectuser['id_user']._id + "%2Fphoto.jpg?alt=media"
+
+                      this.checkImageExists(imgUrl, (existsImage) => {
+                        if (existsImage == true) {
+                          projectuser['id_user'].hasImage = true
+                        }
+                        else {
+                          projectuser['id_user'].hasImage = false
+
+                          this.createAgentAvatarInitialsAnfBckgrnd(projectuser['id_user'])
+                        }
+
+                        this.usersLocalDbService.saveMembersInStorage(projectuser['id_user']._id, projectuser['id_user']);
+                        this.usersLocalDbService.saveUserInStorageWithProjectUserId(projectuser['_id'], projectuser['id_user']);
+                      })
+                      // this.usersService.getAllUsersOfCurrentProjectAndSaveInStorage();
+
+                      // const _other_project_users_found = this.usersLocalDbService.getMemberFromStorage(key);
+
+                      // console.log('WS-REQUESTS-LIST - OTHER PROJECT-USER THAT HAS ABANDONED other_project_users_found 2', _other_project_users_found)
+
+                      // if (_other_project_users_found) {
+                      //   this.createArrayOther_project_users_that_has_abandoned(_other_project_users_found)
+                      // }
+                    }, error => {
+                      // this.showSpinner = false;
+                      console.log('WS-REQUESTS-LIST - OTHER PROJECT-USER THAT HAS ABANDONED getProjectUserById - ERROR', error);
+                    }, () => {
+                      console.log('WS-REQUESTS-LIST - OTHER PROJECT-USER THAT HAS ABANDONED getProjectUserById - COMPLETE')
+
+                      const _other_project_users_found = this.usersLocalDbService.getMemberFromStorage(key);
+                      console.log('WS-REQUESTS-LIST - OTHER PROJECT-USER THAT HAS ABANDONED other_project_users_found 2', _other_project_users_found)
+
+                      if (_other_project_users_found) {
+                        this.createArrayOther_project_users_that_has_abandoned(_other_project_users_found)
+                      }
+
+                    });
                 }
+
 
                 console.log('WS-REQUESTS-LIST - LAST PROJECT-USER THAT HAS ABANDONED other_project_users_that_has_abandoned_array', this.other_project_users_that_has_abandoned_array)
                 request['attributes']['other_project_users_that_has_abandoned_array'] = this.other_project_users_that_has_abandoned_array
               }
+              // }
             }
+
+
+
+            //  replace this.currentUserID with this.auth.user_bs.value._id  because at the go back from the request's details this.currentUserID at the moment in which is passed in currentUserIdIsInParticipants is undefined 
+            request['currentUserIsJoined'] = this.currentUserIdIsInParticipants(request.participants, this.auth.user_bs.value._id, request.request_id);
           }
-
-
-
-          //  replace this.currentUserID with this.auth.user_bs.value._id  because at the go back from the request's details this.currentUserID at the moment in which is passed in currentUserIdIsInParticipants is undefined 
-          request['currentUserIsJoined'] = this.currentUserIdIsInParticipants(request.participants, this.auth.user_bs.value._id, request.request_id);
-
 
           if (request.status === 200) {
             // USE CASE L'ARRAY new_participants è UNDEFINED x es al refresh o quando si entra nella pagina (anche al back dal dettaglio) o all' UPDATE
@@ -1280,11 +1358,9 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         });
 
 
-
-
-        /**
-         * Sort requests and manage spinner
-         */
+        // -----------------------------------------     
+        //  Sort requests and manage spinner
+        // ----------------------------------------- 
         if (this.ws_requests) {
           console.log('WS-REQUESTS-LIST *** ws_requests ***', this.ws_requests);
           this.wsRequestsUnserved = this.ws_requests
@@ -1367,6 +1443,41 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       }, () => {
         console.log('% »»» WebSocketJs WF +++++ ws-requests--- list getWsRequests */* COMPLETE */*')
       })
+  }
+
+
+  createArrayLast_abandoned_by_project_user(users_found_in_storage_by_projectuserid, request) {
+    const imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + this.storageBucket + "/o/profiles%2F" + users_found_in_storage_by_projectuserid['_id'] + "%2Fphoto.jpg?alt=media"
+
+    const last_abandoned_by_project_user_array = []
+    last_abandoned_by_project_user_array.push(
+      {
+        _id: users_found_in_storage_by_projectuserid['_id'],
+        firstname: users_found_in_storage_by_projectuserid['firstname'],
+        lastname: users_found_in_storage_by_projectuserid['lastname'],
+        has_image: users_found_in_storage_by_projectuserid['hasImage'],
+        img_url: imgUrl,
+        fillColour: users_found_in_storage_by_projectuserid['fillColour'],
+        fullname_initial: users_found_in_storage_by_projectuserid['fullname_initial']
+      }
+    )
+    request['attributes']['last_abandoned_by_project_user_array'] = last_abandoned_by_project_user_array
+  }
+
+  createArrayOther_project_users_that_has_abandoned(other_project_users_found) {
+    const imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + this.storageBucket + "/o/profiles%2F" + other_project_users_found['_id'] + "%2Fphoto.jpg?alt=media"
+
+    this.other_project_users_that_has_abandoned_array.push(
+      {
+        _id: other_project_users_found['_id'],
+        firstname: other_project_users_found['firstname'],
+        lastname: other_project_users_found['lastname'],
+        has_image: other_project_users_found['hasImage'],
+        img_url: imgUrl,
+        fillColour: other_project_users_found['fillColour'],
+        fullname_initial: other_project_users_found['fullname_initial']
+      }
+    )
   }
 
 

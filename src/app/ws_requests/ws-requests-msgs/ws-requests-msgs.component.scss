@@ -2292,29 +2292,21 @@ and also iPads specifically.
   height: auto;
 }
 
-.swal-size-sm {
-  width: 260px !important;
 
-  // .swal-icon {
-  //   width: 60px !important;
-  //   height: 60px !important;
-  //   margin: 12px auto !important;
-  // }
+/* SWAL SM SIZE - moved in demo css to avoid the use of  encapsulation: ViewEncapsulation.None */
+// .swal-size-sm {
+//   width: 260px !important;
 
-  // .swal-icon--info:after {
-  //   top: 5px !important;
-  // }
+//   .swal-title {
+//     font-size: 18px !important;
+//     padding-top: 0px !important;
+//   }
 
-  .swal-title {
-    font-size: 18px !important;
-    padding-top: 0px !important;
-  }
-
-  .swal-text {
-    font-size: 14px;
-    text-align: center;
-  }
-}
+//   .swal-text {
+//     font-size: 14px;
+//     text-align: center;
+//   }
+// }
 
 // --------------------------------
 // NK start CUSTOM SCROLL BAR
