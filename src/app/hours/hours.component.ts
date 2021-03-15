@@ -578,6 +578,7 @@ export class HoursComponent implements OnInit, OnDestroy {
             operatingHours: project['activeOperatingHours']
           }
 
+          console.log('HOURS COMP »»»»»»» UPDATED PROJECT _project set in storage', _project);
           localStorage.setItem(project['_id'], JSON.stringify(_project));
 
           this.auth.projectSelected(_project)
