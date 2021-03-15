@@ -668,59 +668,118 @@
           <!-- Chat reassignment -->
           <!-- --------------------------------------------------- -->
           <button class="btn btn-primary-active" [ngClass]="{'btn-primary-no-active': !CHAT_REASSIGNMENT_IS_ENABLED }"
-          (click)="goToProjectSettings_Advanced()">
-          <span class="material-icons conv-option-icon tool_tip"
-            [ngClass]="{'conv-option-icon-active': CHAT_REASSIGNMENT_IS_ENABLED}">
-            shuffle_on
-
-            <!-- <span class="option--info">
-              <span class="material-icons" style="position: absolute;
-              left: -6px;
-              top: -3px;
-              color: #ddd;">
-                help_outline
-                </span>
-            </span> -->
-
-            <span class="top">
-              <h4 style="white-space: normal;
+            (click)="goToProjectSettings_Advanced()">
+            <span class="material-icons conv-option-icon tool_tip"
+              [ngClass]="{'conv-option-icon-active': CHAT_REASSIGNMENT_IS_ENABLED}">
+              shuffle_on
+              <span class="top">
+                <h4 style="white-space: normal;
               line-height: 14px;
-              font-weight: 400;">   
-              {{ "ProjectEditPage.ReassignChatIf" | translate }}. 
-              {{'ProjectEditPage.TheChatWillBeBetweenTheUnassigned' | translate }}</h4>
-             <h4 style="font-weight: 400;"> timeout: {{reassignment_timeout}} </h4> 
-               <!-- -->
-              <i></i>
+              font-weight: 400;">
+                  {{ "ProjectEditPage.ItReassignChatIf" | translate }}.
+                  {{'ProjectEditPage.TheChatWillBeBetweenTheUnassigned' | translate }}</h4>
+                <h4 style="font-weight: 400;"> timeout (in sec): {{reassignment_timeout}} </h4>
+                <i></i>
+              </span>
             </span>
 
-          </span>
-
-          <span class="btn--text">
-            <span *ngIf="!CHAT_REASSIGNMENT_IS_ENABLED">
-              {{ 'ChatReassignmentIsDisabled' | translate }}
+            <span class="btn--text">
+              <span *ngIf="!CHAT_REASSIGNMENT_IS_ENABLED">
+                {{ 'ReassignmentIsDisabled' | translate }}
+              </span>
+              <span *ngIf="CHAT_REASSIGNMENT_IS_ENABLED">
+                {{ 'ReassignmentIsEnabled' | translate }}
+              </span>
             </span>
 
-            <span *ngIf="CHAT_REASSIGNMENT_IS_ENABLED">
-              {{ 'ChatReassignmentIsEnabled' | translate }}
-                <!-- <span style="display: block;
-                font-size: 9px;
-                font-weight: 500;
-                position: relative;
-                top: -1px;">timeout: {{reassignment_timeout}} </span> -->
+            <span class="btn--link">
+              <span>
+                {{'AdjustSmartAssignment' | translate}}
+              </span>
+              <span class="material-icons" style="vertical-align: middle;">
+                keyboard_arrow_right
+              </span>
+            </span>
+          </button>
+
+          <!-- --------------------------------------------------- -->
+          <!-- Chat Limit -->
+          <!-- --------------------------------------------------- -->
+          <button class="btn btn-primary-active" [ngClass]="{'btn-primary-no-active': !CHAT_LIMIT_IS_ENABLED }"
+            (click)="goToProjectSettings_Advanced()">
+            <span class="material-icons conv-option-icon tool_tip"
+              [ngClass]="{'conv-option-icon-active': CHAT_LIMIT_IS_ENABLED}">
+              sms_failed
+              <span class="top">
+                <h4 style="white-space: normal;
+              line-height: 14px;
+              font-weight: 400;">
+                  {{ "ProjectEditPage.ItLimitChatsNumber" | translate }}.
+
+                </h4>
+                <h4 style="font-weight: 400;"> {{'ProjectEditPage.MaximumChats' | translate}}: {{maximum_chats}} </h4>
+                <i></i>
+              </span>
             </span>
 
-       
-          </span>
+            <span class="btn--text">
+              <span *ngIf="!CHAT_LIMIT_IS_ENABLED">
+                {{ 'ChatLimitDisabled' | translate }}
+              </span>
+              <span *ngIf="CHAT_LIMIT_IS_ENABLED">
+                {{ 'ChatLimitEnabled' | translate }}
+              </span>
+            </span>
 
-          <span class="btn--link">
-            <span>
-              {{'AdjustSmartAssignment' | translate}}
+            <span class="btn--link">
+              <span>
+                {{'AdjustSmartAssignment' | translate}}
+              </span>
+              <span class="material-icons" style="vertical-align: middle;">
+                keyboard_arrow_right
+              </span>
             </span>
-            <span class="material-icons" style="vertical-align: middle;">
-              keyboard_arrow_right
+          </button>
+
+
+          <!-- --------------------------------------------------- -->
+          <!-- Automatic unavailable status -->
+          <!-- --------------------------------------------------- -->
+          <button class="btn btn-primary-active" [ngClass]="{'btn-primary-no-active': !AUTOMATIC_UNAVAILABLE_STAUS_IS_ENABLED }"
+            (click)="goToProjectSettings_Advanced()">
+            <span class="material-icons conv-option-icon tool_tip"
+              [ngClass]="{'conv-option-icon-active': AUTOMATIC_UNAVAILABLE_STAUS_IS_ENABLED}">
+              person_off
+              <span class="top">
+                <h4 style="white-space: normal;
+              line-height: 14px;
+              font-weight: 400;">
+                  {{ "ProjectEditPage.ItSetAnAgentStatusToUnavailable" | translate }}.
+
+                </h4>
+                <h4 style="font-weight: 400;"> {{'ProjectEditPage.MaximumChats' | translate}}: {{maximum_chats}} </h4>
+                <i></i>
+              </span>
             </span>
-          </span>
-        </button>
+
+            <span class="btn--text">
+              <span *ngIf="!AUTOMATIC_UNAVAILABLE_STAUS_IS_ENABLED">
+                {{ 'AutomaticUnavailableStatusDisabled' | translate }}
+              </span>
+              <span *ngIf="AUTOMATIC_UNAVAILABLE_STAUS_IS_ENABLED">
+                {{ 'AutomaticUnavailableeStatusEnabled' | translate }}
+              </span>
+            </span>
+
+            <span class="btn--link">
+              <span>
+                {{'AdjustSmartAssignment' | translate}}
+              </span>
+              <span class="material-icons" style="vertical-align: middle;">
+                keyboard_arrow_right
+              </span>
+            </span>
+          </button>
 
         </div>
 

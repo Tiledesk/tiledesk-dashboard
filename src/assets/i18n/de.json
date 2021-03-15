@@ -698,11 +698,12 @@
 		"ChatLimit": "Chat Limit",
 		"MaximumChats": "Maximale Anzahl von Chats",
 		"LimitChatsNumber": "Begrenzen Sie die Anzahl von gleichzeitigen Chats, die ein Agent auf einmal annehmen kann",
+		"ItLimitChatsNumber": "Es Reassign chatten, wenn der Agent nicht die zugewiesene Chat innerhalb eines Zeitrahmens angegeben ausgeschenkt wird",
 		"ThisChatLimitWillAppliedToAllAgents": "Das Chat Limit wird auf alle Agenten angewandt.",
 		"YouCanSpecifyAgentsIndividualChatLimit": "Sie können Ihren Teamkollegen individuelle Chat-Limits zuweisen: Wählen Sie dazu unter Einstellungen > Teamkollegen & Gruppen einen Teamkollegen aus und geben Sie einen Wert in das Feld Chat-Limit ein",
 		"Reassignment": "Neuzuweisung",
-		"ReassignChatIf": "Chat neu zuweisen wenn die Andrage nicht in einem gewissen Zeitfenster beantwortet wurde",
-		"TheChatWillBeBetweenTheUnassigned":"Wenn keine Agenten auf den zugewiesenen Chat antworten, wird der Chat als nicht zugewiesener Chat aufgeführt",
+		"ReassignChatIf": "Der Chat wird neu zugewiesen, wenn der Agent den zugewiesenen Chat nicht innerhalb eines bestimmten Zeitraums bedient",
+		"TheChatWillBeBetweenTheUnassigned":"Wenn keine Agenten auf den zugewiesenen Chat antworten, wird der Chat als nicht zugewiesen aufgeführt",
 		"ReassignmentTimeout": "Neuzuweisung Timeout",
 		"TimeWithNoResponse": "Zeit (in Sekunden) ohne Antwort bevor ein Chat neu zugewiesen wird",
 		"NotificationMsgs": {
@@ -717,6 +718,7 @@
 		"ChatsReassigned": "Neu zugewiesene Chats",
 		"AutomaticUnavailableStatus": "Automatischer Nicht verfügbar Status",
 		"SetAnAgentStatusToUnavailable": "Den Status eines Agenten automatisch auf nicht verfügbar ändern wenn eine gewisse Anzahl von folgenden Neuzuweisungen durchgeführt wurde",
+		"ItSetAnAgentStatusToUnavailable": "Der Status eines Agenten wurde auf 'Nicht verfügbar' gesetzt, wenn eine fortlaufende Anzahl von Chats neu zugewiesen wurde",
 		"NumberOfChatsReassignedBefore": "Anzahl von neu zugewiesenen Chats bevor der Status des Agenten geändert wird"
 	},
 	"HomePage": {
@@ -1869,6 +1871,12 @@
 	"theLastOneWhoLeft":"der letzte, den er verlassen hat",
 	"AdjustSmartAssignment":"Intelligente Zuordnung einstellen",
 	"ChatReassignmentIsEnabled":"Chat-Neuzuweisung aktiviert",
-    "ChatReassignmentIsDisabled":"Neuzuweisung des Chats deaktiviert"
+	"ChatReassignmentIsDisabled":"Neuzuweisung des Chats deaktiviert",
+	"ReassignmentIsEnabled":"Neuzuweisung aktiviert",
+	"ReassignmentIsDisabled":"Neuzuweisung deaktiviert",
+	"ChatLimitEnabled":"Chat-Limit aktiviert",
+	"ChatLimitDisabled":"Chat-Limit deaktiviert",
+	"AutomaticUnavailableeStatusEnabled":"Automatischer Status 'Nicht verfügbar aktiviert",
+    "AutomaticUnavailableStatusDisabled":"Automatischer Status 'Nicht verfügbar' deaktiviert"
 
 }

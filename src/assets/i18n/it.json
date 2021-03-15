@@ -693,11 +693,13 @@
         "ChatLimit": "Limite di chat",
         "MaximumChats": "Num. massimimo di chat",
         "LimitChatsNumber": "Limita il numero di chat simultanee che ciascun agente può eseguire contemporaneamente",
+        "ItLimitChatsNumber": "Limita il numero di chat simultanee che ciascun agente può eseguire contemporaneamente",
         "ThisChatLimitWillAppliedToAllAgents": "Questo limite verrà applicato a tutti gli agenti.",
         "YouCanSpecifyAgentsIndividualChatLimit": "Puoi specificare il limite di chat simultanea individuale degli agenti: seleziona un agente da modificare in Impostazioni > Utenti & Gruppi e nel suo profilo inserisci un valore nel campo Limite Chat.",
         "Reassignment": "Riassegnazione",
-        "ReassignChatIf": "Riassegna la chat se l'agente non serve la chat assegnata entro il periodo di tempo specificato",
-        "TheChatWillBeBetweenTheUnassigned":"Se nessun agente risponde alla chat assegnata, la chat verrà elencata tra le non assegnate",
+        "ReassignChatIf": "Riassegna la chat se l'agente non serve la chat assegnata entro un periodo di tempo specificato",
+        "ItReassignChatIf": "Riassegna la chat se l'agente non serve la chat assegnata entro un periodo di tempo specificato",
+        "TheChatWillBeBetweenTheUnassigned":"Se nessun agente risponde alla chat assegnata, la chat verrà elencata come non assegnata",
         "ReassignmentTimeout": "Timeout di riassegnazione",
         "TimeWithNoResponse": "Tempo (in secondi) senza risposta prima che una chat venga assegnata a un altro agente",
         "NotificationMsgs": {
@@ -712,6 +714,7 @@
         "ChatsReassigned": "Chat riassegnate",
         "AutomaticUnavailableStatus": "Stato non disponibile automatico",
         "SetAnAgentStatusToUnavailable": "Imposta lo stato di un agente su non disponibile se è stato riassegnato un numero consecutivo di chat",
+        "ItSetAnAgentStatusToUnavailable": "Imposta lo stato di un agente su non disponibile se è stato riassegnato un numero consecutivo di chat",
         "NumberOfChatsReassignedBefore": "Numero di chat riassegnate prima della modifica dello stato dell'agente"
     },
     "HomePage": {
@@ -1865,8 +1868,15 @@
     "ThisChatHasBeenAbandonedBy": "Questa chat è stata abbandonata da",
     "theLastOneWhoLeft":"l'ultimo che ha abbandonato",
     "AdjustSmartAssignment":"Regola l'assegnazione intelligente",
-    "ChatReassignmentIsEnabled":"Chat reassignment enabled",
-    "ChatReassignmentIsDisabled":"Chat reassignment disabled"
+    "ChatReassignmentIsEnabled":"Riassegnazione chat abilitata",
+    "ChatReassignmentIsDisabled":"Riassegnazione chat disattivata",
+    "ReassignmentIsEnabled":"Riassegnazione abilitata",
+    "ReassignmentIsDisabled":"Riassegnazione disattivata",
+    "ChatLimitEnabled":"Limite chat abilitato",
+    "ChatLimitDisabled":"Limite chat disabilitato",
+    "AutomaticUnavailableeStatusEnabled":"Stato non disponibile automatico abilitato",
+    "AutomaticUnavailableStatusDisabled":"Stato non disponibile automatico disabilitato"
+
 
     
 }

@@ -705,6 +705,13 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     });
   }
 
+  // CHAT_REASSIGNMENT_IS_ENABLED: boolean // reassignment_on
+  // reassignment_timeout: number; // reassignment_delay
+  // CHAT_LIMIT_IS_ENABLED: boolean // key chat_limit_on
+  // maximum_chats: number; // key max_agent_assigned_chat
+  // AUTOMATIC_UNAVAILABLE_STAUS_IS_ENABLED: boolean; // automatic_unavailable_status_on
+  // chats_reassigned: number // key automatic_idle_chats
+
   getProjectById(projectid) {
     this.projectService.getProjectById(projectid).subscribe((project: any) => {
       console.log('WS-REQUESTS-LIST - GET PROJECT BY ID - RES: ', project);
@@ -716,8 +723,22 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
           this.reassignment_timeout = project.settings.reassignment_delay
         } else {
           this.CHAT_REASSIGNMENT_IS_ENABLED = false
-          
         }
+
+        if (project.settings.chat_limit_on === true) {
+          this.CHAT_LIMIT_IS_ENABLED = true;
+          this.maximum_chats = project.settings.max_agent_assigned_chat
+        } else {
+          this.CHAT_LIMIT_IS_ENABLED = false
+        }
+
+        if (project.settings.automatic_unavailable_status_on === true) {
+          this.AUTOMATIC_UNAVAILABLE_STAUS_IS_ENABLED = true;
+          this.chats_reassigned = project.settings.automatic_idle_chats
+        } else {
+          this.AUTOMATIC_UNAVAILABLE_STAUS_IS_ENABLED = false
+        }
+
 
 
       } else {

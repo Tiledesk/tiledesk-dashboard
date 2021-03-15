@@ -698,11 +698,13 @@
         "ChatLimit": "Chat limit",
         "MaximumChats": "Maximum chats",
         "LimitChatsNumber": "Limit the number of concurrent chats each agent can take at once",
+        "ItLimitChatsNumber": "It limit the number of concurrent chats each agent can take at once",
         "ThisChatLimitWillAppliedToAllAgents": "This chat limit will applied to all agents.",
         "YouCanSpecifyAgentsIndividualChatLimit": "You can specify agents’ individual concurrent chat limit: select an teammate to edit under Settings > Teammates & Groups and in his profile enter a value in the Chat Limit field.",
         "Reassignment": "Reassignment",
         "ReassignChatIf": "Reassign chat if the agent does not serve the assigned chat within a specified time frame",
-        "TheChatWillBeBetweenTheUnassigned":"If no agents respond to the assigned chat, the chat will be listed as an unassigned",
+        "ItReassignChatIf": "It reassign chat if the agent does not serve the assigned chat within a specified time frame",
+        "TheChatWillBeBetweenTheUnassigned":"If no agents respond to the assigned chat, the chat will be listed as unassigned",
         "ReassignmentTimeout": "Reassignment Timeout",
         "TimeWithNoResponse": "Time (in sec) with no response before a chat is assigned to another agent",
         "NotificationMsgs": {
@@ -717,6 +719,7 @@
         "ChatsReassigned": "Chats reassigned",
         "AutomaticUnavailableStatus": "Automatic unavailable status",
         "SetAnAgentStatusToUnavailable": "Set an agent's status to unavailable if they have a consecutive number of chats reassigned",
+        "ItSetAnAgentStatusToUnavailable": "It set an agent's status to unavailable if they have a consecutive number of chats reassigned",
         "NumberOfChatsReassignedBefore": "Number of chats reassigned before the agent's status is changed"
     },
     "HomePage": {
@@ -1885,6 +1888,11 @@
     "theLastOneWhoLeft":"the last one who left",
     "AdjustSmartAssignment":"Adjust smart assignment",
     "ChatReassignmentIsEnabled":"Chat reassignment enabled",
-    "ChatReassignmentIsDisabled":"Chat reassignment disabled"
-    
+    "ChatReassignmentIsDisabled":"Chat reassignment disabled",
+    "ReassignmentIsEnabled":"Reassignment enabled",
+    "ReassignmentIsDisabled":"Reassignment disabled",
+    "ChatLimitEnabled":"Chat limit enabled",
+    "ChatLimitDisabled":"Chat limit disabled",
+    "AutomaticUnavailableeStatusEnabled":"Automatic unavailable status enabled",
+    "AutomaticUnavailableStatusDisabled":"Automatic unavailable status disabled"
 }
