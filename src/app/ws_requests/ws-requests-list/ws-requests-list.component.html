@@ -618,6 +618,116 @@
     </div>
     <!-- ------====== / .end CARDS COUNT OF REQUESTS: ACTIVE, SERVED & UNSERVED AND REQUESTS FOR DEPTS ======------ -->
 
+    <div class="row">
+      <div class="col-xs-12">
+        <!-- style="background: rgb(231,241,255);" -->
+        <div class="smart-assign-and-operatinghours-options">
+
+
+          <!-- --------------------------------------------------- -->
+          <!-- Operating hours -->
+          <!-- --------------------------------------------------- -->
+          <button class="btn btn-primary-active" [ngClass]="{'btn-primary-no-active': !OPERATING_HOURS_ACTIVE }"
+            (click)="goToOperatingHours()">
+            <span class="material-icons conv-option-icon"
+              [ngClass]="{'conv-option-icon-active': OPERATING_HOURS_ACTIVE}">
+              access_time_filled
+            </span>
+
+            <span class="btn--text">
+              <span *ngIf="!OPERATING_HOURS_ACTIVE">
+                {{ 'OperatingHoursDisabled' | translate }}
+              </span>
+
+              <span *ngIf="OPERATING_HOURS_ACTIVE">
+                {{ 'OperatingHoursEnabled' | translate }}
+              </span>
+            </span>
+
+            <span class="btn--link">
+
+              <span>
+                {{'AdjustOperatingHours' | translate}}
+              </span>
+              <span class="material-icons" style="vertical-align: middle;">
+                keyboard_arrow_right
+              </span>
+
+            </span>
+
+          </button>
+          <!-- #e4e6eb -->
+          <!-- <span class="wpr-material-icons">
+            <span class="material-icons conv-option-icon"
+              [ngClass]="{'conv-option-icon-active': OPERATING_HOURS_ACTIVE}">
+              access_time_filled
+            </span> -->
+
+
+          <!-- --------------------------------------------------- -->
+          <!-- Chat reassignment -->
+          <!-- --------------------------------------------------- -->
+          <button class="btn btn-primary-active" [ngClass]="{'btn-primary-no-active': !CHAT_REASSIGNMENT_IS_ENABLED }"
+          (click)="goToProjectSettings_Advanced()">
+          <span class="material-icons conv-option-icon tool_tip"
+            [ngClass]="{'conv-option-icon-active': CHAT_REASSIGNMENT_IS_ENABLED}">
+            shuffle_on
+
+            <!-- <span class="option--info">
+              <span class="material-icons" style="position: absolute;
+              left: -6px;
+              top: -3px;
+              color: #ddd;">
+                help_outline
+                </span>
+            </span> -->
+
+            <span class="top">
+              <h4 style="white-space: normal;
+              line-height: 14px;
+              font-weight: 400;">   
+              {{ "ProjectEditPage.ReassignChatIf" | translate }}. 
+              {{'ProjectEditPage.TheChatWillBeBetweenTheUnassigned' | translate }}</h4>
+             <h4 style="font-weight: 400;"> timeout: {{reassignment_timeout}} </h4> 
+               <!-- -->
+              <i></i>
+            </span>
+
+          </span>
+
+          <span class="btn--text">
+            <span *ngIf="!CHAT_REASSIGNMENT_IS_ENABLED">
+              {{ 'ChatReassignmentIsDisabled' | translate }}
+            </span>
+
+            <span *ngIf="CHAT_REASSIGNMENT_IS_ENABLED">
+              {{ 'ChatReassignmentIsEnabled' | translate }}
+                <!-- <span style="display: block;
+                font-size: 9px;
+                font-weight: 500;
+                position: relative;
+                top: -1px;">timeout: {{reassignment_timeout}} </span> -->
+            </span>
+
+       
+          </span>
+
+          <span class="btn--link">
+            <span>
+              {{'AdjustSmartAssignment' | translate}}
+            </span>
+            <span class="material-icons" style="vertical-align: middle;">
+              keyboard_arrow_right
+            </span>
+          </span>
+        </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
     <!-- *ngIf="SHOW_SIMULATE_REQUEST_BTN === true && showSpinner === false" -->
     <section *ngIf="SHOW_SIMULATE_REQUEST_BTN === true && showSpinner === false">
       <div class="row">
@@ -824,16 +934,18 @@ l-4.9-13l18-14.8L22.1,34.4z" />
             {{ 'VisitorsPage.Requester' | translate }}
 
             <!-- // view requester details -->
-            <span style="float: right; cursor: pointer;" (click)="openRequesterDetails()" [ngClass]="{'open-requester-details-disable': !selectedRequester}">
-              <span style="color: #0f62ff;" [ngClass]="{'open-requester-details-disable': !selectedRequester}">{{ 'ViewRequesterDetails' | translate }} </span>
+            <span style="float: right; cursor: pointer;" (click)="openRequesterDetails()"
+              [ngClass]="{'open-requester-details-disable': !selectedRequester}">
+              <span style="color: #0f62ff;" [ngClass]="{'open-requester-details-disable': !selectedRequester}">{{
+                'ViewRequesterDetails' | translate }} </span>
 
               <span class="material-icons" style="color: #0f62ff; vertical-align: middle;font-size: 16px;"
-              [ngClass]="{'open-requester-details-disable': !selectedRequester}"> open_in_new </span>
+                [ngClass]="{'open-requester-details-disable': !selectedRequester}"> open_in_new </span>
 
             </span>
           </label>
 
-       
+
           <div class="col-sm-12" style="margin-bottom: 20px;">
 
             <!-- // with custom search -->

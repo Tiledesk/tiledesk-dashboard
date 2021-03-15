@@ -30,7 +30,7 @@ import { Chart } from 'chart.js';
 import { ContactsService } from '../../services/contacts.service';
 import { Observable } from 'rxjs';
 import { ProjectUser } from '../../models/project-user';
-import { switchMap, mergeMap, expand, concatMap, reduce, tap, map, } from 'rxjs/operators'
+import { ProjectService } from '../../services/project.service';
 // import {Observable,of, empty} from 'rxjs'
 
 @Component({
@@ -149,6 +149,13 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
   project_users: ProjectUser[]
   other_project_users_that_has_abandoned_array: Array<any>
+
+  CHAT_REASSIGNMENT_IS_ENABLED: boolean // reassignment_on
+  reassignment_timeout: number; // reassignment_delay
+  CHAT_LIMIT_IS_ENABLED: boolean // key chat_limit_on
+  maximum_chats: number; // key max_agent_assigned_chat
+  AUTOMATIC_UNAVAILABLE_STAUS_IS_ENABLED: boolean; // automatic_unavailable_status_on
+  chats_reassigned: number // key automatic_idle_chats
   /**
    * Constructor
    * 
@@ -173,7 +180,8 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     public appConfigService: AppConfigService,
     private departmentService: DepartmentService,
     public notify: NotifyService,
-    public contactsService: ContactsService
+    public contactsService: ContactsService,
+    private projectService: ProjectService
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify);
     this.zone = new NgZone({ enableLongStackTrace: false });
@@ -193,11 +201,9 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
      // getProjectUserAndBotAndDepts x dare la possibilità di associare una richiesta interna oltre che ad un dept anche ad un bot o a un projct-user) */
     this.getDepartments();
     // this.getWsRequests$();
-    this.getCurrentProject();
+    this.getCurrentProjectAndThenDetProjectById();
     this.getLoggedUser();
     this.getProjectUserRole();
-
-
 
 
     // this.for1();
@@ -221,12 +227,9 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
 
   translateString() {
-
     this.translate.get('NewRequesterCreatedSuccessfully')
       .subscribe((translation: any) => {
-
         this.newRequesterCreatedSuccessfullyMsg = translation;
-
       });
   }
 
@@ -689,17 +692,63 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   // -----------------------------------------------------------------------------------------------------
   // @ Subscribe to get the published current project (called On init)
   // -----------------------------------------------------------------------------------------------------
-  getCurrentProject() {
+  getCurrentProjectAndThenDetProjectById() {
     this.auth.project_bs.subscribe((project) => {
       console.log('WsRequestsList  project', project)
       if (project) {
         this.projectId = project._id;
         this.projectName = project.name;
         this.OPERATING_HOURS_ACTIVE = project.operatingHours
+
+        this.getProjectById(this.projectId)
       }
     });
   }
 
+  getProjectById(projectid) {
+    this.projectService.getProjectById(projectid).subscribe((project: any) => {
+      console.log('WS-REQUESTS-LIST - GET PROJECT BY ID - RES: ', project);
+
+      if (project.settings) {
+
+        if (project.settings.reassignment_on === true) {
+          this.CHAT_REASSIGNMENT_IS_ENABLED = true;
+          this.reassignment_timeout = project.settings.reassignment_delay
+        } else {
+          this.CHAT_REASSIGNMENT_IS_ENABLED = false
+          
+        }
+
+
+      } else {
+        this.CHAT_REASSIGNMENT_IS_ENABLED = false;
+        this.CHAT_LIMIT_IS_ENABLED = false;
+        this.AUTOMATIC_UNAVAILABLE_STAUS_IS_ENABLED = false;
+      }
+
+      // CHAT_REASSIGNMENT_IS_ENABLED: boolean // reassignment_on
+      // reassignment_timeout: number; // reassignment_delay
+      // CHAT_LIMIT_IS_ENABLED: boolean // key chat_limit_on
+      // maximum_chats: number; // key max_agent_assigned_chat
+      // AUTOMATIC_UNAVAILABLE_STAUS_IS_ENABLED: boolean; // automatic_unavailable_status_on
+      // chats_reassigned: number // key automatic_idle_chats
+
+
+
+
+    }, error => {
+      // this.showSpinner = false;
+      console.log('WS-REQUESTS-LIST - GET PROJECT BY ID - ERROR', error);
+    }, () => {
+      console.log('WS-REQUESTS-LIST - GET PROJECT BY ID - * COMPLETE *');
+
+    });
+  }
+
+  goToProjectSettings_Advanced() {
+    console.log('WS-REQUESTS-LIST HAS CLICKED goToProjectSettings_Advanced');
+    this.router.navigate(['project/' + this.projectId + '/project-settings/advanced']);
+  }
 
   seeIamAgentRequests(seeIamAgentReq) {
     this.ONLY_MY_REQUESTS = seeIamAgentReq
@@ -1174,6 +1223,8 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
                     this.usersLocalDbService.saveMembersInStorage(projectuser['id_user']._id, projectuser['id_user']);
                     this.usersLocalDbService.saveUserInStorageWithProjectUserId(projectuser['_id'], projectuser['id_user']);
+                    
+                    this.createArrayLast_abandoned_by_project_user(projectuser['id_user'], request);
                   })
                 }, error => {
                   // this.showSpinner = false;
@@ -1181,12 +1232,12 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
                 }, () => {
                   console.log('WS-REQUESTS-LIST - LAST PROJECT-USER THAT HAS ABANDONED getProjectUserById - COMPLETE')
 
-                  const _users_found_in_storage_by_projectuserid = this.usersLocalDbService.getMemberFromStorage(project_user_id);
-                  console.log('WS-REQUESTS-LIST - LAST PROJECT-USER THAT HAS ABANDONED project_users_found_in_storage 2', users_found_in_storage_by_projectuserid)
+                  // const _users_found_in_storage_by_projectuserid = this.usersLocalDbService.getMemberFromStorage(project_user_id);
+                  // console.log('WS-REQUESTS-LIST - LAST PROJECT-USER THAT HAS ABANDONED project_users_found_in_storage 2', users_found_in_storage_by_projectuserid)
 
-                  if (_users_found_in_storage_by_projectuserid !== null) {
-                    this.createArrayLast_abandoned_by_project_user(_users_found_in_storage_by_projectuserid, request);
-                  }
+                  // if (_users_found_in_storage_by_projectuserid !== null) {
+                    
+                  // }
 
                 });
               // this.usersService.getAllUsersOfCurrentProjectAndSaveInStorage();
@@ -1446,19 +1497,19 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   }
 
 
-  createArrayLast_abandoned_by_project_user(users_found_in_storage_by_projectuserid, request) {
-    const imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + this.storageBucket + "/o/profiles%2F" + users_found_in_storage_by_projectuserid['_id'] + "%2Fphoto.jpg?alt=media"
+  createArrayLast_abandoned_by_project_user(user, request) {
+    const imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + this.storageBucket + "/o/profiles%2F" + user['_id'] + "%2Fphoto.jpg?alt=media"
 
     const last_abandoned_by_project_user_array = []
     last_abandoned_by_project_user_array.push(
       {
-        _id: users_found_in_storage_by_projectuserid['_id'],
-        firstname: users_found_in_storage_by_projectuserid['firstname'],
-        lastname: users_found_in_storage_by_projectuserid['lastname'],
-        has_image: users_found_in_storage_by_projectuserid['hasImage'],
+        _id: user['_id'],
+        firstname: user['firstname'],
+        lastname: user['lastname'],
+        has_image: user['hasImage'],
         img_url: imgUrl,
-        fillColour: users_found_in_storage_by_projectuserid['fillColour'],
-        fullname_initial: users_found_in_storage_by_projectuserid['fullname_initial']
+        fillColour: user['fillColour'],
+        fullname_initial: user['fullname_initial']
       }
     )
     request['attributes']['last_abandoned_by_project_user_array'] = last_abandoned_by_project_user_array

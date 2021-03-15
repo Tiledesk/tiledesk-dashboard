@@ -120,12 +120,13 @@
                   <span class="tool_tip">
                     <span class="material-icons">
                       <!-- shuffle -->
-                      autorenew
+                      shuffle_on
                     </span>
 
 
                     <span id="{{'tooltip_' + i}}" class="right"
-                      style="white-space: normal;padding: 6px 12px;;font-weight: 200; height: 100px; width: fit-content;max-width: unset!important">
+                      style="white-space: normal;padding: 6px 12px;;font-weight: 200; width: fit-content;max-width: unset!important"
+                      [ngStyle]="{'height':  (request?.attributes?.other_project_users_that_has_abandoned_array?.length > 0) ? '100px' : '76px'}">
                       <h4 style="font-weight:400" style="white-space: nowrap;">
                         {{'ThisChatHasBeenAbandonedBy' | translate}}
                       </h4>
@@ -140,7 +141,7 @@
                           <div class="pu-user-name-wpr white___tooltiptext" style="white-space: nowrap;">
                             <span>{{request.attributes.last_abandoned_by_project_user_array[0].firstname}} </span>
                             <span>{{request.attributes.last_abandoned_by_project_user_array[0].lastname | slice:0:1}}.
-                              <span style="display: block;font-style: italic; color: red;"> (the last one he left)
+                              <span style="display: block;font-style: italic; color: red;"> ({{'theLastOneWhoLeft' | translate}})
                               </span>
                             </span>
                           </div>
@@ -158,7 +159,7 @@
                           <div class="pu-user-name-wpr white___tooltiptext" style="white-space: nowrap;">
                             <span>{{request.attributes.last_abandoned_by_project_user_array[0].firstname}} </span>
                             <span>{{request.attributes.last_abandoned_by_project_user_array[0].lastname | slice:0:1}}.
-                              <span style="display: block;font-style: italic; color: red;"> (the last one he left)
+                              <span style="display: block;font-style: italic; color: red;"> ({{'theLastOneWhoLeft' | translate}})
                               </span>
                             </span>
                           </div>
