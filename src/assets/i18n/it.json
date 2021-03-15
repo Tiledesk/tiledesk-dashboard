@@ -697,6 +697,7 @@
         "YouCanSpecifyAgentsIndividualChatLimit": "Puoi specificare il limite di chat simultanea individuale degli agenti: seleziona un agente da modificare in Impostazioni > Utenti & Gruppi e nel suo profilo inserisci un valore nel campo Limite Chat.",
         "Reassignment": "Riassegnazione",
         "ReassignChatIf": "Riassegna la chat se l'agente non serve la chat assegnata entro il periodo di tempo specificato",
+        "TheChatWillBeBetweenTheUnassigned":"Se nessun agente risponde alla chat assegnata, la chat verrà elencata tra le non assegnate",
         "ReassignmentTimeout": "Timeout di riassegnazione",
         "TimeWithNoResponse": "Tempo (in secondi) senza risposta prima che una chat venga assegnata a un altro agente",
         "NotificationMsgs": {
@@ -1861,7 +1862,11 @@
     "HowHandlingImagesVideosButtonsAndMore": "Come gestire immagini, video, pulsanti e altro",
     "TheRequestWillBeReassignedToTheAgent": "La conversazione verrà riassegnata all'agente",
     "Type":"Tipo",
-    "ThisChatHasBeenAbandonedBy": "Questa chat è stata abbandonata da"
+    "ThisChatHasBeenAbandonedBy": "Questa chat è stata abbandonata da",
+    "theLastOneWhoLeft":"l'ultimo che ha abbandonato",
+    "AdjustSmartAssignment":"Regola l'assegnazione intelligente",
+    "ChatReassignmentIsEnabled":"Chat reassignment enabled",
+    "ChatReassignmentIsDisabled":"Chat reassignment disabled"
 
     
 }

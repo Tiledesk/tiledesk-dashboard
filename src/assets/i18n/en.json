@@ -702,6 +702,7 @@
         "YouCanSpecifyAgentsIndividualChatLimit": "You can specify agents’ individual concurrent chat limit: select an teammate to edit under Settings > Teammates & Groups and in his profile enter a value in the Chat Limit field.",
         "Reassignment": "Reassignment",
         "ReassignChatIf": "Reassign chat if the agent does not serve the assigned chat within a specified time frame",
+        "TheChatWillBeBetweenTheUnassigned":"If no agents respond to the assigned chat, the chat will be listed as an unassigned",
         "ReassignmentTimeout": "Reassignment Timeout",
         "TimeWithNoResponse": "Time (in sec) with no response before a chat is assigned to another agent",
         "NotificationMsgs": {
@@ -1880,5 +1881,10 @@
     "HowHandlingImagesVideosButtonsAndMore": "How handling images, videos, buttons and more",
     "TheRequestWillBeReassignedToTheAgent": "The conversation will be reassigned to the agent",
     "Type":"Type",
-    "ThisChatHasBeenAbandonedBy": "This chat has been abandoned by"
+    "ThisChatHasBeenAbandonedBy": "This chat has been abandoned by",
+    "theLastOneWhoLeft":"the last one who left",
+    "AdjustSmartAssignment":"Adjust smart assignment",
+    "ChatReassignmentIsEnabled":"Chat reassignment enabled",
+    "ChatReassignmentIsDisabled":"Chat reassignment disabled"
+    
 }

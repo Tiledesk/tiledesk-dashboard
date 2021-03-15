@@ -702,6 +702,7 @@
 		"YouCanSpecifyAgentsIndividualChatLimit": "Sie können Ihren Teamkollegen individuelle Chat-Limits zuweisen: Wählen Sie dazu unter Einstellungen > Teamkollegen & Gruppen einen Teamkollegen aus und geben Sie einen Wert in das Feld Chat-Limit ein",
 		"Reassignment": "Neuzuweisung",
 		"ReassignChatIf": "Chat neu zuweisen wenn die Andrage nicht in einem gewissen Zeitfenster beantwortet wurde",
+		"TheChatWillBeBetweenTheUnassigned":"Wenn keine Agenten auf den zugewiesenen Chat antworten, wird der Chat als nicht zugewiesener Chat aufgeführt",
 		"ReassignmentTimeout": "Neuzuweisung Timeout",
 		"TimeWithNoResponse": "Zeit (in Sekunden) ohne Antwort bevor ein Chat neu zugewiesen wird",
 		"NotificationMsgs": {
@@ -1864,6 +1865,10 @@
 	"HowHandlingImagesVideosButtonsAndMore": "Wie man mit Bildern, Videos, Schaltflächen und mehr umgeht",
 	"TheRequestWillBeReassignedToTheAgent": "Das Gespräch wird an den Agenten zugewiesen werden",
 	"Type":"Typ",
-	"ThisChatHasBeenAbandonedBy": "Dieser Chat wurde von abgebrochen"
+	"ThisChatHasBeenAbandonedBy": "Dieser Chat wurde von abgebrochen",
+	"theLastOneWhoLeft":"der letzte, den er verlassen hat",
+	"AdjustSmartAssignment":"Intelligente Zuordnung einstellen",
+	"ChatReassignmentIsEnabled":"Chat-Neuzuweisung aktiviert",
+    "ChatReassignmentIsDisabled":"Neuzuweisung des Chats deaktiviert"
 
 }
