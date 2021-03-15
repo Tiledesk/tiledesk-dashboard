@@ -3,6 +3,9 @@
 
 ### 2.1.36
 - Fixes bug of channels icons size in conversation detail
+- Adds a badge that displays a tooltip on the unassigned conversations icon with the list of agents who have left the chat
+- Adds, on the close button of the modal window "Add agent to a conversation" and "Reassign conversation", the effect on the mouse hover
+- Adds, in the details of the Resolution bot > modal window Import CSV file > download example.csv, the field intent_display_name
 
 ### 2.1.35
 - bug fixes: the modal "reassign conversation" and the modal "add agent to the conversation" are not displayed correctly when the window width is less than 992px 
