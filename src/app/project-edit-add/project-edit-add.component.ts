@@ -139,7 +139,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   USER_ROLE: string;
 
   onlyOwnerCanManageTheAccountPlanMsg: string;
-  learnMoreAboutDefaultRoles : string;
+  learnMoreAboutDefaultRoles: string;
 
   constructor(
     private projectService: ProjectService,
@@ -170,14 +170,14 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
     this.translateStrings()
 
-   
+
 
     this.getProjectId();
     this.getBrowserLanguage();
     this.getOSCODE();
     this.getAllUsersOfCurrentProject();
     this.getPendingInvitation();
-   
+
     this.getProjectUserRole();
     //this.checkCurrentStatus();
   }
@@ -240,7 +240,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         this.onlyOwnerCanManageTheAccountPlanMsg = translation;
       });
 
-    
+
     this.translate.get('LearnMoreAboutDefaultRoles')
       .subscribe((translation: any) => {
         // console.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
@@ -1213,6 +1213,22 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     this.projectService.updateAdvancedSettings(this.max_agent_assigned_chat, this.reassignment_delay, this.automatic_idle_chats, this.chat_limit_on, this.reassignment_on, this.automatic_unavailable_status_on)
       .subscribe((prjct) => {
         console.log('PRJCT-EDIT-ADD UPDATE ADVANCED SETTINGS - RES ', prjct);
+
+        // -------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        // I call "this.auth.projectSelected" so that the project is republished and can have the updated data of the advanced options (smart assign) in the conversation list
+        // -------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        const _project: Project = {
+          _id: prjct['_id'],
+          name: prjct['name'],
+          profile_name: prjct['profile'].name,
+          trial_expired: prjct['trialExpired'],
+          trial_days_left: prjct['trialDaysLeft'],
+          operatingHours: prjct['activeOperatingHours']
+        }
+
+        this.auth.projectSelected(_project)
+
+
       }, (error) => {
         console.log('PRJCT-EDIT-ADD UPDATE ADVANCED SETTINGS - ERROR ', error);
         this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem');
