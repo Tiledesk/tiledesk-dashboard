@@ -947,14 +947,15 @@
 
                     <!-- NEW -->
                     <td class="td-actions text-right">
-                      <button style="padding-top:0px" type="button" rel="tooltip"
+                      <button id="edit-faq" style="padding-top:0px" type="button" rel="tooltip"
                         title="{{ 'FaqPage.tooltipEditFaq' | translate }}" class="btn btn-primary btn-simple btn-xs"
                         (click)='goToEditAddPage_EDIT(faq?._id)'>
                         <i class="material-icons">edit</i>
                       </button>
-                      <button style="padding-top:0px" type="button" rel="tooltip"
+
+                      <button id="delete-faq" style="padding-top:0px" type="button" rel="tooltip"
                         title="{{ 'FaqPage.DeleteFaq' | translate }}" class="btn btn-danger btn-simple btn-xs"
-                        (click)='openDeleteModal(faq?._id)'>
+                        (click)='$event.stopPropagation();openDeleteModal(faq?._id)'>
                         <i class="material-icons">close</i>
                       </button>
                     </td>
@@ -991,7 +992,7 @@
 
         <!-- =================== MODAL DELETE FAQ =================== -->
         <!-- <div class="backdrop" [ngStyle]="{'display':display}"></div> -->
-        <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}"
+        <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayDeleteFaqModal}"
           style="background-color: rgba(90,90,90,0.5);">
           <div class="modal-dialog" role="document">
             <div class="modal-content">

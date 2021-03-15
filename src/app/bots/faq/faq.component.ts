@@ -46,7 +46,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   DISPLAY_DATA_FOR_UPDATE_MODAL = false;
   DISPLAY_DATA_FOR_DELETE_MODAL = false;
   // set to none the property display of the modal
-  display = 'none';
+  displayDeleteFaqModal = 'none';
 
   id_faq_kb: string;
   faq_kb_remoteKey: string;
@@ -1075,7 +1075,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   // deptName: string,
   openDeleteModal(id: string) {
     console.log('ON OPEN MODAL TO DELETE FAQ -> FAQ ID ', id);
-    this.display = 'block';
+    this.displayDeleteFaqModal = 'block';
     this.id_toDelete = id;
     // this.faq_toDelete = deptName;
   }
@@ -1083,7 +1083,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   /**
    * DELETE FAQ (WHEN THE 'CONFIRM' BUTTON IN MODAL IS CLICKED)  */
   onCloseDeleteModalHandled() {
-    this.display = 'none';
+    this.displayDeleteFaqModal = 'none';
 
     this.mongodbFaqService.deleteMongoDbFaq(this.id_toDelete).subscribe((data) => {
       console.log('DELETE FAQ ', data);
@@ -1175,7 +1175,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
   // CLOSE MODAL WITHOUT SAVE THE UPDATES OR WITHOUT CONFIRM THE DELETION
   onCloseModal() {
-    this.display = 'none';
+    this.displayDeleteFaqModal = 'none';
     this.displayInfoModal = 'none';
     this.displayImportModal = 'none';
   }
