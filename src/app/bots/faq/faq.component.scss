@@ -797,3 +797,17 @@ input[type="text"]:disabled::placeholder {
   right: 0px;
 }
 // --------- ./end new on-off btn logo ---------
+
+.close-modal-window {
+  float: right;
+  border: unset;
+  font-size: 31px;
+  border-radius: 50%;
+  height: 36px;
+  width: 36px;
+  background-color: rgb(221, 223, 230);
+}
+
+.close-modal-window:hover {
+  background-color: rgb(207, 210, 215) !important;
+}

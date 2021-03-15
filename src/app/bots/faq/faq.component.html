@@ -159,8 +159,9 @@
                 <!-- [disabled]="!is_external_bot" -->
                 <!-- <div class="row"> -->
                 <!-- <div class="col-xs-10" style="padding-right: 2px;"> -->
-                <textarea id="faqKbUrlToUpdate" name="faqKbUrlToUpdate" [(ngModel)]="faqKbUrlToUpdate" rows="2" style="resize: vertical;"
-                  class="input" type="text" placeholder="{{ 'BotsPage.EnterExternalBotUrl' | translate }}">
+                <textarea id="faqKbUrlToUpdate" name="faqKbUrlToUpdate" [(ngModel)]="faqKbUrlToUpdate" rows="2"
+                  style="resize: vertical;" class="input" type="text"
+                  placeholder="{{ 'BotsPage.EnterExternalBotUrl' | translate }}">
                     </textarea>
                 <!-- </div> -->
 
@@ -184,8 +185,8 @@
               <label class="col-sm-2 custom-label">{{ 'Description' | translate }}</label>
               <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
 
-                <textarea id="bot_description" name="bot_description" [(ngModel)]="faqKb_description" rows="3" style="resize: vertical;"
-                  class="input" type="text" placeholder="{{ 'Description' | translate }}">
+                <textarea id="bot_description" name="bot_description" [(ngModel)]="faqKb_description" rows="3"
+                  style="resize: vertical;" class="input" type="text" placeholder="{{ 'Description' | translate }}">
                     </textarea>
               </div>
             </div>
@@ -686,18 +687,18 @@
                         <span class="dropdown-item">{{ 'Questions' | translate }} </span>
                       </li>
                       <li>
-                        <input type="checkbox" checked disabled /> 
-                       <span class="dropdown-item"> {{ 'FaqPage.Answer' | translate }} </span> 
+                        <input type="checkbox" checked disabled />
+                        <span class="dropdown-item"> {{ 'FaqPage.Answer' | translate }} </span>
                       </li>
                       <li>
                         <input type="checkbox" checked disabled />
-                        <span class="dropdown-item">{{ "BotsAddEditPage.Messages" | translate }} </span> 
+                        <span class="dropdown-item">{{ "BotsAddEditPage.Messages" | translate }} </span>
                       </li>
                       <li>
-                        <input type="checkbox" checked disabled /> 
-                        <span class="dropdown-item"> {{ 'FaqPage.Topic' | translate }}</span> 
+                        <input type="checkbox" checked disabled />
+                        <span class="dropdown-item"> {{ 'FaqPage.Topic' | translate }}</span>
                       </li>
-                        
+
                     </ul>
                   </div>
 
@@ -1052,30 +1053,41 @@
           <!-- modal-sm   -->
           <div class="modal-dialog" role="document">
             <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
-                  <span aria-hidden="true">&times;</span>
+              <div class="modal-header" style="padding: 8px 15px;">
+                <!-- class="close" -->
+                <button type="button" class="close-modal-window" aria-label="Close" (click)="onCloseModal()">
+                  <span aria-hidden="true" style="color: rgb(6, 6, 6) !important;position: relative;top: -2px;">&times;</span>
                 </button>
 
-                <h4 class="modal-title">
+                <h4 class="modal-title" style="line-height: 2!important;">
                   <!-- Import CSV file -->
                   {{ 'FaqPage.ImportCsvFile' | translate }}
                 </h4>
               </div>
 
-              <div class="modal-body">
+              <div class="modal-body" style="padding-bottom: 20px !important; padding-top: 20px;">
 
                 <div class="row" style="margin-right: 0px; margin-bottom:8px">
-                  <div class="col-xs-6 col-xs-offset-3"
-                    style="text-align:center; border: 1px solid #eeeeee;background-color: antiquewhite">
+                  <div class="col-xs-8 col-xs-offset-2"
+                    style="text-align:center; border: 1px solid #3ea9f5;background-color:#3ea9f5; color: #fff">
                     <p (click)="downloadExampleCsv()" style="margin:5px; cursor:pointer"> <i class="material-icons"
                         style="font-size:18px; top: 4px; position: relative;">save_alt</i>
                       {{ 'download' | translate }} <span style="font-weight:400"> {{ 'examplecsv' | translate }} </span>
                     </p>
                   </div>
-                  <div class="col-xs-6 col-xs-offset-3"
+                  <div class="col-xs-8 col-xs-offset-2"
                     style="text-align:center; border-left: 1px solid #eeeeee; border-right: 1px solid #eeeeee">
-                    <p style="margin:5px">
+                    <p style="margin:5px; font-weight: 400;">
+                      <span>
+                        <em>
+                          intent_display_name
+                        </em>
+                      </span>
+                      <span>
+                        <strong>
+                          {{csvColumnsDelimiter}}
+                        </strong>
+                      </span>
                       <span>
                         <em>
                           <!-- Question -->
@@ -1100,14 +1112,16 @@
                 <div class="row" style="margin-right: 0px;">
                   <div class="col-sm-12">
                     <label
-                      style="height: 36px; padding-top:10px; padding-left:16px; padding-right:16px; text-align:right; color: #7695a5;"
+                      style="height: 36px; padding-top:10px; padding-left:16px; padding-right:16px; text-align:right; color: #7695a5;font-weight: 300 !important;"
                       class="col-xs-6 col-sm-6 ">
                       <!-- Columns separated with: -->
                       {{ 'FaqPage.ColumnsSeparatedWith' | translate }}
                     </label>
                     <div class="col-xs-6 col-sm-6" style="text-align:start">
-                      <input style="padding-left:5px; margin-top:7px; width:55px" [(ngModel)]="csvColumnsDelimiter"
-                        (keyup)="countDelimiterDigit($event)">
+                      <input style="padding-left:5px; margin-top:7px; width:55px; border-radius: 5px;
+                      border: 1px solid #d9d9d9 !important;
+                      font-weight: 600;
+                      padding-left: 10px;" [(ngModel)]="csvColumnsDelimiter" (keyup)="countDelimiterDigit($event)">
                     </div>
 
                   </div>
@@ -1124,7 +1138,13 @@
 
               </div>
 
-              <div class="modal-footer" style="text-align: center;">
+              <div class="modal-footer" style="text-align: center;
+              padding-top: 0px !important;
+              padding-bottom: 10px;
+              background-color: #fff;
+              border-top: unset;
+              border-bottom-left-radius: 6px;
+              border-bottom-right-radius: 6px;">
 
                 <input style="display:inline" name="fileChangeUploadCSV" id="fileChangeUploadCSV" class="inputfile"
                   type="file" (change)="fileChangeUploadCSV($event)" accept=".csv" />
