@@ -7,10 +7,11 @@
 - Adds, on the close button of the modal window "Add agent to a conversation" and "Reassign conversation", the effect on the mouse hover
 - Adds, in the details of the bot Resolution > modal window Import CSV file, in the downloadable file "example.csv" the field intent_display_name,
 - Fixes the bug: In the details of "Resolution" bot type, when clicking the Delete Question button, the button redirects to the edit page
-- Adds, in the conversation list, buttons that highlight the options enabled in Project Settings> Smart Assignment
+- Adds, in the conversation list, buttons that highlight the options enabled in Project Settings > Smart Assignment
+- Adds the ability, for administrators and owners, to manage Smart Assign for any type of project account
 
 ### 2.1.35
-- bug fixes: the modal "reassign conversation" and the modal "add agent to the conversation" are not displayed correctly when the window width is less than 992px 
+- Bug fixes: the modal "reassign conversation" and the modal "add agent to the conversation" are not displayed correctly when the window width is less than 992px 
 - Customize the size of modal windows "Add agent to a conversation" and "Reassign conversation" when viewed in the right sidebar of chat
 - Adds, in modal windows "Add agent to a conversation" and "Reassign conversation", the avatars of the departments on which the is highlighted the status of the department (visible/not visible, active/ not active)
 - Adds the check mark of the assignee in modal windows "Add agent to a conversation" and "Reassign conversation" when viewed in the right sidebar of chat
