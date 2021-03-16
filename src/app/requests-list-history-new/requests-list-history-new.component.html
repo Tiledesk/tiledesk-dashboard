@@ -197,13 +197,13 @@
                     {{ 'HistoryPage.DateRange' | translate }}
                   </label>
                   <div class="col-sm-6 left-date-picker">
-                    <my-date-picker placeholder="{{ 'HoursPage.From' | translate }}" name="mydate"
+                    <my-date-picker placeholder="{{ 'From' | translate }}" name="mydate"
                       (dateChanged)="startDateSelected($event)" [options]="myDatePickerOptions" [(ngModel)]="startDate"
                       [disabled]="date_picker_is_disabled">
                     </my-date-picker>
                   </div>
                   <div class="col-sm-6 right-date-picker">
-                    <my-date-picker placeholder="{{ 'HoursPage.To' | translate }}" name="mydate"
+                    <my-date-picker placeholder="{{ 'To' | translate }}" name="mydate"
                       (dateChanged)="endDateSelected($event)" [options]="endDatePickerOptions" [(ngModel)]="endDate"
                       [disabled]="date_picker_is_disabled || start_date_is_null">
                     </my-date-picker>
