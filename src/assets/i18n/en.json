@@ -1886,13 +1886,17 @@
     "Type":"Type",
     "ThisChatHasBeenAbandonedBy": "This chat has been abandoned by",
     "theLastOneWhoLeft":"the last one who left",
-    "AdjustSmartAssignment":"Adjust smart assignment",
+    "AdjustSmartAssignment":"Adjust Smart Assign",
     "ChatReassignmentIsEnabled":"Chat reassignment enabled",
     "ChatReassignmentIsDisabled":"Chat reassignment disabled",
     "ReassignmentIsEnabled":"Reassignment enabled",
     "ReassignmentIsDisabled":"Reassignment disabled",
     "ChatLimitEnabled":"Chat limit enabled",
     "ChatLimitDisabled":"Chat limit disabled",
-    "AutomaticUnavailableeStatusEnabled":"Automatic unavailable status enabled",
-    "AutomaticUnavailableStatusDisabled":"Automatic unavailable status disabled"
+    "AutomaticUnavailableeStatusEnabled":"Automatic unavailable enabled",
+    "AutomaticUnavailableStatusDisabled":"Automatic unavailable disabled",
+    "UsersWiththeAgentroleCannotManageTheAdvancedOptionsOfTheProject":"Users with the Agent role cannot manage the advanced options of the project",
+    "ThisFeatureIsAvailableWithTheProPlan": "This feature is available with the PRO plan",
+    "From":"From",
+    "To":"To"
 }

@@ -1869,14 +1869,18 @@
 	"Type":"Typ",
 	"ThisChatHasBeenAbandonedBy": "Dieser Chat wurde von abgebrochen",
 	"theLastOneWhoLeft":"der letzte, den er verlassen hat",
-	"AdjustSmartAssignment":"Intelligente Zuordnung einstellen",
+	"AdjustSmartAssignment":"Stellen Sie Smart Assign",
 	"ChatReassignmentIsEnabled":"Chat-Neuzuweisung aktiviert",
 	"ChatReassignmentIsDisabled":"Neuzuweisung des Chats deaktiviert",
 	"ReassignmentIsEnabled":"Neuzuweisung aktiviert",
 	"ReassignmentIsDisabled":"Neuzuweisung deaktiviert",
 	"ChatLimitEnabled":"Chat-Limit aktiviert",
 	"ChatLimitDisabled":"Chat-Limit deaktiviert",
-	"AutomaticUnavailableeStatusEnabled":"Automatischer Status 'Nicht verfügbar aktiviert",
-    "AutomaticUnavailableStatusDisabled":"Automatischer Status 'Nicht verfügbar' deaktiviert"
+	"AutomaticUnavailableeStatusEnabled":"Automatisch nicht verfügbar aktiviert",
+	"AutomaticUnavailableStatusDisabled":"Automatisch nicht verfügbar deaktiviert",
+	"UsersWiththeAgentroleCannotManageTheAdvancedOptionsOfTheProject":"Benutzer mit der Agentenrolle können keine erweiterten Projektoptionen verwalten",
+	"ThisFeatureIsAvailableWithTheProPlan": "Diese Funktion ist mit dem PRO-Plan verfügbar",
+	"From":"Von",
+    "To":"bis"
 
 }

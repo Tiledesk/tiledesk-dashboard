@@ -1867,16 +1867,17 @@
     "Type":"Tipo",
     "ThisChatHasBeenAbandonedBy": "Questa chat è stata abbandonata da",
     "theLastOneWhoLeft":"l'ultimo che ha abbandonato",
-    "AdjustSmartAssignment":"Regola l'assegnazione intelligente",
+    "AdjustSmartAssignment":"Regola Smart Assign",
     "ChatReassignmentIsEnabled":"Riassegnazione chat abilitata",
     "ChatReassignmentIsDisabled":"Riassegnazione chat disattivata",
     "ReassignmentIsEnabled":"Riassegnazione abilitata",
     "ReassignmentIsDisabled":"Riassegnazione disattivata",
     "ChatLimitEnabled":"Limite chat abilitato",
     "ChatLimitDisabled":"Limite chat disabilitato",
-    "AutomaticUnavailableeStatusEnabled":"Stato non disponibile automatico abilitato",
-    "AutomaticUnavailableStatusDisabled":"Stato non disponibile automatico disabilitato"
-
-
-    
+    "AutomaticUnavailableeStatusEnabled":"Non disponibile automatico abilitato",
+    "AutomaticUnavailableStatusDisabled":"Non disponibile automatico disabilitato",
+    "UsersWiththeAgentroleCannotManageTheAdvancedOptionsOfTheProject":"Users with the Agent role cannot manage the advanced options of the project",
+    "ThisFeatureIsAvailableWithTheProPlan": "Questa funzione è disponibile con il piano PRO",
+     "From":"Dal",
+    "To":"Al"
 }
