@@ -719,3 +719,27 @@ $f21blue: #039be5;
     font-size: 12px;
     font-weight: 400;
 }
+
+.tool-tip-bottom--custom {
+  white-space: nowrap !important;
+  min-width: fit-content !important;
+  text-align: center !important;
+  padding: 5px 10px !important;
+  top: 29px !important;
+  font-size: 10px !important;
+}
+
+.email-wpr {
+  background: #bb001b;
+  border-radius: 50%;
+}
+.form-wpr {
+  background: #39988D;
+  border-radius: 50%;
+}
+
+.channel-img-in-conversations {
+  width: 24px;
+  height: 24px;
+}
+
