@@ -31,6 +31,8 @@ import { ContactsService } from '../../services/contacts.service';
 import { Observable } from 'rxjs';
 import { ProjectUser } from '../../models/project-user';
 import { ProjectService } from '../../services/project.service';
+import { ProjectPlanService } from '../../services/project-plan.service';
+const swal = require('sweetalert');
 // import {Observable,of, empty} from 'rxjs'
 
 @Component({
@@ -156,6 +158,15 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   maximum_chats: number; // key max_agent_assigned_chat
   AUTOMATIC_UNAVAILABLE_STAUS_IS_ENABLED: boolean; // automatic_unavailable_status_on
   chats_reassigned: number // key automatic_idle_chats
+  // DISPLAY_MODAL_UPGRADE_PLAN: boolean; // NOT USED
+  // DISPLAY_MODAL_SUBSCRIPTION_PROBLEM: boolean; // NOT USED
+  CURRENT_USER_ROLE: string;
+  agentCannotManageAdvancedOptions: string;
+  learnMoreAboutDefaultRoles: string;
+  featureIsAvailableWithTheProPlan: string;
+
+  prjct_profile_name: string;
+  subscription_end_date: any;
   /**
    * Constructor
    * 
@@ -181,7 +192,8 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     private departmentService: DepartmentService,
     public notify: NotifyService,
     public contactsService: ContactsService,
-    private projectService: ProjectService
+    private projectService: ProjectService,
+    private prjctPlanService: ProjectPlanService
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify);
     this.zone = new NgZone({ enableLongStackTrace: false });
@@ -202,6 +214,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     this.getDepartments();
     // this.getWsRequests$();
     this.getCurrentProjectAndThenDetProjectById();
+    // this.getProjectPlan();
     this.getLoggedUser();
     this.getProjectUserRole();
 
@@ -225,12 +238,45 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     this.translateString()
   }
 
+  ngAfterViewInit() { }
+
+  ngOnDestroy() {
+    console.log('% »»» WebSocketJs WF +++++ ws-requests--- list ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ ngOnDestroy')
+    if (this.subscription) {
+      this.subscription.unsubscribe()
+    }
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+
+    this.projectUserArray.forEach(projectuser => {
+      this.wsRequestsService.unsubsToToWsAllProjectUsersOfTheProject(projectuser.id_user._id)
+    });
+  }
 
   translateString() {
     this.translate.get('NewRequesterCreatedSuccessfully')
       .subscribe((translation: any) => {
         this.newRequesterCreatedSuccessfullyMsg = translation;
       });
+
+
+    this.translate.get('UsersWiththeAgentroleCannotManageTheAdvancedOptionsOfTheProject')
+      .subscribe((translation: any) => {
+        this.agentCannotManageAdvancedOptions = translation;
+      });
+
+    this.translate.get('LearnMoreAboutDefaultRoles')
+      .subscribe((translation: any) => {
+        this.learnMoreAboutDefaultRoles = translation;
+      });
+
+    this.translate.get('ThisFeatureIsAvailableWithTheProPlan')
+      .subscribe((translation: any) => {
+        this.featureIsAvailableWithTheProPlan = translation;
+      });
+
+
+
   }
 
 
@@ -261,13 +307,10 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   }
 
   displayProjectUserImageSkeleton() {
-
     setTimeout(() => {
       this.showRealTeammates = true;
-
     }, 2500);
   }
-
 
 
   getTestSiteUrl() {
@@ -278,27 +321,6 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   getChatUrl() {
     this.CHAT_BASE_URL = this.appConfigService.getConfig().CHAT_BASE_URL;
     console.log('AppConfigService getAppConfig (WS-REQUESTS-LIST COMP.) CHAT_BASE_URL', this.CHAT_BASE_URL);
-  }
-
-  ngAfterViewInit() { }
-
-  ngOnDestroy() {
-    console.log('% »»» WebSocketJs WF +++++ ws-requests--- list ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ ngOnDestroy')
-    if (this.subscription) {
-      this.subscription.unsubscribe()
-    }
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-
-    this.projectUserArray.forEach(projectuser => {
-      this.wsRequestsService.unsubsToToWsAllProjectUsersOfTheProject(projectuser.id_user._id)
-    });
-
-
-  }
-
-  goToOperatingHours() {
-    this.router.navigate(['project/' + this.projectId + '/hours']);
   }
 
   goToNoRealtimeConversations() {
@@ -355,8 +377,9 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         takeUntil(this.unsubscribe$)
       )
       .subscribe((user_role) => {
-        console.log('% »»» WebSocketJs WF +++++ ws-requests---  WsRequestsList USER ROLE ', user_role);
+        console.log('WS-REQUESTS-LIST - USER ROLE ', user_role);
         if (user_role) {
+          this.CURRENT_USER_ROLE = user_role;
           if (user_role === 'agent') {
             this.ROLE_IS_AGENT = true
             this.displayBtnLabelSeeYourRequets = true
@@ -546,12 +569,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
         //     //   console.log('WS-REQUESTS-LIST - GET PROJECT-USERS TEMP qui entro ');
         //     // }
-
-
         // });
-
-
-
 
         // this.projectUserArray.sort((n1, n2) => {
         //   if (n1.user_available_rt === true) {
@@ -716,8 +734,29 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     this.projectService.getProjectById(projectid).subscribe((project: any) => {
       console.log('WS-REQUESTS-LIST - GET PROJECT BY ID - RES: ', project);
 
-      if (project.settings) {
+      // if (project && project.profile) {
+      //   this.prjct_profile_name = project.profile.name
+      //   this.subscription_end_date = project.profile.subEnd
+      //   if (project.profile.type === 'free' && project.trialExpired === true) {
+      //     this.DISPLAY_MODAL_UPGRADE_PLAN = true;
+      //     this.DISPLAY_MODAL_SUBSCRIPTION_PROBLEM = false;
+      //   } else if (project.profile.type === 'payment' && project.isActiveSubscription === false) {
+      //     this.DISPLAY_MODAL_UPGRADE_PLAN = true;
+      //     this.DISPLAY_MODAL_SUBSCRIPTION_PROBLEM = true;
+      //   } else if (project.profile.type === 'free' && project.trialExpired === false || project.profile.type === 'payment' && project.isActiveSubscription === true) {
+      //     this.DISPLAY_MODAL_UPGRADE_PLAN = false;
+      //     this.DISPLAY_MODAL_SUBSCRIPTION_PROBLEM = false;
+      //   }
+      // }
 
+      if (project && project.activeOperatingHours === true) {
+        let operatingHoursObj = JSON.parse(project.operatingHours)
+        const operatingHoursSizeObj = Object.keys(operatingHoursObj).length;
+        console.log('WS-REQUESTS-LIST - GET PROJECT BY ID operatingHoursSizeObj: ', operatingHoursSizeObj);
+      }
+
+
+      if (project && project.settings) {
         if (project.settings.reassignment_on === true) {
           this.CHAT_REASSIGNMENT_IS_ENABLED = true;
           this.reassignment_timeout = project.settings.reassignment_delay
@@ -739,23 +778,11 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
           this.AUTOMATIC_UNAVAILABLE_STAUS_IS_ENABLED = false
         }
 
-
-
       } else {
         this.CHAT_REASSIGNMENT_IS_ENABLED = false;
         this.CHAT_LIMIT_IS_ENABLED = false;
         this.AUTOMATIC_UNAVAILABLE_STAUS_IS_ENABLED = false;
       }
-
-      // CHAT_REASSIGNMENT_IS_ENABLED: boolean // reassignment_on
-      // reassignment_timeout: number; // reassignment_delay
-      // CHAT_LIMIT_IS_ENABLED: boolean // key chat_limit_on
-      // maximum_chats: number; // key max_agent_assigned_chat
-      // AUTOMATIC_UNAVAILABLE_STAUS_IS_ENABLED: boolean; // automatic_unavailable_status_on
-      // chats_reassigned: number // key automatic_idle_chats
-
-
-
 
     }, error => {
       // this.showSpinner = false;
@@ -766,10 +793,96 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     });
   }
 
+  goToOperatingHours() {
+    if (this.CURRENT_USER_ROLE !== 'agent') {
+      this.router.navigate(['project/' + this.projectId + '/hours']);
+    } else {
+      this.presentModalAgentCannotManageAvancedSettings();
+    }
+  }
+
+
   goToProjectSettings_Advanced() {
     console.log('WS-REQUESTS-LIST HAS CLICKED goToProjectSettings_Advanced');
-    this.router.navigate(['project/' + this.projectId + '/project-settings/advanced']);
+
+    if (this.CURRENT_USER_ROLE !== 'agent') {
+      this.router.navigate(['project/' + this.projectId + '/project-settings/advanced']);
+
+    } else if (this.CURRENT_USER_ROLE === 'agent') {
+      this.presentModalAgentCannotManageAvancedSettings();
+    }
+
+    // if (this.CURRENT_USER_ROLE !== 'agent') {
+    //   console.log('WS-REQUESTS-LIST CURRENT_USER_ROLE 1 ', this.CURRENT_USER_ROLE, 'DISPLAY_MODAL_UPGRADE_PLAN 1', this.DISPLAY_MODAL_UPGRADE_PLAN)
+    //   if (this.DISPLAY_MODAL_UPGRADE_PLAN === false && this.DISPLAY_MODAL_SUBSCRIPTION_PROBLEM === false) {
+    //     console.log('WS-REQUESTS-LIST CURRENT_USER_ROLE ', this.CURRENT_USER_ROLE, 'DISPLAY_MODAL_UPGRADE_PLAN ', this.DISPLAY_MODAL_UPGRADE_PLAN)
+    //     this.router.navigate(['project/' + this.projectId + '/project-settings/advanced']);
+    //   } else if (this.DISPLAY_MODAL_UPGRADE_PLAN === true) {
+    //     if (this.CURRENT_USER_ROLE === 'admin') {
+    //       this.presentModalFeatureAvailableWithProPlanUserRoleAdmin();
+    //     }
+    //     if (this.CURRENT_USER_ROLE === 'owner') {
+    //       if (this.DISPLAY_MODAL_SUBSCRIPTION_PROBLEM === true) {
+    //         this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+    //       }
+    //       if (this.DISPLAY_MODAL_SUBSCRIPTION_PROBLEM === false) {
+    //         this.presentModalFeatureAvailableWithProPlanUserRoleOwner();
+    //       }
+    //     }
+    //     // this.presentModalOnlyOwnerCanManageTheAccountPlan()
+    //   }
+    // } else if (this.CURRENT_USER_ROLE === 'agent') {
+    //   this.presentModalAgentCannotManageAvancedSettings();
+    // }
   }
+
+  presentModalAgentCannotManageAvancedSettings() {
+    const el = document.createElement('div')
+    el.innerHTML = this.agentCannotManageAdvancedOptions + '. ' + "<a href='https://docs.tiledesk.com/knowledge-base/understanding-default-roles/' target='_blank'>" + this.learnMoreAboutDefaultRoles + "</a>"
+
+    swal({
+
+      content: el,
+      icon: "info",
+      button: {
+        text: "OK",
+      },
+      dangerMode: false,
+    })
+  }
+
+  // NOT USED 
+  presentModalFeatureAvailableWithProPlanUserRoleAdmin() {
+    swal({
+      text: this.featureIsAvailableWithTheProPlan,
+      icon: "info",
+      button: {
+        text: "OK",
+      },
+      dangerMode: false,
+    })
+  }
+
+  // NOT USED 
+  presentModalFeatureAvailableWithProPlanUserRoleOwner() {
+    swal({
+      text: this.featureIsAvailableWithTheProPlan,
+      icon: "info",
+      buttons: ["Cancel", "Upgrade Plan"],
+      dangerMode: false,
+    })
+      .then((upgradePlan) => {
+        if (upgradePlan) {
+          console.log('WS-REQUESTS-LIST swal upgradePlan', upgradePlan)
+          this.router.navigate(['project/' + this.projectId + '/pricing']);
+        } else {
+          console.log('WS-REQUESTS-LIST swal upgradePlan (else)', upgradePlan)
+        }
+      });
+  }
+
+
+
 
   seeIamAgentRequests(seeIamAgentReq) {
     this.ONLY_MY_REQUESTS = seeIamAgentReq
@@ -1244,7 +1357,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
                     this.usersLocalDbService.saveMembersInStorage(projectuser['id_user']._id, projectuser['id_user']);
                     this.usersLocalDbService.saveUserInStorageWithProjectUserId(projectuser['_id'], projectuser['id_user']);
-                    
+
                     this.createArrayLast_abandoned_by_project_user(projectuser['id_user'], request);
                   })
                 }, error => {
@@ -1257,7 +1370,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
                   // console.log('WS-REQUESTS-LIST - LAST PROJECT-USER THAT HAS ABANDONED project_users_found_in_storage 2', users_found_in_storage_by_projectuserid)
 
                   // if (_users_found_in_storage_by_projectuserid !== null) {
-                    
+
                   // }
 
                 });
@@ -1343,12 +1456,12 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
               }
               // }
             }
-
-
-
-            //  replace this.currentUserID with this.auth.user_bs.value._id  because at the go back from the request's details this.currentUserID at the moment in which is passed in currentUserIdIsInParticipants is undefined 
-            request['currentUserIsJoined'] = this.currentUserIdIsInParticipants(request.participants, this.auth.user_bs.value._id, request.request_id);
           }
+
+
+
+          //  replace this.currentUserID with this.auth.user_bs.value._id  because at the go back from the request's details this.currentUserID at the moment in which is passed in currentUserIdIsInParticipants is undefined 
+          request['currentUserIsJoined'] = this.currentUserIdIsInParticipants(request.participants, this.auth.user_bs.value._id, request.request_id);
 
           if (request.status === 200) {
             // USE CASE L'ARRAY new_participants è UNDEFINED x es al refresh o quando si entra nella pagina (anche al back dal dettaglio) o all' UPDATE

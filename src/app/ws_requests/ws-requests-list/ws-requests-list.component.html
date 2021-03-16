@@ -43,7 +43,7 @@
   </li>
 
   <!--OPERATING HOURS -->
-  <li class="operating-hours right-li" style="float: right;padding-left: 5px;">
+  <!-- <li class="operating-hours right-li" style="float: right;padding-left: 5px;">
     <a attr.aria-label="{{ 'OperatingHoursAreDisabled' | translate }}" href="javascript:;" role="button"
       class="tool_tip" style="cursor: pointer; display: unset;" *ngIf="!OPERATING_HOURS_ACTIVE"
       (click)="goToOperatingHours()">
@@ -65,7 +65,7 @@
         <i></i>
       </div>
     </a>
-  </li>
+  </li> -->
 
   <!-- NO REALTIME REQUESTS -->
   <li class="see-no-realtime-request right-li" style="float: right; padding-right: 5px;"
@@ -127,8 +127,6 @@
         add_circle
       </span>
       {{ 'CreateTicket' | translate }}
-      <!-- {{ 'Ticket' | translate }} -->
-
     </button>
   </li>
 
@@ -165,14 +163,12 @@
   </li>
 
   <!--OPERATING HOURS * FOR SMALL SCREEN -->
-  <li class="operating-hours" style="float: right;padding-left: 5px;">
+  <!-- <li class="operating-hours" style="float: right;padding-left: 5px;">
     <a attr.aria-label="{{ 'OperatingHoursAreDisabled' | translate }}" href="javascript:;" role="button"
       class="tool_tip" style="cursor: pointer; display: unset;color: #797979;" *ngIf="!OPERATING_HOURS_ACTIVE"
       (click)="goToOperatingHours()">
       <i class="material-icons">access_time</i>
-
-      <!-- <p class="hidden-lg hidden-md">operatinghoursoff</p> -->
-      <div class="bottom"
+       <div class="bottom"
         style="text-align: center; padding: 4px; border-radius: 3px; text-transform: none; min-width: fit-content; white-space: nowrap;">
         {{ 'OperatingHoursAreDisabled' | translate }}
         <i></i>
@@ -188,7 +184,7 @@
         <i></i>
       </div>
     </a>
-  </li>
+  </li> -->
 
   <!-- SHOW SERVED REQUEST MAP * FOR SMALL SCREEN -->
   <li class="see-no-realtime-request" style="float: right; padding-right: 5px; " (click)='openRightSideBar()'>
@@ -402,55 +398,11 @@
 
 
         <div class="row">
-          <!--  -------------------------------------------------------------------------------------- -->
-          <!--  @ OLD TEAMMATES SCROLL DIV  !!! display none  -->
-          <!--  -------------------------------------------------------------------------------------- -->
-          <div class="col-xs-12" style="padding-right: 5px; display: none;">
-            <div class="card card--no-border" style="margin: 5px 0;">
-              <div class="card-content"
-                style="padding-top: 0px;padding-left: 0px;padding-right: 0px;padding-bottom: 0px;">
-
-                <!-- projectUserArray: {{ projectUserArray | json }} -->
-                <div class="team-container">
-                  <div style="float: left" class="side">
-                    <i class="material-icons" (click)="scrollLeft()">keyboard_arrow_left</i>
-                  </div>
-                  <div class="team-content middle" #teamContent>
-                    <div class="team-agent" *ngFor="let agent of projectUserArray">
-                      <!-- *ngIf="agent?._id.indexOf('bot_') === -1"  -->
-                      <img class="team-avatar" style=""
-                        src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?.id_user._id}}%2Fphoto.jpg?alt=media"
-                        onerror="this.src='assets/img/no_image_user.png'">
-
-                      <!-- <img *ngIf="agent?._id.indexOf('bot_') !== -1" class="team-avatar" style="margin: 0;
-                                  width: 32px;
-                                  height: 32px;
-                                  min-width: 32px;border-radius: 50%;
-                                  font-size: 17px;
-                                  font-weight: 600;
-                                  text-align: center;" src="assets/img/bot_image_as_human.jpg"
-                          onerror="this.src='assets/img/no_image_user.png'"> -->
-
-                      <div class="assigned_requests_count">{{agent?.number_assigned_requests_rt}}</div>
-                      <div class="team-agent-status-icon"
-                        [ngClass]="{'is-user-online': agent?.user_available_rt === true, 'is-user-offline':agent?.user_available_rt === false   }">
-                      </div>
-                    </div>
-                  </div>
-                  <div style="float: right" class="side">
-                    <i class="material-icons" (click)="scrollRight()">keyboard_arrow_right</i>
-                  </div>
-                </div>
-                <!-- ./ team-container -->
-
-              </div> <!-- ./ card-content -->
-            </div> <!-- ./ card -->
-          </div>
 
           <!--  -------------------------------------------------------------------------------------- -->
           <!--  @ New TEAMMATES SCROLL DIV -->
           <!--  -------------------------------------------------------------------------------------- -->
-          <div class="col-xs-12" style="padding-right: 5px;">
+          <div class="col-xs-12" style="padding-right: 5px;" *ngIf="ROLE_IS_AGENT === false">
             <div class="card card--no-border" style="margin: 5px 0;margin-top: 8px;">
               <div class="card-content"
                 style="padding-top: 0px;padding-left: 0px;padding-right: 0px;padding-bottom: 0px;">
@@ -524,12 +476,9 @@
                     </div>
                   </div>
 
-
-
                   <!-- ---------------------------------------------- -->
                   <!-- Skeleton -->
                   <!-- ---------------------------------------------- -->
-
                   <div class="served-by-conv-a" *ngIf="showRealTeammates === false">
                     <div class="served-by-conv-b" *ngFor="let fake of generateFake(project_user_length)">
 
@@ -617,7 +566,7 @@
       </div>
     </div>
     <!-- ------====== / .end CARDS COUNT OF REQUESTS: ACTIVE, SERVED & UNSERVED AND REQUESTS FOR DEPTS ======------ -->
-
+    <!-- *ngIf="ROLE_IS_AGENT === false" -->
     <div class="row">
       <div class="col-xs-12">
         <!-- style="background: rgb(231,241,255);" -->
@@ -643,58 +592,9 @@
                 {{ 'OperatingHoursEnabled' | translate }}
               </span>
             </span>
-
             <span class="btn--link">
-
               <span>
                 {{'AdjustOperatingHours' | translate}}
-              </span>
-              <span class="material-icons" style="vertical-align: middle;">
-                keyboard_arrow_right
-              </span>
-
-            </span>
-
-          </button>
-          <!-- #e4e6eb -->
-          <!-- <span class="wpr-material-icons">
-            <span class="material-icons conv-option-icon"
-              [ngClass]="{'conv-option-icon-active': OPERATING_HOURS_ACTIVE}">
-              access_time_filled
-            </span> -->
-
-
-          <!-- --------------------------------------------------- -->
-          <!-- Chat reassignment -->
-          <!-- --------------------------------------------------- -->
-          <button class="btn btn-primary-active" [ngClass]="{'btn-primary-no-active': !CHAT_REASSIGNMENT_IS_ENABLED }"
-            (click)="goToProjectSettings_Advanced()">
-            <span class="material-icons conv-option-icon tool_tip"
-              [ngClass]="{'conv-option-icon-active': CHAT_REASSIGNMENT_IS_ENABLED}">
-              shuffle_on
-              <span class="top">
-                <h4 style="white-space: normal;
-              line-height: 14px;
-              font-weight: 400;">
-                  {{ "ProjectEditPage.ItReassignChatIf" | translate }}.
-                  {{'ProjectEditPage.TheChatWillBeBetweenTheUnassigned' | translate }}</h4>
-                <h4 style="font-weight: 400;"> timeout (in sec): {{reassignment_timeout}} </h4>
-                <i></i>
-              </span>
-            </span>
-
-            <span class="btn--text">
-              <span *ngIf="!CHAT_REASSIGNMENT_IS_ENABLED">
-                {{ 'ReassignmentIsDisabled' | translate }}
-              </span>
-              <span *ngIf="CHAT_REASSIGNMENT_IS_ENABLED">
-                {{ 'ReassignmentIsEnabled' | translate }}
-              </span>
-            </span>
-
-            <span class="btn--link">
-              <span>
-                {{'AdjustSmartAssignment' | translate}}
               </span>
               <span class="material-icons" style="vertical-align: middle;">
                 keyboard_arrow_right
@@ -715,9 +615,9 @@
               line-height: 14px;
               font-weight: 400;">
                   {{ "ProjectEditPage.ItLimitChatsNumber" | translate }}.
-
                 </h4>
-                <h4 style="font-weight: 400;"> {{'ProjectEditPage.MaximumChats' | translate}}: {{maximum_chats}} </h4>
+                <h4 *ngIf="maximum_chats" style="font-weight: 400;"> {{'ProjectEditPage.MaximumChats' | translate}}:
+                  {{maximum_chats}} </h4>
                 <i></i>
               </span>
             </span>
@@ -741,11 +641,53 @@
             </span>
           </button>
 
+          <!-- --------------------------------------------------- -->
+          <!-- Chat reassignment -->
+          <!-- --------------------------------------------------- -->
+          <button class="btn btn-primary-active" [ngClass]="{'btn-primary-no-active': !CHAT_REASSIGNMENT_IS_ENABLED }"
+            (click)="goToProjectSettings_Advanced()">
+            <span class="material-icons conv-option-icon tool_tip"
+              [ngClass]="{'conv-option-icon-active': CHAT_REASSIGNMENT_IS_ENABLED}">
+              shuffle_on
+              <span class="top">
+                <h4 style="white-space: normal;
+              line-height: 14px;
+              font-weight: 400;">
+                  {{ "ProjectEditPage.ItReassignChatIf" | translate }}.
+                  {{'ProjectEditPage.TheChatWillBeBetweenTheUnassigned' | translate }}</h4>
+                <h4 *ngIf="reassignment_timeout" style="font-weight: 400;"> Timeout (in sec): {{reassignment_timeout}}
+                </h4>
+                <i></i>
+              </span>
+            </span>
+
+            <span class="btn--text">
+              <span *ngIf="!CHAT_REASSIGNMENT_IS_ENABLED">
+                {{ 'ReassignmentIsDisabled' | translate }}
+              </span>
+              <span *ngIf="CHAT_REASSIGNMENT_IS_ENABLED">
+                {{ 'ReassignmentIsEnabled' | translate }}
+              </span>
+            </span>
+
+            <span class="btn--link">
+              <span>
+                {{'AdjustSmartAssignment' | translate}}
+              </span>
+              <span class="material-icons" style="vertical-align: middle;">
+                keyboard_arrow_right
+              </span>
+            </span>
+          </button>
+
+
+
 
           <!-- --------------------------------------------------- -->
           <!-- Automatic unavailable status -->
           <!-- --------------------------------------------------- -->
-          <button class="btn btn-primary-active" [ngClass]="{'btn-primary-no-active': !AUTOMATIC_UNAVAILABLE_STAUS_IS_ENABLED }"
+          <button class="btn btn-primary-active"
+            [ngClass]="{'btn-primary-no-active': !AUTOMATIC_UNAVAILABLE_STAUS_IS_ENABLED }"
             (click)="goToProjectSettings_Advanced()">
             <span class="material-icons conv-option-icon tool_tip"
               [ngClass]="{'conv-option-icon-active': AUTOMATIC_UNAVAILABLE_STAUS_IS_ENABLED}">
@@ -757,7 +699,8 @@
                   {{ "ProjectEditPage.ItSetAnAgentStatusToUnavailable" | translate }}.
 
                 </h4>
-                <h4 style="font-weight: 400;"> {{'ProjectEditPage.MaximumChats' | translate}}: {{maximum_chats}} </h4>
+                <h4 *ngIf="chats_reassigned" style="white-space: normal;  line-height: 14px; font-weight: 400;">
+                   {{'ProjectEditPage.NumberOfChatsReassignedBefore' | translate}}: {{chats_reassigned}} </h4>
                 <i></i>
               </span>
             </span>
