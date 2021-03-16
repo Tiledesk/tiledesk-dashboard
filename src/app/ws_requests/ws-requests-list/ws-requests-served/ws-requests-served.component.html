@@ -370,7 +370,6 @@
             <!-- Channel - Form -->
             <!-- ---------------------------------------- -->
             <span *ngIf="request?.channel?.name === 'form'" class="tool_tip form-wpr">
-              
               <img style="padding:4px !important" src="assets/img/channel_icons/form-logo_v2_white.svg" 
                 class="img-fluid channel-img-in-conversations">
 
@@ -715,6 +714,7 @@
           // --------------------------------------------
           // SERVED BY DESKTOP
           // -------------------------------------------- -->
+          <!-- {{ request?.participanting_Agents }} -->
           <td *ngIf="!isMobile">
             <div class="served-by-desktop-a">
               <div class="served-by-desktop-b" *ngFor="let agent of request?.participanting_Agents; let first = first;">
