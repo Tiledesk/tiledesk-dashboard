@@ -167,6 +167,10 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
   prjct_profile_name: string;
   subscription_end_date: any;
+
+  public_Key: string;
+  isVisibleSmartAssignOption: boolean;
+  isVisibleOPH: boolean;
   /**
    * Constructor
    * 
@@ -207,6 +211,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
    * On init
    */
   ngOnInit() {
+    this.getOSCODE();
     // this.getStorageBucketFromUserServiceSubscription();
     this.getStorageBucketAndThenProjectUsers();
     /* getDepartments da valutare se viene ancora usato (veniva usato di sicuro durante la creazione della richiesta interna ora sosstiuiyo con
@@ -251,6 +256,60 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     this.projectUserArray.forEach(projectuser => {
       this.wsRequestsService.unsubsToToWsAllProjectUsersOfTheProject(projectuser.id_user._id)
     });
+  }
+
+
+  getOSCODE() {
+
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    console.log('AppConfigService getAppConfig (WS-REQUESTS-LIST) public_Key', this.public_Key);
+    let keys = this.public_Key.split("-");
+    console.log('PUBLIC-KEY (WS-REQUESTS-LIST) keys', keys)
+    keys.forEach(key => {
+      // console.log('NavbarComponent public_Key key', key)
+
+      if (key.includes("PSA")) {
+        console.log('PUBLIC-KEY (WS-REQUESTS-LIST) - key', key);
+        let psa = key.split(":");
+        console.log('PUBLIC-KEY (WS-REQUESTS-LIST) - pay key&value', psa);
+        if (psa[1] === "F") {
+          this.isVisibleSmartAssignOption = false;
+        } else {
+          this.isVisibleSmartAssignOption = true;
+        }
+      }
+
+      if (key.includes("OPH")) {
+        // console.log('PUBLIC-KEY (SIDEBAR) - key', key);
+        let oph = key.split(":");
+        console.log('PUBLIC-KEY (WS-REQUESTS-LIST) - pay key&value', oph);
+
+        if (oph[1] === "F") {
+          this.isVisibleOPH = false;
+          console.log('PUBLIC-KEY (WS-REQUESTS-LIST) - isVisibleOPH', this.isVisibleOPH);
+        } else {
+          this.isVisibleOPH = true;
+          console.log('PUBLIC-KEY (WS-REQUESTS-LIST) - isVisibleOPH', this.isVisibleOPH);
+        }
+      }
+
+    });
+
+
+    if (!this.public_Key.includes("PSA")) {
+      console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("PSA")', this.public_Key.includes("PSA"));
+      this.isVisibleSmartAssignOption = false;
+    }
+
+    if (!this.public_Key.includes("OPH")) {
+      console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("OPH")', this.public_Key.includes("OPH"));
+      this.isVisibleOPH = false;
+    }
+
+
+
+
+
   }
 
   translateString() {

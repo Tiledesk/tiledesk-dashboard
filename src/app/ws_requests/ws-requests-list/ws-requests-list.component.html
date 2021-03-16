@@ -576,7 +576,7 @@
           <!-- --------------------------------------------------- -->
           <!-- Operating hours -->
           <!-- --------------------------------------------------- -->
-          <button class="btn btn-primary-active" [ngClass]="{'btn-primary-no-active': !OPERATING_HOURS_ACTIVE }"
+          <button *ngIf="isVisibleOPH" class="btn btn-primary-active" [ngClass]="{'btn-primary-no-active': !OPERATING_HOURS_ACTIVE }"
             (click)="goToOperatingHours()">
             <span class="material-icons conv-option-icon"
               [ngClass]="{'conv-option-icon-active': OPERATING_HOURS_ACTIVE}">
@@ -605,7 +605,7 @@
           <!-- --------------------------------------------------- -->
           <!-- Chat Limit -->
           <!-- --------------------------------------------------- -->
-          <button class="btn btn-primary-active" [ngClass]="{'btn-primary-no-active': !CHAT_LIMIT_IS_ENABLED }"
+          <button *ngIf="isVisibleSmartAssignOption"  class="btn btn-primary-active" [ngClass]="{'btn-primary-no-active': !CHAT_LIMIT_IS_ENABLED }"
             (click)="goToProjectSettings_Advanced()">
             <span class="material-icons conv-option-icon tool_tip"
               [ngClass]="{'conv-option-icon-active': CHAT_LIMIT_IS_ENABLED}">
@@ -644,7 +644,7 @@
           <!-- --------------------------------------------------- -->
           <!-- Chat reassignment -->
           <!-- --------------------------------------------------- -->
-          <button class="btn btn-primary-active" [ngClass]="{'btn-primary-no-active': !CHAT_REASSIGNMENT_IS_ENABLED }"
+          <button  *ngIf="isVisibleSmartAssignOption"  class="btn btn-primary-active" [ngClass]="{'btn-primary-no-active': !CHAT_REASSIGNMENT_IS_ENABLED }"
             (click)="goToProjectSettings_Advanced()">
             <span class="material-icons conv-option-icon tool_tip"
               [ngClass]="{'conv-option-icon-active': CHAT_REASSIGNMENT_IS_ENABLED}">
@@ -686,7 +686,7 @@
           <!-- --------------------------------------------------- -->
           <!-- Automatic unavailable status -->
           <!-- --------------------------------------------------- -->
-          <button class="btn btn-primary-active"
+          <button  *ngIf="isVisibleSmartAssignOption"  class="btn btn-primary-active"
             [ngClass]="{'btn-primary-no-active': !AUTOMATIC_UNAVAILABLE_STAUS_IS_ENABLED }"
             (click)="goToProjectSettings_Advanced()">
             <span class="material-icons conv-option-icon tool_tip"
