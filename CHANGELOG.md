@@ -5,10 +5,11 @@
 - Fixes bug of channels icons size in conversation detail
 - Adds a badge that displays a tooltip on the unassigned conversations icon with the list of agents who have left the chat
 - Adds, on the close button of the modal window "Add agent to a conversation" and "Reassign conversation", the effect on the mouse hover
-- Adds, in the details of the bot Resolution > modal window Import CSV file, in the downloadable file "example.csv" the field intent_display_name,
+- Adds, in the details of the bot Resolution > modal window Import CSV file, in the downloadable file "example.csv" the field intent_display_name
 - Fixes the bug: In the details of "Resolution" bot type, when clicking the Delete Question button, the button redirects to the edit page
-- Adds, in the conversation list, buttons that highlight the options enabled in Project Settings > Smart Assignment
+- Adds, in the conversation list, buttons that highlight the options enabled in Project Settings > Smart Assign
 - Adds the ability, for administrators and owners, to manage Smart Assign for any type of project account
+- Updates the "Latest Updates" section on the home page
 
 ### 2.1.35
 - Bug fixes: the modal "reassign conversation" and the modal "add agent to the conversation" are not displayed correctly when the window width is less than 992px 
