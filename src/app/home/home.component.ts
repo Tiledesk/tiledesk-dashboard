@@ -27,7 +27,7 @@ import * as moment from 'moment'; /// VISITOR GRAPH FOR THE NEW NOME
 import { ContactsService } from '../services/contacts.service'; // USED FOR COUNT OF ACTIVE CONTACTS FOR THE NEW HOME
 import { FaqKbService } from '../services/faq-kb.service'; // USED FOR COUNT OF BOTS FOR THE NEW HOME
 import { avatarPlaceholder, getColorBck } from '../utils/util';
-import { forEach } from '@angular/router/src/utils/collection';
+
 const swal = require('sweetalert');
 @Component({
   selector: 'home',
@@ -603,14 +603,13 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   translateModalOnlyOwnerCanManageProjectAccount() {
     this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
       .subscribe((translation: any) => {
-        // console.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
+     
         this.onlyOwnerCanManageTheAccountPlanMsg = translation;
       });
 
 
     this.translate.get('LearnMoreAboutDefaultRoles')
       .subscribe((translation: any) => {
-        // console.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
         this.learnMoreAboutDefaultRoles = translation;
       });
   }
@@ -834,7 +833,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       }
       
     } else {
-      this.presentModalOnlyOwnerCanManageTheAccountPlan()
+      this.presentModalOnlyOwnerCanManageTheAccountPlan();
     }
   }
 
