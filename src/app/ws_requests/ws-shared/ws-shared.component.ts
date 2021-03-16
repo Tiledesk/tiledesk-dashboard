@@ -495,7 +495,7 @@ export class WsSharedComponent implements OnInit {
 
 
   currentUserIdIsInParticipants(participants: any, currentUserID: string, request_id): boolean {
-
+    console.log('!! Ws SHARED »»»»»»» currentUserIdIsInParticipants participants ', participants, ' currentUserID ',currentUserID) 
     let currentUserIsJoined = false
     participants.forEach((participantID: string) => {
 
@@ -512,9 +512,7 @@ export class WsSharedComponent implements OnInit {
   }
 
   getParticipantsInRequests(ws_requests) {
-
     const participantsId = [];
-
     this.participantsInRequests = [];
 
     // this.humanAgents = [];
