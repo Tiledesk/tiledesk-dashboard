@@ -40,7 +40,7 @@
   </li>
 
   <!-- <li *ngIf="(isVisibleAdvancedTab && DISPLAY_ADVANCED_TAB === true) || (isUNIS === true)" -->
-  <li *ngIf="isVisibleAdvancedTab"
+  <li *ngIf="isVisibleAdvancedTab && USER_ROLE !== 'agent'"
     (click)="goToProjectSettings_Advanced()" class="btn-with-border-effect"
     [ngClass]="{ 'li-active' : PROJECT_SETTINGS_ADVANCED_ROUTE === true, 'border-from-center': PROJECT_SETTINGS_ADVANCED_ROUTE === false }">
 
