@@ -966,8 +966,8 @@
         "Actions": "Azioni",
         "NoFAQ": "Nessuna FAQ",
         "FaqId": "Id FAQ",
-        "tooltipEditFaq": "Modifica FAQ",
-        "DeleteFaq": "Elimina FAQ",
+        "tooltipEditFaq": "Modifica risposta",
+        "DeleteFaq": "Elimina risposta",
         "TheFaqWithID": "La FAQ con Id",
         "WillBeDeleted": "verrà eliminata",
         "modalDeleteFaqWithId": "Elimina FAQ con Id",
@@ -984,6 +984,8 @@
         "Error": "Errore",
         "FaqsSuccessfullyUploaded": "FAQs caricate con successo",
         "AnErrorOccurredDuringTheUpload": "Si è verificato un errore durante il caricamento",
+        "AnErrorOccurredWhilDeletingTheAnswer":"Si è verificato un errore durante l'eliminazione della Risposta",
+        "AnswerSuccessfullyDeleted":"Risposta eliminata con successo",
         "Continue": "Continua"
     },
     "FaqEditAddPage": {
@@ -1879,5 +1881,6 @@
     "UsersWiththeAgentroleCannotManageTheAdvancedOptionsOfTheProject":"Users with the Agent role cannot manage the advanced options of the project",
     "ThisFeatureIsAvailableWithTheProPlan": "Questa funzione è disponibile con il piano PRO",
      "From":"Dal",
-    "To":"Al"
+    "To":"Al",
+    "TheAnswerWillBeDeleted":"La risposta {{intent_name}} verrà eliminata"
 }

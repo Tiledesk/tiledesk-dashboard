@@ -970,8 +970,8 @@
 		"Actions": "Aktionen",
 		"NoFAQ": "Kein FAQ",
 		"FaqId": "FAQ Id",
-		"tooltipEditFaq": "FAQ bearbeiten",
-		"DeleteFaq": "FAQ löschen",
+		"tooltipEditFaq": "Antwort bearbeiten",
+		"DeleteFaq": "Antwort löschen",
 		"TheFaqWithID": "Das FAQ mit der Id",
 		"WillBeDeleted": "wird gelöscht",
 		"modalDeleteFaqWithId": "Lösche FAQ with Id",
@@ -988,6 +988,8 @@
 		"Error": "Fehler",
 		"FaqsSuccessfullyUploaded": "FAQs erfolgreich hochgeladen",
 		"AnErrorOccurredDuringTheUpload": "Ein Fehler ist während des Uploads aufgetreten",
+		"AnErrorOccurredWhilDeletingTheAnswer":"Beim Löschen der Antwort ist ein Fehler aufgetreten",
+		"AnswerSuccessfullyDeleted":"Antwort erfolgreich gelöscht",
 		"Continue": "Weiter"
 	},
 	"FaqEditAddPage": {
@@ -1881,6 +1883,7 @@
 	"UsersWiththeAgentroleCannotManageTheAdvancedOptionsOfTheProject":"Benutzer mit der Agentenrolle können keine erweiterten Projektoptionen verwalten",
 	"ThisFeatureIsAvailableWithTheProPlan": "Diese Funktion ist mit dem PRO-Plan verfügbar",
 	"From":"Von",
-    "To":"bis"
+	"To":"bis",
+	"TheAnswerWillBeDeleted":"Die Antwort {{intent_name}} wird gelöscht"
 
 }
