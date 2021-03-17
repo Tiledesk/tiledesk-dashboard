@@ -1901,5 +1901,6 @@
     "ThisFeatureIsAvailableWithTheProPlan": "This feature is available with the PRO plan",
     "From":"From",
     "To":"To",
-    "TheAnswerWillBeDeleted":"The Answer {{intent_name}} will be deleted"
+    "TheAnswerWillBeDeleted":"The Answer {{intent_name}} will be deleted",
+    "NumberOfReplies":"Number of replies"
 }

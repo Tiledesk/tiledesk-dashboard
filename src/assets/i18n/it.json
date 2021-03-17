@@ -1882,5 +1882,6 @@
     "ThisFeatureIsAvailableWithTheProPlan": "Questa funzione è disponibile con il piano PRO",
      "From":"Dal",
     "To":"Al",
-    "TheAnswerWillBeDeleted":"La risposta {{intent_name}} verrà eliminata"
+    "TheAnswerWillBeDeleted":"La risposta {{intent_name}} verrà eliminata",
+    "NumberOfReplies":"Numero di risposte"
 }

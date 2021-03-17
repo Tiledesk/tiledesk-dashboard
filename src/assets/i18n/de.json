@@ -1884,6 +1884,7 @@
 	"ThisFeatureIsAvailableWithTheProPlan": "Diese Funktion ist mit dem PRO-Plan verfügbar",
 	"From":"Von",
 	"To":"bis",
-	"TheAnswerWillBeDeleted":"Die Antwort {{intent_name}} wird gelöscht"
+	"TheAnswerWillBeDeleted":"Die Antwort {{intent_name}} wird gelöscht",
+	"NumberOfReplies":"Anzahl der Antworten"
 
 }
