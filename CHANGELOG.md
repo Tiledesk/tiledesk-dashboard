@@ -2,6 +2,7 @@
 # tiledesk-dashboard
 
 ### 2.1.37
+- Fixes the bug: the "Create a free account" button does not appear on the login page
 
 ### 2.1.36
 - Fixes bug of channels icons size in conversation detail
