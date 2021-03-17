@@ -679,7 +679,7 @@
                     <ul class="dropdown-menu pull-right" style="padding:12px">
                       <li>
                         <input type="checkbox" [(ngModel)]="display_intent_name_in_table"
-                          [checked]="display_intent_name_in_table" (change)="checkValue($event)" />
+                          [checked]="display_intent_name_in_table" (change)="checkValueIntentName($event)" />
                         <span class="dropdown-item"> {{ 'IntentName' | translate }} </span>
                       </li>
                       <li>
@@ -695,7 +695,7 @@
                         <span class="dropdown-item">{{ "BotsAddEditPage.Messages" | translate }} </span>
                       </li>
                       <li>
-                        <input type="checkbox" checked disabled />
+                        <input type="checkbox" [checked]="display_topic_in_table" [(ngModel)]="display_topic_in_table" (change)="checkValueTopic($event)" />
                         <span class="dropdown-item"> {{ 'FaqPage.Topic' | translate }}</span>
                       </li>
 
@@ -811,7 +811,7 @@
               <table class="table table-hover">
                 <thead>
                   <tr>
-
+                     
                     <th *ngIf="display_intent_name_in_table === true">
 
                       <span class="column-th-span">
@@ -841,7 +841,7 @@
                       </span>
                     </th>
 
-                    <th>
+                    <th *ngIf="display_topic_in_table === true"> 
                       <!-- TOPIC -->
                       <span class="column-th-span">
                         {{ 'FaqPage.Topic' | translate }}
@@ -919,15 +919,19 @@
                       style="white-space: normal !important; word-wrap: break-word;font-size:13px; font-weight:400; word-break: break-all;">
                       <span *ngIf="faq.message_count" class="tooltipx">
                         {{ faq?.message_count }}
-                        <span class="tooltiptext">Number of replies: <br> {{ faq?.message_count }} </span>
+                        <span class="tooltiptext" style="white-space: nowrap; cursor: pointer;">
+                          {{'NumberOfReplies' | translate}}:{{ faq?.message_count }} 
+                        </span>
                       </span>
                       <span *ngIf="!faq.message_count" class="tooltipx">
                         0
-                        <span class="tooltiptext">Number of replies: <br> 0 </span>
+                        <span class="tooltiptext" style="white-space: nowrap;cursor: pointer;">
+                          {{'NumberOfReplies' | translate}}: 0 
+                        </span>
                       </span>
                     </td>
 
-                    <td>
+                    <td *ngIf="display_topic_in_table === true">
                       <span class="tooltipx" style="font-size:13px; font-weight:400">
                         {{ faq?.topic }}
                         <!-- <span class="tooltiptext">{{ 'FaqPage.FaqId' | translate }}: <br> {{ faq?._id }} </span> -->

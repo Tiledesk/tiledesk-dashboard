@@ -126,6 +126,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   WEBHOOK_URL_HAS_ERROR: boolean;
 
   display_intent_name_in_table: boolean = false;
+  display_topic_in_table: boolean = false;
   previousUrl: string;
   currentUrl: string;
   navigation_history = []
@@ -341,10 +342,17 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     this.validateUrl($event)
   }
 
-  checkValue(event: any) {
+  checkValueIntentName(event: any) {
     // console.log('Faqcomponent check value display_intent_name_in_table event' , event) 
     console.log('Faqcomponent check value display_intent_name_in_table', this.display_intent_name_in_table)
   }
+
+
+  checkValueTopic (event: any) {
+    console.log('Faqcomponent check value display_topic_in_table', this.display_topic_in_table)
+  }
+
+  
 
 
   getDialogFlowBotData(dlgflwbotid: string) {
