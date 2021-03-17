@@ -212,7 +212,7 @@ export class BotListComponent implements OnInit {
         }
 
         for (let bot of this.faqkbList) {
-          console.log("BOT LIST - GET NUM OF MESSAGE - BOT : ", bot);
+          // console.log("BOT LIST - GET NUM OF MESSAGE - BOT : ", bot);
           this.faqKbService.getNumberOfMessages(bot._id, bot.type).subscribe((res: any) => {
             console.log("Messages sent from bot: ", res);
             if (res.length == 0) {
