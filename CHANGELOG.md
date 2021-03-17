@@ -6,6 +6,7 @@
 - Fixes the bug: in the details of the bot, section Departments this bot is associated with, the department is sometimes duplicated
 - Adds, on the detail page of the bot type 'Resolution' > Answer details, the button Delete answer
 - Fixes the example.csv file downloadable from the 'Import CSV file' modal window
+- Fixes the bug: on the bot list page, the message count only works for Resolution type bots
 
 ### 2.1.36
 - Fixes bug of channels icons size in conversation detail
