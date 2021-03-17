@@ -426,8 +426,8 @@ export class FaqKbService {
 
   getNumberOfMessages(idBot, bottype) {
 
-    console.log('BOT LIST (bot-service) - getNumberOfMessages idBot ', idBot) 
-    console.log('BOT LIST (bot-service) - getNumberOfMessages bottype', bottype) 
+    // console.log('BOT LIST (bot-service) - getNumberOfMessages idBot ', idBot) 
+    // console.log('BOT LIST (bot-service) - getNumberOfMessages bottype', bottype) 
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': this.TOKEN
@@ -442,7 +442,7 @@ export class FaqKbService {
 
     let params = new HttpParams().set('sender', botid)
     // let params = new HttpParams().set('sender', 'bot_' + idBot)
-    console.log('BOT LIST (bot-service) - getNumberOfMessages params', params) 
+    // console.log('BOT LIST (bot-service) - getNumberOfMessages params', params) 
 
     return this.httpClient.get(this.SERVER_BASE_PATH + this.project._id + "/analytics/messages/count", { headers: headers, params: params })
 
