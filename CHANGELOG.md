@@ -1,6 +1,8 @@
 
 # tiledesk-dashboard
 
+### 2.1.37
+
 ### 2.1.36
 - Fixes bug of channels icons size in conversation detail
 - Adds a badge that displays a tooltip on the unassigned conversations icon with the list of agents who have left the chat
@@ -56,7 +58,7 @@
 - Fixes the bug: in the non-real-time conversations page, resetting the applied filters does not change the value selected in the "status" drop-down menu
 
 ### 2.1.28
-- Improves and fixes the "Create Internal Request" and "Add New Requestor" modal windows bugs
+- Improves and fixes the "Create Internal Request" and "Add New Requester" modal windows bugs
 - Allows, in the conversations list> unassigned conversations section and in the non-real-time conversations page, to archive conversations only for users with owner or administrator role
 - Adds the ability for assigned users of a conversation to open the chat directly from the list of non-real-time conversations
 - Adds the user's role to the navigation bar's user profile drop-down menu
