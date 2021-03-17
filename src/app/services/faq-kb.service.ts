@@ -424,13 +424,25 @@ export class FaqKbService {
 
   }
 
-  getNumberOfMessages(idBot) {
+  getNumberOfMessages(idBot, bottype) {
+
+    console.log('BOT LIST (bot-service) - getNumberOfMessages idBot ', idBot) 
+    console.log('BOT LIST (bot-service) - getNumberOfMessages bottype', bottype) 
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': this.TOKEN
     })
 
-    let params = new HttpParams().set('sender', 'bot_' + idBot)
+    let botid = ""
+    if (bottype === 'internal') {
+      botid = 'bot_' + idBot
+    }  else {
+      botid = idBot
+    }
+
+    let params = new HttpParams().set('sender', botid)
+    // let params = new HttpParams().set('sender', 'bot_' + idBot)
+    console.log('BOT LIST (bot-service) - getNumberOfMessages params', params) 
 
     return this.httpClient.get(this.SERVER_BASE_PATH + this.project._id + "/analytics/messages/count", { headers: headers, params: params })
 

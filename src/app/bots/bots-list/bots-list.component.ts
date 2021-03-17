@@ -183,7 +183,7 @@ export class BotListComponent implements OnInit {
   getFaqKbByProjectId() {
     // this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
     this.faqKbService.getAllBotByProjectId().subscribe((faqKb: any) => {
-      console.log('»»» »»» FAQs-KB GET BY PROJECT ID', faqKb);
+      console.log('BOT LIST - GET BOT BY PROJECT ID', faqKb);
       this.faqkbList = faqKb;
 
       if (this.faqkbList) {
@@ -212,7 +212,8 @@ export class BotListComponent implements OnInit {
         }
 
         for (let bot of this.faqkbList) {
-          this.faqKbService.getNumberOfMessages(bot._id).subscribe((res: any) => {
+          console.log("BOT LIST - GET NUM OF MESSAGE - BOT : ", bot);
+          this.faqKbService.getNumberOfMessages(bot._id, bot.type).subscribe((res: any) => {
             console.log("Messages sent from bot: ", res);
             if (res.length == 0) {
               bot.message_count = 0;
