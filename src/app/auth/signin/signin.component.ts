@@ -39,9 +39,10 @@ export class SigninComponent implements OnInit {
 
   userForm: FormGroup;
 
-  isVisibleV1L: boolean;
+  
   public_Key: string;
-  SUP: boolean;
+  SUP: boolean = true;
+  isVisibleV1L: boolean = true;
 
   // newUser = false; // to toggle login or signup form
   // passReset = false; // set to true when password reset is triggered
@@ -80,7 +81,7 @@ export class SigninComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    this.getOSCODE();
 
 
     // this.redirectIfLogged();
@@ -104,7 +105,7 @@ export class SigninComponent implements OnInit {
     // console.log('SIGN-IN - ACTUAL INNER WIDTH elem Left Panel Signin ',  elemLeftPanelSignin);
     // console.log('SIGN-IN - ACTUAL INNER WIDTH elem Left Panel Signin div offsetTop ',  elemLeftPanelSignin.getBoundingClientRect());
     // console.log('SIGN-IN - ACTUAL INNER WIDTH elem Left Panel Login Container offsetTop',  elemLoginContainer.offsetTop);
-    this.getOSCODE();
+  
   }
 
   redirectIfLogged() {
