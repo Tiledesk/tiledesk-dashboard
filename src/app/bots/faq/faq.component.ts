@@ -421,7 +421,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
         let count = 0;
         departments.forEach((dept: any) => {
-          console.log('FaqComponent - DEPT)', dept);
+          console.log('FaqComponent - DEPT', dept);
 
           if (dept.hasBot === true) {
             if (this.id_faq_kb === dept.id_bot) {
@@ -461,8 +461,15 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
               // if (dept.description) {
               //   let stripHere = 20;
               //   dept['truncated_desc'] = dept.description.substring(0, stripHere) + '...';
+
+              
               // }
-              this.DEPTS_BOT_IS_ASSOCIATED_WITH_ARRAY.push(dept)
+
+              this.DEPTS_BOT_IS_ASSOCIATED_WITH_ARRAY.indexOf(dept) === -1 ? this.DEPTS_BOT_IS_ASSOCIATED_WITH_ARRAY.push(dept) : console.log("This item already exists");
+
+
+
+              // this.DEPTS_BOT_IS_ASSOCIATED_WITH_ARRAY.push(dept)
             }
           }
 
