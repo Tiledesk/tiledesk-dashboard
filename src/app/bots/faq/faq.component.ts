@@ -130,6 +130,10 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   currentUrl: string;
   navigation_history = []
   previousPageIsCreateBot: boolean;
+
+  errorDeletingAnswerMsg: string;
+  answerSuccessfullyDeleted: string;
+
   constructor(
     private mongodbFaqService: MongodbFaqService,
     private router: Router,
@@ -230,8 +234,19 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
         this.notValidJson = text;
       });
 
+    this.translate.get('FaqPage.AnErrorOccurredWhilDeletingTheAnswer')
+      .subscribe((text: string) => {
+        this.errorDeletingAnswerMsg = text;
+      });
 
-  }
+      this.translate.get('FaqPage.AnswerSuccessfullyDeleted')
+      .subscribe((text: string) => {
+        this.answerSuccessfullyDeleted = text;
+      });
+
+
+
+    }
 
   getParamsBotType() {
     this.route.params.subscribe((params) => {
@@ -364,7 +379,6 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
 
   onFileChange(event: any) {
-
     // this.elemProgressPercent = <HTMLElement>document.querySelector('.percent');
     // console.log('PROGRESS ELEMENT ', this.elemProgressPercent);
 
@@ -391,10 +405,8 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
   onSelectDialogFlowBotLang(selectedLangCode: string) {
     if (selectedLangCode) {
-
       console.log('onSelectDialogFlowBotLang (FaqComponent) - Bot Type: ', this.botType, ' - selectedLang CODE : ', selectedLangCode);
       this.dlgflwSelectedLangCode = selectedLangCode
-
     }
   }
 
@@ -462,7 +474,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
               //   let stripHere = 20;
               //   dept['truncated_desc'] = dept.description.substring(0, stripHere) + '...';
 
-              
+
               // }
 
               this.DEPTS_BOT_IS_ASSOCIATED_WITH_ARRAY.indexOf(dept) === -1 ? this.DEPTS_BOT_IS_ASSOCIATED_WITH_ARRAY.push(dept) : console.log("This item already exists");
@@ -1114,13 +1126,16 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
       // });
     }, (error) => {
 
+      
+      
+
       console.log('DELETE FAQ ERROR ', error);
       // =========== NOTIFY ERROR ===========
-      this.notify.showNotification('An error occurred while deleting the FAQ', 4, 'report_problem');
+      this.notify.showNotification(this.errorDeletingAnswerMsg, 4, 'report_problem');
     }, () => {
       console.log('DELETE FAQ * COMPLETE *');
       // =========== NOTIFY SUCCESS===========
-      this.notify.showNotification('FAQ successfully deleted', 2, 'done');
+      this.notify.showNotification(this.answerSuccessfullyDeleted, 2, 'done');
     });
 
   }
