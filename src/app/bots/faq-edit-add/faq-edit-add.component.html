@@ -229,8 +229,11 @@
             <!-- <label style="" class="col-sm-2"></label> -->
             <div class="col-sm-12">
               <button class="btn btn-primary pull-right update-answer-btn" (click)="edit()" [disabled]="question_toUpdate?.length < 2 || answer_toUpdate?.length < 2 || intent_name?.length < 1">
-                <!-- Aggiorna FAQ -->
+                
                 {{ "FaqEditAddPage.UpdateFaq" | translate }}
+              </button>
+              <button class="btn btn-danger pull-right delete-answer-btn" (click)='presentSwalModalDeleteFag()' style="margin-right: 8px;">
+                {{ 'FaqPage.DeleteFaq' | translate }}
               </button>
             </div>
 

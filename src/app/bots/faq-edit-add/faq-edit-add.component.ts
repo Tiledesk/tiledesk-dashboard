@@ -44,7 +44,12 @@ export class FaqEditAddComponent implements OnInit {
   error_status: number;
   intentNameAlreadyExistsMsg: string;
   warningMsg: string;
-
+  answerWillBeDeletedMsg: string;
+  areYouSureMsg: string;
+  errorDeleting: string;
+  done_msg: string;
+  errorDeletingAnswerMsg: string;
+  answerSuccessfullyDeleted: string;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -58,7 +63,7 @@ export class FaqEditAddComponent implements OnInit {
   ngOnInit() {
 
     this.getTranslations()
-    
+
 
     this.auth.checkRoleForCurrentProject();
 
@@ -112,7 +117,13 @@ export class FaqEditAddComponent implements OnInit {
     this.translateCreateFaqErrorMsg();
     this.translateUpdateFaqSuccessMsg();
     this.translateUpdateFaqErrorMsg();
-    this.translateWarningMsg()
+    this.translateWarningMsg();
+   
+    this.translateAreYouSure();
+    this.translateErrorDeleting();
+    this.translateDone();
+    this.translateErrorOccurredDeletingAnswer();
+    this.translateAnswerSuccessfullyDeleted();
   }
 
   // TRANSLATION
@@ -121,7 +132,7 @@ export class FaqEditAddComponent implements OnInit {
       .subscribe((text: string) => {
 
         this.createFaqSuccessNoticationMsg = text;
-        console.log('+ + + CreateFaqSuccessNoticationMsg', text)
+        // console.log('+ + + CreateFaqSuccessNoticationMsg', text)
       });
   }
 
@@ -131,7 +142,7 @@ export class FaqEditAddComponent implements OnInit {
       .subscribe((text: string) => {
 
         this.createFaqErrorNoticationMsg = text;
-        console.log('+ + + DeleteLeadSuccessNoticationMsg', text)
+        // console.log('+ + + CreateFaqErrorNoticationMsg', text)
       });
   }
 
@@ -141,7 +152,7 @@ export class FaqEditAddComponent implements OnInit {
       .subscribe((text: string) => {
 
         this.editFaqSuccessNoticationMsg = text;
-        console.log('+ + + UpdateFaqSuccessNoticationMsg', text)
+        // console.log('+ + + UpdateFaqSuccessNoticationMsg', text)
       });
   }
 
@@ -151,21 +162,51 @@ export class FaqEditAddComponent implements OnInit {
       .subscribe((text: string) => {
 
         this.editFaqErrorNoticationMsg = text;
-        console.log('+ + + UpdateFaqErrorNoticationMsg', text)
+        // console.log('+ + + UpdateFaqErrorNoticationMsg', text)
       });
   }
 
   // TRANSLATION
   translateWarningMsg() {
-    this.translate.get('Warning')
-    .subscribe((text: string) => {
+    this.translate.get('Warning').subscribe((text: string) => {
+        this.warningMsg = text;
+        // console.log('+ + + warningMsg', text)
+      });
+  }
 
-      this.warningMsg = text;
-      console.log('+ + + warningMsg', text)
+  translateAreYouSure() {
+    this.translate.get('AreYouSure').subscribe((text: string) => {
+      this.areYouSureMsg = text;
     });
   }
- 
 
+  translateErrorDeleting() {
+    this.translate.get('ErrorDeleting').subscribe((text: string) => {
+      this.errorDeleting = text;
+    });
+  }
+
+  translateDone() {
+    this.translate.get('Done').subscribe((text: string) => {
+      this.done_msg = text;
+    });
+  }
+
+  translateErrorOccurredDeletingAnswer() {
+    this.translate.get('FaqPage.AnErrorOccurredWhilDeletingTheAnswer').subscribe((text: string) => {
+      this.errorDeletingAnswerMsg = text;
+       console.log('+ + + AnErrorOccurredWhilDeletingTheAnswer',  this.errorDeletingAnswerMsg)
+    });
+  }
+
+  translateAnswerSuccessfullyDeleted() {
+    this.translate.get('FaqPage.AnswerSuccessfullyDeleted').subscribe((text: string) => {
+        this.answerSuccessfullyDeleted = text;
+        console.log('+ + + AnswerSuccessfullyDeleted',  this.answerSuccessfullyDeleted)
+      });
+  }
+
+// /. end translations
 
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
@@ -174,9 +215,44 @@ export class FaqEditAddComponent implements OnInit {
     });
   }
 
+  presentSwalModalDeleteFag() {
+    swal({
+      title: this.areYouSureMsg,
+      text: this.answerWillBeDeletedMsg,
+      icon: "warning",
+      buttons: ["Cancel", "Delete"],
+      dangerMode: true,
+    })
+      .then((WillDelete) => {
+        if (WillDelete) {
+          console.log('WS-REQUESTS-LIST swal WillDelete', WillDelete)
+          this.mongodbFaqService.deleteMongoDbFaq(this.id_faq).subscribe((data) => {
 
+          }, (error) => {
 
-  /**
+            swal(this.errorDeletingAnswerMsg, {
+              icon: "error",
+            });
+
+            console.log('DELETE FAQ ERROR ', error);
+
+          }, () => {
+            console.log('DELETE FAQ * COMPLETE *');
+
+            swal(this.done_msg + "!", this.answerSuccessfullyDeleted , {
+              icon: "success",
+            }).then((okpressed) => {
+              this.location.back();
+            });
+
+          });
+        } else {
+          console.log('WS-REQUESTS-LIST swal WillDelete (else)')
+        }
+      });
+  }
+
+   /**
    * GET FAQ BY ID (GET THE DATA OF THE FAQ BY THE ID PASSED FROM FAQ LIST)
    * USED TO SHOW IN THE TEXAREA THE QUESTION AND THE ANSWER THAT USER WANT UPDATE
    */
@@ -199,6 +275,15 @@ export class FaqEditAddComponent implements OnInit {
     }, () => {
       console.log('FaqEditAddComponent - FAQ GET BY ID - COMPLETE ');
       this.showSpinner = false;
+
+      this.translateTheAnswerWillBeDeleted();
+    });
+  }
+
+  translateTheAnswerWillBeDeleted() {
+    let parameter = { intent_name: this.intent_name };
+    this.translate.get('TheAnswerWillBeDeleted', parameter).subscribe((text: string) => {
+      this.answerWillBeDeletedMsg = text;
     });
   }
 
@@ -239,10 +324,10 @@ export class FaqEditAddComponent implements OnInit {
         console.log('FaqEditAddComponent CREATED FAQ - ERROR ', error);
 
         if (error && error['status']) {
-          
+
           this.error_status = error['status']
           console.log('FaqEditAddComponent UPDATE FAQ - ERROR - ERROR-STATUS', this.error_status);
-         
+
           if (this.error_status === 409) {
             console.log('FaqEditAddComponent UPDATE FAQ - ERROR - ERROR-STATUS - TRANSLATE & PRESENT MODAL');
             this.translateAndPresentModalIntentNameAlreadyExist(this.intent_name);
@@ -285,12 +370,12 @@ export class FaqEditAddComponent implements OnInit {
         // this.notify.showNotification('An error occurred while updating the FAQ', 4, 'report_problem');
         this.notify.showWidgetStyleUpdateNotification(this.editFaqErrorNoticationMsg, 4, 'report_problem');
 
-     
+
         if (error && error['status']) {
-          
+
           this.error_status = error['status']
           console.log('FaqEditAddComponent UPDATE FAQ - ERROR - ERROR-STATUS', this.error_status);
-         
+
           if (this.error_status === 409) {
             console.log('FaqEditAddComponent UPDATE FAQ - ERROR - ERROR-STATUS - TRANSLATE & PRESENT MODAL');
             this.translateAndPresentModalIntentNameAlreadyExist(this.intent_name);
@@ -325,7 +410,7 @@ export class FaqEditAddComponent implements OnInit {
         this.intentNameAlreadyExistsMsg = text;
         console.log('+ + + intentNameAlreadyExistsMsg', text)
       }, (error) => {
-        
+
       }, () => {
         this.displayModalIntentNameAlreadyExist()
       });
