@@ -1054,7 +1054,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   }
 
   downloadExampleCsv() {
-    const examplecsv = 'intent_display_name 1; Question 1; Answer 1'
+    const examplecsv = 'Question; Answer; intent_id (must be unique); intent_display_name; webhook_enabled (must be false)' 
     this.downloadFile(examplecsv, 'example.csv');
   }
 
