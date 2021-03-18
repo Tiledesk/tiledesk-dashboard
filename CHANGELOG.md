@@ -4,6 +4,7 @@
 ### 2.1.38
 - Replaces all occurrences of 'closed' with 'archived'
 - Replaces all occurrences of 'Internal request' with 'Ticket'
+- Adds a brief description of the identity bot in the right bar of the details of the "Identity" bot
 
 ### 2.1.37
 - Fixes the bug: the "Create a free account" button does not appear on the login page
