@@ -1902,5 +1902,7 @@
     "From":"From",
     "To":"To",
     "TheAnswerWillBeDeleted":"The Answer {{intent_name}} will be deleted",
-    "NumberOfReplies":"Number of replies"
+    "NumberOfReplies":"Number of replies",
+    "YourProfilePhotoHasBeenUploadedSuccessfully!":"Your profile photo has been uploaded successfully!",
+    "RemovePhoto": "Remove Image"
 }

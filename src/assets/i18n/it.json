@@ -1883,5 +1883,8 @@
      "From":"Dal",
     "To":"Al",
     "TheAnswerWillBeDeleted":"La risposta {{intent_name}} verrà eliminata",
-    "NumberOfReplies":"Numero di risposte"
+    "NumberOfReplies":"Numero di risposte",
+    "YourProfilePhotoHasBeenUploadedSuccessfully!":"La tua foto del profilo è stata caricata con successo!",
+    "RemovePhoto": "Rimuovi immagine"
+
 }

@@ -1885,6 +1885,8 @@
 	"From":"Von",
 	"To":"bis",
 	"TheAnswerWillBeDeleted":"Die Antwort {{intent_name}} wird gelöscht",
-	"NumberOfReplies":"Anzahl der Antworten"
+	"NumberOfReplies":"Anzahl der Antworten",
+	"YourProfilePhotoHasBeenUploadedSuccessfully!":"Ihr Profilfoto wurde erfolgreich hochgeladen!",
+	"RemovePhoto": "Entferne Bild"
 
 }
