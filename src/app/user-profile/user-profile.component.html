@@ -51,16 +51,16 @@
 
                         <div class="row">
                             <div class="col-md-12">
-                              <h3 class="card_title__underlined" style="">
-                                <span class="card_title__underline">
-                                  {{ "UserProfile.YourDetails" | translate }}
-                                </span>
-                              </h3>
+                                <h3 class="card_title__underlined" style="">
+                                    <span class="card_title__underline">
+                                        {{ "UserProfile.YourDetails" | translate }}
+                                    </span>
+                                </h3>
                             </div>
                             <div class="col-md-12">
-                              <div class="section-subtitle"> </div>
+                                <div class="section-subtitle"> </div>
                             </div>
-                          </div>
+                        </div>
 
                         <div class="row">
                             <label class="col-sm-2 avatar_label">
@@ -74,9 +74,10 @@
                                     <img *ngIf="userProfileImageExist === false && userImageHasBeenUploaded !== true"
                                         class="user-img user-profile-image" src="assets/img/no_image_user.png" />
 
-                                    <input class="inputfile" name="file" id="file" type="file" (change)="upload($event)"
+                                    <input #fileInputUserProfileImage class="inputfile" name="teammate-image-profile"
+                                        id="teammate-image-profile" type="file" (change)="upload($event)"
                                         accept=".jpg" />
-                                    <label class="btn btn-white" for="file"
+                                    <label class="btn btn-white" for="teammate-image-profile"
                                         style="padding-left:15px; padding-right:15px; text-transform: none; color: #7695a5">
                                         <span *ngIf="!showSpinnerInUploadImageBtn">
                                             {{ "UserProfile.UploadImage" | translate }}
@@ -87,16 +88,32 @@
                                         </span>
                                     </label>
 
+                                    <button class="btn btn-white delete-user-image tool_tip"
+                                        (click)="deleteUserProfileImage()" style="padding: 9px 15px;">
+                                        <span class="material-icons" style="font-size: 24px; color: #f44336">
+                                            delete_forever
+                                        </span>
+
+                                        <span class="bottom" style="min-width: fit-content;padding: 5px;border-radius: 3px; text-transform: none;">
+                                            {{'RemovePhoto' | translate}}
+
+                                            <i></i>
+                                        </span>
+                                    </button>
+
+
+
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <label class="col-sm-2">
-                                
+
                             </label>
                             <div class="col-sm-10" style="margin-bottom: 12px;">
-                                
-                                <span style="color: #7695a5; font-size: 12px; display: block;"> {{ "UserProfile.PreferredSize" | translate }}</span>
+
+                                <span style="color: #7695a5; font-size: 12px; display: block;"> {{
+                                    "UserProfile.PreferredSize" | translate }}</span>
                                 <!-- <span style="display: block;color: #7695a5; font-size: 12px; display: block;"> {{ "UserProfile.AddYourOwnPicture" | translate }}</span> -->
                             </div>
                         </div>
@@ -143,7 +160,7 @@
 
                         <div class="row">
                             <label class="col-sm-2 custom-label">
-                             
+
                                 {{ "UserProfile.UserId" | translate }}
                             </label>
                             <div class="col-sm-10">
@@ -164,7 +181,8 @@
                                     </span>
                                     <span style="display: block; margin-left: 28px;">
                                         <a (click)="resendVerificationEmail()"
-                                            style="cursor: pointer; color: #03a5e8">{{ "UserProfile.ClickHereToResend" | translate }}
+                                            style="cursor: pointer; color: #03a5e8">{{ "UserProfile.ClickHereToResend" |
+                                            translate }}
                                         </a>
                                     </span>
                                 </div>

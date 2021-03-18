@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from '../core/auth.service';
 
 // USED FOR go back last page
@@ -45,10 +45,13 @@ export class UserProfileComponent implements OnInit {
   storageBucket: string;
   showSpinnerInUploadImageBtn = false;
   userRole: string;
+  profilePhotoWasUploaded: string;
 
   // used to unsuscribe from behaviour subject
   private unsubscribe$: Subject<any> = new Subject<any>();
-
+  
+  @ViewChild('fileInputUserProfileImage') fileInputUserProfileImage: any;
+  
   constructor(
     public auth: AuthService,
     private _location: Location,
@@ -70,6 +73,17 @@ export class UserProfileComponent implements OnInit {
     // used when the page is refreshed
     this.checkUserImageExist();
     this.getProjectUserRole();
+
+    this.translateStrings()
+  }
+
+  translateStrings() {
+    this.translate.get('YourProfilePhotoHasBeenUploadedSuccessfully')
+    .subscribe((text: string) => {
+
+      this.profilePhotoWasUploaded = text;
+    
+    });
   }
 
   getProjectUserRole() {
@@ -98,9 +112,20 @@ export class UserProfileComponent implements OnInit {
   }
 
   upload(event) {
+    console.log('PROFILE IMAGE (USER-PROFILE ) upload')
     this.showSpinnerInUploadImageBtn = true;
     const file = event.target.files[0]
     this.uploadImageService.uploadUserAvatar(file, this.userId)
+    this.fileInputUserProfileImage.nativeElement.value = '';
+  }
+
+  deleteUserProfileImage() {
+    // const file = event.target.files[0]
+    console.log('PROFILE IMAGE (USER-PROFILE ) deleteUserProfileImage')
+    this.uploadImageService.deleteProfileImage(this.userId);
+
+    const delete_user_image_btn = <HTMLElement>document.querySelector('.delete-user-image');
+    delete_user_image_btn.blur();
   }
 
   checkUserImageExist() {
@@ -117,6 +142,8 @@ export class UserProfileComponent implements OnInit {
   checkUserImageUploadIsComplete() {
     this.uploadImageService.imageExist.subscribe((image_exist) => {
       console.log('PROFILE IMAGE - IMAGE UPLOADING IS COMPLETE ? ', image_exist);
+
+      // this.notify.showWidgetStyleUpdateNotification(this.profilePhotoWasUploaded, 2, 'done');
       this.userImageHasBeenUploaded = image_exist;
       if (this.storageBucket && this.userImageHasBeenUploaded === true) {
 

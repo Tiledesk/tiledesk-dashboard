@@ -8,6 +8,7 @@ import 'firebase/storage';
 export class UploadImageService {
 
   public imageExist: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
+  // public imageWasUploaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
 
   constructor() { }
 
@@ -39,11 +40,11 @@ export class UploadImageService {
         // console.log('SNAPSHOT ', snapshot)
         const progress = (uploadTask.snapshot.bytesTransferred / uploadTask.snapshot.totalBytes) * 100;
 
-        if ( progress === 100 ) {
+        if (progress === 100) {
           // const self = this
           // this.imageExist.next(true);
-         
-          console.log('=== === UPLOAD-IMG-SERV PUBLISH - USER PROFILE IMAGE UPLOAD COMPLETE ', true )
+
+          console.log('=== === UPLOAD-IMG-SERV PUBLISH - USER PROFILE IMAGE UPLOAD COMPLETE ', true)
         }
         console.log('Upload is ' + progress + '% done');
         switch (uploadTask.snapshot.state) {
@@ -74,11 +75,32 @@ export class UploadImageService {
         const self = this
         uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
           console.log('File available at', downloadURL);
-          
+
           self.imageExist.next(true);
         });
       }
     );
+  }
+
+  public deleteProfileImage(userid) {
+    const file_name = 'photo.jpg';
+
+    // Create a root reference
+    const storageRef = firebase.storage().ref();
+    // const deleteTask = storageRef.child('profiles/' + userid + '/' + file_name)
+    const deleteTask = storageRef.child('profiles/' + userid + '/' + file_name)
+
+    // Delete the file
+    deleteTask.delete().then(() => {
+      console.log('UPLOAD IMAGE SERVICE - DELETE IMG ')
+    
+      this.imageExist.next(false);
+
+    }).catch((error) => {
+      console.log('UPLOAD IMAGE SERVICE - DELETE IMG err ', error)
+    });
+
+
   }
 
 
