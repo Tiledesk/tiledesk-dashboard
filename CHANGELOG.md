@@ -1,6 +1,10 @@
 
 # tiledesk-dashboard
 
+### 2.1.38
+- Replaces all occurrences of 'closed' with 'archived'
+- Replaces all occurrences of 'Internal request' with 'Ticket'
+
 ### 2.1.37
 - Fixes the bug: the "Create a free account" button does not appear on the login page
 - Fixes the bug: in the details of the bot, section Departments this bot is associated with, the department is sometimes duplicated
