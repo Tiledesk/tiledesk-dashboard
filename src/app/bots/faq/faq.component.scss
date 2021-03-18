@@ -811,3 +811,9 @@ input[type="text"]:disabled::placeholder {
 .close-modal-window:hover {
   background-color: rgb(207, 210, 215) !important;
 }
+
+.identity-bot-description {
+  display: block;
+  font-weight: 100;
+  margin-top: 3px;
+}
