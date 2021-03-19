@@ -99,16 +99,21 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
 
     // because the trigger.key is set to default to message.received temp_cond filter
     // the condition in order of this key value
-    this.temp_cond = this.condition.filter(b => b.triggerType === 'message.create.from.requester');
-    this.temp_act = this.action
 
-    // set the initial value to action to the first element of this.action array
-    const init_act = this.triggerForm.get('actions') as FormArray
-    init_act.patchValue([{
-      'key': this.action[0].key,
-      'type': this.action[0].type,
-      'placeholder': this.action[0].placeholder
-    }])
+    this.translateBasicINFO().then((res) => {
+     
+      this.temp_cond = this.condition.filter(b => b.triggerType === 'message.create.from.requester');
+      this.temp_act = this.action
+
+      // set the initial value to action to the first element of this.action array
+      const init_act = this.triggerForm.get('actions') as FormArray
+      init_act.patchValue([{
+        'key': this.action[0].key,
+        'type': this.action[0].type,
+        'placeholder': this.action[0].placeholder
+      }])
+
+    })
 
     this.cleanForm();
 
@@ -453,7 +458,7 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
   }
 
   onSubmit() {
-    
+
     console.log('TRIGGER ->>>>> onSubmit - get form', this.form);
     this.displayMODAL_Window = 'block';
     this.SHOW_CIRCULAR_SPINNER = true;
@@ -526,14 +531,14 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
         }
       }
 
-            // nk 
+      // nk 
       // --------------------------------------------------------------------------------------------------------------------------------------------
       // Rename the parameters key 'fullName' in 'sender', and add the string 'bot_' if the select agent is a bot
       // Actions key for which it is made:
       // - 'message.send' (i.e. 'Send message to visitor')
       // --------------------------------------------------------------------------------------------------------------------------------------------
       if (
-        (this.triggerForm.value.actions[w].key === 'message.send') 
+        (this.triggerForm.value.actions[w].key === 'message.send')
       ) {
         console.log('TRIGGER ->>>>> onSubmit action key is: ', this.triggerForm.value.actions[w].key);
 
