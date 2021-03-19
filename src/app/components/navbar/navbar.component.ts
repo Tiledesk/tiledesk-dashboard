@@ -448,7 +448,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         });
     }
     checkUserImageUploadIsComplete() {
-        this.uploadImageService.imageExist.subscribe((image_exist) => {
+        this.uploadImageService.userImageWasUploaded.subscribe((image_exist) => {
             console.log('NAVBAR - IMAGE UPLOADING IS COMPLETE ? ', image_exist);
             this.userImageHasBeenUploaded = image_exist;
             if (this.storageBucket && this.userImageHasBeenUploaded === true) {
@@ -866,7 +866,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
     getTestSiteUrl() {
         this.TESTSITE_BASE_URL = this.appConfigService.getConfig().testsiteBaseUrl;
-        console.log('AppConfigService getAppConfig (WS-REQUESTS-LIST COMP.) TESTSITE_BASE_URL', this.TESTSITE_BASE_URL);
+        console.log('AppConfigService getAppConfig (NAVBAR COMP.) TESTSITE_BASE_URL', this.TESTSITE_BASE_URL);
     }
 
     testWidgetPage() {
@@ -899,10 +899,10 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                 if (requests) {
                     let count = 0;
                     requests.forEach(r => {
-
+                        console.log('NAVBAR - UPDATE-UNSERVED-REQUEST-COUNT request', r)
                         // *bug fix: when the user is an agent also for the unserved we have to consider if he is present in agents
                         if (r.status === 100 && this.ROLE_IS_AGENT === true) {
-                            if (this.hasmeInAgents(r.agents) === true) {  // new *bug fix
+                            if (this.hasmeInAgents(r.snapshot.agents) === true) {  // new *bug fix
                                 count = count + 1;
                             }
                         }
@@ -1036,7 +1036,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
                             // *bug fix: when the user is an agent also for the unserved we have to consider if he is present in agents
                             if (this.ROLE_IS_AGENT === true) {
-                                if (this.hasmeInAgents(r.agents) === true) {
+                                if (this.hasmeInAgents(r.snapshot.agents) === true) {
 
                                     this.doUnservedDateDiffAndShowNotification(r)
 
