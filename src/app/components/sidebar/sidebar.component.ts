@@ -524,7 +524,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
 
     checkUserImageUploadIsComplete() {
-        this.uploadImageService.imageExist.subscribe((image_exist) => {
+        this.uploadImageService.userImageWasUploaded.subscribe((image_exist) => {
             console.log('SIDEBAR - IMAGE UPLOADING IS COMPLETE ? ', image_exist);
             this.userImageHasBeenUploaded = image_exist;
             if (this.storageBucket && this.userImageHasBeenUploaded === true) {

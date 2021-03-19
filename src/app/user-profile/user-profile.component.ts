@@ -122,7 +122,7 @@ export class UserProfileComponent implements OnInit {
   deleteUserProfileImage() {
     // const file = event.target.files[0]
     console.log('PROFILE IMAGE (USER-PROFILE ) deleteUserProfileImage')
-    this.uploadImageService.deleteProfileImage(this.userId);
+    this.uploadImageService.deleteUserProfileImage(this.userId);
 
     const delete_user_image_btn = <HTMLElement>document.querySelector('.delete-user-image');
     delete_user_image_btn.blur();
@@ -140,7 +140,7 @@ export class UserProfileComponent implements OnInit {
   }
 
   checkUserImageUploadIsComplete() {
-    this.uploadImageService.imageExist.subscribe((image_exist) => {
+    this.uploadImageService.userImageWasUploaded.subscribe((image_exist) => {
       console.log('PROFILE IMAGE - IMAGE UPLOADING IS COMPLETE ? ', image_exist);
 
       // this.notify.showWidgetStyleUpdateNotification(this.profilePhotoWasUploaded, 2, 'done');
