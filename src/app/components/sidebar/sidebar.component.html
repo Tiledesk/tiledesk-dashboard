@@ -101,7 +101,7 @@
     <div class="avatar-container tiledesk-nav-avatar" [ngClass]="{'small-sidebar-avatar' : SIDEBAR_IS_SMALL === true }">
       <!-- src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{user?._id}}%2Fphoto.jpg?alt=media"  -->
       <img class="avatar" *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true"
-        [src]="getUserProfileImage()" />
+        [src]="getUserProfileImage()" onerror="this.src='assets/img/no_image_user.svg'" />
 
       <img class="avatar" *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true"
         src="assets/img/no_image_user.png" />
@@ -129,10 +129,11 @@
     <!-- CAMERA ICONS OVER THE AVATAR -->
     <!--  [ngClass]="{'hover-effect' : isOverAvar}"  -->
     <i *ngIf="project" routerLink="project/{{ project._id }}/user-profile" class="material-icons is-over-camera"
-      style="z-index: 5; position: relative; top: 15px; background-color: rgba(45,50,62,0.7); padding: 15px;border-radius: 50%; opacity:0;"
-      [ngClass]="{'small-sidebar-camera-icon' : SIDEBAR_IS_SMALL === true }"> camera_alt </i>
+      [ngClass]="{'small-sidebar-camera-icon' : SIDEBAR_IS_SMALL === true, 'is-over-camera-decrease-top':IS_BUSY === true }">
+      camera_alt
+    </i>
 
-    <!--  -->
+
     <div class="isBusy" *ngIf="IS_BUSY === true">
       <span class="material-icons" style="font-size: 16px; color:#fedd00;background-color: #2d323e; border-radius:50%">
         access_time
@@ -140,7 +141,7 @@
       <!-- <span class="isBusyTest" style="position: relative; top: -25px;left: 18px;font-size: 11px;">
         {{ 'Busy' | translate }}
       </span> -->
-     
+
     </div>
   </div>
 
@@ -424,7 +425,7 @@
           <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/labels">
             <p class="onBlackBckgrnd">
               <span class="sidebar-mini">
-               T
+                T
               </span>
               {{'Tags.Tags' | translate}}
             </p>
@@ -477,7 +478,7 @@
         <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/departments">
           <p class="onBlackBckgrnd">
             <span class="sidebar-mini">
-             
+
               <span *ngIf="isVisibleDEP"> {{'RoutingAndDeptsInitials' | translate}} </span>
               <span *ngIf="!isVisibleDEP"> R </span>
             </span>
