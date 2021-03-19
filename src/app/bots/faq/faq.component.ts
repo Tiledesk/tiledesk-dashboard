@@ -135,6 +135,8 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   errorDeletingAnswerMsg: string;
   answerSuccessfullyDeleted: string;
 
+  @ViewChild('fileInputBotProfileImage') fileInputBotProfileImage: any;
+
   constructor(
     private mongodbFaqService: MongodbFaqService,
     private router: Router,
@@ -520,7 +522,17 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   upload(event) {
     this.showSpinnerInUploadImageBtn = true;
     const file = event.target.files[0]
-    this.uploadImageService.uploadUserAvatar(file, this.id_faq_kb)
+    this.uploadImageService.uploadBotAvatar(file, this.id_faq_kb);
+    this.fileInputBotProfileImage.nativeElement.value = '';
+  }
+
+  deleteBotProfileImage() {
+    // const file = event.target.files[0]
+    console.log('PROFILE IMAGE (USER-PROFILE ) deleteUserProfileImage')
+    this.uploadImageService.deleteBotProfileImage(this.id_faq_kb);
+
+    const delete_bot_image_btn = <HTMLElement>document.querySelector('.delete_bot_image_btn');
+    delete_bot_image_btn.blur();
   }
 
   checkBotImageExist(storageBucket) {
@@ -551,7 +563,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   }
 
   checkUserImageUploadIsComplete() {
-    this.uploadImageService.imageExist.subscribe((image_exist) => {
+    this.uploadImageService.botImageWasUploaded.subscribe((image_exist) => {
       console.log('PROFILE IMAGE - IMAGE UPLOADING IS COMPLETE ? ', image_exist);
       this.userImageHasBeenUploaded = image_exist;
       if (this.storageBucket && this.userImageHasBeenUploaded === true) {

@@ -50,6 +50,7 @@
                 <!-- [ngStyle]="{'margin-left':botType === 'dialogflow' ? '35px' : 0 }" -->
                 <div class="card-avatar" style="padding-bottom:15px; min-height: 95px;">
                   <div class="bot_avatar" style="float: left;width: 80px; height: 80px;margin-right: 21px;">
+                   
                     <img *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true"
                       style="vertical-align: middle; width: 80px; height: 80px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;"
                       class="user-img" [src]="getUserProfileImage()"
@@ -61,7 +62,7 @@
                   </div>
 
 
-                  <input class="inputfile" name="uploadbotimage" id="uploadbotimage" type="file"
+                  <input #fileInputBotProfileImage class="inputfile" name="uploadbotimage" id="uploadbotimage" type="file"
                     (change)="upload($event)" accept=".jpg" />
                   <label class="btn btn-white upload-image-btn" for="uploadbotimage"
                     style="padding-left:15px; padding-right:15px; text-transform: none; color: #7695a5">
@@ -75,6 +76,19 @@
                       <i class="fa fa-spinner fa-spin"></i>
                     </span>
                   </label>
+
+                  <button class="btn btn-white delete_bot_image_btn tool_tip" (click)="deleteBotProfileImage()"
+                    style="padding: 9px 15px; margin-top: 20px;">
+                    <span class="material-icons" style="font-size: 24px; color: #f44336">
+                      delete_forever
+                    </span>
+
+                    <span class="bottom"
+                      style="min-width: fit-content;padding: 5px;border-radius: 3px; text-transform: none;">
+                      {{'RemovePhoto' | translate}}
+                      <i></i>
+                    </span>
+                  </button>
                 </div>
               </div>
             </div>
@@ -449,9 +463,6 @@
 
             <p class="title-attribute" style="margin-bottom: 3px; padding-top: 5px;">
               {{ "BotsAddEditPage.Type" | translate }}
-             
-              
-              
             </p>
 
             <p class="attribute">
@@ -459,7 +470,8 @@
               <span *ngIf="botType !== 'native'" style="text-transform:capitalize"> {{ botType }} </span>
               <span *ngIf="botType === 'native'" style="text-transform:capitalize"> Resolution </span>
 
-              <span class="identity-bot-description" *ngIf="botType === 'identity'" > {{ 'AnIdentityBotRepresents' | translate }} </span>
+              <span class="identity-bot-description" *ngIf="botType === 'identity'"> {{ 'AnIdentityBotRepresents' |
+                translate }} </span>
             </p>
 
             <p class="title-attribute" style="margin-bottom: 3px; padding-top: 5px;">
@@ -700,7 +712,8 @@
                         <span class="dropdown-item">{{ "BotsAddEditPage.Messages" | translate }} </span>
                       </li>
                       <li>
-                        <input type="checkbox" [checked]="display_topic_in_table" [(ngModel)]="display_topic_in_table" (change)="checkValueTopic($event)" />
+                        <input type="checkbox" [checked]="display_topic_in_table" [(ngModel)]="display_topic_in_table"
+                          (change)="checkValueTopic($event)" />
                         <span class="dropdown-item"> {{ 'FaqPage.Topic' | translate }}</span>
                       </li>
 
@@ -816,7 +829,7 @@
               <table class="table table-hover">
                 <thead>
                   <tr>
-                     
+
                     <th *ngIf="display_intent_name_in_table === true">
 
                       <span class="column-th-span">
@@ -846,7 +859,7 @@
                       </span>
                     </th>
 
-                    <th *ngIf="display_topic_in_table === true"> 
+                    <th *ngIf="display_topic_in_table === true">
                       <!-- TOPIC -->
                       <span class="column-th-span">
                         {{ 'FaqPage.Topic' | translate }}
@@ -925,13 +938,13 @@
                       <span *ngIf="faq.message_count" class="tooltipx">
                         {{ faq?.message_count }}
                         <span class="tooltiptext" style="white-space: nowrap; cursor: pointer;">
-                          {{'NumberOfReplies' | translate}}:{{ faq?.message_count }} 
+                          {{'NumberOfReplies' | translate}}:{{ faq?.message_count }}
                         </span>
                       </span>
                       <span *ngIf="!faq.message_count" class="tooltipx">
                         0
                         <span class="tooltiptext" style="white-space: nowrap;cursor: pointer;">
-                          {{'NumberOfReplies' | translate}}: 0 
+                          {{'NumberOfReplies' | translate}}: 0
                         </span>
                       </span>
                     </td>
