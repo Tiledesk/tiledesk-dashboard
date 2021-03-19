@@ -6,6 +6,7 @@
 - Replaces all occurrences of 'Internal request' with 'Ticket'
 - Adds a brief description of the identity bot in the right bar of the details of the "Identity" bot
 - Adds, on the user profile page, the ability to delete the profile image
+- Refactors the code by taking agents, department, leads and requester from the "snapshot" property of the request object
 
 ### 2.1.37
 - Fixes the bug: the "Create a free account" button does not appear on the login page
