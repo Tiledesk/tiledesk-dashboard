@@ -6,6 +6,7 @@
 - Adds, on the bot detail page, the ability to delete the bot profile image
 - Fixes bug: conditions are not displayed on the trigger editing page
 - Fixes bug: conflict between uploading / deleting user image with uploading / deleting bot profile image
+- Fixes bug: in the page add trigger when the page is refreshed the conditions are not displayed
 
 ### 2.1.38
 - Replaces all occurrences of 'closed' with 'archived'
