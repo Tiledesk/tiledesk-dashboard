@@ -3,12 +3,15 @@
 
 ### 2.1.39
 - Replaces "plus" / "minus" buttons of notes and attributes with "angle up" / "angle down" on the conversation detail page
+- Adds, on the bot detail page, the ability to delete the bot profile image
+- Fixes bug: conditions are not displayed on the trigger editing page
+- Fixes bug: conflict between uploading / deleting user image with uploading / deleting bot profile image
 
 ### 2.1.38
 - Replaces all occurrences of 'closed' with 'archived'
 - Replaces all occurrences of 'Internal request' with 'Ticket'
 - Adds a brief description of the identity bot in the right bar of the details of the "Identity" bot
-- Adds, on the user profile page, the ability to delete the profile image
+- Adds, on the user profile page, the ability to delete the user profile image
 - Refactors the code by taking agents, department, leads and requester from the "snapshot" property of the request object
 
 ### 2.1.37
