@@ -284,6 +284,7 @@ export class Analytics2Component implements OnInit, OnDestroy {
 
     /* ----------==========   TILEDESK ANALYTICS   ==========---------- */
     this.getCurrentProject();
+    this.getStorageBucket();
     // this.getCountOfRequestForAgent()
     // this.servedAndUnservedRequestsCount();
     // this.globalServedAndUnservedRequestsCount();
@@ -300,7 +301,17 @@ export class Analytics2Component implements OnInit, OnDestroy {
     // this.translateMinutes();
     // this.translateSeconds();
     // this.getWaitingTimeAverage();
-    this.getStorageBucket();
+    
+  }
+
+  getCurrentProject() {
+    this.auth.project_bs.subscribe((project) => {
+
+      if (project) {
+        this.id_project = project._id
+
+      }
+    });
   }
 
 
@@ -688,15 +699,6 @@ export class Analytics2Component implements OnInit, OnDestroy {
     return Math.max.apply(null, requestsByDay_series_array);
   }
 
-  getCurrentProject() {
-    this.auth.project_bs.subscribe((project) => {
-
-      if (project) {
-        this.id_project = project._id
-
-      }
-    });
-  }
 
   /**
    * ********************************************************************************************
@@ -706,71 +708,61 @@ export class Analytics2Component implements OnInit, OnDestroy {
    * 3) FOR EACH ID CONTAINED IN THE ARRAY OF IDS OF THE DEPTS OF THE PROJECT IS CHECKED THE OCCURRENCE IN THE ARRAY OF THE DEPTS ID RETURNED FROM ALL THE REQUESTS
    * ********************************************************************************************
    */
-  getCountOf_AllRequestsForDept() {
-    this.departmentService.getDeptsByProjectId().subscribe((_departments: any) => {
-      console.log('!!! ANALYTICS ALL REQUESTS X DEPT - GET DEPTS RESPONSE ', _departments);
+  // getCountOf_AllRequestsForDept() {
+  //   this.departmentService.getDeptsByProjectId().subscribe((_departments: any) => {
+  //     console.log('!!! ANALYTICS ALL REQUESTS X DEPT - GET DEPTS RESPONSE ', _departments);
 
-      this.departments = _departments
-      const project_depts_id_array = [];
-      if (this.departments) {
-        this.departments.forEach(dept => {
+  //     this.departments = _departments
+  //     const project_depts_id_array = [];
+  //     if (this.departments) {
+  //       this.departments.forEach(dept => {
 
-          // console.log('!!! ANALYTICS - DEPT ', dept);
-          console.log('!!! ANALYTICS ALL REQUESTS X DEPT - DEPT ID: ', dept['_id']);
-          // depts_names_array.push(dept['name']);
-          project_depts_id_array.push(dept['_id']);
-        });
-      }
-      console.log('!!! ANALYTICS ALL REQUESTS X DEPT - ARRAY OF DEPTS IDs: ', project_depts_id_array);
+  //         // console.log('!!! ANALYTICS - DEPT ', dept);
+  //         console.log('!!! ANALYTICS ALL REQUESTS X DEPT - DEPT ID: ', dept['_id']);
+  //         // depts_names_array.push(dept['name']);
+  //         project_depts_id_array.push(dept['_id']);
+  //       });
+  //     }
+  //     console.log('!!! ANALYTICS ALL REQUESTS X DEPT - ARRAY OF DEPTS IDs: ', project_depts_id_array);
+  //     /* behaviour subject */ 
+  //     this.subscription = this.wsRequestsService.wsRequestsList$.subscribe((global_requests) => {
+  //       console.log('!!! ANALYTICS ALL REQUESTS X DEPT - !!!!! SUBSCRIPTION TO ALL-THE-REQUESTS-LIST-BS ', global_requests);
 
+  //       const requests_depts_id_array = []
+  //       if (global_requests) {
+  //         global_requests.forEach(g_r => {
 
-      // FIRESTORE 
-      // this.subscription = this.requestsService.allRequestsList_bs.subscribe((global_requests) => {
+  //           if (g_r.attributes) {
+  //             requests_depts_id_array.push(g_r.attributes.departmentId)
+  //           }
 
-      // WEBSOCKET 
-      this.subscription = this.wsRequestsService.wsRequestsList$.subscribe((global_requests) => {
-        console.log('!!! ANALYTICS ALL REQUESTS X DEPT - !!!!! SUBSCRIPTION TO ALL-THE-REQUESTS-LIST-BS ', global_requests);
+  //         });
+  //       }
+  //       project_depts_id_array.forEach(dept_id => {
+  //         this.getDeptIdOccurrence(requests_depts_id_array, dept_id)
+  //       });
+  //     })
 
-        const requests_depts_id_array = []
-        if (global_requests) {
-          global_requests.forEach(g_r => {
+  //   }, error => {
+      
+  //     console.log('!!! ALL REQUESTS X DEPT - GET DEPTS - ERROR: ', error);
+  //   }, () => {
+  //     console.log('!!! ALL REQUESTS X DEPT - GET DEPTS * COMPLETE *')
+  //   });
+  // }
 
-            if (g_r.attributes) {
-              requests_depts_id_array.push(g_r.attributes.departmentId)
-            }
-
-          });
-        }
-
-        // console.log('!!! ALL REQUESTS X DEPT - ARRAY OF DEPARTMENTS ID ', requests_depts_id_array)
-
-        project_depts_id_array.forEach(dept_id => {
-          this.getDeptIdOccurrence(requests_depts_id_array, dept_id)
-        });
-      })
-
-    }, error => {
-      // this.showSpinner = false;
-      console.log('!!! ALL REQUESTS X DEPT - GET DEPTS - ERROR: ', error);
-    }, () => {
-      console.log('!!! ALL REQUESTS X DEPT - GET DEPTS * COMPLETE *')
-    });
-  }
-
-  getDeptIdOccurrence(array, value) {
-    // console.log('!!! ANALYTICS - ALL REQUESTS X DEPT - GET DEP OCCURRENCE FOR DEPTS ');
-    let count = 0;
-    array.forEach((v) => (v === value && count++));
-    console.log('!!! ANALYTICS - ALL REQUESTS X DEPT - #', count, ' REQUESTS ASSIGNED TO DEPT ', value);
-    for (const dept of this.departments) {
-      if (value === dept._id) {
-        dept.value = count
-      }
-    }
-    // this.showSpinner = false;
-    // console.log('!!! ANALYTICS - !!!!! SHOW SPINNER', this.showSpinner);
-    return count;
-  }
+  // getDeptIdOccurrence(array, value) {
+  //   // console.log('!!! ANALYTICS - ALL REQUESTS X DEPT - GET DEP OCCURRENCE FOR DEPTS ');
+  //   let count = 0;
+  //   array.forEach((v) => (v === value && count++));
+  //   console.log('!!! ANALYTICS - ALL REQUESTS X DEPT - #', count, ' REQUESTS ASSIGNED TO DEPT ', value);
+  //   for (const dept of this.departments) {
+  //     if (value === dept._id) {
+  //       dept.value = count
+  //     }
+  //   }
+  //   return count;
+  // }
 
   goToEditAddPage_EDIT(dept_id: string) {
     console.log('!!! ANALYTICS - ALL REQUESTS X DEPT - GO TO DEPT ID ', dept_id);
@@ -785,210 +777,211 @@ export class Analytics2Component implements OnInit, OnDestroy {
    * (i.e. the requests are not filtered for the current_user_id and so an user with ADMIN role will be able to see
    * also the requests of a group to which it does not belong)
    */
-  getCountOf_AllRequestsForAgent() {
-    this.getProjectUsersAndRunFlatMembersArray();
-  }
+  // getCountOf_AllRequestsForAgent() {
+  //   this.getProjectUsersAndRunFlatMembersArray();
+  // }
 
-  getProjectUsersAndRunFlatMembersArray() {
-    this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
-      console.log('!!! ANALYTICS - !!!!! PROJECT USERS ARRAY ', projectUsers)
-      if (projectUsers) {
-        this.projectUsers = projectUsers;
-        projectUsers.forEach(prjctuser => {
-          console.log('!!! ANALYTICS - PROJECT USERS RETURNED FROM THE CALLBACK', prjctuser)
+  // getProjectUsersAndRunFlatMembersArray() {
+  //   this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
+  //     console.log('!!! ANALYTICS - !!!!! PROJECT USERS ARRAY ', projectUsers)
+  //     if (projectUsers) {
+  //       this.projectUsers = projectUsers;
+  //       projectUsers.forEach(prjctuser => {
+  //         console.log('!!! ANALYTICS - PROJECT USERS RETURNED FROM THE CALLBACK', prjctuser)
 
-          const _user_id = prjctuser['id_user']['_id']
-          console.log('!!! ANALYTICS - USER ID ', _user_id)
-          /**
-            * ANDREA:
-            * CREATES AN OBJECT WITH HAS FOR 'KEY' THE USER ID OF THE ITERATED 'PROJECT USERS' AND A NESTED OBJECT THAT HAS FOR KEY 'VAL' WITH AN INITIAL VALUE= 0 */
-          // , 'user': prjctuser['id_user']
-          // this.users_reqs_dict[prjctuser['id_user']['_id']] = { 'val': 0 }
+  //         const _user_id = prjctuser['id_user']['_id']
+  //         console.log('!!! ANALYTICS - USER ID ', _user_id)
+  //         /**
+  //           * ANDREA:
+  //           * CREATES AN OBJECT WITH HAS FOR 'KEY' THE USER ID OF THE ITERATED 'PROJECT USERS' AND A NESTED OBJECT THAT HAS FOR KEY 'VAL' WITH AN INITIAL VALUE= 0 */
+  //         // , 'user': prjctuser['id_user']
+  //         // this.users_reqs_dict[prjctuser['id_user']['_id']] = { 'val': 0 }
 
-          /**
-          * NK:
-          * CREATES AN ARRAY OF ALL THE USER ID OF THE ITERATED 'PROJECT USERS' */
-          this.users_id_array.push(_user_id);
-        })
-        console.log('!!! ANALYTICS - !!!!! ARRAY OF USERS ID ', this.users_id_array)
-        // console.log('!!! ANALYTICS - USERS DICTIONARY ', this.users_reqs_dict)
-        // console.log('!!! ANALYTICS - USERS DICTIONARY - array  ', this.users_reqs_dict_array)
-      }
-    }, error => {
-      console.log('!!! ANALYTICS - !!!!! PROJECT USERS (FILTERED FOR PROJECT ID) - ERROR', error);
-    }, () => {
-      console.log('!!! ANALYTICS - !!!!!  PROJECT USERS (FILTERED FOR PROJECT ID) - COMPLETE');
-      this.getFlatMembersArrayFromAllRequestsAndRunGetOccurrence()
-    });
-  }
+  //         /**
+  //         * NK:
+  //         * CREATES AN ARRAY OF ALL THE USER ID OF THE ITERATED 'PROJECT USERS' */
+  //         this.users_id_array.push(_user_id);
+  //       })
+  //       console.log('!!! ANALYTICS - !!!!! ARRAY OF USERS ID ', this.users_id_array)
+  //       // console.log('!!! ANALYTICS - USERS DICTIONARY ', this.users_reqs_dict)
+  //       // console.log('!!! ANALYTICS - USERS DICTIONARY - array  ', this.users_reqs_dict_array)
+  //     }
+  //   }, error => {
+  //     console.log('!!! ANALYTICS - !!!!! PROJECT USERS (FILTERED FOR PROJECT ID) - ERROR', error);
+  //   }, () => {
+  //     console.log('!!! ANALYTICS - !!!!!  PROJECT USERS (FILTERED FOR PROJECT ID) - COMPLETE');
+  //     this.getFlatMembersArrayFromAllRequestsAndRunGetOccurrence()
+  //   });
+  // }
 
-  getFlatMembersArrayFromAllRequestsAndRunGetOccurrence() {
-    console.log('!!! ANALYTICS - !!!!! CALL GET COUNT OF REQUEST FOR AGENT');
+  // getFlatMembersArrayFromAllRequestsAndRunGetOccurrence() {
+  //   console.log('!!! ANALYTICS - !!!!! CALL GET COUNT OF REQUEST FOR AGENT');
 
-    // this.subscription = this.requestsService.allRequestsList_bs.subscribe((requests) => {
-    this.subscription = this.wsRequestsService.wsRequestsList$.subscribe((requests) => {
+  //   // this.subscription = this.requestsService.allRequestsList_bs.subscribe((requests) => {
+  //   this.subscription = this.wsRequestsService.wsRequestsList$.subscribe((requests) => {
 
-      console.log('!!! ANALYTICS - !!!!! SUBSCRIPTION TO ALL-THE-REQUESTS-LIST-BS');
+  //     console.log('!!! ANALYTICS - !!!!! SUBSCRIPTION TO ALL-THE-REQUESTS-LIST-BS');
 
-      if (requests) {
-        console.log('!!! ANALYTICS - !!!!! REQUESTS LENGHT ', requests.length)
+  //     if (requests) {
+  //       console.log('!!! ANALYTICS - !!!!! REQUESTS LENGHT ', requests.length)
 
-        /**
-         * NK:
-         * CREATES AN UNIQUE ARRAY FROM ALL THE ARRAYS OF 'MEMBERS' THAT ARE NESTED IN THE ITERATED REQUESTS  */
-        let flat_members_array = [];
-        for (let i = 0; i < requests.length; i++) {
-          flat_members_array = flat_members_array.concat(Object.keys(requests[i].members));
-        }
-        // Result of the concatenation of the single arrays of members
-        console.log('!!! ANALYTICS - !!!!! FLAT-MEMBERS-ARRAY  ', flat_members_array)
-        console.log('!!! ANALYTICS - !!!!! USER_ID_ARRAY - LENGTH ', this.users_id_array.length);
-        /**
-         * FOR EACH USER-ID IN THE 'USER_ID_ARRAY' IS RUNNED 'getOccurrenceAndAssignToProjectUsers'
-         * THAT RETURNS THE COUNT OF HOW MAMY TIMES THE USER-ID IS PRESENT IN THE 'flat_members_array' AND THEN
-         * ASSIGN THE VALUE OF 'COUNT' TO THE PROPERTY 'VALUE' OF THE OBJECT 'PROJECT-USERS' */
+  //       /**
+  //        * NK:
+  //        * CREATES AN UNIQUE ARRAY FROM ALL THE ARRAYS OF 'MEMBERS' THAT ARE NESTED IN THE ITERATED REQUESTS  */
+  //       let flat_members_array = [];
+  //       for (let i = 0; i < requests.length; i++) {
+  //         flat_members_array = flat_members_array.concat(Object.keys(requests[i].members));
+  //       }
+  //       // Result of the concatenation of the single arrays of members
+  //       console.log('!!! ANALYTICS - !!!!! FLAT-MEMBERS-ARRAY  ', flat_members_array)
+  //       console.log('!!! ANALYTICS - !!!!! USER_ID_ARRAY - LENGTH ', this.users_id_array.length);
+  //       /**
+  //        * FOR EACH USER-ID IN THE 'USER_ID_ARRAY' IS RUNNED 'getOccurrenceAndAssignToProjectUsers'
+  //        * THAT RETURNS THE COUNT OF HOW MAMY TIMES THE USER-ID IS PRESENT IN THE 'flat_members_array' AND THEN
+  //        * ASSIGN THE VALUE OF 'COUNT' TO THE PROPERTY 'VALUE' OF THE OBJECT 'PROJECT-USERS' */
 
-        if (flat_members_array) {
-          for (let i = 0; i < this.users_id_array.length; i++) {
-            console.log('!!! ANALYTICS - !!!!! USER_ID_ARRAY - LENGTH ', this.users_id_array.length);
-            this.getOccurrenceAndAssignToProjectUser(flat_members_array, this.users_id_array[i])
-          }
-        }
+  //       if (flat_members_array) {
+  //         for (let i = 0; i < this.users_id_array.length; i++) {
+  //           console.log('!!! ANALYTICS - !!!!! USER_ID_ARRAY - LENGTH ', this.users_id_array.length);
+  //           this.getOccurrenceAndAssignToProjectUser(flat_members_array, this.users_id_array[i])
+  //         }
+  //       }
 
-      }
-    });
-  }
-  getOccurrenceAndAssignToProjectUser(array, value) {
-    console.log('!!! ANALYTICS - !!!!! CALLING GET OCCURRENCE REQUESTS FOR AGENT AND ASSIGN TO PROJECT USERS');
-    let count = 0;
-    array.forEach((v) => (v === value && count++));
-    console.log('!!! ANALYTICS - !!!!! #', count, ' REQUESTS ASSIGNED TO THE USER ', value);
-    for (const p of this.projectUsers) {
-      if (value === p.id_user._id) {
-        p.value = count
-      }
-    }
-    this.showSpinner = false;
-    // console.log('!!! ANALYTICS - !!!!! SHOW SPINNER', this.showSpinner);
-    return count;
-  }
-  /* ANDREA - PSEUDO CODICE
-  users_reqs_dict = {}
-  for u in proj_users {
-    users_reqs_dict[u.id] = { val: 0, "user" : u };
-  }
-  requests.forEach( e => {
-    e.members.keys.forEach( e => {
-      users_reqs_dict[key][val] = users_reqs_dict[key][val] + 1
-    })
-  })
-  */
+  //     }
+  //   });
+  // }
+
+  // getOccurrenceAndAssignToProjectUser(array, value) {
+  //   console.log('!!! ANALYTICS - !!!!! CALLING GET OCCURRENCE REQUESTS FOR AGENT AND ASSIGN TO PROJECT USERS');
+  //   let count = 0;
+  //   array.forEach((v) => (v === value && count++));
+  //   console.log('!!! ANALYTICS - !!!!! #', count, ' REQUESTS ASSIGNED TO THE USER ', value);
+  //   for (const p of this.projectUsers) {
+  //     if (value === p.id_user._id) {
+  //       p.value = count
+  //     }
+  //   }
+  //   this.showSpinner = false;
+  //   // console.log('!!! ANALYTICS - !!!!! SHOW SPINNER', this.showSpinner);
+  //   return count;
+  // }
+
+  // ------------------------------------
+ // ANDREA - PSEUDO CODICE
+ // ------------------------------------
+  // users_reqs_dict = {}
+  // for u in proj_users {
+  //   users_reqs_dict[u.id] = { val: 0, "user" : u };
+  // }
+  // requests.forEach( e => {
+  //   e.members.keys.forEach( e => {
+  //     users_reqs_dict[key][val] = users_reqs_dict[key][val] + 1
+  //   })
+  // })
+ 
 
   /**
    * ******************************************************************************************
    * ====== COUNT OF SERVED, UNSERVED AND OF THE ACTIVE (i.e. SERVED + UNSERVED) REQUESTS ======
    * ******************************************************************************************
    */
-  servedAndUnservedRequestsCount() {
-    this.subscription = this.requestsService.requestsList_bs.subscribe((requests) => {
-      this.date = new Date();
-      console.log('!!! ANALYTICS - CURRENT DATE : ', this.date);
-      console.log('!!! ANALYTICS - SUBSCRIBE TO REQUEST SERVICE - REQUESTS LIST: ', requests);
+  // servedAndUnservedRequestsCount() {
+  //   this.subscription = this.requestsService.requestsList_bs.subscribe((requests) => {
+  //     this.date = new Date();
+  //     console.log('!!! ANALYTICS - CURRENT DATE : ', this.date);
+  //     console.log('!!! ANALYTICS - SUBSCRIBE TO REQUEST SERVICE - REQUESTS LIST: ', requests);
 
-      this.requests = requests;
+  //     this.requests = requests;
 
-      if (requests) {
-        let count_unserved = 0;
-        let count_served = 0
-        requests.forEach(r => {
+  //     if (requests) {
+  //       let count_unserved = 0;
+  //       let count_served = 0
+  //       requests.forEach(r => {
 
-          if (r.support_status === 100) {
-            count_unserved = count_unserved + 1;
-          }
-          if (r.support_status === 200) {
-            count_served = count_served + 1
-          }
-        });
+  //         if (r.support_status === 100) {
+  //           count_unserved = count_unserved + 1;
+  //         }
+  //         if (r.support_status === 200) {
+  //           count_served = count_served + 1
+  //         }
+  //       });
 
-        this.unservedRequestsCount = count_unserved;
-        console.log('!!! ANALYTICS - # OF UNSERVED REQUESTS:  ', this.unservedRequestsCount);
+  //       this.unservedRequestsCount = count_unserved;
+  //       console.log('!!! ANALYTICS - # OF UNSERVED REQUESTS:  ', this.unservedRequestsCount);
 
-        this.servedRequestsCount = count_served;
-        console.log('!!! ANALYTICS - # OF SERVED REQUESTS:  ', this.servedRequestsCount);
+  //       this.servedRequestsCount = count_served;
+  //       console.log('!!! ANALYTICS - # OF SERVED REQUESTS:  ', this.servedRequestsCount);
 
-        this.activeRequestsCount = this.unservedRequestsCount + this.servedRequestsCount
-        console.log('!!! ANALYTICS - # OF ACTIVE REQUESTS:  ', this.activeRequestsCount);
+  //       this.activeRequestsCount = this.unservedRequestsCount + this.servedRequestsCount
+  //       console.log('!!! ANALYTICS - # OF ACTIVE REQUESTS:  ', this.activeRequestsCount);
 
-      }
-    });
-  }
+  //     }
+  //   });
+  // }
 
   /**
    * *****************************************************************************************************
    * ====== COUNT OF ** ALL ** SERVED, UNSERVED AND OF THE ACTIVE (i.e. SERVED + UNSERVED) REQUESTS ======
    * *****************************************************************************************************
    */
-  globalServedAndUnservedRequestsCount() {
+  // globalServedAndUnservedRequestsCount() {
 
-    // this.subscription = this.requestsService.allRequestsList_bs.subscribe((global_requests) => {
-    this.subscription = this.wsRequestsService.wsRequestsList$.subscribe((global_requests) => {
-      this.date = new Date();
-      console.log('!!! ANALYTICS - CURRENT DATE : ', this.date);
-      console.log('!!! ANALYTICS - SUBSCRIBE TO REQUEST SERVICE - GLOBAL REQUESTS LIST: ', global_requests);
+  //   // this.subscription = this.requestsService.allRequestsList_bs.subscribe((global_requests) => {
+  //   this.subscription = this.wsRequestsService.wsRequestsList$.subscribe((global_requests) => {
+  //     this.date = new Date();
+  //     console.log('!!! ANALYTICS - CURRENT DATE : ', this.date);
+  //     console.log('!!! ANALYTICS - SUBSCRIBE TO REQUEST SERVICE - GLOBAL REQUESTS LIST: ', global_requests);
 
-      // this.requests = global_requests;
+  //     // this.requests = global_requests;
 
-      if (global_requests) {
-        let count_globalUnserved = 0;
-        let count_globalServed = 0
-        global_requests.forEach(g_r => {
+  //     if (global_requests) {
+  //       let count_globalUnserved = 0;
+  //       let count_globalServed = 0
+  //       global_requests.forEach(g_r => {
 
-          if (g_r.support_status === 100) {
-            count_globalUnserved = count_globalUnserved + 1;
-          }
-          if (g_r.support_status === 200) {
-            count_globalServed = count_globalServed + 1
-          }
-        });
+  //         if (g_r.support_status === 100) {
+  //           count_globalUnserved = count_globalUnserved + 1;
+  //         }
+  //         if (g_r.support_status === 200) {
+  //           count_globalServed = count_globalServed + 1
+  //         }
+  //       });
 
-        this.global_unservedRequestsCount = count_globalUnserved;
-        console.log('!!! ANALYTICS - # OF GLOBAL UNSERVED REQUESTS:  ', this.global_unservedRequestsCount);
+  //       this.global_unservedRequestsCount = count_globalUnserved;
+  //       console.log('!!! ANALYTICS - # OF GLOBAL UNSERVED REQUESTS:  ', this.global_unservedRequestsCount);
 
-        this.global_servedRequestsCount = count_globalServed;
-        console.log('!!! ANALYTICS - # OF GLOBAL SERVED REQUESTS:  ', this.global_servedRequestsCount);
+  //       this.global_servedRequestsCount = count_globalServed;
+  //       console.log('!!! ANALYTICS - # OF GLOBAL SERVED REQUESTS:  ', this.global_servedRequestsCount);
 
-        this.global_activeRequestsCount = this.global_unservedRequestsCount + this.global_servedRequestsCount
-        console.log('!!! ANALYTICS - # OF GLOBAL ACTIVE REQUESTS:  ', this.global_activeRequestsCount);
-      }
-    });
-  }
+  //       this.global_activeRequestsCount = this.global_unservedRequestsCount + this.global_servedRequestsCount
+  //       console.log('!!! ANALYTICS - # OF GLOBAL ACTIVE REQUESTS:  ', this.global_activeRequestsCount);
+  //     }
+  //   });
+  // }
 
   /**
    * *****************************************************************************************************
    * ======================== COUNT OF ** ALL ** THE REQUESTS OF THE LAST MONTH ==========================
    * *****************************************************************************************************
    */
-  getlastMonthRequetsCount() {
-    this.requestsService.lastMonthRequetsCount().subscribe((_lastMonthrequestsCount: any) => {
-      console.log('!!! ANALYTICS - LAST MONTH REQUESTS COUNT - RESPONSE ', _lastMonthrequestsCount);
-      if (_lastMonthrequestsCount !== 'undefined' && _lastMonthrequestsCount.length > 0) {
-        this.lastMonthrequestsCount = _lastMonthrequestsCount[0]['totalCount'];
-        console.log('!!! ANALYTICS - LAST MONTH REQUESTS COUNT - RESPONSE ', this.lastMonthrequestsCount);
-      } else {
-        console.log('!!! ANALYTICS - LAST MONTH REQUESTS COUNT - RESPONSE ', this.lastMonthrequestsCount);
-        this.lastMonthrequestsCount = 0
-      }
+  // getlastMonthRequetsCount() {
+  //   this.requestsService.lastMonthRequetsCount().subscribe((_lastMonthrequestsCount: any) => {
+  //     console.log('!!! ANALYTICS - LAST MONTH REQUESTS COUNT - RESPONSE ', _lastMonthrequestsCount);
+  //     if (_lastMonthrequestsCount !== 'undefined' && _lastMonthrequestsCount.length > 0) {
+  //       this.lastMonthrequestsCount = _lastMonthrequestsCount[0]['totalCount'];
+  //       console.log('!!! ANALYTICS - LAST MONTH REQUESTS COUNT - RESPONSE ', this.lastMonthrequestsCount);
+  //     } else {
+  //       console.log('!!! ANALYTICS - LAST MONTH REQUESTS COUNT - RESPONSE ', this.lastMonthrequestsCount);
+  //       this.lastMonthrequestsCount = 0
+  //     }
 
-    }, (error) => {
-      console.log('!!! ANALYTICS - LAST MONTH REQUESTS COUNT - ERROR ', error);
-    }, () => {
-      console.log('!!! ANALYTICS - LAST MONTH REQUESTS COUNT * COMPLETE *');
-    });
-  }
-
-  // goToMemberProfile(member_id: string) {
-  //   this.router.navigate(['project/' + this.id_project + '/member/' + member_id]);
+  //   }, (error) => {
+  //     console.log('!!! ANALYTICS - LAST MONTH REQUESTS COUNT - ERROR ', error);
+  //   }, () => {
+  //     console.log('!!! ANALYTICS - LAST MONTH REQUESTS COUNT * COMPLETE *');
+  //   });
   // }
+
 
 
   ngOnDestroy() {
