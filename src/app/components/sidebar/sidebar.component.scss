@@ -175,6 +175,20 @@ button.close {
     opacity: 0.5 !important;
 } */
 
+.is-over-camera {
+  z-index: 5;
+  position: relative;
+  top: 20px;
+  background-color: rgba(45, 50, 62, 0.7);
+  padding: 15px;
+  border-radius: 50%;
+  opacity: 0;
+}
+
+.is-over-camera-decrease-top {
+  top: 2px !important;
+}
+
 .is-over-camera:hover {
   opacity: 1 !important;
   cursor: pointer;
@@ -272,7 +286,7 @@ button.close {
 @keyframes myfirst {
   0% {
     // background: #4caf50;
-    color: rgba(255,255,255,.5);
+    color: rgba(255, 255, 255, 0.5);
   }
   50% {
     // background: #fedd00;
@@ -281,15 +295,15 @@ button.close {
   100% {
     // background: #4caf50;
     // color: #1e2129;
-    color: rgba(255,255,255,.5);
+    color: rgba(255, 255, 255, 0.5);
   }
 }
- /* Firefox */
+/* Firefox */
 @-moz-keyframes myfirst {
   0% {
     // background: #4caf50;
     // color: #1e2129;
-    color: rgba(255,255,255,.5);
+    color: rgba(255, 255, 255, 0.5);
   }
   50% {
     // background: #fedd00;
@@ -298,15 +312,15 @@ button.close {
   100% {
     // background: #4caf50;
     // color: #1e2129;
-    color: rgba(255,255,255,.5);
+    color: rgba(255, 255, 255, 0.5);
   }
 }
 /* Safari and Chrome */
-@-webkit-keyframes myfirst  {
+@-webkit-keyframes myfirst {
   0% {
     // background: #4caf50;
     // color: #1e2129;
-    color: rgba(255,255,255,.5);
+    color: rgba(255, 255, 255, 0.5);
   }
   50% {
     // background: #fedd00;
@@ -315,7 +329,7 @@ button.close {
   100% {
     // background: #4caf50;
     // color: #1e2129;
-    color: rgba(255,255,255,.5);
+    color: rgba(255, 255, 255, 0.5);
   }
 }
 
