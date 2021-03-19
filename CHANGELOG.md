@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.1.39
+- Replaces "plus" / "minus" buttons of notes and attributes with "angle up" / "angle down" on the conversation detail page
+
 ### 2.1.38
 - Replaces all occurrences of 'closed' with 'archived'
 - Replaces all occurrences of 'Internal request' with 'Ticket'
