@@ -184,13 +184,10 @@
                     <span style="color: #7695a5; font-weight: 400; line-height:18px; font-size:12px">
                       {{ 'SentThe' | translate}} {{ request?.createdAt | date: 'dd/MM/yyyy' }}
                       <span *ngIf="request?.department"> {{ 'ToTheDepartment' | translate}}
-                        <span style="text-transform: uppercase"> {{ request?.department?.name }} </span>
+                        <span style="text-transform: uppercase"> {{ request?.snapshot?.department?.name }} </span>
                       </span>
                     </span>
                   </td>
-
-
-
                 </tr>
               </tbody>
             </table>

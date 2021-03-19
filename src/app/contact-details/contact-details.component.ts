@@ -111,7 +111,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
   ngOnInit() {
 
     // this.auth.checkRoleForCurrentProject();
-    this.getRequesterIdParam();
+    this.getRequesterIdParam_AndThenGetRequestsAndContactById();
     this.getCurrentProject();
     this.getCurrentUser();
     this.getTranslation();
@@ -120,7 +120,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
   getChatUrl() {
     this.CHAT_BASE_URL = this.appConfigService.getConfig().CHAT_BASE_URL;
-    console.log('AppConfigService getAppConfig (USERS COMP.) CHAT_BASE_URL', this.CHAT_BASE_URL);
+    console.log('AppConfigService getAppConfig (!!!!! CONTACTS DTLS) CHAT_BASE_URL', this.CHAT_BASE_URL);
   }
 
   getTranslation() {
@@ -273,7 +273,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
     }
   }
 
-  getRequesterIdParam() {
+  getRequesterIdParam_AndThenGetRequestsAndContactById() {
     this.requester_id = this.route.snapshot.params['requesterid'];
     console.log('!!!!! CONTACTS DETAILS - REQUESTER ID ', this.requester_id);
 
@@ -305,7 +305,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
         if (requests_object) {
           console.log('!!!!! CONTACTS DETAILS - REQUESTS OBJECTS ', requests_object);
           this.requests_list = requests_object['requests'];
-          console.log('!!!!! CONTACTS DETAILS - REQUESTS GOT BY REQUEST LIST ', this.requests_list);
+          console.log('!!!!! CONTACTS DETAILS - REQUESTS LIST (got by requester_id) ', this.requests_list);
 
           this.requests_list = requests_object['requests'];
 
