@@ -506,7 +506,7 @@
 // }
 
 .close-modal-btn:hover {
-  background-color: #CFD2D7 !important;
+  background-color: #cfd2d7 !important;
 }
 
 .title-wpr {
@@ -1419,7 +1419,9 @@ and also iPads specifically.
 }
 
 .accordion:after {
-  content: "\002B";
+  // content: "\002B";
+  content: "\f107";
+  font-family: FontAwesome;
   // color: #777;
   color: #039be5;
   font-weight: bold;
@@ -1430,8 +1432,9 @@ and also iPads specifically.
 }
 
 .active:after {
-  content: "\2212";
-  // content: "\f107";
+  // content: "\2212";
+  content: "\f106";
+  font-family: FontAwesome;
 }
 .note-panel {
   padding: 0 18px;
@@ -1463,22 +1466,27 @@ and also iPads specifically.
   background-color: #f7f8fc;
 }
 
-  .attributes-accordion:after {
-    content: "\002B";
-    // color: #777;
-    color: #039be5;
-    font-weight: bold;
-    float: right;
-    // margin-left: 5px;
-    font-size: 20px;
-    padding-right: 4px;
-  }
-
-
-.active:after {
-  content: "\2212";
-  // content: "\f107";
+.attributes-accordion:after {
+  // content: "\002B";
+  content: "\f107";
+  font-family: FontAwesome;
+  // color: #777;
+  color: #039be5;
+  font-weight: bold;
+  float: right;
+  // margin-left: 5px;
+  font-size: 20px;
+  padding-right: 4px;
 }
+.attributes-accordion.active:after{
+  content: "\f106";
+  font-family: FontAwesome;
+}
+
+// .active:after {
+//   content: "\2212";
+//   // content: "\f107";
+// }
 .attributes-panel {
   padding: 0 18px;
   background-color: white;
@@ -2295,7 +2303,6 @@ and also iPads specifically.
   width: 14px;
   height: auto;
 }
-
 
 /* SWAL SM SIZE - moved in demo css to avoid the use of  encapsulation: ViewEncapsulation.None */
 // .swal-size-sm {
