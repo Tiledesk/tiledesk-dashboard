@@ -196,7 +196,7 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
   }
 
   checkUserImageUploadIsComplete() {
-    this.uploadImageService.imageExist.subscribe((image_exist) => {
+    this.uploadImageService.userImageWasUploaded.subscribe((image_exist) => {
       console.log('PROJECTS-X-PANEL - IMAGE UPLOADING IS COMPLETE ? ', image_exist);
       this.userImageHasBeenUploaded = image_exist;
     });

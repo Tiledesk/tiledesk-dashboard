@@ -172,7 +172,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     });
   }
   checkUserImageUploadIsComplete() {
-    this.uploadImageService.imageExist.subscribe((image_exist) => {
+    this.uploadImageService.userImageWasUploaded.subscribe((image_exist) => {
       console.log('USER-PROFILE - IMAGE UPLOADING IS COMPLETE ? ', image_exist);
       this.userImageHasBeenUploaded = image_exist;
     });
