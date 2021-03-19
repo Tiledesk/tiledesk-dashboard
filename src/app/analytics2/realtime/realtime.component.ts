@@ -323,13 +323,13 @@ export class RealtimeComponent implements OnInit {
         const requests_depts_id_array = []
         if (global_requests) {
           global_requests.forEach(g_r => {
-
+            console.log('!!! ANALYTICS ALL REQUESTS X DEPT - g_r ', g_r);
             // if (g_r.attributes) {
             //   requests_depts_id_array.push(g_r.attributes.departmentId)
             // }
-            if (g_r.department) { 
+            if (g_r.snapshot.department) { 
 
-              requests_depts_id_array.push(g_r.department._id);
+              requests_depts_id_array.push(g_r.snapshot.department._id);
             }
 
           });
