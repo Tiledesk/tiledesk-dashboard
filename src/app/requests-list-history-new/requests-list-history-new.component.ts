@@ -450,148 +450,104 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
    * più usata.
    * Verificare eventuali malfunzionamenti prima di eliminarla definitivamente.
    */
-  _getRequests() {
-    this.showSpinner = true;
-    // this.wsRequestsService.getNodeJsHistoryRequests(this.queryString, this.pageNo).subscribe((requests: any) => {
-    this.wsRequestsService.getNodeJsWSRequests(this.operator, this.requests_status, this.queryString, this.pageNo).subscribe((requests: any) => {
+  // _getRequests() {
+  //   this.showSpinner = true;
+  //   // this.wsRequestsService.getNodeJsHistoryRequests(this.queryString, this.pageNo).subscribe((requests: any) => {
+  //   this.wsRequestsService.getNodeJsWSRequests(this.operator, this.requests_status, this.queryString, this.pageNo).subscribe((requests: any) => {
 
-      console.log('!!! NEW REQUESTS HISTORY - GET REQUESTS ', requests['requests']);
-      console.log('!!! NEW REQUESTS HISTORY - GET REQUESTS COUNT ', requests['count']);
-      if (requests) {
+  //     console.log('!!! NEW REQUESTS HISTORY - GET REQUESTS ', requests['requests']);
+  //     console.log('!!! NEW REQUESTS HISTORY - GET REQUESTS COUNT ', requests['count']);
+  //     if (requests) {
 
-        // this.requestsCount = 18; // for test
-        this.requestsCount = requests['count'];
-        console.log('!!! NEW REQUESTS HISTORY - GET REQUESTS COUNT ', this.requestsCount);
+  //       // this.requestsCount = 18; // for test
+  //       this.requestsCount = requests['count'];
+  //       console.log('!!! NEW REQUESTS HISTORY - GET REQUESTS COUNT ', this.requestsCount);
 
-        this.displayHideFooterPagination();
+  //       this.displayHideFooterPagination();
 
-        const requestsPerPage = requests['perPage'];
-        console.log('!!! NEW REQUESTS HISTORY - TOTAL PAGES REQUESTS X PAGE', requestsPerPage);
+  //       const requestsPerPage = requests['perPage'];
+  //       console.log('!!! NEW REQUESTS HISTORY - TOTAL PAGES REQUESTS X PAGE', requestsPerPage);
 
-        const totalPagesNo = this.requestsCount / requestsPerPage;
-        console.log('!!! NEW REQUESTS HISTORY - TOTAL PAGES NUMBER', totalPagesNo);
+  //       const totalPagesNo = this.requestsCount / requestsPerPage;
+  //       console.log('!!! NEW REQUESTS HISTORY - TOTAL PAGES NUMBER', totalPagesNo);
 
-        this.totalPagesNo_roundToUp = Math.ceil(totalPagesNo);
-        console.log('!!! NEW REQUESTS HISTORY - TOTAL PAGES No ROUND TO UP ', this.totalPagesNo_roundToUp);
-
-
-
-        // const firstIndex = requestsPerPage * this.pageNo;
-        // console.log('!!! NEW REQUESTS HISTORY - firstIndex ', firstIndex);
-
-        // const lastIndex = requestsPerPage * (this.pageNo + 1) - 1
-        // console.log('!!! NEW REQUESTS HISTORY - lastIndex ', lastIndex);
-
-        this.requestList = requests['requests'];
-
-        for (const request of this.requestList) {
-
-          if (request) {
-            // console.log('!!! NEW REQUESTS HISTORY - request ', request);
-
-            request['currentUserIsJoined'] = this.currentUserIdIsInParticipants(request.participants, this.auth.user_bs.value._id, request.request_id);
-
-            // -------------------------------------------------------------------
-            // User Agent
-            // -------------------------------------------------------------------
-            const user_agent_result = this.parseUserAgent(request.userAgent);
-            const ua_browser = user_agent_result.browser.name + ' ' + user_agent_result.browser.version
-            // console.log('!!! NEW REQUESTS HISTORY  - USER-AGENT BROWSER ', ua_browser)
-            request['ua_browser'] = ua_browser;
-
-            const ua_os = user_agent_result.os.name + ' ' + user_agent_result.os.version
-            // console.log('!!! NEW REQUESTS HISTORY - USER-AGENT OPERATING SYSTEM ', ua_os)
-            request['ua_os'] = ua_os;
-
-            // -------------------------------------------------------------------
-            // Contact's avatar
-            // -------------------------------------------------------------------
-            let newInitials = '';
-            let newFillColour = '';
-
-            if (request.lead && request.lead.fullname) {
-              newInitials = avatarPlaceholder(request.lead.fullname);
-              newFillColour = getColorBck(request.lead.fullname)
-            } else {
-
-              newInitials = 'N/A';
-              newFillColour = 'rgb(98, 100, 167)';
-            }
-
-            request.requester_fullname_initial = newInitials;
-            request.requester_fullname_fillColour = newFillColour;
-            // .authVar.token.firebase.sign_in_provider
-            // console.log('---- lead sign_in_provider ',  request.lead.attributes.senderAuthInfo);
-
-            const date = moment.localeData().longDateFormat(request.createdAt);
-            request.fulldate = date;
-            // if (this.browserLang === 'it') {
-            //   // moment.locale('it')
-            //   const date = moment(request.createdAt).format('dddd, DD MMM YYYY - HH:mm:ss');
-            //   console.log('!!! NEW REQUESTS HISTORY - createdAt date', date);
-            //   request.fulldate = date;
-            // } else {
-            //   const date = moment(request.createdAt).format('dddd, MMM DD, YYYY - HH:mm:ss');
-            //   console.log('!!! NEW REQUESTS HISTORY - createdAt date', date);
-            //   request.fulldate = date;
-            // }
+  //       this.totalPagesNo_roundToUp = Math.ceil(totalPagesNo);
+  //       console.log('!!! NEW REQUESTS HISTORY - TOTAL PAGES No ROUND TO UP ', this.totalPagesNo_roundToUp);
 
 
-            if (request.participants.length > 0) {
-              console.log('!! Ws SHARED  (from request list history) participants length', request.participants.length);
-              if (!request['participanting_Agents']) {
+  //       this.requestList = requests['requests'];
 
-                console.log('!! Ws SHARED  (from request list history) PARTICIPATING-AGENTS IS ', request['participanting_Agents'], ' - RUN DO ');
+  //       for (const request of this.requestList) {
 
-                request['participanting_Agents'] = this.doParticipatingAgentsArray(request.participants, request.first_text, this.storageBucket)
+  //         if (request) {
+  //           // console.log('!!! NEW REQUESTS HISTORY - request ', request);
 
-              } else {
+  //           request['currentUserIsJoined'] = this.currentUserIdIsInParticipants(request.participants, this.auth.user_bs.value._id, request.request_id);
 
-                console.log('!! Ws SHARED  (from request list history) PARTICIPATING-AGENTS IS DEFINED');
-              }
-            } else {
-              console.log('!! Ws SHARED  (from request list history) participants length', request.participants.length);
-              request['participanting_Agents'] = [{ _id: 'no_agent', email: 'NoAgent', firstname: 'NoAgent', lastname: 'NoAgent' }]
-            }
+  //           // -------------------------------------------------------------------
+  //           // User Agent
+  //           // -------------------------------------------------------------------
+  //           const user_agent_result = this.parseUserAgent(request.userAgent);
+  //           const ua_browser = user_agent_result.browser.name + ' ' + user_agent_result.browser.version
+  //           // console.log('!!! NEW REQUESTS HISTORY  - USER-AGENT BROWSER ', ua_browser)
+  //           request['ua_browser'] = ua_browser;
 
-            // if (request.lead
-            //   && request.lead.attributes
-            //   && request.lead.attributes.senderAuthInfo
-            //   && request.lead.attributes.senderAuthInfo.authVar
-            //   && request.lead.attributes.senderAuthInfo.authVar.token
-            //   && request.lead.attributes.senderAuthInfo.authVar.token.firebase
-            //   && request.lead.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider
-            // ) {
-            //   if (request.lead.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider === 'custom') {
+  //           const ua_os = user_agent_result.os.name + ' ' + user_agent_result.os.version
+  //           // console.log('!!! NEW REQUESTS HISTORY - USER-AGENT OPERATING SYSTEM ', ua_os)
+  //           request['ua_os'] = ua_os;
 
-            //     // console.log('- lead sign_in_provider ',  request.lead.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider);
-            //     this.REQUESTER_IS_VERIFIED = true;
-            //   } else {
-            //     // console.log('- lead sign_in_provider ',  request.lead.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider);
-            //     this.REQUESTER_IS_VERIFIED = false;
-            //   }
-            // } else {
-            //   this.REQUESTER_IS_VERIFIED = false;
-            // }
-            // request.requester_is_verified = this.REQUESTER_IS_VERIFIED
+  //           // -------------------------------------------------------------------
+  //           // Contact's avatar
+  //           // -------------------------------------------------------------------
+  //           let newInitials = '';
+  //           let newFillColour = '';
 
+  //           if (request.lead && request.lead.fullname) {
+  //             newInitials = avatarPlaceholder(request.lead.fullname);
+  //             newFillColour = getColorBck(request.lead.fullname)
+  //           } else {
 
+  //             newInitials = 'N/A';
+  //             newFillColour = 'rgb(98, 100, 167)';
+  //           }
 
+  //           request.requester_fullname_initial = newInitials;
+  //           request.requester_fullname_fillColour = newFillColour;
+  //           // .authVar.token.firebase.sign_in_provider
+  //           // console.log('---- lead sign_in_provider ',  request.lead.attributes.senderAuthInfo);
 
+  //           const date = moment.localeData().longDateFormat(request.createdAt);
+  //           request.fulldate = date;
+    
 
+  //           if (request.participants.length > 0) {
+  //             console.log('!! Ws SHARED  (from request list history) participants length', request.participants.length);
+  //             if (!request['participanting_Agents']) {
 
+  //               console.log('!! Ws SHARED  (from request list history) PARTICIPATING-AGENTS IS ', request['participanting_Agents'], ' - RUN DO ');
 
-          }
-        }
-      }
-    }, error => {
-      this.showSpinner = false;
-      console.log('!!! NEW REQUESTS HISTORY  - GET REQUESTS - ERROR: ', error);
-    }, () => {
-      this.showSpinner = false;
-      console.log('!!! NEW REQUESTS HISTORY  - GET REQUESTS * COMPLETE *')
-    });
-  }
+  //               request['participanting_Agents'] = this.doParticipatingAgentsArray(request.participants, request.first_text, this.storageBucket)
+
+  //             } else {
+
+  //               console.log('!! Ws SHARED  (from request list history) PARTICIPATING-AGENTS IS DEFINED');
+  //             }
+  //           } else {
+  //             console.log('!! Ws SHARED  (from request list history) participants length', request.participants.length);
+  //             request['participanting_Agents'] = [{ _id: 'no_agent', email: 'NoAgent', firstname: 'NoAgent', lastname: 'NoAgent' }]
+  //           }
+
+  //         }
+  //       }
+  //     }
+  //   }, error => {
+  //     this.showSpinner = false;
+  //     console.log('!!! NEW REQUESTS HISTORY  - GET REQUESTS - ERROR: ', error);
+  //   }, () => {
+  //     this.showSpinner = false;
+  //     console.log('!!! NEW REQUESTS HISTORY  - GET REQUESTS * COMPLETE *')
+  //   });
+  // }
 
 
   // GET REQUEST COPY - START
@@ -639,9 +595,9 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
               let newInitials = '';
               let newFillColour = '';
 
-              if (request.lead && request.lead.fullname) {
-                newInitials = avatarPlaceholder(request.lead.fullname);
-                newFillColour = getColorBck(request.lead.fullname)
+              if (request.snapshot.lead && request.snapshot.lead.fullname) {
+                newInitials = avatarPlaceholder(request.snapshot.lead.fullname);
+                newFillColour = getColorBck(request.snapshot.lead.fullname)
               } else {
                 newInitials = 'N/A';
                 newFillColour = 'rgb(98, 100, 167)';
@@ -1323,7 +1279,8 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
     this.selectedAgentId = '';
     this.requester_email = '';
     this.selecteTagName = '';
-    this.requests_status = 'all'
+    // this.requests_status = 'all' // I comment this because it causes bugs
+
     // this.fullTextValue = '';
     // this.deptIdValue = '';
     // this.startDateValue = '';
