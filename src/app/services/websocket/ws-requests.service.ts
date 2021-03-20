@@ -430,10 +430,6 @@ export class WsRequestsService implements OnDestroy {
         console.log('% »»» WebSocketJs WF +++++ ws-requests--- service ON-CREATE ----- NEXT wsRequestsList ', this.wsRequestsList)
 
         // localStorage.setItem('fakerequest', JSON.stringify(this.wsRequestsList));
-
-   
-
-
         /* the json fakeWsRequestsList (used to test the channel icon whatsapp|telegram|messenger|email) is in the folder nicola  */
         //  this.wsRequestsList$.next(this.fakeWsRequestsList);
         //  console.log('% »»» WebSocketJs WF +++++ ws-requests--- service ON-CREATE ----- NEXT fakeWsRequestsList ', this.fakeWsRequestsList)
@@ -1171,9 +1167,9 @@ export class WsRequestsService implements OnDestroy {
 
     let url = '';
     if (status !== 'all') {
-      url = this.SERVER_BASE_PATH + this.project_id + '/requests?status' + operator + status + _querystring + '&page=' + pagenumber;
+      url = this.SERVER_BASE_PATH + this.project_id + '/requests?status' + operator + status + _querystring + '&page=' + pagenumber + '&no_populate=true';
     } else {
-      url = this.SERVER_BASE_PATH + this.project_id + '/requests?' + _querystring + 'page=' + pagenumber;
+      url = this.SERVER_BASE_PATH + this.project_id + '/requests?' + _querystring + 'page=' + pagenumber + '&no_populate=true';
     }
 
 
