@@ -238,6 +238,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.getHasOpenBlogKey()
         this.getChatUrl();
         this.isMac();
+        this.listenHasDeleteUserProfileImage();
     }
 
     getChatUrl() {
@@ -511,6 +512,16 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
 
 
+    listenHasDeleteUserProfileImage() {
+        this.uploadImageService.hasDeletedUserPhoto.subscribe((hasDeletedImage) => {
+            console.log('SIDEBAR - hasDeletedImage ? ', hasDeletedImage);
+            this.userImageHasBeenUploaded = false
+            this.userProfileImageExist = false
+        });
+
+    }
+
+
     checkUserImageExist() {
         this.usersService.userProfileImageExist.subscribe((image_exist) => {
             console.log('SIDEBAR - USER PROFILE EXIST ? ', image_exist);
@@ -522,6 +533,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         });
     }
 
+  
 
     checkUserImageUploadIsComplete() {
         this.uploadImageService.userImageWasUploaded.subscribe((image_exist) => {

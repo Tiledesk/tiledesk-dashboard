@@ -123,6 +123,9 @@ export class UserProfileComponent implements OnInit {
     // const file = event.target.files[0]
     console.log('PROFILE IMAGE (USER-PROFILE ) deleteUserProfileImage')
     this.uploadImageService.deleteUserProfileImage(this.userId);
+   
+    this.userProfileImageExist = false;
+    this.userImageHasBeenUploaded = false
 
     const delete_user_image_btn = <HTMLElement>document.querySelector('.delete-user-image');
     delete_user_image_btn.blur();

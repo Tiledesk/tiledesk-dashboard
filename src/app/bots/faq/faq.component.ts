@@ -531,6 +531,10 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     console.log('PROFILE IMAGE (USER-PROFILE ) deleteUserProfileImage')
     this.uploadImageService.deleteBotProfileImage(this.id_faq_kb);
 
+    this.userProfileImageExist = false;
+    this.userImageHasBeenUploaded = false;
+   
+
     const delete_bot_image_btn = <HTMLElement>document.querySelector('.delete_bot_image_btn');
     delete_bot_image_btn.blur();
   }

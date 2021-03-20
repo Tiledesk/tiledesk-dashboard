@@ -10,12 +10,13 @@ export class UploadImageService {
   public imageExist: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   public userImageWasUploaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   public botImageWasUploaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
+  public hasDeletedUserPhoto: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   // public imageWasUploaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
 
   constructor() { }
 
   // ---------------------------------------------------
-  // @ USER
+  // @ UPLOAD USER PHOTO
   // ---------------------------------------------------
   public uploadUserAvatar(file: any, user_id: string) {
     console.log('UPLOAD IMAGE SERVICE - FILE ', file)
@@ -89,22 +90,41 @@ export class UploadImageService {
     );
   }
 
+  // ---------------------------------------------------
+  // @ DELETE USER PHOTO & THUMB-PHOTO
+  // ---------------------------------------------------
   public deleteUserProfileImage(userid) {
-    const file_name = 'photo.jpg';
+    const file_name_photo = 'photo.jpg';
+    const file_name_thumb_photo = 'thumb_photo.jpg';
 
     // Create a root reference
     const storageRef = firebase.storage().ref();
     // const deleteTask = storageRef.child('profiles/' + userid + '/' + file_name)
-    const deleteTask = storageRef.child('profiles/' + userid + '/' + file_name)
 
-    // Delete the file
-    deleteTask.delete().then(() => {
-      console.log('UPLOAD IMAGE SERVICE - DELETE USER IMG ')
-    
-      this.userImageWasUploaded.next(false);
+    const deletePhoto = storageRef.child('profiles/' + userid + '/' + file_name_photo)
+    const deleteThumbPhoto = storageRef.child('profiles/' + userid + '/' + file_name_thumb_photo)
+
+    // ------------------------------------
+    // Delete the file photo
+    // ------------------------------------
+    deletePhoto.delete().then(() => {
+      console.log('UPLOAD IMAGE SERVICE - DELETE USER PHOTO ')
+
+      this.hasDeletedUserPhoto.next(true);
 
     }).catch((error) => {
-      console.log('UPLOAD IMAGE SERVICE - DELETE USER IMG err ', error)
+      console.log('UPLOAD IMAGE SERVICE - DELETE USER PHOTO err ', error)
+    });
+
+    // ------------------------------------
+    // Delete the file thumb_photo
+    // ------------------------------------
+    deleteThumbPhoto.delete().then(() => {
+      console.log('UPLOAD IMAGE SERVICE - DELETE USER THUMB-PHOTO ')
+      // this.userImageWasUploaded.next(false);
+
+    }).catch((error) => {
+      console.log('UPLOAD IMAGE SERVICE - DELETE USER THUMB-PHOTO err ', error)
     });
   }
 
@@ -182,27 +202,41 @@ export class UploadImageService {
     );
   }
 
- 
 
+ // ---------------------------------------------------
+  // @ DELETE BOT PHOTO & THUMB-PHOTO
+  // ---------------------------------------------------
 
   public deleteBotProfileImage(botid) {
-    const file_name = 'photo.jpg';
-
+    const file_name_photo = 'photo.jpg';
+    const file_name_thumb_photo = 'thumb_photo.jpg';
     // Create a root reference
     const storageRef = firebase.storage().ref();
     // const deleteTask = storageRef.child('profiles/' + userid + '/' + file_name)
-    const deleteTask = storageRef.child('profiles/' + botid + '/' + file_name)
+    const deleteBotPhoto = storageRef.child('profiles/' + botid + '/' + file_name_photo)
+    const deleteBotThumbPhoto = storageRef.child('profiles/' + botid + '/' + file_name_thumb_photo)
 
-    // Delete the file
-    deleteTask.delete().then(() => {
-      console.log('UPLOAD IMAGE SERVICE - DELETE BOT IMG ')
-    
-      this.botImageWasUploaded.next(false);
+     // ------------------------------------
+    // Delete the file photo
+    // ------------------------------------
+    deleteBotPhoto.delete().then(() => {
+      console.log('UPLOAD IMAGE SERVICE - DELETE BOT PHOTO ')
+
 
     }).catch((error) => {
-      console.log('UPLOAD IMAGE SERVICE - DELETE BOT IMG err ', error)
+      console.log('UPLOAD IMAGE SERVICE - DELETE BOT PHOTO - ERR ', error)
+    });
+  
+
+   // ------------------------------------
+    // Delete the file thumb_photo
+    // ------------------------------------
+    deleteBotThumbPhoto.delete().then(() => {
+      console.log('UPLOAD IMAGE SERVICE - DELETE BOT THUMB-PHOTO ')
+
+    }).catch((error) => {
+      console.log('UPLOAD IMAGE SERVICE - DELETE BOT THUMB-PHOTO - ERR ', error)
     });
   }
-
 
 }

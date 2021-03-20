@@ -123,6 +123,7 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
     this.onInitWindowWidth()
 
     this.setPerfectScrollbar();
+    this.listenHasDeleteUserProfileImage();
    
   }
   setPerfectScrollbar() {
@@ -187,6 +188,15 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
     this.storageBucket = firebase_conf['storageBucket'];
     console.log('STORAGE-BUCKET Projects (PROJECTS-X-PANEL) ', this.storageBucket)
   }
+
+  listenHasDeleteUserProfileImage() {
+    this.uploadImageService.hasDeletedUserPhoto.subscribe((hasDeletedImage) => {
+        console.log('SIDEBAR - hasDeletedImage ? ', hasDeletedImage);
+        this.userImageHasBeenUploaded = false
+        this.userProfileImageExist = false
+    });
+
+}
 
   checkUserImageExist() {
     this.usersService.userProfileImageExist.subscribe((image_exist) => {

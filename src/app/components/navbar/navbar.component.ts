@@ -233,7 +233,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         this.setNotificationSound();
         this.getTestSiteUrl();
 
-        this.translateStrings()
+        this.translateStrings();
+        this.listenHasDeleteUserProfileImage();
 
     } // OnInit
 
@@ -435,6 +436,15 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                 this.HAS_OPENED_THE_CHAT = true
             }
         })
+    }
+
+    listenHasDeleteUserProfileImage() {
+        this.uploadImageService.hasDeletedUserPhoto.subscribe((hasDeletedImage) => {
+            console.log('SIDEBAR - hasDeletedImage ? ', hasDeletedImage);
+            this.userImageHasBeenUploaded = false
+            this.userProfileImageExist = false
+        });
+
     }
 
     checkUserImageExist() {
