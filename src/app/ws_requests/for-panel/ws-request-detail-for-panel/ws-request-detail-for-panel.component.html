@@ -58,7 +58,7 @@ padding-bottom: 15px;">
 
                     <a style="font-size: 12px;font-weight: 500;" target="_blank" *ngIf="request?.lead?.email"
                         href="mailto:{{request?.lead?.email}}">
-                        {{request?.lead?.email}}
+                        {{request?.snapshot?.lead?.email}}
                     </a>
                     <a *ngIf="!request?.lead?.email" style="color: #7695a5; font-weight: 500; font-size: 12px;">n.a.</a>
                 </span>
@@ -426,7 +426,7 @@ padding-bottom: 15px;">
             </div>
             <div class="contact-name">
                 <span class="requester-name--for-panel">
-                    {{ request?.lead?.fullname }}
+                    {{ request?.snapshot?.lead?.fullname }}
                 </span>
 
                 <span *ngIf="!request?.lead?.fullname"
