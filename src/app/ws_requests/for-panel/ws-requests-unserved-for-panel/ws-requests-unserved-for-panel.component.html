@@ -63,7 +63,7 @@
 
               <div class="lead-avatar-wrap" style="position:relative">
                 <div class="lead--avatar" [ngStyle]="{'background-color': request?.requester_fullname_fillColour }"
-                  [ngClass]="{'requester_fullname-undefined' : !request?.lead?.fullname }">
+                  [ngClass]="{'requester_fullname-undefined' : !request?.snapshot?.lead?.fullname }">
                   <span style="color: #ffffff"> {{ request?.requester_fullname_initial }} </span>
                   <div class="requester-status-in-unserved-list"
                     [ngClass]="{'requester-is-online' : request?.REQUESTER_IS_ONLINE, 'requester-is-offline' : !request?.REQUESTER_IS_ONLINE }">
@@ -75,9 +75,9 @@
             <div class="right-column"  (click)="displayDetails(request)">
               <div class="lead-name">
                 <div class="lead--name">
-                  {{ request?.lead?.fullname }}
+                  {{ request?.snapshot?.lead?.fullname }}
                   <!-- {{ request?.lead?.lead_id }} -->
-                  <span *ngIf="!request?.lead?.fullname">
+                  <span *ngIf="!request?.snapshot?.lead?.fullname">
                     N/A
                   </span>
                 </div>
