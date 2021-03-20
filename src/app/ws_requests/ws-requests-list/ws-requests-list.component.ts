@@ -1008,21 +1008,6 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   hasmeInAgents(agents, wsrequest) {
     // console.log("% »»» WebSocketJs WF +++++ ws-requests--- list + hasmeInAgents agents", agents);
 
-    // let iAmThere = false
-    // agents.forEach(agent => {
-    //   // console.log("% »»» WebSocketJs WF +++++ ws-requests--- list + hasmeInAgents (forEach) agent", agent);
-
-    //   if (agent.id_user === this.currentUserID) {
-    //     iAmThere = true
-    //     console.log("% »»» WebSocketJs WF +++++ ws-requests--- list + hasmeInAgents", iAmThere, '(forEach) the request id ', wsrequest.request_id, ' status: ', wsrequest.status, ' agent: ', agents );
-
-    //   } else {
-    //     // console.log("% »»» WebSocketJs WF +++++ ws-requests--- list + hasmeInAgents", iAmThere, '(forEach) the request id', wsrequest.request_id, ' status: ', wsrequest.status , ' agent: ', agents);
-    //   }
-    //   return iAmThere
-    // });
-
-
     for (let j = 0; j < agents.length; j++) {
       // console.log("% »»» WebSocketJs WF - WsRequestsList »»» »»» hasmeInAgents agent", agents[j]);
       console.log("% »»» WebSocketJs WF +++++ ws-requests--- list + hasmeInAgents currentUserID 2 ", this.currentUserID);
@@ -1062,15 +1047,15 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       console.log('% »»» WebSocketJs WF +++++ ws-requests--- service -  X-> DEPTS <-X', _departments)
 
       wsrequests.forEach(request => {
-        if (request.department) {
-          const deptHasName = request.department.hasOwnProperty('name')
+        if (request.snapshot.department) {
+          const deptHasName = request.snapshot.department.hasOwnProperty('name')
           if (deptHasName) {
             // console.log('% »»» WebSocketJs WF +++++ ws-requests--- service -  X-> REQ DEPT HAS NAME', deptHasName)
-            request['dept'] = request.department
+            request['dept'] = request.snapshot.department
           } else {
             // console.log('% »»» WebSocketJs WF +++++ ws-requests--- service -  X-> REQ DEPT HAS NAME', deptHasName)
 
-            request['dept'] = this.getDeptObj(request.department, _departments)
+            request['dept'] = this.getDeptObj(request.snapshot.department._id, _departments)
           }
         }
 
@@ -1081,6 +1066,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   }
   // DEPTS_LAZY: add this 
   getDeptObj(departmentid: string, deparments: any) {
+    console.log('% »»» WebSocketJs WF +++++ ws-requests - getDeptObj departmentid', departmentid)
     // const deptObjct =  this.departments.findIndex((e) => e.department === departmentid);
     const deptObjct = deparments.filter((obj: any) => {
       return obj._id === departmentid;
@@ -1191,15 +1177,15 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
             this.ws_requests = [];
             wsrequests.forEach(wsrequest => {
               // console.log('% »»» WebSocketJs WF +++++ ws-requests--- list - ONLY_MY_REQUESTS: ', this.ONLY_MY_REQUESTS, ' - (forEach) wsrequest: ', wsrequest);
-
               // const imInParticipants = this.hasmeInParticipants(wsrequest.participants)
               // console.log("% »»» WebSocketJs - WsRequestsService imInParticipants ", imInParticipants, 'for the request ', wsrequest.participants);
 
               if (wsrequest !== null && wsrequest !== undefined) {
                 // || wsrequest.status === 100
                 // console.log("% »»» WebSocketJs WF +++++ ws-requests--- list - »»» »»» hasmeInAgents ONLY_MY_REQUESTS forEach hasmeInAgents", this.hasmeInAgents(wsrequest.agents, wsrequest));
-
-                if (this.hasmeInAgents(wsrequest.agents, wsrequest) === true || this.hasmeInParticipants(wsrequest.participants) === true) {
+                // console.log("% »»» WebSocketJs WF +++++ ws-requests--- list - »»» »»» hasmeInAgents ONLY_MY_REQUESTS forEach hasmeInAgents (get from snapshot)", this.hasmeInAgents(wsrequest.snapshot.agents, wsrequest));
+                // if (this.hasmeInAgents(wsrequest.agents, wsrequest) === true || this.hasmeInParticipants(wsrequest.participants) === true) {
+                if (this.hasmeInAgents(wsrequest.snapshot.agents, wsrequest) === true || this.hasmeInParticipants(wsrequest.participants) === true) {
 
                   this.ws_requests.push(wsrequest);
                 }
@@ -1546,15 +1532,11 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
               // console.log('!! Ws SHARED (from request list) PARTICIPANTS ', request.participants);
             }
           }
-          // this.createFullParticipacipantsArray(request, request.participants)
-
-
-          // request["test"] = this.newParticipants
-          // console.log('!! Ws SHARED  (from) »»»»»»» createFullParticipacipantsArray request["test"] ' , request["test"]);
-
-          if (request.lead && request.lead.fullname) {
-            request['requester_fullname_initial'] = avatarPlaceholder(request.lead.fullname);
-            request['requester_fullname_fillColour'] = getColorBck(request.lead.fullname)
+        
+  
+          if (request.snapshot.lead && request.snapshot.lead.fullname) {
+            request['requester_fullname_initial'] = avatarPlaceholder(request.snapshot.lead.fullname);
+            request['requester_fullname_fillColour'] = getColorBck(request.snapshot.lead.fullname)
           } else {
 
             request['requester_fullname_initial'] = 'N/A';
@@ -1935,20 +1917,20 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
 
   // NOT USED
-  getAllPaginatedContactsRecursevely(page_No) {
-    // https://stackoverflow.com/questions/56786261/recursively-combining-http-results-based-on-response
-    // https://dev.to/andre347/how-to-use-a-do-while-loop-for-api-pagination-375b
-    // https://stackoverflow.com/questions/44097231/rxjs-while-loop-for-pagination ****
-    this.contactsService.getAllLeadsActive(page_No).subscribe(res => {
-      this.items = this.items.concat(res['leads'])
-      console.log('Ws-REQUESTS-LIST getAllPaginatedContacts items concat ', this.items)
+  // getAllPaginatedContactsRecursevely(page_No) {
+  //   // https://stackoverflow.com/questions/56786261/recursively-combining-http-results-based-on-response
+  //   // https://dev.to/andre347/how-to-use-a-do-while-loop-for-api-pagination-375b
+  //   // https://stackoverflow.com/questions/44097231/rxjs-while-loop-for-pagination ****
+  //   this.contactsService.getAllLeadsActive(page_No).subscribe(res => {
+  //     this.items = this.items.concat(res['leads'])
+  //     console.log('Ws-REQUESTS-LIST getAllPaginatedContacts items concat ', this.items)
 
-      console.log('Ws-REQUESTS-LIST getAllPaginatedContacts  leads in page No ', page_No + ': ', res['leads'])
-      if (res['leads'].length > 0) {
-        this.getAllPaginatedContactsRecursevely(++page_No)
-      }
-    });
-  }
+  //     console.log('Ws-REQUESTS-LIST getAllPaginatedContacts  leads in page No ', page_No + ': ', res['leads'])
+  //     if (res['leads'].length > 0) {
+  //       this.getAllPaginatedContactsRecursevely(++page_No)
+  //     }
+  //   });
+  // }
 
 
   getDepartments() {
@@ -2094,6 +2076,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
   }
 
+  // used nella select requester di crea ticket
   selectRequester() {
     console.log('Ws-REQUESTS-LIST - SELECT REQUESTER ID', this.selectedRequester);
     console.log('Ws-REQUESTS-LIST - SELECT REQUESTER ROLE',);
