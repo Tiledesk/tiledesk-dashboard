@@ -914,6 +914,7 @@ my-app .main-panel .main-content .card {
   padding: 6px;
   background: #e4e6eb;
   border-radius: 50%;
+  cursor: pointer;
 }
 
 
