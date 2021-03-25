@@ -1,6 +1,17 @@
 
 # tiledesk-dashboard
 
+### 2.1.41
+- Fixes bug: app crashes when real-time conversations, non-real-time conversations and history pages have old conversations
+- Deletes, in the 'Routing & Depts' page, the logic relating to the activation of the 'bot only' option on a department
+- Fixed bug: in the conversations page not in real time, resetting the filters does not show all the conversations if a filter on the type of conversation is active (i.e. assigned, not assigned)
+
+### 2.1.40
+- Improve deleting user profile photo and bot profile photo,
+- Fixes the bug: in the 'Your requests' tab, in the 'conversations for department' section, the count of departments is relating to all conversations and not just those of the user currently logged
+- Improves the contact details page
+- Refactors the code by duplicating the 'agents' array and the 'department', 'lead' and 'requester' objects of the "request.snapshot" property in 'request'
+
 ### 2.1.39
 - Replaces "plus" / "minus" buttons of notes and attributes with "angle up" / "angle down" on the conversation detail page
 - Adds, on the bot detail page, the ability to delete the bot profile image
