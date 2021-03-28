@@ -21,8 +21,7 @@ import { BotsBaseComponent } from '../bots-base/bots-base.component';
 import { BrandService } from '../../services/brand.service';
 import { DepartmentService } from '../../services/department.service';
 import { avatarPlaceholder, getColorBck } from '../../utils/util';
-import { filter } from 'rxjs/operators';
-import { pairwise } from 'rxjs/operators';
+const swal = require('sweetalert');
 // import $ = require('jquery');
 // declare const $: any;
 @Component({
@@ -135,6 +134,19 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   errorDeletingAnswerMsg: string;
   answerSuccessfullyDeleted: string;
 
+  depts_length: number;
+  depts_without_bot_array = [];
+
+  COUNT_OF_VISIBLE_DEPT: number;
+
+  selected_bot_id: string;
+  selected_bot_name: string;
+  dept_id: string;
+  done_msg: string;
+  botHasBeenAssociatedWithDept: string;
+
+
+
   @ViewChild('fileInputBotProfileImage') fileInputBotProfileImage: any;
 
   constructor(
@@ -218,7 +230,13 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     this.getParamsBotType();
 
     this.getTranslations();
+
+    this.getDeptsByProjectId();
+
   }
+
+
+
 
 
   getTranslations() {
@@ -242,14 +260,17 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
         this.errorDeletingAnswerMsg = text;
       });
 
-      this.translate.get('FaqPage.AnswerSuccessfullyDeleted')
+    this.translate.get('FaqPage.AnswerSuccessfullyDeleted')
       .subscribe((text: string) => {
         this.answerSuccessfullyDeleted = text;
       });
 
+    this.translate.get('Done')
+      .subscribe((text: string) => {
+        this.done_msg = text;
+      });
+  }
 
-
-    }
 
   getParamsBotType() {
     this.route.params.subscribe((params) => {
@@ -350,11 +371,11 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   }
 
 
-  checkValueTopic (event: any) {
+  checkValueTopic(event: any) {
     console.log('Faqcomponent check value display_topic_in_table', this.display_topic_in_table)
   }
 
-  
+
 
 
   getDialogFlowBotData(dlgflwbotid: string) {
@@ -442,6 +463,8 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
         this.all_depts = departments;
 
         let count = 0;
+        let countOfVisibleDepts = 0;
+
         departments.forEach((dept: any) => {
           console.log('FaqComponent - DEPT', dept);
 
@@ -486,21 +509,43 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
 
               // }
+              const index = this.DEPTS_BOT_IS_ASSOCIATED_WITH_ARRAY.findIndex((d) => d._id === dept._id);
 
-              this.DEPTS_BOT_IS_ASSOCIATED_WITH_ARRAY.indexOf(dept) === -1 ? this.DEPTS_BOT_IS_ASSOCIATED_WITH_ARRAY.push(dept) : console.log("This item already exists");
-
-
+              if (index === -1) {
+                this.DEPTS_BOT_IS_ASSOCIATED_WITH_ARRAY.push(dept)
+              }
+              // this.DEPTS_BOT_IS_ASSOCIATED_WITH_ARRAY.indexOf(dept) === -1 ? this.DEPTS_BOT_IS_ASSOCIATED_WITH_ARRAY.push(dept) : console.log("This item already exists");
 
               // this.DEPTS_BOT_IS_ASSOCIATED_WITH_ARRAY.push(dept)
             }
-          }
+          } else if (dept.hasBot === false) {
+            // this.depts_length = departments.length
+            console.log('FaqComponent --->  DEPT botType ', this.botType);
 
+            if (this.botType !== 'identity') {
+              const index = this.depts_without_bot_array.findIndex((d) => d._id === dept._id);
+
+              if (index === -1) {
+                this.depts_without_bot_array.push(dept)
+              }
+
+              if (dept.default === false && dept.status === 1) {
+                countOfVisibleDepts = countOfVisibleDepts + 1;
+              }
+
+            }
+          }
         });
 
         console.log('FaqComponent - DEPT - DEPTS_BOT_IS_ASSOCIATED_WITH_ARRAY', this.DEPTS_BOT_IS_ASSOCIATED_WITH_ARRAY);
+        console.log('FaqComponent - DEPT - DEPTS WITHOUT BOT', this.depts_without_bot_array);
+
 
         this.COUNT_DEPTS_BOT_IS_ASSOCIATED_WITH = count;
         console.log('FaqComponent - DEPT - COUNT_DEPTS_BOT_IS_ASSOCIATED_WITH', this.COUNT_DEPTS_BOT_IS_ASSOCIATED_WITH);
+
+        this.COUNT_OF_VISIBLE_DEPT = countOfVisibleDepts;
+        console.log('FaqComponent - DEPT - COUNT_OF_VISIBLE_DEPT', this.COUNT_OF_VISIBLE_DEPT);
       }
     }, error => {
 
@@ -510,6 +555,59 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
     });
   }
+
+  onSelectBotId() {
+    console.log('FaqComponent --->  onSelectBotId ', this.selected_bot_id);
+    this.dept_id = this.selected_bot_id
+
+
+    const hasFound = this.depts_without_bot_array.filter((obj: any) => {
+      return obj.id === this.selected_bot_id;
+    });
+    console.log('FaqComponent --->  onSelectBotId dept found', hasFound);
+
+    if (hasFound.length > 0) {
+      this.selected_bot_name = hasFound[0]['name']
+    }
+    this.hookBotToDept()
+  }
+
+  hookBotToDept() {
+
+    this.departmentService.updateExistingDeptWithSelectedBot(this.dept_id, this.id_faq_kb).subscribe((res) => {
+      console.log('FaqComponent - UPDATE EXISTING DEPT WITH SELECED BOT - RES ', res);
+    }, (error) => {
+      console.log('FaqComponent - UPDATE EXISTING DEPT WITH SELECED BOT - ERROR ', error);
+
+
+
+    }, () => {
+      console.log('Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT * COMPLETE *');
+
+      this.translateAndPresentModalBotAssociatedWithDepartment();
+
+    });
+  }
+
+  translateAndPresentModalBotAssociatedWithDepartment() {
+    let parametres = { bot_name: this.faqKb_name, dept_name: this.selected_bot_name };
+
+    this.translate.get("BotHasBeenAssociatedWithDepartment", parametres).subscribe((res: string) => {
+      this.botHasBeenAssociatedWithDept = res
+    });
+
+    swal({
+      title: this.done_msg + "!",
+      text: this.botHasBeenAssociatedWithDept,
+      icon: "success",
+      button: "OK",
+      dangerMode: false,
+    })
+
+  }
+
+
+
 
   getStorageBucket() {
     const firebase_conf = this.appConfigService.getConfig().firebase;
@@ -533,7 +631,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
     this.userProfileImageExist = false;
     this.userImageHasBeenUploaded = false;
-   
+
 
     const delete_bot_image_btn = <HTMLElement>document.querySelector('.delete_bot_image_btn');
     delete_bot_image_btn.blur();
@@ -1078,7 +1176,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   }
 
   downloadExampleCsv() {
-    const examplecsv = 'Question; Answer; intent_id (must be unique); intent_display_name; webhook_enabled (must be false)' 
+    const examplecsv = 'Question; Answer; intent_id (must be unique); intent_display_name; webhook_enabled (must be false)'
     this.downloadFile(examplecsv, 'example.csv');
   }
 
@@ -1150,8 +1248,8 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
       // });
     }, (error) => {
 
-      
-      
+
+
 
       console.log('DELETE FAQ ERROR ', error);
       // =========== NOTIFY ERROR ===========

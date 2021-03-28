@@ -50,7 +50,7 @@
                 <!-- [ngStyle]="{'margin-left':botType === 'dialogflow' ? '35px' : 0 }" -->
                 <div class="card-avatar" style="padding-bottom:15px; min-height: 95px;">
                   <div class="bot_avatar" style="float: left;width: 80px; height: 80px;margin-right: 21px;">
-                   
+
                     <img *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true"
                       style="vertical-align: middle; width: 80px; height: 80px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;"
                       class="user-img" [src]="getUserProfileImage()"
@@ -62,8 +62,8 @@
                   </div>
 
 
-                  <input #fileInputBotProfileImage class="inputfile" name="uploadbotimage" id="uploadbotimage" type="file"
-                    (change)="upload($event)" accept=".jpg" />
+                  <input #fileInputBotProfileImage class="inputfile" name="uploadbotimage" id="uploadbotimage"
+                    type="file" (change)="upload($event)" accept=".jpg" />
                   <label class="btn btn-white upload-image-btn" for="uploadbotimage"
                     style="padding-left:15px; padding-right:15px; text-transform: none; color: #7695a5">
 
@@ -466,18 +466,14 @@
             </p>
 
             <p class="attribute">
-
               <span *ngIf="botType !== 'native'" style="text-transform:capitalize"> {{ botType }} </span>
               <span *ngIf="botType === 'native'" style="text-transform:capitalize"> Resolution </span>
-
-              <span class="identity-bot-description" *ngIf="botType === 'identity'"> {{ 'AnIdentityBotRepresents' |
-                translate }} </span>
+              <span class="identity-bot-description" *ngIf="botType === 'identity'">
+                {{ 'AnIdentityBotRepresents' | translate }} </span>
             </p>
 
             <p class="title-attribute" style="margin-bottom: 3px; padding-top: 5px;">
-
               {{ "BotsAddEditPage.BotID" | translate }}
-
             </p>
             <p class="attribute">
               {{ faqKb_id }}
@@ -512,6 +508,17 @@
 
                   <span style="display: block; color: #0f62ff; cursor:pointer" (click)="goToRoutingAndDepts()">
                     {{'ManageTheBotIn' | translate}} {{'RoutingAndDepts' | translate}}
+                  </span>
+
+                  <span *ngIf="depts_without_bot_array.length > 0" style="display: block;margin-top: 6px;font-weight: 200;">
+                    {{'OrSelectAnExistingOneWithNoAssociatedBot' | translate}}
+                  </span>
+
+                  <span *ngIf="depts_without_bot_array.length > 0">
+                    <ng-select [items]="depts_without_bot_array" bindValue="id" bindLabel="name"
+                      placeholder="{{'SelectDepartment'|translate}}" [(ngModel)]="selected_bot_id"
+                      (change)="onSelectBotId()">
+                    </ng-select>
                   </span>
                 </p>
 
