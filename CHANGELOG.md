@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.1.42
+- Adds, on the bot's details page, the possibility of associating the bot with a department to which no bot is associated
+
 ### 2.1.41
 - Fixes bug: app crashes when real-time conversations, non-real-time conversations and history pages have old conversations
 - Deletes, in the 'Routing & Depts' page, the logic relating to the activation of the 'bot only' option on a department
