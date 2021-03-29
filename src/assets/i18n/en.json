@@ -1905,5 +1905,7 @@
     "TheAnswerWillBeDeleted":"The Answer {{intent_name}} will be deleted",
     "NumberOfReplies":"Number of replies",
     "YourProfilePhotoHasBeenUploadedSuccessfully!":"Your profile photo has been uploaded successfully!",
-    "RemovePhoto": "Remove Image"
+    "RemovePhoto": "Remove Image",
+    "OrSelectAnExistingOneWithNoAssociatedBot": "or select an existing one with no associated bot",
+    "BotHasBeenAssociatedWithDepartment": "The bot {{bot_name}} has been associated with department {{dept_name}}"
 }

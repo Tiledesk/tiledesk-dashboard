@@ -1888,6 +1888,9 @@
 	"TheAnswerWillBeDeleted":"Die Antwort {{intent_name}} wird gelöscht",
 	"NumberOfReplies":"Anzahl der Antworten",
 	"YourProfilePhotoHasBeenUploadedSuccessfully!":"Ihr Profilfoto wurde erfolgreich hochgeladen!",
-	"RemovePhoto": "Entferne Bild"
+	"RemovePhoto": "Entferne Bild",
+	"OrSelectAnExistingOneWithNoAssociatedBot": "oder wählen Sie einen vorhandenen ohne zugeordneten Bot aus",
+	"BotHasBeenAssociatedWithDepartment": " Der bot {{bot_name}} wurde der Abteilung {{dept_name}} zugeordnet"
+	
 
 }
