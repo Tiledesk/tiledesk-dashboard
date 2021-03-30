@@ -449,7 +449,7 @@ export class ContactsService {
     /* *** USED IN PRODUCTION *** */
     const url = this.SERVER_BASE_PATH + this.projectId + '/requests?lead=' + requesterid + '&page=' + pagenumber + '&status=all' + '&no_populate=true';
 
-    console.log('!!!! CONTACT DETAILS - REQUESTS SERVICE URL ', url);
+    console.log('!!!! CONTACT DETAILS - CONTACTS SERVICE URL ', url);
 
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -460,7 +460,34 @@ export class ContactsService {
 
     return this.http
       .get(url, { headers })
-      .map((response) => response.json());
+      // .map((response) => response.json());
+      .map(
+        (response) => {
+          const data = response.json();
+          // Does something on data.data
+          console.log('!!!! CONTACT DETAILS  - CONTACTS SERVICE * DATA * ', data);
+
+          if (data.requests) {
+
+            data.requests.forEach(request => {
+
+
+              // ----------------------------------
+              // @ Department
+              // ----------------------------------
+              if (request.snapshot && request.snapshot.department) {
+                console.log("!!! CONTACT DETAILS  - CONTACTS SERVICE snapshot department", request.snapshot.department);
+                request.department = request['snapshot']["department"]
+
+              } else if (request.department) {
+                request.department = request.department
+              }
+
+            })
+          }
+
+          return data;
+        })
   }
 
 

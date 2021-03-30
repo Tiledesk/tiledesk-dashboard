@@ -15,6 +15,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { AppConfigService } from '../../services/app-config.service';
 import { DepartmentService } from '../department.service';
 import { UsersService } from '../users.service';
+import { IfObservable } from 'rxjs/observable/IfObservable';
 export interface Message {
   action: string;
   payload: {
@@ -243,28 +244,71 @@ export class WsRequestsService implements OnDestroy {
 
           function (data, notification) {
 
-            // console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- HERE ON-CREATE !");
 
-            // if (self.wsRequestsList.length > 0) {
+            if (data) {
+              console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-CREATE - DATA ", data);
+              console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-CREATE - DATA snapshot", data.snapshot);
 
-            console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-CREATE - DATA ", data);
-            // data['dept'] = self.getDeptObj(data.department)
+              // ----------------------------------
+              // @ Agents
+              // ----------------------------------
+              if (data.snapshot && data.snapshot.agents) {
+                console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-CREATE - DATA snapshot agents ", data.snapshot.agents);
+                data.agents = data['snapshot']["agents"]
+              } else if (data.agents) {
+                data.agents = data.agents
 
-            // console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-CREATE - WS-REQUESTS ARRAY ", self.wsRequestsList);
+              }
 
-            // const hasFound = self.wsRequestsList.filter((obj: any) => {
-            //   if (data && obj) {
-            //     return obj._id === data._id;
-            //   }
-            // });
 
-            // if (hasFound.length === 0) {
-            //   self.addWsRequests(data)
+              // ----------------------------------
+              // @ Lead
+              // ----------------------------------
+              if (data.snapshot && data.snapshot.lead) {
+                console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-CREATE - DATA snapshot lead ", data.snapshot.lead);
+                data.lead = data['snapshot']["lead"]
+              }
+              else {
 
-            //   // console.log("% »»» WebSocketJs WF - WsRequestsService Not Found - <<<<<<<<<<<<<<< add request >>>>>>>>>>>>>>>", data);
-            // } else {
-            //   // console.log("% »»» WebSocketJs WF - WsRequestsService hasFound - not added", hasFound);
-            // }
+                console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-CREATE - DATA attributes ", data.attributes);
+
+                console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-CREATE - DATA attributes requester_id ", data.attributes.requester_id);
+                console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-CREATE - DATA attributes userEmail ", data.attributes.userEmail);
+                console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-CREATE - DATA attributes userFullname ", data.attributes.userFullname);
+
+                if (data['attributes']) {
+                  if (data['attributes']['userFullname'] && data['attributes']['userEmail'] && data['attributes']['requester_id']) {
+                    data.lead = { 'fullname': data['attributes']['userFullname'], 'email': data['attributes']['userEmail'], 'lead_id': data['attributes']['requester_id'] }
+                  }
+                  else if (data.lead) {
+                    data.lead = data.lead
+                  }
+                } else if (data.lead) {
+                  data.lead = data.lead;
+                }
+              }
+
+              // ----------------------------------
+              // @ Requester
+              // ----------------------------------
+              if (data.snapshot && data.snapshot.requester) {
+                console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-CREATE - DATA snapshot requester ", data.snapshot.lead);
+                data.requester = data['snapshot']["requester"]
+              } else if (data.requester) {
+                data.requester = data.requester
+              }
+
+              // ----------------------------------
+              // @ Department
+              // ----------------------------------
+              if (data.snapshot && data.snapshot.department) {
+                console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-CREATE - DATA snapshot department", data.snapshot.department);
+                data.department = data['snapshot']["department"]
+
+              } else if (data.department) {
+                data.department = data.department
+              }
+            }
 
             // https://stackoverflow.com/questions/36719477/array-push-and-unique-items
             const index = self.wsRequestsList.findIndex((e) => e.id === data.id);
@@ -471,8 +515,6 @@ export class WsRequestsService implements OnDestroy {
     } else {
       console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-UPATE the request exist");
     }
-
-
 
 
     for (let i = 0; i < this.wsRequestsList.length; i++) {
@@ -786,8 +828,6 @@ export class WsRequestsService implements OnDestroy {
   }
 
 
-
-
   // CLOSE SUPPORT GROUP
   public closeSupportGroup(group_id: string) {
     const headers = new Headers();
@@ -840,7 +880,6 @@ export class WsRequestsService implements OnDestroy {
 
 
   public deleteRequest(request_id: string) {
-
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
@@ -878,10 +917,6 @@ export class WsRequestsService implements OnDestroy {
     })
     return promise;
   }
-
-
-
-
 
 
   joinDept(departmentid, requestid) {
@@ -978,15 +1013,15 @@ export class WsRequestsService implements OnDestroy {
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
     // console.log('JOIN FUNCT OPTIONS  ', options);
-    let  body = {}
-    body = { 'sender': requester_id, 'subject': subject, 'text': message, 'departmentid': departmentid, 'channel': {'name':'form'} };
-    if (participantid !== undefined ) {
+    let body = {}
+    body = { 'sender': requester_id, 'subject': subject, 'text': message, 'departmentid': departmentid, 'channel': { 'name': 'form' } };
+    if (participantid !== undefined) {
       body['participants'] = [participantid]
     } else {
       body['participants'] = participantid
     }
     // , 'participants': [participantid]
-     
+
 
     console.log('CREATE INTERNAL REQUEST body ', body);
 
@@ -1043,9 +1078,6 @@ export class WsRequestsService implements OnDestroy {
       .patch(url, JSON.stringify(body), options)
       .map((res) => res.json());
   }
-
-
-
 
   // -----------------------------------------------------------------------------------------
   // Create note
@@ -1107,9 +1139,9 @@ export class WsRequestsService implements OnDestroy {
   }
 
 
-  // ---------------------------------------------------------------------
-  // HISTORY  Requests (used in history)
-  // ---------------------------------------------------------------------
+  // -------------------------------------------------------------------------------------
+  // HISTORY  Requests (used in history) !! NO MORE USED - REPLACED BY getNodeJsWSRequests
+  // --------------------------------------------------------------------------------------
   public getNodeJsHistoryRequests(querystring: string, pagenumber: number) {
     let _querystring = '&' + querystring
     if (querystring === undefined || !querystring) {
@@ -1137,10 +1169,9 @@ export class WsRequestsService implements OnDestroy {
 
 
   // -------------------------------------------------------------
-  // WS Requests no-realtime
+  // WS Requests no-realtime & HISTORY
   // -------------------------------------------------------------
   public getNodeJsWSRequests(operator: string, status: string, querystring: string, pagenumber: number) {
-
     console.log('!!! NEW REQUESTS HISTORY - REQUESTS SERVICE Get NodeREQUEST - operator  ', operator);
     console.log('!!! NEW REQUESTS HISTORY - REQUESTS SERVICE Get NodeREQUEST - status  ', status);
     console.log('!!! NEW REQUESTS HISTORY - REQUESTS SERVICE Get NodeREQUEST - querystring  ', querystring);
@@ -1203,7 +1234,88 @@ export class WsRequestsService implements OnDestroy {
 
     return this.http
       .get(url, { headers })
-      .map((response) => response.json());
+      // .map((response) => response.json());
+      .map(
+        (response) => {
+          const data = response.json();
+          // Does something on data.data
+          console.log('!!! NEW REQUESTS HISTORY - REQUESTS SERVICE * DATA * ', data);
+
+          if (data.requests) {
+
+            data.requests.forEach(request => {
+
+              // ----------------------------------
+              // @ Department
+              // ----------------------------------
+              if (request.snapshot && request.snapshot.department) {
+                console.log("!!! NEW REQUESTS HISTORY REQUESTS SERVICE snapshot department", request.snapshot.department);
+                request.department = request['snapshot']["department"]
+
+              } else if (request.department) {
+                request.department = request.department
+              }
+
+              // ----------------------------------
+              // @ Lead
+              // ----------------------------------
+              if (request.snapshot && request.snapshot.lead) {
+                console.log("!!! NEW REQUESTS HISTORY REQUESTS SERVICE snapshot lead ", request.snapshot.lead);
+                request.lead = request['snapshot']["lead"]
+              }
+              else {
+
+                console.log("!!! NEW REQUESTS HISTORY REQUESTS SERVICE attributes ", request.attributes);
+
+                console.log("!!! NEW REQUESTS HISTORY REQUESTS SERVICE attributes requester_id ", request.attributes.requester_id);
+                console.log("!!! NEW REQUESTS HISTORY REQUESTS SERVICE attributes userEmail ", request.attributes.userEmail);
+                console.log("!!! NEW REQUESTS HISTORY REQUESTS SERVICE attributes userFullname ", request.attributes.userFullname);
+
+                if (request['attributes']) {
+                  if (request['attributes']['userFullname'] && request['attributes']['userEmail'] && request['attributes']['requester_id']) {
+                    request.lead = { 'fullname': request['attributes']['userFullname'], 'email': request['attributes']['userEmail'], 'lead_id': request['attributes']['requester_id'] }
+                  }
+                  else if (request.lead) {
+                    request.lead = request.lead
+                  }
+                } else if (request.lead) {
+                  request.lead = request.lead;
+                }
+              }
+
+
+
+              // ----------------------------------
+              // @ Requester
+              // ----------------------------------
+              if (request.snapshot && request.snapshot.requester) {
+                console.log("!!! NEW REQUESTS HISTORY REQUESTS SERVICE snapshot requester ", request.snapshot.requester);
+                request.requester = request['snapshot']["requester"]
+
+              } else if (request.requester) {
+                request.requester = request.requester
+              }
+
+
+              // ----------------------------------
+              // @ Agents
+              // ----------------------------------
+              if (request.snapshot && request.snapshot.agents) {
+                console.log("!!! NEW REQUESTS HISTORY REQUESTS SERVICE snapshot snapshot agents ", request.snapshot.agents);
+                request.agents = request['snapshot']["agents"]
+              } else {
+                if (request.agents) {
+                  request.agents = request.agents
+                }
+              }
+
+            });
+          }
+
+
+          // return the modified data:
+          return data;
+        })
   }
 
   public downloadNodeJsWSRequestsAsCsv(querystring: string, pagenumber: number) {
