@@ -221,11 +221,12 @@
                   </div>
                 </div>
 
-                <!-- 
-                // -------------------------------------------------------------------
-                // Description set routing rules
-                // ------------------------------------------------------------------- -->
-                <section [ngClass]="{'disabled-label' : onlybot_disable_routing}">
+                 
+                <!-- ------------------------------------------------------------------- -->
+                <!-- Description set routing rules -->
+                <!-- ------------------------------------------------------------------- -->
+                <!-- [ngClass]="{'disabled-label' : onlybot_disable_routing}" -->
+                <section>
                   <div class="row">
                     <div class="col-sm-12">
                       <div class="description-wpr">
@@ -265,9 +266,10 @@
                     <!-- style="min-height: 90px" -->
                     <div class="col-xs-12">
                       <label>
+                        <!-- [disabled]="onlybot_disable_routing" -->
                         <input type="radio" name="routing" value="assigned"
                           (click)="has_clicked_assigned(show_group_option_form = 'true', show_option_form = 'false', routing = 'assigned')"
-                          [checked]="dept_routing === 'assigned'" [disabled]="onlybot_disable_routing">
+                          [checked]="dept_routing === 'assigned'" >
                         <img *ngIf="dept_routing !== 'assigned'" class="radio-btn-img"
                           src="assets/img/assigned_btn.svg">
                         <img *ngIf="dept_routing === 'assigned'" class="radio-btn-img"
@@ -281,9 +283,10 @@
                       </label>
 
                       <label>
+                        <!-- [disabled]="onlybot_disable_routing" -->
                         <input type="radio" name="routing" value="pooled"
                           (click)="has_clicked_pooled(show_group_option_form = 'true', show_option_form = 'false', routing = 'pooled')"
-                          [checked]="dept_routing === 'pooled'" [disabled]="onlybot_disable_routing">
+                          [checked]="dept_routing === 'pooled'" >
                         <img *ngIf="dept_routing !== 'pooled'" class="radio-btn-img" src="assets/img/pooled_btn.svg">
                         <img *ngIf="dept_routing === 'pooled'" class="radio-btn-img"
                           src="assets/img/pooled_btn_active.svg">
@@ -320,10 +323,10 @@
                       {{ "DeptsAddEditPage.AssignTo" | translate }}
                     </label>
                     <div class="col-xs-12 col-sm-6 col-md-12 col-lg-6">
-
+                      <!-- [ngClass]="{'errorGroup' : GROUP_ID_NOT_EXIST, 'selectCustomDisabled' : onlybot_disable_routing}" -->
+                      <!-- [disabled]="onlybot_disable_routing" -->
                       <select #selectGroup (change)="setSelectedGroup(selectGroup.value)" style="min-width: 150px;"
-                        [ngClass]="{'errorGroup' : GROUP_ID_NOT_EXIST, 'selectCustomDisabled' : onlybot_disable_routing}"
-                        [disabled]="onlybot_disable_routing">
+                        [ngClass]="{'errorGroup' : GROUP_ID_NOT_EXIST}">
 
                         <!-- // IF THE GROUP ASSIGNED TO THE DEFAULT DEPT HAS BEEN DELETED, IT IS DISPLAYED: 'THE GROUP DOES NOT EXIST' -->
                         <option style="color: #ff5252 !important;" *ngIf="GROUP_ID_NOT_EXIST"
