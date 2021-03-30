@@ -952,7 +952,7 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
       }
 
       this.triggerService.updateTrigger(this.triggerForm.value).subscribe(res => {
-        console.log('UPDATE trigger...', res);
+        console.log('TRIGGER (EDIT) UPDATE trigger...', res);
       }, (error) => {
         setTimeout(() => {
           this.SHOW_CIRCULAR_SPINNER = false

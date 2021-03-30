@@ -558,8 +558,8 @@ export class BasetriggerComponent implements OnInit {
             groupId: translateConditions.chat.groupId.SoftwareOfVisitor,
             // id: 'availableAgents.length',
             // key: 'request.availableAgents.length',
-            id: 'availableAgentsCount',
-            key: 'request.availableAgentsCount',
+            id: 'snapshot.availableAgentsCount',
+            key: 'request.snapshot.availableAgentsCount',
             label_key: translateConditions.chat.label_key.VisitoruserAgentAvailable,
             triggerType: 'request.create',
             type: 'int'
