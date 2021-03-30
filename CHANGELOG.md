@@ -1,8 +1,13 @@
 
 # tiledesk-dashboard
 
+### 2.1.43
+- Changes, in triggers, the ID and key of the "Number of available agents" condition
+- Adds, on the conversation detail page, an accordion to display the properties of Attributes > decoded JWT 
+
 ### 2.1.42
 - Adds, on the bot's details page, the possibility of associating the bot with a department to which no bot is associated
+- Handles the "request.snapshot" property in "request" while duplicating the 'agent', 'lead' and 'requester' properties in the request object in case it doesn't have some or none of the properties
 
 ### 2.1.41
 - Fixes bug: app crashes when real-time conversations, non-real-time conversations and history pages have old conversations
