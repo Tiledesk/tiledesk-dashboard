@@ -1446,7 +1446,9 @@ and also iPads specifically.
 }
 /* ./ Notes Accordion */
 
-/* Attributes Accordion */
+/*
+ Attributes Accordion 
+ ----------------------------- */
 .attributes-accordion {
   // background-color: #eee;
   color: #444;
@@ -1478,7 +1480,7 @@ and also iPads specifically.
   font-size: 20px;
   padding-right: 4px;
 }
-.attributes-accordion.active:after{
+.attributes-accordion.active:after {
   content: "\f106";
   font-family: FontAwesome;
 }
@@ -1496,6 +1498,52 @@ and also iPads specifically.
   // transition: max-height 0.2s ease-out;
 }
 /* ./ Attributes Accordion */
+
+/* 
+ Attributes decoded JWT Accordion 
+ ------------------------------------ */
+.attributes-decoded-jwt-accordion {
+  color: #444;
+  cursor: pointer;
+  padding: 8px 0px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+  transition: 0.4s;
+}
+
+.attributes-decoded-jwt-accordion:hover {
+  background-color: #f7f8fc;
+}
+
+.attributes-decoded-jwt-accordion:after {
+  // content: "\002B";
+  content: "\f107";
+  font-family: FontAwesome;
+  // color: #777;
+  color: #039be5;
+  font-weight: bold;
+  float: right;
+  // margin-left: 5px;
+  font-size: 20px;
+  padding-right: 4px;
+}
+.attributes-decoded-jwt-accordion.active:after {
+  content: "\f106";
+  font-family: FontAwesome;
+}
+
+.attributes-decoded-jwt-panel {
+  padding: 0 18px;
+  background-color: white;
+  max-height: 0;
+  // overflow: hidden;
+  overflow-y: auto;
+  // transition: max-height 0.2s ease-out;
+}
+/* ./ Attributes decoded JWT Accordion  */
 
 .ws_request_notes__container {
   margin-bottom: 12px;

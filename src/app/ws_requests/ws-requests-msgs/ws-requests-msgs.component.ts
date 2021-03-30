@@ -145,7 +145,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   timeout: any;
 
-  attributesArray: Array<any>
+  attributesArray: Array<any>;
+  attributesDecodedJWTArray: Array<any>
   rightSidebarWidth: number;
   tag: any;
   tagcolor: any;
@@ -1047,8 +1048,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
               // console.log(':-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES value LENGHT ', _value + " totalLength : " + totalLength)
 
               let entries = { 'attributeName': key, 'attributeValue': _value, 'attributeValueL': totalLength };
-
-              this.attributesArray.push(entries)
+             
+              if (key !== 'decoded_jwt') {
+                this.attributesArray.push(entries)
+              }
             }
             console.log(':-D Ws-REQUESTS-Msgs - getWsRequestById attributesArray: ', this.attributesArray);
             // --------------------------------------------------------------------------------------------------------------
@@ -1095,6 +1098,66 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             // }
           } else {
             console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsRequestById ATTRIBUTES IS UNDEFINED ', this.request.attributes);
+          }
+
+          // ---------------------------------------------------------
+          // Attributes DECODED JWT
+          // ---------------------------------------------------------
+          if (this.request.attributes && this.request.attributes.decoded_jwt) {
+            console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT ', this.request.attributes.decoded_jwt);
+
+
+            this.attributesDecodedJWTArray = []
+            for (let [key, value] of Object.entries(this.request.attributes.decoded_jwt)) {
+
+              console.log(`WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT -key : ${key} - value ${value}`);
+
+              let _value: any;
+              if (typeof value === 'object' && value !== null) {
+
+                // console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES value is an object :`, JSON.stringify(value));
+                _value = JSON.stringify(value)
+              } else {
+                _value = value
+              }
+
+              // https://stackoverflow.com/questions/50463738/how-to-find-width-of-each-character-in-pixels-using-javascript
+              let letterLength = {};
+              let letters = ["", " ", " ?", "= ", " -", " :", " _", " ,", " ", " ", " ", "(", ")", "}", "{", "\"", " ", "/", ".", "a", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+
+              for (let letter of letters) {
+                let span = document.createElement('span');
+                span.append(document.createTextNode(letter));
+                span.style.display = "inline-block";
+                document.body.append(span);
+                letterLength[letter] = span.offsetWidth;
+                span.remove();
+              }
+              let totalLength = 0;
+
+              // for (let i = 0; i < _value.length; i++) {
+              //   console.log(':-D Ws-REQUESTS-Msgs - getWsRequestById _value[i]', _value[i] + ": " + letterLength[_value[i]])
+              // }
+
+              for (let i = 0; i < _value.length; i++) {
+                if (letterLength[_value[i]] !== undefined) {
+                  totalLength += letterLength[_value[i]];
+                } else {
+                  // if the letter not is in dictionary letters letterLength[_value[i]] is undefined so add the witdh of the 'S' letter (8px)
+                  totalLength += letterLength['S'];
+                }
+              }
+              // console.log(':-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES value LENGHT ', _value + " totalLength : " + totalLength)
+
+              let entries = { 'attributeName': key, 'attributeValue': _value, 'attributeValueL': totalLength };
+
+              this.attributesDecodedJWTArray.push(entries)
+            }
+            console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT - attributesDecodedJWTArray: ', this.attributesDecodedJWTArray);
+            // --------------------------------------------------------------------------------------------------------------
+
+          } else {
+            console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT IS UNDEFINED ', this.request.attributes.decoded_jwt);
           }
 
 
@@ -2587,7 +2650,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // @ Attributes accordion
   // ---------------------------------------------------------------------------------------
   openAttributesAccordion() {
-
     // var acc = document.getElementsByClassName("accordion");
     var acc = <HTMLElement>document.querySelector('.attributes-accordion');
     console.log('% Ws-REQUESTS-Msgs - open attributes-accordion -  accordion elem ', acc);
@@ -2595,7 +2657,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // var panel = acc.nextElementSibling ;
     var panel = <HTMLElement>document.querySelector('.attributes-panel')
     console.log('% Ws-REQUESTS-Msgs -  open attributes-accordion  -  panel ', panel);
-
     // this.thisIsCalledWhenNewItemISAdded();
     // let ps = new PerfectScrollbar(panel);
     // if (panel.style.maxHeight) {
@@ -2604,22 +2665,31 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     //   panel.style.maxHeight = "300px";
     //   panel.scrollTop = 0;
     // }
+    if (panel.style.maxHeight) {
+      panel.style.maxHeight = null;
+    } else {
+      panel.style.maxHeight = panel.scrollHeight + "px";
+    }
+  }
+
+  // ---------------------------------------------------------------------------------------
+  // @ Attributes decoded jwt accordion
+  // ---------------------------------------------------------------------------------------
+  openAttributesDecodedJWTAccordion() {
+    // var acc = document.getElementsByClassName("accordion");
+    var acc = <HTMLElement>document.querySelector('.attributes-decoded-jwt-accordion');
+    console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT - open attributes-decoded-jwt-accordion -  accordion elem ', acc);
+    acc.classList.toggle("active");
+    // var panel = acc.nextElementSibling ;
+    var panel = <HTMLElement>document.querySelector('.attributes-decoded-jwt-panel')
+    console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT-  open attributes-decoded-jwt-panel  -  panel ', panel);
 
     if (panel.style.maxHeight) {
       panel.style.maxHeight = null;
     } else {
       panel.style.maxHeight = panel.scrollHeight + "px";
     }
-
   }
-
-
-
-  // create_note_success: string;
-  // create_note_error: string;
-  // delete_note_success: string;
-  // delete_note_error: string;
-
 
 
   // NOT USED (was used for tag)
