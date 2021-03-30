@@ -1,3 +1,4 @@
+@import "./src/assets/sass/md/_variables.scss";
 .table td,
 .table th {
   vertical-align: middle;
@@ -68,13 +69,14 @@ p.member:hover {
 
 .showPosts {
   cursor: pointer;
-  display:table;
+  display: table;
 }
-.showPosts .greekCross, .showPosts h5 {
-  display:table-cell;
+.showPosts .greekCross,
+.showPosts h5 {
+  display: table-cell;
 }
 .greekCross {
-  color: #00BFF3;
+  color: #00bff3;
   font-size: 15px;
 }
 .showPosts > h5 {
@@ -175,7 +177,7 @@ p.member:hover {
   transform: rotate(180deg);
 }
 
-// @media (max-width: 768px){ 
+// @media (max-width: 768px){
 //   .truncate {
 //     width: 223px;
 //     white-space: nowrap;
@@ -226,7 +228,6 @@ p.member:hover {
 .White__Tooltip:hover .White__Tooltiptext {
   visibility: visible;
   opacity: 1;
-
 }
 
 .chat-with-agent {
@@ -235,4 +236,53 @@ p.member:hover {
   font-size: 16px !important;
   vertical-align: middle !important;
   margin-right: 5px;
+}
+
+// UNDERLINE
+.card_title__underlined {
+  text-transform: none;
+  color: #566787;
+  margin-bottom: 0px;
+  height: 40px !important;
+  position: relative;
+  font-family: Google Sans, sans-serif;
+  height: 30px;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+.card_title__underline {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: -1px;
+  border-bottom: 2px solid $brand-primary;
+  z-index: 1;
+}
+
+.section-subtitle {
+  height: 20px;
+  border-top: 1px solid #ddd;
+  // width: calc((100% / 3) + 372px);
+}
+
+#btn-chat-with {
+  margin-top: 5px;
+  margin-bottom: 0px;
+  padding-left: 6px;
+  padding-bottom: 6px;
+  padding-top: 6px;
+  background: #e4e6eb;
+  padding-right: 6px;
+  margin-right: 5px;
+}
+
+.chat-with-fullname {
+  text-transform: none;
+  color: #394f5a;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: "Google Sans", sans-serif !important;
+  position:relative;
+  top: 8px;
 }

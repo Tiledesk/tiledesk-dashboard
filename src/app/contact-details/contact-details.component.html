@@ -10,21 +10,32 @@
     <div class="row">
 
       <div class="col-sm-7">
-        <div class="card">
+        <div class="card card--no-border" style="margin-top: 10px;">
           <loading-spinner *ngIf="showSpinner"></loading-spinner>
           <div *ngIf="!showSpinner" class="card-content table-responsive" style="padding-bottom:5px">
 
-            <table class="table table-hover">
-              <thead class="text">
-                <tr>
+            <div class="row">
+              <div class="col-xs-12 col-sm-12 col-md-12">
+                <h3 class="card_title__underlined">
+                  <span class="card_title__underline" style="white-space: nowrap;">
+                    {{ "Requests" | translate }}
+                  </span>
+                </h3>
+              </div>
+       
+              <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="section-subtitle"> </div>
+              </div>
+            </div>
 
-                  <!-- ===== VISIBILITY ICON ===== -->
+            <table class="table table-hover">
+              <!-- <thead class="text">
+                <tr>
                   <th colspan="2" style="line-height: 26px;">
                     {{ 'Requests' | translate }}
                   </th>
-
                 </tr>
-              </thead>
+              </thead> -->
 
               <tbody>
 
@@ -183,8 +194,8 @@
 
                     <span style="color: #7695a5; font-weight: 400; line-height:18px; font-size:12px">
                       {{ 'SentThe' | translate}} {{ request?.createdAt | date: 'dd/MM/yyyy' }}
-                      <span *ngIf="request?.department"> {{ 'ToTheDepartment' | translate}}
-                        <span style="text-transform: uppercase"> {{ request?.snapshot?.department?.name }} </span>
+                      <span *ngIf="request?.department?.name"> {{ 'ToTheDepartment' | translate}}
+                        <span style="text-transform: uppercase"> {{ request?.department?.name }} </span>
                       </span>
                     </span>
                   </td>
@@ -236,12 +247,51 @@
 
       <!-- ------------============ RIGHT SIDEBAR ============------------ -->
       <div class="col-sm-5">
-        <div class="card right-card" style="padding-top:8px;">
-          <div class="row"
-            style="border-bottom: 1px solid #eeeeee; padding-left:16px; padding-right:16px; height: 50px;">
+        <div class="card right-card card--no-border" style="padding-top:0px;">
+          <!-- style="border-bottom: 1px solid #eeeeee; padding-left:16px; padding-right:16px; height: 50px;" -->
 
-            <span *ngIf="!showSpinner">
-              <div class="col-xs-5">
+          <loading-spinner *ngIf="showSpinner"></loading-spinner>
+          <div *ngIf="!showSpinner" class="card-content" style="padding-top: 0px;">
+
+            <div class="row">
+              <div class="col-xs-4 col-sm-4 col-md-4">
+                <h3 class="card_title__underlined">
+                  <span class="card_title__underline" style="white-space: nowrap;">
+                    {{ "ContactDetails" | translate }}
+                  </span>
+                </h3>
+              </div>
+              <div class="col-xs-8 col-sm-8 col-md-8">
+                <div class="dropdown pull-right">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <span class="material-icons" style="color:rgba(0, 0, 0, 0.87); margin-top: 10px;">
+                      more_vert
+                    </span>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a (click)='goToEditContact(contact_details?._id)'>
+                        {{ 'EditContact' | translate}}
+                      </a>
+                    </li>
+
+                    <li>
+
+                      <a (click)='moveContactToTrash(contact_details?._id, contact_details?.fullname)'>
+                        {{ 'MoveToTrash' | translate}}
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="section-subtitle"> </div>
+              </div>
+            </div>
+
+            <!-- <span *ngIf="!showSpinner"> -->
+            <div class="row">
+              <div class="col-xs-12">
                 <span class="contact-avatar-wrapper">
                   <span class="contact-avatar" [ngStyle]="{'background-color': fillColour }"
                     style="float: left; margin-right: 8px;">
@@ -249,7 +299,7 @@
                     top: 1px;">
                       {{ contact_fullname_initial }}
                     </span>
-                    
+
                   </span>
                   <span *ngIf="CONTACT_IS_VERIFIED === true" class="tooltipx">
                     <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
@@ -291,8 +341,20 @@
                 </span>
 
               </div>
+              <!-- <div class="col-xs-4">
+                <button id="chat-with" type="button"
+                 class="btn btn-primary btn-simple btn-xs pull-right"
+                (click)="chatWithAgent(contact)">
 
-              <div class="col-xs-3">
+                <span class="chat-with-text">  {{ "ChatWith" | translate }} </span>
+                <i class="material-icons">chat</i>
+                
+               
+              </button> -->
+              <!-- </div> -->
+            </div>
+
+            <!-- <div class="col-xs-3">
                 <span>
                   <span class="White__Tooltip" style="margin-top: 12px;">
                     <i class="material-icons chat-with-agent"
@@ -307,14 +369,15 @@
                     </span>
                   </span>
                 </span>
-              </div>
+              </div> -->
 
-              <div class="col-xs-4">
-
-                <!-- 
+            <!-- 
                 // ------------------------------------------------------------ 
                 // CONTACT INFO DROPDOWN MENU  
                 // ------------------------------------------------------------  -->
+            <!-- <div class="col-xs-4">
+
+            
                 <div class="dropdown pull-right">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                     <span class="material-icons" style="color:rgba(0, 0, 0, 0.87); margin-top: 10px;">
@@ -329,7 +392,7 @@
                     </li>
 
                     <li>
-                      <!-- <a (click)='openDeleteContactModal(contact_details?._id, contact_details?.fullname)'> -->
+                      
                         <a (click)='moveContactToTrash(contact_details?._id, contact_details?.fullname)'>
                         {{ 'MoveToTrash' | translate}}
                       </a>
@@ -337,14 +400,14 @@
                   </ul>
                 </div>
 
-              </div>
+              </div> -->
 
-            </span>
-          </div>
+            <!-- </span> -->
 
-          <loading-spinner *ngIf="showSpinner"></loading-spinner>
 
-          <div *ngIf="!showSpinner" class="card-content" style="padding-top: 0px;">
+            <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
+
+            <!-- <div *ngIf="!showSpinner" class="card-content" style="padding-top: 0px;"> -->
             <!-- <h4 class="card-title" style="text-transform: none; color: #566787;  font-weight:400; border-bottom: 1px solid #e1eef4; padding-bottom: 8px;margin-top: 0px;">
               {{ "ContactDetails" | translate }}
               <span class="tooltipx" style="vertical-align: middle; cursor: pointer;float: right;"
@@ -391,81 +454,118 @@
             // Contact email
             // --------------------------------------------------------------------- -->
             <div class="row" style="margin-top:5px">
+
               <div class="col-sm-12">
 
-                <p style="margin-bottom: 0px;margin-top: 6px; ">
-                  <i class="material-icons"
-                    style="vertical-align: middle; color: #394f5a;font-size:14px;  margin-left: 1px;">email</i>
-                  <span style="position: relative;top: 1px;">
-                    <span
-                      style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
-                      {{ "ContactEmail" | translate }}
-                    </span>
+                <button id="btn-chat-with" type="button" class="btn btn-primary btn-simple btn-xs pull-left"
+                  (click)="chatWithAgent(contact)">
+                  <i class="material-icons" style="font-size:14px; position: relative;top:0px; color:#0f62ff !important">chat</i>
+                  <span class="chat-with-text" style="color:#0f62ff !important"> {{ "ChatWith" | translate }} </span>
+                </button>
+                <span class="chat-with-fullname"> {{ contact_details?.fullname }}</span>
+              </div>
 
-                    <a style="font-size: 12px;" target="_blank" *ngIf="contact_details?.email"
-                      href="mailto:{{contact_details?.email}}">
-                      {{ contact_details?.email }}
-                    </a>
-                    <a *ngIf="!contact_details?.email"
-                      style="color: #7695a5; font-weight: 500; font-size: 12px;">n/a</a>
+              <!-- --------------------------------------------------------------------- -->
+              <!-- email -->
+              <!-- --------------------------------------------------------------------- -->
+              <div class="col-sm-12">
+                <p style="margin-bottom: 0px;margin-top: 6px; ">
+                  <!-- style="vertical-align: middle; color: #394f5a;font-size:14px;  margin-left: 1px;" -->
+                  <span class="tool_tip">
+                    <i class="material-icons right-sidebar--m-icon">email</i>
+                    <!-- <span style="position: relative;top: 1px;">
+                      <span
+                        style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
+                        {{ "ContactEmail" | translate }}
+                      </span>
+                    </span> -->
+
+                    <span class="top"
+                      style="min-width: unset; top: -7px;padding: 5px 10px;border-radius: 4px;white-space: nowrap;">
+                      {{ "ContactEmail" | translate }}
+                      <i style="top: 88%;"></i>
+                    </span>
                   </span>
+
+                  <a style="font-size: 12px; color: #0f62ff !important;font-weight: 400;" target="_blank"
+                    *ngIf="contact_details?.email" href="mailto:{{contact_details?.email}}">
+                    {{ contact_details?.email }}
+                  </a>
+                  <a *ngIf="!contact_details?.email" style="color: #7695a5; font-weight: 400; font-size: 12px;">n/a</a>
+
                 </p>
               </div>
             </div>
 
-            <!-- 
-              // ---------------------------------------------------------------------
-              // Company
-              // --------------------------------------------------------------------- -->
+
+            <!-- --------------------------------------------------------------------- -->
+            <!-- Company -->
+            <!-- --------------------------------------------------------------------- -->
             <div class="row">
               <div class="col-sm-12">
 
                 <p style="margin-bottom: 0px;margin-top: 3px;">
-                  <i class="material-icons"
-                    style="vertical-align: middle; color: #394f5a;font-size:14px;  margin-left: 1px;">business</i>
-                  <span style="position: relative;top: 1px;">
-                    <span
+
+                  <!-- style="vertical-align: middle; color: #394f5a;font-size:14px;  margin-left: 1px;" -->
+                  <span class="tool_tip">
+                    <i class="material-icons right-sidebar--m-icon">business</i>
+                    <!-- <span style="position: relative;top: 1px;"> -->
+                    <!-- <span
                       style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
                       {{ "Company" | translate }}
+                    </span> -->
+                    <span class="top"
+                      style="min-width: unset; top: -7px;padding: 5px 10px;border-radius: 4px;white-space: nowrap;">
+                      {{ "Company" | translate }}
+                      <i style="top: 88%;"></i>
                     </span>
 
-                    <span *ngIf="contact_details?.company" style="color: #7695a5; font-weight: 500; font-size: 12px;">
-                      {{ contact_details?.company }}</span>
-
-
-                    <span *ngIf="!contact_details?.company"
-                      style="color: #7695a5; font-weight: 500; font-size: 12px;">n/a</span>
                   </span>
+                  <span *ngIf="contact_details?.company" style="color: #7695a5; font-weight: 500; font-size: 12px;">
+                    {{ contact_details?.company }}
+                  </span>
+                  <span *ngIf="!contact_details?.company" style="color: #7695a5; font-weight: 500; font-size: 12px;">
+                    n/a
+                  </span>
+                  <!-- </span> -->
                 </p>
               </div>
             </div>
 
 
 
-            <!-- 
-              // ---------------------------------------------------------------------
-              // Created At
-              // --------------------------------------------------------------------- -->
+
+            <!-- --------------------------------------------------------------------- -->
+            <!-- Created At -->
+            <!-- --------------------------------------------------------------------- -->
             <div class="row" style="margin-top:5px">
               <div class="col-sm-12">
                 <p [ngClass]="{'no-top-margin' : request?.subject}" style="margin-bottom: 0px;">
-                  <i class="material-icons"
-                    style="vertical-align: middle; color: #394f5a;font-size:14px;  margin-left: 1px;">calendar_today</i>
-                  <span style="position: relative;top: 1px;">
-                    <span
+                  <span class="tool_tip">
+                    <!-- style="vertical-align: middle; color: #394f5a;font-size:14px;  margin-left: 1px;" -->
+                    <i class="material-icons right-sidebar--m-icon">calendar_today</i>
+                    <!-- <span style="position: relative;top: 1px;"> -->
+                    <!-- <span
                       style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
                       {{ "StartDate" | translate }}
+                    </span> -->
+
+                    <span class="top"
+                      style="min-width: unset; top: -7px;padding: 5px 10px;border-radius: 4px;white-space: nowrap;">
+                      {{ "StartDate" | translate }}
+                      <i style="top: 88%;"></i>
                     </span>
 
-                    <span *ngIf="contact_details?.createdAt" style="color: #7695a5; font-weight: 500; font-size: 12px;">
-                      {{ contact_details?.createdAt | amTimeAgo }}
-
-                      <span>({{ contact_details?.createdAt | date: 'd/M/y HH:mm' }}) </span>
-                    </span>
-                    <span *ngIf="!contact_details?.createdAt">
-                      n.a.
-                    </span>
                   </span>
+
+                  <span *ngIf="contact_details?.createdAt" style="color: #7695a5; font-weight: 500; font-size: 12px;">
+                    {{ contact_details?.createdAt | amTimeAgo }}
+                    <span>({{ contact_details?.createdAt | date: 'd/M/y HH:mm' }}) </span>
+                  </span>
+                  <span *ngIf="!contact_details?.createdAt">
+                    n/a
+                  </span>
+                  <!-- </span> -->
                 </p>
               </div>
             </div>
@@ -477,19 +577,27 @@
             <div class="row" style="margin-top:5px">
               <div class="col-sm-12">
                 <p style="margin-bottom: 0px;">
-                  <i class="material-icons"
-                    style="vertical-align: middle; color: #394f5a;font-size:14px;  margin-left: 1px;">code</i>
-                  <span style="position: relative;top: 1px;">
-                    <span
+                  <span class="tool_tip">
+                    <!-- style="vertical-align: middle; color: #394f5a;font-size:14px;  margin-left: 1px;" -->
+                    <i class="material-icons right-sidebar--m-icon">code</i>
+                    <!-- <span style="position: relative;top: 1px;"> -->
+                    <!-- <span
                       style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
                       {{ "ContactId" | translate }}
-                    </span>
-
-                    <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
-                      {{ lead_id }}
+                    </span> -->
+                    <span class="top"
+                      style="min-width: unset; top: -7px;padding: 5px 10px;border-radius: 4px;white-space: nowrap;">
+                      {{ "ContactId" | translate }}
+                      <i style="top: 88%;"></i>
                     </span>
 
                   </span>
+
+                  <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
+                    {{ lead_id }}
+                  </span>
+
+                  <!-- </span> -->
                 </p>
               </div>
             </div>
@@ -504,12 +612,22 @@
                   <span style="position: relative;top: 1px;">
                     <div class="row">
                       <div class="col-xs-10" style="padding-right:10px">
-                        <i class="material-icons"
-                          style="vertical-align: middle; color: #394f5a;font-size:16px">person_pin_circle</i>
-                        <span
+                        <span class="tool_tip">
+                          <!-- style="vertical-align: middle; color: #394f5a;font-size:16px" -->
+                          <i class="material-icons right-sidebar--m-icon">person_pin_circle</i>
+                          <!-- <span
                           style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
                           {{ "Address" | translate }}
+                        </span> -->
+
+                          <span class="top"
+                            style="min-width: unset; top: -7px;padding: 5px 10px;border-radius: 4px;white-space: nowrap;">
+                            {{ "Address" | translate }}
+                            <i style="top: 88%;"></i>
+                          </span>
+
                         </span>
+
                         <span style=" font-weight: 500; font-size: 12px;">
 
                           <span *ngIf="!showAllAddress">
@@ -602,7 +720,7 @@
 
                       <div class="col-xs-2" style="text-align: right;">
                         <i id="address_arrow_down" class="material-icons rotate"
-                          style="cursor: pointer; color: #039be5; font-size:18px;position:relative; top:2px"
+                          style="cursor: pointer; color: #039be5; font-size:18px;position:relative; top:3px"
                           (click)="toggleAddress()">
                           keyboard_arrow_down
                         </i>
@@ -625,8 +743,9 @@
                     <span class="greekCross">
 
                       <span style="white-space: nowrap; margin-right: 3px;">
-                        <i class="material-icons"
-                          style="vertical-align: middle; color: #394f5a;font-size:14px;  margin-left: 1px;">subject</i>
+
+                        <!-- style="vertical-align: middle; color: #394f5a;font-size:14px;  margin-left: 1px;" -->
+                        <i class="material-icons right-sidebar--m-icon">subject</i>
 
                         <!-- <span style="position: relative;top: 1px;"> -->
                         <span
@@ -718,8 +837,9 @@
               </div> <!-- ./ col-sm-12 -->
 
             </div>
-          </div>
 
+
+          </div>
         </div>
       </div>
 

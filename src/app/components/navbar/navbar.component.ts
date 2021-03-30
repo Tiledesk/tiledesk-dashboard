@@ -890,8 +890,10 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
     hasmeInAgents(agents) {
         for (let j = 0; j < agents.length; j++) {
-
+            console.log('NAVBAR hasmeInAgents currentUserId  ', this.currentUserId )
+            console.log('NAVBAR hasmeInAgents agent  ', agents[j].id_user )
             if (this.currentUserId === agents[j].id_user) {
+                console.log('NAVBAR hasmeInAgents ' ) 
                 return true
             }
         }
@@ -909,10 +911,10 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                 if (requests) {
                     let count = 0;
                     requests.forEach(r => {
-                        console.log('NAVBAR - UPDATE-UNSERVED-REQUEST-COUNT request', r)
+                        console.log('NAVBAR - UPDATE-UNSERVED-REQUEST-COUNT request agents', r.agents)
                         // *bug fix: when the user is an agent also for the unserved we have to consider if he is present in agents
                         if (r.status === 100 && this.ROLE_IS_AGENT === true) {
-                            if (this.hasmeInAgents(r.snapshot.agents) === true) {  // new *bug fix
+                            if (this.hasmeInAgents(r.agents) === true) {  // new *bug fix
                                 count = count + 1;
                             }
                         }
@@ -1046,7 +1048,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
                             // *bug fix: when the user is an agent also for the unserved we have to consider if he is present in agents
                             if (this.ROLE_IS_AGENT === true) {
-                                if (this.hasmeInAgents(r.snapshot.agents) === true) {
+                                if (this.hasmeInAgents(r.agents) === true) {
 
                                     this.doUnservedDateDiffAndShowNotification(r)
 
@@ -1077,6 +1079,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                             const url = '#/project/' + this.projectId + '/wsrequest/' + r.request_id + '/messages'
 
                             let contact_fullname = ''
+                              console.log('NABBAR -  currentUserIsInParticipants DATE DIFF (s) ', dateDiff);
                             if (r.lead && r.lead.fullname) {
 
                                 contact_fullname = r.lead.fullname

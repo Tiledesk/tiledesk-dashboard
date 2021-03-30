@@ -210,10 +210,8 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
 
       console.log('WS-REQUESTS-UNSERVED-X-PANEL - ngOnDestroy request', request)
       if (request && request.lead) {
-
-        this.unsuscribeRequesterPresence(request.snapshot.lead.lead_id)
+        this.unsuscribeRequesterPresence(request.lead.lead_id)
       }
-
     });
 
     this.unsubscribe$.next();
@@ -245,14 +243,11 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
   archiveRequest(request_id) {
     this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg);
     console.log('WS-REQUESTS-SERVED - HAS CLICKED ARCHIVE REQUEST ');
-
-
     this.wsRequestsService.closeSupportGroup(request_id)
       .subscribe((data: any) => {
         console.log('WS-REQUESTS-SERVED - CLOSE SUPPORT GROUP - DATA ', data);
       }, (err) => {
         console.log('WS-REQUESTS-SERVED - CLOSE SUPPORT GROUP - ERROR ', err);
-
 
         // =========== NOTIFY ERROR ===========
         // this.notify.showNotification('An error has occurred archiving the request', 4, 'report_problem');
@@ -612,7 +607,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
 
 
               if (wsrequest !== null && wsrequest !== undefined) {
-                if (this.hasmeInAgents(wsrequest.snapshot.agents, wsrequest) === true || this.hasmeInParticipants(wsrequest.participants) === true) {
+                if (this.hasmeInAgents(wsrequest.agents, wsrequest) === true || this.hasmeInParticipants(wsrequest.participants) === true) {
                   this.ws_requests.push(wsrequest);
                 }
               }
@@ -645,18 +640,18 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
             }
           }
 
-          if (request.snapshot.lead && request.snapshot.lead.fullname) {
-            request['requester_fullname_initial'] = avatarPlaceholder(request.snapshot.lead.fullname);
-            request['requester_fullname_fillColour'] = getColorBck(request.snapshot.lead.fullname)
+          if (request.lead && request.lead.fullname) {
+            request['requester_fullname_initial'] = avatarPlaceholder(request.lead.fullname);
+            request['requester_fullname_fillColour'] = getColorBck(request.lead.fullname)
           } else {
             request['requester_fullname_initial'] = 'N/A';
             request['requester_fullname_fillColour'] = '#6264a7';
           }
 
 
-          if (request.snapshot.lead && request.snapshot.lead.lead_id) {
+          if (request.lead && request.lead.lead_id) {
             if (request.status === 100) {
-              this.getRequesterAvailabilityStatus(request.snapshot.lead.lead_id, request)
+              this.getRequesterAvailabilityStatus(request.lead.lead_id, request)
             }
           }
 
@@ -750,6 +745,8 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
   }
 
   getRequesterAvailabilityStatus(requester_id: string, request: any) {
+    console.log('WS-REQUEST-USVER-FOR-PANEL - GET REQUESTER AVAILABILITY STATUS --- requester_id ', requester_id)
+
     // const firebaseRealtimeDbUrl = `/apps/tilechat/presence/LmBT2IKjMzeZ3wqyU8up8KIRB6J3/connections`
     // -----------------------------------------------------------------------------------------
     // No more used - replaced by Get Lead presence from websocket
@@ -843,13 +840,10 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
       console.log('WS-REQUESTS-UNSERVED-X-PANEL - X-> DEPTS <-X', _departments)
 
       wsrequests.forEach(request => {
-        const deptHasName = request.snapshot.department.hasOwnProperty('name')
+        const deptHasName = request.department.hasOwnProperty('name')
         if (deptHasName) {
           // console.log('% »»» WebSocketJs WF +++++ ws-requests--- service -  X-> REQ DEPT HAS NAME', deptHasName)
-          request['dept'] = request.snapshot.department;
-
-
-
+          request['dept'] = request.department;
           let newInitials = '';
           let newFillColour = '';
 
@@ -858,20 +852,17 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
               newInitials = avatarPlaceholder(request.dept.name);
               newFillColour = getColorBck(request.dept.name)
             } else {
-
               newInitials = 'n.a.';
               newFillColour = '#eeeeee';
             }
-
             request.dept['dept_name_initial'] = newInitials;
             request.dept['dept_name_fillcolour'] = newFillColour;
-
           }
 
         } else {
           // console.log('% »»» WebSocketJs WF +++++ ws-requests--- service -  X-> REQ DEPT HAS NAME', deptHasName)
 
-          request['dept'] = this.getDeptObj(request.snapshot.department, _departments);
+          request['dept'] = this.getDeptObj(request.department._id, _departments);
 
 
           let newInitials = '';
@@ -889,15 +880,12 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
 
             request.dept['dept_name_initial'] = newInitials;
             request.dept['dept_name_fillcolour'] = newFillColour;
-
           }
         }
-
       });
-
-
     });
   }
+
   // DEPTS_LAZY: add this 
   getDeptObj(departmentid: string, deparments: any) {
     // const deptObjct =  this.departments.findIndex((e) => e.department === departmentid);

@@ -92,7 +92,7 @@
   <!-- SHOW SERVED REQUEST MAP -->
   <li class="see-no-realtime-request right-li" style="float: right; padding-right: 5px;" (click)='openRightSideBar()'>
     <a attr.aria-label="{{ 'ViewServedRequestsMap' | translate }}" class="tool_tip"
-      style="cursor: pointer; display: unset;" [ngClass]="{ 'has-reached-100' : served_unserved_sum >= 100 }">
+      style="cursor: pointer; display: unset;">
       <span class="material-icons" style="margin-top: 3px; color:#3ea9f5">
         pin_drop
       </span>
@@ -102,11 +102,11 @@
         <i></i>
       </div>
     </a>
-    <span *ngIf="served_unserved_sum >= 100" class="served-unserved-sum">
+    <!-- <span *ngIf="served_unserved_sum >= 100" class="served-unserved-sum">
       <span>
         {{ served_unserved_sum }}
       </span>
-    </span>
+    </span> -->
   </li>
 
 </ul>
@@ -189,7 +189,7 @@
   <!-- SHOW SERVED REQUEST MAP * FOR SMALL SCREEN -->
   <li class="see-no-realtime-request" style="float: right; padding-right: 5px; " (click)='openRightSideBar()'>
     <a attr.aria-label="{{ 'ViewServedRequestsMap' | translate }}" class="tool_tip"
-      style="cursor: pointer; display: unset;" [ngClass]="{ 'has-reached-100' : served_unserved_sum >= 100 }">
+      style="cursor: pointer; display: unset;">
       <span class="material-icons" style="margin-top: 0px;color:#3ea9f5">
         pin_drop
       </span>
@@ -200,11 +200,11 @@
       </div>
     </a>
 
-    <span *ngIf="served_unserved_sum >= 100" class="served-unserved-sum">
+    <!-- <span *ngIf="served_unserved_sum >= 100" class="served-unserved-sum">
       <span>
         {{ served_unserved_sum }}
       </span>
-    </span>
+    </span> -->
   </li>
 </ul>
 

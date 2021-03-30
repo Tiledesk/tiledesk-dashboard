@@ -498,14 +498,12 @@
             <!-- REQUESTER VERIFIED ICON (UNSERVED REQUEST SECTION)-->
             <span class="requester-avatar-wrapper">
               <span class="requester-avatar" [ngStyle]="{'background-color': request?.requester_fullname_fillColour }"
-                [ngClass]="{'requester_fullname-undefined' : !request?.snapshot?.lead?.fullname,  requester_avatar_not_has_email: !request?.snapshot?.lead?.email }">
+                [ngClass]="{'requester_fullname-undefined' : !request?.lead?.fullname,  requester_avatar_not_has_email: !request?.lead?.email }">
                 <span style="color: #ffffff"> {{ request?.requester_fullname_initial }} </span>
               </span>
 
-
               <span *ngIf="request?.requester_is_verified === true" class="tooltipx">
-
-                <svg [ngClass]="{'verified-icon-requester-undefined': !request?.snapshot?.lead?.fullname }" version="1.1"
+                <svg [ngClass]="{'verified-icon-requester-undefined': !request?.lead?.fullname }" version="1.1"
                   id="Livello_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
                   y="0px" viewBox="0 0 26.6 26.6" width="17" height="17"
                   style="position: relative;left: -41px;top: 1px;" xml:space="preserve">
@@ -539,19 +537,19 @@
 
               <span class="lead_data">
 
-                <span class="contact-fullname" [ngClass]="{'requester_not_has_email' : !request?.snapshot?.lead?.email}">
-                  {{ request?.snapshot?.lead?.fullname }}</span>
+                <span class="contact-fullname" [ngClass]="{'requester_not_has_email' : !request?.lead?.email}">
+                  {{ request?.lead?.fullname }}</span>
 
-                <span *ngIf="!request?.snapshot?.lead?.fullname"
-                  [ngClass]="{'requester_fullname_initial-undefined' : !request?.snapshot?.lead?.fullname}">
+                <span *ngIf="!request?.lead?.fullname"
+                  [ngClass]="{'requester_fullname_initial-undefined' : !request?.lead?.fullname}">
                   n/a
                 </span>
 
                 <span class="requester-email"
                   [ngClass]="{'requester-verified-email' : request?.requester_is_verified === true}">
-                  {{ request?.snapshot?.lead?.email }}
+                  {{ request?.lead?.email }}
                 </span>
-                <span class="requester-email" *ngIf="!request?.snapshot?.lead?.email"
+                <span class="requester-email" *ngIf="!request?.lead?.email"
                   [ngClass]="{'requester-verified-email' : request?.requester_is_verified === true}">
                   <!-- n.a. -->
                 </span>
@@ -613,7 +611,7 @@
 
               <span class="tooltiptext" style="font-size: 10px !important; padding: 3px;">
                 <span *ngIf="request?.ua_os !== 'undefined undefined'"> {{ request?.ua_os }} </span>
-                <span *ngIf="request?.ua_os === 'undefined undefined'"> not defined </span>
+                <span *ngIf="request?.ua_os === 'undefined undefined'"> {{'Unavailable' | translate}} </span>
               </span>
             </span>
 
@@ -687,7 +685,7 @@
 
               <span class="tooltiptext" style="font-size: 10px !important; padding: 3px;">
                 <span *ngIf="request?.ua_browser !== 'undefined undefined'"> {{ request?.ua_browser }} </span>
-                <span *ngIf="request?.ua_browser === 'undefined undefined'"> not defined </span>
+                <span *ngIf="request?.ua_browser === 'undefined undefined'"> {{'Unavailable' | translate}}  </span>
               </span>
             </span>
           </td>

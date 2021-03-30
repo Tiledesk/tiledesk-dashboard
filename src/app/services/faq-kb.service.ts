@@ -268,9 +268,7 @@ export class FaqKbService {
 
   getDialogflowBotCredetial(botid: string) {
     let url = this.DLGFLW_BOT_CREDENTIAL_BASE_URL + botid;
-
     console.log('getDialogflowBotCredetialURL', url);
-
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append('Authorization', this.TOKEN);
@@ -281,11 +279,8 @@ export class FaqKbService {
 
 
   public deleteDialogflowBotCredetial(id: string) {
-
     let url = this.DLGFLW_BOT_CREDENTIAL_BASE_URL + id;
-
     console.log('deleteDialogflowBotCredetial DELETE URL ', url);
-
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
@@ -365,17 +360,12 @@ export class FaqKbService {
     const options = new RequestOptions({ headers });
 
     let body = {}
-
-
-
     body = { 'name': name, 'url': urlfaqkb, 'type': bottype, 'description': faqKb_description };
-
     if (bottype === 'internal') {
       body['webhook_enabled'] = webkookisenalbled;
       body['webhook_url'] = webhookurl
 
     }
-
     console.log('update BOT - BODY ', body);
     // let botType = ''
     // if (is_external_bot === true) {
@@ -385,12 +375,9 @@ export class FaqKbService {
     // }
     // body['type'] = botType
 
-
     /* FOR PROD */
     // body['external'] = is_external_bot
-
     console.log('PUT REQUEST BODY ', body);
-
     return this.http
       .put(url, JSON.stringify(body), options)
       .map((res) => res.json());

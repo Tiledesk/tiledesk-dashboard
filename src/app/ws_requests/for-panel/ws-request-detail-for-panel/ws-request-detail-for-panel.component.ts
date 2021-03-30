@@ -84,13 +84,13 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
     if (this.request) {
       this.requestid = this.request.request_id
 
-      this.requester_id = this.request.snapshot.lead.lead_id;
+      this.requester_id = this.request.lead.lead_id;
 
       this.getRequesterAvailabilityStatus(this.requester_id);
 
-      if (this.request.snapshot.lead && this.request.snapshot.lead.fullname) {
-        this.request['requester_fullname_initial'] = avatarPlaceholder(this.request.snapshot.lead.fullname);
-        this.request['requester_fullname_fillColour'] = getColorBck(this.request.snapshot.lead.fullname)
+      if (this.request.lead && this.request.lead.fullname) {
+        this.request['requester_fullname_initial'] = avatarPlaceholder(this.request.lead.fullname);
+        this.request['requester_fullname_fillColour'] = getColorBck(this.request.lead.fullname)
       } else {
 
         this.request['requester_fullname_initial'] = 'N/A';

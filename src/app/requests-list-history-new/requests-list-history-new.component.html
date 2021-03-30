@@ -335,7 +335,7 @@
   <!--  ---------------------------------------------------------------- -->
   <!--  Applied filter -->
   <!--  ---------------------------------------------------------------- -->
-  <div style="margin-top: 16px; display: flex; position: relative;margin-bottom: 18px;"
+  <div style="margin-top: 16px; display: flex; position: relative;margin-bottom: 9px;"
     *ngIf="fullText_applied_filter || startDateFormatted || selectedAgentFirstname || selectedDeptName || requests_status === '200' || requests_status === '100' || selecteTagColor">
 
     <div class="applied-filter-title">
@@ -406,31 +406,48 @@
     </div> -->
 
   </div>
-
-  <div *ngIf="!IS_HERE_FOR_HISTORY" style="display: flex; position: relative; float: right;top: 51px;z-index: 99; ">
-    <div class="conversations-count">
+  <!-- style="display: flex; position: relative; float: right;top: 51px;z-index: 99; " -->
+  <div class="row" *ngIf="!IS_HERE_FOR_HISTORY" style="font-size: 16px;margin-bottom: 8px ">
+    <div class="col-xs-12 conversations-count">
       <span
         *ngIf="requests_status === 'all' && !fullText_applied_filter && !startDateFormatted && !selectedAgentFirstname && !selectedDeptName && !selecteTagColor">
-        {{ 'TotalConversations' | translate }}: {{requestsCount}}
+        {{ 'TotalConversations' | translate }}:
+        <!-- https://stackoverflow.com/questions/13014808/is-there-anyway-to-animate-an-ellipsis-with-css-animations -->
+        <span *ngIf="showSpinner" class="loading">{{'ProcessingNoDot' | translate}} </span>
+        <span *ngIf="!showSpinner">
+          {{requestsCount}}
+        </span>
       </span>
 
       <span
         *ngIf="fullText_applied_filter || startDateFormatted || selectedAgentFirstname || selectedDeptName || requests_status === '200' || requests_status === '100' || selecteTagColor">
-        {{ 'ConversationsFound' | translate }}: {{requestsCount}}
+        {{ 'ConversationsFound' | translate }}:
+        <span *ngIf="showSpinner" class="loading">{{'ProcessingNoDot' | translate}} </span>
+        <span *ngIf="!showSpinner">
+          {{requestsCount}}
+        </span>
       </span>
     </div>
   </div>
-
-  <div *ngIf="IS_HERE_FOR_HISTORY" style="display: flex; position: relative; float: right;top: 51px;z-index: 99; ">
-    <div class="conversations-count">
+  <!-- style="display: flex; position: relative; float: right;top: 51px;z-index: 99; " -->
+  <div class="row" *ngIf="IS_HERE_FOR_HISTORY" style="font-size: 16px;margin-bottom: 8px">
+    <div class="col-xs-12 conversations-count">
       <span
         *ngIf="!fullText_applied_filter && !startDateFormatted && !selectedAgentFirstname && !selectedDeptName && !selecteTagColor">
-        {{ 'TotalConversations' | translate }}: {{requestsCount}}
+        {{ 'TotalConversations' | translate }}:
+        <span *ngIf="showSpinner" class="loading">{{'ProcessingNoDot' | translate}} </span>
+        <span *ngIf="!showSpinner">
+          {{requestsCount}}
+        </span>
       </span>
 
       <span
         *ngIf="fullText_applied_filter || startDateFormatted || selectedAgentFirstname || selectedDeptName || selecteTagColor">
-        {{ 'ConversationsFound' | translate }}: {{requestsCount}}
+        {{ 'ConversationsFound' | translate }}:
+        <span *ngIf="showSpinner" class="loading">{{'ProcessingNoDot' | translate}} </span>
+        <span *ngIf="!showSpinner">
+          {{requestsCount}}
+        </span>
       </span>
     </div>
   </div>
@@ -470,13 +487,13 @@
   <div class="row">
     <div class="col-md-12 table-wrapper-col">
       <div class="card card--no-border" style="margin-top: 0px;">
-        <loading-spinner *ngIf="showSpinner"></loading-spinner>
+        
 
         <!-- 
           // ----------------------------------------------------------------
           // Table
           // ---------------------------------------------------------------- -->
-        <div *ngIf="!showSpinner" class="card-content table-responsive">
+        <div class="card-content table-responsive">
 
           <!-- OPTION TABLE -->
           <table class="table">
@@ -712,8 +729,19 @@
                 </th>
               </tr>
             </thead>
+            
+            <tbody *ngIf="showSpinner">
+              <tr>
+                <td colspan="10">
+                  <loading-spinner *ngIf="showSpinner"></loading-spinner>
 
-            <tbody>
+                </td>
+
+              </tr>
+            
+            </tbody>
+
+            <tbody *ngIf="!showSpinner">
 
               <!-- ------------------------------ -->
               <!--  IF THERE ISN'T REQUEST -->
@@ -847,7 +875,6 @@
                       <span *ngIf="!request?.subject">
                         <img style="width: 30px;" src="assets/img/request_icons/status200_no_joined.svg"
                           class="img-fluid">
-
                       </span>
 
 
@@ -855,11 +882,9 @@
                       <!-- SERVED !NOT BY ME REQUEST INTERNAL -->
                       <!-- ---------------------------------- -->
                       <span *ngIf="request?.subject">
-
                         <img style="width: 30px;" src="assets/img/request_icons/status200_no_joined_internal.svg"
                           class="img-fluid">
                       </span>
-
                     </span>
                   </span>
 
@@ -996,7 +1021,7 @@
                   <!-- Channel - Telegram -->
                   <!-- ---------------------------------------- -->
                   <span *ngIf="request?.channel?.name === 'telegram'" class="tool_tip">
-                  
+
                     <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/Telegram-01.svg"
                       class="img-fluid">
                     <span class="bottom tool-tip-bottom--custom">
@@ -1011,7 +1036,7 @@
                   <!-- Channel - WhatsApp -->
                   <!-- ---------------------------------------- -->
                   <span *ngIf="request?.channel?.name === 'whatsapp'" class="tool_tip">
-                   
+
                     <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/whatsapp-logo_green.svg"
                       class="img-fluid">
                     <span class="bottom tool-tip-bottom--custom">
@@ -1027,15 +1052,12 @@
                   <!-- Channel - Messenger -->
                   <!-- ---------------------------------------- -->
                   <span *ngIf="request?.channel?.name === 'messenger'" class="tool_tip">
-                  
                     <img style="width: 24px;height: 24px;"
                       src="assets/img/channel_icons/Facebook_Messenger_logo_2020.svg" class="img-fluid">
-
                     <span class="bottom tool-tip-bottom--custom">
                       <span style="font-weight: 200;">
                         {{'MessageChannel' | translate}}:
                       </span>
-
                       <span style="font-weight: 400;">Messenger </span>
                       <i></i>
                     </span>
@@ -1045,16 +1067,13 @@
                   <!-- Channel - Email -->
                   <!-- ---------------------------------------- -->
                   <span *ngIf="request?.channel?.name === 'email'" class="tool_tip email-wpr">
-                    
                     <img style="padding:5px !important" src="assets/img/channel_icons/email-logo_white.svg"
                       class="img-fluid channel-img-in-conversations">
-
                     <span class="bottom tool-tip-bottom--custom">
                       <span style="font-weight: 200;">
                         {{'MessageChannel' | translate}}:
                       </span>
                       <span style="font-weight: 400;">Email </span>
-
                       <i></i>
                     </span>
                   </span>
@@ -1063,10 +1082,8 @@
                   <!-- Channel - Form -->
                   <!-- ---------------------------------------- -->
                   <span *ngIf="request?.channel?.name === 'form'" class="tool_tip form-wpr">
-                    
                     <img style="padding:4px !important" src="assets/img/channel_icons/form-logo_v2_white.svg"
                       class="img-fluid channel-img-in-conversations">
-
                     <span class="bottom tool-tip-bottom--custom">
                       <span style="font-weight: 200;">
                         {{'MessageChannel' | translate}}:
@@ -1085,11 +1102,11 @@
                   <span class="requester-avatar-wrapper">
                     <span class="requester-avatar--in-history"
                       [ngStyle]="{'background-color': request?.requester_fullname_fillColour }"
-                      [ngClass]="{'requester_fullname_undefined' : !request?.snapshot?.lead?.fullname}">
+                      [ngClass]="{'requester_fullname_undefined' : !request?.lead?.fullname}">
                       <span style="color: #ffffff"> {{ request?.requester_fullname_initial }} </span>
                     </span>
                     <span *ngIf="request?.requester_is_verified === true" class="tooltipx">
-                      <svg [ngClass]="{'verified-icon-requester-undefined': !request?.snapshot?.lead?.fullname }" version="1.1"
+                      <svg [ngClass]="{'verified-icon-requester-undefined': !request?.lead?.fullname }" version="1.1"
                         id="Livello_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                         x="0px" y="0px" viewBox="0 0 26.6 26.6" width="17" height="17"
                         style="position: relative;left: -41px;top: 1px;" xml:space="preserve">
@@ -1122,19 +1139,19 @@
 
                     <span class="lead_data"
                       [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
-                      {{ request?.snapshot?.lead?.fullname }}
-                      <span *ngIf="!request?.snapshot?.lead?.fullname"
-                        [ngClass]="{'requester_fullname_initial-undefined' : !request?.snapshot?.lead?.fullname}">
+                      {{ request?.lead?.fullname }}
+                      <span *ngIf="!request?.lead?.fullname"
+                        [ngClass]="{'requester_fullname_initial-undefined' : !request?.lead?.fullname}">
                         N/A
                       </span>
 
                       <!--  -->
                       <span class="requester-email"
                         [ngClass]="{'requester-verified-email' : request?.requester_is_verified === true}">
-                        {{ request?.snapshot?.lead?.email }}
+                        {{ request?.lead?.email }}
                       </span>
 
-                      <span class="requester-email-undefined" *ngIf="!request?.snapshot?.lead?.email"
+                      <span class="requester-email-undefined" *ngIf="!request?.lead?.email"
                         [ngClass]="{'requester-verified-email' : request?.requester_is_verified === true}">
                         n/a
                       </span>
@@ -1194,7 +1211,7 @@
 
                     <span class="tooltiptext" style="font-size: 10px !important; padding: 3px;">
                       <span *ngIf="request?.ua_os !== 'undefined undefined'"> {{ request?.ua_os }} </span>
-                      <span *ngIf="request?.ua_os === 'undefined undefined'"> not defined </span>
+                      <span *ngIf="request?.ua_os === 'undefined undefined'"> {{'Unavailable' | translate}}  </span>
                     </span>
                   </span>
 
@@ -1268,15 +1285,19 @@
 
                     <span class="tooltiptext" style="font-size: 10px !important; padding: 3px;">
                       <span *ngIf="request?.ua_browser !== 'undefined undefined'"> {{ request?.ua_browser }} </span>
-                      <span *ngIf="request?.ua_browser === 'undefined undefined'"> not defined </span>
+                      <span *ngIf="request?.ua_browser === 'undefined undefined'"> n/a </span>
                     </span>
                   </span>
                 </td>
 
                 <!-- ===== DEPARTMENT NAME ===== -->
                 <td>
-                  <p class="column-td">
-                    {{ request?.snapshot?.department?.name }}
+                  <p *ngIf="request?.dept?.name" class="column-td">
+                    <!-- {{ request?.department?.name }} -->
+                    {{ request?.dept?.name }}
+                  </p>
+                  <p *ngIf="!request?.dept?.name" class="column-td">
+                    n/a
                   </p>
                 </td>
 

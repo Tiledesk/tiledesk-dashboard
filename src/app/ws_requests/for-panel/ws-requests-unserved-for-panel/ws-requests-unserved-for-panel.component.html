@@ -75,9 +75,9 @@
             <div class="right-column"  (click)="displayDetails(request)">
               <div class="lead-name">
                 <div class="lead--name">
-                  {{ request?.snapshot?.lead?.fullname }}
+                  {{ request?.lead?.fullname }}
                   <!-- {{ request?.lead?.lead_id }} -->
-                  <span *ngIf="!request?.snapshot?.lead?.fullname">
+                  <span *ngIf="!request?.lead?.fullname">
                     N/A
                   </span>
                 </div>
@@ -295,7 +295,7 @@
                         <span class="top"
                           style="min-width: 100px;text-align: center ; top:-8px; border-radius: 3px; padding: 3px 10px; font-size: 10px; line-height: 14px;">
                           <span *ngIf="request?.ua_os !== 'undefined undefined'"> {{ request?.ua_os }} </span>
-                          <span *ngIf="request?.ua_os === 'undefined undefined'"> not defined </span>
+                          <span *ngIf="request?.ua_os === 'undefined undefined'"> {{'Unavailable' | translate}} </span>
 
                           <i></i>
                         </span>
@@ -372,7 +372,7 @@
                         <span class="top"
                           style="min-width: 100px;text-align: center ; top:-8px; border-radius: 3px; padding: 3px 10px; font-size: 10px; line-height: 14px;">
                           <span *ngIf="request?.ua_browser !== 'undefined undefined'"> {{ request?.ua_browser }} </span>
-                          <span *ngIf="request?.ua_browser === 'undefined undefined'"> not defined </span>
+                          <span *ngIf="request?.ua_browser === 'undefined undefined'"> {{'Unavailable' | translate}} </span>
 
                           <i></i>
                         </span>

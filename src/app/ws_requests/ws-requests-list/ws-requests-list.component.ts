@@ -217,6 +217,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     /* getDepartments da valutare se viene ancora usato (veniva usato di sicuro durante la creazione della richiesta interna ora sosstiuiyo con
      // getProjectUserAndBotAndDepts x dare la possibilità di associare una richiesta interna oltre che ad un dept anche ad un bot o a un projct-user) */
     this.getDepartments();
+    // this.getActiveContacts();
     // this.getWsRequests$();
     this.getCurrentProjectAndThenDetProjectById();
     // this.getProjectPlan();
@@ -242,6 +243,13 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     // this.getAllPaginatedContactsRecursevely(this.page_No)
     this.translateString()
   }
+
+  // getActiveContacts() {
+  //   this.contactsService.getLeadsActive().subscribe((activeleads: any) => {
+  //     console.log('WS-REQUEST-LIST - GET ACTIVE LEADS RES ', activeleads)
+  
+  //   });
+  // }
 
   ngAfterViewInit() { }
 
@@ -308,8 +316,6 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
 
 
-
-
   }
 
   translateString() {
@@ -333,9 +339,6 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       .subscribe((translation: any) => {
         this.featureIsAvailableWithTheProPlan = translation;
       });
-
-
-
   }
 
 
@@ -606,7 +609,6 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
           projectuser['updatedAt_rt'] = projectUser_from_ws_subscription['updatedAt'];
 
         }
-
 
         // const index = this.projectUserArray((e) => e._id === projectuser._id);
         this.tempProjectUserArray.indexOf(projectuser) === -1 ? this.tempProjectUserArray.push(projectuser) : console.log("This item already exists");
@@ -940,9 +942,6 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       });
   }
 
-
-
-
   seeIamAgentRequests(seeIamAgentReq) {
     this.ONLY_MY_REQUESTS = seeIamAgentReq
     console.log('% »»» WebSocketJs WF +++++ ws-requests--- list + ONLY_MY_REQUESTS ', this.ONLY_MY_REQUESTS);
@@ -954,29 +953,11 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     this.getWsRequests$()
   }
 
-  // hasmeInUnserved(agents) {
-  //   let iAmThere = false
-  //   for (let j = 0; j < agents.length; j++) {
-  //     // console.log("% »»» WebSocketJs - WsRequestsService AGENT ", agents[j]);
-  //     console.log("% »»» WebSocketJs - WsRequestsService currentUserID 2 ", this.currentUserID);
-  //     console.log("% »»» WebSocketJs - WsRequestsService id_user ", agents[j].id_user);
-
-  //     if (this.currentUserID === agents[j].id_user) {
-  //       iAmThere = true
-  //       console.log("% »»» WebSocketJs - WsRequestsService HERE-YES ", iAmThere);
-  //     }
-  //     return iAmThere
-  //   }
-  // }
-
   goToDept(deptid) {
     this.router.navigate(['project/' + this.projectId + '/department/edit/' + deptid]);
     // this.display_dept_sidebar = true;
     // this.ws_requestslist_deptIdSelected = deptid
   }
-
-
-
 
   parseUserAgent(uastring) {
     // https://github.com/faisalman/ua-parser-js
@@ -1007,7 +988,6 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
   hasmeInAgents(agents, wsrequest) {
     // console.log("% »»» WebSocketJs WF +++++ ws-requests--- list + hasmeInAgents agents", agents);
-
     for (let j = 0; j < agents.length; j++) {
       // console.log("% »»» WebSocketJs WF - WsRequestsList »»» »»» hasmeInAgents agent", agents[j]);
       console.log("% »»» WebSocketJs WF +++++ ws-requests--- list + hasmeInAgents currentUserID 2 ", this.currentUserID);
@@ -1047,15 +1027,24 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       console.log('% »»» WebSocketJs WF +++++ ws-requests--- service -  X-> DEPTS <-X', _departments)
 
       wsrequests.forEach(request => {
-        if (request.snapshot.department) {
-          const deptHasName = request.snapshot.department.hasOwnProperty('name')
+        if (request.department) {
+          const deptHasName = request.department.hasOwnProperty('name')
           if (deptHasName) {
             // console.log('% »»» WebSocketJs WF +++++ ws-requests--- service -  X-> REQ DEPT HAS NAME', deptHasName)
-            request['dept'] = request.snapshot.department
+            request['dept'] = request.department
           } else {
             // console.log('% »»» WebSocketJs WF +++++ ws-requests--- service -  X-> REQ DEPT HAS NAME', deptHasName)
+            // if (request.department.hasOwnProperty('_id'))
+            console.log('% »»» WebSocketJs WF +++++ ws-requests--- service -  X-> REQ DEPT HAS ID', request.department.hasOwnProperty('_id'))
 
-            request['dept'] = this.getDeptObj(request.snapshot.department._id, _departments)
+            if (request.department.hasOwnProperty('_id')) {
+              // in this case department is an object (i.e.  department: {_id: "5df26badde7e1c001743b63e"} )
+              request['dept'] = this.getDeptObj(request.department._id, _departments)
+
+            } else {
+              // in this case department is a string equivalent to the department id (i.e. department: "5df26badde7e1c001743b63e" )
+              request['dept'] = this.getDeptObj(request['department'], _departments)
+            }
           }
         }
 
@@ -1138,7 +1127,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       .subscribe((wsrequests) => {
 
         // DEPTS_LAZY: add this 
-        this.addDeptObject(wsrequests)
+        // this.addDeptObject(wsrequests)
 
         // console.log("% »»» WebSocketJs WF +++++ ws-requests--- list - subscribe ", wsrequests);
 
@@ -1171,6 +1160,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
           if (this.ONLY_MY_REQUESTS === false) {
             this.ws_requests = wsrequests;
             // console.log('% »»» WebSocketJs WF +++++ ws-requests--- list - ONLY_MY_REQUESTS: ', this.ONLY_MY_REQUESTS, ' - this.ws_requests: ', this.ws_requests)
+            this.addDeptObject(this.ws_requests)
           }
 
           if (this.ONLY_MY_REQUESTS === true) {
@@ -1184,14 +1174,14 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
                 // || wsrequest.status === 100
                 // console.log("% »»» WebSocketJs WF +++++ ws-requests--- list - »»» »»» hasmeInAgents ONLY_MY_REQUESTS forEach hasmeInAgents", this.hasmeInAgents(wsrequest.agents, wsrequest));
                 // console.log("% »»» WebSocketJs WF +++++ ws-requests--- list - »»» »»» hasmeInAgents ONLY_MY_REQUESTS forEach hasmeInAgents (get from snapshot)", this.hasmeInAgents(wsrequest.snapshot.agents, wsrequest));
-                // if (this.hasmeInAgents(wsrequest.agents, wsrequest) === true || this.hasmeInParticipants(wsrequest.participants) === true) {
-                if (this.hasmeInAgents(wsrequest.snapshot.agents, wsrequest) === true || this.hasmeInParticipants(wsrequest.participants) === true) {
+                if (this.hasmeInAgents(wsrequest.agents, wsrequest) === true || this.hasmeInParticipants(wsrequest.participants) === true) {
+                  // if (this.hasmeInAgents(wsrequest.snapshot.agents, wsrequest) === true || this.hasmeInParticipants(wsrequest.participants) === true) {
 
                   this.ws_requests.push(wsrequest);
                 }
               }
             });
-
+            this.addDeptObject(this.ws_requests)
             // console.log('% »»» WebSocketJs WF +++++ ws-requests--- list - ONLY_MY_REQUESTS  ', this.ONLY_MY_REQUESTS, 'this.ws_requests', this.ws_requests)
           }
 
@@ -1346,19 +1336,6 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
           // console.log('% »»» WebSocketJs WF - WsRequestsList - USER-AGENT OPERATING SYSTEM ', ua_os)
           request['ua_os'] = ua_os;
 
-          // console.log("% »»» currentUserID WebSocketJs WF - WsRequestsList in ws_requests.forEach ", this.currentUserID);
-          // console.log("% »»» currentUserID WebSocketJs WF - WsRequestsList in ws_requests.forEach 2 ", this.auth.user_bs.value._id);
-
-
-          //  console.log('% »»» WebSocketJs WF - WsRequestsList - department id ', request.department)
-          // if (this.departments) {
-          //   this.departments.forEach(dept => {
-          //     if (dept.id === request.department) {
-          //       request['dept'] = dept;
-          //     }
-          //   });
-          // }
-
           // ------------------------------------------------------------------------------------------
           // for the tooltip on the icon of unserved conversations showing users who have left the chat
           // ------------------------------------------------------------------------------------------
@@ -1431,9 +1408,10 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
           }
 
+          // ------------------------------------------------------------------------------------------
+          // for the tooltip on the icon of unserved conversations showing users who have left the chat
+          // ------------------------------------------------------------------------------------------
           if (request.attributes && request.attributes && request.attributes.abandoned_by_project_users) {
-
-
             this.other_project_users_that_has_abandoned_array = []
             for (const [key, value] of Object.entries(request.attributes.abandoned_by_project_users)) {
               console.log('WS-REQUESTS-LIST - OTHERS PROJECT-USER THAT HAVE ABANDONED', `${key}: ${value}`);
@@ -1491,19 +1469,14 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
                       if (_other_project_users_found) {
                         this.createArrayOther_project_users_that_has_abandoned(_other_project_users_found)
                       }
-
                     });
                 }
-
-
                 console.log('WS-REQUESTS-LIST - LAST PROJECT-USER THAT HAS ABANDONED other_project_users_that_has_abandoned_array', this.other_project_users_that_has_abandoned_array)
                 request['attributes']['other_project_users_that_has_abandoned_array'] = this.other_project_users_that_has_abandoned_array
               }
               // }
             }
           }
-
-
 
           //  replace this.currentUserID with this.auth.user_bs.value._id  because at the go back from the request's details this.currentUserID at the moment in which is passed in currentUserIdIsInParticipants is undefined 
           request['currentUserIsJoined'] = this.currentUserIdIsInParticipants(request.participants, this.auth.user_bs.value._id, request.request_id);
@@ -1532,17 +1505,24 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
               // console.log('!! Ws SHARED (from request list) PARTICIPANTS ', request.participants);
             }
           }
-        
-  
-          if (request.snapshot.lead && request.snapshot.lead.fullname) {
-            request['requester_fullname_initial'] = avatarPlaceholder(request.snapshot.lead.fullname);
-            request['requester_fullname_fillColour'] = getColorBck(request.snapshot.lead.fullname)
-          } else {
 
-            request['requester_fullname_initial'] = 'N/A';
-            request['requester_fullname_fillColour'] = '#6264a7';
-          }
+          // if (typeof request.lead === 'object' && request.lead !== null) {
+            if (request.lead && request.lead.fullname) {
+              request['requester_fullname_initial'] = avatarPlaceholder(request.lead.fullname);
+              request['requester_fullname_fillColour'] = getColorBck(request.lead.fullname)
+            } else {
+              request['requester_fullname_initial'] = 'N/A';
+              request['requester_fullname_fillColour'] = '#6264a7';
+            }
+          // } else {
+          //   console.log('WS-REQUEST-LIST LEAD ',request.lead);
 
+          // }
+
+
+          // ------------------------------------------------------------------------------------------------------------
+          // !!!! No more used
+          // ------------------------------------------------------------------------------------------------------------
           //   if (request.lead
           //     && request.lead.attributes
           //     && request.lead.attributes.senderAuthInfo
@@ -1569,10 +1549,27 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
           // } else {
           //   request['requester_is_verified'] = false;
           // }
-          // request.snapshot.requester.isAuthenticated=true
-          if (request.snapshot && request.snapshot.requester && request.snapshot.requester.isAuthenticated) {
 
-            if (request.snapshot.requester.isAuthenticated === true) {
+          // ------------------------------------------------------------------------------------------------------------
+          //  to get if the requester is authenticated the 'isAuthenticated' property is obtained from snapshot.requester
+          // ------------------------------------------------------------------------------------------------------------
+          // if (request.snapshot && request.snapshot.requester && request.snapshot.requester.isAuthenticated) {
+
+          //   if (request.snapshot.requester.isAuthenticated === true) {
+          //     request['requester_is_verified'] = true;
+          //   } else {
+          //     request['requester_is_verified'] = false;
+          //   }
+          // } else {
+          //   request['requester_is_verified'] = false;
+          // }
+
+          // ------------------------------------------------------------------------------------------------------------
+          //  to get if the requester is authenticated the 'isAuthenticated' property is obtained directly from requester
+          // ------------------------------------------------------------------------------------------------------------
+          if (request && request.requester && request.requester.isAuthenticated) {
+
+            if (request.requester.isAuthenticated === true) {
               request['requester_is_verified'] = true;
             } else {
               request['requester_is_verified'] = false;
@@ -2028,7 +2025,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
 
 
-
+  // Create an array of project user & conatct when is opened the modal create ticket
   getProjectUsersAndContacts() {
     this.loadingRequesters = true;
     const projectUsers = this.usersService.getProjectUsersByProjectId();
@@ -2101,9 +2098,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       this.requester_type = "lead"
       console.log('Ws-REQUESTS-LIST - hasFound REQUESTER requester_type', this.requester_type);
     }
-
   }
-
 
   openRequesterDetails() {
     if (this.selectedRequester) {
@@ -2202,15 +2197,11 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     });
   }
 
-
   onChangeNewRequesterEmail($event) {
-
     console.log('Ws-REQUESTS-LIST - CREATE-NEW-USER - CREATE-NEW-LEAD ON CHANGE EMAIL: ', $event);
-
     this.new_requester_email_is_valid = this.validateEmail($event)
     console.log('Ws-REQUESTS-LIST - CREATE-NEW-USER - CREATE-NEW-LEAD ON CHANGE EMAIL - EMAIL IS VALID ', this.new_requester_email_is_valid);
   }
-
 
   validateEmail(mail) {
     if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(mail)) {
@@ -2219,7 +2210,6 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     console.log('Ws-REQUESTS-LIST - CREATE-NEW-USER - CREATE-NEW-LEAD - validateEmail - You have entered an invalid email address! ');
     return (false)
   }
-
 
   // customSearchFn(term: string, item: any) {
   //   console.log('Ws-REQUESTS-LIST - GET P-USERS-&-LEADS - customSearchFn term : ', term);

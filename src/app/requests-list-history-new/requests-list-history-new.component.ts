@@ -518,7 +518,7 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
 
   //           const date = moment.localeData().longDateFormat(request.createdAt);
   //           request.fulldate = date;
-    
+
 
   //           if (request.participants.length > 0) {
   //             console.log('!! Ws SHARED  (from request list history) participants length', request.participants.length);
@@ -595,9 +595,9 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
               let newInitials = '';
               let newFillColour = '';
 
-              if (request.snapshot.lead && request.snapshot.lead.fullname) {
-                newInitials = avatarPlaceholder(request.snapshot.lead.fullname);
-                newFillColour = getColorBck(request.snapshot.lead.fullname)
+              if (request.lead && request.lead.fullname) {
+                newInitials = avatarPlaceholder(request.lead.fullname);
+                newFillColour = getColorBck(request.lead.fullname)
               } else {
                 newInitials = 'N/A';
                 newFillColour = 'rgb(98, 100, 167)';
@@ -625,21 +625,50 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
                 request['participanting_Agents'] = [{ _id: 'no_agent', email: 'NoAgent', firstname: 'NoAgent', lastname: 'NoAgent' }]
               }
 
+              // ------------------------------------------------------------------------------------------------------------
+              //  to get if the requester is authenticated the 'isAuthenticated' property is obtained from snapshot.requester
+              // ------------------------------------------------------------------------------------------------------------
+              // if (request.snapshot && request.snapshot.requester && request.snapshot.requester.isAuthenticated) {
+              //   if (request.snapshot.requester.isAuthenticated === true) {
+              //     request['requester_is_verified'] = true;
+              //   } else {
+              //     request['requester_is_verified'] = false;
+              //   }
+              // } else {
+              //   request['requester_is_verified'] = false;
+              // }
 
-              if (request.snapshot && request.snapshot.requester && request.snapshot.requester.isAuthenticated) {
 
-                if (request.snapshot.requester.isAuthenticated === true) {
+              // ------------------------------------------------------------------------------------------------------------
+              //  to get if the requester is authenticated the 'isAuthenticated' property is obtained directly from requester
+              // ------------------------------------------------------------------------------------------------------------
+              if (request && request.requester && request.requester.isAuthenticated) {
+                if (request.requester.isAuthenticated === true) {
                   request['requester_is_verified'] = true;
                 } else {
                   request['requester_is_verified'] = false;
                 }
               } else {
                 request['requester_is_verified'] = false;
-                console.log('!!! NEW REQUESTS HISTORY QUI ENTRO')
               }
 
+              if (request.department) {
+                const deptHasName = request.department.hasOwnProperty('name')
+                if (deptHasName) {
+                  // console.log('% »»» WebSocketJs WF +++++ ws-requests--- service -  X-> REQ DEPT HAS NAME', deptHasName)
+                  request['dept'] = request.department
+                } else {
+                  // console.log('% »»» WebSocketJs WF +++++ ws-requests--- service -  X-> REQ DEPT HAS NAME', deptHasName)
 
-
+                  // in this case department is an object (i.e.  department: {_id: "5df26badde7e1c001743b63e"} )
+                  if (request.department.hasOwnProperty('_id')) {
+                    request['dept'] = this.getDeptObj(request.department._id);
+                  } else {
+                    // in this case department is a string equivalent to the department id (i.e. department: "5df26badde7e1c001743b63e" )
+                    request['dept'] = this.getDeptObj(request['department'])
+                  }
+                }
+              }
             }
           }
         }
@@ -657,6 +686,16 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
     return promise;
   }
   // GET REQUEST COPY - END
+
+  getDeptObj(departmentid: string) {
+    console.log('!!! NEW REQUESTS HISTORY - getDeptObj departmentid', departmentid)
+    // const deptObjct =  this.departments.findIndex((e) => e.department === departmentid);
+    const deptObjct = this.departments.filter((obj: any) => {
+      return obj._id === departmentid;
+    });
+    // console.log('% »»» WebSocketJs WF +++++ ws-requests--- service -  X-> DEPT OBJECT <-X', deptObjct)
+    return deptObjct[0]
+  }
 
 
   detectMobile() {
@@ -783,7 +822,7 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
     } else {
 
       this.presentModalOnlyOwnerCanManageTheAccountPlan();
-     }
+    }
   }
 
 
@@ -906,7 +945,7 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
     if (selectedDept.length > 0) {
 
       this.selectedDeptName_temp = selectedDept[0].name
-      console.log('!!! NEW REQUESTS HISTORY - selectedDeptName ', this.selectedDeptName);
+      console.log('!!! NEW REQUESTS HISTORY - selectedDeptName_temp ', this.selectedDeptName_temp);
     } else {
       // this.selectedDeptName = null;
       this.selectedDeptId = '';
@@ -1279,7 +1318,10 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
     this.selectedAgentId = '';
     this.requester_email = '';
     this.selecteTagName = '';
-    // this.requests_status = 'all' // I comment this because it causes bugs
+
+    if (!this.IS_HERE_FOR_HISTORY) {
+      this.requests_status = 'all' // I comment this because it causes bugs
+    }
 
     // this.fullTextValue = '';
     // this.deptIdValue = '';
@@ -1555,7 +1597,6 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
   // }
 
   selectAll(e) {
-
     console.log("**++ Is checked: ", e.target.checked)
     var checkbox = <HTMLInputElement>document.getElementById("allCheckbox");
     console.log("**++ Indeterminate: ", checkbox.indeterminate);
@@ -1711,7 +1752,6 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
 
 
   archiveSelected() {
-
     console.log("REQUEST-LIST-HISTORY-NEW - ARRAY OF ARCHIVE SELECTED: ", this.request_selected);
     console.log("REQUEST-LIST-HISTORY-NEW - ARRAY OF ARCHIVE SELECTED INITILA LENGHT : ", this.request_selected.length);
     let count = 0;
@@ -1831,8 +1871,6 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
       } else {
         console.log('swal willDelete', willDelete)
       }
-
-
     })
   }
 

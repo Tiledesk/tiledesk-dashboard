@@ -104,7 +104,9 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
     // Right sidebar width on resize
     // ------------------------------
     const rightSidebar = <HTMLElement>document.querySelector(`.right-card`);
-    this.rightSidebarWidth = rightSidebar.offsetWidth
+    if (rightSidebar) {
+      this.rightSidebarWidth = rightSidebar.offsetWidth
+    }
     // console.log(`:-D CONTACT DETAILS - ATTRIBUTES onResize attributeValueElem offsetWidth:`, this.rightSidebarWidth);
   }
 

@@ -314,12 +314,9 @@ export class RealtimeComponent implements OnInit {
       }
       console.log('!!! ANALYTICS ALL REQUESTS X DEPT - ARRAY OF DEPTS IDs: ', project_depts_id_array);
 
-
       // this.subscription = this.requestsService.allRequestsList_bs.subscribe((global_requests) => {
       this.subscription = this.wsRequestsService.wsRequestsList$.subscribe((global_requests) => {
-
         // console.log('!!! ANALYTICS ALL REQUESTS X DEPT - !!!!! SUBSCRIPTION TO ALL-THE-REQUESTS-LIST-BS ', global_requests);
-
         const requests_depts_id_array = []
         if (global_requests) {
           global_requests.forEach(g_r => {
@@ -327,11 +324,9 @@ export class RealtimeComponent implements OnInit {
             // if (g_r.attributes) {
             //   requests_depts_id_array.push(g_r.attributes.departmentId)
             // }
-            if (g_r.snapshot.department) { 
-
-              requests_depts_id_array.push(g_r.snapshot.department._id);
+            if (g_r.department) { 
+              requests_depts_id_array.push(g_r.department._id);
             }
-
           });
         }
 

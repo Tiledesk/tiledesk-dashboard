@@ -272,11 +272,12 @@ export class WsRequestsService implements OnDestroy {
 
                 console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-CREATE - DATA attributes ", data.attributes);
 
-                console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-CREATE - DATA attributes requester_id ", data.attributes.requester_id);
-                console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-CREATE - DATA attributes userEmail ", data.attributes.userEmail);
-                console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-CREATE - DATA attributes userFullname ", data.attributes.userFullname);
+                if (data['attributes'] && data['attributes'] !== undefined) {
+                  
+                  // console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-CREATE - DATA attributes requester_id ", data.attributes.requester_id);
+                  // console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-CREATE - DATA attributes userEmail ", data.attributes.userEmail);
+                  // console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-CREATE - DATA attributes userFullname ", data.attributes.userFullname);
 
-                if (data['attributes']) {
                   if (data['attributes']['userFullname'] && data['attributes']['userEmail'] && data['attributes']['requester_id']) {
                     data.lead = { 'fullname': data['attributes']['userFullname'], 'email': data['attributes']['userEmail'], 'lead_id': data['attributes']['requester_id'] }
                   }
@@ -286,6 +287,7 @@ export class WsRequestsService implements OnDestroy {
                 } else if (data.lead) {
                   data.lead = data.lead;
                 }
+                
               }
 
               // ----------------------------------

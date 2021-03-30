@@ -108,11 +108,8 @@ export class WsSharedComponent implements OnInit {
   }
 
 
-
-
-
   // -----------------------------------------------------------------------------------------------------
-  // @ Create the requester avatar
+  // @ Create the requester avatar - Richiamato da ws-request-msgs.components.ts
   // -----------------------------------------------------------------------------------------------------
   createRequesterAvatar(lead) {
     if (lead && lead.fullname) {
@@ -131,7 +128,6 @@ export class WsSharedComponent implements OnInit {
   // -----------------------------------------------------------------------------------------------------
   destructureAttributes(attributes: any) {
     if (attributes) {
-
       /**
        * attributes > userFullname
        */
@@ -196,7 +192,6 @@ export class WsSharedComponent implements OnInit {
 
 
   doParticipatingAgentsArray(participants, first_text, storageBucket) {
-
     console.log('STORAGE-BUCKET Users service  Ws SHARED ', storageBucket);
     console.log('!! Ws SHARED »»»»»»» doParticipatingAgentsArray - first_text ', first_text, ' participants', participants, ' storageBucket', storageBucket);
 
@@ -266,7 +261,7 @@ export class WsSharedComponent implements OnInit {
           this.usersService.getProjectUserById(participantid)
             .subscribe((projectuser) => {
               console.log('!! Ws SHARED »»»»»»» USER IS NOT IN STORAGE GET PROJECT-USER BY ID - RES', projectuser);
-              const user:any = projectuser[0].id_user;
+              const user: any = projectuser[0].id_user;
               console.log('!! Ws SHARED »»»»»»» USER IS NOT IN STORAGE GET PROJECT-USER BY ID - RES > user ', user);
 
               const imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + storageBucket + "/o/profiles%2F" + participantid + "%2Fphoto.jpg?alt=media"
@@ -280,13 +275,9 @@ export class WsSharedComponent implements OnInit {
                 }
               });
 
-
               user['is_bot'] = false
-
               this.createAgentAvatar(user)
-
               newpartarray.push(user)
-
               this.usersLocalDbService.saveMembersInStorage(user['_id'], user);
 
             }, (error) => {
@@ -301,7 +292,6 @@ export class WsSharedComponent implements OnInit {
   }
 
   createAgentAvatar(agent) {
-
     let fullname = '';
     if (agent && agent.firstname && agent.lastname) {
 
@@ -359,14 +349,10 @@ export class WsSharedComponent implements OnInit {
             //   return member_id
 
           } else {
-
             this.getBotFromRemoteAndSaveInStorage(bot_id, participantid)
-
-
           }
 
         } else {
-
           const user = this.usersLocalDbService.getMemberFromStorage(participantid);
           if (user) {
             console.log('!! Ws SHARED »»»»»»» createFullParticipacipantsArray participants - user get from storage ', user);
@@ -394,26 +380,6 @@ export class WsSharedComponent implements OnInit {
                 request['test'] = this.newParticipants
               })
 
-
-            // setTimeout(() => {
-
-
-            //   const user = this.usersLocalDbService.getMemberFromStorage(participantid);
-            //   if (user) {
-            //     console.log('!! Ws SHARED »»»»»»» createFullParticipacipantsArray participants - user get from storage ', user);
-
-            //     let lastnameInizial = ''
-            //     if (user.lastname) {
-            //       lastnameInizial = user['lastname'].charAt(0);
-            //     }
-
-            //     if (this.newParticipants.indexOf(participantid) === -1) {
-            //       this.newParticipants.push([{ '_id': participantid, 'name': user.firstname, 'lastname': lastnameInizial, 'botType': '' }])
-            //     }
-            //   }
-            // }, 100);
-
-            // this.getProjectuserByIdAndSaveInStorage(participantid);
           }
         }
 
@@ -447,7 +413,6 @@ export class WsSharedComponent implements OnInit {
   getProjectuserByIdAndSaveInStorage(request, userid) {
     // DONE -> WORKS NK-TO-TEST - da cambiare - vedi commento nel servizio
     //  this.usersService.getUsersById("5e3d47b485aa8a0017012485")
-
 
     this.usersService.getProjectUserById(userid)
       .subscribe((projectuser) => {
@@ -489,13 +454,8 @@ export class WsSharedComponent implements OnInit {
     // return newUser
   }
 
-
-
-
-
-
   currentUserIdIsInParticipants(participants: any, currentUserID: string, request_id): boolean {
-    console.log('!! Ws SHARED »»»»»»» currentUserIdIsInParticipants participants ', participants, ' currentUserID ',currentUserID) 
+    console.log('!! Ws SHARED »»»»»»» currentUserIdIsInParticipants participants ', participants, ' currentUserID ', currentUserID)
     let currentUserIsJoined = false
     participants.forEach((participantID: string) => {
 
@@ -550,7 +510,7 @@ export class WsSharedComponent implements OnInit {
 
             } else {
 
-              this.participantsInRequests.push({ '_id': participant, 'firstname': participant + " (bot)"});
+              this.participantsInRequests.push({ '_id': participant, 'firstname': participant + " (bot)" });
               this.botAgentsIdArray.push(participant);
             }
 
@@ -572,8 +532,6 @@ export class WsSharedComponent implements OnInit {
               this.humanAgentsIdArray.push(participant);
               // this._getProjectUserByUserId(participant) 
             }
-
-
           }
         }
       });
@@ -607,11 +565,10 @@ export class WsSharedComponent implements OnInit {
 
 
   // -----------------------------------------------------------------------------------------------------
-  // @ departments in Requests & Count of depts in requests
+  // @ departments in Requests & Count of depts in requests - called by ws-requests-list.component.ts
   // -----------------------------------------------------------------------------------------------------
-
   /**
-   * Count of depts in requests !! no more get from request attributes but from department
+   * Count of depts in requests !! no more get from request attributes but from dept
    * 
    * @param requests_array 
    */
@@ -659,12 +616,10 @@ export class WsSharedComponent implements OnInit {
     // console.log('REQUESTS-LIST COMP - DEPTS ID ARRAY NK', deptsIDs);
     // console.log('REQUESTS-LIST COMP - DEPTS NAME ARRAY NK', deptsNames)
 
-    /**
-     * *********************************************************************
-     * ************************* REMOVE DUPLICATE **************************
-     * *********************************************************************
-     * */
 
+    // ---------------------------------------------------------------------
+    //  REMOVE DUPLICATE from depts_array
+    // ---------------------------------------------------------------------
     /**
      * USING DEPT ID  */
     this.depts_array_noduplicate = this.removeDuplicates(depts_array, '_id');
