@@ -1891,7 +1891,7 @@
 	"RemovePhoto": "Entferne Bild",
 	"OrSelectAnExistingOneWithNoAssociatedBot": "oder wählen Sie einen vorhandenen ohne zugeordneten Bot aus",
 	"BotHasBeenAssociatedWithDepartment": " Der bot {{bot_name}} wurde der Abteilung {{dept_name}} zugeordnet",
-	"decodedJWT": "Entschlüsselt JWT"
+	"decodedJWT": "Info-Zertifikat"
 	
 
 }
