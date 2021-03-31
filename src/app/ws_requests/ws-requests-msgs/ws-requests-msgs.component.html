@@ -488,7 +488,10 @@
                 <!-- @ RIGHT SIDEBAR - CONTACT IF CHAT PANEL MODE IS TRUE -->
                 <!-- ----------------------------------------------------------------------------- -->
                 <div class="right-sidebar-header"
-                  [ngClass]="{'right-sidebar-header-with-contact' : CHAT_PANEL_MODE === true,'right-sidebar-header-with-request': CHAT_PANEL_MODE === false}">
+                  [ngClass]="{
+                    'right-sidebar-header-with-contact' : CHAT_PANEL_MODE === true,
+                  'right-sidebar-header-with-request': CHAT_PANEL_MODE === false, 
+                  'right-sidebar-header-border-bottom': !request?.attributes?.decoded_jwt && !REQUESTER_IS_VERIFIED}">
 
                   <div (click)="goToContactDetailsInNewTab()" class="contact-in-right-sidebar"
                     [ngClass]="{'visible-if-chat-panel-mode' : CHAT_PANEL_MODE === true}" style="cursor: pointer;">
@@ -937,6 +940,68 @@
                     </p>
                   </div>
                 </div> -->
+
+                    <!-- ------------------------------------------------------ -->
+                <!-- @ Attributes decoded JWT accordion -->
+                <!-- ------------------------------------------------------ -->
+                <div *ngIf="request?.attributes?.decoded_jwt && REQUESTER_IS_VERIFIED" class="row">
+                  <div class="attributes-accordion-wpr" class="col-sm-12"
+                    style="padding-left: 0px; padding-right: 0px;border-bottom: 1px solid #eeeeee; border-top: 1px solid #eeeeee; margin-top: -18px;">
+                    <p class="row-header  attributes-decoded-jwt-accordion" (click)="openAttributesDecodedJWTAccordion()"
+                      style="padding-left: 11px; padding-right: 15px;font-size: 14px;">
+                      <i class="material-icons" style="vertical-align: middle"> gpp_good  </i> 
+                      <span style="vertical-align: middle">
+                        {{ "decodedJWT" | translate }}
+                      </span>
+                    </p>
+                    <!-- ------------------------------------------------------ -->
+                    <!-- @ Attributes decoded JWT panel -->
+                    <!-- ------------------------------------------------------ -->
+                    <!-- attributesDecodedJWTArray -->
+                    <div class="attributes-decoded-jwt-panel">
+                      <div *ngFor="let attribute of  attributesDecodedJWTArrayMerged; let i = index">
+                        <div class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
+
+                          <div class="row">
+                            <div class="col-xs-10" style="padding-right: 1px;padding-bottom: 5px;">
+                              <div *ngIf="attribute?.decodedJWTType" class="ws_requets_msgs__attribute" style="text-transform: uppercase;font-weight: 600;
+                              font-size: 11px;"> Attributes </div>
+                              <div style="float: left; margin-right: 4px;" class="ws_requets_msgs__attributes" [ngClass]="{'decoded-jwt-attributes': attribute?.decodedJWTType}">
+                                {{attribute?.attributeName }}:
+                              </div>
+
+                              <div aria-expanded="false" [id]="attribute?.attributeName +'_value'"
+                                class="attribute attribute_cutted_text">
+                                {{attribute?.attributeValue }}
+                              </div>
+
+                            </div>
+                            <!-- [id]="attribute?.attributeName +'_arrow_icon'" -->
+                            <!-- [ngClass]="{'down' : attributeFullText === true}" -->
+                            <!-- white-space: nowrap;width: 1%; -->
+                            <div *ngIf="attribute?.attributeValueL + 180 > rightSidebarWidth" class="col-xs-2"
+                              style="text-align: right;">
+                              <i [id]="attribute?.attributeName +'_arrow_icon'" class="material-icons rotate"
+                                style="cursor: pointer; color: #039be5; font-size:18px;"
+                                (click)="toggleShowAllString(attribute?.attributeName +'_value', attribute?.attributeName +'_arrow_icon', 'isActive_' + i)">
+                                keyboard_arrow_down
+                              </i>
+
+                            </div>
+                          </div>
+
+
+                          <!--   <div class="debug_div">
+                                L : {{attribute?.attributeValueL}} <br>
+                                L + 180 : {{attribute?.attributeValueL + 180}} <br>
+                                SB WIDTH : {{rightSidebarWidth}} 
+                              </div> -->
+
+                        </div>
+                      </div>
+                    </div> 
+                  </div>
+                </div>  <!-- ./ end attributes decoded JWT accordion-->
 
 
                 <!-- --------------------------------------------------------------------- -->
@@ -1511,7 +1576,7 @@
                 <!-- <div class="card right-card" style="padding-top:5px; padding-bottom:5px; margin-top: 5px;margin-bottom: 5px;">
                 <div class="card-content" style="padding-top: 5px;padding-bottom: 5px;"> -->
                 <div class="row">
-                  <div class="col-sm-12" style="border-bottom: 1px solid #dadde1; border-top: 1px solid #dadde1;">
+                  <div class="col-sm-12" style="border-bottom: 1px solid #eeeeee; border-top: 1px solid #eeeeee;">
                     <p class="row-header">
                       <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
                       <span style="vertical-align: middle">
@@ -1590,7 +1655,7 @@
                 <!-- <div class="card right-card" style="padding-top:5px; padding-bottom:5px; margin-top: 5px;margin-bottom: 5px;">
                 <div class="card-content" style="padding-top: 5px;padding-bottom: 5px;"> -->
                 <div *ngIf="isVisibleLBS === true" class="row">
-                  <div class="col-sm-12" style="border-bottom: 1px solid #dadde1;">
+                  <div class="col-sm-12" style="border-bottom: 1px solid #eeeeee;">
                     <p class="row-header">
                       <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
                       <span style="vertical-align: middle">
@@ -1718,7 +1783,7 @@
                 <!--  ----------------------------------------------------------------------------- -->
                 <div class="row">
                   <div class="col-sm-12"
-                    style="padding-left: 0px; padding-right: 0px; border-bottom: 1px solid #dadde1;">
+                    style="padding-left: 0px; padding-right: 0px; border-bottom: 1px solid #eeeeee;">
                     <p class="row-header accordion" (click)="openNotesAccordion()"
                       style="padding-left:15px; padding-right:15px; font-size: 14px;">
 
@@ -1991,7 +2056,7 @@
                 <!-- <div class="card right-card" style="padding-top:5px; padding-bottom:5px; margin-top: 5px;margin-bottom: 5px;">
                 <div class="card-content" style="padding-top: 5px;padding-bottom: 5px;"> -->
                 <div class="row" style="">
-                  <div class="col-sm-12" style="border-bottom: 1px solid #dadde1;">
+                  <div class="col-sm-12" style="border-bottom: 1px solid #eeeeee;">
                     <p class="row-header" style="">
                       <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
                       <span style="vertical-align: middle">
@@ -2059,7 +2124,7 @@
                 <!--  @ Create Jira issue -->
                 <!--  ---------------------------------------------------------------- -->
                 <div *ngIf="DISPLAY_BTN_CREATE_JIRA_ISSUE" class="row">
-                  <div class="col-sm-12" style="border-bottom: 1px solid #dadde1; min-height: 148px;">
+                  <div class="col-sm-12" style="border-bottom: 1px solid #eeeeee; min-height: 148px;">
                     <p class="row-header">
 
                       <span style="vertical-align: middle">

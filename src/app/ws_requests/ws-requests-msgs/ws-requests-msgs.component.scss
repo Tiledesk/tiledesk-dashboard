@@ -1096,6 +1096,10 @@ and also iPads specifically.
   font-family: "Google Sans", sans-serif !important;
 }
 
+.decoded-jwt-attributes {
+  margin-left: 15px;
+}
+
 // start attribute 'accordion' style
 .attribute_cutted_text {
   width: calc(100% - 120px);
@@ -1954,8 +1958,11 @@ and also iPads specifically.
 // }
 
 .right-sidebar-header {
-  border-bottom: 1px solid #eeeeee;
+  // border-bottom: 1px solid #eeeeee;
   margin-bottom: 0px;
+}
+.right-sidebar-header-border-bottom {
+  border-bottom: 1px solid #eeeeee;
 }
 
 .right-sidebar-header-with-contact {

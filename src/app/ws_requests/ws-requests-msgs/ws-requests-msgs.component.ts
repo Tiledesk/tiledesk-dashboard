@@ -147,6 +147,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   attributesArray: Array<any>;
   attributesDecodedJWTArray: Array<any>
+  attributesDecodedJWTAttributesArray: Array<any>
+  attributesDecodedJWTArrayMerged: Array<any>
   rightSidebarWidth: number;
   tag: any;
   tagcolor: any;
@@ -1049,9 +1051,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
               let entries = { 'attributeName': key, 'attributeValue': _value, 'attributeValueL': totalLength };
 
-              if (key !== 'decoded_jwt') {
-                this.attributesArray.push(entries)
-              }
+              // if (key !== 'decoded_jwt') {
+              this.attributesArray.push(entries)
+              // }
             }
             console.log(':-D Ws-REQUESTS-Msgs - getWsRequestById attributesArray: ', this.attributesArray);
             // --------------------------------------------------------------------------------------------------------------
@@ -1106,8 +1108,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           if (this.request.attributes) {
             if (this.request.attributes.decoded_jwt) {
               console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT ', this.request.attributes.decoded_jwt);
-
-
               this.attributesDecodedJWTArray = []
               for (let [key, value] of Object.entries(this.request.attributes.decoded_jwt)) {
 
@@ -1121,6 +1121,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
                 } else {
                   _value = value
                 }
+
+
 
                 // https://stackoverflow.com/questions/50463738/how-to-find-width-of-each-character-in-pixels-using-javascript
                 let letterLength = {};
@@ -1149,16 +1151,85 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
                   }
                 }
                 // console.log(':-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES value LENGHT ', _value + " totalLength : " + totalLength)
+                if (key !== 'attributes') {
+                  let entries = { 'attributeName': key, 'attributeValue': _value, 'attributeValueL': totalLength };
 
-                let entries = { 'attributeName': key, 'attributeValue': _value, 'attributeValueL': totalLength };
 
-                this.attributesDecodedJWTArray.push(entries)
+                  this.attributesDecodedJWTArray.push(entries)
+                }
               }
               console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT - attributesDecodedJWTArray: ', this.attributesDecodedJWTArray);
               // --------------------------------------------------------------------------------------------------------------
             } else {
 
               console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT IS UNDEFINED ');
+            }
+          } else {
+            console.log('WS-REQUESTS-MSGS - ATTRIBUTES IS UNDEFINED (in  decoded_jwt)');
+          }
+
+          // ---------------------------------------------------------
+          // Attributes DECODED JWT Attributes
+          // ---------------------------------------------------------
+          if (this.request.attributes) {
+            if (this.request.attributes.decoded_jwt && this.request.attributes.decoded_jwt.attributes) {
+              console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT ATTRIBUTES', this.request.attributes.decoded_jwt.attributes);
+
+              this.attributesDecodedJWTAttributesArray = []
+              for (let [key, value] of Object.entries(this.request.attributes.decoded_jwt.attributes)) {
+
+                console.log(`WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT ATTRIBUTES -key : ${key} - value ${value}`);
+
+                let _value: any;
+                if (typeof value === 'object' && value !== null) {
+
+                  // console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES value is an object :`, JSON.stringify(value));
+                  _value = JSON.stringify(value)
+                } else {
+                  _value = value
+                }
+
+                // https://stackoverflow.com/questions/50463738/how-to-find-width-of-each-character-in-pixels-using-javascript
+                let letterLength = {};
+                let letters = ["", " ", " ?", "= ", " -", " :", " _", " ,", " ", " ", " ", "(", ")", "}", "{", "\"", " ", "/", ".", "a", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+
+                for (let letter of letters) {
+                  let span = document.createElement('span');
+                  span.append(document.createTextNode(letter));
+                  span.style.display = "inline-block";
+                  document.body.append(span);
+                  letterLength[letter] = span.offsetWidth;
+                  span.remove();
+                }
+                let totalLength = 0;
+
+                for (let i = 0; i < _value.length; i++) {
+                  console.log(':-D Ws-REQUESTS-Msgs - getWsRequestById _value[i]', _value[i] + ": " + letterLength[_value[i]])
+                }
+
+                for (let i = 0; i < _value.length; i++) {
+                  if (letterLength[_value[i]] !== undefined) {
+                    totalLength += letterLength[_value[i]];
+                  } else {
+                    // if the letter not is in dictionary letters letterLength[_value[i]] is undefined so add the witdh of the 'S' letter (8px)
+                    totalLength += letterLength['S'];
+                  }
+                }
+                // console.log(':-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES value LENGHT ', _value + " totalLength : " + totalLength)
+
+                let entries = { 'attributeName': key, 'attributeValue': _value, 'decodedJWTType': 'Attributes', 'attributeValueL': totalLength };
+
+                this.attributesDecodedJWTAttributesArray.push(entries)
+              }
+              console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT  ATTRIBUTES - attributesDecodedJWTAttributesArray: ', this.attributesDecodedJWTAttributesArray);
+
+              this.attributesDecodedJWTArrayMerged = [].concat(this.attributesDecodedJWTArray, this.attributesDecodedJWTAttributesArray);
+
+              console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT  ATTRIBUTES - attributesDecodedJWTArrayMerged: ', this.attributesDecodedJWTArrayMerged);
+              // --------------------------------------------------------------------------------------------------------------
+            } else {
+
+              console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT  ATTRIBUTES IS UNDEFINED ');
             }
           } else {
             console.log('WS-REQUESTS-MSGS - ATTRIBUTES IS UNDEFINED (in  decoded_jwt)');
