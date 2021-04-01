@@ -247,7 +247,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   // getActiveContacts() {
   //   this.contactsService.getLeadsActive().subscribe((activeleads: any) => {
   //     console.log('WS-REQUEST-LIST - GET ACTIVE LEADS RES ', activeleads)
-  
+
   //   });
   // }
 
@@ -988,17 +988,22 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
   hasmeInAgents(agents, wsrequest) {
     // console.log("% »»» WebSocketJs WF +++++ ws-requests--- list + hasmeInAgents agents", agents);
-    for (let j = 0; j < agents.length; j++) {
-      // console.log("% »»» WebSocketJs WF - WsRequestsList »»» »»» hasmeInAgents agent", agents[j]);
-      console.log("% »»» WebSocketJs WF +++++ ws-requests--- list + hasmeInAgents currentUserID 2 ", this.currentUserID);
-      // console.log("% »»» WebSocketJs WF - WsRequestsList id_user ", agents[j].id_user);
 
-      if (this.currentUserID === agents[j].id_user) {
-        return true
-        // console.log("% »»» WebSocketJs WF +++++ ws-requests--- list + hasmeInAgents in If", iAmThere, '(forEach) the request id ', wsrequest.request_id, ' status: ', wsrequest.status, ' agent: ', agents );
+    if (agents) {
+      for (let j = 0; j < agents.length; j++) {
+        // console.log("% »»» WebSocketJs WF - WsRequestsList »»» »»» hasmeInAgents agent", agents[j]);
+        console.log("WS-REQUESTS-LIST hasmeInAgents currentUserID 2 ", this.currentUserID);
+        // console.log("% »»» WebSocketJs WF - WsRequestsList id_user ", agents[j].id_user);
+
+        if (this.currentUserID === agents[j].id_user) {
+          return true
+          // console.log("% »»» WebSocketJs WF +++++ ws-requests--- list + hasmeInAgents in If", iAmThere, '(forEach) the request id ', wsrequest.request_id, ' status: ', wsrequest.status, ' agent: ', agents );
+        }
+        // console.log("% »»» WebSocketJs WF +++++ ws-requests--- list + hasmeInAgents", iAmThere, '(forEach) the request id ', wsrequest.request_id, ' status: ', wsrequest.status, ' agent: ', agents );
+        // return iAmThere
       }
-      // console.log("% »»» WebSocketJs WF +++++ ws-requests--- list + hasmeInAgents", iAmThere, '(forEach) the request id ', wsrequest.request_id, ' status: ', wsrequest.status, ' agent: ', agents );
-      // return iAmThere
+    } else {
+      console.log("WS-REQUESTS-LIST hasmeInAgents Oops!!!! AGENT THERE ARE NOT  ");
     }
   }
 
@@ -1507,13 +1512,13 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
           }
 
           // if (typeof request.lead === 'object' && request.lead !== null) {
-            if (request.lead && request.lead.fullname) {
-              request['requester_fullname_initial'] = avatarPlaceholder(request.lead.fullname);
-              request['requester_fullname_fillColour'] = getColorBck(request.lead.fullname)
-            } else {
-              request['requester_fullname_initial'] = 'N/A';
-              request['requester_fullname_fillColour'] = '#6264a7';
-            }
+          if (request.lead && request.lead.fullname) {
+            request['requester_fullname_initial'] = avatarPlaceholder(request.lead.fullname);
+            request['requester_fullname_fillColour'] = getColorBck(request.lead.fullname)
+          } else {
+            request['requester_fullname_initial'] = 'N/A';
+            request['requester_fullname_fillColour'] = '#6264a7';
+          }
           // } else {
           //   console.log('WS-REQUEST-LIST LEAD ',request.lead);
 

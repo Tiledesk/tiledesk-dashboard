@@ -889,13 +889,17 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
 
     hasmeInAgents(agents) {
-        for (let j = 0; j < agents.length; j++) {
-            console.log('NAVBAR hasmeInAgents currentUserId  ', this.currentUserId )
-            console.log('NAVBAR hasmeInAgents agent  ', agents[j].id_user )
-            if (this.currentUserId === agents[j].id_user) {
-                console.log('NAVBAR hasmeInAgents ' ) 
-                return true
+        if (agents) {
+            for (let j = 0; j < agents.length; j++) {
+                console.log('NAVBAR hasmeInAgents currentUserId  ', this.currentUserId)
+                console.log('NAVBAR hasmeInAgents agent  ', agents[j].id_user)
+                if (this.currentUserId === agents[j].id_user) {
+                    console.log('NAVBAR hasmeInAgents ')
+                    return true
+                }
             }
+        } else {
+            console.log('NAVBAR hasmeInAgents OOPS!!! AGENTS THERE ARE NOT ')
         }
     }
 
@@ -1079,7 +1083,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                             const url = '#/project/' + this.projectId + '/wsrequest/' + r.request_id + '/messages'
 
                             let contact_fullname = ''
-                              console.log('NABBAR -  currentUserIsInParticipants DATE DIFF (s) ', dateDiff);
+                            console.log('NABBAR -  currentUserIsInParticipants DATE DIFF (s) ', dateDiff);
                             if (r.lead && r.lead.fullname) {
 
                                 contact_fullname = r.lead.fullname
