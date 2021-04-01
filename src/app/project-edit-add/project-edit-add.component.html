@@ -26,7 +26,7 @@
         'border-from-center' : displayBtnLabelSeeYourRequets === false, 
         'li-active' : displayBtnLabelSeeYourRequets === true
       }" -->
-      <!-- , 'payment-is-disabled': USER_ROLE !== 'owner' -->
+  <!-- , 'payment-is-disabled': USER_ROLE !== 'owner' -->
   <li *ngIf="isVisiblePaymentTab" (click)="goToProjectSettings_Payments()" class="btn-with-border-effect"
     [ngClass]="{ 'li-active' : PROJECT_SETTINGS_PAYMENTS_ROUTE === true, 'border-from-center': PROJECT_SETTINGS_PAYMENTS_ROUTE === false}">
 
@@ -40,13 +40,13 @@
   </li>
 
   <!-- <li *ngIf="(isVisibleAdvancedTab && DISPLAY_ADVANCED_TAB === true) || (isUNIS === true)" -->
-  <li *ngIf="isVisibleAdvancedTab && USER_ROLE !== 'agent'"
-    (click)="goToProjectSettings_Advanced()" class="btn-with-border-effect"
+  <li *ngIf="isVisibleAdvancedTab && USER_ROLE !== 'agent'" (click)="goToProjectSettings_Advanced()"
+    class="btn-with-border-effect"
     [ngClass]="{ 'li-active' : PROJECT_SETTINGS_ADVANCED_ROUTE === true, 'border-from-center': PROJECT_SETTINGS_ADVANCED_ROUTE === false }">
 
     <!-- <a> {{ "ProjectEditPage.Advanced" | translate }}</a> -->
     <a> {{ "SmartAssign" | translate }}</a>
-   
+
   </li>
 
   <li *ngIf="isVisibleNotificationTab" (click)="goToProjectSettings_Notification()" class="btn-with-border-effect"
@@ -63,7 +63,7 @@
     <div class="row">
       <div class="col-md-12">
         <!-- min-height: 518px -->
-        <div class="card" style="min-height: 425px">
+        <div class="card card--no-border" style="min-height: 425px">
           <loading-spinner *ngIf="showSpinner"></loading-spinner>
 
           <div *ngIf="!showSpinner" class="card-content">
@@ -137,7 +137,7 @@
 
               <!-- Moved under Notification Tab -->
               <!-- TRANSCRIPT BY EMAIL -->
-              
+
               <!-- SECTION TITLE AND SUBTITLE -->
               <!-- <div class="row">
                   <div class="col-sm-12" style="">
@@ -149,8 +149,8 @@
                     </p>
                   </div>
                 </div> -->
-              
-              
+
+
               <!-- <div class="row">
                 <div class="col-md-12">
                   <h3 class="card_title__underlined" style="margin-top:30px">
@@ -161,12 +161,12 @@
                 </div>
                 <div class="col-md-12"> -->
 
-                  <!-- commentato -->
-                  <!-- <span style="display: block; margin-bottom: 8px; color: #687882; font-size:13px; font-weight: 400">
+              <!-- commentato -->
+              <!-- <span style="display: block; margin-bottom: 8px; color: #687882; font-size:13px; font-weight: 400">
                     {{ "ProjectEditPage.AutoSendTranscriptByEmail" | translate }}
                   </span> -->
 
-                  <!-- <div class="section-subtitle"> </div>
+              <!-- <div class="section-subtitle"> </div>
                 </div>
               </div> -->
 
@@ -756,14 +756,15 @@
                 </div>
 
                 <div class="row">
-                  <label class="col-xs-12 col-sm-2 custom-label custom-label-left" style="padding-top:7px">
+                  <!-- <label class="col-xs-12 col-sm-2 custom-label custom-label-left" style="padding-top:7px">
                     Shared Secret
-                  </label>
-                  <div class="col-xs-12 col-sm-10">
+                  </label> -->
+                  <!-- col-sm-10 -->
+                  <div class="col-xs-12">
 
                     <button (click)="openConfirmJwtSecretCreationModal()" class="btn btn-primary"
                       style="margin-top:5px; padding:6px 15px ">
-                      {{ "ProjectEditPage.Generate" | translate }}
+                      {{ "ProjectEditPage.GenerateSharedSecret" | translate }}
                     </button>
                   </div>
                 </div>
@@ -802,7 +803,7 @@
                       <span style="vertical-align: middle; display: inline-flex;">
                         {{ "ProjectEditPage.EnableWebhook" | translate }}.
                         <span class="link-to-widget-auth" (click)="goToWebhookDocs()">
-                            {{ 'Resourcepage.HereHow' | translate }}
+                          {{ 'Resourcepage.HereHow' | translate }}
                         </span>
                       </span>
                     </div>
@@ -810,13 +811,15 @@
                 </div>
 
                 <div class="row">
-                  <label class="col-xs-12 col-sm-2 custom-label custom-label-left" style="padding-top:7px">
+                  <!-- <label class="col-xs-12 col-sm-2 custom-label custom-label-left" style="padding-top:7px">
                     {{ "ProjectEditPage.GoToWebhookConsole" | translate }}
-                  </label>
-                  <div class="col-xs-12 col-sm-10">
+                  </label> -->
+                  <!-- col-sm-10 -->
+                  <div class="col-xs-12">
 
-                    <button (click)="goToWebhookPage()" class="btn btn-primary" style="margin-top:5px; padding:6px 15px ">
-                      {{ "ProjectEditPage.Webhook" | translate }}
+                    <button (click)="goToWebhookPage()" class="btn btn-primary"
+                      style="margin-top:5px; padding:6px 15px ">
+                      {{ "ProjectEditPage.ManageWebhook" | translate }}
                     </button>
                   </div>
                 </div>
@@ -832,15 +835,15 @@
             // -------------------------------------------------------- -->
             <span *ngIf="PROJECT_SETTINGS_ADVANCED_ROUTE">
 
-              <!-- 
-            // --------------------------------------------------------
-            // Chat limit
-            // -------------------------------------------------------- -->
+
+              <!-- -------------------------------------------------------- -->
+              <!-- Automatic Assignment -->
+              <!-- -------------------------------------------------------- -->
               <div class="row">
                 <div class="col-md-6">
                   <h3 class="card_title__underlined">
                     <span class="card_title__underline">
-                      {{ "ProjectEditPage.ChatLimit" | translate }}
+                      {{ "ProjectEditPage.AutomaticAssignment" | translate }}
                     </span>
                   </h3>
                 </div>
@@ -864,6 +867,56 @@
                 </div>
               </div>
 
+              <div class="input-wrapper" style="max-width: 992px;">
+                <div class="row">
+                  <div class="col-sm-8">
+                    <div
+                      style="background-color: #fff; border: 1px solid #e8f0f5;box-shadow: none;padding: 10px">
+                      <span style="display: flex;">
+                        <i style="vertical-align: middle; display: inline-flex; color:#00bcd4; margin-right: 3px;"
+                          class="material-icons">info
+                        </i>
+                        <span style="vertical-align: middle; display: inline-flex;">
+                          {{ "ProjectEditPage.IfYouActivateTheAutomaticAssignmentOption" | translate: tparams }}
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+              <!-- -------------------------------------------------------- -->
+              <!-- Chat limit -->
+              <!-- -------------------------------------------------------- -->
+              <div class="row">
+                <div class="col-md-12">
+                  <h3 class="card_title__underlined" style="margin-top: 30px;">
+                    <span class="card_title__underline">
+                      {{ "ProjectEditPage.ChatLimit" | translate }}
+                    </span>
+                  </h3>
+                </div>
+
+                <!-- <div class="col-md-6">
+                  <h3 class="card-title onoffswitch_container_first_line">
+
+                    <div class="onoffswitch">
+                      <input (change)="toggleChat_limit_on($event)" [checked]="chat_limit_on" type="checkbox"
+                        name="chat_limit_on_onoffswitch" class="onoffswitch-checkbox" id="chat_limit_on_onoffswitch">
+                      <label class="onoffswitch-label" for="chat_limit_on_onoffswitch">
+                        <span class="onoffswitch-inner"></span>
+                        <span class="onoffswitch-switch"></span>
+                      </label>
+                    </div>
+                  </h3>
+                </div> -->
+
+                <div class="col-md-12">
+                  <div class="section-subtitle"> </div>
+                </div>
+              </div>
+
               <div class="input-wrapper" style="max-width: 992px;"
                 [ngClass]="{'section-disabled' : chat_limit_on === false}">
                 <div class="row">
@@ -873,7 +926,7 @@
                       <i style="vertical-align: middle; display: inline-flex; color:#00bcd4" class="material-icons">info
                       </i>
                       <span style="vertical-align: middle; display: inline-flex;">
-                        {{ "ProjectEditPage.LimitChatsNumber" | translate  }}</span>
+                        {{ "ProjectEditPage.LimitChatsNumber" | translate }}</span>
                     </div>
                   </div>
                 </div>
@@ -906,11 +959,11 @@
 
                     <span
                       style="display: block; font-size: 12px; font-weight: 100;color: #7695a5;line-height: 1.2em;padding-top: 3px;">
-                      {{ "ProjectEditPage.ThisChatLimitWillAppliedToAllAgents" | translate  }}
+                      {{ "ProjectEditPage.ThisChatLimitWillAppliedToAllAgents" | translate }}
                     </span>
                     <span
                       style="display: block; font-size: 12px; font-weight: 100;color: #7695a5;line-height: 1.2em;padding-top: 3px; max-width: 415px;margin-top: 5px;">
-                      {{ "ProjectEditPage.YouCanSpecifyAgentsIndividualChatLimit" | translate  }}
+                      {{ "ProjectEditPage.YouCanSpecifyAgentsIndividualChatLimit" | translate }}
                     </span>
                   </div>
                 </div>
@@ -957,14 +1010,14 @@
                       <i style="vertical-align: middle; display: inline-flex; color:#00bcd4" class="material-icons">info
                       </i>
                       <span style="vertical-align: middle; display: inline-flex;">
-                        {{ "ProjectEditPage.ReassignChatIf" | translate  }}</span>
+                        {{ "ProjectEditPage.ReassignChatIf" | translate }}</span>
                     </div>
                   </div>
                 </div>
 
                 <div class="row">
                   <label class="col-xs-12 col-sm-2 custom-label custom-label-left" style="padding-top:0px">
-                    {{ "ProjectEditPage.ReassignmentTimeout" | translate  }}
+                    {{ "ProjectEditPage.ReassignmentTimeout" | translate }}
                   </label>
                   <div class="col-xs-12 col-sm-10">
 
@@ -990,7 +1043,7 @@
 
                       <span
                         style="display: block; font-size: 12px; font-weight: 100;color: #7695a5;line-height: 1.2em;padding-top: 3px;">
-                        {{ "ProjectEditPage.TimeWithNoResponse" | translate  }}
+                        {{ "ProjectEditPage.TimeWithNoResponse" | translate }}
                       </span>
 
                     </div>
@@ -1045,14 +1098,14 @@
                       <i style="vertical-align: middle; display: inline-flex; color:#00bcd4" class="material-icons">info
                       </i>
                       <span style="vertical-align: middle; display: inline-flex;">
-                        {{ "ProjectEditPage.SetAnAgentStatusToUnavailable" | translate  }}</span>
+                        {{ "ProjectEditPage.SetAnAgentStatusToUnavailable" | translate }}</span>
                     </div>
                   </div>
                 </div>
 
                 <div class="row">
                   <label class="col-xs-12 col-sm-2 custom-label custom-label-left" style="">
-                    {{ "ProjectEditPage.ChatsReassigned" | translate  }}
+                    {{ "ProjectEditPage.ChatsReassigned" | translate }}
                   </label>
                   <div class="col-xs-12 col-sm-10">
 
@@ -1079,7 +1132,7 @@
 
                       <span
                         style="display: block; font-size: 12px; font-weight: 100;color: #7695a5;line-height: 1.2em;padding-top: 3px;">
-                        {{ "ProjectEditPage.NumberOfChatsReassignedBefore" | translate  }}
+                        {{ "ProjectEditPage.NumberOfChatsReassignedBefore" | translate }}
                       </span>
                     </div>
                   </div>
@@ -1167,7 +1220,7 @@
 
               </div>
               <!-- END UNASSIGNED CONVERSATION -->
-              
+
               <!-- TRANSCRIPT BY EMAIL -->
               <div class="row" style="margin-top: 40px;">
                 <div class="col-md-6">
@@ -1198,16 +1251,16 @@
                 <div class="col-md-12">
                   <div class="section-subtitle"></div>
                   <p style="margin-top: -10px;">
-                    {{ "ProjectEditPage.AutoSendTranscriptByEmail" | translate  }}</p>
+                    {{ "ProjectEditPage.AutoSendTranscriptByEmail" | translate }}</p>
                 </div>
               </div>
 
               <!-- AUTO SEND TRANSCRIPT BY EMAIL BODY -->
               <div class="input-wrapper" style="max-width: 992px;">
-      
+
                 <div class="row">
                   <div class="col-xs-12 col-sm-10" style="margin-bottom: 12px;">
-                    
+
                     <span *ngIf="DISPLAY_ADVANCED_TAB === false">
                       <span
                         style="display: block;  font-size: 12px;   font-weight: 100;  color: #7695a5;  line-height: 1.2em;   padding-top: 3px;">
@@ -1217,14 +1270,14 @@
                       <span *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false">
                         <span style="color: #039be5; cursor:pointer; font-size: 12px; font-weight: 100;"
                           (click)="openModalSubsExpired()">
-                          {{ "Pricing.UpgradeYourPlan" | translate }} {{ 'Pricing.ToEnableAllFeatures' | translate  }}.
+                          {{ "Pricing.UpgradeYourPlan" | translate }} {{ 'Pricing.ToEnableAllFeatures' | translate }}.
                         </span>
                       </span>
 
                       <span *ngIf="prjct_profile_type !== 'payment'"
                         style="color: #039be5; cursor:pointer; font-size: 12px; font-weight: 400;"
                         (click)="goToPricing()">
-                        {{ "Pricing.UpgradeYourPlan" | translate }} {{ 'Pricing.ToEnableAllFeatures' | translate  }}.
+                        {{ "Pricing.UpgradeYourPlan" | translate }} {{ 'Pricing.ToEnableAllFeatures' | translate }}.
                       </span>
                     </span>
 
