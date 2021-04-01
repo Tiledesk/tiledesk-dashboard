@@ -939,8 +939,10 @@ and also iPads specifically.
 
 .chat-panel-mode-requester-verified {
   position: relative;
-  left: -89px !important;
-  top: -22px !important;
+  left: -83px !important;
+  top: -20px !important;
+  width: 22px;
+  height: 24px;
 }
 
 .requester-status-icon {
@@ -1506,6 +1508,28 @@ and also iPads specifically.
 /* 
  Attributes decoded JWT Accordion 
  ------------------------------------ */
+.attributes-jwt-decoded-accordion-wpr {
+  padding-left: 0px;
+  padding-right: 0px;
+  border-bottom: 1px solid #eeeeee;
+  border-top: 1px solid #eeeeee;
+  margin-top: -18px;
+}
+
+@media only screen and (max-width: 768px) {
+  .attributes-jwt-decoded-accordion-wpr {
+    margin-top: 0px;
+  }
+
+  .attributes-decoded-jwt-accordion:after {
+    margin-right: -25px;
+  }
+}
+
+.attributes-decoded-jwt-accordion-in-chat:after {
+  margin-right: 0px !important; 
+}
+
 .attributes-decoded-jwt-accordion {
   color: #444;
   cursor: pointer;
@@ -1517,6 +1541,8 @@ and also iPads specifically.
   font-size: 15px;
   transition: 0.4s;
 }
+
+
 
 .attributes-decoded-jwt-accordion:hover {
   background-color: #f7f8fc;
@@ -1958,11 +1984,11 @@ and also iPads specifically.
 // }
 
 .right-sidebar-header {
-  // border-bottom: 1px solid #eeeeee;
+  border-bottom: 1px solid #eeeeee;
   margin-bottom: 0px;
 }
-.right-sidebar-header-border-bottom {
-  border-bottom: 1px solid #eeeeee;
+.right-sidebar-header-no-border-bottom {
+  border-bottom: unset !important;
 }
 
 .right-sidebar-header-with-contact {
@@ -1995,6 +2021,10 @@ and also iPads specifically.
   height: 72px;
   margin-right: 8px;
   line-height: 54px;
+}
+
+._requester-avatar_as_title-in-chat {
+  margin-right: 2px;
 }
 
 .requester-status-icon-avatar_as_title-in-right-sidebar {
