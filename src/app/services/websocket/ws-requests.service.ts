@@ -327,9 +327,20 @@ export class WsRequestsService implements OnDestroy {
           }, function (data, notification) {
             // data['dept'] = self.getDeptObj(data.department)
             console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-UPDATE", data);
-            // this.wsRequestsList.push(data);
 
-            // self.addOrUpdateWsRequestsList(data);
+              // ----------------------------------
+              // @ Agents
+              // ----------------------------------
+              if (data.snapshot && data.snapshot.agents) {
+                console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-UPDATE - DATA snapshot agents ", data.snapshot.agents);
+                data.agents = data['snapshot']["agents"]
+              } else if (data.agents) {
+                data.agents = data.agents
+
+              }
+
+            
+            
             self.updateWsRequests(data)
 
 
