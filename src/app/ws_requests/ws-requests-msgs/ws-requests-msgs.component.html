@@ -483,15 +483,14 @@
             <div class="card-content" style="padding-top: 5px;padding-bottom: 5px;min-height: 510px;">
               <div *ngIf="!showSpinner" class="content-wrap">
 
-                 
+
                 <!-- ----------------------------------------------------------------------------- -->
                 <!-- @ RIGHT SIDEBAR - CONTACT IF CHAT PANEL MODE IS TRUE -->
                 <!-- ----------------------------------------------------------------------------- -->
-                <div class="right-sidebar-header"
-                  [ngClass]="{
+                <div class="right-sidebar-header" [ngClass]="{
                     'right-sidebar-header-with-contact' : CHAT_PANEL_MODE === true,
                   'right-sidebar-header-with-request': CHAT_PANEL_MODE === false, 
-                  'right-sidebar-header-border-bottom': !request?.attributes?.decoded_jwt && !REQUESTER_IS_VERIFIED}">
+                  'right-sidebar-header-no-border-bottom': request?.attributes?.decoded_jwt && REQUESTER_IS_VERIFIED}">
 
                   <div (click)="goToContactDetailsInNewTab()" class="contact-in-right-sidebar"
                     [ngClass]="{'visible-if-chat-panel-mode' : CHAT_PANEL_MODE === true}" style="cursor: pointer;">
@@ -499,7 +498,7 @@
                     <span class="requester-avatar-wrapper-in-right-sidebar">
                       <span class="_requester-avatar_as_title-in-right-sidebar"
                         [ngStyle]="{'background-color': fillColour }"
-                        [ngClass]="{'requester_fullname-undefined' : !request?.lead?.fullname}">
+                        [ngClass]="{'requester_fullname-undefined' : !request?.lead?.fullname, '_requester-avatar_as_title-in-chat': CHAT_PANEL_MODE === true}">
                         <span style="color: #ffffff"> {{ requester_fullname_initial }} </span>
                       </span>
                       <span *ngIf="REQUESTER_IS_VERIFIED === true" class="tooltipx">
@@ -941,15 +940,15 @@
                   </div>
                 </div> -->
 
-                    <!-- ------------------------------------------------------ -->
+                <!-- ------------------------------------------------------ -->
                 <!-- @ Attributes decoded JWT accordion -->
                 <!-- ------------------------------------------------------ -->
                 <div *ngIf="request?.attributes?.decoded_jwt && REQUESTER_IS_VERIFIED" class="row">
-                  <div class="attributes-accordion-wpr" class="col-sm-12"
-                    style="padding-left: 0px; padding-right: 0px;border-bottom: 1px solid #eeeeee; border-top: 1px solid #eeeeee; margin-top: -18px;">
-                    <p class="row-header  attributes-decoded-jwt-accordion" (click)="openAttributesDecodedJWTAccordion()"
+                  <div class="col-sm-12 attributes-jwt-decoded-accordion-wpr">
+                    <p class="row-header  attributes-decoded-jwt-accordion" [ngClass]="{'attributes-decoded-jwt-accordion-in-chat': CHAT_PANEL_MODE === true}"
+                      (click)="openAttributesDecodedJWTAccordion()"
                       style="padding-left: 11px; padding-right: 15px;font-size: 14px;">
-                      <i class="material-icons" style="vertical-align: middle"> gpp_good  </i> 
+                      <i class="material-icons" style="vertical-align: middle; color: #2C3E48"> gpp_good </i>
                       <span style="vertical-align: middle">
                         {{ "decodedJWT" | translate }}
                       </span>
@@ -966,7 +965,8 @@
                             <div class="col-xs-10" style="padding-right: 1px;padding-bottom: 5px;">
                               <div *ngIf="attribute?.decodedJWTType" class="ws_requets_msgs__attribute" style="text-transform: uppercase;font-weight: 600;
                               font-size: 11px;"> Attributes </div>
-                              <div style="float: left; margin-right: 4px;" class="ws_requets_msgs__attributes" [ngClass]="{'decoded-jwt-attributes': attribute?.decodedJWTType}">
+                              <div style="float: left; margin-right: 4px;" class="ws_requets_msgs__attributes"
+                                [ngClass]="{'decoded-jwt-attributes': attribute?.decodedJWTType}">
                                 {{attribute?.attributeName }}:
                               </div>
 
@@ -999,9 +999,9 @@
 
                         </div>
                       </div>
-                    </div> 
+                    </div>
                   </div>
-                </div>  <!-- ./ end attributes decoded JWT accordion-->
+                </div> <!-- ./ end attributes decoded JWT accordion-->
 
 
                 <!-- --------------------------------------------------------------------- -->
@@ -1021,7 +1021,7 @@
                           {{ project_name }}
                         </span>
                         <i (click)="goToProjectHomeInNewTab()" class="material-icons"
-                          style="vertical-align: middle; color: #394f5a;font-size:12px; cursor: pointer;">open_in_new</i>
+                          style="vertical-align: middle; color: #0f62ff;font-size:12px; cursor: pointer;">open_in_new</i>
 
                       </span>
                     </p>
@@ -1569,10 +1569,10 @@
                     </div> -->
 
 
-                 
+
                 <!-- ----------------------------------------------------------------------------- -->
                 <!-- Agents -->
-                <!-- ----------------------------------------------------------------------------- --> 
+                <!-- ----------------------------------------------------------------------------- -->
                 <!-- <div class="card right-card" style="padding-top:5px; padding-bottom:5px; margin-top: 5px;margin-bottom: 5px;">
                 <div class="card-content" style="padding-top: 5px;padding-bottom: 5px;"> -->
                 <div class="row">
@@ -1786,7 +1786,7 @@
                     style="padding-left: 0px; padding-right: 0px; border-bottom: 1px solid #eeeeee;">
                     <p class="row-header accordion" (click)="openNotesAccordion()"
                       style="padding-left:15px; padding-right:15px; font-size: 14px;">
-
+                      <i class="material-icons" style="vertical-align: middle; color: #2C3E48"> note_alt </i>
                       <span style="vertical-align: middle">
                         {{ "Notes.Notes" | translate }} ({{ notesArray?.length }})
                       </span>
@@ -1992,7 +1992,7 @@
                           </span>
                         </p>
 
-                              <!-- <p class="row-body" style="margin-bottom:0px; padding-bottom:0px">
+                        <!-- <p class="row-body" style="margin-bottom:0px; padding-bottom:0px">
                           <span style="color:#394f5a;"> id: </span>
                             {{ requester_id }}
                         </p> -->
@@ -2190,8 +2190,37 @@
                     style="padding-left: 0px; padding-right: 0px;">
                     <p class="row-header  attributes-accordion" (click)="openAttributesAccordion()"
                       style="padding-left: 15px; padding-right: 15px;font-size: 14px;">
-                      <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
-                      <span style="vertical-align: middle">
+
+                      <span>
+                        <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                          xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 18 18"
+                          style="enable-background:new 0 0 18 18; width: 24px; height: 24px;" xml:space="preserve">
+                          <style type="text/css">
+                            .st0_attributes_icon {
+                              fill: none;
+                            }
+
+                            .st1_attributes_icon {
+                              fill: #2C3E48;
+                            }
+                          </style>
+                          <g>
+                            <path class="st0_attributes_icon" d="M0,0h18v18H0V0z" />
+                          </g>
+                          <polygon points="31.3,2.1 29.7,2.1 29.7,0.5 34.2,-4 35.8,-2.4 " />
+                          <path
+                            d="M28.6-3.9l-0.8,0.8l-1.6-1.6L27-5.5c0.2-0.2,0.4-0.2,0.5,0l1.1,1.1C28.8-4.3,28.8-4.1,28.6-3.9z" />
+                          <g>
+                            <path class="st1_attributes_icon" d="M14.2,3H11C10.8,2.2,10,1.5,9,1.5S7.2,2.2,6.9,3H3.8C3,3,2.2,3.7,2.2,4.5V15c0,0.8,0.7,1.5,1.5,1.5h10.5
+		c0.8,0,1.5-0.7,1.5-1.5V4.5C15.8,3.7,15,3,14.2,3z M9,2.8c0.3,0,0.6,0.3,0.6,0.6S9.2,4,9,4S8.4,3.7,8.4,3.3C8.4,3,8.7,2.8,9,2.8z
+		 M12,9.8c0,0.1,0,0.1,0,0.2l0.9,0.7l-1.2,2.1l-1.1-0.5c-0.1,0.1-0.2,0.1-0.3,0.2l-0.1,1.2H7.8l-0.1-1.2c-0.1-0.1-0.2-0.1-0.3-0.2
+		l-1.1,0.5l-1.2-2.1L6,10C6,10,6,9.9,6,9.8c0-0.1,0-0.1,0-0.2L5.1,9l1.2-2.1l1.1,0.5c0.1-0.1,0.2-0.1,0.3-0.2L7.8,6h2.4l0.1,1.2
+		c0.1,0.1,0.2,0.1,0.3,0.2l1.1-0.5L12.9,9L12,9.7C12,9.7,12,9.8,12,9.8z" />
+                            <circle class="st1_attributes_icon" cx="9" cy="9.8" r="1.6" />
+                          </g>
+                        </svg>
+                      </span>
+                      <span style="position: relative;top: -6px;">
                         {{ "Attributes" | translate }}
                       </span>
                     </p>
@@ -2238,65 +2267,6 @@
                     </div>
                   </div>
                 </div> <!-- ./ end new attributes accordion -->
-
-                <!-- ------------------------------------------------------ -->
-                <!-- @ Attributes decoded JWT accordion -->
-                <!-- ------------------------------------------------------ -->
-                <div *ngIf="request?.attributes?.decoded_jwt" class="row">
-                  <div class="attributes-accordion-wpr" class="col-sm-12"
-                    style="padding-left: 0px; padding-right: 0px;">
-                    <p class="row-header  attributes-decoded-jwt-accordion" (click)="openAttributesDecodedJWTAccordion()"
-                      style="padding-left: 15px; padding-right: 15px;font-size: 14px;">
-                      <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
-                      <span style="vertical-align: middle">
-                        {{ "decodedJWT" | translate }}
-                      </span>
-                    </p>
-                    <!-- ------------------------------------------------------ -->
-                    <!-- @ Attributes decoded JWT panel -->
-                    <!-- ------------------------------------------------------ -->
-                    <div class="attributes-decoded-jwt-panel">
-                      <div *ngFor="let attribute of attributesDecodedJWTArray; let i = index">
-                        <div class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
-
-                          <div class="row">
-                            <div class="col-xs-10" style="padding-right: 1px;padding-bottom: 5px;">
-                              <div style="float: left; margin-right: 4px;" class="ws_requets_msgs__attributes">
-                                {{attribute?.attributeName }}:
-                              </div>
-
-                              <div aria-expanded="false" [id]="attribute?.attributeName +'_value'"
-                                class="attribute attribute_cutted_text">
-                                {{attribute?.attributeValue }}
-                              </div>
-
-                            </div>
-                            <!-- [id]="attribute?.attributeName +'_arrow_icon'" -->
-                            <!-- [ngClass]="{'down' : attributeFullText === true}" -->
-                            <!-- white-space: nowrap;width: 1%; -->
-                            <div *ngIf="attribute?.attributeValueL + 180 > rightSidebarWidth" class="col-xs-2"
-                              style="text-align: right;">
-                              <i [id]="attribute?.attributeName +'_arrow_icon'" class="material-icons rotate"
-                                style="cursor: pointer; color: #039be5; font-size:18px;"
-                                (click)="toggleShowAllString(attribute?.attributeName +'_value', attribute?.attributeName +'_arrow_icon', 'isActive_' + i)">
-                                keyboard_arrow_down
-                              </i>
-
-                            </div>
-                          </div>
-
-
-                          <!--   <div class="debug_div">
-                                L : {{attribute?.attributeValueL}} <br>
-                                L + 180 : {{attribute?.attributeValueL + 180}} <br>
-                                SB WIDTH : {{rightSidebarWidth}} 
-                              </div> -->
-
-                        </div>
-                      </div>
-                    </div> 
-                  </div>
-                </div>  <!-- ./ end attributes decoded JWT accordion-->
 
               </div>
 
