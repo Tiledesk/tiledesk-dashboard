@@ -1,6 +1,15 @@
 
 # tiledesk-dashboard
 
+### 2.1.44
+- Rename the accordion "Jwt Decoded" to "Trusted Info" in the right sidebar of the conversation detail page and move it to the top of the sidebar
+- Adds the attributes of the "decoded JWT" to the "Trusted Info" accordion
+- Adds icons to accordions in the right sidebar of the conversation detail page
+- Increase the size of the "verified contact" icon in the right sidebar of the conversation details when it is displayed in the chat
+- Adds a check on the existence of the agents property in the "hasmeInAgents" method
+- Truncates the project name in the navigation bar if it is too long
+- Adds, in Project Settings > "Smart Assign" tab, the ability to enable / disable automatic assignment in the Auto Assignment section, moving it from Chat Limit
+
 ### 2.1.43
 - Changes, in triggers, the ID and key of the "Number of available agents" condition
 - Adds, on the conversation detail page, an accordion to display the properties of Attributes > decoded JWT 
