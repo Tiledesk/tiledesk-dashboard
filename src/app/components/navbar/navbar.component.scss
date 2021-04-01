@@ -818,3 +818,10 @@ button.close.custom-hover:hover {
 .navbar-test-site-btn:hover {
   opacity: 0.6;
 }
+
+.project-dropdown {
+  max-width: 180px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
