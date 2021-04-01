@@ -28,6 +28,7 @@
               <div class="col-sm-10 col-md-10">
                 <h3 class="card_title__underlined">
                   <span class="card_title__underline">
+                    <span *ngIf="botType === 'native'" style="text-transform:capitalize"> Resolution </span>
                     {{ "BotDetails" | translate }}
                   </span>
                 </h3>
@@ -446,8 +447,11 @@
             <div class="row">
               <div class="col-sm-10 col-md-12">
                 <h3 class="card_title__underlined">
-                  <span class="card_title__underline">
+                  <span *ngIf="botType !== 'native'" class="card_title__underline">
                     {{ "BotsAddEditPage.BotAttributes" | translate }}
+                  </span>
+                  <span *ngIf="botType === 'native'" class="card_title__underline">
+                    {{ "Departments" | translate }}
                   </span>
                 </h3>
               </div>
@@ -461,21 +465,21 @@
               {{ "BotsAddEditPage.BotAttributes" | translate }}
             </h4> -->
 
-            <p class="title-attribute" style="margin-bottom: 3px; padding-top: 5px;">
+            <p *ngIf="botType !== 'native'" class="title-attribute" style="margin-bottom: 3px; padding-top: 5px;">
               {{ "BotsAddEditPage.Type" | translate }}
             </p>
 
-            <p class="attribute">
-              <span *ngIf="botType !== 'native'" style="text-transform:capitalize"> {{ botType }} </span>
-              <span *ngIf="botType === 'native'" style="text-transform:capitalize"> Resolution </span>
+            <p *ngIf="botType !== 'native'" class="attribute">
+              <span style="text-transform:capitalize"> {{ botType }} </span>
+              <!-- <span *ngIf="botType === 'native'" style="text-transform:capitalize"> Resolution </span> -->
               <span class="identity-bot-description" *ngIf="botType === 'identity'">
                 {{ 'AnIdentityBotRepresents' | translate }} </span>
             </p>
 
-            <p class="title-attribute" style="margin-bottom: 3px; padding-top: 5px;">
+            <p *ngIf="botType !== 'native'" class="title-attribute" style="margin-bottom: 3px; padding-top: 5px;">
               {{ "BotsAddEditPage.BotID" | translate }}
             </p>
-            <p class="attribute">
+            <p *ngIf="botType !== 'native'" class="attribute">
               {{ faqKb_id }}
             </p>
 
@@ -488,29 +492,50 @@
               {{ faq_kb_remoteKey }}
             </p> -->
 
-            <p class="title-attribute" style="margin-bottom: 3px; padding-top: 0px;">
+            <p *ngIf="botType !== 'native'" class="title-attribute" style="margin-bottom: 3px; padding-top: 0px;">
               {{ "BotsAddEditPage.CreationDate" | translate }}
             </p>
-            <p class="attribute" style="margin-bottom: 9px">
+            <p *ngIf="botType !== 'native'" class="attribute" style="margin-bottom: 9px">
               {{ faqKb_created_at | date: 'd/M/y'}}
             </p>
 
 
             <span *ngIf="isVisibleDEP === true">
+              <!-- USE CASE: THE BOT IS ASSOCIATED -->
               <span *ngIf="botType !== 'identity'">
-                <p class="title-attribute" style="margin-bottom: 3px; padding-top: 0px;">
+                <p *ngIf="depts_without_bot_array?.length === 0" class="title-attribute"
+                  style="margin-bottom: 3px; padding-top: 0px;">
                   {{ "DepartmentsThisBotIsAssociatedWith" | translate }}
                 </p>
+                <div *ngIf="depts_without_bot_array?.length === 0">
+                  <div *ngFor="let dept of DEPTS_BOT_IS_ASSOCIATED_WITH_ARRAY" style="margin-bottom: 8px;">
+                    <span class="dept-avatar-wrapper" (click)="goToEditAddPage_EDIT_DEPT(dept?._id, dept?.default)">
 
+                      <span class="dept-avatar-in-bot-dtl"
+                        [ngStyle]="{'background-color': dept?.dept_name_fillcolour }">
+                        {{ dept?.dept_name_initial }}
+                      </span>
+                      <span class="dept-name-in-bot-dtl">
+                        {{ dept?.name }}
+                      </span>
+                    </span>
+                  </div>
+                </div>
 
-                <p class="attribute" *ngIf="COUNT_DEPTS_BOT_IS_ASSOCIATED_WITH === 0">
-                  <span style="font-weight: 200;"> {{ 'NoDeptsAreAssociatedWithThisBot' | translate}} </span>
+                <span *ngIf="depts_without_bot_array?.length === 0" style="display: block; color: #0f62ff; cursor:pointer" (click)="goToRoutingAndDepts()">
+                  {{'ManageTheBotIn' | translate}} {{'RoutingAndDepts' | translate}}
+                </span>
 
-                  <span style="display: block; color: #0f62ff; cursor:pointer" (click)="goToRoutingAndDepts()">
+                <p class="title-attribute" *ngIf="COUNT_DEPTS_BOT_IS_ASSOCIATED_WITH === 0">
+                  <span style="margin-bottom: 3px; padding-top: 0px;"> {{ 'NoDeptsAreAssociatedWithThisBot' | translate}} </span>
+
+                  <span style="display: block; color: #0f62ff; cursor:pointer; font-weight: 200;
+                  margin-top: 5px;" (click)="goToRoutingAndDepts()">
                     {{'ManageTheBotIn' | translate}} {{'RoutingAndDepts' | translate}}
                   </span>
 
-                  <span *ngIf="depts_without_bot_array.length > 0" style="display: block;margin-top: 6px;font-weight: 200;">
+                  <span *ngIf="depts_without_bot_array.length > 0"
+                    style="display: block;margin-top: 0px;margin-bottom: 2px;font-weight: 200;">
                     {{'OrSelectAnExistingOneWithNoAssociatedBot' | translate}}
                   </span>
 
@@ -522,17 +547,7 @@
                   </span>
                 </p>
 
-                <div *ngFor="let dept of DEPTS_BOT_IS_ASSOCIATED_WITH_ARRAY" style="margin-bottom: 8px;">
-                  <span class="dept-avatar-wrapper" (click)="goToEditAddPage_EDIT_DEPT(dept?._id, dept?.default)">
-
-                    <span class="dept-avatar-in-bot-dtl" [ngStyle]="{'background-color': dept?.dept_name_fillcolour }">
-                      {{ dept?.dept_name_initial }}
-                    </span>
-                    <span class="dept-name-in-bot-dtl">
-                      {{ dept?.name }}
-                    </span>
-                  </span>
-                </div>
+                
               </span>
             </span>
           </div>
