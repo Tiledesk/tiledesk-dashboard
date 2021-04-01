@@ -95,7 +95,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
   projectName: string;
   projectNameFirstLetter: any;
 
- 
+
   deptsArrayBuildFromRequests: any;
 
   filter: any[] = [{ 'deptId': null }, { 'agentId': null }];
@@ -169,7 +169,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
     // this.getWsRequests$();
 
     // this.getProjectUserRole();
- 
+
 
     // this.for1();
     // this.getRequestsTotalCount()  
@@ -179,7 +179,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
     // const perfs = new PerfectScrollbar(teamContentEl);
     // this.selectedDeptId = '';
     // this.selectedAgentId = '';
-    
+
 
     // this.getChatUrl();
     // this.getTestSiteUrl();
@@ -526,18 +526,19 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
   }
 
   hasmeInAgents(agents, wsrequest) {
+    if (agents) {
+      for (let j = 0; j < agents.length; j++) {
+        // console.log("% »»» WebSocketJs WF - WsRequestsList »»» »»» hasmeInAgents agent", agents[j]);
+        console.log("WS-REQUESTS-UNSERVED-X-PANEL -  hasmeInAgents currentUserID 2 ", this.currentUserID);
+        // console.log("% »»» WebSocketJs WF - WsRequestsList id_user ", agents[j].id_user);
 
-    for (let j = 0; j < agents.length; j++) {
-      // console.log("% »»» WebSocketJs WF - WsRequestsList »»» »»» hasmeInAgents agent", agents[j]);
-      console.log("WS-REQUESTS-UNSERVED-X-PANEL -  hasmeInAgents currentUserID 2 ", this.currentUserID);
-      // console.log("% »»» WebSocketJs WF - WsRequestsList id_user ", agents[j].id_user);
-
-      if (this.currentUserID === agents[j].id_user) {
-        return true
-        // console.log("% »»» WebSocketJs WF +++++ ws-requests--- list + hasmeInAgents in If", iAmThere, '(forEach) the request id ', wsrequest.request_id, ' status: ', wsrequest.status, ' agent: ', agents );
+        if (this.currentUserID === agents[j].id_user) {
+          return true
+          // console.log("% »»» WebSocketJs WF +++++ ws-requests--- list + hasmeInAgents in If", iAmThere, '(forEach) the request id ', wsrequest.request_id, ' status: ', wsrequest.status, ' agent: ', agents );
+        }
+        // console.log("% »»» WebSocketJs WF +++++ ws-requests--- list + hasmeInAgents", iAmThere, '(forEach) the request id ', wsrequest.request_id, ' status: ', wsrequest.status, ' agent: ', agents );
+        // return iAmThere
       }
-      // console.log("% »»» WebSocketJs WF +++++ ws-requests--- list + hasmeInAgents", iAmThere, '(forEach) the request id ', wsrequest.request_id, ' status: ', wsrequest.status, ' agent: ', agents );
-      // return iAmThere
     }
   }
 
@@ -576,7 +577,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
         if (wsrequests) {
 
           this.addDeptObject(wsrequests)
-          
+
           console.log("WS-REQUESTS-UNSERVED-X-PANEL - subscribe > if (wsrequests) ", wsrequests);
           this.browserRefresh = browserRefresh;
 
@@ -613,7 +614,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
               }
             });
           }
-        
+
         }
 
         // this.ws_requests.forEach(request => {
