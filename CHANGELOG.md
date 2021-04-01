@@ -1,6 +1,10 @@
 
 # tiledesk-dashboard
 
+### 2.1.45
+- Duplicate the "agent" array of the "request.snapshot" property in "request" during the "ON-UPDATE" websocket callback
+- UI refactoring of bot details of type "Resolution"
+
 ### 2.1.44
 - Rename the accordion "Jwt Decoded" to "Trusted Info" in the right sidebar of the conversation detail page and move it to the top of the sidebar
 - Adds the attributes of the "decoded JWT" to the "Trusted Info" accordion
@@ -27,7 +31,7 @@
 - Improve deleting user profile photo and bot profile photo,
 - Fixes the bug: in the 'Your requests' tab, in the 'conversations for department' section, the count of departments is relating to all conversations and not just those of the user currently logged
 - Improves the contact details page
-- Refactors the code by duplicating the 'agents' array and the 'department', 'lead' and 'requester' objects of the "request.snapshot" property in 'request'
+- Refactors the code by duplicating the 'agents' array and the 'department', 'lead' and 'requester' objects of the "request.snapshot" property in 'request' during the "ON-CREATE" websocket callback
 
 ### 2.1.39
 - Replaces "plus" / "minus" buttons of notes and attributes with "angle up" / "angle down" on the conversation detail page
