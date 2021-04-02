@@ -108,7 +108,7 @@ export class BotTypeSelectComponent implements OnInit {
   }
 
   openDocsTiledeskCreateABot() {
-    const url = 'https://docs.tiledesk.com/knowledge-base/create-a-bot/';
+    const url = 'https://docs.tiledesk.com/knowledge-base/configure-your-first-chatbot/';
     window.open(url, '_blank');
   }
 
