@@ -25,14 +25,32 @@
           </span>
           <span *ngIf="botType === 'resolution'"
             style="margin-left: 8px;vertical-align: middle;color: #0f62ff; font-size: 14px;font-weight: 400; cursor: pointer; text-decoration: underline;"
-            (click)="openDocsTiledeskCreateABot()">
+            (click)="openDocsResolutionBotConfigureYourFirstChatbot()">
             {{'HereHowCreateABot' | translate}}
+          </span>
+
+          <span *ngIf="botType === 'resolution'"
+            style="margin-left: 8px;vertical-align: middle;color: #0f62ff; font-size: 14px;font-weight: 400; cursor: pointer; text-decoration: underline;"
+            (click)="openResolutionBotDocsStylingYourChatbotReplies()">
+            {{'HereHowStylingYourReplies' | translate}}
+          </span>
+
+          <span *ngIf="botType === 'resolution'"
+            style="margin-left: 8px;vertical-align: middle;color: #0f62ff; font-size: 14px;font-weight: 400; cursor: pointer; text-decoration: underline;"
+            (click)="openDocsResolutionBotSendImageVideosMore()">
+            {{'HereHowSendImageVideosMore' | translate}}
+          </span>
+
+          <span *ngIf="botType === 'resolution'"
+            style="margin-left: 8px;vertical-align: middle;color: #0f62ff; font-size: 14px;font-weight: 400; cursor: pointer; text-decoration: underline;"
+            (click)="openDocsResolutionBotHandoffToHumanAgent()">
+            {{'HereHowToHandoffToTheHumanAgent' | translate}}
           </span>
 
           <span *ngIf="botType === 'external'"
             style="margin-left: 8px;vertical-align: middle;color: #0f62ff; font-size: 14px;font-weight: 400; cursor: pointer; text-decoration: underline;"
             (click)="openExternalBotIntegrationTutorial()">
-            {{ "HereTheTutorial" | translate: tparams }}
+            {{ "ConnectYourExternalChatbotsTo" | translate: tparams }}
           </span>
 
           <span *ngIf="botType === 'dialogflow'"
@@ -49,7 +67,7 @@
 
           <span *ngIf="botType === 'dialogflow'"
             style="margin-left: 8px;vertical-align: middle;color: #0f62ff; font-size: 14px;font-weight: 400; cursor: pointer; text-decoration: underline;"
-            (click)="openDocsTiledeskHandoffToHumanAgent()">
+            (click)="openDocsDialogFlowHandoffToHumanAgent()">
             {{'HereHowToHandoffToTheHumanAgent' | translate}}
           </span>
         </div>
@@ -107,10 +125,10 @@
               </div>
             </div>
 
-            <!-- 
-            // ------------------------------------------------------
-            // Bot name - common for native and external and identity
-            // ------------------------------------------------------ -->
+
+            <!-- ------------------------------------------------------ -->
+            <!-- Bot name - common for native and external and identity -->
+            <!-- ------------------------------------------------------ -->
             <div class="row" *ngIf="botType !== 'dialogflow'" style="margin-top: 18px;">
               <label class="col-sm-2 custom-label">
 
@@ -124,38 +142,13 @@
             </div>
 
 
-            <!-- EXTERNAL URL CHECKBOX -->
-            <!-- <div class="row" >
-              <label class="col-sm-2"></label>
-              <div class="col-sm-10">
-                <div class="checkbox">
-                  <label>
-                    <input type="checkbox" name="externalBot"
-                      (click)="hasClickedExternalBot(is_external_bot = !is_external_bot)">
-                    <span class="checkbox-label" style="position: relative;top: 2px;">
-                      {{ "BotsPage.ExternalBot" | translate }}
-                    </span>
-                  </label>
-                  <span style="font-size: 12px; font-weight: 400;">
-                    <i class="material-icons"
-                      style="vertical-align: middle; color: #ec971f; font-size: 20px;padding-left: 16px">info</i>
-                    <span style="position: relative;top: 2px;">
-                      <span style="color: #7695a5; "> {{'ExperimentalFeature' | translate }}. </span>
-                      <span style="color: #7695a5">{{'IfYouAreInterested' | translate }} </span>
-                      <span (click)="launchWidget()" style="color: #039be5; cursor:pointer;">
-                        {{ 'ChatWithUs' | translate}} </span>
-                    </span>
-                  </span>
-                </div>
-
-              </div>
-            </div> -->
 
 
-            <!-- 
-            // ------------------------------------------------------
-            // External bot - external bot url
-            // ------------------------------------------------------ -->
+
+
+            <!-- ------------------------------------------------------ -->
+            <!-- External bot - external bot url -->
+            <!-- ------------------------------------------------------ -->
             <section *ngIf="botType === 'external'">
               <div class="row" style="margin-top: 8px;">
                 <label class="col-sm-2 custom-label">Endpoint Url</label>
@@ -184,10 +177,10 @@
 
 
             <section *ngIf="botType === 'dialogflow'" style="padding-left: 30px; padding-right: 30px;">
-              <!-- 
-              // ---------------------------------------------------------
-              // Dilaogflow bot  - Bot name
-              // --------------------------------------------------------- -->
+
+              <!-- --------------------------------------------------------- -->
+              <!-- Dilaogflow bot  - Bot name -->
+              <!-- --------------------------------------------------------- -->
               <div class="row" style="margin-bottom: 18px;">
                 <label class="col-sm-12 custom-label__dlgflowbot">
                   {{ "BotsAddEditPage.BotName" | translate }}
@@ -199,10 +192,10 @@
                 </div>
               </div>
 
-              <!-- 
-              // ---------------------------------------------------------
-              // Dilaogflow bot - Upload file (label service account private key)
-              // --------------------------------------------------------- -->
+
+              <!-- ------------------------------------------------------------------- -->
+              <!-- Dilaogflow bot - Upload file (label service account private key) -->
+              <!-- ------------------------------------------------------------------- -->
               <div class="row" style="margin-bottom: 18px;">
                 <label class="col-sm-12 custom-label__dlgflowbot">
                   {{ 'ServiceAccountPrivateKeyFile' | translate }}
@@ -300,8 +293,11 @@
                   <span
                     style="display: block; font-size: 12px; font-weight: 100;color: #7695a5;line-height: 1.2em;padding-top: 3px;">
                     {{ 'FillTheFieldOnlyIfYouWantToUseDialogflowKB' | translate }}
-                    <span (click)="openDialogflowKbFeatureTutorial()">
-                      <i class="material-icons" style="vertical-align: middle;font-size: 14px;"> open_in_new </i>
+                    <span (click)="openDialogflowKbFeatureTutorial()" style="color: #0f62ff;">
+                      {{ 'DialogflowKnowledgeBaseFeature' | translate }}
+                      <i class="material-icons"
+                        style="vertical-align: middle;font-size: 14px; cursor:pointer; color: #0f62ff;"> open_in_new
+                      </i>
                     </span>
                   </span>
                 </div>
@@ -351,59 +347,143 @@
         <div class="card card--no-border" style="margin-top:0px">
           <div class="card-content">
 
-            <!-- <h4 *ngIf="botType !== 'dialogflow'" class="card-title"
-              style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 15px">
-              {{ "QuickTips" | translate }}
-            </h4> -->
-
-            <div class="row" *ngIf="botType !== 'dialogflow'">
-              <div class="col-sm-12 col-md-12">
-                <h3 class="card_title__underlined">
-                  <span class="card_title__underline">
-                    {{ "QuickTips" | translate }}
-                  </span>
-                </h3>
-              </div>
-              <div class="col-sm-12 col-md-12">
-                <div class="section-subtitle"> </div>
-              </div>
-            </div>
-
-            <!-- <section *ngIf="botType === 'native'"> -->
+            <!-- ------------------------------------------------- -->
+            <!-- RIGHT SIDEBAR Resolution bot -->
+            <!-- ------------------------------------------------- -->
             <section *ngIf="botType === 'resolution'">
-              <!-- <p style="color:#7695a5">
-                {{ "BotsPage.BotQuickTipsText" | translate: tparams }}
-              </p> -->
+              <div class="row" *ngIf="botType === 'resolution'">
+                <div class="col-sm-12 col-md-12">
+                  <h3 class="card_title__underlined">
+                    <span class="card_title__underline">
+                      {{ "ConfigureYourFirstChatbot" | translate }}
+                    </span>
+                  </h3>
+                </div>
+                <div class="col-sm-12 col-md-12">
+                  <div class="section-subtitle"> </div>
+                </div>
+              </div>
+
               <p style="color:#7695a5">
                 {{ 'ResolutionBotDescription' | translate}}.
-                <span style="display: block;cursor:pointer" (click)="openDocsTiledeskCreateABot()"
-                  style="color: #03a5e8; text-decoration: underline;"> {{'HereHowCreateABot' | translate}}
+                <span style="display: block;" (click)="openDocsResolutionBotConfigureYourFirstChatbot()"
+                  style="color: #0f62ff; text-decoration: underline;cursor:pointer"> 
+                  {{'Resourcepage.HereHow' | translate}}
                 </span>
               </p>
-            </section>
 
+
+              <div class="row">
+                <div class="col-sm-12 col-md-12">
+                  <h3 class="card_title__underlined">
+                    <span class="card_title__underline">
+                      {{'Train' | translate }}
+                    </span>
+                  </h3>
+                </div>
+                <div class="col-sm-12 col-md-12">
+                  <div class="section-subtitle"> </div>
+                </div>
+              </div>
+
+              <p style="color:#7695a5">
+                {{'Resolution_bot_train_StylingYouReplies' | translate: tparams }}.
+                <span style="color: #0f62ff; text-decoration: underline;cursor: pointer;"
+                  (click)="openResolutionBotDocsStylingYourChatbotReplies()">
+                  {{'HereHowStylingYourReplies' | translate }}
+                </span>
+              </p>
+
+              <p style="color:#7695a5">
+                {{'Resolution_bot_train_SendImagesVideoAndMore' | translate: tparams }}.
+                <span style="color: #0f62ff; text-decoration: underline;cursor: pointer;"
+                  (click)="openDocsResolutionBotSendImageVideosMore()">
+                  {{'HereHowSendImageVideosMore' | translate }}
+                </span>
+              </p>
+
+
+              <div class="row">
+                <div class="col-sm-12 col-md-12">
+                  <h3 class="card_title__underlined">
+                    <span class="card_title__underline">
+                      {{'Handoff' | translate}}
+                    </span>
+                  </h3>
+                </div>
+                <div class="col-sm-12 col-md-12">
+                  <div class="section-subtitle"> </div>
+                </div>
+              </div>
+
+              <p style="color:#7695a5">
+                {{'DoYouWantToHandoffToHumanAgentDuringAChatbotConversation' | translate}}
+
+                <span style="color: #0f62ff; text-decoration: underline;cursor: pointer;"
+                  (click)="openDocsResolutionBotHandoffToHumanAgent()">
+                  {{'HereHowToHandoffToTheHumanAgent' | translate }}.
+                </span>
+              </p>
+
+
+            </section>
+            <!-- ./ end section Resolution -->
+
+
+            <!-- ------------------------------------------------- -->
+            <!-- RIGHT SIDEBAR External  -->
+            <!-- ------------------------------------------------- -->
             <section *ngIf="botType === 'external'">
+              <div class="row">
+                <div class="col-sm-12 col-md-12">
+                  <h3 class="card_title__underlined">
+                    <span class="card_title__underline">
+                      {{ "ConnectYourExternalChatbotsTo" | translate: tparams }}
+                    </span>
+                  </h3>
+                </div>
+                <div class="col-sm-12 col-md-12">
+                  <div class="section-subtitle"> </div>
+                </div>
+              </div>
+
               <p style="color:#7695a5">
                 {{ "BotsPage.ExternabotQuickTips" | translate: tparams }}
-                <span style="color: #03a5e8; display: block; cursor:pointer"
+                <span style="color: #0f62ff; display: block; cursor:pointer"
                   (click)="openExternalBotIntegrationTutorial()">
                   {{ "HereTheTutorial" | translate: tparams }}
                 </span>
               </p>
             </section>
+             <!-- ./ end section External -->
 
+            <!-- ------------------------------------------------- -->
+            <!-- RIGHT SIDEBAR identity bot  -->
+            <!-- ------------------------------------------------- -->
             <section *ngIf="botType === 'identity'">
+              <div class="row">
+                <div class="col-sm-12 col-md-12">
+                  <h3 class="card_title__underlined">
+                    <span class="card_title__underline">
+                      {{ "QuickTips" | translate }}
+                    </span>
+                  </h3>
+                </div>
+                <div class="col-sm-12 col-md-12">
+                  <div class="section-subtitle"> </div>
+                </div>
+              </div>
+
               <p style="color:#7695a5">
                 {{ "AnIdentityBotRepresents" | translate }}
               </p>
             </section>
 
-            <section *ngIf="botType === 'dialogflow'">
 
-              <!-- <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 5px">
-                
-                {{'ConnectToYourDialogflowAgent' | translate}}
-              </h4> -->
+            <!-- ------------------------------------------------- -->
+            <!-- RIGHT SIDEBAR Dialogflow  -->
+            <!-- ------------------------------------------------- -->
+            <section *ngIf="botType === 'dialogflow'">
               <div class="row">
                 <div class="col-sm-12 col-md-12">
                   <h3 class="card_title__underlined">
@@ -419,7 +499,7 @@
 
               <p style="color:#7695a5">
                 {{'YouNeedAServiceAccountPrivateKeyFileToConnectTheDialogflowAgent' | translate: tparams}}.
-                <span style="color: #03a5e8; text-decoration: underline;cursor: pointer;"
+                <span style="color: #0f62ff; text-decoration: underline;cursor: pointer;"
                   (click)="openDeveloperTiledeskGenerateDFCredentialFile()">
                   {{'FollowThisGuideToFindOutHowToCreateThisFile' | translate }}.
                 </span>
@@ -445,7 +525,7 @@
 
               <p style="color:#7695a5">
                 {{'DoYouWantToSendImagesVideosButtonsAndMore' | translate }}
-                <span style="color: #03a5e8; text-decoration: underline;cursor: pointer;"
+                <span style="color: #0f62ff; text-decoration: underline;cursor: pointer;"
                   (click)="openDocsTiledeskDialogflowConnector()">
                   {{'FollowTheMicrolanguageGuide' | translate }}.
                 </span>
@@ -475,12 +555,10 @@
               <p style="color:#7695a5">
                 {{'DoYouWantToHandoffToHumanAgentDuringAChatbotConversation' | translate}}
                 {{'SimplyReplyAgentOnTheLastResponseLine' | translate}}.
-                <span style="color: #03a5e8; text-decoration: underline;cursor: pointer;"
-                  (click)="openDocsTiledeskHandoffToHumanAgent()">
+                <span style="color: #0f62ff; text-decoration: underline;cursor: pointer;"
+                  (click)="openDocsDialogFlowHandoffToHumanAgent()">
                   {{'HereHowToHandoffToTheHumanAgent' | translate }}.
                 </span>
-
-
               </p>
 
 
@@ -530,6 +608,7 @@
               </p> -->
 
             </section>
+            <!-- ./ end section Dilaogflow -->
 
 
           </div>

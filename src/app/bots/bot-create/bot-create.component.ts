@@ -714,32 +714,21 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     };
   }
 
-  openDocsTiledeskCreateABot () {
-    const url = 'https://docs.tiledesk.com/knowledge-base/create-a-bot/';
-    window.open(url, '_blank');
-  }
 
-  openExternalBotIntegrationTutorial() {
-    // const url = 'https://developer.tiledesk.com/apis/tutorials/connect-your-own-chatbot';
-    const url = 'https://developer.tiledesk.com/external-chatbot/connect-your-own-chatbot';
-    window.open(url, '_blank');
-  }
 
-  openDialogflowConsole() {
-    const url = 'https://dialogflow.cloud.google.com/#/login';
-    window.open(url, '_blank');
-  }
 
+
+
+
+ 
   // openDialogGenerateCredentialTutorial() {
   //   const url = 'https://developer.tiledesk.com/apis/tutorials/generate-dialgoflow-google-credentials-file';
   //   window.open(url, '_blank');
   // }
 
-  openDialogflowKbFeatureTutorial() {
-    const url = 'https://cloud.google.com/dialogflow/docs/knowledge-connectors';
-    window.open(url, '_blank');
-  }
-
+  // -----------------------------------------------------------------------
+  // Dialogflow bot doc link
+  // -----------------------------------------------------------------------
   openDeveloperTiledeskGenerateDFCredentialFile() {
     const url = 'https://developer.tiledesk.com/external-chatbot/build-your-own-dialogflow-connnector/generate-dialgoflow-google-credentials-file';
     window.open(url, '_blank');
@@ -750,11 +739,59 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     window.open(url, '_blank');
   }
 
-  openDocsTiledeskHandoffToHumanAgent() {
+  openDocsDialogFlowHandoffToHumanAgent() {
     const url = 'https://docs.tiledesk.com/knowledge-base/dialogflow-connector-handoff-to-human-agent-example/';
     window.open(url, '_blank');
   }
 
+  // used during the creation
+  openDialogflowKbFeatureTutorial() {
+    const url = 'https://cloud.google.com/dialogflow/docs/knowledge-connectors';
+    window.open(url, '_blank');
+  }
+
+  // No more used
+  openDialogflowConsole() {
+    const url = 'https://dialogflow.cloud.google.com/#/login';
+    window.open(url, '_blank');
+  }
+
+ // -----------------------------------------------------------------------
+  // External bot doc link
+  // -----------------------------------------------------------------------
+  openExternalBotIntegrationTutorial() {
+    // const url = 'https://developer.tiledesk.com/apis/tutorials/connect-your-own-chatbot';
+    const url = 'https://developer.tiledesk.com/external-chatbot/connect-your-own-chatbot';
+    window.open(url, '_blank');
+  }
+  
+
+  
+
+
+  // -----------------------------------------------------------------------
+  // Resolution bot doc link
+  // -----------------------------------------------------------------------
+  openResolutionBotDocsStylingYourChatbotReplies () {
+    const url = 'https://docs.tiledesk.com/knowledge-base/styling-your-chatbot-replies/';
+    window.open(url, '_blank');
+  }
+
+  openDocsResolutionBotSendImageVideosMore () {
+    const url = 'https://docs.tiledesk.com/knowledge-base/response-bot-images-buttons-videos-and-more/';
+    window.open(url, '_blank');
+  }
+
+  openDocsResolutionBotHandoffToHumanAgent() {
+    const url = 'https://docs.tiledesk.com/knowledge-base/handoff-to-human-agents/';
+    window.open(url, '_blank');
+  }
+
+  openDocsResolutionBotConfigureYourFirstChatbot () {
+    // const url = 'https://docs.tiledesk.com/knowledge-base/create-a-bot/';
+    const url = 'https://docs.tiledesk.com/knowledge-base/configure-your-first-chatbot/';
+    window.open(url, '_blank');
+  }
 
 
   // !!! NO MORE USED - WHEN A BOT IS CREATED IN THE MODAL WINDOW 'CREATE BOT', TWO ACTIONS ARE POSSIBLE:
