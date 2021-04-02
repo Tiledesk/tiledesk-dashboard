@@ -95,6 +95,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   userProfileImageurl: string;
   timeStamp: any;
   botType: string;
+  botTypeForInput: string;
   uploadedFileName: string;
   dlgflwSelectedLang: any;
   dlgflwSelectedLangCode: any;
@@ -139,11 +140,12 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
   COUNT_OF_VISIBLE_DEPT: number;
 
-  selected_bot_id: string;
-  selected_bot_name: string;
+  selected_dept_id: string;
+  selected_dept_name: string;
   dept_id: string;
   done_msg: string;
   botHasBeenAssociatedWithDept: string;
+  DEPTS_HAVE_BOT_BUT_NOT_THIS: boolean
 
 
 
@@ -277,18 +279,27 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
       this.botType = params.type;
 
       if (this.botType && this.botType === 'external') {
+
+        this.botTypeForInput = 'External'
+
         this.is_external_bot = true
       } else {
         this.is_external_bot = false
       }
 
       if (this.botType && this.botType === 'dialogflow') {
+       
+        this.botTypeForInput = 'Dialogflow'
 
         this.getDialogFlowBotData(params.faqkbid)
       }
 
+      if (this.botType && this.botType === 'native') {
+        this.botTypeForInput = 'Resolution'
+      }
+
       console.log('Bot Create (FaqComponent) --->  PARAMS', params);
-      console.log('Bot Create (FaqComponent)--->  PARAMS botType', this.botType);
+      console.log('Bot Create (FaqComponent)---> ***** PARAMS botType', this.botType);
     });
 
   }
@@ -537,7 +548,21 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
           }
         });
 
-        console.log('FaqComponent - DEPT - DEPTS_BOT_IS_ASSOCIATED_WITH_ARRAY', this.DEPTS_BOT_IS_ASSOCIATED_WITH_ARRAY);
+        console.log('FaqComponent ---> Current bot is found in DEPTS_BOT_IS_ASSOCIATED_WITH_ARRAY', this.DEPTS_BOT_IS_ASSOCIATED_WITH_ARRAY);
+
+
+        const hasFoundBotIn = this.DEPTS_BOT_IS_ASSOCIATED_WITH_ARRAY.filter((obj: any) => {
+          return obj.id_bot === this.id_faq_kb;
+        });
+
+        if (hasFoundBotIn.length > 0) {
+          this.DEPTS_HAVE_BOT_BUT_NOT_THIS = false
+          console.log('FaqComponent ---> Current bot is found in DEPTS_BOT_IS_ASSOCIATED_WITH_ARRAY', this.DEPTS_HAVE_BOT_BUT_NOT_THIS);
+        } else {
+          this.DEPTS_HAVE_BOT_BUT_NOT_THIS = true
+          console.log('FaqComponent ---> Current bot is NOT found in DEPTS_BOT_IS_ASSOCIATED_WITH_ARRAY', this.DEPTS_HAVE_BOT_BUT_NOT_THIS);
+        }
+
         console.log('FaqComponent - DEPT - DEPTS WITHOUT BOT', this.depts_without_bot_array);
 
 
@@ -557,40 +582,36 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   }
 
   onSelectBotId() {
-    console.log('FaqComponent --->  onSelectBotId ', this.selected_bot_id);
-    this.dept_id = this.selected_bot_id
+    console.log('FaqComponent --->  onSelectBotId dept_id', this.dept_id);
+    console.log('FaqComponent --->  onSelectBotId selected_dept_id', this.selected_dept_id);
+    console.log('FaqComponent --->  onSelectBotId id_faq_kb', this.id_faq_kb);
+    this.dept_id = this.selected_dept_id
 
 
     const hasFound = this.depts_without_bot_array.filter((obj: any) => {
-      return obj.id === this.selected_bot_id;
+      return obj.id === this.selected_dept_id;
     });
     console.log('FaqComponent --->  onSelectBotId dept found', hasFound);
 
     if (hasFound.length > 0) {
-      this.selected_bot_name = hasFound[0]['name']
+      this.selected_dept_name = hasFound[0]['name']
     }
-    this.hookBotToDept()
+    // this.hookBotToDept()
   }
 
   hookBotToDept() {
-
     this.departmentService.updateExistingDeptWithSelectedBot(this.dept_id, this.id_faq_kb).subscribe((res) => {
       console.log('FaqComponent - UPDATE EXISTING DEPT WITH SELECED BOT - RES ', res);
     }, (error) => {
       console.log('FaqComponent - UPDATE EXISTING DEPT WITH SELECED BOT - ERROR ', error);
-
-
-
     }, () => {
       console.log('Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT * COMPLETE *');
-
       this.translateAndPresentModalBotAssociatedWithDepartment();
-
     });
   }
 
   translateAndPresentModalBotAssociatedWithDepartment() {
-    let parametres = { bot_name: this.faqKb_name, dept_name: this.selected_bot_name };
+    let parametres = { bot_name: this.faqKb_name, dept_name: this.selected_dept_name };
 
     this.translate.get("BotHasBeenAssociatedWithDepartment", parametres).subscribe((res: string) => {
       this.botHasBeenAssociatedWithDept = res
@@ -603,6 +624,10 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
       button: "OK",
       dangerMode: false,
     })
+      .then((WillUpdated) => {
+        this.getDeptsByProjectId()
+        this.depts_without_bot_array = []
+      })
 
   }
 
@@ -1417,6 +1442,58 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     window.open(url, '_blank');
 
   }
+
+   // -----------------------------------------------------------------------
+  // Resolution bot doc link
+  // -----------------------------------------------------------------------
+  openResolutionBotDocsStylingYourChatbotReplies () {
+    const url = 'https://docs.tiledesk.com/knowledge-base/styling-your-chatbot-replies/';
+    window.open(url, '_blank');
+  }
+
+  openDocsResolutionBotSendImageVideosMore () {
+    const url = 'https://docs.tiledesk.com/knowledge-base/response-bot-images-buttons-videos-and-more/';
+    window.open(url, '_blank');
+  }
+
+  openDocsResolutionBotHandoffToHumanAgent() {
+    const url = 'https://docs.tiledesk.com/knowledge-base/handoff-to-human-agents/';
+    window.open(url, '_blank');
+  }
+
+  openDocsResolutionBotConfigureYourFirstChatbot () {
+    // const url = 'https://docs.tiledesk.com/knowledge-base/create-a-bot/';
+    const url = 'https://docs.tiledesk.com/knowledge-base/configure-your-first-chatbot/';
+    window.open(url, '_blank');
+  }
+
+   // -----------------------------------------------------------------------
+  // Dialogflow bot doc link
+  // -----------------------------------------------------------------------
+  openDeveloperTiledeskGenerateDFCredentialFile() {
+    const url = 'https://developer.tiledesk.com/external-chatbot/build-your-own-dialogflow-connnector/generate-dialgoflow-google-credentials-file';
+    window.open(url, '_blank');
+  }
+
+  openDocsTiledeskDialogflowConnector() {
+    const url = 'https://docs.tiledesk.com/knowledge-base/microlanguage-for-dialogflow-images-videos/';
+    window.open(url, '_blank');
+  }
+
+  openDocsDialogFlowHandoffToHumanAgent() {
+    const url = 'https://docs.tiledesk.com/knowledge-base/dialogflow-connector-handoff-to-human-agent-example/';
+    window.open(url, '_blank');
+  }
+
+  // -----------------------------------------------------------------------
+  // External bot doc link
+  // -----------------------------------------------------------------------
+  openExternalBotIntegrationTutorial() {
+    // const url = 'https://developer.tiledesk.com/apis/tutorials/connect-your-own-chatbot';
+    const url = 'https://developer.tiledesk.com/external-chatbot/connect-your-own-chatbot';
+    window.open(url, '_blank');
+  }
+
 
   // public changeListener(files: FileList) {
   //   console.log(files);

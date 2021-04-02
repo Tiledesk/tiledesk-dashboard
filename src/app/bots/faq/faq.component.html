@@ -28,7 +28,7 @@
               <div class="col-sm-10 col-md-10">
                 <h3 class="card_title__underlined">
                   <span class="card_title__underline">
-                    <span *ngIf="botType === 'native'" style="text-transform:capitalize"> Resolution </span>
+                    <!-- <span *ngIf="botType === 'native'" style="text-transform:capitalize"> Resolution </span> -->
                     {{ "BotDetails" | translate }}
                   </span>
                 </h3>
@@ -100,21 +100,18 @@
             <!-- ------------------------------------------------------------------------------------------- -->
             <section *ngIf="botType !== 'dialogflow'">
 
-              <!-- <div class="row">
-
-                <label class="col-sm-2 custom-label"
-                  [ngClass]="{'col-sm-2 custom-label' : botType !== 'dialogflow', 'col-sm-12 custom-label__dlgflowbot' : botType === 'dialogflow'}">
+              <!-- ------------------------------------------------------------------------------------------- -->
+              <!--  (for external & native) -->
+              <!-- ------------------------------------------------------------------------------------------- -->
+              <div *ngIf="botType !== 'identity'" class="row" style="margin-bottom: 18px;">
+                <label class="col-sm-2 custom-label">
                   {{ "BotsAddEditPage.Type" | translate }}
                 </label>
                 <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
-                  <div style="text-transform: capitalize; margin-top:8px; color: rgba(0,0,0,.54); font-weight: 400;">
-                    {{ botType }}
-                  </div>
+                  <input id="bot_type" name="bot_type" [(ngModel)]="botTypeForInput" class="input" type="text"
+                    style="margin-bottom: 0px; color:#808080" disabled>
                 </div>
-              </div> -->
-
-              <!-- SPACER -->
-              <!-- <div class="col-sm-12" style="height:10px"></div> -->
+              </div>
 
 
               <!-- ------------------------------------------------------------------------------------------- -->
@@ -131,36 +128,6 @@
 
             </section>
 
-
-
-            <!-- /// External bot checkbox -->
-            <!-- <div class="row">
-              <label class="col-sm-2"></label>
-              <div class="col-sm-10">
-                <div class="checkbox">
-                  <label>
-                    <input type="checkbox" name="externalBot"
-                      (click)="hasClickedExternalBot(is_external_bot = !is_external_bot)" [checked]="is_external_bot"
-                      disabled>
-                    <span class="checkbox-label" style="position: relative;top: 2px;">
-                      {{ "BotsPage.ExternalBot" | translate }}
-                    </span>
-                  </label>
-
-                  <span style="font-size: 12px; font-weight: 400;">
-                    <i class="material-icons"
-                      style="vertical-align: middle; color: #ec971f; font-size: 20px;padding-left: 16px">info</i>
-                    <span style="position: relative;top: 2px;">
-                      <span style="color: #7695a5; "> {{'ExperimentalFeature' | translate }}. </span>
-                      <span style="color: #7695a5">{{'IfYouAreInterested' | translate }} </span>
-                      <span (click)="launchWidget()" style="color: #039be5; cursor:pointer;">
-                        {{ 'ChatWithUs' | translate}} </span>
-                    </span>
-                  </span>
-
-                </div>
-              </div>
-            </div> -->
 
             <!-- SPACER -->
             <div class="col-sm-12" style="height:10px"></div>
@@ -212,6 +179,18 @@
             <!-- ------------------------------------------------------------------------------------------- -->
             <section class="dialogflow-bot-data-section" *ngIf="botType === 'dialogflow'">
 
+              <!-- ------------------------------------------------------------------------------------------- -->
+              <!--  Dialogflow bot - type -->
+              <!-- ------------------------------------------------------------------------------------------- -->
+              <div class="row" style="margin-bottom: 18px;">
+                <label class="col-sm-12 custom-label__dlgflowbot">
+                  {{ "BotsAddEditPage.Type" | translate }}
+                </label>
+                <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+                  <input id="dlgflowbot_type" name="dlgflowbot_type" [(ngModel)]="botTypeForInput" class="input"
+                    type="text" style="margin-bottom: 0px; color:#808080" disabled>
+                </div>
+              </div>
 
               <!-- ------------------------------------------------------------------------------------------- -->
               <!--  Dialogflow bot - name -->
@@ -447,10 +426,10 @@
             <div class="row">
               <div class="col-sm-10 col-md-12">
                 <h3 class="card_title__underlined">
-                  <span *ngIf="botType !== 'native'" class="card_title__underline">
+                  <span *ngIf="botType === 'identity'" class="card_title__underline">
                     {{ "BotsAddEditPage.BotAttributes" | translate }}
                   </span>
-                  <span *ngIf="botType === 'native'" class="card_title__underline">
+                  <span *ngIf="botType !== 'identity'" class="card_title__underline">
                     {{ "Departments" | translate }}
                   </span>
                 </h3>
@@ -460,54 +439,45 @@
               </div>
             </div>
 
-            <!-- <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 6px;">
-            
-              {{ "BotsAddEditPage.BotAttributes" | translate }}
-            </h4> -->
 
-            <p *ngIf="botType !== 'native'" class="title-attribute" style="margin-bottom: 3px; padding-top: 5px;">
+            <p *ngIf="botType === 'identity'" class="title-attribute" style="margin-bottom: 3px; padding-top: 5px;">
               {{ "BotsAddEditPage.Type" | translate }}
             </p>
 
-            <p *ngIf="botType !== 'native'" class="attribute">
+            <p *ngIf="botType === 'identity'" class="attribute">
               <span style="text-transform:capitalize"> {{ botType }} </span>
               <!-- <span *ngIf="botType === 'native'" style="text-transform:capitalize"> Resolution </span> -->
               <span class="identity-bot-description" *ngIf="botType === 'identity'">
                 {{ 'AnIdentityBotRepresents' | translate }} </span>
             </p>
 
-            <p *ngIf="botType !== 'native'" class="title-attribute" style="margin-bottom: 3px; padding-top: 5px;">
+            <p *ngIf="botType === 'identity'" class="title-attribute" style="margin-bottom: 3px; padding-top: 5px;">
               {{ "BotsAddEditPage.BotID" | translate }}
             </p>
-            <p *ngIf="botType !== 'native'" class="attribute">
+            <p *ngIf="botType === 'identity'" class="attribute">
               {{ faqKb_id }}
             </p>
 
-            <!-- <p style="margin-bottom: 3px; color:#566787; padding-top: 5px;"> 
-              <strong>
-                {{ "BotsPage.RemoteId" | translate }}
-              </strong>
-            </p>
-            <p style="color:#999999; font-weight: 500; margin-bottom: 0px;">  
-              {{ faq_kb_remoteKey }}
-            </p> -->
-
-            <p *ngIf="botType !== 'native'" class="title-attribute" style="margin-bottom: 3px; padding-top: 0px;">
+            <p *ngIf="botType === 'identity'" class="title-attribute" style="margin-bottom: 3px; padding-top: 0px;">
               {{ "BotsAddEditPage.CreationDate" | translate }}
             </p>
-            <p *ngIf="botType !== 'native'" class="attribute" style="margin-bottom: 9px">
+            <p *ngIf="botType === 'identity'" class="attribute" style="margin-bottom: 9px">
               {{ faqKb_created_at | date: 'd/M/y'}}
             </p>
 
-
+            <!-- ---------------------------------------------------  -->
+            <!-- Department section (replaces Bot attributes) -->
+            <!-- ---------------------------------------------------  -->
             <span *ngIf="isVisibleDEP === true">
               <!-- USE CASE: THE BOT IS ASSOCIATED -->
               <span *ngIf="botType !== 'identity'">
-                <p *ngIf="depts_without_bot_array?.length === 0" class="title-attribute"
+
+                <!-- USE CASE: THE BOT IS ASSOCIATED -->
+                <p *ngIf="DEPTS_BOT_IS_ASSOCIATED_WITH_ARRAY.length > 0" class="title-attribute"
                   style="margin-bottom: 3px; padding-top: 0px;">
                   {{ "DepartmentsThisBotIsAssociatedWith" | translate }}
                 </p>
-                <div *ngIf="depts_without_bot_array?.length === 0">
+                <div *ngIf="DEPTS_BOT_IS_ASSOCIATED_WITH_ARRAY?.length > 0">
                   <div *ngFor="let dept of DEPTS_BOT_IS_ASSOCIATED_WITH_ARRAY" style="margin-bottom: 8px;">
                     <span class="dept-avatar-wrapper" (click)="goToEditAddPage_EDIT_DEPT(dept?._id, dept?.default)">
 
@@ -522,34 +492,249 @@
                   </div>
                 </div>
 
-                <span *ngIf="depts_without_bot_array?.length === 0" style="display: block; color: #0f62ff; cursor:pointer" (click)="goToRoutingAndDepts()">
+                <!-- <span *ngIf="depts_without_bot_array?.length === 0"
+                  style="display: block; color: #0f62ff; cursor:pointer" (click)="goToRoutingAndDepts()">
                   {{'ManageTheBotIn' | translate}} {{'RoutingAndDepts' | translate}}
-                </span>
-
-                <p class="title-attribute" *ngIf="COUNT_DEPTS_BOT_IS_ASSOCIATED_WITH === 0">
-                  <span style="margin-bottom: 3px; padding-top: 0px;"> {{ 'NoDeptsAreAssociatedWithThisBot' | translate}} </span>
-
-                  <span style="display: block; color: #0f62ff; cursor:pointer; font-weight: 200;
-                  margin-top: 5px;" (click)="goToRoutingAndDepts()">
-                    {{'ManageTheBotIn' | translate}} {{'RoutingAndDepts' | translate}}
-                  </span>
-
-                  <span *ngIf="depts_without_bot_array.length > 0"
-                    style="display: block;margin-top: 0px;margin-bottom: 2px;font-weight: 200;">
-                    {{'OrSelectAnExistingOneWithNoAssociatedBot' | translate}}
-                  </span>
-
-                  <span *ngIf="depts_without_bot_array.length > 0">
-                    <ng-select [items]="depts_without_bot_array" bindValue="id" bindLabel="name"
-                      placeholder="{{'SelectDepartment'|translate}}" [(ngModel)]="selected_bot_id"
-                      (change)="onSelectBotId()">
-                    </ng-select>
+                </span> -->
+                <!-- USE CASE: THIS BOT IS NOT ASSOCIATED BUT ALL DEPARTMENTS ALREADY HAVE A BOT -->
+                <p class="title-attribute"
+                  *ngIf="DEPTS_HAVE_BOT_BUT_NOT_THIS === true && depts_without_bot_array?.length === 0">
+                  <span style="margin-bottom: 3px; padding-top: 0px;">
+                    {{ 'NoDeptsAreAssociatedWithThisBot' |translate}}
                   </span>
                 </p>
 
-                
+                <!-- USE CASE: THIS BOT IS NOT ASSOCIATED AND SOME DEPARTMENTS DON'T HAVE A BOT-->
+                <p class="title-attribute"
+                  *ngIf="depts_without_bot_array?.length > 0 && DEPTS_BOT_IS_ASSOCIATED_WITH_ARRAY?.length === 0">
+                  <span style="margin-bottom: 3px; padding-top: 0px;">
+                    {{ 'NoDeptsAreAssociatedWithThisBot' |translate}}
+                  </span>
+                  <span *ngIf="depts_without_bot_array?.length > 0"
+                    style="display: block;margin-top: 8px;margin-bottom: 2px;font-weight: 200;">
+                    {{'SelectADepartment' | translate}}
+                  </span>
+
+                  <span *ngIf="depts_without_bot_array?.length > 0">
+                    <ng-select [items]="depts_without_bot_array" bindValue="id" bindLabel="name"
+                      placeholder="{{'SelectDepartment'|translate}}" [(ngModel)]="selected_dept_id"
+                      (change)="onSelectBotId()">
+                    </ng-select>
+                  </span>
+
+                  <button *ngIf="depts_without_bot_array?.length > 0" class="btn btn-tdblu-no-boxshadow"
+                    (click)="hookBotToDept()" [disabled]="!selected_dept_id"
+                    style="margin-top:8px; padding-top: 8px !important;padding-bottom: 8px!important; margin-bottom: 0px;">
+                    <span> {{ 'ActivateBot' | translate}} </span>
+                  </button>
+                </p>
+
+                <span style="display: block;  cursor:pointer; font-weight: 200;
+                margin-top: 5px;" (click)="goToRoutingAndDepts()">
+                  {{'ManageTheBotIn' | translate}}
+
+                  <span style="color: #0f62ff;"> {{'RoutingAndDepts' | translate}}</span>
+                </span>
               </span>
-            </span>
+            </span>  <!-- ./end Department section (replaces Bot attributes) -->
+
+            <!-- ------------------------------------------------- -->
+            <!-- RIGHT SIDEBAR Resolution bot -->
+            <!-- ------------------------------------------------- -->
+            <section *ngIf="botType === 'native'">
+              <div class="row">
+                <div class="col-sm-12 col-md-12">
+                  <h3 class="card_title__underlined" style="margin-top: 20px!important;">
+                    <span class="card_title__underline">
+                      {{ "ConfigureYourFirstChatbot" | translate }}
+                    </span>
+                  </h3>
+                </div>
+                <div class="col-sm-12 col-md-12">
+                  <div class="section-subtitle"> </div>
+                </div>
+              </div>
+
+              <p style="color:#7695a5">
+                {{ 'ResolutionBotDescription' | translate}}.
+                <span style="display: block;" (click)="openDocsResolutionBotConfigureYourFirstChatbot()"
+                  style="color: #0f62ff; text-decoration: underline;cursor:pointer"> {{'Resourcepage.HereHow' |
+                  translate}}
+                </span>
+              </p>
+
+
+              <div class="row">
+                <div class="col-sm-12 col-md-12">
+                  <h3 class="card_title__underlined">
+                    <span class="card_title__underline">
+                      {{'Train' | translate }}
+                    </span>
+                  </h3>
+                </div>
+                <div class="col-sm-12 col-md-12">
+                  <div class="section-subtitle"> </div>
+                </div>
+              </div>
+
+              <p style="color:#7695a5">
+                {{'Resolution_bot_train_StylingYouReplies' | translate: tparams }}.
+                <span style="color: #0f62ff; text-decoration: underline;cursor: pointer;"
+                  (click)="openResolutionBotDocsStylingYourChatbotReplies()">
+                  {{'HereHowStylingYourReplies' | translate }}
+                </span>
+              </p>
+
+              <p style="color:#7695a5">
+                {{'Resolution_bot_train_SendImagesVideoAndMore' | translate: tparams }}.
+                <span style="color: #0f62ff; text-decoration: underline;cursor: pointer;"
+                  (click)="openDocsResolutionBotSendImageVideosMore()">
+                  {{'HereHowSendImageVideosMore' | translate }}
+                </span>
+              </p>
+
+
+              <div class="row">
+                <div class="col-sm-12 col-md-12">
+                  <h3 class="card_title__underlined">
+                    <span class="card_title__underline">
+                      {{'Handoff' | translate}}
+                    </span>
+                  </h3>
+                </div>
+                <div class="col-sm-12 col-md-12">
+                  <div class="section-subtitle"> </div>
+                </div>
+              </div>
+
+              <p style="color:#7695a5">
+                {{'DoYouWantToHandoffToHumanAgentDuringAChatbotConversation' | translate}}
+
+                <span style="color: #0f62ff; text-decoration: underline;cursor: pointer;"
+                  (click)="openDocsResolutionBotHandoffToHumanAgent()">
+                  {{'HereHowToHandoffToTheHumanAgent' | translate }}.
+                </span>
+              </p>
+            </section>
+            <!-- ./ end section Resolution -->
+
+                       <!-- ------------------------------------------------- -->
+            <!-- Dialogflow  -->
+            <!-- ------------------------------------------------- -->
+            <section *ngIf="botType === 'dialogflow'">
+              <div class="row">
+                <div class="col-sm-12 col-md-12">
+                  <h3 class="card_title__underlined" style="margin-top: 20px!important;">
+                    <span class="card_title__underline">
+                      {{'ConnectToYourDialogflowAgent' | translate}}
+                    </span>
+                  </h3>
+                </div>
+                <div class="col-sm-12 col-md-12">
+                  <div class="section-subtitle"> </div>
+                </div>
+              </div>
+
+              <p style="color:#7695a5">
+                {{'YouNeedAServiceAccountPrivateKeyFileToConnectTheDialogflowAgent' | translate: tparams}}.
+                <span style="color: #0f62ff; text-decoration: underline;cursor: pointer;"
+                  (click)="openDeveloperTiledeskGenerateDFCredentialFile()">
+                  {{'FollowThisGuideToFindOutHowToCreateThisFile' | translate }}.
+                </span>
+              </p>
+
+              <!-- <h4 class="card-title"
+                style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 5px; margin-top: 18px;">
+                {{'Train' | translate }}
+              </h4> -->
+
+              <div class="row">
+                <div class="col-sm-12 col-md-12">
+                  <h3 class="card_title__underlined">
+                    <span class="card_title__underline">
+                      {{'Train' | translate }}
+                    </span>
+                  </h3>
+                </div>
+                <div class="col-sm-12 col-md-12">
+                  <div class="section-subtitle"> </div>
+                </div>
+              </div>
+
+              <p style="color:#7695a5">
+                {{'DoYouWantToSendImagesVideosButtonsAndMore' | translate }}
+                <span style="color: #0f62ff; text-decoration: underline;cursor: pointer;"
+                  (click)="openDocsTiledeskDialogflowConnector()">
+                  {{'FollowTheMicrolanguageGuide' | translate }}.
+                </span>
+              </p>
+              <div (click)="openDocsTiledeskDialogflowConnector()" style="cursor: pointer;">
+                <img src="assets/img/Dialogflow-Microlanguage-v2.png">
+              </div>
+
+              <!-- <h4 class="card-title"
+                style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 5px; margin-top: 18px;">
+                {{'Handoff' | translate}}
+              </h4> -->
+
+              <div class="row">
+                <div class="col-sm-12 col-md-12">
+                  <h3 class="card_title__underlined">
+                    <span class="card_title__underline">
+                      {{'Handoff' | translate}}
+                    </span>
+                  </h3>
+                </div>
+                <div class="col-sm-12 col-md-12">
+                  <div class="section-subtitle"> </div>
+                </div>
+              </div>
+
+              <p style="color:#7695a5">
+                {{'DoYouWantToHandoffToHumanAgentDuringAChatbotConversation' | translate}}
+                {{'SimplyReplyAgentOnTheLastResponseLine' | translate}}.
+                <span style="color: #0f62ff; text-decoration: underline;cursor: pointer;"
+                  (click)="openDocsDialogFlowHandoffToHumanAgent()">
+                  {{'HereHowToHandoffToTheHumanAgent' | translate }}.
+                </span>
+              </p>
+
+            </section>
+            <!-- ./ end section Dilaogflow -->
+
+                   <!-- ------------------------------------------------- -->
+            <!-- RIGHT SIDEBAR External  -->
+            <!-- ------------------------------------------------- -->
+            <section *ngIf="botType === 'external'">
+              <div class="row">
+                <div class="col-sm-12 col-md-12">
+                  <h3 class="card_title__underlined" style="margin-top: 20px!important;">
+                    <span class="card_title__underline">
+                      {{ "ConnectYourExternalChatbotsTo" | translate: tparams }}
+                    </span>
+                  </h3>
+                </div>
+                <div class="col-sm-12 col-md-12">
+                  <div class="section-subtitle"> </div>
+                </div>
+              </div>
+
+              <p style="color:#7695a5">
+                {{ "BotsPage.ExternabotQuickTips" | translate: tparams }}
+                <span style="color: #0f62ff; display: block; cursor:pointer"
+                  (click)="openExternalBotIntegrationTutorial()">
+                  {{ "HereTheTutorial" | translate: tparams }}
+                </span>
+              </p>
+            </section>
+             <!-- ./ end section External -->
+
+
+
+
+
+
+
           </div>
         </div>
       </div> <!-- ./ col-md-4 -->
