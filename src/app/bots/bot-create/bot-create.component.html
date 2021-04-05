@@ -35,7 +35,7 @@
             {{'HereHowStylingYourReplies' | translate}}
           </span>
 
-          <span *ngIf="botType === 'resolution'"
+          <!-- <span *ngIf="botType === 'resolution'"
             style="margin-left: 8px;vertical-align: middle;color: #0f62ff; font-size: 14px;font-weight: 400; cursor: pointer; text-decoration: underline;"
             (click)="openDocsResolutionBotSendImageVideosMore()">
             {{'HereHowSendImageVideosMore' | translate}}
@@ -45,7 +45,7 @@
             style="margin-left: 8px;vertical-align: middle;color: #0f62ff; font-size: 14px;font-weight: 400; cursor: pointer; text-decoration: underline;"
             (click)="openDocsResolutionBotHandoffToHumanAgent()">
             {{'HereHowToHandoffToTheHumanAgent' | translate}}
-          </span>
+          </span> -->
 
           <span *ngIf="botType === 'external'"
             style="margin-left: 8px;vertical-align: middle;color: #0f62ff; font-size: 14px;font-weight: 400; cursor: pointer; text-decoration: underline;"
@@ -59,7 +59,7 @@
             {{'HowToGenerateDialogflowGoogleCredentialsFile' | translate}}
           </span>
 
-          <span *ngIf="botType === 'dialogflow'"
+          <!-- <span *ngIf="botType === 'dialogflow'"
             style="margin-left: 8px;vertical-align: middle;color: #0f62ff; font-size: 14px;font-weight: 400; cursor: pointer; text-decoration: underline;"
             (click)="openDocsTiledeskDialogflowConnector()">
             {{'HowHandlingImagesVideosButtonsAndMore' | translate}}
@@ -69,7 +69,7 @@
             style="margin-left: 8px;vertical-align: middle;color: #0f62ff; font-size: 14px;font-weight: 400; cursor: pointer; text-decoration: underline;"
             (click)="openDocsDialogFlowHandoffToHumanAgent()">
             {{'HereHowToHandoffToTheHumanAgent' | translate}}
-          </span>
+          </span> -->
         </div>
       </div>
     </div>
@@ -377,7 +377,7 @@
                 <div class="col-sm-12 col-md-12">
                   <h3 class="card_title__underlined">
                     <span class="card_title__underline">
-                      {{'Train' | translate }}
+                      {{ "QuickTips" | translate }}
                     </span>
                   </h3>
                 </div>
@@ -407,7 +407,7 @@
                 <div class="col-sm-12 col-md-12">
                   <h3 class="card_title__underlined">
                     <span class="card_title__underline">
-                      {{'Handoff' | translate}}
+                      {{'HandoffToHumanAgents' | translate}}
                     </span>
                   </h3>
                 </div>
@@ -421,7 +421,8 @@
 
                 <span style="color: #0f62ff; text-decoration: underline;cursor: pointer;"
                   (click)="openDocsResolutionBotHandoffToHumanAgent()">
-                  {{'HereHowToHandoffToTheHumanAgent' | translate }}.
+                  <!-- {{'HereHowToHandoffToTheHumanAgent' | translate }}. -->
+                  {{'Resourcepage.HereHow' | translate}}
                 </span>
               </p>
 
@@ -451,7 +452,9 @@
                 {{ "BotsPage.ExternabotQuickTips" | translate: tparams }}
                 <span style="color: #0f62ff; display: block; cursor:pointer"
                   (click)="openExternalBotIntegrationTutorial()">
-                  {{ "HereTheTutorial" | translate: tparams }}
+                  <!-- {{ "HereTheTutorial" | translate: tparams }} -->
+                  {{ "HereThe_Tutorial" | translate }}
+                  
                 </span>
               </p>
             </section>
@@ -514,7 +517,7 @@
                 <div class="col-sm-12 col-md-12">
                   <h3 class="card_title__underlined">
                     <span class="card_title__underline">
-                      {{'Train' | translate }}
+                      {{ "QuickTips" | translate }}
                     </span>
                   </h3>
                 </div>
@@ -543,7 +546,7 @@
                 <div class="col-sm-12 col-md-12">
                   <h3 class="card_title__underlined">
                     <span class="card_title__underline">
-                      {{'Handoff' | translate}}
+                      {{'HandoffToHumanAgents' | translate}}
                     </span>
                   </h3>
                 </div>
@@ -557,7 +560,7 @@
                 {{'SimplyReplyAgentOnTheLastResponseLine' | translate}}.
                 <span style="color: #0f62ff; text-decoration: underline;cursor: pointer;"
                   (click)="openDocsDialogFlowHandoffToHumanAgent()">
-                  {{'HereHowToHandoffToTheHumanAgent' | translate }}.
+                  {{'Resourcepage.HereHow' | translate}}
                 </span>
               </p>
 

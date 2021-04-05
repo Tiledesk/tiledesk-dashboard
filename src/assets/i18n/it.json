@@ -452,6 +452,7 @@
     "DialogflowKnowledgeBaseFeature":"funzionalità della Knowledge-base di Dialogflow",
     "ConnectYourExternalChatbotsTo":"Connetti i tuoi chatbot a {{ company_name }}",
     "HereTheTutorial": "Qui il tutorial su come connettere i tuoi chatbot a {{ company_name }}.",
+    "HereThe_Tutorial": "Qui il tutorial.",
     "FiletypeNotSupported": "file type not supported",
     "ChatLimit": "Limite di chat",
     "SuccessfullyUpdated": "Aggiornato con successo",

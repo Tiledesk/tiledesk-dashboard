@@ -536,7 +536,7 @@
                   <span style="color: #0f62ff;"> {{'RoutingAndDepts' | translate}}</span>
                 </span>
               </span>
-            </span>  <!-- ./end Department section (replaces Bot attributes) -->
+            </span> <!-- ./end Department section (replaces Bot attributes) -->
 
             <!-- ------------------------------------------------- -->
             <!-- RIGHT SIDEBAR Resolution bot -->
@@ -568,7 +568,7 @@
                 <div class="col-sm-12 col-md-12">
                   <h3 class="card_title__underlined">
                     <span class="card_title__underline">
-                      {{'Train' | translate }}
+                      {{ "QuickTips" | translate }}
                     </span>
                   </h3>
                 </div>
@@ -598,7 +598,7 @@
                 <div class="col-sm-12 col-md-12">
                   <h3 class="card_title__underlined">
                     <span class="card_title__underline">
-                      {{'Handoff' | translate}}
+                      {{'HandoffToHumanAgents' | translate}}
                     </span>
                   </h3>
                 </div>
@@ -612,13 +612,14 @@
 
                 <span style="color: #0f62ff; text-decoration: underline;cursor: pointer;"
                   (click)="openDocsResolutionBotHandoffToHumanAgent()">
-                  {{'HereHowToHandoffToTheHumanAgent' | translate }}.
+                  <!-- {{'HereHowToHandoffToTheHumanAgent' | translate }}. -->
+                  {{'Resourcepage.HereHow' | translate}}
                 </span>
               </p>
             </section>
             <!-- ./ end section Resolution -->
 
-                       <!-- ------------------------------------------------- -->
+            <!-- ------------------------------------------------- -->
             <!-- Dialogflow  -->
             <!-- ------------------------------------------------- -->
             <section *ngIf="botType === 'dialogflow'">
@@ -652,7 +653,7 @@
                 <div class="col-sm-12 col-md-12">
                   <h3 class="card_title__underlined">
                     <span class="card_title__underline">
-                      {{'Train' | translate }}
+                      {{ "QuickTips" | translate }}
                     </span>
                   </h3>
                 </div>
@@ -681,7 +682,7 @@
                 <div class="col-sm-12 col-md-12">
                   <h3 class="card_title__underlined">
                     <span class="card_title__underline">
-                      {{'Handoff' | translate}}
+                      {{'HandoffToHumanAgents' | translate}}
                     </span>
                   </h3>
                 </div>
@@ -695,14 +696,14 @@
                 {{'SimplyReplyAgentOnTheLastResponseLine' | translate}}.
                 <span style="color: #0f62ff; text-decoration: underline;cursor: pointer;"
                   (click)="openDocsDialogFlowHandoffToHumanAgent()">
-                  {{'HereHowToHandoffToTheHumanAgent' | translate }}.
+                  {{'Resourcepage.HereHow' | translate}}
                 </span>
               </p>
 
             </section>
             <!-- ./ end section Dilaogflow -->
 
-                   <!-- ------------------------------------------------- -->
+            <!-- ------------------------------------------------- -->
             <!-- RIGHT SIDEBAR External  -->
             <!-- ------------------------------------------------- -->
             <section *ngIf="botType === 'external'">
@@ -723,11 +724,12 @@
                 {{ "BotsPage.ExternabotQuickTips" | translate: tparams }}
                 <span style="color: #0f62ff; display: block; cursor:pointer"
                   (click)="openExternalBotIntegrationTutorial()">
-                  {{ "HereTheTutorial" | translate: tparams }}
+                  <!-- {{ "HereTheTutorial" | translate: tparams }} -->
+                  {{ "HereThe_Tutorial" | translate }}
                 </span>
               </p>
             </section>
-             <!-- ./ end section External -->
+            <!-- ./ end section External -->
 
 
 
