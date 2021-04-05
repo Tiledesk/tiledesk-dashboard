@@ -1,9 +1,12 @@
 
 # tiledesk-dashboard
 
+
 ### 2.1.45
 - Duplicate the "agent" array of the "request.snapshot" property in "request" during the "ON-UPDATE" websocket callback
-- UI refactoring of bot details of type "Resolution"
+- Replaces in the details page of the bot type "Diloagflow", "External" and "Resolution" the Bot Attributes section with the Department section that lists the departments the bot is associated with
+- Adds links to documentation on the bot detail page for "Dialogflow", "External" and "Resolution" bot types
+- Updates the Quick Tips section on the "Resolution bot" > "Add Answer" and "Edit Answer" pages
 
 ### 2.1.44
 - Rename the accordion "Jwt Decoded" to "Trusted Info" in the right sidebar of the conversation detail page and move it to the top of the sidebar
