@@ -1004,8 +1004,8 @@
         "FaqAttributes": "Attributi Risposta",
         "FaqID": "Id Risposta",
         "CreationDate": "Data creazione",
-        "TheRequestWillBeAssignedToAHumanAgent": "la conversazione verrà assegnata a un agente umano",
-        "DisplayTheButtonWithNameButton_1": "visualizza il pulsante con il nome button_1",
+        "TheRequestWillBeAssignedToAHumanAgent": "inserisci '\\agent' come ultima riga nell'area di testo “Risposta“ per spostare automaticamente la conversazione su un agente umano, seguendo le regole del dipartimento. Altro sul Human handoff:",
+        "DisplayTheButtonWithNameButton_1": "sintassi per visualizzare un pulsante: utilizza ‘*’ seguito da uno spazio, quindi il testo del pulsante su una nuova riga del testo della risposta. Vedi esempio",
         "DisplayTheImageWithTheSpecifiedURL": "visualizza l'immagine con l'URL specificato",
         "CallTheExternalWebhookToTheSpecifiedEndpoint": "chiama il webhook esterno all'endpoint specificato"
     },
@@ -1863,7 +1863,7 @@
     "EnterIntentName":"Inserisci nome intent",
     "BotDetails":"Dettagli bot",
     "AdvancedChatboStylingButtons": "Stile chatbot avanzato: pulsanti",
-    "SylingYourChatbotReplies":"Definire lo stile delle risposte del chatbot",
+    "StylingYourChatbotReplies":"Definire lo stile delle risposte del chatbot",
     "WebhookmentUrlMustBeAHttpsUrl":"L'URL del webhook deve essere un URL https o http",
     "WebhookmentUrlMustBeAValidUrl":"L'URL del webhook deve essere un URL valido",
     "EnableWebhookCallForThisIntent":"Abilita la chiamata webhook per questo intent",
@@ -1900,5 +1900,10 @@
     "Resolution_bot_train_StylingYouReplies":"{{ company_name }} fornisce un modo semplice per definire lo stile dei messaggi di risposta del chatbot",
     "HereHowStylingYourReplies":"Ecco come modellare le vostre risposte",
     "Resolution_bot_train_SendImagesVideoAndMore":"{{ company_name }} supporta molti messaggi speciali che vanno oltre il semplice testo",
-    "HereHowSendImageVideosMore": "Ecco come inviare immagini, video e altro"
+    "HereHowSendImageVideosMore": "Ecco come inviare immagini, video e altro",
+    "YourAnswerText": "Il tuo testo di risposta",
+    "Images":"Immagini",
+    "ResolutionBotImagesVideosButtonsAndMore":"Resolution bot: immagini, video, pulsanti e altro ancora",
+    "HandoffToHumanAgents":"Trasferimento ad agenti umani",
+    "RenderAbutton": "Eseguire il rendering di un pulsante"
 }

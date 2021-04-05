@@ -1008,9 +1008,9 @@
 		"FaqAttributes": "Attribute der Antwort",
 		"FaqID": "Antwort Id",
 		"CreationDate": "Erstelldatum",
-		"TheRequestWillBeAssignedToAHumanAgent": "Die Anfrage wird einem menschlichen Agenten zugewiesen",
-		"DisplayTheButtonWithNameButton_1": "Zeigen Sie die Schaltfläche mit dem Namen button_1 an",
-		"DisplayTheImageWithTheSpecifiedURL": "Zeigen Sie das Bild mit der angegebenen URL an",
+		"TheRequestWillBeAssignedToAHumanAgent": "fügen Sie '\\agent' als letzte Zeile in den Textbereich “Antwort“ ein, um die Konversation gemäß den Abteilungsregeln automatisch auf einen menschlichen Agenten zu verschieben. Mehr zur Human handoff:",
+		"DisplayTheButtonWithNameButton_1": "syntax der Anzeigetaste: Verwenden Sie ‘*’, gefolgt von einem Leerzeichen und dem Text der Schaltfläche in einer neuen Zeile des Antworttextes. Siehe Beispiel",
+		"DisplayTheImageWithTheSpecifiedURL": "zeigen Sie das Bild mit der angegebenen URL an. Siehe Beispiel",
 		"CallTheExternalWebhookToTheSpecifiedEndpoint": "Rufen Sie den externen Webhook zum angegebenen Endpunkt auf"
 	},
 	"FaqTestPage": {
@@ -1865,7 +1865,7 @@
 	"EnterIntentName":"Geben sie den namen intent ein.",
 	"BotDetails":"Bot einzelheiten",
 	"AdvancedChatboStylingButtons": "Erweitertes Chatbot-Styling: Schaltflächen",
-	"SylingYourChatbotReplies":"Styling Ihrer Chatbot-Antworten",
+	"StylingYourChatbotReplies":"Styling Ihrer Chatbot-Antworten",
 	"WebhookmentUrlMustBeAHttpsUrl":"Die Webhook-URL muss eine https- oder http-URL sein",
 	"WebhookmentUrlMustBeAValidUrl":"Die Webhook-URL muss eine gültige URL sein",
 	"EnableWebhookCallForThisIntent":"Aktivieren Sie den Webhook-Aufruf für diese Absicht",
@@ -1902,7 +1902,11 @@
 	"Resolution_bot_train_StylingYouReplies":"{{ company_name }} bietet eine einfache Möglichkeit, Ihre Chatbot-Antwortnachrichten zu gestalten",
 	"HereHowStylingYourReplies":"Hier ist, wie Ihre Antworten Styling",
 	"Resolution_bot_train_SendImagesVideoAndMore":"{{ company_name }} unterstützt viele spezielle Nachrichten, die über einfachen Text hinausgehen",
-    "HereHowSendImageVideosMore": "Hier wie Senden von Bildern, Videos & mehr"
+    "HereHowSendImageVideosMore": "Hier wie Senden von Bildern, Videos & mehr",
+	"YourAnswerText": "Ihr Antworttext",
+	"Images":"Bilder",
+	"ResolutionBotImagesVideosButtonsAndMore":"Resolution bot: bilder, Videos, Schaltflächen und mehr",
+	"HandoffToHumanAgents":"Handoff zu menschlichen Agenten",
+	"RenderAbutton": "Eine Schaltfläche rendern"
 	
-
 }

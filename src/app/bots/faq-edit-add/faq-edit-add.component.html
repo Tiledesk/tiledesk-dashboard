@@ -20,8 +20,10 @@
 
 
     <div class="row">
+      <!-- ---------------------------------------------- -->
       <!--  CREATE_VIEW -->
-      <div class="col-md-8" *ngIf="CREATE_VIEW">
+      <!-- ---------------------------------------------- -->
+      <div class="col-md-7" *ngIf="CREATE_VIEW">
         <div class="card card--no-border" style="margin-top:0px; padding-bottom:5px; margin-bottom: 5px;">
           <loading-spinner *ngIf="showSpinner"></loading-spinner>
           <div *ngIf="!showSpinner" class="card-content">
@@ -111,15 +113,15 @@
               </div>
             </div>
 
-         
+
 
             <!-- SPACER -->
             <div class="col-sm-12" style="height:15px"></div>
 
             <!-- <label style="" class="col-sm-2"></label> -->
             <div class="col-sm-12">
-              <button class="btn btn-primary pull-right create-answer-btn" [disabled]="question?.length < 2 || answer?.length < 2 || intent_name?.length < 1"
-                (click)="create()">
+              <button class="btn btn-primary pull-right create-answer-btn"
+                [disabled]="question?.length < 2 || answer?.length < 2 || intent_name?.length < 1" (click)="create()">
                 <!-- Crea FAQ  -->
                 {{ "FaqEditAddPage.CreateFaq" | translate }}
               </button>
@@ -127,11 +129,12 @@
 
           </div>
         </div>
-      </div> <!-- /. CREATE_VIEW -->
+      </div> <!-- ./ CREATE_VIEW col-md-7 -->
 
-
+      <!-- ---------------------------------------------- -->
       <!-- EDIT_VIEW -->
-      <div class="col-md-8" *ngIf="EDIT_VIEW">
+      <!-- ---------------------------------------------- -->
+      <div class="col-md-7" *ngIf="EDIT_VIEW">
         <div class="card  card--no-border" style="margin-top:0px; padding-bottom:5px; margin-bottom: 5px;">
           <loading-spinner *ngIf="showSpinner"></loading-spinner>
           <div *ngIf="!showSpinner" class="card-content">
@@ -170,9 +173,9 @@
               <!-- Type/Add your questtion here separated with a new line -->
               {{ 'TypeAddYourQuesttionHere' | translate}}
             </span>
-            <div class="col-sm-12"> 
-              <textarea [(ngModel)]="question_toUpdate" class="textarea" rows="3" style="resize: vertical; border-radius:5px"
-                placeholder='{{ "FaqEditAddPage.Question" | translate }}'>
+            <div class="col-sm-12">
+              <textarea [(ngModel)]="question_toUpdate" class="textarea" rows="3"
+                style="resize: vertical; border-radius:5px" placeholder='{{ "FaqEditAddPage.Question" | translate }}'>
                 </textarea>
             </div>
 
@@ -186,8 +189,8 @@
               {{ "FaqEditAddPage.Answer" | translate }}
             </label>
             <div class="col-sm-12">
-              <textarea [(ngModel)]="answer_toUpdate" class="textarea" rows="3" style="resize: vertical;border-radius:5px"
-                placeholder='{{ "FaqEditAddPage.Answer" | translate }}'>
+              <textarea [(ngModel)]="answer_toUpdate" class="textarea" rows="3"
+                style="resize: vertical;border-radius:5px" placeholder='{{ "FaqEditAddPage.Answer" | translate }}'>
                   </textarea>
             </div>
 
@@ -228,39 +231,33 @@
 
             <!-- <label style="" class="col-sm-2"></label> -->
             <div class="col-sm-12">
-              <button class="btn btn-primary pull-right update-answer-btn" (click)="edit()" [disabled]="question_toUpdate?.length < 2 || answer_toUpdate?.length < 2 || intent_name?.length < 1">
-                
+              <button class="btn btn-primary pull-right update-answer-btn" (click)="edit()"
+                [disabled]="question_toUpdate?.length < 2 || answer_toUpdate?.length < 2 || intent_name?.length < 1">
+
                 {{ "FaqEditAddPage.UpdateFaq" | translate }}
               </button>
-              <button class="btn btn-danger pull-right delete-answer-btn" (click)='presentSwalModalDeleteFag()' style="margin-right: 8px;">
+              <button class="btn btn-danger pull-right delete-answer-btn" (click)='presentSwalModalDeleteFag()'
+                style="margin-right: 8px;">
                 {{ 'FaqPage.DeleteFaq' | translate }}
               </button>
             </div>
 
           </div>
         </div>
-      </div> <!-- col-md-8 -->
+      </div> <!-- ./ EDIT_VIEW col-md-7 -->
 
       <!-- ---------------------------------------------- -->
-      <!-- RIGHT SIDEBAR 'FAQ ATTRIBUTES' & Quick tips  -->
+      <!-- RIGHT SIDEBAR Quick tips  -->
       <!-- ---------------------------------------------- -->
-      <div class="col-md-4">
+      <div class="col-md-5">
         <div class="card  card--no-border"
           style="padding-top: 0px;padding-bottom:5px;margin-bottom: 5px;margin-top: 0px;">
           <div class="card-content">
-            <!--
-              // -----------------------------------------------------------
-              // Attributes
-              // ----------------------------------------------------------- -->
-            <section *ngIf="EDIT_VIEW">
-              <!-- <div class="row" style="border-bottom: 1px solid #eeeeee;">
-                <div class="col-xs-12">
-                  <h4 class="right-sidebar-title" style="">
-                    {{ "FaqEditAddPage.FaqAttributes" | translate }}
-                  </h4>
-                </div>
-              </div> -->
 
+            <!-- ----------------------------------------------------------- -->
+            <!-- Attributes only for EDIT_VIEW  !!!! NO MORE DISPLAYED -->
+            <!-- ----------------------------------------------------------- -->
+            <!-- <section *ngIf="EDIT_VIEW">
               <div class="row">
                 <div class="col-sm-12 col-md-12">
                   <h3 class="card_title__underlined">
@@ -272,29 +269,12 @@
                 <div class="col-sm-12 col-md-12">
                   <div class="section-subtitle"> </div>
                 </div>
-              </div>
-
-              <!-- style="margin-top:5px" -->
-              <!-- --------------------------------------------------------------------- -->
-              <!-- FAQ Created At -->
-              <!-- --------------------------------------------------------------------- -->
-              <div class="row">
+              </div> -->
+            <!-- --------------------------------------------------------------------- -->
+            <!-- FAQ Created At -->
+            <!-- --------------------------------------------------------------------- -->
+            <!-- <div class="row">
                 <div class="col-sm-12">
-                  <!-- <p style="margin-bottom: 0px;">
-                    <i class="material-icons"
-                      style="vertical-align: middle; color: #394f5a;font-size:14px;  margin-top: 1px;">calendar_today</i>
-                    <span style="position: relative;top: 1px;">
-                      <span class="right-sidebar-attribute-name" style="">
-                        {{ "FaqEditAddPage.CreationDate" | translate }}
-                      </span>
-
-                      <span class="right-sidebar-attribute-value" style="">
-                        {{ faq_creationDate | date: 'd/M/y'}}
-                      </span>
-
-                    </span>
-                  </p> -->
-
                   <p style="margin-bottom: 0px;">
                     <span class="tool_tip">
                       <i class="material-icons right-sidebar--m-icon">calendar_today</i>
@@ -307,30 +287,15 @@
                     <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
                       {{ faq_creationDate | date: 'd/M/y'}}
                     </span>
-
                   </p>
                 </div>
-              </div>
+              </div> -->
 
-              <!-- --------------------------------------------------------------------- -->
-              <!-- FAQ id -->
-              <!-- --------------------------------------------------------------------- -->
-              <div class="row" style="margin-top:5px">
+            <!-- --------------------------------------------------------------------- -->
+            <!-- FAQ id -->
+            <!-- --------------------------------------------------------------------- -->
+            <!-- <div class="row" style="margin-top:5px">
                 <div class="col-sm-12">
-                  <!-- <p style="margin-bottom: 0px; padding-top: 3px;">
-                    <i class="material-icons right-sidebar-icon" style="">code</i>
-                    <span style="position: relative;top: 1px;">
-                      <span class="right-sidebar-attribute-name" style="">
-                        {{ "FaqEditAddPage.FaqID" | translate }}
-                      </span>
-
-                      <span class="right-sidebar-attribute-value" style="">
-                        {{ id_faq }}
-                      </span>
-
-                    </span>
-                  </p> -->
-
                   <p style="margin-bottom: 12px;">
                     <span class="tool_tip">
                       <i class="material-icons right-sidebar--m-icon">code</i>
@@ -345,20 +310,13 @@
                     </span>
                   </p>
                 </div>
-              </div>
-            </section>
+              </div> 
+            </section> -->
 
 
             <!-- ----------------------------------------------------------- -->
             <!-- Quick Tips -->
             <!-- ----------------------------------------------------------- -->
-            <!-- <div class="row" style="border-bottom: 1px solid #eeeeee;">
-              <div class="col-xs-12">
-                <h4 class="right-sidebar-title" style="margin-top: 12px;">
-                  {{ "QuickTips" | translate }}
-                </h4>
-              </div>
-            </div> -->
 
             <div class="row">
               <div class="col-sm-12 col-md-12">
@@ -378,17 +336,20 @@
               <!-- style="margin-top: 6px;" -->
               <div class="col-sm-12">
                 <div class="row">
-                  <div class="col-xs-6">
+                  <div class="col-xs-4">
                     <div style="line-height: 14px;">
                       <span class="right-sidebar-attribute-name">
                         \agent
                       </span>
                     </div>
                   </div>
-                  <div class="col-xs-6">
+                  <div class="col-xs-8">
                     <div style="line-height: 14px;">
-                      <span class="right-sidebar-attribute-value">
+                      <span class="right-sidebar-attribute-name"> {{'HandoffToHumanAgents' | translate}}: </span>
+                      <span class="faq-right-sidebar-attribute-value">
                         {{"FaqEditAddPage.TheRequestWillBeAssignedToAHumanAgent" | translate}}
+                        <span class="faq-right-sidebar-link" (click)="goToKBArticle_HandoffToHumanAgents()">
+                          {{"Resourcepage.Here" | translate}}. </span>
                       </span>
                     </div>
                   </div>
@@ -400,18 +361,26 @@
               <div class="col-sm-12" style="margin-top: 6px;">
 
                 <div class="row">
-                  <div class="col-xs-6">
+                  <div class="col-xs-4">
                     <div style="line-height: 14px;">
-                      <span class="right-sidebar-attribute-name" style="">
-                        <span style="display: block;"> answer </span>
-                        * button_1
+                      <span class="right-sidebar-attribute-name">
+                        <span style="display: block;"> {{'YourAnswerText' | translate}} </span>
+                        * Button-1-text
+                        <span style="display: block;">
+                          * Button-2-text
+                        </span>
+
                       </span>
                     </div>
                   </div>
-                  <div class="col-xs-6">
+                  <div class="col-xs-8">
                     <div style="line-height: 14px;">
-                      <span class="right-sidebar-attribute-value" style="">
+                      <span class="right-sidebar-attribute-name"> {{'RenderAbutton' | translate}}: </span>
+                      <span class="faq-right-sidebar-attribute-value">
                         {{"FaqEditAddPage.DisplayTheButtonWithNameButton_1" | translate}}
+                        <span class="faq-right-sidebar-link" (click)="goToKBArticleAnchor_TextButton()">
+                          {{"Resourcepage.Here" | translate}}. 
+                        </span>
                       </span>
                     </div>
                   </div>
@@ -422,18 +391,22 @@
             <div class="row" style="margin-top:5px">
               <div class="col-sm-12">
                 <div class="row" style="margin-top: 6px;">
-                  <div class="col-xs-6">
+                  <div class="col-xs-4">
                     <div style="line-height: 14px;">
-                      <span class="right-sidebar-attribute-name" style="">
-                        <span style="display: block;"> answer </span>
-                        \image:URL
+                      <span class="right-sidebar-attribute-name">
+                        <span style="display: block;"> {{'YourAnswerText' | translate}} </span>
+                        tdImage:IMAGE-URL
                       </span>
                     </div>
                   </div>
-                  <div class="col-xs-6">
+                  <div class="col-xs-8">
                     <div style="line-height: 14px;">
-                      <span class="right-sidebar-attribute-value" style="">
+                      <span class="right-sidebar-attribute-name"> {{'Images' | translate}}: </span>
+                      <span class="faq-right-sidebar-attribute-value">
                         {{"FaqEditAddPage.DisplayTheImageWithTheSpecifiedURL" | translate}}
+                        <span class="faq-right-sidebar-link" (click)="goToKBArticleAnchor_SendImages()">
+                          {{"Resourcepage.Here" | translate}}. 
+                        </span>
                       </span>
                     </div>
                   </div>
@@ -441,28 +414,26 @@
               </div>
             </div>
 
-            <div class="row" style="margin-top:5px">
+            <!-- <div class="row" style="margin-top:5px">
               <div class="col-sm-12">
                 <div class="row" style="margin-top: 6px;">
                   <div class="col-xs-6">
                     <div style="line-height: 14px;">
-                      <span class="right-sidebar-attribute-name" style="">
+                      <span class="right-sidebar-attribute-name" >
                         <span style="display: block;"> \webhook:Endpoint </span>
                       </span>
                     </div>
                   </div>
                   <div class="col-xs-6">
                     <div style="line-height: 14px;">
-                      <span class="right-sidebar-attribute-value" style="">
-
+                      <span class="faq-right-sidebar-attribute-value">
                         {{"FaqEditAddPage.CallTheExternalWebhookToTheSpecifiedEndpoint" | translate}}
-
                       </span>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
 
 
             <!-- ----------------------------------------------------------- -->
@@ -489,15 +460,8 @@
               </div>
             </div>
 
-
             <div class="row">
-              <!--  -->
               <div class="col-sm-12">
-                <!-- <span class="right-sidebar-attribute-value" style="color: #03a5e8; cursor: pointer;"
-                  (click)="goToKBArticle_AdvancedChatbotStyling()">
-                  Advanced chatbot styling: buttons
-                </span> -->
-
                 <span>
                   <svg style="width: 25px;height:auto; vertical-align: middle;" aria-hidden="true" focusable="false"
                     data-prefix="fab" data-icon="readme" class="svg-inline--fa fa-readme fa-w-18" role="img"
@@ -509,7 +473,6 @@
                 </span>
                 <a style="color:#0f62ff !important; vertical-align: middle; font-size: 14px; font-weight: 400;cursor: pointer; margin-left: 8px; text-decoration: underline;"
                   (click)="goToKBArticle_AdvancedChatbotStyling()">
-
                   {{ 'AdvancedChatboStylingButtons' | translate }}
                 </a>
 
@@ -518,11 +481,6 @@
 
             <div class="row" style="margin-top:5px">
               <div class="col-sm-12" style="margin-top: 6px;">
-                <!-- <   <span class="right-sidebar-attribute-value" style="color: #03a5e8; cursor: pointer;"
-                  (click)="goToKBArticle_StylingYourChatbotReplies()">
-                  Styling your chatbot replies
-                </span> -->
-
                 <span>
                   <svg style="width: 25px;height:auto; vertical-align: middle;" aria-hidden="true" focusable="false"
                     data-prefix="fab" data-icon="readme" class="svg-inline--fa fa-readme fa-w-18" role="img"
@@ -534,15 +492,50 @@
                 </span>
                 <a style="color:#0f62ff !important; vertical-align: middle; font-size: 14px; font-weight: 400;cursor: pointer; margin-left: 8px; text-decoration: underline;"
                   (click)="goToKBArticle_StylingYourChatbotReplies()">
-
-                  {{ 'SylingYourChatbotReplies' | translate }}
+                  {{ 'StylingYourChatbotReplies' | translate }}
                 </a>
               </div>
             </div>
 
+            <div class="row" style="margin-top:5px">
+              <div class="col-sm-12" style="margin-top: 6px;">
+                <span>
+                  <svg style="width: 25px;height:auto; vertical-align: middle;" aria-hidden="true" focusable="false"
+                    data-prefix="fab" data-icon="readme" class="svg-inline--fa fa-readme fa-w-18" role="img"
+                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                    <path fill="#0f62ff"
+                      d="M528.3 46.5H388.5c-48.1 0-89.9 33.3-100.4 80.3-10.6-47-52.3-80.3-100.4-80.3H48c-26.5 0-48 21.5-48 48v245.8c0 26.5 21.5 48 48 48h89.7c102.2 0 132.7 24.4 147.3 75 .7 2.8 5.2 2.8 6 0 14.7-50.6 45.2-75 147.3-75H528c26.5 0 48-21.5 48-48V94.6c0-26.4-21.3-47.9-47.7-48.1zM242 311.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5V289c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5V251zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm259.3 121.7c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5V228c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5v-22.8c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5V190z">
+                    </path>
+                  </svg>
+                </span>
+                <a style="color:#0f62ff !important; vertical-align: middle; font-size: 14px; font-weight: 400;cursor: pointer; margin-left: 8px; text-decoration: underline;"
+                  (click)="goToKBArticle_ResolutionBotImagesVideosButtonsAndMore()">
+                  {{ 'ResolutionBotImagesVideosButtonsAndMore' | translate }}
+                </a>
+              </div>
+            </div>
+
+            <div class="row" style="margin-top:5px">
+              <div class="col-sm-12" style="margin-top: 6px;">
+                <span>
+                  <svg style="width: 25px;height:auto; vertical-align: middle;" aria-hidden="true" focusable="false"
+                    data-prefix="fab" data-icon="readme" class="svg-inline--fa fa-readme fa-w-18" role="img"
+                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                    <path fill="#0f62ff"
+                      d="M528.3 46.5H388.5c-48.1 0-89.9 33.3-100.4 80.3-10.6-47-52.3-80.3-100.4-80.3H48c-26.5 0-48 21.5-48 48v245.8c0 26.5 21.5 48 48 48h89.7c102.2 0 132.7 24.4 147.3 75 .7 2.8 5.2 2.8 6 0 14.7-50.6 45.2-75 147.3-75H528c26.5 0 48-21.5 48-48V94.6c0-26.4-21.3-47.9-47.7-48.1zM242 311.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5V289c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5V251zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm259.3 121.7c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5V228c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5v-22.8c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5V190z">
+                    </path>
+                  </svg>
+                </span>
+                <a style="color:#0f62ff !important; vertical-align: middle; font-size: 14px; font-weight: 400;cursor: pointer; margin-left: 8px; text-decoration: underline;"
+                  (click)="goToKBArticle_HandoffToHumanAgents()">
+                  {{ 'HandoffToHumanAgents' | translate }}
+                </a>
+              </div>
+            </div>
+            
           </div>
         </div>
-      </div> <!-- ./ col-md-4 -->
+      </div> <!-- ./ RIGHT SIDEBAR  col-md-5 -->
 
     </div> <!-- ./ row -->
 

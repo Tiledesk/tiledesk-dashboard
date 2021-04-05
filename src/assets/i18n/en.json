@@ -1009,9 +1009,9 @@
         "FaqAttributes": "Answer attributes",
         "FaqID": "Answer Id",
         "CreationDate": "Creation date",
-        "TheRequestWillBeAssignedToAHumanAgent": "the conversation will be assigned to a human agent",
-        "DisplayTheButtonWithNameButton_1": "display the button with name button_1",
-        "DisplayTheImageWithTheSpecifiedURL": "display the image with the specified URL",
+        "TheRequestWillBeAssignedToAHumanAgent": "insert '\\agent' as the last line in “Answer” text area to automatically move the conversaton to a human agent, following the department rules. More on human handoff",
+        "DisplayTheButtonWithNameButton_1": "display button syntax: Use ‘*’ followed by one space, then the button’s text on a new line of the answer text. See example",
+        "DisplayTheImageWithTheSpecifiedURL": "display the image with the specified URL. See example",
         "CallTheExternalWebhookToTheSpecifiedEndpoint": "call the external webhook to the specified endpoint"
     },
     "FaqTestPage": {
@@ -1882,7 +1882,7 @@
     "EnterIntentName":"Enter intent name",
     "BotDetails":"Bot details",
     "AdvancedChatboStylingButtons": "Advanced chatbot styling: buttons",
-    "SylingYourChatbotReplies":"Styling your chatbot replies",
+    "StylingYourChatbotReplies":"Styling your chatbot replies",
     "WebhookmentUrlMustBeAHttpsUrl":"The webhook URL must be an https or http URL",
     "WebhookmentUrlMustBeAValidUrl":"The webhook URL must be a valid URL",
     "EnableWebhookCallForThisIntent":"Enable webhook call for this intent",
@@ -1919,5 +1919,10 @@
     "Resolution_bot_train_StylingYouReplies":"{{ company_name }} provides an easy way to style your chatbot reply messages",
     "HereHowStylingYourReplies":"Here's how styling your replies",
     "Resolution_bot_train_SendImagesVideoAndMore":"{{ company_name }} supports many special messages that go beyond simple text",
-    "HereHowSendImageVideosMore": "Here's how send Images, Videos & more"
+    "HereHowSendImageVideosMore": "Here's how send Images, Videos & more",
+    "YourAnswerText": "Your answer text",
+    "Images":"Images",
+   "ResolutionBotImagesVideosButtonsAndMore":"Resolution bot: images, videos, buttons and more" ,
+   "HandoffToHumanAgents":"Handoff to human agents",
+   "renderAbutton": "Render a button"
 }

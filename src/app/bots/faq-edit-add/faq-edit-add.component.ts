@@ -118,7 +118,7 @@ export class FaqEditAddComponent implements OnInit {
     this.translateUpdateFaqSuccessMsg();
     this.translateUpdateFaqErrorMsg();
     this.translateWarningMsg();
-   
+
     this.translateAreYouSure();
     this.translateErrorDeleting();
     this.translateDone();
@@ -169,9 +169,9 @@ export class FaqEditAddComponent implements OnInit {
   // TRANSLATION
   translateWarningMsg() {
     this.translate.get('Warning').subscribe((text: string) => {
-        this.warningMsg = text;
-        // console.log('+ + + warningMsg', text)
-      });
+      this.warningMsg = text;
+      // console.log('+ + + warningMsg', text)
+    });
   }
 
   translateAreYouSure() {
@@ -195,18 +195,18 @@ export class FaqEditAddComponent implements OnInit {
   translateErrorOccurredDeletingAnswer() {
     this.translate.get('FaqPage.AnErrorOccurredWhilDeletingTheAnswer').subscribe((text: string) => {
       this.errorDeletingAnswerMsg = text;
-       console.log('+ + + AnErrorOccurredWhilDeletingTheAnswer',  this.errorDeletingAnswerMsg)
+      console.log('+ + + AnErrorOccurredWhilDeletingTheAnswer', this.errorDeletingAnswerMsg)
     });
   }
 
   translateAnswerSuccessfullyDeleted() {
     this.translate.get('FaqPage.AnswerSuccessfullyDeleted').subscribe((text: string) => {
-        this.answerSuccessfullyDeleted = text;
-        console.log('+ + + AnswerSuccessfullyDeleted',  this.answerSuccessfullyDeleted)
-      });
+      this.answerSuccessfullyDeleted = text;
+      console.log('+ + + AnswerSuccessfullyDeleted', this.answerSuccessfullyDeleted)
+    });
   }
 
-// /. end translations
+  // /. end translations
 
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
@@ -239,7 +239,7 @@ export class FaqEditAddComponent implements OnInit {
           }, () => {
             console.log('DELETE FAQ * COMPLETE *');
 
-            swal(this.done_msg + "!", this.answerSuccessfullyDeleted , {
+            swal(this.done_msg + "!", this.answerSuccessfullyDeleted, {
               icon: "success",
             }).then((okpressed) => {
               this.location.back();
@@ -252,10 +252,10 @@ export class FaqEditAddComponent implements OnInit {
       });
   }
 
-   /**
-   * GET FAQ BY ID (GET THE DATA OF THE FAQ BY THE ID PASSED FROM FAQ LIST)
-   * USED TO SHOW IN THE TEXAREA THE QUESTION AND THE ANSWER THAT USER WANT UPDATE
-   */
+  /**
+  * GET FAQ BY ID (GET THE DATA OF THE FAQ BY THE ID PASSED FROM FAQ LIST)
+  * USED TO SHOW IN THE TEXAREA THE QUESTION AND THE ANSWER THAT USER WANT UPDATE
+  */
   getFaqById() {
     this.mongodbFaqService.getMongDbFaqById(this.id_faq).subscribe((faq: any) => {
       console.log('FaqEditAddComponent - FAQ GET BY ID RES', faq);
@@ -426,6 +426,28 @@ export class FaqEditAddComponent implements OnInit {
     })
   }
 
+
+ 
+
+  goToKBArticle_ResolutionBotImagesVideosButtonsAndMore() {
+    const url = 'https://docs.tiledesk.com/knowledge-base/response-bot-images-buttons-videos-and-more/';
+    window.open(url, '_blank');
+  }
+
+  goToKBArticleAnchor_SendImages() {
+    const url = 'https://docs.tiledesk.com/knowledge-base/response-bot-images-buttons-videos-and-more/#send-images';
+    window.open(url, '_blank');
+  }
+
+  goToKBArticleAnchor_TextButton() {
+    const url = 'https://docs.tiledesk.com/knowledge-base/response-bot-images-buttons-videos-and-more/#text-buttons';
+    window.open(url, '_blank');
+  }
+
+  goToKBArticle_HandoffToHumanAgents() {
+    const url = 'https://docs.tiledesk.com/knowledge-base/handoff-to-human-agents/';
+    window.open(url, '_blank');
+  }
 
   goToKBArticle_AdvancedChatbotStyling() {
     console.log('goToKBArticle_AdvancedChatbotStyling');
