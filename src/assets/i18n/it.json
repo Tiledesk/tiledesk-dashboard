@@ -1906,5 +1906,6 @@
     "Images":"Immagini",
     "ResolutionBotImagesVideosButtonsAndMore":"Resolution bot: immagini, video, pulsanti e altro ancora",
     "HandoffToHumanAgents":"Trasferimento ad agenti umani",
-    "RenderAbutton": "Eseguire il rendering di un pulsante"
+    "RenderAbutton": "Eseguire il rendering di un pulsante",
+    "SettingUpAutomaticAssignment":"Configurazione dell'assegnazione automatica"
 }

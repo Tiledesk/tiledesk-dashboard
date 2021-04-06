@@ -1396,6 +1396,11 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     window.open(url, '_blank');
   }
 
+  goToKBDocsSettingUpAutomaticAssignment () {
+    const url = 'https://docs.tiledesk.com/knowledge-base/setting-up-automatic-assignment/'
+    window.open(url, '_blank');
+  }
+
   goToWebhookPage() {
     console.log("PRJCT-EDIT-ADD Navigate to Webhook console with ProjectID: ", this.id_project);
     this.router.navigate(['project/' + this.id_project + '/webhook']);

@@ -1925,5 +1925,6 @@
     "Images":"Images",
    "ResolutionBotImagesVideosButtonsAndMore":"Resolution bot: images, videos, buttons and more" ,
    "HandoffToHumanAgents":"Handoff to human agents",
-   "renderAbutton": "Render a button"
+   "RenderAbutton": "Render a button",
+   "SettingUpAutomaticAssignment":"Setting up automatic assignment"
 }

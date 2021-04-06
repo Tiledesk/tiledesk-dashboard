@@ -1908,6 +1908,7 @@
 	"Images":"Bilder",
 	"ResolutionBotImagesVideosButtonsAndMore":"Resolution bot: bilder, Videos, Schaltflächen und mehr",
 	"HandoffToHumanAgents":"Handoff zu menschlichen Agenten",
-	"RenderAbutton": "Eine Schaltfläche rendern"
+	"RenderAbutton": "Eine Schaltfläche rendern",
+	"SettingUpAutomaticAssignment":"Automatische Zuordnung einrichten"
 	
 }
