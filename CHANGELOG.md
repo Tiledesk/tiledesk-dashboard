@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.1.46
+- Highlight, on the home page, the "What's new" section rocket with an icon indicating that the change log has been updated
+- Update the "Latest Updates" section of the home page by highlighting some of the new features in version 2.1.45 of the dashboard
 
 ### 2.1.45
 - Duplicate the "agent" array of the "request.snapshot" property in "request" during the "ON-UPDATE" websocket callback
