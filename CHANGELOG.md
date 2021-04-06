@@ -8,6 +8,7 @@
 - Adds links to documentation on the bot detail page for "Dialogflow", "External" and "Resolution" bot types
 - Updates the Quick Tips section on the "Resolution bot" > "Add Answer" and "Edit Answer" pages
 - Adds a link to documentation "Setting up automatic assignment" at the top of the Smart Assignment tab of the Project Settings page
+- Removes the link to the "edit answer" page from the row in the Resolution Bot "Answers table"
 
 ### 2.1.44
 - Rename the accordion "Jwt Decoded" to "Trusted Info" in the right sidebar of the conversation detail page and move it to the top of the sidebar
