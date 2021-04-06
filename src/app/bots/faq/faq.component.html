@@ -731,12 +731,6 @@
             </section>
             <!-- ./ end section External -->
 
-
-
-
-
-
-
           </div>
         </div>
       </div> <!-- ./ col-md-4 -->
@@ -1117,8 +1111,8 @@
                       </p>
                     </td>
                   </tr>
-
-                  <tr *ngFor="let faq of faq" (click)='goToEditAddPage_EDIT(faq?._id)'>
+                  <!-- (click)='goToEditAddPage_EDIT(faq?._id)' -->
+                  <tr *ngFor="let faq of faq">
                     <td style="font-size:13px; font-weight:400" *ngIf="display_intent_name_in_table === true">
                       <span class="tooltipx">
                         <span style="white-space: pre-wrap; word-wrap: break-word">{{ faq?.intent_display_name }}</span>
