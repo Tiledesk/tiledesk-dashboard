@@ -24,6 +24,7 @@
               "src/dashboard-pre-config.json",
               "src/dashboard-prod-config.json",
               "src/dashboard-pre-config-nofb.json",
+              "src/dashboard-mqtt.json",
               {
                 "glob": "**/*",
                 "input": "node_modules/leaflet/dist/images/",
