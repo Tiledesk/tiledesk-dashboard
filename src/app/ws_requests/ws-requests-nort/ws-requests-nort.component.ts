@@ -170,7 +170,7 @@ export class WsRequestsNortComponent extends WsSharedComponent implements OnInit
     //   }, 1000);
     //   console.log('WsRequests NO-RT - PARAMS this.loadingOptions', this.loadingOptions);
     // }
-
+    console.log('WsRequests NO-RT - x test');
   }
 
 
