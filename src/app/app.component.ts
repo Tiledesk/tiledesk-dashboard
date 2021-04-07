@@ -62,6 +62,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     // wsbasepath = environment.wsUrl;
 
     subscription: Subscription;
+    public_Key: string;
     // background_bottom_section = brand.sidebar.background_bottom_section
     constructor(
         public location: Location,
@@ -96,22 +97,47 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
         // ----------------------------
-        // FIREBASE initializeApp 
+        // MQTT test 
         // ---------------------------- 
-        console.log('AppConfigService - APP-COMPONENT-TS firebase_conf 1 ', appConfigService.getConfig().firebase)
-        // firebase.initializeApp(firebaseConfig);
-        if (!appConfigService.getConfig().firebase || appConfigService.getConfig().firebase.apiKey === 'CHANGEIT') {
-            throw new Error('firebase config is not defined. Please create your dashboard-config.json. See the Dashboard Installation Page');
+        console.log('APP-COMPONENT getConfig ', appConfigService.getConfig())
+        this.public_Key = appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK
+
+        if (this.public_Key.includes("FBAS")) {
+            console.log('APP-COMPONENT - WORKS WITH FIREBASE ')
+            // ----------------------------
+            // FIREBASE initializeApp 
+            // ---------------------------- 
+            console.log('APP-COMPONENT - firebase_conf 1 ', appConfigService.getConfig().firebase)
+            if (!appConfigService.getConfig().firebase || appConfigService.getConfig().firebase.apiKey === 'CHANGEIT') {
+                throw new Error('firebase config is not defined. Please create your dashboard-config.json. See the Dashboard Installation Page');
+            }
+
+            // const firebase_conf = JSON.parse(appConfigService.getConfig().firebase)
+            const firebase_conf = appConfigService.getConfig().firebase;
+            console.log('AppConfigService - APP-COMPONENT-TS firebase_conf 2', firebase_conf)
+            firebase.initializeApp(firebase_conf);
+
+            localStorage.removeItem('firebase:previous_websocket_failure');
+        } else {
+            console.log('APP-COMPONENT - !!! WORKS WITHOUT FIREBASE ')
         }
 
 
-        // const firebase_conf = JSON.parse(appConfigService.getConfig().firebase)
-        const firebase_conf = appConfigService.getConfig().firebase;
-        console.log('AppConfigService - APP-COMPONENT-TS firebase_conf 2', firebase_conf)
-        firebase.initializeApp(firebase_conf);
+        // ----------------------------
+        // FIREBASE initializeApp 
+        // ---------------------------- 
+        // console.log('AppConfigService - APP-COMPONENT-TS firebase_conf 1 ', appConfigService.getConfig().firebase)
+        // if (!appConfigService.getConfig().firebase || appConfigService.getConfig().firebase.apiKey === 'CHANGEIT') {
+        //     throw new Error('firebase config is not defined. Please create your dashboard-config.json. See the Dashboard Installation Page');
+        // }
 
+        // // const firebase_conf = JSON.parse(appConfigService.getConfig().firebase)
+        // const firebase_conf = appConfigService.getConfig().firebase;
+        // console.log('AppConfigService - APP-COMPONENT-TS firebase_conf 2', firebase_conf)
+        // firebase.initializeApp(firebase_conf);
 
-        localStorage.removeItem('firebase:previous_websocket_failure');
+        // localStorage.removeItem('firebase:previous_websocket_failure');
+        // ./end FIREBASE initializeApp  ---------------------------- 
 
         console.log('!!! =========== HELLO APP.COMP (constructor) ===========')
         translate.setDefaultLang('en');
@@ -139,9 +165,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 browserRefresh = !router.navigated;
             }
         });
-
-
-
     }
 
     setFavicon(brand) {
@@ -154,9 +177,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
     }
 
-    ngOnDestroy() {
-        this.subscription.unsubscribe();
-    }
+
 
     switchLanguage(language: string) {
         this.translate.use(language);
@@ -166,7 +187,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         console.log(' ====== >>> HELLO APP.COMP (ngOnInit) <<< ====== ')
         console.log('!! FIREBASE  ', firebase);
 
-        this.closeWSAndResetWsRequestsIfUserIsSignedOut();
+        // this.closeWSAndResetWsRequestsIfUserIsSignedOut();
+        this.closeWSAndResetWsRequestsIfUserIsSignedOut_NoFB();
 
         // NEW (SEE ALSO )
         const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
@@ -218,7 +240,9 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         this.getCurrentUserAndConnectToWs();
     }
 
-
+    ngOnDestroy() {
+        this.subscription.unsubscribe();
+    }
     // ---------------------------
     // GET BRAND
     // ---------------------------
@@ -245,7 +269,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
     getCurrentUserAndConnectToWs() {
-
         this.auth.user_bs.subscribe((user) => {
             console.log('% »»» WebSocketJs WF - APP-COMPONENT - LoggedUser ', user);
             // console.log('% »»» WebSocketJs WF - APP-COMPONENT - WS URL ', this.wsbasepath);
@@ -271,6 +294,25 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             }
         });
     }
+
+    closeWSAndResetWsRequestsIfUserIsSignedOut_NoFB() {
+        this.auth.user_bs.subscribe((user) => {
+
+            console.log('APP-COMPONENT - closeWSAndResetWsRequestsIfUserIsSignedOut_NoFB ', user)
+
+            if (user) {
+                console.log('APP-COMPONENT - closeWSAndResetWsRequestsIfUserIsSignedOut_NoFB - User is signed in. ', user)
+                this.userIsSignedIn = true
+
+            } else {
+                console.log('APP-COMPONENT - closeWSAndResetWsRequestsIfUserIsSignedOut_NoFB - No user is signed in. ', user)
+
+                this.webSocketClose()
+                this.wsRequestsService.resetWsRequestList()
+            }
+        })
+    }
+
 
 
     closeWSAndResetWsRequestsIfUserIsSignedOut() {

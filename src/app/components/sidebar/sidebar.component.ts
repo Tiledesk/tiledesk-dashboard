@@ -1124,7 +1124,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     logout() {
         this.auth.showExpiredSessionPopup(false);
         this.auth.signOut();
-
     }
 
     // RESOLVE THE BUG 'chat button remains focused after clicking'

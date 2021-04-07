@@ -94,7 +94,7 @@ export class AuthService {
   HAS_JWT: boolean;
 
   selected_project_id: string;
-
+  public_Key: string;
 
   constructor(
     http: Http,
@@ -483,7 +483,7 @@ export class AuthService {
   // USED FOR PRICING WHOSE ACCESS IS PERMITTED ONLY TO THE OWNERS
   checkRoleForCurrentProjectAndRedirectAdminAndAgent() {
     console.log('!! »»»»» AUTH SERV - CHECK ROLE »»»»» CALLING CHECK-ROLE-FOR-CURRENT-PRJCT AND BLOCK ADMIN AND AGEBT');
- 
+
     let project_id = ''
     if (this.nav_project_id !== undefined) {
       project_id = this.nav_project_id
@@ -514,7 +514,7 @@ export class AuthService {
     }
   }
 
-  
+
 
   // !!! NO MORE USED
   // WHEN THE PAGE IS RELOADED THE project_id RETURNED FROM THE SUBSCRIPTION IS NULL SO IT IS GET FROM LOCAL STORAGE
@@ -611,58 +611,69 @@ export class AuthService {
         console.log('SSO - LOGIN 1. POST DATA ', jsonRes);
         if (jsonRes['success'] === true) {
 
-          // '/chat21/firebase/auth/createCustomToken'
-          this.chat21CreateFirebaseCustomToken(jsonRes['token']).subscribe(fbtoken => {
+          // NEW FOR MQTT
+          this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK
+          if (this.public_Key.includes("FBAS")) {
 
-            // this.firebaseSignin(email, password).subscribe(fbtoken => {
-            console.log('SSO - LOGIN 2. FIREBASE SIGNIN RESPO ', fbtoken)
+            console.log('SSO - LOGIN - SIGNIN WORKS WITH FIREBASE ')
+            // '/chat21/firebase/auth/createCustomToken'
+            this.chat21CreateFirebaseCustomToken(jsonRes['token']).subscribe(fbtoken => {
 
-            if (fbtoken) {
-              // Firebase Sign in using custom token
+              // this.firebaseSignin(email, password).subscribe(fbtoken => {
+              console.log('SSO - LOGIN 2. FIREBASE SIGNIN RESPO ', fbtoken)
+
+              if (fbtoken) {
+                // Firebase Sign in using custom token
+                // firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE).then(() => {
+
+                console.log('SSO - LOGIN - 3. FIREBASE CUSTOM AUTH setPersistence ');
+
+                firebase.auth().signInWithCustomToken(fbtoken)
+                  .then(firebase_user => {
+                    console.log('SSO - LOGIN - 4. FIREBASE CUSTOM AUTH DATA ', firebase_user);
+
+                    if (!this.APP_IS_DEV_MODE && this.FCM_Supported === true) {
+                      this.getPermission();
+                    }
+
+                    callback(null, user);
+                  })
+                  .catch(function (error) {
+                    // return error;
+                    callback(error);
+                    // Handle Errors here.
+                    // const errorCode = error.code;
+                    console.log('SSO - LOGIN - FIREBASE CUSTOM AUTH ERROR CODE ', error)
+                    // const errorMessage = error.message;
+                    // console.log('FIREBASE CUSTOM AUTH ERROR MSG ', errorMessage)
+                  });
 
 
-              // firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE).then(() => {
+                // }).catch(function (error) {
+                //   callback(error);
+                //   console.log('SSO - LOGIN - SET PERSISTENCE ERR ', error)
+                // });
 
-              console.log('SSO - LOGIN - 3. FIREBASE CUSTOM AUTH setPersistence ');
+              } else {
+                callback({ code: '4569', message: 'Error token not generated' });
+              }
+              // tslint:disable-next-line:no-debugger
+              // debugger
+            })
 
-              firebase.auth().signInWithCustomToken(fbtoken)
-                .then(firebase_user => {
-                  console.log('SSO - LOGIN - 4. FIREBASE CUSTOM AUTH DATA ', firebase_user);
+          } else { // ./end NEW X MQTT
+            console.log('SSO - LOGIN - MQTT CASE - !!!! SIGNIN WITHOUT FIREBASE CUSTOM TOKEN ')
+            // USECASE: NO FBAS in env: eseguo il sigin senza signInWithCustomToken dato che uso i servizi MQTT
+            callback(null, user);
 
-                  if (!this.APP_IS_DEV_MODE && this.FCM_Supported === true) {
-                    this.getPermission();
-                  }
-
-                  callback(null, user);
-                })
-                .catch(function (error) {
-                  // return error;
-                  callback(error);
-                  // Handle Errors here.
-                  // const errorCode = error.code;
-                  console.log('SSO - LOGIN - FIREBASE CUSTOM AUTH ERROR CODE ', error)
-                  // const errorMessage = error.message;
-                  // console.log('FIREBASE CUSTOM AUTH ERROR MSG ', errorMessage)
-                });
-
-
-              // }).catch(function (error) {
-              //   callback(error);
-              //   console.log('SSO - LOGIN - SET PERSISTENCE ERR ', error)
-              // });
-
-            } else {
-              callback({ code: '4569', message: 'Error token not generated' });
-            }
-            // tslint:disable-next-line:no-debugger
-            // debugger
-          })
+          }
         } else {
+          console.log('SSO - LOGIN - POST REQUEST ERROR jsonRes[success] NOT IS === true')
           callback({ code: jsonRes.code, message: jsonRes.message });
         }
 
       }).catch(function (error) {
-        console.log('TO PROMISE ERROR ', error);
+        console.log('SSO - LOGIN - SIGNIN POST REQUEST ERROR', error);
         callback(error);
       })
   }
@@ -910,7 +921,6 @@ export class AuthService {
 
   // RUN THE FIREBASE LOGOUT FOR TEST OF THE EXIPERD SESIION MODAL WINDOW
   testExpiredSessionFirebaseLogout(logoutFromFireBase) {
-
     console.log('TEST EXIPERD SESSION - LOGOUT FROM FIREBASE');
     firebase.auth().signOut()
       .then(function () {
@@ -943,14 +953,7 @@ export class AuthService {
 
   // if()this.FCM_Supported
   // this.checkIfFCMIsSupported()
-  hasOpenedLogoutModal(isOpenedlogoutModal: boolean) {
-    console.log('hasOpenedLogoutModal ', isOpenedlogoutModal, '*** >>>> FCM is Supported: ', this.FCM_Supported);
-    if (isOpenedlogoutModal) {
-      if (this.FCM_Supported === undefined) {
-        this.checkIfFCMIsSupported()
-      }
-    }
-  }
+
 
   //  const isOpenedExpiredSessionModal = this.notify.isOpenedExpiredSessionModal();
   //  console.log('isOpenedExpiredSessionModal ', isOpenedExpiredSessionModal, '*** >>>> FCM is Supported: ', this.FCM_Supported);
@@ -966,40 +969,78 @@ export class AuthService {
     })
   }
 
-  signOut() {
-    if (!this.APP_IS_DEV_MODE && this.FCM_Supported === true) {
+  hasOpenedLogoutModal(isOpenedlogoutModal: boolean) {
+    
 
-      console.log('this.FCMcurrentToken ', this.FCMcurrentToken);
-      console.log('here 1 ');
-      if (this.FCMcurrentToken !== undefined && this.userId !== undefined) {
-        console.log('here 2 ');
-        this.removeInstanceIdAndFireabseSignout();
-
-      } else {
-        console.log('here 3 ');
-        // use case: FCMcurrentToken is undefined
-        // (e.g. the user refresh the page or not is FCMcurrentToken created at the login)
-        const messaging = firebase.messaging();
-        messaging.getToken()
-          .then(FCMtoken => {
-            console.log('>>>> getPermission FCMtoken', FCMtoken)
-            this.FCMcurrentToken = FCMtoken;
-            const storedUser = localStorage.getItem('user');
-            const storedUserObj = JSON.parse(storedUser);
-            console.log('signOut - storedUserObj ', storedUserObj);
-            this.userId = storedUserObj._id;
-
-            this.removeInstanceIdAndFireabseSignout();
-          }).catch((err) => {
-            console.log('err: ', err);
-
-            this.firebaseSignout();
-
-          });
+    // NEW FOR MQTT - RUN  checkIfFCMIsSupported if in env there is the key FBAS
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK
+    if (this.public_Key.includes("FBAS")) {
+      console.log('hasOpenedLogoutModal ', isOpenedlogoutModal, '*** >>>> FCM is Supported: ', this.FCM_Supported);
+      if (isOpenedlogoutModal) {
+        if (this.FCM_Supported === undefined) {
+          this.checkIfFCMIsSupported()
+        }
       }
     } else {
+      console.log('hasOpenedLogoutModal WORKS WITHOUT FIREBASE DOES NOT RUN  checkIfFCMIsSupported');
+    }
+  }
 
-      this.firebaseSignout();
+  signOut() {
+    // NEW FOR MQTT - RUN  checkIfFCMIsSupported if in env there is the key FBAS
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK
+    if (this.public_Key.includes("FBAS")) {
+    
+      console.log('signOut WITH FIREBASE');
+      if (!this.APP_IS_DEV_MODE && this.FCM_Supported === true) {
+
+        console.log('this.FCMcurrentToken ', this.FCMcurrentToken);
+        console.log('here 1 ');
+        if (this.FCMcurrentToken !== undefined && this.userId !== undefined) {
+          console.log('here 2 ');
+          this.removeInstanceIdAndFireabseSignout();
+
+        } else {
+          console.log('here 3 ');
+          // use case: FCMcurrentToken is undefined
+          // (e.g. the user refresh the page or not is FCMcurrentToken created at the login)
+          const messaging = firebase.messaging();
+          messaging.getToken()
+            .then(FCMtoken => {
+              console.log('>>>> getPermission FCMtoken', FCMtoken)
+              this.FCMcurrentToken = FCMtoken;
+              const storedUser = localStorage.getItem('user');
+              const storedUserObj = JSON.parse(storedUser);
+              console.log('signOut - storedUserObj ', storedUserObj);
+              this.userId = storedUserObj._id;
+
+              this.removeInstanceIdAndFireabseSignout();
+            }).catch((err) => {
+              console.log('err: ', err);
+
+              this.firebaseSignout();
+
+            });
+        }
+      } else {
+
+        this.firebaseSignout();
+      }
+
+    } else {
+      console.log('signOut !!!! WITHOUT FIREBASE');
+
+      this.user_bs.next(null);
+      this.project_bs.next(null);
+      console.log('SIGNOUT project_bs VALUE: ', this.project_bs.value);
+  
+      localStorage.removeItem('user');
+      localStorage.removeItem('project');
+      localStorage.removeItem('role');
+      this.webSocketClose();
+      if (!this.HAS_JWT) {
+        this.router.navigate(['/login']);
+      }
     }
     // !!! NO MORE USED
     // this.afAuth.auth.signOut()
