@@ -1176,9 +1176,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
               console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT ATTRIBUTES', this.request.attributes.decoded_jwt.attributes);
 
               this.attributesDecodedJWTAttributesArray = []
-              for (let [key, value] of Object.entries(this.request.attributes.decoded_jwt.attributes)) {
+              // for (let [key, value] of Object.entries(this.request.attributes.decoded_jwt.attributes)) {
+              for (const [index, [key, value]] of Object.entries(Object.entries(this.request.attributes.decoded_jwt.attributes))) {
 
-                console.log(`WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT ATTRIBUTES -key : ${key} - value ${value}`);
+                console.log(`WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT ATTRIBUTES index :${index}: -key  ${key} - value ${value}`);
 
                 let _value: any;
                 if (typeof value === 'object' && value !== null) {
@@ -1203,21 +1204,23 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
                 }
                 let totalLength = 0;
 
-                for (let i = 0; i < _value.length; i++) {
-                  console.log(':-D Ws-REQUESTS-Msgs - getWsRequestById _value[i]', _value[i] + ": " + letterLength[_value[i]])
-                }
+                if (_value) {
+                  for (let i = 0; i < _value.length; i++) {
+                    console.log(':-D Ws-REQUESTS-Msgs - getWsRequestById _value[i]', _value[i] + ": " + letterLength[_value[i]])
+                  }
 
-                for (let i = 0; i < _value.length; i++) {
-                  if (letterLength[_value[i]] !== undefined) {
-                    totalLength += letterLength[_value[i]];
-                  } else {
-                    // if the letter not is in dictionary letters letterLength[_value[i]] is undefined so add the witdh of the 'S' letter (8px)
-                    totalLength += letterLength['S'];
+                  for (let i = 0; i < _value.length; i++) {
+                    if (letterLength[_value[i]] !== undefined) {
+                      totalLength += letterLength[_value[i]];
+                    } else {
+                      // if the letter not is in dictionary letters letterLength[_value[i]] is undefined so add the witdh of the 'S' letter (8px)
+                      totalLength += letterLength['S'];
+                    }
                   }
                 }
                 // console.log(':-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES value LENGHT ', _value + " totalLength : " + totalLength)
 
-                let entries = { 'attributeName': key, 'attributeValue': _value, 'decodedJWTType': 'Attributes', 'attributeValueL': totalLength };
+                let entries = { 'attributeName': key, 'attributeValue': _value, 'decodedJWTType': 'Attributes', 'attributeValueL': totalLength, 'index': index };
 
                 this.attributesDecodedJWTAttributesArray.push(entries)
               }
@@ -1228,8 +1231,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
               console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT  ATTRIBUTES - attributesDecodedJWTArrayMerged: ', this.attributesDecodedJWTArrayMerged);
               // --------------------------------------------------------------------------------------------------------------
             } else {
-
-              console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT  ATTRIBUTES IS UNDEFINED ');
+              this.attributesDecodedJWTArrayMerged = this.attributesDecodedJWTArray
+              console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT  ATTRIBUTES IS UNDEFINED (in decoded_jwt)');
+              console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT  ATTRIBUTES - attributesDecodedJWTArrayMerged: ', this.attributesDecodedJWTArrayMerged);
             }
           } else {
             console.log('WS-REQUESTS-MSGS - ATTRIBUTES IS UNDEFINED (in  decoded_jwt)');
