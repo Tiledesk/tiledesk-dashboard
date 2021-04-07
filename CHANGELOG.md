@@ -1,6 +1,12 @@
 
 # tiledesk-dashboard
 
+### 2.1.48
+- Fixes the bug: on the conversation details page the "Trusted Info" accordion does not open if the attributes of the decoded jwt are undefined
+
+### 2.1.47
+- Fixes the bug: on the conversation details page the app crashes if the decoded jwt has null values
+
 ### 2.1.46
 - Highlight, on the home page, the "What's new" section rocket with an icon indicating that the change log has been updated
 - Update the "Latest Updates" section of the home page by highlighting some of the new features in version 2.1.46 of the dashboard
