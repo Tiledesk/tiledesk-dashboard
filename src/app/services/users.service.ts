@@ -648,7 +648,7 @@ export class UsersService {
   /// ========================= GET PROJECT-USER BY ID (PROJECT USER DETAIL) ======================= ///
   public getProjectUsersById(projectuser_id: string): Observable<ProjectUser[]> {
     // const url = this.MONGODB_BASE_URL + 'details/' + projectuser_id; // old
-    const url = this.PROJECT_USER_URL + '/' + projectuser_id;
+    const url = this.PROJECT_USER_URL + projectuser_id;
 
     console.log('GET PROJECT USERS BY ID ', url);
     const headers = new Headers();
