@@ -72,8 +72,8 @@ export class MarkerService {
 
           const marker = L.marker([lat, lon], {
             icon: L.icon({
-              iconUrl: 'assets/marker/red.png',
-              shadowUrl: 'assets/marker/marker-shadow.png',
+              iconUrl: 'assets/img/marker/red.png',
+              shadowUrl: 'assets/img/marker/marker-shadow.png',
               iconSize: [25, 41],
               shadowSize: [30, 34],
               iconAnchor: [13, 41],
