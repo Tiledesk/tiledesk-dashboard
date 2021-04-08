@@ -4,7 +4,7 @@
 ### 2.1.49
 - Adds the "Trusted Info" accordion to the right sidebar of the contact details page
 - Implements a new method to get if the contact is authenticated
-- Bug Fix: unassigned conversations map pin URL is incorrect
+- Fixes the bug: unassigned conversations map pin URL is incorrect
 
 ### 2.1.48
 - Fixes the bug: on the conversation details page the "Trusted Info" accordion does not open if the attributes of the decoded jwt are undefined
