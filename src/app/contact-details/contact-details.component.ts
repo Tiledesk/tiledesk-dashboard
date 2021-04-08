@@ -12,6 +12,7 @@ import { avatarPlaceholder, getColorBck } from '../utils/util';
 import { NotifyService } from '../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AppConfigService } from 'app/services/app-config.service';
+import { UsersService } from '../services/users.service';
 const swal = require('sweetalert');
 @Component({
   selector: 'appdashboard-contact-details',
@@ -79,6 +80,10 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
   CHAT_BASE_URL: string;
 
+  attributesDecodedJWTArray: Array<any>
+  attributesDecodedJWTAttributesArray: Array<any>
+  attributesDecodedJWTArrayMerged: Array<any>
+
   constructor(
     public location: Location,
     private route: ActivatedRoute,
@@ -90,7 +95,8 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
     private contactsService: ContactsService,
     private notify: NotifyService,
     private translate: TranslateService,
-    private appConfigService: AppConfigService
+    private appConfigService: AppConfigService,
+    private usersService: UsersService
   ) { }
 
   // -----------------------------------------------------------------------------------------------------
@@ -394,6 +400,44 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
     }
   }
 
+    // ---------------------------------------------------------------------------------------
+  // @ Attributes decoded jwt accordion
+  // ---------------------------------------------------------------------------------------
+  openAttributesDecodedJWTAccordion() {
+    // var acc = document.getElementsByClassName("accordion");
+    var acc = <HTMLElement>document.querySelector('.attributes-decoded-jwt-accordion');
+    console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT - open attributes-decoded-jwt-accordion -  accordion elem ', acc);
+    acc.classList.toggle("active");
+    // var panel = acc.nextElementSibling ;
+    var panel = <HTMLElement>document.querySelector('.attributes-decoded-jwt-panel')
+    console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT-  open attributes-decoded-jwt-panel  -  panel ', panel);
+
+    if (panel.style.maxHeight) {
+      panel.style.maxHeight = null;
+    } else {
+      panel.style.maxHeight = panel.scrollHeight + "px";
+    }
+  }
+
+
+  getProjectUserById(leadid) {
+    this.usersService.getProjectUserById(leadid).subscribe((projectUser: any) => {
+
+    
+      // console.log('!!!!! CONTACTS DETAILS - GET PROJECT USER BY LEAD ID RES  ', projectUser);
+      // console.log('!!!!! CONTACTS DETAILS - GET PROJECT USER BY LEAD ID projectUser[0]  ', projectUser[0]);
+      // console.log('!!!!! CONTACTS DETAILS - GET PROJECT USER BY LEAD ID projectUser[0] isAuthenticated ', projectUser[0]['isAuthenticated']);
+      this.CONTACT_IS_VERIFIED = projectUser[0]['isAuthenticated']
+      console.log('!!!!! CONTACTS DETAILS - GET PROJECT USER BY LEAD ID CONTACT_IS_VERIFIED ', this.CONTACT_IS_VERIFIED);
+    },
+      (error) => {
+        console.log('!!!!! CONTACTS DETAILS - GET PROJECT USER BY LEAD ID ERR  ', error);
+      },
+      () => {
+        console.log('!!!!! CONTACTS DETAILS - GET PROJECT USER BY LEAD ID * COMPLETE *');
+      });
+  }
+
   getContactById() {
     this.contactsService.getLeadById(this.requester_id)
       .subscribe((lead: any) => {
@@ -404,6 +448,10 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
           if (this.contact_details && this.contact_details.lead_id) {
             this.lead_id = this.contact_details.lead_id;
+            
+            this.getProjectUserById(this.lead_id)
+
+            console.log('!!!!! CONTACTS DETAILS this.lead_id', this.lead_id) 
           }
 
 
@@ -455,30 +503,35 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
             this.fillColour = '#6264a7';
           }
 
-          if (this.contact_details.attributes
-            && this.contact_details.attributes.senderAuthInfo
-            && this.contact_details.attributes.senderAuthInfo.authVar
-            && this.contact_details.attributes.senderAuthInfo.authVar.token
-            && this.contact_details.attributes.senderAuthInfo.authVar.token.firebase
-            && this.contact_details.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider) {
+          // No more used -- now is get from projrct user
+          // if (this.contact_details.attributes
+          //   && this.contact_details.attributes.senderAuthInfo
+          //   && this.contact_details.attributes.senderAuthInfo.authVar
+          //   && this.contact_details.attributes.senderAuthInfo.authVar.token
+          //   && this.contact_details.attributes.senderAuthInfo.authVar.token.firebase
+          //   && this.contact_details.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider) {
 
-            if (this.contact_details.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider === 'custom') {
-              this.CONTACT_IS_VERIFIED = true;
-            } else {
-              this.CONTACT_IS_VERIFIED = false;
-            }
-          } else {
-            this.CONTACT_IS_VERIFIED = false;
-          }
+          //   if (this.contact_details.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider === 'custom') {
+          //     this.CONTACT_IS_VERIFIED = true;
+          //   } else {
+          //     this.CONTACT_IS_VERIFIED = false;
+          //   }
+          // } else {
+          //   this.CONTACT_IS_VERIFIED = false;
+          // }
 
 
+
+
+          // --------------------------------------------------------------------------------------------------------------
+          // @ Contact Attributes
+          // --------------------------------------------------------------------------------------------------------------
           if (this.contact_details.attributes) {
-
-
             // --------------------------------------------------------------------------------------------------------------
             // new: display all attributes dinamically
             // --------------------------------------------------------------------------------------------------------------
             this.attributesArray = []
+
             for (let [key, value] of Object.entries(this.contact_details.attributes)) {
 
               // console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES key : ${key} - value ${value}`);
@@ -524,36 +577,146 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
               let entries = { 'attributeName': key, 'attributeValue': _value, 'attributeValueL': totalLength };
 
               this.attributesArray.push(entries)
-            }
+            } // ./end for
             console.log(':-D CONTACTS DETAILS - getWsRequestById attributesArray: ', this.attributesArray);
             // --------------------------------------------------------------------------------------------------------------
 
+            // ---------------------------------------------------------
+            // @ Contact Attributes DECODED JWT
+            // ---------------------------------------------------------
+            if (this.contact_details.attributes) {
+              if (this.contact_details.attributes.decoded_jwt) {
+                console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT ', this.contact_details.attributes.decoded_jwt);
+                this.attributesDecodedJWTArray = []
+                for (let [key, value] of Object.entries(this.contact_details.attributes.decoded_jwt)) {
 
-            // if (this.contact_details.attributes.client) {
-            //   console.log('!!!!! CONTACTS DETAILS - ATTRIBUTES > CLIENT: ', this.contact_details.attributes.client);
-            //   const stripHere = 30;
-            //   this.clientStringCutted = this.contact_details.attributes.client.substring(0, stripHere) + '...';
-            //   console.log('!!!!! CONTACTS DETAILS - ATTRIBUTES > CLIENT cutted: ', this.clientStringCutted);
-            // }
+                  console.log(`WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT -key : ${key} - value ${value}`);
 
-            // if (this.contact_details.attributes.senderAuthInfo) {
-            //   console.log('!!!!! CONTACTS DETAILS - ATTRIB. > SENDER AUTH INFO: ', this.contact_details.attributes.senderAuthInfo);
-            //   const _senderAuthInfoString = JSON.stringify(this.contact_details.attributes.senderAuthInfo)
+                  let _value: any;
+                  if (typeof value === 'object' && value !== null) {
 
-            //   // add a space after each comma
-            //   this.senderAuthInfoString = _senderAuthInfoString.split(',').join(', ')
-            //   console.log('!!!!! CONTACTS DETAILS - ATTRIB. > SENDER AUTH INFO (STRING): ', this.senderAuthInfoString);
+                    // console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES value is an object :`, JSON.stringify(value));
+                    _value = JSON.stringify(value)
+                  } else {
+                    _value = value
+                  }
 
-            //   const stripHere = 20;
-            //   this.senderAuthInfoStringCutted = this.senderAuthInfoString.substring(0, stripHere) + '...';
-            // }
+                  // https://stackoverflow.com/questions/50463738/how-to-find-width-of-each-character-in-pixels-using-javascript
+                  let letterLength = {};
+                  let letters = ["", " ", " ?", "= ", " -", " :", " _", " ,", " ", " ", " ", "(", ")", "}", "{", "\"", " ", "/", ".", "a", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 
-            // if (this.contact_details.attributes.sourcePage) {
-            //   this.sourcePage = this.contact_details.attributes.sourcePage;
-            //   const stripHere = 20;
-            //   console.log('!!!!! CONTACTS DETAILS - ATTRIB. > SOURCR PAGE: ', this.sourcePage);
-            //   this.sourcePageCutted = this.contact_details.attributes.sourcePage.substring(0, stripHere) + '...';
-            // }
+                  for (let letter of letters) {
+                    let span = document.createElement('span');
+                    span.append(document.createTextNode(letter));
+                    span.style.display = "inline-block";
+                    document.body.append(span);
+                    letterLength[letter] = span.offsetWidth;
+                    span.remove();
+                  }
+                  let totalLength = 0;
+
+                  // for (let i = 0; i < _value.length; i++) {
+                  //   console.log(':-D Ws-REQUESTS-Msgs - getWsRequestById _value[i]', _value[i] + ": " + letterLength[_value[i]])
+                  // }
+
+                  for (let i = 0; i < _value.length; i++) {
+                    if (letterLength[_value[i]] !== undefined) {
+                      totalLength += letterLength[_value[i]];
+                    } else {
+                      // if the letter not is in dictionary letters letterLength[_value[i]] is undefined so add the witdh of the 'S' letter (8px)
+                      totalLength += letterLength['S'];
+                    }
+                  }
+                  // console.log(':-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES value LENGHT ', _value + " totalLength : " + totalLength)
+                  if (key !== 'attributes') {
+                    let entries = { 'attributeName': key, 'attributeValue': _value, 'attributeValueL': totalLength };
+
+
+                    this.attributesDecodedJWTArray.push(entries)
+                  }
+                }
+                console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT - attributesDecodedJWTArray: ', this.attributesDecodedJWTArray);
+                // --------------------------------------------------------------------------------------------------------------
+              } else {
+
+                console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT IS UNDEFINED ');
+              }
+            } else {
+              console.log('WS-REQUESTS-MSGS - ATTRIBUTES IS UNDEFINED ');
+            }
+
+            // ---------------------------------------------------------
+            // Attributes DECODED JWT Attributes
+            // ---------------------------------------------------------
+            if (this.contact_details.attributes) {
+              if (this.contact_details.attributes.decoded_jwt && this.contact_details.attributes.decoded_jwt.attributes) {
+                console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT ATTRIBUTES', this.contact_details.attributes.decoded_jwt.attributes);
+
+                this.attributesDecodedJWTAttributesArray = []
+                // for (let [key, value] of Object.entries(this.request.attributes.decoded_jwt.attributes)) {
+                for (const [index, [key, value]] of Object.entries(Object.entries(this.contact_details.attributes.decoded_jwt.attributes))) {
+
+                  console.log(`WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT ATTRIBUTES index :${index}: -key  ${key} - value ${value}`);
+
+                  let _value: any;
+                  if (typeof value === 'object' && value !== null) {
+
+                    // console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES value is an object :`, JSON.stringify(value));
+                    _value = JSON.stringify(value)
+                  } else {
+                    _value = value
+                  }
+
+                  // https://stackoverflow.com/questions/50463738/how-to-find-width-of-each-character-in-pixels-using-javascript
+                  let letterLength = {};
+                  let letters = ["", " ", " ?", "= ", " -", " :", " _", " ,", " ", " ", " ", "(", ")", "}", "{", "\"", " ", "/", ".", "a", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+
+                  for (let letter of letters) {
+                    let span = document.createElement('span');
+                    span.append(document.createTextNode(letter));
+                    span.style.display = "inline-block";
+                    document.body.append(span);
+                    letterLength[letter] = span.offsetWidth;
+                    span.remove();
+                  }
+                  let totalLength = 0;
+
+                  if (_value) {
+                    for (let i = 0; i < _value.length; i++) {
+                      console.log(':-D Ws-REQUESTS-Msgs - getWsRequestById _value[i]', _value[i] + ": " + letterLength[_value[i]])
+                    }
+
+                    for (let i = 0; i < _value.length; i++) {
+                      if (letterLength[_value[i]] !== undefined) {
+                        totalLength += letterLength[_value[i]];
+                      } else {
+                        // if the letter not is in dictionary letters letterLength[_value[i]] is undefined so add the witdh of the 'S' letter (8px)
+                        totalLength += letterLength['S'];
+                      }
+                    }
+                  }
+                  // console.log(':-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES value LENGHT ', _value + " totalLength : " + totalLength)
+
+                  let entries = { 'attributeName': key, 'attributeValue': _value, 'decodedJWTType': 'Attributes', 'attributeValueL': totalLength, 'index': index };
+
+                  this.attributesDecodedJWTAttributesArray.push(entries)
+                }
+                console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT  ATTRIBUTES - attributesDecodedJWTAttributesArray: ', this.attributesDecodedJWTAttributesArray);
+
+                this.attributesDecodedJWTArrayMerged = [].concat(this.attributesDecodedJWTArray, this.attributesDecodedJWTAttributesArray);
+
+                console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT  ATTRIBUTES - attributesDecodedJWTArrayMerged: ', this.attributesDecodedJWTArrayMerged);
+                // --------------------------------------------------------------------------------------------------------------
+              } else {
+                this.attributesDecodedJWTArrayMerged = this.attributesDecodedJWTArray
+                console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT  ATTRIBUTES IS UNDEFINED (in decoded_jwt)');
+                console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT  ATTRIBUTES - attributesDecodedJWTArrayMerged: ', this.attributesDecodedJWTArrayMerged);
+              }
+            } else {
+              console.log('WS-REQUESTS-MSGS - ATTRIBUTES IS UNDEFINED (in  decoded_jwt)');
+            }
+
+
           }
         }
 

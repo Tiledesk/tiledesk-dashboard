@@ -141,7 +141,7 @@ p.member:hover {
 .contact-verified {
   position: relative;
   // left: -20px;
-  margin-top: -13px !important;
+  margin-top: -24px !important;
 }
 
 .column-th-span {
@@ -286,3 +286,101 @@ p.member:hover {
   position:relative;
   top: 8px;
 }
+
+.contact-details-fullname {
+  display: block;
+  font-size: 18px;
+  margin-left: 5px;
+  white-space: nowrap;
+  position: relative;
+  top: 4px;
+} 
+
+.attributes-accordion {
+  // background-color: #eee;
+  color: #444;
+  cursor: pointer;
+  padding: 8px 0px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+  transition: 0.4s;
+}
+
+.attributes-accordion:hover {
+  // background-color: #ccc;
+  background-color: #f7f8fc;
+}
+
+/* 
+ Attributes decoded JWT Accordion 
+ ------------------------------------ */
+ .attributes-jwt-decoded-cntct-accordion-wpr {
+  padding-left: 0px;
+  padding-right: 0px;
+  border-bottom: 1px solid #eeeeee;
+  border-top: 1px solid #eeeeee;
+  margin-top: -18px;
+}
+
+@media only screen and (max-width: 768px) {
+  .attributes-jwt-decoded-cntct-accordion-wpr {
+    margin-top: 0px;
+  }
+
+  .contact-email-col-12 {
+    margin-top: 15px;
+  }
+  // .attributes-decoded-jwt-accordion:after {
+  //   margin-right: -25px;
+  // }
+}
+.attributes-decoded-jwt-cntct-accordion {
+  color: #444;
+  cursor: pointer;
+  padding: 8px 0px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+  transition: 0.4s;
+}
+
+
+
+.attributes-decoded-jwt-cntct-accordion:hover {
+  background-color: #f7f8fc;
+}
+
+.attributes-decoded-jwt-cntct-accordion:after {
+  // content: "\002B";
+  content: "\f107";
+  font-family: FontAwesome;
+  // color: #777;
+  color: #039be5;
+  font-weight: bold;
+  float: right;
+  // margin-left: 5px;
+  font-size: 20px;
+  padding-right: 4px;
+}
+.attributes-decoded-jwt-cntct-accordion.active:after {
+  content: "\f106";
+  font-family: FontAwesome;
+}
+
+.attributes-decoded-jwt-panel {
+  padding: 0 18px;
+  background-color: white;
+  max-height: 0;
+  // overflow: hidden;
+  overflow-y: auto;
+  // transition: max-height 0.2s ease-out;
+}
+/* ./ Attributes decoded JWT Accordion  */
+
+
+
