@@ -318,31 +318,36 @@
                     <tr>
 
                       <!-- ===== CONTACT NAME ===== -->
-                      <th style="width: 20%;">
+                      <!-- style="width: 20%;" -->
+                      <th>
                         <span class="column-th-span">
                           {{ 'Contact' | translate }}
                         </span>
                       </th>
 
                       <!-- ===== CHAT WITH ===== -->
-                      <th style="width: 20%;"> </th>
+                      <!-- style="width: 20%;" -->
+                      <th> </th>
 
                       <!-- ===== CONTACT EMAIL ===== -->
-                      <th style="width: 20%;">
+                      
+                      <th >
                         <span class="column-th-span">
                           Email
                         </span>
                       </th>
 
                       <!-- ===== CREATED ===== -->
-                      <th style="width: 20%;">
+                      <!-- style="width: 20%;" -->
+                      <th >
                         <span class="column-th-span">
                           {{ 'Created' | translate }}
                         </span>
                       </th>
 
                       <!-- ========== ICON VIEW CONTACT DETAILS ========== -->
-                      <th style="width: 20%;">
+                      <!-- style="width: 20%;" -->
+                      <th>
                         <span class="column-th-span">
                           {{ 'Actions' | translate }}
                         </span>
@@ -411,7 +416,7 @@
                       </td>
 
                       <!-- ========== CHAT WITH ========== -->
-                      <td>
+                      <td style="width: 1%;">
                         <span>
                           <span class="White__Tooltip">
                             <i class="material-icons chat-with-agent"
@@ -529,7 +534,7 @@
                 </table>
               </div> <!-- ./ card-content table-responsive -->
 
-              <div *ngIf="displaysFooterPagination === true" class="card-footer" style="text-align:right">
+              <div *ngIf="displaysFooterPagination === true" class="card-footer" style="text-align:center">
                 <div class="stats">
 
                   <div class="contacts-paginantion" style="width: 120px; margin: 0 auto; margin-top: 10px ">
@@ -537,7 +542,7 @@
 
                       <!-- -------====== BTN DECREASE PAGE  ======------ -->
                       <span class="input-group-btn" style="padding-right:0px;  padding-left: 0px;">
-                        <button [disabled]="pageNo + 1 === 1" class="btn btn-info" type="button"
+                        <button [disabled]="pageNo + 1 === 1" class="btn btn-primary decrease-page-number-btn" type="button"
                           (click)="decreasePageNumber()" style="padding: 6px 8px">
                           <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
                         </button>
@@ -545,7 +550,7 @@
 
                       <!-- -------====== DISPLAY No PAGE / No TOTAL PAGES   ======------ -->
                       <span class="input-group-btn" style="padding-right:0px;">
-                        <button #searchbtn class="btn btn-info" type="button" style="padding: 6px 8px">
+                        <button #searchbtn class="btn btn-primary" type="button" style="padding: 6px 8px">
                           {{ pageNo + 1 }} / {{ totalPagesNo_roundToUp }}
                         </button>
                       </span>
@@ -553,7 +558,7 @@
                       <!-- -------====== BTN INCREASE PAGE  ======------ -->
                       <span class="input-group-btn" style="padding-right:0px">
                         <button [disabled]="pageNo + 1 === totalPagesNo_roundToUp || totalPagesNo_roundToUp === 0"
-                          class="btn btn-info" type="button" (click)="increasePageNumber()" style="padding: 6px 8px">
+                          class="btn btn-primary increase-page-number-btn" type="button" (click)="increasePageNumber()" style="padding: 6px 8px">
                           <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
                         </button>
                       </span>

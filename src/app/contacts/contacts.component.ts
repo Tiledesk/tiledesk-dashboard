@@ -306,6 +306,9 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   decreasePageNumber() {
+    const decreasePageNumberBtn = <HTMLElement>document.querySelector('.decrease-page-number-btn');
+    decreasePageNumberBtn.blur()
+
     this.pageNo -= 1;
 
     console.log('!!!! CONTACTS - DECREASE PAGE NUMBER ', this.pageNo);
@@ -313,6 +316,9 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   increasePageNumber() {
+    const increasePageNumberBtn = <HTMLElement>document.querySelector('.increase-page-number-btn');
+    increasePageNumberBtn.blur()
+
     this.pageNo += 1;
     console.log('!!!! CONTACTS  - INCREASE PAGE NUMBER ', this.pageNo);
     this.getContacts()

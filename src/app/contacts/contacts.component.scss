@@ -451,4 +451,9 @@ input:-webkit-autofill:active {
     vertical-align: middle !important;
     margin-right: 5px;
 }
+
+.contacts-paginantion > .input-group:focus-within {
+    box-shadow: unset !important;
+  }
+  
   
