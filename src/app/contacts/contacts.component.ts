@@ -514,6 +514,8 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
       this.contacts = leads_object['leads'];
       console.log('!!!! CONTACTS - CONTACTS LIST ', this.contacts);
 
+      
+
       /* to test pagination */
       // const contactsCount = 0;
 
@@ -531,7 +533,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
       this.totalPagesNo_roundToUp = Math.ceil(totalPagesNo);
       console.log('!!!!! CONTACTS - TOTAL PAGES No ROUND TO UP ', this.totalPagesNo_roundToUp);
 
-      this.generateAvatarFromName(this.contacts);
+      this.generateAvatarFromNameAndGetIfContactIsAuthenticated(this.contacts);
     }, (error) => {
       console.log('!!!! CONTACTS - GET LEADS - ERROR  ', error);
       this.showSpinner = false;
@@ -539,6 +541,84 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
       console.log('!!!! CONTACTS - GET LEADS * COMPLETE *');
       this.showSpinner = false;
     });
+  }
+
+  generateAvatarFromNameAndGetIfContactIsAuthenticated(contacts_list) {
+    contacts_list.forEach(contact => {
+
+      if (contact) {
+        // const id_contact = contact._id
+        const leadid = contact.lead_id
+        console.log('!!!! CONTACTS - * leadid *', leadid);
+
+        // let initial = '';
+        // let fillColour = '';
+
+        let newInitials = '';
+        let newFillColour = '';
+        if (contact.fullname) {
+          const name = contact.fullname;
+          // console.log('!!!!! CONTACTS - NAME OF THE CONTACT ', name);
+
+          // initial = name.charAt(0).toUpperCase();
+          // // console.log('!!!!! CONTACTS - INITIAL OF NAME OF THE CONTACT ', initial);
+          // const charIndex = initial.charCodeAt(0) - 65
+          // const colourIndex = charIndex % 19;
+          // // console.log('!!!!! CONTACTS - COLOUR INDEX ', colourIndex);
+          // fillColour = this.colours[colourIndex];
+          // // console.log('!!!!! CONTACTS - NAME INITIAL ', initial, ' COLOUR INDEX ', colourIndex, 'FILL COLOUR ', fillColour);
+
+          // NEW - FULL NAME INITIAL AS DISPLAYED IN THE WIDGET
+          newInitials = avatarPlaceholder(name);
+          newFillColour = getColorBck(name)
+
+
+        } else {
+
+          // initial = 'n.a.';
+          // fillColour = '#eeeeee';
+          newInitials = 'N/A';
+          newFillColour = '#6264a7';
+
+        }
+
+  
+
+        contact.avatar_fill_colour = newFillColour;
+        contact.name_initial = newInitials
+        contact.contact_is_verified = this.CONTACT_IS_VERIFIED
+
+        this.getProjectUserById(contact, leadid)
+        // for (const c of contacts_list) {
+
+        //   if (c._id === id_contact) {
+        //     // console.log('!!!! CONTACTS  - c._id ', c._id, 'id_contact ', id_contact)
+        //     c.avatar_fill_colour = newFillColour;
+        //     c.name_initial = newInitials
+        //     c.contact_is_verified = this.CONTACT_IS_VERIFIED
+        //   }
+        // }
+      }
+    });
+  }
+
+  getProjectUserById(contact ,leadid) {
+    this.usersService.getProjectUserById(leadid).subscribe((projectUser: any) => {
+
+    
+      console.log('!!!!! CONTACTS - GET PROJECT USER BY LEAD ID RES  ', projectUser);
+      // console.log('!!!!! CONTACTS DETAILS - GET PROJECT USER BY LEAD ID projectUser[0]  ', projectUser[0]);
+      // console.log('!!!!! CONTACTS DETAILS - GET PROJECT USER BY LEAD ID projectUser[0] isAuthenticated ', projectUser[0]['isAuthenticated']);
+      // this.CONTACT_IS_VERIFIED = projectUser[0]['isAuthenticated']
+      // console.log('!!!!! CONTACTS DETAILS - GET PROJECT USER BY LEAD ID CONTACT_IS_VERIFIED ', this.CONTACT_IS_VERIFIED);
+      contact.contact_is_verified = projectUser[0]['isAuthenticated']
+    },
+      (error) => {
+        console.log('!!!! CONTACTS - GET PROJECT USER BY LEAD ID ERR  ', error);
+      },
+      () => {
+        console.log('!!!! CONTACTS - GET PROJECT USER BY LEAD ID * COMPLETE *');
+      });
   }
 
   // --------------------------------------------------
@@ -818,74 +898,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  generateAvatarFromName(contacts_list) {
-    contacts_list.forEach(contact => {
 
-      if (contact) {
-        const id_contact = contact._id
-
-        // let initial = '';
-        // let fillColour = '';
-
-        let newInitials = '';
-        let newFillColour = '';
-        if (contact.fullname) {
-          const name = contact.fullname;
-          // console.log('!!!!! CONTACTS - NAME OF THE CONTACT ', name);
-
-          // initial = name.charAt(0).toUpperCase();
-          // // console.log('!!!!! CONTACTS - INITIAL OF NAME OF THE CONTACT ', initial);
-          // const charIndex = initial.charCodeAt(0) - 65
-          // const colourIndex = charIndex % 19;
-          // // console.log('!!!!! CONTACTS - COLOUR INDEX ', colourIndex);
-          // fillColour = this.colours[colourIndex];
-          // // console.log('!!!!! CONTACTS - NAME INITIAL ', initial, ' COLOUR INDEX ', colourIndex, 'FILL COLOUR ', fillColour);
-
-          // NEW - FULL NAME INITIAL AS DISPLAYED IN THE WIDGET
-          newInitials = avatarPlaceholder(name);
-          newFillColour = getColorBck(name)
-
-
-        } else {
-
-          // initial = 'n.a.';
-          // fillColour = '#eeeeee';
-          newInitials = 'N/A';
-          newFillColour = '#6264a7';
-
-        }
-
-        // if (contact.attributes
-        //   && contact.attributes.senderAuthInfo
-        //   && contact.attributes.senderAuthInfo.authVar
-        //   && contact.attributes.senderAuthInfo.authVar.token
-        //   && contact.attributes.senderAuthInfo.authVar.token.firebase
-        //   && contact.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider) {
-
-        //   if (contact.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider === 'custom') {
-        //     this.CONTACT_IS_VERIFIED = true;
-        //     // console.log('!!!! CONTACTS  - CONTACT_IS_VERIFIED ', this.CONTACT_IS_VERIFIED, 'for id_contact ', id_contact)
-        //   } else {
-        //     this.CONTACT_IS_VERIFIED = false;
-        //     // console.log('!!!! CONTACTS  - CONTACT_IS_VERIFIED ', this.CONTACT_IS_VERIFIED, 'for id_contact ', id_contact)
-        //   }
-        // } else {
-        //   this.CONTACT_IS_VERIFIED = false;
-        //   // console.log('!!!! CONTACTS  - CONTACT_IS_VERIFIED ', this.CONTACT_IS_VERIFIED, 'for id_contact ', id_contact)
-        // }
-
-        for (const c of contacts_list) {
-
-          if (c._id === id_contact) {
-            // console.log('!!!! CONTACTS  - c._id ', c._id, 'id_contact ', id_contact)
-            c.avatar_fill_colour = newFillColour;
-            c.name_initial = newInitials
-            c.contact_is_verified = this.CONTACT_IS_VERIFIED
-          }
-        }
-      }
-    });
-  }
 
   chatWithAgent(contact) {
     console.log("CONTACT: ", contact);
