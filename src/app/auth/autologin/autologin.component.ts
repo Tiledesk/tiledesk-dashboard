@@ -6,6 +6,7 @@ import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { SsoService } from '../../core/sso.service';
 import * as firebase from 'firebase';
 import { isDevMode } from '@angular/core';
+import { AppConfigService } from '../../services/app-config.service';
 
 @Component({
   selector: 'appdashboard-autologin',
@@ -22,7 +23,8 @@ export class AutologinComponent implements OnInit {
     private route: ActivatedRoute,
     public auth: AuthService,
     private router: Router,
-    public sso: SsoService
+    public sso: SsoService,
+    public appConfigService: AppConfigService
   ) {
     this.APP_IS_DEV_MODE = isDevMode();
     console.log('SSO - autologin page isDevMode ', this.APP_IS_DEV_MODE);
@@ -109,12 +111,12 @@ export class AutologinComponent implements OnInit {
               // if (!this.APP_IS_DEV_MODE && this.FCM_Supported === true) {
               //   this.auth.getPermission();
               // }
-             
+
               if (firebase_user) {
                 this.sso.getCurrentAuthenticatedUser(JWT).subscribe(auth_user => {
                   console.log('SSO - autologin getCurrentAuthenticatedUser RES ', auth_user);
 
-                  const user = {firstname: auth_user.firstname, lastname: auth_user.lastname, _id: auth_user._id, token: JWT }
+                  const user = { firstname: auth_user.firstname, lastname: auth_user.lastname, _id: auth_user._id, token: JWT }
 
                   localStorage.setItem('user', JSON.stringify(user));
 
@@ -152,7 +154,10 @@ export class AutologinComponent implements OnInit {
 
   logout() {
     console.log('RUN LOGOUT FROM NAV-BAR')
+
+    console.log('SSO - autologin - WORKS WITH FIREBASE ')
     this.auth.showExpiredSessionPopup(false);
+
     this.auth.signOut();
   }
 

@@ -62,6 +62,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     // wsbasepath = environment.wsUrl;
 
     subscription: Subscription;
+    public_Key: string;
     // background_bottom_section = brand.sidebar.background_bottom_section
     constructor(
         public location: Location,
@@ -95,23 +96,34 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         this.setFavicon(brand); // here used with "import brand from ..." now see in getBrand()
 
 
-        // ----------------------------
-        // FIREBASE initializeApp 
-        // ---------------------------- 
-        console.log('AppConfigService - APP-COMPONENT-TS firebase_conf 1 ', appConfigService.getConfig().firebase)
-        // firebase.initializeApp(firebaseConfig);
-        if (!appConfigService.getConfig().firebase || appConfigService.getConfig().firebase.apiKey === 'CHANGEIT') {
-            throw new Error('firebase config is not defined. Please create your dashboard-config.json. See the Dashboard Installation Page');
+        // ---------------------------------------------------------------------------------
+        // InitializeApp with firebase config IF chatEngine NOT exist or exist AND is ≠ mqtt
+        // --------------------------------------------------------------------------------- 
+        console.log('APP-COMPONENT getConfig chatEngine', appConfigService.getConfig().chatEngine)
+        if (appConfigService.getConfig().chatEngine && appConfigService.getConfig().chatEngine !== 'mqtt') {
+            console.log('APP-COMPONENT - WORKS WITH FIREBASE ')
+
+            // ----------------------------
+            // FIREBASE initializeApp 
+            // ---------------------------- 
+            console.log('AppConfigService - APP-COMPONENT-TS firebase_conf 1 ', appConfigService.getConfig().firebase)
+            // firebase.initializeApp(firebaseConfig);
+            if (!appConfigService.getConfig().firebase || appConfigService.getConfig().firebase.apiKey === 'CHANGEIT') {
+                throw new Error('firebase config is not defined. Please create your dashboard-config.json. See the Dashboard Installation Page');
+            }
+
+
+            // const firebase_conf = JSON.parse(appConfigService.getConfig().firebase)
+            const firebase_conf = appConfigService.getConfig().firebase;
+            console.log('AppConfigService - APP-COMPONENT-TS firebase_conf 2', firebase_conf)
+            firebase.initializeApp(firebase_conf);
+
+
+            localStorage.removeItem('firebase:previous_websocket_failure');
+
+        } else {
+            console.log('APP-COMPONENT - !!! WORKS WITHOUT FIREBASE ')
         }
-
-
-        // const firebase_conf = JSON.parse(appConfigService.getConfig().firebase)
-        const firebase_conf = appConfigService.getConfig().firebase;
-        console.log('AppConfigService - APP-COMPONENT-TS firebase_conf 2', firebase_conf)
-        firebase.initializeApp(firebase_conf);
-
-
-        localStorage.removeItem('firebase:previous_websocket_failure');
 
         console.log('!!! =========== HELLO APP.COMP (constructor) ===========')
         translate.setDefaultLang('en');
@@ -166,7 +178,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         console.log(' ====== >>> HELLO APP.COMP (ngOnInit) <<< ====== ')
         console.log('!! FIREBASE  ', firebase);
 
-        this.closeWSAndResetWsRequestsIfUserIsSignedOut();
+        // this.closeWSAndResetWsRequestsIfUserIsSignedOut();
+        this.closeWSAndResetWsRequestsIfUserIsSignedOut_NoFB();
 
         // NEW (SEE ALSO )
         const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
@@ -270,6 +283,24 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 );
             }
         });
+    }
+
+    closeWSAndResetWsRequestsIfUserIsSignedOut_NoFB() {
+        this.auth.user_bs.subscribe((user) => {
+
+            console.log('APP-COMPONENT - closeWSAndResetWsRequestsIfUserIsSignedOut_NoFB ', user)
+
+            if (user) {
+                console.log('APP-COMPONENT - closeWSAndResetWsRequestsIfUserIsSignedOut_NoFB - User is signed in. ', user)
+                this.userIsSignedIn = true
+
+            } else {
+                console.log('APP-COMPONENT - closeWSAndResetWsRequestsIfUserIsSignedOut_NoFB - No user is signed in. ', user)
+
+                this.webSocketClose()
+                this.wsRequestsService.resetWsRequestList()
+            }
+        })
     }
 
 
