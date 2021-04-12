@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.1.50
+- Adds the "chatEngine" key in the environments and conditions the initialization of the configurations according to how it is valued (mqtt or firebase)
+
 ### 2.1.49
 - Adds the "Trusted Info" accordion to the right sidebar of the contact details page
 - Implements a new method to get if the contact is authenticated
