@@ -9,6 +9,7 @@
   "wsUrlRel": "${WS_URL_RELATIVE}",
   "brandSrc": "${BRAND_SRC}",
   "globalRemoteJSSrc":"${REMOTE_JS_SRC}",
+  "chatEngine": "${CHAT21_ENGINE}",
   "firebase": {
       "apiKey": "${FIREBASE_APIKEY}",
       "authDomain": "${FIREBASE_AUTHDOMAIN}",
