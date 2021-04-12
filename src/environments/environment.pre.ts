@@ -10,6 +10,7 @@ export const environment = {
   CHAT_BASE_URL: 'https://support-pre.tiledesk.com/chat/',
   testsiteBaseUrl: 'https://widget-pre.tiledesk.com/v2/assets/test_widget_page/index.html',
   wsUrl: 'wss://tiledesk-server-pre.herokuapp.com/',
+  chatEngine: 'mqtt',
   firebase: {
       apiKey: 'CHANGEIT',
       authDomain: 'CHANGEIT',

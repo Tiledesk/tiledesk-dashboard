@@ -11,6 +11,7 @@ export const environment = {
   CHAT_BASE_URL: 'http://localhost:8080/',
   testsiteBaseUrl: 'http://localhost:4200/assets/test_widget_page/index.html',
   wsUrl: 'ws://localhost:3000/',
+  chatEngine: 'mqtt',
   firebase: {
       apiKey: 'CHANGEIT',
       authDomain: 'CHANGEIT',

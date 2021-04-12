@@ -11,6 +11,7 @@ export const environment = {
     CHAT_BASE_URL: '../chat/',
     testsiteBaseUrl: 'https://api.tiledesk.com/v2/widgets/test/load',
     wsUrl: 'wss://eu.rtm.tiledesk.com/v2/ws/',
+    chatEngine: 'mqtt',
     firebase: {
         apiKey: "CHANGE-IT",
         authDomain: "CHANGE-IT",
