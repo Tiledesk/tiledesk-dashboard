@@ -1278,11 +1278,11 @@ export class WsRequestsService implements OnDestroy {
               }
               else {
 
-                console.log("!!! NEW REQUESTS HISTORY REQUESTS SERVICE attributes ", request.attributes);
+                // console.log("!!! NEW REQUESTS HISTORY REQUESTS SERVICE attributes ", request.attributes);
 
-                console.log("!!! NEW REQUESTS HISTORY REQUESTS SERVICE attributes requester_id ", request.attributes.requester_id);
-                console.log("!!! NEW REQUESTS HISTORY REQUESTS SERVICE attributes userEmail ", request.attributes.userEmail);
-                console.log("!!! NEW REQUESTS HISTORY REQUESTS SERVICE attributes userFullname ", request.attributes.userFullname);
+                // console.log("!!! NEW REQUESTS HISTORY REQUESTS SERVICE attributes requester_id ", request.attributes.requester_id);
+                // console.log("!!! NEW REQUESTS HISTORY REQUESTS SERVICE attributes userEmail ", request.attributes.userEmail);
+                // console.log("!!! NEW REQUESTS HISTORY REQUESTS SERVICE attributes userFullname ", request.attributes.userFullname);
 
                 if (request['attributes']) {
                   if (request['attributes']['userFullname'] && request['attributes']['userEmail'] && request['attributes']['requester_id']) {
