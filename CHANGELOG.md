@@ -6,6 +6,9 @@
 - Implements a new method to get if the contact is authenticated
 - Fixes the bug: unassigned conversations map pin URL is incorrect
 - Fixes the bug: requester_id of undefined
+- Display "info" messages in the chat on the conversation detail page in the style they appear in the web chat
+- Fixex the bug: accessing the dashboard in the conversation list page from the link suggested by the browser address bar the project is not found
+- Adds an loading spinner on the app installation page
 
 ### 2.1.48
 - Fixes the bug: on the conversation details page the "Trusted Info" accordion does not open if the attributes of the decoded jwt are undefined
