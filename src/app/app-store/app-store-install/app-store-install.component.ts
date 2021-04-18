@@ -1,5 +1,5 @@
 import { AuthService } from './../../core/auth.service';
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, NgZone } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser'
 import { Location } from '@angular/common';
@@ -20,13 +20,16 @@ export class AppStoreInstallComponent implements OnInit {
   app_title: string;
   result: any;
   TOKEN: string;
+  showSpinner: boolean;
+
 
   constructor(
     public route: ActivatedRoute,
     private sanitizer: DomSanitizer,
     public location: Location,
     private appStoreService: AppStoreService,
-    private auth: AuthService
+    private auth: AuthService,
+    private ngZone: NgZone
   ) {
 
     this.getRouteParams();
@@ -36,30 +39,39 @@ export class AppStoreInstallComponent implements OnInit {
   ngOnInit() {
 
     this.onInitframeHeight();
+    
   }
 
+
+
+
+
   getRouteParams() {
+    this.showSpinner = true;
     this.route.params.subscribe((params) => {
 
-      console.log('APP-STORE-INSTALL - PARAMS ', params);
+      console.log('APP-STORE-INSTALL - GET ROUTE PARAMS ', params);
 
       this.appStoreService.getAppDetail(params.appid).subscribe((res) => {
         console.log("APP-STORE-INSTALL - GET APP DETAIL RESULT: ", res);
         this.result = res;
         //console.log(this.result._body);
-        let parsed_json = JSON.parse(this.result._body); 
-        console.log("PARSED JSON: ", parsed_json);
+        let parsed_json = JSON.parse(this.result._body);
+        console.log("APP-STORE-INSTALL PARSED JSON: ", parsed_json);
 
         this.auth.user_bs.subscribe((user) => {
           if (user) {
             this.TOKEN = user.token
             this.URL = this.sanitizer.bypassSecurityTrustResourceUrl(parsed_json.installActionURL + '?project_id=' + params.projectid + '&token=' + this.TOKEN);
-            console.log("URL IFRAME: ", this.URL)
+            console.log("APP-STORE-INSTALL - URL IFRAME: ", this.URL)
+            this.getIframeHaLoaded()
+            
           } else {
-            console.log("GET USER TOKEN: FAILED");
+            console.log("APP-STORE-INSTALL - GET USER TOKEN: FAILED");
+            this.showSpinner = false;
           }
         });
-        
+
       })
 
       //this.app_title = params.apptitle;
@@ -68,6 +80,32 @@ export class AppStoreInstallComponent implements OnInit {
       //this.URL = this.sanitizer.bypassSecurityTrustResourceUrl(params.url);
       //console.log("URL IFRAME: ", this.URL)
     })
+  }
+
+
+  getIframeHaLoaded() {
+    var self = this;
+    var iframe = document.getElementById('i_frame') as HTMLIFrameElement;;
+    console.log('APP-STORE-INSTALL GET iframe ', iframe)
+    var iframeDoc = iframe.contentDocument;
+    console.log('APP-STORE-INSTALL GET iframeDoc ', iframeDoc)
+
+    // Check if loading is complete
+    if (iframeDoc.readyState == 'complete') {
+      console.log('APP-STORE-INSTALL GET iframeDoc readyState', iframeDoc.readyState)
+      console.log('APP-STORE-INSTALL GET iframeDoc readyState  iframeDoc',  iframeDoc)
+      // this.ngZone.run( () => {
+        self.showSpinner = false;
+        let spinnerElem =  <HTMLElement>document.querySelector('.stretchspinner_in_app_install')
+        // let spinnerElem = document.getElementsByClassName("stretchspinner_in_app_install")  as HTMLCollectionOf<HTMLElement>;
+        console.log('APP-STORE-INSTALL GET iframeDoc readyState spinnerElem',  spinnerElem)
+        spinnerElem.classList.add("hide-stretchspinner")
+      // });
+      console.log('APP-STORE-INSTALL GET iframeDoc readyState   this.showSpinner',   self.showSpinner)
+    } else {
+         // If we are here, it is not loaded. Set things up so we check   the status again in 100 milliseconds
+    window.setTimeout(this.getIframeHaLoaded, 100)
+    }
   }
 
   @HostListener('window:resize', ['$event'])

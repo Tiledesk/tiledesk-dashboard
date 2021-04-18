@@ -5,16 +5,35 @@
 </div>
 
 
-<div class="main-content" style="padding-top: 0px;
-margin-top: -9px;
-padding-bottom: 0px;
-padding-left: 0px;
-padding-right: 0px;">
+<!-- <div *ngIf="showSpinner" class="main-content app-install-main-content" style="height: calc(100% - 60px);"> 
+ 
 
+  <div class="container-fluid">
+
+    showSpinner = {{ showSpinner}}
+    <loading-spinner *ngIf="showSpinner"></loading-spinner>
+  </div>
+ 
+</div> -->
+
+<div class="main-content app-install-main-content">
+  
   <div class="container-fluid" style="padding-right: 0px;  padding-left: 0px;">
+    
+    <div *ngIf="showSpinner" class="stretchspinner_in_app_install">
+      <div class="rect1"></div>
+      <div class="rect2"></div>
+      <div class="rect3"></div>
+      <div class="rect4"></div>
+      <div class="rect5"></div>
+    </div>
+    
+    <iframe id="i_frame" [src]="URL" style="width:100%;" frameBorder="0" allowfullscreen
+      [ngStyle]="{ 'height': iframeHeight }">
+    
+    </iframe>
 
-    <iframe [src]="URL" style="width:100%;" frameBorder="0" allowfullscreen
-      [ngStyle]="{ 'height': iframeHeight }"></iframe>
+    showSpinner = {{ showSpinner}}
   </div>
 
 </div>
