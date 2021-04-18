@@ -194,7 +194,7 @@ export class AuthGuard implements CanActivate {
 
 
     if (storedProjectJson === null) {
-      console.log('!! AUTH WF in auth.guard - PROJECT JSON IS NULL - RUN getProjectById() ')
+      console.log('!! AUTH WF in auth.guard - PROJECT JSON IS NULL - RUN getProjects and filter for project id ')
 
 
       this.getProjectPublishAndSaveInStorage();
@@ -285,7 +285,9 @@ export class AuthGuard implements CanActivate {
 
       } else {
 
-        console.log('!! »»»»» AUTH GUARD - PROJECT OBJCT FILTERED FOR PROJECT ID !! NOT FOUND ');
+        console.log('!! »»»»» AUTH GUARD - PROJECT OBJCT FILTERED FOR PROJECT ID !! NOT FOUND - GO TO PROJECTS ');
+
+        this.goToProjects()
       }
 
     }, (error) => {
@@ -296,6 +298,21 @@ export class AuthGuard implements CanActivate {
       // this.resetCurrentProjectAndInizializeNewProject();
     });
   }
+
+  goToProjects() {
+    console.log('HAS CLICCKED GO TO PROJECT ')
+    this.router.navigate(['/projects']);
+    // (in AUTH SERVICE ) RESET PROJECT_BS AND REMOVE ITEM PROJECT FROM STORAGE WHEN THE USER GO TO PROJECTS PAGE
+    this.auth.hasClickedGoToProjects();
+
+    // this.project = null
+
+    // this.subscription.unsubscribe();
+    // this.unsubscribe$.next();
+    // this.unsubscribe$.complete();
+
+  
+}
 
   // !!! NO MORE USED
   checkIf_NavPrjctIdMatchesCurrentPrjctId() {
