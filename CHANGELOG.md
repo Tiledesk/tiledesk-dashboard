@@ -7,7 +7,7 @@
 - Fixes the bug: unassigned conversations map pin URL is incorrect
 - Fixes the bug: requester_id of undefined
 - Display "info" messages in the chat on the conversation detail page in the style they appear in the web chat
-- Fixex the bug: accessing the dashboard in the conversation list page from the link suggested by the browser address bar the project is not found
+- Fixes the bug: accessing the dashboard in the conversation list page from the link suggested by the browser address bar the project is not found
 - Adds a loading spinner on the apps installation page
 
 ### 2.1.48
