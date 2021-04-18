@@ -229,13 +229,57 @@
                 <!-- style="padding-bottom: 3px;" class="answer left" -->
                 <div *ngFor="let message of messagesList">
 
-                  <div class="parent">
+ <!-- ////// INFO MSG -->
+                        <!-- requester_id: {{requester_id}} message_sender {{message.sender}} type
+                        {{message?.attributes?.subtype}} rext {{ message?.text }} -->
+                        <div *ngIf="message?.attributes?.subtype === 'info'" style="padding:20px 55px; text-align:center">
+                          <div>
+                            <!-- <div class="requester-avatar-wrapper"
+                              style="display: block;border-radius: 50%; height: 100%; margin-top: 35px;"
+                              [ngStyle]="{'background-color': fillColour }">
+
+                              <span class="_requester-avatar-inchat">
+
+                                {{ requester_fullname_initial }}
+                              </span>
+                            </div> -->
+
+                            <div class="txt">
+                              <!-- <p class="name" [ngStyle]="{'color': fillColour }">
+                                {{ message.senderFullname }}
+                                
+                                <span *ngIf="message?.type === 'text'"
+                                  style="float:right; cursor:pointer; color: #00bcf8; text-decoration: underline;"
+                                  (click)="openRightSideBar(message?.text)">
+                                  {{ 'Train' | translate }}
+                                </span>
+                              </p> -->
+                              <p *ngIf="message?.type === 'text'"  class="type-info-msg-text">
+                                {{ message?.text }}
+                              </p>
+                              <!-- <div *ngIf="message?.type === 'image'" class="message ow">
+                                <div class="image-container" style="height:200px; width:200px;">
+                                  <img src={{message.metadata.src}} class="message-img" />
+                                </div>
+                              </div> -->
+                              <!-- <span class="timestamp"> {{ message?.createdAt | date: 'd/M/y HH:mm:ss'}} </span> -->
+                            </div>
+                            <!-- <div class="bubble-arrow"></div> -->
+                          </div>
+                        </div>
+
+
+                  <div class="parent" *ngIf="message?.attributes?.subtype !== 'info'">
                     <div [ngClass]="{'child' : requester_id !== message.sender}">
 
                       <div class="speech-wrapper">
 
+
                         <!-- ////// REQUESTER -->
-                        <div *ngIf="requester_id === message.sender" class="bubble">
+                        <!-- requester_id: {{requester_id}} message_sender {{message.sender}} type
+                        {{message?.attributes?.subtype}} -->
+                        <div *ngIf="requester_id === message.sender && message?.attributes?.subtype !== 'info'"
+                          class="bubble">
                           <div class="avatar"
                             style="  width: 35px; height: 35px; position: absolute; left: -50px; bottom: 36px;">
                             <div class="requester-avatar-wrapper"
@@ -273,7 +317,7 @@
                           <div class="bubble-arrow"></div>
                         </div>
                         <!-- ////////////////// Speech Bubble alternative ////////////////// -->
-                        <div *ngIf="requester_id !== message.sender" class="bubble alt">
+                        <div *ngIf="requester_id !== message.sender && message?.attributes?.subtype !== 'info'" class="bubble alt">
 
                           <div class="avatar"
                             style="width: 35px; height: 35px; position: absolute; left: 254px; bottom: 36px;">
@@ -282,7 +326,7 @@
 
                               <!-- USE CASE: human -->
                               <!-- <span *ngIf="message?.sender !== 'system' && message?.senderFullname !== 'Bot'" style="position: absolute; top:43px; margin-left:13px;"> -->
-                              <span *ngIf="message?.sender !== 'system' && message?.sender.indexOf('bot_') === -1"
+                              <span *ngIf="message?.sender !== 'system' && message?.sender.indexOf('bot_') === -1 && message?.attributes?.subtype !== 'info'"
                                 style="position: absolute; top:43px; margin-left:13px;">
                                 <!-- {{ messageSenderInitialLetter( message?.senderFullname )}} -->
                                 <!-- {{ message?.sender }}{{  message?.senderFullname }} -->
@@ -295,7 +339,7 @@
 
                               <!-- USE CASE: bot -->
                               <!-- <span *ngIf="message?.senderFullname === 'Bot'" style="position: absolute; top:43px; margin-left:13px;"> -->
-                              <span *ngIf="message?.sender.indexOf('bot_') !== -1"
+                              <span *ngIf="message?.sender.indexOf('bot_') !== -1 && message?.attributes?.subtype !== 'info'"
                                 style="position: absolute; top:43px; margin-left:13px;">
                                 <img
                                   style="vertical-align: middle; width: 36px; height: 36px; border-radius: 50%; border: 1px solid #eee; position:relative;top: -9px;left: -14px;"
@@ -305,24 +349,24 @@
                               </span>
 
                               <!-- USE CASE: system but with name Bot -->
-                              <span *ngIf="message?.sender === 'system' && message?.senderFullname === 'Bot'"
-                                style="position: absolute; top:43px; margin-left:13px;color: #999999;">
-                                <!-- {{ message?.sender }}{{  message?.senderFullname }} -->
-                                <img
-                                  style="vertical-align: middle; width: 36px; height: 36px; border-radius: 50%; border: 1px solid #eee; position:relative;top: -9px;left: -14px;"
-                                  class="user-img" src="assets/img/bot_image_as_human.jpg"
-                                  onerror="this.src='assets/img/no_image_user.png'" />
-                              </span>
+                              <!-- <span *ngIf="message?.sender === 'system' && message?.senderFullname === 'Bot'"
+                                  style="position: absolute; top:43px; margin-left:13px;color: #999999;">
+                                  
+                                  <img
+                                    style="vertical-align: middle; width: 36px; height: 36px; border-radius: 50%; border: 1px solid #eee; position:relative;top: -9px;left: -14px;"
+                                    class="user-img" src="assets/img/bot_image_as_human.jpg"
+                                    onerror="this.src='assets/img/no_image_user.png'" />
+                                </span> -->
 
                               <!-- USE CASE: system -->
-                              <span *ngIf="message?.sender === 'system' && message?.senderFullname !== 'Bot'"
-                                style="position: absolute; top:43px; margin-left:13px;color: #999999;">
-                                <!-- {{ message?.sender }}{{  message?.senderFullname }} -->
-                                <i class="material-icons"
-                                  style="position: relative;left: -9px;top: -3px;font-size:26px">
-                                  code
-                                </i>
-                              </span>
+                              <!-- <span *ngIf="message?.sender === 'system' && message?.senderFullname !== 'Bot'"
+                                  style="position: absolute; top:43px; margin-left:13px;color: #999999;">
+                                  
+                                  <i class="material-icons"
+                                    style="position: relative;left: -9px;top: -3px;font-size:26px">
+                                    code
+                                  </i>
+                                </span> -->
 
 
                             </div>
@@ -945,7 +989,8 @@
                 <!-- ------------------------------------------------------ -->
                 <div *ngIf="request?.attributes?.decoded_jwt && REQUESTER_IS_VERIFIED" class="row">
                   <div class="col-sm-12 attributes-jwt-decoded-accordion-wpr">
-                    <p class="row-header  attributes-decoded-jwt-accordion" [ngClass]="{'attributes-decoded-jwt-accordion-in-chat': CHAT_PANEL_MODE === true}"
+                    <p class="row-header  attributes-decoded-jwt-accordion"
+                      [ngClass]="{'attributes-decoded-jwt-accordion-in-chat': CHAT_PANEL_MODE === true}"
                       (click)="openAttributesDecodedJWTAccordion()"
                       style="padding-left: 11px; padding-right: 15px;font-size: 14px;">
                       <i class="material-icons" style="vertical-align: middle; color: #2C3E48"> gpp_good </i>
@@ -963,15 +1008,16 @@
 
                           <div class="row">
                             <div class="col-xs-10" style="padding-right: 1px;padding-bottom: 5px;">
-                              <div *ngIf="attribute?.decodedJWTType && attribute?.index === '0'" class="ws_requets_msgs__attribute" style="text-transform: uppercase;font-weight: 600;
+                              <div *ngIf="attribute?.decodedJWTType && attribute?.index === '0'"
+                                class="ws_requets_msgs__attribute" style="text-transform: uppercase;font-weight: 600;
                               font-size: 11px;"> Attributes </div>
                               <div style="float: left; margin-right: 4px;" class="ws_requets_msgs__attributes"
                                 [ngClass]="{'decoded-jwt-attributes': attribute?.decodedJWTType}">
                                 {{attribute?.attributeName }}:
                               </div>
 
-                              <div aria-expanded="false" [id]="attribute?.attributeName +'_value'"
-                                class="attribute" [ngClass]="{'attribute_cutted_text': !attribute?.decodedJWTType}">
+                              <div aria-expanded="false" [id]="attribute?.attributeName +'_value'" class="attribute"
+                                [ngClass]="{'attribute_cutted_text': !attribute?.decodedJWTType}">
                                 {{attribute?.attributeValue }}
                               </div>
 
@@ -2775,7 +2821,8 @@
                                         check_circle
                                       </span>
                                       <span class="right" style="white-space: normal;padding: 5px;font-weight: 200;">
-                                        <h4 style="font-weight:400"> Default Department {{ 'Enabled' | translate }}</h4>
+                                        <h4 style="font-weight:400"> Default Department {{ 'Enabled' | translate }}
+                                        </h4>
                                         <!-- {{'TheDefaulDeptIsEnabledBecause' | translate}} -->
                                         {{'TheDefaulDeptIsEnabledBecause_2' | translate}}
                                         <i></i>
@@ -3374,5 +3421,6 @@
 
     <div *ngIf="OPEN_RIGHT_SIDEBAR === true" class="view-side">
       <appdashboard-ws-train-bot [ngStyle]="{'height':train_bot_sidebar_height }" [selectedQuestion]="selectedQuestion"
-        (valueChange)='handleCloseRightSidebar($event)'></appdashboard-ws-train-bot>
+        (valueChange)='handleCloseRightSidebar($event)'>
+      </appdashboard-ws-train-bot>
     </div>

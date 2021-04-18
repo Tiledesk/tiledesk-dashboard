@@ -247,6 +247,17 @@
 
 // ***************** START new CHAT *****************
 
+.type-info-msg-text {
+  padding: 2px 6px 2px 6px;
+  background: #c9e4f6;
+  margin: auto;
+  width: fit-content;
+  font-size: 12px;
+  color: #2b2b2b;
+  font-weight: 400;
+  border-radius: 4px;
+}
+
 .parent {
   display: flex;
   // height: 400px;
@@ -1527,7 +1538,7 @@ and also iPads specifically.
 }
 
 .attributes-decoded-jwt-accordion-in-chat:after {
-  margin-right: 0px !important; 
+  margin-right: 0px !important;
 }
 
 .attributes-decoded-jwt-accordion {
@@ -1541,8 +1552,6 @@ and also iPads specifically.
   font-size: 15px;
   transition: 0.4s;
 }
-
-
 
 .attributes-decoded-jwt-accordion:hover {
   background-color: #f7f8fc;
