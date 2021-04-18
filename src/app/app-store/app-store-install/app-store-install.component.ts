@@ -96,7 +96,7 @@ export class AppStoreInstallComponent implements OnInit {
       console.log('APP-STORE-INSTALL GET iframeDoc readyState  iframeDoc',  iframeDoc)
       // this.ngZone.run( () => {
         self.showSpinner = false;
-        let spinnerElem =  <HTMLElement>document.querySelector('.stretchspinner_in_app_install')
+         let spinnerElem =  <HTMLElement>document.querySelector('.stretchspinner_in_app_install')
         // let spinnerElem = document.getElementsByClassName("stretchspinner_in_app_install")  as HTMLCollectionOf<HTMLElement>;
         console.log('APP-STORE-INSTALL GET iframeDoc readyState spinnerElem',  spinnerElem)
         spinnerElem.classList.add("hide-stretchspinner")
