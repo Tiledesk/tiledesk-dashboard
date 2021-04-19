@@ -9,6 +9,9 @@
 - Display "info" messages in the chat on the conversation detail page in the style they appear in the web chat
 - Fixes the bug: accessing the dashboard in the conversation list page from the link suggested by the browser address bar the project is not found
 - Adds a loading spinner on the apps installation page
+- Fixes the bug: when the trigger "When a visitor requests a chat" is created with  the condition "Department" after saving the selected department is always the default department
+- Fixes the bug: when the trigger "When a visitor requests a chat" is created with two conditions "Department" in the second condition the selected department is the same as the first one
+- Fixes the bug: in the Analytics> Metrics> Satisfaction page the number of decimals displayed in the Average Satisfaction section is greater than two
 
 ### 2.1.48
 - Fixes the bug: on the conversation details page the "Trusted Info" accordion does not open if the attributes of the decoded jwt are undefined
