@@ -228,15 +228,32 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
       // -conditions_array is a new formbuilder array with the value of conditionsGROUP
       // -cond_triggerFormNewArray is a variable that help to add controls (see line after) to
       //  triggerForm with che value of conditions_array
-      const conditionsGROUP = trigger.conditions[this.conditionType.split('.')[1]]
-        .map(cond => this.formBuilder.group({
-          fact: cond.fact,
-          operator: cond.operator,
-          path: cond.path,
-          value: cond.value,
-          key: cond.key,
-          type: this.condition.filter(b => b.triggerType === trigger.trigger.key).filter(c => c.key === cond.key)[0].type
-        }))
+      // const conditionsGROUP = trigger.conditions[this.conditionType.split('.')[1]]
+      //   .map(cond => this.formBuilder.group({
+      //     fact: cond.fact,
+      //     operator: cond.operator,
+      //     path: cond.path,
+      //     value: cond.value,
+      //     key: cond.key,
+      //     type: this.condition.filter(b => b.triggerType === trigger.trigger.key).filter(c => c.key === cond.key)[0].type
+      //   }))
+
+
+        const conditionsGROUP = trigger.conditions[this.conditionType.split('.')[1]]
+        .map(cond => {
+          console.log("***** COND: ", cond.value);
+
+          this.default_dept_id = cond.value;
+          
+          return this.formBuilder.group({
+            fact: cond.fact,
+            operator: cond.operator,
+            path: cond.path,
+            value: cond.value,
+            key: cond.key,
+            type: this.condition.filter(b => b.triggerType === trigger.trigger.key).filter(c => c.key === cond.key)[0].type
+          })
+        })
 
       console.log('TRIGGER (EDIT) - conditionsGROUP', conditionsGROUP)
 
@@ -583,7 +600,8 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
       'path': selectedCondition.id, // nk added
       'type': selectedCondition.type,
       'operator': this.options[selectedCondition.type + 'Opt'][0].id,
-      'value': undefined,
+      // value: undefined permette di visualizzare il placeholder della terza select
+      'value': (selectedCondition.key.includes('department')) ? this.operator[selectedCondition.key][0].id: undefined, 
       'key': selectedCondition.key,
       'placeholder': selectedCondition.placeholder
     });
@@ -644,11 +662,13 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
     console.log('action before', action);
     console.log('action before', action);
     // set value of second and third dropdown action section and set it's placeholder value for selected action
+  
+
     action.patchValue({
       'type': this.action.filter(b => b.key === event)[0].type,
       'placeholder': this.action.filter(b => b.key === event)[0].placeholder,
       'parameters': {
-        'fullName': undefined,
+        'fullName': (action.value.key === 'request.create' || action.value.key === 'request.department.route') ? this.operator[action.value.key][0].id: undefined, 
         'text': event === 'request.create' || event === 'message.send' ? '' : ' '
       }
     });

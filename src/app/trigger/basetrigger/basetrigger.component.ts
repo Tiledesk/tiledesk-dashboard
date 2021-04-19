@@ -468,7 +468,7 @@ export class BasetriggerComponent implements OnInit {
           type: 'int'
         },
         // ******* REQUEST - When a chat message is sent - END *******
- 
+
 
         // ******* REQUEST - When a visitor request a chat - START *******
         {
@@ -586,11 +586,19 @@ export class BasetriggerComponent implements OnInit {
           label_key: translateConditions.chat.label_key.VisitorCountryRegion,
           triggerType: 'request.create',
           type: 'boolean',
+          // operator: [
+          //   { id: 'zh-CN', label_key: 'Chinese' },
+          //   { id: 'en-GB', label_key: 'English' },
+          //   { id: 'fr-FR', label_key: 'French' },
+          //   { id: 'it-IT', label_key: 'Italian' }
+          // ],
           operator: [
-            { id: 'zh-CN', label_key: 'Chinese' },
-            { id: 'en-GB', label_key: 'English' },
-            { id: 'fr-FR', label_key: 'French' },
-            { id: 'it-IT', label_key: 'Italian' }
+            { id: 'zh', label_key: 'Chinese' },
+            { id: 'en', label_key: 'English' },
+            { id: 'fr', label_key: 'French' },
+            { id: 'it', label_key: 'Italian' },
+            { id: 'de', label_key: 'German' },
+            { id: 'es', label_key: 'Spanish' },
           ],
           placeholder: translateConditions.chat.placeholder.SelectLanguage
         },
@@ -813,10 +821,12 @@ export class BasetriggerComponent implements OnInit {
       // key: 'request.create', Crea richiesta
       // key: 'request.department.route', Assegna a diparimento
 
+      console.log("*** Deps: ", this.departments)
 
       this.operator = {
         'attributes.departmentId': this.departments,
         'lead.attributes.departmentId': this.departments,
+        'message.request.department.name': this.departments,
         'department.name': this.departments,
         'request.department.name': this.departments,
         'request.department._id': this.departments,
@@ -902,7 +912,7 @@ export class BasetriggerComponent implements OnInit {
         ],
         'request.create': this.departments
       },
-      console.log('No pair_cond:', this.condition)
+        console.log('No pair_cond:', this.condition)
 
     }, (error) => {
       console.log('!!!  REQUESTS TRANSLATE FOR COND, OPT AND ACT - ERROR: ', error);
@@ -1039,6 +1049,8 @@ export class BasetriggerComponent implements OnInit {
             // { key: 'request.department.root', label_key: 'Assegna a dipartimento', type: 'select', placeholder: 'text here2'},
             // { key: 'request.department.root.self', label_key: 'Riassegna allo stesso dipartimento', type: 'input', placeholder: 'text here2'}
           ]
+
+          console.log("*** Deps: ", this.departments);
 
           this.operator = {
             'attributes.departmentId': this.departments,

@@ -334,14 +334,26 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
     // set conditionFormArray by using selectedCondition value:
     // - type , operator, key, placeholder
     const selectedCondition = this.condition.filter(b => b.key === $event.key)[0]
+    console.log('TRIGGER (ADD) onSelectedCondition selectedCondition', selectedCondition)
+    if (selectedCondition.key.includes('department')) {
+      console.log("*** SelectedConditon includes department")
+      console.log("*** SelectedCondition.key: ", selectedCondition.key)
+      console.log("*** operator: ", this.operator)
+    } else {
+      console.log("*** SelectedConditon not includes department")
+    }
     console.log('TRIGGER ->>>>> onSelectedCondition - selectedCondition: ', selectedCondition);
     console.log('TRIGGER ->>>>> onSelectedCondition - selectedCondition.type: ', selectedCondition.type);
     console.log('TRIGGER ->>>>> onSelectedCondition - operator: ', this.options[selectedCondition.type + 'Opt'][0].id);
 
+    console.log("*** this.operator: ", this.operator[selectedCondition.key])
+    console.log("*** selcondition.key: ", selectedCondition.key)
+
     condition.patchValue({
       'type': selectedCondition.type,
       'operator': this.options[selectedCondition.type + 'Opt'][0].id,
-      'value': undefined,
+      'value': (selectedCondition.key.includes('department')) ? this.operator[selectedCondition.key][0].id: undefined, 
+      // 'value': undefined,
       'key': selectedCondition.key,
       'placeholder': selectedCondition.placeholder
     });
@@ -414,7 +426,8 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
       'type': this.action.filter(b => b.key === event)[0].type,
       'placeholder': this.action.filter(b => b.key === event)[0].placeholder,
       'parameters': {
-        'fullName': undefined,
+        'fullName': (action.value.key === 'request.create' || action.value.key === 'request.department.route') ? this.operator[action.value.key][0].id: undefined, 
+        // 'fullName': undefined,
         'text': event === 'request.create' || event === 'message.send' ? '' : ' '
       }
     });
