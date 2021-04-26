@@ -29,8 +29,40 @@ export class AutologinComponent implements OnInit {
     this.APP_IS_DEV_MODE = isDevMode();
     console.log('SSO - autologin page isDevMode ', this.APP_IS_DEV_MODE);
 
-    this.getRouteAndJWTfromUrl();
 
+
+    this.getJWTAndRouteParamsAndLogin();
+
+
+  }
+
+  getJWTAndRouteParamsAndLogin() {
+    this.route.params.subscribe((params) => {
+      console.log('SSO - autologin page params ', params)
+
+      const route = params.route
+      console.log('SSO - autologin page params route', route);
+
+
+      const JWT = params.token
+      console.log('SSO - autologin page params token ', JWT);
+
+
+
+      console.log('SSO - autologin getConfig chatEngine', this.appConfigService.getConfig().chatEngine)
+      if (this.appConfigService.getConfig().chatEngine && this.appConfigService.getConfig().chatEngine !== 'mqtt') {
+
+        if (JWT && route) {
+          this.ssoLoginWithCustomToken(JWT, route)
+        }
+      } else {
+        if (JWT && route) {
+          this.ssoLogin(JWT, route)
+        }
+      }
+
+
+    });
   }
 
   ngOnInit() {
@@ -61,7 +93,33 @@ export class AutologinComponent implements OnInit {
     }
   }
 
-  getRouteAndJWTfromUrl() {
+  ssoLogin(JWT, route) {
+
+    console.log('SSO - ssoLogin getCurrentAuthenticatedUser route ', route);
+    console.log('SSO - ssoLogin getCurrentAuthenticatedUser JWT ', JWT);
+    
+    this.logout();
+    this.sso.getCurrentAuthenticatedUser(JWT).subscribe(auth_user => {
+      console.log('SSO - ssoLogin getCurrentAuthenticatedUser RES ', auth_user);
+
+      const user = { firstname: auth_user.firstname, lastname: auth_user.lastname, _id: auth_user._id, token: JWT }
+      console.log('SSO - ssoLogin getCurrentAuthenticatedUser user ', user);
+
+      localStorage.setItem('user', JSON.stringify(user));
+
+      this.auth.publishSSOloggedUser();
+
+      this.router.navigate([route]);
+
+    }, (error) => {
+      console.log('SSO - ssoLogin getCurrentAuthenticatedUser ', error);
+
+    }, () => {
+      console.log('SSO - ssoLogin getCurrentAuthenticatedUser * COMPLETE *');
+    });
+  }
+
+  ssoLoginWithCustomToken(JWT, route) {
 
     // -------------
     // @ Logout
@@ -70,84 +128,62 @@ export class AutologinComponent implements OnInit {
 
     console.log('SSO - getUrl');
 
-    this.route.params.subscribe((params) => {
-      console.log('SSO - autologin page params ', params)
 
-      const route = params.route
-      console.log('SSO - autologin page params route', route);
+    this.sso.chat21CreateFirebaseCustomToken(JWT).subscribe(fbtoken => {
 
+      console.log('SSO - ssoLoginWithCustomToken chat21CreateFirebaseCustomToken res ', fbtoken);
 
-      const JWT = params.token
-      console.log('SSO - autologin page params token ', JWT);
+      if (fbtoken) {
 
-      // const url_array = url.split('?')
-      // console.log('SSO - autologin url_array ', url_array);
-
-      // const route = url_array[0];
-      // console.log('SSO - autologin route ', route);
-
-      // const dirty_JWT = url_array[1];
-      // console.log('SSO - autologin dirty_JWT ', dirty_JWT);
-
-      // const JWT = 'JWT' + ' ' +  dirty_JWT.slice(4);
-      // console.log('SSO - autologin cleaned_JWT ', JWT);
-      // this.auth.chat21CreateFirebaseCustomToken(JWT).subscribe(fbtoken => { // })
-
-      // this.firebaseSigninAndRedirect(route, JWT)
+        firebase.auth().signInWithCustomToken(fbtoken)
+          .then(firebase_user => {
+            console.log('SSO - ssoLoginWithCustomToken - signInWithCustomToken ', firebase_user);
 
 
+            // if (!this.APP_IS_DEV_MODE && this.FCM_Supported === true) {
+            //   this.auth.getPermission();
+            // }
 
-      this.sso.chat21CreateFirebaseCustomToken(JWT).subscribe(fbtoken => {
+            if (firebase_user) {
+              this.sso.getCurrentAuthenticatedUser(JWT).subscribe(auth_user => {
+                console.log('SSO - ssoLoginWithCustomToken getCurrentAuthenticatedUser RES ', auth_user);
 
-        console.log('SSO - autologin chat21CreateFirebaseCustomToken res ', fbtoken);
+                const user = { firstname: auth_user.firstname, lastname: auth_user.lastname, _id: auth_user._id, token: JWT }
 
-        if (fbtoken) {
+                localStorage.setItem('user', JSON.stringify(user));
 
-          firebase.auth().signInWithCustomToken(fbtoken)
-            .then(firebase_user => {
-              console.log('SSO - autologin - signInWithCustomToken ', firebase_user);
+                this.auth.publishSSOloggedUser();
+
+                this.router.navigate([route]);
 
 
-              // if (!this.APP_IS_DEV_MODE && this.FCM_Supported === true) {
-              //   this.auth.getPermission();
-              // }
 
-              if (firebase_user) {
-                this.sso.getCurrentAuthenticatedUser(JWT).subscribe(auth_user => {
-                  console.log('SSO - autologin getCurrentAuthenticatedUser RES ', auth_user);
+                // email: "pregino@f21test.it"
+                // emailverified: true
+                // firstname: "Gino"
+                // lastname: "Pre"
+                // token: "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZGRkMzBiZmYwMTk1ZjAwMTdmNzJjNmQiLCJlbWFpbCI6InByZWdpbm9AZjIxdGVzdC5pdCIsImZpcnN0bmFtZSI6Ikdpbm8iLCJsYXN0bmFtZSI6IlByZSIsImVtYWlsdmVyaWZpZWQiOnRydWUsImlhdCI6MTU5OTQ4ODIzMiwiYXVkIjoiaHR0cHM6Ly90aWxlZGVzay5jb20iLCJpc3MiOiJodHRwczovL3RpbGVkZXNrLmNvbSIsInN1YiI6InVzZXIiLCJqdGkiOiJkMzZiNGUwOS00MzQ1LTRmZDYtYTNmZi1hMzY0NjdmNzdjYjgifQ.FMRFwxyHq2_fbR4_oEnG4cFKqZQxsK_YScJKKSptfUo"
+                // _id: "5ddd30bff0195f0017f72c6d"
 
-                  const user = { firstname: auth_user.firstname, lastname: auth_user.lastname, _id: auth_user._id, token: JWT }
+              }, (error) => {
+                console.log('SSO - autologin getCurrentAuthenticatedUser ', error);
 
-                  localStorage.setItem('user', JSON.stringify(user));
+              }, () => {
+                console.log('SSO - autologin getCurrentAuthenticatedUser * COMPLETE *');
+              });
+            }
 
-                  this.auth.publishSSOloggedUser();
 
-                  this.router.navigate([route]);
+          })
+      }
 
-                  // email: "pregino@f21test.it"
-                  // emailverified: true
-                  // firstname: "Gino"
-                  // lastname: "Pre"
-                  // token: "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZGRkMzBiZmYwMTk1ZjAwMTdmNzJjNmQiLCJlbWFpbCI6InByZWdpbm9AZjIxdGVzdC5pdCIsImZpcnN0bmFtZSI6Ikdpbm8iLCJsYXN0bmFtZSI6IlByZSIsImVtYWlsdmVyaWZpZWQiOnRydWUsImlhdCI6MTU5OTQ4ODIzMiwiYXVkIjoiaHR0cHM6Ly90aWxlZGVzay5jb20iLCJpc3MiOiJodHRwczovL3RpbGVkZXNrLmNvbSIsInN1YiI6InVzZXIiLCJqdGkiOiJkMzZiNGUwOS00MzQ1LTRmZDYtYTNmZi1hMzY0NjdmNzdjYjgifQ.FMRFwxyHq2_fbR4_oEnG4cFKqZQxsK_YScJKKSptfUo"
-                  // _id: "5ddd30bff0195f0017f72c6d"
+    }, (error) => {
+      console.log('SSO - autologin chat21CreateFirebaseCustomToken ', error);
+    }, () => {
+      console.log('SSO - autologin chat21CreateFirebaseCustomToken * COMPLETE *');
 
-                }, (error) => {
-                  console.log('SSO - autologin getCurrentAuthenticatedUser ', error);
-
-                }, () => {
-                  console.log('SSO - autologin getCurrentAuthenticatedUser * COMPLETE *');
-                });
-              }
-            })
-        }
-
-      }, (error) => {
-        console.log('SSO - autologin chat21CreateFirebaseCustomToken ', error);
-      }, () => {
-        console.log('SSO - autologin chat21CreateFirebaseCustomToken * COMPLETE *');
-
-      });
     });
+
   }
 
 
