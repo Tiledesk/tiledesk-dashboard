@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.1.51
+- Fixes the bug: SSO login doesn't work if the 'chat engine' is mqtt
+
 ### 2.1.50
 - Adds the "chatEngine" key in the environments and conditions the initialization of the configurations according to how it is valued (mqtt or firebase)
 
