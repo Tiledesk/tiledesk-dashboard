@@ -642,7 +642,7 @@ export class BasetriggerComponent implements OnInit {
         {
           groupId: translateConditions.chat.groupId.ChatInformation,
           id: 'status',
-          key: ' ',
+          key: 'request.statusRequestStatus',
           label_key: translateConditions.chat.label_key.RequestStatus,
           triggerType: 'request.create',
           type: 'int'

@@ -352,7 +352,8 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
     condition.patchValue({
       'type': selectedCondition.type,
       'operator': this.options[selectedCondition.type + 'Opt'][0].id,
-      'value': (selectedCondition.key.includes('department')) ? this.operator[selectedCondition.key][0].id: undefined, 
+      // 'value': (selectedCondition.key.includes('department')) ? this.operator[selectedCondition.key][0].id: undefined, 
+      'value': (selectedCondition.key === "message.request.department.name") ? this.operator[selectedCondition.key][0].id: undefined, 
       // 'value': undefined,
       'key': selectedCondition.key,
       'placeholder': selectedCondition.placeholder
