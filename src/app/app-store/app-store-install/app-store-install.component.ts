@@ -4,6 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser'
 import { Location } from '@angular/common';
 import { AppStoreService } from 'app/services/app-store.service';
+import { Subscription } from 'rxjs/Subscription';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'appdashboard-app-store-install',
@@ -11,7 +13,8 @@ import { AppStoreService } from 'app/services/app-store.service';
   styleUrls: ['./app-store-install.component.scss']
 })
 export class AppStoreInstallComponent implements OnInit {
-
+  
+  subscription: Subscription;
   URL: any;
   iframeHeight: any;
   actualHeight: any;
@@ -21,7 +24,7 @@ export class AppStoreInstallComponent implements OnInit {
   result: any;
   TOKEN: string;
   showSpinner: boolean;
-
+  projectId: string;
 
   constructor(
     public route: ActivatedRoute,
@@ -29,7 +32,8 @@ export class AppStoreInstallComponent implements OnInit {
     public location: Location,
     private appStoreService: AppStoreService,
     private auth: AuthService,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private router: Router
   ) {
 
     this.getRouteParams();
@@ -37,13 +41,23 @@ export class AppStoreInstallComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    this.getCurrentProject();
     this.onInitframeHeight();
 
   }
 
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
 
-
+  getCurrentProject() {
+    this.subscription = this.auth.project_bs.subscribe((project) => {
+      if (project) {
+        this.projectId = project._id
+        console.log('APP-STORE - projectId ', this.projectId)
+      }
+    });
+  }
 
 
   getRouteParams() {
@@ -147,7 +161,9 @@ export class AppStoreInstallComponent implements OnInit {
 
   goBack() {
     console.log("APP-STORE-INSTALL - goBack");
-    this.location.back();
+    // this.location.back();
+    
+    this.router.navigate(['project/' + this.projectId + '/app-store/'])
   }
 
 
