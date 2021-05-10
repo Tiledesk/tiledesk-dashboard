@@ -1,6 +1,15 @@
 
 # tiledesk-dashboard
 
+### 2.1.53
+- Saves in local storage the token with the key "chat_sv5__tiledeskToken"
+- Adds the "firebaseAuth" key in the environments and conditions signInWithCustomToken based on how it is valued (true or false)
+- Adds the "uploadEngine" key in the environments and conditions the service to be used to upload and delete user and bot profile picture based on how it is valued (native or firebase)
+- Adds the "pushEngine" key in the environments and conditions whether to use Firebase or another service to manage push notifications based on how it is valued (firebase or none)
+
+### 2.1.52
+- Minor improvements
+
 ### 2.1.51
 - Fixes the bug: SSO login doesn't work if the 'chat engine' is mqtt
 
