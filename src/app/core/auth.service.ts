@@ -605,6 +605,8 @@ export class AuthService {
 
         // SET USER IN LOCAL STORAGE
         localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem('chat_sv5__tiledeskToken',  user.token); // x autoligin of Chat ionic
+        
         console.log('++ USER ', user)
 
         ///////////////////
