@@ -97,10 +97,16 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
         // ---------------------------------------------------------------------------------
-        // InitializeApp with firebase config IF chatEngine NOT exist or exist AND is ≠ mqtt
+        // InitializeApp with firebase config IF 
+        // * chatEngine is = firebase or
+        // * uploadEngine is = firebase or 
+        // * pushEngine is = firebase
         // --------------------------------------------------------------------------------- 
         console.log('APP-COMPONENT getConfig chatEngine', appConfigService.getConfig().chatEngine)
-        if (appConfigService.getConfig().chatEngine && appConfigService.getConfig().chatEngine !== 'mqtt') {
+        console.log('APP-COMPONENT getConfig uploadEngine', appConfigService.getConfig().uploadEngine)
+        console.log('APP-COMPONENT getConfig pushEngine', appConfigService.getConfig().pushEngine)
+        // if (appConfigService.getConfig().chatEngine && appConfigService.getConfig().chatEngine !== 'mqtt') {
+        if (appConfigService.getConfig().uploadEngine === 'firebase' || appConfigService.getConfig().chatEngine === 'firebase' || appConfigService.getConfig().pushEngine === 'firebase') {
             console.log('APP-COMPONENT - WORKS WITH FIREBASE ')
 
             // ----------------------------

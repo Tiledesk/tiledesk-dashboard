@@ -124,7 +124,11 @@ export class AuthService {
     // this.getParamsProjectId();
     // const messaging = firebase.messaging();
 
-    this.checkIfFCMIsSupported();
+    if (appConfigService.getConfig().pushEngine === 'firebase') {
+      this.checkIfFCMIsSupported();
+    }
+
+
     this.checkIfExpiredSessionModalIsOpened();
 
     this.getAppConfigAnBuildUrl();
@@ -224,6 +228,8 @@ export class AuthService {
       // Supported
       this.FCM_Supported = true;
       console.log('*** >>>> FCM is Supported: ', this.FCM_Supported);
+
+
     } else {
       // NOT Supported
       this.FCM_Supported = false;
@@ -605,19 +611,20 @@ export class AuthService {
 
         // SET USER IN LOCAL STORAGE
         localStorage.setItem('user', JSON.stringify(user));
-        localStorage.setItem('chat_sv5__tiledeskToken',  user.token); // x autoligin of Chat ionic
-        
+        localStorage.setItem('chat_sv5__tiledeskToken', user.token); // x autologin of Chat ionic
+
         console.log('++ USER ', user)
 
         ///////////////////
         console.log('SSO - LOGIN 1. POST DATA ', jsonRes);
         if (jsonRes['success'] === true) {
-          // ----------------------------------------------------------------------------------------------------------------------------
-          // Run chat21CreateFirebaseCustomToken() signInWithCustomToken() getPermission() IF chatEngine NOT exist or exist AND is ≠ mqtt
-          // ----------------------------------------------------------------------------------------------------------------------------
+          // ----------------------------------------------------------------------------------------------------------------------------------------------
+          // Run chat21CreateFirebaseCustomToken() and signInWithCustomToken() if firebaseAuth === true - RUN getPermission() IF pushEngine  === 'firebase'
+          // ----------------------------------------------------------------------------------------------------------------------------------------------
           // this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK
-          console.log('SSO getConfig chatEngine', this.appConfigService.getConfig().chatEngine)
-          if (this.appConfigService.getConfig().chatEngine && this.appConfigService.getConfig().chatEngine !== 'mqtt') {
+          console.log('SSO - LOGIN getConfig firebaseAuth', this.appConfigService.getConfig().firebaseAuth)
+          // if (this.appConfigService.getConfig().chatEngine && this.appConfigService.getConfig().chatEngine !== 'mqtt') {
+          if (this.appConfigService.getConfig().firebaseAuth === true) {
             console.log('SSO - LOGIN - WORKS WITH FIREBASE ')
             // '/chat21/firebase/auth/createCustomToken'
             this.chat21CreateFirebaseCustomToken(jsonRes['token']).subscribe(fbtoken => {
@@ -635,8 +642,10 @@ export class AuthService {
                   .then(firebase_user => {
                     console.log('SSO - LOGIN - 4. FIREBASE CUSTOM AUTH DATA ', firebase_user);
 
-                    if (!this.APP_IS_DEV_MODE && this.FCM_Supported === true) {
-                      this.getPermission();
+                    if (this.appConfigService.getConfig().pushEngine === 'firebase') {
+                      if (!this.APP_IS_DEV_MODE && this.FCM_Supported === true) {
+                        this.getPermission();
+                      }
                     }
 
                     callback(null, user);
@@ -665,11 +674,11 @@ export class AuthService {
             })
 
           } else {
-            console.log('SSO - LOGIN - MQTT CASE - !!!! SIGNIN WITHOUT FIREBASE CUSTOM TOKEN ')
-            // USECASE: NO FBAS in env: eseguo il sigin senza signInWithCustomToken dato che uso i servizi MQTT
+            console.log('SSO - LOGIN - FIREBASE- AUTH false - !!!! SIGNIN WITHOUT FIREBASE CUSTOM TOKEN ')
+            
             callback(null, user);
 
-          } // ./end condition for X MQTT
+          } // ./end condition for X FIREBASE- AUTH
         } else {
           console.log('SSO - LOGIN - POST REQUEST ERROR jsonRes[success] NOT IS === true')
           callback({ code: jsonRes.code, message: jsonRes.message });
@@ -686,7 +695,8 @@ export class AuthService {
     console.log('SSO - LOGIN - 5. getPermission ')
     const messaging = firebase.messaging();
     if (firebase.messaging.isSupported()) {
-      messaging.requestPermission()
+      // messaging.requestPermission()
+      Notification.requestPermission()
         .then(() => {
           console.log('SSO - LOGIN - 5B. >>>> getPermission Notification permission granted.');
           return messaging.getToken()
@@ -922,6 +932,9 @@ export class AuthService {
     localStorage.removeItem('project');
   }
 
+  // -----------------------------------------------------------------------
+  // EXIPRED SESSION MODAL
+  // -----------------------------------------------------------------------
   // RUN THE FIREBASE LOGOUT FOR TEST OF THE EXIPERD SESIION MODAL WINDOW
   testExpiredSessionFirebaseLogout(logoutFromFireBase) {
 
@@ -935,73 +948,48 @@ export class AuthService {
 
   }
 
+      // -----------------------------------------------------------------------------------------------------------
+    // Run showExpiredSessionPopup(); with the passed parameter IF firebaseAuth === 'firebase' else is always False
+    // -------------------------------------------------------------------------------------------------------------
   showExpiredSessionPopup(showExpiredSessionPopup) {
-    // ----------------------------------------------------------------------------------------------------------------------------
-    // Run showExpiredSessionPopup(); with the passed parameter IF chatEngine NOT exist or exist AND is ≠ mqtt else is always False
-    // ----------------------------------------------------------------------------------------------------------------------------
-    if (this.appConfigService.getConfig().chatEngine && this.appConfigService.getConfig().chatEngine !== 'mqtt') {
+
+    if (this.appConfigService.getConfig().firebaseAuth === 'firebase') {
       this.show_ExpiredSessionPopup = showExpiredSessionPopup;
-      console.log('AUTH SERV getConfig - (USE CASE FIREBASE) SHOW EXPIRED SESSION POPUP ', this.show_ExpiredSessionPopup)
+      console.log('AUTH SERV - SHOW EXPIRED SESSION POPUP - (USE CASE FIREBASE AUTH) ', this.show_ExpiredSessionPopup)
     } else {
       this.show_ExpiredSessionPopup = false;
-      console.log('AUTH SERV getConfig - (USE CASE MQTT) SHOW EXPIRED SESSION POPUP   ', this.show_ExpiredSessionPopup)
+      console.log('AUTH SERV - SHOW EXPIRED SESSION POPUP - (USE CASE NO FIREBASE AUTH) ', this.show_ExpiredSessionPopup)
     }
   }
 
-  // hasPressedLogOut(logoutPressed) {
-  //   this.logoutPressed = logoutPressed
-  //   console.log('AUTH SERV - HAS PRESSED LOGOUT ', this.logoutPressed)
-  // }
+
+    // ----------------------------------------------------------------------------------------------------------------------------
+    // @ ShowExiperdSessionPopup  when userIsSignedIn if firebaseAuth === 'firebase else is always False
+    // ----------------------------------------------------------------------------------------------------------------------------
   // PASSED FROM APP.COMPONENT.TS
   userIsSignedIn(user_is_signed_in: boolean) {
-    // ----------------------------------------------------------------------------------------------------------------------------
-    // Run this.notify.showExiperdSessionPopup;  chatEngine NOT exist or exist AND is ≠ mqtt else is always False
-    // ----------------------------------------------------------------------------------------------------------------------------
-    if (this.appConfigService.getConfig().chatEngine && this.appConfigService.getConfig().chatEngine !== 'mqtt') {
-      console.log('AUTH SERVICE getConfig - USER IS SIGNED IN ', user_is_signed_in);
+    if (this.appConfigService.getConfig().firebaseAuth === 'firebase') {
+      console.log('AUTH SERV - USER-IS-SIGNED-IN - SHOW EXPIRED SESSION POPUP - (USE CASE FIREBASE AUTH) ', user_is_signed_in);
 
       if (this.show_ExpiredSessionPopup === true) {
         this.notify.showExiperdSessionPopup(user_is_signed_in);
       }
     } else {
-
-      console.log('AUTH SERVICE getConfig - USER IS SIGNED IN USE CASE MQTT - DOES NOT RUN this.notify.showExiperdSessionPopup');
+      console.log('AUTH SERV - USER-IS-SIGNED-IN - SHOW EXPIRED SESSION POPUP - (USE CASE NO FIREBASE AUTH) - DOES NOT RUN this.notify.showExiperdSessionPopup');
     }
 
   }
 
-
-  // if()this.FCM_Supported
-  // this.checkIfFCMIsSupported()
-  hasOpenedLogoutModal(isOpenedlogoutModal: boolean) {
-    // --------------------------------------------------------------------------
-    // @ Run checkIfFCMIsSupported IF chatEngine not exist or exist and is ≠ mqtt
-    // -------------------------------------------------------------------------- 
-    console.log('AUTH SERV getConfig chatEngine', this.appConfigService.getConfig().chatEngine)
-    // this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK
-    if (this.appConfigService.getConfig().chatEngine && this.appConfigService.getConfig().chatEngine !== 'mqtt') {
-      console.log('AUTH SERV getConfig hasOpenedLogoutModal WORKS WITH FIREBASE  RUN checkIfFCMIsSupported');
-      console.log('hasOpenedLogoutModal ', isOpenedlogoutModal, '*** >>>> FCM is Supported: ', this.FCM_Supported);
-      if (isOpenedlogoutModal) {
-        if (this.FCM_Supported === undefined) {
-          this.checkIfFCMIsSupported()
-        }
-      }
-    } else {
-      console.log('AUTH SERV getConfig hasOpenedLogoutModal WORKS WITHOUT FIREBASE DOES NOT RUN checkIfFCMIsSupported');
-    }
-  }
-
-  //  const isOpenedExpiredSessionModal = this.notify.isOpenedExpiredSessionModal();
-  //  console.log('isOpenedExpiredSessionModal ', isOpenedExpiredSessionModal, '*** >>>> FCM is Supported: ', this.FCM_Supported);
-
+  // --------------------------------------------------------------------------------------------------------------
+  // @ Subscribe to isOpenedExpiredSessionModal (which the run checkIfFCMIsSupported) IF firebaseAuth === 'firebase'
+  // -------------------------------------------------------------------------------------------------------------- 
   checkIfExpiredSessionModalIsOpened() {
-
-    if (this.appConfigService.getConfig().chatEngine && this.appConfigService.getConfig().chatEngine !== 'mqtt') {
-      console.log('AUTH SERV getConfig (USE CASE FIREBASE) RUN isOpenedExpiredSessionModal.subscribe');
+    if (this.appConfigService.getConfig().firebaseAuth === 'firebase') {
+      console.log('AUTH SERV - CHECK-IF-EXPIRED-SESSSION-MODAL-IS-OPENED (USE CASE FIREBASE AUTH) subscribe to isOpenedExpiredSessionModal');
       this.notify.isOpenedExpiredSessionModal.subscribe((isOpenedExpiredSession: boolean) => {
         console.log('isOpenedExpiredSession ', isOpenedExpiredSession, '*** >>>> FCM is Supported: ', this.FCM_Supported);
         if (isOpenedExpiredSession) {
+          console.log('AUTH SERV - CHECK-IF-EXPIRED-SESSSION-MODAL-IS-OPENED (USE CASE FIREBASE) checkIfFCMIsSupported');
           if (this.FCM_Supported === undefined) {
             this.checkIfFCMIsSupported()
           }
@@ -1009,17 +997,38 @@ export class AuthService {
       })
 
     } else {
-      console.log('AUTH SERV getConfig (USE CASE FIREBASE) DOES NOT RUN isOpenedExpiredSessionModal.subscribe');
+      console.log('AUTH SERV - CHECK-IF-EXPIRED-SESSSION-MODAL-IS-OPENED (USE CASE NO FIREBASE AUTH) DOES subscribe to isOpenedExpiredSessionModal');
     }
   }
 
+
+  // -----------------------------------------------------------------------------------
+  // @ Run when hasOpenedLogoutModal checkIfFCMIsSupported IF uploadEngine === 'firebase'
+  // ----------------------------------------------------------------------------------- 
+  hasOpenedLogoutModal(isOpenedlogoutModal: boolean) {
+    console.log('AUTH SERV - HAS-OPENED-LOGOUT-MODAL getConfig chatEngine', this.appConfigService.getConfig().uploadEngine)
+    if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+      console.log('AUTH SERV - HAS-OPENED-LOGOUT-MODAL - WORKS WITH FIREBASE  RUN checkIfFCMIsSupported');
+      console.log('AUTH SERV - HAS-OPENED-LOGOUT-MODAL ', isOpenedlogoutModal, '*** >>>> FCM is Supported: ', this.FCM_Supported);
+      if (isOpenedlogoutModal) {
+        if (this.FCM_Supported === undefined) {
+          this.checkIfFCMIsSupported()
+        }
+      }
+    } else {
+      console.log('AUTH SERV - HAS-OPENED-LOGOUT-MODAL - WORKS WITHOUT FIREBASE DOES NOT RUN checkIfFCMIsSupported');
+    }
+  }
+
+
   signOut() {
     // ------------------------------------------------------------------------------------------------------------
-    // RUN emoveInstanceIdAndFireabseSignout(); firebaseSignout() IF chatEngine NOT exist or exist AND is ≠ mqtt
+    // RUN removeInstanceIdAndSignout() if pushEngine === 'firebase' + 
+    // in  removeInstanceIdAndSignout if  firebaseAuth === 'firebase' run  firebaseSignout else signoutNoFirebase
     // --------------------------------------------------------------------------------------------------------- 
     // this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK
-    console.log('signOut getConfig chatEngine', this.appConfigService.getConfig().chatEngine)
-    if (this.appConfigService.getConfig().chatEngine && this.appConfigService.getConfig().chatEngine !== 'mqtt') {
+    console.log('Signout getConfig pushEngine', this.appConfigService.getConfig().chatEngine)
+    if (this.appConfigService.getConfig().pushEngine === 'firebase') {
       console.log('signOut WITH FIREBASE');
       if (!this.APP_IS_DEV_MODE && this.FCM_Supported === true) {
 
@@ -1027,7 +1036,8 @@ export class AuthService {
         console.log('here 1 ');
         if (this.FCMcurrentToken !== undefined && this.userId !== undefined) {
           console.log('here 2 ');
-          this.removeInstanceIdAndFireabseSignout();
+
+          this.removeInstanceIdAndSignout();
 
         } else {
           console.log('here 3 ');
@@ -1043,41 +1053,36 @@ export class AuthService {
               console.log('signOut - storedUserObj ', storedUserObj);
               this.userId = storedUserObj._id;
 
-              this.removeInstanceIdAndFireabseSignout();
+              this.removeInstanceIdAndSignout();
+
             }).catch((err) => {
               console.log('err: ', err);
-
-              this.firebaseSignout();
+              if (this.appConfigService.getConfig().firebaseAuth === 'firebase') {
+                this.firebaseSignout();
+              } else {
+                this.signoutNoFirebase()
+              }
 
             });
         }
       } else {
-
-        this.firebaseSignout();
+        if (this.appConfigService.getConfig().firebaseAuth === 'firebase') {
+          this.firebaseSignout();
+        } else {
+          this.signoutNoFirebase()
+        }
       }
     } else {
-      console.log('signOut !!!! WITHOUT FIREBASE');
-
-      this.user_bs.next(null);
-      this.project_bs.next(null);
-      console.log('SIGNOUT project_bs VALUE: ', this.project_bs.value);
-
-      localStorage.removeItem('user');
-      localStorage.removeItem('project');
-      localStorage.removeItem('role');
-      this.webSocketClose();
-      if (!this.HAS_JWT) {
-        this.router.navigate(['/login']);
+      if (this.appConfigService.getConfig().firebaseAuth === 'firebase') {
+        this.firebaseSignout();
+      } else {
+        this.signoutNoFirebase()
       }
     }
-    // !!! NO MORE USED
-    // this.afAuth.auth.signOut()
-
-    // this.router.navigate(['/login']);
-    // this.firebaseSignout();
   }
 
-  removeInstanceIdAndFireabseSignout() {
+
+  removeInstanceIdAndSignout() {
     console.log('here 4')
     console.log('removeInstanceId - FCM Token: ', this.FCMcurrentToken);
     console.log('removeInstanceId - USER ID: ', this.userId);
@@ -1093,20 +1098,25 @@ export class AuthService {
       connectionsRef.remove()
         .then(function () {
 
-          that.firebaseSignout();
+          if (this.appConfigService.getConfig().firebaseAuth === 'firebase') {
+            that.firebaseSignout();
+          } else {
+            that.signoutNoFirebase()
+          }
 
         }).catch((err) => {
           console.log('removeInstanceId - err: ', err);
 
-          that.firebaseSignout();
-          that.webSocketClose();
+          if (this.appConfigService.getConfig().firebaseAuth === 'firebase') {
+            that.firebaseSignout();
+          } else {
+            that.signoutNoFirebase()
+          }
         });
     }
   }
 
-  webSocketClose() {
-    this.webSocketJs.close()
-  }
+
 
   firebaseSignout() {
     this.user_bs.next(null);
@@ -1116,6 +1126,7 @@ export class AuthService {
     localStorage.removeItem('user');
     localStorage.removeItem('project');
     localStorage.removeItem('role')
+    this.webSocketClose();
 
     const that = this;
     firebase.auth().signOut()
@@ -1136,7 +1147,25 @@ export class AuthService {
       });
   }
 
+  signoutNoFirebase() {
+    console.log('SIMPLE LOGOUT (NO-FIREBASE SIGN-OUT)')
+    this.user_bs.next(null);
+    this.project_bs.next(null);
+    console.log('SIGNOUT project_bs VALUE: ', this.project_bs.value);
 
+    localStorage.removeItem('user');
+    localStorage.removeItem('project');
+    localStorage.removeItem('role');
+    this.webSocketClose();
+    if (!this.HAS_JWT) {
+      this.router.navigate(['/login']);
+    }
+  }
+
+
+  webSocketClose() {
+    this.webSocketJs.close()
+  }
 
   widgetReInit() {
     if (window && window['tiledesk']) {

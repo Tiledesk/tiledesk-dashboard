@@ -11,6 +11,9 @@ export const environment = {
   testsiteBaseUrl: 'https://widget-pre.tiledesk.com/v2/assets/test_widget_page/index.html',
   wsUrl: 'wss://tiledesk-server-pre.herokuapp.com/',
   chatEngine: 'mqtt',
+  firebaseAuth: false,
+  uploadEngine: 'native',
+  pushEngine: 'none',
   firebase: {
       apiKey: 'CHANGEIT',
       authDomain: 'CHANGEIT',

@@ -49,9 +49,9 @@ export class UserProfileComponent implements OnInit {
 
   // used to unsuscribe from behaviour subject
   private unsubscribe$: Subject<any> = new Subject<any>();
-  
+
   @ViewChild('fileInputUserProfileImage') fileInputUserProfileImage: any;
-  
+
   constructor(
     public auth: AuthService,
     private _location: Location,
@@ -79,11 +79,11 @@ export class UserProfileComponent implements OnInit {
 
   translateStrings() {
     this.translate.get('YourProfilePhotoHasBeenUploadedSuccessfully')
-    .subscribe((text: string) => {
+      .subscribe((text: string) => {
 
-      this.profilePhotoWasUploaded = text;
-    
-    });
+        this.profilePhotoWasUploaded = text;
+
+      });
   }
 
   getProjectUserRole() {
@@ -93,13 +93,13 @@ export class UserProfileComponent implements OnInit {
       )
       .subscribe((user_role) => {
         console.log('% »»» WebSocketJs WF +++++ ws-requests--- navbar - USER ROLE ', user_role);
-        if (user_role) {        
-            // this.userRole = user_role
+        if (user_role) {
+          // this.userRole = user_role
 
-            this.translate.get(user_role)
+          this.translate.get(user_role)
             .subscribe((text: string) => {
               this.userRole = text;
-              
+
             });
         }
       });
@@ -112,18 +112,28 @@ export class UserProfileComponent implements OnInit {
   }
 
   upload(event) {
-    console.log('PROFILE IMAGE (USER-PROFILE ) upload')
+    console.log('USER PROFILE IMAGE (USER-PROFILE ) upload')
     this.showSpinnerInUploadImageBtn = true;
     const file = event.target.files[0]
-    this.uploadImageService.uploadUserAvatar(file, this.userId)
+
+    if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+      this.uploadImageService.uploadUserAvatar(file, this.userId)
+    } else {
+      console.log('USER PROFILE IMAGE (USER-PROFILE ) upload with native service')
+    }
     this.fileInputUserProfileImage.nativeElement.value = '';
   }
 
   deleteUserProfileImage() {
     // const file = event.target.files[0]
-    console.log('PROFILE IMAGE (USER-PROFILE ) deleteUserProfileImage')
-    this.uploadImageService.deleteUserProfileImage(this.userId);
-   
+    console.log('USER PROFILE IMAGE (USER-PROFILE ) deleteUserProfileImage')
+
+    if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+      this.uploadImageService.deleteUserProfileImage(this.userId);
+    } else {
+      console.log('USER PROFILE IMAGE (USER-PROFILE ) deleteUserProfileImage with native service')
+    }
+
     this.userProfileImageExist = false;
     this.userImageHasBeenUploaded = false
 
@@ -133,10 +143,10 @@ export class UserProfileComponent implements OnInit {
 
   checkUserImageExist() {
     this.usersService.userProfileImageExist.subscribe((image_exist) => {
-      console.log('PROFILE IMAGE (USER-PROFILE ) - USER PROFILE IMAGE EXIST ? ', image_exist);
+      console.log('PROFILE IMAGE (USER-PROFILE) - USER PROFILE IMAGE EXIST ? ', image_exist);
       this.userProfileImageExist = image_exist;
       if (this.storageBucket && this.userProfileImageExist === true) {
-        console.log('PROFILE IMAGE (USER-PROFILE ) - USER PROFILE IMAGE EXIST - setImageProfileUrl ');
+        console.log('PROFILE IMAGE (USER-PROFILE) - USER PROFILE IMAGE EXIST - setImageProfileUrl ');
         this.setImageProfileUrl(this.storageBucket)
       }
     });
@@ -323,7 +333,7 @@ export class UserProfileComponent implements OnInit {
     this.HAS_EDIT_LASTNAME = false;
   }
 
- 
+
   resendVerificationEmail() {
     this.usersService.resendVerifyEmail().subscribe((res) => {
 

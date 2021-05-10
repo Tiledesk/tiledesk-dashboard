@@ -12,6 +12,9 @@ export const environment = {
     testsiteBaseUrl: 'https://api.tiledesk.com/v2/widgets/test/load',
     wsUrl: 'wss://eu.rtm.tiledesk.com/v2/ws/',
     chatEngine: 'mqtt',
+    firebaseAuth: false,
+    uploadEngine: 'native',
+    pushEngine: 'none',
     firebase: {
         apiKey: "CHANGE-IT",
         authDomain: "CHANGE-IT",

@@ -49,8 +49,8 @@ export class AutologinComponent implements OnInit {
 
 
 
-      console.log('SSO - autologin getConfig chatEngine', this.appConfigService.getConfig().chatEngine)
-      if (this.appConfigService.getConfig().chatEngine && this.appConfigService.getConfig().chatEngine !== 'mqtt') {
+      console.log('SSO - autologin getConfig firebaseAuth', this.appConfigService.getConfig().firebaseAuth)
+      if (this.appConfigService.getConfig().firebaseAuth === 'firebase') {
 
         if (JWT && route) {
           this.ssoLoginWithCustomToken(JWT, route)
@@ -60,8 +60,6 @@ export class AutologinComponent implements OnInit {
           this.ssoLogin(JWT, route)
         }
       }
-
-
     });
   }
 

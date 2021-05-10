@@ -10,6 +10,9 @@
   "brandSrc": "${BRAND_SRC}",
   "globalRemoteJSSrc":"${REMOTE_JS_SRC}",
   "chatEngine": "${CHAT21_ENGINE}",
+  "firebaseAuth": "${FIREBASE_AUTH}",
+  "uploadEngine": "${UPLOAD_ENGINE}",
+  "pushEngine": "${PUSH_ENGINE}",
   "firebase": {
       "apiKey": "${FIREBASE_APIKEY}",
       "authDomain": "${FIREBASE_AUTHDOMAIN}",

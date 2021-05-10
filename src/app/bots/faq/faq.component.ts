@@ -643,17 +643,27 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   }
 
   upload(event) {
+    console.log('BOT PROFILE IMAGE (FAQ-COMP) upload')
     this.showSpinnerInUploadImageBtn = true;
     const file = event.target.files[0]
+
+    if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
     this.uploadImageService.uploadBotAvatar(file, this.id_faq_kb);
+    } else {
+      console.log('BOT PROFILE IMAGE (FAQ-COMP) upload with native service')
+    }
     this.fileInputBotProfileImage.nativeElement.value = '';
   }
 
   deleteBotProfileImage() {
     // const file = event.target.files[0]
-    console.log('PROFILE IMAGE (USER-PROFILE ) deleteUserProfileImage')
+    console.log('PROFILE IMAGE (BOT-PROFILE ) deleteBotProfileImage')
+   
+    if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
     this.uploadImageService.deleteBotProfileImage(this.id_faq_kb);
-
+    } else {
+      console.log('PROFILE IMAGE (BOT-PROFILE ) deleteBotProfileImage with native service')
+    }
     this.userProfileImageExist = false;
     this.userImageHasBeenUploaded = false;
 
