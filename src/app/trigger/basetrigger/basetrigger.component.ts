@@ -370,8 +370,8 @@ export class BasetriggerComponent implements OnInit {
            */
           // id: 'availableAgents.length',
           // key: 'request.availableAgents.length',
-          id: 'request.availableAgentsCount',
-          key: 'message.request.availableAgentsCount',
+          id: 'request.snapshot.availableAgentsCount',
+          key: 'message.request.snapshot.availableAgentsCount',
           label_key: translateConditions.message.label_key.VisitoruserAgentAvailable,
           triggerType: 'message.create.from.requester',
           type: 'int'

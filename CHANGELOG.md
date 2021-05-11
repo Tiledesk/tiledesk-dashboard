@@ -13,6 +13,7 @@
 - Fixes the bug: when the trigger "When a visitor requests a chat" is created with two conditions "Department" in the second condition the selected department is the same as the first one
 - Fixes the bug: in the Analytics> Metrics> Satisfaction page the number of decimals displayed in the Average Satisfaction section is greater than two
 - Fixes the bugs in Trigger related to the conditions: "Conservation status" and "The department has bot"
+- Modifies path and key in the trigger 'Message create from requester'
 
 ### 2.1.48
 - Fixes the bug: on the conversation details page the "Trusted Info" accordion does not open if the attributes of the decoded jwt are undefined
