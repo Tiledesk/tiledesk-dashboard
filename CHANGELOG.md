@@ -1,10 +1,7 @@
 
 # tiledesk-dashboard
 
-### 2.1.49
-- Adds the "Trusted Info" accordion to the right sidebar of the contact details page
-- Implements a new method to get if the contact is authenticated
-- Fixes the bug: unassigned conversations map pin URL is incorrect
+### 2.1.49.1
 - Fixes the bug: requester_id of undefined
 - Display "info" messages in the chat on the conversation detail page in the style they appear in the web chat
 - Fixes the bug: accessing the dashboard in the conversation list page from the link suggested by the browser address bar the project is not found
@@ -14,6 +11,11 @@
 - Fixes the bug: in the Analytics> Metrics> Satisfaction page the number of decimals displayed in the Average Satisfaction section is greater than two
 - Fixes the bugs in Trigger related to the conditions: "Conservation status" and "The department has bot"
 - Modifies path and key in the trigger 'Message create from requester'
+
+### 2.1.49
+- Adds the "Trusted Info" accordion to the right sidebar of the contact details page
+- Implements a new method to get if the contact is authenticated
+- Fixes the bug: unassigned conversations map pin URL is incorrect
 
 ### 2.1.48
 - Fixes the bug: on the conversation details page the "Trusted Info" accordion does not open if the attributes of the decoded jwt are undefined
