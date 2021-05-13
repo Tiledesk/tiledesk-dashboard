@@ -297,7 +297,8 @@
                               <div class="col-sm-3"
                                 *ngIf="condition.value.type==='boolean' || condition.value.type==='keyExist'"
                                 style="padding-right: 3px;">
-                                <ng-select class="custom-select" [(ngModel)]="default_dept_id" formControlName="value"
+                                <!-- <ng-select class="custom-select" [(ngModel)]="default_dept_id" formControlName="value" -->
+                                <ng-select class="custom-select" formControlName="value"
                                   [placeholder]="condition.value.placeholder" [searchable]="false" [clearable]="false">
                                   <ng-option *ngFor="let oper of operator[condition.value.path]" [value]="oper.id">
                                     {{oper.label_key}}</ng-option>
@@ -402,7 +403,8 @@
                             <div
                               *ngIf="action.value.key === 'request.create' || action.value.key === 'request.department.route'">
                               <div class="col-sm-3" *ngIf="action.value.type==='select'">
-                                <ng-select class="custom-select" [(ngModel)]="default_dept_id"
+                                <!-- <ng-select class="custom-select" [(ngModel)]="default_dept_id" -->
+                                <ng-select class="custom-select"
                                   formControlName="fullName" [placeholder]="action.value.placeholder"
                                   [searchable]="false" [clearable]="false">
                                   <ng-option *ngFor="let operator of operator[action.value.key]" [value]="operator.id">

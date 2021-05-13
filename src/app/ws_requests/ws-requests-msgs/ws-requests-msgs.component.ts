@@ -1342,7 +1342,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         // console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsMsgs$ *** wsmsgs *** ', wsmsgs)
 
         this.messagesList = wsmsgs;
-        console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsMsgs$ *** this.messagesList *** ', this.messagesList)
+        // console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsMsgs$ *** this.messagesList *** ', this.messagesList)
+        console.log('WS-REQUESTS-MSGS *** this.messagesList *** ', this.messagesList)
 
         if (this.timeout) {
           clearTimeout(this.timeout);

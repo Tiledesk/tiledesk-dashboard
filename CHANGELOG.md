@@ -16,6 +16,17 @@
 ### 2.1.50
 - Adds the "chatEngine" key in the environments and conditions the initialization of the configurations according to how it is valued (mqtt or firebase)
 
+### 2.1.49.1
+- Fixes the bug: requester_id of undefined
+- Display "info" messages in the chat on the conversation detail page in the style they appear in the web chat
+- Fixes the bug: accessing the dashboard in the conversation list page from the link suggested by the browser address bar the project is not found
+- Adds a loading spinner on the apps installation page
+- Fixes the bug: when the trigger "When a visitor requests a chat" is created with  the condition "Department" after saving the selected department is always the default department
+- Fixes the bug: when the trigger "When a visitor requests a chat" is created with two conditions "Department" in the second condition the selected department is the same as the first one
+- Fixes the bug: in the Analytics> Metrics> Satisfaction page the number of decimals displayed in the Average Satisfaction section is greater than two
+- Fixes the bugs in Trigger related to the conditions: "Conservation status" and "The department has bot"
+- Modifies path and key in the trigger 'Message create from requester'
+
 ### 2.1.49
 - Adds the "Trusted Info" accordion to the right sidebar of the contact details page
 - Implements a new method to get if the contact is authenticated
