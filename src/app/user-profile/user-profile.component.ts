@@ -123,8 +123,10 @@ export class UserProfileComponent implements OnInit {
     } else {
       // Native upload
       console.log('USER PROFILE IMAGE (USER-PROFILE ) upload with native service')
-
-      this.uploadImageNativeService.uploadPhotoProfile_Native(file , 'user').subscribe((downoloadurl) => {
+      // const userImageExist = this.usersService.userProfileImageExist.getValue()
+      // console.log('USER PROFILE IMAGE (USER-PROFILE ) upload with native service userImageExist ', userImageExist);
+      
+      this.uploadImageNativeService.uploadUserPhotoProfile_Native(file).subscribe((downoloadurl) => {
         console.log('USER PROFILE IMAGE (USER-PROFILE ) upload with native service - RES downoloadurl', downoloadurl);
 
         this.userProfileImageurl = downoloadurl
@@ -160,6 +162,8 @@ export class UserProfileComponent implements OnInit {
 
         this.userImageHasBeenUploaded = image_exist;
         this.showSpinnerInUploadImageBtn = false;
+        // here "setImageProfileUrl" is missing because in the "upload" method there is the subscription to the downoload 
+        // url published by the BehaviourSubject in the service "upload-image-native"
       })
     }
   }
@@ -177,10 +181,19 @@ export class UserProfileComponent implements OnInit {
           this.setImageProfileUrl(this.storageBucket)
         }
       } else {
-        // for native
+        if (this.userProfileImageExist === true) {
+          this.setImageProfileUrl_Native()
+        }
       }
     });
   }
+
+  setImageProfileUrl_Native() {
+    this.userProfileImageurl = 'https://tiledesk-server-pre.herokuapp.com/images?path=uploads%2Fusers%2F' + this.userId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
+    // console.log('PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
+    this.timeStamp = (new Date()).getTime();
+  }
+
 
   setImageProfileUrl(storageBucket) {
     this.userProfileImageurl = 'https://firebasestorage.googleapis.com/v0/b/' + storageBucket + '/o/profiles%2F' + this.userId + '%2Fphoto.jpg?alt=media';
@@ -198,6 +211,7 @@ export class UserProfileComponent implements OnInit {
       this.uploadImageService.deleteUserProfileImage(this.userId);
     } else {
       console.log('USER PROFILE IMAGE (USER-PROFILE ) deleteUserProfileImage with native service')
+      this.uploadImageNativeService.deletePhotoProfile_Native(this.userId, 'user')
     }
 
     this.userProfileImageExist = false;

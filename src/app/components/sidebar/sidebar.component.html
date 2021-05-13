@@ -100,21 +100,19 @@
     <!--  -->
     <div class="avatar-container tiledesk-nav-avatar" [ngClass]="{'small-sidebar-avatar' : SIDEBAR_IS_SMALL === true }">
 
-      <!-- <img class="avatar" *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true"
+      <img class="avatar" *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true"
         [src]="getUserProfileImage()" onerror="this.src='assets/img/no_image_user.svg'" />
 
       <img class="avatar" *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true"
-        src="assets/img/no_image_user.png" /> -->
+        src="assets/img/no_image_user.png" />
 
       <!-- --------------------------------------------------------------------- -->
       <!-- test -->
       <!-- --------------------------------------------------------------------- -->
-      <!-- userProfileImageExist === true ||  -->
-      <img class="avatar" *ngIf="userImageHasBeenUploaded === true" [src]="getUserProfileImage()"
+    
+      <!-- <img class="avatar" *ngIf="userImageHasBeenUploaded === true" [src]="getUserProfileImage()"
         onerror="this.src='assets/img/no_image_user.svg'" />
-
-      <!-- userProfileImageExist !== true &&  -->
-      <img class="avatar" *ngIf="userImageHasBeenUploaded !== true" src="assets/img/no_image_user.png" />
+      <img class="avatar" *ngIf="userImageHasBeenUploaded !== true" src="assets/img/no_image_user.png" /> -->
 
       <!-- --------------------------------------------------------------------- -->
       <!-- ./ test -->

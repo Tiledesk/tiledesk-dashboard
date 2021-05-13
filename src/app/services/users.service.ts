@@ -228,7 +228,7 @@ export class UsersService {
         this.storageBucket$.next(storageBucket)
 
 
-        this.verifyUserProfileImageOnFirebaseStorage(this.currentUserId, storageBucket);
+        this.verifyIfExistProfileImage(this.currentUserId, storageBucket);
       }
 
       // this.getToken();
@@ -247,12 +247,17 @@ export class UsersService {
   }
 
 
-  verifyUserProfileImageOnFirebaseStorage(user_id, storageBucket) {
+  verifyIfExistProfileImage(user_id, storageBucket) {
     // tslint:disable-next-line:max-line-length
     // const url = 'https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F' + user_id + '%2Fphoto.jpg?alt=media';
-    const url = 'https://firebasestorage.googleapis.com/v0/b/' + storageBucket + '/o/profiles%2F' + user_id + '%2Fphoto.jpg?alt=media';
+    let imageUrl = ''
+    if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+      imageUrl = 'https://firebasestorage.googleapis.com/v0/b/' + storageBucket + '/o/profiles%2F' + user_id + '%2Fphoto.jpg?alt=media';
+    } else {
+      imageUrl = 'https://tiledesk-server-pre.herokuapp.com/images?path=uploads%2Fusers%2F' + user_id + '%2Fimages%2Fthumbnails_200_200-photo.jpg'
+    }
     const self = this;
-    this.verifyImageURL(url, function (imageExists) {
+    this.verifyImageURL(imageUrl, function (imageExists) {
 
       if (imageExists === true) {
         // alert('Image Exists');
@@ -425,9 +430,9 @@ export class UsersService {
       .map((res) => res.json());
   }
 
-  
+
   public getProjectUserByProjecUserId(project_user_id): Observable<ProjectUser[]> {
-  
+
     const url = this.SERVER_BASE_PATH + this.project._id + '/project_users/' + project_user_id;;
 
 

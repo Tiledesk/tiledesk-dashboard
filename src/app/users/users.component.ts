@@ -82,12 +82,12 @@ export class UsersComponent implements OnInit, OnDestroy {
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
 
-    // input passed to docs-url-row
-    trigger_docs_url = helpdocurl_users_role;
-    trigger_docs_title = ''; // is diplayed if customtext = false
-    customtext = true;
-    text_to_display = "LearnMoreAboutDefaultRoles" // is diplayed if customtext = true
-
+  // input passed to docs-url-row
+  trigger_docs_url = helpdocurl_users_role;
+  trigger_docs_title = ''; // is diplayed if customtext = false
+  customtext = true;
+  text_to_display = "LearnMoreAboutDefaultRoles" // is diplayed if customtext = true
+  UPLOAD_ENGINE_IS_FIREBASE: boolean
   constructor(
     private usersService: UsersService,
     private router: Router,
@@ -96,10 +96,13 @@ export class UsersComponent implements OnInit, OnDestroy {
     private translate: TranslateService,
     private prjctPlanService: ProjectPlanService,
     public appConfigService: AppConfigService
-  ) { }
+  ) {
+
+  }
 
   ngOnInit() {
     this.auth.checkRoleForCurrentProject();
+    this.getUploadEgine();
     this.getStorageBucketAndThenProjectUser();
     console.log('=========== USERS COMP ============')
 
@@ -123,6 +126,13 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.getChatUrl();
   }
 
+  getUploadEgine() {
+    if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+      this.UPLOAD_ENGINE_IS_FIREBASE = true
+    } else {
+      this.UPLOAD_ENGINE_IS_FIREBASE = false
+    }
+  }
 
   translateStrings() {
     this.translateChangeAvailabilitySuccessMsg();
@@ -413,7 +423,12 @@ export class UsersComponent implements OnInit, OnDestroy {
         this.projectUsersList.forEach(projectuser => {
           console.log('»» USERS COMP - PROJECT USERS', projectuser);
 
-          const imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + storagebucket + "/o/profiles%2F" + projectuser['id_user']['_id'] + "%2Fphoto.jpg?alt=media"
+          let imgUrl = ''
+          if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+            imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + storagebucket + "/o/profiles%2F" + projectuser['id_user']['_id'] + "%2Fphoto.jpg?alt=media"
+          } else {
+            imgUrl = 'https://tiledesk-server-pre.herokuapp.com/images?path=uploads%2Fusers%2F' + projectuser['id_user']['_id'] + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
+          }
 
           this.checkImageExists(imgUrl, (existsImage) => {
             if (existsImage == true) {

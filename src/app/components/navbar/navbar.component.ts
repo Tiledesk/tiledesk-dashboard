@@ -441,21 +441,34 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     }
 
     listenHasDeleteUserProfileImage() {
-        this.uploadImageService.hasDeletedUserPhoto.subscribe((hasDeletedImage) => {
-            console.log('SIDEBAR - hasDeletedImage ? ', hasDeletedImage);
-            this.userImageHasBeenUploaded = false
-            this.userProfileImageExist = false
-        });
-
+        if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+            this.uploadImageService.hasDeletedUserPhoto.subscribe((hasDeletedImage) => {
+                console.log('SIDEBAR - hasDeletedImage ? ', hasDeletedImage ,'(usecase Firebase)');
+                this.userImageHasBeenUploaded = false
+                this.userProfileImageExist = false
+            });
+        } else {
+            this.uploadImageNativeService.hasDeletedUserPhoto.subscribe((hasDeletedImage) => {
+                console.log('SIDEBAR - hasDeletedImage ? ', hasDeletedImage ,'(usecase Native)');
+                this.userImageHasBeenUploaded = false
+                this.userProfileImageExist = false
+            });
+        }
     }
 
     checkUserImageExist() {
         this.usersService.userProfileImageExist.subscribe((image_exist) => {
             console.log('NAVBAR - USER PROFILE EXIST ? ', image_exist);
             this.userProfileImageExist = image_exist;
-            if (this.storageBucket && this.userProfileImageExist === true) {
-                console.log('NAVBAR - USER PROFILE EXIST - BUILD userProfileImageurl');
-                this.setImageProfileUrl(this.storageBucket)
+            if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+                if (this.storageBucket && this.userProfileImageExist === true) {
+                    console.log('NAVBAR - USER PROFILE EXIST - BUILD userProfileImageurl');
+                    this.setImageProfileUrl(this.storageBucket)
+                }
+            } else {
+                if (this.userProfileImageExist === true) {
+                    this.setImageProfileUrl_Native()
+                }
             }
         });
     }
@@ -482,6 +495,12 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                 })
             })
         }
+    }
+
+    setImageProfileUrl_Native() {
+        this.userProfileImageurl = 'https://tiledesk-server-pre.herokuapp.com/images?path=uploads%2Fusers%2F' + this.currentUserId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
+        // console.log('PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
+        this.timeStamp = (new Date()).getTime();
     }
 
     setImageProfileUrl(storageBucket) {

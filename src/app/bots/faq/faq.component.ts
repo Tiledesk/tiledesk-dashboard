@@ -89,9 +89,9 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
   storageBucket: string;
   showSpinnerInUploadImageBtn = false;
-  userProfileImageExist: boolean;
+  botProfileImageExist: boolean;
 
-  userImageHasBeenUploaded = false;
+  botImageHasBeenUploaded = false;
 
   botProfileImageurl: string;
   timeStamp: any;
@@ -230,7 +230,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     this.getBrowserLang();
     this.getOSCODE();
 
-    this.checkUserImageUploadIsComplete();
+    this.checkBotImageUploadIsComplete();
     this.getParamsBotType();
 
     this.getTranslations();
@@ -656,7 +656,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
       // Native upload
       console.log('BOT PROFILE IMAGE (FAQ-COMP) upload with native service')
 
-      this.uploadImageNativeService.uploadPhotoProfile_Native(file, 'bot').subscribe((downoloadurl) => {
+      this.uploadImageNativeService.uploadBotPhotoProfile_Native(file, this.id_faq_kb).subscribe((downoloadurl) => {
         console.log('BOT PROFILE IMAGE (FAQ-COMP) upload with native service - RES downoloadurl', downoloadurl);
 
         this.botProfileImageurl = downoloadurl
@@ -677,10 +677,11 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
       this.uploadImageService.deleteBotProfileImage(this.id_faq_kb);
     } else {
-      console.log('PROFILE IMAGE (BOT-PROFILE ) deleteBotProfileImage with native service')
+      console.log('BOT PROFILE IMAGE (FAQ-COMP) deleteUserProfileImage with native service')
+      this.uploadImageNativeService.deletePhotoProfile_Native(this.id_faq_kb, 'bot')
     }
-    this.userProfileImageExist = false;
-    this.userImageHasBeenUploaded = false;
+    this.botProfileImageExist = false;
+    this.botImageHasBeenUploaded = false;
 
 
     const delete_bot_image_btn = <HTMLElement>document.querySelector('.delete_bot_image_btn');
@@ -688,17 +689,31 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   }
 
   checkBotImageExist(storageBucket) {
-    const url = 'https://firebasestorage.googleapis.com/v0/b/' + storageBucket + '/o/profiles%2F' + this.id_faq_kb + '%2Fphoto.jpg?alt=media';
+    let imageUrl = ''
+    if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+      imageUrl = 'https://firebasestorage.googleapis.com/v0/b/' + storageBucket + '/o/profiles%2F' + this.id_faq_kb + '%2Fphoto.jpg?alt=media';
+    } else {
+      imageUrl = 'https://tiledesk-server-pre.herokuapp.com/images?path=uploads%2Fusers%2F' + this.id_faq_kb + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
+      // https://tiledesk-server-pre.herokuapp.com/images?path=uploads%2Fusers%2F609d4388cc141100340afa00%2Fimages%2Fphoto.jpg
+    }
+
     const self = this;
-    this.verifyImageURL(url, function (imageExists) {
+    this.verifyImageURL(imageUrl, function (imageExists) {
 
       if (imageExists === true) {
-        self.userProfileImageExist = imageExists
+        self.botProfileImageExist = imageExists
         console.log('BOT PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists)
-        self.setImageProfileUrl(storageBucket)
+        if (self.appConfigService.getConfig().uploadEngine === 'firebase') {
+          self.setImageProfileUrl(storageBucket);
+        } else {
+          self.setImageProfileUrl_Native()
+        }
+
       } else {
-        self.userProfileImageExist = imageExists
+        self.botProfileImageExist = imageExists
         console.log('BOT PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists)
+
+
       }
     })
   }
@@ -714,13 +729,13 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     };
   }
 
-  checkUserImageUploadIsComplete() {
+  checkBotImageUploadIsComplete() {
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
 
       this.uploadImageService.botImageWasUploaded.subscribe((image_exist) => {
         console.log('PROFILE IMAGE - IMAGE UPLOADING IS COMPLETE ? ', image_exist, '(usecase Firebase)');
-        this.userImageHasBeenUploaded = image_exist;
-        if (this.storageBucket && this.userImageHasBeenUploaded === true) {
+        this.botImageHasBeenUploaded = image_exist;
+        if (this.storageBucket && this.botImageHasBeenUploaded === true) {
 
           this.showSpinnerInUploadImageBtn = false;
 
@@ -734,8 +749,11 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
       this.uploadImageNativeService.botImageWasUploaded_Native.subscribe((image_exist) => {
         console.log('USER PROFILE IMAGE - IMAGE UPLOADING IS COMPLETE ? ', image_exist, '(usecase Native)');
 
-        this.userImageHasBeenUploaded = image_exist;
+        this.botImageHasBeenUploaded = image_exist;
         this.showSpinnerInUploadImageBtn = false;
+
+        // here "setImageProfileUrl" is missing because in the "upload" method there is the subscription to the downoload
+        // url published by the BehaviourSubject in the service
       })
     }
   }
@@ -746,13 +764,21 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     this.timeStamp = (new Date()).getTime();
   }
 
+  setImageProfileUrl_Native() {
+    this.botProfileImageurl = 'https://tiledesk-server-pre.herokuapp.com/images?path=uploads%2Fusers%2F' + this.id_faq_kb + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
+    // console.log('PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
+    this.timeStamp = (new Date()).getTime();
+}
+
   getBotProfileImage() {
+    
     if (this.timeStamp) {
 
       // setTimeout(() => {
       return this.botProfileImageurl + '&' + this.timeStamp;
       // }, 200);
     }
+  
     return this.botProfileImageurl
   }
 
