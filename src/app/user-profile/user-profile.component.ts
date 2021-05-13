@@ -6,7 +6,7 @@ import { Location } from '@angular/common';
 import { Project } from '../models/project-model';
 import { UsersService } from '../services/users.service';
 import { UploadImageService } from '../services/upload-image.service';
-
+import { UploadImageNativeService } from '../services/upload-image-native.service';
 import { NotifyService } from '../core/notify.service';
 import * as firebase from 'firebase/app';
 import { Router } from '@angular/router';
@@ -59,6 +59,7 @@ export class UserProfileComponent implements OnInit {
     public notify: NotifyService,
     private router: Router,
     private uploadImageService: UploadImageService,
+    private uploadImageNativeService: UploadImageNativeService,
     public appConfigService: AppConfigService,
     private translate: TranslateService,
   ) { }
@@ -115,14 +116,79 @@ export class UserProfileComponent implements OnInit {
     console.log('USER PROFILE IMAGE (USER-PROFILE ) upload')
     this.showSpinnerInUploadImageBtn = true;
     const file = event.target.files[0]
-
+    // Firebase upload
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
       this.uploadImageService.uploadUserAvatar(file, this.userId)
+
     } else {
+      // Native upload
       console.log('USER PROFILE IMAGE (USER-PROFILE ) upload with native service')
+
+      this.uploadImageNativeService.uploadPhotoProfile_Native(file , 'user').subscribe((downoloadurl) => {
+        console.log('USER PROFILE IMAGE (USER-PROFILE ) upload with native service - RES downoloadurl', downoloadurl);
+
+        this.userProfileImageurl = downoloadurl
+        this.timeStamp = (new Date()).getTime();
+      }, (error) => {
+
+        console.log('USER PROFILE IMAGE (USER-PROFILE ) upload with native service - ERR ', error);
+      })
+
     }
     this.fileInputUserProfileImage.nativeElement.value = '';
   }
+
+  checkUserImageUploadIsComplete() {
+    if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+      this.uploadImageService.userImageWasUploaded.subscribe((image_exist) => {
+        console.log('USER PROFILE IMAGE - IMAGE UPLOADING IS COMPLETE ?  ', image_exist, '(usecase Firebase)');
+
+        // this.notify.showWidgetStyleUpdateNotification(this.profilePhotoWasUploaded, 2, 'done');
+        this.userImageHasBeenUploaded = image_exist;
+        if (this.storageBucket && this.userImageHasBeenUploaded === true) {
+
+          this.showSpinnerInUploadImageBtn = false;
+
+          console.log('USER PROFILE IMAGE (USER-PROFILE ) - IMAGE UPLOADING IS COMPLETE - BUILD userProfileImageurl ');
+          this.setImageProfileUrl(this.storageBucket)
+        }
+      });
+    } else {
+      // Native upload
+      this.uploadImageNativeService.userImageWasUploaded_Native.subscribe((image_exist) => {
+        console.log('USER PROFILE IMAGE - IMAGE UPLOADING IS COMPLETE ? ', image_exist, '(usecase Native)');
+
+        this.userImageHasBeenUploaded = image_exist;
+        this.showSpinnerInUploadImageBtn = false;
+      })
+    }
+  }
+
+
+
+  checkUserImageExist() {
+    this.usersService.userProfileImageExist.subscribe((image_exist) => {
+      console.log('PROFILE IMAGE (USER-PROFILE) - USER PROFILE IMAGE EXIST ? ', image_exist);
+      this.userProfileImageExist = image_exist;
+
+      if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+        if (this.storageBucket && this.userProfileImageExist === true) {
+          console.log('PROFILE IMAGE (USER-PROFILE) - USER PROFILE IMAGE EXIST - setImageProfileUrl ');
+          this.setImageProfileUrl(this.storageBucket)
+        }
+      } else {
+        // for native
+      }
+    });
+  }
+
+  setImageProfileUrl(storageBucket) {
+    this.userProfileImageurl = 'https://firebasestorage.googleapis.com/v0/b/' + storageBucket + '/o/profiles%2F' + this.userId + '%2Fphoto.jpg?alt=media';
+    // console.log('PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
+    this.timeStamp = (new Date()).getTime();
+  }
+
+
 
   deleteUserProfileImage() {
     // const file = event.target.files[0]
@@ -141,39 +207,6 @@ export class UserProfileComponent implements OnInit {
     delete_user_image_btn.blur();
   }
 
-  checkUserImageExist() {
-    this.usersService.userProfileImageExist.subscribe((image_exist) => {
-      console.log('PROFILE IMAGE (USER-PROFILE) - USER PROFILE IMAGE EXIST ? ', image_exist);
-      this.userProfileImageExist = image_exist;
-      if (this.storageBucket && this.userProfileImageExist === true) {
-        console.log('PROFILE IMAGE (USER-PROFILE) - USER PROFILE IMAGE EXIST - setImageProfileUrl ');
-        this.setImageProfileUrl(this.storageBucket)
-      }
-    });
-  }
-
-  checkUserImageUploadIsComplete() {
-    this.uploadImageService.userImageWasUploaded.subscribe((image_exist) => {
-      console.log('PROFILE IMAGE - IMAGE UPLOADING IS COMPLETE ? ', image_exist);
-
-      // this.notify.showWidgetStyleUpdateNotification(this.profilePhotoWasUploaded, 2, 'done');
-      this.userImageHasBeenUploaded = image_exist;
-      if (this.storageBucket && this.userImageHasBeenUploaded === true) {
-
-        this.showSpinnerInUploadImageBtn = false;
-
-        console.log('PROFILE IMAGE (USER-PROFILE ) - IMAGE UPLOADING IS COMPLETE - BUILD userProfileImageurl ');
-        this.setImageProfileUrl(this.storageBucket)
-      }
-    });
-  }
-
-  setImageProfileUrl(storageBucket) {
-    this.userProfileImageurl = 'https://firebasestorage.googleapis.com/v0/b/' + storageBucket + '/o/profiles%2F' + this.userId + '%2Fphoto.jpg?alt=media';
-    // console.log('PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
-    this.timeStamp = (new Date()).getTime();
-  }
-
   getUserProfileImage() {
     if (this.timeStamp) {
       // console.log('PROFILE IMAGE (USER-IMG IN USER-LOG) - getUserProfileImage ', this.userProfileImageurl);
@@ -183,6 +216,9 @@ export class UserProfileComponent implements OnInit {
     }
     return this.userProfileImageurl
   }
+
+
+
 
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {

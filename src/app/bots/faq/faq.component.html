@@ -52,14 +52,32 @@
                 <div class="card-avatar" style="padding-bottom:15px; min-height: 95px;">
                   <div class="bot_avatar" style="float: left;width: 80px; height: 80px;margin-right: 21px;">
 
-                    <img *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true"
+                    <!-- <img *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true"
                       style="vertical-align: middle; width: 80px; height: 80px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;"
                       class="user-img" [src]="getUserProfileImage()"
                       onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
 
                     <img *ngIf="userProfileImageExist === false && userImageHasBeenUploaded !== true"
                       style="vertical-align: middle; width: 80px; height: 80px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;"
-                      class="user-img" src="assets/img/avatar_bot_tiledesk.svg" />
+                      class="user-img" src="assets/img/avatar_bot_tiledesk.svg" /> -->
+
+                    <!-- --------------------------------------------------------------------- -->
+                    <!-- test -->
+                    <!-- --------------------------------------------------------------------- -->
+                    <img *ngIf="userImageHasBeenUploaded === true"
+                    style="vertical-align: middle; width: 80px; height: 80px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;"
+                    class="user-img" [src]="getBotProfileImage()"
+                    onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
+
+                  <img *ngIf="userImageHasBeenUploaded !== true"
+                    style="vertical-align: middle; width: 80px; height: 80px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;"
+                    class="user-img" src="assets/img/avatar_bot_tiledesk.svg" />
+
+
+
+                    <!-- --------------------------------------------------------------------- -->
+                    <!-- ./test -->
+                    <!-- --------------------------------------------------------------------- -->
                   </div>
 
 

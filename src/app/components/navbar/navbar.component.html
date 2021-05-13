@@ -149,7 +149,8 @@
         <ng-container *ngIf="isVisible">
           <li *ngIf="project && prjct_profile_type === 'payment' && HOME_ROUTE_IS_ACTIVE === false">
             <a>
-              <span class="project-plan-nav" style="text-transform:capitalize;padding-right: 8px;padding-left: 14px;" (click)="goToPayment()">
+              <span class="project-plan-nav" style="text-transform:capitalize;padding-right: 8px;padding-left: 14px;"
+                (click)="goToPayment()">
                 {{ prjct_profile_name }}
               </span>
 
@@ -162,7 +163,8 @@
                 <i class="material-icons" style="vertical-align: middle; color:#f44336; cursor:pointer">
                   error_outline
                 </i>
-                <span class="expired__Tooltiptext" style="font-size:14px; top: 100%;text-transform:none; cursor: pointer; height: 44px;">
+                <span class="expired__Tooltiptext"
+                  style="font-size:14px; top: 100%;text-transform:none; cursor: pointer; height: 44px;">
                   {{ 'Pricing.SubscriptionPaymentProblem' | translate }}
                 </span>
               </span>
@@ -359,14 +361,28 @@
             <div class="card card-profile">
               <div class="card-avatar user-profile-avatar">
                 <a>
-                  <!-- <img class="img" src="assets/img/no_image_user.png" /> -->
-                  <!-- src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{user?._id}}%2Fphoto.jpg?alt=media" -->
-                  <img style="width:80px; height:80px"
+               
+                  <!-- <img style="width:80px; height:80px"
                     *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true" class="user-img"
                     [src]="getUserProfileImage()" />
 
                   <img *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true" class="user-img"
+                    src="assets/img/no_image_user.png" /> -->
+
+                  <!-- --------------------------------------------------------------------- -->
+                  <!-- test -->
+                  <!-- --------------------------------------------------------------------- -->
+
+                  <img style="width:80px; height:80px"
+                    *ngIf="userImageHasBeenUploaded === true" class="user-img"
+                    [src]="getUserProfileImage()" />
+
+                  <img *ngIf="userImageHasBeenUploaded !== true" class="user-img"
                     src="assets/img/no_image_user.png" />
+
+                  <!-- --------------------------------------------------------------------- -->
+                  <!-- ./ test -->
+                  <!-- --------------------------------------------------------------------- -->
                 </a>
               </div>
               <div class="content">
@@ -376,7 +392,7 @@
                 <h4 class="card-title user-profile-email">
                   {{ user?.email }}
                 </h4>
-                <h6 class="card-title user-profile-role"> 
+                <h6 class="card-title user-profile-role">
                   {{ USER_ROLE | translate}}
                 </h6>
 

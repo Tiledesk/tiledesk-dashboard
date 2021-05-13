@@ -15,6 +15,7 @@ import { ProjectPlanService } from '../../services/project-plan.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AppConfigService } from '../../services/app-config.service';
 import { UploadImageService } from '../../services/upload-image.service';
+import { UploadImageNativeService } from '../../services/upload-image-native.service';
 import { UsersService } from '../../services/users.service';
 import { BotsBaseComponent } from '../bots-base/bots-base.component';
 // import brand from 'assets/brand/brand.json';
@@ -92,7 +93,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
   userImageHasBeenUploaded = false;
 
-  userProfileImageurl: string;
+  botProfileImageurl: string;
   timeStamp: any;
   botType: string;
   botTypeForInput: string;
@@ -162,10 +163,11 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     private prjctPlanService: ProjectPlanService,
     private translate: TranslateService,
     private uploadImageService: UploadImageService,
+    private uploadImageNativeService: UploadImageNativeService,
     public appConfigService: AppConfigService,
     private usersService: UsersService,
     public brandService: BrandService,
-    private departmentService: DepartmentService,
+    private departmentService: DepartmentService
 
   ) {
     super();
@@ -288,7 +290,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
       }
 
       if (this.botType && this.botType === 'dialogflow') {
-       
+
         this.botTypeForInput = 'Dialogflow'
 
         this.getDialogFlowBotData(params.faqkbid)
@@ -648,19 +650,32 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     const file = event.target.files[0]
 
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
-    this.uploadImageService.uploadBotAvatar(file, this.id_faq_kb);
+      this.uploadImageService.uploadBotAvatar(file, this.id_faq_kb);
     } else {
+
+      // Native upload
       console.log('BOT PROFILE IMAGE (FAQ-COMP) upload with native service')
+
+      this.uploadImageNativeService.uploadPhotoProfile_Native(file, 'bot').subscribe((downoloadurl) => {
+        console.log('BOT PROFILE IMAGE (FAQ-COMP) upload with native service - RES downoloadurl', downoloadurl);
+
+        this.botProfileImageurl = downoloadurl
+        this.timeStamp = (new Date()).getTime();
+      }, (error) => {
+
+        console.log('BOT PROFILE IMAGE (FAQ-COMP) upload with native service - ERR ', error);
+      })
+
     }
     this.fileInputBotProfileImage.nativeElement.value = '';
   }
 
   deleteBotProfileImage() {
     // const file = event.target.files[0]
-    console.log('PROFILE IMAGE (BOT-PROFILE ) deleteBotProfileImage')
-   
+    console.log('BOT PROFILE IMAGE (FAQ-COMP) deleteBotProfileImage')
+
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
-    this.uploadImageService.deleteBotProfileImage(this.id_faq_kb);
+      this.uploadImageService.deleteBotProfileImage(this.id_faq_kb);
     } else {
       console.log('PROFILE IMAGE (BOT-PROFILE ) deleteBotProfileImage with native service')
     }
@@ -679,11 +694,11 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
       if (imageExists === true) {
         self.userProfileImageExist = imageExists
-        console.log('PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists)
+        console.log('BOT PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists)
         self.setImageProfileUrl(storageBucket)
       } else {
         self.userProfileImageExist = imageExists
-        console.log('PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists)
+        console.log('BOT PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists)
       }
     })
   }
@@ -700,34 +715,45 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   }
 
   checkUserImageUploadIsComplete() {
-    this.uploadImageService.botImageWasUploaded.subscribe((image_exist) => {
-      console.log('PROFILE IMAGE - IMAGE UPLOADING IS COMPLETE ? ', image_exist);
-      this.userImageHasBeenUploaded = image_exist;
-      if (this.storageBucket && this.userImageHasBeenUploaded === true) {
+    if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
 
+      this.uploadImageService.botImageWasUploaded.subscribe((image_exist) => {
+        console.log('PROFILE IMAGE - IMAGE UPLOADING IS COMPLETE ? ', image_exist, '(usecase Firebase)');
+        this.userImageHasBeenUploaded = image_exist;
+        if (this.storageBucket && this.userImageHasBeenUploaded === true) {
+
+          this.showSpinnerInUploadImageBtn = false;
+
+          console.log('PROFILE IMAGE (FAQ-COMP) - IMAGE UPLOADING IS COMPLETE - BUILD botProfileImageurl ');
+
+          this.setImageProfileUrl(this.storageBucket)
+        }
+      });
+    } else {
+      // Native
+      this.uploadImageNativeService.botImageWasUploaded_Native.subscribe((image_exist) => {
+        console.log('USER PROFILE IMAGE - IMAGE UPLOADING IS COMPLETE ? ', image_exist, '(usecase Native)');
+
+        this.userImageHasBeenUploaded = image_exist;
         this.showSpinnerInUploadImageBtn = false;
-
-        console.log('PROFILE IMAGE (FAQ-COMP) - IMAGE UPLOADING IS COMPLETE - BUILD userProfileImageurl ');
-
-        this.setImageProfileUrl(this.storageBucket)
-      }
-    });
+      })
+    }
   }
 
   setImageProfileUrl(storageBucket) {
-    this.userProfileImageurl = 'https://firebasestorage.googleapis.com/v0/b/' + storageBucket + '/o/profiles%2F' + this.id_faq_kb + '%2Fphoto.jpg?alt=media';
-    // console.log('PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
+    this.botProfileImageurl = 'https://firebasestorage.googleapis.com/v0/b/' + storageBucket + '/o/profiles%2F' + this.id_faq_kb + '%2Fphoto.jpg?alt=media';
+
     this.timeStamp = (new Date()).getTime();
   }
 
-  getUserProfileImage() {
+  getBotProfileImage() {
     if (this.timeStamp) {
-      // console.log('PROFILE IMAGE (BOT-PROFILE IN FAQ COMP) - getUserProfileImage ', this.userProfileImageurl);
+
       // setTimeout(() => {
-      return this.userProfileImageurl + '&' + this.timeStamp;
+      return this.botProfileImageurl + '&' + this.timeStamp;
       // }, 200);
     }
-    return this.userProfileImageurl
+    return this.botProfileImageurl
   }
 
   getBrowserLang() {
@@ -1453,15 +1479,15 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
   }
 
-   // -----------------------------------------------------------------------
+  // -----------------------------------------------------------------------
   // Resolution bot doc link
   // -----------------------------------------------------------------------
-  openResolutionBotDocsStylingYourChatbotReplies () {
+  openResolutionBotDocsStylingYourChatbotReplies() {
     const url = 'https://docs.tiledesk.com/knowledge-base/styling-your-chatbot-replies/';
     window.open(url, '_blank');
   }
 
-  openDocsResolutionBotSendImageVideosMore () {
+  openDocsResolutionBotSendImageVideosMore() {
     const url = 'https://docs.tiledesk.com/knowledge-base/response-bot-images-buttons-videos-and-more/';
     window.open(url, '_blank');
   }
@@ -1471,13 +1497,13 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     window.open(url, '_blank');
   }
 
-  openDocsResolutionBotConfigureYourFirstChatbot () {
+  openDocsResolutionBotConfigureYourFirstChatbot() {
     // const url = 'https://docs.tiledesk.com/knowledge-base/create-a-bot/';
     const url = 'https://docs.tiledesk.com/knowledge-base/configure-your-first-chatbot/';
     window.open(url, '_blank');
   }
 
-   // -----------------------------------------------------------------------
+  // -----------------------------------------------------------------------
   // Dialogflow bot doc link
   // -----------------------------------------------------------------------
   openDeveloperTiledeskGenerateDFCredentialFile() {

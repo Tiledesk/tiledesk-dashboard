@@ -63,7 +63,7 @@ export class UploadImageService {
         }
       }, (error: any) => {
 
-        this.userImageWasUploaded.next(true);
+        this.userImageWasUploaded.next(false);
         // A full list of error codes is available at
         // https://firebase.google.com/docs/storage/web/handle-errors
         console.log('ERROR ', error)

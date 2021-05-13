@@ -15,6 +15,7 @@ import { UsersService } from '../../services/users.service';
 
 import { isDevMode } from '@angular/core';
 import { UploadImageService } from '../../services/upload-image.service';
+import { UploadImageNativeService } from '../../services/upload-image-native.service';
 import { NotifyService } from '../../core/notify.service';
 import * as moment from 'moment';
 import { ProjectPlanService } from '../../services/project-plan.service';
@@ -150,6 +151,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         private router: Router,
         private usersService: UsersService,
         private uploadImageService: UploadImageService,
+        private uploadImageNativeService: UploadImageNativeService,
         private notifyService: NotifyService,
         private prjctPlanService: ProjectPlanService,
         private projectService: ProjectService,
@@ -458,14 +460,28 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         });
     }
     checkUserImageUploadIsComplete() {
-        this.uploadImageService.userImageWasUploaded.subscribe((image_exist) => {
-            console.log('NAVBAR - IMAGE UPLOADING IS COMPLETE ? ', image_exist);
-            this.userImageHasBeenUploaded = image_exist;
-            if (this.storageBucket && this.userImageHasBeenUploaded === true) {
-                console.log('SIDEBAR - IMAGE UPLOADING IS COMPLETE - BUILD userProfileImageurl ');
-                this.setImageProfileUrl(this.storageBucket)
-            }
-        });
+        if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+            this.uploadImageService.userImageWasUploaded.subscribe((image_exist) => {
+                console.log('NAVBAR - IMAGE UPLOADING IS COMPLETE ? ', image_exist, '(usecase Firebase)');
+                this.userImageHasBeenUploaded = image_exist;
+                if (this.storageBucket && this.userImageHasBeenUploaded === true) {
+                    console.log('SIDEBAR - IMAGE UPLOADING IS COMPLETE - BUILD userProfileImageurl ');
+                    this.setImageProfileUrl(this.storageBucket)
+                }
+            });
+        } else {
+
+            // NATIVE
+            this.uploadImageNativeService.userImageWasUploaded_Native.subscribe((image_exist) => {
+                console.log('USER PROFILE IMAGE - IMAGE UPLOADING IS COMPLETE ? ', image_exist, '(usecase Native)');
+
+                this.userImageHasBeenUploaded = image_exist;
+                this.uploadImageNativeService.userImageDownloadUrl_Native.subscribe((imageUrl) => {
+                    this.userProfileImageurl = imageUrl
+                    this.timeStamp = (new Date()).getTime();
+                })
+            })
+        }
     }
 
     setImageProfileUrl(storageBucket) {

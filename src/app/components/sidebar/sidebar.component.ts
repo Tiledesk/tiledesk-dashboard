@@ -13,6 +13,7 @@ import { Project } from '../../models/project-model';
 import { LocalDbService } from '../../services/users-local-db.service';
 import { NotifyService } from '../../core/notify.service';
 import { UploadImageService } from '../../services/upload-image.service';
+import { UploadImageNativeService } from '../../services/upload-image-native.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -179,7 +180,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         public appConfigService: AppConfigService,
         private deptService: DepartmentService,
         public brandService: BrandService,
-        public wsRequestsService: WsRequestsService
+        public wsRequestsService: WsRequestsService,
+        private uploadImageNativeService: UploadImageNativeService
     ) {
         console.log('!!!!! HELLO SIDEBAR')
 
@@ -533,17 +535,31 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         });
     }
 
-  
+
 
     checkUserImageUploadIsComplete() {
-        this.uploadImageService.userImageWasUploaded.subscribe((image_exist) => {
-            console.log('SIDEBAR - IMAGE UPLOADING IS COMPLETE ? ', image_exist);
-            this.userImageHasBeenUploaded = image_exist;
-            if (this.storageBucket && this.userImageHasBeenUploaded === true) {
-                console.log('SIDEBAR - IMAGE UPLOADING IS COMPLETE - BUILD userProfileImageurl ');
-                this.setImageProfileUrl(this.storageBucket)
-            }
-        });
+        if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+            this.uploadImageService.userImageWasUploaded.subscribe((image_exist) => {
+                console.log('SIDEBAR - IMAGE UPLOADING IS COMPLETE ? ', image_exist, '(usecase Firebase)');
+                this.userImageHasBeenUploaded = image_exist;
+                if (this.storageBucket && this.userImageHasBeenUploaded === true) {
+                    console.log('SIDEBAR - IMAGE UPLOADING IS COMPLETE - BUILD userProfileImageurl ');
+                    this.setImageProfileUrl(this.storageBucket)
+                }
+            });
+        } else {
+
+            // NATIVE
+            this.uploadImageNativeService.userImageWasUploaded_Native.subscribe((image_exist) => {
+                console.log('USER PROFILE IMAGE - IMAGE UPLOADING IS COMPLETE ? ', image_exist, '(usecase Native)');
+
+                this.userImageHasBeenUploaded = image_exist;
+                this.uploadImageNativeService.userImageDownloadUrl_Native.subscribe((imageUrl)=> {
+                    this.userProfileImageurl = imageUrl
+                    this.timeStamp = (new Date()).getTime();
+                })
+            })
+        }
     }
 
     setImageProfileUrl(storageBucket) {
@@ -658,7 +674,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         });
     }
 
-     // IF THE AVAILABILITY STATUS IS CHANGED from THE USER.COMP AVAILABLE / UNAVAILABLE TOGGLE BTN
+    // IF THE AVAILABILITY STATUS IS CHANGED from THE USER.COMP AVAILABLE / UNAVAILABLE TOGGLE BTN
     // RE-RUN getAllUsersOfCurrentProject TO UPDATE AVAILABLE / UNAVAILABLE BTN ON THE TOP OF THE SIDEBAR
     hasChangedAvailabilityStatusInUsersComp() {
         this.usersService.has_changed_availability_in_users.subscribe((has_changed_availability) => {
@@ -671,7 +687,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         })
     }
 
-   
+
 
 
     // *** NOTE: THE SAME CALLBACK IS RUNNED IN THE HOME.COMP ***
@@ -734,7 +750,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         // this.usersService.subscriptionToWsCurrentUser(currentuserprjctuserid);
         this.wsRequestsService.subscriptionToWsCurrentUser(currentuserprjctuserid);
 
-        
+
         this.getWsCurrentUserAvailability$();
         this.getWsCurrentUserIsBusy$();
     }

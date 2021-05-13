@@ -110,6 +110,9 @@ import { ResetPswComponent } from './reset-psw/reset-psw.component';
 import { ResetPswService } from './services/reset-psw.service';
 import { WidgetDesignComponent } from './widget_components/widget-design/widget-design.component';
 import { UploadImageService } from './services/upload-image.service';
+import { UploadImageNativeService } from './services/upload-image-native.service';
+
+
 import { RequestsListHistoryNewComponent } from './requests-list-history-new/requests-list-history-new.component';
 import { MyDatePickerModule } from 'mydatepicker';
 import { ContactDetailsComponent } from './contact-details/contact-details.component';
@@ -452,6 +455,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     BotLocalDbService,
     ResetPswService,
     UploadImageService,
+    UploadImageNativeService,
     WidgetService,
     WebhookService,
     ProjectPlanService,
