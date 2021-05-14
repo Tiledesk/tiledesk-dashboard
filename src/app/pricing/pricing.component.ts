@@ -502,9 +502,15 @@ export class PricingComponent implements OnInit, OnDestroy {
 
 
   launchWidget() {
-    if (window && window['tiledesk']) {
-      window['tiledesk'].open();
-    }
+    // if (window && window['tiledesk']) {
+    //   window['tiledesk'].open();
+    // }
+
+    // <a onClick="javascript:window.open('mailto:mail@domain.com', 'mail');event.preventDefault()" href="mailto:mail@domain.com">Send a e-mail</a>
+
+    // const mailTo = "mailto:info@tiledesk.com";
+    // window.location.href = mailTo;
+    window.open('mailto:info@tiledesk.com', 'mail')
   }
 
   openReportPaymentModal() {

@@ -1431,11 +1431,11 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     // _elemMainPanel.setAttribute('style', 'overflow-x: hidden !important;');
   }
 
-  launchWidget() {
-    if (window && window['tiledesk']) {
-      window['tiledesk'].open();
-    }
-  }
+  // launchWidget() {
+  //   if (window && window['tiledesk']) {
+  //     window['tiledesk'].open();
+  //   }
+  // }
 
   openBotExternalUrl() {
     const url = this.faqKbUrlToUpdate;

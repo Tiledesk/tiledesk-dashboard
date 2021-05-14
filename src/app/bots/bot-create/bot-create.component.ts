@@ -550,11 +550,11 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     this.location.back();
   }
 
-  launchWidget() {
-    if (window && window['tiledesk']) {
-      window['tiledesk'].open();
-    }
-  }
+  // launchWidget() {
+  //   if (window && window['tiledesk']) {
+  //     window['tiledesk'].open();
+  //   }
+  // }
   hasClickedChangeFile() {
     this.hideProgressBar = true;
     this.uploadCompleted = true;

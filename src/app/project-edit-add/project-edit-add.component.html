@@ -1571,7 +1571,9 @@
           <div class="col-sm-12">
             <h3 style="text-align: center;  color: #8894ab; font-size: 24px">
               <!-- Contact us via chat and tell us how many operator seats you want to add to the project -->
-              {{ "Pricing.ContactUsViaChatAndTellIUsHowManyOperator" | translate}}
+              <!-- {{ "Pricing.ContactUsViaChatAndTellIUsHowManyOperator" | translate}} -->
+              {{ "Pricing.ContactUsViaEmailAndTellIUsHowManyOperator" | translate}}
+              
             </h3>
           </div>
         </div>
@@ -1584,7 +1586,8 @@
             style="background-color:#3EA9F5;color:#FFF;padding:12px 16px;border:0;border-radius:4px;font-size:18px"
             id="checkout-button-plan_EjFHNnzJXE3jul" role="link" (click)="launchWidget()">
             <!-- PerMonth -->
-            Let's chat
+            <!-- Let's chat -->
+            {{'ContactUs' | translate}}
           </button>
         </div>
       </div>
