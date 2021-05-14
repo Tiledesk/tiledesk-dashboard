@@ -99,6 +99,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   isVisibleANA: boolean;
   isVisibleAPP: boolean;
+  isVisibleOPH: boolean;
   hidechangelogrocket: boolean;
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
@@ -603,7 +604,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   translateModalOnlyOwnerCanManageProjectAccount() {
     this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
       .subscribe((translation: any) => {
-     
+
         this.onlyOwnerCanManageTheAccountPlanMsg = translation;
       });
 
@@ -638,36 +639,55 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
         if (ana[1] === "F") {
           this.isVisibleANA = false;
-          // console.log('PUBLIC-KEY (SIDEBAR) - ana isVisible', this.isVisibleANA);
+          // console.log('PUBLIC-KEY (Home) - ana isVisible', this.isVisibleANA);
         } else {
           this.isVisibleANA = true;
-          // console.log('PUBLIC-KEY (SIDEBAR) - ana isVisible', this.isVisibleANA);
+          // console.log('PUBLIC-KEY (Home) - ana isVisible', this.isVisibleANA);
         }
       }
 
       if (key.includes("APP")) {
-        console.log('PUBLIC-KEY (SIDEBAR) - key', key);
+        console.log('PUBLIC-KEY (Home) - key', key);
         let lbs = key.split(":");
-        console.log('PUBLIC-KEY (SIDEBAR) - app key&value', lbs);
+        console.log('PUBLIC-KEY (Home) - app key&value', lbs);
 
         if (lbs[1] === "F") {
           this.isVisibleAPP = false;
-          console.log('PUBLIC-KEY (SIDEBAR) - app isVisible', this.isVisibleAPP);
+          console.log('PUBLIC-KEY (Home) - app isVisible', this.isVisibleAPP);
         } else {
           this.isVisibleAPP = true;
-          console.log('PUBLIC-KEY (SIDEBAR) - app isVisible', this.isVisibleAPP);
+          console.log('PUBLIC-KEY (Home) - app isVisible', this.isVisibleAPP);
+        }
+      }
+
+      if (key.includes("OPH")) {
+        // console.log('PUBLIC-KEY (Home) - key', key);
+        let oph = key.split(":");
+        // console.log('PUBLIC-KEY (Home) - oph key&value', oph);
+
+        if (oph[1] === "F") {
+          this.isVisibleOPH = false;
+          // console.log('PUBLIC-KEY (Home) - oph isVisible', this.isVisibleOPH);
+        } else {
+          this.isVisibleOPH = true;
+          // console.log('PUBLIC-KEY (Home) - oph isVisible', this.isVisibleOPH);
         }
       }
     });
 
     if (!this.public_Key.includes("ANA")) {
-      console.log('PUBLIC-KEY (SIGN-IN) - key.includes("V1L")', this.public_Key.includes("ANA"));
+      // console.log('PUBLIC-KEY (Home) - key.includes("V1L")', this.public_Key.includes("ANA"));
       this.isVisibleANA = false;
     }
 
     if (!this.public_Key.includes("APP")) {
-      console.log('PUBLIC-KEY (SIDEBAR) - key.includes("APP")', this.public_Key.includes("APP"));
+      // console.log('PUBLIC-KEY (Home) - key.includes("APP")', this.public_Key.includes("APP"));
       this.isVisibleAPP = false;
+    }
+
+    if (!this.public_Key.includes("OPH")) {
+      // console.log('PUBLIC-KEY (Home) - key.includes("OPH")', this.public_Key.includes("OPH"));
+      this.isVisibleOPH = false;
     }
 
     // console.log('eoscode', this.eos)
@@ -828,10 +848,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
         // this.notify.showCheckListModal(true);
       } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true) {
-        
+
         this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
       }
-      
+
     } else {
       this.presentModalOnlyOwnerCanManageTheAccountPlan();
     }

@@ -13,6 +13,7 @@ import { NotifyService } from '../core/notify.service';
 
 import { Router, NavigationEnd, RoutesRecognized, NavigationStart, ActivatedRoute } from '@angular/router';
 import { Project } from './../models/project-model';
+import { AppConfigService } from '../services/app-config.service';
 @Component({
   selector: 'appdashboard-hours',
   templateUrl: './hours.component.html',
@@ -137,6 +138,7 @@ export class HoursComponent implements OnInit, OnDestroy {
   timeZoneSelectedIsUnlikeCurrentTimezone: boolean;
 
   showSpinner = true;
+  public_Key: string;
   // hasSaved: boolean
 
   constructor(
@@ -146,14 +148,16 @@ export class HoursComponent implements OnInit, OnDestroy {
     private atp: AmazingTimePickerService,
     private translate: TranslateService,
     public notify: NotifyService,
-    private router: Router
+    private router: Router,
+    public appConfigService: AppConfigService
   ) { }
 
   ngOnInit() {
     console.log('DAYS ', this.days);
-
+    
     // getCurrentProject > getProjectById > BUILD THE OBJECT DAYS
     this.getCurrentProject();
+    this.getOSCODE();
     // this.daysList = this.days
     this.auth.checkRoleForCurrentProject();
 
@@ -212,6 +216,34 @@ export class HoursComponent implements OnInit, OnDestroy {
     //   });
 
 
+  }
+
+
+  getOSCODE() {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    console.log('AppConfigService getAppConfig (HOURS COMP) public_Key', this.public_Key);
+    let keys = this.public_Key.split("-");
+    console.log('PUBLIC-KEY (Home) keys', keys)
+    keys.forEach(key => {
+      // console.log('HOURS COMP public_Key key', key)
+  
+  
+      if (key.includes("OPH")) {
+        // console.log('PUBLIC-KEY (HOURS COMP) - key', key);
+        let oph = key.split(":");
+        // console.log('PUBLIC-KEY (HOURS COMP) - oph key&value', oph);
+
+        if (oph[1] === "F") {
+          this.router.navigate([`project/${this.projectid}/unauthorized`]);
+        } 
+      }
+    });
+
+
+    if (!this.public_Key.includes("OPH")) {
+      // console.log('PUBLIC-KEY (Home) - key.includes("OPH")', this.public_Key.includes("OPH"));
+      this.router.navigate([`project/${this.projectid}/unauthorized`]);
+    }
   }
 
   ngOnDestroy() {

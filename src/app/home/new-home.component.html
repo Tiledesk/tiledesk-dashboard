@@ -28,7 +28,8 @@
               <i class="material-icons" style="vertical-align: middle; color:#f44336; cursor:pointer">
                 error_outline
               </i>
-              <span class="expired__Tooltiptext" style="font-size:14px; top: 43px;padding: 5px; height: 44px; cursor:pointer">
+              <span class="expired__Tooltiptext"
+                style="font-size:14px; top: 43px;padding: 5px; height: 44px; cursor:pointer">
                 {{ 'Pricing.SubscriptionPaymentProblem' | translate }} </span>
             </span>
           </span>
@@ -249,7 +250,8 @@
           // ---------------------------------------------------
           // @ Operating Hours  
           // --------------------------------------------------- -->
-          <div class="served-by-desktop-a--home-header-operating-hours">
+
+          <div *ngIf="isVisibleOPH" class="served-by-desktop-a--home-header-operating-hours">
             <div class="served-by-desktop-b">
               <div class="served-by-desktop-d">
                 <div size="32" class="served-by-desktop-e" style="position: relative;top: -2px;">
@@ -261,7 +263,9 @@
               </div>
             </div>
 
-            <span style="padding-left: 4px;color: rgba(255,255,255,0.8);font-size: 13px;font-weight: 400;">
+
+            <span *ngIf="isVisibleOPH"
+              style="padding-left: 4px;color: rgba(255,255,255,0.8);font-size: 13px;font-weight: 400;">
               <span *ngIf="!OPERATING_HOURS_ACTIVE"> {{'OperatingHoursDisabled' | translate }}</span>
               <span *ngIf="OPERATING_HOURS_ACTIVE"> {{'OperatingHoursEnabled' | translate}} </span>
               <span class="tool_tip">
@@ -276,6 +280,7 @@
                 </span>
               </span>
             </span>
+
           </div>
 
 
@@ -514,7 +519,7 @@
               </div>
             </div>
           </div>
-          
+
         </div>
 
       </div>
@@ -526,7 +531,8 @@
   <!--  ANALITICS INDICATORS IN ONE ROWS -->
   <!--  ---------------------------------------------------------------------------------------------------------------- -->
 
-  <div *ngIf="isVisibleANA" class="row home-statistics-row is_visible_up_992" style="border-bottom: 1px solid #e5effe !important;  padding-top: 16px;  padding-bottom: 16px;">
+  <div *ngIf="isVisibleANA" class="row home-statistics-row is_visible_up_992"
+    style="border-bottom: 1px solid #e5effe !important;  padding-top: 16px;  padding-bottom: 16px;">
 
     <!--  --------------------------------------------------------- -->
     <!--  @ Active contacts count -->
@@ -948,13 +954,13 @@
     </div>
   </div>
 
- <div class="row">
+  <div class="row">
     <!-- ------------------------------------------------------- -->
     <!--  @ Getting started docs link -->
     <!-- -------------------------------------------------------- -->
     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
       <!-- style="margin-left:15px; margin-right:15px" -->
-      <div class="card getting-started-card" >
+      <div class="card getting-started-card">
         <div class="card-content">
           <div class="row">
             <div class="col-xs-3">
@@ -1112,7 +1118,7 @@
         </div>
       </div> -->
       <!-- style="margin-left:15px; margin-right:15px" -->
-      <div class="card last-updated-card" >
+      <div class="card last-updated-card">
         <div class="card-content">
           <div class="row">
             <div class="col-xs-3">
@@ -1211,7 +1217,7 @@
                     <strong>Bot profile photo and teammate profile photo</strong>
                     <span>April 2021</span>
                   </p>
-                  <p>You can now delete user profile photo and bot profile photo 
+                  <p>You can now delete user profile photo and bot profile photo
                   </p>
                 </div>
                 <div class="slide">
@@ -1219,7 +1225,8 @@
                     <strong>Improved performance</strong>
                     <span>April 2021</span>
                   </p>
-                  <p>Improve the loading times of the conversation list, non-real-time conversation list, and history pages
+                  <p>Improve the loading times of the conversation list, non-real-time conversation list, and history
+                    pages
                   </p>
                 </div>
                 <div class="slide">
