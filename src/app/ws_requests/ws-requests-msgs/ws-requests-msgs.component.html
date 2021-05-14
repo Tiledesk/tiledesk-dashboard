@@ -232,7 +232,7 @@
  <!-- ////// INFO MSG -->
                         <!-- requester_id: {{requester_id}} message_sender {{message.sender}} type
                         {{message?.attributes?.subtype}} rext {{ message?.text }} -->
-                        <div *ngIf="message?.attributes?.subtype === 'info'" style="padding:20px 55px; text-align:center">
+                        <div *ngIf="message?.attributes?.subtype === 'info' || message?.attributes?.subtype === 'info/support'" style="padding:20px 55px; text-align:center">
                           <div>
                             <!-- <div class="requester-avatar-wrapper"
                               style="display: block;border-radius: 50%; height: 100%; margin-top: 35px;"
@@ -269,7 +269,7 @@
                         </div>
 
 
-                  <div class="parent" *ngIf="message?.attributes?.subtype !== 'info'">
+                  <div class="parent" *ngIf="message?.attributes?.subtype !== 'info' && message?.attributes?.subtype !== 'info/support'">
                     <div [ngClass]="{'child' : requester_id !== message.sender}">
 
                       <div class="speech-wrapper">

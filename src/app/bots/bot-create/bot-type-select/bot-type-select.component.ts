@@ -88,6 +88,16 @@ export class BotTypeSelectComponent implements OnInit {
         }
       }
     });
+
+    if (!this.public_Key.includes("DGF")) {
+      // console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - key.includes("PAY")', this.public_Key.includes("DGF"));
+      this.dgfIsVisible = false;
+    }
+
+    if (!this.public_Key.includes("NAT")) {
+      // console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - key.includes("PAY")', this.public_Key.includes("DGF"));
+      this.natIsVisible = false;
+    }
   }
 
 

@@ -209,7 +209,8 @@
           <button type="button" class="btn btn-primary" (click)="launchWidget()">
 
             <!-- {{ 'Pricing.UpgradePlan' | translate }} -->
-            Let's chat
+            <!-- Let's chat -->
+            {{'ContactUs' | translate}}
           </button>
         </div>
       </div>
@@ -268,7 +269,9 @@
               </span>
               <span style="display: block">
                 <!-- Contact us via chat to upgrade your pricing plan. -->
-                {{ "Pricing.ContactUsViaChatToUpgradeYourPricingPlan" | translate }}.
+                <!-- {{ "Pricing.ContactUsViaChatToUpgradeYourPricingPlan" | translate }}. -->
+                {{ "Pricing.ContactUsViaEmailToUpgradeYourPricingPlan" | translate }}.
+                
               </span>
             </h3>
           </div>
@@ -281,7 +284,8 @@
           <!-- style="background-color:#3EA9F5;color:#FFF;padding:12px 16px;border:0;border-radius:4px;font-size:18px"  -->
           <button class="btn btn-primary" (click)="launchWidget()">
             <!-- PerMonth -->
-            Let's chat
+            <!-- Let's chat -->
+            {{'ContactUs' | translate}}
           </button>
         </div>
       </div>
@@ -548,7 +552,7 @@
     (function(d, s, id) {
       var js, fjs = d.getElementsByTagName(s)[0];
       if (d.getElementById(id)) return;
-      js = d.createElement(s); js.id = id; //js.async=!0;
+      js = d.createElement(s); js.id = id; js.async=true;
       js.src = &quot;{{WIDGET_URL}}&quot;;
       fjs.parentNode.insertBefore(js, fjs);
     }(document, &#39;script&#39;, &#39;tiledesk-jssdk&#39;));
@@ -573,7 +577,7 @@
                   <span>   (function(d, s, id) {{'{'}}</span>
                   <span>    var js, fjs = d.getElementsByTagName(s)[0];    </span>
                   <span>    if (d.getElementById(id)) return;    </span>
-                  <span>    js = d.createElement(s); js.id = id; //js.async=!0;    </span>
+                  <span>    js = d.createElement(s); js.id = id; js.async=true;;    </span>
                   <span>    js.src = &quot;{{WIDGET_URL}}&quot;;</span>
                   <span>    fjs.parentNode.insertBefore(js, fjs);</span>
                   <span>  {{'}'}}(document, &#39;script&#39;, &#39;tiledesk-jssdk&#39;));</span>

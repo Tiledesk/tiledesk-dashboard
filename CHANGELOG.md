@@ -19,13 +19,21 @@
 ### 2.1.49.1
 - Fixes the bug: requester_id of undefined
 - Display "info" messages in the chat on the conversation detail page in the style they appear in the web chat
-- Fixes the bug: accessing the dashboard in the conversation list page from the link suggested by the browser address bar the project is not found
+- Fixes the bug: accessing the dashboard in the conversations list page from the link suggested by the browser address bar, if the project is not found, the conversations are not found (now the user is redirected to the project list)
 - Adds a loading spinner on the apps installation page
-- Fixes the bug: when the trigger "When a visitor requests a chat" is created with  the condition "Department" after saving the selected department is always the default department
+- Fixes the bug: when the trigger "When a visitor requests a chat" is created with the condition "Department" after saving the selected department is always the default department
 - Fixes the bug: when the trigger "When a visitor requests a chat" is created with two conditions "Department" in the second condition the selected department is the same as the first one
 - Fixes the bug: in the Analytics> Metrics> Satisfaction page the number of decimals displayed in the Average Satisfaction section is greater than two
 - Fixes the bugs in Trigger related to the conditions: "Conservation status" and "The department has bot"
 - Modifies path and key in the trigger 'Message create from requester'
+- Fixes the bug: in the home page the link that directs to the 'Operating Hours' page is displayed even if the module is absent
+- Fixes the bug: translation error in the page 'Widget' > Install widget with javascript code
+- Adds "js.async = true" to the widget script
+- Changes the translation of the tooltip on the map marker icon on the conversation list page (replaces "view assigned requests map" with "view on map") 
+- Changes the method called by "Let's chat" which now allows to send an email to contatct the support team
+- Replaces all the occurrences of "Let's chat" with "Contact us"
+- Displays on the home page and on the conversation list page 'Operating Hours' as disabled even if they are activated but the paid plan has not been renewed or if the trial period has expired
+- Bug fixed: on the "Choose bot type" page there is the possibility to create a Dialogflow bot even if the module "Dialogflow" is disabled
 
 ### 2.1.49
 - Adds the "Trusted Info" accordion to the right sidebar of the contact details page
