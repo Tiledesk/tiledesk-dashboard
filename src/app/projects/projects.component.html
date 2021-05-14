@@ -47,14 +47,27 @@
               <ul class="dropdown-menu">
                 <div class="card card-profile" style="border:unset !important">
                   <div class="card-avatar user-profile-avatar">
-                    <a>
-                      <!-- <img class="img" src="assets/img/no_image_user.png" /> -->
+                    <a *ngIf="user">
+                      <!-- (userProfileImageExist === true || userImageHasBeenUploaded === true) -->
                       <img style="width:80px; height:80px"
-                        *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true" class="user-img"
-                        src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{user?._id}}%2Fphoto.jpg?alt=media" />
-
-                      <img *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true" class="user-img"
+                     
+                        *ngIf="user?.hasImage && UPLOAD_ENGINE_IS_FIREBASE" class="user-img"
+                        src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{user?._id}}%2Fphoto.jpg?alt=media"
+                        onerror="this.src='assets/img/no_image_user.png'" />
+                        <!-- (userProfileImageExist === true || userImageHasBeenUploaded === true) -->
+                        <img style="width:80px; height:80px"
+                        *ngIf="user?.hasImage && !UPLOAD_ENGINE_IS_FIREBASE " class="user-img"
+                        src="https://tiledesk-server-pre.herokuapp.com/images?path=uploads%2Fusers%2F{{user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                        onerror="this.src='assets/img/no_image_user.png'" />
+                        <!-- userProfileImageExist !== true && userImageHasBeenUploaded !== true" -->
+                      <img *ngIf="!user?.hasImage" class="user-img"
                         src="assets/img/no_image_user.png" />
+
+                        <!-- <img style="width:80px; height:80px"  *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true"
+                        [src]="getUserProfileImage()" onerror="this.src='assets/img/no_image_user.svg'" />
+                
+                      <img class="avatar" *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true"
+                        src="assets/img/no_image_user.png" /> -->
                     </a>
                   </div>
 

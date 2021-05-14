@@ -9,6 +9,7 @@ import { DepartmentService } from '../services/department.service';
 import { isDevMode } from '@angular/core';
 import { UsersService } from '../services/users.service';
 import { UploadImageService } from '../services/upload-image.service';
+import { UploadImageNativeService } from '../services/upload-image-native.service';
 import { Subscription } from 'rxjs/Subscription';
 import { AppConfigService } from '../services/app-config.service';
 import { Subject } from 'rxjs';
@@ -17,6 +18,7 @@ import { takeUntil } from 'rxjs/operators';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../services/brand.service';
 import { WsRequestsService } from '../services/websocket/ws-requests.service';
+import { Console } from 'console';
 @Component({
   selector: 'projects',
   templateUrl: './projects.component.html',
@@ -58,6 +60,8 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   APP_IS_DEV_MODE: boolean;
   userProfileImageExist: boolean;
   userImageHasBeenUploaded: boolean;
+  userProfileImageurl: string;
+  timeStamp: any;
   myAvailabilityCount: number;
   subscription: Subscription;
 
@@ -65,6 +69,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   currentUserId: string
   public_Key: string;
   MT: boolean;
+  UPLOAD_ENGINE_IS_FIREBASE: boolean;
 
   private unsubscribe$: Subject<any> = new Subject<any>();
 
@@ -77,6 +82,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     private departmentService: DepartmentService,
     private usersService: UsersService,
     private uploadImageService: UploadImageService,
+    private uploadImageNativeService: UploadImageNativeService,
     public appConfigService: AppConfigService,
     public brandService: BrandService,
     public wsRequestsService: WsRequestsService
@@ -99,17 +105,17 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     const navbar: HTMLElement = this.element.nativeElement;
     this.toggleButton = navbar.getElementsByClassName('navbar-toggle')[0];
-
+    // this.getUploadEgine();
     this.getProjectsAndSaveInStorage();
     this.getLoggedUser();
 
-    this.checkUserImageUploadIsComplete();
+    // this.checkUserImageUploadIsComplete();
 
     // used when the page is refreshed
-    this.checkUserImageExist();
+    // this.checkUserImageExist();
 
     // this.subscribeToLogoutPressedinSidebarNavMobilePrjctUndefined();
-    this.getStorageBucket();
+    // this.getStorageBucket();
     this.getOSCODE();
     this.listenHasDeleteUserProfileImage();
   }
@@ -124,6 +130,75 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+  getLoggedUser() {
+    this.auth.user_bs.subscribe((user) => {
+      console.log('PROJECT COMP - USER  ', user)
+      this.user = user;
+
+      if (user) {
+        this.currentUserId = user._id;
+        console.log('PROJECT COMP Current USER ID ', this.currentUserId)
+      }
+
+      this.getStorageBucket();
+
+    });
+  }
+
+  getStorageBucket() {
+    const firebase_conf = this.appConfigService.getConfig().firebase;
+    this.storageBucket = firebase_conf['storageBucket'];
+    console.log('STORAGE-BUCKET Projects ', this.storageBucket)
+
+    this.getUploadEgine()
+  }
+
+  getUploadEgine() {
+    let imgUrl = ''
+    if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+      this.UPLOAD_ENGINE_IS_FIREBASE = true
+      imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + this.storageBucket + "/o/profiles%2F" + this.currentUserId + "%2Fphoto.jpg?alt=media"
+      console.log('PROJECTS-LIST - UPLOAD_ENGINE_IS_FIREBASE', this.UPLOAD_ENGINE_IS_FIREBASE);
+      // console.log('PROJECTS-LIST - userProfileImageExist', this.userProfileImageExist);
+      // console.log('PROJECTS-LIST - userProfileImageExist', this.userImageHasBeenUploaded);
+
+
+
+
+    } else {
+      this.UPLOAD_ENGINE_IS_FIREBASE = false
+      imgUrl = 'https://tiledesk-server-pre.herokuapp.com/images?path=uploads%2Fusers%2F' + this.currentUserId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
+      console.log('PROJECTS-LIST - UPLOAD_ENGINE_IS_FIREBASE', this.UPLOAD_ENGINE_IS_FIREBASE);
+      // console.log('PROJECTS-LIST - userProfileImageExist', this.userProfileImageExist);
+      // console.log('PROJECTS-LIST - userProfileImageExist', this.userImageHasBeenUploaded);
+
+      this.checkImageExists(imgUrl, (existsImage) => {
+        if (existsImage == true) {
+
+          this.user.hasImage = true;
+          console.log('PROJECTS-LIST - IMAGE EXIST X USER', this.user);
+        }
+        else {
+
+          this.user.hasImage = false;
+          console.log('PROJECTS-LIST - IMAGE NOT EXIST X USER', this.user);
+        }
+      });
+
+    }
+  }
+
+  checkImageExists(imageUrl, callBack) {
+    var imageData = new Image();
+    imageData.onload = function () {
+      callBack(true);
+    };
+    imageData.onerror = function () {
+      callBack(false);
+    };
+    imageData.src = imageUrl;
   }
 
   getOSCODE() {
@@ -160,49 +235,96 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   }
 
 
-  getStorageBucket() {
-    const firebase_conf = this.appConfigService.getConfig().firebase;
-    this.storageBucket = firebase_conf['storageBucket'];
-    console.log('STORAGE-BUCKET Projects ', this.storageBucket)
-  }
+
 
 
   listenHasDeleteUserProfileImage() {
-    this.uploadImageService.hasDeletedUserPhoto.subscribe((hasDeletedImage) => {
-        console.log('SIDEBAR - hasDeletedImage ? ', hasDeletedImage);
+    if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+      this.uploadImageService.hasDeletedUserPhoto.subscribe((hasDeletedImage) => {
+        console.log('PROJECTS-LIST - hasDeletedImage ? ', hasDeletedImage, '(usecase Firebase)');
         this.userImageHasBeenUploaded = false
         this.userProfileImageExist = false
-    });
-
-}
-
-
-  checkUserImageExist() {
-    this.usersService.userProfileImageExist.subscribe((image_exist) => {
-      console.log('USER-PROFILE - USER PROFILE EXIST ? ', image_exist);
-      this.userProfileImageExist = image_exist;
-    });
-  }
-  checkUserImageUploadIsComplete() {
-    this.uploadImageService.userImageWasUploaded.subscribe((image_exist) => {
-      console.log('USER-PROFILE - IMAGE UPLOADING IS COMPLETE ? ', image_exist);
-      this.userImageHasBeenUploaded = image_exist;
-    });
+      });
+    } else {
+      this.uploadImageNativeService.hasDeletedUserPhoto.subscribe((hasDeletedImage) => {
+        console.log('PROJECTS-LIST - hasDeletedImage ? ', hasDeletedImage, '(usecase Native)');
+        this.userImageHasBeenUploaded = false
+        this.userProfileImageExist = false
+      });
+    }
   }
 
 
-  getLoggedUser() {
-    this.auth.user_bs.subscribe((user) => {
-      console.log('PROJECT COMP - USER  ', user)
-      this.user = user;
+  // checkUserImageExist() {
+  //   this.usersService.userProfileImageExist.subscribe((image_exist) => {
+  //     console.log('PROJECTS-LIST - USER PROFILE EXIST ? ', image_exist);
+  //     this.userProfileImageExist = image_exist;
 
-      if (user) {
-        this.currentUserId = user._id;
-        console.log('Current USER ID ', this.currentUserId)
-      }
+  //     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+  //       if (this.storageBucket && this.userProfileImageExist === true) {
+  //         console.log('PROJECT-COMP - USER PROFILE EXIST - BUILD userProfileImageurl');
+  //         this.setImageProfileUrl(this.storageBucket)
+  //       }
+  //     } else {
+  //       console.log('PROJECT-COMP - USER PROFILE EXIST - BUILD userProfileImageurl (NATIVE)');
+  //       if (this.userProfileImageExist === true) {
+  //         this.setImageProfileUrl_Native()
+  //       }
+  //     }
+  //   });
+  // }
 
-    });
-  }
+
+
+
+  // checkUserImageUploadIsComplete() {
+  //   if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+  //     this.uploadImageService.userImageWasUploaded.subscribe((image_exist) => {
+  //       console.log('PROJECTS-LIST - IMAGE UPLOADING IS COMPLETE ? ', image_exist);
+  //       this.userImageHasBeenUploaded = image_exist;
+
+  //       if (this.storageBucket && this.userImageHasBeenUploaded === true) {
+  //         console.log('PROJECT-COMP - IMAGE UPLOADING IS COMPLETE - BUILD userProfileImageurl ');
+  //         this.setImageProfileUrl(this.storageBucket)
+  //       }
+  //     });
+  //   } else {
+  //     // NATIVE
+  //     this.uploadImageNativeService.userImageWasUploaded_Native.subscribe((image_exist) => {
+  //       console.log('USER PROFILE IMAGE - IMAGE UPLOADING IS COMPLETE ? ', image_exist, '(usecase Native)');
+
+  //       this.userImageHasBeenUploaded = image_exist;
+  //       this.uploadImageNativeService.userImageDownloadUrl_Native.subscribe((imageUrl) => {
+  //         this.userProfileImageurl = imageUrl
+  //         this.timeStamp = (new Date()).getTime();
+  //       })
+  //     })
+  //   }
+  // }
+
+  // setImageProfileUrl_Native() {
+  //   console.log('PROJECT-COMP - USER PROFILE EXIST - setImageProfileUrl_Native (NATIVE)')
+
+  //   this.userProfileImageurl = 'https://tiledesk-server-pre.herokuapp.com/images?path=uploads%2Fusers%2F' + this.currentUserId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
+  //   // console.log('PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
+  //   this.timeStamp = (new Date()).getTime();
+  // }
+
+  // setImageProfileUrl(storageBucket) {
+  //   this.userProfileImageurl = 'https://firebasestorage.googleapis.com/v0/b/' + storageBucket + '/o/profiles%2F' + this.currentUserId + '%2Fphoto.jpg?alt=media';
+  //   this.timeStamp = (new Date()).getTime();
+  // }
+
+  // getUserProfileImage() {
+  //   if (this.timeStamp) {
+  //     console.log('PROJECT-COMP PROFILE IMAGE - getUserProfileImage ', this.userProfileImageurl);
+  //     return this.userProfileImageurl + '&' + this.timeStamp;
+  //   }
+  //   return this.userProfileImageurl
+  // }
+
+
+
 
 
   display_loading(project_id) {
@@ -224,7 +346,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     activeOperatingHours: boolean) {
     console.log('!!! GO TO HOME - PROJECT ', project)
     console.log('!!! GO TO HOME - PROJECT status ', project_status)
-   
+
     project['is_selected'] = true
 
     // const loadingInProjectCardEle = <HTMLElement>document.querySelector('#loading_' + project_id);
