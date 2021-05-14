@@ -578,19 +578,19 @@
           <!-- --------------------------------------------------- -->
           <!-- Operating hours -->
           <!-- --------------------------------------------------- -->
-          <button *ngIf="isVisibleOPH" class="btn btn-primary-active" [ngClass]="{'btn-primary-no-active': !OPERATING_HOURS_ACTIVE }"
+          <button *ngIf="isVisibleOPH" class="btn btn-primary-active" [ngClass]="{'btn-primary-no-active': !OPERATING_HOURS_ACTIVE || DISPLAY_OPH_AS_DISABLED }"
             (click)="goToOperatingHours()">
             <span class="material-icons conv-option-icon"
-              [ngClass]="{'conv-option-icon-active': OPERATING_HOURS_ACTIVE}">
+              [ngClass]="{'conv-option-icon-active': OPERATING_HOURS_ACTIVE && !DISPLAY_OPH_AS_DISABLED}">
               access_time_filled
             </span>
 
             <span class="btn--text">
-              <span *ngIf="!OPERATING_HOURS_ACTIVE">
+              <span *ngIf="!OPERATING_HOURS_ACTIVE || DISPLAY_OPH_AS_DISABLED">
                 {{ 'OperatingHoursDisabled' | translate }}
               </span>
 
-              <span *ngIf="OPERATING_HOURS_ACTIVE">
+              <span *ngIf="OPERATING_HOURS_ACTIVE && !DISPLAY_OPH_AS_DISABLED">
                 {{ 'OperatingHoursEnabled' | translate }}
               </span>
             </span>

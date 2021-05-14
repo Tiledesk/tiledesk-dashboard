@@ -255,9 +255,9 @@
             <div class="served-by-desktop-b">
               <div class="served-by-desktop-d">
                 <div size="32" class="served-by-desktop-e" style="position: relative;top: -2px;">
-                  <img *ngIf="!OPERATING_HOURS_ACTIVE" src="assets/img/clock-solid-white.svg"
+                  <img *ngIf="!OPERATING_HOURS_ACTIVE || DISPLAY_OPH_AS_DISABLED" src="assets/img/clock-solid-white.svg"
                     style="width: 32px;height: 32px; padding: 6px;">
-                  <img *ngIf="OPERATING_HOURS_ACTIVE" src="assets/img/clock-solid-green.svg"
+                  <img *ngIf="OPERATING_HOURS_ACTIVE && !DISPLAY_OPH_AS_DISABLED" src="assets/img/clock-solid-green.svg"
                     style="width: 32px;height: 32px; padding: 6px;">
                 </div>
               </div>
@@ -266,8 +266,8 @@
 
             <span *ngIf="isVisibleOPH"
               style="padding-left: 4px;color: rgba(255,255,255,0.8);font-size: 13px;font-weight: 400;">
-              <span *ngIf="!OPERATING_HOURS_ACTIVE"> {{'OperatingHoursDisabled' | translate }}</span>
-              <span *ngIf="OPERATING_HOURS_ACTIVE"> {{'OperatingHoursEnabled' | translate}} </span>
+              <span *ngIf="!OPERATING_HOURS_ACTIVE || DISPLAY_OPH_AS_DISABLED"> {{'OperatingHoursDisabled' | translate }}</span>
+              <span *ngIf="OPERATING_HOURS_ACTIVE && !DISPLAY_OPH_AS_DISABLED"> {{'OperatingHoursEnabled' | translate}} </span>
               <span class="tool_tip">
                 <span *ngIf="USER_ROLE !== 'agent'" class="material-icons add-operators-icons tool_tip"
                   (click)="goToOperatingHours()"

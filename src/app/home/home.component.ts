@@ -103,6 +103,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   hidechangelogrocket: boolean;
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
+  DISPLAY_OPH_AS_DISABLED: boolean;
   constructor(
     public auth: AuthService,
     private route: ActivatedRoute,
@@ -795,6 +796,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
         this.showSpinner = false;
+
+        if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false || this.prjct_profile_type === 'free' && this.prjct_trial_expired === true) {
+          this.DISPLAY_OPH_AS_DISABLED = true;
+        } else {
+          this.DISPLAY_OPH_AS_DISABLED = false;
+        }
 
         if (this.prjct_profile_type === 'free') {
           if (this.prjct_trial_expired === false) {

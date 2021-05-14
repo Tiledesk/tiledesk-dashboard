@@ -171,6 +171,10 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   public_Key: string;
   isVisibleSmartAssignOption: boolean;
   isVisibleOPH: boolean;
+  prjct_profile_type: string;
+  prjct_trial_expired: boolean;
+  subscription_is_active: boolean;
+  DISPLAY_OPH_AS_DISABLED: boolean;
   /**
    * Constructor
    * 
@@ -220,7 +224,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     // this.getActiveContacts();
     // this.getWsRequests$();
     this.getCurrentProjectAndThenDetProjectById();
-    // this.getProjectPlan();
+    this.getProjectPlan();
     this.getLoggedUser();
     this.getProjectUserRole();
 
@@ -264,6 +268,26 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     this.projectUserArray.forEach(projectuser => {
       this.wsRequestsService.unsubsToToWsAllProjectUsersOfTheProject(projectuser.id_user._id)
     });
+  }
+
+  getProjectPlan() {
+    this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
+      console.log('ProjectPlanService (HomeComponent) project Profile Data', projectProfileData)
+      if (projectProfileData) {
+
+        this.prjct_trial_expired = projectProfileData.trial_expired;
+        this.prjct_profile_type = projectProfileData.profile_type;
+        this.subscription_is_active = projectProfileData.subscription_is_active;
+       
+
+        if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false || this.prjct_profile_type === 'free' && this.prjct_trial_expired === true) {
+          this.DISPLAY_OPH_AS_DISABLED = true;
+        } else {
+          this.DISPLAY_OPH_AS_DISABLED = false;
+        }
+      }
+ 
+    })
   }
 
 
