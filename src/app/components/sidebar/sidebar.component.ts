@@ -161,6 +161,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     isVisibleLBS: boolean;
     isVisibleAPP: boolean;
     storageBucket: string;
+    baseUrl: string;
     default_dept_id: string;
 
     private unsubscribe$: Subject<any> = new Subject<any>();
@@ -196,7 +197,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     ngOnInit() {
         this.translateChangeAvailabilitySuccessMsg();
         this.translateChangeAvailabilityErrorMsg();
-
+        this.getProfileImageStorage();
         // !!!! NO MORE USED
         // this.ROUTES = [
         //     { path: `project/${this.projectid}/home`, title: 'Home', icon: 'dashboard', class: '' },
@@ -235,7 +236,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.getCurrentRoute();
 
         this.getOSCODE();
-        this.getStorageBucket();
+
         this.brandLog();
         this.getHasOpenBlogKey()
         this.getChatUrl();
@@ -262,10 +263,17 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         console.log('BRAND_JSON - SIDEBAR hidechangelogrocket ', this.hidechangelogrocket);
     }
 
-    getStorageBucket() {
-        const firebase_conf = this.appConfigService.getConfig().firebase;
-        this.storageBucket = firebase_conf['storageBucket'];
-        console.log('STORAGE-BUCKET Sidebar ', this.storageBucket)
+    getProfileImageStorage() {
+        if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+            const firebase_conf = this.appConfigService.getConfig().firebase;
+            this.storageBucket = firebase_conf['storageBucket'];
+            console.log('Sidebar IMAGE STORAGE ', this.storageBucket , 'usecase Firebase')
+        } else {
+            this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
+            console.log('Sidebar IMAGE STORAGE ', this.storageBucket , 'usecase Native')
+        }
+
+
     }
 
     getOSCODE() {
@@ -517,13 +525,13 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     listenHasDeleteUserProfileImage() {
         if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
             this.uploadImageService.hasDeletedUserPhoto.subscribe((hasDeletedImage) => {
-                console.log('SIDEBAR - hasDeletedImage ? ', hasDeletedImage,'(usecase Firebase)');
+                console.log('SIDEBAR - hasDeletedImage ? ', hasDeletedImage, '(usecase Firebase)');
                 this.userImageHasBeenUploaded = false
                 this.userProfileImageExist = false
             });
         } else {
             this.uploadImageNativeService.hasDeletedUserPhoto.subscribe((hasDeletedImage) => {
-                console.log('SIDEBAR - hasDeletedImage ? ', hasDeletedImage,'(usecase Native)');
+                console.log('SIDEBAR - hasDeletedImage ? ', hasDeletedImage, '(usecase Native)');
                 this.userImageHasBeenUploaded = false
                 this.userProfileImageExist = false
             });
@@ -543,8 +551,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                     this.setImageProfileUrl(this.storageBucket)
                 }
             } else {
-                if (this.userProfileImageExist === true) {
-                    this.setImageProfileUrl_Native()
+                if (this.baseUrl && this.userProfileImageExist === true) {
+                    this.setImageProfileUrl_Native(this.baseUrl)
                 }
             }
         });
@@ -577,8 +585,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         }
     }
 
-    setImageProfileUrl_Native() {
-        this.userProfileImageurl = 'https://tiledesk-server-pre.herokuapp.com/images?path=uploads%2Fusers%2F' + this.currentUserId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
+    setImageProfileUrl_Native(storage) {
+        this.userProfileImageurl = storage + 'images?path=uploads%2Fusers%2F' + this.currentUserId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
         // console.log('PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
         this.timeStamp = (new Date()).getTime();
     }

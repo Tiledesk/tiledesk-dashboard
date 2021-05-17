@@ -701,12 +701,9 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
       if (imageExists === true) {
         self.botProfileImageExist = imageExists
-        console.log('BOT PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists , 'usecase firebse')
-        if (self.appConfigService.getConfig().uploadEngine === 'firebase') {
-          self.setImageProfileUrl(this.storageBucket);
-        } else {
-          self.setImageProfileUrl_Native()
-        }
+        console.log('BOT PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists, 'usecase firebse')
+        
+        self.setImageProfileUrl(this.storageBucket);
 
       } else {
         self.botProfileImageExist = imageExists
@@ -718,24 +715,22 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   }
 
   checkBotImageExistOnNative() {
-
-    const imageUrl = 'https://tiledesk-server-pre.herokuapp.com/images?path=uploads%2Fusers%2F' + this.id_faq_kb + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
+    const baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
+    const imageUrl = baseUrl + 'images?path=uploads%2Fusers%2F' + this.id_faq_kb + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
     const self = this;
     this.verifyImageURL(imageUrl, function (imageExists) {
 
       if (imageExists === true) {
         self.botProfileImageExist = imageExists
         console.log('BOT PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists, 'usecase native')
-       
-        self.setImageProfileUrl_Native()
-        
+
+        self.setImageProfileUrl_Native(baseUrl)
+
       } else {
         self.botProfileImageExist = imageExists
         console.log('BOT PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists, 'usecase native')
-
       }
     })
-
   }
 
   verifyImageURL(image_url, callBack) {
@@ -750,20 +745,17 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   }
 
 
-
-
-
   checkBotImageUploadIsComplete() {
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
 
       this.uploadImageService.botImageWasUploaded.subscribe((imageuploaded) => {
-        console.log('PROFILE IMAGE - IMAGE UPLOADING IS COMPLETE ? ', imageuploaded, '(usecase Firebase)');
+        console.log('BOT PROFILE IMAGE - IMAGE UPLOADING IS COMPLETE ? ', imageuploaded, '(usecase Firebase)');
         this.botImageHasBeenUploaded = imageuploaded;
         if (this.storageBucket && this.botImageHasBeenUploaded === true) {
 
           this.showSpinnerInUploadImageBtn = false;
 
-          console.log('PROFILE IMAGE (FAQ-COMP) - IMAGE UPLOADING IS COMPLETE - BUILD botProfileImageurl ');
+          console.log('BOT PROFILE IMAGE (FAQ-COMP) - IMAGE UPLOADING IS COMPLETE - BUILD botProfileImageurl ');
 
           this.setImageProfileUrl(this.storageBucket)
         }
@@ -771,7 +763,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     } else {
       // Native
       this.uploadImageNativeService.botImageWasUploaded_Native.subscribe((imageuploaded) => {
-        console.log('USER PROFILE IMAGE - IMAGE UPLOADING IS COMPLETE ? ', imageuploaded, '(usecase Native)');
+        console.log('BOT PROFILE IMAGE - IMAGE UPLOADING IS COMPLETE ? ', imageuploaded, '(usecase Native)');
 
         this.botImageHasBeenUploaded = imageuploaded;
         this.showSpinnerInUploadImageBtn = false;
@@ -788,21 +780,16 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     this.timeStamp = (new Date()).getTime();
   }
 
-  setImageProfileUrl_Native() {
-    this.botProfileImageurl = 'https://tiledesk-server-pre.herokuapp.com/images?path=uploads%2Fusers%2F' + this.id_faq_kb + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
+  setImageProfileUrl_Native(storage) {
+    this.botProfileImageurl = storage + 'images?path=uploads%2Fusers%2F' + this.id_faq_kb + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
     // console.log('PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
     this.timeStamp = (new Date()).getTime();
   }
 
   getBotProfileImage() {
-
     if (this.timeStamp) {
-
-      // setTimeout(() => {
       return this.botProfileImageurl + '&' + this.timeStamp;
-      // }, 200);
     }
-
     return this.botProfileImageurl
   }
 

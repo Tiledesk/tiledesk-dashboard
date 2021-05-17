@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FaqKbService } from '../../services/faq-kb.service';
 import { FaqKb } from '../../models/faq_kb-model';
-import { Router , RoutesRecognized} from '@angular/router';
+import { Router, RoutesRecognized } from '@angular/router';
 import { MongodbFaqService } from '../../services/mongodb-faq.service';
 
 import { Project } from '../../models/project-model';
@@ -57,6 +57,7 @@ export class BotListComponent implements OnInit {
   rowIndexSelected: number;
 
   storageBucket: string;
+  baseUrl: string;
   _botType: string;
 
   deptsNameAssociatedToBot: any
@@ -68,6 +69,7 @@ export class BotListComponent implements OnInit {
 
   public_Key: string;
   isVisibleAnalytics: boolean;
+  UPLOAD_ENGINE_IS_FIREBASE: boolean;
 
   constructor(
     private faqKbService: FaqKbService,
@@ -111,6 +113,7 @@ export class BotListComponent implements OnInit {
 
   ngOnInit() {
     this.auth.checkRoleForCurrentProject();
+    this.getProfileImageStorage();
     this.translateTrashBotSuccessMsg();
     this.translateTrashBotErrorMsg();
 
@@ -118,7 +121,7 @@ export class BotListComponent implements OnInit {
     this.getOSCODE();
     // this.getFaqKb();
     this.getFaqKbByProjectId();
-    this.getStorageBucket();
+
     this.getTranslations()
   }
 
@@ -134,7 +137,7 @@ export class BotListComponent implements OnInit {
       });
 
 
-      this.translate.get('Warning')
+    this.translate.get('Warning')
       .subscribe((text: string) => {
         // this.deleteContact_msg = text;
         console.log('+ + + BotsPage translation: ', text)
@@ -143,10 +146,18 @@ export class BotListComponent implements OnInit {
 
   }
 
-  getStorageBucket() {
-    const firebase_conf = this.appConfigService.getConfig().firebase;
-    this.storageBucket = firebase_conf['storageBucket'];
-    console.log('STORAGE-BUCKET Analytics List ', this.storageBucket)
+  getProfileImageStorage() {
+    if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+      this.UPLOAD_ENGINE_IS_FIREBASE = true;
+      const firebase_conf = this.appConfigService.getConfig().firebase;
+      this.storageBucket = firebase_conf['storageBucket'];
+      console.log('BOT-LIST IMAGE STORAGE ', this.storageBucket , 'usecase Firebase')
+    } else {
+      this.UPLOAD_ENGINE_IS_FIREBASE = false;
+      this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
+
+      console.log('BOT-LIST IMAGE STORAGE ', this.baseUrl, 'usecase native')
+    }
   }
 
   translateTrashBotSuccessMsg() {
@@ -206,7 +217,7 @@ export class BotListComponent implements OnInit {
             let stripHere = 40;
             this.faqkbList[i]['truncated_desc'] = this.faqkbList[i].description.substring(0, stripHere) + '...';
           }
-          if(this.faqkbList[i].createdBy === 'system' && this.faqkbList[i].type === 'identity') {
+          if (this.faqkbList[i].createdBy === 'system' && this.faqkbList[i].type === 'identity') {
             this.faqkbList[i]['is_system_identity_bot'] = true;
           }
         }
@@ -248,7 +259,7 @@ export class BotListComponent implements OnInit {
     let keys = this.public_Key.split("-");
     console.log('PUBLIC-KEY (BOT LIST) keys', keys)
     keys.forEach(key => {
-      
+
       if (key.includes("ANA")) {
         console.log('PUBLIC-KEY (BOT LIST) - key', key);
         let ana = key.split(":");
@@ -446,7 +457,7 @@ export class BotListComponent implements OnInit {
 
           swal({
             title: this.warning,
-            text: this.botIsAssociatedWithTheDepartment + ' ' + this.deptsNameAssociatedToBot+ '. ' + this.disassociateTheBot,
+            text: this.botIsAssociatedWithTheDepartment + ' ' + this.deptsNameAssociatedToBot + '. ' + this.disassociateTheBot,
             icon: "warning",
             button: true,
             dangerMode: false,

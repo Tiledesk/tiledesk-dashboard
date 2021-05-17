@@ -68,7 +68,7 @@
         <div class="card card-stats" style="border-radius: 10px;">
 
             <div class="card-header tiledesk_card_header">
-             
+
                 <!-- <svg viewBox="0 0 58.1 53.9" style="width: 42px; position: relative; top: 7px" xml:space="preserve">
                     <style type="text/css">
                         .st0-served {
@@ -134,7 +134,7 @@
         <div class="card card-stats" style="border-radius: 10px;">
 
             <div class="card-header tiledesk_card_header">
-        
+
                 <!-- <svg viewBox="0 0 58.1 53.9" style="width: 42px; position:relative; top:7px" xml:space="preserve">
                     <style type="text/css">
                         .st0-unserved {
@@ -248,9 +248,16 @@
                             <td style="width:45px; padding-top:4px !important; padding-bottom:4px!important; cursor:pointer"
                                 (click)="goToMemberProfile(member?._id)">
 
-                                <img style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;"
+                                <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
+                                    style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;"
                                     class="user-img"
                                     src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{member?.id_user?._id}}%2Fphoto.jpg?alt=media"
+                                    onerror="this.src='assets/img/no_image_user.png'" />
+
+                                <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
+                                    style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;"
+                                    class="user-img"
+                                    src="{{baseUrl}}images?path=uploads%2Fusers%2F{{member?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                                     onerror="this.src='assets/img/no_image_user.png'" />
 
                                 <!-- <img *ngIf="userProfileImageExist !== true" style="vertical-align: middle; width: 60px; height: 60px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;" 

@@ -221,7 +221,7 @@
                   </div>
                 </div>
 
-                 
+
                 <!-- ------------------------------------------------------------------- -->
                 <!-- Description set routing rules -->
                 <!-- ------------------------------------------------------------------- -->
@@ -269,7 +269,7 @@
                         <!-- [disabled]="onlybot_disable_routing" -->
                         <input type="radio" name="routing" value="assigned"
                           (click)="has_clicked_assigned(show_group_option_form = 'true', show_option_form = 'false', routing = 'assigned')"
-                          [checked]="dept_routing === 'assigned'" >
+                          [checked]="dept_routing === 'assigned'">
                         <img *ngIf="dept_routing !== 'assigned'" class="radio-btn-img"
                           src="assets/img/assigned_btn.svg">
                         <img *ngIf="dept_routing === 'assigned'" class="radio-btn-img"
@@ -286,7 +286,7 @@
                         <!-- [disabled]="onlybot_disable_routing" -->
                         <input type="radio" name="routing" value="pooled"
                           (click)="has_clicked_pooled(show_group_option_form = 'true', show_option_form = 'false', routing = 'pooled')"
-                          [checked]="dept_routing === 'pooled'" >
+                          [checked]="dept_routing === 'pooled'">
                         <img *ngIf="dept_routing !== 'pooled'" class="radio-btn-img" src="assets/img/pooled_btn.svg">
                         <img *ngIf="dept_routing === 'pooled'" class="radio-btn-img"
                           src="assets/img/pooled_btn_active.svg">
@@ -406,7 +406,8 @@
               <div class="col-sm-12">
 
                 <span *ngIf="has_selected_bot === true">
-                  <button class="btn btn-primary update-dept-btn" (click)="edit()" [disabled]="BOT_NOT_SELECTED === true">
+                  <button class="btn btn-primary update-dept-btn" (click)="edit()"
+                    [disabled]="BOT_NOT_SELECTED === true">
                     <!-- <span *ngIf="ROUTING_PAGE_MODE === false"> -->
                     {{ "DeptsAddEditPage.UpdateDept" | translate }}
                     <!-- </span> -->
@@ -467,73 +468,6 @@
               {{ "QuickTipsBot" | translate }}
             </p>
 
-
-
-            <!--
-            // ---------------------------------------------------------------------
-            // Agents - All project userr
-            // --------------------------------------------------------------------- -->
-            <!-- <div class="row" style="margin-top:0px">
-              <div class="col-sm-12">
-                <p class="row-header">
-                  <span style="vertical-align: middle;">
-                    {{ 'DeptsAddEditPage.AllUsers' | translate }}
-                  </span>
-                </p>
-                <div class="row-body" style="margin-bottom: 10px;">
-                  <div class="dept___served_by_alluser">
-                    <div *ngFor="let agent of projectUsers" style="margin-bottom: 5px;">
-                      <span (click)="goToMemberProfile( agent?.id_user?._id )" style="cursor:pointer">
-                        <img
-                          style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #eee; margin-right: 3px;"
-                          class="user-img"
-                          src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?.id_user?._id}}%2Fphoto.jpg?alt=media"
-                          onerror="this.src='assets/img/no_image_user.png'" />
-                        <span style="font-size:12px; font-weight: 400">
-                          {{agent?.id_user?.firstname}} {{agent?.id_user?.lastname}}
-                        </span>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div> -->
-
-            <!-- 
-                // ---------------------------------------------------
-                // To do: display all project group
-                // --------------------------------------------------- -->
-            <!-- <div class="row" style="margin-top:0px">
-              <div class="col-sm-12">
-                <div *ngIf="selectedGroupId" class="row-body" style="margin-bottom: 0px;">
-                  <div class="dept___served_by_group">
-                    <div *ngIf="projectUsersInGroup?.length === 0">
-                      <p style="font-size:1em; margin-bottom: 0px; color:#7695a5; font-weight: 400">
-                        <i class="material-icons"
-                          style="vertical-align: middle; margin-bottom: 2px;color: #00bcd4;font-size: 18px;">
-                          info </i>
-                        {{ 'ThisGroupHasNoMembers' | translate }}
-                      </p>
-                    </div>
-
-                    <div *ngFor="let agent of projectUsersInGroup" style="margin-bottom: 5px;">
-                      <span (click)="goToMemberProfile( agent?._id )" style="cursor:pointer">
-                        <img
-                          style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #eee; margin-right: 3px;"
-                          class="user-img"
-                          src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fphoto.jpg?alt=media"
-                          onerror="this.src='assets/img/no_image_user.png'" />
-
-                        <span style="font-size:12px; font-weight: 400">
-                          {{agent?.firstname}} {{agent?.lastname}}
-                        </span>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div> -->
-
           </div> <!-- ./ card content -->
 
         </div>
@@ -541,7 +475,7 @@
       <!-- /. col-md-4 -->
 
 
-      
+
       <!--  --------------------------------------------------- -->
       <!--  RIGHT SIDEBAR in EDIT VIEW -->
       <!--  --------------------------------------------------- -->
@@ -587,7 +521,7 @@
 
             </div>
 
-             
+
             <!-- --------------------------------------------------------------------- -->
             <!-- Dept Created At -->
             <!-- --------------------------------------------------------------------- -->
@@ -598,7 +532,8 @@
                 <p style="margin-bottom: 0px;">
                   <span class="tool_tip">
                     <i class="material-icons right-sidebar--m-icon">calendar_today</i>
-                    <span class="top" style="min-width: unset; top: -7px;padding: 5px 10px;border-radius: 4px;white-space: nowrap;">
+                    <span class="top"
+                      style="min-width: unset; top: -7px;padding: 5px 10px;border-radius: 4px;white-space: nowrap;">
                       {{ "Created" | translate }}
                       <i style="top: 88%;"></i>
                     </span>
@@ -613,7 +548,7 @@
                 </p>
               </div>
             </div>
-            
+
             <!-- --------------------------------------------------------------------- -->
             <!-- Dept id -->
             <!-- --------------------------------------------------------------------- -->
@@ -624,7 +559,8 @@
                 <p style="margin-bottom: 0px;">
                   <span class="tool_tip">
                     <i class="material-icons right-sidebar--m-icon">code</i>
-                    <span class="top" style="min-width: unset; top: -7px;padding: 5px 10px;border-radius: 4px;white-space: nowrap;">
+                    <span class="top"
+                      style="min-width: unset; top: -7px;padding: 5px 10px;border-radius: 4px;white-space: nowrap;">
                       {{ 'DeptsAddEditPage.DeptId' | translate }}
                       <i style="top: 88%;"></i>
                     </span>
@@ -663,11 +599,22 @@
 
                   <div *ngIf="BOT_NOT_SELECTED === false" class="row-body" style="margin-bottom: 0px; cursor: pointer;">
                     <div (click)="goToBotDetails()" class="dept___served_by_bot">
-
-                      <img
+                      <!-- --------------------------------------------------------------------- -->
+                      <!-- Bot profile photo usecase uploadEngine Firebase -->
+                      <!-- --------------------------------------------------------------------- -->
+                      <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
                         style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #eee; margin-right: 6px;"
                         class="user-img"
                         src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{selectedId}}%2Fphoto.jpg?alt=media"
+                        onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
+
+                      <!-- --------------------------------------------------------------------- -->
+                      <!-- Bot profile photo usecase uploadEngine Native -->
+                      <!-- --------------------------------------------------------------------- -->
+                      <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
+                        style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #eee; margin-right: 6px;"
+                        class="user-img"
+                        src="{{baseUrl}}images?path=uploads%2Fusers%2F{{selectedId}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                         onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
 
                       <span *ngIf="bot_type === 'internal'">
@@ -776,28 +723,32 @@
                       </span>
                     </span>
                   </span>
-
                 </p>
 
-
-
-                <!-- 
-              // ---------------------------------------------------
-              // All Users
-              // --------------------------------------------------- -->
+                <!-- --------------------------------------------------- -->
+                <!-- All teammates profile image -->
+                <!-- --------------------------------------------------- -->
                 <div *ngIf="!selectedGroupId" class="row-body" style="margin-bottom: 10px;">
-
-                  <!-- <div style="text-align: center; color: rgba(0,0,0,.54);text-transform: uppercase;">
-                    {{ 'DeptsAddEditPage.AllUsers' | translate }}
-                  </div> -->
 
                   <div class="dept___served_by_alluser">
                     <div *ngFor="let agent of projectUsers" style="margin-bottom: 5px;">
                       <span (click)="goToMemberProfile( agent?.id_user?._id )" style="cursor:pointer">
-                        <img
+                        <!-- --------------------------------------------------- -->
+                        <!-- USECASE uploadEngine Firebase -->
+                        <!-- --------------------------------------------------- -->
+                        <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
                           style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #eee; margin-right: 3px;"
                           class="user-img"
                           src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?.id_user?._id}}%2Fphoto.jpg?alt=media"
+                          onerror="this.src='assets/img/no_image_user.png'" />
+
+                        <!-- --------------------------------------------------- -->
+                        <!-- USECASE uploadEngine Native -->
+                        <!-- --------------------------------------------------- -->
+                        <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
+                          style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #eee; margin-right: 3px;"
+                          class="user-img"
+                          src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                           onerror="this.src='assets/img/no_image_user.png'" />
 
 
@@ -809,19 +760,11 @@
                   </div>
                 </div>
 
-                <!-- 
-                // ---------------------------------------------------
-                //
-                // --------------------------------------------------- -->
+
+                <!-- --------------------------------------------------- -->
+                <!-- Group selected teammates profile image -->
+                <!-- --------------------------------------------------- -->
                 <div *ngIf="selectedGroupId" class="row-body" style="margin-bottom: 0px;">
-                  <!-- <div style="text-align: center; color: rgba(0,0,0,.54);">
-                    {{ 'DepartmentsPage.Group' | translate }}
-
-                    <span style="text-transform: uppercase;">
-                      {{ group_name }}
-                    </span>
-
-                  </div> -->
 
                   <div class="dept___served_by_group">
 
@@ -836,10 +779,22 @@
 
                     <div *ngFor="let agent of projectUsersInGroup" style="margin-bottom: 5px;">
                       <span (click)="goToMemberProfile( agent?._id )" style="cursor:pointer">
-                        <img
+                        <!-- --------------------------------------------------- -->
+                        <!-- USECASE uploadEngine Firebase -->
+                        <!-- --------------------------------------------------- -->
+                        <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
                           style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #eee; margin-right: 3px;"
                           class="user-img"
                           src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fphoto.jpg?alt=media"
+                          onerror="this.src='assets/img/no_image_user.png'" />
+
+                        <!-- --------------------------------------------------- -->
+                        <!-- USECASE uploadEngine Native -->
+                        <!-- --------------------------------------------------- -->
+                        <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
+                          style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #eee; margin-right: 3px;"
+                          class="user-img"
+                          src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                           onerror="this.src='assets/img/no_image_user.png'" />
 
 

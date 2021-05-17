@@ -246,7 +246,7 @@ class="navbar-brand">
                         <img *ngIf="projectUser?.hasImage && !UPLOAD_ENGINE_IS_FIREBASE"
                         style="vertical-align: middle; width: 52px; height: 52px; border-radius: 50%; border: 1px solid #eee;"
                         class="user-img"
-                        src="https://tiledesk-server-pre.herokuapp.com/images?path=uploads%2Fusers%2F{{projectUser?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                        src="{{baseUrl}}images?path=uploads%2Fusers%2F{{projectUser?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                         onerror="this.src='assets/img/no_image_user.png'" />
 
                       <div *ngIf="projectUser.hasImage === false"  style="vertical-align: middle; width: 52px; height: 52px; border-radius: 50%; border: 1px solid #eee;"

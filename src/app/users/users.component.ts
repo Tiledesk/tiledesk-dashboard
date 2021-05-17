@@ -72,6 +72,8 @@ export class UsersComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   isVisible: boolean;
   storageBucket: string;
+
+  baseUrl: string;
   // CHAT_BASE_URL = environment.chat.CHAT_BASE_URL; // moved
   // CHAT_BASE_URL = environment.CHAT_BASE_URL;  // now get from appconfig
   CHAT_BASE_URL: string;
@@ -103,7 +105,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.auth.checkRoleForCurrentProject();
     this.getUploadEgine();
-    this.getStorageBucketAndThenProjectUser();
+
     console.log('=========== USERS COMP ============')
 
     this.translateStrings();
@@ -126,13 +128,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.getChatUrl();
   }
 
-  getUploadEgine() {
-    if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
-      this.UPLOAD_ENGINE_IS_FIREBASE = true
-    } else {
-      this.UPLOAD_ENGINE_IS_FIREBASE = false
-    }
-  }
+
 
   translateStrings() {
     this.translateChangeAvailabilitySuccessMsg();
@@ -180,13 +176,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     window.open(url, '_blank');
   }
 
-  getStorageBucketAndThenProjectUser() {
-    const firebase_conf = this.appConfigService.getConfig().firebase;
-    this.storageBucket = firebase_conf['storageBucket'];
-    console.log('STORAGE-BUCKET Users ', this.storageBucket)
-    this.getAllUsersOfCurrentProject(this.storageBucket)
 
-  }
 
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
@@ -413,7 +403,34 @@ export class UsersComponent implements OnInit, OnDestroy {
     })
   }
 
-  getAllUsersOfCurrentProject(storagebucket) {
+  getUploadEgine() {
+    if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+      this.UPLOAD_ENGINE_IS_FIREBASE = true;
+      console.log('USERS-COMP - UPLOAD ENGINE IS FIREBASE ? ', this.UPLOAD_ENGINE_IS_FIREBASE)
+      this.getProjectUsersAndCheckIfPhotoExistOnFirebase();
+
+    } else {
+      this.UPLOAD_ENGINE_IS_FIREBASE = false;
+      console.log('USERS-COMP - UPLOAD ENGINE IS FIREBASE ? ', this.UPLOAD_ENGINE_IS_FIREBASE)
+      this.getProjectUsersAndCheckIfPhotoExistOnNative();
+    }
+  }
+
+  getProjectUsersAndCheckIfPhotoExistOnFirebase() {
+    const firebase_conf = this.appConfigService.getConfig().firebase;
+    this.storageBucket = firebase_conf['storageBucket'];
+    console.log('USERS-COMP IMAGE STORAGE URL (usecase FIREBASE) ', this.storageBucket);
+
+    this.getAllUsersOfCurrentProject(this.storageBucket)
+  }
+
+  getProjectUsersAndCheckIfPhotoExistOnNative() {
+    this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
+    console.log('USERS-COMP IMAGE STORAGE URL (usecase NATIVE) ', this.baseUrl);
+    this.getAllUsersOfCurrentProject(this.baseUrl)
+  }
+
+  getAllUsersOfCurrentProject(storage) {
     this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
       console.log('»» USERS COMP - PROJECT USERS (FILTERED FOR PROJECT ID)', projectUsers);
       if (projectUsers) {
@@ -421,22 +438,22 @@ export class UsersComponent implements OnInit, OnDestroy {
 
 
         this.projectUsersList.forEach(projectuser => {
-          console.log('»» USERS COMP - PROJECT USERS', projectuser);
+          console.log('USERS-COMP - PROJECT USERS', projectuser);
 
           let imgUrl = ''
           if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
-            imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + storagebucket + "/o/profiles%2F" + projectuser['id_user']['_id'] + "%2Fphoto.jpg?alt=media"
+            imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + storage + "/o/profiles%2F" + projectuser['id_user']['_id'] + "%2Fphoto.jpg?alt=media"
           } else {
-            imgUrl = 'https://tiledesk-server-pre.herokuapp.com/images?path=uploads%2Fusers%2F' + projectuser['id_user']['_id'] + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
+            imgUrl = storage + 'images?path=uploads%2Fusers%2F' + projectuser['id_user']['_id'] + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
           }
 
           this.checkImageExists(imgUrl, (existsImage) => {
             if (existsImage == true) {
-              console.log('»» USERS COMP - IMAGE EXIST X PROJECT USERS', projectuser);
+              console.log('USERS-COMP - IMAGE EXIST X PROJECT USERS', projectuser);
               projectuser.hasImage = true;
             }
             else {
-              console.log('»» USERS COMP - IMAGE NOT EXIST X PROJECT USERS', projectuser);
+              console.log('USERS-COMP - IMAGE NOT EXIST X PROJECT USERS', projectuser);
               projectuser.hasImage = false;
             }
           });
@@ -447,16 +464,16 @@ export class UsersComponent implements OnInit, OnDestroy {
         });
 
         this.projectUsersLength = projectUsers.length;
-        console.log('»» USERS COMP - PROJECT USERS Length  (FILTERED FOR PROJECT ID)', this.projectUsersLength);
+        console.log('USERS-COMP - PROJECT USERS Length  (FILTERED FOR PROJECT ID)', this.projectUsersLength);
       }
     }, error => {
       this.showSpinner = false;
-      console.log('»» USERS COMP - PROJECT USERS (FILTERED FOR PROJECT ID) - ERROR', error);
+      console.log('USERS-COMP - PROJECT USERS (FILTERED FOR PROJECT ID) - ERROR', error);
     }, () => {
 
       this.HAS_FINISHED_GET_PROJECT_USERS = true;
       this.showSpinner = false;
-      console.log('»» USERS COMP - PROJECT USERS (FILTERED FOR PROJECT ID) - COMPLETE');
+      console.log('USERS-COMP - PROJECT USERS (FILTERED FOR PROJECT ID) - COMPLETE');
 
       // this.getPendingInvitation();
     });

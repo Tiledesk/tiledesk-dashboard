@@ -123,6 +123,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     isVisible: boolean;
 
     storageBucket: string;
+    baseUrl: string;
+
     currentUserId: string;
     subscription: Subscription;
     ROLE_IS_AGENT: boolean;
@@ -179,6 +181,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     ngOnInit() {
         this.getCurrentProject();
         this.getProjectUserRole();
+        this.getProfileImageStorage();
         // tslint:disable-next-line:no-debugger
         // debugger
         // this.listTitles = ROUTES.filter(listTitle => listTitle);
@@ -230,7 +233,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
         this.getChatUrl();
         this.getOSCODE();
-        this.getStorageBucket();
+
 
         this.setNotificationSound();
         this.getTestSiteUrl();
@@ -313,10 +316,17 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     }
 
 
-    getStorageBucket() {
-        const firebase_conf = this.appConfigService.getConfig().firebase;
-        this.storageBucket = firebase_conf['storageBucket'];
-        console.log('STORAGE-BUCKET Navbar ', this.storageBucket)
+    getProfileImageStorage() {
+        if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+            const firebase_conf = this.appConfigService.getConfig().firebase;
+            this.storageBucket = firebase_conf['storageBucket'];
+            console.log('Navbar IMAGE STORAGE ', this.storageBucket, 'usecase firebase')
+        } else {
+
+            this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
+
+            console.log('Navbar IMAGE STORAGE ', this.storageBucket, 'usecase native')
+        }
     }
 
     getOSCODE() {
@@ -443,13 +453,13 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     listenHasDeleteUserProfileImage() {
         if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
             this.uploadImageService.hasDeletedUserPhoto.subscribe((hasDeletedImage) => {
-                console.log('SIDEBAR - hasDeletedImage ? ', hasDeletedImage ,'(usecase Firebase)');
+                console.log('SIDEBAR - hasDeletedImage ? ', hasDeletedImage, '(usecase Firebase)');
                 this.userImageHasBeenUploaded = false
                 this.userProfileImageExist = false
             });
         } else {
             this.uploadImageNativeService.hasDeletedUserPhoto.subscribe((hasDeletedImage) => {
-                console.log('SIDEBAR - hasDeletedImage ? ', hasDeletedImage ,'(usecase Native)');
+                console.log('SIDEBAR - hasDeletedImage ? ', hasDeletedImage, '(usecase Native)');
                 this.userImageHasBeenUploaded = false
                 this.userProfileImageExist = false
             });
@@ -467,7 +477,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                 }
             } else {
                 if (this.userProfileImageExist === true) {
-                    this.setImageProfileUrl_Native()
+                    this.setImageProfileUrl_Native(this.baseUrl)
                 }
             }
         });
@@ -497,8 +507,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         }
     }
 
-    setImageProfileUrl_Native() {
-        this.userProfileImageurl = 'https://tiledesk-server-pre.herokuapp.com/images?path=uploads%2Fusers%2F' + this.currentUserId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
+    setImageProfileUrl_Native(storage) {
+        this.userProfileImageurl = storage + 'images?path=uploads%2Fusers%2F' + this.currentUserId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
         // console.log('PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
         this.timeStamp = (new Date()).getTime();
     }

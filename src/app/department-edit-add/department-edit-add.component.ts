@@ -82,6 +82,9 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
 
   bot_type: string;
   storageBucket: string;
+  UPLOAD_ENGINE_IS_FIREBASE: boolean
+
+  baseUrl: string;
   group_name: string;
   bot_description: string;
   ROUTING_PAGE_MODE: boolean;
@@ -203,7 +206,7 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
 
   ngOnInit() {
     this.auth.checkRoleForCurrentProject();
-    this.getStorageBucket();
+    this.getProfileImageStorage();
 
     console.log('DEPT-EDIT-ADD selectedDeptId FROM @INPUT: ', this.ws_requestslist_deptIdSelected)
     console.log('DEPT-EDIT-ADD display_dept_sidebar FROM @INPUT: ', this.display_dept_sidebar)
@@ -397,15 +400,19 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
     //   console.log('ngAfterViewInit   $(window).scrollTop())',   $(window).scrollTop()) 
     //   $("#right_edit_card").stop().animate({"marginTop": ($(window).scrollTop()) + "px", "marginLeft":($(window).scrollLeft()) + "px"}, "slow" );
     // });
-
-
-
   }
 
-  getStorageBucket() {
-    const firebase_conf = this.appConfigService.getConfig().firebase;
-    this.storageBucket = firebase_conf['storageBucket'];
-    console.log('STORAGE-BUCKET (DEPT EDIT-ADD) ', this.storageBucket)
+  getProfileImageStorage() {
+    if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+      this.UPLOAD_ENGINE_IS_FIREBASE = true;
+      const firebase_conf = this.appConfigService.getConfig().firebase;
+      this.storageBucket = firebase_conf['storageBucket'];
+      console.log('DEPT EDIT-ADD IMAGE STORAGE ', this.storageBucket, 'usecase firebase')
+    } else {
+      this.UPLOAD_ENGINE_IS_FIREBASE = false;
+      this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
+      console.log('DEPT EDIT-ADD IMAGE STORAGE ', this.baseUrl, 'usecase native')
+    }
   }
 
   getUsersAndGroup() {
@@ -497,7 +504,6 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
   // WHEN THE BTN 'EDIT DEPARTMENT' IS PRESSED THE VALUE OF THE ID OF THE SELECTED BOT IS MODIFIED IN THE DEPT'S FIELD id_bot
   // Note: is used also for the 'CREATE VIEW'
   setSelectedBot(id: any): void {
-
     this.selectedBotId = id;
     console.log('FAQ-KB ID SELECTED (SUBSTITUTE BOT): ', this.selectedBotId);
 

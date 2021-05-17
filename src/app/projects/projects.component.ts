@@ -66,6 +66,8 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   subscription: Subscription;
 
   storageBucket: string;
+  baseUrl: string;
+
   currentUserId: string
   public_Key: string;
   MT: boolean;
@@ -174,8 +176,8 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   }
 
   ckeckUserPhotoProfileOnNative() {
-
-    const imgUrl = 'https://tiledesk-server-pre.herokuapp.com/images?path=uploads%2Fusers%2F' + this.currentUserId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
+    this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
+    const imgUrl = this.baseUrl + 'images?path=uploads%2Fusers%2F' + this.currentUserId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
     console.log('PROJECTS-LIST - check if exist imgUrl ',imgUrl, '(usecase native)');
     
     this.checkImageExists(imgUrl, (existsImage) => {
@@ -202,27 +204,8 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     imageData.src = imageUrl;
   }
 
-  // getUploadEgine() {
-  //   let imgUrl = ''
-  //   if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
-  //     this.UPLOAD_ENGINE_IS_FIREBASE = true
-  //     imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + this.storageBucket + "/o/profiles%2F" + this.currentUserId + "%2Fphoto.jpg?alt=media"
-  //     console.log('PROJECTS-LIST - UPLOAD_ENGINE_IS_FIREBASE', this.UPLOAD_ENGINE_IS_FIREBASE);
-  //     // console.log('PROJECTS-LIST - userProfileImageExist', this.userProfileImageExist);
-  //     // console.log('PROJECTS-LIST - userProfileImageExist', this.userImageHasBeenUploaded);
 
-
-
-
-  //   } else {
-  //     this.UPLOAD_ENGINE_IS_FIREBASE = false
-  //     imgUrl = 'https://tiledesk-server-pre.herokuapp.com/images?path=uploads%2Fusers%2F' + this.currentUserId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
-  //     console.log('PROJECTS-LIST - UPLOAD_ENGINE_IS_FIREBASE', this.UPLOAD_ENGINE_IS_FIREBASE);
-  //     // console.log('PROJECTS-LIST - userProfileImageExist', this.userProfileImageExist);
-  //     // console.log('PROJECTS-LIST - userProfileImageExist', this.userImageHasBeenUploaded);
-  //   }
-  // }
-
+  
  
 
   getOSCODE() {
@@ -326,26 +309,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   //   }
   // }
 
-  // setImageProfileUrl_Native() {
-  //   console.log('PROJECT-COMP - USER PROFILE EXIST - setImageProfileUrl_Native (NATIVE)')
 
-  //   this.userProfileImageurl = 'https://tiledesk-server-pre.herokuapp.com/images?path=uploads%2Fusers%2F' + this.currentUserId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
-  //   // console.log('PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
-  //   this.timeStamp = (new Date()).getTime();
-  // }
-
-  // setImageProfileUrl(storageBucket) {
-  //   this.userProfileImageurl = 'https://firebasestorage.googleapis.com/v0/b/' + storageBucket + '/o/profiles%2F' + this.currentUserId + '%2Fphoto.jpg?alt=media';
-  //   this.timeStamp = (new Date()).getTime();
-  // }
-
-  // getUserProfileImage() {
-  //   if (this.timeStamp) {
-  //     console.log('PROJECT-COMP PROFILE IMAGE - getUserProfileImage ', this.userProfileImageurl);
-  //     return this.userProfileImageurl + '&' + this.timeStamp;
-  //   }
-  //   return this.userProfileImageurl
-  // }
 
 
 

@@ -43,6 +43,7 @@ export class UserProfileComponent implements OnInit {
   timeStamp: any;
 
   storageBucket: string;
+  baseUrl: string;
   showSpinnerInUploadImageBtn = false;
   userRole: string;
   profilePhotoWasUploaded: string;
@@ -67,7 +68,7 @@ export class UserProfileComponent implements OnInit {
   ngOnInit() {
 
     this.getLoggedUser();
-    this.getStorageBucket();
+    this.getProfileImageStorage();
     this.getCurrentProject();
 
     this.checkUserImageUploadIsComplete()
@@ -106,14 +107,20 @@ export class UserProfileComponent implements OnInit {
       });
   }
 
-  getStorageBucket() {
-    const firebase_conf = this.appConfigService.getConfig().firebase;
-    this.storageBucket = firebase_conf['storageBucket'];
-    console.log('STORAGE-BUCKET User profile ', this.storageBucket)
+  getProfileImageStorage() {
+    if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+      const firebase_conf = this.appConfigService.getConfig().firebase;
+      this.storageBucket = firebase_conf['storageBucket'];
+      console.log('USER-PROFILE - IMAGE STORAGE ', this.storageBucket, 'usecase Firebase')
+    } else {
+      this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
+
+      console.log('USER-PROFILE - IMAGE STORAGE ', this.baseUrl, 'usecase Native')
+    }
   }
 
   upload(event) {
-    console.log('USER PROFILE IMAGE (USER-PROFILE ) upload')
+    console.log('USER PROFILE IMAGE (USER-PROFILE  upload')
     this.showSpinnerInUploadImageBtn = true;
     const file = event.target.files[0]
     // Firebase upload
@@ -125,7 +132,7 @@ export class UserProfileComponent implements OnInit {
       console.log('USER PROFILE IMAGE (USER-PROFILE ) upload with native service')
       // const userImageExist = this.usersService.userProfileImageExist.getValue()
       // console.log('USER PROFILE IMAGE (USER-PROFILE ) upload with native service userImageExist ', userImageExist);
-      
+
       this.uploadImageNativeService.uploadUserPhotoProfile_Native(file).subscribe((downoloadurl) => {
         console.log('USER PROFILE IMAGE (USER-PROFILE ) upload with native service - RES downoloadurl', downoloadurl);
 
@@ -181,15 +188,15 @@ export class UserProfileComponent implements OnInit {
           this.setImageProfileUrl(this.storageBucket)
         }
       } else {
-        if (this.userProfileImageExist === true) {
-          this.setImageProfileUrl_Native()
+        if (this.baseUrl && this.userProfileImageExist === true) {
+          this.setImageProfileUrl_Native(this.baseUrl)
         }
       }
     });
   }
 
-  setImageProfileUrl_Native() {
-    this.userProfileImageurl = 'https://tiledesk-server-pre.herokuapp.com/images?path=uploads%2Fusers%2F' + this.userId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
+  setImageProfileUrl_Native(baseUrl) {
+    this.userProfileImageurl = baseUrl + 'images?path=uploads%2Fusers%2F' + this.userId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
     // console.log('PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
     this.timeStamp = (new Date()).getTime();
   }

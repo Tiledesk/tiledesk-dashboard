@@ -97,6 +97,7 @@ export class UsersService {
   project_id: string;
   project_name: string;
   storageBucket: string;
+  baseUrl: string;
   eventlist: any;
   constructor(
     http: Http,
@@ -220,15 +221,20 @@ export class UsersService {
       this.TOKEN = this.user.token
       this.currentUserId = this.user._id
 
-      const storageBucket = this.getStorageBucket();
-      console.log('STORAGE-BUCKET Users service ', storageBucket)
+      let imageStorage = ''
+      if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+        imageStorage = this.getStorageBucket();
+        console.log('=== === USER-SERV IMAGE STORAGE ', imageStorage , 'usecase Firebase');
 
-      if (storageBucket) {
+      } else {
+        imageStorage = this.getBaseUrl();
+        console.log('=== === USER-SERV IMAGE STORAGE ', imageStorage , 'usecase Native');
+      }
 
-        this.storageBucket$.next(storageBucket)
+      if (imageStorage) {
+        this.storageBucket$.next(imageStorage)
 
-
-        this.verifyIfExistProfileImage(this.currentUserId, storageBucket);
+        this.verifyIfExistProfileImage(this.currentUserId, imageStorage);
       }
 
       // this.getToken();
@@ -240,21 +246,25 @@ export class UsersService {
 
   getStorageBucket() {
     const firebase_conf = this.appConfigService.getConfig().firebase;
-
     // console.log('STORAGE-BUCKET Users service ', this.storageBucket)
     return this.storageBucket = firebase_conf['storageBucket'];
 
   }
 
+  getBaseUrl() {
+    this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
+    return this.baseUrl
+  }
 
-  verifyIfExistProfileImage(user_id, storageBucket) {
+
+  verifyIfExistProfileImage(user_id, imageStorage) {
     // tslint:disable-next-line:max-line-length
     // const url = 'https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F' + user_id + '%2Fphoto.jpg?alt=media';
     let imageUrl = ''
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
-      imageUrl = 'https://firebasestorage.googleapis.com/v0/b/' + storageBucket + '/o/profiles%2F' + user_id + '%2Fphoto.jpg?alt=media';
+      imageUrl = 'https://firebasestorage.googleapis.com/v0/b/' + imageStorage + '/o/profiles%2F' + user_id + '%2Fphoto.jpg?alt=media';
     } else {
-      imageUrl = 'https://tiledesk-server-pre.herokuapp.com/images?path=uploads%2Fusers%2F' + user_id + '%2Fimages%2Fthumbnails_200_200-photo.jpg'
+      imageUrl = imageStorage + 'images?path=uploads%2Fusers%2F' + user_id + '%2Fimages%2Fthumbnails_200_200-photo.jpg'
     }
     const self = this;
     this.verifyImageURL(imageUrl, function (imageExists) {

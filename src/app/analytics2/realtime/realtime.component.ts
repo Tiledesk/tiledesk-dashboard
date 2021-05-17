@@ -40,6 +40,8 @@ export class RealtimeComponent implements OnInit {
   departments: any;
 
   storageBucket: string;
+  baseUrl: string;
+  UPLOAD_ENGINE_IS_FIREBASE: boolean;
 
   constructor(
     private requestsService: RequestsService,
@@ -58,13 +60,22 @@ export class RealtimeComponent implements OnInit {
     this.getCountOf_AllRequestsForAgent(); //request for agent
     this.getCountOf_AllRequestsForDept(); //request for department
     this.getlastMonthRequetsCount(); //last mounth request count
-    this.getStorageBucket();
+    this.getProfileImageStorage();
   }
 
-  getStorageBucket() {
-    const firebase_conf = this.appConfigService.getConfig().firebase;
-    this.storageBucket = firebase_conf['storageBucket'];
-    console.log('STORAGE-BUCKET Realtime ', this.storageBucket)
+  getProfileImageStorage() {
+    if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+      this.UPLOAD_ENGINE_IS_FIREBASE = true
+      const firebase_conf = this.appConfigService.getConfig().firebase;
+      this.storageBucket = firebase_conf['storageBucket'];
+      console.log('Realtime IMAGE STORAGE ', this.storageBucket, '(usecase Firebase)')
+    } else {
+      this.UPLOAD_ENGINE_IS_FIREBASE = false
+      this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
+
+      console.log('Realtime IMAGE STORAGE ', this.baseUrl, 'usecase native')
+
+    }
   }
 
   ngOnDestroy() {
@@ -324,7 +335,7 @@ export class RealtimeComponent implements OnInit {
             // if (g_r.attributes) {
             //   requests_depts_id_array.push(g_r.attributes.departmentId)
             // }
-            if (g_r.department) { 
+            if (g_r.department) {
               requests_depts_id_array.push(g_r.department._id);
             }
           });
