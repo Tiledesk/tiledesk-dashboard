@@ -41,29 +41,31 @@ export class AppStoreInstallComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getCurrentProject();
+    // this.getCurrentProject();
     this.onInitframeHeight();
 
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    // if ( this.subscription) {
+    // this.subscription.unsubscribe();
+    // }
   }
 
-  getCurrentProject() {
-    this.subscription = this.auth.project_bs.subscribe((project) => {
-      if (project) {
-        this.projectId = project._id
-        console.log('APP-STORE - projectId ', this.projectId)
-      }
-    });
-  }
+  // getCurrentProject() {
+  //   this.subscription = this.auth.project_bs.subscribe((project) => {
+  //     if (project) {
+  //       this.projectId = project._id
+  //       console.log('APP-STORE - projectId ', this.projectId)
+  //     }
+  //   });
+  // }
 
 
   getRouteParams() {
     this.showSpinner = true;
     this.route.params.subscribe((params) => {
-
+      this.projectId = params.projectid
       console.log('APP-STORE-INSTALL - GET ROUTE PARAMS ', params);
 
       this.appStoreService.getAppDetail(params.appid).subscribe((res) => {
@@ -76,7 +78,8 @@ export class AppStoreInstallComponent implements OnInit {
         this.auth.user_bs.subscribe((user) => {
           if (user) {
             this.TOKEN = user.token
-            this.URL = this.sanitizer.bypassSecurityTrustResourceUrl(parsed_json.installActionURL + '?project_id=' + params.projectid + '&token=' + this.TOKEN);
+            // this.URL = this.sanitizer.bypassSecurityTrustResourceUrl(parsed_json.installActionURL + '?project_id=' + params.projectid + '&token=' + this.TOKEN);
+            this.URL = this.sanitizer.bypassSecurityTrustResourceUrl(parsed_json.installActionURL + '?project_id=' + params.projectid + '&app_id=' + params.appid + '&token=' + this.TOKEN );
             console.log("APP-STORE-INSTALL - URL IFRAME: ", this.URL)
             this.getIframeHaLoaded()
 
