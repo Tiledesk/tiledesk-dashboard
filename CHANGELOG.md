@@ -1,6 +1,11 @@
 
 # tiledesk-dashboard
 
+### 2.1.49.2
+- Fixes the bug 'type of undefined' on the trigger  "Offline Welcome Greeting"
+- Adds the parameter 'appid' to the url that open the iframe in the 'app-store-install' component
+- Adds the ability on the app store page to manage the installed app
+
 ### 2.1.49.1
 - Fixes the bug: requester_id of undefined
 - Display "info" messages in the chat on the conversation detail page in the style they appear in the web chat
