@@ -557,8 +557,8 @@ export class BasetriggerComponent implements OnInit {
           groupId: translateConditions.chat.groupId.SoftwareOfVisitor,
           // id: 'availableAgents.length',
           // key: 'request.availableAgents.length',
-          id: 'availableAgentsCount',
-          key: 'request.availableAgentsCount',
+          id: 'snapshot.availableAgentsCount',
+          key: 'request.snapshot.availableAgentsCount',
           label_key: translateConditions.chat.label_key.VisitoruserAgentAvailable,
           triggerType: 'request.create',
           type: 'int'
@@ -586,20 +586,20 @@ export class BasetriggerComponent implements OnInit {
           label_key: translateConditions.chat.label_key.VisitorCountryRegion,
           triggerType: 'request.create',
           type: 'boolean',
-          // operator: [
-          //   { id: 'zh-CN', label_key: 'Chinese' },
-          //   { id: 'en-GB', label_key: 'English' },
-          //   { id: 'fr-FR', label_key: 'French' },
-          //   { id: 'it-IT', label_key: 'Italian' }
-          // ],
           operator: [
-            { id: 'zh', label_key: 'Chinese' },
-            { id: 'en', label_key: 'English' },
-            { id: 'fr', label_key: 'French' },
-            { id: 'it', label_key: 'Italian' },
-            { id: 'de', label_key: 'German' },
-            { id: 'es', label_key: 'Spanish' },
+            { id: 'zh-CN', label_key: 'Chinese' },
+            { id: 'en-GB', label_key: 'English' },
+            { id: 'fr-FR', label_key: 'French' },
+            { id: 'it-IT', label_key: 'Italian' }
           ],
+          // operator: [
+          //   { id: 'zh', label_key: 'Chinese' },
+          //   { id: 'en', label_key: 'English' },
+          //   { id: 'fr', label_key: 'French' },
+          //   { id: 'it', label_key: 'Italian' },
+          //   { id: 'de', label_key: 'German' },
+          //   { id: 'es', label_key: 'Spanish' },
+          // ],
           placeholder: translateConditions.chat.placeholder.SelectLanguage
         },
         {

@@ -83,7 +83,20 @@ export class AppStoreComponent implements OnInit {
       this.showSpinner = false;
     }, () => {
       console.log('APP-STORE * COMPLETE *');
-      this.showSpinner = false;
+      this.getInstallations().then((res: any) => {
+
+        for (let installation of res) {
+          console.log("INSTALLATION: ", this.apps.findIndex(x => x._id === installation.app_id ))
+          let index = this.apps.findIndex(x => x._id === installation.app_id);
+          this.apps[index].installed = true;
+        }
+        this.showSpinner = false;
+      }).catch((err) => {
+        console.log("Error: ", err)
+        this.showSpinner = false;
+      })
+
+      // this.showSpinner = false;
     });
   }
 
@@ -126,5 +139,21 @@ export class AppStoreComponent implements OnInit {
     console.log('APP-STORE PATTERN TEST USRL ')
     return pattern.test(url);
   }
+
+  getInstallations() {
+    let promise = new Promise((resolve, reject) => {
+      this.appStoreService.getInstallation(this.projectId).then((res) => {
+        console.log("Get Installation Response: ", res);
+        resolve(res);
+      }).catch((err) => {
+        console.error("Error getting installation: ", err);
+        reject(err);
+      })
+    })
+    return promise;
+  }
+
+
+
 
 }
