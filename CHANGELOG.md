@@ -5,6 +5,7 @@
 - Fixes the bug 'type of undefined' on the trigger  "Offline Welcome Greeting"
 - Adds the parameter 'appid' to the url that open the iframe in the 'app-store-install' component
 - Adds the ability on the app store page to manage the installed app
+- Adds the label 'Use this secret' in the modal window 'Shared secret webhook generated'
 
 ### 2.1.49.1
 - Fixes the bug: requester_id of undefined
@@ -14,7 +15,7 @@
 - Fixes the bug: when the trigger "When a visitor requests a chat" is created with the condition "Department" after saving the selected department is always the default department
 - Fixes the bug: when the trigger "When a visitor requests a chat" is created with two conditions "Department" in the second condition the selected department is the same as the first one
 - Fixes the bug: in the Analytics> Metrics> Satisfaction page the number of decimals displayed in the Average Satisfaction section is greater than two
-- Fixes the bugs in Trigger related to the conditions: "Conservation status" and "The department has bot"
+- Fixes the bugs in Trigger related to the conditions: "Conversation status" and "The department has bot"
 - Modifies path and key in the trigger 'Message create from requester'
 - Fixes the bug: in the home page the link that directs to the 'Operating Hours' page is displayed even if the module is absent
 - Fixes the bug: translation error in the page 'Widget' > Install widget with javascript code
