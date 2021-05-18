@@ -43,10 +43,17 @@
                 </a>
               </div>
 
-              <div class="col-xs-6 app-store-right-col-btn" 
+              <div *ngIf="!app.installed" class="col-xs-6 app-store-right-col-btn" 
                 (click)="installApp(app.installActionType, app.installActionURL, app.title, app._id)">
                 <a>
                   Install
+                </a>
+              </div>
+
+              <div *ngIf="app.installed" class="col-xs-6 app-store-right-col-btn"  style="background-color: rgb(45, 88, 230);"
+                (click)="installApp(app.installActionType, app.installActionURL, app.title, app._id)">
+                <a style="color: white;">
+                  Manage
                 </a>
               </div>
 

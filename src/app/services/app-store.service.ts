@@ -1,5 +1,7 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
+
 import { map } from 'rxjs/operators';
 import { AuthService } from '../core/auth.service';
 @Injectable()
@@ -9,9 +11,10 @@ export class AppStoreService {
   http: Http;
   TOKEN: string;
   APPS_URL = "https://tiledesk-apps.herokuapp.com/api/apps?sort=score";
-
+  APPS_BASE_URL = "https://tiledesk-apps.herokuapp.com/"
   constructor(
     http: Http,
+    private httpClient: HttpClient,
     public auth: AuthService,
   ) {
     this.http = http;
@@ -65,6 +68,24 @@ export class AppStoreService {
     })
 
     return this.http.get("https://tiledesk-apps.herokuapp.com/api/apps/" + appId)
+  }
+
+  getInstallation(projectId) {
+    let promise = new Promise((resolve, reject) => {
+      
+      let headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+
+      this.httpClient.get(this.APPS_BASE_URL + 'api/installation/' + projectId, { headers: headers })
+          .toPromise().then((res) => {
+            resolve(res);
+          }).catch((err) => {
+            reject(err);
+          })
+    })
+    return promise;
   }
 
 
