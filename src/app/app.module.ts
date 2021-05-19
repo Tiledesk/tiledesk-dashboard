@@ -233,12 +233,20 @@ export function HttpLoaderFactory(http: HttpClient) {
 }
 
 const appInitializerFn = (appConfig: AppConfigService, brandService: BrandService) => {
-  return () => {
+  return async () => {
     if (environment.remoteConfig) {
-      console.log('AppConfigService APP-MODULE-TS appInitializerFn environment.remoteConfig', environment.remoteConfig);
-      return appConfig.loadAppConfig(), brandService.loadBrand();
+      console.log('### AppConfigService APP-MODULE-TS appInitializerFn environment.remoteConfig', environment.remoteConfig);
+      await appConfig.loadAppConfig();
+      console.log('### AppConfigService APP-MODULE-TS appConfig loaded');
+      await brandService.loadBrand();
+  
+      console.log('### AppConfigService APP-MODULE-TS brandService loaded');
+      // return appConfig.loadAppConfig(), brandService.loadBrand();
+      return;
     } else {
-      return brandService.loadBrand();
+      // return brandService.loadBrand();
+      await brandService.loadBrand();
+      return;
     }
   };
 };
