@@ -102,10 +102,11 @@ export class WsRequestsService implements OnDestroy {
     private usersService: UsersService
   ) {
     this.http = http;
-    console.log("% HI WsRequestsService wsjsRequestsService  ", this.wsjsRequestsService);
+    // console.log("% HI WsRequestsService wsjsRequestsService  ", this.wsjsRequestsService);
 
-    console.log("% »»» WebSocketJs - WsRequestsService BASE URL", this.SERVER_BASE_PATH);
+    // console.log("% »»» WebSocketJs - WsRequestsService BASE URL", this.SERVER_BASE_PATH);
     // console.log("% HI WsRequestsService CHAT_URL ", CHAT_URL);
+    
     //this.wsConnect(); !no more used
 
     // this.getWsRequestsById()
@@ -160,8 +161,8 @@ export class WsRequestsService implements OnDestroy {
       if (user) {
         this.TOKEN = user.token
         this.currentUserID = user._id
-        console.log("% »»» WebSocketJs - WsRequestsService CURRENT USER ID", this.currentUserID);
-        console.log("% »»» WebSocketJs - WsRequestsService TOKEN", this.TOKEN);
+        // console.log("% »»» WebSocketJs - WsRequestsService CURRENT USER ID", this.currentUserID);
+        // console.log("% »»» WebSocketJs - WsRequestsService TOKEN", this.TOKEN);
       }
     });
   }
@@ -246,14 +247,14 @@ export class WsRequestsService implements OnDestroy {
 
 
             if (data) {
-              console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-CREATE - DATA ", data);
-              console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-CREATE - DATA snapshot", data.snapshot);
+              // console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-CREATE - DATA ", data);
+              // console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-CREATE - DATA snapshot", data.snapshot);
 
               // ----------------------------------
               // @ Agents
               // ----------------------------------
               if (data.snapshot && data.snapshot.agents) {
-                console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-CREATE - DATA snapshot agents ", data.snapshot.agents);
+                // console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-CREATE - DATA snapshot agents ", data.snapshot.agents);
                 data.agents = data['snapshot']["agents"]
               } else if (data.agents) {
                 data.agents = data.agents
@@ -265,12 +266,12 @@ export class WsRequestsService implements OnDestroy {
               // @ Lead
               // ----------------------------------
               if (data.snapshot && data.snapshot.lead) {
-                console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-CREATE - DATA snapshot lead ", data.snapshot.lead);
+                // console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-CREATE - DATA snapshot lead ", data.snapshot.lead);
                 data.lead = data['snapshot']["lead"]
               }
               else {
 
-                console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-CREATE - DATA attributes ", data.attributes);
+                // console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-CREATE - DATA attributes ", data.attributes);
 
                 if (data['attributes'] && data['attributes'] !== undefined) {
                   
@@ -294,7 +295,7 @@ export class WsRequestsService implements OnDestroy {
               // @ Requester
               // ----------------------------------
               if (data.snapshot && data.snapshot.requester) {
-                console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-CREATE - DATA snapshot requester ", data.snapshot.lead);
+                // console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-CREATE - DATA snapshot requester ", data.snapshot.lead);
                 data.requester = data['snapshot']["requester"]
               } else if (data.requester) {
                 data.requester = data.requester
@@ -304,7 +305,7 @@ export class WsRequestsService implements OnDestroy {
               // @ Department
               // ----------------------------------
               if (data.snapshot && data.snapshot.department) {
-                console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-CREATE - DATA snapshot department", data.snapshot.department);
+                // console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-CREATE - DATA snapshot department", data.snapshot.department);
                 data.department = data['snapshot']["department"]
 
               } else if (data.department) {
@@ -318,21 +319,21 @@ export class WsRequestsService implements OnDestroy {
             if (index === -1) {
               self.addWsRequests(data)
 
-              console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- CREATE the request not exist - addWsRequests!");
+              // console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- CREATE the request not exist - addWsRequests!");
             } else {
-              console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- CREATE the request exist - NOT addWsRequests!");
+              // console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- CREATE the request exist - NOT addWsRequests!");
             }
 
             // }
           }, function (data, notification) {
             // data['dept'] = self.getDeptObj(data.department)
-            console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-UPDATE", data);
+            // console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-UPDATE", data);
 
               // ----------------------------------
               // @ Agents
               // ----------------------------------
               if (data.snapshot && data.snapshot.agents) {
-                console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-UPDATE - DATA snapshot agents ", data.snapshot.agents);
+                // console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-UPDATE - DATA snapshot agents ", data.snapshot.agents);
                 data.agents = data['snapshot']["agents"]
               } else if (data.agents) {
                 data.agents = data.agents
@@ -704,24 +705,24 @@ export class WsRequestsService implements OnDestroy {
     console.log("wsRequesterPresence - HERE ");
     const path = '/' + this.project_id + '/project_users/users/' + requesterid;
     // const path = "/5f61efc28f90f300345edd75/project_users/5f623d5c56065e0034fce69c";
-    console.log('% »»» WebSocketJs WF >>> r-service - wsRequesterPresence PATH ', path);
+    // console.log('% »»» WebSocketJs WF >>> r-service - wsRequesterPresence PATH ', path);
     this.webSocketJs.ref(path, 'subscribeToWS_RequesterPresence',
       function (data, notification) {
-        console.log("% »»» WebSocketJs WF >>> r-service wsRequesterPresence - CREATE - data ", data);
+        // console.log("% »»» WebSocketJs WF >>> r-service wsRequesterPresence - CREATE - data ", data);
         // console.log("% WsMsgsService notification", notification);
 
         self.wsRequesterStatus$.next(data);
 
       }, function (data, notification) {
 
-        console.log("% »»» WebSocketJs WF >>> r-service wsRequesterPresence - UPDATE - data ", data);
+        // console.log("% »»» WebSocketJs WF >>> r-service wsRequesterPresence - UPDATE - data ", data);
         // console.log("% WsMsgsService notification", notification);
         self.wsRequesterStatus$.next(data);
 
       }, function (data, notification) {
 
         if (data) {
-          console.log("% »»» WebSocketJs WF >>> r-service wsRequesterPresence - ON-DATA - data", data);
+          // console.log("% »»» WebSocketJs WF >>> r-service wsRequesterPresence - ON-DATA - data", data);
 
         }
       }
