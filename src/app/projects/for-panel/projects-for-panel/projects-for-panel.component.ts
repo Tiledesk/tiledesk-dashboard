@@ -486,7 +486,7 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
 
   logout() {
     this.auth.showExpiredSessionPopup(false);
-    this.auth.signOut();
+    this.auth.signOut('project-for-panel');
   }
 
   testExpiredSessionFirebaseLogout() {

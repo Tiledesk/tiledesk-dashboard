@@ -77,13 +77,13 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
 
   getChatUrl() {
     this.CHAT_BASE_URL = this.appConfigService.getConfig().CHAT_BASE_URL;
-    console.log('AppConfigService getAppConfig (Notification Message Component) CHAT_BASE_URL', this.CHAT_BASE_URL);
+    // console.log('AppConfigService getAppConfig (Notification Message Component) CHAT_BASE_URL', this.CHAT_BASE_URL);
   }
 
 
   getWidgetUrl() {
     this.WIDGET_URL = this.appConfigService.getConfig().widgetUrl;
-    console.log('AppConfigService getAppConfig (Notification Message Component) WIDGET_URL ', this.WIDGET_URL)
+    // console.log('AppConfigService getAppConfig (Notification Message Component) WIDGET_URL ', this.WIDGET_URL)
 
   }
 
@@ -159,7 +159,7 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
 
   onOkExpiredSessionModal() {
     this.notify.onOkExpiredSessionModal();
-    this.auth.signOut();
+    this.auth.signOut('notification-message');
   }
 
   getCurrentProject() {
