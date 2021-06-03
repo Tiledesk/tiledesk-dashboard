@@ -84,12 +84,12 @@ export class WebSocketJs {
 
   ref(topic, calledby, onCreate, onUpdate, onData) {
     // console.log('% »»» WebSocketJs ****** CALLING REF ****** ');
-    console.log('% »»» WebSocketJs WF ****** CALLING REF ****** calledby ', calledby);
-    console.log('% »»» WebSocketJs WF ****** CALLING REF ****** TOPIC ', topic);
-    console.log('% »»» WebSocketJs WF ****** CALLING REF ****** CALLBACKS', this.callbacks);
-    console.log('% »»» WebSocketJs WF ****** CALLING REF ****** CALLBACKS typeof', typeof this.callbacks);
-    console.log('% »»» WebSocketJs WF ****** CALLING REF ****** CALLBACKS    Object.prototype.toString.call(this.callbacks)', Object.prototype.toString.call(this.callbacks));
-    console.log('% »»» WebSocketJs WF ****** CALLING REF ****** CALLBACKS  this.callbacks.has(topic) ', this.callbacks.has(topic));
+    // console.log('% »»» WebSocketJs WF ****** CALLING REF ****** calledby ', calledby);
+    // console.log('% »»» WebSocketJs WF ****** CALLING REF ****** TOPIC ', topic);
+    // console.log('% »»» WebSocketJs WF ****** CALLING REF ****** CALLBACKS', this.callbacks);
+    // console.log('% »»» WebSocketJs WF ****** CALLING REF ****** CALLBACKS typeof', typeof this.callbacks);
+    // console.log('% »»» WebSocketJs WF ****** CALLING REF ****** CALLBACKS    Object.prototype.toString.call(this.callbacks)', Object.prototype.toString.call(this.callbacks));
+    // console.log('% »»» WebSocketJs WF ****** CALLING REF ****** CALLBACKS  this.callbacks.has(topic) ', this.callbacks.has(topic));
     //this.callbacks.set(topic, {onCreate:onCreate, onUpdate:onUpdate});
 
 
@@ -99,7 +99,7 @@ export class WebSocketJs {
     }
 
     this.callbacks.set(topic, { onCreate: onCreate, onUpdate: onUpdate, onData: onData });
-    console.log('% »»» WebSocketJs WF ****** CALLING REF ****** CALLBACKS this.callbacks.set ', this.callbacks);
+    // console.log('% »»» WebSocketJs WF ****** CALLING REF ****** CALLBACKS this.callbacks.set ', this.callbacks);
     // console.log('% »»» WebSocketJs WF *** REF *** callbacks *** ', this.callbacks);
     // this.callbacks
 
@@ -108,7 +108,7 @@ export class WebSocketJs {
     // console.log('% »»» WebSocketJs WF *** REF *** this.topics ***', this.topics);
     // console.log('% »»» WebSocketJs WF *** REF *** READY STATE *** ws.readyState ', this.ws.readyState);
     // console.log('% »»» WebSocketJs WF *** REF *** READY STATE *** this.readyState ', this.readyState);
-    console.log('% »»» WebSocketJs WF *** REF *** WS 1 ', this.ws)
+    // console.log('% »»» WebSocketJs WF *** REF *** WS 1 ', this.ws)
     if (this.ws && this.ws.readyState == 1) {
 
       console.log('% »»» WebSocketJs WF *** REF *** READY STATE 1 ', this.ws.readyState)
@@ -118,7 +118,7 @@ export class WebSocketJs {
       // this.ws =  new WebSocket("wss://tiledesk-server-pre.herokuapp.com/?token=JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZGRkMzBiZmYwMTk1ZjAwMTdmNzJjNmQiLCJlbWFpbCI6InByZWdpbm9AZjIxdGVzdC5pdCIsImZpcnN0bmFtZSI6Ikdpbm8iLCJsYXN0bmFtZSI6IlByZSIsImVtYWlsdmVyaWZpZWQiOnRydWUsImlhdCI6MTYwODgwNjY0MCwiYXVkIjoiaHR0cHM6Ly90aWxlZGVzay5jb20iLCJpc3MiOiJodHRwczovL3RpbGVkZXNrLmNvbSIsInN1YiI6InVzZXIiLCJqdGkiOiI1YmVmMDcxYy00ODBlLTQzYzQtOTRhYS05ZjQxYzMyNDcxMGQifQ.wv6uBn2P6H9wGb5WCYQkpPEScMU9PB1pBUzFouhJk20");
 
       console.log('% »»» WebSocketJs WF *** REF *** READY STATE 2 ', this.ws.readyState);
-      console.log('% »»» WebSocketJs WF *** REF *** WS 2 ', this.ws);
+      // console.log('% »»» WebSocketJs WF *** REF *** WS 2 ', this.ws);
 
       var that = this;
       if (this.ws) {
@@ -148,7 +148,7 @@ export class WebSocketJs {
     if (this.topics.indexOf(topic) === -1) {
       this.topics.push(topic);
     }
-    console.log("% »»» WebSocketJs *** SUBSCRIBE *** topics ", this.topics);
+    // console.log("% »»» WebSocketJs *** SUBSCRIBE *** topics ", this.topics);
 
     var message = {
       action: 'subscribe',
@@ -175,9 +175,9 @@ export class WebSocketJs {
   unsubscribe(topic) {
     console.log('% »»» WebSocketJs WF ****** CALLING UN-SUBSCRIBE ****** ');
     // console.log("% »»» WebSocketJs WF *** UNSUBSCRIBE *** - this.topics ", this.topics);
-    console.log("% »»» WebSocketJs WF *** UNSUBSCRIBE *** - topic ", topic);
-    console.log("% »»» WebSocketJs WF *** UNSUBSCRIBE *** - callbacks ", this.callbacks);
-    //this.topics.delete(topic);
+    // console.log("% »»» WebSocketJs WF *** UNSUBSCRIBE *** - topic ", topic);
+    // console.log("% »»» WebSocketJs WF *** UNSUBSCRIBE *** - callbacks ", this.callbacks);
+    
 
     var index = this.topics.indexOf(topic);
     console.log("% »»» WebSocketJs WF *** UNSUBSCRIBE *** - topic  (1C)", topic, ' index ', index);
@@ -228,7 +228,7 @@ export class WebSocketJs {
     // console.log('% »»» WebSocketJs WF  SEND - initialMessageObj', initialMessageObj);
 
     // nk 
-    console.log('% »»» WebSocketJs WF *** UNSUSCRIBE  sender: ', calling_method, '- message: ', initialMessage);
+    // console.log('% »»» WebSocketJs WF *** UNSUSCRIBE  sender: ', calling_method, '- message: ', initialMessage);
     this.ws.send(initialMessage);
   }
 
@@ -239,8 +239,8 @@ export class WebSocketJs {
   close() {
     console.log('% »»» WebSocketJs WF *** CALLING CLOSE ****** ');
     this.topics = [];
-    // this.callbacks = []; // NK COMMENTET FOR THE BUG callback.set is not a function
-    this.callbacks = {};
+    this.callbacks = []; // NK COMMENTET FOR THE BUG callback.set is not a function
+    // this.callbacks = {};
     console.log('% »»» WebSocketJs WF *** CALLING CLOSE ****** this.callbacks');
     if (this.ws) {
       this.ws.onclose = function () { }; // disable onclose handler first
@@ -325,7 +325,7 @@ export class WebSocketJs {
       // onmessage Ottieni il battito cardiaco restituito per indicare che la connessione è normale
       if (this.ws.readyState == 1) {
         console.log('% »»» WebSocketJs - heartStart WS OK - readyState ', this.ws.readyState);
-        console.log('% »»» WebSocketJs - HEART-START send PING MSG ', JSON.stringify(this.pingMsg));
+        // console.log('% »»» WebSocketJs - HEART-START send PING MSG ', JSON.stringify(this.pingMsg));
 
         // this.ws.send(JSON.stringify(this.pingMsg));
         this.send(JSON.stringify(this.pingMsg), 'HEART-START')
@@ -462,15 +462,15 @@ export class WebSocketJs {
         // console.log('% »»» WebSocketJs - websocket onmessage ', message);
         // console.log('% »»» WebSocketJs - websocket onmessage data ', message.data);
 
-        let test = '{ "action": "publish","payload": {"topic": "/5df26badde7e1c001743b63c/requests", "method": "CREATE", "message": [ { "_id": "5f29372d690e6f0034edf100", "status": 200, "preflight": false, "hasBot": true, "participants": ["bot_5df272e8de7e1c001743b645"],  "participantsAgents": [], "participantsBots": ["5df272e8de7e1c001743b645"], "request_id": "support-group-MDszsSJlwqQn1_WCh6u", "requester": "5f29371b690e6f0034edf0f5", "lead": "5f29372d690e6f0034edf0ff", "first_text": "ocourse the email is valid ","department": "5df26badde7e1c001743b63e", "agents": [{"user_available": true,"online_status": "online", "number_assigned_requests": 35, "_id": "5e0f2119705a35001725714d","id_project": "5df26badde7e1c001743b63c", "id_user": "5aaa99024c3b110014b478f0", "role": "admin", "createdBy": "5df26ba1de7e1c001743b637","createdAt": "2020-01-03T11:10:17.123Z", "updatedAt": "2020-01-03T11:10:17.123Z", "__v": 0 }, { "user_available": false, "online_status": "offline", "number_assigned_requests": 0, "_id": "5e1a13824437eb0017f712b4", "id_project": "5df26badde7e1c001743b63c","id_user": "5ac7521787f6b50014e0b592", "role": "admin", "createdBy": "5df26ba1de7e1c001743b637", "createdAt": "2020-01-11T18:27:14.657Z","updatedAt": "2020-01-11T18:27:14.657Z", "__v": 0}, { "user_available": false,"online_status": "offline", "number_assigned_requests": 0, "_id": "5df26bdfde7e1c001743b640", "id_project": "5df26badde7e1c001743b63c", "id_user": "5de9200d6722370017731969","role": "admin","createdBy": "5df26ba1de7e1c001743b637", "createdAt": "2019-12-12T16:33:35.244Z", "updatedAt": "2019-12-12T16:33:35.244Z","__v": 0 }, {"user_available": true, "online_status": "online","number_assigned_requests": -11, "_id": "5eb1a3647ac005003480f54d", "id_project": "5df26badde7e1c001743b63c","id_user": "5e09d16d4d36110017506d7f","role": "owner", "createdBy": "5aaa99024c3b110014b478f0","createdAt": "2020-05-05T17:33:24.328Z", "updatedAt": "2020-05-05T17:33:24.328Z","__v": 0}], "sourcePage": "https://www.tiledesk.com/pricing-self-managed/", "language": "en","userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36","attributes": { "departmentId": "5df26badde7e1c001743b63e","departmentName": "Default Department","ipAddress": "115.96.30.154","client": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36","sourcePage": "https://www.tiledesk.com/pricing-self-managed/", "projectId": "5df26badde7e1c001743b63c", "requester_id": "ce31d3fd-a358-49c7-9b9f-5aead8330063", "subtype": "info","decoded_jwt": {"_id": "ce31d3fd-a358-49c7-9b9f-5aead8330063","firstname": "Guest", "id": "ce31d3fd-a358-49c7-9b9f-5aead8330063", "fullName": "Guest ","iat": 1596536604,"aud": "https://tiledesk.com","iss": "https://tiledesk.com","sub": "guest","jti": "702a4a7e-e56a-43cf-aadd-376f7c12f633"}},"id_project": "5df26badde7e1c001743b63c","createdBy": "ce31d3fd-a358-49c7-9b9f-5aead8330063","tags": [], "notes": [],"channel": {"name": "chat21"},"createdAt": "2020-08-04T10:23:41.641Z","updatedAt": "2021-03-25T18:01:13.371Z","__v": 3,"assigned_at": "2020-08-04T10:25:26.059Z","channelOutbound": {"name": "chat21"},"snapshot": {"agents": [{"id_user": "5aaa99024c3b110014b478f0"}, {"id_user": "5ac7521787f6b50014e0b592"}, {"id_user": "5de9200d6722370017731969"}, { "id_user": "5e09d16d4d36110017506d7f"}]},"id": "5f29372d690e6f0034edf100","requester_id": "5f29372d690e6f0034edf0ff"}]}}'
-        let test_due = '{ "action": "publish","payload": {"topic": "/5df26badde7e1c001743b63c/requests", "method": "CREATE", "message": [ { "_id": "5f29372d690e6f0034edf100", "status": 200, "preflight": false, "hasBot": true, "participants": ["bot_5df272e8de7e1c001743b645"],  "participantsAgents": [], "participantsBots": ["5df272e8de7e1c001743b645"], "request_id": "support-group-MDszsSJlwqQn1_WCh6u", "requester": "5f29371b690e6f0034edf0f5", "lead": "5f29372d690e6f0034edf0ff", "first_text": "ocourse the email is valid ","department": "5df26badde7e1c001743b63e", "agents": [{"user_available": true,"online_status": "online", "number_assigned_requests": 35, "_id": "5e0f2119705a35001725714d","id_project": "5df26badde7e1c001743b63c", "id_user": "5aaa99024c3b110014b478f0", "role": "admin", "createdBy": "5df26ba1de7e1c001743b637","createdAt": "2020-01-03T11:10:17.123Z", "updatedAt": "2020-01-03T11:10:17.123Z", "__v": 0 }, { "user_available": false, "online_status": "offline", "number_assigned_requests": 0, "_id": "5e1a13824437eb0017f712b4", "id_project": "5df26badde7e1c001743b63c","id_user": "5ac7521787f6b50014e0b592", "role": "admin", "createdBy": "5df26ba1de7e1c001743b637", "createdAt": "2020-01-11T18:27:14.657Z","updatedAt": "2020-01-11T18:27:14.657Z", "__v": 0}, { "user_available": false,"online_status": "offline", "number_assigned_requests": 0, "_id": "5df26bdfde7e1c001743b640", "id_project": "5df26badde7e1c001743b63c", "id_user": "5de9200d6722370017731969","role": "admin","createdBy": "5df26ba1de7e1c001743b637", "createdAt": "2019-12-12T16:33:35.244Z", "updatedAt": "2019-12-12T16:33:35.244Z","__v": 0 }, {"user_available": true, "online_status": "online","number_assigned_requests": -11, "_id": "5eb1a3647ac005003480f54d", "id_project": "5df26badde7e1c001743b63c","id_user": "5e09d16d4d36110017506d7f","role": "owner", "createdBy": "5aaa99024c3b110014b478f0","createdAt": "2020-05-05T17:33:24.328Z", "updatedAt": "2020-05-05T17:33:24.328Z","__v": 0}], "sourcePage": "https://www.tiledesk.com/pricing-self-managed/", "language": "en","userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36","attributes": { "departmentId": "5df26badde7e1c001743b63e","departmentName": "Default Department","ipAddress": "115.96.30.154","client": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36","sourcePage": "https://www.tiledesk.com/pricing-self-managed/", "projectId": "5df26badde7e1c001743b63c", "requester_id": "ce31d3fd-a358-49c7-9b9f-5aead8330063", "subtype": "info","decoded_jwt": {"_id": "ce31d3fd-a358-49c7-9b9f-5aead8330063","firstname": "Guest", "id": "ce31d3fd-a358-49c7-9b9f-5aead8330063", "fullName": "Guest ","iat": 1596536604,"aud": "https://tiledesk.com","iss": "https://tiledesk.com","sub": "guest","jti": "702a4a7e-e56a-43cf-aadd-376f7c12f633"}},"id_project": "5df26badde7e1c001743b63c","createdBy": "ce31d3fd-a358-49c7-9b9f-5aead8330063","tags": [], "notes": [],"channel": {"name": "chat21"},"createdAt": "2020-08-04T10:23:41.641Z","updatedAt": "2021-03-25T18:01:13.371Z","__v": 3,"assigned_at": "2020-08-04T10:25:26.059Z","channelOutbound": {"name": "chat21"},"_snapshot": {"agents": [{"id_user": "5aaa99024c3b110014b478f0"}, {"id_user": "5ac7521787f6b50014e0b592"}, {"id_user": "5de9200d6722370017731969"}, { "id_user": "5e09d16d4d36110017506d7f"}]},"id": "5f29372d690e6f0034edf100","requester_id": "5f29372d690e6f0034edf0ff"}]}}'
+        // let test = '{ "action": "publish","payload": {"topic": "/5df26badde7e1c001743b63c/requests", "method": "CREATE", "message": [ { "_id": "5f29372d690e6f0034edf100", "status": 200, "preflight": false, "hasBot": true, "participants": ["bot_5df272e8de7e1c001743b645"],  "participantsAgents": [], "participantsBots": ["5df272e8de7e1c001743b645"], "request_id": "support-group-MDszsSJlwqQn1_WCh6u", "requester": "5f29371b690e6f0034edf0f5", "lead": "5f29372d690e6f0034edf0ff", "first_text": "ocourse the email is valid ","department": "5df26badde7e1c001743b63e", "agents": [{"user_available": true,"online_status": "online", "number_assigned_requests": 35, "_id": "5e0f2119705a35001725714d","id_project": "5df26badde7e1c001743b63c", "id_user": "5aaa99024c3b110014b478f0", "role": "admin", "createdBy": "5df26ba1de7e1c001743b637","createdAt": "2020-01-03T11:10:17.123Z", "updatedAt": "2020-01-03T11:10:17.123Z", "__v": 0 }, { "user_available": false, "online_status": "offline", "number_assigned_requests": 0, "_id": "5e1a13824437eb0017f712b4", "id_project": "5df26badde7e1c001743b63c","id_user": "5ac7521787f6b50014e0b592", "role": "admin", "createdBy": "5df26ba1de7e1c001743b637", "createdAt": "2020-01-11T18:27:14.657Z","updatedAt": "2020-01-11T18:27:14.657Z", "__v": 0}, { "user_available": false,"online_status": "offline", "number_assigned_requests": 0, "_id": "5df26bdfde7e1c001743b640", "id_project": "5df26badde7e1c001743b63c", "id_user": "5de9200d6722370017731969","role": "admin","createdBy": "5df26ba1de7e1c001743b637", "createdAt": "2019-12-12T16:33:35.244Z", "updatedAt": "2019-12-12T16:33:35.244Z","__v": 0 }, {"user_available": true, "online_status": "online","number_assigned_requests": -11, "_id": "5eb1a3647ac005003480f54d", "id_project": "5df26badde7e1c001743b63c","id_user": "5e09d16d4d36110017506d7f","role": "owner", "createdBy": "5aaa99024c3b110014b478f0","createdAt": "2020-05-05T17:33:24.328Z", "updatedAt": "2020-05-05T17:33:24.328Z","__v": 0}], "sourcePage": "https://www.tiledesk.com/pricing-self-managed/", "language": "en","userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36","attributes": { "departmentId": "5df26badde7e1c001743b63e","departmentName": "Default Department","ipAddress": "115.96.30.154","client": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36","sourcePage": "https://www.tiledesk.com/pricing-self-managed/", "projectId": "5df26badde7e1c001743b63c", "requester_id": "ce31d3fd-a358-49c7-9b9f-5aead8330063", "subtype": "info","decoded_jwt": {"_id": "ce31d3fd-a358-49c7-9b9f-5aead8330063","firstname": "Guest", "id": "ce31d3fd-a358-49c7-9b9f-5aead8330063", "fullName": "Guest ","iat": 1596536604,"aud": "https://tiledesk.com","iss": "https://tiledesk.com","sub": "guest","jti": "702a4a7e-e56a-43cf-aadd-376f7c12f633"}},"id_project": "5df26badde7e1c001743b63c","createdBy": "ce31d3fd-a358-49c7-9b9f-5aead8330063","tags": [], "notes": [],"channel": {"name": "chat21"},"createdAt": "2020-08-04T10:23:41.641Z","updatedAt": "2021-03-25T18:01:13.371Z","__v": 3,"assigned_at": "2020-08-04T10:25:26.059Z","channelOutbound": {"name": "chat21"},"snapshot": {"agents": [{"id_user": "5aaa99024c3b110014b478f0"}, {"id_user": "5ac7521787f6b50014e0b592"}, {"id_user": "5de9200d6722370017731969"}, { "id_user": "5e09d16d4d36110017506d7f"}]},"id": "5f29372d690e6f0034edf100","requester_id": "5f29372d690e6f0034edf0ff"}]}}'
+        // let test_due = '{ "action": "publish","payload": {"topic": "/5df26badde7e1c001743b63c/requests", "method": "CREATE", "message": [ { "_id": "5f29372d690e6f0034edf100", "status": 200, "preflight": false, "hasBot": true, "participants": ["bot_5df272e8de7e1c001743b645"],  "participantsAgents": [], "participantsBots": ["5df272e8de7e1c001743b645"], "request_id": "support-group-MDszsSJlwqQn1_WCh6u", "requester": "5f29371b690e6f0034edf0f5", "lead": "5f29372d690e6f0034edf0ff", "first_text": "ocourse the email is valid ","department": "5df26badde7e1c001743b63e", "agents": [{"user_available": true,"online_status": "online", "number_assigned_requests": 35, "_id": "5e0f2119705a35001725714d","id_project": "5df26badde7e1c001743b63c", "id_user": "5aaa99024c3b110014b478f0", "role": "admin", "createdBy": "5df26ba1de7e1c001743b637","createdAt": "2020-01-03T11:10:17.123Z", "updatedAt": "2020-01-03T11:10:17.123Z", "__v": 0 }, { "user_available": false, "online_status": "offline", "number_assigned_requests": 0, "_id": "5e1a13824437eb0017f712b4", "id_project": "5df26badde7e1c001743b63c","id_user": "5ac7521787f6b50014e0b592", "role": "admin", "createdBy": "5df26ba1de7e1c001743b637", "createdAt": "2020-01-11T18:27:14.657Z","updatedAt": "2020-01-11T18:27:14.657Z", "__v": 0}, { "user_available": false,"online_status": "offline", "number_assigned_requests": 0, "_id": "5df26bdfde7e1c001743b640", "id_project": "5df26badde7e1c001743b63c", "id_user": "5de9200d6722370017731969","role": "admin","createdBy": "5df26ba1de7e1c001743b637", "createdAt": "2019-12-12T16:33:35.244Z", "updatedAt": "2019-12-12T16:33:35.244Z","__v": 0 }, {"user_available": true, "online_status": "online","number_assigned_requests": -11, "_id": "5eb1a3647ac005003480f54d", "id_project": "5df26badde7e1c001743b63c","id_user": "5e09d16d4d36110017506d7f","role": "owner", "createdBy": "5aaa99024c3b110014b478f0","createdAt": "2020-05-05T17:33:24.328Z", "updatedAt": "2020-05-05T17:33:24.328Z","__v": 0}], "sourcePage": "https://www.tiledesk.com/pricing-self-managed/", "language": "en","userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36","attributes": { "departmentId": "5df26badde7e1c001743b63e","departmentName": "Default Department","ipAddress": "115.96.30.154","client": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36","sourcePage": "https://www.tiledesk.com/pricing-self-managed/", "projectId": "5df26badde7e1c001743b63c", "requester_id": "ce31d3fd-a358-49c7-9b9f-5aead8330063", "subtype": "info","decoded_jwt": {"_id": "ce31d3fd-a358-49c7-9b9f-5aead8330063","firstname": "Guest", "id": "ce31d3fd-a358-49c7-9b9f-5aead8330063", "fullName": "Guest ","iat": 1596536604,"aud": "https://tiledesk.com","iss": "https://tiledesk.com","sub": "guest","jti": "702a4a7e-e56a-43cf-aadd-376f7c12f633"}},"id_project": "5df26badde7e1c001743b63c","createdBy": "ce31d3fd-a358-49c7-9b9f-5aead8330063","tags": [], "notes": [],"channel": {"name": "chat21"},"createdAt": "2020-08-04T10:23:41.641Z","updatedAt": "2021-03-25T18:01:13.371Z","__v": 3,"assigned_at": "2020-08-04T10:25:26.059Z","channelOutbound": {"name": "chat21"},"_snapshot": {"agents": [{"id_user": "5aaa99024c3b110014b478f0"}, {"id_user": "5ac7521787f6b50014e0b592"}, {"id_user": "5de9200d6722370017731969"}, { "id_user": "5e09d16d4d36110017506d7f"}]},"id": "5f29372d690e6f0034edf100","requester_id": "5f29372d690e6f0034edf0ff"}]}}'
 
         try {
           var json = JSON.parse(message.data);
           // var json = JSON.parse(test_due);
           // console.log('% »»» WebSocketJs - websocket onmessage JSON.parse(message.data) json payload', json.payload);
           // console.log('% »»» WebSocketJs - websocket onmessage JSON.parse(message.data) json payload topic', json.payload.topic);
-          console.log('% »»» WebSocketJs - websocket onmessage JSON.parse(message.data) json ', json);
+          // console.log('% »»» WebSocketJs - websocket onmessage JSON.parse(message.data) json ', json);
         } catch (e) {
           console.log('% »»» WebSocketJs WF ***  This doesn\'t look like a valid JSON: ', message.data);
           return;
@@ -509,7 +509,7 @@ export class WebSocketJs {
 
         var object = { event: json.payload, data: json };
 
-        console.log("% »»» WebSocketJs WF *** - WsRequestsService - WebSocketJs onData object ", object);
+        // console.log("% »»» WebSocketJs WF *** - WsRequestsService - WebSocketJs onData object ", object);
 
         if (that.onData) {
           that.onData(json.payload.message, object);
@@ -529,7 +529,7 @@ export class WebSocketJs {
             // console.log("element", element);
             //let insUp = that.insertOrUpdate(element);
             let insUp = json.payload.method;
-            console.log("% »»» WebSocketJs WF *** - insUp", insUp);
+            // console.log("% »»» WebSocketJs WF *** - insUp", insUp);
 
             var object = { event: json.payload, data: element };
 
@@ -541,7 +541,7 @@ export class WebSocketJs {
             if (insUp == "CREATE") {
 
               if (that.onCreate) {
-                console.log("% »»» WebSocketJs WF *** - INIT > CREATE when array (general)");
+                // console.log("% »»» WebSocketJs WF *** - INIT > CREATE when array (general)");
                 that.onCreate(element, object);
               }
 
@@ -554,7 +554,7 @@ export class WebSocketJs {
 
             if (insUp == "UPDATE") {
 
-              console.log('% »»» WebSocketJs WF *** - INIT > UPDATE  callbackObj when array (1)', callbackObj)
+              // console.log('% »»» WebSocketJs WF *** - INIT > UPDATE  callbackObj when array (1)', callbackObj)
 
               if (that.onUpdate) {
 
@@ -585,7 +585,7 @@ export class WebSocketJs {
           if (insUp == "CREATE") {
 
             if (that.onCreate) {
-              console.log("% »»» WebSocketJs WF *** - INIT > CREATE when object (general)");
+              // console.log("% »»» WebSocketJs WF *** - INIT > CREATE when object (general)");
               that.onCreate(json.payload.message, object);
             }
 
@@ -595,7 +595,7 @@ export class WebSocketJs {
           }
 
           if (insUp == "UPDATE") {
-            console.log('% »»» WebSocketJs WF *** - INIT > UPDATE  when object callbackObj (1)', callbackObj)
+            // console.log('% »»» WebSocketJs WF *** - INIT > UPDATE  when object callbackObj (1)', callbackObj)
 
             if (that.onUpdate) {
               // console.log('% »»» WebSocketJs - INIT > UPDATE when object (general)')

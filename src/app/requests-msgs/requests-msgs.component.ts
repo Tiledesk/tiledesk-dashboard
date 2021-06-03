@@ -1125,9 +1125,9 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
     if (member_id.indexOf('bot_') !== -1) {
       console.log('IS A BOT !');
 
-      this.router.navigate(['project/' + this.id_project + '/botprofile/' + member_id]);
+      // this.router.navigate(['project/' + this.id_project + '/botprofile/' + member_id]);
     } else {
-      this.router.navigate(['project/' + this.id_project + '/member/' + member_id]);
+      // this.router.navigate(['project/' + this.id_project + '/member/' + member_id]);
     }
   }
 
