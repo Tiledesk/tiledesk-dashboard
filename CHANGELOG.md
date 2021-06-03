@@ -1,7 +1,53 @@
 
 # tiledesk-dashboard
 
+### 2.1.66
+- Fixes the bug: the endpoint for deleting 'native' images is not obtained from the current environment configuration
+- Improves the method signOut 
+- Fixes the bug: the trigger condition "department has bot" does not work in trigger edit
+- Replaces in "app-routing" the path: ' ' redirectTo: 'projects' with the path: '', redirectTo: 'login
+- Adds the custom pipes 'marked' and 'sanitizeHtml'
+
+### 2.1.65
+- Sets in config.json "firebaseAuth" to false
+
+### 2.1.64
+- Changes in pre enviroment the endpoint of the key "CHAT_BASE_URL" 
+
+### 2.1.63
+- Sets in pre environment the key "firebaseAuth" to false
+
+### 2.1.62
+- Minor improvements
+
+### 2.1.61
+- Adds in the chat section of the conversation detail page the text markdown and render the urls as clickable links
+- Increase the "bubble" width in the chat section of the conversation detail page
+
+### 2.1.60
+- MQTT Environment fix
+
+### 2.1.59
+- MQTT Environment fix
+
+### 2.1.58
+- Changes environment's keys values  "widgetUrl" and "testsiteBaseUrl"
+
+### 2.1.57
+- Improves autologin and other minor improvements
+
+### 2.1.56
+- Improves autologin
+
+### 2.1.55
+- Adds the ability to upload (and get) the users and bot profile images to the firebase Storage or to the native Storage
+
+### 2.1.54
+- Improves in app.module the methods loadAppConfig() and loadBrand()
+- Refactoring (in progress) of all app components that perform the 'get' of profiles images from Firebase by adding the "get" from native
+
 ### 2.1.53
+- Adds the "upload-image-native" service
 - Saves in local storage the token with the key "chat_sv5__tiledeskToken"
 - Adds the "firebaseAuth" key in the environments and conditions signInWithCustomToken based on how it is valued (true or false)
 - Adds the "uploadEngine" key in the environments and conditions the service to be used to upload and delete user and bot profile picture based on how it is valued (native or firebase)
