@@ -111,7 +111,7 @@ export class DepartmentsComponent implements OnInit {
     });
 
     if (!this.public_Key.includes("DEP")) {
-      console.log('PUBLIC-KEY (SIDEBAR) - key.includes("DEP")', this.public_Key.includes("DEP"));
+      // console.log('PUBLIC-KEY (SIDEBAR) - key.includes("DEP")', this.public_Key.includes("DEP"));
       this.isVisibleDEP = false;
     }
   }
