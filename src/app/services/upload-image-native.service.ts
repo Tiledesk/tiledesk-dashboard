@@ -158,10 +158,10 @@ export class UploadImageNativeService {
       // 'Content-Type': 'multipart/form-data',
     });
     const requestOptions = { headers: headers };
-    const url = "https://tiledesk-server-pre.herokuapp.com/images/users/?path=uploads%2Fusers%2F" + id + "%2Fimages%2Fphoto.jpg"
-
+    // const url = "https://tiledesk-server-pre.herokuapp.com/images/users/?path=uploads%2Fusers%2F" + id + "%2Fimages%2Fphoto.jpg"
+    const BASE_URL_IMAGES = this.BASE_URL + 'images'
     return this.http
-      .delete(url, requestOptions)
+      .delete(BASE_URL_IMAGES +"/users/?path=uploads/users/"+ id + "/images/photo.jpg" , requestOptions)
       .subscribe((res: any) => {
         console.log('UploadImageNativeService deleteNativeUserAvatar res ', res);
 
