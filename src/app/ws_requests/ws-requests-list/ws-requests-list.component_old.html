@@ -623,19 +623,12 @@
                   </div>
                   <div class="team-content middle" #teamContent>
                     <div class="team-agent" *ngFor="let agent of projectUserArray">
-                      <!-- *ngIf="agent?._id.indexOf('bot_') === -1"  -->
-                      <img class="team-avatar" style=""
+                    
+                      <!-- <img class="team-avatar"
                         src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?.id_user._id}}%2Fphoto.jpg?alt=media"
-                        onerror="this.src='assets/img/no_image_user.png'">
+                        onerror="this.src='assets/img/no_image_user.png'"> -->
 
-                      <!-- <img *ngIf="agent?._id.indexOf('bot_') !== -1" class="team-avatar" style="margin: 0;
-                                  width: 32px;
-                                  height: 32px;
-                                  min-width: 32px;border-radius: 50%;
-                                  font-size: 17px;
-                                  font-weight: 600;
-                                  text-align: center;" src="assets/img/bot_image_as_human.jpg"
-                          onerror="this.src='assets/img/no_image_user.png'"> -->
+           
 
                       <div class="assigned_requests_count">{{agent?.number_assigned_requests_rt}}</div>
                       <div class="team-agent-status-icon"
