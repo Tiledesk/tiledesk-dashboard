@@ -850,7 +850,7 @@ export class WsRequestsNortComponent extends WsSharedComponent implements OnInit
       this.router.navigate(['project/' + this.projectId + '/bots', bot_id, botType]);
 
     } else {
-      this.router.navigate(['project/' + this.projectId + '/member/' + member_id]);
+      // this.router.navigate(['project/' + this.projectId + '/member/' + member_id]);
 
       const filteredProjectUser = this.projectUsersArray.filter((obj: any) => {
         return obj.id_user._id === member_id;
