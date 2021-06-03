@@ -296,9 +296,9 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     keys.forEach(key => {
       // console.log('NavbarComponent public_Key key', key)
       if (key.includes("PAY")) {
-        console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
+        // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
         let pay = key.split(":");
-        console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - pay key&value', pay);
+        // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - pay key&value', pay);
         if (pay[1] === "F") {
           this.isVisiblePaymentTab = false;
         } else {
@@ -307,9 +307,9 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       }
 
       if (key.includes("PSA")) {
-        console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
+        // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
         let psa = key.split(":");
-        console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - pay key&value', psa);
+        // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - pay key&value', psa);
         if (psa[1] === "F") {
           this.isVisibleAdvancedTab = false;
         } else {
@@ -318,9 +318,9 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       }
 
       if (key.includes("DEV")) {
-        console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
+        // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
         let dev = key.split(":");
-        console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - dev key&value', dev);
+        // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - dev key&value', dev);
         if (dev[1] === "F") {
           this.isVisibleDeveloperTab = false;
         } else {
@@ -329,9 +329,9 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       }
 
       if (key.includes("NOT")) {
-        console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
+        // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
         let not = key.split(":");
-        console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - not key&value', not);
+        // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - not key&value', not);
         if (not[1] === "F") {
           this.isVisibleNotificationTab = false;
         } else {
@@ -342,22 +342,22 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     });
 
     if (!this.public_Key.includes("PAY")) {
-      console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("PAY")', this.public_Key.includes("PAY"));
+      // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("PAY")', this.public_Key.includes("PAY"));
       this.isVisiblePaymentTab = false;
     }
 
     if (!this.public_Key.includes("PSA")) {
-      console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("PSA")', this.public_Key.includes("PSA"));
+      // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("PSA")', this.public_Key.includes("PSA"));
       this.isVisibleAdvancedTab = false;
     }
 
     if (!this.public_Key.includes("DEV")) {
-      console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("DEV")', this.public_Key.includes("DEV"));
+      // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("DEV")', this.public_Key.includes("DEV"));
       this.isVisibleDeveloperTab = false;
     }
 
     if (!this.public_Key.includes("NOT")) {
-      console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("NOT")', this.public_Key.includes("NOT"));
+      // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("NOT")', this.public_Key.includes("NOT"));
       this.isVisibleNotificationTab = false;
     }
 
