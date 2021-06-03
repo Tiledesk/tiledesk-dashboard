@@ -601,7 +601,8 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
       'type': selectedCondition.type,
       'operator': this.options[selectedCondition.type + 'Opt'][0].id,
       // value: undefined permette di visualizzare il placeholder della terza select
-      'value': (selectedCondition.key.includes('department')) ? this.operator[selectedCondition.key][0].id: undefined, 
+      // 'value': (selectedCondition.key.includes('department')) ? this.operator[selectedCondition.key][0].id: undefined, 
+      'value': (selectedCondition.key === "message.request.department.name") ? this.operator[selectedCondition.key][0].id: undefined, 
       'key': selectedCondition.key,
       'placeholder': selectedCondition.placeholder
     });
