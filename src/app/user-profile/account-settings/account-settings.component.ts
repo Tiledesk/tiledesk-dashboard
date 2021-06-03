@@ -137,7 +137,7 @@ export class AccountSettingsComponent implements OnInit {
       this.showSpinner_deleteAccount = false;
       this.deleteAccount_hasError = false;
 
-      this.auth.signOut();
+      this.auth.signOut('account-settings');
       this.auth.showExpiredSessionPopup(false);
 
     });
