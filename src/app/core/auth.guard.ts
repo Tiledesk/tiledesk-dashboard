@@ -489,7 +489,7 @@ export class AuthGuard implements CanActivate {
 
 
     let token = next.queryParams.token
-    console.log('SSO - CAN ACTIVATE queryParams Token ', token);
+    console.log('SSO - CAN ACTIVATE queryParams HAS_JWT Token ', token);
 
 
     // tslint:disable-next-line:max-line-length
@@ -503,12 +503,12 @@ export class AuthGuard implements CanActivate {
       return true;
       // if ((!this.user) || (this.is_verify_email_page === false))
     } else {
-      // tslint:disable-next-line:no-debugger
-      // debugger
+  
       if (!HAS_JWT) {
         this.router.navigate(['/login']);
-        return false;
+        console.log('SSO - CAN ACTIVATE queryParams HAS_JWT: NOT HAS  navigate to login ');
       } else {
+        console.log('SSO - CAN ACTIVATE queryParams HAS_JWT: YES HAS  navigate to autologin ');
         this.router.navigate(['/autologin', route, token]);
         return false;
       }

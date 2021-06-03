@@ -1,6 +1,6 @@
 // tslint:disable:max-line-length
 import { Injectable } from '@angular/core';
-import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
+import { Router, NavigationEnd, ActivatedRoute, NavigationStart } from '@angular/router';
 import { NotifyService } from './notify.service';
 import { Observable } from 'rxjs/Observable';
 import { switchMap } from 'rxjs/operators';
@@ -179,7 +179,8 @@ export class AuthService {
 
     this.subscription = this.router.events
       .subscribe((e) => {
-        if (e instanceof NavigationEnd) {
+        // if (e instanceof NavigationEnd) {
+          if (e instanceof NavigationStart) {
           console.log('SSO - AUTH SERVICE - CHECK CREDENTIAL - params e ', e);
           console.log('SSO - AUTH SERVICE - CHECK CREDENTIAL - params e.url ', e.url);
 
@@ -1021,7 +1022,17 @@ export class AuthService {
   }
 
 
-  signOut() {
+  signOut(calledby: string ) {
+    console.log('Signout calledby +++++ ', calledby)
+
+    this.user_bs.next(null);
+    this.project_bs.next(null);
+    console.log('SIGNOUT project_bs VALUE: ', this.project_bs.value);
+
+    localStorage.removeItem('user');
+    localStorage.removeItem('project');
+    localStorage.removeItem('role')
+    this.webSocketClose();
     // ------------------------------------------------------------------------------------------------------------
     // RUN removeInstanceIdAndSignout() if pushEngine === 'firebase' + 
     // in  removeInstanceIdAndSignout if  firebaseAuth === 'firebase' run  firebaseSignout else signoutNoFirebase
@@ -1037,7 +1048,7 @@ export class AuthService {
         if (this.FCMcurrentToken !== undefined && this.userId !== undefined) {
           console.log('here 2 ');
 
-          this.removeInstanceIdAndSignout();
+          this.removeInstanceIdAndSignout(calledby);
 
         } else {
           console.log('here 3 ');
@@ -1053,36 +1064,36 @@ export class AuthService {
               console.log('signOut - storedUserObj ', storedUserObj);
               this.userId = storedUserObj._id;
 
-              this.removeInstanceIdAndSignout();
+              this.removeInstanceIdAndSignout(calledby);
 
             }).catch((err) => {
               console.log('err: ', err);
-              if (this.appConfigService.getConfig().firebaseAuth === 'firebase') {
-                this.firebaseSignout();
+              if (this.appConfigService.getConfig().firebaseAuth === true) {
+                this.firebaseSignout(calledby);
               } else {
-                this.signoutNoFirebase()
+                this.signoutNoFirebase(calledby)
               }
 
             });
         }
       } else {
-        if (this.appConfigService.getConfig().firebaseAuth === 'firebase') {
-          this.firebaseSignout();
+        if (this.appConfigService.getConfig().firebaseAuth === true) {
+          this.firebaseSignout(calledby);
         } else {
-          this.signoutNoFirebase()
+          this.signoutNoFirebase(calledby)
         }
       }
     } else {
-      if (this.appConfigService.getConfig().firebaseAuth === 'firebase') {
-        this.firebaseSignout();
+      if (this.appConfigService.getConfig().firebaseAuth === true) {
+        this.firebaseSignout(calledby);
       } else {
-        this.signoutNoFirebase()
+        this.signoutNoFirebase(calledby)
       }
     }
   }
 
 
-  removeInstanceIdAndSignout() {
+  removeInstanceIdAndSignout(calledby) {
     console.log('here 4')
     console.log('removeInstanceId - FCM Token: ', this.FCMcurrentToken);
     console.log('removeInstanceId - USER ID: ', this.userId);
@@ -1099,18 +1110,18 @@ export class AuthService {
         .then(function () {
 
           if (this.appConfigService.getConfig().firebaseAuth === 'firebase') {
-            that.firebaseSignout();
+            that.firebaseSignout(calledby);
           } else {
-            that.signoutNoFirebase()
+            that.signoutNoFirebase(calledby)
           }
 
         }).catch((err) => {
           console.log('removeInstanceId - err: ', err);
 
           if (this.appConfigService.getConfig().firebaseAuth === 'firebase') {
-            that.firebaseSignout();
+            that.firebaseSignout(calledby);
           } else {
-            that.signoutNoFirebase()
+            that.signoutNoFirebase(calledby)
           }
         });
     }
@@ -1118,46 +1129,49 @@ export class AuthService {
 
 
 
-  firebaseSignout() {
-    this.user_bs.next(null);
-    this.project_bs.next(null);
-    console.log('SIGNOUT project_bs VALUE: ', this.project_bs.value);
-
-    localStorage.removeItem('user');
-    localStorage.removeItem('project');
-    localStorage.removeItem('role')
-    this.webSocketClose();
-
+  firebaseSignout(calledby) {
     const that = this;
     firebase.auth().signOut()
       .then(function () {
         console.log('Signed Out');
         that.widgetReInit()
 
-        if (!that.HAS_JWT) {
+        // if (!that.HAS_JWT) {
+        //   that.router.navigate(['/login']);
+        // }
+
+        if (calledby !== 'autologin') {
           that.router.navigate(['/login']);
         }
       }, function (error) {
         console.error('Sign Out Error', error);
         that.widgetReInit()
 
-        if (!that.HAS_JWT) {
+        // if (!that.HAS_JWT) {
+        //   that.router.navigate(['/login']);
+        // }
+
+        if (calledby !== 'autologin') {
           that.router.navigate(['/login']);
         }
       });
   }
 
-  signoutNoFirebase() {
-    console.log('SIMPLE LOGOUT (NO-FIREBASE SIGN-OUT)')
-    this.user_bs.next(null);
-    this.project_bs.next(null);
-    console.log('SIGNOUT project_bs VALUE: ', this.project_bs.value);
+  signoutNoFirebase(calledby) {
+    // console.log('SIMPLE LOGOUT (NO-FIREBASE SIGN-OUT)')
+    // this.user_bs.next(null);
+    // this.project_bs.next(null);
+    // console.log('SIGNOUT project_bs VALUE: ', this.project_bs.value);
 
-    localStorage.removeItem('user');
-    localStorage.removeItem('project');
-    localStorage.removeItem('role');
-    this.webSocketClose();
-    if (!this.HAS_JWT) {
+    // localStorage.removeItem('user');
+    // localStorage.removeItem('project');
+    // localStorage.removeItem('role');
+    // this.webSocketClose();
+    // if (!this.HAS_JWT) {
+    //   this.router.navigate(['/login']);
+    // }
+
+    if (calledby !== 'autologin') {
       this.router.navigate(['/login']);
     }
   }
