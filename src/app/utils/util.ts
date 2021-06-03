@@ -80,6 +80,18 @@ export function getColorBck(requester_fullname) {
     return arrayBckColor[num];
 }
 
+
+export function htmlEntities(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      // .replace(/\r/g, '<br>')
+      .replace(/\n/g, '<br>')
+      // .replace(/]/g, '&#93;')
+  }
+
 export const helpdocurl_triggers = 'https://docs.tiledesk.com/knowledge-base/getting-started-with-triggers/'
 export const helpdocurl_users_role = 'https://docs.tiledesk.com/knowledge-base/understanding-default-roles/'
 
