@@ -22,7 +22,7 @@ export class AppConfigService {
       const data = await this.http.get(this.appConfig.remoteConfigUrl)
         .toPromise();
       // console.log('AppConfigService loadAppConfig data: ', data['_body']['firebase']);
-      // console.log('AppConfigService loadAppConfig data: ', data);
+      console.log('### AppConfigService loadAppConfig data: ', data);
 
       const dataObject = JSON.parse(data['_body'])
       // console.log('AppConfigService loadAppConfig data as Object: ', dataObject);
@@ -88,6 +88,8 @@ export class AppConfigService {
       }
 
       this.appConfig = allconfig;
+      console.log('### AppConfigService loadAppConfig allconfig !!!! does not exist wsUrlRel');
+      // return this.appConfig;
 
     } catch (err) {
       console.log('AppConfigService loadAppConfig error : ', err);

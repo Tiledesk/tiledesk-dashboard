@@ -95,7 +95,7 @@ export class BrandService {
       // console.log('BrandService loadBrand remoteConfig -> true get remoteConfig response ', res);
 
       const remoteConfigData = JSON.parse(res['_body'])
-      console.log('BrandService loadBrand - remoteConfig is true - get remoteConfigData  res ', remoteConfigData);
+      // console.log('BrandService loadBrand - remoteConfig is true - get remoteConfigData  res ', remoteConfigData);
 
       if (remoteConfigData.hasOwnProperty("brandSrc")) {
         console.log('BrandService loadBrand remoteConfig is true - remoteConfigData has Property brandSrc');
