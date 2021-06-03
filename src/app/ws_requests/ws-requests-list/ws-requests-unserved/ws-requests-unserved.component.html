@@ -320,8 +320,11 @@
 
           <!-- ------ ====== MESSAGE ====== ------ -->
           <td [ngClass]="{'padding_5' : request?.tags?.length > 0}" (click)='goToRequestMsgs(request?.request_id)'
-            style="cursor:pointer; ">
-            <p class="column-td" [innerHTML]="getRequestText(request?.first_text)"> </p>
+            style="cursor:pointer; width: 215px;">
+            <!-- [innerHTML]="getRequestText(request?.first_text)" -->
+            <p class="column-td" style="max-width: 215px;white-space: nowrap; overflow: hidden;text-overflow: ellipsis;"> 
+              {{ request?.first_text }}
+            </p>
 
             <!-- --------------------------------------- -->
             <!-- Request Tag -->
