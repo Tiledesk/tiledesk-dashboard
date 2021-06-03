@@ -7,6 +7,7 @@ import { SsoService } from '../../core/sso.service';
 import * as firebase from 'firebase';
 import { isDevMode } from '@angular/core';
 import { AppConfigService } from '../../services/app-config.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'appdashboard-autologin',
@@ -19,6 +20,10 @@ export class AutologinComponent implements OnInit {
   FCM_Supported: boolean;
   APP_IS_DEV_MODE: boolean;
   isMobile: boolean;
+  FCMcurrentToken: string;
+  user: any;
+  public version: string = environment.VERSION;
+
   constructor(
     private route: ActivatedRoute,
     public auth: AuthService,
@@ -26,13 +31,24 @@ export class AutologinComponent implements OnInit {
     public sso: SsoService,
     public appConfigService: AppConfigService
   ) {
+
+    this.user = auth.user_bs.value;
+    this.auth.user_bs.subscribe((user) => {
+      // tslint:disable-next-line:no-debugger
+      // debugger
+      this.user = user;
+      console.log('!! AUTH WF USER ', user)
+    });
     this.APP_IS_DEV_MODE = isDevMode();
     console.log('SSO - autologin page isDevMode ', this.APP_IS_DEV_MODE);
 
 
 
     this.getJWTAndRouteParamsAndLogin();
-
+   
+    if (appConfigService.getConfig().pushEngine === 'firebase') {
+      this.checkIfFCMIsSupported();
+    }
 
   }
 
@@ -50,7 +66,7 @@ export class AutologinComponent implements OnInit {
 
 
       console.log('SSO - autologin getConfig firebaseAuth', this.appConfigService.getConfig().firebaseAuth)
-      if (this.appConfigService.getConfig().firebaseAuth === 'firebase') {
+      if (this.appConfigService.getConfig().firebaseAuth === 'true') {
 
         if (JWT && route) {
           this.ssoLoginWithCustomToken(JWT, route)
@@ -66,8 +82,6 @@ export class AutologinComponent implements OnInit {
   ngOnInit() {
 
     console.log('SSO - autologin page');
-
-    this.checkIfFCMIsSupported();
     this.detectMobile();
   }
 
@@ -97,6 +111,7 @@ export class AutologinComponent implements OnInit {
     console.log('SSO - ssoLogin getCurrentAuthenticatedUser JWT ', JWT);
     
     this.logout();
+
     this.sso.getCurrentAuthenticatedUser(JWT).subscribe(auth_user => {
       console.log('SSO - ssoLogin getCurrentAuthenticatedUser RES ', auth_user);
 
@@ -118,7 +133,6 @@ export class AutologinComponent implements OnInit {
   }
 
   ssoLoginWithCustomToken(JWT, route) {
-
     // -------------
     // @ Logout
     // -------------
@@ -138,9 +152,7 @@ export class AutologinComponent implements OnInit {
             console.log('SSO - ssoLoginWithCustomToken - signInWithCustomToken ', firebase_user);
 
 
-            // if (!this.APP_IS_DEV_MODE && this.FCM_Supported === true) {
-            //   this.auth.getPermission();
-            // }
+       
 
             if (firebase_user) {
               this.sso.getCurrentAuthenticatedUser(JWT).subscribe(auth_user => {
@@ -154,7 +166,11 @@ export class AutologinComponent implements OnInit {
 
                 this.router.navigate([route]);
 
-
+                if (this.appConfigService.getConfig().pushEngine === 'firebase') {
+                  if (!this.APP_IS_DEV_MODE && this.FCM_Supported === true) {
+                    this.getPermission(auth_user._id);
+                  }
+                }
 
                 // email: "pregino@f21test.it"
                 // emailverified: true
@@ -179,20 +195,65 @@ export class AutologinComponent implements OnInit {
       console.log('SSO - autologin chat21CreateFirebaseCustomToken ', error);
     }, () => {
       console.log('SSO - autologin chat21CreateFirebaseCustomToken * COMPLETE *');
-
     });
-
   }
 
+  getPermission(userid) {
+    console.log('SSO - LOGIN - 5. getPermission ')
+    const messaging = firebase.messaging();
+    if (firebase.messaging.isSupported()) {
+      // messaging.requestPermission()
+      Notification.requestPermission()
+        .then(() => {
+          console.log('SSO - LOGIN - 5B. >>>> getPermission Notification permission granted.');
+          return messaging.getToken()
+        })
+        .then(FCMtoken => {
+          console.log('>>>> getPermission FCMtoken', FCMtoken)
+          // Save FCM Token in Firebase
+          this.FCMcurrentToken = FCMtoken;
+          this.updateToken(FCMtoken, userid)
+        })
+        .catch((err) => {
+          console.log('SSO - LOGIN - 5C. >>>> getPermission Unable to get permission to notify.', err);
+        });
+    }
+  }
 
+  updateToken(FCMcurrentToken, userid) {
+    console.log('>>>> updateToken ', FCMcurrentToken);
+    // this.afAuth.authState.take(1).subscribe(user => {
+    if (!userid || !FCMcurrentToken) {
+      return
+    };
+    console.log('aggiorno token nel db');
+    const connection = FCMcurrentToken;
+    const updates = {};
+    const urlNodeFirebase = '/apps/tilechat'
+    const connectionsRefinstancesId = urlNodeFirebase + '/users/' + userid + '/instances/';
 
+    // this.connectionsRefinstancesId = this.urlNodeFirebase + "/users/" + userUid + "/instances/";
+    const device_model = {
+      device_model: navigator.userAgent,
+      language: navigator.language,
+      platform: 'web/dashboard',
+      platform_version: this.version
+    }
+
+    updates[connectionsRefinstancesId + connection] = device_model;
+
+    console.log('Firebase Cloud Messaging  - Aggiorno token ------------>', updates);
+    firebase.database().ref().update(updates)
+  }
+
+  
   logout() {
-    console.log('RUN LOGOUT FROM NAV-BAR')
+    console.log('SSO - autologin')
 
     console.log('SSO - autologin - WORKS WITH FIREBASE ')
     this.auth.showExpiredSessionPopup(false);
 
-    this.auth.signOut();
+    this.auth.signOut('autologin');
   }
 
 }
