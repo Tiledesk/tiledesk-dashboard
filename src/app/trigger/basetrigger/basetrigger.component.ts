@@ -399,12 +399,12 @@ export class BasetriggerComponent implements OnInit {
           label_key: translateConditions.message.label_key.VisitorCountryRegion,
           triggerType: 'message.create.from.requester',
           type: 'boolean',
-          operator: [
-            { id: 'zh-CN', label_key: 'Chinese' },
-            { id: 'en-GB', label_key: 'English' },
-            { id: 'fr-FR', label_key: 'French' },
-            { id: 'it-IT', label_key: 'Italian' }
-          ],
+          // operator: [
+          //   { id: 'zh-CN', label_key: 'Chinese' },
+          //   { id: 'en-GB', label_key: 'English' },
+          //   { id: 'fr-FR', label_key: 'French' },
+          //   { id: 'it-IT', label_key: 'Italian' }
+          // ],
           placeholder: translateConditions.message.placeholder.SelectLanguage
         },
         {
@@ -586,12 +586,12 @@ export class BasetriggerComponent implements OnInit {
           label_key: translateConditions.chat.label_key.VisitorCountryRegion,
           triggerType: 'request.create',
           type: 'boolean',
-          operator: [
-            { id: 'zh-CN', label_key: 'Chinese' },
-            { id: 'en-GB', label_key: 'English' },
-            { id: 'fr-FR', label_key: 'French' },
-            { id: 'it-IT', label_key: 'Italian' }
-          ],
+          // operator: [
+          //   { id: 'zh-CN', label_key: 'Chinese' },
+          //   { id: 'en-GB', label_key: 'English' },
+          //   { id: 'fr-FR', label_key: 'French' },
+          //   { id: 'it-IT', label_key: 'Italian' }
+          // ],
           // operator: [
           //   { id: 'zh', label_key: 'Chinese' },
           //   { id: 'en', label_key: 'English' },
