@@ -44,8 +44,8 @@ export class TopNavComponent {
 
   }
 
-  logout() {
-    this.auth.signOut();
-    this.display = 'none';
-  }
+  // logout() {
+  //   this.auth.signOut();
+  //   this.display = 'none';
+  // }
 }
