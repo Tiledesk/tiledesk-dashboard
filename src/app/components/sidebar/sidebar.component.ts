@@ -195,6 +195,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit() {
+        this.getLoggedUser();
         this.translateChangeAvailabilitySuccessMsg();
         this.translateChangeAvailabilityErrorMsg();
         this.getProfileImageStorage();
@@ -217,7 +218,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         // } else {
         //     this.trasform = 'none';
         // }
-        this.getLoggedUser();
+        
         this.getCurrentProject_andThenDepts();
 
         this.getUserAvailability();
@@ -242,6 +243,20 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.getChatUrl();
         this.isMac();
         this.listenHasDeleteUserProfileImage();
+    }
+    
+    getLoggedUser() {
+        this.auth.user_bs.subscribe((user) => {
+            console.log('USER GET IN SIDEBAR ', user)
+            // tslint:disable-next-line:no-debugger
+            // debugger
+            this.user = user;
+
+            if (user) {
+                this.currentUserId = user._id;
+                console.log('Current USER ID ', this.currentUserId)
+            }
+        });
     }
 
     getChatUrl() {
@@ -348,10 +363,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
                 if (dep[1] === "F") {
                     this.isVisibleDEP = false;
-                    console.log('PUBLIC-KEY (SIDEBAR) - dep isVisible', this.isVisibleDEP);
+                    // console.log('PUBLIC-KEY (SIDEBAR) - dep isVisible', this.isVisibleDEP);
                 } else {
                     this.isVisibleDEP = true;
-                    console.log('PUBLIC-KEY (SIDEBAR) - dep isVisible', this.isVisibleDEP);
+                    // console.log('PUBLIC-KEY (SIDEBAR) - dep isVisible', this.isVisibleDEP);
                 }
             }
 
@@ -370,63 +385,63 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             }
 
             if (key.includes("CAR")) {
-                console.log('PUBLIC-KEY (SIDEBAR) - key.includes("CAR")', key.includes("CAR"));
-                console.log('PUBLIC-KEY (SIDEBAR) - key', key);
+                // console.log('PUBLIC-KEY (SIDEBAR) - key.includes("CAR")', key.includes("CAR"));
+                // console.log('PUBLIC-KEY (SIDEBAR) - key', key);
                 let car = key.split(":");
-                console.log('PUBLIC-KEY (SIDEBAR) - car key&value', car);
+                // console.log('PUBLIC-KEY (SIDEBAR) - car key&value', car);
 
                 if (car[1] === "F") {
                     this.isVisibleCAR = false;
-                    console.log('PUBLIC-KEY (SIDEBAR) - car isVisible', this.isVisibleCAR);
+                    // console.log('PUBLIC-KEY (SIDEBAR) - car isVisible', this.isVisibleCAR);
                 } else {
                     this.isVisibleCAR = true;
-                    console.log('PUBLIC-KEY (SIDEBAR) - car isVisible', this.isVisibleCAR);
+                    // console.log('PUBLIC-KEY (SIDEBAR) - car isVisible', this.isVisibleCAR);
                 }
             }
 
 
             if (key.includes("LBS")) {
-                console.log('PUBLIC-KEY (SIDEBAR) - key', key);
+                // console.log('PUBLIC-KEY (SIDEBAR) - key', key);
                 let lbs = key.split(":");
-                console.log('PUBLIC-KEY (SIDEBAR) - car key&value', lbs);
+                // console.log('PUBLIC-KEY (SIDEBAR) - car key&value', lbs);
 
                 if (lbs[1] === "F") {
                     this.isVisibleLBS = false;
-                    console.log('PUBLIC-KEY (SIDEBAR) - lbs isVisible', this.isVisibleLBS);
+                    // console.log('PUBLIC-KEY (SIDEBAR) - lbs isVisible', this.isVisibleLBS);
                 } else {
                     this.isVisibleLBS = true;
-                    console.log('PUBLIC-KEY (SIDEBAR) - lbs isVisible', this.isVisibleLBS);
+                    // console.log('PUBLIC-KEY (SIDEBAR) - lbs isVisible', this.isVisibleLBS);
                 }
             }
 
             if (key.includes("APP")) {
-                console.log('PUBLIC-KEY (SIDEBAR) - key', key);
+                // console.log('PUBLIC-KEY (SIDEBAR) - key', key);
                 let lbs = key.split(":");
-                console.log('PUBLIC-KEY (SIDEBAR) - app key&value', lbs);
+                // console.log('PUBLIC-KEY (SIDEBAR) - app key&value', lbs);
 
                 if (lbs[1] === "F") {
                     this.isVisibleAPP = false;
-                    console.log('PUBLIC-KEY (SIDEBAR) - app isVisible', this.isVisibleAPP);
+                    // console.log('PUBLIC-KEY (SIDEBAR) - app isVisible', this.isVisibleAPP);
                 } else {
                     this.isVisibleAPP = true;
-                    console.log('PUBLIC-KEY (SIDEBAR) - app isVisible', this.isVisibleAPP);
+                    // console.log('PUBLIC-KEY (SIDEBAR) - app isVisible', this.isVisibleAPP);
                 }
             }
 
         });
 
         if (!this.public_Key.includes("CAR")) {
-            console.log('PUBLIC-KEY (SIDEBAR) - key.includes("CAR")', this.public_Key.includes("CAR"));
+            // console.log('PUBLIC-KEY (SIDEBAR) - key.includes("CAR")', this.public_Key.includes("CAR"));
             this.isVisibleCAR = false;
         }
 
         if (!this.public_Key.includes("LBS")) {
-            console.log('PUBLIC-KEY (SIDEBAR) - key.includes("LBS")', this.public_Key.includes("LBS"));
+            // console.log('PUBLIC-KEY (SIDEBAR) - key.includes("LBS")', this.public_Key.includes("LBS"));
             this.isVisibleLBS = false;
         }
 
         if (!this.public_Key.includes("APP")) {
-            console.log('PUBLIC-KEY (SIDEBAR) - key.includes("APP")', this.public_Key.includes("APP"));
+            // console.log('PUBLIC-KEY (SIDEBAR) - key.includes("APP")', this.public_Key.includes("APP"));
             this.isVisibleAPP = false;
         }
     }
@@ -435,7 +450,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     getCurrentRoute() {
         this.router.events.filter((event: any) => event instanceof NavigationEnd)
             .subscribe(event => {
-                console.log('SIDEBAR NavigationEnd ', event.url);
+                // console.log('SIDEBAR NavigationEnd ', event.url);
 
                 // USED FOR THE BADGE 'NEW'
                 if (event.url.indexOf('/activities') !== -1) {
@@ -587,7 +602,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     setImageProfileUrl_Native(storage) {
         this.userProfileImageurl = storage + 'images?path=uploads%2Fusers%2F' + this.currentUserId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
-        // console.log('PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
+        console.log('PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
         this.timeStamp = (new Date()).getTime();
     }
 
@@ -846,7 +861,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         console.log('SIDEBAR - CALLING GET CURRENT PROJECT  ', this.project)
         this.auth.project_bs.subscribe((project) => {
             this.project = project
-            console.log('00 -> SIDEBAR project from AUTH service subscription  ', this.project)
+            // console.log('00 -> SIDEBAR project from AUTH service subscription  ', this.project)
 
 
 
@@ -871,11 +886,11 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 // this.prjc_trial_days_left_percentage IT IS 
                 // A NEGATIVE NUMBER AND SO TO DETERMINE THE PERCENT IS MADE AN ADDITION
                 const perc = 100 + this.prjc_trial_days_left_percentage
-                console.log('SIDEBAR project perc ', perc)
+                // console.log('SIDEBAR project perc ', perc)
 
 
                 this.prjc_trial_days_left_percentage = this.round5(perc)
-                console.log('SIDEBAR project trial days left % rounded', this.prjc_trial_days_left_percentage);
+                // console.log('SIDEBAR project trial days left % rounded', this.prjc_trial_days_left_percentage);
                 // if (roundedPercentage === 0) {
                 //     this.prjc_trial_days_left_percentage = 0;
                 // }
@@ -905,11 +920,11 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 // this.prjc_trial_days_left_percentage = 95;
                 // this.prjc_trial_days_left_percentage = 100;
 
-                console.log('SIDEBAR project profile name ', this.prjct_profile_name);
-                console.log('SIDEBAR project trial expired ', this.prjct_trial_expired);
-                console.log('SIDEBAR project trial expired ', this.prjct_trial_expired);
-                console.log('SIDEBAR project trial days left  ', this.prjc_trial_days_left);
-                console.log('SIDEBAR project trial days left % ', this.prjc_trial_days_left_percentage);
+                // console.log('SIDEBAR project profile name ', this.prjct_profile_name);
+                // console.log('SIDEBAR project trial expired ', this.prjct_trial_expired);
+                // console.log('SIDEBAR project trial expired ', this.prjct_trial_expired);
+                // console.log('SIDEBAR project trial days left  ', this.prjc_trial_days_left);
+                // console.log('SIDEBAR project trial days left % ', this.prjc_trial_days_left_percentage);
 
 
 
@@ -927,9 +942,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             if (departments) {
                 departments.forEach(dept => {
                     if (dept.default === true) {
-                        console.log('SIDEBAR - GET DEPTS - DEFAULT DEPT ', dept);
+                        // console.log('SIDEBAR - GET DEPTS - DEFAULT DEPT ', dept);
                         this.default_dept_id = dept._id;
-                        console.log('SIDEBAR - GET DEPTS - DEFAULT DEPT ID: ', this.default_dept_id);
+                        // console.log('SIDEBAR - GET DEPTS - DEFAULT DEPT ID: ', this.default_dept_id);
                     }
                 })
             }
@@ -972,19 +987,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     }
 
-    getLoggedUser() {
-        this.auth.user_bs.subscribe((user) => {
-            console.log('USER GET IN SIDEBAR ', user)
-            // tslint:disable-next-line:no-debugger
-            // debugger
-            this.user = user;
 
-            if (user) {
-                this.currentUserId = user._id;
-                console.log('Current USER ID ', this.currentUserId)
-            }
-        });
-    }
 
 
 
@@ -1168,7 +1171,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     logout() {
         this.auth.showExpiredSessionPopup(false);
-        this.auth.signOut();
+        this.auth.signOut('sidebar');
 
     }
 
