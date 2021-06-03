@@ -57,34 +57,34 @@ export class BotTypeSelectComponent implements OnInit {
     console.log('AppConfigService getAppConfig (BOT-TYPE-SELECT) public_Key', this.public_Key)
     
     let keys = this.public_Key.split("-");
-    console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - public_Key keys', keys)
+    // console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - public_Key keys', keys)
 
     keys.forEach(key => {
       // console.log('NavbarComponent public_Key key', key)
       if (key.includes("DGF")) {
         // console.log('PUBLIC-KEY (SIDEBAR) - key', key);
         let dgf = key.split(":");
-        console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - dgf key&value', dgf);
+        // console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - dgf key&value', dgf);
 
         if (dgf[1] === "F") {
           this.dgfIsVisible = false;
-          console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - dgf dgfIsVisible', this.dgfIsVisible);
+          // console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - dgf dgfIsVisible', this.dgfIsVisible);
         } else {
           this.dgfIsVisible = true;
-          console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - dgf dgfIsVisible', this.dgfIsVisible);
+          // console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - dgf dgfIsVisible', this.dgfIsVisible);
         }
       }
       if (key.includes("NAT")) {
         // console.log('PUBLIC-KEY (SIDEBAR) - key', key);
         let nat = key.split(":");
-        console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - nat key&value', nat);
+        // console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - nat key&value', nat);
 
         if (nat[1] === "F") {
           this.natIsVisible = false;
-          console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - nat natIsVisible', this.natIsVisible);
+          // console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - nat natIsVisible', this.natIsVisible);
         } else {
           this.natIsVisible = true;
-          console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - nat natIsVisible', this.natIsVisible);
+          // console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - nat natIsVisible', this.natIsVisible);
         }
       }
     });

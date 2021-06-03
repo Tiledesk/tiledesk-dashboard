@@ -125,31 +125,31 @@ export class SignupComponent implements OnInit, AfterViewInit {
     console.log('NavbarComponent public_Key', this.public_Key)
 
     let keys = this.public_Key.split("-");
-    console.log('PUBLIC-KEY (SIGNUP) - public_Key keys', keys)
+    // console.log('PUBLIC-KEY (SIGNUP) - public_Key keys', keys)
 
-    console.log('PUBLIC-KEY (SIGNUP) - public_Key Arry includes MTT', this.public_Key.includes("MTT"));
+    // console.log('PUBLIC-KEY (SIGNUP) - public_Key Arry includes MTT', this.public_Key.includes("MTT"));
 
     if (this.public_Key.includes("MTT") === true) {
 
       keys.forEach(key => {
         // console.log('NavbarComponent public_Key key', key)
         if (key.includes("MTT")) {
-          console.log('PUBLIC-KEY (SIGNUP) - key', key);
+          // console.log('PUBLIC-KEY (SIGNUP) - key', key);
           let mt = key.split(":");
-          console.log('PUBLIC-KEY (SIGNUP) - mt key&value', mt);
+          // console.log('PUBLIC-KEY (SIGNUP) - mt key&value', mt);
           if (mt[1] === "F") {
             this.MT = false;
-            console.log('PUBLIC-KEY (SIGNUP) - mt is', this.MT);
+            // console.log('PUBLIC-KEY (SIGNUP) - mt is', this.MT);
           } else {
             this.MT = true;
-            console.log('PUBLIC-KEY (SIGNUP) - mt is', this.MT);
+            // console.log('PUBLIC-KEY (SIGNUP) - mt is', this.MT);
           }
         }
       });
 
     } else {
       this.MT = false;
-      console.log('PUBLIC-KEY (SIGNUP) - mt is', this.MT);
+      // console.log('PUBLIC-KEY (SIGNUP) - mt is', this.MT);
     }
 
     this.checkCurrentUrlAndSkipWizard();

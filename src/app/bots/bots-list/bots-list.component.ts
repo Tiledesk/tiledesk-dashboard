@@ -257,13 +257,13 @@ export class BotListComponent implements OnInit {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
     console.log('AppConfigService getAppConfig (BOT LIST) public_Key', this.public_Key);
     let keys = this.public_Key.split("-");
-    console.log('PUBLIC-KEY (BOT LIST) keys', keys)
+    // console.log('PUBLIC-KEY (BOT LIST) keys', keys)
     keys.forEach(key => {
 
       if (key.includes("ANA")) {
-        console.log('PUBLIC-KEY (BOT LIST) - key', key);
+        // console.log('PUBLIC-KEY (BOT LIST) - key', key);
         let ana = key.split(":");
-        console.log('PUBLIC-KEY (BOT LIST) - ana key&value', ana);
+        // console.log('PUBLIC-KEY (BOT LIST) - ana key&value', ana);
         if (ana[1] === "F") {
           this.isVisibleAnalytics = false;
         } else {

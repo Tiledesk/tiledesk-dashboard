@@ -51,7 +51,7 @@ export class FooterComponent implements OnInit {
 
   ngOnInit() {
     console.log('version (footer.component)  ', this.version);
-    this.brandLog()
+    // this.brandLog()
   }
 
   brandLog() {

@@ -122,34 +122,34 @@ export class SigninComponent implements OnInit {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
 
     let keys = this.public_Key.split("-");
-    console.log('PUBLIC-KEY (SIGN-IN) - public_Key keys', keys)
+    // console.log('PUBLIC-KEY (SIGN-IN) - public_Key keys', keys)
 
     keys.forEach(key => {
       if (key.includes("V1L")) {
-        console.log('PUBLIC-KEY (SIGN-IN) - key', key);
+        // console.log('PUBLIC-KEY (SIGN-IN) - key', key);
         let v1l = key.split(":");
-        console.log('PUBLIC-KEY (SIGN-IN) - v1l key&value', v1l);
+        // console.log('PUBLIC-KEY (SIGN-IN) - v1l key&value', v1l);
 
         if (v1l[1] === "F") {
           this.isVisibleV1L = false;
-          console.log('PUBLIC-KEY (SIGN-IN) - v1l isVisible', this.isVisibleV1L);
+          // console.log('PUBLIC-KEY (SIGN-IN) - v1l isVisible', this.isVisibleV1L);
         } else {
           this.isVisibleV1L = true;
-          console.log('PUBLIC-KEY (SIGN-IN) - v1l isVisible', this.isVisibleV1L);
+          // console.log('PUBLIC-KEY (SIGN-IN) - v1l isVisible', this.isVisibleV1L);
         }
       }
 
       if (key.includes("SUP")) {
-        console.log('PUBLIC-KEY (SIGN-IN) - key', key);
+        // console.log('PUBLIC-KEY (SIGN-IN) - key', key);
         let sup = key.split(":");
-        console.log('PUBLIC-KEY (SIGN-IN) - sup key&value ', sup);
+        // console.log('PUBLIC-KEY (SIGN-IN) - sup key&value ', sup);
 
         if (sup[1] === "F") {
           this.SUP = false;
-          console.log('PUBLIC-KEY (SIGN-IN) - sup is ', this.SUP);
+          // console.log('PUBLIC-KEY (SIGN-IN) - sup is ', this.SUP);
         } else {
           this.SUP = true;
-          console.log('PUBLIC-KEY (SIGN-IN) - sup is ', this.SUP);
+          // console.log('PUBLIC-KEY (SIGN-IN) - sup is ', this.SUP);
         }
       }
       /* this generates bugs: the loop goes into the false until the "key" matches "V1L" */
@@ -159,13 +159,13 @@ export class SigninComponent implements OnInit {
     });
 
     if (!this.public_Key.includes("V1L")) {
-      console.log('PUBLIC-KEY (SIGN-IN) - key.includes("V1L")', this.public_Key.includes("V1L"));
+      // console.log('PUBLIC-KEY (SIGN-IN) - key.includes("V1L")', this.public_Key.includes("V1L"));
       this.isVisibleV1L = false;
     }
 
     if (!this.public_Key.includes("SUP")) {
       this.SUP = false;
-      console.log('PUBLIC-KEY (SIGN-IN) - SUP is', this.SUP);
+      // console.log('PUBLIC-KEY (SIGN-IN) - SUP is', this.SUP);
     }
 
   }

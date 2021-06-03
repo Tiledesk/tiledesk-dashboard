@@ -335,50 +335,42 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         console.log('NavbarComponent public_Key', this.public_Key)
 
         let keys = this.public_Key.split("-");
-        console.log('PUBLIC-KEY (Navbar) - public_Key keys', keys)
+        // console.log('PUBLIC-KEY (Navbar) - public_Key keys', keys)
 
         keys.forEach(key => {
             // console.log('NavbarComponent public_Key key', key)
             if (key.includes("PAY")) {
-                console.log('PUBLIC-KEY (Navbar) - key', key);
+                // console.log('PUBLIC-KEY (Navbar) - key', key);
                 let pay = key.split(":");
-                console.log('PUBLIC-KEY (Navbar) - pay key&value', pay);
+                // console.log('PUBLIC-KEY (Navbar) - pay key&value', pay);
                 if (pay[1] === "F") {
                     this.isVisible = false;
-                    console.log('PUBLIC-KEY (Navbar) - pay isVisible', this.isVisible);
+                    // console.log('PUBLIC-KEY (Navbar) - pay isVisible', this.isVisible);
                 } else {
                     this.isVisible = true;
-                    console.log('PUBLIC-KEY (Navbar) - pay isVisible', this.isVisible);
+                    // console.log('PUBLIC-KEY (Navbar) - pay isVisible', this.isVisible);
                 }
             }
 
             if (key.includes("MTT")) {
-                console.log('PUBLIC-KEY (Navbar) - key', key);
+                // console.log('PUBLIC-KEY (Navbar) - key', key);
                 let mt = key.split(":");
-                console.log('PUBLIC-KEY (Navbar) - mt key&value', mt);
+                // console.log('PUBLIC-KEY (Navbar) - mt key&value', mt);
                 if (mt[1] === "F") {
                     this.MT = false;
-                    console.log('PUBLIC-KEY (Navbar) - mt is', this.MT);
+                    // console.log('PUBLIC-KEY (Navbar) - mt is', this.MT);
                 } else {
                     this.MT = true;
-                    console.log('PUBLIC-KEY (Navbar) - mt is', this.MT);
+                    // console.log('PUBLIC-KEY (Navbar) - mt is', this.MT);
                 }
             }
         });
 
         if (!this.public_Key.includes("MTT")) {
             this.MT = false;
-            console.log('PUBLIC-KEY (Navbar) - mt is', this.MT);
+            // console.log('PUBLIC-KEY (Navbar) - mt is', this.MT);
         }
-        // console.log('NavbarComponent eoscode', this.eos);
-        // if (this.eos && this.eos === publicKey) {
-        //     this.isVisible = true;
-        //     console.log('NavbarComponent eoscode isVisible ', this.isVisible);
-        // } else {
-
-        //     this.isVisible = false;
-        //     console.log('NavbarComponent eoscode isVisible ', this.isVisible);
-        // }
+   
     }
 
     getProjects() {
@@ -669,10 +661,10 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
                 if (this.route.indexOf('/unserved-request-for-panel') !== -1) {
                     this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE = true;
-                    console.log('NAVBAR route detected - IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE  ', this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE);
+                    // console.log('NAVBAR route detected - IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE  ', this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE);
                 } else {
                     this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE = false;
-                    console.log('NAVBAR route detected - IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE  ', this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE);
+                    // console.log('NAVBAR route detected - IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE  ', this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE);
                 }
 
 
@@ -728,10 +720,10 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                     // this.prjc_trial_days_left_percentage IT IS 
                     // A NEGATIVE NUMBER AND SO TO DETERMINE THE PERCENT IS MADE AN ADDITION
                     const perc = 100 + this.prjc_trial_days_left_percentage
-                    console.log('ProjectPlanService (navbar) project perc ', perc)
+                    // console.log('ProjectPlanService (navbar) project perc ', perc)
 
                     this.prjc_trial_days_left_percentage = this.round5(perc);
-                    console.log('ProjectPlanService (navbar) trial days left % rounded', this.prjc_trial_days_left_percentage);
+                    // console.log('ProjectPlanService (navbar) trial days left % rounded', this.prjc_trial_days_left_percentage);
 
                 } else if (this.prjct_trial_expired === true) {
                     this.prjc_trial_days_left_percentage = 100;
@@ -1469,7 +1461,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     logout() {
         console.log('RUN LOGOUT FROM NAV-BAR')
         this.auth.showExpiredSessionPopup(false);
-        this.auth.signOut();
+        this.auth.signOut('navbar');
     }
 
     testExpiredSessionFirebaseLogout() {
