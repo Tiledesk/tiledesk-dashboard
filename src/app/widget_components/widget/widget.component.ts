@@ -163,9 +163,9 @@ export class WidgetComponent implements OnInit, OnDestroy {
     keys.forEach(key => {
       // console.log('NavbarComponent public_Key key', key)
       if (key.includes("MTL")) {
-        console.log('PUBLIC-KEY (Widget) - mlt', key);
+        // console.log('PUBLIC-KEY (Widget) - mlt', key);
         let mlt = key.split(":");
-        console.log('PUBLIC-KEY (Widget) - mlt key&value', mlt);
+        // console.log('PUBLIC-KEY (Widget) - mlt key&value', mlt);
         if (mlt[1] === "F") {
           this.isVisible = false;
         } else {
