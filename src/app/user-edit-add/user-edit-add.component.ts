@@ -14,6 +14,8 @@ import { Location } from '@angular/common';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../services/brand.service';
 import { helpdocurl_users_role } from '../utils/util';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 const swal = require('sweetalert');
 
 @Component({
@@ -63,7 +65,11 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
   browserLang: string;
   subscription: Subscription;
   showSpinner = true;
+
   storageBucket: string;
+  UPLOAD_ENGINE_IS_FIREBASE: boolean;
+  baseUrl: string;
+
   user_id: string;
   user_fullname: string;
   projectUser: any;
@@ -83,8 +89,10 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
   isUNIS: boolean = false;
 
   onlyOwnerCanManageTheAccountPlanMsg: string;
-  learnMoreAboutDefaultRoles : string;
+  learnMoreAboutDefaultRoles: string;
   KNOWLEDGE_BASE_USER_ROLE_URL = helpdocurl_users_role
+
+  private unsubscribe$: Subject<any> = new Subject<any>();
   constructor(
     private router: Router,
     private auth: AuthService,
@@ -96,7 +104,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
     public appConfigService: AppConfigService,
     public location: Location,
     public brandService: BrandService
-  ) { 
+  ) {
     const brand = brandService.getBrand();
     this.tparams = brand;
   }
@@ -126,7 +134,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
     this.getProjectPlan();
     this.getPendingInvitation();
     this.getBrowserLang();
-    this.getStorageBucket();
+    this.getProfileImageStorage();
     this.getTranslations();
     this.getLoggedUser();
     this.getUserRole();
@@ -167,9 +175,9 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
 
 
       if (key.includes("PSA")) {
-        console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
+        // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
         let psa = key.split(":");
-        console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - pay key&value', psa);
+        // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - pay key&value', psa);
         if (psa[1] === "F") {
           this.isVisibleAdvancedFeatureChatLimit = false;
         } else {
@@ -180,7 +188,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
 
 
     if (!this.public_Key.includes("PSA")) {
-      console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("PSA")', this.public_Key.includes("PSA"));
+      // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("PSA")', this.public_Key.includes("PSA"));
       this.isVisibleAdvancedFeatureChatLimit = false;
     }
 
@@ -240,7 +248,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
         // console.log('+ + + change Availability Error Notication Msg', text)
       });
 
-      this.translateModalOnlyOwnerCanManageProjectAccount()
+    this.translateModalOnlyOwnerCanManageProjectAccount()
   }
 
   translateModalOnlyOwnerCanManageProjectAccount() {
@@ -250,7 +258,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
         this.onlyOwnerCanManageTheAccountPlanMsg = translation;
       });
 
-    
+
     this.translate.get('LearnMoreAboutDefaultRoles')
       .subscribe((translation: any) => {
         // console.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
@@ -258,10 +266,17 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
       });
   }
 
-  getStorageBucket() {
-    const firebase_conf = this.appConfigService.getConfig().firebase;
-    this.storageBucket = firebase_conf['storageBucket'];
-    console.log('STORAGE-BUCKET UserEditAddComponent ', this.storageBucket)
+  getProfileImageStorage() {
+    if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+      this.UPLOAD_ENGINE_IS_FIREBASE = true;
+      const firebase_conf = this.appConfigService.getConfig().firebase;
+      this.storageBucket = firebase_conf['storageBucket'];
+      console.log('UserEditAddComponent IMAGE STORAGE  ', this.storageBucket, 'usecase firebase')
+    } else {
+      this.UPLOAD_ENGINE_IS_FIREBASE = false;
+      this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
+      console.log('UserEditAddComponent IMAGE STORAGE ', this.baseUrl, 'usecase native')
+    }
   }
 
   getBrowserLang() {
@@ -293,7 +308,11 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
   }
 
   getProjectPlan() {
-    this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
+    this.subscription = this.prjctPlanService.projectPlan$
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((projectProfileData: any) => {
       console.log('UserEditAddComponent - project Profile Data', projectProfileData)
       if (projectProfileData) {
 
@@ -313,6 +332,8 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 
@@ -339,7 +360,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
     console.log('UserEditAddComponent openModalSubsExpired ');
 
     if (this.CURRENT_USER_ROLE === 'owner') {
-    this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+      this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
     } else {
       this.presentModalOnlyOwnerCanManageTheAccountPlan();
     }

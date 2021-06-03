@@ -47,6 +47,9 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
   displayBtnScrollToBottom = 'none';
 
   storageBucket: string;
+  baseUrl: string;
+  UPLOAD_ENGINE_IS_FIREBASE: boolean;
+
   requestid: string;
   requester_id: string;
   chat_content_height: any;
@@ -76,7 +79,7 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
   ) { super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify); }
 
   ngOnInit() {
-    this.getStorageBucket();
+    this.getProfileImageStorage();
     this.getLoggedUser()
     console.log('REQUEST-DTLS-X-PANEL REQUEST ', this.selectedRequest)
     this.request = this.selectedRequest
@@ -217,7 +220,7 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
     // -----------------------------------------------------------------------------------------
     // this.contactsService.subscribeToWS_RequesterPresence(requester_id);
     this.wsRequestsService.subscribeToWS_RequesterPresence(requester_id);
-    
+
     this.getWsRequesterPresence();
 
   }
@@ -328,10 +331,20 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
 
   }
 
-  getStorageBucket() {
-    const firebase_conf = this.appConfigService.getConfig().firebase;
-    this.storageBucket = firebase_conf['storageBucket'];
-    console.log('STORAGE-BUCKET REQUEST-DTLS-X-PANEL ', this.storageBucket)
+  getProfileImageStorage() {
+
+    if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+      this.UPLOAD_ENGINE_IS_FIREBASE = true;
+      const firebase_conf = this.appConfigService.getConfig().firebase;
+      this.storageBucket = firebase_conf['storageBucket'];
+      console.log('REQUEST-DTLS-X-PANEL IMAGE STOTAGE  ', this.storageBucket, 'usecase firebase')
+    } else {
+      this.UPLOAD_ENGINE_IS_FIREBASE = false;
+      this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
+
+      console.log('REQUEST-DTLS-X-PANEL IMAGE STORAGE ', this.baseUrl, 'usecase native')
+    }
+
   }
 
 
@@ -371,7 +384,11 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
 
           } else {
 
-            this.messagesList[i]['avatar_url'] = 'https://firebasestorage.googleapis.com/v0/b/' + this.storageBucket + '/o/profiles%2F' + this.messagesList[i].sender + '%2Fphoto.jpg?alt=media'
+            if (this.UPLOAD_ENGINE_IS_FIREBASE === true) {
+              this.messagesList[i]['avatar_url'] = 'https://firebasestorage.googleapis.com/v0/b/' + this.storageBucket + '/o/profiles%2F' + this.messagesList[i].sender + '%2Fphoto.jpg?alt=media'
+            } else {
+              this.messagesList[i]['avatar_url'] = this.baseUrl + 'images?path=uploads%2Fusers%2F' + this.messagesList[i].sender + '%2Fimages%2Fthumbnails_200_200-photo.jpg'
+            }
           }
 
           // sender_in_curr_msg = this.messagesList[i].sender

@@ -60,6 +60,8 @@ export class GroupEditAddComponent implements OnInit {
 
   count: number;
   storageBucket: string;
+  baseUrl: string;
+  UPLOAD_ENGINE_IS_FIREBASE: boolean;
 
   constructor(
     private router: Router,
@@ -86,13 +88,20 @@ export class GroupEditAddComponent implements OnInit {
     this.detectsCreateEditInTheUrl();
 
     this.getCurrentProject();
-    this.getStorageBucket();
+    this.getProfileImageStorage();
   }
 
-  getStorageBucket() {
-    const firebase_conf = this.appConfigService.getConfig().firebase;
-    this.storageBucket = firebase_conf['storageBucket'];
-    console.log('STORAGE-BUCKET Group edit-add ', this.storageBucket)
+  getProfileImageStorage() {
+    if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+      this.UPLOAD_ENGINE_IS_FIREBASE = true;
+      const firebase_conf = this.appConfigService.getConfig().firebase;
+      this.storageBucket = firebase_conf['storageBucket'];
+      console.log('GROUP-EDIT-ADD IMAGE STORAGE ' ,this.storageBucket, 'usecase firebase')
+    } else {
+      this.UPLOAD_ENGINE_IS_FIREBASE = false;
+      this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
+      console.log('GROUP-EDIT-ADD IMAGE STORAGE ', this.baseUrl, 'usecase native')
+    }
   }
 
   // TRANSLATION

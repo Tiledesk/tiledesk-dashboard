@@ -45,7 +45,7 @@ export class UsersService {
   // public currentUserWsIsBusy$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null); // Moved to ws-requests.sercice
   public currentUserWsBusyAndAvailabilityForProject$: BehaviorSubject<[]> = new BehaviorSubject<[]>([]);
   public contactsEvents$: BehaviorSubject<[]> = new BehaviorSubject<[]>([]);
-  public storageBucket$: BehaviorSubject<string> = new BehaviorSubject<string>('');
+  public imageStorage$: BehaviorSubject<string> = new BehaviorSubject<string>('');
   // public has_clicked_logoutfrom_mobile_sidebar: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   // public has_clicked_logoutfrom_mobile_sidebar_project_undefined: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
@@ -224,15 +224,15 @@ export class UsersService {
       let imageStorage = ''
       if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
         imageStorage = this.getStorageBucket();
-        console.log('=== === USER-SERV IMAGE STORAGE ', imageStorage , 'usecase Firebase');
+        console.log('=== === USER-SERV IMAGE STORAGE ', imageStorage, 'usecase Firebase');
 
       } else {
         imageStorage = this.getBaseUrl();
-        console.log('=== === USER-SERV IMAGE STORAGE ', imageStorage , 'usecase Native');
+        console.log('=== === USER-SERV IMAGE STORAGE ', imageStorage, 'usecase Native');
       }
 
       if (imageStorage) {
-        this.storageBucket$.next(imageStorage)
+        this.imageStorage$.next(imageStorage)
 
         this.verifyIfExistProfileImage(this.currentUserId, imageStorage);
       }
@@ -762,8 +762,13 @@ export class UsersService {
           if (projectUser && projectUser !== null) {
             if (projectUser.id_user) {
               console.log('!! USER SERVICE  - PROJECT-USERS - USER ', projectUser.id_user, projectUser.id_user._id)
-
-              const imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + this.storageBucket + "/o/profiles%2F" + projectUser.id_user._id + "%2Fphoto.jpg?alt=media"
+             
+              let imgUrl = ''
+              if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+                imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + this.storageBucket + "/o/profiles%2F" + projectUser.id_user._id + "%2Fphoto.jpg?alt=media"
+              } else {
+                imgUrl = this.baseUrl + "images?path=uploads%2Fusers%2F" + projectUser.id_user._id + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
+              }
 
               this.checkImageExists(imgUrl, (existsImage) => {
                 if (existsImage == true) {

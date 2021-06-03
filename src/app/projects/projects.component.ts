@@ -142,53 +142,54 @@ export class ProjectsComponent implements OnInit, OnDestroy {
       if (user) {
         this.currentUserId = user._id;
         console.log('PROJECT COMP Current USER ID ', this.currentUserId)
-      }
 
-      if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
-        this.UPLOAD_ENGINE_IS_FIREBASE = true
-        this.ckeckUserPhotoProfileOnFirebase();
-      } else {
-        this.UPLOAD_ENGINE_IS_FIREBASE = false
-        this.ckeckUserPhotoProfileOnNative();
+
+        if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+          this.UPLOAD_ENGINE_IS_FIREBASE = true
+          this.ckeckUserPhotoProfileOnFirebase(user);
+        } else {
+          this.UPLOAD_ENGINE_IS_FIREBASE = false
+          this.ckeckUserPhotoProfileOnNative(user);
+        }
       }
     });
   }
 
-  ckeckUserPhotoProfileOnFirebase() {
+  ckeckUserPhotoProfileOnFirebase(user) {
     const firebase_conf = this.appConfigService.getConfig().firebase;
     this.storageBucket = firebase_conf['storageBucket'];
     console.log('STORAGE-BUCKET Projects ', this.storageBucket)
 
     const imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + this.storageBucket + "/o/profiles%2F" + this.currentUserId + "%2Fphoto.jpg?alt=media"
-    console.log('PROJECTS-LIST - check if exist imgUrl ',imgUrl, '(usecase firebase)');
-   
+    console.log('PROJECTS-LIST - check if exist imgUrl ', imgUrl, '(usecase firebase)');
+
     this.checkImageExists(imgUrl, (existsImage) => {
       if (existsImage == true) {
 
-        this.user.hasImage = true;
+       user.hasImage = true;
         console.log('PROJECTS-LIST - IMAGE EXIST X USER', this.user, '(usecase firebase)');
       }
       else {
-        this.user.hasImage = false;
+       user.hasImage = false;
         console.log('PROJECTS-LIST - IMAGE NOT EXIST X USER', this.user, '(usecase firebase)');
       }
     });
   }
 
-  ckeckUserPhotoProfileOnNative() {
+  ckeckUserPhotoProfileOnNative(user) {
     this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
     const imgUrl = this.baseUrl + 'images?path=uploads%2Fusers%2F' + this.currentUserId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
-    console.log('PROJECTS-LIST - check if exist imgUrl ',imgUrl, '(usecase native)');
-    
+    console.log('PROJECTS-LIST - check if exist imgUrl ', imgUrl, '(usecase native)');
+
     this.checkImageExists(imgUrl, (existsImage) => {
       if (existsImage == true) {
 
-        this.user.hasImage = true;
-        console.log('PROJECTS-LIST - IMAGE EXIST X USER', this.user, '(usecase native)');
+        user.hasImage = true;
+        console.log('PROJECTS-LIST - IMAGE EXIST X USER', user, '(usecase native)');
       }
       else {
-        this.user.hasImage = false;
-        console.log('PROJECTS-LIST - IMAGE NOT EXIST X USER', this.user, '(usecase native)');
+        user.hasImage = false;
+        console.log('PROJECTS-LIST - IMAGE NOT EXIST X USER', user, '(usecase native)');
       }
     });
   }
@@ -205,8 +206,8 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   }
 
 
-  
- 
+
+
 
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
@@ -223,21 +224,21 @@ export class ProjectsComponent implements OnInit, OnDestroy {
       keys.forEach(key => {
         // console.log('NavbarComponent public_Key key', key)
         if (key.includes("MTT")) {
-          console.log('PUBLIC-KEY (PROJECTS-LIST) - key', key);
+          // console.log('PUBLIC-KEY (PROJECTS-LIST) - key', key);
           let mt = key.split(":");
-          console.log('PUBLIC-KEY (PROJECTS-LIST) - mt key&value', mt);
+          // console.log('PUBLIC-KEY (PROJECTS-LIST) - mt key&value', mt);
           if (mt[1] === "F") {
             this.MT = false;
-            console.log('PUBLIC-KEY (PROJECTS-LIST) - mt is', this.MT);
+            // console.log('PUBLIC-KEY (PROJECTS-LIST) - mt is', this.MT);
           } else {
             this.MT = true;
-            console.log('PUBLIC-KEY (PROJECTS-LIST) - mt is', this.MT);
+            // console.log('PUBLIC-KEY (PROJECTS-LIST) - mt is', this.MT);
           }
         }
       });
     } else {
       this.MT = false;
-      console.log('PUBLIC-KEY (PROJECTS-LIST) - mt is', this.MT);
+      // console.log('PUBLIC-KEY (PROJECTS-LIST) - mt is', this.MT);
     }
   }
 
@@ -727,7 +728,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
   logout() {
     this.auth.showExpiredSessionPopup(false);
-    this.auth.signOut();
+    this.auth.signOut('projects');
   }
 
   testExpiredSessionFirebaseLogout() {

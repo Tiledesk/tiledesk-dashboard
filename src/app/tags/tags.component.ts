@@ -31,6 +31,8 @@ export class TagsComponent implements OnInit, AfterViewInit {
 
   isOpenEditTagColorDropdown = false;
   storageBucket: string;
+  baseUrl: string;
+  UPLOAD_ENGINE_IS_FIREBASE: boolean;
   hasError = false;
 
   tagColor = [
@@ -56,7 +58,7 @@ export class TagsComponent implements OnInit, AfterViewInit {
     this.auth.checkRoleForCurrentProject();
     this.getTag();
     this.translateNotificationMsgs();
-    this.getStorageBucket();
+    this.getImageStorage();
   }
 
   ngAfterViewInit() {
@@ -71,10 +73,18 @@ export class TagsComponent implements OnInit, AfterViewInit {
     // }
   }
 
-  getStorageBucket() {
-    const firebase_conf = this.appConfigService.getConfig().firebase;
-    this.storageBucket = firebase_conf['storageBucket'];
-    console.log('STORAGE-BUCKET tags comp ', this.storageBucket)
+  getImageStorage() {
+    if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+      this.UPLOAD_ENGINE_IS_FIREBASE = true;
+      const firebase_conf = this.appConfigService.getConfig().firebase;
+      this.storageBucket = firebase_conf['storageBucket'];
+      console.log('TAGS IMAGE STORAGE ', this.storageBucket, 'usecase native')
+    } else {
+      this.UPLOAD_ENGINE_IS_FIREBASE = false;
+
+      this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
+      console.log('TAGS IMAGE STORAGE ', this.baseUrl, 'usecase native')
+    }
   }
 
   translateNotificationMsgs() {

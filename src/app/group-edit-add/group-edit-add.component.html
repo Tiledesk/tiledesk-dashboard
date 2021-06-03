@@ -1,7 +1,7 @@
 <div class="navbar-brand" style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px">
   <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
     (click)="goBack()">keyboard_arrow_left</i>
-    <!-- (click)="goBackGroupList()" -->
+  <!-- (click)="goBackGroupList()" -->
   <span *ngIf="CREATE_VIEW">
     {{ "GroupsAddEditPage.AddGroup" | translate }}
   </span>
@@ -284,10 +284,23 @@
                     <!-- click)="goToMemberProfile(projectUser?.id_user?._id) -->
                     <td *ngIf="projectUser?.is_group_member" (click)="goToMemberProfile(projectUser?._id)"
                       style="cursor:pointer">
-                      <img
+
+                      <!-- --------------------------------------------------- -->
+                      <!-- USECASE uploadEngine Firebase -->
+                      <!-- --------------------------------------------------- -->
+                      <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
                         style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;"
                         class="user-img"
                         src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media"
+                        onerror="this.src='assets/img/no_image_user.png'" />
+
+                      <!-- --------------------------------------------------- -->
+                      <!-- USECASE uploadEngine Native -->
+                      <!-- --------------------------------------------------- -->
+                      <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
+                        style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;"
+                        class="user-img"
+                        src="{{baseUrl}}images?path=uploads%2Fusers%2F{{projectUser?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                         onerror="this.src='assets/img/no_image_user.png'" />
 
                       <span class="tooltipx">
@@ -359,7 +372,7 @@
         </button>
         <h4 class="modal-title" style="font-family: 'Google Sans',sans-serif!important">
           {{ "GroupsAddEditPage.AddMembersToTheGroup" | translate }}
-      
+
           <!-- <span style="font-weight: 500;"> {{ groupNameToUpdate }} </span> -->
         </h4>
       </div>
@@ -414,11 +427,25 @@
 
 
                       <td style="padding-left:10px;" rel="tooltip" title="{{ project_user?.id_user?._id }}">
-                        <img
+                        <!-- --------------------------------------------------- -->
+                        <!-- USECASE uploadEngine Firebase -->
+                        <!-- --------------------------------------------------- -->
+                        <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
                           style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;"
                           class="user-img"
                           src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{project_user?.id_user?._id}}%2Fphoto.jpg?alt=media"
                           onerror="this.src='assets/img/no_image_user.png'" />
+
+                        <!-- --------------------------------------------------- -->
+                        <!-- USECASE uploadEngine Native -->
+                        <!-- --------------------------------------------------- -->
+                        <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
+                          style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;"
+                          class="user-img"
+                          src="{{baseUrl}}images?path=uploads%2Fusers%2F{{project_user?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                          onerror="this.src='assets/img/no_image_user.png'" />
+
+
                         <span style="font-size:13px"> {{ project_user?.id_user?.firstname }} </span>
                         <span style="text-transform: uppercase; font-size:13px">
                           {{project_user?.id_user?.lastname}}</span>

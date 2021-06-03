@@ -157,6 +157,8 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
 
   C21_BODY_HOME = true
   storageBucket: string;
+  UPLOAD_ENGINE_IS_FIREBASE: boolean;
+  imageUrl: string;
   currentUserId: string;
 
   widget_preview_selected = '0000';
@@ -187,7 +189,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   noDefaultLanguageIsSetUpMsg: string;
   noLanguagesAreSetUpMsg: string;
   goToMultilanguagePageMsg: string;
-  goToMultilanguageSectionMsg : string;
+  goToMultilanguageSectionMsg: string;
   setDefaultLangInMultilanguageSection: string;
   toAddLanguagesToYourProjectMsg: string;
   cancelMsg: string;
@@ -218,7 +220,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   ngOnInit() {
     this.auth.checkRoleForCurrentProject();
     // this.HAS_SELECT_INSTALL_WITH_CODE = false
-    this.getStorageBucket();
+    this.getProfileImageStorage();
     this.getWidgetUrl();
     this.getLoggedUser();
     this.onInitWindowWidth();
@@ -362,10 +364,20 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
 
   }
 
-  getStorageBucket() {
-    const firebase_conf = this.appConfigService.getConfig().firebase;
-    this.storageBucket = firebase_conf['storageBucket'];
-    console.log('STORAGE-BUCKET Sidebar ', this.storageBucket)
+  getProfileImageStorage() {
+    if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+      this.UPLOAD_ENGINE_IS_FIREBASE = true;
+      const firebase_conf = this.appConfigService.getConfig().firebase;
+      this.imageUrl = firebase_conf['storageBucket'];
+
+      console.log('WIDGET DESIGN IMAGE STORAGE ', this.imageUrl, 'usecase firebase')
+    } else {
+      this.UPLOAD_ENGINE_IS_FIREBASE = false;
+      this.imageUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
+      console.log('WIDGET DESIGN IMAGE STORAGE ', this.imageUrl, 'usecase native')
+
+    }
+
   }
 
   getLoggedUser() {
@@ -528,9 +540,9 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     keys.forEach(key => {
       // console.log('NavbarComponent public_Key key', key)
       if (key.includes("MTL")) {
-        console.log('PUBLIC-KEY (Widget-design) - mlt', key);
+        // console.log('PUBLIC-KEY (Widget-design) - mlt', key);
         let mlt = key.split(":");
-        console.log('PUBLIC-KEY (Widget-design) - mlt key&value', mlt);
+        // console.log('PUBLIC-KEY (Widget-design) - mlt key&value', mlt);
         if (mlt[1] === "F") {
           this.isVisible = false;
         } else {
@@ -597,7 +609,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
 
         console.log('Multilanguage (widget-design) ***** GET labels ***** defaultLangCode (onInit) 2', this.defaultLangCode);
 
-        if (this.defaultLangCode === undefined)  {
+        if (this.defaultLangCode === undefined) {
           this.translateAndDisplayModalNoDefaultLangIsSet();
         }
 
@@ -712,7 +724,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
       arrow_icon.classList.add("arrow-up");
     }
 
-  } 
+  }
 
 
   translateAndDisplayModalNoLangAreSet() {
@@ -830,7 +842,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
         // ------------------------------------------------------------------------------------------------------- 
         // if (this.selected_translation["WAITING_TIME_FOUND"].includes("$reply_time") === false) {
         //   var hasSpaceAtEnds = this.selected_translation["WAITING_TIME_FOUND"].slice(-1);
-          
+
         //   if (hasSpaceAtEnds == " ") {
         //     console.log("Multilanguage (widget-design) WAITING_TIME_FOUND ends with space");
         //     this.waitingTimeFoundMsg = this.selected_translation["WAITING_TIME_FOUND"] + '$reply_time';
@@ -1090,7 +1102,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     // if (event.length === 0) {  }
   }
 
- 
+
 
   // ------------------------------------------------------------------------------------
   // Select language
@@ -1142,7 +1154,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
 
     if (this.selectedLangCode === this.defaultLangCode) {
       isdefault = true
-    }  else {
+    } else {
       isdefault = false
     }
 
@@ -1160,7 +1172,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
         // }
 
         if (this.HAS_CHANGED_GREETINGS === true) {
-           this.notify.showWidgetStyleUpdateNotification(this.updateWidgetSuccessNoticationMsg, 2, 'done');
+          this.notify.showWidgetStyleUpdateNotification(this.updateWidgetSuccessNoticationMsg, 2, 'done');
         }
         console.log('Multilanguage (widget-design) - saveTranslation * COMPLETE *')
       });
@@ -1834,7 +1846,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     }
   }
 
-  onFocusCalloutTitle () {
+  onFocusCalloutTitle() {
     this.DISPLAY_WIDGET_HOME = false;
     this.DISPLAY_CALLOUT = true;
     this.DISPLAY_WIDGET_CHAT = false;
@@ -1961,7 +1973,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
 
   testWidgetPage() {
     // this.elementRef.nativeElement.blur();
-    
+
     // const url = 'http://testwidget.tiledesk.com/testsitenw3?projectname=' + this.projectName + '&projectid=' + this.id_project
     // const url = this.TESTSITE_BASE_URL + '?projectname=' + this.projectName + '&projectid=' + this.id_project + '&isOpen=true'
     const url = this.TESTSITE_BASE_URL + '?tiledesk_projectid=' + this.id_project + '&project_name=' + this.projectName + '&isOpen=true'

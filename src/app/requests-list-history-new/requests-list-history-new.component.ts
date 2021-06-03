@@ -25,7 +25,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { Location } from '@angular/common';
 import { SelectOptionsTranslatePipe } from '../selectOptionsTranslate.pipe';
-import { request } from 'http';
+import { request, ServerResponse } from 'http';
 import { TagsService } from '../services/tags.service';
 
 // import swal from 'sweetalert';
@@ -168,6 +168,10 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
 
 
   storageBucket: string;
+  baseUrl: string;
+  UPLOAD_ENGINE_IS_FIREBASE: boolean;
+  imageStorage: string;
+
   isMobile: boolean;
 
   operator: string;
@@ -221,7 +225,7 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
 
   ngOnInit() {
     this.getCurrentUrlLoadRequests();
-
+    this.getImageStorageAndChatBaseUrl();
     // this.auth.checkRoleForCurrentProject();
     // selectedDeptId is assigned to empty so in the template will be selected the custom option ALL DEPARTMENTS
     this.selectedDeptId = '';
@@ -235,7 +239,7 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
     this.getProjectPlan();
     this.getBrowserLang();
     // this.createBotsAndUsersArray();
-    this.getStorageBucketAndChatBaseUrl();
+
     this.getTranslations();
     this.getProjectUserRole();
     this.detectMobile();
@@ -445,109 +449,6 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
     this.getRequests()
   }
 
-  /**
-   * Nota: la funzione seguente è stata sostituita dalla sua versione promise, quindi non è
-   * più usata.
-   * Verificare eventuali malfunzionamenti prima di eliminarla definitivamente.
-   */
-  // _getRequests() {
-  //   this.showSpinner = true;
-  //   // this.wsRequestsService.getNodeJsHistoryRequests(this.queryString, this.pageNo).subscribe((requests: any) => {
-  //   this.wsRequestsService.getNodeJsWSRequests(this.operator, this.requests_status, this.queryString, this.pageNo).subscribe((requests: any) => {
-
-  //     console.log('!!! NEW REQUESTS HISTORY - GET REQUESTS ', requests['requests']);
-  //     console.log('!!! NEW REQUESTS HISTORY - GET REQUESTS COUNT ', requests['count']);
-  //     if (requests) {
-
-  //       // this.requestsCount = 18; // for test
-  //       this.requestsCount = requests['count'];
-  //       console.log('!!! NEW REQUESTS HISTORY - GET REQUESTS COUNT ', this.requestsCount);
-
-  //       this.displayHideFooterPagination();
-
-  //       const requestsPerPage = requests['perPage'];
-  //       console.log('!!! NEW REQUESTS HISTORY - TOTAL PAGES REQUESTS X PAGE', requestsPerPage);
-
-  //       const totalPagesNo = this.requestsCount / requestsPerPage;
-  //       console.log('!!! NEW REQUESTS HISTORY - TOTAL PAGES NUMBER', totalPagesNo);
-
-  //       this.totalPagesNo_roundToUp = Math.ceil(totalPagesNo);
-  //       console.log('!!! NEW REQUESTS HISTORY - TOTAL PAGES No ROUND TO UP ', this.totalPagesNo_roundToUp);
-
-
-  //       this.requestList = requests['requests'];
-
-  //       for (const request of this.requestList) {
-
-  //         if (request) {
-  //           // console.log('!!! NEW REQUESTS HISTORY - request ', request);
-
-  //           request['currentUserIsJoined'] = this.currentUserIdIsInParticipants(request.participants, this.auth.user_bs.value._id, request.request_id);
-
-  //           // -------------------------------------------------------------------
-  //           // User Agent
-  //           // -------------------------------------------------------------------
-  //           const user_agent_result = this.parseUserAgent(request.userAgent);
-  //           const ua_browser = user_agent_result.browser.name + ' ' + user_agent_result.browser.version
-  //           // console.log('!!! NEW REQUESTS HISTORY  - USER-AGENT BROWSER ', ua_browser)
-  //           request['ua_browser'] = ua_browser;
-
-  //           const ua_os = user_agent_result.os.name + ' ' + user_agent_result.os.version
-  //           // console.log('!!! NEW REQUESTS HISTORY - USER-AGENT OPERATING SYSTEM ', ua_os)
-  //           request['ua_os'] = ua_os;
-
-  //           // -------------------------------------------------------------------
-  //           // Contact's avatar
-  //           // -------------------------------------------------------------------
-  //           let newInitials = '';
-  //           let newFillColour = '';
-
-  //           if (request.lead && request.lead.fullname) {
-  //             newInitials = avatarPlaceholder(request.lead.fullname);
-  //             newFillColour = getColorBck(request.lead.fullname)
-  //           } else {
-
-  //             newInitials = 'N/A';
-  //             newFillColour = 'rgb(98, 100, 167)';
-  //           }
-
-  //           request.requester_fullname_initial = newInitials;
-  //           request.requester_fullname_fillColour = newFillColour;
-  //           // .authVar.token.firebase.sign_in_provider
-  //           // console.log('---- lead sign_in_provider ',  request.lead.attributes.senderAuthInfo);
-
-  //           const date = moment.localeData().longDateFormat(request.createdAt);
-  //           request.fulldate = date;
-
-
-  //           if (request.participants.length > 0) {
-  //             console.log('!! Ws SHARED  (from request list history) participants length', request.participants.length);
-  //             if (!request['participanting_Agents']) {
-
-  //               console.log('!! Ws SHARED  (from request list history) PARTICIPATING-AGENTS IS ', request['participanting_Agents'], ' - RUN DO ');
-
-  //               request['participanting_Agents'] = this.doParticipatingAgentsArray(request.participants, request.first_text, this.storageBucket)
-
-  //             } else {
-
-  //               console.log('!! Ws SHARED  (from request list history) PARTICIPATING-AGENTS IS DEFINED');
-  //             }
-  //           } else {
-  //             console.log('!! Ws SHARED  (from request list history) participants length', request.participants.length);
-  //             request['participanting_Agents'] = [{ _id: 'no_agent', email: 'NoAgent', firstname: 'NoAgent', lastname: 'NoAgent' }]
-  //           }
-
-  //         }
-  //       }
-  //     }
-  //   }, error => {
-  //     this.showSpinner = false;
-  //     console.log('!!! NEW REQUESTS HISTORY  - GET REQUESTS - ERROR: ', error);
-  //   }, () => {
-  //     this.showSpinner = false;
-  //     console.log('!!! NEW REQUESTS HISTORY  - GET REQUESTS * COMPLETE *')
-  //   });
-  // }
 
 
   // GET REQUEST COPY - START
@@ -614,7 +515,7 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
 
                   console.log('!! Ws SHARED  (from request list history) PARTICIPATING-AGENTS IS ', request['participanting_Agents'], ' - RUN DO ');
 
-                  request['participanting_Agents'] = this.doParticipatingAgentsArray(request.participants, request.first_text, this.storageBucket)
+                  request['participanting_Agents'] = this.doParticipatingAgentsArray(request.participants, request.first_text, this.imageStorage, this.UPLOAD_ENGINE_IS_FIREBASE)
 
                 } else {
 
@@ -727,10 +628,22 @@ export class RequestsListHistoryNewComponent extends WsSharedComponent implement
 
   // requestWillBePermanentlyDeleted
 
-  getStorageBucketAndChatBaseUrl() {
-    const firebase_conf = this.appConfigService.getConfig().firebase;
-    this.storageBucket = firebase_conf['storageBucket'];
-    console.log('STORAGE-BUCKET Requests-List-History-new ', this.storageBucket)
+  getImageStorageAndChatBaseUrl() {
+    if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+      this.UPLOAD_ENGINE_IS_FIREBASE = true;
+      const firebase_conf = this.appConfigService.getConfig().firebase;
+      this.storageBucket = firebase_conf['storageBucket'];
+
+      this.imageStorage = this.storageBucket
+
+      console.log('REQUESTS-LIST-HISTORY-NEW IMAGE STORAGE ', this.storageBucket , 'usecase firebase')
+    } else {
+      this.UPLOAD_ENGINE_IS_FIREBASE = false;
+      this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
+
+      this.imageStorage = this.baseUrl
+      console.log('REQUESTS-LIST-HISTORY-NEW IMAGE STORAGE ', this.baseUrl, 'usecase native')
+    }
 
     this.CHAT_BASE_URL = this.appConfigService.getConfig().CHAT_BASE_URL;
   }

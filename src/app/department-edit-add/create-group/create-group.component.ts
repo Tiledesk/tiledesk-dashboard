@@ -27,7 +27,9 @@ export class CreateGroupComponent implements OnInit {
 
   showSpinner = true;
   projectUsersList: any;
+  UPLOAD_ENGINE_IS_FIREBASE: boolean;
   storageBucket: string;
+  baseUrl: string;
   groupMembersArray: Array<any> = []
   sidebar_height: any;
   group_name: string;
@@ -53,7 +55,7 @@ export class CreateGroupComponent implements OnInit {
     if (this.deptName_toUpdate !== undefined) {
       this.group_name = this.deptName_toUpdate + ' ' + 'group'
     }
-    this.getStorageBucket();
+    this.getProfileImageStorage();
     this.getAllUsersOfCurrentProject();
     this.translateCreateGroupMsgs()
     // this.getScollPosition()
@@ -72,13 +74,11 @@ export class CreateGroupComponent implements OnInit {
         }
       });
 
-
     }, (error) => {
       console.log('CREATE GROUP SIDEBAR - GET GROUPS - ERROR ', error);
 
     }, () => {
       console.log('CREATE GROUP SIDEBAR - GET GROUPS * COMPLETE');
-
 
     });
   }
@@ -87,7 +87,6 @@ export class CreateGroupComponent implements OnInit {
   translateCreateGroupMsgs() {
     this.translate.get('CreatedGroupSuccessMsg')
       .subscribe((text: string) => {
-
         this.group_created_success_msg = text;
         console.log('+ + + CreatedGroupSuccessMsg', text)
       });
@@ -156,10 +155,17 @@ export class CreateGroupComponent implements OnInit {
 
   // }
 
-  getStorageBucket() {
-    const firebase_conf = this.appConfigService.getConfig().firebase;
-    this.storageBucket = firebase_conf['storageBucket'];
-    console.log('STORAGE-BUCKET (CREATE GROUP SIDEBAR) ', this.storageBucket)
+  getProfileImageStorage() {
+    if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+      this.UPLOAD_ENGINE_IS_FIREBASE = true;
+      const firebase_conf = this.appConfigService.getConfig().firebase;
+      this.storageBucket = firebase_conf['storageBucket'];
+      console.log('CREATE-GROUP IMAGE STORAGE', this.storageBucket, 'usecase firebase')
+    } else {
+      this.UPLOAD_ENGINE_IS_FIREBASE = false;
+      this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
+      console.log('CREATE-GROUP IMAGE STORAGE ', this.baseUrl, 'usecase native')
+    }
   }
 
 
@@ -189,7 +195,6 @@ export class CreateGroupComponent implements OnInit {
 
   addMembersToArray(userid) {
     console.log('CREATE GROUP SIDEBAR - change - userid', userid);
-
 
     // const index = this.groupMembersArray.indexOf(userid);
     // console.log('CREATE GROUP SIDEBAR USERID INDEX ', index);

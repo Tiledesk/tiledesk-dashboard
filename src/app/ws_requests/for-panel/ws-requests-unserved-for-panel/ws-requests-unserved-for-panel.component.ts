@@ -84,6 +84,9 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
   seeAll: any;
   subscription: Subscription;
   storageBucket: string;
+  baseUrl: string;
+  imageStorage: string;
+  UPLOAD_ENGINE_IS_FIREBASE: boolean;
 
   departments: any;
   selectedDeptId: string;
@@ -183,7 +186,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
 
     // this.getChatUrl();
     // this.getTestSiteUrl();
-    this.getStorageBucket();
+    this.getImageStorage();
     this.detectBrowserRefresh();
     this.getCurrentProject();
     this.getLoggedUser();
@@ -373,9 +376,19 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
   }
 
 
-  getStorageBucket() {
-    const firebase_conf = this.appConfigService.getConfig().firebase;
-    this.storageBucket = firebase_conf['storageBucket'];
+  getImageStorage() {
+    if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+      this.UPLOAD_ENGINE_IS_FIREBASE = true;
+      const firebase_conf = this.appConfigService.getConfig().firebase;
+      this.storageBucket = firebase_conf['storageBucket'];
+      this.imageStorage = this.storageBucket;
+      console.log('WS-REQUESTS-UNSERVED-X-PANEL IMAGE STORAGE ', this.storageBucket, 'usecase firebase')
+    } else {
+      this.UPLOAD_ENGINE_IS_FIREBASE = false;
+      this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
+      this.imageStorage = this.baseUrl;
+      console.log('WS-REQUESTS-UNSERVED-X-PANEL IMAGE STORAGE ', this.baseUrl, 'usecase native')
+    }
     // console.log('STORAGE-BUCKET Ws Requests List ', this.storageBucket)
   }
 
@@ -634,7 +647,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
 
             if (!request['participanting_Agents']) {
               console.log('!! Ws SHARED  (from request list) PARTICIPATING-AGENTS IS ', request['participanting_Agents'], ' - RUN DO ');
-              request['participanting_Agents'] = this.doParticipatingAgentsArray(request.participants, request.first_text, this.storageBucket)
+              request['participanting_Agents'] = this.doParticipatingAgentsArray(request.participants, request.first_text, this.imageStorage, this.UPLOAD_ENGINE_IS_FIREBASE)
 
             } else {
               console.log('!! Ws SHARED  (from request list) PARTICIPATING-AGENTS IS DEFINED');

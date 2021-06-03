@@ -30,7 +30,7 @@ import PerfectScrollbar from 'perfect-scrollbar';
 import { UAParser } from 'ua-parser-js';
 import { ContactsService } from '../../services/contacts.service';
 const swal = require('sweetalert');
-import { avatarPlaceholder, getColorBck } from '../../utils/util';
+import { avatarPlaceholder, getColorBck, htmlEntities } from '../../utils/util';
 
 @Component({
   selector: 'appdashboard-ws-requests-msgs',
@@ -122,6 +122,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   train_bot_sidebar_height: any;
   storageBucket: string;
+  baseUrl: string;
+  UPLOAD_ENGINE_IS_FIREBASE: boolean;
 
   // isSubscribedToMsgs = false;
   clientStringCutted: string;
@@ -207,6 +209,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   anErrorHasOccurredMsg: string;
   done_msg: string;
   COUNT_OF_VISIBLE_DEPT: number;
+
+  urls: any = /(\b(https?|http|ftp|ftps|Https|rtsp|Rtsp):\/\/[A-Z0-9+&@#\/%?=~_|!:,.;-]*[-A-Z0-9+&@#\/%=~_|])/gim; // Find/Replace URL's in text  
+  emails: any = /(\S+@\S+\.\S+)/gim; // Find/Replace email addresses in text
 
   // @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
 
@@ -317,11 +322,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.getLoggedUser();
     this.detectMobile();
     // this.listenToGotAllMsgAndDismissSpinner()
-    this.getStorageBucket();
+    this.getProfileImageStorage();
     this.getAppConfig()
     this.translateNotificationMsgs();
     this.getUserRole();
-    console.log('% Ws-REQUESTS-Msgs - note-wf - new_note value oninit: ', this.new_note)
+    // console.log('% Ws-REQUESTS-Msgs - note-wf - new_note value oninit: ', this.new_note)
 
     this.getRouteUrl();
     this.getBaseUrl();
@@ -334,7 +339,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   createJiraTicket() {
 
-    console.log('REQUEST-MSGS - createJiraTicket this.request', this.request);
+    // console.log('REQUEST-MSGS - createJiraTicket this.request', this.request);
 
     const transcript_url = this.SERVER_BASE_PATH + 'public/requests/' + this.id_request + '/messages.html'
 
@@ -399,22 +404,22 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     keys.forEach(key => {
       // console.log('NavbarComponent public_Key key', key)
       if (key.includes("LBS")) {
-        console.log('PUBLIC-KEY (WS-REQUETS-MSGS) - key', key);
+        // console.log('PUBLIC-KEY (WS-REQUETS-MSGS) - key', key);
         let lbs = key.split(":");
-        console.log('PUBLIC-KEY (WS-REQUETS-MSGS) - lbs key&value', lbs);
+        // console.log('PUBLIC-KEY (WS-REQUETS-MSGS) - lbs key&value', lbs);
 
         if (lbs[1] === "F") {
           this.isVisibleLBS = false;
-          console.log('PUBLIC-KEY (WS-REQUETS-MSGS) - lbs is', this.isVisibleLBS);
+          // console.log('PUBLIC-KEY (WS-REQUETS-MSGS) - lbs is', this.isVisibleLBS);
         } else {
           this.isVisibleLBS = true;
-          console.log('PUBLIC-KEY (WS-REQUETS-MSGS) - lbs is', this.isVisibleLBS);
+          // console.log('PUBLIC-KEY (WS-REQUETS-MSGS) - lbs is', this.isVisibleLBS);
         }
       }
     });
 
     if (!this.public_Key.includes("LBS")) {
-      console.log('PUBLIC-KEY (SIDEBAR) - key.includes("LBS")', this.public_Key.includes("LBS"));
+      // console.log('PUBLIC-KEY (SIDEBAR) - key.includes("LBS")', this.public_Key.includes("LBS"));
       this.isVisibleLBS = false;
     }
 
@@ -601,10 +606,19 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       this.router.navigate([uri]));
   }
 
-  getStorageBucket() {
-    const firebase_conf = this.appConfigService.getConfig().firebase;
-    this.storageBucket = firebase_conf['storageBucket'];
-    console.log('STORAGE-BUCKET Ws-Requests-Lists ', this.storageBucket)
+  getProfileImageStorage() {
+    if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+      this.UPLOAD_ENGINE_IS_FIREBASE = true;
+      const firebase_conf = this.appConfigService.getConfig().firebase;
+      this.storageBucket = firebase_conf['storageBucket'];
+      console.log('WS-REQUESTS-MSGS  IMAGE STORAGE ', this.storageBucket, 'usecase firebase')
+    } else {
+      this.UPLOAD_ENGINE_IS_FIREBASE = false;
+      this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
+
+      console.log('WS-REQUESTS-MSGS  IMAGE STORAGE ', this.baseUrl, 'usecase native')
+
+    }
   }
 
 
@@ -646,7 +660,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       // this.user = user;
       if (user) {
         this.currentUserID = user._id
-        console.log('%%% Ws-REQUESTS-Msgs - USER ID ', this.currentUserID);
+        // console.log('%%% Ws-REQUESTS-Msgs - USER ID ', this.currentUserID);
       }
     });
   }
@@ -901,7 +915,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           // ---------------------------------------------------------
           if (this.request.tags) {
             this.tagsArray = this.request.tags // initialize the tagsArray with the existing tags
-            console.log('% Ws-REQUESTS-Msgs - note-wf - onInit TAGS ARRAY: ', this.tagsArray);
+            // console.log('% Ws-REQUESTS-Msgs - note-wf - onInit TAGS ARRAY: ', this.tagsArray);
           }
 
           // ---------------------------------------------------------
@@ -909,7 +923,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           // ---------------------------------------------------------
           if (this.request.notes) {
             this.notesArray = this.request.notes.reverse()
-            console.log('% Ws-REQUESTS-Msgs - note-wf - onInit »»»»»»»»»»» NOTES ARRAY: ', this.notesArray);
+            // console.log('% Ws-REQUESTS-Msgs - note-wf - onInit »»»»»»»»»»» NOTES ARRAY: ', this.notesArray);
 
             // this.disableScroll();
 
@@ -945,7 +959,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           if (this.request.sourcePage) {
 
             this.sourcePageCutted = this.request.sourcePage.substring(0, sourcePageStripHere) + '...';
-            console.log('% Ws-REQUESTS-Msgs getWsRequestById - > SOURCE PAGE CUTTED: ', this.sourcePageCutted);
+            // console.log('% Ws-REQUESTS-Msgs getWsRequestById - > SOURCE PAGE CUTTED: ', this.sourcePageCutted);
           }
 
           // ---------------------------------------------------------
@@ -957,7 +971,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           if (this.request.request_id) {
 
             this.requestidCutted = this.request.request_id.substring(0, stripHere) + '...';
-            console.log('% Ws-REQUESTS-Msgs getWsRequestById - > request id CUTTED: ', this.requestidCutted);
+            // console.log('% Ws-REQUESTS-Msgs getWsRequestById - > request id CUTTED: ', this.requestidCutted);
           }
 
 
@@ -1002,7 +1016,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           // Attributes
           // ---------------------------------------------------------
           if (this.request.attributes) {
-            console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsRequestById ATTRIBUTES ', this.request.attributes);
+            // console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsRequestById ATTRIBUTES ', this.request.attributes);
 
             // --------------------------------------------------------------------------------------------------------------
             // new: display all attributes dinamically
@@ -1099,7 +1113,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             //   this.senderAuthInfoStringCutted = this.senderAuthInfoString.substring(0, stripHere) + '...';
             // }
           } else {
-            console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsRequestById ATTRIBUTES IS UNDEFINED ', this.request.attributes);
+            // console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsRequestById ATTRIBUTES IS UNDEFINED ', this.request.attributes);
           }
 
           // ---------------------------------------------------------
@@ -1107,11 +1121,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           // ---------------------------------------------------------
           if (this.request.attributes) {
             if (this.request.attributes.decoded_jwt) {
-              console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT ', this.request.attributes.decoded_jwt);
+              // console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT ', this.request.attributes.decoded_jwt);
               this.attributesDecodedJWTArray = []
               for (let [key, value] of Object.entries(this.request.attributes.decoded_jwt)) {
 
-                console.log(`WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT -key : ${key} - value ${value}`);
+                // console.log(`WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT -key : ${key} - value ${value}`);
 
                 let _value: any;
                 if (typeof value === 'object' && value !== null) {
@@ -1158,7 +1172,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
                   this.attributesDecodedJWTArray.push(entries)
                 }
               }
-              console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT - attributesDecodedJWTArray: ', this.attributesDecodedJWTArray);
+              // console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT - attributesDecodedJWTArray: ', this.attributesDecodedJWTArray);
               // --------------------------------------------------------------------------------------------------------------
             } else {
 
@@ -1179,7 +1193,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
               // for (let [key, value] of Object.entries(this.request.attributes.decoded_jwt.attributes)) {
               for (const [index, [key, value]] of Object.entries(Object.entries(this.request.attributes.decoded_jwt.attributes))) {
 
-                console.log(`WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT ATTRIBUTES index :${index}: -key  ${key} - value ${value}`);
+                // console.log(`WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT ATTRIBUTES index :${index}: -key  ${key} - value ${value}`);
 
                 let _value: any;
                 if (typeof value === 'object' && value !== null) {
@@ -1228,7 +1242,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
               this.attributesDecodedJWTArrayMerged = [].concat(this.attributesDecodedJWTArray, this.attributesDecodedJWTAttributesArray);
 
-              console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT  ATTRIBUTES - attributesDecodedJWTArrayMerged: ', this.attributesDecodedJWTArrayMerged);
+              // console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT  ATTRIBUTES - attributesDecodedJWTArrayMerged: ', this.attributesDecodedJWTArrayMerged);
               // --------------------------------------------------------------------------------------------------------------
             } else {
               this.attributesDecodedJWTArrayMerged = this.attributesDecodedJWTArray
@@ -1291,9 +1305,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
           this.IS_CURRENT_USER_JOINED = this.currentUserIdIsInParticipants(this.request.participants, this.currentUserID, this.request.request_id);
-          console.log('%%% Ws-REQUESTS-Msgs »»»»»»» IS_CURRENT_USER_JOINED? ', this.IS_CURRENT_USER_JOINED)
-          console.log('%%% Ws-REQUESTS-Msgs »»»»»»» IS_CURRENT_USER_JOINED - PARTICIPANTS ', this.request.participants)
-          console.log('%%% Ws-REQUESTS-Msgs »»»»»»» IS_CURRENT_USER_JOINED - CURRENT USER ID ', this.currentUserID)
+          // console.log('%%% Ws-REQUESTS-Msgs »»»»»»» IS_CURRENT_USER_JOINED? ', this.IS_CURRENT_USER_JOINED)
+          // console.log('%%% Ws-REQUESTS-Msgs »»»»»»» IS_CURRENT_USER_JOINED - PARTICIPANTS ', this.request.participants)
+          // console.log('%%% Ws-REQUESTS-Msgs »»»»»»» IS_CURRENT_USER_JOINED - CURRENT USER ID ', this.currentUserID)
         }
 
 
@@ -1331,6 +1345,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.wsMsgsService.subsToWS_MsgsByRequestId(id_request);
     this.getWsMsgs$();
   }
+
+
 
   getWsMsgs$() {
     this.wsMsgsService.wsMsgsList$
@@ -1715,8 +1731,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     Observable
       .zip(projectUsers, bots, (_projectUsers: any, _bots: any) => ({ _projectUsers, _bots }))
       .subscribe(pair => {
-        console.log('%% Ws-REQUESTS-Msgs - GET P-USERS-&-BOTS - PROJECT USERS : ', pair._projectUsers);
-        console.log('%% Ws-REQUESTS-Msgs - GET P-USERS-&-BOTS - BOTS: ', pair._bots);
+        // console.log('%% Ws-REQUESTS-Msgs - GET P-USERS-&-BOTS - PROJECT USERS : ', pair._projectUsers);
+        // console.log('%% Ws-REQUESTS-Msgs - GET P-USERS-&-BOTS - BOTS: ', pair._bots);
 
         if (pair && pair._projectUsers) {
           this.projectUsersList = pair._projectUsers;
@@ -2758,11 +2774,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   openAttributesDecodedJWTAccordion() {
     // var acc = document.getElementsByClassName("accordion");
     var acc = <HTMLElement>document.querySelector('.attributes-decoded-jwt-accordion');
-    console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT - open attributes-decoded-jwt-accordion -  accordion elem ', acc);
+    // console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT - open attributes-decoded-jwt-accordion -  accordion elem ', acc);
     acc.classList.toggle("active");
     // var panel = acc.nextElementSibling ;
     var panel = <HTMLElement>document.querySelector('.attributes-decoded-jwt-panel')
-    console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT-  open attributes-decoded-jwt-panel  -  panel ', panel);
+    // console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT-  open attributes-decoded-jwt-panel  -  panel ', panel);
 
     if (panel.style.maxHeight) {
       panel.style.maxHeight = null;

@@ -191,9 +191,9 @@ export class WsSharedComponent implements OnInit {
 
 
 
-  doParticipatingAgentsArray(participants, first_text, storageBucket) {
-    console.log('STORAGE-BUCKET Users service  Ws SHARED ', storageBucket);
-    console.log('!! Ws SHARED »»»»»»» doParticipatingAgentsArray - first_text ', first_text, ' participants', participants, ' storageBucket', storageBucket);
+  doParticipatingAgentsArray(participants, first_text, imageStorage, isFirebaseUploadEngine) {
+    console.log('!! Ws SHARED »»»»»»» doParticipatingAgentsArray imageStorage ', imageStorage);
+    console.log('!! Ws SHARED »»»»»»» doParticipatingAgentsArray - first_text: ', first_text, ' participants: ', participants, 'isFirebaseUploadEngine: ', isFirebaseUploadEngine);
 
     const newpartarray = []
     participants.forEach(participantid => {
@@ -238,8 +238,18 @@ export class WsSharedComponent implements OnInit {
         console.log('!! Ws SHARED »»»»»»» USER GET FROM STORAGE ', user);
         if (user) {
           // check if user iamge exist  
-          const imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + storageBucket + "/o/profiles%2F" + participantid + "%2Fphoto.jpg?alt=media"
-
+          let imgUrl = ''
+          if (isFirebaseUploadEngine) {
+            // ------------------------------------------------------------------------------
+            // Usecase uploadEngine Firebase 
+            // ------------------------------------------------------------------------------
+            imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + imageStorage + "/o/profiles%2F" + participantid + "%2Fphoto.jpg?alt=media"
+          } else {
+            // ------------------------------------------------------------------------------
+            // Usecase uploadEngine Native 
+            // ------------------------------------------------------------------------------
+            imgUrl = imageStorage + "images?path=uploads%2Fusers%2F" + participantid + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
+          }
           this.checkImageExists(imgUrl, (existsImage) => {
             if (existsImage == true) {
               user.hasImage = true
@@ -264,7 +274,19 @@ export class WsSharedComponent implements OnInit {
               const user: any = projectuser[0].id_user;
               console.log('!! Ws SHARED »»»»»»» USER IS NOT IN STORAGE GET PROJECT-USER BY ID - RES > user ', user);
 
-              const imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + storageBucket + "/o/profiles%2F" + participantid + "%2Fphoto.jpg?alt=media"
+              let imgUrl = ''
+              if (isFirebaseUploadEngine === true) {
+                // ------------------------------------------------------------------------------
+                // Usecase uploadEngine Firebase 
+                // ------------------------------------------------------------------------------
+                imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + imageStorage + "/o/profiles%2F" + participantid + "%2Fphoto.jpg?alt=media"
+
+              } else {
+                // ------------------------------------------------------------------------------
+                // Usecase uploadEngine Native 
+                // ------------------------------------------------------------------------------
+                imgUrl = imageStorage + "images?path=uploads%2Fusers%2F" + participantid + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
+              }
 
               this.checkImageExists(imgUrl, (existsImage) => {
                 if (existsImage == true) {
@@ -628,7 +650,7 @@ export class WsSharedComponent implements OnInit {
      * USING DEPT NAME  */
     //  this.depts_array_noduplicate = this.removeDuplicates(depts_array, 'deptName');
 
-    console.log('% WsRequestsList - REQUESTSxDEPTS - DEPTS ARRAY [no duplicate] NK', this.depts_array_noduplicate)
+    // console.log('% WsRequestsList - REQUESTSxDEPTS - DEPTS ARRAY [no duplicate] NK', this.depts_array_noduplicate)
 
     // GET OCCURRENCY OF THE DEPT ID IN THE ARRAY OF THE TOTAL DEPT ID
     this.depts_array_noduplicate.forEach(dept => {

@@ -93,6 +93,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   percentageOfLastMonthRequestsHandledByBots: any;
   projectUsers: any // TO DISPLAY THE PROJECT USERS IN THE NEW HOME HEADER
   storageBucket: string;
+  baseUrl: string;
   chatbots: any // TO DISPLAY THE CHATVOT IN THE NEW HOME HEADER
   DISPLAY_TEAMMATES: boolean = false;
   DISPLAY_CHATBOTS: boolean = false;
@@ -104,6 +105,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
   DISPLAY_OPH_AS_DISABLED: boolean;
+  UPLOAD_ENGINE_IS_FIREBASE: boolean;
+
   constructor(
     public auth: AuthService,
     private route: ActivatedRoute,
@@ -322,7 +325,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   init() {
     // this.getDeptsByProjectId(); // USED FOR COUNT OF DEPTS FOR THE NEW HOME
-    this.getStorageBucketThenUserAndBots();
+    this.getImageStorageThenUserAndBots();
     this.getLastMounthMessagesCount() // USED TO GET THE MESSAGES OF THE LAST 30 DAYS
     this.getLastMounthRequestsCount(); // USED TO GET THE REQUESTS OF THE LAST 30 DAYS
     this.getActiveContactsCount()  /// COUNT OF ACTIVE CONTACTS FOR THE NEW HOME
@@ -359,13 +362,26 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
 
-  getStorageBucketThenUserAndBots() {
-    const firebase_conf = this.appConfigService.getConfig().firebase;
-    this.storageBucket = firebase_conf['storageBucket'];
-    console.log('STORAGE-BUCKET HOME ', this.storageBucket)
+  getImageStorageThenUserAndBots() {
+    if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+      
+      this.UPLOAD_ENGINE_IS_FIREBASE = true;
+      const firebase_conf = this.appConfigService.getConfig().firebase;
+      this.storageBucket = firebase_conf['storageBucket'];
+      console.log('STORAGE-BUCKET HOME ', this.storageBucket, 'usecase firebase')
 
-    this.getAllUsersOfCurrentProject(this.storageBucket)  // USED TO DISPLAY THE HUMAN AGENT FOR THE NEW HOME
-    this.getFaqKbByProjectId(this.storageBucket) // USED FOR COUNT OF BOTS FOR THE NEW HOME
+      this.getAllUsersOfCurrentProject(this.storageBucket, this.UPLOAD_ENGINE_IS_FIREBASE)  // USED TO DISPLAY THE HUMAN AGENT FOR THE NEW HOME
+      this.getFaqKbByProjectId(this.storageBucket, this.UPLOAD_ENGINE_IS_FIREBASE) // USED FOR COUNT OF BOTS FOR THE NEW HOME
+
+    } else {
+      
+      this.UPLOAD_ENGINE_IS_FIREBASE = false;
+      this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
+      console.log('CREATE-GROUP IMAGE STORAGE ', this.baseUrl, 'usecase native')
+      this.getAllUsersOfCurrentProject(this.baseUrl, this.UPLOAD_ENGINE_IS_FIREBASE)  // USED TO DISPLAY THE HUMAN AGENT FOR THE NEW HOME
+      this.getFaqKbByProjectId(this.baseUrl, this.UPLOAD_ENGINE_IS_FIREBASE) // USED FOR COUNT OF BOTS FOR THE NEW HOME
+    }
+
   }
 
   // USED FOR COUNT OF ACTIVE CONTACTS FOR THE NEW HOME 
@@ -462,7 +478,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   // USED TO DISPLAY THE HUMAN AGENT FOR THE NEW HOME
-  getAllUsersOfCurrentProject(storagebucket) {
+  getAllUsersOfCurrentProject(storage, uploadEngineIsFirebase) {
     this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
       console.log('HOME - PROJECT-USERS ', projectUsers);
 
@@ -470,16 +486,28 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         this.projectUsers = projectUsers
 
         this.projectUsers.forEach(user => {
+          let imgUrl = ''
+          if (uploadEngineIsFirebase === true) {
+            console.log('HOME-COMP - ++++++ QUI ENTRO ++++++');
+            // ------------------------------------------------------------------------------
+            // Usecase uploadEngine Firebase 
+            // ------------------------------------------------------------------------------
+            imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + storage + "/o/profiles%2F" + user['id_user']['_id'] + "%2Fphoto.jpg?alt=media"
 
-          const imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + storagebucket + "/o/profiles%2F" + user['id_user']['_id'] + "%2Fphoto.jpg?alt=media"
+          } else {
+            // ------------------------------------------------------------------------------
+            // Usecase uploadEngine Native 
+            // ------------------------------------------------------------------------------
+            imgUrl = storage + "images?path=uploads%2Fusers%2F" + user['id_user']['_id'] + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
+          }
 
           this.checkImageExists(imgUrl, (existsImage) => {
             if (existsImage == true) {
-              console.log('»» USERS COMP - IMAGE EXIST X USERS', user);
+              console.log('HOME-COMP - IMAGE EXIST X USERS', user);
               user.hasImage = true;
             }
             else {
-              console.log('»» USERS COMP - IMAGE NOT EXIST X USERS', user);
+              console.log('HOME-COMP - IMAGE NOT EXIST X USERS', user);
               user.hasImage = false;
             }
           });
@@ -499,10 +527,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
             user['fullname_initial'] = 'N/A';
             user['fillColour'] = 'rgb(98, 100, 167)';
           }
-
-
         });
-
       }
 
     }, error => {
@@ -514,7 +539,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   // USED FOR COUNT OF BOTS FOR THE NEW HOME !!! *** Not used - replaced with GET LAST 30 DAYS MESSAGE COUNT ***
-  getFaqKbByProjectId(storagebucket) {
+  getFaqKbByProjectId(storage, uploadEngineIsFirebase) {
     this.faqKbService.getAllBotByProjectId().subscribe((faqKb: any) => {
       console.log('HOME - GET FAQKB RES', faqKb);
       if (faqKb) {
@@ -530,8 +555,21 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
               faqKb.splice(index, 1);
             }
           }
+          let imgUrl = ''
+          if (uploadEngineIsFirebase === true) {
 
-          const imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + storagebucket + "/o/profiles%2F" + bot['_id'] + "%2Fphoto.jpg?alt=media"
+            console.log('HOME-COMP - ++++++ QUI ENTRO 2 ++++++');
+            // ------------------------------------------------------------------------------
+            // Usecase uploadEngine Firebase 
+            // ------------------------------------------------------------------------------
+            imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + storage + "/o/profiles%2F" + bot['_id'] + "%2Fphoto.jpg?alt=media"
+          
+          } else {
+            // ------------------------------------------------------------------------------
+            // Usecase uploadEngine Native 
+            // ------------------------------------------------------------------------------
+            imgUrl = storage + "images?path=uploads%2Fusers%2F" + bot['_id'] + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
+          }
           this.checkImageExists(imgUrl, (existsImage) => {
             if (existsImage == true) {
               console.log('»» USERS COMP - IMAGE EXIST X bot', bot);
@@ -624,9 +662,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     keys.forEach(key => {
       // console.log('NavbarComponent public_Key key', key)
       if (key.includes("PAY")) {
-        console.log('PUBLIC-KEY (Home) - key', key);
+        // console.log('PUBLIC-KEY (Home) - key', key);
         let pay = key.split(":");
-        console.log('PUBLIC-KEY (Home) - pay key&value', pay);
+        // console.log('PUBLIC-KEY (Home) - pay key&value', pay);
         if (pay[1] === "F") {
           this.isVisible = false;
         } else {
@@ -648,16 +686,16 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       }
 
       if (key.includes("APP")) {
-        console.log('PUBLIC-KEY (Home) - key', key);
+        // console.log('PUBLIC-KEY (Home) - key', key);
         let lbs = key.split(":");
-        console.log('PUBLIC-KEY (Home) - app key&value', lbs);
+        // console.log('PUBLIC-KEY (Home) - app key&value', lbs);
 
         if (lbs[1] === "F") {
           this.isVisibleAPP = false;
-          console.log('PUBLIC-KEY (Home) - app isVisible', this.isVisibleAPP);
+          // console.log('PUBLIC-KEY (Home) - app isVisible', this.isVisibleAPP);
         } else {
           this.isVisibleAPP = true;
-          console.log('PUBLIC-KEY (Home) - app isVisible', this.isVisibleAPP);
+          // console.log('PUBLIC-KEY (Home) - app isVisible', this.isVisibleAPP);
         }
       }
 

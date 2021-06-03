@@ -48,26 +48,33 @@
                 <div class="card card-profile" style="border:unset !important">
                   <div class="card-avatar user-profile-avatar">
                     <a *ngIf="user">
+
+
+                      <!-- --------------------------------------------------- -->
+                      <!-- USECASE uploadEngine Firebase -->
+                      <!-- --------------------------------------------------- -->
                       <!-- (userProfileImageExist === true || userImageHasBeenUploaded === true) -->
-                      <img style="width:80px; height:80px"
-                     
-                        *ngIf="user?.hasImage && UPLOAD_ENGINE_IS_FIREBASE" class="user-img"
+                      <img style="width:80px; height:80px" *ngIf="user?.hasImage && UPLOAD_ENGINE_IS_FIREBASE"
+                        class="user-img"
                         src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{user?._id}}%2Fphoto.jpg?alt=media"
                         onerror="this.src='assets/img/no_image_user.png'" />
-                        <!-- (userProfileImageExist === true || userImageHasBeenUploaded === true) -->
-                        <img style="width:80px; height:80px"
-                        *ngIf="user?.hasImage && !UPLOAD_ENGINE_IS_FIREBASE " class="user-img"
+
+
+                      <!-- --------------------------------------------------- -->
+                      <!-- USECASE uploadEngine Firebase -->
+                      <!-- --------------------------------------------------- -->
+                      <!-- (userProfileImageExist === true || userImageHasBeenUploaded === true) -->
+                      <img style="width:80px; height:80px" *ngIf="user?.hasImage && !UPLOAD_ENGINE_IS_FIREBASE "
+                        class="user-img"
                         src="{{baseUrl}}images?path=uploads%2Fusers%2F{{user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                         onerror="this.src='assets/img/no_image_user.png'" />
-                        <!-- userProfileImageExist !== true && userImageHasBeenUploaded !== true" -->
-                      <img *ngIf="!user?.hasImage" class="user-img"
-                        src="assets/img/no_image_user.png" />
 
-                        <!-- <img style="width:80px; height:80px"  *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true"
-                        [src]="getUserProfileImage()" onerror="this.src='assets/img/no_image_user.svg'" />
-                
-                      <img class="avatar" *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true"
-                        src="assets/img/no_image_user.png" /> -->
+                      <!-- --------------------------------------------------- -->
+                      <!-- USECASE No profile image -->
+                      <!-- --------------------------------------------------- -->
+                      <img *ngIf="!user?.hasImage" class="user-img" src="assets/img/no_image_user.png" />
+
+
                     </a>
                   </div>
 
@@ -301,7 +308,7 @@
 
                 </div>
                 <!-- class="loading"   -->
-          
+
                 <div class="project-user-isBusy" *ngIf="project?.ws_projct_user_isBusy === true">
                   <span class="material-icons" style="font-size: 20px; color:#fedd00;">
                     access_time
@@ -314,11 +321,11 @@
                 <div id="{{'loading_'+ project?.id_project?._id}}" *ngIf="project?.is_selected === true">
                   <!-- Loading project data -->
                   <!-- <div class="dot-flashing-spinner-wpr"> -->
-                    <div class="spinner">
-                      <div class="bounce1"></div>
-                      <div class="bounce2"></div>
-                      <div class="bounce3"></div>
-                    </div>
+                  <div class="spinner">
+                    <div class="bounce1"></div>
+                    <div class="bounce2"></div>
+                    <div class="bounce3"></div>
+                  </div>
                   <!-- </div> -->
                 </div>
 

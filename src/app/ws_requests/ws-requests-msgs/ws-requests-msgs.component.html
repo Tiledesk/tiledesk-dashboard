@@ -229,12 +229,14 @@
                 <!-- style="padding-bottom: 3px;" class="answer left" -->
                 <div *ngFor="let message of messagesList">
 
- <!-- ////// INFO MSG -->
-                        <!-- requester_id: {{requester_id}} message_sender {{message.sender}} type
+                  <!-- ////// INFO MSG -->
+                  <!-- requester_id: {{requester_id}} message_sender {{message.sender}} type
                         {{message?.attributes?.subtype}} rext {{ message?.text }} -->
-                        <div *ngIf="message?.attributes?.subtype === 'info' || message?.attributes?.subtype === 'info/support'" style="padding:20px 55px; text-align:center">
-                          <div>
-                            <!-- <div class="requester-avatar-wrapper"
+                  <div
+                    *ngIf="message?.attributes?.subtype === 'info' || message?.attributes?.subtype === 'info/support'"
+                    style="padding:20px 55px; text-align:center">
+                    <div>
+                      <!-- <div class="requester-avatar-wrapper"
                               style="display: block;border-radius: 50%; height: 100%; margin-top: 35px;"
                               [ngStyle]="{'background-color': fillColour }">
 
@@ -244,8 +246,8 @@
                               </span>
                             </div> -->
 
-                            <div class="txt">
-                              <!-- <p class="name" [ngStyle]="{'color': fillColour }">
+                      <div class="txt">
+                        <!-- <p class="name" [ngStyle]="{'color': fillColour }">
                                 {{ message.senderFullname }}
                                 
                                 <span *ngIf="message?.type === 'text'"
@@ -254,22 +256,23 @@
                                   {{ 'Train' | translate }}
                                 </span>
                               </p> -->
-                              <p *ngIf="message?.type === 'text'"  class="type-info-msg-text">
-                                {{ message?.text }}
-                              </p>
-                              <!-- <div *ngIf="message?.type === 'image'" class="message ow">
+                        <p *ngIf="message?.type === 'text'" class="type-info-msg-text"  [innerHTML]="message?.text | marked  | sanitizeHtml">
+                          <!-- {{ message?.text }} -->
+                        </p>
+                        <!-- <div *ngIf="message?.type === 'image'" class="message ow">
                                 <div class="image-container" style="height:200px; width:200px;">
                                   <img src={{message.metadata.src}} class="message-img" />
                                 </div>
                               </div> -->
-                              <!-- <span class="timestamp"> {{ message?.createdAt | date: 'd/M/y HH:mm:ss'}} </span> -->
-                            </div>
-                            <!-- <div class="bubble-arrow"></div> -->
-                          </div>
-                        </div>
+                        <!-- <span class="timestamp"> {{ message?.createdAt | date: 'd/M/y HH:mm:ss'}} </span> -->
+                      </div>
+                      <!-- <div class="bubble-arrow"></div> -->
+                    </div>
+                  </div>
 
 
-                  <div class="parent" *ngIf="message?.attributes?.subtype !== 'info' && message?.attributes?.subtype !== 'info/support'">
+                  <div class="parent"
+                    *ngIf="message?.attributes?.subtype !== 'info' && message?.attributes?.subtype !== 'info/support'">
                     <div [ngClass]="{'child' : requester_id !== message.sender}">
 
                       <div class="speech-wrapper">
@@ -304,8 +307,9 @@
 
                               </span>
                             </p>
-                            <p *ngIf="message?.type === 'text'" class="message ow">
-                              {{ message?.text }}
+                            <!-- [innerHTML]="message?.text | marked" -->
+                            <p *ngIf="message?.type === 'text'" class="message ow"  [innerHTML]="message?.text | marked | sanitizeHtml" >
+                              <!-- {{ message?.text  }} -->
                             </p>
                             <div *ngIf="message?.type === 'image'" class="message ow">
                               <div class="image-container" style="height:200px; width:200px;">
@@ -317,34 +321,66 @@
                           <div class="bubble-arrow"></div>
                         </div>
                         <!-- ////////////////// Speech Bubble alternative ////////////////// -->
-                        <div *ngIf="requester_id !== message.sender && message?.attributes?.subtype !== 'info'" class="bubble alt">
-
+                        <div *ngIf="requester_id !== message.sender && message?.attributes?.subtype !== 'info'"
+                          class="bubble alt">
+                          <!-- left: 254px; -->
                           <div class="avatar"
-                            style="width: 35px; height: 35px; position: absolute; left: 254px; bottom: 36px;">
+                            style="width: 35px; height: 35px; position: absolute; left: 365px; bottom: 36px;">
                             <div
                               style="display: block;border-radius: 50%; height: 100%; margin-top: 35px; background-color: #fff; border:1px solid #ebebeb;">
-
+                              <!-- ------------------------------------------------ -->
                               <!-- USE CASE: human -->
+                              <!-- ------------------------------------------------ -->
                               <!-- <span *ngIf="message?.sender !== 'system' && message?.senderFullname !== 'Bot'" style="position: absolute; top:43px; margin-left:13px;"> -->
-                              <span *ngIf="message?.sender !== 'system' && message?.sender.indexOf('bot_') === -1 && message?.attributes?.subtype !== 'info'"
+                              <span
+                                *ngIf="message?.sender !== 'system' && message?.sender.indexOf('bot_') === -1 && message?.attributes?.subtype !== 'info'"
                                 style="position: absolute; top:43px; margin-left:13px;">
                                 <!-- {{ messageSenderInitialLetter( message?.senderFullname )}} -->
                                 <!-- {{ message?.sender }}{{  message?.senderFullname }} -->
-                                <img
+
+                                <!-- --------------------------------------- -->
+                                <!-- Usecase  Firebase -->
+                                <!-- --------------------------------------- -->
+                                <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
                                   style="vertical-align: middle; width: 36px; height: 36px; border-radius: 50%; border: 1px solid #eee; margin-top: 1px; margin-bottom: 1px;position: relative;top: -9px; left: -14px;"
                                   class="user-img"
                                   src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{message?.sender}}%2Fphoto.jpg?alt=media"
                                   onerror="this.src='assets/img/no_image_user.png'" />
+
+                                <!-- --------------------------------------- -->
+                                <!-- Usecase  Native  -->
+                                <!-- --------------------------------------- -->
+                                <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
+                                  style="vertical-align: middle; width: 36px; height: 36px; border-radius: 50%; border: 1px solid #eee; margin-top: 1px; margin-bottom: 1px;position: relative;top: -9px; left: -14px;"
+                                  class="user-img"
+                                  src="{{baseUrl}}images?path=uploads%2Fusers%2F{{message?.sender}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                  onerror="this.src='assets/img/no_image_user.png'" />
                               </span>
 
+                              <!-- ------------------------------------------------ -->
                               <!-- USE CASE: bot -->
+                              <!-- ------------------------------------------------ -->
                               <!-- <span *ngIf="message?.senderFullname === 'Bot'" style="position: absolute; top:43px; margin-left:13px;"> -->
-                              <span *ngIf="message?.sender.indexOf('bot_') !== -1 && message?.attributes?.subtype !== 'info'"
+                              <span
+                                *ngIf="message?.sender.indexOf('bot_') !== -1 && message?.attributes?.subtype !== 'info'"
                                 style="position: absolute; top:43px; margin-left:13px;">
-                                <img
+
+                                <!-- --------------------------------------- -->
+                                <!-- Usecase  Firebase (bot) -->
+                                <!-- --------------------------------------- -->
+                                <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
                                   style="vertical-align: middle; width: 36px; height: 36px; border-radius: 50%; border: 1px solid #eee; position:relative;top: -9px;left: -14px;"
                                   class="user-img"
                                   src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{message?.sender | slice:4 }}%2Fphoto.jpg?alt=media"
+                                  onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
+
+                                <!-- --------------------------------------- -->
+                                <!-- Usecase  Native (bot) -->
+                                <!-- --------------------------------------- -->
+                                <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
+                                  style="vertical-align: middle; width: 36px; height: 36px; border-radius: 50%; border: 1px solid #eee; position:relative;top: -9px;left: -14px;"
+                                  class="user-img"
+                                  src="{{baseUrl}}images?path=uploads%2Fusers%2F{{message?.sender | slice:4}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                                   onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
                               </span>
 
@@ -376,8 +412,9 @@
                               {{ message?.senderFullname }}
                               <!-- +353 87 1234 567<span> ~ John</span> -->
                             </p>
-                            <p *ngIf="message?.type === 'text'" class="message ow">
-                              {{ message?.text }}
+                            <!-- [innerHTML]="message?.text | marked" -->
+                            <p *ngIf="message?.type === 'text'" class="message ow" [innerHTML]="message?.text | marked  | sanitizeHtml" >
+                              <!-- {{ message?.text}} -->
                             </p>
                             <div *ngIf="message?.type === 'image'" class="message ow">
                               <div class="image-container" style="height:200px; width:200px;">
@@ -1653,16 +1690,41 @@
                       <div *ngFor="let agent of agents_array" class="row-body">
                         <span class="agent-wrp" (click)="goToMemberProfile( agent?._id )"
                           [ngClass]="{'disable-link-if-is-agent' : CURRENT_USER_ROLE === 'agent'}">
-                          <img *ngIf="agent.isBot === false"
+
+                          <!-- --------------------------------------- -->
+                          <!-- Usecase  Firebase -->
+                          <!-- --------------------------------------- -->
+                          <img *ngIf="agent.isBot === false && UPLOAD_ENGINE_IS_FIREBASE"
                             style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #eee; margin-right: 3px;"
                             class="user-img"
                             src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fphoto.jpg?alt=media"
                             onerror="this.src='assets/img/no_image_user.png'" />
 
-                          <img *ngIf="agent.isBot === true"
+                          <!-- --------------------------------------- -->
+                          <!-- Usecase  Native -->
+                          <!-- --------------------------------------- -->
+                          <img *ngIf="agent.isBot === false && !UPLOAD_ENGINE_IS_FIREBASE"
                             style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #eee; margin-right: 3px;"
                             class="user-img"
-                            src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id | slice:4 }}%2Fphoto.jpg?alt=media"
+                            src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                            onerror="this.src='assets/img/no_image_user.png'" />
+
+                          <!-- --------------------------------------- -->
+                          <!-- Usecase  Firebase (bot) -->
+                          <!-- --------------------------------------- -->
+                          <img *ngIf="agent.isBot === true && UPLOAD_ENGINE_IS_FIREBASE"
+                            style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #eee; margin-right: 3px;"
+                            class="user-img"
+                            src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id | slice:4}}%2Fphoto.jpg?alt=media"
+                            onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
+
+                          <!-- --------------------------------------- -->
+                          <!-- Usecase  Native (bot) -->
+                          <!-- --------------------------------------- -->
+                          <img *ngIf="agent.isBot === true && !UPLOAD_ENGINE_IS_FIREBASE"
+                            style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #eee; margin-right: 3px;"
+                            class="user-img"
+                            src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id | slice:4}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                             onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
 
                           <span [ngClass]="{'current_user_is_agent' : agent?._id === currentUserID}"
@@ -2506,18 +2568,32 @@
                       </thead>
                       <tbody>
 
-                        <!-- 
-                    // -----------------------------------------------------------------------------
-                    // Project users for
-                    // ----------------------------------------------------------------------------- -->
+
+                        <!-- ----------------------------------------------------------------------------- -->
+                        <!-- Project users for -->
+                        <!-- ----------------------------------------------------------------------------- -->
                         <tr *ngFor="let projectUser of projectUsersList;" class="table-row">
 
                           <td style="width: 25px; cursor:pointer"
                             (click)="selectUser(projectUser?.id_user._id, projectUser?.id_user.firstname, projectUser?.id_user.lastname, projectUser?.id_user?.email)">
-                            <img class="ws_requets_msgs__user-img-in-modal"
+
+                            <!-- --------------------------------------- -->
+                            <!-- Usecase  Firebase -->
+                            <!-- --------------------------------------- -->
+                            <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="ws_requets_msgs__user-img-in-modal"
                               [ngClass]="{'ws_requets_msgs__user-img-in-modal-chat-panel-mode' : CHAT_PANEL_MODE === true}"
                               src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media"
                               onerror="this.src='assets/img/no_image_user.png'" />
+
+                            <!-- --------------------------------------- -->
+                            <!-- Usecase  Native -->
+                            <!-- --------------------------------------- -->
+                            <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="ws_requets_msgs__user-img-in-modal"
+                              [ngClass]="{'ws_requets_msgs__user-img-in-modal-chat-panel-mode' : CHAT_PANEL_MODE === true}"
+                              src="{{baseUrl}}images?path=uploads%2Fusers%2F{{projectUser?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                              onerror="this.src='assets/img/no_image_user.png'" />
+
+
                             <div class="ws_request_msgs__status-icon" [ngClass]="{'is-user-online' : projectUser?.user_available === true, 
                                       'is-user-offline' : projectUser?.user_available === false,
                                       'ws_request_msgs__status-icon-chat-panel-mode' : CHAT_PANEL_MODE === true
@@ -2601,17 +2677,29 @@
                           </td>
                         </tr>
 
-                        <!-- 
-                    // -----------------------------------------------------------------------------
-                    // Bots for
-                    // ----------------------------------------------------------------------------- -->
+
+                        <!-- ----------------------------------------------------------------------------- -->
+                        <!-- Bots for -->
+                        <!-- ----------------------------------------------------------------------------- -->
                         <ng-container *ngIf="actionInModal === 'reassign'">
                           <tr *ngFor="let bot of bots;" class="table-row">
 
                             <td style="width: 25px; cursor:pointer" (click)="selectBot(bot?._id, bot?.name)">
-                              <img class="ws_requets_msgs__user-img-in-modal"
+
+                              <!-- --------------------------------------- -->
+                              <!-- Usecase Firebase (bot) -->
+                              <!-- --------------------------------------- -->
+                              <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="ws_requets_msgs__user-img-in-modal"
                                 [ngClass]="{'ws_requets_msgs__user-img-in-modal-chat-panel-mode' : CHAT_PANEL_MODE === true}"
                                 src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{bot?._id}}%2Fphoto.jpg?alt=media"
+                                onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
+
+                              <!-- --------------------------------------- -->
+                              <!-- Usecase Native (bot) -->
+                              <!-- --------------------------------------- -->
+                              <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="ws_requets_msgs__user-img-in-modal"
+                                [ngClass]="{'ws_requets_msgs__user-img-in-modal-chat-panel-mode' : CHAT_PANEL_MODE === true}"
+                                src="{{baseUrl}}images?path=uploads%2Fusers%2F{{bot?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                                 onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
 
 

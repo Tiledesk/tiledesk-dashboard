@@ -31,7 +31,8 @@ class="navbar-brand">
 <div class="main-content" style="padding-top:0px;">
   <div class="container-fluid">
 
-    <appdashboard-docs-url-row [text_to_display]="text_to_display" [customtext]="customtext" [doctitle]="trigger_docs_title" [docurl]="trigger_docs_url">  </appdashboard-docs-url-row>
+    <appdashboard-docs-url-row [text_to_display]="text_to_display" [customtext]="customtext"
+      [doctitle]="trigger_docs_title" [docurl]="trigger_docs_url"> </appdashboard-docs-url-row>
     <!-- *** this row to prevent that the two columns in the below row being displayed on two lines -->
     <div class="row" style="margin-top: 16px;"></div>
     <!-- <ul class="nav nav-pills nav-pills-info custom">
@@ -89,7 +90,7 @@ class="navbar-brand">
             <span *ngIf="subscription_is_active === true">
               <i class="material-icons" style="vertical-align: middle; color: #039be5;"> info </i>
               <span class="msg-alert">
-                {{ "YouCurrentlyAreUsing" |  translate }} {{ this.projectUsersLength + this.countOfPendingInvites }}
+                {{ "YouCurrentlyAreUsing" | translate }} {{ this.projectUsersLength + this.countOfPendingInvites }}
                 {{ "Of" | translate }} {{ projectPlanAgentsNo }} {{ "ActiveOperatorSeatsInThe" | translate }}
                 <span style="text-transform: capitalize">
                   {{ prjct_profile_name }}</span> - <span style="color: #039be5; cursor:pointer"
@@ -104,8 +105,8 @@ class="navbar-brand">
                 </span>
                 {{ "Pricing.HasExpiredOn" | translate}} {{ subscription_end_date | date: 'dd/MM/y' }} -
 
-                <span style="color: #039be5; cursor:pointer"
-                  (click)="openModalSubsExpired()">{{ "Pricing.UpgradePlan" | translate }} </span>
+                <span style="color: #039be5; cursor:pointer" (click)="openModalSubsExpired()">{{ "Pricing.UpgradePlan" |
+                  translate }} </span>
               </span>
             </span>
           </div>
@@ -227,7 +228,7 @@ class="navbar-brand">
 
               <tbody>
                 <!-- trackBy: trackByFn  -- trackBy: trackImageId-->
-                <tr #divItem  *ngFor="let projectUser of projectUsersList;let i = index;">
+                <tr #divItem *ngFor="let projectUser of projectUsersList;let i = index;">
                   <!-- FOR DEBUG: ID OF THE PROJECT-USER  -->
                   <!-- <td>
                     {{ projectUser?._id }}
@@ -237,19 +238,30 @@ class="navbar-brand">
                     style="cursor:pointer; width:1%;white-space:nowrap; text-align: center">
 
                     <div class="user-avatar-wrap">
+
+                      <!-- --------------------------------------------------- -->
+                      <!-- USECASE uploadEngine Firebase -->
+                      <!-- --------------------------------------------------- -->
                       <img *ngIf="projectUser?.hasImage && UPLOAD_ENGINE_IS_FIREBASE"
                         style="vertical-align: middle; width: 52px; height: 52px; border-radius: 50%; border: 1px solid #eee;"
                         class="user-img"
                         src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media"
                         onerror="this.src='assets/img/no_image_user.png'" />
 
-                        <img *ngIf="projectUser?.hasImage && !UPLOAD_ENGINE_IS_FIREBASE"
+                      <!-- --------------------------------------------------- -->
+                      <!-- USECASE uploadEngine Native -->
+                      <!-- --------------------------------------------------- -->
+                      <img *ngIf="projectUser?.hasImage && !UPLOAD_ENGINE_IS_FIREBASE"
                         style="vertical-align: middle; width: 52px; height: 52px; border-radius: 50%; border: 1px solid #eee;"
                         class="user-img"
                         src="{{baseUrl}}images?path=uploads%2Fusers%2F{{projectUser?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                         onerror="this.src='assets/img/no_image_user.png'" />
 
-                      <div *ngIf="projectUser.hasImage === false"  style="vertical-align: middle; width: 52px; height: 52px; border-radius: 50%; border: 1px solid #eee;"
+                      <!-- --------------------------------------------------- -->
+                      <!-- USECASE No profile Image -->
+                      <!-- --------------------------------------------------- -->
+                      <div *ngIf="projectUser?.hasImage === false"
+                        style="vertical-align: middle; width: 52px; height: 52px; border-radius: 50%; border: 1px solid #eee;"
                         [ngStyle]="{'background-color': projectUser?.id_user?.fillColour }">
                         <span class="altenative-projetuser-avatar">
                           {{ projectUser?.id_user?.fullname_initial }}
@@ -321,7 +333,7 @@ class="navbar-brand">
                   <td>
                     <label class="switch" style="margin-bottom: -6px;">
                       <input type="checkbox"
-                        (click)="changeAvailabilityStatus(projectUser?.user_available, projectUser?._id)" 
+                        (click)="changeAvailabilityStatus(projectUser?.user_available, projectUser?._id)"
                         [checked]="projectUser?.user_available === true">
                       <span class="slider round"></span>
                     </label>

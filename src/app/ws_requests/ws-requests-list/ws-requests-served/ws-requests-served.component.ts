@@ -32,6 +32,8 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   // @Input() showSpinner: boolean;
   CHAT_BASE_URL: string;
   storageBucket: string;
+  baseUrl: string;
+  UPLOAD_ENGINE_IS_FIREBASE: boolean;
   projectId: string;
   id_request_to_archive: string;
   displayArchiveRequestModal: string;
@@ -79,7 +81,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   }
 
   ngOnInit() {
-    this.getStorageBucketAndChatBaseUrl();
+    this.getProfileImageStorageAndChatBaseUrl();
     this.getCurrentProject();
     this.getDepartments();
 
@@ -95,25 +97,34 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     this.detectMobile();
   }
 
-  getStorageBucketAndChatBaseUrl() {
-    const firebase_conf = this.appConfigService.getConfig().firebase;
-    this.storageBucket = firebase_conf['storageBucket'];
-    console.log('STORAGE-BUCKET Ws Requests served ', this.storageBucket)
-    this.checkImage(this.wsRequestsServed)
+  getProfileImageStorageAndChatBaseUrl() {
+    if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+      this.UPLOAD_ENGINE_IS_FIREBASE = true;
+      const firebase_conf = this.appConfigService.getConfig().firebase;
+      this.storageBucket = firebase_conf['storageBucket'];
+      console.log('WS-REQUESTS-SERVED - IMAGE STORAGE  ', this.storageBucket, 'usecase firebase')
+
+    } else {
+      this.UPLOAD_ENGINE_IS_FIREBASE = false;
+      this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
+
+      console.log('WS-REQUESTS-SERVED - IMAGE STORAGE ', this.baseUrl, 'usecase native')
+    }
+    // this.checkImage(this.wsRequestsServed)
 
     this.CHAT_BASE_URL = this.appConfigService.getConfig().CHAT_BASE_URL;
   }
 
-  checkImage(wsRequestsServed) {
-    wsRequestsServed.forEach(request => {
-      if (request) {
-        console.log('STORAGE-BUCKET  +++++ ws-requests--- served - request ', request)
-        // request.participanting_Agents.forEach(agent => {
-        //   console.log('% »»» WebSocketJs WF +++++ ws-requests--- served - participanting_Agents agent ', agent)
-        // });
-      }
-    });
-  }
+  // checkImage(wsRequestsServed) {
+  //   wsRequestsServed.forEach(request => {
+  //     if (request) {
+  //       console.log('STORAGE-BUCKET  +++++ ws-requests--- served - request ', request)
+  //       // request.participanting_Agents.forEach(agent => {
+  //       //   console.log('% »»» WebSocketJs WF +++++ ws-requests--- served - participanting_Agents agent ', agent)
+  //       // });
+  //     }
+  //   });
+  // }
 
 
 

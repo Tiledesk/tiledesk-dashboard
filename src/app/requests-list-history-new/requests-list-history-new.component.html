@@ -487,7 +487,7 @@
   <div class="row">
     <div class="col-md-12 table-wrapper-col">
       <div class="card card--no-border" style="margin-top: 0px;">
-        
+
 
         <!-- 
           // ----------------------------------------------------------------
@@ -729,7 +729,7 @@
                 </th>
               </tr>
             </thead>
-            
+
             <tbody *ngIf="showSpinner">
               <tr>
                 <td colspan="10">
@@ -738,7 +738,7 @@
                 </td>
 
               </tr>
-            
+
             </tbody>
 
             <tbody *ngIf="!showSpinner">
@@ -1211,7 +1211,7 @@
 
                     <span class="tooltiptext" style="font-size: 10px !important; padding: 3px;">
                       <span *ngIf="request?.ua_os !== 'undefined undefined'"> {{ request?.ua_os }} </span>
-                      <span *ngIf="request?.ua_os === 'undefined undefined'"> {{'Unavailable' | translate}}  </span>
+                      <span *ngIf="request?.ua_os === 'undefined undefined'"> {{'Unavailable' | translate}} </span>
                     </span>
                   </span>
 
@@ -1301,37 +1301,6 @@
                   </p>
                 </td>
 
-                <!-- 
-                  // ------------------------------------------------------------------------------------------------------
-                  // @ Served By - the old
-                  // ------------------------------------------------------------------------------------------------------ -->
-                <!-- 
-                  <td>
-                    <div *ngFor="let participant of request?.participants" style="font-size:0.8em;">
-                      <span
-                        *ngIf="participant !== request?.requester_id && participant !== 'system' && participant !== currentUserID"
-                        class="tooltipx">
-                        <span (click)="goToMemberProfile( participant )" style="cursor:pointer; display: block">
-                          <img *ngIf="participant.indexOf('bot_') !== -1" class="user_profile_in_history"
-                            src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{participant | slice:4}}%2Fphoto.jpg?alt=media"
-                            onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />                
-                          <img *ngIf="participant.indexOf('bot_') === -1" class="user_profile_in_history"
-                            src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{participant}}%2Fphoto.jpg?alt=media"
-                            onerror="this.src='assets/img/no_image_user.png'" />
-                          <span class="member" [innerHTML]="members_replace( participant )"></span>
-                        </span>
-                        <span class="tooltiptext"> {{ "ViewProfile" | translate }} </span>
-                      </span>
-                      <span style="cursor:pointer;" (click)="goToMemberProfile( participant )"
-                        *ngIf="participant === currentUserID">
-                        <img class="user_profile_in_history"
-                          src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{participant}}%2Fphoto.jpg?alt=media"
-                          onerror="this.src='assets/img/no_image_user.png'" />
-                        <span class="current-user-member" [innerHTML]="members_replace(participant)"></span>
-                      </span>
-                    </div> 
-                  </td> -->
-
 
                 <!-- ------------------------------------------------------------------------------------------------------ -->
                 <!-- @ Served By (new) - mobile -->
@@ -1342,9 +1311,21 @@
                       <span *ngIf="agent.is_bot === true">
 
                         <span (click)="goToBotProfile(agent?._id, agent?.type)" style="cursor:pointer">
-                          <img class="user-img ws-requests-list-servedby-avatar"
+
+                          <!-- --------------------------------------------------- -->
+                          <!-- USECASE uploadEngine Firebase -->
+                          <!-- --------------------------------------------------- -->
+                          <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="user-img ws-requests-list-servedby-avatar"
                             src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fphoto.jpg?alt=media"
                             onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
+
+                          <!-- --------------------------------------------------- -->
+                          <!-- USECASE uploadEngine Native -->
+                          <!-- --------------------------------------------------- -->
+                          <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="user-img ws-requests-list-servedby-avatar"
+                            src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                            onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
+
                           <span class="served-by-agent">
                             {{ agent.name}}
                           </span>
@@ -1361,9 +1342,21 @@
                       </span>
                       <span *ngIf="agent.is_bot === false">
                         <span (click)="goToAgentProfile(agent?._id)" style="cursor:pointer">
-                          <img class="user-img ws-requests-list-servedby-avatar"
+
+                          <!-- --------------------------------------------------- -->
+                          <!-- USECASE uploadEngine Firebase -->
+                          <!-- --------------------------------------------------- -->
+                          <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="user-img ws-requests-list-servedby-avatar"
                             src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fphoto.jpg?alt=media"
                             onerror="this.src='assets/img/no_image_user.png'" />
+
+                          <!-- --------------------------------------------------- -->
+                          <!-- USECASE uploadEngine Native -->
+                          <!-- --------------------------------------------------- -->
+                          <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="user-img ws-requests-list-servedby-avatar"
+                            src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                            onerror="this.src='assets/img/no_image_user.png'" />
+
                           <span [ngClass]="{'current-user-member' : agent._id === currentUserID}"
                             class="served-by-agent">
                             {{ agent?.firstname }}
@@ -1399,16 +1392,28 @@
                           (click)="goToAgentProfile(agent?._id)">
                           <div class="served-by-desktop-d">
                             <div size="32" class="served-by-desktop-e">
-                              <!-- {{  agent.hasImage }} -->
-                              <img *ngIf="agent.hasImage"
+                              <!-- --------------------------------------------------- -->
+                              <!-- USECASE uploadEngine Firebase -->
+                              <!-- --------------------------------------------------- -->
+                              <img *ngIf="agent?.hasImage && UPLOAD_ENGINE_IS_FIREBASE"
                                 [ngClass]="{'current-user-member-border' : agent._id === currentUserID}"
                                 src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fphoto.jpg?alt=media"
                                 alt="" onerror="this.src='assets/img/no_image_user.png'"
                                 (error)="updateUrl($event, agent)">
 
-                              <div [ngClass]="{'current-user-member-border' : agent._id === currentUserID}"
-                                class="altenative-avatar-wrap" [ngStyle]="{'background-color': agent?.fillColour }"
-                                *ngIf="!agent.hasImage">
+                              <!-- --------------------------------------------------- -->
+                              <!-- USECASE uploadEngine Native -->
+                              <!-- --------------------------------------------------- -->
+                              <img *ngIf="agent?.hasImage && !UPLOAD_ENGINE_IS_FIREBASE"
+                                [ngClass]="{'current-user-member-border' : agent._id === currentUserID}"
+                                src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                alt="" onerror="this.src='assets/img/no_image_user.png'"
+                                (error)="updateUrl($event, agent)">
+
+
+                              <div *ngIf="!agent?.hasImage"
+                                [ngClass]="{'current-user-member-border' : agent._id === currentUserID}"
+                                class="altenative-avatar-wrap" [ngStyle]="{'background-color': agent?.fillColour }">
 
                                 <span class="altenative-avatar">
                                   {{ agent?.fullname_initial }}
@@ -1435,10 +1440,21 @@
                       <span *ngIf="agent.is_bot === true">
                         <span (click)="goToBotProfile(agent?._id, agent?.type)"
                           [ngClass]="{'disable-link-if-is-agent' : ROLE_IS_AGENT}" class="bot---avatar tool_tip">
-                          <img class="user-img ws-requests-list-servedby-avatar"
+
+                          <!-- --------------------------------------------------- -->
+                          <!-- USECASE uploadEngine Firebase -->
+                          <!-- --------------------------------------------------- -->
+                          <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="user-img ws-requests-list-servedby-avatar"
                             src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fphoto.jpg?alt=media"
                             onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
 
+                          <!-- --------------------------------------------------- -->
+                          <!-- USECASE uploadEngine Native -->
+                          <!-- --------------------------------------------------- -->
+                          <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"  class="user-img ws-requests-list-servedby-avatar"
+                            src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                            onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
+                            
                           <span
                             style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px; white-space: nowrap;"
                             class="top">

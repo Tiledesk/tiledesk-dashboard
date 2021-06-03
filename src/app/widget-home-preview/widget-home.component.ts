@@ -7,7 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class WidgetHomeComponent implements OnInit {
   colorBck: string;
-  g:any
+  g: any
   public userProfileImageurl: string;
   @Input() primaryColorGradiend: string;
   @Input() LOGO_IS_ON: boolean;
@@ -28,14 +28,15 @@ export class WidgetHomeComponent implements OnInit {
   @Input() waitingTimeNotFoundMsg: string;
   @Input() waitingTimeFoundMsg: string;
   @Input() currentUserId: string;
-  @Input() storageBucket: string;
+  @Input() UPLOAD_ENGINE_IS_FIREBASE: boolean;
+  @Input() imageUrl: string;
   @Input() newConversation: string;
   @Input() noConversation: string;
   @Input() HAS_SELECT_DYMANIC_REPLY_TIME_MSG: boolean;
   @Input() HAS_SELECT_STATIC_REPLY_TIME_MSG: boolean;
   @Input() DISPLAY_LAUNCER_BUTTON: boolean;
-  
-  
+
+
   constructor() { }
 
   ngOnInit() {
@@ -43,7 +44,12 @@ export class WidgetHomeComponent implements OnInit {
 
     console.log('WIDGET CLONE COMPONENT ', this.primaryColorGradiend)
 
-    this.userProfileImageurl = 'https://firebasestorage.googleapis.com/v0/b/' + this.storageBucket + '/o/profiles%2F' + this.currentUserId + '%2Fphoto.jpg?alt=media';
+    if (this.UPLOAD_ENGINE_IS_FIREBASE === true) {
+      this.userProfileImageurl = 'https://firebasestorage.googleapis.com/v0/b/' + this.imageUrl + '/o/profiles%2F' + this.currentUserId + '%2Fphoto.jpg?alt=media';
+    } else {
+      this.userProfileImageurl = this.imageUrl + 'images?path=uploads%2Fusers%2F' + this.currentUserId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
+
+    }
   }
 
 }

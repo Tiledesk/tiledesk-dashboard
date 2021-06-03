@@ -602,7 +602,7 @@
                       <!-- --------------------------------------------------------------------- -->
                       <!-- Bot profile photo usecase uploadEngine Firebase -->
                       <!-- --------------------------------------------------------------------- -->
-                      <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
+                      <img *ngIf="selectedId && UPLOAD_ENGINE_IS_FIREBASE"
                         style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #eee; margin-right: 6px;"
                         class="user-img"
                         src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{selectedId}}%2Fphoto.jpg?alt=media"
@@ -611,7 +611,7 @@
                       <!-- --------------------------------------------------------------------- -->
                       <!-- Bot profile photo usecase uploadEngine Native -->
                       <!-- --------------------------------------------------------------------- -->
-                      <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
+                      <img *ngIf="selectedId && !UPLOAD_ENGINE_IS_FIREBASE"
                         style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #eee; margin-right: 6px;"
                         class="user-img"
                         src="{{baseUrl}}images?path=uploads%2Fusers%2F{{selectedId}}%2Fimages%2Fthumbnails_200_200-photo.jpg"

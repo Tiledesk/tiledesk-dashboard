@@ -111,7 +111,10 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   // deptIdSelectedInRequuestsXDepts
   ws_requestslist_deptIdSelected: string
   display_dept_sidebar = false;
-  storagebucket$: string;
+  imageStorage$: string;
+  baseUrl: string;
+  UPLOAD_ENGINE_IS_FIREBASE: boolean;
+
   OPERATING_HOURS_ACTIVE: boolean;
   served_unserved_sum: any;
 
@@ -217,7 +220,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   ngOnInit() {
     this.getOSCODE();
     // this.getStorageBucketFromUserServiceSubscription();
-    this.getStorageBucketAndThenProjectUsers();
+    this.getImageStorageAndThenProjectUsers();
     /* getDepartments da valutare se viene ancora usato (veniva usato di sicuro durante la creazione della richiesta interna ora sosstiuiyo con
      // getProjectUserAndBotAndDepts x dare la possibilità di associare una richiesta interna oltre che ad un dept anche ad un bot o a un projct-user) */
     this.getDepartments();
@@ -278,7 +281,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         this.prjct_trial_expired = projectProfileData.trial_expired;
         this.prjct_profile_type = projectProfileData.profile_type;
         this.subscription_is_active = projectProfileData.subscription_is_active;
-       
+
 
         if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false || this.prjct_profile_type === 'free' && this.prjct_trial_expired === true) {
           this.DISPLAY_OPH_AS_DISABLED = true;
@@ -286,7 +289,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
           this.DISPLAY_OPH_AS_DISABLED = false;
         }
       }
- 
+
     })
   }
 
@@ -301,9 +304,9 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       // console.log('NavbarComponent public_Key key', key)
 
       if (key.includes("PSA")) {
-        console.log('PUBLIC-KEY (WS-REQUESTS-LIST) - key', key);
+        // console.log('PUBLIC-KEY (WS-REQUESTS-LIST) - key', key);
         let psa = key.split(":");
-        console.log('PUBLIC-KEY (WS-REQUESTS-LIST) - pay key&value', psa);
+        // console.log('PUBLIC-KEY (WS-REQUESTS-LIST) - pay key&value', psa);
         if (psa[1] === "F") {
           this.isVisibleSmartAssignOption = false;
         } else {
@@ -314,14 +317,14 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       if (key.includes("OPH")) {
         // console.log('PUBLIC-KEY (SIDEBAR) - key', key);
         let oph = key.split(":");
-        console.log('PUBLIC-KEY (WS-REQUESTS-LIST) - pay key&value', oph);
+        // console.log('PUBLIC-KEY (WS-REQUESTS-LIST) - pay key&value', oph);
 
         if (oph[1] === "F") {
           this.isVisibleOPH = false;
-          console.log('PUBLIC-KEY (WS-REQUESTS-LIST) - isVisibleOPH', this.isVisibleOPH);
+          // console.log('PUBLIC-KEY (WS-REQUESTS-LIST) - isVisibleOPH', this.isVisibleOPH);
         } else {
           this.isVisibleOPH = true;
-          console.log('PUBLIC-KEY (WS-REQUESTS-LIST) - isVisibleOPH', this.isVisibleOPH);
+          // console.log('PUBLIC-KEY (WS-REQUESTS-LIST) - isVisibleOPH', this.isVisibleOPH);
         }
       }
 
@@ -329,12 +332,12 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
 
     if (!this.public_Key.includes("PSA")) {
-      console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("PSA")', this.public_Key.includes("PSA"));
+      // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("PSA")', this.public_Key.includes("PSA"));
       this.isVisibleSmartAssignOption = false;
     }
 
     if (!this.public_Key.includes("OPH")) {
-      console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("OPH")', this.public_Key.includes("OPH"));
+      // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("OPH")', this.public_Key.includes("OPH"));
       this.isVisibleOPH = false;
     }
 
@@ -367,28 +370,41 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
 
   getStorageBucketFromUserServiceSubscription() {
-    this.usersService.storageBucket$
+    this.usersService.imageStorage$
       .pipe(
         takeUntil(this.unsubscribe$)
       )
-      .subscribe((storagebucket) => {
-        console.log('STORAGE-BUCKET - from sub in ws-request-list ', storagebucket);
-        if (storagebucket) {
-          this.storagebucket$ = storagebucket;
+      .subscribe((imagestorage) => {
+        console.log('WS-REQUEST-LIST - IMAGE STORAGE from usersService BS sub ', imagestorage);
+        if (imagestorage) {
+          this.imageStorage$ = imagestorage;
         }
       })
   }
 
-  getStorageBucketAndThenProjectUsers() {
+  getImageStorageAndThenProjectUsers() {
     // storage bucket from user service subscription 
-    this.storagebucket$ = this.usersService.storageBucket$.value;
-    console.log('STORAGE-BUCKET - from sub in ws-request-list value', this.storagebucket$);
+    this.imageStorage$ = this.usersService.imageStorage$.value;
+    console.log('WS-REQUEST-LIST - IMAGE STORAGE usersService BS value', this.imageStorage$);
 
-    const firebase_conf = this.appConfigService.getConfig().firebase;
-    this.storageBucket = firebase_conf['storageBucket'];
-    console.log('STORAGE-BUCKET Ws Requests List ', this.storageBucket);
+    if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+      this.UPLOAD_ENGINE_IS_FIREBASE = true;
 
-    this.getAllProjectUsers(this.storageBucket);
+      const firebase_conf = this.appConfigService.getConfig().firebase;
+      this.storageBucket = firebase_conf['storageBucket'];
+      console.log('WS-REQUEST-LIST - IMAGE STORAGE (getImageStorageAndThenProjectUsers)', this.storageBucket, 'usecase firebase');
+
+      this.getAllProjectUsers(this.storageBucket, this.UPLOAD_ENGINE_IS_FIREBASE);
+
+    } else {
+
+      this.UPLOAD_ENGINE_IS_FIREBASE = false;
+      this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
+
+      console.log('WS-REQUEST-LIST - IMAGE STORAGE (getImageStorageAndThenProjectUsers) ', this.baseUrl, 'usecase native')
+      this.getAllProjectUsers(this.baseUrl, this.UPLOAD_ENGINE_IS_FIREBASE);
+    }
+
     this.displayProjectUserImageSkeleton()
   }
 
@@ -544,7 +560,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   }
 
 
-  getAllProjectUsers(storageBucket) {
+  getAllProjectUsers(imagestorage: string, isfirebaseuploadengine: boolean) {
     // createBotsAndUsersArray() {
     this.usersService.getProjectUsersByProjectId().subscribe((_projectUsers: any) => {
       // console.log('% »»» WebSocketJs WF WS-RL - +++ GET PROJECT-USERS ', projectUsers);
@@ -558,9 +574,13 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         _projectUsers.forEach(projectuser => {
 
           console.log('WS-REQUESTS-LIST - GET PROJECT-USERS forEach projectuser ', projectuser);
+          let imgUrl = ''
+          if (isfirebaseuploadengine === true) {
+            imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + imagestorage + "/o/profiles%2F" + projectuser.id_user._id + "%2Fphoto.jpg?alt=media";
+          } else {
 
-
-          const imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + storageBucket + "/o/profiles%2F" + projectuser.id_user._id + "%2Fphoto.jpg?alt=media";
+            imgUrl = imagestorage + "images?path=uploads%2Fusers%2F" + projectuser.id_user._id + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
+          }
 
           this.checkImageExists(imgUrl, (existsImage) => {
             if (existsImage == true) {
@@ -1366,7 +1386,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
           request['ua_os'] = ua_os;
 
           // ------------------------------------------------------------------------------------------
-          // for the tooltip on the icon of unserved conversations showing users who have left the chat
+          // for the tooltip on the icon of unserved conversations showing last users who have left the chat
           // ------------------------------------------------------------------------------------------
           if (request.attributes && request.attributes.last_abandoned_by_project_user) {
 
@@ -1393,9 +1413,13 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
                 .subscribe((projectuser) => {
                   console.log('WS-REQUESTS-LIST - LAST PROJECT-USER THAT HAS ABANDONED getProjectUserById RES', projectuser)
 
-
-                  const imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + this.storageBucket + "/o/profiles%2F" + projectuser['id_user']._id + "%2Fphoto.jpg?alt=media"
-
+                  let imgUrl = ''
+                  if (this.UPLOAD_ENGINE_IS_FIREBASE === true) {
+                    imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + this.storageBucket + "/o/profiles%2F" + projectuser['id_user']._id + "%2Fphoto.jpg?alt=media"
+                  } else {
+                    imgUrl = this.baseUrl + "images?path=uploads%2Fusers%2F" + projectuser['id_user']._id + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                    console.log('WS-REQUESTS-LIST - LAST PROJECT-USER THAT HAS ABANDONED has image ', imgUrl)
+                  }
                   this.checkImageExists(imgUrl, (existsImage) => {
                     if (existsImage == true) {
                       projectuser['id_user'].hasImage = true
@@ -1425,14 +1449,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
                   // }
 
                 });
-              // this.usersService.getAllUsersOfCurrentProjectAndSaveInStorage();
 
-              // const _users_found_in_storage_by_projectuserid = this.usersLocalDbService.getMemberFromStorage(project_user_id);
-              // console.log('WS-REQUESTS-LIST - LAST PROJECT-USER THAT HAS ABANDONED project_users_found_in_storage 2', users_found_in_storage_by_projectuserid)
-
-              // if (_users_found_in_storage_by_projectuserid !== null) {
-              //   this.createArrayLast_abandoned_by_project_user(_users_found_in_storage_by_projectuserid, request);
-              // }
             }
 
           }
@@ -1462,8 +1479,13 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
                     .subscribe((projectuser) => {
                       console.log('WS-REQUESTS-LIST - OTHER PROJECT-USER THAT HAS ABANDONED getProjectUserById RES', projectuser)
 
-                      const imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + this.storageBucket + "/o/profiles%2F" + projectuser['id_user']._id + "%2Fphoto.jpg?alt=media"
-
+                      let imgUrl = ''
+                      if (this.UPLOAD_ENGINE_IS_FIREBASE === true) {
+                        imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + this.storageBucket + "/o/profiles%2F" + projectuser['id_user']._id + "%2Fphoto.jpg?alt=media"
+                      } else {
+                        imgUrl = this.baseUrl + "images?path=uploads%2Fusers%2F" + projectuser['id_user']._id + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                        console.log('WS-REQUESTS-LIST - OTHER PROJECT-USER THAT HAS ABANDONED has image ', imgUrl)
+                      }
                       this.checkImageExists(imgUrl, (existsImage) => {
                         if (existsImage == true) {
                           projectuser['id_user'].hasImage = true
@@ -1518,7 +1540,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
               console.log('!! Ws SHARED  (from request list) PARTICIPATING-AGENTS IS ', request['participanting_Agents'], ' - RUN DO ');
 
-              request['participanting_Agents'] = this.doParticipatingAgentsArray(request.participants, request.first_text, this.storagebucket$)
+              request['participanting_Agents'] = this.doParticipatingAgentsArray(request.participants, request.first_text, this.imageStorage$, this.UPLOAD_ENGINE_IS_FIREBASE)
 
             } else {
 
@@ -1699,7 +1721,13 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
 
   createArrayLast_abandoned_by_project_user(user, request) {
-    const imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + this.storageBucket + "/o/profiles%2F" + user['_id'] + "%2Fphoto.jpg?alt=media"
+
+    let imgUrl = ''
+    if (this.UPLOAD_ENGINE_IS_FIREBASE === true) {
+      imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + this.storageBucket + "/o/profiles%2F" + user['_id'] + "%2Fphoto.jpg?alt=media"
+    } else {
+      imgUrl = this.baseUrl + "images?path=uploads%2Fusers%2F" + user['_id'] + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
+    }
 
     const last_abandoned_by_project_user_array = []
     last_abandoned_by_project_user_array.push(
@@ -1717,7 +1745,14 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   }
 
   createArrayOther_project_users_that_has_abandoned(other_project_users_found) {
-    const imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + this.storageBucket + "/o/profiles%2F" + other_project_users_found['_id'] + "%2Fphoto.jpg?alt=media"
+   
+    console.log('createArrayOther_project_users_that_has_abandoned other_project_users_found', other_project_users_found  ) 
+    let imgUrl = ''
+    if (this.UPLOAD_ENGINE_IS_FIREBASE === true) {
+      imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + this.storageBucket + "/o/profiles%2F" + other_project_users_found['_id'] + "%2Fphoto.jpg?alt=media"
+    } else {
+      imgUrl = this.baseUrl + "images?path=uploads%2Fusers%2F" + other_project_users_found['_id'] + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
+    }
 
     this.other_project_users_that_has_abandoned_array.push(
       {

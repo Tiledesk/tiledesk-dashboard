@@ -185,16 +185,16 @@ export class UsersComponent implements OnInit, OnDestroy {
     let keys = this.public_Key.split("-");
     keys.forEach(key => {
       if (key.includes("GRO")) {
-        console.log('PUBLIC-KEY (Users) - key', key);
+        // console.log('PUBLIC-KEY (Users) - key', key);
         let gro = key.split(":");
-        console.log('PUBLIC-KEY (Users) - gro key&value', gro);
+        // console.log('PUBLIC-KEY (Users) - gro key&value', gro);
 
         if (gro[1] === "F") {
           this.isVisible = false;
-          console.log('PUBLIC-KEY (Users) - gro isVisible', this.isVisible);
+          // console.log('PUBLIC-KEY (Users) - gro isVisible', this.isVisible);
         } else {
           this.isVisible = true;
-          console.log('PUBLIC-KEY (Users) - gro isVisible', this.isVisible);
+          // console.log('PUBLIC-KEY (Users) - gro isVisible', this.isVisible);
         }
       }
     });
@@ -443,8 +443,10 @@ export class UsersComponent implements OnInit, OnDestroy {
           let imgUrl = ''
           if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
             imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + storage + "/o/profiles%2F" + projectuser['id_user']['_id'] + "%2Fphoto.jpg?alt=media"
+            console.log('USERS-COMP - PROJECT USERS imgUrl (usecase firebase)', imgUrl);
           } else {
             imgUrl = storage + 'images?path=uploads%2Fusers%2F' + projectuser['id_user']['_id'] + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
+            console.log('USERS-COMP - PROJECT USERS imgUrl (usecase native)', imgUrl);
           }
 
           this.checkImageExists(imgUrl, (existsImage) => {

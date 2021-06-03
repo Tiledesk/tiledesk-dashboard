@@ -47,6 +47,8 @@ export class ConfigureWidgetComponent extends WidgetDesignBaseComponent implemen
   public hasSelectedRightAlignment = true
   public C21_BODY_HOME = true
   public storageBucket: string;
+  public imageUrl: string;
+  public UPLOAD_ENGINE_IS_FIREBASE: boolean;
   public currentUserId: string;
 
 
@@ -94,7 +96,7 @@ export class ConfigureWidgetComponent extends WidgetDesignBaseComponent implemen
   }
 
   ngOnInit() {
-    this.getStorageBucket();
+    this.getProfileImageStorage();
     this.getLoggedUser();
     this.getCurrentProject();
     // this.getEnDefaultTranslation();
@@ -102,10 +104,20 @@ export class ConfigureWidgetComponent extends WidgetDesignBaseComponent implemen
     this.getALLDefaultTranslations();
   }
 
-  getStorageBucket() {
-    const firebase_conf = this.appConfigService.getConfig().firebase;
-    this.storageBucket = firebase_conf['storageBucket'];
-    console.log('STORAGE-BUCKET WIZARD - CONFIGURE WIDGET ', this.storageBucket)
+  getProfileImageStorage() {
+    if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+      this.UPLOAD_ENGINE_IS_FIREBASE = true;
+      const firebase_conf = this.appConfigService.getConfig().firebase;
+      this.imageUrl = firebase_conf['storageBucket'];
+      console.log('WIZARD - CONFIGURE WIDGET IMAGE STORAGE ', this.imageUrl, 'usecase firebase')
+    } else {
+      this.UPLOAD_ENGINE_IS_FIREBASE = false;
+      this.imageUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
+
+      console.log('WIZARD - CONFIGURE WIDGET IMAGE STORAGE ', this.imageUrl, 'usecase native')
+
+
+    }
   }
 
   getLoggedUser() {
@@ -419,7 +431,7 @@ export class ConfigureWidgetComponent extends WidgetDesignBaseComponent implemen
         this.allDefaultTranslations = translations;
         console.log('WIZARD - CONFIGURE WIDGET ***** GET * ALL * TRANSLATIONS ***** - RES', translations);
 
-        this.setCurrentTranslation('en') 
+        this.setCurrentTranslation('en')
 
       }
     })
@@ -428,10 +440,10 @@ export class ConfigureWidgetComponent extends WidgetDesignBaseComponent implemen
 
   setCurrentTranslation(selectedlangcode) {
     console.log('WIZARD - CONFIGURE WIDGET *****  selectedlangcode selectedlangcode', selectedlangcode);
-  
+
     this.allDefaultTranslations.forEach(translation => {
       console.log('WIZARD - CONFIGURE WIDGET *****  selectedlangcode translation', translation);
-     
+
       if (translation.lang.toLowerCase() === selectedlangcode) {
 
         this.defaultTranslation = translation.data
@@ -470,8 +482,8 @@ export class ConfigureWidgetComponent extends WidgetDesignBaseComponent implemen
       this.temp_SelectedLangName = selectedLang.name;
       console.log('WIZARD - CONFIGURE WIDGET selected TEMP Lang Code ', this.temp_SelectedLangCode);
       console.log('WIZARD - CONFIGURE WIDGET selected TEMP Lang label ', this.temp_SelectedLangName);
-    
-      this.setCurrentTranslation(this.temp_SelectedLangCode) 
+
+      this.setCurrentTranslation(this.temp_SelectedLangCode)
 
     }
   }
@@ -568,7 +580,7 @@ export class ConfigureWidgetComponent extends WidgetDesignBaseComponent implemen
 
 
 
- 
+
 
   continueToInstallScript() {
 

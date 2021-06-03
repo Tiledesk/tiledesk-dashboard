@@ -12,7 +12,8 @@
   <div lass="create-new-group-note-wpr" style="margin-top: 6px;">
     <div class="create-new-group-note">
       <span class="material-icons" style="color: #3ea9f5;font-size: 18px;position: relative;top: 4px;"> info </span>
-      <h5 style="font-size: 13px; font-weight:400;color: rgba(0,0,0,0.5);">{{ "TheNewGroupCreatedCanAlso" | translate }}</h5>
+      <h5 style="font-size: 13px; font-weight:400;color: rgba(0,0,0,0.5);">{{ "TheNewGroupCreatedCanAlso" | translate }}
+      </h5>
     </div>
   </div>
 
@@ -83,11 +84,24 @@
 
 
                 <td style="padding-left:10px;" rel="tooltip" title="{{ project_user?.id_user?._id }}">
-                  <img
+                  <!-- --------------------------------------------------- -->
+                  <!-- USECASE uploadEngine Firebase -->
+                  <!-- --------------------------------------------------- -->
+                  <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
                     style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #eee; margin-right: 3px;"
                     class="user-img"
                     src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{project_user?.id_user?._id}}%2Fphoto.jpg?alt=media"
                     onerror="this.src='assets/img/no_image_user.png'" />
+
+                  <!-- --------------------------------------------------- -->
+                  <!-- USECASE uploadEngine Native -->
+                  <!-- --------------------------------------------------- -->
+                  <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
+                    style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #eee; margin-right: 3px;"
+                    class="user-img"
+                    src="{{baseUrl}}images?path=uploads%2Fusers%2F{{project_user?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                    onerror="this.src='assets/img/no_image_user.png'" />
+
                   <span class="teammate-fullname" style="font-size:12px">
                     <span> {{ project_user?.id_user?.firstname }} </span>
                     <span style="text-transform: uppercase">

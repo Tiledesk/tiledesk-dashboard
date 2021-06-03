@@ -17,7 +17,8 @@ export class WidgetChatComponent implements OnInit {
   @Input() onlineMsg: string;
   @Input() offlineMsg: string;
   @Input() projectName: string;
-  @Input() storageBucket: string;
+  @Input() UPLOAD_ENGINE_IS_FIREBASE: boolean;
+  @Input() imageUrl: string;
   @Input() currentUserId: string;
   @Input() current_user_name: string;
   
