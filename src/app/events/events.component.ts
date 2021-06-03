@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit , OnDestroy} from '@angular/core';
 import { AuthService } from '../core/auth.service';
 import { UsersService } from '../services/users.service';
 import { Subject } from 'rxjs';
@@ -10,7 +10,7 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './events.component.html',
   styleUrls: ['./events.component.scss']
 })
-export class EventsComponent implements OnInit {
+export class EventsComponent implements OnInit,  OnDestroy {
   project_id: string;
   contact_id: string;
   events: any;
@@ -28,6 +28,11 @@ export class EventsComponent implements OnInit {
   ngOnInit() {
     // this.getCurrentProject();
 
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   getParams() {
