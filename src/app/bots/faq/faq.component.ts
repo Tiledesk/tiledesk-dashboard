@@ -690,9 +690,14 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
 
   checkBotImageExistOnFirebase() {
+    console.log('checkBotImageExistOnFirebase (FAQ-COMP) ')
+    console.log('STORAGE-BUCKET (FAQ-COMP) firebase_conf ', this.appConfigService.getConfig().firebase)
+
     const firebase_conf = this.appConfigService.getConfig().firebase;
-    this.storageBucket = firebase_conf['storageBucket'];
-    console.log('STORAGE-BUCKET Users-profile ', this.storageBucket)
+    if (firebase_conf) {
+      this.storageBucket = firebase_conf['storageBucket'];
+      console.log('STORAGE-BUCKET (FAQ-COMP) ', this.storageBucket)
+    }
 
     const imageUrl = 'https://firebasestorage.googleapis.com/v0/b/' + this.storageBucket + '/o/profiles%2F' + this.id_faq_kb + '%2Fphoto.jpg?alt=media';
 
@@ -701,13 +706,13 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
       if (imageExists === true) {
         self.botProfileImageExist = imageExists
-        console.log('BOT PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists, 'usecase firebse')
-        
-        self.setImageProfileUrl(this.storageBucket);
+        console.log('BOT PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists, 'usecase firebase')
+
+        self.setImageProfileUrl(self.storageBucket);
 
       } else {
         self.botProfileImageExist = imageExists
-        console.log('BOT PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists, 'usecase firebse')
+        console.log('BOT PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists, 'usecase firebase')
 
 
       }
@@ -746,6 +751,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
 
   checkBotImageUploadIsComplete() {
+    console.log('checkBotImageUploadIsComplete (FAQ-COMP)')
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
 
       this.uploadImageService.botImageWasUploaded.subscribe((imageuploaded) => {
@@ -801,13 +807,13 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
     console.log('AppConfigService getAppConfig (BOT LIST) public_Key', this.public_Key);
     let keys = this.public_Key.split("-");
-    console.log('PUBLIC-KEY (BOT LIST) keys', keys)
+    // console.log('PUBLIC-KEY (BOT LIST) keys', keys)
     keys.forEach(key => {
 
       if (key.includes("ANA")) {
-        console.log('PUBLIC-KEY (BOT LIST) - key', key);
+        // console.log('PUBLIC-KEY (BOT LIST) - key', key);
         let ana = key.split(":");
-        console.log('PUBLIC-KEY (BOT LIST) - ana key&value', ana);
+        // console.log('PUBLIC-KEY (BOT LIST) - ana key&value', ana);
         if (ana[1] === "F") {
           this.isVisibleAnalytics = false;
         } else {
@@ -820,10 +826,10 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
         let dep = key.split(":");
         if (dep[1] === "F") {
           this.isVisibleDEP = false;
-          console.log('PUBLIC-KEY (Faqcomponent) - isVisibleDEP', this.isVisibleDEP);
+          // console.log('PUBLIC-KEY (Faqcomponent) - isVisibleDEP', this.isVisibleDEP);
         } else {
           this.isVisibleDEP = true;
-          console.log('PUBLIC-KEY (Faqcomponent) - isVisibleDEP', this.isVisibleDEP);
+          // console.log('PUBLIC-KEY (Faqcomponent) - isVisibleDEP', this.isVisibleDEP);
         }
       }
     });
@@ -1184,7 +1190,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
             console.log("FQ id: ", fq._id)
             let reply: any;
             for (reply of res) {
-              console.log("REPLY id: ", reply._id._answerid)
+              // console.log("REPLY id: ", reply._id._answerid)
               if (fq._id == reply._id._answerid) {
                 console.log("RES count: ", reply.count);
                 fq['message_count'] = reply.count;
