@@ -956,3 +956,8 @@ my-app .main-panel .main-content .card {
   font-size: 14px;
   text-align: center;
 }
+
+/*  used for the message of type info in the chat section of the conversation detail page */
+.type-info-msg-text > p {
+  margin-bottom: 0px;
+}
