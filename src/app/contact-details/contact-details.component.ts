@@ -406,11 +406,11 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
   openAttributesDecodedJWTAccordion() {
     // var acc = document.getElementsByClassName("accordion");
     var acc = <HTMLElement>document.querySelector('.attributes-decoded-jwt-accordion');
-    console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT - open attributes-decoded-jwt-accordion -  accordion elem ', acc);
+    // console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT - open attributes-decoded-jwt-accordion -  accordion elem ', acc);
     acc.classList.toggle("active");
     // var panel = acc.nextElementSibling ;
     var panel = <HTMLElement>document.querySelector('.attributes-decoded-jwt-panel')
-    console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT-  open attributes-decoded-jwt-panel  -  panel ', panel);
+    // console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT-  open attributes-decoded-jwt-panel  -  panel ', panel);
 
     if (panel.style.maxHeight) {
       panel.style.maxHeight = null;
@@ -586,11 +586,11 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
             // ---------------------------------------------------------
             if (this.contact_details.attributes) {
               if (this.contact_details.attributes.decoded_jwt) {
-                console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT ', this.contact_details.attributes.decoded_jwt);
+                // console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT ', this.contact_details.attributes.decoded_jwt);
                 this.attributesDecodedJWTArray = []
                 for (let [key, value] of Object.entries(this.contact_details.attributes.decoded_jwt)) {
 
-                  console.log(`WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT -key : ${key} - value ${value}`);
+                  // console.log(`WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT -key : ${key} - value ${value}`);
 
                   let _value: any;
                   if (typeof value === 'object' && value !== null) {
@@ -635,11 +635,11 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
                     this.attributesDecodedJWTArray.push(entries)
                   }
                 }
-                console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT - attributesDecodedJWTArray: ', this.attributesDecodedJWTArray);
+                // console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT - attributesDecodedJWTArray: ', this.attributesDecodedJWTArray);
                 // --------------------------------------------------------------------------------------------------------------
               } else {
 
-                console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT IS UNDEFINED ');
+                // console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT IS UNDEFINED ');
               }
             } else {
               console.log('WS-REQUESTS-MSGS - ATTRIBUTES IS UNDEFINED ');
@@ -650,13 +650,13 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
             // ---------------------------------------------------------
             if (this.contact_details.attributes) {
               if (this.contact_details.attributes.decoded_jwt && this.contact_details.attributes.decoded_jwt.attributes) {
-                console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT ATTRIBUTES', this.contact_details.attributes.decoded_jwt.attributes);
+                // console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT ATTRIBUTES', this.contact_details.attributes.decoded_jwt.attributes);
 
                 this.attributesDecodedJWTAttributesArray = []
                 // for (let [key, value] of Object.entries(this.request.attributes.decoded_jwt.attributes)) {
                 for (const [index, [key, value]] of Object.entries(Object.entries(this.contact_details.attributes.decoded_jwt.attributes))) {
 
-                  console.log(`WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT ATTRIBUTES index :${index}: -key  ${key} - value ${value}`);
+                  // console.log(`WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT ATTRIBUTES index :${index}: -key  ${key} - value ${value}`);
 
                   let _value: any;
                   if (typeof value === 'object' && value !== null) {
@@ -701,11 +701,11 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
                   this.attributesDecodedJWTAttributesArray.push(entries)
                 }
-                console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT  ATTRIBUTES - attributesDecodedJWTAttributesArray: ', this.attributesDecodedJWTAttributesArray);
+                // console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT  ATTRIBUTES - attributesDecodedJWTAttributesArray: ', this.attributesDecodedJWTAttributesArray);
 
                 this.attributesDecodedJWTArrayMerged = [].concat(this.attributesDecodedJWTArray, this.attributesDecodedJWTAttributesArray);
 
-                console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT  ATTRIBUTES - attributesDecodedJWTArrayMerged: ', this.attributesDecodedJWTArrayMerged);
+                // console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT  ATTRIBUTES - attributesDecodedJWTArrayMerged: ', this.attributesDecodedJWTArrayMerged);
                 // --------------------------------------------------------------------------------------------------------------
               } else {
                 this.attributesDecodedJWTArrayMerged = this.attributesDecodedJWTArray
@@ -861,19 +861,6 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
   goToEditContact(requester_id) {
     this.router.navigate(['project/' + this.projectId + '/contact/edit', requester_id]);
   }
-
-  // goToMemberProfile(member_id: any) {
-  //   console.log('!!!!! CONTACTS DETAILS has clicked GO To MEMBER ', member_id);
-  //   if (member_id.indexOf('bot_') !== -1) {
-  //     console.log('!!!!! CONTACTS DETAILS IS A BOT !');
-
-  //     this.router.navigate(['project/' + this.projectId + '/botprofile/' + member_id]);
-  //   } else {
-  //     this.router.navigate(['project/' + this.projectId + '/member/' + member_id]);
-  //   }
-  // }
-
-
 
 
   openDeleteContactModal(id: string, fullName: string) {
