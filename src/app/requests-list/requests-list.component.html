@@ -879,9 +879,9 @@
                           onerror="this.src='assets/img/no_image_user.png'"/>
                           
                           <!-- IF IS A HUMAN -->
-                          <img *ngIf="m.indexOf('bot_') === -1" style="vertical-align: middle; width: 25px; height: 25px; border-radius: 50%; border: 1px solid #eee; margin-top: 1px; margin-bottom: 1px" 
+                          <!-- <img *ngIf="m.indexOf('bot_') === -1" style="vertical-align: middle; width: 25px; height: 25px; border-radius: 50%; border: 1px solid #eee; margin-top: 1px; margin-bottom: 1px" 
                           class="user-img" src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{m}}%2Fphoto.jpg?alt=media" 
-                          onerror="this.src='assets/img/no_image_user.png'"/>
+                          onerror="this.src='assets/img/no_image_user.png'"/> -->
 
                           <span class="member" [innerHTML]="members_replace( m )"></span>
                         </span>
@@ -889,9 +889,9 @@
                       </span> 
                       <span *ngIf="m === currentUserID"> 
                          <!-- IF IS THE LOGGED USER -->
-                        <img style="vertical-align: middle; width: 25px; height: 25px; border-radius: 50%; border: 1px solid #eee;margin-top: 1px; margin-bottom: 1px" 
+                        <!-- <img style="vertical-align: middle; width: 25px; height: 25px; border-radius: 50%; border: 1px solid #eee;margin-top: 1px; margin-bottom: 1px" 
                             class="user-img" src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{m}}%2Fphoto.jpg?alt=media" 
-                            onerror="this.src='assets/img/no_image_user.png'"/>
+                            onerror="this.src='assets/img/no_image_user.png'"/> -->
                             <span class="current-user-member" [innerHTML]="members_replace( m )"></span>
                       </span>
                     </div>

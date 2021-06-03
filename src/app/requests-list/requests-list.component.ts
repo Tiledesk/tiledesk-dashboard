@@ -298,9 +298,9 @@ export class RequestsListComponent implements OnInit {
     if (member_id.indexOf('bot_') !== -1) {
       console.log('IS A BOT !');
 
-      this.router.navigate(['project/' + this.projectId + '/botprofile/' + member_id]);
+      // this.router.navigate(['project/' + this.projectId + '/botprofile/' + member_id]);
     } else {
-      this.router.navigate(['project/' + this.projectId + '/member/' + member_id]);
+      // this.router.navigate(['project/' + this.projectId + '/member/' + member_id]);
     }
   }
   goToDept(deptid) {
