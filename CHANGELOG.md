@@ -1,6 +1,10 @@
 
 # tiledesk-dashboard
 
+### 2.1.67
+- Fixes the bug: profile photos are missing when the availability status is updated on the teammates page
+- Fixes the bug: the ticket ID does not contain the project id and uuid without hyphens
+
 ### 2.1.66
 - Fixes the bug: the endpoint for deleting 'native' images is not obtained from the current environment configuration
 - Improves the method signOut 
