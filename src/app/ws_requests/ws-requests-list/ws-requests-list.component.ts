@@ -178,6 +178,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   prjct_trial_expired: boolean;
   subscription_is_active: boolean;
   DISPLAY_OPH_AS_DISABLED: boolean;
+  project_id: string;
   /**
    * Constructor
    * 
@@ -275,9 +276,9 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      console.log('ProjectPlanService (HomeComponent) project Profile Data', projectProfileData)
+      console.log('ProjectPlanService (WS-REQUEST-LIST) project Profile Data', projectProfileData)
       if (projectProfileData) {
-
+        this.project_id = projectProfileData._id;
         this.prjct_trial_expired = projectProfileData.trial_expired;
         this.prjct_profile_type = projectProfileData.profile_type;
         this.subscription_is_active = projectProfileData.subscription_is_active;
@@ -1745,8 +1746,8 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   }
 
   createArrayOther_project_users_that_has_abandoned(other_project_users_found) {
-   
-    console.log('createArrayOther_project_users_that_has_abandoned other_project_users_found', other_project_users_found  ) 
+
+    console.log('createArrayOther_project_users_that_has_abandoned other_project_users_found', other_project_users_found)
     let imgUrl = ''
     if (this.UPLOAD_ENGINE_IS_FIREBASE === true) {
       imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + this.storageBucket + "/o/profiles%2F" + other_project_users_found['_id'] + "%2Fphoto.jpg?alt=media"
@@ -2339,9 +2340,14 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
 
     const uiid = uuid.v4();
+    console.log('% WsRequestsList create internalRequest - uiid', uiid);
+    console.log('% WsRequestsList create internalRequest - uiid typeof', typeof uiid);
+    const uiid_no_dashes = uiid.replace(/-/g, "");;
+    console.log('% WsRequestsList create internalRequest - uiid_no_dash', uiid_no_dashes);
+    // Note: the request id must be in the form "support-group-" + "-" + "project_id" + "uid" <- uid without dash
     // console.log('% WsRequestsList createTicket - UUID', uiid);
-    this.internal_request_id = 'support-group-' + uiid
-    console.log('% WsRequestsList create internalRequest - this.internal_request_id', this.internal_request_id);
+    this.internal_request_id = 'support-group-' + this.project_id + '-' + uiid_no_dashes
+    console.log('% WsRequestsList create internalRequest - internal_request_id', this.internal_request_id);
     // (request_id:string, subject: string, message:string, departmentid: string)
     this.wsRequestsService.createInternalRequest(this.selectedRequester, this.internal_request_id, this.internalRequest_subject, this.internalRequest_message, this.assignee_dept_id, this.assignee_participants_id).subscribe((newticket: any) => {
       console.log('% WsRequestsList create internalRequest - RES ', this.internal_request_id);
