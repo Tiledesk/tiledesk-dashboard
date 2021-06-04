@@ -683,7 +683,11 @@ export class UsersComponent implements OnInit, OnDestroy {
       this.notify.showWidgetStyleUpdateNotification(this.changeAvailabilitySuccessNoticationMsg, 2, 'done');
 
       // RE-RUNS getAllUsersOfCurrentProject TO UPDATE THE TABLE
-      this.getAllUsersOfCurrentProject(this.storageBucket);
+
+
+
+      // this.getAllUsersOfCurrentProject(this.storageBucket);
+      this.getUploadEgine()
     });
   }
 
