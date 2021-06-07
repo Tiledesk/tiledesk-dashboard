@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.1.68
+- Sets in pre enviroments the value of the key remoteConfig to true
+
 ### 2.1.67
 - Fixes the bug: profile photos are missing when the availability status is updated on the teammates page
 - Fixes the bug: the ticket ID does not contain the project id and uuid without hyphens
