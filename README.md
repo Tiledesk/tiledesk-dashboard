@@ -335,7 +335,7 @@ REMOTE_JS_SRC=YOUR_CUSTOM_SCRIPT_URL
 ```
 
 # Autologin 
-To auto login (without using the Authorization header) pass the JWT token as a query parameter as in the following example
+To auto login pass the JWT token as a query parameter of your Dashboard url as in the following example:
 
 ```typescript
 
@@ -344,7 +344,7 @@ To auto login (without using the Authorization header) pass the JWT token as a q
 ```
 
 # Embedded info mode
-You can run an embedded version of the dashboard inside an existing app using for example an iframe as in the following example which display the detail of a conversation
+You can run an embedded version of the dashboard inside an existing app using, for example an iframe, as in the following example which display the detail of a conversation (CONVERSATION_UUID starts with support-group-XYZ)
 
 ```typescript
 
