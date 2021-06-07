@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.1.69
+- Updated CHANGELOG
+
 ### 2.1.68
 - Sets in pre enviroments the value of the key remoteConfig to true
 
