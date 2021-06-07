@@ -1,11 +1,11 @@
 
 export const environment = {
   production: true,
-  t2y12PruGU9wUtEGzBJfolMIgK: 'PAY:F-ANA:F-ACT:F-TRI:F-GRO:F-DEP:F-OPH:F-MTL:F-DGF:F-NAT:F-CAR:F-V1L:F-PSA:F',
+  t2y12PruGU9wUtEGzBJfolMIgK: 'PAY:F-ANA:F-ACT:F-TRI:F-GRO:F-DEP:F-OPH:F-MTL:F-DGF:F-NAT:F-CAR:F-V1L:F-PSA:F-MTT:F-SUP:F-LBS:F-APP:F-DEV:F-NOT:F',
   VERSION: require('../../package.json').version,
   widgetUrl: 'https://widget.tiledesk.com/v3/launch.js',
   botcredendialsURL:'CHANGEIT',
-  remoteConfig: false,
+  remoteConfig: true,
   SERVER_BASE_URL:'https://tiledesk-server-pre.herokuapp.com/',
   CHAT_BASE_URL: 'https://support-pre.tiledesk.com/chat/',
   testsiteBaseUrl: 'https://widget-pre.tiledesk.com/v2/assets/test_widget_page/index.html',
