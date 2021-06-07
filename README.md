@@ -344,10 +344,10 @@ To auto login pass the JWT token as a query parameter of your Dashboard url as i
 ```
 
 # Embedded info mode
-You can run an embedded version of the dashboard inside an existing app using, for example an iframe, as in the following example which display the detail of a conversation (CONVERSATION_UUID starts with support-group-XYZ)
+You can run an embedded version of the dashboard inside an existing app using, for example an iframe, as in the following example which display the detail of a conversation (CONVERSATION_ID starts with support-group-XYZ)
 
 ```typescript
 
-"<iframe src='http://localhost:4200/#/project/<YOUR_PROJECT_ID>/request-for-panel/support-group-<PROJECT_ID>-<CONVERSATION_UUID>?token=<JWT_TOKEN'></iframe>"
+"<iframe src='http://localhost:4200/#/project/<YOUR_PROJECT_ID>/request-for-panel/support-group-<CONVERSATION_ID>?token=<JWT_TOKEN'></iframe>"
 
 ```
