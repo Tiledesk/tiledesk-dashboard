@@ -5,7 +5,7 @@ export const environment = {
   VERSION: require('../../package.json').version,
   widgetUrl: 'https://widget.tiledesk.com/v3/launch.js',
   botcredendialsURL:'CHANGEIT',
-  remoteConfig: false,
+  remoteConfig: true,
   SERVER_BASE_URL:'https://tiledesk-server-pre.herokuapp.com/',
   CHAT_BASE_URL: 'https://support-pre.tiledesk.com/chat/',
   testsiteBaseUrl: 'https://widget-pre.tiledesk.com/v2/assets/test_widget_page/index.html',

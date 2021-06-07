@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.1.49.3
+- Sets in pre enviroment the value of the key remoteConfig to true
+
 ### 2.1.49.2
 - Fixes the bug 'type of undefined' on the trigger  "Offline Welcome Greeting"
 - Adds the parameter 'appid' to the url that open the iframe in the 'app-store-install' component
