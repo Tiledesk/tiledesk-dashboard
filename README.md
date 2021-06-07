@@ -335,3 +335,19 @@ REMOTE_JS_SRC=YOUR_CUSTOM_SCRIPT_URL
 ```
 
 # Autologin 
+To auto login (without using the Authorization header) pass the JWT token as a query parameter as in the following example
+
+```typescript
+
+"http://localhost:4200/#/project/<YOUR_PROJECT_ID>/home?token=<JWT_TOKEN>"
+
+```
+
+# Embedded info mode
+You can run an embedded version of the dashboard inside an existing app using for example an iframe as in the following example
+
+```typescript
+
+"<iframe src='http://localhost:4200/#/project/<YOUR_PROJECT_ID>/home?token=<JWT_TOKEN'></iframe>"
+
+```
