@@ -344,10 +344,10 @@ To auto login (without using the Authorization header) pass the JWT token as a q
 ```
 
 # Embedded info mode
-You can run an embedded version of the dashboard inside an existing app using for example an iframe as in the following example
+You can run an embedded version of the dashboard inside an existing app using for example an iframe as in the following example which display the detail of a conversation
 
 ```typescript
 
-"<iframe src='http://localhost:4200/#/project/<YOUR_PROJECT_ID>/home?token=<JWT_TOKEN'></iframe>"
+"<iframe src='http://localhost:4200/#/project/<YOUR_PROJECT_ID>/request-for-panel/<CONVERSATION_ID>?token=<JWT_TOKEN'></iframe>"
 
 ```
