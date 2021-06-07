@@ -348,6 +348,6 @@ You can run an embedded version of the dashboard inside an existing app using fo
 
 ```typescript
 
-"<iframe src='http://localhost:4200/#/project/<YOUR_PROJECT_ID>/request-for-panel/<CONVERSATION_ID>?token=<JWT_TOKEN'></iframe>"
+"<iframe src='http://localhost:4200/#/project/<YOUR_PROJECT_ID>/request-for-panel/support-group-<PROJECT_ID>-<CONVERSATION_UUID>?token=<JWT_TOKEN'></iframe>"
 
 ```
