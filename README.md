@@ -187,11 +187,6 @@ Copy the content of the dist folder to your Web Server (for example Apache or Ng
 aws s3 sync ./dist/ s3://tiledesk-dashboard/dashboard
 
 ```
-```
-
-aws cloudfront create-invalidation --distribution-id E2DTAKWHWQ7C3J --paths "/*
-
-```
   
 # Run with docker
 
