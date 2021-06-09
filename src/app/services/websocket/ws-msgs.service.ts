@@ -154,7 +154,7 @@ export class WsMsgsService {
     console.log("% WsMsgsService addWsMsgs wsMsgsList.length", this.wsMsgsList.length);
     console.log("% »»» WebSocketJs WF >>> ws-msgs--- m-service - ADD WS Msgs - msg ", msg);
     // msg['TEXT'] = this.linkify(msg.text)
-    msg.text = this.htmlEntities(msg.text)
+    // msg.text = this.htmlEntities(msg.text)
     this.wsMsgsList.push(msg);
 
 
