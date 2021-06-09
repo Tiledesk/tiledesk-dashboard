@@ -1,6 +1,12 @@
 
 # tiledesk-dashboard
 
+### 2.1.70-beta.1.1
+- Fixes the bug: Incorrect encoding of HTML entities in the chat section of conversation detail page
+
+### 2.1.70-beta.1.0
+- Updated in pre enviroment the endpoints of "CHAT_BASE_URL" and "testsiteBaseUrl" to the Chat-Ionic and Widget latest versions
+
 ### 2.1.69
 - Updated CHANGELOG
 
