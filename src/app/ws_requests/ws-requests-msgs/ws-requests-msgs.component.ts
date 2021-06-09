@@ -30,7 +30,7 @@ import PerfectScrollbar from 'perfect-scrollbar';
 import { UAParser } from 'ua-parser-js';
 import { ContactsService } from '../../services/contacts.service';
 const swal = require('sweetalert');
-import { avatarPlaceholder, getColorBck, htmlEntities } from '../../utils/util';
+import { avatarPlaceholder, getColorBck } from '../../utils/util';
 
 @Component({
   selector: 'appdashboard-ws-requests-msgs',

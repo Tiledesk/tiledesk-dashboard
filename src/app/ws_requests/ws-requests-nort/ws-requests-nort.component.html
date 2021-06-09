@@ -1,9 +1,7 @@
 <div class="navbar-brand" style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px">
   <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
     (click)="goBack()">keyboard_arrow_left</i>
-
   {{ "Requests" | translate }}
-
 </div>
 
 <div class="main-content" style="padding-top:0px">
@@ -45,9 +43,9 @@
                           </ng-select> -->
                           <!--[loading]=loadingOptions loadingText='Loading...'  -->
                           <ng-select name="requeststatus" [(ngModel)]="requests_status"
-                            (change)="requestsStatusSelect(requests_status)" 
-                            [items]="status | selectOptionsTranslate" bindLabel="name" [clearable]='false'
-                            [searchable]="false" bindValue="id" placeholder="Select status">
+                            (change)="requestsStatusSelect(requests_status)" [items]="status | selectOptionsTranslate"
+                            bindLabel="name" [clearable]='false' [searchable]="false" bindValue="id"
+                            placeholder="Select status">
                           </ng-select>
 
 
@@ -586,9 +584,10 @@
                         <span style="color: #ffffff"> {{ request?.requester_fullname_initial }} </span>
                       </span>
                       <span *ngIf="request?.requester_is_verified === true" class="tooltipx">
-                        <svg [ngClass]="{'verified-icon-requester-undefined': !request?.lead?.fullname }" version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
-                          xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 26.6 26.6" width="17"
-                          height="17" style="position: relative;left: -41px;top: 1px;" xml:space="preserve">
+                        <svg [ngClass]="{'verified-icon-requester-undefined': !request?.lead?.fullname }" version="1.1"
+                          id="Livello_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                          x="0px" y="0px" viewBox="0 0 26.6 26.6" width="17" height="17"
+                          style="position: relative;left: -41px;top: 1px;" xml:space="preserve">
                           <style type="text/css">
                             .st0 {
                               fill: none;
@@ -688,7 +687,7 @@
 
                       <span class="tooltiptext" style="font-size: 10px !important; padding: 3px;">
                         <span *ngIf="request?.ua_os !== 'undefined undefined'"> {{ request?.ua_os }} </span>
-                        <span *ngIf="request?.ua_os === 'undefined undefined'"> {{'Unavailable' | translate}}  </span>
+                        <span *ngIf="request?.ua_os === 'undefined undefined'"> {{'Unavailable' | translate}} </span>
                       </span>
                     </span>
 
@@ -762,7 +761,8 @@
 
                       <span class="tooltiptext" style="font-size: 10px !important; padding: 3px;">
                         <span *ngIf="request?.ua_browser !== 'undefined undefined'"> {{ request?.ua_browser }} </span>
-                        <span *ngIf="request?.ua_browser === 'undefined undefined'"> {{'Unavailable' | translate}} </span>
+                        <span *ngIf="request?.ua_browser === 'undefined undefined'"> {{'Unavailable' | translate}}
+                        </span>
                       </span>
                     </span>
                   </td>
