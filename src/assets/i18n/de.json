@@ -59,6 +59,7 @@
 	"ResetPsw": "Passwort zurücksetzen",
 	"YourPswHasBeenChanged": "Passwort wurde erfolgreich geändert",
 	"GoToLogin": "Zur Anmeldung",
+	"GoToYourProjects": "Gehe zu deinen Projekten",
 	"InvalidPswResetKey": "Ungültiger Schlüssel zur Zurücksetzung des Passworts",
 	"QuickTips": "Quick tips",
 	"Error": "Fehler",
@@ -1498,7 +1499,8 @@
 	},
 	"UnauthorizedPage": {
 		"UnauthorizedAccess": "Nicht authorisierter Zugriff!",
-		"OopsYouDontHave": "Oops! Sie haben keine Rechte um diese Seite zu sehen."
+		"OopsYouDontHave": "Oops! Sie haben keine Rechte um diese Seite zu sehen.",
+		"OopsYoudontBelongToTheProject": "Oops! Das ist anscheinend nicht dein Projekt"
 	},
 	"HoursPage": {
 		"ActivateTimetables": "Öffnungszeiten aktivieren",

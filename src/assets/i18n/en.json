@@ -59,6 +59,7 @@
     "ResetPsw": "Reset password",
     "YourPswHasBeenChanged": "Your password has been changed",
     "GoToLogin": "Go to Login",
+    "GoToYourProjects": "Go to your Projects",
     "InvalidPswResetKey": "Invalid password reset key",
     "QuickTips": "Quick tips",
     "Error": "Error",
@@ -1513,7 +1514,8 @@
     },
     "UnauthorizedPage": {
         "UnauthorizedAccess": "Unauthorized  access!",
-        "OopsYouDontHave": "Oops! You don't have permission to access this page."
+        "OopsYouDontHave": "Oops! You don't have permission to access this page.",
+        "OopsYoudontBelongToTheProject": "Oops! Seems that this is not a your project."
     },
     "HoursPage": {
         "ActivateTimetables": "Activate opening hours",
