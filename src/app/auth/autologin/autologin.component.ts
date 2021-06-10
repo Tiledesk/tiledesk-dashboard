@@ -115,7 +115,7 @@ export class AutologinComponent implements OnInit {
     this.sso.getCurrentAuthenticatedUser(JWT).subscribe(auth_user => {
       console.log('SSO - ssoLogin getCurrentAuthenticatedUser RES ', auth_user);
 
-      const user = { firstname: auth_user.firstname, lastname: auth_user.lastname, _id: auth_user._id, token: JWT }
+      const user = { firstname: auth_user.firstname, lastname: auth_user.lastname, _id: auth_user._id, email: auth_user.email, emailverified: auth_user.emailverified, token: JWT }
       console.log('SSO - ssoLogin getCurrentAuthenticatedUser user ', user);
 
       localStorage.setItem('user', JSON.stringify(user));
