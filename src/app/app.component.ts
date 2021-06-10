@@ -425,7 +425,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     (this.route.indexOf('/request-for-panel') !== -1) ||
                     (this.route.indexOf('/projects-for-panel') !== -1) ||
                     (this.route.indexOf('/unserved-request-for-panel') !== -1) ||
-                    (this.route.indexOf('/autologin') !== -1)
+                    (this.route.indexOf('/autologin') !== -1) ||
+                    (this.route.indexOf('/unauthorized_access') !== -1)
 
                 ) {
 
@@ -525,7 +526,9 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     (this.route.indexOf('/request-for-panel') !== -1) ||
                     (this.route.indexOf('/projects-for-panel') !== -1) ||
                     (this.route.indexOf('/unserved-request-for-panel') !== -1) ||
-                    (this.route.indexOf('/autologin') !== -1)
+                    (this.route.indexOf('/autologin') !== -1) ||
+                    (this.route.indexOf('/unauthorized_access') !== -1)
+                    
                 ) {
                     elemFooter.setAttribute('style', 'display:none;');
                     // console.log('DETECT LOGIN PAGE')

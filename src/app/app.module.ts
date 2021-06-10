@@ -226,6 +226,7 @@ import { SatisfactionComponent } from './analytics2/metriche/satisfaction/satisf
 import { UnauthorizedForPricingComponent } from './auth/unauthorized-for-pricing/unauthorized-for-pricing.component';
 import { EventsAnalyticsComponent } from './analytics2/metriche/events-analytics/events-analytics.component';
 import { SanitizeHtmlPipe } from './sanitize-html.pipe';
+import { UnauthorizedForProjectComponent } from './auth/unauthorized-for-project/unauthorized-for-project.component';
 
 
 
@@ -396,7 +397,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     UnauthorizedForPricingComponent,
     EventsAnalyticsComponent,
     MarkedPipe,
-    SanitizeHtmlPipe
+    SanitizeHtmlPipe,
+    UnauthorizedForProjectComponent
 
   ],
   imports: [
