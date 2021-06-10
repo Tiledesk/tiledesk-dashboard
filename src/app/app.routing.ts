@@ -61,6 +61,7 @@ import { SigninComponent } from './auth/signin/signin.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { UnauthorizedComponent } from './auth/unauthorized/unauthorized.component';
 import { UnauthorizedForPricingComponent } from './auth/unauthorized-for-pricing/unauthorized-for-pricing.component';
+import { UnauthorizedForProjectComponent } from './auth/unauthorized-for-project/unauthorized-for-project.component';
 import { HandleInvitationComponent } from './auth/handle-invitation/handle-invitation.component';
 import { AutologinComponent } from './auth/autologin/autologin.component';
 
@@ -204,6 +205,7 @@ const routes: Routes = [
 
   { path: 'project/:projectid/unauthorized', component: UnauthorizedComponent },
   { path: 'project/:projectid/unauthorized-access', component: UnauthorizedForPricingComponent },
+  { path: 'project/:projectid/unauthorized_access', component: UnauthorizedForProjectComponent },
   
 
   { path: 'userprofile', component: UserProfileComponent },
