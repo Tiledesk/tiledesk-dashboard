@@ -1,6 +1,10 @@
 
 # tiledesk-dashboard
 
+### 2.1.70-beta.1.2
+- Adds the 'Ticket id' in the right sidebar of the conversation detail
+- Adds the Unauthorized Access page to which the user is redirected when try to access a project he do not belong to
+
 ### 2.1.70-beta.1.1
 - Fixes the bug: Incorrect encoding of HTML entities in the chat section of conversation detail page
 
