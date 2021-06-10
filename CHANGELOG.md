@@ -1,6 +1,10 @@
 
 # tiledesk-dashboard
 
+### 2.1.70-beta.1.3
+- Fixes the bug: after the auto-login, the e-mail of the user who has logged in is missing
+- Fixed bug: when the user is redirected to the Unauthorized Access page when trying to access a project he doesn't belong to, the project id is missing in the url
+
 ### 2.1.70-beta.1.2
 - Adds the 'Ticket id' in the right sidebar of the conversation detail
 - Adds the Unauthorized Access page to which the user is redirected when try to access a project he do not belong to
