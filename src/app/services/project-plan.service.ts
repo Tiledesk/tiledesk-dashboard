@@ -20,7 +20,7 @@ export class ProjectPlanService {
   projectID: string;
   TOKEN: string
   project_deleted_notification: string
-
+progetIdGetFromParams: string
   constructor(
     http: Http,
     private router: Router,
@@ -79,7 +79,7 @@ export class ProjectPlanService {
         console.log('ProjectPlanService - CURRENT URL SEGMENTS ', url_segments);
         const nav_project_id = url_segments[2];
         console.log('ProjectPlanService - nav_project_id ', nav_project_id);
-
+        this.progetIdGetFromParams = nav_project_id
         // -----------------------------------------------------------------
         // this check is in auth.guard - auth.service - project-plan.service
         // -----------------------------------------------------------------
@@ -149,7 +149,10 @@ export class ProjectPlanService {
       }
 
       if (error.status === 403) {
-        this.router.navigate([`project/${this.projectID}/unauthorized_access`]);
+       
+        console.log('ProjectPlanService - hey i redirect to unauthorized_access progetIdGetFromParams', this.progetIdGetFromParams);
+        console.log('ProjectPlanService - hey i redirect to unauthorized_access projectID', this.projectID);
+        this.router.navigate([`project/${this.progetIdGetFromParams}/unauthorized_access`]);
       }
 
 
