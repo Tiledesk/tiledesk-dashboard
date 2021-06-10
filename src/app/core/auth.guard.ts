@@ -285,9 +285,11 @@ export class AuthGuard implements CanActivate {
 
       } else {
 
-        console.log('!! »»»»» AUTH GUARD - PROJECT OBJCT FILTERED FOR PROJECT ID !! NOT FOUND - GO TO PROJECTS ');
+        console.log('!! AUTH WF  - PROJECT OBJCT FILTERED FOR PROJECT ID !! NOT FOUND - RUN LOGOUT ');
 
-        this.goToProjects()
+        this.router.navigate([`project/${this.nav_project_id}/unauthorized_access`]);
+        // this.goToProjects()
+        // this.logout()
       }
 
     }, (error) => {
@@ -299,6 +301,8 @@ export class AuthGuard implements CanActivate {
     });
   }
 
+
+  
   goToProjects() {
     console.log('HAS CLICCKED GO TO PROJECT ')
     this.router.navigate(['/projects']);
@@ -309,9 +313,7 @@ export class AuthGuard implements CanActivate {
 
     // this.subscription.unsubscribe();
     // this.unsubscribe$.next();
-    // this.unsubscribe$.complete();
-
-  
+    // this.unsubscribe$.complete();  
 }
 
   // !!! NO MORE USED

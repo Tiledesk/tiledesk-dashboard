@@ -148,6 +148,10 @@ export class ProjectPlanService {
         console.log('ProjectPlanService - hey i redirect to login');
       }
 
+      if (error.status === 403) {
+        this.router.navigate([`project/${this.projectID}/unauthorized_access`]);
+      }
+
 
     }, () => {
       console.log('ProjectPlanService - getProjectByID * complete ');
