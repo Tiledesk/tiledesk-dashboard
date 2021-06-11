@@ -1,9 +1,13 @@
 
 # tiledesk-dashboard
 
+### 2.1.70-beta.1.4
+- Fixes the bug: redirectTo: 'login' when the path is empty
+- Updated in pre enviroment the endpoints of "CHAT_BASE_URL" to the Chat-Ionic latest versions (3.0.42-beta.1.1)
+
 ### 2.1.70-beta.1.3
 - Fixes the bug: after the auto-login, the e-mail of the user who has logged in is missing
-- Fixed bug: when the user is redirected to the Unauthorized Access page when trying to access a project he doesn't belong to, the project id is missing in the url
+- Fixes bug: when the user is redirected to the Unauthorized Access page when trying to access a project he doesn't belong to, the project id is missing in the url
 
 ### 2.1.70-beta.1.2
 - Adds the 'Ticket id' in the right sidebar of the conversation detail
