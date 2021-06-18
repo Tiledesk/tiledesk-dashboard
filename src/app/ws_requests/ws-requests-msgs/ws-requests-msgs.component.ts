@@ -19,6 +19,7 @@ import { AppConfigService } from '../../services/app-config.service';
 import { Subscription } from 'rxjs';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 import { DepartmentService } from '../../services/department.service';
 import { GroupService } from '../../services/group.service';
 import { Observable } from 'rxjs';
@@ -210,6 +211,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   done_msg: string;
   COUNT_OF_VISIBLE_DEPT: number;
 
+  ALL_MSG_LENGTH: number;
+
   urls: any = /(\b(https?|http|ftp|ftps|Https|rtsp|Rtsp):\/\/[A-Z0-9+&@#\/%?=~_|!:,.;-]*[-A-Z0-9+&@#\/%=~_|])/gim; // Find/Replace URL's in text  
   emails: any = /(\S+@\S+\.\S+)/gim; // Find/Replace email addresses in text
 
@@ -331,6 +334,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.getRouteUrl();
     this.getBaseUrl();
     this.getOSCODE();
+
   }
 
   selectJiraType() {
@@ -376,6 +380,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // the two snippet bottom replace  this.subscribe.unsubscribe()
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+
 
     this.unsuscribeRequesterPresence(this.requester_id)
 
@@ -628,17 +633,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // @ Common methods
   // -----------------------------------------------------------------------------------------------------
 
-  // listenToGotAllMsgAndDismissSpinner() {
-  //   this.wsMsgsService.wsMsgsGotAllData$.subscribe((hasAllData: boolean) => {
-  //     console.log('% »»» WebSocketJs WF - WsRequestsMsgsComponent got all msgs ', hasAllData)
-  //     if (hasAllData === true) {
-  //       setTimeout(() => {
-  //         this.showSpinner = false;
-  //         console.log('% »»» WebSocketJs WF - WsRequestsMsgsComponent got all msgs showSpinner', this.showSpinner)
-  //       }, 1000);
-  //     }
-  //   })
-  // }
+
 
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
@@ -808,6 +803,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     parser.setUA(uastring);
     return parser.getResult();
   }
+
+
 
   /**
    * Get the request published
@@ -1343,7 +1340,24 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   subscribeToWs_MsgsByRequestId(id_request: string) {
     console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - subscribe To Ws Msgs ByRequestId ', id_request)
     this.wsMsgsService.subsToWS_MsgsByRequestId(id_request);
+    this.listenToGotAllMsg()
     this.getWsMsgs$();
+   
+  }
+  // .pipe(filter((data) => data !== null))
+  listenToGotAllMsg() {
+    this.wsMsgsService.wsMsgsGotAllData$
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    
+    .subscribe((data: any) => {
+      if (data) {
+        console.log('MSGS SRV - ADD WS Msgs - HERE YES (WS-REQUEST-COMPONENT) ALL DATA LENGTH ', data.length)
+        this.ALL_MSG_LENGTH = data.length
+      }
+
+    })
   }
 
 
@@ -1356,22 +1370,46 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       .subscribe((wsmsgs) => {
         // this.wsMsgsService._wsMsgsList.subscribe((wsmsgs) => {
         // console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsMsgs$ *** wsmsgs *** ', wsmsgs)
+        console.log('MSGS SRV - ADD WS Msgs - HERE YES (WS-REQUEST-COMPONENT) wsmsgs lenght', wsmsgs.length)
 
+
+     
         this.messagesList = wsmsgs;
+
+        // this.messagesList.forEach(msg => {
+        //   console.log('MSGS SRV - ADD WS Msgs - FOR EACH WS MSG ',msg)
+        //   // if (msg && msg['metadata'] && msg['metadata']['type'] && msg['metadata']['type'] === 'file') {
+          
+        //   //   msg['text'] = `<a href=${msg['metadata']['src']} target="_blank" rel="noopener noreferrer">${msg['metadata']['name']}</a>`
+        //   // }
+
+
+        //   // if (msg && msg['metadata'] && msg['metadata']['type'] &&  msg['metadata']['type'] === ('svg')) {
+          
+        //   //   msg['text'] = `<a href=${msg['metadata']['src']} target="_blank" rel="noopener noreferrer">${msg['metadata']['name']}</a>`
+        //   // }
+        // });
+
+        
+
+
         // console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsMsgs$ *** this.messagesList *** ', this.messagesList)
-        console.log('WS-REQUESTS-MSGS *** this.messagesList *** ', this.messagesList)
+        console.log('WS-REQUESTS-MSGS *** this.messagesList *** ', this.messagesList);
 
-        if (this.timeout) {
-          clearTimeout(this.timeout);
-        }
+       
 
-        this.timeout = setTimeout(() => {
+        // if (this.timeout) {
+        //   clearTimeout(this.timeout);
+        // }
+
+        // this.timeout = setTimeout(() => {
           console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsMsgs$ *** messagesList *** completed ')
           this.showSpinner = false;
 
-          this.scrollCardContetToBottom();
-
-        }, 200);
+          if (this.messagesList && this.messagesList.length !== this.ALL_MSG_LENGTH) {
+            this.scrollCardContetToBottom();
+          }
+        // }, 200);
 
       }, error => {
         this.showSpinner = false;

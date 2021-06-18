@@ -12,11 +12,10 @@ export class WsMsgsService {
   wsService: WebSocketJs;
   project_id: string;
   wsMsgsList: any;
-
   WS_IS_CONNECTED: number;
 
   public wsMsgsList$: BehaviorSubject<[]> = new BehaviorSubject<[]>([]);
-  public wsMsgsGotAllData$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  public wsMsgsGotAllData$: BehaviorSubject<any> = new BehaviorSubject(null);
 
   // public _wsMsgsList = new Subject<any>();
 
@@ -25,6 +24,8 @@ export class WsMsgsService {
     public webSocketJs: WebSocketJs
   ) {
 
+    console.log('WS SERV - HELLO CONSTRUCTOR !!!!!!')
+    this.wsMsgsList = [];
     this.getCurrentProject();
 
     // this.getCurrentUserAndConnectToWs();
@@ -70,6 +71,8 @@ export class WsMsgsService {
       if (project) {
 
         this.project_id = project._id
+        // set the list of messages to empty before subscribing
+
       }
 
     });
@@ -88,8 +91,8 @@ export class WsMsgsService {
    */
   subsToWS_MsgsByRequestId(request_id) {
     var self = this;
-    // set the list of messages to empty before subscribing
-    this.wsMsgsList = [];
+
+
     console.log("% »»» WebSocketJs WF >>> ws-msgs--- m-service - subs To WS Msgs - wsMsgsList init ", this.wsMsgsList);
     // var message = {
     //   action: 'subscribe',
@@ -116,12 +119,17 @@ export class WsMsgsService {
         // console.log("% WsMsgsService notification", notification);
 
         // Check if upcoming messages already exist in the messasges list
-        const msgFound = self.wsMsgsList.filter((obj: any) => {
+        // console.log("MSGS SRV - ADD WS Msgs - CHEK IF ADD MSD data ",  data);
+        // const msgFound = self.wsMsgsList.filter((obj: any) => {
+        //   console.log("MSGS SRV - ADD WS Msgs - CHEK IF ADD MSD obj._id ", obj._id , ' data._id ', data._id);
 
-          return obj._id === data._id;
-        });
-
-        if (msgFound.length === 0) {
+        //   return obj._id === data._id;
+        // });
+        console.log("MSGS SRV - ADD WS Msgs - CHEK IF ADD MSG INCOMING data ", data);
+        console.log("MSGS SRV - ADD WS Msgs - CHEK IF ADD MSG INCOMING data wsMsgsList ", self.wsMsgsList);
+        const index = self.wsMsgsList.findIndex((msg) => msg._id === data._id);
+        // if (msgFound.length === 0) {
+        if (index === -1) {
           self.addWsMsg(data)
         } else {
           // console.log("% »»» WebSocketJs WF >>> ws-msgs--- m-service - SUBSCR To WS MSGS - HAS FOUND - NOT ADD");
@@ -138,7 +146,7 @@ export class WsMsgsService {
 
         if (data) {
           // console.log("% »»» WebSocketJs WF >>> ws-msgs--- m-service - SUBSCR To WS MSGS - ON-DATA - data", data);
-          self.wsMsgsGotAllData$.next(true);
+          self.wsMsgsGotAllData$.next(data);
         }
       }
     );
@@ -146,13 +154,15 @@ export class WsMsgsService {
 
 
 
-  htmlEntities(str) {
-    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/\n/g, '<br>');
-  }
+  // htmlEntities(str) {
+  //   return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/\n/g, '<br>');
+  // }
 
   addWsMsg(msg) {
+    console.log("MSGS SRV - ADD WS Msgs - HERE YES");
     console.log("% WsMsgsService addWsMsgs wsMsgsList.length", this.wsMsgsList.length);
-    console.log("% »»» WebSocketJs WF >>> ws-msgs--- m-service - ADD WS Msgs - msg ", msg);
+    console.log("MSGS SRV - ADD WS Msgs - CHEK IF ADD MSD data ", this.wsMsgsList);
+    console.log("MSGS SRV - ADD WS Msgs - msg ", msg);
     // msg['TEXT'] = this.linkify(msg.text)
     // msg.text = this.htmlEntities(msg.text)
     this.wsMsgsList.push(msg);
@@ -161,6 +171,7 @@ export class WsMsgsService {
 
 
     if (this.wsMsgsList) {
+      console.log("MSGS SRV - ADD WS Msgs - HERE YES 2");
       // console.log("% »»» WebSocketJs WF >>> ws-msgs--- m-service - ADD WS Msgs - wsMsgsList before publish ", this.wsMsgsList);
       this.wsMsgsList$.next(this.wsMsgsList);
       // this._wsMsgsList.next(this.wsMsgsList);
@@ -168,6 +179,7 @@ export class WsMsgsService {
   }
 
   updateWsMsg(msg) {
+    console.log("MSGS SRV - UPDATED WS Msgs - msg ", msg);
     for (let i = 0; i < this.wsMsgsList.length; i++) {
 
       if (msg._id === this.wsMsgsList[i]._id) {
@@ -176,7 +188,7 @@ export class WsMsgsService {
         this.wsMsgsList[i] = msg
 
         if (this.wsMsgsList) {
-
+          console.log("MSGS SRV - ADD WS Msgs - HERE YES 3");
           this.wsMsgsList$.next(msg);
         }
       }
@@ -191,6 +203,12 @@ export class WsMsgsService {
    * @param request_id 
    */
   unsubsToWS_MsgsByRequestId(request_id) {
+
+    console.log('WS SERV - HAS BEEN CALLED UNSUBSCRIBE TO MSGS BY REQUEST ID')
+
+    this.wsMsgsList = [];
+
+
     // var message = {
     //   action: 'unsubscribe',
     //   payload: {
