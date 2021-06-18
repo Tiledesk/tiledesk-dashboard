@@ -256,7 +256,9 @@
                                   {{ 'Train' | translate }}
                                 </span>
                               </p> -->
-                        <p *ngIf="message?.type === 'text'" class="type-info-msg-text"  [innerHTML]="message?.text | marked  | sanitizeHtml">
+                        <!-- | marked  | sanitizeHtml -->
+                        <p *ngIf="message?.type === 'text'" class="type-info-msg-text"
+                          [innerHTML]="message?.text | htmlEntitiesEncode | autolinker">
                           <!-- {{ message?.text }} -->
                         </p>
                         <!-- <div *ngIf="message?.type === 'image'" class="message ow">
@@ -308,7 +310,9 @@
                               </span>
                             </p>
                             <!-- [innerHTML]="message?.text | marked" -->
-                            <p *ngIf="message?.type === 'text'" class="message ow"  [innerHTML]="message?.text | marked | sanitizeHtml" >
+                            <!-- | marked | sanitizeHtml -->
+                            <p *ngIf="message?.type === 'text'" class="message ow"
+                              [innerHTML]="message?.text | htmlEntitiesEncode | autolinker">
                               <!-- {{ message?.text  }} -->
                             </p>
                             <div *ngIf="message?.type === 'image'" class="message ow">
@@ -413,12 +417,20 @@
                               <!-- +353 87 1234 567<span> ~ John</span> -->
                             </p>
                             <!-- [innerHTML]="message?.text | marked" -->
-                            <p *ngIf="message?.type === 'text'" class="message ow" [innerHTML]="message?.text | marked  | sanitizeHtml" >
+                            <!-- | marked  | sanitizeHtml -->
+                            <p *ngIf="message?.type === 'text' || message?.type === 'file'" class="message ow"
+                              [innerHTML]="message?.text | htmlEntitiesEncode | autolinker">
                               <!-- {{ message?.text}} -->
                             </p>
                             <div *ngIf="message?.type === 'image'" class="message ow">
                               <div class="image-container" style="height:200px; width:200px;">
                                 <img src={{message.metadata.src}} class="message-img" />
+                                <!-- <div *ngIf="!message.text.startsWith('Image: https:')"> -->
+                                <div *ngIf="!message?.metadata?.type?.startsWith('image')">
+                                  <!-- | marked  | sanitizeHtml -->
+                                  <p [innerHTML]="message?.text | htmlEntitiesEncode | autolinker "></p>
+                                </div>
+
                               </div>
                             </div>
                             <span class="timestamp"> {{ message?.createdAt | date: 'd/M/y HH:mm:ss'}}</span>
@@ -1111,22 +1123,21 @@
                   </div>
                 </div>
 
-                 <!-- --------------------------------------------------------------------- -->
+                <!-- --------------------------------------------------------------------- -->
                 <!-- Ticket id -->
                 <!-- --------------------------------------------------------------------- -->
                 <div class="row" *ngIf="request?.ticket_id" style="margin-top:5px">
                   <!-- border-top: 1px solid #e1eef4;" -->
                   <div class="col-sm-12">
                     <p class="" style="margin-bottom: 0px">
-                      <i class="material-icons"
-                        style="vertical-align: middle; color: #394f5a;font-size:16px">code</i>
+                      <i class="material-icons" style="vertical-align: middle; color: #394f5a;font-size:16px">code</i>
                       <span style="position: relative;top: 1px;">
                         <span
                           style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
-                         Ticket id
+                          Ticket id
                         </span>
                         <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
-                         #{{ request?.ticket_id}}
+                          #{{ request?.ticket_id}}
                         </span>
                       </span>
                     </p>
@@ -2226,9 +2237,9 @@
                 <div class="card right-card"
                   style="padding-top:5px; padding-bottom:5px; margin-top: 5px;margin-bottom: 5px; display: none;">
                   <div class="card-content" style="padding-top: 5px;padding-bottom: 5px;">
-                    <div class="row" style="">
-                      <div class="col-sm-12" style="">
-                        <p class="row-header" style="">
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <p class="row-header">
                           <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
                           <span style="vertical-align: middle">
                             {{ "RequestMsgsPage.SourcePage" | translate }}
@@ -2500,10 +2511,10 @@
 
             <div class="row">
 
-              <!-- 
-          // ---------------------------------------------------------------------------------------------
-          // modal subtitle
-          // --------------------------------------------------------------------------------------------- -->
+
+              <!-- --------------------------------------------------------------------------------------------- -->
+              <!-- modal subtitle -->
+              <!-- --------------------------------------------------------------------------------------------- -->
               <div class="col-md-12" *ngIf="CHAT_PANEL_MODE === false">
                 <span *ngIf="actionInModal === 'reassign'">
                   <h4 style="font-weight:400" [ngClass]="{'modal-subtitle-chat-panel-mode' : CHAT_PANEL_MODE === true}">
