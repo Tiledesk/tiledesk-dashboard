@@ -39,7 +39,9 @@ color: #fff!important; -->
     <div class="bubble">
       <div class="txt selected-question">
       
-        <p class="message"> {{ selectedQuestion}} </p>
+        <!-- <p class="message">{{ selectedQuestion}} </p> -->
+        <p class="message" [innerHTML]="selectedQuestion | htmlEntitiesEncode | autolinker "> </p>
+        
         
       </div>
       <div class="bubble-arrow"></div>
