@@ -227,7 +227,8 @@ import { UnauthorizedForPricingComponent } from './auth/unauthorized-for-pricing
 import { EventsAnalyticsComponent } from './analytics2/metriche/events-analytics/events-analytics.component';
 import { SanitizeHtmlPipe } from './sanitize-html.pipe';
 import { UnauthorizedForProjectComponent } from './auth/unauthorized-for-project/unauthorized-for-project.component';
-
+import { Autolinkerjs } from './autolinkerjs.pipe';
+import { HtmlEntitiesEncodePipe } from './html-entities-encode.pipe';
 
 
 console.log('************** APPMODULE ******************');
@@ -398,7 +399,9 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     EventsAnalyticsComponent,
     MarkedPipe,
     SanitizeHtmlPipe,
-    UnauthorizedForProjectComponent
+    UnauthorizedForProjectComponent,
+    Autolinkerjs,
+    HtmlEntitiesEncodePipe
 
   ],
   imports: [
@@ -425,7 +428,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     MyDatePickerModule,
     ColorPickerModule,
     BrowserAnimationsModule,
-    SlideshowModule,
+    SlideshowModule,                    
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

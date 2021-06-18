@@ -46,7 +46,7 @@ export function currentUserUidIsInMembers(members: object, currentUserFireBaseUI
             // console.log('»»»»»»» UTILS MEMBERS ', members)
             // console.log('»»»»»»» CURRENT_USER_JOINED ', currentUserFireBaseUID);
             currentUserIsJoined = true;
-         // console.log('»»»»»»» CURRENT USER ', currentUserFireBaseUID, 'is JOINED ?', currentUserIsJoined, 'to the request ', request_id);
+            // console.log('»»»»»»» CURRENT USER ', currentUserFireBaseUID, 'is JOINED ?', currentUserIsJoined, 'to the request ', request_id);
             return
         }
     });
@@ -83,14 +83,19 @@ export function getColorBck(requester_fullname) {
 
 export function htmlEntities(str) {
     return String(str)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      // .replace(/\r/g, '<br>')
-      .replace(/\n/g, '<br>')
-      // .replace(/]/g, '&#93;')
-  }
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+    // .replace(/\n/g, '<br>')
+}
+
+export function replaceEndOfLine(text) {
+    // const newText =   text.replace(/\n/g, '<br>')
+    const newText = text.replace(/[\n\r]/g, '<br>');
+    // const newText = text.replace(/<br\s*[\/]?>/gi, '\n')
+    return newText;
+}
 
 export const helpdocurl_triggers = 'https://docs.tiledesk.com/knowledge-base/getting-started-with-triggers/'
 export const helpdocurl_users_role = 'https://docs.tiledesk.com/knowledge-base/understanding-default-roles/'
