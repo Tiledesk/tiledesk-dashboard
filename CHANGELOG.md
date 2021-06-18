@@ -1,8 +1,28 @@
 
 # tiledesk-dashboard
 
+### 2.1.70-beta.1.9
+- Adds support for images with text on the conversation detail page in the chat section
+- Fixed bug: in the conversation details page the chat section scroll to bottom even if there are no new messages
+- Replaces the markdown pipe with the linkify pipe
+- Adds the Html entities encode pipe
+- Updated in pre enviroment the endpoints of "CHAT_BASE_URL" to the Chat-Ionic (Firebase env) latest versions (3.0.42-beta.1.7)
+
+### 2.1.70-beta.1.8
+- Updated in pre enviroment the endpoints of "CHAT_BASE_URL" to the Chat-Ionic (Firebase env) latest versions (3.0.42-beta.1.6)
+
+### 2.1.70-beta.1.7
+- Updated in pre enviroment the endpoints of "CHAT_BASE_URL" to the Chat-Ionic (Firebase env) latest versions (3.0.42-beta.1.5)
+
+### 2.1.70-beta.1.6
+- Updated in pre enviroment the endpoints of "CHAT_BASE_URL" to the Chat-Ionic (MQTT env) latest versions (3.0.42-beta.1.4)
+
+### 2.1.70-beta.1.5 
+- Sets in pre: the value of the key chatEngine to 'mqtt', the value of the key uploadEngine to 'native' and the value of the key pushEngine to 'none'
+
+
 ### 2.1.70-beta.1.4
-- Fixes the bug: redirectTo: 'login' when the path is empty
+- Fixes the bug: redirectTo: 'login' when the path is empty 
 - Updated in pre enviroment the endpoints of "CHAT_BASE_URL" to the Chat-Ionic latest versions (3.0.42-beta.1.1)
 
 ### 2.1.70-beta.1.3
