@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.0
+- Fixes bugs and various improvements (compatible with td-server 2.2.X)
+
 ### 2.1.70-beta.1.9
 - Adds support for images with text on the conversation detail page in the chat section
 - Fixed bug: in the conversation details page the chat section scroll to bottom even if there are no new messages
