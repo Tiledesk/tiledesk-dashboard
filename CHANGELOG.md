@@ -2,7 +2,7 @@
 # tiledesk-dashboard
 
 ### 2.2.0
-- Fixes bugs and various improvements (compatible with td-server 2.2.X)
+- Updates the "Latest Updates" section on the home page (compatible with td-server 2.2.X)
 
 ### 2.1.70-beta.1.9
 - Adds support for images with text on the conversation detail page in the chat section
