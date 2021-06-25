@@ -1,12 +1,14 @@
 
 # tiledesk-dashboard
 
-### 2.2.0
-- Updates the "Latest Updates" section on the home page (compatible with td-server 2.2.X)
+
+### 2.1.70-beta.1.10
+- Fixes the bug: the conversation detail page crashes not dismissing the loading spinner if any of the attribute values are null
+- Fixes the bug: contact details page does not show all attributes if any of the attribute values are null
 
 ### 2.1.70-beta.1.9
 - Adds support for images with text on the conversation detail page in the chat section
-- Fixed bug: in the conversation details page the chat section scroll to bottom even if there are no new messages
+- Fixes the bug: in the conversation details page the chat section scroll to bottom even if there are no new messages
 - Replaces the markdown pipe with the linkify pipe
 - Adds the Html entities encode pipe
 - Updated in pre enviroment the endpoints of "CHAT_BASE_URL" to the Chat-Ionic (Firebase env) latest versions (3.0.42-beta.1.7)
