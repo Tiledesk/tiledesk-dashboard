@@ -367,7 +367,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // -----------------------------------
     const rightSidebar = <HTMLElement>document.querySelector(`.right-card`);
     this.rightSidebarWidth = rightSidebar.offsetWidth
-    console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES attributeValueElem offsetWidth:`, this.rightSidebarWidth);
+    // console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES attributeValueElem offsetWidth:`, this.rightSidebarWidth);
 
   }
 
@@ -747,18 +747,18 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // get the element that contains the attribute's value
     // -------------------------------------------------------------
     const attributeValueElem = <HTMLElement>document.querySelector(`#${elementAttributeValueId}`);
-    console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES attributeValueElem :`, attributeValueElem);
+    // console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES attributeValueElem :`, attributeValueElem);
 
     // -------------------------------------------------------------
     // get the element arrow icon 
     // -------------------------------------------------------------
     const arrowIconElem = <HTMLElement>document.querySelector(`#${elementArrowIconId}`);
-    console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES arrowIconElem :`, arrowIconElem);
+    // console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES arrowIconElem :`, arrowIconElem);
     // -------------------------------------------------------------
     // get the value of aria-expanded
     // -------------------------------------------------------------
     let isAriaExpanded = attributeValueElem.getAttribute('aria-expanded')
-    console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES - element »»»»»»»»»»» isAriaExpanded:`, isAriaExpanded);
+    // console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES - element »»»»»»»»»»» isAriaExpanded:`, isAriaExpanded);
 
 
     if (isAriaExpanded === 'false') {
@@ -817,7 +817,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       )
       .subscribe((wsrequest) => {
 
-        // console.log('% !!!!!!!!!!!! Ws-REQUESTS-Msgs - getWsRequestById$ *** wsrequest *** ', wsrequest)
+        console.log('% !!!!!!!!!!!! Ws-REQUESTS-Msgs - getWsRequestById$ *** wsrequest *** ', wsrequest)
         this.request = wsrequest;
 
         if (this.request) {
@@ -987,6 +987,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           // ---------------------------------------------------------
           if (this.request.lead) {
             this.requester_id = this.request.lead.lead_id;
+            console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - requester_id ', this.requester_id)
             this.getRequesterAvailabilityStatus(this.requester_id);
           } else {
             this.requester_id = "n.a.";
@@ -1021,7 +1022,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             this.attributesArray = []
             for (let [key, value] of Object.entries(this.request.attributes)) {
 
-              // console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES key : ${key} - value ${value}`);
+              console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES key : ${key} - value ${value}`);
 
               let _value: any;
               if (typeof value === 'object' && value !== null) {
@@ -1049,22 +1050,21 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
               // for (let i = 0; i < _value.length; i++) {
               //   console.log(':-D Ws-REQUESTS-Msgs - getWsRequestById _value[i]', _value[i] + ": " + letterLength[_value[i]])
               // }
-
-              for (let i = 0; i < _value.length; i++) {
-                if (letterLength[_value[i]] !== undefined) {
-                  totalLength += letterLength[_value[i]];
-                } else {
-                  // if the letter not is in dictionary letters letterLength[_value[i]] is undefined so add the witdh of the 'S' letter (8px)
-                  totalLength += letterLength['S'];
+              if (_value) {
+                for (let i = 0; i < _value.length; i++) {
+                  if (letterLength[_value[i]] !== undefined) {
+                    totalLength += letterLength[_value[i]];
+                  } else {
+                    // if the letter not is in dictionary letters letterLength[_value[i]] is undefined so add the witdh of the 'S' letter (8px)
+                    totalLength += letterLength['S'];
+                  }
                 }
+                // console.log(':-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES value LENGHT ', _value + " totalLength : " + totalLength)
+
+                let entries = { 'attributeName': key, 'attributeValue': _value, 'attributeValueL': totalLength };
+                // if (key !== 'decoded_jwt') {
+                this.attributesArray.push(entries)
               }
-              // console.log(':-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES value LENGHT ', _value + " totalLength : " + totalLength)
-
-              let entries = { 'attributeName': key, 'attributeValue': _value, 'attributeValueL': totalLength };
-
-              // if (key !== 'decoded_jwt') {
-              this.attributesArray.push(entries)
-              // }
             }
             console.log(':-D Ws-REQUESTS-Msgs - getWsRequestById attributesArray: ', this.attributesArray);
             // --------------------------------------------------------------------------------------------------------------
@@ -1132,9 +1132,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
                 } else {
                   _value = value
                 }
-
-
-
                 // https://stackoverflow.com/questions/50463738/how-to-find-width-of-each-character-in-pixels-using-javascript
                 let letterLength = {};
                 let letters = ["", " ", " ?", "= ", " -", " :", " _", " ,", " ", " ", " ", "(", ")", "}", "{", "\"", " ", "/", ".", "a", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
@@ -1152,21 +1149,21 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
                 // for (let i = 0; i < _value.length; i++) {
                 //   console.log(':-D Ws-REQUESTS-Msgs - getWsRequestById _value[i]', _value[i] + ": " + letterLength[_value[i]])
                 // }
-
-                for (let i = 0; i < _value.length; i++) {
-                  if (letterLength[_value[i]] !== undefined) {
-                    totalLength += letterLength[_value[i]];
-                  } else {
-                    // if the letter not is in dictionary letters letterLength[_value[i]] is undefined so add the witdh of the 'S' letter (8px)
-                    totalLength += letterLength['S'];
+                if (_value) {
+                  for (let i = 0; i < _value.length; i++) {
+                    if (letterLength[_value[i]] !== undefined) {
+                      totalLength += letterLength[_value[i]];
+                    } else {
+                      // if the letter not is in dictionary letters letterLength[_value[i]] is undefined so add the witdh of the 'S' letter (8px)
+                      totalLength += letterLength['S'];
+                    }
                   }
-                }
-                // console.log(':-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES value LENGHT ', _value + " totalLength : " + totalLength)
-                if (key !== 'attributes') {
-                  let entries = { 'attributeName': key, 'attributeValue': _value, 'attributeValueL': totalLength };
 
-
-                  this.attributesDecodedJWTArray.push(entries)
+                  // console.log(':-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES value LENGHT ', _value + " totalLength : " + totalLength)
+                  if (key !== 'attributes') {
+                    let entries = { 'attributeName': key, 'attributeValue': _value, 'attributeValueL': totalLength };
+                    this.attributesDecodedJWTArray.push(entries)
+                  }
                 }
               }
               // console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT - attributesDecodedJWTArray: ', this.attributesDecodedJWTArray);
@@ -1218,22 +1215,23 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
                 if (_value) {
                   for (let i = 0; i < _value.length; i++) {
                     console.log(':-D Ws-REQUESTS-Msgs - getWsRequestById _value[i]', _value[i] + ": " + letterLength[_value[i]])
-                  }
 
-                  for (let i = 0; i < _value.length; i++) {
-                    if (letterLength[_value[i]] !== undefined) {
-                      totalLength += letterLength[_value[i]];
-                    } else {
-                      // if the letter not is in dictionary letters letterLength[_value[i]] is undefined so add the witdh of the 'S' letter (8px)
-                      totalLength += letterLength['S'];
+
+                    for (let i = 0; i < _value.length; i++) {
+                      if (letterLength[_value[i]] !== undefined) {
+                        totalLength += letterLength[_value[i]];
+                      } else {
+                        // if the letter not is in dictionary letters letterLength[_value[i]] is undefined so add the witdh of the 'S' letter (8px)
+                        totalLength += letterLength['S'];
+                      }
                     }
                   }
+                  // console.log(':-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES value LENGHT ', _value + " totalLength : " + totalLength)
+
+                  let entries = { 'attributeName': key, 'attributeValue': _value, 'decodedJWTType': 'Attributes', 'attributeValueL': totalLength, 'index': index };
+
+                  this.attributesDecodedJWTAttributesArray.push(entries)
                 }
-                // console.log(':-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES value LENGHT ', _value + " totalLength : " + totalLength)
-
-                let entries = { 'attributeName': key, 'attributeValue': _value, 'decodedJWTType': 'Attributes', 'attributeValueL': totalLength, 'index': index };
-
-                this.attributesDecodedJWTAttributesArray.push(entries)
               }
               console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT  ATTRIBUTES - attributesDecodedJWTAttributesArray: ', this.attributesDecodedJWTAttributesArray);
 
@@ -1342,22 +1340,22 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.wsMsgsService.subsToWS_MsgsByRequestId(id_request);
     this.listenToGotAllMsg()
     this.getWsMsgs$();
-   
+
   }
   // .pipe(filter((data) => data !== null))
   listenToGotAllMsg() {
     this.wsMsgsService.wsMsgsGotAllData$
-    .pipe(
-      takeUntil(this.unsubscribe$)
-    )
-    
-    .subscribe((data: any) => {
-      if (data) {
-        console.log('MSGS SRV - ADD WS Msgs - HERE YES (WS-REQUEST-COMPONENT) ALL DATA LENGTH ', data.length)
-        this.ALL_MSG_LENGTH = data.length
-      }
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
 
-    })
+      .subscribe((data: any) => {
+        if (data) {
+          console.log('MSGS SRV - ADD WS Msgs - HERE YES (WS-REQUEST-COMPONENT) ALL DATA LENGTH ', data.length)
+          this.ALL_MSG_LENGTH = data.length
+        }
+
+      })
   }
 
 
@@ -1368,47 +1366,31 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         takeUntil(this.unsubscribe$)
       )
       .subscribe((wsmsgs) => {
+        // console.log('MSGS SRV - ADD WS Msgs - HERE YES (WS-REQUEST-COMPONENT) wsmsgs ', wsmsgs)
         // this.wsMsgsService._wsMsgsList.subscribe((wsmsgs) => {
         // console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsMsgs$ *** wsmsgs *** ', wsmsgs)
-        console.log('MSGS SRV - ADD WS Msgs - HERE YES (WS-REQUEST-COMPONENT) wsmsgs lenght', wsmsgs.length)
+        if (wsmsgs) {
+          console.log('MSGS SRV - ADD WS Msgs - HERE YES (WS-REQUEST-COMPONENT) wsmsgs lenght', wsmsgs.length)
+
+          this.messagesList = wsmsgs;
+
+          // console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsMsgs$ *** this.messagesList *** ', this.messagesList)
+          console.log('WS-REQUESTS-MSGS *** this.messagesList *** ', this.messagesList);
 
 
-     
-        this.messagesList = wsmsgs;
-
-        // this.messagesList.forEach(msg => {
-        //   console.log('MSGS SRV - ADD WS Msgs - FOR EACH WS MSG ',msg)
-        //   // if (msg && msg['metadata'] && msg['metadata']['type'] && msg['metadata']['type'] === 'file') {
-          
-        //   //   msg['text'] = `<a href=${msg['metadata']['src']} target="_blank" rel="noopener noreferrer">${msg['metadata']['name']}</a>`
-        //   // }
-
-
-        //   // if (msg && msg['metadata'] && msg['metadata']['type'] &&  msg['metadata']['type'] === ('svg')) {
-          
-        //   //   msg['text'] = `<a href=${msg['metadata']['src']} target="_blank" rel="noopener noreferrer">${msg['metadata']['name']}</a>`
-        //   // }
-        // });
-
-        
-
-
-        // console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsMsgs$ *** this.messagesList *** ', this.messagesList)
-        console.log('WS-REQUESTS-MSGS *** this.messagesList *** ', this.messagesList);
-
-       
-
+        }
         // if (this.timeout) {
         //   clearTimeout(this.timeout);
         // }
 
         // this.timeout = setTimeout(() => {
-          console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsMsgs$ *** messagesList *** completed ')
-          this.showSpinner = false;
+        console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsMsgs$ *** messagesList *** completed ')
+        this.showSpinner = false;
 
-          if (this.messagesList && this.messagesList.length !== this.ALL_MSG_LENGTH) {
-            this.scrollCardContetToBottom();
-          }
+        if (this.messagesList && this.messagesList.length !== this.ALL_MSG_LENGTH) {
+          this.scrollCardContetToBottom();
+        }
+
         // }, 200);
 
       }, error => {
