@@ -113,7 +113,7 @@ export class RequestsService {
     // this.CHAT21_CLOUD_FUNC_CLOSE_GROUP_BASE_URL = cloudBaseUrl + '/supportapi/tilechat/groups/'
 
     this.SERVER_BASE_PATH = appConfigService.getConfig().SERVER_BASE_URL;
-    console.log('AppConfigService getAppConfig (REQUESTS SERV.) SERVER_BASE_PATH ', this.SERVER_BASE_PATH);
+    // console.log('AppConfigService getAppConfig (REQUESTS SERV.) SERVER_BASE_PATH ', this.SERVER_BASE_PATH);
   }
 
   getProjectUserRole() {
@@ -175,10 +175,10 @@ export class RequestsService {
       this.TOKEN = this.user.token
       // this.currentUserFireBaseUID = this.user.uid
       this.currentUserID = this.user._id
-      console.log('USER UID GET IN REQUEST-SERV', this.currentUserID);
+      // console.log('USER UID GET IN REQUEST-SERV', this.currentUserID);
       // this.getToken();
     } else {
-      console.log('No user is signed in');
+      console.log('REQUEST-SERV - No user is signed in');
     }
   }
 

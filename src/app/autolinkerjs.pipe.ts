@@ -6,7 +6,7 @@ import Autolinker from 'autolinker';
 export class Autolinkerjs implements PipeTransform {
 
   transform(value: any): any {
-    console.log('AUTOLINKER PIPE value ', value)
+    // console.log('AUTOLINKER PIPE value ', value)
     var linkedText = Autolinker.link(value)
     return linkedText;
   }

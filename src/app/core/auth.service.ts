@@ -148,11 +148,11 @@ export class AuthService {
     this.VERIFY_EMAIL_URL = this.SERVER_BASE_PATH + 'auth/verifyemail/';
     this.CREATE_CUSTOM_TOKEN_URL = this.SERVER_BASE_PATH + 'chat21/firebase/auth/createCustomToken';
 
-    console.log('AppConfigService getAppConfig (AUTH SERVICE) SERVER_BASE_PATH', this.SERVER_BASE_PATH);
-    console.log('AppConfigService getAppConfig (AUTH SERVICE) SIGNUP_BASE_URL', this.SIGNUP_BASE_URL);
-    console.log('AppConfigService getAppConfig (AUTH SERVICE) SIGNIN_BASE_URL', this.SIGNIN_BASE_URL);
-    console.log('AppConfigService getAppConfig (AUTH SERVICE) VERIFY_EMAIL_URL', this.VERIFY_EMAIL_URL);
-    console.log('AppConfigService getAppConfig (AUTH SERVICE) CREATE_CUSTOM_TOKEN_URL', this.CREATE_CUSTOM_TOKEN_URL);
+    // console.log('AppConfigService getAppConfig (AUTH SERVICE) SERVER_BASE_PATH', this.SERVER_BASE_PATH);
+    // console.log('AppConfigService getAppConfig (AUTH SERVICE) SIGNUP_BASE_URL', this.SIGNUP_BASE_URL);
+    // console.log('AppConfigService getAppConfig (AUTH SERVICE) SIGNIN_BASE_URL', this.SIGNIN_BASE_URL);
+    // console.log('AppConfigService getAppConfig (AUTH SERVICE) VERIFY_EMAIL_URL', this.VERIFY_EMAIL_URL);
+    // console.log('AppConfigService getAppConfig (AUTH SERVICE) CREATE_CUSTOM_TOKEN_URL', this.CREATE_CUSTOM_TOKEN_URL);
 
   }
 
@@ -174,7 +174,7 @@ export class AuthService {
   // GET THE USER OBJECT FROM LOCAL STORAGE AND PASS IT IN user_bs
   checkCredentials() {
     const storedUser = localStorage.getItem('user')
-    console.log('SSO AUTH SERVICE - CHECK CREDENTIAL - STORED USER  ', storedUser)
+    // console.log('SSO AUTH SERVICE - CHECK CREDENTIAL - STORED USER  ', storedUser)
 
 
     this.subscription = this.router.events

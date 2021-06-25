@@ -100,10 +100,10 @@ export class ProjectService {
       // this.currentUserFireBaseUID = this.user.uid
       this.currentUserID = this.user._id
       this.TOKEN = this.user.token
-      console.log('!!! USER UID GET IN PROJECT SERV ', this.currentUserID);
+      // console.log('!!! USER UID GET IN PROJECT SERV ', this.currentUserID);
       // this.getToken();
     } else {
-      console.log('No user is signed in');
+      console.log('PROJECT SERV - No user is signed in');
     }
   }
 

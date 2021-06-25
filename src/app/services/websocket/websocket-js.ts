@@ -324,7 +324,7 @@ export class WebSocketJs {
       // Qui viene inviato un battito cardiaco Dopo averlo ricevuto, viene restituito un messaggio di battito cardiaco.
       // onmessage Ottieni il battito cardiaco restituito per indicare che la connessione è normale
       if (this.ws.readyState == 1) {
-        console.log('% »»» WebSocketJs - heartStart WS OK - readyState ', this.ws.readyState);
+        // console.log('% »»» WebSocketJs - heartStart WS OK - readyState ', this.ws.readyState);
         // console.log('% »»» WebSocketJs - HEART-START send PING MSG ', JSON.stringify(this.pingMsg));
 
         // this.ws.send(JSON.stringify(this.pingMsg));
@@ -350,7 +350,7 @@ export class WebSocketJs {
   // @ heartReset
   // -----------------------------------------------------------------------------------------------------
   heartReset() {
-    console.log('% »»» WebSocketJs - HEART-START RESET ');
+    // console.log('% »»» WebSocketJs - HEART-START RESET ');
     clearTimeout(this.pingTimeoutId);
     clearTimeout(this.pongTimeoutId);
   }
@@ -397,7 +397,7 @@ export class WebSocketJs {
       // @ new WebSocket
       // -----------------------------------------------------------------------------------------------------
 
-      console.log('Web_SocketJs url', that.url)
+      // console.log('Web_SocketJs url', that.url)
       // 'ws://localhost:40510'
       that.ws = new WebSocket(that.url);
       // var ws = new WebSocket(that.url, options);

@@ -805,7 +805,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
-    console.log('AppConfigService getAppConfig (BOT LIST) public_Key', this.public_Key);
+    // console.log('AppConfigService getAppConfig (BOT LIST) public_Key', this.public_Key);
     let keys = this.public_Key.split("-");
     // console.log('PUBLIC-KEY (BOT LIST) keys', keys)
     keys.forEach(key => {

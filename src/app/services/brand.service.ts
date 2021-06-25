@@ -33,7 +33,7 @@ export class BrandService {
        this.translate.get('Warning')
       .subscribe((text: string) => {
         // this.deleteContact_msg = text;
-        console.log('+ + + BrandService translation text: ', text)
+        // console.log('+ + + BrandService translation text: ', text)
 
         this.warning = text;
     
@@ -42,7 +42,7 @@ export class BrandService {
       this.translate.get('RelatedKnowledgeBase')
       .subscribe((text: string) => {
         // this.deleteContact_msg = text;
-        console.log('+ + + BrandService translation text: ', text)
+        // console.log('+ + + BrandService translation text: ', text)
 
         this.loadBrandError = text;
     
@@ -89,7 +89,7 @@ export class BrandService {
 
     } else {
 
-      console.log('BrandService loadBrand - remoteConfig is true - remoteConfigUrl ');
+      // console.log('BrandService loadBrand - remoteConfig is true - remoteConfigUrl ');
 
       const res = await this.http.get(environment['remoteConfigUrl']).toPromise();
       // console.log('BrandService loadBrand remoteConfig -> true get remoteConfig response ', res);
@@ -167,7 +167,7 @@ export class BrandService {
 
 
   getBrand() {
-    console.log('BrandService getBrand has been called - brand: ', this.brand);
+    // console.log('BrandService getBrand has been called - brand: ', this.brand);
     return this.brand;
   }
 

@@ -266,16 +266,16 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     getCurrentUserAndConnectToWs() {
 
         this.auth.user_bs.subscribe((user) => {
-            console.log('% »»» WebSocketJs WF - APP-COMPONENT - LoggedUser ', user);
+            // console.log('% »»» WebSocketJs WF - APP-COMPONENT - LoggedUser ', user);
             // console.log('% »»» WebSocketJs WF - APP-COMPONENT - WS URL ', this.wsbasepath);
-            console.log('AppConfigService % »»» WebSocketJs WF - APP-COMPONENT - WS URL ', this.appConfigService.getConfig().wsUrl);
+            // console.log('AppConfigService % »»» WebSocketJs WF - APP-COMPONENT - WS URL ', this.appConfigService.getConfig().wsUrl);
 
             if (user && user.token) {
 
                 // const CHAT_URL = 'ws://tiledesk-server-pre.herokuapp.com?token=' + user.token
                 const CHAT_URL = this.appConfigService.getConfig().wsUrl + '?token=' + user.token
 
-                console.log('AppConfigService % »»» WebSocketJs WF - APP-COMPONENT - I am about to connect to ws ')
+                // console.log('AppConfigService % »»» WebSocketJs WF - APP-COMPONENT - I am about to connect to ws ')
 
                 // -----------------------------------------------------------------------------------------------------
                 // Websocket init 

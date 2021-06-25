@@ -1074,7 +1074,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   // DEPTS_LAZY: add this 
   addDeptObject(wsrequests) {
     this.departmentService.getDeptsByProjectIdToPromise().then((_departments: any) => {
-      console.log('% »»» WebSocketJs WF +++++ ws-requests--- service -  X-> DEPTS <-X', _departments)
+      // console.log('% »»» WebSocketJs WF +++++ ws-requests--- service -  X-> DEPTS <-X', _departments)
 
       wsrequests.forEach(request => {
         if (request.department) {
@@ -1085,7 +1085,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
           } else {
             // console.log('% »»» WebSocketJs WF +++++ ws-requests--- service -  X-> REQ DEPT HAS NAME', deptHasName)
             // if (request.department.hasOwnProperty('_id'))
-            console.log('% »»» WebSocketJs WF +++++ ws-requests--- service -  X-> REQ DEPT HAS ID', request.department.hasOwnProperty('_id'))
+            // console.log('% »»» WebSocketJs WF +++++ ws-requests--- service -  X-> REQ DEPT HAS ID', request.department.hasOwnProperty('_id'))
 
             if (request.department.hasOwnProperty('_id')) {
               // in this case department is an object (i.e.  department: {_id: "5df26badde7e1c001743b63e"} )

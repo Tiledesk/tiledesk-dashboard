@@ -50,9 +50,9 @@ progetIdGetFromParams: string
     this.auth.user_bs.subscribe((user) => {
       if (user) {
         this.TOKEN = user.token
-        console.log('ProjectPlanService TOKEN ', this.TOKEN)
+        // console.log('ProjectPlanService TOKEN ', this.TOKEN)
       } else {
-        console.log('No user is signed in');
+        console.log('ProjectPlanService No user is signed in');
       }
     });
   }
@@ -62,7 +62,7 @@ progetIdGetFromParams: string
 
       if (project) {
         this.projectID = project._id;
-        console.log('ProjectPlanService subscribe to project_bs - projectID', this.projectID)
+        // console.log('ProjectPlanService subscribe to project_bs - projectID', this.projectID)
       }
 
     });

@@ -145,7 +145,7 @@ export class WsRequestsService implements OnDestroy {
 
   getAppConfig() {
     this.SERVER_BASE_PATH = this.appConfigService.getConfig().SERVER_BASE_URL;
-    console.log('AppConfigService getAppConfig (WS-REQUESTS SERV.) SERVER_BASE_PATH ', this.SERVER_BASE_PATH);
+    // console.log('AppConfigService getAppConfig (WS-REQUESTS SERV.) SERVER_BASE_PATH ', this.SERVER_BASE_PATH);
   }
 
   ngOnDestroy() {
@@ -327,7 +327,7 @@ export class WsRequestsService implements OnDestroy {
             // }
           }, function (data, notification) {
             // data['dept'] = self.getDeptObj(data.department)
-            // console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-UPDATE", data);
+            console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-UPDATE", data);
 
               // ----------------------------------
               // @ Agents
@@ -362,7 +362,7 @@ export class WsRequestsService implements OnDestroy {
             if (data) {
 
 
-              console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-DATA - WS-REQUESTS ARRAY ", self.wsRequestsList);
+              // console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-DATA - WS-REQUESTS ARRAY ", self.wsRequestsList);
 
               // if (self.wsRequestsList && self.wsRequestsList.length === 0 && Array.isArray(data)) {
 
@@ -468,7 +468,7 @@ export class WsRequestsService implements OnDestroy {
    */
   addWsRequests(request: Request) {
     // console.log("% WsRequestsService addWsRequest wsRequestsList.length", this.wsRequestsList.length);
-    console.log("% »»» WebSocketJs WF - WsRequestsService addWsRequest request ", request);
+    // console.log("% »»» WebSocketJs WF - WsRequestsService addWsRequest request ", request);
 
     if (request !== null && request !== undefined) {
       this.wsRequestsList.push(request);
@@ -485,7 +485,7 @@ export class WsRequestsService implements OnDestroy {
 
       this.timeout = setTimeout(() => {
         this.wsRequestsList$.next(this.wsRequestsList);
-        console.log('% »»» WebSocketJs WF +++++ ws-requests--- service ON-CREATE ----- NEXT wsRequestsList ', this.wsRequestsList)
+        // console.log('% »»» WebSocketJs WF +++++ ws-requests--- service ON-CREATE ----- NEXT wsRequestsList ', this.wsRequestsList)
 
         // localStorage.setItem('fakerequest', JSON.stringify(this.wsRequestsList));
         /* the json fakeWsRequestsList (used to test the channel icon whatsapp|telegram|messenger|email) is in the folder nicola  */
@@ -522,26 +522,26 @@ export class WsRequestsService implements OnDestroy {
     const index = this.wsRequestsList.findIndex((e) => e.id === request.id);
     if (index === -1) {
 
-      console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-UPATE the request not exist - PUSH & PUBLISH ");
+      // console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-UPATE the request not exist - PUSH & PUBLISH ");
       this.wsRequestsList.push(request);
       this.wsRequestsList$.next(this.wsRequestsList);
 
     } else {
-      console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-UPATE the request exist");
+      // console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-UPATE the request exist");
     }
 
 
     for (let i = 0; i < this.wsRequestsList.length; i++) {
 
       if (request._id === this.wsRequestsList[i]._id) {
-        console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ON-UPATE AN EXISTING REQUESTS - request._id : ", request._id, " wsRequestsList[i]._id: ", this.wsRequestsList[i]._id);
+        // console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ON-UPATE AN EXISTING REQUESTS - request._id : ", request._id, " wsRequestsList[i]._id: ", this.wsRequestsList[i]._id);
 
 
         if (request.status !== 1000) {
 
           /// UPATE AN EXISTING REQUESTS
           this.wsRequestsList[i] = request
-          console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ON-UPATE request (status !== 1000): ", request);
+          // console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ON-UPATE request (status !== 1000): ", request);
 
           // if (this.wsRequestsList) {
           //   // this.wsRequestsList$.next(request);
@@ -550,7 +550,7 @@ export class WsRequestsService implements OnDestroy {
 
         } else if (request.status === 1000) {
 
-          console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ON-UPATE request (status === 1000): ", request);
+          // console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ON-UPATE request (status === 1000): ", request);
           // delete this.wsRequestsList[i]
           this.wsRequestsList.splice(i, 1);
 
@@ -755,7 +755,7 @@ export class WsRequestsService implements OnDestroy {
       function (data, notification) {
         // console.log("SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - CREATE - data ", data , ' path ', path);
         console.log("WS-REQUESTS-SERVICE - SUBSCR To CURRENT-USER AVAILABILITY - CREATE - data ", data);
-        console.log("WS-REQUESTS-SERVICE - SUBSCR To CURRENT-USER AVAILABILITY - CREATE - data  user_available ", data.user_available);
+        // console.log("WS-REQUESTS-SERVICE - SUBSCR To CURRENT-USER AVAILABILITY - CREATE - data  user_available ", data.user_available);
 
         self.currentUserWsAvailability$.next(data.user_available);
         if (data.isBusy) {

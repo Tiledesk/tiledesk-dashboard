@@ -125,8 +125,8 @@ export class WsMsgsService {
 
         //   return obj._id === data._id;
         // });
-        console.log("MSGS SRV - ADD WS Msgs - CHEK IF ADD MSG INCOMING data ", data);
-        console.log("MSGS SRV - ADD WS Msgs - CHEK IF ADD MSG INCOMING data wsMsgsList ", self.wsMsgsList);
+        // console.log("MSGS SRV - ADD WS Msgs - CHEK IF ADD MSG INCOMING data ", data);
+        // console.log("MSGS SRV - ADD WS Msgs - CHEK IF ADD MSG INCOMING data wsMsgsList ", self.wsMsgsList);
         const index = self.wsMsgsList.findIndex((msg) => msg._id === data._id);
         // if (msgFound.length === 0) {
         if (index === -1) {
@@ -159,9 +159,9 @@ export class WsMsgsService {
   // }
 
   addWsMsg(msg) {
-    console.log("MSGS SRV - ADD WS Msgs - HERE YES");
-    console.log("% WsMsgsService addWsMsgs wsMsgsList.length", this.wsMsgsList.length);
-    console.log("MSGS SRV - ADD WS Msgs - CHEK IF ADD MSD data ", this.wsMsgsList);
+    // console.log("MSGS SRV - ADD WS Msgs - HERE YES");
+    // console.log("% WsMsgsService addWsMsgs wsMsgsList.length", this.wsMsgsList.length);
+    // console.log("MSGS SRV - ADD WS Msgs - CHEK IF ADD MSD data ", this.wsMsgsList);
     console.log("MSGS SRV - ADD WS Msgs - msg ", msg);
     // msg['TEXT'] = this.linkify(msg.text)
     // msg.text = this.htmlEntities(msg.text)
@@ -171,7 +171,7 @@ export class WsMsgsService {
 
 
     if (this.wsMsgsList) {
-      console.log("MSGS SRV - ADD WS Msgs - HERE YES 2");
+      // console.log("MSGS SRV - ADD WS Msgs - HERE YES 2");
       // console.log("% »»» WebSocketJs WF >>> ws-msgs--- m-service - ADD WS Msgs - wsMsgsList before publish ", this.wsMsgsList);
       this.wsMsgsList$.next(this.wsMsgsList);
       // this._wsMsgsList.next(this.wsMsgsList);

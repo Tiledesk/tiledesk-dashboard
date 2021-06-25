@@ -389,11 +389,11 @@ export class AuthGuard implements CanActivate {
       if (this.route.indexOf('/verify') !== -1) {
         // this.router.navigate([`${this.route}`]);
         this.is_verify_email_page = true;
-        console.log('%AUTH GUARD - IS VERIFY EMAIL PAGE »> »> ', this.is_verify_email_page);
+        // console.log('%AUTH GUARD - IS VERIFY EMAIL PAGE »> »> ', this.is_verify_email_page);
 
       } else {
         this.is_verify_email_page = false;
-        console.log('%AUTH GUARD - IS VERIFY EMAIL PAGE »> »> ', this.is_verify_email_page);
+        // console.log('%AUTH GUARD - IS VERIFY EMAIL PAGE »> »> ', this.is_verify_email_page);
 
       }
     }
@@ -408,20 +408,20 @@ export class AuthGuard implements CanActivate {
       if (this.route.indexOf('/handle-invitation') !== -1) {
         // this.router.navigate([`${this.route}`]);
         this.is_handleinvitation_page = true;
-        console.log('%AUTH GUARD - IS HANDLE-INVITATION PAGE »> »> ', this.is_handleinvitation_page);
+        // console.log('%AUTH GUARD - IS HANDLE-INVITATION PAGE »> »> ', this.is_handleinvitation_page);
 
       } else {
         this.is_handleinvitation_page = false;
-        console.log('%AUTH GUARD - IS HANDLE-INVITATION PAGE »> »> ', this.is_handleinvitation_page);
+        // console.log('%AUTH GUARD - IS HANDLE-INVITATION PAGE »> »> ', this.is_handleinvitation_page);
       }
 
       if (this.route.indexOf('/signup-on-invitation') !== -1) {
         // this.router.navigate([`${this.route}`]);
         this.is_signup_on_invitation_page = true;
-        console.log('%AUTH GUARD - IS SIGNUP-ON-INVITATION PAGE »> »> ', this.is_signup_on_invitation_page);
+        // console.log('%AUTH GUARD - IS SIGNUP-ON-INVITATION PAGE »> »> ', this.is_signup_on_invitation_page);
       } else {
         this.is_signup_on_invitation_page = false;
-        console.log('%AUTH GUARD - IS SIGNUP-ON-INVITATION  PAGE »> »> ', this.is_signup_on_invitation_page);
+        // console.log('%AUTH GUARD - IS SIGNUP-ON-INVITATION  PAGE »> »> ', this.is_signup_on_invitation_page);
       }
     }
   }
@@ -433,11 +433,11 @@ export class AuthGuard implements CanActivate {
       if (this.route.indexOf('/signup') !== -1) {
         // this.router.navigate([`${this.route}`]);
         this.is_signup_page = true;
-        console.log('%AUTH GUARD  - IS SIGNUP PAGE »> »> ', this.is_signup_page);
+        // console.log('%AUTH GUARD  - IS SIGNUP PAGE »> »> ', this.is_signup_page);
 
       } else {
         this.is_signup_page = false;
-        console.log('%AUTH GUARD  - IS SIGNUP PAGE »> »> ', this.is_signup_page);
+        // console.log('%AUTH GUARD  - IS SIGNUP PAGE »> »> ', this.is_signup_page);
 
       }
     }

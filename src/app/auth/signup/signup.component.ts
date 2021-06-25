@@ -121,8 +121,8 @@ export class SignupComponent implements OnInit, AfterViewInit {
 
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
-    console.log('AppConfigService getAppConfig (SIGNUP) public_Key', this.public_Key)
-    console.log('NavbarComponent public_Key', this.public_Key)
+    // console.log('AppConfigService getAppConfig (SIGNUP) public_Key', this.public_Key)
+    // console.log('NavbarComponent public_Key', this.public_Key)
 
     let keys = this.public_Key.split("-");
     // console.log('PUBLIC-KEY (SIGNUP) - public_Key keys', keys)

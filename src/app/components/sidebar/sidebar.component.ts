@@ -261,7 +261,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     getChatUrl() {
         this.CHAT_BASE_URL = this.appConfigService.getConfig().CHAT_BASE_URL;
-        console.log('AppConfigService getAppConfig (SIDEBAR) CHAT_BASE_URL', this.CHAT_BASE_URL);
+        // console.log('AppConfigService getAppConfig (SIDEBAR) CHAT_BASE_URL', this.CHAT_BASE_URL);
     }
 
     getHasOpenBlogKey() {

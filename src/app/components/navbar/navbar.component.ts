@@ -283,7 +283,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
     getChatUrl() {
         this.CHAT_BASE_URL = this.appConfigService.getConfig().CHAT_BASE_URL;
-        console.log('AppConfigService getAppConfig (NAVBAR) CHAT_BASE_URL', this.CHAT_BASE_URL);
+        // console.log('AppConfigService getAppConfig (NAVBAR) CHAT_BASE_URL', this.CHAT_BASE_URL);
     }
 
     getProjectUserRole() {
@@ -952,7 +952,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                 if (requests) {
                     let count = 0;
                     requests.forEach(r => {
-                        console.log('NAVBAR - UPDATE-UNSERVED-REQUEST-COUNT request agents', r.agents)
+                        // console.log('NAVBAR - UPDATE-UNSERVED-REQUEST-COUNT request agents', r.agents)
                         // *bug fix: when the user is an agent also for the unserved we have to consider if he is present in agents
                         if (r.status === 100 && this.ROLE_IS_AGENT === true) {
                             if (this.hasmeInAgents(r.agents) === true) {  // new *bug fix
