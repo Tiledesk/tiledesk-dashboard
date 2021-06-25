@@ -400,7 +400,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
     }
   }
 
-    // ---------------------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------------------
   // @ Attributes decoded jwt accordion
   // ---------------------------------------------------------------------------------------
   openAttributesDecodedJWTAccordion() {
@@ -423,7 +423,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
   getProjectUserById(leadid) {
     this.usersService.getProjectUserById(leadid).subscribe((projectUser: any) => {
 
-    
+
       // console.log('!!!!! CONTACTS DETAILS - GET PROJECT USER BY LEAD ID RES  ', projectUser);
       // console.log('!!!!! CONTACTS DETAILS - GET PROJECT USER BY LEAD ID projectUser[0]  ', projectUser[0]);
       // console.log('!!!!! CONTACTS DETAILS - GET PROJECT USER BY LEAD ID projectUser[0] isAuthenticated ', projectUser[0]['isAuthenticated']);
@@ -448,10 +448,10 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
           if (this.contact_details && this.contact_details.lead_id) {
             this.lead_id = this.contact_details.lead_id;
-            
+
             this.getProjectUserById(this.lead_id)
 
-            console.log('!!!!! CONTACTS DETAILS this.lead_id', this.lead_id) 
+            console.log('!!!!! CONTACTS DETAILS this.lead_id', this.lead_id)
           }
 
 
@@ -562,21 +562,22 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
               // for (let i = 0; i < _value.length; i++) {
               //   console.log(':-D Ws-REQUESTS-Msgs - getWsRequestById _value[i]', _value[i] + ": " + letterLength[_value[i]])
               // }
-
-              for (let i = 0; i < _value.length; i++) {
-                if (letterLength[_value[i]] !== undefined) {
-                  totalLength += letterLength[_value[i]];
-                } else {
-                  // if the letter not is in dictionary letters letterLength[_value[i]] is undefined so add the witdh of the 'S' letter (8px)
-                  totalLength += letterLength['S'];
+              if (_value) {
+                for (let i = 0; i < _value.length; i++) {
+                  if (letterLength[_value[i]] !== undefined) {
+                    totalLength += letterLength[_value[i]];
+                  } else {
+                    // if the letter not is in dictionary letters letterLength[_value[i]] is undefined so add the witdh of the 'S' letter (8px)
+                    totalLength += letterLength['S'];
+                  }
                 }
+
+                console.log(':-D CONTACTS DETAILS - ATTRIBUTES value LENGHT ', _value + " totalLength : " + totalLength)
+
+                let entries = { 'attributeName': key, 'attributeValue': _value, 'attributeValueL': totalLength };
+
+                this.attributesArray.push(entries)
               }
-
-              console.log(':-D CONTACTS DETAILS - ATTRIBUTES value LENGHT ', _value + " totalLength : " + totalLength)
-
-              let entries = { 'attributeName': key, 'attributeValue': _value, 'attributeValueL': totalLength };
-
-              this.attributesArray.push(entries)
             } // ./end for
             console.log(':-D CONTACTS DETAILS - getWsRequestById attributesArray: ', this.attributesArray);
             // --------------------------------------------------------------------------------------------------------------
@@ -683,23 +684,24 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
                   if (_value) {
                     for (let i = 0; i < _value.length; i++) {
-                      console.log(':-D Ws-REQUESTS-Msgs - getWsRequestById _value[i]', _value[i] + ": " + letterLength[_value[i]])
-                    }
+                      // console.log(':-D Ws-REQUESTS-Msgs - getWsRequestById _value[i]', _value[i] + ": " + letterLength[_value[i]])
 
-                    for (let i = 0; i < _value.length; i++) {
-                      if (letterLength[_value[i]] !== undefined) {
-                        totalLength += letterLength[_value[i]];
-                      } else {
-                        // if the letter not is in dictionary letters letterLength[_value[i]] is undefined so add the witdh of the 'S' letter (8px)
-                        totalLength += letterLength['S'];
+
+                      for (let i = 0; i < _value.length; i++) {
+                        if (letterLength[_value[i]] !== undefined) {
+                          totalLength += letterLength[_value[i]];
+                        } else {
+                          // if the letter not is in dictionary letters letterLength[_value[i]] is undefined so add the witdh of the 'S' letter (8px)
+                          totalLength += letterLength['S'];
+                        }
                       }
                     }
+                    // console.log(':-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES value LENGHT ', _value + " totalLength : " + totalLength)
+
+                    let entries = { 'attributeName': key, 'attributeValue': _value, 'decodedJWTType': 'Attributes', 'attributeValueL': totalLength, 'index': index };
+
+                    this.attributesDecodedJWTAttributesArray.push(entries)
                   }
-                  // console.log(':-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES value LENGHT ', _value + " totalLength : " + totalLength)
-
-                  let entries = { 'attributeName': key, 'attributeValue': _value, 'decodedJWTType': 'Attributes', 'attributeValueL': totalLength, 'index': index };
-
-                  this.attributesDecodedJWTAttributesArray.push(entries)
                 }
                 // console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT  ATTRIBUTES - attributesDecodedJWTAttributesArray: ', this.attributesDecodedJWTAttributesArray);
 
@@ -735,26 +737,26 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
   toggleShowAllString(elementAttributeValueId: any, elementArrowIconId: any, index) {
 
-    console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES - element Attribute Value Id:`, elementAttributeValueId);
-    console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES - element Arrow Icon id:`, elementArrowIconId);
+    // console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES - element Attribute Value Id:`, elementAttributeValueId);
+    // console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES - element Arrow Icon id:`, elementArrowIconId);
 
     // -------------------------------------------------------------
     // get the element that contains the attribute's value
     // -------------------------------------------------------------
     const attributeValueElem = <HTMLElement>document.querySelector(`#${elementAttributeValueId}`);
-    console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES attributeValueElem :`, attributeValueElem);
+    // console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES attributeValueElem :`, attributeValueElem);
 
     // -------------------------------------------------------------
     // get the element arrow icon 
     // -------------------------------------------------------------
     const arrowIconElem = <HTMLElement>document.querySelector(`#${elementArrowIconId}`);
-    console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES arrowIconElem :`, arrowIconElem);
+    // console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES arrowIconElem :`, arrowIconElem);
 
     // -------------------------------------------------------------
     // get the value of aria-expanded
     // -------------------------------------------------------------
     let isAriaExpanded = attributeValueElem.getAttribute('aria-expanded')
-    console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES - element »»»»»»»»»»» isAriaExpanded:`, isAriaExpanded);
+    // console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES - element »»»»»»»»»»» isAriaExpanded:`, isAriaExpanded);
 
 
     if (isAriaExpanded === 'false') {
