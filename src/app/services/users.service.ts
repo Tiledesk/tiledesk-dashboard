@@ -884,7 +884,7 @@ export class UsersService {
       }, function (data, notification) {
         resolve(data)
         console.log("PROJECT COMP (user-service) SUBSCR TO WS CURRENT USERS - UPDATE - data ", data);
-
+        self.currentUserWsBusyAndAvailabilityForProject$.next(data)
 
       }, function (data, notification) {
         resolve(data)
