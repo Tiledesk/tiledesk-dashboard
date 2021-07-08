@@ -273,7 +273,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
   }
 
   handleCloseRightSidebar(event) {
-    console.log('%%% Ws-REQUESTS-Msgs »»»» CLOSE RIGHT SIDEBAR ', event);
+    console.log('%%% Ws-REQUESTS-Msgs »»»» IS OPEN RIGHT SIDEBAR ', event);
     this.OPEN_REQUEST_DETAILS = event;
 
     // const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
@@ -403,12 +403,14 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
         if (totalrequests === 0) {
           this.SHOW_SIMULATE_REQUEST_BTN = true
           this.showSpinner = false;
+          this.SHOW_NO_REQUEST_MSG = true
           console.log('WS-REQUESTS-UNSERVED-X-PANEL - listenToRequestsLength SHOW_SIMULATE_REQUEST_BTN ', this.SHOW_SIMULATE_REQUEST_BTN)
           console.log('WS-REQUESTS-UNSERVED-X-PANEL - listenToRequestsLength showSpinner ', this.showSpinner)
 
         } else if (totalrequests > 0) {
 
           this.showSpinner = false;
+          this.SHOW_NO_REQUEST_MSG = false;
           this.SHOW_SIMULATE_REQUEST_BTN = false
           console.log('WS-REQUESTS-UNSERVED-X-PANEL - listenToRequestsLength SHOW_SIMULATE_REQUEST_BTN ', this.SHOW_SIMULATE_REQUEST_BTN)
           console.log('WS-REQUESTS-UNSERVED-X-PANEL - listenToRequestsLength showSpinner ', this.showSpinner)
@@ -728,26 +730,26 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
         console.log('WS-REQUESTS-UNSERVED-X-PANEL getWsRequests (served)', this.wsRequestsServed);
         console.log('WS-REQUESTS-UNSERVED-X-PANEL list getWsRequests (unserved)', this.wsRequestsUnserved);
 
-        var time = 1;
-        // this = that
-        var interval = setInterval(() => {
-          if (time <= 3) {
-            console.log('WS-REQUESTS-UNSERVED-X-PANEL (unserved) TIME TIME TIME ', time);
-            time++;
-          }
-          else {
-            clearInterval(interval);
-            console.log('WS-REQUESTS-UNSERVED-X-PANEL (unserved) TIME TIME TIME COMPLETED Unserved LENGTH ', this.wsRequestsUnserved.length);
+        // var time = 1;
+        // // this = that
+        // var interval = setInterval(() => {
+        //   if (time <= 3) {
+        //     console.log('WS-REQUESTS-UNSERVED-X-PANEL (unserved) TIME TIME TIME ', time);
+        //     time++;
+        //   }
+        //   else {
+        //     clearInterval(interval);
+        //     console.log('WS-REQUESTS-UNSERVED-X-PANEL (unserved) TIME TIME TIME COMPLETED Unserved LENGTH ', this.wsRequestsUnserved.length);
 
-            if (this.wsRequestsUnserved.length > 0) {
-              this.SHOW_NO_REQUEST_MSG = false;
-              this.showSpinner = false;
-            } else {
-              this.SHOW_NO_REQUEST_MSG = true;
-              this.showSpinner = false;
-            }
-          }
-        }, 1000);
+        //     if (this.wsRequestsUnserved.length > 0) {
+        //       this.SHOW_NO_REQUEST_MSG = false;
+        //       this.showSpinner = false;
+        //     } else {
+        //       this.SHOW_NO_REQUEST_MSG = true;
+        //       this.showSpinner = false;
+        //     }
+        //   }
+        // }, 1000);
 
       }, error => {
         console.log('% WsRequestsList getWsRequests$ * error * ', error)

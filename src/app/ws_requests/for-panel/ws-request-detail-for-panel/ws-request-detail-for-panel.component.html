@@ -25,10 +25,23 @@ padding-bottom: 15px;">
             <div class="col-xs-8">
                 <h4>{{'RequestMsgsPage.RequestDetails' | translate}}</h4>
             </div>
+            <!-- <div class="col-xs-2" style="text-align: right;">
+
+                <i class="material-icons join-sidebar-btn"
+                    (click)="closeRightSideBar()">
+                    close
+                </i>
+            </div> -->
+            <!-- <div class="col-xs-2" style="text-align: right;">
+
+                <i class="material-icons archive-sidebar-btn"
+                    (click)="closeRightSideBar()">
+                    close
+                </i>
+            </div> -->
             <div class="col-xs-4" style="text-align: right;">
 
-                <i class="material-icons"
-                    style="cursor:pointer; background-color: #e4e6eb;padding: 8px;border-radius: 50%; margin-right: 12px;"
+                <i class="material-icons close-sidebar-btn"
                     (click)="closeRightSideBar()">
                     close
                 </i>
@@ -454,18 +467,19 @@ padding-bottom: 15px;">
             <div class="chat-messages">
 
                 <!-- MESSAGE -->
-                <div *ngFor="let message of messagesList; let i = index" class="message-row" [ngClass]="{
-                            'me': requester_id !== message.sender,
-                            'contact': requester_id === message.sender,
+                <div *ngFor="let message of messagesList; let i = index; let first = first" class="message-row" [ngClass]="{
+                            'me': requester_id !== message.sender && message.attributes.subtype !== 'info',
+                            'contact': requester_id === message.sender && message.attributes.subtype !== 'info',
+                            'system-info': message.attributes.subtype === 'info',
                             'first-of-group': isFirstMessageOfGroup(message, i),
                             'last-of-group': isLastMessageOfGroup(message, i)
                             }">
-
+                            <!-- message   {{message | json}} -->
                     <img *ngIf="shouldShowContactAvatar(message, i)" src="{{message.avatar_url}}"
                         onerror="this.src='assets/img/no_image_user.png'" class="avatar">
 
 
-                    <div class="bubble">
+                    <div class="bubble" [ngClass]="{ 'first' : first }">
                         <div class="message">{{message?.text}}</div>
                         <div class="time secondary-text">{{message.createdAt | date:'short'}}</div>
                     </div>
@@ -501,7 +515,7 @@ padding-bottom: 15px;">
 
   
 
-    <div class="StickyFooter">
+    <!-- <div class="StickyFooter">
         <div class="row">
             <div class="col-xs-6">
                 <button class="btn btn-primary btn-no-boxshadow" 
@@ -516,7 +530,7 @@ padding-bottom: 15px;">
                 </button>
             </div>
         </div>
-    </div>
+    </div> -->
 
 
 

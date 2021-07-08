@@ -311,7 +311,7 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
     const windowActualHeight = window.innerHeight;
     console.log('REQUEST-DTLS-X-PANEL - ACTUAL HEIGHT ', windowActualHeight);
 
-    this.chat_content_height = windowActualHeight - 490
+    this.chat_content_height = windowActualHeight - 457
     console.log('REQUEST-DTLS-X-PANEL CHAT CONTENT HEIGHT ', this.chat_content_height);
 
     return { 'height': this.chat_content_height += 'px' };
@@ -322,7 +322,7 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
   onResize(event: any) {
     // this.newInnerWidth = event.target.innerWidth;
     const newInnerHeight = event.target.innerHeight;
-    this.chat_content_height = newInnerHeight - 490
+    this.chat_content_height = newInnerHeight - 457
 
     // console.log('REQUEST-DTLS-X-PANEL - NEW INNER HEIGHT ', newInnerHeight);
     // console.log('REQUEST-DTLS-X-PANEL - ON RESIZE CHAT CONTENT HEIGHT ', this.chat_content_height);
@@ -430,16 +430,16 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
   }
 
   isFirstMessageOfGroup(message, i): boolean {
-    return (i === 0 || this.messagesList[i - 1] && this.messagesList[i - 1].sender !== message.sender);
+    return (i === 0 || this.messagesList[i - 1] && this.messagesList[i - 1].sender !== message.sender) && message.attributes.subtype !== 'info';
   }
 
   isLastMessageOfGroup(message, i): boolean {
-    return (i === this.messagesList.length - 1 || this.messagesList[i + 1] && this.messagesList[i + 1].sender !== message.sender);
+    return (i === this.messagesList.length - 1 || this.messagesList[i + 1] && this.messagesList[i + 1].sender !== message.sender) && message.attributes.subtype !== 'info';
   }
 
   shouldShowContactAvatar(message, i): boolean {
     return (
-      message.sender !== this.requester_id && ((this.messagesList[i + 1] && this.messagesList[i + 1].sender !== message.sender) || !this.messagesList[i + 1])
+      message.sender !== this.requester_id && ((this.messagesList[i + 1] && this.messagesList[i + 1].sender !== message.sender && message.attributes.subtype !== 'info') || !this.messagesList[i + 1])
     );
   }
 
