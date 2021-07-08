@@ -1,3 +1,40 @@
+.close-sidebar-btn {
+    cursor: pointer;
+    background-color: #e4e6eb;
+    padding: 8px;
+    border-radius: 50%;
+    margin-right: 12px;
+}
+
+.close-sidebar-btn:hover {
+    background-color: #CFD2D7;
+}
+
+.join-sidebar-btn {
+    cursor: pointer;
+    background-color: #e4e6eb;
+    padding: 8px;
+    border-radius: 50%;
+}
+
+.join-sidebar-btn:hover  {
+    background-color: #CFD2D7;  
+}
+
+.archive-sidebar-btn{
+    cursor: pointer;
+    background-color: #e4e6eb;
+    padding: 8px;
+    border-radius: 50%;
+
+}
+
+.archive-sidebar-btn:hover{
+    background-color: #CFD2D7;  
+}
+
+
+
 .dept-avatar-detail-for-panel {
     padding-left: 3px;
     border-radius: 3px;
@@ -383,6 +420,28 @@ ul li {
             }
         }
     }
+}
+
+#chat-content > .chat-messages > .system-info {
+    align-items: center !important;
+}
+
+#chat-content > .chat-messages > .system-info > .first {
+    border-radius: 20px;
+    margin-top: 0px !important;
+    margin-bottom: 12px;
+    border-radius: 20px 20px;
+    background-color: #c9e4f6;
+    padding: 8px 12px;
+}
+
+#chat-content > .chat-messages > .system-info > .bubble {
+    border-radius: 20px;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    border-radius: 20px 20px;
+    background-color: #c9e4f6;
+    padding: 8px 12px;
 }
 
 .StickyFooter {
