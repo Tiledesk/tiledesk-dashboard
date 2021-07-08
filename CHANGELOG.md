@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.1.70-beta.1.11
+- Adds the "behaviorsubject" publication on the update of the availability of the current user
+- Improves the components of 'projects-for-panel'
 
 ### 2.1.70-beta.1.10
 - Fixes the bug: the conversation detail page crashes not dismissing the loading spinner if any of the attribute values are null
