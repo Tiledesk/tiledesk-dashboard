@@ -405,7 +405,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       const noAuthMatch = cleanUrl.match(/\/project\/[^\/]+\/([^\/]+)\/no-auth$/);
       if (noAuthMatch && noAuthMatch[1]) {
         const callingPage = noAuthMatch[1];
-        console.log('[NAVBAR] Detected /no-auth route with callingPage:', callingPage);
+        this.logger.log('[NAVBAR] Detected /no-auth route with callingPage:', callingPage);
         
         // Imposta il titolo in base al callingPage
         if (callingPage === 'wsrequests' || callingPage === 'all-conversations') {
