@@ -572,7 +572,7 @@ export class ConvsDurationComponent implements OnInit {
           data: {
             labels: this.xValueDurationConversation,
             datasets: [{
-              label: 'Average duration conversation lenght response in last N days ',
+              label: 'Average duration conversation length response in last N days ',
               data: this.yValueDurationConversation,
               fill: false, // riempie zona sottostante dati
               lineTension: 0.0,
