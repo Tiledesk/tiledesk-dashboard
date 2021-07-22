@@ -1,64 +1,4 @@
-<!-- <div #homeComponent id='chat21-home-component'>
 
-  <div class="c21-header" style="color: rgb(255, 255, 255);"
-    [ngStyle]="{'background-color': colorBck, 'background-image': primaryColorGradiend }">
-
-    <div class="c21-header-container">
-
-      <div class="c21-header-button">
-        <div class="c21-close-button">
-          <button tabindex="2001" aria-label="    chiudi chat" class="c21-close-button-body">
-            <svg role="img" aria-labelledby="altIconTitle" [ngStyle]="{'fill': g?.themeForegroundColor }"
-              xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24">
-              <path fill="none" d="M0 0h24v24H0V0z" />
-              <path
-                d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z" />
-            
-            </svg>
-          </button>
-        </div>
-      </div>
-
- 
-      <div class="c21-header-content">
-
-
-        <div *ngIf="g?.project?.logoChat !== 'nologo'" class='avatar-project' item-start>
-
-          <div #avatarImage class="avatar-image" [style.background-image]="'url(' + g?.project.logoChat + ')'"></div>
-        </div>
-
-        <div class="c21-text fade-in-bottom">
-          <div class="c21-text-welcome">{{g?.welcomeTitle}}</div>
-          <div *ngIf="g?.welcomeMsg" class="c21-text-intro">{{g?.welcomeMsg}}</div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="c21-body">
-    <div class="c21-body-content" [class.nologo]="g?.project.logoChat === 'nologo'">
-      <div class="c21-cards">
-        <div class="c21-card fade-in-top"
-          [ngStyle]="{ 'border-top': '2.4px solid', 'border-top-color': g?.themeColor50 }">
-  
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-
-  <div class="c21-footer fade-in-bottom-footer">
-  
-    <div id="c21-powered-by">
-      <div tabindex="-1" class="c21-powered-by" [innerHTML]="g?.poweredBy"></div>
-      <div class="build_version">111</div>
-    </div>
-  </div>
-
-</div> -->
-
-<!-- [ngStyle]="{'width':  (newInnerWidth < 490 ) ? 'auto' : '375px' }" -->
 <div class="widget-container">
   <div id="chat21-container" *ngIf="!DISPLAY_LAUNCER_BUTTON">
     <!-- height':  (LOGO_IS_ON === true ) ? '480px' : '428px' -->
@@ -66,8 +6,8 @@
       [ngStyle]="{'height':  (LOGO_IS_ON === true ) ? '577px' : '527px' }">
       <div class="modal-page active">
         <div id="chat21-home-component">
-
-          <div class="c21-header" style="background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);"
+          <!-- background-color: rgb(0, 0, 0); -->
+          <div class="c21-header" style=" color: rgb(255, 255, 255);"
             [ngStyle]="{'background-image':primaryColorGradiend, 'height':  (LOGO_IS_ON === true ) ? '252px' : '200px' }">
             <div class="c21-header-container">
 
@@ -281,10 +221,7 @@
           <!-- style="bottom: 47px;" -->
           <div class="c21-footer_nk"  [ngStyle]="{'bottom':  (C21_BODY_HOME === true ) ? '-48px' : '50px' }">
             <div id="c21-powered-by">
-              <a target="_blank" [href]="company_site_url" style="color: #AAAAAA;
-              font-size: 11px;
-              font-weight: 500;
-              line-height: 28px;">
+           
 
                 <svg _ngcontent-c10="" xml:space="preserve" xmlns:xlink="http://www.w3.org/1999/xlink" height="22"
                   id="Livello_1"
@@ -313,8 +250,15 @@
                   C-96,148.3-98.2,146.1-101,146.1C-101,146.1-101,146.1-101,146.1z M-101,154.6c-2,0-3.7-1.6-3.7-3.6s1.6-3.6,3.7-3.6
                   s3.7,1.6,3.7,3.6l0,0C-97.3,153-99,154.6-101,154.6z" [ngStyle]="{'fill': primaryColor }"></path>
                 </svg>
+                <a target="_blank" [href]="company_site_url" style="color: #AAAAAA;
+                font-size: 11px;
+                font-weight: 500;
+                line-height: 28px;">
                 <span style="position: relative;left: -13px;">
-                  Powered by <b>{{company_name}}</b> </span>
+                  POWERED BY 
+                  <!-- <b>{{company_name}}</b>  -->
+                  <img style="width: 65px; height:auto;margin-left: 7px;position:relative;top: -1px;" src="assets/img/logos/tiledesk-logo.svg">
+                </span>
               </a>
             </div>
           </div>
