@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../services/brand.service';
+import { LoggerService } from '../../services/logger/logger.service';
 
 @Component({
   selector: 'appdashboard-payment-success-page',
@@ -18,10 +19,10 @@ export class PaymentSuccessPageComponent implements OnInit {
   constructor(
     private router: Router,
     private auth: AuthService,
-    public brandService: BrandService
+    public brandService: BrandService,
+    private logger: LoggerService
   ) {
     const brand = brandService.getBrand();
-    
     this.contact_us_email = brand['contact_us_email'];
    }
 
@@ -33,7 +34,7 @@ export class PaymentSuccessPageComponent implements OnInit {
     this.auth.project_bs.subscribe((project) => {
       if (project) {
         this.id_project = project._id
-        console.log('PaymentSuccessPageComponent CurrentProject ID ', this.id_project)
+        this.logger.log('[PRICING - PAYMENT-SUCCESS] - CurrentProject ID ', this.id_project)
       }
     });
   }

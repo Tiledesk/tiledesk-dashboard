@@ -42,7 +42,7 @@ export class WidgetHomeComponent implements OnInit {
   ngOnInit() {
     this.colorBck = '#000000';
 
-    console.log('WIDGET CLONE COMPONENT ', this.primaryColorGradiend)
+    // console.log('WIDGET CLONE COMPONENT ', this.primaryColorGradiend)
 
     if (this.UPLOAD_ENGINE_IS_FIREBASE === true) {
       this.userProfileImageurl = 'https://firebasestorage.googleapis.com/v0/b/' + this.imageUrl + '/o/profiles%2F' + this.currentUserId + '%2Fphoto.jpg?alt=media';

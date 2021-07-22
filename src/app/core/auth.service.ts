@@ -15,11 +15,12 @@ import { LocalDbService } from '../services/users-local-db.service';
 import { Location } from '@angular/common';
 import { Subscription } from 'rxjs/Subscription';
 import { isDevMode } from '@angular/core';
-import * as firebase from 'firebase';
+import * as firebase from 'firebase/app';
 import 'firebase/messaging';
 import 'firebase/database'
 import { AppConfigService } from '../services/app-config.service';
 import { WebSocketJs } from '../services/websocket/websocket-js';
+import { LoggerService } from '../services/logger/logger.service';
 // import { SsoService } from './sso.service';
 
 // start SUPER USER
@@ -58,9 +59,6 @@ export class AuthService {
   SIGNIN_BASE_URL: string;
   VERIFY_EMAIL_URL: string;
   CREATE_CUSTOM_TOKEN_URL: string
-
-  // CLOUDFUNCTION_CREATE_CONTACT_URL = environment.cloudFunctions.cloud_func_create_contact_url;
-  // CLOUDFUNCTION_CREATE_CONTACT_URL: string; // NO MORE USED
 
 
   // public version: string = require('../../../package.json').version;
@@ -106,41 +104,29 @@ export class AuthService {
     public location: Location,
     public appConfigService: AppConfigService,
     public webSocketJs: WebSocketJs,
+    private logger: LoggerService
+
     // public ssoService: SsoService
   ) {
     this.http = http;
-    console.log('version (AuthService)  ', this.version);
-    console.log('!!! ====== AUTH SERVICE ====== !!!')
+    // this.logger.log('[AUTH-SERV] !!! ====== HELLO AUTH SERVICE ====== DASHBOARD version ', this.version)
     this.APP_IS_DEV_MODE = isDevMode();
-    console.log('!!! ====== AUTH SERVICE !!! ====== isDevMode ', this.APP_IS_DEV_MODE);
+    // this.logger.log('[AUTH-SERV] ====== isDevMode ', this.APP_IS_DEV_MODE);
 
-    this.checkCredentials();
-
-    /* !!! NO MORE USED - REPLACED BY checkStoredProjectAndPublish() */
-    // this.getProjectFromLocalStorage();
-
-    this.checkStoredProjectAndPublish();
-
-    // this.getParamsProjectId();
-    // const messaging = firebase.messaging();
+    this.checkIfExistStoredUserAndPublish();
+    this.checkStoredProjectAndPublishIfPublishedProjectIsNull();
 
     if (appConfigService.getConfig().pushEngine === 'firebase') {
       this.checkIfFCMIsSupported();
     }
 
-
     this.checkIfExpiredSessionModalIsOpened();
-
     this.getAppConfigAnBuildUrl();
   }
 
   getAppConfigAnBuildUrl() {
     const firebase_conf = this.appConfigService.getConfig().firebase;
-    // console.log('% appConfigService.getConfig().firebase ', firebase_conf)
-
-    // const cloudBaseUrl = firebase_conf['chat21ApiUrl']; // NO MORE USED
-    // this.CLOUDFUNCTION_CREATE_CONTACT_URL = cloudBaseUrl + '/api/tilechat/contacts'; // NO MORE USED
-    // console.log('AppConfigService getAppConfig (AUTH SERVICE) CLOUDFUNCTION_CREATE_CONTACT_URL', this.CLOUDFUNCTION_CREATE_CONTACT_URL);
+    // this.logger.log('[AUTH-SERV] AppConfigService getAppConfig firebase_conf', firebase_conf)
 
     this.SERVER_BASE_PATH = this.appConfigService.getConfig().SERVER_BASE_URL;
     this.SIGNUP_BASE_URL = this.SERVER_BASE_PATH + 'auth/signup';
@@ -148,73 +134,54 @@ export class AuthService {
     this.VERIFY_EMAIL_URL = this.SERVER_BASE_PATH + 'auth/verifyemail/';
     this.CREATE_CUSTOM_TOKEN_URL = this.SERVER_BASE_PATH + 'chat21/firebase/auth/createCustomToken';
 
-    // console.log('AppConfigService getAppConfig (AUTH SERVICE) SERVER_BASE_PATH', this.SERVER_BASE_PATH);
-    // console.log('AppConfigService getAppConfig (AUTH SERVICE) SIGNUP_BASE_URL', this.SIGNUP_BASE_URL);
-    // console.log('AppConfigService getAppConfig (AUTH SERVICE) SIGNIN_BASE_URL', this.SIGNIN_BASE_URL);
-    // console.log('AppConfigService getAppConfig (AUTH SERVICE) VERIFY_EMAIL_URL', this.VERIFY_EMAIL_URL);
-    // console.log('AppConfigService getAppConfig (AUTH SERVICE) CREATE_CUSTOM_TOKEN_URL', this.CREATE_CUSTOM_TOKEN_URL);
+    // this.logger.log('[AUTH-SERV] AppConfigService getAppConfig SERVER_BASE_PATH', this.SERVER_BASE_PATH);
+    // this.logger.log('[AUTH-SERV] AppConfigService getAppConfig SIGNUP_BASE_URL', this.SIGNUP_BASE_URL);
+    // this.logger.log('[AUTH-SERV] AppConfigService getAppConfig SIGNIN_BASE_URL', this.SIGNIN_BASE_URL);
+    // this.logger.log('[AUTH-SERV] AppConfigService getAppConfig VERIFY_EMAIL_URL', this.VERIFY_EMAIL_URL);
+    // this.logger.log('[AUTH-SERV] AppConfigService getAppConfig CREATE_CUSTOM_TOKEN_URL', this.CREATE_CUSTOM_TOKEN_URL);
 
   }
 
 
+  // -------------------------------------------------------------------------
+  // CHECK IF TRIAL HAS EXPIRED - THE VALUE IS PASSED TO PROJECT-PROFILE-GUARD
+  // -------------------------------------------------------------------------
   public checkTrialExpired(): Promise<boolean> {
-    // this.getProjectById();
     return new Promise<boolean>((resolve, reject) => {
-
-      // console.log('»> »> PROJECT-PROFILE GUARD (WF in AUTH SERV) called checkTrialExpired! TRIAL EXPIRED ', this.project_trial_expired);
-      console.log('»> »> PROJECT-PROFILE GUARD (WF in AUTH SERV) called checkTrialExpired!');
+      this.logger.info('[AUTH-SERV] »> »> PROJECT-PROFILE GUARD (WF in AUTH SERV) called checkTrialExpired!');
       resolve(this.project_trial_expired);
-
     });
   }
 
-
-
-
-  // GET THE USER OBJECT FROM LOCAL STORAGE AND PASS IT IN user_bs
-  checkCredentials() {
+  // -------------------------------------------------------------------------------------- 
+  // GET THE USER OBJECT FROM LOCAL STORAGE AND PUBLISH IT WITH THE BehaviorSubject user_bs
+  // --------------------------------------------------------------------------------------
+  checkIfExistStoredUserAndPublish() {
     const storedUser = localStorage.getItem('user')
-    // console.log('SSO AUTH SERVICE - CHECK CREDENTIAL - STORED USER  ', storedUser)
-
-
-    this.subscription = this.router.events
-      .subscribe((e) => {
-        // if (e instanceof NavigationEnd) {
-          if (e instanceof NavigationStart) {
-          console.log('SSO - AUTH SERVICE - CHECK CREDENTIAL - params e ', e);
-          console.log('SSO - AUTH SERVICE - CHECK CREDENTIAL - params e.url ', e.url);
-
-          const current_url = e.url;
-          this.HAS_JWT = current_url.includes('JWT');
-          console.log('SSO - AUTH SERVICE - CHECK CREDENTIAL - current url HAS_JWT ', this.HAS_JWT);
-
-        }
-      })
-    // console.log('USER BS VALUE', this.user_bs.value)
+    // this.logger.log('[AUTH-SERV] »> »> PUBLISH STORED USER ', storedUser);
     if (storedUser !== null) {
+      this.user_bs.next(JSON.parse(storedUser));
 
       // /**
       //  * *** WIDGET - pass data to the widget function setTiledeskWidgetUser in index.html ***
       //  */
       // const _storedUser = JSON.parse(storedUser);
-      // console.log('SetTiledeskWidgetUserSignin (AUTH-SERVICE) - storedUser', _storedUser)
+      // this.logger.log('SetTiledeskWidgetUserSignin (AUTH-SERVICE) - storedUser', _storedUser)
       // const userFullname = _storedUser['firstname'] + ' ' + _storedUser['lastname'];
-      // console.log('SetTiledeskWidgetUserSignin (AUTH-SERVICE) - userFullname', userFullname);
+      // this.logger.log('SetTiledeskWidgetUserSignin (AUTH-SERVICE) - userFullname', userFullname);
       // const userEmail = _storedUser['email']
-      // console.log('SetTiledeskWidgetUserSignin (AUTH-SERVICE) - userEmail', userEmail);
+      // this.logger.log('SetTiledeskWidgetUserSignin (AUTH-SERVICE) - userEmail', userEmail);
       // const userId = _storedUser['_id']
-      // console.log('SetTiledeskWidgetUserSignin (AUTH-SERVICE) - userId', userId);
-      // console.log('SetTiledeskWidgetUserSignin (AUTH-SERVICE) - window', window);
+      // this.logger.log('SetTiledeskWidgetUserSignin (AUTH-SERVICE) - userId', userId);
+      // this.logger.log('SetTiledeskWidgetUserSignin (AUTH-SERVICE) - window', window);
       // // window['setTiledeskWidgetUser'](userFullname, userEmail, userId)
 
-
-      this.user_bs.next(JSON.parse(storedUser));
-      // this.user_bs.next(null);
-      // this.router.navigate(['/home']);
     }
   }
 
-
+  // -------------------------------------------------------------------------------------- 
+  // CALLED BY AUTOLOGIN AFTER  getCurrentAuthenticatedUser(JWT)
+  // --------------------------------------------------------------------------------------
   publishSSOloggedUser() {
     const storedUser = localStorage.getItem('user')
     if (storedUser !== null) {
@@ -228,32 +195,32 @@ export class AuthService {
     if (firebase.messaging.isSupported()) {
       // Supported
       this.FCM_Supported = true;
-      console.log('*** >>>> FCM is Supported: ', this.FCM_Supported);
+      this.logger.log('[AUTH-SERV] *** >>>> FCM is Supported: ', this.FCM_Supported);
 
 
     } else {
       // NOT Supported
       this.FCM_Supported = false;
-      console.log('*** >>>> FCM is Supported: ', this.FCM_Supported);
+      this.logger.log('[AUTH-SERV] *** >>>> FCM is Supported: ', this.FCM_Supported);
     }
   }
 
   // USED ONLY FOR A TEST
   getParamsProjectId() {
     this.route.params.subscribe((params) => {
-      console.log('!!! AUTH SETVICE - »»» TEST »»»- GET PROJECT ID ', params)
+      this.logger.log('[AUTH-SERV] - »»» TEST »»»- GET PROJECT ID ', params)
     })
   }
 
 
-  // RECEIVE THE the project (name, id, profile_name, trial_expired and trial_days_left) AND PUBLISHES
+  // RECEIVE FROM VARIOUS COMP THE OBJECT PROJECT AND PUBLISH 
   projectSelected(project: Project) {
     // PUBLISH THE project
-    console.log('!!C-U AUTH SERVICE: I PUBLISH THE PROJECT RECEIVED FROM PROJECT COMP ', project);
-    console.log('NAVBAR-FOR-PANEL - PUBLISH THE PROJECT RECEIVED FROM PROJECTS X PANEL ', project);
+    this.logger.log('[AUTH-SERV] - PUBLISH THE PROJECT OBJECT RECEIVED ', project);
+
     // tslint:disable-next-line:no-debugger
     // debugger
-    console.log('% »»» WebSocketJs WF +++++ ws-requests--- auth service PUBLISH THE PROJECT RECEIVED FROM PROJECT COMP', project._id)
+    this.logger.log('[AUTH-SERV] PUBLISH THE PROJECT OBJECT RECEIVED  > selected_project_id ', project._id)
     this.selected_project_id = project._id // used in checkRoleForCurrentProject if nav_project_id is undefined
     this.project_bs.next(project);
 
@@ -269,65 +236,37 @@ export class AuthService {
    * **** ^NOTE: THE ITEMS PROJECT ID AND PROJECT NAME IN THE STORAGE ARE SETTED IN PROJECT-COMP
    * A SIMILAR 'WORKFLOW' IS PERFORMED IN THE AUTH.GUARD IN CASE, AFTER A CHECK FOR ID PROJECT IN THE STORAGE, THE PROJECT JSON IS NULL */
   // getAndPublish_NavProjectIdAndProjectName() {
-  checkStoredProjectAndPublish() {
+  checkStoredProjectAndPublishIfPublishedProjectIsNull() {
     this.project_bs.subscribe((prjct) => {
-      console.log('% »»» WebSocketJs WF +++++ ws-requests--- auth service checkStoredProjectAndPublish prjct (1)', prjct)
-
-      console.log('»> »> PROJECT-PROFILE GUARD (WF in AUTH SERV checkStoredProjectAndPublish) prjct', prjct);
-      console.log('!!C-U  - 1) »»»»» AUTH SERV - PROJECT FROM SUBSCRIP', prjct);
+      this.logger.log('[AUTH-SERV] - PROJECT FROM SUBSCRIPTION TO project_bs ', prjct)
 
       if (prjct !== null && prjct._id !== undefined) {
         this.project_trial_expired = prjct.trial_expired;
         // tslint:disable-next-line:max-line-length
-        console.log('»> »> PROJECT-PROFILE GUARD (WF in AUTH SERV checkStoredProjectAndPublish) TRIAL expired 1', this.project_trial_expired);
+        this.logger.log('[AUTH-SERV] - PROJECT FROM SUBSCRIPTION TO project_bs > project_trial_expired', this.project_trial_expired);
       }
-      console.log('% »»» WebSocketJs WF +++++ ws-requests--- auth service checkStoredProjectAndPublish PROJECT (2)', prjct)
-      if (prjct == null) {
-        // console.log('!!C-U »»»»» AUTH SERV - PROJECT IS NULL: ', prjct);
-        console.log('% »»» WebSocketJs WF +++++ ws-requests--- auth service checkStoredProjectAndPublish PROJECT IS NULL (3) ', prjct)
 
-        /**
-         * !!!! NO MORE - REPLACES 'router.events.subscribe' WITH 'location.path()'
-         * BECAUSE OF 'events.subscribe' THAT IS ACTIVATED FOR THE FIRST
-         * TIME WHEN THE PROJECT IS NULL AND THEN IS ALWAYS CALLED EVEN IF THE  PROJECT IS DEFINED */
+      if (prjct == null) {
+
+        this.logger.log('[AUTH-SERV] - PROJECT FROM SUBSCRIPTION TO project_bs IS NULL ', prjct)
+
         this.subscription = this.router.events
           .subscribe((e) => {
             if (e instanceof NavigationEnd) {
-              // if (this.location.path() !== '') {
-              // const current_url = this.location.path()
+
               const current_url = e.url
-              console.log('% »»» WebSocketJs WF +++++ ws-requests--- auth service checkStoredProjectAndPublish NavigationEnd current_url (4)', current_url)
-              console.log('!!C-U »»»»» AUTH SERV - CURRENT URL ', current_url);
-
-
-              // ------------------------------------------------------------------
-              // SINGLE SIGN-ON - STEP 1 - Check if the current url contains "?JWT" 
-              // ------------------------------------------------------------------
-
-              // const string_to_check = '?JWT';
-              // if (current_url.includes(string_to_check)) {
-              //   console.log('SSO (AUTH SERV) - ⚡️⚡️⚡️ HEY THERE IS A JWT IN THE CURRENT URL > SET USER TO NULL');
-
-              //   this.user_bs.next(null);
-              //   // this.router.navigate(['/autologin']);
-              //   // this.ssoService.current_url_has_JWT_token(decodeURI(current_url));
-
-              //   // this.subscription.unsubscribe();
-              // }
-
+              this.logger.log('[AUTH-SERV] - NavigationEnd CURRENT-URL ', current_url)
 
               const url_segments = current_url.split('/');
-              console.log('!!C-U »»»»» AUTH SERV - CURRENT URL SEGMENTS ', url_segments);
-
+              this.logger.log('[AUTH-SERV] - NavigationEnd CURRENT-URL SEGMENTS ', url_segments);
 
               this.nav_project_id = url_segments[2];
-              console.log('% »»» WebSocketJs WF +++++ ws-requests--- auth service checkStoredProjectAndPublish this.nav_project_id (5)', this.nav_project_id)
-              console.log('!! »»»»» AUTH SERV - CURRENT URL SEGMENTS > NAVIGATION PROJECT ID: ', this.nav_project_id);
-              console.log('!! »»»»» AUTH SERV - CURRENT URL SEGMENTS > SEGMENT 1: ', url_segments[1]);
+              this.logger.log('[AUTH-SERV] - CURRENT-URL SEGMENTS > NAVIGATION PROJECT ID: ', this.nav_project_id);
+
 
               // USECASE: ROUTES /projects (i.e., Recent Projects) /create-new-project 
               if (this.nav_project_id === undefined) {
-                console.log('% »»» WebSocketJs WF +++++ ws-requests--- auth service --- QUI ENTRO 1 --- checkStoredProjectAndPublish this.nav_project_id (6)', this.nav_project_id)
+                this.logger.log('[AUTH-SERV] - CURRENT-URL SEGMENTS > NAVIGATION-PROJECT-ID IS UNDEFINED 1', this.nav_project_id, ' - UNSUBSCRIBE FROM ROUTER-EVENTS')
                 this.subscription.unsubscribe();
               }
               /**
@@ -352,20 +291,18 @@ export class AuthService {
                 current_url !== '/projects'
               ) {
 
-                console.log('!!C-U »»»»» QUI ENTRO ', this.nav_project_id);
-                console.log('% »»» WebSocketJs WF +++++ ws-requests--- auth service --- QUI ENTRO 2 --- checkStoredProjectAndPublish this.nav_project_id (7)', this.nav_project_id)
+                this.logger.log('[AUTH-SERV] NAVIGATION-PROJECT-ID IS UNDEFINED 2', this.nav_project_id, ' - UNSUBSCRIBE FROM ROUTER-EVENTS');
 
                 this.subscription.unsubscribe();
 
                 const storedProjectJson = localStorage.getItem(this.nav_project_id);
-                console.log('!! »»»»» AUTH SERV - JSON OF STORED PROJECT: ', storedProjectJson);
+                this.logger.log('[AUTH-SERV] - JSON OF STORED PROJECT: ', storedProjectJson);
 
                 // RUN THE BELOW ONLY IF EXIST THE PROJECT JSON SAVED IN THE STORAGE
                 if (storedProjectJson) {
-                  console.log('% »»» WebSocketJs WF +++++ ws-requests--- auth service checkStoredProjectAndPublish storedProjectJson (8)')
 
                   const storedProjectObject = JSON.parse(storedProjectJson);
-                  console.log('!! »»»»» AUTH SERV - OBJECT OF STORED PROJECT', storedProjectObject);
+                  this.logger.log('[AUTH-SERV] - OBJECT OF STORED PROJECT', storedProjectObject);
 
                   const project_name = storedProjectObject['name'];
                   const project_profile_name = storedProjectObject['profile_name'];
@@ -375,9 +312,7 @@ export class AuthService {
                   const storedProjectOH = storedProjectObject['operatingHours'];
 
                   // tslint:disable-next-line:max-line-length
-                  // console.log('»> »> PROJECT-PROFILE GUARD (WF in AUTH SERV checkStoredProjectAndPublish) TRIAL expired 2', this.project_trial_expired);
-
-                  console.log('!! »»»»» AUTH SERV - PROJECT NAME GET FROM STORAGE: ', project_name);
+                  this.logger.log('[AUTH-SERV] - PROJECT NAME GET FROM STORAGE: ', project_name);
 
                   const project: Project = {
                     _id: this.nav_project_id,
@@ -387,50 +322,38 @@ export class AuthService {
                     trial_days_left: project_trial_days_left,
                     operatingHours: storedProjectOH
                   }
-                  // console.log('!! AUTH in auth.serv  - 1) PROJECT THAT IS PUBLISHED: ', project);
+                  // this.logger.log('!! AUTH in auth.serv  - 1) PROJECT THAT IS PUBLISHED: ', project);
                   // SE NN C'è IL PROJECT NAME COMUNQUE PUBBLICO PERCHè CON L'ID DEL PROGETTO VENGONO EFFETTUATE DIVERSE CALLBACK
 
                   /**** ******* ******* NEW BUG FIX ***** *** ** ***/
 
-                  // if(prjct.id ) { }
-
-                  // if (prjct && prjct._id !== this.nav_project_id) {
-
-                  console.log('% »»» WebSocketJs WF +++++ ws-requests--- auth service checkStoredProjectAndPublish BEFORE TO PUBLISH this.project_bs.value (9) ', this.project_bs.value)
+                  this.logger.log('[AUTH-SERV] BEFORE TO PUBLISH this.project_bs.value ', this.project_bs.value)
                   if (this.project_bs.value == null) {
-                    console.log('% »»» WebSocketJs WF +++++ ws-requests--- auth service checkStoredProjectAndPublish PROJECT (get from storage) THAT IS PUBLISHED (10) ', project)
+                    this.logger.log('[AUTH-SERV] PROJECT (get from storage) THAT IS PUBLISHED ', project)
                     this.project_bs.next(project);
                   }
 
-                  // }
 
-                  // NOTA: AUTH GUARD ESEGUE UN CHECK DEL PROGETTO SALVATO NEL LOCAL STORAGE E SE IL PROJECT NAME è NULL DOPO AVER 'GET' IL
-                  // PROGETTO PER nav_project_id SET THE ID and the NAME OF THE PROJECT IN THE LOCAL STORAGE and
-                  // SENT THEM TO THE AUTH SERVICE THAT PUBLISHES
-                  // if (project_name === null) {
-                  //   console.log('!! »»»»» AUTH SERV - PROJECT NAME IS NULL')
-                  // }
                 } else {
-                  console.log('% »»» WebSocketJs WF +++++ ws-requests--- auth service checkStoredProjectAndPublish FOR THE PRJCT ID ', this.nav_project_id, ' THERE IS NOT STORED PRJCT-JSON - SEE AUTH GUARD (11)')
+                  this.logger.log('[AUTH-SERV] THERE IS NOT STORED PRJCT-JSON - FOR THE PROJECT WITH ID ', this.nav_project_id, 'SEE AUTH GUARD')
                   // USE-CASE: FOR THE ID (GOT FROM URL) OF THE CURRENT PROJECT THERE IS NO THE JSON SAVED IN THE STORAGE:
                   // IT IS THE CASE IN WHICH THE USER ACCESS TO A NEW PROJECT IN THE DASHBOARD BY LINKS
                   // WITHOUT BEING PASSED FROM THE PROJECT LIST.
                   // IF THE STORED JSON OF THE PROJECT IS NULL  IS THE AUTH-GUARD THAT RUNS A REMOTE CALLBACK TO OBTAIN THE
                   // PROJECT BY ID AND THAT THEN PUBLISH IT AND SAVE IT (THE REMOTE CALLBACK IS PERFORMED IN AUTH-GUARD BECAUSE
-                  // IS NOT POSSIBLE TO DO IT IN THIS SERVICE (BECAUSE OF THE CIRCULAR DEPEDENCY WARNING)  )
-                  // tslint:disable-next-line:max-line-length
-                  console.log('!! AUTH WF in auth.serv - FOR THE PRJCT ID ', this.nav_project_id, ' THERE IS NOT STORED PRJCT-JSON - SEE AUTH GUARD')
-                  // this.projectService.getProjectById(this.nav_project_id).subscribe((prjct: any) => {
+                  // IS NOT POSSIBLE TO DO IT IN THIS SERVICE (BECAUSE OF THE CIRCULAR DEPEDENCY WARNING)
 
-                  // public anyway to immediately make the project id available to subscribers
+                  // -------------------------------------------------------------------------
+                  // PUBLISH anyway to immediately make the project id available to subscribers
                   // the project name will be published by the auth.guard
+                  // -------------------------------------------------------------------------
                   const project: Project = {
                     _id: this.nav_project_id,
                   }
-                  console.log('!! AUTH in auth.serv - 2) PROJECT THAT IS PUBLISHED: ', project);
+                  this.logger.log('[AUTH-SERV] PROJECT THAT IS PUBLISHED (ONLY THE PROJECT ID BECAUSE THE PROJECT IS NOT PRESENT IN THE STORAGE)', project);
 
                   this.project_bs.next(project);
-                  console.log('% »»» WebSocketJs WF +++++ ws-requests--- auth service 2) PROJECT THAT IS PUBLISHED ', project)
+
                 }
               }
             }
@@ -441,22 +364,7 @@ export class AuthService {
 
 
   checkRoleForCurrentProject() {
-    console.log('!! »»»»» AUTH SERV - CHECK ROLE »»»»» CALLING CHECK-ROLE-FOR-CURRENT-PRJCT');
-    // this.router.events.subscribe((e) => {
-    //   console.log('!! »»»»» AUTH SERV - CHECK ROLE »»»»» CALLING checkRoleForCurrentProjectAndRedirect');
-    //   console.log('!! »»»»» AUTH SERV - CHECK ROLE - EVENT ', e);
-    //   if (e instanceof NavigationEnd) {
-    // console.log('!! AUTH GUARD - EVENT ', e);
-    // const current_url = e.url
-    // console.log('!! »»»»» AUTH SERV - CHECK ROLE - CURRENT URL ', current_url);
-
-    // const url_segments = current_url.split('/');
-    // console.log('!! »»»»» AUTH SERV - CHECK ROLE - CURRENT URL SEGMENTS ', url_segments);
-
-    // const nav_project_id = url_segments[2];
-    // console.log('!! »»»»» AUTH SERV - CHECK ROLE - NAVIGATION PROJECT ID: ', nav_project_id);
-    // this.selected_project_id
-
+    this.logger.log('[AUTH-SERV] - CHECK ROLE »»»»» CALLING CHECK-ROLE-FOR-CURRENT-PRJCT');
     let project_id = ''
     if (this.nav_project_id !== undefined) {
       project_id = this.nav_project_id
@@ -465,31 +373,33 @@ export class AuthService {
     }
 
     const storedProjectJson = localStorage.getItem(project_id);
-    console.log('!! »»»»» AUTH SERV - CHECK ROLE - JSON OF STORED PROJECT iD', project_id);
-    console.log('!! »»»»» AUTH SERV - CHECK ROLE - JSON OF STORED PROJECT', storedProjectJson);
+    this.logger.log('[AUTH-SERV] - CHECK ROLE - JSON OF STORED PROJECT iD', project_id);
+    this.logger.log('[AUTH-SERV] - CHECK ROLE - JSON OF STORED PROJECT', storedProjectJson);
     if (storedProjectJson) {
 
       const storedProjectObject = JSON.parse(storedProjectJson);
-      console.log('!! »»»»» AUTH SERV - CHECK ROLE - OBJECT OF STORED PROJECT', storedProjectObject);
+      this.logger.log('[AUTH-SERV] - CHECK ROLE - OBJECT OF STORED PROJECT', storedProjectObject);
 
       this._user_role = storedProjectObject['role'];
 
       if (this._user_role) {
         if (this._user_role === 'agent' || this._user_role === undefined) {
-          console.log('!! »»»»» AUTH SERV - CHECK ROLE (GOT FROM STORAGE) »»» ', this._user_role);
+          this.logger.log('[AUTH-SERV] - CHECK ROLE (GOT FROM STORAGE) »»» ', this._user_role);
 
           this.router.navigate([`project/${project_id}/unauthorized`]);
           // this.router.navigate(['/unauthorized']);
         } else {
-          console.log('!! »»»»» AUTH SERV - CHECK ROLE (GOT FROM STORAGE) »»» ', this._user_role)
+          this.logger.log('[AUTH-SERV] - CHECK ROLE (GOT FROM STORAGE) »»» ', this._user_role)
         }
       }
     }
   }
 
+  // -------------------------------------------------------------
   // USED FOR PRICING WHOSE ACCESS IS PERMITTED ONLY TO THE OWNERS
+  // -------------------------------------------------------------
   checkRoleForCurrentProjectAndRedirectAdminAndAgent() {
-    console.log('!! »»»»» AUTH SERV - CHECK ROLE »»»»» CALLING CHECK-ROLE-FOR-CURRENT-PRJCT AND BLOCK ADMIN AND AGEBT');
+    this.logger.log('[AUTH-SERV] - CHECK ROLE »»»»» CALLING CHECK-ROLE-FOR-CURRENT-PRJCT (USED X PRICING) AND BLOCK ADMIN AND AGENT');
 
     let project_id = ''
     if (this.nav_project_id !== undefined) {
@@ -499,23 +409,23 @@ export class AuthService {
     }
 
     const storedProjectJson = localStorage.getItem(project_id);
-    console.log('!! »»»»» AUTH SERV - CHECK ROLE - JSON OF STORED PROJECT iD', project_id);
-    console.log('!! »»»»» AUTH SERV - CHECK ROLE - JSON OF STORED PROJECT', storedProjectJson);
+    this.logger.log('[AUTH-SERV] - CHECK ROLE - JSON OF STORED PROJECT iD', project_id);
+    this.logger.log('[AUTH-SERV] - CHECK ROLE - JSON OF STORED PROJECT', storedProjectJson);
     if (storedProjectJson) {
 
       const storedProjectObject = JSON.parse(storedProjectJson);
-      console.log('!! »»»»» AUTH SERV - CHECK ROLE - OBJECT OF STORED PROJECT', storedProjectObject);
+      this.logger.log('[AUTH-SERV] - CHECK ROLE - OBJECT OF STORED PROJECT', storedProjectObject);
 
       this._user_role = storedProjectObject['role'];
 
       if (this._user_role) {
         if (this._user_role === 'agent' || this._user_role === 'admin' || this._user_role === undefined) {
-          console.log('!! »»»»» AUTH SERV - CHECK ROLE (GOT FROM STORAGE) »»» ', this._user_role);
+          this.logger.log('[AUTH-SERV] - CHECK ROLE (GOT FROM STORAGE) »»» ', this._user_role);
 
           this.router.navigate([`project/${project_id}/unauthorized-access`]);
           // this.router.navigate(['/unauthorized']);
         } else {
-          console.log('!! »»»»» AUTH SERV - CHECK ROLE (GOT FROM STORAGE) »»» ', this._user_role)
+          this.logger.log('[AUTH-SERV] - CHECK ROLE (GOT FROM STORAGE) »»» ', this._user_role)
         }
       }
     }
@@ -523,18 +433,8 @@ export class AuthService {
 
 
 
-  // !!! NO MORE USED
-  // WHEN THE PAGE IS RELOADED THE project_id RETURNED FROM THE SUBSCRIPTION IS NULL SO IT IS GET FROM LOCAL STORAGE
-  // getProjectFromLocalStorage() {
-  //   const storedProject = localStorage.getItem('project')
-  //   console.log('!! getProjectFromLocalStorage ', storedProject)
-  //   this.project_bs.next(JSON.parse(storedProject));
-  // }
-
-
-
   /**
-   *  //// NODEJS SIGNUP //// CREATE (POST)
+   * SIGNUP - CREATE (POST)
    * @param email
    * @param password
    * @param first_name
@@ -546,32 +446,21 @@ export class AuthService {
     headers.append('Content-type', 'application/json');
     // headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
-    // const optionsp = new RequestOptions({ headers });
 
-    const body = { 'email': email, 'password': password, 'firstname': first_name, 'lastname': last_name };
-    // const bodyperson = { 'firstname': `${first_name}`, 'lastname': `${last_name}` };
-
-    console.log('SIGNUP POST REQUEST BODY ', body);
+    const body = { 'email': email, 'password': password, 'firstname': first_name, 'lastname': last_name };;
+    this.logger.log('[AUTH-SERV] - SIGNUP POST REQUEST BODY ', body);
 
     const url = this.SIGNUP_BASE_URL;
-    // const personurl = this.MONGODB_PEOPLE_BASE_URL;
-    console.log('SIGNUP URL ', url)
-    // console.log('PEOPLE URL ', personurl)
+    this.logger.log('[AUTH-SERV] - SIGNUP URL ', url)
 
     return this.http
       .post(url, JSON.stringify(body), options)
       .map(res => {
-        // tslint:disable-next-line:no-debugger
-        // debugger
-        console.log('res: ', res.json())
+
+        this.logger.log('res: ', res.json())
         return res.json()
       })
-    // .pipe(mergeMap(e => {
-    //   console.log('e: ', e)
-    //   return this.http.post(personurl, JSON.stringify(bodyperson), options)
-    //   .map((res) => {res.json()})
-    // }))
-    // .map((res) => {res.json()})))
+
   }
 
   /**
@@ -582,20 +471,23 @@ export class AuthService {
    * @param password
    */
   signin(email: string, password: string, callback) {
+    const self = this;
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
     const options = new RequestOptions({ headers });
+
     const body = { 'email': email, 'password': password };
-    console.log('SIGNIN POST REQUEST BODY ', body);
+    this.logger.log('[AUTH-SERV] - SIGNIN POST REQUEST BODY ', body);
+
     const url = this.SIGNIN_BASE_URL;
-    console.log('SIGNIN URL ', url)
+    this.logger.log('[AUTH-SERV] - SIGNIN URL ', url)
 
     return this.http
       .post(url, JSON.stringify(body), options)
       .toPromise().then(res => {
 
-        console.log('SIGNIN RES: ', res.json())
+        this.logger.log('[AUTH-SERV] SIGNIN RES: ', res.json())
         const jsonRes = res.json()
         const user: User = jsonRes.user
 
@@ -614,34 +506,34 @@ export class AuthService {
         localStorage.setItem('user', JSON.stringify(user));
         localStorage.setItem('chat_sv5__tiledeskToken', user.token); // x autologin of Chat ionic
 
-        console.log('++ USER ', user)
+        this.logger.log('[AUTH-SERV] > USER ', user)
 
         ///////////////////
-        console.log('SSO - LOGIN 1. POST DATA ', jsonRes);
+        this.logger.log('[AUH-SERV] SSO - LOGIN 1. POST DATA ', jsonRes);
         if (jsonRes['success'] === true) {
           // ----------------------------------------------------------------------------------------------------------------------------------------------
           // Run chat21CreateFirebaseCustomToken() and signInWithCustomToken() if firebaseAuth === true - RUN getPermission() IF pushEngine  === 'firebase'
           // ----------------------------------------------------------------------------------------------------------------------------------------------
-          // this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK
-          console.log('SSO - LOGIN getConfig firebaseAuth', this.appConfigService.getConfig().firebaseAuth)
-          // if (this.appConfigService.getConfig().chatEngine && this.appConfigService.getConfig().chatEngine !== 'mqtt') {
+
+          this.logger.log('[AUTH-SERV] SSO - LOGIN getConfig firebaseAuth', this.appConfigService.getConfig().firebaseAuth)
+
           if (this.appConfigService.getConfig().firebaseAuth === true) {
-            console.log('SSO - LOGIN - WORKS WITH FIREBASE ')
-            // '/chat21/firebase/auth/createCustomToken'
+            this.logger.log('[AUTH-SERV] SSO - LOGIN - WORKS WITH FIREBASE ')
+
             this.chat21CreateFirebaseCustomToken(jsonRes['token']).subscribe(fbtoken => {
 
               // this.firebaseSignin(email, password).subscribe(fbtoken => {
-              console.log('SSO - LOGIN 2. FIREBASE SIGNIN RESPO ', fbtoken)
+              this.logger.log('[AUTH-SERV] SSO - LOGIN 2. FIREBASE SIGNIN RESPO ', fbtoken)
 
               if (fbtoken) {
                 // Firebase Sign in using custom token
                 // firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE).then(() => {
 
-                console.log('SSO - LOGIN - 3. FIREBASE CUSTOM AUTH setPersistence ');
+                this.logger.log('[AUTH-SERV] SSO - LOGIN - 3. FIREBASE CUSTOM AUTH setPersistence ');
 
                 firebase.auth().signInWithCustomToken(fbtoken)
                   .then(firebase_user => {
-                    console.log('SSO - LOGIN - 4. FIREBASE CUSTOM AUTH DATA ', firebase_user);
+                    this.logger.log('[AUTH-SERV] SSO - LOGIN - 4. FIREBASE CUSTOM AUTH DATA ', firebase_user);
 
                     if (this.appConfigService.getConfig().pushEngine === 'firebase') {
                       if (!this.APP_IS_DEV_MODE && this.FCM_Supported === true) {
@@ -656,109 +548,64 @@ export class AuthService {
                     callback(error);
                     // Handle Errors here.
                     // const errorCode = error.code;
-                    console.log('SSO - LOGIN - FIREBASE CUSTOM AUTH ERROR CODE ', error)
-                    // const errorMessage = error.message;
-                    // console.log('FIREBASE CUSTOM AUTH ERROR MSG ', errorMessage)
+                    self.logger.error('[AUTH-SERV] SSO - LOGIN - FIREBASE CUSTOM AUTH ERROR CODE ', error)
+
                   });
 
-
-                // }).catch(function (error) {
-                //   callback(error);
-                //   console.log('SSO - LOGIN - SET PERSISTENCE ERR ', error)
-                // });
 
               } else {
                 callback({ code: '4569', message: 'Error token not generated' });
               }
-              // tslint:disable-next-line:no-debugger
-              // debugger
             })
 
           } else {
-            console.log('SSO - LOGIN - FIREBASE- AUTH false - !!!! SIGNIN WITHOUT FIREBASE CUSTOM TOKEN ')
-            
+            this.logger.log('[AUTH-SERV] SSO - LOGIN - FIREBASE- AUTH false - !!!! SIGNIN WITHOUT FIREBASE CUSTOM TOKEN ')
+
             callback(null, user);
 
           } // ./end condition for X FIREBASE- AUTH
         } else {
-          console.log('SSO - LOGIN - POST REQUEST ERROR jsonRes[success] NOT IS === true')
+          this.logger.error('[AUTH-SERV] SSO - LOGIN - POST REQUEST ERROR jsonRes[success] NOT IS === true')
           callback({ code: jsonRes.code, message: jsonRes.message });
         }
 
       }).catch(function (error) {
-        console.log('SSO - LOGIN - SIGNIN POST REQUEST ERROR', error);
+        self.logger.error('[AUTH-SERV] SSO - LOGIN - SIGNIN POST REQUEST ERROR', error);
         callback(error);
       })
   }
 
 
   getPermission() {
-    console.log('SSO - LOGIN - 5. getPermission ')
+    this.logger.log('[AUTH-SERV] SSO - LOGIN - 5. getPermission ')
     const messaging = firebase.messaging();
     if (firebase.messaging.isSupported()) {
       // messaging.requestPermission()
       Notification.requestPermission()
         .then(() => {
-          console.log('SSO - LOGIN - 5B. >>>> getPermission Notification permission granted.');
+          this.logger.log('[AUTH-SERV] SSO - LOGIN - 5B. >>>> getPermission Notification permission granted.');
           return messaging.getToken()
         })
         .then(FCMtoken => {
-          console.log('>>>> getPermission FCMtoken', FCMtoken)
+          this.logger.log('[AUTH-SERV] >>>> getPermission FCMtoken', FCMtoken)
           // Save FCM Token in Firebase
           this.FCMcurrentToken = FCMtoken;
           this.updateToken(FCMtoken)
         })
         .catch((err) => {
-          console.log('SSO - LOGIN - 5C. >>>> getPermission Unable to get permission to notify.', err);
+          this.logger.error('[AUTH-SERV] SSO - LOGIN - 5C. >>>> getPermission Unable to get permission to notify.', err);
         });
     }
   }
 
-  // requestPermissionGetFCMTokenAndRegisterInstanceId(userId) {
-  //   const messaging = firebase.messaging();
-  //   const that = this;
-  //   messaging.requestPermission()
-  //     .then(function () {
-  //       console.log('Notification permission granted.');
-  //       // TODO(developer): Retrieve a Instance ID token for use with FCM.
-  //       // ...
-  //       that.getFCMregistrationToken(userId)
-  //     })
-  //     .catch(function (err) {
-  //       console.log('Unable to get permission to notify. ', err);
-  //     });
-  // }
-
-  // getFCMregistrationToken(userId) {
-  //   const that = this;
-  //   console.log('>>>>  messaging.getToken - Notification permission granted.');
-
-  //   // /* forceRefresh */ true
-  //   const messaging = firebase.messaging();
-  //   messaging.getToken().then(function (FCMcurrentToken) {
-  //     if (FCMcurrentToken) {
-  //       console.log('>>>>  messaging.getToken - FCM registration token ', FCMcurrentToken);
-
-  //       that.FCMcurrentToken = FCMcurrentToken;
-
-  //       that.registerInstanceId(FCMcurrentToken);
-
-  //     } else {
-  //       // Show permission request.
-  //       console.log('>>>>  messaging.getToken - No Instance ID token available. Request permission to generate one.');
-  //     }
-  //   }).catch(function (err) {
-  //     console.log('>>>>  messaging.getToken - An error occurred while retrieving token. ', err);
-  //   });
-  // }
 
   updateToken(FCMcurrentToken) {
-    console.log('>>>> updateToken ', FCMcurrentToken);
+    this.logger.log('[AUTH-SERV] >>>> updateToken ', FCMcurrentToken);
     // this.afAuth.authState.take(1).subscribe(user => {
     if (!this.userId || !FCMcurrentToken) {
       return
     };
-    console.log('aggiorno token nel db');
+    this.logger.log('[AUTH-SERV] updated token in db');
     const connection = FCMcurrentToken;
     const updates = {};
     const urlNodeFirebase = '/apps/tilechat'
@@ -774,67 +621,10 @@ export class AuthService {
 
     updates[connectionsRefinstancesId + connection] = device_model;
 
-    console.log('Firebase Cloud Messaging  - Aggiorno token ------------>', updates);
+    this.logger.log('[AUTH-SERV] Firebase Cloud Messaging  - Update token updates ------------>', updates);
     firebase.database().ref().update(updates)
   }
 
-  // !!!!!! NO MORE USED CREATE CONTACT ON FIREBASE Realtime Database
-  // cloudFunctionsCreateContact(firstname, lastname, email) {
-  //   const self = this;
-  //   firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
-  //     .then(function (token) {
-  //       console.log('cloudFunctionsCreateContact idToken.', token);
-  //       // console.log('idToken.', idToken);
-  //       const headers = new Headers();
-  //       headers.append('Accept', 'application/json');
-  //       headers.append('Content-type', 'application/json');
-  //       headers.append('Authorization', 'Bearer ' + token);
-
-  //       const options = new RequestOptions({ headers });
-  //       // const url = 'https://us-central1-chat-v2-dev.cloudfunctions.net/api/tilechat/contacts';
-  //       const url = self.CLOUDFUNCTION_CREATE_CONTACT_URL
-  //       const body = { 'firstname': firstname, 'lastname': lastname, 'email': email };
-
-  //       self.http
-  //         .post(url, JSON.stringify(body), options)
-  //         .toPromise().then(res => {
-  //           console.log('Cloud Functions Create Contact RES ', res)
-  //         }).catch(function (error) {
-  //           // Handle error
-  //           console.log('Cloud Functions Create Contact RES ERROR', error);
-  //         })
-
-  //     }).catch(function (error) {
-  //       // Handle error
-  //       console.log('idToken.', error);
-  //     });
-  // }
-
-  // !!!! DEPRECATED
-  // NODE.JS FIREBASE SIGNIN (USED TO GET THE TOKEN THEN USED FOR Firebase Signin using custom token)
-  // firebaseSignin(email: string, password: string) {
-  //   const headers = new Headers();
-  //   headers.append('Accept', 'application/json');
-  //   headers.append('Content-type', 'application/json');
-  //   const options = new RequestOptions({ headers });
-  //   const url = this.FIREBASE_SIGNIN_BASE_URL;
-  //   console.log('FIREBASE SIGNIN URL ', url)
-
-  //   const body = { 'email': email, 'password': password };
-  //   console.log('FIREBASE SIGNIN URL BODY ', body);
-  //   // tslint:disable-next-line:no-debugger
-  //   // debugger
-  //   return this.http
-  //     .post(url, JSON.stringify(body), options)
-  //     .map((res) => {
-  //       // tslint:disable-next-line:no-debugger
-  //       // debugger
-  //       // console.log('FIREBASE SIGNIN RES TOKEN', res.text())
-  //       // const firebaseToken = res.text()
-  //       return res.text()
-
-  //     });
-  // }
 
   chat21CreateFirebaseCustomToken(JWT_token: any) {
     const headers = new Headers();
@@ -845,24 +635,22 @@ export class AuthService {
 
     const url = this.CREATE_CUSTOM_TOKEN_URL;
 
-    console.log('chat21CreateFirebaseCustomToken ', url)
+    this.logger.log('[AUTH-SERV] chat21CreateFirebaseCustomToken  URL', url)
 
-
-    // tslint:disable-next-line:no-debugger
-    // debugger
     return this.http
       .post(url, null, options)
       .map((res) => {
         // tslint:disable-next-line:no-debugger
         // debugger
-        console.log('SSO - chat21CreateFirebaseCustomToken RES: ', res)
+        this.logger.log('[AUTH-SERV] SSO - chat21CreateFirebaseCustomToken RES: ', res)
         // const firebaseToken = res.text()
         return res.text()
       });
   }
 
-
-  /// ===================== VERIFY EMAIL ===================== ///
+  // ------------------------------------------------------------
+  // VERIFY EMAIL 
+  // ------------------------------------------------------------
   emailVerify(user_id: string): Observable<User[]> {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
@@ -870,7 +658,7 @@ export class AuthService {
     const options = new RequestOptions({ headers });
 
     const url = this.VERIFY_EMAIL_URL + user_id;
-    console.log('VERIFY EMAIL URL ', url)
+    this.logger.log('[AUTH-SERV] VERIFY EMAIL URL ', url)
     const body = { 'emailverified': true };
     return this.http
       // .get(url, { headers })
@@ -878,14 +666,16 @@ export class AuthService {
       .map((res) => res.json());
   }
 
+  // --------------------------------------------------
+  // REPUBLISH AND RESET IN STORAGE THE (UPDATED) USER
+  // --------------------------------------------------
 
-  /* ===================== REPUBLISH AND RESET IN STORAGE THE (UPDATED) USER ===================== */
   // * WHEN THE USER UPGRADES HIS OWN PROFILE (NAME AND / OR SURNAME) THE USER-SERVICE
   //   SEND THE UPDATED USER OBJECT TO AUTH SERVICE (THIS COMPONENT) THAT REPUBLISH IT
   // * WHEN THE USER VERIFY HIS EMAIL THE VERIFY-EMAIL.COMP SENT UPDATED USER OBJECT 
   // TO AUTH SERVICE (THIS COMPONENT) THAT REPUBLISH IT
   public publishUpdatedUser(updated_user) {
-    console.log('AUTH SERV - UPDATED USER OBJECT RECEIVED FROM USER.SERV or VERY-EMAIL.COM (BEFORE TO REPUBLISH IT): ', updated_user);
+    this.logger.log('[AUTH-SERV] - UPDATED USER OBJECT RECEIVED FROM USER.SERV or VERY-EMAIL.COM (BEFORE TO REPUBLISH IT): ', updated_user);
 
     // REPUBLISH THE (UPDATED) USER OBJECT
     this.user_bs.next(updated_user);
@@ -898,85 +688,65 @@ export class AuthService {
   superUserAuth(currentUserEmailgetFromStorage) {
     const authenticatedSuperUser = superusers.find(u => u.email === currentUserEmailgetFromStorage);
     if (authenticatedSuperUser && authenticatedSuperUser.email === currentUserEmailgetFromStorage) {
-      // console.log('AUTENTICATED SUPER USER ', authenticatedUser)
-      // console.log('AUTENTICATED SUPER USER EMAIL ', authenticatedUser.email)
-      // console.log('AUTH SERVICE C. USER EMAIL ', authenticatedUser.email)
+      // this.logger.log('AUTENTICATED SUPER USER ', authenticatedUser)
+      // this.logger.log('AUTENTICATED SUPER USER EMAIL ', authenticatedUser.email)
+      // this.logger.log('AUTH SERVICE C. USER EMAIL ', authenticatedUser.email)
       return true;
     }
     return false;
   }
 
-
-  /**
-   * OLD CODE NOT USED
-   */
-  // // Sends email allowing user to reset password
-  // resetPassword(email: string) {
-  //   const fbAuth = firebase.auth();
-
-  //   return fbAuth.sendPasswordResetEmail(email)
-  //     .then(() => this.notify.update('Password update email sent', 'info'))
-  //     .catch((error) => this.handleError(error));
-  // }
-
-  // // If error, console log and notify user
-  // private handleError(error: Error) {
-  //   console.error(error);
-  //   this.notify.update(error.message, 'error');
-  // }
-
   hasClickedGoToProjects() {
     this.project_bs.next(null);
-    console.log('% »»» WebSocketJs WF +++++ ws-requests--- auth service  PUBLISH PRJCT = ', this.project_bs.next(null))
-    console.log('% »»» WebSocketJs WF +++++ ws-requests--- auth service  PUBLISH PRJCT VALUE = ', this.project_bs.value)
-    // console.log('!!C-U »»»»» AUTH SERV - HAS BEEN CALLED "HAS CLICKED GOTO PROJECTS" - PUBLISH PRJCT = ', this.project_bs.next(null))
-    localStorage.removeItem('project');
+    this.logger.log('[AUTH-SERV] - HAS CLICKED GO TO PROJECT - PUBLISH PRJCT = ', this.project_bs.next(null))
+    this.logger.log('[AUTH-SERV] - HAS CLICKED GO TO PROJECT - PRJCT VALUE = ', this.project_bs.value)
+    // this.logger.log('!!C-U »»»»» AUTH SERV - HAS BEEN CALLED "HAS CLICKED GOTO PROJECTS" - PUBLISH PRJCT = ', this.project_bs.next(null))
+    localStorage.removeItem('project'); // NOTE: questo serve????
   }
 
   // -----------------------------------------------------------------------
-  // EXIPRED SESSION MODAL
+  // EXPIRED SESSION MODAL
   // -----------------------------------------------------------------------
   // RUN THE FIREBASE LOGOUT FOR TEST OF THE EXIPERD SESIION MODAL WINDOW
   testExpiredSessionFirebaseLogout(logoutFromFireBase) {
-
-    console.log('TEST EXIPERD SESSION - LOGOUT FROM FIREBASE');
+    const self = this;
+    this.logger.log('[AUTH-SERV] TEST EXIPERD SESSION - LOGOUT FROM FIREBASE');
     firebase.auth().signOut()
       .then(function () {
-        console.log('Signed Out');
+        self.logger.log('[AUTH-SERV] Signed Out');
       }, function (error) {
-        console.error('Sign Out Error', error);
+        self.logger.error('[AUTH-SERV] Sign Out Error', error);
       });
 
   }
 
-      // -----------------------------------------------------------------------------------------------------------
-    // Run showExpiredSessionPopup(); with the passed parameter IF firebaseAuth === 'firebase' else is always False
-    // -------------------------------------------------------------------------------------------------------------
+  // -----------------------------------------------------------------------------------------------------------
+  // Run showExpiredSessionPopup(); with the passed parameter IF firebaseAuth === 'firebase' else is always False
+  // -------------------------------------------------------------------------------------------------------------
   showExpiredSessionPopup(showExpiredSessionPopup) {
-
     if (this.appConfigService.getConfig().firebaseAuth === 'firebase') {
       this.show_ExpiredSessionPopup = showExpiredSessionPopup;
-      console.log('AUTH SERV - SHOW EXPIRED SESSION POPUP - (USE CASE FIREBASE AUTH) ', this.show_ExpiredSessionPopup)
+      this.logger.log('[AUTH-SERV]- SHOW EXPIRED SESSION POPUP - (USE CASE FIREBASE AUTH) ', this.show_ExpiredSessionPopup)
     } else {
       this.show_ExpiredSessionPopup = false;
-      console.log('AUTH SERV - SHOW EXPIRED SESSION POPUP - (USE CASE NO FIREBASE AUTH) ', this.show_ExpiredSessionPopup)
+      this.logger.log('[AUTH-SERV] - SHOW EXPIRED SESSION POPUP - (USE CASE NO FIREBASE AUTH) ', this.show_ExpiredSessionPopup)
     }
   }
 
 
-    // ----------------------------------------------------------------------------------------------------------------------------
-    // @ ShowExiperdSessionPopup  when userIsSignedIn if firebaseAuth === 'firebase else is always False
-    // ----------------------------------------------------------------------------------------------------------------------------
+  // ----------------------------------------------------------------------------------------------------------------------------
+  // @ ShowExiperdSessionPopup  when userIsSignedIn if firebaseAuth === 'firebase else is always False
+  // ----------------------------------------------------------------------------------------------------------------------------
   // PASSED FROM APP.COMPONENT.TS
   userIsSignedIn(user_is_signed_in: boolean) {
     if (this.appConfigService.getConfig().firebaseAuth === 'firebase') {
-      console.log('AUTH SERV - USER-IS-SIGNED-IN - SHOW EXPIRED SESSION POPUP - (USE CASE FIREBASE AUTH) ', user_is_signed_in);
+      this.logger.log('[AUTH-SERV] - USER-IS-SIGNED-IN - SHOW EXPIRED SESSION POPUP - (USE CASE FIREBASE AUTH) ', user_is_signed_in);
 
       if (this.show_ExpiredSessionPopup === true) {
         this.notify.showExiperdSessionPopup(user_is_signed_in);
       }
     } else {
-      console.log('AUTH SERV - USER-IS-SIGNED-IN - SHOW EXPIRED SESSION POPUP - (USE CASE NO FIREBASE AUTH) - DOES NOT RUN this.notify.showExiperdSessionPopup');
+      this.logger.log('[AUTH-SERV] - USER-IS-SIGNED-IN - SHOW EXPIRED SESSION POPUP - (USE CASE NO FIREBASE AUTH) - DOES NOT RUN this.notify.showExiperdSessionPopup');
     }
 
   }
@@ -986,11 +756,11 @@ export class AuthService {
   // -------------------------------------------------------------------------------------------------------------- 
   checkIfExpiredSessionModalIsOpened() {
     if (this.appConfigService.getConfig().firebaseAuth === 'firebase') {
-      console.log('AUTH SERV - CHECK-IF-EXPIRED-SESSSION-MODAL-IS-OPENED (USE CASE FIREBASE AUTH) subscribe to isOpenedExpiredSessionModal');
+      this.logger.log('[AUTH-SERV] - CHECK-IF-EXPIRED-SESSSION-MODAL-IS-OPENED (USE CASE FIREBASE AUTH) subscribe to isOpenedExpiredSessionModal');
       this.notify.isOpenedExpiredSessionModal.subscribe((isOpenedExpiredSession: boolean) => {
-        console.log('isOpenedExpiredSession ', isOpenedExpiredSession, '*** >>>> FCM is Supported: ', this.FCM_Supported);
+        this.logger.log('[AUTH-SERV] - isOpenedExpiredSession ', isOpenedExpiredSession, '*** >>>> FCM is Supported: ', this.FCM_Supported);
         if (isOpenedExpiredSession) {
-          console.log('AUTH SERV - CHECK-IF-EXPIRED-SESSSION-MODAL-IS-OPENED (USE CASE FIREBASE) checkIfFCMIsSupported');
+          this.logger.log('[AUTH-SERV] - CHECK-IF-EXPIRED-SESSSION-MODAL-IS-OPENED (USE CASE FIREBASE) checkIfFCMIsSupported');
           if (this.FCM_Supported === undefined) {
             this.checkIfFCMIsSupported()
           }
@@ -998,7 +768,7 @@ export class AuthService {
       })
 
     } else {
-      console.log('AUTH SERV - CHECK-IF-EXPIRED-SESSSION-MODAL-IS-OPENED (USE CASE NO FIREBASE AUTH) DOES subscribe to isOpenedExpiredSessionModal');
+      this.logger.log('[AUTH-SERV]- CHECK-IF-EXPIRED-SESSSION-MODAL-IS-OPENED (USE CASE NO FIREBASE AUTH) DOES subscribe to isOpenedExpiredSessionModal');
     }
   }
 
@@ -1007,27 +777,27 @@ export class AuthService {
   // @ Run when hasOpenedLogoutModal checkIfFCMIsSupported IF uploadEngine === 'firebase'
   // ----------------------------------------------------------------------------------- 
   hasOpenedLogoutModal(isOpenedlogoutModal: boolean) {
-    console.log('AUTH SERV - HAS-OPENED-LOGOUT-MODAL getConfig chatEngine', this.appConfigService.getConfig().uploadEngine)
+    this.logger.log('[AUTH-SERV] - HAS-OPENED-LOGOUT-MODAL getConfig chatEngine', this.appConfigService.getConfig().uploadEngine)
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
-      console.log('AUTH SERV - HAS-OPENED-LOGOUT-MODAL - WORKS WITH FIREBASE  RUN checkIfFCMIsSupported');
-      console.log('AUTH SERV - HAS-OPENED-LOGOUT-MODAL ', isOpenedlogoutModal, '*** >>>> FCM is Supported: ', this.FCM_Supported);
+      this.logger.log('[AUTH-SERV] - HAS-OPENED-LOGOUT-MODAL - WORKS WITH FIREBASE  RUN checkIfFCMIsSupported');
+      this.logger.log('[AUTH-SERV] - HAS-OPENED-LOGOUT-MODAL ', isOpenedlogoutModal, '*** >>>> FCM is Supported: ', this.FCM_Supported);
       if (isOpenedlogoutModal) {
         if (this.FCM_Supported === undefined) {
           this.checkIfFCMIsSupported()
         }
       }
     } else {
-      console.log('AUTH SERV - HAS-OPENED-LOGOUT-MODAL - WORKS WITHOUT FIREBASE DOES NOT RUN checkIfFCMIsSupported');
+      this.logger.log('[AUTH-SERV] - HAS-OPENED-LOGOUT-MODAL - WORKS WITHOUT FIREBASE DOES NOT RUN checkIfFCMIsSupported');
     }
   }
 
 
-  signOut(calledby: string ) {
-    console.log('Signout calledby +++++ ', calledby)
+  signOut(calledby: string) {
+    this.logger.log('[AUTH-SERV] Signout calledby +++++ ', calledby)
 
     this.user_bs.next(null);
     this.project_bs.next(null);
-    console.log('SIGNOUT project_bs VALUE: ', this.project_bs.value);
+    this.logger.log('[AUTH-SERV] SIGNOUT project_bs VALUE: ', this.project_bs.value);
 
     localStorage.removeItem('user');
     localStorage.removeItem('project');
@@ -1038,36 +808,36 @@ export class AuthService {
     // in  removeInstanceIdAndSignout if  firebaseAuth === 'firebase' run  firebaseSignout else signoutNoFirebase
     // --------------------------------------------------------------------------------------------------------- 
     // this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK
-    console.log('Signout getConfig pushEngine', this.appConfigService.getConfig().chatEngine)
+    this.logger.log('[AUTH-SERV] signOut getConfig pushEngine', this.appConfigService.getConfig().chatEngine)
     if (this.appConfigService.getConfig().pushEngine === 'firebase') {
-      console.log('signOut WITH FIREBASE');
+      this.logger.log('[AUTH-SERV] signOut pushEngine FIREBASE');
       if (!this.APP_IS_DEV_MODE && this.FCM_Supported === true) {
 
-        console.log('this.FCMcurrentToken ', this.FCMcurrentToken);
-        console.log('here 1 ');
+        this.logger.log('[AUTH-SERV] signOut this.FCMcurrentToken ', this.FCMcurrentToken);
+        this.logger.log('[AUTH-SERV] signOut here 1 ');
         if (this.FCMcurrentToken !== undefined && this.userId !== undefined) {
-          console.log('here 2 ');
+          this.logger.log('[AUTH-SERV] signOut here 2 ');
 
           this.removeInstanceIdAndSignout(calledby);
 
         } else {
-          console.log('here 3 ');
+          this.logger.log('AUTH-SERV] signOut here 3 ');
           // use case: FCMcurrentToken is undefined
           // (e.g. the user refresh the page or not is FCMcurrentToken created at the login)
           const messaging = firebase.messaging();
           messaging.getToken()
             .then(FCMtoken => {
-              console.log('>>>> getPermission FCMtoken', FCMtoken)
+              this.logger.log('[AUTH-SERV] signOut >>>> getToken FCMtoken', FCMtoken)
               this.FCMcurrentToken = FCMtoken;
               const storedUser = localStorage.getItem('user');
               const storedUserObj = JSON.parse(storedUser);
-              console.log('signOut - storedUserObj ', storedUserObj);
+              this.logger.log('[AUTH-SERV] signOut >>>> getToken storedUserObj ', storedUserObj);
               this.userId = storedUserObj._id;
 
               this.removeInstanceIdAndSignout(calledby);
 
             }).catch((err) => {
-              console.log('err: ', err);
+              this.logger.error('[AUTH-SERV] signOut >>>> getToken err: ', err);
               if (this.appConfigService.getConfig().firebaseAuth === true) {
                 this.firebaseSignout(calledby);
               } else {
@@ -1094,9 +864,9 @@ export class AuthService {
 
 
   removeInstanceIdAndSignout(calledby) {
-    console.log('here 4')
-    console.log('removeInstanceId - FCM Token: ', this.FCMcurrentToken);
-    console.log('removeInstanceId - USER ID: ', this.userId);
+    this.logger.log('[AUTH-SERV] - removeInstanceId here 4')
+    this.logger.log('[AUTH-SERV] - removeInstanceId - FCM Token: ', this.FCMcurrentToken);
+    this.logger.log('[AUTH-SERV] - removeInstanceId - USER ID: ', this.userId);
     // this.connectionsRefinstancesId = this.urlNodeFirebase+"/users/"+userUid+"/instances/";
     const urlNodeFirebase = '/apps/tilechat'
     const connectionsRefinstancesId = urlNodeFirebase + '/users/' + this.userId + '/instances/';
@@ -1116,7 +886,7 @@ export class AuthService {
           }
 
         }).catch((err) => {
-          console.log('removeInstanceId - err: ', err);
+          that.logger.error('[AUTH-SERV] - removeInstanceId - err: ', err);
 
           if (this.appConfigService.getConfig().firebaseAuth === 'firebase') {
             that.firebaseSignout(calledby);
@@ -1127,29 +897,19 @@ export class AuthService {
     }
   }
 
-
-
   firebaseSignout(calledby) {
     const that = this;
     firebase.auth().signOut()
       .then(function () {
-        console.log('Signed Out');
+        that.logger.log('[AUTH-SERV] firebaseSignout SIGN-OUT OK');
         that.widgetReInit()
-
-        // if (!that.HAS_JWT) {
-        //   that.router.navigate(['/login']);
-        // }
 
         if (calledby !== 'autologin') {
           that.router.navigate(['/login']);
         }
       }, function (error) {
-        console.error('Sign Out Error', error);
+        that.logger.error('[AUTH-SERV] firebaseSignout SIGN-OUT - Error', error);
         that.widgetReInit()
-
-        // if (!that.HAS_JWT) {
-        //   that.router.navigate(['/login']);
-        // }
 
         if (calledby !== 'autologin') {
           that.router.navigate(['/login']);
@@ -1158,24 +918,10 @@ export class AuthService {
   }
 
   signoutNoFirebase(calledby) {
-    // console.log('SIMPLE LOGOUT (NO-FIREBASE SIGN-OUT)')
-    // this.user_bs.next(null);
-    // this.project_bs.next(null);
-    // console.log('SIGNOUT project_bs VALUE: ', this.project_bs.value);
-
-    // localStorage.removeItem('user');
-    // localStorage.removeItem('project');
-    // localStorage.removeItem('role');
-    // this.webSocketClose();
-    // if (!this.HAS_JWT) {
-    //   this.router.navigate(['/login']);
-    // }
-
     if (calledby !== 'autologin') {
       this.router.navigate(['/login']);
     }
   }
-
 
   webSocketClose() {
     this.webSocketJs.close()
@@ -1183,11 +929,11 @@ export class AuthService {
 
   widgetReInit() {
     if (window && window['tiledesk']) {
-      console.log('AUTH-SERVICE   window[-tiledesk ', window['tiledesk'])
+      this.logger.log('[AUTH-SERV] window[tiledesk] ', window['tiledesk'])
       try {
         window['tiledesk'].reInit();
       } catch (err) {
-        console.log('AUTH-SERVICE  widgetReInit error ', err);
+        this.logger.error('[AUTH-SERV] widgetReInit error ', err);
       }
       // alert('logout');
     }

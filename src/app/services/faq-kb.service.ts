@@ -4,52 +4,39 @@ import { Observable } from 'rxjs/Observable';
 import { FaqKb } from '../models/faq_kb-model';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
-import { environment } from '../../environments/environment';
 import { AuthService } from '../core/auth.service';
 import { AppConfigService } from '../services/app-config.service';
-
+import { LoggerService } from '../services/logger/logger.service';
 @Injectable()
 export class FaqKbService {
 
   http: Http;
-  // MONGODB_BASE_URL = environment.mongoDbConfig.FAQKB_BASE_URL;
-  // TOKEN = environment.mongoDbConfig.TOKEN;
-
-  // BASE_URL = environment.mongoDbConfig.BASE_URL;  // replaced
-  // SERVER_BASE_PATH = environment.SERVER_BASE_URL;  // now get from appconfig
-  // DLGFLW_BOT_CREDENTIAL_BASE_URL = environment.botcredendialsURL; // now get from appconfig
-
   SERVER_BASE_PATH: string;
   DLGFLW_BOT_CREDENTIAL_BASE_URL: string;
-
   FAQKB_URL: any;
-
   TOKEN: string;
   user: any;
-
   project: any;
-
 
   constructor(
     http: Http,
     private auth: AuthService,
     public appConfigService: AppConfigService,
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private logger: LoggerService
   ) {
-    // // tslint:disable-next-line:no-debugger
-    // debugger
-    console.log('hello faq-kb service')
+
     this.http = http;
 
     // SUBSCRIBE TO USER BS
     this.user = auth.user_bs.value
-    this.checkUser()
+    this.checkIfExistUserAndGetToken()
 
     this.auth.user_bs.subscribe((user) => {
       // // tslint:disable-next-line:no-debugger
       // debugger
       this.user = user;
-      this.checkUser()
+      this.checkIfExistUserAndGetToken()
     });
 
     this.getCurrentProject();
@@ -61,12 +48,12 @@ export class FaqKbService {
     // this.DLGFLW_BOT_CREDENTIAL_BASE_URL = this.appConfigService.getConfig().botcredendialsURL;
     this.SERVER_BASE_PATH = this.appConfigService.getConfig().SERVER_BASE_URL;
 
-    console.log('AppConfigService getAppConfig (FAQ-KB SERV.) DLGFLW_BOT_CREDENTIAL_BASE_URL ', this.DLGFLW_BOT_CREDENTIAL_BASE_URL);
-    console.log('AppConfigService getAppConfig (FAQ-KB SERV.) SERVER_BASE_PATH ', this.SERVER_BASE_PATH);
+    this.logger.log('AppConfigService getAppConfig (FAQ-KB SERV.) DLGFLW_BOT_CREDENTIAL_BASE_URL ', this.DLGFLW_BOT_CREDENTIAL_BASE_URL);
+    this.logger.log('AppConfigService getAppConfig (FAQ-KB SERV.) SERVER_BASE_PATH ', this.SERVER_BASE_PATH);
   }
 
   getCurrentProject() {
-    // console.log('FAQ-KB SERV - SUBSCRIBE TO CURRENT PROJ ')
+    // this.logger.log('FAQ-KB SERV - SUBSCRIBE TO CURRENT PROJ ')
     // tslint:disable-next-line:no-debugger
     // debugger
     this.auth.project_bs.subscribe((project) => {
@@ -75,7 +62,7 @@ export class FaqKbService {
       // debugger
 
       if (this.project) {
-        console.log('00 -> FAQKB SERVICE project ID from AUTH service subscription  ', this.project._id)
+        this.logger.log('00 -> FAQKB SERVICE project ID from AUTH service subscription  ', this.project._id)
         this.FAQKB_URL = this.SERVER_BASE_PATH + this.project._id + '/faq_kb/'
 
 
@@ -84,28 +71,21 @@ export class FaqKbService {
     });
   }
 
-  checkUser() {
+  checkIfExistUserAndGetToken() {
     if (this.user) {
       this.TOKEN = this.user.token
       // this.getToken();
-      console.log('FAQ KB SERVICE user is signed in');
+      this.logger.log('[FAQ-KB.SERV] user is signed in');
     } else {
-      console.log('FAQ KB SERVICE No user is signed in');
+      this.logger.log('[FAQ-KB.SERV] No user is signed in');
     }
   }
 
   /**
-   * READ (GET)
-   * USED IN bot-edit-add.component.ts
-   * !!! NO MORE USED
-   *     * IN FAQ COMPONENT THE FAQ-KB'S LIST IS CURRENTLY OBTAINED BY FILTERING
-   *     ALL THE FAQ-KB FOR THE ID OF THE CURRENT PROJECT (see BELOW getFaqKbByProjectId)
-   *     getMongDbFaqKb() was also used in bot-edit-add.component.ts ma currently THE BOTs ARE NO LONGER USED
-   *     (in the view the menu item FAQ (alias faq-kb) have been renamed in BOT)
-   */
+   * READ (GET) !!! NO MORE USED
   public getMongDbFaqKb(): Observable<FaqKb[]> {
     const url = this.FAQKB_URL;
-    console.log('MONGO DB FAQ-KB URL', url);
+    this.logger.log('[FAQ-KB.SERV] MONGO DB FAQ-KB URL', url);
 
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -114,6 +94,7 @@ export class FaqKbService {
       .get(url, { headers })
       .map((response) => response.json());
   }
+  */
 
   /**
    * READ (GET ALL FAQKB WITH THE CURRENT PROJECT ID)
@@ -124,7 +105,7 @@ export class FaqKbService {
     const url = this.FAQKB_URL;
     // url += '?id_project=' + `${id_project}`;
     // const url = `http://localhost:3000/${id_project}/faq_kb/`;
-    console.log('GET FAQ-KB BY PROJECT ID URL', url);
+    this.logger.log('[FAQ-KB.SERV] - GET FAQ-KB BY PROJECT ID - URL', url);
 
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -135,17 +116,15 @@ export class FaqKbService {
         (response) => {
           const data = response.json();
           // Does something on data.data
-          console.log('GET FAQ-KB BY PROJECT ID URL data', data);
+          this.logger.log('[FAQ-KB.SERV] GET FAQ-KB BY PROJECT ID - data', data);
 
           data.forEach(d => {
-            console.log('GET FAQ-KB BY PROJECT ID URL data d', d);
+            this.logger.log('[FAQ-KB.SERV] - GET FAQ-KB BY PROJECT ID URL data d', d);
             if (d.description) {
               let stripHere = 20;
               d['truncated_desc'] = d.description.substring(0, stripHere) + '...';
             }
           });
-
-
           // return the modified data:
           return data;
         })
@@ -158,7 +137,7 @@ export class FaqKbService {
     const url = this.FAQKB_URL + '?all=true';
     // url += '?id_project=' + `${id_project}`;
     // const url = `http://localhost:3000/${id_project}/faq_kb/`;
-    console.log('GET *ALL* FAQ-KB BY PROJECT ID URL', url);
+    this.logger.log('[FAQ-KB.SERV] - GET *ALL* FAQ-KB BY PROJECT ID - URL', url);
 
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -169,10 +148,10 @@ export class FaqKbService {
         (response) => {
           const data = response.json();
           // Does something on data.data
-          console.log('GET *ALL* FAQ-KB BY PROJECT ID URL data', data);
+          this.logger.log('[FAQ-KB.SERV] GET *ALL* FAQ-KB BY PROJECT ID - data', data);
 
           data.forEach(d => {
-            console.log('GET *ALL* FAQ-KB BY PROJECT ID URL data d', d);
+            this.logger.log('[FAQ-KB.SERV] - GET *ALL* FAQ-KB BY PROJECT ID URL data d', d);
             if (d.description) {
               let stripHere = 20;
               d['truncated_desc'] = d.description.substring(0, stripHere) + '...';
@@ -185,18 +164,16 @@ export class FaqKbService {
         })
   }
 
-
-
-
-
-
   /**
    * READ DETAIL (GET BY ID)
+   * 
+   * @param id 
+   * @returns 
    */
-  public getMongDbFaqKbById(id: string): Observable<FaqKb[]> {
+  public getFaqKbById(id: string): Observable<FaqKb[]> {
     let url = this.FAQKB_URL;
     url += `${id}`;
-    console.log('MONGO DB GET BY ID FAQ-KB URL', url);
+    this.logger.log('[FAQ-KB.SERV] - GET FAQ-KB BY ID - URL', url);
 
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -208,10 +185,14 @@ export class FaqKbService {
 
   /**
    * CREATE (POST)
-   * @param fullName
+   * 
+   * @param name 
+   * @param urlfaqkb 
+   * @param bottype 
+   * @param description 
+   * @returns 
    */
-  // public addMongoDbFaqKb(name: string, urlfaqkb: string, is_external_bot: boolean) {
-  public addMongoDbFaqKb(name: string, urlfaqkb: string, bottype: string, description: string) {
+  public addFaqKb(name: string, urlfaqkb: string, bottype: string, description: string) {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
@@ -222,23 +203,11 @@ export class FaqKbService {
     const body = { 'name': name, 'url': urlfaqkb, 'id_project': this.project._id, 'type': bottype, 'description': description };
 
 
-    /* FOR PRE */
-    // let botType = ''
-    // if (is_external_bot === true) {
-    //   botType = 'external'
-    // } else {
-    //   botType = 'internal'
-    // }
-    // body['type'] = botType
-
-
-    /* FOR PROD */
-    // body['external'] = is_external_bot
-
-    console.log('CREATE BOT - POST REQUEST BODY ', body);
+    this.logger.log('[FAQ-KB.SERV] - CREATE FAQ-KB - BODY ', body);
 
     const url = this.FAQKB_URL;
     // let url = `http://localhost:3000/${project_id}/faq_kb/`;
+    this.logger.log('[FAQ-KB.SERV] - CREATE FAQ-KB - URL ', url);
 
     return this.http
       .post(url, JSON.stringify(body), options)
@@ -246,8 +215,16 @@ export class FaqKbService {
 
   }
 
+  // ------------------------------------------------------------------------------------------------
   // IF THE BOT IS OF TYPE DIALOGFLOW, AFTER THAT A NEW FAQKB WAS CREATED RUN A CALLBACK TO POST THE 
   // dialogfolw bot CREDENTIAL
+  // ------------------------------------------------------------------------------------------------
+  /**
+   * 
+   * @param botid 
+   * @param formData 
+   * @returns 
+   */
   uploadDialogflowBotCredetial(botid: string, formData: any) {
     const headers = new Headers();
 
@@ -255,11 +232,11 @@ export class FaqKbService {
     // headers.append('Accept', 'application/json');
     // headers.append('Content-type', 'multipart/form-data');
     headers.append('Authorization', this.TOKEN);
-    console.log('uploadDialogflowBotCredetial formData ', formData)
+    this.logger.log('[FAQ-KB.SERV] - uploadDialogflowBotCredetial formData ', formData)
 
     // const url =  "http://dialogflow-proxy-tiledesk.herokuapp.com/uploadgooglecredendials/" + botid
     const url = this.DLGFLW_BOT_CREDENTIAL_BASE_URL + botid
-
+    this.logger.log('[FAQ-KB.SERV] - uploadDialogflowBotCredetial POST URL ', url)
     const options = new RequestOptions({ headers: headers });
     return this.http
       .post(url, formData, options)
@@ -268,7 +245,7 @@ export class FaqKbService {
 
   getDialogflowBotCredetial(botid: string) {
     let url = this.DLGFLW_BOT_CREDENTIAL_BASE_URL + botid;
-    console.log('getDialogflowBotCredetialURL', url);
+    this.logger.log('[FAQ-KB.SERV] - getDialogflowBotCredetial GET URL', url);
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append('Authorization', this.TOKEN);
@@ -280,7 +257,7 @@ export class FaqKbService {
 
   public deleteDialogflowBotCredetial(id: string) {
     let url = this.DLGFLW_BOT_CREDENTIAL_BASE_URL + id;
-    console.log('deleteDialogflowBotCredetial DELETE URL ', url);
+    this.logger.log('[FAQ-KB.SERV] - deleteDialogflowBotCredetial DELETE URL ', url);
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
@@ -312,7 +289,7 @@ export class FaqKbService {
 
   //   const body = { 'username': 'frontiere21', 'password': 'password', 'language': 'italian' };
 
-  //   console.log('CREATE FAQKB KEY - POST REQUEST BODY ', body);
+  //   this.logger.log('CREATE FAQKB KEY - POST REQUEST BODY ', body);
 
   //   const url = 'http://ec2-52-47-168-118.eu-west-3.compute.amazonaws.com/qna_kbmanagement/create';
 
@@ -326,10 +303,10 @@ export class FaqKbService {
    * DELETE (DELETE)
    * @param id
    */
-  public deleteMongoDbFaqKb(id: string) {
+  public deleteFaqKb(id: string) {
     let url = this.FAQKB_URL;
     url += `${id}# chat21-api-nodejs`;
-    console.log('DELETE URL ', url);
+    this.logger.log('[FAQ-KB.SERV] - deleteFaqKb - DELETE URL ', url);
 
     const headers = new Headers();
     headers.append('Accept', 'application/json');
@@ -347,11 +324,11 @@ export class FaqKbService {
    * @param id
    * @param fullName
    */
-  public updateMongoDbFaqKb(id: string, name: string, urlfaqkb: string, bottype: string, faqKb_description: string, webkookisenalbled: any, webhookurl) {
+  public updateFaqKb(id: string, name: string, urlfaqkb: string, bottype: string, faqKb_description: string, webkookisenalbled: any, webhookurl) {
 
     let url = this.FAQKB_URL + id;
     // url = url += `${id}`;
-    console.log('update BOT - URL ', url);
+    this.logger.log('update BOT - URL ', url);
 
     const headers = new Headers();
     headers.append('Accept', 'application/json');
@@ -366,18 +343,9 @@ export class FaqKbService {
       body['webhook_url'] = webhookurl
 
     }
-    console.log('update BOT - BODY ', body);
-    // let botType = ''
-    // if (is_external_bot === true) {
-    //   botType = 'external'
-    // } else {
-    //   botType = 'internal'
-    // }
-    // body['type'] = botType
+    this.logger.log('[FAQ-KB.SERV] updateFaqKb - BODY ', body);
 
-    /* FOR PROD */
-    // body['external'] = is_external_bot
-    console.log('PUT REQUEST BODY ', body);
+    this.logger.log('[FAQ-KB.SERV] updateFaqKb - PUT BODY ', body);
     return this.http
       .put(url, JSON.stringify(body), options)
       .map((res) => res.json());
@@ -385,16 +353,16 @@ export class FaqKbService {
   }
 
   /**
-  * UPDATE (PUT) the BOT WITH trashed = true WHEN THE USER CLICKED THE BTN 'DELETE BOT' 
-  * @param id
-  * @param fullName
-  */
+   * UPDATE (PUT) the BOT WITH trashed = true WHEN THE USER CLICKED THE BTN 'DELETE BOT' 
+   * 
+   * @param id 
+   * @param _trashed 
+   * @returns 
+   */
   public updateFaqKbAsTrashed(id: string, _trashed: boolean) {
-
     let url = this.FAQKB_URL;
     url = url += `${id}`;
-    console.log('PUT URL ', url);
-
+    this.logger.log('[FAQ-KB.SERV] updateFaqKbAsTrashed - PUT URL ', url);
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
@@ -403,7 +371,7 @@ export class FaqKbService {
 
     const body = { 'trashed': _trashed };
 
-    console.log('PUT REQUEST BODY ', body);
+    this.logger.log('[FAQ-KB.SERV] updateFaqKbAsTrashed - PUT BODY ', body);
 
     return this.http
       .put(url, JSON.stringify(body), options)
@@ -412,9 +380,8 @@ export class FaqKbService {
   }
 
   getNumberOfMessages(idBot, bottype) {
-
-    // console.log('BOT LIST (bot-service) - getNumberOfMessages idBot ', idBot) 
-    // console.log('BOT LIST (bot-service) - getNumberOfMessages bottype', bottype) 
+    this.logger.log('[FAQ-KB.SERV] - getNumberOfMessages idBot ', idBot) 
+    this.logger.log('[FAQ-KB.SERV] - getNumberOfMessages bottype', bottype) 
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': this.TOKEN
@@ -423,13 +390,13 @@ export class FaqKbService {
     let botid = ""
     if (bottype === 'internal') {
       botid = 'bot_' + idBot
-    }  else {
+    } else {
       botid = idBot
     }
 
     let params = new HttpParams().set('sender', botid)
     // let params = new HttpParams().set('sender', 'bot_' + idBot)
-    // console.log('BOT LIST (bot-service) - getNumberOfMessages params', params) 
+    // this.logger.log('BOT LIST (bot-service) - getNumberOfMessages params', params) 
 
     return this.httpClient.get(this.SERVER_BASE_PATH + this.project._id + "/analytics/messages/count", { headers: headers, params: params })
 

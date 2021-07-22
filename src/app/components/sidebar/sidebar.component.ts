@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit, NgModule, ElementRef, ViewChild, HostListener } from '@angular/core';
-// import { RequestsService } from '../../services/requests.service';
+
 import { Router, NavigationEnd } from '@angular/router';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
@@ -28,6 +28,7 @@ import { environment } from '../../../environments/environment';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../services/brand.service';
 import { WsRequestsService } from './../../services/websocket/ws-requests.service';
+import { LoggerService } from './../../services/logger/logger.service';
 declare const $: any;
 
 declare interface RouteInfo {
@@ -167,7 +168,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     private unsubscribe$: Subject<any> = new Subject<any>();
 
     constructor(
-        // private requestsService: RequestsService,
         private router: Router,
         public location: Location,
         private route: ActivatedRoute,
@@ -182,9 +182,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         private deptService: DepartmentService,
         public brandService: BrandService,
         public wsRequestsService: WsRequestsService,
-        private uploadImageNativeService: UploadImageNativeService
+        private uploadImageNativeService: UploadImageNativeService,
+        private logger: LoggerService
     ) {
-        console.log('!!!!! HELLO SIDEBAR')
+        this.logger.log('[SIDEBAR] !!!!! HELLO SIDEBAR')
 
         const brand = brandService.getBrand();
 
@@ -199,26 +200,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.translateChangeAvailabilitySuccessMsg();
         this.translateChangeAvailabilityErrorMsg();
         this.getProfileImageStorage();
-        // !!!! NO MORE USED
-        // this.ROUTES = [
-        //     { path: `project/${this.projectid}/home`, title: 'Home', icon: 'dashboard', class: '' },
-        //     { path: `project/${this.projectid}/requests`, title: 'Visitatori', icon: 'group', class: '' },
-        //     { path: 'chat', title: 'Chat', icon: 'chat', class: '' }
-        // ]
-        // this.menuItems = this.ROUTES.filter(menuItem => menuItem);
-
-
-        // WHEN THE PAGE IS REFRESHED GETS FROM LOCAL STORAGE IF THE SETTINGS SUBMENU WAS OPENED OR CLOSED
-        // this.SETTINGS_SUBMENU_WAS_OPEN = localStorage.getItem('show_settings_submenu')
-        // console.log('LOCAL STORAGE VALU OF KEY show_settings_submenu', localStorage.getItem('show_settings_submenu'))
-        // this.SHOW_SETTINGS_SUBMENU = this.SETTINGS_SUBMENU_WAS_OPEN
-        // console.log('ON INIT - SHOW SETTINGS SUBMENU ', this.SHOW_SETTINGS_SUBMENU)
-        // if (localStorage.getItem('show_settings_submenu') === 'true') {
-        //     this.trasform = 'rotate(180deg)';
-        // } else {
-        //     this.trasform = 'none';
-        // }
-        
+   
         this.getCurrentProject_andThenDepts();
 
         this.getUserAvailability();
@@ -247,45 +229,45 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     
     getLoggedUser() {
         this.auth.user_bs.subscribe((user) => {
-            console.log('USER GET IN SIDEBAR ', user)
+            this.logger.log('[SIDEBAR] USER GET IN SIDEBAR ', user)
             // tslint:disable-next-line:no-debugger
             // debugger
             this.user = user;
 
             if (user) {
                 this.currentUserId = user._id;
-                console.log('Current USER ID ', this.currentUserId)
+                this.logger.log('[SIDEBAR] Current USER ID ', this.currentUserId)
             }
         });
     }
 
     getChatUrl() {
         this.CHAT_BASE_URL = this.appConfigService.getConfig().CHAT_BASE_URL;
-        // console.log('AppConfigService getAppConfig (SIDEBAR) CHAT_BASE_URL', this.CHAT_BASE_URL);
+        // this.logger.log('[SIDEBAR] AppConfigService getAppConfig CHAT_BASE_URL', this.CHAT_BASE_URL);
     }
 
     getHasOpenBlogKey() {
         const hasOpenedBlog = this.usersLocalDbService.getStoredChangelogDate();
-        console.log('SIDEBAR  »»»»»»»»» hasOpenedBlog ', hasOpenedBlog);
+        this.logger.log('[SIDEBAR] »»»»»»»»» hasOpenedBlog ', hasOpenedBlog);
         if (hasOpenedBlog === true) {
             this.hidechangelogrocket = true;
         }
     }
 
     brandLog() {
-        // console.log('BRAND_JSON - SIDEBAR ', brand);
-        console.log('BRAND_JSON - SIDEBAR sidebarlogourl ', this.sidebarLogoWhite_Url);
-        console.log('BRAND_JSON - SIDEBAR hidechangelogrocket ', this.hidechangelogrocket);
+        // this.logger.log('BRAND_JSON - SIDEBAR ', brand);
+        this.logger.log('[SIDEBAR] BRAND_JSON - sidebarlogourl ', this.sidebarLogoWhite_Url);
+        this.logger.log('[SIDEBAR] BRAND_JSON - hidechangelogrocket ', this.hidechangelogrocket);
     }
 
     getProfileImageStorage() {
         if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
             const firebase_conf = this.appConfigService.getConfig().firebase;
             this.storageBucket = firebase_conf['storageBucket'];
-            console.log('Sidebar IMAGE STORAGE ', this.storageBucket , 'usecase Firebase')
+            this.logger.log('[SIDEBAR] IMAGE STORAGE ', this.storageBucket , 'usecase Firebase')
         } else {
             this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
-            console.log('Sidebar IMAGE STORAGE ', this.storageBucket , 'usecase Native')
+            this.logger.log('[SIDEBAR] IMAGE STORAGE ', this.storageBucket , 'usecase Native')
         }
 
 
@@ -293,155 +275,106 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     getOSCODE() {
         this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
-        console.log('AppConfigService getAppConfig (SIDEBAR) public_Key', this.public_Key);
+        this.logger.log('[SIDEBAR] AppConfigService getAppConfig public_Key', this.public_Key);
 
         let keys = this.public_Key.split("-");
-        console.log('PUBLIC-KEY (SIDEBAR) - public_Key keys', keys)
+        this.logger.log('[SIDEBAR] PUBLIC-KEY - public_Key keys', keys)
 
         keys.forEach(key => {
-            // console.log('NavbarComponent public_Key key', key)
+           
             if (key.includes("ANA")) {
-                // console.log('PUBLIC-KEY (SIDEBAR) - key', key);
+               
                 let ana = key.split(":");
-                // console.log('PUBLIC-KEY (SIDEBAR) - ana key&value', ana);
-
+    
                 if (ana[1] === "F") {
                     this.isVisibleANA = false;
-                    // console.log('PUBLIC-KEY (SIDEBAR) - ana isVisible', this.isVisibleANA);
                 } else {
                     this.isVisibleANA = true;
-                    // console.log('PUBLIC-KEY (SIDEBAR) - ana isVisible', this.isVisibleANA);
                 }
             }
 
             if (key.includes("ACT")) {
-                // console.log('PUBLIC-KEY (SIDEBAR) - key', key);
                 let act = key.split(":");
-                // console.log('PUBLIC-KEY (SIDEBAR) - act key&value', act);
-
                 if (act[1] === "F") {
                     this.isVisibleACT = false;
-                    // console.log('PUBLIC-KEY (SIDEBAR) - act isVisible', this.isVisibleACT);
                 } else {
                     this.isVisibleACT = true;
-                    // console.log('PUBLIC-KEY (SIDEBAR) - act isVisible', this.isVisibleACT);
                 }
             }
 
             if (key.includes("TRI")) {
-                // console.log('PUBLIC-KEY (SIDEBAR) - key', key);
                 let tri = key.split(":");
-                // console.log('PUBLIC-KEY (SIDEBAR) - tri key&value', tri);
-
                 if (tri[1] === "F") {
                     this.isVisibleTRI = false;
-                    // console.log('PUBLIC-KEY (SIDEBAR) - tri isVisible', this.isVisibleTRI);
                 } else {
                     this.isVisibleTRI = true;
-                    // console.log('PUBLIC-KEY (SIDEBAR) - tri isVisible', this.isVisibleTRI);
                 }
             }
 
             if (key.includes("GRO")) {
-                // console.log('PUBLIC-KEY (SIDEBAR) - key', key);
                 let gro = key.split(":");
-                // console.log('PUBLIC-KEY (SIDEBAR) - gro key&value', gro);
-
                 if (gro[1] === "F") {
                     this.isVisibleGRO = false;
-                    // console.log('PUBLIC-KEY (SIDEBAR) - gro isVisible', this.isVisibleGRO);
                 } else {
                     this.isVisibleGRO = true;
-                    // console.log('PUBLIC-KEY (SIDEBAR) - gro isVisible', this.isVisibleGRO);
                 }
             }
 
             if (key.includes("DEP")) {
-                // console.log('PUBLIC-KEY (SIDEBAR) - key', key);
                 let dep = key.split(":");
-                // console.log('PUBLIC-KEY (SIDEBAR) - dep key&value', dep);
-
                 if (dep[1] === "F") {
                     this.isVisibleDEP = false;
-                    // console.log('PUBLIC-KEY (SIDEBAR) - dep isVisible', this.isVisibleDEP);
                 } else {
                     this.isVisibleDEP = true;
-                    // console.log('PUBLIC-KEY (SIDEBAR) - dep isVisible', this.isVisibleDEP);
                 }
             }
 
             if (key.includes("OPH")) {
-                // console.log('PUBLIC-KEY (SIDEBAR) - key', key);
                 let oph = key.split(":");
-                // console.log('PUBLIC-KEY (SIDEBAR) - oph key&value', oph);
-
                 if (oph[1] === "F") {
                     this.isVisibleOPH = false;
-                    // console.log('PUBLIC-KEY (SIDEBAR) - oph isVisible', this.isVisibleOPH);
                 } else {
                     this.isVisibleOPH = true;
-                    // console.log('PUBLIC-KEY (SIDEBAR) - oph isVisible', this.isVisibleOPH);
                 }
             }
 
             if (key.includes("CAR")) {
-                // console.log('PUBLIC-KEY (SIDEBAR) - key.includes("CAR")', key.includes("CAR"));
-                // console.log('PUBLIC-KEY (SIDEBAR) - key', key);
                 let car = key.split(":");
-                // console.log('PUBLIC-KEY (SIDEBAR) - car key&value', car);
-
                 if (car[1] === "F") {
                     this.isVisibleCAR = false;
-                    // console.log('PUBLIC-KEY (SIDEBAR) - car isVisible', this.isVisibleCAR);
                 } else {
                     this.isVisibleCAR = true;
-                    // console.log('PUBLIC-KEY (SIDEBAR) - car isVisible', this.isVisibleCAR);
                 }
             }
 
-
             if (key.includes("LBS")) {
-                // console.log('PUBLIC-KEY (SIDEBAR) - key', key);
                 let lbs = key.split(":");
-                // console.log('PUBLIC-KEY (SIDEBAR) - car key&value', lbs);
-
                 if (lbs[1] === "F") {
                     this.isVisibleLBS = false;
-                    // console.log('PUBLIC-KEY (SIDEBAR) - lbs isVisible', this.isVisibleLBS);
                 } else {
                     this.isVisibleLBS = true;
-                    // console.log('PUBLIC-KEY (SIDEBAR) - lbs isVisible', this.isVisibleLBS);
                 }
             }
 
             if (key.includes("APP")) {
-                // console.log('PUBLIC-KEY (SIDEBAR) - key', key);
                 let lbs = key.split(":");
-                // console.log('PUBLIC-KEY (SIDEBAR) - app key&value', lbs);
-
                 if (lbs[1] === "F") {
                     this.isVisibleAPP = false;
-                    // console.log('PUBLIC-KEY (SIDEBAR) - app isVisible', this.isVisibleAPP);
                 } else {
                     this.isVisibleAPP = true;
-                    // console.log('PUBLIC-KEY (SIDEBAR) - app isVisible', this.isVisibleAPP);
                 }
             }
-
         });
 
         if (!this.public_Key.includes("CAR")) {
-            // console.log('PUBLIC-KEY (SIDEBAR) - key.includes("CAR")', this.public_Key.includes("CAR"));
             this.isVisibleCAR = false;
         }
 
         if (!this.public_Key.includes("LBS")) {
-            // console.log('PUBLIC-KEY (SIDEBAR) - key.includes("LBS")', this.public_Key.includes("LBS"));
             this.isVisibleLBS = false;
         }
 
         if (!this.public_Key.includes("APP")) {
-            // console.log('PUBLIC-KEY (SIDEBAR) - key.includes("APP")', this.public_Key.includes("APP"));
             this.isVisibleAPP = false;
         }
     }
@@ -450,62 +383,62 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     getCurrentRoute() {
         this.router.events.filter((event: any) => event instanceof NavigationEnd)
             .subscribe(event => {
-                // console.log('SIDEBAR NavigationEnd ', event.url);
+                // this.logger.log('[SIDEBAR] NavigationEnd ', event.url);
 
                 // USED FOR THE BADGE 'NEW'
                 if (event.url.indexOf('/activities') !== -1) {
-                    // console.log('SIDEBAR NavigationEnd - THE activities-demo route IS ACTIVE  ', event.url);
+                    // this.logger.log('[SIDEBAR] NavigationEnd - THE activities-demo route IS ACTIVE  ', event.url);
                     this.ACTIVITIES_ROUTE_IS_ACTIVE = true;
                 } else {
-                    // console.log('SIDEBAR NavigationEnd - THE activities-demo route IS NOT ACTIVE  ', event.url);
+                    // this.logger.log('[SIDEBAR] NavigationEnd - THE activities-demo route IS NOT ACTIVE  ', event.url);
                     this.ACTIVITIES_ROUTE_IS_ACTIVE = false;
                 }
 
                 if (event.url.indexOf('/activities-demo') !== -1) {
-                    // console.log('SIDEBAR NavigationEnd - THE activities-demo route IS ACTIVE  ', event.url);
+                    // this.logger.log('[SIDEBAR] NavigationEnd - THE activities-demo route IS ACTIVE  ', event.url);
                     this.ACTIVITIES_DEMO_ROUTE_IS_ACTIVE = true;
                 } else {
-                    // console.log('SIDEBAR NavigationEnd - THE activities-demo route IS NOT ACTIVE  ', event.url);
+                    // this.logger.log('[SIDEBAR] NavigationEnd - THE activities-demo route IS NOT ACTIVE  ', event.url);
                     this.ACTIVITIES_DEMO_ROUTE_IS_ACTIVE = false;
                 }
 
                 if (event.url.indexOf('/analytics-demo') !== -1) {
-                    // console.log('SIDEBAR NavigationEnd - THE analytics-demo route IS ACTIVE  ', event.url);
+                    // this.logger.log('[SIDEBAR] NavigationEnd - THE analytics-demo route IS ACTIVE  ', event.url);
                     this.ANALYTICS_DEMO_ROUTE_IS_ACTIVE = true;
                 } else {
-                    // console.log('SIDEBAR NavigationEnd - THE analytics-demo route IS NOT ACTIVE  ', event.url);
+                    // this.logger.log('[SIDEBAR] NavigationEnd - THE analytics-demo route IS NOT ACTIVE  ', event.url);
                     this.ANALYTICS_DEMO_ROUTE_IS_ACTIVE = false;
                 }
 
                 if (event.url.indexOf('/widget') !== -1) {
-                    // console.log('SIDEBAR NavigationEnd - THE widget route IS ACTIVE  ', event.url);
+                    // this.logger.log('[SIDEBAR] NavigationEnd - THE widget route IS ACTIVE  ', event.url);
                     this.WIDGET_ROUTE_IS_ACTIVE = true;
                 } else {
-                    // console.log('SIDEBAR NavigationEnd - THE widget route IS NOT ACTIVE  ', event.url);
+                    // this.logger.log('[SIDEBAR] NavigationEnd - THE widget route IS NOT ACTIVE  ', event.url);
                     this.WIDGET_ROUTE_IS_ACTIVE = false;
                 }
 
                 if (event.url.indexOf('/analytics') !== -1) {
-                    // console.log('SIDEBAR NavigationEnd - THE analytics route IS ACTIVE  ', event.url);
+                    // this.logger.log('[SIDEBAR] NavigationEnd - THE analytics route IS ACTIVE  ', event.url);
                     this.ANALITYCS_ROUTE_IS_ACTIVE = true;
                 } else {
-                    // console.log('SIDEBAR NavigationEnd - THE analytics route IS NOT ACTIVE  ', event.url);
+                    // this.logger.log('[SIDEBAR] NavigationEnd - THE analytics route IS NOT ACTIVE  ', event.url);
                     this.ANALITYCS_ROUTE_IS_ACTIVE = false;
                 }
 
                 if (event.url.indexOf('/home') !== -1) {
-                    // console.log('SIDEBAR NavigationEnd - THE home route IS ACTIVE  ', event.url);
+                    // this.logger.log('[SIDEBAR] NavigationEnd - THE home route IS ACTIVE  ', event.url);
                     this.HOME_ROUTE_IS_ACTIVE = true;
                 } else {
-                    // console.log('SIDEBAR NavigationEnd - THE home route IS NOT ACTIVE  ', event.url);
+                    // this.logger.log('[SIDEBAR] NavigationEnd - THE home route IS NOT ACTIVE  ', event.url);
                     this.HOME_ROUTE_IS_ACTIVE = false;
                 }
 
                 if (event.url.indexOf('/trigger') !== -1) {
-                    // console.log('SIDEBAR NavigationEnd - THE home route IS ACTIVE  ', event.url);
+                    // this.logger.log('[SIDEBAR] NavigationEnd - THE home route IS ACTIVE  ', event.url);
                     this.TRIGGER_ROUTE_IS_ACTIVE = true;
                 } else {
-                    // console.log('SIDEBAR NavigationEnd - THE home route IS NOT ACTIVE  ', event.url);
+                    // this.logger.log('[SIDEBAR] NavigationEnd - THE home route IS NOT ACTIVE  ', event.url);
                     this.TRIGGER_ROUTE_IS_ACTIVE = false;
                 }
             });
@@ -515,7 +448,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     subscribeToMyAvailibilityCount() {
         this.projectService.myAvailabilityCount
             .subscribe((num: number) => {
-                console.log('SIDEBAR subscribeToMyAvailibilityCount ', num)
+                this.logger.log('[SIDEBAR] subscribeToMyAvailibilityCount ', num)
                 this.availabilityCount = num;
             })
     }
@@ -524,7 +457,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.translate.get('ChangeAvailabilitySuccessNoticationMsg')
             .subscribe((text: string) => {
                 this.changeAvailabilitySuccessNoticationMsg = text;
-                // console.log('+ + + change Availability Success Notication Msg', text)
+                // this.logger.log('+ + + change Availability Success Notication Msg', text)
             });
     }
 
@@ -532,7 +465,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.translate.get('ChangeAvailabilityErrorNoticationMsg')
             .subscribe((text: string) => {
                 this.changeAvailabilityErrorNoticationMsg = text;
-                // console.log('+ + + change Availability Error Notication Msg', text)
+                // this.logger.log('+ + + change Availability Error Notication Msg', text)
             });
     }
 
@@ -540,13 +473,13 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     listenHasDeleteUserProfileImage() {
         if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
             this.uploadImageService.hasDeletedUserPhoto.subscribe((hasDeletedImage) => {
-                console.log('SIDEBAR - hasDeletedImage ? ', hasDeletedImage, '(usecase Firebase)');
+                this.logger.log('[SIDEBAR] - hasDeletedImage ? ', hasDeletedImage, '(usecase Firebase)');
                 this.userImageHasBeenUploaded = false
                 this.userProfileImageExist = false
             });
         } else {
             this.uploadImageNativeService.hasDeletedUserPhoto.subscribe((hasDeletedImage) => {
-                console.log('SIDEBAR - hasDeletedImage ? ', hasDeletedImage, '(usecase Native)');
+                this.logger.log('[SIDEBAR] - hasDeletedImage ? ', hasDeletedImage, '(usecase Native)');
                 this.userImageHasBeenUploaded = false
                 this.userProfileImageExist = false
             });
@@ -557,12 +490,12 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     checkUserImageExist() {
         this.usersService.userProfileImageExist.subscribe((image_exist) => {
-            console.log('SIDEBAR - USER PROFILE EXIST ? ', image_exist);
+            this.logger.log('[SIDEBAR] - USER PROFILE EXIST ? ', image_exist);
             this.userProfileImageExist = image_exist;
 
             if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
                 if (this.storageBucket && this.userProfileImageExist === true) {
-                    console.log('SIDEBAR - USER PROFILE EXIST - BUILD userProfileImageurl');
+                    this.logger.log('[SIDEBAR] - USER PROFILE EXIST - BUILD userProfileImageurl');
                     this.setImageProfileUrl(this.storageBucket)
                 }
             } else {
@@ -578,10 +511,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     checkUserImageUploadIsComplete() {
         if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
             this.uploadImageService.userImageWasUploaded.subscribe((image_exist) => {
-                console.log('SIDEBAR - IMAGE UPLOADING IS COMPLETE ? ', image_exist, '(usecase Firebase)');
+                this.logger.log('[SIDEBAR] - IMAGE UPLOADING IS COMPLETE ? ', image_exist, '(usecase Firebase)');
                 this.userImageHasBeenUploaded = image_exist;
                 if (this.storageBucket && this.userImageHasBeenUploaded === true) {
-                    console.log('SIDEBAR - IMAGE UPLOADING IS COMPLETE - BUILD userProfileImageurl ');
+                    this.logger.log('[SIDEBAR] - IMAGE UPLOADING IS COMPLETE - BUILD userProfileImageurl ');
                     this.setImageProfileUrl(this.storageBucket)
                 }
             });
@@ -589,7 +522,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
             // NATIVE
             this.uploadImageNativeService.userImageWasUploaded_Native.subscribe((image_exist) => {
-                console.log('USER PROFILE IMAGE - IMAGE UPLOADING IS COMPLETE ? ', image_exist, '(usecase Native)');
+                this.logger.log('[SIDEBAR] USER PROFILE IMAGE - IMAGE UPLOADING IS COMPLETE ? ', image_exist, '(usecase Native)');
 
                 this.userImageHasBeenUploaded = image_exist;
                 this.uploadImageNativeService.userImageDownloadUrl_Native.subscribe((imageUrl) => {
@@ -602,7 +535,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     setImageProfileUrl_Native(storage) {
         this.userProfileImageurl = storage + 'images?path=uploads%2Fusers%2F' + this.currentUserId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
-        console.log('PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
+        this.logger.log('[SIDEBAR] PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
         this.timeStamp = (new Date()).getTime();
     }
 
@@ -613,7 +546,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     getUserProfileImage() {
         if (this.timeStamp) {
-            // console.log('PROFILE IMAGE (USER-PROFILE IN SIDEBAR-COMP) - getUserProfileImage ', this.userProfileImageurl);
+            // this.logger.log('PROFILE IMAGE (USER-PROFILE IN SIDEBAR-COMP) - getUserProfileImage ', this.userProfileImageurl);
             return this.userProfileImageurl + '&' + this.timeStamp;
         }
         return this.userProfileImageurl
@@ -623,9 +556,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     getProjectUserRole() {
         this.usersService.project_user_role_bs.subscribe((user_role) => {
             this.USER_ROLE = user_role;
-            console.log('!!! SIDEBAR - 1. SUBSCRIBE PROJECT_USER_ROLE_BS ', this.USER_ROLE);
+            this.logger.log('[SIDEBAR] - 1. SUBSCRIBE PROJECT_USER_ROLE_BS ', this.USER_ROLE);
             if (this.USER_ROLE) {
-                console.log('SIDEBAR - PROJECT USER ROLE ', this.USER_ROLE);
+                this.logger.log('[SIDEBAR] - PROJECT USER ROLE ', this.USER_ROLE);
                 if (this.USER_ROLE === 'agent') {
                     this.SHOW_SETTINGS_SUBMENU = false;
                 }
@@ -635,7 +568,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             //     // this.USER_ROLE = this.usersLocalDbService.getUserRoleFromStorage();
 
             //     /*  IF USER_ROLE IS NULL FROM SUBSCRIPTION IS GOT FROM THE getProjectUser CALLBACK */
-            //     console.log('!!! SIDEBAR - 2. PROJECT_USER_ROLE_BS IS NULL GET USER ROLE FROM getProjectUser CALLBACK ', this.USER_ROLE);
+            //     this.logger.log('!!! SIDEBAR - 2. PROJECT_USER_ROLE_BS IS NULL GET USER ROLE FROM getProjectUser CALLBACK ', this.USER_ROLE);
             //     if (this.USER_ROLE === 'agent') {
             //         this.SHOW_SETTINGS_SUBMENU = false;
             //     }
@@ -645,12 +578,11 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     getProjectUserId() {
         this.usersService.project_user_id_bs.subscribe((projectUser_id) => {
-            console.log('SIDEBAR - PROJECT-USER-ID ', projectUser_id);
-
+            this.logger.log('[SIDEBAR] - PROJECT-USER-ID ', projectUser_id);
 
             // if (this.projectUser_id) {
-            //     console.log('SIDEBAR - PROJECT-USER-ID (THIS)  ', this.projectUser_id);
-            //     console.log('SIDEBAR - PROJECT-USER-ID ', projectUser_id);
+            //     this.logger.log('[SIDEBAR] - PROJECT-USER-ID (THIS)  ', this.projectUser_id);
+            //     this.logger.log('[SIDEBAR] - PROJECT-USER-ID ', projectUser_id);
 
             //     this.usersService.unsubscriptionToWsCurrentUser(projectUser_id)
             // }
@@ -670,7 +602,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     getUserAvailability() {
         this.usersService.user_is_available_bs.subscribe((user_available) => {
             this.IS_AVAILABLE = user_available;
-            console.log('!!! SIDEBAR - USER IS AVAILABLE ', this.IS_AVAILABLE);
+            this.logger.log('[SIDEBAR] - USER IS AVAILABLE ', this.IS_AVAILABLE);
         });
     }
 
@@ -679,14 +611,14 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             this.IS_BUSY = user_isbusy;
             // THE VALUE OS  IS_BUSY IS THEN UPDATED WITH THE VALUE RETURNED FROM THE WEBSOCKET getWsCurrentUserIsBusy$()
             // WHEN, FOR EXAMPLE IN PROJECT-SETTINGS > ADVANCED THE NUM OF MAX CHAT IS 3 AND THE 
-            console.log('!!! SIDEBAR - USER IS BUSY (from db)', this.IS_BUSY);
+            this.logger.log('[SIDEBAR] - USER IS BUSY (from db)', this.IS_BUSY);
         });
     }
 
 
     changeAvailabilityState(IS_AVAILABLE) {
-        console.log('SB - CHANGE STATUS - USER IS AVAILABLE ? ', IS_AVAILABLE);
-        console.log('SB - CHANGE STATUS - PROJECT USER ID: ', this.projectUser_id);
+        this.logger.log('[SIDEBAR] - CHANGE STATUS - USER IS AVAILABLE ? ', IS_AVAILABLE);
+        this.logger.log('[SIDEBAR]- CHANGE STATUS - PROJECT USER ID: ', this.projectUser_id);
 
 
         // this.usersService.updateProjectUser(this.projectUser_id, IS_AVAILABLE).subscribe((projectUser: any) => {
@@ -694,19 +626,19 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         // anche in USER & GROUP bisogna cambiare per la riga dell'utente corrente   
         this.usersService.updateCurrentUserAvailability(this.projectId, IS_AVAILABLE).subscribe((projectUser: any) => { // non 
 
-            console.log('PROJECT-USER UPDATED ', projectUser)
+            this.logger.log('[SIDEBAR] PROJECT-USER UPDATED ', projectUser)
 
             // NOTIFY TO THE USER SERVICE WHEN THE AVAILABLE / UNAVAILABLE BUTTON IS CLICKED
             this.usersService.availability_btn_clicked(true)
 
         }, (error) => {
-            console.log('PROJECT-USER UPDATED ERR  ', error);
+            this.logger.error('[SIDEBAR] PROJECT-USER UPDATED ERR  ', error);
             // =========== NOTIFY ERROR ===========
             // this.notify.showNotification('An error occurred while updating status', 4, 'report_problem');
             this.notify.showWidgetStyleUpdateNotification(this.changeAvailabilityErrorNoticationMsg, 4, 'report_problem');
 
         }, () => {
-            console.log('PROJECT-USER UPDATED  * COMPLETE *');
+            this.logger.log('[SIDEBAR] PROJECT-USER UPDATED  * COMPLETE *');
 
             // =========== NOTIFY SUCCESS===========
             // this.notify.showNotification('status successfully updated', 2, 'done');
@@ -722,7 +654,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     // RE-RUN getAllUsersOfCurrentProject TO UPDATE AVAILABLE / UNAVAILABLE BTN ON THE TOP OF THE SIDEBAR
     hasChangedAvailabilityStatusInUsersComp() {
         this.usersService.has_changed_availability_in_users.subscribe((has_changed_availability) => {
-            console.log('SIDEBAR SUBSCRIBES TO HAS CHANGED AVAILABILITY FROM THE USERS COMP', has_changed_availability)
+            this.logger.log('[SIDEBAR] SUBSCRIBES TO HAS CHANGED AVAILABILITY FROM THE USERS COMP', has_changed_availability)
 
             if (this.project) {
                 this.getProjectUser()
@@ -736,23 +668,21 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     // *** NOTE: THE SAME CALLBACK IS RUNNED IN THE HOME.COMP ***
     getProjectUser() {
-        console.log('SB  !!! SIDEBAR CALL GET-PROJECT-USER')
+        this.logger.log('[SIDEBAR]  !!! SIDEBAR CALL GET-PROJECT-USER')
         this.usersService.getProjectUserByUserId(this.currentUserId).subscribe((projectUser: any) => {
 
-            console.log('SB PROJECT-USER GET BY USER-ID - PROJECT-ID ', this.projectId);
-            console.log('SB PROJECT-USER GET BY USER-ID - CURRENT-USER-ID ', this.user._id);
-            console.log('SB PROJECT-USER GET BY USER-ID - PROJECT USER ', projectUser);
-            console.log('SB PROJECT-USER GET BY USER-ID - PROJECT USER LENGTH', projectUser.length);
+            this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - PROJECT-ID ', this.projectId);
+            this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - CURRENT-USER-ID ', this.user._id);
+            this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - PROJECT USER ', projectUser);
+            this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - PROJECT USER LENGTH', projectUser.length);
             if ((projectUser) && (projectUser.length !== 0)) {
-                console.log('SB PROJECT-USER ID ', projectUser[0]._id)
-                console.log('SB USER IS AVAILABLE ', projectUser[0].user_available)
-                console.log('SB USER IS BUSY (from db)', projectUser[0].isBusy)
+                this.logger.log('[SIDEBAR] PROJECT-USER ID ', projectUser[0]._id)
+                this.logger.log('[SIDEBAR] USER IS AVAILABLE ', projectUser[0].user_available)
+                this.logger.log('[SIDEBAR] USER IS BUSY (from db)', projectUser[0].isBusy)
                 // this.user_is_available_bs = projectUser.user_available;
 
                 // NOTE_nk: comment this this.subsTo_WsCurrentUser(projectUser[0]._id)
                 this.subsTo_WsCurrentUser(projectUser[0]._id)
-
-
 
                 if (projectUser[0].user_available !== undefined) {
                     this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available, projectUser[0].isBusy)
@@ -760,7 +690,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
                 // ADDED 21 AGO
                 if (projectUser[0].role !== undefined) {
-                    console.log('!!! »» SIDEBAR GET PROJECT USER ROLE FOR THE PROJECT ', this.projectId, ' »» ', projectUser[0].role);
+                    this.logger.log('[SIDEBAR] GET PROJECT USER ROLE FOR THE PROJECT ', this.projectId, ' »» ', projectUser[0].role);
 
                     // ASSIGN THE projectUser[0].role VALUE TO USER_ROLE
                     this.USER_ROLE = projectUser[0].role;
@@ -768,32 +698,24 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                     // SEND THE ROLE TO USER SERVICE THAT PUBLISH
                     this.usersService.user_role(projectUser[0].role);
 
-
-
-                    // save the user role in storage - then the value is get by auth.service:
-                    // the user with agent role can not access to the pages under the settings sub-menu
-                    // this.auth.user_role(projectUser[0].role);
-
-                    // this.usersLocalDbService.saveUserRoleInStorage(projectUser[0].role);
                 }
             } else {
                 // this could be the case in which the current user was deleted as a member of the current project
-                console.log('SB PROJECT-USER UNDEFINED ')
+                this.logger.log('[SIDEBAR] PROJECT-USER UNDEFINED ')
             }
 
         }, (error) => {
-            console.log('SB PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID  ', error);
+            this.logger.error('[SIDEBAR] PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID  ', error);
         }, () => {
-            console.log('SB PROJECT-USER GET BY PROJECT ID & CURRENT-USER-ID  * COMPLETE *');
+            this.logger.log('[SIDEBAR] PROJECT-USER GET BY PROJECT ID & CURRENT-USER-ID  * COMPLETE *');
         });
     }
 
 
     subsTo_WsCurrentUser(currentuserprjctuserid) {
-        console.log('SB - SUBSCRIBE TO WS CURRENT-USER AVAILABILITY  prjct user id of current user ', currentuserprjctuserid);
+        this.logger.log('[SIDEBAR] - SUBSCRIBE TO WS CURRENT-USER AVAILABILITY  prjct user id of current user ', currentuserprjctuserid);
         // this.usersService.subscriptionToWsCurrentUser(currentuserprjctuserid);
         this.wsRequestsService.subscriptionToWsCurrentUser(currentuserprjctuserid);
-
 
         this.getWsCurrentUserAvailability$();
         this.getWsCurrentUserIsBusy$();
@@ -806,14 +728,14 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 takeUntil(this.unsubscribe$)
             )
             .subscribe((currentuser_availability) => {
-                console.log('WS-REQUESTS-SERVICE - SB - GET WS CURRENT-USER AVAILABILITY - IS AVAILABLE? ', currentuser_availability);
+                this.logger.log('[SIDEBAR] - GET WS CURRENT-USER AVAILABILITY - IS AVAILABLE? ', currentuser_availability);
                 if (currentuser_availability !== null) {
                     this.IS_AVAILABLE = currentuser_availability;
                 }
             }, error => {
-                console.log('SB - GET WS CURRENT-USER AVAILABILITY * error * ', error)
+                this.logger.error('[SIDEBAR] - GET WS CURRENT-USER AVAILABILITY * error * ', error)
             }, () => {
-                console.log('SB - GET WS CURRENT-USER AVAILABILITY *** complete *** ')
+                this.logger.log('[SIDEBAR] - GET WS CURRENT-USER AVAILABILITY *** complete *** ')
             });
     }
 
@@ -824,15 +746,15 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 takeUntil(this.unsubscribe$)
             )
             .subscribe((currentuser_isbusy) => {
-                console.log('WS-REQUESTS-SERVICE SB - GET WS CURRENT-USER - currentuser_isbusy? ', currentuser_isbusy);
+                this.logger.log('[SIDEBAR] - GET WS CURRENT-USER - currentuser_isbusy? ', currentuser_isbusy);
                 if (currentuser_isbusy !== null) {
                     this.IS_BUSY = currentuser_isbusy;
-                    console.log('SB - GET WS CURRENT-USER (from ws)- this.IS_BUSY? ', this.IS_BUSY);
+                    this.logger.log('[SIDEBAR] - GET WS CURRENT-USER (from ws)- this.IS_BUSY? ', this.IS_BUSY);
                 }
             }, error => {
-                console.log('SB - GET WS CURRENT-USER IS BUSY * error * ', error)
+                this.logger.error('[SIDEBAR] - GET WS CURRENT-USER IS BUSY * error * ', error)
             }, () => {
-                console.log('SB - GET WS CURRENT-USER IS BUSY *** complete *** ')
+                this.logger.log('[SIDEBAR] - GET WS CURRENT-USER IS BUSY *** complete *** ')
             });
 
 
@@ -844,35 +766,27 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     //         //   this.display = 'block';
 
     //         this.IS_AVAILABLE = hasClickedChangeStatus
-    //         console.log('HAS CLICKED CHANGE STATUS - IS_AVAILABLE ? ', this.IS_AVAILABLE);
+    //         this.logger.log('HAS CLICKED CHANGE STATUS - IS_AVAILABLE ? ', this.IS_AVAILABLE);
     //     }
 
     //     if (!hasClickedChangeStatus) {
     //         //   this.display = 'none';
-    //         console.log('HAS CLICKED CHANGE STATUS ', hasClickedChangeStatus);
+    //         this.logger.log('HAS CLICKED CHANGE STATUS ', hasClickedChangeStatus);
     //         this.IS_AVAILABLE = hasClickedChangeStatus
-    //         console.log('HAS CLICKED CHANGE STATUS - IS_AVAILABLE ? ', this.IS_AVAILABLE);
+    //         this.logger.log('HAS CLICKED CHANGE STATUS - IS_AVAILABLE ? ', this.IS_AVAILABLE);
     //     }
     // }
 
 
     // GET CURRENT PROJECT - IF IS DEFINED THE CURRENT PROJECT GET THE PROJECTUSER
     getCurrentProject_andThenDepts() {
-        console.log('SIDEBAR - CALLING GET CURRENT PROJECT  ', this.project)
+        this.logger.log('[SIDEBAR] - CALLING GET CURRENT PROJECT  ', this.project)
         this.auth.project_bs.subscribe((project) => {
             this.project = project
-            // console.log('00 -> SIDEBAR project from AUTH service subscription  ', this.project)
+            // this.logger.log('[SIDEBAR] project from AUTH service subscription  ', this.project)
 
-
-
-            // if (this.project) {
             if (this.project) {
-                // ------------------------------------------------------------------------------------
-                // Get Depts & filter defautt dept id to use in the path ../routing/:deptid
-                // when the user click on the sidebar menu item 'routing' is redirect to
-                // the the component DepartmentEditAddComponent in the edit mode (no more to the comp. RoutingPageComponent), 
-                // the new path for routing is ../routing/:deptid (no more routing)
-                // ------------------------------------------------------------------------------------
+  
                 this.getDeptsAndFilterDefaultDept();
 
                 this.projectId = this.project._id
@@ -886,11 +800,11 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 // this.prjc_trial_days_left_percentage IT IS 
                 // A NEGATIVE NUMBER AND SO TO DETERMINE THE PERCENT IS MADE AN ADDITION
                 const perc = 100 + this.prjc_trial_days_left_percentage
-                // console.log('SIDEBAR project perc ', perc)
+                // this.logger.log('[SIDEBAR] project perc ', perc)
 
 
                 this.prjc_trial_days_left_percentage = this.round5(perc)
-                // console.log('SIDEBAR project trial days left % rounded', this.prjc_trial_days_left_percentage);
+                // this.logger.log('[SIDEBAR] project trial days left % rounded', this.prjc_trial_days_left_percentage);
                 // if (roundedPercentage === 0) {
                 //     this.prjc_trial_days_left_percentage = 0;
                 // }
@@ -920,11 +834,11 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 // this.prjc_trial_days_left_percentage = 95;
                 // this.prjc_trial_days_left_percentage = 100;
 
-                // console.log('SIDEBAR project profile name ', this.prjct_profile_name);
-                // console.log('SIDEBAR project trial expired ', this.prjct_trial_expired);
-                // console.log('SIDEBAR project trial expired ', this.prjct_trial_expired);
-                // console.log('SIDEBAR project trial days left  ', this.prjc_trial_days_left);
-                // console.log('SIDEBAR project trial days left % ', this.prjc_trial_days_left_percentage);
+                // this.logger.log('[SIDEBAR] project profile name ', this.prjct_profile_name);
+                // this.logger.log('[SIDEBAR] project trial expired ', this.prjct_trial_expired);
+                // this.logger.log('[SIDEBAR] project trial expired ', this.prjct_trial_expired);
+                // this.logger.log('[SIDEBAR] project trial days left  ', this.prjc_trial_days_left);
+                // this.logger.log('[SIDEBAR] project trial days left % ', this.prjc_trial_days_left_percentage);
 
 
 
@@ -937,78 +851,52 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     getDeptsAndFilterDefaultDept() {
         this.deptService.getDeptsByProjectId().subscribe((departments: any) => {
-            //   console.log('SIDEBAR - DEPTS (FILTERED FOR PROJECT ID)', departments);
+            //   this.logger.log('[SIDEBAR] - DEPTS (FILTERED FOR PROJECT ID)', departments);
 
             if (departments) {
                 departments.forEach(dept => {
                     if (dept.default === true) {
-                        // console.log('SIDEBAR - GET DEPTS - DEFAULT DEPT ', dept);
+                        // this.logger.log('[SIDEBAR] - GET DEPTS - DEFAULT DEPT ', dept);
                         this.default_dept_id = dept._id;
-                        // console.log('SIDEBAR - GET DEPTS - DEFAULT DEPT ID: ', this.default_dept_id);
+                        // this.logger.log('[SIDEBAR] - GET DEPTS - DEFAULT DEPT ID: ', this.default_dept_id);
                     }
                 })
             }
         }, error => {
-            console.log('SIDEBAR - GET DEPTS ERR', error);
+            this.logger.error('[SIDEBAR] - GET DEPTS ERR', error);
         }, () => {
-            console.log('SIDEBAR - GET DEPTS COMPLETE');
+            this.logger.log('[SIDEBAR] - GET DEPTS COMPLETE');
         });
 
     }
 
     round5(x) {
         // const percentageRounded = Math.ceil(x / 5) * 5;
-        // console.log('SIDEBAR project trial days left % rounded', percentageRounded);
+        // this.logger.log('SIDEBAR project trial days left % rounded', percentageRounded);
         // return Math.ceil(x / 5) * 5;
         return x % 5 < 3 ? (x % 5 === 0 ? x : Math.floor(x / 5) * 5) : Math.ceil(x / 5) * 5
     }
 
     ngAfterViewInit() {
-        // const elemProgressBar = <HTMLElement>document.querySelector('.progress');
-        // const elemProgressBarDataset = elemProgressBar.dataset.percentage
-        // console.log('SIDEBAR project ELEMENT PROGRESS', elemProgressBar);
-        // console.log('SIDEBAR project ELEMENT PROGRESS elemProgressBarDataset', elemProgressBarDataset);
-        // elemProgressBarDataset = '80'
-
-
-        // this.checkForUnathorizedRoute();
-
-        //     this.SETTINGS_SUBMENU_WAS_OPEN = localStorage.getItem('show_settings_submenu')
-        //     console.log('LOCAL STORAGE VALUE OF KEY show_settings_submenu: ', localStorage.getItem('show_settings_submenu'))
-
-        //     if (this.SETTINGS_SUBMENU_WAS_OPEN === 'true') {
-        //         console.log(' XXXXX ', this.SETTINGS_SUBMENU_WAS_OPEN)
-        //         this.trasform = 'rotate(180deg)';
-
-        //     } else {
-        //         this.trasform = 'none';
-        //         console.log(' XXXXX ', this.SETTINGS_SUBMENU_WAS_OPEN)
-        //     }
-
+  
     }
-
-
-
-
 
 
     isMobileMenu() {
         if ($(window).width() > 991) {
             this.IS_MOBILE_MENU = false
-
-            // console.log('SIDEBAR - IS MOBILE MENU ', this.IS_MOBILE_MENU);
-
+            // this.logger.log('[SIDEBAR] - IS MOBILE MENU ', this.IS_MOBILE_MENU);
             return false;
         }
         this.IS_MOBILE_MENU = true
 
-        // console.log('SIDEBAR - IS MOBILE MENU ', this.IS_MOBILE_MENU);
+        // this.logger.log('[SIDEBAR] - IS MOBILE MENU ', this.IS_MOBILE_MENU);
 
         return true;
     };
 
     isMac(): boolean {
-        console.log('SIDEBAR NAVIGATOR ', navigator.platform)
+        this.logger.log('[SIDEBAR] NAVIGATOR PLATFORM', navigator.platform)
         let bool = false;
         if (navigator.platform.toUpperCase().indexOf('MAC') >= 0 || navigator.platform.toUpperCase().indexOf('IPAD') >= 0) {
             bool = true;
@@ -1018,7 +906,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     @HostListener('window:resize', ['$event'])
     onResize(event: any) {
-        // console.log('SIDEBAR - WINDOW WIDTH ON RESIZE', event.target.innerWidth);
+        // this.logger.log('SIDEBAR - WINDOW WIDTH ON RESIZE', event.target.innerWidth);
         if (event.target.innerWidth > 991) {
             this.IS_MOBILE_MENU = false
 
@@ -1028,19 +916,19 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
 
     onScroll(event: any): void {
-        // console.log('SIDEBAR RICHIAMO ON SCROLL ');
+        // this.logger.log('[SIDEBAR] RICHIAMO ON SCROLL ');
         this.elSidebarWrapper = <HTMLElement>document.querySelector('.sidebar-wrapper');
         this.scrollpos = this.elSidebarWrapper.scrollTop
-        // console.log('SIDEBAR SCROLL POSITION', this.scrollpos)
+        // this.logger.log('[SIDEBAR] SCROLL POSITION', this.scrollpos)
     }
 
     stopScroll() {
         // const el = <HTMLElement>document.querySelector('.sidebar-wrapper');
-        console.log('SIDEBAR SCROLL TO', this.scrollpos);
-        console.log('SIDEBAR SCROLL TO elSidebarWrapper ', this.elSidebarWrapper)
+        this.logger.log('[SIDEBAR] SCROLL TO', this.scrollpos);
+        this.logger.log('[SIDEBAR] SCROLL TO elSidebarWrapper ', this.elSidebarWrapper)
 
         // const oh = <HTMLElement>document.querySelector('.oh');
-        // console.log('SIDEBAR SCROLL TO operating hours ', oh)
+        // this.logger.log('[SIDEBAR] SCROLL TO operating hours ', oh)
         // oh.scrollIntoView();
 
         if (this.elSidebarWrapper) {
@@ -1051,7 +939,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
 
     onEvent($event) {
-        console.log('SIDEBAR SCROLL event ', $event);
+        this.logger.log('[SIDEBAR] SCROLL event ', $event);
         event.stopPropagation();
     }
 
@@ -1073,17 +961,17 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
 
     goToProjects() {
-        console.log('SIDEBAR IS MOBILE -  HAS CLICCKED GO TO PROJECT  ')
+        this.logger.log('[SIDEBAR] IS MOBILE -  HAS CLICCKED GO TO PROJECT')
         this.router.navigate(['/projects']);
 
         // (in AUTH SERVICE ) RESET PROJECT_BS AND REMOVE ITEM PROJECT FROM STORAGE WHEN THE USER GO TO PROJECTS PAGE
         this.auth.hasClickedGoToProjects()
-        console.log('00 -> SIDEBAR IS MOBILE project AFTER GOTO PROJECTS ', this.project)
+        this.logger.log('[SIDEBAR] IS MOBILE project AFTER GOTO PROJECTS ', this.project)
     }
 
     has_clicked_settings(SHOW_SETTINGS_SUBMENU: boolean) {
         this.SHOW_SETTINGS_SUBMENU = SHOW_SETTINGS_SUBMENU;
-        console.log('HAS CLICKED SETTINGS - SHOW_SETTINGS_SUBMENU ', this.SHOW_SETTINGS_SUBMENU);
+        this.logger.log('[SIDEBAR] HAS CLICKED SETTINGS - SHOW_SETTINGS_SUBMENU ', this.SHOW_SETTINGS_SUBMENU);
 
         // SAVE IN 'show_settings_submenu' KEY OF LOCAL STORAGE THE VALUE OF this.SHOW_SETTINGS_SUBMENU
         // (IS USED TO DISPLAY / HIDE THE SUBMENU WHEN THE PAGE IS REFRESHED)
@@ -1098,7 +986,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     // USED FOR SIDEBAR IN MOBILE MODE (TOGGLE THE CARET OF THE 'PROJECT NAME' DROPDOWN-MENU)
     has_cliked_hidden_project(SHOW_PRJCT_SUB) {
-        console.log('HAS CLICKED PROJECT NAME ON MOBILE - SHOW SUBMENU ', this.SHOW_PRJCT_SUB);
+        this.logger.log('[SIDEBAR] HAS CLICKED PROJECT NAME ON MOBILE - SHOW SUBMENU ', this.SHOW_PRJCT_SUB);
         if (this.SHOW_PRJCT_SUB === true) {
             this.trasform_projectname_caret = 'rotate(180deg)';
         } else {
@@ -1108,7 +996,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     // USED FOR SIDEBAR IN MOBILE MODE (TOGGLE THE CARET OF THE 'NAME OF THE CURRENT USER' DROPDOWN-MENU)
     has_cliked_hidden_profile(SHOW_PROFILE_SUB) {
-        console.log('HAS CLICKED NAME OF THE CURRENT USER ON MOBILE - SHOW SUBMENU ', this.SHOW_PRJCT_SUB);
+        this.logger.log('[SIDEBAR] HAS CLICKED NAME OF THE CURRENT USER ON MOBILE - SHOW SUBMENU ', this.SHOW_PRJCT_SUB);
         if (this.SHOW_PROFILE_SUB === true) {
             this.transform_user_profile_caret = 'rotate(180deg)';
         } else {
@@ -1116,36 +1004,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         }
     }
 
-    // NO MORE USED
-    // setActiveClassToSettings() {
-    //     this.isActive = 'active';
-    //     console.log('HAS CLICKED SET ACTIVE TO SETTINGS MENU ITEM ', this.isActive);
-    // }
 
-
-    // !! NO MORE USED
-    // setUnavailableAndlogout() {
-    //     console.log('PRESSED SIDEBAR LOGOUT  - PRJ-USER ID ', this.projectUser_id)
-    //     if (this.projectUser_id) {
-    //         this.usersService.updateProjectUser(this.projectUser_id, false).subscribe((projectUser: any) => {
-    //             console.log('PROJECT-USER UPDATED ', projectUser)
-    //         },
-    //             (error) => {
-    //                 console.log('PROJECT-USER UPDATED ERR  ', error);
-    //             },
-    //             () => {
-    //                 console.log('PROJECT-USER UPDATED  * COMPLETE *');
-    //                 this.logout();
-    //             });
-    //     } else {
-    //         // this could be the case in which the current user was deleted as a member of the current project
-    //         console.log('PRESSED SIDEBAR LOGOUT - PRJ-USER IS NOT DEFINED - RUN ONLY THE LOGOUT')
-    //         this.logout();
-    //     }
-    // }
 
     openLogoutModal() {
-        console.log('SIDEBAR - calling openLogoutModal - PROJRCT ID ', this.projectId);
+        this.logger.log('[SIDEBAR] - calling openLogoutModal - PROJRCT ID ', this.projectId);
         this.displayLogoutModal = 'block';
         this.auth.hasOpenedLogoutModal(true);
 
@@ -1192,7 +1054,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.router.events.subscribe((val) => {
             if (this.location.path() !== '') {
                 this.checked_route = this.location.path();
-                console.log('!! »»» SIDEBAR CHECKED ROUTE ', this.checked_route)
+                this.logger.log('[SIDEBAR] CHECKED ROUTE ', this.checked_route)
                 if (this.checked_route.indexOf('/unauthorized') !== -1) {
 
                     // RESOLVE THE BUG 'HOME button remains focused WHEN AN USER WITH AGENT ROLE TRY TO ACCESS TO AN UNATHORIZED PAGE 
@@ -1205,7 +1067,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     mouseOver(_isOverAvar: boolean) {
         this.isOverAvar = _isOverAvar
-        // console.log('Mouse Over Avatar Container ', _isOverAvar)
+        // this.logger.log('[SIDEBAR] Mouse Over Avatar Container ', _isOverAvar)
     }
 
     goToPricing() {
@@ -1223,16 +1085,14 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     smallSidebar(IS_SMALL) {
         this.SIDEBAR_IS_SMALL = IS_SMALL;
-        console.log('smallSidebar ', IS_SMALL)
+        this.logger.log('[SIDEBAR] smallSidebar ', IS_SMALL)
 
         const elemSidebarWrapper = <HTMLElement>document.querySelector('.sidebar-wrapper');
         const elemSidebar = <HTMLElement>document.querySelector('.sidebar');
         const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
-        // console.log('elemAppSidebar', elemAppSidebar)
+        // this.logger.log('elemAppSidebar', elemAppSidebar)
 
         if (IS_SMALL === true) {
-
-
             elemSidebar.setAttribute('style', 'width: 70px;');
             elemSidebarWrapper.setAttribute('style', 'width: 70px; background-color: #2d323e!important');
             elemMainPanel.setAttribute('style', 'width:calc(100% - 70px);');
@@ -1240,7 +1100,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             [].forEach.call(
                 document.querySelectorAll('.nav-container ul li a p'),
                 function (el) {
-                    console.log('footer > ul > li > a element: ', el);
                     el.setAttribute('style', 'display: none');
                 }
             );
@@ -1248,7 +1107,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             [].forEach.call(
                 document.querySelectorAll('.nav-container ul li a'),
                 function (el) {
-                    console.log('footer > ul > li > a element: ', el);
                     el.setAttribute('style', 'height: 40px');
                 }
             );
@@ -1263,7 +1121,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             [].forEach.call(
                 document.querySelectorAll('.nav-container ul li a p'),
                 function (el) {
-                    console.log('footer > ul > li > a element: ', el);
                     el.setAttribute('style', 'display: block');
                 }
             );

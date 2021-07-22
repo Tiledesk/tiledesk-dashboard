@@ -12,7 +12,7 @@ declare var Stripe: any;
 import { Subscription } from 'rxjs';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../services/brand.service';
-
+import { LoggerService } from '../services/logger/logger.service';
 
 @Component({
   selector: 'appdashboard-pricing',
@@ -71,7 +71,8 @@ export class PricingComponent implements OnInit, OnDestroy {
     private usersService: UsersService,
     public projectService: ProjectService,
     private prjctPlanService: ProjectPlanService,
-    public brandService: BrandService
+    public brandService: BrandService,
+    private logger: LoggerService
   ) { 
 
     const brand = brandService.getBrand();
@@ -112,14 +113,14 @@ export class PricingComponent implements OnInit, OnDestroy {
   setPlansPKandCode() {
 
     if (this.TILEDESK_V2 === true) {
-      console.log('PricingComponent - TILEDESK_V2 ?', this.TILEDESK_V2)
+      this.logger.log('[PRICING] - TILEDESK_V2 ?', this.TILEDESK_V2)
       this.STRIPE_LIVE_PK = 'pk_live_ED4EiI7FHgu0rv4lEHAl8pff00n2qPazOn';
       this.LIVE_PLAN_X_MONTH_PLAN_CODE = 'plan_H3i8qRroJqwO6K';
       this.LIVE_PLAN_X_YEAR_PLAN_CODE = 'plan_H3iDFGtPN8coKT';
       this.LIVE_PLAN_X_DAY_20CENTS_PLAN_CODE = 'plan_H3iIUMonLu2jIW';
 
     } else {
-      console.log('PricingComponent - TILEDESK_V2 ?', this.TILEDESK_V2)
+      this.logger.log('[PRICING] - TILEDESK_V2 ?', this.TILEDESK_V2)
       this.STRIPE_LIVE_PK = 'pk_live_XcOe1UfJm9GkSgreETF7WGsc';
       this.LIVE_PLAN_X_MONTH_PLAN_CODE = 'plan_FrXJ00oxr0akaF';
       this.LIVE_PLAN_X_YEAR_PLAN_CODE = 'plan_FrXjIcRD20tsAN';
@@ -131,11 +132,11 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      console.log('PricingComponent - project Profile Data ', projectProfileData)
+      this.logger.log('[PRICING]  - project Profile Data ', projectProfileData)
       if (projectProfileData) {
 
         this.subscription_id = projectProfileData.subscription_id;
-        console.log('PricingComponent - project Profile Data > subscription_id ', this.subscription_id)
+        this.logger.log('[PRICING]  - project Profile Data > subscription_id ', this.subscription_id)
 
       }
     })
@@ -154,8 +155,8 @@ export class PricingComponent implements OnInit, OnDestroy {
     Observable
       .zip(projectUsers, pendingInvitation, (_projectUsers: any, _pendingInvitation: any) => ({ _projectUsers, _pendingInvitation }))
       .subscribe(pair => {
-        console.log('PricingComponent - PAIR _projectUsers: ', pair._projectUsers);
-        console.log('PricingComponent - PAIR _projectUsers: ', pair._pendingInvitation);
+        this.logger.log('[PRICING]  - PAIR _projectUsers: ', pair._projectUsers);
+        this.logger.log('[PRICING]  - PAIR _pendingInvitation: ', pair._pendingInvitation);
 
         if (pair) {
           const NoOfProjectUsers = pair._projectUsers.length
@@ -163,26 +164,26 @@ export class PricingComponent implements OnInit, OnDestroy {
 
           this.projectUsersNumber = NoOfProjectUsers + NoOfPendingInvitians;
           this.operatorNo = NoOfProjectUsers + NoOfPendingInvitians;
-          console.log('PricingComponent - PAIR operatorNo (sum of NoOfProjectUsers + NoOfPendingInvitians): ', this.operatorNo);
+          this.logger.log('[PRICING] - PAIR operatorNo (sum of NoOfProjectUsers + NoOfPendingInvitians): ', this.operatorNo);
           this.numberOfAgentPerPrice = this.operatorNo * this.proPlanPerAgentPrice;
-          console.log('PricingComponent - PAIR numberOfAgentPerPrice: ', this.operatorNo);
+          this.logger.log('[PRICING] - PAIR numberOfAgentPerPrice: ', this.operatorNo);
         }
       }, error => {
         this.showSpinnerInTotalPrice = false;
-        console.log('PricingComponent - PAIR * ERROR: ', error);
+        this.logger.error('[PRICING] - PAIR * ERROR: ', error);
       }, () => {
         this.showSpinnerInTotalPrice = false;
-        console.log('PricingComponent - PAIR * COMPLETE');
+        this.logger.log('[PRICING] - PAIR * COMPLETE');
       });
   }
 
   getAllUsersOfCurrentProject() {
     this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
-      console.log('PricingComponent - PROJECT USERS (FILTERED FOR PROJECT ID)', projectUsers);
+      this.logger.log('[PRICING] - PROJECT USERS (FILTERED FOR PROJECT ID)', projectUsers);
 
       if (projectUsers) {
         this.projectUsersNumber = projectUsers.length
-        console.log('PricingComponent - PROJECT USERS (FILTERED FOR PROJECT ID) projectUsersNumber', this.projectUsersNumber);
+        this.logger.log('[PRICING] - PROJECT USERS (FILTERED FOR PROJECT ID) projectUsersNumber', this.projectUsersNumber);
 
 
         this.operatorNo = projectUsers.length
@@ -190,10 +191,10 @@ export class PricingComponent implements OnInit, OnDestroy {
       }
     }, error => {
       this.showSpinnerInTotalPrice = false;
-      console.log('PricingComponent - PROJECT USERS (FILTERED FOR PROJECT ID) - ERROR', error);
+      this.logger.error('[PRICING] - PROJECT USERS (FILTERED FOR PROJECT ID) - ERROR', error);
     }, () => {
       this.showSpinnerInTotalPrice = false;
-      console.log('PricingComponent - PROJECT USERS (FILTERED FOR PROJECT ID) - COMPLETE');
+      this.logger.log('[PRICING] - PROJECT USERS (FILTERED FOR PROJECT ID) - COMPLETE');
     });
   }
 
@@ -202,23 +203,23 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   getBaseUrl() {
     const href = window.location.href;
-    console.log('PricingComponent href ', href)
+    this.logger.log('[PRICING] href ', href)
 
     const hrefArray = href.split('/#/');
     this.dshbrdBaseUrl = hrefArray[0]
 
-    console.log('PricingComponent dshbrdBaseUrl ', this.dshbrdBaseUrl)
+    this.logger.log('[PRICING] dshbrdBaseUrl ', this.dshbrdBaseUrl)
     // var url = new URL(href);
     // this.dashboardHost = url.origin
-    // console.log('PricingComponent host ', this.dashboardHost)
+    // this.logger.log('[PRICING] host ', this.dashboardHost)
   }
 
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
       if (project) {
-        console.log('PricingComponent - project ', project)
+        this.logger.log('[PRICING] - project ', project)
         this.projectId = project._id;
-        console.log('PricingComponent - projectId ', this.projectId)
+        this.logger.log('[PRICING] - projectId ', this.projectId)
         this.projectName = project.name;
       }
     });
@@ -227,29 +228,28 @@ export class PricingComponent implements OnInit, OnDestroy {
   getCurrentUser() {
     const user = this.auth.user_bs.value
 
-    console.log('PricingComponent user ', user);
+    this.logger.log('[PRICING]  Component user ', user);
     if (user) {
-
       this.currentUserID = user._id
       this.currentUserEmail = user.email
-      console.log('PricingComponent USER UID ', this.currentUserID);
-      console.log('PricingComponent USER email ', this.currentUserEmail);
+      this.logger.log('[PRICING] USER UID ', this.currentUserID);
+      this.logger.log('[PRICING] USER email ', this.currentUserEmail);
 
     } else {
-      // console.log('No user is signed in');
+      // this.logger.log('No user is signed in');
     }
   }
 
 
   selectedPlan(_selectedPlanName: string) {
     this.selectedPlanName = _selectedPlanName
-    console.log('selectePlanName ', this.selectedPlanName);
+    this.logger.log('[PRICING] selectePlanName ', this.selectedPlanName);
 
     this.switchPlanPrice()
   }
 
   setPeriod(selectedPeriod: string) {
-    console.log('selectedPeriod ', selectedPeriod);
+    this.logger.log('[PRICING] - selectedPeriod ', selectedPeriod);
     if (selectedPeriod === 'perMonth') {
       this.perMonth = true;
       this.perYear = false;
@@ -266,7 +266,7 @@ export class PricingComponent implements OnInit, OnDestroy {
       this.openInfoModal()
     }
 
-    console.log('decreaseOperatorNumber operatorNo', this.operatorNo);
+    this.logger.log('[PRICING] - decreaseOperatorNumber operatorNo', this.operatorNo);
     // this.switchPlanPrice()
     this.numberOfAgentPerPrice = this.operatorNo * this.proPlanPerAgentPrice;
     //
@@ -315,7 +315,7 @@ export class PricingComponent implements OnInit, OnDestroy {
    */
   stripeProPlanPerMonthCheckout() {
     const that = this;
-    console.log('clicked on stripeProPlanPerMonthCheckout ');
+    this.logger.log('[PRICING] - clicked on stripeProPlanPerMonthCheckout (LIVE) ');
 
     // const stripe = Stripe('pk_test_lurAeBj5B7n7JGvE1zIPIFwV');
     // const stripe = Stripe('pk_live_XcOe1UfJm9GkSgreETF7WGsc');
@@ -336,7 +336,7 @@ export class PricingComponent implements OnInit, OnDestroy {
 
 
     }).then(function (result) {
-      console.log('clicked on stripeProPlanPerMonthCheckout result', result);
+      this.logger.log('[PRICING] - clicked on stripeProPlanPerMonthCheckout (LIVE) result', result);
 
       if (result.error) {
         // If `redirectToCheckout` fails due to a browser or network
@@ -375,6 +375,7 @@ export class PricingComponent implements OnInit, OnDestroy {
       cancelUrl: this.dshbrdBaseUrl + '/#/project/' + this.projectId + '/canceled',
     })
       .then(function (result) {
+        this.logger.log('[PRICING] - clicked on stripeProPlanPerYearCheckout (LIVE) result', result);
         if (result.error) {
           // If `redirectToCheckout` fails due to a browser or network
           // error, display the localized error message to your customer.
@@ -524,24 +525,24 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   cancelSubcription() {
     this.projectService.cancelSubscription().subscribe((confirmation: any) => {
-      console.log('cancelSubscription RES ', confirmation);
+      this.logger.log('[PRICING] - cancelSubscription RES ', confirmation);
 
     }, error => {
-      console.log('cancelSubscription - ERROR: ', error);
+      this.logger.error('[PRICING] - cancelSubscription - ERROR: ', error);
     }, () => {
-      console.log('cancelSubscription * COMPLETE *')
+      this.logger.log('[PRICING] - cancelSubscription * COMPLETE *')
     });
 
   }
 
   updatesubscription() {
     this.projectService.updatesubscription().subscribe((updatesubscription: any) => {
-      console.log('updatesubscription RES ', updatesubscription);
+      this.logger.log('[PRICING] - updatesubscription RES ', updatesubscription);
 
     }, error => {
-      console.log('updatesubscription - ERROR: ', error);
+      this.logger.error('[PRICING] - updatesubscription - ERROR: ', error);
     }, () => {
-      console.log('updatesubscription * COMPLETE *')
+      this.logger.log('[PRICING] - updatesubscription * COMPLETE *')
     });
 
   }

@@ -4,9 +4,9 @@ import { AuthService } from '../../core/auth.service';
 import { Router } from '@angular/router';
 import { slideInAnimation } from '../../_animations/index';
 import { AppConfigService } from '../../services/app-config.service';
-
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../services/brand.service';
+import { LoggerService } from '../../services/logger/logger.service';
 
 @Component({
   selector: 'appdashboard-install-widget',
@@ -35,10 +35,10 @@ export class InstallWidgetComponent implements OnInit, OnDestroy {
     private auth: AuthService,
     private router: Router,
     public appConfigService: AppConfigService,
-    public brandService: BrandService
+    public brandService: BrandService,
+    private logger: LoggerService
   ) { 
     const brand = brandService.getBrand();
-
     this.tparams = brand;
     this.logo_on_rocket = brand['wizard_install_widget_page']['logo_on_rocket'];
   }
@@ -50,23 +50,20 @@ export class InstallWidgetComponent implements OnInit, OnDestroy {
 
   getWidgetUrl() {
     this.WIDGET_URL = this.appConfigService.getConfig().widgetUrl;
-    console.log('AppConfigService getAppConfig (Install Tiledesk) WIDGET_URL ', this.WIDGET_URL)
-
+    this.logger.log('[WIZARD - INSTALL-WIDGET] AppConfigService getAppConfig WIDGET_URL ', this.WIDGET_URL)
   }
 
   getCurrentProject() {
     this.sub = this.auth.project_bs
       .subscribe((project) => {
 
-        // console.log('00 -> InstallTiledeskComponent project from AUTH service subscription  ', project)
-
         if (project) {
           this.projectId = project._id;
           this.projectName = project.name;
-
         }
-        console.log('InstallTiledeskComponent projectId  ', this.projectId);
-        console.log('InstallTiledeskComponent projectName  ', this.projectName);
+
+        this.logger.log('[WIZARD - INSTALL-WIDGET] projectId  ', this.projectId);
+        this.logger.log('[WIZARD - INSTALL-WIDGET] projectName  ', this.projectName);
       });
   }
 

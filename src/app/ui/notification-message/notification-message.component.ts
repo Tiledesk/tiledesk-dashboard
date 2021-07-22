@@ -4,13 +4,12 @@ import { NotifyService } from '../../core/notify.service';
 import { AuthService } from '../../core/auth.service';
 import { ProjectService } from '../../services/project.service';
 import { Router } from '@angular/router';
-import { environment } from '../../../environments/environment';
 import { TranslateService } from '@ngx-translate/core';
 import { ProjectPlanService } from '../../services/project-plan.service';
 import { Subscription } from 'rxjs';
 import { AppConfigService } from '../../services/app-config.service';
-// import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../services/brand.service';
+import { LoggerService } from '../../services/logger/logger.service';
 
 @Component({
   selector: 'notification-message',
@@ -20,20 +19,12 @@ import { BrandService } from '../../services/brand.service';
 })
 export class NotificationMessageComponent implements OnInit, OnDestroy {
 
-  // tparams = brand;
-  // company_name = brand.company_name;
   tparams: any;
   company_name: string;
-
   displayExpiredSessionModal: string;
   projectId: string;
   gettingStartedChecklist: any;
-
-  // CHAT_BASE_URL = environment.chat.CHAT_BASE_URL; // moved
-  // CHAT_BASE_URL = environment.CHAT_BASE_URL; // now get from appconfig
   CHAT_BASE_URL: string;
-
-
   showSpinnerInModal = true;
   browserLang: string;
   subscriptionCanceledSuccessfully: string;
@@ -45,10 +36,9 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
   subscription_end_date: any;
   prjct_profile_name: string;
   subscription: Subscription;
-  // WIDGET_URL = environment.widgetUrl; // now get from appconfig
   WIDGET_URL: string;
-
   has_copied = false;
+
   constructor(
     public notify: NotifyService,
     public auth: AuthService,
@@ -57,7 +47,8 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
     private translate: TranslateService,
     private prjctPlanService: ProjectPlanService,
     public appConfigService: AppConfigService,
-    public brandService: BrandService
+    public brandService: BrandService,
+    private logger: LoggerService
   ) {
     const brand = brandService.getBrand();
     this.tparams = brand;
@@ -67,7 +58,7 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.getBrowserLang();
     this.getCurrentProject()
-    this.getProjectById();
+    // this.getProjectById();
     this.translateMsgSubscriptionCanceledSuccessfully();
     this.translateMsgSubscriptionCanceledError();
     this.getProjectPlan();
@@ -77,23 +68,19 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
 
   getChatUrl() {
     this.CHAT_BASE_URL = this.appConfigService.getConfig().CHAT_BASE_URL;
-    // console.log('AppConfigService getAppConfig (Notification Message Component) CHAT_BASE_URL', this.CHAT_BASE_URL);
   }
-
 
   getWidgetUrl() {
     this.WIDGET_URL = this.appConfigService.getConfig().widgetUrl;
-    // console.log('AppConfigService getAppConfig (Notification Message Component) WIDGET_URL ', this.WIDGET_URL)
-
   }
 
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      console.log('UserEditAddComponent - project Profile Data', projectProfileData)
+      this.logger.log('[NOTIFICATION-MSG] - GET PROJECT PROFILE', projectProfileData)
       if (projectProfileData) {
 
         this.prjct_profile_type = projectProfileData.profile_type;
-        console.log('UserEditAddComponent prjct_profile_type ', this.prjct_profile_type);
+        this.logger.log('[NOTIFICATION-MSG] - GET PROJECT PROFILE prjct_profile_type ', this.prjct_profile_type);
         this.subscription_is_active = projectProfileData.subscription_is_active;
 
         this.trial_expired = projectProfileData.trial_expired;
@@ -102,7 +89,11 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
 
         this.prjct_profile_name = this.buildPlanName(projectProfileData.profile_name, this.browserLang, this.prjct_profile_type);
       }
-    })
+    }, err => {
+      this.logger.error('[NOTIFICATION-MSG] GET PROJECT PROFILE - ERROR',err);
+    }, () => {
+      this.logger.log('[NOTIFICATION-MSG] GET PROJECT PROFILE * COMPLETE *');
+    });
   }
 
   ngOnDestroy() {
@@ -110,7 +101,7 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
   }
 
   buildPlanName(planName: string, browserLang: string, planType: string) {
-    console.log('StaticPageBaseComponent planName ', planName, ' browserLang  ', browserLang);
+    this.logger.log('[NOTIFICATION-MSG] buildPlanName - planName ', planName, ' browserLang  ', browserLang);
 
     if (planType === 'payment') {
       if (browserLang === 'it') {
@@ -164,164 +155,42 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
 
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
-
-      // console.log('00 -> Notification Message Component project from AUTH service subscription  ', project)
-
+      // this.logger.log('[NOTIFICATION-MSG] project from AUTH service subscription  ', project)
       if (project) {
         this.projectId = project._id
+        this.logger.log('[NOTIFICATION-MSG] project ID ', this.projectId)
       }
     });
   }
 
-  getProjectById() {
-    this.notify.hasOpenChecklistModal.subscribe((hasOpen: boolean) => {
-      console.log('Notification-Message-Component - THE checklist modal has been opened ', hasOpen);
-
-      if (hasOpen === true) {
-        this.projectService.getProjectById(this.projectId)
-          .subscribe((project: any) => {
-
-
-            if (project) {
-              console.log('Notification-Message-Component - GET PROJECT BY ID : ', project);
-
-              if (project.gettingStarted) {
-                this.gettingStartedChecklist = project.gettingStarted;
-                console.log('Notification-Message-Component - GET PROJECT Getting Started Checklist : ', this.gettingStartedChecklist);
-              }
-            }
-          }, (error) => {
-            this.showSpinnerInModal = false;
-            console.log('GET PROJECT BY ID - ERROR ', error);
-          }, () => {
-            this.showSpinnerInModal = false;
-            console.log('GET PROJECT BY ID * COMPLETE *');
-          });
-      }
-    })
-  }
-
-  hasClickedChecklist(event) {
-    console.log('Notification-Message-Component - event : ', event);
-    console.log('Notification-Message-Component - target name : ', event.target.name);
-
-    if (event.target.name === 'openChat') {
-      // this.openChat()
-      this.notify.onCloseCheckLIstModal();
-
-      this.updateGettingStarted('openChat');
-    } else if (event.target.name === 'openWidget') {
-
-      // this.router.navigate(['project/' + this.projectId + '/widget']);
-      this.notify.onCloseCheckLIstModal();
-
-      // const updatedGettingStarted = this.gettingStartedChecklist[1].done = true;
-
-      this.updateGettingStarted('openWidget')
-
-
-    } else if (event.target.name === 'openUserProfile') {
-
-      // this.router.navigate(['project/' + this.projectId + '/user-profile']);
-
-      this.notify.onCloseCheckLIstModal();
-      // const updatedGettingStarted = this.gettingStartedChecklist[2].done = true;
-      this.updateGettingStarted('openUserProfile')
-    }
-  }
-
-  updateGettingStarted(selectesTask) {
-    // const updatedGettingStarted = [
-    //   { 'task': 'openChat', 'taskDesc': 'openChatDesc', 'done': false },
-    //   { 'task': 'openWidget', 'taskDesc': 'openWidgetDesc', 'done': false },
-    //   { 'task': 'openUserProfile', 'taskDesc': 'openUserProfileDesc', 'done': false }
-    // ]
-
-
-    const objIndex = this.gettingStartedChecklist.findIndex((obj => obj.task === selectesTask));
-    // Log object to Console.
-    console.log('666 Before update: ', this.gettingStartedChecklist[objIndex])
-    console.log('666 updatedGettingStarted ', this.gettingStartedChecklist);
-    // Update object's name property.
-    this.gettingStartedChecklist[objIndex].done = true;
-
-    // Log object to console again.
-    console.log('666 After update: ', this.gettingStartedChecklist[objIndex]),
-
-      console.log('666 After update 2: ', this.gettingStartedChecklist)
-
-    this.projectService.updateGettingStartedProject(this.gettingStartedChecklist)
-      .subscribe((res) => {
-        console.log('GETTING-STARTED UPDATED: ', res.gettingStarted);
-      },
-        (error) => {
-          console.log('GETTING-STARTED UPDATED - ERROR ', error);
-        },
-        () => {
-          console.log('GETTING-STARTED UPDATED * COMPLETE *');
-        });
-  }
-
-  openChat() {
-    // localStorage.setItem('chatOpened', 'true');
-    const url = this.CHAT_BASE_URL;
-    window.open(url, '_blank');
-
-    this.notify.publishHasClickedChat(true);
-  }
-
-
-  downgradePlanToFree() {
-
-    // BISOGNA FARE SERVIZIO SU TILEDESK API
-    this.projectService.downgradePlanToFree(this.projectId)
-      .subscribe((prjct) => {
-
-        console.log('NotificationMessageComponent -  downgradePlanToFree ', prjct);
-      }, (error) => {
-        console.log('NotificationMessageComponent -  downgradePlanToFree ERROR ', error);
-      },
-        () => {
-          console.log('NotificationMessageComponent -  downgradePlanToFree * COMPLETE *');
-
-          // CALL getProjectByID IN THE ProjectPlanService THAT PUBLISH THE UPDATED PROJECT
-          this.prjctPlanService.getProjectByID(this.projectId);
-          this.notify.closeModalSubsExpired();
-        });
-  }
-
-
+ 
   cancelSubscription() {
     this.notify.cancelSubscriptionCompleted(false)
 
     // this.showSpinner = true;
     this.projectService.cancelSubscription().subscribe((confirmation: any) => {
-      console.log('cancelSubscription RES ', confirmation);
+      this.logger.log('[NOTIFICATION-MSG] - cancelSubscription RES ', confirmation);
 
       if (confirmation && confirmation.status === 'canceled') {
         this.notify.showNotification(this.subscriptionCanceledSuccessfully, 2, 'done');
 
-        this.notify.cancelSubscriptionCompleted(true)
-        // this.prjct_profile_type = 'free'
-        // console.log('ProjectEditAddComponent cancelSubscriptionDone ', this.cancelSubscriptionDone);
-
+        this.notify.cancelSubscriptionCompleted(true);
       }
     }, error => {
-      console.log('cancelSubscription - ERROR: ', error);
+      this.logger.error('[NOTIFICATION-MSG] - cancelSubscription - ERROR: ', error);
       this.notify.showNotification(this.subscriptionCanceledError, 4, 'report_problem');
-      // this.showSpinner = false;
+      
       this.notify.cancelSubscriptionCompleted(true)
     }, () => {
-      console.log('cancelSubscription * COMPLETE *');
-      // this.showSpinner = false;
+      this.logger.log('[NOTIFICATION-MSG] - cancelSubscription * COMPLETE *');
+     
     });
 
   }
 
 
-
   goToPricing() {
-    console.log('goToPricing projectId ', this.projectId);
+    this.logger.log('goToPricing projectId ', this.projectId);
     this.router.navigate(['project/' + this.projectId + '/pricing']);
     this.notify.closeModalSubsExpired();
   }
@@ -333,6 +202,10 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
     window.open('mailto:info@tiledesk.com', 'mail')
   }
 
+
+  // ----------------------------------------
+  // TODO: PROBABLY NOT USED - VERIFY BETTER
+  // ----------------------------------------
   copyToClipboard() {
     document.querySelector('textarea').select();
     document.execCommand('copy');
@@ -343,12 +216,148 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
     }, 2000);
   }
 
+  // ----------------------------------------
+  // TODO: PROBABLY NOT USED - VERIFY BETTER
+  // ----------------------------------------
+  openChat() {
+    // localStorage.setItem('chatOpened', 'true');
+    const url = this.CHAT_BASE_URL;
+    window.open(url, '_blank');
+    this.notify.publishHasClickedChat(true);
+  }
+
+  // ----------------------------------------
+  // TODO: PROBABLY NOT USED - VERIFY BETTER
+  // ----------------------------------------
   goToWidgetPage() {
-
     this.router.navigate(['project/' + this.projectId + '/widget']);
-
     this.notify.closeModalInstallTiledeskModal()
   }
+
+
+  // --------------------------------------------------------------------------------------------
+  // NOT USED - subdsribe to hasOpenChecklistModal and get project by is > project.gettingStarted
+  // --------------------------------------------------------------------------------------------
+
+  // getProjectById() {
+  //   this.notify.hasOpenChecklistModal.subscribe((hasOpen: boolean) => {
+  //     this.logger.log('[NOTIFICATION-MSG] - THE checklist modal has been opened ', hasOpen);
+
+  //     if (hasOpen === true) {
+  //       this.projectService.getProjectById(this.projectId)
+  //         .subscribe((project: any) => {
+
+
+  //           if (project) {
+  //             this.logger.log('[NOTIFICATION-MSG] - GET PROJECT BY ID : ', project);
+
+  //             if (project.gettingStarted) {
+  //               this.gettingStartedChecklist = project.gettingStarted;
+  //               this.logger.log('[NOTIFICATION-MSG] - GET PROJECT Getting Started Checklist : ', this.gettingStartedChecklist);
+  //             }
+  //           }
+  //         }, (error) => {
+  //           this.showSpinnerInModal = false;
+  //           this.logger.error('[NOTIFICATION-MSG]  GET PROJECT BY ID - ERROR ', error);
+  //         }, () => {
+  //           this.showSpinnerInModal = false;
+  //           this.logger.log('[NOTIFICATION-MSG]  GET PROJECT BY ID * COMPLETE *');
+  //         });
+  //     }
+  //   })
+  // }
+
+  // -------------------------------------
+  // CHECKLIST MODAL - NOT USED
+  // -------------------------------------
+
+  // hasClickedChecklist(event) {
+  //   this.logger.log('[NOTIFICATION-MSG] - event : ', event);
+  //   this.logger.log('[NOTIFICATION-MSG] - target name : ', event.target.name);
+
+  //   if (event.target.name === 'openChat') {
+  //     // this.openChat()
+  //     this.notify.onCloseCheckLIstModal();
+
+  //     this.updateGettingStarted('openChat');
+  //   } else if (event.target.name === 'openWidget') {
+
+  //     // this.router.navigate(['project/' + this.projectId + '/widget']);
+  //     this.notify.onCloseCheckLIstModal();
+
+  //     // const updatedGettingStarted = this.gettingStartedChecklist[1].done = true;
+
+  //     this.updateGettingStarted('openWidget')
+
+
+  //   } else if (event.target.name === 'openUserProfile') {
+
+  //     // this.router.navigate(['project/' + this.projectId + '/user-profile']);
+
+  //     this.notify.onCloseCheckLIstModal();
+  //     // const updatedGettingStarted = this.gettingStartedChecklist[2].done = true;
+  //     this.updateGettingStarted('openUserProfile')
+  //   }
+  // }
+
+  // ----------------------------------------
+  // CALLED BY hasClickedChecklist - NOT USED
+  // ----------------------------------------
+
+  // updateGettingStarted(selectesTask) {
+  //   // const updatedGettingStarted = [
+  //   //   { 'task': 'openChat', 'taskDesc': 'openChatDesc', 'done': false },
+  //   //   { 'task': 'openWidget', 'taskDesc': 'openWidgetDesc', 'done': false },
+  //   //   { 'task': 'openUserProfile', 'taskDesc': 'openUserProfileDesc', 'done': false }
+  //   // ]
+
+
+  //   const objIndex = this.gettingStartedChecklist.findIndex((obj => obj.task === selectesTask));
+  //   // Log object to this.logger.
+  //   this.logger.log('666 Before update: ', this.gettingStartedChecklist[objIndex])
+  //   this.logger.log('666 updatedGettingStarted ', this.gettingStartedChecklist);
+  //   // Update object's name property.
+  //   this.gettingStartedChecklist[objIndex].done = true;
+
+  //   // Log object to this.logger again.
+  //   this.logger.log('[NOTIFICATION-MSG]  666 After update: ', this.gettingStartedChecklist[objIndex]),
+
+  //     this.logger.log('[NOTIFICATION-MSG]  666 After update 2: ', this.gettingStartedChecklist)
+
+  //   this.projectService.updateGettingStartedProject(this.gettingStartedChecklist)
+  //     .subscribe((res) => {
+  //       this.logger.log('[NOTIFICATION-MSG] - GETTING-STARTED UPDATED: ', res.gettingStarted);
+  //     },
+  //       (error) => {
+  //         this.logger.error('[NOTIFICATION-MSG] - GETTING-STARTED UPDATED - ERROR ', error);
+  //       },
+  //       () => {
+  //         this.logger.log('[NOTIFICATION-MSG] - GETTING-STARTED UPDATED * COMPLETE *');
+  //       });
+  // }
+
+
+  // -----------------------------------------------------------------
+  // DOWNGRADE PLAN TO FREE - DO I NEED TO DO SERVICE ON TILEDESK API?
+  // ------------------------------------------------------------------
+
+  // downgradePlanToFree() {
+  //   //
+  //   this.projectService.downgradePlanToFree(this.projectId)
+  //     .subscribe((prjct) => {
+
+  //       this.logger.log('[NOTIFICATION-MSG] -  downgradePlanToFree ', prjct);
+  //     }, (error) => {
+  //       this.logger.error('[NOTIFICATION-MSG] -  downgradePlanToFree ERROR ', error);
+  //     },
+  //       () => {
+  //         this.logger.log('[NOTIFICATION-MSG] -  downgradePlanToFree * COMPLETE *');
+
+  //         // CALL getProjectByID IN THE ProjectPlanService THAT PUBLISH THE UPDATED PROJECT
+  //         this.prjctPlanService.getProjectByIdAndPublish(this.projectId);
+  //         this.notify.closeModalSubsExpired();
+  //       });
+  // }
 
 
 }

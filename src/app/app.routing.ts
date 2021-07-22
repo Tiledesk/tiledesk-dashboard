@@ -4,21 +4,14 @@ import { CommonModule, } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { Routes, RouterModule } from '@angular/router';
 
-import { DashboardComponent } from './dashboard/dashboard.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
-import { TableListComponent } from './table-list/table-list.component';
-import { TypographyComponent } from './typography/typography.component';
-import { IconsComponent } from './icons/icons.component';
-import { MapsComponent } from './maps/maps.component';
-import { NotificationsComponent } from './notifications/notifications.component';
-import { UpgradeComponent } from './upgrade/upgrade.component';
 
 import { AuthGuard } from './core/auth.guard';
 import { AdminGuard } from './core/admin.guard';
 import { ProjectProfileGuard } from './core/project-profile.guard';
 import { PendingChangesGuard } from './core/pending-changes.guard';
 import { CoreModule } from './core/core.module';
-import { ReadmePageComponent } from './ui/readme-page/readme-page.component';
+
 import { HomeComponent } from './home/home.component';
 
 // NK
@@ -27,17 +20,12 @@ import { VisitorsComponent } from './visitors/visitors.component';
 import { EventsComponent } from './events/events.component';
 
 
-import { RequestsListComponent } from './requests-list/requests-list.component';
-
 /*** WEBSOCKET ***/
 import { WsRequestsListComponent } from './ws_requests/ws-requests-list/ws-requests-list.component';
 import { WsRequestsMsgsComponent } from './ws_requests/ws-requests-msgs/ws-requests-msgs.component';
 
 import { DepartmentsComponent } from './departments/departments.component';
 import { DepartmentEditAddComponent } from './department-edit-add/department-edit-add.component';
-import { RoutingPageComponent } from './routing-page/routing-page.component';
-
-import { DeptsComponent } from './depts/depts.component'; 
 
 import { ProjectsComponent } from './projects/projects.component';
 import { UsersComponent } from './users/users.component';
@@ -52,7 +40,7 @@ import { FaqTestComponent } from './bots/faq-test/faq-test.component';
 
 import { ProjectEditAddComponent } from './project-edit-add/project-edit-add.component';
 // import { RequestsListHistoryComponent } from './requests-list-history/requests-list-history.component';
-import { RequestsListHistoryNewComponent } from './requests-list-history-new/requests-list-history-new.component';
+import { HistoryAndNortConvsComponent } from './ws_requests//history-and-nort-convs/history-and-nort-convs.component';
 
 // --------------------------------------------------------------------------------------------
 // AUTH PAGES
@@ -65,21 +53,15 @@ import { UnauthorizedForProjectComponent } from './auth/unauthorized-for-project
 import { HandleInvitationComponent } from './auth/handle-invitation/handle-invitation.component';
 import { AutologinComponent } from './auth/autologin/autologin.component';
 
-import { WidgetComponent } from './widget_components/widget/widget.component';
-import { WidgetDesignComponent } from './widget_components/widget-design/widget-design.component';
+import { WidgetSetUp } from './widget_components/widget-set-up/widget-set-up.component';
 import { WidgetMultilanguageComponent } from './widget_components/widget-multilanguage/widget-multilanguage.component';
 
-
-import { ScriptComponent } from './script/script.component';
 import { ChannelsComponent } from './channels/channels.component';
-import { SocialComponent } from './social/social.component';
+
 
 import { UserEditAddComponent } from './user-edit-add/user-edit-add.component';
-import { UsersProfileComponent } from './users-profile/users-profile.component';
-
 import { VerifyEmailComponent } from './verify-email/verify-email.component';
-import { RequestsMsgsComponent } from './requests-msgs/requests-msgs.component';
-import { TrainBotComponent } from './requests-msgs/train-bot/train-bot.component';
+
 import { GroupsComponent } from './groups/groups.component';
 import { GroupEditAddComponent } from './group-edit-add/group-edit-add.component';
 import { GroupsStaticComponent } from './static-pages/groups-static/groups-static.component';
@@ -89,9 +71,8 @@ import { HoursComponent } from './hours/hours.component';
 import { ResetPswComponent } from './reset-psw/reset-psw.component';
 import { ContactDetailsComponent } from './contact-details/contact-details.component';
 import { ContactEditComponent } from './contact-edit/contact-edit.component';
-import { UsersPendingComponent } from './users-pending/users-pending.component';
 import { ActivitiesComponent } from './activities/activities.component';
-// import { DashboardComponent} from './dashboard/dashboard.component';
+
 // Andrea
 import { ChatComponent } from './chat/chat.component';
 
@@ -99,7 +80,7 @@ import { AnalyticsStaticComponent } from './static-pages/analytics-static/analyt
 import { ActivitiesStaticComponent } from './static-pages/activities-static/activities-static.component';
 import { HoursStaticComponent } from './static-pages/hours-static/hours-static.component';
 import { DepartmentsStaticComponent } from './static-pages/departments-static/departments-static.component';
-import { AnalyticsComponent } from './analytics/analytics.component';
+
 import { Analytics2Component } from './analytics2/analytics2.component';
 import { PanoramicaComponent } from './analytics2/panoramica/panoramica.component';
 import { MetricheComponent } from './analytics2/metriche/metriche.component';
@@ -123,7 +104,6 @@ import { ConfigureWidgetComponent } from './create-project-wizard/configure-widg
 import { LoadingPageComponent } from './loading-page/loading-page.component';
 import { CannedResponsesListComponent } from './canned-responses/canned-responses-list.component';
 import { TagsComponent } from './tags/tags.component';
-import { WsRequestsNortComponent } from './ws_requests/ws-requests-nort/ws-requests-nort.component';
 import { ProjectsForPanelComponent } from './projects/for-panel/projects-for-panel/projects-for-panel.component';
 
 import { WsRequestsUnservedForPanelComponent } from './ws_requests/for-panel/ws-requests-unserved-for-panel/ws-requests-unserved-for-panel.component';
@@ -138,20 +118,12 @@ import { RichiesteComponent } from './analytics2/metriche/richieste/richieste.co
 
 // /Users/nicola/TILEDESK-DSHBRD-ENTP/src/app/analytics2/metriche/messages/messages.component.ts
 const routes: Routes = [
-  { path: 'dashboard', component: DashboardComponent },
+
 
   /* PRIVATE */
   { path: 'project/:projectid/pricing', component: PricingComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/success', component: PaymentSuccessPageComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/canceled', component: PaymentCanceledPageComponent, canActivate: [AuthGuard] },
-
-  { path: 'table-list', component: TableListComponent },
-  { path: 'typography', component: TypographyComponent },
-  { path: 'icons', component: IconsComponent },
-  { path: 'maps', component: MapsComponent },
-  { path: 'notifications', component: NotificationsComponent },
-  { path: 'upgrade', component: UpgradeComponent },
-  // { path: '',               redirectTo: 'dashboard', pathMatch: 'full' }
 
 
   // PROJECTS IS THE NEW HOME
@@ -210,7 +182,7 @@ const routes: Routes = [
 
   { path: 'userprofile', component: UserProfileComponent },
   // , canActivate: [AuthGuard]
-  { path: 'project/:projectid/requests', component: RequestsListComponent, canActivate: [AuthGuard] },
+  
 
   /*** WEBSOCKET ***/
   /**
@@ -233,17 +205,14 @@ const routes: Routes = [
 
   // MESSAGES OF A REQUEST (IT BEFORE WERE DISPLAYED IN A MODAL WINDOW)
   // tslint:disable-next-line:max-line-length
-  { path: 'project/:projectid/request/:requestid/messages', component: RequestsMsgsComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/train', component: TrainBotComponent, canActivate: [AuthGuard] },
-
+  
   // tslint:disable-next-line:max-line-length
   // ARE ALL THE USER OF A PROJECT (e.g. THE USER THAT HAS CREATED THE PROJECT AND THE USERS THAT HE HAS INVITED (THE OTHER MEMBERS OF THE PROJECT))
   { path: 'project/:projectid/users', component: UsersComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/user/add', component: UserEditAddComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/user/edit/:projectuserid', component: UserEditAddComponent, canActivate: [AuthGuard] },
 
-  // ARE THE USERS THAT HAVE BEEN INVITED BUT THAT ARE NOT YET REGISTERED IN TILEDESK
-  { path: 'project/:projectid/users/pending', component: UsersPendingComponent, canActivate: [AuthGuard] },
+  
 
   // GROUPS
   // , ProjectProfileGuard
@@ -253,10 +222,6 @@ const routes: Routes = [
   { path: 'project/:projectid/group/edit/:groupid', component: GroupEditAddComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/groups-demo', component: GroupsStaticComponent, canActivate: [AuthGuard] },
 
-  // DISPLAY THE PROFILE OF THE MEMBER (USERS WHO HAVE BEEN INVITED)
-  { path: 'project/:projectid/member/:memberid', component: UsersProfileComponent, canActivate: [AuthGuard] },
-  // DISPLAY THE PROFILE OF THE BOT
-  { path: 'project/:projectid/botprofile/:memberid', component: UsersProfileComponent, canActivate: [AuthGuard] },
 
   // IS THE PROFILE OF THE LOGGED USER
   { path: 'project/:projectid/user-profile', component: UserProfileComponent },
@@ -288,9 +253,6 @@ const routes: Routes = [
   // TEST-FAQ PAGE NEW URL
   { path: 'project/:projectid/faq/test/:faqkbid', component: FaqTestComponent, canActivate: [AuthGuard] },
 
-
-  // , ProjectProfileGuard
-  { path: 'project/:projectid/analytics/old', component: AnalyticsComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/analytics', component: Analytics2Component, canActivate: [AuthGuard, ProjectProfileGuard] },
   { path: 'project/:projectid/analytics/metrics', component: Analytics2Component, canActivate: [AuthGuard, ProjectProfileGuard] },
   { path: 'project/:projectid/analytics/metrics/visitors', component: Analytics2Component, canActivate: [AuthGuard, ProjectProfileGuard] },
@@ -319,26 +281,17 @@ const routes: Routes = [
 
   { path: 'project/:projectid/department/edit/:deptid', component: DepartmentEditAddComponent, canActivate: [AuthGuard], canDeactivate: [PendingChangesGuard]},
 
-  { path: 'project/:projectid/depts', component: DeptsComponent, canActivate: [AuthGuard] },
-  
-
-  { path: 'project/:projectid/routing', component: RoutingPageComponent, canActivate: [AuthGuard] }, // no more used
 
   // new routing page is the edit department
   { path: 'project/:projectid/routing/:deptid', component: DepartmentEditAddComponent, canActivate: [AuthGuard] }, // new
 
-
-
   { path: 'project/:projectid/departments-demo', component: DepartmentsStaticComponent, canActivate: [AuthGuard] },
-
 
   // HISTORY
   // { path: 'project/:projectid/historyrt', component: RequestsListHistoryComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/history', component: RequestsListHistoryNewComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/all-conversations', component: RequestsListHistoryNewComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/history', component: HistoryAndNortConvsComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/all-conversations', component: HistoryAndNortConvsComponent, canActivate: [AuthGuard] },
   
-  { path: 'project/:projectid/wsrequests-all/:requeststatus', component: WsRequestsNortComponent, canActivate: [AuthGuard] },
-
   // TRIGGER
   { path: 'project/:projectid/trigger', component: TriggerComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
   { path: 'project/:projectid/trigger-demo', component: TriggerStaticComponent, canActivate: [AuthGuard] },
@@ -347,22 +300,17 @@ const routes: Routes = [
   { path: 'project/:projectid/trigger/:triggerId', component: TriggerEditComponent, canActivate: [AuthGuard] },
 
 
-  // page RESOURCES (RENAMED WIDGET)   // path: 'project/:projectid/resources'
-  { path: 'project/:projectid/widget', component: WidgetComponent, canActivate: [AuthGuard] },
 
   // { path: 'project/:projectid/widget/design', component: WidgetDesignComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/widget/greetings', component: WidgetDesignComponent, canActivate: [AuthGuard] }, // old
-  { path: 'project/:projectid/widget/callout', component: WidgetDesignComponent, canActivate: [AuthGuard] }, // old
-  { path: 'project/:projectid/widget/appearance', component: WidgetDesignComponent, canActivate: [AuthGuard] }, // old
+  // { path: 'project/:projectid/widget/greetings', component: WidgetSetUp, canActivate: [AuthGuard] }, // old
+  // { path: 'project/:projectid/widget/callout', component: WidgetSetUp, canActivate: [AuthGuard] }, // old
+  // { path: 'project/:projectid/widget/appearance', component: WidgetSetUp, canActivate: [AuthGuard] }, // old
   { path: 'project/:projectid/widget/translations', component: WidgetMultilanguageComponent, canActivate: [AuthGuard] }, // old
-  { path: 'project/:projectid/widget-set-up', component: WidgetDesignComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/widget-set-up', component: WidgetSetUp, canActivate: [AuthGuard] },
 
-  { path: 'project/:projectid/script', component: ScriptComponent, canActivate: [AuthGuard] },
+
   { path: 'project/:projectid/channels', component: ChannelsComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/social', component: SocialComponent, canActivate: [AuthGuard] },
-
-
-
+ 
   // CHANGE PSWRD if project is defined (use case: THE USER SELECTED A PROJECT)
   { path: 'project/:projectid/user/:userid/password/change', component: ChangePasswordComponent, canActivate: [AuthGuard] },
   // CHANGE PSWRD if project is undefined (use case: THE USER HAS NOT YET SELECTED A PROJECT)
@@ -398,8 +346,6 @@ const routes: Routes = [
   { path: 'project/:projectid/app-store', component: AppStoreComponent, canActivate: [AuthGuard] },
   //{ path: 'project/:projectid/app-store-install/:url/:apptitle', component: AppStoreInstallComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/app-store-install/:appid', component: AppStoreInstallComponent, canActivate: [AuthGuard]},
-
-  { path: 'dashboard', component: DashboardComponent },
 
   // Webhook
   { path: 'project/:projectid/webhook', component: WebhookComponent, canActivate: [AuthGuard]},

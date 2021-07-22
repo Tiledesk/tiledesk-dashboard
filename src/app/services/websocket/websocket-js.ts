@@ -1,7 +1,8 @@
 
 //import { Injectable } from '@angular/core';
+import { forwardRef, Inject } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-
+import { LoggerService } from './../../services/logger/logger.service';
 //@Injectable()
 export class WebSocketJs {
 
@@ -34,29 +35,12 @@ export class WebSocketJs {
   public pingSent$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public pongSent$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public pongReceived$: BehaviorSubject<boolean> = new BehaviorSubject(false);
-  // public sendingMessages;
-  //public data;
 
-  /*
-    constructor(url, onCreate, onUpdate, onOpen=undefined) {
-      console.log("WebSocketJs constructor");
-      this.url = url;
-      this.onCreate = onCreate;
-      this.onUpdate = onUpdate;
-      this.onOpen = onOpen;
-      this.topics = [];//new Map();
-      this.callbacks = new Map();
-      this.sendingMessages = [];//new Map();
-    // this.data = [];
-      this.init(this.sendMesagesInSendingArray);
 
-    }
-    */
+  constructor(@Inject(forwardRef(() => LoggerService))  public logger: LoggerService) {
 
-  constructor() {
-
-    console.log("% »»» WebSocketJs WF constructor ***");
-    this.topics = [];//new Map();
+    this.logger.log("[WEBSOCKET-JS] HELLO !!!");
+    this.topics = [];
     this.callbacks = new Map();
 
     // this.sendingMessages = [];//new Map();
@@ -83,50 +67,37 @@ export class WebSocketJs {
   //     WsRequestsMsgsComponent onInit() is got the request id from url params
 
   ref(topic, calledby, onCreate, onUpdate, onData) {
-    // console.log('% »»» WebSocketJs ****** CALLING REF ****** ');
-    // console.log('% »»» WebSocketJs WF ****** CALLING REF ****** calledby ', calledby);
-    // console.log('% »»» WebSocketJs WF ****** CALLING REF ****** TOPIC ', topic);
-    // console.log('% »»» WebSocketJs WF ****** CALLING REF ****** CALLBACKS', this.callbacks);
-    // console.log('% »»» WebSocketJs WF ****** CALLING REF ****** CALLBACKS typeof', typeof this.callbacks);
-    // console.log('% »»» WebSocketJs WF ****** CALLING REF ****** CALLBACKS    Object.prototype.toString.call(this.callbacks)', Object.prototype.toString.call(this.callbacks));
-    // console.log('% »»» WebSocketJs WF ****** CALLING REF ****** CALLBACKS  this.callbacks.has(topic) ', this.callbacks.has(topic));
-    //this.callbacks.set(topic, {onCreate:onCreate, onUpdate:onUpdate});
-
+    // this.logger.log('[WEBSOCKET-JS] ****** CALLING REF ****** ');
+    this.logger.log('[WEBSOCKET-JS] - REF - calledby ', calledby);
+    this.logger.log('[WEBSOCKET-JS] - REF - TOPIC ', topic);
+    this.logger.log('[WEBSOCKET-JS] - REF - CALLBACKS', this.callbacks);
 
     if (!this.callbacks) {
-      console.log('% »»» WebSocketJs WF *** REF *** OOOOPS! NOT CALLBACKS ***', topic);
+      this.logger.log('[WEBSOCKET-JS] - REF OOOOPS! NOT CALLBACKS ***', this.callbacks);
       return
     }
 
     this.callbacks.set(topic, { onCreate: onCreate, onUpdate: onUpdate, onData: onData });
-    // console.log('% »»» WebSocketJs WF ****** CALLING REF ****** CALLBACKS this.callbacks.set ', this.callbacks);
-    // console.log('% »»» WebSocketJs WF *** REF *** callbacks *** ', this.callbacks);
-    // this.callbacks
+    this.logger.log('[WEBSOCKET-JS] - CALLBACK-SET - callbacks', this.callbacks);
 
+    this.logger.log('[WEBSOCKET-JS] - REF - READY STATE ', this.ws.readyState);
 
-    console.log('% »»» WebSocketJs WF *** REF *** topic ***', topic);
-    // console.log('% »»» WebSocketJs WF *** REF *** this.topics ***', this.topics);
-    // console.log('% »»» WebSocketJs WF *** REF *** READY STATE *** ws.readyState ', this.ws.readyState);
-    // console.log('% »»» WebSocketJs WF *** REF *** READY STATE *** this.readyState ', this.readyState);
-    // console.log('% »»» WebSocketJs WF *** REF *** WS 1 ', this.ws)
     if (this.ws && this.ws.readyState == 1) {
 
-      console.log('% »»» WebSocketJs WF *** REF *** READY STATE 1 ', this.ws.readyState)
+      this.logger.log('[WEBSOCKET-JS] - REF - READY STATE = 1 > SUBSCRIBE TO TOPICS ');
+
       this.subscribe(topic);
 
     } else {
       // this.ws =  new WebSocket("wss://tiledesk-server-pre.herokuapp.com/?token=JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZGRkMzBiZmYwMTk1ZjAwMTdmNzJjNmQiLCJlbWFpbCI6InByZWdpbm9AZjIxdGVzdC5pdCIsImZpcnN0bmFtZSI6Ikdpbm8iLCJsYXN0bmFtZSI6IlByZSIsImVtYWlsdmVyaWZpZWQiOnRydWUsImlhdCI6MTYwODgwNjY0MCwiYXVkIjoiaHR0cHM6Ly90aWxlZGVzay5jb20iLCJpc3MiOiJodHRwczovL3RpbGVkZXNrLmNvbSIsInN1YiI6InVzZXIiLCJqdGkiOiI1YmVmMDcxYy00ODBlLTQzYzQtOTRhYS05ZjQxYzMyNDcxMGQifQ.wv6uBn2P6H9wGb5WCYQkpPEScMU9PB1pBUzFouhJk20");
 
-      console.log('% »»» WebSocketJs WF *** REF *** READY STATE 2 ', this.ws.readyState);
-      // console.log('% »»» WebSocketJs WF *** REF *** WS 2 ', this.ws);
+      this.logger.log('[WEBSOCKET-JS] - REF - READY STATE ≠ 1 > OPEN WS AND THEN SUBSCRIBE TO TOPICS');
+      // this.logger.log('% »»» WebSocketJs WF *** REF *** WS 2 ', this.ws);
 
       var that = this;
       if (this.ws) {
-
-
-
         this.ws.addEventListener("open", function (event) {
-          console.log('% »»» WebSocketJs WF *** REF *** OPEN EVENT *** ', event);
+          that.logger.log('[WEBSOCKET-JS] - REF - OPEN EVENT *** ', event);
           that.subscribe(topic);
         });
       }
@@ -141,14 +112,11 @@ export class WebSocketJs {
   // @ subscribe - is called by 'ref' & call 'send'
   // -----------------------------------------------------------------------------------------------------
   subscribe(topic) {
-    // console.log('% »»» WebSocketJs ****** CALLING SUBSCRIBE ****** ');
-    //this.topics.set(topic,1);
-    // console.log('% »»» WebSocketJs ****** CALLING SUBSCRIBE ****** to topic ', topic);
 
     if (this.topics.indexOf(topic) === -1) {
       this.topics.push(topic);
     }
-    // console.log("% »»» WebSocketJs *** SUBSCRIBE *** topics ", this.topics);
+    this.logger.log('[WEBSOCKET-JS] - SUBSCRIBE TO TOPIC ', topic);
 
     var message = {
       action: 'subscribe',
@@ -160,7 +128,7 @@ export class WebSocketJs {
       },
     };
     var str = JSON.stringify(message);
-    console.log("%% str " + str);
+    this.logger.log("[WEBSOCKET-JS] - SUBSCRIBE TO TOPIC - STRING TO SEND " + str, " FOR SUBSCRIBE TO TOPIC: ", topic);
 
     this.send(str, `SUBSCRIBE to ${topic}`);
   }
@@ -173,27 +141,25 @@ export class WebSocketJs {
   //  - call 'send'
   // -----------------------------------------------------------------------------------------------------
   unsubscribe(topic) {
-    console.log('% »»» WebSocketJs WF ****** CALLING UN-SUBSCRIBE ****** ');
-    // console.log("% »»» WebSocketJs WF *** UNSUBSCRIBE *** - this.topics ", this.topics);
-    // console.log("% »»» WebSocketJs WF *** UNSUBSCRIBE *** - topic ", topic);
-    // console.log("% »»» WebSocketJs WF *** UNSUBSCRIBE *** - callbacks ", this.callbacks);
-    
+    this.logger.log("[WEBSOCKET-JS] - UN-SUBSCRIBE  - FROM TOPIC: ", topic);
+    // this.logger.log("% »»» WebSocketJs WF *** UNSUBSCRIBE *** - this.topics ", this.topics);
+    // this.logger.log("% »»» WebSocketJs WF *** UNSUBSCRIBE *** - topic ", topic);
+    // this.logger.log("% »»» WebSocketJs WF *** UNSUBSCRIBE *** - callbacks ", this.callbacks);
+
 
     var index = this.topics.indexOf(topic);
-    console.log("% »»» WebSocketJs WF *** UNSUBSCRIBE *** - topic  (1C)", topic, ' index ', index);
+
     if (index > -1) {
       this.topics.splice(index, 1);
     }
 
-    console.log("% »»» WebSocketJs WF *** UNSUBSCRIBE *** - topics after splice ", this.topics);
-    console.log("% »»» WebSocketJs WF *** UNSUBSCRIBE *** - topic  ", topic);
-    console.log('% »»» WebSocketJs WF *** UNSUBSCRIBE *** this.ws.readyState ', this.ws.readyState);
-    console.log("% »»» WebSocketJs WF *** UNSUBSCRIBE *** - callback size ", this.callbacks.size);
+    this.logger.log("[WEBSOCKET-JS] - UN-SUBSCRIBE - TOPICS AFTER SPLICE THE TOPIC ", this.topics);
+    this.logger.log("[WEBSOCKET-JS] - UN-SUBSCRIBE - DELETE TOPIC FROM CALLBACKS - CALLBACKS SIZE ", this.callbacks.size);
 
     // if (this.callbacks.length > 0) {
     if (this.callbacks.size > 0) {
       this.callbacks.delete(topic);
-      console.log("% »»» WebSocketJs WF *** UNSUBSCRIBE *** - callback after delete ", this.callbacks);
+      this.logger.log("[WEBSOCKET-JS] - UN-SUBSCRIBE - CALLBACKS AFTER DELETE TOPIC ", this.callbacks);
     }
 
     var message = {
@@ -206,29 +172,23 @@ export class WebSocketJs {
       },
     };
     var str = JSON.stringify(message);
-    console.log("%% str " + str);
+    this.logger.log("[WEBSOCKET-JS] - UN-SUBSCRIBE str " + str);
 
     if (this.ws.readyState == 1) {
-      this.send(str, `calling method - UNSUSCRIBE from ${topic}`);
+      this.logger.log("[WEBSOCKET-JS] - UN-SUBSCRIBE TO TOPIC - STRING TO SEND " + str, " FOR UNSUBSCRIBE TO TOPIC: ", topic);
+      this.send(str, `UNSUSCRIBE from ${topic}`);
 
     } else {
-      console.log('% »»» WebSocketJs WF *** UNSUSCRIBE try send but this.ws.readyState is = ', this.ws.readyState);
-
-
+      this.logger.log("[WEBSOCKET-JS] - UN-SUBSCRIBE TRY 'SEND' BUT READY STASTE IS : ", this.ws.readyState);
     }
   }
 
   // -----------------------------------------------------------------------------------------------------
-  // @ send - call this.ws.send()  
+  // @ send - 
   // -----------------------------------------------------------------------------------------------------
   send(initialMessage, calling_method) {
+    // this.logger.log("[WEBSOCKET-JS] - SEND - INIZIAL-MSG ", initialMessage, " CALLED BY ", calling_method);
 
-    // const initialMessageObj = JSON.parse(initialMessage);
-    // const message = initialMessageObj.payload.message.text
-    // console.log('% »»» WebSocketJs WF  SEND - initialMessageObj', initialMessageObj);
-
-    // nk 
-    // console.log('% »»» WebSocketJs WF *** UNSUSCRIBE  sender: ', calling_method, '- message: ', initialMessage);
     this.ws.send(initialMessage);
   }
 
@@ -237,11 +197,10 @@ export class WebSocketJs {
   // @ close (to find where is used search for x webSocketClose()) 
   // -----------------------------------------------------------------------------------------------------
   close() {
-    console.log('% »»» WebSocketJs WF *** CALLING CLOSE ****** ');
     this.topics = [];
-    this.callbacks = []; // NK COMMENTET FOR THE BUG callback.set is not a function
-    // this.callbacks = {};
-    console.log('% »»» WebSocketJs WF *** CALLING CLOSE ****** this.callbacks');
+    this.callbacks = []; 
+    this.logger.log("[WEBSOCKET-JS] - CALLED CLOSE - TOPICS ", this.topics, ' - CALLLBACKS ', this.callbacks);
+
     if (this.ws) {
       this.ws.onclose = function () { }; // disable onclose handler first
       this.ws.close();
@@ -250,23 +209,22 @@ export class WebSocketJs {
   }
 
   // -----------------------------------------------------------------------------------------------------
-  // @ resubscribe
+  // @ Resubscribe
   // -----------------------------------------------------------------------------------------------------
   resubscribe() {
-    console.log('% »»» WebSocketJs WF *** CALLING RESUBSCRIBE ****** ');
-    console.log('% »»» WebSocketJs WF *** CALLING RESUBSCRIBE ****** TOPICS ', this.topics);
-    console.log('% »»» WebSocketJs WF *** CALLING RESUBSCRIBE ****** CALLBACKS  444 ', this.callbacks);
-    console.log('% »»» WebSocketJs WF *** CALLING RESUBSCRIBE ****** TOPICS LENGTH ', this.topics.length);
+    this.logger.log("[WEBSOCKET-JS] - RESUBSCRIBE - TO TOPICS ", this.topics);
+    this.logger.log("[WEBSOCKET-JS] - RESUBSCRIBE - CALLBACKS ", this.callbacks);
+
     if (this.topics.length > 0) {
       this.topics.forEach(topic => {
-        console.log('% »»» WebSocketJs WF *** RESUBSCRIBE *** to topic ', topic);
+        this.logger.log("[WEBSOCKET-JS] - RESUBSCRIBE - SUBDCRIBE TO TOPICS ", topic);
         this.subscribe(topic); // nn fa sudbcribe 
       });
     }
   }
 
   // -----------------------------------------------------------------------------------------------------
-  // @ heartCheck
+  // @ HeartCheck
   // -----------------------------------------------------------------------------------------------------
   heartCheck() {
     this.heartReset();
@@ -279,7 +237,7 @@ export class WebSocketJs {
   //     // Qui viene inviato un battito cardiaco Dopo averlo ricevuto, viene restituito un messaggio di battito cardiaco.
   //     // onmessage Ottieni il battito cardiaco restituito per indicare che la connessione è normale
   //     try {
-  //       console.log('% »»» WebSocketJs - HEARTBEAT send MSG ', JSON.stringify(this.pingMsg));
+  //       this.logger.log('% »»» WebSocketJs - HEARTBEAT send MSG ', JSON.stringify(this.pingMsg));
   //       this.ws.send(JSON.stringify(this.pingMsg));
   //       // Se non viene ripristinato dopo un determinato periodo di tempo, il backend viene attivamente disconnesso
   //       this.pongTimeoutId = setTimeout(() => {
@@ -289,33 +247,31 @@ export class WebSocketJs {
 
   //     } catch (e) {
 
-  //       console.log('% »»» WebSocketJs - HEARTBEAT err ', e);
+  //       this.logger.log('% »»» WebSocketJs - HEARTBEAT err ', e);
   //     }
 
   //   }, this.pingTimeout);
   // }
 
 
-  getRemainingTime() {
-    // return  this.pingTimeout - ( (new Date()).getTime() -  this.startTimeMS );
+  // getRemainingTime() {
+  //   var milliSecondsTime = 15000;
+  //   var timer;
 
-    var milliSecondsTime = 15000;
-    var timer;
-
-    console.log('% »»» WebSocketJs - heartStart timer 1', milliSecondsTime / 1000);
-    timer = setInterval(function () {
-      milliSecondsTime = milliSecondsTime - 1000;
-      if (milliSecondsTime / 1000 == 0) {
-        clearTimeout(timer);
-      }
-      else {
-        console.log('% »»» WebSocketJs - heartStart timer 2 ', milliSecondsTime / 1000);
-      }
-    }, 1000);
-  }
+  //   this.logger.log('% »»» WebSocketJs - heartStart timer 1', milliSecondsTime / 1000);
+  //   timer = setInterval(function () {
+  //     milliSecondsTime = milliSecondsTime - 1000;
+  //     if (milliSecondsTime / 1000 == 0) {
+  //       clearTimeout(timer);
+  //     }
+  //     else {
+  //       this.logger.log('% »»» WebSocketJs - heartStart timer 2 ', milliSecondsTime / 1000);
+  //     }
+  //   }, 1000);
+  // }
 
   // -----------------------------------------------------------------------------------------------------
-  // @ heartStart
+  // @ HeartStart
   // -----------------------------------------------------------------------------------------------------
   heartStart() {
     // this.getRemainingTime();
@@ -324,21 +280,20 @@ export class WebSocketJs {
       // Qui viene inviato un battito cardiaco Dopo averlo ricevuto, viene restituito un messaggio di battito cardiaco.
       // onmessage Ottieni il battito cardiaco restituito per indicare che la connessione è normale
       if (this.ws.readyState == 1) {
-        // console.log('% »»» WebSocketJs - heartStart WS OK - readyState ', this.ws.readyState);
-        // console.log('% »»» WebSocketJs - HEART-START send PING MSG ', JSON.stringify(this.pingMsg));
 
-        // this.ws.send(JSON.stringify(this.pingMsg));
+        // this.logger.log("[WEBSOCKET-JS] - HEART-START - SEND PING-MSG");
+
         this.send(JSON.stringify(this.pingMsg), 'HEART-START')
 
       } else {
-        console.log('% »»» WebSocketJs - heartStart WS KO - readyState ', this.ws.readyState);
 
+        this.logger.error("[WEBSOCKET-JS] - HEART-START - TRY TO SEND PING-MSG BUT READY STATE IS ", this.ws.readyState);
 
       }
 
       // Se non viene ripristinato dopo un determinato periodo di tempo, il backend viene attivamente disconnesso
       this.pongTimeoutId = setTimeout(() => {
-        console.log('% »»» WebSocketJs - HEARTBEAT pongTimeoutId ', this.pongTimeoutId);
+        this.logger.log("[WEBSOCKET-JS] - HEART-START - PONG-TIMEOUT-ID  - CLOSE WS ");
         // se onclose Si esibirà reconnect，Eseguiamo ws.close() Bene, se lo esegui direttamente reconnect Si innescherà onclose Causa riconnessione due volte
         this.ws.close();
       }, this.pongTimeout);
@@ -350,7 +305,7 @@ export class WebSocketJs {
   // @ heartReset
   // -----------------------------------------------------------------------------------------------------
   heartReset() {
-    // console.log('% »»» WebSocketJs - HEART-START RESET ');
+    // this.logger.log("[WEBSOCKET-JS] - HEART-RESET");
     clearTimeout(this.pingTimeoutId);
     clearTimeout(this.pongTimeoutId);
   }
@@ -359,12 +314,9 @@ export class WebSocketJs {
   // @ init
   // -----------------------------------------------------------------------------------------------------
   init(url, onCreate, onUpdate, onData, onOpen = undefined, onOpenCallback = undefined, _topics = [], _callbacks = new Map()) {
-    console.log('% »»» WebSocketJs WF ***  ****** CALLING INIT ****** ');
-    // console.log('% »»» WebSocketJs - INIT url ', url);
-    console.log('% »»» WebSocketJs WF *** - INIT onCreate ', onCreate);
-    console.log('% »»» WebSocketJs WF *** - INIT onUpdate ', onUpdate);
-    console.log('% »»» WebSocketJs WF *** - INIT onOpen ', onOpen);
-    console.log('% »»» WebSocketJs WF *** - INIT onOpenCallback ', onOpenCallback);
+
+
+
     this.url = url;
     this.onCreate = onCreate;
     this.onUpdate = onUpdate;
@@ -373,12 +325,16 @@ export class WebSocketJs {
     this.topics = _topics//[];//new Map();
     this.callbacks = _callbacks// new Map();
     // this.userHasClosed = false;
-    // console.log('% »»» WebSocketJs WF - closeWebsocket this.userHasClosed ' , this.userHasClosed);
+    // this.logger.log('% »»» WebSocketJs WF - closeWebsocket this.userHasClosed ' , this.userHasClosed);
 
     // this.sendingMessages = [];//new Map();
     // this.data = [];
     // this.init(this.sendMesagesInSendingArray);
-    console.log('% »»» WebSocketJs WF *** - INIT topics ', this.topics);
+
+    this.logger.log("[WEBSOCKET-JS] - CALLING INIT - topics ", this.topics);
+    this.logger.log("[WEBSOCKET-JS] - CALLING INIT - url ", this.url);
+    this.logger.log("[WEBSOCKET-JS] - CALLING INIT - callbacks ", this.callbacks);
+
 
     var that = this;
     return new Promise(function (resolve, reject) {
@@ -387,7 +343,7 @@ export class WebSocketJs {
       //     //     "Authorization" : "JWT " + token
       //     // }
       // };
-      // console.log('options', options);
+      // this.logger.log('options', options);
       // var ws = new WebSocket('ws://localhost:3000');
       // var ws = new WebSocket('ws://localhost:3000/public/requests');
       // var ws = new WebSocket('ws://localhost:3000/5bae41325f03b900401e39e8/messages');
@@ -396,24 +352,21 @@ export class WebSocketJs {
       // -----------------------------------------------------------------------------------------------------
       // @ new WebSocket
       // -----------------------------------------------------------------------------------------------------
-
-      // console.log('Web_SocketJs url', that.url)
-      // 'ws://localhost:40510'
       that.ws = new WebSocket(that.url);
-      // var ws = new WebSocket(that.url, options);
+
 
       // -----------------------------------------------------------------------------------------------------
       // @ onopen
       // -----------------------------------------------------------------------------------------------------
       that.ws.onopen = function (e) {
-        console.log('% »»» WebSocketJs WF *** - websocket is connected ...', e);
+        that.logger.log('[WEBSOCKET-JS] - websocket is connected ...', e);
 
         // -----------------
         // @ heartCheck
         // -----------------
         that.heartCheck();
 
-        // ws.send('connected')
+
         if (onOpenCallback) {
           onOpenCallback();
         }
@@ -427,11 +380,10 @@ export class WebSocketJs {
       // -----------------------------------------------------------------------------------------------------
       // @ onclose
       // -----------------------------------------------------------------------------------------------------
-
       that.ws.onclose = function (e) {
-        console.log('% »»» WebSocketJs WF *** - websocket IS CLOSED ... Try to reconnect in 3 seconds ', e);
+        that.logger.log('[WEBSOCKET-JS] websocket IS CLOSED ... Try to reconnect in 3 seconds ', e);
 
-        // console.log('% »»» WebSocketJs - websocket onclose this.userHasClosed ', that.userHasClosed);
+        // this.logger.log('% »»» WebSocketJs - websocket onclose this.userHasClosed ', that.userHasClosed);
         // https://stackoverflow.com/questions/3780511/reconnection-of-client-when-server-reboots-in-websocket
         // Try to reconnect in 3 seconds
 
@@ -441,6 +393,7 @@ export class WebSocketJs {
 
         setTimeout(function () {
           that.init(url, onCreate, onUpdate, onData, onOpen, function () {
+            that.logger.log('[WEBSOCKET-JS] websocket IS CLOSED ... CALLING RESUSCRIBE ');
             that.resubscribe();
           }, that.topics, that.callbacks);
         }, 3000);
@@ -449,18 +402,16 @@ export class WebSocketJs {
       // -----------------------------------------------------------------------------------------------------
       // @ onerror
       // -----------------------------------------------------------------------------------------------------
-
-      that.ws.onerror = function () {
-        console.log('% »»» WebSocketJs WF *** - websocket error ...')
+      that.ws.onerror = function (err) {
+        that.logger.error('[WEBSOCKET-JS] websocket IS CLOSED - websocket error ...', err)
       }
 
       // -----------------------------------------------------------------------------------------------------
       // @ onmessage
       // -----------------------------------------------------------------------------------------------------
-
       that.ws.onmessage = function (message) {
-        // console.log('% »»» WebSocketJs - websocket onmessage ', message);
-        // console.log('% »»» WebSocketJs - websocket onmessage data ', message.data);
+        // that.logger.log('[WEBSOCKET-JS] websocket onmessage ', message);
+        // that.logger.log('[WEBSOCKET-JS] websocket onmessage data', message.data);
 
         // let test = '{ "action": "publish","payload": {"topic": "/5df26badde7e1c001743b63c/requests", "method": "CREATE", "message": [ { "_id": "5f29372d690e6f0034edf100", "status": 200, "preflight": false, "hasBot": true, "participants": ["bot_5df272e8de7e1c001743b645"],  "participantsAgents": [], "participantsBots": ["5df272e8de7e1c001743b645"], "request_id": "support-group-MDszsSJlwqQn1_WCh6u", "requester": "5f29371b690e6f0034edf0f5", "lead": "5f29372d690e6f0034edf0ff", "first_text": "ocourse the email is valid ","department": "5df26badde7e1c001743b63e", "agents": [{"user_available": true,"online_status": "online", "number_assigned_requests": 35, "_id": "5e0f2119705a35001725714d","id_project": "5df26badde7e1c001743b63c", "id_user": "5aaa99024c3b110014b478f0", "role": "admin", "createdBy": "5df26ba1de7e1c001743b637","createdAt": "2020-01-03T11:10:17.123Z", "updatedAt": "2020-01-03T11:10:17.123Z", "__v": 0 }, { "user_available": false, "online_status": "offline", "number_assigned_requests": 0, "_id": "5e1a13824437eb0017f712b4", "id_project": "5df26badde7e1c001743b63c","id_user": "5ac7521787f6b50014e0b592", "role": "admin", "createdBy": "5df26ba1de7e1c001743b637", "createdAt": "2020-01-11T18:27:14.657Z","updatedAt": "2020-01-11T18:27:14.657Z", "__v": 0}, { "user_available": false,"online_status": "offline", "number_assigned_requests": 0, "_id": "5df26bdfde7e1c001743b640", "id_project": "5df26badde7e1c001743b63c", "id_user": "5de9200d6722370017731969","role": "admin","createdBy": "5df26ba1de7e1c001743b637", "createdAt": "2019-12-12T16:33:35.244Z", "updatedAt": "2019-12-12T16:33:35.244Z","__v": 0 }, {"user_available": true, "online_status": "online","number_assigned_requests": -11, "_id": "5eb1a3647ac005003480f54d", "id_project": "5df26badde7e1c001743b63c","id_user": "5e09d16d4d36110017506d7f","role": "owner", "createdBy": "5aaa99024c3b110014b478f0","createdAt": "2020-05-05T17:33:24.328Z", "updatedAt": "2020-05-05T17:33:24.328Z","__v": 0}], "sourcePage": "https://www.tiledesk.com/pricing-self-managed/", "language": "en","userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36","attributes": { "departmentId": "5df26badde7e1c001743b63e","departmentName": "Default Department","ipAddress": "115.96.30.154","client": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36","sourcePage": "https://www.tiledesk.com/pricing-self-managed/", "projectId": "5df26badde7e1c001743b63c", "requester_id": "ce31d3fd-a358-49c7-9b9f-5aead8330063", "subtype": "info","decoded_jwt": {"_id": "ce31d3fd-a358-49c7-9b9f-5aead8330063","firstname": "Guest", "id": "ce31d3fd-a358-49c7-9b9f-5aead8330063", "fullName": "Guest ","iat": 1596536604,"aud": "https://tiledesk.com","iss": "https://tiledesk.com","sub": "guest","jti": "702a4a7e-e56a-43cf-aadd-376f7c12f633"}},"id_project": "5df26badde7e1c001743b63c","createdBy": "ce31d3fd-a358-49c7-9b9f-5aead8330063","tags": [], "notes": [],"channel": {"name": "chat21"},"createdAt": "2020-08-04T10:23:41.641Z","updatedAt": "2021-03-25T18:01:13.371Z","__v": 3,"assigned_at": "2020-08-04T10:25:26.059Z","channelOutbound": {"name": "chat21"},"snapshot": {"agents": [{"id_user": "5aaa99024c3b110014b478f0"}, {"id_user": "5ac7521787f6b50014e0b592"}, {"id_user": "5de9200d6722370017731969"}, { "id_user": "5e09d16d4d36110017506d7f"}]},"id": "5f29372d690e6f0034edf100","requester_id": "5f29372d690e6f0034edf0ff"}]}}'
         // let test_due = '{ "action": "publish","payload": {"topic": "/5df26badde7e1c001743b63c/requests", "method": "CREATE", "message": [ { "_id": "5f29372d690e6f0034edf100", "status": 200, "preflight": false, "hasBot": true, "participants": ["bot_5df272e8de7e1c001743b645"],  "participantsAgents": [], "participantsBots": ["5df272e8de7e1c001743b645"], "request_id": "support-group-MDszsSJlwqQn1_WCh6u", "requester": "5f29371b690e6f0034edf0f5", "lead": "5f29372d690e6f0034edf0ff", "first_text": "ocourse the email is valid ","department": "5df26badde7e1c001743b63e", "agents": [{"user_available": true,"online_status": "online", "number_assigned_requests": 35, "_id": "5e0f2119705a35001725714d","id_project": "5df26badde7e1c001743b63c", "id_user": "5aaa99024c3b110014b478f0", "role": "admin", "createdBy": "5df26ba1de7e1c001743b637","createdAt": "2020-01-03T11:10:17.123Z", "updatedAt": "2020-01-03T11:10:17.123Z", "__v": 0 }, { "user_available": false, "online_status": "offline", "number_assigned_requests": 0, "_id": "5e1a13824437eb0017f712b4", "id_project": "5df26badde7e1c001743b63c","id_user": "5ac7521787f6b50014e0b592", "role": "admin", "createdBy": "5df26ba1de7e1c001743b637", "createdAt": "2020-01-11T18:27:14.657Z","updatedAt": "2020-01-11T18:27:14.657Z", "__v": 0}, { "user_available": false,"online_status": "offline", "number_assigned_requests": 0, "_id": "5df26bdfde7e1c001743b640", "id_project": "5df26badde7e1c001743b63c", "id_user": "5de9200d6722370017731969","role": "admin","createdBy": "5df26ba1de7e1c001743b637", "createdAt": "2019-12-12T16:33:35.244Z", "updatedAt": "2019-12-12T16:33:35.244Z","__v": 0 }, {"user_available": true, "online_status": "online","number_assigned_requests": -11, "_id": "5eb1a3647ac005003480f54d", "id_project": "5df26badde7e1c001743b63c","id_user": "5e09d16d4d36110017506d7f","role": "owner", "createdBy": "5aaa99024c3b110014b478f0","createdAt": "2020-05-05T17:33:24.328Z", "updatedAt": "2020-05-05T17:33:24.328Z","__v": 0}], "sourcePage": "https://www.tiledesk.com/pricing-self-managed/", "language": "en","userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36","attributes": { "departmentId": "5df26badde7e1c001743b63e","departmentName": "Default Department","ipAddress": "115.96.30.154","client": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36","sourcePage": "https://www.tiledesk.com/pricing-self-managed/", "projectId": "5df26badde7e1c001743b63c", "requester_id": "ce31d3fd-a358-49c7-9b9f-5aead8330063", "subtype": "info","decoded_jwt": {"_id": "ce31d3fd-a358-49c7-9b9f-5aead8330063","firstname": "Guest", "id": "ce31d3fd-a358-49c7-9b9f-5aead8330063", "fullName": "Guest ","iat": 1596536604,"aud": "https://tiledesk.com","iss": "https://tiledesk.com","sub": "guest","jti": "702a4a7e-e56a-43cf-aadd-376f7c12f633"}},"id_project": "5df26badde7e1c001743b63c","createdBy": "ce31d3fd-a358-49c7-9b9f-5aead8330063","tags": [], "notes": [],"channel": {"name": "chat21"},"createdAt": "2020-08-04T10:23:41.641Z","updatedAt": "2021-03-25T18:01:13.371Z","__v": 3,"assigned_at": "2020-08-04T10:25:26.059Z","channelOutbound": {"name": "chat21"},"_snapshot": {"agents": [{"id_user": "5aaa99024c3b110014b478f0"}, {"id_user": "5ac7521787f6b50014e0b592"}, {"id_user": "5de9200d6722370017731969"}, { "id_user": "5e09d16d4d36110017506d7f"}]},"id": "5f29372d690e6f0034edf100","requester_id": "5f29372d690e6f0034edf0ff"}]}}'
@@ -468,15 +419,14 @@ export class WebSocketJs {
         try {
           var json = JSON.parse(message.data);
           // var json = JSON.parse(test_due);
-          // console.log('% »»» WebSocketJs - websocket onmessage JSON.parse(message.data) json payload', json.payload);
-          // console.log('% »»» WebSocketJs - websocket onmessage JSON.parse(message.data) json payload topic', json.payload.topic);
-          // console.log('% »»» WebSocketJs - websocket onmessage JSON.parse(message.data) json ', json);
+          // this.logger.log('% »»» WebSocketJs - websocket onmessage JSON.parse(message.data) json payload', json.payload);
+          // this.logger.log('% »»» WebSocketJs - websocket onmessage JSON.parse(message.data) json payload topic', json.payload.topic);
+          // this.logger.log('% »»» WebSocketJs - websocket onmessage JSON.parse(message.data) json ', json);
         } catch (e) {
-          console.log('% »»» WebSocketJs WF ***  This doesn\'t look like a valid JSON: ', message.data);
+          that.logger.error('[WEBSOCKET-JS] -  This doesn\'t look like a valid JSON: ', message.data);
           return;
         }
 
-        // console.log('% »»» WebSocketJs - INIT > ON-MESSAGE action: ', json.action , ' message: ', json.payload.message)
 
         // -------------------
         // @ heartCheck
@@ -484,108 +434,80 @@ export class WebSocketJs {
         that.heartCheck();
 
         // --------------------------------------------------------------------------------------------------------------------
-        // check the action and the message's text - if action is 'heartbeat' and text is ping send the PONG message and return
+        // @ check the action and the message's text - if action is 'heartbeat' and text is ping send the PONG message and return
         // --------------------------------------------------------------------------------------------------------------------
 
         if (json.action == "heartbeat") {
 
           if (json.payload.message.text == "ping") {
-            // nk 
-            // console.log('% »»» WebSocketJs - RECEIVED PING -> SEND PONG  ')
-
             // -------------------
             // @ send PONG
             // -------------------
-            // that.ws.send(JSON.stringify(that.pongMsg));
+            // this.logger.log('[WEBSOCKET-JS] -  RECEIVED PING -> SEND PONG MSG');
+         
             that.send(JSON.stringify(that.pongMsg), 'ON-MESSAGE')
 
           } else {
-
             // nk
-            // console.log('% »»» WebSocketJs - RECEIVED PONG -> NOTHING  ')
+            // this.logger.log('[WEBSOCKET-JS] - NOT RECEIVED PING ');
           }
           return;
         }
 
         var object = { event: json.payload, data: json };
-
-        // console.log("% »»» WebSocketJs WF *** - WsRequestsService - WebSocketJs onData object ", object);
-
         if (that.onData) {
           that.onData(json.payload.message, object);
         }
 
         var callbackObj = that.callbacks.get(object.event.topic);
-        // console.log("% »»» WebSocketJs WF - WsRequestsService - WebSocketJs onData callbackObj ", callbackObj);
         if (callbackObj && callbackObj.onData) {
-          // console.log("% »»» WebSocketJs WF - WsRequestsService - WebSocketJs onData json.payload.message ", json.payload.message);
-          // console.log("% »»» WebSocketJs WF - WsRequestsService - WebSocketJs onData object ", object);
           callbackObj.onData(json.payload.message, object);
         }
 
         if (json && json.payload && json.payload.message && that.isArray(json.payload.message)) {
 
           json.payload.message.forEach(element => {
-            // console.log("element", element);
+  
             //let insUp = that.insertOrUpdate(element);
             let insUp = json.payload.method;
-            // console.log("% »»» WebSocketJs WF *** - insUp", insUp);
-
+          
             var object = { event: json.payload, data: element };
 
-            //console.log("% object.event.topic",object.event.topic);
-            //console.log("% that.callbacks",that.callbacks);
             var callbackObj = that.callbacks.get(object.event.topic);
 
-            // console.log("% »»» WebSocketJs - INIT callbackObj when array (1) ", callbackObj);
+         
             if (insUp == "CREATE") {
-
               if (that.onCreate) {
-                // console.log("% »»» WebSocketJs WF *** - INIT > CREATE when array (general)");
                 that.onCreate(element, object);
               }
 
               if (callbackObj) {
-
                 callbackObj.onCreate(element, object);
-                // console.log("% »»» WebSocketJs - INIT > CREATE when array (specific) callbackObj (2)", callbackObj);
               }
             }
 
             if (insUp == "UPDATE") {
-
-              // console.log('% »»» WebSocketJs WF *** - INIT > UPDATE  callbackObj when array (1)', callbackObj)
-
               if (that.onUpdate) {
-
                 that.onUpdate(element, object);
-                // console.log('% »»» WebSocketJs - INIT > UPDATE when array (general) onUpdate ', that.onUpdate(element, object));
               }
 
               if (callbackObj && callbackObj.onUpdate) {
-
                 callbackObj.onUpdate(element, object);
-                // console.log('% »»» WebSocketJs - INIT > UPDATE when array (specific) callbackObj (2)', callbackObj);
               }
             }
-            //this.data.push(element);
-
             resolve({ element: element, object: object });
-            // $('#messages').after(element.text + '<br>');
           });
 
         } else {
           //let insUp = that.insertOrUpdate(json.payload.message);
           let insUp = json.payload.method;
-          // console.log("insUp", insUp);
+         
           var object = { event: json.payload, data: json };
           var callbackObj = that.callbacks.get(object.event.topic);
-          // console.log('% »»» WebSocketJs - INIT callbackObj when object (1)', callbackObj)
+        
 
           if (insUp == "CREATE") {
-
             if (that.onCreate) {
-              // console.log("% »»» WebSocketJs WF *** - INIT > CREATE when object (general)");
               that.onCreate(json.payload.message, object);
             }
 
@@ -595,15 +517,11 @@ export class WebSocketJs {
           }
 
           if (insUp == "UPDATE") {
-            // console.log('% »»» WebSocketJs WF *** - INIT > UPDATE  when object callbackObj (1)', callbackObj)
-
             if (that.onUpdate) {
-              // console.log('% »»» WebSocketJs - INIT > UPDATE when object (general)')
               that.onUpdate(json.payload.message, object);
             }
 
             if (callbackObj && callbackObj.onUpdate) {
-              //  console.log("% »»» WebSocketJs - INIT > UPDATE when object (specific) callbackObj (2)", callbackObj);
               callbackObj.onUpdate(json.payload.message, object);
             }
 
@@ -617,18 +535,20 @@ export class WebSocketJs {
     }); // .PROMISE
   }
 
+  // -------------------------------------
   // !! not use this but the above close()
-  closeWebsocket() {
-    this.topics = [];
-    this.callbacks = [];
-    console.log('% »»» WebSocketJs WF - closeWebsocket  this.ws ', this.ws)
-    // this.userHasClosed = true;
-    // console.log('% »»» WebSocketJs WF - closeWebsocket this.userHasClosed ' , this.userHasClosed)
-    if (this.ws) {
-      this.ws.close();
-      console.log('% »»» WebSocketJs WF - closeWebsocket ')
-    }
-  }
+  // -------------------------------------
+
+  // closeWebsocket() {
+  //   this.topics = [];
+  //   this.callbacks = [];
+  //   this.logger.log('% »»» WebSocketJs WF - closeWebsocket  this.ws ', this.ws)
+
+  //   if (this.ws) {
+  //     this.ws.close();
+  //     this.logger.log('% »»» WebSocketJs WF - closeWebsocket ')
+  //   }
+  // }
 
 
 

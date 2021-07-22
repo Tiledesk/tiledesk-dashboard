@@ -1,17 +1,19 @@
 import { Injectable } from '@angular/core';
-
+import { LoggerService } from '../services/logger/logger.service';
 @Injectable()
+
 export class PopupService {
 
-  constructor() { }
+  constructor(
+    private logger: LoggerService
+  ) { }
 
   makeSegnalationsServedPopup(request: any): string {
-
-    console.log("request: ", request)
-    console.log("request.first_text", request.first_text)
-    console.log("request.department.name", request.dept.name)
+    this.logger.log("[POPUP-SERV] - MAKE SEGNALATIONS SERVED POPUP - request: ", request)
+    this.logger.log("[POPUP-SERV] - MAKE SEGNALATIONS SERVED POPUP - request.first_text", request.first_text)
+    this.logger.log("[POPUP-SERV] - MAKE SEGNALATIONS SERVED POPUP - request.department.name", request.dept.name)
     let requester = request.requester_fullname_initial;
-    console.log("REQUESTER: ", requester)
+    this.logger.log("[POPUP-SERV] - MAKE SEGNALATIONS SERVED POPUP - REQUESTER: ", requester)
     if (requester === 'N/A') {
       requester = 'Guest'
     }
@@ -41,7 +43,7 @@ export class PopupService {
   }
 
   makeSegnalationsUnservedPopup(request: any): string {
-    console.log("request: ", request)
+    this.logger.log("[POPUP-SERV] - MAKE SEGNALATIONS UNSERVED POPUP request: ", request)
     let requester = request.requester_fullname_initial;
     if (requester === 'N/A') {
       requester = 'Guest'
@@ -56,22 +58,13 @@ export class PopupService {
       "<div><button class='btn btn-primary btn-xs goToRequestDetail' value=" + request.request_id + ">Request Detail</button></div>"
   }
 
-  // makeSegnalationsPopupFromOR(data: any): string {
-  //   let category: string = data._category.replace('_', ' ');
-  //   let categoryCapitalize = category.charAt(0).toUpperCase() + category.slice(1);
 
-  //   return `` +
-  //     `<div>Requester: <b>Nome Cognome</b></div>` +
-  //     `<div>Tipo: <b>${categoryCapitalize}</xb></div>`
-  // }
 
   timeSince(date) {
-
     let requestDate = new Date(date).valueOf() / 1000;
     var seconds = Math.floor(((new Date().getTime() / 1000) - requestDate))
 
     var interval = seconds / 31536000;
-
 
     if (interval > 1) {
       return Math.floor(interval) + " years ago";

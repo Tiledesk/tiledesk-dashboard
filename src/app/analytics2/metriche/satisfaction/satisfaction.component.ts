@@ -8,6 +8,7 @@ import { AnalyticsService } from './../../../services/analytics.service';
 import { Component, OnInit } from '@angular/core';
 import { Chart } from 'chart.js';
 import * as moment from 'moment';
+import { LoggerService } from './../../..//services/logger/logger.service';
 
 @Component({
   selector: 'appdashboard-satisfaction',
@@ -40,14 +41,17 @@ export class SatisfactionComponent implements OnInit {
   projectBotsList: any;
   bots: any;
 
-  constructor(private translate: TranslateService,
+  constructor(
+    private translate: TranslateService,
     private analyticsService: AnalyticsService,
     private departmentService: DepartmentService,
     private usersService: UsersService,
-    private faqKbService: FaqKbService) {
+    private faqKbService: FaqKbService,
+    private logger: LoggerService
+    ) {
 
     this.lang = this.translate.getBrowserLang();
-    console.log('LANGUAGE ', this.lang);
+    this.logger.log('[ANALYTICS - SATISFACTION] LANGUAGE ', this.lang);
     this.switchMonthName();
 
   }
@@ -60,7 +64,7 @@ export class SatisfactionComponent implements OnInit {
 
     this.initDay = moment().subtract(6, 'd').format('D/M/YYYY');
     this.endDay = moment().subtract(0, 'd').format('D/M/YYYY');
-    console.log("INIT", this.initDay, "END", this.endDay);
+    this.logger.log("[ANALYTICS - SATISFACTION] INIT", this.initDay, "END", this.endDay);
 
     this.getDepartments();
     this.getProjectUsersAndBots();
@@ -79,7 +83,7 @@ export class SatisfactionComponent implements OnInit {
   }
 
   daysSelect(value, event) {
-    console.log("EVENT: ", event)
+    this.logger.log("[ANALYTICS - SATISFACTION] daysSelect EVENT: ", event)
     this.selectedDaysId = value;
 
     if (value <= 30) {
@@ -95,29 +99,29 @@ export class SatisfactionComponent implements OnInit {
   }
 
   depSelected(selectedDeptId: string) {
-    console.log('Department selected: ', selectedDeptId);
+    this.logger.log('[ANALYTICS - SATISFACTION] Department selected: ', selectedDeptId);
     this.barChart.destroy();
     this.subscription.unsubscribe();
     this.getSatisfactionByLastNDays(this.selectedDaysId, selectedDeptId, this.selectedAgentId);
   }
 
   agentSelected(selectedAgentId) {
-    console.log("Selected agent: ", selectedAgentId);
+    this.logger.log("[ANALYTICS - SATISFACTION] Selected agent: ", selectedAgentId);
     this.barChart.destroy();
     this.subscription.unsubscribe();
     this.getSatisfactionByLastNDays(this.selectedDaysId, this.selectedDeptId, selectedAgentId)
-    console.log('REQUEST:', this.selectedDaysId, this.selectedDeptId, selectedAgentId)
+    this.logger.log('[ANALYTICS - SATISFACTION] agentSelected REQUEST:', this.selectedDaysId, this.selectedDeptId, selectedAgentId)
   }
 
   getDepartments() {
     this.departmentService.getDeptsByProjectId().subscribe((_departments: any) => {
-      console.log('!!! NEW REQUESTS HISTORY - GET DEPTS RESPONSE by analitycs ', _departments);
+      this.logger.log('[ANALYTICS - SATISFACTION] - GET DEPTS RESPONSE by analitycs ', _departments);
       this.departments = _departments
 
     }, error => {
-      console.log('!!! NEW REQUESTS HISTORY - GET DEPTS - ERROR: ', error);
+      this.logger.error('[ANALYTICS - SATISFACTION] - GET DEPTS - ERROR: ', error);
     }, () => {
-      console.log('!!! NEW REQUESTS HISTORY - GET DEPTS * COMPLETE *')
+      this.logger.log('[ANALYTICS - SATISFACTION] - GET DEPTS * COMPLETE *')
     });
   }
 
@@ -130,8 +134,8 @@ export class SatisfactionComponent implements OnInit {
     Observable
       .zip(projectUsers, bots, (_projectUsers: any, _bots: any) => ({ _projectUsers, _bots }))
       .subscribe(pair => {
-        console.log('BASE-TRIGGER - GET P-USERS-&-BOTS - PROJECT USERS : ', pair._projectUsers);
-        console.log('BASE-TRIGGER - GET P-USERS-&-BOTS - BOTS: ', pair._bots);
+        this.logger.log('[ANALYTICS - SATISFACTION] - GET P-USERS-&-BOTS - PROJECT USERS : ', pair._projectUsers);
+        this.logger.log('[ANALYTICS - SATISFACTION] - GET P-USERS-&-BOTS - BOTS: ', pair._bots);
 
         if (pair && pair._projectUsers) {
           this.projectUsersList = pair._projectUsers;
@@ -156,28 +160,28 @@ export class SatisfactionComponent implements OnInit {
           });
         }
 
-        console.log('BASE-TRIGGER - GET P-USERS-&-BOTS - PROJECT-USER & BOTS ARRAY : ', this.projectUserAndBotsArray);
+        this.logger.log('[ANALYTICS - SATISFACTION] - GET P-USERS-&-BOTS - PROJECT-USER & BOTS ARRAY : ', this.projectUserAndBotsArray);
 
       }, error => {
-        console.log('BASE-TRIGGER - GET P-USERS-&-BOTS - ERROR: ', error);
+        this.logger.error('[ANALYTICS - SATISFACTION] - GET P-USERS-&-BOTS - ERROR: ', error);
       }, () => {
-        console.log('BASE-TRIGGER - GET P-USERS-&-BOTS - COMPLETE');
+        this.logger.log('[ANALYTICS - SATISFACTION]- GET P-USERS-&-BOTS - COMPLETE');
       });
   }
 
   getAvgSatisfaction() {
     this.analyticsService.getAvgSatisfaction().then((res) => {
-      console.log("!!! ANALYTICS STISFACTION !!! AVG Satisfaction: ", res);
+      this.logger.log("[ANALYTICS - SATISFACTION] !!! AVG Satisfaction: ", res);
       this.avgSatisfaction = res[0].satisfaction_avg;
     }).catch((err) => {
-      console.error("Error during getAvgSatisfaction: ", err);
+      this.logger.error("[ANALYTICS - SATISFACTION] Error during getAvgSatisfaction: ", err);
       this.avgSatisfaction = 0;
     })
   }
 
   getSatisfactionByLastNDays(lastdays, depId, participantId) {
     this.subscription = this.analyticsService.getSatisfactionByDay(lastdays, depId, participantId).subscribe((satisfactionByDay: any) => {
-      console.log("»» SATISFACTION BY DAY RESULT: ", satisfactionByDay);
+      this.logger.log("[ANALYTICS - SATISFACTION] »» SATISFACTION BY DAY RESULT: ", satisfactionByDay);
 
       const requestSatisfactionByDays_series_array = [];
       const requestSatisfactionByDays_labels_array = [];
@@ -188,23 +192,23 @@ export class SatisfactionComponent implements OnInit {
           lastNdays_initarraySatisfaction.push({ date: moment().subtract(i, 'd').format('D/M/YYYY'), value: 0 });
         }
         lastNdays_initarraySatisfaction.reverse();
-        console.log('»» !!! ANALYTICS - REQUESTS SATISFACTION BY DAY - (init array)', lastNdays_initarraySatisfaction);
+        this.logger.log('[ANALYTICS - SATISFACTION] - REQUESTS SATISFACTION BY DAY - (init array)', lastNdays_initarraySatisfaction);
 
         const customSatisfactionChart = [];
 
         for (let j in satisfactionByDay) {
-          console.log("****** satisfaction: ", satisfactionByDay[j]);
+          this.logger.log("[ANALYTICS - SATISFACTION] ****** satisfaction: ", satisfactionByDay[j]);
           if (satisfactionByDay[j].satisfaction_avg == null) {
             satisfactionByDay[j].satisfaction_avg = 0;
           }
           customSatisfactionChart.push({ date: new Date(satisfactionByDay[j]._id.year, satisfactionByDay[j]._id.month - 1, satisfactionByDay[j]._id.day).toLocaleDateString(), value: satisfactionByDay[j].satisfaction_avg });
         }
 
-        console.log('Satisfaction data:', customSatisfactionChart);
+        this.logger.log('[ANALYTICS - SATISFACTION] Satisfaction data:', customSatisfactionChart);
 
         // build a final array that compars value between the two arrray before builded with respect to date key value
         const satisfactionByDays_final_array = lastNdays_initarraySatisfaction.map(obj => customSatisfactionChart.find(o => o.date === obj.date) || obj);
-        console.log('»» !!! ANALYTICS - REQUESTS SATISFACTION BY DAY - FINAL ARRAY ', satisfactionByDays_final_array);
+        this.logger.log('[ANALYTICS - SATISFACTION] - REQUESTS SATISFACTION BY DAY - FINAL ARRAY ', satisfactionByDays_final_array);
 
         // const requestSatisfactionByDays_series_array = [];
         // const requestSatisfactionByDays_labels_array = [];
@@ -212,25 +216,25 @@ export class SatisfactionComponent implements OnInit {
         // select init and end day to show on div
         this.initDay = satisfactionByDays_final_array[0].date;
         this.endDay = satisfactionByDays_final_array[lastdays - 1].date;
-        console.log('INIT', this.initDay, 'END', this.endDay);
+        this.logger.log('[ANALYTICS - SATISFACTION] INIT', this.initDay, 'END', this.endDay);
 
         satisfactionByDays_final_array.forEach(requestByDay => {
-          //console.log('»» !!! ANALYTICS - REQUESTS SATISFACTION BY DAY - requestByDay', requestByDay);
+          //this.logger.log('»» !!! ANALYTICS - REQUESTS SATISFACTION BY DAY - requestByDay', requestByDay);
           requestSatisfactionByDays_series_array.push(requestByDay.value);
 
           const splitted_date = requestByDay.date.split('/');
-          //console.log('»» !!! ANALYTICS - REQUESTS SATISFACTION BY DAY - SPLITTED DATE', splitted_date);
+          //this.logger.log('»» !!! ANALYTICS - REQUESTS SATISFACTION BY DAY - SPLITTED DATE', splitted_date);
           requestSatisfactionByDays_labels_array.push(splitted_date[0] + ' ' + this.monthNames[splitted_date[1]])
         })
 
         this.xValueSatisfaction = requestSatisfactionByDays_labels_array;
         this.yValueSatisfaction = requestSatisfactionByDays_series_array;
 
-        console.log('Xlabel-Satisfaction', this.xValueSatisfaction);
-        console.log('Ylabel-Satisfaction', this.yValueSatisfaction);
+        this.logger.log('[ANALYTICS - SATISFACTION] Xlabel-Satisfaction', this.xValueSatisfaction);
+        this.logger.log('[ANALYTICS - SATISFACTION] Ylabel-Satisfaction', this.yValueSatisfaction);
 
       } else {
-        console.log('!!!ERROR!!! while get data from resouces for requests satisfaction graph');
+        this.logger.error('[ANALYTICS - SATISFACTION] !!!ERROR!!! while get data from resouces for requests satisfaction graph');
       }
 
       // set the stepsize
@@ -328,7 +332,7 @@ export class SatisfactionComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    console.log('!!! ANALYTICS.RICHIESTE - !!!!! UN - SUBSCRIPTION TO REQUESTS');
+    this.logger.log('[ANALYTICS - SATISFACTION] - !!!!! UN - SUBSCRIPTION TO REQUESTS');
     this.subscription.unsubscribe();
   }
 

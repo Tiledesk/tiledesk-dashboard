@@ -1,11 +1,7 @@
 import { Component, OnInit, HostListener, AfterViewInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { RequestsService } from '../services/requests.service';
-
 import { ContactsService } from '../services/contacts.service';
-import { BotLocalDbService } from '../services/bot-local-db.service';
-import { LocalDbService } from '../services/users-local-db.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../core/auth.service';
 import { avatarPlaceholder, getColorBck } from '../utils/util';
@@ -13,6 +9,7 @@ import { NotifyService } from '../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AppConfigService } from 'app/services/app-config.service';
 import { UsersService } from '../services/users.service';
+import { LoggerService } from '../services/logger/logger.service';
 const swal = require('sweetalert');
 @Component({
   selector: 'appdashboard-contact-details',
@@ -87,16 +84,14 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
   constructor(
     public location: Location,
     private route: ActivatedRoute,
-    private requestsService: RequestsService,
-    private usersLocalDbService: LocalDbService,
-    private botLocalDbService: BotLocalDbService,
     private router: Router,
     public auth: AuthService,
     private contactsService: ContactsService,
     private notify: NotifyService,
     private translate: TranslateService,
     private appConfigService: AppConfigService,
-    private usersService: UsersService
+    private usersService: UsersService,
+    private logger: LoggerService
   ) { }
 
   // -----------------------------------------------------------------------------------------------------
@@ -113,7 +108,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
     if (rightSidebar) {
       this.rightSidebarWidth = rightSidebar.offsetWidth
     }
-    // console.log(`:-D CONTACT DETAILS - ATTRIBUTES onResize attributeValueElem offsetWidth:`, this.rightSidebarWidth);
+    // this.logger.log(`:-D CONTACT DETAILS - ATTRIBUTES onResize attributeValueElem offsetWidth:`, this.rightSidebarWidth);
   }
 
   ngOnInit() {
@@ -128,7 +123,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
   getChatUrl() {
     this.CHAT_BASE_URL = this.appConfigService.getConfig().CHAT_BASE_URL;
-    console.log('AppConfigService getAppConfig (!!!!! CONTACTS DTLS) CHAT_BASE_URL', this.CHAT_BASE_URL);
+    this.logger.log('[CONTACTS-DTLS] AppConfigService getAppConfig CHAT_BASE_URL', this.CHAT_BASE_URL);
   }
 
   getTranslation() {
@@ -167,7 +162,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
   // MOVE TO TRASH
   // --------------------------------------------------
   moveContactToTrash(contactid: string, fullName: string) {
-    // console.log('!!!!! CONTACTS - ON MODAL DELETE OPEN -> USER ID ', id);
+    // this.logger.log('[CONTACTS-DTLS] - ON MODAL DELETE OPEN -> USER ID ', id);
 
     // this.displayDeleteModal = 'block';
 
@@ -178,7 +173,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
       this.moveContactToTrash_msg = text
     })
-    console.log('!!!!! CONTACTS DTLS - moveContactToTrash ', this.moveContactToTrash_msg);
+    this.logger.log('[CONTACTS-DTLS] - moveContactToTrash ', this.moveContactToTrash_msg);
 
     swal({
       title: this.moveToTrash_msg,
@@ -189,20 +184,20 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
     })
       .then((willDelete) => {
         if (willDelete) {
-          console.log('swal willDelete', willDelete)
+          this.logger.log('[CONTACTS-DTLS] swal willDelete', willDelete)
 
           this.contactsService.deleteLead(contactid).subscribe((res: any) => {
-            console.log('in swal deleteRequest res ', res)
+            this.logger.log('[CONTACTS-DTLS] in swal deleteRequest res ', res)
 
           }, (error) => {
-            console.log('in swal deleteRequest res - ERROR ', error);
+            this.logger.error('[CONTACTS-DTLS] in swal deleteRequest res - ERROR ', error);
 
             swal(this.errorDeleting, this.pleaseTryAgain, {
               icon: "error",
             });
 
           }, () => {
-            console.log('in swal deleteRequest res* COMPLETE *');
+            this.logger.log('[CONTACTS-DTLS]in swal deleteRequest res * COMPLETE *');
 
             swal(this.done_msg + "!", this.contactHasBeenMovedToTheTrash, {
               icon: "success",
@@ -212,7 +207,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
           });
         } else {
-          console.log('swal willDelete', willDelete)
+          this.logger.log('[CONTACTS-DTLS] swal willDelete', willDelete)
           // swal("Your imaginary file is safe!");
         }
       });
@@ -232,7 +227,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
     this.rightSidebarWidth = rightSidebar.offsetWidth
 
-    console.log(`:-D CONTACT DETAILS - ATTRIBUTES AfterViewInit attributeValueElem offsetWidth:`, this.rightSidebarWidth);
+    this.logger.log(`[CONTACTS-DTLS] - ATTRIBUTES AfterViewInit attributeValueElem offsetWidth:`, this.rightSidebarWidth);
 
   }
 
@@ -243,7 +238,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
       .subscribe((text: string) => {
 
         this.deleteLeadSuccessNoticationMsg = text;
-        // console.log('+ + + DeleteLeadSuccessNoticationMsg', text)
+        // this.logger.log('[CONTACTS-DTLS] + + + DeleteLeadSuccessNoticationMsg', text)
       });
   }
 
@@ -253,14 +248,14 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
       .subscribe((text: string) => {
 
         this.deleteLeadErrorNoticationMsg = text;
-        // console.log('+ + + DeleteLeadErrorNoticationMsg', text)
+        // this.logger.log('[CONTACTS-DTLS] + + + DeleteLeadErrorNoticationMsg', text)
       });
 
   }
 
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
-      console.log('00 -> CONTACT DETAILS - PRJCT FROM SUBSCRIPTION TO AUTH SERV  ', project)
+      this.logger.log('[CONTACTS-DTLS] - PRJCT FROM SUBSCRIPTION TO AUTH SERV  ', project)
       if (project) {
         this.projectId = project._id;
       }
@@ -270,20 +265,21 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
   getCurrentUser() {
     const user = this.auth.user_bs.value
 
-    console.log('!!!!! CONTACTS DETAILS - LOGGED USER ', user);
+    this.logger.log('[CONTACTS-DTLS] - LOGGED USER ', user);
     if (user) {
 
       this.currentUserID = user._id
-      console.log('!!!!! CONTACTS DETAILS- USER UID ', this.currentUserID);
+      this.logger.log('[CONTACTS-DTLS] - USER UID ', this.currentUserID);
 
     } else {
-      // console.log('No user is signed in');
+      this.logger.log('[CONTACTS-DTLS] - No user is signed in ');
+      
     }
   }
 
   getRequesterIdParam_AndThenGetRequestsAndContactById() {
     this.requester_id = this.route.snapshot.params['requesterid'];
-    console.log('!!!!! CONTACTS DETAILS - REQUESTER ID ', this.requester_id);
+    this.logger.log('[CONTACTS-DTLS] - GET REQUESTER ID PARAM & THEN GET REQUESTS AND CONTACT BY ID -> REQUESTER ID ', this.requester_id);
 
     if (this.requester_id) {
       this.getContactById();
@@ -295,66 +291,64 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
   decreasePageNumber() {
     this.pageNo -= 1;
 
-    console.log('!!!!! CONTACTS DETAILS - DECREASE PAGE NUMBER ', this.pageNo);
+    this.logger.log('[CONTACTS-DTLS] - DECREASE PAGE NUMBER ', this.pageNo);
     this.getRequests()
   }
 
   increasePageNumber() {
     this.pageNo += 1;
-    console.log('!!!!! CONTACTS DETAILS  - INCREASE PAGE NUMBER ', this.pageNo);
+    this.logger.log('[CONTACTS-DTLS]  - INCREASE PAGE NUMBER ', this.pageNo);
     this.getRequests()
   }
 
 
   getRequests() {
-    this.contactsService.getNodeJsRequestsByRequesterId(this.requester_id, this.pageNo)
+    this.contactsService.getRequestsByRequesterId(this.requester_id, this.pageNo)
       .subscribe((requests_object: any) => {
 
         if (requests_object) {
-          console.log('!!!!! CONTACTS DETAILS - REQUESTS OBJECTS ', requests_object);
+          this.logger.log('[CONTACTS-DTLS] - getRequests REQUESTS OBJECTS ', requests_object);
           this.requests_list = requests_object['requests'];
-          console.log('!!!!! CONTACTS DETAILS - REQUESTS LIST (got by requester_id) ', this.requests_list);
+          this.logger.log('[CONTACTS-DTLS] - getRequests REQUESTS LIST (got by requester_id) ', this.requests_list);
 
           this.requests_list = requests_object['requests'];
 
 
           this.requests_list.forEach(request => {
             request.currentUserIsJoined = false;
-            console.log(' REQUEST ', request)
+            this.logger.log('[CONTACTS-DTLS] - REQUEST ', request)
             request.participants.forEach(p => {
-              console.log(' Participant ', p);
+              this.logger.log('[CONTACTS-DTLS] Participant ', p);
               if (p === this.currentUserID) {
                 request.currentUserIsJoined = true;
                 return
               }
             })
-            // Object.keys(participants).forEach(m => {
           });
-
 
           // to test pagination
           // const requestsCount = 83;
           const requestsCount = requests_object['count'];
-          console.log('!!!!! CONTACTS DETAILS - REQUESTS COUNT ', requestsCount);
+          this.logger.log('[CONTACTS-DTLS] - REQUESTS COUNT ', requestsCount);
 
           this.displayHideFooterPagination(requestsCount);
 
           const requestsPerPage = requests_object['perPage'];
-          console.log('!!!!! CONTACTS DETAILS - N° OF REQUESTS X PAGE ', requestsPerPage);
+          this.logger.log('[CONTACTS-DTLS] - N° OF REQUESTS X PAGE ', requestsPerPage);
 
           const totalPagesNo = requestsCount / requestsPerPage;
-          console.log('!!!!! CONTACTS DETAILS - TOTAL PAGES NUMBER', totalPagesNo);
+          this.logger.log('[CONTACTS-DTLS] - TOTAL PAGES NUMBER', totalPagesNo);
 
           this.totalPagesNo_roundToUp = Math.ceil(totalPagesNo);
-          console.log('!!!!! CONTACTS DETAILS  - TOTAL PAGES NUMBER ROUND TO UP ', this.totalPagesNo_roundToUp);
+          this.logger.log('[CONTACTS-DTLS] - TOTAL PAGES NUMBER ROUND TO UP ', this.totalPagesNo_roundToUp);
 
         }
       }, (error) => {
         this.showSpinner = false;
-        console.log('!!!!! CONTACTS DETAILS - GET REQUEST BY REQUESTER ID - ERROR ', error);
+        this.logger.error('[CONTACTS-DTLS] - GET REQUEST BY REQUESTER ID - ERROR ', error);
       }, () => {
         this.showSpinner = false;
-        console.log('!!!!! CONTACTS DETAILS - GET REQUEST BY REQUESTER ID * COMPLETE *');
+        this.logger.log('[CONTACTS-DTLS] - GET REQUEST BY REQUESTER ID * COMPLETE *');
       });
   }
 
@@ -363,18 +357,18 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
     if (requests_count >= 16) {
       this.displaysFooterPagination = true;
       // tslint:disable-next-line:max-line-length
-      console.log('!!!!! CONTACTS DETAILS ', requests_count, 'DISPLAY FOOTER PAG ', this.displaysFooterPagination);
+      this.logger.log('[CONTACTS-DTLS] ', requests_count, 'DISPLAY FOOTER PAG ', this.displaysFooterPagination);
     } else {
       this.displaysFooterPagination = false;
       // tslint:disable-next-line:max-line-length
-      console.log('!!!!! CONTACTS DETAILS ', requests_count, 'DISPLAY FOOTER PAG ', this.displaysFooterPagination);
+      this.logger.log('[CONTACTS-DTLS] ', requests_count, 'DISPLAY FOOTER PAG ', this.displaysFooterPagination);
     }
   }
 
 
   toggleAddress() {
     this.showAllAddress = !this.showAllAddress;
-    console.log('!!!!! CONTACTS DETAILS SHOW ALL ADDRESS ', this.showAllAddress);
+    this.logger.log('[CONTACTS-DTLS] SHOW ALL ADDRESS ', this.showAllAddress);
 
     const addressArrowIconElem = <HTMLElement>document.querySelector('#address_arrow_down');
 
@@ -388,10 +382,8 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
   toggleAttributes() {
     this.showAttributes = !this.showAttributes;
-    console.log('!!!!! CONTACTS DETAILS SHOW ALL ATTRIBUTES ', this.showAttributes);
-
+    this.logger.log('[CONTACTS-DTLS] SHOW ALL ATTRIBUTES ', this.showAttributes);
     const attributesArrowIconElem = <HTMLElement>document.querySelector('#attributes_arrow_down');
-
     if (this.showAttributes === true) {
       attributesArrowIconElem.classList.add("up");
     }
@@ -406,11 +398,11 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
   openAttributesDecodedJWTAccordion() {
     // var acc = document.getElementsByClassName("accordion");
     var acc = <HTMLElement>document.querySelector('.attributes-decoded-jwt-accordion');
-    // console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT - open attributes-decoded-jwt-accordion -  accordion elem ', acc);
+    // this.logger.log('[CONTACTS-DTLS] - ATTRIBUTES DECODED JWT - open attributes-decoded-jwt-accordion -  accordion elem ', acc);
     acc.classList.toggle("active");
     // var panel = acc.nextElementSibling ;
     var panel = <HTMLElement>document.querySelector('.attributes-decoded-jwt-panel')
-    // console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT-  open attributes-decoded-jwt-panel  -  panel ', panel);
+    // this.logger.log('[CONTACTS-DTLS] - ATTRIBUTES DECODED JWT-  open attributes-decoded-jwt-panel  -  panel ', panel);
 
     if (panel.style.maxHeight) {
       panel.style.maxHeight = null;
@@ -424,18 +416,16 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
     this.usersService.getProjectUserById(leadid).subscribe((projectUser: any) => {
 
 
-      // console.log('!!!!! CONTACTS DETAILS - GET PROJECT USER BY LEAD ID RES  ', projectUser);
-      // console.log('!!!!! CONTACTS DETAILS - GET PROJECT USER BY LEAD ID projectUser[0]  ', projectUser[0]);
-      // console.log('!!!!! CONTACTS DETAILS - GET PROJECT USER BY LEAD ID projectUser[0] isAuthenticated ', projectUser[0]['isAuthenticated']);
+      // this.logger.log('[CONTACTS-DTLS] - GET PROJECT USER BY LEAD ID RES  ', projectUser);
+      // this.logger.log('[CONTACTS-DTLS] - GET PROJECT USER BY LEAD ID projectUser[0]  ', projectUser[0]);
+      // this.logger.log('[CONTACTS-DTLS] - GET PROJECT USER BY LEAD ID projectUser[0] isAuthenticated ', projectUser[0]['isAuthenticated']);
       this.CONTACT_IS_VERIFIED = projectUser[0]['isAuthenticated']
-      console.log('!!!!! CONTACTS DETAILS - GET PROJECT USER BY LEAD ID CONTACT_IS_VERIFIED ', this.CONTACT_IS_VERIFIED);
-    },
-      (error) => {
-        console.log('!!!!! CONTACTS DETAILS - GET PROJECT USER BY LEAD ID ERR  ', error);
-      },
-      () => {
-        console.log('!!!!! CONTACTS DETAILS - GET PROJECT USER BY LEAD ID * COMPLETE *');
-      });
+      this.logger.log('[CONTACTS-DTLS] - GET PROJECT USER BY LEAD ID CONTACT_IS_VERIFIED ', this.CONTACT_IS_VERIFIED);
+    }, (error) => {
+      this.logger.error('[CONTACTS-DTLS] - GET PROJECT USER BY LEAD ID ERR  ', error);
+    }, () => {
+      this.logger.log('[CONTACTS-DTLS] - GET PROJECT USER BY LEAD ID * COMPLETE *');
+    });
   }
 
   getContactById() {
@@ -443,7 +433,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
       .subscribe((lead: any) => {
 
         if (lead) {
-          console.log('!!!!! CONTACTS DETAILS - GET LEAD BY REQUESTER ID ', lead);
+          this.logger.log('[CONTACTS-DTLS] - GET LEAD BY REQUESTER ID ', lead);
           this.contact_details = lead;
 
           if (this.contact_details && this.contact_details.lead_id) {
@@ -451,9 +441,8 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
             this.getProjectUserById(this.lead_id)
 
-            console.log('!!!!! CONTACTS DETAILS this.lead_id', this.lead_id)
+            this.logger.log('[CONTACTS-DTLS] this.lead_id', this.lead_id)
           }
-
 
           if (this.contact_details.streetAddress && this.contact_details.streetAddress !== "") {
             this.streetAddress = this.contact_details.streetAddress
@@ -486,15 +475,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
           }
 
           if (this.contact_details.fullname) {
-
-            // this.contact_fullname_initial = this.contact_details.fullname.charAt(0).toUpperCase();
-            // console.log('!!!!! CONTACTS DETAILS - CONTACT INITIAL: ', this.contact_fullname_initial);
-            // const charIndex = this.contact_fullname_initial.charCodeAt(0) - 65
-            // const colourIndex = charIndex % 19;
-            // console.log('!!!!! CONTACTS DETAILS - CONTACT colourIndex: ', colourIndex);
-            // this.fillColour = this.colours[colourIndex];
-            // console.log('!!!!! CONTACTS DETAILS - CONTACT fillColour: ', this.fillColour);
-
+       
             this.contact_fullname_initial = avatarPlaceholder(this.contact_details.fullname);
             this.fillColour = getColorBck(this.contact_details.fullname);
           } else {
@@ -534,12 +515,12 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
             for (let [key, value] of Object.entries(this.contact_details.attributes)) {
 
-              // console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES key : ${key} - value ${value}`);
+              // this.logger.log(`[CONTACTS-DTLS] -  ATTRIBUTES key : ${key} - value ${value}`);
 
               let _value: any;
               if (typeof value === 'object' && value !== null) {
 
-                console.log(`:-D CONTACTS DETAILS - ATTRIBUTES value is an object :`, JSON.stringify(value));
+                this.logger.log(`[CONTACTS-DTLS] - ATTRIBUTES value is an object :`, JSON.stringify(value));
                 _value = JSON.stringify(value)
               } else {
                 _value = value
@@ -560,7 +541,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
               let totalLength = 0;
 
               // for (let i = 0; i < _value.length; i++) {
-              //   console.log(':-D Ws-REQUESTS-Msgs - getWsRequestById _value[i]', _value[i] + ": " + letterLength[_value[i]])
+              //   this.logger.log('[CONTACTS-DTLS] _value[i]', _value[i] + ": " + letterLength[_value[i]])
               // }
               if (_value) {
                 for (let i = 0; i < _value.length; i++) {
@@ -572,14 +553,14 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
                   }
                 }
 
-                console.log(':-D CONTACTS DETAILS - ATTRIBUTES value LENGHT ', _value + " totalLength : " + totalLength)
+                this.logger.log('[CONTACTS-DTLS] - ATTRIBUTES value LENGHT ', _value + " totalLength : " + totalLength)
 
                 let entries = { 'attributeName': key, 'attributeValue': _value, 'attributeValueL': totalLength };
 
                 this.attributesArray.push(entries)
               }
             } // ./end for
-            console.log(':-D CONTACTS DETAILS - getWsRequestById attributesArray: ', this.attributesArray);
+            this.logger.log('[CONTACTS-DTLS] - getWsRequestById attributesArray: ', this.attributesArray);
             // --------------------------------------------------------------------------------------------------------------
 
             // ---------------------------------------------------------
@@ -587,16 +568,16 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
             // ---------------------------------------------------------
             if (this.contact_details.attributes) {
               if (this.contact_details.attributes.decoded_jwt) {
-                // console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT ', this.contact_details.attributes.decoded_jwt);
+                // this.logger.log('[CONTACTS-DTLS] - ATTRIBUTES DECODED JWT ', this.contact_details.attributes.decoded_jwt);
                 this.attributesDecodedJWTArray = []
                 for (let [key, value] of Object.entries(this.contact_details.attributes.decoded_jwt)) {
 
-                  // console.log(`WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT -key : ${key} - value ${value}`);
+                  // this.logger.log(`[CONTACTS-DTLS] - ATTRIBUTES DECODED JWT -key : ${key} - value ${value}`);
 
                   let _value: any;
                   if (typeof value === 'object' && value !== null) {
 
-                    // console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES value is an object :`, JSON.stringify(value));
+                    // this.logger.log(`[CONTACTS-DTLS] - ATTRIBUTES value is an object :`, JSON.stringify(value));
                     _value = JSON.stringify(value)
                   } else {
                     _value = value
@@ -617,7 +598,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
                   let totalLength = 0;
 
                   // for (let i = 0; i < _value.length; i++) {
-                  //   console.log(':-D Ws-REQUESTS-Msgs - getWsRequestById _value[i]', _value[i] + ": " + letterLength[_value[i]])
+                  //   this.logger.log('[CONTACTS-DTLS] _value[i]', _value[i] + ": " + letterLength[_value[i]])
                   // }
 
                   for (let i = 0; i < _value.length; i++) {
@@ -628,7 +609,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
                       totalLength += letterLength['S'];
                     }
                   }
-                  // console.log(':-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES value LENGHT ', _value + " totalLength : " + totalLength)
+                  // this.logger.log('[CONTACTS-DTLS] - ATTRIBUTES value LENGHT ', _value + " totalLength : " + totalLength)
                   if (key !== 'attributes') {
                     let entries = { 'attributeName': key, 'attributeValue': _value, 'attributeValueL': totalLength };
 
@@ -636,14 +617,14 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
                     this.attributesDecodedJWTArray.push(entries)
                   }
                 }
-                // console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT - attributesDecodedJWTArray: ', this.attributesDecodedJWTArray);
+                // this.logger.log('[CONTACTS-DTLS] - ATTRIBUTES DECODED JWT - attributesDecodedJWTArray: ', this.attributesDecodedJWTArray);
                 // --------------------------------------------------------------------------------------------------------------
               } else {
 
-                // console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT IS UNDEFINED ');
+                // this.logger.log('[CONTACTS-DTLS] - ATTRIBUTES DECODED JWT IS UNDEFINED ');
               }
             } else {
-              console.log('WS-REQUESTS-MSGS - ATTRIBUTES IS UNDEFINED ');
+              this.logger.log('[CONTACTS-DTLS] - ATTRIBUTES IS UNDEFINED ');
             }
 
             // ---------------------------------------------------------
@@ -651,18 +632,18 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
             // ---------------------------------------------------------
             if (this.contact_details.attributes) {
               if (this.contact_details.attributes.decoded_jwt && this.contact_details.attributes.decoded_jwt.attributes) {
-                // console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT ATTRIBUTES', this.contact_details.attributes.decoded_jwt.attributes);
+                // this.logger.log('[CONTACTS-DTLS] - ATTRIBUTES DECODED JWT ATTRIBUTES', this.contact_details.attributes.decoded_jwt.attributes);
 
                 this.attributesDecodedJWTAttributesArray = []
                 // for (let [key, value] of Object.entries(this.request.attributes.decoded_jwt.attributes)) {
                 for (const [index, [key, value]] of Object.entries(Object.entries(this.contact_details.attributes.decoded_jwt.attributes))) {
 
-                  // console.log(`WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT ATTRIBUTES index :${index}: -key  ${key} - value ${value}`);
+                  // this.logger.log(`[CONTACTS-DTLS]- ATTRIBUTES DECODED JWT ATTRIBUTES index :${index}: -key  ${key} - value ${value}`);
 
                   let _value: any;
                   if (typeof value === 'object' && value !== null) {
 
-                    // console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES value is an object :`, JSON.stringify(value));
+                    // this.logger.log(`[CONTACTS-DTLS] - getWsRequestById ATTRIBUTES value is an object :`, JSON.stringify(value));
                     _value = JSON.stringify(value)
                   } else {
                     _value = value
@@ -684,7 +665,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
                   if (_value) {
                     for (let i = 0; i < _value.length; i++) {
-                      // console.log(':-D Ws-REQUESTS-Msgs - getWsRequestById _value[i]', _value[i] + ": " + letterLength[_value[i]])
+                      // this.logger.log('[CONTACTS-DTLS] - getWsRequestById _value[i]', _value[i] + ": " + letterLength[_value[i]])
 
 
                       for (let i = 0; i < _value.length; i++) {
@@ -696,67 +677,63 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
                         }
                       }
                     }
-                    // console.log(':-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES value LENGHT ', _value + " totalLength : " + totalLength)
+                    // this.logger.log('[CONTACTS-DTLS] getWsRequestById ATTRIBUTES value LENGHT ', _value + " totalLength : " + totalLength)
 
                     let entries = { 'attributeName': key, 'attributeValue': _value, 'decodedJWTType': 'Attributes', 'attributeValueL': totalLength, 'index': index };
 
                     this.attributesDecodedJWTAttributesArray.push(entries)
                   }
                 }
-                // console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT  ATTRIBUTES - attributesDecodedJWTAttributesArray: ', this.attributesDecodedJWTAttributesArray);
+                // this.logger.log('[CONTACTS-DTLS] - ATTRIBUTES DECODED JWT  ATTRIBUTES - attributesDecodedJWTAttributesArray: ', this.attributesDecodedJWTAttributesArray);
 
                 this.attributesDecodedJWTArrayMerged = [].concat(this.attributesDecodedJWTArray, this.attributesDecodedJWTAttributesArray);
 
-                // console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT  ATTRIBUTES - attributesDecodedJWTArrayMerged: ', this.attributesDecodedJWTArrayMerged);
+                // this.logger.log('[CONTACTS-DTLS] - ATTRIBUTES DECODED JWT  ATTRIBUTES - attributesDecodedJWTArrayMerged: ', this.attributesDecodedJWTArrayMerged);
                 // --------------------------------------------------------------------------------------------------------------
               } else {
                 this.attributesDecodedJWTArrayMerged = this.attributesDecodedJWTArray
-                console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT  ATTRIBUTES IS UNDEFINED (in decoded_jwt)');
-                console.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT  ATTRIBUTES - attributesDecodedJWTArrayMerged: ', this.attributesDecodedJWTArrayMerged);
+                this.logger.log('[CONTACTS-DTLS] - ATTRIBUTES DECODED JWT  ATTRIBUTES IS UNDEFINED (in decoded_jwt)');
+                this.logger.log('[CONTACTS-DTLS] - ATTRIBUTES DECODED JWT  ATTRIBUTES - attributesDecodedJWTArrayMerged: ', this.attributesDecodedJWTArrayMerged);
               }
             } else {
-              console.log('WS-REQUESTS-MSGS - ATTRIBUTES IS UNDEFINED (in  decoded_jwt)');
+              this.logger.log('[CONTACTS-DTLS] - ATTRIBUTES IS UNDEFINED (in  decoded_jwt)');
             }
-
-
           }
         }
-
       }, (error) => {
 
-        console.log('!!!!! CONTACTS DETAILS - GET LEAD BY REQUESTER ID - ERROR ', error);
+        this.logger.error('[CONTACTS-DTLS] - GET LEAD BY REQUESTER ID - ERROR ', error);
         this.fillColour = '#eeeeee';
         this.contact_fullname_initial = 'n.a.';
 
       }, () => {
-        console.log('!!!!! CONTACTS DETAILS - GET LEAD BY REQUESTER ID * COMPLETE *');
+        this.logger.log('[CONTACTS-DTLS] - GET LEAD BY REQUESTER ID * COMPLETE *');
       });
-
   }
 
 
   toggleShowAllString(elementAttributeValueId: any, elementArrowIconId: any, index) {
 
-    // console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES - element Attribute Value Id:`, elementAttributeValueId);
-    // console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES - element Arrow Icon id:`, elementArrowIconId);
+    // this.logger.log(`[CONTACTS-DTLS] - ATTRIBUTES - element Attribute Value Id:`, elementAttributeValueId);
+    // this.logger.log(`[CONTACTS-DTLS] - ATTRIBUTES - element Arrow Icon id:`, elementArrowIconId);
 
     // -------------------------------------------------------------
     // get the element that contains the attribute's value
     // -------------------------------------------------------------
     const attributeValueElem = <HTMLElement>document.querySelector(`#${elementAttributeValueId}`);
-    // console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES attributeValueElem :`, attributeValueElem);
+    // this.logger.log(`[CONTACTS-DTLS] ATTRIBUTES attributeValueElem :`, attributeValueElem);
 
     // -------------------------------------------------------------
     // get the element arrow icon 
     // -------------------------------------------------------------
     const arrowIconElem = <HTMLElement>document.querySelector(`#${elementArrowIconId}`);
-    // console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES arrowIconElem :`, arrowIconElem);
+    // this.logger.log(`[CONTACTS-DTLS] ATTRIBUTES arrowIconElem :`, arrowIconElem);
 
     // -------------------------------------------------------------
     // get the value of aria-expanded
     // -------------------------------------------------------------
     let isAriaExpanded = attributeValueElem.getAttribute('aria-expanded')
-    // console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES - element »»»»»»»»»»» isAriaExpanded:`, isAriaExpanded);
+    // this.logger.log(`[CONTACTS-DTLS] ATTRIBUTES - element »»»»»»»»»»» isAriaExpanded:`, isAriaExpanded);
 
 
     if (isAriaExpanded === 'false') {
@@ -797,47 +774,22 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
   toggleShowAllClientString() {
     this.showAllClientString = !this.showAllClientString;
-    console.log('SHOW ALL TEXT OF THE ATTRIBUTES > CLIENT ', this.showAllClientString)
+    this.logger.log('[CONTACTS-DTLS] - SHOW ALL TEXT OF THE ATTRIBUTES > CLIENT ', this.showAllClientString)
   }
   toggleShowAllsenderAuthInfoString() {
     this.showAllsenderAuthInfoString = !this.showAllsenderAuthInfoString;
-    console.log('SHOW ALL TEXT OF THE ATTRIBUTES > SENDER AUTH INFO ', this.showAllsenderAuthInfoString);
+    this.logger.log('[CONTACTS-DTLS] - SHOW ALL TEXT OF THE ATTRIBUTES > SENDER AUTH INFO ', this.showAllsenderAuthInfoString);
   }
 
   toggleShowAllSourcePageString() {
     this.showAllSourcePageString = !this.showAllSourcePageString;
-    console.log('SHOW ALL TEXT OF THE ATTRIBUTES > SOURCR PAGE ', this.showAllSourcePageString);
+    this.logger.log('[CONTACTS-DTLS] - SHOW ALL TEXT OF THE ATTRIBUTES > SOURCR PAGE ', this.showAllSourcePageString);
   }
 
   goBack() {
     this.location.back();
   }
 
-  // members_replace(member_id) {
-  //   const participantIsBot = member_id.includes('bot_')
-
-  //   if (participantIsBot === true) {
-
-  //     const bot_id = member_id.slice(4);
-  //         const bot = this.botLocalDbService.getBotFromStorage(bot_id);
-  //     if (bot) {
-  //       return member_id = '- ' + bot['name'] + ' (bot)';
-  //     } else {
-  //       return '- ' + member_id
-  //     }
-
-  //   } else {
-
-  //     const user = this.usersLocalDbService.getMemberFromStorage(member_id);
-  //     if (user) {
-  //       // console.log('user ', user)
-  //       const lastnameInizial = user['lastname'].charAt(0)
-  //       return member_id = '- ' + user['firstname'] + ' ' + lastnameInizial + '.'
-  //     } else {
-  //       return '- ' + member_id
-  //     }
-  //   }
-  // }
 
   getRequestText(text: string): string {
     if (text) {
@@ -848,10 +800,10 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
   }
 
   chatWithAgent() {
-    console.log("CONTACT: ", this.contact_details);
+    this.logger.log("[CONTACTS-DTLS] CHAT WITH AGENT > CONTACT: ", this.contact_details);
 
     const url = this.CHAT_BASE_URL + '?' + 'recipient=' + this.contact_details._id + '&recipientFullname=' + this.contact_details.fullname;
-    console.log("CONTACT-DETAIL-COMP - CHAT URL ", url);
+    this.logger.log("[CONTACTS-DTLS] - CHAT URL ", url);
     window.open(url, '_blank');
   }
 
@@ -866,8 +818,8 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
 
   openDeleteContactModal(id: string, fullName: string) {
-    console.log('!!!!! CONTACTS DETAILS - ON OPEN DELETE  MODAL -> CONTACT ID ', id);
-    console.log('!!!!! CONTACTS DETAILS - ON OPEN DELETE  MODAL -> FULL NAME ID ', fullName);
+    this.logger.log('[CONTACTS-DTLS] - ON OPEN DELETE  MODAL -> CONTACT ID ', id);
+    this.logger.log('[CONTACTS-DTLS] - ON OPEN DELETE  MODAL -> FULL NAME ID ', fullName);
 
     this.displayDeleteModal = 'block';
 
@@ -884,20 +836,20 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
     this.contactsService.deleteLead(this.id_toDelete)
       .subscribe((lead: any) => {
-        console.log('!!!!! CONTACTS - DELETE CONTACT RES ', lead);
+        this.logger.log('[CONTACTS-DTLS] - DELETE CONTACT RES ', lead);
 
         // GO TO CONTACT LIST
         this.goToContactDetails()
       }, (error) => {
-        console.log('!!!!! CONTACTS - DELETE REQUEST - ERROR ', error);
+        this.logger.error('[CONTACTS-DTLS] - DELETE CONTACT - ERROR ', error);
         // =========== NOTIFY ERROR ===========
         // this.notify.showNotification('An error occurred while deleting contact', 4, 'report_problem');
-        this.notify.showNotification(this.deleteLeadErrorNoticationMsg, 4, 'report_problem');
+        this.notify.showWidgetStyleUpdateNotification(this.deleteLeadErrorNoticationMsg, 4, 'report_problem');
       }, () => {
-        console.log('!!!!! CONTACTS - DELETE REQUEST * COMPLETE *');
+        this.logger.log('[CONTACTS-DTLS] - DELETE CONTACT * COMPLETE *');
         // =========== NOTIFY SUCCESS===========
         // this.notify.showNotification('Contact successfully deleted', 2, 'done');
-        this.notify.showNotification(this.deleteLeadSuccessNoticationMsg, 2, 'done');
+        this.notify.showWidgetStyleUpdateNotification(this.deleteLeadSuccessNoticationMsg, 2, 'done');
       });
 
   }

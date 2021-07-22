@@ -1540,7 +1540,7 @@
 	"Analytics": {
 		"AnalyticsTITLE": "Analytics",
 		"HeatMapTitle": "Anfragen pro Stunde pro Tag",
-		"PanoramicaComponentTitle": "Panoramica",
+		"PanoramicaComponentTitle": "Überblick",
 		"MetricsComponentTitle": "Metriken",
 		"Metrics": {
 			"Requests": "Gespräche",
@@ -1914,5 +1914,7 @@
 	"ResolutionBotImagesVideosButtonsAndMore": "Resolution bot: bilder, Videos, Schaltflächen und mehr",
 	"HandoffToHumanAgents": "Handoff zu menschlichen Agenten",
 	"RenderAbutton": "Eine Schaltfläche rendern",
-	"SettingUpAutomaticAssignment": "Automatische Zuordnung einrichten"
+	"SettingUpAutomaticAssignment": "Automatische Zuordnung einrichten",
+	"..................":"..................",
+	"Map":"Karte"
 }

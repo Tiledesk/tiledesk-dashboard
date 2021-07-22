@@ -2,7 +2,7 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { DomSanitizer } from '@angular/platform-browser'
 import { AppConfigService } from '../services/app-config.service';
-
+import { LoggerService } from '../services/logger/logger.service';
 @Component({
   selector: 'chat',
   templateUrl: './chat.component.html',
@@ -21,10 +21,10 @@ export class ChatComponent implements OnInit {
 
   constructor(
     private sanitizer: DomSanitizer,
-    public appConfigService: AppConfigService
+    public appConfigService: AppConfigService,
+    private logger: LoggerService
   ) {
-    // this.CHAT_BASE_URL = sanitizer.bypassSecurityTrustResourceUrl(environment.chat.CHAT_BASE_URL); // moved
-    // this.CHAT_BASE_URL = sanitizer.bypassSecurityTrustResourceUrl(environment.CHAT_BASE_URL); // now get from appconfig
+  
 
     // // User screen size
     // const screenHeight = window.screen.height;
@@ -52,21 +52,21 @@ export class ChatComponent implements OnInit {
   onResize(event: any) {
     // this.newInnerWidth = event.target.innerWidth;
     this.newInnerHeight = event.target.innerHeight;
-    console.log('NEW INNER HEIGHT ', this.newInnerHeight);
+    console.log('[CHAT-COMP] NEW INNER HEIGHT ', this.newInnerHeight);
     // this.iframeHeight = this.newInnerHeight - this.navbarHeight;
     this.iframeHeight = this.newInnerHeight - this.navbarAndFooterHeight;
-    console.log('ON RESIZE -> IFRAME HEIGHT (ACTUAL HEIGHT - NAVBAR HEIGHT) ', this.iframeHeight);
+    console.log('[CHAT-COMP] ON RESIZE -> IFRAME HEIGHT (ACTUAL HEIGHT - NAVBAR HEIGHT) ', this.iframeHeight);
 
     return { 'height': this.iframeHeight += 'px' };
   }
 
   onInitframeHeight(): any {
     this.actualHeight = window.innerHeight;
-    console.log('ACTUAL HEIGHT ', this.actualHeight);
+    console.log('[CHAT-COMP] ACTUAL HEIGHT ', this.actualHeight);
     // this.iframeHeight = this.actualHeight += 'px';
     // this.iframeHeight = this.actualHeight - this.navbarHeight;
     this.iframeHeight = this.actualHeight - this.navbarAndFooterHeight;
-    console.log('ON INIT -> IFRAME HEIGHT (ACTUAL HEIGHT - NAVBAR HEIGHT) ', this.iframeHeight);
+    console.log('[CHAT-COMP] ON INIT -> IFRAME HEIGHT (ACTUAL HEIGHT - NAVBAR HEIGHT) ', this.iframeHeight);
 
     return { 'height': this.iframeHeight += 'px' };
   }

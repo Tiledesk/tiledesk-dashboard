@@ -12,36 +12,36 @@ export interface Trigger {
         _id?: string
     },
     conditions?: {
-            _id?: string,
-            any?: [
-                    {
-                        fact?: string,
-                        path?: string,
-                        operator?: string,
-                        value?: string
-                    }
-            ],
-            all?: [
-                    {
-                        fact?: string,
-                        path?: string,
-                        operator?: string,
-                        value?: string
-                    }
-            ]
+        _id?: string,
+        any?: [
+            {
+                fact?: string,
+                path?: string,
+                operator?: string,
+                value?: string
+            }
+        ],
+        all?: [
+            {
+                fact?: string,
+                path?: string,
+                operator?: string,
+                value?: string
+            }
+        ]
     },
     createdBy?: any,
     __v?: any,
     enabled?: boolean,
     actions?: [
-                {
-                    _id?: string,
-                    key?: string,
-                    parameters?: {
-                        fullName?: string,
-                        text?: string
-                    },
+        {
+            _id?: string,
+            key?: string,
+            parameters?: {
+                fullName?: string,
+                text?: string
+            },
 
-                }
+        }
     ]
 }

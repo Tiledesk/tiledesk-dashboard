@@ -1555,7 +1555,7 @@
     "Analytics": {
         "AnalyticsTITLE": "Analytics",
         "HeatMapTitle": "Conversations per hour of day",
-        "PanoramicaComponentTitle": "Panoramic",
+        "PanoramicaComponentTitle": "Overview",
         "MetricsComponentTitle": "Metrics",
         "Metrics": {
             "Requests": "Conversations",
@@ -1673,7 +1673,7 @@
         "Actions": "Actions",
         "NoWebhookSubscriptions": "There are no webhook subscriptions",
         "CreateSubscription": "Create subscription",
-        "UpdateSubscription": "Update sottoscrizione",
+        "UpdateSubscription": "Update subscription",
         "RequiredFiled": "*Required field",
         "SelectEvent": "Select event",
         "SharedSecretGenerated": "Webhook Secret Generated",
@@ -1931,5 +1931,7 @@
    "ResolutionBotImagesVideosButtonsAndMore":"Resolution bot: images, videos, buttons and more" ,
    "HandoffToHumanAgents":"Handoff to human agents",
    "RenderAbutton": "Render a button",
-   "SettingUpAutomaticAssignment":"Setting up automatic assignment"
+   "SettingUpAutomaticAssignment":"Setting up automatic assignment",
+   "..................":"..................",
+   "Map":"Map"
 }

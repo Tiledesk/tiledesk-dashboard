@@ -13,7 +13,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { UsersService } from '../../services/users.service';
 import { FaqKbService } from '../../services/faq-kb.service';
-
+import { LoggerService } from '../../services/logger/logger.service';
 
 @Component({
   selector: 'appdashboard-trigger-add',
@@ -67,10 +67,11 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
     private notify: NotifyService,
     public translate: TranslateService,
     public usersService: UsersService,
-    public faqKbService: FaqKbService
+    public faqKbService: FaqKbService,
+    public logger: LoggerService
   ) {
 
-    super(translate, departmentService, usersService, faqKbService)
+    super(translate, departmentService, usersService, faqKbService, logger)
   }
 
   ngOnInit() {
@@ -95,7 +96,7 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
 
     // this.getDepartments();
     // this.selected_dept = this.getDefaultDept()  this.selected_dept 
-    console.log('TRIGGER (ADD) - >>> DEFAULT DEPT ID ', this.default_dept_id);
+    this.logger.log('[TRIGGER-ADD] - >>> DEFAULT DEPT ID ', this.default_dept_id);
 
     // because the trigger.key is set to default to message.received temp_cond filter
     // the condition in order of this key value
@@ -116,34 +117,15 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
   }
 
 
-  // getDepartments() {
-  //   this.departmentService.getDeptsByProjectId().subscribe((_departments: any) => {
-  //     console.log('TRIGGER - GET DEPTS RESPONSE  ', _departments);
-
-  //     _departments.forEach(dept => {
-  //       if (dept.default === true) {
-  //         console.log('TRIGGER - GET DEPTS RESPONSE default dept  ', dept);
-  //         this.default_dept_id = dept.id
-  //       }
-  //     });
-  //     console.log('TRIGGER - GET DEPTS - ARRAY : ', this.departments);
-  //   }, error => {
-  //     console.log('TRIGGER - GET DEPTS - ERROR: ', error);
-  //   }, () => {
-
-  //     console.log('TRIGGER - GET DEPTS * COMPLETE *')
-  //   });
-  // }
-
   public cleanForm() {
     //  let actions =  this.triggerForm.get('actions');
     let action_controls = this.triggerForm.get('actions')['controls'][0]
-    console.log('TRIGGER ->>>>> cleanForm - TRIGGER FORM > ACTIONS CONTROLS: ', action_controls);
+    this.logger.log('[TRIGGER-ADD] ->>>>> cleanForm - TRIGGER FORM > ACTIONS CONTROLS: ', action_controls);
     let parameters_text_value = action_controls.controls['parameters'].value.text;
     action_controls.get('parameters')
 
     const action_parameters_text_control = action_controls.get('parameters.text')
-    console.log('TRIGGER ->>>>> cleanForm - TRIGGER FORM > action_parameters_text_control: ', action_parameters_text_control);
+    this.logger.log('[TRIGGER-ADD] ->>>>> cleanForm - TRIGGER FORM > action_parameters_text_control: ', action_parameters_text_control);
 
     action_parameters_text_control.setValue(parameters_text_value.trim())
   }
@@ -176,13 +158,13 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
 
 
   addConditions(): void {
-    console.log('Add NEW CONDITIONS ARRAY');
+    this.logger.log('[TRIGGER-ADD] - Add NEW CONDITIONS ARRAY');
     this.conditions = this.triggerForm.get(this.conditionType) as FormArray;
     this.conditions.push(this.createCondition());
   }
 
   removeCondition(rowIndex: number): void {
-    console.log('Remove CONDITION ARRAY with index:', rowIndex);
+    this.logger.log('[TRIGGER-ADD] - Remove CONDITION ARRAY with index:', rowIndex);
     this.conditions = this.triggerForm.get(this.conditionType) as FormArray;
     if (this.conditions.length === 1 && rowIndex === 0) {
       this.notify.showNotification(this.messageCondition, 4, 'report_problem');
@@ -193,13 +175,13 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
   }
 
   addActions(): void {
-    console.log('Add NEW CONDITIONS ARRAY');
+    this.logger.log('[TRIGGER-ADD] Add NEW ACTION ARRAY');
     this.actions = this.triggerForm.get('actions') as FormArray;
     this.actions.push(this.createAction());
   }
 
   removeAction(rowIndex: number): void {
-    console.log('Remove CONDITION ARRAY with index:', rowIndex);
+    this.logger.log('[TRIGGER-ADD] Remove ACTION ARRAY BY index:', rowIndex);
     this.actions = this.triggerForm.get('actions') as FormArray;
     // check if exist at least 1 action to do for trigger
     if (this.actions.length === 1 && rowIndex === 0) {
@@ -210,22 +192,21 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
   }
 
   onEnableDisable(status: boolean) {
-    console.log('trigger status:', status)
+    this.logger.log('[TRIGGER-ADD] onEnableDisable trigger status:', status)
     this.triggerForm.controls['enabled'].setValue(status);
   }
 
   swithOnOff($event) {
-    console.log('trigger status', $event.target.checked)
+    this.logger.log('[TRIGGER-ADD] swithOnOff trigger status', $event.target.checked)
     this.triggerForm.controls['enabled'].setValue($event.target.checked);
   }
 
   // get dropdown ANY/ALL condition value
   conditionTriggerValue(value: string) {
-
     // this.temp_cond = this.condition; 
     // this.temp_act = this.action;
     this.conditionType = 'conditions.' + value;
-    console.log('Cond-value', this.conditionType);
+    this.logger.log('[TRIGGER-ADD] - Cond-value', this.conditionType);
 
     // reset condition formArray value: delete all the index from 1  to conditions.length and
     // finally clear the value of first index array
@@ -242,7 +223,7 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
   }
 
   onTriggerKey(value: string) {
-    // console.log('TRIGGER (ADD) - onTriggerKey myselect', this.myselect);
+    // this.logger.log('TRIGGER (ADD) - onTriggerKey myselect', this.myselect);
 
     // reset condition formArray value: delete all the index from 1  to conditions.length and
     // finally clear the value of the first index array
@@ -257,7 +238,7 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
       this.conditions.reset();
     }
 
-    console.log('Trigger key:', value);
+    this.logger.log('[TRIGGER-ADD] onTriggerKey - Trigger key:', value);
     if (value) {
       this.temp_cond = this.condition.filter(b => b.triggerType === value);
     } else {
@@ -271,7 +252,7 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
     if (value === 'event.emit') {
 
       this.actions = this.triggerForm.get('actions') as FormArray;
-      console.log('TRIGGER (ADD) - onTriggerKey  this.actions', this.actions);
+      this.logger.log('[TRIGGER-ADD] - onTriggerKey -actions', this.actions);
 
       if (this.actions.length !== null) {
         for (let i = 1; i < this.actions.length; i++) {
@@ -288,7 +269,7 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
 
       // !! Not used
       const items = this.myselect.items
-      console.log('TRIGGER (ADD) - onTriggerKey myselect items', items);
+      this.logger.log('[TRIGGER-ADD] - onTriggerKey select items', items);
 
       setTimeout(() => {
         this.loadingActions = false;
@@ -296,9 +277,9 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
     } else {
       this.temp_act = this.action
     }
-    console.log('TRIGGER (ADD) - onTriggerKey value', value);
-    console.log('TRIGGER (ADD) - onTriggerKey temp_cond', this.temp_cond);
-    console.log('TRIGGER (ADD) - onTriggerKey temp_action', this.temp_act);
+    this.logger.log('[TRIGGER-ADD] - onTriggerKey value', value);
+    this.logger.log('[TRIGGER-ADD] - onTriggerKey temp_cond', this.temp_cond);
+    this.logger.log('[TRIGGER-ADD] - onTriggerKey temp_action', this.temp_act);
   }
 
   onSelectedCondition($event: any, condition: FormGroup) {
@@ -321,33 +302,33 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
     ) {
 
       const value = condition.get('value')
-      console.log('TRIGGER (EDIT) ->>>>> conditionsGROUP actions parameters : ', value);
+      this.logger.log('[TRIGGER-ADD] onSelectedCondition value : ', value);
       Validators.required(value)
       value.updateValueAndValidity();
     }
 
     this.submitted = false; // allow to reset errorMsg on screen
-    console.log('VALUE', $event);
+    this.logger.log('[TRIGGER-ADD] onSelectedCondition $event ', $event);
 
-    console.log('condition before', condition)
+    this.logger.log('[TRIGGER-ADD] onSelectedCondition - condition before', condition)
     // set current value of selectedCondition filtering condition array by unique key : key
     // set conditionFormArray by using selectedCondition value:
     // - type , operator, key, placeholder
     const selectedCondition = this.condition.filter(b => b.key === $event.key)[0]
-    console.log('TRIGGER (ADD) onSelectedCondition selectedCondition', selectedCondition)
+    this.logger.log('[TRIGGER-ADD] onSelectedCondition selectedCondition', selectedCondition)
     if (selectedCondition.key.includes('department')) {
-      console.log("*** SelectedConditon includes department")
-      console.log("*** SelectedCondition.key: ", selectedCondition.key)
-      console.log("*** operator: ", this.operator)
+      this.logger.log("[TRIGGER-ADD] *** onSelectedCondition selectedConditon includes department")
+      this.logger.log("[TRIGGER-ADD] *** onSelectedCondition selectedCondition.key: ", selectedCondition.key)
+      this.logger.log("[TRIGGER-ADD] *** onSelectedCondition operator: ", this.operator)
     } else {
-      console.log("*** SelectedConditon not includes department")
+      this.logger.log("[TRIGGER-ADD] *** onSelectedCondition SelectedConditon not includes department")
     }
-    console.log('TRIGGER ->>>>> onSelectedCondition - selectedCondition: ', selectedCondition);
-    console.log('TRIGGER ->>>>> onSelectedCondition - selectedCondition.type: ', selectedCondition.type);
-    console.log('TRIGGER ->>>>> onSelectedCondition - operator: ', this.options[selectedCondition.type + 'Opt'][0].id);
+    this.logger.log('[TRIGGER-ADD] ->>>>> onSelectedCondition - selectedCondition: ', selectedCondition);
+    this.logger.log('[TRIGGER-ADD] ->>>>> onSelectedCondition - selectedCondition.type: ', selectedCondition.type);
+    this.logger.log('[TRIGGER-ADD] ->>>>> onSelectedCondition - operator: ', this.options[selectedCondition.type + 'Opt'][0].id);
 
-    console.log("*** this.operator: ", this.operator[selectedCondition.key])
-    console.log("*** selcondition.key: ", selectedCondition.key)
+    this.logger.log("[TRIGGER-ADD] *** this.operator: ", this.operator[selectedCondition.key])
+    this.logger.log("[TRIGGER-ADD] *** selcondition.key: ", selectedCondition.key)
 
     condition.patchValue({
       'type': selectedCondition.type,
@@ -358,13 +339,13 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
       'key': selectedCondition.key,
       'placeholder': selectedCondition.placeholder
     });
-    console.log('condition after', condition);
+    this.logger.log('[TRIGGER-ADD] condition after', condition);
 
   }
 
   onSelectedAction(event, action) {
-    console.log('onSelectedAction VALUE', event)
-    console.log('action before', action);
+    this.logger.log('[TRIGGER-ADD] onSelectedAction VALUE', event)
+    this.logger.log('[TRIGGER-ADD] action before', action);
 
     // For triggers for which the second action is the selection of a department, 
     // the default value is the id of the default department
@@ -377,7 +358,7 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
     if ((event === 'request.create') || (event === 'request.department.route')) {
       this.getDepartments();
     }
-    // console.log('TRIGGER - onSelectedAction - default dept id  ', this.default_dept_id);
+    // this.logger.log('TRIGGER - onSelectedAction - default dept id  ', this.default_dept_id);
 
     // nk 
     // --------------------------------------------------------------------------------------------------------------------------------------------
@@ -404,10 +385,10 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
       (event === 'request.department.bot.launch')
     ) {
       const parameters = action.get('parameters')
-      console.log('TRIGGER ->>>>> onSelectedAction - ACTIONS PARAMETER: ', parameters);
+      this.logger.log('[TRIGGER-ADD] ->>>>> onSelectedAction - ACTIONS PARAMETER: ', parameters);
 
       for (const key in parameters.controls) {
-        console.log('TRIGGER ->>>>> onSelectedAction - parameters.controls key: ', key);
+        this.logger.log('[TRIGGER-ADD] ->>>>> onSelectedAction - parameters.controls key: ', key);
         parameters.get(key).clearValidators();
         parameters.get(key).updateValueAndValidity();
       }
@@ -415,7 +396,7 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
       const parameters = action.get('parameters');
 
       for (const key in parameters.controls) {
-        console.log('TRIGGER (ADD) ->>>>> onSelectedAction  parameters.controls key: ', key);
+        this.logger.log('[TRIGGER-ADD] ->>>>> onSelectedAction  parameters.controls key: ', key);
         parameters.get(key).setValidators([Validators.required]);
         parameters.get(key).updateValueAndValidity();
       }
@@ -432,20 +413,16 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
         'text': event === 'request.create' || event === 'message.send' ? '' : ' '
       }
     });
-    console.log('action after', action);
+    this.logger.log('[TRIGGER-ADD] action after', action);
 
-    // if (event === 'request.create' || event === 'message.send') {
-    //   this.cleanForm()
-    // }
-    // this.onChanges();
   }
 
   onChanges() {
     // action.get('parameters')
     this.triggerForm.get('actions').valueChanges.subscribe(values => {
-      console.log('TRIGGER (ADD) ->>>>> onChanges  actions: ', values);
+      this.logger.log('[TRIGGER-ADD] ->>>>> onChanges  actions: ', values);
       values.forEach(val => {
-        console.log('TRIGGER (ADD) ->>>>> onChanges  action: ', values);
+        this.logger.log('[TRIGGER-ADD] ->>>>> onChanges  action: ', values);
       });
     });
   }
@@ -457,7 +434,7 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
   // }
 
   renameKey(obj, old_key, new_key) {
-    console.log('TRIGGER ->>>>> onSubmit - renameKey obj: ', obj, ' - old_key: ', old_key, ' - new_key: ', new_key);
+    this.logger.log('[TRIGGER-ADD] ->>>>> onSubmit - renameKey obj: ', obj, ' - old_key: ', old_key, ' - new_key: ', new_key);
     // check if old key = new key   
     if (old_key !== new_key) {
       Object.defineProperty(obj, new_key, // modify old key 
@@ -467,8 +444,7 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
   }
 
   onSubmit() {
-    
-    console.log('TRIGGER ->>>>> onSubmit - get form', this.form);
+    this.logger.log('[TRIGGER-ADD] ->>>>> onSubmit - get form', this.form);
     this.displayMODAL_Window = 'block';
     this.SHOW_CIRCULAR_SPINNER = true;
     this.errorMESSAGE = false;
@@ -477,7 +453,7 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
 
 
     for (let w = 0; w < this.triggerForm.value.actions.length; w++) {
-      console.log('TRIGGER ->>>>> onSubmit triggerForm.value.actions[w].key: ', this.triggerForm.value.actions[w].key);
+      this.logger.log('[TRIGGER-ADD] ->>>>> onSubmit triggerForm.value.actions[w].key: ', this.triggerForm.value.actions[w].key);
 
       // nk 
       // --------------------------------------------------------------------------------------------------------------------------------------------
@@ -508,17 +484,17 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
         (this.triggerForm.value.actions[w].key === 'request.participants.join') ||
         (this.triggerForm.value.actions[w].key === 'request.participants.leave')
       ) {
-        console.log('TRIGGER ->>>>> onSubmit action key is: ', this.triggerForm.value.actions[w].key);
+        this.logger.log('[TRIGGER-ADD] ->>>>> onSubmit action key is: ', this.triggerForm.value.actions[w].key);
 
         // ----------------------------------------------------------------
         // search the id of the selected agent (fullnameValue) in 
         // the bots array and, if it is found, add the string 'bot_' to it
         // ----------------------------------------------------------------
         const fullnameValue = this.triggerForm.value.actions[w].parameters.fullName
-        console.log('TRIGGER ->>>>> onSubmit parameters fullname value ', fullnameValue);
+        this.logger.log('[TRIGGER-ADD] ->>>>> onSubmit parameters fullname value ', fullnameValue);
 
         let foundBot = this.bots.find(bot => bot._id === fullnameValue);
-        console.log('TRIGGER ->>>>> onSubmit foundBot ', foundBot);
+        this.logger.log('[TRIGGER-ADD] ->>>>> onSubmit foundBot ', foundBot);
 
         if (foundBot !== undefined) {
           this.triggerForm.value.actions[w].parameters.fullName = 'bot_' + fullnameValue
@@ -529,8 +505,8 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
         // -------------------------------------------------------
         delete this.triggerForm.value.actions[w].parameters.text
 
-        console.log('TRIGGER ->>>>> onSubmit parameters: ', this.triggerForm.value.actions[w].parameters);
-        console.log('TRIGGER ->>>>> onSubmit bots: ', this.bots);
+        this.logger.log('[TRIGGER-ADD] ->>>>> onSubmit parameters: ', this.triggerForm.value.actions[w].parameters);
+        this.logger.log('[TRIGGER-ADD] ->>>>> onSubmit bots: ', this.bots);
 
         // -------------------------------------------------------
         // Rename the key fullName in member
@@ -549,24 +525,24 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
       if (
         (this.triggerForm.value.actions[w].key === 'message.send') 
       ) {
-        console.log('TRIGGER ->>>>> onSubmit action key is: ', this.triggerForm.value.actions[w].key);
+        this.logger.log('[TRIGGER-ADD] ->>>>> onSubmit action key is: ', this.triggerForm.value.actions[w].key);
 
         // ----------------------------------------------------------------
         // search the id of the selected agent (fullnameValue) in 
         // the bots array and, if it is found, add the string 'bot_' to it
         // ----------------------------------------------------------------
         const fullnameValue = this.triggerForm.value.actions[w].parameters.fullName
-        console.log('TRIGGER ->>>>> onSubmit parameters fullname value ', fullnameValue);
+        this.logger.log('[TRIGGER-ADD] ->>>>> onSubmit parameters fullname value ', fullnameValue);
 
         let foundBot = this.bots.find(bot => bot._id === fullnameValue);
-        console.log('TRIGGER ->>>>> onSubmit foundBot ', foundBot);
+        this.logger.log('[TRIGGER-ADD] ->>>>> onSubmit foundBot ', foundBot);
 
         if (foundBot !== undefined) {
           this.triggerForm.value.actions[w].parameters.fullName = 'bot_' + fullnameValue
         }
 
-        console.log('TRIGGER ->>>>> onSubmit parameters: ', this.triggerForm.value.actions[w].parameters);
-        console.log('TRIGGER ->>>>> onSubmit bots: ', this.bots);
+        this.logger.log('[TRIGGER-ADD] ->>>>> onSubmit parameters: ', this.triggerForm.value.actions[w].parameters);
+        this.logger.log('[TRIGGER-ADD] ->>>>> onSubmit bots: ', this.bots);
 
         // -------------------------------------------------------
         // Rename the key fullName in member
@@ -591,14 +567,14 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
         (this.triggerForm.value.actions[w].key === 'request.status.update') ||
         (this.triggerForm.value.actions[w].key === 'request.tags.add')
       ) {
-        console.log('TRIGGER ->>>>> onSubmit action key is: ', this.triggerForm.value.actions[w].key);
+        this.logger.log('[TRIGGER-ADD] ->>>>> onSubmit action key is: ', this.triggerForm.value.actions[w].key);
 
         // -------------------------------------------------------
         // delete the field 'text'
         // -------------------------------------------------------
         delete this.triggerForm.value.actions[w].parameters.text
 
-        console.log('TRIGGER ->>>>> onSubmit parameters: ', this.triggerForm.value.actions[w].parameters);
+        this.logger.log('[TRIGGER-ADD] ->>>>> onSubmit parameters: ', this.triggerForm.value.actions[w].parameters);
 
         // -------------------------------------------------------
         // Rename 
@@ -635,7 +611,7 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
       // --------------------------------------------------------------------------------------------------------------------------------------------
 
       if (this.triggerForm.value.actions[w].key === 'request.create') {
-        console.log('TRIGGER ->>>>> onSubmit action key is: ', this.triggerForm.value.actions[w].key);
+        this.logger.log('[TRIGGER-ADD] ->>>>> onSubmit action key is: ', this.triggerForm.value.actions[w].key);
         // -------------------------------------------------------
         // Rename the key fullName in departmentid
         // -------------------------------------------------------
@@ -645,8 +621,6 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
       }
 
     }
-
-
 
     // delete the not choice conditionType array in triggerForm.conditions
     if (this.conditionType.split('conditions.')[1] === 'all') {
@@ -663,12 +637,12 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
       // --------------------------------------------------------------------------------------------------------------------------------------------
       // If the condition type is 'int' convert the condition value from string to number
       // --------------------------------------------------------------------------------------------------------------------------------------------
-      console.log('TRIGGER ->>>>> onSubmit conditionType ', this.conditionType)
-      console.log('TRIGGER ->>>>> onSubmit triggerForm.value.conditions: ', this.triggerForm.value.conditions[this.conditionType.split('conditions.')[1]][i]);
+      this.logger.log('[TRIGGER-ADD] ->>>>> onSubmit conditionType ', this.conditionType)
+      this.logger.log('[TRIGGER-ADD] ->>>>> onSubmit triggerForm.value.conditions: ', this.triggerForm.value.conditions[this.conditionType.split('conditions.')[1]][i]);
 
       if (this.triggerForm.value.conditions[this.conditionType.split('conditions.')[1]][i].type === 'int') {
         const conditionValue = this.triggerForm.value.conditions[this.conditionType.split('conditions.')[1]][i].value;
-        console.log('TRIGGER ->>>>> onSubmit conditionValue ', conditionValue);
+        this.logger.log('[TRIGGER-ADD] ->>>>> onSubmit conditionValue ', conditionValue);
         this.triggerForm.value.conditions[this.conditionType.split('conditions.')[1]][i].value = parseInt(conditionValue, 10);
       }
     }
@@ -687,7 +661,7 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
 
       // check at least one action is selected
     } else if (this.triggerForm.controls['actions'].invalid) {
-      console.log('action validator', this.triggerForm.controls['actions']);
+      this.logger.log('[TRIGGER-ADD] action validator', this.triggerForm.controls['actions']);
 
       setTimeout(() => {
         this.SHOW_CIRCULAR_SPINNER = false
@@ -698,7 +672,7 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
       // check condition validation and if first dropdawn has value than other ones has a valid value
     } else if (conditionsGROUP.invalid && conditionsGROUP.controls[0].value['path'] !== null) {
 
-      console.log('User selected only some dropdown condition but not all. SUMBIT KO')
+      this.logger.log('[TRIGGER-ADD] User selected only some dropdown condition but not all. SUMBIT KO')
 
       setTimeout(() => {
         this.SHOW_CIRCULAR_SPINNER = false
@@ -732,38 +706,38 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
       if (conditionsGROUP.controls[0].value['path'] === null) {
         this.triggerForm.value.conditions[this.conditionType.split('conditions.')[1]] = [];
       }
-      console.log('TRIGGER ->>>>> onSubmit - TRIGGER FORM VALUE ', this.triggerForm.value);
+      this.logger.log('[TRIGGER-ADD] ->>>>> onSubmit - TRIGGER FORM VALUE ', this.triggerForm.value);
 
       this.triggerService.postTrigger(this.triggerForm.value).subscribe(res => {
-        console.log('add trigger response ', res);
+        this.logger.log('[TRIGGER-ADD] ->>>>> onSubmit RES ', res);
       }, (error) => {
         setTimeout(() => {
           this.SHOW_CIRCULAR_SPINNER = false
           this.SHOW_ERROR_CROSS = true;
           this.errorMESSAGE_server = true;
         }, 1000);
-        console.log('»» !!! TRIGGER -  ADD NEW TRIGGER REQUESTS  - ERROR ', error);
+        this.logger.error('[TRIGGER-ADD]-  ADD NEW TRIGGER REQUESTS  - ERROR ', error);
 
       }, () => {
         setTimeout(() => {
           this.SHOW_CIRCULAR_SPINNER = false;
           this.SHOW_ERROR_CROSS = false;
         }, 1000);
-        console.log('»» !!! TRIGGER -  ADD NEW TRIGGER REQUESTS * COMPLETE *');
+        this.logger.log('[TRIGGER-ADD] -  ADD NEW TRIGGER REQUESTS * COMPLETE *');
 
       });
     }
 
-    console.log('TRIGGER ->>>>> TRIGGER-FORM-VALUE ', this.triggerForm.value);
+    this.logger.log('[TRIGGER-ADD] ->>>>> TRIGGER-FORM-VALUE ', this.triggerForm.value);
   }
 
 
   // modal button CONTINUE
   onCloseModalHandled() {
-    console.log('CONTINUE PRESSED ');
+    this.logger.log('[TRIGGER-ADD] - CONTINUE PRESSED ');
 
     if (this.errorMESSAGE || this.errorMESSAGE_server) {
-      console.log('Error occured. Return to current page')
+      this.logger.error('[TRIGGER-ADD] Error occured. Return to current page')
     } else {
       this._location.back();
     }

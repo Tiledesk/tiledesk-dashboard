@@ -9,14 +9,11 @@ import PerfectScrollbar from 'perfect-scrollbar'; // https://github.com/mdbootst
 import { AuthService } from './core/auth.service';
 import { TranslateService } from '@ngx-translate/core';
 
-import { RequestsService } from './services/requests.service';
-
-// import { NotifyService } from './core/notify.service';
 declare const $: any;
 
 import { environment } from '../environments/environment';
 export const firebaseConfig = environment.firebase;
-import * as firebase from 'firebase';
+import * as firebase from 'firebase/app';
 import 'firebase/auth';
 import { AppConfigService } from './services/app-config.service';
 import { WsRequestsService } from './services/websocket/ws-requests.service';
@@ -31,7 +28,7 @@ import * as moment from 'moment';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from './services/brand.service';
 import { ScriptService } from './services/script/script.service';
-
+import { LoggerService } from './services/logger/logger.service';
 
 
 @Component({
@@ -63,14 +60,14 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
     subscription: Subscription;
     public_Key: string;
+
+    // private logger: LoggerService = LoggerInstance.getInstance();
     // background_bottom_section = brand.sidebar.background_bottom_section
     constructor(
         public location: Location,
         private router: Router,
         private translate: TranslateService,
-        private requestsService: RequestsService,
         private auth: AuthService,
-        // private notify: NotifyService,
         public appConfigService: AppConfigService,
         public wsRequestsService: WsRequestsService,
         public wsMsgsService: WsMsgsService,
@@ -78,19 +75,22 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         private metaTitle: Title,
         public brandService: BrandService,
         public script: ScriptService,
+        private logger: LoggerService
         // private faqKbService: FaqKbService,
     ) {
         // this.getBrand();
 
         // script.load('dummy').then(data => {
         // script.load().then(data => {
-        //     console.log('APP.COMP - script loaded ', data);
-        // }).catch(error => console.log('APP.COMP - script error ', error));
+        //     this.logger.log('APP.COMP - script loaded ', data);
+        // }).catch(error => this.logger.log('APP.COMP - script error ', error));
 
+        this.logger.initilaizeLoger()
+        
         const brand = brandService.getBrand();
 
-        console.log('APP-COMPONENT - GET BRAND brandService > brand ', brand)
-
+        this.logger.log('[APP-COMPONENT] - GET BRAND brandService > brand ', brand)
+    
 
         this.metaTitle.setTitle(brand['metaTitle']); // here used with: "import brand from ..." now see in getBrand()
         this.setFavicon(brand); // here used with "import brand from ..." now see in getBrand()
@@ -102,17 +102,17 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         // * uploadEngine is = firebase or 
         // * pushEngine is = firebase
         // --------------------------------------------------------------------------------- 
-        console.log('APP-COMPONENT getConfig chatEngine', appConfigService.getConfig().chatEngine)
-        console.log('APP-COMPONENT getConfig uploadEngine', appConfigService.getConfig().uploadEngine)
-        console.log('APP-COMPONENT getConfig pushEngine', appConfigService.getConfig().pushEngine)
+        this.logger.log('[APP-COMPONENT] getConfig chatEngine', appConfigService.getConfig().chatEngine)
+        this.logger.log('[APP-COMPONENT] getConfig uploadEngine', appConfigService.getConfig().uploadEngine)
+        this.logger.log('[APP-COMPONENT] getConfig pushEngine', appConfigService.getConfig().pushEngine)
         // if (appConfigService.getConfig().chatEngine && appConfigService.getConfig().chatEngine !== 'mqtt') {
         if (appConfigService.getConfig().uploadEngine === 'firebase' || appConfigService.getConfig().chatEngine === 'firebase' || appConfigService.getConfig().pushEngine === 'firebase') {
-            console.log('APP-COMPONENT - WORKS WITH FIREBASE ')
+            this.logger.log('[APP-COMPONENT] - WORKS WITH FIREBASE ')
 
             // ----------------------------
             // FIREBASE initializeApp 
             // ---------------------------- 
-            console.log('AppConfigService - APP-COMPONENT-TS firebase_conf 1 ', appConfigService.getConfig().firebase)
+            this.logger.log('[APP-COMPONENT] AppConfigService firebase_conf 1 ', appConfigService.getConfig().firebase)
             // firebase.initializeApp(firebaseConfig);
             if (!appConfigService.getConfig().firebase || appConfigService.getConfig().firebase.apiKey === 'CHANGEIT') {
                 throw new Error('firebase config is not defined. Please create your dashboard-config.json. See the Dashboard Installation Page');
@@ -121,21 +121,21 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
             // const firebase_conf = JSON.parse(appConfigService.getConfig().firebase)
             const firebase_conf = appConfigService.getConfig().firebase;
-            console.log('AppConfigService - APP-COMPONENT-TS firebase_conf 2', firebase_conf)
+            this.logger.log('[APP-COMPONENT] AppConfigService - APP-COMPONENT-TS firebase_conf 2', firebase_conf)
             firebase.initializeApp(firebase_conf);
 
 
             localStorage.removeItem('firebase:previous_websocket_failure');
 
         } else {
-            console.log('APP-COMPONENT - !!! WORKS WITHOUT FIREBASE ')
+            this.logger.log('[APP-COMPONENT] - !!! WORKS WITHOUT FIREBASE ')
         }
 
-        console.log('!!! =========== HELLO APP.COMP (constructor) ===========')
+        this.logger.log('[APP-COMPONENT] !!! =========== HELLO APP.COMP (constructor) ===========')
         translate.setDefaultLang('en');
 
         const browserLang = this.translate.getBrowserLang();
-        console.log('!!! ===== HELLO APP.COMP ===== BRS LANG ', browserLang)
+        this.logger.log('[APP-COMPONENT] !!! ===== HELLO APP.COMP ===== BRS LANG ', browserLang)
         if (browserLang) {
             if (browserLang === 'it') {
                 this.translate.use('it');
@@ -164,7 +164,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
     setFavicon(brand) {
         var link = document.querySelector("link[rel*='icon']") || document.createElement('link');
-        console.log('APP.COMP setFavicon ', link)
+        this.logger.log('[APP-COMPONENT] setFavicon ', link)
         link['type'] = 'image/x-icon';
         link['rel'] = 'shortcut icon';
         link['href'] = brand.favicon__url;
@@ -181,15 +181,15 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngOnInit() {
-        console.log(' ====== >>> HELLO APP.COMP (ngOnInit) <<< ====== ')
-        console.log('!! FIREBASE  ', firebase);
+        this.logger.log('[APP-COMPONENT] ====== >>> HELLO APP.COMP (ngOnInit) <<< ====== ')
+        this.logger.log('[APP-COMPONENT] !! FIREBASE  ', firebase);
 
         // this.closeWSAndResetWsRequestsIfUserIsSignedOut();
         this.closeWSAndResetWsRequestsIfUserIsSignedOut_NoFB();
 
         // NEW (SEE ALSO )
         const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
-        // console.log('APP COMP - MAIN PANEL ', _elemMainPanel)
+        // this.logger.log('APP COMP - MAIN PANEL ', _elemMainPanel)
         _elemMainPanel.setAttribute('style', 'overflow-x: hidden !important;');
         // _elemMainPanel.setAttribute('style', 'overflow-x: auto !important;');
         $.material.init();
@@ -245,7 +245,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     //     this.brandService.getBrand().subscribe((_brand: any) => {
 
     //         this.BRAND = _brand;
-    //         console.log('APP-COMPONENT - GET BRAND ', this.BRAND);
+    //         this.logger.log('APP-COMPONENT - GET BRAND ', this.BRAND);
 
     //         if (this.BRAND) {
     //             this.metaTitle.setTitle(this.BRAND.metaTitle);
@@ -253,10 +253,10 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     //         }
 
     //     }, (error) => {
-    //         console.log('APP-COMPONENT GET BRAND - ERROR  ', error);
+    //         this.logger.log('APP-COMPONENT GET BRAND - ERROR  ', error);
 
     //     }, () => {
-    //         console.log('APP-COMPONENT GET BRAND * COMPLETE *');
+    //         this.logger.log('APP-COMPONENT GET BRAND * COMPLETE *');
 
     //     });
     // }
@@ -266,16 +266,16 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     getCurrentUserAndConnectToWs() {
 
         this.auth.user_bs.subscribe((user) => {
-            // console.log('% »»» WebSocketJs WF - APP-COMPONENT - LoggedUser ', user);
-            // console.log('% »»» WebSocketJs WF - APP-COMPONENT - WS URL ', this.wsbasepath);
-            // console.log('AppConfigService % »»» WebSocketJs WF - APP-COMPONENT - WS URL ', this.appConfigService.getConfig().wsUrl);
+            // this.logger.log('% »»» WebSocketJs WF - APP-COMPONENT - LoggedUser ', user);
+            // this.logger.log('% »»» WebSocketJs WF - APP-COMPONENT - WS URL ', this.wsbasepath);
+            // this.logger.log('AppConfigService % »»» WebSocketJs WF - APP-COMPONENT - WS URL ', this.appConfigService.getConfig().wsUrl);
 
             if (user && user.token) {
 
                 // const CHAT_URL = 'ws://tiledesk-server-pre.herokuapp.com?token=' + user.token
                 const CHAT_URL = this.appConfigService.getConfig().wsUrl + '?token=' + user.token
 
-                // console.log('AppConfigService % »»» WebSocketJs WF - APP-COMPONENT - I am about to connect to ws ')
+                // this.logger.log('AppConfigService % »»» WebSocketJs WF - APP-COMPONENT - I am about to connect to ws ')
 
                 // -----------------------------------------------------------------------------------------------------
                 // Websocket init 
@@ -294,14 +294,14 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     closeWSAndResetWsRequestsIfUserIsSignedOut_NoFB() {
         this.auth.user_bs.subscribe((user) => {
 
-            console.log('APP-COMPONENT - closeWSAndResetWsRequestsIfUserIsSignedOut_NoFB ', user)
+            this.logger.log('[APP-COMPONENT] - closeWSAndResetWsRequestsIfUserIsSignedOut_NoFB ', user)
 
             if (user) {
-                console.log('APP-COMPONENT - closeWSAndResetWsRequestsIfUserIsSignedOut_NoFB - User is signed in. ', user)
+                this.logger.log('[APP-COMPONENT] - closeWSAndResetWsRequestsIfUserIsSignedOut_NoFB - User is signed in. ', user)
                 this.userIsSignedIn = true
 
             } else {
-                console.log('APP-COMPONENT - closeWSAndResetWsRequestsIfUserIsSignedOut_NoFB - No user is signed in. ', user)
+                this.logger.log('[APP-COMPONENT] - closeWSAndResetWsRequestsIfUserIsSignedOut_NoFB - No user is signed in. ', user)
 
                 this.webSocketClose()
                 this.wsRequestsService.resetWsRequestList()
@@ -312,17 +312,17 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
     closeWSAndResetWsRequestsIfUserIsSignedOut() {
         const self = this
-        console.log('% »»» WebSocketJs WF - APP-COMPONENT - closeWSAndResetWsRequestsIfUserIsSignedOut ', typeof firebase.auth)
+        this.logger.log('[APP-COMPONENT] % »»» WebSocketJs WF - APP-COMPONENT - closeWSAndResetWsRequestsIfUserIsSignedOut ', typeof firebase.auth)
         firebase.auth().onAuthStateChanged(function (user) {
             if (user) {
-                console.log('% »»» WebSocketJs WF - APP-COMPONENT - User is signed in. ', user)
+                this.logger.log('% »»» WebSocketJs WF - APP-COMPONENT - User is signed in. ', user)
                 this.userIsSignedIn = true
 
             } else {
-                console.log('% »»» WebSocketJs WF - APP-COMPONENT - closeWSAndResetWsRequestsIfUserIsSignedOut - No user is signed in. ', user)
+                this.logger.log('[APP-COMPONENT] % »»» WebSocketJs WF - APP-COMPONENT - closeWSAndResetWsRequestsIfUserIsSignedOut - No user is signed in. ', user)
 
                 this.userIsSignedIn = false
-                console.log('% »»» WebSocketJs WF - APP-COMPONENT - User is signed in. ', this.userIsSignedIn)
+                this.logger.log('[APP-COMPONENT] % »»» WebSocketJs WF - APP-COMPONENT - User is signed in. ', this.userIsSignedIn)
 
                 // USED TO DETERMINE WHEN VISUALIZING THE POPUP WINDOW 'SESSION EXPIRED'
                 self.auth.userIsSignedIn(this.userIsSignedIn);
@@ -334,12 +334,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 // self.webSocketJs.close()
                 self.webSocketClose()
                 self.wsRequestsService.resetWsRequestList()
-
-                /* The old unsuscribe to firestore requests when No user is signed in. */
-                // if (self.requestsService.unsubscribe) {
-                //     self.requestsService.unsubscribe()
-                //     self.requestsService.resetRequestsList()
-                // }
 
             }
         });
@@ -354,7 +348,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         this.router.events.subscribe((val) => {
             if (this.location.path() !== '') {
                 this.route = this.location.path();
-                // console.log('»> ', this.route);
+                // this.logger.log('»> ', this.route);
 
                 // (this.route.indexOf('/analytics') !== -1) ||
                 if (
@@ -375,7 +369,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 ) {
 
                     const elemNavbar = <HTMLElement>document.querySelector('.navbar');
-                    // console.log('»> is analytics -- elemNavbar ', elemNavbar)
+                    // this.logger.log('»> is analytics -- elemNavbar ', elemNavbar)
                     elemNavbar.setAttribute('style', 'box-shadow:none');
 
                 }
@@ -387,10 +381,10 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     hideElementsInAuthPage() {
         // GET THE HTML ELEMENT NAVBAR AND SIDEBAR THAT WILL BE HIDDEN IF IS DETECTED THE LOGIN PAGE
         const elemAppSidebar = <HTMLElement>document.querySelector('app-sidebar');
-        // console.log('xxxx xxxx elemAppSidebar ', elemAppSidebar)
+        // this.logger.log('xxxx xxxx elemAppSidebar ', elemAppSidebar)
         const elemNavbar = <HTMLElement>document.querySelector('.navbar');
         const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
-        // console.log('xxxx xxxx elemNavbar', elemNavbar)
+        // this.logger.log('xxxx xxxx elemNavbar', elemNavbar)
         // const elemContentainerFluid = <HTMLElement>document.querySelector('.container-fluid');
 
         const elemNavbarToogle = <HTMLElement>document.querySelector('.navbar-toggle');
@@ -406,7 +400,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             if (this.location.path() !== '') {
                 this.route = this.location.path();
 
-                // console.log('»> ', this.route)
+                // this.logger.log('»> ', this.route)
                 // tslint:disable-next-line:max-line-length
                 if ((this.route === '/login') ||
                     (this.route === '/signup') ||
@@ -435,7 +429,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     // margin-top: -70px
                     elemMainPanel.setAttribute('style', 'width:100% !important; overflow-x: hidden !important;');
 
-                    // console.log('DETECT LOGIN PAGE')
+                    // this.logger.log('DETECT LOGIN PAGE')
                     this.LOGIN_PAGE = true;
                 } else {
                     this.LOGIN_PAGE = false;
@@ -474,7 +468,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 //     this.IS_PROJECTS_FOR_PANEL = true
 
                 //     const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
-                //     console.log('APP COMP IS_PROJECTS_FOR_PANEL .main-panel ', elemMainPanel)
+                //     this.logger.log('APP COMP IS_PROJECTS_FOR_PANEL .main-panel ', elemMainPanel)
                 //     if (this.IS_PROJECTS_FOR_PANEL === true) {
                 //         let ps = new PerfectScrollbar(elemMainPanel);
                 //     }
@@ -487,7 +481,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
             } else {
-                // console.log('»> * ', this.route)
+                // this.logger.log('»> * ', this.route)
             }
         });
     }
@@ -502,14 +496,14 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const elemFooter = <HTMLElement>document.querySelector('footer');
         const eleWidget = <HTMLElement>document.querySelector('#tiledesk-container');
-        // console.log('APP.COMP - elem FOOTER ', elemFooter);
-        console.log('APP.COMP - elem WIDGET ', eleWidget);
+        // this.logger.log('APP.COMP - elem FOOTER ', elemFooter);
+        this.logger.log('[APP-COMPONENT] - elem WIDGET ', eleWidget);
 
         /* HIDE FOOTER IF IS LOGIN PAGE - SIGNUP PAGE */
         this.router.events.subscribe((val) => {
             if (this.location.path() !== '') {
                 this.route = this.location.path();
-                // console.log('»> ', this.route)
+                // this.logger.log('»> ', this.route)
                 // tslint:disable-next-line:max-line-length
                 if (
                     (this.route === '/login') ||
@@ -531,7 +525,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     
                 ) {
                     elemFooter.setAttribute('style', 'display:none;');
-                    // console.log('DETECT LOGIN PAGE')
+                    // this.logger.log('DETECT LOGIN PAGE')
                     // tslint:disable-next-line:max-line-length
                 } else {
                     elemFooter.setAttribute('style', '');
@@ -543,12 +537,12 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 //     if (eleWidget) {
                 //         eleWidget.style.display = 'none';
                 //     } else {
-                //         console.log('APP.COMP - elem WIDGET ', eleWidget) 
+                //         this.logger.log('APP.COMP - elem WIDGET ', eleWidget) 
                 //     }
                 // }
 
             } else {
-                // console.log('»> * ', this.route)
+                // this.logger.log('»> * ', this.route)
             }
         });
 
@@ -556,11 +550,11 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         this.router.events.subscribe((val) => {
             if (this.location.path() !== '') {
                 this.route = this.location.path();
-                // console.log('»> ', this.route)
+                // this.logger.log('»> ', this.route)
                 if (this.route.indexOf('/verify') !== -1) {
 
                     elemAppFooter.setAttribute('style', 'display:none;');
-                    // console.log('DETECT LOGIN PAGE')
+                    // this.logger.log('DETECT LOGIN PAGE')
                     // tslint:disable-next-line:max-line-length
                 } else {
 
@@ -568,7 +562,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
                 }
             } else {
-                // console.log('»> * ', this.route)
+                // this.logger.log('»> * ', this.route)
             }
         });
 
@@ -579,7 +573,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         this.router.events.subscribe((val) => {
             if (this.location.path() !== '') {
                 this.route = this.location.path();
-                // console.log('»> ', this.route)
+                // this.logger.log('»> ', this.route)
                 // tslint:disable-next-line:max-line-length
                 if ((this.route === '/login') || (this.route === '/signup') || (this.route === '/forgotpsw') || (this.route.indexOf('/signup-on-invitation') !== -1)) {
 
@@ -597,7 +591,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                         }
                     }
                 }
-                // console.log('APP.COMP currentUrl ', this.route, 'tiledeskSettings ', window['tiledeskSettings']);
+                // this.logger.log('APP.COMP currentUrl ', this.route, 'tiledeskSettings ', window['tiledeskSettings']);
             }
         });
     }
@@ -636,7 +630,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     changeOfRoutes() {
-        console.log('changeOfRoutes ')
+        this.logger.log('[APP-COMPONENT] changeOfRoutes ')
     }
 
 

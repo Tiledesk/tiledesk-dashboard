@@ -9,6 +9,8 @@ import { AppConfigService } from '../../services/app-config.service';
 
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../services/brand.service';
+import { LoggerService } from '../../services/logger/logger.service';
+
 
 type UserFields = 'email' | 'password' | 'firstName' | 'lastName' | 'terms';
 type FormErrors = { [u in UserFields]: string };
@@ -95,7 +97,8 @@ export class SignupComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     private notify: NotifyService,
     public appConfigService: AppConfigService,
-    public brandService: BrandService
+    public brandService: BrandService,
+    private logger: LoggerService
   ) {
 
     const brand = brandService.getBrand();
@@ -158,17 +161,16 @@ export class SignupComponent implements OnInit, AfterViewInit {
   redirectIfLogged() {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
-      console.log('SIGN-UP - REDIRECT TO DASHBORD IF USER IS LOGGED-IN - STORED USER', storedUser);
+      console.log('[SIGN-UP] - REDIRECT TO DASHBORD IF USER IS LOGGED-IN - STORED USER', storedUser);
       this.router.navigate(['/projects']);
     }
   }
 
   getWindowWidthAndHeight() {
-    console.log('SIGN-UP - ACTUAL INNER WIDTH ', window.innerWidth);
-    console.log('SIGN-UP - ACTUAL INNER HEIGHT ', window.innerHeight);
+    console.log('[SIGN-UP] - ACTUAL INNER WIDTH ', window.innerWidth);
+    console.log('[SIGN-UP] - ACTUAL INNER HEIGHT ', window.innerHeight);
 
     if (window.innerHeight <= 680) {
-
       this.bckgndImageSize = 50 + '%'
     } else {
       this.bckgndImageSize = 60 + '%'
@@ -176,35 +178,34 @@ export class SignupComponent implements OnInit, AfterViewInit {
 
 
     if (window.innerWidth < 992) {
-
       this.hide_left_panel = true;
-      console.log('SIGN-IN - ACTUAL INNER WIDTH hide_left_panel ', this.hide_left_panel);
+      console.log('[SIGN-UP] - ACTUAL INNER WIDTH hide_left_panel ', this.hide_left_panel);
     } else {
       this.hide_left_panel = false;
-      console.log('SIGN-IN - ACTUAL INNER WIDTH hide_left_panel ', this.hide_left_panel);
+      console.log('[SIGN-UP] - ACTUAL INNER WIDTH hide_left_panel ', this.hide_left_panel);
     }
 
   }
 
 
   checkCurrentUrlAndSkipWizard() {
-    console.log('SignupComponent checkCurrentUrlAndSkipWizard router.url  ', this.router.url)
+    console.log('[SIGN-UP] checkCurrentUrlAndSkipWizard router.url  ', this.router.url)
 
     // (this.router.url === '/signup-on-invitation')
     if (this.router.url.indexOf('/signup-on-invitation') !== -1) {
       this.SKIP_WIZARD = true;
-      console.log('SignupComponent checkCurrentUrlAndSkipWizard SKIP_WIZARD ', this.SKIP_WIZARD)
+      console.log('[SIGN-UP] checkCurrentUrlAndSkipWizard SKIP_WIZARD ', this.SKIP_WIZARD)
       this.getAndPatchInvitationEmail();
 
     } else if (this.router.url.indexOf('/signup-on-invitation') === -1 && this.MT === false) {
 
       this.SKIP_WIZARD = true;
-      console.log('SignupComponent checkCurrentUrlAndSkipWizard SKIP_WIZARD ', this.SKIP_WIZARD)
+      console.log('[SIGN-UP]checkCurrentUrlAndSkipWizard SKIP_WIZARD ', this.SKIP_WIZARD)
     }
     else if (this.router.url.indexOf('/signup-on-invitation') === -1 && this.MT === true) {
 
       this.SKIP_WIZARD = false;
-      console.log('SignupComponent checkCurrentUrlAndSkipWizard SKIP_WIZARD ', this.SKIP_WIZARD)
+      console.log('[SIGN-UP] checkCurrentUrlAndSkipWizard SKIP_WIZARD ', this.SKIP_WIZARD)
     }
   }
 
@@ -212,7 +213,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
     this.pendingInvitationEmail = this.route.snapshot.params['pendinginvitationemail'];
 
     this.userForm.patchValue({ 'email': this.pendingInvitationEmail })
-    console.log('SignupComponent Pending Invitation Email (get From URL)  ', this.pendingInvitationEmail)
+    console.log('[SIGN-UP] Pending Invitation Email (get From URL)  ', this.pendingInvitationEmail)
   }
 
 
@@ -242,9 +243,9 @@ export class SignupComponent implements OnInit, AfterViewInit {
      * FOR WHETHER IF THE webkitTextSecurity STYLE THERE IS NOT, IS ADDED THE ATTRIBUTE PASSWORD TO THE FIELD
      */
     if (style['-webkitTextSecurity']) {
-      console.log('ELEMENT INPUT PSW HAS STYLE webkitTextSecurity: YES')
+      console.log('[SIGN-UP] ngAfterViewInit ELEMENT INPUT PSW HAS STYLE webkitTextSecurity: YES')
     } else {
-      console.log('ELEMENT INPUT PSW HAS STYLE webkitTextSecurity: FALSE')
+      console.log('[SIGN-UP] ngAfterViewInit ELEMENT INPUT PSW HAS STYLE webkitTextSecurity: FALSE')
       elemPswInput.setAttribute('type', 'password');
     }
   }
@@ -260,18 +261,18 @@ export class SignupComponent implements OnInit, AfterViewInit {
       this.userForm.value['firstName'],
       this.userForm.value['lastName'])
       .subscribe((signupResponse) => {
-        console.log('SIGNUP Email ', this.userForm.value['email']);
-        console.log('SIGNUP Password ', this.userForm.value['password']);
-        console.log('SIGNUP Firstname ', this.userForm.value['firstName']);
-        console.log('SIGNUP Lastname ', this.userForm.value['lastName']);
-        console.log('POST DATA ', signupResponse);
+        console.log('[SIGN-UP] Email ', this.userForm.value['email']);
+        console.log('[SIGN-UP] Password ', this.userForm.value['password']);
+        console.log('[SIGN-UP] Firstname ', this.userForm.value['firstName']);
+        console.log('[SIGN-UP] Lastname ', this.userForm.value['lastName']);
+        console.log('[SIGN-UP] POST DATA ', signupResponse);
         if (signupResponse['success'] === true) {
           // this.router.navigate(['/welcome']);
 
           this.autoSignin();
 
         } else {
-          console.log('SIGNUP ERROR CODE', signupResponse['code']);
+          console.error('[SIGN-UP] ERROR CODE', signupResponse['code']);
           this.showSpinnerInLoginBtn = false;
           this.display = 'block';
 
@@ -296,11 +297,11 @@ export class SignupComponent implements OnInit, AfterViewInit {
         }
       }, (error) => {
 
-        console.log('CREATE NEW USER - POST REQUEST ERROR ', error);
+        console.error('[SIGN-UP] CREATE NEW USER - POST REQUEST ERROR ', error);
         this.showSpinnerInLoginBtn = false;
         this.display = 'block';
         // const errorObj = JSON.parse(error);
-        console.log('CREATE NEW USER - POST REQUEST ERROR STATUS', error.status);
+        console.error('[SIGN-UP] CREATE NEW USER - POST REQUEST ERROR STATUS', error.status);
         
         if (error.status === 422) {
           this.signin_errormsg = 'Form validation error. Please fill in every fields.';
@@ -313,7 +314,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
 
 
       }, () => {
-        console.log('CREATE NEW USER  - POST REQUEST COMPLETE ');
+        console.log('[SIGN-UP] CREATE NEW USER  - POST REQUEST COMPLETE ');
       });
   }
 
@@ -324,7 +325,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
     // this.auth.signin(this.userForm.value['email'], this.userForm.value['password'])
     //   .subscribe((error) => {
     this.auth.signin(this.userForm.value['email'], this.userForm.value['password'], function (error) {
-      console.log('1. POST DATA ', error);
+      self.logger.log('[SIGN-UP] autoSignin 1. POST DATA ', error);
       // this.auth.user = signinResponse.user;
       // this.auth.user.token = signinResponse.token
       // console.log('SIGNIN TOKEN ', this.auth.user.token)
@@ -336,18 +337,18 @@ export class SignupComponent implements OnInit, AfterViewInit {
          * *** WIDGET - pass data to the widget function setTiledeskWidgetUser in index.html ***
          */
         const storedUser = localStorage.getItem('user')
-        console.log('Signup - STORED USER  ', storedUser)
+        self.logger.log('Signup - STORED USER  ', storedUser)
         if (storedUser !== null) {
           const _storedUser = JSON.parse(storedUser);
-          console.log('SetTiledeskWidgetUserSignin (Signup) - userFullname', _storedUser.firstname + _storedUser.lastname)
-          console.log('SetTiledeskWidgetUserSignin (Signup) - userEmail', _storedUser.email);
-          console.log('SetTiledeskWidgetUserSignin (Signup) - userId', _storedUser._id);
+          self.logger.log('[SIGN-UP] autoSignin SetTiledeskWidgetUserSignin (Signup) - userFullname', _storedUser.firstname + _storedUser.lastname)
+          self.logger.log('[SIGN-UP] autoSignin SetTiledeskWidgetUserSignin (Signup) - userEmail', _storedUser.email);
+          self.logger.log('[SIGN-UP] autoSignin SetTiledeskWidgetUserSignin (Signup) - userId', _storedUser._id);
 
           setTimeout(() => {
             try {
-              window['setTiledeskWidgetUser'](_storedUser.firstname + ' ' + _storedUser.lastname, _storedUser.email, _storedUser._id);
+              window['[SIGN-UP] setTiledeskWidgetUser'](_storedUser.firstname + ' ' + _storedUser.lastname, _storedUser.email, _storedUser._id);
             } catch (err) {
-              console.log('SetTiledeskWidgetUser (Signup) - error', err);
+              self.logger.log('[SIGN-UP] SetTiledeskWidgetUser (Signup) - error', err);
             }
           }, 2000);
         }
@@ -366,7 +367,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
         self.display = 'block';
         // console.log('SIGNIN USER - POST REQUEST ERROR ', error);
         // console.log('SIGNIN USER - POST REQUEST BODY ERROR ', signin_errorbody);
-        console.log('SIGNIN USER - POST REQUEST MSG ERROR ', self.signin_errormsg);
+        self.logger.log('[SIGN-UP] SIGNIN USER - POST REQUEST MSG ERROR ', self.signin_errormsg);
       }
       // tslint:disable-next-line:no-debugger
       // debugger
@@ -375,7 +376,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
 
   widgetReInit() {
     if (window && window['tiledesk']) {
-      console.log('SIGNUP PAGE ', window['tiledesk'])
+      console.log('[SIGN-UP] widgetReInit ', window['tiledesk'])
 
       window['tiledesk'].reInit();
       // alert('signin reinit');
@@ -439,7 +440,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
   }
 
   dismissAlert() {
-    console.log('DISMISS ALERT CLICKED')
+    console.log('[SIGN-UP] DISMISS ALERT CLICKED')
     this.display = 'none';
   }
 
@@ -459,7 +460,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
 
   onChange($event) {
     const checkModel = $event.target.checked;
-    console.log('CHECK MODEL ', checkModel)
+    console.log('[SIGN-UP] CHECK MODEL ', checkModel)
   }
 
 

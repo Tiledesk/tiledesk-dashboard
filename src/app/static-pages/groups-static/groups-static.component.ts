@@ -7,6 +7,7 @@ import { NotifyService } from '../../core/notify.service';
 import { ProjectPlanService } from '../../services/project-plan.service';
 import { StaticPageBaseComponent } from './../static-page-base/static-page-base.component';
 import { UsersService } from '../../services/users.service';
+import { LoggerService } from '../../services/logger/logger.service';
 const swal = require('sweetalert');
 
 @Component({
@@ -39,7 +40,8 @@ export class GroupsStaticComponent extends StaticPageBaseComponent implements On
     private translate: TranslateService,
     private prjctPlanService: ProjectPlanService,
     private notify: NotifyService,
-    private usersService: UsersService
+    private usersService: UsersService,
+    private logger: LoggerService
   ) {
     super();
   }
@@ -56,7 +58,7 @@ export class GroupsStaticComponent extends StaticPageBaseComponent implements On
   getProjectUserRole() {
     this.usersService.project_user_role_bs.subscribe((user_role) => {
       this.USER_ROLE = user_role;
-      console.log('USERS-COMP - PROJECT USER ROLE: ', this.USER_ROLE);
+      this.logger.log('[GROUPS-STATIC] - PROJECT USER ROLE: ', this.USER_ROLE);
     });
   }
 
@@ -67,14 +69,14 @@ export class GroupsStaticComponent extends StaticPageBaseComponent implements On
   translateModalOnlyOwnerCanManageProjectAccount() {
     this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
       .subscribe((translation: any) => {
-        // console.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        // this.logger.log('[GROUPS-STATIC] onlyOwnerCanManageTheAccountPlanMsg text', translation)
         this.onlyOwnerCanManageTheAccountPlanMsg = translation;
       });
 
 
     this.translate.get('LearnMoreAboutDefaultRoles')
       .subscribe((translation: any) => {
-        // console.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        // this.logger.log('[GROUPS-STATIC]  onlyOwnerCanManageTheAccountPlanMsg text', translation)
         this.learnMoreAboutDefaultRoles = translation;
       });
   }
@@ -88,17 +90,17 @@ export class GroupsStaticComponent extends StaticPageBaseComponent implements On
 
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
-      console.log('!!! ANALYTICS STATIC - project ', project)
-
+      // this.logger.log('[GROUPS-STATIC] - project ', project)
       if (project) {
         this.projectId = project._id
+        this.logger.log('[GROUPS-STATIC] - project Id  ', this.projectId)
       }
     });
   }
 
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      console.log('ProjectPlanService (GroupsStaticComponent) project Profile Data', projectProfileData)
+      this.logger.log('[GROUPS-STATIC] GET PROJECT PROFILE', projectProfileData)
       if (projectProfileData) {
 
         this.prjct_profile_type = projectProfileData.profile_type;
@@ -110,21 +112,21 @@ export class GroupsStaticComponent extends StaticPageBaseComponent implements On
 
         if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
 
-
           if (this.USER_ROLE === 'owner') {
             this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
           } 
-          // else {
-          //   this.presentModalOnlyOwnerCanManageTheAccountPlan();
-          // }
         }
       }
-    })
+    }, err => {
+      this.logger.error('[GROUPS-STATIC] GET PROJECT PROFILE - ERROR',err);
+    }, () => {
+      this.logger.log('[GROUPS-STATIC] GET PROJECT PROFILE * COMPLETE *');
+    });
   }
 
 
   goToPricing() {
-    console.log('goToPricing projectId ', this.projectId);
+    this.logger.log('[GROUPS-STATIC] - goToPricing projectId ', this.projectId);
     if (this.USER_ROLE === 'owner') {
       if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
         this.notify._displayContactUsModal(true, 'upgrade_plan');

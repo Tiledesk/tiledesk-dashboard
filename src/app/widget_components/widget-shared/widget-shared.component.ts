@@ -215,7 +215,7 @@ export class WidgetSharedComponent implements OnInit {
         // every element from both of the 
         // arrays 
         if (this.languages[i]['code'] === languagesCodes[j]) {
-          console.log('Multilanguage (widget-shared) LANG CODE FOUND IN LANG ARRAY - ITEM: ', this.languages[i])
+          // console.log('Multilanguage (widget-shared) LANG CODE FOUND IN LANG ARRAY - ITEM: ', this.languages[i])
 
           this.availableTranslations.push(this.languages[i])
           // Return if common element found 
@@ -223,7 +223,7 @@ export class WidgetSharedComponent implements OnInit {
         }
       }
     }
-    console.log('Multilanguage (widget-shared) availableTranslations - ARRAY: ', this.availableTranslations)
+    // console.log('Multilanguage (widget-shared) availableTranslations - ARRAY: ', this.availableTranslations)
     return this.availableTranslations
   }
 
@@ -233,14 +233,14 @@ export class WidgetSharedComponent implements OnInit {
       this.availableTranslations.splice(index, 1);
     }
 
-    console.log('Multilanguage (widget-shared) availableTranslations - ARRAY: ', this.availableTranslations)
+    // console.log('Multilanguage (widget-shared) availableTranslations - ARRAY: ', this.availableTranslations)
   }
 
   getLanguageNameFromCode(langCode) {
-    console.log('Multilanguage (widget-shared) getLanguageNameFromCode - langCode: ', langCode)
+    // console.log('Multilanguage (widget-shared) getLanguageNameFromCode - langCode: ', langCode)
     const index = this.languages.findIndex(x => x.code === langCode );
-    console.log('Multilanguage (widget-shared) getLanguageNameFromCode - index: ', index)
-    console.log('Multilanguage (widget-shared) delault lang - : ', this.languages[index])
+    // console.log('Multilanguage (widget-shared) getLanguageNameFromCode - index: ', index)
+    // console.log('Multilanguage (widget-shared) delault lang - : ', this.languages[index])
 
  return  this.languages[index].name;
 //     a = [

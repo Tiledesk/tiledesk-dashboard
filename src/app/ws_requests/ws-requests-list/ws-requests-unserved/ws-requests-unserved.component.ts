@@ -16,7 +16,7 @@ import { DepartmentService } from '../../../services/department.service';
 import { NotifyService } from '../../../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-
+import { LoggerService } from '../../../services/logger/logger.service';
 @Component({
   selector: 'appdashboard-ws-requests-unserved',
   templateUrl: './ws-requests-unserved.component.html',
@@ -58,10 +58,11 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     public faqKbService: FaqKbService,
     private departmentService: DepartmentService,
     public notify: NotifyService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    public logger: LoggerService
   ) {
 
-    super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify);
+    super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger);
   }
 
   ngOnInit() {
@@ -70,7 +71,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     this.getDepartments();
     // this.getUnservedRequestsLength();
     // this.getWsRequestsUnservedLength()
-    console.log('% »»» WebSocketJs WF - onData (ws-requests-unserved) - wsRequestsUnserved', this.wsRequestsUnserved)
+    this.logger.log('% »»» WebSocketJs WF - onData (ws-requests-unserved) - wsRequestsUnserved', this.wsRequestsUnserved)
     // this.getProjectUserRole()
     // this.getCount();
     this.detectBrowserRefresh();
@@ -83,7 +84,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
   getUserRole() {
     this.subscription = this.usersService.project_user_role_bs.subscribe((userRole) => {
 
-      console.log('WS-REQUESTS UNSERVED - USER ROLE »»» ', userRole)
+      this.logger.log('WS-REQUESTS UNSERVED - USER ROLE »»» ', userRole)
       
       this.USER_ROLE = userRole;
     })
@@ -92,11 +93,11 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
 
   getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
-      console.log('WS-REQUESTS UNSERVED ', user)
+      this.logger.log('WS-REQUESTS UNSERVED ', user)
       // this.user = user;
       if (user) {
         this.currentUserID = user._id
-        console.log('WS-REQUESTS UNSERVEDcurrentUser ID', this.currentUserID);
+        this.logger.log('WS-REQUESTS UNSERVEDcurrentUser ID', this.currentUserID);
       }
     });
   }
@@ -114,7 +115,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     this.translate.get('ArchivingRequestNoticationMsg')
       .subscribe((text: string) => {
         this.archivingRequestNoticationMsg = text;
-        // console.log('+ + + ArchivingRequestNoticationMsg', text)
+        // this.logger.log('+ + + ArchivingRequestNoticationMsg', text)
       });
   }
 
@@ -124,7 +125,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
       .subscribe((text: string) => {
 
         this.archivingRequestErrorNoticationMsg = text;
-        // console.log('+ + + ArchivingRequestErrorNoticationMsg', text)
+        // this.logger.log('+ + + ArchivingRequestErrorNoticationMsg', text)
       });
   }
 
@@ -134,7 +135,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     this.translate.get('RequestSuccessfullyClosed')
       .subscribe((text: string) => {
         this.requestHasBeenArchivedNoticationMsg_part1 = text;
-        // console.log('+ + + RequestHasBeenArchivedNoticationMsg_part1', text)
+        // this.logger.log('+ + + RequestHasBeenArchivedNoticationMsg_part1', text)
       });
   }
 
@@ -143,27 +144,27 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     this.translate.get('RequestHasBeenArchivedNoticationMsg_part2')
       .subscribe((text: string) => {
         this.requestHasBeenArchivedNoticationMsg_part2 = text;
-        // console.log('+ + + RequestHasBeenArchivedNoticationMsg_part2', text)
+        // this.logger.log('+ + + RequestHasBeenArchivedNoticationMsg_part2', text)
       });
   }
 
   getDepartments() {
     this.departmentService.getDeptsByProjectId().subscribe((_departments: any) => {
-      console.log('% »»» WebSocketJs WF +++++ ws-requests--- unserved GET DEPTS RESPONSE ', _departments);
+      this.logger.log('% »»» WebSocketJs WF +++++ ws-requests--- unserved GET DEPTS RESPONSE ', _departments);
       this.depts = _departments;
 
     }, error => {
-      console.log('% »»» WebSocketJs WF +++++ ws-requests--- unserved GET DEPTS - ERROR: ', error);
+      this.logger.error('% »»» WebSocketJs WF +++++ ws-requests--- unserved GET DEPTS - ERROR: ', error);
     }, () => {
-      console.log('% »»» WebSocketJs WF +++++ ws-requests--- unserved GET DEPTS * COMPLETE *')
+      this.logger.log('% »»» WebSocketJs WF +++++ ws-requests--- unserved GET DEPTS * COMPLETE *')
     });
   }
 
 
   ngAfterViewInit() {
     // const elemTable = <HTMLElement>document.querySelector('.unserved_requests_table tbody');
-    // console.log("% »»» WebSocketJs WF +++++ ws-requests--- unserved ----- ngAfterViewInit elemTable ", elemTable);
-    // console.log("% »»» WebSocketJs WF +++++ ws-requests--- unserved ----- ngAfterViewInit elemTable.childNodes.length ", elemTable.children.length);
+    // this.logger.log("% »»» WebSocketJs WF +++++ ws-requests--- unserved ----- ngAfterViewInit elemTable ", elemTable);
+    // this.logger.log("% »»» WebSocketJs WF +++++ ws-requests--- unserved ----- ngAfterViewInit elemTable.childNodes.length ", elemTable.children.length);
 
     // if (elemTable.children.length === 0) {
     //   this.displayNoRequestString = true;
@@ -174,9 +175,9 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
   }
 
   detectBrowserRefresh() {
-    // console.log('% »»» WebSocketJs WF +++++ ws-requests--- served CALLING browserRefresh')
+    // this.logger.log('% »»» WebSocketJs WF +++++ ws-requests--- served CALLING browserRefresh')
     this.browserRefresh = browserRefresh;
-    console.log("% »»» WebSocketJs WF +++++ ws-requests--- served ----- ngOnInit browserRefresh ", this.browserRefresh);
+    this.logger.log("% »»» WebSocketJs WF +++++ ws-requests--- served ----- ngOnInit browserRefresh ", this.browserRefresh);
 
     if (this.wsRequestsUnserved.length === 0 && browserRefresh === false) {
       this.displayNoRequestString = true;
@@ -184,8 +185,8 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
   }
 
   ngOnChanges() {
-    // console.log("% »»» WebSocketJs WF +++++ ws-requests--- unserved ----- ngOnChanges wsRequestsList$.value.length ", this.wsRequestsService.wsRequestsList$.value.length);
-    // console.log('% »»» WebSocketJs WF +++++ ws-requests--- unserved ----- ngOnChanges wsRequestsServed length', this.wsRequestsUnserved.length)
+    // this.logger.log("% »»» WebSocketJs WF +++++ ws-requests--- unserved ----- ngOnChanges wsRequestsList$.value.length ", this.wsRequestsService.wsRequestsList$.value.length);
+    // this.logger.log('% »»» WebSocketJs WF +++++ ws-requests--- unserved ----- ngOnChanges wsRequestsServed length', this.wsRequestsUnserved.length)
     // setTimeout(() => {
     //   if (this.wsRequestsUnserved.length === 0) {
     //     this.displayNoRequestString = true;
@@ -204,25 +205,25 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
   // @ Tags - display more tags
   // --------------------------------------------------
   displayMoreTags(requestid) {
-    // console.log("% »»» WebSocketJs WF +++++ ws-requests--- served ----- displayMoreTags - id request ", requestid);
+    // this.logger.log("% »»» WebSocketJs WF +++++ ws-requests--- served ----- displayMoreTags - id request ", requestid);
     const hiddenTagsElem = <HTMLElement>document.querySelector(`#more_tags_for_request_${requestid}`);
-    console.log("% »»» WebSocketJs WF +++++ ws-requests--- served ----- displayMoreTags - hiddenTagsElem ", hiddenTagsElem);
+    this.logger.log("% »»» WebSocketJs WF +++++ ws-requests--- served ----- displayMoreTags - hiddenTagsElem ", hiddenTagsElem);
     hiddenTagsElem.style.display = "inline-block";
 
     const moreTagsBtn = <HTMLElement>document.querySelector(`#more_tags_btn_for_request_${requestid}`);
-    console.log("% »»» WebSocketJs WF +++++ ws-requests--- served ----- displayMoreTags - moreTagsBtn ", moreTagsBtn);
+    this.logger.log("% »»» WebSocketJs WF +++++ ws-requests--- served ----- displayMoreTags - moreTagsBtn ", moreTagsBtn);
     moreTagsBtn.style.display = "none";
 
     // const lessTagsBtn = <HTMLElement>document.querySelector(`#less_tags_btn_for_request_${requestid}`);
-    // console.log("% »»» WebSocketJs WF +++++ ws-requests--- served ----- displayMoreTags - lessTagsBtn ", lessTagsBtn);
+    // this.logger.log("% »»» WebSocketJs WF +++++ ws-requests--- served ----- displayMoreTags - lessTagsBtn ", lessTagsBtn);
     // lessTagsBtn.style.display = "inline-block";
   }
 
   toggleTooltip(index) {
-    console.log("WS-REQUESTS-UNSERVED toggleTooltip index" ,index);
+    this.logger.log("WS-REQUESTS-UNSERVED toggleTooltip index" ,index);
     // const tooltipElem = <HTMLElement>document.querySelector('.right');
     const tooltipElem = <HTMLElement>document.querySelector(`#tooltip_${index}`);
-    console.log("WS-REQUESTS-UNSERVED toggleTooltip tooltipElem" , tooltipElem);
+    this.logger.log("WS-REQUESTS-UNSERVED toggleTooltip tooltipElem" , tooltipElem);
     tooltipElem.classList.toggle("tooltip-fixed");
   }
 
@@ -231,26 +232,26 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
   // --------------------------------------------------
   displayLessTag(requestid) {
     const hiddenTagsElem = <HTMLElement>document.querySelector(`#more_tags_for_request_${requestid}`);
-    console.log("% »»» WebSocketJs WF +++++ ws-requests--- served ----- displayMoreTags - hiddenTagsElem ", hiddenTagsElem);
+    this.logger.log("% »»» WebSocketJs WF +++++ ws-requests--- served ----- displayMoreTags - hiddenTagsElem ", hiddenTagsElem);
     hiddenTagsElem.style.display = "none";
 
     const moreTagsBtn = <HTMLElement>document.querySelector(`#more_tags_btn_for_request_${requestid}`);
-    console.log("% »»» WebSocketJs WF +++++ ws-requests--- served ----- displayMoreTags - moreTagsBtn ", moreTagsBtn);
+    this.logger.log("% »»» WebSocketJs WF +++++ ws-requests--- served ----- displayMoreTags - moreTagsBtn ", moreTagsBtn);
     moreTagsBtn.style.display = "inline-block";
 
     // const lessTagsBtn = <HTMLElement>document.querySelector(`#less_tags_btn_for_request_${requestid}`);
-    // console.log("% »»» WebSocketJs WF +++++ ws-requests--- served ----- displayMoreTags - lessTagsBtn ", lessTagsBtn);
+    // this.logger.log("% »»» WebSocketJs WF +++++ ws-requests--- served ----- displayMoreTags - lessTagsBtn ", lessTagsBtn);
     // lessTagsBtn.style.display = "none";
   }
 
   getCount() {
-    console.log('% »»» WebSocketJs WF +++++ ws-requests--- unserved - wsRequestsUnserved unserved calling getCount ')
+    this.logger.log('% »»» WebSocketJs WF +++++ ws-requests--- unserved - wsRequestsUnserved unserved calling getCount ')
     this.wsRequestsUnserved.forEach(unserved => {
       if (this.timeout) {
         clearTimeout(this.timeout);
       }
       this.timeout = setTimeout(() => {
-        console.log('% »»» WebSocketJs WF +++++ ws-requests--- unserved - wsRequestsUnserved unserved getCount unserved ', unserved)
+        this.logger.log('% »»» WebSocketJs WF +++++ ws-requests--- unserved - wsRequestsUnserved unserved getCount unserved ', unserved)
       }, 1000);
     });
   }
@@ -259,12 +260,12 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
   // getProjectUserRole() {
   //   this.usersService.project_user_role_bs  
   //   .subscribe((user_role) => {
-  //     console.log('% »»» WebSocketJs WF - WsRequestsList USER ROLE ', user_role);
+  //     this.logger.log('% »»» WebSocketJs WF - WsRequestsList USER ROLE ', user_role);
   //     if (user_role) {
   //       if (user_role === 'agent') {
   //         this.ROLE_IS_AGENT = true;
   //         this.totalOf_unservedRequests = this.wsRequestsUnserved.length;
-  //         console.log('% »»» WebSocketJs WF +++++ ws-requests--- unserved ROLE is AGENT', this.ROLE_IS_AGENT ,' done -> total unserved ', this.totalOf_unservedRequests)
+  //         this.logger.log('% »»» WebSocketJs WF +++++ ws-requests--- unserved ROLE is AGENT', this.ROLE_IS_AGENT ,' done -> total unserved ', this.totalOf_unservedRequests)
   //       } else {
   //         this.ROLE_IS_AGENT = false;
   //         this.getWsRequestsUnservedLength();
@@ -284,7 +285,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
   //   .subscribe((totalunserved: number) => {
 
   //     this.totalOf_unservedRequests = totalunserved
-  //     console.log('% »»» WebSocketJs WF +++++ ws-requests--- unserved ROLE is AGENT', this.ROLE_IS_AGENT ,' done -> total unserved ', this.totalOf_unservedRequests)
+  //     this.logger.log('% »»» WebSocketJs WF +++++ ws-requests--- unserved ROLE is AGENT', this.ROLE_IS_AGENT ,' done -> total unserved ', this.totalOf_unservedRequests)
 
   //   })
   // }
@@ -294,7 +295,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     if (this.ws_requests_length > 0) {
       this.showSpinner = false;
     }
-    console.log('% »»» WebSocketJs WF - onData (ws-requests-unserved) ws_requests_length ', this.ws_requests_length)
+    this.logger.log('% »»» WebSocketJs WF - onData (ws-requests-unserved) ws_requests_length ', this.ws_requests_length)
   }
 
 
@@ -306,7 +307,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
       )
       .subscribe((project) => {
 
-        // console.log('WsRequestsUnservedComponent - project', project)
+        // this.logger.log('WsRequestsUnservedComponent - project', project)
 
         if (project) {
           this.projectId = project._id;
@@ -318,13 +319,13 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
   getStorageBucket() {
     const firebase_conf = this.appConfigService.getConfig().firebase;
     this.storageBucket = firebase_conf['storageBucket'];
-    // console.log('STORAGE-BUCKET Ws Requests List ', this.storageBucket)
+    // this.logger.log('STORAGE-BUCKET Ws Requests List ', this.storageBucket)
   }
 
   // goToMemberProfile(member_id: any) {
-  //   console.log('!!! NEW REQUESTS HISTORY has clicked GO To MEMBER ', member_id);
+  //   this.logger.log('!!! NEW REQUESTS HISTORY has clicked GO To MEMBER ', member_id);
   //   if (member_id.indexOf('bot_') !== -1) {
-  //     console.log('!!! NEW REQUESTS HISTORY IS A BOT !');
+  //     this.logger.log('!!! NEW REQUESTS HISTORY IS A BOT !');
 
   //     this.router.navigate(['project/' + this.projectId + '/botprofile/' + member_id]);
   //   } else {
@@ -345,26 +346,26 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
   // ------------------------------------------------------
 
   // openDeleteRequestModal(request_recipient: string) {
-  //   console.log('ID OF REQUEST TO ARCHIVE ', request_recipient)
+  //   this.logger.log('ID OF REQUEST TO ARCHIVE ', request_recipient)
   //   this.id_request_to_archive = request_recipient;
   //   this.displayArchiveRequestModal = 'block'
   // }
 
   // onCloseArchiveRequestModal() {
-  //   console.log('onCloseArchiveRequestModal displayArchiveRequestModal', this.displayArchiveRequestModal)
+  //   this.logger.log('onCloseArchiveRequestModal displayArchiveRequestModal', this.displayArchiveRequestModal)
   //   this.displayArchiveRequestModal = 'none'
   // }
 
   archiveRequest(request_id) {
     this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg);
-    console.log('WS-REQUESTS-UNSERVED - HAS CLICKED ARCHIVE REQUEST ');
+    this.logger.log('WS-REQUESTS-UNSERVED - HAS CLICKED ARCHIVE REQUEST ');
 
 
     this.wsRequestsService.closeSupportGroup(request_id)
       .subscribe((data: any) => {
-        console.log('WS-REQUESTS-UNSERVED - CLOSE SUPPORT GROUP - DATA ', data);
+        this.logger.log('WS-REQUESTS-UNSERVED - CLOSE SUPPORT GROUP - DATA ', data);
       }, (err) => {
-        console.log('WS-REQUESTS-UNSERVED - CLOSE SUPPORT GROUP - ERROR ', err);
+        this.logger.error('WS-REQUESTS-UNSERVED - CLOSE SUPPORT GROUP - ERROR ', err);
 
    
         // =========== NOTIFY ERROR ===========
@@ -372,7 +373,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
         this.notify.showNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
       }, () => {
         // this.ngOnInit();
-        console.log('CLOSE SUPPORT GROUP - COMPLETE');  
+        this.logger.log('CLOSE SUPPORT GROUP - COMPLETE');  
 
         // =========== NOTIFY SUCCESS===========
         // this.notify.showNotification(`request with id: ${this.id_request_to_archive} has been moved to History`, 2, 'done');
@@ -384,7 +385,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
 
 
   trackByFn(index, request) {
-    // console.log('% »»» WebSocketJs WF WS-RL - trackByFn ', request );
+    // this.logger.log('% »»» WebSocketJs WF WS-RL - trackByFn ', request );
     if (!request) return null
     return index; // unique id corresponding to the item
   }
@@ -393,23 +394,23 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
   // Join request
   // ------------------------------------------
   joinRequest (request_id:string) {
-    console.log('WS-REQUESTS-UNSERVED - joinRequest request_id', request_id);
-    console.log('WS-REQUESTS-UNSERVED - joinRequest currentUserID', this.currentUserID);
+    this.logger.log('WS-REQUESTS-UNSERVED - joinRequest request_id', request_id);
+    this.logger.log('WS-REQUESTS-UNSERVED - joinRequest currentUserID', this.currentUserID);
 
     this.onJoinHandled(request_id, this.currentUserID); 
   }
 
 
   dept_replace(deptid) {
-    // console.log('% »»» WebSocketJs WF +++++ ws-requests--- unserved - dept_replace deptid', deptid)
-    // console.log('% »»» WebSocketJs WF +++++ ws-requests--- served - dept_replace depts', this.depts)
+    // this.logger.log('% »»» WebSocketJs WF +++++ ws-requests--- unserved - dept_replace deptid', deptid)
+    // this.logger.log('% »»» WebSocketJs WF +++++ ws-requests--- served - dept_replace depts', this.depts)
     if (this.depts) {
       const foundDept = this.depts.filter((obj: any) => {
 
         return obj._id === deptid;
 
       });
-      // console.log('% »»» WebSocketJs WF +++++ ws-requests--- unserved - dept_replace foundDept', foundDept)
+      // this.logger.log('% »»» WebSocketJs WF +++++ ws-requests--- unserved - dept_replace foundDept', foundDept)
 
       return deptid = foundDept[0]['name'];
     }

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FaqKbService } from '../../services/faq-kb.service';
 import { FaqKb } from '../../models/faq_kb-model';
 import { Router, RoutesRecognized } from '@angular/router';
-import { MongodbFaqService } from '../../services/mongodb-faq.service';
+import { FaqService } from '../../services/faq.service';
 
 import { Project } from '../../models/project-model';
 import { AuthService } from '../../core/auth.service';
@@ -13,7 +13,7 @@ import { AppConfigService } from '../../services/app-config.service';
 import { DepartmentService } from '../../services/department.service';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../services/brand.service';
-
+import { LoggerService } from '../../services/logger/logger.service';
 const swal = require('sweetalert');
 @Component({
   selector: 'bots-list',
@@ -74,41 +74,19 @@ export class BotListComponent implements OnInit {
   constructor(
     private faqKbService: FaqKbService,
     private router: Router,
-    private mongodbFaqService: MongodbFaqService,
+    private faqService: FaqService,
     private auth: AuthService,
     private _location: Location,
     private notify: NotifyService,
     public appConfigService: AppConfigService,
     private translate: TranslateService,
     public brandService: BrandService,
-    public departmentService: DepartmentService
+    public departmentService: DepartmentService,
+    private logger: LoggerService
   ) {
 
     const brand = brandService.getBrand();
     this.tparams = brand;
-
-    // this.router.events
-    // .filter(e => e instanceof RoutesRecognized)
-    // .pairwise()
-    // .subscribe((event: any[]) => {
-
-    //   console.log('FaqComponent NAVIGATION - event ', event);
-    //   console.log('FaqComponent NAVIGATION - urlAfterRedirects ', event[0].urlAfterRedirects);
-    //   // console.log('FaqComponent NAVIGATION - urlAfterRedirects PREVIOUS PAGE ', event[0].urlAfterRedirects.includes('create'));
-
-    //   if (event[0].urlAfterRedirects.includes('create') === true) {
-    //     // this.navigation_history.push('create')
-    //     const url_segment = event[0].urlAfterRedirects.split('/');
-    //     console.log('FaqComponent NAVIGATION - url_segment (bot list) ', url_segment);
-
-    //     // if (url_segment[3] === 'bots' && url_segment[4] === 'create') {
-    //     //   this.previousPageIsCreateBot = true
-    //     //   console.log('FaqComponent NAVIGATION - urlAfterRedirects PREVIOUS PAGE IS CREATE BOT', this.previousPageIsCreateBot);
-    //     // }
-    //   }
-
-    // });
-
   }
 
   ngOnInit() {
@@ -129,7 +107,7 @@ export class BotListComponent implements OnInit {
     this.translate.get('BotsPage')
       .subscribe((text: string) => {
         // this.deleteContact_msg = text;
-        console.log('+ + + BotsPage translation: ', text)
+        this.logger.log('[BOTS-LIST] getTranslations BotsPage : ', text)
 
         this.botIsAssociatedWithDepartments = text['TheBotIsAssociatedWithDepartments'];
         this.botIsAssociatedWithTheDepartment = text['TheBotIsAssociatedWithTheDepartment'];
@@ -140,7 +118,7 @@ export class BotListComponent implements OnInit {
     this.translate.get('Warning')
       .subscribe((text: string) => {
         // this.deleteContact_msg = text;
-        console.log('+ + + BotsPage translation: ', text)
+        // this.logger.log('+ + + BotsPage translation: ', text)
         this.warning = text;
       });
 
@@ -151,12 +129,12 @@ export class BotListComponent implements OnInit {
       this.UPLOAD_ENGINE_IS_FIREBASE = true;
       const firebase_conf = this.appConfigService.getConfig().firebase;
       this.storageBucket = firebase_conf['storageBucket'];
-      console.log('BOT-LIST IMAGE STORAGE ', this.storageBucket , 'usecase Firebase')
+      this.logger.log('[BOTS-LIST] IMAGE STORAGE ', this.storageBucket, 'usecase Firebase')
     } else {
       this.UPLOAD_ENGINE_IS_FIREBASE = false;
       this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
 
-      console.log('BOT-LIST IMAGE STORAGE ', this.baseUrl, 'usecase native')
+      this.logger.log('[BOTS-LIST] IMAGE STORAGE ', this.baseUrl, 'usecase native')
     }
   }
 
@@ -165,7 +143,7 @@ export class BotListComponent implements OnInit {
       .subscribe((text: string) => {
 
         this.trashBotSuccessNoticationMsg = text;
-        console.log('+ + + TrashBotSuccessNoticationMsg', text)
+        // this.logger.log('+ + + TrashBotSuccessNoticationMsg', text)
       });
   }
 
@@ -174,7 +152,7 @@ export class BotListComponent implements OnInit {
       .subscribe((text: string) => {
 
         this.trashBotErrorNoticationMsg = text;
-        console.log('+ + + TrashBotErrorNoticationMsg', text)
+        // this.logger.log('+ + + TrashBotErrorNoticationMsg', text)
       });
   }
 
@@ -182,7 +160,7 @@ export class BotListComponent implements OnInit {
     this.auth.project_bs.subscribe((project) => {
       this.project = project
       if (this.project) {
-        // console.log('00 -> FAQKB COMP project ID from AUTH service subscription  ', this.project._id)
+        // this.logger.log('[BOTS-LIST] 00 -> FAQKB COMP project ID from AUTH service subscription  ', this.project._id)
       }
     });
   }
@@ -194,7 +172,7 @@ export class BotListComponent implements OnInit {
   getFaqKbByProjectId() {
     // this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
     this.faqKbService.getAllBotByProjectId().subscribe((faqKb: any) => {
-      console.log('BOT LIST - GET BOT BY PROJECT ID', faqKb);
+      this.logger.log('[BOTS-LIST] - GET BOTS BY PROJECT ID', faqKb);
       this.faqkbList = faqKb;
 
       if (this.faqkbList) {
@@ -223,9 +201,9 @@ export class BotListComponent implements OnInit {
         }
 
         for (let bot of this.faqkbList) {
-          // console.log("BOT LIST - GET NUM OF MESSAGE - BOT : ", bot);
+          // this.logger.log("BOT LIST - GET NUM OF MESSAGE - BOT : ", bot);
           this.faqKbService.getNumberOfMessages(bot._id, bot.type).subscribe((res: any) => {
-            console.log("Messages sent from bot: ", res);
+            this.logger.log("[BOTS-LIST] Messages sent from bot: ", res);
             if (res.length == 0) {
               bot.message_count = 0;
             } else {
@@ -242,11 +220,11 @@ export class BotListComponent implements OnInit {
       // this.showSpinner = false;
     },
       (error) => {
-        console.log('GET FAQ KB ERROR ', error);
+        this.logger.error('[BOTS-LIST] GET BOTS ERROR ', error);
         this.showSpinner = false;
       },
       () => {
-        console.log('GET FAQ KB COMPLETE');
+        this.logger.log('[BOTS-LIST] GET BOTS COMPLETE');
         // FOR ANY FAQ-KB ID GET THE FAQ ASSOCIATED
         this.getFaqByFaqKbId();
       });
@@ -255,15 +233,15 @@ export class BotListComponent implements OnInit {
 
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
-    // console.log('AppConfigService getAppConfig (BOT LIST) public_Key', this.public_Key);
+    // this.logger.log('AppConfigService getAppConfig (BOT LIST) public_Key', this.public_Key);
     let keys = this.public_Key.split("-");
-    // console.log('PUBLIC-KEY (BOT LIST) keys', keys)
+    // this.logger.log('PUBLIC-KEY (BOT LIST) keys', keys)
     keys.forEach(key => {
 
       if (key.includes("ANA")) {
-        // console.log('PUBLIC-KEY (BOT LIST) - key', key);
+        // this.logger.log('PUBLIC-KEY (BOT LIST) - key', key);
         let ana = key.split(":");
-        // console.log('PUBLIC-KEY (BOT LIST) - ana key&value', ana);
+        // this.logger.log('PUBLIC-KEY (BOT LIST) - ana key&value', ana);
         if (ana[1] === "F") {
           this.isVisibleAnalytics = false;
         } else {
@@ -275,15 +253,15 @@ export class BotListComponent implements OnInit {
   }
 
   goToBotExternalUrl(botExternalUrl) {
-    console.log('botExternalUrl ', botExternalUrl);
+    this.logger.log('[BOTS-LIST] botExternalUrl ', botExternalUrl);
     window.open(botExternalUrl, '_blank');
   }
 
   disableTruncateText(i: number) {
     this.text_is_truncated = false;
-    // console.log('toggleShowUrl ', this.truncate_text);
+    // this.logger.log('toggleShowUrl ', this.truncate_text);
     this.rowIndexSelected = i;
-    console.log('toggleShowUrl index ', i);
+    this.logger.log('[BOTS-LIST] toggleShowUrl index ', i);
   }
 
   enableTruncateText() {
@@ -291,57 +269,33 @@ export class BotListComponent implements OnInit {
     this.rowIndexSelected = undefined;
   }
 
-  /**
-   * !!! NO MORE USED: NOW THE FAQ-KB ARE GET BY FILTERING FOR THE ID OF THE CURRENT PROJECT (see above)
-   * GET ALL FAQ KB (READ)
-   */
-  // getFaqKb() {
-  //   this.faqKbService.getMongDbFaqKb().subscribe((faqkb: any) => {
-  //     console.log('MONGO DB FAQKB', faqkb);
-  //     this.faqkbList = faqkb;
-  //   },
-  //     (error) => {
-
-  //       console.log('GET FAQ KB ERROR ', error);
-
-  //     },
-  //     () => {
-  //       console.log('GET FAQ KB COMPLETE');
-
-  //       // FOR ANY FAQ-KB ID GET THE FAQ ASSOCIATED
-  //       this.getFaqByFaqKbId();
-
-  //     });
-  // }
+ 
 
   getFaqByFaqKbId() {
     // FOR ANY FAQ-KB ID GET THE FAQ ASSOCIATED
     let i: number;
     for (i = 0; i < this.faqkbList.length; i++) {
-      console.log('ID FAQ KB ', this.faqkbList[i]._id);
+      this.logger.log('[BOTS-LIST] getFaqByFaqKbId ID FAQ KB ', this.faqkbList[i]._id);
       this.faqKbId = this.faqkbList[i]._id;
 
-      this.mongodbFaqService.getMongoDbFaqByFaqKbId(this.faqKbId).subscribe((faq: any) => {
-        console.log('GET BOT FAQs - FAQs ARRAY ', faq);
+      this.faqService.getFaqByFaqKbId(this.faqKbId).subscribe((faq: any) => {
+        this.logger.log('[BOTS-LIST] getFaqByFaqKbId GET BOT FAQs - FAQs ARRAY ', faq);
 
         if (faq) {
-
           let j: number;
           for (j = 0; j < faq.length; j++) {
-            // console.log('MONGO DB FAQ - FAQ ID', faq[j]._id);
-            // console.log('MONGO DB FAQ - FAQ-KB ID', faq[j].id_faq_kb);
+            // this.logger.log('MONGO DB FAQ - FAQ ID', faq[j]._id);
+            // this.logger.log('MONGO DB FAQ - FAQ-KB ID', faq[j].id_faq_kb);
 
-            // console.log('WITH THE FAQ-KB ID ', faq[j].id_faq_kb, 'FOUND FAQ WITH ID ', faq[j]._id)
+            // this.logger.log('WITH THE FAQ-KB ID ', faq[j].id_faq_kb, 'FOUND FAQ WITH ID ', faq[j]._id)
             this.faq_faqKbId = faq[j].id_faq_kb;
 
             for (const faqkb of this.faqkbList) {
 
               if (faqkb._id === this.faq_faqKbId) {
-                // console.log('+> ID COINCIDONO');
-
-
+                // this.logger.log('+> ID COINCIDONO');
                 faqkb.faqs_number = faq.length
-                // console.log('»»» BOT ID', faqkb._id, 'FAQ LENGHT ', faq.length);
+                // this.logger.log('»»» BOT ID', faqkb._id, 'FAQ LENGHT ', faq.length);
                 // set in the json the value true to the property has_faq
                 faqkb.has_faq = true;
               }
@@ -349,10 +303,10 @@ export class BotListComponent implements OnInit {
           }
         }
       }, (error) => {
-        console.log('GET BOT FAQs - ERROR ', error)
+        this.logger.error('[BOTS-LIST] GET BOT FAQs - ERROR ', error)
         this.showSpinner = false;
       }, () => {
-        console.log('GET BOT FAQs - COMPLETE ');
+        this.logger.log('[BOTS-LIST] GET BOT FAQs - COMPLETE ');
         setTimeout(() => {
           this.showSpinner = false;
         }, 100);
@@ -360,58 +314,24 @@ export class BotListComponent implements OnInit {
     }
   }
 
-  // !!! NO MORE USED ????
-  // getFaqByFaqKbIdForDeleteModal() {
-  //   // FOR ANY FAQ-KB ID GET THE FAQ ASSOCIATED
-  //   // let i: number;
-  //   // for (i = 0; i < this.faqkbList.length; i++) {
-  //   //   console.log('ID FAQ KB ', this.faqkbList[i]._id);
-  //   //   this.faqKbId = this.faqkbList[i]._id;
-
-  //   // '5a84754f7d70e79db67fb0da'
-  //   this.mongodbFaqService.getMongoDbFaqByFaqKbId(this.id_toDelete).subscribe((faq: any) => {
-  //     console.log('MONGO DB FAQ RETURNED BY getFaqByFaqKbIdForDeleteModal', faq);
-  //     console.log('FAQ-KB ID TO DELETE (IN getFaqByFaqKbIdForDeleteModal)', this.id_toDelete);
-
-  //     let j: number;
-  //     for (j = 0; j < faq.length; j++) {
-  //       // console.log('MONGO DB FAQ - FAQ ID', faq[j]._id);
-  //       console.log('MONGO DB FAQ - THE FAQ-KB WITH ID', faq[j].id_faq_kb, ' HAS RELATED THE FAQ ' + faq[j]._id);
-  //       this.faq_faqKbId = faq[j].id_faq_kb;
-
-  //       for (const faqkb of this.faqkbList) {
-  //         if (faqkb._id === this.faq_faqKbId) {
-  //           // console.log('+> ID COINCIDONO');
-  //           // this.HAS_FAQ_ASSOCIATED = true;
-  //           // set in the json the value true to the property has_faq
-  //           faqkb.has_faq = true;
-  //         }
-  //       }
-  //     }
-  //   });
-  //   // }
-  // }
 
   /**
    * MODAL DELETE FAQ KB
    * @param id
    */
   openDeleteModal(id: string, bot_name: string, HAS_FAQ_RELATED: boolean, botType: string) {
-
     const deptsArray = this.getDepartments(id)
-    console.log('»» ON MODAL DELETE OPEN - deptsArray', deptsArray);
-
-
+    this.logger.log('[BOTS-LIST] »» ON MODAL DELETE OPEN - deptsArray', deptsArray);
     // FIX THE BUG: WHEN THE MODAL IS OPENED, IF ANOTHER BOT HAS BEEN DELETED PREVIOUSLY, IS DISPLAYED THE ID OF THE BOT DELETED PREVIOUSLY
     this.bot_id_typed = '';
     // FIX THE BUG: WHEN THE MODAL IS OPENED, IF ANOTHER BOT HAS BEEN DELETED PREVIOUSLY, THE BUTTON 'DELETE BOT' IS ACTIVE
     this.ID_BOT_TYPED_MATCHES_THE_BOT_ID = false;
 
-    console.log('»» ON MODAL DELETE OPEN - BOT ID TYPED BY USER', this.bot_id_typed);
-    console.log('ON MODAL DELETE OPEN -> FAQ-KB ID ', id);
-    console.log('ON MODAL DELETE OPEN -> FAQ-KB NAME ', bot_name);
-    console.log('ON MODAL DELETE OPEN -> HAS_FAQ_RELATED ', HAS_FAQ_RELATED);
-    console.log('ON MODAL DELETE OPEN -> botType ', botType);
+    this.logger.log('[BOTS-LIST] »» ON MODAL DELETE OPEN - BOT ID TYPED BY USER', this.bot_id_typed);
+    this.logger.log('[BOTS-LIST] ON MODAL DELETE OPEN -> FAQ-KB ID ', id);
+    this.logger.log('[BOTS-LIST] ON MODAL DELETE OPEN -> FAQ-KB NAME ', bot_name);
+    this.logger.log('[BOTS-LIST] ON MODAL DELETE OPEN -> HAS_FAQ_RELATED ', HAS_FAQ_RELATED);
+    this.logger.log('[BOTS-LIST] ON MODAL DELETE OPEN -> botType ', botType);
     this._botType = botType
     this.HAS_FAQ_RELATED = HAS_FAQ_RELATED;
 
@@ -424,24 +344,19 @@ export class BotListComponent implements OnInit {
 
   getDepartments(selectedBotId) {
     this.departmentService.getDeptsByProjectId().subscribe((_departments: any) => {
-      console.log('ON MODAL DELETE OPEN - GET DEPTS RES', _departments);
+      this.logger.log('[BOTS-LIST] ON MODAL DELETE OPEN - GET DEPTS RES', _departments);
       // this.departments = _departments
 
       const foundDeptsArray = _departments.filter((obj: any) => {
         return obj.id_bot === selectedBotId;
       });
 
-      // console.log('ON MODAL DELETE OPEN - foundBotArray', foundBotArray);
-
       if (foundDeptsArray.length === 0) {
-        console.log('ON MODAL DELETE OPEN - BOT NOT ASSOCIATED');
-
-
+        this.logger.log('[BOTS-LIST] ON MODAL DELETE OPEN - BOT NOT ASSOCIATED');
         this.displayDeleteBotModal = 'block'; // THE NEW MODAL USED TO DELETE THE BOT
-
       } else {
-        console.log('ON MODAL DELETE OPEN - BOT !!! ASSOCIATED');
-        console.log('ON MODAL DELETE OPEN - foundDeptsArray', foundDeptsArray);
+        this.logger.log('[BOTS-LIST] ON MODAL DELETE OPEN - BOT !!! ASSOCIATED');
+        this.logger.log('[BOTS-LIST] ON MODAL DELETE OPEN - foundDeptsArray', foundDeptsArray);
 
         this.deptsNameAssociatedToBot = []
 
@@ -449,12 +364,11 @@ export class BotListComponent implements OnInit {
           this.deptsNameAssociatedToBot.push(dept.name)
         });
 
-        console.log('ON MODAL DELETE OPEN - depts Names Associated To Bot', this.deptsNameAssociatedToBot);
+        this.logger.log('[BOTS-LIST] ON MODAL DELETE OPEN - depts Names Associated To Bot', this.deptsNameAssociatedToBot);
 
         // this.botIsAssociatedWithDepartments = text['TheBotIsAssociatedWithDepartments'];
         // this.botIsAssociatedWithTheDepartment = text['TheBotIsAssociatedWithTheDepartment'];
         if (foundDeptsArray.length === 1) {
-
           swal({
             title: this.warning,
             text: this.botIsAssociatedWithTheDepartment + ' ' + this.deptsNameAssociatedToBot + '. ' + this.disassociateTheBot,
@@ -465,7 +379,6 @@ export class BotListComponent implements OnInit {
         }
 
         if (foundDeptsArray.length > 1) {
-
           swal({
             title: this.warning,
             text: this.botIsAssociatedWithDepartments + ' ' + this.deptsNameAssociatedToBot + '. ' + this.disassociateTheBot,
@@ -479,9 +392,9 @@ export class BotListComponent implements OnInit {
       }
 
     }, error => {
-      console.log('ON MODAL DELETE OPEN - GET DEPTS - ERROR: ', error);
+      this.logger.error('[BOTS-LIST] ON MODAL DELETE OPEN - GET DEPTS - ERROR: ', error);
     }, () => {
-      console.log('ON MODAL DELETE OPEN - GET DEPTS * COMPLETE *')
+      this.logger.log('[BOTS-LIST] ON MODAL DELETE OPEN - GET DEPTS * COMPLETE *')
     });
 
 
@@ -500,14 +413,14 @@ export class BotListComponent implements OnInit {
   // ENABLED THE BUTTON 'DELETE BOT' IF THE BOT ID TYPED BY THE USER
   // MATCHES TO THE BOT ID
   checkIdBotTyped() {
-    console.log('BOT ID TYPED BY USER', this.bot_id_typed);
+    this.logger.log('[BOTS-LIST] BOT ID TYPED BY USER', this.bot_id_typed);
 
     if (this.id_toDelete === this.bot_id_typed) {
       this.ID_BOT_TYPED_MATCHES_THE_BOT_ID = true;
-      console.log('»» BOT ID TYPED MATCHES THE BOT ID ', this.ID_BOT_TYPED_MATCHES_THE_BOT_ID)
+      this.logger.log('[BOTS-LIST] »» BOT ID TYPED MATCHES THE BOT ID ', this.ID_BOT_TYPED_MATCHES_THE_BOT_ID)
     } else {
       this.ID_BOT_TYPED_MATCHES_THE_BOT_ID = false;
-      console.log('»» BOT ID TYPED MATCHES THE BOT ID ', this.ID_BOT_TYPED_MATCHES_THE_BOT_ID)
+      this.logger.log('[BOTS-LIST] »» BOT ID TYPED MATCHES THE BOT ID ', this.ID_BOT_TYPED_MATCHES_THE_BOT_ID)
     }
   }
 
@@ -527,16 +440,16 @@ export class BotListComponent implements OnInit {
     // Delete Dialogflow Bot Credetial
     // ------------------------------------------------------------------
     this.faqKbService.deleteDialogflowBotCredetial(this.id_toDelete).subscribe((res: any) => {
-      console.log('deleteDlflwBotCredentialAndUpdateBotAsTrashed - RES ', res);
+      this.logger.log('[BOTS-LIST] deleteDlflwBotCredentialAndUpdateBotAsTrashed - RES ', res);
 
     }, (error) => {
-      console.log('deleteDlflwBotCredentialAndUpdateBotAsTrashed - ERROR ', error);
+      this.logger.error('[BOTS-LIST] deleteDlflwBotCredentialAndUpdateBotAsTrashed - ERROR ', error);
 
       // =========== NOTIFY ERROR ===========
       this.notify.showWidgetStyleUpdateNotification(this.trashBotErrorNoticationMsg, 4, 'report_problem');
 
     }, () => {
-      console.log('deleteDlflwBotCredentialAndUpdateBotAsTrashed * COMPLETE *');
+      this.logger.log('[BOTS-LIST] deleteDlflwBotCredentialAndUpdateBotAsTrashed * COMPLETE *');
 
       // ------------------------------------------------------------------
       // Update as trashed the bot on our db
@@ -548,17 +461,17 @@ export class BotListComponent implements OnInit {
 
   updateBotAsTrashed() {
     this.faqKbService.updateFaqKbAsTrashed(this.id_toDelete, true).subscribe((updatedFaqKb: any) => {
-      console.log('TRASH THE BOT - UPDATED FAQ-KB ', updatedFaqKb);
+      this.logger.log('[BOTS-LIST] TRASH THE BOT - UPDATED FAQ-KB ', updatedFaqKb);
     }, (error) => {
       // =========== NOTIFY ERROR ===========
       // this.notify.showNotification('An error occurred while deleting the bot', 4, 'report_problem');
       this.notify.showWidgetStyleUpdateNotification(this.trashBotErrorNoticationMsg, 4, 'report_problem');
 
-      console.log('TRASH THE BOT - ERROR ', error);
+      this.logger.error('[BOTS-LIST] TRASH THE BOT - ERROR ', error);
       this.showSpinner = false;
       this.displayDeleteBotModal = 'none'
     }, () => {
-      console.log('TRASH THE BOT - COMPLETE');
+      this.logger.log('[BOTS-LIST] TRASH THE BOT - COMPLETE');
       // =========== NOTIFY SUCCESS===========
       // this.notify.showNotification('bot successfully deleted', 2, 'done');
       this.notify.showWidgetStyleUpdateNotification(this.trashBotSuccessNoticationMsg, 2, 'done');
@@ -572,83 +485,17 @@ export class BotListComponent implements OnInit {
     });
   }
 
-  /**
-    * ON CLOSE DELETE MODAL - NO MORE USED
-    * - SEARCH FOR ANY FAQ WITH THE ID of the FAQ-KB THAT THE USER INTENDS TO DELETE
-    * - IF THERE ARE FAQs RELATED TO THE FAQ-KB, ARE FIRST DELETED THE FAQs AND THEN IS DELETED the FAQ-KB
-    * - IF THERE ARE NO FAQ, THE FAQ-KB IS IMMEDIATELY DELETED
-    * NOTE: THIS WF RESOLVES THE ISSUE 'FAQ-KB-ID NOT FOUND' WHEN IN CHAT21-SUPPORT-NODEJS-API ARE DELETED THE REMOTE FAQ
-    */
-  // onCloseDeleteModalHandled() {
-  //   this.display = 'none';
-
-  //   this.displayDeleteInfoModal = 'block'
-  //   this.SHOW_CIRCULAR_SPINNER = true;
-  //   // this.faqKbService.deleteMongoDbFaqKb(this.id_toDelete).subscribe((data) => {
-  //   //   console.log('DELETE DATA ', data);
-
-  //   // SEARCH BY THE FAQ-KB ID THE RELATED FAQ TO DELETE
-  //   this.mongodbFaqService.getMongoDbFaqByFaqKbId(this.id_toDelete)
-  //     .subscribe((faq: any) => {
-  //       console.log(' ++ MONGO DB FAQ RETURNED WHEN CLOSE DELETE MODAL', faq);
-  //       console.log(' ++ FAQ-KB ID TO DELETE WHEN CLOSE DELETE MODAL', this.id_toDelete);
-
-  //       if (faq.length > 0 && faq !== undefined) {
-  //         console.log('THE FAQ-KB TO DELETE HAS FAQ RELATED ')
-
-  //         let w: number;
-  //         for (w = 0; w < faq.length; w++) {
-
-  //           this.NUMBER_OF_CICLE = w
-  //           console.log('NUMBER OF CICLE ', this.NUMBER_OF_CICLE);
-  //           console.log(' ++ faq lenght to delete ', faq.length)
-
-  //           // if ((this.NUMBER_OF_CICLE + 1) === faq.length) {
-  //           //   console.log('**************************');
-  //           // }
-
-  //           const relatedFaqIdToDelete = faq[w]._id
-  //           console.log('RELATED FAQ ID TO DELETE ', relatedFaqIdToDelete)
-
-  //           this.mongodbFaqService.deleteMongoDbFaq(relatedFaqIdToDelete).subscribe((faq_to_delete) => {
-  //             console.log('DELETE RELATED FAQ ', faq_to_delete);
-  //           }, (error) => {
-  //             console.log('DELETE RELATED FAQ - ERROR ', error);
-  //             this.SHOW_CIRCULAR_SPINNER = false;
-  //           }, () => {
-  //             console.log('DELETE RELATED FAQ * COMPLETE *');
-  //             this.deleteFaqKb();
-  //           });
-  //         }
-  //       } else {
-  //         this.deleteFaqKb();
-  //       }
-
-  //     }, (error) => {
-  //       console.log('GET FAQ BY FAQ-KB ID - ERROR ', error);
-  //       this.SHOW_CIRCULAR_SPINNER = false;
-  //       this.DELETE_BOT_ERROR = true;
-  //     }, () => {
-  //       console.log('GET FAQ BY FAQ-KB * COMPLETE *');
-  //       setTimeout(() => {
-  //         this.SHOW_CIRCULAR_SPINNER = false
-  //       }, 300);
-  //       this.DELETE_BOT_ERROR = false;
-  //     });
-
-  // }
-
   deleteFaqKb() {
-    this.faqKbService.deleteMongoDbFaqKb(this.id_toDelete)
+    this.faqKbService.deleteFaqKb(this.id_toDelete)
       .subscribe((data) => {
-        console.log('DELETE FAQ-KB ', data);
+        this.logger.log('[BOTS-LIST] DELETE FAQ-KB ', data);
       }, (error) => {
-        console.log('DELETE FAQ-KB (BOT) REQUEST ERROR ', error);
+        this.logger.error('[BOTS-LIST] DELETE FAQ-KB (BOT) REQUEST ERROR ', error);
         this.SHOW_CIRCULAR_SPINNER = false;
         this.DELETE_BOT_ERROR = true;
       },
         () => {
-          console.log('DELETE FAQ-KB (BOT) REQUEST * COMPLETE *');
+          this.logger.log('[BOTS-LIST] DELETE FAQ-KB (BOT) REQUEST * COMPLETE *');
           // RE-RUN ngOnInit() TO UPDATE THE TABLE
           // this.ngOnInit()
           this.DELETE_BOT_ERROR = false;
@@ -693,7 +540,7 @@ export class BotListComponent implements OnInit {
       _botType = botType
     }
 
-    console.log('ID OF THE BOT (FAQKB) SELECTED ', idFaqKb, 'bot type ', botType);
+    this.logger.log('[BOTS-LIST] ID OF THE BOT (FAQKB) SELECTED ', idFaqKb, 'bot type ', botType);
     this.router.navigate(['project/' + this.project._id + '/bots', idFaqKb, _botType]);
   }
 
@@ -707,7 +554,7 @@ export class BotListComponent implements OnInit {
 
 
   goToTestFaqPage(remoteFaqKbKey: string) {
-    console.log('REMOTE FAQKB KEY SELECTED ', remoteFaqKbKey);
+    this.logger.log('[BOTS-LIST] REMOTE FAQKB KEY SELECTED ', remoteFaqKbKey);
 
     this.router.navigate(['project/' + this.project._id + '/faq/test', remoteFaqKbKey]);
   }

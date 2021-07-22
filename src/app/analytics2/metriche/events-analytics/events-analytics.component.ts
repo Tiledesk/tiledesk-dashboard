@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment'
 import { Chart } from 'chart.js';
-
+import { LoggerService } from './../../../services/logger/logger.service';
 @Component({
   selector: 'appdashboard-events-analytics',
   templateUrl: './events-analytics.component.html',
@@ -33,11 +33,14 @@ export class EventsAnalyticsComponent implements OnInit {
   ]
   eventsCountLastMonth: any;
 
-  constructor(private analyticsService: AnalyticsService,
-    private translate: TranslateService) {
+  constructor(
+    private analyticsService: AnalyticsService,
+    private translate: TranslateService,
+    private logger: LoggerService
+    ) {
 
     this.lang = this.translate.getBrowserLang();
-    console.log('LANGUAGE ', this.lang);
+    this.logger.log('[ANALYTICS - EVENTS] LANGUAGE ', this.lang);
     this.switchMonthName();
   }
 
@@ -49,21 +52,21 @@ export class EventsAnalyticsComponent implements OnInit {
 
     this.initDay = moment().subtract(6, 'd').format('D/M/YYYY')
     this.endDay = moment().subtract(0, 'd').format('D/M/YYYY')
-    console.log("INIT", this.initDay, "END", this.endDay);
+    this.logger.log("[ANALYTICS - EVENTS] INIT", this.initDay, "END", this.endDay);
 
     this.getEventsName();
     this.getEventsByLastNDays(this.selectedDaysId, this.selectedEventName);
-    console.log("EVENTS FOR: ", this.selectedDaysId, this.selectedEventName);
+    this.logger.log("[ANALYTICS - EVENTS] EVENTS FOR: ", this.selectedDaysId, this.selectedEventName);
 
   }
 
   getAggregateValue() {
     this.analyticsService.getLastMountConversationsCount().subscribe((res: any) => {
-      console.log("LAST MONTH CONVERSATIONS COUNT: ", res);
+      this.logger.log("[ANALYTICS - EVENTS] LAST MONTH CONVERSATIONS COUNT: ", res);
       this.eventsCountLastMonth = res[0].totalCount;
-      console.log("Events Count: ", this.eventsCountLastMonth);
+      this.logger.log("[ANALYTICS - EVENTS]Events Count: ", this.eventsCountLastMonth);
     }, (error) => {
-      console.log("Impossible to retrieve monthly count")
+      this.logger.error("[ANALYTICS - EVENTS] Impossible to retrieve monthly count", error)
       this.eventsCountLastMonth = 0;
     })
   }
@@ -79,7 +82,7 @@ export class EventsAnalyticsComponent implements OnInit {
   }
 
   daysSelect(value, event) {
-    console.log("EVENT: ", event)
+    this.logger.log("[ANALYTICS - EVENTS] daysSelect EVENT: ", event)
     this.selectedDaysId = value;
 
     if (value <= 30) {
@@ -95,23 +98,23 @@ export class EventsAnalyticsComponent implements OnInit {
   }
 
   eventSelected(selectedEventName) {
-    console.log("Selected event: ", selectedEventName);
+    this.logger.log("[ANALYTICS - EVENTS] Selected event: ", selectedEventName);
     this.lineChart.destroy();
     this.subscription.unsubscribe();
     this.getEventsByLastNDays(this.selectedDaysId, selectedEventName);
-    console.log("EVENTS FOR: ", this.selectedDaysId, selectedEventName);
+    this.logger.log("[ANALYTICS - EVENTS] EVENTS FOR: ", this.selectedDaysId, selectedEventName);
   }
 
   getEventsName() {
     this.analyticsService.getEventsList().subscribe((res: []) => {
-      console.log("GET EVENTS LIST RESPONSE: ", res);
+      this.logger.log("[ANALYTICS - EVENTS] GET EVENTS LIST RESPONSE: ", res);
       this.eventsList = res;
       for (let event of this.eventsList) {
         if (this.eventsNameList.includes(event._id.name)) {
-          console.log("Event already exists in array")
+          this.logger.log("[ANALYTICS - EVENTS] Event already exists in array")
         } else {
           this.eventsNameList.push(event._id.name);
-          console.log("Events Name List: ", this.eventsNameList)
+          this.logger.log("[ANALYTICS - EVENTS] Events Name List: ", this.eventsNameList)
         }
       }
 
@@ -119,14 +122,14 @@ export class EventsAnalyticsComponent implements OnInit {
   }
 
   getEventsByLastNDays(lastdays, eventName) {
-    console.log("Lastdays: ", lastdays);
+    this.logger.log("[ANALYTICS - EVENTS] Lastdays: ", lastdays);
 
     // this.subscription = this.analyticsService.getEventByDay(lastdays, eventName).subscribe((eventsByDay) => {
-    //   console.log("»» EVENTS BY DAY RESULT: ", eventsByDay);
+    //   this.logger.log("»» EVENTS BY DAY RESULT: ", eventsByDay);
     // })
 
     this.subscription = this.analyticsService.getEventByDay(lastdays, eventName).subscribe((eventsByDay) => {
-      console.log("»» EVENTS BY DAY RESULT: ", eventsByDay);
+      this.logger.log("[ANALYTICS - EVENTS] BY DAY RESULT: ", eventsByDay);
 
       const lastdays_initarray = [];
       for (let i = 0; i < lastdays; i++) {
@@ -134,7 +137,7 @@ export class EventsAnalyticsComponent implements OnInit {
       }
 
       lastdays_initarray.reverse();
-      console.log("»» LASTDAYS MESSAGES - INIT ARRAY: ", lastdays_initarray)
+      this.logger.log("»» LASTDAYS MESSAGES - INIT ARRAY: ", lastdays_initarray)
 
       const eventsByDay_series_array = [];
       const eventsByDay_labels_array = [];
@@ -146,15 +149,15 @@ export class EventsAnalyticsComponent implements OnInit {
           eventsByDay_array.push({ 'count': eventsByDay[j]['count'], day: eventsByDay[j]['_id']['day'] + '/' + eventsByDay[j]['_id']['month'] + '/' + eventsByDay[j]['_id']['year'] })
         }
       }
-      console.log('»» !!! ANALYTICS - MESSAGES BY DAY FORMATTED ', eventsByDay_array);
+      this.logger.log('[ANALYTICS - EVENTS] - MESSAGES BY DAY FORMATTED ', eventsByDay_array);
 
       // MERGE lastdays_initarray & visitorsByDay_array
       const eventsByDay_final_array = lastdays_initarray.map(obj => eventsByDay_array.find(o => o.day === obj.day) || obj);
-      console.log('»» !!! ANALYTICS - MESSGES BY DAY - FINAL ARRAY ', eventsByDay_final_array);
+      this.logger.log('[ANALYTICS - EVENTS] - MESSGES BY DAY - FINAL ARRAY ', eventsByDay_final_array);
 
       this.initDay = eventsByDay_final_array[0].day;
       this.endDay = eventsByDay_final_array[lastdays - 1].day;
-      console.log("INIT", this.initDay, "END", this.endDay);
+      this.logger.log("[ANALYTICS - EVENTS] INIT", this.initDay, "END", this.endDay);
 
       eventsByDay_final_array.forEach((msgByDay) => {
         eventsByDay_series_array.push(msgByDay.count)
@@ -162,8 +165,8 @@ export class EventsAnalyticsComponent implements OnInit {
         eventsByDay_labels_array.push(splitted_date[0] + ' ' + this.monthNames[splitted_date[1]]);
       })
 
-      console.log('»» MESSAGES BY DAY - SERIES (+ NEW + ARRAY OF COUNT)', eventsByDay_series_array);
-      console.log('»» MESSAGES BY DAY - LABELS (+ NEW + ARRAY OF DAY)', eventsByDay_labels_array);
+      this.logger.log('[ANALYTICS - EVENTS] »» MESSAGES BY DAY - SERIES (+ NEW + ARRAY OF COUNT)', eventsByDay_series_array);
+      this.logger.log('[ANALYTICS - EVENTS] »» MESSAGES BY DAY - LABELS (+ NEW + ARRAY OF DAY)', eventsByDay_labels_array);
 
       const higherCount = this.getMaxOfArray(eventsByDay_series_array);
 
@@ -259,9 +262,9 @@ export class EventsAnalyticsComponent implements OnInit {
         }]
       })
     }, (error) => {
-      console.log('»» EVENTS BY DAY - ERROR ', error);
+      this.logger.error('[ANALYTICS - EVENTS] »» EVENTS BY DAY - ERROR ', error);
     }, () => {
-      console.log('»» EVENTS BY DAY - * COMPLETE * ');
+      this.logger.log('[ANALYTICS - EVENTS] »» EVENTS BY DAY - * COMPLETE * ');
     })
   }
 

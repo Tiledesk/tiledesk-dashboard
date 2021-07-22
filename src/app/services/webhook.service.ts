@@ -3,10 +3,10 @@ import { AppConfigService } from './app-config.service';
 import { AuthService } from './../core/auth.service';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
+import { LoggerService } from '../services/logger/logger.service';
 @Injectable()
 export class WebhookService {
-  
+
   SERVER_BASE_PATH: string;
   user: any;
   projectID: string;
@@ -15,112 +15,141 @@ export class WebhookService {
   constructor(
     private http: HttpClient,
     public auth: AuthService,
-    public appConfigService: AppConfigService
+    public appConfigService: AppConfigService,
+    private logger: LoggerService
   ) {
-
     this.getToken()
     this.getCurrentProject();
-    this.getAppConfig();
+    this.getAppConfigAndBuildUrl();
   }
 
   getToken() {
     this.auth.user_bs.subscribe((user) => {
       if (user) {
         this.TOKEN = user.token;
-        console.log("WebhookService: User is signed in")
+        this.logger.log("[WEBHOOK-SERV] User is signed in")
       } else {
-        console.log("WebhookService: No user is signed in");
+        // this.logger.log("[WEBHOOK-SERV] No user is signed in");
       }
     })
   }
 
   getCurrentProject() {
-    console.log('============ PROJECT SERVICE - SUBSCRIBE TO CURRENT PROJ ============');
-
     this.auth.project_bs.subscribe((project) => {
       if (project) {
         this.projectID = project._id;
-        console.log('WebhookService: ID PROJECT ', this.projectID)
+        this.logger.log('[WEBHOOK-SERV] ID PROJECT ', this.projectID)
       } else {
-        console.log('WebhookService: NO PROJECT SELECTED')
+        // this.logger.log('[WEBHOOK-SERV]: NO PROJECT SELECTED')
       }
     })
   }
 
-  getAppConfig() {
+  getAppConfigAndBuildUrl() {
     this.SERVER_BASE_PATH = this.appConfigService.getConfig().SERVER_BASE_URL;
-    console.log('AppConfigService getAppConfig (WEBHOOK-SERV) SERVER_BASE_PATH ', this.SERVER_BASE_PATH);
+    this.logger.log('[WEBHOOK-SERV] - SERVER_BASE_PATH ', this.SERVER_BASE_PATH);
   }
 
-  // GET ALL SUBSCRIPTION FOR PROJECT ID
+  // --------------------------------------------
+  // GET ALL VEBHOOK SUBSCRIPTIONS FOR PROJECT ID
+  // --------------------------------------------
   getAllSubscriptions(): Observable<[]> {
-    console.log('GET ALL SUBSCRIPTION FOR PROJECT ID: ', this.projectID);
-    console.log('AUTH TOKEN: ', this.TOKEN);
+    this.logger.log('[WEBHOOK-SERV] - GET ALL SUBSCRIPTION FOR PROJECT ID: ', this.projectID);
+
+    const url = this.SERVER_BASE_PATH + this.projectID + '/subscriptions';
+    this.logger.log('[WEBHOOK-SERV] - GET ALL SUBSCRIPTION FOR PROJECT ID URL: ', url);
+
     let headers = new HttpHeaders({
       'Authorization': this.TOKEN
     })
 
-    return this.http.get<[]>(this.SERVER_BASE_PATH + this.projectID + '/subscriptions', {headers: headers});
+    return this.http.get<[]>(url, { headers: headers });
   }
 
-  // GET SUBSCRIPTION BY ID
+
+  /**
+   * GET WEBHOOK SUBSCRIPTION BY ID
+   * @param subscriptionID 
+   * @returns 
+   */
   getSubscritionById(subscriptionID): Observable<[]> {
-    console.log('GET SUBSCRIPTION WITH ID: ', subscriptionID, ' FOR PROJECT ID: ', this.projectID);
-    console.log('AUTH TOKEN: ', this.TOKEN);
-
+    this.logger.log('[WEBHOOK-SERV] - GET SUBSCRIPTION BY ID - subscriptionID: ', subscriptionID, ' - PROJECT ID: ', this.projectID);
+    
+    const url = this.SERVER_BASE_PATH + this.projectID + '/subscriptions/' + subscriptionID;
+    this.logger.log('[WEBHOOK-SERV] - GET SUBSCRIPTION BY ID URL: ', url);
+    
     let headers = new HttpHeaders({
       'Authorization': this.TOKEN
     })
 
-    return this.http.get<[]>(this.SERVER_BASE_PATH + this.projectID + '/subscriptions/' + subscriptionID, {headers: headers})
+    return this.http.get<[]>(url, { headers: headers })
   }
 
-  // CREATE NEW SUBSCRIPTION
+  /**
+   * CREATE NEW WEBHOOK SUBSCRIPTION
+   * @param target 
+   * @param event 
+   * @returns 
+   */
   createNewSubscription(target, event): Observable<[]> {
-    console.log('ADD NEW SUBSCRIPTION FOR PROJECT ID: ', this.projectID);
-    console.log('AUTH TOKEN: ', this.TOKEN);
+    this.logger.log('[WEBHOOK-SERV] - ADD NEW SUBSCRIPTION FOR PROJECT ID: ', this.projectID);
+    
+    const url = this.SERVER_BASE_PATH + this.projectID + '/subscriptions';
+    this.logger.log('[WEBHOOK-SERV] - ADD NEW SUBSCRIPTION - URL: ', url);
 
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': this.TOKEN
     })
-    
-    let data = {
-      target: target,
-      event: event
-    }
 
-    return this.http.post<[]>(this.SERVER_BASE_PATH + this.projectID + '/subscriptions', JSON.stringify(data), {headers: headers});            
+    let data = {  target: target, event: event }
+    this.logger.log('[WEBHOOK-SERV] - ADD NEW SUBSCRIPTION - BODY: ', data);
+
+    return this.http.post<[]>(url, JSON.stringify(data), { headers: headers });
   }
 
+  /**
+   * UPDATE WEBHOOK SUBSCRIPTION
+   * @param subscriptionID 
+   * @param target 
+   * @param event 
+   * @returns 
+   */
   updateSubscription(subscriptionID, target, event): Observable<[]> {
-    console.log('UPDATE SUBSCRIPTION WITH ID: ', subscriptionID, ' FOR PROJECT ID: ', this.projectID);
-    console.log('AUTH TOKEN: ', this.TOKEN);
-
+    this.logger.log('[WEBHOOK-SERV] - UPDATE SUBSCRIPTION WITH ID: ', subscriptionID, ' FOR PROJECT ID: ', this.projectID);
+ 
+    const url = this.SERVER_BASE_PATH + this.projectID + '/subscriptions/' + subscriptionID;
+    this.logger.log('[WEBHOOK-SERV] - UPDATE SUBSCRIPTION PUT URL: ', url);
+    
     let headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Authorization': this.TOKEN,
     })
 
-    let data = {
-      target: target,
-      event: event
-    }
+    let data = { target: target, event: event }
+    this.logger.log('[WEBHOOK-SERV] - UPDATE SUBSCRIPTION BODY: ', data);
 
-    return this.http.put<[]>(this.SERVER_BASE_PATH + this.projectID + '/subscriptions/' + subscriptionID, data, {headers: headers});
+    return this.http.put<[]>(url , data, { headers: headers });
   }
 
-  // DELETE SUBSCRIPTION
+
+  /**
+   * DELETE SUBSCRIPTION
+   * @param subscriptionID 
+   * @returns 
+   */
   deleteSubscription(subscriptionID): Observable<[]> {
-    console.log('DELETE SUBSCRIPTION WITH ID: ', subscriptionID, ' FOR PROJECT ID: ', this.projectID);
-    console.log('AUTH TOKEN: ', this.TOKEN);
+    this.logger.log('[WEBHOOK-SERV] - DELETE SUBSCRIPTION WITH ID: ', subscriptionID, ' FOR PROJECT ID: ', this.projectID);
+    
+    const url = this.SERVER_BASE_PATH + this.projectID + '/subscriptions/' + subscriptionID
+    this.logger.log('[WEBHOOK-SERV] - DELETE SUBSCRIPTION URL: ', url);
 
     let headers = new HttpHeaders({
       'Authorization': this.TOKEN
     })
 
-    return this.http.delete<[]>(this.SERVER_BASE_PATH + this.projectID + '/subscriptions/' + subscriptionID, {headers: headers});
+    return this.http.delete<[]>(url, { headers: headers });
   }
 
-  
+
 }

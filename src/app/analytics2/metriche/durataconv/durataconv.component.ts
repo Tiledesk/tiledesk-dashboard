@@ -9,6 +9,7 @@ import * as moment from 'moment';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { Observable } from 'rxjs';
+import { LoggerService } from './../../..//services/logger/logger.service';
 
 @Component({
   selector: 'appdashboard-durataconv',
@@ -51,14 +52,17 @@ export class DurataconvComponent implements OnInit {
   projectBotsList: any;
   bots: any;
 
-  constructor(private analyticsService: AnalyticsService,
+  constructor(
+    private analyticsService: AnalyticsService,
     private translate: TranslateService,
     private departmentService: DepartmentService,
     private usersService: UsersService,
-    private faqKbService: FaqKbService) {
+    private faqKbService: FaqKbService,
+    private logger: LoggerService
+    ) {
 
     this.lang = this.translate.getBrowserLang();
-    console.log('LANGUAGE ', this.lang);
+    this.logger.log('LANGUAGE ', this.lang);
     this.getBrowserLangAndSwitchMonthName();
   }
 
@@ -73,7 +77,7 @@ export class DurataconvComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    console.log('!!! ANALYTICS  CONVERSATION LENGHT - !!!!! UN - SUBSCRIPTION TO REQUESTS');
+    this.logger.log('[ANALYTICS - DURATACONV] CONVERSATION LENGHT - !!!!! UN - SUBSCRIPTION TO REQUESTS');
     this.subscription.unsubscribe();
   }
 
@@ -101,7 +105,7 @@ export class DurataconvComponent implements OnInit {
       }
     }
 
-    console.log('H:M->', hours, minutes)
+    this.logger.log('[ANALYTICS - DURATACONV] H:M->', hours, minutes)
 
     const hoursS = (hours < 10) ? '0' + hours : hours;
     const minutesS = (minutes < 10) ? '0' + minutes : minutes;
@@ -122,11 +126,11 @@ export class DurataconvComponent implements OnInit {
     }
     // if(hours!=0){
     //   let hourss= ((hours/4)%2==0)? hours/4 : (hours/4)+1;
-    //   console.log("H:",hourss);
+    //   this.logger.log("H:",hourss);
     //   return (hourss)*1000*60*60
     // }else{
     //   let minutess=(minutes%2==0)? minutes : minutes+1;
-    //   console.log("M:",minutess);
+    //   this.logger.log("M:",minutess);
     //   return (minutess/4)*1000*60
     // }
 
@@ -146,34 +150,34 @@ export class DurataconvComponent implements OnInit {
     this.barChart.destroy();
     this.subscription.unsubscribe();
     this.durationConversationTimeCHART(value, this.selectedDeptId, this.selectedAgentId);
-    console.log('REQUEST:', value, this.selectedDeptId, this.selectedAgentId)
+    this.logger.log('[ANALYTICS - DURATACONV] REQUEST:', value, this.selectedDeptId, this.selectedAgentId)
   }
 
   depSelected(selectedDeptId: string) {
-    console.log('dep', selectedDeptId);
+    this.logger.log('dep', selectedDeptId);
     this.barChart.destroy();
     this.subscription.unsubscribe();
     this.durationConversationTimeCHART(this.selectedDaysId, selectedDeptId, this.selectedAgentId)
-    console.log('REQUEST:', this.selectedDaysId, selectedDeptId, this.selectedAgentId)
+    this.logger.log('[ANALYTICS - DURATACONV] REQUEST:', this.selectedDaysId, selectedDeptId, this.selectedAgentId)
   }
 
   agentSelected(selectedAgentId) {
-    console.log("Selected agent: ", selectedAgentId);
+    this.logger.log("[ANALYTICS - DURATACONV] Selected agent: ", selectedAgentId);
     this.barChart.destroy();
     this.subscription.unsubscribe();
     this.durationConversationTimeCHART(this.selectedDaysId, this.selectedDeptId, selectedAgentId)
-    console.log('REQUEST:', this.selectedDaysId, this.selectedDeptId, selectedAgentId)
+    this.logger.log('[ANALYTICS - DURATACONV] REQUEST:', this.selectedDaysId, this.selectedDeptId, selectedAgentId)
   }
 
   getDepartments() {
     this.departmentService.getDeptsByProjectId().subscribe((_departments: any) => {
-      console.log('!!! NEW REQUESTS HISTORY - GET DEPTS RESPONSE by analitycs ', _departments);
+      this.logger.log('[ANALYTICS - DURATACONV] - GET DEPTS RESPONSE by analitycs ', _departments);
       this.departments = _departments
 
     }, error => {
-      console.log('!!! NEW REQUESTS HISTORY - GET DEPTS - ERROR: ', error);
+      this.logger.error('[ANALYTICS] - GET DEPTS - ERROR: ', error);
     }, () => {
-      console.log('!!! NEW REQUESTS HISTORY - GET DEPTS * COMPLETE *')
+      this.logger.log('[ANALYTICS] - GET DEPTS * COMPLETE *')
     });
   }
 
@@ -186,8 +190,8 @@ export class DurataconvComponent implements OnInit {
     Observable
       .zip(projectUsers, bots, (_projectUsers: any, _bots: any) => ({ _projectUsers, _bots }))
       .subscribe(pair => {
-        console.log('CONV LENGTH ANALYTICS - GET P-USERS-&-BOTS - PROJECT USERS : ', pair._projectUsers);
-        console.log('CONV LENGTH ANALYTICS - GET P-USERS-&-BOTS - BOTS: ', pair._bots);
+        this.logger.log('[ANALYTICS - DURATACONV] CONV LENGTH ANALYTICS - GET P-USERS-&-BOTS - PROJECT USERS : ', pair._projectUsers);
+        this.logger.log('[ANALYTICS - DURATACONV] CONV LENGTH ANALYTICS - GET P-USERS-&-BOTS - BOTS: ', pair._bots);
 
         if (pair && pair._projectUsers) {
           this.projectUsersList = pair._projectUsers;
@@ -212,12 +216,12 @@ export class DurataconvComponent implements OnInit {
           });
         }
 
-        console.log('CONV LENGTH ANALYTICS - GET P-USERS-&-BOTS - PROJECT-USER & BOTS ARRAY : ', this.projectUserAndBotsArray);
+        this.logger.log('[ANALYTICS - DURATACONV] CONV LENGTH ANALYTICS - GET P-USERS-&-BOTS - PROJECT-USER & BOTS ARRAY : ', this.projectUserAndBotsArray);
 
       }, error => {
-        console.log('CONV LENGTH ANALYTICS - GET P-USERS-&-BOTS - ERROR: ', error);
+        this.logger.error('[ANALYTICS - DURATACONV] CONV LENGTH ANALYTICS - GET P-USERS-&-BOTS - ERROR: ', error);
       }, () => {
-        console.log('CONV LENGTH ANALYTICS - GET P-USERS-&-BOTS - COMPLETE');
+        this.logger.log('[ANALYTICS - DURATACONV] CONV LENGTH ANALYTICS - GET P-USERS-&-BOTS - COMPLETE');
       });
   }
 
@@ -239,8 +243,8 @@ export class DurataconvComponent implements OnInit {
       let splitString: string;
 
       if (res && res.length > 0) {
-        console.log('»»»» res[0].duration_avg ', res[0].duration_avg)
-        console.log('»»»» typeof res[0].duration_avg ', typeof res[0].duration_avg)
+        this.logger.log('[ANALYTICS - DURATACONV] »»»» res[0].duration_avg ', res[0].duration_avg)
+        this.logger.log('[ANALYTICS - DURATACONV] »»»» typeof res[0].duration_avg ', typeof res[0].duration_avg)
         if (res[0].duration_avg) {
           if ((res[0].duration_avg !== null) || (res[0].duration_avg !== undefined)) {
             // this.humanizer.setOptions({round: true, units:['m']});
@@ -255,8 +259,8 @@ export class DurataconvComponent implements OnInit {
             this.responseDurationtime = this.humanizer.humanize(res[0].duration_avg, { round: true, language: this.lang });
 
 
-            console.log('Waiting time: humanize', this.humanizer.humanize(res[0].duration_avg))
-            console.log('waiting time funtion:', avarageWaitingTimestring);
+            this.logger.log('[ANALYTICS - DURATACONV] Waiting time: humanize', this.humanizer.humanize(res[0].duration_avg))
+            this.logger.log('[ANALYTICS - DURATACONV] waiting time funtion:', avarageWaitingTimestring);
 
           } else {
 
@@ -265,22 +269,22 @@ export class DurataconvComponent implements OnInit {
         } else {
           this.setToNa();
 
-          console.log('Waiting time: humanize', this.humanizer.humanize(0))
-          console.log('waiting time funtion:', avarageWaitingTimestring);
+          this.logger.log('[ANALYTICS - DURATACONV] Waiting time: humanize', this.humanizer.humanize(0))
+          this.logger.log('[ANALYTICS - DURATACONV] waiting time funtion:', avarageWaitingTimestring);
         }
       } else {
         this.setToNa();
 
-        console.log('Waiting time: humanize', this.humanizer.humanize(0))
-        console.log('waiting time funtion:', avarageWaitingTimestring);
+        this.logger.log('[ANALYTICS - DURATACONV] Waiting time: humanize', this.humanizer.humanize(0))
+        this.logger.log('[ANALYTICS - DURATACONV] waiting time funtion:', avarageWaitingTimestring);
       }
 
     }, (error) => {
-      console.log('!!! ANALYTICS - DURATION CONVERSATION CLOCK REQUEST - ERROR ', error);
+      this.logger.error('[ANALYTICS - DURATACONV] CLOCK REQUEST - ERROR ', error);
       this.setToNa();
 
     }, () => {
-      console.log('!!! ANALYTICS - DURATION CONVERSATION CLOCK REQUEST * COMPLETE *');
+      this.logger.log('[ANALYTICS - DURATACONV] CLOCK REQUEST * COMPLETE *');
     });
   }
 
@@ -296,18 +300,18 @@ export class DurataconvComponent implements OnInit {
     this.subscription = this.analyticsService.getDurationConversationTimeDataCHART(lastdays, depID, participantId).subscribe((resp: any) => {
 
       if (resp) {
-        console.log('Duration time', resp)
+        this.logger.log('[ANALYTICS - DURATACONV] Duration time', resp)
 
         const lastNdays_initarrayDURATION = []
         for (let i = 0; i < lastdays; i++) {
-          // console.log('»» !!! ANALYTICS - LOOP INDEX', i);
+          // this.logger.log('»» !!! ANALYTICS - LOOP INDEX', i);
           lastNdays_initarrayDURATION.push({ date: moment().subtract(i, 'd').format('D/M/YYYY'), value: 0 })
         }
         lastNdays_initarrayDURATION.reverse()
 
         // this.dataRangeDuration = last30days_initarrayDURATION[0].date + ' - ' + last30days_initarrayDURATION[30].date;
 
-        console.log('»» !!! ANALYTICS - REQUESTS CONVERSATION LENGHT BY DAY - MOMENT LAST 30 DATE (init array)', lastNdays_initarrayDURATION);
+        this.logger.log('[ANALYTICS - DURATACONV] - REQUESTS CONVERSATION LENGHT BY DAY - MOMENT LAST 30 DATE (init array)', lastNdays_initarrayDURATION);
 
         // build a custom array with che same structure of "init array" but with key value of serviceData
         // i'm using time_convert function that return avg_time always in hour
@@ -317,7 +321,7 @@ export class DurataconvComponent implements OnInit {
 
           // this.humanizer.setOptions({round: true, units:['h']});
           // const AVGtimevalue= this.humanizer.humanize(res[i].waiting_time_avg).split(" ")
-          // console.log("value humanizer:", this.humanizer.humanize(res[i].waiting_time_avg), "split:",AVGtimevalue)
+          // this.logger.log("value humanizer:", this.humanizer.humanize(res[i].waiting_time_avg), "split:",AVGtimevalue)
 
           if (resp[j].duration_avg == null)
             resp[j].duration_avg = 0;
@@ -326,11 +330,11 @@ export class DurataconvComponent implements OnInit {
         }
 
 
-        console.log('Custom Duration Conversation data:', customDurationCOnversationChart);
+        this.logger.log('[ANALYTICS - DURATACONV] Custom Duration Conversation data:', customDurationCOnversationChart);
 
         // build a final array that compars value between the two arrray before builded with respect to date key value
         const requestDurationConversationByDays_final_array = lastNdays_initarrayDURATION.map(obj => customDurationCOnversationChart.find(o => o.date === obj.date) || obj);
-        console.log('»» !!! ANALYTICS - REQUESTS CONVERSATION LENGHT BY DAY - FINAL ARRAY ', requestDurationConversationByDays_final_array);
+        this.logger.log('[ANALYTICS - DURATACONV] - REQUESTS CONVERSATION LENGHT BY DAY - FINAL ARRAY ', requestDurationConversationByDays_final_array);
 
         const requestDurationConversationByDays_series_array = [];
         const requestDurationConversationByDays_labels_array = [];
@@ -338,14 +342,14 @@ export class DurataconvComponent implements OnInit {
         // select init and end day to show on div
         this.initDay = requestDurationConversationByDays_final_array[0].date;
         this.endDay = requestDurationConversationByDays_final_array[lastdays - 1].date;
-        console.log('INIT', this.initDay, 'END', this.endDay);
+        this.logger.log('[ANALYTICS - DURATACONV] INIT', this.initDay, 'END', this.endDay);
 
         requestDurationConversationByDays_final_array.forEach(requestByDay => {
-          console.log('»» !!! ANALYTICS - REQUESTS CONVERSATION LENGHT BY DAY - requestByDay', requestByDay);
+          this.logger.log('[ANALYTICS - DURATACONV] - REQUESTS CONVERSATION LENGHT BY DAY - requestByDay', requestByDay);
           requestDurationConversationByDays_series_array.push(requestByDay.value)
 
           const splitted_date = requestByDay.date.split('/');
-          console.log('»» !!! ANALYTICS - REQUESTS CONVERSATION LENGHT BY DAY - SPLITTED DATE', splitted_date);
+          this.logger.log('[ANALYTICS - DURATACONV] - REQUESTS CONVERSATION LENGHT BY DAY - SPLITTED DATE', splitted_date);
           requestDurationConversationByDays_labels_array.push(splitted_date[0] + ' ' + this.monthNames[splitted_date[1]])
         });
 
@@ -360,10 +364,10 @@ export class DurataconvComponent implements OnInit {
         //   return e.value
         // })
 
-        console.log('Xlabel-DURATION', this.xValueDurationConversation);
-        console.log('Ylabel-DURATION', this.yValueDurationConversation);
+        this.logger.log('[ANALYTICS - DURATACONV] Xlabel-DURATION', this.xValueDurationConversation);
+        this.logger.log('[ANALYTICS - DURATACONV] Ylabel-DURATION', this.yValueDurationConversation);
       } else {
-        console.log('!!!ERROR!!! while get data from resouces for duration conversation time graph');
+        this.logger.error('[ANALYTICS - DURATACONV] !!!ERROR!!! while get data from resouces for duration conversation time graph');
       }
 
       // set the stepsize
@@ -375,8 +379,8 @@ export class DurataconvComponent implements OnInit {
       }
       const lang = this.lang;
       const higherCount = this.getMaxOfArray(this.yValueDurationConversation);
-      console.log('MS', this.msToTime(higherCount))
-      console.log('STEPSIZE', this.stepSize(higherCount))
+      this.logger.log('[ANALYTICS - DURATACONV] MS', this.msToTime(higherCount))
+      this.logger.log('[ANALYTICS - DURATACONV] STEPSIZE', this.stepSize(higherCount))
 
       this.barChart = new Chart('durationConversationTimeResponse', {
         type: 'bar',
@@ -470,12 +474,12 @@ export class DurataconvComponent implements OnInit {
                 // }
                 // label += Math.round(tooltipItem.yLabel * 100) / 100;
                 // return label + '';
-                // console.log("data",data)
+                // this.logger.log("data",data)
                 const currentItemValue = tooltipItem.yLabel
                 const langService = new HumanizeDurationLanguage();
                 const humanizer = new HumanizeDuration(langService);
                 // humanizer.setOptions({ round: true })
-                // //console.log("humanize", humanizer.humanize(currentItemValue))
+                // //this.logger.log("humanize", humanizer.humanize(currentItemValue))
                 // return data.datasets[tooltipItem.datasetIndex].label + ': ' + humanizer.humanize(currentItemValue)
                 if (lang === 'it') {
                   return 'Lunghezza conversazione media: ' + humanizer.humanize(currentItemValue, { round: true, language: lang, units: ['y', 'mo', 'w', 'd', 'h', 'm', 's'] });

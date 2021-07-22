@@ -3,12 +3,13 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
 import { Project } from '../../models/project-model';
 import { ActivatedRoute } from '@angular/router';
-import { MongodbFaqService } from '../../services/mongodb-faq.service';
+import { FaqService } from '../../services/faq.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 // USED FOR go back last page
 import { Location } from '@angular/common';
 import { FaqKbService } from '../../services/faq-kb.service';
 import * as moment from 'moment';
+import { LoggerService } from '../../services/logger/logger.service';
 
 @Component({
   selector: 'app-faq-test',
@@ -41,9 +42,10 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
     private router: Router,
     private auth: AuthService,
     private route: ActivatedRoute,
-    private faqService: MongodbFaqService,
+    private faqService: FaqService,
     private _location: Location,
-    private faqKbService: FaqKbService
+    private faqKbService: FaqKbService,
+    private logger: LoggerService
   ) { }
 
   ngOnInit() {
@@ -54,7 +56,7 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
     this.getRemoteFaqKbKey();
     this.getCurrentUser();
 
-    console.log('FaqTestComponent - OnInit  questionToTest', this.questionToTest);
+    this.logger.log('[FAQ-TEST-COMP] - OnInit  questionToTest', this.questionToTest);
     // if (this.questionToTest && this.questionToTest !== null) {
     //   this.showSpinner = true;
 
@@ -70,7 +72,7 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
 
   getCurrentUser() {
     this.auth.user_bs.subscribe((user) => {
-      console.log('FaqTestComponent - LoggedUser ', user);
+      this.logger.log('[FAQ-TEST-COMP] - LoggedUser ', user);
 
       if (user && user.firstname) {
         this.currentUserFirstname = user.firstname;
@@ -79,42 +81,13 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    console.log('FaqTestComponent - ngAfterViewInit ');
+    this.logger.log('[FAQ-TEST-COMP] - ngAfterViewInit ');
     const elemSendCardContent = <HTMLElement>document.querySelector('.ref-for-speech-wrapper');
-    console.log('FaqTestComponent - elemSendCardContent ', elemSendCardContent);
+    this.logger.log('[FAQ-TEST-COMP] - elemSendCardContent ', elemSendCardContent);
     this.elemSendCardContentWidth = elemSendCardContent.clientWidth;
-    console.log('FaqTestComponent - elemSendCardContent Width', this.elemSendCardContentWidth);
+    this.logger.log('[FAQ-TEST-COMP] - elemSendCardContent Width', this.elemSendCardContentWidth);
 
   }
-
-
-  // @HostListener('window:resize', ['$event'])
-  // onResize(event: any) {
-  //   const newInnerWidth = event.target.innerWidth;
-  //   console.log('FaqTestComponent newInnerWidth ', newInnerWidth)
-
-  //   // const elemSpeechWrapper = <HTMLElement>document.querySelector('.speech-wrapper');
-
-  //   const elemSendCardContent = <HTMLElement>document.querySelector('.ref-for-speech-wrapper');
-  //   //  console.log('FaqTestComponent - elemSpeechWrapper onResize ', elemSpeechWrapper);
-  //   if (elemSendCardContent) {
-
-  //     // elemSendCardContentWidth è la card sopra alla card che contiene le bubble.
-  //     // Uso questa x calcolare il margine delle bulle sx perchè la sua ampiezza e da subito calcolabile e non bisogna aspettare
-  //     // che venga effettuata una ricerca
-  //     this.elemSendCardContentWidth = elemSendCardContent.clientWidth;
-  //     console.log('FaqTestComponent - elemSendCardContentWidth onResize', this.elemSendCardContentWidth);
-
-  //     if (newInnerWidth > 410) {
-  //       // this.bubbleAltMarginLeft = elemSpeechWrapperWidth - 260 + 'px';
-  //       this.bubbleAltMarginLeft = this.elemSendCardContentWidth - 406 + 'px';
-  //       console.log('FaqTestComponent - bubbleAltMarginLeft onResize', this.elemSendCardContentWidth);
-  //     } else {
-
-  //       this.bubbleAltMarginLeft = 0 + 'px'
-  //     }
-  //   }
-  // }
 
   /**
    * WHEN THE USER RUN A TEST, THE QUESTION FOR THAT SEARCH IS SAVED IN THE STORAGE
@@ -124,19 +97,19 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
    * WHEN THE USER GO TO THE PAGE 'EDIT BOT' (faq.comp) THE STORED SEARCHED QUESTION IS CLEARED  */
   getSearchedQuestionFromStorage() {
     const storedQuestionToTest = localStorage.getItem('searchedQuestion');
-    console.log('FaqTestComponent SEARCHED QUESTION - FROM LOcAL STORAGE 1', storedQuestionToTest)
+    this.logger.log('[FAQ-TEST-COMP] SEARCHED QUESTION - FROM LOcAL STORAGE 1', storedQuestionToTest)
     if (storedQuestionToTest !== 'null') {
       // this.questionToTest = storedQuestionToTest;
-      console.log('FaqTestComponent SEARCHED QUESTION - FROM LOcAL STORAGE 2', this.questionToTest)
+      this.logger.log('[FAQ-TEST-COMP] SEARCHED QUESTION - FROM LOcAL STORAGE 2', this.questionToTest)
     }
   }
 
   getRemoteFaqKbKey() {
     this.remote_faq_kb_key = this.route.snapshot.params['remoteFaqKbKey'];
-    console.log('FaqTestComponent - FAQ-KB COMP HAS PASSED remote_faq_kb_key', this.remote_faq_kb_key);
+    this.logger.log('[FAQ-TEST-COMP] - FAQ-KB COMP HAS PASSED remote_faq_kb_key', this.remote_faq_kb_key);
 
     this.idBot = this.route.snapshot.params['faqkbid'];
-    console.log('FaqTestComponent - FAQ-KB COMP HAS PASSED idBot', this.idBot);
+    this.logger.log('[FAQ-TEST-COMP] - FAQ-KB COMP HAS PASSED idBot', this.idBot);
 
     if (this.idBot) {
       this.getFaqKbById();
@@ -144,10 +117,10 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
   }
 
   getFaqKbById() {
-    this.faqKbService.getMongDbFaqKbById(this.idBot).subscribe((faqKb: any) => {
-      console.log('FaqTestComponent - FAQ-KB GET BY ID', faqKb);
+    this.faqKbService.getFaqKbById(this.idBot).subscribe((faqKb: any) => {
+      this.logger.log('[FAQ-TEST-COMP] - FAQ-KB GET BY ID', faqKb);
       this.botName = faqKb.name;
-      console.log('FaqTestComponent - FAQ-KB NAME', this.botName);
+      this.logger.log('[FAQ-TEST-COMP] - FAQ-KB NAME', this.botName);
     });
   }
 
@@ -155,7 +128,7 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
       this.project = project
-      // console.log('00 -> FAQ-KB EDIT ADD COMP project ID from AUTH service subscription  ', this.project._id)
+      // this.logger.log('[FAQ-TEST-COMP] project ID from AUTH service subscription  ', this.project._id)
     });
   }
 
@@ -169,64 +142,35 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
     this._location.back();
   }
 
-  // onInitSearchRemoteFaq(questionToTest) {
-  //   console.log('ON INIT QUESTION TO TEST ', questionToTest)
-  //   this.faqService.searchRemoteFaqByRemoteFaqKbKey(this.remote_faq_kb_key, questionToTest)
-  //     .subscribe((remoteFaq) => {
-  //       console.log('REMOTE FAQ FOUND - POST DATA ', remoteFaq);
-
-  //       if (remoteFaq) {
-  //         this.hits = remoteFaq.hits;
-  //         console.log('FaqTestComponent *** hits *** ', this.hits);
-  //         this.faq_number_of_found = remoteFaq.total;
-  //         console.log('REMOTE FAQ LENGHT ', this.faq_number_of_found);
-
-  //       }
-
-  //     }, (error) => {
-  //       console.log('REMOTE FAQ - POST REQUEST ERROR ', error);
-
-  //       this.showSpinner = false;
-  //     }, () => {
-  //       console.log('REMOTE FAQ - POST REQUEST * COMPLETE *');
-
-  //       this.showSpinner = false;
-
-  //       setTimeout(() => {
-  //         this.getSpeechWrapperWidth()
-  //       }, 500);
-  //     });
-  // }
-
   searchRemoteFaq() {
     // const today = new Date();
     // const time = today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds();
-    // console.log('FaqTestComponent  time: ', time);
+    // this.logger.log('[FAQ-TEST-COMP]  time: ', time);
 
     const momentTime = moment().toDate()
-    console.log('FaqTestComponent moment  time: ', momentTime);
+    this.logger.log('[FAQ-TEST-COMP] moment  time: ', momentTime);
     const mTime = moment(momentTime).format('HH:mm:ss');
 
-    console.log('FaqTestComponent  mTime: ', mTime);
+    this.logger.log('[FAQ-TEST-COMP]  mTime: ', mTime);
     // this.bubbleAltMarginLeft = this.elemSendCardContentWidth - 406 + 'px'
-    // console.log('FaqTestComponent  searchRemoteFaq bubbleAltMarginLeft : ', this.bubbleAltMarginLeft);
+    // this.logger.log('[FAQ-TEST-COMP]  searchRemoteFaq bubbleAltMarginLeft : ', this.bubbleAltMarginLeft);
 
     // BUG FIX 'RUN TEST button remains focused after clicking'
     // this.elementRef.nativeElement.blur();
-    console.log('FaqTestComponent  questionToTest: ', this.questionToTest);
+    this.logger.log('[FAQ-TEST-COMP]  questionToTest: ', this.questionToTest);
 
     if (this.questionToTest) {
 
       localStorage.setItem('searchedQuestion', this.questionToTest);
 
       // this.faqService.searchRemoteFaqByRemoteFaqKbKey(this.remote_faq_kb_key, this.questionToTest)
-      this.faqService.searchRemoteFaqByRemoteFaqKbKey(this.idBot, this.questionToTest)
+      this.faqService.searchFaqByFaqKbId(this.idBot, this.questionToTest)
         .subscribe((remoteFaq) => {
-          console.log('REMOTE FAQ FOUND - POST DATA ', remoteFaq);
+          this.logger.log('[FAQ-TEST-COMP] REMOTE FAQ FOUND - POST DATA ', remoteFaq);
 
           if (remoteFaq) {
             this.hits = remoteFaq.hits
-            console.log('FaqTestComponent *** hits *** ', this.hits);
+            this.logger.log('[FAQ-TEST-COMP] *** hits *** ', this.hits);
             let answer = '';
 
             if (this.hits && this.hits.length > 0) {
@@ -243,22 +187,22 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
             this.reverseQuestionsAndAnswersArray = questionsAndAnswersArrayClone.reverse();
             // this.questionsAndAnswersArray.push({'q': this.hits[0].document.question, 'a': this.hits[0].document.answer })
 
-            console.log('FaqTestComponent *** Questions & Answers Array *** ', this.questionsAndAnswersArray);
-            console.log('FaqTestComponent *** Reverse Questions & Answers Array *** ', this.reverseQuestionsAndAnswersArray);
+            this.logger.log('[FAQ-TEST-COMP] *** Questions & Answers Array *** ', this.questionsAndAnswersArray);
+            this.logger.log('[FAQ-TEST-COMP] *** Reverse Questions & Answers Array *** ', this.reverseQuestionsAndAnswersArray);
 
             this.faq_number_of_found = remoteFaq.total;
-            console.log('REMOTE FAQ LENGHT ', this.faq_number_of_found);
+            this.logger.log('[FAQ-TEST-COMP] REMOTE FAQ LENGHT ', this.faq_number_of_found);
 
           }
 
         }, (error) => {
-          console.log('REMOTE FAQ - POST REQUEST ERROR ', error);
+          this.logger.error('[FAQ-TEST-COMP] REMOTE FAQ - POST REQUEST ERROR ', error);
         }, () => {
-          console.log('REMOTE FAQ - POST REQUEST * COMPLETE *');
+          this.logger.log('[FAQ-TEST-COMP] REMOTE FAQ - POST REQUEST * COMPLETE *');
         });
 
     } else {
-      console.log('FaqTestComponent **** ***** NO QUESTION ENTERED');
+      this.logger.log('[FAQ-TEST-COMP] **** ***** NO QUESTION ENTERED');
 
     }
   }
@@ -271,33 +215,32 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
 
 
   goToEditFaqPage(id_faq: string) {
-    console.log('ID OF FAQ Pressed', id_faq);
+    this.logger.log('[FAQ-TEST-COMP] ID OF FAQ Pressed', id_faq);
 
     // this.getFaqById(id_faq);
     // this.router.navigate(['project/' + this.project._id + '/editfaq', this.id_faq_kb, faq_id]);
   }
 
   getFaqKbIdAndGoToEditFaqPage(id_faq) {
-    this.faqService.getMongDbFaqById(id_faq).subscribe((faq: any) => {
-      console.log('FAQ GET BY ID', faq);
+    this.faqService.getFaqById(id_faq).subscribe((faq: any) => {
+      this.logger.log('[FAQ-TEST-COMP] FAQ GET BY ID', faq);
 
       if (faq) {
         this.router.navigate(['project/' + this.project._id + '/editfaq', faq.id_faq_kb, id_faq]);
       }
 
     }, (error) => {
-      console.log('FAQ GET BY ID - ERROR ', error);
+      this.logger.error('[FAQ-TEST-COMP] FAQ GET BY ID - ERROR ', error);
 
     }, () => {
-      console.log('FAQ GET BY ID - COMPLETE ');
+      this.logger.log('[FAQ-TEST-COMP] FAQ GET BY ID - COMPLETE ');
 
     });
   }
 
   onChangeHideScore($event) {
-
     this.hideScore = $event.target.checked;
-    console.log('ON CHANGE - HIDE SCORE', this.hideScore);
+    this.logger.log('[FAQ-TEST-COMP] ON CHANGE - HIDE SCORE', this.hideScore);
   }
 
   openRightSideBar(question: string) {
@@ -306,17 +249,17 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
 
     this.selectedQuestion = question
 
-    console.log('FaqTestComponent »»»» OPEN RIGHT SIDEBAR selectetQuestion', this.selectedQuestion);
+    this.logger.log('[FAQ-TEST-COMP] »»»» OPEN RIGHT SIDEBAR selectetQuestion', this.selectedQuestion);
 
-    console.log('FaqTestComponent »»»» OPEN RIGHT SIDEBAR ', this.OPEN_RIGHT_SIDEBAR);
+    this.logger.log('[FAQ-TEST-COMP] »»»» OPEN RIGHT SIDEBAR ', this.OPEN_RIGHT_SIDEBAR);
     const elemMainContent = <HTMLElement>document.querySelector('.main-content');
     this.train_bot_sidebar_height = elemMainContent.clientHeight + 10 + 'px'
-    console.log('FaqTestComponent - ON OPEN RIGHT SIDEBAR -> RIGHT SIDEBAR HEIGHT', this.train_bot_sidebar_height);
+    this.logger.log('[FAQ-TEST-COMP] - ON OPEN RIGHT SIDEBAR -> RIGHT SIDEBAR HEIGHT', this.train_bot_sidebar_height);
 
   }
 
   closeRightSidebar(event) {
-    console.log('»»»» CLOSE RIGHT SIDEBAR ', event);
+    this.logger.log('[FAQ-TEST-COMP] »»»» CLOSE RIGHT SIDEBAR ', event);
     this.OPEN_RIGHT_SIDEBAR = event;
 
     // const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');

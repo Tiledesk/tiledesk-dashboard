@@ -4,7 +4,7 @@ import { UsersService } from '../services/users.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
-
+import { LoggerService } from '../services/logger/logger.service';
 @Component({
   selector: 'appdashboard-events',
   templateUrl: './events.component.html',
@@ -20,7 +20,8 @@ export class EventsComponent implements OnInit,  OnDestroy {
   constructor(
     private auth: AuthService,
     private usersService: UsersService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private logger: LoggerService
   ) {
     this.getParams();
   }
@@ -38,7 +39,7 @@ export class EventsComponent implements OnInit,  OnDestroy {
   getParams() {
     this.route.params.subscribe((params) => {
 
-      console.log('EVENTS COMP - GET PARAMS  ', params)
+      this.logger.log('[EVENTS-COMP] - GET PARAMS  ', params)
 
       this.project_id = params['projectid']
       this.contact_id = params['requesterid']
@@ -49,18 +50,15 @@ export class EventsComponent implements OnInit,  OnDestroy {
     });
   }
 
-  getCurrentProject() {
-    this.auth.project_bs.subscribe((project) => {
+  // getCurrentProject() {
+  //   this.auth.project_bs.subscribe((project) => {
 
-      if (project) {
-        // this.projectId = project._id
-        // console.log('00 -> !!!! CONTACTS project ID from AUTH service subscription  ', this.projectId)
-
-
-
-      }
-    });
-  }
+  //     if (project) {
+  //       // this.projectId = project._id
+  //       // this.logger.log('[EVENTS-COMP] project ID from AUTH service subscription  ', this.projectId)
+  //     }
+  //   });
+  // }
 
 
   getContactsEvents$() {
@@ -69,30 +67,22 @@ export class EventsComponent implements OnInit,  OnDestroy {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((contactevents) => {
-        console.log('EVENTS COMP $UBSC TO WS CONTACT EVENT ', contactevents);
+        this.logger.log('[EVENTS-COMP] $UBSC TO WS CONTACT EVENT ', contactevents);
         // this.events = contactevents;
         this.events = contactevents
 
         // contactevents.forEach(contactevent => {
-
         //   const index = this.events.findIndex((e) => e.id === contactevent['_id']);
-
         //   if (index === -1) { 
-
         //     this.events.push({ 'name': contactevent['name'], 'createdAt': contactevent['createdAt']})
-
         //   }
-
         // });
 
-
       }, (error) => {
-        console.log('EVENTS COMP $UBSC TO WS CONTACT EVENT ', error);
+        this.logger.error('EVENTS COMP $UBSC TO WS CONTACT EVENT ', error);
       }, () => {
-        console.log('EVENTS COMP $UBSC TO WS CONTACT EVENT * COMPLETE *');
+        this.logger.log('EVENTS COMP $UBSC TO WS CONTACT EVENT * COMPLETE *');
       })
-
   }
-
 
 }

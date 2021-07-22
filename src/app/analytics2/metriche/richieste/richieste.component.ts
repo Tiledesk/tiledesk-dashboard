@@ -8,7 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { UsersService } from 'app/services/users.service';
 import { Observable } from 'rxjs';
-
+import { LoggerService } from '../../..//services/logger/logger.service';
 @Component({
   selector: 'appdashboard-richieste',
   templateUrl: './richieste.component.html',
@@ -41,14 +41,17 @@ export class RichiesteComponent implements OnInit {
   bots: any;
   conversationsCountLastMonth: any;
 
-  constructor(private analyticsService: AnalyticsService,
+  constructor(
+    private analyticsService: AnalyticsService,
     private translate: TranslateService,
     private departmentService: DepartmentService,
     private usersService: UsersService,
-    public faqKbService: FaqKbService) {
+    public faqKbService: FaqKbService,
+    private logger: LoggerService
+  ) {
 
     this.lang = this.translate.getBrowserLang();
-    console.log('LANGUAGE ', this.lang);
+    this.logger.log('[ANALYTICS - CONVS] LANGUAGE ', this.lang);
     this.getBrowserLangAndSwitchMonthName();
 
   }
@@ -61,22 +64,22 @@ export class RichiesteComponent implements OnInit {
 
     this.initDay = moment().subtract(6, 'd').format('D/M/YYYY')
     this.endDay = moment().subtract(0, 'd').format('D/M/YYYY')
-    console.log("INIT", this.initDay, "END", this.endDay);
+    this.logger.log("[ANALYTICS - CONVS] INIT", this.initDay, "END", this.endDay);
 
     this.getAggregateValue();
     this.getRequestByLastNDayMerge(this.selectedDaysId, this.selectedDeptId);
     this.getDepartments();
     this.getProjectUsersAndBots();
-  
+
   }
 
   ngOnDestroy() {
-    console.log('!!! ANALYTICS.RICHIESTE - !!!!! UN - SUBSCRIPTION TO REQUESTS');
+    this.logger.log('[ANALYTICS - CONVS] - !!!!! UN - SUBSCRIPTION TO REQUESTS');
     this.subscription.unsubscribe();
   }
 
   daysSelect(value, event) {
-    console.log("EVENT", event)
+    this.logger.log("[ANALYTICS - CONVS] daysSelect EVENT", event)
     this.selectedDaysId = value;//--> value to pass throw for graph method
     //check value for label in htlm
     if (value <= 30) {
@@ -88,65 +91,65 @@ export class RichiesteComponent implements OnInit {
     }
     this.lineChart.destroy();
     this.subscription.unsubscribe();
-    console.log("++++++++++ SELECTED AGENT: ", this.selectedAgentId);
+    this.logger.log("[ANALYTICS - CONVS] ++++++++++ SELECTED AGENT: ", this.selectedAgentId);
     if (!this.selectedAgentId) {
       this.getRequestByLastNDayMerge(this.selectedDaysId, this.selectedDeptId,)
-      console.log('REQUEST:', this.selectedDaysId, this.selectedDeptId)
+      this.logger.log('[ANALYTICS - CONVS] getRequestByLastNDayMerge REQUEST:', this.selectedDaysId, this.selectedDeptId)
     } else {
       this.getRequestByLastNDay(value, this.selectedDeptId, this.selectedAgentId)
-      console.log('REQUEST:', value, this.selectedDeptId, this.selectedAgentId)
+      this.logger.log('[ANALYTICS - CONVS] getRequestByLastNDay REQUEST:', value, this.selectedDeptId, this.selectedAgentId)
     }
   }
 
   depSelected(selectedDeptId) {
-    console.log('dep', selectedDeptId);
+    this.logger.log('[ANALYTICS - CONVS] depSelected', selectedDeptId);
     this.lineChart.destroy();
     this.subscription.unsubscribe();
     if (!this.selectedAgentId) {
       this.getRequestByLastNDayMerge(this.selectedDaysId, this.selectedDeptId,)
-      console.log('REQUEST:', this.selectedDaysId, this.selectedDeptId)
+      this.logger.log('[ANALYTICS - CONVS] getRequestByLastNDayMerge REQUEST:', this.selectedDaysId, this.selectedDeptId)
     } else {
       this.getRequestByLastNDay(this.selectedDaysId, selectedDeptId, this.selectedAgentId)
-      console.log('REQUEST:', this.selectedDaysId, selectedDeptId, this.selectedAgentId)
+      this.logger.log('[ANALYTICS - CONVS] getRequestByLastNDay:', this.selectedDaysId, selectedDeptId, this.selectedAgentId)
     }
 
   }
 
   agentSelected(selectedAgentId) {
-    console.log("Selected agent: ", selectedAgentId);
+    this.logger.log("[ANALYTICS - CONVS]  Selected agent: ", selectedAgentId);
     this.lineChart.destroy();
     this.subscription.unsubscribe();
     if (!this.selectedAgentId) {
       this.getRequestByLastNDayMerge(this.selectedDaysId, this.selectedDeptId,)
-      console.log('REQUEST:', this.selectedDaysId, this.selectedDeptId)
+      this.logger.log('[ANALYTICS - CONVS] agentSelected getRequestByLastNDayMerge REQUEST:', this.selectedDaysId, this.selectedDeptId)
     } else {
       this.getRequestByLastNDay(this.selectedDaysId, this.selectedDeptId, selectedAgentId)
-      console.log('REQUEST:', this.selectedDaysId, this.selectedDeptId, selectedAgentId)
+      this.logger.log('[ANALYTICS - CONVS] agentSelected getRequestByLastNDay REQUEST:', this.selectedDaysId, this.selectedDeptId, selectedAgentId)
     }
   }
 
 
   getDepartments() {
     this.departmentService.getDeptsByProjectId().subscribe((_departments: any) => {
-      console.log('!!! NEW REQUESTS HISTORY - GET DEPTS RESPONSE by analitycs ', _departments);
+      this.logger.log('[ANALYTICS - CONVS] - GET DEPTS RES ', _departments);
       this.departments = _departments
 
     }, error => {
-      console.log('!!! NEW REQUESTS HISTORY - GET DEPTS - ERROR: ', error);
+      this.logger.error('[ANALYTICS - CONVS]- GET DEPTS - ERROR: ', error);
     }, () => {
-      console.log('!!! NEW REQUESTS HISTORY - GET DEPTS * COMPLETE *')
+      this.logger.log('[ANALYTICS - CONVS] - GET DEPTS * COMPLETE *')
     });
   }
 
   // getProjectUsersAndBots() {
   //   const projectUsersSubscription = this.usersService.getProjectUsersByProjectId().subscribe((res) => {
   //     this.projectUsersList = res;
-  //     console.log('!!! ANALYTICS.RICHIESTE - !!!  PROJECT USERS : ', this.projectUsersList);
+  //     this.logger.log('!!! ANALYTICS.RICHIESTE - !!!  PROJECT USERS : ', this.projectUsersList);
   //   })
 
   //   const projectBotsSubscription = this.faqKbService.getAllBotByProjectId().subscribe((res) => {
   //     this.projectBotsList = res;
-  //     console.log('!!! ANALYTICS.RICHIESTE - !!!  PROJECT BOTS : ', res);
+  //     this.logger.log('!!! ANALYTICS.RICHIESTE - !!!  PROJECT BOTS : ', res);
   //   })
   // }
 
@@ -159,8 +162,8 @@ export class RichiesteComponent implements OnInit {
     Observable
       .zip(projectUsers, bots, (_projectUsers: any, _bots: any) => ({ _projectUsers, _bots }))
       .subscribe(pair => {
-        console.log('BASE-TRIGGER - GET P-USERS-&-BOTS - PROJECT USERS : ', pair._projectUsers);
-        console.log('BASE-TRIGGER - GET P-USERS-&-BOTS - BOTS: ', pair._bots);
+        this.logger.log('[ANALYTICS - CONVS] - GET P-USERS-&-BOTS - PROJECT USERS : ', pair._projectUsers);
+        this.logger.log('[ANALYTICS - CONVS] - GET P-USERS-&-BOTS - BOTS: ', pair._bots);
 
         if (pair && pair._projectUsers) {
           this.projectUsersList = pair._projectUsers;
@@ -185,12 +188,12 @@ export class RichiesteComponent implements OnInit {
           });
         }
 
-        console.log('BASE-TRIGGER - GET P-USERS-&-BOTS - PROJECT-USER & BOTS ARRAY : ', this.projectUserAndBotsArray);
+        this.logger.log('[ANALYTICS - CONVS] - GET P-USERS-&-BOTS - PROJECT-USER & BOTS ARRAY : ', this.projectUserAndBotsArray);
 
       }, error => {
-        console.log('BASE-TRIGGER - GET P-USERS-&-BOTS - ERROR: ', error);
+        this.logger.error('[ANALYTICS - CONVS] - GET P-USERS-&-BOTS - ERROR: ', error);
       }, () => {
-        console.log('BASE-TRIGGER - GET P-USERS-&-BOTS - COMPLETE');
+        this.logger.log('[ANALYTICS - CONVS] - GET P-USERS-&-BOTS - COMPLETE');
       });
   }
 
@@ -217,11 +220,16 @@ export class RichiesteComponent implements OnInit {
 
   getAggregateValue() {
     this.analyticsService.getLastMountConversationsCount().subscribe((res: any) => {
-      console.log("LAST MONTH CONVERSATIONS COUNT: ", res);
-      this.conversationsCountLastMonth = res[0].totalCount;
-      console.log("Conversations Count: ", this.conversationsCountLastMonth);
+      this.logger.log("[ANALYTICS - CONVS] LAST MONTH CONVERSATIONS COUNT: ", res);
+      if (res && res[0]) {
+        this.conversationsCountLastMonth = res[0].totalCount;
+        this.logger.log("[ANALYTICS - CONVS] Conversations Count: ", this.conversationsCountLastMonth);
+      } else {
+        this.logger.log("[ANALYTICS - CONVS] Conversations Count - THERE ARE NOT CONVS IN THE LAST MONTH");
+        this.conversationsCountLastMonth = 0;
+      }
     }, (error) => {
-      console.log("Impossible to retrieve monthly count")
+      this.logger.error("[ANALYTICS - CONVS] Impossible to retrieve monthly count", error)
       this.conversationsCountLastMonth = 0;
     })
   }
@@ -229,21 +237,21 @@ export class RichiesteComponent implements OnInit {
   getRequestByLastNDay(lastdays, depID, participantID) {
 
     if (participantID.includes("bot")) {
-      console.log("Selected Agent is a BOT");
+      this.logger.log("[ANALYTICS - CONVS] Selected Agent is a BOT");
       // try to change chart's colors
     }
-    console.log("GET REQUEST TYPE: For Agent/Bot")
+    this.logger.log("[ANALYTICS - CONVS] GET REQUEST TYPE: For Agent/Bot")
     this.subscription = this.analyticsService.requestsByDay(lastdays, depID, participantID).subscribe((requestsByDay: any) => {
-      console.log('»» !!! ANALYTICS - REQUESTS BY  N-DAY ', requestsByDay);
+      this.logger.log('[ANALYTICS - CONVS] - REQUESTS BY  N-DAY ', requestsByDay);
 
       const last7days_initarray = []
       for (let i = 0; i < lastdays; i++) {
-        // console.log('»» !!! ANALYTICS - LOOP INDEX', i);
+        // this.logger.log('»» !!! ANALYTICS - LOOP INDEX', i);
         last7days_initarray.push({ 'count': 0, day: moment().subtract(i, 'd').format('D/M/YYYY') })
       }
 
       last7days_initarray.reverse()
-      console.log('»» !!! ANALYTICS - REQUESTS BY lastDAY - MOMENT LAST N DATE (init array)', last7days_initarray);
+      this.logger.log('[ANALYTICS - CONVS]- REQUESTS BY lastDAY - MOMENT LAST N DATE (init array)', last7days_initarray);
 
       const requestsByDay_series_array = [];
       const requestsByDay_labels_array = [];
@@ -257,7 +265,7 @@ export class RichiesteComponent implements OnInit {
         }
       }
 
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY FORMATTED ', requestsByDay_array);
+      this.logger.log('[ANALYTICS - CONVS] - REQUESTS BY DAY FORMATTED ', requestsByDay_array);
 
       /**
         * MERGE THE ARRAY last7days_initarray WITH requestsByDay_array  */
@@ -266,7 +274,7 @@ export class RichiesteComponent implements OnInit {
       // If not, then the same element in last7days i.e. obj is returned.
       // human
       const requestByDays_final_array = last7days_initarray.map(obj => requestsByDay_array.find(o => o.day === obj.day) || obj);
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - FINAL ARRAY ', requestByDays_final_array);
+      this.logger.log('[ANALYTICS - CONVS] - REQUESTS BY DAY - FINAL ARRAY ', requestByDays_final_array);
 
       // human
       const _requestsByDay_series_array = [];
@@ -275,27 +283,27 @@ export class RichiesteComponent implements OnInit {
       //select init and end day to show on div
       this.initDay = requestByDays_final_array[0].day;
       this.endDay = requestByDays_final_array[lastdays - 1].day;
-      console.log("INIT", this.initDay, "END", this.endDay);
+      this.logger.log("INIT", this.initDay, "END", this.endDay);
 
       // human
       requestByDays_final_array.forEach(requestByDay => {
-        //console.log('»» !!! ANALYTICS - REQUESTS BY DAY - requestByDay', requestByDay);
+        //this.logger.log('»» !!! ANALYTICS - REQUESTS BY DAY - requestByDay', requestByDay);
         _requestsByDay_series_array.push(requestByDay.count)
 
         const splitted_date = requestByDay.day.split('/');
-        //console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SPLITTED DATE', splitted_date);
+        //this.logger.log('»» !!! ANALYTICS - REQUESTS BY DAY - SPLITTED DATE', splitted_date);
         _requestsByDay_labels_array.push(splitted_date[0] + ' ' + this.monthNames[splitted_date[1]])
       });
 
 
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SERIES (ARRAY OF COUNT - to use for debug)', requestsByDay_series_array);
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SERIES (+ NEW + ARRAY OF COUNT)', _requestsByDay_series_array);
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - LABELS (ARRAY OF DAY - to use for debug)', requestsByDay_labels_array);
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - LABELS (+ NEW + ARRAY OF DAY)', _requestsByDay_labels_array);
+      this.logger.log('[ANALYTICS - CONVS] - REQUESTS BY DAY - SERIES (ARRAY OF COUNT - to use for debug)', requestsByDay_series_array);
+      this.logger.log('[ANALYTICS - CONVS] - REQUESTS BY DAY - SERIES (+ NEW + ARRAY OF COUNT)', _requestsByDay_series_array);
+      this.logger.log('[ANALYTICS - CONVS] - REQUESTS BY DAY - LABELS (ARRAY OF DAY - to use for debug)', requestsByDay_labels_array);
+      this.logger.log('[ANALYTICS - CONVS] - REQUESTS BY DAY - LABELS (+ NEW + ARRAY OF DAY)', _requestsByDay_labels_array);
 
       //get higher value of xvalue array 
       const higherCount = this.getMaxOfArray(_requestsByDay_series_array);
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - HIGHTER COUNT ', higherCount);
+      this.logger.log('[ANALYTICS - CONVS] - REQUESTS BY DAY - HIGHTER COUNT ', higherCount);
 
       //set the stepsize 
       var stepsize;
@@ -351,9 +359,9 @@ export class RichiesteComponent implements OnInit {
                 //minRotation: 30,
                 fontColor: 'black',
                 // callback: function(tickValue, index, ticks) {
-                //      console.log("XXXX",tickValue);
-                //      console.log("III", index)
-                //      console.log("TTT", ticks)
+                //      this.logger.log("XXXX",tickValue);
+                //      this.logger.log("III", index)
+                //      this.logger.log("TTT", ticks)
 
                 // }
 
@@ -406,12 +414,12 @@ export class RichiesteComponent implements OnInit {
                 // }
                 // label += Math.round(tooltipItem.yLabel * 100) / 100;
                 // return label + '';
-                //console.log("data",data)
+                //this.logger.log("data",data)
                 const currentItemValue = tooltipItem.yLabel
                 // let langService = new HumanizeDurationLanguage();
                 // let humanizer = new HumanizeDuration(langService);
                 // humanizer.setOptions({ round: true })
-                //console.log("humanize", humanizer.humanize(currentItemValue))
+                //this.logger.log("humanize", humanizer.humanize(currentItemValue))
                 //return data.datasets[tooltipItem.datasetIndex].label + ': ' + currentItemValue
                 if (lang === 'it') {
                   return 'Richieste: ' + currentItemValue;
@@ -428,7 +436,7 @@ export class RichiesteComponent implements OnInit {
         plugins: [{
           beforeDraw: function (chartInstance, easing) {
             var ctx = chartInstance.chart.ctx;
-            //console.log("chartistance",chartInstance)
+            //this.logger.log("chartistance",chartInstance)
             //ctx.fillStyle = 'red'; // your color here
             ctx.height = 128
             //chartInstance.chart.canvas.parentNode.style.height = '128px';
@@ -443,9 +451,9 @@ export class RichiesteComponent implements OnInit {
 
 
     }, (error) => {
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - ERROR ', error);
+      this.logger.error('[ANALYTICS - CONVS] - REQUESTS BY DAY - ERROR ', error);
     }, () => {
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY * COMPLETE *');
+      this.logger.log('[ANALYTICS - CONVS] - REQUESTS BY DAY * COMPLETE *');
     })
   }
 
@@ -453,22 +461,22 @@ export class RichiesteComponent implements OnInit {
   //-----------LAST n DAYS GRAPH-----------------------
   getRequestByLastNDayMerge(lastdays, depID) {
 
-    console.log("GET REQUEST TYPE: Merged")
+    this.logger.log("[ANALYTICS - CONVS] GET REQUEST TYPE: Merged")
     this.subscription = this.analyticsService.requestsByDay(lastdays, depID).subscribe((requestsByDay: any) => {
-      console.log('»» !!! ANALYTICS - REQUESTS BY  N-DAY ', requestsByDay);
+      this.logger.log('[ANALYTICS - CONVS] - REQUESTS BY  N-DAY ', requestsByDay);
 
       this.analyticsService.requestsByDayBotServed(lastdays, depID).subscribe((requestsByDayBotServed: any) => {
-        console.log('»» !!! ANALYTICS - REQUESTS BY N-DAY BOT SERVED ', requestsByDayBotServed);
+        this.logger.log('[ANALYTICS - CONVS] - REQUESTS BY N-DAY BOT SERVED ', requestsByDayBotServed);
 
         // CREATES THE INITIAL ARRAY WITH THE LAST SEVEN DAYS (calculated with moment) AND REQUESTS COUNT = O
         const last7days_initarray = []
         for (let i = 0; i < lastdays; i++) {
-          // console.log('»» !!! ANALYTICS - LOOP INDEX', i);
+          // this.logger.log('»» !!! ANALYTICS - LOOP INDEX', i);
           last7days_initarray.push({ 'count': 0, day: moment().subtract(i, 'd').format('D/M/YYYY') })
         }
 
         last7days_initarray.reverse()
-        console.log('»» !!! ANALYTICS - REQUESTS BY lastDAY - MOMENT LAST N DATE (init array)', last7days_initarray);
+        this.logger.log('[ANALYTICS - CONVS] - REQUESTS BY lastDAY - MOMENT LAST N DATE (init array)', last7days_initarray);
 
         const requestsByDay_series_array = [];
         const requestsByDay_labels_array = [];
@@ -486,14 +494,14 @@ export class RichiesteComponent implements OnInit {
 
         // bot
         for (let j = 0; j < requestsByDayBotServed.length; j++) {
-          console.log("aaaaaaaaaa")
+
           if (requestsByDayBotServed[j] && (requestsByDayBotServed[j]['_id']['hasBot'] == true)) {
             requestByDayBotServed_array.push({ 'count': requestsByDayBotServed[j]['count'], day: requestsByDayBotServed[j]['_id']['day'] + '/' + requestsByDayBotServed[j]['_id']['month'] + '/' + requestsByDayBotServed[j]['_id']['year'] })
           }
         }
 
-        console.log('»» !!! ANALYTICS - REQUESTS BY DAY FORMATTED ', requestsByDay_array);
-        console.log('»» !!! ANALYTICS - REQUESTS BY DAY BOT SERVED FORMATTED ', requestByDayBotServed_array);
+        this.logger.log('[ANALYTICS - CONVS] - REQUESTS BY DAY FORMATTED ', requestsByDay_array);
+        this.logger.log('[ANALYTICS - CONVS] - REQUESTS BY DAY BOT SERVED FORMATTED ', requestByDayBotServed_array);
 
         /**
          * MERGE THE ARRAY last7days_initarray WITH requestsByDay_array  */
@@ -502,10 +510,10 @@ export class RichiesteComponent implements OnInit {
         // If not, then the same element in last7days i.e. obj is returned.
         // human
         const requestByDays_final_array = last7days_initarray.map(obj => requestsByDay_array.find(o => o.day === obj.day) || obj);
-        console.log('»» !!! ANALYTICS - REQUESTS BY DAY - FINAL ARRAY ', requestByDays_final_array);
+        this.logger.log('[ANALYTICS - CONVS] - REQUESTS BY DAY - FINAL ARRAY ', requestByDays_final_array);
         // bot
         const requestByDaysBotServed_final_array = last7days_initarray.map(obj => requestByDayBotServed_array.find(o => o.day === obj.day) || obj);
-        console.log('»» !!! ANALYTICS - REQUESTS BY DAY BOT SERVED - FINAL ARRAY ', requestByDaysBotServed_final_array);
+        this.logger.log('[ANALYTICS - CONVS] - REQUESTS BY DAY BOT SERVED - FINAL ARRAY ', requestByDaysBotServed_final_array);
 
         // human
         const _requestsByDay_series_array = [];
@@ -516,15 +524,15 @@ export class RichiesteComponent implements OnInit {
         //select init and end day to show on div
         this.initDay = requestByDays_final_array[0].day;
         this.endDay = requestByDays_final_array[lastdays - 1].day;
-        console.log("INIT", this.initDay, "END", this.endDay);
+        this.logger.log("[ANALYTICS - CONVS] INIT", this.initDay, "END", this.endDay);
 
         // human
         requestByDays_final_array.forEach(requestByDay => {
-          //console.log('»» !!! ANALYTICS - REQUESTS BY DAY - requestByDay', requestByDay);
+          //this.logger.log('»» !!! ANALYTICS - REQUESTS BY DAY - requestByDay', requestByDay);
           _requestsByDay_series_array.push(requestByDay.count)
 
           const splitted_date = requestByDay.day.split('/');
-          //console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SPLITTED DATE', splitted_date);
+          //this.logger.log('»» !!! ANALYTICS - REQUESTS BY DAY - SPLITTED DATE', splitted_date);
           _requestsByDay_labels_array.push(splitted_date[0] + ' ' + this.monthNames[splitted_date[1]])
         });
 
@@ -534,15 +542,15 @@ export class RichiesteComponent implements OnInit {
         })
 
 
-        console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SERIES (ARRAY OF COUNT - to use for debug)', requestsByDay_series_array);
-        console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SERIES (+ NEW + ARRAY OF COUNT)', _requestsByDay_series_array);
-        console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SERIES (+ NEW + ARRAY OF COUNT)', _requestsByDayBotServed_series_array);
-        console.log('»» !!! ANALYTICS - REQUESTS BY DAY - LABELS (ARRAY OF DAY - to use for debug)', requestsByDay_labels_array);
-        console.log('»» !!! ANALYTICS - REQUESTS BY DAY - LABELS (+ NEW + ARRAY OF DAY)', _requestsByDay_labels_array);
+        this.logger.log('[ANALYTICS - CONVS] - REQUESTS BY DAY - SERIES (ARRAY OF COUNT - to use for debug)', requestsByDay_series_array);
+        this.logger.log('[ANALYTICS - CONVS] - REQUESTS BY DAY - SERIES (+ NEW + ARRAY OF COUNT)', _requestsByDay_series_array);
+        this.logger.log('[ANALYTICS - CONVS] - REQUESTS BY DAY - SERIES (+ NEW + ARRAY OF COUNT)', _requestsByDayBotServed_series_array);
+        this.logger.log('[ANALYTICS - CONVS] - REQUESTS BY DAY - LABELS (ARRAY OF DAY - to use for debug)', requestsByDay_labels_array);
+        this.logger.log('[ANALYTICS - CONVS] - REQUESTS BY DAY - LABELS (+ NEW + ARRAY OF DAY)', _requestsByDay_labels_array);
 
         //get higher value of xvalue array 
         const higherCount = this.getMaxOfArray(_requestsByDay_series_array);
-        console.log('»» !!! ANALYTICS - REQUESTS BY DAY - HIGHTER COUNT ', higherCount);
+        this.logger.log('[ANALYTICS - CONVS] - REQUESTS BY DAY - HIGHTER COUNT ', higherCount);
 
         //set the stepsize 
         var stepsize;
@@ -611,9 +619,9 @@ export class RichiesteComponent implements OnInit {
                   //minRotation: 30,
                   fontColor: 'black',
                   // callback: function(tickValue, index, ticks) {
-                  //      console.log("XXXX",tickValue);
-                  //      console.log("III", index)
-                  //      console.log("TTT", ticks)
+                  //      this.logger.log("XXXX",tickValue);
+                  //      this.logger.log("III", index)
+                  //      this.logger.log("TTT", ticks)
 
                   // }
 
@@ -666,12 +674,12 @@ export class RichiesteComponent implements OnInit {
                   // }
                   // label += Math.round(tooltipItem.yLabel * 100) / 100;
                   // return label + '';
-                  //console.log("data",data)
+                  //this.logger.log("data",data)
                   const currentItemValue = tooltipItem.yLabel
                   // let langService = new HumanizeDurationLanguage();
                   // let humanizer = new HumanizeDuration(langService);
                   // humanizer.setOptions({ round: true })
-                  //console.log("humanize", humanizer.humanize(currentItemValue))
+                  //this.logger.log("humanize", humanizer.humanize(currentItemValue))
                   //return data.datasets[tooltipItem.datasetIndex].label + ': ' + currentItemValue
                   if (lang === 'it') {
                     return 'Richieste: ' + currentItemValue;
@@ -688,7 +696,7 @@ export class RichiesteComponent implements OnInit {
           plugins: [{
             beforeDraw: function (chartInstance, easing) {
               var ctx = chartInstance.chart.ctx;
-              //console.log("chartistance",chartInstance)
+              //this.logger.log("chartistance",chartInstance)
               //ctx.fillStyle = 'red'; // your color here
               ctx.height = 128
               //chartInstance.chart.canvas.parentNode.style.height = '128px';
@@ -702,9 +710,9 @@ export class RichiesteComponent implements OnInit {
       })
 
     }, (error) => {
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - ERROR ', error);
+      this.logger.error('[ANALYTICS - CONVS] - REQUESTS BY DAY - ERROR ', error);
     }, () => {
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY * COMPLETE *');
+      this.logger.log('[ANALYTICS - CONVS] - REQUESTS BY DAY * COMPLETE *');
     });
   }
 

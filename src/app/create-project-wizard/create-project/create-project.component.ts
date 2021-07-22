@@ -7,6 +7,7 @@ import { Location } from '@angular/common';
 import { slideInAnimation } from '../../_animations/index';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../services/brand.service';
+import { LoggerService } from '../../services/logger/logger.service';
 
 @Component({
   selector: 'appdashboard-create-project',
@@ -19,12 +20,9 @@ import { BrandService } from '../../services/brand.service';
 
 
 export class CreateProjectComponent implements OnInit {
-
   // company_logo_in_spinner = brand.wizard_create_project_page.company_logo_in_spinner; // no more used - removed from brand
-
   // logo_x_rocket = brand.wizard_create_project_page.logo_x_rocket
   logo_x_rocket: string;
-
   projects: Project[];
   project_name: string;
   id_project: string;
@@ -37,22 +35,23 @@ export class CreateProjectComponent implements OnInit {
     private auth: AuthService,
     private router: Router,
     public location: Location,
-    public brandService: BrandService
+    public brandService: BrandService,
+    private logger: LoggerService
   ) { 
     const brand = brandService.getBrand();
     this.logo_x_rocket = brand['wizard_create_project_page']['logo_x_rocket']
   }
 
   ngOnInit() {
-    console.log('CreateProjectComponent project_name ', this.project_name)
-    // console.log('project_name.length', this.project_name.length)
+    this.logger.log('[WIZARD - CREATE-PRJCT] project_name ', this.project_name)
+    // this.logger.log('project_name.length', this.project_name.length)
 
 
     this.checkCurrentUrlAndHideCloseBtn();
   }
 
   checkCurrentUrlAndHideCloseBtn() {
-    console.log('CreateProjectComponent this.router.url  ', this.router.url)
+    this.logger.log('[WIZARD - CREATE-PRJCT] this.router.url  ', this.router.url)
 
     if (this.router.url === '/create-project') {
       this.CLOSE_BTN_IS_HIDDEN = true;
@@ -81,11 +80,11 @@ export class CreateProjectComponent implements OnInit {
   createNewProject() {
     this.DISPLAY_SPINNER_SECTION = true;
     this.DISPLAY_SPINNER = true;
-    console.log('CreateProjectComponent CREATE NEW PROJECT - PROJECT-NAME DIGIT BY USER ', this.project_name);
+    this.logger.log('[WIZARD - CREATE-PRJCT] CREATE NEW PROJECT - PROJECT-NAME DIGIT BY USER ', this.project_name);
 
-    this.projectService.addMongoDbProject(this.project_name)
+    this.projectService.createProject(this.project_name)
       .subscribe((project) => {
-        console.log('POST DATA PROJECT RESPONSE ', project);
+        this.logger.log('[WIZARD - CREATE-PRJCT] POST DATA PROJECT RESPONSE ', project);
 
         // WHEN THE USER SELECT A PROJECT ITS ID IS SEND IN THE PROJECT SERVICE THET PUBLISHES IT
         // THE SIDEBAR SIGNS UP FOR ITS PUBLICATION
@@ -97,7 +96,7 @@ export class CreateProjectComponent implements OnInit {
 
         // SENT THE NEW PROJECT TO THE AUTH SERVICE THAT PUBLISH
         this.auth.projectSelected(newproject)
-        console.log('CreateProjectComponent CREATED PROJECT ', newproject)
+        this.logger.log('[WIZARD - CREATE-PRJCT] CREATED PROJECT ', newproject)
 
         this.id_project = newproject._id
 
@@ -107,12 +106,11 @@ export class CreateProjectComponent implements OnInit {
         // localStorage.setItem('project', JSON.stringify(newproject));
 
       }, (error) => {
-
         this.DISPLAY_SPINNER = false;
+        this.logger.error('[WIZARD - CREATE-PRJCT] CREATE NEW PROJECT - POST REQUEST - ERROR ', error);
 
-        console.log('CreateProjectComponent CREATE NEW PROJECT - POST REQUEST ERROR ', error);
       }, () => {
-        console.log('CreateProjectComponent CREATE NEW PROJECT - POST REQUEST COMPLETE ');
+        this.logger.log('[WIZARD - CREATE-PRJCT] CREATE NEW PROJECT - POST REQUEST * COMPLETE *');
 
         this.projectService.newProjectCreated(true)
 
@@ -133,7 +131,7 @@ export class CreateProjectComponent implements OnInit {
    * GET PROJECTS AND SAVE IN THE STORAGE: PROJECT ID - PROJECT NAME - USE ROLE   */
   getProjectsAndSaveInStorage() {
     this.projectService.getProjects().subscribe((projects: any) => {
-      console.log('!!! getProjectsAndSaveInStorage PROJECTS ', projects);
+      this.logger.log('[WIZARD - CREATE-PRJCT] !!! getProjectsAndSaveInStorage PROJECTS ', projects);
 
       if (projects) {
         this.projects = projects;
@@ -142,7 +140,7 @@ export class CreateProjectComponent implements OnInit {
         // WHEN IS REFRESHED A PAGE THE AUTSERVICE USE THE NAVIGATION PROJECT ID TO GET FROM STORAGE THE NAME OF THE PROJECT
         // AND THEN PUBLISH PROJECT ID AND PROJECT NAME
         this.projects.forEach(project => {
-          console.log('!!! getProjectsAndSaveInStorage SET PROJECT IN STORAGE')
+          this.logger.log('[WIZARD - CREATE-PRJCT] !!! getProjectsAndSaveInStorage SET PROJECT IN STORAGE')
           if (project.id_project) {
             const prjct: Project = {
               _id: project.id_project._id,
@@ -156,20 +154,14 @@ export class CreateProjectComponent implements OnInit {
         });
       }
     }, error => {
-      console.log('getProjectsAndSaveInStorage - ERROR ', error)
+      this.logger.error('[WIZARD - CREATE-PRJCT] getProjectsAndSaveInStorage - ERROR ', error)
     }, () => {
-      console.log('getProjectsAndSaveInStorage - COMPLETE')
+      this.logger.log('[WIZARD - CREATE-PRJCT] getProjectsAndSaveInStorage - COMPLETE')
     });
   }
-
-
-
 
   continueToConfigureScript() {
     this.router.navigate([`/project/${this.id_project}/configure-widget`]);
   }
-
-
- 
 
 }

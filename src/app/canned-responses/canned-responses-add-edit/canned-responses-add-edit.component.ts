@@ -3,6 +3,7 @@ import { CannedResponsesService } from '../../services/canned-responses.service'
 import { TranslateService } from '@ngx-translate/core';
 import { NotifyService } from '../../core/notify.service';
 import { AuthService } from '../../core/auth.service';
+import { LoggerService } from '../../services/logger/logger.service';
 @Component({
   selector: 'appdashboard-canned-responses-add-edit',
   templateUrl: './canned-responses-add-edit.component.html',
@@ -46,14 +47,15 @@ export class CannedResponsesAddEditComponent implements OnInit, AfterViewInit {
     public cannedResponsesService: CannedResponsesService,
     public translate: TranslateService,
     private notify: NotifyService,
-    private auth: AuthService
+    private auth: AuthService,
+    private logger: LoggerService
   ) { }
 
   // 
 
   ngOnInit() {
-    console.log('CANNED-RES-CREATE.COMP - modalMode ', this.modalMode);
-    console.log('CANNED-RES-CREATE.COMP - selectCannedResponseId ', this.selectCannedResponseId);
+    this.logger.log('[CANNED-RES-EDIT-CREATE] - modalMode ', this.modalMode);
+    this.logger.log('[CANNED-RES-EDIT-CREATE] - selectCannedResponseId ', this.selectCannedResponseId);
     
     this.auth.checkRoleForCurrentProject();
     
@@ -75,7 +77,7 @@ export class CannedResponsesAddEditComponent implements OnInit, AfterViewInit {
       // this.hideQuickTips = true
       const elemMainContent = <HTMLElement>document.querySelector('.main-content');
       const elemMainContentHeight = elemMainContent.clientHeight;
-      console.log('CANNED-RES  elemMainContentHeight', elemMainContentHeight)
+      this.logger.log('[CANNED-RES-EDIT-CREATE]  elemMainContentHeight', elemMainContentHeight)
       this.canned_response_modal_height = elemMainContent.clientHeight + 70 + 'px'
       // this.mobile_v = true;
     } else {
@@ -92,7 +94,7 @@ export class CannedResponsesAddEditComponent implements OnInit, AfterViewInit {
   onResize(event: any) {
 
     const newInnerWidth = event.target.innerWidth;
-    // console.log('CANNED-RES  newInnerWidth', newInnerWidth);
+    // this.logger.log('CANNED-RES  newInnerWidth', newInnerWidth);
 
     if (newInnerWidth <= 991) {
       // this.hideQuickTips = true
@@ -111,7 +113,7 @@ export class CannedResponsesAddEditComponent implements OnInit, AfterViewInit {
   translateNotificationMsgs() {
     this.translate.get('CannedResponses.NotificationMsgs')
       .subscribe((translation: any) => {
-        console.log('CANNED-RES  translateNotificationMsgs text', translation)
+        this.logger.log('[CANNED-RES-EDIT-CREATE] translateNotificationMsgs text', translation)
         this.createSuccessMsg = translation.CreateCannedResSuccess;
         this.createErrorMsg = translation.CreateCannedResError;
         this.updateSuccessMsg = translation.UpdateCannedResSuccess;
@@ -122,7 +124,7 @@ export class CannedResponsesAddEditComponent implements OnInit, AfterViewInit {
   getCannedResponseById() {
     this.cannedResponsesService.getCannedResponseById(this.selectCannedResponseId)
       .subscribe((response: any) => {
-        console.log('CANNED-RES - GET CANNED RES BY ID - RES ', response);
+        this.logger.log('[CANNED-RES-EDIT-CREATE] - GET CANNED RES BY ID - RES ', response);
 
         if (response) {
           this.cannedResponseMessage = response.text
@@ -130,10 +132,10 @@ export class CannedResponsesAddEditComponent implements OnInit, AfterViewInit {
         }
 
       }, (error) => {
-        console.log('CANNED-RES - GET CANNED RES BY ID - ERROR  ', error);
+        this.logger.error('[CANNED-RES-EDIT-CREATE] - GET CANNED RES BY ID - ERROR  ', error);
         this.showSkeleton = false;
       }, () => {
-        console.log('CANNED-RES - GET CANNED RES BY ID * COMPLETE *');
+        this.logger.log('[CANNED-RES-EDIT-CREATE] - GET CANNED RES BY ID * COMPLETE *');
         this.showSkeleton = false;
 
       });
@@ -141,7 +143,7 @@ export class CannedResponsesAddEditComponent implements OnInit, AfterViewInit {
 
   getTextArea() {
     this.elTextarea = <HTMLElement>document.querySelector('.canned-response-texarea');
-    console.log('CANNED-RES-CREATE.COMP - GET TEXT AREA - elTextarea ', this.elTextarea);
+    this.logger.log('[CANNED-RES-EDIT-CREATE] - GET TEXT AREA - elTextarea ', this.elTextarea);
   }
 
   insertCustomField(customfieldValue: string) {
@@ -153,11 +155,11 @@ export class CannedResponsesAddEditComponent implements OnInit, AfterViewInit {
   }
 
   insertAtCursor(myField, myValue) {
-    console.log('CANNED-RES-CREATE.COMP - insertAtCursor - myValue ', myValue );
+    this.logger.log('[CANNED-RES-EDIT-CREATE] - insertAtCursor - myValue ', myValue );
      
     if (this.addWhiteSpaceBefore === true) {
       myValue = ' ' + myValue;
-      console.log('CANNED-RES-CREATE.COMP - GET TEXT AREA - QUI ENTRO myValue ', myValue );
+      this.logger.log('[CANNED-RES-EDIT-CREATE] - GET TEXT AREA - QUI ENTRO myValue ', myValue );
     }
    
     //IE support
@@ -170,10 +172,10 @@ export class CannedResponsesAddEditComponent implements OnInit, AfterViewInit {
     //MOZILLA and others
     else if (myField.selectionStart || myField.selectionStart == '0') {
       var startPos = myField.selectionStart;
-      console.log('CANNED-RES-CREATE.COMP - insertAtCursor - startPos ', startPos);
+      this.logger.log('[CANNED-RES-EDIT-CREATE] - insertAtCursor - startPos ', startPos);
       
       var endPos = myField.selectionEnd;
-      console.log('CANNED-RES-CREATE.COMP - insertAtCursor - endPos ', endPos);
+      this.logger.log('[CANNED-RES-EDIT-CREATE] - insertAtCursor - endPos ', endPos);
       
       myField.value = myField.value.substring(0, startPos) + myValue + myField.value.substring(endPos, myField.value.length);
   
@@ -194,7 +196,7 @@ export class CannedResponsesAddEditComponent implements OnInit, AfterViewInit {
   }
 
   cannedResponseMessageChanged($event) {
-    console.log('CANNED-RES-CREATE.COMP - ON MSG CHANGED ', $event);
+    this.logger.log('[CANNED-RES-EDIT-CREATE] - ON MSG CHANGED ', $event);
     if ($event && $event.length > 0) {
       this.texareaIsEmpty = false;
     } else {
@@ -203,11 +205,11 @@ export class CannedResponsesAddEditComponent implements OnInit, AfterViewInit {
 
     if(/\s$/.test($event)) {
     
-      console.log('CANNED-RES-CREATE.COMP - ON MSG CHANGED - string contains space at last');
+      this.logger.log('[CANNED-RES-EDIT-CREATE] - ON MSG CHANGED - string contains space at last');
       this.addWhiteSpaceBefore = false;
    } else {
      
-      console.log('CANNED-RES-CREATE.COMP - ON MSG CHANGED - string does not contain space at last');
+      this.logger.log('[CANNED-RES-EDIT-CREATE] - ON MSG CHANGED - string does not contain space at last');
 
       // IS USED TO ADD A WHITE SPACE TO THE 'PERSONALIZATION' VALUE IF THE STRING DOES NOT CONTAIN SPACE AT LAST
       this.addWhiteSpaceBefore = true;
@@ -216,8 +218,8 @@ export class CannedResponsesAddEditComponent implements OnInit, AfterViewInit {
   }
 
   createResponse() {
-    console.log('CANNED-RES-CREATE.COMP - CREATE CANNED RESP - MSG ', this.cannedResponseMessage);
-    console.log('CANNED-RES-CREATE.COMP - CREATE CANNED RESP - TITLE ', this.cannedResponseTitle);
+    this.logger.log('[CANNED-RES-EDIT-CREATE] - CREATE CANNED RESP - MSG ', this.cannedResponseMessage);
+    this.logger.log('[CANNED-RES-EDIT-CREATE] - CREATE CANNED RESP - TITLE ', this.cannedResponseTitle);
 
     if (this.cannedResponseMessage && this.cannedResponseMessage.length > 0) {
       this.texareaIsEmpty = false;
@@ -229,13 +231,13 @@ export class CannedResponsesAddEditComponent implements OnInit, AfterViewInit {
 
       this.cannedResponsesService.createCannedResponse(this.cannedResponseMessage.trim(), responseTitle)
         .subscribe((responses: any) => {
-          console.log('CANNED-RES-CREATE.COMP - CREATE CANNED RESP - RES ', responses);
+          this.logger.log('[CANNED-RES-EDIT-CREATE] - CREATE CANNED RESP - RES ', responses);
 
         }, (error) => {
-          console.log('CANNED-RES-CREATE.COMP - CREATE CANNED RESP - ERROR  ', error);
+          this.logger.error('[CANNED-RES-EDIT-CREATE]- CREATE CANNED RESP - ERROR  ', error);
           this.notify.showWidgetStyleUpdateNotification(this.createErrorMsg, 4, 'report_problem');
         }, () => {
-          console.log('CANNED-RES-CREATE.COMP - CREATE CANNED RESP * COMPLETE *');
+          this.logger.log('[CANNED-RES-EDIT-CREATE] - CREATE CANNED RESP * COMPLETE *');
           this.notify.showWidgetStyleUpdateNotification(this.createSuccessMsg, 2, 'done');
           this.hasSavedResponse.emit();
           this.closeModal.emit();
@@ -256,13 +258,13 @@ export class CannedResponsesAddEditComponent implements OnInit, AfterViewInit {
 
     this.cannedResponsesService.updateCannedResponse(this.cannedResponseMessage, this.selectCannedResponseId, responseTitle)
       .subscribe((responses: any) => {
-        console.log('CANNED-RES-CREATE.COMP - EDIT CANNED RESP - RES ', responses);
+        this.logger.log('[CANNED-RES-EDIT-CREATE] - EDIT CANNED RESP - RES ', responses);
 
       }, (error) => {
-        console.log('CANNED-RES-CREATE.COMP - EDIT CANNED RESP - ERROR  ', error);
+        this.logger.error('[CANNED-RES-EDIT-CREATE] - EDIT CANNED RESP - ERROR  ', error);
         this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem');
       }, () => {
-        console.log('CANNED-RES-CREATE.COMP - EDIT CANNED RESP * COMPLETE *');
+        this.logger.log('[CANNED-RES-EDIT-CREATE] - EDIT CANNED RESP * COMPLETE *');
         this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done');
         this.hasSavedResponse.emit();
         this.closeModal.emit();
@@ -270,11 +272,10 @@ export class CannedResponsesAddEditComponent implements OnInit, AfterViewInit {
   }
 
   hasClickedAddCustomization() {
-    
     this.getTextArea();
     this.displayAddcustomizationView = true;
     this.hovered_value = '';
-    console.log('CANNED-RES - mouseEnter hasClickedAddCustomization hovered_value.length ', this.hovered_value.length);
+    this.logger.log('[CANNED-RES-EDIT-CREATE] - mouseEnter hasClickedAddCustomization hovered_value.length ', this.hovered_value.length);
   }
 
   closeAddcustomizationView() {
@@ -282,12 +283,12 @@ export class CannedResponsesAddEditComponent implements OnInit, AfterViewInit {
   }
 
   mouseEnter(fileValue: string) {
-    // console.log('CANNED-RES - mouseEnter fileValue ', fileValue);
+    // this.logger.log('CANNED-RES - mouseEnter fileValue ', fileValue);
     this.hovered_value = fileValue
   }
 
   mouseLeave() {
-    // console.log('CANNED-RES - mouseLeave ');
+    // this.logger.log('CANNED-RES - mouseLeave ');
     this.hovered_value = ''
   }
 

@@ -1654,7 +1654,7 @@
         "Actions": "Azioni",
         "NoWebhookSubscriptions": "Non sono presenti sottoscrizioni al webhook",
         "CreateSubscription": "Crea sottoscrizione",
-        "UpdateSubscription": "Modifica sottoscrizione",
+        "UpdateSubscription": "Aggiorna sottoscrizione",
         "RequiredFiled": "*Campo obbligatorio",
         "SelectEvent": "Seleziona evento",
         "SharedSecretGenerated": "Secret Webhook Generato",
@@ -1912,5 +1912,7 @@
     "ResolutionBotImagesVideosButtonsAndMore":"Resolution bot: immagini, video, pulsanti e altro ancora",
     "HandoffToHumanAgents":"Trasferimento ad agenti umani",
     "RenderAbutton": "Eseguire il rendering di un pulsante",
-    "SettingUpAutomaticAssignment":"Configurazione dell'assegnazione automatica"
+    "SettingUpAutomaticAssignment":"Configurazione dell'assegnazione automatica",
+    "..................":"..................",
+    "Map":"Mappa"
 }

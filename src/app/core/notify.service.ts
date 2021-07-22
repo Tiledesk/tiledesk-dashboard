@@ -1,11 +1,8 @@
 import { Injectable } from '@angular/core';
-
 import { Subject } from 'rxjs/Subject';
-import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { SubscriptionService } from '../services/subscription.service';
-
+import { LoggerService } from '../services/logger/logger.service';
 declare var $: any;
 /// Notify users about errors and other helpful stuff
 export interface Msg {
@@ -51,32 +48,18 @@ export class NotifyService {
   showSubtitleAllOperatorsSeatsUsed: boolean;
 
   constructor(
-    private router: Router,
     public location: Location,
-    public subscriptionService: SubscriptionService,
-  ) {
-
-    // this.router.events.subscribe((val) => {
-    //   if (this.location.path() !== '') {
-    //     this.route = this.location.path();
-    //     console.log('ROUTE DETECTED ', this.route);
-
-    //     if ((this.route === '/login') || (this.route === '/signup')) {
-
-    //       console.log('NOTIFY SERVICE - DETECTED ROUTE ', this.route)
-    //     }
-    //   }
-    // })
-  }
+    private logger: LoggerService
+  ) {   }
 
   displaySubscripionHasExpiredModal(subHasExpired: boolean, prjctPlanName: string, prjctPlanSubsEndDate: Date) {
     if (subHasExpired === true) {
       this.displayModalSubsExpired = 'block';
     }
 
-    console.log('NotifyService - HasExpiredModal subHasExpired ', subHasExpired);
-    console.log('NotifyService - HasExpiredModal prjctPlanName ', prjctPlanName);
-    console.log('NotifyService - HasExpiredModal prjctPlanSubsEndDate ', prjctPlanSubsEndDate);
+    this.logger.log('[NOTIFY-SERVICE] - HasExpiredModal subHasExpired ', subHasExpired);
+    this.logger.log('[NOTIFY-SERVICE] - HasExpiredModal prjctPlanName ', prjctPlanName);
+    this.logger.log('[NOTIFY-SERVICE] - HasExpiredModal prjctPlanSubsEndDate ', prjctPlanSubsEndDate);
     this._prjctPlanSubsEndDate = prjctPlanSubsEndDate;
     this._prjctPlanName = prjctPlanName;
   }
@@ -86,14 +69,14 @@ export class NotifyService {
   }
 
   closeThisModalAndDisplayCancelSubscriptionModal() {
-    console.log('closeThisModalAndDisplayCancelSubscriptionModal');
+    this.logger.log('[NOTIFY-SERVICE] - closeThisModalAndDisplayCancelSubscriptionModal');
     this.displayModalSubsExpired = 'none';
     this.viewCancelSubscriptionModal = 'block';
   }
 
   // "CONTACT US - LET'S CHAT" MODAL
   _displayContactUsModal(displayModal: boolean, areAvailableOperatorsSeats: string) {
-    console.log('NotifyService - _displayContactUsModal areAvailableOperatorsSeats ', areAvailableOperatorsSeats);
+    this.logger.log('[NOTIFY-SERVICE] - _displayContactUsModal areAvailableOperatorsSeats ', areAvailableOperatorsSeats);
     if (areAvailableOperatorsSeats === 'operators_seats_unavailable') {
       this.showSubtitleAllOperatorsSeatsUsed = true;
     } else {
@@ -108,8 +91,6 @@ export class NotifyService {
   closeContactUsModal() {
     this.displayContactUsModal = 'none';
   }
-
-
 
   // -----------------------------------------------
   // Data Export Not Available Modal
@@ -162,16 +143,9 @@ export class NotifyService {
 
   // CALLED FROM NotificationMessageComponent
   cancelSubscriptionCompleted(hasDone: boolean) {
-
     this.viewCancelSubscriptionModal = 'none';
-
-
     this.cancelSubscriptionCompleted$.next(hasDone);
-
   }
-
-
-
 
   update(content: string, style: 'error' | 'info' | 'success') {
     const msg: Msg = { content, style };
@@ -199,7 +173,7 @@ export class NotifyService {
   }
 
   showCheckListModal(_displayCecklistModal: boolean) {
-    console.log('NotifyService - displayCecklistModal ', _displayCecklistModal)
+    this.logger.log('[NOTIFY-SERVICE] - displayCecklistModal ', _displayCecklistModal)
     if (_displayCecklistModal === true) {
       this.displayCheckLIstModal = 'block'
       this.hasOpenChecklistModal.next(true);
@@ -214,7 +188,7 @@ export class NotifyService {
 
   // is CALLED FROM SIDEBAR, IN THE CHECLIST MODAL (NOTIFICATION-MESSAGE) AND HOME WHEN THE USER CLICK ON THE CHAT BTN
   publishHasClickedChat(hasClickedChat: boolean) {
-    console.log('NotifyService  - hasClickedChat ', hasClickedChat);
+    this.logger.log('[NOTIFY-SERVICE] - hasClickedChat ', hasClickedChat);
     this.bs_hasClickedChat.next(true);
   }
 

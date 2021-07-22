@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ContactsService } from '../services/contacts.service';
 import { NotifyService } from '../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
+import { LoggerService } from '../services/logger/logger.service';
 
 @Component({
   selector: 'appdashboard-contact-edit',
@@ -39,14 +40,15 @@ export class ContactEditComponent implements OnInit {
     private route: ActivatedRoute,
     private contactsService: ContactsService,
     private notify: NotifyService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private logger: LoggerService
   ) { }
 
   ngOnInit() {
     this.translateEditContactSuccessMsg();
     this.translateEditContactErrorMsg();
 
-    this.getRequesterIdParam();
+    this.getRequesterIdParamAndThenGetContactById();
   }
   // TRANSLATION
   translateEditContactSuccessMsg() {
@@ -54,7 +56,7 @@ export class ContactEditComponent implements OnInit {
       .subscribe((text: string) => {
 
         this.editContactSuccessNoticationMsg = text;
-        // console.log('+ + + EditContactSuccessNoticationMsg', text)
+        // this.logger.log('[CONTACT-EDIT] + + + EditContactSuccessNoticationMsg', text)
       });
   }
   // TRANSLATION
@@ -63,16 +65,16 @@ export class ContactEditComponent implements OnInit {
       .subscribe((text: string) => {
 
         this.editContactErrorNoticationMsg = text;
-        // console.log('+ + + EditContactErrorNoticationMsg', text)
+        // this.logger.log('[CONTACT-EDIT] + + + EditContactErrorNoticationMsg', text)
       });
   }
 
 
 
 
-  getRequesterIdParam() {
+  getRequesterIdParamAndThenGetContactById() {
     this.lead_id = this.route.snapshot.params['requesterid'];
-    console.log('!!!!! EDIT CONTACT - REQUESTER ID ', this.lead_id);
+    this.logger.log('[CONTACT-EDIT] GET REQUESTER ID PARAM AND THEN GET CONTACT BY ID -> REQUESTER ID ', this.lead_id);
 
     if (this.lead_id) {
       this.getContactById();
@@ -85,7 +87,7 @@ export class ContactEditComponent implements OnInit {
       .subscribe((lead: any) => {
 
         if (lead) {
-          console.log('!!!!! EDIT CONTACT - GET LEAD BY ID ', lead);
+          this.logger.log('[CONTACT-EDIT] - GET LEAD BY ID ', lead);
           this.lead_fullname = lead.fullname;
           this.lead_email = lead.email;
           this.lead_company = lead.company;
@@ -103,10 +105,10 @@ export class ContactEditComponent implements OnInit {
       }, (error) => {
         this.showSpinner = false;
 
-        console.log('!!!!! EDIT CONTACT  - GET LEAD BY REQUESTER ID - ERROR ', error);
+        this.logger.error('[CONTACT-EDIT]  - GET LEAD BY REQUESTER ID - ERROR ', error);
       }, () => {
         this.showSpinner = false;
-        console.log('!!!!! EDIT CONTACT  - GET LEAD BY REQUESTER ID * COMPLETE *');
+        this.logger.log('[CONTACT-EDIT]  - GET LEAD BY REQUESTER ID * COMPLETE *');
       });
 
   }
@@ -171,17 +173,17 @@ export class ContactEditComponent implements OnInit {
       this.lead_note
     )
       .subscribe((contact) => {
-        console.log('!!!!! EDIT CONTACT - UPDATED CONTACT ', contact);
+        this.logger.log('[CONTACT-EDIT] - UPDATED CONTACT ', contact);
 
       }, (error) => {
 
-        console.log('!!!!! EDIT CONTACT - UPDATE CONTACT - ERROR ', error);
+        this.logger.error('[CONTACT-EDIT] - UPDATE CONTACT - ERROR ', error);
         // =========== NOTIFY ERROR ===========
         // this.notify.showNotification('An error occurred while updating contact', 4, 'report_problem');
         this.notify.showWidgetStyleUpdateNotification(this.editContactErrorNoticationMsg, 4, 'report_problem')
 
       }, () => {
-        console.log('!!!!! EDIT CONTACT - UPDATE CONTACT * COMPLETE *');
+        this.logger.log('[CONTACT-EDIT] - UPDATE CONTACT * COMPLETE *');
 
         // =========== NOTIFY SUCCESS===========
         // this.notify.showNotification('Contact successfully updated', 2, 'done');
@@ -192,8 +194,8 @@ export class ContactEditComponent implements OnInit {
 
   /* !!! no more used */
   // fullnameChange(event) {
-  //   console.log('!!!!! EDIT CONTACT - EDITING FULLNAME ', event);
-  //   console.log('!!!!! EDIT CONTACT - EDITING FULLNAME CURRENT VALUE ', this.lead_fullnameCurrentValue);
+  //   this.logger.log('!!!!! EDIT CONTACT - EDITING FULLNAME ', event);
+  //   this.logger.log('!!!!! EDIT CONTACT - EDITING FULLNAME CURRENT VALUE ', this.lead_fullnameCurrentValue);
   //   if (event === this.lead_fullnameCurrentValue) {
   //     this.HAS_EDIT_FULLNAME = false;
   //   } else {
@@ -202,8 +204,8 @@ export class ContactEditComponent implements OnInit {
   // }
 
   emailChange(event) {
-    console.log('!!!!! EDIT CONTACT - EDITING EMAIL ', event);
-    console.log('!!!!! EDIT CONTACT - EDITING EMAIL length ', event.length);
+    this.logger.log('[CONTACT-EDIT] - EDITING EMAIL ', event);
+    this.logger.log('[CONTACT-EDIT] - EDITING EMAIL length ', event.length);
 
     // if (event === this.lead_emailCurrentValue) {
     //   this.HAS_EDIT_EMAIL = false;
@@ -213,7 +215,7 @@ export class ContactEditComponent implements OnInit {
 
 
     this.EMAIL_IS_VALID = this.validateEmail(event)
-    console.log('!!!!! EDIT CONTACT - EMAIL IS VALID ', this.EMAIL_IS_VALID);
+    this.logger.log('[CONTACT-EDIT] - EMAIL IS VALID ', this.EMAIL_IS_VALID);
 
     if (event.length === 0) {
       this.EMAIL_IS_VALID = true;

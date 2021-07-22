@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { AuthService } from '../core/auth.service';
 import { AppConfigService } from '../services/app-config.service';
-
+import { LoggerService } from '../services/logger/logger.service';
 
 @Injectable()
 export class TagsService {
@@ -16,23 +16,24 @@ export class TagsService {
   constructor(
     http: Http,
     public auth: AuthService,
-    public appConfigService: AppConfigService
+    public appConfigService: AppConfigService,
+    private logger: LoggerService
   ) {
     this.http = http;
-    this.getAppConfig();
+    this.getAppConfigAndBuildUrl();
     this.getCurrentProject();
     this.getToken();
   }
 
 
-  getAppConfig() {
+  getAppConfigAndBuildUrl() {
     this.SERVER_BASE_PATH = this.appConfigService.getConfig().SERVER_BASE_URL;
-    console.log('AppConfigService getAppConfig (TAGS.SERV) SERVER_BASE_PATH', this.SERVER_BASE_PATH);
+    this.logger.log('[TAGS-SERV] SERVER_BASE_PATH', this.SERVER_BASE_PATH);
   }
 
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
-      console.log('TAGS.SERV: SUBSCRIBE TO THE PROJECT PUBLISHED BY AUTH SERVICE ', project)
+      this.logger.log('[TAGS-SERV] - SUBSCRIBE TO THE PROJECT PUBLISHED BY AUTH SERVICE ', project)
       if (project) {
         this.projectId = project._id
       }
@@ -54,7 +55,7 @@ export class TagsService {
   public getTags(): Observable<[any]> {
     // https://tiledesk-server-pre.herokuapp.com/5e20a68e7c2e640017f2f40f/canned/  // example
     const url = this.SERVER_BASE_PATH + this.projectId + '/tags/'
-    console.log('TAGS.SERV - GET CANNED-RES URL', url);
+    this.logger.log('[TAGS-SERV] - GET TAGS - URL', url);
 
 
     const headers = new Headers();
@@ -66,13 +67,15 @@ export class TagsService {
       .map((response) => response.json());
   }
 
-  // -------------------------------------------------------------------------------------
-  // @ Read - Get tag by id
-  // -------------------------------------------------------------------------------------
 
+  /**
+   * Read - Get tag by id (not used)
+   * @param tagid 
+   * @returns 
+   */
   public getTagById(tagid: string): Observable<[any]> {
     const url = this.SERVER_BASE_PATH + this.projectId + '/tags/' + tagid
-    console.log('TAGS.SERV - GET CANNED-RES URL', url);
+    this.logger.log('[TAGS-SERV] - GET TAGS BY ID - URL', url);
 
 
     const headers = new Headers();
@@ -85,10 +88,12 @@ export class TagsService {
   }
 
 
-  // -------------------------------------------------------------------------------------
-  // @ Create - Save new tag
-  // -------------------------------------------------------------------------------------
-
+  /**
+   * Create - Save new tag
+   * @param tagname 
+   * @param tagcolor 
+   * @returns 
+   */
   public createTag(tagname: string, tagcolor: string) {
 
     const headers = new Headers();
@@ -99,21 +104,25 @@ export class TagsService {
 
     const body = { 'tag': tagname, 'color': tagcolor };
 
-    console.log('TAGS.SERV CREATE TAGS BODY ', body);
+    this.logger.log('[TAGS-SERV] - CREATE TAGS POST BODY ', body);
 
     const url = this.SERVER_BASE_PATH + this.projectId + '/tags/'
-    console.log('TAGS - CREATE TAGS URL', url);
+    this.logger.log('[TAGS-SERV] - CREATE TAGS POST URL', url);
 
     return this.http
       .post(url, JSON.stringify(body), options)
       .map((res) => res.json());
   }
 
-  // -------------------------------------------------------------------------------------
-  // @ Update - update  tag
-  // -------------------------------------------------------------------------------------
+  
+  /**
+   * Update - update  tag
+   * @param tagname 
+   * @param newtagcolor 
+   * @param tagid 
+   * @returns 
+   */
   public updateTag(tagname: string, newtagcolor: string,  tagid: string ) {
-
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
@@ -121,11 +130,11 @@ export class TagsService {
     const options = new RequestOptions({ headers });
 
     const body = { 'tag': tagname, 'color': newtagcolor };
+    this.logger.log('[TAGS-SERV] - UPDATE TAGS PUT BODY ', body);
 
     const url = this.SERVER_BASE_PATH + this.projectId + '/tags/' + tagid;
-    console.log('TAGS.SERV UPDATE TAGS URL ', url);
+    this.logger.log('[TAGS-SERV] - UPDATE TAGS PUT URL ', url);
 
-    console.log('UPDATE TAGS REQUEST BODY ', body);
     return this.http
       .put(url, JSON.stringify(body), options)
       .map((res) => res.json());
@@ -133,9 +142,11 @@ export class TagsService {
   }
 
 
-  // -------------------------------------------------------------------------------------
-  // @ Delete - tag
-  // -------------------------------------------------------------------------------------
+  /**
+   * Delete - tag
+   * @param tagid 
+   * @returns 
+   */
   public deleteTag(tagid: string, ) {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
@@ -144,7 +155,7 @@ export class TagsService {
     const options = new RequestOptions({ headers });
 
     const url = this.SERVER_BASE_PATH + this.projectId + '/tags/' + tagid;
-    console.log('TAGS.SERV UPDATE TAGS URL ', url);
+    this.logger.log('[TAGS-SERV] - DELETE TAGS - DELETE URL ', url);
 
     return this.http
       .delete(url, options)

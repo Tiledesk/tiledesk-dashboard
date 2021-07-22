@@ -5,6 +5,7 @@ import { AppConfigService } from '../../services/app-config.service';
 import { GroupService } from '../../services/group.service';
 import { TranslateService } from '@ngx-translate/core';
 import { NotifyService } from '../../core/notify.service';
+import { LoggerService } from '../../services/logger/logger.service';
 
 @Component({
   selector: 'appdashboard-create-group',
@@ -43,7 +44,8 @@ export class CreateGroupComponent implements OnInit {
     private groupsService: GroupService,
     public appConfigService: AppConfigService,
     private notify: NotifyService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private logger: LoggerService
   ) {
 
     // this.sidebar_height = this.newInnerWidth +'px'
@@ -65,20 +67,20 @@ export class CreateGroupComponent implements OnInit {
   getGroupsByProjectId() {
     // this.HAS_COMPLETED_GET_GROUPS = false
     this.groupsService.getGroupsByProjectId().subscribe((groups: any) => {
-      console.log('CREATE GROUP SIDEBAR - GET GROUPS RES ', groups);
+      this.logger.log('[DEPT-EDIT-ADD - CREATE-GROUP] - GET GROUPS RES ', groups);
 
       groups.forEach(group => {
         if (this.deptName_toUpdate + ' ' + 'group' === group.name) {
-          console.log('CREATE GROUP SIDEBAR - GET GROUPS - this group name already exist ', this.deptName_toUpdate + ' ' + 'group');
+          this.logger.log('[DEPT-EDIT-ADD - CREATE-GROUP] - GET GROUPS - this group name already exist ', this.deptName_toUpdate + ' ' + 'group');
           this.group_name_already_exist = true
         }
       });
 
     }, (error) => {
-      console.log('CREATE GROUP SIDEBAR - GET GROUPS - ERROR ', error);
+      this.logger.error('[DEPT-EDIT-ADD - CREATE-GROUP] - GET GROUPS - ERROR ', error);
 
     }, () => {
-      console.log('CREATE GROUP SIDEBAR - GET GROUPS * COMPLETE');
+      this.logger.log('[DEPT-EDIT-ADD - CREATE-GROUP] - GET GROUPS * COMPLETE');
 
     });
   }
@@ -88,95 +90,42 @@ export class CreateGroupComponent implements OnInit {
     this.translate.get('CreatedGroupSuccessMsg')
       .subscribe((text: string) => {
         this.group_created_success_msg = text;
-        console.log('+ + + CreatedGroupSuccessMsg', text)
+        // this.logger.log('[DEPT-EDIT-ADD - CREATE-GROUP] + + + CreatedGroupSuccessMsg', text)
       });
 
     this.translate.get('CreatedGroupErrorMsg')
       .subscribe((text: string) => {
 
         this.group_created_error_msg = text;
-        console.log('+ + + CreatedGroupErrorMsg', text)
+        // this.logger.log('[DEPT-EDIT-ADD - CREATE-GROUP] + + + CreatedGroupErrorMsg', text)
       });
   }
 
-  ngAfterViewInit() {
-    // this.sidebar_height = this.newInnerWidth +'px'
-    // console.log('CREATE GROUP SIDEBAR >>>  sidebar_height ',  this.sidebar_height);
-  }
+  ngAfterViewInit() { }
 
-  // onScroll(event: any): void {
-  //   // console.log('RICHIAMO ON SCROLL ')
-  //   const scrollPosition = this.myScrollContainer.nativeElement.scrollTop;
-  //   console.log('CREATE GROUP SIDEBAR >>> scrollPosition', scrollPosition);
-  //   const scrollHeight = this.myScrollContainer.nativeElement.scrollHeight;
-  //   console.log('CREATE GROUP SIDEBAR >>> scrollHeight', scrollHeight);
-  //   // console.log('ON SCROLL - SCROLL POSITION ', scrollPosition);
-  //   // console.log('ON SCROLL - SCROLL HEIGHT ', scrollHeight);
-
-  //   const scrollHeighLessScrollPosition = scrollHeight - scrollPosition;
-  //   // console.log('ON SCROLL - SCROLL OVERFLOW ', scrollHeighLessScrollPosition);
-  //   // if (scrollHeighLessScrollPosition > 500) {
-  //   //   this.displayBtnScrollToBottom = 'block';
-  //   // } else {
-  //   //   this.displayBtnScrollToBottom = 'none';
-  //   // }
-  // }
-  // getScollPosition() {
-  //   // const elemSaveGroup = <HTMLElement>document.querySelector('.div-save-group');
-  //   // console.log('CREATE GROUP SIDEBAR scrollLeft', elemSaveGroup.scrollLeft);
-  //   // console.log('CREATE GROUP SIDEBAR scrollTop', elemSaveGroup.scrollTop);
-
-  //   // var scrollLeft = window.pageXOffset || document.documentElement.scrollLeft
-  //   // var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-  //   // console.log('CREATE GROUP SIDEBAR >>> scrollLeft', scrollLeft);
-  //   // console.log('CREATE GROUP SIDEBAR >>> scrollTop', scrollTop);
-  //   const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
-  //   const _elemFooter = <HTMLElement>document.querySelector('footer');
-  //   // console.log('CREATE GROUP SIDEBAR >>> _elemFooter', _elemFooter);
-  //   // const footerTop = _elemFooter.offsetTop
-  //   // console.log('CREATE GROUP SIDEBAR >>> footerTop offsetTop ', footerTop);
-  //   // console.log('CREATE GROUP SIDEBAR >>> _elemMainPanel scrollTop', _elemMainPanel.scrollTop);
-
-  //   // if (_elemMainPanel.onscroll) {
-  //   //   console.log('CREATE GROUP SIDEBAR >>> _elemMainPanel scrollTop', _elemMainPanel.scrollTop);
-  //   // }
-
-  //   _elemMainPanel.addEventListener("scroll", function () {
-  //     console.log('CREATE GROUP SIDEBAR >>> _elemMainPanel calling scroll',);
-  //     console.log('CREATE GROUP SIDEBAR >>> _elemMainPanel scrollTop', _elemMainPanel.scrollTop);
-  //   });
-
-  //   // window.onscroll = function (ev) {
-  //   //   console.log('CREATE GROUP SIDEBAR >>> _window.onscroll ', window.innerHeight);
-  //   //   if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-  //   //     alert("you're at the bottom of the page");
-  //   //   }
-  //   // };
-
-  // }
 
   getProfileImageStorage() {
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
       this.UPLOAD_ENGINE_IS_FIREBASE = true;
       const firebase_conf = this.appConfigService.getConfig().firebase;
       this.storageBucket = firebase_conf['storageBucket'];
-      console.log('CREATE-GROUP IMAGE STORAGE', this.storageBucket, 'usecase firebase')
+      this.logger.log('[DEPT-EDIT-ADD - CREATE-GROUP] - IMAGE STORAGE', this.storageBucket, 'usecase firebase')
     } else {
       this.UPLOAD_ENGINE_IS_FIREBASE = false;
       this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
-      console.log('CREATE-GROUP IMAGE STORAGE ', this.baseUrl, 'usecase native')
+      this.logger.log('[DEPT-EDIT-ADD - CREATE-GROUP] - IMAGE STORAGE ', this.baseUrl, 'usecase native')
     }
   }
 
 
   closeCreateGroupRightSideBar() {
-    console.log('CREATE GROUP SIDEBAR - CALLING CLOSE ')
+    this.logger.log('[DEPT-EDIT-ADD - CREATE-GROUP] - CALLING CLOSE ')
     this.valueChange.emit(false);
   }
 
   getAllUsersOfCurrentProject() {
     this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
-      console.log('CREATE GROUP SIDEBAR - PROJECT-USERS (FILTERED FOR PROJECT ID)', projectUsers);
+      this.logger.log('[DEPT-EDIT-ADD - CREATE-GROUP] - PROJECT-USERS (FILTERED FOR PROJECT ID)', projectUsers);
 
       if (projectUsers) {
         this.projectUsersList = projectUsers;
@@ -185,51 +134,40 @@ export class CreateGroupComponent implements OnInit {
     }, error => {
       this.showSpinner = false;
 
-      console.log('CREATE GROUP SIDEBAR - PROJECT USERS (FILTERED FOR PROJECT ID) - ERROR', error);
+      this.logger.error('[DEPT-EDIT-ADD - CREATE-GROUP] - PROJECT USERS (FILTERED FOR PROJECT ID) - ERROR', error);
     }, () => {
-      console.log('CREATE GROUP SIDEBAR - PROJECT USERS (FILTERED FOR PROJECT ID) - COMPLETE');
+      this.logger.log('[DEPT-EDIT-ADD - CREATE-GROUP] - PROJECT USERS (FILTERED FOR PROJECT ID) - COMPLETE');
       this.showSpinner = false;
     });
   }
 
 
   addMembersToArray(userid) {
-    console.log('CREATE GROUP SIDEBAR - change - userid', userid);
-
-    // const index = this.groupMembersArray.indexOf(userid);
-    // console.log('CREATE GROUP SIDEBAR USERID INDEX ', index);
-
-    // if (index > -1) {
-    //   console.log('qui entro 1 ');
-    //   this.groupMembersArray.splice(index, 1);
-    // } else {
-    //   console.log('qui entro 1 ');
-    //   this.groupMembersArray.push(userid);
-    // }
+    this.logger.log('[DEPT-EDIT-ADD - CREATE-GROUP] - change - userid', userid);
 
     let index = this.groupMembersArray.findIndex(x => x === userid);
-    console.log('CREATE GROUP SIDEBAR USERID INDEX ', index);
+    this.logger.log('[DEPT-EDIT-ADD - CREATE-GROUP] USERID INDEX ', index);
 
     if (index === -1) {
-      console.log('qui entro 1 push item');
+      this.logger.log('[DEPT-EDIT-ADD - CREATE-GROUP] here yes 1 push item');
       this.groupMembersArray.push(userid);
     } else {
-      console.log('qui entro 2 splice item');
+      this.logger.log('[DEPT-EDIT-ADD - CREATE-GROUP] here yes 2 splice item');
       this.groupMembersArray.splice(index, 1);
     }
 
-    console.log('CREATE GROUP SIDEBAR - ARRAY OF SELECTED USERS ', this.groupMembersArray);
+    this.logger.log('[DEPT-EDIT-ADD - CREATE-GROUP] - ARRAY OF SELECTED USERS ', this.groupMembersArray);
 
 
     // DISABLE THE CREATE GROUP AND THEN ADD MEMBERS BUTTON
     if (this.groupMembersArray) {
 
       if (this.groupMembersArray.length === 0) {
-        console.log('CREATE GROUP SIDEBAR - ARRAY OF SELECTED USERS lenght ', this.groupMembersArray.length);
+        this.logger.log('[DEPT-EDIT-ADD - CREATE-GROUP]  - ARRAY OF SELECTED USERS lenght ', this.groupMembersArray.length);
         this.create_group_and_add_members_btn_disabled = true;
 
       } else {
-        console.log('CREATE GROUP SIDEBAR - ARRAY OF SELECTED USERS lenght ', this.groupMembersArray.length);
+        this.logger.log('[DEPT-EDIT-ADD - CREATE-GROUP]  - ARRAY OF SELECTED USERS lenght ', this.groupMembersArray.length);
         this.create_group_and_add_members_btn_disabled = false;
       }
     }
@@ -238,32 +176,29 @@ export class CreateGroupComponent implements OnInit {
 
   onChangeGroupName(event) {
     this.group_name = event;
-    console.log('CREATE GROUP SIDEBAR - onChangeGroupName ', this.group_name);
+    this.logger.log('[DEPT-EDIT-ADD - CREATE-GROUP] - onChangeGroupName ', this.group_name);
   }
 
-  // group_created_success_msg: string;
-  // group_created_error_msg: string;
 
   createGroupAndAddMembers() {
-
     // CREATE THE GROUP
     this.groupsService.createGroup(this.group_name)
       .subscribe((group) => {
-        console.log('CREATE GROUP SIDEBAR - RES ', group);
+        this.logger.log('[DEPT-EDIT-ADD - CREATE-GROUP]  - RES ', group);
 
         if (group) {
           this.group_name = group.name;
           this.new_group_id = group._id
 
-          console.log('CREATE GROUP SIDEBAR - new_group_id ', this.new_group_id);
+          this.logger.log('[DEPT-EDIT-ADD - CREATE-GROUP]  - new_group_id ', this.new_group_id);
         }
 
       }, (error) => {
-        console.log('CREATE GROUP SIDEBAR - ERROR ', error);
+        this.logger.error('[DEPT-EDIT-ADD - CREATE-GROUP]  - ERROR ', error);
         this.notify.showWidgetStyleUpdateNotification(this.group_created_error_msg, 4, 'report_problem');
 
       }, () => {
-        console.log('CREATE GROUP SIDEBAR  * COMPLETE *');
+        this.logger.log('CREATE GROUP SIDEBAR  * COMPLETE *');
 
         this.updatedGroupWithSelectedMembers();
 
@@ -273,16 +208,16 @@ export class CreateGroupComponent implements OnInit {
   updatedGroupWithSelectedMembers() {
     this.groupsService.updateGroup(this.new_group_id, this.groupMembersArray).subscribe((group) => {
 
-      console.log('CREATE GROUP SIDEBAR - UPDATED GROUP WITH THE USER SELECTED', group);
+      this.logger.log('[DEPT-EDIT-ADD - CREATE-GROUP] - UPDATED GROUP WITH THE USER SELECTED', group);
 
       // this.COUNT_OF_MEMBERS_ADDED = group.members.length;
-      console.log('CREATE GROUP SIDEBAR - # OF MEMBERS ADDED ', group.members.length);
+      this.logger.log('[DEPT-EDIT-ADD - CREATE-GROUP] - # OF MEMBERS ADDED ', group.members.length);
 
     }, (error) => {
-      console.log('CREATE GROUP SIDEBAR - UPDATED GROUP WITH THE USER SELECTED - ERROR ', error);
+      this.logger.error('[DEPT-EDIT-ADD - CREATE-GROUP] - UPDATED GROUP WITH THE USER SELECTED - ERROR ', error);
       this.notify.showWidgetStyleUpdateNotification(this.group_created_error_msg, 4, 'report_problem');
     }, () => {
-      console.log('CREATE GROUP SIDEBAR - UPDATED GROUP WITH THE USER SELECTED * COMPLETE *');
+      this.logger.log('[DEPT-EDIT-ADD - CREATE-GROUP]  - UPDATED GROUP WITH THE USER SELECTED * COMPLETE *');
 
       this.notify.showWidgetStyleUpdateNotification(this.group_created_success_msg, 2, 'done');
 
@@ -291,7 +226,7 @@ export class CreateGroupComponent implements OnInit {
   }
 
   closeCreateGroupRightSideBarAndEmitGroupCreated() {
-    console.log('CREATE GROUP SIDEBAR - CALLING CLOSE ')
+    this.logger.log('[DEPT-EDIT-ADD - CREATE-GROUP] - CALLING CLOSE ')
     this.valueChange.emit(false);
     this.groupcreated.emit(this.new_group_id);
   }

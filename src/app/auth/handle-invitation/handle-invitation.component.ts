@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../services/brand.service';
-
+import { LoggerService } from '../../services/logger/logger.service';
 @Component({
   selector: 'appdashboard-handle-invitation',
   templateUrl: './handle-invitation.component.html',
@@ -35,7 +35,8 @@ export class HandleInvitationComponent implements OnInit {
     public projectService: ProjectService,
     private router: Router,
     private translate: TranslateService,
-    public brandService: BrandService
+    public brandService: BrandService,
+    private logger: LoggerService
   ) { 
 
     const brand = brandService.getBrand();
@@ -51,7 +52,7 @@ export class HandleInvitationComponent implements OnInit {
 
   getBrowserLanguage() {
     this.browser_lang = this.translate.getBrowserLang();
-    console.log('HandleInvitationComponent - browser_lang ', this.browser_lang)
+    this.logger.log('[HandleInvitationComponent] - browser_lang ', this.browser_lang)
   }
 
 
@@ -66,7 +67,7 @@ export class HandleInvitationComponent implements OnInit {
     const pendingInvitationId = this.route.snapshot.params['pendinginvitationid'];
 
     this.usersService.getPendingUsersById(pendingInvitationId).subscribe((pendinginvitation: any) => {
-      console.log('HandleInvitationComponent GET PENDING INVITATION BY ID - RES: ', pendinginvitation);
+      this.logger.log('[HandleInvitationComponent] GET PENDING INVITATION BY ID - RES: ', pendinginvitation);
 
       if (pendinginvitation) {
 
@@ -81,11 +82,11 @@ export class HandleInvitationComponent implements OnInit {
       }
 
 
-      console.log('HandleInvitationComponent GET PENDING INVITATION BY ID - ERROR ', error);
+      this.logger.log('[HandleInvitationComponent] GET PENDING INVITATION BY ID - ERROR ', error);
       // this.showSpinner = false;
     }, () => {
       this.showSpinner = false;
-      console.log('HandleInvitationComponent GET PENDING INVITATION * COMPLETE *');
+      this.logger.log('[HandleInvitationComponent] GET PENDING INVITATION * COMPLETE *');
       this.PENDING_INVITATION_NOT_FOUND = false;
     });
   }

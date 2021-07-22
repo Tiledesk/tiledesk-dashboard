@@ -7,6 +7,7 @@ import { NotifyService } from '../../core/notify.service';
 
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../services/brand.service';
+import { LoggerService } from '../../services/logger/logger.service';
 
 type UserFields = 'email' | 'password';
 type FormErrors = { [u in UserFields]: string };
@@ -69,7 +70,8 @@ export class SigninComponent implements OnInit {
     private router: Router,
     public appConfigService: AppConfigService,
     private notify: NotifyService,
-    public brandService: BrandService
+    public brandService: BrandService,
+    private logger: LoggerService
   ) { 
     const brand = brandService.getBrand();
 
@@ -88,11 +90,11 @@ export class SigninComponent implements OnInit {
     // this.widgetReInit()
 
 
-    // console.log('xxxx ', this.userForm)
+    // this.logger.log('xxxx ', this.userForm)
     this.buildForm();
     this.getWindowWidthAndHeight();
     // const x = document.getElementsByTagName('input');
-    // console.log('XX ', x)
+    // this.logger.log('XX ', x)
     // for (let i = 0; i <= x.length - 1; i++) {
     //   if (x.item(i).type !== 'button') {
     //     x.item(i).value = '';
@@ -102,9 +104,9 @@ export class SigninComponent implements OnInit {
 
     // const elemLeftPanelSignin = <HTMLElement>document.querySelector('.centered');
     // const elemLoginContainer = <HTMLElement>document.querySelector('.login-container');
-    // console.log('SIGN-IN - ACTUAL INNER WIDTH elem Left Panel Signin ',  elemLeftPanelSignin);
-    // console.log('SIGN-IN - ACTUAL INNER WIDTH elem Left Panel Signin div offsetTop ',  elemLeftPanelSignin.getBoundingClientRect());
-    // console.log('SIGN-IN - ACTUAL INNER WIDTH elem Left Panel Login Container offsetTop',  elemLoginContainer.offsetTop);
+    // this.logger.log('SIGN-IN - ACTUAL INNER WIDTH elem Left Panel Signin ',  elemLeftPanelSignin);
+    // this.logger.log('SIGN-IN - ACTUAL INNER WIDTH elem Left Panel Signin div offsetTop ',  elemLeftPanelSignin.getBoundingClientRect());
+    // this.logger.log('SIGN-IN - ACTUAL INNER WIDTH elem Left Panel Login Container offsetTop',  elemLoginContainer.offsetTop);
   
   }
 
@@ -113,7 +115,7 @@ export class SigninComponent implements OnInit {
     const storedUser = localStorage.getItem('user')
 
     if (storedUser) {
-      console.log('SIGN-IN - REDIRECT TO DASHBORD IF USER IS LOGGED-IN - STORED USER', storedUser);
+      this.logger.log('[SIGN-IN] - REDIRECT TO DASHBORD IF USER IS LOGGED-IN - STORED USER', storedUser);
       this.router.navigate(['/projects']);
     }
   }
@@ -122,34 +124,34 @@ export class SigninComponent implements OnInit {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
 
     let keys = this.public_Key.split("-");
-    // console.log('PUBLIC-KEY (SIGN-IN) - public_Key keys', keys)
+    // this.logger.log('PUBLIC-KEY (SIGN-IN) - public_Key keys', keys)
 
     keys.forEach(key => {
       if (key.includes("V1L")) {
-        // console.log('PUBLIC-KEY (SIGN-IN) - key', key);
+        // this.logger.log('PUBLIC-KEY (SIGN-IN) - key', key);
         let v1l = key.split(":");
-        // console.log('PUBLIC-KEY (SIGN-IN) - v1l key&value', v1l);
+        // this.logger.log('PUBLIC-KEY (SIGN-IN) - v1l key&value', v1l);
 
         if (v1l[1] === "F") {
           this.isVisibleV1L = false;
-          // console.log('PUBLIC-KEY (SIGN-IN) - v1l isVisible', this.isVisibleV1L);
+          // this.logger.log('PUBLIC-KEY (SIGN-IN) - v1l isVisible', this.isVisibleV1L);
         } else {
           this.isVisibleV1L = true;
-          // console.log('PUBLIC-KEY (SIGN-IN) - v1l isVisible', this.isVisibleV1L);
+          // this.logger.log('PUBLIC-KEY (SIGN-IN) - v1l isVisible', this.isVisibleV1L);
         }
       }
 
       if (key.includes("SUP")) {
-        // console.log('PUBLIC-KEY (SIGN-IN) - key', key);
+        // this.logger.log('PUBLIC-KEY (SIGN-IN) - key', key);
         let sup = key.split(":");
-        // console.log('PUBLIC-KEY (SIGN-IN) - sup key&value ', sup);
+        // this.logger.log('PUBLIC-KEY (SIGN-IN) - sup key&value ', sup);
 
         if (sup[1] === "F") {
           this.SUP = false;
-          // console.log('PUBLIC-KEY (SIGN-IN) - sup is ', this.SUP);
+          // this.logger.log('PUBLIC-KEY (SIGN-IN) - sup is ', this.SUP);
         } else {
           this.SUP = true;
-          // console.log('PUBLIC-KEY (SIGN-IN) - sup is ', this.SUP);
+          // this.logger.log('PUBLIC-KEY (SIGN-IN) - sup is ', this.SUP);
         }
       }
       /* this generates bugs: the loop goes into the false until the "key" matches "V1L" */
@@ -159,21 +161,21 @@ export class SigninComponent implements OnInit {
     });
 
     if (!this.public_Key.includes("V1L")) {
-      // console.log('PUBLIC-KEY (SIGN-IN) - key.includes("V1L")', this.public_Key.includes("V1L"));
+      // this.logger.log('PUBLIC-KEY (SIGN-IN) - key.includes("V1L")', this.public_Key.includes("V1L"));
       this.isVisibleV1L = false;
     }
 
     if (!this.public_Key.includes("SUP")) {
       this.SUP = false;
-      // console.log('PUBLIC-KEY (SIGN-IN) - SUP is', this.SUP);
+      // this.logger.log('PUBLIC-KEY (SIGN-IN) - SUP is', this.SUP);
     }
 
   }
 
 
   getWindowWidthAndHeight() {
-    console.log('SIGN-IN - ACTUAL INNER WIDTH ', window.innerWidth);
-    console.log('SIGN-IN - ACTUAL INNER HEIGHT ', window.innerHeight);
+    this.logger.log('[SIGN-IN] - ACTUAL INNER WIDTH ', window.innerWidth);
+    this.logger.log('[SIGN-IN] - ACTUAL INNER HEIGHT ', window.innerHeight);
 
     if (this.SUP === true) {
       if (window.innerHeight <= 680) {
@@ -187,10 +189,10 @@ export class SigninComponent implements OnInit {
 
     if (window.innerWidth < 992) {
       this.hide_left_panel = true;
-      console.log('SIGN-IN - ACTUAL INNER WIDTH hide_left_panel ', this.hide_left_panel);
+      this.logger.log('[SIGN-IN]- ACTUAL INNER WIDTH hide_left_panel ', this.hide_left_panel);
     } else {
       this.hide_left_panel = false;
-      console.log('SIGN-IN - ACTUAL INNER WIDTH hide_left_panel ', this.hide_left_panel);
+      this.logger.log('[SIGN-IN] - ACTUAL INNER WIDTH hide_left_panel ', this.hide_left_panel);
     }
   }
 
@@ -199,9 +201,9 @@ export class SigninComponent implements OnInit {
   onResize(event: any) {
 
     const elemLeftPanelSignin = <HTMLElement>document.querySelector('.centered');
-    // console.log('SIGN-IN - ACTUAL INNER WIDTH elem Left Panel Signin div offsetTop ', elemLeftPanelSignin.getBoundingClientRect());
-    // console.log('SIGN-IN - NEW INNER WIDTH ', event.target.innerWidth);
-    // console.log('SIGN-IN - NEW INNER HEIGHT ', event.target.innerHeight);
+    // this.logger.log('SIGN-IN - ACTUAL INNER WIDTH elem Left Panel Signin div offsetTop ', elemLeftPanelSignin.getBoundingClientRect());
+    // this.logger.log('SIGN-IN - NEW INNER WIDTH ', event.target.innerWidth);
+    // this.logger.log('SIGN-IN - NEW INNER HEIGHT ', event.target.innerHeight);
     if (this.SUP === true) {
       if (event.target.innerHeight <= 680) {
 
@@ -216,10 +218,10 @@ export class SigninComponent implements OnInit {
     if (event.target.innerWidth < 992) {
 
       this.hide_left_panel = true;
-      console.log('SIGN-IN - NEW INNER WIDTH hide_left_panel ', this.hide_left_panel);
+      this.logger.log('[SIGN-IN] - NEW INNER WIDTH hide_left_panel ', this.hide_left_panel);
     } else {
       this.hide_left_panel = false;
-      console.log('SIGN-IN - NEW INNER WIDTH hide_left_panel ', this.hide_left_panel);
+      this.logger.log('[SIGN-IN] - NEW INNER WIDTH hide_left_panel ', this.hide_left_panel);
     }
 
   }
@@ -275,18 +277,18 @@ export class SigninComponent implements OnInit {
     const self = this;
     // this.auth.signin(this.userForm.value['email'], this.userForm.value['password'])
     //   .subscribe((error) => {
-    console.log('SIGNIN email ', this.userForm.value['email'])
+    this.logger.log('[SIGN-IN] email ', this.userForm.value['email'])
     this.auth.signin(this.userForm.value['email'], this.userForm.value['password'], function (error, user) {
 
 
       // this.auth.user = signinResponse.user;
       // this.auth.user.token = signinResponse.token
-      // console.log('SIGNIN TOKEN ', this.auth.user.token)
+      // this.logger.log('SIGNIN TOKEN ', this.auth.user.token)
       // tslint:disable-next-line:no-debugger
       // debugger
       if (!error) {
 
-        console.log('SSO (Signin) - user', user)
+        self.logger.log('[SIGN-IN] SSO (Signin) - user', user)
 
         self.router.navigate(['/projects']);
 
@@ -295,23 +297,23 @@ export class SigninComponent implements OnInit {
         /**
          * *** WIDGET - pass data to the widget function setTiledeskWidgetUser in index.html ***
          */
-        console.log('SetTiledeskWidgetUserSignin (Signin) - userFullname', user.firstname + ' ' + user.lastname)
-        console.log('SetTiledeskWidgetUserSignin (Signin) - userEmail', user.email);
-        console.log('SetTiledeskWidgetUserSignin (Signin) - userId', user._id);
+         self.logger.log('[SIGN-IN] SetTiledeskWidgetUserSignin (Signin) - userFullname', user.firstname + ' ' + user.lastname)
+         self.logger.log('[SIGN-IN] SetTiledeskWidgetUserSignin (Signin) - userEmail', user.email);
+         self.logger.log('[SIGN-IN] SetTiledeskWidgetUserSignin (Signin) - userId', user._id);
 
         setTimeout(() => {
           try {
             window['setTiledeskWidgetUser'](user.firstname + ' ' + user.lastname, user.email, user._id);
           } catch (err) {
-            console.log('SetTiledeskWidgetUserSignin (Signin) error', err);
+            self.logger.log('[SIGN-IN] SetTiledeskWidgetUserSignin (Signin) error', err);
           }
         }, 2000);
 
 
       } else {
         self.showSpinnerInLoginBtn = false;
-        console.log('1. POST DATA ERROR', error);
-        console.log('2. POST DATA ERROR status', error.status);
+        self.logger.error('[SIGN-IN] 1. POST DATA ERROR', error);
+        self.logger.error('[SIGN-IN] 2. POST DATA ERROR status', error.status);
 
         if (error.status === 0) {
 
@@ -322,12 +324,12 @@ export class SigninComponent implements OnInit {
           self.display = 'block';
           // if ( )
           const signin_errorbody = JSON.parse(error._body)
-          console.log('SIGNIN ERROR BODY ', signin_errorbody)
+          self.logger.error('[SIGN-IN] SIGNIN ERROR BODY ', signin_errorbody)
           self.signin_errormsg = signin_errorbody['msg']
 
-          // console.log('SIGNIN USER - POST REQUEST ERROR ', error);
-          // console.log('SIGNIN USER - POST REQUEST BODY ERROR ', signin_errorbody);
-          console.log('SIGNIN USER - POST REQUEST MSG ERROR ', self.signin_errormsg);
+          // this.logger.log('SIGNIN USER - POST REQUEST ERROR ', error);
+          // this.logger.log('SIGNIN USER - POST REQUEST BODY ERROR ', signin_errorbody);
+          self.logger.error('[SIGN-IN] SIGNIN USER - POST REQUEST MSG ERROR ', self.signin_errormsg);
 
           self.notify.showToast(self.signin_errormsg, 4, 'report_problem')
         }
@@ -340,7 +342,7 @@ export class SigninComponent implements OnInit {
 
   widgetReInit() {
     if (window && window['tiledesk']) {
-      console.log('SIGNIN PAGE ', window['tiledesk'])
+      this.logger.log('[SIGN-IN] SIGNIN PAGE ', window['tiledesk'])
 
       window['tiledesk'].reInit();
       // alert('signin reinit');
@@ -348,7 +350,7 @@ export class SigninComponent implements OnInit {
   }
 
   dismissAlert() {
-    console.log('DISMISS ALERT CLICKED')
+    this.logger.log('[SIGN-IN] DISMISS ALERT CLICKED')
     this.display = 'none';
   }
 
@@ -360,7 +362,7 @@ export class SigninComponent implements OnInit {
   }
 
   goToResetPsw() {
-    console.log('HAS CLICKED FORGOT PWS ');
+    this.logger.log('[SIGN-IN] HAS CLICKED FORGOT PWS ');
     this.router.navigate(['forgotpsw']);
   }
 

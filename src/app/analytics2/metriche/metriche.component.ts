@@ -13,7 +13,7 @@ export class MetricheComponent implements OnInit {
 
   ngOnInit() {
 
-    console.log("»» !!! ANALYTICS - Metriche component - autoselected", this.autoselected)
+    console.log("[ANALYTICS - METRICS] - autoselected", this.autoselected)
 
     if (this.autoselected === 'visitors') {
       this.selected='visitors';
@@ -26,6 +26,6 @@ export class MetricheComponent implements OnInit {
 
   goTo(component){
     this.selected=component;
-    console.log("Move to:",component)
+    console.log("[ANALYTICS - METRICS] Move to:",component)
   }
 }

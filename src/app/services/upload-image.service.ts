@@ -3,6 +3,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import * as firebase from 'firebase/app';
 import 'firebase/storage';
+import { LoggerService } from '../services/logger/logger.service';
 
 @Injectable()
 export class UploadImageService {
@@ -13,24 +14,26 @@ export class UploadImageService {
   public hasDeletedUserPhoto: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   // public imageWasUploaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
 
-  constructor() { }
+  constructor(
+    private logger: LoggerService
+  ) { }
 
   // ---------------------------------------------------
   // @ UPLOAD USER PHOTO
   // ---------------------------------------------------
   public uploadUserAvatar(file: any, user_id: string) {
-    console.log('UPLOAD IMAGE SERVICE - FILE ', file)
+    this.logger.log('[UPLOAD-IMAGE-FB.SERV] - UPLOAD USER PHOTO - FILE ', file)
 
     const file_name = 'photo.jpg';
-    console.log('UPLOAD IMAGE SERVICE - FILE NAME ', file_name);
+    this.logger.log('[UPLOAD-IMAGE-FB.SERV] - UPLOAD USER PHOTO - FILE NAME ', file_name);
     const file_metadata = { contentType: file.type };
-    console.log('UPLOAD IMAGE SERVICE - FILE METADATA ', file_metadata);
+    this.logger.log('[UPLOAD-IMAGE-FB.SERV] - FILE METADATA ', file_metadata);
 
-    console.log('UPLOAD IMAGE SERVICE - CURRENT USER ID ', user_id)
+    this.logger.log('[UPLOAD-IMAGE-FB.SERV] - UPLOAD USER PHOTO - CURRENT USER ID ', user_id)
 
     // Create a root reference
     const storageRef = firebase.storage().ref();
-    // console.log('UPLOAD IMAGE SERVICE - STORAGE REFERENCE ', storageRef)
+    // this.logger.log('UPLOAD IMAGE SERVICE - STORAGE REFERENCE ', storageRef)
 
     // Upload file and metadata to the object 'images/mountains.jpg'
     const uploadTask = storageRef.child('profiles/' + user_id + '/' + file_name).put(file, file_metadata);
@@ -38,27 +41,27 @@ export class UploadImageService {
     // uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
     //   (snapshot) =>  {
     //     upload.progress = (uploadTask.snapshot.bytesTransferred / uploadTask.snapshot.totalBytes) * 100;
-    //     console.log(upload.progress);
+    //     this.logger.log(upload.progress);
     //   },
     // Listen for state changes, errors, and completion of the upload.
     uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
       (snapshot) => {
-        // console.log('SNAPSHOT ', snapshot)
+        // this.logger.log('SNAPSHOT ', snapshot)
         const progress = (uploadTask.snapshot.bytesTransferred / uploadTask.snapshot.totalBytes) * 100;
 
         if (progress === 100) {
           // const self = this
           // this.imageExist.next(true);
 
-          console.log('=== === UPLOAD-IMG-SERV PUBLISH - USER PROFILE IMAGE UPLOAD COMPLETE ', true)
+          this.logger.log('[UPLOAD-IMAGE-FB.SERV] - UPLOAD USER PHOTO * COMPLETE *', true)
         }
-        console.log('Upload is ' + progress + '% done');
+        this.logger.log('Upload is ' + progress + '% done');
         switch (uploadTask.snapshot.state) {
           case firebase.storage.TaskState.PAUSED: // or 'paused'
-            console.log('Upload is paused');
+            this.logger.log('Upload is paused');
             break;
           case firebase.storage.TaskState.RUNNING: // or 'running'
-            console.log('Upload is running');
+            this.logger.log('Upload is running');
             break;
         }
       }, (error: any) => {
@@ -66,7 +69,7 @@ export class UploadImageService {
         this.userImageWasUploaded.next(false);
         // A full list of error codes is available at
         // https://firebase.google.com/docs/storage/web/handle-errors
-        console.log('ERROR ', error)
+        this.logger.error('[UPLOAD-IMAGE-FB.SERV] - UPLOAD USER PHOTO - ERROR ', error)
         switch (error.code) {
           case 'storage/unauthorized':
             // User doesn't have permission to access the object
@@ -82,7 +85,7 @@ export class UploadImageService {
         // Upload completed successfully, now we can get the download URL
         const self = this
         uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
-          console.log('File available at', downloadURL);
+          self.logger.log('[UPLOAD-IMAGE-FB.SERV] - UPLOAD USER PHOTO - File available at', downloadURL);
 
           self.userImageWasUploaded.next(true);
         });
@@ -108,23 +111,23 @@ export class UploadImageService {
     // Delete the file photo
     // ------------------------------------
     deletePhoto.delete().then(() => {
-      console.log('UPLOAD IMAGE SERVICE - DELETE USER PHOTO ')
+      this.logger.log('[UPLOAD-IMAGE-FB.SERV] - DELETE USER PHOTO ')
 
       this.hasDeletedUserPhoto.next(true);
 
     }).catch((error) => {
-      console.log('UPLOAD IMAGE SERVICE - DELETE USER PHOTO err ', error)
+      this.logger.error('[UPLOAD-IMAGE-FB.SERV] - DELETE USER - ERROR ', error)
     });
 
     // ------------------------------------
     // Delete the file thumb_photo
     // ------------------------------------
     deleteThumbPhoto.delete().then(() => {
-      console.log('UPLOAD IMAGE SERVICE - DELETE USER THUMB-PHOTO ')
+      this.logger.log('[UPLOAD-IMAGE-FB.SERV] - DELETE USER THUMB-PHOTO ')
       // this.userImageWasUploaded.next(false);
 
     }).catch((error) => {
-      console.log('UPLOAD IMAGE SERVICE - DELETE USER THUMB-PHOTO err ', error)
+      this.logger.error('[UPLOAD-IMAGE-FB.SERV] - DELETE USER THUMB-PHOTO - ERROR ', error)
     });
   }
 
@@ -132,18 +135,18 @@ export class UploadImageService {
   // @ BOT
   // ---------------------------------------------------
   public uploadBotAvatar(file: any, bot_id: string) {
-    console.log('UPLOAD IMAGE SERVICE - FILE ', file)
+    this.logger.log('[UPLOAD-IMAGE-FB.SERV] - UPLOAD BOT PHOTO - FILE ', file)
 
     const file_name = 'photo.jpg';
-    console.log('UPLOAD BOT IMAGE SERVICE - FILE NAME ', file_name);
+    this.logger.log('[UPLOAD-IMAGE-FB.SERV] - UPLOAD BOT PHOTO - FILE NAME ', file_name);
     const file_metadata = { contentType: file.type };
-    console.log('UPLOAD BOT IMAGE SERVICE - FILE METADATA ', file_metadata);
+    this.logger.log('[UPLOAD-IMAGE-FB.SERV] - UPLOAD BOT PHOTO - FILE METADATA ', file_metadata);
 
-    console.log('UPLOAD BOT IMAGE SERVICE - CURRENT USER ID ', bot_id)
+    this.logger.log('[UPLOAD-IMAGE-FB.SERV] - UPLOAD BOT PHOTO - BOT ID ', bot_id)
 
     // Create a root reference
     const storageRef = firebase.storage().ref();
-    // console.log('UPLOAD IMAGE SERVICE - STORAGE REFERENCE ', storageRef)
+    // this.logger.log('UPLOAD IMAGE SERVICE - STORAGE REFERENCE ', storageRef)
 
     // Upload file and metadata to the object 'images/mountains.jpg'
     const uploadTask = storageRef.child('profiles/' + bot_id + '/' + file_name).put(file, file_metadata);
@@ -151,34 +154,34 @@ export class UploadImageService {
     // uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
     //   (snapshot) =>  {
     //     upload.progress = (uploadTask.snapshot.bytesTransferred / uploadTask.snapshot.totalBytes) * 100;
-    //     console.log(upload.progress);
+    //     this.logger.log(upload.progress);
     //   },
     // Listen for state changes, errors, and completion of the upload.
     uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
       (snapshot) => {
-        // console.log('SNAPSHOT ', snapshot)
+        // this.logger.log('SNAPSHOT ', snapshot)
         const progress = (uploadTask.snapshot.bytesTransferred / uploadTask.snapshot.totalBytes) * 100;
 
         if (progress === 100) {
           // const self = this
           // this.imageExist.next(true);
 
-          console.log('=== === UPLOAD-IMG-SERV PUBLISH - BOT PROFILE IMAGE UPLOAD COMPLETE ', true)
+          this.logger.log('[UPLOAD-IMAGE-FB.SERV] - BOT PROFILE IMAGE UPLOAD COMPLETE ', true)
         }
-        console.log('Upload is ' + progress + '% done');
+        this.logger.log('[UPLOAD-IMAGE-FB.SERV] Upload is ' + progress + '% done');
         switch (uploadTask.snapshot.state) {
           case firebase.storage.TaskState.PAUSED: // or 'paused'
-            console.log('Upload is paused');
+            this.logger.log('Upload is paused');
             break;
           case firebase.storage.TaskState.RUNNING: // or 'running'
-            console.log('Upload is running');
+            this.logger.log('Upload is running');
             break;
         }
       }, (error: any) => {
         this.botImageWasUploaded.next(false);
         // A full list of error codes is available at
         // https://firebase.google.com/docs/storage/web/handle-errors
-        console.log('ERROR ', error)
+        this.logger.error('[UPLOAD-IMAGE-FB.SERV] - BOT PROFILE IMAGE UPLOAD - ERROR ', error)
         switch (error.code) {
           case 'storage/unauthorized':
             // User doesn't have permission to access the object
@@ -194,7 +197,7 @@ export class UploadImageService {
         // Upload completed successfully, now we can get the download URL
         const self = this
         uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
-          console.log('File available at', downloadURL);
+          self.logger.log('[UPLOAD-IMAGE-FB.SERV] - BOT PROFILE IMAGE UPLOAD - File available at', downloadURL);
 
           self.botImageWasUploaded.next(true);
         });
@@ -203,7 +206,7 @@ export class UploadImageService {
   }
 
 
- // ---------------------------------------------------
+  // ---------------------------------------------------
   // @ DELETE BOT PHOTO & THUMB-PHOTO
   // ---------------------------------------------------
 
@@ -216,26 +219,26 @@ export class UploadImageService {
     const deleteBotPhoto = storageRef.child('profiles/' + botid + '/' + file_name_photo)
     const deleteBotThumbPhoto = storageRef.child('profiles/' + botid + '/' + file_name_thumb_photo)
 
-     // ------------------------------------
+    // ------------------------------------
     // Delete the file photo
     // ------------------------------------
     deleteBotPhoto.delete().then(() => {
-      console.log('UPLOAD IMAGE SERVICE - DELETE BOT PHOTO ')
+      this.logger.log('[UPLOAD-IMAGE-FB.SERV] - DELETE BOT PHOTO ')
 
 
     }).catch((error) => {
-      console.log('UPLOAD IMAGE SERVICE - DELETE BOT PHOTO - ERR ', error)
+      this.logger.error('[UPLOAD-IMAGE-FB.SERV] - DELETE BOT PHOTO - ERROR ', error)
     });
-  
 
-   // ------------------------------------
+
+    // ------------------------------------
     // Delete the file thumb_photo
     // ------------------------------------
     deleteBotThumbPhoto.delete().then(() => {
-      console.log('UPLOAD IMAGE SERVICE - DELETE BOT THUMB-PHOTO ')
+      this.logger.log('[UPLOAD-IMAGE-FB.SERV] - DELETE BOT THUMB-PHOTO ')
 
     }).catch((error) => {
-      console.log('UPLOAD IMAGE SERVICE - DELETE BOT THUMB-PHOTO - ERR ', error)
+      this.logger.error('[UPLOAD-IMAGE-FB.SERV] - DELETE BOT THUMB-PHOTO - ERROR ', error)
     });
   }
 

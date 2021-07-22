@@ -2,7 +2,7 @@ import { NotifyService } from 'app/core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
 import { WebhookService } from './../../services/webhook.service';
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-
+import { LoggerService } from './../../services/logger/logger.service';
 @Component({
   selector: 'appdashboard-webhook-add-edit',
   templateUrl: './webhook-add-edit.component.html',
@@ -35,11 +35,12 @@ export class WebhookAddEditComponent implements OnInit {
     private webhookService: WebhookService,
     public translate: TranslateService,
     private notify: NotifyService,
+    private logger: LoggerService
   ) { }
 
   ngOnInit() {
-    console.log('WEBHOOK-CREATE.COMP - modalMode ', this.modalMode);
-    console.log('WEBHOOK-CREATE.COMP - selectCannedResponseId ', this.selectWebhookId);
+    this.logger.log('[WEBHOOK][WEBHOOK-ADD-EDIT] - modalMode ', this.modalMode);
+    this.logger.log('[WEBHOOK][WEBHOOK-ADD-EDIT] - selectWebhookId ', this.selectWebhookId);
 
     // MI SERVE?
     // this.auth.checkRoleForCurrentProject();
@@ -53,8 +54,8 @@ export class WebhookAddEditComponent implements OnInit {
   }
 
   createSubscription() {
-    console.log('WEBHOOK-CREATE.COMP - CREATE SUBSCRIPTION - TARGET ', this.webhookTarget);
-    console.log('WEBHOOK-CREATE.COMP - CREATE SUBSCRIPTION - EVENT ', this.subscriptionEvent);
+    this.logger.log('[WEBHOOK][WEBHOOK-ADD-EDIT] - CREATE SUBSCRIPTION - TARGET ', this.webhookTarget);
+    this.logger.log('[WEBHOOK][WEBHOOK-ADD-EDIT] - CREATE SUBSCRIPTION - EVENT ', this.subscriptionEvent);
 
     if (!this.webhookTarget) {
       this.targetIsEmpty = true;
@@ -62,13 +63,13 @@ export class WebhookAddEditComponent implements OnInit {
       this.eventIsEmpty = true;
     } else {
       this.webhookService.createNewSubscription(this.webhookTarget, this.subscriptionEvent).subscribe((res) => {
-        console.log("WEBHOOK-CREATE.COMP - CREATE SUBSCRIPTION - RES: ", res);
+        this.logger.log("[WEBHOOK][WEBHOOK-ADD-EDIT] - CREATE SUBSCRIPTION - RES: ", res);
         this.response = res;
       }, (error) => {
-        console.log('WEBHOOK-CREATE.COMP - CREATE SUBSCRIPTION - ERR ', error);
+        this.logger.error('[WEBHOOK][WEBHOOK-ADD-EDIT]- CREATE SUBSCRIPTION - ERR ', error);
         this.notify.showWidgetStyleUpdateNotification(this.createErrorMsg, 4, 'report_problem');
       }, () => {
-        console.log('WEBHOOK-CREATE.COMP - CREATE SUBSCRIPTION - * COMPLETE *');
+        this.logger.log('[WEBHOOK][WEBHOOK-ADD-EDIT] - CREATE SUBSCRIPTION - * COMPLETE *');
         this.notify.showWidgetStyleUpdateNotification(this.createSuccessMsg, 2, 'done');
         this.hasSavedSubscription.emit();
         this.createdWebhook.emit(this.response);
@@ -79,17 +80,17 @@ export class WebhookAddEditComponent implements OnInit {
 
   getSubscriptionById() {
     this.webhookService.getSubscritionById(this.selectWebhookId).subscribe((response: any) => {
-      console.log('WEBHOOK - GET SUBSCRIPTION BY ID - RES ', response);
+      this.logger.log('[WEBHOOK][WEBHOOK-ADD-EDIT] - GET SUBSCRIPTION BY ID - RES ', response);
       
       if(response) {
         this.webhookTarget = response.target,
         this.subscriptionEvent = response.event
       }
     }, (error) => {
-      console.log('WEBHOOK - GET SUBSCRIPTION BY ID - ERROR  ', error);
+      this.logger.error('[WEBHOOK][WEBHOOK-ADD-EDIT] - GET SUBSCRIPTION BY ID - ERROR  ', error);
       this.showSkeleton = false;
     }, () => {
-      console.log('WEBHOOK - GET SUBSCRIPTION BY ID * COMPLETE *');
+      this.logger.log('[WEBHOOK][WEBHOOK-ADD-EDIT] - GET SUBSCRIPTION BY ID * COMPLETE *');
       this.showSkeleton = false;
     })
   }
@@ -101,12 +102,12 @@ export class WebhookAddEditComponent implements OnInit {
       this.eventIsEmpty = true;
     } else {
       this.webhookService.updateSubscription(this.selectWebhookId, this.webhookTarget, this.subscriptionEvent).subscribe((response) => {
-        console.log("WEBHOOK-UPDATE.COMP - UPDATE SUBSCRIPTION - RES: ", response);
+        this.logger.log("[WEBHOOK][WEBHOOK-ADD-EDIT] - UPDATE SUBSCRIPTION - RES: ", response);
       }, (error) => {
-        console.log('WEBHOOK-UPDATE.COMP - UPDATE SUBSCRIPTION - ERR ', error);
+        this.logger.error('[WEBHOOK][WEBHOOK-ADD-EDIT] - UPDATE SUBSCRIPTION - ERR ', error);
         this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem');
       }, () => {
-        console.log('WEBHOOK-UPDATE.COMP - UPDATE SUBSCRIPTION - * COMPLETE *');
+        this.logger.log('[WEBHOOK][WEBHOOK-ADD-EDIT] - UPDATE SUBSCRIPTION - * COMPLETE *');
         this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done');
         this.hasSavedSubscription.emit();
         this.closeModal_AddEditWebhook();
@@ -117,7 +118,7 @@ export class WebhookAddEditComponent implements OnInit {
   translateNotificationMsgs() {
     this.translate.get('Webhook.NotificationMsgs')
       .subscribe((translation: any) => {
-        console.log('WEBHOOK  translateNotificationMsgs text', translation)
+        // this.logger.log('[WEBHOOK][WEBHOOK-ADD-EDIT]  translateNotificationMsgs text', translation)
         this.createSuccessMsg = translation.CreateSubscriptionSuccess;
         this.createErrorMsg = translation.CreateSubscriptionError;
         this.updateSuccessMsg = translation.UpdateSubscriptionSuccess;

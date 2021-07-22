@@ -8,6 +8,7 @@ import { NotifyService } from '../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AppConfigService } from '../services/app-config.service';
 import { Location } from '@angular/common';
+import { LoggerService } from '../services/logger/logger.service';
 @Component({
   selector: 'app-group-edit-add',
   templateUrl: './group-edit-add.component.html',
@@ -73,7 +74,8 @@ export class GroupEditAddComponent implements OnInit {
     private notify: NotifyService,
     private translate: TranslateService,
     public location: Location,
-    public appConfigService: AppConfigService
+    public appConfigService: AppConfigService,
+    private logger: LoggerService
   ) { }
 
   ngOnInit() {
@@ -96,11 +98,11 @@ export class GroupEditAddComponent implements OnInit {
       this.UPLOAD_ENGINE_IS_FIREBASE = true;
       const firebase_conf = this.appConfigService.getConfig().firebase;
       this.storageBucket = firebase_conf['storageBucket'];
-      console.log('GROUP-EDIT-ADD IMAGE STORAGE ' ,this.storageBucket, 'usecase firebase')
+      this.logger.log('[GROUP-EDIT-ADD] IMAGE STORAGE ', this.storageBucket, 'usecase firebase')
     } else {
       this.UPLOAD_ENGINE_IS_FIREBASE = false;
       this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
-      console.log('GROUP-EDIT-ADD IMAGE STORAGE ', this.baseUrl, 'usecase native')
+      this.logger.log('[GROUP-EDIT-ADD] IMAGE STORAGE ', this.baseUrl, 'usecase native')
     }
   }
 
@@ -108,18 +110,16 @@ export class GroupEditAddComponent implements OnInit {
   translateUpdateGroupSuccessNoticationMsg() {
     this.translate.get('UpdateGroupSuccessNoticationMsg')
       .subscribe((text: string) => {
-
         this.updateGroupSuccessNoticationMsg = text;
-        // console.log('+ + + Update Group Success Notication Msg', text)
+        // this.logger.log('[GROUP-EDIT-ADD] + + + Update Group Success Notication Msg', text)
       });
   }
   // TRANSLATION
   translateUpdateGroupErrorNoticationMsg() {
     this.translate.get('UpdateGroupErrorNoticationMsg')
       .subscribe((text: string) => {
-
         this.updateGroupErrorNoticationMsg = text;
-        // console.log('+ + + Update Group Error Notication Msg', text)
+        // this.logger.log('[GROUP-EDIT-ADD] + + + Update Group Error Notication Msg', text)
       });
   }
 
@@ -127,9 +127,8 @@ export class GroupEditAddComponent implements OnInit {
   translateRemoveGroupMemberSuccessNoticationMsg() {
     this.translate.get('RemoveGroupMemberSuccessNoticationMsg')
       .subscribe((text: string) => {
-
         this.removeGroupMemberSuccessNoticationMsg = text;
-        // console.log('+ + + Remove Group Success Notication Msg', text)
+        // this.logger.log('[GROUP-EDIT-ADD] + + + Remove Group Success Notication Msg', text)
       });
   }
 
@@ -137,19 +136,18 @@ export class GroupEditAddComponent implements OnInit {
   translateRemoveGroupMemberErrorNoticationMsg() {
     this.translate.get('RemoveGroupMemberErrorNoticationMsg')
       .subscribe((text: string) => {
-
         this.removeGroupMemberErrorNoticationMsg = text;
-        // console.log('+ + + Remove Group Error Notication Msg', text)
+        // this.logger.log('[GROUP-EDIT-ADD]+ + + Remove Group Error Notication Msg', text)
       });
   }
 
 
   onInitUsersListModalHeight() {
     this.windowActualHeight = window.innerHeight;
-    console.log('»»» GROUP EDIT ADD - ACTUAL HEIGHT ', this.windowActualHeight);
+    this.logger.log('[GROUP-EDIT-ADD] - ACTUAL HEIGHT ', this.windowActualHeight);
 
     this.users_list_modal_height = this.windowActualHeight - 350
-    console.log('»»» GROUP EDIT ADD - ON INIT USER LIST MODAL HEIGHT ', this.users_list_modal_height);
+    this.logger.log('[GROUP-EDIT-ADD] - ON INIT USER LIST MODAL HEIGHT ', this.users_list_modal_height);
 
     return { 'height': this.users_list_modal_height += 'px' };
   }
@@ -161,8 +159,8 @@ export class GroupEditAddComponent implements OnInit {
     this.newInnerHeight = event.target.innerHeight;
     this.users_list_modal_height = this.newInnerHeight - 350
 
-    console.log('»»» GROUP EDIT ADD - NEW INNER HEIGHT ', this.newInnerHeight);
-    console.log('»»» GROUP EDIT ADD - ON RESIZE USER LIST MODAL HEIGHT ', this.users_list_modal_height);
+    this.logger.log('[GROUP-EDIT-ADD] - NEW INNER HEIGHT ', this.newInnerHeight);
+    this.logger.log('[GROUP-EDIT-ADD] - ON RESIZE USER LIST MODAL HEIGHT ', this.users_list_modal_height);
 
     return { 'height': this.users_list_modal_height += 'px' };
 
@@ -170,18 +168,18 @@ export class GroupEditAddComponent implements OnInit {
 
   detectBrowserLang() {
     this.browser_lang = this.translate.getBrowserLang();
-    console.log('»» »» GROUP-EDIT-ADD COMP - BROWSER LANGUAGE ', this.browser_lang);
+    this.logger.log('[GROUP-EDIT-ADD] - BROWSER LANGUAGE ', this.browser_lang);
   }
 
   detectsCreateEditInTheUrl() {
     if (this.router.url.indexOf('/create') !== -1) {
-      console.log('HAS CLICKED CREATE ');
+      this.logger.log('[GROUP-EDIT-ADD] - HAS CLICKED CREATE ');
 
       this.CREATE_VIEW = true;
       this.showSpinner = false;
 
     } else {
-      console.log('HAS CLICKED EDIT ');
+      this.logger.log('[GROUP-EDIT-ADD] - HAS CLICKED EDIT ');
       this.EDIT_VIEW = true;
       // this.showSpinner = false;
 
@@ -191,7 +189,7 @@ export class GroupEditAddComponent implements OnInit {
   }
   getGroupId() {
     this.group_id = this.route.snapshot.params['groupid'];
-    console.log('GROUP-LIST PAGE HAS PASSED group_id ', this.group_id);
+    this.logger.log('[GROUP-EDIT-ADD] - GROUP-LIST PAGE HAS PASSED group_id ', this.group_id);
 
     if (this.group_id) {
       this.getGroupById();
@@ -205,9 +203,9 @@ export class GroupEditAddComponent implements OnInit {
    */
   getGroupById() {
     this.groupsService.getGroupById(this.group_id).subscribe((group: any) => {
-      console.log('GROUP GET BY ID', group);
+      this.logger.log('[GROUP-EDIT-ADD] - GROUP GET BY ID', group);
 
-      // console.log('MONGO DB FAQ-KB NAME', this.faqKbNameToUpdate);
+      // this.logger.log('MONGO DB FAQ-KB NAME', this.faqKbNameToUpdate);
       if (group) {
         this.groupNameToUpdate = group.name;
         this.group_members = group.members;
@@ -215,22 +213,20 @@ export class GroupEditAddComponent implements OnInit {
         this.groupCreatedAt = group.createdAt
 
         this.users_selected = this.group_members;
-        console.log('GROUP MEMBERS ', this.group_members)
+        this.logger.log('[GROUP-EDIT-ADD] -GROUP MEMBERS ', this.group_members)
       }
       // this.showSpinner = false;
 
-    },
-      (error) => {
-        this.showSpinner = false;
-        console.log('GROUP GET BY ID - ERROR ', error);
-      },
-      () => {
-        console.log('GROUP GET BY ID * COMPLETE *');
-        this.has_completed_getGroupById = true;
-        console.log('HAS COMPLETED getGroupById ', this.has_completed_getGroupById)
+    }, (error) => {
+      this.showSpinner = false;
+      this.logger.error('[GROUP-EDIT-ADD] - GROUP GET BY ID - ERROR ', error);
+    }, () => {
+      this.logger.log('[GROUP-EDIT-ADD] - GROUP GET BY ID * COMPLETE *');
+      this.has_completed_getGroupById = true;
+      this.logger.log('[GROUP-EDIT-ADD] - HAS COMPLETED getGroupById ', this.has_completed_getGroupById)
 
-        this.getAllUsersOfCurrentProject();
-      });
+      this.getAllUsersOfCurrentProject();
+    });
   }
 
   // is used to display name lastname role in the members list table
@@ -238,7 +234,7 @@ export class GroupEditAddComponent implements OnInit {
   // in the array 'this.group_members' the user_project property 'is_group_member' is set to true
   getAllUsersOfCurrentProject() {
     this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
-      console.log('GROUPS-EDITADD - PROJECT-USERS (FILTERED FOR PROJECT ID)', projectUsers);
+      this.logger.log('[GROUP-EDIT-ADD] - PROJECT-USERS (FILTERED FOR PROJECT ID)', projectUsers);
 
       this.showSpinner = false;
       this.showSpinnerInModal = false;
@@ -250,7 +246,7 @@ export class GroupEditAddComponent implements OnInit {
         this.projectUsersList.forEach(projectUser => {
 
           for (const p of this.projectUsersList) {
-            // console.log('vv', projectUser._id)
+            // this.logger.log('vv', projectUser._id)
             if (this.group_members) {
 
               this.group_members.forEach(group_member => {
@@ -259,8 +255,8 @@ export class GroupEditAddComponent implements OnInit {
                   if (projectUser._id === p._id) {
                     p.is_group_member = true;
 
-                    console.log('GROUPS-EDITADD GROUP MEMBER ', group_member)
-                    console.log('GROUPS-EDITADD IS MEMBER OF THE GROUP THE USER ', p.id_user._id, ' - ', p.is_group_member);
+                    this.logger.log('[GROUP-EDIT-ADD] GROUP MEMBER ', group_member)
+                    this.logger.log('[GROUP-EDIT-ADD] IS MEMBER OF THE GROUP THE USER ', p.id_user._id, ' - ', p.is_group_member);
                   }
                 }
               });
@@ -274,16 +270,16 @@ export class GroupEditAddComponent implements OnInit {
            */
           if (projectUser.is_group_member === true) {
             this.count = this.count + 1;
-            console.log('GROUPS-EDITADD GROUP MEMBER count ', this.count)
+            this.logger.log('[GROUP-EDIT-ADD] GROUP MEMBER count ', this.count)
           }
         });
       }
     }, error => {
       this.showSpinner = false;
       this.showSpinnerInModal = false;
-      console.log('GROUPS-EDITADD PROJECT USERS (FILTERED FOR PROJECT ID) - ERROR', error);
+      this.logger.error('[GROUP-EDIT-ADD] PROJECT USERS (FILTERED FOR PROJECT ID) - ERROR', error);
     }, () => {
-      console.log('GROUPS-EDITADD PROJECT USERS (FILTERED FOR PROJECT ID) - COMPLETE');
+      this.logger.log('[GROUP-EDIT-ADD] PROJECT USERS (FILTERED FOR PROJECT ID) - COMPLETE');
     });
   }
 
@@ -293,7 +289,7 @@ export class GroupEditAddComponent implements OnInit {
 
       if (project) {
         this.project_id = project._id
-        console.log('00 ->GROUPS-EDITADD - project ID from AUTH service subscription ', this.project_id)
+        this.logger.log('[GROUP-EDIT-ADD] - project ID from AUTH service subscription ', this.project_id)
       }
 
     });
@@ -305,12 +301,12 @@ export class GroupEditAddComponent implements OnInit {
     this.SHOW_CIRCULAR_SPINNER = true;
     this.CREATE_GROUP_ERROR = false;
 
-    console.log('GROUPS-EDITADD - HAS CLICKED CREATE NEW GROUP');
-    console.log('GROUPS-EDITADD - Create GROUP - NAME ', this.groupName);
+    this.logger.log('[GROUP-EDIT-ADD] - HAS CLICKED CREATE NEW GROUP');
+    this.logger.log('[GROUP-EDIT-ADD] - Create GROUP - NAME ', this.groupName);
 
     this.groupsService.createGroup(this.groupName)
       .subscribe((group) => {
-        console.log('GROUPS-EDITADD - CREATE GROUP - POST DATA ', group);
+        this.logger.log('[GROUP-EDIT-ADD] - CREATE GROUP - POST DATA ', group);
 
         if (group) {
           this.group_name = group.name;
@@ -320,33 +316,24 @@ export class GroupEditAddComponent implements OnInit {
         // RE-RUN GET CONTACT TO UPDATE THE TABLE
         // this.getDepartments();
         // this.ngOnInit();
-      },
-        (error) => {
-          console.log('GROUPS-EDITADD - CREATE GROUP - POST REQUEST ERROR ', error);
-          setTimeout(() => {
-            this.SHOW_CIRCULAR_SPINNER = false
-            this.CREATE_GROUP_ERROR = true;
-          }, 300);
+      }, (error) => {
+        this.logger.error('[GROUP-EDIT-ADD] - CREATE GROUP - POST REQUEST ERROR ', error);
+        setTimeout(() => {
+          this.SHOW_CIRCULAR_SPINNER = false
+          this.CREATE_GROUP_ERROR = true;
+        }, 300);
 
-          // IF THERE IS AN ERROR, PREVENT THAT THE USER BE ADDRESSED TO THE PAGE 'EDIT BOT'
-          // WHEN CLICK ON THE BUTTON 'CONTINUE' OF THE MODAL 'CREATE BOT'
-          this.goToEditGroup = false;
-        },
-        () => {
-          console.log('GROUPS-EDITADD - CREATE GROUP - POST REQUEST * COMPLETE *');
+        // IF THERE IS AN ERROR, PREVENT THAT THE USER BE ADDRESSED TO THE PAGE 'EDIT BOT'
+        // WHEN CLICK ON THE BUTTON 'CONTINUE' OF THE MODAL 'CREATE BOT'
+        this.goToEditGroup = false;
+      }, () => {
+        this.logger.log('[GROUP-EDIT-ADD] - CREATE GROUP - POST REQUEST * COMPLETE *');
 
-          // this.faqKbService.createFaqKbKey()
-          // .subscribe((faqKbKey) => {
+        setTimeout(() => {
+          this.SHOW_CIRCULAR_SPINNER = false
+        }, 300);
 
-          //   console.log('CREATE FAQKB KEY - POST DATA ', faqKbKey);
-
-          // });
-          setTimeout(() => {
-            this.SHOW_CIRCULAR_SPINNER = false
-          }, 300);
-
-          // this.router.navigate(['project/' + this.project._id + '/faqkb']);
-        });
+      });
   }
 
 
@@ -355,7 +342,7 @@ export class GroupEditAddComponent implements OnInit {
   // WHEN THE USER CLICK ON "CONTINUE" WILL BE ADDRESSED: TO THE VIEW OF "EDIT GROUP" or,
   // IF THE USER SELECT THE SECOND OPTION, TO THE LIST OF GROUPS
   actionAfterGroupCreation(goToEditGroup) {
-    console.log('GROUPS-EDITADD - OPEN MODAL TO ADD MEMBERS ', goToEditGroup)
+    this.logger.log('[GROUP-EDIT-ADD] - OPEN MODAL TO ADD MEMBERS ', goToEditGroup)
     this.goToEditGroup = goToEditGroup
   }
 
@@ -365,7 +352,7 @@ export class GroupEditAddComponent implements OnInit {
 
     if (this.goToEditGroup === true) {
       this.router.navigate(['project/' + this.project_id + '/group/edit/' + this.id_new_group]);
-      console.log('1) check if HAS COMPLETED getGroupById ', this.has_completed_getGroupById)
+      this.logger.log('[GROUP-EDIT-ADD] 1) check if HAS COMPLETED getGroupById ', this.has_completed_getGroupById)
 
     } else {
       this.router.navigate(['project/' + this.project_id + '/groups']);
@@ -380,14 +367,14 @@ export class GroupEditAddComponent implements OnInit {
   editGroupName() {
     this.groupsService.updateGroupName(this.id_group, this.groupNameToUpdate).subscribe((group) => {
 
-      console.log('UPDATED GROUP WITH UPDATED NAME', group);
+      this.logger.log('[GROUP-EDIT-ADD] UPDATED GROUP WITH UPDATED NAME', group);
     }, (error) => {
-      console.log('UPDATED GROUP WITH UPDATED NAME - ERROR ', error);
+      this.logger.error('[GROUP-EDIT-ADD] UPDATED GROUP WITH UPDATED NAME - ERROR ', error);
       // =========== NOTIFY ERROR ===========
       // this.notify.showNotification('An error occurred while updating the group', 4, 'report_problem');
       this.notify.showNotification(this.updateGroupErrorNoticationMsg, 4, 'report_problem');
     }, () => {
-      console.log('UPDATED GROUP WITH UPDATED NAME * COMPLETE *');
+      this.logger.log('[GROUP-EDIT-ADD] UPDATED GROUP WITH UPDATED NAME * COMPLETE *');
 
       // this.router.navigate(['project/' + this.project_id + '/groups']);
 
@@ -416,11 +403,11 @@ export class GroupEditAddComponent implements OnInit {
 
     this.showSpinnerInModal = true;
 
-    // console.log('GROUP SELECTED -> group NAME: ', this.group_name, ' -> group ID: ', this.id_group)
-    // console.log('GROUP SELECTED -> MEMBERS; ', this.group_members);
+    // this.logger.log('[GROUP-EDIT-ADD] GROUP SELECTED -> group NAME: ', this.group_name, ' -> group ID: ', this.id_group)
+    // this.logger.log('[GROUP-EDIT-ADD] GROUP SELECTED -> MEMBERS; ', this.group_members);
 
     // this.users_selected = this.group_members;
-    // console.log('ARRAY OF SELECTED USERS WHEN OPEN MODAL ', this.users_selected);
+    // this.logger.log('[GROUP-EDIT-ADD] ARRAY OF SELECTED USERS WHEN OPEN MODAL ', this.users_selected);
 
 
     this.getAllUsersOfCurrentProject();
@@ -435,11 +422,11 @@ export class GroupEditAddComponent implements OnInit {
 
   change(obj) {
     // + this.group_members
-    console.log('obj', obj);
+    this.logger.log('[GROUP-EDIT-ADD] - change - obj', obj);
 
     const index = this.users_selected.indexOf(obj);
 
-    console.log('INDEX ', index);
+    this.logger.log('[GROUP-EDIT-ADD] - change - users_selected INDEX ', index);
 
     if (index > -1) {
       this.users_selected.splice(index, 1);
@@ -447,8 +434,8 @@ export class GroupEditAddComponent implements OnInit {
       this.users_selected.push(obj);
     }
 
-    console.log('GROUPS-EDITADD - ARRAY OF SELECTED USERS ', this.users_selected);
-    console.log('GROUPS-EDITADD - ARRAY OF SELECTED USERS lenght ', this.users_selected.length);
+    this.logger.log('[GROUP-EDIT-ADD] - change - ARRAY OF SELECTED USERS ', this.users_selected);
+    this.logger.log('[GROUP-EDIT-ADD] - change - ARRAY OF SELECTED USERS lenght ', this.users_selected.length);
 
     // DISABLE THE ADD BUTTON
     // if (this.users_selected.length < 1) {
@@ -468,29 +455,27 @@ export class GroupEditAddComponent implements OnInit {
 
     this.groupsService.updateGroup(this.id_group, this.users_selected).subscribe((group) => {
 
-      console.log('GROUPS-EDITADD - UPDATED GROUP WITH THE USER SELECTED', group);
+      this.logger.log('[GROUP-EDIT-ADD] - UPDATED GROUP WITH THE USER SELECTED', group);
 
       this.COUNT_OF_MEMBERS_ADDED = group.members.length;
-      console.log('GROUPS-EDITADD - # OF MEMBERS ADDED ', group.members.length);
-    },
-      (error) => {
-        console.log('GROUPS-EDITADD - UPDATED GROUP WITH THE USER SELECTED - ERROR ', error);
-        this.SHOW_CIRCULAR_SPINNER = false;
-        this.ADD_MEMBER_TO_GROUP_ERROR = true;
-      },
-      () => {
-        console.log('GROUPS-EDITADD - UPDATED GROUP WITH THE USER SELECTED * COMPLETE *');
-        this.SHOW_CIRCULAR_SPINNER = false;
-        this.ADD_MEMBER_TO_GROUP_ERROR = false;
+      this.logger.log('[GROUP-EDIT-ADD] - # OF MEMBERS ADDED ', group.members.length);
+    }, (error) => {
+      this.logger.error('[GROUP-EDIT-ADD] - UPDATED GROUP WITH THE USER SELECTED - ERROR ', error);
+      this.SHOW_CIRCULAR_SPINNER = false;
+      this.ADD_MEMBER_TO_GROUP_ERROR = true;
+    }, () => {
+      this.logger.log('[GROUP-EDIT-ADD]- UPDATED GROUP WITH THE USER SELECTED * COMPLETE *');
+      this.SHOW_CIRCULAR_SPINNER = false;
+      this.ADD_MEMBER_TO_GROUP_ERROR = false;
 
-        // =========== NOTIFY SUCCESS===========
-        // this.notify.showNotification('group successfully updated', 2, 'done');
-        this.notify.showNotification(this.updateGroupSuccessNoticationMsg, 2, 'done');
+      // =========== NOTIFY SUCCESS===========
+      // this.notify.showNotification('group successfully updated', 2, 'done');
+      this.notify.showNotification(this.updateGroupSuccessNoticationMsg, 2, 'done');
 
-        // UPDATE THE GROUP LIST
-        this.ngOnInit()
-        // this.getAllUsersOfCurrentProject();
-      });
+      // UPDATE THE GROUP LIST
+      this.ngOnInit()
+      // this.getAllUsersOfCurrentProject();
+    });
   }
 
   onCloseAddingMembersModal() {
@@ -499,9 +484,8 @@ export class GroupEditAddComponent implements OnInit {
 
   // =========== DELETE MODAL ===========
   openDeleteModal(id_user, user_email) {
-
     this.displayDeleteModal = 'block';
-    console.log('GROUPS-EDITADD - OPEN DELETE MODAL - ID USER: ', id_user, ' USER EMAIL ', user_email);
+    this.logger.log('[GROUP-EDIT-ADD] - OPEN DELETE MODAL - ID USER: ', id_user, ' USER EMAIL ', user_email);
     this.id_user_to_delete = id_user;
   }
 
@@ -511,26 +495,26 @@ export class GroupEditAddComponent implements OnInit {
 
   deleteMemberFromTheGroup() {
     this.displayDeleteModal = 'none';
-    console.log('GROUPS-EDITADD - DELETE MEMBER ', this.id_user_to_delete, ' FROM THE GROUP ', this.group_members);
+    this.logger.log('[GROUP-EDIT-ADD] - DELETE MEMBER ', this.id_user_to_delete, ' FROM THE GROUP ', this.group_members);
 
     const index = this.group_members.indexOf(this.id_user_to_delete);
-    console.log('GROUPS-EDITADD - INDEX OF THE MEMBER ', index);
+    this.logger.log('[GROUP-EDIT-ADD] - INDEX OF THE MEMBER ', index);
     if (index > -1) {
       this.group_members.splice(index, 1);
-      console.log('GROUPS-EDITADD - GROUP AFTER MEMBER DELETED ', this.group_members);
+      this.logger.log('[GROUP-EDIT-ADD] - GROUP AFTER MEMBER DELETED ', this.group_members);
 
       this.groupsService.updateGroup(this.id_group, this.group_members).subscribe((group) => {
 
-        console.log('GROUPS-EDITADD - UPDATED GROUP WITH THE USER SELECTED', group);
+        this.logger.log('[GROUP-EDIT-ADD] - UPDATED GROUP WITH THE USER SELECTED', group);
 
       }, (error) => {
-        console.log('GROUPS-EDITADD - UPDATED GROUP WITH THE USER SELECTED - ERROR ', error);
+        this.logger.error('[GROUP-EDIT-ADD] - UPDATED GROUP WITH THE USER SELECTED - ERROR ', error);
         // =========== NOTIFY ERROR ===========
         // this.notify.showNotification('An error occurred while removing the member', 4, 'report_problem');
         this.notify.showNotification(this.removeGroupMemberErrorNoticationMsg, 4, 'report_problem');
 
       }, () => {
-        console.log('GROUPS-EDITADD - UPDATED GROUP WITH THE USER SELECTED* COMPLETE *');
+        this.logger.log('[GROUP-EDIT-ADD] - UPDATED GROUP WITH THE USER SELECTED* COMPLETE *');
 
         // =========== NOTIFY SUCCESS===========
         // this.notify.showNotification('member successfully removed', 2, 'done');
@@ -544,7 +528,7 @@ export class GroupEditAddComponent implements OnInit {
   }
 
   goToMemberProfile(member_id: any) {
-    console.log('has clicked GO To MEMBER ', member_id);
+    this.logger.log('[GROUP-EDIT-ADD] has clicked GO To MEMBER ', member_id);
     // this.router.navigate(['project/' + this.project_id + '/member/' + member_id]);
     this.router.navigate(['project/' + this.project_id + '/user/edit/' + member_id]);
   }

@@ -3,7 +3,7 @@ import { NotifyService } from './../core/notify.service';
 import { WebhookService } from './../services/webhook.service';
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-
+import { LoggerService } from '../services/logger/logger.service';
 @Component({
   selector: 'appdashboard-webhook',
   templateUrl: './webhook.component.html',
@@ -28,7 +28,8 @@ export class WebhookComponent implements OnInit {
     private webhookService: WebhookService,
     public translate: TranslateService,
     private notify: NotifyService,
-    private location: Location
+    private location: Location,
+    private logger: LoggerService
   ) { }
 
   ngOnInit() {
@@ -39,7 +40,7 @@ export class WebhookComponent implements OnInit {
   translateNotificationMsgs() {
     this.translate.get('Webhook.NotificationMsgs')
       .subscribe((translation: any) => {
-        console.log('WEBHOOK  translateNotificationMsgs text', translation)
+        this.logger.log('[WEBHOOK]  translateNotificationMsgs text', translation)
         this.deleteErrorMsg = translation.DeleteSubscriptionError;
         this.deleteSuccessMsg = translation.DeleteSubscriptionSuccess;
         this.showSecretError = translation.ShowSecretError;
@@ -48,20 +49,24 @@ export class WebhookComponent implements OnInit {
 
   getSubscriptions() {
     this.webhookService.getAllSubscriptions().subscribe((res) => {
-      console.log("ALL SUBSCRIPTIONS RESPONSE: ", res);
+      this.logger.log("[WEBHOOK] GET ALL SUBSCRIPTIONS RES: ", res);
       this.subscriptionsList = res;
       this.showSpinner = false;
-    })
+    }, error => {
+      this.logger.error('[WEBHOOK] GET ALL SUBSCRIPTIONS - ERROR', error);
+    }, () => {
+      this.logger.log('[WEBHOOK] GET ALL SUBSCRIPTIONS * COMPLETE *');
+    });
   }
 
   deleteSubscription() {
     this.webhookService.deleteSubscription(this.subscriptionIDToDelete).subscribe((res) => {
-      console.log("DELETE SUBSCRIPTIONS RESPONSE: ", res); 
+      this.logger.log("[WEBHOOK] - DELETE SUBSCRIPTIONS RES: ", res); 
     }, (error) => {
-      console.log('WEBHOOK.COMP - DELETE SUBSCRIPTION - ERROR  ', error);
+      this.logger.error('[WEBHOOK] - DELETE SUBSCRIPTION - ERROR  ', error);
       this.notify.showWidgetStyleUpdateNotification(this.deleteErrorMsg, 4, 'report_problem');
     }, () => {
-      console.log('WEBHOOK.COMP - DELETE SUBSCRIPTION * COMPLETE *');
+      this.logger.log('[WEBHOOK] - DELETE SUBSCRIPTION * COMPLETE *');
       this.notify.showWidgetStyleUpdateNotification(this.deleteSuccessMsg, 2, 'done');
       this.closeModal_ConfirmDeleteModal();
       this.subscriptionIDToDelete = "";
@@ -73,14 +78,14 @@ export class WebhookComponent implements OnInit {
     this.selectWebhookId = null;
     this.displayModal_AddEditWebhook = 'block';
     this.modalMode = 'add';
-    console.log('WEBHOOK.COMP - displayModal ', this.displayModal_AddEditWebhook, ' in Mode', this.modalMode);
+    this.logger.log('[WEBHOOK] - displayModal ', this.displayModal_AddEditWebhook, ' in Mode', this.modalMode);
   }
 
   presentWebhookModal_inEditMode(subscriptionID: string) {
     this.selectWebhookId = subscriptionID;
     this.displayModal_AddEditWebhook = 'block';
     this.modalMode = 'edit';
-    console.log('CANNED-RES.COMP - displayModal ', this.displayModal_AddEditWebhook, ' in Mode', this.modalMode, ' subscription-id', subscriptionID);
+    this.logger.log('[WEBHOOK] - displayModal ', this.displayModal_AddEditWebhook, ' in Mode', this.modalMode, ' subscription-id', subscriptionID);
   }
 
   copySharedSecret() {
@@ -94,7 +99,7 @@ export class WebhookComponent implements OnInit {
   }
 
   showSecretModal(subscription) {
-    console.log("SUBSCRIPTION RITORNATA: ", subscription)
+    this.logger.log("[WEBHOOK] SUBSCRIPTION: ", subscription)
     if (!subscription) {
       this.notify.showWidgetStyleUpdateNotification(this.showSecretError, 4, 'report_problem');
     } else {

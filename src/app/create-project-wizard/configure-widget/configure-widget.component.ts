@@ -6,9 +6,10 @@ import { slideInAnimation } from '../../_animations/index';
 import { BrandService } from '../../services/brand.service';
 import { ProjectService } from '../../services/project.service';
 import { TranslateService } from '@ngx-translate/core';
-import { WidgetDesignBaseComponent } from '../../widget_components/widget-design/widget-design-base/widget-design-base.component';
+import { WidgetDesignBaseComponent } from '../../widget_components/widget-set-up/widget-design-base/widget-design-base.component';
 import { WidgetService } from '../../services/widget.service';
 import { AppConfigService } from '../../services/app-config.service';
+import { LoggerService } from '../../services/logger/logger.service';
 
 @Component({
   selector: 'appdashboard-configure-widget',
@@ -24,10 +25,7 @@ export class ConfigureWidgetComponent extends WidgetDesignBaseComponent implemen
   projectName: string;
   projectId: string;
   sub: Subscription;
-
   tparams: any;
-
-
   DISPLAY_WIDGET_HOME = true;
   DISPLAY_CALLOUT = false;
   public company_name: any;
@@ -50,7 +48,6 @@ export class ConfigureWidgetComponent extends WidgetDesignBaseComponent implemen
   public imageUrl: string;
   public UPLOAD_ENGINE_IS_FIREBASE: boolean;
   public currentUserId: string;
-
 
   public engTraslationClone: object;
   public defaultTranslation: any
@@ -84,7 +81,8 @@ export class ConfigureWidgetComponent extends WidgetDesignBaseComponent implemen
     private projectService: ProjectService,
     public translate: TranslateService,
     private widgetService: WidgetService,
-    public appConfigService: AppConfigService
+    public appConfigService: AppConfigService,
+    private logger: LoggerService
   ) {
     super(translate);
     const brand = brandService.getBrand();
@@ -100,7 +98,6 @@ export class ConfigureWidgetComponent extends WidgetDesignBaseComponent implemen
     this.getLoggedUser();
     this.getCurrentProject();
     // this.getEnDefaultTranslation();
-
     this.getALLDefaultTranslations();
   }
 
@@ -109,23 +106,20 @@ export class ConfigureWidgetComponent extends WidgetDesignBaseComponent implemen
       this.UPLOAD_ENGINE_IS_FIREBASE = true;
       const firebase_conf = this.appConfigService.getConfig().firebase;
       this.imageUrl = firebase_conf['storageBucket'];
-      console.log('WIZARD - CONFIGURE WIDGET IMAGE STORAGE ', this.imageUrl, 'usecase firebase')
+      this.logger.log('[WIZARD - CONFIGURE-WIDGET] IMAGE STORAGE ', this.imageUrl, 'usecase firebase')
     } else {
       this.UPLOAD_ENGINE_IS_FIREBASE = false;
       this.imageUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
-
-      console.log('WIZARD - CONFIGURE WIDGET IMAGE STORAGE ', this.imageUrl, 'usecase native')
-
-
+      this.logger.log('[WIZARD - CONFIGURE-WIDGET] IMAGE STORAGE ', this.imageUrl, 'usecase native')
     }
   }
 
   getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
-      console.log('USER GET IN »» WIZARD - CONFIGURE WIDGET ', user)
+      this.logger.log('[WIZARD - CONFIGURE-WIDGET] USER ', user)
       if (user) {
         this.currentUserId = user._id;
-        console.log('WIZARD - CONFIGURE WIDGET Current USER ID ', this.currentUserId)
+        this.logger.log('[WIZARD - CONFIGURE-WIDGET] CURRENT USER ID ', this.currentUserId)
       }
     });
   }
@@ -133,24 +127,21 @@ export class ConfigureWidgetComponent extends WidgetDesignBaseComponent implemen
   getCurrentProject() {
     this.sub = this.auth.project_bs
       .subscribe((project) => {
-
-        // console.log('00 -> InstallTiledeskComponent project from AUTH service subscription  ', project)
-
         if (project) {
           this.projectId = project._id;
           this.projectName = project.name;
           this.getProjectById();
         }
-        console.log('WIZARD - CONFIGURE WIDGET - projectId  ', this.projectId);
-        console.log('WIZARD - CONFIGURE WIDGET - projectName  ', this.projectName);
+        this.logger.log('[WIZARD - CONFIGURE-WIDGET] - projectId  ', this.projectId);
+        this.logger.log('[WIZARD - CONFIGURE-WIDGET] - projectName  ', this.projectName);
       });
   }
 
   getProjectById() {
     this.projectService.getProjectById(this.projectId).subscribe((project: any) => {
-      // console.log('WIDGET DESIGN - GET PROJECT BY ID - PROJECT OBJECT: ', project);
+      // this.logger.log('WIDGET DESIGN - GET PROJECT BY ID - PROJECT OBJECT: ', project);
 
-      console.log('WIZARD - CONFIGURE WIDGET - PRJCT-WIDGET (onInit): ', project.widget);
+      this.logger.log('[WIZARD - CONFIGURE-WIDGET] - PRJCT-WIDGET (onInit): ', project.widget);
 
       if (project.widget) {
         this.widgetObj = project.widget;
@@ -168,7 +159,7 @@ export class ConfigureWidgetComponent extends WidgetDesignBaseComponent implemen
           this.hasOwnLogo = true;
           this.LOGO_IS_ON = true;
 
-          console.log('WIZARD - CONFIGURE WIDGET - (onInit WIDGET DEFINED) LOGO URL: ', project.widget.logoChat,
+          this.logger.log('[WIZARD - CONFIGURE-WIDGET] - (onInit WIDGET DEFINED) LOGO URL: ', project.widget.logoChat,
             ' HAS HOWN LOGO ', this.hasOwnLogo,
             ' LOGO IS ON', this.LOGO_IS_ON);
 
@@ -183,7 +174,7 @@ export class ConfigureWidgetComponent extends WidgetDesignBaseComponent implemen
           this.hasOwnLogo = false;
           this.LOGO_IS_ON = false;
 
-          console.log('WIZARD - CONFIGURE WIDGET - (onInit WIDGET DEFINED) LOGO URL: ', project.widget.logoChat,
+          this.logger.log('[WIZARD - CONFIGURE-WIDGET] - (onInit WIDGET DEFINED) LOGO URL: ', project.widget.logoChat,
             ' HAS HOWN LOGO ', this.hasOwnLogo,
             ' LOGO IS ON', this.LOGO_IS_ON);
 
@@ -199,7 +190,7 @@ export class ConfigureWidgetComponent extends WidgetDesignBaseComponent implemen
           this.hasOwnLogo = false;
           this.LOGO_IS_ON = true
 
-          console.log('WIZARD - CONFIGURE WIDGET - (onInit WIDGET DEFINED) LOGO URL: ', project.widget.logoChat,
+          this.logger.log('[WIZARD - CONFIGURE-WIDGET] - (onInit WIDGET DEFINED) LOGO URL: ', project.widget.logoChat,
             ' HAS HOWN LOGO ', this.hasOwnLogo,
             ' LOGO IS ON', this.LOGO_IS_ON);
         }
@@ -212,7 +203,7 @@ export class ConfigureWidgetComponent extends WidgetDesignBaseComponent implemen
         if (project.widget.themeColor) {
 
           this.primaryColor = project.widget.themeColor;
-          console.log('WIZARD - CONFIGURE WIDGET -(onInit WIDGET DEFINED) THEME COLOR: ', this.primaryColor);
+          this.logger.log('WIZARD - CONFIGURE WIDGET -(onInit WIDGET DEFINED) THEME COLOR: ', this.primaryColor);
           this.primaryColorRgb = this.hexToRgb(this.primaryColor)
           this.generateRgbaGradientAndBorder(this.primaryColorRgb);
         } else {
@@ -224,7 +215,7 @@ export class ConfigureWidgetComponent extends WidgetDesignBaseComponent implemen
           // ------------------------------------------------------------------------
           this.primaryColor = this.widgetDefaultSettings.themeColor
 
-          console.log('WIZARD - CONFIGURE WIDGET - (onInit WIDGET DEFINED) THEME COLOR: ', project.widget.themeColor,
+          this.logger.log('[WIZARD - CONFIGURE-WIDGET] - (onInit WIDGET DEFINED) THEME COLOR: ', project.widget.themeColor,
             ' IS UNDEFINED > SET DEFAULT ', this.primaryColor);
 
           this.primaryColorRgb = this.hexToRgb(this.primaryColor)
@@ -237,7 +228,7 @@ export class ConfigureWidgetComponent extends WidgetDesignBaseComponent implemen
         // ------------------------------------------------------------------------
         if (project.widget.themeForegroundColor) {
           this.secondaryColor = project.widget.themeForegroundColor;
-          console.log('WIZARD - CONFIGURE WIDGET - (onInit WIDGET DEFINED) THEME-FOREGROUND COLOR: ', this.secondaryColor);
+          this.logger.log('[WIZARD - CONFIGURE-WIDGET] - (onInit WIDGET DEFINED) THEME-FOREGROUND COLOR: ', this.secondaryColor);
         } else {
 
           // ------------------------------------------------------------------------
@@ -247,7 +238,7 @@ export class ConfigureWidgetComponent extends WidgetDesignBaseComponent implemen
           // ------------------------------------------------------------------------
           this.secondaryColor = this.widgetDefaultSettings.themeForegroundColor;
 
-          console.log('WIZARD - CONFIGURE WIDGET - (onInit WIDGET DEFINED) THEME-FOREGROUND COLOR: ', project.widget.themeForegroundColor,
+          this.logger.log('[WIZARD - CONFIGURE-WIDGET]- (onInit WIDGET DEFINED) THEME-FOREGROUND COLOR: ', project.widget.themeForegroundColor,
             ' IS UNDEFINED > SET DEFAULT ', this.secondaryColor);
         }
 
@@ -264,7 +255,7 @@ export class ConfigureWidgetComponent extends WidgetDesignBaseComponent implemen
         this.hasOwnLogo = false;
         this.LOGO_IS_ON = true
 
-        console.log('WIZARD - CONFIGURE WIDGET - (onInit WIDGET UNDEFINED) > SET DEFAULT LOGOURL: ',
+        this.logger.log('[WIZARD - CONFIGURE-WIDGET] - (onInit WIDGET UNDEFINED) > SET DEFAULT LOGOURL: ',
           this.logoUrl, 'HAS OWN LOGO ', this.hasOwnLogo, 'LOGO IS ON ', this.LOGO_IS_ON);
 
         // -----------------------------------------------------------------------
@@ -272,7 +263,7 @@ export class ConfigureWidgetComponent extends WidgetDesignBaseComponent implemen
         // WIDGET UNDEFINED
         // -----------------------------------------------------------------------
         this.primaryColor = this.widgetDefaultSettings.themeColor
-        console.log('WIZARD - CONFIGURE WIDGET - (onInit WIDGET UNDEFINED) > SET DEFAULT THEME COLOR: ', this.primaryColor);
+        this.logger.log('[WIZARD - CONFIGURE-WIDGET] - (onInit WIDGET UNDEFINED) > SET DEFAULT THEME COLOR: ', this.primaryColor);
         this.primaryColorRgb = this.hexToRgb(this.primaryColor)
         this.generateRgbaGradientAndBorder(this.primaryColorRgb);
 
@@ -281,18 +272,12 @@ export class ConfigureWidgetComponent extends WidgetDesignBaseComponent implemen
         // WIDGET UNDEFINED
         // -----------------------------------------------------------------------
         this.secondaryColor = this.widgetDefaultSettings.themeForegroundColor;
-        console.log('WIZARD - CONFIGURE WIDGET - (onInit WIDGET UNDEFINED) > SET DEFAULT THEME-FOREGROUND COLOR: ', this.secondaryColor);
-
-
+        this.logger.log('[WIZARD - CONFIGURE-WIDGET] - (onInit WIDGET UNDEFINED) > SET DEFAULT THEME-FOREGROUND COLOR: ', this.secondaryColor);
       }
-
     }, (error) => {
-      console.log('WIZARD - CONFIGURE WIDGET - GET PROJECT BY ID - ERROR ', error);
-      // this.showSpinner = false;
+      this.logger.error('[WIZARD - CONFIGURE-WIDGET] - GET PROJECT BY ID - ERROR ', error);
     }, () => {
-      console.log('WIZARD - CONFIGURE WIDGET - GET PROJECT BY ID - COMPLETE ');
-
-      // this.showSpinner = false;
+      this.logger.log('[WIZARD - CONFIGURE-WIDGET] - GET PROJECT BY ID - COMPLETE ');
     });
   }
 
@@ -302,7 +287,7 @@ export class ConfigureWidgetComponent extends WidgetDesignBaseComponent implemen
     this.DISPLAY_WIDGET_HOME = true;
     this.DISPLAY_CALLOUT = false;
 
-    console.log('»» WIDGET DESIGN - setPresetCombOne ', primaryColor, secondaryColor);
+    this.logger.log('[WIZARD - CONFIGURE-WIDGET] - setPresetComb ', primaryColor, secondaryColor);
     this.primaryColor = primaryColor;
     this.secondaryColor = secondaryColor;
 
@@ -318,10 +303,10 @@ export class ConfigureWidgetComponent extends WidgetDesignBaseComponent implemen
 
     this.primaryColor = $event
 
-    // console.log('+ WIDGET DESIGN - ON CHANGE PRIMARY COLOR ', $event);
+    // this.logger.log('+ WIDGET DESIGN - ON CHANGE PRIMARY COLOR ', $event);
     // this.widgetService.publishPrimaryColorSelected(this.primaryColor);
     this.primaryColorRgb = this.hexToRgb(this.primaryColor)
-    console.log('WIZARD - CONFIGURE WIDGET - ON CHANGE PRIMARY COLOR - PRIMARY COLOR RGB ', this.primaryColorRgb);
+    this.logger.log('[WIZARD - CONFIGURE-WIDGET] - ON CHANGE PRIMARY COLOR - PRIMARY COLOR RGB ', this.primaryColorRgb);
     this.generateRgbaGradientAndBorder(this.primaryColorRgb);
   }
 
@@ -338,7 +323,7 @@ export class ConfigureWidgetComponent extends WidgetDesignBaseComponent implemen
 
 
   onClosePrimaryColorDialog(event) {
-    console.log('WIZARD - CONFIGURE WIDGET - ON CLOSE PRIMARY COLOR DIALOG ', event);
+    this.logger.log('[WIZARD - CONFIGURE-WIDGET] - ON CLOSE PRIMARY COLOR DIALOG ', event);
     this.primaryColor = event
 
     if (this.primaryColor !== this.widgetDefaultSettings.themeColor) {
@@ -351,7 +336,7 @@ export class ConfigureWidgetComponent extends WidgetDesignBaseComponent implemen
   }
 
   onCloseSecondaryColorDialog(event) {
-    console.log('WIZARD - CONFIGURE WIDGET - ON CLOSE SECONDARY DIALOG ', event);
+    this.logger.log('[WIZARD - CONFIGURE-WIDGET] - ON CLOSE SECONDARY DIALOG ', event);
     this.secondaryColor = event
 
     if (this.secondaryColor !== this.widgetDefaultSettings.themeForegroundColor) {
@@ -367,7 +352,7 @@ export class ConfigureWidgetComponent extends WidgetDesignBaseComponent implemen
   }
 
   onChangeSecondaryColor(event) {
-    console.log('WIZARD - CONFIGURE WIDGET - onChangeSecondaryColor ', event);
+    this.logger.log('[WIZARD - CONFIGURE-WIDGET] - onChangeSecondaryColor ', event);
     this.secondaryColor = event;
     if (this.secondaryColor !== this.widgetDefaultSettings.themeForegroundColor) {
       // *** ADD PROPERTY
@@ -404,10 +389,10 @@ export class ConfigureWidgetComponent extends WidgetDesignBaseComponent implemen
   }
 
   generateRgbaGradientAndBorder(primaryColor: string) {
-    // console.log('»» WIDGET DESIGN - ON CLOSE PRIMARY COLOR DIALOG COLOR (RGB) ', primaryColor);
+    // this.logger.log('[WIZARD - CONFIGURE-WIDGET] - ON CLOSE PRIMARY COLOR DIALOG COLOR (RGB) ', primaryColor);
     const new_col = primaryColor.replace(/rgb/i, 'rgba');
     this.primaryColorRgba = new_col.replace(/\)/i, ',0.50)');
-    // console.log('»» WIDGET DESIGN - PRIMARY COLOR RGBA ', this.primaryColorRgba);
+    // this.logger.log('[WIZARD - CONFIGURE-WIDGET] - PRIMARY COLOR RGBA ', this.primaryColorRgba);
 
     this.primaryColorGradiend = `linear-gradient(${this.primaryColor}, ${this.primaryColorRgba})`;
     this.primaryColorBorder = `2.4px solid ${this.primaryColorRgba}`;
@@ -429,7 +414,7 @@ export class ConfigureWidgetComponent extends WidgetDesignBaseComponent implemen
 
       if (translations) {
         this.allDefaultTranslations = translations;
-        console.log('WIZARD - CONFIGURE WIDGET ***** GET * ALL * TRANSLATIONS ***** - RES', translations);
+        this.logger.log('[WIZARD - CONFIGURE-WIDGET] ***** GET * ALL * TRANSLATIONS ***** - RES', translations);
 
         this.setCurrentTranslation('en')
 
@@ -439,16 +424,16 @@ export class ConfigureWidgetComponent extends WidgetDesignBaseComponent implemen
 
 
   setCurrentTranslation(selectedlangcode) {
-    console.log('WIZARD - CONFIGURE WIDGET *****  selectedlangcode selectedlangcode', selectedlangcode);
+    this.logger.log('[WIZARD - CONFIGURE-WIDGET] *****  selectedlangcode selectedlangcode', selectedlangcode);
 
     this.allDefaultTranslations.forEach(translation => {
-      console.log('WIZARD - CONFIGURE WIDGET *****  selectedlangcode translation', translation);
+      this.logger.log('[WIZARD - CONFIGURE-WIDGET] *****  selectedlangcode translation', translation);
 
       if (translation.lang.toLowerCase() === selectedlangcode) {
 
         this.defaultTranslation = translation.data
-        console.log('WIZARD - CONFIGURE WIDGET *****  DEFAULT TRANSLATION data', this.defaultTranslation);
-        console.log('WIZARD - CONFIGURE WIDGET *****  DEFAULT TRANSLATION code', selectedlangcode);
+        this.logger.log('[WIZARD - CONFIGURE-WIDGET] *****  DEFAULT TRANSLATION data', this.defaultTranslation);
+        this.logger.log('[WIZARD - CONFIGURE-WIDGET] *****  DEFAULT TRANSLATION code', selectedlangcode);
         // ---------------------------------------------------------------
         // @ Welcome title and company intro
         // ---------------------------------------------------------------
@@ -480,8 +465,8 @@ export class ConfigureWidgetComponent extends WidgetDesignBaseComponent implemen
 
       this.temp_SelectedLangCode = selectedLang.code;
       this.temp_SelectedLangName = selectedLang.name;
-      console.log('WIZARD - CONFIGURE WIDGET selected TEMP Lang Code ', this.temp_SelectedLangCode);
-      console.log('WIZARD - CONFIGURE WIDGET selected TEMP Lang label ', this.temp_SelectedLangName);
+      this.logger.log('[WIZARD - CONFIGURE-WIDGET] selected TEMP Lang Code ', this.temp_SelectedLangCode);
+      this.logger.log('[WIZARD - CONFIGURE-WIDGET] selected TEMP Lang label ', this.temp_SelectedLangName);
 
       this.setCurrentTranslation(this.temp_SelectedLangCode)
 
@@ -495,12 +480,12 @@ export class ConfigureWidgetComponent extends WidgetDesignBaseComponent implemen
   getEnDefaultTranslation() {
 
     this.widgetService.getEnDefaultLabels().subscribe((labels: any) => {
-      console.log('WIZARD - CONFIGURE WIDGET ***** GET labels ***** - RES', labels);
+      this.logger.log('[WIZARD - CONFIGURE-WIDGET] ***** GET labels ***** - RES', labels);
       if (labels) {
         // this.translation = labels[0].data[0];
         this.defaultTranslation = labels['data']
-        // console.log('Multilanguage ***** GET labels ***** - RES > TRANSLATIONS ', labels[0].data[0]);
-        console.log('WIZARD - CONFIGURE WIDGET ***** GET labels ***** - RES > DEFAULT TRANSLATION ', this.defaultTranslation);
+        // this.logger.log('Multilanguage ***** GET labels ***** - RES > TRANSLATIONS ', labels[0].data[0]);
+        this.logger.log('[WIZARD - CONFIGURE-WIDGET] ***** GET labels ***** - RES > DEFAULT TRANSLATION ', this.defaultTranslation);
 
 
         // ---------------------------------------------------------------
@@ -523,70 +508,21 @@ export class ConfigureWidgetComponent extends WidgetDesignBaseComponent implemen
         this.temp_SelectedLangName = 'English';
         this.temp_SelectedLangCode = 'en'
 
-
-        // this.languages_codes = [];
-
-        // if (this.translations.filter(e => e.lang === 'EN').length > 0) {
-        //   /* vendors contains the element we're looking for */
-        //   console.log('WIZARD - CONFIGURE WIDGET ***** EN EXIST');
-
-        // } else {
-        //   console.log('WIZARD - CONFIGURE WIDGET ***** ENGLISH TRANSLATION NOT EXIST');
-        //   // this.notify.showNotification(this.errorNoticationMsg, 4, 'report_problem');
-        // }
-
-        // this.translations.forEach(translation => {
-        //   console.log('WIZARD - CONFIGURE WIDGET ***** GET labels ***** - RES >>> TRANSLATION ', translation);
-
-        //   if (translation) {
-        //     // se c'è inglese eseguo subito il push in languages_codes perle altre lang verifico se è presente _id
-        //     // prima di eseguire il push
-
-        //     if (translation.lang === 'EN') {
-        //       this.languages_codes.push(translation.lang.toLowerCase());
-
-        //       this.engTraslationClone = Object.assign({}, translation['data']);
-        //       // console.log('Multilanguage ***** GET labels ***** >>> engTraslationClone', this.engTraslationClone);
-        //     }
-        //     if (translation.lang !== 'EN') {
-        //       console.log('WIZARD - CONFIGURE WIDGET ***** GET labels ***** - RES >>> TRANSLATION _id', translation._id);
-
-        //       // UNA LINGUA DIVERSA DALL'INGLESE FA PARTE DEL PROGETTO SE HA UN ID ED è IN QUESTO CASO CHE L'AGGIUNGO TRA LE DISPONIBILI
-        //       // (INFATTI LE LINGUE CON L'ID SONO QUELLE CHE AGGIUNGE L'UTENTE - ANCHE L'INGLESE AVRA' L'ID SE VIENE MODIFICATA)
-        //       if (translation._id !== undefined) {
-        //         this.languages_codes.push(translation.lang.toLowerCase())
-        //       }
-        //     }
-        //   }
-        // });
-        // console.log('WIZARD - CONFIGURE WIDGET ***** GET labels ***** - Array of LANG CODE ', this.languages_codes);
-        // this.doAvailableLanguageArray(this.languages_codes);
-        // this.languages_codes = [];
-        // const availableTranslations = this.doAvailableLanguageArray(this.languages_codes);
-        // console.log('WIZARD - CONFIGURE WIDGET *****  AVAILABLE TRANSLATION ', availableTranslations);
       }
 
     }, error => {
-      console.log('WIZARD - CONFIGURE WIDGET ***** GET labels ***** - ERROR ', error)
+      this.logger.error('[WIZARD - CONFIGURE-WIDGET] ***** GET labels ***** - ERROR ', error)
     }, () => {
-      console.log('WIZARD - CONFIGURE WIDGET ***** GET labels ***** * COMPLETE *')
-      // this.showSheleton = false;
-
+      this.logger.log('[WIZARD - CONFIGURE-WIDGET] ***** GET labels ***** * COMPLETE *')
 
     });
   }
 
 
-
-
-
-
-
   continueToInstallScript() {
-
     this.router.navigate([`/project/${this.projectId}/install-widget`]);
-    console.log('WIZARD - CONFIGURE WIDGET ***** CONTINUE  this.temp_SelectedLangCode', this.temp_SelectedLangCode);
-    console.log('WIZARD - CONFIGURE WIDGET ***** CONTINUE  this.temp_SelectedLangCode', this.temp_SelectedLangName)
+    this.logger.log('[WIZARD - CONFIGURE-WIDGET] ***** CONTINUE  this.temp_SelectedLangCode', this.temp_SelectedLangCode);
+    this.logger.log('[WIZARD - CONFIGURE-WIDGET] ***** CONTINUE  this.temp_SelectedLangCode', this.temp_SelectedLangName)
     this.addNewLanguage();
     this.saveWidgetApparance()
   }
@@ -596,37 +532,34 @@ export class ConfigureWidgetComponent extends WidgetDesignBaseComponent implemen
   }
 
   addNewLanguage() {
-
     this.selectedTranslationCode = this.temp_SelectedLangCode
     this.selectedTranslationLabel = this.temp_SelectedLangName
-    console.log('WIZARD - CONFIGURE WIDGET ***** ADD-NEW-LANG selectedTranslationCode', this.selectedTranslationCode);
-    console.log('WIZARD - CONFIGURE WIDGET ***** ADD-NEW-LANG selectedTranslationLabel', this.selectedTranslationLabel);
+    this.logger.log('[WIZARD - CONFIGURE-WIDGET] ***** ADD-NEW-LANG selectedTranslationCode', this.selectedTranslationCode);
+    this.logger.log('[WIZARD - CONFIGURE-WIDGET]***** ADD-NEW-LANG selectedTranslationLabel', this.selectedTranslationLabel);
 
     // cloneLabel CHE RITORNERA IN RESPONSE LA NUOVA LINGUA (l'inglese nel caso non sia una delle nostre lingue pretradotte)
     this.widgetService.cloneLabel(this.temp_SelectedLangCode.toUpperCase())
       .subscribe((res: any) => {
-        // console.log('Multilanguage - addNewLanguage - CLONE LABEL RES ', res);
-        console.log('WIZARD - CONFIGURE WIDGET - ADD-NEW-LANG (clone-label) RES ', res.data);
+        // this.logger.log('Multilanguage - addNewLanguage - CLONE LABEL RES ', res);
+        this.logger.log('[WIZARD - CONFIGURE-WIDGET] - ADD-NEW-LANG (clone-label) RES ', res.data);
 
-        if (res) {
-
-          // UPDATE THE ARRAY TRANSLATION CREATED ON INIT
-
-        }
+        // if (res) {
+        //   // UPDATE THE ARRAY TRANSLATION CREATED ON INIT
+        // }
 
       }, error => {
-        console.log('WIZARD - CONFIGURE WIDGET ADD-NEW-LANG (clone-label) - ERROR ', error)
+        this.logger.error('[WIZARD - CONFIGURE-WIDGET] ADD-NEW-LANG (clone-label) - ERROR ', error)
       }, () => {
-        console.log('WIZARD - CONFIGURE WIDGET ADD-NEW-LANG (clone-label) * COMPLETE *')
+        this.logger.log('[WIZARD - CONFIGURE-WIDGET] ADD-NEW-LANG (clone-label) * COMPLETE *')
 
       });
 
     // // ADD THE NEW LANGUAGE TO BOTTOM NAV
     const newLang = { code: this.temp_SelectedLangCode, name: this.temp_SelectedLangName };
-    console.log('Multilanguage saveNewLanguage newLang objct ', newLang);
+    this.logger.log('[WIZARD - CONFIGURE-WIDGET] Multilanguage saveNewLanguage newLang objct ', newLang);
 
     this.availableTranslations.push(newLang)
-    console.log('Multilanguage saveNewLanguage availableTranslations ', this.availableTranslations)
+    this.logger.log('[WIZARD - CONFIGURE-WIDGET] Multilanguage saveNewLanguage availableTranslations ', this.availableTranslations)
   }
 
 }

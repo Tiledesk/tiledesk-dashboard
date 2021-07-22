@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 // import { ScriptStoreT } from "./script.store";
 import { environment } from '../../../environments/environment';
 import { Http, Headers } from '@angular/http';
-
+import { LoggerService } from '../../services/logger/logger.service';
 declare var document: any;
 
 // https://stackoverflow.com/questions/34489916/how-to-load-external-scripts-dynamically-in-angular
@@ -11,19 +11,20 @@ declare var document: any;
 @Injectable()
 export class ScriptService {
 
-script: any;
+  script: any;
 
   private scripts: any = {};
 
 
   http: Http;
   constructor(
-    http: Http
+    http: Http,
+    private logger: LoggerService
   ) {
 
     this.http = http;
 
-    console.log('ScriptService Hello !!!')
+    this.logger.log('[SCRIPT-SERV] Hello !!!')
 
     if (environment.remoteConfig === false) {
 
@@ -34,14 +35,14 @@ script: any;
         if (!isEmptyGlobalRemoteJSSrc) {
 
           const scriptString = environment['globalRemoteJSSrc']
-          console.log('ScriptService globalRemoteJSSrc scriptString', scriptString);
+          this.logger.log('[SCRIPT-SERV] globalRemoteJSSrc scriptString', scriptString);
 
           this.buildScriptArray(scriptString)
         } else {
-          console.log('ScriptService REMOTE CONFIG FALSE - ENV has the property globalRemoteJSSrc but IT IS EMPTY');
+          this.logger.log('[SCRIPT-SERV] REMOTE CONFIG FALSE - ENV has the property globalRemoteJSSrc but IT IS EMPTY');
         }
       } else {
-        console.log('ScriptService REMOTE CONFIG FALSE - ENV not has the property globalRemoteJSSrc');
+        this.logger.log('[SCRIPT-SERV] REMOTE CONFIG FALSE - ENV not has the property globalRemoteJSSrc');
       }
     } else {
 
@@ -57,7 +58,7 @@ script: any;
     //   };
     // });
 
-    // console.log('ScriptService ScriptStore scripts', this.scripts);
+    // this.logger.log('ScriptService ScriptStore scripts', this.scripts);
 
 
   }
@@ -66,10 +67,10 @@ script: any;
 
   async loadRemoteConfig(remoteConfigUrl) {
     const res = await this.http.get(remoteConfigUrl).toPromise();
-    console.log('ScriptService REMOTE CONFIG TRUE - GET RES', res);
+    this.logger.log('[SCRIPT-SERV] REMOTE CONFIG TRUE - GET RES', res);
 
     const remoteCONFIG = JSON.parse(res['_body'])
-    console.log('ScriptService REMOTE CONFIG TRUE - remoteCONFIG', remoteCONFIG);
+    this.logger.log('[SCRIPT-SERV] REMOTE CONFIG TRUE - remoteCONFIG', remoteCONFIG);
 
 
     if (remoteCONFIG.hasOwnProperty("globalRemoteJSSrc")) {
@@ -79,36 +80,36 @@ script: any;
       if (!isEmptyGlobalRemoteJSSrc) {
 
         const scriptString = remoteCONFIG['globalRemoteJSSrc']
-        console.log('ScriptService globalRemoteJSSrc scriptString', scriptString);
+        this.logger.log('[SCRIPT-SERV] globalRemoteJSSrc scriptString', scriptString);
 
         this.buildScriptArray(scriptString)
 
       } else {
-        console.log('ScriptService REMOTE CONFIG TRUE - remoteCONFIG has the property globalRemoteJSSrc but IT IS EMPTY');
+        this.logger.log('[SCRIPT-SERV] REMOTE CONFIG TRUE - remoteCONFIG has the property globalRemoteJSSrc but IT IS EMPTY');
       }
 
     } else {
-      console.log('ScriptService REMOTE CONFIG TRUE - remoteCONFIG not has the property globalRemoteJSSrc');
+      this.logger.log('[SCRIPT-SERV] REMOTE CONFIG TRUE - remoteCONFIG not has the property globalRemoteJSSrc');
     }
   }
 
   buildScriptArray(scriptString) {
 
     var scriptArray = scriptString.split(",");
-    console.log('ScriptService scriptArray', scriptArray);
+    this.logger.log('[SCRIPT-SERV] scriptArray', scriptArray);
 
     let count = 0;
     this.scripts = []
     const scriptArrayKeyValue = []
     scriptArray.forEach(scriptSrc => {
       count = count + 1;
-      // console.log('ScriptService  scriptArray', scriptSrc);
+      // this.logger.log('ScriptService  scriptArray', scriptSrc);
       scriptArrayKeyValue.push({ name: 'custom_script_' + count, src: scriptSrc })
       this.scripts.push('custom_script_' + count);
     });
 
-    console.log('ScriptService  scriptArrayKeyValue', scriptArrayKeyValue);
-    console.log('ScriptService  scripts_name', this.scripts);
+    this.logger.log('[SCRIPT-SERV]  scriptArrayKeyValue', scriptArrayKeyValue);
+    this.logger.log('[SCRIPT-SERV]  scripts_name', this.scripts);
 
 
     scriptArrayKeyValue.forEach((script: any) => {
@@ -118,7 +119,7 @@ script: any;
       };
     });
 
-    console.log('ScriptService ScriptStore scripts', this.scripts);
+    this.logger.log('[SCRIPT-SERV] ScriptStore scripts', this.scripts);
 
     this.load()
   }
@@ -126,11 +127,16 @@ script: any;
 
 
   // load(...scripts: string[]) {
-    load() {
-    console.log('ScriptService load ...scripts ', this.scripts)
+  load() {
+    this.logger.log('[SCRIPT-SERV] load ...scripts ', this.scripts)
     var promises: any[] = [];
     this.scripts.forEach((script) => promises.push(this.loadScript(script)));
-    return Promise.all(promises);
+    return Promise.all(promises)
+      .catch((err) => {
+        // log that I have an error, return the entire array;
+        this.logger.error('A promise failed to resolve', err);
+
+      });
   }
 
   loadScript(name: string) {
@@ -165,9 +171,12 @@ script: any;
   }
 
 
+
   isEmpty(url: string) {
     return (url === undefined || url == null || url.length <= 0) ? true : false;
   }
+
+
 
 
 }

@@ -8,6 +8,7 @@ import { ProjectPlanService } from '../../services/project-plan.service';
 import { StaticPageBaseComponent } from './../static-page-base/static-page-base.component';
 import { Subscription } from 'rxjs';
 import { UsersService } from '../../services/users.service';
+import { LoggerService } from '../../services/logger/logger.service';
 const swal = require('sweetalert');
 
 @Component({
@@ -46,7 +47,8 @@ export class ActivitiesStaticComponent extends StaticPageBaseComponent implement
     private router: Router,
     private prjctPlanService: ProjectPlanService,
     private notify: NotifyService,
-    private usersService: UsersService
+    private usersService: UsersService,
+    private logger: LoggerService
   ) {
     super();
   }
@@ -64,7 +66,7 @@ export class ActivitiesStaticComponent extends StaticPageBaseComponent implement
   getProjectUserRole() {
     this.usersService.project_user_role_bs.subscribe((user_role) => {
       this.USER_ROLE = user_role;
-      console.log('USERS-COMP - PROJECT USER ROLE: ', this.USER_ROLE);
+      this.logger.log('[ACTIVITIES-STATIC] - PROJECT USER ROLE: ', this.USER_ROLE);
     });
   }
 
@@ -75,14 +77,14 @@ export class ActivitiesStaticComponent extends StaticPageBaseComponent implement
   translateModalOnlyOwnerCanManageProjectAccount() {
     this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
       .subscribe((translation: any) => {
-        // console.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        // this.logger.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
         this.onlyOwnerCanManageTheAccountPlanMsg = translation;
       });
 
 
     this.translate.get('LearnMoreAboutDefaultRoles')
       .subscribe((translation: any) => {
-        // console.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        // this.logger.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
         this.learnMoreAboutDefaultRoles = translation;
       });
   }
@@ -93,7 +95,7 @@ export class ActivitiesStaticComponent extends StaticPageBaseComponent implement
 
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      console.log('ProjectPlanService (ActivitiesStaticComponent) project Profile Data', projectProfileData)
+      this.logger.log('[ACTIVITIES-STATIC] - GET PROJECT PROFILE', projectProfileData)
       if (projectProfileData) {
 
         this.prjct_profile_type = projectProfileData.profile_type;
@@ -110,7 +112,11 @@ export class ActivitiesStaticComponent extends StaticPageBaseComponent implement
           }
         }
       }
-    })
+     }, err => {
+      this.logger.error('[ACTIVITIES-STATIC] GET PROJECT PROFILE - ERROR',err);
+    }, () => {
+      this.logger.log('[ACTIVITIES-STATIC] GET PROJECT PROFILE * COMPLETE *');
+    });
   }
 
 
@@ -150,32 +156,15 @@ export class ActivitiesStaticComponent extends StaticPageBaseComponent implement
 
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
-      console.log('!!! ACTIVITIES STATIC - project ', project)
+      this.logger.log('[ACTIVITIES-STATIC] - project ', project)
 
       if (project) {
         this.projectId = project._id
+        this.logger.log('[ACTIVITIES-STATIC] - project id ', this.projectId)
       }
     });
   }
 
-  // buildActivitiesOptions() {
-  //   const browserLang = this.translate.getBrowserLang();
-  //   if (browserLang) {
-  //     if (browserLang === 'it') {
-  //       this.activities = [
-  //         { name: 'Modifica disponibilità o ruolo agente' },
-  //         { name: 'Cancellazione agente' },
-  //         { name: 'Invito agente' },
-  //       ];
-  //     } else {
-  //       this.activities = [
-  //         { name: 'Change agent availability or role' },
-  //         { name: 'Agent deletion' },
-  //         { name: 'Agent invitation' },
-  //       ];
-  //     }
-  //   }
-  // }
 
   buildActivitiesOptions() {
     this.translate.get('ActivitiesOptions')
@@ -186,14 +175,14 @@ export class ActivitiesStaticComponent extends StaticPageBaseComponent implement
         this.agentInvitation = text.AgentInvitation;
         this.newRequest = text.NewRequest;
 
-        console.log('translateActivities AgentAvailabilityOrRoleChange ', text.AgentAvailabilityOrRoleChange)
-        console.log('translateActivities AgentDeletion ', text.AgentDeletion)
-        console.log('translateActivities AgentDeletion ', text.AgentInvitation)
-        console.log('translateActivities newRequest ', text.newRequest)
+        // this.logger.log('[ACTIVITIES-STATIC] - translateActivities AgentAvailabilityOrRoleChange ', text.AgentAvailabilityOrRoleChange)
+        // this.logger.log('[ACTIVITIES-STATIC] - AgentDeletion ', text.AgentDeletion)
+        // this.logger.log('[ACTIVITIES-STATIC] - AgentDeletion ', text.AgentInvitation)
+        // this.logger.log('[ACTIVITIES-STATIC] - newRequest ', text.newRequest)
       }, (error) => {
-        console.log('ActivitiesComponent - GET translations error', error);
+        this.logger.error('[ACTIVITIES-STATIC] - GET translations error', error);
       }, () => {
-        console.log('ActivitiesComponent - GET translations * COMPLETE *');
+        this.logger.log('[ACTIVITIES-STATIC] - GET translations * COMPLETE *');
 
         this.activities = [
           { id: 'PROJECT_USER_UPDATE', name: this.agentAvailabilityOrRoleChange },

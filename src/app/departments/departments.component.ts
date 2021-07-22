@@ -12,7 +12,7 @@ import { NotifyService } from '../core/notify.service';
 import { avatarPlaceholder, getColorBck } from '../utils/util';
 import { AppConfigService } from '../services/app-config.service';
 import { ProjectPlanService } from '../services/project-plan.service';
-
+import { LoggerService } from '../services/logger/logger.service';
 @Component({
   selector: 'mongodb-departments',
   templateUrl: './departments.component.html',
@@ -60,7 +60,7 @@ export class DepartmentsComponent implements OnInit {
   trialExpired: boolean;
   subscriptionInactiveOrTrialExpired: boolean;
   constructor(
-    private mongodbDepartmentService: DepartmentService,
+    private deptService: DepartmentService,
     private router: Router,
     private auth: AuthService,
     private groupsService: GroupService,
@@ -68,7 +68,8 @@ export class DepartmentsComponent implements OnInit {
     public translate: TranslateService,
     private notify: NotifyService,
     private prjctPlanService: ProjectPlanService,
-    public appConfigService: AppConfigService
+    public appConfigService: AppConfigService,
+    private logger: LoggerService
   ) { }
 
   ngOnInit() {
@@ -86,47 +87,47 @@ export class DepartmentsComponent implements OnInit {
 
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
-    console.log('AppConfigService getAppConfig (DEPTS) public_Key', this.public_Key);
+    this.logger.log('[DEPTS] AppConfigService getAppConfig  public_Key', this.public_Key);
 
     let keys = this.public_Key.split("-");
-    // console.log('PUBLIC-KEY (SIDEBAR) - public_Key keys', keys)
+    // this.logger.log('[DEPTS] PUBLIC-KEY - public_Key keys', keys)
 
     keys.forEach(key => {
-      // console.log('DEPTS public_Key key', key)
+      // this.logger.log('[DEPTS] public_Key key', key)
 
       if (key.includes("DEP")) {
-        // console.log('PUBLIC-KEY (SIDEBAR) - key', key);
+        // this.logger.log('[DEPTS] PUBLIC-KEY - key', key);
         let dep = key.split(":");
-        // console.log('PUBLIC-KEY (SIDEBAR) - dep key&value', dep);
+        // this.logger.log('[DEPTS] PUBLIC-KEY - dep key&value', dep);
 
         if (dep[1] === "F") {
           this.isVisibleDEP = false;
-          // console.log('PUBLIC-KEY (SIDEBAR) - dep isVisible', this.isVisibleDEP);
+          // this.logger.log('[DEPTS] PUBLIC-KEY - dep isVisible', this.isVisibleDEP);
         } else {
           this.isVisibleDEP = true;
-          // console.log('PUBLIC-KEY (SIDEBAR) - dep isVisible', this.isVisibleDEP);
+          // this.logger.log('[DEPTS] PUBLIC-KEY - dep isVisible', this.isVisibleDEP);
         }
       }
-      // this.getDeptsByProjectId();
+
     });
 
     if (!this.public_Key.includes("DEP")) {
-      // console.log('PUBLIC-KEY (SIDEBAR) - key.includes("DEP")', this.public_Key.includes("DEP"));
+      // this.logger.log('[DEPTS] PUBLIC-KEY - key.includes("DEP")', this.public_Key.includes("DEP"));
       this.isVisibleDEP = false;
     }
   }
 
   getBrowserLanguage() {
     this.browser_lang = this.translate.getBrowserLang();
-    console.log('Depts - browser_lang ', this.browser_lang)
+    this.logger.log('[DEPTS]  - browser_lang ', this.browser_lang)
     var userLang = navigator.language;
-    console.log('Depts - browser_lang ', userLang)
+    this.logger.log('[DEPTS]  - browser_lang ', userLang)
   }
 
   translateNotificationMsgs() {
     this.translate.get('DeptsAddEditPage.NotificationMsgs')
       .subscribe((translation: any) => {
-        // console.log('Depts - translateNotificationMsgs text', translation)
+        // this.logger.log('Depts - translateNotificationMsgs text', translation)
         this.deleteErrorMsg = translation.DeleteDeptError;
         this.deleteSuccessMsg = translation.DeleteDeptSuccess;
         this.updateSuccessMsg = translation.UpdateDeptSuccess;
@@ -138,7 +139,7 @@ export class DepartmentsComponent implements OnInit {
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
       this.project = project
-      // console.log('00 -> DEPTS COMP project ID from AUTH service subscription  ', this.project._id)
+      // this.logger.log('00 -> DEPTS COMP project ID from AUTH service subscription  ', this.project._id)
     });
   }
 
@@ -146,55 +147,49 @@ export class DepartmentsComponent implements OnInit {
 
   // GO TO BOT-EDIT-ADD COMPONENT AND PASS THE BOT ID (RECEIVED FROM THE VIEW)
   goToEditAddPage_EDIT(dept_id: string, dept_default: boolean) {
-    console.log('goToEditAddPage_EDIT DEPT ID ', dept_id);
-    console.log('goToEditAddPage_EDIT DEPT DEFAULT ', dept_default);
-    console.log('goToEditAddPage_EDIT DEPTS LENGHT ', this.departments.length);
+    this.logger.log('[DEPTS] - goToEditAddPage_EDIT DEPT ID ', dept_id);
+    this.logger.log('[DEPTS] - goToEditAddPage_EDIT DEPT DEFAULT ', dept_default);
+    this.logger.log('[DEPTS] - goToEditAddPage_EDIT DEPTS LENGHT ', this.departments.length);
 
     this.router.navigate(['project/' + this.project._id + '/department/edit', dept_id]);
-
-    // if (dept_default === true && this.departments.length ===  1 ) {
-    // this.router.navigate(['project/' + this.project._id + '/department/edit', dept_id]);
-    // } else if (dept_default !== true && this.departments.length >  1) { 
-    //   this.router.navigate(['project/' + this.project._id + '/department/edit', dept_id]);
-    // }
   }
 
 
   /**
    * GETS ONLY THE DEPTs WITH THE CURRENT PROJECT ID
-   * note: the project id is passed get and passed by mongodbDepartmentService */
+   * note: the project id is passed get and passed by deptService */
   getDeptsByProjectId() {
-    this.mongodbDepartmentService.getDeptsByProjectId().subscribe((departments: any) => {
-      console.log('»»» »»» DEPTS PAGE - DEPTS (FILTERED FOR PROJECT ID)', departments);
+    this.deptService.getDeptsByProjectId().subscribe((departments: any) => {
+      this.logger.log('[DEPTS] - GET DEPTS (FILTERED FOR PROJECT ID)', departments);
 
       if (departments) {
         let count = 0;
         departments.forEach((dept: any) => {
-          // console.log('»»» »»» DEPTS PAGE - DEPT)', dept);
+          // this.logger.log('»»» »»» DEPTS PAGE - DEPT)', dept);
           if (dept && dept.default === true) {
-            console.log('»»» »»» DEPTS PAGE - DEFAULT DEPT ', dept);
+            this.logger.log('[DEPTS] - GET DEPTS - DEFAULT DEPT ', dept);
             dept['display_name'] = "Default Routing"
           }
 
           /// DI QUESTO NN C'E NE SAREBBE BISOGNO
           if (!this.isVisibleDEP) {
             if (dept && dept.default === true) {
-              console.log('»»» »»» DEPTS PAGE - this.isVisibleDEP ', this.isVisibleDEP, 'DEFAULT DEPT STATUS', dept.status);
+              this.logger.log('[DEPTS]  - this.isVisibleDEP ', this.isVisibleDEP, 'DEFAULT DEPT STATUS', dept.status);
 
               if (dept.status === 0) {
                 this.updateDefaultDeptStatusIfIsZero(dept._id, 1)
               }
 
               const index = departments.indexOf(dept);
-              console.log('»»» »»» DEPTS PAGE - this.isVisibleDEP ', this.isVisibleDEP, 'INDEX OF DEFAULT DEPT', index);
+              this.logger.log('[DEPTS] - this.isVisibleDEP ', this.isVisibleDEP, 'INDEX OF DEFAULT DEPT', index);
 
               this.departments.push(dept)
-              console.log('»»» »»» DEPTS PAGE - this.isVisibleDEP ', this.isVisibleDEP, 'this.departments ', this.departments);
+              this.logger.log('[DEPTS] - this.isVisibleDEP ', this.isVisibleDEP, 'this.departments ', this.departments);
             }
           } else {
 
             this.departments = departments;
-            console.log('»»» »»» DEPTS PAGE - this.isVisibleDEP ', this.isVisibleDEP, 'this.departments ', this.departments);
+            this.logger.log('[DEPTS] - this.isVisibleDEP ', this.isVisibleDEP, 'this.departments ', this.departments);
           }
 
           if (this.isVisibleDEP) {
@@ -248,41 +243,38 @@ export class DepartmentsComponent implements OnInit {
           }
         });
 
-
-
         this.COUNT_OF_VISIBLE_DEPT = count;
-        console.log('»»» »»» DEPTS PAGE - COUNT_OF_VISIBLE_DEPT', this.COUNT_OF_VISIBLE_DEPT);
+        this.logger.log('[DEPTS] - COUNT_OF_VISIBLE_DEPT', this.COUNT_OF_VISIBLE_DEPT);
       }
     }, error => {
       this.showSpinner = false;
-      console.log('DEPARTMENTS (FILTERED FOR PROJECT ID) - ERROR', error);
+      this.logger.error('[DEPTS] (FILTERED FOR PROJECT ID) - ERROR', error);
     }, () => {
-      console.log('DEPARTMENTS (FILTERED FOR PROJECT ID) - COMPLETE')
+      this.logger.log('[DEPTS] (FILTERED FOR PROJECT ID) - COMPLETE')
       this.showSpinner = false;
     });
   }
 
 
-  // da controllare sembra nn usato
   updateDefaultDeptStatusIfIsZero(dept_id, deptStatus) {
-    this.mongodbDepartmentService.updateDeptStatus(dept_id, deptStatus)
+    this.deptService.updateDeptStatus(dept_id, deptStatus)
       .subscribe((department: any) => {
-        console.log('»»» »»» DEPTS PAGE - updateDefaultDeptStatusIfIsZero - UPDATED DEPT ', department)
+        this.logger.log('[DEPTS] - updateDefaultDeptStatusIfIsZero - UPDATED DEPT ', department)
 
       }, error => {
-        // this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem');
-        console.log('»»» »»» DEPTS PAGE - updateDefaultDeptStatusIfIsZero - ERROR', error);
+     
+        this.logger.error('[DEPTS] - updateDefaultDeptStatusIfIsZero - ERROR', error);
       }, () => {
-        // this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done');
-        console.log('»»» »»» DEPTS PAGE - updateDefaultDeptStatusIfIsZero - COMPLETE')
+      
+        this.logger.log('[DEPTS] - updateDefaultDeptStatusIfIsZero - COMPLETE')
 
       });
   }
 
   updateDeptStatus($event, dept_id) {
-    console.log('»»» »»» DEPTS PAGE - ON CHANGE DEPT STATUS - event ', $event)
+    this.logger.log('[DEPTS] - ON CHANGE DEPT STATUS - event ', $event)
     const checkModel = $event.target.checked;
-    console.log('»»» »»» DEPTS PAGE - ON CHANGE DEPT STATUS - DEPT ID ', dept_id, 'CHECHED ', checkModel)
+    this.logger.log('[DEPTS] - ON CHANGE DEPT STATUS - DEPT ID ', dept_id, 'CHECKED ', checkModel)
 
     // let deptStatus = null;
 
@@ -292,54 +284,60 @@ export class DepartmentsComponent implements OnInit {
       this.deptStatus = 0
     }
 
-    this.mongodbDepartmentService.updateDeptStatus(dept_id, this.deptStatus)
+    this.deptService.updateDeptStatus(dept_id, this.deptStatus)
       .subscribe((department: any) => {
-        console.log('»»» »»» DEPTS PAGE - UPDATE DEPT STATUS - UPDATED DEPT ', department)
+        this.logger.log('[DEPTS] - UPDATE DEPT STATUS - UPDATED DEPT ', department)
 
       }, error => {
         this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem');
-        console.log('»»» »»» DEPTS PAGE - UPDATE DEPT STATUS - ERROR', error);
+        this.logger.error('[DEPTS] - UPDATE DEPT STATUS - ERROR', error);
       }, () => {
         this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done');
-        console.log('»»» »»» DEPTS PAGE - UPDATE DEPT STATUS - COMPLETE')
+        this.logger.log('[DEPTS] - UPDATE DEPT STATUS - COMPLETE')
+
+        // ------------------------
+        // GET  DEPTS BY PROJECT ID
+        // ------------------------
         this.getDeptsByProjectId();
 
-        console.log('»»» »»» DEPTS PAGE - UPDATE DEPT STATUS - COMPLETE DEPTS - ', this.departments)
-
-        
-
+        this.logger.log('[DEPTS] - UPDATE DEPT STATUS - COMPLETE DEPTS - ', this.departments)
       });
   }
 
 
   getProjectPlan() {
     this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      console.log('»»» »»» DEPTS PAGE project Profile Data', projectProfileData)
+      this.logger.log('[DEPTS] getProjectPlan project Profile Data', projectProfileData)
       if (projectProfileData) {
         this.prjct_profile_type = projectProfileData.profile_type;
-        console.log('»»» »»» DEPTS PAGE prjct_profile_type', this.prjct_profile_type)
+        this.logger.log('[DEPTS] getProjectPlan prjct_profile_type', this.prjct_profile_type)
         this.subscription_is_active = projectProfileData.subscription_is_active;
-        console.log('»»» »»» DEPTS PAGE subscription_is_active', this.subscription_is_active)
+        this.logger.log('[DEPTS] getProjectPlan subscription_is_active', this.subscription_is_active)
         this.trialExpired = projectProfileData.trial_expired;
-        console.log('»»» »»» DEPTS PAGE trialExpired', this.trialExpired)
-       
-        if ((this.prjct_profile_type === 'payment' && this.subscription_is_active === false ) || (this.prjct_profile_type === 'free' && this.trialExpired === true )) {
+        this.logger.log('[DEPTS] getProjectPlan trialExpired', this.trialExpired)
+
+        if ((this.prjct_profile_type === 'payment' && this.subscription_is_active === false) || (this.prjct_profile_type === 'free' && this.trialExpired === true)) {
           this.subscriptionInactiveOrTrialExpired = true;
-          console.log('»»» »»» DEPTS PAGE subscriptionInactiveOrTrialExpired', this.subscriptionInactiveOrTrialExpired)
+          this.logger.log('[DEPTS] getProjectPlan subscriptionInactiveOrTrialExpired', this.subscriptionInactiveOrTrialExpired)
         } else {
           this.subscriptionInactiveOrTrialExpired = false;
-          console.log('»»» »»» DEPTS PAGE subscriptionInactiveOrTrialExpired', this.subscriptionInactiveOrTrialExpired)
+          this.logger.log('[DEPTS] getProjectPlan subscriptionInactiveOrTrialExpired', this.subscriptionInactiveOrTrialExpired)
         }
-
-       
       }
-    })
+    }, error => {
+    
+      this.logger.error('[DEPTS] - getProjectPlan - ERROR', error);
+    }, () => {
+     
+      this.logger.log('[DEPTS] - getProjectPlan - COMPLETE')
+
+    });
   }
 
 
   // GO TO  BOT-EDIT-ADD COMPONENT
   goToEditAddPage_CREATE() {
-    if ((this.prjct_profile_type === 'payment' && this.subscription_is_active === false ) || (this.prjct_profile_type === 'free' && this.trialExpired === true )) {
+    if ((this.prjct_profile_type === 'payment' && this.subscription_is_active === false) || (this.prjct_profile_type === 'free' && this.trialExpired === true)) {
       this.router.navigate(['project/' + this.project._id + '/departments-demo']);
     } else {
       this.router.navigate(['project/' + this.project._id + '/department/create']);
@@ -349,9 +347,9 @@ export class DepartmentsComponent implements OnInit {
   /**
    * GET BOT BY ID  */
   getBotById(id_bot) {
-    this.faqKbService.getMongDbFaqKbById(id_bot).subscribe((bot: any) => {
+    this.faqKbService.getFaqKbById(id_bot).subscribe((bot: any) => {
       if (bot) {
-        console.log(' -- > BOT GET BY ID', bot);
+        this.logger.log('[DEPTS] -- > BOT GET BY ID', bot);
         this.botName = bot.name;
 
         for (const dept of this.departments) {
@@ -362,19 +360,19 @@ export class DepartmentsComponent implements OnInit {
         }
       }
     }, error => {
-      console.log('-- > BOT GET BY ID - ERROR', error);
+      this.logger.error('[DEPTS] -- > BOT GET BY ID - ERROR', error);
 
       const errorBody = JSON.parse(error._body)
-      console.log('BOT GET BY ID - ERROR BODY', errorBody);
+      this.logger.log('[DEPTS] - BOT GET BY ID - ERROR BODY', errorBody);
       if (errorBody.msg === 'Object not found.') {
-        console.log('BOT GET BY ID - ERROR BODY MSG', errorBody.msg);
-        console.log('BOT GET BY ID - ERROR url', error.url);
+        this.logger.log('[DEPTS] -  BOT GET BY ID - ERROR BODY MSG', errorBody.msg);
+        this.logger.log('[DEPTS] - BOT GET BY ID - ERROR url', error.url);
         const IdOfBotNotFound = error.url.split('/').pop();
-        console.log('BOT GET BY ID - ERROR - ID OF BOT NOT FOUND ', IdOfBotNotFound);
+        this.logger.log('[DEPTS] - BOT GET BY ID - ERROR - ID OF BOT NOT FOUND ', IdOfBotNotFound);
 
       }
     }, () => {
-      console.log('-- > BOT GET BY ID - COMPLETE')
+      this.logger.log('[DEPTS] -- > BOT GET BY ID - COMPLETE')
     });
   }
 
@@ -384,11 +382,11 @@ export class DepartmentsComponent implements OnInit {
     this.groupsService.getGroupById(id_group).subscribe((group: any) => {
 
       if (group) {
-        console.log(' -- > GROUP GET BY ID', group);
+        this.logger.log('[DEPTS] --> GROUP GET BY ID', group);
 
         this.groupName = group.name
         this.groupIsTrashed = group.trashed
-        console.log(' -- > GROUP NAME ', this.groupName, 'is TRASHED ', this.groupIsTrashed);
+        this.logger.log('[DEPTS] --> GROUP NAME ', this.groupName, 'is TRASHED ', this.groupIsTrashed);
         for (const dept of this.departments) {
 
           if (dept.id_group === group._id) {
@@ -406,9 +404,9 @@ export class DepartmentsComponent implements OnInit {
         }
       }
     }, error => {
-      console.log('-- > GROUP GET BY ID - ERROR', error);
+      this.logger.error('[DEPTS] --> GROUP GET BY ID - ERROR', error);
     }, () => {
-      console.log('-- > GROUP GET BY ID - COMPLETE')
+      this.logger.log('[DEPTS] --> GROUP GET BY ID - COMPLETE')
     });
   }
 
@@ -419,8 +417,8 @@ export class DepartmentsComponent implements OnInit {
    * GET DEPTS ALL DEPTS (READ)
    */
   // getDepartments() {
-  //   this.mongodbDepartmentService.getMongDbDepartments().subscribe((departments: any) => {
-  //     console.log('RETRIEVED DEPTS AS THE OLD WIDGET VERSION: ', departments);
+  //   this.deptService.getDeptsAsOldWidget().subscribe((departments: any) => {
+  //     this.logger.log('RETRIEVED DEPTS AS THE OLD WIDGET VERSION: ', departments);
   //     // this.departments = departments;
   //   });
   // }
@@ -432,25 +430,25 @@ export class DepartmentsComponent implements OnInit {
   * GET DEPTS ALL DEPTS (READ)
   */
   // getDepartmentsAsNewWidgetVersion() {
-  //   this.mongodbDepartmentService.getDepartmentsAsNewWidgetVersion().subscribe((departments: any) => {
-  //     console.log('RETRIEVED DEPTS AS THE NEW WIDGET VERSION: ', departments);
+  //   this.deptService.getDeptsAsNewWidget().subscribe((departments: any) => {
+  //     this.logger.log('RETRIEVED DEPTS AS THE NEW WIDGET VERSION: ', departments);
   //     // this.departments = departments;
   //   });
   // }
 
 
   // getVisitorCounter() {
-  //   this.mongodbDepartmentService.getVisitorCounter()
+  //   this.deptService.getVisitorCounter()
   //     .subscribe((visitorCounter: any) => {
-  //       console.log('getVisitorCounter : ', visitorCounter);
+  //       this.logger.log('getVisitorCounter : ', visitorCounter);
   //       // this.departments = departments;
   //     }, (error) => {
 
-  //       console.log('getVisitorCounter ERROR ', error);
+  //       this.logger.log('getVisitorCounter ERROR ', error);
 
   //     },
   //       () => {
-  //         console.log('getVisitorCounter * COMPLETE *');
+  //         this.logger.log('getVisitorCounter * COMPLETE *');
   //       });
   // }
 
@@ -459,10 +457,10 @@ export class DepartmentsComponent implements OnInit {
    * !! MOVED IN DEPARTMENT-EDIT-ADD COMPONENT
    */
   // createDepartment() {
-  //   console.log('MONGO DB DEPT-NAME DIGIT BY USER ', this.dept_name);
-  //   this.mongodbDepartmentService.addMongoDbDepartments(this.dept_name)
+  //   this.logger.log('MONGO DB DEPT-NAME DIGIT BY USER ', this.dept_name);
+  //   this.deptService.addMongoDbDepartments(this.dept_name)
   //     .subscribe((department) => {
-  //       console.log('POST DATA ', department);
+  //       this.logger.log('POST DATA ', department);
 
   //       this.dept_name = '';
 
@@ -472,11 +470,11 @@ export class DepartmentsComponent implements OnInit {
   //     },
   //     (error) => {
 
-  //       console.log('POST REQUEST ERROR ', error);
+  //       this.logger.log('POST REQUEST ERROR ', error);
 
   //     },
   //     () => {
-  //       console.log('POST REQUEST * COMPLETE *');
+  //       this.logger.log('POST REQUEST * COMPLETE *');
   //     });
 
   // }
@@ -488,7 +486,7 @@ export class DepartmentsComponent implements OnInit {
    */
   openDeleteModal(id: string, deptName: string) {
 
-    console.log('ON MODAL DELETE OPEN -> DEPT ID ', id);
+    this.logger.log('[DEPTS] - ON MODAL DELETE OPEN -> DEPT ID ', id);
 
     this.DISPLAY_DATA_FOR_UPDATE_MODAL = false;
 
@@ -503,74 +501,21 @@ export class DepartmentsComponent implements OnInit {
   onCloseDeleteModalHandled() {
     this.displayDeleteModal = 'none';
 
-    this.mongodbDepartmentService.deleteMongoDbDeparment(this.id_toDelete).subscribe((data) => {
-      console.log('DELETE DATA ', data);
-
+    this.deptService.deleteDeparment(this.id_toDelete).subscribe((data) => {
+      this.logger.log('[DEPTS] - DELETE DEPT RES ', data);
 
       this.getDeptsByProjectId();
-      // this.ngOnInit();
-
-    },
-      (error) => {
-        console.log('DELETE REQUEST ERROR ', error);
+  
+    },(error) => {
+        this.logger.error('[DEPTS] DELETE DEPT - ERROR ', error);
         this.notify.showWidgetStyleUpdateNotification(this.deleteErrorMsg, 4, 'report_problem');
-      },
-      () => {
-        console.log('DELETE REQUEST * COMPLETE *');
+      },() => {
+        this.logger.log('[DEPTS] DELETE DEPT * COMPLETE *');
         this.notify.showWidgetStyleUpdateNotification(this.deleteSuccessMsg, 2, 'done');
 
       });
   }
 
-  /** !!! NO MORE USED
-   * MODAL UPDATE DEPARTMENT
-   * @param id
-   * @param deptName
-   * @param hasClickedUpdateModal
-   */
-  // openUpdateModal(id: string, deptName: string, hasClickedUpdateModal: boolean) {
-  //   // display the modal windows (change the display value in the view)
-  //   console.log('HAS CLICKED OPEN MODAL TO UPDATE USER DATA ', hasClickedUpdateModal);
-  //   this.DISPLAY_DATA_FOR_UPDATE_MODAL = hasClickedUpdateModal;
-  //   this.DISPLAY_DATA_FOR_DELETE_MODAL = false;
-
-  //   if (hasClickedUpdateModal) {
-  //     this.display = 'block';
-  //   }
-
-  //   console.log('ON MODAL OPEN -> CONTACT ID ', id);
-  //   console.log('ON MODAL OPEN -> CONTACT FULL-NAME TO UPDATE', deptName);
-
-  //   this.id_toUpdate = id;
-  //   this.deptName_toUpdate = deptName;
-  // }
-
-  /**
-   * UPDATE CONTACT (WHEN THE 'SAVE' BUTTON IN MODAL IS CLICKED)
-   */
-  // onCloseUpdateModalHandled() {
-  //   // HIDE THE MODAL
-  //   this.display = 'none';
-
-  //   console.log('ON MODAL UPDATE CLOSE -> CONTACT ID ', this.id_toUpdate);
-  //   console.log('ON MODAL UPDATE CLOSE -> CONTACT FULL-NAME UPDATED ', this.deptName_toUpdate);
-  //   this.mongodbDepartmentService.updateMongoDbDepartment(this.id_toUpdate, this.deptName_toUpdate).subscribe((data) => {
-  //     console.log('PUT DATA ', data);
-
-  //     // RE-RUN GET CONTACT TO UPDATE THE TABLE
-  //     // this.getDepartments();
-  //     this.ngOnInit();
-  //   },
-  //     (error) => {
-
-  //       console.log('PUT REQUEST ERROR ', error);
-
-  //     },
-  //     () => {
-  //       console.log('PUT REQUEST * COMPLETE *');
-  //     });
-
-  // }
 
   // CLOSE MODAL WITHOUT SAVE THE UPDATES OR WITHOUT CONFIRM THE DELETION
   onCloseModal() {

@@ -6,7 +6,7 @@ import * as marked from 'marked';
 export class MarkedPipe implements PipeTransform {
 
   transform(value: any): any {
-    console.log('MARKED PIPE value ', value)
+    // console.log('MARKED PIPE value ', value)
     const renderer = new marked.Renderer();
     renderer.link = function(href, title, text) {
         const link = marked.Renderer.prototype.link.call(this, href, title, text);
@@ -17,7 +17,7 @@ export class MarkedPipe implements PipeTransform {
     });
     if (value && value.length > 0) {
       const text = marked(value);
-      console.log('MARKED PIPE value 2', text)
+      // console.log('MARKED PIPE value 2', text)
       return text;
     }
     return value;

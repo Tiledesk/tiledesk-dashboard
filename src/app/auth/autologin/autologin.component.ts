@@ -1,13 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-
+import { Project } from '../../models/project-model';
 import { AuthService } from '../../core/auth.service';
 import { Subscription } from 'rxjs/Subscription';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { SsoService } from '../../core/sso.service';
-import * as firebase from 'firebase';
+import * as firebase from 'firebase/app';
+import 'firebase/messaging';
 import { isDevMode } from '@angular/core';
 import { AppConfigService } from '../../services/app-config.service';
 import { environment } from '../../../environments/environment';
+import { ProjectService } from '../../services/project.service';
+import { LoggerService } from '../../services/logger/logger.service';
 
 @Component({
   selector: 'appdashboard-autologin',
@@ -29,7 +32,9 @@ export class AutologinComponent implements OnInit {
     public auth: AuthService,
     private router: Router,
     public sso: SsoService,
-    public appConfigService: AppConfigService
+    public appConfigService: AppConfigService,
+    private projectService: ProjectService,
+    private logger: LoggerService
   ) {
 
     this.user = auth.user_bs.value;
@@ -37,15 +42,15 @@ export class AutologinComponent implements OnInit {
       // tslint:disable-next-line:no-debugger
       // debugger
       this.user = user;
-      console.log('!! AUTH WF USER ', user)
+      this.logger.log('[AUTOLOGIN] !! AUTH WF USER ', user)
     });
     this.APP_IS_DEV_MODE = isDevMode();
-    console.log('SSO - autologin page isDevMode ', this.APP_IS_DEV_MODE);
+    this.logger.log('[AUTOLOGIN] SSO - autologin page isDevMode ', this.APP_IS_DEV_MODE);
 
 
 
     this.getJWTAndRouteParamsAndLogin();
-   
+
     if (appConfigService.getConfig().pushEngine === 'firebase') {
       this.checkIfFCMIsSupported();
     }
@@ -54,18 +59,18 @@ export class AutologinComponent implements OnInit {
 
   getJWTAndRouteParamsAndLogin() {
     this.route.params.subscribe((params) => {
-      console.log('SSO - autologin page params ', params)
+      this.logger.log('[AUTOLOGIN] SSO - autologin page params ', params)
 
       const route = params.route
-      console.log('SSO - autologin page params route', route);
+      this.logger.log('[AUTOLOGIN] SSO - autologin page params route', route);
 
 
       const JWT = params.token
-      console.log('SSO - autologin page params token ', JWT);
+      this.logger.log('[AUTOLOGIN] SSO - autologin page params token ', JWT);
 
 
 
-      console.log('SSO - autologin getConfig firebaseAuth', this.appConfigService.getConfig().firebaseAuth)
+      this.logger.log('[AUTOLOGIN] SSO - autologin getConfig firebaseAuth', this.appConfigService.getConfig().firebaseAuth)
       if (this.appConfigService.getConfig().firebaseAuth === 'true') {
 
         if (JWT && route) {
@@ -81,7 +86,7 @@ export class AutologinComponent implements OnInit {
 
   ngOnInit() {
 
-    console.log('SSO - autologin page');
+    this.logger.log('[AUTOLOGIN] SSO - autologin page');
     this.detectMobile();
   }
 
@@ -89,7 +94,7 @@ export class AutologinComponent implements OnInit {
   detectMobile() {
     // this.isMobile = true;
     this.isMobile = /Android|iPhone/i.test(window.navigator.userAgent);
-    console.log('WS-REQUEST-SERVED - IS MOBILE ', this.isMobile);
+    this.logger.log('[AUTOLOGIN] - IS MOBILE ', this.isMobile);
   }
 
 
@@ -97,40 +102,110 @@ export class AutologinComponent implements OnInit {
     if (firebase.messaging.isSupported()) {
       // Supported
       this.FCM_Supported = true;
-      console.log('SSO (autologin page) - *** >>>> FCM is Supported: ', this.FCM_Supported);
+      this.logger.log('[AUTOLOGIN] SSO (autologin page) - *** >>>> FCM is Supported: ', this.FCM_Supported);
     } else {
       // NOT Supported
       this.FCM_Supported = false;
-      console.log('SSO (autologin page) - *** >>>> FCM is Supported: ', this.FCM_Supported);
+      this.logger.log('[AUTOLOGIN] SSO (autologin page) - *** >>>> FCM is Supported: ', this.FCM_Supported);
     }
   }
 
   ssoLogin(JWT, route) {
 
-    console.log('SSO - ssoLogin getCurrentAuthenticatedUser route ', route);
-    console.log('SSO - ssoLogin getCurrentAuthenticatedUser JWT ', JWT);
-    
+    this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser route ', route);
+    this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser JWT ', JWT);
+
     this.logout();
 
     this.sso.getCurrentAuthenticatedUser(JWT).subscribe(auth_user => {
-      console.log('SSO - ssoLogin getCurrentAuthenticatedUser RES ', auth_user);
+      this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser RES ', auth_user);
 
       const user = { firstname: auth_user.firstname, lastname: auth_user.lastname, _id: auth_user._id, email: auth_user.email, emailverified: auth_user.emailverified, token: JWT }
-      console.log('SSO - ssoLogin getCurrentAuthenticatedUser user ', user);
+      this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser user ', user);
 
       localStorage.setItem('user', JSON.stringify(user));
+
+
 
       this.auth.publishSSOloggedUser();
 
       this.router.navigate([route]);
 
     }, (error) => {
-      console.log('SSO - ssoLogin getCurrentAuthenticatedUser ', error);
+      this.logger.error('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser ', error);
 
     }, () => {
-      console.log('SSO - ssoLogin getCurrentAuthenticatedUser * COMPLETE *');
+      this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser * COMPLETE *');
+
+      const route_part = route.split('/');
+      console.log('[AUTOLOGIN] SSO - ssoLogin route_part ', route_part);
+      const project_id = route_part[2]
+      console.log('[AUTOLOGIN] SSO - ssoLogin route_part ', route_part);
+  
+      const storedProjectJson = localStorage.getItem(project_id);
+      console.log('[AUTOLOGIN] SSO - ssoLogin storedProjectJson ', storedProjectJson);
+  
+      if (storedProjectJson === null) {
+        this.getProjectFromRemotePublishAndSaveInStorage(project_id);
+      }
     });
   }
+
+  getProjectFromRemotePublishAndSaveInStorage(project_id) {
+
+    this.projectService.getProjects().subscribe((prjcts: any) => {
+      this.logger.log('[AUTOLOGIN] - PROJECTS OBJCTS FROM REMOTE CALLBACK ', prjcts);
+
+      const prjct = prjcts.filter(p => p.id_project._id === project_id);
+
+      this.logger.log('[AUTOLOGIN] - PROJECT OBJCT FILTERED FOR PROJECT ID ', prjct);
+      // this.logger.log('[AUTOLOGIN] - PROJECT OBJCT FILTERED FOR PROJECT ID LENGHT ', prjct.length);
+
+      if (prjct && prjct.length > 0) {
+        this.logger.log('[AUTOLOGIN] - TEST --- HERE YES');
+       
+
+        const project_name = prjct[0].id_project.name;
+        this.logger.log('[AUTOLOGIN] - PROJECT NAME GOT BY  PROJECT REMOTE ', project_name);
+        // tslint:disable-next-line:max-line-length
+        // this.notify.showNotificationChangeProject(`You have been redirected to the project <span style="color:#ffffff; display: inline-block; max-width: 100%;"> ${this.nav_project_name} </span>`, 0, 'info');
+
+        const project: Project = {
+          _id: project_id,
+          name: project_name,
+          profile_name: prjct[0].id_project.profile.name,
+          trial_expired: prjct[0].id_project.trialExpired,
+          trial_days_left: prjct[0].id_project.trialDaysLeft,
+          operatingHours: prjct[0].id_project.activeOperatingHours
+        }
+        // PROJECT ID and NAME ARE SENT TO THE AUTH SERVICE THAT PUBLISHES
+        this.auth.projectSelected(project);
+        this.logger.log('[AUTOLOGIN] - PROJECT THAT IS PUBLISHED ', project);
+        // this.project_bs.next(project);
+
+        const projectForStorage: Project = {
+          _id: project_id,
+          name: project_name,
+          role: prjct[0].role,
+          profile_name: prjct[0].id_project.profile.name,
+          trial_expired: prjct[0].id_project.trialExpired,
+          trial_days_left: prjct[0].id_project.trialDaysLeft,
+          operatingHours: prjct[0].id_project.activeOperatingHours
+        }
+        // SET THE ID, the NAME OF THE PROJECT and THE USER ROLE IN THE LOCAL STORAGE.
+        this.logger.log('[AUTOLOGIN] - PROJECT THAT IS STORED', projectForStorage);
+        localStorage.setItem(project_id, JSON.stringify(projectForStorage));
+
+      }
+
+    }, (error) => {
+      this.logger.error('[AUTOLOGIN] - GET PROJECT BY ID - ERROR ', error);
+    }, () => {
+      this.logger.log('[AUTOLOGIN] - GET PROJECT BY ID - COMPLETE ');
+
+    });
+  }
+
 
   ssoLoginWithCustomToken(JWT, route) {
     // -------------
@@ -138,25 +213,22 @@ export class AutologinComponent implements OnInit {
     // -------------
     this.logout();
 
-    console.log('SSO - getUrl');
+    this.logger.log('[AUTOLOGIN] SSO - ssoLoginWithCustomToken');
 
 
     this.sso.chat21CreateFirebaseCustomToken(JWT).subscribe(fbtoken => {
 
-      console.log('SSO - ssoLoginWithCustomToken chat21CreateFirebaseCustomToken res ', fbtoken);
+      this.logger.log('[AUTOLOGIN] SSO - ssoLoginWithCustomToken chat21CreateFirebaseCustomToken res ', fbtoken);
 
       if (fbtoken) {
 
         firebase.auth().signInWithCustomToken(fbtoken)
           .then(firebase_user => {
-            console.log('SSO - ssoLoginWithCustomToken - signInWithCustomToken ', firebase_user);
-
-
-       
+            this.logger.log('[AUTOLOGIN] SSO - ssoLoginWithCustomToken - signInWithCustomToken ', firebase_user);
 
             if (firebase_user) {
               this.sso.getCurrentAuthenticatedUser(JWT).subscribe(auth_user => {
-                console.log('SSO - ssoLoginWithCustomToken getCurrentAuthenticatedUser RES ', auth_user);
+                this.logger.log('[AUTOLOGIN] SSO - ssoLoginWithCustomToken getCurrentAuthenticatedUser RES ', auth_user);
 
                 const user = { firstname: auth_user.firstname, lastname: auth_user.lastname, _id: auth_user._id, token: JWT }
 
@@ -180,53 +252,50 @@ export class AutologinComponent implements OnInit {
                 // _id: "5ddd30bff0195f0017f72c6d"
 
               }, (error) => {
-                console.log('SSO - autologin getCurrentAuthenticatedUser ', error);
+                this.logger.error('[AUTOLOGIN] SSO - autologin getCurrentAuthenticatedUser ', error);
 
               }, () => {
-                console.log('SSO - autologin getCurrentAuthenticatedUser * COMPLETE *');
+                this.logger.log('[AUTOLOGIN] SSO - autologin getCurrentAuthenticatedUser * COMPLETE *');
               });
             }
-
-
           })
       }
-
     }, (error) => {
-      console.log('SSO - autologin chat21CreateFirebaseCustomToken ', error);
+      this.logger.error('[AUTOLOGIN] SSO - autologin chat21CreateFirebaseCustomToken ', error);
     }, () => {
-      console.log('SSO - autologin chat21CreateFirebaseCustomToken * COMPLETE *');
+      this.logger.log('[AUTOLOGIN]SSO - autologin chat21CreateFirebaseCustomToken * COMPLETE *');
     });
   }
 
   getPermission(userid) {
-    console.log('SSO - LOGIN - 5. getPermission ')
+    this.logger.log('[AUTOLOGIN] SSO - LOGIN - 5. getPermission ')
     const messaging = firebase.messaging();
     if (firebase.messaging.isSupported()) {
       // messaging.requestPermission()
       Notification.requestPermission()
         .then(() => {
-          console.log('SSO - LOGIN - 5B. >>>> getPermission Notification permission granted.');
+          this.logger.log('[AUTOLOGIN] SSO - LOGIN - 5B. >>>> getPermission Notification permission granted.');
           return messaging.getToken()
         })
         .then(FCMtoken => {
-          console.log('>>>> getPermission FCMtoken', FCMtoken)
+          this.logger.log('[AUTOLOGIN] >>>> getPermission FCMtoken', FCMtoken)
           // Save FCM Token in Firebase
           this.FCMcurrentToken = FCMtoken;
           this.updateToken(FCMtoken, userid)
         })
         .catch((err) => {
-          console.log('SSO - LOGIN - 5C. >>>> getPermission Unable to get permission to notify.', err);
+          this.logger.error('[AUTOLOGIN] SSO - LOGIN - 5C. >>>> getPermission Unable to get permission to notify.', err);
         });
     }
   }
 
   updateToken(FCMcurrentToken, userid) {
-    console.log('>>>> updateToken ', FCMcurrentToken);
+    this.logger.log('[AUTOLOGIN] >>>> updateToken ', FCMcurrentToken);
     // this.afAuth.authState.take(1).subscribe(user => {
     if (!userid || !FCMcurrentToken) {
       return
     };
-    console.log('aggiorno token nel db');
+    this.logger.log('[AUTOLOGIN] update the token in the db');
     const connection = FCMcurrentToken;
     const updates = {};
     const urlNodeFirebase = '/apps/tilechat'
@@ -242,15 +311,14 @@ export class AutologinComponent implements OnInit {
 
     updates[connectionsRefinstancesId + connection] = device_model;
 
-    console.log('Firebase Cloud Messaging  - Aggiorno token ------------>', updates);
+    this.logger.log('[AUTOLOGIN] Firebase Cloud Messaging  - Update token updates ------------>', updates);
     firebase.database().ref().update(updates)
   }
 
-  
-  logout() {
-    console.log('SSO - autologin')
 
-    console.log('SSO - autologin - WORKS WITH FIREBASE ')
+  logout() {
+    this.logger.log('[AUTOLOGIN] SSO - autologin logout')
+
     this.auth.showExpiredSessionPopup(false);
 
     this.auth.signOut('autologin');

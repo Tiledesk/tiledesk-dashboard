@@ -10,7 +10,7 @@ import { Observable } from 'rxjs/Observable';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { NotifyService } from '../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
-
+import { LoggerService } from '../services/logger/logger.service';
 @Injectable()
 
 export class ProjectPlanService {
@@ -20,18 +20,19 @@ export class ProjectPlanService {
   projectID: string;
   TOKEN: string
   project_deleted_notification: string
-progetIdGetFromParams: string
+  progetIdGetFromParams: string
   constructor(
     http: Http,
     private router: Router,
     private auth: AuthService,
     private projectService: ProjectService,
     private notify: NotifyService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private logger: LoggerService
   ) {
     this.http = http;
     // this.getCurrentProject();
-    this.ckeckProjectPlan();
+    this.getProjectIdFroUrlAndIfExistGetProjectByIdAndPublish();
     this.getUserToken();
     this.translateNotificationMsgs();
   }
@@ -39,10 +40,8 @@ progetIdGetFromParams: string
   translateNotificationMsgs() {
     this.translate.get('ProjectEditPage.NotificationMsgs')
       .subscribe((translation: any) => {
-        // console.log('PROJECT-PLAN-SERVICE  translateNotificationMsgs text', translation)
-
+        // this.logger.log('[PROJECT-PLAN-SERV] translateNotificationMsgs text', translation)
         this.project_deleted_notification = translation.TheProjectHasBeenDeleted;
-
       });
   }
 
@@ -50,9 +49,9 @@ progetIdGetFromParams: string
     this.auth.user_bs.subscribe((user) => {
       if (user) {
         this.TOKEN = user.token
-        // console.log('ProjectPlanService TOKEN ', this.TOKEN)
+        // this.logger.log('[PROJECT-PLAN-SERV] - User is signed in)
       } else {
-        console.log('ProjectPlanService No user is signed in');
+        this.logger.log('[PROJECT-PLAN-SERV] - No user is signed in');
       }
     });
   }
@@ -62,23 +61,22 @@ progetIdGetFromParams: string
 
       if (project) {
         this.projectID = project._id;
-        // console.log('ProjectPlanService subscribe to project_bs - projectID', this.projectID)
+        this.logger.log('[PROJECT-PLAN-SERV] project ID ', this.projectID)
       }
-
     });
   }
 
-  ckeckProjectPlan() {
+  getProjectIdFroUrlAndIfExistGetProjectByIdAndPublish() {
     this.router.events.subscribe((ev) => {
       if (ev instanceof NavigationEnd) {
 
-
         const current_url = ev.url
-        console.log('ProjectPlanService - NavigationEnd current_url', current_url);
+        this.logger.log('[PROJECT-PLAN-SERV] - NavigationEnd current_url', current_url);
         const url_segments = current_url.split('/');
-        console.log('ProjectPlanService - CURRENT URL SEGMENTS ', url_segments);
+        this.logger.log('[PROJECT-PLAN-SERV] - CURRENT URL SEGMENTS ', url_segments);
         const nav_project_id = url_segments[2];
-        console.log('ProjectPlanService - nav_project_id ', nav_project_id);
+        this.logger.log('[PROJECT-PLAN-SERV] - nav_project_id ', nav_project_id);
+
         this.progetIdGetFromParams = nav_project_id
         // -----------------------------------------------------------------
         // this check is in auth.guard - auth.service - project-plan.service
@@ -93,27 +91,21 @@ progetIdGetFromParams: string
           url_segments[1] !== 'autologin' &&
           current_url !== '/projects'
         ) {
-          this.getProjectByID(nav_project_id)
+          this.getProjectByIdAndPublish(nav_project_id)
         }
 
         // nav_project_id IS UNDEFINED IN THE LOGIN PAGE - IN THE PROJECT LIST PAGE
         // IN THE PAGE IN WICH THE  nav_project_id IS UNDEFINED SET TO NULL THE VALUE PUBLISHED BY projectPlan
         if (nav_project_id === undefined) {
-
           this.projectPlan$.next(null);
         }
-
       }
-      // this.projectPlan.next('»»»»»»»»»   change of route »»»»»»»»»');
-
-
     });
   }
 
-  getProjectByID(nav_project_id: string) {
-
+  getProjectByIdAndPublish(nav_project_id: string) {
     this.projectService.getProjectById(nav_project_id).subscribe((project: any) => {
-      console.log('»> »> PROJECT-PROFILE GUARD (NEW WF IN ProjectPlanService) - getProjectByID * project ', project);
+      this.logger.log('[PROJECT-PLAN-SERV] - GET PROJECT BY ID - project ', project);
 
       const projectPlanData: Project = {
 
@@ -135,39 +127,37 @@ progetIdGetFromParams: string
       this.projectPlan$.next(projectPlanData);
 
     }, error => {
-      console.log('ProjectPlanService - getProjectByID * error ', error);
+      this.logger.error('[PROJECT-PLAN-SERV] - GET PROJECT BY ID - ERROR ', error);
 
       if (error.status === 404) {
         this.router.navigate(['/projects']);
         this.notify.showNotificationChangeProject(this.project_deleted_notification, 2, 'report_problem');
-        console.log('ProjectPlanService - hey i redirect to projects');
+        this.logger.log('[PROJECT-PLAN-SERV] - hey i redirect to projects');
       }
 
       if (error.status === 401) {
         this.router.navigate(['/login']);
-        console.log('ProjectPlanService - hey i redirect to login');
+        this.logger.log('[PROJECT-PLAN-SERV] - hey i redirect to login');
       }
 
       if (error.status === 403) {
-       
-        console.log('ProjectPlanService - hey i redirect to unauthorized_access progetIdGetFromParams', this.progetIdGetFromParams);
-        console.log('ProjectPlanService - hey i redirect to unauthorized_access projectID', this.projectID);
+
+        this.logger.log('[PROJECT-PLAN-SERV] - hey i redirect to unauthorized_access progetIdGetFromParams', this.progetIdGetFromParams);
+        this.logger.log('[PROJECT-PLAN-SERV] - hey i redirect to unauthorized_access projectID', this.projectID);
         this.router.navigate([`project/${this.progetIdGetFromParams}/unauthorized_access`]);
       }
-
-
     }, () => {
-      console.log('ProjectPlanService - getProjectByID * complete ');
+      this.logger.log('[PROJECT-PLAN-SERV] - getProjectByID * complete ');
     });
   }
 
-
-  // USED BY ProjectProfileGuard
+  // ------------------------------------
+  // USED BY PROJECT-PROFILE-GUARD
+  // ------------------------------------
   public _getProjectById(prjct_id): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
-      console.log('»> »> PROJECT-PROFILE GUARD (NEW WF IN ProjectPlanService) - getProjectByID * prjct_id (passed from ProjectProfileGuard) ', prjct_id);
+      this.logger.log('[PROJECT-PLAN-SERV] - _GET PROJECT BY ID WHITH PROJECT-ID PASSED FROM PROJECT-PROFILE-GUARD ', prjct_id);
       this.projectService.getProjectById(prjct_id).subscribe((project: any) => {
-
         resolve(project);
       })
     });

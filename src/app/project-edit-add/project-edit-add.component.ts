@@ -22,6 +22,7 @@ import { takeUntil } from 'rxjs/operators'
 
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../services/brand.service';
+import { LoggerService } from '../services/logger/logger.service';
 const swal = require('sweetalert');
 
 @Component({
@@ -152,7 +153,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     private usersService: UsersService,
     private translate: TranslateService,
     public appConfigService: AppConfigService,
-    public brandService: BrandService
+    public brandService: BrandService,
+    private logger: LoggerService
 
   ) {
     const brand = brandService.getBrand();
@@ -188,7 +190,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((user_role) => {
-        console.log('PROJECT-EDIT-ADD  USER ROLE ', user_role);
+        this.logger.log('[PRJCT-EDIT-ADD] - USER ROLE ', user_role);
         if (user_role) {
           this.USER_ROLE = user_role
           if (user_role === 'owner') {
@@ -213,7 +215,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   translateNotificationMsgs() {
     this.translate.get('ProjectEditPage.NotificationMsgs')
       .subscribe((translation: any) => {
-        // console.log('PROJECT-EDIT-ADD  translateNotificationMsgs text', translation)
+        // this.logger.log('[PRJCT-EDIT-ADD] translateNotificationMsgs text', translation)
 
         this.updateSuccessMsg = translation.UpdateProjectSuccess;
         this.updateErrorMsg = translation.UpdateProjectError;
@@ -224,7 +226,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
     this.translate.get('NotificationNothingToSave')
       .subscribe((translation: any) => {
-        // console.log('PROJECT-EDIT-ADD  translateNotificationMsgs text', translation)
+        // this.logger.log('[PRJCT-EDIT-ADD]  translateNotificationMsgs text', translation)
 
         this.notificationNothingToSave = translation;
 
@@ -236,14 +238,14 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   translateModalOnlyOwnerCanManageProjectAccount() {
     this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
       .subscribe((translation: any) => {
-        // console.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        // this.logger.log('[PRJCT-EDIT-ADD] onlyOwnerCanManageTheAccountPlanMsg text', translation)
         this.onlyOwnerCanManageTheAccountPlanMsg = translation;
       });
 
 
     this.translate.get('LearnMoreAboutDefaultRoles')
       .subscribe((translation: any) => {
-        // console.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        // this.logger.log('[PRJCT-EDIT-ADD] onlyOwnerCanManageTheAccountPlanMsg text', translation)
         this.learnMoreAboutDefaultRoles = translation;
       });
   }
@@ -252,53 +254,53 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   getPendingInvitation() {
     this.usersService.getPendingUsers()
       .subscribe((pendingInvitation: any) => {
-        console.log('ProjectEditAddComponent - GET PENDING INVITATION ', pendingInvitation);
+        this.logger.log('[PRJCT-EDIT-ADD] - GET PENDING INVITATION ', pendingInvitation);
 
         if (pendingInvitation) {
           this.countOfPendingInvites = pendingInvitation.length
-          console.log('ProjectEditAddComponent - # OF PENDING INVITATION ', this.countOfPendingInvites);
+          this.logger.log('[PRJCT-EDIT-ADD] - # OF PENDING INVITATION ', this.countOfPendingInvites);
         }
       }, error => {
-        console.log('ProjectEditAddComponent - GET PENDING INVITATION - ERROR', error);
+        this.logger.error('[PRJCT-EDIT-ADD] - GET PENDING INVITATION - ERROR', error);
       }, () => {
-        console.log('ProjectEditAddComponent - GET PENDING INVITATION - COMPLETE');
+        this.logger.log('[PRJCT-EDIT-ADD] - GET PENDING INVITATION - COMPLETE');
       });
   }
 
   getAllUsersOfCurrentProject() {
     this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
-      console.log('ProjectEditAddComponent PROJECT USERS ', projectUsers);
+      this.logger.log('[PRJCT-EDIT-ADD] GET PROJECT USERS - RES ', projectUsers);
 
       if (projectUsers) {
         this.projectUsersLength = projectUsers.length;
-        console.log('ProjectEditAddComponent # OF PROJECT USERS ', this.projectUsersLength);
+        this.logger.log('[PRJCT-EDIT-ADD] # OF PROJECT USERS ', this.projectUsersLength);
       }
     }, error => {
-      console.log('ProjectEditAddComponent PROJECT USERS - ERROR', error);
+      this.logger.error('[PRJCT-EDIT-ADD] PROJECT USERS - ERROR', error);
     }, () => {
-      console.log('ProjectEditAddComponent PROJECT USERS - COMPLETE');
+      this.logger.log('[PRJCT-EDIT-ADD] PROJECT USERS - COMPLETE');
     });
   }
 
 
   getBrowserLanguage() {
     this.browser_lang = this.translate.getBrowserLang();
-    console.log('ProjectEditAddComponent - browser_lang ', this.browser_lang)
+    this.logger.log('[PRJCT-EDIT-ADD] - browser_lang ', this.browser_lang)
   }
 
 
   getOSCODE() {
 
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
-    console.log('AppConfigService getAppConfig (PROJECT-EDIT-ADD) public_Key', this.public_Key);
+    this.logger.log('[PRJCT-EDIT-ADD] AppConfigService getAppConfig public_Key', this.public_Key);
     let keys = this.public_Key.split("-");
-    console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) keys', keys)
+    this.logger.log('[PRJCT-EDIT-ADD] keys', keys)
     keys.forEach(key => {
-      // console.log('NavbarComponent public_Key key', key)
+      // this.logger.log('NavbarComponent public_Key key', key)
       if (key.includes("PAY")) {
-        // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
+        // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
         let pay = key.split(":");
-        // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - pay key&value', pay);
+        // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - pay key&value', pay);
         if (pay[1] === "F") {
           this.isVisiblePaymentTab = false;
         } else {
@@ -307,9 +309,9 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       }
 
       if (key.includes("PSA")) {
-        // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
+        // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
         let psa = key.split(":");
-        // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - pay key&value', psa);
+        // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - pay key&value', psa);
         if (psa[1] === "F") {
           this.isVisibleAdvancedTab = false;
         } else {
@@ -318,9 +320,9 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       }
 
       if (key.includes("DEV")) {
-        // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
+        // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
         let dev = key.split(":");
-        // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - dev key&value', dev);
+        // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - dev key&value', dev);
         if (dev[1] === "F") {
           this.isVisibleDeveloperTab = false;
         } else {
@@ -329,9 +331,9 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       }
 
       if (key.includes("NOT")) {
-        // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
+        // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
         let not = key.split(":");
-        // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - not key&value', not);
+        // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - not key&value', not);
         if (not[1] === "F") {
           this.isVisibleNotificationTab = false;
         } else {
@@ -342,22 +344,22 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     });
 
     if (!this.public_Key.includes("PAY")) {
-      // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("PAY")', this.public_Key.includes("PAY"));
+      // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("PAY")', this.public_Key.includes("PAY"));
       this.isVisiblePaymentTab = false;
     }
 
     if (!this.public_Key.includes("PSA")) {
-      // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("PSA")', this.public_Key.includes("PSA"));
+      // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("PSA")', this.public_Key.includes("PSA"));
       this.isVisibleAdvancedTab = false;
     }
 
     if (!this.public_Key.includes("DEV")) {
-      // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("DEV")', this.public_Key.includes("DEV"));
+      // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("DEV")', this.public_Key.includes("DEV"));
       this.isVisibleDeveloperTab = false;
     }
 
     if (!this.public_Key.includes("NOT")) {
-      // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("NOT")', this.public_Key.includes("NOT"));
+      // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("NOT")', this.public_Key.includes("NOT"));
       this.isVisibleNotificationTab = false;
     }
 
@@ -366,19 +368,19 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   getCurrentUrlAndSwitchView() {
 
     const currentUrl = this.router.url;
-    console.log('%ProjectEditAddComponent current_url ', currentUrl);
+    this.logger.log('[PRJCT-EDIT-ADD] current_url ', currentUrl);
 
-    console.log('%ProjectEditAddComponent PROJECT_SETTINGS_ROUTE ', currentUrl.indexOf('/project-settings/general'));
-    console.log('%ProjectEditAddComponent PROJECT_SETTINGS_PAYMENTS_ROUTE ', currentUrl.indexOf('/project-settings/payments'));
-    console.log('%ProjectEditAddComponent PROJECT_SETTINGS_AUTH_ROUTE ', currentUrl.indexOf('/project-settings/auth'));
-    console.log('%ProjectEditAddComponent PROJECT_SETTINGS_AUTH_ROUTE ', currentUrl.indexOf('/project-settings/advanced'));
-    console.log('%ProjectEditAddComponent PROJECT_SETTINGS_NOTIFICATION ', currentUrl.indexOf('/project-settings/notification'));
+    this.logger.log('[PRJCT-EDIT-ADD] - PROJECT_SETTINGS_ROUTE ', currentUrl.indexOf('/project-settings/general'));
+    this.logger.log('[PRJCT-EDIT-ADD] - PROJECT_SETTINGS_PAYMENTS_ROUTE ', currentUrl.indexOf('/project-settings/payments'));
+    this.logger.log('[PRJCT-EDIT-ADD] - PROJECT_SETTINGS_AUTH_ROUTE ', currentUrl.indexOf('/project-settings/auth'));
+    this.logger.log('[PRJCT-EDIT-ADD] - PROJECT_SETTINGS_AUTH_ROUTE ', currentUrl.indexOf('/project-settings/advanced'));
+    this.logger.log('[PRJCT-EDIT-ADD] - PROJECT_SETTINGS_NOTIFICATION ', currentUrl.indexOf('/project-settings/notification'));
 
     const url_segments = currentUrl.split('/');
-    console.log('%ProjectEditAddComponent url_segments ', url_segments);
+    this.logger.log('[PRJCT-EDIT-ADD] - url_segments ', url_segments);
 
     const nav_project_id = url_segments[2];
-    console.log('%ProjectEditAddComponent nav_project_id ', nav_project_id);
+    this.logger.log('[PRJCT-EDIT-ADD] - nav_project_id ', nav_project_id);
 
 
 
@@ -388,10 +390,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
       // this.isVisibleAdvancedTab = true;
       // this.DISPLAY_ADVANCED_TAB = true;
-      console.log('%ProjectEditAddComponent isUNIS ', this.isUNIS);
+      this.logger.log('[PRJCT-EDIT-ADD] - isUNIS ', this.isUNIS);
     } else {
       this.isUNIS = false;
-      console.log('%ProjectEditAddComponent isUNIS ', this.isUNIS);
+      this.logger.log('[PRJCT-EDIT-ADD] - isUNIS ', this.isUNIS);
       // this.isVisibleAdvancedTab = false;
       // this.DISPLAY_ADVANCED_TAB = false;
     }
@@ -405,18 +407,18 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       (currentUrl.indexOf('/project-settings/advanced') === -1) &&
       (currentUrl.indexOf('/project-settings/notification') === -1)
     ) {
-      console.log('%ProjectEditAddComponent router.url', this.router.url);
+      this.logger.log('%ProjectEditAddComponent router.url', this.router.url);
 
       this.PROJECT_SETTINGS_ROUTE = true;
       this.PROJECT_SETTINGS_PAYMENTS_ROUTE = false;
       this.PROJECT_SETTINGS_AUTH_ROUTE = false;
       this.PROJECT_SETTINGS_ADVANCED_ROUTE = false;
       this.PROJECT_SETTINGS_NOTIFICATION_ROUTE = false;
-      console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_ROUTE ', this.PROJECT_SETTINGS_ROUTE);
-      console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_PAYMENTS_ROUTE ', this.PROJECT_SETTINGS_PAYMENTS_ROUTE);
-      console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_AUTH_ROUTE ', this.PROJECT_SETTINGS_AUTH_ROUTE);
-      console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_ADVANCED_ROUTE ', this.PROJECT_SETTINGS_ADVANCED_ROUTE);
-      console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_NOTIFICATION ', this.PROJECT_SETTINGS_NOTIFICATION_ROUTE);
+      this.logger.log('[PRJCT-EDIT-ADD] - is PROJECT_SETTINGS_ROUTE ', this.PROJECT_SETTINGS_ROUTE);
+      this.logger.log('[PRJCT-EDIT-ADD] - is PROJECT_SETTINGS_PAYMENTS_ROUTE ', this.PROJECT_SETTINGS_PAYMENTS_ROUTE);
+      this.logger.log('[PRJCT-EDIT-ADD] - is PROJECT_SETTINGS_AUTH_ROUTE ', this.PROJECT_SETTINGS_AUTH_ROUTE);
+      this.logger.log('[PRJCT-EDIT-ADD] - is PROJECT_SETTINGS_ADVANCED_ROUTE ', this.PROJECT_SETTINGS_ADVANCED_ROUTE);
+      this.logger.log('[PRJCT-EDIT-ADD] - is PROJECT_SETTINGS_NOTIFICATION ', this.PROJECT_SETTINGS_NOTIFICATION_ROUTE);
 
       /** THE ACTIVE ROUTE IS /project-settings/payments */
     } else if (
@@ -433,10 +435,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.PROJECT_SETTINGS_ADVANCED_ROUTE = false;
       this.PROJECT_SETTINGS_NOTIFICATION_ROUTE = false;
 
-      // console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_ROUTE ', this.PROJECT_SETTINGS_ROUTE);
-      // console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_PAYMENTS_ROUTE ', this.PROJECT_SETTINGS_PAYMENTS_ROUTE);
-      // console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_AUTH_ROUTE ', this.PROJECT_SETTINGS_AUTH_ROUTE);
-      // console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_ADVANCED_ROUTE ', this.PROJECT_SETTINGS_ADVANCED_ROUTE);
+      // this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_ROUTE ', this.PROJECT_SETTINGS_ROUTE);
+      // this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_PAYMENTS_ROUTE ', this.PROJECT_SETTINGS_PAYMENTS_ROUTE);
+      // this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_AUTH_ROUTE ', this.PROJECT_SETTINGS_AUTH_ROUTE);
+      // this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_ADVANCED_ROUTE ', this.PROJECT_SETTINGS_ADVANCED_ROUTE);
 
       /** THE ACTIVE ROUTE IS project-settings/auth */
     } else if (
@@ -451,10 +453,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.PROJECT_SETTINGS_AUTH_ROUTE = true;
       this.PROJECT_SETTINGS_ADVANCED_ROUTE = false;
       this.PROJECT_SETTINGS_NOTIFICATION_ROUTE = false;
-      // console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_ROUTE ', this.PROJECT_SETTINGS_ROUTE);
-      // console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_PAYMENTS_ROUTE ', this.PROJECT_SETTINGS_PAYMENTS_ROUTE);
-      // console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_AUTH_ROUTE ', this.PROJECT_SETTINGS_AUTH_ROUTE);
-      // console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_ADVANCED_ROUTE ', this.PROJECT_SETTINGS_ADVANCED_ROUTE);
+      // this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_ROUTE ', this.PROJECT_SETTINGS_ROUTE);
+      // this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_PAYMENTS_ROUTE ', this.PROJECT_SETTINGS_PAYMENTS_ROUTE);
+      // this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_AUTH_ROUTE ', this.PROJECT_SETTINGS_AUTH_ROUTE);
+      // this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_ADVANCED_ROUTE ', this.PROJECT_SETTINGS_ADVANCED_ROUTE);
     }
 
     else if (
@@ -469,10 +471,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.PROJECT_SETTINGS_AUTH_ROUTE = false;
       this.PROJECT_SETTINGS_ADVANCED_ROUTE = true;
       this.PROJECT_SETTINGS_NOTIFICATION_ROUTE = false;
-      // console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_ROUTE ', this.PROJECT_SETTINGS_ROUTE);
-      // console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_PAYMENTS_ROUTE ', this.PROJECT_SETTINGS_PAYMENTS_ROUTE);
-      // console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_AUTH_ROUTE ', this.PROJECT_SETTINGS_AUTH_ROUTE);
-      // console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_ADVANCED_ROUTE ', this.PROJECT_SETTINGS_ADVANCED_ROUTE);
+      // this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_ROUTE ', this.PROJECT_SETTINGS_ROUTE);
+      // this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_PAYMENTS_ROUTE ', this.PROJECT_SETTINGS_PAYMENTS_ROUTE);
+      // this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_AUTH_ROUTE ', this.PROJECT_SETTINGS_AUTH_ROUTE);
+      // this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_ADVANCED_ROUTE ', this.PROJECT_SETTINGS_ADVANCED_ROUTE);
     }
 
     else if (
@@ -493,17 +495,13 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
 
   goToProjectSettings_Payments() {
-    console.log('%ProjectEditAddComponent HAS CLICKED goToProjectSettings_Payments USER_ROLE ', this.USER_ROLE);
+    this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_Payments USER_ROLE ', this.USER_ROLE);
     if (this.USER_ROLE === 'owner') {
-
-      console.log('%ProjectEditAddComponent HAS CLICKED goToProjectSettings_Payments ');
+      this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_Payments ');
       this.router.navigate(['project/' + this.id_project + '/project-settings/payments']);
 
     } else {
-
       this.presentModalOnlyOwnerCanManageTheAccountPlan()
-
-
     }
   }
 
@@ -527,22 +525,22 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
 
   goToProjectSettings_General() {
-    console.log('%ProjectEditAddComponent HAS CLICKED goToProjectSettings_General ');
+    this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_General ');
     this.router.navigate(['project/' + this.id_project + '/project-settings/general']);
   }
 
   goToProjectSettings_Auth() {
-    console.log('%ProjectEditAddComponent HAS CLICKED goToProjectSettings_Auth ');
+    this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_Auth ');
     this.router.navigate(['project/' + this.id_project + '/project-settings/auth']);
   }
 
   goToProjectSettings_Advanced() {
-    console.log('%ProjectEditAddComponent HAS CLICKED goToProjectSettings_Advanced');
+    this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_Advanced');
     this.router.navigate(['project/' + this.id_project + '/project-settings/advanced']);
   }
 
   goToProjectSettings_Notification() {
-    console.log('%ProjectEditAddComponent HAS CLICKED goToProjectSettings_Notification');
+    this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_Notification');
     this.router.navigate(['project/' + this.id_project + '/project-settings/notification'])
   }
 
@@ -565,7 +563,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      console.log('ProjectPlanService (ProjectEditAddComponent) project Profile Data', projectProfileData)
+      this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan ProjectPlanService project Profile Data', projectProfileData)
       if (projectProfileData) {
         this.prjct_name = projectProfileData.name;
         this.prjct_profile_name = projectProfileData.profile_name;
@@ -586,7 +584,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
          */
         // if (projectProfileData.subscription_creation_date) {
         //   this.subscription_creation_date = projectProfileData.subscription_creation_date;
-        //   console.log('ProjectPlanService (ProjectEditAddComponent) subscription_creation_date', this.subscription_creation_date)
+        //   this.logger.log('ProjectPlanService (ProjectEditAddComponent) subscription_creation_date', this.subscription_creation_date)
         // }
         // RETURN THE CURRENT DAY AT THE TIME 00:00:00
         const today = moment().startOf('day')
@@ -595,16 +593,16 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         // const today = moment();
         // 2019-09-20T08:48:07.000Z
         const current_sub_end_date = moment(this.subscription_end_date)
-        console.log('»»»»» ProjectEditAddComponent project Profile Data ', today);
-        console.log('»»»»» ProjectEditAddComponent project Profile Data current_sub_end_date ', current_sub_end_date);
+        this.logger.log('[PRJCT-EDIT-ADD] - project Profile Data ', today);
+        this.logger.log('[PRJCT-EDIT-ADD] - project Profile Data current_sub_end_date ', current_sub_end_date);
 
         this.days_to_next_renew = current_sub_end_date.diff(today, 'days');
-        console.log('»»»»» ProjectEditAddComponent project Profile Data days_to_next_renew ', this.days_to_next_renew);
+        this.logger.log('[PRJCT-EDIT-ADD] - project Profile Data days_to_next_renew ', this.days_to_next_renew);
 
         if (this.days_to_next_renew === 0) {
 
           this.timeOfNextRenew = moment(current_sub_end_date).format('HH.mm')
-          console.log('»»»»» ProjectEditAddComponent project Profile Data timeOfNextRenew ', this.timeOfNextRenew);
+          this.logger.log('[PRJCT-EDIT-ADD] - project Profile Data timeOfNextRenew ', this.timeOfNextRenew);
         }
 
         // USE CASE 'BUFFER DAYS': WHEN THE SUBSCRIPTION IS EXPIRED WE ADD 3 DAYS TO THE SUB END DATE
@@ -614,10 +612,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         if (this.days_to_next_renew === -1 || this.days_to_next_renew === -2) {
 
           this.SUBSCRIPTION_BUFFER_DAYS = true;
-          console.log('»»»»» ProjectEditAddComponent days_to_next_renew ', this.days_to_next_renew, ' SUBSCRIPTION_BUFFER_DAYS ', this.SUBSCRIPTION_BUFFER_DAYS);
+          this.logger.log('[PRJCT-EDIT-ADD] - days_to_next_renew ', this.days_to_next_renew, ' SUBSCRIPTION_BUFFER_DAYS ', this.SUBSCRIPTION_BUFFER_DAYS);
         } else {
           this.SUBSCRIPTION_BUFFER_DAYS = false;
-          console.log('»»»»» ProjectEditAddComponent days_to_next_renew ', this.days_to_next_renew, ' SUBSCRIPTION_BUFFER_DAYS ', this.SUBSCRIPTION_BUFFER_DAYS);
+          this.logger.log('[PRJCT-EDIT-ADD] - days_to_next_renew ', this.days_to_next_renew, ' SUBSCRIPTION_BUFFER_DAYS ', this.SUBSCRIPTION_BUFFER_DAYS);
         }
 
 
@@ -661,7 +659,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   //   this.projectService.getSubscriptionById(subscription_id)
   //     .subscribe((subscription: any) => {
   //       this.stripe_subscription_objct = subscription;
-  //       console.log('»»»»» ProjectEditAddComponent get subscription by id ', subscription);
+  //       this.logger.log('»»»»» ProjectEditAddComponent get subscription by id ', subscription);
 
   //       // RETURN THE CURRENT DAY AT THE TIME 00:00:00
   //       // const today = moment().startOf('day')
@@ -670,37 +668,37 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   //       const today = moment();
 
   //       const current_sub_end_date = moment(subscription.current_period_end * 1000)
-  //       console.log('»»»»» ProjectEditAddComponent get subscription by id today ', today);
-  //       console.log('»»»»» ProjectEditAddComponent get subscription by id current_sub_end_date ', current_sub_end_date);
+  //       this.logger.log('»»»»» ProjectEditAddComponent get subscription by id today ', today);
+  //       this.logger.log('»»»»» ProjectEditAddComponent get subscription by id current_sub_end_date ', current_sub_end_date);
 
   //       this.days_to_next_renew = current_sub_end_date.diff(today, 'days');
-  //       console.log('»»»»» ProjectEditAddComponent get subscription by id days_to_next_renew ', this.days_to_next_renew);
+  //       this.logger.log('»»»»» ProjectEditAddComponent get subscription by id days_to_next_renew ', this.days_to_next_renew);
 
   //       if (this.days_to_next_renew === 0) {
 
   //         const timeOfNextRenew = moment(current_sub_end_date).format('HH.mm')
-  //         console.log('»»»»» ProjectEditAddComponent get subscription by id timeOfNextRenew ', timeOfNextRenew);
+  //         this.logger.log('»»»»» ProjectEditAddComponent get subscription by id timeOfNextRenew ', timeOfNextRenew);
   //       }
 
   //     }, (error) => {
-  //       console.log('»»»»» ProjectEditAddComponent get subscription by id ', error);
+  //       this.logger.log('»»»»» ProjectEditAddComponent get subscription by id ', error);
 
   //     }, () => {
-  //       console.log('»»»»» ProjectEditAddComponent get subscription by id * COMPLETE * ');
+  //       this.logger.log('»»»»» ProjectEditAddComponent get subscription by id * COMPLETE * ');
   //     });
   // }
 
   // GET THE SUBSCRIPTION PAYMENT SAVED IN OUR DB
   getSubscriptionPayments(subscription_id) {
     this.projectService.getSubscriptionPayments(subscription_id).subscribe((subscriptionPayments: any) => {
-      console.log('ProjectEditAddComponent get subscriptionPayments ', subscriptionPayments);
+      this.logger.log('[PRJCT-EDIT-ADD] GET subscriptionPayments ', subscriptionPayments);
 
       this.subscriptionPaymentsLength = subscriptionPayments.length
-      console.log('ProjectEditAddComponent get subscriptionPayments Length ', this.subscriptionPaymentsLength);
+      this.logger.log('[PRJCT-EDIT-ADD] GET subscriptionPayments Length ', this.subscriptionPaymentsLength);
       if (subscriptionPayments) {
         this.subscription_payments = [];
         subscriptionPayments.forEach((subscriptionPayment, index) => {
-          console.log('ProjectEditAddComponent subscriptionPayment.stripe_event ', subscriptionPayment.stripe_event);
+          this.logger.log('[PRJCT-EDIT-ADD] subscriptionPayment.stripe_event ', subscriptionPayment.stripe_event);
 
           if (subscriptionPayment.stripe_event === 'invoice.payment_succeeded') {
 
@@ -710,39 +708,39 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
              */
             if (subscriptionPayment.object.data.object.billing_reason === 'subscription_create') {
               this.subscription_creation_date = subscriptionPayment.object.data.object.lines.data[0].period.start
-              console.log('ProjectEditAddComponent subscription creation date ', this.subscription_creation_date);
+              this.logger.log('[PRJCT-EDIT-ADD] - subscription creation date ', this.subscription_creation_date);
             }
 
             // get the last iteration in a _.forEach() loop
 
             this.plan_amount = subscriptionPayment.object.data.object.lines.data[0].plan.amount;
-            console.log('»»»»» ProjectEditAddComponent plan_amount ', this.plan_amount);
+            this.logger.log('[PRJCT-EDIT-ADD] - plan_amount ', this.plan_amount);
 
             this.plan_interval = subscriptionPayment.object.data.object.lines.data[0].plan.interval;
-            console.log('»»»»»  ProjectEditAddComponent plan_interval ', this.plan_interval);
+            this.logger.log('[PRJCT-EDIT-ADD] - plan_interval ', this.plan_interval);
 
             // if (index === subscriptionPayments.length - 1) {
 
-            //   console.log('last invoice ', subscriptionPayment);
+            //   this.logger.log('last invoice ', subscriptionPayment);
             //   this.current_invoice_start_date = subscriptionPayment.object.data.object.lines.data[0].period.start
             //   this.current_invoice_end_date = subscriptionPayment.object.data.object.lines.data[0].period.end
 
             // }
 
             const plan_description = subscriptionPayment.object.data.object.lines.data[0].description;
-            console.log('ProjectEditAddComponent subscriptionPayment plan_description: ', plan_description);
+            this.logger.log('[PRJCT-EDIT-ADD] subscriptionPayment plan_description: ', plan_description);
             if (plan_description.indexOf('×') !== -1) {
               const planSubstring = plan_description.split('×').pop();
-              console.log('ProjectEditAddComponent subscriptionPayment planSubstring: ', planSubstring);
+              this.logger.log('[PRJCT-EDIT-ADD] subscriptionPayment planSubstring: ', planSubstring);
               if (plan_description.indexOf('(') !== -1) {
                 const planName = planSubstring.substring(0, planSubstring.indexOf('('));
-                console.log('ProjectEditAddComponent subscriptionPayment planName: ', planName);
+                this.logger.log('[PRJCT-EDIT-ADD] subscriptionPayment planName: ', planName);
                 subscriptionPayment.plan_name = planName.trim()
               }
 
               if (plan_description.indexOf('after') !== -1) {
                 const planName = planSubstring.substring(0, planSubstring.indexOf('after'));
-                console.log('ProjectEditAddComponent subscriptionPayment planName: ', planName);
+                this.logger.log('[PRJCT-EDIT-ADD] subscriptionPayment planName: ', planName);
 
                 subscriptionPayment.plan_name = planName.trim()
               }
@@ -753,13 +751,13 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           }
 
         });
-        console.log('ProjectEditAddComponent FILTERED subscriptionPayments ', this.subscription_payments);
+        this.logger.log('[PRJCT-EDIT-ADD] FILTERED subscriptionPayments ', this.subscription_payments);
       }
     }, (error) => {
-      console.log('ProjectEditAddComponent get subscriptionPayments error ', error);
+      this.logger.error('[PRJCT-EDIT-ADD] - GET subscriptionPayments error ', error);
       this.showSpinner = false;
     }, () => {
-      console.log('ProjectEditAddComponent get subscriptionPayments * COMPLETE * ');
+      this.logger.log('[PRJCT-EDIT-ADD] - GET subscriptionPayments * COMPLETE * ');
       this.showSpinner = false;
     });
   }
@@ -779,7 +777,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   listenCancelSubscription() {
     this.notify.cancelSubscriptionCompleted$.subscribe((hasDone: boolean) => {
 
-      console.log('ProjectEditAddComponent cancelSubscriptionCompleted hasDone', hasDone);
+      this.logger.log('[PRJCT-EDIT-ADD] - (listenCancelSubscription) cancelSubscriptionCompleted hasDone', hasDone);
       if (hasDone === false) {
         this.showSpinner = true;
       }
@@ -794,7 +792,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   // doCancelSubcription() {
   //   this.showSpinner = true;
   //   this.projectService.cancelSubscription().subscribe((confirmation: any) => {
-  //     console.log('cancelSubscription RES ', confirmation);
+  //     this.logger.log('cancelSubscription RES ', confirmation);
 
   //     if (confirmation && confirmation.status === 'canceled') {
   //       this.notify.showNotification(this.subscriptionCanceledSuccessfully, 2, 'done');
@@ -802,16 +800,16 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   //       // this.ngOnInit()
   //       this.prjct_profile_type = 'free'
   //       this.cancelSubscriptionDone = true;
-  //       console.log('ProjectEditAddComponent cancelSubscriptionDone ', this.cancelSubscriptionDone);
+  //       this.logger.log('ProjectEditAddComponent cancelSubscriptionDone ', this.cancelSubscriptionDone);
   //       // setTimeout(() => {
   //       // }, 2000);
   //     }
   //   }, error => {
-  //     console.log('cancelSubscription - ERROR: ', error);
+  //     this.logger.log('cancelSubscription - ERROR: ', error);
   //     this.notify.showNotification(this.subscriptionCanceledError, 4, 'report_problem');
   //     this.showSpinner = false;
   //   }, () => {
-  //     console.log('cancelSubscription * COMPLETE *');
+  //     this.logger.log('cancelSubscription * COMPLETE *');
   //     this.showSpinner = false;
   //   });
   // }
@@ -822,7 +820,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   // openLetsChatModal() {
   //   this.displayContactUsModal = 'block';
-  //   console.log('openLetsChatModal')
+  //   this.logger.log('openLetsChatModal')
   // }
   getMoreOperatorsSeats() {
     this.notify._displayContactUsModal(true, 'upgrade_plan');
@@ -855,7 +853,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   getProjectId() {
     this.id_project = this.route.snapshot.params['projectid'];
-    console.log('PROJECT COMPONENT HAS PASSED id_project ', this.id_project);
+    this.logger.log('[PRJCT-EDIT-ADD] - PROJECT COMPONENT HAS PASSED id_project ', this.id_project);
     if (this.id_project) {
       this.getProjectById();
     }
@@ -869,11 +867,11 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
    */
   getProjectById() {
     this.projectService.getProjectById(this.id_project).subscribe((project: any) => {
-      console.log('PRJCT-EDIT-ADD - GET PROJECT (DETAILS) BY ID - PROJECT OBJECT: ', project);
+      this.logger.log('[PRJCT-EDIT-ADD] - GET PROJECT BY ID - PROJECT OBJECT: ', project);
 
       if (project) {
         this.projectName_toUpdate = project.name;
-        console.log('PRJCT-EDIT-ADD - PROJECT NAME TO UPDATE: ', this.projectName_toUpdate);
+        this.logger.log('[PRJCT-EDIT-ADD] - PROJECT NAME TO UPDATE: ', this.projectName_toUpdate);
 
         // used in onProjectNameChange to enable / disable the 'update project name' btn
         this.project_name = project.name;
@@ -883,14 +881,14 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           if (project.settings.email) {
 
             if (project.settings.email.autoSendTranscriptToRequester === true) {
-              console.log('PRJCT-EDIT-ADD - ON INIT AUTO SEND TRANSCRIPT IS ', project.settings.email.autoSendTranscriptToRequester);
+              this.logger.log('[PRJCT-EDIT-ADD] - ON INIT AUTO SEND TRANSCRIPT IS ', project.settings.email.autoSendTranscriptToRequester);
 
               this.AUTO_SEND_TRANSCRIPT_IS_ON = true;
-              console.log('PRJCT-EDIT-ADD - ON INIT AUTO SEND TRANSCRIPT IS ON ', this.AUTO_SEND_TRANSCRIPT_IS_ON);
+              this.logger.log('[PRJCT-EDIT-ADD] - ON INIT AUTO SEND TRANSCRIPT IS ON ', this.AUTO_SEND_TRANSCRIPT_IS_ON);
 
             } else {
               this.AUTO_SEND_TRANSCRIPT_IS_ON = false;
-              console.log('PRJCT-EDIT-ADD - ON INIT AUTO SEND TRANSCRIPT IS ON ', this.AUTO_SEND_TRANSCRIPT_IS_ON);
+              this.logger.log('[PRJCT-EDIT-ADD] - ON INIT AUTO SEND TRANSCRIPT IS ON ', this.AUTO_SEND_TRANSCRIPT_IS_ON);
             }
 
             // Check Notification Status - START
@@ -921,7 +919,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
             this.AUTO_SEND_TRANSCRIPT_IS_ON = false;
             this.assigned_conv_on = true;
             this.unassigned_conv_on = true;
-            console.log('PRJCT-EDIT-ADD - ON INIT AUTO SEND TRANSCRIPT IS ON ', this.AUTO_SEND_TRANSCRIPT_IS_ON);
+            this.logger.log('[PRJCT-EDIT-ADD]- ON INIT AUTO SEND TRANSCRIPT IS ON ', this.AUTO_SEND_TRANSCRIPT_IS_ON);
           }
 
 
@@ -929,7 +927,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           this.AUTO_SEND_TRANSCRIPT_IS_ON = false;
           this.assigned_conv_on = true;
           this.unassigned_conv_on = true;
-          console.log('PRJCT-EDIT-ADD - ON INIT AUTO SEND TRANSCRIPT IS ON ', this.AUTO_SEND_TRANSCRIPT_IS_ON);
+          this.logger.log('[PRJCT-EDIT-ADD] - ON INIT AUTO SEND TRANSCRIPT IS ON ', this.AUTO_SEND_TRANSCRIPT_IS_ON);
         }
 
 
@@ -997,10 +995,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       }
 
     }, (error) => {
-      console.log('PRJCT-EDIT-ADD - GET PROJECT BY ID - ERROR ', error);
+      this.logger.error('[PRJCT-EDIT-ADD] - GET PROJECT BY ID - ERROR ', error);
       this.showSpinner = false;
     }, () => {
-      console.log('PRJCT-EDIT-ADD - GET PROJECT BY ID - COMPLETE ');
+      this.logger.log('[PRJCT-EDIT-ADD] - GET PROJECT BY ID - COMPLETE ');
       this.showSpinner = false;
     });
   }
@@ -1010,11 +1008,11 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     if ($event.target.checked) {
 
       this.chat_limit_on = true;
-      console.log('PRJCT-EDIT-ADD - toggleChat_limit_on ', this.chat_limit_on);
+      this.logger.log('[PRJCT-EDIT-ADD] - toggleChat_limit_on ', this.chat_limit_on);
     } else {
 
       this.chat_limit_on = false;
-      console.log('PRJCT-EDIT-ADD - toggleChat_limit_on ', this.chat_limit_on);
+      this.logger.log('[PRJCT-EDIT-ADD] - toggleChat_limit_on ', this.chat_limit_on);
     }
 
   }
@@ -1024,11 +1022,11 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     if ($event.target.checked) {
 
       this.reassignment_on = true;
-      console.log('PRJCT-EDIT-ADD - toggleReassignment_on ', this.reassignment_on);
+      this.logger.log('[PRJCT-EDIT-ADD] - toggleReassignment_on ', this.reassignment_on);
     } else {
 
       this.reassignment_on = false;
-      console.log('PRJCT-EDIT-ADD - toggleReassignment_on ', this.reassignment_on);
+      this.logger.log('[PRJCT-EDIT-ADD] - toggleReassignment_on ', this.reassignment_on);
     }
 
   }
@@ -1038,77 +1036,45 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     if ($event.target.checked) {
 
       this.automatic_unavailable_status_on = true;
-      console.log('PRJCT-EDIT-ADD - toggleUnavailable_status_on ', this.automatic_unavailable_status_on);
+      this.logger.log('[PRJCT-EDIT-ADD]- toggleUnavailable_status_on ', this.automatic_unavailable_status_on);
     } else {
 
       this.automatic_unavailable_status_on = false;
-      console.log('PRJCT-EDIT-ADD - toggleUnavailable_status_on ', this.automatic_unavailable_status_on);
+      this.logger.log('[PRJCT-EDIT-ADD] - toggleUnavailable_status_on ', this.automatic_unavailable_status_on);
     }
 
   }
 
   toggleProjectAssignedConversation($event) {
-    console.log("Event Toggle Assigned: ", $event.target.checked);
+    this.logger.log("[PRJCT-EDIT-ADD] - Event Toggle Assigned: ", $event.target.checked);
     this.assigned_conv_on = $event.target.checked;
 
     this.projectService.enableDisableAssignedNotification(this.assigned_conv_on).then((result) => {
-      console.log("ASSIGNED NOTIFICATION RESULT: ", result)
+      this.logger.log("[PRJCT-EDIT-ADD] - ENABLE/DISABLED ASSIGNED NOTIFICATION RESULT: ", result)
       this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done')
     }).catch((err) => {
-      console.log("Error during preferences updating: ", err)
+      this.logger.error("[PRJCT-EDIT-ADD] - Error during ENABLE/DISABLED ASSIGNED NOTIFICATION updating: ", err)
       this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem')
     })
   }
 
   toggleProjectUnassignedConversation($event) {
-    console.log("Event Toggle Assigned: ", $event.target.checked);
+    this.logger.log("[PRJCT-EDIT-ADD] - Event Toggle UNASSIGNED: ", $event.target.checked);
     this.unassigned_conv_on = $event.target.checked;
 
     this.projectService.enableDisableUnassignedNotification(this.unassigned_conv_on).then((result) => {
-      console.log("ASSIGNED NOTIFICATION RESULT: ", result)
+      this.logger.log("[PRJCT-EDIT-ADD] ENABLE/DISABLED UNASSIGNED NOTIFICATION RESULT: ", result)
       this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done')
     }).catch((err) => {
-      console.log("Error during preferences updating: ", err)
+      this.logger.error("PRJCT-EDIT-ADD] Error during  ENABLE/DISABLED UNASSIGNED NOTIFICATION updating: ", err)
       this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem')
     })
   }
 
 
-
-
-
-  /**
-   * ADD PROJECT (CREATE VIEW)  */
-  // createProject() {
-  //   console.log('CREATE PROJECT - PROJECT-NAME DIGIT BY USER ', this.project_name);
-
-  //   this.projectService.addMongoDbProject(this.project_name)
-  //     .subscribe((project) => {
-  //       console.log('POST DATA PROJECT', project);
-
-  //       // if (project) {
-  //       //   this.projectService.createUserProject(project._id)
-  //       //   .subscribe((project_user) => {
-
-  //       //     console.log('POST DATA PROJECT-USER ', project_user);
-  //       //   },
-  //       //   (error) => {
-  //       //     console.log('CREATE PROJECT-USER - POST REQUEST ERROR ', error);
-  //       //   },
-  //       // );
-  //       // }
-  //     }, (error) => {
-  //       console.log('CREATE PROJECT - POST REQUEST ERROR ', error);
-  //     }, () => {
-  //       console.log('CREATE PROJECT - POST REQUEST COMPLETE ');
-
-  //       this.router.navigate(['/projects']);
-  //     });
-  // }
-
   onProjectNameChange(event) {
-    console.log('ON PROJECT NAME CHANGE ', event);
-    console.log('ON PROJECT NAME TO UPDATE ', this.project_name);
+    this.logger.log('[PRJCT-EDIT-ADD] - ON PROJECT NAME CHANGE ', event);
+    this.logger.log('[PRJCT-EDIT-ADD] - ON PROJECT NAME TO UPDATE ', this.project_name);
 
     if (event === this.project_name) {
       this.DISABLE_UPDATE_BTN = true;
@@ -1121,12 +1087,12 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
 
   edit() {
-    console.log('PROJECT ID WHEN EDIT IS PRESSED ', this.id_project);
-    console.log('PROJECT NAME WHEN EDIT IS PRESSED ', this.projectName_toUpdate);
+    this.logger.log('[PRJCT-EDIT-ADD] - PROJECT ID WHEN EDIT IS PRESSED ', this.id_project);
+    this.logger.log('[PRJCT-EDIT-ADD] - PROJECT NAME WHEN EDIT IS PRESSED ', this.projectName_toUpdate);
 
-    this.projectService.updateMongoDbProject(this.id_project, this.projectName_toUpdate)
+    this.projectService.updateProjectName(this.id_project, this.projectName_toUpdate)
       .subscribe((prjct) => {
-        console.log('UPDATE PROJECT - RESPONSE ', prjct);
+        this.logger.log('[PRJCT-EDIT-ADD] - UPDATE PROJECT - RESPONSE ', prjct);
 
         if (prjct) {
           if (prjct.name === this.projectName_toUpdate) {
@@ -1141,17 +1107,21 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           this.auth.projectSelected(project)
 
           const storedProjectJson = localStorage.getItem(this.id_project);
-          console.log('PRJCT-EDIT-ADD - STORED PROJECT JSON ', storedProjectJson);
+          this.logger.log('[PRJCT-EDIT-ADD] - STORED PROJECT JSON ', storedProjectJson);
 
           if (storedProjectJson) {
             const projectObject = JSON.parse(storedProjectJson);
-            console.log('PRJCT-EDIT-ADD - STORED PROJECT OBJ ', projectObject);
+            this.logger.log('[PRJCT-EDIT-ADD] - STORED PROJECT OBJ ', projectObject);
+
             const storedUserRole = projectObject['role'];
-            console.log('PRJCT-EDIT-ADD - STORED PROJECT OBJ - USER ROLE ', storedUserRole);
+            this.logger.log('[PRJCT-EDIT-ADD] - STORED PROJECT OBJ - USER ROLE ', storedUserRole);
+
             const storedProjectName = projectObject['name'];
-            console.log('PRJCT-EDIT-ADD - STORED PROJECT OBJ - PRJ NAME ', storedProjectName);
+            this.logger.log('[PRJCT-EDIT-ADD] - STORED PROJECT OBJ - PRJ NAME ', storedProjectName);
+
             const storedProjectId = projectObject['_id'];
-            console.log('PRJCT-EDIT-ADD - STORED PROJECT OBJ - PRJ ID ', storedProjectId);
+            this.logger.log('[PRJCT-EDIT-ADD] - STORED PROJECT OBJ - PRJ ID ', storedProjectId);
+
             const storedProjectOH = projectObject['operatingHours'];
 
             if (storedProjectName !== prjct.name) {
@@ -1171,12 +1141,12 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         }
 
       }, (error) => {
-        console.log('UPDATE PROJECT - ERROR ', error);
+        this.logger.error('[PRJCT-EDIT-ADD] UPDATE PROJECT - ERROR ', error);
 
         this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem');
 
       }, () => {
-        console.log('UPDATE PROJECT * COMPLETE *');
+        this.logger.log('[PRJCT-EDIT-ADD] UPDATE PROJECT * COMPLETE *');
         // this.router.navigate(['/projects']);
 
 
@@ -1186,17 +1156,17 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
 
   autoSendTranscriptOnOff($event) {
-    console.log('»» PRJCT-EDIT-ADD - AUTO SEND TRANSCRIPT BY EMAIL ON ', $event.target.checked);
+    this.logger.log('[PRJCT-EDIT-ADD] - AUTO SEND TRANSCRIPT BY EMAIL ON ', $event.target.checked);
 
     this.projectService.updateAutoSendTranscriptToRequester($event.target.checked)
       .subscribe((prjct) => {
-        console.log('PRJCT-EDIT-ADD AUTO SEND TRANSCRIPT UPDATE PROJECT - RES ', prjct);
+        this.logger.log('[PRJCT-EDIT-ADD] AUTO SEND TRANSCRIPT UPDATE PROJECT - RES ', prjct);
       }, (error) => {
-        console.log('PRJCT-EDIT-ADD AUTO SEND TRANSCRIPT UPDATE PROJECT - ERROR ', error);
+        this.logger.error('[PRJCT-EDIT-ADD] AUTO SEND TRANSCRIPT UPDATE PROJECT - ERROR ', error);
         this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem');
 
       }, () => {
-        console.log('PRJCT-EDIT-ADD AUTO SEND TRANSCRIPT UPDATE PROJECT * COMPLETE *');
+        this.logger.log('[PRJCT-EDIT-ADD] AUTO SEND TRANSCRIPT UPDATE PROJECT * COMPLETE *');
         this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done');
         // this.router.navigate(['/projects']);
       });
@@ -1204,17 +1174,17 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   updateAdvancedSettings() {
     const updateAdvancedSettingBtn = <HTMLElement>document.querySelector('.btn_edit_advanced_settings');
-    console.log('!!! PRJCT-EDIT-ADD  - SEARCH BTN ', updateAdvancedSettingBtn)
+    this.logger.log('[PRJCT-EDIT-ADD]  - UPDATE ADVANCED SETTINGS BTN ', updateAdvancedSettingBtn)
     updateAdvancedSettingBtn.blur();
-    console.log('PRJCT-EDIT-ADD UPDATE ADVANCED SETTINGS - max_agent_assigned_chat ', this.max_agent_assigned_chat, ' reassignment_delay ', this.reassignment_delay, ' automatic_idle_chats ', this.automatic_idle_chats);
+    this.logger.log('[PRJCT-EDIT-ADD] - UPDATE ADVANCED SETTINGS - max_agent_assigned_chat ', this.max_agent_assigned_chat, ' reassignment_delay ', this.reassignment_delay, ' automatic_idle_chats ', this.automatic_idle_chats);
 
-    console.log('PRJCT-EDIT-ADD UPDATE ADVANCED SETTINGS - chat_limit_on ', this.chat_limit_on, ' reassignment_on ', this.reassignment_on, ' automatic_unavailable_status_on ', this.automatic_unavailable_status_on);
+    this.logger.log('[PRJCT-EDIT-ADD] - UPDATE ADVANCED SETTINGS - chat_limit_on ', this.chat_limit_on, ' reassignment_on ', this.reassignment_on, ' automatic_unavailable_status_on ', this.automatic_unavailable_status_on);
 
 
     // if (this.chat_limit_on === true || this.reassignment_on === true || this.automatic_unavailable_status_on === true) {
     this.projectService.updateAdvancedSettings(this.max_agent_assigned_chat, this.reassignment_delay, this.automatic_idle_chats, this.chat_limit_on, this.reassignment_on, this.automatic_unavailable_status_on)
       .subscribe((prjct) => {
-        console.log('PRJCT-EDIT-ADD UPDATE ADVANCED SETTINGS - RES ', prjct);
+        this.logger.log('[PRJCT-EDIT-ADD] UPDATE ADVANCED SETTINGS - RES ', prjct);
 
         // -------------------------------------------------------------------------------------------------------------------------------------------------------------------
         // I call "this.auth.projectSelected" so that the project is republished and can have the updated data of the advanced options (smart assign) in the conversation list
@@ -1232,10 +1202,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
 
       }, (error) => {
-        console.log('PRJCT-EDIT-ADD UPDATE ADVANCED SETTINGS - ERROR ', error);
+        this.logger.error('[PRJCT-EDIT-ADD] - UPDATE ADVANCED SETTINGS - ERROR ', error);
         this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem');
       }, () => {
-        console.log('PRJCT-EDIT-ADD UPDATE ADVANCED SETTINGS * COMPLETE *');
+        this.logger.log('[PRJCT-EDIT-ADD] - UPDATE ADVANCED SETTINGS * COMPLETE *');
         this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done');
       })
     // } else {
@@ -1246,36 +1216,36 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
 
   onChangeMaximum_chats($event) {
-    console.log('PRJCT-EDIT-ADD UPDATE ADVANCED SETTINGS - ON CHANGE MAXIMUM CHAT  ', $event);
+    this.logger.log('[PRJCT-EDIT-ADD] - UPDATE ADVANCED SETTINGS - ON CHANGE MAXIMUM CHAT  ', $event);
 
     if ($event < 1) {
       this.maximum_chats_has_minimum_error = true;
-      console.log('PRJCT-EDIT-ADD UPDATE ADVANCED SETTINGS - ON CHANGE MAXIMUM CHAT - HAS MIN ERROR ', this.maximum_chats_has_minimum_error);
+      this.logger.log('[PRJCT-EDIT-ADD] - UPDATE ADVANCED SETTINGS - ON CHANGE MAXIMUM CHAT - HAS MIN ERROR ', this.maximum_chats_has_minimum_error);
     } else {
       this.maximum_chats_has_minimum_error = false;
     }
 
     if ($event > 10000000) {
       this.maximum_chats_has_maximum_error = true;
-      console.log('PRJCT-EDIT-ADD UPDATE ADVANCED SETTINGS - ON CHANGE MAXIMUM CHAT - HAS MAX ERROR ', this.maximum_chats_has_maximum_error);
+      this.logger.log('[PRJCT-EDIT-ADD] - UPDATE ADVANCED SETTINGS - ON CHANGE MAXIMUM CHAT - HAS MAX ERROR ', this.maximum_chats_has_maximum_error);
     } else {
       this.maximum_chats_has_maximum_error = false;
     }
   }
 
   onChangeReassignment_timeout($event) {
-    console.log('PRJCT-EDIT-ADD UPDATE ADVANCED SETTINGS - ON CHANGE REASSIGMENT TIMEOUT ', $event);
+    this.logger.log('[PRJCT-EDIT-ADD] - UPDATE ADVANCED SETTINGS - ON CHANGE REASSIGMENT TIMEOUT ', $event);
 
     if ($event < 1) {
       this.reassignment_timeout_has_minimum_error = true;
-      console.log('PRJCT-EDIT-ADD UPDATE ADVANCED SETTINGS - ON CHANGE REASSIGMENT TIMEOUT - HAS MIN ERROR ', this.reassignment_timeout_has_minimum_error);
+      this.logger.log('[PRJCT-EDIT-ADD] - UPDATE ADVANCED SETTINGS - ON CHANGE REASSIGMENT TIMEOUT - HAS MIN ERROR ', this.reassignment_timeout_has_minimum_error);
     } else {
       this.reassignment_timeout_has_minimum_error = false;
     }
 
     if ($event > 10000000) {
       this.reassignment_timeout_has_maximum__error = true;
-      console.log('PRJCT-EDIT-ADD UPDATE ADVANCED SETTINGS - ON CHANGE REASSIGMENT TIMEOUT - HAS MAX ERROR ', this.reassignment_timeout_has_maximum__error);
+      this.logger.log('[PRJCT-EDIT-ADD] - UPDATE ADVANCED SETTINGS - ON CHANGE REASSIGMENT TIMEOUT - HAS MAX ERROR ', this.reassignment_timeout_has_maximum__error);
     } else {
       this.reassignment_timeout_has_maximum__error = false;
     }
@@ -1283,18 +1253,18 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
 
   onChangeAutomaticUnavailable($event) {
-    console.log('PRJCT-EDIT-ADD UPDATE ADVANCED SETTINGS - ON CHANGE Automatic Unavailable after a n of chat ', $event);
+    this.logger.log('[PRJCT-EDIT-ADD] - UPDATE ADVANCED SETTINGS - ON CHANGE Automatic Unavailable after a n of chat ', $event);
 
     if ($event < 1) {
       this.automatic_idle_chats_has_minimum_error = true;
-      console.log('PRJCT-EDIT-ADD UPDATE ADVANCED SETTINGS - ON CHANGE REASSIGMENT TIMEOUT - HAS MIN ERROR ', this.reassignment_timeout_has_minimum_error);
+      this.logger.log('[PRJCT-EDIT-ADD] - ADVANCED SETTINGS - ON CHANGE REASSIGMENT TIMEOUT - HAS MIN ERROR ', this.reassignment_timeout_has_minimum_error);
     } else {
       this.automatic_idle_chats_has_minimum_error = false;
     }
 
     if ($event > 10000000) {
       this.automatic_idle_chats_has_maximum__error = true;
-      console.log('PRJCT-EDIT-ADD UPDATE ADVANCED SETTINGS - ON CHANGE REASSIGMENT TIMEOUT - HAS MAX ERROR ', this.reassignment_timeout_has_maximum__error);
+      this.logger.log('[PRJCT-EDIT-ADD] - UPDATE ADVANCED SETTINGS - ON CHANGE REASSIGMENT TIMEOUT - HAS MAX ERROR ', this.reassignment_timeout_has_maximum__error);
     } else {
       this.automatic_idle_chats_has_maximum__error = false;
     }
@@ -1313,13 +1283,13 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     this.displayConfirmJwtSecretCreationModal = 'none';
     this.projectService.generateSharedSecret()
       .subscribe((res) => {
-        console.log('PRJCT-EDIT-ADD GENERATE SHARED SECRET - RESPONSE ', res);
+        this.logger.log('[PRJCT-EDIT-ADD] - GENERATE SHARED SECRET - RESPONSE ', res);
         this.sharedSecret = res.jwtSecret
 
       }, (error) => {
-        console.log('PRJCT-EDIT-ADD GENERATE SHARED SECRET - ERROR ', error);
+        this.logger.error('[PRJCT-EDIT-ADD] GENERATE SHARED SECRET - ERROR ', error);
       }, () => {
-        console.log('PRJCT-EDIT-ADD GENERATE SHARED SECRET  * COMPLETE *');
+        this.logger.log('[PRJCT-EDIT-ADD] GENERATE SHARED SECRET  * COMPLETE *');
 
         this.displayJwtSecretGeneratedModal = 'block'
       });
@@ -1341,7 +1311,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
    * @param projectName
    */
   openDeleteModal() {
-    console.log('OPEN DELETE MODAL -> PROJECT ID ', this.id_project);
+    this.logger.log('[PRJCT-EDIT-ADD] - OPEN DELETE MODAL -> PROJECT ID ', this.id_project);
     this.display = 'block';
   }
 
@@ -1350,8 +1320,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
 
   onProjectIdToDeleteChange($event) {
-    console.log('ON PROJECT ID CHANGE ', $event);
-    console.log('PROJECT ID  ', this.id_project);
+    this.logger.log('[PRJCT-EDIT-ADD] - ON PROJECT ID CHANGE ', $event);
+    this.logger.log('[PRJCT-EDIT-ADD] - PROJECT ID  ', this.id_project);
 
     if ($event === this.id_project) {
       this.DISABLE_DELETE_PROJECT_BTN = false;
@@ -1363,20 +1333,18 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   deleteProject() {
     this.SHOW_CIRCULAR_SPINNER = true;
-    console.log('deleteProject ID PROJECT TO DELETE ', this.project_id_to_delete);
-    console.log('deleteProject ID PROJECT ', this.id_project);
+    this.logger.log('[PRJCT-EDIT-ADD] - deleteProject ID PROJECT TO DELETE ', this.project_id_to_delete);
+    this.logger.log('[PRJCT-EDIT-ADD] - deleteProject ID PROJECT ', this.id_project);
 
     this.projectService.deleteProject(this.id_project).subscribe((data) => {
-      console.log('deleteProject RES ', data);
+      this.logger.log('[PRJCT-EDIT-ADD] - deleteProject RES ', data);
 
-    },
-      (error) => {
+    }, (error) => {
         this.SHOW_CIRCULAR_SPINNER = false;
-        console.log('deleteProject - ERROR ', error);
+        this.logger.error('[PRJCT-EDIT-ADD] - deleteProject - ERROR ', error);
         this.notify.showWidgetStyleUpdateNotification(this.deleteErrorMsg, 4, 'report_problem');
-      },
-      () => {
-        console.log('deleteProject * COMPLETE *');
+      }, () => {
+        this.logger.log('[PRJCT-EDIT-ADD] - deleteProject * COMPLETE *');
 
         setTimeout(() => {
           this.SHOW_CIRCULAR_SPINNER = false;
@@ -1404,7 +1372,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
 
   goToWebhookPage() {
-    console.log("PRJCT-EDIT-ADD Navigate to Webhook console with ProjectID: ", this.id_project);
+    this.logger.log("[PRJCT-EDIT-ADD] Navigate to Webhook with the ProjectID: ", this.id_project);
     this.router.navigate(['project/' + this.id_project + '/webhook']);
   }
 

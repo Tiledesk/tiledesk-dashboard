@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { UsersService } from '../../services/users.service';
 import { AuthService } from '../../core/auth.service';
 import { Router } from '@angular/router';
-
+import { LoggerService } from '../../services/logger/logger.service';
 @Component({
   selector: 'appdashboard-change-password',
   templateUrl: './change-password.component.html',
@@ -32,21 +32,23 @@ export class ChangePasswordComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     private usersService: UsersService,
     public auth: AuthService,
-    private router: Router
+    private router: Router,
+    private logger: LoggerService
   ) { }
 
   ngOnInit() {
     this.getUserIdFromRouteParams();
     this.getCurrentProject();
   }
+
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
 
       if (project) {
         this.projectId = project._id;
-        console.log('00 -> CHANGE PSW - project from AUTH service subscription  ', project)
+        this.logger.log('[USER-PROFILE][CHANGE-PSW] - GET CURRENT PROJECT - project ', project)
       } else {
-        console.log('00 -> CHANGE PSW - project from AUTH service subscription ? ', project)
+        this.logger.log('[USER-PROFILE][CHANGE-PSW] - GET CURRENT PROJECT - project ', project, ' HIDE-SIDEBAR')
 
         this.hideSidebar();
       }
@@ -56,106 +58,106 @@ export class ChangePasswordComponent implements OnInit, AfterViewInit {
   // hides the sidebar if the user is in the CHANGE PSW PAGE but has not yet selected a project
   hideSidebar() {
     const elemAppSidebar = <HTMLElement>document.querySelector('app-sidebar');
-    console.log('USER PROFILE  elemAppSidebar ', elemAppSidebar)
+    this.logger.log('[USER-PROFILE][CHANGE-PSW] - HIDE-SIDEBAR - elemAppSidebar ', elemAppSidebar)
     elemAppSidebar.setAttribute('style', 'display:none;');
 
     const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
-    console.log('USER PROFILE  elemMainPanel ', elemMainPanel)
+    this.logger.log('[USER-PROFILE][CHANGE-PSW] - HIDE-SIDEBAR - elemMainPanel ', elemMainPanel)
     elemMainPanel.setAttribute('style', 'width:100% !important; overflow-x: hidden !important;');
   }
 
 
   ngAfterViewInit() {
     if (document.getElementsByTagName) {
-
       const inputElements = document.getElementsByTagName('input');
-      console.log('» input elemnts ', inputElements)
+      this.logger.log('[USER-PROFILE][CHANGE-PSW] » input elemnts ', inputElements)
 
       for (let i = 0; inputElements[i]; i++) {
-
         // if (inputElements[i].className && (inputElements[i].className.indexOf('disableAutoComplete') !== -1)) {
-        console.log('» qui entro')
+        this.logger.log('[USER-PROFILE][CHANGE-PSW] » HERE YES - SET ATTRIBUTE AUTOCOMPLETE OFF TO INPUT-ELEMENTS')
         inputElements[i].setAttribute('autocomplete', 'off');
-
-        // }
-
       }
-
     }
   }
 
   getUserIdFromRouteParams() {
     this.userId = this.route.snapshot.params['userid'];
-    console.log('CHANGE PSW COMP - USER ID ', this.userId)
+    this.logger.log('[USER-PROFILE][CHANGE-PSW] - GET USER ID PROM PARAMS - USER ID ', this.userId)
   }
 
-
-
-
   onDigitNewPsw() {
-
-    console.log('==> new psw ', this.newPassword);
+    this.logger.log('[USER-PROFILE][CHANGE-PSW] - ON DIGIT NEW PSW ==> new psw ', this.newPassword);
     if (this.confirmNewPassword !== this.newPassword) {
       this.DISABLE_UPDATE_PSW_BTN = true;
-      console.log('CONFIRM PASSWORD IS NOT EQUAL TO NEW PASSWORD ', this.DISABLE_UPDATE_PSW_BTN)
+      this.logger.log('[USER-PROFILE][CHANGE-PSW] - ON DIGIT NEW PSW - CONFIRM PASSWORD IS NOT EQUAL TO NEW PASSWORD ', this.DISABLE_UPDATE_PSW_BTN)
     } else {
       this.DISABLE_UPDATE_PSW_BTN = false;
-      console.log('CONFIRM PASSWORD IS NOT EQUAL TO NEW PASSWORD ', this.DISABLE_UPDATE_PSW_BTN)
+      this.logger.log('[USER-PROFILE][CHANGE-PSW] - ON DIGIT NEW PSW - CONFIRM PASSWORD IS NOT EQUAL TO NEW PASSWORD ', this.DISABLE_UPDATE_PSW_BTN)
     }
   }
 
   onConfirmNewPsw() {
-    console.log('==> confirm new psw ', this.confirmNewPassword);
-
+    this.logger.log('[USER-PROFILE][CHANGE-PSW] - ON CONFIRM NEW PSW ==> confirm new psw ', this.confirmNewPassword);
     if (this.confirmNewPassword !== this.newPassword) {
       this.DISABLE_UPDATE_PSW_BTN = true;
-      console.log('CONFIRM PASSWORD IS NOT EQUAL TO NEW PASSWORD ', this.DISABLE_UPDATE_PSW_BTN)
+      this.logger.log('[USER-PROFILE][CHANGE-PSW] - ON CONFIRM NEW PSW - CONFIRM PASSWORD IS NOT EQUAL TO NEW PASSWORD ', this.DISABLE_UPDATE_PSW_BTN)
     } else {
       this.DISABLE_UPDATE_PSW_BTN = false;
-      console.log('CONFIRM PASSWORD IS NOT EQUAL TO NEW PASSWORD ', this.DISABLE_UPDATE_PSW_BTN)
+      this.logger.log('[USER-PROFILE][CHANGE-PSW] - ON CONFIRM NEW PSW - CONFIRM PASSWORD IS NOT EQUAL TO NEW PASSWORD ', this.DISABLE_UPDATE_PSW_BTN)
     }
 
   }
 
   changePsw() {
-    console.log('on CHANGE PSW - OLD PSW ', this.oldPassword)
-    console.log('on CHANGE PSW - NEW PSW ', this.newPassword)
+    this.logger.log('[USER-PROFILE][CHANGE-PSW] - CHANGE PSW - OLD PSW ', this.oldPassword)
+    this.logger.log('[USER-PROFILE][CHANGE-PSW] - CHANGE PSW - NEW PSW ', this.newPassword)
 
     this.displayModalChangingPsw = 'block';
     this.SHOW_CIRCULAR_SPINNER = true;
 
     this.usersService.changePassword(this.userId, this.oldPassword, this.newPassword)
       .subscribe((user) => {
-        console.log('CHANGE PASSWORD - DATA ', user);
+        this.logger.log('USER-PROFILE][CHANGE-PSW] - CHANGE PASSWORD - RES ', user);
 
-      },        (error) => {
-          console.log('CHANGE PASSWORD - ERROR ', error);
-          this.SHOW_CIRCULAR_SPINNER = false;
-          this.CHANGE_PSW_NO_ERROR = false;
+      }, (error) => {
+        this.logger.error('USER-PROFILE][CHANGE-PSW] - CHANGE PASSWORD - ERROR ', error);
+        this.SHOW_CIRCULAR_SPINNER = false;
+        this.CHANGE_PSW_NO_ERROR = false;
 
-          const error_body = JSON.parse(error._body);
+        const error_body = JSON.parse(error._body);
 
-          if (error_body.msg === 'Current password is invalid.') {
-            this.CURRENT_PSW_INVALID_ERROR = true;
-            this.CHANGE_PSW_OTHER_ERROR = false;
-
-          } else {
-            this.CHANGE_PSW_OTHER_ERROR = true;
-            this.CURRENT_PSW_INVALID_ERROR = false;
-          }
-
-        },         () => {
-          console.log('CHANGE PASSWORD * COMPLETE *');
+        if (error_body.msg === 'Current password is invalid.') {
+          this.CURRENT_PSW_INVALID_ERROR = true;
           this.CHANGE_PSW_OTHER_ERROR = false;
+
+        } else {
+          this.CHANGE_PSW_OTHER_ERROR = true;
           this.CURRENT_PSW_INVALID_ERROR = false;
-          this.SHOW_CIRCULAR_SPINNER = false;
-          this.CHANGE_PSW_NO_ERROR = true;
-        });
+        }
+
+      }, () => {
+        this.logger.log('USER-PROFILE][CHANGE-PSW] - CHANGE PASSWORD * COMPLETE *');
+        this.CHANGE_PSW_OTHER_ERROR = false;
+        this.CURRENT_PSW_INVALID_ERROR = false;
+        this.SHOW_CIRCULAR_SPINNER = false;
+        this.CHANGE_PSW_NO_ERROR = true;
+      });
   }
 
   closeModalChangingPswHandler() {
     this.displayModalChangingPsw = 'none';
-    this._location.back();
+    // this._location.back();
+
+    if (document.getElementsByTagName) {
+      const inputElements = document.getElementsByTagName('input');
+      this.logger.log('[USER-PROFILE][CHANGE-PSW] » input elemnts ', inputElements)
+
+      for (let i = 0; inputElements[i]; i++) {
+        // if (inputElements[i].className && (inputElements[i].className.indexOf('disableAutoComplete') !== -1)) {
+        this.logger.log('[USER-PROFILE][CHANGE-PSW] » HERE YES - SET VALUE TO EMPTY')
+        inputElements[i].value = '';
+      }
+    }
   }
 
   closeModalChangingPsw() {
@@ -164,15 +166,15 @@ export class ChangePasswordComponent implements OnInit, AfterViewInit {
 
 
   // hides the sidebar if the user views his profile but has not yet selected a project
-  selectSidebar() {
-    const elemAppSidebar = <HTMLElement>document.querySelector('app-sidebar');
-    console.log('USER PROFILE  elemAppSidebar ', elemAppSidebar)
-    elemAppSidebar.setAttribute('style', 'display:none;');
+  // selectSidebar() {
+  //   const elemAppSidebar = <HTMLElement>document.querySelector('app-sidebar');
+  //   this.logger.log('USER PROFILE  elemAppSidebar ', elemAppSidebar)
+  //   elemAppSidebar.setAttribute('style', 'display:none;');
 
-    const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
-    console.log('USER PROFILE  elemMainPanel ', elemMainPanel)
-    elemMainPanel.setAttribute('style', 'width:100% !important; overflow-x: hidden !important;');
-  }
+  //   const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
+  //   this.logger.log('USER PROFILE  elemMainPanel ', elemMainPanel)
+  //   elemMainPanel.setAttribute('style', 'width:100% !important; overflow-x: hidden !important;');
+  // }
 
 
   goBack() {
@@ -180,9 +182,9 @@ export class ChangePasswordComponent implements OnInit, AfterViewInit {
   }
 
   goToUserProfile() {
-    console.log('»» GO TO USER PROFILE  - PROJECT ID ', this.projectId)
+    this.logger.log('USER-PROFILE][CHANGE-PSW] »» GO TO USER PROFILE  - PROJECT ID ', this.projectId)
     if (this.projectId === undefined) {
-    
+
       this.router.navigate(['user-profile']);
     } else {
       this.router.navigate(['project/' + this.projectId + '/user-profile']);
@@ -190,7 +192,7 @@ export class ChangePasswordComponent implements OnInit, AfterViewInit {
   }
 
   goToAccountSettings() {
-    console.log('»» GO TO USER  PROFILE SETTINGS - PROJECT ID ', this.projectId)
+    this.logger.log('USER-PROFILE][CHANGE-PSW] »» GO TO USER  PROFILE SETTINGS - PROJECT ID ', this.projectId)
     if (this.projectId === undefined) {
       this.router.navigate(['user/' + this.userId + '/settings']);
     } else {
@@ -199,7 +201,7 @@ export class ChangePasswordComponent implements OnInit, AfterViewInit {
   }
 
   goToNotificationSettings() {
-    console.log('»» GO TO USER  NOTIFICATION SETTINGS - PROJECT ID ', this.projectId)
+    this.logger.log('USER-PROFILE][CHANGE-PSW] »» GO TO USER  NOTIFICATION SETTINGS - PROJECT ID ', this.projectId)
     if (this.projectId === undefined) {
       this.router.navigate(['user/' + this.userId + '/notifications']);
     } else {
@@ -207,6 +209,6 @@ export class ChangePasswordComponent implements OnInit, AfterViewInit {
     }
   }
 
-  
+
 
 }

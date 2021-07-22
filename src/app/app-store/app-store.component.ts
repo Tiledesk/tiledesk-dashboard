@@ -3,6 +3,7 @@ import { AppStoreService } from '../services/app-store.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../core/auth.service';
 import { Subscription } from 'rxjs/Subscription';
+import { LoggerService } from '../services/logger/logger.service';
 
 @Component({
   selector: 'appdashboard-app-store',
@@ -20,7 +21,8 @@ export class AppStoreComponent implements OnInit {
   constructor(
     public appStoreService: AppStoreService,
     private router: Router,
-    public auth: AuthService
+    public auth: AuthService,
+    private logger: LoggerService
   ) { }
 
   ngOnInit() {
@@ -46,7 +48,7 @@ export class AppStoreComponent implements OnInit {
     this.subscription = this.auth.project_bs.subscribe((project) => {
       if (project) {
         this.projectId = project._id
-        console.log('APP-STORE - projectId ', this.projectId)
+        this.logger.log('APP-STORE - projectId ', this.projectId)
       }
     });
   }
@@ -58,7 +60,7 @@ export class AppStoreComponent implements OnInit {
     this.appStoreService.getApps().subscribe((_apps: any) => {
 
       this.apps = _apps.apps;
-      console.log('APP-STORE - APPS ', this.apps);
+      this.logger.log('APP-STORE - getApps APPS ', this.apps);
 
       this.apps.forEach(app => {
 
@@ -79,20 +81,20 @@ export class AppStoreComponent implements OnInit {
 
 
     }, (error) => {
-      console.log('APP-STORE - ERROR  ', error);
+      this.logger.error('[APP-STORE] - getApps ERROR  ', error);
       this.showSpinner = false;
     }, () => {
-      console.log('APP-STORE * COMPLETE *');
+      this.logger.log('[APP-STORE] getApps * COMPLETE *');
       this.getInstallations().then((res: any) => {
 
         for (let installation of res) {
-          console.log("INSTALLATION: ", this.apps.findIndex(x => x._id === installation.app_id ))
+          this.logger.log("[APP-STORE] getInstallations INSTALLATION: ", this.apps.findIndex(x => x._id === installation.app_id ))
           let index = this.apps.findIndex(x => x._id === installation.app_id);
           this.apps[index].installed = true;
         }
         this.showSpinner = false;
       }).catch((err) => {
-        console.log("Error: ", err)
+        this.logger.error("[APP-STORE] getInstallations ERROR: ", err)
         this.showSpinner = false;
       })
 
@@ -101,12 +103,11 @@ export class AppStoreComponent implements OnInit {
   }
 
   installApp(installationType: string, installationUrl: string, appTitle: string, appId: string) {
-    console.log('APP-STORE installationType ', installationType);
-
-    console.log('APP-STORE installationUrl ', installationUrl);
+    this.logger.log('[APP-STORE] installationType ', installationType);
+    this.logger.log('[APP-STORE] installationUrl ', installationUrl);
 
     const urlHasQueryString = this.detectQueryString(installationUrl)
-    console.log('APP-STORE installationUrl Has QueryString ', urlHasQueryString);
+    this.logger.log('[APP-STORE] installationUrl Has QueryString ', urlHasQueryString);
 
 
     let installationUrlWithQueryString = ''
@@ -117,7 +118,7 @@ export class AppStoreComponent implements OnInit {
     }
 
     if (installationType === 'internal') {
-      console.log("Navigation to: " + 'project/' + this.projectId + '/app-store-install', installationUrlWithQueryString, appTitle)
+      this.logger.log("[APP-STORE] Navigation to: " + 'project/' + this.projectId + '/app-store-install', installationUrlWithQueryString, appTitle)
       //this.router.navigate(['project/' + this.projectId + '/app-store-install', installationUrlWithQueryString, appTitle]);
       this.router.navigate(['project/' + this.projectId + '/app-store-install/' + appId])
     } else {
@@ -127,7 +128,7 @@ export class AppStoreComponent implements OnInit {
   }
 
   learnmore(learnmoreUrl: string) {
-    console.log('APP-STORE installationUrl ', learnmoreUrl);
+    this.logger.log('[APP-STORE] installationUrl ', learnmoreUrl);
     const url = learnmoreUrl;
 
     window.open(url, '_blank');
@@ -136,17 +137,17 @@ export class AppStoreComponent implements OnInit {
   detectQueryString(url) {
     // regex pattern for detecting querystring
     var pattern = new RegExp(/\?.+=.*/g);
-    console.log('APP-STORE PATTERN TEST USRL ')
+    // this.logger.log('[APP-STORE] PATTERN TEST USL ')
     return pattern.test(url);
   }
 
   getInstallations() {
     let promise = new Promise((resolve, reject) => {
       this.appStoreService.getInstallation(this.projectId).then((res) => {
-        console.log("Get Installation Response: ", res);
+        this.logger.log("[APP-STORE] Get Installation Response: ", res);
         resolve(res);
       }).catch((err) => {
-        console.error("Error getting installation: ", err);
+        this.logger.error("[APP-STORE] Error getting installation: ", err);
         reject(err);
       })
     })

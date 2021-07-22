@@ -1,15 +1,14 @@
 import { Subscription } from 'rxjs/Subscription';
 import { AnalyticsService } from './../../services/analytics.service';
 import { Component, OnInit } from '@angular/core';
-import { RequestsService } from 'app/services/requests.service';
 import * as moment from 'moment';
 import * as moment_tz from 'moment-timezone'
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
 import { TranslateService } from '@ngx-translate/core';
 import { ITooltipEventArgs } from '@syncfusion/ej2-heatmap/src';
 import { Chart } from 'chart.js';
-import { TransferState } from '@angular/platform-browser';
 import { AuthService } from 'app/core/auth.service';
+import { LoggerService } from './../../services/logger/logger.service';
 
 @Component({
   selector: 'appdashboard-panoramica',
@@ -55,18 +54,15 @@ export class PanoramicaComponent implements OnInit {
   langService: HumanizeDurationLanguage = new HumanizeDurationLanguage();
   humanizer: HumanizeDuration = new HumanizeDuration(this.langService);
 
-
-
-
-
-  constructor(private requestsService: RequestsService,
+  constructor(
     private translate: TranslateService,
     private analyticsService: AnalyticsService,
-    private auth: AuthService
+    private auth: AuthService,
+    private logger: LoggerService
   ) {
 
     this.lang = this.translate.getBrowserLang();
-    console.log('LANGUAGE ', this.lang);
+    this.logger.log('[ANALYTICS - OVERVIEW] LANGUAGE ', this.lang);
     this.getBrowserLangAndSwitchMonthName();
     this.getHeatMapSeriesDataByLang();
     //this.startTimer();
@@ -92,7 +88,7 @@ export class PanoramicaComponent implements OnInit {
     interval = setInterval(() => {
       if (timeLeft > 0) {
         timeLeft--;
-        console.log("TIME", timeLeft)
+        this.logger.log("[ANALYTICS - OVERVIEW] startTimer timeLeft ", timeLeft)
       }
 
     }, 1000)
@@ -101,12 +97,12 @@ export class PanoramicaComponent implements OnInit {
 
 
   ngOnDestroy() {
-    console.log('!!! ANALYTICS - !!!!! UN - SUBSCRIPTION TO REQUESTS');
+    this.logger.log('[ANALYTICS - OVERVIEW] - !!!!! UN - SUBSCRIPTION TO REQUESTS');
     this.subscription.unsubscribe();
   }
 
   goToRichieste() {
-    console.log("User click on last 7 days graph");
+    this.logger.log("[ANALYTICS - OVERVIEW] User click on last 7 days graph");
     this.analyticsService.goToRichieste();
   }
 
@@ -171,13 +167,13 @@ export class PanoramicaComponent implements OnInit {
   // -----------LAST 7 DAYS GRAPH-----------------------
   getRequestByLast7Day() {
     this.subscription = this.analyticsService.requestsByDay(7).subscribe((requestsByDay: any) => {
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY ', requestsByDay);
+      this.logger.log('[ANALYTICS - OVERVIEW] - REQUESTS BY DAY ', requestsByDay);
 
 
       // CREATES THE INITIAL ARRAY WITH THE LAST SEVEN DAYS (calculated with moment) AND REQUESTS COUNT = O
       const last7days_initarray = []
       for (let i = 0; i <= 6; i++) {
-        // console.log('»» !!! ANALYTICS - LOOP INDEX', i);
+        // this.logger.log('»» !!! ANALYTICS - LOOP INDEX', i);
         last7days_initarray.push({ 'count': 0, day: moment().subtract(i, 'd').format('D-M-YYYY') })
       }
 
@@ -185,7 +181,7 @@ export class PanoramicaComponent implements OnInit {
 
       last7days_initarray.reverse()
 
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - MOMENT LAST SEVEN DATE (init array)', last7days_initarray);
+      this.logger.log('[ANALYTICS - OVERVIEW] - REQUESTS BY DAY - MOMENT LAST SEVEN DATE (init array)', last7days_initarray);
 
       const requestsByDay_series_array = [];
       const requestsByDay_labels_array = []
@@ -199,7 +195,7 @@ export class PanoramicaComponent implements OnInit {
         }
 
       }
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY FORMATTED ', requestsByDay_array);
+      this.logger.log('[ANALYTICS - OVERVIEW] - REQUESTS BY DAY FORMATTED ', requestsByDay_array);
 
 
       /**
@@ -208,28 +204,28 @@ export class PanoramicaComponent implements OnInit {
       // will return the element i.e. object from requestsByDay_formatted_array if the day is found in the requestsByDay_formatted_array.
       // If not, then the same element in last7days i.e. obj is returned.
       const requestByDays_final_array = last7days_initarray.map(obj => requestsByDay_array.find(o => o.day === obj.day) || obj);
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - FINAL ARRAY ', requestByDays_final_array);
+      this.logger.log('[ANALYTICS - OVERVIEW] - REQUESTS BY DAY - FINAL ARRAY ', requestByDays_final_array);
 
       const _requestsByDay_series_array = [];
       const _requestsByDay_labels_array = [];
 
       requestByDays_final_array.forEach(requestByDay => {
-        //console.log('»» !!! ANALYTICS - REQUESTS BY DAY - requestByDay', requestByDay);
+        //this.logger.log('»» !!! ANALYTICS - REQUESTS BY DAY - requestByDay', requestByDay);
         _requestsByDay_series_array.push(requestByDay.count)
 
         const splitted_date = requestByDay.day.split('-');
-        //console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SPLITTED DATE', splitted_date);
+        //this.logger.log('»» !!! ANALYTICS - REQUESTS BY DAY - SPLITTED DATE', splitted_date);
         _requestsByDay_labels_array.push(splitted_date[0] + ' ' + this.monthNames[splitted_date[1]])
       });
 
 
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SERIES (ARRAY OF COUNT - to use for debug)', requestsByDay_series_array);
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SERIES (+ NEW + ARRAY OF COUNT)', _requestsByDay_series_array);
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - LABELS (ARRAY OF DAY - to use for debug)', requestsByDay_labels_array);
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - LABELS (+ NEW + ARRAY OF DAY)', _requestsByDay_labels_array);
+      this.logger.log('[ANALYTICS - OVERVIEW] - REQUESTS BY DAY - SERIES (ARRAY OF COUNT - to use for debug)', requestsByDay_series_array);
+      this.logger.log('[ANALYTICS - OVERVIEW] - REQUESTS BY DAY - SERIES (+ NEW + ARRAY OF COUNT)', _requestsByDay_series_array);
+      this.logger.log('[ANALYTICS - OVERVIEW] - REQUESTS BY DAY - LABELS (ARRAY OF DAY - to use for debug)', requestsByDay_labels_array);
+      this.logger.log('[ANALYTICS - OVERVIEW] - REQUESTS BY DAY - LABELS (+ NEW + ARRAY OF DAY)', _requestsByDay_labels_array);
 
       const higherCount = this.getMaxOfArray(_requestsByDay_series_array);
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - HIGHTER COUNT ', higherCount);
+      this.logger.log('[ANALYTICS - OVERVIEW] - REQUESTS BY DAY - HIGHTER COUNT ', higherCount);
 
       let lang = this.lang;
 
@@ -319,12 +315,12 @@ export class PanoramicaComponent implements OnInit {
                 // }
                 // label += Math.round(tooltipItem.yLabel * 100) / 100;
                 // return label + '';
-                //console.log("data",data)
+                //this.logger.log("data",data)
                 const currentItemValue = tooltipItem.yLabel
                 // let langService = new HumanizeDurationLanguage();
                 // let humanizer = new HumanizeDuration(langService);
                 // humanizer.setOptions({ round: true })
-                //console.log("humanize", humanizer.humanize(currentItemValue))
+                //this.logger.log("humanize", humanizer.humanize(currentItemValue))
                 //return data.datasets[tooltipItem.datasetIndex].label + ': ' + currentItemValue
                 if (lang === 'it') {
                   return 'Conversazioni: ' + currentItemValue;
@@ -341,7 +337,7 @@ export class PanoramicaComponent implements OnInit {
         plugins: [{
           beforeDraw: function (chartInstance, easing) {
             var ctx = chartInstance.chart.ctx;
-            //console.log("chartistance",chartInstance)
+            //this.logger.log("chartistance",chartInstance)
             //ctx.fillStyle = 'red'; // your color here
             ctx.height = 128
             //chartInstance.chart.canvas.parentNode.style.height = '128px';
@@ -353,10 +349,10 @@ export class PanoramicaComponent implements OnInit {
       });
 
     }, (error) => {
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - ERROR ', error);
+      this.logger.error('[ANALYTICS -  OVERVIEW] - REQUESTS BY DAY - ERROR ', error);
 
     }, () => {
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY * COMPLETE *');
+      this.logger.log('[ANALYTICS - OVERVIEW] - REQUESTS BY DAY * COMPLETE *');
 
     });
   }
@@ -390,7 +386,7 @@ export class PanoramicaComponent implements OnInit {
 
     this.analyticsService.getDataHeatMap().subscribe(res => {
       let data: object = res;
-      console.log('data from servoice->', res);
+      this.logger.log('[ANALYTICS - OVERVIEW] data from service ->', res);
       // let init_array=[];
       // if(res.length==0){
 
@@ -398,7 +394,7 @@ export class PanoramicaComponent implements OnInit {
       //     init_array.push({ '_id': { "hour": this.xlabel_ita[i], "weekday": this.ylabel_ita[i] }, 'count': 0 })
       //   }
       // data=init_array;
-      // console.log("init_array",init_array)
+      // this.logger.log("init_array",init_array)
 
       // }
 
@@ -409,30 +405,21 @@ export class PanoramicaComponent implements OnInit {
         for (let j = 1; j <= 7; j++) {
           initialArray.push({ '_id': { 'hour': this.hour[i], 'weekday': this.weekday[j] }, 'count': null })
         }
-
       }
-      console.log("INITIALLLL", initialArray);
 
-
-
+      this.logger.log("[ANALYTICS - OVERVIEW] getDataHeatMap  INITIALLLL", initialArray);
 
       for (let z in data) {
-        console.log("DATA", this.getOffset(data[z]._id.hour, data[z]._id.weekday))
+        this.logger.log("[ANALYTICS - OVERVIEW] getDataHeatMap DATA", this.getOffset(data[z]._id.hour, data[z]._id.weekday))
         this.customData.push({ '_id': { "hour": this.hour[this.getOffset(data[z]._id.hour, data[z]._id.weekday).hours], "weekday": this.weekday[this.getOffset(data[z]._id.hour, data[z]._id.weekday).weekday] }, 'count': data[z].count });
         //this.customData.push({ '_id': { "hour": this.hour[data[z]._id.hour ], "weekday": this.weekday[data[z]._id.weekday] }, 'count': data[z].count });
-
       }
 
-
-
-
-      console.log('CUSTOM', this.customData)
-
-
+      this.logger.log('[ANALYTICS - OVERVIEW] getDataHeatMap CUSTOM', this.customData)
 
       //map customdata to initial array to create filanArray by _id.hour & _id.weekday values
       const finalArray = initialArray.map(obj => this.customData.find(o => (o._id.hour === obj._id.hour) && (o._id.weekday === obj._id.weekday)) || obj);
-      console.log("FINAL", finalArray)
+      this.logger.log("[ANALYTICS - OVERVIEW] getDataHeatMap  FINAL ARRAY", finalArray)
 
       this.dataSource = {
         data: finalArray,
@@ -444,9 +431,9 @@ export class PanoramicaComponent implements OnInit {
       }
 
     }, (error) => {
-      console.log('»» !!! ANALYTICS - REQUESTS HEATMAP - ERROR ', error);
+      this.logger.error('[ANALYTICS - OVERVIEW] - REQUESTS HEATMAP - ERROR ', error);
     }, () => {
-      console.log('»» !!! ANALYTICS - REQUESTS HEATMAP * COMPLETE *');
+      this.logger.log('[ANALYTICS - OVERVIEW] - REQUESTS HEATMAP * COMPLETE *');
 
     })
 
@@ -456,14 +443,14 @@ export class PanoramicaComponent implements OnInit {
 
     // get offset local time respect to utc in minutes
     var offSet = moment_tz.tz(moment_tz.utc(), moment_tz.tz.guess()).utcOffset();
-    // console.log("Offset:",offSet); --> ACTIVE TO DEBUG
+    // this.logger.log("Offset:",offSet); --> ACTIVE TO DEBUG
 
     var prjTzOffsetToHours = (offSet / 60) // get offset in hours
 
     const off_FINAL = hours + prjTzOffsetToHours;
-    // console.log("Hour + weekday:", hours, weekday); --> ACTIVE TO DEBUG
-    // console.log("OFFSEThour", prjTzOffsetToHours); --> ACTIVE TO DEBUG
-    // console.log("OFFSET_FINAL", off_FINAL); --> ACTIVE TO DEBUG
+    // this.logger.log("Hour + weekday:", hours, weekday); --> ACTIVE TO DEBUG
+    // this.logger.log("OFFSEThour", prjTzOffsetToHours); --> ACTIVE TO DEBUG
+    // this.logger.log("OFFSET_FINAL", off_FINAL); --> ACTIVE TO DEBUG
 
     // offset+UtcHour is grater than 24
     if (off_FINAL > 24) {
@@ -529,14 +516,14 @@ export class PanoramicaComponent implements OnInit {
 
             this.responseAVGtime = this.humanizer.humanize(res[0].waiting_time_avg, { round: true, language: this.lang })
 
-            console.log('Waiting time: humanize', this.humanizer.humanize(res[0].waiting_time_avg))
-            console.log('waiting time funtion:', this.humanizeDurations(res[0].waiting_time_avg));
+            this.logger.log('[ANALYTICS - OVERVIEW] avarageWaitingTimeCLOCK Waiting time: humanize', this.humanizer.humanize(res[0].waiting_time_avg))
+            this.logger.log('[ANALYTICS - OVERVIEW] waiting time funtion:', this.humanizeDurations(res[0].waiting_time_avg));
 
           } else {
             this.setToNa('avg');
 
-            console.log('Waiting time: humanize', this.humanizer.humanize(0))
-            console.log('waiting time funtion:', this.humanizeDurations(0));
+            this.logger.log('[ANALYTICS - OVERVIEW] avarageWaitingTimeCLOCK Waiting time: humanize', this.humanizer.humanize(0))
+            this.logger.log('[ANALYTICS - OVERVIEW] avarageWaitingTimeCLOCK waiting time funtion:', this.humanizeDurations(0));
           }
 
         } else {
@@ -545,15 +532,15 @@ export class PanoramicaComponent implements OnInit {
       } else {
         this.setToNa('avg');
 
-        console.log('Waiting time: humanize', this.humanizer.humanize(0))
-        console.log('waiting time funtion:', this.humanizeDurations(0));
+        this.logger.log('[ANALYTICS - OVERVIEW] avarageWaitingTimeCLOCK Waiting time: humanize', this.humanizer.humanize(0))
+        this.logger.log('[ANALYTICS - OVERVIEW] avarageWaitingTimeCLOCK waiting time funtion:', this.humanizeDurations(0));
       }
 
     }, (error) => {
-      console.log('!!! ANALYTICS - AVERAGE WAITING TIME CLOCK REQUEST  - ERROR ', error);
+      this.logger.error('[ANALYTICS - OVERVIEW] - AVERAGE WAITING TIME CLOCK REQUEST  - ERROR ', error);
       this.setToNa('avg');
     }, () => {
-      console.log('!!! ANALYTICS - AVERAGE TIME CLOCK REQUEST * COMPLETE *');
+      this.logger.log('![ANALYTICS - OVERVIEW]- AVERAGE TIME CLOCK REQUEST * COMPLETE *');
     });
   }
 
@@ -565,8 +552,8 @@ export class PanoramicaComponent implements OnInit {
       let splitString;
 
       if (res && res.length > 0) {
-        console.log('»»»» res[0].duration_avg ', res[0].duration_avg)
-        console.log('»»»» typeof res[0].duration_avg ', typeof res[0].duration_avg)
+        this.logger.log('[ANALYTICS - OVERVIEW] »»»» durationConvTimeCLOCK res[0].duration_avg ', res[0].duration_avg)
+        this.logger.log('[ANALYTICS - OVERVIEW] »»»» durationConvTimeCLOCK typeof res[0].duration_avg ', typeof res[0].duration_avg)
         if (res[0].duration_avg) {
           if ((res[0].duration_avg !== null) || (res[0].duration_avg !== undefined)) {
             // this.humanizer.setOptions({round: true, units:['m']});
@@ -581,8 +568,8 @@ export class PanoramicaComponent implements OnInit {
             this.responseDurationtime = this.humanizer.humanize(res[0].duration_avg, { round: true, language: this.lang });
 
 
-            console.log('Waiting time: humanize', this.humanizer.humanize(res[0].duration_avg))
-            console.log('waiting time funtion:', avarageWaitingTimestring);
+            this.logger.log('[ANALYTICS - OVERVIEW] durationConvTimeCLOCK Waiting time: humanize', this.humanizer.humanize(res[0].duration_avg))
+            this.logger.log('[ANALYTICS - OVERVIEW] durationConvTimeCLOCK waiting time funtion:', avarageWaitingTimestring);
 
           } else {
 
@@ -591,22 +578,22 @@ export class PanoramicaComponent implements OnInit {
         } else {
           this.setToNa('duration');
 
-          console.log('Waiting time: humanize', this.humanizer.humanize(0))
-          console.log('waiting time funtion:', avarageWaitingTimestring);
+          this.logger.log('[ANALYTICS - OVERVIEW] durationConvTimeCLOCK Waiting time: humanize', this.humanizer.humanize(0))
+          this.logger.log('[ANALYTICS - OVERVIEW] durationConvTimeCLOCK waiting time funtion:', avarageWaitingTimestring);
         }
       } else {
         this.setToNa('duration');
         
-        console.log('Waiting time: humanize', this.humanizer.humanize(0))
-        console.log('waiting time funtion:', avarageWaitingTimestring);
+        this.logger.log('[ANALYTICS - OVERVIEW] durationConvTimeCLOCK Waiting time: humanize', this.humanizer.humanize(0))
+        this.logger.log('[ANALYTICS - OVERVIEW] durationConvTimeCLOCK waiting time funtion:', avarageWaitingTimestring);
       }
 
     }, (error) => {
-      console.log('!!! ANALYTICS - DURATION CONVERSATION CLOCK REQUEST - ERROR ', error);
+      this.logger.error('[ANALYTICS - OVERVIEW] - DURATION CONVERSATION CLOCK REQUEST - ERROR ', error);
       this.setToNa('duration');
 
     }, () => {
-      console.log('!!! ANALYTICS - DURATION CONVERSATION CLOCK REQUEST * COMPLETE *');
+      this.logger.log('[ANALYTICS - OVERVIEW] - DURATION CONVERSATION CLOCK REQUEST * COMPLETE *');
     });
   }
 
@@ -670,7 +657,7 @@ export class PanoramicaComponent implements OnInit {
     let hours = Math.floor(value / 3600000) // 1 Hour = 36000 Milliseconds
     let minutes = Math.floor((value % 3600000) / 60000) // 1 Minutes = 60000 Milliseconds
     let seconds = Math.round(((value % 360000) % 60000) / 1000) // 1 Second = 1000 Milliseconds (prima era Math.floor ma non arrotonda i secondi)
-    //console.log("SECOND:",Math.round(((value % 360000) % 60000) / 1000))
+    //this.logger.log("SECOND:",Math.round(((value % 360000) % 60000) / 1000))
     return hours + 'h:' + minutes + 'm:' + seconds + 's'
   }
 

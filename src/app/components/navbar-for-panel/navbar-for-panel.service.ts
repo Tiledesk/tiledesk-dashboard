@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { LoggerService } from '../../services/logger/logger.service';
 
 @Injectable()
 
@@ -7,12 +8,14 @@ export class NavbarForPanelService {
 
   public darkmode$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
 
-  constructor() { }
+  constructor(
+    private logger: LoggerService
+    ) { }
 
 
   publishDisplayPreferences(dkm) {
 
-    console.log('NAVBAR-X-PANEL Service publishDisplayPreferences dkm ', dkm)
+    this.logger.log('[NAVBAR-X-PANEL] publishDisplayPreferences dkm ', dkm)
 
   }
 }

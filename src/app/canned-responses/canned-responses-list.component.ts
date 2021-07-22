@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CannedResponsesService } from '../services/canned-responses.service';
 import { TranslateService } from '@ngx-translate/core';
 import { NotifyService } from '../core/notify.service';
-
+import { LoggerService } from '../services/logger/logger.service';
 
 @Component({
   selector: 'appdashboard-canned-responses-list',
@@ -23,7 +23,8 @@ export class CannedResponsesListComponent implements OnInit {
   constructor(
     public cannedResponsesService: CannedResponsesService,
     public translate: TranslateService,
-    private notify: NotifyService
+    private notify: NotifyService,
+    private logger: LoggerService
   ) { }
 
   ngOnInit() {
@@ -34,7 +35,7 @@ export class CannedResponsesListComponent implements OnInit {
   translateNotificationMsgs() {
     this.translate.get('CannedResponses.NotificationMsgs')
       .subscribe((translation: any) => {
-        console.log('CANNED-RES  translateNotificationMsgs text', translation)
+        this.logger.log('[CANNED-RES-LIST]  translateNotificationMsgs text', translation)
         this.deleteErrorMsg = translation.DeleteCannedResError;
         this.deleteSuccessMsg = translation.DeleteCannedResSuccess;
    
@@ -50,29 +51,29 @@ export class CannedResponsesListComponent implements OnInit {
   getResponses() {
     // this.contactsService.getLeads(this.queryString, this.pageNo).subscribe((leads_object: any) => {
     this.cannedResponsesService.getCannedResponses().subscribe((responses: any) => {
-      console.log('CANNED-RES.COMP - GET CANNED RESP - RES ', responses);
+      this.logger.log('[CANNED-RES-LIST] - GET CANNED RESP - RES ', responses);
 
       this.responsesList = responses;
 
     }, (error) => {
-      console.log('CANNED-RES.COMP - GET CANNED RESP - ERROR  ', error);
+      this.logger.error('[CANNED-RES-LIST]- GET CANNED RESP - ERROR  ', error);
       this.showSpinner = false
     }, () => {
-      console.log('CANNED-RES.COMP - GET CANNED RESP * COMPLETE *');
+      this.logger.log('[CANNED-RES-LIST] - GET CANNED RESP * COMPLETE *');
       this.showSpinner = false
     });
   }
 
   deleteCannedResponse(cannedresponseid) {
     this.cannedResponsesService.deleteCannedResponse(cannedresponseid).subscribe((responses: any) => {
-      console.log('CANNED-RES.COMP - DELETE CANNED RESP - RES ', responses);
+      this.logger.log('[CANNED-RES-LIST] - DELETE CANNED RESP - RES ', responses);
 
     }, (error) => {
-      console.log('CANNED-RES.COMP - DELETE CANNED RESP - ERROR  ', error);
+      this.logger.error('[CANNED-RES-LIST] - DELETE CANNED RESP - ERROR  ', error);
 
       this.notify.showWidgetStyleUpdateNotification(this.deleteErrorMsg, 4, 'report_problem');
     }, () => {
-      console.log('CANNED-RES.COMP - DELETE CANNED RESP * COMPLETE *');
+      this.logger.log('[CANNED-RES-LIST] - DELETE CANNED RESP * COMPLETE *');
       this.notify.showWidgetStyleUpdateNotification(this.deleteSuccessMsg, 2, 'done');
       this.getResponses()
 
@@ -84,7 +85,7 @@ export class CannedResponsesListComponent implements OnInit {
     this.selectCannedResponseId = null;
     this.displayModal_AddEditResponse = 'block';
     this.modalMode = 'add';
-    console.log('CANNED-RES.COMP - displayModal ', this.displayModal_AddEditResponse, ' in Mode', this.modalMode);
+    this.logger.log('[CANNED-RES-LIST] - displayModal ', this.displayModal_AddEditResponse, ' in Mode', this.modalMode);
   }
 
   presentResponseModal_inEditMode(cannedresponseid: string) {
@@ -92,7 +93,7 @@ export class CannedResponsesListComponent implements OnInit {
     this.selectCannedResponseId = cannedresponseid;
     this.displayModal_AddEditResponse = 'block';
     this.modalMode = 'edit';
-    console.log('CANNED-RES.COMP - displayModal ', this.displayModal_AddEditResponse, ' in Mode', this.modalMode, ' canned-response-id', cannedresponseid);
+    this.logger.log('[CANNED-RES-LIST] - displayModal ', this.displayModal_AddEditResponse, ' in Mode', this.modalMode, ' canned-response-id', cannedresponseid);
 
   }
 
@@ -103,13 +104,13 @@ export class CannedResponsesListComponent implements OnInit {
       const elemMainContent = <HTMLElement>document.querySelector('.main-content');
       const elemMainContClientHeight = elemMainContent.clientHeight;
       const elemMainContScrollHeight = elemMainContent.scrollHeight;
-      console.log('CANNED-RES  elemMainContentHeight', elemMainContClientHeight)
-      console.log('CANNED-RES  elemMainContentHeight', elemMainContScrollHeight)
+      this.logger.log('[CANNED-RES-LIST]  elemMainContentHeight', elemMainContClientHeight)
+      this.logger.log('[CANNED-RES-LIST]  elemMainContScrollHeight', elemMainContScrollHeight)
 
       // var scrollPos = elemMainContScrollHeight - elemMainContClientHeight;
 
       var scrollPos = document.getElementsByTagName("html")[0].scrollTop;
-      console.log('CANNED-RES  scrollPos', scrollPos)
+      this.logger.log('[CANNED-RES-LIST]  scrollPos', scrollPos)
     }
   }
 

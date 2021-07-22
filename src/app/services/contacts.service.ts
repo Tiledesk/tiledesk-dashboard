@@ -1,22 +1,20 @@
 // tslint:disable:max-line-length
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+
 import { Observable } from 'rxjs/Observable';
 import { Contact } from '../models/contact-model';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
-// import { MongodbConfService } from '../utils/mongodb-conf.service';
-import { environment } from '../../environments/environment';
 import { AuthService } from '../core/auth.service';
 import { AppConfigService } from '../services/app-config.service';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+
 import { WebSocketJs } from "./websocket/websocket-js";
 import 'rxjs/add/observable/forkJoin';
+import { LoggerService } from '../services/logger/logger.service';
 
 @Injectable()
 export class ContactsService {
 
-  // public wsRequesterStatus$: BehaviorSubject<any> = new BehaviorSubject<any>({});
   // Contact: Contact[];
   http: Http;
   projectId: string;
@@ -24,15 +22,14 @@ export class ContactsService {
   TOKEN: any;
   currentUserID: string;
 
-  // BASE_URL = environment.mongoDbConfig.BASE_URL; // replaced with SERVER_BASE_PATH
-  // SERVER_BASE_PATH = environment.SERVER_BASE_URL; // now get from appconfig
   SERVER_BASE_PATH: string;
 
   constructor(
     http: Http,
     public auth: AuthService,
     public appConfigService: AppConfigService,
-    public webSocketJs: WebSocketJs
+    public webSocketJs: WebSocketJs,
+    private logger: LoggerService
 
   ) {
 
@@ -53,12 +50,12 @@ export class ContactsService {
 
   getAppConfig() {
     this.SERVER_BASE_PATH = this.appConfigService.getConfig().SERVER_BASE_URL;
-    console.log('AppConfigService getAppConfig (CONTACTS-SERV) SERVER_BASE_PATH', this.SERVER_BASE_PATH);
+    this.logger.log('[CONTACTS-SERV] getAppConfig SERVER_BASE_PATH', this.SERVER_BASE_PATH);
   }
 
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
-      console.log('!!!! CONTACTS SERVICE: SUBSCRIBE TO THE PROJECT PUBLISHED BY AUTH SERVICE ', project)
+      // this.logger.log('[CONTACTS-SERV]: SUBSCRIBE TO THE PROJECT PUBLISHED BY AUTH SERVICE ', project)
 
       if (project) {
         this.projectId = project._id
@@ -70,53 +67,20 @@ export class ContactsService {
     if (this.user) {
       this.TOKEN = this.user.token
       this.currentUserID = this.user._id
-      console.log('!!!! CONTACTS SERVICE - USER UID  ', this.currentUserID);
+      this.logger.log('[CONTACTS-SERV] - USER UID  ', this.currentUserID);
     } else {
-      console.log('No user is signed in');
+      this.logger.log('No user is signed in');
     }
   }
 
-  // subscribeToWS_RequesterPresence(requesterid) {
-  //   var self = this;
-  //   console.log("wsRequesterPresence - HERE ");
-  //   const path = '/' + this.projectId + '/project_users/users/' + requesterid;
-  //   // const path = "/5f61efc28f90f300345edd75/project_users/5f623d5c56065e0034fce69c";
-  //   console.log('wsRequesterPresence PATH ', path);
-  //   this.webSocketJs.ref(path, 'subscribeToWS_RequesterPresence',
-  //     function (data, notification) {
-  //       console.log("wsRequesterPresence (contacts service) - CREATE - data ", data);
-  //       // console.log("% WsMsgsService notification", notification);
-
-  //       self.wsRequesterStatus$.next(data);
-
-  //     }, function (data, notification) {
-
-  //       console.log("wsRequesterPresence (contacts service) - UPDATE - data ", data);
-  //       // console.log("% WsMsgsService notification", notification);
-  //       self.wsRequesterStatus$.next(data);
-
-  //     }, function (data, notification) {
-
-  //       if (data) {
-  //         console.log("wsRequesterPresence (contacts service) - ON-DATA - data", data);
-
-  //       }
-  //     }
-  //   );
-  // }
-
-  // unsubscribeToWS_RequesterPresence(requesterid) {
-  //   const path = '/' + this.projectId + '/project_users/users/' + requesterid;
-  //   this.webSocketJs.unsubscribe(path);
-  //   console.log("wsRequesterPresence UNSUBSCRIBE To WS Requester Presence (contacts service) ");
-
-  // }
-
-
-  // GET LEADS
+  // -------------------------------
+  // @ GET LEADS - ACTIVE OR TRASHED
+  // -------------------------------
   public getLeadsActiveOrTrashed(querystring, pagenumber, hasclickedtrash): Observable<Contact[]> {
     let _querystring = '&' + querystring
-    console.log('!!!! CONTACTS SERVICE - GET CONTACTS hasclickedtrashL', hasclickedtrash);
+    this.logger.log('[CONTACTS-SERV] - GET CONTACTS (ACTIVE OR TRASHED) hasclickedtrash', hasclickedtrash);
+    this.logger.log('[CONTACTS-SERV] - GET CONTACTS (ACTIVE OR TRASHED) querystring', querystring);
+    this.logger.log('[CONTACTS-SERV] - GET CONTACTS (ACTIVE OR TRASHED) pagenumber', pagenumber);
 
     if (querystring === undefined || !querystring) {
       _querystring = ''
@@ -131,7 +95,7 @@ export class ContactsService {
     // use this to test
     // 5bcf51dbc375420015542b5f is the id og the project (in production ) progetto test 23 ott of the user lanzilottonicola74@gmail.com
     // const url = 'https://api.tiledesk.com/v1/5bcf51dbc375420015542b5f/leads?page=' + pagenumber + _querystring;
-    console.log('!!!! CONTACTS SERVICE - GET CONTACTS URL', url);
+    this.logger.log('[CONTACTS-SERV] - GET CONTACTS (ACTIVE OR TRASHED) URL', url);
 
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -145,12 +109,15 @@ export class ContactsService {
       .map((response) => response.json());
   }
 
+  // -------------------------------
+  // @ GET LEADS - TRASHED
+  // -------------------------------
   getLeadsTrashed(): Observable<Contact[]> {
     const url = this.SERVER_BASE_PATH + this.projectId + '/leads?page=0&status=1000';
     // use this to test
     // 5bcf51dbc375420015542b5f is the id og the project (in production ) progetto test 23 ott of the user lanzilottonicola74@gmail.com
     // const url = 'https://api.tiledesk.com/v1/5bcf51dbc375420015542b5f/leads?page=' + pagenumber + _querystring;
-    console.log('!!!! CONTACTS SERVICE - GET TRASHED CONTACTS URL', url);
+    this.logger.log('[CONTACTS-SERV] - GET TRASHED CONTACTS URL', url);
 
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -161,13 +128,16 @@ export class ContactsService {
       .map((response) => response.json());
   }
 
+  // -------------------------------
+  // @ GET LEADS - ACTIVE
+  // -------------------------------
   getLeadsActive(): Observable<Contact[]> {
     // const url = this.SERVER_BASE_PATH + this.projectId + '/leads?page=0';
     const url = this.SERVER_BASE_PATH + this.projectId + '/leads';
     // use this to test
     // 5bcf51dbc375420015542b5f is the id og the project (in production ) progetto test 23 ott of the user lanzilottonicola74@gmail.com
     // const url = 'https://api.tiledesk.com/v1/5bcf51dbc375420015542b5f/leads?page=' + pagenumber + _querystring;
-    console.log('!!!! CONTACTS SERVICE - GET ACIVE CONTACTS URL', url);
+    this.logger.log('[CONTACTS-SERV] - GET ACIVE CONTACTS URL', url);
 
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -178,32 +148,16 @@ export class ContactsService {
       .map((response) => response.json());
   }
 
-
-  // NoT USED
-  getAllLeadsActive(pageNo): Observable<Contact[]> {
-    // const url = this.SERVER_BASE_PATH + this.projectId + '/leads?page=0';
-    const url = this.SERVER_BASE_PATH + this.projectId + '/leads/?page=' + pageNo;
-    // use this to test
-    // 5bcf51dbc375420015542b5f is the id og the project (in production ) progetto test 23 ott of the user lanzilottonicola74@gmail.com
-    // const url = 'https://api.tiledesk.com/v1/5bcf51dbc375420015542b5f/leads?page=' + pagenumber + _querystring;
-    console.log('!!!! CONTACTS SERVICE - GET ACIVE CONTACTS URL', url);
-
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.json());
-  }
-
+  // -------------------------------
+  // @ GET LEADS WHIT LIMIT
+  // -------------------------------
   getAllLeadsActiveWithLimit(limit): Observable<Contact[]> {
     // const url = this.SERVER_BASE_PATH + this.projectId + '/leads?page=0';
     const url = this.SERVER_BASE_PATH + this.projectId + '/leads?limit=' + limit + '&with_fullname=true';
     // use this to test
     // 5bcf51dbc375420015542b5f is the id og the project (in production ) progetto test 23 ott of the user lanzilottonicola74@gmail.com
     // const url = 'https://api.tiledesk.com/v1/5bcf51dbc375420015542b5f/leads?page=' + pagenumber + _querystring;
-    console.log('!!!! CONTACTS SERVICE - GET ACIVE CONTACTS WITH LIMIT URL', url);
+    this.logger.log('[CONTACTS-SERV] - GET ACIVE CONTACTS WITH LIMIT URL', url);
 
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -214,6 +168,9 @@ export class ContactsService {
       .map((response) => response.json());
   }
 
+  // ---------------------------------------------
+  // @ Create new project user to get new lead ID
+  // ---------------------------------------------
   public createNewProjectUserToGetNewLeadID() {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
@@ -223,13 +180,15 @@ export class ContactsService {
 
     const body = {};
     const url = this.SERVER_BASE_PATH + this.projectId + '/project_users/'
-    console.log('CREATE NEW PROJECT USER TO GET NEW LEAD ID url ', url);
+    this.logger.log('[CONTACTS-SERV] - CREATE NEW PROJECT USER TO GET NEW LEAD ID url ', url);
     return this.http
       .post(url, body, options)
       .map((res) => res.json());
-
   }
 
+  // ---------------------------------------------
+  // @ Create new lead 
+  // ---------------------------------------------
   public createNewLead(leadid: string, fullname: string, leademail: string) {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
@@ -239,7 +198,7 @@ export class ContactsService {
 
     const body = { 'lead_id': leadid, 'fullname': fullname, 'email': leademail };
 
-    console.log('ADD BOT POST REQUEST BODY ', body);
+    this.logger.log('[CONTACTS-SERV] - CREATE NEW LEAD ', body);
 
     const url = this.SERVER_BASE_PATH + this.projectId + '/leads/'
 
@@ -249,7 +208,9 @@ export class ContactsService {
 
   }
 
-
+  // ---------------------------------------------
+  // @ Export lead to CSV
+  // ---------------------------------------------
   public exportLeadToCsv(querystring, pagenumber, hasclickedtrash) {
     let _querystring = '&' + querystring
     if (querystring === undefined || !querystring) {
@@ -265,7 +226,7 @@ export class ContactsService {
     // use this to test
     // 5bcf51dbc375420015542b5f is the id og the project (in production ) progetto test 23 ott of the user lanzilottonicola74@gmail.com
     // const url = 'https://api.tiledesk.com/v1/5bcf51dbc375420015542b5f/leads?page=' + pagenumber + _querystring;
-    console.log('!!!! CONTACTS SERVICE - GET CONTACTS URL', url);
+    this.logger.log('[CONTACTS-SERV] - EXPORT LEAD AS CSV URL', url);
 
     const headers = new Headers();
     headers.append('Content-Type', 'application/csv');
@@ -279,15 +240,15 @@ export class ContactsService {
   }
 
 
-
-
-  // GET LEAD BY ID
+  // ---------------------------------------------
+  // @ Get lead by id
+  // ---------------------------------------------
   public getLeadById(id: string): Observable<Contact[]> {
     const url = this.SERVER_BASE_PATH + this.projectId + '/leads/' + id;
 
     /****** use this to test *******/
     // const url = 'https://api.tiledesk.com/v1/5bcf51dbc375420015542b5f/leads/' + id;
-    console.log('!!!! CONTACTS SERVICE - GET CONTACT BY ID URL', url);
+    this.logger.log('[CONTACTS-SERV] - GET LEAD BY ID URL', url);
 
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -301,11 +262,9 @@ export class ContactsService {
       .map((response) => response.json());
   }
 
-  /**
-   * UPDATE (PUT)
-   * @param id
-   * @param fullName
-   */
+  // ---------------------------------------------
+  // @ Update lead
+  // ---------------------------------------------
   public updateLead(
     id: string,
     fullName: string,
@@ -324,7 +283,7 @@ export class ContactsService {
 
     /****** use this to test *******/
     // const url = 'https://api.tiledesk.com/v1/5bcf51dbc375420015542b5f/leads/' + id;
-    console.log('UPDATE CONTACT URL ', url);
+    this.logger.log('[CONTACTS-SERV] UPDATE LEAD - URL ', url);
 
     const headers = new Headers();
 
@@ -349,31 +308,23 @@ export class ContactsService {
       'phone': lead_phone_number,
       'note': lead_note
     };
-    // const body = {};
-    // if (fullName) {
-    //   body['fullname'] = fullName
-    // }
-    // if (email) {
-    //   body['email'] = email
-    // }
 
-    console.log('UPDATE CONTACT REQUEST BODY ', body);
+    this.logger.log('[CONTACTS-SERV] UPDATE LEAD REQUEST - BODY ', body);
     return this.http
       .put(url, JSON.stringify(body), options)
       .map((res) => res.json());
   }
 
-  /**
-   * DELETE (DELETE)
-   * @param id
-   */
+  // ---------------------------------------------
+  // @ Delete lead
+  // ---------------------------------------------
   public deleteLead(id: string) {
     const url = this.SERVER_BASE_PATH + this.projectId + '/leads/' + id;
 
     /****** use this to test *******/
     // const url = 'https://api.tiledesk.com/v1/5bcf51dbc375420015542b5f/leads/' + id;
 
-    console.log('DELETE URL ', url);
+    this.logger.log('[CONTACTS-SERV] DELETE LEAD - URL ', url);
 
     const headers = new Headers();
     headers.append('Accept', 'application/json');
@@ -389,10 +340,9 @@ export class ContactsService {
 
   }
 
-  /**
- * DELETE (DELETE)
- * @param id
- */
+  // ---------------------------------------------
+  // @ Delete lead from db
+  // ---------------------------------------------
   public deleteLeadForever(id: string) {
 
     const url = this.SERVER_BASE_PATH + this.projectId + '/leads/' + id + '/physical';
@@ -400,7 +350,7 @@ export class ContactsService {
     /****** use this to test *******/
     // const url = 'https://api.tiledesk.com/v1/5bcf51dbc375420015542b5f/leads/' + id;
 
-    console.log('DELETE LEAD FOREVER URL ', url);
+    this.logger.log('[CONTACTS-SERV] DELETE LEAD FOREVER - URL ', url);
 
     const headers = new Headers();
     headers.append('Accept', 'application/json');
@@ -413,15 +363,18 @@ export class ContactsService {
     return this.http
       .delete(url, options)
       .map((res) => res.json());
-
   }
 
-  public restoreContact(id: string) {
+
+  // ---------------------------------------------
+  // @ Restore lead
+  // ---------------------------------------------
+  public restoreLead(id: string) {
     const url = this.SERVER_BASE_PATH + this.projectId + '/leads/' + id;
 
     /****** use this to test *******/
     // const url = 'https://api.tiledesk.com/v1/5bcf51dbc375420015542b5f/leads/' + id;
-    console.log('UPDATE CONTACT URL ', url);
+    this.logger.log('[CONTACTS-SERV] - RESTORE LEAD - URL ', url);
 
     const headers = new Headers();
 
@@ -434,22 +387,24 @@ export class ContactsService {
 
     const options = new RequestOptions({ headers });
 
-    const body = { 'status': 100, };
+    const body = { 'status': 100 };
 
-    console.log('UPDATE CONTACT REQUEST BODY ', body);
+    this.logger.log('[CONTACTS-SERV] - RESTORE LEAD - BODY ', body);
     return this.http
       .put(url, JSON.stringify(body), options)
       .map((res) => res.json());
-
   }
 
-  public getNodeJsRequestsByRequesterId(requesterid: string, pagenumber: number) {
+  // ---------------------------------------------
+  // @ Get requests by requeste id
+  // ---------------------------------------------
+  public getRequestsByRequesterId(requesterid: string, pagenumber: number) {
     /* *** USED TO TEST IN LOCALHOST (note: this service doen't work in localhost) *** */
     // const url = 'https://api.tiledesk.com/v1/' + '5ba35f0b9acdd40015d350b6' + '/requests?requester_id=' + requesterid + '&page=' + pagenumber;
     /* *** USED IN PRODUCTION *** */
     const url = this.SERVER_BASE_PATH + this.projectId + '/requests?lead=' + requesterid + '&page=' + pagenumber + '&status=all' + '&no_populate=true';
 
-    console.log('!!!! CONTACT DETAILS - CONTACTS SERVICE URL ', url);
+    this.logger.log('[CONTACTS-SERV] - GET REQUESTS BY REQUESTER ID - URL ', url);
 
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -465,18 +420,17 @@ export class ContactsService {
         (response) => {
           const data = response.json();
           // Does something on data.data
-          console.log('!!!! CONTACT DETAILS  - CONTACTS SERVICE * DATA * ', data);
+          this.logger.log('[CONTACTS-SERV] - GET REQUESTS BY REQUESTER ID * DATA * ', data);
 
           if (data.requests) {
 
             data.requests.forEach(request => {
 
-
               // ----------------------------------
               // @ Department
               // ----------------------------------
               if (request.snapshot && request.snapshot.department) {
-                console.log("!!! CONTACT DETAILS  - CONTACTS SERVICE snapshot department", request.snapshot.department);
+                this.logger.log("[CONTACTS-SERV] - GET REQUESTS BY REQUESTER ID - snapshot department", request.snapshot.department);
                 request.department = request['snapshot']["department"]
 
               } else if (request.department) {
@@ -489,32 +443,5 @@ export class ContactsService {
           return data;
         })
   }
-
-
-  /**
-   * CREATE (POST)
-   * @param fullName
-   */
-  // public addMongoDbContacts(fullName: string) {
-  //   const headers = new Headers();
-  //   headers.append('Accept', 'application/json');
-  //   headers.append('Content-type', 'application/json');
-  //   headers.append('Authorization', this.TOKEN);
-  //   const options = new RequestOptions({ headers });
-
-  //   const body = { 'fullname': `${fullName}` };
-
-  //   console.log('POST REQUEST BODY ', body);
-
-  //   const url = this.MONGODB_BASE_URL;
-
-  //   return this.http
-  //     .post(url, JSON.stringify(body), options)
-  //     .map((res) => res.json());
-  // }
-
-
-
-
 
 }

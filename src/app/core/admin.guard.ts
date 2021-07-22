@@ -3,8 +3,7 @@ import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from
 import { Observable } from 'rxjs/Observable';
 import { UsersService } from '../services/users.service';
 import { AuthService } from '../core/auth.service';
-import { FaqKbService } from '../services/faq-kb.service';
-
+import { LoggerService } from '../services/logger/logger.service';
 // implements CanActivate
 @Injectable()
 export class AdminGuard {
@@ -16,7 +15,8 @@ export class AdminGuard {
   constructor(
     private router: Router,
     private usersService: UsersService,
-    private auth: AuthService
+    private auth: AuthService,
+    private logger: LoggerService
   ) {
     // this.checkRole();
     // this.getLoggedUser();
@@ -29,7 +29,7 @@ export class AdminGuard {
 
       if (user) {
         this.currentUserId = user._id;
-        console.log('»> »> !!! »»» ADMIN GUARD -Current USER ID ', this.currentUserId)
+        this.logger.log('[ADMIN-GUARD] - Current USER ID ', this.currentUserId)
 
       }
     });
@@ -40,7 +40,7 @@ export class AdminGuard {
 
       if (project) {
         this.projectId = project._id
-        console.log('»> »> !!! »»» ADMIN GUARD - PRJCT ID from AUTH SERV SUBSC  ', this.projectId);
+        this.logger.log('[ADMIN-GUARD] - PRJCT ID from AUTH SERV SUBSC  ', this.projectId);
       }
 
     });
@@ -52,14 +52,14 @@ export class AdminGuard {
 
         this.userRole = user_role;
         // this.userRole = 'agent';
-        console.log('»> »> !!! »»» ADMIN GUARD - CHECK ROLE (FROM SUBSCRIPTION) »»» ', this.userRole);
+        this.logger.log('[ADMIN-GUARD] - CHECK ROLE (FROM SUBSCRIPTION) »»» ', this.userRole);
         // if (user_role === 'agent' || user_role === undefined) {
-        //   console.log('»> »> !!! »»» ADMIN GUARD - CHECK ROLE (FROM SUBSCRIPTION) »»» ', user_role);
+        //   this.logger.log([ADMIN-GUARD] - CHECK ROLE (FROM SUBSCRIPTION) »»» ', user_role);
 
         //   this.router.navigate(['unauthorized']);
 
         // } else {
-        //   console.log('»> »> !!! »»» ADMIN GUARD - CHECK ROLE (FROM SUBSCRIPTION) »»» ', user_role);
+        //   this.logger.log([ADMIN-GUARD] - CHECK ROLE (FROM SUBSCRIPTION) »»» ', user_role);
         // }
       }
     });
@@ -68,9 +68,9 @@ export class AdminGuard {
 
 //   canActivate(): Observable<boolean> | Promise<boolean> | boolean {
 
-//     // console.log('»> »> !!! »»» ADMIN GUARD - CAN ACTIVATE - USER IS OWNER or ADMIN ', this.usersService.checkRole() )
+//     // this.logger.log('[ADMIN-GUARD] - CAN ACTIVATE - USER IS OWNER or ADMIN ', this.usersService.checkRole() )
 //     const hasAdminPrivileges = this.usersService.checkRole();
-//     console.log('»> »> !!! »»» ADMIN GUARD - CAN ACTIVATE - USER IS OWNER or ADMIN ', hasAdminPrivileges);
+//     this.logger.log('[ADMIN-GUARD] - CAN ACTIVATE - USER IS OWNER or ADMIN ', hasAdminPrivileges);
 
 //     if (hasAdminPrivileges === true) {
 

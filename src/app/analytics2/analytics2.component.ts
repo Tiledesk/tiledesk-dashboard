@@ -2,12 +2,9 @@
 import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../core/auth.service';
-import { RequestsService } from './../services/requests.service';
-import { UsersService } from '../services/users.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import * as Chartist from 'chartist';
-import { DepartmentService } from '../services/department.service';
 import * as moment from 'moment';
 import { AnalyticsService } from 'app/services/analytics.service';
 import { ITooltipEventArgs } from '@syncfusion/ej2-heatmap/src';
@@ -15,7 +12,7 @@ import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts
 import { Chart } from 'chart.js';
 import { WsRequestsService } from '../services/websocket/ws-requests.service';
 import { AppConfigService } from '../services/app-config.service';
-
+import { LoggerService } from '../services/logger/logger.service';
 @Component({
   selector: 'appdashboard-analytics2',
   templateUrl: './analytics2.component.html',
@@ -96,17 +93,15 @@ export class Analytics2Component implements OnInit, OnDestroy {
   childToSelect: string
   constructor(
     private auth: AuthService,
-    private requestsService: RequestsService,
-    private usersService: UsersService,
     private router: Router,
     private translate: TranslateService,
-    private departmentService: DepartmentService,
     private analyticsService: AnalyticsService,
     public wsRequestsService: WsRequestsService,
-    public appConfigService: AppConfigService
+    public appConfigService: AppConfigService,
+    private logger: LoggerService
   ) {
     this.selected = 'panoramica';//-> default active component
-    console.log('!!! »»» HELLO ANALYTICS »»» ');
+    this.logger.log('[ANALYTICS] !!! »»» HELLO ANALYTICS »»» ');
     // this.getAllUsersOfCurrentProject();
     this.getBrowserLangAndSwitchMonthName();
     this.getCurrentUrl();
@@ -115,16 +110,16 @@ export class Analytics2Component implements OnInit, OnDestroy {
   getCurrentUrl() {
 
     const currentUrl = this.router.url;
-    console.log('!!! ANALYTICS  - currentUrl ', currentUrl)
+    this.logger.log('[ANALYTICS]  - currentUrl ', currentUrl)
     const url_segments = currentUrl.split('/');
-    console.log('!!! ANALYTICS  - url_segments ', url_segments)
-    if (url_segments.length === 5 ) {
+    this.logger.log('[ANALYTICS]  - url_segments ', url_segments)
+    if (url_segments.length === 5) {
       if (url_segments[4] === "metrics") {
         this.selected = 'metriche';
       }
     }
 
-    if (url_segments.length === 6 ) {
+    if (url_segments.length === 6) {
       if (url_segments[4] === "metrics") {
         this.selected = 'metriche';
         this.childToSelect = url_segments[5]
@@ -135,7 +130,7 @@ export class Analytics2Component implements OnInit, OnDestroy {
   //go to different component passed throw arg of method
   goTo(selected) {
     this.selected = selected;
-    console.log("Move to:", selected);
+    this.logger.log("[ANALYTICS] Move to:", selected);
   }
 
 
@@ -143,7 +138,7 @@ export class Analytics2Component implements OnInit, OnDestroy {
 
   getBrowserLangAndSwitchMonthName() {
     const browserLang = this.translate.getBrowserLang();
-    console.log('!!! ANALYTICS  - BROWSER LANG ', browserLang)
+    this.logger.log('[ANALYTICS]  - BROWSER LANG ', browserLang)
     if (browserLang) {
       if (browserLang === 'it') {
         this.monthNames = { '1': 'Gen', '2': 'Feb', '3': 'Mar', '4': 'Apr', '5': 'Mag', '6': 'Giu', '7': 'Lug', '8': 'Ago', '9': 'Set', '10': 'Ott', '11': 'Nov', '12': 'Dic' }
@@ -164,8 +159,8 @@ export class Analytics2Component implements OnInit, OnDestroy {
     // this.getRequestByLast7Day();
 
     this.analyticsService.richieste_bs.subscribe((hasClickedOnGraph) => {
-      console.log("CLICK:", hasClickedOnGraph)
-      console.log("Has click graph title... move to METRICHE");
+      this.logger.log("[ANALYTICS] CLICK hasClickedOnGraph:", hasClickedOnGraph)
+      this.logger.log("[ANALYTICS] Has click graph title... move to METRICHE");
       if (hasClickedOnGraph) {
         this.selected = 'metriche';
       }
@@ -290,7 +285,6 @@ export class Analytics2Component implements OnInit, OnDestroy {
     // this.globalServedAndUnservedRequestsCount();
     // this.getCountOf_AllRequestsForAgent();
     // this.getRequestsByDay();
-    // this.getlastMonthRequetsCount();
     // this.getCountOf_AllRequestsForDept();
 
     /** NOT  USED */
@@ -301,7 +295,7 @@ export class Analytics2Component implements OnInit, OnDestroy {
     // this.translateMinutes();
     // this.translateSeconds();
     // this.getWaitingTimeAverage();
-    
+
   }
 
   getCurrentProject() {
@@ -318,7 +312,7 @@ export class Analytics2Component implements OnInit, OnDestroy {
   getStorageBucket() {
     const firebase_conf = this.appConfigService.getConfig().firebase;
     this.storageBucket = firebase_conf['storageBucket'];
-    console.log('STORAGE-BUCKET Analytics2 List ', this.storageBucket)
+    this.logger.log('[ANALYTICS] STORAGE-BUCKET Analytics2 List ', this.storageBucket)
   }
 
   translateHours() {
@@ -326,7 +320,7 @@ export class Analytics2Component implements OnInit, OnDestroy {
       .subscribe((text: string) => {
 
         this.translatedHoursString = text;
-        console.log('»» !!! ANALYTICS - AVERAGE WAIT - translatedHoursString ', text)
+        this.logger.log('[ANALYTICS] - AVERAGE WAIT - translatedHoursString ', text)
       });
   };
 
@@ -335,7 +329,7 @@ export class Analytics2Component implements OnInit, OnDestroy {
       .subscribe((text: string) => {
 
         this.translatedMinutesString = text;
-        console.log('»» !!! ANALYTICS - AVERAGE WAIT - translatedMinutesString ', text)
+        this.logger.log('[ANALYTICS] - AVERAGE WAIT - translatedMinutesString ', text)
       });
   };
 
@@ -344,648 +338,26 @@ export class Analytics2Component implements OnInit, OnDestroy {
       .subscribe((text: string) => {
 
         this.translatedSecondsString = text;
-        console.log('»» !!! ANALYTICS - AVERAGE WAIT - translatedSecondsString ', text)
+        this.logger.log('[ANALYTICS] - AVERAGE WAIT - translatedSecondsString ', text)
       });
   };
 
-  // getWaitingTimeAverage() {
-  //   this.requestsService.averageWait().subscribe((waitTime: any) => {
-  //     console.log('»» !!! ANALYTICS - AVERAGE WAIT ', waitTime);
-  //     if (waitTime.length > 0 ) {
-  //     }
-  //     const waitingTimeMs = waitTime[0].waiting_time_avg;
-  //     console.log('»» !!! ANALYTICS - AVERAGE WAIT - waitingTime', waitingTimeMs);
 
-  //     // const test = this.msToTime(this.waitingTime)
-  //     // console.log('»» !!! ANALYTICS - AVERAGE WAIT - test', test);
-  //     const mm = moment.duration(waitingTimeMs);
-  //     let mmHours = ''
-  //     if (mm.hours() > 0) {
-  //       mmHours = mm.hours() + this.translatedHoursString
-  //     }
-  //     this.waitingTime = mmHours + mm.minutes() + this.translatedMinutesString + mm.seconds() + this.translatedSecondsString
-  //     // this.waitingTime = mm.hours() + this.translatedHoursString + mm.minutes() + this.translatedMinutesString + mm.seconds() + this.translatedSecondsString
-
-  //     console.log('»» !!! ANALYTICS - AVERAGE WAIT - test moment ', this.waitingTime);
-  //     // console.log('»» !!! ANALYTICS - AVERAGE WAIT - test moment ', mm.hours() + ':' + mm.minutes() + ':' + mm.seconds());
-  //   }, (error) => {
-  //     console.log('»» !!! ANALYTICS - AVERAGE WAIT - ERROR ', error);
-  //   }, () => {
-  //     console.log('»» !!! ANALYTICS - AVERAGE WAIT * COMPLETE *');
-  //   });
-  // }
-
-  // msToTime(ms) {
-  //   var seconds = (ms / 1000);
-  //   var minutes = parseInt(seconds / 60, 10);
-  //   seconds = seconds % 60;
-  //   var hours = parseInt(minutes / 60, 10);
-  //   minutes = minutes % 60;
-
-  //   return hours + ':' + minutes + ':' + seconds;
-  // }
-
-  // msToTime(duration) {
-  //   const milliseconds = parseInt((duration % 1000) / 100);
-  //   const seconds = parseInt((duration / 1000) % 60);
-  //   const minutes = parseInt((duration / (1000 * 60)) % 60)
-  //   const hours = parseInt((duration / (1000 * 60 * 60)) % 24);
-
-  //   hours = (hours < 10) ? '0' + hours : hours;
-  //   minutes = (minutes < 10) ? '0' + minutes : minutes;
-  //   seconds = (seconds < 10) ? '0' + seconds : seconds;
-
-  //   return hours + ':' + minutes + ':' + seconds + '.' + milliseconds;
-  // }
-
-
-  /** NOT USED */
-  // daysHoursRequestsDistribution() {
-  //   this.requestsService.daysHoursRequestsDistribution().subscribe((requestsDistribution: any) => {
-
-  //     console.log('»» !!! ANALYTICS - REQUESTS DISTRIBUTION ', requestsDistribution);
-  //   })
-  // }
-  /* ----------==========   end ON INIT    ==========---------- */
-
-
-  // !!! NOT USED - 
-  // getRequestByLast7Day(){
-  //   this.requestsService.requestsByDay().subscribe((requestsByDay: any) => {
-  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY ', requestsByDay);
-
-  //     // CREATES THE INITIAL ARRAY WITH THE LAST SEVEN DAYS (calculated with moment) AND REQUESTS COUNT = O
-  //     const last7days_initarray = []
-  //     for (let i = 0; i <= 6; i++) {
-  //       // console.log('»» !!! ANALYTICS - LOOP INDEX', i);
-  //       last7days_initarray.push({ 'count': 0, day: moment().subtract(i, 'd').format('D-M-YYYY') })
-  //     }
-
-  //     last7days_initarray.reverse()
-
-  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY - MOMENT LAST SEVEN DATE (init array)', last7days_initarray);
-
-  //     const requestsByDay_series_array = [];
-  //     const requestsByDay_labels_array = []
-
-  //     // CREATES A NEW ARRAY FROM THE ARRAY RETURNED FROM THE SERVICE SO THAT IT IS COMPARABLE WITH last7days_initarray
-  //     const requestsByDay_array = []
-  //     for (let j = 0; j < requestsByDay.length; j++) {
-  //       if (requestsByDay[j]) {
-  //         requestsByDay_array.push({ 'count': requestsByDay[j]['count'], day: requestsByDay[j]['_id']['day'] + '-' + requestsByDay[j]['_id']['month'] + '-' + requestsByDay[j]['_id']['year'] })
-
-  //         /* OLD LABELS & SERIES (TO USE FOR DEBUG) */
-  //         // const requestByDay_count = requestsByDay[j]['count']
-  //         // requestsByDay_series_array.push(requestByDay_count)
-  //         // const requestByDay_day = requestsByDay[j]['_id']['day']
-  //         // const requestByDay_month = requestsByDay[j]['_id']['month']
-  //         // requestsByDay_labels_array.push(requestByDay_day + ' ' + this.monthNames[requestByDay_month])
-  //       }
-
-  //     }
-  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY FORMATTED ', requestsByDay_array);
-
-
-  //     /**
-  //      * MERGE THE ARRAY last7days_initarray WITH requestsByDay_array  */
-  //     // Here, requestsByDay_formatted_array.find(o => o.day === obj.day)
-  //     // will return the element i.e. object from requestsByDay_formatted_array if the day is found in the requestsByDay_formatted_array.
-  //     // If not, then the same element in last7days i.e. obj is returned.
-  //     const requestByDays_final_array = last7days_initarray.map(obj => requestsByDay_array.find(o => o.day === obj.day) || obj);
-  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY - FINAL ARRAY ', requestByDays_final_array);
-
-  //     const _requestsByDay_series_array = [];
-  //     const _requestsByDay_labels_array = [];
-
-  //     requestByDays_final_array.forEach(requestByDay => {
-  //       console.log('»» !!! ANALYTICS - REQUESTS BY DAY - requestByDay', requestByDay);
-  //       _requestsByDay_series_array.push(requestByDay.count)
-
-  //       const splitted_date = requestByDay.day.split('-');
-  //       console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SPLITTED DATE', splitted_date);
-  //       _requestsByDay_labels_array.push(splitted_date[0] + ' ' + this.monthNames[splitted_date[1]])
-  //     });
-
-
-  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SERIES (ARRAY OF COUNT - to use for debug)', requestsByDay_series_array);
-  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SERIES (+ NEW + ARRAY OF COUNT)', _requestsByDay_series_array);
-  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY - LABELS (ARRAY OF DAY - to use for debug)', requestsByDay_labels_array);
-  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY - LABELS (+ NEW + ARRAY OF DAY)', _requestsByDay_labels_array);
-
-  //     const higherCount = this.getMaxOfArray(_requestsByDay_series_array);
-  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY - HIGHTER COUNT ', higherCount);
-
-  //     var lineChart = new Chart('last7dayChart_old', {
-  //       type: 'line',
-  //       data: {
-  //         labels: _requestsByDay_labels_array ,
-  //         datasets: [{
-  //           label: 'Average time response in last 30 days ',
-  //           data: _requestsByDay_series_array,
-  //           fill: false, //riempie zona sottostante dati
-  //           lineTension: 0.1,
-  //           backgroundColor: 'rgba(255, 255, 255, 0.7)',
-  //           borderColor: 'rgba(255, 255, 255, 0.7)',
-  //           borderWidth: 3,
-  //           pointBackgroundColor: 'rgba(255, 255, 255, 0.8)',
-  //           pointBorderColor: 'rgba(255, 255, 255, 0.8)'
-
-  //         }]
-  //       },
-  //       options: {
-  //         title: {
-  //           text: 'AVERAGE TIME RESPONSE',
-  //           display: false
-  //         },
-  //         scales: {
-  //           xAxes: [{
-  //             ticks: {
-  //               beginAtZero: true,
-  //               display: true,
-  //               //minRotation: 30,
-  //               fontColor: 'white',
-  //             },
-  //             gridLines: {
-  //               display: true,
-  //               color:'rgba(255, 255, 255, 0.5)',
-  //               borderDash:[3,1]
-  //             }
-
-  //           }],
-  //           yAxes: [{
-  //             gridLines: {
-  //               display: true ,
-  //               color:'rgba(255, 255, 255, 0.5)',
-  //               borderDash:[3,1],
-  //             },
-  //             ticks: {
-  //               beginAtZero: true,
-  //               display: true,
-  //               fontColor: 'white',
-  //               stepSize: 1,
-  //               suggestedMax: higherCount + 2,
-
-
-  //               // callback: function (value, index, values) {
-  //               //   let hours = Math.floor(value / 3600000) // 1 Hour = 36000 Milliseconds
-  //               //   let minutes = Math.floor((value % 3600000) / 60000) // 1 Minutes = 60000 Milliseconds
-  //               //   let seconds = Math.floor(((value % 360000) % 60000) / 1000) // 1 Second = 1000 Milliseconds
-  //               //   return hours + 'h:' + minutes + 'm:' + seconds + 's'
-  //               // },
-
-  //             }
-  //           }]
-  //         },
-  //         tooltips: {
-  //           callbacks: {
-  //             label: function (tooltipItem, data) {
-  //               // var label = data.datasets[tooltipItem.datasetIndex].label || '';
-  //               // if (label) {
-  //               //     label += ': ';
-  //               // }
-  //               // label += Math.round(tooltipItem.yLabel * 100) / 100;
-  //               // return label + '';
-  //               //console.log("data",data)
-  //               const currentItemValue = tooltipItem.yLabel
-  //               let langService = new HumanizeDurationLanguage();
-  //               let humanizer = new HumanizeDuration(langService);
-  //               humanizer.setOptions({ round: true })
-  //               //console.log("humanize", humanizer.humanize(currentItemValue))
-  //               return data.datasets[tooltipItem.datasetIndex].label + ': ' + humanizer.humanize(currentItemValue)
-
-  //             }
-  //           }
-  //         }
-
-  //       }
-  //       ,
-  //       plugins:[{
-  //         beforeDraw: function(chartInstance, easing) {
-  //           var ctx = chartInstance.chart.ctx;
-  //           console.log("chartistance",chartInstance)
-  //           //ctx.fillStyle = 'red'; // your color here
-  //           //ctx.height=128
-  //           //chartInstance.chart.canvas.parentNode.style.height = '128px';
-  //           ctx.font="Google Sans"
-  //           var chartArea = chartInstance.chartArea;
-  //           //ctx.fillRect(chartArea.left, chartArea.top, chartArea.right - chartArea.left, chartArea.bottom - chartArea.top);
-  //         }
-  //       }]
-  //     });
-
-
-  //   }, (error) => {
-  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY - ERROR ', error);
-  //   }, () => {
-  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY * COMPLETE *');
-  //   });
-  // }
-
-  // NOT USED
-  // getRequestsByDay() {
-  //   this.requestsService.requestsByDay().subscribe((requestsByDay: any) => {
-  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY ', requestsByDay);
-
-  //     // CREATES THE INITIAL ARRAY WITH THE LAST SEVEN DAYS (calculated with moment) AND REQUESTS COUNT = O
-  //     const last7days_initarray = []
-  //     for (let i = 0; i <= 6; i++) {
-  //       // console.log('»» !!! ANALYTICS - LOOP INDEX', i);
-  //       last7days_initarray.push({ 'count': 0, day: moment().subtract(i, 'd').format('D-M-YYYY') })
-  //     }
-
-  //     // last7days_initarray.sort(function compare(a, b) {
-  //     //   console.log('»» !!! ANALYTICS - REQUESTS BY DAY a.day', a.day);
-  //     //   console.log('»» !!! ANALYTICS - REQUESTS BY DAY b.day', b.day);
-  //     //   // if (a.day > b.day) {
-  //     //   //   return 1;
-  //     //   // }
-  //     //   // if (a.day < a.day) {
-  //     //   //   return -1;
-  //     //   // }
-  //     //   // return 0;
-
-  //     // })
-
-  //     last7days_initarray.reverse()
-
-  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY - MOMENT LAST SEVEN DATE (init array)', last7days_initarray);
-
-  //     const requestsByDay_series_array = [];
-  //     const requestsByDay_labels_array = []
-
-  //     // CREATES A NEW ARRAY FROM THE ARRAY RETURNED FROM THE SERVICE SO THAT IT IS COMPARABLE WITH last7days_initarray
-  //     const requestsByDay_array = []
-  //     for (let j = 0; j < requestsByDay.length; j++) {
-  //       if (requestsByDay[j]) {
-  //         requestsByDay_array.push({ 'count': requestsByDay[j]['count'], day: requestsByDay[j]['_id']['day'] + '-' + requestsByDay[j]['_id']['month'] + '-' + requestsByDay[j]['_id']['year'] })
-
-  //         /* OLD LABELS & SERIES (TO USE FOR DEBUG) */
-  //         // const requestByDay_count = requestsByDay[j]['count']
-  //         // requestsByDay_series_array.push(requestByDay_count)
-  //         // const requestByDay_day = requestsByDay[j]['_id']['day']
-  //         // const requestByDay_month = requestsByDay[j]['_id']['month']
-  //         // requestsByDay_labels_array.push(requestByDay_day + ' ' + this.monthNames[requestByDay_month])
-  //       }
-
-  //     }
-  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY FORMATTED ', requestsByDay_array);
-
-
-  //     /**
-  //      * MERGE THE ARRAY last7days_initarray WITH requestsByDay_array  */
-  //     // Here, requestsByDay_formatted_array.find(o => o.day === obj.day)
-  //     // will return the element i.e. object from requestsByDay_formatted_array if the day is found in the requestsByDay_formatted_array.
-  //     // If not, then the same element in last7days i.e. obj is returned.
-  //     const requestByDays_final_array = last7days_initarray.map(obj => requestsByDay_array.find(o => o.day === obj.day) || obj);
-  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY - FINAL ARRAY ', requestByDays_final_array);
-
-  //     const _requestsByDay_series_array = [];
-  //     const _requestsByDay_labels_array = [];
-
-  //     requestByDays_final_array.forEach(requestByDay => {
-  //       console.log('»» !!! ANALYTICS - REQUESTS BY DAY - requestByDay', requestByDay);
-  //       _requestsByDay_series_array.push(requestByDay.count)
-
-  //       const splitted_date = requestByDay.day.split('-');
-  //       console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SPLITTED DATE', splitted_date);
-  //       _requestsByDay_labels_array.push(splitted_date[0] + ' ' + this.monthNames[splitted_date[1]])
-  //     });
-
-
-  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SERIES (ARRAY OF COUNT - to use for debug)', requestsByDay_series_array);
-  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SERIES (+ NEW + ARRAY OF COUNT)', _requestsByDay_series_array);
-  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY - LABELS (ARRAY OF DAY - to use for debug)', requestsByDay_labels_array);
-  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY - LABELS (+ NEW + ARRAY OF DAY)', _requestsByDay_labels_array);
-
-  //     const higherCount = this.getMaxOfArray(_requestsByDay_series_array);
-  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY - HIGHTER COUNT ', higherCount);
-
-  //     const dataRequestsByDayChart: any = {
-
-  //       labels: _requestsByDay_labels_array,
-  //       series: [
-  //         _requestsByDay_series_array,
-  //       ]
-  //     };
-
-  //     const optionsRequestsByDayChart: any = {
-  //       lineSmooth: Chartist.Interpolation.cardinal({
-  //         tension: 0
-  //       }),
-  //       low: 0,
-  //       high: higherCount + 2, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
-  //       // scaleMinSpace: 6,
-  //       chartPadding: { top: 0, right: 0, bottom: 0, left: 0 },
-  //       // fullWidth: false,
-  //       axisY: {
-  //         onlyInteger: true,
-  //         offset: 20
-  //       },
-  //       height: '240px'
-  //     }
-
-  //     const requestsByDayChart = new Chartist.Line('#requestsByDayChart', dataRequestsByDayChart, optionsRequestsByDayChart);
-
-  //     this.startAnimationForLineChart(requestsByDayChart);
-
-  //   }, (error) => {
-  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY - ERROR ', error);
-  //   }, () => {
-  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY * COMPLETE *');
-  //   });
-  // }
 
   getMaxOfArray(requestsByDay_series_array) {
     return Math.max.apply(null, requestsByDay_series_array);
   }
 
 
-  /**
-   * ********************************************************************************************
-   * ========================== COUNT OF ** ALL ** REQUESTS X DEPT =============================
-   * 1) GET THE DEPTS OF THE PROJECT AND CREATED AN ARRAY WITH THE ID OF THE DEPARTMENTS
-   * 2) FROM  'ALL' THE REQUESTS (RETURNED  FROM THE SUBSCRIPTION) IS CREATED AN ARRAY WITH THE DEPARTMENT IDS  CONTAINED IN THE REQUESTS
-   * 3) FOR EACH ID CONTAINED IN THE ARRAY OF IDS OF THE DEPTS OF THE PROJECT IS CHECKED THE OCCURRENCE IN THE ARRAY OF THE DEPTS ID RETURNED FROM ALL THE REQUESTS
-   * ********************************************************************************************
-   */
-  // getCountOf_AllRequestsForDept() {
-  //   this.departmentService.getDeptsByProjectId().subscribe((_departments: any) => {
-  //     console.log('!!! ANALYTICS ALL REQUESTS X DEPT - GET DEPTS RESPONSE ', _departments);
-
-  //     this.departments = _departments
-  //     const project_depts_id_array = [];
-  //     if (this.departments) {
-  //       this.departments.forEach(dept => {
-
-  //         // console.log('!!! ANALYTICS - DEPT ', dept);
-  //         console.log('!!! ANALYTICS ALL REQUESTS X DEPT - DEPT ID: ', dept['_id']);
-  //         // depts_names_array.push(dept['name']);
-  //         project_depts_id_array.push(dept['_id']);
-  //       });
-  //     }
-  //     console.log('!!! ANALYTICS ALL REQUESTS X DEPT - ARRAY OF DEPTS IDs: ', project_depts_id_array);
-  //     /* behaviour subject */ 
-  //     this.subscription = this.wsRequestsService.wsRequestsList$.subscribe((global_requests) => {
-  //       console.log('!!! ANALYTICS ALL REQUESTS X DEPT - !!!!! SUBSCRIPTION TO ALL-THE-REQUESTS-LIST-BS ', global_requests);
-
-  //       const requests_depts_id_array = []
-  //       if (global_requests) {
-  //         global_requests.forEach(g_r => {
-
-  //           if (g_r.attributes) {
-  //             requests_depts_id_array.push(g_r.attributes.departmentId)
-  //           }
-
-  //         });
-  //       }
-  //       project_depts_id_array.forEach(dept_id => {
-  //         this.getDeptIdOccurrence(requests_depts_id_array, dept_id)
-  //       });
-  //     })
-
-  //   }, error => {
-      
-  //     console.log('!!! ALL REQUESTS X DEPT - GET DEPTS - ERROR: ', error);
-  //   }, () => {
-  //     console.log('!!! ALL REQUESTS X DEPT - GET DEPTS * COMPLETE *')
-  //   });
-  // }
-
-  // getDeptIdOccurrence(array, value) {
-  //   // console.log('!!! ANALYTICS - ALL REQUESTS X DEPT - GET DEP OCCURRENCE FOR DEPTS ');
-  //   let count = 0;
-  //   array.forEach((v) => (v === value && count++));
-  //   console.log('!!! ANALYTICS - ALL REQUESTS X DEPT - #', count, ' REQUESTS ASSIGNED TO DEPT ', value);
-  //   for (const dept of this.departments) {
-  //     if (value === dept._id) {
-  //       dept.value = count
-  //     }
-  //   }
-  //   return count;
-  // }
 
   goToEditAddPage_EDIT(dept_id: string) {
-    console.log('!!! ANALYTICS - ALL REQUESTS X DEPT - GO TO DEPT ID ', dept_id);
+    this.logger.log('[ANALYTICS] - ALL REQUESTS X DEPT - GO TO DEPT ID ', dept_id);
     this.router.navigate(['project/' + this.id_project + '/department/edit', dept_id]);
   }
 
-  /**
-   * ********************************************************************************************
-   * ========================== COUNT OF ** ALL ** REQUESTS X AGENT =============================
-   * ********************************************************************************************
-   * GET THE OCCURRENCES OF THE USER-ID IN THE MEMBERS ARRAYS OF ALL THE REQUESTS OF THE PROJECT
-   * (i.e. the requests are not filtered for the current_user_id and so an user with ADMIN role will be able to see
-   * also the requests of a group to which it does not belong)
-   */
-  // getCountOf_AllRequestsForAgent() {
-  //   this.getProjectUsersAndRunFlatMembersArray();
-  // }
-
-  // getProjectUsersAndRunFlatMembersArray() {
-  //   this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
-  //     console.log('!!! ANALYTICS - !!!!! PROJECT USERS ARRAY ', projectUsers)
-  //     if (projectUsers) {
-  //       this.projectUsers = projectUsers;
-  //       projectUsers.forEach(prjctuser => {
-  //         console.log('!!! ANALYTICS - PROJECT USERS RETURNED FROM THE CALLBACK', prjctuser)
-
-  //         const _user_id = prjctuser['id_user']['_id']
-  //         console.log('!!! ANALYTICS - USER ID ', _user_id)
-  //         /**
-  //           * ANDREA:
-  //           * CREATES AN OBJECT WITH HAS FOR 'KEY' THE USER ID OF THE ITERATED 'PROJECT USERS' AND A NESTED OBJECT THAT HAS FOR KEY 'VAL' WITH AN INITIAL VALUE= 0 */
-  //         // , 'user': prjctuser['id_user']
-  //         // this.users_reqs_dict[prjctuser['id_user']['_id']] = { 'val': 0 }
-
-  //         /**
-  //         * NK:
-  //         * CREATES AN ARRAY OF ALL THE USER ID OF THE ITERATED 'PROJECT USERS' */
-  //         this.users_id_array.push(_user_id);
-  //       })
-  //       console.log('!!! ANALYTICS - !!!!! ARRAY OF USERS ID ', this.users_id_array)
-  //       // console.log('!!! ANALYTICS - USERS DICTIONARY ', this.users_reqs_dict)
-  //       // console.log('!!! ANALYTICS - USERS DICTIONARY - array  ', this.users_reqs_dict_array)
-  //     }
-  //   }, error => {
-  //     console.log('!!! ANALYTICS - !!!!! PROJECT USERS (FILTERED FOR PROJECT ID) - ERROR', error);
-  //   }, () => {
-  //     console.log('!!! ANALYTICS - !!!!!  PROJECT USERS (FILTERED FOR PROJECT ID) - COMPLETE');
-  //     this.getFlatMembersArrayFromAllRequestsAndRunGetOccurrence()
-  //   });
-  // }
-
-  // getFlatMembersArrayFromAllRequestsAndRunGetOccurrence() {
-  //   console.log('!!! ANALYTICS - !!!!! CALL GET COUNT OF REQUEST FOR AGENT');
-
-  //   // this.subscription = this.requestsService.allRequestsList_bs.subscribe((requests) => {
-  //   this.subscription = this.wsRequestsService.wsRequestsList$.subscribe((requests) => {
-
-  //     console.log('!!! ANALYTICS - !!!!! SUBSCRIPTION TO ALL-THE-REQUESTS-LIST-BS');
-
-  //     if (requests) {
-  //       console.log('!!! ANALYTICS - !!!!! REQUESTS LENGHT ', requests.length)
-
-  //       /**
-  //        * NK:
-  //        * CREATES AN UNIQUE ARRAY FROM ALL THE ARRAYS OF 'MEMBERS' THAT ARE NESTED IN THE ITERATED REQUESTS  */
-  //       let flat_members_array = [];
-  //       for (let i = 0; i < requests.length; i++) {
-  //         flat_members_array = flat_members_array.concat(Object.keys(requests[i].members));
-  //       }
-  //       // Result of the concatenation of the single arrays of members
-  //       console.log('!!! ANALYTICS - !!!!! FLAT-MEMBERS-ARRAY  ', flat_members_array)
-  //       console.log('!!! ANALYTICS - !!!!! USER_ID_ARRAY - LENGTH ', this.users_id_array.length);
-  //       /**
-  //        * FOR EACH USER-ID IN THE 'USER_ID_ARRAY' IS RUNNED 'getOccurrenceAndAssignToProjectUsers'
-  //        * THAT RETURNS THE COUNT OF HOW MAMY TIMES THE USER-ID IS PRESENT IN THE 'flat_members_array' AND THEN
-  //        * ASSIGN THE VALUE OF 'COUNT' TO THE PROPERTY 'VALUE' OF THE OBJECT 'PROJECT-USERS' */
-
-  //       if (flat_members_array) {
-  //         for (let i = 0; i < this.users_id_array.length; i++) {
-  //           console.log('!!! ANALYTICS - !!!!! USER_ID_ARRAY - LENGTH ', this.users_id_array.length);
-  //           this.getOccurrenceAndAssignToProjectUser(flat_members_array, this.users_id_array[i])
-  //         }
-  //       }
-
-  //     }
-  //   });
-  // }
-
-  // getOccurrenceAndAssignToProjectUser(array, value) {
-  //   console.log('!!! ANALYTICS - !!!!! CALLING GET OCCURRENCE REQUESTS FOR AGENT AND ASSIGN TO PROJECT USERS');
-  //   let count = 0;
-  //   array.forEach((v) => (v === value && count++));
-  //   console.log('!!! ANALYTICS - !!!!! #', count, ' REQUESTS ASSIGNED TO THE USER ', value);
-  //   for (const p of this.projectUsers) {
-  //     if (value === p.id_user._id) {
-  //       p.value = count
-  //     }
-  //   }
-  //   this.showSpinner = false;
-  //   // console.log('!!! ANALYTICS - !!!!! SHOW SPINNER', this.showSpinner);
-  //   return count;
-  // }
-
-  // ------------------------------------
- // ANDREA - PSEUDO CODICE
- // ------------------------------------
-  // users_reqs_dict = {}
-  // for u in proj_users {
-  //   users_reqs_dict[u.id] = { val: 0, "user" : u };
-  // }
-  // requests.forEach( e => {
-  //   e.members.keys.forEach( e => {
-  //     users_reqs_dict[key][val] = users_reqs_dict[key][val] + 1
-  //   })
-  // })
- 
-
-  /**
-   * ******************************************************************************************
-   * ====== COUNT OF SERVED, UNSERVED AND OF THE ACTIVE (i.e. SERVED + UNSERVED) REQUESTS ======
-   * ******************************************************************************************
-   */
-  // servedAndUnservedRequestsCount() {
-  //   this.subscription = this.requestsService.requestsList_bs.subscribe((requests) => {
-  //     this.date = new Date();
-  //     console.log('!!! ANALYTICS - CURRENT DATE : ', this.date);
-  //     console.log('!!! ANALYTICS - SUBSCRIBE TO REQUEST SERVICE - REQUESTS LIST: ', requests);
-
-  //     this.requests = requests;
-
-  //     if (requests) {
-  //       let count_unserved = 0;
-  //       let count_served = 0
-  //       requests.forEach(r => {
-
-  //         if (r.support_status === 100) {
-  //           count_unserved = count_unserved + 1;
-  //         }
-  //         if (r.support_status === 200) {
-  //           count_served = count_served + 1
-  //         }
-  //       });
-
-  //       this.unservedRequestsCount = count_unserved;
-  //       console.log('!!! ANALYTICS - # OF UNSERVED REQUESTS:  ', this.unservedRequestsCount);
-
-  //       this.servedRequestsCount = count_served;
-  //       console.log('!!! ANALYTICS - # OF SERVED REQUESTS:  ', this.servedRequestsCount);
-
-  //       this.activeRequestsCount = this.unservedRequestsCount + this.servedRequestsCount
-  //       console.log('!!! ANALYTICS - # OF ACTIVE REQUESTS:  ', this.activeRequestsCount);
-
-  //     }
-  //   });
-  // }
-
-  /**
-   * *****************************************************************************************************
-   * ====== COUNT OF ** ALL ** SERVED, UNSERVED AND OF THE ACTIVE (i.e. SERVED + UNSERVED) REQUESTS ======
-   * *****************************************************************************************************
-   */
-  // globalServedAndUnservedRequestsCount() {
-
-  //   // this.subscription = this.requestsService.allRequestsList_bs.subscribe((global_requests) => {
-  //   this.subscription = this.wsRequestsService.wsRequestsList$.subscribe((global_requests) => {
-  //     this.date = new Date();
-  //     console.log('!!! ANALYTICS - CURRENT DATE : ', this.date);
-  //     console.log('!!! ANALYTICS - SUBSCRIBE TO REQUEST SERVICE - GLOBAL REQUESTS LIST: ', global_requests);
-
-  //     // this.requests = global_requests;
-
-  //     if (global_requests) {
-  //       let count_globalUnserved = 0;
-  //       let count_globalServed = 0
-  //       global_requests.forEach(g_r => {
-
-  //         if (g_r.support_status === 100) {
-  //           count_globalUnserved = count_globalUnserved + 1;
-  //         }
-  //         if (g_r.support_status === 200) {
-  //           count_globalServed = count_globalServed + 1
-  //         }
-  //       });
-
-  //       this.global_unservedRequestsCount = count_globalUnserved;
-  //       console.log('!!! ANALYTICS - # OF GLOBAL UNSERVED REQUESTS:  ', this.global_unservedRequestsCount);
-
-  //       this.global_servedRequestsCount = count_globalServed;
-  //       console.log('!!! ANALYTICS - # OF GLOBAL SERVED REQUESTS:  ', this.global_servedRequestsCount);
-
-  //       this.global_activeRequestsCount = this.global_unservedRequestsCount + this.global_servedRequestsCount
-  //       console.log('!!! ANALYTICS - # OF GLOBAL ACTIVE REQUESTS:  ', this.global_activeRequestsCount);
-  //     }
-  //   });
-  // }
-
-  /**
-   * *****************************************************************************************************
-   * ======================== COUNT OF ** ALL ** THE REQUESTS OF THE LAST MONTH ==========================
-   * *****************************************************************************************************
-   */
-  // getlastMonthRequetsCount() {
-  //   this.requestsService.lastMonthRequetsCount().subscribe((_lastMonthrequestsCount: any) => {
-  //     console.log('!!! ANALYTICS - LAST MONTH REQUESTS COUNT - RESPONSE ', _lastMonthrequestsCount);
-  //     if (_lastMonthrequestsCount !== 'undefined' && _lastMonthrequestsCount.length > 0) {
-  //       this.lastMonthrequestsCount = _lastMonthrequestsCount[0]['totalCount'];
-  //       console.log('!!! ANALYTICS - LAST MONTH REQUESTS COUNT - RESPONSE ', this.lastMonthrequestsCount);
-  //     } else {
-  //       console.log('!!! ANALYTICS - LAST MONTH REQUESTS COUNT - RESPONSE ', this.lastMonthrequestsCount);
-  //       this.lastMonthrequestsCount = 0
-  //     }
-
-  //   }, (error) => {
-  //     console.log('!!! ANALYTICS - LAST MONTH REQUESTS COUNT - ERROR ', error);
-  //   }, () => {
-  //     console.log('!!! ANALYTICS - LAST MONTH REQUESTS COUNT * COMPLETE *');
-  //   });
-  // }
-
-
 
   ngOnDestroy() {
-    console.log('!!! ANALYTICS - !!!!! UN - SUBSCRIPTION TO REQUESTS-LIST-BS');
+    this.logger.log('[ANALYTICS] - !!!!! UN - SUBSCRIPTION TO REQUESTS-LIST-BS');
     // this.subscription.unsubscribe();
   }
 
@@ -1028,7 +400,7 @@ export class Analytics2Component implements OnInit, OnDestroy {
 
     // get the language of browser
     this.lang = this.translate.getBrowserLang();
-    console.log('LANGUAGE ', this.lang);
+    this.logger.log('[ANALYTICS] buildgraph LANGUAGE ', this.lang);
     this.cellSettings = {
       border: {
         radius: 4,
@@ -1053,7 +425,7 @@ export class Analytics2Component implements OnInit, OnDestroy {
 
     this.analyticsService.getDataHeatMap().subscribe(res => {
       const data: object = res;
-      console.log('data from servoice->', res);
+      this.logger.log('[ANALYTICS] getDataHeatMap data from servoice->', res);
 
       if (this.lang === 'it') {
         this.weekday = { '1': 'Lun', '2': 'Mar', '3': 'Mer', '4': 'Gio', '5': 'Ven', '6': 'Sab', '7': 'Dom' }
@@ -1100,7 +472,7 @@ export class Analytics2Component implements OnInit, OnDestroy {
         this.customData.push({ '_id': { "hour": this.hour[data[i]._id.hour], "weekday": this.weekday[data[i]._id.weekday] }, 'count': data[i].count });
       }
 
-      console.log('CUSTOM', this.customData);
+      this.logger.log('[ANALYTICS] getDataHeatMap customData', this.customData);
 
       this.dataSource = {
         data: this.customData,
@@ -1184,8 +556,8 @@ export class Analytics2Component implements OnInit, OnDestroy {
 
         this.responseAVGtime = this.humanizer.humanize(res[0].waiting_time_avg, { round: true, language: this.lang })
 
-        console.log('Waiting time: humanize', this.humanizer.humanize(res[0].waiting_time_avg))
-        console.log('waiting time funtion:', avarageWaitingTimestring);
+        this.logger.log('[ANALYTICS] avarageWaitingTimeCLOCK Waiting time: humanize', this.humanizer.humanize(res[0].waiting_time_avg))
+        this.logger.log('[ANALYTICS] avarageWaitingTimeCLOCK waiting time funtion:', avarageWaitingTimestring);
 
 
       }
@@ -1195,15 +567,15 @@ export class Analytics2Component implements OnInit, OnDestroy {
         this.unitAVGtime = ''
         this.responseAVGtime = 'n.a.'
 
-        console.log('Waiting time: humanize', this.humanizer.humanize(0))
-        console.log('waiting time funtion:', avarageWaitingTimestring);
+        this.logger.log('[ANALYTICS] avarageWaitingTimeCLOCK humanize', this.humanizer.humanize(0))
+        this.logger.log('[ANALYTICS] avarageWaitingTimeCLOCK waiting time funtion:', avarageWaitingTimestring);
       }
 
 
     }, (error) => {
-      console.log('!!! ANALYTICS - AVERAGE WAITING TIME REQUEST - ERROR ', error);
+      this.logger.error('[ANALYTICS] avarageWaitingTimeCLOCK - AVERAGE WAITING TIME REQUEST - ERROR ', error);
     }, () => {
-      console.log('!!! ANALYTICS - AVERAGE TIME REQUEST * COMPLETE *');
+      this.logger.log('[ANALYTICS] avarageWaitingTimeCLOCK - AVERAGE TIME REQUEST * COMPLETE *');
     });
 
   }
@@ -1211,19 +583,19 @@ export class Analytics2Component implements OnInit, OnDestroy {
 
   avgTimeResponsechart() {
     this.analyticsService.getavarageWaitingTimeDataCHART(30, '').subscribe((res: any) => {
-      console.log('chart data:', res);
+      this.logger.log('[ANALYTICS] avgTimeResponsechart chart data:', res);
       if (res) {
 
         //build a 30 days array of date with value 0--> is the init array
         const last30days_initarray = []
         for (let i = 0; i <= 30; i++) {
-          // console.log('»» !!! ANALYTICS - LOOP INDEX', i);
+          // this.logger.log('»» !!! ANALYTICS - LOOP INDEX', i);
           last30days_initarray.push({ date: moment().subtract(i, 'd').format('D/M/YYYY'), value: 0 });
         }
 
         last30days_initarray.reverse()
         this.dateRangeAvg = last30days_initarray[0].date.split(-4) + ' - ' + last30days_initarray[30].date;
-        console.log('»» !!! ANALYTICS - REQUESTS BY DAY - MOMENT LAST 30 DATE (init array)', last30days_initarray);
+        this.logger.log('[ANALYTICS] avgTimeResponsechart - REQUESTS BY DAY - MOMENT LAST 30 DATE (init array)', last30days_initarray);
 
         //build a custom array with che same structure of "init array" but with key value of serviceData
         //i'm using time_convert function that return avg_time always in hour 
@@ -1238,11 +610,11 @@ export class Analytics2Component implements OnInit, OnDestroy {
             customDataLineChart.push({ date: new Date(res[j]._id.year, res[j]._id.month - 1, res[j]._id.day).toLocaleDateString(), value: res[j].waiting_time_avg });
           }
         }
-        console.log('Custom data:', customDataLineChart);
+        this.logger.log('[ANALYTICS] avgTimeResponsechart Custom data:', customDataLineChart);
 
         //build a final array that compars value between the two arrray before builded with respect to date key value
         const requestByDays_final_array = last30days_initarray.map(obj => customDataLineChart.find(o => o.date === obj.date) || obj);
-        console.log('»» !!! ANALYTICS - REQUESTS BY DAY - FINAL ARRAY ', requestByDays_final_array);
+        this.logger.log('[ANALYTICS] avgTimeResponsechart - FINAL ARRAY ', requestByDays_final_array);
 
 
 
@@ -1265,16 +637,16 @@ export class Analytics2Component implements OnInit, OnDestroy {
           return e.value
         })
 
-        console.log('Xlabel-AVERAGE TIME', this.xValueAVGchart);
-        console.log('Ylabel-AVERAGE TIME', this.yValueAVGchart);
+        this.logger.log('[ANALYTICS] Xlabel-AVERAGE TIME', this.xValueAVGchart);
+        this.logger.log('[ANALYTICS] Ylabel-AVERAGE TIME', this.yValueAVGchart);
       }
       else
-        console.log('!!!ERROR!!! while get data from resouces for waiting avg time graph')
+        this.logger.error('[ANALYTICS]  !!!ERROR!!! while get data from resouces for waiting avg time graph')
 
       // Chart.plugins.register({
       //   beforeDraw: function(chartInstance, easing) {
       //     var ctx = chartInstance.chart.ctx;
-      //     console.log("chart istance",chartInstance);
+      //     this.logger.log("chart istance",chartInstance);
       //     ctx.fillStyle = 'red'; // your color here
 
       //     var chartArea = chartInstance.chartArea;
@@ -1348,12 +720,12 @@ export class Analytics2Component implements OnInit, OnDestroy {
                 // }
                 // label += Math.round(tooltipItem.yLabel * 100) / 100;
                 // return label + '';
-                //console.log("data",data)
+                //this.logger.log("data",data)
                 const currentItemValue = tooltipItem.yLabel
                 let langService = new HumanizeDurationLanguage();
                 let humanizer = new HumanizeDuration(langService);
                 humanizer.setOptions({ round: true })
-                //console.log("humanize", humanizer.humanize(currentItemValue))
+                //this.logger.log("humanize", humanizer.humanize(currentItemValue))
                 return data.datasets[tooltipItem.datasetIndex].label + ': ' + humanizer.humanize(currentItemValue)
 
               }
@@ -1365,7 +737,7 @@ export class Analytics2Component implements OnInit, OnDestroy {
         plugins: [{
           beforeDraw: function (chartInstance, easing) {
             var ctx = chartInstance.chart.ctx;
-            //console.log("chartistance",chartInstance)
+            //this.logger.log("chartistance",chartInstance)
             //ctx.fillStyle = 'red'; // your color here
             ctx.font = "Google Sans"
             var chartArea = chartInstance.chartArea;
@@ -1402,11 +774,11 @@ export class Analytics2Component implements OnInit, OnDestroy {
           else
             this.responseDurationtime = "Your team's overall Median Conversation Lenght is " + this.humanizer.humanize(res[0].duration_avg, { language: 'en' });
 
-          console.log('Waiting time: humanize', this.humanizer.humanize(res[0].duration_avg))
-          console.log('waiting time funtion:', avarageWaitingTimestring);
+          this.logger.log('[ANALYTICS] durationConvTimeCLOCK Waiting time: humanize', this.humanizer.humanize(res[0].duration_avg))
+          this.logger.log('[ANALYTICS] durationConvTimeCLOCK waiting time funtion:', avarageWaitingTimestring);
         }
         else
-          console.log('!!!ERROR!!! while get resources for waiting avarage time ');
+          this.logger.error('[ANALYTICS] durationConvTimeCLOCK !!!ERROR!!! while get resources for waiting avarage time ');
       }
     });
 
@@ -1416,17 +788,17 @@ export class Analytics2Component implements OnInit, OnDestroy {
   durationConversationTimeCHART() {
     this.analyticsService.getDurationConversationTimeDataCHART(30, '').subscribe((resp: any) => {
       if (resp) {
-        console.log("Duration time", resp)
+        this.logger.log("[ANALYTICS] durationConversationTimeCHART resp", resp)
 
         const last30days_initarrayDURATION = []
         for (let i = 0; i <= 30; i++) {
-          // console.log('»» !!! ANALYTICS - LOOP INDEX', i);
+          // this.logger.log('»» !!! ANALYTICS - LOOP INDEX', i);
           last30days_initarrayDURATION.push({ date: moment().subtract(i, 'd').format('D/M/YYYY'), value: 0 })
         }
         last30days_initarrayDURATION.reverse()
         this.dataRangeDuration = last30days_initarrayDURATION[0].date + ' - ' + last30days_initarrayDURATION[30].date;
 
-        console.log('»» !!! ANALYTICS - REQUESTS DURATION CONVERSATION BY DAY - MOMENT LAST 30 DATE (init array)', last30days_initarrayDURATION);
+        this.logger.log('[ANALYTICS] - REQUESTS DURATION CONVERSATION BY DAY - MOMENT LAST 30 DATE (init array)', last30days_initarrayDURATION);
 
         //build a custom array with che same structure of "init array" but with key value of serviceData
         //i'm using time_convert function that return avg_time always in hour 
@@ -1435,18 +807,18 @@ export class Analytics2Component implements OnInit, OnDestroy {
 
           // this.humanizer.setOptions({round: true, units:['h']});
           // const AVGtimevalue= this.humanizer.humanize(res[i].waiting_time_avg).split(" ")
-          // console.log("value humanizer:", this.humanizer.humanize(res[i].waiting_time_avg), "split:",AVGtimevalue)
+          // this.logger.log("value humanizer:", this.humanizer.humanize(res[i].waiting_time_avg), "split:",AVGtimevalue)
 
           if (resp[i].duration_avg == null)
             resp[i].duration_avg = 0;
 
           customDurationCOnversationChart.push({ date: new Date(resp[i]._id.year, resp[i]._id.month - 1, resp[i]._id.day).toLocaleDateString(), value: resp[i].duration_avg });
         }
-        console.log("Custom Duration COnversation data:", customDurationCOnversationChart);
+        this.logger.log("[ANALYTICS] Custom Duration COnversation data:", customDurationCOnversationChart);
 
         //build a final array that compars value between the two arrray before builded with respect to date key value
         const requestDurationConversationByDays_final_array = last30days_initarrayDURATION.map(obj => customDurationCOnversationChart.find(o => o.date === obj.date) || obj);
-        console.log('»» !!! ANALYTICS - REQUESTS DURATION CONVERSATION BY DAY - FINAL ARRAY ', requestDurationConversationByDays_final_array);
+        this.logger.log('[ANALYTICS] - REQUESTS DURATION CONVERSATION BY DAY - FINAL ARRAY ', requestDurationConversationByDays_final_array);
 
         this.xValueDurationConversation = requestDurationConversationByDays_final_array.map(function (e) {
           return e.date
@@ -1455,11 +827,11 @@ export class Analytics2Component implements OnInit, OnDestroy {
           return e.value
         })
 
-        console.log("Xlabel-DURATION", this.xValueDurationConversation);
-        console.log("Ylabel-DURATION", this.yValueDurationConversation);
+        this.logger.log("[ANALYTICS] Xlabel-DURATION", this.xValueDurationConversation);
+        this.logger.log("[ANALYTICS] Ylabel-DURATION", this.yValueDurationConversation);
       }
       else
-        console.log("!!!ERROR!!! while get data from resouces for duration conversation time graph")
+        this.logger.error("[ANALYTICS] !!!ERROR!!! while get data from resouces for duration conversation time graph")
 
       var lineChart = new Chart('durationConversationTimeResponse', {
         type: 'bar',
@@ -1524,12 +896,12 @@ export class Analytics2Component implements OnInit, OnDestroy {
                 // }
                 // label += Math.round(tooltipItem.yLabel * 100) / 100;
                 // return label + '';
-                //console.log("data",data)
+                //this.logger.log("data",data)
                 const currentItemValue = tooltipItem.yLabel
                 let langService = new HumanizeDurationLanguage();
                 let humanizer = new HumanizeDuration(langService);
                 humanizer.setOptions({ round: true })
-                //console.log("humanize", humanizer.humanize(currentItemValue))
+                //this.logger.log("humanize", humanizer.humanize(currentItemValue))
                 return data.datasets[tooltipItem.datasetIndex].label + ': ' + humanizer.humanize(currentItemValue)
 
               }

@@ -3,9 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../core/auth.service';
 import { Router } from '@angular/router';
 import { User } from '../models/user-model';
-// import brand from 'assets/brand/brand.json';
 import { BrandService } from '../services/brand.service';
-
+import { LoggerService } from '../services/logger/logger.service';
 
 @Component({
   selector: 'app-verify-email',
@@ -28,7 +27,8 @@ export class VerifyEmailComponent implements OnInit {
     private route: ActivatedRoute,
     private auth: AuthService,
     private router: Router,
-    public brandService: BrandService
+    public brandService: BrandService,
+    private logger: LoggerService
   ) { 
     const brand = brandService.getBrand();
     this.company_logo_black__url = brand['company_logo_black__url'];
@@ -36,19 +36,18 @@ export class VerifyEmailComponent implements OnInit {
   }
 
   ngOnInit() {
-
     this.getUserIdAndUpdateVerifiedEmail();
   }
 
   getUserIdAndUpdateVerifiedEmail() {
     this.user_id = this.route.snapshot.params['user_id'];
-    console.log('VERIFY-EMAIL :: USER ID  ', this.user_id);
+    this.logger.log('[VERIFY-EMAIL] :: USER ID  ', this.user_id);
 
     // this.auth.emailVerify('5ae30c95192bba2f25XXXdd5').subscribe((user) => {
     // this.auth.emailVerify('5ae30c95192bba2f25983dd5').subscribe((user) => {
     this.auth.emailVerify(this.user_id).subscribe((_user) => {
-      console.log('VERIFY-EMAIL - USER RETURNED FROM SUBSCRIPTION ', _user);
-      console.log('VERIFY-EMAIL - USER RETURNED FROM SUBSCRIPTION - EMAIL VERIFIED ', _user['emailverified']);
+      this.logger.log('[VERIFY-EMAIL] - USER RETURNED FROM SUBSCRIPTION ', _user);
+      this.logger.log('[VERIFY-EMAIL] - USER RETURNED FROM SUBSCRIPTION - EMAIL VERIFIED ', _user['emailverified']);
       if (_user && _user['emailverified'] === true) {
 
         this.success_msg = 'Your email has successfully been verified';
@@ -58,15 +57,15 @@ export class VerifyEmailComponent implements OnInit {
         if (storedUser !== null) {
 
           const storedUserObject = JSON.parse(storedUser);
-          console.log('VERIFY EMAIL - STORED USER ', JSON.parse(storedUser));
+          this.logger.log('[VERIFY-EMAIL] - STORED USER ', JSON.parse(storedUser));
 
-          console.log('VERIFY EMAIL - STORED USER * ID: ', storedUserObject._id);
-          console.log('VERIFY EMAIL - STORED USER * EMAIL: ', storedUserObject.email);
-          console.log('VERIFY EMAIL - STORED USER * EMAIL VERIFIED: ', storedUserObject.emailverified);
-          console.log('VERIFY EMAIL - STORED USER * PSW: ', storedUserObject.password);
-          console.log('VERIFY EMAIL - STORED USER * FIRSTNAME: ', storedUserObject.firstname);
-          console.log('VERIFY EMAIL - STORED USER * LASTNAME: ', storedUserObject.lastname);
-          console.log('VERIFY EMAIL - STORED USER * TOKEN: ', storedUserObject.token);
+          this.logger.log('[VERIFY-EMAIL] - STORED USER * ID: ', storedUserObject._id);
+          this.logger.log('[VERIFY-EMAIL] - STORED USER * EMAIL: ', storedUserObject.email);
+          this.logger.log('[VERIFY-EMAIL] - STORED USER * EMAIL VERIFIED: ', storedUserObject.emailverified);
+          this.logger.log('[VERIFY-EMAIL] - STORED USER * PSW: ', storedUserObject.password);
+          this.logger.log('[VERIFY-EMAIL] - STORED USER * FIRSTNAME: ', storedUserObject.firstname);
+          this.logger.log('[VERIFY-EMAIL] - STORED USER * LASTNAME: ', storedUserObject.lastname);
+          this.logger.log('[VERIFY-EMAIL] - STORED USER * TOKEN: ', storedUserObject.token);
 
           const user: User = {
             _id: storedUserObject._id,
@@ -78,13 +77,13 @@ export class VerifyEmailComponent implements OnInit {
             token: storedUserObject.token
           }
 
-          console.log('VERIFY EMAIL - USER UPDATED OBJECT ', user);
+          this.logger.log('[VERIFY-EMAIL] - USER UPDATED OBJECT ', user);
           this.auth.publishUpdatedUser(user)
         }
       }
 
     }, (error) => {
-      console.log('VERIFY-EMAIL PUT REQUEST ERROR ', error);
+      this.logger.error('[VERIFY-EMAIL] PUT REQUEST - ERROR ', error);
 
       if (error.status === 500) {
         this.error_msg_title = 'Sorry, something went wrong!';
@@ -94,25 +93,23 @@ export class VerifyEmailComponent implements OnInit {
         this.error_msg_subtitle = 'Verification failed';
       }
     }, () => {
-      console.log('VERIFY-EMAIL PUT REQUEST * COMPLETE *');
+      this.logger.log('[VERIFY-EMAIL] PUT REQUEST * COMPLETE *');
 
     });
   }
 
-  // goToTileDeskDotCom() {
-  //   const url = 'http://tiledesk.com/'
-  //   window.open(url);
-  //   // , '_blank'
-  // }
+
   getUserAndGoToLoginOrProjects() {
     this.auth.user_bs.subscribe((user) => {
-      console.log('USER GET in VERIFY EMAIL ', user)
+      this.logger.log('[VERIFY-EMAIL] - GET USER AND GO TO LOGIN OR PROJECTS - USER ', user)
       // tslint:disable-next-line:no-debugger
       // debugger
 
       if (user) {
+        this.logger.log('[VERIFY-EMAIL] - USER EXIST GO TO PROJECT ', user)
         this.router.navigate(['/projects']);
       } else {
+        this.logger.log('[VERIFY-EMAIL] - USER NOT EXIST GO TO LOGIN ', user)
         this.router.navigate(['/login']);
       }
     });

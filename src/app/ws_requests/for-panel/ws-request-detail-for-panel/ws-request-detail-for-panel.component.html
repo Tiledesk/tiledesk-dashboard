@@ -468,9 +468,8 @@ padding-bottom: 15px;">
 
                 <!-- MESSAGE -->
                 <div *ngFor="let message of messagesList; let i = index; let first = first" class="message-row" [ngClass]="{
-                            'me': requester_id !== message.sender && message.attributes.subtype !== 'info',
-                            'contact': requester_id === message.sender && message.attributes.subtype !== 'info',
-                            'system-info': message.attributes.subtype === 'info',
+                            'me': requester_id !== message.sender,
+                            'contact': requester_id === message.sender,
                             'first-of-group': isFirstMessageOfGroup(message, i),
                             'last-of-group': isLastMessageOfGroup(message, i)
                             }">

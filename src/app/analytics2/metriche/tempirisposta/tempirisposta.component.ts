@@ -10,7 +10,7 @@ import * as moment from 'moment';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { Observable } from 'rxjs';
-
+import { LoggerService } from '../../../services/logger/logger.service';
 
 @Component({
   selector: 'appdashboard-tempirisposta',
@@ -53,14 +53,17 @@ export class TempirispostaComponent implements OnInit {
   projectBotsList: any;
   bots: any;
 
-  constructor(private analyticsService: AnalyticsService,
+  constructor(
+    private analyticsService: AnalyticsService,
     private translate: TranslateService,
     private departmentService: DepartmentService,
     private usersService: UsersService,
-    private faqKbService: FaqKbService) {
+    private faqKbService: FaqKbService,
+    private logger: LoggerService
+    ) {
 
     this.lang = this.translate.getBrowserLang();
-    console.log('LANGUAGE ', this.lang);
+    this.logger.log('[ANALYTICS - RESPONSETIMES] LANGUAGE ', this.lang);
     this.getBrowserLangAndSwitchMonthName();
   }
 
@@ -78,7 +81,7 @@ export class TempirispostaComponent implements OnInit {
     let hours = Math.floor(value / 3600000) // 1 Hour = 36000 Milliseconds
     let minutes = Math.floor((value % 3600000) / 60000) // 1 Minutes = 60000 Milliseconds
     let seconds = Math.round(((value % 360000) % 60000) / 1000) // 1 Second = 1000 Milliseconds (prima era Math.floor ma non arrotonda i secondi)
-    //console.log("SECOND:",Math.round(((value % 360000) % 60000) / 1000))
+    //this.logger.log("SECOND:",Math.round(((value % 360000) % 60000) / 1000))
     return hours + 'h:' + minutes + 'm:' + seconds + 's'
   }
 
@@ -97,7 +100,7 @@ export class TempirispostaComponent implements OnInit {
       }
     }
 
-    console.log("H:M->", hours, minutes)
+    this.logger.log("[ANALYTICS - RESPONSETIMES] H:M->", hours, minutes)
 
     let hoursS = (hours < 10) ? "0" + hours : hours;
     let minutesS = (minutes < 10) ? "0" + minutes : minutes;
@@ -119,11 +122,11 @@ export class TempirispostaComponent implements OnInit {
     }
     // if(hours!=0){
     //   let hourss= ((hours/4)%2==0)? hours/4 : (hours/4)+1;
-    //   console.log("H:",hourss);
+    //   this.logger.log("H:",hourss);
     //   return (hourss)*1000*60*60
     // }else{
     //   let minutess=(minutes%2==0)? minutes : minutes+1;
-    //   console.log("M:",minutess);
+    //   this.logger.log("M:",minutess);
     //   return (minutess/4)*1000*60
     // }
 
@@ -143,34 +146,34 @@ export class TempirispostaComponent implements OnInit {
     this.barChart.destroy();
     this.subscription.unsubscribe();
     this.avgTimeResponseCHART(value, this.selectedDeptId, this.selectedAgentId);
-    console.log('REQUEST:', value, this.selectedDeptId, this.selectedAgentId)
+    this.logger.log('[ANALYTICS - RESPONSETIMES] daysSelect REQUEST:', value, this.selectedDeptId, this.selectedAgentId)
   }
 
   depSelected(selectedDeptId) {
-    console.log('dep', selectedDeptId);
+    this.logger.log('[ANALYTICS - RESPONSETIMES] selectedDeptId', selectedDeptId);
     this.barChart.destroy();
     this.subscription.unsubscribe();
     this.avgTimeResponseCHART(this.selectedDaysId, selectedDeptId, this.selectedAgentId)
-    console.log('REQUEST:', this.selectedDaysId, selectedDeptId, this.selectedAgentId)
+    this.logger.log('[ANALYTICS - RESPONSETIMES] depSelected REQUEST:', this.selectedDaysId, selectedDeptId, this.selectedAgentId)
   }
 
   agentSelected(selectedAgentId) {
-    console.log("Selected agent: ", selectedAgentId);
+    this.logger.log("[ANALYTICS - RESPONSETIMES] selectedAgentId: ", selectedAgentId);
     this.barChart.destroy();
     this.subscription.unsubscribe();
     this.avgTimeResponseCHART(this.selectedDaysId, this.selectedDeptId, selectedAgentId)
-    console.log('REQUEST:', this.selectedDaysId, this.selectedDeptId, selectedAgentId)
+    this.logger.log('[ANALYTICS - RESPONSETIMES] selectedAgentId REQUEST:', this.selectedDaysId, this.selectedDeptId, selectedAgentId)
   }
 
   getDepartments() {
     this.departmentService.getDeptsByProjectId().subscribe((_departments: any) => {
-      console.log('!!! NEW REQUESTS HISTORY - GET DEPTS RESPONSE by analitycs ', _departments);
+      this.logger.log('[ANALYTICS - RESPONSETIMES] - GET DEPTS RESPONSE by analitycs ', _departments);
       this.departments = _departments
 
     }, error => {
-      console.log('!!! NEW REQUESTS HISTORY - GET DEPTS - ERROR: ', error);
+      this.logger.error('[ANALYTICS - RESPONSETIMES] - GET DEPTS - ERROR: ', error);
     }, () => {
-      console.log('!!! NEW REQUESTS HISTORY - GET DEPTS * COMPLETE *')
+      this.logger.log('[ANALYTICS - RESPONSETIMES] - GET DEPTS * COMPLETE *')
     });
   }
 
@@ -183,8 +186,8 @@ export class TempirispostaComponent implements OnInit {
     Observable
       .zip(projectUsers, bots, (_projectUsers: any, _bots: any) => ({ _projectUsers, _bots }))
       .subscribe(pair => {
-        console.log('CONV LENGTH ANALYTICS - GET P-USERS-&-BOTS - PROJECT USERS : ', pair._projectUsers);
-        console.log('CONV LENGTH ANALYTICS - GET P-USERS-&-BOTS - BOTS: ', pair._bots);
+        this.logger.log('[ANALYTICS - RESPONSETIMES] - GET P-USERS-&-BOTS - PROJECT USERS : ', pair._projectUsers);
+        this.logger.log('[ANALYTICS - RESPONSETIMES] - GET P-USERS-&-BOTS - BOTS: ', pair._bots);
 
         if (pair && pair._projectUsers) {
           this.projectUsersList = pair._projectUsers;
@@ -209,12 +212,12 @@ export class TempirispostaComponent implements OnInit {
           });
         }
 
-        console.log('CONV LENGTH ANALYTICS - GET P-USERS-&-BOTS - PROJECT-USER & BOTS ARRAY : ', this.projectUserAndBotsArray);
+        this.logger.log('[ANALYTICS - RESPONSETIMES] - GET P-USERS-&-BOTS - PROJECT-USER & BOTS ARRAY : ', this.projectUserAndBotsArray);
 
       }, error => {
-        console.log('CONV LENGTH ANALYTICS - GET P-USERS-&-BOTS - ERROR: ', error);
+        this.logger.error('[ANALYTICS - RESPONSETIMES] - GET P-USERS-&-BOTS - ERROR: ', error);
       }, () => {
-        console.log('CONV LENGTH ANALYTICS - GET P-USERS-&-BOTS - COMPLETE');
+        this.logger.log('[ANALYTICS - RESPONSETIMES] - GET P-USERS-&-BOTS - COMPLETE');
       });
   }
 
@@ -248,14 +251,14 @@ export class TempirispostaComponent implements OnInit {
 
             this.responseAVGtime = this.humanizer.humanize(res[0].waiting_time_avg, { round: true, language: this.lang })
 
-            console.log('Waiting time: humanize', this.humanizer.humanize(res[0].waiting_time_avg))
-            console.log('waiting time funtion:', this.humanizeDurations(res[0].waiting_time_avg));
+            this.logger.log('[ANALYTICS - RESPONSETIMES] Waiting time: humanize', this.humanizer.humanize(res[0].waiting_time_avg))
+            this.logger.log('[ANALYTICS - RESPONSETIMES] waiting time funtion:', this.humanizeDurations(res[0].waiting_time_avg));
 
           } else {
             this.setToNa();
 
-            console.log('Waiting time: humanize', this.humanizer.humanize(0))
-            console.log('waiting time funtion:', this.humanizeDurations(0));
+            this.logger.log('[ANALYTICS - RESPONSETIMES] Waiting time: humanize', this.humanizer.humanize(0))
+            this.logger.log('[ANALYTICS - RESPONSETIMES] waiting time funtion:', this.humanizeDurations(0));
           }
 
         } else {
@@ -264,15 +267,15 @@ export class TempirispostaComponent implements OnInit {
       } else {
         this.setToNa();
 
-        console.log('Waiting time: humanize', this.humanizer.humanize(0))
-        console.log('waiting time funtion:', this.humanizeDurations(0));
+        this.logger.log('[ANALYTICS - RESPONSETIMES] Waiting time: humanize', this.humanizer.humanize(0))
+        this.logger.log('[ANALYTICS - RESPONSETIMES] waiting time funtion:', this.humanizeDurations(0));
       }
 
     }, (error) => {
-      console.log('!!! ANALYTICS - AVERAGE WAITING TIME CLOCK REQUEST  - ERROR ', error);
+      this.logger.error('[ANALYTICS - RESPONSETIMES] - AVERAGE WAITING TIME CLOCK REQUEST  - ERROR ', error);
       this.setToNa();
     }, () => {
-      console.log('!!! ANALYTICS - AVERAGE TIME CLOCK REQUEST * COMPLETE *');
+      this.logger.log('[ANALYTICS - RESPONSETIMES] - AVERAGE TIME CLOCK REQUEST * COMPLETE *');
     });
   }
 
@@ -286,19 +289,19 @@ export class TempirispostaComponent implements OnInit {
 
   avgTimeResponseCHART(lastdays, depID, participantID) {
     this.subscription = this.analyticsService.getavarageWaitingTimeDataCHART(lastdays, depID, participantID).subscribe((res: any) => {
-      console.log('chart data:', res);
+      this.logger.log('[ANALYTICS - RESPONSETIMES] avgTimeResponseCHART chart data:', res);
       if (res) {
 
         //build a 30 days array of date with value 0--> is the init array
         const lastNdays_initarray = []
         for (let i = 0; i < lastdays; i++) {
-          // console.log('»» !!! ANALYTICS - LOOP INDEX', i);
+          // this.logger.log('»» !!! ANALYTICS - LOOP INDEX', i);
           lastNdays_initarray.push({ date: moment().subtract(i, 'd').format('D/M/YYYY'), value: 0 });
         }
 
         lastNdays_initarray.reverse()
         //this.dateRangeAvg= last30days_initarray[0].date.split(-4) +' - '+last30days_initarray[30].date;
-        console.log('»» !!! ANALYTICS - RESPONSE TIME REQUESTS BY DAY - MOMENT LAST n DATE (init array)', lastNdays_initarray);
+        this.logger.log('[ANALYTICS - RESPONSETIMES]- RESPONSE TIME REQUESTS BY DAY - MOMENT LAST n DATE (init array)', lastNdays_initarray);
 
         //build a custom array with che same structure of "init array" but with key value of serviceData
         //i'm using time_convert function that return avg_time always in hour 
@@ -312,11 +315,11 @@ export class TempirispostaComponent implements OnInit {
           customDataLineChart.push({ date: new Date(res[j]._id.year, res[j]._id.month - 1, res[j]._id.day).toLocaleDateString(), value: res[j].waiting_time_avg });
         }
 
-        console.log('Custom data:', customDataLineChart);
+        this.logger.log('[ANALYTICS - RESPONSETIMES] Custom data LineChart):', customDataLineChart);
 
         //build a final array that compars value between the two arrray before builded with respect to date key value
         const requestByDays_final_array = lastNdays_initarray.map(obj => customDataLineChart.find(o => o.date === obj.date) || obj);
-        console.log('»» !!! ANALYTICS - RESPONSE TIME REQUESTS BY DAY - FINAL ARRAY ', requestByDays_final_array);
+        this.logger.log('[ANALYTICS - RESPONSETIMES] - RESPONSE TIME REQUESTS BY DAY - FINAL ARRAY ', requestByDays_final_array);
 
         const _requestsByDay_series_array = [];
         const _requestsByDay_labels_array = [];
@@ -324,20 +327,20 @@ export class TempirispostaComponent implements OnInit {
         //select init and end day to show on div
         this.initDay = requestByDays_final_array[0].date;
         this.endDay = requestByDays_final_array[lastdays - 1].date;
-        console.log("INIT", this.initDay, "END", this.endDay);
+        this.logger.log("[ANALYTICS - RESPONSETIMES] INIT", this.initDay, "END", this.endDay);
 
         requestByDays_final_array.forEach(requestByDay => {
-          console.log('»» !!! ANALYTICS - RESPONSE TIME REQUESTS BY DAY - requestByDay', requestByDay);
+          this.logger.log('[ANALYTICS - RESPONSETIMES] - RESPONSE TIME REQUESTS BY DAY - requestByDay', requestByDay);
           _requestsByDay_series_array.push(requestByDay.value)
 
           const splitted_date = requestByDay.date.split('/');
-          console.log('»» !!! ANALYTICS - RESPONSE TIME REQUESTS BY DAY - SPLITTED DATE', splitted_date);
+          this.logger.log('[ANALYTICS - RESPONSETIMES] - RESPONSE TIME REQUESTS BY DAY - SPLITTED DATE', splitted_date);
           _requestsByDay_labels_array.push(splitted_date[0] + ' ' + this.monthNames[splitted_date[1]])
         });
 
         this.xValueAVGchart = _requestsByDay_labels_array;
         this.yValueAVGchart = _requestsByDay_series_array;
-        //console.log("XXXX", _requestsByDay_labels_array);
+        //this.logger.log("XXXX", _requestsByDay_labels_array);
         // this.xValueAVGchart=requestByDays_final_array.map(function(e){
 
         //   return e.date
@@ -346,14 +349,14 @@ export class TempirispostaComponent implements OnInit {
         //   return e.value
         // })
 
-        console.log('Xlabel-RESPONSE TIME', this.xValueAVGchart);
-        console.log('Ylabel-RESPONSE TIME', this.yValueAVGchart);
+        this.logger.log('[ANALYTICS - RESPONSETIMES] Xlabel-RESPONSE TIME', this.xValueAVGchart);
+        this.logger.log('[ANALYTICS - RESPONSETIMES] Ylabel-RESPONSE TIME', this.yValueAVGchart);
 
 
         // Chart.plugins.register({
         //   beforeDraw: function(chartInstance, easing) {
         //     var ctx = chartInstance.chart.ctx;
-        //     console.log("chart istance",chartInstance);
+        //     this.logger.log("chart istance",chartInstance);
         //     ctx.fillStyle = 'red'; // your color here
 
         //     var chartArea = chartInstance.chartArea;
@@ -362,11 +365,11 @@ export class TempirispostaComponent implements OnInit {
         // });
 
         const higherCount = this.getMaxOfArray(this.yValueAVGchart);
-        console.log('»» !!! ANALYTICS - RESPONSE TIME REQUESTS BY DAY - HIGHER COUNT ', higherCount);
+        this.logger.log('[ANALYTICS - RESPONSETIMES] - RESPONSE TIME REQUESTS BY DAY - HIGHER COUNT ', higherCount);
         this.msToTime(higherCount)
         var hours = (higherCount / 4) / (1000 * 60 * 60);
         var absoluteHours = Math.floor((higherCount / 4) / (1000 * 60 * 60));
-        console.log("step", absoluteHours);
+        this.logger.log("[ANALYTICS - RESPONSETIMES] step absoluteHours", absoluteHours);
 
         //set the stepsize 
         var stepsize;
@@ -462,12 +465,12 @@ export class TempirispostaComponent implements OnInit {
                   // }
                   // label += Math.round(tooltipItem.yLabel * 100) / 100;
                   // return label + '';
-                  //console.log("data",data)
+                  //this.logger.log("data",data)
                   const currentItemValue = tooltipItem.yLabel
                   let langService = new HumanizeDurationLanguage();
                   let humanizer = new HumanizeDuration(langService);
                   // humanizer.setOptions({ round: true })
-                  // //console.log("humanize", humanizer.humanize(currentItemValue))
+                  // //this.logger.log("humanize", humanizer.humanize(currentItemValue))
                   // return data.datasets[tooltipItem.datasetIndex].label + ': ' + humanizer.humanize(currentItemValue)
                   if (lang === 'it') {
                     return 'Tempo risposta medio: ' + humanizer.humanize(currentItemValue, { round: true, language: lang, units: ['y', 'mo', 'w', 'd', 'h', 'm', 's'] });
@@ -484,7 +487,7 @@ export class TempirispostaComponent implements OnInit {
           plugins: [{
             beforeDraw: function (chartInstance, easing) {
               var ctx = chartInstance.chart.ctx;
-              //console.log("chartistance",chartInstance)
+              //this.logger.log("chartistance",chartInstance)
               //ctx.fillStyle = 'red'; // your color here
               ctx.font = "Google Sans"
               var chartArea = chartInstance.chartArea;
@@ -495,9 +498,9 @@ export class TempirispostaComponent implements OnInit {
       }//fine if
 
     }, (error) => {
-      console.log('»» !!! ANALYTICS - RESPONSE TIME REQUESTS BY DAY - ERROR ', error);
+      this.logger.error('[ANALYTICS - RESPONSETIMES] - RESPONSE TIME REQUESTS BY DAY - ERROR ', error);
     }, () => {
-      console.log('»» !!! ANALYTICS - RESPONSE TIME REQUESTS BY DAY * COMPLETE *');
+      this.logger.log('[ANALYTICS - RESPONSETIMES] - RESPONSE TIME REQUESTS BY DAY * COMPLETE *');
     });
 
   }

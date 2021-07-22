@@ -4,7 +4,6 @@ import { Component, OnInit, ElementRef, AfterContentChecked, AfterViewInit, Afte
 import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { AuthService } from '../../core/auth.service';
 import { TranslateService } from '@ngx-translate/core';
-import { RequestsService } from '../../services/requests.service';
 import { AuthGuard } from '../../core/auth.guard';
 import { Router, NavigationEnd } from '@angular/router';
 
@@ -35,6 +34,7 @@ import { Subscription } from 'rxjs/Subscription';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from './../../services/brand.service';
 import { LocalDbService } from '../../services/users-local-db.service';
+import { LoggerService } from '../../services/logger/logger.service';
 const swal = require('sweetalert');
 
 
@@ -149,7 +149,6 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         public auth: AuthService,
         public authguard: AuthGuard,
         private translate: TranslateService,
-        private requestsService: RequestsService,
         private router: Router,
         private usersService: UsersService,
         private uploadImageService: UploadImageService,
@@ -160,7 +159,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         public wsRequestsService: WsRequestsService,
         public appConfigService: AppConfigService,
         public brandService: BrandService,
-        public LocalDbService: LocalDbService
+        public LocalDbService: LocalDbService,
+        private logger: LoggerService
     ) {
 
 
@@ -172,7 +172,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         this.sidebarVisible = false;
         // this.unservedRequestCount = 0
 
-        console.log('IS DEV MODE ', isDevMode());
+        this.logger.log('[NAVBAR] IS DEV MODE ', isDevMode());
         this.APP_IS_DEV_MODE = isDevMode()
     }
 
@@ -182,17 +182,6 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         this.getCurrentProject();
         this.getProjectUserRole();
         this.getProfileImageStorage();
-        // tslint:disable-next-line:no-debugger
-        // debugger
-        // this.listTitles = ROUTES.filter(listTitle => listTitle);
-
-        // SUBSCRIBE TO IS LOGGED IN PUBLISHED BY AUTH GUARD
-        // this.authguard.IS_LOGGED_IN.subscribe((islogged: boolean) => {
-        //     this.USER_IS_SIGNED_IN = islogged
-        //     console.log('>>> >>> USER IS SIGNED IN ', this.USER_IS_SIGNED_IN);
-
-        // })
-
         this.updateUnservedRequestCount();
         this.updateCurrentUserRequestCount();
         this.notifyLastUnservedAndCurrentUserRequest();
@@ -250,14 +239,11 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     translateModalOnlyOwnerCanManageProjectAccount() {
         this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
             .subscribe((translation: any) => {
-                // console.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
                 this.onlyOwnerCanManageTheAccountPlanMsg = translation;
             });
 
-
         this.translate.get('LearnMoreAboutDefaultRoles')
             .subscribe((translation: any) => {
-                // console.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
                 this.learnMoreAboutDefaultRoles = translation;
             });
     }
@@ -265,17 +251,17 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     setNotificationSound() {
         // NOTIFICATION_SOUND = 'enabled';
         const storedNotificationSound = localStorage.getItem(this.storedValuePrefix + 'sound');
-        console.log('NAV NOTIFICATION_SOUND STORED ', storedNotificationSound)
+        this.logger.log('[NAVBAR] NOTIFICATION_SOUND STORED ', storedNotificationSound)
 
         if (storedNotificationSound !== 'undefined' && storedNotificationSound !== null) {
-            console.log('NAV NOTIFICATION_SOUND - EXIST STORED SO SET STORED VALUE', storedNotificationSound)
+            this.logger.log('[NAVBAR] NOTIFICATION_SOUND - EXIST STORED SO SET STORED VALUE', storedNotificationSound)
             this.NOTIFICATION_SOUND = storedNotificationSound;
         } else {
 
             this.NOTIFICATION_SOUND = 'enabled';
 
             localStorage.setItem(this.storedValuePrefix + 'sound', this.NOTIFICATION_SOUND);
-            console.log('NAV NOTIFICATION_SOUND - NOT EXIST STORED SO SET DEFAULT ', this.NOTIFICATION_SOUND)
+            this.logger.log('[NAVBAR] NOTIFICATION_SOUND - NOT EXIST STORED SO SET DEFAULT ', this.NOTIFICATION_SOUND)
         }
 
     }
@@ -283,19 +269,19 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
     getChatUrl() {
         this.CHAT_BASE_URL = this.appConfigService.getConfig().CHAT_BASE_URL;
-        // console.log('AppConfigService getAppConfig (NAVBAR) CHAT_BASE_URL', this.CHAT_BASE_URL);
+        // this.logger.log('[NAVBAR] AppConfigService getAppConfig (NAVBAR) CHAT_BASE_URL', this.CHAT_BASE_URL);
     }
 
     getProjectUserRole() {
         // const user___role =  this.usersService.project_user_role_bs.value;
-        // console.log('% »»» WebSocketJs WF +++++ ws-requests--- navbar - USER ROLE 1 ', user___role);
+        // this.logger.log('[NAVBAR] % »»» WebSocketJs WF +++++ ws-requests--- navbar - USER ROLE 1 ', user___role);
 
         this.usersService.project_user_role_bs
             .pipe(
                 takeUntil(this.unsubscribe$)
             )
             .subscribe((user_role) => {
-                console.log('% »»» WebSocketJs WF +++++ ws-requests--- navbar - USER ROLE 2', user_role);
+                this.logger.log('[NAVBAR] % »»» WebSocketJs WF +++++ ws-requests--- navbar - USER ROLE 2', user_role);
                 if (user_role) {
                     this.USER_ROLE = user_role
                     if (user_role === 'agent') {
@@ -309,7 +295,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     }
 
     ngOnDestroy() {
-        console.log('% »»» WebSocketJs WF +++++ ws-requests--- navbar ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ ngOnDestroy')
+        this.logger.log('[NAVBAR] % »»» WebSocketJs WF +++++ ws-requests--- navbar ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ ngOnDestroy')
         this.subscription.unsubscribe();
         this.unsubscribe$.next();
         this.unsubscribe$.complete();
@@ -320,78 +306,78 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
             const firebase_conf = this.appConfigService.getConfig().firebase;
             this.storageBucket = firebase_conf['storageBucket'];
-            console.log('Navbar IMAGE STORAGE ', this.storageBucket, 'usecase firebase')
+            this.logger.log('[NAVBAR] IMAGE STORAGE ', this.storageBucket, 'usecase firebase')
         } else {
 
             this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
 
-            console.log('Navbar IMAGE STORAGE ', this.storageBucket, 'usecase native')
+            this.logger.log('[NAVBAR] IMAGE STORAGE ', this.storageBucket, 'usecase native')
         }
     }
 
     getOSCODE() {
         this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
-        console.log('AppConfigService getAppConfig (NAVBAR) public_Key', this.public_Key)
-        console.log('NavbarComponent public_Key', this.public_Key)
+        this.logger.log('[NAVBAR] AppConfigService getAppConfig public_Key', this.public_Key)
+        this.logger.log('[NAVBAR] public_Key', this.public_Key)
 
         let keys = this.public_Key.split("-");
-        // console.log('PUBLIC-KEY (Navbar) - public_Key keys', keys)
+        // this.logger.log('PUBLIC-KEY (Navbar) - public_Key keys', keys)
 
         keys.forEach(key => {
-            // console.log('NavbarComponent public_Key key', key)
+            // this.logger.log('NavbarComponent public_Key key', key)
             if (key.includes("PAY")) {
-                // console.log('PUBLIC-KEY (Navbar) - key', key);
+                // this.logger.log('PUBLIC-KEY (Navbar) - key', key);
                 let pay = key.split(":");
-                // console.log('PUBLIC-KEY (Navbar) - pay key&value', pay);
+                // this.logger.log('PUBLIC-KEY (Navbar) - pay key&value', pay);
                 if (pay[1] === "F") {
                     this.isVisible = false;
-                    // console.log('PUBLIC-KEY (Navbar) - pay isVisible', this.isVisible);
+                    // this.logger.log('PUBLIC-KEY (Navbar) - pay isVisible', this.isVisible);
                 } else {
                     this.isVisible = true;
-                    // console.log('PUBLIC-KEY (Navbar) - pay isVisible', this.isVisible);
+                    // this.logger.log('PUBLIC-KEY (Navbar) - pay isVisible', this.isVisible);
                 }
             }
 
             if (key.includes("MTT")) {
-                // console.log('PUBLIC-KEY (Navbar) - key', key);
+                // this.logger.log('PUBLIC-KEY (Navbar) - key', key);
                 let mt = key.split(":");
-                // console.log('PUBLIC-KEY (Navbar) - mt key&value', mt);
+                // this.logger.log('PUBLIC-KEY (Navbar) - mt key&value', mt);
                 if (mt[1] === "F") {
                     this.MT = false;
-                    // console.log('PUBLIC-KEY (Navbar) - mt is', this.MT);
+                    // this.logger.log('PUBLIC-KEY (Navbar) - mt is', this.MT);
                 } else {
                     this.MT = true;
-                    // console.log('PUBLIC-KEY (Navbar) - mt is', this.MT);
+                    // this.logger.log('PUBLIC-KEY (Navbar) - mt is', this.MT);
                 }
             }
         });
 
         if (!this.public_Key.includes("MTT")) {
             this.MT = false;
-            // console.log('PUBLIC-KEY (Navbar) - mt is', this.MT);
+            // this.logger.log('PUBLIC-KEY (Navbar) - mt is', this.MT);
         }
    
     }
 
     getProjects() {
-        console.log('NavbarComponent calling getProjects ... ');
+        this.logger.log('[NAVBAR] calling getProjects ... ');
         this.projectService.getProjects().subscribe((projects: any) => {
-            console.log('NavbarComponent getProjects PROJECTS ', projects);
+            this.logger.log('[NAVBAR] getProjects PROJECTS ', projects);
 
             if (projects) {
                 // this.projects = projects;
 
                 this.projects = projects.filter((project: any) => {
-                    console.log('NavbarComponent getProjects PROJECTS status ', project.id_project.status);
+                    this.logger.log('[NAVBAR] getProjects PROJECTS status ', project.id_project.status);
                     return project.id_project.status === 100;
 
                 });
-                console.log('NavbarComponent getProjects this.projects ', this.projects);
+                this.logger.log('[NAVBAR] getProjects this.projects ', this.projects);
             }
         }, error => {
-            console.log('NavbarComponent getProjects - ERROR ', error)
+            this.logger.error('[NAVBAR] getProjects - ERROR ', error)
         }, () => {
-            console.log('NavbarComponent getProjects - COMPLETE')
+            this.logger.log('[NAVBAR] getProjects - COMPLETE')
         });
     }
 
@@ -399,26 +385,26 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
     getBrowserLanguage() {
         this.browserLang = this.translate.getBrowserLang();
-        console.log('!!! ===== NAVABAR ===== BRS LANG ', this.browserLang)
+        this.logger.log('[NAVBAR] ===== BRS LANG ', this.browserLang)
     }
 
     getUserAvailability() {
         this.usersService.user_is_available_bs.subscribe((user_available) => {
             this.IS_AVAILABLE = user_available;
-            console.log('!!! NAVABAR - USER IS AVAILABLE ', this.IS_AVAILABLE);
+            this.logger.log('[NAVBAR]- USER IS AVAILABLE ', this.IS_AVAILABLE);
         });
     }
 
     hasChangedAvailabilityStatusInSidebar() {
         this.usersService.has_changed_availability_in_sidebar.subscribe((has_changed_availability) => {
-            console.log('!!! NAVABAR SUBSCRIBES TO HAS CHANGED AVAILABILITY FROM THE SIDEBAR', has_changed_availability)
+            this.logger.log('[NAVBAR] SUBSCRIBES TO HAS CHANGED AVAILABILITY FROM THE SIDEBAR', has_changed_availability)
             //   this.getAllUsersOfCurrentProject();
         })
     }
 
     hasChangedAvailabilityStatusInUsersComp() {
         this.usersService.has_changed_availability_in_users.subscribe((has_changed_availability) => {
-            console.log('!!! NAVABAR SUBSCRIBES TO HAS CHANGED AVAILABILITY FROM THE USERS COMP', has_changed_availability)
+            this.logger.log('[NAVBAR] SUBSCRIBES TO HAS CHANGED AVAILABILITY FROM THE USERS COMP', has_changed_availability)
             if (this.project) {
                 // this.getProjectUser()
             }
@@ -428,13 +414,13 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     ngAfterViewInit() {
         const navbar: HTMLElement = this.element.nativeElement;
         this.toggleButton = navbar.getElementsByClassName('navbar-toggle')[0];
-        console.log('NAVBAR toggleButton ', this.toggleButton)
+        this.logger.log('[NAVBAR] toggleButton ', this.toggleButton)
     }
 
     // bs_hasClickedChat IS PUBLISHED WHEN THE USER CLICK THE CHAT BTN FROM SIDEBAR OR HOME
     getFromNotifyServiceHasOpenedChat() {
         this.notifyService.bs_hasClickedChat.subscribe((hasClickedChat) => {
-            console.log('NAVBAR - HAS CLICKED CHAT ? ', hasClickedChat);
+            this.logger.log('[NAVBAR] - HAS CLICKED CHAT ? ', hasClickedChat);
 
             if (hasClickedChat === true) {
                 this.HAS_OPENED_THE_CHAT = true
@@ -445,13 +431,13 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     listenHasDeleteUserProfileImage() {
         if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
             this.uploadImageService.hasDeletedUserPhoto.subscribe((hasDeletedImage) => {
-                console.log('SIDEBAR - hasDeletedImage ? ', hasDeletedImage, '(usecase Firebase)');
+                this.logger.log('[NAVBAR] - hasDeletedImage ? ', hasDeletedImage, '(usecase Firebase)');
                 this.userImageHasBeenUploaded = false
                 this.userProfileImageExist = false
             });
         } else {
             this.uploadImageNativeService.hasDeletedUserPhoto.subscribe((hasDeletedImage) => {
-                console.log('SIDEBAR - hasDeletedImage ? ', hasDeletedImage, '(usecase Native)');
+                this.logger.log('[NAVBAR] - hasDeletedImage ? ', hasDeletedImage, '(usecase Native)');
                 this.userImageHasBeenUploaded = false
                 this.userProfileImageExist = false
             });
@@ -460,11 +446,11 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
     checkUserImageExist() {
         this.usersService.userProfileImageExist.subscribe((image_exist) => {
-            console.log('NAVBAR - USER PROFILE EXIST ? ', image_exist);
+            this.logger.log('[NAVBAR] - USER PROFILE EXIST ? ', image_exist);
             this.userProfileImageExist = image_exist;
             if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
                 if (this.storageBucket && this.userProfileImageExist === true) {
-                    console.log('NAVBAR - USER PROFILE EXIST - BUILD userProfileImageurl');
+                    this.logger.log('[NAVBAR] - USER PROFILE EXIST - BUILD userProfileImageurl');
                     this.setImageProfileUrl(this.storageBucket)
                 }
             } else {
@@ -477,10 +463,10 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     checkUserImageUploadIsComplete() {
         if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
             this.uploadImageService.userImageWasUploaded.subscribe((image_exist) => {
-                console.log('NAVBAR - IMAGE UPLOADING IS COMPLETE ? ', image_exist, '(usecase Firebase)');
+                this.logger.log('[NAVBAR] - IMAGE UPLOADING IS COMPLETE ? ', image_exist, '(usecase Firebase)');
                 this.userImageHasBeenUploaded = image_exist;
                 if (this.storageBucket && this.userImageHasBeenUploaded === true) {
-                    console.log('SIDEBAR - IMAGE UPLOADING IS COMPLETE - BUILD userProfileImageurl ');
+                    this.logger.log('[NAVBAR] - IMAGE UPLOADING IS COMPLETE - BUILD userProfileImageurl ');
                     this.setImageProfileUrl(this.storageBucket)
                 }
             });
@@ -488,7 +474,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
             // NATIVE
             this.uploadImageNativeService.userImageWasUploaded_Native.subscribe((image_exist) => {
-                console.log('USER PROFILE IMAGE - IMAGE UPLOADING IS COMPLETE ? ', image_exist, '(usecase Native)');
+                this.logger.log('[NAVBAR] USER PROFILE IMAGE - IMAGE UPLOADING IS COMPLETE ? ', image_exist, '(usecase Native)');
 
                 this.userImageHasBeenUploaded = image_exist;
                 this.uploadImageNativeService.userImageDownloadUrl_Native.subscribe((imageUrl) => {
@@ -501,7 +487,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
     setImageProfileUrl_Native(storage) {
         this.userProfileImageurl = storage + 'images?path=uploads%2Fusers%2F' + this.currentUserId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
-        // console.log('PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
+        // this.logger.log('[NAVBAR] PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
         this.timeStamp = (new Date()).getTime();
     }
 
@@ -512,65 +498,50 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
     getUserProfileImage() {
         if (this.timeStamp) {
-            // console.log('PROFILE IMAGE (USER-IMG IN NAV-COMP) - getUserProfileImage ', this.userProfileImageurl);
+            // this.logger.log('[NAVBAR] PROFILE IMAGE (USER-IMG IN NAV-COMP) - getUserProfileImage ', this.userProfileImageurl);
             return this.userProfileImageurl + '&' + this.timeStamp;
         }
         return this.userProfileImageurl
     }
 
     getActiveRoute() {
-        // this.router.events.subscribe((val) => {
-
-        //     if (this.location.path() !== '') {
-        //         this.route = this.location.path();
-        //         // console.log('»> »> »> NAVBAR ROUTE DETECTED »> ', this.route)
-        //         if (this.route === '/chat') {
-        //             // console.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route)
-        //             this.DETECTED_CHAT_PAGE = true;
-        //         } else {
-        //             this.DETECTED_CHAT_PAGE = false;
-        //         }
-        //     }
-        // });
 
         this.router.events.filter((event: any) => event instanceof NavigationEnd)
             .subscribe(event => {
-                // console.log('NAVBAR NavigationEnd ', event.url);
+                // this.logger.log('[NAVBAR]  NavigationEnd ', event.url);
 
                 /** HIDE THE PLAN NAME IF THE ROUTE ACTIVE IS THE HOME */
                 if (event.url.indexOf('/home') !== -1) {
-                    // console.log('NAVBAR NavigationEnd - THE home route IS ACTIVE  ', event.url);
+                    // this.logger.log('[NAVBAR] NavigationEnd - THE home route IS ACTIVE  ', event.url);
                     this.HOME_ROUTE_IS_ACTIVE = true;
                 } else {
-                    // console.log('NAVBAR NavigationEnd - THE home route IS NOT ACTIVE  ', event.url);
+                    // this.logger.log('[NAVBAR] NavigationEnd - THE home route IS NOT ACTIVE  ', event.url);
                     this.HOME_ROUTE_IS_ACTIVE = false;
                 }
 
                 if (event.url.indexOf('/chat') !== -1) {
-                    // console.log('NAVBAR NavigationEnd - THE chat route IS ACTIVE  ', event.url);
+                    // this.logger.log('[NAVBAR] NavigationEnd - THE chat route IS ACTIVE  ', event.url);
                     this.DETECTED_CHAT_PAGE = true;
                 } else {
-                    // console.log('NAVBAR NavigationEnd - THE chat route IS NOT ACTIVE  ', event.url);
+                    // this.logger.log('[NAVBAR] NavigationEnd - THE chat route IS NOT ACTIVE  ', event.url);
                     this.DETECTED_CHAT_PAGE = false;
                 }
 
                 if (event.url.indexOf('/request-for-panel') !== -1) {
                     this.IS_REQUEST_FOR_PANEL_ROUTE = true;
-                    // console.log('NAVBAR NavigationEnd - IS_REQUEST_FOR_PANEL_ROUTE  ', this.IS_REQUEST_FOR_PANEL_ROUTE);
+                    // this.logger.log('[NAVBAR] NavigationEnd - IS_REQUEST_FOR_PANEL_ROUTE  ', this.IS_REQUEST_FOR_PANEL_ROUTE);
                 } else {
                     this.IS_REQUEST_FOR_PANEL_ROUTE = false;
-                    // console.log('NAVBAR NavigationEnd - IS_REQUEST_FOR_PANEL_ROUTE  ', this.IS_REQUEST_FOR_PANEL_ROUTE);
+                    // this.logger.log('[NAVBAR] NavigationEnd - IS_REQUEST_FOR_PANEL_ROUTE  ', this.IS_REQUEST_FOR_PANEL_ROUTE);
                 }
 
                 if (event.url.indexOf('/unserved-request-for-panel') !== -1) {
                     this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE = true;
-                    console.log('NAVBAR NavigationEnd - IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE  ', this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE);
+                    this.logger.log('[NAVBAR] NavigationEnd - IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE  ', this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE);
                 } else {
                     this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE = false;
-                    console.log('NAVBAR NavigationEnd - IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE  ', this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE);
+                    this.logger.log('[NAVBAR] NavigationEnd - IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE  ', this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE);
                 }
-
-
             })
     }
 
@@ -581,7 +552,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         this.router.events.subscribe((val) => {
             if (this.location.path() !== '') {
                 this.route = this.location.path();
-                // console.log('»> »> »> NAVBAR ROUTE DETECTED »> ', this.route)
+                // this.logger.log('»> »> »> NAVBAR ROUTE DETECTED »> ', this.route)
                 if (
                     (this.route === '/projects') ||
                     (this.route === '/login') ||
@@ -597,17 +568,17 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                     (this.route.indexOf('/projects-for-panel') !== -1) ||
                     (this.route.indexOf('/unserved-request-for-panel') !== -1)
                 ) {
-                    // console.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route)
+                    // this.logger.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route)
                     // this.DETECTED_PROJECT_PAGE = true;
                     this.HIDE_PENDING_EMAIL_NOTIFICATION = true;
-                    // console.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route, 'HIDE PENDING_EMAIL_NOTIFICATION ', this.HIDE_PENDING_EMAIL_NOTIFICATION)
+                    // this.logger.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route, 'HIDE PENDING_EMAIL_NOTIFICATION ', this.HIDE_PENDING_EMAIL_NOTIFICATION)
                 } else {
                     this.HIDE_PENDING_EMAIL_NOTIFICATION = false;
-                    // console.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route, 'HIDE PENDING_EMAIL_NOTIFICATION ', this.HIDE_PENDING_EMAIL_NOTIFICATION)
+                    // this.logger.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route, 'HIDE PENDING_EMAIL_NOTIFICATION ', this.HIDE_PENDING_EMAIL_NOTIFICATION)
                 }
 
                 // if (this.route === '/login') {
-                //     console.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route)
+                //     this.logger.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route)
                 //     // this.DETECTED_LOGIN_PAGE = true;
                 //     this.HIDE_PENDING_EMAIL_NOTIFICATION = true;
                 // } else {
@@ -616,7 +587,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                 // }
 
                 // if (this.route === '/signup') {
-                //     console.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route)
+                //     this.logger.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route)
                 //     // this.DETECTED_SIGNUP_PAGE = true;
                 //     this.HIDE_PENDING_EMAIL_NOTIFICATION = true;
                 // } else {
@@ -636,7 +607,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
             if (this.location.path() !== '') {
                 this.route = this.location.path();
-                //  console.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route)
+                //  this.logger.log('[NAVBAR] »> »> »> NAVBAR ROUTE DETECTED  »> ', this.route)
                 if (
                     this.route === '/user-profile' ||
                     this.route === '/create-new-project' ||
@@ -645,26 +616,26 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                 ) {
 
                     this.DETECTED_USER_PROFILE_PAGE = true;
-                    // console.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route, 'DETECTED_USER_PROFILE_PAGE ', this.DETECTED_USER_PROFILE_PAGE)
+                    // this.logger.log('[NAVBAR] »> »> »> NAVBAR ROUTE DETECTED  »> ', this.route, 'DETECTED_USER_PROFILE_PAGE ', this.DETECTED_USER_PROFILE_PAGE)
                 } else {
                     this.DETECTED_USER_PROFILE_PAGE = false;
-                    // console.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route, 'DETECTED_USER_PROFILE_PAGE ', this.DETECTED_USER_PROFILE_PAGE)
+                    // this.logger.log('[NAVBAR] »> »> »> NAVBAR ROUTE DETECTED  »> ', this.route, 'DETECTED_USER_PROFILE_PAGE ', this.DETECTED_USER_PROFILE_PAGE)
                 }
 
                 if (this.route.indexOf('/request-for-panel') !== -1) {
                     this.IS_REQUEST_FOR_PANEL_ROUTE = true;
-                    // console.log('NAVBAR route detected - IS_REQUEST_FOR_PANEL_ROUTE  ', this.IS_REQUEST_FOR_PANEL_ROUTE);
+                    // this.logger.log('[NAVBAR] route detected - IS_REQUEST_FOR_PANEL_ROUTE  ', this.IS_REQUEST_FOR_PANEL_ROUTE);
                 } else {
                     this.IS_REQUEST_FOR_PANEL_ROUTE = false;
-                    // console.log('NAVBAR route detected - IS_REQUEST_FOR_PANEL_ROUTE  ', this.IS_REQUEST_FOR_PANEL_ROUTE);
+                    // this.logger.log('[NAVBAR] route detected - IS_REQUEST_FOR_PANEL_ROUTE  ', this.IS_REQUEST_FOR_PANEL_ROUTE);
                 }
 
                 if (this.route.indexOf('/unserved-request-for-panel') !== -1) {
                     this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE = true;
-                    // console.log('NAVBAR route detected - IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE  ', this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE);
+                    // this.logger.log('[NAVBAR] route detected - IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE  ', this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE);
                 } else {
                     this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE = false;
-                    // console.log('NAVBAR route detected - IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE  ', this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE);
+                    // this.logger.log('[NAVBAR] route detected - IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE  ', this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE);
                 }
 
 
@@ -678,12 +649,12 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         this.auth.project_bs.subscribe((project) => {
             if (project) {
                 this.project = project
-                console.log('!!C-U 00 -> NAVBAR project from AUTH service subscription ', this.project);
+                this.logger.log('[NAVBAR] project from AUTH service subscription ', this.project);
                 this.projectId = project._id;
                 this.projectName = project.name;
                 this.OPERATING_HOURS_ACTIVE = this.project.operatingHours
 
-                console.log('!!C-U 00 -> NAVBAR OPERATING_HOURS_ACTIVE ', this.OPERATING_HOURS_ACTIVE);
+                this.logger.log('[NAVBAR] -> OPERATING_HOURS_ACTIVE ', this.OPERATING_HOURS_ACTIVE);
                 // this.prjct_profile_name = this.project.profile_name;
                 // this.prjct_trial_expired = this.project.trial_expired;
                 // this.prjc_trial_days_left = this.project.trial_days_left;
@@ -693,11 +664,11 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                 // // this.prjc_trial_days_left_percentage IT IS 
                 // // A NEGATIVE NUMBER AND SO TO DETERMINE THE PERCENT IS MADE AN ADDITION
                 // const perc = 100 + this.prjc_trial_days_left_percentage
-                // console.log('SIDEBAR project perc ', perc)
+                // this.logger.log('SIDEBAR project perc ', perc)
 
 
                 // this.prjc_trial_days_left_percentage = this.round5(perc)
-                // console.log('SIDEBAR project trial days left % rounded', this.prjc_trial_days_left_percentage);
+                // this.logger.log('SIDEBAR project trial days left % rounded', this.prjc_trial_days_left_percentage);
             }
         });
     }
@@ -705,7 +676,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
     getProjectPlan() {
         this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-            console.log('ProjectPlanService (navbar) project Profile Data', projectProfileData)
+            this.logger.log('[NAVBAR] ProjectPlanService project Profile Data', projectProfileData)
             if (projectProfileData) {
                 this.prjct_profile_name = projectProfileData.profile_name;
                 this.prjct_trial_expired = projectProfileData.trial_expired;
@@ -720,16 +691,16 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                     // this.prjc_trial_days_left_percentage IT IS 
                     // A NEGATIVE NUMBER AND SO TO DETERMINE THE PERCENT IS MADE AN ADDITION
                     const perc = 100 + this.prjc_trial_days_left_percentage
-                    // console.log('ProjectPlanService (navbar) project perc ', perc)
+                    // this.logger.log('ProjectPlanService (navbar) project perc ', perc)
 
                     this.prjc_trial_days_left_percentage = this.round5(perc);
-                    // console.log('ProjectPlanService (navbar) trial days left % rounded', this.prjc_trial_days_left_percentage);
+                    // this.logger.log('ProjectPlanService (navbar) trial days left % rounded', this.prjc_trial_days_left_percentage);
 
                 } else if (this.prjct_trial_expired === true) {
                     this.prjc_trial_days_left_percentage = 100;
                 }
                 if (this.prjct_profile_type === 'payment') {
-                    console.log('!!! ===== HELLO HOME COMP this.browserLang 4 ', this.browserLang);
+                    this.logger.log('[NAVBAR] browserLang ', this.browserLang);
                     if (this.browserLang === 'it') {
                         this.prjct_profile_name = 'Piano ' + projectProfileData.profile_name;
                     } else if (this.browserLang !== 'it') {
@@ -754,12 +725,12 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     listenCancelSubscription() {
         this.notifyService.cancelSubscriptionCompleted$.subscribe((hasDone: boolean) => {
 
-            console.log('NavbarComponent cancelSubscriptionCompleted hasDone', hasDone);
+            this.logger.log('[NAVBAR] cancelSubscriptionCompleted hasDone', hasDone);
             if (hasDone === false) { }
 
             if (hasDone === true) {
                 setTimeout(() => {
-                    this.prjctPlanService.getProjectByID(this.projectId);
+                    this.prjctPlanService.getProjectByIdAndPublish(this.projectId);
                 }, 2000);
             }
         });
@@ -776,7 +747,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
     round5(x) {
         // const percentageRounded = Math.ceil(x / 5) * 5;
-        // console.log('SIDEBAR project trial days left % rounded', percentageRounded);
+        // this.logger.log('[NAVBAR] project trial days left % rounded', percentageRounded);
         // return Math.ceil(x / 5) * 5;
         return x % 5 < 3 ? (x % 5 === 0 ? x : Math.floor(x / 5) * 5) : Math.ceil(x / 5) * 5
     }
@@ -822,7 +793,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
     getLoggedUser() {
         this.auth.user_bs.subscribe((user) => {
-            console.log('»»» »»» USER GET IN NAVBAR ', user)
+            this.logger.log('[NAVBAR] »»» »»» USER GET IN NAVBAR ', user)
             // tslint:disable-next-line:no-debugger
             // debugger
             this.user = user;
@@ -837,7 +808,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
     getIfIsCreatedNewProject() {
         this.projectService.hasCreatedNewProject$.subscribe((hasCreatedNewProject) => {
-            console.log('»»» »»» getIfIsCreatedNewProject hasCreatedNewProject', hasCreatedNewProject)
+            this.logger.log('[NAVBAR] »»» »»» getIfIsCreatedNewProject hasCreatedNewProject', hasCreatedNewProject)
             if (hasCreatedNewProject) {
                 this.getProjects();
             }
@@ -846,7 +817,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
 
     goToProjects() {
-        console.log('HAS CLICCKED GO TO PROJECT ')
+        this.logger.log('[NAVBAR] HAS CLICCKED GO TO PROJECT ')
         this.router.navigate(['/projects']);
         // (in AUTH SERVICE ) RESET PROJECT_BS AND REMOVE ITEM PROJECT FROM STORAGE WHEN THE USER GO TO PROJECTS PAGE
         this.auth.hasClickedGoToProjects();
@@ -857,7 +828,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         // this.unsubscribe$.next();
         // this.unsubscribe$.complete();
 
-        console.log('!!C-U 00 -> NAVBAR project AFTER GOTO PROJECTS ', this.project)
+        this.logger.log('[NAVBAR] project AFTER GOTO PROJECTS ', this.project)
     }
 
     // WHEN A USER CLICK ON A PROJECT IN THE NAVBAR DROPDOWN 
@@ -866,8 +837,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         project_trial_expired: string,
         project_trial_days_left: number,
         activeOperatingHours: boolean) {
-        // console.log('!NAVBAR  goToHome prjct ', prjct)
-        console.log('!NAVBAR  goToHome id_project ', id_project, 'project_name', project_name, 'project_trial_expired ', project_trial_expired, 'project_trial_days_left ', project_trial_days_left, ' activeOperatingHours ', activeOperatingHours)
+        // this.logger.log('!NAVBAR  goToHome prjct ', prjct)
+        this.logger.log('[NAVBAR] goToHome id_project ', id_project, 'project_name', project_name, 'project_trial_expired ', project_trial_expired, 'project_trial_days_left ', project_trial_days_left, ' activeOperatingHours ', activeOperatingHours)
         // RUNS ONLY IF THE THE USER CLICK OVER A PROJECT WITH THE ID DIFFERENT FROM THE CURRENT PROJECT ID
         if (id_project !== this.projectId) {
             // this.subscription.unsubscribe();
@@ -886,7 +857,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                 operatingHours: activeOperatingHours
             }
             this.auth.projectSelected(project)
-            console.log('!!! GO TO HOME - PROJECT ', project)
+            this.logger.log('[NAVBAR] !!! GO TO HOME - PROJECT ', project)
         }
     }
 
@@ -899,7 +870,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     }
 
     goToUserProfile() {
-        console.log('»»» »»» NAVBAR GO TO USER PROFILE ', this.project)
+        this.logger.log('[NAVBAR] »»» »»» GO TO USER PROFILE ', this.project)
         if (this.project) {
             this.router.navigate(['/project/' + this.project._id + '/user-profile']);
 
@@ -913,7 +884,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
     getTestSiteUrl() {
         this.TESTSITE_BASE_URL = this.appConfigService.getConfig().testsiteBaseUrl;
-        console.log('AppConfigService getAppConfig (NAVBAR COMP.) TESTSITE_BASE_URL', this.TESTSITE_BASE_URL);
+        this.logger.log('[NAVBAR] AppConfigService getAppConfig TESTSITE_BASE_URL', this.TESTSITE_BASE_URL);
     }
 
     testWidgetPage() {
@@ -928,15 +899,15 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     hasmeInAgents(agents) {
         if (agents) {
             for (let j = 0; j < agents.length; j++) {
-                console.log('NAVBAR hasmeInAgents currentUserId  ', this.currentUserId)
-                console.log('NAVBAR hasmeInAgents agent  ', agents[j].id_user)
+                this.logger.log('[NAVBAR] hasmeInAgents currentUserId  ', this.currentUserId)
+                this.logger.log('[NAVBAR] hasmeInAgents agent  ', agents[j].id_user)
                 if (this.currentUserId === agents[j].id_user) {
-                    console.log('NAVBAR hasmeInAgents ')
+                    this.logger.log('[NAVBAR] hasmeInAgents ')
                     return true
                 }
             }
         } else {
-            console.log('NAVBAR hasmeInAgents OOPS!!! AGENTS THERE ARE NOT ')
+            this.logger.log('[NAVBAR] hasmeInAgents OOPS!!! AGENTS THERE ARE NOT ')
         }
     }
 
@@ -952,7 +923,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                 if (requests) {
                     let count = 0;
                     requests.forEach(r => {
-                        // console.log('NAVBAR - UPDATE-UNSERVED-REQUEST-COUNT request agents', r.agents)
+                        // this.logger.log('NAVBAR - UPDATE-UNSERVED-REQUEST-COUNT request agents', r.agents)
                         // *bug fix: when the user is an agent also for the unserved we have to consider if he is present in agents
                         if (r.status === 100 && this.ROLE_IS_AGENT === true) {
                             if (this.hasmeInAgents(r.agents) === true) {  // new *bug fix
@@ -966,9 +937,9 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                     this.unservedRequestCount = count;
                 }
             }, error => {
-                console.log('% »»» WebSocketJs WF +++++ ws-requests--- navbar updateUnservedRequestCount * error * ', error)
+                this.logger.error('[NAVBAR] updateUnservedRequestCount * error * ', error)
             }, () => {
-                console.log('% »»» WebSocketJs WF +++++ ws-requests--- navbar updateUnservedRequestCount */* COMPLETE */*')
+                this.logger.log('[NAVBAR] updateUnservedRequestCount */* COMPLETE */*')
             })
     }
 
@@ -985,23 +956,23 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
                         // const membersArray = Object.keys(r.members);
                         const participantsArray = r.participants // new used with ws 
-                        // console.log('»» WIDGET updateCurrentUserRequestCount REQUEST currentUserRequestCount membersArray ', membersArray);
+                        // this.logger.log('[NAVBAR] »» WIDGET updateCurrentUserRequestCount REQUEST currentUserRequestCount membersArray ', membersArray);
 
                         // const currentUserIsInParticipants = membersArray.includes(this.user._id);
                         const currentUserIsInParticipants = participantsArray.includes(this.user._id); // new used with ws 
 
-                        // console.log('»» WIDGET updateCurrentUserRequestCount REQUEST currentUserRequestCount currentUserIsInParticipants ', currentUserIsInParticipants);
+                        // this.logger.log('[NAVBAR] »» WIDGET updateCurrentUserRequestCount REQUEST currentUserRequestCount currentUserIsInParticipants ', currentUserIsInParticipants);
                         if (currentUserIsInParticipants === true) {
                             count = count + 1;
                         }
                     });
                     this.currentUserRequestCount = count;
-                    // console.log('»» NAVBAR notifyLastUnservedRequest REQUEST currentUserRequestCount ', this.currentUserRequestCount);
+                    // this.logger.log('»» NAVBAR notifyLastUnservedRequest REQUEST currentUserRequestCount ', this.currentUserRequestCount);
                 }
             }, error => {
-                console.log('% »»» WebSocketJs WF +++++ ws-requests--- navbar updateCurrentUserRequestCount * error * ', error)
+                this.logger.error('[NAVBAR] updateCurrentUserRequestCount * error * ', error)
             }, () => {
-                console.log('% »»» WebSocketJs WF +++++ ws-requests--- navbar updateCurrentUserRequestCount */* COMPLETE */*')
+                this.logger.log('[NAVBAR] updateCurrentUserRequestCount */* COMPLETE */*')
             })
 
     }
@@ -1011,7 +982,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     // TO -> 200 (THE R. RECIPIENT IS SET TO FALSE IN  shown_requests )
     // SO IF THE REQUEST CHANGE AGAIN STATUS IN 100 THE NOTICATION IS AGAIN DISPLAYED
     checkRequestStatusInShown_requests() {
-        console.log('»» NAVBAR shown_requests object ', this.shown_requests)
+        this.logger.log('[NAVBAR] shown_requests object ', this.shown_requests)
         // this.requestsService.requestsList_bs.subscribe((requests) => {
         this.subscription = this.wsRequestsService.wsRequestsList$
             .pipe(
@@ -1021,27 +992,27 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                 // const storedRequest = []
                 if (requests) {
                     requests.forEach(r => {
-                        // console.log('IN-APP-NOTIFICATION request ', r)
+                        // this.logger.log('IN-APP-NOTIFICATION request ', r)
 
                         // storedRequest.push(r.id + '_' + r.updatedAt)
                         // localStorage.setItem(r.id + '_' + r.updatedAt, 'false');
 
                         if (r.status !== 100) {
-                            // console.log('REQUEST WITH STATUS != 100 ', r.status)
+                            // this.logger.log('REQUEST WITH STATUS != 100 ', r.status)
                             this.shown_requests[r.id] = false;
-                            // this.shown_requests[r.request_id] = false;
-                            console.log('REQUEST WITH STATUS != 100 ', r.status)
+                          
+                            // this.logger.log('[NAVBAR] REQUEST WITH STATUS != 100 ', r.status)
                         }
                     });
 
                     // localStorage.setItem('request', JSON.stringify(storedRequest));
 
-                    // console.log('IN-APP-NOTIFICATION shown_requests ', this.shown_requests)
+                    // this.logger.log('IN-APP-NOTIFICATION shown_requests ', this.shown_requests)
                 }
             }, error => {
-                console.log('% »»» WebSocketJs WF +++++ ws-requests--- navbar checkRequestStatusInShown_requests * error * ', error)
+                this.logger.error('[NAVBAR] checkRequestStatusInShown_requests * ERROR * ', error)
             }, () => {
-                console.log('% »»» WebSocketJs WF +++++ ws-requests--- navbar checkRequestStatusInShown_requests */* COMPLETE */*')
+                this.logger.log('[NAVBAR] checkRequestStatusInShown_requests */* COMPLETE */*')
             })
     }
 
@@ -1060,28 +1031,28 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                 if (requests) {
                     requests.forEach(r => {
 
-                        // console.log('»» WIDGET notifyLastUnservedRequest REQUEST shown_requests ', this.shown_requests);
-                        // console.log('»» WIDGET notifyLastUnservedRequest REQUEST shown_my_requests ', this.shown_my_requests);
-                        // console.log('»» NAVBAR notifyLastUnservedRequest REQUEST r ', r);
+                        // this.logger.log('[NAVBAR]notifyLastUnservedRequest REQUEST shown_requests ', this.shown_requests);
+                        // this.logger.log('[NAVBAR] notifyLastUnservedRequest REQUEST shown_my_requests ', this.shown_my_requests);
+                        // this.logger.log('[NAVBAR] notifyLastUnservedRequest REQUEST r ', r);
 
-                        // console.log('»» WIDGET notifyLastUnservedRequest REQUEST this.user ID  ', this.user._id);
+                        // this.logger.log('[NAVBAR] notifyLastUnservedRequest REQUEST this.user ID  ', this.user._id);
 
                         // const membersArray = Object.keys(r.members); // old used with firestore 
-                        // console.log('»» WIDGET notifyLastUnservedRequest REQUEST membersArray ', membersArray);
+                        // this.logger.log('[NAVBAR] notifyLastUnservedRequest REQUEST membersArray ', membersArray);
 
                         const participantsArray = r.participants // new used with ws 
-                        // console.log('% »»» WebSocketJs WF - Navbar participantsArray ', participantsArray);
+                        // this.logger.log([NAVBAR] participantsArray ', participantsArray);
 
                         // const currentUserIsInMembers = membersArray.includes(this.user._id);  // old used with firestore 
                         const currentUserIsInParticipants = participantsArray.includes(this.user._id); // new used with ws 
-                        // console.log('»» WIDGET notifyLastUnservedRequest REQUEST currentUserIsInParticipants ', currentUserIsInParticipants);
+                        // this.logger.log('[NAVBAR] notifyLastUnservedRequest REQUEST currentUserIsInParticipants ', currentUserIsInParticipants);
 
 
                         // --------------------------------------------------------------------------
                         // @ get stored request
                         // --------------------------------------------------------------------------
                         const storedRequest = localStorage.getItem(r.id + '_' + r.status);
-                        // console.log('IN-APP-NOTIFICATION >> get storedRequest served >> ', r.id + '_' + r.updatedAt, ' - ', storedRequest);
+                        // this.logger.log('[NAVBAR] IN-APP-NOTIFICATION >> get storedRequest served >> ', r.id + '_' + r.updatedAt, ' - ', storedRequest);
 
                         // if (r.status === 100 && !this.shown_requests[r.id] && this.user !== null) {
                         if (r.status === 100 && !storedRequest && this.user !== null) {
@@ -1090,9 +1061,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                             // *bug fix: when the user is an agent also for the unserved we have to consider if he is present in agents
                             if (this.ROLE_IS_AGENT === true) {
                                 if (this.hasmeInAgents(r.agents) === true) {
-
                                     this.doUnservedDateDiffAndShowNotification(r)
-
                                 }
                             } else {
                                 this.doUnservedDateDiffAndShowNotification(r)
@@ -1111,7 +1080,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
                             // const dateDiff = currentTime.diff(requestCreationDate, 'h');
                             const dateDiff = currentTime.diff(requestUpdatedTime, 's');
-                            // console.log('IN-APP-NOTIFICATION currentUserIsInParticipants DATE DIFF (s) ', dateDiff);
+                            // this.logger.log('[NAVBAR] IN-APP-NOTIFICATION currentUserIsInParticipants DATE DIFF (s) ', dateDiff);
 
 
 
@@ -1120,16 +1089,14 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                             const url = '#/project/' + this.projectId + '/wsrequest/' + r.request_id + '/messages'
 
                             let contact_fullname = ''
-                            console.log('NABBAR -  currentUserIsInParticipants DATE DIFF (s) ', dateDiff);
+                            this.logger.log('[NAVBAR] -  currentUserIsInParticipants DATE DIFF (s) ', dateDiff);
                             if (r.lead && r.lead.fullname) {
-
                                 contact_fullname = r.lead.fullname
                             } else {
-
                                 contact_fullname = ""
                             }
 
-                            // console.log('NAV (showNotification) before to show notification (my) this.notify ', this.notify)
+                            // this.logger.log('NAV (showNotification) before to show notification (my) this.notify ', this.notify)
                             // if (this.notify === undefined) {
                             this.showNotification(
                                 '<span style="font-weight: 400; font-family: Google Sans, sans-serif; color:#2d323e!important">' + contact_fullname + '</span>' +
@@ -1150,7 +1117,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                             // }
 
                             this.shown_my_requests[r.id] = true;
-                            // console.log('IN-APP-NOTIFICATION shown_my_requests ', this.shown_my_requests)
+                            // this.logger.log('IN-APP-NOTIFICATION shown_my_requests ', this.shown_my_requests)
                             // this.shown_my_requests[r.request_id] = true;
 
                             // --------------------------------------------------------------------------
@@ -1164,11 +1131,9 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                     // this.unservedRequestCount = count;
                 }
             }, error => {
-                console.log('% »»» WebSocketJs WF +++++ ws-requests--- navbar notifyLastUnservedRequest * error * ', error)
+                this.logger.error('[NAVBAR] notifyLastUnservedRequest * ERROR * ', error)
             }, () => {
-
-
-                console.log('% »»» WebSocketJs WF +++++ ws-requests--- navbar notifyLastUnservedRequest */* COMPLETE */*')
+                this.logger.log('[NAVBAR] notifyLastUnservedRequest */* COMPLETE */*')
             })
     }
 
@@ -1176,11 +1141,11 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         // const requestCreationDate = moment(r.createdAt);
         const requestUpdatedTime = moment(r.updatedAt);
         const currentTime = moment();
-        console.log('notifyLastUnservedRequest REQUEST TODAY ', currentTime);
+        this.logger.log('[NAVBAR] notifyLastUnservedRequest REQUEST TODAY ', currentTime);
 
         // const dateDiff = currentTime.diff(requestCreationDate, 'h');
         const dateDiff = currentTime.diff(requestUpdatedTime, 's');
-        // console.log('IN-APP-NOTIFICATION  notifyLastUnservedRequest DATE DIFF (second)', dateDiff);
+        // this.logger.log('IN-APP-NOTIFICATION  notifyLastUnservedRequest DATE DIFF (second)', dateDiff);
 
         /**
          * *** NEW 29JAN19: the unserved requests notifications are not displayed if it is older than one day ***
@@ -1190,14 +1155,14 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         // if (dateDiff < 5) {
 
         // this.lastRequest = requests[requests.length - 1];
-        // console.log('!!! »»» LAST UNSERVED REQUEST ', this.lastRequest)
+        // this.logger.log('!!! »»» LAST UNSERVED REQUEST ', this.lastRequest)
 
-        // console.log('!!! »»» UNSERVED REQUEST IN BOOTSTRAP NOTIFY ', r)
+        // this.logger.log('!!! »»» UNSERVED REQUEST IN BOOTSTRAP NOTIFY ', r)
         // const url = '#/project/' + this.projectId + '/request/' + r.id + '/messages'
         const url = '#/project/' + this.projectId + '/wsrequest/' + r.request_id + '/messages'
-        console.log('% »»» WebSocketJs WF +++++ ws-requests--- navbar unserved request url ', url);
+        this.logger.log('[NAVBAR] unserved request url ', url);
 
-        console.log('NAV NOTIFICATION_SOUND (showNotification) before to show notification (unserved) this.notify ', this.notify)
+        this.logger.log('[NAVBAR] NOTIFICATION_SOUND (showNotification) before to show notification (unserved) this.notify ', this.notify)
 
         let contact_fullname = ''
         if (r.lead && r.lead.fullname) {
@@ -1216,7 +1181,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         );
 
         this.shown_requests[r.id] = true;
-        // console.log('IN-APP-NOTIFICATION shown_requests ', this.shown_requests)
+        // this.logger.log('IN-APP-NOTIFICATION shown_requests ', this.shown_requests)
         // r.notification_already_shown = true;
 
         // --------------------------------------------------------------------------
@@ -1229,14 +1194,14 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
 
     showNotification(text: string, notificationColor: number, borderColor: string, chatIcon: string) {
-        // console.log('show notification' )
+        // this.logger.log('show notification' )
         const type = ['', 'info', 'success', 'warning', 'danger'];
 
         // const color = Math.floor((Math.random() * 4) + 1);
         // the tree corresponds to the orange
         const color = notificationColor
 
-        // console.log('COLOR ', color)
+        // this.logger.log('COLOR ', color)
         // const color = '#ffffff';
 
         // the in-app notifications are not displayed if the route is /request-for-panel
@@ -1244,7 +1209,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
 
             // const elemNotificationAlert = $('#request-notify');
-            // console.log('NAV NOTIFICATION_SOUND (showNotification) notify alert get by id ', elemNotificationAlert)
+            // this.logger.log('[NAVBAR] NAV NOTIFICATION_SOUND (showNotification) notify alert get by id ', elemNotificationAlert)
 
 
             this.notify = $.notify({
@@ -1297,12 +1262,12 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
 
         this.NOTIFICATION_SOUND = localStorage.getItem(this.storedValuePrefix + 'sound');
-        // console.log('NAV NOTIFICATION_SOUND (showNotification)', this.NOTIFICATION_SOUND)
-        // console.log('NAV NOTIFICATION_SOUND (showNotification) hasPlayed ', this.hasPlayed)
+        // this.logger.log('[NAVBAR] NAV NOTIFICATION_SOUND (showNotification)', this.NOTIFICATION_SOUND)
+        // this.logger.log('[NAVBAR] NAV NOTIFICATION_SOUND (showNotification) hasPlayed ', this.hasPlayed)
         if (this.NOTIFICATION_SOUND === 'enabled') {
-            // console.log('NAV NOTIFICATION_SOUND (showNotification) hasPlayed ', this.hasPlayed)
+            // this.logger.log('[NAVBAR] NOTIFICATION_SOUND (showNotification) hasPlayed ', this.hasPlayed)
             if (this.hasPlayed === false) {
-                // console.log('NAV NOTIFICATION_SOUND (showNotification) hasPlayed (HERE IN IF)', this.hasPlayed)
+                // this.logger.log('[NAVBAR] NOTIFICATION_SOUND (showNotification) hasPlayed (HERE IN IF)', this.hasPlayed)
                 this.audio = new Audio();
                 // this.audio.src = 'assets/Carme.mp3';
                 // this.audio.src = 'assets/microbounce.mp3';
@@ -1315,7 +1280,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
         }
         this.hasPlayed = true
-        // console.log('NAV NOTIFICATION_SOUND (showNotification) hasPlayed ', this.hasPlayed)
+        // this.logger.log('[NAVBAR] NOTIFICATION_SOUND (showNotification) hasPlayed ', this.hasPlayed)
         setTimeout(() => {
             this.hasPlayed = false
         }, 3000);
@@ -1333,16 +1298,16 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     }
 
     setNoticationSoundUserPreference(value) {
-        // console.log('NAV NOTIFICATION_SOUND (setNoticationSoundUserPreference)', value)
+        // this.logger.log('[NAVBAR] NOTIFICATION_SOUND (setNoticationSoundUserPreference)', value)
         localStorage.setItem(this.storedValuePrefix + 'sound', value);
     }
 
     ngAfterContentChecked() {
-        // console.log(' -- --- *** ngAfterContentChecked');
+        // this.logger.log('[NAVBAR] -- --- *** ngAfterContentChecked');
     }
 
     ngAfterViewChecked() {
-        // console.log('++ ++ +++ ngAfterViewChecked');
+        // this.logger.log('[NAVBAR]++ ++ +++ ngAfterViewChecked');
     }
 
 
@@ -1361,7 +1326,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         }
     };
     sidebarClose() {
-        // console.log('sidebarClose clicked')
+        // this.logger.log('[NAVBAR] sidebarClose clicked')
         const body = document.getElementsByTagName('body')[0];
         if (this.toggleButton) {
             this.toggleButton.classList.remove('toggled');
@@ -1371,7 +1336,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     };
 
     sidebarToggle() {
-        console.log('sidebarToggle clicked')
+        this.logger.log('[NAVBAR] sidebarToggle clicked')
         // const toggleButton = this.toggleButton;
         // const body = document.getElementsByTagName('body')[0];
         if (this.sidebarVisible === false) {
@@ -1398,47 +1363,10 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
     getProjectUserId() {
         this.usersService.project_user_id_bs.subscribe((projectUser_id) => {
-            console.log('NAV-BAR - PROJECT-USER-ID ', projectUser_id);
+            this.logger.log('[NAVBAR] - PROJECT-USER-ID ', projectUser_id);
             this.projectUser_id = projectUser_id;
         });
     }
-
-
-    // !! NO MORE USED
-    // setUnavailableAndlogout() {
-    //     console.log('PRESSED NAVBAR LOGOUT  - PRJ-USER ID ', this.projectUser_id);
-    //     if (this.projectUser_id) {
-    //         this.usersService.updateProjectUser(this.projectUser_id, false).subscribe((projectUser: any) => {
-    //             console.log('PROJECT-USER UPDATED ', projectUser)
-    //         },
-    //             (error) => {
-    //                 console.log('PROJECT-USER UPDATED ERR  ', error);
-    //             },
-    //             () => {
-    //                 console.log('PROJECT-USER UPDATED  * COMPLETE *');
-    //                 this.logout();
-    //             });
-    //     } else {
-    //         // this could be the case in which the current user was deleted as a member of the current project
-    //         console.log('PRESSED NAVBAR LOGOUT - PRJ-USER ID IS NOT DEFINED - RUN ONLY THE LOGOUT')
-    //         this.logout();
-    //     }
-    // }
-
-    // subscribeToLogoutPressedinSidebarNavMobile() {
-    //     this.usersService.has_clicked_logoutfrom_mobile_sidebar.subscribe((has_clicked_logout: boolean) => {
-    //         console.log('NAV-BAR - HAS CLICKED LOGOUT IN THE SIDEBAR ', has_clicked_logout);
-    //         console.log('NAV-BAR -  SIDEBAR is VISIBILE', this.sidebarVisible);
-    //         console.log('NAV-BAR -  USER IS AVAILABLE ', this.IS_AVAILABLE);
-
-    //         if (has_clicked_logout === true) {
-    //             this.sidebarClose();
-    //             this.openLogoutModal();
-    //         }
-
-    //     })
-    // };
-
 
     openLogoutModal() {
         this.displayLogoutModal = 'block';
@@ -1459,7 +1387,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     }
 
     logout() {
-        console.log('RUN LOGOUT FROM NAV-BAR')
+        this.logger.log('[NAVBAR] RUN LOGOUT FROM NAV-BAR')
         this.auth.showExpiredSessionPopup(false);
         this.auth.signOut('navbar');
     }
@@ -1476,13 +1404,13 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
     getFromLocalStorageHasOpenedTheChat() {
         const storedChatOpenedValue = localStorage.getItem('chatOpened');
-        console.log('+ + + STORED CHAT OPENED VALUE ', storedChatOpenedValue);
+        this.logger.log('[NAVBAR] + + + STORED CHAT OPENED VALUE ', storedChatOpenedValue);
         if (storedChatOpenedValue && storedChatOpenedValue === 'true') {
             this.HAS_OPENED_THE_CHAT = true;
-            console.log('+ + + HAS OPENED THE CHAT ', this.HAS_OPENED_THE_CHAT);
+            this.logger.log('[NAVBAR] + + + HAS OPENED THE CHAT ', this.HAS_OPENED_THE_CHAT);
         } else {
             this.HAS_OPENED_THE_CHAT = false;
-            console.log('+ + + HAS OPENED THE CHAT ', this.HAS_OPENED_THE_CHAT);
+            this.logger.log('[NAVBAR] + + + HAS OPENED THE CHAT ', this.HAS_OPENED_THE_CHAT);
         }
     }
 }

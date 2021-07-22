@@ -1,21 +1,12 @@
 import { Injectable } from '@angular/core';
-
-// import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
-
 import { User } from '../models/user-model';
 import { Activity } from '../models/activity-model';
 import { PendingInvitation } from '../models/pending-invitation-model';
 import { ProjectUser } from '../models/project-user';
-
 import { Observable } from 'rxjs/Observable';
-import { map } from 'rxjs/operators';
-
 import { AuthService } from '../core/auth.service';
 import { Http, Headers, RequestOptions } from '@angular/http';
-import { environment } from '../../environments/environment';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import * as firebase from 'firebase/app';
-
 import { LocalDbService } from '../services/users-local-db.service';
 import { Router } from '@angular/router';
 import { Project } from '../models/project-model';
@@ -24,6 +15,7 @@ import { BotLocalDbService } from '../services/bot-local-db.service';
 import { AppConfigService } from '../services/app-config.service';
 import { WebSocketJs } from "../services/websocket/websocket-js";
 import { avatarPlaceholder, getColorBck } from '../utils/util';
+import { LoggerService } from '../services/logger/logger.service';
 interface NewUser {
   displayName: string;
   email: string;
@@ -51,47 +43,20 @@ export class UsersService {
 
   http: Http;
 
-  // BASE_URL = environment.mongoDbConfig.BASE_URL; // replaced with SERVER_BASE_PATH
-  // PROJECT_BASE_URL = environment.mongoDbConfig.PROJECTS_BASE_URL; // moved
-  // UPDATE_USER_URL = environment.mongoDbConfig.UPDATE_USER_LASTNAME_FIRSTNAME; // moved
-  // CHANGE_PSW_URL = environment.mongoDbConfig.CHANGE_PSW; // moved
-  // RESEND_VERIFY_EMAIL = environment.mongoDbConfig.RESEND_VERIFY_EMAIL; // moved
-
-  // SERVER_BASE_PATH = environment.SERVER_BASE_URL; // now get from appconfig
-  // PROJECTS_URL = this.SERVER_BASE_PATH + 'projects/' // now built after get SERVER_BASE_PATH from appconfig
-  // UPDATE_USER_URL = this.SERVER_BASE_PATH + 'users/' // now built after get SERVER_BASE_PATH from appconfig
-  // CHANGE_PSW_URL = this.SERVER_BASE_PATH + 'users/changepsw/'; // now built after get SERVER_BASE_PATH from appconfig
-  // RESEND_VERIFY_EMAIL = this.SERVER_BASE_PATH + 'users/resendverifyemail/'; // now built after get SERVER_BASE_PATH from appconfig
-
   SERVER_BASE_PATH: string;
   PROJECTS_URL: string;
   UPDATE_USER_URL: string;
   CHANGE_PSW_URL: string;
   RESEND_VERIFY_EMAIL: string;
-
   AVAILABLE_USERS_URL: any;
-  // NEW_AVAILABLE_USERS_URL: any; // NO MORE USED
   USERS_ACTIVITIES_URL: any;
-  // CLOUD_FUNC_UPDATE_USER_URL: any; // NO MORE USED 
   PROJECT_USER_URL: any;
   INVITE_USER_URL: any;
   PENDING_INVITATION_URL: string;
-
-  // http://localhost:3000/users/updateuser/'
-  // CLOUD_FUNC_UPDATE_USER_URL = environment.cloudFunctions.cloud_func_update_firstname_and_lastname;
-  // MONGODB_BASE_URL: any;
-  // PROJECT_USER_DTLS_URL: any;
-  // GET_PROJECT_USER_URL: any;
-
   TOKEN: string
   user: any;
   orderBy_field: any;
   orderBy_direction: any;
-
-  // usersCollection: AngularFirestoreCollection<User>;
-  // userDocument: AngularFirestoreDocument<Node>;
-  // searchUserCollection: AngularFirestoreCollection<User>;
-
   project: any;
   currentUserId: string;
   project_id: string;
@@ -101,85 +66,48 @@ export class UsersService {
   eventlist: any;
   constructor(
     http: Http,
-    // private afs: AngularFirestore,
     private auth: AuthService,
     private usersLocalDbService: LocalDbService,
     private router: Router,
     private faqKbService: FaqKbService,
     private botLocalDbService: BotLocalDbService,
     public appConfigService: AppConfigService,
-    public webSocketJs: WebSocketJs
+    public webSocketJs: WebSocketJs,
+    private logger: LoggerService
   ) {
-    // this.usersCollection = this.afs.collection('users', (ref) => ref.orderBy('time', 'desc').limit(5));
-    // this.searchUserCollection = this.afs.collection('users', (ref) => ref.where('displayName', '>=', 'B'));
 
     this.http = http;
     // SUBSCRIBE TO USER BS
     this.user = auth.user_bs.value
-    console.log('++ ++++ 1. USER SERVICE User', this.user)
-    this.checkUser()
+    // this.logger.log('[USER-SERV] 1 User', this.user)
+    this.checkUserAndVerifyIfExistProfileImage()
 
     this.auth.user_bs.subscribe((user) => {
       this.user = user;
-      console.log('++ ++++ 2. USER SERVICE User', this.user)
-      this.checkUser()
+      // this.logger.log('[USER-SERV] 2 User', this.user)
+      this.checkUserAndVerifyIfExistProfileImage()
     });
 
     this.getAppConfigAndBuildUrl();
     this.getCurrentProject();
   }
 
-
-
-
-  // public sumUpAuth() {
-  //   const headers = new Headers();
-  //   headers.append('Accept', 'application/json');
-  //   headers.append('Content-type', 'application/x-www-form-urlencoded');
-  //   // headers.append(' Authorization': 'Basic ' + btoa('yourClientId' + ':' + 'yourClientSecret')');
-
-
-  //   const options = new RequestOptions({ headers });
-
-  //   // , 'id_project': this.project_id, 'project_name': this.project_name
-  //   const body =  {
-  //     "grant_type": "password",
-  //     "client_id": "mNQskKOqbZ0VL0NmI9hk30gDjzTX",
-  //     "username": "lorenzo@prinzsrl.it",
-  //     "password": "PosPrinz$20"
-  //   }
-
-  //   console.log('POST INVITE USER - REQUEST BODY ', body);
-
-  //   const url = 'https://api.sumup.com/token';
-
-  //   return this.http
-  //     .post(url, JSON.stringify(body), options)
-  //     .map((res) => res.json());
-
-  // }
-
   getAppConfigAndBuildUrl() {
-
-    // const firebase_conf = this.appConfigService.getConfig().firebase;
-    // const cloudBaseUrl = firebase_conf['chat21ApiUrl']
-    // this.CLOUD_FUNC_UPDATE_USER_URL = cloudBaseUrl + '/api/tilechat/contacts/me';  // NO MORE USED
-
     this.SERVER_BASE_PATH = this.appConfigService.getConfig().SERVER_BASE_URL;
-    console.log('AppConfigService getAppConfig (USERS SERV.) SERVER_BASE_PATH ', this.SERVER_BASE_PATH);
     this.PROJECTS_URL = this.SERVER_BASE_PATH + 'projects/';
     this.UPDATE_USER_URL = this.SERVER_BASE_PATH + 'users/';
     this.CHANGE_PSW_URL = this.SERVER_BASE_PATH + 'users/changepsw/';
     this.RESEND_VERIFY_EMAIL = this.SERVER_BASE_PATH + 'users/resendverifyemail/';
 
-    console.log('AppConfigService getAppConfig (USERS SERV.) PROJECTS_URL (built with SERVER_BASE_PATH) ', this.PROJECTS_URL);
-    console.log('AppConfigService getAppConfig (USERS SERV.) UPDATE_USER_URL (built with SERVER_BASE_PATH) ', this.UPDATE_USER_URL);
-    console.log('AppConfigService getAppConfig (USERS SERV.) CHANGE_PSW_URL (built with SERVER_BASE_PATH) ', this.CHANGE_PSW_URL);
-    console.log('AppConfigService getAppConfig (USERS SERV.) RESEND_VERIFY_EMAIL (built with SERVER_BASE_PATH) ', this.RESEND_VERIFY_EMAIL);
+    this.logger.log('[USER-SERV] - SERVER_BASE_PATH ', this.SERVER_BASE_PATH);
+    this.logger.log('[USER-SERV] - PROJECTS_URL  ', this.PROJECTS_URL);
+    this.logger.log('[USER-SERV] - UPDATE_USER_URL ', this.UPDATE_USER_URL);
+    this.logger.log('[USER-SERV] - CHANGE_PSW_URL ', this.CHANGE_PSW_URL);
+    this.logger.log('[USER-SERV] - RESEND_VERIFY_EMAIL ', this.RESEND_VERIFY_EMAIL);
   }
 
   getCurrentProject() {
-    console.log('============ USER SERVICE - SUBSCRIBE TO CURRENT PROJ ============')
+
     // tslint:disable-next-line:no-debugger
     // debugger
     this.auth.project_bs.subscribe((project) => {
@@ -189,34 +117,25 @@ export class UsersService {
       if (this.project) {
         this.project_id = this.project._id;
         this.project_name = this.project.name;
-        console.log('-- -- >>>> 00 -> USERS SERVICE project ID from AUTH service subscription  ', this.project._id);
-        // this.MONGODB_BASE_URL = this.SERVER_BASE_PATH + this.project._id + '/project_users/';
+        this.logger.log('[USER-SERV] project ID ', this.project._id);
 
         this.PROJECT_USER_URL = this.SERVER_BASE_PATH + this.project._id + '/project_users/';
-
         this.INVITE_USER_URL = this.SERVER_BASE_PATH + this.project._id + '/project_users/invite';
         this.PENDING_INVITATION_URL = this.SERVER_BASE_PATH + this.project._id + '/pendinginvitations';
         this.AVAILABLE_USERS_URL = this.PROJECTS_URL + this.project._id + '/users/availables';
-        // this.NEW_AVAILABLE_USERS_URL = this.PROJECTS_URL + this.project._id + '/users/availables';
         this.USERS_ACTIVITIES_URL = this.SERVER_BASE_PATH + this.project._id + '/activities';
 
-        console.log('AppConfigService getAppConfig (USERS SERV.) PROJECT_USER_URL (built with SERVER_BASE_PATH) ', this.PROJECT_USER_URL);
-        console.log('AppConfigService getAppConfig (USERS SERV.) INVITE_USER_URL (built with SERVER_BASE_PATH) ', this.INVITE_USER_URL);
-        console.log('AppConfigService getAppConfig (USERS SERV.) PENDING_INVITATION_URL (built with SERVER_BASE_PATH) ', this.PENDING_INVITATION_URL);
-        console.log('AppConfigService getAppConfig (USERS SERV.) AVAILABLE_USERS_URL (built with SERVER_BASE_PATH) ', this.AVAILABLE_USERS_URL);
-        // console.log('AppConfigService getAppConfig (USERS SERV.) NEW_AVAILABLE_USERS_URL (built with SERVER_BASE_PATH) ', this.NEW_AVAILABLE_USERS_URL);
-        console.log('AppConfigService getAppConfig (USERS SERV.) USERS_ACTIVITIES_URL (built with SERVER_BASE_PATH) ', this.USERS_ACTIVITIES_URL);
+        this.logger.log('[USER-SERV] - PROJECT_USER_URL ', this.PROJECT_USER_URL);
+        this.logger.log('[USER-SERV] - INVITE_USER_URL ', this.INVITE_USER_URL);
+        this.logger.log('[USER-SERV] - PENDING_INVITATION_URL ', this.PENDING_INVITATION_URL);
+        this.logger.log('[USER-SERV] - AVAILABLE_USERS_URL ', this.AVAILABLE_USERS_URL);
+        this.logger.log('[USER-SERV] - USERS_ACTIVITIES_URL ', this.USERS_ACTIVITIES_URL);
 
-        // PROJECT-USER BY PROJECT ID AND CURRENT USER ID
-        // this.PROJECT_USER_URL = this.BASE_URL + this.project._id + '/project_users/'
-
-        // MAYBE NOT USED anymore
-        // this.PROJECT_USER_DTLS_URL = this.SERVER_BASE_PATH + this.project._id + '/member/';
       }
     });
   }
 
-  checkUser() {
+  checkUserAndVerifyIfExistProfileImage() {
     if (this.user) {
       this.TOKEN = this.user.token
       this.currentUserId = this.user._id
@@ -224,11 +143,11 @@ export class UsersService {
       let imageStorage = ''
       if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
         imageStorage = this.getStorageBucket();
-        console.log('=== === USER-SERV IMAGE STORAGE ', imageStorage, 'usecase Firebase');
+        this.logger.log('[USER-SERV] IMAGE STORAGE ', imageStorage, 'usecase Firebase');
 
       } else {
         imageStorage = this.getBaseUrl();
-        console.log('=== === USER-SERV IMAGE STORAGE ', imageStorage, 'usecase Native');
+        this.logger.log('[USER-SERV] IMAGE STORAGE ', imageStorage, 'usecase Native');
       }
 
       if (imageStorage) {
@@ -237,18 +156,14 @@ export class UsersService {
         this.verifyIfExistProfileImage(this.currentUserId, imageStorage);
       }
 
-      // this.getToken();
-      // this.verifyUserProfileImageOnFirebaseStorage(this.currentUserId);
     } else {
-      console.log('No user is signed in');
+      this.logger.log('[USER-SERV] No user is signed in');
     }
   }
 
   getStorageBucket() {
     const firebase_conf = this.appConfigService.getConfig().firebase;
-    // console.log('STORAGE-BUCKET Users service ', this.storageBucket)
     return this.storageBucket = firebase_conf['storageBucket'];
-
   }
 
   getBaseUrl() {
@@ -258,8 +173,6 @@ export class UsersService {
 
 
   verifyIfExistProfileImage(user_id, imageStorage) {
-    // tslint:disable-next-line:max-line-length
-    // const url = 'https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F' + user_id + '%2Fphoto.jpg?alt=media';
     let imageUrl = ''
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
       imageUrl = 'https://firebasestorage.googleapis.com/v0/b/' + imageStorage + '/o/profiles%2F' + user_id + '%2Fphoto.jpg?alt=media';
@@ -267,16 +180,15 @@ export class UsersService {
       imageUrl = imageStorage + 'images?path=uploads%2Fusers%2F' + user_id + '%2Fimages%2Fthumbnails_200_200-photo.jpg'
     }
     const self = this;
-    this.verifyImageURL(imageUrl, function (imageExists) {
 
+    this.verifyImageURL(imageUrl, function (imageExists) {
       if (imageExists === true) {
-        // alert('Image Exists');
-        console.log('=== === USER-SERV PUBLISH - USER PROFILE IMAGE EXIST ', imageExists)
+
+        self.logger.log('[USER-SERV] - PUBLISH - USER PROFILE IMAGE EXIST? ', imageExists)
         self.userProfileImageExist.next(imageExists);
       } else {
         // alert('Image does not Exist');
-        console.log('=== === USER-SERV PUBLISH - USER PROFILE IMAGE EXIST ', imageExists)
-        // self.userProfileImageExist = false;
+        self.logger.log('[USER-SERV] - PUBLISH - USER PROFILE IMAGE EXIST? ', imageExists)
         self.userProfileImageExist.next(imageExists);
       }
     });
@@ -293,13 +205,14 @@ export class UsersService {
     };
   }
 
-  // curl -v -X GET -u andrea.leo@frontiere21.it:258456 
-  // https://api.tiledesk.com/v1/5ad5bd52c975820014ba900a/activities
-  // https://api.tiledesk.com/v1/
 
-  /// ================================== GET USER ACTIVITIES ================================== ///
+  /**
+   * GET USER ACTIVITIES
+   * @param querystring 
+   * @param pagenumber 
+   * @returns 
+   */
   public getUsersActivities(querystring: string, pagenumber: number): Observable<Activity[]> {
-
     let _querystring = '&' + querystring
     if (querystring === undefined || !querystring) {
       _querystring = ''
@@ -307,10 +220,7 @@ export class UsersService {
 
     const url = this.USERS_ACTIVITIES_URL + '?page=' + pagenumber + _querystring;
 
-    // *** TEST URL  ***
-    // const url = 'https://api.tiledesk.com/v1/' + this.project_id + '/activities?page=' + pagenumber;
-
-    console.log('!! USERS ACTIVITIES URL ', url);
+    this.logger.log('[USER-SERV] - GET USER ACTIVITIES - URL ', url);
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append('Authorization', this.TOKEN);
@@ -319,16 +229,22 @@ export class UsersService {
       .map((response) => response.json());
   }
 
+  /**
+   * GET - DOWNLOAD ACTIVITIES CSV
+   * @param querystring 
+   * @param pagenumber 
+   * @param language 
+   * @returns 
+   */
   public downloadActivitiesAsCsv(querystring: string, pagenumber: number, language: string) {
-
     let _querystring = '&' + querystring
     if (querystring === undefined || !querystring) {
       _querystring = ''
     }
 
     const url = this.USERS_ACTIVITIES_URL + '/csv' + '?page=' + pagenumber + _querystring + '&lang=' + language;
+    this.logger.log('[USER-SERV] - DOWNLOAD ACTIVITIES CSV - URL ', url);
 
-    console.log('!! USERS ACTIVITIES URL ', url);
     const headers = new Headers();
     headers.append('Content-Type', 'application/csv');
     headers.append('Authorization', this.TOKEN);
@@ -336,78 +252,10 @@ export class UsersService {
     return this.http
       .get(url, { headers })
       .map((response) => response.text());
-
   }
 
-
   /**
-   * return an observable of ALL FIRESTORE 'users' * WITH * ID
-   */
-  // getSnapshot(orderBy_field: any, orderBy_direction: any): Observable<User[]> {
-  //   // ['added', 'modified', 'removed']
-
-  //   this.orderBy_field = orderBy_field;
-  //   this.orderBy_direction = orderBy_direction;
-
-  //   this.usersCollection = this.afs.collection('users', (ref) => ref.orderBy(this.orderBy_field, this.orderBy_direction));
-  //   console.log('Hello User Service!');
-  //   console.log('COLLECTION ORDERED BY FIELD', this.orderBy_field);
-  //   console.log('COLLECTION ORDERED BY DIRECTION', this.orderBy_direction);
-  //   return this.usersCollection.snapshotChanges().map((actions) => {
-  //     return actions.map((a) => {
-  //       const data = a.payload.doc.data() as User;
-  //       return { id: a.payload.doc.id, displayName: data.displayName, email: data.email, time: data.time };
-  //     });
-  //   });
-  // }
-
-  // searchUsers(searchParams: any) {
-  //   this.searchUserCollection = this.afs.collection('users',
-  //     (ref) => ref.where('displayName', '>=', `${searchParams}`));
-  //   return this.searchUserCollection.snapshotChanges().map((actions) => {
-  //     return actions.map((a) => {
-  //       const data = a.payload.doc.data() as User;
-  //       return { id: a.payload.doc.id, displayName: data.displayName, email: data.email, time: data.time };
-  //     });
-  //   });
-  // }
-
-
-  // this.afs.collection('users');
-  // getDataFilter(): Observable<User[]> {
-  //   this.searchUserCollection = this.afs.collection('users', (ref) => ref.where('displayName', '>=', 'Kopolla' ));
-  //   return this.searchUserCollection.valueChanges();
-  // }
-
-  // getUser(id: string) {
-  //   return this.afs.doc<User>(`users/${id}`);
-  // }
-
-  // deleteUser(id: string) {
-  //   return this.getUser(id).delete();
-  // }
-  /**
-   * return an observable of ALL FIRESTORE CHAT-F21 'users' * WITHOUT * ID
-   */
-  // getData(): Observable<User[]> {
-  //   return this.usersCollection.valueChanges();
-  // }
-
-
-  // displayName: string
-  // create(displayName: string, email: string) {
-  //   const user = {
-  //     displayName: `${displayName}`,
-  //     email: `${email}`,
-  //     time: new Date().getTime(),
-  //   };
-  //   return this.usersCollection.add(user);
-  //   // return this.usersCollection.doc('PXmRJVrtzFAHsxjs7voD5R').set(user);
-  // }
-
-
-  /**
-   * !!!! NOT YET USED
+   * !!!! NOT  USED
    * Get Name Surname and id of the logged user
    */
   public getCurrentUserProfile(): Observable<User[]> {
@@ -415,7 +263,7 @@ export class UsersService {
     const url = this.SERVER_BASE_PATH + 'users';
     // const url = this.BASE_URL + 'project_users/users/' + user_id;
 
-    console.log('!! GET USERS BY ID - URL', url);
+    this.logger.log('[USER-SERV] - GET CURRENT USER PROFILE - URL', url);
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append('Authorization', this.TOKEN);
@@ -429,7 +277,7 @@ export class UsersService {
   // ---------------------------------------------------------
   public deleteUserAccount() {
     const url = this.SERVER_BASE_PATH + 'users';
-    console.log('DELETE ACCOUNT URL ', url);
+    this.logger.log('[USER-SERV] - DELETE USER ACCOUNT - URL ', url);
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
@@ -441,12 +289,16 @@ export class UsersService {
   }
 
 
+  /**
+   * GET PROJECT USER BY PROJECT USER ID
+   * @param project_user_id 
+   * @returns 
+   */
   public getProjectUserByProjecUserId(project_user_id): Observable<ProjectUser[]> {
 
     const url = this.SERVER_BASE_PATH + this.project._id + '/project_users/' + project_user_id;;
+    this.logger.log('[USER-SERV] - GET PROJECT USER BY PROJECT USER ID - URL', url);
 
-
-    console.log('!! GET PROJECT USER BY PROJECT USER ID - URL', url);
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append('Authorization', this.TOKEN);
@@ -455,15 +307,18 @@ export class UsersService {
       .map((response) => response.json());
   }
 
-  /// ================================== GET USER BY ID ================================== ///
 
-  // DONE- WORKS - NK-TO-TEST - questo va sostituito con /project_users/users/:user_id',
+
+  /**
+   * GET PROJECT-USERS BY USER ID
+   * @param user_id 
+   * @returns 
+   */
   public getProjectUserById(user_id): Observable<User[]> {
-    // const url = this.BASE_URL + 'users/' + user_id; 
+
     const url = this.SERVER_BASE_PATH + this.project._id + '/project_users/users/' + user_id;;
 
-
-    console.log('!! GET USERS BY ID - URL', url);
+    this.logger.log('[USER-SERV] - GET PROJECT-USERS BY USER ID - URL', url);
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append('Authorization', this.TOKEN);
@@ -472,15 +327,13 @@ export class UsersService {
       .map((response) => response.json());
   }
 
-  /// ================================== ALL PROJECT-USER FROM MONGO DB ================================== ///
-  /**
-   * NOTE: the PROJECT-USER returned has nested the user's object
-   */
-  // DONE - WORKS NK-TO-TEST - da testare dopo che L. esegue il commit del servizio aggiornato (is used to get the list of users in "Users & Groups")
+  // -------------------------------------------------------------
+  // GET PROJECT'S PROJECT-USERS BY PROJECT ID
+  // -------------------------------------------------------------
   public getProjectUsersByProjectId(): Observable<ProjectUser[]> {
     const url = this.PROJECT_USER_URL;
 
-    console.log('!! GET PROJECT USERS BY PROJECT ID - URL', url);
+    this.logger.log('[USER-SERV] - GET PROJECT USERS BY PROJECT ID - URL', url);
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append('Authorization', this.TOKEN);
@@ -489,10 +342,14 @@ export class UsersService {
       .map((response) => response.json());
   }
 
+
+  // -------------------------------------------------------------
+  // GET VISITORS WITH ROLE GUEST & ONLINE
+  // -------------------------------------------------------------
   public getProjectUsersByProjectId_GuestRole(): Observable<ProjectUser[]> {
     const url = this.PROJECT_USER_URL + '?role=guest&presencestatus=online';
 
-    console.log('»» VISITOR SERV - GET VISITOR - URL', url);
+    this.logger.log('[USER-SERV] - GET VISITORS WITH ROLE GUEST & ONLINE - URL', url);
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append('Authorization', this.TOKEN);
@@ -501,11 +358,14 @@ export class UsersService {
       .map((response) => response.json());
   }
 
-  /// ================ TEST FUNCTION -- ALL AVAILABLE PROJECT-USER (OF CURRENT PROJECT) ====================== ///
+
+  // ----------------------------------------------------------------
+  // TEST FUNCTION -- ALL AVAILABLE PROJECT-USER (OF CURRENT PROJECT)
+  // ----------------------------------------------------------------
   public getAvailableProjectUsersByProjectId(): Observable<ProjectUser[]> {
     // const url = this.MONGODB_BASE_URL + 'availables';
     const url = this.AVAILABLE_USERS_URL;
-    console.log('»»»» »»»» PROJECT USERS AVAILABLE URL', url);
+    this.logger.log('[USER-SERV] - PROJECT USERS AVAILABLE URL', url);
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append('Authorization', this.TOKEN);
@@ -514,12 +374,14 @@ export class UsersService {
       .map((response) => response.json());
   }
 
-  /* // ================ TEST FUNCTION -- ALL AVAILABLE PROJECT-USER (OF CURRENT PROJECT)
-  ALSO CONSIDERING OPERATING HOURS ====================== */
+
+  // -------------------------------------------------------------------------------------------------
+  // TEST FUNCTION -- ALL AVAILABLE PROJECT-USER (OF CURRENT PROJECT) ALSO CONSIDERING OPERATING HOURS
+  // -------------------------------------------------------------------------------------------------
   public getAvailableProjectUsersConsideringOperatingHours(): Observable<ProjectUser[]> {
     // const url = this.MONGODB_BASE_URL + 'availables';
     const url = this.AVAILABLE_USERS_URL;
-    console.log('»»»» »»»» PROJECT USERS NEW AVAILABLE URL', url);
+    this.logger.log('[USER-SERV] - PROJECT USERS AVAILABLE ALSO CONSIDERING OPERATING HOURS - URL', url);
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append('Authorization', this.TOKEN);
@@ -528,8 +390,13 @@ export class UsersService {
       .map((response) => response.json());
   }
 
-  /// ================================== INVITE USER (ALIAS CREATE A MEMBER) ================================== ///
-  // DONE - WORKS NK-TO-TEST - da testare dopo che L. esegue il commit del servizio aggiornato (può falo solo l'admin)
+
+  /**
+   * INVITE PROJECT-USER - NOTE: only admin can do it
+   * @param email 
+   * @param role 
+   * @returns 
+   */
   public inviteUser(email: string, role: string) {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
@@ -537,12 +404,11 @@ export class UsersService {
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
 
-    // , 'id_project': this.project_id, 'project_name': this.project_name
-    const body = { 'email': email, 'role': role, 'user_available': false };
-
-    console.log('POST INVITE USER - REQUEST BODY ', body);
-
     const url = this.INVITE_USER_URL;
+    this.logger.log('[USER-SERV] INVITE PROJECT-USER - URL ', url);
+
+    const body = { 'email': email, 'role': role, 'user_available': false };
+    this.logger.log('[USER-SERV] INVITE PROJECT-USER - POST REQUEST BODY ', body);
 
     return this.http
       .post(url, JSON.stringify(body), options)
@@ -550,24 +416,32 @@ export class UsersService {
 
   }
 
-  /// ================================== GET PENDING USERS ================================== ///
+  // -------------------------------------------------------
+  // GET PENDING USERS
+  // --------------------------------------------------------
   public getPendingUsers(): Observable<PendingInvitation[]> {
     const url = this.PENDING_INVITATION_URL;
 
-    console.log('GET PENDING USERS ', url);
+    this.logger.log('[USER-SERV] - GET PENDING USERS - URL ', url);
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append('Authorization', this.TOKEN);
-    // console.log('TOKEN TO COPY ', this.TOKEN)
+    // this.logger.log('TOKEN TO COPY ', this.TOKEN)
     return this.http
       .get(url, { headers })
       .map((response) => response.json());
   }
 
-  /// ================================== GET PENDING USERS ================================== ///
+
+
+  /**
+   * DELTE PENDING INVITATION
+   * @param pendingInvitationId 
+   * @returns 
+   */
   public deletePendingInvitation(pendingInvitationId): Observable<PendingInvitation[]> {
     const url = this.PENDING_INVITATION_URL + '/' + pendingInvitationId;
-    console.log('DELETE PENDING INVITATION URL ', url);
+    this.logger.log('[USER-SERV] - DELETE PENDING INVITATION - URL ', url);
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
@@ -578,113 +452,98 @@ export class UsersService {
       .map((res) => res.json());
   }
 
-  /// ================================== RESEND EMAIL TO PENDING USERS ================================== ///
+
+  /**
+   * RESEND EMAIL TO PENDING PROJECT-USERS
+   * @param pendingInvitationId 
+   * @returns 
+   */
   public getPendingUsersByIdAndResendEmail(pendingInvitationId): Observable<PendingInvitation[]> {
     const url = this.PENDING_INVITATION_URL + '/resendinvite/' + pendingInvitationId;
 
-    console.log('GET PENDING USERS ', url);
+    this.logger.log('[USER-SERV] - RESEND EMAIL TO PENDING PROJECT-USERS - URL', url);
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append('Authorization', this.TOKEN);
-    // console.log('TOKEN TO COPY ', this.TOKEN)
+    // this.logger.log('TOKEN TO COPY ', this.TOKEN)
     return this.http
       .get(url, { headers })
       .map((response) => response.json());
   }
 
-  /// ================================== GET PENDING USER BY ID ================================== ///
+
+  /**
+   * GET PENDING INVITATION BY PENDING INVITATION ID
+   * @param pendingInvitationId 
+   * @returns 
+   */
   public getPendingUsersById(pendingInvitationId): Observable<PendingInvitation[]> {
     // const url = this.PENDING_INVITATION_URL + '/' + pendingInvitationId;
     const url = this.SERVER_BASE_PATH + 'auth/pendinginvitationsnoauth/' + pendingInvitationId;
-    console.log('GET PENDING USER BY ID URL', url);
+    this.logger.log('[USER-SERV] - GET PENDING INVITATION BY PENDING INVITATION ID ', url);
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append('Authorization', this.TOKEN);
-    // console.log('TOKEN TO COPY ', this.TOKEN)
+    // this.logger.log('TOKEN TO COPY ', this.TOKEN)
     return this.http
       .get(url, { headers })
       .map((response) => response.json());
   }
 
-  // public getProjectUserByUser_AllProjects(project_id: string, user_id: string): Observable<ProjectUser[]> {
 
 
-  //   const url = this.SERVER_BASE_PATH + project_id + '/project_users/users/' + user_id;
-  //   console.log('GET PROJECT USERS BY PROJECT-ID & CURRENT-USER-ID (All Projects) URL', url);
-  //   const headers = new Headers();
-  //   headers.append('Content-Type', 'application/json');
-  //   headers.append('Authorization', this.TOKEN);
-  //   // console.log('TOKEN TO COPY ', this.TOKEN)
-  //   return this.http
-  //     .get(url, { headers })
-  //     .map((response) => response.json());
-  // }
-
-
-
-  /// ============================= GET PROJECT-USER BY CURRENT-PROJECT-ID AND CURRENT-USER-ID ============================= ///
+  /**
+   * GET PROJECT-USER BY USER-ID
+   * @param user_id 
+   * @returns 
+   */
   public getProjectUserByUserId(user_id: string): Observable<ProjectUser[]> {
-    // const url = this.MONGODB_BASE_URL + user_id + '/' + project_id; 
+
     const url = this.PROJECT_USER_URL + 'users/' + user_id;
+    this.logger.log('[USER-SERV] - GET PROJECT-USER BY USER-ID - URL', url);
 
-
-    console.log('GET PROJECT USERS BY PROJECT-ID & CURRENT-USER-ID URL', url);
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append('Authorization', this.TOKEN);
-    // console.log('TOKEN TO COPY ', this.TOKEN)
+    // this.logger.log('TOKEN TO COPY ', this.TOKEN)
     return this.http
       .get(url, { headers })
       .map((response) => response.json());
   }
 
-  /// ======================== GET PROJECT-USER ROLE BY CURRENT-PROJECT-ID AND CURRENT-USER-ID To PROMISE ===================== ///
-  // !! NOT USED  (to use with AdminGuard)
-  // public getUserRole(user_id: string, project_id: string): Promise<ProjectUser[]> {
-  //   const url = this.MONGODB_BASE_URL + user_id + '/' + project_id;
 
-  //   console.log('GET PROJECT USERS BY PROJECT-ID & CURRENT-USER-ID URL', url);
-  //   const headers = new Headers();
-  //   headers.append('Content-Type', 'application/json');
-  //   headers.append('Authorization', this.TOKEN);
-  //   // console.log('TOKEN TO COPY ', this.TOKEN)
-
-  //   return this.http
-  //     .get(url, { headers })
-  //     .toPromise()
-  //     .then(response => {
-  //       console.log('»> »> !!! »»» USER SERVICE - GET USER ROLE RESPONSE ', response.json());
-  //       return 'nicol';
-  //     })
-  //     .catch(err => err);
-  // }
-  // end To PROMISE
-
-  /// ========================= GET PROJECT-USER BY ID (PROJECT USER DETAIL) ======================= ///
+  /**
+   * GET PROJECT-USER BY ID (PROJECT USER DETAIL)
+   * @param projectuser_id 
+   * @returns 
+   */
   public getProjectUsersById(projectuser_id: string): Observable<ProjectUser[]> {
-    // const url = this.MONGODB_BASE_URL + 'details/' + projectuser_id; // old
-    const url = this.PROJECT_USER_URL + projectuser_id;
 
-    console.log('GET PROJECT USERS BY ID ', url);
+    const url = this.PROJECT_USER_URL + projectuser_id;
+    this.logger.log('[USER-SERV] - GET PROJECT USERS BY ID - URL ', url);
+
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append('Authorization', this.TOKEN);
-    // console.log('TOKEN TO COPY ', this.TOKEN)
+
     return this.http
       .get(url, { headers })
       .map((response) => response.json());
   }
 
-  // NEW - 22 AGO - DA SOSTITUIRE A getProjectUser() USATO COMPONENTI SIDEBAR AND HOME
+
+  // ------------------------------------------------------------------------------------------------
+  // TODO: TO REPLACE "getProjectUser()" USED BY THE SIDEBAR AND HOME COMPONENTS - CURRENTLY NOT USED
+  // -------------------------------------------------------------------------------------------------
   getProjectUserAvailabilityAndRole() {
     this.getProjectUserByUserId(this.currentUserId).subscribe((projectUser: any) => {
-      // console.log('!! USER SERVICE - PROJECT-USER GET BY PROJECT-ID ', this.project_id);
-      console.log('!! USER SERVICE - GET BY CURRENT-USER-ID ', this.currentUserId);
-      console.log('!! USER SERVICE - PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID ', projectUser);
-      console.log('!! USER SERVICE - PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID LENGTH', projectUser.length);
+      // this.logger.log('!! USER SERVICE - PROJECT-USER GET BY PROJECT-ID ', this.project_id);
+      this.logger.log('[USER-SERV] - PROJECT-USER GET BY CURRENT-USER-ID - CURRENT USE ID ', this.currentUserId);
+      this.logger.log('[USER-SERV] - PROJECT-USER GET BY CURRENT-USER-ID - PROJECT-USER ', projectUser);
+      this.logger.log('[USER-SERV] - PROJECT-USER GET BY CURRENT-USER-ID - PROJECT-USER LENGTH', projectUser.length);
       if ((projectUser) && (projectUser.length !== 0)) {
-        console.log('!! USER SERVICE - PROJECT-USER ID ', projectUser[0]._id)
-        console.log('!! USER SERVICE - USER IS AVAILABLE ', projectUser[0].user_available)
+        this.logger.log('[USER-SERV] - PROJECT-USER GET BY CURRENT-USER-ID - PROJECT-USER ID ', projectUser[0]._id)
+        this.logger.log('[USER-SERV] - PROJECT-USER GET BY CURRENT-USER-ID - USER IS AVAILABLE ', projectUser[0].user_available)
         // this.user_is_available_bs = projectUser.user_available;
 
         if (projectUser[0].user_available !== undefined) {
@@ -693,7 +552,7 @@ export class UsersService {
 
         // ADDED 21 AGO
         if (projectUser[0].role !== undefined) {
-          console.log('!! USER SERVICE - CURRENT USER ROLE IN THIS PROJECT ', projectUser[0].role);
+          this.logger.log('[USER-SERV] - PROJECT-USER GET BY CURRENT-USER-ID - CURRENT USER ROLE ', projectUser[0].role);
           this.user_role(projectUser[0].role);
 
           // save the user role in storage - then the value is get by auth.service:
@@ -704,65 +563,32 @@ export class UsersService {
         }
       } else {
         // this could be the case in which the current user was deleted as a member of the current project
-        console.log('!! USER SERVICE - PROJECT-USER UNDEFINED ')
+        this.logger.log('[USER-SERV] -  PROJECT-USER GET BY CURRENT-USER-ID - PROJECT-USER UNDEFINED ')
       }
 
     }, (error) => {
-      console.log('!! USER SERVICE - PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID  ', error);
+      this.logger.error('[USER-SERV] - PROJECT-USER GET BY CURRENT-USER-ID - ERROR  ', error);
     }, () => {
-      console.log('!! USER SERVICE - PROJECT-USER GET BY PROJECT ID & CURRENT-USER-ID  * COMPLETE *');
+      this.logger.log('[USER-SERV] - PROJECT-USER GET BY CURRENT-USER-ID * COMPLETE *');
     });
   }
 
 
-
-
-  checkImageExists(imageUrl, callBack) {
-    var imageData = new Image();
-    imageData.onload = function () {
-      callBack(true);
-    };
-    imageData.onerror = function () {
-      callBack(false);
-    };
-    imageData.src = imageUrl;
-  }
-
-  createAgentAvatarInitialsAnfBckgrnd(user) {
-
-    let fullname = '';
-    if (user && user.firstname && user.lastname) {
-
-
-      fullname = user.firstname + ' ' + user.lastname
-      user['fullname_initial'] = avatarPlaceholder(fullname);
-      user['fillColour'] = getColorBck(fullname)
-    } else if (user && user.firstname) {
-
-      fullname = user.firstname
-      user['fullname_initial'] = avatarPlaceholder(fullname);
-      user['fillColour'] = getColorBck(fullname)
-    } else {
-      user['fullname_initial'] = 'N/A';
-      user['fillColour'] = 'rgb(98, 100, 167)';
-    }
-
-  }
-
-
-  // NEW 22 AGO - GET AND SAVE ALL USERS OF CURRENT PROJECT IN LOCAL STORAGE
+  // -------------------------------------------------------------------------
+  // GET ALL PROJECT PROJECT-USERS AND SAVE IN STORAGE USERS AND PROJECT-USERS
+  // -------------------------------------------------------------------------
   getAllUsersOfCurrentProjectAndSaveInStorage() {
-    console.log('!! USER SERVICE  - PROJECT-USERS FILTERED FOR PROJECT ID ', this.project_id);
+    this.logger.log('[USER-SERV] - GET ALL PROJECT PROJECT-USERS AND SAVE IN STORAGE USERS AND PROJECT-USERS - PROJECT ID ', this.project_id);
 
     this.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
-      console.log('!! USER SERVICE  - PROJECT-USERS (FILTERED FOR PROJECT ID ', this.project_id, ')', projectUsers);
+      this.logger.log('[USER-SERV] - GET ALL PROJECT PROJECT-USERS AND SAVE IN STORAGE USERS AND PROJECT-USERS - PROJECT-USERS ', projectUsers);
 
       if (projectUsers) {
         projectUsers.forEach(projectUser => {
           if (projectUser && projectUser !== null) {
             if (projectUser.id_user) {
-              console.log('!! USER SERVICE  - PROJECT-USERS - USER ', projectUser.id_user, projectUser.id_user._id)
-             
+              this.logger.log('[USER-SERV] - GET ALL PROJECT PROJECT-USERS AND SAVE IN STORAGE USERS AND PROJECT-USERS - USER', projectUser.id_user, 'USER-ID', projectUser.id_user._id)
+
               let imgUrl = ''
               if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
                 imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + this.storageBucket + "/o/profiles%2F" + projectUser.id_user._id + "%2Fphoto.jpg?alt=media"
@@ -777,26 +603,51 @@ export class UsersService {
                 else {
                   projectUser.id_user.hasImage = false
 
-                  this.createAgentAvatarInitialsAnfBckgrnd(projectUser.id_user)
+                  this.createAvatarInitialsAndBckgrnd(projectUser.id_user)
                 }
 
                 this.usersLocalDbService.saveMembersInStorage(projectUser.id_user._id, projectUser.id_user);
                 this.usersLocalDbService.saveUserInStorageWithProjectUserId(projectUser._id, projectUser.id_user);
               });
-              // localStorage.setItem(projectUser.id_user._id, JSON.stringify(projectUser.id_user));
             }
           }
         });
       }
-      // localStorage.setItem('project', JSON.stringify(project));
-      //   this.showSpinner = false;
-      //   this.projectUsersList = projectUsers;
     }, error => {
-      // this.showSpinner = false;
-      console.log('!! USER SERVICE - PROJECT-USERS (FILTERED FOR PROJECT ID) - ERROR', error);
+      this.logger.error('[USER-SERV] - GET ALL PROJECT PROJECT-USERS AND SAVE IN STORAGE USERS AND PROJECT-USERS - ERROR', error);
     }, () => {
-      console.log('!! USER SERVICE - PROJECT-USERS (FILTERED FOR PROJECT ID) - COMPLETE')
+      this.logger.log('[USER-SERV] - GET ALL PROJECT PROJECT-USERS AND SAVE IN STORAGE USERS AND PROJECT-USERS - COMPLETE')
     });
+  }
+
+
+  checkImageExists(imageUrl, callBack) {
+    var imageData = new Image();
+    imageData.onload = function () {
+      callBack(true);
+    };
+    imageData.onerror = function () {
+      callBack(false);
+    };
+    imageData.src = imageUrl;
+  }
+
+  createAvatarInitialsAndBckgrnd(user) {
+    let fullname = '';
+    if (user && user.firstname && user.lastname) {
+
+      fullname = user.firstname + ' ' + user.lastname
+      user['fullname_initial'] = avatarPlaceholder(fullname);
+      user['fillColour'] = getColorBck(fullname)
+    } else if (user && user.firstname) {
+
+      fullname = user.firstname
+      user['fullname_initial'] = avatarPlaceholder(fullname);
+      user['fillColour'] = getColorBck(fullname)
+    } else {
+      user['fullname_initial'] = 'N/A';
+      user['fillColour'] = 'rgb(98, 100, 167)';
+    }
   }
 
   // GET AND SAVE ALL BOTS OF CURRENT PROJECT IN LOCAL STORAGE
@@ -806,16 +657,16 @@ export class UsersService {
       if (bots && bots !== null) {
 
         bots.forEach(bot => {
-          console.log('!! USER SERVICE - FAQs-KB (i.e. BOT) GET BY PROJECT ID', bot);
-          console.log('!! USER SERVICE - FAQs-KB ID (i.e. BOT) GET BY PROJECT ID', bot._id);
+          this.logger.log('[USER-SERV] - GET BOT BY PROJECT ID AND SAVE IN STORAGE - BOT', bot);
+          this.logger.log('[USER-SERV] - GET BOT BY PROJECT ID AND SAVE IN STORAGE - BOT-ID', bot._id);
           this.botLocalDbService.saveBotsInStorage(bot._id, bot);
         });
 
       }
     }, (error) => {
-      console.log('!! USER SERVICE - GET FAQs-KB (i.e. BOT) - ERROR ', error);
+      this.logger.error('[USER-SERV] - GET BOT BY PROJECT ID AND SAVE IN STORAGE - ERROR ', error);
     }, () => {
-      console.log('!! USER SERVICE - GET FAQs-KB * COMPLETE');
+      this.logger.log('[USER-SERV] - GET BOT BY PROJECT ID AND SAVE IN STORAGE * COMPLETE');
 
     });
 
@@ -823,13 +674,21 @@ export class UsersService {
 
 
   // -----------------------------------------------------------------------------------------------------
-  // Project User ID, Availability; Busy - PUBLISH projectUser_id, user_available, isBusy
+  // PUBLISH: Project User ID, Availability; Busy - PUBLISH projectUser_id, user_available, isBusy
   // -----------------------------------------------------------------------------------------------------
   // NOTE: THE projectUser_id AND user_available ARE PASSED FROM HOME.COMPONENT and from SIDEBAR.COMP
+
+  /**
+   * PUBLISH: PROJECT-USER-ID - USER AVAILABILITY - USER IS BUSY - PUBLISH projectUser_id, user_available, isBusy
+   * NOTE: THE PARAMS ARE PASSED FROM HOME.COMPONENT - SIDEBAR.COMP - NAVBAR-FOR-PANEL
+   * @param projectUser_id 
+   * @param user_available 
+   * @param user_isbusy 
+   */
   public user_availability(projectUser_id: string, user_available: boolean, user_isbusy: boolean) {
-    console.log('!!! USER SERVICE - PROJECT-USER-ID ', projectUser_id);
-    console.log('!!! USER SERVICE - USER AVAILABLE ', user_available);
-    console.log('!!! USER SERVICE - USER IS BUSY ', user_isbusy);
+    this.logger.log('[USER-SERV] - PUBLISH PROJECT-USER-ID ', projectUser_id);
+    this.logger.log('[USER-SERV] - PUBLISH USER AVAILABLE ', user_available);
+    this.logger.log('[USER-SERV] - PUBLISH USER IS BUSY ', user_isbusy);
 
     this.project_user_id_bs.next(projectUser_id);
     this.user_is_available_bs.next(user_available);
@@ -838,109 +697,107 @@ export class UsersService {
 
 
   // -----------------------------------------------------------------------------------------------------
-  // Availability - PUBLISH WHEN THE SIDEBAR AVAILABLE / UNAVAILABLE BUTTON IS CLICKED
+  // AVAILABILITY - PUBLISH WHEN THE SIDEBAR AVAILABLE / UNAVAILABLE BUTTON IS CLICKED
+  // NOTE: NAVBAR USER-EDIT-ADD & USER COMPONENT SUBSCRIBES WHEN IN SIDEBAR IS CHANGED AVAILABILITY
   // -----------------------------------------------------------------------------------------------------
-  // NOTE: USER COMP SUBSCRIBES TO has_changed_availability TO RE-RUN getAllUsersOfCurrentProject
-  // WITCH UPDATE THE LIST OF THE PROJECT' MEMBER
   public availability_btn_clicked(clicked: boolean) {
-
     this.has_changed_availability_in_sidebar.next(clicked)
-    console.log('NAVBAR-FOR-PANEL & SB >>> user-service SUBSCR To CURRENT-USER AVAILABILITY  availability_btn_clicked ', clicked)
+    this.logger.log('[USER-SERV] - CURRENT-USER AVAILABILITY  availability_btn_clicked ', clicked)
   }
 
 
   // -----------------------------------------------------------------------------------------------------
-  // Availability - PUBLISH WHEN THE USERS-COMP AVAILABLE / UNAVAILABLE Toggle Switch BTN IS CLICKED
+  // AVAILABILITY - PUBLISH WHEN THE USERS-COMP AVAILABLE / UNAVAILABLE Toggle Switch BTN IS CLICKED
+  // NOTE: SIDEBAR & NAVBAR SUBSCRIBES WHEN IN USER-EDIT-ADD & USER COMPONENT IS CHANGED AVAILABILITY
   // -----------------------------------------------------------------------------------------------------
-  // NOTE: SIDEBAR SUBSCRIBES TO has_changed_availability TO RE-RUN getAllUsersOfCurrentProject
-  // WITCH UPDATE THE LIST OF THE PROJECT' MEMBER
   public availability_switch_clicked(clicked: boolean) {
     this.has_changed_availability_in_users.next(clicked)
-
   }
 
 
-  // -----------------------------------------------------------------------------------------------------------------------------
-  // Subscribe to WS PROJECTS CURRENT USERS (used to get availability and is busy in the projects card of the recent project page)
-  // -----------------------------------------------------------------------------------------------------------------------------
+  /**
+   * Subscribe to WS - CURRENT USER OF ALL PROJECTS 
+   * used to get availability and is busy in PROJECTS (i.e Recent projects page) & PROJECT-FOR-PANEL)
+   * @param projectid 
+   * @param prjctuserid 
+   * @returns 
+   */
   subscriptionToWsCurrentUser_allProject(projectid, prjctuserid) {
-    var self = this;
 
-    console.log('PROJECT COMP (user-service) SUBSCR TO WS CURRENT USERS projectid: ', projectid, ' prjctuserid: ', prjctuserid);
+    var self = this;
     const path = '/' + projectid + '/project_users/' + prjctuserid
+    this.logger.log('[USER-SERV] - SUBSCR (REF) TO WS CURRENT USERS PATH: ', path);
 
     return new Promise(function (resolve, reject) {
 
-      self.webSocketJs.ref(path, 'subscriptionToWsCurrentUser_allProject', function (data, notification) {
-        // console.log("SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - CREATE - data ", data , ' path ', path);
-        // console.log("PROJECT COMP (user-service) SUBSCR TO WS CURRENT USERS - CREATE - data ", data);
-        // console.log("PROJECT COMP (user-service) SUBSCR TO WS CURRENT USERS - CREATE - data  user_available ", data.user_available);
-        // console.log("PROJECT COMP (user-service) SUBSCR TO WS CURRENT USERS - CREATE - data  isBusy ", data.isBusy);
+      self.webSocketJs.ref(path, 'subscriptionToWsCurrentUser_allProject',
+        function (data, notification) {
+          self.logger.log("[USER-SERV] SUBSCR TO WS CURRENT USER OF ALL PROJECTS  - CREATE - data ", data);
+          resolve(data)
+          // self.currentUserWsAvailability$.next(data.user_available);
+          self.currentUserWsBusyAndAvailabilityForProject$.next(data)
 
-        resolve(data)
-        // self.currentUserWsAvailability$.next(data.user_available);
-        self.currentUserWsBusyAndAvailabilityForProject$.next(data)
+        }, function (data, notification) {
+          resolve(data)
+          self.logger.log("[USER-SERV] SUBSCR TO WS CURRENT USER OF ALL PROJECTS - UPDATE - data ", data);
+          self.currentUserWsBusyAndAvailabilityForProject$.next(data)
 
-      }, function (data, notification) {
-        resolve(data)
-        console.log("PROJECT COMP (user-service) SUBSCR TO WS CURRENT USERS - UPDATE - data ", data);
-        self.currentUserWsBusyAndAvailabilityForProject$.next(data)
-
-      }, function (data, notification) {
-        resolve(data)
-        if (data) {
-          console.log("PROJECT COMP (user-service) SUBSCR TO WS CURRENT USERS - ON-DATA - data", data);
-
-        }
-      });
+        }, function (data, notification) {
+          resolve(data)
+          if (data) {
+            self.logger.log("[USER-SERV] SUBSCR TO WS CURRENT USER OF ALL PROJECTS - ON-DATA - data", data);
+          }
+        });
 
     })
   }
 
+  /**
+   * UN-SUBSCRIBE TO WS CURRENT USER OF ALL PROJECTS
+   * @param projectid 
+   * @param prjctuserid 
+   */
+  unsubsToWS_CurrentUser_allProject(projectid, prjctuserid) {
+    this.webSocketJs.unsubscribe('/' + projectid + '/project_users/' + prjctuserid);
+    this.logger.log("[USER-SERV] - UN-SUBSCRIBE TO WS CURRENT USER OF ALL PROJECTS  projectid: ", projectid, ' prjctuserid:', prjctuserid);
+  }
 
-  // -----------------------------------------------------------------------------------------------------
-  // Subscribe to WS Contact Events
-  // -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Subscribe to WS Contact Events
+   * @param projectid 
+   * @param leadid 
+   * @returns 
+   */
   subscriptionToWsContactEvents(projectid, leadid) {
-
     var self = this;
     self.eventlist = []
-    console.log('EVENTS SERV (user-service) SUBSCR TO WS CONTACT EVENTS projectid: ', projectid, ' prjctuserid: ', leadid);
-    const path = '/' + projectid + '/events/' + leadid
 
+    const path = '/' + projectid + '/events/' + leadid
+    this.logger.log('[USER-SERV] - SUBSCR TO WS CONTACT EVENTS PATH: ', path);
     return new Promise(function (resolve, reject) {
 
       self.webSocketJs.ref(path, 'subscriptionToWsContactEvents', function (data, notification) {
-        console.log('EVENTS SERV (user-service) SUBSCR TO WS CONTACT EVENTS data: ', data);
-        // console.log("PROJECT COMP (user-service) SUBSCR TO WS CURRENT USERS - CREATE - data ", data);
-        // console.log("PROJECT COMP (user-service) SUBSCR TO WS CURRENT USERS - CREATE - data  user_available ", data.user_available);
-        // console.log("PROJECT COMP (user-service) SUBSCR TO WS CURRENT USERS - CREATE - data  isBusy ", data.isBusy);
-
+        self.logger.log('[USER-SERV] - SUBSCR TO WS CONTACT EVENTS - CREATE data: ', data);
 
         const index = self.eventlist.findIndex((e) => e._id === data._id);
         if (index === -1) {
 
-
-          console.log("EVENTS SERV (user-service) SUBSCR TO WS CONTACT EVENTS CREATE the event not exist - ADD");
+          self.logger.log("[USER-SERV] - SUBSCR TO WS CONTACT EVENTS CREATE  - the event not exist - ADD");
           self.eventlist.push(data)
-
           self.contactsEvents$.next(self.eventlist)
         }
-
-        // resolve(data)
-        // self.currentUserWsAvailability$.next(data.user_available);
 
 
       }, function (data, notification) {
         resolve(data)
-        console.log("EVENTS SERV (user-service) SUBSCR TO WS CONTACT EVENTS - UPDATE - data ", data);
+        self.logger.log("[USER-SERV] - SUBSCR TO WS CONTACT EVENTS - UPDATE data ", data);
 
 
       }, function (data, notification) {
         resolve(data)
         if (data) {
-          console.log("EVENTS SERV (user-service) SUBSCR TO WS CONTACT EVENTS - ON-DATA - data", data);
-
+          self.logger.log("[USER-SERV] - SUBSCR TO WS CONTACT EVENTS - ON-DATA data", data);
         }
       });
 
@@ -948,62 +805,14 @@ export class UsersService {
   }
 
 
-  unsubsToWS_CurrentUser_allProject(projectid, prjctuserid) {
-    this.webSocketJs.unsubscribe('/' + projectid + '/project_users/' + prjctuserid);
-    console.log("PROJECT COMP (user-service) UN-SUBSCR TO WS CURRENT USERS  projectid: ", projectid, ' prjctuserid:', prjctuserid);
-  }
-
-
-  // // -----------------------------------------------------------------------------------------------------
-  // // Availability - subscribe to WS Current user availability !!!! MOVED IN wsRequestsService
-  // // -----------------------------------------------------------------------------------------------------
-  // subscriptionToWsCurrentUser(prjctuserid) {
-  //   var self = this;
-
-  //   console.log('NAVBAR-FOR-PANEL & SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY ****** CALLING REF ****** prjctuserid', prjctuserid);
-  //   const path = '/' + this.project_id + '/project_users/' + prjctuserid
-
-  //   this.webSocketJs.ref(path, 'subscriptionToWsCurrentUser',
-  //     function (data, notification) {
-  //       // console.log("SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - CREATE - data ", data , ' path ', path);
-  //       console.log("NAVBAR-FOR-PANEL & SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - CREATE - data ", data);
-  //       console.log("NAVBAR-FOR-PANEL & SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - CREATE - data  user_available ", data.user_available);
-
-  //       self.currentUserWsAvailability$.next(data.user_available);
-  //       if (data.isBusy) {
-  //         self.currentUserWsIsBusy$.next(data.isBusy)
-  //       } else {
-  //         self.currentUserWsIsBusy$.next(false)
-  //       }
-  //       // self.availability_btn_clicked(true) // NK LO COMMENTO 11 GEN PRIMA DI SPOSTARLO IN ws-requests.service
-
-  //     }, function (data, notification) {
-  //       console.log("SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - UPDATE - data ", data);
-
-  //     }, function (data, notification) {
-  //       if (data) {
-  //         console.log("SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - ON-DATA - data", data);
-
-  //       }
-  //     }
-  //   );
-  // }
-
-  // // -----------------------------------------------------------------------------------------------------
-  // // Availability - unsubscribe to WS Current user availability !!!! MOVED IN wsRequestsService
-  // // -----------------------------------------------------------------------------------------------------
-  // unsubscriptionToWsCurrentUser(prjctuserid) {
-  //   this.webSocketJs.unsubscribe('/' + this.project_id + '/project_users/' + prjctuserid);
-  //   console.log("NAVBAR-FOR-PANEL - UN-SUBSCR TO WS CURRENT USERS  projectid: ", this.project_id, ' prjctuserid:', prjctuserid);
-  // }
-
-
-
-  // ===================  PUBLISH PROJECT-USER ROLE AND CHECK THE ROLE (FOR THE CURRENT PROJECT) SAVED IN THE STORAGE ======================
-  // NOTE: THE projectUser_role IS PASSED FROM HOME.COMPONENT AND FROM SIDEBAR
-  // NOTE: IF THE USER ROLE STORED NOT MATCHES THE USER ROLE PUBLISHED IS RESER IN THE STORAGE YìTJE JSON PROJECT UPDATED WITH THE NEW ROLE
+  /**
+   * PUBLISH PROJECT-USER ROLE AND CHECK THE ROLE (FOR THE CURRENT PROJECT) SAVED IN THE STORAGE
+   * NOTE: THE projectUser_role IS PASSED FROM HOME - SIDEBAR - NAVBAR-FOR-PANEL
+   * NOTE: IF THE USER ROLE STORED NOT MATCHES THE USER ROLE PUBLISHED IS RESET IN STORAGE THE PROJECT OBJCT
+   * @param projectUser_role 
+   */
   public user_role(projectUser_role: string) {
-    console.log('!! »»»»» USER SERVICE PUBLISH THE USER-ROLE  >>', projectUser_role, '<< FOR THE PROJECT ID ', this.project_id);
+    this.logger.log('[USER-SERV] PUBLISH THE USER-ROLE  >>', projectUser_role, '<< FOR THE PROJECT ID ', this.project_id);
 
     // PUBLISH THE USER ROLE
     this.project_user_role_bs.next(projectUser_role);
@@ -1016,12 +825,12 @@ export class UsersService {
       const storedProjectName = projectObject['name'];
       const storedProjectId = projectObject['_id'];
       const storedProjectOH = projectObject['operatingHours'];
-      console.log('!! »»»»» USER SERVICE USER ROLE FROM STORAGE >>', storedUserRole, '<<');
-      console.log('!! »»»»» USER SERVICE PROJECT NAME FROM STORAGE ', storedProjectName);
-      console.log('!! »»»»» USER SERVICE PROJECT ID FROM STORAGE ', storedProjectId);
+      this.logger.log('[USER-SERV] USER ROLE FROM STORAGE >>', storedUserRole, '<<');
+      this.logger.log('[USER-SERV] PROJECT NAME FROM STORAGE ', storedProjectName);
+      this.logger.log('[USER-SERV] PROJECT ID FROM STORAGE ', storedProjectId);
 
       if (storedUserRole !== projectUser_role) {
-        console.log('!! »»»»» USER SERVICE - USER ROLE STORED !!! NOT MATCHES USER ROLE PUBLISHED - RESET PROJECT IN STORAGE ');
+        this.logger.log('[USER-SERV] - USER ROLE STORED !!! NOT MATCHES USER ROLE PUBLISHED - RESET PROJECT IN STORAGE ');
 
         const projectForStorage: Project = {
           _id: storedProjectId,
@@ -1030,61 +839,23 @@ export class UsersService {
           operatingHours: storedProjectOH
         }
 
-        // RE-SET THE PROJECT IN THE STORAGE WITH THE UPDATED ROLE
+        // RESET THE PROJECT IN THE STORAGE WITH THE UPDATED ROLE
         localStorage.setItem(storedProjectId, JSON.stringify(projectForStorage));
-
       }
     }
-
   }
-
-
-  // ====================== (WHEN PROJEC IS DEFINED) IS PASSED FROM THE SIDEBAR COMP  > nav-mobile-menu WHEN IS CLICKED THE LOGOUT BTN IN IT
-  // THE NAVBAR SUBISCIBE THE EVENT SO WILL BE OPEN THE LOGOUT MODAL THAT IS IN THE NAVBAR COMPONENT AND NO MORE THE LOG
-  // LOGOUT MODAL IN THE SIDEBAR COMP ======================
-  // public logout_btn_clicked_from_mobile_sidebar(clicked: boolean) {
-  //   this.has_clicked_logoutfrom_mobile_sidebar.next(clicked)
-  //   console.log('USER-SERVICE: - HAS CLICKED LOGOUT IN THE SIDEBAR (prjct defined) ')
-  // }
-
-  // public logout_btn_clicked_from_mobile_sidebar_project_undefined(clicked: boolean) {
-  //   this.has_clicked_logoutfrom_mobile_sidebar_project_undefined.next(clicked)
-  //   console.log('USER-SERVICE: - HAS CLICKED LOGOUT IN THE SIDEBAR (prjct undefined)')
-  // }
-
-
-  /* used by admin.guard (for the moment not used) */
-  // checkRole() {
-  //   let result: boolean
-  //   this.project_user_role_bs.subscribe((user_role) => {
-  //     if (user_role) {
-  //       if (user_role !== 'agent') {
-  //         console.log('»> »> !!! »»» USERS SERV - CHECK ROLE (FROM SUBSCRIPTION) »»» ', user_role);
-
-  //         result = true
-  //         // this.router.navigate(['/unauthorized']);
-  //         // || user_role === undefined
-  //       } else if (user_role === 'agent' || user_role === undefined) {
-  //         console.log('»> »> !!! »»» USERS SERV - CHECK ROLE (GOT SUBSCRIPTION) »»» ', user_role);
-
-  //         result = false
-  //       }
-  //     }
-  //   })
-  //   return result
-  // }
-
 
 
   /**
    * UPDATE PROJECT-USER AVAILABILITY (PUT)
+   * @param projectUser_id 
+   * @param user_is_available 
+   * @returns 
    */
-  // DONE - WORKS NK-TO-TEST - da testare dopo che L. esegue il commit del servizio aggiornato (lo puo fare solo l'admin)
   public updateProjectUser(projectUser_id: string, user_is_available: boolean) {
 
     let url = this.SERVER_BASE_PATH + this.project._id + '/project_users/' + projectUser_id;
-
-    console.log('PROJECT-USER UPDATE (PUT) URL ', url);
+    this.logger.log('[USER-SERV] - PROJECT-USER UPDATE AVAILABILITY (PUT) URL ', url);
 
     const headers = new Headers();
     headers.append('Accept', 'application/json');
@@ -1093,8 +864,7 @@ export class UsersService {
     const options = new RequestOptions({ headers });
 
     const body = { 'user_available': user_is_available };
-
-    console.log('PUT REQUEST BODY ', body);
+    this.logger.log('[USER-SERV] - PROJECT-USER UPDATE AVAILABILITY - PUT REQUEST BODY ', body);
 
     return this.http
       .put(url, JSON.stringify(body), options)
@@ -1104,12 +874,17 @@ export class UsersService {
   // DONE - WORKS NK-TO-TEST - da fare e da testare dopo che L. esegue il commit del servizio aggiornato (lo puo fare solo l'admin)
   // this is a service equal to updateProjectUser() in which project User_id was not passed
   // must be implemented for to change the availability status (available / unavailable) of the current user
+
+  /**
+   * UPDATE CURRENT USER AVAILABILITY
+   * @param projectId 
+   * @param user_is_available 
+   * @returns 
+   */
   public updateCurrentUserAvailability(projectId: string, user_is_available: boolean) {
 
-    // let url = this.MONGODB_BASE_URL;
     let url = this.SERVER_BASE_PATH + projectId + '/project_users/';
-
-    console.log('PROJECT-USER UPDATE (PUT) URL ', url);
+    this.logger.log('[USER-SERV] - UPDATE CURRENT USER AVAILABILITY (PUT) URL ', url);
 
     const headers = new Headers();
     headers.append('Accept', 'application/json');
@@ -1118,21 +893,26 @@ export class UsersService {
     const options = new RequestOptions({ headers });
 
     const body = { 'user_available': user_is_available };
-
-    console.log('PUT REQUEST BODY ', body);
+    this.logger.log('[USER-SERV] - UPDATE CURRENT USER AVAILABILITY - BODY ', body);
 
     return this.http
       .put(url, JSON.stringify(body), options)
       .map((res) => res.json());
   }
 
-  /**
-   * UPDATE PROJECT-USER ROLE (PUT) */
-  // DONE - WORKS NK-TO-TEST - da testare dopo che L. esegue il commit del servizio aggiornato (lo puo fare solo l'admin)
-  public updateProjectUserRoleAndMaxchat(projectUser_id: string, user_role: string, max_assigned_chat: number) {
 
+
+  /**
+   * UPDATE PROJECT-USER ROLE & MAX-CHAT 
+   * NOTE: only admin can do it
+   * @param projectUser_id 
+   * @param user_role 
+   * @param max_assigned_chat 
+   * @returns 
+   */
+  public updateProjectUserRoleAndMaxchat(projectUser_id: string, user_role: string, max_assigned_chat: number) {
     let url = this.PROJECT_USER_URL + projectUser_id;
-    console.log('PROJECT-USER DETAILS (calling from) - PROJECT-USER UPDATE ROLE & MAX-CHAT (PUT) URL ', url);
+    this.logger.log('[USER-SERV] - UPDATE PROJECT-USER ROLE & MAX-CHAT (PUT) URL ', url);
 
     const headers = new Headers();
     headers.append('Accept', 'application/json');
@@ -1144,19 +924,24 @@ export class UsersService {
     const body = { 'role': user_role, 'max_assigned_chat': max_assigned_chat };
 
 
-    console.log('PROJECT-USER DETAILS (calling from) - PROJECT-USER UPDATE ROLE & MAX-CHAT BODY ', body);
+    this.logger.log('[USER-SERV] - UPDATE PROJECT-USER ROLE & MAX-CHAT  BODY ', body);
 
     return this.http
       .put(url, JSON.stringify(body), options)
       .map((res) => res.json());
   }
 
+
   /**
-   * DELETE PROJECT-USER (PUT)  */
+   * DELETE PROJECT-USER (DELETE) 
+   * @param projectUser_id 
+   * @returns 
+   */
   public deleteProjectUser(projectUser_id: string) {
-    let url = this.PROJECT_USER_URL;
-    url += projectUser_id + '# chat21-api-nodejs';
-    console.log('PROJECT-USER DELETE URL ', url);
+
+    let url = this.PROJECT_USER_URL + projectUser_id;
+    this.logger.log('[USER-SERV] - DELETE PROJECT-USER - DELETE URL ', url);
+
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
@@ -1166,20 +951,20 @@ export class UsersService {
     return this.http
       .delete(url, options)
       .map((res) => res.json());
-
   }
 
-  // ================== UPDATE CURRENT USER LASTNAME / FIRSTNAME ==================
+
+  /**
+   * UPDATE CURRENT USER LASTNAME / FIRSTNAME
+   * @param user_firstname 
+   * @param user_lastname 
+   * @param callback 
+   * @returns 
+   */
   public updateCurrentUserLastnameFirstname(user_firstname: string, user_lastname: string, callback) {
 
-    // DONE - WORKS NK-TO-TEST - da testare dopo che L. esegue il commit del servizio aggiornato
-    // const url = this.UPDATE_USER_URL + this.currentUserId; // old
     const url = this.UPDATE_USER_URL;
-
-    // ERROR TEST WITH A currentUserId that does not exist
-    // const url = this.UPDATE_USER_URL + '5ad08846ea181e2e9cc2d20g';
-
-    console.log('UPDATE CURRENT USER (PUT) URL ', url);
+    this.logger.log('[USER-SERV] - UPDATE CURRENT USER LASTNAME & FIRSTNAME (PUT) URL ', url);
 
     const headers = new Headers();
     headers.append('Accept', 'application/json');
@@ -1187,18 +972,18 @@ export class UsersService {
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
 
-    console.log('»»» »»» UPDATE CURRENT USER - LASTNAME ', user_lastname);
+    this.logger.log('[USER-SERV] - UPDATE CURRENT USER-LASTNAME ', user_lastname, 'USER-FIRSTNAME', user_firstname);
 
     const body = { 'firstname': user_firstname, 'lastname': user_lastname };
 
-    console.log('»»» »»» UPDATE CURRENT USER - BODY ', body);
+    this.logger.log('[USER-SERV] - UPDATE CURRENT USER LASTNAME & FIRSTNAME - BODY ', body);
 
     return this.http
       .put(url, JSON.stringify(body), options)
       .toPromise()
       .then(res => {
 
-        console.log('NODEJS: UPDATED USER RESPONSE: ', res.json())
+        this.logger.log('[USER-SERV] - UPDATE CURRENT USER LASTNAME & FIRSTNAME - RESPONSE: ', res.json())
 
         const jsonRes = res.json()
 
@@ -1209,75 +994,34 @@ export class UsersService {
           const user: User = jsonRes.updatedUser;
 
           user.token = this.TOKEN;
-          console.log('UPDATED USER + token (before to set in storage) ', user)
+          this.logger.log('[USER-SERV] - UPDATED USER + token (before to set in storage) ', user)
 
-          /* REPUBLISH AND RESET IN STORAGE THE (UPDATED) USER */
-          // that, when the user logged in, the AUTH SERVICE had published and set in memory)
-          // this.user_bs.next(user);
-          // localStorage.setItem('user', JSON.stringify(user));
-
-          // SEND THE UPDATED USER OBJECT TO THE AUTH SERVICE THAT:
-          // -  PUBLISHES IT AGAIN and
-          // -  RESET IT IN LOCAL STORAGE
+          /* PUBLISH THE UPDATED USER CURRENT USER */
           this.auth.publishUpdatedUser(user)
 
-          /** 
-           * !!!! NO MORE USED
-           */
-          // chat21-cloud-functions - Update my FirstName and Last Name
-          // on firebase Realtime Database
-          // this.cloudFunctionsUpdateContact(user_firstname, user_lastname, callback);
-
         } else {
-
           callback('error');
-
         }
       })
       .catch(res => Promise.reject(`my error is: ${res}`))
-      .then(res => console.log('good', res),
+      .then(res => this.logger.log('good', res),
         err => {
-          console.log('* Bad *', err)
+          this.logger.error('* Bad *', err)
           callback('error')
         });
   }
 
-  // cloudFunctionsUpdateContact(updated_firstname: string, updated_lastname: string, callback) {
-  //   const self = this;
-  //   firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
-  //     .then(function (token) {
-  //       console.log('USER SERV - FIREBASE idToken.', token);
-
-  //       const headers = new Headers();
-  //       headers.append('Accept', 'application/json');
-  //       headers.append('Content-type', 'application/json');
-  //       headers.append('Authorization', 'Bearer ' + token);
-  //       const options = new RequestOptions({ headers });
-  //       const url = self.CLOUD_FUNC_UPDATE_USER_URL;
-  //       console.log('CLOUD FUNCT - UPDATE CONTACT URL ', url)
-  //       const body = { 'firstname': updated_firstname, 'lastname': updated_lastname };
-  //       self.http
-  //         .put(url, JSON.stringify(body), options)
-  //         .toPromise().then(res => {
-  //           console.log('Cloud Functions Update Contact RESPONSE ', res)
-  //           console.log('Cloud Functions Update Contact RESPONSE STATUS', res.status)
-  //           if (res.status === 200) {
-  //             callback('user successfully updated on firebase')
-  //           }
-  //         });
-
-  //     }).catch(function (error) {
-  //       // Handle error
-  //       console.log('idToken.', error);
-  //       callback('error')
-  //     });
-  // }
-
-
+  /**
+   * CHANGE PSW
+   * @param user_id 
+   * @param old_psw 
+   * @param new_psw 
+   * @returns 
+   */
   public changePassword(user_id: string, old_psw: string, new_psw: string) {
-    const url = this.CHANGE_PSW_URL;
 
-    console.log('CHSNGE PSW (PUT) URL ', url);
+    const url = this.CHANGE_PSW_URL;
+    this.logger.log('[USER-SERV] - CHANGE PSW (PUT) URL ', url);
 
     const headers = new Headers();
     headers.append('Accept', 'application/json');
@@ -1285,21 +1029,22 @@ export class UsersService {
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
 
-    // DONE -> WORKS NK-TO-TEST - nn passare + userid  -- 'userid': user_id, 
     const body = { 'oldpsw': old_psw, 'newpsw': new_psw };
-
-    console.log('PUT REQUEST BODY ', body);
+    this.logger.log('[USER-SERV] - PUT REQUEST BODY ', body);
 
     return this.http
       .put(url, JSON.stringify(body), options)
       .map((res) => res.json());
-
   }
 
+  /**
+   * RESEND VERIFY EMAIL
+   * @returns 
+   */
   public resendVerifyEmail() {
-    const url = this.RESEND_VERIFY_EMAIL;
 
-    console.log('RESEND VERIFY EMAIL URL ', url);
+    const url = this.RESEND_VERIFY_EMAIL;
+    this.logger.log('[USER-SERV] - RESEND VERIFY EMAIL URL ', url);
 
     const headers = new Headers();
     headers.append('Accept', 'application/json');

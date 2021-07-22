@@ -6,8 +6,8 @@ export class FilterArrayPipe implements PipeTransform {
 
     transform(array: any, query?: any): any {
 
-        console.log('PIPE filterArray array ', array);
-        console.log('PIPE filterArray args ', query);
+        // console.log('PIPE filterArray array ', array);
+        // console.log('PIPE filterArray args ', query);
         if (!array) return null;
         if (!query) return array;
 

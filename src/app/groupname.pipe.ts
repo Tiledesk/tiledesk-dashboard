@@ -19,20 +19,17 @@ export class GroupNamePipe implements PipeTransform {
             .subscribe((group: any) => {
 
                 if (group) {
-                    console.log('RUN THE PIPE - GROUP GET BY ID', group);
-                    console.log('RUN THE PIPE - GROUP NAME ', group.name)
+                    // console.log('RUN THE PIPE - GROUP GET BY ID', group);
+                    // console.log('RUN THE PIPE - GROUP NAME ', group.name)
                     return this.groupName = group.name
                 }
 
                 // return null;
             }, err => {
-                console.error(err);
-            },
-                () => {
-                    console.log('POST REQUEST * COMPLETE *');
-
-
-                });
+                // console.error(err);
+            }, () => {
+                // console.log('POST REQUEST * COMPLETE *');
+            });
 
         // if (this.groupName) {
         //     return this.groupName

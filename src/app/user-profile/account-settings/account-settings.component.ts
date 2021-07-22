@@ -5,6 +5,7 @@ import { UsersService } from '../../services/users.service';
 import { AuthService } from '../../core/auth.service';
 import { Router } from '@angular/router';
 import { ProjectService } from '../../services/project.service';
+import { LoggerService } from '../../services/logger/logger.service';
 
 @Component({
   selector: 'appdashboard-settings',
@@ -30,6 +31,7 @@ export class AccountSettingsComponent implements OnInit {
     public auth: AuthService,
     private router: Router,
     private projectService: ProjectService,
+    private logger: LoggerService
   ) { }
 
   ngOnInit() {
@@ -43,19 +45,19 @@ export class AccountSettingsComponent implements OnInit {
    */
   getProjects() {
     this.projectService.getProjects().subscribe((projects: any) => {
-      console.log('ACCOUNT_SETTINGS - GET PROJECTS ', projects);
+      this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS] - GET PROJECTS ', projects);
 
       if (projects) {
         this.projects_length = projects.length;
-        console.log('ACCOUNT_SETTINGS - GET PROJECTS - LENGTH ', this.projects_length);
+        this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS] - GET PROJECTS - LENGTH ', this.projects_length);
 
         this.translateparam = { projects_length: this.projects_length };
       }
     }, error => {
 
-      console.log('ACCOUNT_SETTINGS - GET PROJECTS - ERROR ', error)
+      this.logger.error('[USER-PROFILE][ACCOUNT-SETTINGS] - GET PROJECTS - ERROR ', error)
     }, () => {
-      console.log('ACCOUNT_SETTINGS - GET PROJECTS - COMPLETE')
+      this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS] - GET PROJECTS * COMPLETE *')
     });
   }
 
@@ -63,12 +65,13 @@ export class AccountSettingsComponent implements OnInit {
     this.auth.project_bs.subscribe((project) => {
 
       if (project) {
-        console.log('ACCOUNT_SETTINGS - project from AUTH-SERV subscr ', project)
+
+        this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS] - GET CURRENT PROJECT - project ', project)
         this.projectId = project._id;
-
+        this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS] - GET CURRENT PROJECT - project ID', this.projectId)
+    
       } else {
-        console.log('ACCOUNT_SETTINGS - project from AUTH-SERV subscr ? ', project)
-
+        this.logger.log('ACCOUNT_SETTINGS - GET CURRENT PROJECT ', project , ' HIDE-SIDEBAR')
         this.hideSidebar();
       }
     });
@@ -78,17 +81,17 @@ export class AccountSettingsComponent implements OnInit {
   // hides the sidebar if the user is in the CHANGE PSW PAGE but has not yet selected a project
   hideSidebar() {
     const elemAppSidebar = <HTMLElement>document.querySelector('app-sidebar');
-    console.log('ACCOUNT_SETTINGS  elemAppSidebar ', elemAppSidebar)
+    this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS]  elemAppSidebar ', elemAppSidebar)
     elemAppSidebar.setAttribute('style', 'display:none;');
 
     const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
-    console.log('ACCOUNT_SETTINGS  elemMainPanel ', elemMainPanel)
+    this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS]  elemMainPanel ', elemMainPanel)
     elemMainPanel.setAttribute('style', 'width:100% !important; overflow-x: hidden !important;');
   }
 
   getUserIdFromRouteParams() {
     this.userId = this.route.snapshot.params['userid'];
-    console.log('ACCOUNT_SETTINGS - USER ID ', this.userId)
+    this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS] - USER ID ', this.userId)
   }
 
 
@@ -113,26 +116,17 @@ export class AccountSettingsComponent implements OnInit {
     this.showSpinner_deleteAccount = true;
     this.deleteAccount_hasError = false;
 
-    // setTimeout(() => { 
-    //   this.showSpinner_deleteAccount = false;
-    //   this.deleteAccount_hasError  = true;
-    //   if(this.deleteAccount_hasError === true) {
-    //     this.hasClickedDeleteAccount = false;
-    //     this.showSpinner_deleteAccount  = null;
-    //   }
-    //   }, 300);
-
     this.usersService.deleteUserAccount().subscribe((res: any) => {
-      console.log('ACCOUNT_SETTINGS - DELETE-USER-ACCOUNT RES ', res);
+      this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS] - DELETE-USER-ACCOUNT RES ', res);
 
     }, (error) => {
-      console.log('ACCOUNT_SETTINGS - DELETE-USER-ACCOUNT ', error);
+      this.logger.error('[USER-PROFILE][ACCOUNT-SETTINGS] - DELETE-USER-ACCOUNT ', error);
 
       this.showSpinner_deleteAccount = false;
       this.deleteAccount_hasError = true;
       this.hasClickedDeleteAccount = false;
     }, () => {
-      console.log('ACCOUNT_SETTINGS - DELETE-USER-ACCOUNT * COMPLETE *');
+      this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS] - DELETE-USER-ACCOUNT * COMPLETE *');
       this.delete_account_completed = true;
       this.showSpinner_deleteAccount = false;
       this.deleteAccount_hasError = false;
@@ -154,7 +148,7 @@ export class AccountSettingsComponent implements OnInit {
   }
 
   goToChangePsw() {
-    console.log('»» GO TO CHANGE PSW - PROJECT ID ', this.projectId)
+    this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS] - GO TO CHANGE PSW - PROJECT ID ', this.projectId)
     if (this.projectId === undefined) {
       this.router.navigate(['user/' + this.userId + '/password/change']);
     } else {
@@ -163,7 +157,7 @@ export class AccountSettingsComponent implements OnInit {
   }
 
   goToUserProfile() {
-    console.log('»» GO TO USER PROFILE  - PROJECT ID ', this.projectId)
+    this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS] - GO TO USER PROFILE  - PROJECT ID ', this.projectId)
     if (this.projectId === undefined) {
       this.router.navigate(['user-profile']);
     } else {
@@ -172,7 +166,7 @@ export class AccountSettingsComponent implements OnInit {
   }
 
   goToNotificationSettings() {
-    console.log('»» GO TO USER  NOTIFICATION SETTINGS - PROJECT ID ', this.projectId)
+    this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS] GO TO USER  NOTIFICATION SETTINGS - PROJECT ID ', this.projectId)
     if (this.projectId === undefined) {
       this.router.navigate(['user/' + this.userId + '/notifications']);
     } else {

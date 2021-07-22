@@ -4,7 +4,7 @@ import { AuthService } from '../core/auth.service';
 import { Project } from '../models/project-model';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../services/brand.service';
-
+import { LoggerService } from '../services/logger/logger.service';
 
 @Component({
   selector: 'app-channels',
@@ -19,7 +19,8 @@ export class ChannelsComponent implements OnInit {
 
   constructor(
     public auth: AuthService,
-    public brandService: BrandService
+    public brandService: BrandService,
+    private logger: LoggerService
   ) {
     const brand = brandService.getBrand();
     this.tparams = brand;
@@ -32,7 +33,7 @@ export class ChannelsComponent implements OnInit {
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
       this.project = project
-      console.log('00 -> CHANNELS project from AUTH service subscription  ', this.project)
+      console.log('[CHANNELS] project from AUTH service subscription  ', this.project)
 
       if (this.project) {
         this.project_name = this.project.name;

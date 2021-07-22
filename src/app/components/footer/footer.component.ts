@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { environment } from '../../../environments/environment';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from './../../services/brand.service';
+import { LoggerService } from './../../services/logger/logger.service';
 // declare var require: any;
 @Component({
   selector: 'app-footer',
@@ -34,7 +35,8 @@ export class FooterComponent implements OnInit {
   contactUsEmail: string;
 
   constructor(
-    public brandService: BrandService
+    public brandService: BrandService,
+    private logger: LoggerService
   ) { 
     const brand = brandService.getBrand();
     this.company_name = brand['company_name'];
@@ -50,21 +52,21 @@ export class FooterComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('version (footer.component)  ', this.version);
+    this.logger.log('[FOOTER-COMP] version ', this.version);
     // this.brandLog()
   }
 
   brandLog() {
 
-    // console.log('BRAND_JSON - FOOTER ', this.brand);
-    console.log('BRAND_JSON - FOOTER companySiteName ', this.companySiteName);
-    console.log('BRAND_JSON - FOOTER companySiteUrl ', this.companySiteUrl);
-    console.log('BRAND_JSON - FOOTER companyContactUsEmail ', this.contactUsEmail);
-    console.log('BRAND_JSON - FOOTER privacyPolicyLinkName ', this.privacyPolicyLinkName);
-    console.log('BRAND_JSON - FOOTER privacyPolicyUrl ', this.privacyPolicyUrl);
-    console.log('BRAND_JSON - FOOTER displayTermsAndConditionsLink ', this.displayTermsAndConditionsLink);
-    console.log('BRAND_JSON - FOOTER termsAndConditionsUrl ', this.termsAndConditionsUrl);
-    console.log('BRAND_JSON - FOOTER display_contact_us_email ', this.display_contact_us_email);
+    // this.logger.log('BRAND_JSON - FOOTER ', this.brand);
+    this.logger.log('[FOOTER-COMP] BRAND_JSON - companySiteName ', this.companySiteName);
+    this.logger.log('[FOOTER-COMP] BRAND_JSON - companySiteUrl ', this.companySiteUrl);
+    this.logger.log('[FOOTER-COMP] BRAND_JSON - companyContactUsEmail ', this.contactUsEmail);
+    this.logger.log('[FOOTER-COMP] BRAND_JSON - privacyPolicyLinkName ', this.privacyPolicyLinkName);
+    this.logger.log('[FOOTER-COMP] BRAND_JSON - privacyPolicyUrl ', this.privacyPolicyUrl);
+    this.logger.log('[FOOTER-COMP] BRAND_JSON - displayTermsAndConditionsLink ', this.displayTermsAndConditionsLink);
+    this.logger.log('[FOOTER-COMP] BRAND_JSON - termsAndConditionsUrl ', this.termsAndConditionsUrl);
+    this.logger.log('[FOOTER-COMP] BRAND_JSON - display_contact_us_email ', this.display_contact_us_email);
   }
 
 }

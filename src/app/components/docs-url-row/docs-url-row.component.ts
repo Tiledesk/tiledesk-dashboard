@@ -1,5 +1,5 @@
 import { Component, OnInit , Input} from '@angular/core';
-
+import { LoggerService } from '../../services/logger/logger.service';
 @Component({
   selector: 'appdashboard-docs-url-row',
   templateUrl: './docs-url-row.component.html',
@@ -12,14 +12,16 @@ export class DocsUrlRowComponent implements OnInit {
   @Input() text_to_display: string;
   
   translateparam: any; 
-  constructor() { }
+  constructor(
+    private logger: LoggerService
+  ) { }
 
   ngOnInit() {
     this.translateparam = { helpdoc: this.doctitle };
-    console.log('Docs_Url_Row Component doctitle ', this.doctitle);
-    console.log('Docs_Url_Row Component docurl ', this.docurl)  
-    console.log('Docs_Url_Row Component customtext ', this.customtext)  
-    console.log('Docs_Url_Row Component text_to_display ', this.text_to_display) 
+    this.logger.log('[Docs_Url_Row-COMP] doctitle ', this.doctitle);
+    this.logger.log('[Docs_Url_Row-COMP] docurl ', this.docurl)  
+    this.logger.log('[Docs_Url_Row-COMP] customtext ', this.customtext)  
+    this.logger.log('[Docs_Url_Row-COMP]text_to_display ', this.text_to_display) 
   }
 
 }

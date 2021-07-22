@@ -5,6 +5,7 @@ import { ProjectPlanService } from '../../services/project-plan.service';
 import { ProjectService } from '../../services/project.service';
 import { Location } from '@angular/common';
 import { Subscription } from 'rxjs';
+import { LoggerService } from '../../services/logger/logger.service';
 @Component({
   selector: 'appdashboard-payments-list',
   templateUrl: './payments-list.component.html',
@@ -19,6 +20,7 @@ export class PaymentsListComponent implements OnInit, OnDestroy {
     private prjctPlanService: ProjectPlanService,
     private prjctService: ProjectService,
     public location: Location,
+    private logger: LoggerService
   ) { }
 
   ngOnInit() {
@@ -29,7 +31,7 @@ export class PaymentsListComponent implements OnInit, OnDestroy {
 
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      console.log('ProjectPlanService (PaymentsListComponent) project Profile Data', projectProfileData)
+      this.logger.log('[PRICING - PAYMENT-LIST] ProjectPlanService project Profile Data', projectProfileData)
 
       if (projectProfileData && projectProfileData.subscription_id) {
         this.getSubscriptionPayments(projectProfileData.subscription_id)
@@ -43,12 +45,12 @@ export class PaymentsListComponent implements OnInit, OnDestroy {
 
   getSubscriptionPayments(subscription_id) {
     this.prjctService.getSubscriptionPayments(subscription_id).subscribe((subscriptionPayments: any) => {
-      console.log('PaymentsListComponent get subscriptionPayments ', subscriptionPayments);
+      this.logger.log('[PRICING - PAYMENT-LIST] get subscriptionPayments ', subscriptionPayments);
 
       if (subscriptionPayments) {
         this.subscription_payments = [];
         subscriptionPayments.forEach(subscriptionPayment => {
-          console.log('PaymentsListComponent subscriptionPayment.stripe_event ', subscriptionPayment.stripe_event);
+          this.logger.log('[PRICING - PAYMENT-LIST] subscriptionPayment.stripe_event ', subscriptionPayment.stripe_event);
 
 
           // && subscriptionPayment.stripe_event !== 'customer.subscription.deleted' && subscriptionPayment.stripe_event !== 'customer.subscription.updated'
@@ -56,24 +58,24 @@ export class PaymentsListComponent implements OnInit, OnDestroy {
           if (subscriptionPayment.stripe_event === 'invoice.payment_succeeded') {
 
             const plan_description = subscriptionPayment.object.data.object.lines.data[0].description;
-            console.log('PaymentsListComponent subscriptionPayment plan_description: ', plan_description);
+            this.logger.log('[PRICING - PAYMENT-LIST] subscriptionPayment plan_description: ', plan_description);
 
             if (plan_description.indexOf('×') !== -1) {
 
               const planSubstring = plan_description.split('×').pop();
 
-              console.log('PaymentsListComponent subscriptionPayment planSubstring: ', planSubstring);
+              this.logger.log('[PRICING - PAYMENT-LIST] subscriptionPayment planSubstring: ', planSubstring);
 
               if (plan_description.indexOf('(') !== -1) {
                 const planName = planSubstring.substring(0, planSubstring.indexOf('('));
-                console.log('PaymentsListComponent subscriptionPayment planName: ', planName);
+                this.logger.log('[PRICING - PAYMENT-LIST] subscriptionPayment planName: ', planName);
 
                 subscriptionPayment.plan_name = planName.trim()
               }
 
               if (plan_description.indexOf('after') !== -1) {
                 const planName = planSubstring.substring(0, planSubstring.indexOf('after'));
-                console.log('PaymentsListComponent subscriptionPayment planName: ', planName);
+                this.logger.log('[PRICING - PAYMENT-LIST] subscriptionPayment planName: ', planName);
 
                 subscriptionPayment.plan_name = planName.trim()
               }
@@ -83,13 +85,13 @@ export class PaymentsListComponent implements OnInit, OnDestroy {
             this.subscription_payments.push(subscriptionPayment);
           }
         });
-        console.log('PaymentsListComponent FILTERED subscriptionPayments ', this.subscription_payments);
+        this.logger.log('[PRICING - PAYMENT-LIST] FILTERED subscriptionPayments ', this.subscription_payments);
       }
     }, (error) => {
-      console.log('PaymentsListComponent get subscriptionPayments error ', error);
+      this.logger.error('[PRICING - PAYMENT-LIST] get subscriptionPayments error ', error);
       this.showSpinner = false;
     }, () => {
-      console.log('PaymentsListComponent get subscriptionPayments * COMPLETE * ');
+      this.logger.log('[PRICING - PAYMENT-LIST] get subscriptionPayments * COMPLETE * ');
       this.showSpinner = false;
     });
   }

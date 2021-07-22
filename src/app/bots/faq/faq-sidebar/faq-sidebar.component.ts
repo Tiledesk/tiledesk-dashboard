@@ -1,5 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { slideInOutAnimation } from '../../../_animations/index';
+import { LoggerService } from '../../../services/logger/logger.service';
 @Component({
   selector: 'appdashboard-faq-sidebar',
   templateUrl: './faq-sidebar.component.html',
@@ -12,21 +13,22 @@ export class FaqSidebarComponent implements OnInit {
   @Output() valueChange = new EventEmitter();
   _displaydDemoModal = 'none'
   hasClickedStart= false;
-  constructor() { }
+  constructor(
+    private logger: LoggerService
+  ) { }
 
   ngOnInit() {
   }
 
   closeRightSideBar() {
-    console.log('FaqSidebarComponent - closeRightSideBar ')
+    this.logger.log('[FAQ-SIDEBAR] - closeRightSideBar ')
     this.valueChange.emit(false);
-
 
 
     [].forEach.call(
       document.querySelectorAll('footer ul li a'),
       function (el) {
-        console.log('footer > ul > li > a element: ', el);
+        this.logger.log('[FAQ-SIDEBAR] footer > ul > li > a element: ', el);
         el.setAttribute('style', 'text-transform: none');
       }
     );

@@ -11,11 +11,11 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { AppConfigService } from '../services/app-config.service';
 import { Location } from '@angular/common';
-// import brand from 'assets/brand/brand.json';
 import { BrandService } from '../services/brand.service';
 import { helpdocurl_users_role } from '../utils/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { LoggerService } from '../services/logger/logger.service';
 const swal = require('sweetalert');
 
 @Component({
@@ -103,30 +103,28 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
     private translate: TranslateService,
     public appConfigService: AppConfigService,
     public location: Location,
-    public brandService: BrandService
+    public brandService: BrandService,
+    private logger: LoggerService
   ) {
     const brand = brandService.getBrand();
     this.tparams = brand;
   }
 
   ngOnInit() {
-    // this.auth.checkRoleForCurrentProject();
-    console.log('on init Selected Role ', this.role);
+
+    this.logger.log('on init Selected Role ', this.role);
     this.selectedRole = 'ROLE_NOT_SELECTED';
 
-    // this.auth.checkRoleForCurrentProject();
-
     if (this.router.url.indexOf('/add') !== -1) {
-
-      console.log('HAS CLICKED INVITES ');
+      this.logger.log('[USER-EDIT-ADD] HAS CLICKED INVITES ');
       this.CREATE_VIEW = true;
       this.EDIT_VIEW = false;
     } else {
-      console.log('HAS CLICKED EDIT ');
+      this.logger.log('[USER-EDIT-ADD] HAS CLICKED EDIT ');
       this.EDIT_VIEW = true;
       this.CREATE_VIEW = false;
 
-      this.getProjectUserId()
+      this.getParamsProjectUserIdAndThenGetProjectUsersById()
     }
 
     this.getCurrentProject();
@@ -146,38 +144,36 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
 
   getCurrentUrl() {
     const currentUrl = this.router.url;
-    console.log('%ProjectEditAddComponent (user-edit-add) current_url ', currentUrl);
+    this.logger.log('[USER-EDIT-ADD] - GET CURRENT URL - current_url ', currentUrl);
 
     const url_segments = currentUrl.split('/');
-    console.log('%ProjectEditAddComponent (user-edit-add) url_segments ', url_segments);
+    this.logger.log('[USER-EDIT-ADD] - GET CURRENT URL - url_segments ', url_segments);
 
     const nav_project_id = url_segments[2];
-    console.log('%ProjectEditAddComponent (user-edit-add) nav_project_id ', nav_project_id);
-
-
+    this.logger.log('[USER-EDIT-ADD] - GET CURRENT URL - nav_project_id ', nav_project_id);
 
     if (nav_project_id === '5ec688ed13400f0012c2edc2') {
       this.isUNIS = true;
-      console.log('%ProjectEditAddComponent (user-edit-add) isUNIS ', this.isUNIS);
+      this.logger.log('[USER-EDIT-ADD] - GET CURRENT URL - isUNIS ', this.isUNIS);
     } else {
       this.isUNIS = false;
-      console.log('%ProjectEditAddComponent (user-edit-add) isUNIS ', this.isUNIS);
+      this.logger.log('[USER-EDIT-ADD] - GET CURRENT URL - isUNIS ', this.isUNIS);
     }
   }
 
   getOSCODE() {
 
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
-    console.log('AppConfigService getAppConfig (PROJECT-EDIT-ADD) public_Key', this.public_Key);
+    this.logger.log('[USER-EDIT-ADD] getAppConfig - public_Key', this.public_Key);
     let keys = this.public_Key.split("-");
-    console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) keys', keys)
+    this.logger.log('[USER-EDIT-ADD] - keys', keys)
     keys.forEach(key => {
 
 
       if (key.includes("PSA")) {
-        // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
+        // this.logger.log('[USER-EDIT-ADD] PUBLIC-KEY - key', key);
         let psa = key.split(":");
-        // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - pay key&value', psa);
+        // this.logger.log('[USER-EDIT-ADD] PUBLIC-KEY - pay key&value', psa);
         if (psa[1] === "F") {
           this.isVisibleAdvancedFeatureChatLimit = false;
         } else {
@@ -188,7 +184,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
 
 
     if (!this.public_Key.includes("PSA")) {
-      // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("PSA")', this.public_Key.includes("PSA"));
+      // this.logger.log('[USER-EDIT-ADD] PUBLIC-KEY - key.includes("PSA")', this.public_Key.includes("PSA"));
       this.isVisibleAdvancedFeatureChatLimit = false;
     }
 
@@ -196,10 +192,10 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
 
   getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
-      console.log('LOGGED USER GET IN USER-EDIT-ADD-COMP ', user)
+      this.logger.log('[USER-EDIT-ADD] - LOGGED USER ', user)
       if (user) {
         this.CURRENT_USER_ID = user._id;
-        console.log('PROJECT-USER DETAILS - CURRENT USER ID ', this.CURRENT_USER_ID)
+        this.logger.log('[USER-EDIT-ADD] - CURRENT USER ID ', this.CURRENT_USER_ID)
       }
     });
   }
@@ -207,7 +203,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
   getUserRole() {
     this.subscription = this.usersService.project_user_role_bs.subscribe((userRole) => {
 
-      console.log('PROJECT-USER DETAILS - CURRENT USER ROLE »»» ', userRole)
+      this.logger.log('[USER-EDIT-ADD] - PROJECT-USER DETAILS - CURRENT USER ROLE »»» ', userRole)
       // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
       this.CURRENT_USER_ROLE = userRole;
     })
@@ -215,9 +211,9 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
 
   hasChangedAvailabilityStatusInSidebar() {
     this.usersService.has_changed_availability_in_sidebar.subscribe((has_changed_availability) => {
-      console.log('»»USER COMP SUBSCRIBES TO HAS CHANGED AVAILABILITY FROM THE SIDEBAR', has_changed_availability)
+      this.logger.log('[USER-EDIT-ADD] SUBSCRIBES TO HAS CHANGED AVAILABILITY FROM THE SIDEBAR', has_changed_availability)
       if (has_changed_availability === true) {
-        this.getProjectUserId();
+        this.getParamsProjectUserIdAndThenGetProjectUsersById();
       }
     })
   }
@@ -227,25 +223,25 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
     this.translate.get('ChangeAvailabilitySuccessNoticationMsg')
       .subscribe((text: string) => {
         this.changeAvailabilitySuccessNoticationMsg = text;
-        // console.log('+ + + change Availability Success Notication Msg', text)
+        // this.logger.log('[USER-EDIT-ADD] + + + change Availability Success Notication Msg', text)
       });
 
     this.translate.get('ChangeAvailabilityErrorNoticationMsg')
       .subscribe((text: string) => {
         this.changeAvailabilityErrorNoticationMsg = text;
-        // console.log('+ + + change Availability Error Notication Msg', text)
+        // this.logger.log('[USER-EDIT-ADD] + + + change Availability Error Notication Msg', text)
       });
 
     this.translate.get('SuccessfullyUpdated')
       .subscribe((text: string) => {
         this.successfullyUpdatedNoticationMsg = text;
-        // console.log('+ + + change Availability Error Notication Msg', text)
+        // this.logger.log('[USER-EDIT-ADD] + + + change Availability Error Notication Msg', text)
       });
 
     this.translate.get('AnErrorOccurredWhileUpdating')
       .subscribe((text: string) => {
         this.anErrorOccurredWhileUpdatingNoticationMsg = text;
-        // console.log('+ + + change Availability Error Notication Msg', text)
+        // this.logger.log('[USER-EDIT-ADD] + + + change Availability Error Notication Msg', text)
       });
 
     this.translateModalOnlyOwnerCanManageProjectAccount()
@@ -254,14 +250,14 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
   translateModalOnlyOwnerCanManageProjectAccount() {
     this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
       .subscribe((translation: any) => {
-        // console.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        // this.logger.log('[USER-EDIT-ADD] - TRANSLATE onlyOwnerCanManageTheAccountPlanMsg text', translation)
         this.onlyOwnerCanManageTheAccountPlanMsg = translation;
       });
 
 
     this.translate.get('LearnMoreAboutDefaultRoles')
       .subscribe((translation: any) => {
-        // console.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        // this.logger.log('[USER-EDIT-ADD] - TRANSLATE onlyOwnerCanManageTheAccountPlanMsg text', translation)
         this.learnMoreAboutDefaultRoles = translation;
       });
   }
@@ -271,11 +267,11 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
       this.UPLOAD_ENGINE_IS_FIREBASE = true;
       const firebase_conf = this.appConfigService.getConfig().firebase;
       this.storageBucket = firebase_conf['storageBucket'];
-      console.log('UserEditAddComponent IMAGE STORAGE  ', this.storageBucket, 'usecase firebase')
+      this.logger.log('[USER-EDIT-ADD] IMAGE STORAGE  ', this.storageBucket, 'usecase firebase')
     } else {
       this.UPLOAD_ENGINE_IS_FIREBASE = false;
       this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
-      console.log('UserEditAddComponent IMAGE STORAGE ', this.baseUrl, 'usecase native')
+      this.logger.log('[USER-EDIT-ADD] IMAGE STORAGE ', this.baseUrl, 'usecase native')
     }
   }
 
@@ -285,49 +281,51 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
 
   getAllUsersOfCurrentProject() {
     this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
-      console.log('UserEditAddComponent PROJECT USERS ', projectUsers);
+      this.logger.log('[USER-EDIT-ADD] - GET ALL PROJECT USERS OF THE PROJECT - RES ', projectUsers);
 
       if (projectUsers) {
         this.projectUsersLength = projectUsers.length;
-        console.log('UserEditAddComponent PROJECT USERS Length ', this.projectUsersLength);
+        this.logger.log('[USER-EDIT-ADD] - GET ALL PROJECT USERS OF THE PROJECT - PROJECT USERS Length ', this.projectUsersLength);
 
-
-        // this.currentUser_projectUserID = projectUser._id;
         const filteredProjectUser = projectUsers.filter((obj: any) => {
           return obj.id_user._id === this.CURRENT_USER_ID;
         });
-        console.log('UserEditAddComponent filteredProjectUser ', filteredProjectUser);
+        this.logger.log('[USER-EDIT-ADD] - GET ALL PROJECT USERS OF THE PROJECT - filteredProjectUser FOR CURRENT_USER_ID ', filteredProjectUser);
         this.currentUser_projectUserID = filteredProjectUser[0]._id
 
       }
     }, error => {
-      console.log('UserEditAddComponent PROJECT USERS - ERROR', error);
+      this.logger.error('[USER-EDIT-ADD] - GET ALL PROJECT USERS OF THE PROJECT - ERROR', error);
     }, () => {
-      console.log('UserEditAddComponent PROJECT USERS - COMPLETE');
+      this.logger.log('[USER-EDIT-ADD] - GET ALL PROJECT USERS OF THE PROJECT * COMPLETE *');
     });
   }
 
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$
-    .pipe(
-      takeUntil(this.unsubscribe$)
-    )
-    .subscribe((projectProfileData: any) => {
-      console.log('UserEditAddComponent - project Profile Data', projectProfileData)
-      if (projectProfileData) {
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((projectProfileData: any) => {
+        this.logger.log('[USER-EDIT-ADD] - GET PROJECT PROFILE - RES', projectProfileData)
+        if (projectProfileData) {
 
-        this.projectPlanAgentsNo = projectProfileData.profile_agents;
-        console.log('UserEditAddComponent projectPlanAgentsNo ', this.projectPlanAgentsNo);
-        this.prjct_profile_type = projectProfileData.profile_type;
-        console.log('UserEditAddComponent prjct_profile_type ', this.prjct_profile_type);
-        this.subscription_is_active = projectProfileData.subscription_is_active;
+          this.projectPlanAgentsNo = projectProfileData.profile_agents;
+          this.logger.log('[USER-EDIT-ADD] - GET PROJECT PROFILE - projectPlanAgentsNo ', this.projectPlanAgentsNo);
 
+          this.prjct_profile_type = projectProfileData.profile_type;
+          this.logger.log('[USER-EDIT-ADD] - GET PROJECT PROFILE - prjct_profile_type ', this.prjct_profile_type);
 
-        this.subscription_end_date = projectProfileData.subscription_end_date
+          this.subscription_is_active = projectProfileData.subscription_is_active;
+          this.subscription_end_date = projectProfileData.subscription_end_date
 
-        this.prjct_profile_name = this.buildPlanName(projectProfileData.profile_name, this.browserLang, this.prjct_profile_type);
-      }
-    })
+          this.prjct_profile_name = this.buildPlanName(projectProfileData.profile_name, this.browserLang, this.prjct_profile_type);
+        }
+      }, err => {
+        this.logger.error('[USER-EDIT-ADD] GET PROJECT PROFILE - ERROR', err);
+      }, () => {
+        this.logger.log('[USER-EDIT-ADD] GET PROJECT PROFILE * COMPLETE *');
+      });
   }
 
   ngOnDestroy() {
@@ -339,7 +337,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
 
   // NOTE: IF THE PLAN IS OF FREE TYPE IN THE USER INTERFACE THE MODAL 'YOU SUBSCRIPTION HAS EXPIRED' IS NOT DISPLAYED
   buildPlanName(planName: string, browserLang: string, planType: string) {
-    console.log('UserEditAddComponent planName ', planName, ' browserLang  ', browserLang);
+    this.logger.log('[USER-EDIT-ADD] buildPlanName - planName ', planName, ' browserLang  ', browserLang);
 
     if (planType === 'payment') {
       if (browserLang === 'it') {
@@ -357,7 +355,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
   }
 
   openModalSubsExpired() {
-    console.log('UserEditAddComponent openModalSubsExpired ');
+    this.logger.log('[USER-EDIT-ADD] - openModalSubsExpired ');
 
     if (this.CURRENT_USER_ROLE === 'owner') {
       this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
@@ -384,30 +382,27 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
   }
 
 
-
-
   getPendingInvitation() {
     this.usersService.getPendingUsers()
       .subscribe((pendingInvitation: any) => {
-        console.log('USER COMP - GET PENDING INVITATION ', pendingInvitation);
+        this.logger.log('[USER-EDIT-ADD] - GET PENDING INVITATION ', pendingInvitation);
 
         if (pendingInvitation) {
           this.countOfPendingInvites = pendingInvitation.length
-          console.log('USER COMP - # OF PENDING INVITATION ', this.countOfPendingInvites);
+          this.logger.log('[USER-EDIT-ADD] - # OF PENDING INVITATION ', this.countOfPendingInvites);
         }
 
       }, error => {
 
-        console.log('USER COMP - GET PENDING INVITATION - ERROR', error);
+        this.logger.error('[USER-EDIT-ADD] - GET PENDING INVITATION - ERROR', error);
       }, () => {
-        console.log('USER COMP - GET PENDING INVITATION - COMPLETE');
+        this.logger.log('[USER-EDIT-ADD] - GET PENDING INVITATION * COMPLETE *');
       });
-
   }
 
-  getProjectUserId() {
+  getParamsProjectUserIdAndThenGetProjectUsersById() {
     this.project_user_id = this.route.snapshot.params['projectuserid'];
-    console.log('USER-EDIT-ADD COMP PROJ-USER ID ', this.project_user_id);
+    this.logger.log('[USER-EDIT-ADD] - GET PARAMS PROJ-USER ID ', this.project_user_id);
 
     if (this.project_user_id) {
       this.getProjectUsersById();
@@ -420,59 +415,49 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
 
       this.projectUser = projectUser;
 
-      console.log('PROJECT-USER DETAILS (GET getProjectUsersById): ', projectUser);
+      this.logger.log('[USER-EDIT-ADD] PROJECT-USER DETAILS (GET getProjectUsersById): ', projectUser);
 
       this.user_id = projectUser.id_user._id;
       this.user_fullname = projectUser.id_user.firstname + ' ' + projectUser.id_user.lastname
 
       this.user_email = projectUser.id_user.email;
-      console.log('PROJECT-USER DETAILS - EMAIL: ', this.user_email);
+      this.logger.log('[USER-EDIT-ADD] PROJECT-USER DETAILS (GET getProjectUsersById) - EMAIL: ', this.user_email);
 
       this.user_role = projectUser.role;
-      console.log('PROJECT-USER DETAILS - ROLE: ', this.user_role);
+      this.logger.log('[USER-EDIT-ADD] PROJECT-USER DETAILS (GET getProjectUsersById) - ROLE: ', this.user_role);
 
       if (projectUser && projectUser.max_assigned_chat) {
         this.max_assigned_chat = projectUser.max_assigned_chat;
       }
 
-    },
-      (error) => {
-        console.log('PROJECT-USER DETAILS - ERR  ', error);
-        this.showSpinner = false;
-      },
-      () => {
-        this.showSpinner = false;
-        console.log('PROJECT-USER DETAILS * COMPLETE *');
-      });
+    }, (error) => {
+      this.logger.error('[USER-EDIT-ADD] PROJECT-USER DETAILS (GET getProjectUsersById) - ERR  ', error);
+      this.showSpinner = false;
+    }, () => {
+      this.showSpinner = false;
+      this.logger.log('[USER-EDIT-ADD] PROJECT-USER DETAILS (GET getProjectUsersById) * COMPLETE *');
+    });
   }
 
   changeAvailabilityStatus(event, projectUser_id: string) {
-    console.log('PROJECT-USER DETAILS - CHANGE STATUS - WHEN CLICK USER IS AVAILABLE event.target.checked ', event.target.checked);
+    this.logger.log('[USER-EDIT-ADD] PROJECT-USER DETAILS - CHANGE STATUS - WHEN CLICK USER IS AVAILABLE event.target.checked ', event.target.checked);
     this.IS_AVAILABLE = event.target.checked
-    // console.log('PROJECT-USER DETAILS - CHANGE STATUS - WHEN CLICK USER IS AVAILABLE ? ', IS_AVAILABLE);
-    console.log('PROJECT-USER DETAILS- CHANGE STATUS - WHEN CLICK USER PROJECT-USER ID ', projectUser_id);
-    // if (IS_AVAILABLE === true) {
-    //   this.IS_AVAILABLE = false
-    //   console.log('PROJECT-USER DETAILS - CHANGE STATUS - NEW USER AVAILABLITY  ', this.IS_AVAILABLE);
-    // }
-    // if (IS_AVAILABLE === false) {
-    //   this.IS_AVAILABLE = true
-    //   console.log('PROJECT-USER DETAILS - CHANGE STATUS - NEW USER AVAILABLITY  ', this.IS_AVAILABLE);
-    // }
+
+    this.logger.log('[USER-EDIT-ADD] PROJECT-USER DETAILS- CHANGE STATUS - WHEN CLICK USER PROJECT-USER ID ', projectUser_id);
 
     this.usersService.updateProjectUser(projectUser_id, this.IS_AVAILABLE).subscribe((projectUser: any) => {
-      console.log('PROJECT-USER DETAILS - PROJECT-USER UPDATED ', projectUser)
+      this.logger.log('[USER-EDIT-ADD] PROJECT-USER DETAILS - PROJECT-USER UPDATED ', projectUser)
 
       // NOTIFY TO THE USER SERVICE WHEN THE AVAILABLE / UNAVAILABLE BUTTON IS CLICKED
       this.usersService.availability_switch_clicked(true)
 
     }, (error) => {
-      console.log('PROJECT-USER DETAILS - PROJECT-USER UPDATED ERR  ', error);
+      this.logger.error('[USER-EDIT-ADD] PROJECT-USER DETAILS - PROJECT-USER UPDATED - ERROR  ', error);
       // =========== NOTIFY ERROR ============
       // this.notify.showNotification('An error occurred while updating status', 4, 'report_problem');
       this.notify.showWidgetStyleUpdateNotification(this.changeAvailabilityErrorNoticationMsg, 4, 'report_problem');
     }, () => {
-      console.log('PROJECT-USER DETAILS - PROJECT-USER UPDATED  * COMPLETE *');
+      this.logger.log('[USER-EDIT-ADD] PROJECT-USER DETAILS - PROJECT-USER UPDATED  * COMPLETE *');
       // =========== NOTIFY SUCCESS ==========
       // this.notify.showNotification('status successfully updated', 2, 'done');
       this.notify.showWidgetStyleUpdateNotification(this.changeAvailabilitySuccessNoticationMsg, 2, 'done');
@@ -482,13 +467,13 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
 
   updateUserRoleAndMaxchat() {
     const update_project_user_btn = <HTMLElement>document.querySelector('.update-pu-btn');
-    console.log('!!! CONTACTS - SEARCH BTN ', update_project_user_btn)
+    this.logger.log('[USER-EDIT-ADD] - UPDATE PROJECT USER BTN ', update_project_user_btn)
     update_project_user_btn.blur();
 
-    console.log('PROJECT-USER DETAILS - updateUserRole this.max_assigned_chat', this.max_assigned_chat)
-    console.log('PROJECT-USER DETAILS - updateUserRole current user id', this.CURRENT_USER_ID)
-    console.log('PROJECT-USER DETAILS - updateUserRole project_user_id', this.project_user_id)
-    console.log('PROJECT-USER DETAILS - updateUserRole  user_id  from project-user object', this.user_id)
+    this.logger.log('USER-EDIT-ADD] PROJECT-USER DETAILS - updateUserRoleAndMaxchat - this.max_assigned_chat', this.max_assigned_chat)
+    this.logger.log('USER-EDIT-ADD] PROJECT-USER DETAILS - updateUserRoleAndMaxchat - current user id', this.CURRENT_USER_ID)
+    this.logger.log('USER-EDIT-ADD] PROJECT-USER DETAILS - updateUserRoleAndMaxchat - project_user_id', this.project_user_id)
+    this.logger.log('USER-EDIT-ADD] PROJECT-USER DETAILS - updateUserRoleAndMaxchat - user_id  from project-user object', this.user_id)
 
 
     let maxassignedchat = -1
@@ -504,37 +489,42 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
     // the same was done for updating the available / unavailable status (see in user service the callbacks updateCurrentUserAvailability() and updateProjectUser() )
     let projectuserid = "";
     if (this.CURRENT_USER_ID !== this.user_id) {
-      console.log('PROJECT-USER DETAILS - IT IS NOT THE CURRENT USER WHO IS UPDATING HIS PROJECT-USER PROFILE ')
+      this.logger.log('[USER-EDIT-ADD] - updateUserRoleAndMaxchat - PROJECT-USER DETAILS - IT IS NOT THE CURRENT USER WHO IS UPDATING HIS PROJECT-USER PROFILE ')
       projectuserid = this.project_user_id
     } else {
-      console.log('PROJECT-USER DETAILS - THE CURRENT USER IS UPDATING HIS PROJECT-USER PROFILE ')
+      this.logger.log('[USER-EDIT-ADD] - updateUserRoleAndMaxchat - PROJECT-USER DETAILS - THE CURRENT USER IS UPDATING HIS PROJECT-USER PROFILE ')
     }
 
     this.usersService.updateProjectUserRoleAndMaxchat(projectuserid, this.role, maxassignedchat)
       .subscribe((projectUser: any) => {
-        console.log('PROJECT-USER DETAILS - PROJECT-USER UPDATED ', projectUser)
+        this.logger.log('[USER-EDIT-ADD] - updateUserRoleAndMaxchat - PROJECT-USER DETAILS - PROJECT-USER UPDATED - RES ', projectUser)
 
       }, (error) => {
-        console.log('PROJECT-USER DETAILS - PROJECT-USER UPDATED ERR  ', error);
+        this.logger.error('[USER-EDIT-ADD] - updateUserRoleAndMaxchat - PROJECT-USER DETAILS - PROJECT-USER UPDATED ERROR  ', error);
 
-        // =========== NOTIFY ERROR ===========
+        // -----------------------
+        // NOTIFY ERROR 
+        // -----------------------
         this.notify.showWidgetStyleUpdateNotification(this.anErrorOccurredWhileUpdatingNoticationMsg, 4, 'report_problem')
       }, () => {
-        console.log('PROJECT-USER DETAILS - PROJECT-USER UPDATED  * COMPLETE *');
+        this.logger.log('[USER-EDIT-ADD] - updateUserRoleAndMaxchat - PROJECT-USER DETAILS - PROJECT-USER UPDATED  * COMPLETE *');
 
-        // =========== NOTIFY SUCCESS===========
+        // -----------------------
+        // NOTIFY SUCCESS 
+        // -----------------------
         this.notify.showWidgetStyleUpdateNotification(this.successfullyUpdatedNoticationMsg, 2, 'done');
-        // this.router.navigate(['project/' + this.id_project + '/users']);
+
       });
   }
 
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
       this.project = project
-      console.log('USER EDIT ADD - PROJECT ', this.project)
+      this.logger.log('[USER-EDIT-ADD] - GET CURRENT PROJECT ', this.project)
       if (this.project) {
         this.project_name = project.name;
         this.id_project = project._id;
+        this.logger.log('[USER-EDIT-ADD] - GET CURRENT PROJECT - PROJECT-NAME ', this.project_name, ' PROJECT-ID ', this.id_project)
       }
     });
   }
@@ -550,7 +540,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
 
   setSelected(role) {
     this.role = role;
-    console.log('setSelected Selected ROLE ', this.role)
+    this.logger.log('[USER-EDIT-ADD] - setSelected Selected ROLE ', this.role)
 
     if (role !== 'ROLE_NOT_SELECTED') {
       this.ROLE_NOT_SELECTED = false;
@@ -558,16 +548,10 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
       this.ROLE_NOT_SELECTED = true;
     }
   }
-  // setSelectedRole() {
-  //   console.log('setSelected Selected ROLE ', this.selectedRole)
-  // }
-
 
   emailChange(event) {
-    // console.log('!!!!! INVITE THE USER - EDITING EMAIL ', event);
-
     this.EMAIL_IS_VALID = this.validateEmail(event)
-    // console.log('!!!!! INVITE THE USER - EMAIL IS VALID ', this.EMAIL_IS_VALID);
+    // this.logger.log('[USER-EDIT-ADD] !!!!! INVITE THE USER - EMAIL IS VALID ', this.EMAIL_IS_VALID);
   }
 
   validateEmail(email) {
@@ -578,10 +562,10 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
   }
 
   invite() {
-    console.log('INVITE USER No of Project Users ', this.projectUsersLength)
-    console.log('INVITE USER No of Pending Invites ', this.countOfPendingInvites)
-    console.log('INVITE USER No of Operators Seats (agents purchased)', this.projectPlanAgentsNo)
-    console.log('INVITE USER No of PROJECT PROFILE TYPE ', this.prjct_profile_type)
+    this.logger.log('[USER-EDIT-ADD] - INVITE USER No of Project Users ', this.projectUsersLength)
+    this.logger.log('[USER-EDIT-ADD] - INVITE USER No of Pending Invites ', this.countOfPendingInvites)
+    this.logger.log('[USER-EDIT-ADD] - INVITE USER No of Operators Seats (agents purchased)', this.projectPlanAgentsNo)
+    this.logger.log('[USER-EDIT-ADD] - INVITE USER No of PROJECT PROFILE TYPE ', this.prjct_profile_type)
 
 
     if (this.prjct_profile_type === 'payment') {
@@ -590,12 +574,9 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
       } else {
         this.notify._displayContactUsModal(true, 'operators_seats_unavailable');
       }
-
       /* IN THE "FREE TYPE PLAN" THERE ISN'T LIMIT TO THE NUMBER OF INVITED USER */
     } else {
-
       this.doInviteUser();
-
     }
   }
 
@@ -608,33 +589,33 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
       this.SHOW_CIRCULAR_SPINNER = false
     }, 1000);
 
-    console.log('INVITE THE USER EMAIL ', this.user_email)
-    console.log('INVITE THE USER ROLE ', this.role)
+    this.logger.log('[USER-EDIT-ADD] - INVITE THE USER EMAIL ', this.user_email)
+    this.logger.log('[USER-EDIT-ADD] - INVITE THE USER ROLE ', this.role)
 
     if (this.role === 'ROLE_NOT_SELECTED') {
       this.role = ''
     }
 
     this.usersService.inviteUser(this.user_email, this.role).subscribe((project_user: any) => {
-      console.log('INVITE USER - POST SUBSCRIPTION PROJECT-USER ', project_user);
+      this.logger.log('[USER-EDIT-ADD] - INVITE USER - POST SUBSCRIPTION PROJECT-USER - RES ', project_user);
 
       // HANDLE THE ERROR "Pending Invitation already exist"
       if (project_user.success === false && project_user.msg === 'Pending Invitation already exist.') {
 
         this.PENDING_INVITATION_ALREADY_EXIST = true;
-        console.log('INVITE USER SUCCESS = FALSE ', project_user.msg, ' PENDING_INVITATION_ALREADY_EXIST', this.PENDING_INVITATION_ALREADY_EXIST);
+        this.logger.error('[USER-EDIT-ADD] - INVITE USER SUCCESS = FALSE ', project_user.msg, ' PENDING_INVITATION_ALREADY_EXIST', this.PENDING_INVITATION_ALREADY_EXIST);
       } else {
         this.PENDING_INVITATION_ALREADY_EXIST = false;
       }
 
     }, (error) => {
-      console.log('INVITE USER  ERROR ', error);
+      this.logger.error('[USER-EDIT-ADD] - INVITE USER  ERROR ', error);
 
       const invite_errorbody = JSON.parse(error._body)
-      console.log('INVITE USER  ERROR BODY ', invite_errorbody);
+      this.logger.error('[USER-EDIT-ADD] - INVITE USER  ERROR BODY ', invite_errorbody);
 
       if ((invite_errorbody['success'] === false) && (invite_errorbody['code'] === 4000)) {
-        console.log('!!! Forbidden, you can not invite yourself')
+        this.logger.error('[USER-EDIT-ADD] !!! Forbidden, you can not invite yourself')
 
         this.INVITE_YOURSELF_ERROR = true;
         this.INVITE_USER_ALREADY_MEMBER_ERROR = false;
@@ -642,7 +623,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
         this.PENDING_INVITATION_ALREADY_EXIST = false;
 
       } else if ((invite_errorbody['success'] === false) && (invite_errorbody['code'] === 4001)) {
-        console.log('!!! Forbidden, user is already a member')
+        this.logger.error('[USER-EDIT-ADD] !!! Forbidden, user is already a member')
 
         this.INVITE_YOURSELF_ERROR = false;
         this.INVITE_USER_ALREADY_MEMBER_ERROR = true;
@@ -650,7 +631,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
         this.PENDING_INVITATION_ALREADY_EXIST = false;
 
       } else if ((invite_errorbody['success'] === false) && (error['status'] === 404)) {
-        console.log('!!! USER NOT FOUND ')
+        this.logger.error('[USER-EDIT-ADD] !!! USER NOT FOUND ')
         this.INVITE_YOURSELF_ERROR = false;
         this.INVITE_USER_ALREADY_MEMBER_ERROR = false;
         this.INVITE_USER_NOT_FOUND = true;
@@ -666,7 +647,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
 
       }
     }, () => {
-      console.log('INVITE USER  * COMPLETE *');
+      this.logger.log('[USER-EDIT-ADD] - INVITE USER  * COMPLETE *');
       this.INVITE_YOURSELF_ERROR = false;
       this.INVITE_OTHER_ERROR = false;
       this.INVITE_USER_ALREADY_MEMBER_ERROR = false;
@@ -683,8 +664,8 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
   }
 
   onCloseModalHandled() {
-    console.log('CONTINUE PRESSED ');
-    // console.log('CONTINUE PRESSED Selected ROLE ', this.role);
+    this.logger.log('[USER-EDIT-ADD] - onCloseModalHandled - CONTINUE PRESSED ');
+    // this.logger.log('CONTINUE PRESSED Selected ROLE ', this.role);
     // this.role = 'ROLE_NOT_SELECTED';
     this.selectedRole = 'ROLE_NOT_SELECTED';
     this.user_email = '';

@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { DepartmentService } from 'app/services/department.service'
 import { UsersService } from '../../services/users.service';
 import { FaqKbService } from '../../services/faq-kb.service';
-
+import { LoggerService } from '../../services/logger/logger.service';
 @Component({
   selector: 'appdashboard-basetrigger',
   template: '',
@@ -33,13 +33,14 @@ export class BasetriggerComponent implements OnInit {
     public translate: TranslateService,
     public departmentService: DepartmentService,
     public usersService: UsersService,
-    public faqKbService: FaqKbService
+    public faqKbService: FaqKbService,
+    public logger: LoggerService
   ) {
 
   }
 
   ngOnInit() {
-    console.log('BASE-TRIGGER - CALLING  BASE-TRIGGER ONINIT ');
+    this.logger.log('[TRIGGER][BASE-TRIGGER] - CALLING  BASE-TRIGGER ONINIT ');
     this.translateNotifyMsg()
     this.getDepartments();
     this.translateBasicINFO();
@@ -61,8 +62,8 @@ export class BasetriggerComponent implements OnInit {
     Observable
       .zip(projectUsers, bots, (_projectUsers: any, _bots: any) => ({ _projectUsers, _bots }))
       .subscribe(pair => {
-        console.log('BASE-TRIGGER - GET P-USERS-&-BOTS - PROJECT USERS : ', pair._projectUsers);
-        console.log('BASE-TRIGGER - GET P-USERS-&-BOTS - BOTS: ', pair._bots);
+        this.logger.log('[TRIGGER][BASE-TRIGGER] - GET P-USERS-&-BOTS - PROJECT USERS : ', pair._projectUsers);
+        this.logger.log('[TRIGGER][BASE-TRIGGER] - GET P-USERS-&-BOTS - BOTS: ', pair._bots);
 
         if (pair && pair._projectUsers) {
           this.projectUsersList = pair._projectUsers;
@@ -90,25 +91,17 @@ export class BasetriggerComponent implements OnInit {
           });
         }
 
-
-        // console.log('BASE-TRIGGER - GET P-USERS-&-BOTS - BOTS: ', this.bots);
-        // console.log('BASE-TRIGGER - GET P-USERS-&-BOTS - PROJECT-USER: ', this.projectUsersList);
-
-        console.log('BASE-TRIGGER - GET P-USERS-&-BOTS - PROJECT-USER & BOTS ARRAY : ', this.projectUserAndBotsArray);
-
+        this.logger.log('[TRIGGER][BASE-TRIGGER] - GET P-USERS-&-BOTS - PROJECT-USER & BOTS ARRAY : ', this.projectUserAndBotsArray);
 
       }, error => {
-
-        console.log('BASE-TRIGGER - GET P-USERS-&-BOTS - ERROR: ', error);
+        this.logger.error('[TRIGGER][BASE-TRIGGER] - GET P-USERS-&-BOTS - ERROR: ', error);
       }, () => {
-
-        console.log('BASE-TRIGGER - GET P-USERS-&-BOTS - COMPLETE');
+        this.logger.log('[TRIGGER][BASE-TRIGGER] - GET P-USERS-&-BOTS - COMPLETE');
       });
   }
 
 
   translateNotifyMsg() {
-
     this.translate.get('Trigger.Add_Edit.ConditionNotifyError').subscribe((text: string) => {
       this.messageCondition = text;
     });
@@ -123,39 +116,36 @@ export class BasetriggerComponent implements OnInit {
 
   // get all available departments by project_id and customize json for dropdown element
   getDepartments() {
-
     this.departmentService.getDeptsByProjectId().subscribe((_departments: any) => {
-      console.log('BASE-TRIGGER - GET DEPTS RESPONSE  ', _departments);
+      this.logger.log('[TRIGGER][BASE-TRIGGER] - GET DEPTS RESPONSE  ', _departments);
 
       _departments.forEach(dept => {
 
         const index = this.departments.findIndex((d) => d.id === dept['id']);
-        // console.log('BASE-TRIGGER - GET getDefaultDept DEPTS RESPONSE departments includes dept._id  ', index);
+        // this.logger.log('BASE-TRIGGER - GET getDefaultDept DEPTS RESPONSE departments includes dept._id  ', index);
         if (index === -1) {
           this.departments.push({ id: dept._id, label_key: dept.name, default: dept.default })
         }
         if (dept.default === true) {
-          console.log('BASE-TRIGGER - GET getDefaultDept DEPTS RESPONSE default dept  ', dept);
+          this.logger.log('[TRIGGER][BASE-TRIGGER] - GET getDefaultDept DEPTS RESPONSE default dept  ', dept);
           this.default_dept_id = dept.id
         }
       });
 
-      console.log('BASE-TRIGGER - GET DEPTS - ARRAY : ', this.departments);
+      this.logger.log('[TRIGGER][BASE-TRIGGER] - GET DEPTS - ARRAY : ', this.departments);
 
     }, error => {
-      console.log('BASE-TRIGGER - GET DEPTS - ERROR: ', error);
+      this.logger.error('[TRIGGER][BASE-TRIGGER] - GET DEPTS - ERROR: ', error);
     }, () => {
       // this.showSpinner = false;
-      console.log('BASE-TRIGGER - GET DEPTS * COMPLETE *')
+      this.logger.log('[TRIGGER][BASE-TRIGGER] - GET DEPTS * COMPLETE *')
 
     });
   }
 
-
-
   translateBasicINFO() {
     this.translate.get('Trigger.ArrayCondition_Option_Action').subscribe((translateArray: any) => {
-      console.log('Translate TEXT ', translateArray)
+      this.logger.log('[TRIGGER][BASE-TRIGGER] - Translate translateArray ', translateArray)
       const translateConditions = translateArray.ConditionArray;
       const translateOptions = translateArray.OptionArray;
       const translateAction = translateArray.ActionArray;
@@ -821,7 +811,7 @@ export class BasetriggerComponent implements OnInit {
       // key: 'request.create', Crea richiesta
       // key: 'request.department.route', Assegna a diparimento
 
-      console.log("*** Deps: ", this.departments)
+      this.logger.log("*** Deps: ", this.departments)
 
       this.operator = {
         'attributes.departmentId': this.departments,
@@ -912,12 +902,12 @@ export class BasetriggerComponent implements OnInit {
         ],
         'request.create': this.departments
       },
-        console.log('No pair_cond:', this.condition)
+        this.logger.log('[TRIGGER][BASE-TRIGGER] No pair_cond:', this.condition)
 
     }, (error) => {
-      console.log('!!!  REQUESTS TRANSLATE FOR COND, OPT AND ACT - ERROR: ', error);
+      this.logger.error('[TRIGGER][BASE-TRIGGER] - Translate translateArray - REQUESTS TRANSLATE FOR COND, OPT AND ACT - ERROR: ', error);
     }, () => {
-      console.log('!!!  REQUESTS TRANSLATE FOR COND, OPT AND ACT - COMPLETE ');
+      this.logger.log('[TRIGGER][BASE-TRIGGER] - Translate translateArray - REQUESTS TRANSLATE FOR COND, OPT AND ACT - COMPLETE ');
       this.showSpinner = false;
     });
   }
@@ -930,7 +920,7 @@ export class BasetriggerComponent implements OnInit {
 
     Observable.zip(translateArray, _departments, (translateArray: any, _departments: any) => ({ translateArray, _departments }))
       .subscribe((pair) => {
-        console.log('pair', pair)
+        this.logger.log('[TRIGGER][BASE-TRIGGER] ***** pair IS USED ?', pair)
 
 
         if (pair) {
@@ -940,7 +930,7 @@ export class BasetriggerComponent implements OnInit {
           });
 
           const translateConditions = pair.translateArray.ConditionArray;
-          console.log('TRIGGER - TRANSLATE COND ', translateConditions);
+          this.logger.log('[TRIGGER][BASE-TRIGGER] - TRANSLATE COND IS USED ? ', translateConditions);
           const translateOptions = pair.translateArray.OptionArray;
           const translateAction = pair.translateArray.ActionArray;
           this.condition = [
@@ -1050,7 +1040,7 @@ export class BasetriggerComponent implements OnInit {
             // { key: 'request.department.root.self', label_key: 'Riassegna allo stesso dipartimento', type: 'input', placeholder: 'text here2'}
           ]
 
-          console.log("*** Deps: ", this.departments);
+          this.logger.log("*** Deps: ", this.departments);
 
           this.operator = {
             'attributes.departmentId': this.departments,
@@ -1071,15 +1061,15 @@ export class BasetriggerComponent implements OnInit {
             ]
           }
 
-          console.log('pair_dep', this.departments)
-          console.log('pair_cond', this.condition)
-          console.log('pair_opt', this.options)
-          console.log('pair_act', this.action)
+          this.logger.log('[TRIGGER][BASE-TRIGGER] pair_dep IS USED?', this.departments)
+          this.logger.log('[TRIGGER][BASE-TRIGGER] pair_cond IS USED?', this.condition)
+          this.logger.log('[TRIGGER][BASE-TRIGGER] pair_opt IS USED?', this.options)
+          this.logger.log('pair_act', this.action)
         }
       }, (error) => {
-        console.log('!!!  REQUESTS DEP or TRANSLATE - ERROR: ', error);
+        this.logger.error('[TRIGGER][BASE-TRIGGER] REQUESTS DEP or TRANSLATE - ERROR: ', error);
       }, () => {
-        console.log('!!!  REQUESTS DEP or TRANSLATE - COMPLETE ');
+        this.logger.log('[TRIGGER][BASE-TRIGGER] REQUESTS DEP or TRANSLATE - COMPLETE - IS USED? ');
         this.showSpinner = false;
       })
 

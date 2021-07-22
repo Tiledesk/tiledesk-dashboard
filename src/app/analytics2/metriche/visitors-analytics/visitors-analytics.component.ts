@@ -4,7 +4,7 @@ import { AnalyticsService } from 'app/services/analytics.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
-
+import { LoggerService } from '../../../services/logger/logger.service';
 @Component({
   selector: 'appdashboard-visitors-analytics',
   templateUrl: './visitors-analytics.component.html',
@@ -27,49 +27,52 @@ export class VisitorsAnalyticsComponent implements OnInit {
   hour: any;
 
   lastdays = 7;
-  selectedDaysId:number; //lastdays filter
-  selectedDeptId:string;  //department filter
+  selectedDaysId: number; //lastdays filter
+  selectedDeptId: string;  //department filter
   lineChart: any;
   subscription: Subscription;
-  initDay:string;
-  endDay:string;
-  selected:string;
+  initDay: string;
+  endDay: string;
+  selected: string;
   visitorsCountLastMonth: any;
 
-  constructor(private translate: TranslateService,
-    private analyticsService: AnalyticsService) {
+  constructor(
+    private translate: TranslateService,
+    private analyticsService: AnalyticsService,
+    private logger: LoggerService
+  ) {
 
     this.lang = this.translate.getBrowserLang();
-    console.log('LANGUAGE ', this.lang);
+    this.logger.log('[ANALYTICS - VISITORS] LANGUAGE ', this.lang);
     this.switchMonthName();
 
   }
 
   ngOnInit() {
-    this.selected='day'
+    this.selected = 'day'
     this.selectedDeptId = '';
-    this.selectedDaysId=7;
+    this.selectedDaysId = 7;
 
-    this.initDay=moment().subtract(6, 'd').format('D/M/YYYY')
-    this.endDay=moment().subtract(0, 'd').format('D/M/YYYY')
-    console.log("INIT", this.initDay, "END", this.endDay);
+    this.initDay = moment().subtract(6, 'd').format('D/M/YYYY')
+    this.endDay = moment().subtract(0, 'd').format('D/M/YYYY')
+    this.logger.log("[ANALYTICS - VISITORS] INIT", this.initDay, "END", this.endDay);
     this.getAggregateValue();
     this.getVisitorsByLastNDays(this.selectedDaysId);
   }
 
   ngOnDestroy() {
-    console.log('!!! ANALYTICS.RICHIESTE - !!!!! UN - SUBSCRIPTION TO REQUESTS');
+    this.logger.log('[ANALYTICS - VISITORS] - !!!!! UN - SUBSCRIPTION TO REQUESTS');
     this.subscription.unsubscribe();
   }
 
   daysSelect(value, $event) {
-    console.log("EVENT: ", $event)
+    this.logger.log("[ANALYTICS - VISITORS] daysSelect EVENT: ", $event)
     this.selectedDaysId = value;
 
     if (value <= 30) {
       this.lastdays = value;
     } else if ((value == 90) || (value == 180)) {
-      this.lastdays = value/30;
+      this.lastdays = value / 30;
     } else if (value == 360) {
       this.lastdays = 1;
     }
@@ -80,18 +83,23 @@ export class VisitorsAnalyticsComponent implements OnInit {
 
   getAggregateValue() {
     this.analyticsService.getVisitors().subscribe((res: any) => {
-      console.log("LAST MONTH VISITORS COUNT: ", res);
-      this.visitorsCountLastMonth = res[0].totalCount;
-      console.log("Visitors Count: ", this.visitorsCountLastMonth);
+      this.logger.log("[ANALYTICS - VISITORS] LAST MONTH VISITORS COUNT: ", res);
+      if (res && res[0]) {
+        this.visitorsCountLastMonth = res[0].totalCount;
+        this.logger.log("[ANALYTICS - VISITORS] Visitors Count: ", this.visitorsCountLastMonth);
+      } else {
+        this.logger.log("[ANALYTICS - VISITORS] THERE ARE NOT VISITORS IN THE LAST MONTH ");
+        this.visitorsCountLastMonth = 0;
+      }
     }, (error) => {
-      console.log("Impossible to retrieve monthly count")
+      this.logger.error("[ANALYTICS - VISITORS] Impossible to retrieve monthly count", error)
       this.visitorsCountLastMonth = 0;
     })
   }
 
   getVisitorsByLastNDays(lastdays) {
     this.subscription = this.analyticsService.getVisitorsByDay(lastdays).subscribe((visitorsByDay) => {
-      console.log("»» VISITORS BY DAY RESULT: ", visitorsByDay)
+      this.logger.log("[ANALYTICS - VISITORS] »» VISITORS BY DAY RESULT: ", visitorsByDay)
 
       const last7days_initarray = [];
       for (let i = 0; i < lastdays; i++) {
@@ -99,7 +107,7 @@ export class VisitorsAnalyticsComponent implements OnInit {
       }
 
       last7days_initarray.reverse();
-      console.log("»» LAST 7 DAYS VISITORS - INIT ARRAY: ", last7days_initarray)
+      this.logger.log("[ANALYTICS - VISITORS] »» LAST 7 DAYS VISITORS - INIT ARRAY: ", last7days_initarray)
 
       const visitorsByDay_series_array = [];
       const visitorsByDay_labels_array = [];
@@ -116,8 +124,8 @@ export class VisitorsAnalyticsComponent implements OnInit {
       const visitorsByDays_final_array = last7days_initarray.map(obj => visitorsByDay_array.find(o => o.day === obj.day) || obj);
 
       this.initDay = visitorsByDays_final_array[0].day;
-      this.endDay = visitorsByDays_final_array[lastdays-1].day;
-      console.log("INIT", this.initDay, "END", this.endDay);
+      this.endDay = visitorsByDays_final_array[lastdays - 1].day;
+      this.logger.log("[ANALYTICS - VISITORS] INIT", this.initDay, "END", this.endDay);
 
       visitorsByDays_final_array.forEach((visitByDay) => {
         visitorsByDay_series_array.push(visitByDay.count)
@@ -125,18 +133,18 @@ export class VisitorsAnalyticsComponent implements OnInit {
         visitorsByDay_labels_array.push(splitted_date[0] + ' ' + this.monthNames[splitted_date[1]])
       })
 
-      console.log('»» VISITORS BY DAY - SERIES (+ NEW + ARRAY OF COUNT)', visitorsByDay_series_array);
-      console.log('»» VISITORS BY DAY - LABELS (+ NEW + ARRAY OF DAY)', visitorsByDay_labels_array);
+      this.logger.log('[ANALYTICS - VISITORS] »» VISITORS BY DAY - SERIES (+ NEW + ARRAY OF COUNT)', visitorsByDay_series_array);
+      this.logger.log('[ANALYTICS - VISITORS] »» VISITORS BY DAY - LABELS (+ NEW + ARRAY OF DAY)', visitorsByDay_labels_array);
 
       const higherCount = this.getMaxOfArray(visitorsByDay_series_array);
 
       //set the stepsize 
       var stepsize;
-      if(this.selectedDaysId>60){
-          stepsize=10;
+      if (this.selectedDaysId > 60) {
+        stepsize = 10;
       }
       else {
-        stepsize=this.selectedDaysId
+        stepsize = this.selectedDaysId
       }
 
       let lang = this.lang;
@@ -224,9 +232,9 @@ export class VisitorsAnalyticsComponent implements OnInit {
       })
 
     }, (error) => {
-      console.log('»» VISITORS BY DAY - ERROR ', error);
+      this.logger.error('[ANALYTICS - VISITORS] »» VISITORS BY DAY - ERROR ', error);
     }, () => {
-      console.log('»» VISITORS BY DAY - * COMPLETE * ');
+      this.logger.log('[ANALYTICS - VISITORS] »» VISITORS BY DAY - * COMPLETE * ');
     })
   }
 

@@ -3,148 +3,176 @@ import { Trigger } from './../models/trigger-model';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment';
 import { AuthService } from 'app/core/auth.service';
 import { AppConfigService } from '../services/app-config.service';
+import { LoggerService } from '../services/logger/logger.service';
 
 @Injectable()
 export class TriggerService {
 
-
-  // BASE_URL = 'https://tiledesk-server-pre.herokuapp.com/'
-  // BASE_URL = environment.mongoDbConfig.BASE_URL;  // replaced with SERVER_BASE_PATH
-  // SERVER_BASE_PATH = environment.SERVER_BASE_URL; // now get from appconfig
   SERVER_BASE_PATH: string;
-
   projectID: string;
   user: any;
   TOKEN: string;
-
 
   constructor(
     private http: HttpClient,
     public auth: AuthService,
     public departmentService: DepartmentService,
-    public appConfigService: AppConfigService
+    public appConfigService: AppConfigService,
+    private logger: LoggerService
   ) {
 
-
     this.user = auth.user_bs.value
-    this.checkUser()
+    this.getToken()
 
     this.auth.user_bs.subscribe((user) => {
       this.user = user;
-      this.checkUser()
+      this.getToken()
     });
 
-    this.getAppConfig();
+    this.getAppConfigAndBuildUrl();
     this.getCurrentProject()
   }
 
-  getAppConfig() {
+  getAppConfigAndBuildUrl() {
     this.SERVER_BASE_PATH = this.appConfigService.getConfig().SERVER_BASE_URL;
-    console.log('AppConfigService getAppConfig (TRIGGER SERV.) SERVER_BASE_PATH ', this.SERVER_BASE_PATH);
+    // this.logger.log('[TRIGGER-SERV] - SERVER BASE PATH ', this.SERVER_BASE_PATH);
   }
 
   getCurrentProject() {
-    console.log('============ PROJECT SERVICE - SUBSCRIBE TO CURRENT PROJ ============');
-    // tslint:disable-next-line:no-debugger
-    // debugger
     this.auth.project_bs.subscribe((project) => {
-      console.log('AnalyticsService  project', project)
+      // this.logger.log('[TRIGGER-SERV] - GET CURRENT PROJECT - project', project)
       if (project) {
-
         this.projectID = project._id;
-        console.log('AnalyticsService ID PROJECT ', this.projectID);
-
+        this.logger.log('[TRIGGER-SERV] GET CURRENT PROJECT - ID PROJECT ', this.projectID);
       }
     });
   }
 
 
-  checkUser() {
+  getToken() {
     if (this.user) {
       this.TOKEN = this.user.token
-      // this.getToken();
-      console.log('AnalyticsService user is signed in');
+
+      // this.logger.log('[TRIGGER-SERV] user is signed in');
     } else {
-      console.log('AnalyticsService No user is signed in');
+      this.logger.log('[TRIGGER-SERV] No user is signed in');
     }
   }
 
+
+  // --------------------------------------------------------------
+  // @ GET ALL TRIGGERS
+  // --------------------------------------------------------------
   getAllTrigger(): Observable<[]> {
 
+    const url = this.SERVER_BASE_PATH + this.projectID + '/modules/triggers'
+    this.logger.log('[TRIGGER-SERV] - GET ALL TRIGGERS - URL ', url);
+
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': this.TOKEN,
-      // 'Authorization': 'Basic ' + btoa('aaa22@aaa22.it:123456')
     });
 
-    // return this.http.get<[]>(this.SERVER_BASE_PATH + this.projectID + '/modules/triggers' ,{ headers:headers})
-    return this.http.get<[]>(this.SERVER_BASE_PATH + this.projectID + '/modules/triggers', { headers: headers })
-
+    return this.http.get<[]>(url, { headers: headers })
   }
 
+  /**
+   * GET TRIGGER BY ID
+   * @param triggerId 
+   * @returns 
+   */
   getTriggerById(triggerId: string): Observable<[Trigger]> {
 
+    const url = this.SERVER_BASE_PATH + this.projectID + '/modules/triggers/' + triggerId
+    this.logger.log('[TRIGGER-SERV] - GET TRIGGER BY ID - URL ', url);
+
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': this.TOKEN,
     });
 
-    return this.http.get<[Trigger]>(this.SERVER_BASE_PATH + this.projectID + '/modules/triggers/' + triggerId, { headers: headers })
+    return this.http.get<[Trigger]>(url, { headers: headers })
 
 
   }
 
+  /**
+   * CREATE TRIGGER
+   * @param trigger 
+   * @returns 
+   */
   postTrigger(trigger: Trigger): Observable<[]> {
+    const url = this.SERVER_BASE_PATH + this.projectID + '/modules/triggers';
+    this.logger.log('[TRIGGER-SERV] - POST TRIGGER - URL ', url);
+
+    const body = trigger;
+    this.logger.log('[TRIGGER-SERV] - POST TRIGGER - BODY ', body);
 
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': this.TOKEN,
     });
 
-    return this.http.post<[]>(this.SERVER_BASE_PATH + this.projectID + '/modules/triggers', JSON.stringify(trigger), { headers: headers });
+    return this.http.post<[]>(url, JSON.stringify(body), { headers: headers });
 
   }
 
+  /**
+   * UPDATE TRIGGER
+   * @param trigger 
+   * @returns 
+   */
   updateTrigger(trigger: Trigger): Observable<[]> {
+    const url = this.SERVER_BASE_PATH + this.projectID + '/modules/triggers/' + trigger._id
+    this.logger.log('[TRIGGER-SERV] - UPDATE TRIGGER - PUT URL ', url);
+
+    const body = trigger
+    this.logger.log('[TRIGGER-SERV] - UPDATE TRIGGER - BODY ', body);
 
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': this.TOKEN,
     });
 
-    return this.http.put<[]>(this.SERVER_BASE_PATH + this.projectID + '/modules/triggers/' + trigger._id, JSON.stringify(trigger), { headers: headers });
+    return this.http.put<[]>(url, JSON.stringify(body), { headers: headers });
 
   }
 
 
+  /**
+   * DELETE TRIGGER
+   * @param triggerID 
+   * @returns 
+   */
   deleteTrigger(triggerID: string): Observable<[]> {
+    const url = this.SERVER_BASE_PATH + this.projectID + '/modules/triggers/' + triggerID
+    this.logger.log('[TRIGGER-SERV] - DELETE TRIGGER - DELETE URL ', url);
 
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': this.TOKEN,
     });
 
-    return this.http.delete<[]>(this.SERVER_BASE_PATH + this.projectID + '/modules/triggers/' + triggerID, { headers: headers });
+    return this.http.delete<[]>(url, { headers: headers });
   }
 
+  /**
+   * RESET PRE BUILT TRIGGER TO DEFAULT
+   * @param triggercode 
+   * @returns 
+   */
   resetPreBuiltTriggerToDefault(triggercode: any): Observable<[]> {
+    const url = this.SERVER_BASE_PATH + this.projectID + '/modules/triggers/' + triggercode + '/reset'
+    this.logger.log('[TRIGGER-SERV] - RESET PRE BUILT TRIGGER TO DEFAULT - PUT URL: ', url)
 
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': this.TOKEN,
     });
 
-    const url = this.SERVER_BASE_PATH + this.projectID + '/modules/triggers/' + triggercode + '/reset'
-    console.log('RESET TRIGGER TO DEFAULT URL: ', url)
     return this.http.put<[]>(url, null, { headers: headers });
-
   }
-
-
-
-
 
 }

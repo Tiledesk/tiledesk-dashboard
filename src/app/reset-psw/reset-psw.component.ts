@@ -7,7 +7,7 @@ import { Location } from '@angular/common';
 import { PasswordValidation } from './password-validation';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../services/brand.service';
-
+import { LoggerService } from '../services/logger/logger.service';
 
 type EmailField = 'email';
 type EmailFormErrors = { [u in EmailField]: string };
@@ -83,7 +83,8 @@ export class ResetPswComponent implements OnInit {
       private resetPswService: ResetPswService,
       private activetedRoute: ActivatedRoute,
       public location: Location,
-      public brandService: BrandService
+      public brandService: BrandService,
+      private logger: LoggerService
     ) {
 
     const brand = brandService.getBrand();
@@ -116,28 +117,28 @@ export class ResetPswComponent implements OnInit {
   detectResetPswRoute() {
     if (this.location.path() !== '') {
       this.route = this.location.path();
-      console.log('RESET PSW »> »> ', this.route);
+      // this.logger.log('[RESET PSW] detectResetPswRoute »> »> ', this.route);
       if (this.route.indexOf('/resetpassword') !== -1) {
         // this.router.navigate([`${this.route}`]);
         this.IS_RESET_PSW_ROUTE = true;
-        console.log('»> »> RESET PSW - IS RESET PSW PAGE »> »> ', this.IS_RESET_PSW_ROUTE);
+        this.logger.log('[RESET-PSW] - IS RESET PSW COMP »> »> ', this.IS_RESET_PSW_ROUTE);
 
-        /**
-         * ****** GET RESET PSW REQUEST ID ******
-         */
+        // ----------------------------------------
+        //  GET RESET PSW REQUEST ID 
+        // ----------------------------------------
         this.getResetPswRequestId();
 
       } else {
         this.IS_RESET_PSW_ROUTE = false;
         this.showSpinner = false;
-        console.log('»> »> RESET PSW - IS RESET PSW PAGE »> »> ', this.IS_RESET_PSW_ROUTE);
+        this.logger.log('[RESET-PSW] - IS RESET PSW PAGE »> »> ', this.IS_RESET_PSW_ROUTE);
       }
     }
   }
 
   getResetPswRequestId() {
     this.resetPswRequestId = this.activetedRoute.snapshot.params['resetpswrequestid'];
-    console.log('»»» »»» RESET PSW - ID OF THE REQUEST FOR RESET THE PSW ', this.resetPswRequestId);
+    this.logger.log('[RESET-PSW] - ID OF THE REQUEST FOR RESET THE PSW ', this.resetPswRequestId);
 
     if (this.resetPswRequestId) {
       this.checkIfExistResetPswRequestId();
@@ -146,26 +147,24 @@ export class ResetPswComponent implements OnInit {
 
   checkIfExistResetPswRequestId() {
     this.resetPswService.getUserByPswRequestId(this.resetPswRequestId).subscribe((user) => {
-      console.log('»»» »»» CHECK RESET PSW REQUEST ID  ', user);
+      this.logger.log('[RESET-PSW] »»» »»» CHECK RESET PSW REQUEST ID  ', user);
 
-    },
-      (error) => {
-        console.log('»»» »»» CHECK RESET PSW REQUEST ID - ERROR ', error);
-        const ckeckrequestid_errorbody = JSON.parse(error._body);
-        console.log('»»» »»» CHECK RESET PSW REQUEST ID - ERROR BODY ', ckeckrequestid_errorbody)
-        if (error && ckeckrequestid_errorbody.msg === 'Invalid password reset key') {
+    }, (error) => {
+      this.logger.error('[RESET-PSW] »»» »»» CHECK RESET PSW REQUEST ID - ERROR ', error);
+      const ckeckrequestid_errorbody = JSON.parse(error._body);
+      this.logger.log('[RESET-PSW] »»» »»» CHECK RESET PSW REQUEST ID - ERROR BODY ', ckeckrequestid_errorbody)
+      if (error && ckeckrequestid_errorbody.msg === 'Invalid password reset key') {
 
-          this.RESET_PSW_REQUEST_ID_IS_VALID = false;
-          console.log('»»» »»» CHECK RESET PSW REQUEST ID - IS VALID REQUEST ID ', this.RESET_PSW_REQUEST_ID_IS_VALID);
-          this.showSpinner = false;
-        }
-      },
-      () => {
-        this.RESET_PSW_REQUEST_ID_IS_VALID = true;
-        console.log('»»» »»» CHECK RESET PSW REQUEST ID - COMPLETE ');
-        console.log('»»» »»» CHECK RESET PSW REQUEST ID - IS VALID REQUEST ID ', this.RESET_PSW_REQUEST_ID_IS_VALID);
-        this.showSpinner = false
-      });
+        this.RESET_PSW_REQUEST_ID_IS_VALID = false;
+        this.logger.log('[RESET-PSW] »»» »»» CHECK RESET PSW REQUEST ID - IS VALID REQUEST ID ', this.RESET_PSW_REQUEST_ID_IS_VALID);
+        this.showSpinner = false;
+      }
+    }, () => {
+      this.RESET_PSW_REQUEST_ID_IS_VALID = true;
+      this.logger.log('[RESET PSW] »»» »»» CHECK RESET PSW REQUEST ID * COMPLETE *');
+      this.logger.log('[RESET PSW] »»» »»» CHECK RESET PSW REQUEST ID - IS VALID REQUEST ID ', this.RESET_PSW_REQUEST_ID_IS_VALID);
+      this.showSpinner = false
+    });
   }
 
   buildEmailForm() {
@@ -245,30 +244,30 @@ export class ResetPswComponent implements OnInit {
   }
 
   dismissAlert() {
-    console.log('DISMISS ALERT CLICKED')
+    this.logger.log('[RESET-PSW] - DISMISS ALERT CLICKED')
     this.display = 'none';
   }
 
   dismissResetPswEmailSentAlert() {
-    console.log('DISMISS RESET PSW EMAIL ALERT CLICKED')
+    this.logger.log('[RESET-PSW] - DISMISS RESET PSW EMAIL ALERT CLICKED')
     this.displayResetPswEmailSentAlert = 'none';
   }
 
   requestResetPsw() {
     this.showSpinnerInRequestNewPswBtn = true;
-    console.log('REQUEST RESET PSW USER EMAIL ', this.emailForm.value['email']);
+    this.logger.log('[RESET-PSW] - REQUEST RESET PSW USER EMAIL ', this.emailForm.value['email']);
 
     this.resetPswService.sendResetPswEmailAndUpdateUserWithResetPswRequestId(this.emailForm.value['email']).subscribe((user) => {
-      console.log('REQUEST RESET PSW - UPDATED USER ', user);
+      this.logger.log('[RESET-PSW] - REQUEST RESET PSW - UPDATED USER ', user);
 
       if (user['success'] === false) {
         this.ERROR_SENDING_EMAIL_RESET_PSW = true;
-        console.log('REQUEST RESET PSW - UPDATED USER - success false > MSG', user['msg']);
+        this.logger.error('[RESET-PSW] - REQUEST RESET PSW - UPDATED USER - success false > MSG', user['msg']);
         if (user['msg'] === 'User not found.') {
-        
+
           this.ERROR_SENDING_EMAIL_RESET_PSW_USER_NOT_FOUND = true;
           this.ERROR_SENDING_EMAIL_RESET_PSW_OTHER_ERROR = false;
-        } else { 
+        } else {
 
           this.ERROR_SENDING_EMAIL_RESET_PSW_OTHER_ERROR = true;
           this.ERROR_SENDING_EMAIL_RESET_PSW_USER_NOT_FOUND = false;
@@ -278,69 +277,62 @@ export class ResetPswComponent implements OnInit {
         this.ERROR_SENDING_EMAIL_RESET_PSW = false;
       }
 
-    },
-      (error) => {
-        this.HAS_REQUEST_NEW_PSW = false
-        this.showSpinnerInRequestNewPswBtn = true;
-        console.log('REQUEST RESET PSW - ERROR ', error);
+    }, (error) => {
+      this.HAS_REQUEST_NEW_PSW = false
+      this.showSpinnerInRequestNewPswBtn = true;
+      this.logger.error('[RESET-PSW] - REQUEST RESET PSW - ERROR ', error);
+      this.showSpinnerInRequestNewPswBtn = false;
+      if (error.status === 0) {
+        this.ERROR_SENDING_EMAIL_RESET_PSW_OTHER_ERROR = true;
+        this.OTHER_ERROR_MSG = 'Sorry, there was an error connecting to the server'
+        this.display = 'block';
+      } else {
+        this.ERROR_SENDING_EMAIL_RESET_PSW_OTHER_ERROR = true;
+        this.OTHER_ERROR_MSG = this.OTHER_ERROR_MSG;
+        this.display = 'block';
+      }
+
+    }, () => {
+      this.logger.log('REQUEST RESET PSW - * COMPLETE *');
+      setTimeout(() => {
         this.showSpinnerInRequestNewPswBtn = false;
-        if (error.status === 0) {
-          this.ERROR_SENDING_EMAIL_RESET_PSW_OTHER_ERROR = true;
-          this.OTHER_ERROR_MSG = 'Sorry, there was an error connecting to the server'
-          this.display = 'block';
-        } else {
-          this.ERROR_SENDING_EMAIL_RESET_PSW_OTHER_ERROR = true;
-          this.OTHER_ERROR_MSG = this.OTHER_ERROR_MSG;
-          this.display = 'block';
-        }
-        // const signin_errorbody = JSON.parse(error._body);
-        // console.log('SIGNIN ERROR BODY ', signin_errorbody)
-        // this.signin_errormsg = signin_errorbody['msg']
+        this.displayResetPswEmailSentAlert = 'block'
+        this.HAS_REQUEST_NEW_PSW = true
+      }, 300);
 
-      },
-      () => {
-        console.log('REQUEST RESET PSW - * COMPLETE *');
-        setTimeout(() => {
-          this.showSpinnerInRequestNewPswBtn = false;
-          this.displayResetPswEmailSentAlert = 'block'
-          this.HAS_REQUEST_NEW_PSW = true
-        }, 300);
-
-      });
+    });
   }
 
   resetPsw() {
     this.showSpinnerInResetPswBtn = true;
-    console.log('RESET PSW - NEW PSW ', this.pswForm.value['password']);
+    this.logger.log('[RESET-PSW] - RESET-PSW - NEW PSW ', this.pswForm.value['password']);
 
     this.resetPswService.getUserByResetPswRequestIdAndResetPsw(this.resetPswRequestId, this.pswForm.value['password']).subscribe((user) => {
-      console.log('RESET PSW - UPDATED USER ', user);
+      this.logger.log('[RESET-PSW] - RESET-PSW - UPDATED USER ', user);
 
-    },
-      (error) => {
-        console.log('RESET PSW - ERR ', error);
+    }, (error) => {
+      this.logger.error('[RESET-PSW] - RESET-PSW - ERROR ', error);
+      this.showSpinnerInResetPswBtn = false;
+    }, () => {
+      this.logger.log('[RESET-PSW] - RESET-PSW - * COMPLETE *');
+      setTimeout(() => {
         this.showSpinnerInResetPswBtn = false;
-      },
-      () => {
-        console.log('RESET PSW   * COMPLETE *');
-        setTimeout(() => {
-          this.showSpinnerInResetPswBtn = false;
-          this.PSW_HAS_BEEN_CHANGED = true;
-        }, 300);
-      });
+        this.PSW_HAS_BEEN_CHANGED = true;
+      }, 300);
+    });
   }
 
   // goToLoginForm() {
   // }
   // onDigitCofirmPsw() {
-  //   console.log('WRITING CONFIRM PSW - CONFIRM PSW LENGTH: ', this.pswForm.value['confirmPassword'].length);
-  //   console.log('WRITING CONFIRM PSW - PSW LENGTH: ', this.pswForm.value['password'].length);
+  //   this.logger.log('WRITING CONFIRM PSW - CONFIRM PSW LENGTH: ', this.pswForm.value['confirmPassword'].length);
+  //   this.logger.log('WRITING CONFIRM PSW - PSW LENGTH: ', this.pswForm.value['password'].length);
   //   if (this.pswForm.value['confirmPassword'] === this.pswForm.value['password']) {
   //     this.CONFIRM_PSW_IS_SAME_OF_PWS = true;
-  //     console.log('CONFIRM PSW IS PSW ', this.CONFIRM_PSW_IS_SAME_OF_PWS);
+  //     this.logger.log('CONFIRM PSW IS PSW ', this.CONFIRM_PSW_IS_SAME_OF_PWS);
   //   } else {
   //     this.CONFIRM_PSW_IS_SAME_OF_PWS = false;
-  //     console.log('CONFIRM PSW IS PSW ', this.CONFIRM_PSW_IS_SAME_OF_PWS);
+  //     this.logger.log('CONFIRM PSW IS PSW ', this.CONFIRM_PSW_IS_SAME_OF_PWS);
   //   }
   // }
 

@@ -1,12 +1,9 @@
 
-import { Component, OnInit, AfterViewInit, ElementRef, HostListener, OnDestroy, ViewChildren, QueryList} from '@angular/core';
+import { Component, OnInit, AfterViewInit, ElementRef, HostListener, OnDestroy, ViewChildren, QueryList } from '@angular/core';
 import { ProjectService } from '../../../services/project.service';
 import { Project } from '../../../models/project-model';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/auth.service';
-
-import { RequestsService } from '../../../services/requests.service';
-import { DepartmentService } from '../../../services/department.service';
 import { isDevMode } from '@angular/core';
 import { UsersService } from '../../../services/users.service';
 import { UploadImageService } from '../../../services/upload-image.service';
@@ -19,6 +16,7 @@ import { takeUntil } from 'rxjs/operators';
 import { BrandService } from '../../../services/brand.service';
 import PerfectScrollbar from 'perfect-scrollbar';
 // import { PerfectScrollbarTdDirective } from '../../../_directives/td-perfect-scrollbar/perfect-scrollbar-td.directive';
+import { LoggerService } from '../../../services/logger/logger.service';
 declare const ngDevMode: boolean;
 @Component({
   selector: 'appdashboard-projects-for-panel',
@@ -29,7 +27,7 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
 
   // @ViewChildren(PerfectScrollbarTdDirective)
   // perfectScrollbarTdDirective: QueryList<PerfectScrollbarTdDirective>;
-  
+
   // companyLogoBlack_Url = brand.company_logo_allwhite__url
   // pageBackgroundColor = brand.recent_project_page.background_color;
 
@@ -37,9 +35,9 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
   // companyLogoBlack_Url = brand.company_logo_black__url;
   // companyLogoBlack_width = brand.recent_project_page.company_logo_black__width;
 
-  tparams:any;
+  tparams: any;
   companyLogoBlack_Url: string;
-  companyLogoBlack_width:string;
+  companyLogoBlack_width: string;
 
   projects: Project[];
   id_project: string;
@@ -80,13 +78,12 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
     private projectService: ProjectService,
     private router: Router,
     private auth: AuthService,
-    private requestsService: RequestsService,
     private element: ElementRef,
-    private departmentService: DepartmentService,
     private usersService: UsersService,
     private uploadImageService: UploadImageService,
     public appConfigService: AppConfigService,
-    public brandService: BrandService
+    public brandService: BrandService,
+    private logger: LoggerService
   ) {
     const brand = brandService.getBrand();
     this.tparams = brand;
@@ -94,7 +91,7 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
     this.companyLogoBlack_width = brand['recent_project_page']['company_logo_black__width'];
 
 
-    console.log('IS DEV MODE ', isDevMode());
+    this.logger.log('[PROJECTS-X-PANEL] - IS DEV MODE ', isDevMode());
     this.APP_IS_DEV_MODE = isDevMode()
   }
 
@@ -104,7 +101,7 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     if (ngDevMode) {
-      console.log('PROJECTS-X-PANEL DEV MODE');
+      this.logger.log('[PROJECTS-X-PANEL] is in DEV MODE');
     }
     const navbar: HTMLElement = this.element.nativeElement;
     this.toggleButton = navbar.getElementsByClassName('navbar-toggle')[0];
@@ -124,21 +121,20 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
 
     this.setPerfectScrollbar();
     this.listenHasDeleteUserProfileImage();
-   
+
   }
   setPerfectScrollbar() {
- const container_projects_for_panel = <HTMLElement>document.querySelector('.main-content-projects-for-panel');
-    console.log('PROJECTS-X-PANEL main-content-projects-for-panel', container_projects_for_panel);
+    const container_projects_for_panel = <HTMLElement>document.querySelector('.main-content-projects-for-panel');
+    this.logger.log('[PROJECTS-X-PANEL] main-content-projects-for-panel', container_projects_for_panel);
     let ps = new PerfectScrollbar(container_projects_for_panel);
   }
 
   ngAfterViewInit() {
-   
   }
 
   ngOnDestroy() {
     this.projects.forEach(project => {
-      // console.log('PROJECTS-X-PANEL - unsubsToWS_CurrentUser_allProject ', project);
+      // this.logger.log('[PROJECTS-X-PANEL] - unsubsToWS_CurrentUser_allProject ', project);
       this.usersService.unsubsToWS_CurrentUser_allProject(project.id_project._id, project._id)
     });
 
@@ -150,35 +146,35 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
 
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
-    console.log('AppConfigService getAppConfig (PROJECTS-X-PANEL) public_Key', this.public_Key)
-    console.log('PROJECTS-X-PANEL public_Key', this.public_Key)
+    this.logger.log('[PROJECTS-X-PANEL] AppConfigService getAppConfig public_Key', this.public_Key)
+    this.logger.log('[PROJECTS-X-PANEL] public_Key', this.public_Key)
 
     let keys = this.public_Key.split("-");
-    console.log('PUBLIC-KEY (PROJECTS-X-PANEL) - public_Key keys', keys)
+    this.logger.log('[PROJECTS-X-PANEL] PUBLIC-KEY- public_Key keys', keys)
 
-    console.log('PUBLIC-KEY (PROJECTS-X-PANEL) - public_Key Arry includes MTT', this.public_Key.includes("MTT"));
+    this.logger.log('[PROJECTS-X-PANEL] PUBLIC-KEY - public_Key Arry includes MTT', this.public_Key.includes("MTT"));
 
     if (this.public_Key.includes("MTT") === true) {
 
       keys.forEach(key => {
-        // console.log('NavbarComponent public_Key key', key)
+        // this.logger.log('NavbarComponent public_Key key', key)
         if (key.includes("MTT")) {
-          console.log('PUBLIC-KEY (PROJECTS-X-PANEL) - key', key);
+          this.logger.log('[PROJECTS-X-PANEL] PUBLIC-KEY  - key', key);
           let mt = key.split(":");
-          console.log('PUBLIC-KEY (PROJECTS-X-PANEL) - mt key&value', mt);
+          this.logger.log('[PROJECTS-X-PANEL] PUBLIC-KEY - mt key&value', mt);
           if (mt[1] === "F") {
             this.MT = false;
-            console.log('PUBLIC-KEY (PROJECTS-X-PANEL) - mt is', this.MT);
+            this.logger.log('[PROJECTS-X-PANEL] PUBLIC-KEY - mt is', this.MT);
           } else {
             this.MT = true;
-            console.log('PUBLIC-KEY (PROJECTS-X-PANEL) - mt is', this.MT);
+            this.logger.log('[PROJECTS-X-PANEL] PUBLIC-KEY - mt is', this.MT);
           }
         }
       });
 
     } else {
       this.MT = false;
-      console.log('PUBLIC-KEY (PROJECTS-X-PANEL) - mt is', this.MT);
+      this.logger.log('[PROJECTS-X-PANEL] PUBLIC-KEY - mt is', this.MT);
     }
   }
 
@@ -186,28 +182,28 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
   getStorageBucket() {
     const firebase_conf = this.appConfigService.getConfig().firebase;
     this.storageBucket = firebase_conf['storageBucket'];
-    console.log('STORAGE-BUCKET Projects (PROJECTS-X-PANEL) ', this.storageBucket)
+    this.logger.log('[PROJECTS-X-PANEL] STORAGE-BUCKET ', this.storageBucket)
   }
 
   listenHasDeleteUserProfileImage() {
     this.uploadImageService.hasDeletedUserPhoto.subscribe((hasDeletedImage) => {
-        console.log('SIDEBAR - hasDeletedImage ? ', hasDeletedImage);
-        this.userImageHasBeenUploaded = false
-        this.userProfileImageExist = false
+      this.logger.log('[PROJECTS-X-PANEL] - LISTEN TO hasDeletedImage ? ', hasDeletedImage);
+      this.userImageHasBeenUploaded = false
+      this.userProfileImageExist = false
     });
 
-}
+  }
 
   checkUserImageExist() {
     this.usersService.userProfileImageExist.subscribe((image_exist) => {
-      console.log('PROJECTS-X-PANEL - USER PROFILE EXIST ? ', image_exist);
+      this.logger.log('[PROJECTS-X-PANEL] - USER PROFILE EXIST ? ', image_exist);
       this.userProfileImageExist = image_exist;
     });
   }
 
   checkUserImageUploadIsComplete() {
     this.uploadImageService.userImageWasUploaded.subscribe((image_exist) => {
-      console.log('PROJECTS-X-PANEL - IMAGE UPLOADING IS COMPLETE ? ', image_exist);
+      this.logger.log('[PROJECTS-X-PANEL] - IMAGE UPLOADING IS COMPLETE ? ', image_exist);
       this.userImageHasBeenUploaded = image_exist;
     });
   }
@@ -215,20 +211,17 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
 
   getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
-      console.log('NAVBAR-FOR-PANEL - USER  ', user)
+      this.logger.log('[PROJECTS-X-PANEL] - USER  ', user)
       this.user = user;
 
       if (user) {
         this.currentUserId = user._id;
-        console.log('NAVBAR-FOR-PANEL Current USER ID ', this.currentUserId)
+        this.logger.log('[PROJECTS-X-PANEL] Current USER ID ', this.currentUserId)
       }
 
     });
   }
 
-  // goToUnservedRequests(projectid: string) {
-  //   this.router.navigate(['/project/' + projectid + '/wsrequests']);
-  // }
 
   goToUnservedRequests(
     project_id: string,
@@ -238,7 +231,7 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
     project_trial_days_left: number,
     project_status: number) {
 
-    console.log('NAVBAR-FOR-PANEL !!! GO TO UNSERVED-REQUEST - PROJECT status ', project_status)
+    this.logger.log('[PROJECTS-X-PANEL] - GO TO UNSERVED-REQUEST - PROJECT status ', project_status)
 
     if (project_status !== 0) {
 
@@ -255,7 +248,7 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
       }
 
       this.auth.projectSelected(project)
-      console.log('NAVBAR-FOR-PANEL !!! UNSERVED-REQUEST - PROJECT ', project)
+      this.logger.log('[PROJECTS-X-PANEL] - UNSERVED-REQUEST - PROJECT ', project)
 
     }
     /* !!! NO MORE USED - NOW THE ALL PROJECTS ARE SETTED IN THE STORAGE IN getProjectsAndSaveInStorage()
@@ -269,7 +262,7 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
    * GET PROJECTS AND SAVE IN THE STORAGE: PROJECT ID - PROJECT NAME - USE ROLE   */
   getProjectsAndSaveInStorage() {
     this.projectService.getProjects().subscribe((projects: any) => {
-      console.log('PROJECTS-X-PANEL !!! GET PROJECTS & SAVE IN STORAGE ', projects);
+      this.logger.log('[PROJECTS-X-PANEL] - GET PROJECTS & SAVE IN STORAGE ', projects);
 
       this.showSpinner = false;
 
@@ -283,9 +276,9 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
 
 
         this.projects.forEach(project => {
-          console.log('PROJECTS-X-PANEL !!! SET PROJECT IN STORAGE')
-          
-          if (project.id_project) {      
+          this.logger.log('[PROJECTS-X-PANEL] - SET PROJECT IN STORAGE')
+
+          if (project.id_project) {
             const prjct: Project = {
               _id: project.id_project._id,
               name: project.id_project.name,
@@ -298,10 +291,10 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
               operatingHours: project.id_project.activeOperatingHours
             }
 
-            if (project && project.id_project &&  project.id_project.name ) {
+            if (project && project.id_project && project.id_project.name) {
               project['project_name_initial'] = project.id_project.name.charAt(0)
             }
- 
+
             // this.subsTo_WsCurrentUser( project.id_project._id)
             // this.getProjectUsersIdByCurrentUserId(project.id_project._id)
 
@@ -315,7 +308,7 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
 
             // .then((data) => {
 
-            //     console.log("PROJECT COMP SUBSCR TO WS CURRENT USERS - RES ", data);
+            //     this.logger.log("PROJECT COMP SUBSCR TO WS CURRENT USERS - RES ", data);
             //     project['ws_projct_user_available'] = data['user_available']
             //     project['ws_projct_user_isBusy'] = data['isBusy']
             //   })
@@ -330,29 +323,29 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
             localStorage.setItem(project.id_project._id, JSON.stringify(prjct));
           }
         });
-        console.log('PROJECTS-X-PANEL !!! GET PROJECTS AFTER', projects);
+        this.logger.log('[PROJECTS-X-PANEL] - GET PROJECTS AFTER', projects);
 
         this.myAvailabilityCount = countOfcurrentUserAvailabilityInProjects;
         this.projectService.countOfMyAvailability(this.myAvailabilityCount);
-        console.log('PROJECTS-X-PANEL !!! GET PROJECTS - I AM AVAILABLE IN # ', this.myAvailabilityCount, 'PROJECTS');
+        this.logger.log('[PROJECTS-X-PANEL] - GET PROJECTS - I AM AVAILABLE IN # ', this.myAvailabilityCount, 'PROJECTS');
       }
     }, error => {
       this.showSpinner = false;
-      console.log('PROJECTS-X-PANEL GET PROJECTS - ERROR ', error)
+      this.logger.error('[PROJECTS-X-PANEL] - GET PROJECTS - ERROR ', error)
     }, () => {
-      console.log('PROJECTS-X-PANEL GET PROJECTS - COMPLETE')
+      this.logger.log('[PROJECTS-X-PANEL] - GET PROJECTS - COMPLETE')
     });
   }
 
   changeAvailabilityState(projectid, available) {
-    console.log('PROJECTS-X-PANEL changeAvailabilityState projectid', projectid, ' available: ', available);
+    this.logger.log('[PROJECTS-X-PANEL] - changeAvailabilityState projectid', projectid, ' available: ', available);
 
     available = !available
-    console.log('PROJECTS-X-PANEL changeAvailabilityState projectid', projectid, ' available: ', available);
+    this.logger.log('[PROJECTS-X-PANEL] - changeAvailabilityState projectid', projectid, ' available: ', available);
 
     this.usersService.updateCurrentUserAvailability(projectid, available).subscribe((projectUser: any) => { // non 
 
-      console.log('PROJECTS-X-PANEL PROJECT-USER UPDATED ', projectUser)
+      this.logger.log('[PROJECTS-X-PANEL] - PROJECT-USER UPDATED ', projectUser)
 
       // NOTIFY TO THE USER SERVICE WHEN THE AVAILABLE / UNAVAILABLE BUTTON IS CLICKED
       // this.usersService.availability_btn_clicked(true)
@@ -365,10 +358,10 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
       });
 
     }, (error) => {
-      console.log('PROJECTS-X-PANEL PROJECT-USER UPDATED ERR  ', error);
+      this.logger.error('[PROJECTS-X-PANEL] - PROJECT-USER UPDATED - ERROR  ', error);
 
     }, () => {
-      console.log('PROJECTS-X-PANEL PROJECT-USER UPDATED  * COMPLETE *');
+      this.logger.log('[PROJECTS-X-PANEL] - PROJECT-USER UPDATED  * COMPLETE *');
 
     });
   }
@@ -379,31 +372,27 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((projectUser) => {
-        // console.log('PROJECT COMP $UBSC  TO WS USER AVAILABILITY & BUSY STATUS DATA (listenTo)', projectUser);
+        // this.logger.log('PROJECT COMP $UBSC  TO WS USER AVAILABILITY & BUSY STATUS DATA (listenTo)', projectUser);
         // this.projects.forEach(project => {
-          if (project.id_project._id === projectUser['id_project']) {
-            project['ws_projct_user_available'] = projectUser['user_available'];
-            project['ws_projct_user_isBusy'] = projectUser['isBusy']
-          }
+        if (project.id_project._id === projectUser['id_project']) {
+          project['ws_projct_user_available'] = projectUser['user_available'];
+          project['ws_projct_user_isBusy'] = projectUser['isBusy']
+        }
         // });
 
       }, (error) => {
-        console.log('PROJECTS-X-PANEL $UBSC TO WS USER AVAILABILITY & BUSY STATUS error ', error);
+        this.logger.error('[PROJECTS-X-PANEL] - $UBSC TO WS USER AVAILABILITY & BUSY STATUS error ', error);
       }, () => {
-        console.log('PROJECTS-X-PANEL $UBSC TO WS USER AVAILABILITY & BUSY STATUS * COMPLETE *');
+        this.logger.log('[PROJECTS-X-PANEL] - $UBSC TO WS USER AVAILABILITY & BUSY STATUS * COMPLETE *');
       })
 
   }
 
 
-
-
-
-
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.newInnerWidth = event.target.innerWidth;
-    console.log('INNER WIDTH ', this.newInnerWidth)
+    this.logger.log('[PROJECTS-X-PANEL] - INNER WIDTH ', this.newInnerWidth)
 
     // if (this.newInnerWidth >= 992) {
     //   const elemAppSidebar = <HTMLElement>document.querySelector('app-sidebar');
@@ -419,7 +408,7 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
 
   onInitWindowWidth(): any {
     const actualWidth = window.innerWidth;
-    console.log('ACTUAL Width ', actualWidth);
+    this.logger.log('[PROJECTS-X-PANEL] - ACTUAL Width ', actualWidth);
 
 
     // if (actualWidth <= 60) {
@@ -428,75 +417,68 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
     } else {
       this.window_width_is_60 = false;
     }
-
-
   }
 
-  sidebarOpen() {
-    const toggleButton = this.toggleButton;
-    const body = document.getElementsByTagName('body')[0];
-    setTimeout(function () {
-      toggleButton.classList.add('toggled');
-    }, 500);
-    body.classList.add('nav-open');
+  // sidebarOpen() {
+  //   const toggleButton = this.toggleButton;
+  //   const body = document.getElementsByTagName('body')[0];
+  //   setTimeout(function () {
+  //     toggleButton.classList.add('toggled');
+  //   }, 500);
+  //   body.classList.add('nav-open');
 
-    this.sidebarVisible = true;
-    const elemAppSidebar = <HTMLElement>document.querySelector('app-sidebar');
-    elemAppSidebar.setAttribute('style', 'display:block;');
-  };
+  //   this.sidebarVisible = true;
+  //   const elemAppSidebar = <HTMLElement>document.querySelector('app-sidebar');
+  //   elemAppSidebar.setAttribute('style', 'display:block;');
+  // };
 
-  sidebarClose() {
-    const body = document.getElementsByTagName('body')[0];
-    this.toggleButton.classList.remove('toggled');
-    this.sidebarVisible = false;
-    body.classList.remove('nav-open');
+  // sidebarClose() {
+  //   const body = document.getElementsByTagName('body')[0];
+  //   this.toggleButton.classList.remove('toggled');
+  //   this.sidebarVisible = false;
+  //   body.classList.remove('nav-open');
 
-    const elemAppSidebar = <HTMLElement>document.querySelector('app-sidebar');
-    elemAppSidebar.setAttribute('style', 'display:none;');
-  };
+  //   const elemAppSidebar = <HTMLElement>document.querySelector('app-sidebar');
+  //   elemAppSidebar.setAttribute('style', 'display:none;');
+  // };
 
-  sidebarToggle() {
-    // const toggleButton = this.toggleButton;
-    // const body = document.getElementsByTagName('body')[0];
-    if (this.sidebarVisible === false) {
-      this.sidebarOpen();
-    } else {
-      this.sidebarClose();
-    }
-  };
+  // sidebarToggle() {
+  //   // const toggleButton = this.toggleButton;
+  //   // const body = document.getElementsByTagName('body')[0];
+  //   if (this.sidebarVisible === false) {
+  //     this.sidebarOpen();
+  //   } else {
+  //     this.sidebarClose();
+  //   }
+  // };
 
+  // openLogoutModal() {
+  //   this.displayLogoutModal = 'block';
+  //   this.auth.hasOpenedLogoutModal(true);
+  // }
 
+  // onCloseLogoutModalHandled() {
+  //   this.displayLogoutModal = 'none';
+  // }
 
+  // onLogoutModalHandled() {
+  //   this.logout();
+  //   this.displayLogoutModal = 'none';
+  // }
 
+  // logout() {
+  //   this.auth.showExpiredSessionPopup(false);
+  //   this.auth.signOut('project-for-panel');
+  // }
 
-
-  openLogoutModal() {
-    this.displayLogoutModal = 'block';
-    this.auth.hasOpenedLogoutModal(true);
-  }
-
-  onCloseLogoutModalHandled() {
-    this.displayLogoutModal = 'none';
-  }
-
-  onLogoutModalHandled() {
-    this.logout();
-    this.displayLogoutModal = 'none';
-  }
-
-  logout() {
-    this.auth.showExpiredSessionPopup(false);
-    this.auth.signOut('project-for-panel');
-  }
-
-  testExpiredSessionFirebaseLogout() {
-    this.auth.testExpiredSessionFirebaseLogout(true)
-  }
+  // testExpiredSessionFirebaseLogout() {
+  //   this.auth.testExpiredSessionFirebaseLogout(true)
+  // }
 
 
-  goToCreateProject() {
-    this.router.navigate(['/create-new-project']);
-  }
+  // goToCreateProject() {
+  //   this.router.navigate(['/create-new-project']);
+  // }
 
 
 }

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as L from 'leaflet';
 
+import { LoggerService } from '../services/logger/logger.service';
 @Injectable()
 export class MarkerService {
 
@@ -13,8 +14,11 @@ export class MarkerService {
     return 20 * (val / maxVal);
   }
 
-  constructor(private http: HttpClient,
-    private popupService: PopupService) { }
+  constructor(
+    private http: HttpClient,
+    private popupService: PopupService,
+    private logger: LoggerService
+    ) { }
 
 
 
@@ -30,7 +34,7 @@ export class MarkerService {
         marker.addTo(map);
 
       } else {
-        console.log("Location not available for this request.")
+        this.logger.error("[MARKER-SERV] make Segnalations Markers - Location not available for this request." ,requests)
       }
 
     }
@@ -39,7 +43,7 @@ export class MarkerService {
   makeSegnalationsServedMarkers(map: L.map, requests): void {
     for (let request of requests) {
       if (request.status === 200) {
-        console.log("add to served request");
+        this.logger.log("[MARKER-SERV] make Segnalations Served Markers - add to served request");
         if (request.location) {
           const lat = request.location.geometry.coordinates[0];
           const lon = request.location.geometry.coordinates[1];
@@ -65,7 +69,7 @@ export class MarkerService {
   makeSegnalationsUnservedMarkers(map: L.map, requests): void {
     for (let request of requests) {
       if (request.status === 100) {
-        console.log("add to unserved requests");
+        this.logger.log("[MARKER-SERV] make Segnalations Unserved Markers - add to unserved requests");
         if (request.location) {
           const lat = request.location.geometry.coordinates[0];
           const lon = request.location.geometry.coordinates[1];
@@ -90,7 +94,7 @@ export class MarkerService {
 
   // makeSegnalationsMarkersFromOR(map: L.map): void {
   //   this.http.get(this.urlOR).subscribe((res: any) => {
-  //     console.log("RESPONSE OPENRECORDZ: ", res)
+  //     this.logger.log("RESPONSE OPENRECORDZ: ", res)
   //     for (let record of res) {
   //       const lat = record._latitude;
   //       const lon = record._longitude;

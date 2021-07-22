@@ -3,7 +3,6 @@ import { Component, OnInit, Input, Output, AfterViewInit, HostListener, ViewChil
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { DepartmentService } from '../services/department.service';
-import { BotService } from '../services/bot.service'; // no more used
 import { FaqKbService } from '../services/faq-kb.service';
 import { Project } from '../models/project-model';
 import { AuthService } from '../core/auth.service';
@@ -18,6 +17,7 @@ import { avatarPlaceholder, getColorBck } from '../utils/util';
 import { AppConfigService } from '../services/app-config.service';
 import { ComponentCanDeactivate } from '../core/pending-changes.guard';
 import { Observable } from 'rxjs/Observable';
+import { LoggerService } from '../services/logger/logger.service';
 declare const $: any;
 const swal = require('sweetalert');
 
@@ -113,8 +113,7 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private mongodbDepartmentService: DepartmentService,
-    private botService: BotService,
+    private deptService: DepartmentService,
     private faqKbService: FaqKbService,
     private auth: AuthService,
     private groupService: GroupService,
@@ -122,7 +121,8 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
     public translate: TranslateService,
     private notify: NotifyService,
     private usersService: UsersService,
-    public appConfigService: AppConfigService
+    public appConfigService: AppConfigService,
+    private logger: LoggerService
   ) { }
 
 
@@ -162,12 +162,12 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
       })
         .then((willRemain) => {
           if (willRemain) {
-            console.log('showExitFromComponentConfirmation willRemain pressed OK')
+            this.logger.log('[DEPT-EDIT-ADD] showExitFromComponentConfirmation willRemain pressed OK')
 
             return true;
 
           } else {
-            console.log('showExitFromComponentConfirmation willRemain else')
+            this.logger.log('[DEPT-EDIT-ADD] showExitFromComponentConfirmation willRemain else')
 
             return false;
 
@@ -180,21 +180,21 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
   onResize(event: any) {
 
     this.newInnerWidth = event.target.innerWidth;
-    console.log('DEPT-EDIT-ADD - ON RESIZE -> WINDOW WITH ', this.newInnerWidth);
+    this.logger.log('[DEPT-EDIT-ADD] - ON RESIZE -> WINDOW WITH ', this.newInnerWidth);
 
 
     this.newInnerHeight = event.target.innerHeight;
-    console.log('DEPT-EDIT-ADD - ON RESIZE -> WINDOW HEIGHT ', this.newInnerHeight);
+    this.logger.log('[DEPT-EDIT-ADD] - ON RESIZE -> WINDOW HEIGHT ', this.newInnerHeight);
 
     const elemMainContent = <HTMLElement>document.querySelector('.main-content');
     this.main_content_height = elemMainContent.clientHeight
-    console.log('DEPT-EDIT-ADD - ON RESIZE -> MAIN CONTENT HEIGHT', this.main_content_height);
+    this.logger.log('[DEPT-EDIT-ADD] - ON RESIZE -> MAIN CONTENT HEIGHT', this.main_content_height);
 
     // determine the height of the modal when the width of the window is <= of 991px when the window is resized
     // RESOLVE THE BUG: @media screen and (max-width: 992px) THE HEIGHT OF THE  MODAL 'USERS LIST' IS NOT 100%
     // if (this.newInnerWidth <= 991) { // nk gli tolgo la condizione dato che il bug si verifica anche pima del @media < 992
     this.train_bot_sidebar_height = elemMainContent.clientHeight + 'px'
-    // console.log('%%% Ws-REQUESTS-Msgs - *** MODAL HEIGHT ***', this.users_list_modal_height);
+    // this.logger.log('%%% Ws-REQUESTS-Msgs - *** MODAL HEIGHT ***', this.users_list_modal_height);
     // }
 
     // ------------------------------
@@ -208,8 +208,8 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
     this.auth.checkRoleForCurrentProject();
     this.getProfileImageStorage();
 
-    console.log('DEPT-EDIT-ADD selectedDeptId FROM @INPUT: ', this.ws_requestslist_deptIdSelected)
-    console.log('DEPT-EDIT-ADD display_dept_sidebar FROM @INPUT: ', this.display_dept_sidebar)
+    this.logger.log('[DEPT-EDIT-ADD] selectedDeptId FROM @INPUT: ', this.ws_requestslist_deptIdSelected)
+    this.logger.log('[DEPT-EDIT-ADD] display_dept_sidebar FROM @INPUT: ', this.display_dept_sidebar)
 
     // toDo: to call the department detail as a sidebar in the request list
     // if (this.display_dept_sidebar === true) {
@@ -227,7 +227,7 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
 
     if (this.router.url.indexOf('/create') !== -1) {
 
-      console.log('++ DEPT DTLS HAS CLICKED CREATE ');
+      this.logger.log('[DEPT-EDIT-ADD] ++ DEPT DTLS HAS CLICKED CREATE ');
       this.CREATE_VIEW = true;
       // this.showSpinner = false;
       // this.SHOW_OPTION_FORM = true;
@@ -240,11 +240,11 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
       this.BOT_NOT_SELECTED = true;
       this.has_selected_bot = false;
       this.selectedBotId = null;
-      console.log('ON INIT (IF HAS SELECT CREATE) SHOW OPTION FORM ', this.SHOW_OPTION_FORM, 'ROUTING SELECTED ', this.ROUTING_SELECTED);
+      this.logger.log('[DEPT-EDIT-ADD] ON INIT (IF HAS SELECT CREATE) SHOW OPTION FORM ', this.SHOW_OPTION_FORM, 'ROUTING SELECTED ', this.ROUTING_SELECTED);
       this.ROUTING_PAGE_MODE = false;
 
     } else if (this.router.url.indexOf('/edit') !== -1) {
-      console.log('++ DEPT DTLS - HAS CLICKED EDIT DEPT');
+      this.logger.log('[DEPT-EDIT-ADD] ++ DEPT DTLS - HAS CLICKED EDIT DEPT');
       this.EDIT_VIEW = true;
       this.showSpinner = true;
       this.SHOW_OPTION_FORM = false; // to check if is used
@@ -256,7 +256,7 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
 
     } else if (this.router.url.indexOf('/routing') !== -1) {
 
-      console.log('++ DEPT DTLS HAS CLICKED ROUTING FROM SIDEBAR');
+      this.logger.log('[DEPT-EDIT-ADD] ++ DEPT DTLS HAS CLICKED ROUTING FROM SIDEBAR');
       this.EDIT_VIEW = true;
       this.SHOW_OPTION_FORM = false; // to check if is used
       this.showSpinner = true;
@@ -265,8 +265,6 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
 
       // *** GET DEPT ID FROM URL PARAMS AND THEN DEPT BY ID ***
       this.getParamsAndDeptById();
-
-
     }
 
     this.getCurrentProject();
@@ -288,13 +286,13 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
   // @ canDeactivate NOT_HAS_EDITED is to canDeactivate if is false is displayed the alert
   // -------------------------------------------------------------------------------------
   onChangeDeptName($event) {
-    console.log('DEPT EDIT-ADD - onChangeDeptName ', $event);
+    this.logger.log('[DEPT-EDIT-ADD] - onChangeDeptName ', $event);
     this.NOT_HAS_EDITED = false
   }
 
 
   onChangeDeptDescription($event) {
-    console.log('DEPT EDIT-ADD - onChangeDeptDescription ', $event);
+    this.logger.log('[DEPT-EDIT-ADD] - onChangeDeptDescription ', $event);
     this.NOT_HAS_EDITED = false
   }
 
@@ -310,11 +308,11 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
     this.navbarbrandRef.nativeElement.scrollIntoView({ behavior: "smooth", block: "start" });
 
     this.OPEN_CREATE_GROUP_RIGHT_SIDEBAR = true
-    console.log('DEPT EDIT-ADD - OPEN CREATE GROUP SIDEBAR ', this.OPEN_CREATE_GROUP_RIGHT_SIDEBAR);
+    this.logger.log('[DEPT-EDIT-ADD] - OPEN CREATE GROUP SIDEBAR ', this.OPEN_CREATE_GROUP_RIGHT_SIDEBAR);
 
     const elemMainContent = <HTMLElement>document.querySelector('.main-content');
     this.train_bot_sidebar_height = elemMainContent.clientHeight + 10 + 'px'
-    console.log('DEPT EDIT-ADD  - OPEN CREATE GROUP SIDEBAR -> RIGHT SIDEBAR HEIGHT', this.train_bot_sidebar_height);
+    this.logger.log('[DEPT-EDIT-ADD] - OPEN CREATE GROUP SIDEBAR -> RIGHT SIDEBAR HEIGHT', this.train_bot_sidebar_height);
     // const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
 
     // const elemFooter = <HTMLElement>document.querySelector('footer');
@@ -325,7 +323,7 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
   // HALDLE OUTPUT 'CLOSE SIDEBAR' * CREATE GROUP RIGHT SIDEBAR *
   handleCloseCreateGroupSidebar(event) {
     this.OPEN_CREATE_GROUP_RIGHT_SIDEBAR = event;
-    console.log('DEPT EDIT-ADD - CLOSE CREATE GROUP SIDEBAR ', this.OPEN_CREATE_GROUP_RIGHT_SIDEBAR);
+    this.logger.log('[DEPT-EDIT-ADD] - CLOSE CREATE GROUP SIDEBAR ', this.OPEN_CREATE_GROUP_RIGHT_SIDEBAR);
 
     // const elemFooter = <HTMLElement>document.querySelector('footer');
     // elemFooter.setAttribute('style', '');
@@ -333,7 +331,7 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
 
   // HALDLE OUTPUT 'GROUP CREATED' * CREATE GROUP RIGHT SIDEBAR *
   handleNewGroupCreatedFromSidebar(event) {
-    console.log('DEPT EDIT-ADD - handleNewGroupCreatedFromSidebar ID GROUP ', event);
+    this.logger.log('[DEPT-EDIT-ADD] - handleNewGroupCreatedFromSidebar ID GROUP ', event);
     if (event) {
       this.new_group_created_id = event
       this.SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR = true
@@ -342,7 +340,7 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
 
       this.getGroupsByProjectId();
       // this.HAS_COMPLETED_GET_GROUPS = true
-      // console.log('DEPT EDIT-ADD - handleNewGroupCreatedFromSidebar tHAS_COMPLETED_GET_GROUPS  ', this.HAS_COMPLETED_GET_GROUPS );
+      // this.logger.log('DEPT EDIT-ADD - handleNewGroupCreatedFromSidebar tHAS_COMPLETED_GET_GROUPS  ', this.HAS_COMPLETED_GET_GROUPS );
     }
   }
 
@@ -356,11 +354,11 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
     this.navbarbrandRef.nativeElement.scrollIntoView({ behavior: "smooth", block: "start" });
 
     this.OPEN_CREATE_BOT_RIGHT_SIDEBAR = true
-    console.log('DEPT EDIT-ADD - OPEN CREATE BOT SIDEBAR ', this.OPEN_CREATE_BOT_RIGHT_SIDEBAR);
+    this.logger.log('[DEPT-EDIT-ADD] - OPEN CREATE BOT SIDEBAR ', this.OPEN_CREATE_BOT_RIGHT_SIDEBAR);
 
     const elemMainContent = <HTMLElement>document.querySelector('.main-content');
     this.train_bot_sidebar_height = elemMainContent.clientHeight + 10 + 'px'
-    console.log('DEPT EDIT-ADD  - OPEN CREATE BOT SIDEBAR -> RIGHT SIDEBAR HEIGHT', this.train_bot_sidebar_height);
+    this.logger.log('[DEPT-EDIT-ADD]  - OPEN CREATE BOT SIDEBAR -> RIGHT SIDEBAR HEIGHT', this.train_bot_sidebar_height);
     // const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
     const elemFooter = <HTMLElement>document.querySelector('footer');
     elemFooter.setAttribute('style', 'display:none;');
@@ -371,18 +369,15 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
   // HALDLE OUTPUT 'CLOSE SIDEBAR' * CREATE BOT RIGHT SIDEBAR *
   handleCloseCreateBotSidebar(event) {
     this.OPEN_CREATE_BOT_RIGHT_SIDEBAR = event;
-    console.log('DEPT EDIT-ADD - CLOSE CREATE BOT SIDEBAR ', this.OPEN_CREATE_BOT_RIGHT_SIDEBAR);
+    this.logger.log('[DEPT-EDIT-ADD]- CLOSE CREATE BOT SIDEBAR ', this.OPEN_CREATE_BOT_RIGHT_SIDEBAR);
     const elemFooter = <HTMLElement>document.querySelector('footer');
     elemFooter.setAttribute('style', '');
   }
 
 
-
-
-
   getParamsAndDeptById() {
     this.id_dept = this.route.snapshot.params['deptid'];
-    console.log('DEPT EDIT-ADD - DEPATMENT COMPONENT HAS PASSED id_DEPT ', this.id_dept);
+    this.logger.log('[DEPT-EDIT-ADD] - DEPATMENT COMPONENT HAS PASSED id_DEPT ', this.id_dept);
     if (this.id_dept) {
       this.getDeptById();
 
@@ -394,12 +389,6 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
   }
 
   ngAfterViewInit() {
-    // console.log('ngAfterViewInit  $(window)',  $(window)) 
-    // console.log('ngAfterViewInit   $("#right_edit_card")',   $("#right_edit_card")) 
-    // $(window).scroll(function(){
-    //   console.log('ngAfterViewInit   $(window).scrollTop())',   $(window).scrollTop()) 
-    //   $("#right_edit_card").stop().animate({"marginTop": ($(window).scrollTop()) + "px", "marginLeft":($(window).scrollLeft()) + "px"}, "slow" );
-    // });
   }
 
   getProfileImageStorage() {
@@ -407,11 +396,11 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
       this.UPLOAD_ENGINE_IS_FIREBASE = true;
       const firebase_conf = this.appConfigService.getConfig().firebase;
       this.storageBucket = firebase_conf['storageBucket'];
-      console.log('DEPT EDIT-ADD IMAGE STORAGE ', this.storageBucket, 'usecase firebase')
+      this.logger.log('[DEPT-EDIT-ADD] IMAGE STORAGE ', this.storageBucket, 'usecase firebase')
     } else {
       this.UPLOAD_ENGINE_IS_FIREBASE = false;
       this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
-      console.log('DEPT EDIT-ADD IMAGE STORAGE ', this.baseUrl, 'usecase native')
+      this.logger.log('[DEPT-EDIT-ADD] IMAGE STORAGE ', this.baseUrl, 'usecase native')
     }
   }
 
@@ -421,16 +410,16 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
 
   getProjectUsers() {
     this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
-      console.log('DEPT EDIT-ADD - GET PROJECT USERS - RES ', projectUsers)
+      this.logger.log('[DEPT-EDIT-ADD] - GET PROJECT USERS - RES ', projectUsers)
 
       if (projectUsers) {
         this.projectUsers = projectUsers;
 
       }
     }, error => {
-      console.log('DEPT EDIT-ADD - GET PROJECT USERS - ERROR', error);
+      this.logger.error('[DEPT-EDIT-ADD] - GET PROJECT USERS - ERROR', error);
     }, () => {
-      console.log('DEPT EDIT-ADD - GET PROJECT USERS - COMPLETE');
+      this.logger.log('[DEPT-EDIT-ADD] - GET PROJECT USERS - COMPLETE');
 
       this.getGroupsByProjectId();
     });
@@ -440,7 +429,7 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
   translateLabels() {
     this.translate.get('DeptsAddEditPage.NotificationMsgs')
       .subscribe((translation: any) => {
-        // console.log('Depts Add Edit - translateNotificationMsgs text', translation)
+        // this.logger.log('Depts Add Edit - translateNotificationMsgs text', translation)
         this.createSuccessMsg = translation.CreateDeptSuccess;
         this.createErrorMsg = translation.CreateDeptError;
         this.updateSuccessMsg = translation.UpdateDeptSuccess;
@@ -455,27 +444,21 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
         this.areTouSureYouWantToNavigateAwayFromThisPageWithoutSaving = translation.AreTouSureYouWantToNavigateAwayFromThisPageWithoutSaving;
 
       });
-
-
-    //       CanDeactivateModalText
-    // AreYouSure
-    // YouHaveUnsavedChanges
-    // Cancel
   }
 
   // ============ NEW - SUBSTITUTES has_clicked_fixed ============
   has_clicked_bot(has_selected_bot: boolean) {
-    console.log('HAS CLICKED BOT - SHOW DROPDOWN ', has_selected_bot);
+    this.logger.log('[DEPT-EDIT-ADD] HAS CLICKED BOT - SHOW DROPDOWN ', has_selected_bot);
 
     this.NOT_HAS_EDITED = false;
 
     if (has_selected_bot === false) {
       this.BOT_NOT_SELECTED = true;
-      console.log('DEPT EDIT-ADD - HAS CLICKED BOT - BOT NOT SELECTED ', this.BOT_NOT_SELECTED);
+      this.logger.log('[DEPT-EDIT-ADD] - HAS CLICKED BOT - BOT NOT SELECTED ', this.BOT_NOT_SELECTED);
 
 
       this.selectedBotId = null;
-      console.log('DEPT EDIT-ADD - SELECTED BOT ID ', this.selectedBotId)
+      this.logger.log('[DEPT-EDIT-ADD] - SELECTED BOT ID ', this.selectedBotId)
 
       // ONLY BOT AUEOMATIC DESELECTION IF has_selected_bot IS FALSE
       this.has_selected_only_bot = false
@@ -486,11 +469,11 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
 
 
   toggleActivateBot($event) {
-    console.log('toggleActivateBot event', $event);
+    this.logger.log('[DEPT-EDIT-ADD] toggleActivateBot event', $event);
   }
 
   has_clicked_only_bot(has_selected_only_bot) {
-    console.log('DEPT EDIT-ADD - HAS CLICKED ONLY BOT ', has_selected_only_bot);
+    this.logger.log('[DEPT-EDIT-ADD] - HAS CLICKED ONLY BOT ', has_selected_only_bot);
     if (has_selected_only_bot === true) {
       this.onlybot_disable_routing = true;
       this.bot_only = true;
@@ -505,7 +488,7 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
   // Note: is used also for the 'CREATE VIEW'
   setSelectedBot(id: any): void {
     this.selectedBotId = id;
-    console.log('FAQ-KB ID SELECTED (SUBSTITUTE BOT): ', this.selectedBotId);
+    this.logger.log('[DEPT-EDIT-ADD] BOT ID SELECTED: ', this.selectedBotId);
 
     if (this.selectedBotId !== null) {
       this.NOT_HAS_EDITED = false
@@ -534,31 +517,31 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
   getGroupsByProjectId() {
 
     if (this.SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR === true) {
-      console.log('DEPT EDIT-ADD -  + + GET GROUPS  SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR', this.new_group_created_id);
+      this.logger.log('[DEPT-EDIT-ADD] - GET GROUPS  SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR', this.new_group_created_id);
 
       this.selectedGroupId = this.new_group_created_id;
     }
     // this.HAS_COMPLETED_GET_GROUPS = false
     this.groupService.getGroupsByProjectId().subscribe((groups: any) => {
-      console.log('DEPT EDIT-ADD - GROUPS GET BY PROJECT ID', groups);
+      this.logger.log('[DEPT-EDIT-ADD] - GROUPS GET BY PROJECT ID', groups);
 
       if (groups) {
         this.groupsList = groups;
 
-        console.log('DEPT EDIT-ADD - GROUP ID SELECTED', this.selectedGroupId);
+        this.logger.log('[DEPT-EDIT-ADD] - GROUP ID SELECTED', this.selectedGroupId);
         this.groupsList.forEach(group => {
 
           if (this.selectedGroupId) {
             if (group._id === this.selectedGroupId) {
-              console.log('DEPT EDIT-ADD - GROUP ASSIGNED TO THIS DEPT', group);
+              this.logger.log('[DEPT-EDIT-ADD] - GROUP ASSIGNED TO THIS DEPT', group);
               this.group_name = group.name
               this.projectUsersInGroup = [];
 
               group.members.forEach(member => {
-                console.log('DEPT EDIT-ADD - MEMBER OF THE GROUP ASSIGNED TO THIS DEPT', member);
+                this.logger.log('[DEPT-EDIT-ADD] - MEMBER OF THE GROUP ASSIGNED TO THIS DEPT', member);
 
                 this.projectUsers.forEach(projectuser => {
-                  // console.log('DEPT EDIT-ADD - PROJECT USER ', projectuser);
+                  // this.logger.log('DEPT EDIT-ADD - PROJECT USER ', projectuser);
                   if (member === projectuser.id_user._id) {
 
                     this.projectUsersInGroup.push(projectuser.id_user)
@@ -567,11 +550,11 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
 
               });
 
-              console.log('DEPT EDIT-ADD - PROJECT USERS IN GROUP ', this.projectUsersInGroup);
+              this.logger.log('[DEPT-EDIT-ADD] - PROJECT USERS IN GROUP ', this.projectUsersInGroup);
               // const filteredProjectUsers = group.members
             }
           } else {
-            console.log('DEPT EDIT-ADD - NO GROUP ASSIGNED TO THIS DEPT - GROUP ID', this.selectedGroupId);
+            this.logger.log('[DEPT-EDIT-ADD] - NO GROUP ASSIGNED TO THIS DEPT - GROUP ID', this.selectedGroupId);
           }
         });
 
@@ -582,29 +565,18 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
           this.checkGroupId(this.selectedGroupId, this.groupsList)
         }
       }
+    }, (error) => {
+      this.logger.error('[DEPT-EDIT-ADD] - GET GROUPS - ERROR ', error);
+      // this.HAS_COMPLETED_GET_GROUPS = false
+      // this.showSpinner = false;
     },
-      (error) => {
-        console.log('DEPT EDIT-ADD + + GET GROUPS - ERROR ', error);
-        // this.HAS_COMPLETED_GET_GROUPS = false
-        // this.showSpinner = false;
-      },
       () => {
-        console.log('DEPT EDIT-ADD + + GET GROUPS * COMPLETE');
-        // this.HAS_COMPLETED_GET_GROUPS = true
-        //   this.new_group_created_id = event
-        // this.SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR = true
-
-        // if (this.SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR === true) {
-        //   console.log('DEPT EDIT-ADD -  + + GET GROUPS  SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR', this.new_group_created_id);
-
-        //   this.selectedGroupId = this.new_group_created_id;
-        // }
-
+        this.logger.log('[DEPT-EDIT-ADD] - GET GROUPS * COMPLETE');
       });
   }
 
   checkGroupId(groupIdSelected, groups_list) {
-    console.log('DEPT EDIT-ADD - checkGroupId: groupIdSelected', this.selectedGroupId, 'groups_list ', groups_list);
+    this.logger.log('[DEPT-EDIT-ADD] - CHECK FOR GROUP ID: groupIdSelected', this.selectedGroupId, 'groups_list ', groups_list);
     this.GROUP_ID_NOT_EXIST = true;
 
     for (let i = 0; i < groups_list.length; i++) {
@@ -614,7 +586,7 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
         break;
       }
     }
-    console.log('CHECK FOR GROUP ID - NOT EXIST?: ', this.GROUP_ID_NOT_EXIST)
+    this.logger.log('[DEPT-EDIT-ADD] - CHECK FOR GROUP ID - NOT EXIST?: ', this.GROUP_ID_NOT_EXIST)
     return this.GROUP_ID_NOT_EXIST;
   }
 
@@ -624,8 +596,8 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
     this.NOT_HAS_EDITED = false
 
     this.selectedGroupId = id;
-    console.log('DEPT-EDIT-ADD - GROUP ID SELECTED: ', this.selectedGroupId);
-    console.log('DEPT-EDIT-ADD - GROUP_ID_NOT_EXIST: ', this.GROUP_ID_NOT_EXIST);
+    this.logger.log('[DEPT-EDIT-ADD] - GROUP ID SELECTED: ', this.selectedGroupId);
+    this.logger.log('[DEPT-EDIT-ADD] - GROUP_ID_NOT_EXIST: ', this.GROUP_ID_NOT_EXIST);
 
     // this.SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR = false;
 
@@ -637,7 +609,7 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
       this.GROUP_ID_NOT_EXIST = false
 
       this.getGroupsByProjectId()
-      console.log('DEPT EDIT-ADD - setSelectedGroup this.selectedGroupId !== Group error',);
+      this.logger.log('[DEPT-EDIT-ADD] - setSelectedGroup this.selectedGroupId !== Group error');
     }
 
     // if (this.selectedGroupId !== 'ALL_USERS_SELECTED') {
@@ -652,7 +624,7 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
       this.project = project
-      // console.log('00 -> DEPT EDIT/ADD COMP project ID from AUTH service subscription  ', this.project._id)
+      // this.logger.log('[DEPT-EDIT-ADD] project ID from AUTH service subscription  ', this.project._id)
     });
   }
 
@@ -665,39 +637,23 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
    */
   getFaqKbByProjecId() {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqkb: any) => {
-      console.log('GET FAQ-KB LIST - SUBSTITUTE BOT (TO SHOW IN SELECTION FIELD) ', faqkb);
+      this.logger.log('[DEPT-EDIT-ADD] - GET BOTS (TO SHOW IN SELECTION FIELD) ', faqkb);
       this.botsList = faqkb;
 
-      // this.botsList.forEach(bot => {
-      //   if (bot && bot.description) {
-      //     let stripHere = 10;
-      //     bot['truncated_desc'] = bot.description.substring(0, stripHere) + '...';
-      //   }
-      // });
-    },
-      (error) => {
-        console.log('GET FAQ-KB LIST - SUBSTITUTE BOT - ERROR ', error);
-      },
-      () => {
-        console.log('GET FAQ-KB LIST - SUBSTITUTE BOT - COMPLETE ');
-      });
+    }, (error) => {
+      this.logger.error('[DEPT-EDIT-ADD] GET BOTS - ERROR ', error);
+    }, () => {
+      this.logger.log('[DEPT-EDIT-ADD] GET BOTS - COMPLETE ');
+    });
 
   }
-
 
   // GO BACK TO DEPARTMENTS COMPONENT
   goBackToDeptsList() {
     this.router.navigate(['project/' + this.project._id + '/departments']);
   }
 
-  // goBack() {
-  //   this.location.back();
-  // }
-
-
-
   has_clicked_assigned(show_group_option_form: boolean, show_option_form: boolean, routing: string) {
-
     if (this.dept_routing !== 'assigned') {
       this.NOT_HAS_EDITED = false
     }
@@ -705,31 +661,20 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
     this.SHOW_GROUP_OPTION_FORM = show_group_option_form;
     this.SHOW_OPTION_FORM = show_option_form;
     this.ROUTING_SELECTED = routing
-    console.log('HAS CLICKED ASSIGNABLE - SHOW GROUP OPTION ', this.SHOW_GROUP_OPTION_FORM, ' SHOW BOT OPTION: ', this.SHOW_OPTION_FORM, ' ROUTING SELECTED ', this.ROUTING_SELECTED)
+    this.logger.log('[DEPT-EDIT-ADD] HAS CLICKED ASSIGNABLE - SHOW GROUP OPTION ', this.SHOW_GROUP_OPTION_FORM, ' SHOW BOT OPTION: ', this.SHOW_OPTION_FORM, ' ROUTING SELECTED ', this.ROUTING_SELECTED)
 
     // ONLY FOR THE EDIT VIEW (see above in ngOnInit the logic for the EDIT VIEW)
     this.dept_routing = 'assigned'
   }
 
-  // is the option (called Bot in the html) that provides for the selection of a faq-kb (also this called Bot in the html)
-  // has_clicked_fixed(show_option_form: boolean, routing: string) {
-
-  //   this.SHOW_OPTION_FORM = show_option_form;
-  //   this.ROUTING_SELECTED = routing
-  //   console.log('HAS CLICKED FIXED - SHOW OPTION ', this.SHOW_OPTION_FORM, ' ROUTING SELECTED ', this.ROUTING_SELECTED)
-  //   this.dept_routing = 'fixed'
-  //   this.BOT_NOT_SELECTED = true;
-  // }
-
   has_clicked_pooled(show_group_option_form: boolean, show_option_form: boolean, routing: string) {
-
     if (this.dept_routing !== 'pooled') {
       this.NOT_HAS_EDITED = false
     }
     this.SHOW_GROUP_OPTION_FORM = show_group_option_form;
     this.SHOW_OPTION_FORM = show_option_form;
     this.ROUTING_SELECTED = routing
-    console.log('HAS CLICKED POOLED  - SHOW GROUP OPTION ', this.SHOW_GROUP_OPTION_FORM, ' SHOW BOT OPTION: ', this.SHOW_OPTION_FORM, ' ROUTING SELECTED ', this.ROUTING_SELECTED)
+    this.logger.log('[DEPT-EDIT-ADD] HAS CLICKED POOLED  - SHOW GROUP OPTION ', this.SHOW_GROUP_OPTION_FORM, ' SHOW BOT OPTION: ', this.SHOW_OPTION_FORM, ' ROUTING SELECTED ', this.ROUTING_SELECTED)
 
     // ONLY FOR THE EDIT VIEW (see above in ngOnInit the logic for the EDIT VIEW)
     this.dept_routing = 'pooled'
@@ -740,7 +685,7 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
 
   /** === FOR EDIT VIEW === **
    * **** GET DEPT (DETAILS) OBJECT BY ID AND (THEN) GET BOT OBJECT BY ID (GET BOT DETAILS) ***
-   * THE ID USED TO RUN THIS getMongDbDeptById IS PASSED FROM THE DEPT LIST (DEPARTMENTS COMPONENT goToEditAddPage_EDIT))
+   * THE ID USED TO RUN THIS getDeptById IS PASSED FROM THE DEPT LIST (DEPARTMENTS COMPONENT goToEditAddPage_EDIT))
    * FROM DEPT OBJECT IS USED:
    * THE DEPT NAME TO SHOW IN THE INPUT FIELD (OF THE EDIT VIEW)
    * THE DEPT ROUTING (PREVIOUSLY SELECTED): dept_routing is passed in the view [checked]="dept_routing === 'pooled'"
@@ -750,8 +695,8 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
    * (WHEN THE USER HAS CREATED THE DEPT)  (see: selectedId === bot._id)
    */
   getDeptById() {
-    this.mongodbDepartmentService.getMongDbDeptById(this.id_dept).subscribe((dept: any) => {
-      console.log('DEPT-EDIT-ADD ++ > GET DEPT (DETAILS) BY ID - DEPT OBJECT: ', dept);
+    this.deptService.getDeptById(this.id_dept).subscribe((dept: any) => {
+      this.logger.log('[DEPT-EDIT-ADD] ++ > GET DEPT (DETAILS) BY ID - DEPT OBJECT: ', dept);
       if (dept) {
         this.IS_DEFAULT_DEPT = dept.default
         this.deptName_toUpdate = dept.name;
@@ -775,14 +720,6 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
         this.dept_routing = 'assigned'
         this.BOT_NOT_SELECTED = true;
       }
-      // else if (this.dept_routing === 'fixed') {
-      //   this.SHOW_OPTION_FORM = true;
-      //   this.dept_routing = 'fixed'
-      //   this.BOT_NOT_SELECTED = false;
-      // }
-
-
-
 
       if (this.bot_only === false || this.bot_only === undefined || this.bot_only === null) {
         this.has_selected_only_bot = false;
@@ -791,12 +728,12 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
         this.onlybot_disable_routing = true;
       }
 
-      console.log('++ DEPT DTLS - DEPT FULLNAME TO UPDATE: ', this.deptName_toUpdate);
-      console.log('++ DEPT DTLS - DEPT DESCRIPTION TO UPDATE: ', this.dept_description_toUpdate);
-      console.log('++ DEPT DTLS - BOT ID (IT IS ACTUALLY FAQ-KB ID) GET FROM DEPT OBJECT: ', this.botId);
-      console.log('++ DEPT DTLS - ONLY BOT: ', this.bot_only);
-      console.log('++ DEPT DTLS - DEPT ROUTING GET FROM DEPT OBJECT: ', this.dept_routing);
-      console.log('++ DEPT DTLS - GROUP ID GET FROM DEPT OBJECT: ', this.selectedGroupId);
+      this.logger.log('[DEPT-EDIT-ADD] ++ DEPT DTLS - DEPT FULLNAME TO UPDATE: ', this.deptName_toUpdate);
+      this.logger.log('[DEPT-EDIT-ADD] ++ DEPT DTLS - DEPT DESCRIPTION TO UPDATE: ', this.dept_description_toUpdate);
+      this.logger.log('[DEPT-EDIT-ADD] ++ DEPT DTLS - BOT ID (IT IS ACTUALLY FAQ-KB ID) GET FROM DEPT OBJECT: ', this.botId);
+      this.logger.log('[DEPT-EDIT-ADD] ++ DEPT DTLS - ONLY BOT: ', this.bot_only);
+      this.logger.log('[DEPT-EDIT-ADD] ++ DEPT DTLS - DEPT ROUTING GET FROM DEPT OBJECT: ', this.dept_routing);
+      this.logger.log('[DEPT-EDIT-ADD] ++ DEPT DTLS - GROUP ID GET FROM DEPT OBJECT: ', this.selectedGroupId);
 
 
       // -------------------------------------------------------------------
@@ -816,49 +753,44 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
 
       this.dept_name_initial = newInitials;
       this.dept_name_fillcolour = newFillColour;
-    },
-      (error) => {
-        console.log('GET DEPT BY ID - ERROR ', error);
-        this.showSpinner = false;
-      },
-      () => {
-        console.log('GET DEPT BY ID - COMPLETE ');
+    }, (error) => {
+      this.logger.error('[DEPT-EDIT-ADD] GET DEPT BY ID - ERROR ', error);
+      this.showSpinner = false;
+    }, () => {
+      this.logger.log('[DEPT-EDIT-ADD] GET DEPT BY ID - COMPLETE ');
 
-        this.showSpinner = false;
+      this.showSpinner = false;
 
+      if (this.botId === undefined) {
+        this.selectedBotId = null;
+        this.BOT_NOT_SELECTED = true;
+        this.has_selected_bot = false;
+        this.logger.log('[DEPT-EDIT-ADD] ++ DEPT DTLS getDeptById has_selected_bot ', this.has_selected_bot);
+        this.logger.log('[DEPT-EDIT-ADD] ++ DEPT DTLS !!! BOT ID UNDEFINED ', this.botId, ', BOT NOT SELECTED: ', this.BOT_NOT_SELECTED);
+        // this.showSpinner = false;
+        // this.selectedValue = 'Selezione FAQ KB';
 
-        if (this.botId === undefined) {
+      } else if (this.botId == null) {
 
-          this.selectedBotId = null;
+        this.selectedBotId = null;
 
-          this.BOT_NOT_SELECTED = true;
-          this.has_selected_bot = false;
-          console.log('++ DEPT DTLS getDeptById has_selected_bot ', this.has_selected_bot);
-          console.log('++ DEPT DTLS !!! BOT ID UNDEFINED ', this.botId, ', BOT NOT SELECTED: ', this.BOT_NOT_SELECTED);
-          // this.showSpinner = false;
-          // this.selectedValue = 'Selezione FAQ KB';
+        this.BOT_NOT_SELECTED = true;
+        this.has_selected_bot = false;
+        this.logger.log('[DEPT-EDIT-ADD] ++ DEPT DTLS getDeptById has_selected_bot ', this.has_selected_bot);
+        this.logger.log('[DEPT-EDIT-ADD] ++ BOT ID NULL ', this.botId, ', BOT NOT SELECTED: ', this.BOT_NOT_SELECTED);
+        // this.showSpinner = false;
+      } else {
+        // getBotById() IS RUNNED ONLY IF THE BOT-ID (returned in the DEPT OBJECT) 
+        // IS NOT undefined AND IS NOT null
 
-        } else if (this.botId == null) {
+        // if the bot is defined it means that the user had selected the bot
+        this.has_selected_bot = true
+        this.BOT_NOT_SELECTED = false;
 
-          this.selectedBotId = null;
-
-          this.BOT_NOT_SELECTED = true;
-          this.has_selected_bot = false;
-          console.log('++ DEPT DTLS getDeptById has_selected_bot ', this.has_selected_bot);
-          console.log(' !!! BOT ID NULL ', this.botId, ', BOT NOT SELECTED: ', this.BOT_NOT_SELECTED);
-          // this.showSpinner = false;
-        } else {
-          // getBotById() IS RUNNED ONLY IF THE BOT-ID (returned in the DEPT OBJECT) 
-          // IS NOT undefined AND IS NOT null
-
-          // if the bot is defined it means that the user had selected the bot
-          this.has_selected_bot = true
-          this.BOT_NOT_SELECTED = false;
-
-          this.getBotById();
-          console.log(' !!! BOT ID DEFINED ', this.botId);
-        }
-      });
+        this.getBotById();
+        this.logger.log('[DEPT-EDIT-ADD] ++ BOT ID DEFINED ', this.botId);
+      }
+    });
 
   }
 
@@ -870,9 +802,8 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
    * (see: selectedId === bot._id)
    */
   getBotById() {
-    // this.botService.getMongDbBotById(this.botId).subscribe((bot: any) => { // NO MORE USED
-    this.faqKbService.getMongDbFaqKbById(this.botId).subscribe((faqkb: any) => {
-      console.log('GET FAQ-KB (DETAILS) BY ID (SUBSTITUTE BOT) ', faqkb);
+    this.faqKbService.getFaqKbById(this.botId).subscribe((faqkb: any) => {
+      this.logger.log('[DEPT-EDIT-ADD] ++ GET BOT (DETAILS) BY ID ', faqkb);
       // this.selectedId = bot._id;
 
       if (faqkb) {
@@ -889,9 +820,7 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
           // add btn read all if bot description text line are more of 2
           // --------------------------------------------------------------------------------   
           const elemSidebarDescription = <HTMLElement>document.querySelector('.sidebar-description');
-          console.log(' DEPT EDIT-ADD elem Sidebar Description', elemSidebarDescription)
-
-
+          this.logger.log('[DEPT-EDIT-ADD] - GET BOT BY ID - elem Sidebar Description', elemSidebarDescription)
 
           let lines = undefined;
           if (this.bot_description) {
@@ -900,24 +829,24 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
 
                 const divHeight = elemSidebarDescription.offsetHeight
                 const lineHeight = parseInt(elemSidebarDescription.style.lineHeight);
-                console.log(' DEPT EDIT-ADD elem Sidebar Description divHeight', divHeight);
-                console.log(' DEPT EDIT-ADD elem Sidebar Description lineHeight', lineHeight)
+                this.logger.log('[DEPT-EDIT-ADD] - GET BOT BY ID - elem Sidebar Description divHeight', divHeight);
+                this.logger.log('[DEPT-EDIT-ADD] - GET BOT BY ID - elem Sidebar Description lineHeight', lineHeight)
 
 
                 if (divHeight && lineHeight) {
                   lines = divHeight / lineHeight;
-                  console.log(' DEPT EDIT-ADD elem Sidebar Description lines', lines)
+                  this.logger.log('[DEPT-EDIT-ADD] - GET BOT BY ID - elem Sidebar Description lines', lines)
                 }
 
                 // const elemDescription = <HTMLElement>document.querySelector('.sidebar-description .description-icon-and-text .bot-description')
-                // console.log(' DEPT EDIT-ADD elem Sidebar Description elemDescription', elemDescription)
+                // this.logger.log(' DEPT EDIT-ADD elem Sidebar Description elemDescription', elemDescription)
                 const textInDescription = elemSidebarDescription.textContent.replace(/(<.*?>)|\s+/g, (m, $1) => $1 ? $1 : ' ')
-                console.log(' DEPT EDIT-ADD elem Sidebar Description elemDescription text', textInDescription)
+                this.logger.log('[DEPT-EDIT-ADD] - GET BOT BY ID - elem Sidebar Description elemDescription text', textInDescription)
                 const lastThree = textInDescription.substr(textInDescription.length - 3);
-                console.log(' DEPT EDIT-ADD elem Sidebar Description elemDescription text lastThree', lastThree)
+                this.logger.log('[DEPT-EDIT-ADD] - GET BOT BY ID - elem Sidebar Description elemDescription text lastThree', lastThree)
 
                 if (lines && lines > 3) {
-                  console.log(' DEPT EDIT-ADD elem Sidebar Description lines is > 3', lines)
+                  this.logger.log('[DEPT-EDIT-ADD] - GET BOT BY ID - elem Sidebar Description lines is > 3', lines)
                   // elemSidebarDescription.setAttribute('style', ' display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;');
                   elemSidebarDescription.classList.add("sidebar-description-cropped");
                   this.display_btn_read_all_descr = true;
@@ -934,30 +863,26 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
       }
 
       // this.faqKbUrlToUpdate = faqKb.url;
-      console.log('FAQ-KB NAME (SUBSTITUTE BOT) ', this.selectedValue);
+      this.logger.log('[DEPT-EDIT-ADD] GET BOT BY ID - BOT NAME  ', this.selectedValue);
 
-    },
-      (error) => {
-        console.log('GET FAQ-KB BY ID (SUBSTITUTE BOT) - ERROR ', error);
+    }, (error) => {
+      this.logger.error('[DEPT-EDIT-ADD] - GET BOT BY ID - ERROR ', error);
 
-        // this.showSpinner = false;
-      },
-      () => {
-        console.log('GET FAQ-KB ID (SUBSTITUTE BOT) - COMPLETE ');
-        // this.showSpinner = false;
+    }, () => {
+      this.logger.log('[DEPT-EDIT-ADD] - GET BOT BY ID  - COMPLETE ');
 
-      });
+    });
 
   }
 
   toggleDescriptionReadAll() {
     const elemSidebarDescription = <HTMLElement>document.querySelector('.sidebar-description');
-    console.log('DEPT EDIT-ADD elem Sidebar Description toggleDescriptionReadAll', elemSidebarDescription)
+    this.logger.log('[DEPT-EDIT-ADD] elem Sidebar Description toggleDescriptionReadAll', elemSidebarDescription)
     if (elemSidebarDescription.classList) {
       elemSidebarDescription.classList.toggle("sidebar-description-cropped");
 
       const hasClassCropped = elemSidebarDescription.classList.contains("sidebar-description-cropped")
-      console.log('DEPT EDIT-ADD elem Sidebar Description toggleDescriptionReadAll hasClassCropped', hasClassCropped)
+      this.logger.log('[DEPT-EDIT-ADD] elem Sidebar Description toggleDescriptionReadAll hasClassCropped', hasClassCropped)
       if (hasClassCropped === false) {
         this.read_all = false;
       } else {
@@ -1000,16 +925,16 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
   getProjectuserbyUseridAndGoToEditProjectuser(member_id: string) {
 
     this.usersService.getProjectUserByUserId(member_id).subscribe((projectUser: any) => {
-      console.log('DEPT EDIT-ADD GET projectUser by USER-ID ', projectUser)
+      this.logger.log('[DEPT-EDIT-ADD] GET projectUser by USER-ID ', projectUser)
       if (projectUser) {
-        console.log('DEPT EDIT-ADD - ADDprojectUser id', projectUser[0]._id);
+        this.logger.log('[DEPT-EDIT-ADD] - GET projectUser by USER-ID > projectUser id', projectUser[0]._id);
 
         this.router.navigate(['project/' + this.project._id + '/user/edit/' + projectUser[0]._id]);
       }
     }, (error) => {
-      console.log('DEPT EDIT-ADD GET projectUser by USER-ID - ERROR ', error);
+      this.logger.error('[DEPT-EDIT-ADD] GET projectUser by USER-ID - ERROR ', error);
     }, () => {
-      console.log('DEPT EDIT-ADD GET projectUser by USER-ID * COMPLETE *');
+      this.logger.log('[DEPT-EDIT-ADD]GET projectUser by USER-ID * COMPLETE *');
     });
   }
 
@@ -1020,28 +945,26 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
  */
   createDepartment() {
     this.NOT_HAS_EDITED = true;
-    console.log('DEPT EDIT-ADD createDepartment DEPT NAME  ', this.deptName_toUpdate);
-    console.log('DEPT EDIT-ADD createDepartment DEPT DESCRIPTION DIGIT BY USER ', this.dept_description_toUpdate);
-    console.log('DEPT EDIT-ADD createDepartment GROUP ID WHEN CREATE IS PRESSED ', this.selectedGroupId);
-    this.mongodbDepartmentService.addDept(
+    this.logger.log('[DEPT-EDIT-ADD] createDepartment DEPT NAME  ', this.deptName_toUpdate);
+    this.logger.log('[DEPT-EDIT-ADD] createDepartment DEPT DESCRIPTION DIGIT BY USER ', this.dept_description_toUpdate);
+    this.logger.log('[DEPT-EDIT-ADD] createDepartment GROUP ID WHEN CREATE IS PRESSED ', this.selectedGroupId);
+    this.deptService.addDept(
       this.deptName_toUpdate,
       this.dept_description_toUpdate,
       this.selectedBotId,
       this.bot_only,
       this.selectedGroupId,
       this.ROUTING_SELECTED).subscribe((department) => {
-        console.log('DEPT EDIT-ADD +++ ++++ POST DATA DEPT', department);
-      },
-        (error) => {
-          console.log('DEPT EDIT-ADD createDepartment ERROR ', error);
-          this.notify.showWidgetStyleUpdateNotification(this.createErrorMsg, 4, 'report_problem');
-        },
-        () => {
-          this.notify.showWidgetStyleUpdateNotification(this.createSuccessMsg, 2, 'done');
-          console.log('DEPT EDIT-ADD createDepartment * COMPLETE *');
-          this.router.navigate(['project/' + this.project._id + '/departments']);
+        this.logger.log('[DEPT-EDIT-ADD] - createDepartment - POST DATA DEPT', department);
+      }, (error) => {
+        this.logger.error('[DEPT-EDIT-ADD] createDepartment - ERROR ', error);
+        this.notify.showWidgetStyleUpdateNotification(this.createErrorMsg, 4, 'report_problem');
+      }, () => {
+        this.notify.showWidgetStyleUpdateNotification(this.createSuccessMsg, 2, 'done');
+        this.logger.log('[DEPT-EDIT-ADD] - createDepartment * COMPLETE *');
+        this.router.navigate(['project/' + this.project._id + '/departments']);
 
-        });
+      });
   }
 
 
@@ -1051,14 +974,14 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
     const updated_btn = <HTMLElement>document.querySelector('.update-dept-btn');
     updated_btn.blur();
 
-    console.log('DEPT EDIT-ADD - EDIT - updated_btn ', updated_btn);
-    console.log('DEPT EDIT-ADD - EDIT - ID WHEN EDIT IS PRESSED ', this.id_dept);
-    console.log('DEPT EDIT-ADD - EDIT - FULL-NAME WHEN EDIT IS PRESSED ', this.deptName_toUpdate);
-    console.log('DEPT EDIT-ADD - EDIT - DESCRIPTION WHEN EDIT IS PRESSED ', this.dept_description_toUpdate);
-    console.log('DEPT EDIT-ADD - EDIT - BOT ID WHEN EDIT IS PRESSED IF USER HAS SELECT ANOTHER BOT', this.selectedBotId);
-    console.log('DEPT EDIT-ADD - EDIT - BOT ID WHEN EDIT IS PRESSED IF USER ! DOES NOT SELECT A ANOTHER BOT', this.botId);
-    console.log('DEPT EDIT-ADD - EDIT - DEPT_ROUTING WHEN EDIT IS PRESSED ', this.dept_routing);
-    console.log('DEPT EDIT-ADD - EDIT - ROUTING_SELECTED WHEN EDIT IS PRESSED ', this.ROUTING_SELECTED);
+    this.logger.log('[DEPT-EDIT-ADD] - EDIT - updated_btn ', updated_btn);
+    this.logger.log('[DEPT-EDIT-ADD] - EDIT - ID WHEN EDIT IS PRESSED ', this.id_dept);
+    this.logger.log('[DEPT-EDIT-ADD] - EDIT - FULL-NAME WHEN EDIT IS PRESSED ', this.deptName_toUpdate);
+    this.logger.log('[DEPT-EDIT-ADD] - EDIT - DESCRIPTION WHEN EDIT IS PRESSED ', this.dept_description_toUpdate);
+    this.logger.log('[DEPT-EDIT-ADD]- EDIT - BOT ID WHEN EDIT IS PRESSED IF USER HAS SELECT ANOTHER BOT', this.selectedBotId);
+    this.logger.log('[DEPT-EDIT-ADD] - EDIT - BOT ID WHEN EDIT IS PRESSED IF USER ! DOES NOT SELECT A ANOTHER BOT', this.botId);
+    this.logger.log('[DEPT-EDIT-ADD] - EDIT - DEPT_ROUTING WHEN EDIT IS PRESSED ', this.dept_routing);
+    this.logger.log('[DEPT-EDIT-ADD] - EDIT - ROUTING_SELECTED WHEN EDIT IS PRESSED ', this.ROUTING_SELECTED);
 
     // selectedFaqKbId
     // 'FIXED' (NOW, IN THE HTML, RENAMED IN 'BOT') OPTION WORK-FLOW:
@@ -1073,34 +996,30 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
       this.botIdEdit = this.selectedBotId
     }
 
-
-    // this.faqKbEdit
     // this.ROUTING_SELECTED
-    this.mongodbDepartmentService.updateDept(this.id_dept,
+    this.deptService.updateDept(this.id_dept,
       this.deptName_toUpdate,
       this.dept_description_toUpdate,
       this.botIdEdit,
       this.bot_only,
       this.selectedGroupId,
       this.dept_routing).subscribe((data) => {
-        console.log('DEPT EDIT-ADD - EDIT - RES ', data);
+        this.logger.log('[DEPT-EDIT-ADD] - EDIT DEPT - RES ', data);
 
         // RE-RUN GET CONTACT TO UPDATE THE TABLE
         // this.getDepartments();
         // this.ngOnInit();
-      },
-        (error) => {
-          console.log('DEPT EDIT-ADD - EDIT - ERROR ', error);
+      }, (error) => {
+        this.logger.error('[DEPT-EDIT-ADD] - EDIT DEPT - ERROR ', error);
 
-          this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem');
+        this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem');
 
-        },
-        () => {
-          console.log('DEPT EDIT-ADD - EDIT * COMPLETE *');
-          this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done');
+      }, () => {
+        this.logger.log('[DEPT-EDIT-ADD] - EDIT * COMPLETE *');
+        this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done');
 
-          // this.router.navigate(['project/' + this.project._id + '/departments']);
-        });
+        // this.router.navigate(['project/' + this.project._id + '/departments']);
+      });
 
   }
 
@@ -1111,16 +1030,14 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
   // TEST CHAT21-API-NODEJS router.get('/:departmentid/operators'
   /* GET OPERATORS OF A DEPT */
   getDeptByIdToTestChat21AssigneesFunction() {
-    this.mongodbDepartmentService.testChat21AssignesFunction(this.id_dept).subscribe((dept: any) => {
-      console.log('-- -- -- TEST func - RESULT: ', dept);
-    },
-      (error) => {
-        console.log('-- -- -- TEST func - ERROR ', error);
-        // this.showSpinner = false;
-      },
-      () => {
-        console.log('-- -- --TEST func * COMPLETE *');
-      });
+    this.deptService.testChat21AssignesFunction(this.id_dept).subscribe((dept: any) => {
+      this.logger.log('[DEPT-EDIT-ADD] -- -- -- TEST func - RESULT: ', dept);
+    }, (error) => {
+      this.logger.error('[DEPT-EDIT-ADD] -- -- -- TEST func - ERROR ', error);
+      // this.showSpinner = false;
+    }, () => {
+      this.logger.log('[DEPT-EDIT-ADD] -- -- -- TEST func * COMPLETE *');
+    });
   }
 
 

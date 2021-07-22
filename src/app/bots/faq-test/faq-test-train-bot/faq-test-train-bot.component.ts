@@ -1,9 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { slideInOutAnimation } from '../../../_animations/index';
-import { MongodbFaqService } from '../../../services/mongodb-faq.service';
+import { FaqService } from '../../../services/faq.service';
 import { TranslateService } from '@ngx-translate/core';
 import { NotifyService } from '../../../core/notify.service';
-
+import { LoggerService } from '../../../services/logger/logger.service';
 @Component({
   selector: 'appdashboard-faq-test-train-bot',
   templateUrl: './faq-test-train-bot.component.html',
@@ -24,76 +24,69 @@ export class FaqTestTrainBotComponent implements OnInit {
   answer: string;
   answerSuccessfullyAdded: string;
   constructor(
-    private faqService: MongodbFaqService,
+    private faqService: FaqService,
     private notify: NotifyService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private logger: LoggerService
   ) { }
 
   ngOnInit() {
 
-    console.log('FaqTestTrainBotComponent - selectedQuestion ', this.selectedQuestion)
-    // console.log('FaqTestTrainBotComponent - remote_faq_kb_key ', this.remote_faq_kb_key)
-    console.log('FaqTestTrainBotComponent - idBot ', this.idBot)
-
+    this.logger.log('[FAQ-TEST-TRAIN-BOT] - selectedQuestion ', this.selectedQuestion)
+    // this.logger.log('FaqTestTrainBotComponent - remote_faq_kb_key ', this.remote_faq_kb_key)
+    this.logger.log('[FAQ-TEST-TRAIN-BOT] - idBot ', this.idBot)
     this.searchRemoteFaq();
-
     this.translateAnswerSuccessfullyAdded();
   }
 
 
-
   translateAnswerSuccessfullyAdded() {
-
     this.translate.get('AnswerSuccessfullyAdded')
       .subscribe((text: string) => {
 
         this.answerSuccessfullyAdded = text;
-        console.log('FaqTestTrainBotComponent + + + AnswerSuccessfullyAdded', text)
+        // this.logger.log('[FAQ-TEST-TRAIN-BOT] + + + AnswerSuccessfullyAdded', text)
       });
   }
 
   searchRemoteFaq() {
-
     // this.faqService.searchRemoteFaqByRemoteFaqKbKey(this.remote_faq_kb_key, this.selectedQuestion)
-    this.faqService.searchRemoteFaqByRemoteFaqKbKey(this.idBot, this.selectedQuestion)
+    this.faqService.searchFaqByFaqKbId(this.idBot, this.selectedQuestion)
       .subscribe((remoteFaq) => {
-        console.log('FaqTestTrainBotComponent - REMOTE FAQ FOUND - POST DATA ', remoteFaq);
-
+        this.logger.log('[FAQ-TEST-TRAIN-BOT] - REMOTE FAQ FOUND - POST DATA ', remoteFaq);
         if (remoteFaq) {
           this.hits = remoteFaq.hits
         }
-
       }, (error) => {
-        console.log('FaqTestTrainBotComponent - REMOTE FAQ - POST REQUEST ERROR ', error);
+        this.logger.error('[FAQ-TEST-TRAIN-BOT] - REMOTE FAQ - POST REQUEST ERROR ', error);
         this.showSpinner = false;
       }, () => {
-        console.log('FaqTestTrainBotComponent - REMOTE FAQ - POST REQUEST * COMPLETE *');
+        this.logger.log('[FAQ-TEST-TRAIN-BOT] - REMOTE FAQ - POST REQUEST * COMPLETE *');
         this.showSpinner = false;
       });
 
   }
-
 
   /**
    * *** ADD FAQ ***
    */
   create() {
-    console.log('MONGO DB CREATE FAQ - QUESTION: ', this.selectedQuestion, ' - ANSWER: ', this.answer, ' - ID FAQ KB ', this.idBot);
+    this.logger.log('[FAQ-TEST-TRAIN-BOT] CREATE FAQ - QUESTION: ', this.selectedQuestion, ' - ANSWER: ', this.answer, ' - ID FAQ KB ', this.idBot);
 
     if (this.answer) {
       this.faqService.createTrainBotAnswer(this.selectedQuestion, this.answer, this.idBot)
         .subscribe((faq) => {
-          console.log('FaqTestComponent - CREATED FAQ ', faq);
+          this.logger.log('[FAQ-TEST-TRAIN-BOT] - CREATED FAQ ', faq);
 
 
         }, (error) => {
 
-          console.log('FaqTestComponent - CREATED FAQ - ERROR ', error);
+          this.logger.error('[FAQ-TEST-TRAIN-BOT] - CREATED FAQ - ERROR ', error);
           // =========== NOTIFY ERROR ===========
 
           // this.notify.showNotification(this.createFaqErrorNoticationMsg, 4, 'report_problem');
         }, () => {
-          console.log('FaqTestComponent - CREATED FAQ * COMPLETE *');
+          this.logger.log('[FAQ-TEST-TRAIN-BOT] - CREATED FAQ * COMPLETE *');
           // =========== NOTIFY SUCCESS===========
           this.answer = '';
           this.notify.showNotification(this.answerSuccessfullyAdded, 2, 'done');
@@ -107,7 +100,7 @@ export class FaqTestTrainBotComponent implements OnInit {
         });
     } else {
 
-      console.log('FaqTestComponent - CREATED FAQ - ANSWER', this.answer);
+      this.logger.log('[FAQ-TEST-TRAIN-BOT] - CREATED FAQ - ANSWER', this.answer);
     }
 
   }
@@ -115,7 +108,7 @@ export class FaqTestTrainBotComponent implements OnInit {
 
 
   closeRightSideBar() {
-    console.log('FaqTestTrainBotComponent - closeRightSideBar ')
+    this.logger.log('[FAQ-TEST-TRAIN-BOT] - closeRightSideBar ')
     this.valueChange.emit(false);
 
 
@@ -123,7 +116,6 @@ export class FaqTestTrainBotComponent implements OnInit {
     [].forEach.call(
       document.querySelectorAll('footer ul li a'),
       function (el) {
-        console.log('footer > ul > li > a element: ', el);
         el.setAttribute('style', 'text-transform: none');
       }
     );

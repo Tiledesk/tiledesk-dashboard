@@ -7,7 +7,7 @@ import moment from 'moment';
 import { AnalyticsService } from './../../../services/analytics.service';
 import { Subscription } from 'rxjs';
 import { Observable } from 'rxjs';
-
+import { LoggerService } from './../../../services/logger/logger.service';
 @Component({
   selector: 'appdashboard-messages',
   templateUrl: './messages.component.html',
@@ -33,13 +33,16 @@ export class MessagesComponent implements OnInit {
   bots: any;
   messageCountLastMonth: any;
 
-  constructor(private translate: TranslateService,
+  constructor(
+    private translate: TranslateService,
     private analyticsService: AnalyticsService,
     private usersService: UsersService,
-    private faqKbService: FaqKbService) {
+    private faqKbService: FaqKbService,
+    private logger: LoggerService
+    ) {
 
     this.lang = this.translate.getBrowserLang();
-    console.log('LANGUAGE ', this.lang);
+    this.logger.log('[ANALYTICS - MSGS] LANGUAGE ', this.lang);
     this.switchMonthName();
     this.getProjectUsersAndBots();
     this.getAggregateValue();
@@ -53,7 +56,7 @@ export class MessagesComponent implements OnInit {
 
     this.initDay = moment().subtract(6, 'd').format('D/M/YYYY')
     this.endDay = moment().subtract(0, 'd').format('D/M/YYYY')
-    console.log("INIT", this.initDay, "END", this.endDay);
+    this.logger.log("[ANALYTICS - MSGS] INIT", this.initDay, "END", this.endDay);
 
     this.getMessagesByLastNDays(this.selectedDaysId, this.selectedAgentId);
   }
@@ -77,8 +80,8 @@ export class MessagesComponent implements OnInit {
     Observable
       .zip(projectUsers, bots, (_projectUsers: any, _bots: any) => ({ _projectUsers, _bots }))
       .subscribe(pair => {
-        console.log('CONV LENGTH ANALYTICS - GET P-USERS-&-BOTS - PROJECT USERS : ', pair._projectUsers);
-        console.log('CONV LENGTH ANALYTICS - GET P-USERS-&-BOTS - BOTS: ', pair._bots);
+        this.logger.log('[ANALYTICS - MSGS] - GET P-USERS-&-BOTS - PROJECT USERS : ', pair._projectUsers);
+        this.logger.log('[ANALYTICS - MSGS] - GET P-USERS-&-BOTS - BOTS: ', pair._bots);
 
         if (pair && pair._projectUsers) {
           this.projectUsersList = pair._projectUsers;
@@ -103,22 +106,22 @@ export class MessagesComponent implements OnInit {
           });
         }
 
-        console.log('CONV LENGTH ANALYTICS - GET P-USERS-&-BOTS - PROJECT-USER & BOTS ARRAY : ', this.projectUserAndBotsArray);
+        this.logger.log('[ANALYTICS - MSGS] - GET P-USERS-&-BOTS - PROJECT-USER & BOTS ARRAY : ', this.projectUserAndBotsArray);
 
       }, error => {
-        console.log('CONV LENGTH ANALYTICS - GET P-USERS-&-BOTS - ERROR: ', error);
+        this.logger.error('[ANALYTICS - MSGS] - GET P-USERS-&-BOTS - ERROR: ', error);
       }, () => {
-        console.log('CONV LENGTH ANALYTICS - GET P-USERS-&-BOTS - COMPLETE');
+        this.logger.log('[ANALYTICS - MSGS] - GET P-USERS-&-BOTS - COMPLETE');
       });
   }
 
   ngOnDestroy() {
-    console.log('!!! ANALYTICS.RICHIESTE - !!!!! UN - SUBSCRIPTION TO REQUESTS');
+    this.logger.log('[ANALYTICS - MSGS] - !!!!! UN - SUBSCRIPTION TO REQUESTS');
     this.subscription.unsubscribe();
   }
 
   daysSelect(value, $event) {
-    console.log("MSG COMP EVENT: ", $event)
+    this.logger.log("[ANALYTICS - MSGS] daysSelect EVENT: ", $event)
     this.selectedDaysId = value;
 
     if (value <= 30) {
@@ -133,29 +136,34 @@ export class MessagesComponent implements OnInit {
   }
 
   agentSelected(selectedAgentId) {
-    console.log("Selected agent: ", selectedAgentId);
+    this.logger.log("[ANALYTICS - MSGS] Selected agent: ", selectedAgentId);
     this.lineChart.destroy();
     this.subscription.unsubscribe();
     this.getMessagesByLastNDays(this.selectedDaysId, selectedAgentId)
-    console.log('REQUEST:', this.selectedDaysId, selectedAgentId)
+    this.logger.log('[ANALYTICS - MSGS] REQUEST:', this.selectedDaysId, selectedAgentId)
   }
 
   getAggregateValue() {
     this.analyticsService.getLastMountMessagesCount().subscribe((res: any) => {
-      console.log("LAST MONTH MESSAGES COUNT: ", res);
+      this.logger.log("[ANALYTICS - MSGS] LAST MONTH MESSAGES COUNT: ", res);
+      if (res && res[0]) {
       this.messageCountLastMonth = res[0].totalCount;
-      console.log("Message Count: ", this.messageCountLastMonth);
+      this.logger.log("[ANALYTICS - MSGS] Message Count: ", this.messageCountLastMonth);
+    } else {
+      this.logger.log("[ANALYTICS - MSGS] THRE ARE NOT MSG IN THE LAST MONTH");
+      this.messageCountLastMonth = 0;
+    }
     }, (error) => {
-      console.log("Impossible to retrieve monthly count")
+      this.logger.error("[ANALYTICS - MSGS] Impossible to retrieve monthly count", error)
       this.messageCountLastMonth = 0;
     })
   }
 
   getMessagesByLastNDays(lastdays, senderID) {
-    console.log("Lastdays: ", lastdays);
+    this.logger.log("[ANALYTICS - MSGS] Lastdays: ", lastdays);
     
     this.subscription = this.analyticsService.getMessagesByDay(lastdays, senderID).subscribe((messagesByDay) => {
-      console.log("»» MESSAGES BY DAY RESULT: ", messagesByDay)
+      this.logger.log("[ANALYTICS - MSGS] »» MESSAGES BY DAY RESULT: ", messagesByDay)
 
       const lastdays_initarray = [];
       for (let i = 0; i < lastdays; i++) {
@@ -163,7 +171,7 @@ export class MessagesComponent implements OnInit {
       }
 
       lastdays_initarray.reverse();
-      console.log("»» LASTDAYS MESSAGES - INIT ARRAY: ", lastdays_initarray)
+      this.logger.log("[ANALYTICS - MSGS] »» LASTDAYS MESSAGES - INIT ARRAY: ", lastdays_initarray)
 
       const messagesByDay_series_array = [];
       const messagesByDay_labels_array = [];
@@ -175,15 +183,15 @@ export class MessagesComponent implements OnInit {
           messagesByDay_array.push({ 'count': messagesByDay[j]['count'], day: messagesByDay[j]['_id']['day'] + '/' + messagesByDay[j]['_id']['month'] + '/' + messagesByDay[j]['_id']['year'] })
         }
       }
-      console.log('»» !!! ANALYTICS - MESSAGES BY DAY FORMATTED ', messagesByDay_array);
+      this.logger.log('[ANALYTICS - MSGS] - MESSAGES BY DAY FORMATTED ', messagesByDay_array);
 
       // MERGE lastdays_initarray & visitorsByDay_array
       const messagesByDay_final_array = lastdays_initarray.map(obj => messagesByDay_array.find(o => o.day === obj.day) || obj);
-      console.log('»» !!! ANALYTICS - MESSGES BY DAY - FINAL ARRAY ', messagesByDay_final_array);
+      this.logger.log('[ANALYTICS - MSGS] - MESSGES BY DAY - FINAL ARRAY ', messagesByDay_final_array);
 
       this.initDay = messagesByDay_final_array[0].day;
       this.endDay = messagesByDay_final_array[lastdays - 1].day;
-      console.log("INIT", this.initDay, "END", this.endDay);
+      this.logger.log("[ANALYTICS - MSGS] INIT", this.initDay, "END", this.endDay);
 
       messagesByDay_final_array.forEach((msgByDay) => {
         messagesByDay_series_array.push(msgByDay.count)
@@ -191,8 +199,8 @@ export class MessagesComponent implements OnInit {
         messagesByDay_labels_array.push(splitted_date[0] + ' ' + this.monthNames[splitted_date[1]]);
       })
 
-      console.log('»» MESSAGES BY DAY - SERIES (+ NEW + ARRAY OF COUNT)', messagesByDay_series_array);
-      console.log('»» MESSAGES BY DAY - LABELS (+ NEW + ARRAY OF DAY)', messagesByDay_labels_array);
+      this.logger.log('[ANALYTICS - MSGS] »» MESSAGES BY DAY - SERIES (+ NEW + ARRAY OF COUNT)', messagesByDay_series_array);
+      this.logger.log('[ANALYTICS - MSGS] »» MESSAGES BY DAY - LABELS (+ NEW + ARRAY OF DAY)', messagesByDay_labels_array);
 
       const higherCount = this.getMaxOfArray(messagesByDay_series_array);
 
@@ -288,9 +296,9 @@ export class MessagesComponent implements OnInit {
         }]
       })
     }, (error) => {
-      console.log('»» MESSAGES BY DAY - ERROR ', error);
+      this.logger.error('[ANALYTICS - MSGS] »» MESSAGES BY DAY - ERROR ', error);
     }, () => {
-      console.log('»» MESSAGES BY DAY - * COMPLETE * ');
+      this.logger.log('[ANALYTICS - MSGS] »» MESSAGES BY DAY - * COMPLETE * ');
     })
   }
 

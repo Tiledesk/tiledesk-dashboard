@@ -8,12 +8,12 @@ import { UsersService } from '../services/users.service';
 import { UploadImageService } from '../services/upload-image.service';
 import { UploadImageNativeService } from '../services/upload-image-native.service';
 import { NotifyService } from '../core/notify.service';
-import * as firebase from 'firebase/app';
 import { Router } from '@angular/router';
 import { AppConfigService } from '../services/app-config.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { TranslateService } from '@ngx-translate/core';
+import { LoggerService } from '../services/logger/logger.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -63,6 +63,7 @@ export class UserProfileComponent implements OnInit {
     private uploadImageNativeService: UploadImageNativeService,
     public appConfigService: AppConfigService,
     private translate: TranslateService,
+    private logger: LoggerService
   ) { }
 
   ngOnInit() {
@@ -82,9 +83,7 @@ export class UserProfileComponent implements OnInit {
   translateStrings() {
     this.translate.get('YourProfilePhotoHasBeenUploadedSuccessfully')
       .subscribe((text: string) => {
-
         this.profilePhotoWasUploaded = text;
-
       });
   }
 
@@ -94,14 +93,13 @@ export class UserProfileComponent implements OnInit {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((user_role) => {
-        console.log('% »»» WebSocketJs WF +++++ ws-requests--- navbar - USER ROLE ', user_role);
+        this.logger.log('[USER-PROFILE] - USER ROLE ', user_role);
         if (user_role) {
           // this.userRole = user_role
 
           this.translate.get(user_role)
             .subscribe((text: string) => {
               this.userRole = text;
-
             });
         }
       });
@@ -111,16 +109,16 @@ export class UserProfileComponent implements OnInit {
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
       const firebase_conf = this.appConfigService.getConfig().firebase;
       this.storageBucket = firebase_conf['storageBucket'];
-      console.log('USER-PROFILE - IMAGE STORAGE ', this.storageBucket, 'usecase Firebase')
+      this.logger.log('[USER-PROFILE] - IMAGE STORAGE ', this.storageBucket, 'usecase Firebase')
     } else {
       this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
 
-      console.log('USER-PROFILE - IMAGE STORAGE ', this.baseUrl, 'usecase Native')
+      this.logger.log('[USER-PROFILE] - IMAGE STORAGE ', this.baseUrl, 'usecase Native')
     }
   }
 
   upload(event) {
-    console.log('USER PROFILE IMAGE (USER-PROFILE  upload')
+    this.logger.log('[USER-PROFILE] IMAGE upload')
     this.showSpinnerInUploadImageBtn = true;
     const file = event.target.files[0]
     // Firebase upload
@@ -129,18 +127,18 @@ export class UserProfileComponent implements OnInit {
 
     } else {
       // Native upload
-      console.log('USER PROFILE IMAGE (USER-PROFILE ) upload with native service')
+      this.logger.log('[USER-PROFILE] IMAGE upload with native service')
       // const userImageExist = this.usersService.userProfileImageExist.getValue()
-      // console.log('USER PROFILE IMAGE (USER-PROFILE ) upload with native service userImageExist ', userImageExist);
+      // this.logger.log('USER PROFILE IMAGE (USER-PROFILE ) upload with native service userImageExist ', userImageExist);
 
       this.uploadImageNativeService.uploadUserPhotoProfile_Native(file).subscribe((downoloadurl) => {
-        console.log('USER PROFILE IMAGE (USER-PROFILE ) upload with native service - RES downoloadurl', downoloadurl);
+        this.logger.log('[USER-PROFILE] IMAGE upload with native service - RES downoloadurl', downoloadurl);
 
         this.userProfileImageurl = downoloadurl
         this.timeStamp = (new Date()).getTime();
       }, (error) => {
 
-        console.log('USER PROFILE IMAGE (USER-PROFILE ) upload with native service - ERR ', error);
+        this.logger.error('[USER-PROFILE] IMAGE upload with native service - ERR ', error);
       })
 
     }
@@ -150,7 +148,7 @@ export class UserProfileComponent implements OnInit {
   checkUserImageUploadIsComplete() {
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
       this.uploadImageService.userImageWasUploaded.subscribe((image_exist) => {
-        console.log('USER PROFILE IMAGE - IMAGE UPLOADING IS COMPLETE ?  ', image_exist, '(usecase Firebase)');
+        this.logger.log('[USER-PROFILE] - IMAGE UPLOADING IS COMPLETE ?  ', image_exist, '(usecase Firebase)');
 
         // this.notify.showWidgetStyleUpdateNotification(this.profilePhotoWasUploaded, 2, 'done');
         this.userImageHasBeenUploaded = image_exist;
@@ -158,14 +156,14 @@ export class UserProfileComponent implements OnInit {
 
           this.showSpinnerInUploadImageBtn = false;
 
-          console.log('USER PROFILE IMAGE (USER-PROFILE ) - IMAGE UPLOADING IS COMPLETE - BUILD userProfileImageurl ');
+          this.logger.log('[USER-PROFILE] - IMAGE UPLOADING IS COMPLETE - BUILD userProfileImageurl ');
           this.setImageProfileUrl(this.storageBucket)
         }
       });
     } else {
       // Native upload
       this.uploadImageNativeService.userImageWasUploaded_Native.subscribe((image_exist) => {
-        console.log('USER PROFILE IMAGE - IMAGE UPLOADING IS COMPLETE ? ', image_exist, '(usecase Native)');
+        this.logger.log('[USER-PROFILE] - IMAGE UPLOADING IS COMPLETE ? ', image_exist, '(usecase Native)');
 
         this.userImageHasBeenUploaded = image_exist;
         this.showSpinnerInUploadImageBtn = false;
@@ -175,16 +173,14 @@ export class UserProfileComponent implements OnInit {
     }
   }
 
-
-
   checkUserImageExist() {
     this.usersService.userProfileImageExist.subscribe((image_exist) => {
-      console.log('PROFILE IMAGE (USER-PROFILE) - USER PROFILE IMAGE EXIST ? ', image_exist);
+      this.logger.log('[USER-PROFILE] PROFILE IMAGE - USER PROFILE IMAGE EXIST ? ', image_exist);
       this.userProfileImageExist = image_exist;
 
       if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
         if (this.storageBucket && this.userProfileImageExist === true) {
-          console.log('PROFILE IMAGE (USER-PROFILE) - USER PROFILE IMAGE EXIST - setImageProfileUrl ');
+          this.logger.log('[USER-PROFILE] PROFILE IMAGE - USER PROFILE IMAGE EXIST - setImageProfileUrl ');
           this.setImageProfileUrl(this.storageBucket)
         }
       } else {
@@ -197,28 +193,25 @@ export class UserProfileComponent implements OnInit {
 
   setImageProfileUrl_Native(baseUrl) {
     this.userProfileImageurl = baseUrl + 'images?path=uploads%2Fusers%2F' + this.userId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
-    // console.log('PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
+    // this.logger.log('PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
     this.timeStamp = (new Date()).getTime();
   }
-
 
   setImageProfileUrl(storageBucket) {
     this.userProfileImageurl = 'https://firebasestorage.googleapis.com/v0/b/' + storageBucket + '/o/profiles%2F' + this.userId + '%2Fphoto.jpg?alt=media';
-    // console.log('PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
+    // this.logger.log('PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
     this.timeStamp = (new Date()).getTime();
   }
 
-
-
   deleteUserProfileImage() {
-    // const file = event.target.files[0]
-    console.log('USER PROFILE IMAGE (USER-PROFILE ) deleteUserProfileImage')
+    this.logger.log('[USER-PROFILE] - deleteUserProfileImage')
 
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+      this.logger.log('[USER-PROFILE] IMAGE deleteUserProfileImage with firebase service')
       this.uploadImageService.deleteUserProfileImage(this.userId);
     } else {
-      console.log('USER PROFILE IMAGE (USER-PROFILE ) deleteUserProfileImage with native service')
-      this.uploadImageNativeService.deletePhotoProfile_Native(this.userId, 'user')
+      this.logger.log('[USER-PROFILE] IMAGE deleteUserProfileImage with native service')
+      this.uploadImageNativeService.deletePhotoProfile_Native(this.userId, 'user');
     }
 
     this.userProfileImageExist = false;
@@ -230,26 +223,22 @@ export class UserProfileComponent implements OnInit {
 
   getUserProfileImage() {
     if (this.timeStamp) {
-      // console.log('PROFILE IMAGE (USER-IMG IN USER-LOG) - getUserProfileImage ', this.userProfileImageurl);
+      // this.logger.log('PROFILE IMAGE (USER-IMG IN USER-LOG) - getUserProfileImage ', this.userProfileImageurl);
       // setTimeout(() => {
       return this.userProfileImageurl + '&' + this.timeStamp;
       // }, 200);
     }
     return this.userProfileImageurl
   }
-
-
-
-
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
       this.project = project
 
       if (this.project) {
         this.projectId = project._id
-        console.log('00 -> USER PROFILE project from AUTH service subscription  ', project)
+        this.logger.log('[USER-PROFILE] - GET CURRENT PROJECT project ', project)
       } else {
-        console.log('00 -> USER PROFILE project from AUTH service subscription ? ', project)
+        this.logger.log('[USER-PROFILE] - GET CURRENT PROJECT project ', project , ' - HIDE SIDEBAR')
         this.selectSidebar();
       }
     });
@@ -258,114 +247,78 @@ export class UserProfileComponent implements OnInit {
   // hides the sidebar if the user views his profile but has not yet selected a project
   selectSidebar() {
     const elemAppSidebar = <HTMLElement>document.querySelector('app-sidebar');
-    console.log('USER PROFILE  elemAppSidebar ', elemAppSidebar)
+    this.logger.log('[USER-PROFILE]  elemAppSidebar ', elemAppSidebar)
     elemAppSidebar.setAttribute('style', 'display:none;');
 
     const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
-    console.log('USER PROFILE  elemMainPanel ', elemMainPanel)
+    this.logger.log('[USER-PROFILE] elemMainPanel ', elemMainPanel)
     elemMainPanel.setAttribute('style', 'width:100% !important; overflow-x: hidden !important;');
   }
 
   getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
-      console.log('==> USER GET IN USER PROFILE ', user)
-      // tslint:disable-next-line:no-debugger
-      // debugger
+      this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - USER', user)
+    
       if (user) {
         this.user = user;
-
         this.userFirstname = user.firstname;
         this.userLastname = user.lastname;
         this.userId = user._id;
         this.userEmail = user.email;
-
-        /// ===== CHECK USER PROFILE IMAGE ===== 
-        // this.verifyUserProfileImageOnStorage(this.userId);
-
         this.firstnameCurrentValue = user.firstname;
         this.lastnameCurrentValue = user.lastname;
         this.emailverified = user.emailverified;
-        console.log('EMAIL VERIFIED ', this.emailverified)
+        this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - EMAIL VERIFIED ', this.emailverified)
         this.showSpinner = false;
       }
 
     }, (error) => {
-      console.log('==> USER GET IN USER PROFILE', error);
+      this.logger.error('[USER-PROFILE] - USER GET IN USER PROFILE - ERROR', error);
       this.showSpinner = false;
+    }, () => {
+      this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE * COMPLETE *');
     });
   }
 
-  // verifyUserProfileImageOnStorage(user_id) {
-  //   // tslint:disable-next-line:max-line-length
-  //   const url = 'https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F' + user_id + '%2Fphoto.jpg?alt=media';
-  //   const self = this;
-  //   this.verifyImageURL(url, function (imageExists) {
-
-
-  //     if (imageExists === true) {
-  //       // alert('Image Exists');
-  //       console.log('=== === USER PROFILE IMAGE EXIST ', imageExists)
-  //       self.userProfileImageExist = true;
-  //     } else {
-  //       // alert('Image does not Exist');
-  //       console.log('=== === USER PROFILE IMAGE EXIST ', imageExists)
-  //       self.userProfileImageExist = false;
-  //     }
-  //   });
-  // }
-
-
-  // verifyImageURL(image_url, callBack) {
-  //   const img = new Image();
-  //   img.src = image_url;
-  //   img.onload = function () {
-  //     callBack(true);
-  //   };
-  //   img.onerror = function () {
-  //     callBack(false);
-  //   };
-  // }
 
   onEditFirstname(updatedFirstname) {
-    console.log('==> firstname previous value ', this.firstnameCurrentValue);
-    console.log('==> firstname updated value', updatedFirstname);
+    this.logger.log('[USER-PROFILE] - onEditFirstname ==> firstname previous value ', this.firstnameCurrentValue);
+    this.logger.log('[USER-PROFILE] - onEditFirstname ==> firstname updated value', updatedFirstname);
     if (this.firstnameCurrentValue !== updatedFirstname) {
       this.HAS_EDIT_FIRSTNAME = true;
-      console.log('HAS CHANGED FIRSTNAME: ', this.HAS_EDIT_FIRSTNAME);
+      this.logger.log('[USER-PROFILE] - onEditFirstname HAS CHANGED FIRSTNAME: ', this.HAS_EDIT_FIRSTNAME);
     } else {
       this.HAS_EDIT_FIRSTNAME = false;
-      console.log('HAS CHANGED FIRSTNAME: ', this.HAS_EDIT_FIRSTNAME);
+      this.logger.log('[USER-PROFILE] - onEditFirstname HAS CHANGED FIRSTNAME: ', this.HAS_EDIT_FIRSTNAME);
     }
   }
 
   onEditLastname(updatedLastname) {
-    console.log('==> lastname previous value ', this.lastnameCurrentValue);
-    console.log('==> lastname updated value', updatedLastname);
+    this.logger.log('[USER-PROFILE] - onEditLastname ==> lastname previous value ', this.lastnameCurrentValue);
+    this.logger.log('[USER-PROFILE] - onEditLastname  ==> lastname updated value', updatedLastname);
     if (this.lastnameCurrentValue !== updatedLastname) {
       this.HAS_EDIT_LASTNAME = true;
-      console.log('HAS CHANGED LASTNAME: ', this.HAS_EDIT_LASTNAME);
+      this.logger.log('[USER-PROFILE] - onEditLastname HAS CHANGED LASTNAME: ', this.HAS_EDIT_LASTNAME);
     } else {
       this.HAS_EDIT_LASTNAME = false;
-      console.log('HAS CHANGED LASTNAME: ', this.HAS_EDIT_LASTNAME);
+      this.logger.log('[USER-PROFILE] - onEditLastname HAS CHANGED LASTNAME: ', this.HAS_EDIT_LASTNAME);
     }
   }
-
-
 
   updateCurrentUserFirstnameLastname() {
     this.displayModalUpdatingUser = 'block';
     this.SHOW_CIRCULAR_SPINNER = true;
 
-    console.log('»» »» »» UPDATE CURRENT USER - WHEN CLICK UPDATE - USER FIRST NAME ', this.userFirstname);
-    console.log('»» »» »» UPDATE CURRENT USER - WHEN CLICK UPDATE - USER LAST NAME ', this.userLastname);
+    this.logger.log('[USER-PROFILE] - UPDATE CURRENT USER - WHEN CLICK UPDATE - USER FIRST NAME ', this.userFirstname);
+    this.logger.log('[USER-PROFILE] - UPDATE CURRENT USER - WHEN CLICK UPDATE - USER LAST NAME ', this.userLastname);
     this.usersService.updateCurrentUserLastnameFirstname(this.userFirstname, this.userLastname, (response) => {
 
-      console.log('»»»» CALLBACK RESPONSE ', response)
+      this.logger.log('[USER-PROFILE] - CALLBACK RESPONSE ', response)
       if (response === 'success') {
 
         this.SHOW_CIRCULAR_SPINNER = false;
         this.UPDATE_USER_ERROR = false;
-        console.log('»» »» »» UPDATE CURRENT USER  ', this.SHOW_CIRCULAR_SPINNER);
+        this.logger.log('[USER-PROFILE] - UPDATE CURRENT USER  ', this.SHOW_CIRCULAR_SPINNER);
         // =========== NOTIFY SUCCESS===========
         this.notify.showNotification('your profile has been successfully updated', 2, 'done');
 
@@ -376,8 +329,6 @@ export class UserProfileComponent implements OnInit {
         this.notify.showNotification('An error has occurred updating your profile', 4, 'report_problem')
       }
     });
-    // this.notify.showNotification()
-    // this.displayModalUpdatingUser = 'block'
   }
 
   closeModalUpdatingUser() {
@@ -394,24 +345,22 @@ export class UserProfileComponent implements OnInit {
   resendVerificationEmail() {
     this.usersService.resendVerifyEmail().subscribe((res) => {
 
-      console.log('RESEND VERIFY EMAIL - RESPONSE ', res);
+      this.logger.log('[USER-PROFILE] - RESEND VERIFY EMAIL - RESPONSE ', res);
       const res_success = res['success'];
-      console.log('RESEND VERIFY EMAIL - RESPONSE SUCCESS ', res_success);
+      this.logger.log('[USER-PROFILE] - RESEND VERIFY EMAIL - RESPONSE SUCCESS ', res_success);
       if (res_success === true) {
         // =========== NOTIFY SUCCESS===========
         this.notify.showResendingVerifyEmailNotification(this.userEmail);
       }
-    },
-      (error) => {
-        console.log('RESEND VERIFY EMAIL - ERROR ', error);
+    }, (error) => {
+        this.logger.error('[USER-PROFILE] - RESEND VERIFY EMAIL - ERROR ', error);
         const error_body = JSON.parse(error._body);
-        console.log('RESEND VERIFY EMAIL - ERROR BODY', error_body);
+        this.logger.error('[USER-PROFILE] - RESEND VERIFY EMAIL - ERROR BODY', error_body);
         if (error_body['success'] === false) {
           this.notify.showNotification('An error has occurred sending verification link', 4, 'report_problem')
         }
-      },
-      () => {
-        console.log('RESEND VERIFY EMAIL * COMPLETE *');
+      }, () => {
+        this.logger.log('[USER-PROFILE] - RESEND VERIFY EMAIL * COMPLETE *');
       });
   }
 
@@ -421,7 +370,7 @@ export class UserProfileComponent implements OnInit {
   }
 
   goToChangePsw() {
-    console.log('»» GO TO CHANGE PSW - PROJECT ID ', this.projectId)
+    this.logger.log('[USER-PROFILE] - GO TO CHANGE PSW - PROJECT ID ', this.projectId)
     if (this.projectId === undefined) {
       this.router.navigate(['user/' + this.userId + '/password/change']);
     } else {
@@ -430,7 +379,7 @@ export class UserProfileComponent implements OnInit {
   }
 
   goToAccountSettings() {
-    console.log('»» GO TO USER  PROFILE SETTINGS - PROJECT ID ', this.projectId)
+    this.logger.log('[USER-PROFILE] - GO TO USER  PROFILE SETTINGS - PROJECT ID ', this.projectId)
     if (this.projectId === undefined) {
       this.router.navigate(['user/' + this.userId + '/settings']);
     } else {
@@ -439,7 +388,7 @@ export class UserProfileComponent implements OnInit {
   }
 
   goToNotificationSettings() {
-    console.log('»» GO TO USER  NOTIFICATION SETTINGS - PROJECT ID ', this.projectId)
+    this.logger.log('[USER-PROFILE] - GO TO USER  NOTIFICATION SETTINGS - PROJECT ID ', this.projectId)
     if (this.projectId === undefined) {
       this.router.navigate(['user/' + this.userId + '/notifications']);
     } else {

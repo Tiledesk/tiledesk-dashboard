@@ -1,11 +1,11 @@
 import { Component, OnInit, AfterViewInit, EventEmitter, Input, Output, ElementRef, ViewChild } from '@angular/core';
 import { slideInOutAnimation } from '../../../_animations/index';
-import { MongodbFaqService } from '../../../services/mongodb-faq.service';
+import { FaqService } from '../../../services/faq.service';
 import { TranslateService } from '@ngx-translate/core';
 import { NotifyService } from '../../../core/notify.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/auth.service';
-
+import { LoggerService } from '../../../services/logger/logger.service';
 @Component({
   selector: 'appdashboard-ws-train-bot',
   templateUrl: './ws-train-bot.component.html',
@@ -38,17 +38,18 @@ export class WsTrainBotComponent implements OnInit {
   selectQuestionForTooltip: string;
 
   constructor(
-    private faqService: MongodbFaqService,
+    private faqService: FaqService,
     private translate: TranslateService,
     private notify: NotifyService,
     private router: Router,
-    private auth: AuthService
+    private auth: AuthService,
+    private logger: LoggerService
   ) { }
 
   ngOnInit() {
     this.onInitSidebarContentHeight();
     this.getCurrentProject();
-    console.log('WsTrainBotComponent - selectedQuestion ', this.selectedQuestion);
+    this.logger.log('WsTrainBotComponent - selectedQuestion ', this.selectedQuestion);
 
     this.translateFaqSuccessfullyUpdated();
     this.translateFaqErrorWhileUpdating();
@@ -81,7 +82,7 @@ export class WsTrainBotComponent implements OnInit {
       .subscribe((text: string) => {
 
         this.faqSuccessfullyUpdated = text;
-        // console.log('+ + + FaqUpdatedSuccessfullyMsg', text)
+        // this.logger.log('+ + + FaqUpdatedSuccessfullyMsg', text)
       });
   }
 
@@ -90,7 +91,7 @@ export class WsTrainBotComponent implements OnInit {
       .subscribe((text: string) => {
 
         this.faqErrorWhileUpdating = text;
-        // console.log('+ + + FaqUpdatedErrorMsg', text)
+        // this.logger.log('+ + + FaqUpdatedErrorMsg', text)
       });
   }
 
@@ -98,11 +99,11 @@ export class WsTrainBotComponent implements OnInit {
 
   onInitSidebarContentHeight() {
     this.windowActualHeight = window.innerHeight;
-    console.log('WsTrainBotComponent - windowActualHeight ', this.windowActualHeight);
+    this.logger.log('WsTrainBotComponent - windowActualHeight ', this.windowActualHeight);
   }
 
   closeRightSideBar() {
-    console.log('WsTrainBotComponent closeRightSideBar this.valueChange ', this.valueChange)
+    this.logger.log('WsTrainBotComponent closeRightSideBar this.valueChange ', this.valueChange)
     // this.valueChange.next()
     this.valueChange.emit(false);
     this.isOpenRightSidebar = false;
@@ -111,7 +112,7 @@ export class WsTrainBotComponent implements OnInit {
     [].forEach.call(
       document.querySelectorAll('footer ul li a'),
       function (el) {
-        // console.log('footer > ul > li > a element: ', el);
+        // this.logger.log('footer > ul > li > a element: ', el);
         el.setAttribute('style', 'text-transform: none');
       }
     );
@@ -123,35 +124,35 @@ export class WsTrainBotComponent implements OnInit {
     this.showSpinner = true;
     this.has_pressed_search = true;
     const elemBubbleOfSelectedQuestion = <HTMLElement>document.querySelector('.selected-question');
-    console.log('TrainBotComponent - elemBubbleOfSelectedQuestion ', elemBubbleOfSelectedQuestion);
+    this.logger.log('TrainBotComponent - elemBubbleOfSelectedQuestion ', elemBubbleOfSelectedQuestion);
     const elemBubbleHeight = elemBubbleOfSelectedQuestion.clientHeight;
-    console.log('TrainBotComponent - elemBubbleHeight 2', elemBubbleHeight);
+    this.logger.log('TrainBotComponent - elemBubbleHeight 2', elemBubbleHeight);
 
     // this.sidebar_content_height = this.windowActualHeight - elemBubbleHeight + 25 + 'px';
     this.sidebar_content_height = 500 + 'px';
-    console.log('TrainBotComponent - sidebar_content_height ', this.sidebar_content_height);
+    this.logger.log('TrainBotComponent - sidebar_content_height ', this.sidebar_content_height);
 
 
     // ########### Check if  the sidebar-content html element has scrollbar ###########
     // const elemSidebarContent = <HTMLElement>document.querySelector('.sidebar-content');
-    // console.log('TrainBotComponent - elemSidebarContent ', elemSidebarContent);
-    // console.log('TrainBotComponent - elemSidebarContent scrollWidth', elemSidebarContent.scrollWidth);
-    // console.log('TrainBotComponent - elemSidebarContent clientWidth', elemSidebarContent.clientWidth);
+    // this.logger.log('TrainBotComponent - elemSidebarContent ', elemSidebarContent);
+    // this.logger.log('TrainBotComponent - elemSidebarContent scrollWidth', elemSidebarContent.scrollWidth);
+    // this.logger.log('TrainBotComponent - elemSidebarContent clientWidth', elemSidebarContent.clientWidth);
     // var hasHorizontalScrollbar = elemSidebarContent.scrollWidth > elemSidebarContent.clientWidth;
-    // console.log('TrainBotComponent - hasHorizontalScrollbar ', hasHorizontalScrollbar);
+    // this.logger.log('TrainBotComponent - hasHorizontalScrollbar ', hasHorizontalScrollbar);
 
 
     this.searchbtnRef.nativeElement.blur();
-    console.log('searchFaq - faqToSearch ', this.faqToSearch)
+    this.logger.log('searchFaq - faqToSearch ', this.faqToSearch)
 
     // if (this.elSidebarContent) {
     //   this.elSidebarContent.scrollTop = 279;
-    //   console.log('TrainBotComponent SCROLL POSITION 2 ', this.scrollpos)
+    //   this.logger.log('TrainBotComponent SCROLL POSITION 2 ', this.scrollpos)
     // }
 
     this.faqService.getFaqsByText(this.faqToSearch)
       .subscribe((faqs: any) => {
-        console.log('TrainBotComponent FAQs GOT BY TEXT ', faqs);
+        this.logger.log('TrainBotComponent FAQs GOT BY TEXT ', faqs);
         // this.foundFAQs = faqs;
 
         /**
@@ -162,31 +163,31 @@ export class WsTrainBotComponent implements OnInit {
           return faq.faq_kb[0].trashed === false
         });
 
-        console.log('TrainBotComponent FAQs GOT BY TEXT foundFAQs ', this.foundFAQs);
+        this.logger.log('TrainBotComponent FAQs GOT BY TEXT foundFAQs ', this.foundFAQs);
       }, (error) => {
-        console.log('TrainBotComponent FAQs GOT BY TEXT  error', error);
+        this.logger.error('TrainBotComponent FAQs GOT BY TEXT  error', error);
         this.showSpinner = false;
       },
         () => {
-          console.log('TrainBotComponent FAQs GOT BY TEXT * COMPLETE *');
+          this.logger.log('TrainBotComponent FAQs GOT BY TEXT * COMPLETE *');
 
           this.showSpinner = false;
         });
 
     // this.faqToSearch = getFaq.question
-    console.log('searchFaq - faqToSearch ', this.faqToSearch);
+    this.logger.log('searchFaq - faqToSearch ', this.faqToSearch);
 
   }
 
   // onScroll(event: any): void {
   //   this.elSidebarContent = <HTMLElement>document.querySelector('.sidebar-content');
   //   this.scrollpos = this.elSidebarContent.scrollTop
-  //   console.log('TrainBotComponent SCROLL POSITION', this.scrollpos)
+  //   this.logger.log('TrainBotComponent SCROLL POSITION', this.scrollpos)
   // }
 
   clearFaqToSearch() {
     this.has_pressed_search = false;
-    console.log('calling clearFaqToSearch');
+    this.logger.log('calling clearFaqToSearch');
     this.faqToSearch = '';
     this.foundFAQs = []
   }
@@ -195,27 +196,27 @@ export class WsTrainBotComponent implements OnInit {
    * *** EDIT FAQ ***
    */
   editFaq(faq_id: string, question: string, answer: string) {
-    console.log('TrainBotComponent FAQ ID TO UPDATE ', faq_id);
-    console.log('TrainBotComponent FAQ QUESTION TO UPDATE ', question);
-    console.log('TrainBotComponent FAQ ANSWER TO UPDATE ', answer);
+    this.logger.log('TrainBotComponent FAQ ID TO UPDATE ', faq_id);
+    this.logger.log('TrainBotComponent FAQ QUESTION TO UPDATE ', question);
+    this.logger.log('TrainBotComponent FAQ ANSWER TO UPDATE ', answer);
 
 
-    this.faqService.updateTrainBotAnswer(faq_id, question + '\n\n' + this.selectedQuestion, answer)
+    this.faqService.updateTrainBotFaq(faq_id, question + '\n\n' + this.selectedQuestion, answer)
       .subscribe((updatedFAQ) => {
-        console.log('TrainBotComponent PUT DATA (UPDATED FAQs)', updatedFAQ);
+        this.logger.log('TrainBotComponent PUT DATA (UPDATED FAQs)', updatedFAQ);
         this.updatedFAQ = updatedFAQ;
 
       }, (error) => {
-        console.log('TrainBotComponent PUT (UPDATE FAQ) REQUEST ERROR ', error);
+        this.logger.error('TrainBotComponent PUT (UPDATE FAQ) REQUEST ERROR ', error);
         // =========== NOTIFY ERROR ===========
         this.notify.showNotification(this.faqErrorWhileUpdating, 4, 'report_problem');
       }, () => {
-        console.log('TrainBotComponent PUT (UPDATE FAQ) REQUEST * COMPLETE *');
+        this.logger.log('TrainBotComponent PUT (UPDATE FAQ) REQUEST * COMPLETE *');
         // =========== NOTIFY SUCCESS===========
         this.notify.showNotification(this.faqSuccessfullyUpdated, 2, 'done');
 
         this.foundFAQs.forEach(faq => {
-          console.log('TrainBotComponent foundFAQs faq', faq);
+          this.logger.log('TrainBotComponent foundFAQs faq', faq);
           if (faq_id === faq._id) {
             faq.question = faq.question + '\n\n' + this.selectedQuestion
           }
@@ -225,18 +226,18 @@ export class WsTrainBotComponent implements OnInit {
 
 
   ngAfterViewInit() {
-    console.log('searchboxRef ', this.searchboxRef)
+    this.logger.log('searchboxRef ', this.searchboxRef)
     this.searchboxRef.nativeElement.focus();
 
     // ul li a
     const elemFooter = <HTMLElement>document.querySelector('footer ul li');
-    console.log('elemFooter ', elemFooter);
+    this.logger.log('elemFooter ', elemFooter);
 
     [].forEach.call(
 
       document.querySelectorAll('footer ul li a'),
       function (el) {
-        // console.log('footer > ul > li > a element: ', el);
+        // this.logger.log('footer > ul > li > a element: ', el);
 
         el.setAttribute('style', 'z-index:-1; text-transform: none');
 
@@ -244,14 +245,14 @@ export class WsTrainBotComponent implements OnInit {
     );
 
     // for (let i = 0, len = 3; i < len; i++) {
-    //   console.log('elemFooter', elemFooter[i]);
+    //   this.logger.log('elemFooter', elemFooter[i]);
     //   // work with checkboxes[i]
     // }
     // elemFooter.setAttribute('style', 'z-index:-1');
   }
 
   goToBot(idFaqKb: string) {
-    console.log('TrainBotComponent goToBot id_bot', idFaqKb);
+    this.logger.log('TrainBotComponent goToBot id_bot', idFaqKb);
 
     // this.router.navigate(['project/' + this.project._id + '/faq', idFaqKb]);
     this.router.navigate(['project/' + this.project_id + '/bots', idFaqKb, 'native']);

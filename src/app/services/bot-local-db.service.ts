@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
-
+import { LoggerService } from '../services/logger/logger.service';
 @Injectable()
 export class BotLocalDbService {
 
-  constructor() {
-    console.log('$ HELLO BOT LOCAL SERVICE')
+  constructor(
+    private logger: LoggerService
+  ) {
+    // this.logger.log('[BOT-LOCAL-SERVICE] - HELLO BOT LOCAL SERVICE')
+    
   }
 
 
@@ -13,14 +16,14 @@ export class BotLocalDbService {
     if (faqkb_id) {
       localStorage.setItem(faqkb_id, JSON.stringify(faqkb_object));
 
-      console.log('HEY - SAVE BOT IN STORAGE !!! ');
+      this.logger.log('[BOT-LOCAL-SERVICE]  HEY - SAVE BOT IN STORAGE !!! ');
     }
   }
 
   getBotFromStorage(bot_id: string) {
     if (bot_id) {
       const bot = JSON.parse((localStorage.getItem(bot_id)));
-      // console.log('HEY MEMBER !!! ', member)
+    
       return bot;
     }
   }

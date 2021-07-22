@@ -1,6 +1,21 @@
 
 # tiledesk-dashboard
 
+### 2.1.70-beta.1.13
+- Fixes the bug: on the configuration page of the widgetthe accordion "Add chat to your website" does not open
+- Changes the "Simulate visitors" site url
+- Updates the widget script in the wizard page "install-widget" and in the page widget set up 
+
+### 2.1.70-beta.1.12
+- Fixes the bug: if at autologin the project is not present in the storage (e.g. first access to the project) after logging in the project name is not present in the navbar and the project is not saved in the storage
+- Fixes the bug: if at autologin the active page is that of the installation of an app, the error "Cannot read the property 'addEventListener' of null" occurs
+- Fixes the bug: for projects that do not have conversations yet, the error "total count of undefined" occurs in the section "Unique visitors in last 30 days" in Analytics > Metrics > Visitors 
+- Fixes the bug: for projects that do not have conversations yet, the error "total count of undefined" occurs in the section "Last 30 days conversations" in Analytics > Metrics > Conversations
+- Fixes the bug: for projects that do not have conversations yet, the error "total count of undefined" occurs in the section "Last 30 days messages" in Analytics > Metrics > Messages
+- Adds the ability to manage the log level through the key "logging Level" of the environments
+- Removes unused code
+- Removes unused components
+
 ### 2.1.70-beta.1.11
 - Adds the "behaviorsubject" publication on the update of the availability of the current user
 - Improves the components of 'projects-for-panel'

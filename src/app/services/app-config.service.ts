@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
+import { forwardRef, Inject, Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { environment } from '../../environments/environment';
+
 @Injectable()
 export class AppConfigService {
 
@@ -8,9 +9,9 @@ export class AppConfigService {
   private appConfig: any;
 
   constructor(
-    http: Http
+    http: Http,
   ) {
-    console.log('AppConfigService HELLO !!!!');
+    // console.log('AppConfigService HELLO !!!!');
     this.http = http;
     this.appConfig = environment;
   }
@@ -22,30 +23,21 @@ export class AppConfigService {
       const data = await this.http.get(this.appConfig.remoteConfigUrl)
         .toPromise();
       // console.log('AppConfigService loadAppConfig data: ', data['_body']['firebase']);
-      console.log('### AppConfigService loadAppConfig data: ', data);
+      // console.log('[APP-CONFIG-SERVICE] loadAppConfig data: ', data);
 
       const dataObject = JSON.parse(data['_body'])
-      // console.log('AppConfigService loadAppConfig data as Object: ', dataObject);
-
-
-
-      // const firebaseConfig = dataObject['firebase'];
-      // console.log('AppConfigService loadAppConfig firebaseConfig: ', firebaseConfig);
-
+  
       const allconfig = dataObject
-      // console.log('AppConfigService loadAppConfig allconfig: ', allconfig);
+      // console.log('[APP-CONFIG-SERVICE] - loadAppConfig allconfig: ', allconfig);
 
-      // this.appConfig.firebase = JSON.parse(data['_body']);
-
-      // this.appConfig.firebase = firebaseConfig;
       if (allconfig.hasOwnProperty('wsUrlRel')) {
-        // console.log('AppConfigService loadAppConfig allconfig !!!! exist wsUrlRel -> ', allconfig.wsUrlRel);
-
+     
+        // console.log('[APP-CONFIG-SERVICE] - loadAppConfig allconfig !!!! exist wsUrlRel ->: ',  allconfig.wsUrlRel);
         var wsUrlRelIsEmpty = this.isEmpty(allconfig.wsUrlRel)
-        // console.log('AppConfigService loadAppConfig allconfig !!!! exist wsUrlRel -> wsUrlRelIsEmpty ?', wsUrlRelIsEmpty);
+        // console.log('[APP-CONFIG-SERVICE] - loadAppConfig allconfig !!!! exist wsUrlRel -> wsUrlRelIsEmpty ?', wsUrlRelIsEmpty);
 
         if (wsUrlRelIsEmpty === false) {
-          // console.log('AppConfigService loadAppConfig allconfig !!!! exist - SERVER_BASE_URL', allconfig.SERVER_BASE_URL);
+          // console.log('[APP-CONFIG-SERVICE]- loadAppConfig allconfig !!!! exist - SERVER_BASE_URL', allconfig.SERVER_BASE_URL);
 
 
           if (allconfig.SERVER_BASE_URL.indexOf("http://") !== -1) {
@@ -80,19 +72,20 @@ export class AppConfigService {
           }
 
         } else {
-          // console.log('AppConfigService loadAppConfig allconfig !!!! exist wsUrlRel but IS EMPTY');
+          // console.log('[APP-CONFIG-SERVICE] loadAppConfig allconfig !!!! exist wsUrlRel but IS EMPTY');
         }
 
       } else {
-        // console.log('AppConfigService loadAppConfig allconfig !!!! does not exist wsUrlRel');
+      
+        // console.log('[APP-CONFIG-SERVICE] loadAppConfig allconfig !!!! does not exist wsUrlRel');
       }
 
       this.appConfig = allconfig;
-      console.log('### AppConfigService loadAppConfig allconfig !!!! does not exist wsUrlRel');
+      // console.log('[APP-CONFIG-SERVICE] - loadAppConfig allconfig !!!! does not exist wsUrlRel');
       // return this.appConfig;
 
     } catch (err) {
-      console.log('AppConfigService loadAppConfig error : ', err);
+      // console.error('[APP-CONFIG-SERVICE] - loadAppConfig error : ', err);
     }
   }
 

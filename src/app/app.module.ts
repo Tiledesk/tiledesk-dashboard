@@ -1,6 +1,8 @@
 import { NotificationService } from './services/notification.service';
 import { PopupService } from './services/popup.service';
 import { MarkerService } from './services/marker.service';
+import { LoggerService } from './services/logger/logger.service';
+// import { LoggerInstance } from './services/logger/LoggerInstance';
 import { MapRequestComponent } from './map-request/map-request.component';
 import { MetricheComponent } from './analytics2/metriche/metriche.component';
 import { BrowserModule } from '@angular/platform-browser';
@@ -11,14 +13,9 @@ import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app.routing';
 import { ComponentsModule } from './components/components.module';
 import { AppComponent } from './app.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
+
 import { UserProfileComponent } from './user-profile/user-profile.component';
-import { TableListComponent } from './table-list/table-list.component';
-import { TypographyComponent } from './typography/typography.component';
-import { IconsComponent } from './icons/icons.component';
-import { MapsComponent } from './maps/maps.component';
-import { NotificationsComponent } from './notifications/notifications.component';
-import { UpgradeComponent } from './upgrade/upgrade.component';
+
 import { UiModule } from './ui/shared/ui.module';
 
 ///// Start FireStarter
@@ -31,24 +28,18 @@ import { SharedModule } from './shared/shared.module';
 import { HomeComponent } from './home/home.component';
 import { ChatComponent } from './chat/chat.component';
 
-// FIRESTORE
 import { UsersService } from './services/users.service';
-import { RequestsService } from './services/requests.service';
-import { RequestsListComponent } from './requests-list/requests-list.component';
-
 import { ContactsService } from './services/contacts.service';
 import { ContactsComponent } from './contacts/contacts.component';
 import { DepartmentService } from './services/department.service';
 import { DepartmentsComponent } from './departments/departments.component';
 
-import { MongodbFaqService } from './services/mongodb-faq.service';
-
+import { FaqService } from './services/faq.service';
 import { BotService } from './services/bot.service';
-
 import { ProjectsComponent } from './projects/projects.component';
 import { UsersComponent } from './users/users.component';
-// BOTS & FAQ
 
+// BOTS & FAQ
 import { FaqKbService } from './services/faq-kb.service';
 import { BotListComponent } from './bots/bots-list/bots-list.component';
 import { BotTypeSelectComponent } from './bots/bot-create/bot-type-select/bot-type-select.component';
@@ -62,7 +53,7 @@ import { FaqSidebarComponent } from './bots/faq/faq-sidebar/faq-sidebar.componen
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { AnalyticsComponent } from './analytics/analytics.component';
+
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { DepartmentEditAddComponent } from './department-edit-add/department-edit-add.component';
 import { ProjectEditAddComponent } from './project-edit-add/project-edit-add.component';
@@ -74,18 +65,13 @@ import { SigninComponent } from './auth/signin/signin.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { UnauthorizedComponent } from './auth/unauthorized/unauthorized.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { WidgetComponent } from './widget_components/widget/widget.component';
-import { ScriptComponent } from './script/script.component';
+
 import { ChannelsComponent } from './channels/channels.component';
-import { SocialComponent } from './social/social.component';
 
 import { UserEditAddComponent } from './user-edit-add/user-edit-add.component';
-import { UsersProfileComponent } from './users-profile/users-profile.component';
-import { LocalDbService } from './services/users-local-db.service';
-import { RoutingPageComponent } from './routing-page/routing-page.component';
-import { VerifyEmailComponent } from './verify-email/verify-email.component';
-import { RequestsMsgsComponent } from './requests-msgs/requests-msgs.component';
 
+import { LocalDbService } from './services/users-local-db.service';
+import { VerifyEmailComponent } from './verify-email/verify-email.component';
 import { GroupService } from './services/group.service';
 import { GroupsComponent } from './groups/groups.component';
 import { GroupEditAddComponent } from './group-edit-add/group-edit-add.component';
@@ -109,23 +95,22 @@ import { AmazingTimePickerModule } from 'amazing-time-picker';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ResetPswComponent } from './reset-psw/reset-psw.component';
 import { ResetPswService } from './services/reset-psw.service';
-import { WidgetDesignComponent } from './widget_components/widget-design/widget-design.component';
+import { WidgetSetUp } from './widget_components/widget-set-up/widget-set-up.component';
 import { UploadImageService } from './services/upload-image.service';
 import { UploadImageNativeService } from './services/upload-image-native.service';
 
 
-import { RequestsListHistoryNewComponent } from './requests-list-history-new/requests-list-history-new.component';
+import { HistoryAndNortConvsComponent } from './ws_requests/history-and-nort-convs/history-and-nort-convs.component';
 import { MyDatePickerModule } from 'mydatepicker';
 import { ContactDetailsComponent } from './contact-details/contact-details.component';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { WidgetService } from './services/widget.service';
 import { ContactEditComponent } from './contact-edit/contact-edit.component';
-import { UsersPendingComponent } from './users-pending/users-pending.component';
 import { ActivitiesComponent } from './activities/activities.component';
 
 import { AnalyticsStaticComponent } from './static-pages/analytics-static/analytics-static.component';
 import { ActivitiesStaticComponent } from './static-pages/activities-static/activities-static.component';
-import { TrainBotComponent } from './requests-msgs/train-bot/train-bot.component';
+
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
@@ -141,7 +126,6 @@ import { DurataconvComponent } from './analytics2/metriche/durataconv/durataconv
 import { HoursStaticComponent } from './static-pages/hours-static/hours-static.component';
 import { DepartmentsStaticComponent } from './static-pages/departments-static/departments-static.component';
 import { ProjectPlanService } from './services/project-plan.service';
-import { SubscriptionService } from './services/subscription.service';
 import { TriggerComponent } from './trigger/trigger.component';
 import { BasetriggerComponent } from './trigger/basetrigger/basetrigger.component';
 import { TriggerService } from './services/trigger.service';
@@ -166,7 +150,6 @@ import { AppConfigService } from './services/app-config.service';
 import { WsRequestsListComponent } from './ws_requests/ws-requests-list/ws-requests-list.component';
 import { WsRequestsService } from './services/websocket/ws-requests.service';
 import { WsRequestsMsgsComponent } from './ws_requests/ws-requests-msgs/ws-requests-msgs.component';
-// import { WebsocketService } from './services/websocket.service';
 import { WsMsgsService } from './services/websocket/ws-msgs.service';
 import { WsSharedComponent } from './ws_requests/ws-shared/ws-shared.component';
 import { WsTrainBotComponent } from './ws_requests/ws-requests-msgs/ws-train-bot/ws-train-bot.component';
@@ -174,7 +157,7 @@ import { WebSocketJs } from './services/websocket/websocket-js';
 import { WidgetMultilanguageComponent } from './widget_components/widget-multilanguage/widget-multilanguage.component';
 import { BaseTranslationComponent } from './widget_components/widget-multilanguage/base-translation/base-translation.component';
 import { WidgetSharedComponent } from './widget_components/widget-shared/widget-shared.component';
-import { WidgetDesignBaseComponent } from './widget_components/widget-design/widget-design-base/widget-design-base.component';
+import { WidgetDesignBaseComponent } from './widget_components/widget-set-up/widget-design-base/widget-design-base.component';
 import { WsRequestsServedComponent } from './ws_requests/ws-requests-list/ws-requests-served/ws-requests-served.component';
 import { WsRequestsUnservedComponent } from './ws_requests/ws-requests-list/ws-requests-unserved/ws-requests-unserved.component';
 import { CloseRequestModalComponent } from './ws_requests/modals/close-request-modal/close-request-modal.component';
@@ -189,7 +172,7 @@ import { TagsDeleteComponent } from './tags/tags-delete/tags-delete.component';
 import { TagsEditComponent } from './tags/tags-edit/tags-edit.component';
 import { TriggerStaticComponent } from './static-pages/trigger-static/trigger-static.component';
 import { AccountSettingsComponent } from './user-profile/account-settings/account-settings.component';
-import { WsRequestsNortComponent } from './ws_requests/ws-requests-nort/ws-requests-nort.component';
+
 import { ProjectsForPanelComponent } from './projects/for-panel/projects-for-panel/projects-for-panel.component';
 import { WsRequestsUnservedForPanelComponent } from './ws_requests/for-panel/ws-requests-unserved-for-panel/ws-requests-unserved-for-panel.component';
 import { WsRequestDetailForPanelComponent } from './ws_requests/for-panel//ws-request-detail-for-panel/ws-request-detail-for-panel.component';
@@ -200,7 +183,6 @@ import { BrandService } from './services/brand.service';
 import { ScriptService } from './services/script/script.service';
 import { AppStoreInstallComponent } from './app-store/app-store-install/app-store-install.component';
 // import { PerfectScrollbarTdDirective } from './_directives/td-perfect-scrollbar/perfect-scrollbar-td.directive';
-import { DeptsComponent } from './depts/depts.component';
 import { DocsUrlRowComponent } from './components/docs-url-row/docs-url-row.component';
 import { VisitorsComponent } from './visitors/visitors.component';
 import { EventsComponent } from './events/events.component';
@@ -231,7 +213,7 @@ import { Autolinkerjs } from './autolinkerjs.pipe';
 import { HtmlEntitiesEncodePipe } from './html-entities-encode.pipe';
 
 
-console.log('************** APPMODULE ******************');
+// console.log('************** APPMODULE ******************');
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -239,14 +221,21 @@ export function HttpLoaderFactory(http: HttpClient) {
 
 const appInitializerFn = (appConfig: AppConfigService, brandService: BrandService) => {
   return async () => {
+
+
     if (environment.remoteConfig) {
-      console.log('### AppConfigService APP-MODULE-TS appInitializerFn environment.remoteConfig', environment.remoteConfig);
+
       await appConfig.loadAppConfig();
-      console.log('### AppConfigService APP-MODULE-TS appConfig loaded');
       await brandService.loadBrand();
-  
-      console.log('### AppConfigService APP-MODULE-TS brandService loaded');
-      // return appConfig.loadAppConfig(), brandService.loadBrand();
+      let customLogger = new LoggerService(appConfig);
+
+      let loggingLevel = appConfig.getConfig().loggingLevel;
+      if (loggingLevel === 2) {
+        console.info('### AppConfigService APP-MODULE-TS appInitializerFn environment.remoteConfig', environment.remoteConfig);
+        console.info('### AppConfigService APP-MODULE-TS appConfig loaded');
+        console.info('### AppConfigService APP-MODULE-TS brandService loaded');
+      }
+
       return;
     } else {
       // return brandService.loadBrand();
@@ -269,17 +258,9 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
 @NgModule({
   declarations: [
     AppComponent,
-    DashboardComponent,
     UserProfileComponent,
-    TableListComponent,
-    TypographyComponent,
-    IconsComponent,
-    MapsComponent,
-    NotificationsComponent,
-    UpgradeComponent,
     HomeComponent,
     ContactsComponent,
-    RequestsListComponent,
     ChatComponent,
     DepartmentsComponent,
     FaqComponent,
@@ -288,23 +269,16 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     BotListComponent,
     BotCreateComponent,
     FaqEditAddComponent,
-    AnalyticsComponent,
     DepartmentEditAddComponent,
     ProjectEditAddComponent,
     // RequestsListHistoryComponent,
     SigninComponent,
     SignupComponent,
     UnauthorizedComponent,
-    WidgetComponent,
-    ScriptComponent,
     ChannelsComponent,
-    SocialComponent,
     FaqTestComponent,
     UserEditAddComponent,
-    UsersProfileComponent,
-    RoutingPageComponent,
     VerifyEmailComponent,
-    RequestsMsgsComponent,
     GroupsComponent,
     GroupEditAddComponent,
     GroupNamePipe,
@@ -316,15 +290,13 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     ChangePasswordComponent,
     HoursComponent,
     ResetPswComponent,
-    WidgetDesignComponent,
-    RequestsListHistoryNewComponent,
+    WidgetSetUp,
+    HistoryAndNortConvsComponent,
     ContactDetailsComponent,
     ContactEditComponent,
-    UsersPendingComponent,
     ActivitiesComponent,
     AnalyticsStaticComponent,
     ActivitiesStaticComponent,
-    TrainBotComponent,
     FaqTestTrainBotComponent,
     Analytics2Component,
     PanoramicaComponent,
@@ -367,7 +339,6 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     TagsEditComponent,
     TriggerStaticComponent,
     AccountSettingsComponent,
-    WsRequestsNortComponent,
     ProjectsForPanelComponent,
     WsRequestsUnservedForPanelComponent,
     WsRequestDetailForPanelComponent,
@@ -375,7 +346,6 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     AppStoreComponent,
     AppStoreInstallComponent,
     // PerfectScrollbarTdDirective,
-    DeptsComponent,
     DocsUrlRowComponent,
     VisitorsComponent,
     EventsComponent,
@@ -428,7 +398,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     MyDatePickerModule,
     ColorPickerModule,
     BrowserAnimationsModule,
-    SlideshowModule,                    
+    SlideshowModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -440,6 +410,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
   providers: [
     AppConfigService, // https://juristr.com/blog/2018/01/ng-app-runtime-config/
     BrandService,
+    LoggerService,
     {
       provide: APP_INITIALIZER,
       useFactory: appInitializerFn,
@@ -456,15 +427,13 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     WsRequestsService,
     WsMsgsService,
     AppStoreService,
-    // WebsocketService,
     WebSocketJs,
     UsersService,
     ContactsService,
     CannedResponsesService,
     TagsService,
-    RequestsService,
     DepartmentService,
-    MongodbFaqService,
+    FaqService,
     BotService,
     FaqKbService,
     ProjectService,
@@ -477,12 +446,12 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     WidgetService,
     WebhookService,
     ProjectPlanService,
-    SubscriptionService,
     LegendService, TooltipService, AdaptorService, AnalyticsService, HttpClientModule,
     TriggerService,
     SelectOptionsTranslatePipe,
     FilterArrayPipe,
     MarkerService,
+    // LoggerInstance,
     PopupService,
     NotificationService,
     { provide: LocationStrategy, useClass: HashLocationStrategy }

@@ -3,9 +3,6 @@ import { ProjectService } from '../services/project.service';
 import { Project } from '../models/project-model';
 import { Router } from '@angular/router';
 import { AuthService } from '../core/auth.service';
-
-// import { RequestsService } from '../services/requests.service';
-import { DepartmentService } from '../services/department.service';
 import { isDevMode } from '@angular/core';
 import { UsersService } from '../services/users.service';
 import { UploadImageService } from '../services/upload-image.service';
@@ -18,7 +15,7 @@ import { takeUntil } from 'rxjs/operators';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../services/brand.service';
 import { WsRequestsService } from '../services/websocket/ws-requests.service';
-import { Console } from 'console';
+import { LoggerService } from '../services/logger/logger.service';
 @Component({
   selector: 'projects',
   templateUrl: './projects.component.html',
@@ -79,15 +76,14 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     private projectService: ProjectService,
     private router: Router,
     private auth: AuthService,
-    // private requestsService: RequestsService,
     private element: ElementRef,
-    private departmentService: DepartmentService,
     private usersService: UsersService,
     private uploadImageService: UploadImageService,
     private uploadImageNativeService: UploadImageNativeService,
     public appConfigService: AppConfigService,
     public brandService: BrandService,
-    public wsRequestsService: WsRequestsService
+    public wsRequestsService: WsRequestsService,
+    private logger: LoggerService
   ) {
     const brand = brandService.getBrand();
 
@@ -95,14 +91,10 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     this.companyLogoBlack_Url = brand['company_logo_black__url'];
     this.companyLogoBlack_width = brand['recent_project_page']['company_logo_black__width'];
 
-
-    console.log('IS DEV MODE ', isDevMode());
+    this.logger.log('[PROJECTS] - IS DEV MODE ', isDevMode());
     this.APP_IS_DEV_MODE = isDevMode()
 
   }
-
-
-
 
   ngOnInit() {
     const navbar: HTMLElement = this.element.nativeElement;
@@ -136,12 +128,12 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
   getLoggedUserAndCheckProfilePhoto() {
     this.auth.user_bs.subscribe((user) => {
-      console.log('PROJECT COMP - USER  ', user)
+      this.logger.log('[PROJECTS] - USER  ', user)
       this.user = user;
 
       if (user) {
         this.currentUserId = user._id;
-        console.log('PROJECT COMP Current USER ID ', this.currentUserId)
+        this.logger.log('[PROJECTS] - Current USER ID ', this.currentUserId)
 
 
         if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
@@ -158,20 +150,20 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   ckeckUserPhotoProfileOnFirebase(user) {
     const firebase_conf = this.appConfigService.getConfig().firebase;
     this.storageBucket = firebase_conf['storageBucket'];
-    console.log('STORAGE-BUCKET Projects ', this.storageBucket)
+    this.logger.log('[PROJECTS] STORAGE-BUCKET Projects ', this.storageBucket)
 
     const imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + this.storageBucket + "/o/profiles%2F" + this.currentUserId + "%2Fphoto.jpg?alt=media"
-    console.log('PROJECTS-LIST - check if exist imgUrl ', imgUrl, '(usecase firebase)');
+    this.logger.log('[PROJECTS] - check if exist imgUrl ', imgUrl, '(usecase firebase)');
 
     this.checkImageExists(imgUrl, (existsImage) => {
       if (existsImage == true) {
 
-       user.hasImage = true;
-        console.log('PROJECTS-LIST - IMAGE EXIST X USER', this.user, '(usecase firebase)');
+        user.hasImage = true;
+        this.logger.log('[PROJECTS] - IMAGE EXIST X USER', this.user, '(usecase firebase)');
       }
       else {
-       user.hasImage = false;
-        console.log('PROJECTS-LIST - IMAGE NOT EXIST X USER', this.user, '(usecase firebase)');
+        user.hasImage = false;
+        this.logger.log('[PROJECTS] - IMAGE NOT EXIST X USER', this.user, '(usecase firebase)');
       }
     });
   }
@@ -179,17 +171,17 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   ckeckUserPhotoProfileOnNative(user) {
     this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
     const imgUrl = this.baseUrl + 'images?path=uploads%2Fusers%2F' + this.currentUserId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
-    console.log('PROJECTS-LIST - check if exist imgUrl ', imgUrl, '(usecase native)');
+    this.logger.log('[PROJECTS] - check if exist imgUrl ', imgUrl, '(usecase native)');
 
     this.checkImageExists(imgUrl, (existsImage) => {
       if (existsImage == true) {
 
         user.hasImage = true;
-        console.log('PROJECTS-LIST - IMAGE EXIST X USER', user, '(usecase native)');
+        this.logger.log('[PROJECTS] - IMAGE EXIST X USER', user, '(usecase native)');
       }
       else {
         user.hasImage = false;
-        console.log('PROJECTS-LIST - IMAGE NOT EXIST X USER', user, '(usecase native)');
+        this.logger.log('[PROJECTS] - IMAGE NOT EXIST X USER', user, '(usecase native)');
       }
     });
   }
@@ -207,55 +199,51 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
 
 
-
-
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
-    console.log('AppConfigService getAppConfig (PROJECTS-LIST) public_Key', this.public_Key)
-    console.log('NavbarComponent public_Key', this.public_Key)
+    this.logger.log('[PROJECTS] AppConfigService getAppConfig public_Key', this.public_Key)
+    this.logger.log('[PROJECTS] public_Key', this.public_Key)
 
     let keys = this.public_Key.split("-");
-    console.log('PUBLIC-KEY (PROJECTS-LIST) - public_Key keys', keys)
+    this.logger.log('[PROJECTS] PUBLIC-KEY - public_Key keys', keys)
 
-    console.log('PUBLIC-KEY (PROJECTS-LIST) - public_Key Arry includes MTT', this.public_Key.includes("MTT"));
+    this.logger.log('[PROJECTS] PUBLIC-KEY - public_Key Arry includes MTT', this.public_Key.includes("MTT"));
 
     if (this.public_Key.includes("MTT") === true) {
 
       keys.forEach(key => {
-        // console.log('NavbarComponent public_Key key', key)
+        // this.logger.log('NavbarComponent public_Key key', key)
         if (key.includes("MTT")) {
-          // console.log('PUBLIC-KEY (PROJECTS-LIST) - key', key);
+          // this.logger.log('PUBLIC-KEY (PROJECTS-LIST) - key', key);
           let mt = key.split(":");
-          // console.log('PUBLIC-KEY (PROJECTS-LIST) - mt key&value', mt);
+          // this.logger.log('PUBLIC-KEY (PROJECTS-LIST) - mt key&value', mt);
           if (mt[1] === "F") {
             this.MT = false;
-            // console.log('PUBLIC-KEY (PROJECTS-LIST) - mt is', this.MT);
+            // this.logger.log('PUBLIC-KEY (PROJECTS-LIST) - mt is', this.MT);
           } else {
             this.MT = true;
-            // console.log('PUBLIC-KEY (PROJECTS-LIST) - mt is', this.MT);
+            // this.logger.log('PUBLIC-KEY (PROJECTS-LIST) - mt is', this.MT);
           }
         }
       });
     } else {
       this.MT = false;
-      // console.log('PUBLIC-KEY (PROJECTS-LIST) - mt is', this.MT);
+      // this.logger.log('PUBLIC-KEY (PROJECTS-LIST) - mt is', this.MT);
     }
   }
-
-
 
 
 
   listenHasDeleteUserProfileImage() {
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
       this.uploadImageService.hasDeletedUserPhoto.subscribe((hasDeletedImage) => {
-        console.log('PROJECTS-LIST - hasDeletedImage ? ', hasDeletedImage, '(usecase Firebase)');
+        this.logger.log('[PROJECTS] - LISTEN TO hasDeletedImage ? ', hasDeletedImage, '(usecase Firebase)');
         this.userImageHasBeenUploaded = false
         this.userProfileImageExist = false
       });
     } else {
       this.uploadImageNativeService.hasDeletedUserPhoto.subscribe((hasDeletedImage) => {
-        console.log('PROJECTS-LIST - hasDeletedImage ? ', hasDeletedImage, '(usecase Native)');
+        this.logger.log('[PROJECTS] - LISTEN TO hasDeletedImage ?', hasDeletedImage, '(usecase Native)');
         this.userImageHasBeenUploaded = false
         this.userProfileImageExist = false
       });
@@ -265,16 +253,16 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
   // checkUserImageExist() {
   //   this.usersService.userProfileImageExist.subscribe((image_exist) => {
-  //     console.log('PROJECTS-LIST - USER PROFILE EXIST ? ', image_exist);
+  //     this.logger.log('[PROJECTS] - USER PROFILE EXIST ? ', image_exist);
   //     this.userProfileImageExist = image_exist;
 
   //     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
   //       if (this.storageBucket && this.userProfileImageExist === true) {
-  //         console.log('PROJECT-COMP - USER PROFILE EXIST - BUILD userProfileImageurl');
+  //         this.logger.log('[PROJECTS] - USER PROFILE EXIST - BUILD userProfileImageurl');
   //         this.setImageProfileUrl(this.storageBucket)
   //       }
   //     } else {
-  //       console.log('PROJECT-COMP - USER PROFILE EXIST - BUILD userProfileImageurl (NATIVE)');
+  //       this.logger.log('[PROJECTS] - USER PROFILE EXIST - BUILD userProfileImageurl (NATIVE)');
   //       if (this.userProfileImageExist === true) {
   //         this.setImageProfileUrl_Native()
   //       }
@@ -283,23 +271,21 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   // }
 
 
-
-
   // checkUserImageUploadIsComplete() {
   //   if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
   //     this.uploadImageService.userImageWasUploaded.subscribe((image_exist) => {
-  //       console.log('PROJECTS-LIST - IMAGE UPLOADING IS COMPLETE ? ', image_exist);
+  //       this.logger.log('PROJECTS-LIST - IMAGE UPLOADING IS COMPLETE ? ', image_exist);
   //       this.userImageHasBeenUploaded = image_exist;
 
   //       if (this.storageBucket && this.userImageHasBeenUploaded === true) {
-  //         console.log('PROJECT-COMP - IMAGE UPLOADING IS COMPLETE - BUILD userProfileImageurl ');
+  //         this.logger.log('PROJECT-COMP - IMAGE UPLOADING IS COMPLETE - BUILD userProfileImageurl ');
   //         this.setImageProfileUrl(this.storageBucket)
   //       }
   //     });
   //   } else {
   //     // NATIVE
   //     this.uploadImageNativeService.userImageWasUploaded_Native.subscribe((image_exist) => {
-  //       console.log('USER PROFILE IMAGE - IMAGE UPLOADING IS COMPLETE ? ', image_exist, '(usecase Native)');
+  //       this.logger.log('[PROJECTS] - USER PROFILE IMAGE - IMAGE UPLOADING IS COMPLETE ? ', image_exist, '(usecase Native)');
 
   //       this.userImageHasBeenUploaded = image_exist;
   //       this.uploadImageNativeService.userImageDownloadUrl_Native.subscribe((imageUrl) => {
@@ -312,18 +298,12 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
 
 
-
-
-
-
-  display_loading(project_id) {
-    // const loadingInProjectCardEle = <HTMLElement>document.querySelector('#loading_' + project_id);
-    // console.log('!!! GO TO HOME >  display_loading - loadingInProjectCardEle ', loadingInProjectCardEle)
-    // loadingInProjectCardEle.style.color = "red";
-
-  }
-  // project/:projectid/home
-  // , available: boolean
+  // display_loading(project_id) {
+  //   const loadingInProjectCardEle = <HTMLElement>document.querySelector('#loading_' + project_id);
+  //   this.logger.log('[PROJECTS] !!! GO TO HOME >  display_loading - loadingInProjectCardEle ', loadingInProjectCardEle)
+  //   loadingInProjectCardEle.style.color = "red";
+  // }
+ 
   goToHome(
     project: any,
     project_id: string,
@@ -333,14 +313,14 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     project_trial_days_left: number,
     project_status: number,
     activeOperatingHours: boolean) {
-    console.log('!!! GO TO HOME - PROJECT ', project)
-    console.log('!!! GO TO HOME - PROJECT status ', project_status)
+    this.logger.log('[PROJECTS] - GO TO HOME - PROJECT ', project)
+    this.logger.log('[PROJECTS] - GO TO HOME - PROJECT status ', project_status)
 
     project['is_selected'] = true
 
     // const loadingInProjectCardEle = <HTMLElement>document.querySelector('#loading_' + project_id);
     // loadingInProjectCardEle.classList.add("display_loading")
-    // console.log('!!! GO TO HOME - exist_class ', loadingInProjectCardEle.classList.contains("display_loading"))
+    // this.logger.log('!!! GO TO HOME - exist_class ', loadingInProjectCardEle.classList.contains("display_loading"))
 
     // const requestIdArrowIconElem = <HTMLElement>document.querySelector('#request_id_arrow_down');
     // requestIdArrowIconElem.classList.add("up");
@@ -359,7 +339,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
       }
 
       this.auth.projectSelected(project)
-      console.log('!!! GO TO HOME - PROJECT ', project)
+      this.logger.log('[PROJECTS] - GO TO HOME - PROJECT ', project)
 
       setTimeout(() => {
         this.router.navigate([`/project/${project_id}/home`]);
@@ -385,12 +365,12 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
   // !NO MORE USED - GO TO PROJECT-EDIT-ADD COMPONENT AND PASS THE PROJECT ID (RECEIVED FROM THE VIEW)
   // goToEditAddPage_EDIT(project_id: string) {
-  //   console.log('PROJECT ID ', project_id);
+  //   this.logger.log('PROJECT ID ', project_id);
   //   this.router.navigate(['project/edit', project_id]);
   // }
 
   //   subsTo_WsCurrentUser(currentuserprjctuserid) {
-  //     console.log('SB - SUBSCRIBE TO WS CURRENT-USER AVAILABILITY  prjct user id of current user ', currentuserprjctuserid);
+  //     this.logger.log('SB - SUBSCRIBE TO WS CURRENT-USER AVAILABILITY  prjct user id of current user ', currentuserprjctuserid);
   //     this.usersService.subscriptionToWsCurrentUser(this.projectId, currentuserprjctuserid);
   //     this.getWsCurrentUserAvailability$();
   //     // this.getWsCurrentUserIsBusy$();
@@ -404,14 +384,14 @@ export class ProjectsComponent implements OnInit, OnDestroy {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((currentuser_availability) => {
-        console.log('WS-CURRENT-USER - IS AVAILABLE? ', currentuser_availability);
+        this.logger.log('[PROJECTS] - WS-CURRENT-USER - IS AVAILABLE? ', currentuser_availability);
         if (currentuser_availability !== null) {
           // this.IS_AVAILABLE = currentuser_availability;
         }
       }, error => {
-        console.log('WS-CURRENT-USER AVAILABILITY * error * ', error)
+        this.logger.error('[PROJECTS] - WS-CURRENT-USER AVAILABILITY * ERROR * ', error)
       }, () => {
-        console.log('WS-CURRENT-USER AVAILABILITY *** complete *** ')
+        this.logger.log('[PROJECTS] - WS-CURRENT-USER AVAILABILITY * COMPLETE * ')
       });
   }
 
@@ -419,7 +399,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
    * GET PROJECTS AND SAVE IN THE STORAGE: PROJECT ID - PROJECT NAME - USE ROLE   */
   getProjectsAndSaveInStorage() {
     this.projectService.getProjects().subscribe((projects: any) => {
-      console.log('!!! GET PROJECTS ', projects);
+      this.logger.log('[PROJECTS] - GET PROJECTS ', projects);
 
       this.showSpinner = false;
 
@@ -433,7 +413,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
 
         this.projects.forEach(project => {
-          console.log('!!! SET PROJECT IN STORAGE')
+          this.logger.log('[PROJECTS] - SET PROJECT IN STORAGE')
           project['is_selected'] = false
 
           if (project.id_project) {
@@ -463,7 +443,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
             // .then((data) => {
 
-            //     console.log("PROJECT COMP SUBSCR TO WS CURRENT USERS - RES ", data);
+            //     this.logger.log("PROJECT COMP SUBSCR TO WS CURRENT USERS - RES ", data);
             //     project['ws_projct_user_available'] = data['user_available']
             //     project['ws_projct_user_isBusy'] = data['isBusy']
             //   })
@@ -478,29 +458,29 @@ export class ProjectsComponent implements OnInit, OnDestroy {
             localStorage.setItem(project.id_project._id, JSON.stringify(prjct));
           }
         });
-        console.log('!!! GET PROJECTS AFTER', projects);
+        this.logger.log('[PROJECTS] - GET PROJECTS AFTER', projects);
 
         this.myAvailabilityCount = countOfcurrentUserAvailabilityInProjects;
         this.projectService.countOfMyAvailability(this.myAvailabilityCount);
-        console.log('!!! GET PROJECTS - I AM AVAILABLE IN # ', this.myAvailabilityCount, 'PROJECTS');
+        this.logger.log('[PROJECTS] - GET PROJECTS - I AM AVAILABLE IN # ', this.myAvailabilityCount, 'PROJECTS');
       }
     }, error => {
       this.showSpinner = false;
-      console.log('GET PROJECTS - ERROR ', error)
+      this.logger.error('[PROJECTS] - GET PROJECTS - ERROR ', error)
     }, () => {
-      console.log('GET PROJECTS - COMPLETE')
+      this.logger.log('[PROJECTS] - GET PROJECTS * COMPLETE *')
     });
   }
 
   changeAvailabilityState(projectid, available) {
-    console.log('PROJECT COMP changeAvailabilityState projectid', projectid, ' available: ', available);
+    this.logger.log('[PROJECTS] - changeAvailabilityState projectid', projectid, ' available: ', available);
 
     available = !available
-    console.log('PROJECT COMP changeAvailabilityState projectid', projectid, ' available: ', available);
+    this.logger.log('[PROJECTS] - changeAvailabilityState projectid', projectid, ' available: ', available);
 
     this.usersService.updateCurrentUserAvailability(projectid, available).subscribe((projectUser: any) => { // non 
 
-      console.log('PROJECT COMP PROJECT-USER UPDATED ', projectUser)
+      this.logger.log('[PROJECTS] - PROJECT-USER UPDATED ', projectUser)
 
       // NOTIFY TO THE USER SERVICE WHEN THE AVAILABLE / UNAVAILABLE BUTTON IS CLICKED
       // this.usersService.availability_btn_clicked(true)
@@ -513,10 +493,10 @@ export class ProjectsComponent implements OnInit, OnDestroy {
       });
 
     }, (error) => {
-      console.log('PROJECT COMP PROJECT-USER UPDATED ERR  ', error);
+      this.logger.error('[PROJECTS] - PROJECT-USER UPDATED - ERROR  ', error);
 
     }, () => {
-      console.log('PROJECT COMP PROJECT-USER UPDATED  * COMPLETE *');
+      this.logger.log('[PROJECTS] - PROJECT-USER UPDATED  * COMPLETE *');
 
     });
   }
@@ -527,7 +507,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((projectUser) => {
-        // console.log('PROJECT COMP $UBSC  TO WS USER AVAILABILITY & BUSY STATUS DATA (listenTo)', projectUser);
+        // this.logger.log('PROJECT COMP $UBSC  TO WS USER AVAILABILITY & BUSY STATUS DATA (listenTo)', projectUser);
         this.projects.forEach(project => {
           if (project.id_project._id === projectUser['id_project']) {
             project['ws_projct_user_available'] = projectUser['user_available'];
@@ -536,127 +516,17 @@ export class ProjectsComponent implements OnInit, OnDestroy {
         });
 
       }, (error) => {
-        console.log('PROJECT COMP $UBSC TO WS USER AVAILABILITY & BUSY STATUS error ', error);
+        this.logger.error('[PROJECTS] $UBSC TO WS USER AVAILABILITY & BUSY STATUS - ERROR ', error);
       }, () => {
-        console.log('PROJECT COMP $UBSC TO WS USER AVAILABILITY & BUSY STATUS * COMPLETE *');
+        this.logger.log('[PROJECTS] $UBSC TO WS USER AVAILABILITY & BUSY STATUS * COMPLETE *');
       })
-
-  }
-
-
-
-
-  // getProjectUsersIdByCurrentUserId(projectid) {
-
-  //   this.usersService.getProjectUserByUser_AllProjects(projectid, this.currentUserId).subscribe((projectUser: any) => {
-  //     console.log('PROJECT COMP - PROJECT-USER GET IN  RES ', projectUser)
-
-  //     if (projectUser) {
-  //       this.usersService.subscriptionToWsCurrentUser_allProject(projectid, projectUser[0]._id)
-  //     }
-
-  //   }, error => {
-  //     console.log('PROJECT COMP PROJECT-USER GET * error * ', error)
-  //   }, () => {
-  //     console.log('PROJECT COMP PROJECT-USER GET *** complete *** ')
-  //   });
-  // }
-
-
-
-
-
-  /**
-   * MODAL DELETE PROJECT
-   * @param id
-   * @param projectName
-   */
-  // openDeleteModal(id: string, projectName: string) {
-  //   console.log('OPEN DELETE MODAL');
-  //   this.display = 'block';
-  //   this.id_toDelete = id;
-  //   this.projectName_toDelete = projectName;
-  // }
-
-
-  openCreateModal() {
-    console.log('OPEN CREATE MODAL ');
-
-    this.displayCreateModal = 'block';
-
-  }
-
-  // CLOSE MODAL WITHOUT SAVE THE UPDATES OR WITHOUT CONFIRM THE DELETION
-  onCloseModal() {
-    this.displayCreateModal = 'none';
-    this.displayInfoModal = 'none';
-    this.displayLogoutModal = 'none';
-  }
-
-
-
-  createProject() {
-    console.log('OPEN CREATE MODAL ');
-    // hide the create Modal and display the info Modal and the spinner in the info Modal
-    this.displayInfoModal = 'block'
-    this.displayCreateModal = 'none';
-    this.SHOW_CIRCULAR_SPINNER = true;
-
-    console.log('CREATE PROJECT - PROJECT-NAME DIGIT BY USER ', this.project_name);
-
-    this.projectService.addMongoDbProject(this.project_name)
-      .subscribe((project) => {
-        console.log('POST DATA PROJECT RESPONSE ', project);
-
-        // WHEN THE USER SELECT A PROJECT ITS ID IS SEND IN THE PROJECT SERVICE THET PUBLISHES IT
-        // THE SIDEBAR SIGNS UP FOR ITS PUBLICATION
-        const newproject: Project = {
-          _id: project._id,
-          name: project.name
-
-        }
-
-        // SENT THE NEW PROJECT TO THE AUTH SERVICE THAT PUBLISH
-        this.auth.projectSelected(newproject)
-        console.log('!!! CREATED PROJECT ', newproject)
-
-        this.id_project = newproject._id
-
-        /* !!! NO MORE USED - NOW THE ALL PROJECTS ARE SETTED IN THE STORAGE IN getProjectsAndSaveInStorage()
-         * SET THE project_id IN THE LOCAL STORAGE
-         * WHEN THE PAGE IS RELOADED THE SIDEBAR GET THE PROJECT ID FROM THE LOCAL STORAGE */
-        // localStorage.setItem('project', JSON.stringify(newproject));
-
-        // this.display = 'none';
-
-        // this.router.navigate([`/project/${project._id}/home`]);
-
-      }, (error) => {
-        this.SHOW_CIRCULAR_SPINNER = false;
-        console.log('CREATE PROJECT - POST REQUEST ERROR ', error);
-      }, () => {
-        console.log('CREATE PROJECT - POST REQUEST COMPLETE ');
-
-        // 'getProjectsAndSaveInStorage()' was called only on the onInit lifehook, now recalling also after the creation 
-        // of the new project resolve the bug  'the auth service not find the project in the storage'
-        this.getProjectsAndSaveInStorage();
-        setTimeout(() => {
-          this.SHOW_CIRCULAR_SPINNER = false
-        }, 300);
-
-        // this.router.navigate(['/projects']);
-      });
-  }
-
-  onCloseInfoModalHandled() {
-    this.router.navigate([`/project/${this.id_project}/home`]);
   }
 
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.newInnerWidth = event.target.innerWidth;
-    console.log('INNER WIDTH ', this.newInnerWidth)
+    this.logger.log('[PROJECTS] INNER WIDTH ', this.newInnerWidth)
 
     if (this.newInnerWidth >= 992) {
       const elemAppSidebar = <HTMLElement>document.querySelector('app-sidebar');
@@ -699,8 +569,8 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   // subscribeToLogoutPressedinSidebarNavMobilePrjctUndefined() {
   //  this.usersService.has_clicked_logoutfrom_mobile_sidebar_project_undefined
   //     .subscribe((has_clicked_logout: boolean) => {
-  //       console.log('NAV-BAR - HAS CLICKED LOGOUT IN THE SIDEBAR ', has_clicked_logout);
-  //       console.log('NAV-BAR -  SIDEBAR is VISIBILE', this.sidebarVisible);
+  //       this.logger.log('[PROJECTS] - HAS CLICKED LOGOUT IN THE SIDEBAR ', has_clicked_logout);
+  //       this.logger.log('[PROJECTS]-  SIDEBAR is VISIBILE', this.sidebarVisible);
 
   //       if (has_clicked_logout === true) {
   //         this.sidebarClose();
@@ -715,6 +585,12 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   openLogoutModal() {
     this.displayLogoutModal = 'block';
     this.auth.hasOpenedLogoutModal(true);
+  }
+
+  onCloseModal() {
+    this.displayCreateModal = 'none';
+    this.displayInfoModal = 'none';
+    this.displayLogoutModal = 'none';
   }
 
   onCloseLogoutModalHandled() {

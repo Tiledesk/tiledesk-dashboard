@@ -7,7 +7,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from './../../core/auth.service';
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-
+import { LoggerService } from './../../services/logger/logger.service';
 @Component({
   selector: 'appdashboard-notification-settings',
   templateUrl: './notification-settings.component.html',
@@ -27,7 +27,8 @@ export class NotificationSettingsComponent implements OnInit {
   updateSuccessMsg: string;
   updateErrorMsg: string;
 
-  constructor(private _location: Location,
+  constructor(
+    private _location: Location,
     private auth: AuthService,
     private router: Router,
     private projectService: ProjectService,
@@ -35,7 +36,10 @@ export class NotificationSettingsComponent implements OnInit {
     private notificationService: NotificationService,
     private usersService: UsersService,
     private translate: TranslateService,
-    private notify: NotifyService) { }
+    private notify: NotifyService,
+    private logger: LoggerService
+    ) 
+    { }
 
   ngOnInit() {
     this.getUserIdFromRouteParams();
@@ -53,19 +57,19 @@ export class NotificationSettingsComponent implements OnInit {
    */
   getProjects() {
     this.projectService.getProjects().subscribe((projects: any) => {
-      console.log('ACCOUNT_SETTINGS - GET PROJECTS ', projects);
+      this.logger.log('[USER-PROFILE][NOTIFICATION-SETTINGS] - GET PROJECTS  RES', projects);
 
       if (projects) {
         this.projects_length = projects.length;
-        console.log('ACCOUNT_SETTINGS - GET PROJECTS - LENGTH ', this.projects_length);
+        this.logger.log('[USER-PROFILE][NOTIFICATION-SETTINGS] - GET PROJECTS - LENGTH ', this.projects_length);
 
         this.translateparam = { projects_length: this.projects_length };
       }
     }, error => {
 
-      console.log('ACCOUNT_SETTINGS - GET PROJECTS - ERROR ', error)
+      this.logger.error('[USER-PROFILE][NOTIFICATION-SETTINGS] - GET PROJECTS - ERROR ', error)
     }, () => {
-      console.log('ACCOUNT_SETTINGS - GET PROJECTS - COMPLETE')
+      this.logger.log('[USER-PROFILE][NOTIFICATION-SETTINGS] - GET PROJECTS - COMPLETE')
     });
   }
 
@@ -73,11 +77,11 @@ export class NotificationSettingsComponent implements OnInit {
     this.auth.project_bs.subscribe((project) => {
 
       if (project) {
-        console.log('ACCOUNT_SETTINGS - project from AUTH-SERV subscr ', project)
+        this.logger.log('[USER-PROFILE][NOTIFICATION-SETTINGS] - project from AUTH-SERV subscr ', project)
         this.projectId = project._id;
 
       } else {
-        console.log('ACCOUNT_SETTINGS - project from AUTH-SERV subscr ? ', project)
+        this.logger.log('[USER-PROFILE][NOTIFICATION-SETTINGS] - project from AUTH-SERV subscr ? ', project)
 
         this.hideSidebar();
       }
@@ -87,25 +91,25 @@ export class NotificationSettingsComponent implements OnInit {
   // hides the sidebar if the user is in the CHANGE PSW PAGE but has not yet selected a project
   hideSidebar() {
     const elemAppSidebar = <HTMLElement>document.querySelector('app-sidebar');
-    console.log('ACCOUNT_SETTINGS  elemAppSidebar ', elemAppSidebar)
+    this.logger.log('[USER-PROFILE][NOTIFICATION-SETTINGS]  elemAppSidebar ', elemAppSidebar)
     elemAppSidebar.setAttribute('style', 'display:none;');
 
     const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
-    console.log('ACCOUNT_SETTINGS  elemMainPanel ', elemMainPanel)
+    this.logger.log('[USER-PROFILE][NOTIFICATION-SETTINGS]  elemMainPanel ', elemMainPanel)
     elemMainPanel.setAttribute('style', 'width:100% !important; overflow-x: hidden !important;');
   }
 
   getUserIdFromRouteParams() {
     this.userId = this.route.snapshot.params['userid'];
-    console.log('ACCOUNT_SETTINGS - USER ID ', this.userId)
+    this.logger.log('[USER-PROFILE][NOTIFICATION-SETTINGS] - USER ID ', this.userId)
   }
 
   checkCurrentStatus() {
     this.usersService.project_user_id_bs.subscribe((project_user_id) => {
 
-      console.log("################ CHECK NOTIFICATION checkCurrentStatus: ", project_user_id);
+      this.logger.log("[USER-PROFILE][NOTIFICATION-SETTINGS] - CHECK NOTIFICATION checkCurrentStatus: ", project_user_id);
       this.notificationService.checkNotificationsStatus(project_user_id).subscribe((result: any) => {
-        console.log("################ CHECK NOTIFICATION STATUS RESULT: ", result);
+        this.logger.log("[USER-PROFILE][NOTIFICATION-SETTINGS] - CHECK NOTIFICATION STATUS RESULT: ", result);
 
         if (result.settings) {
 
@@ -143,7 +147,7 @@ export class NotificationSettingsComponent implements OnInit {
 
   translateNotificationMsgs() {
     this.translate.get('NotificationSettings.NotificationMsgs').subscribe((translation: any) => {
-      console.log('NOTIFICATION SETTINGS tranlsateNotificationMsgs text', translation)
+      // this.logger.log('[USER-PROFILE][NOTIFICATION-SETTINGS] - tranlsateNotificationMsgs text', translation)
       this.updateSuccessMsg = translation.UpdateSuccess;
       this.updateErrorMsg = translation.UpdateError;
     });
@@ -151,25 +155,25 @@ export class NotificationSettingsComponent implements OnInit {
 
   // TOGGLE ACTION
   toggleAssignedConversation($event) {
-    console.log("Event Toggle Assigned: ", $event.target.checked);
+    this.logger.log("[USER-PROFILE][NOTIFICATION-SETTINGS] Event Toggle Assigned: ", $event.target.checked);
     this.assigned_conv_on = $event.target.checked;
     this.notificationService.enableDisableAssignedNotification(this.assigned_conv_on).then((result) => {
-      console.log("ASSIGNED NOTIFICATION RESULT: ", result)
+      this.logger.log("[USER-PROFILE][NOTIFICATION-SETTINGS] - TOGGLE ASSIGNED NOTIFICATION RES : ", result)
       this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done')
     }).catch((err) => {
-      console.log("Error during preferences updating: ", err)
+      this.logger.error("[USER-PROFILE][NOTIFICATION-SETTINGS] - TOGGLE ASSIGNED NOTIFICATION - ERROR ", err)
       this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem')
     })
   }
 
   toggleUnassignedConversation($event) {
-    console.log("Event Toggle Unassigned: ", $event.target.checked);
+    this.logger.log("[USER-PROFILE][NOTIFICATION-SETTINGS] Event Toggle Unassigned: ", $event.target.checked);
     this.unassigned_conv_on = $event.target.checked;
     this.notificationService.enableDisableUnassignedNotification(this.unassigned_conv_on).then((result) => {
-      console.log("UNASSIGNED NOTIFICATION RESULT: ", result)
+      this.logger.log("[USER-PROFILE][NOTIFICATION-SETTINGS] - TOGGLE UNASSIGNED NOTIFICATION RES: ", result)
       this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done')
     }).catch((err) => {
-      console.log("Error during preferences updating: ", err)
+      this.logger.error("[USER-PROFILE][NOTIFICATION-SETTINGS] - TOGGLE UNASSIGNED NOTIFICATION - ERROR ", err)
       this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem')
     })
   }
@@ -181,7 +185,7 @@ export class NotificationSettingsComponent implements OnInit {
   }
 
   goToChangePsw() {
-    console.log('»» GO TO CHANGE PSW - PROJECT ID ', this.projectId)
+    this.logger.log('[USER-PROFILE][NOTIFICATION-SETTINGS] »» GO TO CHANGE PSW - PROJECT ID ', this.projectId)
     if (this.projectId === undefined) {
       this.router.navigate(['user/' + this.userId + '/password/change']);
     } else {
@@ -190,7 +194,7 @@ export class NotificationSettingsComponent implements OnInit {
   }
 
   goToAccountSettings() {
-    console.log('»» GO TO USER  PROFILE SETTINGS - PROJECT ID ', this.projectId)
+    this.logger.log('[USER-PROFILE][NOTIFICATION-SETTINGS] »» GO TO USER  PROFILE SETTINGS - PROJECT ID ', this.projectId)
     if (this.projectId === undefined) {
       this.router.navigate(['user/' + this.userId + '/settings']);
     } else {
@@ -199,7 +203,7 @@ export class NotificationSettingsComponent implements OnInit {
   }
 
   goToUserProfile() {
-    console.log('»» GO TO USER PROFILE  - PROJECT ID ', this.projectId)
+    this.logger.log('[USER-PROFILE][NOTIFICATION-SETTINGS] »» GO TO USER PROFILE  - PROJECT ID ', this.projectId)
     if (this.projectId === undefined) {
       this.router.navigate(['user-profile']);
     } else {

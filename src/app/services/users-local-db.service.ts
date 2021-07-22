@@ -1,13 +1,17 @@
 import { Injectable } from '@angular/core';
+import { LoggerService } from '../services/logger/logger.service';
+
 
 @Injectable()
 export class LocalDbService {
 
   prefix = 'dshbrd----'
-  constructor() { }
+  constructor(
+    private logger: LoggerService
+  ) { }
 
   getMemberFromStorage(member_id: string) {
-    // console.log('HEY MEMBER member_id !!! ', member_id);
+    // this.logger.log('HEY MEMBER member_id !!! ', member_id);
     if (member_id) {
 
       /**
@@ -19,11 +23,11 @@ export class LocalDbService {
        * *** NEW 29JAN19 - GET FROM LOCAL STORAGE MEMBER ID WITH PREFIX ***
        */
       const prefixedMemberId = this.prefix + member_id;
-      // console.log('HEY MEMBER prefixedMemberId !!! ', prefixedMemberId);
+      // this.logger.log('HEY MEMBER prefixedMemberId !!! ', prefixedMemberId);
       const member = JSON.parse((localStorage.getItem(prefixedMemberId)));
 
 
-      // console.log('HEY MEMBER !!! ', member);
+      // this.logger.log('HEY MEMBER !!! ', member);
       return member;
     }
   }
@@ -40,21 +44,19 @@ export class LocalDbService {
        * *** NEW 29JAN19 - SET IN LOCAL STORAGE MEMBER ID WITH PREFIX ***
        */
       localStorage.setItem(this.prefix + member_id, JSON.stringify(member_object));
-      console.log('HEY - SAVE IN STORAGE !!! ');
+      this.logger.log('[USERS-LOCAL-DB] - SET IN STORAGE MEMBER-OBJCT WITH KEY MEMBER-ID ', member_id);
     }
   }
 
   saveUserInStorageWithProjectUserId(projectuserid: string, userobj: any)  {
     localStorage.setItem(this.prefix + projectuserid, JSON.stringify(userobj));
-    console.log('HEY - SAVE IN STORAGE !!! ');
+    this.logger.log('[USERS-LOCAL-DB] - SET IN STORAGE USER-OBJCT WITH KEY PROJECT-USER-ID ', projectuserid);
   }
-
-
 
   getUserInStorageWithProjectUserId(projectuserid: string) {
      if (projectuserid) {
       const prefixedMemberId = this.prefix + projectuserid;
-      // console.log('HEY MEMBER prefixedMemberId !!! ', prefixedMemberId);
+      // this.logger.log('HEY MEMBER prefixedMemberId !!! ', prefixedMemberId);
       const member = JSON.parse((localStorage.getItem(prefixedMemberId)));
       return member;
     }
@@ -63,12 +65,12 @@ export class LocalDbService {
 
   saveUserRoleInStorage(user_role: string) {
     localStorage.setItem('role', user_role);
-    console.log('HEY - SAVE ROLE IN STORAGE !!! ');
+    this.logger.log('[USERS-LOCAL-DB] - SET USER ROLE IN STORAGE - ROLE ', user_role);
   }
 
   getUserRoleFromStorage() {
     const user_role = localStorage.getItem('role');
-    console.log('HEY - GET USER ROLE FROM STORAGE !!! ', user_role)
+    this.logger.log('[USERS-LOCAL-DB] - GET USER ROLE FROM STORAGE - ROLE ', user_role)
     return user_role
   }
 
@@ -99,9 +101,8 @@ export class LocalDbService {
   storeAppearanceDisplayPreferences(dkm): void {
     if (dkm) {
       localStorage.setItem(this.prefix + 'dkmode', dkm);
-      console.log('HEY - SAVE IN STORAGE !!! ');
+      this.logger.log('HEY - SAVE IN STORAGE !!! ');
     }
-
   }
 
 

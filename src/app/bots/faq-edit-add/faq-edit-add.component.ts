@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
-import { MongodbFaqService } from '../../services/mongodb-faq.service';
+import { FaqService } from '../../services/faq.service';
 import { Project } from '../../models/project-model';
 import { AuthService } from '../../core/auth.service';
 import { NotifyService } from '../../core/notify.service';
 import { Location } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
+import { LoggerService } from '../../services/logger/logger.service';
 const swal = require('sweetalert');
 @Component({
   selector: 'faq-edit-add',
@@ -53,18 +54,17 @@ export class FaqEditAddComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private mongodbFaqService: MongodbFaqService,
+    private faqService: FaqService,
     private auth: AuthService,
     private notify: NotifyService,
     public location: Location,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private logger: LoggerService
   ) { }
 
   ngOnInit() {
 
     this.getTranslations()
-
-
     this.auth.checkRoleForCurrentProject();
 
     // BASED ON THE URL PATH DETERMINE IF THE USER HAS SELECTED (IN FAQ PAGE) 'CREATE' OR 'EDIT'
@@ -72,13 +72,13 @@ export class FaqEditAddComponent implements OnInit {
     this.getUrlParams();
 
     if (this.router.url.indexOf('/createfaq') !== -1) {
-      console.log('HAS CLICKED CREATE ');
+      this.logger.log('[FAQ-EDIT-ADD] HAS CLICKED CREATE ');
       this.CREATE_VIEW = true;
       this.showSpinner = false;
       // GET THE ID OF FAQ-KB PASSED BY FAQ PAGE (AND THAT FAQ PAGE HAS RECEIVED FROM FAQ-KB)
       this.getFaqKbId();
     } else {
-      console.log('HAS CLICKED EDIT ');
+      this.logger.log('[FAQ-EDIT-ADD] HAS CLICKED EDIT ');
       this.EDIT_VIEW = true;
       // GET THE ID OF FAQ PASSED BY FAQ PAGE &
       // GET THE ID OF FAQ-KB PASSED BY FAQ PAGE (AND THAT FAQ PAGE HAS RECEIVED FROM FAQ-KB)
@@ -101,15 +101,15 @@ export class FaqEditAddComponent implements OnInit {
       this.id_faq_kb = params.faqkbid;
       this.id_faq = params.faqid;
       this.botType = params.bottype
-      console.log('getUrlParams (FaqEditAddComponent) PARAMS', params);
-      console.log('getUrlParams (FaqEditAddComponent) BOT ID ', this.id_faq_kb);
-      console.log('getUrlParams (FaqEditAddComponent) FAQ ID ', this.id_faq);
+      this.logger.log('[FAQ-EDIT-ADD] getUrlParams (FaqEditAddComponent) PARAMS', params);
+      this.logger.log('[FAQ-EDIT-ADD] getUrlParams (FaqEditAddComponent) BOT ID ', this.id_faq_kb);
+      this.logger.log('[FAQ-EDIT-ADD] getUrlParams (FaqEditAddComponent) FAQ ID ', this.id_faq);
     });
   }
 
   getFaqKbId() {
     this.id_faq_kb = this.route.snapshot.params['faqkbid'];
-    console.log('FAQ HAS PASSED id_faq_kb ', this.id_faq_kb);
+    this.logger.log('[FAQ-EDIT-ADD] FAQ HAS PASSED id_faq_kb ', this.id_faq_kb);
   }
 
   getTranslations() {
@@ -132,7 +132,7 @@ export class FaqEditAddComponent implements OnInit {
       .subscribe((text: string) => {
 
         this.createFaqSuccessNoticationMsg = text;
-        // console.log('+ + + CreateFaqSuccessNoticationMsg', text)
+        // this.logger.log('+ + + CreateFaqSuccessNoticationMsg', text)
       });
   }
 
@@ -142,7 +142,7 @@ export class FaqEditAddComponent implements OnInit {
       .subscribe((text: string) => {
 
         this.createFaqErrorNoticationMsg = text;
-        // console.log('+ + + CreateFaqErrorNoticationMsg', text)
+        // this.logger.log('+ + + CreateFaqErrorNoticationMsg', text)
       });
   }
 
@@ -152,7 +152,7 @@ export class FaqEditAddComponent implements OnInit {
       .subscribe((text: string) => {
 
         this.editFaqSuccessNoticationMsg = text;
-        // console.log('+ + + UpdateFaqSuccessNoticationMsg', text)
+        // this.logger.log('+ + + UpdateFaqSuccessNoticationMsg', text)
       });
   }
 
@@ -162,7 +162,7 @@ export class FaqEditAddComponent implements OnInit {
       .subscribe((text: string) => {
 
         this.editFaqErrorNoticationMsg = text;
-        // console.log('+ + + UpdateFaqErrorNoticationMsg', text)
+        // this.logger.log('+ + + UpdateFaqErrorNoticationMsg', text)
       });
   }
 
@@ -170,7 +170,7 @@ export class FaqEditAddComponent implements OnInit {
   translateWarningMsg() {
     this.translate.get('Warning').subscribe((text: string) => {
       this.warningMsg = text;
-      // console.log('+ + + warningMsg', text)
+      // this.logger.log('+ + + warningMsg', text)
     });
   }
 
@@ -195,14 +195,14 @@ export class FaqEditAddComponent implements OnInit {
   translateErrorOccurredDeletingAnswer() {
     this.translate.get('FaqPage.AnErrorOccurredWhilDeletingTheAnswer').subscribe((text: string) => {
       this.errorDeletingAnswerMsg = text;
-      console.log('+ + + AnErrorOccurredWhilDeletingTheAnswer', this.errorDeletingAnswerMsg)
+      // this.logger.log('+ + + AnErrorOccurredWhilDeletingTheAnswer', this.errorDeletingAnswerMsg)
     });
   }
 
   translateAnswerSuccessfullyDeleted() {
     this.translate.get('FaqPage.AnswerSuccessfullyDeleted').subscribe((text: string) => {
       this.answerSuccessfullyDeleted = text;
-      console.log('+ + + AnswerSuccessfullyDeleted', this.answerSuccessfullyDeleted)
+      // this.logger.log('+ + + AnswerSuccessfullyDeleted', this.answerSuccessfullyDeleted)
     });
   }
 
@@ -211,11 +211,11 @@ export class FaqEditAddComponent implements OnInit {
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
       this.project = project
-      // console.log('00 -> FAQ EDIT/ADD COMP project ID from AUTH service subscription  ', this.project._id)
+      // this.logger.log('00 -> FAQ EDIT/ADD COMP project ID from AUTH service subscription  ', this.project._id)
     });
   }
 
-  presentSwalModalDeleteFag() {
+  presentSwalModalDeleteFaq() {
     swal({
       title: this.areYouSureMsg,
       text: this.answerWillBeDeletedMsg,
@@ -225,29 +225,24 @@ export class FaqEditAddComponent implements OnInit {
     })
       .then((WillDelete) => {
         if (WillDelete) {
-          console.log('WS-REQUESTS-LIST swal WillDelete', WillDelete)
-          this.mongodbFaqService.deleteMongoDbFaq(this.id_faq).subscribe((data) => {
+          this.logger.log('[FAQ-EDIT-ADD] presentSwalModalDeleteFaq swal WillDelete', WillDelete)
+          this.faqService.deleteFaq(this.id_faq).subscribe((data) => {
 
           }, (error) => {
-
             swal(this.errorDeletingAnswerMsg, {
               icon: "error",
             });
-
-            console.log('DELETE FAQ ERROR ', error);
-
+            this.logger.error('[FAQ-EDIT-ADD] DELETE FAQ ERROR ', error);
           }, () => {
-            console.log('DELETE FAQ * COMPLETE *');
-
+            this.logger.log('[FAQ-EDIT-ADD] DELETE FAQ * COMPLETE *');
             swal(this.done_msg + "!", this.answerSuccessfullyDeleted, {
               icon: "success",
             }).then((okpressed) => {
               this.location.back();
             });
-
           });
         } else {
-          console.log('WS-REQUESTS-LIST swal WillDelete (else)')
+          this.logger.log('[FAQ-EDIT-ADD] WS-REQUESTS-LIST swal WillDelete (else)')
         }
       });
   }
@@ -257,23 +252,23 @@ export class FaqEditAddComponent implements OnInit {
   * USED TO SHOW IN THE TEXAREA THE QUESTION AND THE ANSWER THAT USER WANT UPDATE
   */
   getFaqById() {
-    this.mongodbFaqService.getMongDbFaqById(this.id_faq).subscribe((faq: any) => {
-      console.log('FaqEditAddComponent - FAQ GET BY ID RES', faq);
+    this.faqService.getFaqById(this.id_faq).subscribe((faq: any) => {
+      this.logger.log('[FAQ-EDIT-ADD] - FAQ GET BY ID RES', faq);
       if (faq) {
         this.question_toUpdate = faq.question;
         this.answer_toUpdate = faq.answer;
         this.faq_creationDate = faq.createdAt;
         this.intent_name = faq.intent_display_name;
         this.faq_webhook_is_enabled = faq.webhook_enabled;
-        console.log('FAQ QUESTION TO UPDATE', this.question_toUpdate);
-        console.log('FAQ ANSWER TO UPDATE', this.answer_toUpdate);
+        this.logger.log('[FAQ-EDIT-ADD] FAQ QUESTION TO UPDATE', this.question_toUpdate);
+        this.logger.log('[FAQ-EDIT-ADD] FAQ ANSWER TO UPDATE', this.answer_toUpdate);
       }
 
     }, (error) => {
-      console.log('FaqEditAddComponent - FAQ GET BY ID - ERROR ', error);
+      this.logger.error('[FAQ-EDIT-ADD] - FAQ GET BY ID - ERROR ', error);
       this.showSpinner = false;
     }, () => {
-      console.log('FaqEditAddComponent - FAQ GET BY ID - COMPLETE ');
+      this.logger.log('[FAQ-EDIT-ADD] - FAQ GET BY ID - COMPLETE ');
       this.showSpinner = false;
 
       this.translateTheAnswerWillBeDeleted();
@@ -298,7 +293,7 @@ export class FaqEditAddComponent implements OnInit {
   }
 
   toggleFaqWebhook($event) {
-    console.log('FaqEditAddComponent toggleFaqWebhook ', $event.target.checked);
+    this.logger.log('[FAQ-EDIT-ADD] toggleFaqWebhook ', $event.target.checked);
     this.faq_webhook_is_enabled = $event.target.checked
   }
 
@@ -309,10 +304,10 @@ export class FaqEditAddComponent implements OnInit {
     const create_answer_btn = <HTMLElement>document.querySelector('.create-answer-btn');
     create_answer_btn.blur();
 
-    console.log('FaqEditAddComponent CREATE FAQ - QUESTION: ', this.question, ' - ANSWER: ', this.answer, ' - ID FAQ KB ', this.id_faq_kb, ' - INTENT NAME ', this.intent_name, ' - FAQ WEBHOOK ENABLED ', this.faq_webhook_is_enabled);
-    this.mongodbFaqService.addMongoDbFaq(this.question, this.answer, this.id_faq_kb, this.intent_name, this.faq_webhook_is_enabled)
+    this.logger.log('[FAQ-EDIT-ADD] CREATE FAQ - QUESTION: ', this.question, ' - ANSWER: ', this.answer, ' - ID FAQ KB ', this.id_faq_kb, ' - INTENT NAME ', this.intent_name, ' - FAQ WEBHOOK ENABLED ', this.faq_webhook_is_enabled);
+    this.faqService.addFaq(this.question, this.answer, this.id_faq_kb, this.intent_name, this.faq_webhook_is_enabled)
       .subscribe((faq) => {
-        console.log('FaqEditAddComponent CREATED FAQ RES ', faq);
+        this.logger.log('[FAQ-EDIT-ADD] CREATED FAQ RES ', faq);
 
         // this.question = '';
         // this.answer = '';
@@ -321,15 +316,14 @@ export class FaqEditAddComponent implements OnInit {
         // this.ngOnInit();
       }, (error) => {
 
-        console.log('FaqEditAddComponent CREATED FAQ - ERROR ', error);
+        this.logger.error('[FAQ-EDIT-ADD] CREATED FAQ - ERROR ', error);
 
         if (error && error['status']) {
-
           this.error_status = error['status']
-          console.log('FaqEditAddComponent UPDATE FAQ - ERROR - ERROR-STATUS', this.error_status);
+          this.logger.error('[FAQ-EDIT-ADD] UPDATE FAQ - ERROR - ERROR-STATUS', this.error_status);
 
           if (this.error_status === 409) {
-            console.log('FaqEditAddComponent UPDATE FAQ - ERROR - ERROR-STATUS - TRANSLATE & PRESENT MODAL');
+            this.logger.error('[FAQ-EDIT-ADD] UPDATE FAQ - ERROR - ERROR-STATUS - TRANSLATE & PRESENT MODAL');
             this.translateAndPresentModalIntentNameAlreadyExist(this.intent_name);
           }
         }
@@ -337,7 +331,7 @@ export class FaqEditAddComponent implements OnInit {
         // this.notify.showNotification('An error occurred while creating the FAQ', 4, 'report_problem');
         this.notify.showWidgetStyleUpdateNotification(this.createFaqErrorNoticationMsg, 4, 'report_problem');
       }, () => {
-        console.log('FaqEditAddComponent CREATED FAQ * COMPLETE *');
+        this.logger.log('[FAQ-EDIT-ADD] CREATED FAQ * COMPLETE *');
         // =========== NOTIFY SUCCESS===========
         // this.notify.showNotification('FAQ successfully created', 2, 'done');
         this.notify.showWidgetStyleUpdateNotification(this.createFaqSuccessNoticationMsg, 2, 'done');
@@ -355,35 +349,33 @@ export class FaqEditAddComponent implements OnInit {
     const updated_answer_btn = <HTMLElement>document.querySelector('.update-answer-btn');
     updated_answer_btn.blur();
 
-    console.log('FaqEditAddComponent FAQ QUESTION TO UPDATE ', this.question_toUpdate);
-    console.log('FaqEditAddComponent FAQ ANSWER TO UPDATE ', this.answer_toUpdate);
+    this.logger.log('[FAQ-EDIT-ADD] FAQ QUESTION TO UPDATE ', this.question_toUpdate);
+    this.logger.log('[FAQ-EDIT-ADD] FAQ ANSWER TO UPDATE ', this.answer_toUpdate);
 
-    this.mongodbFaqService.updateMongoDbFaq(this.id_faq, this.question_toUpdate, this.answer_toUpdate, this.intent_name, this.faq_webhook_is_enabled)
+    this.faqService.updateFaq(this.id_faq, this.question_toUpdate, this.answer_toUpdate, this.intent_name, this.faq_webhook_is_enabled)
       .subscribe((data) => {
-        console.log('FaqEditAddComponent UPDATE FAQ RES', data);
+        this.logger.log('[FAQ-EDIT-ADD] UPDATE FAQ RES', data);
 
         // RE-RUN TO UPDATE THE TABLE
         // this.ngOnInit();
       }, (error) => {
-        console.log('FaqEditAddComponent UPDATE FAQ - ERROR ', error);
+        this.logger.error('[FAQ-EDIT-ADD] UPDATE FAQ - ERROR ', error);
         // =========== NOTIFY ERROR ===========
         // this.notify.showNotification('An error occurred while updating the FAQ', 4, 'report_problem');
         this.notify.showWidgetStyleUpdateNotification(this.editFaqErrorNoticationMsg, 4, 'report_problem');
 
-
         if (error && error['status']) {
-
           this.error_status = error['status']
-          console.log('FaqEditAddComponent UPDATE FAQ - ERROR - ERROR-STATUS', this.error_status);
+          this.logger.error('[FAQ-EDIT-ADD] UPDATE FAQ - ERROR - ERROR-STATUS', this.error_status);
 
           if (this.error_status === 409) {
-            console.log('FaqEditAddComponent UPDATE FAQ - ERROR - ERROR-STATUS - TRANSLATE & PRESENT MODAL');
+            this.logger.error('[FAQ-EDIT-ADD] UPDATE FAQ - ERROR - ERROR-STATUS - TRANSLATE & PRESENT MODAL');
             this.translateAndPresentModalIntentNameAlreadyExist(this.intent_name);
           }
         }
 
       }, () => {
-        console.log('FaqEditAddComponent UPDATE FAQ * COMPLETE *');
+        this.logger.log('[FAQ-EDIT-ADD] UPDATE FAQ * COMPLETE *');
         // =========== NOTIFY SUCCESS===========
         // this.notify.showNotification('FAQ successfully updated', 2, 'done');
         this.notify.showWidgetStyleUpdateNotification(this.editFaqSuccessNoticationMsg, 2, 'done');
@@ -408,9 +400,9 @@ export class FaqEditAddComponent implements OnInit {
       .subscribe((text: string) => {
 
         this.intentNameAlreadyExistsMsg = text;
-        console.log('+ + + intentNameAlreadyExistsMsg', text)
+        this.logger.log('[FAQ-EDIT-ADD] + + + intentNameAlreadyExistsMsg', text)
       }, (error) => {
-
+        this.logger.error('[FAQ-EDIT-ADD] + + + intentNameAlreadyExistsMsg', error)
       }, () => {
         this.displayModalIntentNameAlreadyExist()
       });
@@ -427,7 +419,7 @@ export class FaqEditAddComponent implements OnInit {
   }
 
 
- 
+
 
   goToKBArticle_ResolutionBotImagesVideosButtonsAndMore() {
     const url = 'https://docs.tiledesk.com/knowledge-base/response-bot-images-buttons-videos-and-more/';
@@ -450,13 +442,13 @@ export class FaqEditAddComponent implements OnInit {
   }
 
   goToKBArticle_AdvancedChatbotStyling() {
-    console.log('goToKBArticle_AdvancedChatbotStyling');
+    this.logger.log('goToKBArticle_AdvancedChatbotStyling');
     const url = 'https://docs.tiledesk.com/knowledge-base/advanced-chatbot-styling-buttons/';
     window.open(url, '_blank');
   }
 
   goToKBArticle_StylingYourChatbotReplies() {
-    console.log('goToKBArticle_StylingYourChatbotReplies');
+    this.logger.log('[FAQ-EDIT-ADD] goToKBArticle_StylingYourChatbotReplies');
     const url = 'https://docs.tiledesk.com/knowledge-base/styling-your-chatbot-replies/';
     window.open(url, '_blank');
   }

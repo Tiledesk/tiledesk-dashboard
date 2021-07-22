@@ -14,6 +14,7 @@ import { UsersService } from '../services/users.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ProjectPlanService } from '../services/project-plan.service';
 import { Subscription } from 'rxjs';
+import { LoggerService } from '../services/logger/logger.service';
 declare const $: any;
 const swal = require('sweetalert');
 
@@ -107,7 +108,8 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     private usersService: UsersService,
     private translate: TranslateService,
     private prjctPlanService: ProjectPlanService,
-    private appConfigService: AppConfigService
+    private appConfigService: AppConfigService,
+    private logger: LoggerService
   ) { }
 
   ngOnInit() {
@@ -143,20 +145,20 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
       .subscribe((text: string) => {
 
         this.deleteLeadSuccessNoticationMsg = text;
-        // console.log('+ + + DeleteLeadSuccessNoticationMsg', text)
+        // this.logger.log('[CONTACTS-COMP] + + + DeleteLeadSuccessNoticationMsg', text)
       });
 
     this.translate.get('DeleteLeadErrorNoticationMsg')
       .subscribe((text: string) => {
 
         this.deleteLeadErrorNoticationMsg = text;
-        // console.log('+ + + DeleteLeadErrorNoticationMsg', text)
+        // this.logger.log('[CONTACTS-COMP] + + + DeleteLeadErrorNoticationMsg', text)
       });
 
     this.translate.get('AreYouSure')
       .subscribe((text: string) => {
         this.areYouSure = text;
-        // console.log('+ + + areYouSure', text)
+        // this.logger.log('[CONTACTS-COMP] + + + areYouSure', text)
       });
 
     this.translate.get('Done')
@@ -188,7 +190,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.translate.get('DeleteContact')
       .subscribe((text: string) => {
         this.deleteContact_msg = text;
-        console.log('+ + + DeleteContact_msg', this.deleteContact_msg)
+        // this.logger.log('[CONTACTS-COMP] + + + DeleteContact_msg', this.deleteContact_msg)
       });
 
     this.translate.get('YouCannotDeleteThisContact')
@@ -214,14 +216,14 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.translate.get('SearchYourContacts')
       .subscribe((text: string) => {
         this.searchInYourContactsPlaceholder = text;
-        console.log('+ + + translatePlaceholder SearchYourContacts', text)
+        // this.logger.log('[CONTACTS-COMP] + + + translatePlaceholder SearchYourContacts', text)
       });
 
 
     this.translate.get('SearchInTrash')
       .subscribe((text: string) => {
         this.searchInTrashPlaceholder = text;
-        // console.log('+ + + DeleteLeadSuccessNoticationMsg', text)
+        // this.logger.log('[CONTACTS-COMP] + + + DeleteLeadSuccessNoticationMsg', text)
       });
   }
 
@@ -232,13 +234,13 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   getElemSearchField() {
     // const elemSearchField =   (<HTMLInputElement>document.getElementById('#search_field'));
     const elemSearchField = <HTMLInputElement>document.querySelector('#search_field');
-    console.log('!!!! CONTACTS elemSearchField', elemSearchField)
+    this.logger.log('[CONTACTS-COMP] GET elemSearchField', elemSearchField)
     //  elemSearchField.innerHTML = 'res';
   }
 
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      console.log('ProjectPlanService (RequestsListHistoryNewComponent) project Profile Data', projectProfileData)
+      this.logger.log('[CONTACTS-COMP] ProjectPlanService project Profile Data', projectProfileData)
       if (projectProfileData) {
 
         this.prjct_profile_type = projectProfileData.profile_type;
@@ -274,7 +276,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
       if (project) {
         this.projectId = project._id
-        // console.log('00 -> !!!! CONTACTS project ID from AUTH service subscription  ', this.projectId)
+        // this.logger.log('[CONTACTS-COMP] project ID from AUTH service subscription  ', this.projectId)
       }
     });
   }
@@ -282,24 +284,24 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   getProjectUserRole() {
     this.usersService.project_user_role_bs.subscribe((user_role) => {
       const current_user_role = user_role;
-      console.log('CONTACTS COMP - SUBSCRIBE PROJECT_USER_ROLE_BS ', current_user_role);
+      this.logger.log('[CONTACTS-COMP] - SUBSCRIBE PROJECT_USER_ROLE_BS ', current_user_role);
       if (current_user_role) {
-        console.log('CONTACTS COMP - PROJECT USER ROLE ', current_user_role);
+        this.logger.log('[CONTACTS-COMP] - PROJECT USER ROLE ', current_user_role);
         if (current_user_role === 'agent') {
           this.IS_CURRENT_USER_AGENT = true;
-          console.log('CONTACTS COMP - PROJECT USER ROLE - IS CURRENT USER AGENT ', this.IS_CURRENT_USER_AGENT);
+          this.logger.log('[CONTACTS-COMP] - PROJECT USER ROLE - IS CURRENT USER AGENT? ', this.IS_CURRENT_USER_AGENT);
         } else {
           this.IS_CURRENT_USER_AGENT = false;
-          console.log('CONTACTS COMP - PROJECT USER ROLE - IS CURRENT USER AGENT ', this.IS_CURRENT_USER_AGENT);
+          this.logger.log('[CONTACTS-COMP] - PROJECT USER ROLE - IS CURRENT USER AGENT? ', this.IS_CURRENT_USER_AGENT);
         }
 
 
         if (current_user_role === 'owner') {
           this.IS_CURRENT_USER_OWNER = true;
-          console.log('CONTACTS COMP - PROJECT USER ROLE - IS CURRENT USER OWNER ', this.IS_CURRENT_USER_OWNER);
+          this.logger.log('[CONTACTS-COMP] - PROJECT USER ROLE - IS CURRENT USER OWNER? ', this.IS_CURRENT_USER_OWNER);
         } else {
           this.IS_CURRENT_USER_OWNER = false;
-          console.log('CONTACTS COMP - PROJECT USER ROLE - IS CURRENT USER OWNER ', this.IS_CURRENT_USER_OWNER);
+          this.logger.log('[CONTACTS-COMP] - PROJECT USER ROLE - IS CURRENT USER OWNER? ', this.IS_CURRENT_USER_OWNER);
         }
       }
     });
@@ -311,7 +313,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.pageNo -= 1;
 
-    console.log('!!!! CONTACTS - DECREASE PAGE NUMBER ', this.pageNo);
+    this.logger.log('[CONTACTS-COMP] - DECREASE PAGE NUMBER ', this.pageNo);
     this.getContacts()
   }
 
@@ -320,7 +322,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     increasePageNumberBtn.blur()
 
     this.pageNo += 1;
-    console.log('!!!! CONTACTS  - INCREASE PAGE NUMBER ', this.pageNo);
+    this.logger.log('[CONTACTS-COMP]  - INCREASE PAGE NUMBER ', this.pageNo);
     this.getContacts()
   }
 
@@ -331,13 +333,13 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     // Programmatically close Dropdown Menu
     // ---------------------------------------------------------------------
     const elemInputGroupDropdown = <HTMLInputElement>document.querySelector('#dropdown_input_group_btn');
-    console.log('!!! CONTACTS - elemInputGroupDropdown ', elemInputGroupDropdown);
+    this.logger.log('[CONTACTS-COMP] - elemInputGroupDropdown ', elemInputGroupDropdown);
 
     const elemBtnDropdown = <HTMLInputElement>document.querySelector('#dropdown_btn');
-    console.log('!!! CONTACTS - elemBtnDropdown ', elemBtnDropdown);
+    this.logger.log('[CONTACTS-COMP] - elemBtnDropdown ', elemBtnDropdown);
 
     const isOpen = elemBtnDropdown.getAttribute("aria-expanded")
-    console.log('!!! CONTACTS - elemBtnDropdown isOpen ', isOpen);
+    this.logger.log('[CONTACTS-COMP] - elemBtnDropdown isOpen ', isOpen);
 
     if (isOpen === 'true') {
       elemInputGroupDropdown.classList.remove('open');
@@ -348,20 +350,20 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // RESOLVE THE BUG: THE BUTTON SEARCH REMAIN FOCUSED AFTER PRESSED
     const searchBtn = <HTMLElement>document.querySelector('.searchbtn');
-    console.log('!!! CONTACTS - SEARCH BTN ', searchBtn)
+    this.logger.log('[CONTACTS-COMP] - SEARCH BTN ', searchBtn)
     searchBtn.blur();
 
     this.pageNo = 0
 
     if (this.fullText) {
 
-      console.log('!!!! CONTACTS - SEARCH FULLTEXT CONTAINS email: ', this.fullText.includes('email:'));
-      // console.log('!!!! CONTACTS - SEARCH FULLTEXT CONTAINS index of email: ', this.fullText.substring(0, this.fullText.indexOf('email:')));
+      this.logger.log('[CONTACTS-COMP] - SEARCH FULLTEXT CONTAINS email: ', this.fullText.includes('email:'));
+      // this.logger.log('!!!! CONTACTS - SEARCH FULLTEXT CONTAINS index of email: ', this.fullText.substring(0, this.fullText.indexOf('email:')));
 
       // if (this.fullText.includes('email:') === true) {
 
       //   const cleanedFullText = this.fullText.substring(0, this.fullText.indexOf('email:'))
-      //   console.log('!!!! CONTACTS - FULLTEXT - cleanedFullText', cleanedFullText);
+      //   this.logger.log('!!!! CONTACTS - FULLTEXT - cleanedFullText', cleanedFullText);
       //   this.fullText = cleanedFullText;
       // }
 
@@ -369,9 +371,9 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
       this.fullTextValue = this.fullText;
 
 
-      console.log('!!!! CONTACTS - SEARCH FOR FULL TEXT ', this.fullTextValue);
+      this.logger.log('[CONTACTS-COMP] - SEARCH FOR FULL TEXT ', this.fullTextValue);
     } else {
-      console.log('!!!! CONTACTS - SEARCH FOR FULL TEXT ', this.fullText);
+      this.logger.log('[CONTACTS-COMP] - SEARCH FOR FULL TEXT ', this.fullText);
       this.fullTextValue = ''
 
       if (this.selectedContactEmail) {
@@ -381,14 +383,14 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
     if (this.selectedContactEmail) {
       this.selectedContactEmailValue = this.selectedContactEmail;
-      console.log('!!!! CONTACTS  - SEARCH FOR selectedContactEmail ', this.selectedContactEmailValue);
+      this.logger.log('[CONTACTS-COMP]  - SEARCH FOR selectedContactEmail ', this.selectedContactEmailValue);
     } else {
-      console.log('!!!! CONTACTS  - SEARCH FOR selectedContactEmail ', this.selectedContactEmailValue);
+      this.logger.log('[CONTACTS-COMP]  - SEARCH FOR selectedContactEmail ', this.selectedContactEmailValue);
       this.selectedContactEmailValue = ''
     }
 
     this.queryString = 'full_text=' + this.fullTextValue + '&email=' + this.selectedContactEmailValue;
-    console.log('!!!! CONTACTS - SEARCH - QUERY STRING ', this.queryString);
+    this.logger.log('[CONTACTS-COMP] - SEARCH - QUERY STRING ', this.queryString);
 
     this.getContacts();
 
@@ -406,7 +408,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   // Not used
   onfocusFullTextSearchField(ev) {
 
-    console.log('+ + + translatePlaceholder searchInYourContactsPlaceholder', this.searchInYourContactsPlaceholder)
+    this.logger.log('[CONTACTS-COMP] + + + translatePlaceholder searchInYourContactsPlaceholder', this.searchInYourContactsPlaceholder)
 
     if (this.searchInYourContactsPlaceholder === "ADVANCED SEARCH") {
 
@@ -414,34 +416,34 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
       // this.translate.get('SearchYourContacts')
       //   .subscribe((text: string) => {
       //     this.searchInYourContactsPlaceholder = text;
-      //     console.log('+ + + translatePlaceholder SearchYourContacts', text)
+      //     this.logger.log('+ + + translatePlaceholder SearchYourContacts', text)
       //   });
     }
-    // console.log('!!!! CONTACTS - onfocusFullTextSearchField event ', ev);
+    // this.logger.log('!!!! CONTACTS - onfocusFullTextSearchField event ', ev);
     // ev.preventDefault();
     // ev.stopPropagation();
 
-    console.log('!!!! CONTACTS - onFocusSearchField fullText ', this.fullText);
-    console.log('!!!! CONTACTS - onFocusSearchField selectedContactEmail ', this.selectedContactEmail);
+    this.logger.log('[CONTACTS-COMP] - onFocusSearchField fullText ', this.fullText);
+    this.logger.log('[CONTACTS-COMP] - onFocusSearchField selectedContactEmail ', this.selectedContactEmail);
 
     // if (this.fullText.includes('email:') === true) {
-    //   console.log('!!!! CONTACTS - SEARCH FULLTEXT CONTAINS replace this: ', 'email:' + this.selectedContactEmail);
+    //   this.logger.log('!!!! CONTACTS - SEARCH FULLTEXT CONTAINS replace this: ', 'email:' + this.selectedContactEmail);
     //   const cleanedFullText = this.fullText.replace('email:' + this.selectedContactEmail, '');
-    //   console.log('!!!! CONTACTS - FULLTEXT after replace - cleanedFullText', cleanedFullText);
+    //   this.logger.log('!!!! CONTACTS - FULLTEXT after replace - cleanedFullText', cleanedFullText);
     //   this.fullText = cleanedFullText;
     //   // ---------------------------------------------------------------------
     //   // Programmatically open Dropdown Menu
     //   // ---------------------------------------------------------------------
     //   const elemInputGroupDropdown = <HTMLInputElement>document.querySelector('#dropdown_input_group_btn');
-    //   console.log('!!! CONTACTS - elemInputGroupDropdown ', elemInputGroupDropdown);
+    //   this.logger.log('!!! CONTACTS - elemInputGroupDropdown ', elemInputGroupDropdown);
 
 
     if (this.selectedContactEmail) {
       const elemBtnDropdown = <HTMLInputElement>document.querySelector('#dropdown_btn');
-      console.log('!!! CONTACTS - elemBtnDropdown ', elemBtnDropdown);
+      this.logger.log('[CONTACTS-COMP] - elemBtnDropdown ', elemBtnDropdown);
 
       const isOpen = elemBtnDropdown.getAttribute("aria-expanded");
-      console.log('!!! CONTACTS - elemBtnDropdown isOpen ', isOpen);
+      this.logger.log('[CONTACTS-COMP] - elemBtnDropdown isOpen ', isOpen);
 
       if (isOpen === 'false') {
         elemBtnDropdown.click()
@@ -453,7 +455,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     // const elemDropdownMenu = <HTMLInputElement>document.querySelector('.dropdown-menu');
-    // console.log('!!! CONTACTS - elemDropdownMenu ', elemDropdownMenu);
+    // this.logger.log('[CONTACTS-COMP] - elemDropdownMenu ', elemDropdownMenu);
 
 
     // elemDropdownMenu.addEventListener(
@@ -469,7 +471,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
       // this.translate.get('SearchYourContacts')
       //   .subscribe((text: string) => {
       //     this.searchInYourContactsPlaceholder = text;
-      //     console.log('+ + + translatePlaceholder SearchYourContacts', text)
+      //     this.logger.log('+ + + translatePlaceholder SearchYourContacts', text)
       //   });
     }
 
@@ -482,7 +484,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
     this.queryString = '';
-    console.log('!!!! CONTACTS - CLEAR SEARCH - QUERY STRING ', this.queryString);
+    this.logger.log('[CONTACTS-COMP] - CLEAR SEARCH - QUERY STRING ', this.queryString);
 
     this.getContacts();
   }
@@ -490,7 +492,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   clearSearch() {
     // RESOLVE THE BUG: THE BUTTON CLEAR-SEARCH REMAIN FOCUSED AFTER PRESSED
     const clearSearchBtn = <HTMLElement>document.querySelector('.clearsearchbtn');
-    console.log('!!!! CONTACTS - CLEAR SEARCH BTN', clearSearchBtn)
+    this.logger.log('[CONTACTS-COMP] - CLEAR SEARCH BTN', clearSearchBtn)
     clearSearchBtn.blur()
 
     this.pageNo = 0
@@ -509,10 +511,10 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.showSpinner = true;
     this.contactsService.getLeadsActiveOrTrashed(this.queryString, this.pageNo, this.hasClickedTrashed).subscribe((leads_object: any) => {
-      console.log('!!!! CONTACTS - GET LEADS RESPONSE ', leads_object);
+      this.logger.log('[CONTACTS-COMP] - GET LEADS RESPONSE ', leads_object);
 
       this.contacts = leads_object['leads'];
-      console.log('!!!! CONTACTS - CONTACTS LIST ', this.contacts);
+      this.logger.log('[CONTACTS-COMP] - CONTACTS LIST ', this.contacts);
 
       
 
@@ -520,25 +522,25 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
       // const contactsCount = 0;
 
       const contactsCount = leads_object['count'];
-      console.log('!!!! CONTACTS - CONTACTS COUNT ', contactsCount);
+      this.logger.log('[CONTACTS-COMP] - CONTACTS COUNT ', contactsCount);
 
       this.displayHideFooterPagination(contactsCount);
 
       const contactsPerPage = leads_object['perPage'];
-      console.log('!!!! CONTACTS - N° OF CONTACTS X PAGE ', contactsCount);
+      this.logger.log('[CONTACTS-COMP] - N° OF CONTACTS X PAGE ', contactsCount);
 
       const totalPagesNo = contactsCount / contactsPerPage;
-      console.log('!!!! CONTACTS - TOTAL PAGES NUMBER', totalPagesNo);
+      this.logger.log('[CONTACTS-COMP] - TOTAL PAGES NUMBER', totalPagesNo);
 
       this.totalPagesNo_roundToUp = Math.ceil(totalPagesNo);
-      console.log('!!!!! CONTACTS - TOTAL PAGES No ROUND TO UP ', this.totalPagesNo_roundToUp);
+      this.logger.log('[CONTACTS-COMP] - TOTAL PAGES No ROUND TO UP ', this.totalPagesNo_roundToUp);
 
       this.generateAvatarFromNameAndGetIfContactIsAuthenticated(this.contacts);
     }, (error) => {
-      console.log('!!!! CONTACTS - GET LEADS - ERROR  ', error);
+      this.logger.error('[CONTACTS-COMP] - GET LEADS - ERROR  ', error);
       this.showSpinner = false;
     }, () => {
-      console.log('!!!! CONTACTS - GET LEADS * COMPLETE *');
+      this.logger.log('[CONTACTS-COMP] - GET LEADS * COMPLETE *');
       this.showSpinner = false;
     });
   }
@@ -549,7 +551,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
       if (contact) {
         // const id_contact = contact._id
         const leadid = contact.lead_id
-        console.log('!!!! CONTACTS - * leadid *', leadid);
+        this.logger.log('[CONTACTS-COMP] - * leadid *', leadid);
 
         // let initial = '';
         // let fillColour = '';
@@ -558,15 +560,15 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
         let newFillColour = '';
         if (contact.fullname) {
           const name = contact.fullname;
-          // console.log('!!!!! CONTACTS - NAME OF THE CONTACT ', name);
+          // this.logger.log('!!!!! CONTACTS - NAME OF THE CONTACT ', name);
 
           // initial = name.charAt(0).toUpperCase();
-          // // console.log('!!!!! CONTACTS - INITIAL OF NAME OF THE CONTACT ', initial);
+          // // this.logger.log('!!!!! CONTACTS - INITIAL OF NAME OF THE CONTACT ', initial);
           // const charIndex = initial.charCodeAt(0) - 65
           // const colourIndex = charIndex % 19;
-          // // console.log('!!!!! CONTACTS - COLOUR INDEX ', colourIndex);
+          // // this.logger.log('!!!!! CONTACTS - COLOUR INDEX ', colourIndex);
           // fillColour = this.colours[colourIndex];
-          // // console.log('!!!!! CONTACTS - NAME INITIAL ', initial, ' COLOUR INDEX ', colourIndex, 'FILL COLOUR ', fillColour);
+          // // this.logger.log('!!!!! CONTACTS - NAME INITIAL ', initial, ' COLOUR INDEX ', colourIndex, 'FILL COLOUR ', fillColour);
 
           // NEW - FULL NAME INITIAL AS DISPLAYED IN THE WIDGET
           newInitials = avatarPlaceholder(name);
@@ -592,7 +594,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
         // for (const c of contacts_list) {
 
         //   if (c._id === id_contact) {
-        //     // console.log('!!!! CONTACTS  - c._id ', c._id, 'id_contact ', id_contact)
+        //     // this.logger.log('!!!! CONTACTS  - c._id ', c._id, 'id_contact ', id_contact)
         //     c.avatar_fill_colour = newFillColour;
         //     c.name_initial = newInitials
         //     c.contact_is_verified = this.CONTACT_IS_VERIFIED
@@ -606,18 +608,18 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.usersService.getProjectUserById(leadid).subscribe((projectUser: any) => {
 
     
-      console.log('!!!!! CONTACTS - GET PROJECT USER BY LEAD ID RES  ', projectUser);
-      // console.log('!!!!! CONTACTS DETAILS - GET PROJECT USER BY LEAD ID projectUser[0]  ', projectUser[0]);
-      // console.log('!!!!! CONTACTS DETAILS - GET PROJECT USER BY LEAD ID projectUser[0] isAuthenticated ', projectUser[0]['isAuthenticated']);
+      this.logger.log('[CONTACTS-COMP] - GET PROJECT USER BY LEAD ID RES  ', projectUser);
+      // this.logger.log('[CONTACTS-COMP] - GET PROJECT USER BY LEAD ID projectUser[0]  ', projectUser[0]);
+      // this.logger.log('[CONTACTS-COMP] - GET PROJECT USER BY LEAD ID projectUser[0] isAuthenticated ', projectUser[0]['isAuthenticated']);
       // this.CONTACT_IS_VERIFIED = projectUser[0]['isAuthenticated']
-      // console.log('!!!!! CONTACTS DETAILS - GET PROJECT USER BY LEAD ID CONTACT_IS_VERIFIED ', this.CONTACT_IS_VERIFIED);
+      // this.logger.log('[CONTACTS-COMP] - GET PROJECT USER BY LEAD ID CONTACT_IS_VERIFIED ', this.CONTACT_IS_VERIFIED);
       contact.contact_is_verified = projectUser[0]['isAuthenticated']
     },
       (error) => {
-        console.log('!!!! CONTACTS - GET PROJECT USER BY LEAD ID ERR  ', error);
+        this.logger.error('[CONTACTS-COMP] - GET PROJECT USER BY LEAD ID ERR  ', error);
       },
       () => {
-        console.log('!!!! CONTACTS - GET PROJECT USER BY LEAD ID * COMPLETE *');
+        this.logger.log('[CONTACTS-COMP] - GET PROJECT USER BY LEAD ID * COMPLETE *');
       });
   }
 
@@ -646,7 +648,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getTrashedContactsCount() {
     this.contactsService.getLeadsTrashed().subscribe((trashedleads: any) => {
-      console.log('!!!! CONTACTS - GET TRASHED LEADS RESPONSE ', trashedleads)
+      this.logger.log('[CONTACTS-COMP] - GET TRASHED LEADS RESPONSE ', trashedleads)
       if (trashedleads) {
         this.trashedContanctCount = trashedleads.count
       }
@@ -655,7 +657,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getActiveContactsCount() {
     this.contactsService.getLeadsActive().subscribe((activeleads: any) => {
-      console.log('!!!! CONTACTS - GET ACTIVE LEADS RESPONSE ', activeleads)
+      this.logger.log('[CONTACTS-COMP] - GET ACTIVE LEADS RESPONSE ', activeleads)
       if (activeleads) {
 
         this.countOfActiveContacts = activeleads['count'];
@@ -666,12 +668,12 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   deleteContactForever(contactid: string) {
-    this.contactsService.getNodeJsRequestsByRequesterId(contactid, 0)
+    this.contactsService.getRequestsByRequesterId(contactid, 0)
       .subscribe((requests_object: any) => {
-        console.log('!!!! CONTACTS  deleteContactForever requests_object', requests_object);
+        this.logger.log('[CONTACTS-COMP]  deleteContactForever requests_object', requests_object);
 
         const request_count = requests_object.count
-        console.log('!!!! CONTACTS  deleteContactForever request_count', request_count);
+        this.logger.log('[CONTACTS-COMP]  deleteContactForever request_count', request_count);
         if (request_count !== 0) {
 
           swal({
@@ -683,7 +685,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
           })
         } else {
 
-          console.log('!!!! CONTACTS  deleteContactForever ', contactid)
+          this.logger.log('[CONTACTS-COMP]  deleteContactForever ', contactid)
 
           swal({
             title: this.areYouSure + "?",
@@ -694,20 +696,20 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
           })
             .then((willDelete) => {
               if (willDelete) {
-                console.log('swal willDelete', willDelete)
+                this.logger.log('[CONTACTS-COMP] swal willDelete', willDelete)
 
                 this.contactsService.deleteLeadForever(contactid).subscribe((res: any) => {
-                  console.log('in swal deleteRequest res ', res)
+                  this.logger.log('[CONTACTS-COMP] in swal deleteRequest res ', res)
 
                 }, (error) => {
-                  console.log('in swal deleteRequest res - ERROR ', error);
+                  this.logger.error('[CONTACTS-COMP] in swal deleteRequest res - ERROR ', error);
 
                   swal(this.errorDeleting, this.pleaseTryAgain, {
                     icon: "error",
                   });
 
                 }, () => {
-                  console.log('in swal deleteRequest res* COMPLETE *');
+                  this.logger.log('[CONTACTS-COMP] in swal deleteRequest res* COMPLETE *');
 
                   swal(this.done_msg + "!", this.contactWasSuccessfullyDeleted, {
                     icon: "success",
@@ -718,7 +720,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
                 });
               } else {
-                console.log('swal willDelete', willDelete)
+                this.logger.log('[CONTACTS-COMP] swal willDelete', willDelete)
                 // swal("Your imaginary file is safe!");
               }
             });
@@ -730,7 +732,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   // MOVE TO TRASH
   // --------------------------------------------------
   moveContactToTrash(contactid: string, fullName: string) {
-    // console.log('!!!!! CONTACTS - ON MODAL DELETE OPEN -> USER ID ', id);
+    // this.logger.log('!!!!! CONTACTS - ON MODAL DELETE OPEN -> USER ID ', id);
 
     // this.displayDeleteModal = 'block';
 
@@ -747,7 +749,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
       })
     }
     
-    console.log('!!!!! CONTACTS - moveContactToTrash ', this.moveContactToTrash_msg);
+    this.logger.log('[CONTACTS-COMP] - moveContactToTrash ', this.moveContactToTrash_msg);
 
     swal({
       title: this.moveToTrash_msg,
@@ -758,20 +760,20 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     })
       .then((willDelete) => {
         if (willDelete) {
-          console.log('swal willDelete', willDelete)
+          this.logger.log('[CONTACTS-COMP] swal willDelete', willDelete)
 
           this.contactsService.deleteLead(contactid).subscribe((res: any) => {
-            console.log('in swal deleteRequest res ', res)
+            this.logger.log('[CONTACTS-COMP] in swal deleteRequest res ', res)
 
           }, (error) => {
-            console.log('in swal deleteRequest res - ERROR ', error);
+            this.logger.error('[CONTACTS-COMP] in swal deleteRequest res - ERROR ', error);
 
             swal(this.errorDeleting, this.pleaseTryAgain, {
               icon: "error",
             });
 
           }, () => {
-            console.log('in swal deleteRequest res* COMPLETE *');
+            this.logger.log('[CONTACTS-COMP] in swal deleteRequest res* COMPLETE *');
 
             swal(this.done_msg + "!", this.contactHasBeenMovedToTheTrash, {
               icon: "success",
@@ -781,26 +783,26 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
           });
         } else {
-          console.log('swal willDelete', willDelete)
+          this.logger.log('[CONTACTS-COMP] swal willDelete', willDelete)
           // swal("Your imaginary file is safe!");
         }
       });
   }
 
   restore_contact(contactid: string) {
-    this.contactsService.restoreContact(contactid)
+    this.contactsService.restoreLead(contactid)
       .subscribe((lead: any) => {
-        console.log('!!!!! CONTACTS - RESTORE CONTACT RES ', lead);
+        this.logger.log('[CONTACTS-COMP] - RESTORE CONTACT RES ', lead);
 
         // RE-RUN GET CONTACT TO UPDATE THE TABLE
 
       }, (error) => {
-        console.log('!!!!! CONTACTS - RESTORE CONTACT - ERROR ', error);
+        this.logger.error('[CONTACTS-COMP] - RESTORE CONTACT - ERROR ', error);
         // =========== NOTIFY ERROR ===========
 
         // this.notify.showNotification(this.deleteLeadErrorNoticationMsg, 4, 'report_problem');
       }, () => {
-        console.log('!!!!! CONTACTS - RESTORE CONTACT * COMPLETE *');
+        this.logger.log('[CONTACTS-COMP] - RESTORE CONTACT * COMPLETE *');
         // =========== NOTIFY SUCCESS===========
         this.getContacts();
         // this.notify.showNotification(this.deleteLeadSuccessNoticationMsg, 2, 'done');
@@ -820,18 +822,18 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.contactsService.deleteLead(this.id_toDelete)
       .subscribe((lead: any) => {
-        console.log('!!!!! CONTACTS - DELETE CONTACT RES ', lead);
+        this.logger.log('[CONTACTS-COMP] - DELETE CONTACT RES ', lead);
 
         // RE-RUN GET CONTACT TO UPDATE THE TABLE
 
         this.ngOnInit();
       }, (error) => {
-        console.log('!!!!! CONTACTS - DELETE REQUEST - ERROR ', error);
+        this.logger.error('[CONTACTS-COMP] - DELETE REQUEST - ERROR ', error);
         // =========== NOTIFY ERROR ===========
         // this.notify.showNotification('An error occurred while deleting contact', 4, 'report_problem');
         this.notify.showNotification(this.deleteLeadErrorNoticationMsg, 4, 'report_problem');
       }, () => {
-        console.log('!!!!! CONTACTS - DELETE REQUEST * COMPLETE *');
+        this.logger.log('[CONTACTS-COMP] - DELETE REQUEST * COMPLETE *');
         // =========== NOTIFY SUCCESS===========
         // this.notify.showNotification('Contact successfully deleted', 2, 'done');
         this.notify.showNotification(this.deleteLeadSuccessNoticationMsg, 2, 'done');
@@ -847,21 +849,21 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
       this.notify.openDataExportNotAvailable()
     } else {
       const exportToCsvBtn = <HTMLElement>document.querySelector('.export-to-csv-btn');
-      console.log('!!! NEW REQUESTS HISTORY - EXPORT TO CSV BTN', exportToCsvBtn)
+      this.logger.log('[CONTACTS-COMP] - EXPORT TO CSV BTN', exportToCsvBtn)
       exportToCsvBtn.blur()
 
       this.contactsService.exportLeadToCsv(this.queryString, 0, this.hasClickedTrashed).subscribe((leads_object: any) => {
-        // console.log('!!!! CONTACTS - EXPORT CONTACT TO CSV RESPONSE ', leads_object);
+        // this.logger.log('!!!! CONTACTS - EXPORT CONTACT TO CSV RESPONSE ', leads_object);
 
-        // console.log('!!!! CONTACTS - CONTACTS LIST ', this.contacts);
+        // this.logger.log('!!!! CONTACTS - CONTACTS LIST ', this.contacts);
         if (leads_object) {
-          console.log('!!!! CONTACTS - - EXPORT CONTACT TO CSV RESPONSE', leads_object);
+          this.logger.log('[CONTACTS-COMP] - EXPORT CONTACTS TO CSV RESPONSE', leads_object);
           this.downloadFile(leads_object);
         }
       }, (error) => {
-        console.log('!!!! CONTACTS - EXPORT CONTACT TO CSV - ERROR  ', error);
+        this.logger.error('[CONTACTS-COMP]- EXPORT CONTACT TO CSV - ERROR  ', error);
       }, () => {
-        console.log('!!!! CONTACTS - EXPORT CONTACT TO CSV * COMPLETE *');
+        this.logger.log('[CONTACTS-COMP] - EXPORT CONTACT TO CSV * COMPLETE *');
       });
     }
   }
@@ -890,21 +892,21 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     if (contacts_count >= 16) {
       this.displaysFooterPagination = true;
       // tslint:disable-next-line:max-line-length
-      console.log('!!!! CONTACTS  ', contacts_count, 'DISPLAY FOOTER PAG ', this.displaysFooterPagination);
+      this.logger.log('[CONTACTS-COMP] contacts_count ', contacts_count, 'DISPLAY FOOTER PAG ', this.displaysFooterPagination);
     } else {
       this.displaysFooterPagination = false;
       // tslint:disable-next-line:max-line-length
-      console.log('!!!! CONTACTS  ', contacts_count, 'DISPLAY FOOTER PAG ', this.displaysFooterPagination);
+      this.logger.log('[CONTACTS-COMP] contacts_count ', contacts_count, 'DISPLAY FOOTER PAG ', this.displaysFooterPagination);
     }
   }
 
 
 
   chatWithAgent(contact) {
-    console.log("CONTACT: ", contact);
+    this.logger.log("[CONTACTS-COMP] CHAT WITH AGENT > CONTACT : ", contact);
 
     const url = this.CHAT_BASE_URL + '?' + 'recipient=' + contact._id + '&recipientFullname=' + contact.fullname;
-    console.log("CONTACT-COMP - CHAT URL ", url);
+    this.logger.log("[CONTACTS-COMP] CHAT WITH AGENT -> CHAT URL ", url);
     window.open(url, '_blank');
   }
 
@@ -932,29 +934,21 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   /**
    * ADD CONTACT  */
   // createContact() {
-  //   console.log('MONGO DB FULL-NAME DIGIT BY USER ', this.fullName);
+  //   this.logger.log('MONGO DB FULL-NAME DIGIT BY USER ', this.fullName);
   //   this.contactsService.addMongoDbContacts(this.fullName).subscribe((contact) => {
-  //     console.log('POST DATA ', contact);
+  //     this.logger.log('POST DATA ', contact);
   //     this.fullName = '';
   //     // RE-RUN GET CONTACT TO UPDATE THE TABLE
   //     // this.getContacts();
   //     this.ngOnInit();
   //   }, (error) => {
 
-  //     console.log('POST REQUEST ERROR ', error);
+  //     this.logger.log('POST REQUEST ERROR ', error);
 
   //   }, () => {
-  //     console.log('POST REQUEST * COMPLETE *');
+  //     this.logger.log('POST REQUEST * COMPLETE *');
   //   });
 
   // }
-
-
-
-
-
-
-
-
 
 }

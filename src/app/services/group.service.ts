@@ -5,7 +5,7 @@ import { environment } from '../../environments/environment';
 import { AuthService } from '../core/auth.service';
 import { Observable } from 'rxjs/Observable';
 import { AppConfigService } from '../services/app-config.service';
-
+import { LoggerService } from '../services/logger/logger.service';
 @Injectable()
 export class GroupService {
   http: Http;
@@ -25,53 +25,50 @@ export class GroupService {
   constructor(
     http: Http,
     private auth: AuthService,
-    public appConfigService: AppConfigService
+    public appConfigService: AppConfigService,
+    private logger: LoggerService
   ) {
-    console.log('HELLO GROUP SERVICE! ')
+
     this.http = http;
 
     // SUBSCRIBE TO USER BS
     this.user = auth.user_bs.value
-    this.checkUser()
+    this.checkIfUserExistAnfGetToken()
 
     this.auth.user_bs.subscribe((user) => {
       // // tslint:disable-next-line:no-debugger
       // debugger
       this.user = user;
-      this.checkUser()
+      this.checkIfUserExistAnfGetToken()
     });
 
     this.getAppConfig();
-    this.getCurrentProject();
+    this.getCurrentProjectAndBuildGroupUrl();
   }
 
   getAppConfig() {
     this.SERVER_BASE_PATH = this.appConfigService.getConfig().SERVER_BASE_URL;
-    console.log('AppConfigService getAppConfig (GROUP SERV.) SERVER_BASE_PATH ', this.SERVER_BASE_PATH);
+    // this.logger.log('[GROUP-SERV] getAppConfig SERVER_BASE_PATH ', this.SERVER_BASE_PATH);
   }
 
-  getCurrentProject() {
-    console.log('GROUP-SERV - SUBSCRIBE TO CURRENT PROJ ')
-
+  getCurrentProjectAndBuildGroupUrl() {
     this.auth.project_bs.subscribe((project) => {
-
-
       if (project) {
         this.project_id = project._id;
-        console.log('00 -> GROUP-SERV project ID from AUTH service subscription  ', this.project_id);
+        // this.logger.log('[GROUP-SERV] project ID from AUTH service subscription  ', this.project_id);
         this.GROUPS_URL = this.SERVER_BASE_PATH + this.project_id + '/groups/';
-        console.log('AppConfigService getAppConfig (GROUP SERV.) GROUPS_URL (built with SERVER_BASE_PATH) ', this.GROUPS_URL);
+        this.logger.log('[GROUP-SERV] GROUPS_URL (built with SERVER_BASE_PATH) ', this.GROUPS_URL);
       }
     });
   }
 
-  checkUser() {
+  checkIfUserExistAnfGetToken() {
     if (this.user) {
       this.TOKEN = this.user.token
       // this.getToken();
-      console.log('GROUP-SERV user is signed in');
+      this.logger.log('[GROUP-SERV] user is signed in');
     } else {
-      console.log('GROUP-SERV No user is signed in');
+      this.logger.log('[GROUP-SERV] No user is signed in');
     }
   }
 
@@ -82,7 +79,7 @@ export class GroupService {
    */
   public getGroupsByProjectId(): Observable<Group[]> {
     const url = this.GROUPS_URL;
-    console.log('GET GROUP BY PROJECT ID URL', url);
+    this.logger.log('[GROUP-SERV] GET GROUPS BY PROJECT ID - URL', url);
 
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -106,23 +103,29 @@ export class GroupService {
     // , 'id_project': this.project_id
     const body = { 'name': name };
 
-    console.log('POST REQUEST BODY ', body);
+    this.logger.log('[GROUP-SERV] CREATE GROUP - POST BODY ', body);
 
     const url = this.GROUPS_URL;
     // let url = `http://localhost:3000/${project_id}/faq_kb/`;
-
+    this.logger.log('[GROUP-SERV] CREATE GROUP - POST URL ', url);
     return this.http
       .post(url, JSON.stringify(body), options)
       .map((res) => res.json());
 
   }
 
-  // UPDATE GROUP MEMBERS
+
+  /**
+   * UPDATE GROUP WITH SELECTED MEMBERS
+   * @param id_group 
+   * @param users_selected_array 
+   * @returns 
+   */
   public updateGroup(id_group: string, users_selected_array: any) {
-    console.log('ARRAY OF USERS SELECTED FOR THE GROUP', users_selected_array);
+    this.logger.log('[GROUP-SERV] - UPDATE GROUP - ARRAY OF USERS SELECTED FOR THE GROUP', users_selected_array);
     const url = this.GROUPS_URL + id_group;
 
-    console.log('GROUPS UPDATE - PUT URL ', url);
+    this.logger.log('[GROUP-SERV] - UPDATE GROUP WITH SELECTED MEMBERS - PUT URL ', url);
 
 
     const headers = new Headers();
@@ -133,7 +136,7 @@ export class GroupService {
 
     const body = { 'members': users_selected_array };
 
-    console.log('PUT REQUEST BODY ', body);
+    this.logger.log('[GROUP-SERV] - UPDATE GROUP WITH SELECTED MEMBERS - PUT BODY ', body);
 
     return this.http
       .put(url, JSON.stringify(body), options)
@@ -141,13 +144,18 @@ export class GroupService {
 
   }
 
-  // UPDATE GROUP NAME
+
+  /**
+   * UPDATE GROUP NAME
+   * @param id_group 
+   * @param group_name 
+   * @returns 
+   */
   public updateGroupName(id_group: string, group_name: string) {
-    console.log('NEW GROUP NAME', group_name);
+    this.logger.log('NEW GROUP NAME', group_name);
     const url = this.GROUPS_URL + id_group;
 
-    console.log('GROUPS UPDATE - PUT URL ', url);
-
+    this.logger.log('[GROUP-SERV] - UPDATE GROUP NAME - PUT URL ', url);
 
     const headers = new Headers();
     headers.append('Accept', 'application/json');
@@ -157,20 +165,23 @@ export class GroupService {
 
     const body = { 'name': group_name };
 
-    console.log('PUT REQUEST BODY ', body);
+    this.logger.log('[GROUP-SERV] - UPDATE GROUP NAME - PUT BODY ', body);
 
     return this.http
       .put(url, JSON.stringify(body), options)
       .map((res) => res.json());
   }
 
-  // UPDATE THE GROUP WITH TRASHED = TRUE
-  public setTrashedToTheGroup(id_group: string) {
 
+  /**
+   * UPDATE THE GROUP WITH TRASHED = TRUE
+   * @param id_group 
+   * @returns 
+   */
+  public setTrashedToTheGroup(id_group: string) {
     const url = this.GROUPS_URL + id_group;
 
-    console.log('GROUPS UPDATE - PUT URL ', url);
-
+    this.logger.log('[GROUP-SERV] - SET TRASHED TO THE GROUP - PUT URL ', url);
 
     const headers = new Headers();
     headers.append('Accept', 'application/json');
@@ -180,20 +191,23 @@ export class GroupService {
 
     const body = { 'trashed': true };
 
-    console.log('PUT REQUEST BODY ', body);
+    this.logger.log('[GROUP-SERV] - SET TRASHED TO THE GROUP - PUT REQUEST BODY ', body);
 
     return this.http
       .put(url, JSON.stringify(body), options)
       .map((res) => res.json());
   }
 
-/**
- * READ DETAIL (GET BY ID)
- */
+
+  /**
+   * READ DETAIL (GET BY ID)
+   * @param id_group 
+   * @returns 
+   */
   public getGroupById(id_group: string): Observable<Group[]> {
     const url = this.GROUPS_URL + id_group;
     // url += `${id}`;
-    console.log('GET GROUP BY ID URL', url);
+    this.logger.log('[GROUP-SERV] - GET GROUP BY ID - URL', url);
 
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -202,8 +216,5 @@ export class GroupService {
       .get(url, { headers })
       .map((response) => response.json());
   }
-
-
-
 
 }

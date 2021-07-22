@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MarkerService } from './../services/marker.service';
 import { Component, AfterViewInit, OnInit, Input, Output, EventEmitter, HostListener, SimpleChanges } from '@angular/core';
 import * as L from 'leaflet';
+import { LoggerService } from './..//services/logger/logger.service';
 
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
 const iconUrl = 'assets/marker-icon.png';
@@ -39,14 +40,15 @@ export class MapRequestComponent implements OnInit, AfterViewInit {
   i = 1;
   afterViewFlag: boolean = false;
 
-  constructor(private markerService: MarkerService,
-    private acRoute: ActivatedRoute,
+  constructor(
+    private markerService: MarkerService,
     private router: Router,
+    private logger: LoggerService
   ) { }
 
   ngOnInit() {
-    console.log("--- MAP REQUESTS --- SERVED REQUEST: ", this.wsRequestsServed)
-    console.log("--- MAP REQUESTS --- UNSERVED REQUEST: ", this.wsRequestsUnserved)
+    this.logger.log("[MAP-REQUESTS] - SERVED REQUEST: ", this.wsRequestsServed)
+    this.logger.log("[MAP-REQUESTS] - UNSERVED REQUEST: ", this.wsRequestsUnserved)
 
     if (this.wsRequestsServed[0]) {
       this.projectId = this.wsRequestsServed[0].id_project;
@@ -54,7 +56,7 @@ export class MapRequestComponent implements OnInit, AfterViewInit {
   }
   
   ngOnChanges(changes: SimpleChanges) {
-    console.log("ONCHANGES: ", changes)
+    this.logger.log("[MAP-REQUESTS] - ONCHANGES: ", changes)
     if(this.map) {
       if (changes.wsRequestsServed.currentValue != changes.wsRequestsServed.previousValue) {
         this.markerService.makeSegnalationsServedMarkers(this.map, this.wsRequestsServed)
@@ -68,7 +70,7 @@ export class MapRequestComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    console.log("AFTERVIEWINIT - REQUESTS TO SHOW ON MAP: ", this.wsRequestsServed);
+    this.logger.log("[MAP-REQUESTS] - AFTERVIEWINIT - REQUESTS TO SHOW ON MAP: ", this.wsRequestsServed);
     this.afterViewFlag = true;
     this.initMap();
     this.markerService.makeSegnalationsServedMarkers(this.map, this.wsRequestsServed)
@@ -87,14 +89,14 @@ export class MapRequestComponent implements OnInit, AfterViewInit {
       attribution: '© <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     });
 
-    console.log(L.Icon.Default.prototype._getIconUrl())
+    this.logger.log(L.Icon.Default.prototype._getIconUrl())
 
     tiles.addTo(this.map);
 
   }
 
   goToRequestDetail(requestId) {
-    console.log("GO TO DETAIL --- REQUEST ID: ", requestId)
+    this.logger.log("[MAP-REQUESTS]  GO TO DETAIL - REQUEST ID: ", requestId)
     this.router.navigate(['project/' + this.projectId + '/wsrequest/' + requestId + '/messages']);
   }
 
@@ -107,7 +109,7 @@ export class MapRequestComponent implements OnInit, AfterViewInit {
   }
 
   closeRightSideBar() {
-    console.log("CLOSE RIGHT SIDEBAR");
+    this.logger.log("[MAP-REQUESTS] - CLOSE RIGHT SIDEBAR");
     this.closeMapsView.emit();
   }
 }
