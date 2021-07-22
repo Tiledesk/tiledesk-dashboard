@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { WidgetSharedComponent } from '../../widget-shared/widget-shared.component';
 import { TranslateService } from '@ngx-translate/core';
 @Component({
-  selector: 'appdashboard-widget-design-base',
-  templateUrl: './widget-design-base.component.html',
-  styleUrls: ['./widget-design-base.component.scss']
+  selector: 'appdashboard-widget-set-up-base',
+  templateUrl: './widget-set-up-base.component.html',
+  styleUrls: ['./widget-set-up-base.component.scss']
 })
-export class WidgetDesignBaseComponent extends WidgetSharedComponent implements OnInit {
+export class WidgetSetUpBaseComponent extends WidgetSharedComponent implements OnInit {
 
   // { seconds: 'disabled', value: -1 },
   calloutTimerOptions = [

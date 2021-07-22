@@ -2,18 +2,15 @@ import { Component, OnInit, AfterViewInit, HostListener, OnDestroy, ElementRef, 
 import { Location } from '@angular/common';
 import { ColorPickerService, Cmyk } from 'ngx-color-picker';
 import { WidgetService } from '../../services/widget.service';
-import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectService } from '../../services/project.service';
 import { AuthService } from '../../core/auth.service';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable } from 'rxjs/Rx';
 import { Subscription } from 'rxjs/Subscription';
-import { Subject } from 'rxjs/Subject';
 import { Department } from '../../models/department-model';
 import { DepartmentService } from '../../services/department.service';
 import { NotifyService } from '../../core/notify.service';
-import { environment } from '../../../environments/environment';
-import { WidgetDesignBaseComponent } from './widget-design-base/widget-design-base.component';
+import { WidgetSetUpBaseComponent } from './widget-set-up-base/widget-set-up-base.component';
 import { AppConfigService } from '../../services/app-config.service';
 import { AnalyticsService } from '../../services/analytics.service';
 
@@ -31,23 +28,15 @@ const swal = require('sweetalert');
 })
 
 
-export class WidgetSetUp extends WidgetDesignBaseComponent implements OnInit, AfterViewInit, OnDestroy {
-  // '#2889e9'
-  // tparams = brand;
-  // company_name = brand.company_name;
-  // company_site_url = brand.company_site_url;
+export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, AfterViewInit, OnDestroy {
+
   @ViewChild('testwidgetbtn') private elementRef: ElementRef;
   @ViewChild("multilanguage") private multilanguageRef: ElementRef;
   tparams: any;
   company_name: any;
   company_site_url: any;
-
-  // TESTSITE_BASE_URL = environment.testsite.testsiteBaseUrl; // moved
-  // TESTSITE_BASE_URL = environment.testsiteBaseUrl; // now get from appconfig
   TESTSITE_BASE_URL: string;
-  // public_Key = environment.t2y12PruGU9wUtEGzBJfolMIgK; // now get from appconfig
   public_Key: string;
-
   _route: string;
   public primaryColor: string;
   public primaryColorRgb: any

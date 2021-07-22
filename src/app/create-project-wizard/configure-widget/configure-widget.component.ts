@@ -6,7 +6,7 @@ import { slideInAnimation } from '../../_animations/index';
 import { BrandService } from '../../services/brand.service';
 import { ProjectService } from '../../services/project.service';
 import { TranslateService } from '@ngx-translate/core';
-import { WidgetDesignBaseComponent } from '../../widget_components/widget-set-up/widget-design-base/widget-design-base.component';
+import { WidgetSetUpBaseComponent } from '../../widget_components/widget-set-up/widget-set-up-base/widget-set-up-base.component';
 import { WidgetService } from '../../services/widget.service';
 import { AppConfigService } from '../../services/app-config.service';
 import { LoggerService } from '../../services/logger/logger.service';
@@ -20,7 +20,7 @@ import { LoggerService } from '../../services/logger/logger.service';
   // tslint:disable-next-line:use-host-property-decorator
   host: { '[@slideInAnimation]': '' }
 })
-export class ConfigureWidgetComponent extends WidgetDesignBaseComponent implements OnInit {
+export class ConfigureWidgetComponent extends WidgetSetUpBaseComponent implements OnInit {
 
   projectName: string;
   projectId: string;

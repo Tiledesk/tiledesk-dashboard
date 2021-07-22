@@ -157,7 +157,7 @@ import { WebSocketJs } from './services/websocket/websocket-js';
 import { WidgetMultilanguageComponent } from './widget_components/widget-multilanguage/widget-multilanguage.component';
 import { BaseTranslationComponent } from './widget_components/widget-multilanguage/base-translation/base-translation.component';
 import { WidgetSharedComponent } from './widget_components/widget-shared/widget-shared.component';
-import { WidgetDesignBaseComponent } from './widget_components/widget-set-up/widget-design-base/widget-design-base.component';
+import { WidgetSetUpBaseComponent } from './widget_components/widget-set-up/widget-set-up-base/widget-set-up-base.component';
 import { WsRequestsServedComponent } from './ws_requests/ws-requests-list/ws-requests-served/ws-requests-served.component';
 import { WsRequestsUnservedComponent } from './ws_requests/ws-requests-list/ws-requests-unserved/ws-requests-unserved.component';
 import { CloseRequestModalComponent } from './ws_requests/modals/close-request-modal/close-request-modal.component';
@@ -325,7 +325,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     WidgetMultilanguageComponent,
     BaseTranslationComponent,
     WidgetSharedComponent,
-    WidgetDesignBaseComponent,
+    WidgetSetUpBaseComponent,
     WsRequestsServedComponent,
     WsRequestsUnservedComponent,
     CloseRequestModalComponent,
