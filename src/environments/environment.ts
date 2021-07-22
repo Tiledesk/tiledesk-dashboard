@@ -4,7 +4,7 @@ export const environment = {
   remoteConfig: true,
   remoteConfigUrl: './dashboard-config.json',
   VERSION: require('../../package.json').version,
-  t2y12PruGU9wUtEGzBJfolMIgK: 'PAY:F-ANA:F-ACT:F-TRI:F-GRO:F-DEP:F-OPH:F-MTL:F-DGF:F-NAT:F-CAR:F-V1L:F-PSA:F',
+  t2y12PruGU9wUtEGzBJfolMIgK: 'PAY:T-ANA:T-ACT:T-TRI:T-GRO:T-DEP:T-OPH:T-MTL:T-DGF:T-NAT:T-CAR:T-V1L:T-PSA:T-MTT:T-SUP:T-LBS:T-APP:T-DEV:T-NOT:T',
   widgetUrl: 'http://localhost:4200/launch.js',
   botcredendialsURL: 'CHANGEIT',
   SERVER_BASE_URL: 'http://localhost:3000/',
@@ -15,6 +15,7 @@ export const environment = {
   firebaseAuth: false,
   uploadEngine: 'native',
   pushEngine: 'none',
+  loggingLevel: 0,
   firebase: {
       apiKey: 'CHANGEIT',
       authDomain: 'CHANGEIT',

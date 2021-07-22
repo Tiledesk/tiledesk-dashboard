@@ -1,7 +1,7 @@
 
 export const environment = {
     production: true,
-    t2y12PruGU9wUtEGzBJfolMIgK: 'PAY:F-ANA:F-ACT:F-TRI:F-GRO:F-DEP:F-OPH:F-MTL:F-DGF:F-NAT:F-CAR:F-V1L:F-PSA:F',
+    t2y12PruGU9wUtEGzBJfolMIgK: 'PAY:T-ANA:T-ACT:T-TRI:T-GRO:T-DEP:T-OPH:T-MTL:T-DGF:T-NAT:T-CAR:T-V1L:T-PSA:T-MTT:T-SUP:T-LBS:T-APP:T-DEV:T-NOT:T',
     VERSION: require('../../package.json').version,
     widgetUrl: 'https://widget.tiledesk.com/v4/launch.js',
     botcredendialsURL: 'CHANGE-IT',
@@ -15,6 +15,7 @@ export const environment = {
     firebaseAuth: false,
     uploadEngine: 'native',
     pushEngine: 'none',
+    loggingLevel: 0,
     firebase: {
         apiKey: "CHANGE-IT",
         authDomain: "CHANGE-IT",
