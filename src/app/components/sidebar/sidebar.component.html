@@ -1,35 +1,13 @@
-<!-- 
-<div *ngIf="project" class="logo" style="background-color:#1e2129!important; padding-bottom: 5px;display: flex;
-  flex-direction: row;
-  flex: 1 0 auto;
-  align-items: center;
-  justify-content: space-between;
-  height:61px;">
-  
-  <div class="logo-img" style=" display: flex; align-items: center;">
-    <a routerLink="project/{{ project._id }}/home" class="simple-text" style="text-transform: none; ">
-      <span *ngIf="SIDEBAR_IS_SMALL !== true">
-        <img style="width:50%; top:20px" src="assets/img/tiledesk-logo_white.svg"/>
-      </span>
-      <span *ngIf="SIDEBAR_IS_SMALL === true">
-          <img style="width:37%; top:20px" src="assets/img/tiledesk_logo_white_small.png"/>
-      </span>
-    </a> 
-  </div>
-  <div  style="display: flex; align-items: center; padding-bottom: 6px">
-    <i class="material-icons" (click)="smallSidebar(IS_SMALL = !IS_SMALL)" style="color:rgba(255,255,255,0.7)!important">  menu  </i>
-  </div>
-</div>
--->
+
 <!-- *ngIf="project"  -->
 <div class="logo" style="background-color:#1e2129!important; padding-bottom: 5px;min-height: 60px;">
   <a class="simple-text" style="text-transform: none; padding-left: 40px; min-height: 40px;">
     <!-- routerLink="project/{{ project._id }}/home" -->
 
     <div class="logo-img" (click)="goToHome()" style="cursor: pointer;">
-      <!-- assets/img/tiledesk-logo_white.svg -->
+
       <!-- assets/img/tiledesk-logo_white_orange.svg -->
-      <!-- assets/img/tiledesk-logo_white_blu.svg" -->
+   
       <!-- note to center the logo remove > left: 26px -->
       <!-- <img style="width:45%; top:20px;left: 26px" src="assets/img/tiledesk-logo_white_orange.svg" /> -->
       <img class="sidebar__logo" [ngClass]="{'sidebar__logo_no_rocket' : hidechangelogrocket === true }"
