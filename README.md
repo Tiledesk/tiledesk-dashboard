@@ -100,6 +100,7 @@ export  const environment = {
 
 	VERSION: require('../../package.json').version,
 
+    ...
 }
 ```
 #### dashboard-config.json
@@ -113,7 +114,19 @@ SERVER_BASE_URL: "https://<YOUR_TILEDESK_SERVER>/",
 
 CHAT_BASE_URL: "https://<YOUR_CHAT21_IONIC_URL>/chat",
 
-testsiteBaseUrl: 'http://localhost:4200/assets/test_widget_page/index.html',
+testsiteBaseUrl: "http://localhost:4200/assets/test_widget_page/index.html",
+
+globalRemoteJSSrc: "https://<YOUR_CUSTOM_SCRIPT_1>, https://<YOUR_CUSTOM_SCRIPT_2>" // see the section below "Load external scripts"
+
+firebaseAuth : false,
+
+chatEngine: "mqtt", // OR YOUR CUSTOM CHAT ENGINE
+
+updloaEngine: "native", // OR YOUR CUSTOM UPLOAD ENGINE
+
+pushEngine:"none", // OR YOUR CUSTOM PUSH ENGINE
+
+loggingLevel: "<YOUR-PREFERRED-LOG-LEVEL-NUMBER>",
 
 wsUrl: 'ws://' + window.location.hostname + '/ws/',
 
@@ -136,10 +149,12 @@ wsUrl: 'ws://' + window.location.hostname + '/ws/',
 };
 
 ```
+* `logLevel`: The Dashboard supports 4 log levels. The order is as follows:
+  `Error = 0 < Warn = 1 < Info = 2 < Debug = 3`
+
 
 ### RUN in dev
 
-  
 Run the app with `ng serve`
 
   
