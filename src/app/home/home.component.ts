@@ -792,7 +792,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      this.logger.log('ProjectPlanService (HomeComponent) project Profile Data', projectProfileData)
+      this.logger.log('[HOME] - getProjectPlan project Profile Data', projectProfileData)
       if (projectProfileData) {
 
 
@@ -848,7 +848,14 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           }
         }
       }
-    })
+    }, error => {
+    
+      this.logger.error('[HOME] - getProjectPlan - ERROR', error);
+    }, () => {
+     
+      this.logger.log('[HOME] - getProjectPlan * COMPLETE *')
+
+    });
   }
 
 

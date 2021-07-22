@@ -31,11 +31,18 @@ export class PaymentsListComponent implements OnInit, OnDestroy {
 
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      this.logger.log('[PRICING - PAYMENT-LIST] ProjectPlanService project Profile Data', projectProfileData)
+      this.logger.log('[PRICING - PAYMENT-LIST] getProjectPlan project Profile Data', projectProfileData)
 
       if (projectProfileData && projectProfileData.subscription_id) {
         this.getSubscriptionPayments(projectProfileData.subscription_id)
       }
+    }, error => {
+    
+      this.logger.error('[PRICING - PAYMENT-LIST] - getProjectPlan - ERROR', error);
+    }, () => {
+     
+      this.logger.log('[PRICING - PAYMENT-LIST] - getProjectPlan * COMPLETE *')
+
     });
   }
 

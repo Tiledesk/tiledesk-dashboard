@@ -356,7 +356,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
             this.MT = false;
             // this.logger.log('PUBLIC-KEY (Navbar) - mt is', this.MT);
         }
-   
+
     }
 
     getProjects() {
@@ -676,7 +676,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
     getProjectPlan() {
         this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-            this.logger.log('[NAVBAR] ProjectPlanService project Profile Data', projectProfileData)
+            this.logger.log('[NAVBAR] - getProjectPlan project Profile Data', projectProfileData)
             if (projectProfileData) {
                 this.prjct_profile_name = projectProfileData.profile_name;
                 this.prjct_trial_expired = projectProfileData.trial_expired;
@@ -708,7 +708,14 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                     }
                 }
             }
-        })
+        }, error => {
+
+            this.logger.error('[NAVBAR] - getProjectPlan - ERROR', error);
+        }, () => {
+
+            this.logger.log('[NAVBAR] - getProjectPlan - COMPLETE')
+
+        });
     }
 
     /**
@@ -1000,7 +1007,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                         if (r.status !== 100) {
                             // this.logger.log('REQUEST WITH STATUS != 100 ', r.status)
                             this.shown_requests[r.id] = false;
-                          
+
                             // this.logger.log('[NAVBAR] REQUEST WITH STATUS != 100 ', r.status)
                         }
                     });

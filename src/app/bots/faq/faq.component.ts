@@ -799,7 +799,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      this.logger.log('[FAQ-COMP] ProjectPlanService (RequestsListHistoryNewComponent) project Profile Data', projectProfileData)
+      this.logger.log('[FAQ-COMP] -getProjectPlan - project Profile Data', projectProfileData)
       if (projectProfileData) {
 
         this.prjct_profile_type = projectProfileData.profile_type;
@@ -810,7 +810,14 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
         this.prjct_profile_name = this.buildPlanName(projectProfileData.profile_name, this.browserLang, this.prjct_profile_type);
       }
-    })
+    }, error => {
+    
+      this.logger.error('[FAQ-COMP] - getProjectPlan - ERROR', error);
+    }, () => {
+     
+      this.logger.log('[FAQ-COMP] - getProjectPlan - COMPLETE')
+
+    });
   }
 
   buildPlanName(planName: string, browserLang: string, planType: string) {

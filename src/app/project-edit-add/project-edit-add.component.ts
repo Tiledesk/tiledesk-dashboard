@@ -563,7 +563,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan ProjectPlanService project Profile Data', projectProfileData)
+      this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan project Profile Data', projectProfileData)
       if (projectProfileData) {
         this.prjct_name = projectProfileData.name;
         this.prjct_profile_name = projectProfileData.profile_name;
@@ -593,16 +593,16 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         // const today = moment();
         // 2019-09-20T08:48:07.000Z
         const current_sub_end_date = moment(this.subscription_end_date)
-        this.logger.log('[PRJCT-EDIT-ADD] - project Profile Data ', today);
-        this.logger.log('[PRJCT-EDIT-ADD] - project Profile Data current_sub_end_date ', current_sub_end_date);
+        this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan project Profile Data ', today);
+        this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan project Profile Data current_sub_end_date ', current_sub_end_date);
 
         this.days_to_next_renew = current_sub_end_date.diff(today, 'days');
-        this.logger.log('[PRJCT-EDIT-ADD] - project Profile Data days_to_next_renew ', this.days_to_next_renew);
+        this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan project Profile Data days_to_next_renew ', this.days_to_next_renew);
 
         if (this.days_to_next_renew === 0) {
 
           this.timeOfNextRenew = moment(current_sub_end_date).format('HH.mm')
-          this.logger.log('[PRJCT-EDIT-ADD] - project Profile Data timeOfNextRenew ', this.timeOfNextRenew);
+          this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan project Profile Data timeOfNextRenew ', this.timeOfNextRenew);
         }
 
         // USE CASE 'BUFFER DAYS': WHEN THE SUBSCRIPTION IS EXPIRED WE ADD 3 DAYS TO THE SUB END DATE
@@ -612,10 +612,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         if (this.days_to_next_renew === -1 || this.days_to_next_renew === -2) {
 
           this.SUBSCRIPTION_BUFFER_DAYS = true;
-          this.logger.log('[PRJCT-EDIT-ADD] - days_to_next_renew ', this.days_to_next_renew, ' SUBSCRIPTION_BUFFER_DAYS ', this.SUBSCRIPTION_BUFFER_DAYS);
+          this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan days_to_next_renew ', this.days_to_next_renew, ' SUBSCRIPTION_BUFFER_DAYS ', this.SUBSCRIPTION_BUFFER_DAYS);
         } else {
           this.SUBSCRIPTION_BUFFER_DAYS = false;
-          this.logger.log('[PRJCT-EDIT-ADD] - days_to_next_renew ', this.days_to_next_renew, ' SUBSCRIPTION_BUFFER_DAYS ', this.SUBSCRIPTION_BUFFER_DAYS);
+          this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan days_to_next_renew ', this.days_to_next_renew, ' SUBSCRIPTION_BUFFER_DAYS ', this.SUBSCRIPTION_BUFFER_DAYS);
         }
 
 
@@ -643,7 +643,14 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           // this.getSubscriptionByID(projectProfileData.subscription_id);
         }
       }
-    })
+    }, error => {
+    
+      this.logger.error('[PRICING - PAYMENT-LIST] - getProjectPlan - ERROR', error);
+    }, () => {
+     
+      this.logger.log('[PRICING - PAYMENT-LIST] - getProjectPlan * COMPLETE *')
+
+    });
   }
 
   ngOnDestroy() {

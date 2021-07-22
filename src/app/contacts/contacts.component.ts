@@ -240,7 +240,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      this.logger.log('[CONTACTS-COMP] ProjectPlanService project Profile Data', projectProfileData)
+      this.logger.log('[CONTACTS-COMP] getProjectPlan project Profile Data', projectProfileData)
       if (projectProfileData) {
 
         this.prjct_profile_type = projectProfileData.profile_type;
@@ -251,7 +251,14 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.prjct_profile_name = this.buildPlanName(projectProfileData.profile_name, this.browserLang, this.prjct_profile_type);
       }
-    })
+    }, error => {
+
+      this.logger.error('[CONTACTS-COMP] - getProjectPlan - ERROR', error);
+    }, () => {
+
+      this.logger.log('[CONTACTS-COMP] - getProjectPlan * COMPLETE')
+
+    });
   }
 
   ngOnDestroy() {
@@ -516,7 +523,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
       this.contacts = leads_object['leads'];
       this.logger.log('[CONTACTS-COMP] - CONTACTS LIST ', this.contacts);
 
-      
+
 
       /* to test pagination */
       // const contactsCount = 0;
@@ -584,7 +591,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
         }
 
-  
+
 
         contact.avatar_fill_colour = newFillColour;
         contact.name_initial = newInitials
@@ -604,10 +611,10 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  getProjectUserById(contact ,leadid) {
+  getProjectUserById(contact, leadid) {
     this.usersService.getProjectUserById(leadid).subscribe((projectUser: any) => {
 
-    
+
       this.logger.log('[CONTACTS-COMP] - GET PROJECT USER BY LEAD ID RES  ', projectUser);
       // this.logger.log('[CONTACTS-COMP] - GET PROJECT USER BY LEAD ID projectUser[0]  ', projectUser[0]);
       // this.logger.log('[CONTACTS-COMP] - GET PROJECT USER BY LEAD ID projectUser[0] isAuthenticated ', projectUser[0]['isAuthenticated']);
@@ -748,7 +755,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
         this.moveContactToTrash_msg = text
       })
     }
-    
+
     this.logger.log('[CONTACTS-COMP] - moveContactToTrash ', this.moveContactToTrash_msg);
 
     swal({

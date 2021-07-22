@@ -132,14 +132,21 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      this.logger.log('[PRICING]  - project Profile Data ', projectProfileData)
+      this.logger.log('[PRICING] - getProjectPlan - project Profile Data ', projectProfileData)
       if (projectProfileData) {
 
         this.subscription_id = projectProfileData.subscription_id;
-        this.logger.log('[PRICING]  - project Profile Data > subscription_id ', this.subscription_id)
+        this.logger.log('[PRICING]  - getProjectPlan > subscription_id ', this.subscription_id)
 
       }
-    })
+    }, error => {
+    
+      this.logger.error('[PRICING] - getProjectPlan - ERROR', error);
+    }, () => {
+     
+      this.logger.log('[PRICING] - getProjectPlan * COMPLETE *')
+
+    });
   }
 
   ngOnDestroy() {
