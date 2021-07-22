@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy, AfterViewInit, NgZone, ViewChild, Element
 import { WsRequestsService } from '../../../services/websocket/ws-requests.service';
 import { LocalDbService } from '../../../services/users-local-db.service';
 import { BotLocalDbService } from '../../../services/bot-local-db.service';
-import { Router, NavigationStart, NavigationEnd } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthService } from '../../../core/auth.service';
 import { avatarPlaceholder, getColorBck } from '../../../utils/util';
 import { NotifyService } from '../../../core/notify.service';
@@ -14,17 +14,15 @@ import { UsersService } from '../../../services/users.service';
 import { UAParser } from 'ua-parser-js'
 import { FaqKbService } from '../../../services/faq-kb.service';
 
-import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import { AppConfigService } from '../../../services/app-config.service';
 import { Subscription } from 'rxjs/Subscription';
 import PerfectScrollbar from 'perfect-scrollbar';
 import { DepartmentService } from '../../../services/department.service';
-import { environment } from '../../../../environments/environment';
-import { distinctUntilChanged } from 'rxjs/operators';
+
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+
 import { browserRefresh } from '../../../app.component';
 import { Location } from '@angular/common';
 // import { fadeInAnimation } from '../../../_animations/index';
@@ -42,32 +40,24 @@ import { LoggerService } from '../../../services/logger/logger.service';
 })
 export class WsRequestsUnservedForPanelComponent extends WsSharedComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  // CHAT_BASE_URL = environment.chat.CHAT_BASE_URL; // moved
-  // CHAT_BASE_URL = environment.CHAT_BASE_URL; // now get from appconfig
   CHAT_BASE_URL: string;
 
   // used to unsuscribe from behaviour subject
   private unsubscribe$: Subject<any> = new Subject<any>();
 
-
   // @ViewChild('teamContent', { read: ElementRef }) public teamContent: ElementRef<any>;
   @ViewChild('teamContent') private teamContent: ElementRef;
   @ViewChild('testwidgetbtn') private testwidgetbtnRef: ElementRef;
 
-  // wsRequestsUnserved: Observable<Request[]>;
-  // wsRequestsServed: Observable<Request[]>;
+
   wsRequestsUnserved: any;
   wsRequestsServed: any;
   ws_requests: any;
-
   projectId: string;
   zone: NgZone;
   SHOW_SIMULATE_REQUEST_BTN = false;
   showSpinner = true;
-
-
   firebase_token: any;
-
   currentUserID: string;
   ONLY_MY_REQUESTS: boolean = false;
   ROLE_IS_AGENT: boolean;
@@ -90,13 +80,9 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
   departments: any;
   selectedDeptId: string;
   selectedAgentId: string;
-
-  // TESTSITE_BASE_URL = environment.testsite.testsiteBaseUrl; // moved
-  // TESTSITE_BASE_URL = environment.testsiteBaseUrl;   // now get from appconfig
   TESTSITE_BASE_URL: string;
   projectName: string;
   projectNameFirstLetter: any;
-
 
   deptsArrayBuildFromRequests: any;
 
@@ -115,7 +101,6 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
   ws_requestslist_deptIdSelected: string
   display_dept_sidebar = false;
 
-
   archivingRequestNoticationMsg: string;
   archivingRequestErrorNoticationMsg: string;
   requestHasBeenArchivedNoticationMsg_part1: string;
@@ -124,8 +109,6 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
   selectedRequest: any;
 
   SHOW_NO_REQUEST_MSG: boolean
-
-
 
   /**
    * 
@@ -143,6 +126,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
    * @param location 
    * @param cdref 
    * @param contactsService 
+   * @param logger 
    */
   constructor(
     public wsRequestsService: WsRequestsService,
@@ -171,28 +155,8 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
   // @ Lifecycle hooks
   // -----------------------------------------------------------------------------------------------------
 
-  /**
-   * On init
-   */
   ngOnInit() {
-    // this.getDepartments();
-    // this.getWsRequests$();
 
-    // this.getProjectUserRole();
-
-
-    // this.for1();
-    // this.getRequestsTotalCount()  
-    // this.getAllProjectUsersAndBot();
-
-    // const teamContentEl = <HTMLElement>document.querySelector('.team-content');
-    // const perfs = new PerfectScrollbar(teamContentEl);
-    // this.selectedDeptId = '';
-    // this.selectedAgentId = '';
-
-
-    // this.getChatUrl();
-    // this.getTestSiteUrl();
     this.getImageStorage();
     this.detectBrowserRefresh();
     this.getCurrentProject();
@@ -203,22 +167,19 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
   }
 
   ngAfterViewInit() {
-    const leftsidebarbtn = <HTMLElement>document.querySelector('.left-sidebar--btns-container')
-    this.logger.log('WS-REQUESTS-UNSERVED-X-PANEL - leftsidebarbtn ', leftsidebarbtn);
-
     this.getProjectUserRole();
     this.cdref.detectChanges();
   }
 
   ngOnDestroy() {
-    this.logger.log('WS-REQUESTS-UNSERVED-X-PANEL - ngOnDestroy')
+    this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - ngOnDestroy')
     if (this.subscription) {
       this.subscription.unsubscribe()
     }
 
     this.wsRequestsUnserved.forEach(request => {
 
-      this.logger.log('WS-REQUESTS-UNSERVED-X-PANEL - ngOnDestroy request', request)
+      this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - ngOnDestroy request', request)
       if (request && request.lead) {
         this.unsuscribeRequesterPresence(request.lead.lead_id)
       }
@@ -229,13 +190,12 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
   }
 
   unsuscribeRequesterPresence(requester_id) {
-    // this.contactsService.unsubscribeToWS_RequesterPresence(requester_id);
     this.wsRequestsService.unsubscribeToWS_RequesterPresence(requester_id);
   }
 
   setPerfectScrollbar() {
     const container_projects_for_panel = <HTMLElement>document.querySelector('.main-content-projects-for-panel');
-    this.logger.log('WS-REQUESTS-SERVED main-content-projects-for-panel', container_projects_for_panel);
+    this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] setPerfectScrollbar main-content-projects-for-panel', container_projects_for_panel);
     let ps = new PerfectScrollbar(container_projects_for_panel, {
       suppressScrollX: true
     });
@@ -246,45 +206,38 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
   // Join request
   // ------------------------------------------
   joinRequest(request_id: string) {
-    this.currentUserID
+    this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] JOIN-REQUEST request_id', request_id, ' - CURRENT-USER-ID ', this.currentUserID);
     this.onJoinHandled(request_id, this.currentUserID);
   }
 
   archiveRequest(request_id) {
     this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg);
-    this.logger.log('WS-REQUESTS-SERVED - HAS CLICKED ARCHIVE REQUEST ');
+    this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - HAS CLICKED ARCHIVE REQUEST ');
     this.wsRequestsService.closeSupportGroup(request_id)
       .subscribe((data: any) => {
-        this.logger.log('WS-REQUESTS-SERVED - CLOSE SUPPORT GROUP - DATA ', data);
+        this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - CLOSE SUPPORT GROUP - RES ', data);
       }, (err) => {
-        this.logger.error('WS-REQUESTS-SERVED - CLOSE SUPPORT GROUP - ERROR ', err);
+        this.logger.error('[WS-REQUESTS-UNSERVED-X-PANEL] - CLOSE SUPPORT GROUP - ERROR ', err);
 
-        // =========== NOTIFY ERROR ===========
-        // this.notify.showNotification('An error has occurred archiving the request', 4, 'report_problem');
+        //  NOTIFY ERROR 
         this.notify.showNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
       }, () => {
-        // this.ngOnInit();
-        this.logger.log('WS-REQUESTS-UNSERVED-X-PANEL - CLOSE SUPPORT GROUP - COMPLETE');
 
-        // =========== NOTIFY SUCCESS===========
-        // this.notify.showNotification(`request with id: ${this.id_request_to_archive} has been moved to History`, 2, 'done');
+        this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL]- CLOSE SUPPORT GROUP * COMPLETE *');
+        //  NOTIFY SUCCESS
         this.notify.showRequestIsArchivedNotification(this.requestHasBeenArchivedNoticationMsg_part1);
-
-        // this.onArchiveRequestCompleted()
       });
   }
 
   displayDetails(request) {
     this.OPEN_REQUEST_DETAILS = true;
     this.selectedRequest = request
+    this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - displayDetails OPEN_REQUEST_DETAILS? ', this.OPEN_REQUEST_DETAILS, 'SELECTED REQUEST ', this.selectedRequest);
   }
 
   handleCloseRightSidebar(event) {
-    this.logger.log('%%% Ws-REQUESTS-Msgs »»»» IS OPEN RIGHT SIDEBAR ', event);
+    this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] IS OPEN RIGHT SIDEBAR event', event);
     this.OPEN_REQUEST_DETAILS = event;
-
-    // const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
-    // _elemMainPanel.setAttribute('style', 'overflow-x: hidden !important;');
   }
 
   getTranslations() {
@@ -333,29 +286,15 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
       });
   }
 
-  getTestSiteUrl() {
-    this.TESTSITE_BASE_URL = this.appConfigService.getConfig().testsiteBaseUrl;
-    this.logger.log('AppConfigService getAppConfig (WS-REQUESTS-UNSERVED-X-PANEL) TESTSITE_BASE_URL', this.TESTSITE_BASE_URL);
-  }
-
-  getChatUrl() {
-    this.CHAT_BASE_URL = this.appConfigService.getConfig().CHAT_BASE_URL;
-    this.logger.log('AppConfigService getAppConfig (WS-REQUESTS-UNSERVED-X-PANEL) CHAT_BASE_URL', this.CHAT_BASE_URL);
-  }
-
-
   detectBrowserRefresh() {
-    // this.logger.log('% »»» WebSocketJs WF +++++ ws-requests--- list CALLING browserRefresh')
+    this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - CALLING browserRefresh')
     this.browserRefresh = browserRefresh;
-    // this.logger.log("% »»» WebSocketJs WF +++++ ws-requests--- list ----- ngOnInit browserRefresh ", this.browserRefresh);
-    // this.logger.log("% »»» WebSocketJs WF +++++ ws-requests--- list ----- ngOnInit browserRefresh ", this.browserRefresh, 'wsRequestsList$.value length', this.wsRequestsService.wsRequestsList$.value.length);
+
     if (this.browserRefresh) {
 
       this.listenToRequestsLength();
     } else {
       this.wsRequestsService.wsRequestsList$.value
-      // this.logger.log("% »»» WebSocketJs WF +++++ ws-requests--- list ----- ngOnInit browserRefresh ", this.browserRefresh, 'wsRequestsList$.value length', this.wsRequestsService.wsRequestsList$.value.length);
-
     }
   }
 
@@ -365,7 +304,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
         takeUntil(this.unsubscribe$)
       )
       .subscribe((user_role) => {
-        this.logger.log('WS-REQUESTS-UNSERVED-X-PANEL - USER ROLE ', user_role);
+        this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - GET PROJECT-USER ROLE user_role ', user_role);
         if (user_role) {
           if (user_role === 'agent') {
             this.ROLE_IS_AGENT = true
@@ -389,14 +328,14 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
       const firebase_conf = this.appConfigService.getConfig().firebase;
       this.storageBucket = firebase_conf['storageBucket'];
       this.imageStorage = this.storageBucket;
-      this.logger.log('WS-REQUESTS-UNSERVED-X-PANEL IMAGE STORAGE ', this.storageBucket, 'usecase firebase')
+      this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] IMAGE STORAGE ', this.storageBucket, 'usecase firebase')
     } else {
       this.UPLOAD_ENGINE_IS_FIREBASE = false;
       this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
       this.imageStorage = this.baseUrl;
-      this.logger.log('WS-REQUESTS-UNSERVED-X-PANEL IMAGE STORAGE ', this.baseUrl, 'usecase native')
+      this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] IMAGE STORAGE ', this.baseUrl, 'usecase native')
     }
-    // this.logger.log('STORAGE-BUCKET Ws Requests List ', this.storageBucket)
+
   }
 
   listenToRequestsLength() {
@@ -405,30 +344,23 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
         takeUntil(this.unsubscribe$)
       )
       .subscribe((totalrequests: number) => {
-        this.logger.log('WS-REQUESTS-UNSERVED-X-PANEL listenToRequestsLength RECEIVED NEXT wsRequestsList LENGTH', totalrequests)
+        this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - listenToRequestsLength RECEIVED NEXT wsRequestsList LENGTH', totalrequests)
 
         if (totalrequests === 0) {
           this.SHOW_SIMULATE_REQUEST_BTN = true
           this.showSpinner = false;
           this.SHOW_NO_REQUEST_MSG = true
-          this.logger.log('WS-REQUESTS-UNSERVED-X-PANEL - listenToRequestsLength SHOW_SIMULATE_REQUEST_BTN ', this.SHOW_SIMULATE_REQUEST_BTN)
-          this.logger.log('WS-REQUESTS-UNSERVED-X-PANEL - listenToRequestsLength showSpinner ', this.showSpinner)
+          this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - listenToRequestsLength SHOW_SIMULATE_REQUEST_BTN ', this.SHOW_SIMULATE_REQUEST_BTN)
+          this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - listenToRequestsLength showSpinner ', this.showSpinner)
 
         } else if (totalrequests > 0) {
 
           this.showSpinner = false;
           this.SHOW_NO_REQUEST_MSG = false;
           this.SHOW_SIMULATE_REQUEST_BTN = false
-          this.logger.log('WS-REQUESTS-UNSERVED-X-PANEL - listenToRequestsLength SHOW_SIMULATE_REQUEST_BTN ', this.SHOW_SIMULATE_REQUEST_BTN)
-          this.logger.log('WS-REQUESTS-UNSERVED-X-PANEL - listenToRequestsLength showSpinner ', this.showSpinner)
-
+          this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - listenToRequestsLength SHOW_SIMULATE_REQUEST_BTN ', this.SHOW_SIMULATE_REQUEST_BTN)
+          this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - listenToRequestsLength showSpinner ', this.showSpinner)
         }
-
-        // this.logger.log('% »»» WebSocketJs WF - WsRequestsList >>>>>>> >>>>>>> BEHAVIOUR TOTAL-REQUESTS <<<<<<< ', totalrequests)
-        // this.logger.log('% »»» WebSocketJs WF - WsRequestsList >>>>>>> >>>>>>> THIS.WS-REQUESTS LENGTH <<<<<<< ', this.ws_requests.length)
-        // if (totalrequests) {
-        //   this.totalRequests = totalrequests
-        // }
       })
   }
 
@@ -442,11 +374,11 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
 
   getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
-      this.logger.log('WS-REQUESTS-UNSERVED-X-PANEL -  USER ', user)
+      this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - GET CURRENT USER ', user)
       // this.user = user;
       if (user) {
         this.currentUserID = user._id
-        this.logger.log('WS-REQUESTS-UNSERVED-X-PANEL - currentUser ID', this.currentUserID);
+        this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - GET CURRENT USER > currentUser ID', this.currentUserID);
       }
     });
   }
@@ -457,7 +389,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
   // -----------------------------------------------------------------------------------------------------
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
-      this.logger.log('WS-REQUESTS-UNSERVED-X-PANEL - project', project)
+      this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - GET CURRENT PRJCT - project', project)
       if (project) {
         this.projectNameFirstLetter = project.name.charAt(0)
         this.projectId = project._id;
@@ -466,100 +398,22 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
     });
   }
 
-
-  seeIamAgentRequests(seeIamAgentReq) {
-    this.ONLY_MY_REQUESTS = seeIamAgentReq
-    this.logger.log('WS-REQUESTS-UNSERVED-X-PANEL - ONLY_MY_REQUESTS ', this.ONLY_MY_REQUESTS);
-    if (seeIamAgentReq === false) {
-      this.displayBtnLabelSeeYourRequets = false;
-    } else {
-      this.displayBtnLabelSeeYourRequets = true;
-    }
-    this.getWsRequests$()
-  }
-
-  // hasmeInUnserved(agents) {
-  //   let iAmThere = false
-  //   for (let j = 0; j < agents.length; j++) {
-  //     // this.logger.log("% »»» WebSocketJs - WsRequestsService AGENT ", agents[j]);
-  //     this.logger.log("% »»» WebSocketJs - WsRequestsService currentUserID 2 ", this.currentUserID);
-  //     this.logger.log("% »»» WebSocketJs - WsRequestsService id_user ", agents[j].id_user);
-
-  //     if (this.currentUserID === agents[j].id_user) {
-  //       iAmThere = true
-  //       this.logger.log("% »»» WebSocketJs - WsRequestsService HERE-YES ", iAmThere);
-  //     }
-  //     return iAmThere
-  //   }
-  // }
-
-  goToDept(deptid) {
-    this.router.navigate(['project/' + this.projectId + '/department/edit/' + deptid]);
-
-  }
-
-
   parseUserAgent(uastring) {
     // https://github.com/faisalman/ua-parser-js
     var parser = new UAParser();
-    // var uastring = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36";
     parser.setUA(uastring);
     return parser.getResult();
-  }
-
-  // getRequestsTotalCount(wsrequests): Observable<[]> {
-  //   return Observable.of(wsrequests);
-  // }
-
-  onChangeDepts() {
-    this.hasFiltered = true
-    // this.logger.log('% »»» WebSocketJs WF WS-RL - on Change Depts - dept id', this.selectedDeptId);
-
-    this.filter[0]['deptId'] = this.selectedDeptId
-
-    this.logger.log('% »»» WebSocketJs WF WS-RL - on Change Depts - filter', this.filter)
-    this.getWsRequests$();
-    // this.logger.log('% »»» WebSocketJs WF WS-RL - on Change Depts - ws Requests Unserved ', this.wsRequestsUnserved.length);
-    // this.logger.log('% »»» WebSocketJs WF WS-RL - on Change Depts - ws Requests Served length', this.wsRequestsServed.length)
-
-  }
-
-  clearDeptFilter() {
-    this.filter[0]['deptId'] = null;
-    this.hasFiltered = false
-    // this.getWsRequests$();
-    this.logger.log('% »»» WebSocketJs WF WS-RL - clear Dept Filter selectedDeptId', this.selectedDeptId)
-  }
-
-
-
-  // countRequestsLength(wsrequests) {
-  //   this.logger.log('% »»» WebSocketJs WF WS-RL - WsRequestsList  ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ CALLING NOW countRequestsLength ',wsrequests.length);
-  //   if (wsrequests.length === 0) {
-  //     this.showSpinner = false;
-  //     this.SHOW_SIMULATE_REQUEST_BTN = true;
-  //   }
-  // }
-  asyncFunction(item, cb) {
-    setTimeout(() => {
-      // this.logger.log('% »»» WebSocketJs WF +++++ ws-requests--- list  ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ asyncFunction done with', item);
-      cb();
-    }, 100);
   }
 
   hasmeInAgents(agents, wsrequest) {
     if (agents) {
       for (let j = 0; j < agents.length; j++) {
-        // this.logger.log("% »»» WebSocketJs WF - WsRequestsList »»» »»» hasmeInAgents agent", agents[j]);
-        this.logger.log("WS-REQUESTS-UNSERVED-X-PANEL -  hasmeInAgents currentUserID 2 ", this.currentUserID);
-        // this.logger.log("% »»» WebSocketJs WF - WsRequestsList id_user ", agents[j].id_user);
+
+        this.logger.log("[WS-REQUESTS-UNSERVED-X-PANEL] - hasmeInAgents currentUserID 2 ", this.currentUserID, " - THE REQUEST ", wsrequest);
 
         if (this.currentUserID === agents[j].id_user) {
-          return true
-          // this.logger.log("% »»» WebSocketJs WF +++++ ws-requests--- list + hasmeInAgents in If", iAmThere, '(forEach) the request id ', wsrequest.request_id, ' status: ', wsrequest.status, ' agent: ', agents );
+          return true;
         }
-        // this.logger.log("% »»» WebSocketJs WF +++++ ws-requests--- list + hasmeInAgents", iAmThere, '(forEach) the request id ', wsrequest.request_id, ' status: ', wsrequest.status, ' agent: ', agents );
-        // return iAmThere
       }
     }
   }
@@ -570,17 +424,15 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
   hasmeInParticipants(participants) {
     let iAmThere = false
     participants.forEach(participant => {
-      this.logger.log('WS-REQUESTS-UNSERVED-X-PANEL - hasmeInParticipants  participant', participant)
+      this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - hasmeInParticipants  participant', participant)
       if (participant === this.currentUserID) {
-        // this.logger.log('»»»»»»» UTILS MEMBERS ', members)
-        // this.logger.log('»»»»»»» CURRENT_USER_JOINED ', currentUserFireBaseUID);
+
         iAmThere = true;
         return
       }
     });
-    this.logger.log('WS-REQUESTS-UNSERVED-X-PANEL -  hasmeInParticipants', iAmThere);
+    this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - hasmeInParticipants', iAmThere);
     return iAmThere;
-
   }
 
 
@@ -589,7 +441,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
   // @ Subscribe to get the published requests (called On init)
   // -----------------------------------------------------------------------------------------------------
   getWsRequests$() {
-    this.logger.log("WS-REQUESTS-UNSERVED-X-PANEL - enter NOW in getWsRequests$");
+    this.logger.log("[WS-REQUESTS-UNSERVED-X-PANEL] - getWsRequests$");
     this.wsRequestsService.wsRequestsList$
       .pipe(
         takeUntil(this.unsubscribe$)
@@ -600,23 +452,23 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
 
           this.addDeptObject(wsrequests)
 
-          this.logger.log("WS-REQUESTS-UNSERVED-X-PANEL - subscribe > if (wsrequests) ", wsrequests);
+          this.logger.log("[WS-REQUESTS-UNSERVED-X-PANEL] - subscribe > if (wsrequests) ", wsrequests);
           this.browserRefresh = browserRefresh;
 
           if ((this.browserRefresh === false) || (this.browserRefresh === true && this.wsRequestsService.wsRequestsList$.value.length > 0)) {
             if (wsrequests.length > 0) {
 
               this.SHOW_SIMULATE_REQUEST_BTN = false;
-              this.logger.log('WS-REQUESTS-UNSERVED-X-PANEL - SHOW_SIMULATE_REQUEST_BTN ', this.SHOW_SIMULATE_REQUEST_BTN)
+              this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - SHOW_SIMULATE_REQUEST_BTN ', this.SHOW_SIMULATE_REQUEST_BTN)
               this.showSpinner = false;
-              this.logger.log('WS-REQUESTS-UNSERVED-X-PANEL - SHOW_SPINNER ', this.showSpinner)
+              this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - SHOW_SPINNER ', this.showSpinner)
 
 
             } else if (wsrequests.length === 0) {
               this.SHOW_SIMULATE_REQUEST_BTN = true;
-              this.logger.log('WS-REQUESTS-UNSERVED-X-PANEL - SHOW_SIMULATE_REQUEST_BTN ', this.SHOW_SIMULATE_REQUEST_BTN)
+              this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - SHOW_SIMULATE_REQUEST_BTN ', this.SHOW_SIMULATE_REQUEST_BTN)
               this.showSpinner = false;
-              this.logger.log('WS-REQUESTS-UNSERVED-X-PANEL - SHOW_SPINNER ', this.showSpinner)
+              this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - SHOW_SPINNER ', this.showSpinner)
             }
           }
 
@@ -627,8 +479,6 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
           if (this.ONLY_MY_REQUESTS === true) {
             this.ws_requests = [];
             wsrequests.forEach(wsrequest => {
-
-
               if (wsrequest !== null && wsrequest !== undefined) {
                 if (this.hasmeInAgents(wsrequest.agents, wsrequest) === true || this.hasmeInParticipants(wsrequest.participants) === true) {
                   this.ws_requests.push(wsrequest);
@@ -636,10 +486,8 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
               }
             });
           }
-
         }
 
-        // this.ws_requests.forEach(request => {
         this.ws_requests.forEach((request) => {
 
           const user_agent_result = this.parseUserAgent(request.userAgent)
@@ -651,15 +499,14 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
           request['currentUserIsJoined'] = this.currentUserIdIsInParticipants(request.participants, this.auth.user_bs.value._id, request.request_id);
 
           if (request.status === 200) {
-            // USE CASE L'ARRAY new_participants è UNDEFINED x es al refresh o quando si entra nella pagina (anche al back dal dettaglio) o all' UPDATE
-            // this.logger.log('!! Ws SHARED  (from request list) PARTICIPATING-AGENTS  ', request['participantingAgents']);
 
+            // USE CASE ARRAY "new_participants" is UNDEFINED e.g. when the page is refreshed or when you enter the page (even when back from the detail) or to the "UPDATE"
             if (!request['participanting_Agents']) {
-              this.logger.log('!! Ws SHARED  (from request list) PARTICIPATING-AGENTS IS ', request['participanting_Agents'], ' - RUN DO ');
+              this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - PARTICIPATING-AGENTS IS ', request['participanting_Agents'], ' - RUN DO ');
               request['participanting_Agents'] = this.doParticipatingAgentsArray(request.participants, request.first_text, this.imageStorage, this.UPLOAD_ENGINE_IS_FIREBASE)
 
             } else {
-              this.logger.log('!! Ws SHARED  (from request list) PARTICIPATING-AGENTS IS DEFINED');
+              this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - PARTICIPATING-AGENTS IS DEFINED');
             }
           }
 
@@ -689,11 +536,11 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
           }
         });
 
-        /**
-         * Sort requests and manage spinner
-         */
+        // -------------------------------------------------------
+        // Sort requests and manage spinner
+        // -------------------------------------------------------
         if (this.ws_requests) {
-          this.logger.log('% »»» WebSocketJs WF +++++ ws-requests--- list getWsRequests *** ws_requests ***', this.ws_requests);
+          this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL]  getWsRequests *** ws_requests ***', this.ws_requests);
           this.wsRequestsUnserved = this.ws_requests
             .filter(r => {
               if (r['status'] === 100) {
@@ -730,40 +577,19 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
               return 0;
             });
 
-
         } else {
-          // this.showSpinner = false;
+         
         }
-        this.logger.log('WS-REQUESTS-UNSERVED-X-PANEL getWsRequests (served)', this.wsRequestsServed);
-        this.logger.log('WS-REQUESTS-UNSERVED-X-PANEL list getWsRequests (unserved)', this.wsRequestsUnserved);
+        this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - getWsRequests$ (served)', this.wsRequestsServed);
+        this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - getWsRequests$ (unserved)', this.wsRequestsUnserved);
 
-        // var time = 1;
-        // // this = that
-        // var interval = setInterval(() => {
-        //   if (time <= 3) {
-        //     this.logger.log('WS-REQUESTS-UNSERVED-X-PANEL (unserved) TIME TIME TIME ', time);
-        //     time++;
-        //   }
-        //   else {
-        //     clearInterval(interval);
-        //     this.logger.log('WS-REQUESTS-UNSERVED-X-PANEL (unserved) TIME TIME TIME COMPLETED Unserved LENGTH ', this.wsRequestsUnserved.length);
-
-        //     if (this.wsRequestsUnserved.length > 0) {
-        //       this.SHOW_NO_REQUEST_MSG = false;
-        //       this.showSpinner = false;
-        //     } else {
-        //       this.SHOW_NO_REQUEST_MSG = true;
-        //       this.showSpinner = false;
-        //     }
-        //   }
-        // }, 1000);
 
       }, error => {
-        this.logger.error('% WsRequestsList getWsRequests$ * error * ', error)
+        this.logger.error('[WS-REQUESTS-UNSERVED-X-PANEL] - getWsRequests$ - ERROR ', error)
       }, () => {
 
 
-        this.logger.log('% »»» WebSocketJs WF +++++ ws-requests--- list getWsRequests */* COMPLETE */*')
+        this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - getWsRequests$  */* COMPLETE */*')
       })
   }
 
@@ -805,8 +631,8 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
       .subscribe((data) => {
         const user = data
 
-        this.logger.log("WS-REQUESTS-UNSERVED-X-PANEL -  wsRequesterPresence - getWsRequesterPresence user uuid_user ", user.uuid_user);
-        this.logger.log("WS-REQUESTS-UNSERVED-X-PANEL -  wsRequesterPresence - getWsRequesterPresence user ", user);
+        this.logger.log("[WS-REQUESTS-UNSERVED-X-PANEL] - wsRequesterPresence - getWsRequesterPresence user uuid_user ", user.uuid_user);
+        this.logger.log("[WS-REQUESTS-UNSERVED-X-PANEL] - wsRequesterPresence - getWsRequesterPresence user ", user);
         if (user && user.presence) {
           if (requester_id === user.uuid_user) {
             if (user.presence.status === "offline") {
@@ -819,21 +645,12 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
         }
       }, error => {
 
-        this.logger.error('WS-REQUESTS-UNSERVED-X-PANEL - wsRequesterPresence - getWsRequesterPresence user * error * ', error)
+        this.logger.error('[WS-REQUESTS-UNSERVED-X-PANEL] - wsRequesterPresence - getWsRequesterPresence user - ERROR ', error)
       }, () => {
-        this.logger.log('WS-REQUESTS-UNSERVED-X-PANEL - wsRequesterPresence - getWsRequesterPresence user *** complete *** ')
+        this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - wsRequesterPresence - getWsRequesterPresence user *   complete * ')
       });
   }
 
-
-
-  cutFirstMessage(text: string): string {
-    if (text) {
-      return text.length >= 20 ?
-        text.slice(0, 20) + '...' :
-        text;
-    }
-  }
 
   checkIfFinished(wsRequestsServed) {
     return (wsRequestsServed.length > 0);
@@ -843,24 +660,11 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
     this.location.back();
   }
 
-
-
-  getDepartments() {
-    this.departmentService.getDeptsByProjectId().subscribe((_departments: any) => {
-      this.logger.log('WS-REQUESTS-UNSERVED-X-PANEL - GET DEPTS RESPONSE ', _departments);
-      this.departments = _departments
-    }, error => {
-      this.logger.error('WS-REQUESTS-UNSERVED-X-PANEL - GET DEPTS - ERROR: ', error);
-    }, () => {
-      this.logger.log('WS-REQUESTS-UNSERVED-X-PANEL - GET DEPTS * COMPLETE *')
-    });
-  }
-
   // DEPTS_LAZY: add this 
   addDeptObject(wsrequests) {
     this.departmentService.getDeptsByProjectIdToPromise().then((_departments: any) => {
 
-      this.logger.log('WS-REQUESTS-UNSERVED-X-PANEL - X-> DEPTS <-X', _departments)
+      this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - X-> DEPTS <-X', _departments)
 
       wsrequests.forEach(request => {
         const deptHasName = request.department.hasOwnProperty('name')
@@ -911,35 +715,11 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
 
   // DEPTS_LAZY: add this 
   getDeptObj(departmentid: string, deparments: any) {
-    // const deptObjct =  this.departments.findIndex((e) => e.department === departmentid);
     const deptObjct = deparments.filter((obj: any) => {
       return obj._id === departmentid;
     });
-    // this.logger.log('% »»» WebSocketJs WF +++++ ws-requests--- service -  X-> DEPT OBJECT <-X', deptObjct)
     return deptObjct[0]
   }
-
-
-  onChangeAgent() {
-    this.hasFiltered = true
-    // this.filter['agentId'] = this.selectedAgentId
-    // this.filter.push({ 'agentId': this.selectedAgentId }) 
-    // this.logger.log('% »»» WebSocketJs WF WS-RL - on Change Agent filter', this.filter)
-    this.filter[1]['agentId'] = this.selectedAgentId;
-    // this.logger.log('% »»» WebSocketJs WF WS-RL - on Change Agent - selected Agent Id', this.selectedAgentId);
-    // this.logger.log('% »»» WebSocketJs WF WS-RL - on Change Agent - filter', this.filter)
-    this.getWsRequests$();
-
-    // this.logger.log('% »»» WebSocketJs WF WS-RL - on Change Agent - ws Requests Unserved ', this.wsRequestsUnserved.length);
-    // this.logger.log('% »»» WebSocketJs WF WS-RL - on Change Agent - ws Requests Served ', this.wsRequestsServed.length)
-  }
-
-  clearAgentFilter() {
-    // this.logger.log('% »»» WebSocketJs WF WS-RL - clear Agent Filter selectedAgentId', this.selectedAgentId)
-    this.filter[1]['agentId'] = null;
-    this.hasFiltered = false
-  }
-
 
 }
 
