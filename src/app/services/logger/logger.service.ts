@@ -47,17 +47,6 @@ export class LoggerService {
   }
 
 
-  // setLoglevel(logLevel: number) {
-  //   this.logLevel = logLevel;
-  //   console.log("[LoggerService] setLoglevel logLevel", logLevel)
-  // }
-
-  // getLoglevel() { 
-  //   console.log("[LoggerService] getLoglevel logLevel", this.logLevel)
-  //   return this.logLevel 
-
-  // }
-
   error(...message: any[]) {
     if (this.logLevel >= LogLevel.Error) {
       console.error(message)
