@@ -30,9 +30,8 @@ export class CloseRequestModalComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-
-    this.logger.log('% »»» WebSocketJs WF Close Request Modal id_request_to_archive ', this.id_request_to_archive);
-    this.logger.log('% »»» WebSocketJs WF Close Request Modal displayArchiveRequestModal', this.displayArchiveRequestModal);
+    this.logger.log('[WS-REQUEST][CLOSE-REQUEST-MODAL] - id_request_to_archive ', this.id_request_to_archive);
+    this.logger.log('[WS-REQUEST][CLOSE-REQUEST-MODAL] - displayArchiveRequestModal', this.displayArchiveRequestModal);
     this.getTranslations();
   }
 
@@ -87,39 +86,31 @@ export class CloseRequestModalComponent implements OnInit {
   }
 
 
-
-
   archiveTheRequestHandler() {
     this.closeModal.emit();
     this.displayArchiveRequestModal = 'none';
 
     this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg);
-    this.logger.log('HAS CLICKED ARCHIVE REQUEST ');
+    this.logger.log('[WS-REQUEST][CLOSE-REQUEST-MODAL] - HAS CLICKED ARCHIVE REQUEST ');
 
 
     this.wsRequestsService.closeSupportGroup(this.id_request_to_archive)
       .subscribe((data: any) => {
-        this.logger.log('CLOSE SUPPORT GROUP - DATA ', data);
+        this.logger.log('[WS-REQUEST][CLOSE-REQUEST-MODAL] - CLOSE SUPPORT GROUP - RES ', data);
       }, (err) => {
-        this.logger.error('CLOSE SUPPORT GROUP - ERROR ', err);
+        this.logger.error('[WS-REQUEST][CLOSE-REQUEST-MODAL] - CLOSE SUPPORT GROUP - ERROR ', err);
 
         this.ARCHIVE_REQUEST_ERROR = true;
-        // =========== NOTIFY ERROR ===========
-
-        // this.notify.showNotification('An error has occurred archiving the request', 4, 'report_problem');
+        //  NOTIFY ERROR 
         this.notify.showNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
       }, () => {
-        // this.ngOnInit();
-        this.logger.log('CLOSE SUPPORT GROUP - COMPLETE');
-
+   
+        this.logger.log('[WS-REQUEST][CLOSE-REQUEST-MODAL] - CLOSE SUPPORT GROUP * COMPLETE *');
 
         this.ARCHIVE_REQUEST_ERROR = false;
 
-        // =========== NOTIFY SUCCESS===========
-        // this.notify.showNotification(`request with id: ${this.id_request_to_archive} has been moved to History`, 2, 'done');
+        //  NOTIFY SUCCESS
         this.notify.showRequestIsArchivedNotification(this.requestHasBeenArchivedNoticationMsg_part1);
-
-        // this.onArchiveRequestCompleted()
       });
   }
 
@@ -129,11 +120,7 @@ export class CloseRequestModalComponent implements OnInit {
   }
 
   onCloseArchiveRequestModal() {
-    // this.displayArchiveRequestModal = 'none'
-
-    // this.logger.log('calling closemodalEditForm');
     this.closeModal.emit();
-
   }
 
 
