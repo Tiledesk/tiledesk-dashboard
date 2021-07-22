@@ -83,7 +83,7 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
   ngOnInit() {
     this.getProfileImageStorage();
     this.getLoggedUser()
-    this.logger.log('REQUEST-DTLS-X-PANEL REQUEST ', this.selectedRequest)
+    this.logger.log('[REQUEST-DTLS-X-PANEL] SELECTED REQUEST ', this.selectedRequest)
     this.request = this.selectedRequest
 
     if (this.request) {
@@ -104,8 +104,8 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
     }
 
     if (this.requestid) {
-      this.logger.log('REQUEST-DTLS-X-PANEL- UNSUB-REQUEST-BY-ID - id_request ', this.requestid);
-      this.logger.log('REQUEST-DTLS-X-PANEL- UNSUB-MSGS - id_request ', this.requestid);
+      this.logger.log('[REQUEST-DTLS-X-PANEL] - UNSUB-REQUEST-BY-ID - id_request ', this.requestid);
+      this.logger.log('[REQUEST-DTLS-X-PANEL] - UNSUB-MSGS - id_request ', this.requestid);
       this.unsuscribeRequestById(this.requestid);
       this.unsuscribeMessages(this.requestid);
     }
@@ -123,7 +123,7 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
   }
 
   ngOnDestroy() {
-    this.logger.log('REQUEST-DTLS-X-PANEL - ngOnDestroy')
+    this.logger.log('[REQUEST-DTLS-X-PANEL] - ngOnDestroy')
     // this.subscribe.unsubscribe();
     // the two snippet bottom replace  this.subscribe.unsubscribe()
     this.unsubscribe$.next();
@@ -147,16 +147,15 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
 
   setPerfectScrollbar() {
     const messages_container = <HTMLElement>document.querySelector('.chat-messages-container');
-    this.logger.log('REQUEST-DTLS-X-PANEL messages_container', messages_container);
+    this.logger.log('[REQUEST-DTLS-X-PANEL] setPerfectScrollbar messages_container', messages_container);
     let ps = new PerfectScrollbar(messages_container, {
       suppressScrollX: true
     });
   }
 
   subscribeToWs_RequestById(id_request) {
-    this.logger.log('% »»» WebSocketJs WF >>> ws-msgs--- comp »»»»»»»»»» CALLING SUBSCRIBE Request-By-Id: ', id_request)
+    this.logger.log('[REQUEST-DTLS-X-PANEL] CALLING SUBSCRIBE TO Request-By-Id: ', id_request)
     // Start websocket subscription
-    // NOTE_nk: comment  this.wsRequestsService.subscribeTo_wsRequestById(id_request)
     this.wsRequestsService.subscribeTo_wsRequestById(id_request);
     // Get request
     this.getWsRequestById$();
@@ -170,13 +169,10 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
       )
       .subscribe((wsrequest) => {
 
-        // this.logger.log('% !!!!!!!!!!!! Ws-REQUESTS-Msgs - getWsRequestById$ *** wsrequest *** ', wsrequest)
-        // this.request = wsrequest;
-
         if (wsrequest) {
-          this.logger.log('REQUEST-DTLS-X-PANEL - wsrequest FROM SUBSCRIPTION ', wsrequest);
+          this.logger.log('[REQUEST-DTLS-X-PANEL] - wsrequest FROM SUBSCRIPTION ', wsrequest);
           this.IS_CURRENT_USER_JOINED = this.currentUserIdIsInParticipants(wsrequest['participants'], this.currentUserID, this.request.request_id);
-          this.logger.log('REQUEST-DTLS-X-PANEL - wsrequest IS_CURRENT_USER_JOINED ', this.IS_CURRENT_USER_JOINED);
+          this.logger.log('[REQUEST-DTLS-X-PANEL] - wsrequest IS_CURRENT_USER_JOINED ', this.IS_CURRENT_USER_JOINED);
 
           this.REQUEST_STATUS = wsrequest['status']
         }
@@ -228,7 +224,7 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
   }
 
   getWsRequesterPresence() {
-    // this.contactsService.wsRequesterStatus$
+
     this.wsRequestsService.wsRequesterStatus$
       .pipe(
         takeUntil(this.unsubscribe$)
@@ -237,7 +233,7 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
 
 
         const user = data
-        this.logger.log("wsRequesterPresence (ws-requests-dtl-for-panel) - getWsRequesterPresence user ", user);
+        this.logger.log("[REQUEST-DTLS-X-PANEL] - getWsRequesterPresence user ", user);
         if (user && user.presence) {
 
           if (user.presence.status === "offline") {
@@ -248,9 +244,9 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
         }
       }, error => {
 
-        this.logger.error('wsRequesterPresence (ws-requests-dtl-for-panel) - getWsRequesterPresence user * error * ', error)
+        this.logger.error('[REQUEST-DTLS-X-PANEL] - getWsRequesterPresence - ERROR', error)
       }, () => {
-        this.logger.log('wsRequesterPresence (ws-requests-dtl-for-panel) - getWsRequesterPresence user *** complete *** ')
+        this.logger.log('[REQUEST-DTLS-X-PANEL] - getWsRequesterPresence * COMPLETE * ')
       });
   }
 
@@ -267,54 +263,50 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
 
   getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
-      this.logger.log('REQUEST-DTLS-X-PANEL  USER ', user)
+      // this.logger.log('[REQUEST-DTLS-X-PANEL] GET CURRENT USER ', user)
       // this.user = user;
       if (user) {
         this.currentUserID = user._id
-        this.logger.log('REQUEST-DTLS-X-PANELD currentUserID ', this.currentUserID);
+        this.logger.log('[REQUEST-DTLS-X-PANEL] GET CURRENT USER  > currentUserID ', this.currentUserID);
       }
     });
   }
 
   joinRequest(request_id: string) {
-    this.logger.log('REQUEST-DTLS-X-PANEL currentUserID ', this.currentUserID);
+    this.logger.log('[REQUEST-DTLS-X-PANEL] JOIN-REQUEST - currentUserID ', this.currentUserID);
     this.currentUserID
     this.onJoinHandled(request_id, this.currentUserID);
   }
 
   archiveRequest(request_id) {
     this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg);
-    this.logger.log('REQUEST-DTLS-X-PANEL - HAS CLICKED ARCHIVE REQUEST ');
+    this.logger.log('[REQUEST-DTLS-X-PANEL] - HAS CLICKED ARCHIVE REQUEST ');
 
 
     this.wsRequestsService.closeSupportGroup(request_id)
       .subscribe((data: any) => {
-        this.logger.log('REQUEST-DTLS-X-PANEL - CLOSE SUPPORT GROUP - DATA ', data);
+        this.logger.log('[REQUEST-DTLS-X-PANEL] - CLOSE SUPPORT GROUP - DATA ', data);
       }, (err) => {
-        this.logger.error('REQUEST-DTLS-X-PANEL - CLOSE SUPPORT GROUP - ERROR ', err);
+        this.logger.error('[REQUEST-DTLS-X-PANEL] - CLOSE SUPPORT GROUP - ERROR ', err);
 
-
-        // =========== NOTIFY ERROR ===========
-        // this.notify.showNotification('An error has occurred archiving the request', 4, 'report_problem');
+        //  NOTIFY ERROR 
         this.notify.showNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
       }, () => {
-        // this.ngOnInit();
+    
         this.logger.log('REQUEST-DTLS-X-PANEL CLOSE SUPPORT GROUP - COMPLETE');
 
-        // =========== NOTIFY SUCCESS===========
-        // this.notify.showNotification(`request with id: ${this.id_request_to_archive} has been moved to History`, 2, 'done');
+        //  NOTIFY SUCCESS;
         this.notify.showRequestIsArchivedNotification(this.requestHasBeenArchivedNoticationMsg_part1);
 
-        // this.onArchiveRequestCompleted()
       });
   }
 
   onInitUsersListModalHeight() {
     const windowActualHeight = window.innerHeight;
-    this.logger.log('REQUEST-DTLS-X-PANEL - ACTUAL HEIGHT ', windowActualHeight);
+    this.logger.log('[REQUEST-DTLS-X-PANEL] - ACTUAL HEIGHT ', windowActualHeight);
 
     this.chat_content_height = windowActualHeight - 457
-    this.logger.log('REQUEST-DTLS-X-PANEL CHAT CONTENT HEIGHT ', this.chat_content_height);
+    this.logger.log('[REQUEST-DTLS-X-PANEL] CHAT CONTENT HEIGHT ', this.chat_content_height);
 
     return { 'height': this.chat_content_height += 'px' };
   }
@@ -322,15 +314,13 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
-    // this.newInnerWidth = event.target.innerWidth;
     const newInnerHeight = event.target.innerHeight;
     this.chat_content_height = newInnerHeight - 457
 
-    // this.logger.log('REQUEST-DTLS-X-PANEL - NEW INNER HEIGHT ', newInnerHeight);
-    // this.logger.log('REQUEST-DTLS-X-PANEL - ON RESIZE CHAT CONTENT HEIGHT ', this.chat_content_height);
+    this.logger.log('[REQUEST-DTLS-X-PANEL] - ON-RESIZE NEW INNER HEIGHT ', newInnerHeight);
+    this.logger.log('[REQUEST-DTLS-X-PANEL] - ON-RESIZE CHAT CONTENT HEIGHT ', this.chat_content_height);
 
     return { 'height': this.chat_content_height += 'px' };
-
   }
 
   getProfileImageStorage() {
@@ -339,22 +329,17 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
       this.UPLOAD_ENGINE_IS_FIREBASE = true;
       const firebase_conf = this.appConfigService.getConfig().firebase;
       this.storageBucket = firebase_conf['storageBucket'];
-      this.logger.log('REQUEST-DTLS-X-PANEL IMAGE STOTAGE  ', this.storageBucket, 'usecase firebase')
+      this.logger.log('[REQUEST-DTLS-X-PANEL] IMAGE STOTAGE  ', this.storageBucket, 'usecase firebase')
     } else {
       this.UPLOAD_ENGINE_IS_FIREBASE = false;
       this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
 
-      this.logger.log('REQUEST-DTLS-X-PANEL IMAGE STORAGE ', this.baseUrl, 'usecase native')
+      this.logger.log('[REQUEST-DTLS-X-PANEL] IMAGE STORAGE ', this.baseUrl, 'usecase native')
     }
-
   }
 
-
-
-
-
   subscribeToWs_MsgsByRequestId(id_request: string) {
-    this.logger.log('REQUEST-DTLS-X-PANEL subscribe To Ws Msgs ByRequestId ', id_request)
+    this.logger.log('[REQUEST-DTLS-X-PANEL] subscribe To Ws Msgs ByRequestId ', id_request)
     this.wsMsgsService.subsToWS_MsgsByRequestId(id_request);
     this.getWsMsgs$();
   }
@@ -365,16 +350,11 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
         takeUntil(this.unsubscribe$)
       )
       .subscribe((wsmsgs) => {
-        // this.wsMsgsService._wsMsgsList.subscribe((wsmsgs) => {
-        // this.logger.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsMsgs$ *** wsmsgs *** ', wsmsgs)
-
+ 
         this.messagesList = wsmsgs;
-        this.logger.log('REQUEST-DTLS-X-PANEL - getWsMsgs$ *** this.messagesList *** ', this.messagesList)
+        this.logger.log('[REQUEST-DTLS-X-PANEL] - getWsMsgs$ *** this.messagesList *** ', this.messagesList)
 
 
-        // let sender_in_next_msg: string
-        // let sender_in_prev_msg: string
-        // let sender_in_curr_msg: string
         let i: number
         for (i = 0; i < this.messagesList.length; i++) {
           this.logger.log('MSG - i: ', i, ' - requester_id ', this.requester_id)
@@ -392,22 +372,6 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
               this.messagesList[i]['avatar_url'] = this.baseUrl + 'images?path=uploads%2Fusers%2F' + this.messagesList[i].sender + '%2Fimages%2Fthumbnails_200_200-photo.jpg'
             }
           }
-
-          // sender_in_curr_msg = this.messagesList[i].sender
-          // if (i === 0 || this.messagesList[i - 1] && this.messagesList[i - 1].sender !== sender_in_curr_msg) {
-          //   this.messagesList[i]['isFirstMsgOfGroup'] = true;
-          // }
-          // if (i === this.messagesList.length - 1 || this.messagesList[i + 1] && this.messagesList[i + 1].sender !== sender_in_curr_msg) {
-          //   this.messagesList[i]['isLastMsgOfGroup'] = true;
-          // }
-          // if (this.messagesList[i + 1]) {
-          //   this.logger.log('MSG - i: ', i, ' -messagesList[i+1]?.sender ', this.messagesList[i + 1].sender)
-          //   sender_in_next_msg = this.messagesList[i + 1].sender
-          // }
-          // if (this.messagesList[i - 1]) {
-          //   this.logger.log('MSG - i: ', i, ' - messagesList[i-1]?.sender ', this.messagesList[i - 1].sender)
-          //   sender_in_prev_msg = this.messagesList[i - 1].sender
-          // }
         }
 
         if (this.timeout) {
@@ -415,7 +379,7 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
         }
 
         this.timeout = setTimeout(() => {
-          this.logger.log('REQUEST-DTLS-X-PANEL - getWsMsgs$ *** messagesList *** completed ')
+          this.logger.log('[REQUEST-DTLS-X-PANEL] - getWsMsgs$ *** messagesList *** COMPLETED ')
           this.showSpinner = false;
 
           this.scrollCardContetToBottom();
@@ -424,9 +388,9 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
 
       }, error => {
         this.showSpinner = false;
-        this.logger.error('REQUEST-DTLS-X-PANEL - getWsMsgs$ * error * ', error)
+        this.logger.error('[REQUEST-DTLS-X-PANEL]  - getWsMsgs$ - ERROR ', error)
       }, () => {
-        this.logger.log('REQUEST-DTLS-X-PANEL - getWsMsgs$ *** complete *** ')
+        this.logger.log('[REQUEST-DTLS-X-PANEL]  - getWsMsgs$ * COMPLETE * ')
       });
 
   }
@@ -465,24 +429,24 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
     setTimeout(() => {
       // CHECK THIS
       const initialScrollPosition = this.myScrollContainer.nativeElement;
-      // this.logger.log('SCROLL CONTAINER ', initialScrollPosition)
+      // this.logger.log('[REQUEST-DTLS-X-PANEL] - SCROLL CONTAINER ', initialScrollPosition)
 
       initialScrollPosition.scrollTop = initialScrollPosition.scrollHeight;
-      // this.logger.log('SCROLL HEIGHT ', initialScrollPosition.scrollHeight);
+      // this.logger.log('[REQUEST-DTLS-X-PANEL] - SCROLL HEIGHT ', initialScrollPosition.scrollHeight);
     }, 100);
   }
 
   // LISTEN TO SCROLL POSITION
   onScroll(event: any): void {
-    // this.logger.log('RICHIAMO ON SCROLL ')
+    // this.logger.log('[REQUEST-DTLS-X-PANEL] CALL ON SCROLL ')
     const scrollPosition = this.myScrollContainer.nativeElement.scrollTop;
 
     const scrollHeight = this.myScrollContainer.nativeElement.scrollHeight;
-    // this.logger.log('ON SCROLL - SCROLL POSITION ', scrollPosition);
-    // this.logger.log('ON SCROLL - SCROLL HEIGHT ', scrollHeight);
+    // this.logger.log('[REQUEST-DTLS-X-PANEL] ON SCROLL - SCROLL POSITION ', scrollPosition);
+    // this.logger.log('[REQUEST-DTLS-X-PANEL] ON SCROLL - SCROLL HEIGHT ', scrollHeight);
 
     const scrollHeighLessScrollPosition = scrollHeight - scrollPosition;
-    // this.logger.log('ON SCROLL - SCROLL OVERFLOW ', scrollHeighLessScrollPosition);
+    // this.logger.log('[REQUEST-DTLS-X-PANEL] ON SCROLL - SCROLL OVERFLOW ', scrollHeighLessScrollPosition);
     if (scrollHeighLessScrollPosition > 500) {
       this.displayBtnScrollToBottom = 'block';
     } else {
@@ -494,7 +458,7 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
     try {
       this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
       // tslint:disable-next-line:max-line-length
-      // this.logger.log('RUN SCROLL TO BOTTOM - SCROLL TOP ', this.myScrollContainer.nativeElement.scrollHeight, ' SCROLL HEIGHT ', this.myScrollContainer.nativeElement.scrollHeight);
+      // this.logger.log('[REQUEST-DTLS-X-PANEL]  RUN SCROLL TO BOTTOM - SCROLL TOP ', this.myScrollContainer.nativeElement.scrollHeight, ' SCROLL HEIGHT ', this.myScrollContainer.nativeElement.scrollHeight);
     } catch (err) {
       this.logger.error('REQUEST-DTLS-X-PANEL - scrollToBottom ERROR ', err);
     }
@@ -503,7 +467,6 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
 
   closeRightSideBar() {
     this.logger.log('REQUEST-DETAIL-FOR-PANEL - closeRightSideBar this.valueChange ', this.valueChange)
-    // this.valueChange.next()
     this.valueChange.emit(false);
     this.isOpenRightSidebar = false;
 
@@ -511,7 +474,7 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
     [].forEach.call(
       document.querySelectorAll('footer ul li a'),
       function (el) {
-        // this.logger.log('footer > ul > li > a element: ', el);
+        // this.logger.log('[REQUEST-DTLS-X-PANEL] footer > ul > li > a element: ', el);
         el.setAttribute('style', 'text-transform: none');
       }
     );
