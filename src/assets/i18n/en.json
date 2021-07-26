@@ -474,7 +474,7 @@
     "PostalCode": "Postal/Zip",
     "Country": "Country",
     "PhoneNumber": "Phone number",
-    "StartDate": "Start Date",
+    "StartDate": "Start date",
     "ExtremeMeasures": "Extreme measures",
     "DeleteAccount": "Delete account",
     "AreYouSureYouWantDeleteYourAccount": "Are you sure you want delete your account",
@@ -1933,5 +1933,14 @@
    "RenderAbutton": "Render a button",
    "SettingUpAutomaticAssignment":"Setting up automatic assignment",
    "..................":"..................",
-   "Map":"Map"
+   "Map":"Map",
+   "EventDetails": "Event Details",
+   "PeriodStart":"Period start",
+   "PeriodEnd":"Period end",
+   "Amount": "Amount", 
+   "EndDate":" End date",
+   "Seats": "Seats",
+   "UnitAmount":"Unit Amount",
+   "AnErrorOccurringDuringThePayment":"An error occurring during the payment"
+   
 }

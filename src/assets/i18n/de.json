@@ -1916,5 +1916,13 @@
 	"RenderAbutton": "Eine Schaltfläche rendern",
 	"SettingUpAutomaticAssignment": "Automatische Zuordnung einrichten",
 	"..................":"..................",
-	"Map":"Karte"
+	"Map":"Karte",
+	"EventDetails": "Veranstaltungsdetails",
+	"PeriodStart":"Periodenbeginn",
+    "PeriodEnd":"Perioden Ende",
+	"Amount": "Menge",
+	"EndDate":" Enddatum",
+	"Seats": "Sitze",
+	"UnitAmount":"Einheitsbetrag",
+	"AnErrorOccurringDuringThePayment":"Bei der Zahlung ist ein Fehler aufgetreten"
 }

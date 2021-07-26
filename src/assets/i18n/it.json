@@ -1914,5 +1914,14 @@
     "RenderAbutton": "Eseguire il rendering di un pulsante",
     "SettingUpAutomaticAssignment":"Configurazione dell'assegnazione automatica",
     "..................":"..................",
-    "Map":"Mappa"
+    "Map":"Mappa",
+    "EventDetails": "Dettagli dell'evento",
+    "PeriodStart":"Inizio periodo",
+    "PeriodEnd":"Fine periodo",
+    "Amount": "Importo",
+    "EndDate":"Data di fine",
+    "Seats": "Posti",
+    "UnitAmount":"Importo unitario",
+    "AnErrorOccurringDuringThePayment":"Si è verificato un errore durante il pagamento"
+ 
 }
