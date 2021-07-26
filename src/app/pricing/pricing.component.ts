@@ -2,15 +2,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
 import { AuthService } from '../core/auth.service';
-import { Router } from '@angular/router'
+import { ActivatedRoute } from '@angular/router'
 import { UsersService } from '../services/users.service';
 import { ProjectService } from '../services/project.service';
 import { ProjectPlanService } from '../services/project-plan.service';
-import { switchMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 declare var Stripe: any;
 import { Subscription } from 'rxjs';
-// import brand from 'assets/brand/brand.json';
 import { BrandService } from '../services/brand.service';
 import { LoggerService } from '../services/logger/logger.service';
 
@@ -64,10 +62,11 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   TILEDESK_V2 = true;
 
+  DISPLAY_BTN_PLAN_LIVE_20_CENTSXUNIT: boolean = false;
   constructor(
     public location: Location,
     public auth: AuthService,
-    private router: Router,
+    private route: ActivatedRoute,
     private usersService: UsersService,
     public projectService: ProjectService,
     private prjctPlanService: ProjectPlanService,
@@ -107,6 +106,21 @@ export class PricingComponent implements OnInit, OnDestroy {
     this.getProjectPlan();
 
     this.setPlansPKandCode();
+    this.getRouteParams();
+  }
+
+  getRouteParams() {
+    // ADDS ?nk=y to the route pricing to dispaly the button to run the checkout to the plan "LIVE 0,20 €/day MIN 3 QTY "
+    this.route.queryParams.subscribe((params) => {
+      this.logger.log('[PRICING] - ROUTE-PARAMS', params)
+      if (params.nk) {
+        this.logger.log('[PRICING] - ROUTE-PARAMS params.nk: ', params.nk)
+        if(params.nk === 'y') {
+          this.DISPLAY_BTN_PLAN_LIVE_20_CENTSXUNIT = true;
+          this.logger.log('[PRICING] - ROUTE-PARAMS DISPLAY_BTN_PLAN_LIVE_20_CENTSXUNIT', this.DISPLAY_BTN_PLAN_LIVE_20_CENTSXUNIT)
+        }
+      }
+    });
   }
 
 
