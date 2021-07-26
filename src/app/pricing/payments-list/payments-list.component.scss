@@ -1,40 +1,147 @@
 // start TOOLTIP
 /* Tooltip container */
 .tooltipx {
-    position: relative;
-    display: inline-block;
-    // border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+  position: relative;
+  display: inline-block;
+  // border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.tooltipx .tooltiptext-custom {
+  visibility: hidden;
+  // width: 120px;
+  color: #fff;
+  text-align: center;
+  padding: 5px 5px;
+  border-radius: 5px;
+  font-size: 12px !important;
+  /* Position the tooltip text */
+  position: absolute;
+  z-index: 1;
+  /* Position the tooltip text - TOP */
+  // width: 420px;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
+
+  max-width: 10em; // only for contacts component
+  overflow-wrap: break-word; // only for contacts component
+  // NEW
+  box-shadow: 0 1em 2em -0.5em rgba(0, 0, 0, 0.35);
+  z-index: 1000;
+  background-color: #394f5a;
+  line-height: 1.5;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltipx:hover .tooltiptext-custom {
+  visibility: visible;
+}
+// /.end TOOLTIP
+
+// TABLE WITH DETAILS
+.pcs:after {
+  content: " pcs";
+}
+.cur:before {
+  content: "$";
+}
+.per:after {
+  content: "%";
+}
+// --------------------------
+* {
+  box-sizing: border-box;
+}
+body {
+  padding: 0.2em 2em;
+}
+// Table
+table {
+  width: 100%;
+  th {
+    text-align: left;
+    border-bottom: 1px solid #ccc;
   }
-  
-  /* Tooltip text */
-  .tooltipx .tooltiptext-custom {
-    visibility: hidden;
-    // width: 120px;
-    color: #fff;
-    text-align: center;
-    padding: 5px 5px;
-    border-radius: 5px;
-    font-size: 12px !important;
-    /* Position the tooltip text */
-    position: absolute;
-    z-index: 1;
-    /* Position the tooltip text - TOP */
-    // width: 420px;
-    bottom: 100%;
-    left: 50%; 
-    margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
-    
-    max-width: 10em; // only for contacts component
-    overflow-wrap: break-word; // only for contacts component
-    // NEW
-    box-shadow: 0 1em 2em -0.5em rgba(0, 0, 0, 0.35);
-    z-index: 1000;
-    background-color: #394f5a;
-    line-height: 1.5;
+  th,
+  td {
+    padding: 0.4em;
+    font-family: "Google Sans", sans-serif !important;
+    font-weight: 400;
   }
-  
-  /* Show the tooltip text when you mouse over the tooltip container */
-  .tooltipx:hover .tooltiptext-custom {
-    visibility: visible;
+}
+
+// fold table
+table.fold-table {
+  > tbody {
+    // view segment
+    > tr.view {
+      td,
+      th {
+        cursor: pointer;
+      }
+      td:first-child,
+      th:first-child {
+        position: relative;
+        padding-left: 20px;
+        &:before {
+          position: absolute;
+          top: 50%;
+          left: 5px;
+          width: 9px;
+          height: 16px;
+          margin-top: -8px;
+          font: 16px fontawesome;
+          color: #999;
+          content: "\f0d7";
+          transition: all 0.3s ease;
+        }
+      }
+      // &:nth-child(4n-1) { background: #eee; }
+      &:hover {
+        background: #eee;
+      }
+      &.open {
+        background: #3ea9f5;
+        color: white;
+        // background: #eee;
+        // color: white;
+        td:first-child,
+        th:first-child {
+          &:before {
+            transform: rotate(-180deg);
+            color: white;
+          }
+        }
+      }
+    }
+
+    // fold segment
+    > tr.fold {
+      display: none;
+      &.open {
+        display: table-row;
+      }
+    }
   }
-  // /.end TOOLTIP 
+}
+
+// fold content
+.fold-content {
+  padding: 0.5em;
+  h3 {
+    margin-top: 0;
+  }
+  > table {
+    border: 1px solid #ccc;
+    > tbody {
+      tr:nth-child(even) {
+        // background: #eee;
+      }
+    }
+  }
+}
+
+.btn_in_accordion_table.open {
+  color: #ffffff !important;
+}

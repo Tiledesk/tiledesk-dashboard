@@ -1,144 +1,278 @@
 <<div class="navbar-brand" style="margin-top:6px; padding-left:30px; z-index: 1050;position: relative;">
-    <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBack()">keyboard_arrow_left</i>
-    {{ "ProjectEditPage.Payments" | translate }}
-</div>
-<div class="main-content" style="padding-top: 0px">
-  <div class="container-fluid">
-    <div class="row">
+  <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
+    (click)="goBack()">keyboard_arrow_left</i>
+  {{ "ProjectEditPage.Payments" | translate }}
+  </div>
+  <div class="main-content" style="padding-top: 0px;margin-top: 45px;">
+    <div class="container-fluid">
+      <div class="row">
 
 
-      <div class="col-md-12">
-        <div class="card">
-          <loading-spinner *ngIf="showSpinner"></loading-spinner>
+        <div class="col-md-12" style="display: none;">
+          <div class="card card--no-border">
+            <loading-spinner *ngIf="showSpinner"></loading-spinner>
 
-          <div *ngIf="!showSpinner"  class="card-content table-responsive" style="padding-bottom:5px">
-    
-            <table class="table table-hover">
-              <thead class="text">
-                <tr>
+            <div *ngIf="!showSpinner" class="card-content table-responsive" style="padding-bottom:5px">
 
-                  <th>
-                    <span style="font-size: 14px; font-weight: 500; color: #353f45;">
-                        ID  {{ 'Invoice' | translate }} 
-                    </span>
-                  </th>
+              <table class="table table-hover">
+                <thead class="text">
+                  <tr>
 
-                  <th>
-                    <span style="font-size: 14px; font-weight: 500; color: #353f45;">
-                      {{ 'Event' | translate }}  
-                    </span>
-                  </th>
+                    <th>
+                      <span style="font-size: 14px; font-weight: 500; color: #353f45;">
+                        ID {{ 'Invoice' | translate }}
+                      </span>
+                    </th>
 
-                  <!-- <th>
+                    <th>
+                      <span style="font-size: 14px; font-weight: 500; color: #353f45;">
+                        {{ 'Event' | translate }}
+                      </span>
+                    </th>
+
+                    <!-- <th>
                     <span style="font-size: 14px; font-weight: 500; color: #353f45;">
                       {{ 'Plan' | translate }}  
                     </span>
                   </th> -->
 
-                  <th>
+                    <th>
                       <span style="font-size: 14px; font-weight: 500; color: #353f45;">
-                        {{ 'PaymentDate' | translate }}  
+                        {{ 'PaymentDate' | translate }}
                       </span>
-                  </th>
-  
+                    </th>
 
-                  <th>
-                    <span style="font-size: 14px; font-weight: 500; color: #353f45;">
-                      {{ 'Period' | translate }}  
-                    </span>
-                  </th>
 
-                  <th>
-                    <span style="font-size: 14px; font-weight: 500; color: #353f45;">
-                      {{ 'Invoice' | translate }}  
-                    </span>
-                  </th>
-
-                </tr>
-              </thead>
-              <tbody>
-
-                <!-- ===== IF THERE ISN'T PAYMENTS ===== -->
-                <tr *ngIf="subscription_payments && subscription_payments?.length === 0"> 
-                  <td colspan="4" style="text-align: center; padding-top: 16px; cursor: pointer">
-
-                    <p style="font-size:1em; color:#7695a5; font-weight: 400">
-                      
-                      {{ 'Pricing.NoPayments' | translate }}
-                    </p>
-                  </td>
-                </tr> 
-                <tr *ngFor="let subscription of subscription_payments">
-
-                  <td style="white-space: nowrap; width: 1%;">
-                    <span style="font-size:14px; line-height:21px; font-weight: 500;"> 
-                      {{ subscription?.object?.data?.object?.id }}
-                    </span>  
-                  </td>
-
-                  <td style="white-space: nowrap; width: 1%;">
-
-                    <span *ngIf="subscription?.object?.data.object.billing_reason === 'subscription_create'">
-                      <span style="font-size:14px; line-height:21px; font-weight: 500;"> 
-                        {{ 'SubscriptionCreated' | translate }} 
+                    <th>
+                      <span style="font-size: 14px; font-weight: 500; color: #353f45;">
+                        {{ 'Period' | translate }}
                       </span>
-                    </span>
-                    <span *ngIf="subscription?.object?.data.object.billing_reason === 'subscription_cycle'">
-                      <span style="font-size:14px; line-height:21px; font-weight: 500;"> 
-                        {{ 'SubscriptionRenewed' | translate }}
+                    </th>
+
+                    <th>
+                      <span style="font-size: 14px; font-weight: 500; color: #353f45;">
+                        {{ 'Invoice' | translate }}
                       </span>
-                    </span>
+                    </th>
 
-                  </td>
+                  </tr>
+                </thead>
+                <tbody>
 
-                  <!-- ================ PLAN NAME ================ -->
-                  <!-- <td style="white-space: nowrap; width: 1%;">
+                  <!-- ===== IF THERE ISN'T PAYMENTS ===== -->
+                  <tr *ngIf="subscription_payments && subscription_payments?.length === 0">
+                    <td colspan="4" style="text-align: center; padding-top: 16px; cursor: pointer">
+
+                      <p style="font-size:1em; color:#7695a5; font-weight: 400">
+
+                        {{ 'Pricing.NoPayments' | translate }}
+                      </p>
+                    </td>
+                  </tr>
+
+                  <tr *ngFor="let subscription of subscription_payments">
+
+                    <td style="white-space: nowrap; width: 1%;">
+
+
+
+                      <span style="font-size:14px; line-height:21px; font-weight: 500;">
+                        {{ subscription?.object?.data?.object?.id }}
+                      </span>
+                    </td>
+
+                    <td style="white-space: nowrap; width: 1%;">
+
+                      <span *ngIf="subscription?.object?.data.object.billing_reason === 'subscription_create'">
+                        <span style="font-size:14px; line-height:21px; font-weight: 500;">
+                          {{ 'SubscriptionCreated' | translate }}
+                        </span>
+                      </span>
+                      <span *ngIf="subscription?.object?.data.object.billing_reason === 'subscription_cycle'">
+                        <span style="font-size:14px; line-height:21px; font-weight: 500;">
+                          {{ 'SubscriptionRenewed' | translate }}
+                        </span>
+                      </span>
+
+                    </td>
+
+                    <!-- ================ PLAN NAME ================ -->
+                    <!-- <td style="white-space: nowrap; width: 1%;">
                     <span style="font-size:14px; line-height:21px; font-weight: 500;"> 
                       {{ subscription?.plan_name }}
                     </span>
                   </td> -->
 
-                  <!-- ================ PAYMENT DATE ================ -->
-                  <td style="white-space: nowrap; width: 1%;">
-                    <span style="font-size:14px; line-height:21px; font-weight: 500;"> 
-                    
-                      {{ subscription?.object?.data.object?.status_transitions?.paid_at * 1000 | date: 'dd/MM/y HH:mm:ss' }}
-                    </span>
-                  </td>
-                  <!-- style="white-space: nowrap; width: 1%;" -->
+                    <!-- ================ PAYMENT DATE ================ -->
+                    <td style="white-space: nowrap; width: 1%;">
+                      <span style="font-size:14px; line-height:21px; font-weight: 500;">
 
-           
-
-                  <td>
-                    <span style="font-size:14px; line-height:21px; font-weight: 500;"> 
-                      {{ subscription?.object?.data.object.lines.data[0].period.start * 1000 | date: 'dd/MM/y HH:mm:ss' }} -> {{   subscription?.object?.data.object.lines.data[0].period.end * 1000 | date: 'dd/MM/y HH:mm:ss' }}
-                    </span>  
-                  </td>
-                  <td class="td-actions text-center">
-                    <a [href]="subscription?.object?.data?.object?.hosted_invoice_url" target="_blank" class="tooltipx">
-                     <i class="material-icons">
-                      open_in_new
-                      </i>
-                      <span class="tooltiptext-custom" style="text-transform:none;height: 40px;line-height: 1.4;font-weight: 200;">
-                        {{ 'ViewInvoice' | translate }} 
-                      </span> 
-                    </a>
-                    <a [href]="subscription?.object?.data?.object?.invoice_pdf" class="tooltipx">
-                      <i class="material-icons" style="margin-left: 16px;">
-                        save_alt
-                      </i>
-                      <span class="tooltiptext-custom" style="text-transform:none;height: 40px;line-height: 1.4;font-weight: 200;">
-                        {{ 'DownloadInvoice' | translate }} 
+                        {{ subscription?.object?.data.object?.status_transitions?.paid_at * 1000 | date: 'dd/MM/y
+                        HH:mm:ss' }}
                       </span>
-                    </a>
-                  </td>
-                </tr>
-              </tbody>
+                    </td>
+                    <!-- style="white-space: nowrap; width: 1%;" -->
 
-            </table>
+
+
+                    <td>
+                      <span style="font-size:14px; line-height:21px; font-weight: 500;">
+                        <span
+                          *ngFor="let lines of  subscription?.object?.data?.object?.lines?.data?.slice().reverse()  | slice:0:1; let i = index; let first = first; let last = last"
+                          [ngClass]="{ first: first, last: last }">
+                          <!-- {{ subscription?.object?.data.object.lines.data[0].period.start * 1000 | date: 'dd/MM/y HH:mm:ss' }} -> {{   subscription?.object?.data.object.lines.data[0].period.end * 1000 | date: 'dd/MM/y HH:mm:ss' }} -->
+                          <!-- {{ subscription?.object?.data.object.lines.data.period.start * 1000 | date: 'dd/MM/y HH:mm:ss' }} -> {{   subscription?.object?.data.object.lines.data.period.end * 1000 | date: 'dd/MM/y HH:mm:ss' }} -->
+
+                          {{lines.period.start * 1000 | date: 'dd/MM/y HH:mm:ss' }} -> {{lines.period.end * 1000 |
+                          date: 'dd/MM/y HH:mm:ss' }}
+                        </span>
+                      </span>
+
+
+                    </td>
+                    <td class="td-actions text-center">
+                      <a [href]="subscription?.object?.data?.object?.hosted_invoice_url" target="_blank"
+                        class="tooltipx">
+                        <i class="material-icons">
+                          open_in_new
+                        </i>
+                        <span class="tooltiptext-custom"
+                          style="text-transform:none;height: 40px;line-height: 1.4;font-weight: 200;">
+                          {{ 'ViewInvoice' | translate }}
+                        </span>
+                      </a>
+                      <a [href]="subscription?.object?.data?.object?.invoice_pdf" class="tooltipx">
+                        <i class="material-icons" style="margin-left: 16px;">
+                          save_alt
+                        </i>
+                        <span class="tooltiptext-custom"
+                          style="text-transform:none;height: 40px;line-height: 1.4;font-weight: 200;">
+                          {{ 'DownloadInvoice' | translate }}
+                        </span>
+                      </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
+
+        <!-- ------------------------------------------------------- -->
+        <!-- TABLE WITH DETAIL  https://codepen.io/jopico/pen/EGpim -->
+        <!-- ------------------------------------------------------- -->
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card  card--no-border">
+              <loading-spinner *ngIf="showSpinner"></loading-spinner>
+              <div *ngIf="!showSpinner" class="card-content table-responsive" style="padding-bottom:5px">
+
+                <table class="fold-table table-hover">
+                  <thead>
+                    <tr>
+                      <th>ID {{ 'Invoice' | translate }}</th>
+                      <th>{{ 'Event' | translate }}</th>
+                      <th>{{ 'PaymentDate' | translate }}</th>
+                      <th>{{ 'Amount' | translate }}</th>
+                      <th> {{ 'Invoice' | translate }}</th>
+
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <ng-container *ngFor="let subscription of subscription_payments">
+                      <tr class="view" id="view_{{subscription?.object?.id}}" (click)=toggle(subscription?.object?.id)>
+                        <td>{{ subscription?.object?.data?.object?.id }}</td>
+                        <td>
+                          <span *ngIf="subscription?.object?.data.object.billing_reason === 'subscription_create'">
+                            <span style="font-size:14px; line-height:21px;">
+                              {{ 'SubscriptionCreated' | translate }}
+                            </span>
+                          </span>
+                          <span *ngIf="subscription?.object?.data.object.billing_reason === 'subscription_cycle'">
+                            <span style="font-size:14px; line-height:21px;">
+                              {{ 'SubscriptionRenewed' | translate }}
+                            </span>
+                          </span>
+                        </td>
+                        <td>
+                          {{ subscription?.object?.data.object?.status_transitions?.paid_at * 1000 | date: 'dd/MM/y' }}
+                        </td>
+                        <td>
+                          <!-- <span
+                      *ngFor="let lines of  subscription?.object?.data?.object?.lines?.data?.slice().reverse()  | slice:0:1; let i = index; let first = first; let last = last"
+                      [ngClass]="{ first: first, last: last }">
+                      {{lines.period.start * 1000 | date: 'dd/MM/y' }} -> {{lines.period.end * 1000 | date: 'dd/MM/y' }}
+                    </span> -->
+                          {{ subscription?.object?.data.object?.amount_paid / 100  | number : '1.2-2' }} {{
+                          subscription?.object?.data.object?.currency}}
+
+                        </td>
+                        <td class="td-actions text-left">
+                          <button id="btn_openinnew_{{subscription?.object?.id}}" type="button" class="btn btn-primary btn-simple btn-xs btn_in_accordion_table tooltipx" style="padding-left: 1px; padding-right: 5px;"
+                            (click)='$event.stopPropagation();viewRecepit(subscription?.object?.data?.object?.hosted_invoice_url)'>
+                            <i class="material-icons accordion_table_icon" id="icon_{{subscription?.object?.id}}">open_in_new</i>
+                            <span class="tooltiptext-custom"
+                              style="text-transform:none;line-height: 1.4;font-weight: 200;">
+                              {{ 'ViewInvoice' | translate }}
+                            </span>
+                          </button>
+
+                          <button id="btn_dwnload_{{subscription?.object?.id}}" type="button" class="btn btn-primary btn-simple btn-xs btn_in_accordion_table tooltipx" style="padding-left: 1px; padding-right: 5px;"
+                            (click)='$event.stopPropagation();viewInvoice(subscription?.object?.data?.object?.invoice_pdf)'>
+                            <i class="material-icons accordion_table_icon"  id="icon_{{subscription?.object?.id}}">save_alt</i>
+                            <span class="tooltiptext-custom"
+                              style="text-transform:none;line-height: 1.4;font-weight: 200;">
+                              {{ 'DownloadInvoice' | translate }}
+                            </span>
+                          </button>
+                        </td>
+                      </tr>
+
+                      <tr class="fold" id="fold_{{subscription?.object?.id}}">
+                        <td colspan="7">
+                          <div class="fold-content">
+                            <h3 style="font-size: 14px; font-weight:400;">{{'EventDetails' | translate}}</h3>
+
+                            <table>
+                              <thead>
+                                <tr>
+                                  <th>{{'Description' | translate}}</th>
+                                  <th>{{'StartDate' | translate}}</th>
+                                  <th>{{'EndDate' | translate}}</th>
+                                  <th>{{'Amount' | translate}}</th>
+                                  <th>{{'Seats' | translate}}</th>
+                                  <th>{{'UnitAmount' | translate}}</th>
+
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr *ngFor="let data of  subscription?.object?.data?.object?.lines?.data">
+                                  <td> {{data?.description}} </td>
+                                  <td>{{data?.period.start * 1000 | date: 'dd/MM/y HH:mm:ss' }}</td>
+                                  <td>{{data?.period.end * 1000 | date: 'dd/MM/y HH:mm:ss' }}</td>
+                                  <td>{{data?.amount  / 100 | number : '1.2-2' }} {{data.currency }}</td>
+                                  <td>{{data?.quantity}}</td>
+                                  <td> {{data?.price.unit_amount / 100 | number : '1.2-2'}} {{ data?.price.currency }}
+                                  </td>
+
+                                </tr>
+
+                              </tbody>
+                            </table>
+                          </div>
+                        </td>
+                      </tr>
+                    </ng-container>
+
+                  </tbody>
+                </table>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
-</div>

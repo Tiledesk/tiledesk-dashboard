@@ -53,16 +53,30 @@ export class PaymentsListComponent implements OnInit, OnDestroy {
   getSubscriptionPayments(subscription_id) {
     this.prjctService.getSubscriptionPayments(subscription_id).subscribe((subscriptionPayments: any) => {
       this.logger.log('[PRICING - PAYMENT-LIST] get subscriptionPayments ', subscriptionPayments);
-
+ 
       if (subscriptionPayments) {
         this.subscription_payments = [];
         subscriptionPayments.forEach(subscriptionPayment => {
-          this.logger.log('[PRICING - PAYMENT-LIST] subscriptionPayment.stripe_event ', subscriptionPayment.stripe_event);
+          this.logger.log('[PRICING - PAYMENT-LIST] get subscriptionPayment ', subscriptionPayment);
+          this.logger.log('[PRICING - PAYMENT-LIST] get subscriptionPayment.stripe_event ', subscriptionPayment.stripe_event);
 
-
+        
+          
           // && subscriptionPayment.stripe_event !== 'customer.subscription.deleted' && subscriptionPayment.stripe_event !== 'customer.subscription.updated'
-
+                                                    
           if (subscriptionPayment.stripe_event === 'invoice.payment_succeeded') {
+
+            var i = 0;
+            subscriptionPayment.object.data.object.lines.data.forEach((line, index) => {
+              this.logger.log('[PRICING - PAYMENT-LIST] subscriptionPayment ', index  ,' line ' ,line)
+              i++
+             
+            });
+            this.logger.log('[PRICING - PAYMENT-LIST] subscriptionPayment i ', i )
+         
+            if ( i > 1) {
+              subscriptionPayment.has_detail = true
+            }
 
             const plan_description = subscriptionPayment.object.data.object.lines.data[0].description;
             this.logger.log('[PRICING - PAYMENT-LIST] subscriptionPayment plan_description: ', plan_description);
@@ -101,6 +115,50 @@ export class PaymentsListComponent implements OnInit, OnDestroy {
       this.logger.log('[PRICING - PAYMENT-LIST] get subscriptionPayments * COMPLETE * ');
       this.showSpinner = false;
     });
+  }
+
+  // $(function(){
+  //   $(".fold-table tr.view").on("click", function(){
+  //     $(this).toggleClass("open").next(".fold").toggleClass("open");
+  //   });
+  // });
+
+  toggle(event_id) {
+    this.logger.log('[PRICING - PAYMENT-LIST] toggle event_id', event_id);
+    let elemtr_viewv: any;
+   elemtr_viewv = <HTMLElement>document.querySelector('.fold-table  tr'+ '#view_'+event_id );
+    this.logger.log('[PRICING - PAYMENT-LIST] toggle elemtr_viewv', elemtr_viewv);
+    // elemtr_viewv.classList.toggle("open").nextElementSibling.
+    elemtr_viewv.classList.toggle("open")
+
+    const foldTrElem = <HTMLElement>document.querySelector('#fold_' + event_id);
+    this.logger.log('[PRICING - PAYMENT-LIST] toggle foldTrElem', foldTrElem);
+    foldTrElem.classList.toggle("open");
+    
+    // const iconElem = <HTMLElement>document.querySelector('#icon_' + event_id);
+    // this.logger.log('[PRICING - PAYMENT-LIST] toggle iconElem', iconElem);
+    // iconElem.classList.toggle("open");
+
+    const btnDwnloadElem = <HTMLElement>document.querySelector('#btn_dwnload_' + event_id);
+    this.logger.log('[PRICING - PAYMENT-LIST] toggle btnDwnloadElem', btnDwnloadElem);
+    btnDwnloadElem.classList.toggle("open");
+
+    const btnOpenInNewTabElem = <HTMLElement>document.querySelector('#btn_openinnew_' + event_id);
+    this.logger.log('[PRICING - PAYMENT-LIST] toggle btnDwnloadElem', btnOpenInNewTabElem);
+    btnOpenInNewTabElem.classList.toggle("open");
+
+    // .next(".fold").toggleClass("open");
+    // .nextElementSibling(".fold").toggleClass("open");
+  }
+
+  viewRecepit(url) {
+    this.logger.log('[PRICING - PAYMENT-LIST] viewRecepit', url);
+    window.open(url, '_blank');
+  }
+
+  viewInvoice(url) {
+    this.logger.log('[PRICING - PAYMENT-LIST] viewInvoice', url);
+    window.location.assign(url);
   }
 
   goBack() {
