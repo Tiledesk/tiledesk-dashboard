@@ -1,3 +1,105 @@
-<p>
-  payment-canceled-page works!
-</p>
+<div class="main-content" style="padding-top:0px; background-color: #ffffff; 
+ min-height: calc(100% - 53px);margin-top: 0px; padding: 0px">
+
+
+  <div style="min-height: calc(100vh - 53px);" class="plan-bckgrnd success-payment-bckgrnd">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="close-pricing-page">
+          <i class="material-icons close-btn" (click)="goToHome()">
+            clear
+          </i>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="row">
+
+        <div class="col-md-12" style="text-align:center">
+
+          <div class="card"
+            style="box-shadow: 0 14px 30px 0 rgba(60,72,91,0.22); border-radius:10px; margin-top: 60px;max-width: 960px ">
+            <div class="card-content">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="icon-box-error">
+                    <i style="font-size: 45px;line-height: 66px;" class="material-icons">clear</i>
+                  </div>
+
+                  <h1 class="success-page-card-title">Oops!</h1>
+
+                  <h3 class="success-page-card-subtitle">
+                    <!-- Your payment is successfully done. -->
+                    {{ 'AnErrorOccurringDuringThePayment' | translate }}.
+                  </h3>
+                  <!-- <h3 class="success-page-card-subtitle" style="margin-top: 10px;">
+                  
+                    {{ 'PleaseCheckYourEmailYouWillReceiveReceipt'| translate }}.
+                  </h3> -->
+                </div>
+              </div>
+
+
+
+              <div class="row">
+
+                <div class="col-sm-12">
+
+                  <hr class="custom-hr">
+
+                </div>
+              </div>
+
+
+              <div class="row">
+
+                <div class="col-sm-12">
+
+                  <div class="contat-us" style="text-align:center; margin-top:15px; margin-bottom:15px">
+                    <!-- #014c8c -->
+                    <h4>
+                      <!-- Having trouble?  -->
+                      {{ 'HavingTrouble' | translate }}?
+
+                      <a target="_blank" href="mailto:{{contact_us_email}}"
+                        style="text-transform: none; color: #0275d8 ">
+                        <!-- Contact us  -->
+                        {{ 'ContactUs' | translate }}
+                      </a>
+
+                    </h4>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div> <!-- ./ card-content -->
+          </div> <!-- ./ card -->
+
+        </div>
+      </div> <!-- ./ row -->
+
+      <div class="row">
+        <div class="col-sm-12">
+
+          <div style="text-align: center; margin-top: 15px;">
+            <button type="button" class="btn btn-lg btn-primary" (click)="goToHome()">
+
+              <span>
+                <!-- Continue to homepage   -->
+                {{ 'ContinueToHomepage' | translate }}
+
+              </span>
+
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
