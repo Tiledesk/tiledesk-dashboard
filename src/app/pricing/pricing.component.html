@@ -103,11 +103,11 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
                 (click)="updatesubscription()">
                   UPDATE SUBSCRIPTION
                 </button> -->
-
-                <!-- <button  style="background-color:#6772E5;color:#FFF;padding:8px 12px;border:0;border-radius:4px;font-size:1em"
+                
+                <button *ngIf="DISPLAY_BTN_PLAN_TEST_3_EURXUNIT_PRE === true" style="background-color:#6772E5;color:#FFF;padding:8px 12px;border:0;border-radius:4px;font-size:1em"
                   (click)="stripeProPlanPerDayCheckout()">
-                    *** DAILY PLAN ***
-                </button> -->
+                    TEST 3,00 €/day
+                </button>
 
               <!--  <button  style="background-color:rgb(103, 229, 221);color:#FFF;padding:8px 12px;border:0;border-radius:4px;font-size:1em"
                 (click)="stripeProPlanPerDayWithTrialCheckout()">

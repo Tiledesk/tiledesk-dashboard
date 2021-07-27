@@ -7,10 +7,12 @@ import { UsersService } from '../services/users.service';
 import { ProjectService } from '../services/project.service';
 import { ProjectPlanService } from '../services/project-plan.service';
 import { Observable } from 'rxjs';
-declare var Stripe: any;
 import { Subscription } from 'rxjs';
 import { BrandService } from '../services/brand.service';
 import { LoggerService } from '../services/logger/logger.service';
+import { AppConfigService } from '../services/app-config.service';
+
+declare var Stripe: any;
 
 @Component({
   selector: 'appdashboard-pricing',
@@ -62,7 +64,8 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   TILEDESK_V2 = true;
 
-  DISPLAY_BTN_PLAN_LIVE_20_CENTSXUNIT: boolean = false;
+  DISPLAY_BTN_PLAN_LIVE_20_CENTSXUNIT_PROD: boolean = false;
+  DISPLAY_BTN_PLAN_TEST_3_EURXUNIT_PRE: boolean = false;
   constructor(
     public location: Location,
     public auth: AuthService,
@@ -71,7 +74,8 @@ export class PricingComponent implements OnInit, OnDestroy {
     public projectService: ProjectService,
     private prjctPlanService: ProjectPlanService,
     public brandService: BrandService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    public appConfigService: AppConfigService,
   ) { 
 
     const brand = brandService.getBrand();
@@ -106,19 +110,27 @@ export class PricingComponent implements OnInit, OnDestroy {
     this.getProjectPlan();
 
     this.setPlansPKandCode();
-    this.getRouteParams();
+    this.getRouteParamsAndAppId();
   }
 
-  getRouteParams() {
-    // ADDS ?nk=y to the route pricing to dispaly the button to run the checkout to the plan "LIVE 0,20 €/day MIN 3 QTY "
+  getRouteParamsAndAppId() {
+    const appID = this.appConfigService.getConfig().firebase.appId;
+    this.logger.log('[PRICING] GET ROUTE-PARAMS & APPID - APP ID: ', appID);
+
     this.route.queryParams.subscribe((params) => {
-      this.logger.log('[PRICING] - ROUTE-PARAMS', params)
+      this.logger.log('[PRICING] - GET ROUTE-PARAMS & APPID - params: ', params)
       if (params.nk) {
-        this.logger.log('[PRICING] - ROUTE-PARAMS params.nk: ', params.nk)
-        if(params.nk === 'y') {
-          this.DISPLAY_BTN_PLAN_LIVE_20_CENTSXUNIT = true;
-          this.logger.log('[PRICING] - ROUTE-PARAMS DISPLAY_BTN_PLAN_LIVE_20_CENTSXUNIT', this.DISPLAY_BTN_PLAN_LIVE_20_CENTSXUNIT)
+        this.logger.log('[PRICING] -  GET ROUTE-PARAMS & APPID - params.nk: ', params.nk)
+        if(params.nk === 'y' && appID === "1:92907897826:android:dd2d325bca3ed8e8ee2fbb") {
+          this.DISPLAY_BTN_PLAN_LIVE_20_CENTSXUNIT_PROD = true;
+          this.logger.log('[PRICING] - ROUTE-PARAMS DISPLAY_BTN_PLAN_LIVE_20_CENTSXUNIT_PROD', this.DISPLAY_BTN_PLAN_LIVE_20_CENTSXUNIT_PROD)
         }
+        if(params.nk === 'y' && appID === "1:269505353043:web:b82af070572669e3707da6") {
+          this.DISPLAY_BTN_PLAN_TEST_3_EURXUNIT_PRE = true;
+          this.logger.log('[PRICING] - ROUTE-PARAMS DISPLAY_BTN_PLAN_TEST_3_EURXUNIT_PRE', this.DISPLAY_BTN_PLAN_TEST_3_EURXUNIT_PRE)
+        }
+
+        
       }
     });
   }
