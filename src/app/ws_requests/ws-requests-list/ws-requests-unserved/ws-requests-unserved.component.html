@@ -4,28 +4,15 @@
 
     <div class="row">
 
-      <div class="col-xs-6">
+      <div class="col-xs-12">
         <h4 class="title customh4" style="margin-bottom:2px;">
           {{ 'VisitorsPage.UnservedRequests' | translate }}
         </h4>
       </div>
 
-      <div class="col-xs-6">
-        <!-- <div class="dropdown pull-right">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <span class="material-icons" style="color:rgba(0, 0, 0, 0.87);">
-              more_vert
-            </span>
-          </a>
-          <ul class="dropdown-menu">
-            <li>
-              <a (click)='goToWsRequestsNoRealtimeUnserved()'>
-                {{ 'SeeAll' | translate}}
-              </a>
-            </li>
-          </ul>
-        </div> -->
-      </div>
+      <!-- <div class="col-xs-6">
+  
+      </div> -->
 
     </div>
 
@@ -40,7 +27,9 @@
         <tr>
           <th></th>
 
-          <!-- ------ ====== MESSAGE ====== ------ -->
+          <!-- ------------------- -->
+          <!-- MESSAGE -->
+          <!-- ------------------- -->
           <th>
             <span class="column-th-span">
               {{ 'VisitorsPage.Message' | translate }}
@@ -49,35 +38,41 @@
 
           <th></th>
 
-          <!-- ------ ====== REQUESTER ====== ------ -->
+          <!-- ------------------- -->
+          <!-- REQUESTER -->
+          <!-- ------------------- -->
           <th>
             <span class="column-th-span">
               {{ 'VisitorsPage.Requester' | translate }}
             </span>
           </th>
 
-          <!-- ------ ====== USER AGENT BROWSER & OPERATING SYSTEM (in served requests)====== ------ -->
+          <!-- ----------------------------------------- -->
+          <!-- USER AGENT BROWSER & OPERATING SYSTEM -->
+          <!-- ----------------------------------------- -->
           <th></th>
 
-
-          <!-- ------ ====== DEPARTMENT ====== ------ -->
+          <!-- ------------------- -->
+          <!-- DEPARTMENT -->
+          <!-- ------------------- -->
           <th>
             <span class="column-th-span">
               {{ 'VisitorsPage.Department' | translate }}
             </span>
           </th>
 
-
-
-          <!-- ------ ====== CREATED ON ====== ------ -->
+          <!-- ------------------- -->
+          <!-- CREATED ON -->
+          <!-- ------------------- -->
           <th>
             <span class="column-th-span">
               {{ 'VisitorsPage.Published' | translate }}
             </span>
           </th>
 
-
-          <!-- ------ ====== ARCHIVE ACTION ====== ------ -->
+          <!-- ------------------- -->
+          <!-- ARCHIVE ACTION -->
+          <!-- ------------------- -->
           <th>
             <span class="column-th-span">
               {{ 'VisitorsPage.Actions' | translate }}
@@ -87,7 +82,9 @@
       </thead>
       <tbody>
 
-        <!-- ------ ====== IF THERE ISN'T REQUEST (SERVED OR UNSERVED) ====== ------ -->
+        <!-- ------------------------- -->
+        <!-- IF THERE ISN'T REQUESTS -->
+        <!-- ------------------------ -->
         <tr *ngIf="wsRequestsUnserved?.length === 0">
           <!-- <tr *ngIf="displayNoRequestString"> -->
           <td colspan="8" style="text-align: center; padding-top: 16px;">
@@ -98,32 +95,35 @@
         </tr>
 
 
-        <!-- ****************************************
-            ------ ====== UNSERVED FOR ====== ------
-          ********************************************* -->
+        <!-- ------------------------- -->
+        <!-- UNSERVED FOR -->
+        <!-- ------------------------- -->
         <tr *ngFor="let request of wsRequestsUnserved; trackBy: trackByFn; let i= index">
 
-          <!-- ------ ====== VISIBILITY ICON ====== ------ -->
+
+          <!-- -------------------------------------------------------------------------------- -->
+          <!-- VISIBILITY ICON -->
+          <!-- -------------------------------------------------------------------------------- -->
           <td style="text-align:center; white-space: nowrap; width: 1%;">
 
-            <!-- IF THE REQUEST SUPPORT STATUS IS 100 (UNSERVED REQUEST)   ;else internal_unserved_request-->
-            <div *ngIf="request?.status === 100 && !request?.subject"
-              style="position: relative;">
+            <!-- ------------------------------------------------------------------------------------------------- -->
+            <!--  IF THE REQUEST SUPPORT STATUS IS 100 (UNSERVED REQUEST)   ;else internal_unserved_request -->
+            <!-- ------------------------------------------------------------------------------------------------- -->
+            <div *ngIf="request?.status === 100 && !request?.subject" style="position: relative;">
               <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
 
                 <img style="width: 30px;" src="assets/img/request_icons/status100.svg" class="img-fluid">
 
-                <!-- {{ request.attributes.last_abandoned_by_project_user_array | json }} -->
-                <!-- (click)="$event.stopPropagation();toggleTooltip()" -->
                 <div class="abandoned_chat-badge-wpr" (click)="$event.stopPropagation();toggleTooltip(i)"
                   *ngIf="request?.attributes?.last_abandoned_by_project_user_array?.length > 0 ">
                   <span class="tool_tip">
                     <span class="material-icons">
-                      <!-- shuffle -->
                       shuffle_on
                     </span>
 
-
+                    <!-- ------------------------------------------------------------------------------------------------- -->
+                    <!--  Tooltip with list of who has abandoned the chat -->
+                    <!-- ------------------------------------------------------------------------------------------------- -->
                     <span id="{{'tooltip_' + i}}" class="right"
                       style="white-space: normal;padding: 6px 12px;;font-weight: 200; width: fit-content;max-width: unset!important"
                       [ngStyle]="{'height':  (request?.attributes?.other_project_users_that_has_abandoned_array?.length > 0) ? '100px' : '76px'}">
@@ -141,7 +141,8 @@
                           <div class="pu-user-name-wpr white___tooltiptext" style="white-space: nowrap;">
                             <span>{{request.attributes.last_abandoned_by_project_user_array[0].firstname}} </span>
                             <span>{{request.attributes.last_abandoned_by_project_user_array[0].lastname | slice:0:1}}.
-                              <span style="display: block;font-style: italic; color: red;"> ({{'theLastOneWhoLeft' | translate}})
+                              <span style="display: block;font-style: italic; color: red;">
+                                ({{'theLastOneWhoLeft' | translate}})
                               </span>
                             </span>
                           </div>
@@ -159,26 +160,29 @@
                           <div class="pu-user-name-wpr white___tooltiptext" style="white-space: nowrap;">
                             <span>{{request.attributes.last_abandoned_by_project_user_array[0].firstname}} </span>
                             <span>{{request.attributes.last_abandoned_by_project_user_array[0].lastname | slice:0:1}}.
-                              <span style="display: block;font-style: italic; color: red;"> ({{'theLastOneWhoLeft' | translate}})
+                              <span style="display: block;font-style: italic; color: red;">
+                                ({{'theLastOneWhoLeft' | translate}})
                               </span>
                             </span>
                           </div>
                         </div>
                       </div>
 
-                      <div class="others-that-has-abandoned" *ngIf="request?.attributes?.other_project_users_that_has_abandoned_array?.length > 0" style="margin-top: 6px;">
+                      <div class="others-that-has-abandoned"
+                        *ngIf="request?.attributes?.other_project_users_that_has_abandoned_array?.length > 0"
+                        style="margin-top: 6px;">
                         <div class="served-by-desktop-a-in-tooltip">
                           <div class="served-by-desktop-b-in-tooltip"
                             *ngFor="let agent of request?.attributes?.other_project_users_that_has_abandoned_array; let first = first;">
 
-                            <div [ngClass]="{ 'first-served-by': first }" class="served-by-desktop-c-in-tooltip white___tooltip">
+                            <div [ngClass]="{ 'first-served-by': first }"
+                              class="served-by-desktop-c-in-tooltip white___tooltip">
                               <div class="served-by-desktop-d-in-tooltip">
                                 <div class="served-by-desktop-e-in-tooltip">
-                                  <img  style="width: 24px !important;height: 24px !important;" *ngIf="agent.has_image"
-                                    src={{agent.img_url}}
-                                    alt="" onerror="this.src='assets/img/no_image_user.png'">
-                                 
-                                   <div *ngIf="!agent.has_image" class="avatar-when-not-has-image"
+                                  <img style="width: 24px !important;height: 24px !important;" *ngIf="agent.has_image"
+                                    src={{agent.img_url}} alt="" onerror="this.src='assets/img/no_image_user.png'">
+
+                                  <div *ngIf="!agent.has_image" class="avatar-when-not-has-image"
                                     [ngStyle]="{'background-color': agent?.fillColour }">
                                     {{ agent?.fullname_initial }}
                                   </div>
@@ -196,8 +200,6 @@
                           </div>
                         </div>
                       </div>
-
-
                       <i></i>
                     </span>
                   </span>
@@ -206,123 +208,113 @@
               </span>
             </div>
 
-            <!-- 
-            // ------------------------------------------------------------------------------------------------------
-            // If is ticket
-            // ------------------------------------------------------------------------------------------------------ -->
-            <div *ngIf="request?.status === 100 && request?.subject"
-            style="position: relative;">
-            <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
 
-              <img style="width: 30px;" src="assets/img/request_icons/status100_internal.svg" class="img-fluid">
+            <!-- ------------------------------------------------------------------------------------------------------ -->
+            <!-- If is ticket -->
+            <!-- ------------------------------------------------------------------------------------------------------  -->
+            <div *ngIf="request?.status === 100 && request?.subject" style="position: relative;">
+              <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
+                <img style="width: 30px;" src="assets/img/request_icons/status100_internal.svg" class="img-fluid">
+                <div class="abandoned_chat-badge-wpr" (click)="$event.stopPropagation();toggleTooltip(i)"
+                  *ngIf="request?.attributes?.last_abandoned_by_project_user_array?.length > 0 ">
+                  <span class="tool_tip">
+                    <span class="material-icons">
+                      shuffle_on
+                    </span>
 
-              <!-- {{ request.attributes.last_abandoned_by_project_user_array | json }} -->
-              <!-- (click)="$event.stopPropagation();toggleTooltip()" -->
-              <div class="abandoned_chat-badge-wpr" (click)="$event.stopPropagation();toggleTooltip(i)"
-                *ngIf="request?.attributes?.last_abandoned_by_project_user_array?.length > 0 ">
-                <span class="tool_tip">
-                  <span class="material-icons">
-                    <!-- shuffle -->
-                    shuffle_on
-                  </span>
+                    <span id="{{'tooltip_' + i}}" class="right"
+                      style="white-space: normal;padding: 6px 12px;;font-weight: 200; width: fit-content;max-width: unset!important"
+                      [ngStyle]="{'height':  (request?.attributes?.other_project_users_that_has_abandoned_array?.length > 0) ? '100px' : '76px'}">
+                      <h4 style="font-weight:400" style="white-space: nowrap;">
+                        {{'ThisChatHasBeenAbandonedBy' | translate}}
+                      </h4>
 
+                      <div *ngIf="request.attributes.last_abandoned_by_project_user_array[0].has_image === true">
+                        <div class="pu-user-avatar-wpr white___tooltip"
+                          style="width: 24px !important;height: 24px !important;">
+                          <img style="width: 24px !important;height: 24px !important; border-radius: 50%;"
+                            src={{request.attributes.last_abandoned_by_project_user_array[0].img_url}} />
 
-                  <span id="{{'tooltip_' + i}}" class="right"
-                    style="white-space: normal;padding: 6px 12px;;font-weight: 200; width: fit-content;max-width: unset!important"
-                    [ngStyle]="{'height':  (request?.attributes?.other_project_users_that_has_abandoned_array?.length > 0) ? '100px' : '76px'}">
-                    <h4 style="font-weight:400" style="white-space: nowrap;">
-                      {{'ThisChatHasBeenAbandonedBy' | translate}}
-                    </h4>
-
-
-                    <div *ngIf="request.attributes.last_abandoned_by_project_user_array[0].has_image === true">
-                      <div class="pu-user-avatar-wpr white___tooltip"
-                        style="width: 24px !important;height: 24px !important;">
-                        <img style="width: 24px !important;height: 24px !important; border-radius: 50%;"
-                          src={{request.attributes.last_abandoned_by_project_user_array[0].img_url}} />
-
-                        <div class="pu-user-name-wpr white___tooltiptext" style="white-space: nowrap;">
-                          <span>{{request.attributes.last_abandoned_by_project_user_array[0].firstname}} </span>
-                          <span>{{request.attributes.last_abandoned_by_project_user_array[0].lastname | slice:0:1}}.
-                            <span style="display: block;font-style: italic; color: red;"> ({{'theLastOneWhoLeft' | translate}})
-                            </span>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div *ngIf="request.attributes.last_abandoned_by_project_user_array[0].has_image === false">
-                      <div class="pu-user-avatar-wpr white___tooltip"
-                        style="width: 24px !important;height: 24px !important;">
-                        <div class="avatar-when-not-has-image"
-                          [ngStyle]="{'background-color': request.attributes.last_abandoned_by_project_user_array[0].fillColour }">
-                          {{request.attributes.last_abandoned_by_project_user_array[0].fullname_initial}}
-                        </div>
-
-                        <div class="pu-user-name-wpr white___tooltiptext" style="white-space: nowrap;">
-                          <span>{{request.attributes.last_abandoned_by_project_user_array[0].firstname}} </span>
-                          <span>{{request.attributes.last_abandoned_by_project_user_array[0].lastname | slice:0:1}}.
-                            <span style="display: block;font-style: italic; color: red;"> ({{'theLastOneWhoLeft' | translate}})
-                            </span>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="others-that-has-abandoned" *ngIf="request?.attributes?.other_project_users_that_has_abandoned_array?.length > 0" style="margin-top: 6px;">
-                      <div class="served-by-desktop-a-in-tooltip">
-                        <div class="served-by-desktop-b-in-tooltip"
-                          *ngFor="let agent of request?.attributes?.other_project_users_that_has_abandoned_array; let first = first;">
-
-                          <div [ngClass]="{ 'first-served-by': first }" class="served-by-desktop-c-in-tooltip white___tooltip">
-                            <div class="served-by-desktop-d-in-tooltip">
-                              <div class="served-by-desktop-e-in-tooltip">
-                                <img  style="width: 24px !important;height: 24px !important;" *ngIf="agent.has_image"
-                                  src={{agent.img_url}}
-                                  alt="" onerror="this.src='assets/img/no_image_user.png'">
-                               
-                                 <div *ngIf="!agent.has_image" class="avatar-when-not-has-image"
-                                  [ngStyle]="{'background-color': agent?.fillColour }">
-                                  {{ agent?.fullname_initial }}
-                                </div>
-                              </div>
-                            </div>
-                            <span class="white___tooltiptext">
-                              <span style="text-transform: capitalize;"> {{ agent?.firstname }}
-                                <span *ngIf="agent?.lastname">
-                                  {{ agent?.lastname | slice:0:1 }}.
-                                </span>
-
+                          <div class="pu-user-name-wpr white___tooltiptext" style="white-space: nowrap;">
+                            <span>{{request.attributes.last_abandoned_by_project_user_array[0].firstname}} </span>
+                            <span>{{request.attributes.last_abandoned_by_project_user_array[0].lastname | slice:0:1}}.
+                              <span style="display: block;font-style: italic; color: red;"> ({{'theLastOneWhoLeft' |
+                                translate}})
                               </span>
                             </span>
                           </div>
                         </div>
                       </div>
-                    </div>
 
+                      <div *ngIf="request.attributes.last_abandoned_by_project_user_array[0].has_image === false">
+                        <div class="pu-user-avatar-wpr white___tooltip"
+                          style="width: 24px !important;height: 24px !important;">
+                          <div class="avatar-when-not-has-image"
+                            [ngStyle]="{'background-color': request.attributes.last_abandoned_by_project_user_array[0].fillColour }">
+                            {{request.attributes.last_abandoned_by_project_user_array[0].fullname_initial}}
+                          </div>
 
-                    <i></i>
+                          <div class="pu-user-name-wpr white___tooltiptext" style="white-space: nowrap;">
+                            <span>{{request.attributes.last_abandoned_by_project_user_array[0].firstname}} </span>
+                            <span>{{request.attributes.last_abandoned_by_project_user_array[0].lastname | slice:0:1}}.
+                              <span style="display: block;font-style: italic; color: red;"> ({{'theLastOneWhoLeft' |
+                                translate}})
+                              </span>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="others-that-has-abandoned"
+                        *ngIf="request?.attributes?.other_project_users_that_has_abandoned_array?.length > 0"
+                        style="margin-top: 6px;">
+                        <div class="served-by-desktop-a-in-tooltip">
+                          <div class="served-by-desktop-b-in-tooltip"
+                            *ngFor="let agent of request?.attributes?.other_project_users_that_has_abandoned_array; let first = first;">
+
+                            <div [ngClass]="{ 'first-served-by': first }"
+                              class="served-by-desktop-c-in-tooltip white___tooltip">
+                              <div class="served-by-desktop-d-in-tooltip">
+                                <div class="served-by-desktop-e-in-tooltip">
+                                  <img style="width: 24px !important;height: 24px !important;" *ngIf="agent.has_image"
+                                    src={{agent.img_url}} alt="" onerror="this.src='assets/img/no_image_user.png'">
+
+                                  <div *ngIf="!agent.has_image" class="avatar-when-not-has-image"
+                                    [ngStyle]="{'background-color': agent?.fillColour }">
+                                    {{ agent?.fullname_initial }}
+                                  </div>
+                                </div>
+                              </div>
+                              <span class="white___tooltiptext">
+                                <span style="text-transform: capitalize;"> {{ agent?.firstname }}
+                                  <span *ngIf="agent?.lastname">
+                                    {{ agent?.lastname | slice:0:1 }}.
+                                  </span>
+
+                                </span>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <i></i>
+                    </span>
                   </span>
-                </span>
-              </div>
+                </div>
 
-            </span>
-          </div>
-
-
-            <!-- <ng-template #internal_unserved_request style="position: relative;">
-
-              <img style="width: 30px;" src="assets/img/request_icons/status100_internal.svg" class="img-fluid">
-
-            </ng-template> -->
-
+              </span>
+            </div>
           </td>
 
-          <!-- ------ ====== MESSAGE ====== ------ -->
+
+          <!-- --------------------------------------- -->
+          <!-- MESSAGE -->
+          <!-- --------------------------------------- -->
           <td [ngClass]="{'padding_5' : request?.tags?.length > 0}" (click)='goToRequestMsgs(request?.request_id)'
             style="cursor:pointer; width: 215px;">
             <!-- [innerHTML]="getRequestText(request?.first_text)" -->
-            <p class="column-td" style="max-width: 215px;white-space: nowrap; overflow: hidden;text-overflow: ellipsis;"> 
+            <p class="column-td"
+              style="max-width: 215px;white-space: nowrap; overflow: hidden;text-overflow: ellipsis;">
               {{ request?.first_text }}
             </p>
 
@@ -478,9 +470,7 @@
             <!-- ---------------------------------------- -->
             <!-- Channel - Form -->
             <!-- ---------------------------------------- -->
-
             <span *ngIf="request?.channel?.name === 'form'" class="tool_tip form-wpr">
-
               <img style="padding:4px !important" src="assets/img/channel_icons/form-logo_v2_white.svg"
                 class="img-fluid channel-img-in-conversations">
 
@@ -688,7 +678,7 @@
 
               <span class="tooltiptext" style="font-size: 10px !important; padding: 3px;">
                 <span *ngIf="request?.ua_browser !== 'undefined undefined'"> {{ request?.ua_browser }} </span>
-                <span *ngIf="request?.ua_browser === 'undefined undefined'"> {{'Unavailable' | translate}}  </span>
+                <span *ngIf="request?.ua_browser === 'undefined undefined'"> {{'Unavailable' | translate}} </span>
               </span>
             </span>
           </td>
