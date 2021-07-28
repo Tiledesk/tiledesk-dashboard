@@ -1924,5 +1924,8 @@
 	"EndDate":" Enddatum",
 	"Seats": "Sitze",
 	"UnitAmount":"Einheitsbetrag",
-	"AnErrorOccurringDuringThePayment":"Bei der Zahlung ist ein Fehler aufgetreten"
+	"AnErrorOccurringDuringThePayment":"Bei der Zahlung ist ein Fehler aufgetreten",
+	"WidgetAPITestPage":"Widget-API-Testseite",
+	"UseTheWidgetTestPageToTestTheWidgetAPI":"Verwenden Sie die Widget-Testseite, um die Widget-API und die Eigenschaften zu testen",
+	"WidgetTest": "Widget-Test"
 }

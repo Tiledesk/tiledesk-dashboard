@@ -1922,6 +1922,9 @@
     "EndDate":"Data di fine",
     "Seats": "Posti",
     "UnitAmount":"Importo unitario",
-    "AnErrorOccurringDuringThePayment":"Si è verificato un errore durante il pagamento"
+    "AnErrorOccurringDuringThePayment":"Si è verificato un errore durante il pagamento",
+    "WidgetAPITestPage":"Pagina di prova delle API del widget",
+    "UseTheWidgetTestPageToTestTheWidgetAPI":"Usa la pagina di test del widget per testare le API e le proprietà del widget",
+    "WidgetTest": "Prova del widget"
  
 }

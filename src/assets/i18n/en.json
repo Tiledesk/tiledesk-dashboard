@@ -1941,6 +1941,8 @@
    "EndDate":" End date",
    "Seats": "Seats",
    "UnitAmount":"Unit Amount",
-   "AnErrorOccurringDuringThePayment":"An error occurring during the payment"
-   
+   "AnErrorOccurringDuringThePayment":"An error occurring during the payment",
+   "WidgetAPITestPage":"Widget API test page",
+   "UseTheWidgetTestPageToTestTheWidgetAPI":"Use the widget test page to test the widget API and properties",
+   "WidgetTest": "Widget test"
 }
