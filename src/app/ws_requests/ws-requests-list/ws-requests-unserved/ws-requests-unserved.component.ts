@@ -162,8 +162,6 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     });
   }
 
-
-
   // --------------------------------------------------
   // @ Detect browser refresh
   // --------------------------------------------------
@@ -176,7 +174,6 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
       this.displayNoRequestString = true;
     }
   }
-
 
   // --------------------------------------------------
   // @ Tags - display more tags
@@ -192,7 +189,6 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     moreTagsBtn.style.display = "none";
 
   }
-
 
   // --------------------------------------------------
   // @ Tags - display less tags
@@ -217,9 +213,6 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     this.logger.log("[WS-REQUESTS-LIST][UNSERVED] toggleTooltip tooltipElem", tooltipElem);
     tooltipElem.classList.toggle("tooltip-fixed");
   }
-
-
-
 
 
   // --------------------------------------------------
@@ -282,9 +275,6 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
 
     this.onJoinHandled(request_id, this.currentUserID);
   }
-
-
-
 
   // -----------------------------------------------
   // @ Translate strings
