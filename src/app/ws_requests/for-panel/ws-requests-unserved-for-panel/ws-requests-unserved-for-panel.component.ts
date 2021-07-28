@@ -148,7 +148,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger);
     this.zone = new NgZone({ enableLongStackTrace: false });
-    this.logger.log('WS-REQUESTS-UNSERVED-X-PANEL !!!!')
+    // this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] !!!!')
   }
 
   // -----------------------------------------------------------------------------------------------------
