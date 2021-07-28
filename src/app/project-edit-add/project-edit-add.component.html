@@ -652,10 +652,10 @@
                   <div class="col-sm-10" style="border-top: 1px solid #eeeeee;"></div>
                 </div>
 
-                <!-- 
-                ************************************************************************************************
-                ****************** SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - SEE PAYMENTS BTN **************
-                ************************************************************************************************ -->
+
+                <!-- ------------------------------------------------------------------------------------------------ -->
+                <!-- SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - SEE PAYMENTS BTN  -->
+                <!-- ------------------------------------------------------------------------------------------------ -->
                 <div class="row" *ngIf="prjct_profile_type !== 'free'" style="margin-top: 16px;">
                   <label class="col-sm-2 custom-label">
                     {{ "ProjectEditPage.Payments" | translate }}
@@ -668,10 +668,10 @@
                   </div>
                 </div>
 
-                <!-- 
-                ************************************************************************************************
-                *************** SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - CANCEL SUBSCRIPTION **************
-                ************************************************************************************************ -->
+
+                <!-- ------------------------------------------------------------------------------------------------ -->
+                <!-- SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - CANCEL SUBSCRIPTION  -->
+                <!-- ------------------------------------------------------------------------------------------------ -->
                 <div class="row" *ngIf="prjct_profile_type !== 'free'">
                   <label class="col-sm-2"> </label>
                   <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
@@ -682,10 +682,10 @@
                   </div>
                 </div>
 
-                <!--
-                *********************************************************
-                *********************** NO PAYMENTS *********************
-                ********************************************************* -->
+
+                <!-- ------------------------------------------------------------------------------------------------ -->
+                <!--  NO PAYMENTS  -->
+                <!-- ------------------------------------------------------------------------------------------------ -->
                 <div class="row" style="margin-top: 16px;"
                   *ngIf="subscriptionPaymentsLength === 0 && prjct_profile_type !== 'payment'">
                   <label class="col-sm-2 custom-label" style="padding-top:15px">
@@ -701,10 +701,10 @@
                 </div>
 
 
-                <!-- 
-                ************************************************************************************************
-                ********************** PROFILE TYPE: FREE - SUBSCRIPTION BUTTON @ MEDIA < 768 ******************
-                ************************************************************************************************ -->
+
+                <!-- ------------------------------------------------------------------------------------------------ -->
+                <!--  PROFILE TYPE: FREE - SUBSCRIPTION BUTTON @ MEDIA < 768  -->
+                <!-- ------------------------------------------------------------------------------------------------ -->
                 <div style="margin-top: 16px;" class="row upgrade-plan-btn-row"
                   *ngIf="prjct_profile_type !== 'payment'">
                   <div class="col-xs-12" style="text-align: center;">
@@ -719,10 +719,10 @@
               <!-- ****************** /.end project plan ****************** -->
             </span>
 
-            <!-- 
-            // --------------------------------------------------------
-            // Authentication
-            // -------------------------------------------------------- -->
+
+            <!-- -------------------------------------------------------- -->
+            <!-- Authentication -->
+            <!-- -------------------------------------------------------- -->
             <span *ngIf="PROJECT_SETTINGS_AUTH_ROUTE">
               <!-- SECTION SHARED SECRET - TITLE AND SUBTITLE -->
               <!-- <div class="row">
@@ -797,7 +797,6 @@
 
               <!-- WEBHOOK -->
               <div class="input-wrapper" style="max-width: 992px;">
-
                 <div class="row">
                   <div class="col-md-12">
                     <h3 class="card_title__underlined" style="margin-top:30px">
@@ -807,14 +806,6 @@
                     </h3>
                   </div>
                   <div class="col-md-12">
-
-                    <!-- <span style="display: block; margin-bottom: 8px; color: #687882; font-size:13px; font-weight: 400">
-                    {{ "ProjectEditPage.EnableVisitorAuthentication" | translate }}.
-                    <span class="link-to-widget-auth" (click)="goToWidgetAuthenticationDocs()">
-                      {{ 'Resourcepage.HereHow' | translate }}
-                    </span>
-                  </span> -->
-
                     <div class="section-subtitle"> </div>
                   </div>
                 </div>
@@ -836,19 +827,54 @@
                 </div>
 
                 <div class="row">
-                  <!-- <label class="col-xs-12 col-sm-2 custom-label custom-label-left" style="padding-top:7px">
-                    {{ "ProjectEditPage.GoToWebhookConsole" | translate }}
-                  </label> -->
-                  <!-- col-sm-10 -->
-                  <div class="col-xs-12">
 
+                  <div class="col-xs-12">
                     <button (click)="goToWebhookPage()" class="btn btn-primary"
                       style="margin-top:5px; padding:6px 15px ">
                       {{ "ProjectEditPage.ManageWebhook" | translate }}
                     </button>
                   </div>
                 </div>
+              </div>
 
+              <!-- TEST WIDGET API -->
+              <div class="input-wrapper" style="max-width: 992px;">
+                <div class="row">
+                  <div class="col-md-12">
+                    <h3 class="card_title__underlined" style="margin-top:30px">
+                      <span class="card_title__underline">
+                        {{ "WidgetAPITestPage" | translate }}
+                      </span>
+                    </h3>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="section-subtitle"> </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-8">
+                    <div class="alert"
+                      style="background-color: #fff; border: 1px solid #e8f0f5;box-shadow: none;padding: 10px">
+                      <i style="vertical-align: middle; display: inline-flex; color:#00bcd4" class="material-icons">
+                        info
+                      </i>
+                      <span style="vertical-align: middle; display: inline-flex;">
+                        {{ "UseTheWidgetTestPageToTestTheWidgetAPI" | translate }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+
+                  <div class="col-xs-12">
+                    <button (click)="goToWidgetTestPage()" class="btn btn-primary test-widget-api-btn"
+                      style="margin-top:5px; padding:6px 15px ">
+                      {{ "WidgetTest" | translate | translate }}
+                    </button>
+                  </div>
+                </div>
               </div>
 
             </span> <!-- /. AUTH ROUTE -->
@@ -1573,7 +1599,7 @@
               <!-- Contact us via chat and tell us how many operator seats you want to add to the project -->
               <!-- {{ "Pricing.ContactUsViaChatAndTellIUsHowManyOperator" | translate}} -->
               {{ "Pricing.ContactUsViaEmailAndTellIUsHowManyOperator" | translate}}
-              
+
             </h3>
           </div>
         </div>

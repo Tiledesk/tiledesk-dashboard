@@ -141,7 +141,26 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
+  TESTSITE_BASE_URL: string;
+  TEST_WIDGET_API_BASE_URL: string;
+  projectId: string;
+  projectName: string;
 
+  /**
+   * 
+   * @param projectService 
+   * @param router 
+   * @param route 
+   * @param _location 
+   * @param auth 
+   * @param prjctPlanService 
+   * @param notify 
+   * @param usersService 
+   * @param translate 
+   * @param appConfigService 
+   * @param brandService 
+   * @param logger 
+   */
   constructor(
     private projectService: ProjectService,
     private router: Router,
@@ -165,23 +184,46 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.auth.checkRoleForCurrentProject();
     this.getCurrentUrlAndSwitchView();
-
     this.getProjectPlan();
-
     this.listenCancelSubscription();
-
     this.translateStrings()
-
-
-
     this.getProjectId();
     this.getBrowserLanguage();
     this.getOSCODE();
     this.getAllUsersOfCurrentProject();
     this.getPendingInvitation();
-
     this.getProjectUserRole();
+    this.getTestSiteUrl();
+    this.getCurrentProject();
     //this.checkCurrentStatus();
+  }
+
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+
+  getCurrentProject() {
+    // this.project = this.auth.project_bs.value;
+    this.auth.project_bs
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((project) => {
+        if (project) {
+          this.project = project
+          // this.logger.log('[PRJCT-EDIT-ADD] GET CURRENT PROJECT project', this.project);
+          this.projectId = project._id;
+          this.logger.log('[PRJCT-EDIT-ADD] GET CURRENT PROJECT projectId ', this.projectId);
+          this.projectName = project.name;
+          this.logger.log('[PRJCT-EDIT-ADD] GET CURRENT PROJECT projectName ', this.projectName);
+
+        }
+      });
   }
 
   getProjectUserRole() {
@@ -289,10 +331,11 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
 
 
-  getOSCODE() {
 
+
+  getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
-    this.logger.log('[PRJCT-EDIT-ADD] AppConfigService getAppConfig public_Key', this.public_Key);
+    this.logger.log('[PRJCT-EDIT-ADD] getAppConfig public_Key', this.public_Key);
     let keys = this.public_Key.split("-");
     this.logger.log('[PRJCT-EDIT-ADD] keys', keys)
     keys.forEach(key => {
@@ -644,18 +687,15 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         }
       }
     }, error => {
-    
+
       this.logger.error('[PRICING - PAYMENT-LIST] - getProjectPlan - ERROR', error);
     }, () => {
-     
+
       this.logger.log('[PRICING - PAYMENT-LIST] - getProjectPlan * COMPLETE *')
 
     });
   }
 
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-  }
 
   openModalSubsExpired() {
     this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
@@ -1347,18 +1387,18 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.logger.log('[PRJCT-EDIT-ADD] - deleteProject RES ', data);
 
     }, (error) => {
-        this.SHOW_CIRCULAR_SPINNER = false;
-        this.logger.error('[PRJCT-EDIT-ADD] - deleteProject - ERROR ', error);
-        this.notify.showWidgetStyleUpdateNotification(this.deleteErrorMsg, 4, 'report_problem');
-      }, () => {
-        this.logger.log('[PRJCT-EDIT-ADD] - deleteProject * COMPLETE *');
+      this.SHOW_CIRCULAR_SPINNER = false;
+      this.logger.error('[PRJCT-EDIT-ADD] - deleteProject - ERROR ', error);
+      this.notify.showWidgetStyleUpdateNotification(this.deleteErrorMsg, 4, 'report_problem');
+    }, () => {
+      this.logger.log('[PRJCT-EDIT-ADD] - deleteProject * COMPLETE *');
 
-        setTimeout(() => {
-          this.SHOW_CIRCULAR_SPINNER = false;
-          this.notify.showNotificationChangeProject(this.deleteSuccessMsg, 2, 'done');
-          this.router.navigate(['/projects']);
-        }, 1500);
-      });
+      setTimeout(() => {
+        this.SHOW_CIRCULAR_SPINNER = false;
+        this.notify.showNotificationChangeProject(this.deleteSuccessMsg, 2, 'done');
+        this.router.navigate(['/projects']);
+      }, 1500);
+    });
   }
 
 
@@ -1373,7 +1413,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     window.open(url, '_blank');
   }
 
-  goToKBDocsSettingUpAutomaticAssignment () {
+  goToKBDocsSettingUpAutomaticAssignment() {
     const url = 'https://docs.tiledesk.com/knowledge-base/setting-up-automatic-assignment/'
     window.open(url, '_blank');
   }
@@ -1381,6 +1421,22 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   goToWebhookPage() {
     this.logger.log("[PRJCT-EDIT-ADD] Navigate to Webhook with the ProjectID: ", this.id_project);
     this.router.navigate(['project/' + this.id_project + '/webhook']);
+  }
+
+  getTestSiteUrl() {
+    this.TESTSITE_BASE_URL = this.appConfigService.getConfig().testsiteBaseUrl;
+    this.logger.log('[PRJCT-EDIT-ADD] getAppConfig TESTSITE_BASE_URL', this.TESTSITE_BASE_URL);
+
+    this.TEST_WIDGET_API_BASE_URL = this.TESTSITE_BASE_URL.replace('index.html', "index-dev.html")
+    this.logger.log('[PRJCT-EDIT-ADD] getAppConfig TEST_WIDGET_API_BASE_URL', this.TEST_WIDGET_API_BASE_URL);
+  }
+
+  goToWidgetTestPage() {
+    const widgetTestPageBtnElem = <HTMLElement>document.querySelector('.test-widget-api-btn');
+    widgetTestPageBtnElem.blur();
+
+    const url = this.TEST_WIDGET_API_BASE_URL + '?tiledesk_projectid=' + this.projectId + '&project_name=' + this.projectName + '&isOpen=true'
+    window.open(url, '_blank');
   }
 
   viewCancelSubscription() {
