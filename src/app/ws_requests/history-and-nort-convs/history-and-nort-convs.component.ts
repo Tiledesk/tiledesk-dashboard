@@ -287,10 +287,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.translateArchivingRequestMsg();
     this.translateRequestHasBeenArchivedNoticationMsg_part1();
     this.translateRequestHasBeenArchivedNoticationMsg_part2();
-
-    this.translateAllConversationsHaveBeenArchived()
-
-    this.translateModalOnlyOwnerCanManageProjectAccount()
+    this.translateAllConversationsHaveBeenArchived();
+    this.translateModalOnlyOwnerCanManageProjectAccount();
   }
 
   translateModalOnlyOwnerCanManageProjectAccount() {
