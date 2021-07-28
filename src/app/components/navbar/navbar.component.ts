@@ -770,7 +770,6 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     }
 
     goToPayment() {
-
         if (this.USER_ROLE === 'owner') {
             if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true) {
                 this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
