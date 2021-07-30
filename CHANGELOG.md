@@ -2,7 +2,7 @@
 # tiledesk-dashboard
 
 ### 2.1.70-beta.1.16
-- Improvements of the logs and removes unsed code
+- Improvements of the logs and removes unused code
 - Adds in Project Settings > Developer Tab a button that opens the test page of the api and widget properties
 
 ### 2.1.70-beta.1.15
