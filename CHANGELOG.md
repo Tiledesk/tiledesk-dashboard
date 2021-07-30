@@ -1,6 +1,19 @@
 
 # tiledesk-dashboard
 
+### 2.1.70-beta.1.16
+- Improvements of the logs and removes unsed code
+- Adds in Project Settings > Developer Tab a button that opens the test page of the api and widget properties
+
+### 2.1.70-beta.1.15
+- Minor improvements 
+
+### 2.1.70-beta.1.14
+- Adjust the widget preview available in the widget configuration page to the graphical enhancements made to the widget
+- Removes from assets unused images
+- Add the payment details in the payment table available in Project Settings > Payments > see Payments
+- Adds the "Payment Canceled" page displayed when a subscription error occurs
+
 ### 2.1.70-beta.1.13
 - Fixes the bug: on the configuration page of the widgetthe accordion "Add chat to your website" does not open
 - Changes the "Simulate visitors" site url
