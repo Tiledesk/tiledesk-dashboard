@@ -492,7 +492,7 @@ export class WsRequestsService implements OnDestroy {
         self.wsRequesterStatus$.next(data);
 
       }, function (data, notification) {
-        this.logger.log("[WS-REQUESTS-SERV] - SUBSCRIBE TO REQUESTER-PRECENCE - UPDATE data ", data);
+        self.logger.log("[WS-REQUESTS-SERV] - SUBSCRIBE TO REQUESTER-PRECENCE - UPDATE data ", data);
 
         self.wsRequesterStatus$.next(data);
 
