@@ -1913,7 +1913,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       }, () => {
         this.logger.log('[WS-REQUESTS-MSGS] - addParticipant TO CHAT GROUP * COMPLETE *');
 
-        this.notify.showNotification(`You are successfully added to the chat`, 2, 'done');
+        this.notify.showWidgetStyleUpdateNotification(`You are successfully added to the chat`, 2, 'done');
         this.SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING = false;
         this.HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST = true;
       });
@@ -1938,7 +1938,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.LEAVE_CHAT_ERROR = true;
 
       }, () => {
-        this.notify.showNotification(`You have successfully left the chat`, 2, 'done');
+        this.notify.showWidgetStyleUpdateNotification(`You have successfully left the chat`, 2, 'done');
         this.logger.log('[WS-REQUESTS-MSGS] - LEAVE THE GROUP * COMPLETE');
         this.SHOW_CIRCULAR_SPINNER = false;
         this.LEAVE_CHAT_ERROR = false;
