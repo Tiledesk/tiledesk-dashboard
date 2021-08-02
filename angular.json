@@ -38,7 +38,9 @@
               "src/assets/sass/material-dashboard.scss",
               "src/assets/css/demo.css",
               "node_modules/@ng-select/ng-select/themes/default.theme.css",
-              "node_modules/leaflet/dist/leaflet.css"
+              "node_modules/leaflet/dist/leaflet.css",
+              "node_modules/material-design-icons/iconfont/material-icons.css",
+              "node_modules/roboto-fontface/css/roboto/roboto-fontface.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.js",
