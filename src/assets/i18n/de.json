@@ -1927,5 +1927,6 @@
 	"AnErrorOccurringDuringThePayment":"Bei der Zahlung ist ein Fehler aufgetreten",
 	"WidgetAPITestPage":"Widget-API-Testseite",
 	"UseTheWidgetTestPageToTestTheWidgetAPI":"Verwenden Sie die Widget-Testseite, um die Widget-API und die Eigenschaften zu testen",
-	"WidgetTest": "Öffnen Sie die Testseite"
+	"WidgetTest": "Öffnen Sie die Testseite",
+	"AllAgents": "Alle Agenten"
 }

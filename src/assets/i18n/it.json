@@ -1925,6 +1925,6 @@
     "AnErrorOccurringDuringThePayment":"Si è verificato un errore durante il pagamento",
     "WidgetAPITestPage":"Pagina di prova delle API del widget",
     "UseTheWidgetTestPageToTestTheWidgetAPI":"Usa la pagina di test del widget per testare le API e le proprietà del widget",
-    "WidgetTest": "Apri la pagina di test"
- 
+    "WidgetTest": "Apri la pagina di test",
+    "AllAgents": "Tutti gli agenti"
 }

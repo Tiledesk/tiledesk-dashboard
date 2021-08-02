@@ -1944,5 +1944,6 @@
    "AnErrorOccurringDuringThePayment":"An error occurring during the payment",
    "WidgetAPITestPage":"Widget API test page",
    "UseTheWidgetTestPageToTestTheWidgetAPI":"Use the widget test page to test the widget API and properties",
-   "WidgetTest": "Open the test page"
+   "WidgetTest": "Open the test page",
+   "AllAgents": "All agents"
 }
