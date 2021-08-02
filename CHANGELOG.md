@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.3-rc.3
+- Fixes the bug: Cannot read property 'log' of undefined in the method that subscribes to the 'requester presence'
+- Sets the log level to 'info'
 
 ### 2.2.2-rc.2
 - Updates "material icons" library
