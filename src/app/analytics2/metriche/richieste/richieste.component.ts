@@ -78,6 +78,20 @@ export class RichiesteComponent implements OnInit {
     this.subscription.unsubscribe();
   }
 
+  ngAfterViewInit() {
+    const elemInputOfNgSelectDays = <HTMLElement>document.querySelector('.ng-select-days > .ng-select-container > .ng-value-container > .ng-input > input');
+    this.logger.log('[ANALYTICS - CONVS] EL-INPUT Of NgSelectDays ' , elemInputOfNgSelectDays);
+    elemInputOfNgSelectDays.setAttribute("id", "select-days");
+
+    const elemInputOfNgSelectDept = <HTMLElement>document.querySelector('.ng-select-dept > .ng-select-container > .ng-value-container > .ng-input > input');
+    this.logger.log('[ANALYTICS - CONVS] EL-INPUT Of NgSelectDept ' , elemInputOfNgSelectDept);
+    elemInputOfNgSelectDept.setAttribute("id", "select-dept");
+
+    const elemInputOfNgSelectAgent = <HTMLElement>document.querySelector('.ng-select-agent > .ng-select-container > .ng-value-container > .ng-input > input');
+    this.logger.log('[ANALYTICS - CONVS] EL-INPUT Of NgSelectAgent ' , elemInputOfNgSelectAgent);
+    elemInputOfNgSelectAgent.setAttribute("id", "select-agent");
+  }
+
   daysSelect(value, event) {
     this.logger.log("[ANALYTICS - CONVS] daysSelect EVENT", event)
     this.selectedDaysId = value;//--> value to pass throw for graph method
