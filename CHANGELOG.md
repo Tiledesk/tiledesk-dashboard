@@ -1,6 +1,12 @@
 
 # tiledesk-dashboard
 
+
+### 2.2.2-rc.2
+- Updates "material icons" library
+- Fixes the warning: "Found 2 elements with non-unique id" in Analytics > Metrics > Conversations
+- Translates the string 'All' in the dropdown 'Agent' in Analytics > Metrics > Conversations
+
 ### 2.2.0-rc.1
 - Loads material icons locally
 - Loads Roboto font locally
