@@ -83,14 +83,16 @@ export class PricingComponent implements OnInit, OnDestroy {
   }
 
   /**
-   *  PER I PIANI DI TEST IN Stripe > Sviluppatori > Webhook > Dettagli Webhook clicca Aggiorna dettagli ed inserisci
-   *  in URL endpoint
+   * FOR TEST PLANS in the Stripe Dashboard> Developers> Webhook> Webhook Details click Update details and enter
+   * in endpoint URL:
    *  
-   *  per testare in localhost fai partire ngrok e sortituisci la parte iniziale dell'url 
-   *  http://03caec73.ngrok.io/modules/payments/stripe/webhook
+   *  * to test from localhost start ngrok and replace the initial part of the url
+   *    http://03caec73.ngrok.io/modules/payments/stripe/webhook
    * 
-   *  per testate in PRE 
-   *  https://tiledesk-server-pre.herokuapp.com/modules/payments/stripe/webhook
+   *  Note: to create an ngrok tunnel run: ./ngrok http  http://localhost:3000/
+   * 
+   *  * to test in in PRE 
+   *    https://tiledesk-server-pre.herokuapp.com/modules/payments/stripe/webhook
    * 
    */
 
