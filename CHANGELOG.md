@@ -1,6 +1,12 @@
 
 # tiledesk-dashboard
 
+### 2.2.0-rc.1
+- Loads material icons locally
+- Loads Roboto font locally
+- Improves the widget script formatting available on the "install-widget" wizard page and widget configuration page
+- Updates the Home "Latest updates" section
+
 ### 2.1.70-beta.1.16
 - Improvements of the logs and removes unused code
 - Adds in Project Settings > Developer Tab a button that opens the test page of the api and widget properties
@@ -11,7 +17,7 @@
 ### 2.1.70-beta.1.14
 - Adjust the widget preview available in the widget configuration page to the graphical enhancements made to the widget
 - Removes from assets unused images
-- Add the payment details in the payment table available in Project Settings > Payments > see Payments
+- Adds the payment details in the payment table available in Project Settings > Payments > see Payments
 - Adds the "Payment Canceled" page displayed when a subscription error occurs
 
 ### 2.1.70-beta.1.13
@@ -55,7 +61,6 @@
 
 ### 2.1.70-beta.1.5 
 - Sets in pre: the value of the key chatEngine to 'mqtt', the value of the key uploadEngine to 'native' and the value of the key pushEngine to 'none'
-
 
 ### 2.1.70-beta.1.4
 - Fixes the bug: redirectTo: 'login' when the path is empty 
