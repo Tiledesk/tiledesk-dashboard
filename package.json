@@ -1,6 +1,6 @@
 {
   "name": "@tiledesk/tiledesk-dashboard",
-  "version": "2.2.0-rc.1",
+  "version": "2.2.2-rc.2",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --aot",
@@ -59,7 +59,7 @@
     "jquery": "3.2.1",
     "leaflet": "^1.5.1",
     "marked": "^2.0.6",
-    "material-design-icons": "^3.0.1",
+    "material-icons": "^1.0.1",
     "moment": "^2.18.1",
     "moment-timezone": "^0.5.21",
     "mydatepicker": "^2.6.5",
