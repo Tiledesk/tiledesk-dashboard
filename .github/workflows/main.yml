@@ -17,5 +17,5 @@ jobs:
        with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
-        repository: tiledesk/tiledesk-server
+        repository: tiledesk/tiledesk-dashboard
         tag_with_ref: true
