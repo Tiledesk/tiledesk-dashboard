@@ -467,9 +467,33 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   }
 
 
-  openChatInNewWindow(requestid) {
-    const url = this.CHAT_BASE_URL + '?recipient=' + requestid;
-    window.open(url, '_blank');
+  openChatInNewWindow(requestid: string, requester_fullanme: string) {
+    this.logger.log('[WS-REQUESTS-LIST][SERVED] - openChatInNewWindow - requestid', requestid);
+    this.logger.log('[WS-REQUESTS-LIST][SERVED] - openChatInNewWindow - requester_fullanme', requester_fullanme);
+    // const url = this.CHAT_BASE_URL + '?recipient=' + requestid;
+    // window.open(url, '_blank');
+    const url = this.CHAT_BASE_URL + "/" + requestid + "/" +  requester_fullanme + "/active";
+    this.openWindow('Tiledesk - Open Source Live Chat', url)
+    this.focusWin('Tiledesk - Open Source Live Chat')
+  }
+
+  openWindow(winName: any, winURL: any) {
+    const myWindows = new Array();
+    if (myWindows[winName] && !myWindows[winName].closed) {
+      alert('window already exists');
+    } else {
+      myWindows[winName] = window.open(winURL, winName);
+    }
+  }
+
+  focusWin(winName: any) {
+    const myWindows = new Array();
+    if (myWindows[winName] && !myWindows[winName].closed) {
+      myWindows[winName].focus();
+    } else {
+      // alert('cannot focus closed or nonexistant window');
+      this.logger.log('[HOME] - cannot focus closed or nonexistant window');
+    }
   }
 
 

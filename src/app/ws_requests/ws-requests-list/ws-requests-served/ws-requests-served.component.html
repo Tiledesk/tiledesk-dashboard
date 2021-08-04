@@ -831,7 +831,7 @@
 
             <button *ngIf="request?.currentUserIsJoined === true" type="button" rel="tooltip"
               title="{{ 'RequestMsgsPage.Enter' | translate }}" class="btn btn-tdblu btn-simple btn-xs tool_tip"
-              (click)='openChatInNewWindow(request?.request_id)'>
+              (click)='openChatInNewWindow(request?.request_id, request?.lead?.fullname)'>
 
               <!--
               // ------------------------------------------------------------------------------------------------------

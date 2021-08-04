@@ -2068,9 +2068,40 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   openChatInNewWindow() {
     // RESOLVE THE BUG: THE BUTTON 'OPEN THE CHAT' REMAIN FOCUSED AFTER PRESSED
     this.openChatBtn.nativeElement.blur();
-    const url = this.CHAT_BASE_URL + '?recipient=' + this.id_request
-    window.open(url, '_blank');
+    // const url = this.CHAT_BASE_URL + '?recipient=' + this.id_request
+    const url = this.CHAT_BASE_URL + "/" + this.id_request + "/" +  this.request.lead.fullname + "/active"
+    // this.logger.log('[WS-REQUESTS-MSGS] openChatInNewWindow request.lead.fullname ',  this.request.lead.fullname);
+    // window.open(url, '_blank');
+    this.logger.log('[WS-REQUESTS-MSGS] openChatInNewWindow url ', url);
+
+    this.openWindow('Tiledesk - Open Source Live Chat', url)
+    
+    this.focusWin('Tiledesk - Open Source Live Chat')
+
   }
+
+  openWindow(winName: any, winURL: any) {
+    const myWindows = new Array();
+    if (myWindows[winName] && !myWindows[winName].closed) {
+      alert('window already exists');
+    } else {
+      myWindows[winName] = window.open(winURL, winName);
+    }
+  }
+
+  focusWin(winName: any) {
+    const myWindows = new Array();
+    if (myWindows[winName] && !myWindows[winName].closed) {
+      myWindows[winName].focus();
+    } else {
+      // alert('cannot focus closed or nonexistant window');
+      this.logger.log('[HOME] - cannot focus closed or nonexistant window');
+    }
+  }
+
+
+
+
 
   chatWithAgent(agentId, agentFirstname, agentLastname) {
     this.logger.log('[WS-REQUESTS-MSGS] - CHAT WITH AGENT - agentId: ', agentId, ' - agentFirstname: ', agentFirstname, ' - agentLastname: ', agentLastname);
