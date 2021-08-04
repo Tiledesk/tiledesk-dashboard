@@ -1401,12 +1401,12 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     testExpiredSessionFirebaseLogout() {
         this.auth.testExpiredSessionFirebaseLogout(true)
     }
-    openChat() {
-        // localStorage.setItem('chatOpened', 'true');
-        const url = this.CHAT_BASE_URL;
-        window.open(url, '_blank');
-        // this.getFromLocalStorageHasOpenedTheChat();
-    }
+
+    // NOT USED
+    // openChat() {
+    //     const url = this.CHAT_BASE_URL;
+    //     window.open(url, '_blank');
+    // }
 
     getFromLocalStorageHasOpenedTheChat() {
         const storedChatOpenedValue = localStorage.getItem('chatOpened');
