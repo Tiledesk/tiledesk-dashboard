@@ -361,4 +361,3 @@ You can run an embedded version of the dashboard inside an existing app using, f
 "<iframe src='http://localhost:4200/#/project/<YOUR_PROJECT_ID>/request-for-panel/support-group-<CONVERSATION_ID>?token=<JWT_TOKEN'></iframe>"
 
 ```
-
