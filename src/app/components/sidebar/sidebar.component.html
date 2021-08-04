@@ -282,7 +282,8 @@
       <li *ngIf="project" routerLinkActive="active">
         <!-- <a class="customAncor" routerLink="/chat"> -->
         <!-- <a class="customAncor" routerLink="project/{{ project._id }}/chat"> -->
-        <a #openchatbtn class="customAncor" target="_blank" href="{{ CHAT_BASE_URL }}" (click)="removeChatBtnFocus()">
+          <!-- target="_blank"  href="{{ CHAT_BASE_URL }}" (click)="removeChatBtnFocus()" -->
+        <a #openchatbtn class="customAncor" (click)="openChat()">
           <i class="material-icons sidebar-icons">chat</i>
           <p class="onBlackBckgrnd">Chat</p>
         </a>

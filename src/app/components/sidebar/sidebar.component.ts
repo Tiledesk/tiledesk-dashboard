@@ -200,7 +200,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.translateChangeAvailabilitySuccessMsg();
         this.translateChangeAvailabilityErrorMsg();
         this.getProfileImageStorage();
-   
+
         this.getCurrentProject_andThenDepts();
 
         this.getUserAvailability();
@@ -226,7 +226,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.isMac();
         this.listenHasDeleteUserProfileImage();
     }
-    
+
     getLoggedUser() {
         this.auth.user_bs.subscribe((user) => {
             this.logger.log('[SIDEBAR] USER GET IN SIDEBAR ', user)
@@ -264,10 +264,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
             const firebase_conf = this.appConfigService.getConfig().firebase;
             this.storageBucket = firebase_conf['storageBucket'];
-            this.logger.log('[SIDEBAR] IMAGE STORAGE ', this.storageBucket , 'usecase Firebase')
+            this.logger.log('[SIDEBAR] IMAGE STORAGE ', this.storageBucket, 'usecase Firebase')
         } else {
             this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
-            this.logger.log('[SIDEBAR] IMAGE STORAGE ', this.storageBucket , 'usecase Native')
+            this.logger.log('[SIDEBAR] IMAGE STORAGE ', this.storageBucket, 'usecase Native')
         }
 
 
@@ -281,11 +281,11 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.logger.log('[SIDEBAR] PUBLIC-KEY - public_Key keys', keys)
 
         keys.forEach(key => {
-           
+
             if (key.includes("ANA")) {
-               
+
                 let ana = key.split(":");
-    
+
                 if (ana[1] === "F") {
                     this.isVisibleANA = false;
                 } else {
@@ -786,7 +786,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             // this.logger.log('[SIDEBAR] project from AUTH service subscription  ', this.project)
 
             if (this.project) {
-  
+
                 this.getDeptsAndFilterDefaultDept();
 
                 this.projectId = this.project._id
@@ -878,7 +878,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit() {
-  
+
     }
 
 
@@ -1037,15 +1037,37 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     }
 
-    // RESOLVE THE BUG 'chat button remains focused after clicking'
-    // SET IN THE STORAGE THAT THE CHAT HAS BEEN OPENED
-    removeChatBtnFocus() {
 
+    openChat() {
         this.notify.publishHasClickedChat(true);
-
-        // localStorage.setItem('chatOpened', 'true');
+        const url = this.CHAT_BASE_URL;
+        this.openWindow('Tiledesk - Open Source Live Chat', url)
+        this.focusWin('Tiledesk - Open Source Live Chat')
         this.elementRef.nativeElement.blur();
     }
+
+    openWindow(winName: any, winURL: any) {
+        const myWindows = new Array();
+        if (myWindows[winName] && !myWindows[winName].closed) {
+            alert('window already exists');
+        } else {
+            myWindows[winName] = window.open(winURL, winName);
+        }
+    }
+
+    focusWin(winName: any) {
+        const myWindows = new Array();
+        if (myWindows[winName] && !myWindows[winName].closed) {
+            myWindows[winName].focus();
+        } else {
+            // alert('cannot focus closed or nonexistant window');
+            this.logger.log('[SIDEBAR] - cannot focus closed or nonexistant window');
+        }
+    }
+
+
+
+
 
     // SE IMPLEMENTATO NELL 'AFTER VIEW INIT' RITORNA ERRORE:
     // Cannot read property 'nativeElement' of undefined
