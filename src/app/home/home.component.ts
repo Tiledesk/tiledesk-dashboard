@@ -1052,12 +1052,14 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   openChat() {
     // localStorage.setItem('chatOpened', 'true');
     const url = this.CHAT_BASE_URL;
-    window.open(url, '_blank');
+    // window.open(url, '_blank');
 
     this.notify.publishHasClickedChat(true);
 
-    this.openWindow('tiledesk_chat', url)
-    this.focusWin('tiledesk_chat')
+    // this.openWindow('tiledesk_chat', url);
+    this.openWindow('Tiledesk - Open Source Live Chat', url)
+    
+    this.focusWin('Tiledesk - Open Source Live Chat')
   }
 
   openWindow(winName: any, winURL: any) {
@@ -1080,28 +1082,28 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   // loads an URL into the popup without reloading it
-  openChatWindow(chatUrl: any, chatWindowName: any) {
-    // open the window with blank url
-    const chatwin = window.open('', chatWindowName);
-    try {
-      // if we just opened the window
-      // this.logger.log('1) mywin ', chatwin)
-      // this.logger.log('1) mywin.document ', chatwin.document)
-      if (chatwin.closed || (!chatwin.document.URL) || (chatwin.document.URL.indexOf('about') === 0)) {
-        // this.logger.log('2) mywin ', chatwin)
-        // this.logger.log('2) mywin.document ', chatwin.document)
-        chatwin.location.href = chatUrl;
-      } else {
-        // this.logger.log('3) mywin ', chatwin)
-        // this.logger.log('3) mywin.document ', chatwin.document)
-        chatwin.focus();
-      }
-    } catch (err) {
-      this.logger.log('err ', err)
-    }
-    // return the window
-    return chatwin;
-  }
+  // openChatWindow(chatUrl: any, chatWindowName: any) {
+  //   // open the window with blank url
+  //   const chatwin = window.open('', chatWindowName);
+  //   try {
+  //     // if we just opened the window
+  //     // this.logger.log('1) mywin ', chatwin)
+  //     // this.logger.log('1) mywin.document ', chatwin.document)
+  //     if (chatwin.closed || (!chatwin.document.URL) || (chatwin.document.URL.indexOf('about') === 0)) {
+  //       // this.logger.log('2) mywin ', chatwin)
+  //       // this.logger.log('2) mywin.document ', chatwin.document)
+  //       chatwin.location.href = chatUrl;
+  //     } else {
+  //       // this.logger.log('3) mywin ', chatwin)
+  //       // this.logger.log('3) mywin.document ', chatwin.document)
+  //       chatwin.focus();
+  //     }
+  //   } catch (err) {
+  //     this.logger.log('err ', err)
+  //   }
+  //   // return the window
+  //   return chatwin;
+  // }
 
   goToTiledeskMobileAppPage() {
 
