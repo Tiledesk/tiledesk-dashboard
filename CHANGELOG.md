@@ -1,6 +1,10 @@
 
 # tiledesk-dashboard
 
+### 2.2.3-rc.4
+- Fixes the bug: When the chat is opened to reply to a conversation, the conversation is not selected in the chat
+- Avoids (on Chrome browser) the opening of multiple chat tabs if it is already open
+
 ### 2.2.3-rc.3
 - Fixes the bug: Cannot read property 'log' of undefined in the method that subscribes to the 'requester presence'
 - Sets the log level to 'info'
