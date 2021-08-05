@@ -13,7 +13,7 @@ export class GroupNamePipe implements PipeTransform {
     constructor(private groupsService: GroupService) { }
 
     transform(id_group: string): any {
-        console.log('RUN THE PIPE  ', id_group)
+        // console.log('RUN THE PIPE  ', id_group)
 
         this.groupsService.getGroupById(id_group)
             .subscribe((group: any) => {
