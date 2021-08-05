@@ -29,14 +29,14 @@ export class TagsDeleteComponent implements OnInit {
 
   ngOnInit() {
 
-    console.log('[TAGS][TAGS-DELETE] - ngOnInit - tagid  ', this.tagid, ' tagname ', this.tag_name);
+   this.logger.log('[TAGS][TAGS-DELETE] - ngOnInit - tagid  ', this.tagid, ' tagname ', this.tag_name);
     this.translateNotificationMsgs()
   }
 
   translateNotificationMsgs() {
     this.translate.get('Tags.NotificationMsgs')
       .subscribe((translation: any) => {
-        // console.log('[TAGS][TAGS-DELETE]  translateNotificationMsgs text', translation)
+        //this.logger.log('[TAGS][TAGS-DELETE]  translateNotificationMsgs text', translation)
         this.delete_label_success = translation.DeleteLabelSuccess;
         this.delete_label_error = translation.DeleteLabelError;
       }, err => {
@@ -47,21 +47,21 @@ export class TagsDeleteComponent implements OnInit {
   }
 
   closeModalDeleteTag() {
-    console.log('[TAGS][TAGS-DELETE] - CLOSE MODAL DELETE TAG');
+   this.logger.log('[TAGS][TAGS-DELETE] - CLOSE MODAL DELETE TAG');
     this.closeModal.emit();
   }
 
   deleteTag() {
-    console.log('[TAGS][TAGS-DELETE] - deleteTag - tagid  ', this.tagid);
+   this.logger.log('[TAGS][TAGS-DELETE] - deleteTag - tagid  ', this.tagid);
     this.tagsService.deleteTag(this.tagid).subscribe((res: any) => {
-      console.log('[TAGS][TAGS-DELETE] - DELETE TAG - RES ', res);
+     this.logger.log('[TAGS][TAGS-DELETE] - DELETE TAG - RES ', res);
 
     }, (error) => {
-      console.error('[TAGS][TAGS-DELETE] - DELETE TAG - ERROR  ', error);
+      this.logger.error('[TAGS][TAGS-DELETE] - DELETE TAG - ERROR  ', error);
       this.notify.showWidgetStyleUpdateNotification(this.delete_label_error, 4, 'report_problem');
 
     }, () => {
-      console.log('[TAGS][TAGS-DELETE] - DELETE TAG * COMPLETE *');
+     this.logger.log('[TAGS][TAGS-DELETE] - DELETE TAG * COMPLETE *');
       this.notify.showWidgetStyleUpdateNotification(this.delete_label_success, 2, 'done');
       this.hasDeletedTag.emit();
       this.closeModal.emit();

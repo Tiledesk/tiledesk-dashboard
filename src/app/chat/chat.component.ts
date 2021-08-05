@@ -40,7 +40,7 @@ export class ChatComponent implements OnInit {
     this.getAndSanitizeChatUrl();
     this.onInitframeHeight();
     // const elemNavbar = <HTMLElement>document.querySelector('.navbar');
-    // console.log('NAVBAR QUERY SELECTOR IN CHAT ', elemNavbar)
+    //this.logger.log('NAVBAR QUERY SELECTOR IN CHAT ', elemNavbar)
 
   }
 
@@ -52,21 +52,21 @@ export class ChatComponent implements OnInit {
   onResize(event: any) {
     // this.newInnerWidth = event.target.innerWidth;
     this.newInnerHeight = event.target.innerHeight;
-    console.log('[CHAT-COMP] NEW INNER HEIGHT ', this.newInnerHeight);
+   this.logger.log('[CHAT-COMP] NEW INNER HEIGHT ', this.newInnerHeight);
     // this.iframeHeight = this.newInnerHeight - this.navbarHeight;
     this.iframeHeight = this.newInnerHeight - this.navbarAndFooterHeight;
-    console.log('[CHAT-COMP] ON RESIZE -> IFRAME HEIGHT (ACTUAL HEIGHT - NAVBAR HEIGHT) ', this.iframeHeight);
+   this.logger.log('[CHAT-COMP] ON RESIZE -> IFRAME HEIGHT (ACTUAL HEIGHT - NAVBAR HEIGHT) ', this.iframeHeight);
 
     return { 'height': this.iframeHeight += 'px' };
   }
 
   onInitframeHeight(): any {
     this.actualHeight = window.innerHeight;
-    console.log('[CHAT-COMP] ACTUAL HEIGHT ', this.actualHeight);
+   this.logger.log('[CHAT-COMP] ACTUAL HEIGHT ', this.actualHeight);
     // this.iframeHeight = this.actualHeight += 'px';
     // this.iframeHeight = this.actualHeight - this.navbarHeight;
     this.iframeHeight = this.actualHeight - this.navbarAndFooterHeight;
-    console.log('[CHAT-COMP] ON INIT -> IFRAME HEIGHT (ACTUAL HEIGHT - NAVBAR HEIGHT) ', this.iframeHeight);
+   this.logger.log('[CHAT-COMP] ON INIT -> IFRAME HEIGHT (ACTUAL HEIGHT - NAVBAR HEIGHT) ', this.iframeHeight);
 
     return { 'height': this.iframeHeight += 'px' };
   }

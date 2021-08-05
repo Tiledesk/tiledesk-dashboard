@@ -138,12 +138,12 @@ export class AutologinComponent implements OnInit {
       this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser * COMPLETE *');
 
       const route_part = route.split('/');
-      console.log('[AUTOLOGIN] SSO - ssoLogin route_part ', route_part);
+      this.logger.log('[AUTOLOGIN] SSO - ssoLogin route_part ', route_part);
       const project_id = route_part[2]
-      console.log('[AUTOLOGIN] SSO - ssoLogin route_part ', route_part);
+      this.logger.log('[AUTOLOGIN] SSO - ssoLogin route_part ', route_part);
   
       const storedProjectJson = localStorage.getItem(project_id);
-      console.log('[AUTOLOGIN] SSO - ssoLogin storedProjectJson ', storedProjectJson);
+      this.logger.log('[AUTOLOGIN] SSO - ssoLogin storedProjectJson ', storedProjectJson);
   
       if (storedProjectJson === null) {
         this.getProjectFromRemotePublishAndSaveInStorage(project_id);
