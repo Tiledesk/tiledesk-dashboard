@@ -1,6 +1,14 @@
 
 # tiledesk-dashboard
 
+### 2.2.4
+- Fix widget installation snippet on widget configuration page
+- Handles backward compatibility of chat URLs
+- Performs autologin at sign up with the email obtained from the signup response
+
+### 2.2.3
+- Compatible with td-server 2.2.X
+
 ### 2.2.3-rc.4
 - Fixes the bug: When the chat is opened to reply to a conversation, the conversation is not selected in the chat
 - Avoids (on Chrome browser) the opening of multiple chat tabs if it is already open
