@@ -268,8 +268,10 @@ export class SignupComponent implements OnInit, AfterViewInit {
         this.logger.log('[SIGN-UP] POST DATA ', signupResponse);
         if (signupResponse['success'] === true) {
           // this.router.navigate(['/welcome']);
-
-          this.autoSignin();
+          this.logger.log('[SIGN-UP] RES ', signupResponse);
+          const userEmail = signupResponse.user.email
+          this.logger.log('[SIGN-UP] RES USER EMAIL ', userEmail);
+          this.autoSignin(userEmail);
 
         } else {
           this.logger.error('[SIGN-UP] ERROR CODE', signupResponse['code']);
@@ -317,12 +319,12 @@ export class SignupComponent implements OnInit, AfterViewInit {
   }
 
 
-  autoSignin() {
+  autoSignin(userEmail: string) {
     // this.auth.emailLogin(
     const self = this;
     // this.auth.signin(this.userForm.value['email'], this.userForm.value['password'])
     //   .subscribe((error) => {
-    this.auth.signin(this.userForm.value['email'], this.userForm.value['password'], function (error) {
+    this.auth.signin(userEmail, this.userForm.value['password'], function (error) {
       self.logger.log('[SIGN-UP] autoSignin 1. POST DATA ', error);
       // this.auth.user = signinResponse.user;
       // this.auth.user.token = signinResponse.token
