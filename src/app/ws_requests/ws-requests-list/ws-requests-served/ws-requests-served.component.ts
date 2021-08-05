@@ -60,7 +60,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   joinToChatMsg: string
   areYouSureMsg: string
   isMobile: boolean;
-
+  FIREBASE_AUTH: boolean;
   /**
    * Constructor
    * @param botLocalDbService 
@@ -105,6 +105,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     this.getTranslations();
     this.getProjectUserRole();
     this.detectMobile();
+    this.getFirebaseAuth();
   }
 
   ngOnChanges() {
@@ -115,6 +116,16 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+  getFirebaseAuth() {
+    if (this.appConfigService.getConfig().firebaseAuth === 'true') {
+      this.FIREBASE_AUTH = true;
+      this.logger.log('[HISTORY & NORT-CONVS] - FIREBASE_AUTH IS ', this.FIREBASE_AUTH);
+    } else {
+      this.FIREBASE_AUTH = false;
+      this.logger.log('[HISTORY & NORT-CONVS] - FIREBASE_AUTH IS ', this.FIREBASE_AUTH);
+    }
   }
 
   // -------------------------------------------------------------
@@ -472,7 +483,15 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     this.logger.log('[WS-REQUESTS-LIST][SERVED] - openChatInNewWindow - requester_fullanme', requester_fullanme);
     // const url = this.CHAT_BASE_URL + '?recipient=' + requestid;
     // window.open(url, '_blank');
-    const url = this.CHAT_BASE_URL + "/" + requestid + "/" +  requester_fullanme + "/active";
+    // const url = this.CHAT_BASE_URL + "/" + requestid + "/" +  requester_fullanme + "/active";
+
+    let url = '';
+    if (this.FIREBASE_AUTH === true) {
+      url = this.CHAT_BASE_URL + "/" + requestid + "/" + requester_fullanme + "/active"
+    } else {
+      url = this.CHAT_BASE_URL + '?recipient=' + requestid;
+    }
+
     this.openWindow('Tiledesk - Open Source Live Chat', url)
     this.focusWin('Tiledesk - Open Source Live Chat')
   }

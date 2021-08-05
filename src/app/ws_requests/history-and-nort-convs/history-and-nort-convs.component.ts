@@ -197,7 +197,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   allConversationsaveBeenArchivedMsg: string;
   ROLE_IS_AGENT: boolean;
   CHAT_BASE_URL: string;
-
+  FIREBASE_AUTH: boolean;
 
   /**
    * 
@@ -260,7 +260,17 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.getProjectUserRole();
     this.detectMobile();
     this.getTag();
+    this.getFirebaseAuth();
 
+  }
+  getFirebaseAuth() {
+    if (this.appConfigService.getConfig().firebaseAuth === 'true') {
+      this.FIREBASE_AUTH = true;
+      this.logger.log('[HISTORY & NORT-CONVS] - FIREBASE_AUTH IS ', this.FIREBASE_AUTH);
+    } else {
+      this.FIREBASE_AUTH = false;
+      this.logger.log('[HISTORY & NORT-CONVS] - FIREBASE_AUTH IS ', this.FIREBASE_AUTH);
+    }
   }
 
   getTranslations() {
@@ -369,8 +379,15 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.logger.log('[HISTORY & NORT-CONVS] - openChatInNewWindow - requestid ', requester_fullanme);
     // const url = this.CHAT_BASE_URL + '?recipient=' + requestid;
     // window.open(url, '_blank');
-    
-    const url = this.CHAT_BASE_URL + "/" + requestid + "/" +  requester_fullanme + "/active"
+
+    let url = '';
+    if (this.FIREBASE_AUTH === true) {
+      url = this.CHAT_BASE_URL + "/" + requestid + "/" + requester_fullanme + "/active"
+    } else {
+      url = this.CHAT_BASE_URL + '?recipient=' + requestid;
+    }
+
+
     this.openWindow('Tiledesk - Open Source Live Chat', url)
     this.focusWin('Tiledesk - Open Source Live Chat')
   }
@@ -673,7 +690,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
       this.imageStorage = this.storageBucket
 
-      this.logger.log('[HISTORY & NORT-CONVS] - IMAGE STORAGE ', this.storageBucket , 'usecase firebase')
+      this.logger.log('[HISTORY & NORT-CONVS] - IMAGE STORAGE ', this.storageBucket, 'usecase firebase')
     } else {
       this.UPLOAD_ENGINE_IS_FIREBASE = false;
       this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
@@ -1085,7 +1102,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
       this.endDateValue = this.endDate['formatted']
       this.endDateFormatted = this.endDateFormatted_temp;
-      
+
       this.logger.log('[HISTORY & NORT-CONVS] - SEARCH FOR END DATE ', this.endDateValue);
     } else {
       this.endDateValue = '';
@@ -1382,7 +1399,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     }
   }
 
- 
+
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
       this.logger.log('[HISTORY & NORT-CONVS] - PRJCT FROM SUBSCRIPTION TO AUTH SERV  ', project)
@@ -1511,7 +1528,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
           this.logger.log("[HISTORY & NORT-CONVS] - then res : ", res);
 
           this.logger.log("[HISTORY & NORT-CONVS] - then res _body : ", JSON.parse(res['_body']));
- 
+
           count = index + 1;
           this.logger.log("[HISTORY & NORT-CONVS] - count Of ARCHIVE SELECTED : ", count)
           this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg + count + '/' + this.request_selected.length);

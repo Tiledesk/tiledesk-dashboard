@@ -206,7 +206,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   urls: any = /(\b(https?|http|ftp|ftps|Https|rtsp|Rtsp):\/\/[A-Z0-9+&@#\/%?=~_|!:,.;-]*[-A-Z0-9+&@#\/%=~_|])/gim; // Find/Replace URL's in text  
   emails: any = /(\S+@\S+\.\S+)/gim; // Find/Replace email addresses in text
-
+  FIREBASE_AUTH: boolean;
 
   /**
    * Constructor
@@ -307,7 +307,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.getIfRouteUrlIsRequestForPanel();
     this.getBaseUrl();
     this.getOSCODE();
-
+    this.getFirebaseAuth();
   }
   ngAfterViewInit() {
     // -----------------------------------
@@ -331,6 +331,16 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   unsuscribeRequesterPresence(requester_id) {
     this.wsRequestsService.unsubscribeToWS_RequesterPresence(requester_id);
+  }
+
+  getFirebaseAuth() {
+    if (this.appConfigService.getConfig().firebaseAuth === 'true') {
+      this.FIREBASE_AUTH = true;
+      this.logger.log('[HISTORY & NORT-CONVS] - FIREBASE_AUTH IS ', this.FIREBASE_AUTH);
+    } else {
+      this.FIREBASE_AUTH = false;
+      this.logger.log('[HISTORY & NORT-CONVS] - FIREBASE_AUTH IS ', this.FIREBASE_AUTH);
+    }
   }
 
   getBaseUrlsFromAppConfig() {
@@ -2069,9 +2079,16 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // RESOLVE THE BUG: THE BUTTON 'OPEN THE CHAT' REMAIN FOCUSED AFTER PRESSED
     this.openChatBtn.nativeElement.blur();
     // const url = this.CHAT_BASE_URL + '?recipient=' + this.id_request
-    const url = this.CHAT_BASE_URL + "/" + this.id_request + "/" +  this.request.lead.fullname + "/active"
+    // const url = this.CHAT_BASE_URL + "/" + this.id_request + "/" +  this.request.lead.fullname + "/active"
     // this.logger.log('[WS-REQUESTS-MSGS] openChatInNewWindow request.lead.fullname ',  this.request.lead.fullname);
     // window.open(url, '_blank');
+
+    let url = '';
+    if (this.FIREBASE_AUTH === true) {
+      url = this.CHAT_BASE_URL + "/" + this.id_request + "/" + this.request.lead.fullname + "/active"
+    } else {
+      url = this.CHAT_BASE_URL + '?recipient=' + this.id_request;
+    }
     this.logger.log('[WS-REQUESTS-MSGS] openChatInNewWindow url ', url);
 
     this.openWindow('Tiledesk - Open Source Live Chat', url)
