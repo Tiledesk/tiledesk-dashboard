@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-
+import { LoggerService } from '../../services/logger/logger.service';
 @Component({
   selector: 'appdashboard-metriche',
   templateUrl: './metriche.component.html',
@@ -7,13 +7,18 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class MetricheComponent implements OnInit {
   @Input()  autoselected
- ì
+ 
   selected='richieste'
-  constructor() { }
+ 
+  constructor(
+    private logger: LoggerService
+
+  ) {
+   }
 
   ngOnInit() {
 
-    console.log("[ANALYTICS - METRICS] - autoselected", this.autoselected)
+    this.logger.log("[ANALYTICS - METRICS] - autoselected", this.autoselected)
 
     if (this.autoselected === 'visitors') {
       this.selected='visitors';
@@ -26,6 +31,6 @@ export class MetricheComponent implements OnInit {
 
   goTo(component){
     this.selected=component;
-    console.log("[ANALYTICS - METRICS] Move to:",component)
+    this.logger.log("[ANALYTICS - METRICS] Move to:",component)
   }
 }
