@@ -802,6 +802,21 @@ export class AuthService {
     localStorage.removeItem('user');
     localStorage.removeItem('project');
     localStorage.removeItem('role')
+
+    const chat_sv5__currentUser = localStorage.getItem('chat_sv5__currentUser');
+    this.logger.log('[AUTH-SERV] SIGNOUT - STORED chat_sv5__currentUser : ', chat_sv5__currentUser);
+
+    if (chat_sv5__currentUser) {
+      localStorage.removeItem('chat_sv5__currentUser')
+    }
+
+    const chat_sv5__tiledeskToken = localStorage.getItem('chat_sv5__tiledeskToken');
+    this.logger.log('[AUTH-SERV] SIGNOUT - STORED chat_sv5__tiledeskToken : ', chat_sv5__tiledeskToken);
+
+    if (chat_sv5__tiledeskToken) {
+      localStorage.removeItem('chat_sv5__tiledeskToken')
+    }
+
     this.webSocketClose();
     // ------------------------------------------------------------------------------------------------------------
     // RUN removeInstanceIdAndSignout() if pushEngine === 'firebase' + 
