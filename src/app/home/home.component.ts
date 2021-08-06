@@ -1050,16 +1050,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   openChat() {
-    // localStorage.setItem('chatOpened', 'true');
     const url = this.CHAT_BASE_URL;
-    // window.open(url, '_blank');
-
     this.notify.publishHasClickedChat(true);
-
-    // this.openWindow('tiledesk_chat', url);
-    this.openWindow('Tiledesk - Open Source Live Chat', url)
+    window.open(url, '_blank');
     
-    this.focusWin('Tiledesk - Open Source Live Chat')
+    // this.openWindow('Tiledesk - Open Source Live Chat', url)
+    // this.focusWin('Tiledesk - Open Source Live Chat')
   }
 
   openWindow(winName: any, winURL: any) {

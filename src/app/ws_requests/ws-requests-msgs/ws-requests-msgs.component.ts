@@ -2090,10 +2090,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       url = this.CHAT_BASE_URL + '?recipient=' + this.id_request;
     }
     this.logger.log('[WS-REQUESTS-MSGS] openChatInNewWindow url ', url);
+   
+    window.open(url, '_blank');
 
-    this.openWindow('Tiledesk - Open Source Live Chat', url)
-    
-    this.focusWin('Tiledesk - Open Source Live Chat')
+    // this.openWindow('Tiledesk - Open Source Live Chat', url)
+    // this.focusWin('Tiledesk - Open Source Live Chat')
 
   }
 

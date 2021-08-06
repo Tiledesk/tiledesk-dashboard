@@ -378,8 +378,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.logger.log('[HISTORY & NORT-CONVS] - openChatInNewWindow - requestid ', requestid);
     this.logger.log('[HISTORY & NORT-CONVS] - openChatInNewWindow - requestid ', requester_fullanme);
     // const url = this.CHAT_BASE_URL + '?recipient=' + requestid;
-    // window.open(url, '_blank');
-
+ 
     let url = '';
     if (this.FIREBASE_AUTH === true) {
       url = this.CHAT_BASE_URL + "/" + requestid + "/" + requester_fullanme + "/active"
@@ -387,9 +386,10 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       url = this.CHAT_BASE_URL + '?recipient=' + requestid;
     }
 
+    window.open(url, '_blank');
 
-    this.openWindow('Tiledesk - Open Source Live Chat', url)
-    this.focusWin('Tiledesk - Open Source Live Chat')
+    // this.openWindow('Tiledesk - Open Source Live Chat', url)
+    // this.focusWin('Tiledesk - Open Source Live Chat')
   }
 
   openWindow(winName: any, winURL: any) {

@@ -1037,7 +1037,12 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     }
 
+    removeChatBtnFocus() {
+        this.notify.publishHasClickedChat(true);
+        this.elementRef.nativeElement.blur();
+    }
 
+    // NOT USED
     openChat() {
         this.notify.publishHasClickedChat(true);
         const url = this.CHAT_BASE_URL;

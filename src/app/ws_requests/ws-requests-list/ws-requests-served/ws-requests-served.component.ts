@@ -492,8 +492,10 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
       url = this.CHAT_BASE_URL + '?recipient=' + requestid;
     }
 
-    this.openWindow('Tiledesk - Open Source Live Chat', url)
-    this.focusWin('Tiledesk - Open Source Live Chat')
+    window.open(url, '_blank');
+
+    // this.openWindow('Tiledesk - Open Source Live Chat', url)
+    // this.focusWin('Tiledesk - Open Source Live Chat')
   }
 
   openWindow(winName: any, winURL: any) {
