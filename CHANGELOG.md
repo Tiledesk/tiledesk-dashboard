@@ -1,6 +1,10 @@
 
 # tiledesk-dashboard
 
+### 2.2.5
+- Removes the implemented "Avoids (on Chrome browser) the opening of multiple chat tabs if it is already open"
+- Fixes the bug: chat keys are not removed at the logout
+
 ### 2.2.4
 - Fix widget installation snippet on widget configuration page
 - Handles backward compatibility of chat URLs
