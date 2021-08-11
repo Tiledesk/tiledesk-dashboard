@@ -111,7 +111,6 @@ export class AutologinComponent implements OnInit {
   }
 
   ssoLogin(JWT, route) {
-
     this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser route ', route);
     this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser JWT ', JWT);
 
@@ -124,8 +123,7 @@ export class AutologinComponent implements OnInit {
       this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser user ', user);
 
       localStorage.setItem('user', JSON.stringify(user));
-
-
+      localStorage.setItem('chat_sv5__tiledeskToken', JWT);
 
       this.auth.publishSSOloggedUser();
 
@@ -141,10 +139,10 @@ export class AutologinComponent implements OnInit {
       this.logger.log('[AUTOLOGIN] SSO - ssoLogin route_part ', route_part);
       const project_id = route_part[2]
       this.logger.log('[AUTOLOGIN] SSO - ssoLogin route_part ', route_part);
-  
+
       const storedProjectJson = localStorage.getItem(project_id);
       this.logger.log('[AUTOLOGIN] SSO - ssoLogin storedProjectJson ', storedProjectJson);
-  
+
       if (storedProjectJson === null) {
         this.getProjectFromRemotePublishAndSaveInStorage(project_id);
       }
@@ -163,7 +161,7 @@ export class AutologinComponent implements OnInit {
 
       if (prjct && prjct.length > 0) {
         this.logger.log('[AUTOLOGIN] - TEST --- HERE YES');
-       
+
 
         const project_name = prjct[0].id_project.name;
         this.logger.log('[AUTOLOGIN] - PROJECT NAME GOT BY  PROJECT REMOTE ', project_name);
@@ -229,10 +227,11 @@ export class AutologinComponent implements OnInit {
             if (firebase_user) {
               this.sso.getCurrentAuthenticatedUser(JWT).subscribe(auth_user => {
                 this.logger.log('[AUTOLOGIN] SSO - ssoLoginWithCustomToken getCurrentAuthenticatedUser RES ', auth_user);
-
+                this.logger.log('[AUTOLOGIN] SSO - ssoLoginWithCustomToken getCurrentAuthenticatedUser JWT ', JWT);
                 const user = { firstname: auth_user.firstname, lastname: auth_user.lastname, _id: auth_user._id, token: JWT }
 
                 localStorage.setItem('user', JSON.stringify(user));
+                localStorage.setItem('chat_sv5__tiledeskToken', JWT);
 
                 this.auth.publishSSOloggedUser();
 
