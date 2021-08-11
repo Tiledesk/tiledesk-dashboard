@@ -1,8 +1,11 @@
 
 # tiledesk-dashboard
 
+### 2.2.7-rc.7
+Fixes the bug: the keys stored in the local memory "chat_sv5__tiledeskToken" and "chat_sv5__currentUser" are removed when loading right panel 'conversation info' of the chat
+
 ### 2.2.6-rc.6
-- Fixes the bug: the keys saved in the storage that refer to the chat are removed at the autologin
+- Fixes the bug: the stored key "chat_sv5__tiledeskToken" is not refreshed at the autologin
 
 ### 2.2.5
 - Removes the implemented "Avoids (on Chrome browser) the opening of multiple chat tabs if it is already open"
