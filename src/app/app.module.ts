@@ -389,8 +389,6 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     ComponentsModule,
     RouterModule,
     HeatMapModule,
-    // AngularFireModule.initializeApp(firebaseConfig),
-    // HttpModule,
     HttpClientModule,
     MomentModule,
     AmazingTimePickerModule,
