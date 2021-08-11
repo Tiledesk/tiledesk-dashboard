@@ -3,10 +3,8 @@ import { Injectable } from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute, NavigationStart } from '@angular/router';
 import { NotifyService } from './notify.service';
 import { Observable } from 'rxjs/Observable';
-import { switchMap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { Http, Headers, RequestOptions } from '@angular/http';
-import { mergeMap } from 'rxjs/operators/mergeMap';
 import { User } from '../models/user-model';
 import { Project } from '../models/project-model';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -803,6 +801,7 @@ export class AuthService {
     localStorage.removeItem('project');
     localStorage.removeItem('role')
 
+
     const chat_sv5__currentUser = localStorage.getItem('chat_sv5__currentUser');
     this.logger.log('[AUTH-SERV] SIGNOUT - STORED chat_sv5__currentUser : ', chat_sv5__currentUser);
 
@@ -816,6 +815,7 @@ export class AuthService {
     if (chat_sv5__tiledeskToken) {
       localStorage.removeItem('chat_sv5__tiledeskToken')
     }
+
 
     this.webSocketClose();
     // ------------------------------------------------------------------------------------------------------------
