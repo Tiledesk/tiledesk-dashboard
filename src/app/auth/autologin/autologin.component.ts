@@ -316,6 +316,7 @@ export class AutologinComponent implements OnInit {
 
 
   logout() {
+    this.logger.log('[AUTOLOGIN] SSO - autologin logout - dashboard version ', this.version)
     this.logger.log('[AUTOLOGIN] SSO - autologin logout')
 
     this.auth.showExpiredSessionPopup(false);
