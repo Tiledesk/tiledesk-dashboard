@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.6-rc.6
+- Fixes the bug: the keys saved in the storage that refer to the chat are removed at the autologin
+
 ### 2.2.5
 - Removes the implemented "Avoids (on Chrome browser) the opening of multiple chat tabs if it is already open"
 - Fixes the bug: stored chat keys are not removed at the logout
