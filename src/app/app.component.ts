@@ -86,13 +86,14 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         // }).catch(error => this.logger.log('APP.COMP - script error ', error));
 
         this.logger.initilaizeLoger()
-        
+
         const brand = brandService.getBrand();
 
         this.logger.log('[APP-COMPONENT] - GET BRAND brandService > brand ', brand)
-    
 
-        this.metaTitle.setTitle(brand['metaTitle']); // here used with: "import brand from ..." now see in getBrand()
+        if (brand) {
+            this.metaTitle.setTitle(brand['metaTitle']); // here used with: "import brand from ..." now see in getBrand()
+        }
         this.setFavicon(brand); // here used with "import brand from ..." now see in getBrand()
 
 
@@ -167,7 +168,9 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         this.logger.log('[APP-COMPONENT] setFavicon ', link)
         link['type'] = 'image/x-icon';
         link['rel'] = 'shortcut icon';
-        link['href'] = brand.favicon__url;
+        if (brand) {
+            link['href'] = brand.favicon__url;
+        }
         document.getElementsByTagName('head')[0].appendChild(link);
 
     }
@@ -523,7 +526,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     (this.route.indexOf('/unserved-request-for-panel') !== -1) ||
                     (this.route.indexOf('/autologin') !== -1) ||
                     (this.route.indexOf('/unauthorized_access') !== -1)
-                    
+
                 ) {
                     elemFooter.setAttribute('style', 'display:none;');
                     // this.logger.log('DETECT LOGIN PAGE')

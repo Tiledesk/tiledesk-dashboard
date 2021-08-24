@@ -52,7 +52,9 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
   ) {
     const brand = brandService.getBrand();
     this.tparams = brand;
-    this.company_name = brand['company_name'];
+    if (brand) {
+      this.company_name = brand['company_name'];
+    }
   }
 
   ngOnInit() {
@@ -90,7 +92,7 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
         this.prjct_profile_name = this.buildPlanName(projectProfileData.profile_name, this.browserLang, this.prjct_profile_type);
       }
     }, err => {
-      this.logger.error('[NOTIFICATION-MSG] GET PROJECT PROFILE - ERROR',err);
+      this.logger.error('[NOTIFICATION-MSG] GET PROJECT PROFILE - ERROR', err);
     }, () => {
       this.logger.log('[NOTIFICATION-MSG] GET PROJECT PROFILE * COMPLETE *');
     });
@@ -163,7 +165,7 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
     });
   }
 
- 
+
   cancelSubscription() {
     this.notify.cancelSubscriptionCompleted(false)
 
@@ -179,11 +181,11 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
     }, error => {
       this.logger.error('[NOTIFICATION-MSG] - cancelSubscription - ERROR: ', error);
       this.notify.showNotification(this.subscriptionCanceledError, 4, 'report_problem');
-      
+
       this.notify.cancelSubscriptionCompleted(true)
     }, () => {
       this.logger.log('[NOTIFICATION-MSG] - cancelSubscription * COMPLETE *');
-     
+
     });
 
   }

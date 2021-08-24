@@ -190,9 +190,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         const brand = brandService.getBrand();
 
         this.tparams = brand;
-        this.sidebarLogoWhite_Url = brand['company_logo_white__url'];
-        this.hidechangelogrocket = brand['sidebar__hide_changelog_rocket'];
-
+        if (brand) {
+            this.sidebarLogoWhite_Url = brand['company_logo_white__url'];
+            this.hidechangelogrocket = brand['sidebar__hide_changelog_rocket'];
+        }
     }
 
     ngOnInit() {
