@@ -116,7 +116,7 @@
                 <div class="col-sm-12" style="margin-bottom: 6px; text-align: left;">
                   <ng-select class="custom" name="agent" [(ngModel)]="selectedAgentId" [clearable]="false"
                     (change)="agentSelected(selectedAgentId)">
-                    <ng-option [value]="''">Tutto</ng-option>
+                    <ng-option [value]="''">{{ 'HistoryPage.AllAgents' | translate }}</ng-option>
                     <ng-option *ngFor="let agent of projectUserAndBotsArray" value="{{ agent.id }}">
                       {{ agent.name }}
                     </ng-option>
