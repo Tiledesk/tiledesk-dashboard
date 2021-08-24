@@ -5,6 +5,7 @@
 - Modifies the "logger service" to accept only values of string type from the "loggingLevel" environments property (Error < Warn < Info < Debug)
 - Updates the README.md
 - Replaces in the environments the numerical value of "loggingLevel" with the equivalent string
+- Adds the "loggingLevel" property in the env.sample, dashboard-config-template.json and dashboard-config.json files
 
 ### 2.2.9-rc.9
 - Fixes the bug: when opening the chat from a dashboard conversation if the value of the "firebaseAuth" is an empty string the chat crashes
