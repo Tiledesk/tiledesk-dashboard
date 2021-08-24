@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.9-rc.9
+- Fixes the bug: when opening the chat from a dashboard conversation if the value of the "firebaseAuth" is an empty string the chat crashes
+
 ### 2.2.8-rc.8
 - Adds unit tests
 - Checks in app.component.ts, sidebar.ts and notification-message.components.ts if the 'brand' object exists before accessing its properties to suppress errors "Cannot read property 'xxxx' of undefined"
