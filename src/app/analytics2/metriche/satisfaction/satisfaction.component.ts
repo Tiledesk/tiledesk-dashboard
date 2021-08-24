@@ -5,24 +5,26 @@ import { Subscription } from 'rxjs';
 import { Observable } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { AnalyticsService } from './../../../services/analytics.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Chart } from 'chart.js';
 import * as moment from 'moment';
 import { LoggerService } from './../../..//services/logger/logger.service';
-
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators'
 @Component({
   selector: 'appdashboard-satisfaction',
   templateUrl: './satisfaction.component.html',
   styleUrls: ['./satisfaction.component.scss']
 })
-export class SatisfactionComponent implements OnInit {
+export class SatisfactionComponent implements OnInit, OnDestroy {
 
+  private unsubscribe$: Subject<any> = new Subject<any>();
   lang: string;
 
   selectedDaysId: number;   // lastdays filter
   selectedDeptId: string;   // department filter
   selectedAgentId: string;  // agent filter 
-  
+
   avgSatisfaction: any;
   selected: string;
   departments: any;
@@ -48,7 +50,7 @@ export class SatisfactionComponent implements OnInit {
     private usersService: UsersService,
     private faqKbService: FaqKbService,
     private logger: LoggerService
-    ) {
+  ) {
 
     this.lang = this.translate.getBrowserLang();
     this.logger.log('[ANALYTICS - SATISFACTION] LANGUAGE ', this.lang);
@@ -56,6 +58,9 @@ export class SatisfactionComponent implements OnInit {
 
   }
 
+  // -------------------------------------------
+  // @ Lifehooks
+  // -------------------------------------------
   ngOnInit() {
     this.selectedDaysId = 7;
     this.selectedDeptId = '';
@@ -70,6 +75,13 @@ export class SatisfactionComponent implements OnInit {
     this.getProjectUsersAndBots();
     this.getAvgSatisfaction();
     this.getSatisfactionByLastNDays(this.selectedDaysId, this.selectedDeptId, this.selectedAgentId);
+  }
+
+  ngOnDestroy() {
+    this.logger.log('[ANALYTICS - SATISFACTION] - !!!!! UN - SUBSCRIPTION TO REQUESTS');
+    this.subscription.unsubscribe();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   switchMonthName() {
@@ -114,15 +126,19 @@ export class SatisfactionComponent implements OnInit {
   }
 
   getDepartments() {
-    this.departmentService.getDeptsByProjectId().subscribe((_departments: any) => {
-      this.logger.log('[ANALYTICS - SATISFACTION] - GET DEPTS RESPONSE by analitycs ', _departments);
-      this.departments = _departments
+    this.departmentService.getDeptsByProjectId()
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((_departments: any) => {
+        this.logger.log('[ANALYTICS - SATISFACTION] - GET DEPTS RESPONSE by analitycs ', _departments);
+        this.departments = _departments
 
-    }, error => {
-      this.logger.error('[ANALYTICS - SATISFACTION] - GET DEPTS - ERROR: ', error);
-    }, () => {
-      this.logger.log('[ANALYTICS - SATISFACTION] - GET DEPTS * COMPLETE *')
-    });
+      }, error => {
+        this.logger.error('[ANALYTICS - SATISFACTION] - GET DEPTS - ERROR: ', error);
+      }, () => {
+        this.logger.log('[ANALYTICS - SATISFACTION] - GET DEPTS * COMPLETE *')
+      });
   }
 
   getProjectUsersAndBots() {
@@ -310,10 +326,10 @@ export class SatisfactionComponent implements OnInit {
           },
           tooltips: {
             callbacks: {
-              label: function(tooltipItem, data) {
+              label: function (tooltipItem, data) {
                 const currentItemValue = tooltipItem.yLabel;
-                
-                if(lang == 'it') {
+
+                if (lang == 'it') {
                   return 'Media giornaliera: ' + currentItemValue;
                 } else {
                   return 'Daily average: ' + currentItemValue;
@@ -331,10 +347,7 @@ export class SatisfactionComponent implements OnInit {
     return Math.max.apply(null, requestsByDay_series_array);
   }
 
-  ngOnDestroy() {
-    this.logger.log('[ANALYTICS - SATISFACTION] - !!!!! UN - SUBSCRIPTION TO REQUESTS');
-    this.subscription.unsubscribe();
-  }
+ 
 
   // TO CHECK !!!!!!!!
   stepSize(milliseconds) {
