@@ -334,12 +334,13 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   getFirebaseAuth() {
-    if (this.appConfigService.getConfig().firebaseAuth === 'true') {
+    this.logger.log('[WS-REQUESTS-MSGS] - this.appConfigService.getConfig().firebaseAuth  ', this.appConfigService.getConfig().firebaseAuth );
+    if (this.appConfigService.getConfig().firebaseAuth === true) {
       this.FIREBASE_AUTH = true;
-      this.logger.log('[HISTORY & NORT-CONVS] - FIREBASE_AUTH IS ', this.FIREBASE_AUTH);
+      this.logger.log('[WS-REQUESTS-MSGS] - FIREBASE_AUTH IS ', this.FIREBASE_AUTH);
     } else {
       this.FIREBASE_AUTH = false;
-      this.logger.log('[HISTORY & NORT-CONVS] - FIREBASE_AUTH IS ', this.FIREBASE_AUTH);
+      this.logger.log('[WS-REQUESTS-MSGS] - FIREBASE_AUTH IS ', this.FIREBASE_AUTH);
     }
   }
 
@@ -2082,9 +2083,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // const url = this.CHAT_BASE_URL + "/" + this.id_request + "/" +  this.request.lead.fullname + "/active"
     // this.logger.log('[WS-REQUESTS-MSGS] openChatInNewWindow request.lead.fullname ',  this.request.lead.fullname);
     // window.open(url, '_blank');
-
+    this.logger.log('[WS-REQUESTS-MSGS] openChatInNewWindow FIREBASE_AUTH ', this.FIREBASE_AUTH);
+    this.logger.log('[WS-REQUESTS-MSGS] openChatInNewWindow CHAT_BASE_URL ', this.CHAT_BASE_URL);
     let url = '';
-    if (this.FIREBASE_AUTH === true) {
+    
+    if (this.FIREBASE_AUTH === false) {
       url = this.CHAT_BASE_URL + "/" + this.id_request + "/" + this.request.lead.fullname + "/active"
     } else {
       url = this.CHAT_BASE_URL + '?recipient=' + this.id_request;

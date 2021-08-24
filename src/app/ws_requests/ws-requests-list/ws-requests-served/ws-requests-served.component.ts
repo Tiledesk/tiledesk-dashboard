@@ -119,7 +119,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   }
 
   getFirebaseAuth() {
-    if (this.appConfigService.getConfig().firebaseAuth === 'true') {
+    if (this.appConfigService.getConfig().firebaseAuth === true) {
       this.FIREBASE_AUTH = true;
       this.logger.log('[HISTORY & NORT-CONVS] - FIREBASE_AUTH IS ', this.FIREBASE_AUTH);
     } else {
@@ -486,7 +486,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     // const url = this.CHAT_BASE_URL + "/" + requestid + "/" +  requester_fullanme + "/active";
 
     let url = '';
-    if (this.FIREBASE_AUTH === true) {
+    if (this.FIREBASE_AUTH === false) {
       url = this.CHAT_BASE_URL + "/" + requestid + "/" + requester_fullanme + "/active"
     } else {
       url = this.CHAT_BASE_URL + '?recipient=' + requestid;

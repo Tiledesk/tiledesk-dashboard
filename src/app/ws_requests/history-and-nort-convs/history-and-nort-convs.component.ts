@@ -264,7 +264,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
   }
   getFirebaseAuth() {
-    if (this.appConfigService.getConfig().firebaseAuth === 'true') {
+    if (this.appConfigService.getConfig().firebaseAuth === true) {
       this.FIREBASE_AUTH = true;
       this.logger.log('[HISTORY & NORT-CONVS] - FIREBASE_AUTH IS ', this.FIREBASE_AUTH);
     } else {
@@ -380,7 +380,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     // const url = this.CHAT_BASE_URL + '?recipient=' + requestid;
  
     let url = '';
-    if (this.FIREBASE_AUTH === true) {
+    if (this.FIREBASE_AUTH === false) {
       url = this.CHAT_BASE_URL + "/" + requestid + "/" + requester_fullanme + "/active"
     } else {
       url = this.CHAT_BASE_URL + '?recipient=' + requestid;
