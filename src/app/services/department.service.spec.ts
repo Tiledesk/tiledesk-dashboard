@@ -1,8 +1,8 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import {DepartmentService } from './departemnt.service';
+import { DepartmentService } from './department.service';
 
-describe('MongodbDepartemntService', () => {
+describe('DepartmentService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [DepartmentService]

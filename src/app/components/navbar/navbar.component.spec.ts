@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { WsRequestsService } from 'app/services/websocket/ws-requests.service';
 
 import { NavbarComponent } from './navbar.component';
 
@@ -8,7 +9,12 @@ describe('NavbarComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NavbarComponent ]
+      declarations: [ 
+        NavbarComponent
+       ],
+       providers: [ 
+        WsRequestsService
+       ]
     })
     .compileComponents();
   }));
