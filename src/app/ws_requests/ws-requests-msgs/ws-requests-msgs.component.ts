@@ -338,10 +338,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     if (this.appConfigService.getConfig().firebaseAuth === true) {
       this.FIREBASE_AUTH = true;
       this.logger.log('[WS-REQUESTS-MSGS] - FIREBASE_AUTH IS ', this.FIREBASE_AUTH);
-    } else {
+    } else if (this.appConfigService.getConfig().firebaseAuth === false) {
       this.FIREBASE_AUTH = false;
       this.logger.log('[WS-REQUESTS-MSGS] - FIREBASE_AUTH IS ', this.FIREBASE_AUTH);
-    }
+    } 
   }
 
   getBaseUrlsFromAppConfig() {
@@ -2089,8 +2089,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     
     if (this.FIREBASE_AUTH === false) {
       url = this.CHAT_BASE_URL + "/" + this.id_request + "/" + this.request.lead.fullname + "/active"
-    } else {
+    } else if (this.FIREBASE_AUTH === true)  {
       url = this.CHAT_BASE_URL + '?recipient=' + this.id_request;
+    } else {
+      url = this.CHAT_BASE_URL + '#/conversation-detail/'+ this.id_request + "/" + this.request.lead.fullname + "/active"
     }
     this.logger.log('[WS-REQUESTS-MSGS] openChatInNewWindow url ', url);
    
