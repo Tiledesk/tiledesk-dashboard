@@ -237,7 +237,7 @@ export class AnalyticsService {
 
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MGFhMGZlZjE0ODJmZTAwMzQ2ODU0YTciLCJlbWFpbCI6Im51b3ZvcHJlZ2luYUBtb3plai5jb20iLCJmaXJzdG5hbWUiOiJOdW92byIsImxhc3RuYW1lIjoiUHJlZ2luYSIsImVtYWlsdmVyaWZpZWQiOnRydWUsImlhdCI6MTYyODY3MzM0MSwiYXVkIjoiaHR0cHM6Ly90aWxlZGVzay5jb20iLCJpc3MiOiJodHRwczovL3RpbGVkZXNrLmNvbSIsInN1YiI6InVzZXIiLCJqdGkiOiJlYmZjNWM1OC1kNmI0LTQ2NmItYWYxNy0zNjYzM2Y4ZTZiYjQifQ.o5K1cOF8kGqJPS1xupKdsVIuSvb19FbzNtTAbUXwibg"
+      'Authorization': this.TOKEN
     });
     this.logger.log("[ANALYTICS-SERV] getDurationConversationTimeDataCHART headers", headers);
 
@@ -246,7 +246,7 @@ export class AnalyticsService {
       .set('department_id', department_id)
       .set('participant', participant_id)
 
-      this.logger.log("[ANALYTICS-SERV] getDurationConversationTimeDataCHART params", params);
+    this.logger.log("[ANALYTICS-SERV] getDurationConversationTimeDataCHART params", params);
 
     const url = this.SERVER_BASE_PATH + this.projectID + '/analytics/requests/duration/day'
     this.logger.log("[ANALYTICS-SERV] getDurationConversationTimeDataCHART url", url);
