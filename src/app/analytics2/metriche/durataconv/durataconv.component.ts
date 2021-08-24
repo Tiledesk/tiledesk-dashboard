@@ -51,6 +51,7 @@ export class DurataconvComponent implements OnInit {
   projectUsersList: any;
   projectBotsList: any;
   bots: any;
+  durationConversationTime: any;
 
   constructor(
     private analyticsService: AnalyticsService,
@@ -300,6 +301,7 @@ export class DurataconvComponent implements OnInit {
     this.subscription = this.analyticsService.getDurationConversationTimeDataCHART(lastdays, depID, participantId).subscribe((resp: any) => {
 
       if (resp) {
+        this.durationConversationTime = resp
         this.logger.log('[ANALYTICS - DURATACONV] Duration time', resp)
 
         const lastNdays_initarrayDURATION = []
