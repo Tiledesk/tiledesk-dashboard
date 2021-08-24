@@ -8,6 +8,7 @@ import { WsRequestsService } from '../../services/websocket/ws-requests.service'
 import { AppConfigService } from '../../services/app-config.service';
 import { AnalyticsService } from './../../services/analytics.service';
 import { LoggerService } from '../../services/logger/logger.service';
+
 @Component({
   selector: 'appdashboard-realtime',
   templateUrl: './realtime.component.html',
