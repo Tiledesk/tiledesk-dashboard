@@ -230,7 +230,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
       let customLogger = new LoggerService(appConfig);
 
       let loggingLevel = appConfig.getConfig().loggingLevel;
-      if (loggingLevel === 2) {
+      if (loggingLevel === 'Info') {
         console.info('### AppConfigService APP-MODULE-TS appInitializerFn environment.remoteConfig', environment.remoteConfig);
         console.info('### AppConfigService APP-MODULE-TS appConfig loaded');
         console.info('### AppConfigService APP-MODULE-TS brandService loaded');
