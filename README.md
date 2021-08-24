@@ -126,7 +126,7 @@ updloaEngine: "native", // OR YOUR CUSTOM UPLOAD ENGINE
 
 pushEngine:"none", // OR YOUR CUSTOM PUSH ENGINE
 
-loggingLevel: "<YOUR-PREFERRED-LOG-LEVEL-NUMBER>",
+loggingLevel: "<YOUR-PREFERRED-LOG-LEVEL>",
 
 wsUrl: 'ws://' + window.location.hostname + '/ws/',
 
@@ -150,7 +150,7 @@ wsUrl: 'ws://' + window.location.hostname + '/ws/',
 
 ```
 * `logLevel`: The Dashboard supports 4 log levels. The order is as follows:
-  `Error = 0 < Warn = 1 < Info = 2 < Debug = 3`
+  `Error < Warn < Info < Debug`
 
 
 ### RUN in dev
