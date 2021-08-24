@@ -4,13 +4,12 @@
 ### 2.2.8-rc.8
 - Adds unit tests
 - Checks in app.component.ts, sidebar.ts and notification-message.components.ts if the 'brand' object exists before accessing its properties to suppress errors "Cannot read property 'xxxx' of undefined"
-- Fixes the bug in "pricing.components.html": the name of the instance variable "DISPLAY_BTN_PLAN_LIVE_20_CENTSXUNIT" is incorrect (replaced with "DISPLAY_BTN_PLAN_LIVE_20_CENTSXUNIT_PROD")
 - Fixes the bug: in "pricing.components.ts" and "enviroments.prod" the value of the property "appId" is incorrect
-- Renames in "analytics.service" the injected property httpClient of the HttpClient class from http to httpClient and injectes the property http for the class Http
-- Fixed bug in "message.components": "moment" is not imported correctly
-- Fixed bug in the "getEventsByLastNDays" method in "events.analytics.component.ts": Cannot read length of undefined
+- Fixes the bug in "message.components": "moment" is not imported correctly
+- Fixes the bug in the "getEventsByLastNDays" method in "events.analytics.component.ts": Cannot read length of undefined
 - Fixes the bug in "requests.component.ts": Cannot "setAttribute" of undefined
 - Fixes the bug: when opening the chat from a dashboard conversation, the conversation is not selected in the chat
+- Fixes the bug: in analytics the string 'Tutto' is not translated
 
 ### 2.2.7-rc.7
 - Fixes the bug: the keys stored in the local memory "chat_sv5__tiledeskToken" and "chat_sv5__currentUser" are removed when loading right panel 'conversation info' of the chat
