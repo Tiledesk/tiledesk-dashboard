@@ -37,7 +37,7 @@ export class EventsAnalyticsComponent implements OnInit {
     private analyticsService: AnalyticsService,
     private translate: TranslateService,
     private logger: LoggerService
-    ) {
+  ) {
 
     this.lang = this.translate.getBrowserLang();
     this.logger.log('[ANALYTICS - EVENTS] LANGUAGE ', this.lang);
@@ -144,9 +144,11 @@ export class EventsAnalyticsComponent implements OnInit {
 
       // CREATES A NEW ARRAY FROM THE ARRAY RETURNED FROM THE SERVICE SO THAT IT IS COMPARABLE WITH last7days_initarray
       const eventsByDay_array = [];
-      for (let j = 0; j < eventsByDay.length; j++) {
-        if (eventsByDay[j]) {
-          eventsByDay_array.push({ 'count': eventsByDay[j]['count'], day: eventsByDay[j]['_id']['day'] + '/' + eventsByDay[j]['_id']['month'] + '/' + eventsByDay[j]['_id']['year'] })
+      if (eventsByDay) {
+        for (let j = 0; j < eventsByDay.length; j++) {
+          if (eventsByDay[j]) {
+            eventsByDay_array.push({ 'count': eventsByDay[j]['count'], day: eventsByDay[j]['_id']['day'] + '/' + eventsByDay[j]['_id']['month'] + '/' + eventsByDay[j]['_id']['year'] })
+          }
         }
       }
       this.logger.log('[ANALYTICS - EVENTS] - MESSAGES BY DAY FORMATTED ', eventsByDay_array);
