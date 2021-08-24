@@ -123,7 +123,7 @@ export class PricingComponent implements OnInit, OnDestroy {
       this.logger.log('[PRICING] - GET ROUTE-PARAMS & APPID - params: ', params)
       if (params.nk) {
         this.logger.log('[PRICING] -  GET ROUTE-PARAMS & APPID - params.nk: ', params.nk)
-        if(params.nk === 'y' && appID === "1:92907897826:android:dd2d325bca3ed8e8ee2fbb") {
+        if(params.nk === 'y' && appID === "1:92907897826:web:f255664014a7cc14ee2fbb") {
           this.DISPLAY_BTN_PLAN_LIVE_20_CENTSXUNIT_PROD = true;
           this.logger.log('[PRICING] - ROUTE-PARAMS DISPLAY_BTN_PLAN_LIVE_20_CENTSXUNIT_PROD', this.DISPLAY_BTN_PLAN_LIVE_20_CENTSXUNIT_PROD)
         }
