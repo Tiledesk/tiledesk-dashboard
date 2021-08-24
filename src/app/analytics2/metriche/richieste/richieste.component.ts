@@ -80,16 +80,23 @@ export class RichiesteComponent implements OnInit {
 
   ngAfterViewInit() {
     const elemInputOfNgSelectDays = <HTMLElement>document.querySelector('.ng-select-days > .ng-select-container > .ng-value-container > .ng-input > input');
-    this.logger.log('[ANALYTICS - CONVS] EL-INPUT Of NgSelectDays ' , elemInputOfNgSelectDays);
-    elemInputOfNgSelectDays.setAttribute("id", "select-days");
+    this.logger.log('[ANALYTICS - CONVS] EL-INPUT Of NgSelectDays ', elemInputOfNgSelectDays);
+    if (elemInputOfNgSelectDays) {
+      elemInputOfNgSelectDays.setAttribute("id", "select-days");
+    }
 
     const elemInputOfNgSelectDept = <HTMLElement>document.querySelector('.ng-select-dept > .ng-select-container > .ng-value-container > .ng-input > input');
-    this.logger.log('[ANALYTICS - CONVS] EL-INPUT Of NgSelectDept ' , elemInputOfNgSelectDept);
-    elemInputOfNgSelectDept.setAttribute("id", "select-dept");
+    this.logger.log('[ANALYTICS - CONVS] EL-INPUT Of NgSelectDept ', elemInputOfNgSelectDept);
 
+    if (elemInputOfNgSelectDept) {
+      elemInputOfNgSelectDept.setAttribute("id", "select-dept");
+    }
     const elemInputOfNgSelectAgent = <HTMLElement>document.querySelector('.ng-select-agent > .ng-select-container > .ng-value-container > .ng-input > input');
-    this.logger.log('[ANALYTICS - CONVS] EL-INPUT Of NgSelectAgent ' , elemInputOfNgSelectAgent);
-    elemInputOfNgSelectAgent.setAttribute("id", "select-agent");
+    this.logger.log('[ANALYTICS - CONVS] EL-INPUT Of NgSelectAgent ', elemInputOfNgSelectAgent);
+
+    if (elemInputOfNgSelectAgent) {
+      elemInputOfNgSelectAgent.setAttribute("id", "select-agent");
+    }
   }
 
   daysSelect(value, event) {
