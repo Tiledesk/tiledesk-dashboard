@@ -1,6 +1,10 @@
 
 # tiledesk-dashboard
 
+### 2.2.10-rc.10
+- Modifies the "logger service" to accept only values of string type from the "loggingLevel" environments property (Error < Warn < Info < Debug)
+- Updates the README.md
+
 ### 2.2.9-rc.9
 - Fixes the bug: when opening the chat from a dashboard conversation if the value of the "firebaseAuth" is an empty string the chat crashes
 
