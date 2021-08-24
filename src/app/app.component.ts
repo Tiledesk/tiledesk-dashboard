@@ -158,9 +158,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 browserRefresh = !router.navigated;
             }
         });
-
-
-
     }
 
     setFavicon(brand) {
