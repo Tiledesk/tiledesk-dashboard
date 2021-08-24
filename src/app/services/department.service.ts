@@ -9,6 +9,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { AppConfigService } from './app-config.service';
 import { LoggerService } from '../services/logger/logger.service';
 @Injectable()
+
 export class DepartmentService {
 
   public myDepts_bs: BehaviorSubject<Department[]> = new BehaviorSubject<Department[]>([]);
