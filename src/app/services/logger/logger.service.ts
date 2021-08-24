@@ -32,11 +32,11 @@ export class LoggerService {
 
     const config = this.appConfigService.getConfig();
     // console.log("[LoggerService] current HERE YES config ", config)
-    console.log("[LoggerService] current HERE YES config loggingLevel", config.loggingLevel)
+    if (config.loggingLevel === "Info") {
+      console.log("[LoggerService] loggingLevel:", config.loggingLevel)
+    }
 
     if (config.loggingLevel !== undefined && config.loggingLevel.length > 0) {
-
-
 
       if (this.appConfigService.getConfig().loggingLevel) {
         if (config.loggingLevel === "Error") {
@@ -57,68 +57,68 @@ export class LoggerService {
         //     // console.log("[LoggerService] current HERE YES else 2 config loggingLevel", config.loggingLevel)
         //     this.logLevel = this.appConfigService.getConfig().loggingLevel
         //   }
-        }
-      } else if (config.loggingLevel === undefined || config.loggingLevel.length === 0) {
-        console.log("[LoggerService] IS UNDEFINED OR EMPTY ")
-        this.logLevel = 3 // debug
       }
-
+    } else if (config.loggingLevel === undefined || config.loggingLevel.length === 0) {
+      // console.log("[LoggerService] IS UNDEFINED OR EMPTY ")
+      this.logLevel = 3 // debug
     }
-
-
-    error(...message: any[]) {
-      if (this.logLevel >= LogLevel.Error) {
-        console.error(message)
-      }
-    }
-
-    warn(...message: any[]) {
-      if (this.logLevel >= LogLevel.Warn) {
-        console.warn(message)
-      }
-    }
-
-    info(...message: any[]) {
-      if (this.logLevel >= LogLevel.Info) {
-        console.info(message)
-      }
-    }
-
-    debug(...message: any[]) {
-      if (this.logLevel >= LogLevel.Debug) {
-        console.debug(message)
-      }
-    }
-
-    log(...message: any[]) {
-      if (this.logLevel >= LogLevel.Debug) {
-        console.log(message)
-      }
-    }
-
-    // debug(...args: any[]) {
-    //   if (this.logLevel == this.LEVEL_DEBUG) {
-    //     console.debug.apply(console, args)
-    //   }
-    // }
-
-    // log(...args: any[]) {
-    //   if (this.logLevel == this.LEVEL_DEBUG) {
-    //     console.log.apply(console, args)
-    //   }
-    // }
-
-    // info(...args: any[]) {
-    //   if (this.logLevel <= this.LEVEL_INFO) {
-    //     console.info.apply(console, args)
-    //   }
-    // }
-
-    // error(...args: any[]) {
-    //   // if (this.logLevel <= LEVEL_ERROR) {
-    //   console.error.apply(console, args)
-    //   // }
-    // }
-
 
   }
+
+
+  error(...message: any[]) {
+    if (this.logLevel >= LogLevel.Error) {
+      console.error(message)
+    }
+  }
+
+  warn(...message: any[]) {
+    if (this.logLevel >= LogLevel.Warn) {
+      console.warn(message)
+    }
+  }
+
+  info(...message: any[]) {
+    if (this.logLevel >= LogLevel.Info) {
+      console.info(message)
+    }
+  }
+
+  debug(...message: any[]) {
+    if (this.logLevel >= LogLevel.Debug) {
+      console.debug(message)
+    }
+  }
+
+  log(...message: any[]) {
+    if (this.logLevel >= LogLevel.Debug) {
+      console.log(message)
+    }
+  }
+
+  // debug(...args: any[]) {
+  //   if (this.logLevel == this.LEVEL_DEBUG) {
+  //     console.debug.apply(console, args)
+  //   }
+  // }
+
+  // log(...args: any[]) {
+  //   if (this.logLevel == this.LEVEL_DEBUG) {
+  //     console.log.apply(console, args)
+  //   }
+  // }
+
+  // info(...args: any[]) {
+  //   if (this.logLevel <= this.LEVEL_INFO) {
+  //     console.info.apply(console, args)
+  //   }
+  // }
+
+  // error(...args: any[]) {
+  //   // if (this.logLevel <= LEVEL_ERROR) {
+  //   console.error.apply(console, args)
+  //   // }
+  // }
+
+
+}
