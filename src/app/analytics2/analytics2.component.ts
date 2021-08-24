@@ -91,6 +91,17 @@ export class Analytics2Component implements OnInit, OnDestroy {
 
   storageBucket: string;
   childToSelect: string
+
+  /**
+   * 
+   * @param auth 
+   * @param router 
+   * @param translate 
+   * @param analyticsService 
+   * @param wsRequestsService 
+   * @param appConfigService 
+   * @param logger 
+   */
   constructor(
     private auth: AuthService,
     private router: Router,
