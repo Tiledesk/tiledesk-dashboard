@@ -22,9 +22,51 @@
   <!-- <link href='https://fonts.googleapis.com/css?family=Roboto:400,700,300|Material+Icons' rel='stylesheet'ì type='text/css'> -->
   <link href='https://fonts.googleapis.com/css?family=Google+Sans:400,500' rel='stylesheet' type='text/css'>
 
+
+
+
+
+<!-- <script type="application/javascript">
+  window.tiledeskSettings= 
+  {
+      projectid: "6066e60cc3dade4e7389d182",
+      autoStart: false
+  };
+  (function(d, s, id) { 
+      var w=window; var d=document; var i=function(){i.c(arguments);};
+      i.q=[]; i.c=function(args){i.q.push(args);}; w.Tiledesk=i;
+      var js, fjs=d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js=d.createElement(s);
+      js.id=id; js.async=true; js.src="https://tiledesk-widget-pre.s3-eu-west-1.amazonaws.com/native-mqtt/widget/5.0.17-beta.1/launch.js";
+      fjs.parentNode.insertBefore(js, fjs);
+  }(document,'script','tiledesk-jssdk'));
+  
+  window.Tiledesk('onAuthStateChanged', function(event_data) {
+    console.log("AUTHENTICATED!", event_data);
+     if(event_data.detail.isLogged){
+        console.log("isLogged!!!!", event_data);
+        window.Tiledesk('show')
+          
+      }
+  });
+  
+  window.Tiledesk('onInit', function(event_data) {
+     console.log("onInit > FIRED!"); 
+  });
+  
+  window.Tiledesk('onLoadParams', function(event_data) {
+    console.log("onLoadParams > FIRED!");
+      window.tiledesk.signInWithCustomToken('JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiJkYTY5N2E1Zi02NmQyLTRiOTItYjAxNi02MjE3OThlNjNiOGEiLCJmaXJzdG5hbWUiOiJHdWVzdCIsImlkIjoiZGE2OTdhNWYtNjZkMi00YjkyLWIwMTYtNjIxNzk4ZTYzYjhhIiwiZnVsbE5hbWUiOiJHdWVzdCAiLCJpYXQiOjE2Mjk3OTg2OTQsImF1ZCI6Imh0dHBzOi8vdGlsZWRlc2suY29tIiwiaXNzIjoiaHR0cHM6Ly90aWxlZGVzay5jb20iLCJzdWIiOiJndWVzdCIsImp0aSI6IjdkZjlkMTQ5LTc4N2QtNDVmMy04NzIyLWQyNDRlODIwNzQzYSJ9.En91-AgdKCQVw7dJdiwftdSMwWq5dKZthVZQMG7swBM'); 
+  });
+</script> -->
+
+
 </head>
 
 <body>
+
+
 
   <appdashboard-root>
     <div class="loader">
