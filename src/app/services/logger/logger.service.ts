@@ -32,34 +32,34 @@ export class LoggerService {
 
     const config = this.appConfigService.getConfig();
     // console.log("[LoggerService] current HERE YES config ", config)
-    if (config.loggingLevel === "Info") {
-      console.log("[LoggerService] loggingLevel:", config.loggingLevel)
-    }
+    // if (config.loggingLevel === "Info") {
+    //   console.log("[LoggerService] loggingLevel:", config.loggingLevel)
+    // }
+    // && config.logLevel.length > 0
+    if (config.logLevel !== undefined) {
 
-    if (config.loggingLevel !== undefined && config.loggingLevel.length > 0) {
-
-      if (this.appConfigService.getConfig().loggingLevel) {
-        if (config.loggingLevel === "Error") {
-          this.logLevel = 0
-        } else if (config.loggingLevel === "Warn") {
-          this.logLevel = 1
-        } else if (config.loggingLevel === "Info") {
-          this.logLevel = 2
-        } else if (config.loggingLevel === "Debug") {
-          this.logLevel = 3
+      if (typeof this.appConfigService.getConfig().logLevel === 'string') {
+        if (config.logLevel.length > 0) {
+          if (config.logLevel.toUpperCase() === "ERROR") {
+            this.logLevel = 0
+          } else if (config.logLevel.toUpperCase() === "WARN") {
+            this.logLevel = 1
+          } else if (config.logLevel.toUpperCase() === "INFO") {
+            this.logLevel = 2
+          } else if (config.logLevel.toUpperCase() === "DEBUG") {
+            this.logLevel = 3
+          }
+        } else {
+          console.error('logLevel has an empty value! Will be used the Debug log level ')
+          this.logLevel = 3 // debug
         }
-
-        // this.logLevel = this.appConfigService.getConfig().loggingLevel
-        // cons3ole.log("[LoggerService] current logLevel", this.logLevel)
-        // this.setLoglevel(this.logLevel)
-        // } else {
-        //   if (this.appConfigService.getConfig().loggingLevel === 0) {
-        //     // console.log("[LoggerService] current HERE YES else 2 config loggingLevel", config.loggingLevel)
-        //     this.logLevel = this.appConfigService.getConfig().loggingLevel
-        //   }
+      } else {
+        console.error('logLevel is not a string. See the tiledesk-dashboard README.md available on https://github.com/Tiledesk/tiledesk-dashboard#dashboard-configjson')
       }
-    } else if (config.loggingLevel === undefined || config.loggingLevel.length === 0) {
+      // || config.loggingLevel.length === 0
+    } else if (config.loggingLevel === undefined) {
       // console.log("[LoggerService] IS UNDEFINED OR EMPTY ")
+      console.error('logLevel is undefined! Will be used the Debug log level ')
       this.logLevel = 3 // debug
     }
 
@@ -67,31 +67,31 @@ export class LoggerService {
 
 
   error(...message: any[]) {
-    if (this.logLevel >= LogLevel.Error) {
+    if (this.logLevel >= LogLevel.ERROR) {
       console.error(message)
     }
   }
 
   warn(...message: any[]) {
-    if (this.logLevel >= LogLevel.Warn) {
+    if (this.logLevel >= LogLevel.WARN) {
       console.warn(message)
     }
   }
 
   info(...message: any[]) {
-    if (this.logLevel >= LogLevel.Info) {
+    if (this.logLevel >= LogLevel.INFO) {
       console.info(message)
     }
   }
 
   debug(...message: any[]) {
-    if (this.logLevel >= LogLevel.Debug) {
+    if (this.logLevel >= LogLevel.DEBUG) {
       console.debug(message)
     }
   }
 
   log(...message: any[]) {
-    if (this.logLevel >= LogLevel.Debug) {
+    if (this.logLevel >= LogLevel.DEBUG) {
       console.log(message)
     }
   }

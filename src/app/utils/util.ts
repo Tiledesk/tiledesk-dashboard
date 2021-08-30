@@ -102,18 +102,26 @@ export const helpdocurl_users_role = 'https://docs.tiledesk.com/knowledge-base/u
 
 
 //LOG LEVEL
-export enum LogLevel {
-    // Off = 0,
-    // Info = 1,
-    // Debug = 2,
-    // Warn = 3,
-    // Error = 4,
-    // All = 5,
+// export enum LogLevel {
+//     // Off = 0,
+//     // Info = 1,
+//     // Debug = 2,
+//     // Warn = 3,
+//     // Error = 4,
+//     // All = 5,
 
-    Error = 0,
-    Warn = 1,
-    Info = 2,
-    Debug = 3
+//     Error = 0,
+//     Warn = 1,
+//     Info = 2,
+//     Debug = 3
    
+// }
+
+
+export const LogLevel = {
+    'ERROR': 0,
+    'WARN': 1,
+    'INFO': 2,
+    'DEBUG': 3
 }
 
