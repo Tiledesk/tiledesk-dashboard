@@ -2,8 +2,8 @@
 # tiledesk-dashboard
 
 ### 2.2.11-rc.11
-- Replaces in the environments in "dashboard-config.json" in "dashboard-config-template.json" and in "env.sample" the the key "loggingLevel" with the key "logLevel"
-- Improves custom logger service
+- Replaces in the environments in "dashboard-config.json" in "dashboard-config-template.json" and in "env.sample" the key "loggingLevel" with the key "logLevel"
+- Improves "logger service"
 
 ### 2.2.10-rc.10
 - Modifies the "logger service" to accept only values of string type from the "loggingLevel" environments property (Error < Warn < Info < Debug)
