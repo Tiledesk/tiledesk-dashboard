@@ -126,7 +126,7 @@ updloaEngine: "native", // OR YOUR CUSTOM UPLOAD ENGINE
 
 pushEngine:"none", // OR YOUR CUSTOM PUSH ENGINE
 
-loggingLevel: "<YOUR-PREFERRED-LOG-LEVEL>",
+logLevel: "<YOUR-PREFERRED-LOG-LEVEL>",
 
 wsUrl: 'ws://' + window.location.hostname + '/ws/',
 
