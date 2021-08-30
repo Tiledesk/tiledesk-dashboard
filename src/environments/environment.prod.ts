@@ -15,7 +15,7 @@ export const environment = {
     firebaseAuth: false,
     uploadEngine: 'native',
     pushEngine: 'none',
-    loggingLevel: 'Info',
+    logLevel: 'Info',
     firebase: {
         apiKey: "CHANGE-IT",
         authDomain: "CHANGE-IT",
