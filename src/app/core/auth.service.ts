@@ -847,8 +847,9 @@ export class AuthService {
               const storedUser = localStorage.getItem('user');
               const storedUserObj = JSON.parse(storedUser);
               this.logger.log('[AUTH-SERV] signOut >>>> getToken storedUserObj ', storedUserObj);
-              this.userId = storedUserObj._id;
-
+              if (storedUserObj) {
+                this.userId = storedUserObj._id;
+              }
               this.removeInstanceIdAndSignout(calledby);
 
             }).catch((err) => {
@@ -879,9 +880,9 @@ export class AuthService {
 
 
   removeInstanceIdAndSignout(calledby) {
-    this.logger.log('[AUTH-SERV] - removeInstanceId here 4')
-    this.logger.log('[AUTH-SERV] - removeInstanceId - FCM Token: ', this.FCMcurrentToken);
-    this.logger.log('[AUTH-SERV] - removeInstanceId - USER ID: ', this.userId);
+    this.logger.info('%c ### DSHBRD [AUTH-SERV] - removeInstanceIdAndSignout calledby ', 'color: #1a73e8', calledby)
+    this.logger.log('[AUTH-SERV] - removeInstanceIdAndSignout - FCM Token: ', this.FCMcurrentToken);
+    this.logger.log('[AUTH-SERV] - removeInstanceIdAndSignout - USER ID: ', this.userId);
     // this.connectionsRefinstancesId = this.urlNodeFirebase+"/users/"+userUid+"/instances/";
     const urlNodeFirebase = '/apps/tilechat'
     const connectionsRefinstancesId = urlNodeFirebase + '/users/' + this.userId + '/instances/';
