@@ -97,7 +97,7 @@ export class BrandService {
       // this.logger.log('[BRAND-SERV] loadBrand - remoteConfig is true ');
 
       const res = await this.http.get(environment['remoteConfigUrl']).toPromise();
-      this.logger.info('[BRAND-SERV] loadBrand - remoteConfig -> true get remoteConfig response ', res);
+      this.logger.log('[BRAND-SERV] loadBrand - remoteConfig -> true get remoteConfig response ', res);
 
       const remoteConfigData = JSON.parse(res['_body'])
       // this.logger.log('BrandService loadBrand - remoteConfig is true - get remoteConfigData  res ', remoteConfigData);

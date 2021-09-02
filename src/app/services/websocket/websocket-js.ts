@@ -287,7 +287,7 @@ export class WebSocketJs {
 
       } else {
 
-        this.logger.error("[WEBSOCKET-JS] - HEART-START - TRY TO SEND PING-MSG BUT READY STATE IS ", this.ws.readyState);
+        this.logger.log("[WEBSOCKET-JS] - HEART-START - TRY TO SEND PING-MSG BUT READY STATE IS ", this.ws.readyState);
 
       }
 

@@ -146,7 +146,7 @@ export class AuthService {
   // -------------------------------------------------------------------------
   public checkTrialExpired(): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
-      this.logger.info('[AUTH-SERV] »> »> PROJECT-PROFILE GUARD (WF in AUTH SERV) called checkTrialExpired!');
+      this.logger.log('[AUTH-SERV] »> »> PROJECT-PROFILE GUARD (WF in AUTH SERV) called checkTrialExpired!');
       resolve(this.project_trial_expired);
     });
   }
@@ -880,7 +880,7 @@ export class AuthService {
 
 
   removeInstanceIdAndSignout(calledby) {
-    this.logger.info('%c ### DSHBRD [AUTH-SERV] - removeInstanceIdAndSignout calledby ', 'color: #1a73e8', calledby)
+    this.logger.log('[AUTH-SERV] - removeInstanceIdAndSignout calledby ', calledby)
     this.logger.log('[AUTH-SERV] - removeInstanceIdAndSignout - FCM Token: ', this.FCMcurrentToken);
     this.logger.log('[AUTH-SERV] - removeInstanceIdAndSignout - USER ID: ', this.userId);
     // this.connectionsRefinstancesId = this.urlNodeFirebase+"/users/"+userUid+"/instances/";
