@@ -40,7 +40,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   company_name: string;
   tparams: any;
 
-  
+
   public_Key: string;
 
   firebaseProjectId: any;
@@ -411,7 +411,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   getVisitorsCount() {
     this.analyticsService.getVisitors().subscribe((visitorcounts: any) => {
       this.logger.log("HOME - GET VISITORS COUNT RES: ", visitorcounts)
-    
+
       if (visitorcounts && visitorcounts.length > 0) {
         this.countOfVisitors = visitorcounts[0]['totalCount']
         this.logger.log("HOME - GET VISITORS COUNT: ", this.countOfVisitors)
@@ -849,10 +849,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       }
     }, error => {
-    
+
       this.logger.error('[HOME] - getProjectPlan - ERROR', error);
     }, () => {
-     
+
       this.logger.log('[HOME] - getProjectPlan * COMPLETE *')
 
     });
@@ -1053,7 +1053,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     const url = this.CHAT_BASE_URL;
     this.notify.publishHasClickedChat(true);
     window.open(url, '_blank');
-    
+
     // this.openWindow('Tiledesk - Open Source Live Chat', url)
     // this.focusWin('Tiledesk - Open Source Live Chat')
   }
@@ -1327,8 +1327,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.logger.log('[HOME] - REQUESTS BY DAY - HIGHTER COUNT ', higherCount);
 
       let lang = this.browserLang;
-
-      var lineChart = new Chart('last7dayChart', {
+      const canvas = <HTMLCanvasElement>document.getElementById('last7dayChart'); // nk added to resolve Failed to create chart: can't acquire context from the given item
+      const ctx = canvas.getContext('2d'); // nk added to resolve Failed to create chart: can't acquire context from the given item
+      // var lineChart = new Chart('last7dayChart', {
+      var lineChart = new Chart(ctx, {
         type: 'line',
         data: {
           labels: _requestsByDay_labels_array,
