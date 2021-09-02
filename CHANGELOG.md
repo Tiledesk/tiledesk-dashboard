@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.12
+- Compatible with td-server 2.2.X
+
 ### 2.2.12-rc.12
 - Fixes the bug in home: failed to create chart, can't acquire context from the given item
 - Fixes the bug in the method "signOut()" of auth-service: cannot read property '_id' of undefined" 
