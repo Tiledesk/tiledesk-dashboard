@@ -1,6 +1,10 @@
 
 # tiledesk-dashboard
 
+### 2.2.12-rc.12
+- Fixes the bug in home: failed to create chart, can't acquire context from the given item
+- Fixes the bug in the method "signOut()" of auth-service: cannot read property '_id' of undefined" 
+
 ### 2.2.11-rc.11
 - Replaces in the environments in "dashboard-config.json" in "dashboard-config-template.json" and in "env.sample" the key "loggingLevel" with the key "logLevel"
 - Improves "logger service"
