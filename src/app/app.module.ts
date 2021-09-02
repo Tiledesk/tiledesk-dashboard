@@ -249,10 +249,10 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
             // console.log('### DSHBRD here 3')
             loggingLevel = appConfig.getConfig().logLevel.toUpperCase();
             if (loggingLevel === 'ERROR') {
-              console.info('### DSHBRD [APP-MODULE-TS] Log Level ', 'color: #1a73e8', loggingLevel);
+              console.info('%c ### DSHBRD [APP-MODULE-TS] Log Level ', 'color: #1a73e8', loggingLevel);
             }
             if (loggingLevel === 'WARN') {
-              console.info('### DSHBRD [APP-MODULE-TS] Log Level ', 'color: #1a73e8', loggingLevel);
+              console.info('%c ### DSHBRD [APP-MODULE-TS] Log Level ', 'color: #1a73e8', loggingLevel);
             }
           }
         }
