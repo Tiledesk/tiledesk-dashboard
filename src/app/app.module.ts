@@ -221,61 +221,58 @@ export function HttpLoaderFactory(http: HttpClient) {
 
 const appInitializerFn = (appConfig: AppConfigService, brandService: BrandService) => {
   return async () => {
+
+    let chatEngine = appConfig.getConfig().chatEngine
+    let uploadEngine = appConfig.getConfig().uploadEngine
+    let pushEngine = appConfig.getConfig().pushEngine
+
+    let loggingLevel = ''
+    if (typeof appConfig.getConfig().logLevel === 'string') {
+      loggingLevel = appConfig.getConfig().logLevel.toUpperCase()
+    }
+    if (appConfig.getConfig().logLevel === undefined) {
+      // console.log('### DSHBRD here 1')
+      loggingLevel = 'DEBUG'
+    }
+
+    if (appConfig.getConfig().logLevel !== undefined) {
+      // console.log('### DSHBRD here 2A')
+      if (appConfig.getConfig().logLevel.length === 0) {
+        // console.log('### DSHBRD here 2B')
+        loggingLevel = 'DEBUG'
+      }
+    }
+
+
     if (environment.remoteConfig) {
       await appConfig.loadAppConfig();
       await brandService.loadBrand();
-      let customLogger = new LoggerService(appConfig);
-
-      let loggingLevel = ''
-      // console.info('### DSHBRD [APP-MODULE-TS] appConfig.getConfig().logLevel', appConfig.getConfig().logLevel);
+      // let customLogger = new LoggerService(appConfig);
 
 
-      if (appConfig.getConfig().logLevel === undefined) {
-        // console.log('### DSHBRD here 1')
-        loggingLevel = 'DEBUG'
-      }
-
-      if (appConfig.getConfig().logLevel !== undefined) {
-        // console.log('### DSHBRD here 2A')
-        if (appConfig.getConfig().logLevel.length === 0) {
-          // console.log('### DSHBRD here 2B')
-          loggingLevel = 'DEBUG'
-        }
-      }
-      // && appConfig.getConfig().length !== 0 && typeof appConfig.getConfig().logLevel === 'string'
-      if (appConfig.getConfig().logLevel) {
-        if (appConfig.getConfig().length !== 0) {
-          if (typeof appConfig.getConfig().logLevel === 'string') {
-            // console.log('### DSHBRD here 3')
-            loggingLevel = appConfig.getConfig().logLevel.toUpperCase();
-            if (loggingLevel === 'ERROR') {
-              console.info('%c ### DSHBRD [APP-MODULE-TS] Log Level ', 'color: #1a73e8', loggingLevel);
-            }
-            if (loggingLevel === 'WARN') {
-              console.info('%c ### DSHBRD [APP-MODULE-TS] Log Level ', 'color: #1a73e8', loggingLevel);
-            }
-          }
-        }
-      }
-
-      let chatEngine = appConfig.getConfig().chatEngine
-      let uploadEngine = appConfig.getConfig().uploadEngine
-      let pushEngine = appConfig.getConfig().pushEngine
       if (loggingLevel === 'INFO' || loggingLevel === 'DEBUG') {
         console.info('%c ### DSHBRD [APP-MODULE-TS] remoteConfig', 'color: #1a73e8', environment.remoteConfig);
         console.info('%c ### DSHBRD [APP-MODULE-TS] appConfig loaded', 'color: #1a73e8');
         console.info('%c ### DSHBRD [APP-MODULE-TS] brandService loaded', 'color: #1a73e8');
-        console.info('%c ### DSHBRD [APP-MODULE-TS] Log Level ', 'color: #1a73e8', loggingLevel);
         console.info('%c ### DSHBRD [APP-MODULE-TS] chat Engine ', 'color: #1a73e8', chatEngine);
         console.info('%c ### DSHBRD [APP-MODULE-TS] upload Engine ', 'color: #1a73e8', uploadEngine);
         console.info('%c ### DSHBRD [APP-MODULE-TS] push Engine: ', 'color: #1a73e8', pushEngine);
       }
 
-
       return;
     } else {
       // return brandService.loadBrand();
       await brandService.loadBrand();
+
+      if (loggingLevel === 'INFO' || loggingLevel === 'DEBUG') {
+        console.info('%c ### DSHBRD [APP-MODULE-TS] remoteConfig', 'color: #1a73e8', environment.remoteConfig);
+        console.info('%c ### DSHBRD [APP-MODULE-TS] config', 'color: #1a73e8', appConfig.getConfig());
+        console.info('%c ### DSHBRD [APP-MODULE-TS] brandService loaded', 'color: #1a73e8');
+        console.info('%c ### DSHBRD [APP-MODULE-TS] chat Engine ', 'color: #1a73e8', chatEngine);
+        console.info('%c ### DSHBRD [APP-MODULE-TS] upload Engine ', 'color: #1a73e8', uploadEngine);
+        console.info('%c ### DSHBRD [APP-MODULE-TS] push Engine: ', 'color: #1a73e8', pushEngine);
+      }
+
       return;
     }
   };
