@@ -571,7 +571,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
    * @param id_request 
    */
   subscribeToWs_RequestById(id_request) {
-    this.logger.info('[WS-REQUESTS-MSGS] - CALLING SUBSCRIBE to Request-By-Id: ', id_request)
+    this.logger.info('%c ### DSHBRD [WS-REQUESTS-MSGS] - CALLING SUBSCRIBE to Request-By-Id: ', 'color: #1a73e8', id_request)
     // Start websocket subscription ro ws request by id
     this.wsRequestsService.subscribeTo_wsRequestById(id_request);
     // Subscribe to ws request by id
