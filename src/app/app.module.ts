@@ -222,10 +222,6 @@ export function HttpLoaderFactory(http: HttpClient) {
 const appInitializerFn = (appConfig: AppConfigService, brandService: BrandService) => {
   return async () => {
 
-    let chatEngine = appConfig.getConfig().chatEngine
-    let uploadEngine = appConfig.getConfig().uploadEngine
-    let pushEngine = appConfig.getConfig().pushEngine
-
     let loggingLevel = ''
     if (typeof appConfig.getConfig().logLevel === 'string') {
       loggingLevel = appConfig.getConfig().logLevel.toUpperCase()
@@ -248,7 +244,11 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
       await appConfig.loadAppConfig();
       await brandService.loadBrand();
       // let customLogger = new LoggerService(appConfig);
-
+      let chatEngine = appConfig.getConfig().chatEngine
+      let uploadEngine = appConfig.getConfig().uploadEngine
+      let pushEngine = appConfig.getConfig().pushEngine
+  
+      // console.log('APP-CONFIG ', appConfig.getConfig() ) 
 
       if (loggingLevel === 'INFO' || loggingLevel === 'DEBUG') {
         console.info('%c ### DSHBRD [APP-MODULE-TS] remoteConfig', 'color: #1a73e8', environment.remoteConfig);
@@ -264,6 +264,10 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
       // return brandService.loadBrand();
       await brandService.loadBrand();
 
+      let chatEngine = appConfig.getConfig().chatEngine
+      let uploadEngine = appConfig.getConfig().uploadEngine
+      let pushEngine = appConfig.getConfig().pushEngine
+
       if (loggingLevel === 'INFO' || loggingLevel === 'DEBUG') {
         console.info('%c ### DSHBRD [APP-MODULE-TS] remoteConfig', 'color: #1a73e8', environment.remoteConfig);
         console.info('%c ### DSHBRD [APP-MODULE-TS] config', 'color: #1a73e8', appConfig.getConfig());
@@ -277,14 +281,6 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     }
   };
 };
-
-// const brandLoader = (brandService: BrandService) => {
-//   return () => {
-
-//      brandService.loadBrand();
-
-//   };
-// };
 
 
 
