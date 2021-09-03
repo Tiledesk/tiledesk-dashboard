@@ -675,7 +675,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
     }, () => {
 
-      this.logger.error('[HISTORY & NORT-CONVS] - GET DEPT BY ID - COMPLETE ');
+      this.logger.log('[HISTORY & NORT-CONVS] - GET DEPT BY ID - COMPLETE ');
     })
   }
 
