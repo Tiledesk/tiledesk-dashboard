@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.15
+- Fixes the bug in the History page: cannot read the property 'filter' of undefined
+
 ### 2.2.14
 - Fixes the bug: the 'INFO' level log is not displayed if the remote configuration is set to false
 - Enhances the log service to detect invalid values assigned to the "logLevel" environment variable
