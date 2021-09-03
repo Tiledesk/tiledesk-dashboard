@@ -612,17 +612,25 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
               if (request.department) {
                 const deptHasName = request.department.hasOwnProperty('name')
                 if (deptHasName) {
-                  // this.logger.log('% »»» WebSocketJs WF +++++ ws-requests--- service -  X-> REQ DEPT HAS NAME', deptHasName)
+                  this.logger.log('[HISTORY & NORT-CONVS] - REQ DEPT HAS NAME', deptHasName)
                   request['dept'] = request.department
                 } else {
-                  // this.logger.log('% »»» WebSocketJs WF +++++ ws-requests--- service -  X-> REQ DEPT HAS NAME', deptHasName)
+                  this.logger.log('[HISTORY & NORT-CONVS] - REQ DEPT HAS NAME ', deptHasName)
 
                   // in this case department is an object (i.e.  department: {_id: "5df26badde7e1c001743b63e"} )
                   if (request.department.hasOwnProperty('_id')) {
-                    request['dept'] = this.getDeptObj(request.department._id);
+                    if (this.departments) {
+                      request['dept'] = this.getDeptObj(request.department._id, this.departments);
+                    } else {
+                      request['dept'] = this.getDeptById(request.department._id, request)
+                    }
                   } else {
                     // in this case department is a string equivalent to the department id (i.e. department: "5df26badde7e1c001743b63e" )
-                    request['dept'] = this.getDeptObj(request['department'])
+                    if (this.departments) {
+                      this.getDeptObj(request['department'], this.departments)
+                    } else {
+                      this.getDeptById(request['department'], request)
+                    }
                   }
                 }
               }
@@ -644,14 +652,31 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
   // GET REQUEST COPY - END
 
-  getDeptObj(departmentid: string) {
+  getDeptObj(departmentid: string, department: any) {
     this.logger.log('[HISTORY & NORT-CONVS] - getDeptObj departmentid', departmentid)
+    this.logger.log('[HISTORY & NORT-CONVS] - getDeptObj department', departmentid)
     // const deptObjct =  this.departments.findIndex((e) => e.department === departmentid);
-    const deptObjct = this.departments.filter((obj: any) => {
+
+    const deptObjct = department.filter((obj: any) => {
       return obj._id === departmentid;
     });
     // this.logger.log('% »»» WebSocketJs WF +++++ ws-requests--- service -  X-> DEPT OBJECT <-X', deptObjct)
     return deptObjct[0]
+  }
+
+  getDeptById(departmentid: string, request: any) {
+    
+    this.departmentService.getDeptById(departmentid).subscribe((dept: any) => {
+      this.logger.log('[HISTORY & NORT-CONVS] - GET DEPT BY ID - RES ', dept);
+      request['dept'] = dept
+    
+    }, (error) => {
+      this.logger.error('[HISTORY & NORT-CONVS] - GET DEPT BY ID - ERROR ', error);
+
+    }, () => {
+
+      this.logger.error('[HISTORY & NORT-CONVS] - GET DEPT BY ID - COMPLETE ');
+    })
   }
 
 

@@ -987,7 +987,14 @@ export class WsRequestsService implements OnDestroy {
                 this.logger.log("[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] snapshot department", request.snapshot.department);
                 request.department = request['snapshot']["department"]
 
-              } else if (request.department) {
+
+              } 
+              else if (request['attributes']) {
+                if(request['attributes']['departmentId'] && request['attributes']['departmentName']) 
+                request.department = {'name': request['attributes']['departmentName'], 'id': request['attributes']['departmentId']}
+              }
+
+               else if (request.department) {
                 request.department = request.department
               }
 
