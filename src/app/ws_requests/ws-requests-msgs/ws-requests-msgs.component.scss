@@ -2402,6 +2402,15 @@ and also iPads specifically.
   height: auto;
 }
 
+.chat-panel-mode-project-name {
+  margin-bottom: 0px;
+  margin-top: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+}
+
 /* SWAL SM SIZE - moved in demo css to avoid the use of  encapsulation: ViewEncapsulation.None */
 // .swal-size-sm {
 //   width: 260px !important;
