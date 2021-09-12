@@ -69,10 +69,12 @@ export function avatarPlaceholder(requester_fullname) {
 }
 
 export function getColorBck(requester_fullname) {
-    const arrayBckColor = ['#fba76f', '#80d066', '#73cdd0', '#ecd074', '#6fb1e4', '#f98bae'];
+    // const arrayBckColor = ['#fba76f', '#80d066', '#73cdd0', '#ecd074', '#6fb1e4', '#f98bae'];
+    const arrayBckColor = ['#E17076', '#7BC862', '#65aadd', '#a695e7', '#ee7aae', '#6ec9cb', '#faa774'];
     let num = 0;
     if (requester_fullname) {
-        const code = requester_fullname.charCodeAt(0);
+        // const code = requester_fullname.charCodeAt(0);
+        const code = requester_fullname.charCodeAt((requester_fullname.length - 1));
         num = Math.round(code % arrayBckColor.length);
         // console.log('************** code', requester_fullname.length, code, arrayBckColor.length, num);
     }
