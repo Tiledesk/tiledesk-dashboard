@@ -1257,8 +1257,6 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                 }
             );
 
-
-
         } // end if IS_REQUEST_FOR_PANEL_ROUTE
 
 
@@ -1270,7 +1268,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         this.NOTIFICATION_SOUND = localStorage.getItem(this.storedValuePrefix + 'sound');
         // this.logger.log('[NAVBAR] NAV NOTIFICATION_SOUND (showNotification)', this.NOTIFICATION_SOUND)
         // this.logger.log('[NAVBAR] NAV NOTIFICATION_SOUND (showNotification) hasPlayed ', this.hasPlayed)
-        if (this.NOTIFICATION_SOUND === 'enabled') {
+        if (this.NOTIFICATION_SOUND === 'enabled' && this.IS_REQUEST_FOR_PANEL_ROUTE === false && this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE === false) {
             // this.logger.log('[NAVBAR] NOTIFICATION_SOUND (showNotification) hasPlayed ', this.hasPlayed)
             if (this.hasPlayed === false) {
                 // this.logger.log('[NAVBAR] NOTIFICATION_SOUND (showNotification) hasPlayed (HERE IN IF)', this.hasPlayed)
