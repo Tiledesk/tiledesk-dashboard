@@ -957,6 +957,10 @@ and also iPads specifically.
   height: 24px;
 }
 
+.chat-panel-mode-contact-email {
+margin-top: 8px
+}
+
 .requester-status-icon {
   position: absolute;
   width: 14px;
@@ -2003,7 +2007,10 @@ and also iPads specifically.
 }
 
 .right-sidebar-header-with-contact {
-  min-height: 82px;
+  // min-height: 82px;
+  // min-height: 178px;
+  min-height: 170px;
+  text-align: center;
 }
 
 .right-sidebar-header-with-request {
@@ -2016,41 +2023,44 @@ and also iPads specifically.
 
 .requester-avatar-wrapper-in-right-sidebar {
   display: block;
-  float: left;
+  // float: left;
 }
 
 ._requester-avatar_as_title-in-right-sidebar {
   border-radius: 50%;
-  font-size: 30px;
+  font-size: 32px;
   font-weight: 400;
   text-align: center;
   // padding: 4px 7px;
   padding-top: 10px;
   padding-bottom: 0px;
   display: inline-block;
-  width: 72px;
-  height: 72px;
+  width: 100px;
+  height: 100px;
   margin-right: 8px;
-  line-height: 54px;
+  line-height: 86px;
 }
 
 ._requester-avatar_as_title-in-chat {
   margin-right: 2px;
+  position: relative;
 }
 
 .requester-status-icon-avatar_as_title-in-right-sidebar {
   position: absolute;
   width: 14px;
   height: 14px;
-  top: 68px;
-  left: 69px;
+  // top: 68px;
+  // left: 69px;
+  top: 80px;
+  left: 76px;
   border: 2px solid #ffffff;
   border-radius: 50%;
   background-color: #f44336;
 }
 
 .contact_info_in_right-sidebar {
-  float: left;
+  // float: left;
   margin-top: 9px;
 }
 
@@ -2059,7 +2069,16 @@ and also iPads specifically.
 }
 .right-sidebar-actions-with-contact {
   position: relative;
-  top: 25px;
+  // top: 25px;
+  top: -159px;
+  background: #e4e6eb;
+  height: 36px;
+  width: 36px;
+  border-radius: 50%;
+}
+
+.right-sidebar-actions-with-contact:hover {
+  background: rgb(207, 210,215)
 }
 
 .right-sidebar-actions-with-request {

@@ -584,15 +584,18 @@
                     'right-sidebar-header-with-contact' : CHAT_PANEL_MODE === true,
                   'right-sidebar-header-with-request': CHAT_PANEL_MODE === false, 
                   'right-sidebar-header-no-border-bottom': request?.attributes?.decoded_jwt && REQUESTER_IS_VERIFIED}">
-
-                  <div (click)="goToContactDetailsInNewTab()" class="contact-in-right-sidebar"
-                    [ngClass]="{'visible-if-chat-panel-mode' : CHAT_PANEL_MODE === true}" style="cursor: pointer;">
+                  <!-- (click)="goToContactDetailsInNewTab() style="cursor: pointer;"" -->
+                  <div class="contact-in-right-sidebar"
+                    [ngClass]="{'visible-if-chat-panel-mode' : CHAT_PANEL_MODE === true}">
 
                     <span class="requester-avatar-wrapper-in-right-sidebar">
                       <span class="_requester-avatar_as_title-in-right-sidebar"
                         [ngStyle]="{'background-color': fillColour }"
                         [ngClass]="{'requester_fullname-undefined' : !request?.lead?.fullname, '_requester-avatar_as_title-in-chat': CHAT_PANEL_MODE === true}">
                         <span style="color: #ffffff"> {{ requester_fullname_initial }} </span>
+                        <div class="requester-status-icon-avatar_as_title-in-right-sidebar"
+                          [ngClass]="{'requester_is_online' : REQUESTER_IS_ONLINE}">
+                        </div>
                       </span>
                       <span *ngIf="REQUESTER_IS_VERIFIED === true" class="tooltipx">
                         <svg [ngClass]="{'chat-panel-mode-requester-verified' : CHAT_PANEL_MODE === true }"
@@ -620,22 +623,33 @@
                         </svg>
                         <span class="tooltiptext"> {{ "VisitorsPage.AuthenticatedUser" | translate }} </span>
                       </span>
-                      <div class="requester-status-icon-avatar_as_title-in-right-sidebar"
+                      <!-- <div style="display: none;" class="requester-status-icon-avatar_as_title-in-right-sidebar"
                         [ngClass]="{'requester_is_online' : REQUESTER_IS_ONLINE}">
-                      </div>
+                      </div> -->
                     </span>
 
                     <div class="contact_info_in_right-sidebar">
-                      <span [ngClass]="{'requester-verified' : REQUESTER_IS_VERIFIED === true}" style="margin-top: 18px; display: block; font-size: 18px;width: 135px; white-space: nowrap;
+                      <span style="font-weight: 700; font-family: 'Helvetica Neue', sans-serif; display: block; font-size: 18px;white-space: nowrap;
                         overflow: hidden;
                         text-overflow: ellipsis;">
 
                         {{request?.lead?.fullname}}
                       </span>
-                      <span *ngIf="!request?.lead?.fullname"
-                        [ngClass]="{'requester-verified' : REQUESTER_IS_VERIFIED === true}" style="margin-left: 2px;">
-                        n.a.
+                      <span *ngIf="!request?.lead?.fullname" style="margin-left: 2px;">
+                        N/A
                       </span>
+
+
+                      <div class="chat-panel-mode-contact-email">
+                        <a style="margin-top: 8px; text-transform: lowercase; text-decoration: underline;cursor:pointer ; font-size:14px; font-weight: 400; color: #3880ff;"
+                          target="_blank" *ngIf="request?.lead?.email" href="mailto:{{request?.lead?.email}}">
+                          {{request?.lead?.email}}
+                        </a>
+                        <a *ngIf="!request?.lead?.email"
+                          style="color: #7695a5; margin-top: 8px;font-size:14px; font-weight: 400;">
+                          n.a.
+                        </a>
+                      </div>
 
                       <!-- <span style="position: relative; top: -4px;"
                         [ngClass]="{'requester-verified' : REQUESTER_IS_VERIFIED === true}">
@@ -941,7 +955,12 @@
                         <!-- {{ 'VisitorsPage.Actions' | translate }}
                         <b class="caret"></b> -->
 
-                        <span class="material-icons" style="color:rgba(0, 0, 0, 0.87)">
+                        <span class="material-icons" *ngIf="CHAT_PANEL_MODE === true"
+                          style="color:rgba(0, 0, 0, 0.87);position: relative; right: 6px;top: 6px;">
+                          more_horiz
+                        </span>
+                        <span class="material-icons" *ngIf="CHAT_PANEL_MODE === false"
+                          style="color:rgba(0, 0, 0, 0.87);">
                           more_vert
                         </span>
                       </a>
@@ -1171,7 +1190,7 @@
                 <!-- --------------------------------------------------------------------- -->
                 <!-- Contact email -->
                 <!-- --------------------------------------------------------------------- -->
-                <div class="row" style="margin-top:5px">
+                <div class="row" style="margin-top:5px" *ngIf="CHAT_PANEL_MODE === false">
                   <!-- border-top: 1px solid #e1eef4;" -->
                   <!-- border-bottom: 1px solid #e1eef4; -->
                   <div class="col-sm-12">
