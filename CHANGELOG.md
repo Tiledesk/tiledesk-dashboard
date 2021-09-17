@@ -1,6 +1,13 @@
 
 # tiledesk-dashboard
 
+### 2.2.16
+- Fixes the bug: the project name if too long goes on two lines in the right side panel of the chat
+- Updates the avatars background colors
+- Disables the in-app notification sound if the conversation detail is "panel-mode"
+- Refactoring the conversation details sidebar style in "panel mode"
+- Sets the "firebaseAuth" environment variable to false for compatibility with the new chat
+
 ### 2.2.15
 - Fixes the bug in the History page: cannot read the property 'filter' of undefined
 
