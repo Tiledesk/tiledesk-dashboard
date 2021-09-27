@@ -1928,5 +1928,7 @@
 	"WidgetAPITestPage":"Widget-API-Testseite",
 	"UseTheWidgetTestPageToTestTheWidgetAPI":"Verwenden Sie die Widget-Testseite, um die Widget-API und die Eigenschaften zu testen",
 	"WidgetTest": "Öffnen Sie die Testseite",
-	"AllAgents": "Alle Agenten"
+	"AllAgents": "Alle Agenten",
+	"CustomizeThePreChatForm":"Passen Sie das Pre-Chat-Formular an",
+	"CustomizeTheInformationYouRequestFromCustomersInThePreChatForm":"Passen Sie die Informationen an, die Sie von Kunden im Pre-Chat-Formular anfordern, indem Sie Felder entfernen oder hinzufügen"
 }

@@ -1926,5 +1926,7 @@
     "WidgetAPITestPage":"Pagina di prova delle API del widget",
     "UseTheWidgetTestPageToTestTheWidgetAPI":"Usa la pagina di test del widget per testare le API e le proprietà del widget",
     "WidgetTest": "Apri la pagina di test",
-    "AllAgents": "Tutti gli agenti"
+    "AllAgents": "Tutti gli agenti",
+    "CustomizeThePreChatForm":"Personalizza il modulo di pre-chat",
+    "CustomizeTheInformationYouRequestFromCustomersInThePreChatForm":"Personalizza le informazioni che richiedi ai clienti nel modulo di pre-chat rimuovendo o aggiungendo campi"
 }

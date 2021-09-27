@@ -1945,5 +1945,7 @@
    "WidgetAPITestPage":"Widget API test page",
    "UseTheWidgetTestPageToTestTheWidgetAPI":"Use the widget test page to test the widget API and properties",
    "WidgetTest": "Open the test page",
-   "AllAgents": "All agents"
+   "AllAgents": "All agents",
+   "CustomizeThePreChatForm":"Customize the pre-chat form",
+   "CustomizeTheInformationYouRequestFromCustomersInThePreChatForm":"Customize the information you request from customers in the pre-chat form by removing or adding fields"
 }
