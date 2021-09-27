@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.18
+- Adds the ability to customize the pre-chat form fields
+
 ### 2.2.16
 - Fixes the bug: the project name if too long goes on two lines in the right side panel of the chat
 - Updates the avatars background colors
