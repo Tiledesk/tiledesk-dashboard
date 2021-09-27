@@ -6,7 +6,7 @@
 - Updates the avatars background colors
 - Disables the in-app notification sound if the conversation detail is "panel-mode"
 - Refactoring the conversation details sidebar style in "panel mode"
-- Sets the "firebaseAuth" environment variable to false for compatibility with the new chat
+- Replaces in conversation detail the pipes 'htmlEntitiesEncode' and 'autolinker' with the pipe 'marked' and 'sanitizeHtml'
 
 ### 2.2.15
 - Fixes the bug in the History page: cannot read the property 'filter' of undefined
