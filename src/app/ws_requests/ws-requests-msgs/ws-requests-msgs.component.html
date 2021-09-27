@@ -256,9 +256,9 @@
                                   {{ 'Train' | translate }}
                                 </span>
                               </p> -->
-                        <!-- | marked  | sanitizeHtml -->
+                        <!--  | htmlEntitiesEncode | autolinker-->
                         <p *ngIf="message?.type === 'text'" class="type-info-msg-text"
-                          [innerHTML]="message?.text | htmlEntitiesEncode | autolinker">
+                          [innerHTML]="message?.text | marked  | sanitizeHtml">
                           <!-- {{ message?.text }} -->
                         </p>
                         <!-- <div *ngIf="message?.type === 'image'" class="message ow">
@@ -310,9 +310,9 @@
                               </span>
                             </p>
                             <!-- [innerHTML]="message?.text | marked" -->
-                            <!-- | marked | sanitizeHtml -->
+                            <!--  | htmlEntitiesEncode | autolinker-->
                             <p *ngIf="message?.type === 'text'" class="message ow"
-                              [innerHTML]="message?.text | htmlEntitiesEncode | autolinker">
+                              [innerHTML]="message?.text | marked | sanitizeHtml">
                               <!-- {{ message?.text  }} -->
                             </p>
                             <div *ngIf="message?.type === 'image'" class="message ow">
@@ -417,9 +417,9 @@
                               <!-- +353 87 1234 567<span> ~ John</span> -->
                             </p>
                             <!-- [innerHTML]="message?.text | marked" -->
-                            <!-- | marked  | sanitizeHtml -->
+                            <!-- | htmlEntitiesEncode | autolinker-->
                             <p *ngIf="message?.type === 'text' || message?.type === 'file'" class="message ow"
-                              [innerHTML]="message?.text | htmlEntitiesEncode | autolinker">
+                              [innerHTML]="message?.text | marked  | sanitizeHtml">
                               <!-- {{ message?.text}} -->
                             </p>
                             <div *ngIf="message?.type === 'image'" class="message ow">
@@ -427,8 +427,8 @@
                                 <img src={{message.metadata.src}} class="message-img" />
                                 <!-- <div *ngIf="!message.text.startsWith('Image: https:')"> -->
                                 <div *ngIf="!message?.metadata?.type?.startsWith('image')">
-                                  <!-- | marked  | sanitizeHtml -->
-                                  <p [innerHTML]="message?.text | htmlEntitiesEncode | autolinker "></p>
+                                  <!-- htmlEntitiesEncode | autolinker -->
+                                  <p [innerHTML]="message?.text | marked  | sanitizeHtml"></p>
                                 </div>
 
                               </div>
@@ -628,7 +628,7 @@
                       </div> -->
                     </span>
 
-                    <div class="contact_info_in_right-sidebar">
+                    <div class="contact_info_in_right-sidebar" [ngClass]="{'contact_info_in_right-sidebar-verified':REQUESTER_IS_VERIFIED === true }">
                       <span style="font-weight: 700; font-family: 'Helvetica Neue', sans-serif; display: block; font-size: 18px;white-space: nowrap;
                         overflow: hidden;
                         text-overflow: ellipsis;">
