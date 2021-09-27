@@ -853,7 +853,7 @@ export class AuthService {
               this.removeInstanceIdAndSignout(calledby);
 
             }).catch((err) => {
-              this.logger.error('[AUTH-SERV] signOut >>>> getToken err: ', err);
+              this.logger.log('[AUTH-SERV] signOut >>>> getToken err: ', err);
               if (this.appConfigService.getConfig().firebaseAuth === true) {
                 this.firebaseSignout(calledby);
               } else {
