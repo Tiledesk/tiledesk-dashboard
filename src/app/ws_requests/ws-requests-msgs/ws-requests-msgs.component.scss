@@ -951,8 +951,10 @@ and also iPads specifically.
 
 .chat-panel-mode-requester-verified {
   position: relative;
-  left: -83px !important;
-  top: -20px !important;
+  // left: -83px !important;
+  // top: -20px !important;
+  left: -104px !important;
+  top: -36px !important;
   width: 22px;
   height: 24px;
 }
@@ -2062,6 +2064,10 @@ margin-top: 8px
 .contact_info_in_right-sidebar {
   // float: left;
   margin-top: 9px;
+}
+
+.contact_info_in_right-sidebar-verified {
+  margin-right: 28px;
 }
 
 .right-sidebar-actions {
