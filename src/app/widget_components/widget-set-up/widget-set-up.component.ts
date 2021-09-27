@@ -123,7 +123,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   public noConversation: string // NO_CONVERSATION
   public waitingTimeNotFoundMsg: string; // WAITING_TIME_NOT_FOUND
   public waitingTimeFoundMsg: string; //  WAITING_TIME_FOUND
-  preChatForm: boolean;
+
   placeholderOnlineMsg: string;
   placeholderOfflineMsg: string;
   placeholderofficeClosedMsg: string;
@@ -150,6 +150,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
   imageUrl: string;
   currentUserId: string;
+
 
   widget_preview_selected = '0000';
   widget_preview_status = [
@@ -184,6 +185,13 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   toAddLanguagesToYourProjectMsg: string;
   cancelMsg: string;
   HAS_CHANGED_GREETINGS = false;
+
+  public preChatForm: boolean;
+  public enablePrechatformFieldsCheckBox: boolean;
+  public prechatFormTexareaJson: any;
+  public preChatFormJson: any;
+  public preChatFormCustomFieldsEnabled: boolean;
+
   constructor(
     private notify: NotifyService,
     public location: Location,
@@ -555,8 +563,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           this.logger.log('[WIDGET-SET-UP] - GET LABELS - RES >>> TRANSLATION ', translation);
           if (translation) {
 
-           
-           // if 'translation' has an _id is executed the push of the language code in the array languages_codes
+
+            // if 'translation' has an _id is executed the push of the language code in the array languages_codes
             if (translation._id !== undefined) {
               this.languages_codes.push(translation.lang.toLowerCase())
             }
@@ -1193,13 +1201,35 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
             ' LOGO IS ON', this.LOGO_IS_ON);
         }
 
+        // -----------------------------------------
+        // Pre-chat form
+        // -----------------------------------------
         if (project.widget.preChatForm) {
-
           this.preChatForm = true;
         } else {
           this.preChatForm = false;
         }
 
+        if (project.widget.preChatFormCustomFieldsEnabled) {
+          this.preChatFormCustomFieldsEnabled = true
+        } else {
+          this.preChatFormCustomFieldsEnabled = false;
+        }
+
+        if (project.widget.preChatFormJson) {
+          // this.prechatFormTexareaJson = project.widget.preChatFormJson;
+
+          // this.prechatFormTexareaJson = this.preChatFormJson;
+          // this.prechatFormTexareaJson = JSON.stringify(this.preChatFormJson);
+          // this.prechatFormTexareaJson = JSON.stringify(project.widget.preChatFormJson);
+          this.prechatFormTexareaJson = JSON.stringify(project.widget.preChatFormJson);
+          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) PRE-CHAT-FORM-JSON DEFINED: ', project.widget.preChatFormJson)
+        } else {
+
+          this.prechatFormTexareaJson = JSON.stringify(this.widgetDefaultSettings.preChatFormJson);
+          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) PRE-CHAT-FORM-JSON UNDEFINED: ', project.widget.preChatFormJson)
+          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) PRE-CHAT-FORM-JSON UNDEFINED SET DEFAULT: ', this.prechatFormTexareaJson)
+        }
 
         // ------------------------------------------------------------------------
         // @ themeColor
@@ -1329,6 +1359,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // WIDGET UNDEFINED
         // -----------------------------------------------------------------------
         this.preChatForm = false;
+        this.preChatFormCustomFieldsEnabled = false;
+        this.prechatFormTexareaJson = JSON.stringify(this.widgetDefaultSettings.preChatFormJson);
 
         // -----------------------------------------------------------------------
         // @ Reply time
@@ -1783,7 +1815,6 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   // -----------------------------------------------------------------------
   //  @ Pre-chat form  
   // -----------------------------------------------------------------------
-
   togglePrechatformCheckBox(event) {
     if (event.target.checked) {
       this.preChatForm = true;
@@ -1793,12 +1824,69 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       this.logger.log('[WIDGET-SET-UP] - INCLUDE PRE CHAT FORM ', event.target.checked)
     } else {
       this.preChatForm = false;
+      if (this.preChatFormCustomFieldsEnabled === true) {
+        this.preChatFormCustomFieldsEnabled = false;
+      }
+
+      if (this.widgetObj.hasOwnProperty('preChatFormCustomFieldsEnabled')) {
+        delete this.widgetObj['preChatFormCustomFieldsEnabled'];
+      }
+
       // *** REMOVE PROPERTY
       delete this.widgetObj['preChatForm'];
       this.widgetService.updateWidgetProject(this.widgetObj)
 
       this.logger.log('[WIDGET-SET-UP] - INCLUDE PRE CHAT FORM ', event.target.checked)
     }
+  }
+
+  customizePrechatformFieldsCheckBox(event) {
+    if (event.target.checked) {
+      this.preChatFormCustomFieldsEnabled = true;
+      // *** ADD PROPERTY
+      this.widgetObj['preChatFormCustomFieldsEnabled'] = this.preChatFormCustomFieldsEnabled;
+      this.widgetService.updateWidgetProject(this.widgetObj)
+      this.logger.log('[WIDGET-SET-UP] - ENABLE CUSTOMIZE PRE CHAT FORM ', event.target.checked)
+    } else {
+      this.preChatFormCustomFieldsEnabled = false;
+      // *** REMOVE PROPERTY
+      delete this.widgetObj['preChatFormCustomFieldsEnabled'];
+      this.widgetService.updateWidgetProject(this.widgetObj)
+
+      this.logger.log('[WIDGET-SET-UP] - ENABLE CUSTOMIZE PRE CHAT FORM ', event.target.checked)
+    }
+  }
+
+  savePrechatFormCustomFields() {
+    this.logger.log('[WIDGET-SET-UP] - SAVE PRE-CHAT-FORM-JSON', this.prechatFormTexareaJson)
+    const parsedPrechatFormTexareaJson = JSON.parse(this.prechatFormTexareaJson)
+
+    this.logger.log('[WIDGET-SET-UP] - SAVE PRE-CHAT-FORM-JSON PARSED', parsedPrechatFormTexareaJson)
+
+    this.widgetObj['preChatFormJson'] = parsedPrechatFormTexareaJson;
+    this.widgetService.updateWidgetProject(this.widgetObj)
+  }
+
+
+  // NOT USED
+  onChangePrechatFormTexareaJson(event: any) {
+    this.logger.log('[WIDGET-SET-UP] - CHANGE PRE-CHAT-FORM-JSON event', event)
+    // this.logger.log('[WIDGET-SET-UP] - CHANGE PRE-CHAT-FORM-JSON prechatFormTexareaJson', this.prechatFormTexareaJson)
+    // var x = document.getElementById("prechat-form-texarea").value;
+    //  = <HTMLElement>document.querySelector("prechat-form-texarea").value;
+    //  var x = (<HTMLInputElement>document.getElementById("prechat-form-texarea")).value;
+    //  this.logger.log('[WIDGET-SET-UP] - CHANGE PRE-CHAT-FORM-JSON x', x)
+    // this.prechatFormTexareaJson = event
+
+    var myJSONString = JSON.stringify(event);
+    var myEscapedJSONString = myJSONString.replace(/\\n/g, "\\n")
+      .replace(/\\'/g, "\\'")
+      .replace(/\\"/g, '\\"')
+      .replace(/\\&/g, "\\&")
+      .replace(/\\r/g, "\\r")
+      .replace(/\\t/g, "\\t")
+      .replace(/\\b/g, "\\b")
+      .replace(/\\f/g, "\\f");
   }
 
 

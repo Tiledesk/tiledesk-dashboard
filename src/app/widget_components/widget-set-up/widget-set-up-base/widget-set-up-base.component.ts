@@ -22,7 +22,8 @@ export class WidgetSetUpBaseComponent extends WidgetSharedComponent implements O
   offlineMsgSuccessNoticationMsg: string;
   updateWidgetSuccessNoticationMsg: string;
   errorNoticationMsg: string;
- 
+
+
 
   public widgetDefaultSettings =
     {
@@ -32,6 +33,32 @@ export class WidgetSetUpBaseComponent extends WidgetSharedComponent implements O
       'logoChat': 'tiledesklogo',
       'themeColor': '#2a6ac1',
       'themeForegroundColor': '#ffffff',
+      'preChatFormCustomFieldsEnabled': false,
+      'preChatFormJson': [{
+        name: "userFullname",
+        type: "string",
+        mandatory: false,
+        label: {
+          en: "Userfullname",
+          it: "Nome utente"
+        },
+      },
+      {
+        name: "userEmail",
+        type: "string",
+        mandatory: false,
+        regex: "/^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(\.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(\.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)+$/",
+        label: {
+          en: "Email",
+          it: "Indirizzo email"
+        },
+        errorLabel: {
+          pattern: {
+            en: "Pattern not valid. Insert a valid email",
+            it: "Campo non valido. Insersci un email valida"
+          }
+        }
+      }],
       'en': {
         'wellcomeTitle': 'Hi, welcome to tiledesk 👋 ',
         'wellcomeMsg': 'How can we help you?',
@@ -97,7 +124,7 @@ export class WidgetSetUpBaseComponent extends WidgetSharedComponent implements O
     this.translateOfflineMsgSuccessNoticationMsg();
     this.translateOfficeClosedSuccessNoticationMsg();
     this.translateGetTranslationErrorMsg();
-   
+
   }
 
 
