@@ -587,10 +587,11 @@
                   <!-- (click)="goToContactDetailsInNewTab() style="cursor: pointer;"" -->
                   <div class="contact-in-right-sidebar"
                     [ngClass]="{'visible-if-chat-panel-mode' : CHAT_PANEL_MODE === true}">
-
+                    
+                    <!-- [ngStyle]="{'background-color': fillColour }" -->
                     <span class="requester-avatar-wrapper-in-right-sidebar">
                       <span class="_requester-avatar_as_title-in-right-sidebar"
-                        [ngStyle]="{'background-color': fillColour }"
+                        [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + fillColour + ')'}"
                         [ngClass]="{'requester_fullname-undefined' : !request?.lead?.fullname, '_requester-avatar_as_title-in-chat': CHAT_PANEL_MODE === true}">
                         <span style="color: #ffffff"> {{ requester_fullname_initial }} </span>
                         <div class="requester-status-icon-avatar_as_title-in-right-sidebar"
