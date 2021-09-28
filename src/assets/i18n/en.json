@@ -1747,7 +1747,7 @@
     "GoToGoogleTagManagerAnd": "Go to Google Tag Manager and",
     "FollowTheseInstructions": "follow these instructions",
     "OpenYourWebsite": "Open your website",
-    "AskYourVisitorForTheirNameAndEmailBeforeStartingAChat": "Ask your visitor for their name and email before starting a chat",
+    "AskYourVisitorForTheirNameAndEmailBeforeStartingAChat": "Ask your visitor for their name and email before starting a chat by enabling the pre-chat form",
     "MakeDefault": "Make Default",
     "CurrentlyDisplayedInThePreview": "Currently displayed in the preview",
     "CurrentlySelected": "Currently selected",
@@ -1947,5 +1947,6 @@
    "WidgetTest": "Open the test page",
    "AllAgents": "All agents",
    "CustomizeThePreChatForm":"Customize the pre-chat form",
-   "CustomizeTheInformationYouRequestFromCustomersInThePreChatForm":"Customize the information you request from customers in the pre-chat form by removing or adding fields"
+   "CustomizeTheInformationYouRequestFromCustomersInThePreChatForm":"Customize the information you request from customers in the pre-chat form by removing or adding fields",
+   "InvalidJSON":"Invalid JSON"
 }
