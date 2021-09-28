@@ -1,6 +1,11 @@
 
 # tiledesk-dashboard
 
+### 2.2.19
+- Fixes the bug: the "accordion" of the pre-chat module settings does not close if it is active "customize the pre-chat module"
+- Prevents user pasting text in the textarea "Customize the pre-chat form"
+- Adds a validation check on the "JSON" of the custom fields of the prechat-form
+
 ### 2.2.18
 - Adds the ability to customize the pre-chat form fields
 
