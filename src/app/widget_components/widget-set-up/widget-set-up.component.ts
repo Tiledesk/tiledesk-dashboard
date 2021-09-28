@@ -507,7 +507,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         var panel = this.nextElementSibling;
         self.logger.log('[WIDGET-SET-UP] ACCORDION PANEL', panel);
 
-      
+
 
         var arrow_icon_div = this.children[1];
         // this.logger.log('[WIDGET-SET-UP] ACCORDION ARROW ICON WRAP DIV', arrow_icon_div);
@@ -1224,7 +1224,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         }
 
         if (project.widget.preChatFormJson) {
-      
+
           // this.prechatFormTexareaJson = JSON.stringify(this.widgetDefaultSettings.preChatFormJson);
           this.prechatFormTexareaJson = JSON.stringify(project.widget.preChatFormJson);
           this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) PRE-CHAT-FORM-JSON DEFINED: ', project.widget.preChatFormJson)
@@ -1850,7 +1850,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       this.HAS_ACTIVATED_PRECHAT_CUSTOM_FIELDS = true
       // *** ADD PROPERTY
       this.widgetObj['preChatFormCustomFieldsEnabled'] = this.preChatFormCustomFieldsEnabled;
-      
+
       const parsedPrechatFormTexareaJson = JSON.parse(this.prechatFormTexareaJson)
       this.widgetObj['preChatFormJson'] = parsedPrechatFormTexareaJson;
 
@@ -1868,31 +1868,49 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
   savePrechatFormCustomFields() {
+    const prechatform_savejson_btn = <HTMLElement>document.querySelector('.prechatform-savejson-btn');
+    this.logger.log('[WIDGET-SET-UP] - prechatform_savejson_btn: ', prechatform_savejson_btn);
+    if (prechatform_savejson_btn) {
+      prechatform_savejson_btn.blur()
+    }
+
+
     this.logger.log('[WIDGET-SET-UP] - SAVE PRE-CHAT-FORM-JSON', this.prechatFormTexareaJson)
-    if (this.prechatFormTexareaJson !== '') {
-    const parsedPrechatFormTexareaJson = JSON.parse(this.prechatFormTexareaJson)
+    if (this.prechatFormTexareaJson !== '' && this.isJsonString(this.prechatFormTexareaJson) === true) {
+      const parsedPrechatFormTexareaJson = JSON.parse(this.prechatFormTexareaJson)
 
-    this.logger.log('[WIDGET-SET-UP] - SAVE PRE-CHAT-FORM-JSON PARSED', parsedPrechatFormTexareaJson)
+      this.logger.log('[WIDGET-SET-UP] - SAVE PRE-CHAT-FORM-JSON PARSED', parsedPrechatFormTexareaJson)
 
-    this.widgetObj['preChatFormJson'] = parsedPrechatFormTexareaJson;
-    this.widgetService.updateWidgetProject(this.widgetObj)
+      this.widgetObj['preChatFormJson'] = parsedPrechatFormTexareaJson;
+      this.widgetService.updateWidgetProject(this.widgetObj)
     } else {
       this.notify.showWidgetStyleUpdateNotification(this.invalidJSON_ErrorMsg, 4, 'report_problem');
     }
   }
 
+  isJsonString(str) {
+    try {
+      JSON.parse(str);
+    } catch (e) {
+      return false;
+    }
+    return true;
+  }
+
 
   onPastePrechatFormJSON(event: ClipboardEvent) {
-    let clipboardData = event.clipboardData;
-    this.logger.log('[WIDGET-SET-UP] - ON PASTE PRE-CHAT-FORM clipboardData', clipboardData);
-    let pastedText = clipboardData.getData('text').replace(/\s+/g , '');
-    this.logger.log('[WIDGET-SET-UP] - ON PASTE PRE-CHAT-FORM JSON', pastedText);
-    // // replace(/\s+/g , '')
-    // // .replace(/\"/g, '"').replace(/\s+/g , '');
-    // const pastedTextNoWhiteSpace = pastedText.split('\\');
-    // // const pastedTextNoBackSlash = pastedTextNoWhiteSpace.replace(/\\"/g, '"');
-    this.prechatFormTexareaJson = pastedText.replace(/\\\//g, "/");
-    this.logger.log('[WIDGET-SET-UP] - ON PASTE PRE-CHAT-FORM JSON prechatFormTexareaJson', this.prechatFormTexareaJson);
+    event.preventDefault();
+
+    // let clipboardData = event.clipboardData;
+    // this.logger.log('[WIDGET-SET-UP] - ON PASTE PRE-CHAT-FORM clipboardData', clipboardData);
+    // let pastedText = clipboardData.getData('text').replace(/\s+/g , '');
+    // this.logger.log('[WIDGET-SET-UP] - ON PASTE PRE-CHAT-FORM JSON', pastedText);
+    // // // replace(/\s+/g , '')
+    // // // .replace(/\"/g, '"').replace(/\s+/g , '');
+    // // const pastedTextNoWhiteSpace = pastedText.split('\\');
+    // // // const pastedTextNoBackSlash = pastedTextNoWhiteSpace.replace(/\\"/g, '"');
+    // this.prechatFormTexareaJson = pastedText.replace(/\\\//g, "/");
+    // this.logger.log('[WIDGET-SET-UP] - ON PASTE PRE-CHAT-FORM JSON prechatFormTexareaJson', this.prechatFormTexareaJson);
   }
 
 
