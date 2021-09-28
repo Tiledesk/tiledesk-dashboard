@@ -1524,8 +1524,9 @@
 								</i>
 							</div>
 						</button>
-						<div class="widget-section-container" style="height: auto; transition-duration: 0.613s;" 
-						[ngClass]="{'panel-prechatform-height': preChatFormCustomFieldsEnabled === true}">
+						<!-- [ngClass]="{'panel-prechatform-height': preChatFormCustomFieldsEnabled === true}" -->
+						<div class="widget-section-container prechatform" style="height: auto; transition-duration: 0.613s;" 
+						[ngClass]="{'panel-prechatform-height': HAS_ACTIVATED_PRECHAT_CUSTOM_FIELDS === true}">
 							<div class="section-offset">
 
 
@@ -1539,7 +1540,7 @@
 										{{'AskYourVisitorForTheirNameAndEmailBeforeStartingAChat' | translate}}
 									</label>
 
-									<div class="col-sm-1">
+									<div class="col-sm-12">
 										<div class="nw-onoffswitch-wrapper" style="clear: both;">
 											<div class="nw-onoffswitch">
 												<input (change)="togglePrechatformCheckBox($event)" type="checkbox"
@@ -1550,8 +1551,8 @@
 										</div>
 									</div>
 									<!-- style="padding-top: 14px;" -->
-									<label class="col-sm-11 control-label widget-settings-control-label"
-										style="position: relative;top: -2px;">
+									<label class="col-sm-12 control-label widget-settings-control-label"
+										style="position: relative;top: -6px;">
 										{{ 'EnableDisable' | translate }} pre-chat form
 									</label>
 								</div>
@@ -1567,7 +1568,7 @@
 										{{'CustomizeTheInformationYouRequestFromCustomersInThePreChatForm' | translate}}
 									</label>
 
-									<div class="col-sm-1">
+									<div class="col-sm-12">
 										<div class="nw-onoffswitch-wrapper" style="clear: both;">
 											<div class="nw-onoffswitch">
 												<input (change)="customizePrechatformFieldsCheckBox($event)" type="checkbox"
@@ -1579,15 +1580,15 @@
 										</div>
 									</div>
 									<!-- style="padding-top: 14px;" -->
-									<label class="col-sm-11 control-label widget-settings-control-label"
-										style="position: relative;top: -2px;">
+									<label class="col-sm-12 control-label widget-settings-control-label"
+										style="position: relative;top: -6px;">
 										{{ 'CustomizeThePreChatForm' | translate }}
 									</label>
 
 									<!--  -->
 									<div class="col-sm-12" *ngIf="preChatFormCustomFieldsEnabled === true">
 										<!-- [ngModel]="prechatFormTexareaJson | json" (ngModelChange)="onChangePrechatFormTexareaJson($event)" -->
-										<textarea id="prechat-form-texarea" rows="8" [(ngModel)]="prechatFormTexareaJson"  
+										<textarea id="prechat-form-texarea" rows="8" [(ngModel)]="prechatFormTexareaJson"  (paste)="onPastePrechatFormJSON($event)" 
 											style="width: 100%; border-radius: 5px;border: solid 1px #ddd; padding: 8px;font-weight: 400;resize: vertical">
 <!-- {{prechatFormTexareaJson}} -->
 									</textarea>

@@ -18,6 +18,7 @@ import { AnalyticsService } from '../../services/analytics.service';
 import { BrandService } from '../../services/brand.service';
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
 import { LoggerService } from '../../services/logger/logger.service';
+
 const swal = require('sweetalert');
 
 @Component({
@@ -191,6 +192,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   public prechatFormTexareaJson: any;
   public preChatFormJson: any;
   public preChatFormCustomFieldsEnabled: boolean;
+  public HAS_ACTIVATED_PRECHAT_CUSTOM_FIELDS: boolean;
 
   constructor(
     private notify: NotifyService,
@@ -425,6 +427,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
         if (panel.style.maxHeight) {
           panel.style.maxHeight = null;
+
         } else {
           panel.style.maxHeight = panel.scrollHeight + "px";
         }
@@ -497,11 +500,14 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       var arrow_icon = arrow_icon_div.children[0]
       // this.logger.log('[WIDGET-SET-UP] ACCORDION ARROW ICON', arrow_icon);
       arrow_icon.classList.add("arrow-up");
-
+      const self = this
       acc[i].addEventListener("click", function () {
+        self.logger.log('[WIDGET-SET-UP] ACCORDION click i', i, 'acc[i]', acc[i]);
         this.classList.toggle("active");
         var panel = this.nextElementSibling;
-        // this.logger.log('[WIDGET-SET-UP] ACCORDION PANEL', panel);
+        self.logger.log('[WIDGET-SET-UP] ACCORDION PANEL', panel);
+
+      
 
         var arrow_icon_div = this.children[1];
         // this.logger.log('[WIDGET-SET-UP] ACCORDION ARROW ICON WRAP DIV', arrow_icon_div);
@@ -513,6 +519,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
         if (panel.style.maxHeight) {
           panel.style.maxHeight = null;
+          self.HAS_ACTIVATED_PRECHAT_CUSTOM_FIELDS = false
         } else {
           panel.style.maxHeight = panel.scrollHeight + "px";
         }
@@ -1217,11 +1224,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         }
 
         if (project.widget.preChatFormJson) {
-          // this.prechatFormTexareaJson = project.widget.preChatFormJson;
-
-          // this.prechatFormTexareaJson = this.preChatFormJson;
-          // this.prechatFormTexareaJson = JSON.stringify(this.preChatFormJson);
-          // this.prechatFormTexareaJson = JSON.stringify(project.widget.preChatFormJson);
+      
+          // this.prechatFormTexareaJson = JSON.stringify(this.widgetDefaultSettings.preChatFormJson);
           this.prechatFormTexareaJson = JSON.stringify(project.widget.preChatFormJson);
           this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) PRE-CHAT-FORM-JSON DEFINED: ', project.widget.preChatFormJson)
         } else {
@@ -1843,12 +1847,18 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   customizePrechatformFieldsCheckBox(event) {
     if (event.target.checked) {
       this.preChatFormCustomFieldsEnabled = true;
+      this.HAS_ACTIVATED_PRECHAT_CUSTOM_FIELDS = true
       // *** ADD PROPERTY
       this.widgetObj['preChatFormCustomFieldsEnabled'] = this.preChatFormCustomFieldsEnabled;
+      
+      const parsedPrechatFormTexareaJson = JSON.parse(this.prechatFormTexareaJson)
+      this.widgetObj['preChatFormJson'] = parsedPrechatFormTexareaJson;
+
       this.widgetService.updateWidgetProject(this.widgetObj)
       this.logger.log('[WIDGET-SET-UP] - ENABLE CUSTOMIZE PRE CHAT FORM ', event.target.checked)
     } else {
       this.preChatFormCustomFieldsEnabled = false;
+      this.HAS_ACTIVATED_PRECHAT_CUSTOM_FIELDS = false
       // *** REMOVE PROPERTY
       delete this.widgetObj['preChatFormCustomFieldsEnabled'];
       this.widgetService.updateWidgetProject(this.widgetObj)
@@ -1859,13 +1869,34 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
   savePrechatFormCustomFields() {
     this.logger.log('[WIDGET-SET-UP] - SAVE PRE-CHAT-FORM-JSON', this.prechatFormTexareaJson)
+    if (this.prechatFormTexareaJson !== '') {
     const parsedPrechatFormTexareaJson = JSON.parse(this.prechatFormTexareaJson)
 
     this.logger.log('[WIDGET-SET-UP] - SAVE PRE-CHAT-FORM-JSON PARSED', parsedPrechatFormTexareaJson)
 
     this.widgetObj['preChatFormJson'] = parsedPrechatFormTexareaJson;
     this.widgetService.updateWidgetProject(this.widgetObj)
+    } else {
+      this.notify.showWidgetStyleUpdateNotification(this.invalidJSON_ErrorMsg, 4, 'report_problem');
+    }
   }
+
+
+  onPastePrechatFormJSON(event: ClipboardEvent) {
+    let clipboardData = event.clipboardData;
+    this.logger.log('[WIDGET-SET-UP] - ON PASTE PRE-CHAT-FORM clipboardData', clipboardData);
+    let pastedText = clipboardData.getData('text').replace(/\s+/g , '');
+    this.logger.log('[WIDGET-SET-UP] - ON PASTE PRE-CHAT-FORM JSON', pastedText);
+    // // replace(/\s+/g , '')
+    // // .replace(/\"/g, '"').replace(/\s+/g , '');
+    // const pastedTextNoWhiteSpace = pastedText.split('\\');
+    // // const pastedTextNoBackSlash = pastedTextNoWhiteSpace.replace(/\\"/g, '"');
+    this.prechatFormTexareaJson = pastedText.replace(/\\\//g, "/");
+    this.logger.log('[WIDGET-SET-UP] - ON PASTE PRE-CHAT-FORM JSON prechatFormTexareaJson', this.prechatFormTexareaJson);
+  }
+
+
+
 
 
   // NOT USED

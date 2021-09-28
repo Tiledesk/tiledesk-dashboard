@@ -22,6 +22,7 @@ export class WidgetSetUpBaseComponent extends WidgetSharedComponent implements O
   offlineMsgSuccessNoticationMsg: string;
   updateWidgetSuccessNoticationMsg: string;
   errorNoticationMsg: string;
+  invalidJSON_ErrorMsg: string;
 
 
 
@@ -54,8 +55,8 @@ export class WidgetSetUpBaseComponent extends WidgetSharedComponent implements O
         },
         errorLabel: {
           pattern: {
-            en: "Pattern not valid. Insert a valid email",
-            it: "Campo non valido. Insersci un email valida"
+            en: "Invalid email address",
+            it: "Indirizzo email non valido"
           }
         }
       }],
@@ -124,11 +125,22 @@ export class WidgetSetUpBaseComponent extends WidgetSharedComponent implements O
     this.translateOfflineMsgSuccessNoticationMsg();
     this.translateOfficeClosedSuccessNoticationMsg();
     this.translateGetTranslationErrorMsg();
-
+    this.translateInvalidJSON_ErrorMsg();
   }
 
 
+  translateInvalidJSON_ErrorMsg() {
+    this.translate.get('InvalidJSON')
+    .subscribe((text: string) => {
 
+      this.invalidJSON_ErrorMsg = text;
+      // console.log('»» WIDGET SERVICE - translateOnlineMsgSuccessNoticationMsg ', text)
+    }, (error) => {
+      // console.log('»» WIDGET SERVICE -  translateOnlineMsgSuccessNoticationMsg - ERROR ', error);
+    }, () => {
+      // console.log('»» WIDGET SERVICE -  Update Widget Project Success NoticationMsg * COMPLETE *');
+    });
+  }
 
   translateOnlineMsgSuccessNoticationMsg() {
     this.translate.get('UpdateDeptGreetingsOnlineMsgSuccessNoticationMsg')
