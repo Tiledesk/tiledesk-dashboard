@@ -1226,13 +1226,16 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         if (project.widget.preChatFormJson) {
 
           // this.prechatFormTexareaJson = JSON.stringify(this.widgetDefaultSettings.preChatFormJson);
-          this.prechatFormTexareaJson = JSON.stringify(project.widget.preChatFormJson);
-          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) PRE-CHAT-FORM-JSON DEFINED: ', project.widget.preChatFormJson)
+          
+          this.prechatFormTexareaJson = JSON.stringify(project.widget.preChatFormJson , null, 4);
+          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) PRE-CHAT-FORM-JSON DEFINED: ',  project.widget.preChatFormJson)
+          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) PRE-CHAT-FORM-JSON DEFINED typeof: ', typeof project.widget.preChatFormJson)
         } else {
 
-          this.prechatFormTexareaJson = JSON.stringify(this.widgetDefaultSettings.preChatFormJson);
-          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) PRE-CHAT-FORM-JSON UNDEFINED: ', project.widget.preChatFormJson)
-          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) PRE-CHAT-FORM-JSON UNDEFINED SET DEFAULT: ', this.prechatFormTexareaJson)
+          this.prechatFormTexareaJson = JSON.stringify(this.widgetDefaultSettings.preChatFormJson, null, 4);
+          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) PRE-CHAT-FORM-JSON UNDEFINED: ', this.widgetDefaultSettings.preChatFormJson)
+          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) PRE-CHAT-FORM-JSON UNDEFINED typeof: ', typeof this.widgetDefaultSettings.preChatFormJson)
+   
         }
 
         // ------------------------------------------------------------------------
@@ -1364,8 +1367,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // -----------------------------------------------------------------------
         this.preChatForm = false;
         this.preChatFormCustomFieldsEnabled = false;
-        this.prechatFormTexareaJson = JSON.stringify(this.widgetDefaultSettings.preChatFormJson);
-
+        this.prechatFormTexareaJson = JSON.stringify(this.widgetDefaultSettings.preChatFormJson, null, 4);
+      
         // -----------------------------------------------------------------------
         // @ Reply time
         // WIDGET UNDEFINED
@@ -1898,20 +1901,21 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
 
-  onPastePrechatFormJSON(event: ClipboardEvent) {
-    event.preventDefault();
+  // onPastePrechatFormJSON(event: ClipboardEvent) {
+  //   // event.preventDefault();
 
-    // let clipboardData = event.clipboardData;
-    // this.logger.log('[WIDGET-SET-UP] - ON PASTE PRE-CHAT-FORM clipboardData', clipboardData);
-    // let pastedText = clipboardData.getData('text').replace(/\s+/g , '');
-    // this.logger.log('[WIDGET-SET-UP] - ON PASTE PRE-CHAT-FORM JSON', pastedText);
-    // // // replace(/\s+/g , '')
-    // // // .replace(/\"/g, '"').replace(/\s+/g , '');
-    // // const pastedTextNoWhiteSpace = pastedText.split('\\');
-    // // // const pastedTextNoBackSlash = pastedTextNoWhiteSpace.replace(/\\"/g, '"');
-    // this.prechatFormTexareaJson = pastedText.replace(/\\\//g, "/");
-    // this.logger.log('[WIDGET-SET-UP] - ON PASTE PRE-CHAT-FORM JSON prechatFormTexareaJson', this.prechatFormTexareaJson);
-  }
+  //   let clipboardData = event.clipboardData;
+  //   this.logger.log('[WIDGET-SET-UP] - ON PASTE PRE-CHAT-FORM clipboardData', clipboardData);
+  //   let pastedText = clipboardData.getData('text')
+  //   this.prechatFormTexareaJson = pastedText
+  //   // this.logger.log('[WIDGET-SET-UP] - ON PASTE PRE-CHAT-FORM JSON', pastedText);
+  //   // // // replace(/\s+/g , '')
+  //   // // // .replace(/\"/g, '"').replace(/\s+/g , '');
+  //   // // const pastedTextNoWhiteSpace = pastedText.split('\\');
+  //   // // // const pastedTextNoBackSlash = pastedTextNoWhiteSpace.replace(/\\"/g, '"');
+  //   // this.prechatFormTexareaJson = pastedText.replace(/\\\//g, "/");
+  //   // this.logger.log('[WIDGET-SET-UP] - ON PASTE PRE-CHAT-FORM JSON prechatFormTexareaJson', this.prechatFormTexareaJson);
+  // }
 
 
 

@@ -1588,7 +1588,8 @@
 									<!--  -->
 									<div class="col-sm-12" *ngIf="preChatFormCustomFieldsEnabled === true">
 										<!-- [ngModel]="prechatFormTexareaJson | json" (ngModelChange)="onChangePrechatFormTexareaJson($event)" -->
-										<textarea id="prechat-form-texarea" rows="8" [(ngModel)]="prechatFormTexareaJson"  (paste)="onPastePrechatFormJSON($event)" 
+										<!-- (paste)="onPastePrechatFormJSON($event)" -->
+										<textarea id="prechat-form-texarea" rows="8" [(ngModel)]="prechatFormTexareaJson"   
 											style="width: 100%; border-radius: 5px;border: solid 1px #ddd; padding: 8px;font-weight: 400;resize: vertical">
 <!-- {{prechatFormTexareaJson}} -->
 									</textarea>
