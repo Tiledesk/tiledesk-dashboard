@@ -792,6 +792,11 @@ export class AuthService {
 
   signOut(calledby: string) {
     this.logger.log('[AUTH-SERV] Signout calledby +++++ ', calledby)
+    this.logger.log('[AUTH-SERV] Signout this.router.url +++++ ', this.router.url)
+    const current_url = this.router.url
+    // if (this.router.url.indexOf("request-for-panel") > -1) {
+    //   this.logger.log('[AUTH-SERV] Signout current url contains request-for-panel ')
+    // }
 
     this.user_bs.next(null);
     this.project_bs.next(null);
@@ -801,7 +806,10 @@ export class AuthService {
     localStorage.removeItem('project');
     localStorage.removeItem('role')
 
-    if (calledby !== 'autologin') {
+    // if (calledby !== 'autologin') {
+
+    if (current_url.indexOf("request-for-panel") === -1) {
+      this.logger.log('[AUTH-SERV] Signout current url  NOT contains request-for-panel ')
       const chat_sv5__currentUser = localStorage.getItem('chat_sv5__currentUser');
       this.logger.log('[AUTH-SERV] SIGNOUT - STORED chat_sv5__currentUser : ', chat_sv5__currentUser);
 
@@ -815,9 +823,13 @@ export class AuthService {
       if (chat_sv5__tiledeskToken) {
         localStorage.removeItem('chat_sv5__tiledeskToken')
       }
+
+      this.webSocketClose();
+    } else {
+      this.logger.log('[AUTH-SERV] Signout current url contains request-for-panel ')
     }
 
-    this.webSocketClose();
+
     // ------------------------------------------------------------------------------------------------------------
     // RUN removeInstanceIdAndSignout() if pushEngine === 'firebase' + 
     // in  removeInstanceIdAndSignout if  firebaseAuth === 'firebase' run  firebaseSignout else signoutNoFirebase
@@ -833,7 +845,9 @@ export class AuthService {
         if (this.FCMcurrentToken !== undefined && this.userId !== undefined) {
           this.logger.log('[AUTH-SERV] signOut here 2 ');
 
-          this.removeInstanceIdAndSignout(calledby);
+          if (this.appConfigService.getConfig().firebaseAuth === true) {
+            this.removeInstanceIdAndSignout(calledby);
+          }
 
         } else {
           this.logger.log('AUTH-SERV] signOut here 3 ');
@@ -850,7 +864,9 @@ export class AuthService {
               if (storedUserObj) {
                 this.userId = storedUserObj._id;
               }
-              this.removeInstanceIdAndSignout(calledby);
+              if (this.appConfigService.getConfig().firebaseAuth === true) {
+                this.removeInstanceIdAndSignout(calledby);
+              }
 
             }).catch((err) => {
               this.logger.log('[AUTH-SERV] signOut >>>> getToken err: ', err);
@@ -895,7 +911,7 @@ export class AuthService {
       connectionsRef.remove()
         .then(function () {
 
-          if (this.appConfigService.getConfig().firebaseAuth === 'firebase') {
+          if (this.appConfigService.getConfig().firebaseAuth === true) {
             that.firebaseSignout(calledby);
           } else {
             that.signoutNoFirebase(calledby)
@@ -940,6 +956,7 @@ export class AuthService {
   }
 
   webSocketClose() {
+    this.logger.log('[AUTH-SERV] SIGNOUT has called webSocketClose');
     this.webSocketJs.close()
   }
 
