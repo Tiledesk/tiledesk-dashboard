@@ -51,7 +51,7 @@ export class AutologinComponent implements OnInit {
 
     this.getJWTAndRouteParamsAndLogin();
 
-    if (appConfigService.getConfig().pushEngine === 'firebase') {
+    if (appConfigService.getConfig().pushEngine === 'firebase' && appConfigService.getConfig().firebaseAuth === true) {
       this.checkIfFCMIsSupported();
     }
 
