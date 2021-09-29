@@ -71,7 +71,7 @@ export class AutologinComponent implements OnInit {
 
 
       this.logger.log('[AUTOLOGIN] SSO - autologin getConfig firebaseAuth', this.appConfigService.getConfig().firebaseAuth)
-      if (this.appConfigService.getConfig().firebaseAuth === 'true') {
+      if (this.appConfigService.getConfig().firebaseAuth === true) {
 
         if (JWT && route) {
           this.ssoLoginWithCustomToken(JWT, route)
@@ -237,7 +237,7 @@ export class AutologinComponent implements OnInit {
 
                 this.router.navigate([route]);
 
-                if (this.appConfigService.getConfig().pushEngine === 'firebase') {
+                if (this.appConfigService.getConfig().pushEngine === 'firebase' && this.appConfigService.getConfig().firebaseAuth === true) {
                   if (!this.APP_IS_DEV_MODE && this.FCM_Supported === true) {
                     this.getPermission(auth_user._id);
                   }
@@ -268,8 +268,9 @@ export class AutologinComponent implements OnInit {
 
   getPermission(userid) {
     this.logger.log('[AUTOLOGIN] SSO - LOGIN - 5. getPermission ')
-    const messaging = firebase.messaging();
+   
     if (firebase.messaging.isSupported()) {
+      const messaging = firebase.messaging();
       // messaging.requestPermission()
       Notification.requestPermission()
         .then(() => {
