@@ -403,7 +403,7 @@ export class WebSocketJs {
       // @ onerror
       // -----------------------------------------------------------------------------------------------------
       that.ws.onerror = function (err) {
-        that.logger.log('[WEBSOCKET-JS] websocket IS CLOSED - websocket error ...', err)
+        that.logger.error('[WEBSOCKET-JS] websocket IS CLOSED - websocket error ...', err)
       }
 
       // -----------------------------------------------------------------------------------------------------
