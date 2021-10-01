@@ -869,8 +869,9 @@ export class AuthService {
               }
 
             }).catch((err) => {
-              this.logger.log('[AUTH-SERV] signOut >>>> getToken err: ', err);
               if (this.appConfigService.getConfig().firebaseAuth === true) {
+              this.logger.log('[AUTH-SERV] signOut >>>> getToken err: ', err);
+              
                 this.firebaseSignout(calledby);
               } else {
                 this.signoutNoFirebase(calledby)
