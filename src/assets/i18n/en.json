@@ -1948,5 +1948,8 @@
    "AllAgents": "All agents",
    "CustomizeThePreChatForm":"Customize the pre-chat form",
    "CustomizeTheInformationYouRequestFromCustomersInThePreChatForm":"Customize the information you request from customers in the pre-chat form by removing or adding fields",
-   "InvalidJSON":"Invalid JSON"
+   "InvalidJSON":"Invalid JSON",
+   "EmailNotAvailable":"Email not available",
+   "Project":"Project",
+   "YourProjects": "Your Projects"
 }
