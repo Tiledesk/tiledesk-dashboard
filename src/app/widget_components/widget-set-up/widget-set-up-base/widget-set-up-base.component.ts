@@ -35,31 +35,31 @@ export class WidgetSetUpBaseComponent extends WidgetSharedComponent implements O
       'themeColor': '#2a6ac1',
       'themeForegroundColor': '#ffffff',
       'preChatFormCustomFieldsEnabled': false,
-      'preChatFormJson': [{
-        name: "userFullname",
-        type: "string",
-        mandatory: false,
-        label: {
-          en: "Userfullname",
-          it: "Nome utente"
+      'preChatFormJson': [
+        {
+          "name": "userFullname",
+          "type": "text",
+          "mandatory": true,
+          "label": {
+            "en": "Userfullname",
+            "it": "Nome utente"
+          }
         },
-      },
-      {
-        name: "userEmail",
-        type: "string",
-        mandatory: false,
-        regex: "/^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(\.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(\.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)+$/",
-        label: {
-          en: "Email",
-          it: "Indirizzo email"
-        },
-        errorLabel: {
-          pattern: {
-            en: "Invalid email address",
-            it: "Indirizzo email non valido"
+        {
+          "name": "userEmail",
+          "type": "text",
+          "mandatory": true,
+          "regex": "/^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)+$/",
+          "label": {
+            "en": "Email",
+            "it": "Indirizzo email"
+          },
+          "errorLabel": {
+            "en": "Invalid email address",
+            "it": "Indirizzo email non valido"
           }
         }
-      }],
+      ],
       'en': {
         'wellcomeTitle': 'Hi, welcome to tiledesk 👋 ',
         'wellcomeMsg': 'How can we help you?',
@@ -131,15 +131,15 @@ export class WidgetSetUpBaseComponent extends WidgetSharedComponent implements O
 
   translateInvalidJSON_ErrorMsg() {
     this.translate.get('InvalidJSON')
-    .subscribe((text: string) => {
+      .subscribe((text: string) => {
 
-      this.invalidJSON_ErrorMsg = text;
-      // console.log('»» WIDGET SERVICE - translateOnlineMsgSuccessNoticationMsg ', text)
-    }, (error) => {
-      // console.log('»» WIDGET SERVICE -  translateOnlineMsgSuccessNoticationMsg - ERROR ', error);
-    }, () => {
-      // console.log('»» WIDGET SERVICE -  Update Widget Project Success NoticationMsg * COMPLETE *');
-    });
+        this.invalidJSON_ErrorMsg = text;
+        // console.log('»» WIDGET SERVICE - translateOnlineMsgSuccessNoticationMsg ', text)
+      }, (error) => {
+        // console.log('»» WIDGET SERVICE -  translateOnlineMsgSuccessNoticationMsg - ERROR ', error);
+      }, () => {
+        // console.log('»» WIDGET SERVICE -  Update Widget Project Success NoticationMsg * COMPLETE *');
+      });
   }
 
   translateOnlineMsgSuccessNoticationMsg() {
