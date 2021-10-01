@@ -587,7 +587,7 @@
                   <!-- (click)="goToContactDetailsInNewTab() style="cursor: pointer;"" -->
                   <div class="contact-in-right-sidebar"
                     [ngClass]="{'visible-if-chat-panel-mode' : CHAT_PANEL_MODE === true}">
-                    
+
                     <!-- [ngStyle]="{'background-color': fillColour }" -->
                     <span class="requester-avatar-wrapper-in-right-sidebar">
                       <span class="_requester-avatar_as_title-in-right-sidebar"
@@ -629,7 +629,8 @@
                       </div> -->
                     </span>
 
-                    <div class="contact_info_in_right-sidebar" [ngClass]="{'contact_info_in_right-sidebar-verified':REQUESTER_IS_VERIFIED === true }">
+                    <div class="contact_info_in_right-sidebar"
+                      [ngClass]="{'contact_info_in_right-sidebar-verified':REQUESTER_IS_VERIFIED === true }">
                       <span style="font-weight: 700; font-family: 'Helvetica Neue', sans-serif; display: block; font-size: 18px;white-space: nowrap;
                         overflow: hidden;
                         text-overflow: ellipsis;">
@@ -648,7 +649,7 @@
                         </a>
                         <a *ngIf="!request?.lead?.email"
                           style="color: #7695a5; margin-top: 8px;font-size:14px; font-weight: 400;">
-                          n.a.
+                          {{'EmailNotAvailable' | translate}}
                         </a>
                       </div>
 
@@ -1124,13 +1125,14 @@
                 <!-- --------------------------------------------------------------------- -->
                 <div *ngIf="CHAT_PANEL_MODE === true" class="row" style="margin-top:5px">
                   <!-- border-top: 1px solid #e1eef4;" -->
-                  <div class="col-sm-12">
-                    <p (click)="goToProjectHomeInNewTab()" class="chat-panel-mode-project-name" style="">
+                  
+                    <div class="col-sm-12">
+                      <!-- <p (click)="goToProjectHomeInNewTab()" class="chat-panel-mode-project-name" style="">
                       <i class="material-icons" style="vertical-align: middle; color: #394f5a;font-size:16px">apps</i>
                       <span style="position: relative;top: 1px;">
                         <span
                           style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
-                          {{ "ProjectEditPage.ProjectName" | translate }}
+                          {{ "Project" | translate }}
                         </span>
                         <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
                           {{ project_name }}
@@ -1139,8 +1141,42 @@
                           style="vertical-align: middle; color: #0f62ff;font-size:12px; cursor: pointer;">open_in_new</i>
 
                       </span>
-                    </p>
-                  </div>
+                    </p> -->
+
+                      <span style="position: relative;top: 1px;">
+                        <div class="row">
+                          <!-- (click)="goToProjectHomeInNewTab()" -->
+                          <div class="col-xs-10" style="padding-right:10px">
+                            <p (click)="goToProjectHomeInNewTab()" class="chat-panel-mode-project-name"
+                              style="margin-top: 0px;">
+                              <i class="material-icons"
+                                style="vertical-align: middle; color: #394f5a;font-size:16px">apps</i>
+                              <span style="position: relative;top: 1px;">
+                                <span
+                                  style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
+                                  {{ "Project" | translate }}
+                                </span>
+                                <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
+                                  {{ project_name }}
+                                </span>
+                                <!-- <i (click)="goToProjectHomeInNewTab()" class="material-icons"
+                                style="vertical-align: middle; color: #0f62ff;font-size:12px; cursor: pointer;">open_in_new</i> -->
+
+                              </span>
+                            </p>
+                          </div>
+
+                          <div class="col-xs-2" style="text-align: right;">
+                            <i id="request_id_arrow_down" class="material-icons rotate"
+                              style="cursor: pointer; color: #039be5; font-size:18px;position:relative; top:2px"
+                              (click)="goToProjectHomeInNewTab()">
+                              open_in_new
+                            </i>
+                          </div>
+                        </div>
+                      </span>
+                    </div>
+                  
                 </div>
 
                 <!-- --------------------------------------------------------------------- -->
