@@ -68,17 +68,26 @@ export class AutologinComponent implements OnInit {
       const JWT = params.token
       this.logger.log('[AUTOLOGIN] SSO - autologin page params token ', JWT);
 
-
+      const storedUser = localStorage.getItem('user');
+      let storedJWT = ''
+      if (storedUser) {
+        const storedUserParsed = JSON.parse(storedUser)
+        this.logger.log('[AUTOLOGIN] SSO - autologin page stored User ', storedUserParsed);
+        storedJWT = storedUserParsed.token;
+        this.logger.log('[AUTOLOGIN] SSO - autologin page stored TOKEN ', storedJWT);
+      } else {
+        storedJWT = localStorage.getItem('chat_sv5__tiledeskToken')
+      }
 
       this.logger.log('[AUTOLOGIN] SSO - autologin getConfig firebaseAuth', this.appConfigService.getConfig().firebaseAuth)
       if (this.appConfigService.getConfig().firebaseAuth === true) {
 
         if (JWT && route) {
-          this.ssoLoginWithCustomToken(JWT, route)
+          this.ssoLoginWithCustomToken(JWT, route, storedJWT)
         }
       } else {
         if (JWT && route) {
-          this.ssoLogin(JWT, route)
+          this.ssoLogin(JWT, route, storedJWT)
         }
       }
     });
@@ -110,11 +119,14 @@ export class AutologinComponent implements OnInit {
     }
   }
 
-  ssoLogin(JWT, route) {
+  ssoLogin(JWT, route, storedJWT) {
     this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser route ', route);
     this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser JWT ', JWT);
+    this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser storedJWT ', storedJWT);
 
-    this.logout();
+    if (JWT !== storedJWT) {
+      this.logout();
+    }
 
     this.sso.getCurrentAuthenticatedUser(JWT).subscribe(auth_user => {
       this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser RES ', auth_user);
@@ -205,14 +217,16 @@ export class AutologinComponent implements OnInit {
   }
 
 
-  ssoLoginWithCustomToken(JWT, route) {
+  ssoLoginWithCustomToken(JWT, route, storedJWT) {
+    this.logger.log('[AUTOLOGIN] SSO - ssoLoginWithCustomToken getCurrentAuthenticatedUser route ', route);
+    this.logger.log('[AUTOLOGIN] SSO - ssoLoginWithCustomToken getCurrentAuthenticatedUser JWT ', JWT);
+    this.logger.log('[AUTOLOGIN] SSO - ssoLoginWithCustomToken getCurrentAuthenticatedUser storedJWT ', storedJWT);
     // -------------
     // @ Logout
     // -------------
-    this.logout();
-
-    this.logger.log('[AUTOLOGIN] SSO - ssoLoginWithCustomToken');
-
+    if (JWT !== storedJWT) {
+      this.logout();
+    }
 
     this.sso.chat21CreateFirebaseCustomToken(JWT).subscribe(fbtoken => {
 
@@ -268,7 +282,7 @@ export class AutologinComponent implements OnInit {
 
   getPermission(userid) {
     this.logger.log('[AUTOLOGIN] SSO - LOGIN - 5. getPermission ')
-   
+
     if (firebase.messaging.isSupported()) {
       const messaging = firebase.messaging();
       // messaging.requestPermission()
