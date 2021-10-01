@@ -1,6 +1,13 @@
 
 # tiledesk-dashboard
 
+### 2.2.21
+- Adds, when autologin is performed, a check to avoid logging out if the user is already logged in
+- Replaces the query string "isOpen=true" with "role=${role}" in the URL "simulate visitors"
+- Replaces in the right sidebar displayed in the chat for the support conversations "n.a" with "email not available"
+- Replaces the title "Recent Projects" with "Your Projects" on the project list page
+- Avoid horizontal resizing of the "Customize the pre-chat form" text area
+- Updates the default "preChatFormJson"
 
 ### 2.2.20
 - Checks in the autologin component if the "firebaseAuth" property has the value "true" and that "push Engine" has the value "firebase" before registering the user to receive firebase push notifications
