@@ -960,7 +960,7 @@ and also iPads specifically.
 }
 
 .chat-panel-mode-contact-email {
-margin-top: 8px
+  margin-top: 8px;
 }
 
 .requester-status-icon {
@@ -2084,7 +2084,7 @@ margin-top: 8px
 }
 
 .right-sidebar-actions-with-contact:hover {
-  background: rgb(207, 210,215)
+  background: rgb(207, 210, 215);
 }
 
 .right-sidebar-actions-with-request {
@@ -2433,7 +2433,6 @@ margin-top: 8px
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-
 }
 
 /* SWAL SM SIZE - moved in demo css to avoid the use of  encapsulation: ViewEncapsulation.None */
