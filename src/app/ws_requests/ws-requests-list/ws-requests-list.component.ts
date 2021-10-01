@@ -1471,7 +1471,8 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     // const url = 'http://support.tiledesk.com/testsite/?projectid=' + this.projectId;
     // + '&projectname=' + this.projectName
     // const url = 'http://testwidget.tiledesk.com/testsitenw3?projectname=' + this.projectName + ' &projectid=' + this.projectId
-    const url = this.TESTSITE_BASE_URL + '?tiledesk_projectid=' + this.projectId + '&project_name=' + this.projectName + '&isOpen=true'
+    // '&isOpen=true'
+    const url = this.TESTSITE_BASE_URL + '?tiledesk_projectid=' + this.projectId + '&project_name=' + this.projectName +  '&role=' + this.CURRENT_USER_ROLE
     // + '&prechatform=' + false + '&callout_timer=' + false + '&align=right';
     window.open(url, '_blank');
   }

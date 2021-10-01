@@ -232,6 +232,14 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
     } // OnInit
 
+
+    ngOnDestroy() {
+        this.logger.log('[NAVBAR] % »»» WebSocketJs WF +++++ ws-requests--- navbar ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ ngOnDestroy')
+        this.subscription.unsubscribe();
+        this.unsubscribe$.next();
+        this.unsubscribe$.complete();
+    }
+
     translateStrings() {
         this.translateModalOnlyOwnerCanManageProjectAccount()
     }
@@ -294,13 +302,6 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
             });
     }
 
-    ngOnDestroy() {
-        this.logger.log('[NAVBAR] % »»» WebSocketJs WF +++++ ws-requests--- navbar ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ ngOnDestroy')
-        this.subscription.unsubscribe();
-        this.unsubscribe$.next();
-        this.unsubscribe$.complete();
-    }
-
 
     getProfileImageStorage() {
         if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
@@ -308,9 +309,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
             this.storageBucket = firebase_conf['storageBucket'];
             this.logger.log('[NAVBAR] IMAGE STORAGE ', this.storageBucket, 'usecase firebase')
         } else {
-
             this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
-
             this.logger.log('[NAVBAR] IMAGE STORAGE ', this.storageBucket, 'usecase native')
         }
     }
@@ -896,8 +895,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     testWidgetPage() {
         const simulateVisitorBtnElem = <HTMLElement>document.querySelector('.simulate-visitor-btn');
         simulateVisitorBtnElem.blur();
-
-        const url = this.TESTSITE_BASE_URL + '?tiledesk_projectid=' + this.projectId + '&project_name=' + this.projectName + '&isOpen=true'
+        // + '&isOpen=true'
+        const url = this.TESTSITE_BASE_URL + '?tiledesk_projectid=' + this.projectId + '&project_name=' + this.projectName + '&role=' + this.USER_ROLE
         window.open(url, '_blank');
     }
 

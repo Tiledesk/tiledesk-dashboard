@@ -18,6 +18,9 @@ import { AnalyticsService } from '../../services/analytics.service';
 import { BrandService } from '../../services/brand.service';
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
 import { LoggerService } from '../../services/logger/logger.service';
+import { UsersService } from '../../services/users.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators'
 
 const swal = require('sweetalert');
 
@@ -30,6 +33,8 @@ const swal = require('sweetalert');
 
 
 export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, AfterViewInit, OnDestroy {
+
+  private unsubscribe$: Subject<any> = new Subject<any>();
 
   @ViewChild('testwidgetbtn') private elementRef: ElementRef;
   @ViewChild("multilanguage") private multilanguageRef: ElementRef;
@@ -193,6 +198,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   public preChatFormJson: any;
   public preChatFormCustomFieldsEnabled: boolean;
   public HAS_ACTIVATED_PRECHAT_CUSTOM_FIELDS: boolean;
+  public USER_ROLE: string;
 
   constructor(
     private notify: NotifyService,
@@ -208,7 +214,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     public appConfigService: AppConfigService,
     public brandService: BrandService,
     private analyticsService: AnalyticsService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private usersService: UsersService,
   ) {
     super(translate);
     const brand = brandService.getBrand();
@@ -220,6 +227,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
   ngOnInit() {
     this.auth.checkRoleForCurrentProject();
+    this.getProjectUserRole();
     // this.HAS_SELECT_INSTALL_WITH_CODE = false
     this.getProfileImageStorage();
     this.getWidgetUrl();
@@ -232,9 +240,6 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       this.fragment = fragment;
       this.logger.log('[WIDGET-SET-UP] - FRAGMENT ', this.fragment)
     });
-
-
-
 
     this.translateTextBaseComp();
     // this.translateOnlineMsgSuccessNoticationMsg();
@@ -254,6 +259,26 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.logger.log('[WIDGET-SET-UP] window.matchMedia ', window.matchMedia)
     this.lang = this.translate.getBrowserLang();
     this.logger.log('[WIDGET-SET-UP] LANGUAGE ', this.lang);
+  }
+
+
+  ngAfterViewInit(): void {
+    try {
+      // name of the class of the html div = . + fragment
+      const test = <HTMLElement>document.querySelector('.' + this.fragment)
+      // this.logger.log('»» WIDGET DESIGN - QUERY SELECTOR TEST  ', test)
+      test.scrollIntoView();
+      // document.querySelector('#' + this.fragment).scrollIntoView();
+      // this.logger.log( document.querySelector('#' + this.fragment).scrollIntoView())
+    } catch (e) {
+      // this.logger.log('»» WIDGET DESIGN - QUERY SELECTOR ERROR  ', e)
+    }
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 
@@ -284,9 +309,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
   }
 
-  ngOnDestroy() {
-    this.sub.unsubscribe();
-  }
+ 
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
@@ -378,8 +401,28 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
   }
 
+  getProjectUserRole() {
+    // const user___role =  this.usersService.project_user_role_bs.value;
+    // this.logger.log('[NAVBAR] % »»» WebSocketJs WF +++++ ws-requests--- navbar - USER ROLE 1 ', user___role);
+    this.usersService.project_user_role_bs
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((user_role) => {
+        this.logger.log('[NAVBAR] % »»» WebSocketJs WF +++++ ws-requests--- navbar - USER ROLE 2', user_role);
+        if (user_role) {
+          this.USER_ROLE = user_role
+
+        }
+      });
+  }
+
   getLoggedUser() {
-    this.auth.user_bs.subscribe((user) => {
+    this.auth.user_bs
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((user) => {
       this.logger.log('[WIDGET-SET-UP] USER GET IN »» WIDGET DESIGN ', user)
       if (user) {
         this.current_user_name = user.firstname + ' ' + user.lastname
@@ -479,7 +522,6 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
 
-
   getAndManageAccordion() {
     var acc = document.getElementsByClassName("widget-section-accordion");
     // this.logger.log('[WIDGET-SET-UP] ACCORDION', acc);
@@ -507,15 +549,12 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         var panel = this.nextElementSibling;
         self.logger.log('[WIDGET-SET-UP] ACCORDION PANEL', panel);
 
-
-
         var arrow_icon_div = this.children[1];
         // this.logger.log('[WIDGET-SET-UP] ACCORDION ARROW ICON WRAP DIV', arrow_icon_div);
 
         var arrow_icon = arrow_icon_div.children[0]
         // this.logger.log('[WIDGET-SET-UP] ACCORDION ARROW ICON', arrow_icon);
         arrow_icon.classList.toggle("arrow-up");
-
 
         if (panel.style.maxHeight) {
           panel.style.maxHeight = null;
@@ -528,11 +567,11 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
 
-
   getTestSiteUrl() {
     this.TESTSITE_BASE_URL = this.appConfigService.getConfig().testsiteBaseUrl;
     this.logger.log('[WIDGET-SET-UP] getAppConfig [WIDGET-SET-UP] TESTSITE_BASE_URL', this.TESTSITE_BASE_URL);
   }
+
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
     this.logger.log('[WIDGET-SET-UP] getAppConfig  public_Key', this.public_Key);
@@ -1226,16 +1265,16 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         if (project.widget.preChatFormJson) {
 
           // this.prechatFormTexareaJson = JSON.stringify(this.widgetDefaultSettings.preChatFormJson);
-          
-          this.prechatFormTexareaJson = JSON.stringify(project.widget.preChatFormJson , null, 4);
-          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) PRE-CHAT-FORM-JSON DEFINED: ',  project.widget.preChatFormJson)
+
+          this.prechatFormTexareaJson = JSON.stringify(project.widget.preChatFormJson, null, 4);
+          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) PRE-CHAT-FORM-JSON DEFINED: ', project.widget.preChatFormJson)
           this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) PRE-CHAT-FORM-JSON DEFINED typeof: ', typeof project.widget.preChatFormJson)
         } else {
 
           this.prechatFormTexareaJson = JSON.stringify(this.widgetDefaultSettings.preChatFormJson, null, 4);
           this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) PRE-CHAT-FORM-JSON UNDEFINED: ', this.widgetDefaultSettings.preChatFormJson)
           this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) PRE-CHAT-FORM-JSON UNDEFINED typeof: ', typeof this.widgetDefaultSettings.preChatFormJson)
-   
+
         }
 
         // ------------------------------------------------------------------------
@@ -1368,7 +1407,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         this.preChatForm = false;
         this.preChatFormCustomFieldsEnabled = false;
         this.prechatFormTexareaJson = JSON.stringify(this.widgetDefaultSettings.preChatFormJson, null, 4);
-      
+
         // -----------------------------------------------------------------------
         // @ Reply time
         // WIDGET UNDEFINED
@@ -1391,18 +1430,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
 
 
-  ngAfterViewInit(): void {
-    try {
-      // name of the class of the html div = . + fragment
-      const test = <HTMLElement>document.querySelector('.' + this.fragment)
-      // this.logger.log('»» WIDGET DESIGN - QUERY SELECTOR TEST  ', test)
-      test.scrollIntoView();
-      // document.querySelector('#' + this.fragment).scrollIntoView();
-      // this.logger.log( document.querySelector('#' + this.fragment).scrollIntoView())
-    } catch (e) {
-      // this.logger.log('»» WIDGET DESIGN - QUERY SELECTOR ERROR  ', e)
-    }
-  }
+
 
 
 
@@ -1996,9 +2024,10 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
     // const url = 'http://testwidget.tiledesk.com/testsitenw3?projectname=' + this.projectName + '&projectid=' + this.id_project
     // const url = this.TESTSITE_BASE_URL + '?projectname=' + this.projectName + '&projectid=' + this.id_project + '&isOpen=true'
-    const url = this.TESTSITE_BASE_URL + '?tiledesk_projectid=' + this.id_project + '&project_name=' + this.projectName + '&isOpen=true'
+    // '&isOpen=true'
+    const url = this.TESTSITE_BASE_URL + '?tiledesk_projectid=' + this.id_project + '&project_name=' + this.projectName + '&role=' + this.USER_ROLE
 
-    this.logger.log('[WIDGET-SET-UP] - TEST WIDGET URL ', url);
+      this.logger.log('[WIDGET-SET-UP] - TEST WIDGET URL ', url);
     window.open(url, '_blank');
   }
 
