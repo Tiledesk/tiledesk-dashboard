@@ -289,25 +289,24 @@ export class SigninComponent implements OnInit {
       if (!error) {
 
         self.logger.log('[SIGN-IN] SSO (Signin) - user', user)
-
         self.router.navigate(['/projects']);
 
-        self.widgetReInit();
+        // self.widgetReInit();
 
         /**
          * *** WIDGET - pass data to the widget function setTiledeskWidgetUser in index.html ***
          */
-         self.logger.log('[SIGN-IN] SetTiledeskWidgetUserSignin (Signin) - userFullname', user.firstname + ' ' + user.lastname)
-         self.logger.log('[SIGN-IN] SetTiledeskWidgetUserSignin (Signin) - userEmail', user.email);
-         self.logger.log('[SIGN-IN] SetTiledeskWidgetUserSignin (Signin) - userId', user._id);
+        //  self.logger.log('[SIGN-IN] SetTiledeskWidgetUserSignin (Signin) - userFullname', user.firstname + ' ' + user.lastname)
+        //  self.logger.log('[SIGN-IN] SetTiledeskWidgetUserSignin (Signin) - userEmail', user.email);
+        //  self.logger.log('[SIGN-IN] SetTiledeskWidgetUserSignin (Signin) - userId', user._id);
 
-        setTimeout(() => {
-          try {
-            window['setTiledeskWidgetUser'](user.firstname + ' ' + user.lastname, user.email, user._id);
-          } catch (err) {
-            self.logger.log('[SIGN-IN] SetTiledeskWidgetUserSignin (Signin) error', err);
-          }
-        }, 2000);
+        // setTimeout(() => {
+        //   try {
+        //     window['setTiledeskWidgetUser'](user.firstname + ' ' + user.lastname, user.email, user._id);
+        //   } catch (err) {
+        //     self.logger.log('[SIGN-IN] SetTiledeskWidgetUserSignin (Signin) error', err);
+        //   }
+        // }, 2000);
 
 
       } else {
