@@ -266,7 +266,7 @@ export class WsRequestsService implements OnDestroy {
               self.addWsRequests(data)
               self.logger.log("[WS-REQUESTS-SERV] - CREATE - ADD REQUESTS");
             } else {
-              self.logger.log("[WS-REQUESTS-SERV] - CREATE - REQUEST ALREADY EXIST - NOT ADD");
+              // self.logger.log("[WS-REQUESTS-SERV] - CREATE - REQUEST ALREADY EXIST - NOT ADD");
             }
 
           }, function (data, notification) {
