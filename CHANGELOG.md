@@ -14,6 +14,7 @@
 - Adds the "firebaseAuth" = true control to the "pushEngine" = 'firebase' control in the 'signout' method of the auth.service service before removing the instance that registers the user to receive push notifications
 - Does not close the websocket if the dashboard is in the chat "conversation info" panel
 - Fixes the bug: the JSON in the textarea "Customize the pre-chat form" is not formatted correctly
+- Adds the ability to paste a json in the textarea "Customize the pre-chat form"
 
 ### 2.2.19
 - Fixes the bug: the "accordion" of the pre-chat module settings does not close if it is active "customize the pre-chat module"
