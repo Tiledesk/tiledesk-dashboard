@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.22
+- Removes unused code
+
 ### 2.2.21
 - Adds, when autologin is performed, a check to avoid logging out if the user is already logged in
 - Replaces the query string "isOpen=true" with "role=${role}" in the URL "simulate visitors"
