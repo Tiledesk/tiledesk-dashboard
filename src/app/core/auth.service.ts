@@ -19,6 +19,7 @@ import 'firebase/database'
 import { AppConfigService } from '../services/app-config.service';
 import { WebSocketJs } from '../services/websocket/websocket-js';
 import { LoggerService } from '../services/logger/logger.service';
+import { runInThisContext } from 'vm';
 // import { SsoService } from './sso.service';
 
 // start SUPER USER
@@ -921,7 +922,7 @@ export class AuthService {
         }).catch((err) => {
           that.logger.error('[AUTH-SERV] - removeInstanceId - err: ', err);
 
-          if (this.appConfigService.getConfig().firebaseAuth === 'firebase') {
+          if (this.appConfigService.getConfig().firebaseAuth === true) {
             that.firebaseSignout(calledby);
           } else {
             that.signoutNoFirebase(calledby)
@@ -942,7 +943,7 @@ export class AuthService {
         }
       }, function (error) {
         that.logger.error('[AUTH-SERV] firebaseSignout SIGN-OUT - Error', error);
-        that.widgetReInit()
+        // that.widgetReInit()
 
         if (calledby !== 'autologin') {
           that.router.navigate(['/login']);
@@ -951,6 +952,7 @@ export class AuthService {
   }
 
   signoutNoFirebase(calledby) {
+   this.logger.log('[AUTH-SERV] signoutNoFirebase called By ', calledby);
     if (calledby !== 'autologin') {
       this.router.navigate(['/login']);
     }
