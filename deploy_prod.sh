@@ -19,12 +19,16 @@ cd dist
 
 
 ####### tiledesk V2
-aws s3 sync . s3://tiledesk-console/v2/dashboard/
-echo new version deployed on s3://tiledesk-console/v2/dashboard/
-echo available on https://console.tiledesk.com/v2/dashboard/index.html
+# aws s3 sync . s3://tiledesk-console/v2/dashboard/
+# echo new version deployed on s3://tiledesk-console/v2/dashboard/
+# echo available on https://console.tiledesk.com/v2/dashboard/index.html
 
 
-# aws s3 sync . s3://tiledesk-console/v2/dashboard/$version/
+####### tiledesk V2 in version subfolder 
+aws s3 sync . s3://tiledesk-console/v2/dashboard/2.2.21/
+echo new version deployed on s3://tiledesk-console/v2/dashboard/2.2.21/
+echo available on https://console.tiledesk.com/v2/dashboard/2.2.21/index.html
 
-# aws s3 sync . s3://tiledesk-widget/v4/$version/
-# aws s3 sync . s3://tiledesk-widget/v4/
+
+
+
