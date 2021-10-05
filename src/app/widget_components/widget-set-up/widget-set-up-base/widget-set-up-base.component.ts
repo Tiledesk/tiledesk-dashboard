@@ -41,7 +41,7 @@ export class WidgetSetUpBaseComponent extends WidgetSharedComponent implements O
           "type": "text",
           "mandatory": true,
           "label": {
-            "en": "Userfullname",
+            "en": "Full Name",
             "it": "Nome utente"
           }
         },
