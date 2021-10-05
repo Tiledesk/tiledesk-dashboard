@@ -1,8 +1,12 @@
 
 # tiledesk-dashboard
 
+### 2.2.23
+- Updates the default "preChatFormJson"
+
 ### 2.2.22
 - Removes unused code
+- Fixes the bug: if the app is deployed with the production environment when the user logs out he is not redirected to the login page
 
 ### 2.2.21
 - Adds, when autologin is performed, a check to avoid logging out if the user is already logged in
