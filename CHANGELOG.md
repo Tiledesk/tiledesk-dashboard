@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.24
+- Fixes the bug: in some IF statement firebaseAuth is checked if it is set to 'firebase'
+
 ### 2.2.23
 - Updates the default "preChatFormJson"
 
