@@ -725,7 +725,7 @@ export class AuthService {
   // Run showExpiredSessionPopup(); with the passed parameter IF firebaseAuth === 'firebase' else is always False
   // -------------------------------------------------------------------------------------------------------------
   showExpiredSessionPopup(showExpiredSessionPopup) {
-    if (this.appConfigService.getConfig().firebaseAuth === 'firebase') {
+    if (this.appConfigService.getConfig().firebaseAuth === true) {
       this.show_ExpiredSessionPopup = showExpiredSessionPopup;
       this.logger.log('[AUTH-SERV]- SHOW EXPIRED SESSION POPUP - (USE CASE FIREBASE AUTH) ', this.show_ExpiredSessionPopup)
     } else {
@@ -740,7 +740,7 @@ export class AuthService {
   // ----------------------------------------------------------------------------------------------------------------------------
   // PASSED FROM APP.COMPONENT.TS
   userIsSignedIn(user_is_signed_in: boolean) {
-    if (this.appConfigService.getConfig().firebaseAuth === 'firebase') {
+    if (this.appConfigService.getConfig().firebaseAuth === true) {
       this.logger.log('[AUTH-SERV] - USER-IS-SIGNED-IN - SHOW EXPIRED SESSION POPUP - (USE CASE FIREBASE AUTH) ', user_is_signed_in);
 
       if (this.show_ExpiredSessionPopup === true) {
@@ -756,7 +756,7 @@ export class AuthService {
   // @ Subscribe to isOpenedExpiredSessionModal (which the run checkIfFCMIsSupported) IF firebaseAuth === 'firebase'
   // -------------------------------------------------------------------------------------------------------------- 
   checkIfExpiredSessionModalIsOpened() {
-    if (this.appConfigService.getConfig().firebaseAuth === 'firebase') {
+    if (this.appConfigService.getConfig().firebaseAuth === true) {
       this.logger.log('[AUTH-SERV] - CHECK-IF-EXPIRED-SESSSION-MODAL-IS-OPENED (USE CASE FIREBASE AUTH) subscribe to isOpenedExpiredSessionModal');
       this.notify.isOpenedExpiredSessionModal.subscribe((isOpenedExpiredSession: boolean) => {
         this.logger.log('[AUTH-SERV] - isOpenedExpiredSession ', isOpenedExpiredSession, '*** >>>> FCM is Supported: ', this.FCM_Supported);
