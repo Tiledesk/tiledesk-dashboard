@@ -125,7 +125,10 @@ export class AutologinComponent implements OnInit {
     this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser storedJWT ', storedJWT);
 
     if (JWT !== storedJWT) {
+      this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser stored chat_sv5__tiledeskToken is equal to params JWT ');
       this.logout();
+    } else {
+      this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser stored chat_sv5__tiledeskToken is NOT equal to params JWT ');
     }
 
     this.sso.getCurrentAuthenticatedUser(JWT).subscribe(auth_user => {
@@ -225,7 +228,10 @@ export class AutologinComponent implements OnInit {
     // @ Logout
     // -------------
     if (JWT !== storedJWT) {
+      this.logger.log('[AUTOLOGIN] SSO - ssoLoginWithCustomToken getCurrentAuthenticatedUser stored chat_sv5__tiledeskToken is equal to params JWT ');
       this.logout();
+    } else {
+      this.logger.log('[AUTOLOGIN] SSO - ssoLoginWithCustomToken getCurrentAuthenticatedUser stored chat_sv5__tiledeskToken is NOT equal to params JWT ');
     }
 
     this.sso.chat21CreateFirebaseCustomToken(JWT).subscribe(fbtoken => {
