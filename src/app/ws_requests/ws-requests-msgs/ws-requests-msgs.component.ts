@@ -539,6 +539,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     }
   }
 
+    // https://stackoverflow.com/questions/40983055/how-to-reload-the-current-route-with-the-angular-2-router
+    redirectTo(uri: string, projectid: string) {
+      this.router.navigateByUrl('project/' + projectid + '/wsrequest/loading', { skipLocationChange: true }).then(() =>
+        this.router.navigate([uri]));
+    }
+
 
   /**
    * Unsuscribe Request-by-id
@@ -556,11 +562,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.wsMsgsService.unsubsToWS_MsgsByRequestId(idrequest);
   }
 
-  // https://stackoverflow.com/questions/40983055/how-to-reload-the-current-route-with-the-angular-2-router
-  redirectTo(uri: string, projectid: string) {
-    this.router.navigateByUrl('project/' + projectid + '/wsrequest/loading', { skipLocationChange: true }).then(() =>
-      this.router.navigate([uri]));
-  }
+
 
   // -----------------------------------------------------------------------------------------------------
   // @ Request-by-id ws-subscription (called On init > getParamRequestId) and get 
