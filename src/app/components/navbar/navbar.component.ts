@@ -367,7 +367,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                 // this.projects = projects;
 
                 this.projects = projects.filter((project: any) => {
-                    this.logger.log('[NAVBAR] getProjects PROJECTS status ', project.id_project.status);
+                    // this.logger.log('[NAVBAR] getProjects PROJECTS status ', project.id_project.status);
                     return project.id_project.status === 100;
 
                 });

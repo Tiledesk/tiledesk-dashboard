@@ -677,9 +677,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - PROJECT USER ', projectUser);
             this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - PROJECT USER LENGTH', projectUser.length);
             if ((projectUser) && (projectUser.length !== 0)) {
-                this.logger.log('[SIDEBAR] PROJECT-USER ID ', projectUser[0]._id)
-                this.logger.log('[SIDEBAR] USER IS AVAILABLE ', projectUser[0].user_available)
-                this.logger.log('[SIDEBAR] USER IS BUSY (from db)', projectUser[0].isBusy)
+                // this.logger.log('[SIDEBAR] PROJECT-USER ID ', projectUser[0]._id)
+                // this.logger.log('[SIDEBAR] USER IS AVAILABLE ', projectUser[0].user_available)
+                // this.logger.log('[SIDEBAR] USER IS BUSY (from db)', projectUser[0].isBusy)
                 // this.user_is_available_bs = projectUser.user_available;
 
                 // NOTE_nk: comment this this.subsTo_WsCurrentUser(projectUser[0]._id)
