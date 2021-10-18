@@ -1926,5 +1926,7 @@
     "WidgetAPITestPage":"Pagina di prova delle API del widget",
     "UseTheWidgetTestPageToTestTheWidgetAPI":"Usa la pagina di test del widget per testare le API e le proprietà del widget",
     "WidgetTest": "Apri la pagina di test",
-    "AllAgents": "Tutti gli agenti"
+    "AllAgents": "Tutti gli agenti",
+    "SorryTheFollowingErrorOccurredWhileUploadingTheImage":"Spiacenti, si è verificato il seguente errore durante il caricamento dell'immagine:",
+    "SorryFileTypeNotSupported": "Spiacenti, tipo di file non supportato"
 }
