@@ -92,7 +92,7 @@
 
                                     <input #fileInputUserProfileImage class="inputfile" name="teammate-image-profile"
                                         id="teammate-image-profile" type="file" (change)="upload($event)"
-                                        accept=".jpg" />
+                                        accept=".jpg, .JPEG, .png" />
                                     <label class="btn btn-white" for="teammate-image-profile"
                                         style="padding-left:15px; padding-right:15px; text-transform: none; color: #7695a5">
                                         <span *ngIf="!showSpinnerInUploadImageBtn">
