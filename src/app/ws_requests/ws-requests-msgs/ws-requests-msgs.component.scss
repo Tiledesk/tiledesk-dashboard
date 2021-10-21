@@ -1625,6 +1625,8 @@ and also iPads specifically.
   padding: 3px 6px;
   margin-bottom: 6px;
   margin-top: 0px;
+  width: 70px;
+  height: 22px;
 }
 
 .delete_note_icon:hover {
@@ -2017,6 +2019,9 @@ and also iPads specifically.
 .requester-avatar-wrapper-in-right-sidebar {
   display: block;
   float: left;
+  margin-left: 6px;
+    font-family: "Google Sans",sans-serif!important;
+    font-weight: 600;
 }
 
 ._requester-avatar_as_title-in-right-sidebar {
