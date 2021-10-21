@@ -1,6 +1,17 @@
 
 # tiledesk-dashboard
 
+### 2.2.25
+- Adds the ability to upload user profile photo in png format 
+- Adds the display of an error message in case the user profile photo upload fails
+- Adds the display of an error message if the profile photo the user tries to upload has an unsupported format (supported format are .png and .jpeg)
+- Increases the "toast error message" timer to 1500ms
+- Creates the registration token for push notifications even if the "firebaseAuth" property is set to false
+- Create a registration token for push notifications by passing the "vapidKey" property
+- Fixes the bug: the item containing the teammates does not scroll on the request list page
+- Adds the "vapidKey" property to the env.sample, dashboard-config-template.json and dashboard-config.json files
+- Adds a check in the execution of the auto-login: the instance for receiving push notifications is not created if the token saved in the storage is the same as the one passed in the URL query string
+
 ### 2.2.24
 - Fixes the bug: in some IF statement firebaseAuth is checked if it is set to 'firebase'
 
