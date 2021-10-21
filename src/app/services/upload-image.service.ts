@@ -31,12 +31,12 @@ export class UploadImageService {
     this.translate.get('SorryTheFollowingErrorOccurredWhileUploadingTheImage')
       .subscribe((text: string) => {
         this.uploadImageErrorMsg = text;
-        console.log('[UPLOAD-IMAGE-FB.SERV] - getTranslations - uploadImageError ', text)
+        // console.log('[UPLOAD-IMAGE-FB.SERV] - getTranslations - uploadImageError ', text)
       });
     this.translate.get('SorryFileTypeNotSupported')
       .subscribe((text: string) => {
         this.fileNotSupportedMsg = text;
-        console.log('[UPLOAD-IMAGE-FB.SERV] - getTranslations - fileNotSupportedMsg ', text)
+        // console.log('[UPLOAD-IMAGE-FB.SERV] - getTranslations - fileNotSupportedMsg ', text)
       });
   }
 
