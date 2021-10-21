@@ -2,7 +2,7 @@
 # tiledesk-dashboard
 
 ### 2.2.25
-- Adds the ability to upload user profile photo in png format 
+- Adds the ability to upload user profile photo in .png format 
 - Adds the display of an error message in case the user profile photo upload fails
 - Adds the display of an error message if the profile photo the user tries to upload has an unsupported format (supported format are .png and .jpeg)
 - Increases the "toast error message" timer to 1500ms
