@@ -50,8 +50,8 @@ export class AutologinComponent implements OnInit {
 
 
     this.getJWTAndRouteParamsAndLogin();
-
-    if (appConfigService.getConfig().pushEngine === 'firebase' && appConfigService.getConfig().firebaseAuth === true) {
+    // && appConfigService.getConfig().firebaseAuth === true
+    if (appConfigService.getConfig().pushEngine === 'firebase') {
       this.checkIfFCMIsSupported();
     }
 
@@ -143,6 +143,18 @@ export class AutologinComponent implements OnInit {
       this.auth.publishSSOloggedUser();
 
       this.router.navigate([route]);
+
+      this.logger.log('[AUTOLOGIN] SSO - ssoLogin JWT before to get permsission ', JWT)
+      this.logger.log('[AUTOLOGIN] SSO - ssoLogin storedJWT before to get permsission ', storedJWT)
+      if (JWT !== storedJWT) {
+        if (this.appConfigService.getConfig().pushEngine === 'firebase') {
+          // !this.APP_IS_DEV_MODE && 
+
+          if (this.FCM_Supported === true) {
+            this.getPermission(auth_user._id);
+          }
+        }
+      }
 
     }, (error) => {
       this.logger.error('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser ', error);
@@ -257,9 +269,14 @@ export class AutologinComponent implements OnInit {
 
                 this.router.navigate([route]);
 
-                if (this.appConfigService.getConfig().pushEngine === 'firebase' && this.appConfigService.getConfig().firebaseAuth === true) {
-                  if (!this.APP_IS_DEV_MODE && this.FCM_Supported === true) {
-                    this.getPermission(auth_user._id);
+                this.logger.log('[AUTOLOGIN] SSO - ssoLoginWithCustomToken JWT before to get permsission ', JWT)
+                this.logger.log('[AUTOLOGIN] SSO - ssoLoginWithCustomToken storedJWT before to get permsission ', storedJWT)
+                if (JWT !== storedJWT) {
+                  // && this.appConfigService.getConfig().firebaseAuth === true
+                  if (this.appConfigService.getConfig().pushEngine === 'firebase') {
+                    if (!this.APP_IS_DEV_MODE && this.FCM_Supported === true) {
+                      this.getPermission(auth_user._id);
+                    }
                   }
                 }
 
@@ -295,7 +312,7 @@ export class AutologinComponent implements OnInit {
       Notification.requestPermission()
         .then(() => {
           this.logger.log('[AUTOLOGIN] SSO - LOGIN - 5B. >>>> getPermission Notification permission granted.');
-          return messaging.getToken()
+          return messaging.getToken({ vapidKey: this.appConfigService.getConfig().firebase.vapidKey })
         })
         .then(FCMtoken => {
           this.logger.log('[AUTOLOGIN] >>>> getPermission FCMtoken', FCMtoken)
