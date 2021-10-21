@@ -21,6 +21,7 @@
     "projectId": "${FIREBASE_PROJECT_ID}",
     "storageBucket": "${FIREBASE_STORAGEBUCKET}",
     "messagingSenderId": "${FIREBASE_MESSAGINGSENDERID}",
-    "appId": "${FIREBASE_APP_ID}"
+    "appId": "${FIREBASE_APP_ID}",
+    "vapidKey": "${FIREBASE_VAPID}"
   }
 }
