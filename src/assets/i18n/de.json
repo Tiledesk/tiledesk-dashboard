@@ -1934,5 +1934,7 @@
 	"InvalidJSON":"Ungültige JSON",
 	"EmailNotAvailable":"E-Mail nicht verfügbar",
 	"Project":"Projekt",
-	"YourProjects": "Ihre Projekte"
+	"YourProjects": "Ihre Projekte",
+    "SorryTheFollowingErrorOccurredWhileUploadingTheImage":"Beim Hochladen des Bildes ist leider folgender Fehler aufgetreten:",
+    "SorryFileTypeNotSupported": "Dateityp wird leider nicht unterstützt"
 }

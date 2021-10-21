@@ -1951,5 +1951,7 @@
    "InvalidJSON":"Invalid JSON",
    "EmailNotAvailable":"Email not available",
    "Project":"Project",
-   "YourProjects": "Your Projects"
+   "YourProjects": "Your Projects",
+   "SorryTheFollowingErrorOccurredWhileUploadingTheImage":"Sorry, the following error occurred while loading the image:",
+   "SorryFileTypeNotSupported": "Sorry, unsupported file type"
 }

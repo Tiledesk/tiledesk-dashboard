@@ -1932,5 +1932,7 @@
     "InvalidJSON":"JSON non valido",
     "EmailNotAvailable":"Email non disponibile",
     "Project":"Progetto",
-    "YourProjects": "I tuoi progetti"
+    "YourProjects": "I tuoi progetti",
+    "SorryTheFollowingErrorOccurredWhileUploadingTheImage":"Spiacenti, si è verificato il seguente errore durante il caricamento dell'immagine:",
+    "SorryFileTypeNotSupported": "Spiacenti, tipo di file non supportato"
 }
