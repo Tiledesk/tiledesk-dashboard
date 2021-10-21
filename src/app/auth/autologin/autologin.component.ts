@@ -50,7 +50,7 @@ export class AutologinComponent implements OnInit {
 
 
     this.getJWTAndRouteParamsAndLogin();
-
+    // && appConfigService.getConfig().firebaseAuth === true
     if (appConfigService.getConfig().pushEngine === 'firebase') {
       this.checkIfFCMIsSupported();
     }
@@ -68,17 +68,26 @@ export class AutologinComponent implements OnInit {
       const JWT = params.token
       this.logger.log('[AUTOLOGIN] SSO - autologin page params token ', JWT);
 
-
+      const storedUser = localStorage.getItem('user');
+      let storedJWT = ''
+      if (storedUser) {
+        const storedUserParsed = JSON.parse(storedUser)
+        this.logger.log('[AUTOLOGIN] SSO - autologin page stored User ', storedUserParsed);
+        storedJWT = storedUserParsed.token;
+        this.logger.log('[AUTOLOGIN] SSO - autologin page stored TOKEN ', storedJWT);
+      } else {
+        storedJWT = localStorage.getItem('chat_sv5__tiledeskToken')
+      }
 
       this.logger.log('[AUTOLOGIN] SSO - autologin getConfig firebaseAuth', this.appConfigService.getConfig().firebaseAuth)
-      if (this.appConfigService.getConfig().firebaseAuth === 'true') {
+      if (this.appConfigService.getConfig().firebaseAuth === true) {
 
         if (JWT && route) {
-          this.ssoLoginWithCustomToken(JWT, route)
+          this.ssoLoginWithCustomToken(JWT, route, storedJWT)
         }
       } else {
         if (JWT && route) {
-          this.ssoLogin(JWT, route)
+          this.ssoLogin(JWT, route, storedJWT)
         }
       }
     });
@@ -110,11 +119,17 @@ export class AutologinComponent implements OnInit {
     }
   }
 
-  ssoLogin(JWT, route) {
+  ssoLogin(JWT, route, storedJWT) {
     this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser route ', route);
     this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser JWT ', JWT);
+    this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser storedJWT ', storedJWT);
 
-    this.logout();
+    if (JWT !== storedJWT) {
+      this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser stored chat_sv5__tiledeskToken is equal to params JWT ');
+      this.logout();
+    } else {
+      this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser stored chat_sv5__tiledeskToken is NOT equal to params JWT ');
+    }
 
     this.sso.getCurrentAuthenticatedUser(JWT).subscribe(auth_user => {
       this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser RES ', auth_user);
@@ -128,6 +143,18 @@ export class AutologinComponent implements OnInit {
       this.auth.publishSSOloggedUser();
 
       this.router.navigate([route]);
+
+      this.logger.log('[AUTOLOGIN] SSO - ssoLogin JWT before to get permsission ', JWT)
+      this.logger.log('[AUTOLOGIN] SSO - ssoLogin storedJWT before to get permsission ', storedJWT)
+      if (JWT !== storedJWT) {
+        if (this.appConfigService.getConfig().pushEngine === 'firebase') {
+          // !this.APP_IS_DEV_MODE && 
+
+          if (this.FCM_Supported === true) {
+            this.getPermission(auth_user._id);
+          }
+        }
+      }
 
     }, (error) => {
       this.logger.error('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser ', error);
@@ -205,14 +232,19 @@ export class AutologinComponent implements OnInit {
   }
 
 
-  ssoLoginWithCustomToken(JWT, route) {
+  ssoLoginWithCustomToken(JWT, route, storedJWT) {
+    this.logger.log('[AUTOLOGIN] SSO - ssoLoginWithCustomToken getCurrentAuthenticatedUser route ', route);
+    this.logger.log('[AUTOLOGIN] SSO - ssoLoginWithCustomToken getCurrentAuthenticatedUser JWT ', JWT);
+    this.logger.log('[AUTOLOGIN] SSO - ssoLoginWithCustomToken getCurrentAuthenticatedUser storedJWT ', storedJWT);
     // -------------
     // @ Logout
     // -------------
-    this.logout();
-
-    this.logger.log('[AUTOLOGIN] SSO - ssoLoginWithCustomToken');
-
+    if (JWT !== storedJWT) {
+      this.logger.log('[AUTOLOGIN] SSO - ssoLoginWithCustomToken getCurrentAuthenticatedUser stored chat_sv5__tiledeskToken is equal to params JWT ');
+      this.logout();
+    } else {
+      this.logger.log('[AUTOLOGIN] SSO - ssoLoginWithCustomToken getCurrentAuthenticatedUser stored chat_sv5__tiledeskToken is NOT equal to params JWT ');
+    }
 
     this.sso.chat21CreateFirebaseCustomToken(JWT).subscribe(fbtoken => {
 
@@ -237,9 +269,16 @@ export class AutologinComponent implements OnInit {
 
                 this.router.navigate([route]);
 
-                if (this.appConfigService.getConfig().pushEngine === 'firebase') {
-                  if (!this.APP_IS_DEV_MODE && this.FCM_Supported === true) {
-                    this.getPermission(auth_user._id);
+                this.logger.log('[AUTOLOGIN] SSO - ssoLoginWithCustomToken JWT before to get permsission ', JWT)
+                this.logger.log('[AUTOLOGIN] SSO - ssoLoginWithCustomToken storedJWT before to get permsission ', storedJWT)
+                if (JWT !== storedJWT) {
+
+                  if (this.appConfigService.getConfig().pushEngine === 'firebase') {
+                    // !this.APP_IS_DEV_MODE && 
+
+                    if (this.FCM_Supported === true) {
+                      this.getPermission(auth_user._id);
+                    }
                   }
                 }
 
@@ -267,14 +306,16 @@ export class AutologinComponent implements OnInit {
   }
 
   getPermission(userid) {
-    this.logger.log('[AUTOLOGIN] SSO - LOGIN - 5. getPermission ')
-    const messaging = firebase.messaging();
+    this.logger.log('[AUTOLOGIN] SSO - LOGIN - 5. getPermission (test 3) ')
+
     if (firebase.messaging.isSupported()) {
+      const messaging = firebase
+        .messaging()
       // messaging.requestPermission()
       Notification.requestPermission()
         .then(() => {
           this.logger.log('[AUTOLOGIN] SSO - LOGIN - 5B. >>>> getPermission Notification permission granted.');
-          return messaging.getToken()
+          return messaging.getToken({ vapidKey: this.appConfigService.getConfig().firebase.vapidKey })
         })
         .then(FCMtoken => {
           this.logger.log('[AUTOLOGIN] >>>> getPermission FCMtoken', FCMtoken)
