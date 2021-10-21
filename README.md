@@ -132,7 +132,7 @@ wsUrl: 'ws://' + window.location.hostname + '/ws/',
 
 	firebase: {
 
-		apiKey: "123ABC..",
+		apiKey: "123ABC...",
 
 		authDomain: "XYZ.firebaseapp.com",
 
@@ -142,7 +142,11 @@ wsUrl: 'ws://' + window.location.hostname + '/ws/',
 
 		storageBucket: "XYZ.appspot.com",
 
-		messagingSenderId: "123456"
+		messagingSenderId: "123456123456",
+
+		appId: '123ABC...',
+
+      	vapidKey: '123ABC...'
 
 	}
 
