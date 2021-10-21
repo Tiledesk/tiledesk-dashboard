@@ -462,22 +462,14 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
 
 
-  // -------------------------------------------------------
-  // Used for the old scroll div (now is set to display none)
-  // -------------------------------------------------------
-  public scrollRight(): void {
-    this.teamContent.nativeElement.scrollTo({ left: (this.teamContent.nativeElement.scrollLeft + 150), behavior: 'smooth' });
-  }
-  public scrollLeft(): void {
-    this.teamContent.nativeElement.scrollTo({ left: (this.teamContent.nativeElement.scrollLeft - 150), behavior: 'smooth' });
-  }
+ 
 
   public scrollRightTeammates(): void {
-    this.widgetsContent.nativeElement.scrollTo({ left: (this.teamContent.nativeElement.scrollLeft + 150), behavior: 'smooth' });
+    this.widgetsContent.nativeElement.scrollTo({ left: (this.widgetsContent.nativeElement.scrollLeft + 150), behavior: 'smooth' });
   }
 
   public scrollLeftTeammates(): void {
-    this.widgetsContent.nativeElement.scrollTo({ left: (this.teamContent.nativeElement.scrollLeft - 150), behavior: 'smooth' });
+    this.widgetsContent.nativeElement.scrollTo({ left: (this.widgetsContent.nativeElement.scrollLeft - 150), behavior: 'smooth' });
   }
 
 
