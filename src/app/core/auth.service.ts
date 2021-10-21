@@ -19,7 +19,6 @@ import 'firebase/database'
 import { AppConfigService } from '../services/app-config.service';
 import { WebSocketJs } from '../services/websocket/websocket-js';
 import { LoggerService } from '../services/logger/logger.service';
-import { runInThisContext } from 'vm';
 // import { SsoService } from './sso.service';
 
 // start SUPER USER
@@ -115,7 +114,9 @@ export class AuthService {
     this.checkIfExistStoredUserAndPublish();
     this.checkStoredProjectAndPublishIfPublishedProjectIsNull();
 
+    this.logger.log('[AUTH-SERV] appConfigService.getConfig().pushEngine 1 ', appConfigService.getConfig().pushEngine);
     if (appConfigService.getConfig().pushEngine === 'firebase') {
+      this.logger.log('[AUTH-SERV] appConfigService.getConfig().pushEngine 2 ', appConfigService.getConfig().pushEngine);
       this.checkIfFCMIsSupported();
     }
 
@@ -510,11 +511,8 @@ export class AuthService {
         ///////////////////
         this.logger.log('[AUH-SERV] SSO - LOGIN 1. POST DATA ', jsonRes);
         if (jsonRes['success'] === true) {
-          // ----------------------------------------------------------------------------------------------------------------------------------------------
-          // Run chat21CreateFirebaseCustomToken() and signInWithCustomToken() if firebaseAuth === true - RUN getPermission() IF pushEngine  === 'firebase'
-          // ----------------------------------------------------------------------------------------------------------------------------------------------
-
-          this.logger.log('[AUTH-SERV] SSO - LOGIN getConfig firebaseAuth', this.appConfigService.getConfig().firebaseAuth)
+          
+          this.logger.log('[AUTH-SERV] SSO - LOGIN getConfig firebaseAuth', this.appConfigService.getConfig().firebaseAuth);
 
           if (this.appConfigService.getConfig().firebaseAuth === true) {
             this.logger.log('[AUTH-SERV] SSO - LOGIN - WORKS WITH FIREBASE ')
@@ -535,11 +533,11 @@ export class AuthService {
                     this.logger.log('[AUTH-SERV] SSO - LOGIN - 4. FIREBASE CUSTOM AUTH DATA ', firebase_user);
 
                     if (this.appConfigService.getConfig().pushEngine === 'firebase') {
-                      if (!this.APP_IS_DEV_MODE && this.FCM_Supported === true) {
-                        this.getPermission();
-                      } else {
-                        this.logger.log('[AUTH-SERV] SSO - Unable to get permission FCM_Supported because of ', this.FCM_Supported , 'but APP_IS_DEV_MODE ', this.APP_IS_DEV_MODE);
-                      }
+                      // if (!this.APP_IS_DEV_MODE && this.FCM_Supported === true) {
+                      this.getPermission();
+                      // } else {
+                      //   this.logger.log('[AUTH-SERV] SSO - Unable to get permission FCM_Supported because of ', this.FCM_Supported , 'but APP_IS_DEV_MODE ', this.APP_IS_DEV_MODE);
+                      // }
                     }
 
                     callback(null, user);
@@ -562,6 +560,10 @@ export class AuthService {
           } else {
             this.logger.log('[AUTH-SERV] SSO - LOGIN - FIREBASE- AUTH false - !!!! SIGNIN WITHOUT FIREBASE CUSTOM TOKEN ')
 
+            if (this.appConfigService.getConfig().pushEngine === 'firebase') {
+              this.getPermission();
+            }
+
             callback(null, user);
 
           } // ./end condition for X FIREBASE- AUTH
@@ -579,13 +581,15 @@ export class AuthService {
 
   getPermission() {
     this.logger.log('[AUTH-SERV] SSO - LOGIN - 5. getPermission ')
-    const messaging = firebase.messaging();
+
     if (firebase.messaging.isSupported()) {
+      const messaging = firebase.messaging();
       // messaging.requestPermission()
       Notification.requestPermission()
-        .then(() => {
+        .then((permission) => {
           this.logger.log('[AUTH-SERV] SSO - LOGIN - 5B. >>>> getPermission Notification permission granted.');
-          return messaging.getToken()
+          this.logger.log('[AUTH-SERV] SSO - LOGIN - 5B. - vapidKey >>>> ', this.appConfigService.getConfig().firebase.vapidKey);
+          return messaging.getToken({ vapidKey: this.appConfigService.getConfig().firebase.vapidKey })
         })
         .then(FCMtoken => {
           this.logger.log('[AUTH-SERV] >>>> getPermission FCMtoken', FCMtoken)
@@ -596,6 +600,8 @@ export class AuthService {
         .catch((err) => {
           this.logger.error('[AUTH-SERV] SSO - LOGIN - 5C. >>>> getPermission Unable to get permission to notify.', err);
         });
+    } else {
+      this.logger.log('[AUTH-SERV] SSO - LOGIN - 5F. FCM NOT SUPPORTED');
     }
   }
 
@@ -795,8 +801,7 @@ export class AuthService {
 
   signOut(calledby: string) {
     this.logger.log('[AUTH-SERV] Signout calledby +++++ ', calledby)
-    this.logger.log('[AUTH-SERV] Signout this.router.url +++++ ', this.router.url)
-    const current_url = this.router.url
+
     // if (this.router.url.indexOf("request-for-panel") > -1) {
     //   this.logger.log('[AUTH-SERV] Signout current url contains request-for-panel ')
     // }
@@ -810,10 +815,11 @@ export class AuthService {
     localStorage.removeItem('role')
 
     // if (calledby !== 'autologin') {
-
+    this.logger.log('[AUTH-SERV] Signout this.router.url +++++ ', this.router.url)
+    const current_url = this.router.url
     if (current_url.indexOf("request-for-panel") === -1) {
       this.logger.log('[AUTH-SERV] Signout current url  NOT contains request-for-panel ')
-      
+
       const chat_sv5__currentUser = localStorage.getItem('chat_sv5__currentUser');
       this.logger.log('[AUTH-SERV] SIGNOUT - STORED chat_sv5__currentUser : ', chat_sv5__currentUser);
       if (chat_sv5__currentUser) {
@@ -839,8 +845,9 @@ export class AuthService {
     // this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK
     this.logger.log('[AUTH-SERV] signOut getConfig pushEngine', this.appConfigService.getConfig().pushEngine)
     this.logger.log('[AUTH-SERV] signOut getConfig firebaseAuth', this.appConfigService.getConfig().firebaseAuth)
-  
-    if (this.appConfigService.getConfig().pushEngine === 'firebase' && this.appConfigService.getConfig().firebaseAuth === true) {
+    
+    // && this.appConfigService.getConfig().firebaseAuth === true
+    if (this.appConfigService.getConfig().pushEngine === 'firebase' ) {
       this.logger.log('[AUTH-SERV] signOut pushEngine FIREBASE');
       if (!this.APP_IS_DEV_MODE && this.FCM_Supported === true) {
 
@@ -850,7 +857,7 @@ export class AuthService {
           this.logger.log('[AUTH-SERV] signOut here 2 ');
 
           // if (this.appConfigService.getConfig().firebaseAuth === true) {
-            this.removeInstanceIdAndSignout(calledby);
+          this.removeInstanceIdAndSignout(calledby, this.FCMcurrentToken, this.userId);
           // }
 
         } else {
@@ -858,7 +865,7 @@ export class AuthService {
           // use case: FCMcurrentToken is undefined
           // (e.g. the user refresh the page or not is FCMcurrentToken created at the login)
           const messaging = firebase.messaging();
-          messaging.getToken()
+          messaging.getToken({ vapidKey: this.appConfigService.getConfig().firebase.vapidKey })
             .then(FCMtoken => {
               this.logger.log('[AUTH-SERV] signOut >>>> getToken FCMtoken', FCMtoken)
               this.FCMcurrentToken = FCMtoken;
@@ -869,77 +876,67 @@ export class AuthService {
                 this.userId = storedUserObj._id;
               }
               // if (this.appConfigService.getConfig().firebaseAuth === true) {
-                this.removeInstanceIdAndSignout(calledby);
+              this.removeInstanceIdAndSignout(calledby, this.FCMcurrentToken, this.userId);
               // }
 
             }).catch((err) => {
-              // if (this.appConfigService.getConfig().firebaseAuth === true) {
-              this.logger.log('[AUTH-SERV] signOut >>>> getToken err: ', err);
-              
+              this.logger.error('[AUTH-SERV] signOut >>>> getToken err: ', err);
+              if (this.appConfigService.getConfig().firebaseAuth === true) {
                 this.firebaseSignout(calledby);
-                // this.signoutNoFirebase(calledby)
-              // } 
-              // else {
-              //   this.signoutNoFirebase(calledby)
-              // }
+              } else {
+                this.signoutNoFirebase(calledby)
+              }
 
             });
         }
       } else {
-        // if (this.appConfigService.getConfig().firebaseAuth === true) {
+        if (this.appConfigService.getConfig().firebaseAuth === true) {
           this.firebaseSignout(calledby);
-          // this.signoutNoFirebase(calledby)
-        // } 
-        // else {
-        //   this.signoutNoFirebase(calledby)
-        // }
+        } else {
+          this.signoutNoFirebase(calledby)
+        }
       }
     } else {
       this.logger.log('[AUTH-SERV] signOut here 4 ');
-      // if (this.appConfigService.getConfig().firebaseAuth === true) {
-        // this.firebaseSignout(calledby);
+      if (this.appConfigService.getConfig().firebaseAuth === true) {
+        this.firebaseSignout(calledby);
+      } else {
         this.signoutNoFirebase(calledby)
-      // } else {
-      //   this.signoutNoFirebase(calledby)
-      // }
+      }
     }
   }
 
 
-  removeInstanceIdAndSignout(calledby) {
-    this.logger.log('[AUTH-SERV] - removeInstanceIdAndSignout calledby ', calledby)
-    this.logger.log('[AUTH-SERV] - removeInstanceIdAndSignout - FCM Token: ', this.FCMcurrentToken);
-    this.logger.log('[AUTH-SERV] - removeInstanceIdAndSignout - USER ID: ', this.userId);
+  removeInstanceIdAndSignout(calledby, FCMcurrentToken, userId ) {
+    console.log('[AUTH-SERV] - removeInstanceIdAndSignout calledby ', calledby)
+    console.log('[AUTH-SERV] - removeInstanceIdAndSignout - FCM Token: ', FCMcurrentToken);
+    console.log('[AUTH-SERV] - removeInstanceIdAndSignout - USER ID: ', userId);
     // this.connectionsRefinstancesId = this.urlNodeFirebase+"/users/"+userUid+"/instances/";
     const urlNodeFirebase = '/apps/tilechat'
-    const connectionsRefinstancesId = urlNodeFirebase + '/users/' + this.userId + '/instances/';
+    const connectionsRefinstancesId = urlNodeFirebase + '/users/' + userId + '/instances/';
 
     let connectionsRefURL = '';
     if (connectionsRefinstancesId) {
-      connectionsRefURL = connectionsRefinstancesId + '/' + this.FCMcurrentToken;
+      connectionsRefURL = connectionsRefinstancesId + '/' + FCMcurrentToken;
       const connectionsRef = firebase.database().ref().child(connectionsRefURL);
       const that = this;
       connectionsRef.remove()
         .then(function () {
 
-          // if (this.appConfigService.getConfig().firebaseAuth === true) {
-            this.logger.log('[AUTH-SERV] signOut here 5 ');
+          if (that.appConfigService.getConfig().firebaseAuth === true) {
             that.firebaseSignout(calledby);
-          // } 
-          // else {
-          //   that.signoutNoFirebase(calledby)
-          // }
+          } else {
+            that.signoutNoFirebase(calledby)
+          }
 
         }).catch((err) => {
           that.logger.error('[AUTH-SERV] - removeInstanceId - err: ', err);
 
-          // if (this.appConfigService.getConfig().firebaseAuth === true) {
+          if (that.appConfigService.getConfig().firebaseAuth === true) {
             that.firebaseSignout(calledby);
-          // } 
-          
-          // else {
-          //   that.signoutNoFirebase(calledby)
-          // }
+          } else {
+            that.signoutNoFirebase(calledby)
+          }
         });
     }
   }
@@ -949,7 +946,7 @@ export class AuthService {
     firebase.auth().signOut()
       .then(function () {
         that.logger.log('[AUTH-SERV] firebaseSignout SIGN-OUT OK');
-        that.widgetReInit()
+        // that.widgetReInit()
 
         if (calledby !== 'autologin') {
           that.router.navigate(['/login']);
@@ -965,8 +962,9 @@ export class AuthService {
   }
 
   signoutNoFirebase(calledby) {
-   this.logger.log('[AUTH-SERV] signoutNoFirebase called By ', calledby);
+    this.logger.log('[AUTH-SERV] signoutNoFirebase called By (1)', calledby);
     if (calledby !== 'autologin') {
+      this.logger.log('[AUTH-SERV] signoutNoFirebase called By (2)', calledby);
       this.router.navigate(['/login']);
     }
   }
