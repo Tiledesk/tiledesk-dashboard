@@ -335,7 +335,7 @@ export class NotifyService {
 
     }, {
       type: type[color],
-      timer: 500,
+      timer: 1500,
       // delay: 100,
       placement: {
         from: 'bottom',
