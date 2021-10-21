@@ -301,13 +301,13 @@ export class SigninComponent implements OnInit {
          self.logger.log('[SIGN-IN] SetTiledeskWidgetUserSignin (Signin) - userEmail', user.email);
          self.logger.log('[SIGN-IN] SetTiledeskWidgetUserSignin (Signin) - userId', user._id);
 
-        setTimeout(() => {
-          try {
-            window['setTiledeskWidgetUser'](user.firstname + ' ' + user.lastname, user.email, user._id);
-          } catch (err) {
-            self.logger.log('[SIGN-IN] SetTiledeskWidgetUserSignin (Signin) error', err);
-          }
-        }, 2000);
+        // setTimeout(() => {
+        //   try {
+        //     window['setTiledeskWidgetUser'](user.firstname + ' ' + user.lastname, user.email, user._id);
+        //   } catch (err) {
+        //     self.logger.log('[SIGN-IN] SetTiledeskWidgetUserSignin (Signin) error', err);
+        //   }
+        // }, 2000);
 
 
       } else {
