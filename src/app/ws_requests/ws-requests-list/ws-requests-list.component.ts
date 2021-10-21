@@ -32,6 +32,7 @@ import { ProjectUser } from '../../models/project-user';
 import { ProjectService } from '../../services/project.service';
 import { ProjectPlanService } from '../../services/project-plan.service';
 import { LoggerService } from '../../services/logger/logger.service';
+
 const swal = require('sweetalert');
 // import {Observable,of, empty} from 'rxjs'
 
@@ -465,19 +466,21 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   // -------------------------------------------------------
   // Used for the old scroll div (now is set to display none)
   // -------------------------------------------------------
-  public scrollRight(): void {
-    this.teamContent.nativeElement.scrollTo({ left: (this.teamContent.nativeElement.scrollLeft + 150), behavior: 'smooth' });
-  }
-  public scrollLeft(): void {
-    this.teamContent.nativeElement.scrollTo({ left: (this.teamContent.nativeElement.scrollLeft - 150), behavior: 'smooth' });
-  }
+  // public scrollRight(): void {
+  //   this.teamContent.nativeElement.scrollTo({ left: (this.teamContent.nativeElement.scrollLeft + 150), behavior: 'smooth' });
+  // }
+  // public scrollLeft(): void {
+  //   this.teamContent.nativeElement.scrollTo({ left: (this.teamContent.nativeElement.scrollLeft - 150), behavior: 'smooth' });
+  // }
 
   public scrollRightTeammates(): void {
-    this.widgetsContent.nativeElement.scrollTo({ left: (this.teamContent.nativeElement.scrollLeft + 150), behavior: 'smooth' });
+    console.log('[WS-REQUESTS-LIST] scrollRightTeammates widgetsContent ', this.widgetsContent)
+    this.widgetsContent.nativeElement.scrollTo({ left: (this.widgetsContent.nativeElement.scrollLeft + 150), behavior: 'smooth' });
   }
 
   public scrollLeftTeammates(): void {
-    this.widgetsContent.nativeElement.scrollTo({ left: (this.teamContent.nativeElement.scrollLeft - 150), behavior: 'smooth' });
+    console.log('[WS-REQUESTS-LIST] scrollRightTeammates widgetsContent ', this.widgetsContent)
+    this.widgetsContent.nativeElement.scrollTo({ left: (this.widgetsContent.nativeElement.scrollLeft - 150), behavior: 'smooth' });
   }
 
 
