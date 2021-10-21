@@ -69,7 +69,8 @@
                             <div class="col-sm-10">
                                 <div class="card-avatar" style="padding-bottom:15px; min-height: 95px;">
                                     <img *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true"
-                                        class="user-img user-profile-image" [src]="getUserProfileImage()" onerror="this.src='assets/img/no_image_user.png'"/>
+                                        class="user-img user-profile-image" [src]="getUserProfileImage()"
+                                        onerror="this.src='assets/img/no_image_user.png'" />
 
                                     <img *ngIf="userProfileImageExist === false && userImageHasBeenUploaded !== true"
                                         class="user-img user-profile-image" src="assets/img/no_image_user.png" />
@@ -77,7 +78,7 @@
                                     <!-- --------------------------------------------------------------------- -->
                                     <!-- test -->
                                     <!-- --------------------------------------------------------------------- -->
-                                   
+
                                     <!-- <img *ngIf="userImageHasBeenUploaded === true"
                                         class="user-img user-profile-image" [src]="getUserProfileImage()"
                                         onerror="this.src='assets/img/no_image_user.png'" />
@@ -92,7 +93,7 @@
 
                                     <input #fileInputUserProfileImage class="inputfile" name="teammate-image-profile"
                                         id="teammate-image-profile" type="file" (change)="upload($event)"
-                                        accept=".jpg" />
+                                        accept=".jpg, .JPEG, .png" />
                                     <label class="btn btn-white" for="teammate-image-profile"
                                         style="padding-left:15px; padding-right:15px; text-transform: none; color: #7695a5">
                                         <span *ngIf="!showSpinnerInUploadImageBtn">
