@@ -22,7 +22,8 @@ export const environment = {
       projectId: 'CHANGEIT',
       storageBucket: 'CHANGEIT',
       messagingSenderId: 'CHANGEIT',
-      appId: 'CHANGEIT'
+      appId: 'CHANGEIT',
+      vapidKey: 'CHANGEIT'
   }
 };
 
