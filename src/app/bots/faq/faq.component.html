@@ -121,7 +121,7 @@
               <!-- ------------------------------------------------------------------------------------------- -->
               <!--  (for external & native) -->
               <!-- ------------------------------------------------------------------------------------------- -->
-              <div *ngIf="botType !== 'identity'" class="row" style="margin-bottom: 18px;">
+              <div *ngIf="botType !== 'identity'" class="row" style="margin-bottom: 8px;">
                 <label class="col-sm-2 custom-label">
                   {{ "BotsAddEditPage.Type" | translate }}
                 </label>
@@ -135,7 +135,7 @@
               <!-- ------------------------------------------------------------------------------------------- -->
               <!-- Bot name (for external & native) -->
               <!-- ------------------------------------------------------------------------------------------- -->
-              <div class="row">
+              <div class="row" style="margin-bottom: 8px;">
                 <label class="col-sm-2 custom-label">
                   {{ "BotsAddEditPage.BotName" | translate }}
                 </label>
@@ -144,6 +144,24 @@
                 </div>
               </div>
 
+              <!-- ------------------------------------------------------------------------------------------- -->
+              <!-- Bot language (only for native, i.e. Resolution bot) -->
+              <!-- ------------------------------------------------------------------------------------------- -->
+              <div *ngIf="botType === 'native'" class="row" style="margin-bottom: 8px;">
+                <!-- style="padding-top: 0px; line-height: 1.2;" -->
+                <label class="col-sm-2 custom-label">
+                  {{ "ResolutionBotLanguage" | translate }}
+                </label>
+                <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+                  <!-- <ng-select id="bot_default_language" disabled
+                    [(ngModel)]="botDefaultSelectedLang" [items]="botDefaultLanguages" bindLabel="name"
+                    placeholder="{{ 'ChooseALanguage' | translate }}"
+                    (change)="onSelectBotDefaultlang(botDefaultSelectedLang)">
+                  </ng-select> -->
+
+                  <input id="bot-default-selected-lang" name="bot-default-selected-lang" [(ngModel)]="botDefaultSelectedLang" class="input" type="text" disabled>
+                </div>
+              </div>
             </section>
 
 
@@ -195,7 +213,7 @@
             <!-- ------------------------------------------------------------------------------------------- -->
             <!--  Dialogflow bot data -->
             <!-- ------------------------------------------------------------------------------------------- -->
-            <section class="dialogflow-bot-data-section" *ngIf="botType === 'dialogflow'">
+            <section id="dialogflow-bot-data-section" class="dialogflow-bot-data-section" *ngIf="botType === 'dialogflow'">
 
               <!-- ------------------------------------------------------------------------------------------- -->
               <!--  Dialogflow bot - type -->

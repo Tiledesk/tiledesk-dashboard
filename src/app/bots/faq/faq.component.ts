@@ -34,6 +34,10 @@ const swal = require('sweetalert');
 export class FaqComponent extends BotsBaseComponent implements OnInit {
   @ViewChild('editbotbtn') private elementRef: ElementRef;
 
+
+
+
+
   faq: Faq[];
   question: string;
   answer: string;
@@ -149,7 +153,9 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   botHasBeenAssociatedWithDept: string;
   DEPTS_HAVE_BOT_BUT_NOT_THIS: boolean
 
-
+  botDefaultSelectedLangCode: string
+  botDefaultSelectedLang: any
+  language: string;
 
   @ViewChild('fileInputBotProfileImage') fileInputBotProfileImage: any;
 
@@ -210,7 +216,13 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
   }
 
-
+  onSelectBotDefaultlang(selectedDefaultBotLang) {
+    console.log('onSelectBotDefaultlang > selectedDefaultBotLang ', selectedDefaultBotLang)
+    if (selectedDefaultBotLang) {
+      this.botDefaultSelectedLangCode = selectedDefaultBotLang.code;
+      console.log('onSelectBotDefaultlang > selectedDefaultBotLang > code', this.botDefaultSelectedLangCode)
+    }
+  }
 
 
 
@@ -348,8 +360,6 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   }
 
 
-
-
   getDialogFlowBotData(dlgflwbotid: string) {
     this.faqKbService.getDialogflowBotCredetial(dlgflwbotid).subscribe((res) => {
       this.logger.log('[FAQ-COMP] getDialogFlowBotData - RES ', res);
@@ -468,7 +478,6 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
                   newFillColour = 'rgba(98, 100, 167, 0.6) '
                 }
               } else {
-
                 newInitials = 'N/A.';
                 newFillColour = '#eeeeee';
               }
@@ -482,8 +491,6 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
               // if (dept.description) {
               //   let stripHere = 20;
               //   dept['truncated_desc'] = dept.description.substring(0, stripHere) + '...';
-
-
               // }
               const index = this.DEPTS_BOT_IS_ASSOCIATED_WITH_ARRAY.findIndex((d) => d._id === dept._id);
 
@@ -515,7 +522,6 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
         this.logger.log('[FAQ-COMP] ---> Current bot is found in DEPTS_BOT_IS_ASSOCIATED_WITH_ARRAY', this.DEPTS_BOT_IS_ASSOCIATED_WITH_ARRAY);
 
-
         const hasFoundBotIn = this.DEPTS_BOT_IS_ASSOCIATED_WITH_ARRAY.filter((obj: any) => {
           return obj.id_bot === this.id_faq_kb;
         });
@@ -529,7 +535,6 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
         }
 
         this.logger.log('[FAQ-COMP] - DEPT - DEPTS WITHOUT BOT', this.depts_without_bot_array);
-
 
         this.COUNT_DEPTS_BOT_IS_ASSOCIATED_WITH = count;
         this.logger.log('[FAQ-COMP] - DEPT - COUNT_DEPTS_BOT_IS_ASSOCIATED_WITH', this.COUNT_DEPTS_BOT_IS_ASSOCIATED_WITH);
@@ -593,7 +598,6 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
         this.getDeptsByProjectId()
         this.depts_without_bot_array = []
       })
-
   }
 
   // ---------------------------------------------------
@@ -811,10 +815,10 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
         this.prjct_profile_name = this.buildPlanName(projectProfileData.profile_name, this.browserLang, this.prjct_profile_type);
       }
     }, error => {
-    
+
       this.logger.error('[FAQ-COMP] - getProjectPlan - ERROR', error);
     }, () => {
-     
+
       this.logger.log('[FAQ-COMP] - getProjectPlan - COMPLETE')
 
     });
@@ -927,6 +931,13 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
       this.webhookUrl = faqkb.webhook_url
       this.logger.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID - webhookUrl ', this.webhookUrl);
 
+      // for the comnobobox "select bot language" -now not used because the user cannot change the language of the bot he chose during creation
+      // this.botDefaultSelectedLang = this.botDefaultLanguages[this.getIndexOfbotDefaultLanguages(faqkb.language)]
+      // this.logger.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID  (ONLY FOR NATIVE BOT i.e. Resolution) LANGUAGE ', this.botDefaultSelectedLang);
+
+      this.botDefaultSelectedLang = this.botDefaultLanguages[this.getIndexOfbotDefaultLanguages(faqkb.language)].name
+      this.logger.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID  (ONLY FOR NATIVE BOT i.e. Resolution) LANGUAGE ', this.botDefaultSelectedLang);
+
 
       if (faqkb.webhook_enabled) {
         this.validateUrl(this.webhookUrl)
@@ -987,75 +998,76 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     if (this.botType === 'native') {
       // the type 'native' needs to be changed into 'internal' for the service
       _botType = 'internal'
+      this.language = this.botDefaultSelectedLangCode
     } else {
 
       _botType = this.botType
     }
-   
-    this.faqKbService.updateFaqKb(this.id_faq_kb, this.faqKb_name, this.faqKbUrlToUpdate, _botType, this.faqKb_description, this.webhook_is_enabled, this.webhookUrl)
+
+    this.faqKbService.updateFaqKb(this.id_faq_kb, this.faqKb_name, this.faqKbUrlToUpdate, _botType, this.faqKb_description, this.webhook_is_enabled, this.webhookUrl, this.language)
       .subscribe((faqKb) => {
         this.logger.log('[FAQ-COMP] EDIT BOT - FAQ KB UPDATED ', faqKb);
       }, (error) => {
-          this.logger.error('[FAQ-COMP] EDIT BOT -  ERROR ', error);
+        this.logger.error('[FAQ-COMP] EDIT BOT -  ERROR ', error);
 
-          if (this.botType !== 'dialogflow') {
-            // =========== NOTIFY ERROR ===========
-            this.notify.showWidgetStyleUpdateNotification(this.updateBotError, 4, 'report_problem');
-          }
-        }, () => {
-          this.logger.log('[FAQ-COMP] EDIT BOT - * COMPLETE *');
-          if (this.botType !== 'dialogflow') {
-            // =========== NOTIFY SUCCESS===========
-            this.notify.showWidgetStyleUpdateNotification(this.updateBotSuccess, 2, 'done');
-          }
+        if (this.botType !== 'dialogflow') {
+          // =========== NOTIFY ERROR ===========
+          this.notify.showWidgetStyleUpdateNotification(this.updateBotError, 4, 'report_problem');
+        }
+      }, () => {
+        this.logger.log('[FAQ-COMP] EDIT BOT - * COMPLETE *');
+        if (this.botType !== 'dialogflow') {
+          // =========== NOTIFY SUCCESS===========
+          this.notify.showWidgetStyleUpdateNotification(this.updateBotSuccess, 2, 'done');
+        }
 
-          if (this.botType === 'dialogflow') {
+        if (this.botType === 'dialogflow') {
 
-            // --------------------------------------------------------------------------------
-            // Update dialogflow bot
-            // --------------------------------------------------------------------------------
-            this.logger.log(
-              '[FAQ-COMP] Update BOT dialogflow »»»»»»»»»»» Bot Type: ', this.botType,
-              ' - uploadedFile: ', this.uploadedFile,
-              ' - lang Code ', this.dlgflwSelectedLangCode,
-              ' - kbs (knowledgeBaseID) ', this.dlgflwKnowledgeBaseID);
+          // --------------------------------------------------------------------------------
+          // Update dialogflow bot
+          // --------------------------------------------------------------------------------
+          this.logger.log(
+            '[FAQ-COMP] Update BOT dialogflow »»»»»»»»»»» Bot Type: ', this.botType,
+            ' - uploadedFile: ', this.uploadedFile,
+            ' - lang Code ', this.dlgflwSelectedLangCode,
+            ' - kbs (knowledgeBaseID) ', this.dlgflwKnowledgeBaseID);
 
 
-            const formData = new FormData();
+          const formData = new FormData();
 
-            // --------------------------------------------------------------------------
-            // formData.append language
-            // --------------------------------------------------------------------------
-            formData.append('language', this.dlgflwSelectedLangCode);
+          // --------------------------------------------------------------------------
+          // formData.append language
+          // --------------------------------------------------------------------------
+          formData.append('language', this.dlgflwSelectedLangCode);
 
-            // --------------------------------------------------------------------------
-            // formData.append Knowledge Base ID
-            // --------------------------------------------------------------------------
-            if (this.dlgflwKnowledgeBaseID !== undefined) {
-              if (this.dlgflwKnowledgeBaseID.length > 0) {
-                this.logger.log('[FAQ-COMP] Update BOT (dialogflow) »»»»»»»»» - dlgflwKnowledgeBaseID.length ', this.dlgflwKnowledgeBaseID.length);
-                formData.append('kbs', this.dlgflwKnowledgeBaseID.trim());
-              } else {
-                this.logger.log('[FAQ-COMP] Update BOT (dialogflow) »»»»»»»»» - dlgflwKnowledgeBaseID.length ', this.dlgflwKnowledgeBaseID.length);
-                formData.append('kbs', "");
-              }
-
-            } else if (this.dlgflwKnowledgeBaseID === undefined || this.dlgflwKnowledgeBaseID === 'undefined' || this.dlgflwKnowledgeBaseID === null || this.dlgflwKnowledgeBaseID === 'null') {
-              this.logger.log('[FAQ-COMP] Update BOT (dialogflow) »»»»»»»»» - dlgflwKnowledgeBaseID ', this.dlgflwKnowledgeBaseID);
+          // --------------------------------------------------------------------------
+          // formData.append Knowledge Base ID
+          // --------------------------------------------------------------------------
+          if (this.dlgflwKnowledgeBaseID !== undefined) {
+            if (this.dlgflwKnowledgeBaseID.length > 0) {
+              this.logger.log('[FAQ-COMP] Update BOT (dialogflow) »»»»»»»»» - dlgflwKnowledgeBaseID.length ', this.dlgflwKnowledgeBaseID.length);
+              formData.append('kbs', this.dlgflwKnowledgeBaseID.trim());
+            } else {
+              this.logger.log('[FAQ-COMP] Update BOT (dialogflow) »»»»»»»»» - dlgflwKnowledgeBaseID.length ', this.dlgflwKnowledgeBaseID.length);
               formData.append('kbs', "");
             }
 
-            // --------------------------------------------------------------------------
-            // formData.append file
-            // --------------------------------------------------------------------------
-            if (this.uploadedFile !== undefined) {
-              formData.append('file', this.uploadedFile, this.uploadedFile.name);
-            }
-            this.logger.log('[FAQ-COMP] Create dialogflow BOT FORM DATA ', formData)
-            this.uploaddialogflowBotCredential(this.id_faq_kb, formData);
-          
+          } else if (this.dlgflwKnowledgeBaseID === undefined || this.dlgflwKnowledgeBaseID === 'undefined' || this.dlgflwKnowledgeBaseID === null || this.dlgflwKnowledgeBaseID === 'null') {
+            this.logger.log('[FAQ-COMP] Update BOT (dialogflow) »»»»»»»»» - dlgflwKnowledgeBaseID ', this.dlgflwKnowledgeBaseID);
+            formData.append('kbs', "");
           }
-        });
+
+          // --------------------------------------------------------------------------
+          // formData.append file
+          // --------------------------------------------------------------------------
+          if (this.uploadedFile !== undefined) {
+            formData.append('file', this.uploadedFile, this.uploadedFile.name);
+          }
+          this.logger.log('[FAQ-COMP] Create dialogflow BOT FORM DATA ', formData)
+          this.uploaddialogflowBotCredential(this.id_faq_kb, formData);
+
+        }
+      });
   }
 
   uploaddialogflowBotCredential(bot_Id, formData) {
