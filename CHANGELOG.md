@@ -1,6 +1,12 @@
 
 # tiledesk-dashboard
 
+### 2.2.26
+- Adds the ability to select the language for the "Resolution" bot type
+- Adds the ability to select the priority level of the ticket during its creation
+- Displays the priority level of a ticket or of a conversation in the conversations list
+- Adds the ability, on the conversation detail page, to set a priority level for a conversation
+
 ### 2.2.25
 - Adds the ability to upload user profile photo in .png format 
 - Adds the display of an error message in case the user profile photo upload fails
