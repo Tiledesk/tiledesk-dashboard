@@ -1,6 +1,10 @@
 
 # tiledesk-dashboard
 
+### 2.2.15.3
+- Fixes the bug: "Chat with" on the conversation details page and in the teammates list does not work
+- Fixed bug: "Open chat" on conversation detail page and conversation list page doesn't work
+
 ### 2.2.15.2
 - Updates the "Latest Updates" section of the homepage
 - The "chat" menu item redirects to the new chat!
