@@ -802,7 +802,11 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
   chatWithAgent() {
     this.logger.log("[CONTACTS-DTLS] CHAT WITH AGENT > CONTACT: ", this.contact_details);
 
-    const url = this.CHAT_BASE_URL + '?' + 'recipient=' + this.contact_details._id + '&recipientFullname=' + this.contact_details.fullname;
+    // const url = this.CHAT_BASE_URL + '?' + 'recipient=' + this.contact_details._id + '&recipientFullname=' + this.contact_details.fullname;
+    // this.logger.log("[CONTACTS-DTLS] - CHAT URL ", url);
+    // window.open(url, '_blank');
+
+    const url = this.CHAT_BASE_URL + '#/conversation-detail/' + this.contact_details._id + '/' + this.contact_details.fullname + '/new';
     this.logger.log("[CONTACTS-DTLS] - CHAT URL ", url);
     window.open(url, '_blank');
   }
