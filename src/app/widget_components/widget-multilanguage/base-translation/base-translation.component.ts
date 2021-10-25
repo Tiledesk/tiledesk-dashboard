@@ -36,7 +36,7 @@ export class BaseTranslationComponent extends WidgetSharedComponent implements O
       // console.log('Multilanguage Calling spliceLanguageIfAlreadyAdded availableTranslations translation', translation)
 
       var foundIndex = this.languages.findIndex(x => x.code == translation.code);
-      console.log('Multilanguage splice Language If Already Added - foundIndex', foundIndex)
+      // console.log('Multilanguage splice Language If Already Added - foundIndex', foundIndex)
       this.languages.splice(foundIndex, 1);
       // console.log('Multilanguage Calling doAvailableLanguageArray availableTranslations this.languages ', this.languages)
     });

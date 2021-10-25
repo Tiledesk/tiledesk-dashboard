@@ -114,9 +114,9 @@ export class AuthService {
     this.checkIfExistStoredUserAndPublish();
     this.checkStoredProjectAndPublishIfPublishedProjectIsNull();
 
-    console.log('[AUTH-SERV] appConfigService.getConfig().pushEngine 1 ', appConfigService.getConfig().pushEngine);
+    this.logger.log('[AUTH-SERV] appConfigService.getConfig().pushEngine 1 ', appConfigService.getConfig().pushEngine);
     if (appConfigService.getConfig().pushEngine === 'firebase') {
-      console.log('[AUTH-SERV] appConfigService.getConfig().pushEngine 2 ', appConfigService.getConfig().pushEngine);
+      this.logger.log('[AUTH-SERV] appConfigService.getConfig().pushEngine 2 ', appConfigService.getConfig().pushEngine);
       this.checkIfFCMIsSupported();
     }
 
@@ -195,13 +195,13 @@ export class AuthService {
     if (firebase.messaging.isSupported()) {
       // Supported
       this.FCM_Supported = true;
-      console.log('[AUTH-SERV] *** >>>> FCM is Supported: ', this.FCM_Supported);
+      this.logger.log('[AUTH-SERV] *** >>>> FCM is Supported: ', this.FCM_Supported);
 
 
     } else {
       // NOT Supported
       this.FCM_Supported = false;
-      console.log('[AUTH-SERV] *** >>>> FCM is Supported: ', this.FCM_Supported);
+      this.logger.log('[AUTH-SERV] *** >>>> FCM is Supported: ', this.FCM_Supported);
     }
   }
 
@@ -898,9 +898,9 @@ export class AuthService {
 
 
   removeInstanceIdAndSignout(calledby,FCMcurrentToken, userId) {
-    console.log('[AUTH-SERV] - removeInstanceIdAndSignout calledby ', calledby)
-    console.log('[AUTH-SERV] - removeInstanceIdAndSignout - FCM Token: ', FCMcurrentToken);
-    console.log('[AUTH-SERV] - removeInstanceIdAndSignout - USER ID: ', userId);
+    this.logger.log('[AUTH-SERV] - removeInstanceIdAndSignout calledby ', calledby)
+    this.logger.log('[AUTH-SERV] - removeInstanceIdAndSignout - FCM Token: ', FCMcurrentToken);
+    this.logger.log('[AUTH-SERV] - removeInstanceIdAndSignout - USER ID: ', userId);
     // this.connectionsRefinstancesId = this.urlNodeFirebase+"/users/"+userUid+"/instances/";
     const urlNodeFirebase = '/apps/tilechat'
     const connectionsRefinstancesId = urlNodeFirebase + '/users/' + userId + '/instances/';
@@ -952,15 +952,15 @@ export class AuthService {
   }
 
   signoutNoFirebase(calledby) {
-    console.log('[AUTH-SERV] signoutNoFirebase calledby 1',calledby)
+    this.logger.log('[AUTH-SERV] signoutNoFirebase calledby 1',calledby)
     if (calledby !== 'autologin') {
-      console.log('[AUTH-SERV] signoutNoFirebase calledby 2',calledby)
+      this.logger.log('[AUTH-SERV] signoutNoFirebase calledby 2',calledby)
       this.router.navigate(['/login']);
     }
   }
 
   webSocketClose() {
-    console.log('[AUTH-SERV] called webSocketClose')
+    this.logger.log('[AUTH-SERV] called webSocketClose')
     this.webSocketJs.close()
   }
 
