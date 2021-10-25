@@ -157,7 +157,19 @@ export class UsersComponent implements OnInit, OnDestroy {
 
     // https://support-pre.tiledesk.com/chat/index.html?recipient=5de9200d6722370017731969&recipientFullname=Nuovopre%20Pre
     // https://support-pre.tiledesk.com/chat/index.html?recipient=5dd278b8989ecd00174f9d6b&recipientFullname=Gian Burrasca
-    const url = this.CHAT_BASE_URL + '?' + 'recipient=' + agentId + '&recipientFullname=' + agentFirstname + ' ' + agentLastname;
+    // const url = this.CHAT_BASE_URL + '?' + 'recipient=' + agentId + '&recipientFullname=' + agentFirstname + ' ' + agentLastname;
+
+
+    let agentFullname = ''
+    if (agentLastname) {
+      agentFullname = agentFirstname + ' ' + agentLastname
+    } else {
+      agentFullname = agentFirstname
+    }
+
+
+    const url = this.CHAT_BASE_URL + '#/conversation-detail/' + agentId + '/' + agentFullname + '/new'
+
     this.logger.log('[USERS] - CHAT WITH AGENT - CHAT URL ', url);
     window.open(url, '_blank');
   }
@@ -508,7 +520,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.usersService.getPendingUsersByIdAndResendEmail(pendingInvitationId)
       .subscribe((pendingInvitation: any) => {
         this.logger.log('[USERS] - GET PENDING INVITATION BY ID AND RESEND INVITE - RES ', pendingInvitation);
-        
+
         this.pendingInvitationEmail = pendingInvitation['Resend invitation email to']['email'];
         this.logger.log('[USERS] - GET PENDING INVITATION BY ID AND RESEND INVITE - RES  email', this.pendingInvitationEmail);
       }, error => {
@@ -601,14 +613,14 @@ export class UsersComponent implements OnInit, OnDestroy {
     }, error => {
       this.showSpinner = false;
       this.logger.error('[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USERS - ERROR ', error);
-    
+
       // NOTIFY ERROR 
       this.notify.showNotification(this.deleteProjectUserErrorNoticationMsg, 4, 'report_problem');
     }, () => {
-        this.logger.log('[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USERS * COMPLETE *');
-        // NOTIFY SUCCESS 
-        this.notify.showNotification(this.deleteProjectUserSuccessNoticationMsg, 2, 'done');
-      });
+      this.logger.log('[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USERS * COMPLETE *');
+      // NOTIFY SUCCESS 
+      this.notify.showNotification(this.deleteProjectUserSuccessNoticationMsg, 2, 'done');
+    });
   }
 
   onCloseModal() {
@@ -639,12 +651,12 @@ export class UsersComponent implements OnInit, OnDestroy {
 
     }, (error) => {
       this.logger.error('[USERS] - CHANGE AVAILABILITY STATUS - UPDATED PROJECT-USER - ERROR ', error);
-      
+
       //  NOTIFY ERROR
       this.notify.showWidgetStyleUpdateNotification(this.changeAvailabilityErrorNoticationMsg, 4, 'report_problem');
     }, () => {
       this.logger.log('[USERS] - CHANGE AVAILABILITY STATUS - UPDATED PROJECT-USER * COMPLETE *');
-      
+
       //  NOTIFY SUCCESS 
       this.notify.showWidgetStyleUpdateNotification(this.changeAvailabilitySuccessNoticationMsg, 2, 'done');
 

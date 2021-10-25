@@ -227,7 +227,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   }
 
 
- // --------------------------------------------------
+  // --------------------------------------------------
   // @ Detect browser refresh
   // --------------------------------------------------
   detectBrowserRefresh() {
@@ -484,15 +484,15 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     // const url = this.CHAT_BASE_URL + '?recipient=' + requestid;
     // window.open(url, '_blank');
     // const url = this.CHAT_BASE_URL + "/" + requestid + "/" +  requester_fullanme + "/active";
-
-    let url = '';
-    if (this.FIREBASE_AUTH === false) {
-      url = this.CHAT_BASE_URL + "/" + requestid + "/" + requester_fullanme + "/active"
-    } else if (this.FIREBASE_AUTH === true) {
-      url = this.CHAT_BASE_URL + '?recipient=' + requestid;
-    } else {
-      url = this.CHAT_BASE_URL + '#/conversation-detail/' + requestid + "/" + requester_fullanme + "/active"
-    }
+    const url = this.CHAT_BASE_URL + '#/conversation-detail/' + requestid + "/" + requester_fullanme + "/active"
+    // let url = '';
+    // if (this.FIREBASE_AUTH === false) {
+    //   url = this.CHAT_BASE_URL + "/" + requestid + "/" + requester_fullanme + "/active"
+    // } else if (this.FIREBASE_AUTH === true) {
+    //   url = this.CHAT_BASE_URL + '?recipient=' + requestid;
+    // } else {
+    //   url = this.CHAT_BASE_URL + '#/conversation-detail/' + requestid + "/" + requester_fullanme + "/active"
+    // }
 
     window.open(url, '_blank');
 
