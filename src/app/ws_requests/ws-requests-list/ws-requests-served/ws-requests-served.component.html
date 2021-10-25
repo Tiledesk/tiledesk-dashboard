@@ -37,7 +37,10 @@
           </span>  
         </th> -->
 
-          <!-- ------ ====== MESSAGE ====== ------ -->
+
+          <!-- ----------------------------------------------- -->
+          <!-- MESSAGE -->
+          <!-- ----------------------------------------------- -->
           <th>
             <span class="column-th-span">
               <!-- Messagio -->
@@ -45,10 +48,15 @@
             </span>
           </th>
 
-          <!-- ------ ====== CHANNNEL ====== ------ -->
+
+          <!-- ----------------------------------------------- -->
+          <!-- PRIORITY & CHANNNE -->
+          <!-- ----------------------------------------------- -->
           <th> </th>
 
-          <!-- ------ ====== REQUESTER ====== ------ -->
+          <!-- ----------------------------------------------- -->
+          <!-- REQUESTER -->
+          <!-- ----------------------------------------------- -->
           <th>
             <span class="column-th-span">
               <!-- Richiedente  -->
@@ -56,42 +64,43 @@
             </span>
           </th>
 
-          <!-- ------ ====== USER AGENT BROWSER & OPERATING SYSTEM ====== ------ -->
+
+          <!-- ----------------------------------------------- -->
+          <!-- USER AGENT BROWSER & OPERATING SYSTEM -->
+          <!-- ----------------------------------------------- -->
           <th> </th>
 
-          <!-- ------ ====== DEPARTMENT ====== ------ -->
+
+          <!-- ----------------------------------------------- -->
+          <!-- DEPARTMENT -->
+          <!-- ----------------------------------------------- -->
           <th>
             <span class="column-th-span">
               {{ 'VisitorsPage.Department' | translate }}
             </span>
           </th>
 
-          <!-- ------ ====== SERVED BY  ====== ------ -->
+          <!-- ----------------------------------------------- -->
+          <!-- SERVED BY -->
+          <!-- ----------------------------------------------- -->
           <th>
             <span class="column-th-span">
-              <!-- Servita da -->
               {{ 'VisitorsPage.ServedBy' | translate }}
             </span>
           </th>
 
-
-
-          <!-- <th>
-          <span style="color: #566787">          
-            <strong> Membri </strong>
-          </span>
-        </th> -->
-
-          <!-- ------ ====== CREATED ON ====== ------ -->
+          <!-- ----------------------------------------------- -->
+          <!-- CREATED ON -->
+          <!-- ----------------------------------------------- -->
           <th>
             <span class="column-th-span">
               {{ 'VisitorsPage.Published' | translate }}
             </span>
           </th>
 
-          <!-- <th>TEST</th> -->
-
-          <!-- ------ ====== ARCHIVE & JOIN Action  ====== ------ -->
+          <!-- ----------------------------------------------- -->
+          <!-- ACTIONS: ARCHIVE & JOIN-->
+          <!-- ----------------------------------------------- -->
           <th>
             <span class="column-th-span">
               {{ 'VisitorsPage.Actions' | translate }}
@@ -100,12 +109,11 @@
 
         </tr>
       </thead>
-      <tbody>
 
-        <!-- 
-        // ------------------------------
-        // IF THERE ISN'T SERVED REQUEST 
-        // ------------------------------ -->
+      <tbody>
+        <!-- ------------------------------------------------------------ -->
+        <!-- IF THERE ISN'T SERVED REQUEST -->
+        <!-- ------------------------------------------------------------ -->
         <tr *ngIf="wsRequestsServed?.length === 0">
           <td colspan="9" style="text-align: center; padding-top: 16px;">
             <p style="font-size:1em; color:#737376; font-weight: 100">
@@ -115,10 +123,9 @@
           </td>
         </tr>
 
-        <!-- 
-        // ------------------------------
-        // SERVED FOR
-        // ------------------------------ -->
+        <!-- ------------------------------ -->
+        <!-- SERVED FOR -->
+        <!-- ------------------------------ -->
         <tr *ngFor="let request of wsRequestsServed; trackBy: trackByFn">
 
           <!-- FOR DEBUG: SHOW 'J' IF THE CURRENT USER UID IS BETWEEN 
@@ -129,31 +136,26 @@
           </span>
         </td> -->
 
-          <!-- 
-          // ------------------------------
-          // ICONS
-          // ------------------------------ -->
+
+          <!-- ------------------------------------------------------------------------------------------------------ -->
+          <!-- ICONS -->
+          <!-- ------------------------------------------------------------------------------------------------------ -->
           <td style="text-align:center; white-space: nowrap; width: 1%;">
             <!-- IF THE REQUEST SUPPORT STATUS IS 0 (??? REQUEST) -->
 
-
-            <!-- 
-            IF THE REQUEST SUPPORT STATUS IS 200 (SERVED REQUEST) AND THE CURRENT USER UID IS BETWEEN 
+            <!-- IF THE REQUEST SUPPORT STATUS IS 200 (SERVED REQUEST) AND THE CURRENT USER UID IS BETWEEN 
             THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has joined to the request) -->
             <span *ngIf="request?.status == 200 && request?.currentUserIsJoined === true">
               <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" rel="tooltip"
                 title="{{ 'VisitorsPage.ViewRequestDetails' | translate}}: {{request?.request_id}}">
 
                 <span *ngIf="!request?.subject">
-
                   <img style="width: 30px;" src="assets/img/request_icons/status200_joined.svg" class="img-fluid">
-
                 </span>
 
-                <!-- 
-                // ------------------------------------------------------------------------------------------------------
-                // If is internal request
-                // ------------------------------------------------------------------------------------------------------ -->
+                <!-- --------------------------------- -->
+                <!-- If is internal request -->
+                <!-- --------------------------------- -->
                 <span *ngIf="request?.subject">
                   <img style="width: 30px;" src="assets/img/request_icons/status200_joined_internal.svg"
                     class="img-fluid">
@@ -162,9 +164,10 @@
               </span>
             </span>
 
-            <!-- 
-          IF THE REQUEST SUPPORT STATUS IS 200 (SERVED REQUEST) BUT THE CURRENT USER UID IS NOT BETWEEN 
-          THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has not joined to the request) -->
+            <!-- ------------------------------------------------------------------------------------------------------ -->
+            <!--  IF THE REQUEST SUPPORT STATUS IS 200 (SERVED REQUEST) BUT THE CURRENT USER UID IS NOT BETWEEN -->
+            <!--  THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has not joined to the request) -->
+            <!-- ------------------------------------------------------------------------------------------------------ -->
             <span *ngIf="request?.status == 200 && !request?.currentUserIsJoined">
               <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" rel="tooltip"
                 title="{{ 'VisitorsPage.ViewRequestDetails' | translate}}: {{request?.request_id}}">
@@ -174,10 +177,10 @@
 
                 </span>
 
-                <!-- 
-                // ------------------------------------------------------------------------------------------------------
-                // If is internal request
-                // ------------------------------------------------------------------------------------------------------ -->
+
+                <!-- --------------------------------- -->
+                <!-- If is internal request -->
+                <!-- --------------------------------- -->
                 <span *ngIf="request?.subject">
 
                   <img style="width: 30px;" src="assets/img/request_icons/status200_no_joined_internal.svg"
@@ -188,13 +191,16 @@
             </span>
           </td>
 
-          <!-- ------ ====== MESSAGE  ====== ------ -->
+          <!-- ------------------------------------------------------------------------------------------------------ -->
+          <!-- Message -->
+          <!-- ------------------------------------------------------------------------------------------------------ -->
           <td class="td-first-text" [ngClass]="{'padding_5' : request?.tags?.length > 0}"
             (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer; width: 215px;">
             <!-- max-width: 400px -->
             <!-- [innerHTML]="getRequestText(request?.first_text)" -->
             <!-- [innerHTML]="getRequestText(request?.first_text)  | marked | sanitizeHtml" -->
-            <p class="column-td" style="max-width: 215px;white-space: nowrap; overflow: hidden;text-overflow: ellipsis;">
+            <p class="column-td"
+              style="max-width: 215px;white-space: nowrap; overflow: hidden;text-overflow: ellipsis;">
               <!-- {{ request?.text }} -->
               {{ request?.first_text }}
             </p>
@@ -277,96 +283,150 @@
                 top: -2px;"> display less
                 </a>
                </div> -->
-
-
             </section>
           </td>
 
           <!-- ---------------------------------------- -->
-          <!-- Message Channel  -->
+          <!-- @ Priority & Message Channel  -->
           <!-- ---------------------------------------- -->
-          <td style="width: 1%;">
-            <!-- ---------------------------------------- -->
-            <!-- Channel - Telegram -->
-            <!-- ---------------------------------------- -->
-            <span *ngIf="request?.channel?.name === 'telegram'" class="tool_tip">
+          <td class="" style="width: 1%;padding-left: 4px!important;">
 
-              <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/Telegram-01.svg" class="img-fluid">
-              <span class="bottom tool-tip-bottom--custom">
-                <span style="font-weight: 200;">
-                  {{'MessageChannel' | translate}}:
+            <div class="priority_and_channel_wpr" style="  display: flex;">
+              <!-- ---------------------------------------- -->
+              <!-- @ Priority WRAPPER -->
+              <!-- ---------------------------------------- -->
+              <div *ngIf="request?.priority !== 'medium'" class="priority_wpr" style="flex: 1;; text-align: right;">
+                <!-- ---------------------------------------- -->
+                <!-- Priority High -->
+                <!-- ---------------------------------------- -->
+                <span *ngIf="request?.priority === 'high'" class="tool_tip">
+                  <img style="width: 15px;height: 15px;" src="assets/img/priority_icons/high_v2.svg" class="img-fluid">
+                  <span class="bottom tool-tip-bottom--custom">
+                    <span style="font-weight: 400;">
+                      {{'Priority' | translate}}:
+                    </span>
+                    <span style="font-weight: 400;">{{ 'high' | translate }} </span>
+                    <i></i>
+                  </span>
                 </span>
-                <span style="font-weight: 400;">Telegram </span>
-                <i></i>
-              </span>
-            </span>
-            <!-- ---------------------------------------- -->
-            <!-- Channel - WhatsApp -->
-            <!-- ---------------------------------------- -->
-            <span *ngIf="request?.channel?.name === 'whatsapp'" class="tool_tip">
-
-              <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/whatsapp-logo_green.svg"
-                class="img-fluid">
-              <span class="bottom tool-tip-bottom--custom">
-                <span style="font-weight: 200;">
-                  {{'MessageChannel' | translate}}:
+                <!-- ---------------------------------------- -->
+                <!-- Priority Urgent -->
+                <!-- ---------------------------------------- -->
+                <span *ngIf="request?.priority === 'urgent'" class="tool_tip">
+                  <img style="width: 15px;height: 15px;" src="assets/img/priority_icons/urgent_v2.svg"
+                    class="img-fluid">
+                  <span class="bottom tool-tip-bottom--custom">
+                    <span style="font-weight: 400;">
+                      {{'Priority' | translate}}:
+                    </span>
+                    <span style="font-weight: 400;">{{ 'urgent' | translate }} </span>
+                    <i></i>
+                  </span>
                 </span>
-                <span style="font-weight: 400;">WhatsApp </span>
-                <i></i>
-              </span>
-            </span>
+                <!-- ---------------------------------------- -->
+                <!-- Priority Low -->
+                <!-- ---------------------------------------- -->
+                <span *ngIf="request?.priority === 'low'" class="tool_tip">
+                  <img style="width: 15px;height: 15px;" src="assets/img/priority_icons/low_v2.svg" class="img-fluid">
+                  <span class="bottom tool-tip-bottom--custom">
+                    <span style="font-weight: 400;">
+                      {{'Priority' | translate}}:
+                    </span>
+                    <span style="font-weight: 400;">{{ 'low' | translate }} </span>
+                    <i></i>
+                  </span>
+                </span>
+              </div>
 
-            <!-- ---------------------------------------- -->
-            <!-- Channel - Messenger -->
-            <!-- ---------------------------------------- -->
-            <span *ngIf="request?.channel?.name === 'messenger'" class="tool_tip">
+              <!-- ---------------------------------------- -->
+              <!-- Channel WRAPPER -->
+              <!-- ---------------------------------------- -->
+              <div *ngIf="request?.channel?.name !== 'chat21'" class="channel_wpr" style="flex: 1; text-align: right;"
+              [ngClass]="{'channel-wpr-padding-left' : request?.priority !== 'medium'}">
+                <!-- ---------------------------------------- -->
+                <!-- Channel - Telegram -->
+                <!-- ---------------------------------------- -->
+                <span *ngIf="request?.channel?.name === 'telegram'" class="tool_tip">
 
-              <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/Facebook_Messenger_logo_2020.svg"
-                class="img-fluid">
+                  <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/Telegram-01.svg"
+                    class="img-fluid">
+                  <span class="bottom tool-tip-bottom--custom">
+                    <span style="font-weight: 400;">
+                      {{'MessageChannel' | translate}}:
+                    </span>
+                    <span style="font-weight: 400;">Telegram </span>
+                    <i></i>
+                  </span>
+                </span>
+                <!-- ---------------------------------------- -->
+                <!-- Channel - WhatsApp -->
+                <!-- ---------------------------------------- -->
+                <span *ngIf="request?.channel?.name === 'whatsapp'" class="tool_tip">
 
-              <span class="bottom tool-tip-bottom--custom">
-                <span style="font-weight: 200;">
-                  {{'MessageChannel' | translate}}:
+                  <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/whatsapp-logo_green.svg"
+                    class="img-fluid">
+                  <span class="bottom tool-tip-bottom--custom">
+                    <span style="font-weight: 400;">
+                      {{'MessageChannel' | translate}}:
+                    </span>
+                    <span style="font-weight: 400;">WhatsApp </span>
+                    <i></i>
+                  </span>
                 </span>
 
-                <span style="font-weight: 400;">Messenger </span>
-                <i></i>
-              </span>
-            </span>
+                <!-- ---------------------------------------- -->
+                <!-- Channel - Messenger -->
+                <!-- ---------------------------------------- -->
+                <span *ngIf="request?.channel?.name === 'messenger'" class="tool_tip">
 
-            <!-- ---------------------------------------- -->
-            <!-- Channel - Email -->
-            <!-- ---------------------------------------- -->
-            <span *ngIf="request?.channel?.name === 'email'" class="tool_tip email-wpr">
+                  <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/Facebook_Messenger_logo_2020.svg"
+                    class="img-fluid">
 
-              <img style="padding:5px !important" src="assets/img/channel_icons/email-logo_white.svg"
-                class="img-fluid channel-img-in-conversations">
+                  <span class="bottom tool-tip-bottom--custom">
+                    <span style="font-weight: 400;">
+                      {{'MessageChannel' | translate}}:
+                    </span>
 
-              <span class="bottom tool-tip-bottom--custom">
-                <span style="font-weight: 200;">
-                  {{'MessageChannel' | translate}}:
+                    <span style="font-weight: 400;">Messenger </span>
+                    <i></i>
+                  </span>
                 </span>
-                <span style="font-weight: 400;">Email </span>
 
-                <i></i>
-              </span>
-            </span>
+                <!-- ---------------------------------------- -->
+                <!-- Channel - Email -->
+                <!-- ---------------------------------------- -->
+                <span *ngIf="request?.channel?.name === 'email'" class="tool_tip email-wpr">
 
-            <!-- ---------------------------------------- -->
-            <!-- Channel - Form -->
-            <!-- ---------------------------------------- -->
-            <span *ngIf="request?.channel?.name === 'form'" class="tool_tip form-wpr">
-              <img style="padding:4px !important" src="assets/img/channel_icons/form-logo_v2_white.svg"
-                class="img-fluid channel-img-in-conversations">
+                  <img style="padding:5px !important" src="assets/img/channel_icons/email-logo_white.svg"
+                    class="img-fluid channel-img-in-conversations">
 
-              <span class="bottom tool-tip-bottom--custom">
-                <span style="font-weight: 200;">
-                  {{'MessageChannel' | translate}}:
+                  <span class="bottom tool-tip-bottom--custom">
+                    <span style="font-weight: 400;">
+                      {{'MessageChannel' | translate}}:
+                    </span>
+                    <span style="font-weight: 400;">Email </span>
+
+                    <i></i>
+                  </span>
                 </span>
-                <span style="font-weight: 400;">Form </span>
-                <i></i>
-              </span>
-            </span>
+
+                <!-- ---------------------------------------- -->
+                <!-- Channel - Form -->
+                <!-- ---------------------------------------- -->
+                <span *ngIf="request?.channel?.name === 'form'" class="tool_tip form-wpr">
+                  <img style="padding:4px !important" src="assets/img/channel_icons/form-logo_v2_white.svg"
+                    class="img-fluid channel-img-in-conversations">
+
+                  <span class="bottom tool-tip-bottom--custom">
+                    <span style="font-weight: 400;">
+                      {{'MessageChannel' | translate}}:
+                    </span>
+                    <span style="font-weight: 400;">Form </span>
+                    <i></i>
+                  </span>
+                </span>
+              </div>
+            </div>
           </td>
 
 
