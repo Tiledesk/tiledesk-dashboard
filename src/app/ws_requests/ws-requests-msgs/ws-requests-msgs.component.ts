@@ -207,6 +207,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   urls: any = /(\b(https?|http|ftp|ftps|Https|rtsp|Rtsp):\/\/[A-Z0-9+&@#\/%?=~_|!:,.;-]*[-A-Z0-9+&@#\/%=~_|])/gim; // Find/Replace URL's in text  
   emails: any = /(\S+@\S+\.\S+)/gim; // Find/Replace email addresses in text
   FIREBASE_AUTH: boolean;
+  // = this.priority[2].name;
+  selectedPriority: any;
+  priority_updated_successfully_msg: string;
+  priority_update_failed: string;
 
   /**
    * Constructor
@@ -334,14 +338,14 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   getFirebaseAuth() {
-    this.logger.log('[WS-REQUESTS-MSGS] - this.appConfigService.getConfig().firebaseAuth  ', this.appConfigService.getConfig().firebaseAuth );
+    this.logger.log('[WS-REQUESTS-MSGS] - this.appConfigService.getConfig().firebaseAuth  ', this.appConfigService.getConfig().firebaseAuth);
     if (this.appConfigService.getConfig().firebaseAuth === true) {
       this.FIREBASE_AUTH = true;
       this.logger.log('[WS-REQUESTS-MSGS] - FIREBASE_AUTH IS ', this.FIREBASE_AUTH);
     } else if (this.appConfigService.getConfig().firebaseAuth === false) {
       this.FIREBASE_AUTH = false;
       this.logger.log('[WS-REQUESTS-MSGS] - FIREBASE_AUTH IS ', this.FIREBASE_AUTH);
-    } 
+    }
   }
 
   getBaseUrlsFromAppConfig() {
@@ -539,11 +543,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     }
   }
 
-    // https://stackoverflow.com/questions/40983055/how-to-reload-the-current-route-with-the-angular-2-router
-    redirectTo(uri: string, projectid: string) {
-      this.router.navigateByUrl('project/' + projectid + '/wsrequest/loading', { skipLocationChange: true }).then(() =>
-        this.router.navigate([uri]));
-    }
+  // https://stackoverflow.com/questions/40983055/how-to-reload-the-current-route-with-the-angular-2-router
+  redirectTo(uri: string, projectid: string) {
+    this.router.navigateByUrl('project/' + projectid + '/wsrequest/loading', { skipLocationChange: true }).then(() =>
+      this.router.navigate([uri]));
+  }
 
 
   /**
@@ -697,6 +701,17 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
               }
 
             });
+          }
+
+          // ---------------------------------------------------------
+          // @ Priority
+          // ---------------------------------------------------------
+
+          if (this.request.priority) {
+            this.selectedPriority = this.request.priority
+            this.logger.log('[WS-REQUESTS-MSGS] selectedPriority ', this.selectedPriority);
+          } else {
+            this.selectedPriority = 'medium'
           }
 
           // ---------------------------------------------------------
@@ -997,7 +1012,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.wsMsgsService.subsToWS_MsgsByRequestId(id_request);
     this.listenToGotAllMsg()
     this.getWsMsgs$();
-
   }
   // .pipe(filter((data) => data !== null))
   listenToGotAllMsg() {
@@ -1314,7 +1328,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
 
-
   deleteNote(note_id) {
     this.notify.operationinprogress(this.notifyProcessingMsg);
 
@@ -1339,8 +1352,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
 
-
-
   // ------------------------------------------------
   // @ Used in notes (CALLED FROM TEMPLATE)
   // ------------------------------------------------
@@ -1359,10 +1370,33 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // elBody.animate({ scrollTop: 0 }, 200);
 
     let elMainPanel = <HTMLElement>document.querySelector('.main-panel');
-    this.logger.log('[WS-REQUESTS-MSGS]  - note panel -  elMainPanel: ', elMainPanel)
-    this.logger.log('% Ws-REQUESTS-Msgs - note panel -  elMainPanel.scrollTop: ', elMainPanel.scrollTop)
+    this.logger.log('[WS-REQUESTS-MSGS] - note panel -  elMainPanel: ', elMainPanel)
+    this.logger.log('[WS-REQUESTS-MSGS] - note panel -  elMainPanel.scrollTop: ', elMainPanel.scrollTop)
 
     // elMainPanel.scrollTo(0,scrollpos)
+  }
+
+  // ---------------------------------------------------------------------------------------
+  // @ Priority
+  // ---------------------------------------------------------------------------------------
+  onChangeSelectedPriority(selectedPriority) {
+    console.log('[WS-REQUESTS-MSGS] - onChangeSelectedPriority selectedPriority ', selectedPriority)
+    this.selectedPriority = selectedPriority;
+  
+    this.wsRequestsService.updatePriority(this.id_request, selectedPriority)
+    .subscribe((res: any) => {
+      this.logger.log('[WS-REQUESTS-MSGS] - onChangeSelectedPriority - UPDATED PRIORITY - RES ', res);
+
+    }, (error) => {
+      this.logger.error('[WS-REQUESTS-MSGS] - onChangeSelectedPriority -UPDATED PRIORITY - ERROR ', error);
+      this.notify.showWidgetStyleUpdateNotification(this.priority_update_failed, 4, 'report_problem');
+    }, () => {
+      // panel.scrollTop = panel.scrollHeight;
+      this.logger.log('[WS-REQUESTS-MSGS] - onChangeSelectedPriority - UPDATED PRIORITY  * COMPLETE *');
+      this.notify.showWidgetStyleUpdateNotification(this.priority_updated_successfully_msg, 2, 'done');
+    
+    });
+
   }
 
   // ---------------------------------------------------------------------------------------
@@ -2088,16 +2122,16 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.logger.log('[WS-REQUESTS-MSGS] openChatInNewWindow FIREBASE_AUTH ', this.FIREBASE_AUTH);
     this.logger.log('[WS-REQUESTS-MSGS] openChatInNewWindow CHAT_BASE_URL ', this.CHAT_BASE_URL);
     let url = '';
-    
+
     if (this.FIREBASE_AUTH === false) {
       url = this.CHAT_BASE_URL + "/" + this.id_request + "/" + this.request.lead.fullname + "/active"
-    } else if (this.FIREBASE_AUTH === true)  {
+    } else if (this.FIREBASE_AUTH === true) {
       url = this.CHAT_BASE_URL + '?recipient=' + this.id_request;
     } else {
-      url = this.CHAT_BASE_URL + '#/conversation-detail/'+ this.id_request + "/" + this.request.lead.fullname + "/active"
+      url = this.CHAT_BASE_URL + '#/conversation-detail/' + this.id_request + "/" + this.request.lead.fullname + "/active"
     }
     this.logger.log('[WS-REQUESTS-MSGS] openChatInNewWindow url ', url);
-   
+
     window.open(url, '_blank');
 
     // this.openWindow('Tiledesk - Open Source Live Chat', url)
@@ -2357,6 +2391,16 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.translate.get('Done')
       .subscribe((text: string) => {
         this.done_msg = text;
+      });
+
+      this.translate.get('TheConversationPriorityHasBeenSuccessfullyUpdated')
+      .subscribe((text: string) => {
+        this.priority_updated_successfully_msg = text;
+      });
+
+      this.translate.get('AnErrorOccurredWhileUpdatingTheCnversationPriority')
+      .subscribe((text: string) => {
+        this.priority_update_failed = text;
       });
   }
 

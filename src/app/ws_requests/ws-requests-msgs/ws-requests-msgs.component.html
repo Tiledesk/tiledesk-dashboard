@@ -1125,9 +1125,9 @@
                 <!-- --------------------------------------------------------------------- -->
                 <div *ngIf="CHAT_PANEL_MODE === true" class="row" style="margin-top:5px">
                   <!-- border-top: 1px solid #e1eef4;" -->
-                  
-                    <div class="col-sm-12">
-                      <!-- <p (click)="goToProjectHomeInNewTab()" class="chat-panel-mode-project-name" style="">
+
+                  <div class="col-sm-12">
+                    <!-- <p (click)="goToProjectHomeInNewTab()" class="chat-panel-mode-project-name" style="">
                       <i class="material-icons" style="vertical-align: middle; color: #394f5a;font-size:16px">apps</i>
                       <span style="position: relative;top: 1px;">
                         <span
@@ -1143,40 +1143,40 @@
                       </span>
                     </p> -->
 
-                      <span style="position: relative;top: 1px;">
-                        <div class="row">
-                          <!-- (click)="goToProjectHomeInNewTab()" -->
-                          <div class="col-xs-10" style="padding-right:10px">
-                            <p (click)="goToProjectHomeInNewTab()" class="chat-panel-mode-project-name"
-                              style="margin-top: 0px;">
-                              <i class="material-icons"
-                                style="vertical-align: middle; color: #394f5a;font-size:16px">apps</i>
-                              <span style="position: relative;top: 1px;">
-                                <span
-                                  style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
-                                  {{ "Project" | translate }}
-                                </span>
-                                <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
-                                  {{ project_name }}
-                                </span>
-                                <!-- <i (click)="goToProjectHomeInNewTab()" class="material-icons"
+                    <span style="position: relative;top: 1px;">
+                      <div class="row">
+                        <!-- (click)="goToProjectHomeInNewTab()" -->
+                        <div class="col-xs-10" style="padding-right:10px">
+                          <p (click)="goToProjectHomeInNewTab()" class="chat-panel-mode-project-name"
+                            style="margin-top: 0px;">
+                            <i class="material-icons"
+                              style="vertical-align: middle; color: #394f5a;font-size:16px">apps</i>
+                            <span style="position: relative;top: 1px;">
+                              <span
+                                style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
+                                {{ "Project" | translate }}
+                              </span>
+                              <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
+                                {{ project_name }}
+                              </span>
+                              <!-- <i (click)="goToProjectHomeInNewTab()" class="material-icons"
                                 style="vertical-align: middle; color: #0f62ff;font-size:12px; cursor: pointer;">open_in_new</i> -->
 
-                              </span>
-                            </p>
-                          </div>
-
-                          <div class="col-xs-2" style="text-align: right;">
-                            <i id="request_id_arrow_down" class="material-icons rotate"
-                              style="cursor: pointer; color: #039be5; font-size:18px;position:relative; top:2px"
-                              (click)="goToProjectHomeInNewTab()">
-                              open_in_new
-                            </i>
-                          </div>
+                            </span>
+                          </p>
                         </div>
-                      </span>
-                    </div>
-                  
+
+                        <div class="col-xs-2" style="text-align: right;">
+                          <i id="request_id_arrow_down" class="material-icons rotate"
+                            style="cursor: pointer; color: #039be5; font-size:18px;position:relative; top:2px"
+                            (click)="goToProjectHomeInNewTab()">
+                            open_in_new
+                          </i>
+                        </div>
+                      </div>
+                    </span>
+                  </div>
+
                 </div>
 
                 <!-- --------------------------------------------------------------------- -->
@@ -1696,13 +1696,9 @@
                 </div>
 
 
-
-
-
-                <!-- 
-                // -------------------------------------------------------
-                // NEW - EVENTS
-                // ------------------------------------------------------- -->
+                <!-- ------------------------------------------------------- -->
+                <!-- NEW - EVENTS -->
+                <!-- ------------------------------------------------------- -->
                 <!-- <div class="row" style="margin-top:5px; cursor: pointer;" (click)='goToEvents()' >
                   <div class="col-sm-12">
                     <p style="color: crimson;">
@@ -1719,10 +1715,10 @@
                   </div>
                 </div> -->
 
-                <!-- 
-                  // ------------------------------------------------------------------
-                  // Go to request details - dispalyed only if CHAT_PANEL_MODE === true
-                  // ------------------------------------------------------------------ -->
+
+                <!-- --------------------------------------------------------------------- -->
+                <!-- Go to request details - dispalyed only if CHAT_PANEL_MODE === true -->
+                <!-- --------------------------------------------------------------------- -->
                 <!-- <div class="row" style="margin-top:5px" *ngIf="CHAT_PANEL_MODE === true">
                       <div class="col-sm-12">
                         <p class="" style="">
@@ -1740,7 +1736,37 @@
                       </div>
                     </div> -->
 
+                <!-- ----------------------------------------------------------------------------- -->
+                <!-- Priority -->
+                <!-- ----------------------------------------------------------------------------- -->
+                <div class="row">
+                  <div class="col-sm-12" style="border-top: 1px solid #eeeeee;">
+                    <p class="row-header">
 
+                      <span style="vertical-align: middle">
+                        {{ 'Priority' | translate }}
+                      </span>
+                    </p>
+                  </div>
+
+                  
+                  <div class="col-sm-12" style="margin-bottom: 8px;" >
+         
+                    <ng-select [items]="priority" bindLabel="name" bindValue="name" [clearable]="false" [hideSelected]="true"
+                      [(ngModel)]="selectedPriority" (change)="onChangeSelectedPriority(selectedPriority)">
+                      <ng-template ng-label-tmp let-item="item">
+                        <img style="width: 15px;height: 15px;" height="15" width="15" [src]="item.avatar" />
+                        {{item.name | translate}}
+                      </ng-template>
+                      <ng-template ng-option-tmp let-item="item" let-index="index">
+                        <img style="width: 15px;height: 15px;" height="15" width="15" [src]="item.avatar" />
+                        {{item.name | translate }}
+                      </ng-template>
+                    </ng-select>
+                  </div>
+
+
+                </div>
 
                 <!-- ----------------------------------------------------------------------------- -->
                 <!-- Agents -->
@@ -1757,8 +1783,6 @@
                     </p>
 
                     <div class="served_by">
-
-
                       <!-- ------------------------------------------------------ -->
                       <!-- No Agent -->
                       <!-- ------------------------------------------------------ -->
@@ -1771,7 +1795,6 @@
                           {{ "RequestMsgsPage.NoAgent" | translate }}
                         </span>
                       </div>
-
 
                       <!--  ------------------------------------------------------ -->
                       <!--  Agent array for -->
@@ -2012,10 +2035,16 @@
                               (click)="addNote()"
                               [disabled]="!new_note || new_note?.length === 0 || DISABLE_ADD_NOTE_AND_TAGS === true">
                               <!-- <i class="material-icons" style="left: -5px;">add_circle</i> -->
-                              {{ 'Notes.AddNote' | translate }}
 
-                              <span *ngIf="showSpinnerInAddNoteBtn === true"> <i class="fa fa-spinner fa-spin"
-                                  style="font-size: 15px;"></i></span>
+                              <span *ngIf="showSpinnerInAddNoteBtn !== true">
+                                <i class="material-icons" style="font-size: 15px;">add_circle</i>
+                              </span>
+
+                              <span *ngIf="showSpinnerInAddNoteBtn === true">
+                                <i class="fa fa-spinner fa-spin" style="font-size: 15px;"></i>
+                              </span>
+
+                              {{ 'Notes.AddNote' | translate }}
                             </button>
                           </div>
 
