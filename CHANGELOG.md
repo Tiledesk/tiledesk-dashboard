@@ -3,6 +3,7 @@
 
 ### 2.2.15.2
 - Updates the "Latest Updates" section of the homepage
+- The "chat" menu item redirects to the new chat!
 
 ### 2.2.15.1
 - Adds the ability to upload user profile photo in .png format 
