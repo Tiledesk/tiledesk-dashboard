@@ -2085,15 +2085,17 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // window.open(url, '_blank');
     this.logger.log('[WS-REQUESTS-MSGS] openChatInNewWindow FIREBASE_AUTH ', this.FIREBASE_AUTH);
     this.logger.log('[WS-REQUESTS-MSGS] openChatInNewWindow CHAT_BASE_URL ', this.CHAT_BASE_URL);
-    let url = '';
-    
-    if (this.FIREBASE_AUTH === false) {
-      url = this.CHAT_BASE_URL + "/" + this.id_request + "/" + this.request.lead.fullname + "/active"
-    } else if (this.FIREBASE_AUTH === true)  {
-      url = this.CHAT_BASE_URL + '?recipient=' + this.id_request;
-    } else {
-      url = this.CHAT_BASE_URL + '#/conversation-detail/'+ this.id_request + "/" + this.request.lead.fullname + "/active"
-    }
+
+    const url = this.CHAT_BASE_URL + '#/conversation-detail/'+ this.id_request + "/" + this.request.lead.fullname + "/active"
+
+    // let url = '';
+    // if (this.FIREBASE_AUTH === false) {
+    //   url = this.CHAT_BASE_URL + "/" + this.id_request + "/" + this.request.lead.fullname + "/active"
+    // } else if (this.FIREBASE_AUTH === true)  {
+    //   url = this.CHAT_BASE_URL + '?recipient=' + this.id_request;
+    // } else {
+    //   url = this.CHAT_BASE_URL + '#/conversation-detail/'+ this.id_request + "/" + this.request.lead.fullname + "/active"
+    // }
     this.logger.log('[WS-REQUESTS-MSGS] openChatInNewWindow url ', url);
    
     window.open(url, '_blank');
@@ -2132,12 +2134,24 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // https://support-pre.tiledesk.com/chat/index.html?recipient=5de9200d6722370017731969&recipientFullname=Nuovopre%20Pre
     // https://support-pre.tiledesk.com/chat/index.html?recipient=5dd278b8989ecd00174f9d6b&recipientFullname=Gian Burrasca
 
-    let _agentLastName = ''
+    // let _agentLastName = ''
+    // if (agentLastname) {
+    //   _agentLastName = agentLastname
+    // }
+    // const url = this.CHAT_BASE_URL + '?' + 'recipient=' + agentId + '&recipientFullname=' + agentFirstname + ' ' + _agentLastName;
+    // this.logger.log('[WS-REQUESTS-MSGS] - chatWithAgent - CHAT URL ', url);
+    // window.open(url, '_blank');
+
+    let agentFullname = ''
     if (agentLastname) {
-      _agentLastName = agentLastname
+      agentFullname = agentFirstname + ' ' + agentLastname
+    } else {
+      agentFullname = agentFirstname
     }
-    const url = this.CHAT_BASE_URL + '?' + 'recipient=' + agentId + '&recipientFullname=' + agentFirstname + ' ' + _agentLastName;
+    // https://console.tiledesk.com/v2/chat/#/conversation-detail/5ebf9b2892befe0019055217/Nicola%20Lanzilotto/new
+    const url = this.CHAT_BASE_URL + '#/conversation-detail/' + agentId + '/' + agentFullname + '/new'
     this.logger.log('[WS-REQUESTS-MSGS] - chatWithAgent - CHAT URL ', url);
+    
     window.open(url, '_blank');
   }
 
