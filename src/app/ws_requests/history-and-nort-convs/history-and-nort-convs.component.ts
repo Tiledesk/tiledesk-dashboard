@@ -379,15 +379,15 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.logger.log('[HISTORY & NORT-CONVS] - openChatInNewWindow - requestid ', requester_fullanme);
     // const url = this.CHAT_BASE_URL + '?recipient=' + requestid;
 
-    let url = '';
-    if (this.FIREBASE_AUTH === false) {
-      url = this.CHAT_BASE_URL + "/" + requestid + "/" + requester_fullanme + "/active"
-    } else if (this.FIREBASE_AUTH === true) {
-      url = this.CHAT_BASE_URL + '?recipient=' + requestid;
-    } else {
-      url = this.CHAT_BASE_URL + '#/conversation-detail/' + requestid + "/" + requester_fullanme + "/active"
-    }
-
+    // let url = '';
+    // if (this.FIREBASE_AUTH === false) {
+    //   url = this.CHAT_BASE_URL + "/" + requestid + "/" + requester_fullanme + "/active"
+    // } else if (this.FIREBASE_AUTH === true) {
+    //   url = this.CHAT_BASE_URL + '?recipient=' + requestid;
+    // } else {
+    //   url = this.CHAT_BASE_URL + '#/conversation-detail/' + requestid + "/" + requester_fullanme + "/active"
+    // }
+    const url = this.CHAT_BASE_URL + '#/conversation-detail/' + requestid + "/" + requester_fullanme + "/active"
     window.open(url, '_blank');
 
     // this.openWindow('Tiledesk - Open Source Live Chat', url)
@@ -665,11 +665,11 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
   getDeptById(departmentid: string, request: any) {
-    
+
     this.departmentService.getDeptById(departmentid).subscribe((dept: any) => {
       this.logger.log('[HISTORY & NORT-CONVS] - GET DEPT BY ID - RES ', dept);
       request['dept'] = dept
-    
+
     }, (error) => {
       this.logger.error('[HISTORY & NORT-CONVS] - GET DEPT BY ID - ERROR ', error);
 
