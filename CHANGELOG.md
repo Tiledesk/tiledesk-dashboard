@@ -7,7 +7,7 @@
 
 ### 2.2.15.3
 - Fixes the bug: "Chat with" on the conversation details page and in the teammates list does not work
-- Fixed bug: "Open chat" on conversation detail page and conversation list page doesn't work
+- Fixed bug: "Open chat" on conversation detail page, conversation list page and non-real-time conversation list page does not work
 
 ### 2.2.15.2
 - Updates the "Latest Updates" section of the homepage
