@@ -854,7 +854,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
           const deptHasName = request.department.hasOwnProperty('name')
           if (deptHasName) {
 
-            this.logger.log('[WS-REQUESTS-LIST] - (DEPTS_LAZY) GET DEPTS BY PROJECT-ID toPromise - REQ DEPT HAS PROPERTY NAME', deptHasName);
+            // this.logger.log('[WS-REQUESTS-LIST] - (DEPTS_LAZY) GET DEPTS BY PROJECT-ID toPromise - REQ DEPT HAS PROPERTY NAME', deptHasName);
             request['dept'] = request.department
           } else {
             this.logger.log('[WS-REQUESTS-LIST] - (DEPTS_LAZY) GET DEPTS BY PROJECT-ID toPromise - REQ DEPT NOT HAS PROPERTY NAME', deptHasName);
