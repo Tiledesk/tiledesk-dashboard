@@ -235,31 +235,19 @@
                   <div
                     *ngIf="message?.attributes?.subtype === 'info' || message?.attributes?.subtype === 'info/support'"
                     style="padding:20px 55px; text-align:center">
+                    
                     <div>
-                      <!-- <div class="requester-avatar-wrapper"
-                              style="display: block;border-radius: 50%; height: 100%; margin-top: 35px;"
-                              [ngStyle]="{'background-color': fillColour }">
-
-                              <span class="_requester-avatar-inchat">
-
-                                {{ requester_fullname_initial }}
-                              </span>
-                            </div> -->
+                  
 
                       <div class="txt">
-                        <!-- <p class="name" [ngStyle]="{'color': fillColour }">
-                                {{ message.senderFullname }}
-                                
-                                <span *ngIf="message?.type === 'text'"
-                                  style="float:right; cursor:pointer; color: #00bcf8; text-decoration: underline;"
-                                  (click)="openRightSideBar(message?.text)">
-                                  {{ 'Train' | translate }}
-                                </span>
-                              </p> -->
-                        <!--   htmlEntitiesEncode | autolinker-->
+                    
+                        <!-- -------------------------------------------------------------- -->
+                        <!-- first combination: | marked | sanitizeHtml -->
+                        <!-- 2nd combination: | htmlEntitiesEncode | autolinker -->
+                        <!-- 3rd combination (as in chat): | htmlEntitiesEncode  | marked -->
+                        <!-- -------------------------------------------------------------- -->
                         <p *ngIf="message?.type === 'text'" class="type-info-msg-text"
-                          [innerHTML]="message?.text | marked | sanitizeHtml">
-                          <!-- {{ message?.text }} -->
+                          [innerHTML]="message?.text | htmlEntitiesEncode | marked">
                         </p>
                         <!-- <div *ngIf="message?.type === 'image'" class="message ow">
                                 <div class="image-container" style="height:200px; width:200px;">
@@ -292,31 +280,31 @@
                               [ngStyle]="{'background-color': fillColour }">
 
                               <span class="_requester-avatar-inchat">
-
                                 {{ requester_fullname_initial }}
                               </span>
                             </div>
                           </div>
 
                           <div class="txt">
-                            <p class="name" [ngStyle]="{'color': fillColour }">{{ message.senderFullname }}
-                              <!-- margin-right: -45px; -->
+                            <p class="name" [ngStyle]="{'color': fillColour }">
+                              {{ message.senderFullname }}
                               <span *ngIf="message?.type === 'text'"
                                 style="float:right; cursor:pointer; color: #00bcf8; text-decoration: underline;"
                                 (click)="openRightSideBar(message?.text)">
-                                <!-- Addestra -->
                                 {{ 'Train' | translate }}
-
                               </span>
                             </p>
-                            <!-- [innerHTML]="message?.text | marked" -->
-                            <!-- htmlEntitiesEncode | autolinker-->
+                            <!-- -------------------------------------------------------------- -->
+                            <!-- first combination: | marked | sanitizeHtml -->
+                            <!-- 2nd combination: | htmlEntitiesEncode | autolinker -->
+                            <!-- 3rd combination (as in chat): | htmlEntitiesEncode  | marked -->
+                            <!-- -------------------------------------------------------------- -->
                             <p *ngIf="message?.type === 'text'" class="message ow"
-                              [innerHTML]="message?.text | marked | sanitizeHtml">
-                              <!-- {{ message?.text  }} -->
+                              [innerHTML]="message?.text | htmlEntitiesEncode | marked ">
                             </p>
                             <div *ngIf="message?.type === 'image'" class="message ow">
-                              <div class="image-container" style="height:200px; width:200px;">
+                              <!-- style="height:200px; width:200px;" -->
+                              <div class="image-container" >
                                 <img src={{message.metadata.src}} class="message-img" />
                               </div>
                             </div>
@@ -387,52 +375,56 @@
                                   src="{{baseUrl}}images?path=uploads%2Fusers%2F{{message?.sender | slice:4}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                                   onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
                               </span>
-
-                              <!-- USE CASE: system but with name Bot -->
-                              <!-- <span *ngIf="message?.sender === 'system' && message?.senderFullname === 'Bot'"
-                                  style="position: absolute; top:43px; margin-left:13px;color: #999999;">
-                                  
-                                  <img
-                                    style="vertical-align: middle; width: 36px; height: 36px; border-radius: 50%; border: 1px solid #eee; position:relative;top: -9px;left: -14px;"
-                                    class="user-img" src="assets/img/bot_image_as_human.jpg"
-                                    onerror="this.src='assets/img/no_image_user.png'" />
-                                </span> -->
-
-                              <!-- USE CASE: system -->
-                              <!-- <span *ngIf="message?.sender === 'system' && message?.senderFullname !== 'Bot'"
-                                  style="position: absolute; top:43px; margin-left:13px;color: #999999;">
-                                  
-                                  <i class="material-icons"
-                                    style="position: relative;left: -9px;top: -3px;font-size:26px">
-                                    code
-                                  </i>
-                                </span> -->
-
-
                             </div>
                           </div>
                           <div class="txt">
                             <p class="name alt">
                               {{ message?.senderFullname }}
-                              <!-- +353 87 1234 567<span> ~ John</span> -->
                             </p>
-                            <!-- [innerHTML]="message?.text | marked" -->
-                            <!--  | htmlEntitiesEncode | autolinker-->
+                            <!-- -------------------------------------------------------------- -->
+                            <!-- first combination: | marked | sanitizeHtml -->
+                            <!-- 2nd combination: | htmlEntitiesEncode | autolinker -->
+                            <!-- 3rd combination (as in chat): | htmlEntitiesEncode  | marked -->
+                            <!-- -------------------------------------------------------------- -->
                             <p *ngIf="message?.type === 'text' || message?.type === 'file'" class="message ow"
-                              [innerHTML]="message?.text | marked  | sanitizeHtml">
-                              <!-- {{ message?.text}} -->
-                            </p>
+                              [innerHTML]="message?.text | htmlEntitiesEncode | marked">
                             <div *ngIf="message?.type === 'image'" class="message ow">
-                              <div class="image-container" style="height:200px; width:200px;">
+                              <!-- style="height:200px; width:200px;" -->
+                              <div class="image-container" >
                                 <img src={{message.metadata.src}} class="message-img" />
-                                <!-- <div *ngIf="!message.text.startsWith('Image: https:')"> -->
+                                
+                                <p *ngIf="message?.text" [innerHTML]="message?.text | htmlEntitiesEncode | marked"></p>
+                               
                                 <div *ngIf="!message?.metadata?.type?.startsWith('image')">
-                                  <!-- | htmlEntitiesEncode | autolinker -->
-                                  <p [innerHTML]="message?.text | marked  | sanitizeHtml"></p>
+                                  <!-- -------------------------------------------------------------- -->
+                                  <!-- first combination: | marked | sanitizeHtml -->
+                                  <!-- 2nd combination: | htmlEntitiesEncode | autolinker -->
+                                  <!-- 3rd combination (as in chat): | htmlEntitiesEncode  | marked -->
+                                  <!-- -------------------------------------------------------------- -->
+                                  <p [innerHTML]="message?.text | htmlEntitiesEncode | marked"></p>
                                 </div>
 
                               </div>
                             </div>
+
+                            <!-- // iframe -->
+                            <div *ngIf="message?.type === 'frame'" class="message ow">
+                              <!-- style="height:200px; width:200px;" -->
+                              <div class="image-container">
+                                <iframe allowfullscreen width = "80%" height = "80%" style= "border:none;" [src]="message.metadata.src | sanitizeHtml" class="message-img"></iframe>
+                               
+                                
+                                  <!-- -------------------------------------------------------------- -->
+                                  <!-- first combination: | marked | sanitizeHtml -->
+                                  <!-- 2nd combination: | htmlEntitiesEncode | autolinker -->
+                                  <!-- 3rd combination (as in chat): | htmlEntitiesEncode  | marked -->
+                                  <!-- -------------------------------------------------------------- -->
+                                  <p [innerHTML]="message?.text | htmlEntitiesEncode | marked"></p>
+                               
+
+                              </div>
+                            </div>
+
                             <span class="timestamp"> {{ message?.createdAt | date: 'd/M/y HH:mm:ss'}}</span>
                           </div>
                           <div class="bubble-arrow alt"></div>
