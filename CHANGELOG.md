@@ -1,6 +1,10 @@
 
 # tiledesk-dashboard
 
+### 2.2.15.4
+- Adds the iframes display in the "chat messages" section of the conversation detail page
+- Fixes the bug: code blocks are not displayed correctly in the "chat messages" section of the conversation detail page
+
 ### 2.2.15.3
 - Fixes the bug: "Chat with" on the conversation details page and in the teammates list does not work
 - Fixed bug: "Open chat" on conversation detail page and conversation list page doesn't work
