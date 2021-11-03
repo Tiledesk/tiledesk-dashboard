@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.15.5
+- Removes the functionality implemented for testing: avoid opening the chat in multiple tabs
+
 ### 2.2.15.4
 - Adds the iframes display in the "chat messages" section of the conversation detail page
 - Fixes the bug: code blocks are not displayed correctly in the "chat messages" section of the conversation detail page
