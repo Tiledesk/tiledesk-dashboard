@@ -388,6 +388,7 @@
                             <!-- -------------------------------------------------------------- -->
                             <p *ngIf="message?.type === 'text' || message?.type === 'file'" class="message ow"
                               [innerHTML]="message?.text | htmlEntitiesEncode | marked">
+                            
                             <div *ngIf="message?.type === 'image'" class="message ow">
                               <!-- style="height:200px; width:200px;" -->
                               <div class="image-container" >
@@ -395,7 +396,7 @@
                                 
                                 <p *ngIf="message?.text" [innerHTML]="message?.text | htmlEntitiesEncode | marked"></p>
                                
-                                <div *ngIf="!message?.metadata?.type?.startsWith('image')">
+                                <div *ngIf="message?.metadata?.type && !message?.metadata?.type?.startsWith('image')">
                                   <!-- -------------------------------------------------------------- -->
                                   <!-- first combination: | marked | sanitizeHtml -->
                                   <!-- 2nd combination: | htmlEntitiesEncode | autolinker -->
