@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.15.6
+- Fixes the bug: in the "chat" section of the conversation detail page in some cases the message text is duplicated
+
 ### 2.2.15.5
 - Removes the functionality implemented for testing: avoid opening the chat in multiple tabs
 
