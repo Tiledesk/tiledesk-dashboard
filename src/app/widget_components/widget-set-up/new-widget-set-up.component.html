@@ -1510,10 +1510,12 @@
 									Pre-Chat form
 
 									<span *ngIf="preChatForm === true" style="text-transform: lowercase;">
-										({{ 'Enabled' | translate }})
+										<!-- ({{ 'Enabled' | translate }}) -->
+										(ON)
 									</span>
 									<span *ngIf="preChatForm === false" style="text-transform: lowercase;">
-										({{ 'Disabled' | translate}})
+										<!-- ({{ 'Disabled' | translate}}) -->
+										(OFF)
 									</span>
 								</h4>
 							</div>
@@ -1582,14 +1584,16 @@
 									<!-- style="padding-top: 14px;" -->
 									<label class="col-sm-12 control-label widget-settings-control-label"
 										style="position: relative;top: -6px;">
-										{{ 'CustomizeThePreChatForm' | translate }}
+										{{ 'CustomizeThePreChatForm' | translate }}. 
+										<span style="color:#03a5e8; cursor:pointer" (click)="goToPrechatFormExample()"> {{'HereSomeExamples' | translate}}. </span>
+										
 									</label>
 
 									<!--  -->
 									<div class="col-sm-12" *ngIf="preChatFormCustomFieldsEnabled === true">
 										<!-- [ngModel]="prechatFormTexareaJson | json" (ngModelChange)="onChangePrechatFormTexareaJson($event)" -->
 										<!-- (paste)="onPastePrechatFormJSON($event)" -->
-										<textarea id="prechat-form-texarea" rows="8" [(ngModel)]="prechatFormTexareaJson"   
+										<textarea id="prechat-form-texarea" rows="24" [(ngModel)]="prechatFormTexareaJson"   
 											style="width: 100%; border-radius: 5px;border: solid 1px #ddd; padding: 8px;font-weight: 400;resize: none">
 <!-- {{prechatFormTexareaJson}} -->
 									</textarea>
