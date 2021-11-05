@@ -2019,6 +2019,11 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     window.open(url, '_blank');
   }
 
+  goToPrechatFormExample() {
+    const url = 'https://developer.tiledesk.com/widget/advanced/prechat-form-json#examples';
+    window.open(url, '_blank');
+  }
+
   testWidgetPage() {
     // this.elementRef.nativeElement.blur();
 
