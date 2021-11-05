@@ -93,7 +93,7 @@ export class WsMsgsService {
         if (index === -1) {
           self.addWsMsg(data)
         } else {
-          self.logger.log("[WS-MSGS-SERV] - SUBSCRIBE TO MSGS BY REQUESTS ID - MSG ALREADY EXIST - NOT ADD");
+          // self.logger.log("[WS-MSGS-SERV] - SUBSCRIBE TO MSGS BY REQUESTS ID - MSG ALREADY EXIST - NOT ADD");
         }
 
       }, function (data, notification) {
