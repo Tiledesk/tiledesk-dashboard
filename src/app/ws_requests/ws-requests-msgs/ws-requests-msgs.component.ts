@@ -143,6 +143,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   attributesDecodedJWTArray: Array<any>
   attributesDecodedJWTAttributesArray: Array<any>
   attributesDecodedJWTArrayMerged: Array<any>
+  preChatFormArray: Array<any>;
   rightSidebarWidth: number;
   tag: any;
   tagcolor: any;
@@ -207,7 +208,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   urls: any = /(\b(https?|http|ftp|ftps|Https|rtsp|Rtsp):\/\/[A-Z0-9+&@#\/%?=~_|!:,.;-]*[-A-Z0-9+&@#\/%=~_|])/gim; // Find/Replace URL's in text  
   emails: any = /(\S+@\S+\.\S+)/gim; // Find/Replace email addresses in text
   FIREBASE_AUTH: boolean;
-
+  browserLang: string;
   /**
    * Constructor
    * @param router 
@@ -308,6 +309,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.getBaseUrl();
     this.getOSCODE();
     this.getFirebaseAuth();
+    this.getBrowserLang();
+
+    
   }
   ngAfterViewInit() {
     // -----------------------------------
@@ -329,19 +333,24 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     }
   }
 
+  getBrowserLang() {
+    this.browserLang = this.translate.getBrowserLang();
+    console.log('[WS-REQUESTS-MSGS] browserLang', this.browserLang)
+  }
+
   unsuscribeRequesterPresence(requester_id) {
     this.wsRequestsService.unsubscribeToWS_RequesterPresence(requester_id);
   }
 
   getFirebaseAuth() {
-    this.logger.log('[WS-REQUESTS-MSGS] - this.appConfigService.getConfig().firebaseAuth  ', this.appConfigService.getConfig().firebaseAuth );
+    this.logger.log('[WS-REQUESTS-MSGS] - this.appConfigService.getConfig().firebaseAuth  ', this.appConfigService.getConfig().firebaseAuth);
     if (this.appConfigService.getConfig().firebaseAuth === true) {
       this.FIREBASE_AUTH = true;
       this.logger.log('[WS-REQUESTS-MSGS] - FIREBASE_AUTH IS ', this.FIREBASE_AUTH);
     } else if (this.appConfigService.getConfig().firebaseAuth === false) {
       this.FIREBASE_AUTH = false;
       this.logger.log('[WS-REQUESTS-MSGS] - FIREBASE_AUTH IS ', this.FIREBASE_AUTH);
-    } 
+    }
   }
 
   getBaseUrlsFromAppConfig() {
@@ -539,11 +548,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     }
   }
 
-    // https://stackoverflow.com/questions/40983055/how-to-reload-the-current-route-with-the-angular-2-router
-    redirectTo(uri: string, projectid: string) {
-      this.router.navigateByUrl('project/' + projectid + '/wsrequest/loading', { skipLocationChange: true }).then(() =>
-        this.router.navigate([uri]));
-    }
+  // https://stackoverflow.com/questions/40983055/how-to-reload-the-current-route-with-the-angular-2-router
+  redirectTo(uri: string, projectid: string) {
+    this.router.navigateByUrl('project/' + projectid + '/wsrequest/loading', { skipLocationChange: true }).then(() =>
+      this.router.navigate([uri]));
+  }
 
 
   /**
@@ -950,6 +959,65 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             this.logger.log('[WS-REQUESTS-MSGS] - ATTRIBUTES IS UNDEFINED (getWsRequestById) (in  decoded_jwt) (1)');
           }
 
+          // ---------------------------------------------------------
+          // Attributes PRE-CHAT FORM
+          // ---------------------------------------------------------
+          if (this.request.attributes && this.request.attributes.preChatForm) {
+            // ----------------------------------------
+            // new: display all attributes dinamically
+            // ----------------------------------------
+            this.preChatFormArray = []
+            for (let [key, value] of Object.entries(this.request.attributes.preChatForm)) {
+
+              console.log(`[WS-REQUESTS-MSGS] - getWsRequestById ATTRIBUTES > PRE-CHAT FORM key : ${key} - value ${value}`);
+
+              let _value: any;
+              if (typeof value === 'object' && value !== null) {
+                // this.logger.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES value is an object :`, JSON.stringify(value));
+                _value = JSON.stringify(value)
+              } else {
+                _value = value
+              }
+
+              // https://stackoverflow.com/questions/50463738/how-to-find-width-of-each-character-in-pixels-using-javascript
+              let letterLength = {};
+              let letters = ["", " ", " ?", "= ", " -", " :", " _", " ,", " ", " ", " ", "(", ")", "}", "{", "\"", " ", "/", ".", "a", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+
+              for (let letter of letters) {
+                let span = document.createElement('span');
+                span.append(document.createTextNode(letter));
+                span.style.display = "inline-block";
+                document.body.append(span);
+                letterLength[letter] = span.offsetWidth;
+                span.remove();
+              }
+              let totalLength = 0;
+
+              // for (let i = 0; i < _value.length; i++) {
+              //   this.logger.log(':-D Ws-REQUESTS-Msgs - getWsRequestById _value[i]', _value[i] + ": " + letterLength[_value[i]])
+              // }
+              if (_value) {
+                for (let i = 0; i < _value.length; i++) {
+                  if (letterLength[_value[i]] !== undefined) {
+                    totalLength += letterLength[_value[i]];
+                  } else {
+                    // if the letter not is in dictionary letters letterLength[_value[i]] is undefined so add the witdh of the 'S' letter (8px)
+                    totalLength += letterLength['S'];
+                  }
+                }
+                // this.logger.log(':-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES value LENGHT ', _value + " totalLength : " + totalLength)
+
+                let entries = { 'attributeName': key, 'attributeValue': _value, 'attributeValueL': totalLength };
+                // if (key !== 'decoded_jwt') {
+                this.preChatFormArray.push(entries)
+              }
+            }
+            console.log('[WS-REQUESTS-MSGS] - getWsRequestById preChatFormArray: ', this.preChatFormArray);
+
+          } else {
+            console.log('[WS-REQUESTS-MSGS] - getWsRequestById ATTRIBUTES > PRE-CHAT FORM IS UNDEFINED ', this.request.attributes.preChatForm);
+          }
+
 
 
           // -----------------------------------------------------------------------------------------------------
@@ -985,6 +1053,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       }, () => {
         this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById$ * COMPLETE *')
       });
+
+
+
 
   }
 
@@ -1394,6 +1465,25 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     acc.classList.toggle("active");
     // var panel = acc.nextElementSibling ;
     var panel = <HTMLElement>document.querySelector('.attributes-decoded-jwt-panel')
+    // this.logger.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT-  open attributes-decoded-jwt-panel  -  panel ', panel);
+
+    if (panel.style.maxHeight) {
+      panel.style.maxHeight = null;
+    } else {
+      panel.style.maxHeight = panel.scrollHeight + "px";
+    }
+  }
+
+    // ---------------------------------------------------------------------------------------
+  // @ Attributes Pre-chat form
+  // ---------------------------------------------------------------------------------------
+  openAttributesPrechatFormAccordion() {
+    // var acc = document.getElementsByClassName("accordion");
+    var acc = <HTMLElement>document.querySelector('.attributes-pre-chat-form-accordion');
+    // this.logger.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT - open attributes-decoded-jwt-accordion -  accordion elem ', acc);
+    acc.classList.toggle("active");
+    // var panel = acc.nextElementSibling ;
+    var panel = <HTMLElement>document.querySelector('.attributes-pre-chat-form-accordion-panel')
     // this.logger.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT-  open attributes-decoded-jwt-panel  -  panel ', panel);
 
     if (panel.style.maxHeight) {
@@ -2081,23 +2171,20 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   openChatInNewWindow() {
     // RESOLVE THE BUG: THE BUTTON 'OPEN THE CHAT' REMAIN FOCUSED AFTER PRESSED
     this.openChatBtn.nativeElement.blur();
-    // const url = this.CHAT_BASE_URL + '?recipient=' + this.id_request
-    // const url = this.CHAT_BASE_URL + "/" + this.id_request + "/" +  this.request.lead.fullname + "/active"
-    // this.logger.log('[WS-REQUESTS-MSGS] openChatInNewWindow request.lead.fullname ',  this.request.lead.fullname);
-    // window.open(url, '_blank');
-    this.logger.log('[WS-REQUESTS-MSGS] openChatInNewWindow FIREBASE_AUTH ', this.FIREBASE_AUTH);
-    this.logger.log('[WS-REQUESTS-MSGS] openChatInNewWindow CHAT_BASE_URL ', this.CHAT_BASE_URL);
-    let url = '';
     
-    if (this.FIREBASE_AUTH === false) {
-      url = this.CHAT_BASE_URL + "/" + this.id_request + "/" + this.request.lead.fullname + "/active"
-    } else if (this.FIREBASE_AUTH === true)  {
-      url = this.CHAT_BASE_URL + '?recipient=' + this.id_request;
-    } else {
-      url = this.CHAT_BASE_URL + '#/conversation-detail/'+ this.id_request + "/" + this.request.lead.fullname + "/active"
-    }
+
+    this.logger.log('[WS-REQUESTS-MSGS] openChatInNewWindow CHAT_BASE_URL ', this.CHAT_BASE_URL);
+    // let url = '';
+    // if (this.FIREBASE_AUTH === false) {
+    //   url = this.CHAT_BASE_URL + "/" + this.id_request + "/" + this.request.lead.fullname + "/active"
+    // } else if (this.FIREBASE_AUTH === true)  {
+    //   url = this.CHAT_BASE_URL + '?recipient=' + this.id_request;
+    // } else {
+    //   url = this.CHAT_BASE_URL + '#/conversation-detail/'+ this.id_request + "/" + this.request.lead.fullname + "/active"
+    // }
+    const url = this.CHAT_BASE_URL + '#/conversation-detail/' + this.id_request + "/" + this.request.lead.fullname + "/active"
     this.logger.log('[WS-REQUESTS-MSGS] openChatInNewWindow url ', url);
-   
+
     window.open(url, '_blank');
 
     // this.openWindow('Tiledesk - Open Source Live Chat', url)
@@ -2134,11 +2221,19 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // https://support-pre.tiledesk.com/chat/index.html?recipient=5de9200d6722370017731969&recipientFullname=Nuovopre%20Pre
     // https://support-pre.tiledesk.com/chat/index.html?recipient=5dd278b8989ecd00174f9d6b&recipientFullname=Gian Burrasca
 
-    let _agentLastName = ''
+    // let _agentLastName = ''
+    // if (agentLastname) {
+    //   _agentLastName = agentLastname
+    // }
+    // const url = this.CHAT_BASE_URL + '?' + 'recipient=' + agentId + '&recipientFullname=' + agentFirstname + ' ' + _agentLastName;
+
+    let agentFullname = ''
     if (agentLastname) {
-      _agentLastName = agentLastname
+      agentFullname = agentFirstname + ' ' + agentLastname
+    } else {
+      agentFullname = agentFirstname
     }
-    const url = this.CHAT_BASE_URL + '?' + 'recipient=' + agentId + '&recipientFullname=' + agentFirstname + ' ' + _agentLastName;
+    const url = this.CHAT_BASE_URL + '#/conversation-detail/' + agentId + '/' + agentFullname + '/new'
     this.logger.log('[WS-REQUESTS-MSGS] - chatWithAgent - CHAT URL ', url);
     window.open(url, '_blank');
   }
