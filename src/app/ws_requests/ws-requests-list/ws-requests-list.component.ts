@@ -460,10 +460,6 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       });
   }
 
-
-
- 
-
   public scrollRightTeammates(): void {
     this.widgetsContent.nativeElement.scrollTo({ left: (this.widgetsContent.nativeElement.scrollLeft + 150), behavior: 'smooth' });
   }
