@@ -312,6 +312,7 @@
         font-weight: 400;
         margin: 0;
         color: #2b2b2b;
+        line-height: 1.5;
       }
       .ow {
         overflow-wrap: break-word;
@@ -1524,6 +1525,65 @@ and also iPads specifically.
 }
 /* ./ Attributes Accordion */
 
+/*
+ Attributes Pre-chat Form Accordion  
+ ----------------------------------- */
+ .attributes-pre-chat-form-accordion-wpr {
+
+  border-bottom: 1px solid #eeeeee;
+ }
+
+ .attributes-pre-chat-form-accordion {
+  // background-color: #eee;
+  color: #444;
+  cursor: pointer;
+  padding: 8px 0px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+  transition: 0.4s;
+}
+
+// .active,
+.attributes-pre-chat-form-accordion:hover {
+  // background-color: #ccc;
+  background-color: #f7f8fc;
+}
+
+.attributes-pre-chat-form-accordion:after {
+  // content: "\002B";
+  content: "\f107";
+  font-family: FontAwesome;
+  // color: #777;
+  color: #039be5;
+  font-weight: bold;
+  float: right;
+  // margin-left: 5px;
+  font-size: 20px;
+  padding-right: 4px;
+}
+.attributes-pre-chat-form-accordion.active:after {
+  content: "\f106";
+  font-family: FontAwesome;
+}
+
+// .active:after {
+//   content: "\2212";
+//   // content: "\f107";
+// }
+.attributes-pre-chat-form-accordion-panel {
+  padding: 0 18px;
+  background-color: white;
+  max-height: 0;
+  // overflow: hidden;
+  overflow-y: auto;
+  // transition: max-height 0.2s ease-out;
+}
+/* ./ Attributes Pre-chat Form Accordion */
+
+
 /* 
  Attributes decoded JWT Accordion 
  ------------------------------------ */
@@ -1631,7 +1691,8 @@ and also iPads specifically.
   padding: 3px 6px;
   margin-bottom: 6px;
   margin-top: 0px;
-  width: 70px; 
+  // width: 70px; 
+  min-width: 70px; 
   height: 22px; 
 }
 
