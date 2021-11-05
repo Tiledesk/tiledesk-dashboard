@@ -157,7 +157,14 @@ export class UsersComponent implements OnInit, OnDestroy {
 
     // https://support-pre.tiledesk.com/chat/index.html?recipient=5de9200d6722370017731969&recipientFullname=Nuovopre%20Pre
     // https://support-pre.tiledesk.com/chat/index.html?recipient=5dd278b8989ecd00174f9d6b&recipientFullname=Gian Burrasca
-    const url = this.CHAT_BASE_URL + '?' + 'recipient=' + agentId + '&recipientFullname=' + agentFirstname + ' ' + agentLastname;
+    // const url = this.CHAT_BASE_URL + '?' + 'recipient=' + agentId + '&recipientFullname=' + agentFirstname + ' ' + agentLastname;
+    let agentFullname = ''
+    if (agentLastname) {
+      agentFullname = agentFirstname + ' ' + agentLastname
+    } else {
+      agentFullname = agentFirstname
+    }
+    const url = this.CHAT_BASE_URL + '#/conversation-detail/' + agentId + '/' + agentFullname + '/new'
     this.logger.log('[USERS] - CHAT WITH AGENT - CHAT URL ', url);
     window.open(url, '_blank');
   }
