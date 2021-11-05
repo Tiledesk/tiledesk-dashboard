@@ -1,6 +1,17 @@
 
 # tiledesk-dashboard
 
+### 2.2.26
+- Fixes the bug: "Chat with" on the conversation details page and in the teammates list doesn't work
+- Fixes the bug: "Open Chat" on conversation list page, non-real-time conversation list page, and conversation detail page doesn't work
+- Fixes the bug: on the non-real-time conversation list page when the agent clicks "join chat", the page reloads
+- Adapts the code of the "html-entities-encode" pipe and of the "sanitize-html" pipe to the one used in the chat-ionic
+- Replaces the "sanitizeHtml" pipe in the chat section of the conversation details page with the "htmlEntitiesEncode" pipe
+- Adds the display of "iframes" in the chat section of the conversation detail page
+- Adds the accordion "Pre-Chat Form Data" to the conversation details sidebar showing the pre-chat form data filled in by the requester
+- Adds in the "Pre-chat form" section of the widget configuration page a link that redirects to the documentation with some examples on how to customize the pre-chat module
+- Increase the height of the "Customize the pre-chat form" text area in the "Pre-chat form" section of the widget configuration page
+
 ### 2.2.25
 - Adds the ability to upload user profile photo in .png format 
 - Adds the display of an error message in case the user profile photo upload fails
@@ -8,7 +19,7 @@
 - Increases the "toast error message" timer to 1500ms
 - Creates the registration token for push notifications even if the "firebaseAuth" property is set to false
 - Create a registration token for push notifications by passing the "vapidKey" property
-- Fixes the bug: the item containing the teammates does not scroll on the request list page
+- Fixes the bug: the teammate "carousel" on the conversation list page scrolls neither left nor right
 - Adds the "vapidKey" property to the env.sample, dashboard-config-template.json and dashboard-config.json files
 - Adds a check in the execution of the auto-login: the instance for receiving push notifications is not created if the token saved in the storage is the same as the one passed in the URL query string
 
