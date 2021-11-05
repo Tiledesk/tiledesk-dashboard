@@ -1747,7 +1747,7 @@
     "GoToGoogleTagManagerAnd": "Go to Google Tag Manager and",
     "FollowTheseInstructions": "follow these instructions",
     "OpenYourWebsite": "Open your website",
-    "AskYourVisitorForTheirNameAndEmailBeforeStartingAChat": "Ask your visitor for their name and email before starting a chat by enabling the pre-chat form",
+    "AskYourVisitorForTheirNameAndEmailBeforeStartingAChat": "Ask your visitor for his name and email or other information before starting a chat by enabling the pre-chat form",
     "MakeDefault": "Make Default",
     "CurrentlyDisplayedInThePreview": "Currently displayed in the preview",
     "CurrentlySelected": "Currently selected",
@@ -1953,5 +1953,7 @@
    "Project":"Project",
    "YourProjects": "Your Projects",
    "SorryTheFollowingErrorOccurredWhileUploadingTheImage":"Sorry, the following error occurred while loading the image:",
-   "SorryFileTypeNotSupported": "Sorry, unsupported file type"
+   "SorryFileTypeNotSupported": "Sorry, unsupported file type",
+   "PreChatFormData":"Pre-chat form data",
+   "HereSomeExamples":"Here some examples"
 }

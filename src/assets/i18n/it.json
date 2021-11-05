@@ -1728,7 +1728,7 @@
     "GoToGoogleTagManagerAnd": "Vai a Google Tag Manager e",
     "FollowTheseInstructions": "segui queste istruzioni",
     "OpenYourWebsite": "Apri il tuo sito web",
-    "AskYourVisitorForTheirNameAndEmailBeforeStartingAChat": "Chiedi al tuo visitatore il nome e l'e-mail prima di avviare una chat abilitando il modulo di pre-chat",
+    "AskYourVisitorForTheirNameAndEmailBeforeStartingAChat": "Chiedi al tuo visitatore il suo nome e la sua email o altre informazioni prima di iniziare una chat abilitando il modulo di pre-chat",
     "MakeDefault": "Rendi predefinita",
     "CurrentlyDisplayedInThePreview": "Attualmente visualizzata nell'anteprima",
     "CurrentlySelected": "Attualmente selezionato",
@@ -1934,5 +1934,7 @@
     "Project":"Progetto",
     "YourProjects": "I tuoi progetti",
     "SorryTheFollowingErrorOccurredWhileUploadingTheImage":"Spiacenti, si è verificato il seguente errore durante il caricamento dell'immagine:",
-    "SorryFileTypeNotSupported": "Spiacenti, tipo di file non supportato"
+    "SorryFileTypeNotSupported": "Spiacenti, tipo di file non supportato",
+    "PreChatFormData":"Dati del modulo pre-chat",
+    "HereSomeExamples":"Qui alcuni esempi"
 }
