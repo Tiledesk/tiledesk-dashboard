@@ -38,10 +38,14 @@ color: #fff!important; -->
   <div class="speech-wrapper-train" style="padding-top: 8px;">
     <div class="bubble">
       <div class="txt selected-question">
-      
-        <!-- <p class="message">{{ selectedQuestion}} </p> -->
-        <p class="message" [innerHTML]="selectedQuestion | htmlEntitiesEncode | autolinker "> </p>
-        
+    
+        <!-- <p class="message" [innerHTML]="selectedQuestion | htmlEntitiesEncode | autolinker "> </p> -->
+        <!-- -------------------------------------------------------------- -->
+        <!-- first combination: | marked | sanitizeHtml -->
+        <!-- 2nd combination: | htmlEntitiesEncode | autolinker -->
+        <!-- 3rd combination (as in chat): | htmlEntitiesEncode  | marked -->
+        <!-- -------------------------------------------------------------- -->
+        <p class="message" [innerHTML]="selectedQuestion | htmlEntitiesEncode  | marked"> </p>
         
       </div>
       <div class="bubble-arrow"></div>
