@@ -227,7 +227,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   }
 
 
- // --------------------------------------------------
+  // --------------------------------------------------
   // @ Detect browser refresh
   // --------------------------------------------------
   detectBrowserRefresh() {
@@ -481,19 +481,24 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   openChatInNewWindow(requestid: string, requester_fullanme: string) {
     this.logger.log('[WS-REQUESTS-LIST][SERVED] - openChatInNewWindow - requestid', requestid);
     this.logger.log('[WS-REQUESTS-LIST][SERVED] - openChatInNewWindow - requester_fullanme', requester_fullanme);
-    // const url = this.CHAT_BASE_URL + '?recipient=' + requestid;
-    // window.open(url, '_blank');
-    // const url = this.CHAT_BASE_URL + "/" + requestid + "/" +  requester_fullanme + "/active";
 
-    let url = '';
-    if (this.FIREBASE_AUTH === false) {
-      url = this.CHAT_BASE_URL + "/" + requestid + "/" + requester_fullanme + "/active"
-    } else if (this.FIREBASE_AUTH === true) {
-      url = this.CHAT_BASE_URL + '?recipient=' + requestid;
-    } else {
-      url = this.CHAT_BASE_URL + '#/conversation-detail/' + requestid + "/" + requester_fullanme + "/active"
-    }
+    // NOTE: to test AVOID OPENING THE CHAT IN A NEW BROWSER TAB EVEN WHEN THE CHAT IS ALREADY OPEN
+    // let url = ''
+    // if (!chatStoredUser) {
+    //   url = this.CHAT_BASE_URL + '#/conversation-detail/' + requestid + "/" + requester_fullanme + "/active"
+    // } else {
+    //   url = this.CHAT_BASE_URL + '#/conversation-detail?convselected=' + requestid
+    // }
 
+    // let url = '';
+    // if (this.FIREBASE_AUTH === false) {
+    //   url = this.CHAT_BASE_URL + "/" + requestid + "/" + requester_fullanme + "/active"
+    // } else if (this.FIREBASE_AUTH === true) {
+    //   url = this.CHAT_BASE_URL + '?recipient=' + requestid;
+    // } else {
+    //   url = this.CHAT_BASE_URL + '#/conversation-detail/' + requestid + "/" + requester_fullanme + "/active"
+    // }
+    const url = this.CHAT_BASE_URL + '#/conversation-detail/' + requestid + "/" + requester_fullanme + "/active"
     window.open(url, '_blank');
 
     // this.openWindow('Tiledesk - Open Source Live Chat', url)
