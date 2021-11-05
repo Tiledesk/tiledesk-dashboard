@@ -219,11 +219,11 @@
               <div class="rect5"></div>
             </div>
 
+
+
             <div #scrollMe class="card-content"
               style="height: 500px; overflow-y: auto; padding: 0px; padding-left:25px; padding-right:25px "
               (scroll)="onScroll($event)">
-
-
               <div *ngIf="!showSpinner" class="chat-body" style="vertical-align:baseline;">
 
                 <!-- style="padding-bottom: 3px;" class="answer left" -->
@@ -231,41 +231,25 @@
 
                   <!-- ////// INFO MSG -->
                   <!-- requester_id: {{requester_id}} message_sender {{message.sender}} type
-                        {{message?.attributes?.subtype}} rext {{ message?.text }} -->
+                      {{message?.attributes?.subtype}} rext {{ message?.text }} -->
                   <div
                     *ngIf="message?.attributes?.subtype === 'info' || message?.attributes?.subtype === 'info/support'"
-                    style="padding:20px 55px; text-align:center">
+                    style="padding:12px 55px; text-align:center">
                     <div>
-                      <!-- <div class="requester-avatar-wrapper"
-                              style="display: block;border-radius: 50%; height: 100%; margin-top: 35px;"
-                              [ngStyle]="{'background-color': fillColour }">
-
-                              <span class="_requester-avatar-inchat">
-
-                                {{ requester_fullname_initial }}
-                              </span>
-                            </div> -->
-
                       <div class="txt">
-                        <!-- <p class="name" [ngStyle]="{'color': fillColour }">
-                                {{ message.senderFullname }}
-                                
-                                <span *ngIf="message?.type === 'text'"
-                                  style="float:right; cursor:pointer; color: #00bcf8; text-decoration: underline;"
-                                  (click)="openRightSideBar(message?.text)">
-                                  {{ 'Train' | translate }}
-                                </span>
-                              </p> -->
-                        <!--  | htmlEntitiesEncode | autolinker-->
+                        <!-- -------------------------------------------------------------- -->
+                        <!-- first combination: | marked | sanitizeHtml -->
+                        <!-- 2nd combination: | htmlEntitiesEncode | autolinker -->
+                        <!-- 3rd combination (as in chat): | htmlEntitiesEncode  | marked -->
+                        <!-- -------------------------------------------------------------- -->
                         <p *ngIf="message?.type === 'text'" class="type-info-msg-text"
-                          [innerHTML]="message?.text | marked  | sanitizeHtml">
-                          <!-- {{ message?.text }} -->
+                          [innerHTML]="message?.text | htmlEntitiesEncode | marked">
                         </p>
                         <!-- <div *ngIf="message?.type === 'image'" class="message ow">
-                                <div class="image-container" style="height:200px; width:200px;">
-                                  <img src={{message.metadata.src}} class="message-img" />
-                                </div>
-                              </div> -->
+                              <div class="image-container" style="height:200px; width:200px;">
+                                <img src={{message.metadata.src}} class="message-img" />
+                              </div>
+                            </div> -->
                         <!-- <span class="timestamp"> {{ message?.createdAt | date: 'd/M/y HH:mm:ss'}} </span> -->
                       </div>
                       <!-- <div class="bubble-arrow"></div> -->
@@ -276,13 +260,10 @@
                   <div class="parent"
                     *ngIf="message?.attributes?.subtype !== 'info' && message?.attributes?.subtype !== 'info/support'">
                     <div [ngClass]="{'child' : requester_id !== message.sender}">
-
                       <div class="speech-wrapper">
-
-
                         <!-- ////// REQUESTER -->
                         <!-- requester_id: {{requester_id}} message_sender {{message.sender}} type
-                        {{message?.attributes?.subtype}} -->
+                      {{message?.attributes?.subtype}} -->
                         <div *ngIf="requester_id === message.sender && message?.attributes?.subtype !== 'info'"
                           class="bubble">
                           <div class="avatar"
@@ -292,31 +273,31 @@
                               [ngStyle]="{'background-color': fillColour }">
 
                               <span class="_requester-avatar-inchat">
-
                                 {{ requester_fullname_initial }}
                               </span>
                             </div>
                           </div>
 
                           <div class="txt">
-                            <p class="name" [ngStyle]="{'color': fillColour }">{{ message.senderFullname }}
-                              <!-- margin-right: -45px; -->
-                              <span *ngIf="message?.type === 'text'"
+                            <p class="name" [ngStyle]="{'color': fillColour }">
+                              {{ message.senderFullname }}
+                              <span *ngIf="message?.type === 'text' && !message?.metadata"
                                 style="float:right; cursor:pointer; color: #00bcf8; text-decoration: underline;"
                                 (click)="openRightSideBar(message?.text)">
-                                <!-- Addestra -->
                                 {{ 'Train' | translate }}
-
                               </span>
                             </p>
-                            <!-- [innerHTML]="message?.text | marked" -->
-                            <!--  | htmlEntitiesEncode | autolinker-->
+                            <!-- -------------------------------------------------------------- -->
+                            <!-- first combination: | marked | sanitizeHtml -->
+                            <!-- 2nd combination: | htmlEntitiesEncode | autolinker -->
+                            <!-- 3rd combination (as in chat): | htmlEntitiesEncode  | marked -->
+                            <!-- -------------------------------------------------------------- -->
                             <p *ngIf="message?.type === 'text'" class="message ow"
-                              [innerHTML]="message?.text | marked | sanitizeHtml">
-                              <!-- {{ message?.text  }} -->
+                              [innerHTML]="message?.text | htmlEntitiesEncode | marked ">
                             </p>
                             <div *ngIf="message?.type === 'image'" class="message ow">
-                              <div class="image-container" style="height:200px; width:200px;">
+                              <!-- style="height:200px; width:200px;" -->
+                              <div class="image-container">
                                 <img src={{message.metadata.src}} class="message-img" />
                               </div>
                             </div>
@@ -387,52 +368,58 @@
                                   src="{{baseUrl}}images?path=uploads%2Fusers%2F{{message?.sender | slice:4}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                                   onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
                               </span>
-
-                              <!-- USE CASE: system but with name Bot -->
-                              <!-- <span *ngIf="message?.sender === 'system' && message?.senderFullname === 'Bot'"
-                                  style="position: absolute; top:43px; margin-left:13px;color: #999999;">
-                                  
-                                  <img
-                                    style="vertical-align: middle; width: 36px; height: 36px; border-radius: 50%; border: 1px solid #eee; position:relative;top: -9px;left: -14px;"
-                                    class="user-img" src="assets/img/bot_image_as_human.jpg"
-                                    onerror="this.src='assets/img/no_image_user.png'" />
-                                </span> -->
-
-                              <!-- USE CASE: system -->
-                              <!-- <span *ngIf="message?.sender === 'system' && message?.senderFullname !== 'Bot'"
-                                  style="position: absolute; top:43px; margin-left:13px;color: #999999;">
-                                  
-                                  <i class="material-icons"
-                                    style="position: relative;left: -9px;top: -3px;font-size:26px">
-                                    code
-                                  </i>
-                                </span> -->
-
-
                             </div>
                           </div>
                           <div class="txt">
                             <p class="name alt">
                               {{ message?.senderFullname }}
-                              <!-- +353 87 1234 567<span> ~ John</span> -->
                             </p>
-                            <!-- [innerHTML]="message?.text | marked" -->
-                            <!-- | htmlEntitiesEncode | autolinker-->
+                            <!-- -------------------------------------------------------------- -->
+                            <!-- first combination: | marked | sanitizeHtml -->
+                            <!-- 2nd combination: | htmlEntitiesEncode | autolinker -->
+                            <!-- 3rd combination (as in chat): | htmlEntitiesEncode  | marked -->
+                            <!-- -------------------------------------------------------------- -->
                             <p *ngIf="message?.type === 'text' || message?.type === 'file'" class="message ow"
-                              [innerHTML]="message?.text | marked  | sanitizeHtml">
-                              <!-- {{ message?.text}} -->
-                            </p>
+                              [innerHTML]="message?.text | htmlEntitiesEncode | marked">
+
                             <div *ngIf="message?.type === 'image'" class="message ow">
-                              <div class="image-container" style="height:200px; width:200px;">
+                              <!-- style="height:200px; width:200px;" -->
+                              <div class="image-container">
                                 <img src={{message.metadata.src}} class="message-img" />
-                                <!-- <div *ngIf="!message.text.startsWith('Image: https:')"> -->
-                                <div *ngIf="!message?.metadata?.type?.startsWith('image')">
-                                  <!-- htmlEntitiesEncode | autolinker -->
-                                  <p [innerHTML]="message?.text | marked  | sanitizeHtml"></p>
+
+                                <p *ngIf="message?.text" [innerHTML]="message?.text | htmlEntitiesEncode | marked"></p>
+
+                                <div *ngIf="message?.metadata?.type && !message?.metadata?.type?.startsWith('image')">
+                                  <!-- -------------------------------------------------------------- -->
+                                  <!-- first combination: | marked | sanitizeHtml -->
+                                  <!-- 2nd combination: | htmlEntitiesEncode | autolinker -->
+                                  <!-- 3rd combination (as in chat): | htmlEntitiesEncode  | marked -->
+                                  <!-- -------------------------------------------------------------- -->
+                                  <p [innerHTML]="message?.text | htmlEntitiesEncode | marked"></p>
                                 </div>
 
                               </div>
                             </div>
+
+                            <!-- // iframe -->
+                            <div *ngIf="message?.type === 'frame'" class="message ow">
+                              <!-- style="height:200px; width:200px;" -->
+                              <div class="image-container">
+                                <iframe allowfullscreen width="80%" height="80%" style="border:none;"
+                                  [src]="message.metadata.src | sanitizeHtml" class="message-img"></iframe>
+
+
+                                <!-- -------------------------------------------------------------- -->
+                                <!-- first combination: | marked | sanitizeHtml -->
+                                <!-- 2nd combination: | htmlEntitiesEncode | autolinker -->
+                                <!-- 3rd combination (as in chat): | htmlEntitiesEncode  | marked -->
+                                <!-- -------------------------------------------------------------- -->
+                                <p [innerHTML]="message?.text | htmlEntitiesEncode | marked"></p>
+
+
+                              </div>
+                            </div>
+
                             <span class="timestamp"> {{ message?.createdAt | date: 'd/M/y HH:mm:ss'}}</span>
                           </div>
                           <div class="bubble-arrow alt"></div>
@@ -1125,9 +1112,9 @@
                 <!-- --------------------------------------------------------------------- -->
                 <div *ngIf="CHAT_PANEL_MODE === true" class="row" style="margin-top:5px">
                   <!-- border-top: 1px solid #e1eef4;" -->
-                  
-                    <div class="col-sm-12">
-                      <!-- <p (click)="goToProjectHomeInNewTab()" class="chat-panel-mode-project-name" style="">
+
+                  <div class="col-sm-12">
+                    <!-- <p (click)="goToProjectHomeInNewTab()" class="chat-panel-mode-project-name" style="">
                       <i class="material-icons" style="vertical-align: middle; color: #394f5a;font-size:16px">apps</i>
                       <span style="position: relative;top: 1px;">
                         <span
@@ -1143,40 +1130,40 @@
                       </span>
                     </p> -->
 
-                      <span style="position: relative;top: 1px;">
-                        <div class="row">
-                          <!-- (click)="goToProjectHomeInNewTab()" -->
-                          <div class="col-xs-10" style="padding-right:10px">
-                            <p (click)="goToProjectHomeInNewTab()" class="chat-panel-mode-project-name"
-                              style="margin-top: 0px;">
-                              <i class="material-icons"
-                                style="vertical-align: middle; color: #394f5a;font-size:16px">apps</i>
-                              <span style="position: relative;top: 1px;">
-                                <span
-                                  style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
-                                  {{ "Project" | translate }}
-                                </span>
-                                <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
-                                  {{ project_name }}
-                                </span>
-                                <!-- <i (click)="goToProjectHomeInNewTab()" class="material-icons"
+                    <span style="position: relative;top: 1px;">
+                      <div class="row">
+                        <!-- (click)="goToProjectHomeInNewTab()" -->
+                        <div class="col-xs-10" style="padding-right:10px">
+                          <p (click)="goToProjectHomeInNewTab()" class="chat-panel-mode-project-name"
+                            style="margin-top: 0px;">
+                            <i class="material-icons"
+                              style="vertical-align: middle; color: #394f5a;font-size:16px">apps</i>
+                            <span style="position: relative;top: 1px;">
+                              <span
+                                style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
+                                {{ "Project" | translate }}
+                              </span>
+                              <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
+                                {{ project_name }}
+                              </span>
+                              <!-- <i (click)="goToProjectHomeInNewTab()" class="material-icons"
                                 style="vertical-align: middle; color: #0f62ff;font-size:12px; cursor: pointer;">open_in_new</i> -->
 
-                              </span>
-                            </p>
-                          </div>
-
-                          <div class="col-xs-2" style="text-align: right;">
-                            <i id="request_id_arrow_down" class="material-icons rotate"
-                              style="cursor: pointer; color: #039be5; font-size:18px;position:relative; top:2px"
-                              (click)="goToProjectHomeInNewTab()">
-                              open_in_new
-                            </i>
-                          </div>
+                            </span>
+                          </p>
                         </div>
-                      </span>
-                    </div>
-                  
+
+                        <div class="col-xs-2" style="text-align: right;">
+                          <i id="request_id_arrow_down" class="material-icons rotate"
+                            style="cursor: pointer; color: #039be5; font-size:18px;position:relative; top:2px"
+                            (click)="goToProjectHomeInNewTab()">
+                            open_in_new
+                          </i>
+                        </div>
+                      </div>
+                    </span>
+                  </div>
+
                 </div>
 
                 <!-- --------------------------------------------------------------------- -->
@@ -2069,182 +2056,77 @@
                     </div>
                   </div>
                 </div>
-                <!-- </div>
-                  </div> -->
+
+
+                <!--  ---------------------------------------------------------------- -->
+                <!--  @ Pre-chat form accordion -->
+                <!--  ---------------------------------------------------------------- -->
+                <div *ngIf="request?.attributes?.preChatForm" class="row">
+                  <div class="col-sm-12 attributes-pre-chat-form-accordion-wpr"
+                    style="padding-left: 0px; padding-right: 0px;">
+                    <p class="row-header  attributes-pre-chat-form-accordion"
+                      (click)="openAttributesPrechatFormAccordion()"
+                      style="padding-left: 15px; padding-right: 15px;font-size: 14px;">
+
+                      <span>
+                        <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                        viewBox="0 0 18 18" style="enable-background:new 0 0 18 18;width: 24px; height: 24px;" xml:space="preserve">
+                     <style type="text/css">
+                       .st0_prechat-form{fill:#2C3E48;}
+                     </style>
+                     <path class="st0_prechat-form" d="M14.3,3h-3.2c-0.2-0.8-1-1.5-2-1.5S7.3,2.2,7,3H3.9C3.1,3,2.3,3.7,2.3,4.5V15c0,0.8,0.7,1.5,1.5,1.5h10.5
+                       c0.8,0,1.5-0.7,1.5-1.5V4.5C15.9,3.7,15.1,3,14.3,3z M9.1,2.8c0.3,0,0.6,0.3,0.6,0.6S9.3,4,9.1,4S8.5,3.7,8.5,3.3
+                       C8.5,3,8.8,2.8,9.1,2.8z M5,6.2h8c0.5,0,0.9,0.4,0.9,0.9c0,0.5-0.4,0.9-0.9,0.9H5c-0.5,0-0.9-0.4-0.9-0.9C4.1,6.6,4.5,6.2,5,6.2z
+                        M13,13.9H5c-0.5,0-0.9-0.4-0.9-0.9c0-0.5,0.4-0.9,0.9-0.9h8c0.5,0,0.9,0.4,0.9,0.9C13.9,13.5,13.5,13.9,13,13.9z M13,10.9H5
+                       c-0.5,0-0.9-0.4-0.9-0.9c0-0.5,0.4-0.9,0.9-0.9h8c0.5,0,0.9,0.4,0.9,0.9C13.9,10.5,13.5,10.9,13,10.9z"/>
+                     </svg>
 
 
 
-                <!-- ----------------------------------------------------------------------------- -->
-                <!-- Requester  !! is not dispalyed (now is displayed as title of the left card) -->
-                <!-- ----------------------------------------------------------------------------- -->
-                <div class="card right-card"
-                  style="padding-top:5px; padding-bottom:5px; margin-top: 5px;margin-bottom: 5px; display: none;">
-                  <div class="card-content" style="padding-top: 5px;padding-bottom: 5px;">
-
-                    <div class="row">
-                      <div class="col-sm-12">
-                        <p class="row-header">
-                          <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
-                          <span style="vertical-align: middle">
-                            {{ "RequestMsgsPage.Requester" | translate }}
-                          </span>
-                        </p>
-                        <!-- style="color:#999999; font-weight: 500" -->
-                        <p class="row-body" style="margin-bottom:0px; padding-bottom:0px">
-
-                          <!-- // REQUESTER FULLNAME  -->
-                          <span class="requester-avatar-wrapper">
-                            <span class="_requester-avatar" [ngStyle]="{'background-color': fillColour }"
-                              [ngClass]="{'requester_fullname-undefined' : !request?.lead?.fullname}">
-                              <span style="color: #ffffff"> {{ requester_fullname_initial }} </span>
-                            </span>
-                            <span *ngIf="REQUESTER_IS_VERIFIED === true" class="tooltipx">
-                              <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
-                                xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 26.6 26.6"
-                                width="17" height="17" style="position: relative;left: -43px;top: -3px;"
-                                xml:space="preserve">
-                                <style type="text/css">
-                                  .st0 {
-                                    fill: none;
-                                  }
-
-                                  .st1 {
-                                    fill: #FFFFFF;
-                                  }
-
-                                  .st2 {
-                                    fill: #18BDF7;
-                                  }
-                                </style>
-                                <path class="st0" d="M1.3,1.3h24v24h-24V1.3z" />
-                                <path class="st1"
-                                  d="M13.3,0L2.4,4.9v7.3c0,6.7,4.6,13,10.9,14.5c6.2-1.5,10.9-7.8,10.9-14.5V4.9L13.3,0z" />
-                                <path class="st2" d="M13.3,2.3l-9,4v6c0,5.5,3.8,10.7,9,12c5.2-1.3,9-6.5,9-12v-6L13.3,2.3z M11.3,18.3l-4-4l1.4-1.4l2.6,2.6
-                                l6.6-6.6l1.4,1.4L11.3,18.3z" />
-                              </svg>
-
-                              <span class="tooltiptext"> {{ "VisitorsPage.AuthenticatedUser" | translate }} </span>
-
-                            </span>
-                            <div class="requester-status-icon"
-                              [ngClass]="{'requester_is_online' : REQUESTER_IS_ONLINE}">
-                            </div>
-
-                          </span>
-
-                          <!-- <span style="color:#394f5a;"> {{ "RequestMsgsPage.RequesterName" | translate }}: </span>  -->
-                          <span [ngClass]="{'requester-verified' : REQUESTER_IS_VERIFIED === true}"
-                            style="margin-left: 2px;font-size:12px">
-                            <!-- {{ requester_fullname }} -->
-                            {{request?.lead?.fullname}}
-                          </span>
-                          <span *ngIf="!request?.lead?.fullname"
-                            [ngClass]="{'requester-verified' : REQUESTER_IS_VERIFIED === true}"
-                            style="margin-left: 2px;">
-                            n.a.
-                          </span>
-
-                          <!-- // VIEW DETAILS BTN -->
-                          <span *ngIf="NODEJS_REQUEST_CNTCT_FOUND">
-                            <!-- <button class="btn btn-xs btn-white-custom-round pull-right"
-                        style="margin-left:8px;margin-top: 4px;" (click)="goToContactDetails()">
-                        {{ 'ViewDetails' | translate}}
-                      </button> -->
-
-
-                            <div (click)="goToContactDetails()" class="manage_tags">
-                              {{ 'ViewDetails' | translate}}
-                            </div>
-                          </span>
-                        </p>
-
-
-                        <!-- <p class="row-body" style="margin-top:8px; margin-bottom:0px; padding-bottom:0px">
-                          <span style="color:#394f5a;"> {{ "RequestMsgsPage.ChatFormUserName" | translate }}: </span>
-                          {{ user_name }}
-                        </p> -->
-
-                        <p class="row-body" style="margin-bottom:6px;padding-bottom:0px; margin-top:6px;">
-
-
-                          <!-- ------------------------------------------------------ -->
-                          <!-- no more get from request attributes but from lead -->
-                          <!-- ------------------------------------------------------ -->
-
-                          <!-- <a *ngIf="user_email !== 'n.a.'" href="mailto:{{user_email}}">{{ user_email }}</a>
-                            <a *ngIf="user_email === 'n.a.'" style="color:#7695a5;">{{ user_email }}</a> -->
-
-                          <i class="material-icons"
-                            style="vertical-align: middle; color: #394f5a;font-size:16px; margin-left: 3px;"> email
-                          </i>
-                          <span style="position: relative;top: 1px;">
-                            <span
-                              style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important">
-                              {{ "RequestMsgsPage.ChatFormUserEmail" | translate }}
-                            </span>
-                            <a style="text-transform: lowercase;" target="_blank" *ngIf="request?.lead?.email"
-                              href="mailto:{{request?.lead?.email}}">
-                              {{request?.lead?.email}}
-                            </a>
-                            <a *ngIf="!request?.lead?.email" style="color:#7695a5;">n.a.</a>
-                          </span>
-                        </p>
-
-                        <!-- <p class="row-body" style="margin-bottom:0px; padding-bottom:0px">
-                          <span style="color:#394f5a;"> id: </span>
-                            {{ requester_id }}
-                        </p> -->
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-
-
-                <!-- ------------------------------------------------------------------- -->
-                <!-- DEPARTMENT !! is not dispalyed (now is dispalyed in the first card) -->
-                <!-- ------------------------------------------------------------------- -->
-                <!-- <div class="card right-card" style="padding-top:5px; padding-bottom:5px; margin-top: 5px;margin-bottom: 5px;">
-                      <div class="card-content" style="padding-top: 5px;padding-bottom: 5px;"> -->
-                <div class="row" style="display: none;">
-                  <div class="col-sm-12" style="">
-                    <p class="row-header" style="">
-
-                      <!--  --------------------------------------------------------- -->
-                      <!--  no more get from request attributes but from DEPARTMENT -->
-                      <!--  --------------------------------------------------------- -->
-                      <!-- {{ department_name }} -->
-
-
-                      <span style="vertical-align: middle">
-                        {{ "RequestMsgsPage.DepartmentName" | translate }}
+                      </span>
+                      <span style="position: relative;top: -6px;">
+                        {{ "PreChatFormData" | translate }}
                       </span>
                     </p>
 
-                    <span class="row-body" style="display: block;">
-                      <i class="material-icons"
-                        style="vertical-align: middle; color: #394f5a;font-size:16px; margin-left: 3px;">
-                        account_balance </i>
-                      <!-- <span style="color:#394f5a;"> {{ "DeptsAddEditPage.DeptName" | translate }}: </span> -->
+                    <div class="attributes-pre-chat-form-accordion-panel">
+                      <div *ngFor="let attribute of preChatFormArray; let i = index">
+                        <div class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
 
-                      <span style="position:relative; top:1px">
-                        <span class="ws_requets_msgs__attributes">
-                          {{ "Department" | translate }}
-                        </span>
+                          <div class="row">
+                            <div class="col-xs-10" style="padding-right: 1px;padding-bottom: 5px;">
+                              <div style="float: left; margin-right: 4px;" class="ws_requets_msgs__attributes">
+                                {{attribute?.attributeName }}:
+                              </div>
 
-                        <span *ngIf="request?.department" style="color: #7695a5; font-weight: 500; font-size: 12px;">
-                          {{request?.department?.name}}
-                        </span>
-                        <span *ngIf="!request?.department"
-                          style="color: #7695a5; font-weight: 500; font-size: 12px; text-transform: lowercase;">
-                          {{'DepartmentsPage.NoDept' | translate}}
-                        </span>
-                      </span>
-                    </span>
+                              <div aria-expanded="false" [id]="attribute?.attributeName +'_value'"
+                                class="attribute attribute_cutted_text">
+                                {{attribute?.attributeValue }}
+                              </div>
+
+                            </div>
+
+                            <div *ngIf="attribute?.attributeValueL + 180 > rightSidebarWidth" class="col-xs-2"
+                              style="text-align: right;">
+                              <i [id]="attribute?.attributeName +'_arrow_icon'" class="material-icons rotate"
+                                style="cursor: pointer; color: #039be5; font-size:18px;"
+                                (click)="toggleShowAllString(attribute?.attributeName +'_value', attribute?.attributeName +'_arrow_icon', 'isActive_' + i)">
+                                keyboard_arrow_down
+                              </i>
+
+                            </div>
+                          </div>
+                          <!--   <div class="debug_div">
+                                L : {{attribute?.attributeValueL}} <br>
+                                L + 180 : {{attribute?.attributeValueL + 180}} <br>
+                                SB WIDTH : {{rightSidebarWidth}} 
+                              </div> -->
+
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <!-- </div>
-                </div> -->
+                </div> <!-- ./ end pre-chat form accordion -->
 
 
 
@@ -2284,36 +2166,9 @@
                     </p>
                   </div>
                 </div>
-                <!-- </div>
-                </div> -->
 
-                <!-- 
-                // ------------------------------------------------------
-                // source page !! This is not diaìspayed (now is dispalyed in the first card)
-                // ------------------------------------------------------ -->
-                <div class="card right-card"
-                  style="padding-top:5px; padding-bottom:5px; margin-top: 5px;margin-bottom: 5px; display: none;">
-                  <div class="card-content" style="padding-top: 5px;padding-bottom: 5px;">
-                    <div class="row">
-                      <div class="col-sm-12">
-                        <p class="row-header">
-                          <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
-                          <span style="vertical-align: middle">
-                            {{ "RequestMsgsPage.SourcePage" | translate }}
-                          </span>
-                        </p>
-                        <p class="row-body" style="margin-bottom:0px; word-wrap: break-word;">
 
-                          <!-- 
-                          // ----------------------------------------------------------------
-                          // no more get from request attributes but directly from request 
-                          // ---------------------------------------------------------------- -->
-                          <a href="{{request?.sourcePage}}" target="_blank">{{request?.sourcePage}}</a>
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+
 
 
 
@@ -2465,6 +2320,8 @@
                     </div>
                   </div>
                 </div> <!-- ./ end new attributes accordion -->
+
+
 
               </div>
 
