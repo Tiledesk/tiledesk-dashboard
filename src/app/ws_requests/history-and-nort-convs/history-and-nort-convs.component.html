@@ -1569,7 +1569,7 @@
                   <section *ngIf="!IS_HERE_FOR_HISTORY">
                     <button *ngIf="request?.currentUserIsJoined === false" type="button" rel="tooltip"
                       style="padding-top: 9px !important;" title="{{ 'RequestMsgsPage.Enter' | translate }}"
-                      class="btn btn-tdblu btn-simple btn-xs tool_tip" (click)='joinRequest(request?.request_id)'
+                      class="btn btn-tdblu btn-simple btn-xs tool_tip" (click)='joinRequest(request ,request?.request_id)'
                       [disabled]="request?.currentUserIsJoined === true">
 
                       <!-- ------------------------------------------------------------------------------------------------------ -->

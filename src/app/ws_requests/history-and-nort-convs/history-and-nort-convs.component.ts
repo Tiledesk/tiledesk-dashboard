@@ -367,11 +367,11 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   // ------------------------------------------
   // Join request
   // ------------------------------------------
-  joinRequest(request_id: string) {
+  joinRequest(request, request_id: string) {
     this.currentUserID
-    this._onJoinHandled(request_id, this.currentUserID);
-
-    this.getRequests();
+    this._onJoinHandled(request_id, this.currentUserID, request);
+    this.logger.log('joinRequest request', request)
+    // this.getRequests();
   }
 
   openChatInNewWindow(requestid: string, requester_fullanme: string) {
@@ -379,15 +379,15 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.logger.log('[HISTORY & NORT-CONVS] - openChatInNewWindow - requestid ', requester_fullanme);
     // const url = this.CHAT_BASE_URL + '?recipient=' + requestid;
 
-    let url = '';
-    if (this.FIREBASE_AUTH === false) {
-      url = this.CHAT_BASE_URL + "/" + requestid + "/" + requester_fullanme + "/active"
-    } else if (this.FIREBASE_AUTH === true) {
-      url = this.CHAT_BASE_URL + '?recipient=' + requestid;
-    } else {
-      url = this.CHAT_BASE_URL + '#/conversation-detail/' + requestid + "/" + requester_fullanme + "/active"
-    }
-
+    // let url = '';
+    // if (this.FIREBASE_AUTH === false) {
+    //   url = this.CHAT_BASE_URL + "/" + requestid + "/" + requester_fullanme + "/active"
+    // } else if (this.FIREBASE_AUTH === true) {
+    //   url = this.CHAT_BASE_URL + '?recipient=' + requestid;
+    // } else {
+    //   url = this.CHAT_BASE_URL + '#/conversation-detail/' + requestid + "/" + requester_fullanme + "/active"
+    // }
+    const url = this.CHAT_BASE_URL + '#/conversation-detail/' + requestid + "/" + requester_fullanme + "/active"
     window.open(url, '_blank');
 
     // this.openWindow('Tiledesk - Open Source Live Chat', url)
@@ -413,7 +413,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     }
   }
 
-  _onJoinHandled(id_request: string, currentUserID: string) {
+  _onJoinHandled(id_request: string, currentUserID: string, request:any) {
     // this.getFirebaseToken(() => {
     this.logger.log('[HISTORY & NORT-CONVS] - JOIN PRESSED');
 
@@ -427,9 +427,13 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
       }, () => {
         this.logger.log('[HISTORY & NORT-CONVS] - addParticipant TO CHAT GROUP COMPLETE');
-
+        request.currentUserIsJoined = true
+        request.participants.push(this.currentUserID) 
+        request.participantsAgents.push(this.currentUserID) 
+        request['participanting_Agents'] = this.doParticipatingAgentsArray(request.participants, request.first_text, this.imageStorage, this.UPLOAD_ENGINE_IS_FIREBASE)
+        this.logger.log('[HISTORY & NORT-CONVS] - JOIN PRESSED request ', request);
         this.notify.showWidgetStyleUpdateNotification(`You are successfully added to the chat`, 2, 'done');
-        this.getRequests();
+        // this.getRequests();
       });
     // });
   }
@@ -665,11 +669,11 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
   getDeptById(departmentid: string, request: any) {
-    
+
     this.departmentService.getDeptById(departmentid).subscribe((dept: any) => {
       this.logger.log('[HISTORY & NORT-CONVS] - GET DEPT BY ID - RES ', dept);
       request['dept'] = dept
-    
+
     }, (error) => {
       this.logger.error('[HISTORY & NORT-CONVS] - GET DEPT BY ID - ERROR ', error);
 
