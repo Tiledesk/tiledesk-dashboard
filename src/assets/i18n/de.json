@@ -1937,6 +1937,6 @@
 	"YourProjects": "Ihre Projekte",
     "SorryTheFollowingErrorOccurredWhileUploadingTheImage":"Beim Hochladen des Bildes ist leider folgender Fehler aufgetreten:",
     "SorryFileTypeNotSupported": "Dateityp wird leider nicht unterstützt",
-	"PreChatFormData":"Formulardaten vor dem Chat",
+	"PreChatFormData":"Pre-Chat-Formular",
 	"HereSomeExamples":"Hier einige Beispiele"
 }
