@@ -2,7 +2,7 @@
 # tiledesk-dashboard
 
 ### 2.2.27
-- Adds on the conversation details page the ability to copy the values of the prechat form and the contact's email via button
+- Adds on the conversation details page the ability to copy the values of the pre-chat form and the contact's email via button
 
 ### 2.2.26
 - Fixes the bug: "Chat with" on the conversation details page and in the teammates list doesn't work
