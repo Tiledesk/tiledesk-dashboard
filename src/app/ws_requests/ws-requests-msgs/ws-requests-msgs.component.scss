@@ -1074,7 +1074,7 @@ and also iPads specifically.
 .title-attribute {
   // font-family: 'Google Sans',sans-serif!important;
   color: #394f5a;
-  font-weight: 500;
+  font-weight: 400;
 }
 .attribute {
   color: #7695a5;
@@ -1528,12 +1528,11 @@ and also iPads specifically.
 /*
  Attributes Pre-chat Form Accordion  
  ----------------------------------- */
- .attributes-pre-chat-form-accordion-wpr {
+.attributes-pre-chat-form-accordion-wpr {
+  border-top: 1px solid #eeeeee;
+}
 
-  border-bottom: 1px solid #eeeeee;
- }
-
- .attributes-pre-chat-form-accordion {
+.attributes-pre-chat-form-accordion {
   // background-color: #eee;
   color: #444;
   cursor: pointer;
@@ -1582,7 +1581,6 @@ and also iPads specifically.
   // transition: max-height 0.2s ease-out;
 }
 /* ./ Attributes Pre-chat Form Accordion */
-
 
 /* 
  Attributes decoded JWT Accordion 
@@ -1691,9 +1689,9 @@ and also iPads specifically.
   padding: 3px 6px;
   margin-bottom: 6px;
   margin-top: 0px;
-  // width: 70px; 
-  min-width: 70px; 
-  height: 22px; 
+  // width: 70px;
+  min-width: 70px;
+  height: 22px;
 }
 
 .delete_note_icon:hover {
@@ -2496,6 +2494,81 @@ and also iPads specifically.
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/// START COPY TO CLIPBOARD TOOLTIP EFFECT
+@-moz-keyframes fadeinout {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+@-webkit-keyframes fadeinout {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+@keyframes fadeinout {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.show-has-copied-tooltip {
+  background-color: rgba(85, 85, 85, 0.6);
+  color: white;
+  -moz-animation: fadeinout 1s linear forwards;
+  -webkit-animation: fadeinout 1s linear forwards;
+  animation: fadeinout 2s linear forwards;
+}
+
+.has-copied-tooltip {
+  opacity: 0;
+  text-align: center;
+  position: absolute;
+  top: 4px;
+  // left: 50%;
+  // transform: translateX(-50%);
+  right: 42px;
+  padding: 0px 5px;
+  border-radius: 4px;
+  font-size: 10px;
+  line-height: 1.4;
+  font-weight: 400;
+}
+
+@media screen and (max-width: 767px) {
+  .has-copied-tooltip {
+    right: 60px;
+  }
+}
+.copy-icon-wpr {
+  // padding-left: 8px;
+  // padding-right: 8px;
+  text-align: right;
+  cursor: pointer;
+}
+
+.copy-icon {
+  font-size: 12px !important;
+  vertical-align: middle;
+}
+
+.copy-icon:hover {
+  opacity: 0.8;
 }
 
 /* SWAL SM SIZE - moved in demo css to avoid the use of  encapsulation: ViewEncapsulation.None */

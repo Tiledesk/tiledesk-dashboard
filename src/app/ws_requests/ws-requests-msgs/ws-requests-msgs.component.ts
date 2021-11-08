@@ -172,7 +172,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   main_panel_scrolltop: any;
   topPos: any;
 
-  showSpinnerInAddNoteBtn: boolean;
+  showSpinnerInAddNoteBtn: boolean = false;
   subscription: Subscription;
   CURRENT_USER_ROLE: string;
 
@@ -311,7 +311,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.getFirebaseAuth();
     this.getBrowserLang();
 
-    
+
   }
   ngAfterViewInit() {
     // -----------------------------------
@@ -361,7 +361,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.logger.log('[WS-REQUESTS-MSGS] getAppConfig - APP ID: ', appID);
 
     if (appID === "1:269505353043:web:b82af070572669e3707da6") {
-      this.DISPLAY_BTN_CREATE_JIRA_ISSUE = true;
+      this.DISPLAY_BTN_CREATE_JIRA_ISSUE = false;
     } else {
       this.DISPLAY_BTN_CREATE_JIRA_ISSUE = false;
     }
@@ -1474,8 +1474,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     }
   }
 
-    // ---------------------------------------------------------------------------------------
-  // @ Attributes Pre-chat form
+  // ---------------------------------------------------------------------------------------
+  // @ Attributes PRE-CHAT FORM accordion
   // ---------------------------------------------------------------------------------------
   openAttributesPrechatFormAccordion() {
     // var acc = document.getElementsByClassName("accordion");
@@ -1491,6 +1491,69 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     } else {
       panel.style.maxHeight = panel.scrollHeight + "px";
     }
+  }
+
+  // https://stackoverflow.com/questions/400212/how-do-i-copy-to-the-clipboard-in-javascript see section Async + Fallback
+  copyToClipboardPreChatFormValue(prechatAttributeValue: string, prechattooltipid: string): void {
+    console.log('copyToClipboardPreChatFormValue attributeValue', prechatAttributeValue)
+    console.log('copyToClipboardPreChatFormValue prechatAttributeName', prechattooltipid)
+    const prechatTooltip = <HTMLElement>document.querySelector(`#${prechattooltipid}`)
+    console.log('copyToClipboardPreChatFormValue prechatTooltip ', prechatTooltip);
+
+    let listener = (e: ClipboardEvent) => {
+      e.clipboardData.setData('text/plain', (prechatAttributeValue));
+      e.preventDefault();
+    };
+
+    document.addEventListener('copy', listener);
+    try {
+      var successful = document.execCommand('copy');
+      var msg = successful ? 'successful' : 'unsuccessful';
+      console.log('copyToClipboardPreChatFormValue: Copying text command was ' + msg);
+
+      if (successful) {
+        prechatTooltip.classList.add('show-has-copied-tooltip');
+        setTimeout(() => {
+          prechatTooltip.classList.remove('show-has-copied-tooltip');
+        }, 1000);
+      }
+    } catch (err) {
+      console.error('Fallback: Oops, unable to copy', err);
+    }
+
+    document.removeEventListener('copy', listener);
+  }
+
+
+  copyToClipboardContactEmail (contactemail){
+    console.log('copyToClipboardContactEmail contactemail', contactemail)
+    
+    const prechatTooltip = <HTMLElement>document.querySelector(`#contact-email`)
+    console.log('Fallback: prechatTooltip ', prechatTooltip);
+
+    let listener = (e: ClipboardEvent) => {
+      e.clipboardData.setData('text/plain', (contactemail));
+      e.preventDefault();
+    };
+
+    document.addEventListener('copy', listener);
+    try {
+      var successful = document.execCommand('copy');
+      var msg = successful ? 'successful' : 'unsuccessful';
+      console.log('Fallback: Copying text command was ' + msg);
+
+      if (successful) {
+        prechatTooltip.classList.add('show-has-copied-tooltip');
+        setTimeout(() => {
+          prechatTooltip.classList.remove('show-has-copied-tooltip');
+        }, 1000);
+      }
+    } catch (err) {
+      console.error('Fallback: Oops, unable to copy', err);
+    }
+
+    document.removeEventListener('copy', listener);
+
   }
 
   // ------------------------------------------------
@@ -2171,7 +2234,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   openChatInNewWindow() {
     // RESOLVE THE BUG: THE BUTTON 'OPEN THE CHAT' REMAIN FOCUSED AFTER PRESSED
     this.openChatBtn.nativeElement.blur();
-    
+
 
     this.logger.log('[WS-REQUESTS-MSGS] openChatInNewWindow CHAT_BASE_URL ', this.CHAT_BASE_URL);
     // let url = '';
