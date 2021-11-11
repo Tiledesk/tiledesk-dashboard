@@ -1,6 +1,12 @@
 
 # tiledesk-dashboard
 
+### 2.2.28
+- Updates the Home "Latest updates" section
+- Highlight, on the home page, the "What's new" section rocket with an icon indicating that the change log has been updated
+- Fixes the bug: cannot read property of undefined reading "preChatForm"
+- Removes the badge with the number of conversations assigned by the avatars of teammates in the "carousel" of the conversation list
+
 ### 2.2.27
 - Adds on the conversation details page the ability to copy the values of the pre-chat form and the contact's email via button
 
