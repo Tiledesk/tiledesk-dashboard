@@ -2,14 +2,14 @@
 
 # Tiledesk-dashboard
 
+<img  width="1200"  alt="home_screenshot"  src="https://user-images.githubusercontent.com/26088187/72986544-b2d17580-3de8-11ea-867f-edd874bd8585.png"  width="500">
+
+  
+
 > ***🚀 Do you want to install Tiledesk on your server with just one click?***
 > 
 > ***Use [Docker Compose Tiledesk installation](https://github.com/Tiledesk/tiledesk-deployment/blob/master/docker-compose/README.md) guide***
 
-
-<img  width="1200"  alt="home_screenshot"  src="https://user-images.githubusercontent.com/26088187/72986544-b2d17580-3de8-11ea-867f-edd874bd8585.png"  width="500">
-
-  
 
 Tiledesk.com backoffice application is available on GitHub with the AGPL-3.0 licence.
 
