@@ -4,7 +4,6 @@
 
 <img  width="1200"  alt="home_screenshot"  src="https://user-images.githubusercontent.com/26088187/72986544-b2d17580-3de8-11ea-867f-edd874bd8585.png"  width="500">
 
-  
 
 > ***🚀 Do you want to install Tiledesk on your server with just one click?***
 > 
