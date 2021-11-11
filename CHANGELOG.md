@@ -1,7 +1,7 @@
 
 # tiledesk-dashboard
 
-### 2.2.28
+### 2.2.28-rc1
 - Updates the Home "Latest updates" section
 - Highlight, on the home page, the "What's new" section rocket with an icon indicating that the change log has been updated
 - Fixes the bug: cannot read property of undefined reading "preChatForm"
