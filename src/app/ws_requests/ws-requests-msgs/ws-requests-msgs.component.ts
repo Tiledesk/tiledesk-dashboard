@@ -1015,7 +1015,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             console.log('[WS-REQUESTS-MSGS] - getWsRequestById preChatFormArray: ', this.preChatFormArray);
 
           } else {
-            console.log('[WS-REQUESTS-MSGS] - getWsRequestById ATTRIBUTES > PRE-CHAT FORM IS UNDEFINED ', this.request.attributes.preChatForm);
+            console.log('[WS-REQUESTS-MSGS] - getWsRequestById ATTRIBUTES > PRE-CHAT FORM IS UNDEFINED ');
           }
 
 
