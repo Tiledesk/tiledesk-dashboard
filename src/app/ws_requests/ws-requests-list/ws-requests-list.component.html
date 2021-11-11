@@ -436,8 +436,9 @@
                               alt="" onerror="this.src='assets/img/no_image_user.png'">
 
 
-                            <div class="teammates-with-picture-assigned-requests-count">
-                              {{agent?.number_assigned_requests_rt}}</div>
+                            <!-- <div class="teammates-with-picture-assigned-requests-count">
+                              {{agent?.number_assigned_requests_rt}}
+                            </div> -->
                             <div class="teammates-with-picture-status-icon"
                               [ngClass]="{'is-user-online': agent?.user_available_rt === true, 'is-user-offline':agent?.user_available_rt === false   }">
                             </div>
@@ -455,9 +456,9 @@
                                 {{ agent?.id_user?.fullname_initial }}
                               </span>
 
-                              <div class="teammates-no-picture-assigned_requests_count">
+                              <!-- <div class="teammates-no-picture-assigned_requests_count">
                                 {{agent?.number_assigned_requests_rt}}
-                              </div>
+                              </div> -->
                               <div class="teammates-no-picture-status-icon"
                                 [ngClass]="{'is-user-online': agent?.user_available_rt === true, 'is-user-offline':agent?.user_available_rt === false   }">
                               </div>
