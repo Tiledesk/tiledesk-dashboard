@@ -1,22 +1,13 @@
 <div class="card card--no-border" style="margin: 5px 0;">
   <div class="card-header card-header-custom">
 
-
     <div class="row">
-
       <div class="col-xs-12">
         <h4 class="title customh4" style="margin-bottom:2px;">
           {{ 'VisitorsPage.UnservedRequests' | translate }}
         </h4>
       </div>
-
-      <!-- <div class="col-xs-6">
-  
-      </div> -->
-
     </div>
-
-
   </div>
 
   <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
@@ -36,6 +27,8 @@
             </span>
           </th>
 
+
+          <!-- ------ ====== CHANNNEL ====== ------ -->
           <th></th>
 
           <!-- ------------------- -->
@@ -397,91 +390,147 @@
             </section>
           </td>
 
+
           <!-- ---------------------------------------- -->
-          <!-- Message Channel  -->
+          <!-- @ Priority & Message Channel  -->
           <!-- ---------------------------------------- -->
-          <td style="width: 1%;">
-            <!-- ---------------------------------------- -->
-            <!-- Channel - Telegram -->
-            <!-- ---------------------------------------- -->
-            <span *ngIf="request?.channel?.name === 'telegram'" class="tool_tip">
-
-              <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/Telegram-01.svg" class="img-fluid">
-              <span class="bottom tool-tip-bottom--custom">
-                <span style="font-weight: 200;">
-                  {{'MessageChannel' | translate}}:
+          <td style="width: 1%;padding-left: 4px!important;">
+            <div class="priority_and_channel_wpr" style="  display: flex;">
+              <!-- ---------------------------------------- -->
+              <!-- @ Priority WRAPPER -->
+              <!-- ---------------------------------------- -->
+              <div *ngIf="request?.priority !== 'medium'" class="priority_wpr" style="flex: 1;; text-align: right;">
+                <!-- ---------------------------------------- -->
+                <!-- Priority High -->
+                <!-- ---------------------------------------- -->
+                <span *ngIf="request?.priority === 'high'" class="tool_tip">
+                  <img style="width: 15px;height: 15px;" src="assets/img/priority_icons/high_v2.svg" class="img-fluid">
+                  <span class="bottom tool-tip-bottom--custom">
+                    <span style="font-weight: 400;">
+                      {{'Priority' | translate}}:
+                    </span>
+                    <span style="font-weight: 400;">{{ 'high' | translate }} </span>
+                    <i></i>
+                  </span>
                 </span>
-                <span style="font-weight: 400;">Telegram </span>
-                <i></i>
-              </span>
-            </span>
-            <!-- ---------------------------------------- -->
-            <!-- Channel - WhatsApp -->
-            <!-- ---------------------------------------- -->
-            <span *ngIf="request?.channel?.name === 'whatsapp'" class="tool_tip">
-
-              <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/whatsapp-logo_green.svg"
-                class="img-fluid">
-              <span class="bottom tool-tip-bottom--custom">
-                <span style="font-weight: 200;">
-                  {{'MessageChannel' | translate}}:
+                <!-- ---------------------------------------- -->
+                <!-- Priority Urgent -->
+                <!-- ---------------------------------------- -->
+                <span *ngIf="request?.priority === 'urgent'" class="tool_tip">
+                  <img style="width: 15px;height: 15px;" src="assets/img/priority_icons/urgent_v2.svg"
+                    class="img-fluid">
+                  <span class="bottom tool-tip-bottom--custom">
+                    <span style="font-weight: 400;">
+                      {{'Priority' | translate}}:
+                    </span>
+                    <span style="font-weight: 400;">{{ 'urgent' | translate }} </span>
+                    <i></i>
+                  </span>
                 </span>
-                <span style="font-weight: 400;">WhatsApp </span>
-                <i></i>
-              </span>
-            </span>
+                <!-- ---------------------------------------- -->
+                <!-- Priority Low -->
+                <!-- ---------------------------------------- -->
+                <span *ngIf="request?.priority === 'low'" class="tool_tip">
+                  <img style="width: 15px;height: 15px;" src="assets/img/priority_icons/low_v2.svg" class="img-fluid">
+                  <span class="bottom tool-tip-bottom--custom">
+                    <span style="font-weight: 400;">
+                      {{'Priority' | translate}}:
+                    </span>
+                    <span style="font-weight: 400;">{{ 'low' | translate }} </span>
+                    <i></i>
+                  </span>
+                </span>
+              </div>
 
-            <!-- ---------------------------------------- -->
-            <!-- Channel - Messenger -->
-            <!-- ---------------------------------------- -->
-            <span *ngIf="request?.channel?.name === 'messenger'" class="tool_tip">
+              <!-- ---------------------------------------- -->
+              <!-- Channel WRAPPER -->
+              <!-- ---------------------------------------- -->
+              <div *ngIf="request?.channel?.name !== 'chat21'" class="channel_wpr" style="flex: 1; text-align: right;"
+                [ngClass]="{'channel-wpr-padding-left' : request?.priority !== 'medium'}">
+                <!-- ---------------------------------------- -->
+                <!-- Channel - Telegram -->
+                <!-- ---------------------------------------- -->
+                <span *ngIf="request?.channel?.name === 'telegram'" class="tool_tip">
 
-              <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/Facebook_Messenger_logo_2020.svg"
-                class="img-fluid">
+                  <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/Telegram-01.svg"
+                    class="img-fluid">
+                  <span class="bottom tool-tip-bottom--custom">
+                    <span style="font-weight: 400;">
+                      {{'MessageChannel' | translate}}:
+                    </span>
+                    <span style="font-weight: 400;">Telegram </span>
+                    <i></i>
+                  </span>
+                </span>
+                <!-- ---------------------------------------- -->
+                <!-- Channel - WhatsApp -->
+                <!-- ---------------------------------------- -->
+                <span *ngIf="request?.channel?.name === 'whatsapp'" class="tool_tip">
 
-              <span class="bottom tool-tip-bottom--custom">
-                <span style="font-weight: 200;">
-                  {{'MessageChannel' | translate}}:
+                  <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/whatsapp-logo_green.svg"
+                    class="img-fluid">
+                  <span class="bottom tool-tip-bottom--custom">
+                    <span style="font-weight: 400;">
+                      {{'MessageChannel' | translate}}:
+                    </span>
+                    <span style="font-weight: 400;">WhatsApp </span>
+                    <i></i>
+                  </span>
                 </span>
 
-                <span style="font-weight: 400;">Messenger </span>
-                <i></i>
-              </span>
-            </span>
+                <!-- ---------------------------------------- -->
+                <!-- Channel - Messenger -->
+                <!-- ---------------------------------------- -->
+                <span *ngIf="request?.channel?.name === 'messenger'" class="tool_tip">
 
-            <!-- ---------------------------------------- -->
-            <!-- Channel - Email -->
-            <!-- ---------------------------------------- -->
-            <span *ngIf="request?.channel?.name === 'email'" class="tool_tip email-wpr">
+                  <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/Facebook_Messenger_logo_2020.svg"
+                    class="img-fluid">
 
-              <img style="padding:5px !important" src="assets/img/channel_icons/email-logo_white.svg"
-                class="img-fluid channel-img-in-conversations">
+                  <span class="bottom tool-tip-bottom--custom">
+                    <span style="font-weight: 400;">
+                      {{'MessageChannel' | translate}}:
+                    </span>
 
-              <span class="bottom tool-tip-bottom--custom">
-                <span style="font-weight: 200;">
-                  {{'MessageChannel' | translate}}:
+                    <span style="font-weight: 400;">Messenger </span>
+                    <i></i>
+                  </span>
                 </span>
-                <span style="font-weight: 400;">Email </span>
 
-                <i></i>
-              </span>
-            </span>
+                <!-- ---------------------------------------- -->
+                <!-- Channel - Email -->
+                <!-- ---------------------------------------- -->
+                <span *ngIf="request?.channel?.name === 'email'" class="tool_tip email-wpr">
 
-            <!-- ---------------------------------------- -->
-            <!-- Channel - Form -->
-            <!-- ---------------------------------------- -->
-            <span *ngIf="request?.channel?.name === 'form'" class="tool_tip form-wpr">
-              <img style="padding:4px !important" src="assets/img/channel_icons/form-logo_v2_white.svg"
-                class="img-fluid channel-img-in-conversations">
+                  <img style="padding:5px !important" src="assets/img/channel_icons/email-logo_white.svg"
+                    class="img-fluid channel-img-in-conversations">
 
-              <span class="bottom tool-tip-bottom--custom">
-                <span style="font-weight: 200;">
-                  {{'MessageChannel' | translate}}:
+                  <span class="bottom tool-tip-bottom--custom">
+                    <span style="font-weight: 400;">
+                      {{'MessageChannel' | translate}}:
+                    </span>
+                    <span style="font-weight: 400;">Email </span>
+
+                    <i></i>
+                  </span>
                 </span>
-                <span style="font-weight: 400;">Form </span>
-                <i></i>
-              </span>
-            </span>
+
+                <!-- ---------------------------------------- -->
+                <!-- Channel - Form -->
+                <!-- ---------------------------------------- -->
+                <span *ngIf="request?.channel?.name === 'form'" class="tool_tip form-wpr">
+                  <img style="padding:4px !important" src="assets/img/channel_icons/form-logo_v2_white.svg"
+                    class="img-fluid channel-img-in-conversations">
+
+                  <span class="bottom tool-tip-bottom--custom">
+                    <span style="font-weight: 400;">
+                      {{'MessageChannel' | translate}}:
+                    </span>
+                    <span style="font-weight: 400;">Form </span>
+                    <i></i>
+                  </span>
+                </span>
+              </div>
+            </div>
           </td>
 
           <!-- ------ ====== REQUESTER (in UNSERVED)====== ------ -->

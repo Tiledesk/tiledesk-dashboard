@@ -34,6 +34,24 @@ export class BotsBaseComponent implements OnInit {
     { code: 'uk', name: 'Ukrainian — uk' },
   ];
 
+  botDefaultLanguages = [
+    { code: 'da', name: 'Danish - da' },
+    { code: 'nl', name: 'Dutch - nl' },
+    { code: 'en', name: 'English - en' },
+    { code: 'fi', name: 'Finnish - fi' },
+    { code: 'fr', name: 'French - fr' },
+    { code: 'de', name: 'German - de' },
+    { code: 'hu', name: 'Hungarian - hu' },
+    { code: 'it', name: 'Italian - it' },
+    { code: 'nb', name: 'Norwegian - nb' },
+    { code: 'pt', name: 'Portuguese - pt' },
+    { code: 'ro', name: 'Romanian - ro' },
+    { code: 'ru', name: 'Russian - ru' },
+    { code: 'es', name: 'Spanish - es' },
+    { code: 'sv', name: 'Swedish - sv' },
+    { code: 'tr', name: 'Turkish - tr' }
+  ];
+
 
   constructor() { }
 
@@ -42,7 +60,11 @@ export class BotsBaseComponent implements OnInit {
 
   getIndexOfdialogflowLanguage(langcode: string) {
     const index = this.dialogflowLanguage.findIndex(x => x.code === langcode);
+    return index
+  }
 
+  getIndexOfbotDefaultLanguages(langcode: string) {
+    const index = this.botDefaultLanguages.findIndex(x => x.code === langcode);
     return index
   }
 

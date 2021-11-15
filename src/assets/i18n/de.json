@@ -1938,5 +1938,13 @@
     "SorryTheFollowingErrorOccurredWhileUploadingTheImage":"Beim Hochladen des Bildes ist leider folgender Fehler aufgetreten:",
     "SorryFileTypeNotSupported": "Dateityp wird leider nicht unterstützt",
 	"PreChatFormData":"Pre-Chat-Formular",
-	"HereSomeExamples":"Hier einige Beispiele"
+	"HereSomeExamples":"Hier einige Beispiele",
+	"ResolutionBotLanguage":"Sprache",
+	"Priority":"Priorität",
+	"urgent":"Dringend",
+	"high":"Hohe",
+	"medium":"Mittlere",
+	"low":"Niedrige",
+	"TheConversationPriorityHasBeenSuccessfullyUpdated":"Die Konversationspriorität wurde erfolgreich aktualisiert",
+	"AnErrorOccurredWhileUpdatingTheCnversationPriority":"Beim Aktualisieren der Konversationspriorität ist ein Fehler aufgetreten"
 }

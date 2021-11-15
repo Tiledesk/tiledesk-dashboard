@@ -1692,13 +1692,9 @@
                 </div>
 
 
-
-
-
-                <!-- 
-                // -------------------------------------------------------
-                // NEW - EVENTS
-                // ------------------------------------------------------- -->
+                <!-- ------------------------------------------------------- -->
+                <!-- NEW - EVENTS -->
+                <!-- ------------------------------------------------------- -->
                 <!-- <div class="row" style="margin-top:5px; cursor: pointer;" (click)='goToEvents()' >
                   <div class="col-sm-12">
                     <p style="color: crimson;">
@@ -1715,10 +1711,10 @@
                   </div>
                 </div> -->
 
-                <!-- 
-                  // ------------------------------------------------------------------
-                  // Go to request details - dispalyed only if CHAT_PANEL_MODE === true
-                  // ------------------------------------------------------------------ -->
+
+                <!-- --------------------------------------------------------------------- -->
+                <!-- Go to request details - dispalyed only if CHAT_PANEL_MODE === true -->
+                <!-- --------------------------------------------------------------------- -->
                 <!-- <div class="row" style="margin-top:5px" *ngIf="CHAT_PANEL_MODE === true">
                       <div class="col-sm-12">
                         <p class="" style="">
@@ -1822,7 +1818,37 @@
                   </div>
                 </div> <!-- ./ end pre-chat form accordion -->
 
+                <!-- ----------------------------------------------------------------------------- -->
+                <!-- Priority -->
+                <!-- ----------------------------------------------------------------------------- -->
+                <div class="row">
+                  <div class="col-sm-12" style="border-top: 1px solid #eeeeee;">
+                    <p class="row-header">
 
+                      <span style="vertical-align: middle">
+                        {{ 'Priority' | translate }}
+                      </span>
+                    </p>
+                  </div>
+
+                  
+                  <div class="col-sm-12" style="margin-bottom: 8px;" >
+         
+                    <ng-select [items]="priority" bindLabel="name" bindValue="name" [clearable]="false" [hideSelected]="true"
+                      [(ngModel)]="selectedPriority" (change)="onChangeSelectedPriority(selectedPriority)">
+                      <ng-template ng-label-tmp let-item="item">
+                        <img style="width: 15px;height: 15px;" height="15" width="15" [src]="item.avatar" />
+                        {{item.name | translate}}
+                      </ng-template>
+                      <ng-template ng-option-tmp let-item="item" let-index="index">
+                        <img style="width: 15px;height: 15px;" height="15" width="15" [src]="item.avatar" />
+                        {{item.name | translate }}
+                      </ng-template>
+                    </ng-select>
+                  </div>
+
+
+                </div>
 
                 <!-- ----------------------------------------------------------------------------- -->
                 <!-- Agents -->
@@ -1839,8 +1865,6 @@
                     </p>
 
                     <div class="served_by">
-
-
                       <!-- ------------------------------------------------------ -->
                       <!-- No Agent -->
                       <!-- ------------------------------------------------------ -->
@@ -1853,7 +1877,6 @@
                           {{ "RequestMsgsPage.NoAgent" | translate }}
                         </span>
                       </div>
-
 
                       <!--  ------------------------------------------------------ -->
                       <!--  Agent array for -->
@@ -2089,13 +2112,17 @@
                             <button type="button" class="btn btn-xs btn-primary ws_msgs_small_btn" #cont
                               (click)="addNote()"
                               [disabled]="!new_note || new_note?.length === 0 || DISABLE_ADD_NOTE_AND_TAGS === true">
-                              <i *ngIf="showSpinnerInAddNoteBtn === false" class="material-icons">add_circle</i>
-                              <span *ngIf="showSpinnerInAddNoteBtn === true"> <i class="fa fa-spinner fa-spin"
-                                style="font-size: 15px;"></i></span>
-                                
-                              {{ 'Notes.AddNote' | translate }}
+                       
 
-                            
+                              <span *ngIf="showSpinnerInAddNoteBtn !== true">
+                                <i class="material-icons" style="font-size: 15px;">add_circle</i>
+                              </span>
+
+                              <span *ngIf="showSpinnerInAddNoteBtn === true">
+                                <i class="fa fa-spinner fa-spin" style="font-size: 15px;"></i>
+                              </span>
+
+                              {{ 'Notes.AddNote' | translate }}
                             </button>
                           </div>
 

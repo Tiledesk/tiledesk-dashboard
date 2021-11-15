@@ -1,6 +1,13 @@
 
 # tiledesk-dashboard
 
+
+### 2.2.29-rc1
+- Adds the ability to select the language for the "Resolution" bot type
+- Adds the ability to select the priority level of the ticket during its creation
+- Displays the priority level of a ticket or of a conversation in the conversations list
+- Adds the ability, on the conversation detail page, to set a priority level for a conversation
+
 ### 2.2.28
 - Updates the Home "Latest updates" section
 - Highlight, on the home page, the "What's new" section rocket with an icon indicating that the change log has been updated
@@ -20,6 +27,7 @@
 - Adds the accordion "Pre-Chat Form Data" to the conversation details sidebar showing the pre-chat form data filled in by the requester
 - Adds in the "Pre-chat form" section of the widget configuration page a link that redirects to the documentation with some examples on how to customize the pre-chat module
 - Increase the height of the "Customize the pre-chat form" text area in the "Pre-chat form" section of the widget configuration page
+
 
 ### 2.2.25
 - Adds the ability to upload user profile photo in .png format 

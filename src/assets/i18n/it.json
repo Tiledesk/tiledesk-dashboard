@@ -1936,5 +1936,13 @@
     "SorryTheFollowingErrorOccurredWhileUploadingTheImage":"Spiacenti, si è verificato il seguente errore durante il caricamento dell'immagine:",
     "SorryFileTypeNotSupported": "Spiacenti, tipo di file non supportato",
     "PreChatFormData":"Modulo pre-chat",
-    "HereSomeExamples":"Qui alcuni esempi"
+    "HereSomeExamples":"Qui alcuni esempi",
+    "ResolutionBotLanguage":"Lingua",
+    "Priority":"Priorità",
+    "urgent":"Urgente",
+    "high":"Alta",
+    "medium":"Media",
+    "low":"Bassa",
+    "TheConversationPriorityHasBeenSuccessfullyUpdated":"La priorità della conversazione è stata aggiornata con successo",
+    "AnErrorOccurredWhileUpdatingTheCnversationPriority":"Si è verificato un errore durante l'aggiornamento della priorità della conversazione"
 }

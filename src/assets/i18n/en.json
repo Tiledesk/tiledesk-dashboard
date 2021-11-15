@@ -1955,5 +1955,13 @@
    "SorryTheFollowingErrorOccurredWhileUploadingTheImage":"Sorry, the following error occurred while loading the image:",
    "SorryFileTypeNotSupported": "Sorry, unsupported file type",
    "PreChatFormData":"Pre-chat form",
-   "HereSomeExamples":"Here some examples"
+   "HereSomeExamples":"Here some examples",
+   "ResolutionBotLanguage":"Language",
+   "Priority":"Priority",
+   "urgent":"Urgent",
+   "high":"High",
+   "medium":"Medium",
+   "low": "Low",
+   "TheConversationPriorityHasBeenSuccessfullyUpdated":"The conversation priority has been successfully updated",
+   "AnErrorOccurredWhileUpdatingTheCnversationPriority":"An error occurred while updating the conversation priority"
 }

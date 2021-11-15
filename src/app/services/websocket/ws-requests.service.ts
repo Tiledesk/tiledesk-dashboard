@@ -798,7 +798,7 @@ export class WsRequestsService implements OnDestroy {
   // -----------------------------------------------------------------------------------------
   // @ Create internal request
   // -----------------------------------------------------------------------------------------
-  createInternalRequest(requester_id: string, request_id: string, subject: string, message: string, departmentid: string, participantid: string) {
+  createInternalRequest(requester_id: string, request_id: string, subject: string, message: string, departmentid: string, participantid: string , ticketpriority: string) {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
@@ -806,7 +806,7 @@ export class WsRequestsService implements OnDestroy {
     const options = new RequestOptions({ headers });
     // this.logger.log('JOIN FUNCT OPTIONS  ', options);
     let body = {}
-    body = { 'sender': requester_id, 'subject': subject, 'text': message, 'departmentid': departmentid, 'channel': { 'name': 'form' } };
+    body = { 'sender': requester_id, 'subject': subject, 'text': message, 'departmentid': departmentid, 'channel': { 'name': 'form' } , 'priority':ticketpriority};
     if (participantid !== undefined) {
       body['participants'] = [participantid]
     } else {
@@ -907,6 +907,29 @@ export class WsRequestsService implements OnDestroy {
 
     return this.http
       .delete(url, options)
+      .map((res) => res.json());
+  }
+
+    // -----------------------------------------------------------------------------------------
+  // Update Priority
+  // -----------------------------------------------------------------------------------------
+  updatePriority(request_id: string, selectedPriority: string) {
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+    // this.logger.log('JOIN FUNCT OPTIONS  ', options);
+
+    const body = { 'priority': selectedPriority };
+    // const body = { 'tags':  { tag: "kll", color: "#43B1F2" } };
+    this.logger.log('[WS-REQUESTS-SERV] UPDATE PRIORITY - BODY ', body);
+
+    const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + request_id
+    this.logger.log('[WS-REQUESTS-SERV] UPDATE PRIORITY - URL ', body);
+
+    return this.http
+      .patch(url, JSON.stringify(body), options)
       .map((res) => res.json());
   }
 
