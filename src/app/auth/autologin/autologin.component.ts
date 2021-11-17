@@ -260,8 +260,8 @@ export class AutologinComponent implements OnInit {
               this.sso.getCurrentAuthenticatedUser(JWT).subscribe(auth_user => {
                 this.logger.log('[AUTOLOGIN] SSO - ssoLoginWithCustomToken getCurrentAuthenticatedUser RES ', auth_user);
                 this.logger.log('[AUTOLOGIN] SSO - ssoLoginWithCustomToken getCurrentAuthenticatedUser JWT ', JWT);
-                const user = { firstname: auth_user.firstname, lastname: auth_user.lastname, _id: auth_user._id, token: JWT }
-
+                // const user = { firstname: auth_user.firstname, lastname: auth_user.lastname, _id: auth_user._id, token: JWT }
+                const user = { firstname: auth_user.firstname, lastname: auth_user.lastname, _id: auth_user._id, email: auth_user.email, emailverified: auth_user.emailverified, token: JWT }
                 localStorage.setItem('user', JSON.stringify(user));
                 localStorage.setItem('chat_sv5__tiledeskToken', JWT);
 
