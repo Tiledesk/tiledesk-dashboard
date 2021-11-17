@@ -26,8 +26,8 @@ const swal = require('sweetalert');
 
 @Component({
   selector: 'appdashboard-widget-set-up',
-  // templateUrl: './widget-set-up.component.html',
-  templateUrl: './new-widget-set-up.component.html',
+  templateUrl: './widget-set-up.component.html',
+
   styleUrls: ['./widget-set-up.component.scss']
 })
 
@@ -309,7 +309,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
   }
 
- 
+
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
@@ -419,17 +419,17 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
   getLoggedUser() {
     this.auth.user_bs
-    .pipe(
-      takeUntil(this.unsubscribe$)
-    )
-    .subscribe((user) => {
-      this.logger.log('[WIDGET-SET-UP] USER GET IN »» WIDGET DESIGN ', user)
-      if (user) {
-        this.current_user_name = user.firstname + ' ' + user.lastname
-        this.currentUserId = user._id;
-        this.logger.log('[WIDGET-SET-UP] Current USER ID ', this.currentUserId)
-      }
-    });
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((user) => {
+        this.logger.log('[WIDGET-SET-UP] USER GET IN »» WIDGET DESIGN ', user)
+        if (user) {
+          this.current_user_name = user.firstname + ' ' + user.lastname
+          this.currentUserId = user._id;
+          this.logger.log('[WIDGET-SET-UP] Current USER ID ', this.currentUserId)
+        }
+      });
   }
 
   selectSidebar() {
@@ -937,6 +937,11 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   onChangeReplyTimeTypeMsg(value) {
     this.logger.log('[WIDGET-SET-UP] - ON CHANGE REPLY TIME TYPE MSG : ', value);
 
+    this.DISPLAY_WIDGET_HOME = true;
+    this.DISPLAY_CALLOUT = false;
+    this.DISPLAY_WIDGET_CHAT = false;
+    this.widget_preview_selected = "0000"
+
     if (value === 'reply_time_dynamic_msg') {
       this.HAS_SELECT_DYMANIC_REPLY_TIME_MSG = true;
       this.HAS_SELECT_STATIC_REPLY_TIME_MSG = false;
@@ -1431,12 +1436,49 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
 
 
+  // --------------------------------------------------------------------------
+  // *** Preset color combination ***  
+  // --------------------------------------------------------------------------
+  setPresetColorComb(primaryColor: string, secondaryColor: string) {
+
+    console.log('setPresetColorComb widget_preview_selected ', this.widget_preview_selected)
+
+    if (this.widget_preview_selected === '0001') {
+      this.DISPLAY_WIDGET_HOME = true;
+      this.DISPLAY_CALLOUT = false;
+      this.DISPLAY_WIDGET_CHAT = false;
+    }
+
+    if (this.widget_preview_selected === '0002') {
+      this.DISPLAY_WIDGET_HOME = false;
+      this.DISPLAY_CALLOUT = false;
+      this.DISPLAY_WIDGET_CHAT = true;
+    }
+
+    if (this.widget_preview_selected === '0003') {
+      this.DISPLAY_WIDGET_HOME = false;
+      this.DISPLAY_CALLOUT = true;
+      this.DISPLAY_WIDGET_CHAT = false;
+    }
+
+    if (this.widget_preview_selected === '0004') {
+      this.widget_preview_selected = "0004"
+    }
+
+    this.logger.log('[WIDGET-SET-UP] - setPresetCombOne ', primaryColor, secondaryColor);
+    this.primaryColor = primaryColor;
+    this.secondaryColor = secondaryColor;
+
+    this.onChangePrimaryColor(primaryColor);
+
+    this.widgetObj['themeColor'] = primaryColor
+    this.widgetObj['themeForegroundColor'] = secondaryColor
+  }
 
 
-
-  // ===========================================================================
-  // ============== *** PRIMARY COLOR (alias for themeColor) ***  ==============
-  // ===========================================================================
+  // --------------------------------------------------------------------------
+  // *** PRIMARY COLOR (alias for themeColor) ***  
+  // --------------------------------------------------------------------------
   /**
    * onChangePrimaryColor: USED FOR THE COLOR PREVIEW (IT IS NECESSARY FOR THE PRIMARY COLOR GIVEN THAT
    * FROM IT ARE GENERATED OTHER PROPERTIES - WITHOUT RUNS generateRgbaGradientAndBorder IN
@@ -1444,10 +1486,28 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
    * @param $event
    */
   onChangePrimaryColor($event) {
+    console.log('onChangePrimaryColor widget_preview_selected ', this.widget_preview_selected)
+    if (this.widget_preview_selected === '0001') {
+      this.DISPLAY_WIDGET_HOME = true;
+      this.DISPLAY_CALLOUT = false;
+      this.DISPLAY_WIDGET_CHAT = false;
+    }
 
-    this.DISPLAY_WIDGET_HOME = true;
-    this.DISPLAY_CALLOUT = false;
-    this.DISPLAY_WIDGET_CHAT = false;
+    if (this.widget_preview_selected === '0002') {
+      this.DISPLAY_WIDGET_HOME = false;
+      this.DISPLAY_CALLOUT = false;
+      this.DISPLAY_WIDGET_CHAT = true;
+    }
+
+    if (this.widget_preview_selected === '0003') {
+      this.DISPLAY_WIDGET_HOME = false;
+      this.DISPLAY_CALLOUT = true;
+      this.DISPLAY_WIDGET_CHAT = false;
+    }
+
+    if (this.widget_preview_selected === '0004') {
+      this.widget_preview_selected = "0004"
+    }
 
     this.primaryColor = $event
 
@@ -1460,15 +1520,54 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
   onFocusChangePrimaryColor() {
-    this.DISPLAY_WIDGET_HOME = true;
-    this.DISPLAY_CALLOUT = false;
-    this.DISPLAY_WIDGET_CHAT = false;
+    console.log('onFocusChangePrimaryColor widget_preview_selected ', this.widget_preview_selected)
+
+    if (this.widget_preview_selected === '0001') {
+      this.DISPLAY_WIDGET_HOME = true;
+      this.DISPLAY_CALLOUT = false;
+      this.DISPLAY_WIDGET_CHAT = false;
+    }
+
+    if (this.widget_preview_selected === '0002') {
+      this.DISPLAY_WIDGET_HOME = false;
+      this.DISPLAY_CALLOUT = false;
+      this.DISPLAY_WIDGET_CHAT = true;
+    }
+
+    if (this.widget_preview_selected === '0003') {
+      this.DISPLAY_WIDGET_HOME = false;
+      this.DISPLAY_CALLOUT = true;
+      this.DISPLAY_WIDGET_CHAT = false;
+    }
+
+    if (this.widget_preview_selected === '0004') {
+      this.widget_preview_selected = "0004"
+    }
   }
 
   onOpenPrimaryColorDialog($event) {
-    this.DISPLAY_WIDGET_HOME = true;
-    this.DISPLAY_CALLOUT = false;
-    this.DISPLAY_WIDGET_CHAT = false;
+    console.log('onOpenPrimaryColorDialog widget_preview_selected ', this.widget_preview_selected)
+    if (this.widget_preview_selected === '0001') {
+      this.DISPLAY_WIDGET_HOME = true;
+      this.DISPLAY_CALLOUT = false;
+      this.DISPLAY_WIDGET_CHAT = false;
+    }
+
+    if (this.widget_preview_selected === '0002') {
+      this.DISPLAY_WIDGET_HOME = false;
+      this.DISPLAY_CALLOUT = false;
+      this.DISPLAY_WIDGET_CHAT = true;
+    }
+
+    if (this.widget_preview_selected === '0003') {
+      this.DISPLAY_WIDGET_HOME = false;
+      this.DISPLAY_CALLOUT = true;
+      this.DISPLAY_WIDGET_CHAT = false;
+    }
+
+    if (this.widget_preview_selected === '0004') {
+      this.widget_preview_selected = "0004"
+    }
   }
 
   hexToRgb(hex) {
@@ -1513,9 +1612,9 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
 
-  // =======================================================================================
-  // ============== *** SECONDARY COLOR (alias for themeForegroundColor) ***  ==============
-  // =======================================================================================
+  // --------------------------------------------------------------------------------------
+  //  *** SECONDARY COLOR (alias for themeForegroundColor) ***  
+  // --------------------------------------------------------------------------------------
 
   onCloseSecondaryColorDialog(event) {
     this.logger.log('[WIDGET-SET-UP] - ON CLOSE SECONDARY DIALOG ', event);
@@ -1534,6 +1633,30 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
   onChangeSecondaryColor(event) {
+
+    console.log('onChangeSecondaryColor widget_preview_selected ', this.widget_preview_selected)
+    if (this.widget_preview_selected === '0001') {
+      this.DISPLAY_WIDGET_HOME = true;
+      this.DISPLAY_CALLOUT = false;
+      this.DISPLAY_WIDGET_CHAT = false;
+    }
+
+    if (this.widget_preview_selected === '0002') {
+      this.DISPLAY_WIDGET_HOME = false;
+      this.DISPLAY_CALLOUT = false;
+      this.DISPLAY_WIDGET_CHAT = true;
+    }
+
+    if (this.widget_preview_selected === '0003') {
+      this.DISPLAY_WIDGET_HOME = false;
+      this.DISPLAY_CALLOUT = true;
+      this.DISPLAY_WIDGET_CHAT = false;
+    }
+
+    if (this.widget_preview_selected === '0004') {
+      this.widget_preview_selected = "0004"
+    }
+
     this.logger.log('[WIDGET-SET-UP] - onChangeSecondaryColor ', event);
     this.secondaryColor = event;
     if (this.secondaryColor !== this.widgetDefaultSettings.themeForegroundColor) {
@@ -1554,33 +1677,75 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
   onOpenSecondaryColorDialog($event) {
-    this.DISPLAY_WIDGET_HOME = true;
-    this.DISPLAY_CALLOUT = false;
-    this.DISPLAY_WIDGET_CHAT = false;
+    console.log('onOpenSecondaryColorDialog widget_preview_selected ', this.widget_preview_selected)
+    if (this.widget_preview_selected === '0001') {
+      this.DISPLAY_WIDGET_HOME = true;
+      this.DISPLAY_CALLOUT = false;
+      this.DISPLAY_WIDGET_CHAT = false;
+    }
+
+    if (this.widget_preview_selected === '0002') {
+      this.DISPLAY_WIDGET_HOME = false;
+      this.DISPLAY_CALLOUT = false;
+      this.DISPLAY_WIDGET_CHAT = true;
+    }
+
+    if (this.widget_preview_selected === '0003') {
+      this.DISPLAY_WIDGET_HOME = false;
+      this.DISPLAY_CALLOUT = true;
+      this.DISPLAY_WIDGET_CHAT = false;
+    }
+
+    if (this.widget_preview_selected === '0004') {
+      this.widget_preview_selected = "0004"
+    }
+    
   }
 
   onFocusChangeSecondaryColor() {
-    this.DISPLAY_WIDGET_HOME = true;
-    this.DISPLAY_CALLOUT = false;
-    this.DISPLAY_WIDGET_CHAT = false;
+    console.log('onFocusChangeSecondaryColor widget_preview_selected ', this.widget_preview_selected)
+    if (this.widget_preview_selected === '0001') {
+      this.DISPLAY_WIDGET_HOME = true;
+      this.DISPLAY_CALLOUT = false;
+      this.DISPLAY_WIDGET_CHAT = false;
+    }
+
+    if (this.widget_preview_selected === '0002') {
+      this.DISPLAY_WIDGET_HOME = false;
+      this.DISPLAY_CALLOUT = false;
+      this.DISPLAY_WIDGET_CHAT = true;
+    }
+
+    if (this.widget_preview_selected === '0003') {
+      this.DISPLAY_WIDGET_HOME = false;
+      this.DISPLAY_CALLOUT = true;
+      this.DISPLAY_WIDGET_CHAT = false;
+    }
+
+    if (this.widget_preview_selected === '0004') {
+      this.widget_preview_selected = "0004"
+    }
   }
 
   onFocusWelcomeMsg() {
     this.DISPLAY_WIDGET_HOME = true;
     this.DISPLAY_CALLOUT = false;
     this.DISPLAY_WIDGET_CHAT = false;
+    this.widget_preview_selected = "0000"
   }
 
   onFocusWelcomeTitle() {
     this.DISPLAY_WIDGET_HOME = true;
     this.DISPLAY_CALLOUT = false;
     this.DISPLAY_WIDGET_CHAT = false;
+    this.widget_preview_selected = "0000"
   }
 
   onFocusReplyTime() {
     this.DISPLAY_WIDGET_HOME = true;
     this.DISPLAY_CALLOUT = false;
     this.DISPLAY_WIDGET_CHAT = false;
+    this.widget_preview_selected = "0000"
   }
 
   // ---- NEW
@@ -1592,6 +1757,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.HAS_FOCUSED_ONLINE_MSG = true;
     this.HAS_FOCUSED_OFFLINE_MSG = false;
     this.HAS_FOCUSED_OFFICE_CLOSED_MSG = false;
+    this.widget_preview_selected = "0002"
   }
 
   onFocusOfflineGreetings() {
@@ -1602,6 +1768,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.HAS_FOCUSED_ONLINE_MSG = false;
     this.HAS_FOCUSED_OFFLINE_MSG = true;
     this.HAS_FOCUSED_OFFICE_CLOSED_MSG = false;
+    this.widget_preview_selected = "0002"
 
   }
 
@@ -1613,24 +1780,12 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.HAS_FOCUSED_ONLINE_MSG = false;
     this.HAS_FOCUSED_OFFLINE_MSG = false;
     this.HAS_FOCUSED_OFFICE_CLOSED_MSG = true;
+    this.widget_preview_selected = "0002"
   }
 
 
 
-  setPresetColorComb(primaryColor: string, secondaryColor: string) {
-    this.DISPLAY_WIDGET_HOME = true;
-    this.DISPLAY_CALLOUT = false;
-    this.DISPLAY_WIDGET_CHAT = false;
 
-    this.logger.log('[WIDGET-SET-UP] - setPresetCombOne ', primaryColor, secondaryColor);
-    this.primaryColor = primaryColor;
-    this.secondaryColor = secondaryColor;
-
-    this.onChangePrimaryColor(primaryColor);
-
-    this.widgetObj['themeColor'] = primaryColor
-    this.widgetObj['themeForegroundColor'] = secondaryColor
-  }
 
 
 
@@ -1775,6 +1930,9 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.DISPLAY_WIDGET_HOME = false;
     this.DISPLAY_CALLOUT = true;
     this.DISPLAY_WIDGET_CHAT = false;
+    console.log('toggleCallout', this.widget_preview_selected)
+    this.widget_preview_selected = '0003'
+
 
 
     if ($event.target.checked) {
@@ -1986,6 +2144,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
     // *** ADD PROPERTY
     this.widgetObj['align'] = 'left'
+    this.widget_preview_selected = "0003"
   }
 
   aligmentRightSelected(right_selected: boolean) {
@@ -1998,7 +2157,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
     // *** REMOVE PROPERTY
     delete this.widgetObj['align'];
-
+    this.widget_preview_selected = "0003"
   }
 
 
@@ -2032,7 +2191,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     // '&isOpen=true'
     const url = this.TESTSITE_BASE_URL + '?tiledesk_projectid=' + this.id_project + '&project_name=' + this.projectName + '&role=' + this.USER_ROLE
 
-      this.logger.log('[WIDGET-SET-UP] - TEST WIDGET URL ', url);
+    this.logger.log('[WIDGET-SET-UP] - TEST WIDGET URL ', url);
     window.open(url, '_blank');
   }
 
