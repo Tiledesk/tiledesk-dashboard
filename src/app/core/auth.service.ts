@@ -908,9 +908,9 @@ export class AuthService {
 
 
   removeInstanceIdAndSignout(calledby, FCMcurrentToken, userId ) {
-    console.log('[AUTH-SERV] - removeInstanceIdAndSignout calledby ', calledby)
-    console.log('[AUTH-SERV] - removeInstanceIdAndSignout - FCM Token: ', FCMcurrentToken);
-    console.log('[AUTH-SERV] - removeInstanceIdAndSignout - USER ID: ', userId);
+    // console.log('[AUTH-SERV] - removeInstanceIdAndSignout calledby ', calledby)
+    // console.log('[AUTH-SERV] - removeInstanceIdAndSignout - FCM Token: ', FCMcurrentToken);
+    // console.log('[AUTH-SERV] - removeInstanceIdAndSignout - USER ID: ', userId);
     // this.connectionsRefinstancesId = this.urlNodeFirebase+"/users/"+userUid+"/instances/";
     const urlNodeFirebase = '/apps/tilechat'
     const connectionsRefinstancesId = urlNodeFirebase + '/users/' + userId + '/instances/';
