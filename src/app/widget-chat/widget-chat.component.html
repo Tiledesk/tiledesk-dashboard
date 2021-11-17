@@ -87,14 +87,14 @@
           <!-- --------------------------------------------------- -->
           <!-- Usecase Firebase -->
           <!-- --------------------------------------------------- -->
-          <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" style="border-radius: 50%; height: 40px;width: 40px;"
+          <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" 
             src="https://firebasestorage.googleapis.com/v0/b/{{imageUrl}}/o/profiles%2F{{currentUserId}}%2Fphoto.jpg?alt=media"
             onerror="this.src='assets/img/no_image_user.png'" />
 
           <!-- --------------------------------------------------- -->
           <!-- Usecase Native -->
           <!-- --------------------------------------------------- -->
-          <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" style="border-radius: 50%; height: 40px;width: 40px;"
+          <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
             src="{{imageUrl}}images?path=uploads%2Fusers%2F{{currentUserId}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
             onerror="this.src='assets/img/no_image_user.png'" />
         </div>
