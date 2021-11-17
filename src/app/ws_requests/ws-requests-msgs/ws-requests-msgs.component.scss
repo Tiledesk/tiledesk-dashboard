@@ -1108,6 +1108,7 @@ and also iPads specifically.
   height: 42px !important;
   border-radius: 50%;
   border: 1px solid #eee;
+  object-fit: cover;
   // margin-right: 15px;
 }
 .ws_requets_msgs__attributes {
@@ -2483,6 +2484,16 @@ and also iPads specifically.
   cursor: pointer;
 }
 
+.agent-wrp img {
+  vertical-align: middle;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #eee;
+  margin-right: 3px;
+  object-fit: cover;
+}
+
 .channel-icon {
   width: 14px;
   height: auto;
@@ -2569,6 +2580,20 @@ and also iPads specifically.
 
 .copy-icon:hover {
   opacity: 0.8;
+}
+
+.user-img-in-msg-list {
+  vertical-align: middle;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid #eee;
+  margin-top: 1px;
+  margin-bottom: 1px;
+  position: relative;
+  top: -9px;
+  left: -14px;
+  object-fit: cover;
 }
 
 /* SWAL SM SIZE - moved in demo css to avoid the use of  encapsulation: ViewEncapsulation.None */

@@ -1,6 +1,6 @@
 @import "./src/assets/sass/md/_variables.scss";
 
-input[type=text] {
+input[type="text"] {
     // min-width: 307px !important;
     height: 36px;
     font-size: 14px;
@@ -20,10 +20,10 @@ input[type=text] {
 }
 
 select {
-    height:36px;  
-    background: #fff; 
-    border-radius: 0px; 
-    border-color: #d9d9d9; 
+    height: 36px;
+    background: #fff;
+    border-radius: 0px;
+    border-color: #d9d9d9;
 }
 .card form [class*="col-"] {
     padding: 0px;
@@ -47,23 +47,22 @@ select {
     top: 0;
 }
 
-
 .modal-content {
     position: relative;
     background-color: #fff;
     -webkit-background-clip: padding-box;
     background-clip: padding-box;
     border: 1px solid #999;
-    border: 1px solid rgba(0,0,0,.2);
+    border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 6px;
     outline: 0;
-    -webkit-box-shadow: 0 3px 9px rgba(0,0,0,.5);
-    box-shadow: 0 3px 9px rgba(0,0,0,.5);
+    -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
 }
 
 @media screen and (min-width: 767px) {
     .custom-modal-content {
-        width: 360px
+        width: 360px;
     }
 }
 
@@ -92,7 +91,7 @@ button.close {
     color: #000;
     text-shadow: 0 1px 0 #fff;
     filter: alpha(opacity=20);
-    opacity: .2;
+    opacity: 0.2;
 }
 
 .modal-body {
@@ -109,28 +108,31 @@ button.close {
     border-top: 1px solid #e5e5e5;
     // background-color: #edf0f1;
     background-color: #eeeeee;
-    padding-top:10px !important;
+    padding-top: 10px !important;
 }
 /* MODAL END */
 
-
-
 /* TABLE LIST OF USERS - IN THE MODAL WINDOWS */
-.thead_table-fixed, .tbody_table-fixed, .tr_table-fixed, .td_table-fixed, .th_table-fixed {
+.thead_table-fixed,
+.tbody_table-fixed,
+.tr_table-fixed,
+.td_table-fixed,
+.th_table-fixed {
     display: block;
-  
 }
 
-.thead_table-fixed, .th_table-fixed {
+.thead_table-fixed,
+.th_table-fixed {
     height: 40px;
 }
 
 .tbody_table-fixed {
     overflow-y: auto;
-    
 }
 
-.td_table-fixed, .thead_table-fixed,  .th_table-fixed {
+.td_table-fixed,
+.thead_table-fixed,
+.th_table-fixed {
     float: left;
     // width: 20%;
     width: 25%;
@@ -138,21 +140,21 @@ button.close {
 
 .tr_table-fixed:after {
     clear: both;
-    content: ' ';
+    content: " ";
     display: block;
     visibility: hidden;
 }
 
 .td_table-fixed {
-    border:0px !important;
+    border: 0px !important;
     font-weight: 400;
 }
 
 .th_table-fixed {
-    border:0px !important
+    border: 0px !important;
 }
 
-.tr_table-fixed { 
+.tr_table-fixed {
     border-top: 0px !important;
     border-bottom: 1px solid #ddd;
 }
@@ -161,18 +163,18 @@ button.close {
 
 // button add members hover
 .addMember:hover {
-   background-color: #4caf50 !important;
+    background-color: #4caf50 !important;
     color: #fff !important;
     // display: none
 }
 // button add members
 .addMember {
-    margin-top: 0px; 
-    margin-bottom: 0px; 
-    border-radius: 50%; 
-    padding:2px; 
-    margin-left:15px;
-    border: solid 1px; 
+    margin-top: 0px;
+    margin-bottom: 0px;
+    border-radius: 50%;
+    padding: 2px;
+    margin-left: 15px;
+    border: solid 1px;
 }
 
 .it_custom_add_members_now {
@@ -180,54 +182,54 @@ button.close {
     padding-left: 14px !important;
 }
 
-  // start TOOLTIP
+// start TOOLTIP
 /* Tooltip container */
 .tooltipx {
     position: relative;
     display: inline-block;
     // border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
-  }
-  
-  /* Tooltip text */
-  .tooltipx .tooltiptext {
+}
+
+/* Tooltip text */
+.tooltipx .tooltiptext {
     visibility: hidden;
     // width: 120px;
-    // background-color: black; 
+    // background-color: black;
     // background-color: rgba(0,0,0,0.6);
     color: #fff;
     text-align: center;
     padding: 5px 5px;
     border-radius: 5px;
     font-size: 12px !important;
-  
+
     /* Position the tooltip text */
     position: absolute;
     z-index: 1;
     /* Position the tooltip text - TOP */
     bottom: 100%;
-    left: 50%; 
+    left: 50%;
     margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
 
     // NEW
     box-shadow: 0 1em 2em -0.5em rgba(0, 0, 0, 0.35);
     background-color: #394f5a;
-  }
-  
-  /* Show the tooltip text when you mouse over the tooltip container */
-  .tooltipx:hover .tooltiptext {
-    visibility: visible;
-  }
+}
 
-  /**
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltipx:hover .tooltiptext {
+    visibility: visible;
+}
+
+/**
  * *** WHEN THE SCREEN IS < OF 768 PX  ***
  * CARD - CUSTOM PADDING AND MARGIN 
  * SPACER DIV HIDDEN
- */    
+ */
 @media only screen and (max-width: 768px) {
     .custom_card {
         margin-top: 5px !important;
-        padding-top:5px !important; 
-        padding-bottom:5px !important;
+        padding-top: 5px !important;
+        padding-bottom: 5px !important;
     }
     .spacer_div {
         display: none !important;
@@ -235,7 +237,7 @@ button.close {
 }
 
 .title-attribute {
-    font-family: "Google Sans",sans-serif!important;
+    font-family: "Google Sans", sans-serif !important;
     color: #394f5a;
     // font-weight: 500;
 }
@@ -244,20 +246,20 @@ button.close {
     // font-weight: 500;
 }
 
-.custom-label{
-    color: rgb(118, 149, 165); 
-    height: 36px; 
-    padding-top: 7px !important; 
-    padding-left: 16px !important; 
-    padding-right: 16px !important; 
+.custom-label {
+    color: rgb(118, 149, 165);
+    height: 36px;
+    padding-top: 7px !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
     text-align: right !important;
 }
 
 .card-header-custom-bkgrnd {
     // display:none;
-    box-shadow:none;
-    -webkit-box-shadow:none;
-    margin:0px;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    margin: 0px;
     border-radius: 3px 3px 0px 0px;
     // background-color: #f2f6f8;
     background-color: #ffffff;
@@ -266,10 +268,10 @@ button.close {
     padding-bottom: 12px;
 }
 .card-header-custom {
-    box-shadow: none!important;
-    margin-left: 0px; 
-    margin-right: 0px; 
-    border-bottom: 1px solid #eff3f5
+    box-shadow: none !important;
+    margin-left: 0px;
+    margin-right: 0px;
+    border-bottom: 1px solid #eff3f5;
 }
 
 .column-th-span {
@@ -282,4 +284,14 @@ button.close {
 .text_primary {
     color: $brand-primary;
     font-weight: 500;
+}
+
+.user-img-in-group {
+    vertical-align: middle;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid #eee;
+    margin-right: 15px;
+    object-fit: cover;
 }

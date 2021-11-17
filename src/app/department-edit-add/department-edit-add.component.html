@@ -737,8 +737,7 @@
                         <!-- USECASE uploadEngine Firebase -->
                         <!-- --------------------------------------------------- -->
                         <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
-                          style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #eee; margin-right: 3px;"
-                          class="user-img"
+                          class="user-img-teammates-in-edit-dept"
                           src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?.id_user?._id}}%2Fphoto.jpg?alt=media"
                           onerror="this.src='assets/img/no_image_user.png'" />
 
@@ -746,8 +745,7 @@
                         <!-- USECASE uploadEngine Native -->
                         <!-- --------------------------------------------------- -->
                         <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
-                          style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #eee; margin-right: 3px;"
-                          class="user-img"
+                          class="user-img-teammates-in-edit-dept"
                           src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                           onerror="this.src='assets/img/no_image_user.png'" />
 
@@ -783,8 +781,7 @@
                         <!-- USECASE uploadEngine Firebase -->
                         <!-- --------------------------------------------------- -->
                         <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
-                          style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #eee; margin-right: 3px;"
-                          class="user-img"
+                          class="user-img-teammates-in-edit-dept"
                           src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fphoto.jpg?alt=media"
                           onerror="this.src='assets/img/no_image_user.png'" />
 
@@ -792,8 +789,7 @@
                         <!-- USECASE uploadEngine Native -->
                         <!-- --------------------------------------------------- -->
                         <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
-                          style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #eee; margin-right: 3px;"
-                          class="user-img"
+                          class="user-img-teammates-in-edit-dept"
                           src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                           onerror="this.src='assets/img/no_image_user.png'" />
 

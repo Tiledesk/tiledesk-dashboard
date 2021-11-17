@@ -205,8 +205,7 @@
                     <!-- USECASE uploadEngine Firebase -->
                     <!-- --------------------------------------------------- -->
                     <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
-                      style="vertical-align: middle; width: 35px; height: 35px; border-radius: 50%; border: 1px solid #eee;"
-                      class="user-img"
+                      class="user-img-in-tags"
                       src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{tag?.createdBy}}%2Fphoto.jpg?alt=media"
                       onerror="this.src='assets/img/no_image_user.png'" />
 
@@ -214,8 +213,7 @@
                     <!-- USECASE uploadEngine Native -->
                     <!-- --------------------------------------------------- -->
                     <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
-                      style="vertical-align: middle; width: 35px; height: 35px; border-radius: 50%; border: 1px solid #eee;"
-                      class="user-img"
+                      class="user-img-in-tags"
                       src="{{baseUrl}}images?path=uploads%2Fusers%2F{{tag?.createdBy}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                       onerror="this.src='assets/img/no_image_user.png'" />
 

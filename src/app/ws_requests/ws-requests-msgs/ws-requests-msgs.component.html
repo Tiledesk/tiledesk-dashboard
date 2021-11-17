@@ -327,8 +327,7 @@
                                 <!-- Usecase  Firebase -->
                                 <!-- --------------------------------------- -->
                                 <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
-                                  style="vertical-align: middle; width: 36px; height: 36px; border-radius: 50%; border: 1px solid #eee; margin-top: 1px; margin-bottom: 1px;position: relative;top: -9px; left: -14px;"
-                                  class="user-img"
+                                  class="user-img-in-msg-list"
                                   src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{message?.sender}}%2Fphoto.jpg?alt=media"
                                   onerror="this.src='assets/img/no_image_user.png'" />
 
@@ -336,8 +335,7 @@
                                 <!-- Usecase  Native  -->
                                 <!-- --------------------------------------- -->
                                 <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
-                                  style="vertical-align: middle; width: 36px; height: 36px; border-radius: 50%; border: 1px solid #eee; margin-top: 1px; margin-bottom: 1px;position: relative;top: -9px; left: -14px;"
-                                  class="user-img"
+                                  class="user-img-in-msg-list"
                                   src="{{baseUrl}}images?path=uploads%2Fusers%2F{{message?.sender}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                                   onerror="this.src='assets/img/no_image_user.png'" />
                               </span>
@@ -1866,8 +1864,7 @@
                           <!-- Usecase  Firebase -->
                           <!-- --------------------------------------- -->
                           <img *ngIf="agent.isBot === false && UPLOAD_ENGINE_IS_FIREBASE"
-                            style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #eee; margin-right: 3px;"
-                            class="user-img"
+                            class="teammate-img-conv-detail"
                             src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fphoto.jpg?alt=media"
                             onerror="this.src='assets/img/no_image_user.png'" />
 
@@ -1875,8 +1872,7 @@
                           <!-- Usecase  Native -->
                           <!-- --------------------------------------- -->
                           <img *ngIf="agent.isBot === false && !UPLOAD_ENGINE_IS_FIREBASE"
-                            style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #eee; margin-right: 3px;"
-                            class="user-img"
+                            class="teammate-img-conv-detail"
                             src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                             onerror="this.src='assets/img/no_image_user.png'" />
 
@@ -1884,8 +1880,7 @@
                           <!-- Usecase  Firebase (bot) -->
                           <!-- --------------------------------------- -->
                           <img *ngIf="agent.isBot === true && UPLOAD_ENGINE_IS_FIREBASE"
-                            style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #eee; margin-right: 3px;"
-                            class="user-img"
+                            class="teammate-img-conv-detail"
                             src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id | slice:4}}%2Fphoto.jpg?alt=media"
                             onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
 
@@ -1893,8 +1888,7 @@
                           <!-- Usecase  Native (bot) -->
                           <!-- --------------------------------------- -->
                           <img *ngIf="agent.isBot === true && !UPLOAD_ENGINE_IS_FIREBASE"
-                            style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #eee; margin-right: 3px;"
-                            class="user-img"
+                            class="teammate-img-conv-detail"
                             src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id | slice:4}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                             onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
 

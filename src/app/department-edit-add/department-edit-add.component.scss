@@ -469,15 +469,14 @@ select[disabled] {
 
 .assigned-routing-check-icon {
   position: absolute;
-    left: 81px;
-    top: -5px;
-    font-size: 18px;
-    color: #03a5e8;
-    border-radius: 50%;
-    background: #fff;
-    border: 1px solid #03a5e8;
+  left: 81px;
+  top: -5px;
+  font-size: 18px;
+  color: #03a5e8;
+  border-radius: 50%;
+  background: #fff;
+  border: 1px solid #03a5e8;
 }
-
 
 .pooled-routing-check-icon {
   position: absolute;
@@ -627,7 +626,7 @@ select[disabled] {
   white-space: nowrap;
   position: relative;
   top: 16px;
-  font-family: 'Google Sans', sans-serif !important;
+  font-family: "Google Sans", sans-serif !important;
   font-weight: 400;
 }
 
@@ -656,4 +655,14 @@ select[disabled] {
   align-items: center;
   // justify-content: center;
   flex-direction: row;
+}
+
+.user-img-teammates-in-edit-dept {
+  vertical-align: middle;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #eee;
+  margin-right: 3px;
+  object-fit: cover;
 }

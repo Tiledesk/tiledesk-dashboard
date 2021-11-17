@@ -718,6 +718,7 @@ my-app .main-panel .main-content .card {
   height: 42px;
   border-radius: 50%;
   border: 2px solid rgb(255, 255, 255);
+  object-fit: cover;
 }
 
 .served-by-conv-e .altenative-conv-avatar-wrap {
@@ -814,6 +815,7 @@ my-app .main-panel .main-content .card {
   height: 32px;
   border-radius: 50%;
   border: 2px solid rgb(255, 255, 255);
+  object-fit: cover;
 }
 
 .served-by-desktop-e .altenative-avatar-wrap {

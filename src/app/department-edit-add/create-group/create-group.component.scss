@@ -12,8 +12,7 @@
     -moz-box-sizing: border-box;
     border-radius: 3px;
     background-color: #fff !important;
-  }
-
+}
 
 .create-group-right-side-bar {
     position: absolute;
@@ -102,10 +101,20 @@
     // font-weight: 400;
 }
 
-.create-new-group-note  {
-    display:table;
+.create-new-group-note {
+    display: table;
 }
-.create-new-group-note .material-icons,.create-new-group-note  h5{
-    display:table-cell;
+.create-new-group-note .material-icons,
+.create-new-group-note h5 {
+    display: table-cell;
 }
 
+.user-img-in-create-group-right-sidebar {
+    vertical-align: middle;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid #eee;
+    margin-right: 3px;
+    object-fit: cover;
+}

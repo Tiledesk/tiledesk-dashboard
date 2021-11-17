@@ -55,7 +55,7 @@
                       <!-- --------------------------------------------------- -->
                       <!-- (userProfileImageExist === true || userImageHasBeenUploaded === true) -->
                       <img style="width:80px; height:80px" *ngIf="user?.hasImage && UPLOAD_ENGINE_IS_FIREBASE"
-                        class="user-img"
+                        class="user-img-in-dropdown"
                         src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{user?._id}}%2Fphoto.jpg?alt=media"
                         onerror="this.src='assets/img/no_image_user.png'" />
 
@@ -65,7 +65,7 @@
                       <!-- --------------------------------------------------- -->
                       <!-- (userProfileImageExist === true || userImageHasBeenUploaded === true) -->
                       <img style="width:80px; height:80px" *ngIf="user?.hasImage && !UPLOAD_ENGINE_IS_FIREBASE "
-                        class="user-img"
+                        class="user-img-user-img-in-dropdown"
                         src="{{baseUrl}}images?path=uploads%2Fusers%2F{{user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                         onerror="this.src='assets/img/no_image_user.png'" />
 

@@ -362,8 +362,8 @@
               <div class="card-avatar user-profile-avatar">
                 <a>
                
-                  <img style="width:80px; height:80px"
-                    *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true" class="user-img"
+                  <img
+                    *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true" class="user-img-in-dropdown"
                     [src]="getUserProfileImage()" />
 
                   <img *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true" class="user-img"

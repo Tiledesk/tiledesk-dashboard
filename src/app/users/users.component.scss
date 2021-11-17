@@ -555,8 +555,6 @@ $f21blue: #039be5;
   right: 60px;
 }
 
-
-
 .user-is-busy {
   background-color: #fedd00;
   color: #fff;
@@ -597,6 +595,16 @@ $f21blue: #039be5;
   width: 84px;
   // cursor: pointer;
 }
+
+.user-img-in-teammates-list {
+  vertical-align: middle;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 1px solid #eee;
+  object-fit: cover;
+}
+
 .altenative-projetuser-avatar {
   color: #ffffff;
   line-height: 50px;
@@ -616,7 +624,7 @@ $f21blue: #039be5;
 @keyframes myfirst {
   0% {
     // background: #4caf50;
-    color: #7695a5
+    color: #7695a5;
   }
   50% {
     // background: #fedd00;
@@ -625,15 +633,15 @@ $f21blue: #039be5;
   100% {
     // background: #4caf50;
     // color: #1e2129;
-    color: #7695a5
+    color: #7695a5;
   }
 }
- /* Firefox */
+/* Firefox */
 @-moz-keyframes myfirst {
   0% {
     // background: #4caf50;
     // color: #1e2129;
-    color:#7695a5
+    color: #7695a5;
   }
   50% {
     // background: #fedd00;
@@ -642,15 +650,15 @@ $f21blue: #039be5;
   100% {
     // background: #4caf50;
     // color: #1e2129;
-    color:#7695a5
+    color: #7695a5;
   }
 }
 /* Safari and Chrome */
-@-webkit-keyframes myfirst  {
+@-webkit-keyframes myfirst {
   0% {
     // background: #4caf50;
     // color: #1e2129;
-    color: #7695a5
+    color: #7695a5;
   }
   50% {
     // background: #fedd00;
@@ -659,6 +667,6 @@ $f21blue: #039be5;
   100% {
     // background: #4caf50;
     // color: #1e2129;
-    color: #7695a5
+    color: #7695a5;
   }
 }

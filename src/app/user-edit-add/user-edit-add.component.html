@@ -129,20 +129,18 @@
                 <label
                   style="height: 36px; padding-top: 20px; padding-left: 16px; padding-right: 16px; text-align: right; margin-top: 12px; color: #7695a5"
                   class="col-sm-2 avatar_label">
-                  Avatar
+                 * Avatar
                 </label>
                 <div class="col-sm-10">
 
                   <div class="card-avatar" style="padding-bottom:15px">
                     <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
-                      style="vertical-align: middle; width: 80px; height: 80px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;"
-                      class="user-img"
+                      class="user-img-in-edit-profile"
                       src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{ user_id }}%2Fphoto.jpg?alt=media"
                       onerror="this.src='assets/img/no_image_user.png'" />
 
                       <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
-                      style="vertical-align: middle; width: 80px; height: 80px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;"
-                      class="user-img"
+                      class="user-img-in-edit-profile"
                       src="{{baseUrl}}images?path=uploads%2Fusers%2F{{user_id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                       onerror="this.src='assets/img/no_image_user.png'" />
                   </div>

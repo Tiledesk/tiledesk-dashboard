@@ -120,6 +120,15 @@
   }
 }
 
+.user-img-in-tags {
+  vertical-align: middle;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  border: 1px solid #eee;
+  object-fit: cover;
+}
+
 // -------------------------------------------------------------------------------
 // Horizontal dropdown menu - the follow style is applied in-line in the template
 // -------------------------------------------------------------------------------
