@@ -187,7 +187,7 @@ export class WebSocketJs {
   // @ send - 
   // -----------------------------------------------------------------------------------------------------
   send(initialMessage, calling_method) {
-    this.logger.info("[WEBSOCKET-JS] - SEND - INIZIAL-MSG ", initialMessage, " CALLED BY ", calling_method);
+    // this.logger.log("[WEBSOCKET-JS] - SEND - INIZIAL-MSG ", initialMessage, " CALLED BY ", calling_method);
 
     this.ws.send(initialMessage);
   }
