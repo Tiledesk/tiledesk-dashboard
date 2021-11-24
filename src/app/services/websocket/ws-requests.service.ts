@@ -403,9 +403,7 @@ export class WsRequestsService implements OnDestroy {
   // -----------------------------------------------------------------------------------------------------
   // methods for REQUEST BY ID  
   // -----------------------------------------------------------------------------------------------------
-
   /**
-   * 
    * REQUEST BY ID - Subscribe to websocket request by id service 
    * called when in WsRequestsMsgsComponent onInit() is got the request id from url params
    * 
