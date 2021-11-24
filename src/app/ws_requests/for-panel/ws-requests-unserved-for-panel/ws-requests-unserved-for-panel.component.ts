@@ -21,7 +21,7 @@ import PerfectScrollbar from 'perfect-scrollbar';
 import { DepartmentService } from '../../../services/department.service';
 
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators'
+import { skip, takeUntil } from 'rxjs/operators'
 
 import { browserRefresh } from '../../../app.component';
 import { Location } from '@angular/common';
@@ -163,12 +163,28 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
     this.getLoggedUser();
     this.getTranslations();
     this.setPerfectScrollbar();
+    this.listenToParentPostMessage();
+  }
 
+  listenToParentPostMessage() {
+    window.addEventListener("message", (event) => {
+      console.log("[REQUEST-DTLS-X-PANEL] message event ", event);
+
+      if (event && event.data && event.data.action &&   event.data.parameter) {
+        if (event.data.action === 'joinConversation') {
+          console.log("[WS-REQUESTS-UNSERVED-X-PANEL] message event ", event.data.action);
+          console.log("[WS-REQUESTS-UNSERVED-X-PANEL] message parameter ", event.data.parameter);
+          console.log("[WS-REQUESTS-UNSERVED-X-PANEL] currentUserID ", this.currentUserID);
+          this.onJoinHandled(event.data.parameter, this.currentUserID);
+        }
+      }
+    })
   }
 
   ngAfterViewInit() {
     this.getProjectUserRole();
     this.cdref.detectChanges();
+    window.top.postMessage('finished', '*')
   }
 
   ngOnDestroy() {
@@ -195,7 +211,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
 
   setPerfectScrollbar() {
     const container_projects_for_panel = <HTMLElement>document.querySelector('.main-content-projects-for-panel');
-    this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] setPerfectScrollbar main-content-projects-for-panel', container_projects_for_panel);
+    console.log('[WS-REQUESTS-UNSERVED-X-PANEL] setPerfectScrollbar main-content-projects-for-panel', container_projects_for_panel);
     let ps = new PerfectScrollbar(container_projects_for_panel, {
       suppressScrollX: true
     });
@@ -207,7 +223,10 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
   // ------------------------------------------
   joinRequest(request_id: string) {
     this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] JOIN-REQUEST request_id', request_id, ' - CURRENT-USER-ID ', this.currentUserID);
-    this.onJoinHandled(request_id, this.currentUserID);
+
+    const msg = {action:'openJoinConversationModal', parameter: request_id}
+    window.top.postMessage(msg, '*')
+    // this.onJoinHandled(request_id, this.currentUserID);
   }
 
   archiveRequest(request_id) {
@@ -441,13 +460,14 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
   // @ Subscribe to get the published requests (called On init)
   // -----------------------------------------------------------------------------------------------------
   getWsRequests$() {
-    this.logger.log("[WS-REQUESTS-UNSERVED-X-PANEL] - getWsRequests$");
+    
     this.wsRequestsService.wsRequestsList$
       .pipe(
         takeUntil(this.unsubscribe$)
       )
+      .pipe(skip(1))
       .subscribe((wsrequests) => {
-
+        // console.log("[WS-REQUESTS-UNSERVED-X-PANEL] - subscribe getWsRequests$" , wsrequests);
         if (wsrequests) {
 
           this.addDeptObject(wsrequests)
@@ -489,7 +509,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
         }
 
         this.ws_requests.forEach((request) => {
-
+          // console.log('[WS-REQUESTS-UNSERVED-X-PANEL] forEach request', request);
           const user_agent_result = this.parseUserAgent(request.userAgent)
           const ua_browser = user_agent_result.browser.name + ' ' + user_agent_result.browser.version
           request['ua_browser'] = ua_browser;
@@ -540,7 +560,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
         // Sort requests and manage spinner
         // -------------------------------------------------------
         if (this.ws_requests) {
-          this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL]  getWsRequests *** ws_requests ***', this.ws_requests);
+          // console.log('[WS-REQUESTS-UNSERVED-X-PANEL]  getWsRequests *** ws_requests ***', this.ws_requests);
           this.wsRequestsUnserved = this.ws_requests
             .filter(r => {
               if (r['status'] === 100) {
@@ -551,10 +571,10 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
               }
             }).sort(function compare(a: Request, b: Request) {
               if (a['createdAt'] > b['createdAt']) {
-                return 1;
+                return -1;
               }
               if (a['createdAt'] < b['createdAt']) {
-                return -1;
+                return 1;
               }
               return 0;
             });
@@ -578,10 +598,10 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
             });
 
         } else {
-         
+
         }
         this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - getWsRequests$ (served)', this.wsRequestsServed);
-        this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - getWsRequests$ (unserved)', this.wsRequestsUnserved);
+        console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - getWsRequests$ (unserved)', this.wsRequestsUnserved);
 
 
       }, error => {
@@ -631,8 +651,8 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
       .subscribe((data) => {
         const user = data
 
-        this.logger.log("[WS-REQUESTS-UNSERVED-X-PANEL] - wsRequesterPresence - getWsRequesterPresence user uuid_user ", user.uuid_user);
-        this.logger.log("[WS-REQUESTS-UNSERVED-X-PANEL] - wsRequesterPresence - getWsRequesterPresence user ", user);
+        // this.logger.log("[WS-REQUESTS-UNSERVED-X-PANEL] - wsRequesterPresence - getWsRequesterPresence user uuid_user ", user.uuid_user);
+        // this.logger.log("[WS-REQUESTS-UNSERVED-X-PANEL] - wsRequesterPresence - getWsRequesterPresence user ", user);
         if (user && user.presence) {
           if (requester_id === user.uuid_user) {
             if (user.presence.status === "offline") {
@@ -656,8 +676,12 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
     return (wsRequestsServed.length > 0);
   }
 
-  goBack() {
-    this.location.back();
+  // goBack() {
+  //   this.location.back();
+  // }
+
+  goBackToProjectsList() {
+    this.router.navigate(['/projects-for-panel']);
   }
 
   // DEPTS_LAZY: add this 
@@ -667,46 +691,48 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
       this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - X-> DEPTS <-X', _departments)
 
       wsrequests.forEach(request => {
-        const deptHasName = request.department.hasOwnProperty('name')
-        if (deptHasName) {
-          // this.logger.log('% »»» WebSocketJs WF +++++ ws-requests--- service -  X-> REQ DEPT HAS NAME', deptHasName)
-          request['dept'] = request.department;
-          let newInitials = '';
-          let newFillColour = '';
+        if (request && request.department) {
+          const deptHasName = request.department.hasOwnProperty('name')
+          if (deptHasName) {
+            // this.logger.log('% »»» WebSocketJs WF +++++ ws-requests--- service -  X-> REQ DEPT HAS NAME', deptHasName)
+            request['dept'] = request.department;
+            let newInitials = '';
+            let newFillColour = '';
 
-          if (request.dept) {
-            if (request.dept.name) {
-              newInitials = avatarPlaceholder(request.dept.name);
-              newFillColour = getColorBck(request.dept.name)
-            } else {
-              newInitials = 'n.a.';
-              newFillColour = '#eeeeee';
+            if (request.dept) {
+              if (request.dept.name) {
+                newInitials = avatarPlaceholder(request.dept.name);
+                newFillColour = getColorBck(request.dept.name)
+              } else {
+                newInitials = 'n.a.';
+                newFillColour = '#eeeeee';
+              }
+              request.dept['dept_name_initial'] = newInitials;
+              request.dept['dept_name_fillcolour'] = newFillColour;
             }
-            request.dept['dept_name_initial'] = newInitials;
-            request.dept['dept_name_fillcolour'] = newFillColour;
           }
 
         } else {
           // this.logger.log('% »»» WebSocketJs WF +++++ ws-requests--- service -  X-> REQ DEPT HAS NAME', deptHasName)
+          if (request && request.department) {
+            request['dept'] = this.getDeptObj(request.department._id, _departments);
 
-          request['dept'] = this.getDeptObj(request.department._id, _departments);
+            let newInitials = '';
+            let newFillColour = '';
 
+            if (request.dept) {
+              if (request.dept.name) {
+                newInitials = avatarPlaceholder(request.dept.name);
+                newFillColour = getColorBck(request.dept.name)
+              } else {
 
-          let newInitials = '';
-          let newFillColour = '';
+                newInitials = 'n.a.';
+                newFillColour = '#eeeeee';
+              }
 
-          if (request.dept) {
-            if (request.dept.name) {
-              newInitials = avatarPlaceholder(request.dept.name);
-              newFillColour = getColorBck(request.dept.name)
-            } else {
-
-              newInitials = 'n.a.';
-              newFillColour = '#eeeeee';
+              request.dept['dept_name_initial'] = newInitials;
+              request.dept['dept_name_fillcolour'] = newFillColour;
             }
-
-            request.dept['dept_name_initial'] = newInitials;
-            request.dept['dept_name_fillcolour'] = newFillColour;
           }
         }
       });

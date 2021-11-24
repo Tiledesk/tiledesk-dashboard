@@ -4,7 +4,7 @@
 <div class="selected-project-bar" *ngIf="OPEN_REQUEST_DETAILS === false">
 
   <div class="flex-container">
-    <div class="flex-child-project-avatar" style="" (click)="goBack()">
+    <div class="flex-child-project-avatar" style="" (click)="goBackToProjectsList()">
       <span class="material-icons go-back-icon">
         arrow_back_ios
       </span>
@@ -17,8 +17,9 @@
     </div>
   </div>
 </div>
-
-<div class="main-content main-content-projects-for-panel" style="max-height: calc(100% - 150px);">
+<!-- *ngIf="OPEN_REQUEST_DETAILS === false" -->
+<div class="main-content main-content-projects-for-panel" style="min-height: calc(100% - 40px);"
+ >
   <div class="container-fluid container-projects-for-panel">
 
     <div class="row">
@@ -49,7 +50,7 @@
           </span>
         </div>
       </div>
-      
+
       <div *ngIf="!showSpinner && wsRequestsUnserved?.length > 0" class="left-sidebar-unserved-requests-wrapper">
         <div class="row">
           <div class="col-xs-12">
@@ -58,14 +59,16 @@
             </h4>
           </div>
         </div>
-        <div class="left-sidebar-unserved-requests" *ngFor="let request of wsRequestsUnserved" >
+        <div class="left-sidebar-unserved-requests" *ngFor="let request of wsRequestsUnserved">
 
           <!-- GRID ---------------------------------------------------------------- -->
           <div class="grid-container">
-            <div class="lead-avatar-column"  (click)="displayDetails(request)">
+            <div class="lead-avatar-column" (click)="displayDetails(request)">
 
               <div class="lead-avatar-wrap" style="position:relative">
-                <div class="lead--avatar" [ngStyle]="{'background-color': request?.requester_fullname_fillColour }"
+                <!-- [ngStyle]="{'background-color': request?.requester_fullname_fillColour }"  -->
+                <div class="lead--avatar"
+                  [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + request?.requester_fullname_fillColour + ')'}"
                   [ngClass]="{'requester_fullname-undefined' : !request?.snapshot?.lead?.fullname }">
                   <span style="color: #ffffff"> {{ request?.requester_fullname_initial }} </span>
                   <div class="requester-status-in-unserved-list"
@@ -75,7 +78,7 @@
               </div>
             </div>
 
-            <div class="right-column"  (click)="displayDetails(request)">
+            <div class="right-column" (click)="displayDetails(request)">
               <div class="lead-name">
                 <div class="lead--name">
                   {{ request?.lead?.fullname }}
@@ -125,7 +128,7 @@
                   </div>
                 </div>
               </div>
-              <div class="arrow-container"  (click)="displayDetails(request)">
+              <div class="arrow-container" (click)="displayDetails(request)">
                 <div id="arrow_3" class="arrow-wrapper">
                   <div class="arrow arrow--right">
                     <span></span>
@@ -134,330 +137,16 @@
               </div>
             </div>
           </div>
-           <!-- ./ GRID ---------------------------------------------------------------- -->
+          <!-- ./ GRID ---------------------------------------------------------------- -->
 
-          <!-- <div class="left-sidebar-unserved-requests-row" (click)="displayDetails(request)">
-            <div class="left-sidebar-requester-avatar-wrapper">
-              <span class="left-sidebar-requester-avatar"
-                [ngStyle]="{'background-color': request?.requester_fullname_fillColour }"
-                [ngClass]="{'requester_fullname-undefined' : !request?.lead?.fullname }">
-                <span style="color: #ffffff"> {{ request?.requester_fullname_initial }} </span>
-              </span>
-
-              <div class="requester-status-in-unserved-list"
-                [ngClass]="{'requester-is-online' : request?.REQUESTER_IS_ONLINE, 'requester-is-offline' : !request?.REQUESTER_IS_ONLINE }">
-              </div>
-
-            </div>
-
-            <div class="left-sidebar--lead-name-and-request-wrapper">
-              <div class="left-sidebar--lead-name-and-request">
-                <div class="left-sidebar--lead-name">
-                  <span class="">
-                    {{ request?.lead?.fullname }}
-                  </span>
-
-                  <span *ngIf="!request?.lead?.fullname"
-                    [ngClass]="{'requester_fullname_initial-undefined' : !request?.lead?.fullname}">
-                    n/a
-                  </span>
-                </div>
-                <!- -
-                // ----------------------------------------------------------------
-                // First message
-                // ---------------------------------------------------------------- - ->
-                <div class="left-sidebar--request-first-message  text-truncated" [innerHTML]="request?.first_text">
-                </div>
-              </div>
-
-
-              <div class="left-sidebar--request-time-wrapper">
-
-                <div class="left-sidebar--request-time">
-                  {{ request?.createdAt | amTimeAgo }}
-                </div>
-
-              </div>
-            </div>
-          </div> -->
-
-          <!-- <div class="left-sidebar--btns-container">
-            <div class="left-sidebar--btns-left-column"> </div>
-
-            <div class="left-sidebar--btns-center-column">
-              <div class="tool_tip">
-                <button class="btn btn-primary left-sidebar-btn "
-                  (click)='$event.stopPropagation();joinRequest(request?.request_id)' style="">
-                  <!- - <svg style="height: 15px; width:auto;margin-top: 3px;" aria-hidden="true" focusable="false"
-                    data-prefix="fas" data-icon="link" class="svg-inline--fa fa-link fa-w-16" role="img"
-                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                    <path fill="currentColor"
-                      d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z">
-                    </path>
-                  </svg> - ->
-                  Join
-                </button>
-                <span
-                  style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px; white-space: nowrap;"
-                  class="top">
-                  <span style="text-transform: capitalize;"> {{ 'RequestMsgsPage.Enter' | translate }} </span>
-                  <i></i>
-                </span>
-              </div>
-              <div class="tool_tip">
-                <button class="btn btn-primary left-sidebar-btn"
-                  (click)='$event.stopPropagation();archiveRequest(request?.request_id)'
-                  style="background-color: #e4e6eb; color: #050505;">
-               
-                  <!- - <svg style="height: 22px; width:auto;margin-top: 3px;" xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24" fill="black">
-                    <path d="M0 0h24v24H0z" fill="none" />
-                    <path
-                      d="M20.54 5.23l-1.39-1.68C18.88 3.21 18.47 3 18 3H6c-.47 0-.88.21-1.16.55L3.46 5.23C3.17 5.57 3 6.02 3 6.5V19c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6.5c0-.48-.17-.93-.46-1.27zM12 17.5L6.5 12H10v-2h4v2h3.5L12 17.5zM5.12 5l.81-1h12l.94 1H5.12z" />
-                  </svg> - ->
-                  Archive
-                </button>
-
-                <span
-                  style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px; white-space: nowrap;"
-                  class="top">
-                  <span style="text-transform: capitalize;"> {{ 'VisitorsPage.Archive' | translate }} </span>
-                  <i></i>
-                </span>
-              </div>
-            </div>
-            <div class="left-sidebar--btns-right-column" (click)="displayDetails(request)">
-              <div id="arrow_3" class="arrow-wrapper">
-                <div class="arrow arrow--right">
-                  <span></span>
-                </div>
-              </div>
-            </div>
-          </div> -->
         </div>
-
-
-
-
-        <!-- <div *ngFor="let request of wsRequestsUnserved" class="col-xs-12" style="cursor:pointer; padding-right: 5px;   padding-left: 5px;">
-        <div class="card" style="margin-top:5px ;margin-bottom:5px ;" (click)="displayDetails(request)">
-          <div class="card-content" style="padding: 8px 20px;">
-            <div class="row">
-              <div class="col-xs-8">
-                <div class="row">
-                  <div class="col-xs-12" style="margin-bottom: 8px; padding-left: 5px;">
-                    <span class="user-agent-section">
-                      <span *ngIf="request?.userAgent" class="tool_tip">
-                        <!- - 
-                        // ----------------------------------------------------------------
-                        // @ OS - if not is
-                        // ---------------------------------------------------------------- - ->
-                        <span *ngIf="(request?.ua_os?.indexOf('Android') === -1) && 
-                                      (request?.ua_os?.indexOf('Mac OS') === -1) && 
-                                      (request?.ua_os?.indexOf('iOS') === -1) &&
-                                      (request?.ua_os?.indexOf('Windows') === -1) &&
-                                      (request?.ua_os?.indexOf('Ubuntu') === -1)">
-
-                          <img class="ua-os-icon" style="margin-top: 2px;" src="assets/img/user_agent/laptop.svg" />
-                        </span>
-
-                 
-
-                        <!- - 
-                        // ----------------------------------------------------------------
-                        // if is Android
-                        // ---------------------------------------------------------------- - ->
-                        <span *ngIf="request?.ua_os.indexOf('Android') !== -1">
-                          <img class="ua-os-icon" src="assets/img/user_agent/android.svg" />
-                        </span>
-
-                        <!- - 
-                        // ----------------------------------------------------------------
-                        // if is Mac OS or iOS
-                        // ---------------------------------------------------------------- - ->
-                        <span *ngIf="request?.ua_os.indexOf('Mac OS') !== -1 || request?.ua_os.indexOf('iOS') !== -1">
-                          <img class="ua-os-icon" style="margin-bottom: 2px;" src="assets/img/user_agent/apple.svg" />
-                        </span>
-
-                        <!- - 
-                        // ----------------------------------------------------------------
-                        // if is Windows
-                        // ---------------------------------------------------------------- - ->
-                        <span *ngIf="request?.ua_os.indexOf('Windows') !== -1">
-                          <img class="ua-os-icon" style="margin-top: 2px;" src="assets/img/user_agent/windows.svg" />
-                        </span>
-
-                        <!- - 
-                        // ----------------------------------------------------------------
-                        // if is Ubuntu
-                        // ---------------------------------------------------------------- - ->
-                        <span *ngIf="request?.ua_os.indexOf('Ubuntu') !== -1">
-                          <img class="ua-os-icon" src="assets/img/user_agent/ubuntu.svg" />
-                        </span>
-
-                        <span class="top"
-                          style="min-width: 100px;text-align: center ; top:-8px; border-radius: 3px; padding: 3px 10px; font-size: 10px; line-height: 14px;">
-                          <span *ngIf="request?.ua_os !== 'undefined undefined'"> {{ request?.ua_os }} </span>
-                          <span *ngIf="request?.ua_os === 'undefined undefined'"> {{'Unavailable' | translate}} </span>
-
-                          <i></i>
-                        </span>
-                      </span>
-
-                      <span *ngIf="request?.userAgent" class="tool_tip">
-                        <!- - 
-                        // ----------------------------------------------------------------
-                        // @ Browser - if not is
-                        // ---------------------------------------------------------------- - ->
-                        <span *ngIf="(request?.ua_browser.indexOf('Chrome') === -1) && 
-                                      (request?.ua_browser.indexOf('Chromium') === -1) &&
-                                      (request?.ua_browser.indexOf('Firefox') === -1) &&
-                                      (request?.ua_browser.indexOf('Edge') === -1) &&
-                                      (request?.ua_browser.indexOf('Opera') === -1) &&
-                                      (request?.ua_browser.indexOf('Safari') === -1) &&
-                                      (request?.ua_browser.indexOf('IE') === -1)">
-
-                          <img class="ua_browser_icon" src="assets/img/user_agent/globe.svg" />
-
-                        </span>
-
-                        <!- - 
-                    // ----------------------------------------------------------------
-                    // Chrome or Chromium
-                    // ---------------------------------------------------------------- - ->
-                        <span
-                          *ngIf="request?.ua_browser.indexOf('Chrome') !== -1 || request?.ua_browser.indexOf('Chromium') !== -1">
-                          <img class="ua_browser_icon" src="assets/img/user_agent/chrome.svg" />
-                        </span>
-
-                        <!- - 
-                    // ----------------------------------------------------------------
-                    // Firefox
-                    // ---------------------------------------------------------------- - ->
-                        <span *ngIf="request?.ua_browser.indexOf('Firefox') !== -1">
-                          <img class="ua_browser_icon" src="assets/img/user_agent/firefox.svg" />
-                        </span>
-
-                        <!- - 
-                    // ----------------------------------------------------------------
-                    // Edge
-                    // ---------------------------------------------------------------- - ->
-                        <span *ngIf="request?.ua_browser.indexOf('Edge') !== -1">
-                          <img class="ua_browser_icon" src="assets/img/user_agent/edge.svg" />
-                        </span>
-
-                        <!- - 
-                    // ----------------------------------------------------------------
-                    // Opera
-                    // ---------------------------------------------------------------- - ->
-                        <span *ngIf="request?.ua_browser.indexOf('Opera') !== -1">
-                          <img class="ua_browser_icon" src="assets/img/user_agent/opera.svg" />
-                        </span>
-
-                        <!- - 
-                    // ----------------------------------------------------------------
-                    // Safari
-                    // ---------------------------------------------------------------- - ->
-                        <span *ngIf="request?.ua_browser.indexOf('Safari') !== -1">
-                          <img class="ua_browser_icon" src="assets/img/user_agent/safari.svg" />
-                        </span>
-
-                        <!- - 
-                    // ----------------------------------------------------------------
-                    // Explorer
-                    // ---------------------------------------------------------------- - ->
-                        <span *ngIf="request?.ua_browser.indexOf('IE') !== -1">
-                          <img class="ua_browser_icon" src="assets/img/user_agent/explorer.svg" />
-                        </span>
-
-
-
-                        <span class="top"
-                          style="min-width: 100px;text-align: center ; top:-8px; border-radius: 3px; padding: 3px 10px; font-size: 10px; line-height: 14px;">
-                          <span *ngIf="request?.ua_browser !== 'undefined undefined'"> {{ request?.ua_browser }} </span>
-                          <span *ngIf="request?.ua_browser === 'undefined undefined'"> {{'Unavailable' | translate}} </span>
-
-                          <i></i>
-                        </span>
-                      </span>
-                    </span>
-                    <span class="dept-info-wrap tool_tip">
-                      <span class="material-icons unserved-request-for-panel-icon">
-                        account_balance
-                      </span>
-                      <span>
-                        <span class="dept-avatar--for-panel"
-                          [ngStyle]="{'background-color': request?.dept?.dept_name_fillcolour }">
-                          {{ request?.dept?.dept_name_initial }}
-                        </span>
-                        <span class="top"
-                          style="min-width: 100px;text-align: center ; top:-8px; border-radius: 3px; padding: 3px 10px; font-size: 10px; line-height: 14px;">
-                          {{'Department' | translate}}: <br> {{ request?.dept?.name   }}
-                          <i></i>
-                        </span>
-                      </span>
-                    </span>
-                    <span class="created-at">
-                      <span class="material-icons unserved-request-for-panel-icon">
-                        schedule
-                      </span>
-                      <span style="font-size: 12px; font-weight: 400;"> {{ request?.createdAt | amTimeAgo }} </span>
-                    </span>
-                  </div>
-                  <div class="col-xs-12" style="padding-left: 5px;">
-                    <span class="requester-avatar-wrapper">
-                      <span class="requester-avatar-for-panel"
-                        [ngStyle]="{'background-color': request?.requester_fullname_fillColour }"
-                        [ngClass]="{'requester_fullname-undefined' : !request?.lead?.fullname }">
-                        <span style="color: #ffffff"> {{ request?.requester_fullname_initial }} </span>
-                      </span>
-                    </span>
-                    <span class="lead_data-for-panel">
-                      <span>
-                        <span class="requester-name--for-panel">
-                          {{ request?.lead?.fullname }}</span>
-                        <span *ngIf="!request?.lead?.fullname"
-                          [ngClass]="{'requester_fullname_initial-undefined' : !request?.lead?.fullname}">
-                          n/a
-                        </span>
-                      </span>
-                      <span class="first-messages-for-panel text-truncated" [innerHTML]="request?.first_text"> </span>
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <div class="col-xs-4">
-                <div class="row">
-                  <div class="col-xs-6 col-sm-6">
-                    <button #testwidgetbtn (click)="archiveChat()" class="btn btn-default"
-                      style=" border-radius: 50px 50px 50px 50px;padding-left: 11px;padding-right: 9px;">
-                      <i class="material-icons"> archive </i>
-                      <span>New result</span>
-                    </button>
-                  </div>
-                  <div class="col-xs-6 col-sm-6">
-                    <button #testwidgetbtn (click)="joinToChat()" class="btn btn-primary" style="padding-left: 12px;
-                    padding-right: 12px;
-                    border-radius: 50%;">
-                      <span class="material-icons">
-                        login
-                      </span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> -->
-
       </div>
-
     </div>
   </div>
+</div>
 
-  <div *ngIf="OPEN_REQUEST_DETAILS === true" class="view-side">
-    <appdashboard-ws-request-detail-for-panel [ngStyle]="{'height':train_bot_sidebar_height }"
-      (valueChange)='handleCloseRightSidebar($event)' [selectedRequest]="selectedRequest">
-    </appdashboard-ws-request-detail-for-panel>
-  </div>
+<div *ngIf="OPEN_REQUEST_DETAILS === true" class="view-side">
+  <appdashboard-ws-request-detail-for-panel [ngStyle]="{'height':train_bot_sidebar_height }"
+    (valueChange)='handleCloseRightSidebar($event)' [selectedRequest]="selectedRequest" [wsRequestsUnserved]="wsRequestsUnserved">
+  </appdashboard-ws-request-detail-for-panel>
+</div>

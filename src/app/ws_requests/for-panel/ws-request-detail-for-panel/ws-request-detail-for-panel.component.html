@@ -2,7 +2,7 @@
 position: absolute;
 z-index: 100;
 top: 0;
-top: -10;
+/* top: -10; */
 right: 0;
 /* width: 90%; */
 width: 100%;
@@ -15,7 +15,8 @@ padding-top:10px;
 padding-left: 15px;
 /* padding-right: 15px; */
 padding-right: 0px;
-padding-bottom: 15px;">
+/* padding-bottom: 15px; */
+">
 
 
     <!-- background-color: #3c4252!important;color: #fff!important; margin-left:-20px; margin-right:-20px; margin-top:-15px" -->
@@ -41,8 +42,7 @@ padding-bottom: 15px;">
             </div> -->
             <div class="col-xs-4" style="text-align: right;">
 
-                <i class="material-icons close-sidebar-btn"
-                    (click)="closeRightSideBar()">
+                <i class="material-icons close-sidebar-btn" (click)="closeRightSideBar()">
                     close
                 </i>
             </div>
@@ -174,9 +174,10 @@ padding-bottom: 15px;">
                     <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
 
                         <span *ngIf="request?.dept">
-                            {{request?.dept?.name  }}
+                            {{request?.dept?.name }}
                         </span>
-                        <span *ngIf="!request?.dept" style="text-transform: lowercase;padding-left: 0px;margin-left: 0px;">
+                        <span *ngIf="!request?.dept"
+                            style="text-transform: lowercase;padding-left: 0px;margin-left: 0px;">
                             {{'DepartmentsPage.NoDept' | translate}}
                         </span>
 
@@ -191,10 +192,10 @@ padding-bottom: 15px;">
             <p style="margin-bottom: 0px;" *ngIf="request?.userAgent">
 
                 <span class="tool_tip">
-                    <!-- 
-                  // ----------------------------------------------------------------
-                  // @ OS - if not is
-                  // ---------------------------------------------------------------- -->
+                     
+                  <!-- ---------------------------------------------------------------- -->
+                  <!-- @ OS - if not is -->
+                  <!-- ---------------------------------------------------------------- -->
                     <span *ngIf="(request?.ua_os?.indexOf('Android') === -1) && 
                                 (request?.ua_os?.indexOf('Mac OS') === -1) && 
                                 (request?.ua_os?.indexOf('iOS') === -1) &&
@@ -206,37 +207,37 @@ padding-bottom: 15px;">
                     </span>
 
 
-                    <!-- 
-                  // ----------------------------------------------------------------
-                  // if is Android
-                  // ---------------------------------------------------------------- -->
-                    <span *ngIf="request?.ua_os.indexOf('Android') !== -1">
+                     
+                  <!-- ---------------------------------------------------------------- -->
+                  <!-- if is Android -->
+                  <!-- ---------------------------------------------------------------- -->
+                    <span *ngIf="request?.ua_os?.indexOf('Android') !== -1">
                         <img class="ua-os-icon--right-sidebar" src="assets/img/user_agent/android.svg" />
                     </span>
 
-                    <!-- 
-                  // ----------------------------------------------------------------
-                  // if is Mac OS or iOS
-                  // ---------------------------------------------------------------- -->
-                    <span *ngIf="request?.ua_os.indexOf('Mac OS') !== -1 || request?.ua_os.indexOf('iOS') !== -1">
+                   
+                  <!-- ---------------------------------------------------------------- -->
+                  <!-- if is Mac OS or iOS -->
+                  <!-- ---------------------------------------------------------------- -->
+                    <span *ngIf="request?.ua_os?.indexOf('Mac OS') !== -1 || request?.ua_os.indexOf('iOS') !== -1">
                         <img class="ua-os-icon--right-sidebar" style="margin-bottom: 2px;"
                             src="assets/img/user_agent/apple.svg" />
                     </span>
 
-                    <!-- 
-                  // ----------------------------------------------------------------
-                  // if is Windows
-                  // ---------------------------------------------------------------- -->
-                    <span *ngIf="request?.ua_os.indexOf('Windows') !== -1">
+                     
+                  <!-- ---------------------------------------------------------------- -->
+                  <!-- if is Windows -->
+                  <!-- ---------------------------------------------------------------- -->
+                    <span *ngIf="request?.ua_os?.indexOf('Windows') !== -1">
                         <img class="ua-os-icon--right-sidebar" style="margin-top: 2px;"
                             src="assets/img/user_agent/windows.svg" />
                     </span>
 
-                    <!-- 
-                  // ----------------------------------------------------------------
-                  // if is Ubuntu
-                  // ---------------------------------------------------------------- -->
-                    <span *ngIf="request?.ua_os.indexOf('Ubuntu') !== -1">
+                     
+                  <!-- ---------------------------------------------------------------- -->
+                  <!-- if is Ubuntu -->
+                  <!-- ---------------------------------------------------------------- -->
+                    <span *ngIf="request?.ua_os?.indexOf('Ubuntu') !== -1">
                         <img class="ua-os-icon--right-sidebar" src="assets/img/user_agent/ubuntu.svg" />
                     </span>
 
@@ -251,80 +252,81 @@ padding-bottom: 15px;">
                 <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
 
                     <span *ngIf="request?.ua_os !== 'undefined undefined'"> {{ request?.ua_os }} </span>
-                    <span *ngIf="request?.ua_os === 'undefined undefined'"> {{'Unavailable' | translate}}  </span>
+                    <span *ngIf="request?.ua_os === 'undefined undefined'"> {{'Unavailable' | translate}} </span>
                 </span>
             </p>
         </div>
     </div>
-
+     
     <div class="row" style="margin-top:5px">
         <div class="col-sm-12">
             <p style="margin-bottom: 0px;" *ngIf="request?.userAgent">
 
                 <span class="tool_tip">
-                    <!-- 
-                  // ----------------------------------------------------------------
-                  // @ Browser - if not is
-                  // ---------------------------------------------------------------- -->
-                    <span *ngIf="(request?.ua_browser.indexOf('Chrome') === -1) && 
-                                (request?.ua_browser.indexOf('Chromium') === -1) &&
-                                (request?.ua_browser.indexOf('Firefox') === -1) &&
-                                (request?.ua_browser.indexOf('Edge') === -1) &&
-                                (request?.ua_browser.indexOf('Opera') === -1) &&
-                                (request?.ua_browser.indexOf('Safari') === -1) &&
-                                (request?.ua_browser.indexOf('IE') === -1)">
+                   
+                  <!-- ---------------------------------------------------------------- -->
+                  <!-- @ Browser - if not is -->
+                  <!-- ---------------------------------------------------------------- -->
+                    <span *ngIf="(request?.ua_browser?.indexOf('Chrome') === -1) && 
+                                (request?.ua_browser?.indexOf('Chromium') === -1) &&
+                                (request?.ua_browser?.indexOf('Firefox') === -1) &&
+                                (request?.ua_browser?.indexOf('Edge') === -1) &&
+                                (request?.ua_browser?.indexOf('Opera') === -1) &&
+                                (request?.ua_browser?.indexOf('Safari') === -1) &&
+                                (request?.ua_browser?.indexOf('IE') === -1)">
 
                         <img class="ua_browser_icon--right-sidebar" src="assets/img/user_agent/globe.svg" />
 
                     </span>
 
-                    <!-- 
-                    // ----------------------------------------------------------------
-                    // Chrome or Chromium
-                    // ---------------------------------------------------------------- -->
+                     
+                    <!-- ---------------------------------------------------------------- -->
+                    <!-- Chrome or Chromium -->
+                    <!-- ---------------------------------------------------------------- -->
+                  
                     <span
-                        *ngIf="request?.ua_browser.indexOf('Chrome') !== -1 || request?.ua_browser.indexOf('Chromium') !== -1">
+                        *ngIf="request?.ua_browser?.indexOf('Chrome') !== -1 || request?.ua_browser.indexOf('Chromium') !== -1">
                         <img class="ua_browser_icon--right-sidebar" src="assets/img/user_agent/chrome.svg" />
 
                     </span>
 
-                    <!-- 
-                    // ----------------------------------------------------------------
-                    // Firefox
-                    // ---------------------------------------------------------------- -->
-                    <span *ngIf="request?.ua_browser.indexOf('Firefox') !== -1">
+                     
+                    <!-- ---------------------------------------------------------------- -->
+                    <!-- Firefox -->
+                    <!-- ---------------------------------------------------------------- -->
+                    <span *ngIf="request?.ua_browser?.indexOf('Firefox') !== -1">
                         <img class="ua_browser_icon--right-sidebar" src="assets/img/user_agent/firefox.svg" />
                     </span>
 
-                    <!-- 
-                    // ----------------------------------------------------------------
-                    // Edge
-                    // ---------------------------------------------------------------- -->
-                    <span *ngIf="request?.ua_browser.indexOf('Edge') !== -1">
+                     
+                    <!-- ---------------------------------------------------------------- -->
+                    <!-- Edge -->
+                    <!-- ---------------------------------------------------------------- -->
+                    <span *ngIf="request?.ua_browser?.indexOf('Edge') !== -1">
                         <img class="ua_browser_icon--right-sidebar" src="assets/img/user_agent/edge.svg" />
                     </span>
 
-                    <!-- 
-                    // ----------------------------------------------------------------
-                    // Opera
-                    // ---------------------------------------------------------------- -->
-                    <span *ngIf="request?.ua_browser.indexOf('Opera') !== -1">
+                     
+                    <!-- ---------------------------------------------------------------- -->
+                    <!-- Opera -->
+                    <!-- ---------------------------------------------------------------- -->
+                    <span *ngIf="request?.ua_browser?.indexOf('Opera') !== -1">
                         <img class="ua_browser_icon--right-sidebar" src="assets/img/user_agent/opera.svg" />
                     </span>
 
-                    <!-- 
-                    // ----------------------------------------------------------------
-                    // Safari
-                    // ---------------------------------------------------------------- -->
-                    <span *ngIf="request?.ua_browser.indexOf('Safari') !== -1">
+                     
+                    <!-- ---------------------------------------------------------------- -->
+                    <!-- Safari -->
+                    <!-- ---------------------------------------------------------------- -->
+                    <span *ngIf="request?.ua_browser?.indexOf('Safari') !== -1">
                         <img class="ua_browser_icon--right-sidebar" src="assets/img/user_agent/safari.svg" />
                     </span>
 
-                    <!-- 
-                    // ----------------------------------------------------------------
-                    // Explorer
-                    // ---------------------------------------------------------------- -->
-                    <span *ngIf="request?.ua_browser.indexOf('IE') !== -1">
+                     
+                    <!-- ---------------------------------------------------------------- -->
+                    <!-- Explorer -->
+                    <!-- ---------------------------------------------------------------- -->
+                    <span *ngIf="request?.ua_browser?.indexOf('IE') !== -1">
                         <img class="ua_browser_icon--right-sidebar" src="assets/img/user_agent/explorer.svg" />
                     </span>
 
@@ -332,7 +334,6 @@ padding-bottom: 15px;">
                     <span class="top"
                         style="min-width: 100px;text-align: center ; top:-8px; border-radius: 3px; padding: 3px 10px; font-size: 10px; line-height: 14px;">
                         Browser
-
                         <i></i>
                     </span>
 
@@ -414,24 +415,14 @@ padding-bottom: 15px;">
     <!-- https://stackoverflow.com/questions/42256877/how-to-create-chat-bubbles-like-facebook-messenger -->
 
     <div class="chat-messages-header">
-
-        <!-- <span class="requester-avatar-wrapper">
-            <span class="requester-avatar-request-detail-for-panel"
-                [ngStyle]="{'background-color': request?.requester_fullname_fillColour }"
-                [ngClass]="{'requester_fullname-undefined' : !request?.lead?.fullname }">
-                <span style="color: #ffffff; padding: 0.41px;"> {{ request?.requester_fullname_initial }} </span>
-            </span>
-        </span> -->
-
         <div class="contact-avatar---chat0-wrapper" style="position: relative;">
-            <div class="contact-avatar---chat1" >
+            <div class="contact-avatar---chat1">
                 <div class="contact-avatar---chat2">
-                    <div [ngStyle]="{'background-color': request?.requester_fullname_fillColour }"
+                    <!-- [ngStyle]="{'background-color': request?.requester_fullname_fillColour }"  -->
+                    <div [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + request?.requester_fullname_fillColour + ')'}"
                         class="contact-avatar---chat3">
                         <span class="contact-avatar---chat4">
-
                             {{ request?.requester_fullname_initial }}
-
                         </span>
                     </div>
                     <!-- <span class="e1qzs7wo2 css-1mi8udo ey4f9bj0"></span> -->
@@ -444,22 +435,63 @@ padding-bottom: 15px;">
 
                 <span *ngIf="!request?.lead?.fullname"
                     [ngClass]="{'requester_fullname_initial-undefined' : !request?.lead?.fullname}">
-                    n/a
+                    N/A
                 </span>
             </div>
+            <div class="request-dtls---requester-status-icon"
+                [ngClass]="{'requester_is_online' : REQUESTER_IS_ONLINE, 'requester_is_offline' : !REQUESTER_IS_ONLINE}">
+            </div>
+        </div>
+        <!-- ----------------------------------------------------- -->
+        <!-- Action buttons: archive - join - open chat -->
+        <!-- ----------------------------------------------------- -->
+        <div class="action-btns--wpr">
+            <!-- ----------------------- -->
+            <!-- Archive btn -->
+            <!-- ----------------------- -->
+            <button type="button" rel="tooltip" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}"
+                class="btn btn-tdblu btn-simple btn-xs tool_tip archive-btn" (click)='archiveRequest(request?.request_id)'
+                [disabled]="request?.currentUserIsJoined === false && ROLE_IS_AGENT === true">
 
+                <i class="material-icons">archive</i>
+                <span style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px;" class="top">
+                    <span style="text-transform: capitalize;"> {{ 'VisitorsPage.Archive' | translate }} </span>
+                    <i></i>
+                </span>
+            </button>
+            <!-- ----------------------- -->
+            <!-- Join btn  -->
+            <!-- ----------------------- -->
+            <!-- request?.currentUserIsJoined, request?.participanting_Agents, *ngIf="request?.currentUserIsJoined === false" -->
+            <button type="button" rel="tooltip"
+                title="{{ 'RequestMsgsPage.Enter' | translate }}" class="btn btn-tdblu btn-simple btn-xs tool_tip join-btn"
+                
+                (click)='joinRequest(request?.request_id)'
+                [disabled]="request?.currentUserIsJoined === true">
+                <!-- ------------------------------------------------------------------------------------------------------ -->
+                <!-- SVG font-awesome link icon -->
+                <!-- ------------------------------------------------------------------------------------------------------ -->
+                <svg style="height: 15px; width:auto;" aria-hidden="true" focusable="false" data-prefix="fas"
+                    data-icon="link" class="svg-inline--fa fa-link fa-w-16" role="img"
+                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                    <path fill="currentColor"
+                        d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z">
+                    </path>
+                </svg>
+                <span style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px; left: -16px;"
+                    class="top">
+                    <span style="text-transform: capitalize;"> {{ 'RequestMsgsPage.Enter' | translate }} </span>
+                    <i style="left: 54%;"></i>
+                </span>
 
-            <div class="request-dtls---requester-status-icon" style=" "
-            [ngClass]="{'requester_is_online' : REQUESTER_IS_ONLINE, 'requester_is_offline' : !REQUESTER_IS_ONLINE}">
-           
-          </div>
-
-         
-          
+            </button>
+      
+ 
         </div>
     </div>
 
-    <div #scrollMe  class="chat-messages-container" [ngStyle]="{ 'height': chat_content_height }">
+    <!-- SEE HERE  -->
+    <div #scrollMe class="chat-messages-container" [ngStyle]="{ 'height': chat_content_height }">
         <!-- CHAT CONTENT -->
         <div id="chat-content" fxFlex="1 1 auto" fusePerfectScrollbar>
 
@@ -467,20 +499,32 @@ padding-bottom: 15px;">
             <div class="chat-messages">
 
                 <!-- MESSAGE -->
-                <div *ngFor="let message of messagesList; let i = index; let first = first" class="message-row" [ngClass]="{
-                            'me': requester_id !== message.sender,
-                            'contact': requester_id === message.sender,
+                <!-- && message?.attributes?.subtype !== 'info' -->
+                <div *ngFor="let message of messagesList; let i = index; let first = first" class="message-row"
+                    [ngClass]="{
+                            'me': requester_id !== message.sender && message?.attributes?.subtype !== 'info',
+                            'contact': requester_id === message.sender && message?.attributes?.subtype !== 'info',
                             'first-of-group': isFirstMessageOfGroup(message, i),
-                            'last-of-group': isLastMessageOfGroup(message, i)
+                            'last-of-group': isLastMessageOfGroup(message, i),
+                            'info': isInfoMessage(message, i),
+                            'info-first': isFirstInfoMessage(message, i)
                             }">
-                            <!-- message   {{message | json}} -->
+                    <!-- message   {{message | json}} -->
+                    <!-- <img *ngIf="shouldShowContactAvatar(message, i)" src="{{message.avatar_url}}"
+                        onerror="this.src='assets/img/no_image_user.png'" class="avatar"> -->
                     <img *ngIf="shouldShowContactAvatar(message, i)" src="{{message.avatar_url}}"
-                        onerror="this.src='assets/img/no_image_user.png'" class="avatar">
+                        (error)="onImageError(message, i)" class="avatar">
 
 
                     <div class="bubble" [ngClass]="{ 'first' : first }">
-                        <div class="message">{{message?.text}}</div>
-                        <div class="time secondary-text">{{message.createdAt | date:'short'}}</div>
+                        <!-- <div class="message">{{message?.text}}</div> -->
+                        <div class="message"[innerHTML]="message?.text | htmlEntitiesEncode  | marked" ></div>
+                        
+                        <div *ngIf="!shouldShowContactAvatar(message, i)"class="time secondary-text">{{message.createdAt | date:'short'}}</div>
+                        <div *ngIf="shouldShowContactAvatar(message, i)"  class="time secondary-text">{{message.createdAt | date:'short'}} 
+                           <span style="margin-left: 3px;"> {{'SentBy' | translate}} {{ message.senderFullname}}</span>
+                        </div>
+                        <!-- <div class="time secondary-text"></div> -->
                     </div>
 
                 </div>
@@ -512,7 +556,7 @@ padding-bottom: 15px;">
 
     </div>
 
-  
+
 
     <!-- <div class="StickyFooter">
         <div class="row">
@@ -533,10 +577,10 @@ padding-bottom: 15px;">
 
 
 
-    <!-- 
-    // ----------------------------------------------------------------
-    // Note - the following is set to DISPLAY NONE
-    // ---------------------------------------------------------------- -->
+     
+    <!-- ---------------------------------------------------------------- -->
+    <!-- Note - the following is set to DISPLAY NONE -->
+    <!-- ---------------------------------------------------------------- -->
     <div #scrollMe class="card-content"
         style="height: 500px; overflow-y: auto; padding: 0px; padding-left:25px; padding-right:25px; display: none;"
         (scroll)="onScroll($event)">

@@ -7,7 +7,7 @@
 }
 
 .close-sidebar-btn:hover {
-    background-color: #CFD2D7;
+    background-color: #cfd2d7;
 }
 
 .join-sidebar-btn {
@@ -17,33 +17,33 @@
     border-radius: 50%;
 }
 
-.join-sidebar-btn:hover  {
-    background-color: #CFD2D7;  
+.join-sidebar-btn:hover {
+    background-color: #cfd2d7;
 }
 
-.archive-sidebar-btn{
+.archive-sidebar-btn {
     cursor: pointer;
     background-color: #e4e6eb;
     padding: 8px;
     border-radius: 50%;
-
 }
 
-.archive-sidebar-btn:hover{
-    background-color: #CFD2D7;  
+.archive-sidebar-btn:hover {
+    background-color: #cfd2d7;
 }
-
-
 
 .dept-avatar-detail-for-panel {
-    padding-left: 3px;
+    // padding-left: 2px;
     border-radius: 3px;
     font-size: 10px;
     font-weight: 400;
     color: #fff;
-    padding-top: 3px;
-    padding-bottom: 3px;
+    // padding-top: 3px;
+    // padding-bottom: 3px;
     margin-right: 3px;
+    min-width: 20px;
+    display: inline-block;
+    text-align: center;
 }
 
 .requester-avatar-request-detail-for-panel {
@@ -66,6 +66,7 @@
     height: 47px;
     margin-left: -15px;
     margin-right: -15px;
+    display: flex;
 }
 
 .contact-avatar---chat0-wrapper {
@@ -75,6 +76,33 @@
     place-content: center flex-start;
     align-items: center;
     padding: 8px;
+}
+.action-btns--wpr {
+    flex-direction: row;
+    box-sizing: border-box;
+    display: flex;
+    place-content: center flex-end;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100%;
+    padding-right: 35px;
+    position: relative;
+    top: 2px;
+}
+
+.action-btns--wpr {
+    .join-btn {
+        padding-left: 5px !important;
+        padding-right: 5px !important;
+    }
+    .archive-btn {
+        padding-right: 5px !important;
+        padding-left: 5px !important;
+    }
+    .open-chat {
+        padding-left: 5px !important;
+        padding-right: 5px !important;
+    }
 }
 
 .contact-avatar---chat1 {
@@ -111,16 +139,30 @@
 }
 
 .contact-avatar---chat4 {
-    font-weight: bold;
-    line-height: 0.75em;
+    // font-weight: bold;
+    // line-height: 0.75em;
     color: rgb(255, 255, 255);
+    font-size: 16px;
+    font-weight: 400;
+    font-family: "Helvetica Neue", sans-serif;
 }
 
 .contact-name {
-    font-size: 13px;
-    font-weight: 600;
+    font-size: 16px;
+    font-weight: 400;
     color: rgb(60, 65, 71);
     margin-left: 8px;
+    width: 178px;
+}
+
+.requester-name--for-panel {
+    white-space: nowrap;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    position: relative;
+    top: 3px;
 }
 
 .contact-avatar---messages {
@@ -238,9 +280,9 @@ ul li {
     padding: 4px 4px 4px 4px;
     flex: 1 1 auto;
     box-sizing: border-box;
-
     overflow-y: auto;
     position: relative;
+    margin-left: -12px;
     // height:295px
     //  max-height: 290px;
 }
@@ -258,7 +300,7 @@ ul li {
 
 #chat-content .chat-messages .message-row .avatar {
     position: absolute;
-    left: 217px;
+    left: 240px;
     margin: 0;
 }
 
@@ -278,6 +320,15 @@ ul li {
     color: rgba(0, 0, 0, 0.54);
 }
 
+// #chat-content > div > div.message-row.info {
+//     position: relative;
+//     display: flex;
+//     flex-direction: column;
+//     align-items: center;
+//     justify-content: center;
+// }
+// #chat-content > div > div:nth-child(1) > div
+
 #chat-content {
     background: transparent;
     overflow: auto;
@@ -286,11 +337,42 @@ ul li {
     font-size: 12px;
     font-weight: 400;
     overflow-x: hidden;
-
+   
     .chat-messages {
         position: relative;
-        // padding: 16px 0 40px 40px;
-        padding: 16px 40px 40px 0px;
+        // padding: 16px 40px 40px 0px;
+        padding: 16px 40px 30px 0px;
+      
+        .message-row.info {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-right: -31px;
+            text-align: center;
+
+            .bubble {
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 6px 12px;
+                max-width: 100%;
+                background: #c9e4f6;
+                border-radius: 20px;
+                margin-top: 22px;
+                text-align: 0px;
+            }
+
+            .bubble.first {
+                margin-top: 0px !important;
+                // margin-bottom: 12px;
+            }
+        }
+        .message-row.info + .first-of-group.last-of-group{
+            margin-top: 12px;
+        }
 
         .message-row {
             position: relative;
@@ -301,9 +383,11 @@ ul li {
             // padding: 0 16px 4px 16px;
             padding: 0 8px 4px 8px;
 
+            
+
             .avatar {
                 position: absolute;
-                left: 217px;
+                left: 240px;
                 margin: 0;
             }
 
@@ -316,21 +400,35 @@ ul li {
                 max-width: 100%;
 
                 .message {
-                    white-space: pre-wrap;
+                    // white-space: pre-wrap;
                     line-height: 1.2;
                 }
-
+              
                 .time {
                     position: absolute;
                     display: none;
                     width: 100%;
-                    font-size: 11px;
-                    margin-top: 8px;
+                    font-size: 10px;
+                    margin-top: -2px;
                     top: 100%;
                     left: 0;
                     white-space: nowrap;
+                    font-weight: 500;
                 }
             }
+
+            // &.info {
+            //     .bubble {
+            //         border-top-left-radius: 20px !important;
+            //         border-bottom-left-radius: 20px !important;
+            //         border-top-right-radius: 20px !important;
+            //         border-bottom-right-radius: 20px !important;
+            //         padding: 0px !important;
+            //         align-items: center !important;
+            //         justify-content: center !important;
+            //         display: block !important;
+            //     }
+            // }
 
             &.contact {
                 .bubble {
@@ -341,7 +439,7 @@ ul li {
                     border-bottom-right-radius: 20px;
 
                     .time {
-                        margin-left: 12px;
+                        margin-left: 4px;
                     }
                 }
 
@@ -400,7 +498,6 @@ ul li {
                 padding-top: 20px;
                 margin-top: 20px;
             }
-
             &.first-of-group {
                 .bubble {
                     border-top-left-radius: 20px;

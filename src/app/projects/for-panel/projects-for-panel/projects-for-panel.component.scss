@@ -1802,12 +1802,10 @@ button.close {
   }
 }
 
-.small-projects-sidebar:hover #arrow_1 .arrow span {
-  //  display: none;
-  // $size: 16px;
-  // $width: 2px;
-
-  // width: $size * 1.414;
+.small-projects-sidebar:hover #arrow_1 .arrow:hover span {
+  $size: 16px;
+  $width: 2px;
+  width: $size * 1.414;
 }
 
 // --------------------------------------------------
@@ -1884,6 +1882,71 @@ button.close {
   }
 }
 
+.projects-item--isBusy-icon-wpr {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+}
+
+.projects-item--isBusy-icon {
+  border-radius: 50%;
+  // background-color: #fedd00;
+  font-size: 18px;
+  color: #fedd00;
+}
+
+.projects-item--isBusy-busy-text {
+  font-family: Helvetica, Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  margin-left: 3px;
+  position: relative;
+  top: -4px;
+  text-transform: capitalize;
+  color: #fedd00;
+}
+
+.text-pulse-animation {
+  animation: pulse 5s;
+  -moz-animation: pulse 5s infinite; /* Firefox */
+  -webkit-animation: pulse 5s infinite; /* Safari and Chrome */
+}
+
+@keyframes pulse {
+  0% {
+      color: transparent;
+  }
+  50% {
+      color: #fedd00;
+  }
+  100% {
+      color: transparent;
+  }
+}
+/* Firefox */
+@-moz-keyframes pulse {
+  0% {
+      color: transparent;
+  }
+  50% {
+      color: #fedd00;
+  }
+  100% {
+      color: transparent;
+  }
+}
+/* Safari and Chrome */
+@-webkit-keyframes pulse {
+  0% {
+      color: transparent;
+  }
+  50% {
+      color: #fedd00;
+  }
+  100% {
+      color: transparent;
+  }
+}
+
 // -----------------------
 // i on-off switch
 // -----------------------
@@ -1909,7 +1972,7 @@ button.close {
   line-height: 18px;
   border: 1px solid #e3e3e3;
   border-radius: 18px;
-  background-color: #2d323e;
+  background-color: #f44336;
   transition: background-color 0.3s ease-in;
 }
 .i_onoffswitch-label:before {
@@ -1921,7 +1984,7 @@ button.close {
   position: absolute;
   top: 0;
   bottom: 0;
-  right: 13px;
+  right: 15px;
   border: 1px solid #e3e3e3;
   border-radius: 18px;
   transition: all 0.3s ease-in 0s;
@@ -1935,4 +1998,151 @@ button.close {
 }
 .i_onoffswitch-checkbox:checked + .i_onoffswitch-label:before {
   right: 0px;
+}
+
+// ---- new
+.availabily-and-busy-wpr {
+  margin-top: 6px;
+  margin-left: 11px;
+}
+
+.availibility-status-text {
+  font-family: Helvetica, Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  margin-left: 3px;
+  position: relative;
+  top: -4px;
+  display: inline-block;
+  min-width: 74px;
+}
+
+.online-text-color {
+  color: #4caf50;
+  // font-weight: 600;
+}
+.offline-text-color {
+  color: #f44336;
+  // font-weight: 600;
+}
+
+.project-item--isBusy-icon-wpr {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+}
+
+.project-item--isBusy-icon {
+  border-radius: 50%;
+  background-color: #fedd00;
+  font-size: 18px;
+  color: #fff;
+}
+
+.project-item--isBusy-busy-text {
+  font-family: Helvetica, Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  margin-left: 3px;
+  position: relative;
+  top: -4px;
+}
+
+.text-pulse-animation {
+  animation: pulse 5s;
+  -moz-animation: pulse 5s infinite; /* Firefox */
+  -webkit-animation: pulse 5s infinite; /* Safari and Chrome */
+}
+
+@keyframes pulse {
+  0% {
+      color: transparent;
+  }
+  50% {
+      color: #fedd00;
+  }
+  100% {
+      color: transparent;
+  }
+}
+/* Firefox */
+@-moz-keyframes pulse {
+  0% {
+      color: transparent;
+  }
+  50% {
+      color: #fedd00;
+  }
+  100% {
+      color: transparent;
+  }
+}
+/* Safari and Chrome */
+@-webkit-keyframes pulse {
+  0% {
+      color: transparent;
+  }
+  50% {
+      color: #fedd00;
+  }
+  100% {
+      color: transparent;
+  }
+}
+
+// ------------------------------------------------------------------
+// on-off availability switch btn // https://proto.io/freebies/onoff/
+// ------------------------------------------------------------------
+// ------------------------------------------------------------------
+// on-off availability switch btn // https://proto.io/freebies/onoff/
+// ------------------------------------------------------------------
+.onoffswitch {
+  display: inline-block;
+  position: relative;
+  width: 36px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+.onoffswitch-checkbox {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.onoffswitch-label {
+  display: block;
+  overflow: hidden;
+  cursor: pointer;
+  height: 18px;
+  padding: 0;
+  line-height: 18px;
+  border: 0px solid #ffffff;
+  border-radius: 20px;
+  background-color: #eeeeee;
+}
+.onoffswitch-label:before {
+  content: "";
+  display: block;
+  width: 20px;
+  margin: -1px;
+  background: #f44336;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  // right: 14px;
+  border-radius: 20px;
+  // box-shadow: 0 6px 12px 0px #757575;
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label {
+  background-color: #eeeeee;
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label,
+.onoffswitch-checkbox:checked + .onoffswitch-label:before {
+  border-color: #eeeeee;
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+  margin-left: 0;
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label:before {
+  right: 0px;
+  background-color: #4caf50;
+  // box-shadow: 3px 6px 18px 0px rgba(0, 0, 0, 0.2);
 }

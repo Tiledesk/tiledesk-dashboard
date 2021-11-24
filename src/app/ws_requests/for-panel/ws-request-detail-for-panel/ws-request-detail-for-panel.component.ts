@@ -37,8 +37,9 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
   private myScrollContainer: ElementRef;
 
   @Output() valueChange = new EventEmitter();
-
   @Input() selectedRequest: string;
+  @Input() wsRequestsUnserved: any;
+  
 
   request: any;
   isOpenRightSidebar = true;
@@ -83,7 +84,8 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
   ngOnInit() {
     this.getProfileImageStorage();
     this.getLoggedUser()
-    this.logger.log('[REQUEST-DTLS-X-PANEL] SELECTED REQUEST ', this.selectedRequest)
+    console.log('[REQUEST-DTLS-X-PANEL] SELECTED REQUEST ', this.selectedRequest)
+    console.log('[REQUEST-DTLS-X-PANEL] UNSERVED REQUESTS ', this.wsRequestsUnserved)
     this.request = this.selectedRequest
 
     if (this.request) {
@@ -101,7 +103,11 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
         this.request['requester_fullname_initial'] = 'N/A';
         this.request['requester_fullname_fillColour'] = '#6264a7';
       }
+
     }
+
+   
+
 
     if (this.requestid) {
       this.logger.log('[REQUEST-DTLS-X-PANEL] - UNSUB-REQUEST-BY-ID - id_request ', this.requestid);
@@ -120,6 +126,22 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
 
     // chat-messages-container
     this.setPerfectScrollbar()
+    this.listenToParentPostMessage()
+  }
+
+  listenToParentPostMessage() {
+    window.addEventListener("message", (event) => {
+      console.log("[REQUEST-DTLS-X-PANEL] message event ", event);
+
+      if (event && event.data && event.data.action &&   event.data.parameter) {
+        if (event.data.action === 'joinConversation') {
+          console.log("[REQUEST-DTLS-X-PANEL] message event ", event.data.action);
+          console.log("[REQUEST-DTLS-X-PANEL] message parameter ", event.data.parameter);
+          console.log("[REQUEST-DTLS-X-PANEL] currentUserID ", this.currentUserID);
+          this.onJoinHandled(event.data.parameter, this.currentUserID);
+        }
+      }
+    })
   }
 
   ngOnDestroy() {
@@ -154,7 +176,7 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
   }
 
   subscribeToWs_RequestById(id_request) {
-    this.logger.log('[REQUEST-DTLS-X-PANEL] CALLING SUBSCRIBE TO Request-By-Id: ', id_request)
+    console.log('[REQUEST-DTLS-X-PANEL] CALLING SUBSCRIBE TO Request-By-Id: ', id_request)
     // Start websocket subscription
     this.wsRequestsService.subscribeTo_wsRequestById(id_request);
     // Get request
@@ -170,10 +192,11 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
       .subscribe((wsrequest) => {
 
         if (wsrequest) {
-          this.logger.log('[REQUEST-DTLS-X-PANEL] - wsrequest FROM SUBSCRIPTION ', wsrequest);
+          // this.request = wsrequest;
+          console.log('[REQUEST-DTLS-X-PANEL] - wsrequest FROM SUBSCRIPTION ', wsrequest);
           this.IS_CURRENT_USER_JOINED = this.currentUserIdIsInParticipants(wsrequest['participants'], this.currentUserID, this.request.request_id);
           this.logger.log('[REQUEST-DTLS-X-PANEL] - wsrequest IS_CURRENT_USER_JOINED ', this.IS_CURRENT_USER_JOINED);
-
+          this.request.currentUserIsJoined  = this.IS_CURRENT_USER_JOINED 
           this.REQUEST_STATUS = wsrequest['status']
         }
       })
@@ -273,9 +296,11 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
   }
 
   joinRequest(request_id: string) {
+    const msg = {action:'openJoinConversationModal', parameter: request_id}
+    window.top.postMessage(msg, '*')
+
     this.logger.log('[REQUEST-DTLS-X-PANEL] JOIN-REQUEST - currentUserID ', this.currentUserID);
-    this.currentUserID
-    this.onJoinHandled(request_id, this.currentUserID);
+   
   }
 
   archiveRequest(request_id) {
@@ -292,7 +317,7 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
         //  NOTIFY ERROR 
         this.notify.showNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
       }, () => {
-    
+
         this.logger.log('REQUEST-DTLS-X-PANEL CLOSE SUPPORT GROUP - COMPLETE');
 
         //  NOTIFY SUCCESS;
@@ -304,8 +329,8 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
   onInitUsersListModalHeight() {
     const windowActualHeight = window.innerHeight;
     this.logger.log('[REQUEST-DTLS-X-PANEL] - ACTUAL HEIGHT ', windowActualHeight);
-
-    this.chat_content_height = windowActualHeight - 457
+    // 457
+    this.chat_content_height = windowActualHeight - 332
     this.logger.log('[REQUEST-DTLS-X-PANEL] CHAT CONTENT HEIGHT ', this.chat_content_height);
 
     return { 'height': this.chat_content_height += 'px' };
@@ -315,7 +340,7 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     const newInnerHeight = event.target.innerHeight;
-    this.chat_content_height = newInnerHeight - 457
+    this.chat_content_height = newInnerHeight - 332
 
     this.logger.log('[REQUEST-DTLS-X-PANEL] - ON-RESIZE NEW INNER HEIGHT ', newInnerHeight);
     this.logger.log('[REQUEST-DTLS-X-PANEL] - ON-RESIZE CHAT CONTENT HEIGHT ', this.chat_content_height);
@@ -344,15 +369,24 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
     this.getWsMsgs$();
   }
 
+  onImageError(message, index) {
+    console.log('[REQUEST-DTLS-X-PANEL] - onImageError  message ', message, 'index ', index)
+    if (message.sender.includes('bot_')) {
+      message['avatar_url'] = "assets/img/avatar_bot_tiledesk.svg"
+    } else {
+      message['avatar_url'] = "assets/img/no_image_user.png"
+    }
+  }
+
   getWsMsgs$() {
     this.wsMsgsService.wsMsgsList$
       .pipe(
         takeUntil(this.unsubscribe$)
       )
       .subscribe((wsmsgs) => {
- 
+
         this.messagesList = wsmsgs;
-        this.logger.log('[REQUEST-DTLS-X-PANEL] - getWsMsgs$ *** this.messagesList *** ', this.messagesList)
+        console.log('[REQUEST-DTLS-X-PANEL] - getWsMsgs$ *** this.messagesList *** ', this.messagesList)
 
 
         let i: number
@@ -362,14 +396,18 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
 
           if (this.messagesList[i].sender === 'system') {
 
-            this.messagesList[i]['avatar_url'] = 'assets/img/code-24px.svg'
-
+            // this.messagesList[i]['avatar_url'] = 'assets/img/code-24px.svg'
+            
           } else {
-
-            if (this.UPLOAD_ENGINE_IS_FIREBASE === true) {
-              this.messagesList[i]['avatar_url'] = 'https://firebasestorage.googleapis.com/v0/b/' + this.storageBucket + '/o/profiles%2F' + this.messagesList[i].sender + '%2Fphoto.jpg?alt=media'
-            } else {
-              this.messagesList[i]['avatar_url'] = this.baseUrl + 'images?path=uploads%2Fusers%2F' + this.messagesList[i].sender + '%2Fimages%2Fthumbnails_200_200-photo.jpg'
+            let sender_id = this.messagesList[i].sender
+           
+            if (this.messagesList[i].sender.includes('bot_')) {
+              sender_id = this.messagesList[i].sender.slice(4);
+              if (this.UPLOAD_ENGINE_IS_FIREBASE === true) {
+                this.messagesList[i]['avatar_url'] = 'https://firebasestorage.googleapis.com/v0/b/' + this.storageBucket + '/o/profiles%2F' + sender_id + '%2Fphoto.jpg?alt=media'
+              } else {
+                this.messagesList[i]['avatar_url'] = this.baseUrl + 'images?path=uploads%2Fusers%2F' + sender_id + '%2Fimages%2Fthumbnails_200_200-photo.jpg'
+              }
             }
           }
         }
@@ -411,13 +449,29 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
     return (i === this.messagesList.length - 1 || this.messagesList[i + 1] && this.messagesList[i + 1].sender !== message.sender) && message_subtype !== 'info';
   }
 
+  isInfoMessage(message, i): boolean {
+    let message_subtype = ""
+    if (message && message.attributes && message.attributes.subtype) {
+      message_subtype = message.attributes.subtype
+    }
+    return (i === this.messagesList.length - 1 || this.messagesList[i + 1]) && message_subtype === 'info';
+  }
+
+  isFirstInfoMessage(message, i): boolean {
+    let message_subtype = ""
+    if (message && message.attributes && message.attributes.subtype) {
+      message_subtype = message.attributes.subtype
+    }
+    return (i === 0 || this.messagesList[i - 1]) && message_subtype === 'info';
+  }
+
   shouldShowContactAvatar(message, i): boolean {
     let message_subtype = ""
     if (message && message.attributes && message.attributes.subtype) {
       message_subtype = message.attributes.subtype
     }
     return (
-      message.sender !== this.requester_id && ((this.messagesList[i + 1] && this.messagesList[i + 1].sender !== message.sender && message_subtype !== 'info') || !this.messagesList[i + 1])
+      message.sender !== this.requester_id && message_subtype !== 'info' && ((this.messagesList[i + 1] && this.messagesList[i + 1].sender !== message.sender && message_subtype !== 'info') || !this.messagesList[i + 1])
     );
   }
 

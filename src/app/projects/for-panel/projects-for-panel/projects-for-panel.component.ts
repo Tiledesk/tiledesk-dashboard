@@ -224,13 +224,17 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
 
 
   goToUnservedRequests(
+    project: any,
     project_id: string,
     project_name: string,
     project_profile_name: string,
     project_trial_expired: string,
     project_trial_days_left: number,
     project_status: number) {
-
+    console.log('[PROJECTS-X-PANEL] - GO TO UNSERVED-REQUEST - PROJECT SELECTED ', project)
+    localStorage.setItem('last_project', JSON.stringify(project))
+    window.top.postMessage('hasChangedProject', '*')
+    
     this.logger.log('[PROJECTS-X-PANEL] - GO TO UNSERVED-REQUEST - PROJECT status ', project_status)
 
     if (project_status !== 0) {

@@ -963,3 +963,7 @@ my-app .main-panel .main-content .card {
 .type-info-msg-text > p {
   margin-bottom: 0px;
 }
+
+#chat-content > div > div > div > div.message > p {
+  margin-bottom: 0px!important;
+}

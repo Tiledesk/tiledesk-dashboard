@@ -21,6 +21,7 @@ button:hover span {
     background: #fff;
     position: relative; // requirements for perfect scrollbar
     height: 400px; // requirements for perfect scrollbar
+  
     // height: 100vh;
 }
 
@@ -978,11 +979,12 @@ $f21blue: #039be5;
 }
 
 .unserved-for-panel-title {
-    font-family: "Google Sans", sans-serif !important;
+    font-family: "Helvetica Neue", sans-serif;
     font-size: 16px;
     font-weight: 600;
     text-transform: lowercase;
-    padding-left: 12px;
+    // padding-left: 12px;
+    text-align: center;
 }
 
 .left-sidebar--btns-right-column:hover #arrow_3 .arrow span {
@@ -1055,7 +1057,7 @@ $f21blue: #039be5;
     & span,
     &:before,
     &:after {
-        background: #000;
+        background: #999999;
         content: "";
         display: block;
         width: $size;
@@ -1278,13 +1280,13 @@ $f21blue: #039be5;
     width: 50px;
     min-width: 50px;
     height: 50px;
-    line-height: 44px;
+    line-height: 50px;
     margin: 0 8px 0 0;
     border-radius: 50%;
-    font-size: 17px;
+    font-size: 20px;
     font-weight: 400;
     text-align: center;
-    font-family: "Google Sans";
+    font-family: "Helvetica Neue", sans-serif;
     display: block;
 }
 
@@ -1293,16 +1295,20 @@ $f21blue: #039be5;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-    font-weight: 600;
-    font-family: "Google Sans", sans-serif;
+    font-weight: 400;
+    font-family: Helvetica, Helvetica, Arial, sans-serif;
+    margin-top: 4px;
 }
 
 .request--creation-time {
-    font-size: 11px;
+    font-size: 10px;
     margin-right: 7px;
     text-align: right;
     overflow: hidden;
     text-overflow: ellipsis;
+    color:#666666;
+    font-family: "Helvetica Neue", sans-serif;
+
     // color: #7695a5;
 }
 
@@ -1319,8 +1325,11 @@ $f21blue: #039be5;
 
 .request--first-message {
     line-height: normal;
+    
+    color: #999;
     font-size: 12px;
-    color: #7695a5;
+    font-weight: 400;
+  
     max-width: 95%;
 }
 
