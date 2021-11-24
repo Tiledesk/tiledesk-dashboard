@@ -314,6 +314,9 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     project_status: number,
     activeOperatingHours: boolean) {
     this.logger.log('[PROJECTS] - GO TO HOME - PROJECT ', project)
+    localStorage.setItem('last_project', JSON.stringify(project))
+    window.top.postMessage('hasChangedProject', '*')
+
     this.logger.log('[PROJECTS] - GO TO HOME - PROJECT status ', project_status)
 
     project['is_selected'] = true
