@@ -138,10 +138,10 @@
                       </ul>
                     </div>
 
-                    <!-- -----------------============= 
-                       ACTIONS DROPDOWN MENU  
-                      HERE is HIDDEN - moved in the right sidebar
-                    =============----------------- -->
+                    <!-- ---------------------------------------------- -->
+                    <!--  ACTIONS DROPDOWN MENU -->
+                    <!--  HERE is HIDDEN - moved in the right sidebar -->
+                    <!-- ---------------------------------------------- -->
                     <div class="dropdown pull-right" style="display: none;">
                       <a href="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
                         style="padding:6px 15px; margin-top: 15px">
@@ -326,16 +326,14 @@
                                 <!-- --------------------------------------- -->
                                 <!-- Usecase  Firebase -->
                                 <!-- --------------------------------------- -->
-                                <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
-                                  class="user-img-in-msg-list"
+                                <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="user-img-in-msg-list"
                                   src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{message?.sender}}%2Fphoto.jpg?alt=media"
                                   onerror="this.src='assets/img/no_image_user.png'" />
 
                                 <!-- --------------------------------------- -->
                                 <!-- Usecase  Native  -->
                                 <!-- --------------------------------------- -->
-                                <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
-                                  class="user-img-in-msg-list"
+                                <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="user-img-in-msg-list"
                                   src="{{baseUrl}}images?path=uploads%2Fusers%2F{{message?.sender}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                                   onerror="this.src='assets/img/no_image_user.png'" />
                               </span>
@@ -441,10 +439,12 @@
             <div class="card-footer" style="text-align: center; margin-bottom: 0px;padding-top: 2px; margin:auto">
               <div class="stats" style="width: 100%; min-height: 69px;">
 
-                <!-- -------------------================== start new three btn ==================------------------- -->
+                <!--  start new three btn -->
                 <div class="row" style="width: 100%">
-
-                  <!-- -------------------====== CLOSE CHAT - MOVED IN DROPDOWN ======------------------- -->
+                  
+                  <!-- --------------------------------------------------------------- -->
+                  <!-- CLOSE CHAT - MOVED IN DROPDOWN -->
+                  <!-- --------------------------------------------------------------- -->
                   <!-- <div class="col-xs-4 col-sm-4 col-md-4" style="padding-right:5px">
                     <button type="button" class="btn btn-danger btn-block tooltipx"
                       (click)='openArchiveRequestModal(request?.request_id)' style="vertical-align: middle; padding-left: 0px;padding-right: 0px;" 
@@ -454,7 +454,9 @@
                     </button>
                   </div> -->
 
-                  <!-- ------------============ BTNS SWITCH: OPEN THE CHAT, ENTER, LOADING, ERROR ============------------ -->
+                  <!-- --------------------------------------------------------------- -->
+                  <!-- BTNS SWITCH: OPEN THE CHAT, ENTER, LOADING, ERROR  -->
+                  <!-- --------------------------------------------------------------- -->
                   <!-- [disabled]="request?.status == 1000" -->
                   <div class="col-xs-12" style="padding-left:5px; padding-right:5px">
 
@@ -1690,13 +1692,9 @@
                 </div>
 
 
-
-
-
-                <!-- 
-                // -------------------------------------------------------
-                // NEW - EVENTS
-                // ------------------------------------------------------- -->
+                <!-- ------------------------------------------------------- -->
+                <!-- NEW - EVENTS -->
+                <!-- ------------------------------------------------------- -->
                 <!-- <div class="row" style="margin-top:5px; cursor: pointer;" (click)='goToEvents()' >
                   <div class="col-sm-12">
                     <p style="color: crimson;">
@@ -1713,10 +1711,10 @@
                   </div>
                 </div> -->
 
-                <!-- 
-                  // ------------------------------------------------------------------
-                  // Go to request details - dispalyed only if CHAT_PANEL_MODE === true
-                  // ------------------------------------------------------------------ -->
+
+                <!-- --------------------------------------------------------------------- -->
+                <!-- Go to request details - dispalyed only if CHAT_PANEL_MODE === true -->
+                <!-- --------------------------------------------------------------------- -->
                 <!-- <div class="row" style="margin-top:5px" *ngIf="CHAT_PANEL_MODE === true">
                       <div class="col-sm-12">
                         <p class="" style="">
@@ -1820,7 +1818,38 @@
                   </div>
                 </div> <!-- ./ end pre-chat form accordion -->
 
+                <!-- ----------------------------------------------------------------------------- -->
+                <!-- Priority -->
+                <!-- ----------------------------------------------------------------------------- -->
+                <div class="row">
+                  <div class="col-sm-12" style="border-top: 1px solid #eeeeee;">
+                    <p class="row-header">
 
+                      <span style="vertical-align: middle">
+                        {{ 'Priority' | translate }}
+                      </span>
+                    </p>
+                  </div>
+
+
+                  <div class="col-sm-12" style="margin-bottom: 8px;">
+
+                    <ng-select [items]="priority" bindLabel="name" bindValue="name" [clearable]="false"
+                      [hideSelected]="true" [(ngModel)]="selectedPriority"
+                      (change)="onChangeSelectedPriority(selectedPriority)">
+                      <ng-template ng-label-tmp let-item="item">
+                        <img style="width: 15px;height: 15px;" height="15" width="15" [src]="item.avatar" />
+                        {{item.name | translate}}
+                      </ng-template>
+                      <ng-template ng-option-tmp let-item="item" let-index="index">
+                        <img style="width: 15px;height: 15px;" height="15" width="15" [src]="item.avatar" />
+                        {{item.name | translate }}
+                      </ng-template>
+                    </ng-select>
+                  </div>
+
+
+                </div>
 
                 <!-- ----------------------------------------------------------------------------- -->
                 <!-- Agents -->
@@ -1837,8 +1866,6 @@
                     </p>
 
                     <div class="served_by">
-
-
                       <!-- ------------------------------------------------------ -->
                       <!-- No Agent -->
                       <!-- ------------------------------------------------------ -->
@@ -1851,7 +1878,6 @@
                           {{ "RequestMsgsPage.NoAgent" | translate }}
                         </span>
                       </div>
-
 
                       <!--  ------------------------------------------------------ -->
                       <!--  Agent array for -->
@@ -1917,10 +1943,6 @@
                     </div>
                   </div>
                 </div>
-                <!-- </div>
-                          </div> -->
-
-
 
                 <!--  ----------------------------------------------------------------------------- -->
                 <!--  Tags -->
@@ -2046,7 +2068,7 @@
                     </div>
                   </div>
                 </div>
- 
+
                 <!-- ----------------------------------------------------------------------------- -->
                 <!-- Notes -->
                 <!--  ----------------------------------------------------------------------------- -->
@@ -2083,13 +2105,17 @@
                             <button type="button" class="btn btn-xs btn-primary ws_msgs_small_btn" #cont
                               (click)="addNote()"
                               [disabled]="!new_note || new_note?.length === 0 || DISABLE_ADD_NOTE_AND_TAGS === true">
-                              <i *ngIf="showSpinnerInAddNoteBtn === false" class="material-icons">add_circle</i>
-                              <span *ngIf="showSpinnerInAddNoteBtn === true"> <i class="fa fa-spinner fa-spin"
-                                style="font-size: 15px;"></i></span>
-                                
-                              {{ 'Notes.AddNote' | translate }}
 
-                            
+
+                              <span *ngIf="showSpinnerInAddNoteBtn !== true">
+                                <i class="material-icons" style="font-size: 15px;">add_circle</i>
+                              </span>
+
+                              <span *ngIf="showSpinnerInAddNoteBtn === true">
+                                <i class="fa fa-spinner fa-spin" style="font-size: 15px;"></i>
+                              </span>
+
+                              {{ 'Notes.AddNote' | translate }}
                             </button>
                           </div>
 
@@ -2150,9 +2176,9 @@
                 <!-- ------------------------------------------------------ -->
                 <!-- <div class="card right-card" style="padding-top:5px; padding-bottom:5px; margin-top: 5px;margin-bottom: 5px;">
                 <div class="card-content" style="padding-top: 5px;padding-bottom: 5px;"> -->
-                <div class="row" style="">
+                <div class="row">
                   <div class="col-sm-12" style="border-bottom: 1px solid #eeeeee;">
-                    <p class="row-header" style="">
+                    <p class="row-header">
                       <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
                       <span style="vertical-align: middle">
                         {{ "RequestMsgsPage.Rating" | translate }}
@@ -2181,11 +2207,6 @@
                     </p>
                   </div>
                 </div>
-
-
-
-
-
 
 
                 <!--  ---------------------------------------------------------------- -->
@@ -3035,7 +3056,9 @@
     </div>
     <!-- ./ USERS - BOTS - DEPTS LIST MODAL - FULL WIDTH MODAL -->
 
-    <!-- ============= LEAVE CHAT MODAL ============= -->
+    <!-- ---------------------------------- -->
+    <!-- LEAVE CHAT MODAL  -->
+    <!-- ---------------------------------- -->
     <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayLeaveChatModal}"
       style="background-color: rgba(90,90,90,0.5);">
       <div class="modal-dialog" role="document">
@@ -3074,7 +3097,9 @@
       </div>
     </div>
 
-    <!-- ============ INFO MODAL: LEAVING CHAT IN PROGRESS ============ -->
+    <!-- -------------------------------------------------- -->
+    <!--  INFO MODAL: LEAVING CHAT IN PROGRESS  -->
+    <!-- -------------------------------------------------- -->
     <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayLeavingChatInfoModal}"
       style="background-color: rgba(90,90,90,0.5);">
       <div class="modal-dialog modal-sm" role="document">

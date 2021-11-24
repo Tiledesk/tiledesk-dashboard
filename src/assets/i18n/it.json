@@ -1937,5 +1937,13 @@
     "SorryFileTypeNotSupported": "Spiacenti, tipo di file non supportato",
     "PreChatFormData":"Modulo pre-chat",
     "HereSomeExamples":"Qui alcuni esempi",
-    "SentBy": "inviato da"
+    "SentBy": "inviato da",
+    "ResolutionBotLanguage":"Lingua",
+    "Priority":"Priorità",
+    "urgent":"Urgente",
+    "high":"Alta",
+    "medium":"Media",
+    "low":"Bassa",
+    "TheConversationPriorityHasBeenSuccessfullyUpdated":"La priorità della conversazione è stata aggiornata con successo",
+    "AnErrorOccurredWhileUpdatingTheCnversationPriority":"Si è verificato un errore durante l'aggiornamento della priorità della conversazione"
 }

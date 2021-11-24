@@ -121,13 +121,11 @@
                     {{ 'CreateAN' | translate:translateparam }}
                   </span>
                 </div> -->
-
               </div>
             </div>
 
-
             <!-- ------------------------------------------------------ -->
-            <!-- Bot name - common for native and external and identity -->
+            <!-- Bot name - common for native, external and identity -->
             <!-- ------------------------------------------------------ -->
             <div class="row" *ngIf="botType !== 'dialogflow'" style="margin-top: 18px;">
               <label class="col-sm-2 custom-label">
@@ -141,10 +139,23 @@
               </div>
             </div>
 
-
-
-
-
+            <!-- ------------------------------------------------------ -->
+            <!-- Resolution bot (i.e. native bot) - language -->
+            <!-- ------------------------------------------------------ -->
+            <section *ngIf="botType === 'resolution'">
+              <div class="row" style="margin-bottom: 8px;">
+                <!-- style="padding-top: 0px; line-height: 1.2;" -->
+                <label class="col-sm-2 custom-label">
+                  {{ "ResolutionBotLanguage" | translate }}
+                </label>
+                <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+                  <ng-select id="bot_default_language" [clearable]="true" [(ngModel)]="botDefaultSelectedLang"
+                    [items]="botDefaultLanguages" bindLabel="name" placeholder="{{ 'ChooseALanguage' | translate }}"
+                    (change)="onSelectBotDefaultlang(botDefaultSelectedLang)">
+                  </ng-select>
+                </div>
+              </div>
+            </section>
 
             <!-- ------------------------------------------------------ -->
             <!-- External bot - external bot url -->
@@ -160,10 +171,10 @@
               </div>
             </section>
 
-            <!-- 
-            // ------------------------------------------------------
-            // Bot description - common for native and external
-            // ------------------------------------------------------ -->
+
+            <!-- ------------------------------------------------------  -->
+            <!-- Bot description - common for native and external -->
+            <!-- ------------------------------------------------------ -->
             <div class="row" *ngIf="botType !== 'dialogflow'" style="margin-top: 4px;">
               <label class="col-sm-2 custom-label">
 
@@ -303,10 +314,10 @@
                 </div>
               </div>
 
-              <!--
-              // ---------------------------------------------------------
-              // Dialogflow description
-              // --------------------------------------------------------- -->
+
+              <!-- -------------------------------------------------------- -->
+              <!-- Dialogflow description -->
+              <!-- -------------------------------------------------------- -->
               <div class="row" style="margin-bottom: 18px;">
                 <label class="col-sm-12 custom-label__dlgflowbot">
                   {{ 'Description' | translate }}
@@ -335,13 +346,12 @@
               </div>
             </div>
           </div>
-
         </div>
-
       </div>
 
-
+      <!-- ----------------------------------------------- -->
       <!-- RIGHT SIDEBAR -->
+      <!-- ----------------------------------------------- -->
       <div class="col-md-4">
         <!-- padding-top:25px; padding-bottom:25px -->
         <div class="card card--no-border" style="margin-top:0px">
@@ -367,7 +377,7 @@
               <p style="color:#7695a5">
                 {{ 'ResolutionBotDescription' | translate}}.
                 <span style="display: block;" (click)="openDocsResolutionBotConfigureYourFirstChatbot()"
-                  style="color: #0f62ff; text-decoration: underline;cursor:pointer"> 
+                  style="color: #0f62ff; text-decoration: underline;cursor:pointer">
                   {{'Resourcepage.HereHow' | translate}}
                 </span>
               </p>
@@ -454,11 +464,11 @@
                   (click)="openExternalBotIntegrationTutorial()">
                   <!-- {{ "HereTheTutorial" | translate: tparams }} -->
                   {{ "HereThe_Tutorial" | translate }}
-                  
+
                 </span>
               </p>
             </section>
-             <!-- ./ end section External -->
+            <!-- ./ end section External -->
 
             <!-- ------------------------------------------------- -->
             <!-- RIGHT SIDEBAR identity bot  -->
@@ -564,7 +574,7 @@
                 </span>
               </p>
 
-            </section>  <!-- ./ end section Dilaogflow -->
+            </section> <!-- ./ end section Dilaogflow -->
 
 
           </div>

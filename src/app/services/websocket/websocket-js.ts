@@ -188,7 +188,7 @@ export class WebSocketJs {
   // -----------------------------------------------------------------------------------------------------
   send(initialMessage, calling_method) {
     // this.logger.log("[WEBSOCKET-JS] - SEND - INIZIAL-MSG ", initialMessage, " CALLED BY ", calling_method);
-
+   
     this.ws.send(initialMessage);
   }
 
@@ -281,7 +281,7 @@ export class WebSocketJs {
       // onmessage Ottieni il battito cardiaco restituito per indicare che la connessione è normale
       if (this.ws.readyState == 1) {
 
-        this.logger.log("[WEBSOCKET-JS] - HEART-START - SEND PING-MSG");
+        // this.logger.log("[WEBSOCKET-JS] - HEART-START - SEND PING-MSG");
 
         this.send(JSON.stringify(this.pingMsg), 'HEART-START')
 
@@ -443,7 +443,7 @@ export class WebSocketJs {
             // -------------------
             // @ send PONG
             // -------------------
-            that.logger.log('[WEBSOCKET-JS] -  RECEIVED PING -> SEND PONG MSG');
+            // that.logger.log('[WEBSOCKET-JS] -  RECEIVED PING -> SEND PONG MSG');
          
             that.send(JSON.stringify(that.pongMsg), 'ON-MESSAGE')
 

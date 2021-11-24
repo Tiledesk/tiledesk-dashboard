@@ -769,7 +769,7 @@ button.close {
   }
 }
 
-/** ================ SMALL DEVICES CUSTOMIZATIONS  (NOTE: IN THE .ts IS CUSTOMIZED THE .main-content )================ **/
+/**  SMALL DEVICES CUSTOMIZATIONS  (NOTE: IN THE .ts IS CUSTOMIZED THE .main-content ) **/
 /* CUSTOM MARGIN AND PADDIG FOR THE CARDS AND THE ROWS THAT CONTAINS THEM WHEN ON Small Devices, Tablets */
 @media only screen and (max-width: 768px) {
   .chat-card {
@@ -1691,8 +1691,8 @@ and also iPads specifically.
   margin-bottom: 6px;
   margin-top: 0px;
   // width: 70px;
-  min-width: 70px;
-  height: 22px;
+  min-width: 70px; 
+  height: 22px; 
 }
 
 .delete_note_icon:hover {

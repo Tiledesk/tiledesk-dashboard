@@ -96,6 +96,10 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
   selected_bot_id: string;
   selected_bot_name: string;
 
+  botDefaultSelectedLang: string = 'English - en';
+  botDefaultSelectedLangCode: string = 'en'
+  language: string;
+
   constructor(
     private faqKbService: FaqKbService,
     private router: Router,
@@ -144,7 +148,13 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
 
   }
 
-
+  onSelectBotDefaultlang(selectedDefaultBotLang) {
+    console.log('onSelectBotDefaultlang > selectedDefaultBotLang ', selectedDefaultBotLang)
+    if (selectedDefaultBotLang) {
+      this.botDefaultSelectedLangCode = selectedDefaultBotLang.code;
+      console.log('onSelectBotDefaultlang > selectedDefaultBotLang > code', this.botDefaultSelectedLangCode)
+    }
+  }
 
 
   onSelectBotId() {
@@ -345,6 +355,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     if (this.botType === 'resolution') {
       // the type 'native' needs to be changed into 'internal' for the service
       _botType = 'internal'
+      this.language = this.botDefaultSelectedLangCode;
     } else {
       _botType = this.botType
     }
@@ -353,7 +364,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     // ------------------------------------------------------------------------------------------------------------------------------
     // Create bot - note for the creation of a dialogflow bot see the bottom uploaddialogflowBotCredential() called in the complete() 
     // ------------------------------------------------------------------------------------------------------------------------------
-    this.faqKbService.addFaqKb(this.faqKbName, this.faqKbUrl, _botType, this.bot_description)
+    this.faqKbService.addFaqKb(this.faqKbName, this.faqKbUrl, _botType, this.bot_description, this.language)
 
       .subscribe((faqKb) => {
         this.logger.log('[BOT-CREATE] CREATE FAQKB - RES ', faqKb);

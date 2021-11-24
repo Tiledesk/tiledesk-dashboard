@@ -15,6 +15,31 @@ import { LoggerService } from '../../services/logger/logger.service';
 })
 export class WsSharedComponent implements OnInit {
 
+  priority = [
+    {
+      id: 1,
+      name: 'urgent',
+      avatar: 'assets/img/priority_icons/urgent_v2.svg'
+    },
+    {
+      id: 2,
+      name: 'high',
+      avatar: 'assets/img/priority_icons/high_v2.svg '
+    },
+    {
+      id: 3,
+      name: 'medium',
+      avatar: 'assets/img/priority_icons/medium.svg'
+    },
+    {
+      id: 4,
+      name: 'low',
+      avatar: 'assets/img/priority_icons/low_v2.svg'
+    },
+  ];
+
+
+
   members_array: any;
   agents_array: any;
   cleaned_members_array: any;
@@ -52,6 +77,11 @@ export class WsSharedComponent implements OnInit {
   ngOnInit() {
 
   }
+
+  // getIndexOfPriority(priorityname: string) {
+  //   const index = this.priority.findIndex(x => x.name === priorityname);
+  //   return index
+  // }
 
 
   // -----------------------------------------------------------------------------------------------------
@@ -191,7 +221,7 @@ export class WsSharedComponent implements OnInit {
               user.hasImage = false
             }
           });
-  
+
           this.createAgentAvatar(user)
           user['is_bot'] = false
           newpartarray.push(user)
@@ -576,12 +606,12 @@ export class WsSharedComponent implements OnInit {
         this.logger.error('[WS-SHARED][REQUEST-DTLS-X-PANEL][WS-REQUESTS-UNSERVED-X-PANEL][WS-REQUESTS-LIST][SERVED][UNSERVED] - addParticipant TO CHAT GROUP - ERROR ', err);
 
       }, () => {
-        this.logger.log('[WS-SHARED][REQUEST-DTLS-X-PANEL][WS-REQUESTS-UNSERVED-X-PANEL][WS-REQUESTS-LIST][SERVED][UNSERVED] - addParticipant TO CHAT GROUP * COMPLETE *' );
+        this.logger.log('[WS-SHARED][REQUEST-DTLS-X-PANEL][WS-REQUESTS-UNSERVED-X-PANEL][WS-REQUESTS-LIST][SERVED][UNSERVED] - addParticipant TO CHAT GROUP * COMPLETE *');
 
         this.notify.showWidgetStyleUpdateNotification(`You are successfully added to the chat`, 2, 'done');
 
       });
- 
+
   }
 
   // -------------------------------------------------------------------------------------------------------------
@@ -615,7 +645,7 @@ export class WsSharedComponent implements OnInit {
           if (bot) {
             this.newParticipants.push([{ '_id': participantid, 'name': bot.name, 'lastname': '', 'botType': bot.type }])
             request['test'] = this.newParticipants
-    
+
           } else {
             this.getBotFromRemoteAndSaveInStorage(bot_id, participantid)
           }
@@ -650,7 +680,7 @@ export class WsSharedComponent implements OnInit {
         }
       });
       this.logger.log('!! Ws SHARED »»»»»»» createFullParticipacipantsArray - newParticipants Array ', this.newParticipants);
-  
+
     }
   }
 

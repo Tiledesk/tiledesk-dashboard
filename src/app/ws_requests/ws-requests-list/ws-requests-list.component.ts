@@ -173,7 +173,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   DISPLAY_OPH_AS_DISABLED: boolean;
   project_id: string;
 
-
+  selectedPriority: string;
 
   /**
    * 
@@ -219,6 +219,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   // -----------------------------------------------------------------------------------------------------
 
   ngOnInit() {
+    console.log('SELECTED PRIORITY ', this.selectedPriority)
     this.getOSCODE();
 
     this.getImageStorageAndThenProjectUsers();
@@ -460,15 +461,9 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       });
   }
 
-  public scrollRightTeammates(): void {
-    this.widgetsContent.nativeElement.scrollTo({ left: (this.widgetsContent.nativeElement.scrollLeft + 150), behavior: 'smooth' });
-  }
-
   public scrollLeftTeammates(): void {
     this.widgetsContent.nativeElement.scrollTo({ left: (this.widgetsContent.nativeElement.scrollLeft - 150), behavior: 'smooth' });
   }
-
-
 
   getAllProjectUsers(imagestorage: string, isfirebaseuploadengine: boolean) {
     // createBotsAndUsersArray() {
@@ -543,7 +538,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         takeUntil(this.unsubscribe$)
       )
       .subscribe((projectUser_from_ws_subscription) => {
-        this.logger.log('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS (listenTo) projectUser_from_ws_subscription', projectUser_from_ws_subscription);
+        // this.logger.log('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS (listenTo) projectUser_from_ws_subscription', projectUser_from_ws_subscription);
         // this.logger.log('WS-REQUESTS-LIST PROJECT-USERS ', projectuser);
 
         if (projectuser['_id'] === projectUser_from_ws_subscription['_id']) {
@@ -839,7 +834,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
           const deptHasName = request.department.hasOwnProperty('name')
           if (deptHasName) {
 
-            this.logger.log('[WS-REQUESTS-LIST] - (DEPTS_LAZY) GET DEPTS BY PROJECT-ID toPromise - REQ DEPT HAS PROPERTY NAME', deptHasName);
+            // this.logger.log('[WS-REQUESTS-LIST] - (DEPTS_LAZY) GET DEPTS BY PROJECT-ID toPromise - REQ DEPT HAS PROPERTY NAME', deptHasName);
             request['dept'] = request.department
           } else {
             this.logger.log('[WS-REQUESTS-LIST] - (DEPTS_LAZY) GET DEPTS BY PROJECT-ID toPromise - REQ DEPT NOT HAS PROPERTY NAME', deptHasName);
@@ -1460,7 +1455,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     // + '&projectname=' + this.projectName
     // const url = 'http://testwidget.tiledesk.com/testsitenw3?projectname=' + this.projectName + ' &projectid=' + this.projectId
     // '&isOpen=true'
-    const url = this.TESTSITE_BASE_URL + '?tiledesk_projectid=' + this.projectId + '&project_name=' + this.projectName +  '&role=' + this.CURRENT_USER_ROLE
+    const url = this.TESTSITE_BASE_URL + '?tiledesk_projectid=' + this.projectId + '&project_name=' + this.projectName + '&role=' + this.CURRENT_USER_ROLE
     // + '&prechatform=' + false + '&callout_timer=' + false + '&align=right';
     window.open(url, '_blank');
   }
@@ -1468,6 +1463,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
 
   presentCreateInternalRequestModal() {
+    this.selectedPriority = this.priority[2].name;
     this.displayInternalRequestModal = 'block'
     this.hasClickedCreateNewInternalRequest = false;
 
@@ -1502,8 +1498,15 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     this.internal_request_id = 'support-group-' + this.project_id + '-' + uiid_no_dashes
     this.logger.log('[WS-REQUESTS-LIST] create internalRequest - internal_request_id', this.internal_request_id);
     // (request_id:string, subject: string, message:string, departmentid: string)
-    this.wsRequestsService.createInternalRequest(this.selectedRequester, this.internal_request_id, this.internalRequest_subject, this.internalRequest_message, this.assignee_dept_id, this.assignee_participants_id).subscribe((newticket: any) => {
-      this.logger.log('[WS-REQUESTS-LIST] create internalRequest - RES ', this.internal_request_id);
+    this.wsRequestsService.createInternalRequest(this.selectedRequester, 
+      this.internal_request_id, 
+      this.internalRequest_subject, 
+      this.internalRequest_message, 
+      this.assignee_dept_id, 
+      this.assignee_participants_id, 
+      this.selectedPriority
+      ).subscribe((newticket: any) => {
+      this.logger.log('[WS-REQUESTS-LIST] create internalRequest - RES ', newticket);
 
 
     }, error => {
@@ -1514,7 +1517,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       this.logger.log('[WS-REQUESTS-LIST] create internalRequest * COMPLETE *')
       this.showSpinner_createInternalRequest = false;
       this.createNewInternalRequest_hasError = false;
-     
+
 
     });
   }
@@ -1581,6 +1584,11 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       this.assignee_dept_id = this.assignee_id
       this.assignee_participants_id = undefined
     }
+  }
+
+  onChangeSelectedPriority(selectedPriority) {
+    this.logger.log('[WS-REQUESTS-LIST] onChangeSelectedPriority selectedPriority ', selectedPriority)
+    this.selectedPriority = selectedPriority;
   }
 
 
@@ -1734,99 +1742,99 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     return item.name.toLocaleLowerCase().indexOf(term) > -1 || item.email.toLocaleLowerCase().indexOf(term) > -1;
   }
 
-    // Create an array of project user & conatct when is opened the modal create ticket
-    getProjectUsersAndContacts() {
-      this.loadingRequesters = true;
-      const projectUsers = this.usersService.getProjectUsersByProjectId();
-      const leads = this.contactsService.getAllLeadsActiveWithLimit(10000);
-  
-      Observable
-        .zip(projectUsers, leads, (_projectUsers: any, _leads: any) => ({ _projectUsers, _leads }))
-        .subscribe(pair => {
-          this.logger.log('[WS-REQUESTS-LIST] - GET P-USERS-&-LEADS - PROJECT USERS : ', pair._projectUsers);
-          this.logger.log('[WS-REQUESTS-LIST] - GET P-USERS-&-LEADS - LEADS RES: ', pair._leads);
-          this.logger.log('[WS-REQUESTS-LIST] - GET P-USERS-&-LEADS - LEADS: ', pair._leads['leads']);
-  
-          if (pair && pair._projectUsers) {
-            pair._projectUsers.forEach(p_user => {
-              this.projectUserAndLeadsArray.push({ id: p_user.id_user._id, name: p_user.id_user.firstname + ' ' + p_user.id_user.lastname, role: p_user.role, email: p_user.id_user.email, requestertype: 'agent', requester_id: p_user._id });
-            });
-          }
-  
-          if (pair && pair._leads['leads']) {
-            pair._leads.leads.forEach(lead => {
-  
-              let e_mail = 'n/a'
-              if (lead.email) {
-                e_mail = lead.email
-              }
-              this.projectUserAndLeadsArray.push({ id: lead.lead_id, name: lead.fullname, role: 'lead', email: e_mail, requestertype: 'lead', requester_id: lead._id });
-            });
-          }
-  
-          this.logger.log('[WS-REQUESTS-LIST] - GET P-USERS-&-LEADS - PROJECT-USER-&-LEAD-ARRAY: ', this.projectUserAndLeadsArray);
-  
-          this.projectUserAndLeadsArray = this.projectUserAndLeadsArray.slice(0);
-  
-        }, error => {
-          this.loadingRequesters = false;
-          this.logger.error('[WS-REQUESTS-LIST]- GET P-USERS-&-LEADS - ERROR: ', error);
-        }, () => {
-          this.loadingRequesters = false;
-          this.logger.log('[WS-REQUESTS-LIST] - GET P-USERS-&-LEADS * COMPLETE *');
-        });
-  
-    }
+  // Create an array of project user & conatct when is opened the modal create ticket
+  getProjectUsersAndContacts() {
+    this.loadingRequesters = true;
+    const projectUsers = this.usersService.getProjectUsersByProjectId();
+    const leads = this.contactsService.getAllLeadsActiveWithLimit(10000);
 
-    getProjectUserBotsAndDepts() {
-      this.loadingAssignee = true;
-      const projectUsers = this.usersService.getProjectUsersByProjectId();
-      const bots = this.faqKbService.getAllBotByProjectId();
-      const depts = this.departmentService.getDeptsByProjectId();
-  
-  
-      Observable
-        .zip(projectUsers, bots, depts, (_projectUsers: any, _bots: any, _depts: any) => ({ _projectUsers, _bots, _depts }))
-        .subscribe(pair => {
-          this.logger.log('[WS-REQUESTS-LIST] - GET P-USERS-&-BOTS-&-DEPTS - PROJECT USERS : ', pair._projectUsers);
-          this.logger.log('[WS-REQUESTS-LIST] - GET P-USERS-&-BOTS-&-DEPTS - BOTS : ', pair._bots);
-          this.logger.log('[WS-REQUESTS-LIST] - GET P-USERS-&-BOTS-&-DEPTS - DEPTS: ', pair._depts);
-  
-          // projectUserAndLeadsArray
-  
-          if (pair && pair._projectUsers) {
-            pair._projectUsers.forEach(p_user => {
-              this.projectUserBotsAndDeptsArray.push({ id: p_user.id_user._id, name: p_user.id_user.firstname + ' ' + p_user.id_user.lastname + ' (' + p_user.role + ')' });
-            });
-          }
-  
-          if (pair && pair._bots) {
-            pair._bots.forEach(bot => {
-              if (bot['trashed'] === false && bot['type'] !== "identity") {
-                this.projectUserBotsAndDeptsArray.push({ id: 'bot_' + bot._id, name: bot.name + ' (bot)' })
-              }
-            });
-          }
-  
-          if (pair && pair._bots) {
-            pair._depts.forEach(dept => {
-              this.projectUserBotsAndDeptsArray.push({ id: dept._id, name: dept.name + ' (dept)' })
-            });
-          }
-  
-          this.logger.log('[WS-REQUESTS-LIST] - GET P-USERS-&-BOTS-&-DEPTS ARRAY: ', this.projectUserBotsAndDeptsArray);
-  
-          this.projectUserBotsAndDeptsArray = this.projectUserBotsAndDeptsArray.slice(0);
-  
-        }, error => {
-          this.loadingAssignee = false;
-          this.logger.error('[WS-REQUESTS-LIST] - GET P-USERS-&-BOTS-&-DEPTS - ERROR: ', error);
-        }, () => {
-          this.loadingAssignee = false;
-          this.logger.log('[WS-REQUESTS-LIST] - GET P-USERS-&-BOTS-&-DEPTS * COMPLETE *');
-        });
-  
-    }
+    Observable
+      .zip(projectUsers, leads, (_projectUsers: any, _leads: any) => ({ _projectUsers, _leads }))
+      .subscribe(pair => {
+        this.logger.log('[WS-REQUESTS-LIST] - GET P-USERS-&-LEADS - PROJECT USERS : ', pair._projectUsers);
+        this.logger.log('[WS-REQUESTS-LIST] - GET P-USERS-&-LEADS - LEADS RES: ', pair._leads);
+        this.logger.log('[WS-REQUESTS-LIST] - GET P-USERS-&-LEADS - LEADS: ', pair._leads['leads']);
+
+        if (pair && pair._projectUsers) {
+          pair._projectUsers.forEach(p_user => {
+            this.projectUserAndLeadsArray.push({ id: p_user.id_user._id, name: p_user.id_user.firstname + ' ' + p_user.id_user.lastname, role: p_user.role, email: p_user.id_user.email, requestertype: 'agent', requester_id: p_user._id });
+          });
+        }
+
+        if (pair && pair._leads['leads']) {
+          pair._leads.leads.forEach(lead => {
+
+            let e_mail = 'n/a'
+            if (lead.email) {
+              e_mail = lead.email
+            }
+            this.projectUserAndLeadsArray.push({ id: lead.lead_id, name: lead.fullname, role: 'lead', email: e_mail, requestertype: 'lead', requester_id: lead._id });
+          });
+        }
+
+        this.logger.log('[WS-REQUESTS-LIST] - GET P-USERS-&-LEADS - PROJECT-USER-&-LEAD-ARRAY: ', this.projectUserAndLeadsArray);
+
+        this.projectUserAndLeadsArray = this.projectUserAndLeadsArray.slice(0);
+
+      }, error => {
+        this.loadingRequesters = false;
+        this.logger.error('[WS-REQUESTS-LIST]- GET P-USERS-&-LEADS - ERROR: ', error);
+      }, () => {
+        this.loadingRequesters = false;
+        this.logger.log('[WS-REQUESTS-LIST] - GET P-USERS-&-LEADS * COMPLETE *');
+      });
+
+  }
+
+  getProjectUserBotsAndDepts() {
+    this.loadingAssignee = true;
+    const projectUsers = this.usersService.getProjectUsersByProjectId();
+    const bots = this.faqKbService.getAllBotByProjectId();
+    const depts = this.departmentService.getDeptsByProjectId();
+
+
+    Observable
+      .zip(projectUsers, bots, depts, (_projectUsers: any, _bots: any, _depts: any) => ({ _projectUsers, _bots, _depts }))
+      .subscribe(pair => {
+        this.logger.log('[WS-REQUESTS-LIST] - GET P-USERS-&-BOTS-&-DEPTS - PROJECT USERS : ', pair._projectUsers);
+        this.logger.log('[WS-REQUESTS-LIST] - GET P-USERS-&-BOTS-&-DEPTS - BOTS : ', pair._bots);
+        this.logger.log('[WS-REQUESTS-LIST] - GET P-USERS-&-BOTS-&-DEPTS - DEPTS: ', pair._depts);
+
+        // projectUserAndLeadsArray
+
+        if (pair && pair._projectUsers) {
+          pair._projectUsers.forEach(p_user => {
+            this.projectUserBotsAndDeptsArray.push({ id: p_user.id_user._id, name: p_user.id_user.firstname + ' ' + p_user.id_user.lastname + ' (' + p_user.role + ')' });
+          });
+        }
+
+        if (pair && pair._bots) {
+          pair._bots.forEach(bot => {
+            if (bot['trashed'] === false && bot['type'] !== "identity") {
+              this.projectUserBotsAndDeptsArray.push({ id: 'bot_' + bot._id, name: bot.name + ' (bot)' })
+            }
+          });
+        }
+
+        if (pair && pair._bots) {
+          pair._depts.forEach(dept => {
+            this.projectUserBotsAndDeptsArray.push({ id: dept._id, name: dept.name + ' (dept)' })
+          });
+        }
+
+        this.logger.log('[WS-REQUESTS-LIST] - GET P-USERS-&-BOTS-&-DEPTS ARRAY: ', this.projectUserBotsAndDeptsArray);
+
+        this.projectUserBotsAndDeptsArray = this.projectUserBotsAndDeptsArray.slice(0);
+
+      }, error => {
+        this.loadingAssignee = false;
+        this.logger.error('[WS-REQUESTS-LIST] - GET P-USERS-&-BOTS-&-DEPTS - ERROR: ', error);
+      }, () => {
+        this.loadingAssignee = false;
+        this.logger.log('[WS-REQUESTS-LIST] - GET P-USERS-&-BOTS-&-DEPTS * COMPLETE *');
+      });
+
+  }
 
 
   // ----------------------------------------

@@ -192,7 +192,7 @@ export class FaqKbService {
    * @param description 
    * @returns 
    */
-  public addFaqKb(name: string, urlfaqkb: string, bottype: string, description: string) {
+  public addFaqKb(name: string, urlfaqkb: string, bottype: string, description: string, resbotlanguage: string) {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
@@ -200,14 +200,17 @@ export class FaqKbService {
     const options = new RequestOptions({ headers });
 
     // const isPreDeploy = false
-    const body = { 'name': name, 'url': urlfaqkb, 'id_project': this.project._id, 'type': bottype, 'description': description };
-
-
-    this.logger.log('[FAQ-KB.SERV] - CREATE FAQ-KB - BODY ', body);
+    let body = {}
+    body = { 'name': name, 'url': urlfaqkb, 'id_project': this.project._id, 'type': bottype, 'description': description };
+    if (bottype === 'internal') {
+      body['language'] = resbotlanguage
+    }
+  
+    this.logger.log('[BOT-CREATE][FAQ-KB.SERV] - CREATE FAQ-KB - BODY ', body);
 
     const url = this.FAQKB_URL;
     // let url = `http://localhost:3000/${project_id}/faq_kb/`;
-    this.logger.log('[FAQ-KB.SERV] - CREATE FAQ-KB - URL ', url);
+    this.logger.log('[BOT-CREATE][FAQ-KB.SERV] - CREATE FAQ-KB - URL ', url);
 
     return this.http
       .post(url, JSON.stringify(body), options)
@@ -324,7 +327,7 @@ export class FaqKbService {
    * @param id
    * @param fullName
    */
-  public updateFaqKb(id: string, name: string, urlfaqkb: string, bottype: string, faqKb_description: string, webkookisenalbled: any, webhookurl) {
+  public updateFaqKb(id: string, name: string, urlfaqkb: string, bottype: string, faqKb_description: string, webkookisenalbled: any, webhookurl, resbotlanguage: string) {
 
     let url = this.FAQKB_URL + id;
     // url = url += `${id}`;
@@ -341,7 +344,7 @@ export class FaqKbService {
     if (bottype === 'internal') {
       body['webhook_enabled'] = webkookisenalbled;
       body['webhook_url'] = webhookurl
-
+      body['language'] = resbotlanguage
     }
     this.logger.log('[FAQ-KB.SERV] updateFaqKb - BODY ', body);
 

@@ -1,10 +1,15 @@
 
 # tiledesk-dashboard
 
+
 ### 2.2.29-rc1
 - Fixes the bug: if the agent's avatar photo does not have a 1:1 aspect ratio, it is displayed stretched
 - Fixes the bug: in the "widget set-up" page the selection of the options does not correctly change the preview of the widget
 - Enhances the components displayed in the iframe of the left side panel of the "chat"
+- Adds the ability to select the language for the "Resolution" bot type
+- Adds the ability to select the priority level of the ticket during its creation
+- Displays the priority level of a ticket or of a conversation in the conversations list
+- Adds the ability, on the conversation detail page, to set a priority level for a conversation
 
 ### 2.2.28
 - Updates the Home "Latest updates" section
