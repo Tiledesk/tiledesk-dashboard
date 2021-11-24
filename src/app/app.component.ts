@@ -272,8 +272,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
             if (user && user.token) {
 
-                // const CHAT_URL = 'ws://tiledesk-server-pre.herokuapp.com?token=' + user.token
-                const CHAT_URL = this.appConfigService.getConfig().wsUrl + '?token=' + user.token
+                // const WS_URL = 'ws://tiledesk-server-pre.herokuapp.com?token=' + user.token
+                const WS_URL = this.appConfigService.getConfig().wsUrl + '?token=' + user.token
 
                 // this.logger.log('AppConfigService % »»» WebSocketJs WF - APP-COMPONENT - I am about to connect to ws ')
 
@@ -282,7 +282,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 // -----------------------------------------------------------------------------------------------------
                 // NOTE_nk: comment this.webSocketJs.init
                 this.webSocketJs.init(
-                    CHAT_URL,
+                    WS_URL,
                     undefined,
                     undefined,
                     undefined
@@ -419,6 +419,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     (this.route.indexOf('/handle-invitation') !== -1) ||
                     (this.route.indexOf('/request-for-panel') !== -1) ||
                     (this.route.indexOf('/projects-for-panel') !== -1) ||
+                    (this.route.indexOf('/project-for-panel') !== -1) ||
                     (this.route.indexOf('/unserved-request-for-panel') !== -1) ||
                     (this.route.indexOf('/autologin') !== -1) ||
                     (this.route.indexOf('/unauthorized_access') !== -1)
@@ -520,6 +521,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     (this.route.indexOf('/chat') !== -1) ||
                     (this.route.indexOf('/request-for-panel') !== -1) ||
                     (this.route.indexOf('/projects-for-panel') !== -1) ||
+                    (this.route.indexOf('/project-for-panel') !== -1) ||
                     (this.route.indexOf('/unserved-request-for-panel') !== -1) ||
                     (this.route.indexOf('/autologin') !== -1) ||
                     (this.route.indexOf('/unauthorized_access') !== -1)
