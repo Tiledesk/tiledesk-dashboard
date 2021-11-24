@@ -174,6 +174,8 @@ import { TriggerStaticComponent } from './static-pages/trigger-static/trigger-st
 import { AccountSettingsComponent } from './user-profile/account-settings/account-settings.component';
 
 import { ProjectsForPanelComponent } from './projects/for-panel/projects-for-panel/projects-for-panel.component';
+
+
 import { WsRequestsUnservedForPanelComponent } from './ws_requests/for-panel/ws-requests-unserved-for-panel/ws-requests-unserved-for-panel.component';
 import { WsRequestDetailForPanelComponent } from './ws_requests/for-panel//ws-request-detail-for-panel/ws-request-detail-for-panel.component';
 import { AutologinComponent } from './auth/autologin/autologin.component';
@@ -211,6 +213,8 @@ import { SanitizeHtmlPipe } from './sanitize-html.pipe';
 import { UnauthorizedForProjectComponent } from './auth/unauthorized-for-project/unauthorized-for-project.component';
 import { Autolinkerjs } from './autolinkerjs.pipe';
 import { HtmlEntitiesEncodePipe } from './html-entities-encode.pipe';
+import { ColdObservable } from 'rxjs/testing/ColdObservable';
+
 
 
 // console.log('************** APPMODULE ******************');
@@ -221,7 +225,8 @@ export function HttpLoaderFactory(http: HttpClient) {
 
 const appInitializerFn = (appConfig: AppConfigService, brandService: BrandService) => {
   return async () => {
-
+    // console.log('APP INITIALIZED')
+    // localStorage.setItem('isLoading', 'false')
     let loggingLevel = ''
     if (typeof appConfig.getConfig().logLevel === 'string') {
       loggingLevel = appConfig.getConfig().logLevel.toUpperCase()
@@ -247,7 +252,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
       let chatEngine = appConfig.getConfig().chatEngine
       let uploadEngine = appConfig.getConfig().uploadEngine
       let pushEngine = appConfig.getConfig().pushEngine
-  
+
       // console.log('APP-CONFIG ', appConfig.getConfig() ) 
 
       if (loggingLevel === 'INFO' || loggingLevel === 'DEBUG') {
@@ -400,8 +405,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     SanitizeHtmlPipe,
     UnauthorizedForProjectComponent,
     Autolinkerjs,
-    HtmlEntitiesEncodePipe
-
+    HtmlEntitiesEncodePipe,
   ],
   imports: [
     /* PRIVATE */

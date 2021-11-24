@@ -130,8 +130,10 @@ const routes: Routes = [
   { path: 'projects', component: ProjectsComponent, canActivate: [AuthGuard] },
   { path: '', redirectTo: 'projects', pathMatch: 'full' },
 
-  // is used in the left panel of the chat
+  // are used in the left panel of the chat
   { path: 'projects-for-panel', component: ProjectsForPanelComponent, canActivate: [AuthGuard] },
+
+  
   // **** NEW - WIZARD CREATE PROJECT ****
   // { path: 'project/create-project', component: CreateProjectComponent, canActivate: [AuthGuard] },
 
