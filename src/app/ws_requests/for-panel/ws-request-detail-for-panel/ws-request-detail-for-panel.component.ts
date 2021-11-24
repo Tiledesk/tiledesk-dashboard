@@ -84,8 +84,8 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
   ngOnInit() {
     this.getProfileImageStorage();
     this.getLoggedUser()
-    console.log('[REQUEST-DTLS-X-PANEL] SELECTED REQUEST ', this.selectedRequest)
-    console.log('[REQUEST-DTLS-X-PANEL] UNSERVED REQUESTS ', this.wsRequestsUnserved)
+    this.logger.log('[REQUEST-DTLS-X-PANEL] SELECTED REQUEST ', this.selectedRequest)
+    this.logger.log('[REQUEST-DTLS-X-PANEL] UNSERVED REQUESTS ', this.wsRequestsUnserved)
     this.request = this.selectedRequest
 
     if (this.request) {
@@ -131,13 +131,13 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
 
   listenToParentPostMessage() {
     window.addEventListener("message", (event) => {
-      console.log("[REQUEST-DTLS-X-PANEL] message event ", event);
+      this.logger.log("[REQUEST-DTLS-X-PANEL] message event ", event);
 
       if (event && event.data && event.data.action &&   event.data.parameter) {
         if (event.data.action === 'joinConversation') {
-          console.log("[REQUEST-DTLS-X-PANEL] message event ", event.data.action);
-          console.log("[REQUEST-DTLS-X-PANEL] message parameter ", event.data.parameter);
-          console.log("[REQUEST-DTLS-X-PANEL] currentUserID ", this.currentUserID);
+          this.logger.log("[REQUEST-DTLS-X-PANEL] message event ", event.data.action);
+          this.logger.log("[REQUEST-DTLS-X-PANEL] message parameter ", event.data.parameter);
+          this.logger.log("[REQUEST-DTLS-X-PANEL] currentUserID ", this.currentUserID);
           this.onJoinHandled(event.data.parameter, this.currentUserID);
         }
       }
@@ -176,7 +176,7 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
   }
 
   subscribeToWs_RequestById(id_request) {
-    console.log('[REQUEST-DTLS-X-PANEL] CALLING SUBSCRIBE TO Request-By-Id: ', id_request)
+    this.logger.log('[REQUEST-DTLS-X-PANEL] CALLING SUBSCRIBE TO Request-By-Id: ', id_request)
     // Start websocket subscription
     this.wsRequestsService.subscribeTo_wsRequestById(id_request);
     // Get request
@@ -193,7 +193,7 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
 
         if (wsrequest) {
           // this.request = wsrequest;
-          console.log('[REQUEST-DTLS-X-PANEL] - wsrequest FROM SUBSCRIPTION ', wsrequest);
+          this.logger.log('[REQUEST-DTLS-X-PANEL] - wsrequest FROM SUBSCRIPTION ', wsrequest);
           this.IS_CURRENT_USER_JOINED = this.currentUserIdIsInParticipants(wsrequest['participants'], this.currentUserID, this.request.request_id);
           this.logger.log('[REQUEST-DTLS-X-PANEL] - wsrequest IS_CURRENT_USER_JOINED ', this.IS_CURRENT_USER_JOINED);
           this.request.currentUserIsJoined  = this.IS_CURRENT_USER_JOINED 
@@ -370,7 +370,7 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
   }
 
   onImageError(message, index) {
-    console.log('[REQUEST-DTLS-X-PANEL] - onImageError  message ', message, 'index ', index)
+    this.logger.log('[REQUEST-DTLS-X-PANEL] - onImageError  message ', message, 'index ', index)
     if (message.sender.includes('bot_')) {
       message['avatar_url'] = "assets/img/avatar_bot_tiledesk.svg"
     } else {
@@ -386,7 +386,7 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
       .subscribe((wsmsgs) => {
 
         this.messagesList = wsmsgs;
-        console.log('[REQUEST-DTLS-X-PANEL] - getWsMsgs$ *** this.messagesList *** ', this.messagesList)
+        this.logger.log('[REQUEST-DTLS-X-PANEL] - getWsMsgs$ *** this.messagesList *** ', this.messagesList)
 
 
         let i: number

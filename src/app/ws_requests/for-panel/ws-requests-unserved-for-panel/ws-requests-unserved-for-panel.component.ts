@@ -168,13 +168,13 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
 
   listenToParentPostMessage() {
     window.addEventListener("message", (event) => {
-      console.log("[REQUEST-DTLS-X-PANEL] message event ", event);
+      this.logger.log("[REQUEST-DTLS-X-PANEL] message event ", event);
 
       if (event && event.data && event.data.action &&   event.data.parameter) {
         if (event.data.action === 'joinConversation') {
-          console.log("[WS-REQUESTS-UNSERVED-X-PANEL] message event ", event.data.action);
-          console.log("[WS-REQUESTS-UNSERVED-X-PANEL] message parameter ", event.data.parameter);
-          console.log("[WS-REQUESTS-UNSERVED-X-PANEL] currentUserID ", this.currentUserID);
+          this.logger.log("[WS-REQUESTS-UNSERVED-X-PANEL] message event ", event.data.action);
+          this.logger.log("[WS-REQUESTS-UNSERVED-X-PANEL] message parameter ", event.data.parameter);
+          this.logger.log("[WS-REQUESTS-UNSERVED-X-PANEL] currentUserID ", this.currentUserID);
           this.onJoinHandled(event.data.parameter, this.currentUserID);
         }
       }

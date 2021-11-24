@@ -335,7 +335,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   getBrowserLang() {
     this.browserLang = this.translate.getBrowserLang();
-    console.log('[WS-REQUESTS-MSGS] browserLang', this.browserLang)
+    this.logger.log('[WS-REQUESTS-MSGS] browserLang', this.browserLang)
   }
 
   unsuscribeRequesterPresence(requester_id) {
@@ -969,7 +969,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             this.preChatFormArray = []
             for (let [key, value] of Object.entries(this.request.attributes.preChatForm)) {
 
-              console.log(`[WS-REQUESTS-MSGS] - getWsRequestById ATTRIBUTES > PRE-CHAT FORM key : ${key} - value ${value}`);
+              this.logger.log(`[WS-REQUESTS-MSGS] - getWsRequestById ATTRIBUTES > PRE-CHAT FORM key : ${key} - value ${value}`);
 
               let _value: any;
               if (typeof value === 'object' && value !== null) {
@@ -1012,10 +1012,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
                 this.preChatFormArray.push(entries)
               }
             }
-            console.log('[WS-REQUESTS-MSGS] - getWsRequestById preChatFormArray: ', this.preChatFormArray);
+            this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById preChatFormArray: ', this.preChatFormArray);
 
           } else {
-            console.log('[WS-REQUESTS-MSGS] - getWsRequestById ATTRIBUTES > PRE-CHAT FORM IS UNDEFINED ');
+            this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById ATTRIBUTES > PRE-CHAT FORM IS UNDEFINED ');
           }
 
 
@@ -1495,10 +1495,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   // https://stackoverflow.com/questions/400212/how-do-i-copy-to-the-clipboard-in-javascript see section Async + Fallback
   copyToClipboardPreChatFormValue(prechatAttributeValue: string, prechattooltipid: string): void {
-    console.log('copyToClipboardPreChatFormValue attributeValue', prechatAttributeValue)
-    console.log('copyToClipboardPreChatFormValue prechatAttributeName', prechattooltipid)
+    this.logger.log('copyToClipboardPreChatFormValue attributeValue', prechatAttributeValue)
+    this.logger.log('copyToClipboardPreChatFormValue prechatAttributeName', prechattooltipid)
     const prechatTooltip = <HTMLElement>document.querySelector(`#${prechattooltipid}`)
-    console.log('copyToClipboardPreChatFormValue prechatTooltip ', prechatTooltip);
+    this.logger.log('copyToClipboardPreChatFormValue prechatTooltip ', prechatTooltip);
 
     let listener = (e: ClipboardEvent) => {
       e.clipboardData.setData('text/plain', (prechatAttributeValue));
@@ -1509,7 +1509,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     try {
       var successful = document.execCommand('copy');
       var msg = successful ? 'successful' : 'unsuccessful';
-      console.log('copyToClipboardPreChatFormValue: Copying text command was ' + msg);
+      this.logger.log('copyToClipboardPreChatFormValue: Copying text command was ' + msg);
 
       if (successful) {
         prechatTooltip.classList.add('show-has-copied-tooltip');
@@ -1518,7 +1518,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         }, 1000);
       }
     } catch (err) {
-      console.error('Fallback: Oops, unable to copy', err);
+      this.logger.error('Fallback: Oops, unable to copy', err);
     }
 
     document.removeEventListener('copy', listener);
@@ -1526,10 +1526,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
   copyToClipboardContactEmail (contactemail){
-    console.log('copyToClipboardContactEmail contactemail', contactemail)
+    this.logger.log('copyToClipboardContactEmail contactemail', contactemail)
     
     const prechatTooltip = <HTMLElement>document.querySelector(`#contact-email`)
-    console.log('Fallback: prechatTooltip ', prechatTooltip);
+    this.logger.log('Fallback: prechatTooltip ', prechatTooltip);
 
     let listener = (e: ClipboardEvent) => {
       e.clipboardData.setData('text/plain', (contactemail));
@@ -1540,7 +1540,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     try {
       var successful = document.execCommand('copy');
       var msg = successful ? 'successful' : 'unsuccessful';
-      console.log('Fallback: Copying text command was ' + msg);
+      this.logger.log('Fallback: Copying text command was ' + msg);
 
       if (successful) {
         prechatTooltip.classList.add('show-has-copied-tooltip');
@@ -1549,7 +1549,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         }, 1000);
       }
     } catch (err) {
-      console.error('Fallback: Oops, unable to copy', err);
+      this.logger.error('Fallback: Oops, unable to copy', err);
     }
 
     document.removeEventListener('copy', listener);

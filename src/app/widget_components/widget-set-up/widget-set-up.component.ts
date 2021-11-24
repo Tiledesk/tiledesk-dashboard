@@ -1441,7 +1441,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   // --------------------------------------------------------------------------
   setPresetColorComb(primaryColor: string, secondaryColor: string) {
 
-    console.log('setPresetColorComb widget_preview_selected ', this.widget_preview_selected)
+    this.logger.log('setPresetColorComb widget_preview_selected ', this.widget_preview_selected)
 
     if (this.widget_preview_selected === '0001') {
       this.DISPLAY_WIDGET_HOME = true;
@@ -1486,7 +1486,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
    * @param $event
    */
   onChangePrimaryColor($event) {
-    console.log('onChangePrimaryColor widget_preview_selected ', this.widget_preview_selected)
+    this.logger.log('onChangePrimaryColor widget_preview_selected ', this.widget_preview_selected)
     if (this.widget_preview_selected === '0001') {
       this.DISPLAY_WIDGET_HOME = true;
       this.DISPLAY_CALLOUT = false;
@@ -1520,7 +1520,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
   onFocusChangePrimaryColor() {
-    console.log('onFocusChangePrimaryColor widget_preview_selected ', this.widget_preview_selected)
+    this.logger.log('onFocusChangePrimaryColor widget_preview_selected ', this.widget_preview_selected)
 
     if (this.widget_preview_selected === '0001') {
       this.DISPLAY_WIDGET_HOME = true;
@@ -1546,7 +1546,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
   onOpenPrimaryColorDialog($event) {
-    console.log('onOpenPrimaryColorDialog widget_preview_selected ', this.widget_preview_selected)
+    this.logger.log('onOpenPrimaryColorDialog widget_preview_selected ', this.widget_preview_selected)
     if (this.widget_preview_selected === '0001') {
       this.DISPLAY_WIDGET_HOME = true;
       this.DISPLAY_CALLOUT = false;
@@ -1634,7 +1634,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
   onChangeSecondaryColor(event) {
 
-    console.log('onChangeSecondaryColor widget_preview_selected ', this.widget_preview_selected)
+    this.logger.log('onChangeSecondaryColor widget_preview_selected ', this.widget_preview_selected)
     if (this.widget_preview_selected === '0001') {
       this.DISPLAY_WIDGET_HOME = true;
       this.DISPLAY_CALLOUT = false;
@@ -1677,7 +1677,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
   onOpenSecondaryColorDialog($event) {
-    console.log('onOpenSecondaryColorDialog widget_preview_selected ', this.widget_preview_selected)
+    this.logger.log('onOpenSecondaryColorDialog widget_preview_selected ', this.widget_preview_selected)
     if (this.widget_preview_selected === '0001') {
       this.DISPLAY_WIDGET_HOME = true;
       this.DISPLAY_CALLOUT = false;
@@ -1703,7 +1703,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
   onFocusChangeSecondaryColor() {
-    console.log('onFocusChangeSecondaryColor widget_preview_selected ', this.widget_preview_selected)
+    this.logger.log('onFocusChangeSecondaryColor widget_preview_selected ', this.widget_preview_selected)
     if (this.widget_preview_selected === '0001') {
       this.DISPLAY_WIDGET_HOME = true;
       this.DISPLAY_CALLOUT = false;
@@ -1930,7 +1930,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.DISPLAY_WIDGET_HOME = false;
     this.DISPLAY_CALLOUT = true;
     this.DISPLAY_WIDGET_CHAT = false;
-    console.log('toggleCallout', this.widget_preview_selected)
+    this.logger.log('toggleCallout', this.widget_preview_selected)
     this.widget_preview_selected = '0003'
 
 
