@@ -1955,5 +1955,6 @@
    "SorryTheFollowingErrorOccurredWhileUploadingTheImage":"Sorry, the following error occurred while loading the image:",
    "SorryFileTypeNotSupported": "Sorry, unsupported file type",
    "PreChatFormData":"Pre-chat form",
-   "HereSomeExamples":"Here some examples"
+   "HereSomeExamples":"Here some examples",
+   "SentBy": "sent by"
 }
