@@ -1,6 +1,11 @@
 
 # tiledesk-dashboard
 
+### 2.2.29-rc1
+- Fixes the bug: if the agent's avatar photo does not have a 1:1 aspect ratio, it is displayed stretched
+- Fixes the bug: in the "widget set-up" page the selection of the options does not correctly change the preview of the widget
+- Enhances the components displayed in the iframe of the left side panel of the "chat"
+
 ### 2.2.28
 - Updates the Home "Latest updates" section
 - Highlight, on the home page, the "What's new" section rocket with an icon indicating that the change log has been updated
