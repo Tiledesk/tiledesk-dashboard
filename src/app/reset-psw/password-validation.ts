@@ -9,7 +9,7 @@ export class PasswordValidation {
             // console.log('PSW MACTH CONFIRM-PSW: false');
             AC.get('confirmPassword').setErrors({ MatchPassword: true })
         } else {
-            console.log('PSW MACTH CONFIRM-PSW: true');
+            // console.log('PSW MACTH CONFIRM-PSW: true');
             // return null
         }
     }

@@ -92,7 +92,7 @@ export class WidgetSetUpBaseComponent extends WidgetSharedComponent implements O
 
   getBrowserLang() {
     this.browserLang = this.translate.getBrowserLang();
-    console.log('WIDGET DESIGN - BROWSER LANG ', this.browserLang)
+    // console.log('WIDGET DESIGN - BROWSER LANG ', this.browserLang)
   }
 
   compare(a, b) {
