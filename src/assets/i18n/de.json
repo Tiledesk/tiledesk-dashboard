@@ -1947,5 +1947,7 @@
 	"medium":"Mittlere",
 	"low":"Niedrige",
 	"TheConversationPriorityHasBeenSuccessfullyUpdated":"Die Konversationspriorität wurde erfolgreich aktualisiert",
-	"AnErrorOccurredWhileUpdatingTheCnversationPriority":"Beim Aktualisieren der Konversationspriorität ist ein Fehler aufgetreten"
+	"AnErrorOccurredWhileUpdatingTheCnversationPriority":"Beim Aktualisieren der Konversationspriorität ist ein Fehler aufgetreten",
+	"Join":"Verbinden",
+	"You_are_successfully_added_to_the_chat": "Sie wurden erfolgreich zum Chat hinzugefügt"
 }

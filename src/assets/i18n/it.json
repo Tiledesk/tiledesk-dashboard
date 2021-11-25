@@ -1945,5 +1945,7 @@
     "medium":"Media",
     "low":"Bassa",
     "TheConversationPriorityHasBeenSuccessfullyUpdated":"La priorità della conversazione è stata aggiornata con successo",
-    "AnErrorOccurredWhileUpdatingTheCnversationPriority":"Si è verificato un errore durante l'aggiornamento della priorità della conversazione"
+    "AnErrorOccurredWhileUpdatingTheCnversationPriority":"Si è verificato un errore durante l'aggiornamento della priorità della conversazione",
+    "Join":"Partecipa",
+    "You_are_successfully_added_to_the_chat": "Sei stato aggiunto con successo alla chat"
 }
