@@ -211,7 +211,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
 
   setPerfectScrollbar() {
     const container_projects_for_panel = <HTMLElement>document.querySelector('.main-content-projects-for-panel');
-    console.log('[WS-REQUESTS-UNSERVED-X-PANEL] setPerfectScrollbar main-content-projects-for-panel', container_projects_for_panel);
+    this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] setPerfectScrollbar main-content-projects-for-panel', container_projects_for_panel);
     let ps = new PerfectScrollbar(container_projects_for_panel, {
       suppressScrollX: true
     });
@@ -601,7 +601,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
 
         }
         this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - getWsRequests$ (served)', this.wsRequestsServed);
-        console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - getWsRequests$ (unserved)', this.wsRequestsUnserved);
+        this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - getWsRequests$ (unserved)', this.wsRequestsUnserved);
 
 
       }, error => {
