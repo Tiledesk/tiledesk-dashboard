@@ -9,25 +9,22 @@
     (click)="goBack()">keyboard_arrow_left</i>
 
   {{ "Requests" | translate }} ( {{'NotInRealTime' | translate }})
-
 </div>
 
 
 <div class="main-content" style="padding-top:0px">
   <div class="container-fluid">
 
-    <!-- 
-    // ----------------------------------------------------------------
-    // No real-time conversation info    background: rgb(231, 241, 255);
-    // ---------------------------------------------------------------- -->
+    <!-- ---------------------------------------------------------------- -->
+    <!-- No real-time conversation info background: rgb(231, 241, 255); -->
+    <!-- ---------------------------------------------------------------- -->
     <div class="row filter-row">
       <div class="col-md-12">
         <div class="filter-bar">
 
-          <!--
-          // ----------------------------------------------------------------
-          // Filters - left section
-          // ---------------------------------------------------------------- -->
+          <!-- ---------------------------------------------------------------- -->
+          <!-- Filters - left section -->
+          <!-- ---------------------------------------------------------------- -->
           <div class="filters-on-left" *ngIf="!showAdvancedSearchOption">
 
             <span *ngIf="!IS_HERE_FOR_HISTORY" style="padding-right: 16px; font-weight: 400;">
@@ -38,7 +35,6 @@
               <a style="font-weight: 400;" href="#" class="dropdown-toggle" data-toggle="dropdown">
 
                 <span *ngIf="requests_status === 'all'">
-
                   <a>{{ "All" | translate }}</a>
                 </span>
 
@@ -53,7 +49,6 @@
               </a>
               <ul class="dropdown-menu" style="min-width: 195px;">
                 <li (click)="requestsStatusSelect('all')">
-
 
                   <div class="parent" style="display: flex; align-items: center;">
                     <div class="left" style="padding:12px 6px">
@@ -95,10 +90,10 @@
             </div>
           </div>
 
-          <!--
-          // ----------------------------------------------------------------
-          // Filters - central section
-          // ---------------------------------------------------------------- -->
+          
+          <!-- ---------------------------------------------------------------- -->
+          <!-- Filters - central section -->
+          <!-- ---------------------------------------------------------------- -->
           <div class="filters-on-center" [ngClass]="{'filters-on-center-then-on-left' : showAdvancedSearchOption}">
             <div class="input-group full-text-search"
               [ngClass]="{'full-text-search-full-width' : showAdvancedSearchOption}">
@@ -148,10 +143,10 @@
 
           </div>
 
-          <!--
-          // ----------------------------------------------------------------
-          // Filters - right section
-          // ---------------------------------------------------------------- -->
+          
+          <!-- ---------------------------------------------------------------- -->
+          <!-- Filters - right section -->
+          <!-- ---------------------------------------------------------------- -->
           <div class="filters-on-right">
             <button class="btn pull-right export-to-csv-btn btn-gray-no-boxshadow"
               style="max-height: 38px; margin-top: 20px;" (click)="exportRequestsToCSV()">
@@ -169,10 +164,10 @@
           <div class="filter-bar-advanced-options" *ngIf="showAdvancedSearchOption">
             <div style="margin-top: 6px;">
               <div class="row">
-                <!-- 
-                // ---------------------------------------------------------- 
-                // Select DEPARTMENTS 
-                // ---------------------------------------------------------- -->
+ 
+                <!-- ---------------------------------------------------------- -->
+                <!-- Select DEPARTMENTS -->
+                <!-- ---------------------------------------------------------- -->
                 <div class="col-sm-6">
                   <label class="col-sm-12 label-7695a5">
                     {{ 'HistoryPage.FilterByDepartment' | translate }}
@@ -188,10 +183,10 @@
                   </div>
                 </div>
 
-                <!-- 
-                // ---------------------------------------------------------- 
-                // Select DATE RANGE 
-                // ---------------------------------------------------------- -->
+            
+                <!-- ---------------------------------------------------------- -->
+                <!-- Select DATE RANGE -->
+                <!-- ---------------------------------------------------------- -->
                 <div class="col-sm-6">
                   <label for="contain" class="col-sm-12 label-7695a5">
                     {{ 'HistoryPage.DateRange' | translate }}
@@ -211,10 +206,10 @@
                 </div>
               </div>
 
-              <!-- 
-                // ---------------------------------------------------------- 
-                // Select USERS/BOTS
-                // ---------------------------------------------------------- -->
+
+              <!-- ---------------------------------------------------------- -->
+              <!-- Select USERS/BOTS -->
+              <!-- ---------------------------------------------------------- -->
               <div class="row" style="margin-bottom:8px">
                 <div class="col-sm-6">
                   <label class="col-sm-12 label-7695a5">
@@ -271,10 +266,10 @@
                 <div class="col-sm-6"></div>
               </div>
 
-              <!-- 
-              // ------------------------------------------ 
-              // BTNS SEARCH & CLEAR SEARCH
-              // ------------------------------------------ -->
+
+              <!-- ------------------------------------------ -->
+              <!-- BTNS SEARCH & CLEAR SEARCH -->
+              <!-- ------------------------------------------ -->
               <div class="row">
                 <div class="col-sm-12" style="margin-top: 16px;">
                   <button #searchbtnbottom type="submit" class="btn btn-tdblu-no-boxshadow pull-right"
@@ -297,16 +292,15 @@
       </div>
 
       <!-- <span class="msg-alert">
-        
           Conversations in this page are not real time. Click the refresh button to update
         </span> -->
     </div>
   </div>
 
-  <!-- 
-    // ----------------------------------------------------------------
-    // History info 'Upgrade Your Plan for unlimited chat history' 
-    // ---------------------------------------------------------------- -->
+
+  <!-- ---------------------------------------------------------------- -->
+  <!-- History info 'Upgrade Your Plan for unlimited chat history' -->
+  <!------------------------------------------------------------------ -->
   <div class="row" *ngIf="IS_HERE_FOR_HISTORY">
     <div class="col-md-12">
       <div
@@ -453,10 +447,6 @@
   </div>
 
 
-
-
-
-
   <!-- <div
     style="width: 96%; height: 40px; background-color: #b5bdc0; border-radius: 0px 30px 30px 0px; margin-left: -15px;">
 
@@ -488,11 +478,9 @@
     <div class="col-md-12 table-wrapper-col">
       <div class="card card--no-border" style="margin-top: 0px;">
 
-
-        <!-- 
-          // ----------------------------------------------------------------
-          // Table
-          // ---------------------------------------------------------------- -->
+        <!-- ---------------------------------------------------------------- -->
+        <!-- Table -->
+        <!-- ---------------------------------------------------------------- -->
         <div class="card-content table-responsive">
 
           <!-- OPTION TABLE -->
@@ -652,7 +640,9 @@
                   </span> -->
                 </th>
 
-                <!-- ===== REQUEST ID ===== -->
+                <!--  ----------------------------- -->
+                <!--  REQUEST ID  -->
+                <!--  ----------------------------- -->
                 <!-- <th>
                     <span style="color: #566787">
                       <strong>
@@ -660,24 +650,33 @@
                       </strong>
                     </span>  
                   </th> -->
-                <!-- ===== REQUEST FIRST TEXT ===== -->
+
+                <!--  ----------------------------- -->
+                <!--  REQUEST FIRST TEXT  -->
+                <!--  ----------------------------- -->
                 <th class="table-header-text">
                   <span class="column-th-span">
                     {{ 'HistoryPage.Message' | translate }}
                   </span>
                 </th>
 
-                <!-- ------ ====== CHANNNEL ====== ------ -->
+                <!-- ----------------------------- -->
+                <!-- CHANNNEL  -->
+                <!--  ----------------------------- -->
                 <th> </th>
 
-                <!-- ===== REQUESTER ===== -->
+                <!--  ----------------------------- -->
+                <!--  REQUESTER  -->
+                <!--  ----------------------------- -->
                 <th class="table-header-text">
                   <span class="column-th-span">
                     {{ 'HistoryPage.Requester' | translate }}
                   </span>
                 </th>
 
-                <!-- ====== USER AGENT BROWSER & OPERATING SYSTEM ====== -->
+                <!--  ------------------------------------------------- -->
+                <!--  USER AGENT BROWSER & OPERATING SYSTEM  -->
+                <!--  ------------------------------------------------- -->
                 <th></th>
 
 
@@ -688,14 +687,18 @@
                   </span>
                 </th>
 
-                <!-- ===== SERVED BY ===== -->
+                <!--  ----------------------------- -->
+                <!--  SERVED BY  -->
+                <!--  ----------------------------- -->
                 <th class="table-header-text">
                   <span class="column-th-span">
                     {{ 'HistoryPage.ServedBy' | translate }}
                   </span>
                 </th>
 
-                <!-- ===== RATING ===== -->
+                <!--  ----------------------------- -->
+                <!--  RATING  -->
+                <!--  ----------------------------- -->
                 <!-- <th>
                     <span style="color: #566787">
                       <strong> 
@@ -703,15 +706,18 @@
                       </strong>
                     </span>
                   </th> -->
-
-                <!-- ===== MEMBERS ===== -->
+                <!--  ----------------------------- -->
+                <!-- MEMBERS  -->
+                <!--  ----------------------------- -->
                 <!-- <th>
                     <span style="color: #566787">
                       <strong> Membri </strong>
                       </span>
                   </th> -->
 
-                <!-- ===== PUBLISHED ===== -->
+                <!--  ----------------------------- -->
+                <!--  PUBLISHED  -->
+                <!--  ----------------------------- -->
                 <th class="table-header-text">
                   <span class="column-th-span">
                     {{ 'HistoryPage.Published' | translate }}
@@ -768,7 +774,8 @@
                 <!--  --------------------------------------------------------------------- -->
                 <!--  checkbox displayed in history  (only if user as role owner) -->
                 <!--  --------------------------------------------------------------------- -->
-                <td style="text-align: center;" *ngIf="CURRENT_USER_ROLE === 'owner' && IS_HERE_FOR_HISTORY">
+                <td style="text-align: center;width: 46px;"
+                  *ngIf="CURRENT_USER_ROLE === 'owner' && IS_HERE_FOR_HISTORY">
                   <div class="checkbox">
                     <label>
                       <input type="checkbox" class="form-check-input" [checked]="allChecked"
@@ -782,7 +789,8 @@
                 <!--  --------------------------------------------------------------------- -->
                 <!--  checkbox displayed in NORT  (only if user as role owner or admin) -->
                 <!--  --------------------------------------------------------------------- -->
-                <td style="text-align: center;" *ngIf="!IS_HERE_FOR_HISTORY && CURRENT_USER_ROLE !== 'agent'">
+                <td style="text-align: center;width: 46px;"
+                  *ngIf="!IS_HERE_FOR_HISTORY && CURRENT_USER_ROLE !== 'agent'">
                   <!-- *ngIf="request?.participants.length > 0" -->
                   <div class="checkbox">
                     <label>
@@ -929,8 +937,9 @@
                        {{ request?.recipient }}
                      </p>
                   </td> -->
-
-                <!-- ===== REQUEST FIRST TEXT ===== -->
+                <!-- --------------------------------------- -->
+                <!--  REQUEST FIRST TEXT  -->
+                <!-- --------------------------------------- -->
                 <td [ngClass]="{'padding_5' : request?.tags?.length > 0}" (click)='goToRequestMsgs(request?.request_id)'
                   style="cursor:pointer">
                   <p class="column-td" [innerHTML]="getRequestText(request?.first_text)"> </p>
@@ -964,10 +973,9 @@
                     <!-- -------------------------------------------------------------------- -->
                     <div [id]="'more_tags_btn_for_request_' + request?.request_id" style="display: inline-block;"
                       *ngIf="request?.tags?.length > 2">
-                      <a (click)="$event.stopPropagation(); displayMoreTags(request?.request_id)" style="font-size: 11px;
-               color: rgba(0, 0, 0, 0.54) !important;
-               position: relative;
-               top: -2px;">... {{request?.tags?.length - 2}} {{'more' | translate}}
+                      <a (click)="$event.stopPropagation(); displayMoreTags(request?.request_id)"
+                        style="font-size: 11px; color: rgba(0, 0, 0, 0.54) !important; position: relative;top: -2px;">
+                        ... {{request?.tags?.length - 2}} {{'more' | translate}}
                       </a>
                     </div>
 
@@ -1014,84 +1022,149 @@
                 </td>
 
                 <!-- ---------------------------------------- -->
-                <!-- Message Channel  -->
+                <!-- @ Priority & Message Channel  -->
                 <!-- ---------------------------------------- -->
-                <td style="width: 1%;">
-                  <!-- ---------------------------------------- -->
-                  <!-- Channel - Telegram -->
-                  <!-- ---------------------------------------- -->
-                  <span *ngIf="request?.channel?.name === 'telegram'" class="tool_tip">
-
-                    <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/Telegram-01.svg"
-                      class="img-fluid">
-                    <span class="bottom tool-tip-bottom--custom">
-                      <span style="font-weight: 200;">
-                        {{'MessageChannel' | translate}}:
+                <td style="width: 1%;padding-left: 4px!important;">
+                  <div class="priority_and_channel_wpr" style="display: flex;">
+                    <!-- ---------------------------------------- -->
+                    <!-- @ Priority WRAPPER -->
+                    <!-- ---------------------------------------- -->
+                    <div *ngIf="request?.priority !== 'medium'" class="priority_wpr"
+                      style="flex: 1;; text-align: right;">
+                      <!-- ---------------------------------------- -->
+                      <!-- Priority High -->
+                      <!-- ---------------------------------------- -->
+                      <span *ngIf="request?.priority === 'high'" class="tool_tip">
+                        <img style="width: 15px;height: 15px;" src="assets/img/priority_icons/high_v2.svg"
+                          class="img-fluid">
+                        <span class="bottom tool-tip-bottom--custom">
+                          <span style="font-weight: 400;">
+                            {{'Priority' | translate}}:
+                          </span>
+                          <span style="font-weight: 400;">{{ 'high' | translate }} </span>
+                          <i></i>
+                        </span>
                       </span>
-                      <span style="font-weight: 400;">Telegram </span>
-                      <i></i>
-                    </span>
-                  </span>
-                  <!-- ---------------------------------------- -->
-                  <!-- Channel - WhatsApp -->
-                  <!-- ---------------------------------------- -->
-                  <span *ngIf="request?.channel?.name === 'whatsapp'" class="tool_tip">
-
-                    <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/whatsapp-logo_green.svg"
-                      class="img-fluid">
-                    <span class="bottom tool-tip-bottom--custom">
-                      <span style="font-weight: 200;">
-                        {{'MessageChannel' | translate}}:
+                      <!-- ---------------------------------------- -->
+                      <!-- Priority Urgent -->
+                      <!-- ---------------------------------------- -->
+                      <span *ngIf="request?.priority === 'urgent'" class="tool_tip">
+                        <img style="width: 15px;height: 15px;" src="assets/img/priority_icons/urgent_v2.svg"
+                          class="img-fluid">
+                        <span class="bottom tool-tip-bottom--custom">
+                          <span style="font-weight: 400;">
+                            {{'Priority' | translate}}:
+                          </span>
+                          <span style="font-weight: 400;">{{ 'urgent' | translate }} </span>
+                          <i></i>
+                        </span>
                       </span>
-                      <span style="font-weight: 400;">WhatsApp </span>
-                      <i></i>
-                    </span>
-                  </span>
-
-                  <!-- ---------------------------------------- -->
-                  <!-- Channel - Messenger -->
-                  <!-- ---------------------------------------- -->
-                  <span *ngIf="request?.channel?.name === 'messenger'" class="tool_tip">
-                    <img style="width: 24px;height: 24px;"
-                      src="assets/img/channel_icons/Facebook_Messenger_logo_2020.svg" class="img-fluid">
-                    <span class="bottom tool-tip-bottom--custom">
-                      <span style="font-weight: 200;">
-                        {{'MessageChannel' | translate}}:
+                      <!-- ---------------------------------------- -->
+                      <!-- Priority Low -->
+                      <!-- ---------------------------------------- -->
+                      <span *ngIf="request?.priority === 'low'" class="tool_tip">
+                        <img style="width: 15px;height: 15px;" src="assets/img/priority_icons/low_v2.svg"
+                          class="img-fluid">
+                        <span class="bottom tool-tip-bottom--custom">
+                          <span style="font-weight: 400;">
+                            {{'Priority' | translate}}:
+                          </span>
+                          <span style="font-weight: 400;">{{ 'low' | translate }} </span>
+                          <i></i>
+                        </span>
                       </span>
-                      <span style="font-weight: 400;">Messenger </span>
-                      <i></i>
-                    </span>
-                  </span>
+                    </div>
 
-                  <!-- ---------------------------------------- -->
-                  <!-- Channel - Email -->
-                  <!-- ---------------------------------------- -->
-                  <span *ngIf="request?.channel?.name === 'email'" class="tool_tip email-wpr">
-                    <img style="padding:5px !important" src="assets/img/channel_icons/email-logo_white.svg"
-                      class="img-fluid channel-img-in-conversations">
-                    <span class="bottom tool-tip-bottom--custom">
-                      <span style="font-weight: 200;">
-                        {{'MessageChannel' | translate}}:
-                      </span>
-                      <span style="font-weight: 400;">Email </span>
-                      <i></i>
-                    </span>
-                  </span>
+                    <!-- ---------------------------------------- -->
+                    <!-- Channel WRAPPER -->
+                    <!-- ---------------------------------------- -->
+                    <div *ngIf="request?.channel?.name !== 'chat21'" class="channel_wpr"
+                      style="flex: 1; text-align: right;"
+                      [ngClass]="{'channel-wpr-padding-left' : request?.priority !== 'medium'}">
+                      <!-- ---------------------------------------- -->
+                      <!-- Channel - Telegram -->
+                      <!-- ---------------------------------------- -->
+                      <span *ngIf="request?.channel?.name === 'telegram'" class="tool_tip">
 
-                  <!-- ---------------------------------------- -->
-                  <!-- Channel - Form -->
-                  <!-- ---------------------------------------- -->
-                  <span *ngIf="request?.channel?.name === 'form'" class="tool_tip form-wpr">
-                    <img style="padding:4px !important" src="assets/img/channel_icons/form-logo_v2_white.svg"
-                      class="img-fluid channel-img-in-conversations">
-                    <span class="bottom tool-tip-bottom--custom">
-                      <span style="font-weight: 200;">
-                        {{'MessageChannel' | translate}}:
+                        <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/Telegram-01.svg"
+                          class="img-fluid">
+                        <span class="bottom tool-tip-bottom--custom">
+                          <span style="font-weight: 400;">
+                            {{'MessageChannel' | translate}}:
+                          </span>
+                          <span style="font-weight: 400;">Telegram </span>
+                          <i></i>
+                        </span>
                       </span>
-                      <span style="font-weight: 400;">Form </span>
-                      <i></i>
-                    </span>
-                  </span>
+                      <!-- ---------------------------------------- -->
+                      <!-- Channel - WhatsApp -->
+                      <!-- ---------------------------------------- -->
+                      <span *ngIf="request?.channel?.name === 'whatsapp'" class="tool_tip">
+
+                        <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/whatsapp-logo_green.svg"
+                          class="img-fluid">
+                        <span class="bottom tool-tip-bottom--custom">
+                          <span style="font-weight: 400;">
+                            {{'MessageChannel' | translate}}:
+                          </span>
+                          <span style="font-weight: 400;">WhatsApp </span>
+                          <i></i>
+                        </span>
+                      </span>
+
+                      <!-- ---------------------------------------- -->
+                      <!-- Channel - Messenger -->
+                      <!-- ---------------------------------------- -->
+                      <span *ngIf="request?.channel?.name === 'messenger'" class="tool_tip">
+
+                        <img style="width: 24px;height: 24px;"
+                          src="assets/img/channel_icons/Facebook_Messenger_logo_2020.svg" class="img-fluid">
+
+                        <span class="bottom tool-tip-bottom--custom">
+                          <span style="font-weight: 400;">
+                            {{'MessageChannel' | translate}}:
+                          </span>
+
+                          <span style="font-weight: 400;">Messenger </span>
+                          <i></i>
+                        </span>
+                      </span>
+
+                      <!-- ---------------------------------------- -->
+                      <!-- Channel - Email -->
+                      <!-- ---------------------------------------- -->
+                      <span *ngIf="request?.channel?.name === 'email'" class="tool_tip email-wpr">
+
+                        <img style="padding:5px !important" src="assets/img/channel_icons/email-logo_white.svg"
+                          class="img-fluid channel-img-in-conversations">
+
+                        <span class="bottom tool-tip-bottom--custom">
+                          <span style="font-weight: 400;">
+                            {{'MessageChannel' | translate}}:
+                          </span>
+                          <span style="font-weight: 400;">Email </span>
+
+                          <i></i>
+                        </span>
+                      </span>
+
+                      <!-- ---------------------------------------- -->
+                      <!-- Channel - Form -->
+                      <!-- ---------------------------------------- -->
+                      <span *ngIf="request?.channel?.name === 'form'" class="tool_tip form-wpr">
+                        <img style="padding:4px !important" src="assets/img/channel_icons/form-logo_v2_white.svg"
+                          class="img-fluid channel-img-in-conversations">
+
+                        <span class="bottom tool-tip-bottom--custom">
+                          <span style="font-weight: 400;">
+                            {{'MessageChannel' | translate}}:
+                          </span>
+                          <span style="font-weight: 400;">Form </span>
+                          <i></i>
+                        </span>
+                      </span>
+                    </div>
+                  </div>
                 </td>
 
 
@@ -1451,10 +1524,10 @@
                           <!-- --------------------------------------------------- -->
                           <!-- USECASE uploadEngine Native -->
                           <!-- --------------------------------------------------- -->
-                          <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"  class="user-img ws-requests-list-servedby-avatar"
+                          <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="user-img ws-requests-list-servedby-avatar"
                             src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                             onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
-                            
+
                           <span
                             style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px; white-space: nowrap;"
                             class="top">
@@ -1569,7 +1642,8 @@
                   <section *ngIf="!IS_HERE_FOR_HISTORY">
                     <button *ngIf="request?.currentUserIsJoined === false" type="button" rel="tooltip"
                       style="padding-top: 9px !important;" title="{{ 'RequestMsgsPage.Enter' | translate }}"
-                      class="btn btn-tdblu btn-simple btn-xs tool_tip" (click)='joinRequest(request ,request?.request_id)'
+                      class="btn btn-tdblu btn-simple btn-xs tool_tip"
+                      (click)='joinRequest(request ,request?.request_id)'
                       [disabled]="request?.currentUserIsJoined === true">
 
                       <!-- ------------------------------------------------------------------------------------------------------ -->
