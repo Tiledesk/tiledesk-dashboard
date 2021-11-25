@@ -79,7 +79,7 @@ export class LocalDbService {
   // -----------------------------------------------------------
   savChangelogDate() {
     // 1) to display the rocket "go-to-changelog" change the chglog_date
-    const chglog_date = "09112021" // 
+    const chglog_date = "25112021" // 
     localStorage.setItem(this.prefix + 'chglogdate', chglog_date);
   }
 
@@ -87,7 +87,7 @@ export class LocalDbService {
     const chglog_date = localStorage.getItem(this.prefix + 'chglogdate')
     let hasOpenBlog = false;
     // 2) if this chglog_date is equal to that get from local storage the rocket "go-to-changelog" is hidden
-    if (chglog_date === '09112021') {
+    if (chglog_date === '25112021') {
       hasOpenBlog = true
     }
     return hasOpenBlog
