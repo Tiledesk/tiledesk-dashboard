@@ -485,7 +485,7 @@ export class WsRequestsService implements OnDestroy {
     this.webSocketJs.ref(path, 'subscribeToWS_RequesterPresence',
 
       function (data, notification) {
-        self.logger.log("[WS-REQUESTS-SERV] - SUBSCRIBE TO REQUESTER-PRECENCE - CREATE data ", data);
+        // self.logger.log("[WS-REQUESTS-SERV] - SUBSCRIBE TO REQUESTER-PRECENCE - CREATE data ", data);
 
         self.wsRequesterStatus$.next(data);
 
@@ -497,7 +497,7 @@ export class WsRequestsService implements OnDestroy {
       }, function (data, notification) {
 
         if (data) {
-          self.logger.log("[WS-REQUESTS-SERV] - SUBSCRIBE TO REQUESTER-PRECENCE - ON-DATA data ", data);
+          // self.logger.log("[WS-REQUESTS-SERV] - SUBSCRIBE TO REQUESTER-PRECENCE - ON-DATA data ", data);
         }
       }
     );
