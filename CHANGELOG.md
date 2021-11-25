@@ -1,6 +1,8 @@
 
 # tiledesk-dashboard
 
+### 2.2.29-rc2
+- Changes the email field from mandatory to optional in the "Create New Requester" form available in the "Create Ticket" modal window
 
 ### 2.2.29-rc1
 - Fixes the bug: if the agent's avatar photo does not have a 1:1 aspect ratio, it is displayed stretched
