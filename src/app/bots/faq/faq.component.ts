@@ -931,13 +931,15 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
       this.webhookUrl = faqkb.webhook_url
       this.logger.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID - webhookUrl ', this.webhookUrl);
 
+      this.logger.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID - LANGUAGE ', faqkb.language);
+
       // for the comnobobox "select bot language" -now not used because the user cannot change the language of the bot he chose during creation
       // this.botDefaultSelectedLang = this.botDefaultLanguages[this.getIndexOfbotDefaultLanguages(faqkb.language)]
       // this.logger.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID  (ONLY FOR NATIVE BOT i.e. Resolution) LANGUAGE ', this.botDefaultSelectedLang);
-
-      this.botDefaultSelectedLang = this.botDefaultLanguages[this.getIndexOfbotDefaultLanguages(faqkb.language)].name
-      this.logger.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID  (ONLY FOR NATIVE BOT i.e. Resolution) LANGUAGE ', this.botDefaultSelectedLang);
-
+      if (faqkb && faqkb.language) {
+        this.botDefaultSelectedLang = this.botDefaultLanguages[this.getIndexOfbotDefaultLanguages(faqkb.language)].name
+        this.logger.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID  (ONLY FOR NATIVE BOT i.e. Resolution) LANGUAGE ', this.botDefaultSelectedLang);
+      }
 
       if (faqkb.webhook_enabled) {
         this.validateUrl(this.webhookUrl)

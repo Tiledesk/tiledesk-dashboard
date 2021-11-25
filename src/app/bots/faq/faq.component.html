@@ -565,12 +565,13 @@
                   </button>
                 </p>
 
-                <span style="display: block;  cursor:pointer; font-weight: 200;
-                margin-top: 5px;" (click)="goToRoutingAndDepts()">
+                <!-- <span style="display: block;  cursor:pointer; font-weight: 200;margin-top: 5px;" > -->
+                  <p style="color: #7695a5;">
                   {{'ManageTheBotIn' | translate}}
 
-                  <span style="color: #0f62ff;"> {{'RoutingAndDepts' | translate}}</span>
-                </span>
+                  <span style="color: #0f62ff;" (click)="goToRoutingAndDepts()"> {{'RoutingAndDepts' | translate}}</span>
+                <!-- </span> -->
+              </p>
               </span>
             </span> <!-- ./end Department section (replaces Bot attributes) -->
 

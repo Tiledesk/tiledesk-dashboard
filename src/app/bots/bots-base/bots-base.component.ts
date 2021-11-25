@@ -58,12 +58,12 @@ export class BotsBaseComponent implements OnInit {
   ngOnInit() {
   }
 
-  getIndexOfdialogflowLanguage(langcode: string) {
+  getIndexOfdialogflowLanguage(langcode: string): number {
     const index = this.dialogflowLanguage.findIndex(x => x.code === langcode);
     return index
   }
 
-  getIndexOfbotDefaultLanguages(langcode: string) {
+  getIndexOfbotDefaultLanguages(langcode: string): number {
     const index = this.botDefaultLanguages.findIndex(x => x.code === langcode);
     return index
   }
