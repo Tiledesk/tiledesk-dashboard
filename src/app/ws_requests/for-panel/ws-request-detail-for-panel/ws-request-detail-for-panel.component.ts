@@ -64,7 +64,7 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
   REQUESTER_IS_ONLINE = false;
   IS_CURRENT_USER_JOINED: boolean;
   REQUEST_STATUS: number;
-
+  ROLE_IS_AGENT: boolean;
   constructor(
     private wsMsgsService: WsMsgsService,
     public appConfigService: AppConfigService,
@@ -106,9 +106,6 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
 
     }
 
-   
-
-
     if (this.requestid) {
       this.logger.log('[REQUEST-DTLS-X-PANEL] - UNSUB-REQUEST-BY-ID - id_request ', this.requestid);
       this.logger.log('[REQUEST-DTLS-X-PANEL] - UNSUB-MSGS - id_request ', this.requestid);
@@ -126,8 +123,31 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
 
     // chat-messages-container
     this.setPerfectScrollbar()
-    this.listenToParentPostMessage()
+    this.listenToParentPostMessage();
+    this.getProjectUserRole() 
   }
+
+  getProjectUserRole() {
+    // const user___role =  this.usersService.project_user_role_bs.value;
+    // this.logger.log('[NAVBAR] % »»» WebSocketJs WF +++++ ws-requests--- navbar - USER ROLE 1 ', user___role);
+
+    this.usersService.project_user_role_bs
+        .pipe(
+            takeUntil(this.unsubscribe$)
+        )
+        .subscribe((user_role) => {
+            this.logger.log('[REQUEST-DTLS-X-PANEL] USER ROLE ', user_role);
+            if (user_role) {
+               
+                if (user_role === 'agent') {
+                    this.ROLE_IS_AGENT = true;
+
+                } else {
+                    this.ROLE_IS_AGENT = false;
+                }
+            }
+        });
+}
 
   listenToParentPostMessage() {
     window.addEventListener("message", (event) => {
