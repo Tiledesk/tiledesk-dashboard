@@ -10,6 +10,7 @@
 - Adds the ability to select the priority level of the ticket during its creation
 - Displays the priority level of a ticket or of a conversation in the conversations list
 - Adds the ability, on the conversation detail page, to set a priority level for a conversation
+- Adds a confirmation modal to the non-real-time conversations page that appears when the agent clicks the "Join Chat" button
 
 ### 2.2.28
 - Updates the Home "Latest updates" section
