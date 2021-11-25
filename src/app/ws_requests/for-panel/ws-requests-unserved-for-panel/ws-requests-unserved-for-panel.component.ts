@@ -134,7 +134,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
     public usersLocalDbService: LocalDbService,
     public botLocalDbService: BotLocalDbService,
     public auth: AuthService,
-    private translate: TranslateService,
+    public translate: TranslateService,
     public usersService: UsersService,
     public faqKbService: FaqKbService,
     public appConfigService: AppConfigService,
@@ -146,7 +146,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
     public logger: LoggerService
 
   ) {
-    super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger);
+    super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate);
     this.zone = new NgZone({ enableLongStackTrace: false });
     // this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] !!!!')
   }
@@ -168,14 +168,14 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
 
   listenToParentPostMessage() {
     window.addEventListener("message", (event) => {
-      this.logger.log("[REQUEST-DTLS-X-PANEL] message event ", event);
+      // console.log("[REQUEST-DTLS-X-PANEL] message event ", event);
 
-      if (event && event.data && event.data.action &&   event.data.parameter) {
-        if (event.data.action === 'joinConversation') {
+      if (event && event.data && event.data.action && event.data.parameter && event.data.calledBy) {
+        if (event.data.action === 'joinConversation' && event.data.calledBy === 'ws_unserved_for_panel') {
           this.logger.log("[WS-REQUESTS-UNSERVED-X-PANEL] message event ", event.data.action);
           this.logger.log("[WS-REQUESTS-UNSERVED-X-PANEL] message parameter ", event.data.parameter);
           this.logger.log("[WS-REQUESTS-UNSERVED-X-PANEL] currentUserID ", this.currentUserID);
-          this.onJoinHandled(event.data.parameter, this.currentUserID);
+          this.onJoinHandled(event.data.parameter, this.currentUserID, "postMessage");
         }
       }
     })
@@ -224,7 +224,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
   joinRequest(request_id: string) {
     this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] JOIN-REQUEST request_id', request_id, ' - CURRENT-USER-ID ', this.currentUserID);
 
-    const msg = {action:'openJoinConversationModal', parameter: request_id}
+    const msg = {action:'openJoinConversationModal', parameter: request_id, calledBy: 'ws_unserved_for_panel'}
     window.top.postMessage(msg, '*')
     // this.onJoinHandled(request_id, this.currentUserID);
   }
@@ -239,12 +239,12 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
         this.logger.error('[WS-REQUESTS-UNSERVED-X-PANEL] - CLOSE SUPPORT GROUP - ERROR ', err);
 
         //  NOTIFY ERROR 
-        this.notify.showNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
+        // this.notify.showNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
       }, () => {
 
         this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL]- CLOSE SUPPORT GROUP * COMPLETE *');
         //  NOTIFY SUCCESS
-        this.notify.showRequestIsArchivedNotification(this.requestHasBeenArchivedNoticationMsg_part1);
+        // this.notify.showRequestIsArchivedNotification(this.requestHasBeenArchivedNoticationMsg_part1);
       });
   }
 

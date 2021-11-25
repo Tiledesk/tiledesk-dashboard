@@ -21,7 +21,7 @@ import { NotifyService } from '../../../core/notify.service';
 import PerfectScrollbar from 'perfect-scrollbar';
 import { ContactsService } from '../../../services/contacts.service';
 import { LoggerService } from '../../../services/logger/logger.service';
-
+import * as moment from 'moment';
 @Component({
   selector: 'appdashboard-ws-request-detail-for-panel',
   templateUrl: './ws-request-detail-for-panel.component.html',
@@ -39,7 +39,7 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
   @Output() valueChange = new EventEmitter();
   @Input() selectedRequest: string;
   @Input() wsRequestsUnserved: any;
-  
+
 
   request: any;
   isOpenRightSidebar = true;
@@ -65,6 +65,7 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
   IS_CURRENT_USER_JOINED: boolean;
   REQUEST_STATUS: number;
   ROLE_IS_AGENT: boolean;
+  currentYear: any;
   constructor(
     private wsMsgsService: WsMsgsService,
     public appConfigService: AppConfigService,
@@ -76,10 +77,10 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
     public usersService: UsersService,
     public notify: NotifyService,
     public auth: AuthService,
-    private translate: TranslateService,
+    public translate: TranslateService,
     public contactsService: ContactsService,
     public logger: LoggerService
-  ) { super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger); }
+  ) { super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate); }
 
   ngOnInit() {
     this.getProfileImageStorage();
@@ -124,7 +125,24 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
     // chat-messages-container
     this.setPerfectScrollbar()
     this.listenToParentPostMessage();
-    this.getProjectUserRole() 
+    this.getProjectUserRole();
+    this.setMomentLocale();
+    this.getCurrentYear()
+  }
+
+  getCurrentYear() {
+    this.currentYear = moment().format('YYYY');
+    this.logger.log('[ION-LIST-CONVS-COMP] - currentYear ', this.currentYear)
+  }
+  setMomentLocale() {
+    const browserLang = this.translate.getBrowserLang();
+    if (browserLang) {
+      if (browserLang === 'it') {
+        moment.locale('it')
+      } else {
+        moment.locale('en')
+      }
+    }
   }
 
   getProjectUserRole() {
@@ -132,33 +150,33 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
     // this.logger.log('[NAVBAR] % »»» WebSocketJs WF +++++ ws-requests--- navbar - USER ROLE 1 ', user___role);
 
     this.usersService.project_user_role_bs
-        .pipe(
-            takeUntil(this.unsubscribe$)
-        )
-        .subscribe((user_role) => {
-            this.logger.log('[REQUEST-DTLS-X-PANEL] USER ROLE ', user_role);
-            if (user_role) {
-               
-                if (user_role === 'agent') {
-                    this.ROLE_IS_AGENT = true;
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((user_role) => {
+        this.logger.log('[REQUEST-DTLS-X-PANEL] USER ROLE ', user_role);
+        if (user_role) {
 
-                } else {
-                    this.ROLE_IS_AGENT = false;
-                }
-            }
-        });
-}
+          if (user_role === 'agent') {
+            this.ROLE_IS_AGENT = true;
+
+          } else {
+            this.ROLE_IS_AGENT = false;
+          }
+        }
+      });
+  }
 
   listenToParentPostMessage() {
     window.addEventListener("message", (event) => {
       this.logger.log("[REQUEST-DTLS-X-PANEL] message event ", event);
 
-      if (event && event.data && event.data.action &&   event.data.parameter) {
-        if (event.data.action === 'joinConversation') {
+      if (event && event.data && event.data.action && event.data.parameter && event.data.calledBy) {
+        if (event.data.action === 'joinConversation' && event.data.calledBy === 'ws_request_detail_for_panel') {
           this.logger.log("[REQUEST-DTLS-X-PANEL] message event ", event.data.action);
           this.logger.log("[REQUEST-DTLS-X-PANEL] message parameter ", event.data.parameter);
           this.logger.log("[REQUEST-DTLS-X-PANEL] currentUserID ", this.currentUserID);
-          this.onJoinHandled(event.data.parameter, this.currentUserID);
+          this.onJoinHandled(event.data.parameter, this.currentUserID, "postMessage");
         }
       }
     })
@@ -216,7 +234,7 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
           this.logger.log('[REQUEST-DTLS-X-PANEL] - wsrequest FROM SUBSCRIPTION ', wsrequest);
           this.IS_CURRENT_USER_JOINED = this.currentUserIdIsInParticipants(wsrequest['participants'], this.currentUserID, this.request.request_id);
           this.logger.log('[REQUEST-DTLS-X-PANEL] - wsrequest IS_CURRENT_USER_JOINED ', this.IS_CURRENT_USER_JOINED);
-          this.request.currentUserIsJoined  = this.IS_CURRENT_USER_JOINED 
+          this.request.currentUserIsJoined = this.IS_CURRENT_USER_JOINED
           this.REQUEST_STATUS = wsrequest['status']
         }
       })
@@ -316,15 +334,15 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
   }
 
   joinRequest(request_id: string) {
-    const msg = {action:'openJoinConversationModal', parameter: request_id}
+    const msg = { action: 'openJoinConversationModal', parameter: request_id, calledBy: 'ws_request_detail_for_panel' }
     window.top.postMessage(msg, '*')
 
     this.logger.log('[REQUEST-DTLS-X-PANEL] JOIN-REQUEST - currentUserID ', this.currentUserID);
-   
+
   }
 
   archiveRequest(request_id) {
-    this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg);
+    // this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg);
     this.logger.log('[REQUEST-DTLS-X-PANEL] - HAS CLICKED ARCHIVE REQUEST ');
 
 
@@ -335,13 +353,13 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
         this.logger.error('[REQUEST-DTLS-X-PANEL] - CLOSE SUPPORT GROUP - ERROR ', err);
 
         //  NOTIFY ERROR 
-        this.notify.showNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
+        // this.notify.showNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
       }, () => {
 
-        this.logger.log('REQUEST-DTLS-X-PANEL CLOSE SUPPORT GROUP - COMPLETE');
-
+        this.logger.log('[REQUEST-DTLS-X-PANEL] CLOSE SUPPORT GROUP - COMPLETE');
+        this.closeRightSideBar();
         //  NOTIFY SUCCESS;
-        this.notify.showRequestIsArchivedNotification(this.requestHasBeenArchivedNoticationMsg_part1);
+        // this.notify.showRequestIsArchivedNotification(this.requestHasBeenArchivedNoticationMsg_part1);
 
       });
   }
@@ -417,10 +435,10 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
           if (this.messagesList[i].sender === 'system') {
 
             // this.messagesList[i]['avatar_url'] = 'assets/img/code-24px.svg'
-            
+
           } else {
             let sender_id = this.messagesList[i].sender
-           
+
             if (this.messagesList[i].sender.includes('bot_')) {
               sender_id = this.messagesList[i].sender.slice(4);
               if (this.UPLOAD_ENGINE_IS_FIREBASE === true) {

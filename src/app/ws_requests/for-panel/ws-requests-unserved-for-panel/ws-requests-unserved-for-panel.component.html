@@ -102,7 +102,7 @@
                   <div class="tool_tip" style="width: 100%;">
                     <button class="btn btn-block btn-primary action--btn"
                       (click)='$event.stopPropagation();joinRequest(request?.request_id)'>
-                      Join
+                      {{'Join' | translate}}
                     </button>
                     <span class="top"
                       style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px; white-space: nowrap;">
@@ -117,7 +117,7 @@
                     <button class="btn btn-block btn-primary action--btn"
                       (click)='$event.stopPropagation();archiveRequest(request?.request_id)'
                       style="background-color: #e4e6eb; color: #050505;">
-                      Archive
+                      {{'VisitorsPage.Archive' | translate}}
                     </button>
                     <span
                       style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px; white-space: nowrap;"

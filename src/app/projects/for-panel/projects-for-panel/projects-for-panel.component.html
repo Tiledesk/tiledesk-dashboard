@@ -65,9 +65,10 @@
                   </div>
                 </div>
 
+                <!-- (click)="$event.stopPropagation();changeAvailabilityState(project?.id_project?._id, project?.ws_projct_user_available)" -->
                 <div class="avalability--status-text-wpr" style="display: inline-block; min-width: 75px;">
                   <div class="avalability--status-text"
-                    (click)="$event.stopPropagation();changeAvailabilityState(project?.id_project?._id, project?.ws_projct_user_available)"
+                   
                     [ngClass]="{'online-text-color' : project?.ws_projct_user_available === true, 'offline-text-color' : project?.ws_projct_user_available === false}">
                     <span *ngIf="project?.ws_projct_user_available === true"
                       style="text-transform: capitalize;">{{'Available' | translate}} </span>

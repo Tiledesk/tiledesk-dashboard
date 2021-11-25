@@ -2013,7 +2013,7 @@ button.close {
   position: relative;
   top: -4px;
   display: inline-block;
-  min-width: 74px;
+  min-width: 93px;
 }
 
 .online-text-color {
@@ -2034,14 +2034,14 @@ button.close {
 .project-item--isBusy-icon {
   border-radius: 50%;
   background-color: #fedd00;
-  font-size: 18px;
+  font-size: 16px;
   color: #fff;
 }
 
 .project-item--isBusy-busy-text {
   font-family: Helvetica, Helvetica, Arial, sans-serif;
   font-size: 13px;
-  margin-left: 3px;
+  margin-left: 0px;
   position: relative;
   top: -4px;
 }
