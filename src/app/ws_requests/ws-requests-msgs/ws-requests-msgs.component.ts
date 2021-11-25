@@ -1452,7 +1452,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // @ Priority
   // ---------------------------------------------------------------------------------------
   onChangeSelectedPriority(selectedPriority) {
-    console.log('[WS-REQUESTS-MSGS] - onChangeSelectedPriority selectedPriority ', selectedPriority)
+    this.logger.log('[WS-REQUESTS-MSGS] - onChangeSelectedPriority selectedPriority ', selectedPriority)
     this.selectedPriority = selectedPriority;
   
     this.wsRequestsService.updatePriority(this.id_request, selectedPriority)
