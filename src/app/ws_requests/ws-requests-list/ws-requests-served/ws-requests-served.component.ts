@@ -87,10 +87,10 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     public faqKbService: FaqKbService,
     private departmentService: DepartmentService,
     public notify: NotifyService,
-    private translate: TranslateService,
+    public translate: TranslateService,
     public logger: LoggerService
   ) {
-    super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger);
+    super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate);
   }
 
   // -------------------------------------------------------------

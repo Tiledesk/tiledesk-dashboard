@@ -199,7 +199,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     public usersLocalDbService: LocalDbService,
     public botLocalDbService: BotLocalDbService,
     public auth: AuthService,
-    private translate: TranslateService,
+    public translate: TranslateService,
     public usersService: UsersService,
     public faqKbService: FaqKbService,
     public appConfigService: AppConfigService,
@@ -210,7 +210,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     private prjctPlanService: ProjectPlanService,
     public logger: LoggerService
   ) {
-    super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger);
+    super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate);
     this.zone = new NgZone({ enableLongStackTrace: false });
   }
 

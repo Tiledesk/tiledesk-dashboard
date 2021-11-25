@@ -232,7 +232,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     public usersService: UsersService,
     public faqKbService: FaqKbService,
     private prjctPlanService: ProjectPlanService,
-    private translate: TranslateService,
+    public translate: TranslateService,
     public notify: NotifyService,
     public appConfigService: AppConfigService,
     public wsRequestsService: WsRequestsService,
@@ -241,7 +241,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     private tagsService: TagsService,
     public logger: LoggerService
   ) {
-    super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger);
+    super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate);
   }
 
   ngOnInit() {
