@@ -8,6 +8,7 @@ import { FaqKbService } from '../../services/faq-kb.service';
 import { UsersService } from '../../services/users.service';
 import { NotifyService } from '../../core/notify.service';
 import { LoggerService } from '../../services/logger/logger.service';
+import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'appdashboard-ws-shared',
   templateUrl: './ws-shared.component.html',
@@ -63,6 +64,7 @@ export class WsSharedComponent implements OnInit {
   // botAgents: any;
   humanAgentsIdArray: any;
   botAgentsIdArray: any;
+  you_are_successfully_added_to_the_chat: string
   constructor(
     public botLocalDbService: BotLocalDbService,
     public usersLocalDbService: LocalDbService,
@@ -71,12 +73,15 @@ export class WsSharedComponent implements OnInit {
     public faqKbService: FaqKbService,
     public usersService: UsersService,
     public notify: NotifyService,
-    public logger: LoggerService
+    public logger: LoggerService,
+    public translate: TranslateService
   ) { }
 
   ngOnInit() {
-
+ 
+   
   }
+
 
   // getIndexOfPriority(priorityname: string) {
   //   const index = this.priority.findIndex(x => x.name === priorityname);
@@ -593,25 +598,50 @@ export class WsSharedComponent implements OnInit {
 
 
   // JOIN TO CHAT GROUP
-  onJoinHandled(id_request: string, currentUserID: string) {
+  onJoinHandled(id_request: string, currentUserID: string, postmessage?: string) {
     // this.getFirebaseToken(() => {
+    // console.log('[WS-SHARED] - onJoinHandled postmessage ', postmessage)
     this.logger.log('[WS-SHARED][REQUEST-DTLS-X-PANEL][WS-REQUESTS-UNSERVED-X-PANEL][WS-REQUESTS-LIST][SERVED][UNSERVED] - JOIN PRESSED');
-
+    this.logger.log('[WS-SHARED][REQUEST-DTLS-X-PANEL][WS-REQUESTS-UNSERVED-X-PANEL][WS-REQUESTS-LIST][SERVED][UNSERVED] - JOIN PRESSED postmessage', postmessage);
 
     this.wsRequestsService.addParticipant(id_request, currentUserID)
       .subscribe((data: any) => {
-
+        // console.log('[WS-SHARED] - onJoinHandled data ', data)
         this.logger.log('[WS-SHARED][REQUEST-DTLS-X-PANEL][WS-REQUESTS-UNSERVED-X-PANEL][WS-REQUESTS-LIST][SERVED][UNSERVED] - addParticipant TO CHAT GROUP ', data);
       }, (err) => {
         this.logger.error('[WS-SHARED][REQUEST-DTLS-X-PANEL][WS-REQUESTS-UNSERVED-X-PANEL][WS-REQUESTS-LIST][SERVED][UNSERVED] - addParticipant TO CHAT GROUP - ERROR ', err);
 
       }, () => {
         this.logger.log('[WS-SHARED][REQUEST-DTLS-X-PANEL][WS-REQUESTS-UNSERVED-X-PANEL][WS-REQUESTS-LIST][SERVED][UNSERVED] - addParticipant TO CHAT GROUP * COMPLETE *');
-
-        this.notify.showWidgetStyleUpdateNotification(`You are successfully added to the chat`, 2, 'done');
-
+        if (postmessage === undefined) {
+          this.getTranslationsDisplayInAppNotification()
+          
+        } else {
+          
+          this.getTranslationsAndPostMessage()
+        }
       });
+  }
+  getTranslationsDisplayInAppNotification () {
+    this.translate.get('You_are_successfully_added_to_the_chat').subscribe((text: string) => {
+      
+      this.logger.log('[WS-SHARED] getTranslations : ', text)
 
+      this.you_are_successfully_added_to_the_chat = text;
+      this.notify.showWidgetStyleUpdateNotification(this.you_are_successfully_added_to_the_chat, 2, 'done');
+    });
+  }
+
+
+  getTranslationsAndPostMessage () {
+    this.translate.get('You_are_successfully_added_to_the_chat').subscribe((text: string) => {
+      
+      this.logger.log('[WS-SHARED] getTranslations : ', text)
+
+      this.you_are_successfully_added_to_the_chat = text;
+      const msg = {action:'display_toast_join_complete', text: this.you_are_successfully_added_to_the_chat}
+      window.top.postMessage(msg, '*')
+    });
   }
 
   // -------------------------------------------------------------------------------------------------------------
