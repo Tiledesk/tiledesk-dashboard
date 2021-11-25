@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.29-rc3
+- Improves and fixes the bugs of the components displayed in the iframe of the left side panel of the "chat"
+
 ### 2.2.29-rc2
 - Changes the email field from mandatory to optional in the "Create New Requester" form available in the "Create Ticket" modal window
 
