@@ -219,7 +219,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   // -----------------------------------------------------------------------------------------------------
 
   ngOnInit() {
-    console.log('SELECTED PRIORITY ', this.selectedPriority)
+    // console.log('SELECTED PRIORITY ', this.selectedPriority)
     this.getOSCODE();
 
     this.getImageStorageAndThenProjectUsers();
