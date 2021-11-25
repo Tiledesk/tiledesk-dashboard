@@ -148,6 +148,11 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
+  
+ 
+  joinToChatMsg: string;
+  youAreAboutToJoinMsg: string;
+  cancelMsg: string;
 
   public myDatePickerOptions: IMyDpOptions = {
     // other options...
@@ -299,6 +304,31 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.translateRequestHasBeenArchivedNoticationMsg_part2();
     this.translateAllConversationsHaveBeenArchived();
     this.translateModalOnlyOwnerCanManageProjectAccount();
+    this.translateYouAreAboutToJoin();
+    this.translateCancel();
+    this.translateJoinToChat();
+  }
+
+  translateYouAreAboutToJoin() {
+    this.translate.get('YouAreAboutToJoinThisChatAlreadyAssignedTo')
+      .subscribe((text: string) => {
+        this.youAreAboutToJoinMsg = text;
+
+      });
+  }
+
+  translateCancel() {
+    this.translate.get('Cancel')
+      .subscribe((text: string) => {
+        this.cancelMsg = text;
+      });
+  }
+
+  translateJoinToChat() {
+    this.translate.get('RequestMsgsPage.Enter')
+      .subscribe((text: string) => {
+        this.joinToChatMsg = text;
+      });
   }
 
   translateModalOnlyOwnerCanManageProjectAccount() {
@@ -368,11 +398,98 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   // Join request
   // ------------------------------------------
   joinRequest(request, request_id: string) {
-    this.currentUserID
-    this._onJoinHandled(request_id, this.currentUserID, request);
-    this.logger.log('joinRequest request', request)
+
+    // this._onJoinHandled(request_id, this.currentUserID, request);
+    this.logger.log('[HISTORY & NORT-CONVS] joinRequest request', request)
     // this.getRequests();
+
+    let chatAgent = '';
+    if (request && request.participanting_Agents) {
+
+      const participantingagentslength = request.participanting_Agents.length
+      request.participanting_Agents.forEach((agent, index) => {
+        this.logger.log('[HISTORY & NORT-CONVS] - joinRequest forEach agent', agent);
+        let stringEnd = ' '
+
+        
+        if (participantingagentslength - 1 === index) {
+          stringEnd = '.';
+        } else {
+          stringEnd = ', ';
+        }
+
+        if (agent.firstname && agent.lastname) {
+          chatAgent += agent.firstname + ' ' + agent.lastname + stringEnd
+        }
+
+        if (agent.name) {
+          chatAgent += agent.name + stringEnd
+        }
+
+      });
+
+
+      this.logger.log('[HISTORY & NORT-CONVS] - joinRequest chatAgent', chatAgent);
+
+      if (request && request.currentUserIsJoined === false) {
+        this.displayModalAreYouSureToJoinThisChatAlreadyAssigned(chatAgent, request_id ,request);
+      }
+    }
   }
+
+  displayModalAreYouSureToJoinThisChatAlreadyAssigned(chatAgent, request_id, request) {
+    swal({
+      title: this.areYouSure,
+      text: this.youAreAboutToJoinMsg + ': ' + chatAgent,
+
+      icon: "info",
+      buttons: {
+        cancel: this.cancelMsg,
+        catch: {
+          text: this.joinToChatMsg,
+          value: "catch",
+        },
+      },
+
+      // `"Cancel", ${this.goToMultilanguagePageMsg}`],
+      dangerMode: false,
+    })
+      .then((value) => {
+        this.logger.log('[HISTORY & NORT-CONVS] ARE YOU SURE TO JOIN THIS CHAT ... value', value)
+
+        if (value === 'catch') {
+          this._onJoinHandled(request_id, this.currentUserID, request);
+        }
+      })
+  }
+
+  _onJoinHandled(id_request: string, currentUserID: string, request: any) {
+    // this.getFirebaseToken(() => {
+    this.logger.log('[HISTORY & NORT-CONVS] - JOIN PRESSED');
+
+
+    this.wsRequestsService.addParticipant(id_request, currentUserID)
+      .subscribe((data: any) => {
+
+        this.logger.log('[HISTORY & NORT-CONVS] - addParticipant TO CHAT GROUP ', data);
+      }, (err) => {
+        this.logger.error('[HISTORY & NORT-CONVS] - addParticipant TO CHAT GROUP ERROR ', err);
+
+      }, () => {
+        this.logger.log('[HISTORY & NORT-CONVS] - addParticipant TO CHAT GROUP COMPLETE');
+        request.currentUserIsJoined = true
+        request.participants.push(this.currentUserID)
+        request.participantsAgents.push(this.currentUserID)
+        request['participanting_Agents'] = this.doParticipatingAgentsArray(request.participants, request.first_text, this.imageStorage, this.UPLOAD_ENGINE_IS_FIREBASE)
+        this.logger.log('[HISTORY & NORT-CONVS] - JOIN PRESSED request ', request);
+        this.notify.showWidgetStyleUpdateNotification(`You are successfully added to the chat`, 2, 'done');
+        // this.getRequests();
+      });
+    // });
+  }
+
+
+
 
   openChatInNewWindow(requestid: string, requester_fullanme: string) {
     this.logger.log('[HISTORY & NORT-CONVS] - openChatInNewWindow - requestid ', requestid);
@@ -413,30 +530,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     }
   }
 
-  _onJoinHandled(id_request: string, currentUserID: string, request:any) {
-    // this.getFirebaseToken(() => {
-    this.logger.log('[HISTORY & NORT-CONVS] - JOIN PRESSED');
 
-
-    this.wsRequestsService.addParticipant(id_request, currentUserID)
-      .subscribe((data: any) => {
-
-        this.logger.log('[HISTORY & NORT-CONVS] - addParticipant TO CHAT GROUP ', data);
-      }, (err) => {
-        this.logger.error('[HISTORY & NORT-CONVS] - addParticipant TO CHAT GROUP ERROR ', err);
-
-      }, () => {
-        this.logger.log('[HISTORY & NORT-CONVS] - addParticipant TO CHAT GROUP COMPLETE');
-        request.currentUserIsJoined = true
-        request.participants.push(this.currentUserID) 
-        request.participantsAgents.push(this.currentUserID) 
-        request['participanting_Agents'] = this.doParticipatingAgentsArray(request.participants, request.first_text, this.imageStorage, this.UPLOAD_ENGINE_IS_FIREBASE)
-        this.logger.log('[HISTORY & NORT-CONVS] - JOIN PRESSED request ', request);
-        this.notify.showWidgetStyleUpdateNotification(`You are successfully added to the chat`, 2, 'done');
-        // this.getRequests();
-      });
-    // });
-  }
 
 
 
