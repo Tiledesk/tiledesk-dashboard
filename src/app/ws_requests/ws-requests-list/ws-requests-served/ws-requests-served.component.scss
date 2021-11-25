@@ -915,3 +915,13 @@ $f21blue: #039be5;
 .channel-wpr-padding-left {
   padding-left: 3px;
 }
+
+.requester-presence {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid #ffffff;
+  position: absolute;
+  top: 19px;
+  left: 22px;
+}

@@ -59,7 +59,6 @@
           <!-- ----------------------------------------------- -->
           <th>
             <span class="column-th-span">
-              <!-- Richiedente  -->
               {{ 'VisitorsPage.Requester' | translate }}
             </span>
           </th>
@@ -342,12 +341,12 @@
               <!-- Channel WRAPPER -->
               <!-- ---------------------------------------- -->
               <div *ngIf="request?.channel?.name !== 'chat21'" class="channel_wpr" style="flex: 1; text-align: right;"
-              [ngClass]="{'channel-wpr-padding-left' : request?.priority !== 'medium'}">
+                [ngClass]="{'channel-wpr-padding-left' : request?.priority !== 'medium'}">
+
                 <!-- ---------------------------------------- -->
                 <!-- Channel - Telegram -->
                 <!-- ---------------------------------------- -->
                 <span *ngIf="request?.channel?.name === 'telegram'" class="tool_tip">
-
                   <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/Telegram-01.svg"
                     class="img-fluid">
                   <span class="bottom tool-tip-bottom--custom">
@@ -358,11 +357,11 @@
                     <i></i>
                   </span>
                 </span>
+
                 <!-- ---------------------------------------- -->
                 <!-- Channel - WhatsApp -->
                 <!-- ---------------------------------------- -->
                 <span *ngIf="request?.channel?.name === 'whatsapp'" class="tool_tip">
-
                   <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/whatsapp-logo_green.svg"
                     class="img-fluid">
                   <span class="bottom tool-tip-bottom--custom">
@@ -429,8 +428,9 @@
             </div>
           </td>
 
-
-          <!-- ------ ====== REQUESTER ====== ------ -->
+          <!-- ----------------------------------------------------------- -->
+          <!--  REQUESTER  -->
+          <!-- ----------------------------------------------------------- -->
           <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer;white-space: nowrap; width: 1%;"
             rel="tooltip" title="{{ request?.lead?.lead_id }}">
             <!-- <p style="font-size:0.9em">{{ request.sender_fullname }}</p> -->
@@ -440,8 +440,11 @@
               <span class="requester-avatar" [ngStyle]="{'background-color': request?.requester_fullname_fillColour }"
                 [ngClass]="{'requester_fullname-undefined' : !request?.lead?.fullname, requester_avatar_not_has_email: !request?.lead?.email }">
                 <span style="color: #ffffff"> {{ request?.requester_fullname_initial }} </span>
+                <!-- <span class="requester-presence"
+                  [ngStyle]="{ 'background-color':(request?.requester?.presence?.status === 'online')?'#24d066':'#db4437' }">
+                </span> -->
               </span>
-              <!--  -->
+
               <span *ngIf="request?.requester_is_verified === true" class="tooltipx">
                 <svg
                   [ngClass]="{'verified-icon-requester-undefined': !request?.lead?.fullname , 'verified-icon-requester-internal-ticket': request?.subject}"
@@ -638,7 +641,9 @@
             </span>
           </td>
 
-          <!-- ------ ============== DEPARTMENT  ============== ------ -->
+          <!-- -------------------------------- -->
+          <!-- DEPARTMENT  -->
+          <!-- -------------------------------- -->
           <!-- // DEPTS_LAZY: edit the existing one as this -->
           <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer; font-size: 12px;
           font-weight: 400;">
@@ -847,11 +852,14 @@
           </td>
 
 
-          <!-- class="td-actions text-right" -->
-          <!-- ------ ====== ARCHIVE Action ====== ------ -->
+          <!-- ------------------------------------------------------ -->
+          <!-- @ Actions -->
+          <!-- ------------------------------------------------------ -->
           <!-- (click)='openDeleteRequestModal(request?.request_id)' // <- open the modal "confirm archive request"  -->
           <td class="td-actions text-right" style="padding-top: 9px !important;">
-
+            <!-- -------------------------- -->
+            <!-- Action ARCHIVE  -->
+            <!-- -------------------------- -->
             <button type="button" rel="tooltip" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}"
               class="btn btn-tdblu btn-simple btn-xs tool_tip" (click)='archiveRequest(request?.request_id)'
               [disabled]="request?.currentUserIsJoined === false && ROLE_IS_AGENT === true">
@@ -865,15 +873,16 @@
               </span>
             </button>
 
+            <!-- -------------------------- -->
+            <!-- Action JOIN  -->
+            <!-- -------------------------- -->
             <button *ngIf="request?.currentUserIsJoined === false" type="button" rel="tooltip"
               title="{{ 'RequestMsgsPage.Enter' | translate }}" class="btn btn-tdblu btn-simple btn-xs tool_tip"
               (click)='joinRequest(request?.currentUserIsJoined, request?.participanting_Agents, request?.request_id)'
               [disabled]="request?.currentUserIsJoined === true">
-
-              <!--
-              // ------------------------------------------------------------------------------------------------------
-              // SVG font-awesome link icon
-              // ------------------------------------------------------------------------------------------------------ -->
+              <!-- --------------------------------- -->
+              <!-- SVG font-awesome link icon -->
+              <!-- --------------------------------- -->
               <svg style="height: 15px; width:auto;" aria-hidden="true" focusable="false" data-prefix="fas"
                 data-icon="link" class="svg-inline--fa fa-link fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 512 512">
@@ -886,17 +895,17 @@
                 <span style="text-transform: capitalize;"> {{ 'RequestMsgsPage.Enter' | translate }} </span>
                 <i style="left: 54%;"></i>
               </span>
-
             </button>
 
+            <!-- -------------------------- -->
+            <!-- Action OPEN CHAT  -->
+            <!-- -------------------------- -->
             <button *ngIf="request?.currentUserIsJoined === true" type="button" rel="tooltip"
               title="{{ 'RequestMsgsPage.Enter' | translate }}" class="btn btn-tdblu btn-simple btn-xs tool_tip"
               (click)='openChatInNewWindow(request?.request_id, request?.lead?.fullname)'>
-
-              <!--
-              // ------------------------------------------------------------------------------------------------------
-              // SVG font-awesome chat icon icon
-              // ------------------------------------------------------------------------------------------------------ -->
+              <!-- --------------------------------- -->
+              <!-- SVG font-awesome chat icon icon -->
+              <!-- --------------------------------- -->
               <svg style="height: 15px; width:auto;" aria-hidden="true" focusable="false" data-prefix="fas"
                 data-icon="comments" class="svg-inline--fa fa-comments fa-w-18" role="img"
                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
