@@ -8,6 +8,7 @@
 - Change the colors of the "balloons" in the chat on the "conversation details" page to make the links more visible
 - Improves the "flame" effect of the badge on the rocket on the Home page that indicates changes in the changelog
 - Implements in the cards of the "Your projects" page a "switch button" to change the availability status
+- Replaces the text "is busy" in the teammate list with a tool tip
 
 ### 2.2.29-rc4
 - Fixed the bug in the component "unserved requests" displayed in the left panel of the chat: "Cannot read properties of undefined (reading 'forEach')"
