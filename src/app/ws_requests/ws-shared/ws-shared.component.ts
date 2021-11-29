@@ -30,7 +30,7 @@ export class WsSharedComponent implements OnInit {
     {
       id: 3,
       name: 'medium',
-      avatar: 'assets/img/priority_icons/medium.svg'
+      avatar: 'assets/img/priority_icons/medium_v2.svg'
     },
     {
       id: 4,
