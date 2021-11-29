@@ -18,8 +18,7 @@
   </div>
 </div>
 <!-- *ngIf="OPEN_REQUEST_DETAILS === false" -->
-<div class="main-content main-content-projects-for-panel" style="min-height: calc(100% - 40px);"
- >
+<div class="main-content main-content-projects-for-panel" style="min-height: calc(100% - 40px);">
   <div class="container-fluid container-projects-for-panel">
 
     <div class="row">
@@ -42,11 +41,38 @@
         // No request message
         // ---------------------------------------------------------------- -->
         <div class="no-request-msg-wrapper">
-          <span class="material-icons no-request-icon">
+          <!-- <span class="material-icons no-request-icon">
             sms_failed
-          </span>
+          </span> -->
+          <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+            y="0px" viewBox="0 0 499.5 514.5" style="enable-background:new 0 0 499.5 514.5;" xml:space="preserve">
+            <style type="text/css">
+              .st0 {
+                fill: #616E7D;
+              }
+
+              .st1 {
+                fill: #EF806E;
+              }
+            </style>
+            <g id="Bg">
+            </g>
+            <g id="Object">
+              <g>
+                <path class="st0" d="M8.9,319.3L0,326.7l129.6,16.1c18.8,7.5,38.5,12.8,58.7,16.1c6.8-65.9,76.8-117.8,162-117.8
+			c34.5,0,66.5,8.6,92.9,23.1c16.5-24.8,25.8-53,25.8-82.8C468.9,81.4,364.3,0,235.8,0C107.2,0,2.6,81.4,2.6,181.4
+			c0,35.9,13.5,70.5,39,100.3l-0.2,0.2l2.5,2.6C41,290.4,24.2,306.6,8.9,319.3z M80.5,100.9h303.9v16.5H80.5V100.9z M80.5,162.1
+			h303.9v16.5H80.5V162.1z M80.5,223.4h160.9v16.5H80.5V223.4z" />
+                <path class="st1" d="M201,369.5c0,63.4,67,115,149.2,115c18.2,0,36.1-2.6,53.2-7.6l3.6-1.1l41.8,38.7v-58.9l2.8-2
+			c30.4-21.8,47.8-52.4,47.8-84.2c0-63.4-67-115-149.2-115C268,254.5,201,306.1,201,369.5z" />
+                <rect x="80.5" y="100.9" class="st1" width="303.9" height="16.5" />
+                <rect x="80.5" y="162.1" class="st1" width="303.9" height="16.5" />
+                <rect x="80.5" y="223.4" class="st1" width="160.9" height="16.5" />
+              </g>
+            </g>
+          </svg>
           <span class="no-request-msg">
-            {{'NoUnservedRequests' | translate}}
+            {{'NoRequests' | translate}}
           </span>
         </div>
       </div>
@@ -147,6 +173,7 @@
 
 <div *ngIf="OPEN_REQUEST_DETAILS === true" class="view-side">
   <appdashboard-ws-request-detail-for-panel [ngStyle]="{'height':train_bot_sidebar_height }"
-    (valueChange)='handleCloseRightSidebar($event)' [selectedRequest]="selectedRequest" [wsRequestsUnserved]="wsRequestsUnserved">
+    (valueChange)='handleCloseRightSidebar($event)' [selectedRequest]="selectedRequest"
+    [wsRequestsUnserved]="wsRequestsUnserved">
   </appdashboard-ws-request-detail-for-panel>
 </div>

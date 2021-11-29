@@ -770,16 +770,13 @@ $f21blue: #039be5;
 }
 
 .flex-child-go-back {
-    // flex: 0 0 80%;
     width: 45px;
     padding: 8px 0px;
-
-    // border: 2px solid yellow;
 }
 
 .project-name-in-unserved-top-bar {
     color: #dbddde;
-    font-family: "Montserrat", sans-serif;
+    font-family: "Helvetica Neue", sans-serif;
     font-weight: 400;
 }
 
@@ -796,6 +793,7 @@ $f21blue: #039be5;
     align-items: center;
     height: 160px;
     line-height: 40px;
+    margin:100px auto;
 }
 
 .no-request-icon {
