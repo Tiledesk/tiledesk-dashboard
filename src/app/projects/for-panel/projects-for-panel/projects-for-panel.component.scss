@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap");
+@import "./src/assets/sass/md/_variables.scss";
 
 .main-content-projects-for-panel {
   padding-top: 0px;
@@ -31,101 +31,7 @@
   padding: 0px !important;
 }
 
-@import "./src/assets/sass/md/_variables.scss";
 
-/* REMOVE THE BORDER THAT IS USED TO SHOW THAT THE ELEMENT IS FOCUSED */
-*:focus {
-  outline: none;
-}
-
-// DROPDOWN MENU (USER PROFILE AND LOGOUT)
-// @media (max-width: 767px){
-//     .navbar-nav .open .dropdown-menu {
-//         float: right !important;
-//     }
-// }
-
-@media (max-width: 991px) {
-  .navbar-header .collapse,
-  .navbar-toggle {
-    display: block !important;
-  }
-}
-
-input[type="text"] {
-  // min-width: 307px !important;
-  height: 36px;
-  font-size: 14px;
-  width: 100%;
-  margin-bottom: 10px;
-  -webkit-appearance: none;
-  background: #fff;
-  border: 1px solid #d9d9d9 !important;
-  border-top: 1px solid #c0c0c0;
-  /* border-radius: 2px; */
-  padding: 0 8px;
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  border-radius: 5px;
-  background-color: #fff !important;
-  border: solid 1px #ddd;
-}
-
-.projects-for-panel-project-card:hover {
-  background-color: #f5f5f5;
-}
-
-.card-header-custom-bkgrnd-project {
-  // display:none;
-  box-shadow: none;
-  -webkit-box-shadow: none;
-  margin: 0px;
-  // border-radius: 3px 3px 0px 0px;
-  // background-color: #f2f6f8;
-  background-color: #ffffff;
-  border-bottom: 1px solid #eff3f5;
-  padding-top: 6px;
-  padding-bottom: 6px;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-  border-bottom-left-radius: 0px;
-  border-bottom-right-radius: 0px;
-}
-
-.card-content-custom-height {
-  height: 160px !important;
-}
-
-.project-deleted-card {
-  background-color: #eee;
-}
-
-.project-deleted-card-text-color {
-  color: #999 !important;
-  opacity: 0.4;
-}
-.delete-image-bckground {
-  background-image: url("../../../../assets/img/deleted.svg");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
-.project-deleted-card:hover {
-  box-shadow: unset !important;
-  cursor: not-allowed !important;
-}
-
-.project-deleted-msg-in-card-wrap {
-  position: relative;
-}
-.project-deleted-msg-in-card {
-  position: absolute;
-  margin-left: auto;
-  margin-right: auto;
-  left: 0;
-  right: 0;
-}
 
 /* Tooltip text */
 .tooltipx .tooltiptext {
@@ -162,149 +68,6 @@ input[type="text"] {
 }
 /* // end TOOLTIP */
 
-// TITLE AN SUBTITLE OF THE PAGE
-.prjct-page-title {
-  padding-left: 15px;
-  // margin-top:55px;
-  margin-top: 70px;
-  margin-bottom: 5px;
-  font-weight: 400;
-}
-
-.prjct-page-subtitle {
-  padding-left: 15px;
-  color: rgba(0, 0, 0, 0.54);
-  font-size: 16px;
-  margin-top: 0px;
-}
-// CHANGE COLOR OF TITLE AN SUBTITLE ON SMALL DEVICE
-@media (max-width: 530px) {
-  .prjct-page-title {
-    color: #ffffff;
-  }
-  .prjct-page-subtitle {
-    color: #ffffff;
-  }
-}
-
-// ============= PENDING EMAIL VERIFICATION MSG =============
-.alert-pending-email-prjct-page {
-  display: inline-block;
-  transition: all 0.5s ease-in-out 0s;
-  z-index: 1031;
-  width: 275px;
-  padding-top: 3px;
-  padding-bottom: 3px;
-  padding-left: 5px;
-  padding-right: 3px;
-  cursor: pointer;
-  top: 10px;
-  // margin: 0px auto;
-  // position: fixed;
-  // left: 25px;
-  // right: 0px;
-  position: absolute;
-  margin-left: auto;
-  margin-right: auto;
-  left: 0;
-  right: 0;
-}
-
-@media (max-width: 991px) {
-  .alert-pending-email-prjct-page {
-    right: 0px;
-    left: 0px;
-  }
-}
-
-@media (max-width: 768px) {
-  .alert-pending-email-prjct-page {
-    width: 350px;
-  }
-}
-
-@media (max-width: 568px) {
-  .alert-pending-email-prjct-page {
-    width: 300px;
-  }
-}
-
-.card-profile {
-  background-color: #fff;
-  margin-bottom: 15px;
-  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0);
-}
-
-.card-profile:hover {
-  background-color: #fff;
-}
-
-.user-profile-avatar {
-  max-width: 80px;
-  max-height: 80px;
-  width: 80px;
-  height: 80px;
-  background-color: #ffffff;
-  border: 2px solid #ffffff;
-}
-
-.user-profile-fullname {
-  padding: 0px 16px;
-  margin-bottom: 0px;
-  font-size: 16px;
-  color: #3c4858;
-  font-family: "Google Sans", sans-serif !important;
-  font-weight: 600;
-}
-.user-profile-email {
-  padding: 0px 16px;
-  margin-top: 0px;
-  font-size: 14px;
-  white-space: nowrap;
-  font-weight: 400;
-  color: #7695a5;
-}
-
-.view-user-profile-btn {
-  padding-top: 6px;
-  padding-bottom: 6px;
-  letter-spacing: 1px;
-  border-radius: 30px;
-  padding-left: 18px;
-  padding-right: 18px;
-  margin-top: 8px;
-  margin-bottom: 16px;
-  margin-left: 16px;
-  margin-right: 16px;
-}
-
-.logout-user-profile-btn {
-  padding-left: 12px 26px;
-  font-size: 0.9em;
-  color: #7695a5;
-  margin-top: 10px;
-}
-
-.project_background {
-  // margin-right: -15px;
-  // height: 390px;
-  // background-color: #ffffff;
-  // margin-top: -102px;
-  // margin-left: -15px;
-  // background-position:center bottom;
-  // background-repeat:no-repeat;
-  // background-size:cover;
-
-  position: absolute;
-  width: 100%;
-  transform: skewY(-12deg);
-  transform-origin: 0px center;
-  background: $brand-recent-project-bckgrnd;
-  // background: linear-gradient(90deg,#0e2a3b 0,#34306b); // new
-  height: 500px;
-  left: 0;
-  // top: 19px; // new
-}
 
 .open-user-profile-person-icon {
   font-size: 20px !important;
@@ -455,57 +218,57 @@ input[type="text"] {
   }
 }
 
-.onoffswitch {
-  position: relative;
-  width: 43px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-}
-.onoffswitch-checkbox {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-}
-.onoffswitch-label {
-  display: block;
-  overflow: hidden;
-  cursor: pointer;
-  height: 13px;
-  padding: 0;
-  line-height: 13px;
-  border: 0px solid #ffffff;
-  border-radius: 21px;
-  background-color: #9e9e9e;
-}
-.onoffswitch-label:before {
-  content: "";
-  display: block;
-  width: 21px;
-  margin: -4px;
-  background: #f44336;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 26px;
-  border-radius: 21px;
-  box-shadow: 0 6px 12px 0px #757575;
-}
-.onoffswitch-checkbox:checked + .onoffswitch-label {
-  background-color: #9e9e9e;
-}
-.onoffswitch-checkbox:checked + .onoffswitch-label,
-.onoffswitch-checkbox:checked + .onoffswitch-label:before {
-  border-color: #9e9e9e;
-}
-.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
-  margin-left: 0;
-}
-.onoffswitch-checkbox:checked + .onoffswitch-label:before {
-  right: 0px;
-  background-color: #4caf50;
-  box-shadow: 3px 6px 18px 0px rgba(0, 0, 0, 0.2);
-}
+// .onoffswitch {
+//   position: relative;
+//   width: 43px;
+//   -webkit-user-select: none;
+//   -moz-user-select: none;
+//   -ms-user-select: none;
+// }
+// .onoffswitch-checkbox {
+//   position: absolute;
+//   opacity: 0;
+//   pointer-events: none;
+// }
+// .onoffswitch-label {
+//   display: block;
+//   overflow: hidden;
+//   cursor: pointer;
+//   height: 13px;
+//   padding: 0;
+//   line-height: 13px;
+//   border: 0px solid #ffffff;
+//   border-radius: 21px;
+//   background-color: #9e9e9e;
+// }
+// .onoffswitch-label:before {
+//   content: "";
+//   display: block;
+//   width: 21px;
+//   margin: -4px;
+//   background: #f44336;
+//   position: absolute;
+//   top: 0;
+//   bottom: 0;
+//   right: 26px;
+//   border-radius: 21px;
+//   box-shadow: 0 6px 12px 0px #757575;
+// }
+// .onoffswitch-checkbox:checked + .onoffswitch-label {
+//   background-color: #9e9e9e;
+// }
+// .onoffswitch-checkbox:checked + .onoffswitch-label,
+// .onoffswitch-checkbox:checked + .onoffswitch-label:before {
+//   border-color: #9e9e9e;
+// }
+// .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+//   margin-left: 0;
+// }
+// .onoffswitch-checkbox:checked + .onoffswitch-label:before {
+//   right: 0px;
+//   background-color: #4caf50;
+//   box-shadow: 3px 6px 18px 0px rgba(0, 0, 0, 0.2);
+// }
 
 .user--icon {
   background: url("data:image/svg+xml;charset=utf-8,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%3F%3E%0A%3Csvg%20width%3D%2232px%22%20height%3D%2232px%22%20viewBox%3D%220%200%2032%2032%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%0A%20%20%20%20%3Ctitle%3Egender_neutral_profile%401x%3C%2Ftitle%3E%0A%20%20%20%20%3Cg%20id%3D%22gender_neutral_profile%22%20stroke%3D%22none%22%20stroke-width%3D%221%22%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%0A%20%20%20%20%20%20%20%20%3Cpath%20d%3D%22M15.9698516%2C32%20C24.7508525%2C32%2031.939692%2C24.7990944%2031.939692%2C15.9939703%20C31.939692%2C7.20089884%2024.7508525%2C-1.42108547e-14%2015.9698516%2C-1.42108547e-14%20C7.17678236%2C-1.42108547e-14%20-6.39488462e-14%2C7.20089884%20-6.39488462e-14%2C15.9939703%20C-6.39488462e-14%2C24.7990944%207.17678236%2C32%2015.9698516%2C32%20Z%20M15.9698516%2C21.25292%20C10.9280075%2C21.25292%207.08028725%2C23.0983785%205.64493123%2C25.1488878%20C3.52205121%2C22.7124004%202.24349834%2C19.5160227%202.24349834%2C15.9939703%20C2.24349834%2C8.34677403%208.28646936%2C2.17112308%2015.9698516%2C2.17112308%20C23.653226%2C2.17112308%2029.6841309%2C8.34677403%2029.6841309%2C15.9939703%20C29.6841309%2C19.5160227%2028.4055803%2C22.7124004%2026.2947652%2C25.1488878%20C24.8473498%2C23.0863158%2021.0116867%2C21.25292%2015.9698516%2C21.25292%20Z%20M15.957781%2C18.5993203%20C18.9491204%2C18.623439%2021.2770488%2C16.0663377%2021.2770488%2C12.7372801%20C21.2770488%2C9.60120594%2018.9249904%2C6.98378541%2015.957781%2C6.98378541%20C12.9905828%2C6.98378541%2010.6264617%2C9.60120594%2010.6385233%2C12.7372801%20C10.6385233%2C16.0663377%2012.9664529%2C18.5752015%2015.957781%2C18.5993203%20Z%22%20id%3D%22Fill-1%22%20fill%3D%22%23000000%22%3E%3C%2Fpath%3E%0A%20%20%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E")
@@ -1528,87 +1291,7 @@ button.close {
   }
 }
 
-.flame {
-  bottom: 0;
-  position: absolute;
-  border-bottom-left-radius: 50%;
-  border-top-left-radius: 50%;
-  border-bottom-right-radius: 50%;
-  /* transform: rotate(-45deg) scale(1.5,1.5); */
-  transform: rotate(186deg) scale(1.5, 1.5);
-}
 
-/* .Color_red {
-  left: 5px;
-  width: 60px;
-  height: 60px;
-  background: red;
-  box-shadow: 0px 0px 5px 4px red;
-} */
-
-.Color_orange {
-  /* left: 10px;
-  width: 50px;
-  height: 50px; */
-  left: 16px;
-  width: 10px;
-  height: 10px;
-  background: orange;
-  /* box-shadow: 0px 0px 9px 4px orange; */
-  box-shadow: 0px 0px 9px 2px orange;
-}
-
-/* .Color_yellow {
-  left: 15px;
-  width: 30px;
-  height: 30px;
-  background: orange;
-  box-shadow: 0px 0px 9px 4px orange;
-} */
-
-.Color_white {
-  /* left: 15px;
-  bottom: -4px;
-  width: 40px;
-  height: 40px; */
-  left: 18px;
-  bottom: 2px;
-  width: 9px;
-  height: 9px;
-  background: white;
-  /* box-shadow: 0px 0px 9px 4px white; */
-}
-
-@keyframes flame {
-  0% {
-    transform: rotate(-1deg);
-  }
-  20% {
-    transform: rotate(1deg);
-  }
-  40% {
-    transform: rotate(-1deg);
-  }
-  60% {
-    transform: rotate(1deg);
-  }
-  80% {
-    transform: rotate(-1deg);
-  }
-  100% {
-    transform: rotate(1deg);
-  }
-}
-
-.sidebar__logo {
-  width: 45% !important;
-  top: 20px !important;
-  left: 26px !important;
-}
-.sidebar__logo_no_rocket {
-  left: unset !important;
-  width: 50% !important;
-}
 
 .project-avatar {
   border-radius: 5px;
@@ -1626,7 +1309,7 @@ button.close {
   color: #1e2129;
   background-color: #a9abad;
   text-transform: uppercase;
-  font-family: "Montserrat", sans-serif;
+  font-family: Helvetica, Helvetica, Arial, sans-serif;
   font-weight: 500;
   // margin-top: 8px;
   // margin-bottom: 8px;
@@ -1729,14 +1412,18 @@ button.close {
   // font-weight: 600;
 }
 
-.project-name {
+.project-name-projects-for-panel{
   color: #dbddde;
-  font-family: "Montserrat", sans-serif;
-  // font-weight: 500;
-
-  // font-weight: 600;
-  // font-size: 14px;
-  // font-family: 'Google Sans',sans-serif!important;
+  font-weight: 400;
+  margin-left: 0px;
+  width: 220px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  font-family: Helvetica, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  position: relative;
+  top: 3px;
 }
 
 .im-available {
@@ -1950,7 +1637,6 @@ button.close {
 // -----------------------
 // i on-off switch
 // -----------------------
-
 .i_onoffswitch {
   position: relative;
   width: 33px;
@@ -1999,21 +1685,88 @@ button.close {
 .i_onoffswitch-checkbox:checked + .i_onoffswitch-label:before {
   right: 0px;
 }
+// -----------------------
+// i on-off switch ./end
+// -----------------------
 
-// ---- new
-.availabily-and-busy-wpr {
-  margin-top: 6px;
-  margin-left: 11px;
+
+// ------------------------------------------------------------------
+// New switch button // https://proto.io/freebies/onoff/
+// ------------------------------------------------------------------
+.onoffswitch--prjcts-for-panel {
+  position: relative;
+  width: 30px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+.onoffswitch-checkbox--prjcts-for-panel {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.onoffswitch-label--prjcts-for-panel {
+  display: block;
+  overflow: hidden;
+  cursor: pointer;
+  height: 8px;
+  padding: 0;
+  line-height: 8px;
+  border: 0px solid #ffffff;
+  border-radius: 16px;
+  background-color: #eeeeee;
+}
+.onoffswitch-label--prjcts-for-panel:before {
+  content: "";
+  display: block;
+  width: 16px;
+  margin: -4px;
+  background: #f44336;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 18px;
+  border-radius: 16px;
+  // box-shadow: 0 6px 12px 0px #757575;
+}
+.onoffswitch-checkbox--prjcts-for-panel:checked + .onoffswitch-label--prjcts-for-panel {
+  background-color: #eeeeee;
+}
+.onoffswitch-checkbox--prjcts-for-panel:checked + .onoffswitch-label--prjcts-for-panel,
+.onoffswitch-checkbox--prjcts-for-panel:checked + .onoffswitch-label--prjcts-for-panel:before {
+  border-color: #eeeeee;
+}
+.onoffswitch-checkbox--prjcts-for-panel:checked + .onoffswitch-label--prjcts-for-panel .onoffswitch-inner {
+  margin-left: 0;
+}
+.onoffswitch-checkbox--prjcts-for-panel:checked + .onoffswitch-label--prjcts-for-panel:before {
+  right: 0px;
+  background-color: #4caf50;
+  // box-shadow: 3px 6px 18px 0px rgba(0, 0, 0, 0.2);
 }
 
-.availibility-status-text {
-  font-family: Helvetica, Helvetica, Arial, sans-serif;
-  font-size: 13px;
-  margin-left: 3px;
-  position: relative;
-  top: -4px;
+
+// ---- new
+.availabily-and-busy-wpr--prjcts-for-panel {
+  margin-top: 6px;
+  margin-left: 0px;
+}
+
+.availabily---wpr--prjcts-for-panel {
   display: inline-block;
-  min-width: 93px;
+  position: relative;
+  top: 3px;
+  margin-right: 6px;
+}
+
+.availibility-status-text--prjcts-for-panel {
+  font-family: Helvetica, Helvetica, Arial, sans-serif;
+  font-size: 11px;
+  // margin-left: 3px;
+  position: relative;
+  top: -2px;
+  display: inline-block;
+  min-width: 85px;
 }
 
 .online-text-color {
@@ -2025,10 +1778,12 @@ button.close {
   // font-weight: 600;
 }
 
-.project-item--isBusy-icon-wpr {
+.projects-for-panel--isBusy-icon-wpr{
   width: 16px;
   height: 16px;
   display: inline-block;
+  position: relative;
+  top:2px;
 }
 
 .project-item--isBusy-icon {
@@ -2038,12 +1793,12 @@ button.close {
   color: #fff;
 }
 
-.project-item--isBusy-busy-text {
+.projects-for-panel--isBusy-busy-text {
   font-family: Helvetica, Helvetica, Arial, sans-serif;
-  font-size: 13px;
+  font-size: 11px;
   margin-left: 0px;
   position: relative;
-  top: -4px;
+  top: -3px;
 }
 
 .text-pulse-animation {
@@ -2057,7 +1812,7 @@ button.close {
       color: transparent;
   }
   50% {
-      color: #fedd00;
+      color: #FEB92C;
   }
   100% {
       color: transparent;
@@ -2069,7 +1824,7 @@ button.close {
       color: transparent;
   }
   50% {
-      color: #fedd00;
+      color: #FEB92C;
   }
   100% {
       color: transparent;
@@ -2081,7 +1836,7 @@ button.close {
       color: transparent;
   }
   50% {
-      color: #fedd00;
+      color: #FEB92C;
   }
   100% {
       color: transparent;
@@ -2091,58 +1846,78 @@ button.close {
 // ------------------------------------------------------------------
 // on-off availability switch btn // https://proto.io/freebies/onoff/
 // ------------------------------------------------------------------
-// ------------------------------------------------------------------
-// on-off availability switch btn // https://proto.io/freebies/onoff/
-// ------------------------------------------------------------------
-.onoffswitch {
-  display: inline-block;
-  position: relative;
-  width: 36px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-}
-.onoffswitch-checkbox {
+
+
+
+/* 
+// -------------------------------------------------
+// stretch spinner https://tobiasahlin.com/spinkit/
+// ------------------------------------------------- */
+.stretchspinner {
+  margin: 100px auto;
+  width: 50px;
+  height: 40px;
+  text-align: center;
+  font-size: 10px;
   position: absolute;
-  opacity: 0;
-  pointer-events: none;
-}
-.onoffswitch-label {
-  display: block;
-  overflow: hidden;
-  cursor: pointer;
-  height: 18px;
-  padding: 0;
-  line-height: 18px;
-  border: 0px solid #ffffff;
-  border-radius: 20px;
-  background-color: #eeeeee;
-}
-.onoffswitch-label:before {
-  content: "";
-  display: block;
-  width: 20px;
-  margin: -1px;
-  background: #f44336;
+  margin: auto;
   position: absolute;
   top: 0;
+  left: 0;
   bottom: 0;
-  // right: 14px;
-  border-radius: 20px;
-  // box-shadow: 0 6px 12px 0px #757575;
+  right: 0;
 }
-.onoffswitch-checkbox:checked + .onoffswitch-label {
-  background-color: #eeeeee;
+
+.stretchspinner > div {
+  background-color: $brand-primary;
+  height: 100%;
+  width: 6px;
+  display: inline-block;
+
+  -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
+  animation: sk-stretchdelay 1.2s infinite ease-in-out;
 }
-.onoffswitch-checkbox:checked + .onoffswitch-label,
-.onoffswitch-checkbox:checked + .onoffswitch-label:before {
-  border-color: #eeeeee;
+
+.stretchspinner .rect2 {
+  -webkit-animation-delay: -1.1s;
+  animation-delay: -1.1s;
 }
-.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
-  margin-left: 0;
+
+.stretchspinner .rect3 {
+  -webkit-animation-delay: -1s;
+  animation-delay: -1s;
 }
-.onoffswitch-checkbox:checked + .onoffswitch-label:before {
-  right: 0px;
-  background-color: #4caf50;
-  // box-shadow: 3px 6px 18px 0px rgba(0, 0, 0, 0.2);
+
+.stretchspinner .rect4 {
+  -webkit-animation-delay: -0.9s;
+  animation-delay: -0.9s;
+}
+
+.stretchspinner .rect5 {
+  -webkit-animation-delay: -0.8s;
+  animation-delay: -0.8s;
+}
+
+@-webkit-keyframes sk-stretchdelay {
+  0%,
+  40%,
+  100% {
+      -webkit-transform: scaleY(0.4);
+  }
+  20% {
+      -webkit-transform: scaleY(1);
+  }
+}
+
+@keyframes sk-stretchdelay {
+  0%,
+  40%,
+  100% {
+      transform: scaleY(0.4);
+      -webkit-transform: scaleY(0.4);
+  }
+  20% {
+      transform: scaleY(1);
+      -webkit-transform: scaleY(1);
+  }
 }

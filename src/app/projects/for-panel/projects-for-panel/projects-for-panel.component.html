@@ -5,7 +5,14 @@
 
     <div class="left-sidebar">
 
-      <loading-spinner *ngIf="showSpinner"></loading-spinner>
+      <!-- <loading-spinner *ngIf="showSpinner" style="margin:100px auto"></loading-spinner> -->
+      <div *ngIf="showSpinner" class="stretchspinner">
+        <div class="rect1"></div>
+        <div class="rect2"></div>
+        <div class="rect3"></div>
+        <div class="rect4"></div>
+        <div class="rect5"></div>
+      </div>
 
       <div class="left-sidebar-projects" style="margin-right: -10px;" *ngIf="!showSpinner">
 
@@ -22,20 +29,13 @@
 
                   <div class="project-avatar">
                     {{ project?.project_name_initial }}
-
-                    <!-- {{project?.ws_projct_user_available}} -->
                   </div>
-
-
-                  <!-- <div class="status--icon"
-                    [ngStyle]="{ 'background-color':(project?.ws_projct_user_available)?'#24d066':'#db4437' }">
-                  </div> -->
-                  <!-- <div class="busy--icon" *ngIf="project?.ws_projct_user_isBusy === true"></div> -->
                 </div>
               </div>
 
+              <!-- [ngClass]="{'im-available' : project?.ws_projct_user_available === true}" -->
               <div class="flex-child-right" *ngIf="!window_width_is_60">
-                <div class="project-name" [ngClass]="{'im-available' : project?.ws_projct_user_available === true}">
+                <div class="project-name-projects-for-panel">
                   {{ project?.id_project?.name }}
                 </div>
 
@@ -54,43 +54,85 @@
                     notifications_off
                   </span>
                 </div> -->
-                <div class="switch-btn-wpr" style="display: inline-block;position: relative;top: 4px;">
-                  <div class="i_onoffswitch"
+                <div class="availabily-and-busy-wpr--prjcts-for-panel">
+
+                  <div class="availabily---wpr--prjcts-for-panel">
+                    <!-- <div class="i_onoffswitch"
                     (click)="$event.stopPropagation();changeAvailabilityState(project?.id_project?._id, project?.ws_projct_user_available)">
                     <input type="checkbox" name="i_onoffswitch_{{project?.id_project?._id}}"
                       class="i_onoffswitch-checkbox" id="i_switch_availability_{{project?.id_project?._id}}"
                       tabindex="0" [checked]="project?.ws_projct_user_available">
                     <label style="margin-bottom: 0px" class="i_onoffswitch-label"
                       for="i_switch_availability_{{project?.id_project?._id}}"></label>
-                  </div>
-                </div>
+                  </div> -->
 
-                <!-- (click)="$event.stopPropagation();changeAvailabilityState(project?.id_project?._id, project?.ws_projct_user_available)" -->
-                <div class="avalability--status-text-wpr" style="display: inline-block; min-width: 75px;">
-                  <div class="avalability--status-text"
-                   
-                    [ngClass]="{'online-text-color' : project?.ws_projct_user_available === true, 'offline-text-color' : project?.ws_projct_user_available === false}">
-                    <span *ngIf="project?.ws_projct_user_available === true"
-                      style="text-transform: capitalize;">{{'Available' | translate}} </span>
-                    <span *ngIf="project?.ws_projct_user_available === false" style="text-transform: capitalize;">
-                      {{'Unavailable' | translate}}</span>
-                  </div>
-                </div>
+                    <div class="onoffswitch--prjcts-for-panel"
+                      (click)="$event.stopPropagation();changeAvailabilityState(project?.id_project?._id, project?.ws_projct_user_available)">
+                      <input type="checkbox" name="onoffswitch_{{project?.id_project?._id}}"
+                        class="onoffswitch-checkbox--prjcts-for-panel"
+                        id="availabilityswitch_{{project?.id_project?._id}}" tabindex="0"
+                        [checked]="project?.ws_projct_user_available">
+                      <label class="onoffswitch-label--prjcts-for-panel"
+                        for="availabilityswitch_{{project?.id_project?._id}}"></label>
+                    </div>
 
-                <div class="isBusy---wpr" style="display: inline-block; position: relative;top: 4px;">
-                  <div class="projects-item--isBusy-icon-wpr" *ngIf="project?.ws_projct_user_isBusy === true">
-                    <span class="material-icons projects-item--isBusy-icon">
-                      access_time
+
+                  </div>
+
+                  <!-- (click)="$event.stopPropagation();changeAvailabilityState(project?.id_project?._id, project?.ws_projct_user_available)" -->
+                  <!-- <div class="avalability--status-text-wpr" style="display: inline-block; min-width: 75px;">
+                    <div class="avalability--status-text"
+                      [ngClass]="{'online-text-color' : project?.ws_projct_user_available === true, 'offline-text-color' : project?.ws_projct_user_available === false}">
+                      <span *ngIf="project?.ws_projct_user_available === true"
+                        style="text-transform: capitalize;">{{'Available' | translate}} </span>
+                      <span *ngIf="project?.ws_projct_user_available === false" style="text-transform: capitalize;">
+                        {{'Unavailable' | translate}}</span>
+                    </div>
+                  </div> -->
+
+                  <span *ngIf="project?.ws_projct_user_available === true" class="availibility-status-text--prjcts-for-panel"
+                  [ngClass]="{'online-text-color' : project?.ws_projct_user_available === true, 'offline-text-color' : project?.ws_projct_user_available === false}">
+                  {{'Available' | translate}}
+                </span>
+                
+                <span *ngIf="project?.ws_projct_user_available === false" class="availibility-status-text--prjcts-for-panel"
+                  [ngClass]="{'online-text-color' : project?.ws_projct_user_available === true, 'offline-text-color' : project?.ws_projct_user_available === false}">
+                  {{'Unavailable' | translate}}
+                </span>
+
+                  <!-- <div class="isBusy---wpr" style="display: inline-block; position: relative;top: 4px;">
+                    <div class="projects-item--isBusy-icon-wpr" *ngIf="project?.ws_projct_user_isBusy === true">
+                      <span class="material-icons projects-item--isBusy-icon">
+                        access_time
+                      </span>
+                    </div>
+                    
+                    <span *ngIf="project?.ws_projct_user_isBusy === true" class="projects-item--isBusy-busy-text">
+                      {{'Busy' | translate}}
                     </span>
+                  </div> -->
+
+                  <!-- ------- -->
+                  <div class="projects-for-panel--isBusy-icon-wpr" *ngIf="project?.ws_projct_user_isBusy === true">
+                    <!-- <span class="material-icons project-item--isBusy-icon">
+                      access_time
+                    </span> -->
+                    <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="16px"
+                      viewBox="0 0 24 24" width="16px" fill="#FEB92C">
+                      <g>
+                        <path d="M0,0h24v24H0V0z" fill="none" />
+                      </g>
+                      <g>
+                        <path
+                          d="M11.99,2C6.47,2,2,6.48,2,12s4.47,10,9.99,10C17.52,22,22,17.52,22,12S17.52,2,11.99,2z M15.29,16.71L11,12.41V7h2v4.59 l3.71,3.71L15.29,16.71z" />
+                      </g>
+                    </svg>
                   </div>
-                  <!-- text-pulse-animation -->
-                  <span *ngIf="project?.ws_projct_user_isBusy === true"
-                    class="projects-item--isBusy-busy-text">
+                  <span *ngIf="project?.ws_projct_user_isBusy === true" class="projects-for-panel--isBusy-busy-text text-pulse-animation">
                     {{'Busy' | translate}}
                   </span>
+
                 </div>
-
-
               </div>
 
               <div class="flex-child--right" *ngIf="!window_width_is_60">
