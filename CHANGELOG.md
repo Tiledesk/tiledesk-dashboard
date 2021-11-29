@@ -1,6 +1,13 @@
 
 # tiledesk-dashboard
 
+### 2.2.29-rc4
+- Fixed the bug in the component "unserved requests" displayed in the left panel of the chat: "Cannot read properties of undefined (reading 'forEach')"
+- Fixed the bug in the projects list displayed in the left panel of the chat: the loading spinner is not centered
+- Changes the icon displayed when there are no conversations in the component that displays new conversations in the chat left side panel
+- Improves the graphics of the project list displayed in the left side panel of the chat
+- Displays the project name in the cards of the "Your Projects" page on a single line (adding ellipsis if the project name exceeds the width of the card)
+
 ### 2.2.29-rc3
 - Improves and fixes the bugs of the components displayed in the iframe of the left side panel of the "chat"
 
