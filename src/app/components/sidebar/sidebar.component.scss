@@ -251,12 +251,8 @@ button.close {
   border-radius: 50%;
   background-color: #4caf50;
 }
-.isBusy {
-  // width: 16px;
-  // height: 16px;
-  // position: absolute;
-  // top: 109px;
-  // right: 60px;
+
+.sidebar--isBusy-icon-wpr {
   width: 16px;
   height: 16px;
   position: absolute;
@@ -264,34 +260,35 @@ button.close {
   right: 150px;
 }
 
-// .isBusyClockHands {
-//   background-image: url('../../../assets/img/clock_hands.svg');
-//   background-position: center;
-//   background-repeat: no-repeat;
-//   background-size: cover;
-// }
+.sidebar-is-busy-icon {
+  font-size: 16px;
+  color: #FEB92C;
+  background-color: #2d323e;
+  border-radius: 50%;
+}
 
-// available status icon infinite color transition
-.isBusyTest {
+
+.sidebar--isBusy-text {
   // content: url("../../../assets/img/clock_hands.svg");
   // background-image: url('../../../assets/img/clock_hands.svg');
   // background-position: center;
   // background-repeat: no-repeat;
   // background-size: cover;
-  color: #fedd00;
-  animation: myfirst 5s;
-  -moz-animation: myfirst 5s infinite; /* Firefox */
-  -webkit-animation: myfirst 5s infinite; /* Safari and Chrome */
+  font-size: 11px;
+  color: #FEB92C;
+  animation: sidebarisBusy 5s;
+  -moz-animation: sidebarisBusy 5s infinite; /* Firefox */
+  -webkit-animation: sidebarisBusy 5s infinite; /* Safari and Chrome */
 }
 
-@keyframes myfirst {
+@keyframes sidebarisBusy {
   0% {
     // background: #4caf50;
     color: rgba(255, 255, 255, 0.5);
   }
   50% {
     // background: #fedd00;
-    color: #fedd00;
+    color: #feb92c;
   }
   100% {
     // background: #4caf50;
@@ -300,7 +297,7 @@ button.close {
   }
 }
 /* Firefox */
-@-moz-keyframes myfirst {
+@-moz-keyframes sidebarisBusy {
   0% {
     // background: #4caf50;
     // color: #1e2129;
@@ -308,7 +305,7 @@ button.close {
   }
   50% {
     // background: #fedd00;
-    color: #fedd00;
+    color: #feb92c;
   }
   100% {
     // background: #4caf50;
@@ -317,7 +314,7 @@ button.close {
   }
 }
 /* Safari and Chrome */
-@-webkit-keyframes myfirst {
+@-webkit-keyframes sidebarisBusy {
   0% {
     // background: #4caf50;
     // color: #1e2129;
@@ -325,7 +322,7 @@ button.close {
   }
   50% {
     // background: #fedd00;
-    color: #fedd00;
+    color: #feb92c;
   }
   100% {
     // background: #4caf50;
