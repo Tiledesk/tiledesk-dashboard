@@ -136,7 +136,127 @@ input[type="text"] {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-top: 10px;
 }
+
+.project-user-role {
+  font-size: 16px;
+  margin-top: 22px;
+  font-family: "Google Sans", sans-serif !important;
+  color: #7695a5;
+  text-transform: capitalize;
+}
+
+.availabily---wpr--prjct-for-panel {
+  display: inline-block;
+  position: relative;
+  top: 3px;
+  margin-right: 6px;
+}
+
+.availibility-status-text--prjct-for-panel {
+  font-family: Helvetica, Helvetica, Arial, sans-serif;
+  font-size: 11px;
+  position: relative;
+  top: -3px;
+  display: inline-block;
+  min-width: 85px;
+  font-weight: 400;
+}
+
+.online-text-color {
+  color: #4caf50;
+}
+
+.offline-text-color {
+  color: #f44336;
+}
+
+.project-for-panel--isBusy-icon-wpr{
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  position: relative;
+  top:2px;
+}
+
+.project-for-panel--isBusy-busy-text {
+  font-family: Helvetica, Helvetica, Arial, sans-serif;
+    font-size: 11px;
+    margin-left: 0px;
+    position: relative;
+    top: -3px;
+    color: #FEB92C
+}
+
+.project-for-panel--text-pulse-animation {
+  animation: PULSE 5s;
+  -moz-animation: PULSE 5s infinite; /* Firefox */
+  -webkit-animation: PULSE 5s infinite; /* Safari and Chrome */
+
+  // -webkit-animation: PULSE  5s infinite; 
+  
+  // /* Internet Explorer */
+  // -ms-animation: PULSE  5s infinite;
+  
+  // /* Standard Syntax */
+  // animation: PULSE  5s infinite; 
+}
+/* Chrome, Safari, Opera */
+ @-webkit-keyframes PULSE{
+   0%{color:#eee;}	
+  110%{color: #FEB92C;}
+ }
+
+// /* Internet Explorer */
+ @-ms-keyframes PULSE{
+  0%{color:#eee;}	
+  110%{color: #FEB92C;}
+ }
+
+// /* Standard Syntax */
+ @keyframes PULSE{
+  0%{color:#eee;}	
+  110%{color: #FEB92C;}
+ }
+
+// @keyframes PULSE {
+//   0% {
+//       color: #fedd00;
+//   }
+//   50% {
+//       color: #eeeeee;
+//   }
+//   100% {
+//       color: #fedd00;
+//   }
+// }
+// /* Firefox */
+// @-moz-keyframes PULSE {
+//   0% {
+//       color: #fedd00;
+//   }
+//   50% {
+//       color: #eeeeee;
+//   }
+//   100% {
+//       color: #fedd00;
+//   }
+// }
+// /* Safari and Chrome */
+// @-webkit-keyframes PULSE {
+//   0% {
+//       color: #fedd00;
+//   }
+//   50% {
+//       color: #eeeeee;
+//   }
+//   100% {
+//       color: #fedd00;
+//   }
+// }
+
+
 
 .project-deleted-card {
   background-color: #eee;
@@ -413,75 +533,9 @@ input[type="text"] {
   background-color: #f44336;
 }
 
-.project-user-isBusy {
-  position: relative;
-  // left: -2px;
-  width: fit-content;
-  display: inline-block;
-  margin-left: 12px;
-  top: 3px;
-}
 
-.project-user-isBusyTest {
-  color: #fedd00;
-  animation: myfirst 5s;
-  -moz-animation: myfirst 5s infinite; /* Firefox */
-  -webkit-animation: myfirst 5s infinite; /* Safari and Chrome */
-  font-size: 12px;
-  position: relative;
-  top: -6px;
-  left: -2px;
-}
 
-@keyframes myfirst {
-  0% {
-    // background: #4caf50;
-    color: rgba(255, 255, 255, 0.5);
-  }
-  50% {
-    // background: #fedd00;
-    color: #fedd00;
-  }
-  100% {
-    // background: #4caf50;
-    // color: #1e2129;
-    color: rgba(255, 255, 255, 0.5);
-  }
-}
-/* Firefox */
-@-moz-keyframes myfirst {
-  0% {
-    // background: #4caf50;
-    // color: #1e2129;
-    color: rgba(255, 255, 255, 0.5);
-  }
-  50% {
-    // background: #fedd00;
-    color: #fedd00;
-  }
-  100% {
-    // background: #4caf50;
-    // color: #1e2129;
-    color: rgba(255, 255, 255, 0.5);
-  }
-}
-/* Safari and Chrome */
-@-webkit-keyframes myfirst {
-  0% {
-    // background: #4caf50;
-    // color: #1e2129;
-    color: rgba(255, 255, 255, 0.5);
-  }
-  50% {
-    // background: #fedd00;
-    color: #fedd00;
-  }
-  100% {
-    // background: #4caf50;
-    // color: #1e2129;
-    color: rgba(255, 255, 255, 0.5);
-  }
-}
+
 
 .disabled-card-add-project {
   pointer-events: none;
@@ -556,7 +610,7 @@ input[type="text"] {
  * ============================================================================================================================== 
  */
 .spinner {
-  margin: 2px auto 0;
+  margin: -63px auto 0;
   width: 70px;
   text-align: center;
 }
@@ -606,119 +660,57 @@ input[type="text"] {
   }
 }
 
-/**
- * ==============================================================================================================================
- * Dot Flashing // CodePen Home Three Dots - CSS loading animations made by single element // https://codepen.io/nzbin/pen/GGrXbp
- * ==============================================================================================================================
- */
-//  .dot-flashing {
-//   position: relative;
-//   width: 10px;
-//   height: 10px;
-//   border-radius: 5px;
-//   background-color: #9880ff;
-//   color: #9880ff;
-//   animation: dotFlashing 1s infinite linear alternate;
-//   animation-delay: .5s;
-// }
-
-// .dot-flashing::before, .dot-flashing::after {
-//   content: '';
-//   display: inline-block;
-//   position: absolute;
-//   top: 0;
-// }
-
-// .dot-flashing::before {
-//   left: -15px;
-//   width: 10px;
-//   height: 10px;
-//   border-radius: 5px;
-//   background-color: #9880ff;
-//   color: #9880ff;
-//   animation: dotFlashing 1s infinite alternate;
-//   animation-delay: 0s;
-// }
-
-// .dot-flashing::after {
-//   left: 15px;
-//   width: 10px;
-//   height: 10px;
-//   border-radius: 5px;
-//   background-color: #9880ff;
-//   color: #9880ff;
-//   animation: dotFlashing 1s infinite alternate;
-//   animation-delay: 1s;
-// }
-
-// @keyframes dotFlashing {
-//   0% {
-//     background-color: #9880ff;
-//   }
-//   50%,
-//   100% {
-//     background-color: #ebe6ff;
-//   }
-// }
-
-// .rotate {
-//   -moz-transition: all 0.2s linear;
-//   -webkit-transition: all 0.2s linear;
-//   transition: all 0.2s linear;
-// }
-
-// .rotate.up {
-//   -moz-transform: rotate(180deg);
-//   -webkit-transform: rotate(180deg);
-//   transform: rotate(180deg);
-// }
-
-// onoffswitch https://proto.io/freebies/onoff/
-// .onoffswitch {
-//   position: relative; width: 104px;
-//   -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
-// }
-// .onoffswitch-checkbox {
-//   position: absolute;
-//   opacity: 0;
-//   pointer-events: none;
-// }
-// .onoffswitch-label {
-//   display: block; overflow: hidden; cursor: pointer;
-//   border: 2px solid #999999; border-radius: 20px;
-// }
-// .onoffswitch-inner {
-//   display: block; width: 200%; margin-left: -100%;
-//   transition: margin 0.3s ease-in 0s;
-// }
-// .onoffswitch-inner:before, .onoffswitch-inner:after {
-//   display: block; float: left; width: 50%; height: 20px; padding: 0; line-height: 20px;
-//   font-size: 12px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
-//   box-sizing: border-box;
-// }
-// .onoffswitch-inner:before {
-//   content: "Available";
-//   padding-left: 10px;
-//   background-color: #FFFFFF; color: #4CAF50;
-// }
-// .onoffswitch-inner:after {
-//   content: "Unavailable";
-//   padding-right: 10px;
-//   background-color: #FFFFFF; color: #F44336;
-//   text-align: right;
-// }
-// .onoffswitch-switch {
-//   display: block; width: 18px; margin: 1px;
-//   background: #F44336;
-//   position: absolute; top: 0; bottom: 0;
-//   right: 80px;
-//   border: 2px solid #999999; border-radius: 20px;
-//   transition: all 0.3s ease-in 0s;
-// }
-// .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
-//   margin-left: 0;
-// }
-// .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
-//   right: 0px;
-//   background-color: #4CAF50;
-// }
+// ------------------------------------------------------------------
+// New switch button // https://proto.io/freebies/onoff/
+// ------------------------------------------------------------------
+.onoffswitch--prjct-for-panel {
+  position: relative;
+  width: 30px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+.onoffswitch-checkbox--prjct-for-panel {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.onoffswitch-label--prjct-for-panel {
+  display: block;
+  overflow: hidden;
+  cursor: pointer;
+  height: 8px;
+  padding: 0;
+  line-height: 8px;
+  border: 0px solid #ffffff;
+  border-radius: 16px;
+  background-color: #eeeeee;
+}
+.onoffswitch-label--prjct-for-panel:before {
+  content: "";
+  display: block;
+  width: 16px;
+  margin: -4px;
+  background: #f44336;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 18px;
+  border-radius: 16px;
+  // box-shadow: 0 6px 12px 0px #757575;
+}
+.onoffswitch-checkbox--prjct-for-panel:checked + .onoffswitch-label--prjct-for-panel {
+  background-color: #eeeeee;
+}
+.onoffswitch-checkbox--prjct-for-panel:checked + .onoffswitch-label--prjct-for-panel,
+.onoffswitch-checkbox--prjct-for-panel:checked + .onoffswitch-label--prjct-for-panel:before {
+  border-color: #eeeeee;
+}
+.onoffswitch-checkbox--prjct-for-panel:checked + .onoffswitch-label--prjct-for-panel .onoffswitch-inner {
+  margin-left: 0;
+}
+.onoffswitch-checkbox--prjct-for-panel:checked + .onoffswitch-label--prjct-for-panel:before {
+  right: 0px;
+  background-color: #4caf50;
+  // box-shadow: 3px 6px 18px 0px rgba(0, 0, 0, 0.2);
+}

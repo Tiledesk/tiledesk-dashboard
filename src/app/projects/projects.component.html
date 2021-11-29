@@ -273,7 +273,8 @@
               <!-- <div class="card-header card-header-custom-bkgrnd-project"> </div> -->
 
               <div class="card-content card-content-custom-height">
-                <h3 class="project-title" [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}">
+                <h3 class="project-title"
+                  [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}">
                   {{ project?.id_project?.name }}
                 </h3>
 
@@ -281,46 +282,65 @@
                   [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}">
                   {{ project?.id_project?._id }}
                 </p>
-                <h4 class="category" [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}"
-                  style="font-size:16px; margin-top: 16px;font-family: 'Google Sans',sans-serif!important; color: #7695a5">
+                <h4 class="category project-user-role"
+                  [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}">
                   {{ project?.role }}
                 </h4>
+                <!-- ----- new -->
+                <div class="availabily-and-busy-wpr--prjcts-for-panel">
 
-                <div class="project-user-status" style="width: fit-content; display: inline-block;"
-                  (click)="$event.stopPropagation(); changeAvailabilityState(project?.id_project?._id, project?.ws_projct_user_available)">
-
-                  <div class="project-user-status-icon"
-                    [ngClass]="{'is-user-online' : project?.ws_projct_user_available === true, 'is-user-offline' : project?.ws_projct_user_available === false }">
+                  <div class="availabily---wpr--prjct-for-panel">
+                    <div class="onoffswitch--prjct-for-panel"
+                      (click)="$event.stopPropagation();changeAvailabilityState(project?.id_project?._id, project?.ws_projct_user_available)">
+                      <input type="checkbox" name="onoffswitch_{{project?.id_project?._id}}"
+                        class="onoffswitch-checkbox--prjct-for-panel"
+                        id="availabilityswitch_{{project?.id_project?._id}}" tabindex="0"
+                        [checked]="project?.ws_projct_user_available">
+                      <label class="onoffswitch-label--prjct-for-panel"
+                        for="availabilityswitch_{{project?.id_project?._id}}">
+                      </label>
+                    </div>
                   </div>
 
-                  <span class="project-user-status-text" *ngIf="project?.ws_projct_user_available === true">
-                    {{ 'Available' | translate }}
+                  <span *ngIf="project?.ws_projct_user_available === true"
+                    class="availibility-status-text--prjct-for-panel"
+                    [ngClass]="{'online-text-color' : project?.ws_projct_user_available === true, 'offline-text-color' : project?.ws_projct_user_available === false}">
+                    {{'Available' | translate}}
                   </span>
-                  <span class="project-user-status-text" *ngIf="project?.ws_projct_user_available === false">
-                    {{ 'Unavailable' | translate }}
+
+                  <span *ngIf="project?.ws_projct_user_available === false"
+                    class="availibility-status-text--prjct-for-panel"
+                    [ngClass]="{'online-text-color' : project?.ws_projct_user_available === true, 'offline-text-color' : project?.ws_projct_user_available === false}">
+                    {{'Unavailable' | translate}}
+                  </span>
+
+                  <div class="project-for-panel--isBusy-icon-wpr" *ngIf="project?.ws_projct_user_isBusy === true">
+
+                    <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="16px"
+                      viewBox="0 0 24 24" width="16px" fill="#FEB92C">
+                      <g>
+                        <path d="M0,0h24v24H0V0z" fill="none" />
+                      </g>
+                      <g>
+                        <path
+                          d="M11.99,2C6.47,2,2,6.48,2,12s4.47,10,9.99,10C17.52,22,22,17.52,22,12S17.52,2,11.99,2z M15.29,16.71L11,12.41V7h2v4.59 l3.71,3.71L15.29,16.71z" />
+                      </g>
+                    </svg>
+                  </div>
+                  <span *ngIf="project?.ws_projct_user_isBusy === true"
+                    class="project-for-panel--isBusy-busy-text project-for-panel--text-pulse-animation">
+                    {{'Busy' | translate}}
                   </span>
 
                 </div>
-                <!-- class="loading"   -->
 
-                <div class="project-user-isBusy" *ngIf="project?.ws_projct_user_isBusy === true">
-                  <span class="material-icons" style="font-size: 20px; color:#fedd00;">
-                    access_time
-                  </span>
-                  <span class="project-user-isBusyTest" style="">
-                    {{ 'Busy' | translate }}
-                  </span>
-                  <!-- <div class="isBusyClockHands">   </div> -->
-                </div>
+      
                 <div id="{{'loading_'+ project?.id_project?._id}}" *ngIf="project?.is_selected === true">
-                  <!-- Loading project data -->
-                  <!-- <div class="dot-flashing-spinner-wpr"> -->
                   <div class="spinner">
                     <div class="bounce1"></div>
                     <div class="bounce2"></div>
                     <div class="bounce3"></div>
                   </div>
-                  <!-- </div> -->
                 </div>
 
 
@@ -335,12 +355,7 @@
 
 
               </div>
-              <!-- <div class="project-deleted-msg-in-card-wrap" style=""> 
-              
-                <div class="project-deleted-msg-in-card" style=""> 
-                  DELETED
-                </div>
-              </div> -->
+
               <div class="card-footer">
                 <div [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}" class="stats"
                   style="color:#7695a5">

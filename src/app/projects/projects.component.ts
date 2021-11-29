@@ -491,7 +491,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
       this.projects.forEach(project => {
         if (project.id_project._id === projectUser.id_project) {
           project['ws_projct_user_available'] = projectUser.user_available;
-          project['ws_projct_user_isBusy'] = projectUser['isBusy']
+          // project['ws_projct_user_isBusy'] = projectUser['isBusy']
         }
       });
 
