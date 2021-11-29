@@ -1,6 +1,14 @@
 
 # tiledesk-dashboard
 
+### 2.2.29-rc5
+- Replaces console.log with logger.log
+- Changes the "Medium" priority level icon
+- Changes the sound of "in-app" notifications
+- Change the colors of the "balloons" in the chat on the "conversation details" page to make the links more visible
+- Improves the "flame" effect of the badge on the rocket on the Home page that indicates changes in the changelog
+- Implements in the cards of the "Your projects" page a "switch button" to change the availability status
+
 ### 2.2.29-rc4
 - Fixed the bug in the component "unserved requests" displayed in the left panel of the chat: "Cannot read properties of undefined (reading 'forEach')"
 - Fixed the bug in the projects list displayed in the left panel of the chat: the loading spinner is not centered
