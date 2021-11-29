@@ -66,7 +66,7 @@
       {{ user.email }}
 
       <div style="text-align: center;" *ngIf="IS_BUSY === true">
-        <span class="isBusyTest" style="font-size: 11px;">
+        <span class="sidebar--isBusy-text " style="">
           {{ 'Busy' | translate }}
         </span>
       </div>
@@ -84,17 +84,7 @@
       <img class="avatar" *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true"
         src="assets/img/no_image_user.png" />
 
-      <!-- --------------------------------------------------------------------- -->
-      <!-- test -->
-      <!-- --------------------------------------------------------------------- -->
-    
-      <!-- <img class="avatar" *ngIf="userImageHasBeenUploaded === true" [src]="getUserProfileImage()"
-        onerror="this.src='assets/img/no_image_user.svg'" />
-      <img class="avatar" *ngIf="userImageHasBeenUploaded !== true" src="assets/img/no_image_user.png" /> -->
-
-      <!-- --------------------------------------------------------------------- -->
-      <!-- ./ test -->
-      <!-- --------------------------------------------------------------------- -->
+   
 
       <div *ngIf="project" (click)="changeAvailabilityState(IS_AVAILABLE = !IS_AVAILABLE)" class="status-icon online"
         [ngClass]="{'is-user-online' : IS_AVAILABLE === true, 'is-user-offline' : IS_AVAILABLE === false, 'small-sidebar-status-icon' : SIDEBAR_IS_SMALL === true  }">
@@ -123,14 +113,10 @@
     </i>
 
 
-    <div class="isBusy" *ngIf="IS_BUSY === true">
-      <span class="material-icons" style="font-size: 16px; color:#fedd00;background-color: #2d323e; border-radius:50%">
+    <div class="sidebar--isBusy-icon-wpr" *ngIf="IS_BUSY === true">
+      <span class="material-icons sidebar-is-busy-icon">
         access_time
       </span>
-      <!-- <span class="isBusyTest" style="position: relative; top: -25px;left: 18px;font-size: 11px;">
-        {{ 'Busy' | translate }}
-      </span> -->
-
     </div>
   </div>
 
