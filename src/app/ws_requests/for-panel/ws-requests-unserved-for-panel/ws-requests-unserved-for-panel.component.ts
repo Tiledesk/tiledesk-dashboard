@@ -193,13 +193,15 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
       this.subscription.unsubscribe()
     }
 
-    this.wsRequestsUnserved.forEach(request => {
+    if (this.wsRequestsUnserved) {
+      this.wsRequestsUnserved.forEach(request => {
 
-      this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - ngOnDestroy request', request)
-      if (request && request.lead) {
-        this.unsuscribeRequesterPresence(request.lead.lead_id)
-      }
-    });
+        this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - ngOnDestroy request', request)
+        if (request && request.lead) {
+          this.unsuscribeRequesterPresence(request.lead.lead_id)
+        }
+      });
+    }
 
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
@@ -224,7 +226,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
   joinRequest(request_id: string) {
     this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] JOIN-REQUEST request_id', request_id, ' - CURRENT-USER-ID ', this.currentUserID);
 
-    const msg = {action:'openJoinConversationModal', parameter: request_id, calledBy: 'ws_unserved_for_panel'}
+    const msg = { action: 'openJoinConversationModal', parameter: request_id, calledBy: 'ws_unserved_for_panel' }
     window.top.postMessage(msg, '*')
     // this.onJoinHandled(request_id, this.currentUserID);
   }
@@ -460,7 +462,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
   // @ Subscribe to get the published requests (called On init)
   // -----------------------------------------------------------------------------------------------------
   getWsRequests$() {
-    
+
     this.wsRequestsService.wsRequestsList$
       .pipe(
         takeUntil(this.unsubscribe$)
