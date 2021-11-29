@@ -1520,8 +1520,8 @@
                 <div *ngIf="request?.userAgent" class="row" style="margin-top:5px">
                   <!-- border-top: 1px solid #e1eef4;" -->
                   <div class="col-sm-12">
-                    <!-- no-bottom-margin' : CHAT_PANEL_MODE === true || -->
-                    <p [ngClass]="{'no-bottom-margin': request?.channel?.name !== 'chat21'}">
+                    <!-- [ngClass]="{'no-bottom-margin': request?.channel?.name !== 'chat21'}" -->
+                    <p>
 
 
                       <!-- ---------------------------------------------------------------- -->
@@ -1592,11 +1592,11 @@
                 <!-- ---------------------------------------- -->
                 <div *ngIf="request?.channel?.name !== 'chat21'" class="row" style="margin-top:5px">
                   <div class="col-sm-12">
-                    <p [ngClass]="{'no-bottom-margin' : CHAT_PANEL_MODE === true}">
+                    <!-- [ngClass]="{'no-bottom-margin' : CHAT_PANEL_MODE === true}" -->
+                    <p>
                       <!-- ---------------------------------------- -->
                       <!-- Channel - Telegram -->
                       <!-- ---------------------------------------- -->
-
                       <span *ngIf="request?.channel?.name === 'telegram'">
                         <img class="channel-icon" src="assets/img/channel_icons/telegram-logo.svg" />
                       </span>
@@ -1672,7 +1672,6 @@
                       <!-- ---------------------------------------- -->
                       <!-- Channel - Form -->
                       <!-- ---------------------------------------- -->
-
                       <span style="margin-left: 1px;" *ngIf="request?.channel?.name === 'form'">
                         <img class="channel-icon" src="assets/img/channel_icons/form-logo_v2.svg" />
                       </span>

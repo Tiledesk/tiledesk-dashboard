@@ -255,7 +255,8 @@
   font-size: 12px;
   color: #2b2b2b;
   font-weight: 400;
-  border-radius: 4px;
+  // border-radius: 4px;
+  border-radius: 12px;
 }
 
 .parent {
@@ -277,24 +278,21 @@
     height: auto;
     display: block;
     background: #f5f5f5;
-    border-radius: 4px;
-    // box-shadow: 2px 8px 5px #000;
-    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);
+    // border-radius: 4px;
+    border-radius: 12px;
+    // box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);
     position: relative;
     // margin: 0 0 25px;
     &.alt {
-      // margin: 0 0 0 60px;
 
-      // added
-      // margin: 0 0 40px 60px;
-      // float:right;
-      background: #75d5fd !important;
+      // background: #75d5fd !important;
+      background: #0099ff !important;
     }
     .txt {
       // padding: 8px 55px 8px 14px;
       padding: 8px 14px 8px 14px;
       .name {
-        font-weight: 600;
+        font-weight: 400;
         font-size: 12px;
         margin: 0 0 4px;
         color: #3498db;
@@ -304,7 +302,7 @@
         }
         &.alt {
           // color: #2ecc71;
-          color: #039be5;
+          color: #fff;
         }
       }
       .message {
@@ -355,9 +353,8 @@
     }
     .bubble-arrow.alt:after {
       transform: rotate(45deg) scaleY(-1);
-      // added
-      // #039be5
-      border-top: 9px solid #75d5fd !important;
+      // border-top: 9px solid #75d5fd !important;
+      border-top: 9px solid #039be5 !important;
     }
   }
 }

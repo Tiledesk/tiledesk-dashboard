@@ -964,6 +964,23 @@ my-app .main-panel .main-content .card {
   margin-bottom: 0px;
 }
 
+/* Removes in "ws-request-detail-for-panel.component" the bottom margin from the paragraph created by the marked pipe */
 #chat-content > div > div > div > div.message > p {
   margin-bottom: 0px!important;
+}
+
+/* Removes in the chat availble in tthe conversation details the bottom margin from the paragraph created by the marked pipe */
+ div.card-content > .chat-body > div > div > div > div > div > div.txt > p.message.ow > p {
+  margin-bottom: 0px!important;
+ }
+
+/* Changes the color of the links in the chat on the "conversation details" page to make them more visible */
+div.card-content > div > div > div > div > div > div > div.txt > p.message.ow > p > a {
+  color:#00d5ff;
+  text-decoration: underline;
+}
+/* Changes the color of the links in the chat on the "conversation details" page to make them more visible (this whe are in an iframe) */
+div.card-content > div > div > div > div > div > div > div.txt > div > div > p > p > a {
+  color:#00d5ff;
+  text-decoration: underline;
 }
