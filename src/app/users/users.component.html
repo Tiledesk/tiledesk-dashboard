@@ -242,8 +242,7 @@ class="navbar-brand">
                       <!-- --------------------------------------------------- -->
                       <!-- USECASE uploadEngine Firebase -->
                       <!-- --------------------------------------------------- -->
-                      <img *ngIf="projectUser?.hasImage && UPLOAD_ENGINE_IS_FIREBASE"
-                        style=""
+                      <img *ngIf="projectUser?.hasImage && UPLOAD_ENGINE_IS_FIREBASE" style=""
                         class="user-img-in-teammates-list"
                         src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media"
                         onerror="this.src='assets/img/no_image_user.png'" />
@@ -252,7 +251,6 @@ class="navbar-brand">
                       <!-- USECASE uploadEngine Native -->
                       <!-- --------------------------------------------------- -->
                       <img *ngIf="projectUser?.hasImage && !UPLOAD_ENGINE_IS_FIREBASE"
-                        style=""
                         class="user-img-in-teammates-list"
                         src="{{baseUrl}}images?path=uploads%2Fusers%2F{{projectUser?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                         onerror="this.src='assets/img/no_image_user.png'" />
@@ -269,15 +267,21 @@ class="navbar-brand">
                       </div>
 
                       <div *ngIf="projectUser?.isBusy" class="user-is-busy">
-                        <img src="assets/img/clock_hands.svg" class="img-fluid" style="width:16px;" />
-                        <!-- <span class="material-icons" style="font-size: 16px; color:#fff;"> access_tim  </span> -->
+                        <span class="tool__tip">
+                          <img src="assets/img/clock_hands.svg" class="img-fluid" style="width:16px;" />
+
+                          <span class="top">
+                            {{ 'Busy' | translate }}
+                            <i></i>
+                          </span>
+                        </span>
                       </div>
 
                     </div>
 
-                    <div *ngIf="projectUser?.isBusy" class="is-busy-text is-busy-color-transition">
+                    <!-- <div *ngIf="projectUser?.isBusy" class="is-busy-text is-busy-color-transition">
                       {{ 'Busy' | translate }}
-                    </div>
+                    </div> -->
                   </td>
 
                   <!-- goToMemberProfile(projectUser?.id_user?._id)  -->
