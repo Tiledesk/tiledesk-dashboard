@@ -217,10 +217,10 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   }
 
   onSelectBotDefaultlang(selectedDefaultBotLang) {
-    console.log('onSelectBotDefaultlang > selectedDefaultBotLang ', selectedDefaultBotLang)
+    this.logger.log('onSelectBotDefaultlang > selectedDefaultBotLang ', selectedDefaultBotLang)
     if (selectedDefaultBotLang) {
       this.botDefaultSelectedLangCode = selectedDefaultBotLang.code;
-      console.log('onSelectBotDefaultlang > selectedDefaultBotLang > code', this.botDefaultSelectedLangCode)
+      this.logger.log('onSelectBotDefaultlang > selectedDefaultBotLang > code', this.botDefaultSelectedLangCode)
     }
   }
 

@@ -256,7 +256,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
       // console.log('APP-CONFIG ', appConfig.getConfig() ) 
 
       if (loggingLevel === 'INFO' || loggingLevel === 'DEBUG') {
-        console.info('%c ### DSHBRD [APP-MODULE-TS] remoteConfig', 'color: #1a73e8', environment.remoteConfig);
+        // console.info('%c ### DSHBRD [APP-MODULE-TS] remoteConfig', 'color: #1a73e8', environment.remoteConfig);
         console.info('%c ### DSHBRD [APP-MODULE-TS] appConfig loaded', 'color: #1a73e8');
         console.info('%c ### DSHBRD [APP-MODULE-TS] brandService loaded', 'color: #1a73e8');
         console.info('%c ### DSHBRD [APP-MODULE-TS] chat Engine ', 'color: #1a73e8', chatEngine);
@@ -274,7 +274,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
       let pushEngine = appConfig.getConfig().pushEngine
 
       if (loggingLevel === 'INFO' || loggingLevel === 'DEBUG') {
-        console.info('%c ### DSHBRD [APP-MODULE-TS] remoteConfig', 'color: #1a73e8', environment.remoteConfig);
+        // console.info('%c ### DSHBRD [APP-MODULE-TS] remoteConfig', 'color: #1a73e8', environment.remoteConfig);
         // console.info('%c ### DSHBRD [APP-MODULE-TS] config', 'color: #1a73e8', appConfig.getConfig());
         console.info('%c ### DSHBRD [APP-MODULE-TS] brandService loaded', 'color: #1a73e8');
         console.info('%c ### DSHBRD [APP-MODULE-TS] chat Engine ', 'color: #1a73e8', chatEngine);

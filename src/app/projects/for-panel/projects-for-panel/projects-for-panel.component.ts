@@ -231,7 +231,7 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
     project_trial_expired: string,
     project_trial_days_left: number,
     project_status: number) {
-    console.log('[PROJECTS-X-PANEL] - GO TO UNSERVED-REQUEST - PROJECT SELECTED ', project)
+      this.logger.log('[PROJECTS-X-PANEL] - GO TO UNSERVED-REQUEST - PROJECT SELECTED ', project)
    
     // ------------------------------------------------------------------------------------------------------------
     // POST MESSAGE hasChangedProject (communicates to the parent (chat-ionic) that the agent has changed project)
