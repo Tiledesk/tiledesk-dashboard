@@ -978,9 +978,11 @@ my-app .main-panel .main-content .card {
 div.card-content > div > div > div > div > div > div > div.txt > p.message.ow > p > a {
   color:#00d5ff;
   text-decoration: underline;
+  font-weight: 300;
 }
 /* Changes the color of the links in the chat on the "conversation details" page to make them more visible (this whe are in an iframe) */
 div.card-content > div > div > div > div > div > div > div.txt > div > div > p > p > a {
   color:#00d5ff;
   text-decoration: underline;
+  font-weight: 300;
 }
