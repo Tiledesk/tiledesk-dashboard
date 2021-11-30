@@ -1,6 +1,10 @@
 
 # tiledesk-dashboard
 
+### 2.2.29-rc6
+- Fixed the bug: on the home page the graph "Conversation last 7 days" is loaded as many times as the agent accesses the project
+- Improves in the chat section of the conversation detail page: move the sender name out of the balloons, change the color in white of the messages sent by the agent
+
 ### 2.2.29-rc5
 - Changes the "Medium" priority level icon
 - Changes the sound of "in-app" notifications
