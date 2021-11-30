@@ -858,7 +858,7 @@
           <!-- (click)='openDeleteRequestModal(request?.request_id)' // <- open the modal "confirm archive request"  -->
           <td class="td-actions text-right" style="padding-top: 9px !important;">
             <!-- -------------------------- -->
-            <!-- Action ARCHIVE  -->
+            <!-- ARCHIVE Action  -->
             <!-- -------------------------- -->
             <button type="button" rel="tooltip" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}"
               class="btn btn-tdblu btn-simple btn-xs tool_tip" (click)='archiveRequest(request?.request_id)'
@@ -874,7 +874,7 @@
             </button>
 
             <!-- -------------------------- -->
-            <!-- Action JOIN  -->
+            <!-- JOIN Action   -->
             <!-- -------------------------- -->
             <button *ngIf="request?.currentUserIsJoined === false" type="button" rel="tooltip"
               title="{{ 'RequestMsgsPage.Enter' | translate }}" class="btn btn-tdblu btn-simple btn-xs tool_tip"
@@ -898,7 +898,7 @@
             </button>
 
             <!-- -------------------------- -->
-            <!-- Action OPEN CHAT  -->
+            <!-- OPEN-CHAT Action  -->
             <!-- -------------------------- -->
             <button *ngIf="request?.currentUserIsJoined === true" type="button" rel="tooltip"
               title="{{ 'RequestMsgsPage.Enter' | translate }}" class="btn btn-tdblu btn-simple btn-xs tool_tip"
