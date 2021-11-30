@@ -236,7 +236,7 @@
   padding-top: 3px;
   border-radius: 100px;
   padding-bottom: 3px;
-  color: #00bcd4;
+  color: #3ea9f5;
   cursor: pointer;
 }
 
@@ -290,24 +290,30 @@
     }
     .txt {
       // padding: 8px 55px 8px 14px;
-      padding: 8px 14px 8px 14px;
+      padding: 10px 14px 10px 14px;
       .name {
         font-weight: 400;
-        font-size: 12px;
+        font-size: 11px;
         margin: 0 0 4px;
-        color: #3498db;
+        position: absolute;
+        top: -17px;
+        // color: #3498db;
         span {
           font-weight: normal;
           color: #b3b3b3;
         }
         &.alt {
           // color: #2ecc71;
-          color: #fff;
+          // color: #fff;
+          // position: absolute;
+          // top: -17px;
+          color: #aaa;
+          right: 9px;
         }
       }
       .message {
         font-size: 12px;
-        font-weight: 400;
+        font-weight: 300;
         margin: 0;
         color: #2b2b2b;
         line-height: 1.5;
@@ -318,10 +324,10 @@
         hyphens: auto;
       }
       .timestamp {
-        font-size: 11px;
+        font-size: 10px;
         position: absolute;
         // bottom: 8px;
-        bottom: -22px;
+        bottom: -20px;
         right: 10px;
         text-transform: uppercase;
         // color: #999;
@@ -358,6 +364,10 @@
     }
   }
 }
+
+
+
+
 
 .message-img {
   width: unset !important;

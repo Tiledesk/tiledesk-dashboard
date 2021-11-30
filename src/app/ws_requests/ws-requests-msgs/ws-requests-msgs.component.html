@@ -279,13 +279,25 @@
                           </div>
 
                           <div class="txt">
+
                             <p class="name" [ngStyle]="{'color': fillColour }">
                               {{ message.senderFullname }}
-                              <span *ngIf="message?.type === 'text' && !message?.metadata"
+                              <!-- <span *ngIf="message?.type === 'text' && !message?.metadata"
                                 style="float:right; cursor:pointer; color: #00bcf8; text-decoration: underline;"
                                 (click)="openRightSideBar(message?.text)">
                                 {{ 'Train' | translate }}
-                              </span>
+                              </span> -->
+                            </p>
+
+                            <p class="train" *ngIf="message?.type === 'text' && !message?.metadata" style="
+                              text-align: right;
+                              font-size: 12px;
+                              cursor: pointer;
+                              color: #00bcf8;
+                              text-decoration: underline;
+                              margin-bottom: 0px;
+                              font-weight: 400;" (click)="openRightSideBar(message?.text)">
+                              {{ 'Train' | translate }}
                             </p>
                             <!-- -------------------------------------------------------------- -->
                             <!-- first combination: | marked | sanitizeHtml -->
@@ -301,11 +313,17 @@
                                 <img src={{message.metadata.src}} class="message-img" />
                               </div>
                             </div>
-                            <span class="timestamp"> {{ message?.createdAt | date: 'd/M/y HH:mm:ss'}} </span>
+                            <span class="timestamp">
+                               <!-- {{ message?.createdAt | date: 'd/M/y HH:mm:ss'}}  -->
+                               {{browserLang === 'en' ? (message?.createdAt | amDateFormat:'MMM DD YYYY HH:mm:ss') : ( message?.createdAt | amDateFormat:'DD MMM YYYY HH:mm:ss')}}
+                              </span>
                           </div>
                           <div class="bubble-arrow"></div>
                         </div>
-                        <!-- ////////////////// Speech Bubble alternative ////////////////// -->
+
+                        <!-- ------------------------------------------------------ -->
+                        <!-- The sender is the agent - Speech Bubble alternative -->
+                        <!-- ------------------------------------------------------ -->
                         <div *ngIf="requester_id !== message.sender && message?.attributes?.subtype !== 'info'"
                           class="bubble alt">
                           <!-- left: 254px; -->
@@ -375,10 +393,10 @@
                             <!-- 2nd combination: | htmlEntitiesEncode | autolinker -->
                             <!-- 3rd combination (as in chat): | htmlEntitiesEncode  | marked -->
                             <!-- -------------------------------------------------------------- -->
-                            <p *ngIf="message?.type === 'text' || message?.type === 'file'" class="message ow"
+                            <p *ngIf="message?.type === 'text' || message?.type === 'file'" class="message ow alt"
                               [innerHTML]="message?.text | htmlEntitiesEncode | marked">
 
-                            <div *ngIf="message?.type === 'image'" class="message ow">
+                            <div *ngIf="message?.type === 'image'" class="message ow alt">
                               <!-- style="height:200px; width:200px;" -->
                               <div class="image-container">
                                 <img src={{message.metadata.src}} class="message-img" />
@@ -398,7 +416,7 @@
                             </div>
 
                             <!-- // iframe -->
-                            <div *ngIf="message?.type === 'frame'" class="message ow">
+                            <div *ngIf="message?.type === 'frame'" class="message ow alt">
                               <!-- style="height:200px; width:200px;" -->
                               <div class="image-container">
                                 <iframe allowfullscreen width="80%" height="80%" style="border:none;"
@@ -416,7 +434,10 @@
                               </div>
                             </div>
 
-                            <span class="timestamp"> {{ message?.createdAt | date: 'd/M/y HH:mm:ss'}}</span>
+                            <span class="timestamp"> 
+                              <!-- {{ message?.createdAt | date: 'd/M/y HH:mm:ss'}} -->
+                              {{browserLang === 'en' ? (message?.createdAt | amDateFormat:'MMM DD YYYY HH:mm:ss') : ( message?.createdAt | amDateFormat:'DD MMM YYYY HH:mm:ss')}}
+                            </span>
                           </div>
                           <div class="bubble-arrow alt"></div>
                         </div>
@@ -441,7 +462,7 @@
 
                 <!--  start new three btn -->
                 <div class="row" style="width: 100%">
-                  
+
                   <!-- --------------------------------------------------------------- -->
                   <!-- CLOSE CHAT - MOVED IN DROPDOWN -->
                   <!-- --------------------------------------------------------------- -->
@@ -2852,8 +2873,8 @@
 
                                       </span>
                                       <span class="right" style="white-space: normal;padding: 5px;font-weight: 200;">
-                                        <h4 style="font-weight:400"> {{dept?.name}} {{ 'IsSetToNotVisible' | translate
-                                          }}
+                                        <h4 style="font-weight:400">
+                                          {{dept?.name}} {{ 'IsSetToNotVisible' | translate}}
                                         </h4>
 
                                         <i></i>

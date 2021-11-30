@@ -856,7 +856,6 @@ my-app .main-panel .main-content .card {
   top: -3px;
 }
 
-
 /* =Avatar inline in unserved conversation tooltip
 ---------------------------------------------------- */
 .served-by-desktop-a-in-tooltip {
@@ -919,8 +918,6 @@ my-app .main-panel .main-content .card {
   cursor: pointer;
 }
 
-
-
 .analytics-date-range-selected {
   margin: 8px !important;
   color: rgba(0, 0, 0, 0.5);
@@ -964,25 +961,46 @@ my-app .main-panel .main-content .card {
   margin-bottom: 0px;
 }
 
-/* Removes in "ws-request-detail-for-panel.component" the bottom margin from the paragraph created by the marked pipe */
+/* 
+ * CUSTOM STYLE FOR THE CHAT SECTION IN REQUEST DETAIL FOR PANEL
+ * ------------------------------------------------------------- */
+ /* Removes in "ws-request-detail-for-panel.component" the bottom margin from the paragraph created by the marked pipe */
 #chat-content > div > div > div > div.message > p {
-  margin-bottom: 0px!important;
+  margin-bottom: 0px !important;
 }
 
-/* Removes in the chat availble in tthe conversation details the bottom margin from the paragraph created by the marked pipe */
- div.card-content > .chat-body > div > div > div > div > div > div.txt > p.message.ow > p {
-  margin-bottom: 0px!important;
- }
+/* 
+ * CUSTOM STYLE FOT THE CHAT SECTION IN CONVERSATION DETAIL 
+ * -------------------------------------------------------- */
+/* Removes the bottom margin from the paragraph created by the marked pipe */
+div.card-content > .chat-body > div > div > div > div > div > div.txt > p.message.ow > p {
+  margin-bottom: 0px !important;
+}
 
-/* Changes the color of the links in the chat on the "conversation details" page to make them more visible */
-div.card-content > div > div > div > div > div > div > div.txt > p.message.ow > p > a {
-  color:#00d5ff;
+/*  USE CASE LINK IN MESSAGE - When the sender is the agent changes the color of the links  */
+div.card-content > div > div > div > div > div > div > div.txt > p.message.ow.alt > p > a {
+  color: #fff;
   text-decoration: underline;
   font-weight: 300;
 }
-/* Changes the color of the links in the chat on the "conversation details" page to make them more visible (this whe are in an iframe) */
-div.card-content > div > div > div > div > div > div > div.txt > div > div > p > p > a {
-  color:#00d5ff;
+/* - USE CASE LINK IN IFRAME - When the sender is the agent changes the color of the links "  */
+div.card-content > div > div > div > div > div > div > div.txt > div.message.ow.alt > div > p > p > a {
+  color: #fff;
   text-decoration: underline;
   font-weight: 300;
 }
+/* - USE CASE IMAGE WITH TEXT - When the sender is the agent changes the color of the text   */
+div.card-content > div > div > div > div > div > div > div.txt > div.message.ow.alt > div > p > p {
+  color: #fff;
+  font-weight: 300;
+  margin-bottom: 0px !important;
+  margin-top: 5px !important;
+}
+
+/* USE CASE MESSSAGE SENT BY THE AGENT */
+div.card-content > div > div > div > div > div > div > div.txt > p.message.ow.alt > p {
+  color: #fff;
+}
+
+/* div.card-content > div > div > div > div > div > div > div.txt > div > div > p > p > a
+div.card-content > div > div > div > div > div > div > div.txt > div > div > p > p */
