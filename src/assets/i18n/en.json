@@ -1966,6 +1966,7 @@
    "TheConversationPriorityHasBeenSuccessfullyUpdated":"The conversation priority has been successfully updated",
    "AnErrorOccurredWhileUpdatingTheCnversationPriority":"An error occurred while updating the conversation priority",
    "Join":"Join",
-   "You_are_successfully_added_to_the_chat": "You are successfully added to the chat"
+   "You_are_successfully_added_to_the_chat": "You are successfully added to the chat",
+   "ByPressingOkTheConversationWillBeAssignedToYourself": "By pressing Ok the conversation will be assigned to yourself"
 
 }

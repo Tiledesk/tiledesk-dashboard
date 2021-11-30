@@ -17,6 +17,7 @@ import { NotifyService } from '../../../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { LoggerService } from '../../../services/logger/logger.service';
+const swal = require('sweetalert');
 
 @Component({
   selector: 'appdashboard-ws-requests-unserved',
@@ -49,6 +50,9 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
   subscription: Subscription;
   USER_ROLE: string;
 
+  areYouSureMsg: string;
+  cancelMsg: string;
+  conversationWillBeAssignedToYourselfMsg: string;
   /**
    * Constructor
    * @param botLocalDbService 
@@ -144,8 +148,34 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     this.translateArchivingRequestMsg();
     this.translateRequestHasBeenArchivedNoticationMsg_part1();
     this.translateRequestHasBeenArchivedNoticationMsg_part2();
-
+    this.translateAreYouSure();
+    this.translateCancel();
+    this.conversationWillBeAssignedToYourself()
   }
+
+    // -----------------------------------------------
+  // @ Translate strings
+  // -----------------------------------------------
+  translateAreYouSure() {
+    this.translate.get('AreYouSure')
+      .subscribe((text: string) => {
+        this.areYouSureMsg = text;
+      });
+  }
+
+  translateCancel() {
+    this.translate.get('Cancel')
+      .subscribe((text: string) => {
+        this.cancelMsg = text;
+      });
+  }
+  conversationWillBeAssignedToYourself() {
+    this.translate.get('ByPressingOkTheConversationWillBeAssignedToYourself')
+      .subscribe((text: string) => {
+        this.conversationWillBeAssignedToYourselfMsg = text;
+      });
+  }
+  
 
   // -------------------------------------------------------------
   // @ Get depts
@@ -273,8 +303,35 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - joinRequest request_id', request_id);
     this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - joinRequest currentUserID', this.currentUserID);
 
-    this.onJoinHandled(request_id, this.currentUserID);
+    this.displayModalAreyouSureYouWantToTakeChargeOfTheConversation(request_id, this.currentUserID);
+    // this.onJoinHandled(request_id, this.currentUserID);
   }
+
+  displayModalAreyouSureYouWantToTakeChargeOfTheConversation(requestid, currentuserid) { 
+    swal({
+      title: this.areYouSureMsg,
+      text: this.conversationWillBeAssignedToYourselfMsg,
+      icon: "info",
+      buttons: {
+        cancel: this.cancelMsg,
+        catch: {
+          text: 'OK',
+          value: "catch",
+        },
+      },
+
+      // `"Cancel", ${this.goToMultilanguagePageMsg}`],
+      dangerMode: false,
+    })
+      .then((value) => {
+        this.logger.log('[WS-REQUESTS-LIST][UNSERVED] ARE YOU SURE TO JOIN THIS CHAT ... value', value)
+
+        if (value === 'catch') {
+          this.onJoinHandled(requestid,currentuserid);
+        }
+      })
+
+  } 
 
   // -----------------------------------------------
   // @ Translate strings

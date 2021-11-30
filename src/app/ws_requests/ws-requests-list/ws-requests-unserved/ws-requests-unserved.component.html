@@ -764,12 +764,16 @@
 
             </p>
           </td>
-
-          <!-- ------ ====== ARCHIVE Action ====== ------ -->
+          <!-- ------------------------------------------------------ -->
+          <!-- @ ACTIONS -->
+          <!-- ------------------------------------------------------ -->
           <!-- class="td-actions text-right" -->
           <!-- (click)='openDeleteRequestModal((request?.request_id))' -->
           <td class="td-actions text-right" style="padding-top: 9px !important;">
 
+            <!-- ------------------------------------------------------ -->
+            <!--  Archive ACTION -->
+            <!-- ------------------------------------------------------ -->
             <button type="button" rel="tooltip" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}"
               class="btn btn-tdblu btn-simple btn-xs tool_tip" (click)='archiveRequest(request?.request_id)'
               [disabled]="USER_ROLE === 'agent'">
@@ -780,13 +784,15 @@
               </span>
             </button>
 
+            <!-- ------------------------------------------------------ -->
+            <!--  Join ACTION -->
+            <!-- ------------------------------------------------------ -->
             <button type="button" rel="tooltip" title="{{ 'RequestMsgsPage.Enter' | translate }}"
               class="btn btn-tdblu btn-simple btn-xs tool_tip" (click)='joinRequest(request?.request_id)'>
 
-              <!--
-            // ------------------------------------------------------------------------------------------------------
-            // SVG font-awesome link icon
-            // ------------------------------------------------------------------------------------------------------ -->
+              <!-- ---------------------------------- -->
+              <!-- SVG font-awesome link icon -->
+              <!-- ---------------------------------- -->
               <svg style="height: 15px; width:auto;" aria-hidden="true" focusable="false" data-prefix="fas"
                 data-icon="link" class="svg-inline--fa fa-link fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 512 512">

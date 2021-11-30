@@ -1949,5 +1949,6 @@
 	"TheConversationPriorityHasBeenSuccessfullyUpdated":"Die Konversationspriorität wurde erfolgreich aktualisiert",
 	"AnErrorOccurredWhileUpdatingTheCnversationPriority":"Beim Aktualisieren der Konversationspriorität ist ein Fehler aufgetreten",
 	"Join":"Verbinden",
-	"You_are_successfully_added_to_the_chat": "Sie wurden erfolgreich zum Chat hinzugefügt"
+	"You_are_successfully_added_to_the_chat": "Sie wurden erfolgreich zum Chat hinzugefügt",
+	"ByPressingOkTheConversationWillBeAssignedToYourself": "Durch Drücken der OK-Taste wird Ihnen das Gespräch zugewiesen"
 }
