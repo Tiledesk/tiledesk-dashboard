@@ -26,6 +26,8 @@ import { ContactsService } from '../services/contacts.service'; // USED FOR COUN
 import { FaqKbService } from '../services/faq-kb.service'; // USED FOR COUNT OF BOTS FOR THE NEW HOME
 import { avatarPlaceholder, getColorBck } from '../utils/util';
 import { LoggerService } from '../services/logger/logger.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators'
 const swal = require('sweetalert');
 @Component({
   selector: 'home',
@@ -34,6 +36,7 @@ const swal = require('sweetalert');
 })
 export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
+  private unsubscribe$: Subject<any> = new Subject<any>();
   @ViewChild('widgetsContent', { read: ElementRef }) public widgetsContent;
   // company_name = brand.company_name;
   // tparams = brand;
@@ -156,7 +159,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   ngAfterViewInit() { }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    console.log('HOME COMP - CALLING ON DESTROY')
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   // pauseResumeLastUpdateSlider() {
@@ -280,22 +285,31 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   getCurrentProjectAndInit() {
-    this.subscription = this.auth.project_bs.subscribe((project) => {
+    this.auth.project_bs
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((project) => {
+        this.logger.log('[HOME] $UBSCIBE TO PUBLISHED PROJECT - RES  ', project)
+        if (project) {
+          this.project = project
+          this.projectId = this.project._id
+          this.OPERATING_HOURS_ACTIVE = this.project.operatingHours
+          this.logger.log('[HOME] > OPERATING_HOURS_ACTIVE', this.OPERATING_HOURS_ACTIVE)
 
-      this.logger.log('[HOME] project from AUTH service subscription  ', project)
-      if (project) {
-        this.project = project
-        this.projectId = this.project._id
-        this.OPERATING_HOURS_ACTIVE = this.project.operatingHours
-        this.logger.log('[HOME] > OPERATING_HOURS_ACTIVE', this.OPERATING_HOURS_ACTIVE)
+          this.init()
+        }
+      }, (error) => {
+        this.logger.error('[HOME] $UBSCIBE TO PUBLISHED PROJECT - ERROR ', error);
 
-        this.init()
-      }
-    });
+      }, () => {
+        console.log('[HOME] $UBSCIBE TO PUBLISHED PROJECT * COMPLETE *');
+      });
   }
 
 
   init() {
+    console.log("[HOME] > CALLING INIT")
     // this.getDeptsByProjectId(); // USED FOR COUNT OF DEPTS FOR THE NEW HOME
     this.getImageStorageThenUserAndBots();
     this.getLastMounthMessagesCount() // USED TO GET THE MESSAGES OF THE LAST 30 DAYS
@@ -373,90 +387,106 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   getLastMounthMessagesCount() {
-    this.analyticsService.getLastMountMessagesCount().subscribe((msgscount: any) => {
-      this.logger.log('[HOME] - GET LAST 30 DAYS MESSAGE COUNT RES', msgscount);
-      if (msgscount && msgscount.length > 0) {
-        this.countOfLastMonthMsgs = msgscount[0]['totalCount']
+    this.analyticsService.getLastMountMessagesCount()
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((msgscount: any) => {
+        this.logger.log('[HOME] - GET LAST 30 DAYS MESSAGE COUNT RES', msgscount);
+        if (msgscount && msgscount.length > 0) {
+          this.countOfLastMonthMsgs = msgscount[0]['totalCount']
 
-        this.logger.log('[HOME] - GET LAST 30 DAYS MESSAGE COUNT ', this.countOfLastMonthMsgs);
-      } else {
-        this.countOfLastMonthMsgs = 0;
-      }
-    }, (error) => {
-      this.logger.error('[HOME] - GET LAST 30 DAYS MESSAGE - ERROR ', error);
+          this.logger.log('[HOME] - GET LAST 30 DAYS MESSAGE COUNT ', this.countOfLastMonthMsgs);
+        } else {
+          this.countOfLastMonthMsgs = 0;
+        }
+      }, (error) => {
+        this.logger.error('[HOME] - GET LAST 30 DAYS MESSAGE - ERROR ', error);
 
-    }, () => {
-      this.logger.log('[HOME] - GET LAST 30 DAYS MESSAGE * COMPLETE *');
-    });
+      }, () => {
+        this.logger.log('[HOME] - GET LAST 30 DAYS MESSAGE * COMPLETE *');
+      });
   }
 
   getLastMounthRequestsCount() {
-    this.analyticsService.getLastMountConversationsCount().subscribe((convcount: any) => {
-      this.logger.log('[HOME] - GET LAST 30 DAYS CONVERSATION COUNT RES', convcount);
+    this.analyticsService.getLastMountConversationsCount()
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((convcount: any) => {
+        this.logger.log('[HOME] - GET LAST 30 DAYS CONVERSATION COUNT RES', convcount);
 
-      if (convcount && convcount.length > 0) {
-        this.countOfLastMonthRequests = convcount[0]['totalCount'];
-        this.logger.log('[HOME] - GET LAST 30 DAYS CONVERSATION COUNT ', this.countOfLastMonthRequests);
-      } else {
-        this.countOfLastMonthRequests = 0;
-      }
-    }, (error) => {
-      this.logger.error('[HOME] - GET LAST 30 DAYS CONVERSATION COUNT - ERROR ', error);
+        if (convcount && convcount.length > 0) {
+          this.countOfLastMonthRequests = convcount[0]['totalCount'];
+          this.logger.log('[HOME] - GET LAST 30 DAYS CONVERSATION COUNT ', this.countOfLastMonthRequests);
+        } else {
+          this.countOfLastMonthRequests = 0;
+        }
+      }, (error) => {
+        this.logger.error('[HOME] - GET LAST 30 DAYS CONVERSATION COUNT - ERROR ', error);
 
-    }, () => {
-      this.logger.log('[HOME] - GET LAST 30 DAYS CONVERSATION COUNT * COMPLETE *');
-    });
+      }, () => {
+        this.logger.log('[HOME] - GET LAST 30 DAYS CONVERSATION COUNT * COMPLETE *');
+      });
   }
 
   getVisitorsCount() {
-    this.analyticsService.getVisitors().subscribe((visitorcounts: any) => {
-      this.logger.log("HOME - GET VISITORS COUNT RES: ", visitorcounts)
+    this.analyticsService.getVisitors()
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((visitorcounts: any) => {
+        this.logger.log("HOME - GET VISITORS COUNT RES: ", visitorcounts)
 
-      if (visitorcounts && visitorcounts.length > 0) {
-        this.countOfVisitors = visitorcounts[0]['totalCount']
-        this.logger.log("HOME - GET VISITORS COUNT: ", this.countOfVisitors)
-      } else {
-        this.countOfVisitors = 0
-      }
-    }, (error) => {
-      this.logger.error('[HOME] - GET VISITORS COUNT - ERROR ', error);
+        if (visitorcounts && visitorcounts.length > 0) {
+          this.countOfVisitors = visitorcounts[0]['totalCount']
+          this.logger.log("HOME - GET VISITORS COUNT: ", this.countOfVisitors)
+        } else {
+          this.countOfVisitors = 0
+        }
+      }, (error) => {
+        this.logger.error('[HOME] - GET VISITORS COUNT - ERROR ', error);
 
-    }, () => {
-      this.logger.log('[HOME] - GET VISITORS COUNT * COMPLETE *');
-    });
+      }, () => {
+        this.logger.log('[HOME] - GET VISITORS COUNT * COMPLETE *');
+      });
   }
 
   getCountAndPercentageOfRequestsHandledByBotsLastMonth() {
-    this.analyticsService.getRequestsHasBotCount().subscribe((res: any) => {
-      this.logger.log("[HOME] - getRequestsHasBotCount GET REQUESTS COUNT HANDLED BY BOT LAST 30 DAYS RES : ", res)
+    this.analyticsService.getRequestsHasBotCount()
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((res: any) => {
+        this.logger.log("[HOME] - getRequestsHasBotCount GET REQUESTS COUNT HANDLED BY BOT LAST 30 DAYS RES : ", res)
 
-      if (res && res.length > 0) {
-        this.countOfLastMonthRequestsHandledByBots = res[0]['totalCount']
+        if (res && res.length > 0) {
+          this.countOfLastMonthRequestsHandledByBots = res[0]['totalCount']
 
-      } else {
-        this.countOfLastMonthRequestsHandledByBots = 0
-      }
+        } else {
+          this.countOfLastMonthRequestsHandledByBots = 0
+        }
 
-      this.logger.log("[HOME] - getRequestsHasBotCount REQUESTS COUNT HANDLED BY BOT LAST 30 DAYS: ", this.countOfLastMonthRequestsHandledByBots)
-      this.logger.log("[HOME] - getRequestsHasBotCount REQUESTS COUNT LAST 30 DAYS: ", this.countOfLastMonthRequests);
-      // numero di conversazioni gestite da bot / numero di conversazioni totali (già calcolata) * 100
+        this.logger.log("[HOME] - getRequestsHasBotCount REQUESTS COUNT HANDLED BY BOT LAST 30 DAYS: ", this.countOfLastMonthRequestsHandledByBots)
+        this.logger.log("[HOME] - getRequestsHasBotCount REQUESTS COUNT LAST 30 DAYS: ", this.countOfLastMonthRequests);
+        // numero di conversazioni gestite da bot / numero di conversazioni totali (già calcolata) * 100
 
-      if (this.countOfLastMonthRequestsHandledByBots > 0 && this.countOfLastMonthRequests) {
-        const _percentageOfLastMonthRequestsHandledByBots = (this.countOfLastMonthRequestsHandledByBots / this.countOfLastMonthRequests) * 100
-        this.logger.log("[HOME] - getRequestsHasBotCount % COUNT OF LAST MONTH REQUESTS: ", this.countOfLastMonthRequests);
-        this.logger.log("[HOME] - getRequestsHasBotCount % REQUESTS HANDLED BY BOT LAST 30 DAYS: ", _percentageOfLastMonthRequestsHandledByBots);
-        this.logger.log("[HOME] - getRequestsHasBotCount % REQUESTS HANDLED BY BOT LAST 30 DAYS typeof: ", typeof _percentageOfLastMonthRequestsHandledByBots);
-        this.percentageOfLastMonthRequestsHandledByBots = _percentageOfLastMonthRequestsHandledByBots.toFixed(1);
-      } else {
-        this.percentageOfLastMonthRequestsHandledByBots = 0
-      }
+        if (this.countOfLastMonthRequestsHandledByBots > 0 && this.countOfLastMonthRequests) {
+          const _percentageOfLastMonthRequestsHandledByBots = (this.countOfLastMonthRequestsHandledByBots / this.countOfLastMonthRequests) * 100
+          this.logger.log("[HOME] - getRequestsHasBotCount % COUNT OF LAST MONTH REQUESTS: ", this.countOfLastMonthRequests);
+          this.logger.log("[HOME] - getRequestsHasBotCount % REQUESTS HANDLED BY BOT LAST 30 DAYS: ", _percentageOfLastMonthRequestsHandledByBots);
+          this.logger.log("[HOME] - getRequestsHasBotCount % REQUESTS HANDLED BY BOT LAST 30 DAYS typeof: ", typeof _percentageOfLastMonthRequestsHandledByBots);
+          this.percentageOfLastMonthRequestsHandledByBots = _percentageOfLastMonthRequestsHandledByBots.toFixed(1);
+        } else {
+          this.percentageOfLastMonthRequestsHandledByBots = 0
+        }
 
-    }, (error) => {
-      this.logger.error('[HOME] - GET REQUESTS COUNT HANDLED BY BOT LAST 30 DAYS - ERROR ', error);
+      }, (error) => {
+        this.logger.error('[HOME] - GET REQUESTS COUNT HANDLED BY BOT LAST 30 DAYS - ERROR ', error);
 
-    }, () => {
-      this.logger.log('[HOME] - GET REQUESTS COUNT HANDLED BY BOT LAST 30 DAYS * COMPLETE *');
-    });
+      }, () => {
+        this.logger.log('[HOME] - GET REQUESTS COUNT HANDLED BY BOT LAST 30 DAYS * COMPLETE *');
+      });
 
 
   }
@@ -791,41 +821,57 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   getProjectPlan() {
-    this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      this.logger.log('[HOME] - getProjectPlan project Profile Data', projectProfileData)
-      if (projectProfileData) {
+    this.prjctPlanService.projectPlan$
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((projectProfileData: any) => {
+        this.logger.log('[HOME] - getProjectPlan project Profile Data', projectProfileData)
+        if (projectProfileData) {
 
 
-        this.prjct_name = projectProfileData.name;
-        this.prjct_profile_name = projectProfileData.profile_name;
-        this.prjct_trial_expired = projectProfileData.trial_expired;
-        this.prjct_profile_type = projectProfileData.profile_type;
-        this.subscription_is_active = projectProfileData.subscription_is_active;
-        this.subscription_end_date = projectProfileData.subscription_end_date;
+          this.prjct_name = projectProfileData.name;
+          this.prjct_profile_name = projectProfileData.profile_name;
+          this.prjct_trial_expired = projectProfileData.trial_expired;
+          this.prjct_profile_type = projectProfileData.profile_type;
+          this.subscription_is_active = projectProfileData.subscription_is_active;
+          this.subscription_end_date = projectProfileData.subscription_end_date;
 
 
-        this.showSpinner = false;
+          this.showSpinner = false;
 
-        if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false || this.prjct_profile_type === 'free' && this.prjct_trial_expired === true) {
-          this.DISPLAY_OPH_AS_DISABLED = true;
-        } else {
-          this.DISPLAY_OPH_AS_DISABLED = false;
-        }
-
-        if (this.prjct_profile_type === 'free') {
-          if (this.prjct_trial_expired === false) {
-            this.logger.log('[HOME] getProjectPlan BRS-LANG 2 ', this.browserLang);
-
-            if (this.browserLang === 'it') {
-
-              this.prjct_profile_name = 'Piano Pro (trial)'
-
-            } else if (this.browserLang !== 'it') {
-              this.prjct_profile_name = 'Pro (trial) Plan'
-
-            }
+          if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false || this.prjct_profile_type === 'free' && this.prjct_trial_expired === true) {
+            this.DISPLAY_OPH_AS_DISABLED = true;
           } else {
-            this.logger.log('[HOME] getProjectPlan BRS-LANG 3 ', this.browserLang);
+            this.DISPLAY_OPH_AS_DISABLED = false;
+          }
+
+          if (this.prjct_profile_type === 'free') {
+            if (this.prjct_trial_expired === false) {
+              this.logger.log('[HOME] getProjectPlan BRS-LANG 2 ', this.browserLang);
+
+              if (this.browserLang === 'it') {
+
+                this.prjct_profile_name = 'Piano Pro (trial)'
+
+              } else if (this.browserLang !== 'it') {
+                this.prjct_profile_name = 'Pro (trial) Plan'
+
+              }
+            } else {
+              this.logger.log('[HOME] getProjectPlan BRS-LANG 3 ', this.browserLang);
+              if (this.browserLang === 'it') {
+
+                this.prjct_profile_name = 'Piano ' + projectProfileData.profile_name;
+
+              } else if (this.browserLang !== 'it') {
+
+                this.prjct_profile_name = projectProfileData.profile_name + ' Plan';
+
+              }
+            }
+          } else if (this.prjct_profile_type === 'payment') {
+            this.logger.log('[HOME] getProjectPlan BRS-LANG 4 ', this.browserLang);
             if (this.browserLang === 'it') {
 
               this.prjct_profile_name = 'Piano ' + projectProfileData.profile_name;
@@ -833,29 +879,17 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
             } else if (this.browserLang !== 'it') {
 
               this.prjct_profile_name = projectProfileData.profile_name + ' Plan';
-
             }
           }
-        } else if (this.prjct_profile_type === 'payment') {
-          this.logger.log('[HOME] getProjectPlan BRS-LANG 4 ', this.browserLang);
-          if (this.browserLang === 'it') {
-
-            this.prjct_profile_name = 'Piano ' + projectProfileData.profile_name;
-
-          } else if (this.browserLang !== 'it') {
-
-            this.prjct_profile_name = projectProfileData.profile_name + ' Plan';
-          }
         }
-      }
-    }, error => {
+      }, error => {
 
-      this.logger.error('[HOME] - getProjectPlan - ERROR', error);
-    }, () => {
+        this.logger.error('[HOME] - getProjectPlan - ERROR', error);
+      }, () => {
 
-      this.logger.log('[HOME] - getProjectPlan * COMPLETE *')
+        this.logger.log('[HOME] - getProjectPlan * COMPLETE *')
 
-    });
+      });
   }
 
 
@@ -909,12 +943,16 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   // IN CUI ESGUE getProjectUser() PASSA LO USER ROLE ALLO USER SERVICE CHE LO PUBBLICA
   // NOTA: LA SIDEBAR AGGIORNA LO USER ROLE PRIMA DELLA HOME
   getUserRole() {
-    this.subscription = this.usersService.project_user_role_bs.subscribe((userRole) => {
+    this.usersService.project_user_role_bs
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((userRole) => {
 
-      this.logger.log('[HOME] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
-      // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
-      this.USER_ROLE = userRole;
-    })
+        this.logger.log('[HOME] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
+        // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
+        this.USER_ROLE = userRole;
+      })
   }
 
   // TEST FUNCTION : GET ALL AVAILABLE PROJECT USER
@@ -1185,21 +1223,25 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   getLoggedUser() {
-    this.subscription = this.auth.user_bs.subscribe((user) => {
-      this.logger.log('[HOME] - USER GET IN HOME ', user)
-      // tslint:disable-next-line:no-debugger
-      // debugger
-      this.user = user;
+    this.auth.user_bs
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((user) => {
+        this.logger.log('[HOME] - USER GET IN HOME ', user)
+        // tslint:disable-next-line:no-debugger
+        // debugger
+        this.user = user;
 
-      if (this.user) {
+        if (this.user) {
 
-        // !!!! NO MORE USED - MOVED IN USER SERVICE
-        // this.getAllUsersOfCurrentProject();
-        this.logger.log('[HOME] CALL -> getAllUsersOfCurrentProjectAndSaveInStorage')
-        this.usersService.getAllUsersOfCurrentProjectAndSaveInStorage();
+          // !!!! NO MORE USED - MOVED IN USER SERVICE
+          // this.getAllUsersOfCurrentProject();
+          this.logger.log('[HOME] CALL -> getAllUsersOfCurrentProjectAndSaveInStorage')
+          this.usersService.getAllUsersOfCurrentProjectAndSaveInStorage();
 
-      }
-    });
+        }
+      });
   }
 
   // IS USED TO GET THE PROJECT-USER AND DETERMINE IF THE USER IS AVAILAVLE/UNAVAILABLE WHEN THE USER ENTER IN HOME
@@ -1269,173 +1311,177 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   // LAST 7 DAYS CONVERSATIONS GRAPH
   // ------------------------------------------------------------------
   getRequestByLast7Day() {
-    this.subscription = this.analyticsService.requestsByDay(7).subscribe((requestsByDay: any) => {
-      this.logger.log('[HOME] - REQUESTS BY DAY ', requestsByDay);
+    this.analyticsService.requestsByDay(7)
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((requestsByDay: any) => {
+        this.logger.log('[HOME] - REQUESTS BY DAY ', requestsByDay);
 
-      // CREATES THE INITIAL ARRAY WITH THE LAST SEVEN DAYS (calculated with moment) AND REQUESTS COUNT = O
-      const last7days_initarray = []
-      for (let i = 0; i <= 6; i++) {
-        // this.logger.log('»» !!! ANALYTICS - LOOP INDEX', i);
-        last7days_initarray.push({ 'count': 0, day: moment().subtract(i, 'd').format('D-M-YYYY') })
-      }
-
-      last7days_initarray.reverse()
-
-      this.logger.log('[HOME] - REQUESTS BY DAY - MOMENT LAST SEVEN DATE (init array)', last7days_initarray);
-
-      const requestsByDay_series_array = [];
-      const requestsByDay_labels_array = []
-
-      // CREATES A NEW ARRAY FROM THE ARRAY RETURNED FROM THE SERVICE SO THAT IT IS COMPARABLE WITH last7days_initarray
-      const requestsByDay_array = []
-      for (let j = 0; j < requestsByDay.length; j++) {
-        if (requestsByDay[j]) {
-          requestsByDay_array.push({ 'count': requestsByDay[j]['count'], day: requestsByDay[j]['_id']['day'] + '-' + requestsByDay[j]['_id']['month'] + '-' + requestsByDay[j]['_id']['year'] })
-
+        // CREATES THE INITIAL ARRAY WITH THE LAST SEVEN DAYS (calculated with moment) AND REQUESTS COUNT = O
+        const last7days_initarray = []
+        for (let i = 0; i <= 6; i++) {
+          // this.logger.log('»» !!! ANALYTICS - LOOP INDEX', i);
+          last7days_initarray.push({ 'count': 0, day: moment().subtract(i, 'd').format('D-M-YYYY') })
         }
 
-      }
-      this.logger.log('[HOME] - REQUESTS BY DAY FORMATTED ', requestsByDay_array);
+        last7days_initarray.reverse()
 
-      /**
-       * MERGE THE ARRAY last7days_initarray WITH requestsByDay_array  */
-      // Here, requestsByDay_formatted_array.find(o => o.day === obj.day)
-      // will return the element i.e. object from requestsByDay_formatted_array if the day is found in the requestsByDay_formatted_array.
-      // If not, then the same element in last7days i.e. obj is returned.
-      const requestByDays_final_array = last7days_initarray.map(obj => requestsByDay_array.find(o => o.day === obj.day) || obj);
-      this.logger.log('[HOME] - REQUESTS BY DAY - FINAL ARRAY ', requestByDays_final_array);
+        this.logger.log('[HOME] - REQUESTS BY DAY - MOMENT LAST SEVEN DATE (init array)', last7days_initarray);
 
-      const _requestsByDay_series_array = [];
-      const _requestsByDay_labels_array = [];
+        const requestsByDay_series_array = [];
+        const requestsByDay_labels_array = []
 
-      requestByDays_final_array.forEach(requestByDay => {
-        //this.logger.log('»» !!! ANALYTICS - REQUESTS BY DAY - requestByDay', requestByDay);
-        _requestsByDay_series_array.push(requestByDay.count)
+        // CREATES A NEW ARRAY FROM THE ARRAY RETURNED FROM THE SERVICE SO THAT IT IS COMPARABLE WITH last7days_initarray
+        const requestsByDay_array = []
+        for (let j = 0; j < requestsByDay.length; j++) {
+          if (requestsByDay[j]) {
+            requestsByDay_array.push({ 'count': requestsByDay[j]['count'], day: requestsByDay[j]['_id']['day'] + '-' + requestsByDay[j]['_id']['month'] + '-' + requestsByDay[j]['_id']['year'] })
 
-        const splitted_date = requestByDay.day.split('-');
-        //this.logger.log('»» !!! ANALYTICS - REQUESTS BY DAY - SPLITTED DATE', splitted_date);
-        _requestsByDay_labels_array.push(splitted_date[0] + ' ' + this.monthNames[splitted_date[1]])
-      });
+          }
 
+        }
+        this.logger.log('[HOME] - REQUESTS BY DAY FORMATTED ', requestsByDay_array);
 
-      this.logger.log('[HOME] - REQUESTS BY DAY - SERIES (ARRAY OF COUNT - to use for debug)', requestsByDay_series_array);
-      this.logger.log('[HOME] - REQUESTS BY DAY - SERIES (+ NEW + ARRAY OF COUNT)', _requestsByDay_series_array);
-      this.logger.log('[HOME] - REQUESTS BY DAY - LABELS (ARRAY OF DAY - to use for debug)', requestsByDay_labels_array);
-      this.logger.log('[HOME] - REQUESTS BY DAY - LABELS (+ NEW + ARRAY OF DAY)', _requestsByDay_labels_array);
+        /**
+         * MERGE THE ARRAY last7days_initarray WITH requestsByDay_array  */
+        // Here, requestsByDay_formatted_array.find(o => o.day === obj.day)
+        // will return the element i.e. object from requestsByDay_formatted_array if the day is found in the requestsByDay_formatted_array.
+        // If not, then the same element in last7days i.e. obj is returned.
+        const requestByDays_final_array = last7days_initarray.map(obj => requestsByDay_array.find(o => o.day === obj.day) || obj);
+        this.logger.log('[HOME] - REQUESTS BY DAY - FINAL ARRAY ', requestByDays_final_array);
 
-      const higherCount = this.getMaxOfArray(_requestsByDay_series_array);
-      this.logger.log('[HOME] - REQUESTS BY DAY - HIGHTER COUNT ', higherCount);
+        const _requestsByDay_series_array = [];
+        const _requestsByDay_labels_array = [];
 
-      let lang = this.browserLang;
-      const canvas = <HTMLCanvasElement>document.getElementById('last7dayChart'); // nk added to resolve Failed to create chart: can't acquire context from the given item
-      const ctx = canvas.getContext('2d'); // nk added to resolve Failed to create chart: can't acquire context from the given item
-      // var lineChart = new Chart('last7dayChart', {
-      var lineChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: _requestsByDay_labels_array,
-          datasets: [{
-            label: 'Number of conversations in last 7 days ',//active label setting to true the legend value
-            data: _requestsByDay_series_array,
-            fill: true, //riempie zona sottostante dati
-            lineTension: 0.4,
-            backgroundColor: 'rgba(30, 136, 229, 0.6)',
-            borderColor: 'rgba(30, 136, 229, 1)',
-            borderWidth: 3,
-            borderDash: [],
-            borderDashOffset: 0.0,
-            pointBackgroundColor: 'rgba(255, 255, 255, 0.8)',
-            pointBorderColor: '#1e88e5'
+        requestByDays_final_array.forEach(requestByDay => {
+          //this.logger.log('»» !!! ANALYTICS - REQUESTS BY DAY - requestByDay', requestByDay);
+          _requestsByDay_series_array.push(requestByDay.count)
 
-          }]
-        },
-        options: {
-          maintainAspectRatio: false, //allow to resize chart
-          title: {
-            text: 'Last 7 days converdations',
-            display: false
-          },
-          legend: {
-            display: false //do not show label title
-          },
-          scales: {
-            xAxes: [{
-              ticks: {
-                beginAtZero: true,
-                display: true,
-                //minRotation: 30,
-                fontColor: 'black',
-
-              },
-              gridLines: {
-                display: true,
-                borderDash: [8, 4],
-                //color:'rgba(255, 255, 255, 0.5)',
-
-              }
-
-            }],
-            yAxes: [{
-              gridLines: {
-                display: true,
-                borderDash: [8, 4],
+          const splitted_date = requestByDay.day.split('-');
+          //this.logger.log('»» !!! ANALYTICS - REQUESTS BY DAY - SPLITTED DATE', splitted_date);
+          _requestsByDay_labels_array.push(splitted_date[0] + ' ' + this.monthNames[splitted_date[1]])
+        });
 
 
-              },
-              ticks: {
-                beginAtZero: true,
-                userCallback: function (label, index, labels) {
-                  //userCallback is used to return integer value to ylabel
-                  if (Math.floor(label) === label) {
-                    return label;
-                  }
-                },
-                display: true,
-                fontColor: 'black',
-                suggestedMax: higherCount + 2,
+        this.logger.log('[HOME] - REQUESTS BY DAY - SERIES (ARRAY OF COUNT - to use for debug)', requestsByDay_series_array);
+        this.logger.log('[HOME] - REQUESTS BY DAY - SERIES (+ NEW + ARRAY OF COUNT)', _requestsByDay_series_array);
+        this.logger.log('[HOME] - REQUESTS BY DAY - LABELS (ARRAY OF DAY - to use for debug)', requestsByDay_labels_array);
+        this.logger.log('[HOME] - REQUESTS BY DAY - LABELS (+ NEW + ARRAY OF DAY)', _requestsByDay_labels_array);
 
-              }
+        const higherCount = this.getMaxOfArray(_requestsByDay_series_array);
+        this.logger.log('[HOME] - REQUESTS BY DAY - HIGHTER COUNT ', higherCount);
+
+        let lang = this.browserLang;
+        const canvas = <HTMLCanvasElement>document.getElementById('last7dayChart'); // nk added to resolve Failed to create chart: can't acquire context from the given item
+        const ctx = canvas.getContext('2d'); // nk added to resolve Failed to create chart: can't acquire context from the given item
+        // var lineChart = new Chart('last7dayChart', {
+        var lineChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: _requestsByDay_labels_array,
+            datasets: [{
+              label: 'Number of conversations in last 7 days ',//active label setting to true the legend value
+              data: _requestsByDay_series_array,
+              fill: true, //riempie zona sottostante dati
+              lineTension: 0.4,
+              backgroundColor: 'rgba(30, 136, 229, 0.6)',
+              borderColor: 'rgba(30, 136, 229, 1)',
+              borderWidth: 3,
+              borderDash: [],
+              borderDashOffset: 0.0,
+              pointBackgroundColor: 'rgba(255, 255, 255, 0.8)',
+              pointBorderColor: '#1e88e5'
+
             }]
           },
-          tooltips: {
-            callbacks: {
-              label: function (tooltipItem, data) {
+          options: {
+            maintainAspectRatio: false, //allow to resize chart
+            title: {
+              text: 'Last 7 days converdations',
+              display: false
+            },
+            legend: {
+              display: false //do not show label title
+            },
+            scales: {
+              xAxes: [{
+                ticks: {
+                  beginAtZero: true,
+                  display: true,
+                  //minRotation: 30,
+                  fontColor: 'black',
 
-                const currentItemValue = tooltipItem.yLabel
+                },
+                gridLines: {
+                  display: true,
+                  borderDash: [8, 4],
+                  //color:'rgba(255, 255, 255, 0.5)',
 
-                if (lang === 'it') {
-                  return 'Conversazioni: ' + currentItemValue;
-                } else {
-                  return 'Conversations:' + currentItemValue;
                 }
 
+              }],
+              yAxes: [{
+                gridLines: {
+                  display: true,
+                  borderDash: [8, 4],
+
+
+                },
+                ticks: {
+                  beginAtZero: true,
+                  userCallback: function (label, index, labels) {
+                    //userCallback is used to return integer value to ylabel
+                    if (Math.floor(label) === label) {
+                      return label;
+                    }
+                  },
+                  display: true,
+                  fontColor: 'black',
+                  suggestedMax: higherCount + 2,
+
+                }
+              }]
+            },
+            tooltips: {
+              callbacks: {
+                label: function (tooltipItem, data) {
+
+                  const currentItemValue = tooltipItem.yLabel
+
+                  if (lang === 'it') {
+                    return 'Conversazioni: ' + currentItemValue;
+                  } else {
+                    return 'Conversations:' + currentItemValue;
+                  }
+
+                }
               }
             }
-          }
 
-        }
-        ,
-        plugins: [{
-          beforeDraw: function (chartInstance, easing) {
-            var ctx = chartInstance.chart.ctx;
-            //this.logger.log("chartistance",chartInstance)
-            //ctx.fillStyle = 'red'; // your color here
-            ctx.height = 128
-            //chartInstance.chart.canvas.parentNode.style.height = '128px';
-            ctx.font = "Google Sans"
-            var chartArea = chartInstance.chartArea;
-            //ctx.fillRect(chartArea.left, chartArea.top, chartArea.right - chartArea.left, chartArea.bottom - chartArea.top);
           }
-        }]
+          ,
+          plugins: [{
+            beforeDraw: function (chartInstance, easing) {
+              var ctx = chartInstance.chart.ctx;
+              //this.logger.log("chartistance",chartInstance)
+              //ctx.fillStyle = 'red'; // your color here
+              ctx.height = 128
+              //chartInstance.chart.canvas.parentNode.style.height = '128px';
+              ctx.font = "Google Sans"
+              var chartArea = chartInstance.chartArea;
+              //ctx.fillRect(chartArea.left, chartArea.top, chartArea.right - chartArea.left, chartArea.bottom - chartArea.top);
+            }
+          }]
+        });
+
+      }, (error) => {
+        this.logger.error('[HOME] - REQUESTS BY DAY - ERROR ', error);
+
+      }, () => {
+        this.logger.log('[HOME] - REQUESTS BY DAY * COMPLETE *');
+
       });
-
-    }, (error) => {
-      this.logger.error('[HOME] - REQUESTS BY DAY - ERROR ', error);
-
-    }, () => {
-      this.logger.log('[HOME] - REQUESTS BY DAY * COMPLETE *');
-
-    });
   }
 
 
