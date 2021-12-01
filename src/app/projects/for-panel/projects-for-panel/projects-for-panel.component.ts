@@ -121,7 +121,7 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
 
     this.setPerfectScrollbar();
     this.listenHasDeleteUserProfileImage();
-
+    window.top.postMessage('onInitProjectsForPanel', '*')
   }
   setPerfectScrollbar() {
     const container_projects_for_panel = <HTMLElement>document.querySelector('.main-content-projects-for-panel');
@@ -140,6 +140,7 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
 
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+    window.top.postMessage('onDestroyProjectsForPanel', '*')
   }
 
 
