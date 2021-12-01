@@ -159,7 +159,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   ngAfterViewInit() { }
 
   ngOnDestroy() {
-    console.log('HOME COMP - CALLING ON DESTROY')
+    // console.log('HOME COMP - CALLING ON DESTROY')
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
@@ -303,13 +303,13 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         this.logger.error('[HOME] $UBSCIBE TO PUBLISHED PROJECT - ERROR ', error);
 
       }, () => {
-        console.log('[HOME] $UBSCIBE TO PUBLISHED PROJECT * COMPLETE *');
+        this.logger.log('[HOME] $UBSCIBE TO PUBLISHED PROJECT * COMPLETE *');
       });
   }
 
 
   init() {
-    console.log("[HOME] > CALLING INIT")
+    // console.log("[HOME] > CALLING INIT")
     // this.getDeptsByProjectId(); // USED FOR COUNT OF DEPTS FOR THE NEW HOME
     this.getImageStorageThenUserAndBots();
     this.getLastMounthMessagesCount() // USED TO GET THE MESSAGES OF THE LAST 30 DAYS

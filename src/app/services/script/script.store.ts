@@ -16,7 +16,7 @@ interface Scripts {
 
 export function ScriptStoreT(): string { 
 
-  console.log('SCRIPT STORE - ENV ', environment)
+  // console.log('SCRIPT STORE - ENV ', environment)
 
   return
 }
