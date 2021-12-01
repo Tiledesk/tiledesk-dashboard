@@ -66,6 +66,7 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
   REQUEST_STATUS: number;
   ROLE_IS_AGENT: boolean;
   currentYear: any;
+  browserLang: string;
   constructor(
     private wsMsgsService: WsMsgsService,
     public appConfigService: AppConfigService,
@@ -132,12 +133,12 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
 
   getCurrentYear() {
     this.currentYear = moment().format('YYYY');
-    this.logger.log('[ION-LIST-CONVS-COMP] - currentYear ', this.currentYear)
+    this.logger.log('[REQUEST-DTLS-X-PANEL] - currentYear ', this.currentYear)
   }
   setMomentLocale() {
-    const browserLang = this.translate.getBrowserLang();
-    if (browserLang) {
-      if (browserLang === 'it') {
+    this.browserLang = this.translate.getBrowserLang();
+    if ( this.browserLang) {
+      if ( this.browserLang === 'it') {
         moment.locale('it')
       } else {
         moment.locale('en')

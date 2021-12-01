@@ -341,7 +341,8 @@ ul li {
     .chat-messages {
         position: relative;
         // padding: 16px 40px 40px 0px;
-        padding: 16px 40px 30px 0px;
+        // padding: 16px 40px 30px 0px;
+        padding: 16px 5px 30px 0px;
       
         .message-row.info {
             position: relative;
@@ -349,7 +350,7 @@ ul li {
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            margin-right: -31px;
+            // margin-right: -31px;
             text-align: center;
 
             .bubble {
@@ -413,7 +414,8 @@ ul li {
                     top: 100%;
                     left: 0;
                     white-space: nowrap;
-                    font-weight: 500;
+                    font-weight: 400;
+                    color: #aaaaaa
                 }
             }
 
@@ -457,7 +459,8 @@ ul li {
             }
 
             &.me {
-                padding-left: 40px;
+                // padding-left: 40px;
+                padding-left: 65px;
 
                 .avatar {
                     order: 2;
@@ -685,4 +688,43 @@ ul li {
     }
 }
 
-// ***************** END new CHAT *****************
+// END new CHAT 
+
+// -----------------------------------
+// Action buttons tooltip
+// -----------------------------------
+.action-tooltip {
+    position: relative;
+    display: inline-block;
+    // border-bottom: 1px dotted black;
+  }
+  
+  .action-tooltip .action-tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 150%;
+    left: 50%;
+    margin-left: -60px;
+  }
+  
+  .action-tooltip .action-tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: black transparent transparent transparent;
+  }
+  
+  .action-tooltip:hover .action-tooltiptext {
+    visibility: visible;
+  }

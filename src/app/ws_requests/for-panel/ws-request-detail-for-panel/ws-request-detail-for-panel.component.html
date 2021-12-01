@@ -60,7 +60,7 @@ padding-right: 0px;
                         style="vertical-align: middle; color: #394f5a;font-size:14px; padding: 6px; background: #e4e6eb; border-radius: 50%;">email</i>
 
                     <span class="top"
-                        style="min-width: fit-content;text-align: center ; top:-8px; border-radius: 3px; padding: 3px 10px; font-size: 10px; line-height: 14px;">
+                        style="min-width: fit-content; text-align: center ; top:-8px; border-radius: 3px; padding: 3px 10px; font-size: 10px; line-height: 12px;">
                         {{ "ContactEmail" | translate }}
 
                         <i></i>
@@ -82,9 +82,7 @@ padding-right: 0px;
 
 
     <div class="row" style="margin-top:5px">
-
         <div class="col-sm-12">
-
             <p style="margin-bottom: 0px;">
 
                 <span class="tool_tip">
@@ -92,7 +90,7 @@ padding-right: 0px;
                         style="vertical-align: middle; color: #394f5a;font-size:14px; padding: 6px; background: #e4e6eb; border-radius: 50%;">watch_later
                     </i>
                     <span class="top"
-                        style="min-width: 100px;text-align: center ; top:-8px; border-radius: 3px; padding: 3px 10px; font-size: 10px; line-height: 14px;">
+                        style="min-width: fit-content; text-align: center ; top:-8px; border-radius: 3px; padding: 3px 10px; font-size: 10px; line-height: 12px;">
                         {{ "RequestMsgsPage.Created" | translate }}
                         <i></i>
                     </span>
@@ -100,11 +98,6 @@ padding-right: 0px;
 
 
                 <span style="position: relative;top: 1px;">
-                    <!-- <span
-                        style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
-                        {{ "RequestMsgsPage.Created" | translate }}
-                    </span> -->
-
                     <span style="color: #7695a5; font-weight: 400; font-size: 12px;">
                         {{ request?.createdAt | amTimeAgo }}
                         <span>
@@ -117,7 +110,6 @@ padding-right: 0px;
     </div>
 
     <div class="row" style="margin-top:5px" *ngIf="request?.language">
-
         <div class="col-sm-12">
             <p style="margin-bottom: 0px;">
 
@@ -125,19 +117,13 @@ padding-right: 0px;
                     <i class="material-icons"
                         style="vertical-align: middle; color: #394f5a;font-size:14px; padding: 6px; background: #e4e6eb; border-radius: 50%;">flag</i>
                     <span class="top"
-                        style="min-width: 100px;text-align: center ; top:-8px; border-radius: 3px; padding: 3px 10px; font-size: 10px; line-height: 14px;">
+                        style="min-width: fit-content; text-align: center ; top:-8px; border-radius: 3px; padding: 3px 10px; font-size: 10px; line-height: 12px;">
                         {{ "Language" | translate }}
                         <i></i>
                     </span>
                 </span>
 
                 <span style="position: relative;top: 1px;">
-                    <!-- <span
-                        style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
-                        {{ "Language" | translate }}
-
-                    </span> -->
-
                     <span style="color: #7695a5; font-weight: 400; font-size: 12px; text-transform: uppercase;">
                         {{ request?.language }}
                     </span>
@@ -149,15 +135,13 @@ padding-right: 0px;
 
     <div class="row" style="margin-top:5px">
         <div class="col-sm-12">
-
             <p style="margin-bottom: 0px;">
-
                 <span class="tool_tip">
                     <i class="material-icons"
                         style="vertical-align: middle; color: #394f5a;font-size:14px; padding: 6px; background: #e4e6eb; border-radius: 50%;">account_balance</i>
 
                     <span class="top"
-                        style="min-width: 100px;text-align: center ; top:-8px; border-radius: 3px; padding: 3px 10px; font-size: 10px; line-height: 14px;">
+                        style="min-width: fit-content; text-align: center ; top:-8px; border-radius: 3px; padding: 3px 10px; font-size: 10px; line-height: 12px;">
                         {{ "Department" | translate }}
                         <i></i>
                     </span>
@@ -167,12 +151,10 @@ padding-right: 0px;
 
                     <span class="dept-avatar-detail-for-panel"
                         [ngStyle]="{'background-color': request?.dept?.dept_name_fillcolour }">
-
                         {{ request?.dept?.dept_name_initial }}
                     </span>
 
                     <span style="color: #7695a5; font-weight: 400; font-size: 12px;">
-
                         <span *ngIf="request?.dept">
                             {{request?.dept?.name }}
                         </span>
@@ -180,7 +162,6 @@ padding-right: 0px;
                             style="text-transform: lowercase;padding-left: 0px;margin-left: 0px;">
                             {{'DepartmentsPage.NoDept' | translate}}
                         </span>
-
                     </span>
                 </span>
             </p>
@@ -192,10 +173,10 @@ padding-right: 0px;
             <p style="margin-bottom: 0px;" *ngIf="request?.userAgent">
 
                 <span class="tool_tip">
-                     
-                  <!-- ---------------------------------------------------------------- -->
-                  <!-- @ OS - if not is -->
-                  <!-- ---------------------------------------------------------------- -->
+
+                    <!-- ---------------------------------------------------------------- -->
+                    <!-- @ OS - if not is -->
+                    <!-- ---------------------------------------------------------------- -->
                     <span *ngIf="(request?.ua_os?.indexOf('Android') === -1) && 
                                 (request?.ua_os?.indexOf('Mac OS') === -1) && 
                                 (request?.ua_os?.indexOf('iOS') === -1) &&
@@ -206,67 +187,61 @@ padding-right: 0px;
                             src="assets/img/user_agent/laptop.svg" />
                     </span>
 
-
-                     
-                  <!-- ---------------------------------------------------------------- -->
-                  <!-- if is Android -->
-                  <!-- ---------------------------------------------------------------- -->
+                    <!-- ---------------------------------------------------------------- -->
+                    <!-- if is Android -->
+                    <!-- ---------------------------------------------------------------- -->
                     <span *ngIf="request?.ua_os?.indexOf('Android') !== -1">
                         <img class="ua-os-icon--right-sidebar" src="assets/img/user_agent/android.svg" />
                     </span>
 
-                   
-                  <!-- ---------------------------------------------------------------- -->
-                  <!-- if is Mac OS or iOS -->
-                  <!-- ---------------------------------------------------------------- -->
+                    <!-- ---------------------------------------------------------------- -->
+                    <!-- if is Mac OS or iOS -->
+                    <!-- ---------------------------------------------------------------- -->
                     <span *ngIf="request?.ua_os?.indexOf('Mac OS') !== -1 || request?.ua_os.indexOf('iOS') !== -1">
                         <img class="ua-os-icon--right-sidebar" style="margin-bottom: 2px;"
                             src="assets/img/user_agent/apple.svg" />
                     </span>
 
-                     
-                  <!-- ---------------------------------------------------------------- -->
-                  <!-- if is Windows -->
-                  <!-- ---------------------------------------------------------------- -->
+
+                    <!-- ---------------------------------------------------------------- -->
+                    <!-- if is Windows -->
+                    <!-- ---------------------------------------------------------------- -->
                     <span *ngIf="request?.ua_os?.indexOf('Windows') !== -1">
                         <img class="ua-os-icon--right-sidebar" style="margin-top: 2px;"
                             src="assets/img/user_agent/windows.svg" />
                     </span>
 
-                     
-                  <!-- ---------------------------------------------------------------- -->
-                  <!-- if is Ubuntu -->
-                  <!-- ---------------------------------------------------------------- -->
+                    <!-- ---------------------------------------------------------------- -->
+                    <!-- if is Ubuntu -->
+                    <!-- ---------------------------------------------------------------- -->
                     <span *ngIf="request?.ua_os?.indexOf('Ubuntu') !== -1">
                         <img class="ua-os-icon--right-sidebar" src="assets/img/user_agent/ubuntu.svg" />
                     </span>
 
                     <span class="top"
-                        style="min-width: 100px;text-align: center ; top:-8px; border-radius: 3px; padding: 3px 10px; font-size: 10px; line-height: 14px;">
-
+                        style="min-width: fit-content; text-align: center ; top:-8px; border-radius: 3px; padding: 3px 10px; font-size: 10px; line-height: 12px;">
                         {{ 'OperatingSystem' | translate }}
                         <i></i>
                     </span>
 
                 </span>
                 <span style="color: #7695a5; font-weight: 400; font-size: 12px;">
-
                     <span *ngIf="request?.ua_os !== 'undefined undefined'"> {{ request?.ua_os }} </span>
                     <span *ngIf="request?.ua_os === 'undefined undefined'"> {{'Unavailable' | translate}} </span>
                 </span>
             </p>
         </div>
     </div>
-     
+
     <div class="row" style="margin-top:5px">
         <div class="col-sm-12">
             <p style="margin-bottom: 0px;" *ngIf="request?.userAgent">
 
                 <span class="tool_tip">
-                   
-                  <!-- ---------------------------------------------------------------- -->
-                  <!-- @ Browser - if not is -->
-                  <!-- ---------------------------------------------------------------- -->
+
+                    <!-- ---------------------------------------------------------------- -->
+                    <!-- @ Browser - if not is -->
+                    <!-- ---------------------------------------------------------------- -->
                     <span *ngIf="(request?.ua_browser?.indexOf('Chrome') === -1) && 
                                 (request?.ua_browser?.indexOf('Chromium') === -1) &&
                                 (request?.ua_browser?.indexOf('Firefox') === -1) &&
@@ -279,18 +254,16 @@ padding-right: 0px;
 
                     </span>
 
-                     
+
                     <!-- ---------------------------------------------------------------- -->
                     <!-- Chrome or Chromium -->
                     <!-- ---------------------------------------------------------------- -->
-                  
                     <span
                         *ngIf="request?.ua_browser?.indexOf('Chrome') !== -1 || request?.ua_browser.indexOf('Chromium') !== -1">
                         <img class="ua_browser_icon--right-sidebar" src="assets/img/user_agent/chrome.svg" />
-
                     </span>
 
-                     
+
                     <!-- ---------------------------------------------------------------- -->
                     <!-- Firefox -->
                     <!-- ---------------------------------------------------------------- -->
@@ -298,7 +271,7 @@ padding-right: 0px;
                         <img class="ua_browser_icon--right-sidebar" src="assets/img/user_agent/firefox.svg" />
                     </span>
 
-                     
+
                     <!-- ---------------------------------------------------------------- -->
                     <!-- Edge -->
                     <!-- ---------------------------------------------------------------- -->
@@ -306,7 +279,7 @@ padding-right: 0px;
                         <img class="ua_browser_icon--right-sidebar" src="assets/img/user_agent/edge.svg" />
                     </span>
 
-                     
+
                     <!-- ---------------------------------------------------------------- -->
                     <!-- Opera -->
                     <!-- ---------------------------------------------------------------- -->
@@ -314,7 +287,7 @@ padding-right: 0px;
                         <img class="ua_browser_icon--right-sidebar" src="assets/img/user_agent/opera.svg" />
                     </span>
 
-                     
+
                     <!-- ---------------------------------------------------------------- -->
                     <!-- Safari -->
                     <!-- ---------------------------------------------------------------- -->
@@ -322,7 +295,7 @@ padding-right: 0px;
                         <img class="ua_browser_icon--right-sidebar" src="assets/img/user_agent/safari.svg" />
                     </span>
 
-                     
+
                     <!-- ---------------------------------------------------------------- -->
                     <!-- Explorer -->
                     <!-- ---------------------------------------------------------------- -->
@@ -332,19 +305,16 @@ padding-right: 0px;
 
 
                     <span class="top"
-                        style="min-width: 100px;text-align: center ; top:-8px; border-radius: 3px; padding: 3px 10px; font-size: 10px; line-height: 14px;">
+                        style="min-width: fit-content; text-align: center ; top:-8px; border-radius: 3px; padding: 3px 10px; font-size: 10px; line-height: 12px;">
                         Browser
                         <i></i>
                     </span>
-
                 </span>
 
                 <span style="color: #7695a5; font-weight: 400; font-size: 12px;">
                     <span *ngIf="request?.ua_browser !== 'undefined undefined'"> {{ request?.ua_browser }} </span>
                     <span *ngIf="request?.ua_browser === 'undefined undefined'"> {{'Unavailable' | translate}} </span>
                 </span>
-
-
 
             </p>
         </div>
@@ -361,12 +331,9 @@ padding-right: 0px;
                     border-radius: 50%;
                     height: 26px;" class="request_details___ua_browser_icon"
                         src="assets/img/user_agent/source_page.svg" />
-
-
                 </span>
 
                 <span style="position: relative;top: 1px;">
-
                     <span style=" font-weight: 400; font-size: 12px;">
                         <!-- word-wrap: break-word; -->
                         <span>
@@ -375,10 +342,10 @@ padding-right: 0px;
                     </span>
                 </span>
                 <!-- <span class="top"
-                        style="min-width: 100px;text-align: center ; top:-8px; border-radius: 3px; padding: 3px 10px; font-size: 10px; line-height: 14px;">
-                        {{ "RequestMsgsPage.SourcePage" | translate }}
-                        <i></i>
-                    </span> -->
+                    style="min-width: fit-content; text-align: center ; top:-8px; border-radius: 3px; padding: 3px 10px; font-size: 10px; line-height: 12px;">
+                    {{ "RequestMsgsPage.SourcePage" | translate }}
+                    <i></i>
+                </span> -->
             </p>
         </div>
     </div>
@@ -425,7 +392,7 @@ padding-right: 0px;
                             {{ request?.requester_fullname_initial }}
                         </span>
                     </div>
-                    <!-- <span class="e1qzs7wo2 css-1mi8udo ey4f9bj0"></span> -->
+
                 </div>
             </div>
             <div class="contact-name">
@@ -450,11 +417,18 @@ padding-right: 0px;
             <!-- Archive btn -->
             <!-- ----------------------- -->
             <button type="button" rel="tooltip" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}"
-                class="btn btn-tdblu btn-simple btn-xs tool_tip archive-btn" (click)='archiveRequest(request?.request_id)'
+                class="btn btn-tdblu btn-simple btn-xs tool_tip archive-btn"
+                (click)='archiveRequest(request?.request_id)'
                 [disabled]="request?.currentUserIsJoined === false && ROLE_IS_AGENT === true">
 
                 <i class="material-icons">archive</i>
-                <span style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px;" class="top">
+                <span style=" min-width: fit-content;
+                text-align: center;
+                top: -8px;
+                border-radius: 3px;
+                padding: 3px 10px;
+                font-size: 10px;
+                line-height: 12px;" class="top">
                     <span style="text-transform: capitalize;"> {{ 'VisitorsPage.Archive' | translate }} </span>
                     <i></i>
                 </span>
@@ -463,10 +437,8 @@ padding-right: 0px;
             <!-- Join btn  -->
             <!-- ----------------------- -->
             <!-- request?.currentUserIsJoined, request?.participanting_Agents, *ngIf="request?.currentUserIsJoined === false" -->
-            <button type="button" rel="tooltip"
-                title="{{ 'RequestMsgsPage.Enter' | translate }}" class="btn btn-tdblu btn-simple btn-xs tool_tip join-btn"
-                
-                (click)='joinRequest(request?.request_id)'
+            <button type="button" rel="tooltip" title="{{ 'RequestMsgsPage.Enter' | translate }}"
+                class="btn btn-tdblu btn-simple btn-xs tool_tip join-btn" (click)='joinRequest(request?.request_id)'
                 [disabled]="request?.currentUserIsJoined === true">
                 <!-- ------------------------------------------------------------------------------------------------------ -->
                 <!-- SVG font-awesome link icon -->
@@ -478,15 +450,21 @@ padding-right: 0px;
                         d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z">
                     </path>
                 </svg>
-                <span style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px; left: -16px;"
-                    class="top">
+                <span [ngStyle]="{'left':browserLang === 'it' ? '-29px' : '-16px' }" style="
+                    min-width: fit-content;
+                    text-align: center;
+                    top: -8px;
+                    border-radius: 3px;
+                    padding: 3px 10px;
+                    font-size: 10px;
+                    line-height: 12px;" class="top">
                     <span style="text-transform: capitalize;"> {{ 'RequestMsgsPage.Enter' | translate }} </span>
-                    <i style="left: 54%;"></i>
+                    <i style="left: 70%;"></i>
                 </span>
 
             </button>
-      
- 
+
+
         </div>
     </div>
 
@@ -509,20 +487,42 @@ padding-right: 0px;
                             'info': isInfoMessage(message, i),
                             'info-first': isFirstInfoMessage(message, i)
                             }">
-                    <!-- message   {{message | json}} -->
+
                     <!-- <img *ngIf="shouldShowContactAvatar(message, i)" src="{{message.avatar_url}}"
-                        onerror="this.src='assets/img/no_image_user.png'" class="avatar"> -->
-                    <img *ngIf="shouldShowContactAvatar(message, i)" src="{{message.avatar_url}}"
-                        (error)="onImageError(message, i)" class="avatar">
+                        (error)="onImageError(message, i)" class="avatar"> -->
 
 
                     <div class="bubble" [ngClass]="{ 'first' : first }">
                         <!-- <div class="message">{{message?.text}}</div> -->
-                        <div class="message"[innerHTML]="message?.text | htmlEntitiesEncode  | marked" ></div>
-                        
-                        <div *ngIf="!shouldShowContactAvatar(message, i)"class="time secondary-text">{{message.createdAt | date: 'd/M/y HH:mm'}}</div>
-                        <div *ngIf="shouldShowContactAvatar(message, i)"  class="time secondary-text">{{message.createdAt | date:  'd/M/y HH:mm'}} 
-                           <span style="margin-left: 3px;"> {{'SentBy' | translate}} {{ message.senderFullname}}</span>
+                        <div class="message" [innerHTML]="message?.text | htmlEntitiesEncode  | marked"></div>
+
+                        <div *ngIf="!shouldShowContactAvatar(message, i)" class="time secondary-text">
+                            <!-- {{message.createdAt | date: 'd/M/y HH:mm'}} -->
+
+                            <span *ngIf="(message.createdAt | amDateFormat:'YYYY') === currentYear">
+                                {{browserLang === 'en' ? (message.createdAt | amDateFormat:'MMM DD HH:mm') :
+                                (message.createdAt | amDateFormat:'DD MMM HH:mm')}}
+                            </span>
+                            <span *ngIf="(message.createdAt  | amDateFormat:'YYYY') !== currentYear">
+                                {{browserLang === 'en' ? (message.createdAt | amDateFormat:'MMM DD YYYY HH:mm') :
+                                (message.createdAt | amDateFormat:'DD MMM YYYY HH:mm') }}
+                            </span>
+
+                        </div>
+                        <div *ngIf="shouldShowContactAvatar(message, i)" class="time secondary-text">
+                            <!-- {{message.createdAt  | date: 'd/M/y HH:mm'}} -->
+
+                            <span *ngIf="(message.createdAt | amDateFormat:'YYYY') === currentYear">
+                                {{browserLang === 'en' ? (message.createdAt | amDateFormat:'MMM DD HH:mm') :
+                                (message.createdAt | amDateFormat:'DD MMM HH:mm')}}
+                            </span>
+                            <span *ngIf="(message.createdAt  | amDateFormat:'YYYY') !== currentYear">
+                                {{browserLang === 'en' ? (message.createdAt | amDateFormat:'MMM DD YYYY HH:mm') :
+                                (message.createdAt | amDateFormat:'DD MMM YYYY HH:mm') }}
+                            </span>
+                            <span style="margin-left: 3px;">
+                                {{'SentBy' | translate}} {{ message.senderFullname}}
+                            </span>
                         </div>
                         <!-- <div class="time secondary-text"></div> -->
                     </div>
@@ -577,7 +577,7 @@ padding-right: 0px;
 
 
 
-     
+
     <!-- ---------------------------------------------------------------- -->
     <!-- Note - the following is set to DISPLAY NONE -->
     <!-- ---------------------------------------------------------------- -->
