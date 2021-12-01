@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.29
+- Deploys in production 
+
 ### 2.2.29-rc7
 - Manages the background color of the "ion-content" for the list of projects in the chat iframe
 - Remove the avatar and fix the position of the "tooltip" in the chat section of the conversation details displayed in the chat iframe
