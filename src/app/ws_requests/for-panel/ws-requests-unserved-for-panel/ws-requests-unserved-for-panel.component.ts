@@ -184,7 +184,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
   ngAfterViewInit() {
     this.getProjectUserRole();
     this.cdref.detectChanges();
-    window.top.postMessage('finished', '*')
+    // window.top.postMessage('finished', '*')
   }
 
   ngOnDestroy() {
