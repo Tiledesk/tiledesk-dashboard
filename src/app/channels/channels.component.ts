@@ -33,7 +33,7 @@ export class ChannelsComponent implements OnInit {
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
       this.project = project
-      console.log('[CHANNELS] project from AUTH service subscription  ', this.project)
+      // console.log('[CHANNELS] project from AUTH service subscription  ', this.project)
 
       if (this.project) {
         this.project_name = this.project.name;
