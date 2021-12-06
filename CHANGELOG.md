@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.30-rc1
+Implements methods to prevent the chat from opening in a new browser tab if the chat tab is already open when the agent clicks the "Chat" menu item in the sidebar or the "Chat" button in the Home or "Open" "chat" on the Conversation List Page, Conversation Detail Page, and Non-Real Time Conversations page or when the agent clicks "Chat With" on the Conversation Detail page
+
 ### 2.2.29
 - Deploys in production 
 
