@@ -77,16 +77,43 @@ export class WsSharedComponent implements OnInit {
     public translate: TranslateService
   ) { }
 
-  ngOnInit() {
- 
-   
-  }
+  ngOnInit() { }
 
 
   // getIndexOfPriority(priorityname: string) {
   //   const index = this.priority.findIndex(x => x.name === priorityname);
   //   return index
   // }
+  openChatToAConversation(CHAT_BASE_URL: string, requestid: string, requester_fullanme: string) {
+    this.logger.log('[WS-SHARED] - openChatToAConversation - requestid', requestid);
+    this.logger.log('[WS-SHARED] - openChatToAConversation - requester_fullanme', requester_fullanme);
+    const chatTabCount = localStorage.getItem('tabCount')
+    this.logger.log('[WS-SHARED] openChatToAConversation chatTabCount ', chatTabCount)
+
+    let url = ''
+    if (chatTabCount) {
+      if (+chatTabCount > 0) {
+        this.logger.log('[WS-SHARED] openChatToAConversation chatTabCount > 0 ')
+        url = CHAT_BASE_URL + '#/conversation-detail?convselected=' + requestid
+        this.openWindow('Tiledesk - Open Source Live Chat', url)
+      } else if (chatTabCount && +chatTabCount === 0) {
+        url = CHAT_BASE_URL + '#/conversation-detail/' + requestid + "/" + requester_fullanme + "/active"
+        this.openWindow('Tiledesk - Open Source Live Chat', url)
+      }
+    } else {
+      url = CHAT_BASE_URL + '#/conversation-detail/' + requestid + "/" + requester_fullanme + "/active"
+      this.openWindow('Tiledesk - Open Source Live Chat', url)
+    }
+  }
+
+  openWindow(winName: any, winURL: any) {
+    const myWindows = new Array();
+    if (myWindows[winName] && !myWindows[winName].closed) {
+      alert('window already exists');
+    } else {
+      myWindows[winName] = window.open(winURL, winName);
+    }
+  }
 
 
   // -----------------------------------------------------------------------------------------------------
@@ -615,16 +642,16 @@ export class WsSharedComponent implements OnInit {
         this.logger.log('[WS-SHARED][REQUEST-DTLS-X-PANEL][WS-REQUESTS-UNSERVED-X-PANEL][WS-REQUESTS-LIST][SERVED][UNSERVED] - addParticipant TO CHAT GROUP * COMPLETE *');
         if (postmessage === undefined) {
           this.getTranslationsDisplayInAppNotification()
-          
+
         } else {
-          
+
           this.getTranslationsAndPostMessage()
         }
       });
   }
-  getTranslationsDisplayInAppNotification () {
+  getTranslationsDisplayInAppNotification() {
     this.translate.get('You_are_successfully_added_to_the_chat').subscribe((text: string) => {
-      
+
       this.logger.log('[WS-SHARED] getTranslations : ', text)
 
       this.you_are_successfully_added_to_the_chat = text;
@@ -633,13 +660,13 @@ export class WsSharedComponent implements OnInit {
   }
 
 
-  getTranslationsAndPostMessage () {
+  getTranslationsAndPostMessage() {
     this.translate.get('You_are_successfully_added_to_the_chat').subscribe((text: string) => {
-      
+
       this.logger.log('[WS-SHARED] getTranslations : ', text)
 
       this.you_are_successfully_added_to_the_chat = text;
-      const msg = {action:'display_toast_join_complete', text: this.you_are_successfully_added_to_the_chat}
+      const msg = { action: 'display_toast_join_complete', text: this.you_are_successfully_added_to_the_chat }
       window.top.postMessage(msg, '*')
     });
   }

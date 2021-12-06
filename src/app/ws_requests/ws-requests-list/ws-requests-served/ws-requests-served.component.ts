@@ -477,52 +477,62 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
       })
   }
 
-
-  openChatInNewWindow(requestid: string, requester_fullanme: string) {
-    this.logger.log('[WS-REQUESTS-LIST][SERVED] - openChatInNewWindow - requestid', requestid);
-    this.logger.log('[WS-REQUESTS-LIST][SERVED] - openChatInNewWindow - requester_fullanme', requester_fullanme);
-
-    // NOTE: to test AVOID OPENING THE CHAT IN A NEW BROWSER TAB EVEN WHEN THE CHAT IS ALREADY OPEN
-    // let url = ''
-    // if (!chatStoredUser) {
-    //   url = this.CHAT_BASE_URL + '#/conversation-detail/' + requestid + "/" + requester_fullanme + "/active"
-    // } else {
-    //   url = this.CHAT_BASE_URL + '#/conversation-detail?convselected=' + requestid
-    // }
-
-    // let url = '';
-    // if (this.FIREBASE_AUTH === false) {
-    //   url = this.CHAT_BASE_URL + "/" + requestid + "/" + requester_fullanme + "/active"
-    // } else if (this.FIREBASE_AUTH === true) {
-    //   url = this.CHAT_BASE_URL + '?recipient=' + requestid;
-    // } else {
-    //   url = this.CHAT_BASE_URL + '#/conversation-detail/' + requestid + "/" + requester_fullanme + "/active"
-    // }
-    const url = this.CHAT_BASE_URL + '#/conversation-detail/' + requestid + "/" + requester_fullanme + "/active"
-    window.open(url, '_blank');
-
-    // this.openWindow('Tiledesk - Open Source Live Chat', url)
-    // this.focusWin('Tiledesk - Open Source Live Chat')
+  openChatAtSelectedConversation(requestid: string, requester_fullanme: string) {
+    this.openChatToAConversation(this.CHAT_BASE_URL, requestid, requester_fullanme)
   }
 
-  openWindow(winName: any, winURL: any) {
-    const myWindows = new Array();
-    if (myWindows[winName] && !myWindows[winName].closed) {
-      alert('window already exists');
-    } else {
-      myWindows[winName] = window.open(winURL, winName);
-    }
-  }
+  // openChatInNewWindow(requestid: string, requester_fullanme: string) {
+  //   this.logger.log('[WS-REQUESTS-LIST][SERVED] - openChatInNewWindow - requestid', requestid);
+  //   this.logger.log('[WS-REQUESTS-LIST][SERVED] - openChatInNewWindow - requester_fullanme', requester_fullanme);
+  //   const chatTabCount = localStorage.getItem('tabCount')
+  //   console.log('[WS-REQUESTS-LIST][SERVED] openChatInNewWindow chatTabCount ', chatTabCount)
+  
+  //   let url = ''
+  //   if (chatTabCount && +chatTabCount > 0) {
+  //     console.log('[WS-REQUESTS-LIST][SERVED] openChatInNewWindow chatTabCount > 0 - FOCUS')
+  //     url = this.CHAT_BASE_URL + '#/conversation-detail?convselected=' + requestid
+  //     // this.focusWin('Tiledesk - Open Source Live Chat')
+  //     this.openWindow('Tiledesk - Open Source Live Chat', url)
 
-  focusWin(winName: any) {
-    const myWindows = new Array();
-    if (myWindows[winName] && !myWindows[winName].closed) {
-      myWindows[winName].focus();
-    } else {
-      // alert('cannot focus closed or nonexistant window');
-      this.logger.log('[HOME] - cannot focus closed or nonexistant window');
-    }
-  }
+  //   } else  if (chatTabCount && +chatTabCount === 0) {
+  //     url = this.CHAT_BASE_URL + '#/conversation-detail/' + requestid + "/" + requester_fullanme + "/active"
+  //     // window.open(url, '_blank');
+  //     this.openWindow('Tiledesk - Open Source Live Chat', url)
+  //   }
+
+  //   // let url = '';
+  //   // if (this.FIREBASE_AUTH === false) {
+  //   //   url = this.CHAT_BASE_URL + "/" + requestid + "/" + requester_fullanme + "/active"
+  //   // } else if (this.FIREBASE_AUTH === true) {
+  //   //   url = this.CHAT_BASE_URL + '?recipient=' + requestid;
+  //   // } else {
+  //   //   url = this.CHAT_BASE_URL + '#/conversation-detail/' + requestid + "/" + requester_fullanme + "/active"
+  //   // }
+  //   // const url = this.CHAT_BASE_URL + '#/conversation-detail/' + requestid + "/" + requester_fullanme + "/active"
+   
+
+  //   // this.openWindow('Tiledesk - Open Source Live Chat', url)
+  //   // this.focusWin('Tiledesk - Open Source Live Chat')
+  // }
+
+  // openWindow(winName: any, winURL: any) {
+  //   const myWindows = new Array();
+  //   if (myWindows[winName] && !myWindows[winName].closed) {
+  //     alert('window already exists');
+  //   } else {
+  //     myWindows[winName] = window.open(winURL, winName);
+  //   }
+  // }
+
+  // focusWin(winName: any) {
+  //   const myWindows = new Array();
+  //   if (myWindows[winName] && !myWindows[winName].closed) {
+  //     myWindows[winName].focus();
+  //   } else {
+  //     // alert('cannot focus closed or nonexistant window');
+  //     this.logger.log('[HOME] - cannot focus closed or nonexistant window');
+  //   }
+  // }
 
 
   trackByFn(index, request) {

@@ -66,7 +66,7 @@
       {{ user.email }}
 
       <div style="text-align: center;" *ngIf="IS_BUSY === true">
-        <span class="sidebar--isBusy-text " style="">
+        <span class="sidebar--isBusy-text">
           {{ 'Busy' | translate }}
         </span>
       </div>
@@ -83,8 +83,6 @@
 
       <img class="avatar" *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true"
         src="assets/img/no_image_user.png" />
-
-   
 
       <div *ngIf="project" (click)="changeAvailabilityState(IS_AVAILABLE = !IS_AVAILABLE)" class="status-icon online"
         [ngClass]="{'is-user-online' : IS_AVAILABLE === true, 'is-user-offline' : IS_AVAILABLE === false, 'small-sidebar-status-icon' : SIDEBAR_IS_SMALL === true  }">
@@ -268,8 +266,8 @@
       <li *ngIf="project" routerLinkActive="active">
         <!-- <a class="customAncor" routerLink="/chat"> -->
         <!-- <a class="customAncor" routerLink="project/{{ project._id }}/chat"> -->
-          <!-- (click)="openChat()"  -->
-        <a #openchatbtn class="customAncor" target="_blank"  href="{{ CHAT_BASE_URL }}" (click)="removeChatBtnFocus()">
+          <!-- (click)="openChat()" target="_blank"  href="{{ CHAT_BASE_URL }}"  (click)="removeChatBtnFocus()" -->
+        <a #openchatbtn class="customAncor"  (click)="openChat()" style="cursor: pointer;">
           <i class="material-icons sidebar-icons">chat</i>
           <p class="onBlackBckgrnd">Chat</p>
         </a>

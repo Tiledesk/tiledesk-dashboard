@@ -1081,7 +1081,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       }, (error) => {
         this.logger.error('[HOME] - GET projectUser by USER-ID - ERROR ', error);
       }, () => {
-        this.logger.log('[HOME] - GET projectUser by USER-ID * COMPLETE *');
+        this.logger.log('[] - GET projectUser by USER-ID * COMPLETE *');
       });
   }
 
@@ -1090,10 +1090,25 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   openChat() {
     const url = this.CHAT_BASE_URL;
     this.notify.publishHasClickedChat(true);
-    window.open(url, '_blank');
+    // window.open(url, '_blank');
 
-    // this.openWindow('Tiledesk - Open Source Live Chat', url)
-    // this.focusWin('Tiledesk - Open Source Live Chat')
+    // --- new
+    const chatTabCount = localStorage.getItem('tabCount');
+    this.logger.log('[HOME] openChatToAConversation chatTabCount ', chatTabCount);
+    if (chatTabCount) {
+      if (+chatTabCount > 0) {
+        this.logger.log('[HOME] openChatToAConversation chatTabCount > 0 ')
+
+        this.openWindow('Tiledesk - Open Source Live Chat', url + '?conversation_detail');
+        // this.focusWin('Tiledesk - Open Source Live Chat')
+        // window.open('Tiledesk - Open Source Live Chat', url).focus();
+      } else if (chatTabCount && +chatTabCount === 0) {
+        this.openWindow('Tiledesk - Open Source Live Chat', url);
+      }
+    } else {
+      this.openWindow('Tiledesk - Open Source Live Chat', url);
+    }
+
   }
 
   openWindow(winName: any, winURL: any) {

@@ -490,45 +490,48 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
 
 
-
-  openChatInNewWindow(requestid: string, requester_fullanme: string) {
-    this.logger.log('[HISTORY & NORT-CONVS] - openChatInNewWindow - requestid ', requestid);
-    this.logger.log('[HISTORY & NORT-CONVS] - openChatInNewWindow - requestid ', requester_fullanme);
-    // const url = this.CHAT_BASE_URL + '?recipient=' + requestid;
-
-    // let url = '';
-    // if (this.FIREBASE_AUTH === false) {
-    //   url = this.CHAT_BASE_URL + "/" + requestid + "/" + requester_fullanme + "/active"
-    // } else if (this.FIREBASE_AUTH === true) {
-    //   url = this.CHAT_BASE_URL + '?recipient=' + requestid;
-    // } else {
-    //   url = this.CHAT_BASE_URL + '#/conversation-detail/' + requestid + "/" + requester_fullanme + "/active"
-    // }
-    const url = this.CHAT_BASE_URL + '#/conversation-detail/' + requestid + "/" + requester_fullanme + "/active"
-    window.open(url, '_blank');
-
-    // this.openWindow('Tiledesk - Open Source Live Chat', url)
-    // this.focusWin('Tiledesk - Open Source Live Chat')
+  openChatAtSelectedConversation(requestid: string, requester_fullanme: string) {
+    this.openChatToAConversation(this.CHAT_BASE_URL, requestid, requester_fullanme)
   }
 
-  openWindow(winName: any, winURL: any) {
-    const myWindows = new Array();
-    if (myWindows[winName] && !myWindows[winName].closed) {
-      alert('window already exists');
-    } else {
-      myWindows[winName] = window.open(winURL, winName);
-    }
-  }
+  // openChatInNewWindow(requestid: string, requester_fullanme: string) {
+  //   this.logger.log('[HISTORY & NORT-CONVS] - openChatInNewWindow - requestid ', requestid);
+  //   this.logger.log('[HISTORY & NORT-CONVS] - openChatInNewWindow - requestid ', requester_fullanme);
+  //   // const url = this.CHAT_BASE_URL + '?recipient=' + requestid;
 
-  focusWin(winName: any) {
-    const myWindows = new Array();
-    if (myWindows[winName] && !myWindows[winName].closed) {
-      myWindows[winName].focus();
-    } else {
-      // alert('cannot focus closed or nonexistant window');
-      this.logger.log('[HOME] - cannot focus closed or nonexistant window');
-    }
-  }
+  //   // let url = '';
+  //   // if (this.FIREBASE_AUTH === false) {
+  //   //   url = this.CHAT_BASE_URL + "/" + requestid + "/" + requester_fullanme + "/active"
+  //   // } else if (this.FIREBASE_AUTH === true) {
+  //   //   url = this.CHAT_BASE_URL + '?recipient=' + requestid;
+  //   // } else {
+  //   //   url = this.CHAT_BASE_URL + '#/conversation-detail/' + requestid + "/" + requester_fullanme + "/active"
+  //   // }
+  //   const url = this.CHAT_BASE_URL + '#/conversation-detail/' + requestid + "/" + requester_fullanme + "/active"
+  //   window.open(url, '_blank');
+
+  //   // this.openWindow('Tiledesk - Open Source Live Chat', url)
+  //   // this.focusWin('Tiledesk - Open Source Live Chat')
+  // }
+
+  // openWindow(winName: any, winURL: any) {
+  //   const myWindows = new Array();
+  //   if (myWindows[winName] && !myWindows[winName].closed) {
+  //     alert('window already exists');
+  //   } else {
+  //     myWindows[winName] = window.open(winURL, winName);
+  //   }
+  // }
+
+  // focusWin(winName: any) {
+  //   const myWindows = new Array();
+  //   if (myWindows[winName] && !myWindows[winName].closed) {
+  //     myWindows[winName].focus();
+  //   } else {
+  //     // alert('cannot focus closed or nonexistant window');
+  //     this.logger.log('[HOME] - cannot focus closed or nonexistant window');
+  //   }
+  // }
 
 
 

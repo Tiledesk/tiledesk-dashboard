@@ -1662,12 +1662,12 @@
                         <span style="text-transform: capitalize;"> {{ 'RequestMsgsPage.Enter' | translate }} </span>
                         <i style="left: 54%;"></i>
                       </span>
-
                     </button>
 
+                    <!-- (click)='openChatInNewWindow(request?.request_id, request?.lead?.fullname) -->
                     <button *ngIf="request?.currentUserIsJoined === true" type="button" rel="tooltip"
                       title="{{ 'RequestMsgsPage.Enter' | translate }}" class="btn btn-tdblu btn-simple btn-xs tool_tip"
-                      (click)='openChatInNewWindow(request?.request_id, request?.lead?.fullname)'>
+                      (click)='openChatAtSelectedConversation(request?.request_id, request?.lead?.fullname)'>
 
                       <!--
                     // ------------------------------------------------------------------------------------------------------

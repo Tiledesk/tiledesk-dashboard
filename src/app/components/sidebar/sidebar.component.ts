@@ -1043,13 +1043,29 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.elementRef.nativeElement.blur();
     }
 
-    // NOT USED
     openChat() {
+        this.elementRef.nativeElement.blur();
         this.notify.publishHasClickedChat(true);
         const url = this.CHAT_BASE_URL;
-        this.openWindow('Tiledesk - Open Source Live Chat', url)
-        this.focusWin('Tiledesk - Open Source Live Chat')
-        this.elementRef.nativeElement.blur();
+        // this.openWindow('Tiledesk - Open Source Live Chat', url)
+        // this.focusWin('Tiledesk - Open Source Live Chat')
+        // --- new 
+        const chatTabCount = localStorage.getItem('tabCount');
+        this.logger.log('[SIDEBAR] openChatToAConversation chatTabCount ', chatTabCount);
+        if (chatTabCount) {
+            if (+chatTabCount > 0) {
+                this.logger.log('[SIDEBAR] openChatToAConversation chatTabCount > 0 ')
+
+                this.openWindow('Tiledesk - Open Source Live Chat', url + '?conversation_detail');
+                // this.focusWin('Tiledesk - Open Source Live Chat')
+                // window.open('Tiledesk - Open Source Live Chat', url).focus();
+            } else if (chatTabCount && +chatTabCount === 0) {
+                this.openWindow('Tiledesk - Open Source Live Chat', url);
+            }
+        } else {
+            this.openWindow('Tiledesk - Open Source Live Chat', url);
+        }
+
     }
 
     openWindow(winName: any, winURL: any) {

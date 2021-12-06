@@ -897,12 +897,13 @@
               </span>
             </button>
 
-            <!-- -------------------------- -->
-            <!-- OPEN-CHAT Action  -->
-            <!-- -------------------------- -->
+            <!-- ------------------------------------- -->
+            <!-- OPEN-CHAT TO A CONVERSARION Action  -->
+            <!-- ------------------------------------- -->
+            <!-- (click)='openChatInNewWindow(request?.request_id, request?.lead?.fullname)' -->
             <button *ngIf="request?.currentUserIsJoined === true" type="button" rel="tooltip"
               title="{{ 'RequestMsgsPage.Enter' | translate }}" class="btn btn-tdblu btn-simple btn-xs tool_tip"
-              (click)='openChatInNewWindow(request?.request_id, request?.lead?.fullname)'>
+              (click)='openChatAtSelectedConversation(request?.request_id, request?.lead?.fullname)'>
               <!-- --------------------------------- -->
               <!-- SVG font-awesome chat icon icon -->
               <!-- --------------------------------- -->

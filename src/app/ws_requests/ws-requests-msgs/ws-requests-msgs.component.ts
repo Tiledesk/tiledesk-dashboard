@@ -1454,20 +1454,20 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   onChangeSelectedPriority(selectedPriority) {
     this.logger.log('[WS-REQUESTS-MSGS] - onChangeSelectedPriority selectedPriority ', selectedPriority)
     this.selectedPriority = selectedPriority;
-  
-    this.wsRequestsService.updatePriority(this.id_request, selectedPriority)
-    .subscribe((res: any) => {
-      this.logger.log('[WS-REQUESTS-MSGS] - onChangeSelectedPriority - UPDATED PRIORITY - RES ', res);
 
-    }, (error) => {
-      this.logger.error('[WS-REQUESTS-MSGS] - onChangeSelectedPriority -UPDATED PRIORITY - ERROR ', error);
-      this.notify.showWidgetStyleUpdateNotification(this.priority_update_failed, 4, 'report_problem');
-    }, () => {
-      // panel.scrollTop = panel.scrollHeight;
-      this.logger.log('[WS-REQUESTS-MSGS] - onChangeSelectedPriority - UPDATED PRIORITY  * COMPLETE *');
-      this.notify.showWidgetStyleUpdateNotification(this.priority_updated_successfully_msg, 2, 'done');
-    
-    });
+    this.wsRequestsService.updatePriority(this.id_request, selectedPriority)
+      .subscribe((res: any) => {
+        this.logger.log('[WS-REQUESTS-MSGS] - onChangeSelectedPriority - UPDATED PRIORITY - RES ', res);
+
+      }, (error) => {
+        this.logger.error('[WS-REQUESTS-MSGS] - onChangeSelectedPriority -UPDATED PRIORITY - ERROR ', error);
+        this.notify.showWidgetStyleUpdateNotification(this.priority_update_failed, 4, 'report_problem');
+      }, () => {
+        // panel.scrollTop = panel.scrollHeight;
+        this.logger.log('[WS-REQUESTS-MSGS] - onChangeSelectedPriority - UPDATED PRIORITY  * COMPLETE *');
+        this.notify.showWidgetStyleUpdateNotification(this.priority_updated_successfully_msg, 2, 'done');
+
+      });
 
   }
 
@@ -1560,9 +1560,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
 
-  copyToClipboardContactEmail (contactemail){
+  copyToClipboardContactEmail(contactemail) {
     this.logger.log('copyToClipboardContactEmail contactemail', contactemail)
-    
+
     const prechatTooltip = <HTMLElement>document.querySelector(`#contact-email`)
     this.logger.log('Fallback: prechatTooltip ', prechatTooltip);
 
@@ -2266,10 +2266,15 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.router.navigate(['project/' + this.id_project + '/labels']);
   }
 
+
+  openChatAtSelectedConversation() {
+    this.openChatBtn.nativeElement.blur();
+    this.openChatToAConversation(this.CHAT_BASE_URL, this.id_request, this.request.lead.fullname)
+  }
+
   openChatInNewWindow() {
     // RESOLVE THE BUG: THE BUTTON 'OPEN THE CHAT' REMAIN FOCUSED AFTER PRESSED
     this.openChatBtn.nativeElement.blur();
-
 
     this.logger.log('[WS-REQUESTS-MSGS] openChatInNewWindow CHAT_BASE_URL ', this.CHAT_BASE_URL);
     // let url = '';
@@ -2281,14 +2286,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     //   url = this.CHAT_BASE_URL + '#/conversation-detail/'+ this.id_request + "/" + this.request.lead.fullname + "/active"
     // }
     const url = this.CHAT_BASE_URL + '#/conversation-detail/' + this.id_request + "/" + this.request.lead.fullname + "/active"
-  
     this.logger.log('[WS-REQUESTS-MSGS] openChatInNewWindow url ', url);
-
     window.open(url, '_blank');
-
     // this.openWindow('Tiledesk - Open Source Live Chat', url)
     // this.focusWin('Tiledesk - Open Source Live Chat')
-
   }
 
   openWindow(winName: any, winURL: any) {
@@ -2309,11 +2310,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       this.logger.log('[HOME] - cannot focus closed or nonexistant window');
     }
   }
-
-
-
-
-
   chatWithAgent(agentId, agentFirstname, agentLastname) {
     this.logger.log('[WS-REQUESTS-MSGS] - CHAT WITH AGENT - agentId: ', agentId, ' - agentFirstname: ', agentFirstname, ' - agentLastname: ', agentLastname);
 
@@ -2332,9 +2328,31 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     } else {
       agentFullname = agentFirstname
     }
-    const url = this.CHAT_BASE_URL + '#/conversation-detail/' + agentId + '/' + agentFullname + '/new'
-    this.logger.log('[WS-REQUESTS-MSGS] - chatWithAgent - CHAT URL ', url);
-    window.open(url, '_blank');
+    // const url = this.CHAT_BASE_URL + '#/conversation-detail/' + agentId + '/' + agentFullname + '/new'
+    // this.logger.log('[WS-REQUESTS-MSGS] - chatWithAgent - CHAT URL ', url);
+    // window.open(url, '_blank');
+
+
+    // ---- new
+
+    const chatTabCount = localStorage.getItem('tabCount')
+    console.log('[WS-REQUESTS-MSGS] chatWithAgent chatTabCount ', chatTabCount)
+
+    let url = ''
+    if (chatTabCount) {
+      if (+chatTabCount > 0) {
+        this.logger.log('[WS-REQUESTS-MSGS]  chatWithAgent chatTabCount > 0 ')
+        url = this.CHAT_BASE_URL + '#/conversation-detail?contact_id=' + agentId + '&contact_fullname=' + agentFullname
+        this.openWindow('Tiledesk - Open Source Live Chat', url)
+      } else if (chatTabCount && +chatTabCount === 0) {
+        url = this.CHAT_BASE_URL + '#/conversation-detail/' + agentId + '/' + agentFullname + '/new'
+        this.openWindow('Tiledesk - Open Source Live Chat', url)
+      }
+    } else {
+      url = this.CHAT_BASE_URL + '#/conversation-detail/' + agentId + '/' + agentFullname + '/new'
+      this.openWindow('Tiledesk - Open Source Live Chat', url)
+    }
+
   }
 
   goToContactDetails() {
@@ -2553,12 +2571,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.done_msg = text;
       });
 
-      this.translate.get('TheConversationPriorityHasBeenSuccessfullyUpdated')
+    this.translate.get('TheConversationPriorityHasBeenSuccessfullyUpdated')
       .subscribe((text: string) => {
         this.priority_updated_successfully_msg = text;
       });
 
-      this.translate.get('AnErrorOccurredWhileUpdatingTheCnversationPriority')
+    this.translate.get('AnErrorOccurredWhileUpdatingTheCnversationPriority')
       .subscribe((text: string) => {
         this.priority_update_failed = text;
       });
