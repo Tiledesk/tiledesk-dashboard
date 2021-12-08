@@ -84,17 +84,17 @@ export class WsSharedComponent implements OnInit {
   //   const index = this.priority.findIndex(x => x.name === priorityname);
   //   return index
   // }
-  openChatToAConversation(CHAT_BASE_URL: string, requestid: string, requester_fullanme: string) {
-    this.logger.log('[WS-SHARED] - openChatToAConversation - requestid', requestid);
-    this.logger.log('[WS-SHARED] - openChatToAConversation - requester_fullanme', requester_fullanme);
+  openChatToTheSelectedConversation(CHAT_BASE_URL: string, requestid: string, requester_fullanme: string) {
+    this.logger.log('[WS-SHARED] - openChatToTheSelectedConversation - requestid', requestid);
+    this.logger.log('[WS-SHARED] - openChatToTheSelectedConversation - requester_fullanme', requester_fullanme);
     const chatTabCount = localStorage.getItem('tabCount')
-    this.logger.log('[WS-SHARED] openChatToAConversation chatTabCount ', chatTabCount)
+    this.logger.log('[WS-SHARED] openChatToTheSelectedConversation chatTabCount ', chatTabCount)
 
     let url = ''
     if (chatTabCount) {
       if (+chatTabCount > 0) {
-        this.logger.log('[WS-SHARED] openChatToAConversation chatTabCount > 0 ')
-        url = CHAT_BASE_URL + '#/conversation-detail?convselected=' + requestid
+        this.logger.log('[WS-SHARED] openChatToTheSelectedConversation chatTabCount > 0 ')
+        url = CHAT_BASE_URL + '#/conversation-detail?convId=' + requestid
         this.openWindow('Tiledesk - Open Source Live Chat', url)
       } else if (chatTabCount && +chatTabCount === 0) {
         url = CHAT_BASE_URL + '#/conversation-detail/' + requestid + "/" + requester_fullanme + "/active"
