@@ -1,6 +1,12 @@
 
 # tiledesk-dashboard
 
+### 2.2.30-rc2
+- Adds a check in the "websocket-js.ts" service on the existence of the "ws" property of the "WebSocketJs" class before accessing the property "readyState"
+- In the "openChatToConversation()" method of the "ws-shared" component renames the query string "convselected" with "covId"
+- Renames the "openChatToAConversation()" method to "openChatToTheSelectedConversation()" called when the agent clicks the "Open Chat" button on a specific conversation on the pages: real-time conversations, non-real-time conversations and conversation details
+- In the "openChatToTheSelectedConversation()" method of the "ws-shared" component renames the query string "convselected" with "covId"
+
 ### 2.2.30-rc1
 - Implements methods to prevent the chat from opening in a new browser tab if the chat tab is already open when the agent clicks the "Chat" menu item in the sidebar or the "Chat" button in the Home or "Open" "chat" on the Conversation List Page, Conversation Detail Page, and Non-Real Time Conversations page or when the agent clicks "Chat With" on the Conversation Detail page
 
