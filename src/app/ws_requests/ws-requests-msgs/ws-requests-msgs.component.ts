@@ -2269,7 +2269,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   openChatAtSelectedConversation() {
     this.openChatBtn.nativeElement.blur();
-    this.openChatToAConversation(this.CHAT_BASE_URL, this.id_request, this.request.lead.fullname)
+    this.openChatToTheSelectedConversation(this.CHAT_BASE_URL, this.id_request, this.request.lead.fullname)
   }
 
   openChatInNewWindow() {

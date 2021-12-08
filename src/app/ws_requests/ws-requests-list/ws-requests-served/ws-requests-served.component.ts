@@ -478,7 +478,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   }
 
   openChatAtSelectedConversation(requestid: string, requester_fullanme: string) {
-    this.openChatToAConversation(this.CHAT_BASE_URL, requestid, requester_fullanme)
+    this.openChatToTheSelectedConversation(this.CHAT_BASE_URL, requestid, requester_fullanme)
   }
 
   // openChatInNewWindow(requestid: string, requester_fullanme: string) {
