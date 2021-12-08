@@ -1094,10 +1094,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // --- new
     const chatTabCount = localStorage.getItem('tabCount');
-    this.logger.log('[HOME] openChatToAConversation chatTabCount ', chatTabCount);
+    this.logger.log('[HOME] openChat chatTabCount ', chatTabCount);
     if (chatTabCount) {
       if (+chatTabCount > 0) {
-        this.logger.log('[HOME] openChatToAConversation chatTabCount > 0 ')
+        this.logger.log('[HOME] openChat chatTabCount > 0 ')
 
         this.openWindow('Tiledesk - Open Source Live Chat', url + '?conversation_detail');
         // this.focusWin('Tiledesk - Open Source Live Chat')

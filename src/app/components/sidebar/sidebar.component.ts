@@ -1051,10 +1051,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         // this.focusWin('Tiledesk - Open Source Live Chat')
         // --- new 
         const chatTabCount = localStorage.getItem('tabCount');
-        this.logger.log('[SIDEBAR] openChatToAConversation chatTabCount ', chatTabCount);
+        this.logger.log('[SIDEBAR] openChat chatTabCount ', chatTabCount);
         if (chatTabCount) {
             if (+chatTabCount > 0) {
-                this.logger.log('[SIDEBAR] openChatToAConversation chatTabCount > 0 ')
+                this.logger.log('[SIDEBAR] openChat chatTabCount > 0 ')
 
                 this.openWindow('Tiledesk - Open Source Live Chat', url + '?conversation_detail');
                 // this.focusWin('Tiledesk - Open Source Live Chat')
