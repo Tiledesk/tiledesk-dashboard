@@ -1967,6 +1967,8 @@
    "AnErrorOccurredWhileUpdatingTheCnversationPriority":"An error occurred while updating the conversation priority",
    "Join":"Join",
    "You_are_successfully_added_to_the_chat": "You are successfully added to the chat",
-   "ByPressingOkTheConversationWillBeAssignedToYourself": "By pressing Ok the conversation will be assigned to yourself"
+   "ByPressingOkTheConversationWillBeAssignedToYourself": "By pressing Ok the conversation will be assigned to yourself",
+   "AutoRating":"Auto rating",
+   "AtTheEndOfThConversationAFormIsProposedToEvaluateTheConversation":"At the end of the conversation, a form is automatically proposed with the request to evaluate the quality of the conversation"
 
 }
