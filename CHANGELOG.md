@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.30-rc3
+- Adds the ability in the configuration page of the widget to enable or disable the "Customer satisfaction" form of the widget in which the requester can give an opinion on customer service
+
 ### 2.2.30-rc2
 - Adds a check in the "websocket-js.ts" service on the existence of the "ws" property of the "WebSocketJs" class before accessing the property "readyState"
 - In the "openChatToConversation()" method of the "ws-shared" component renames the query string "convselected" with "covId"
