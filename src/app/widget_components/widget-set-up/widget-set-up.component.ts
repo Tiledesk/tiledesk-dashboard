@@ -193,6 +193,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   HAS_CHANGED_GREETINGS = false;
 
   public preChatForm: boolean;
+  public nativeRating: boolean;
   public enablePrechatformFieldsCheckBox: boolean;
   public prechatFormTexareaJson: any;
   public preChatFormJson: any;
@@ -1282,6 +1283,17 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
         }
 
+        // -----------------------------------------
+        // NATIVE Rating
+        // -----------------------------------------
+        if (project.widget.nativeRating) {
+          this.nativeRating = true;
+        } else {
+          this.nativeRating = false;
+        }
+
+
+
         // ------------------------------------------------------------------------
         // @ themeColor
         // themeColor (WIDGET AND THEME-COLOR DEFINED)
@@ -1412,6 +1424,14 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         this.preChatForm = false;
         this.preChatFormCustomFieldsEnabled = false;
         this.prechatFormTexareaJson = JSON.stringify(this.widgetDefaultSettings.preChatFormJson, null, 4);
+
+        // -----------------------------------------------------------------------
+        // @ nativeRating
+        // WIDGET UNDEFINED
+        // -----------------------------------------------------------------------
+        this.nativeRating = false;
+
+
 
         // -----------------------------------------------------------------------
         // @ Reply time
@@ -1699,7 +1719,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     if (this.widget_preview_selected === '0004') {
       this.widget_preview_selected = "0004"
     }
-    
+
   }
 
   onFocusChangeSecondaryColor() {
@@ -2084,6 +2104,27 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       return false;
     }
     return true;
+  }
+
+  // -----------------------------------------------------------------------
+  //  @ Auto Rating
+  // -----------------------------------------------------------------------
+  toggleAutoRating(event) {
+    if (event.target.checked) {
+      this.nativeRating = true;
+      // *** ADD PROPERTY
+      this.widgetObj['nativeRating'] = this.nativeRating;
+      this.widgetService.updateWidgetProject(this.widgetObj)
+      this.logger.log('[WIDGET-SET-UP] - IS ENABLE Auto Rating ', event.target.checked)
+    } else {
+      this.nativeRating = false;
+    
+      // *** REMOVE PROPERTY
+      delete this.widgetObj['nativeRating'];
+      this.widgetService.updateWidgetProject(this.widgetObj)
+
+      this.logger.log('[WIDGET-SET-UP] - IS ENABLED Auto Rating', event.target.checked)
+    }
   }
 
 
