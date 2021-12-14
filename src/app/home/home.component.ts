@@ -1088,26 +1088,31 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   openChat() {
-    const url = this.CHAT_BASE_URL;
+    // const url = this.CHAT_BASE_URL;
     this.notify.publishHasClickedChat(true);
     // window.open(url, '_blank');
 
     // --- new
-    const chatTabCount = localStorage.getItem('tabCount');
-    this.logger.log('[HOME] openChat chatTabCount ', chatTabCount);
-    if (chatTabCount) {
-      if (+chatTabCount > 0) {
-        this.logger.log('[HOME] openChat chatTabCount > 0 ')
 
-        this.openWindow('Tiledesk - Open Source Live Chat', url + '?conversation_detail');
-        // this.focusWin('Tiledesk - Open Source Live Chat')
-        // window.open('Tiledesk - Open Source Live Chat', url).focus();
-      } else if (chatTabCount && +chatTabCount === 0) {
-        this.openWindow('Tiledesk - Open Source Live Chat', url);
-      }
-    } else {
-      this.openWindow('Tiledesk - Open Source Live Chat', url);
-    }
+    let baseUrl = this.CHAT_BASE_URL + '#/conversation-detail/'
+    let url = baseUrl
+    const myWindow = window.open(url, 'Tiledesk - Open Source Live Chat');
+    myWindow.focus();
+    // const chatTabCount = localStorage.getItem('tabCount');
+    // this.logger.log('[HOME] openChat chatTabCount ', chatTabCount);
+    // if (chatTabCount) {
+    //   if (+chatTabCount > 0) {
+    //     this.logger.log('[HOME] openChat chatTabCount > 0 ')
+
+    //     this.openWindow('Tiledesk - Open Source Live Chat', url + '?conversation_detail');
+    //     // this.focusWin('Tiledesk - Open Source Live Chat')
+    //     // window.open('Tiledesk - Open Source Live Chat', url).focus();
+    //   } else if (chatTabCount && +chatTabCount === 0) {
+    //     this.openWindow('Tiledesk - Open Source Live Chat', url);
+    //   }
+    // } else {
+    //   this.openWindow('Tiledesk - Open Source Live Chat', url);
+    // }
 
   }
 

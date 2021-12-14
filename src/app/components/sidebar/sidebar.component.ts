@@ -1046,25 +1046,30 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     openChat() {
         this.elementRef.nativeElement.blur();
         this.notify.publishHasClickedChat(true);
-        const url = this.CHAT_BASE_URL;
+        // const url = this.CHAT_BASE_URL;
         // this.openWindow('Tiledesk - Open Source Live Chat', url)
         // this.focusWin('Tiledesk - Open Source Live Chat')
         // --- new 
-        const chatTabCount = localStorage.getItem('tabCount');
-        this.logger.log('[SIDEBAR] openChat chatTabCount ', chatTabCount);
-        if (chatTabCount) {
-            if (+chatTabCount > 0) {
-                this.logger.log('[SIDEBAR] openChat chatTabCount > 0 ')
 
-                this.openWindow('Tiledesk - Open Source Live Chat', url + '?conversation_detail');
-                // this.focusWin('Tiledesk - Open Source Live Chat')
-                // window.open('Tiledesk - Open Source Live Chat', url).focus();
-            } else if (chatTabCount && +chatTabCount === 0) {
-                this.openWindow('Tiledesk - Open Source Live Chat', url);
-            }
-        } else {
-            this.openWindow('Tiledesk - Open Source Live Chat', url);
-        }
+        let baseUrl = this.CHAT_BASE_URL + '#/conversation-detail/'
+        let url = baseUrl
+        const myWindow = window.open(url, 'Tiledesk - Open Source Live Chat');
+        myWindow.focus();
+        // const chatTabCount = localStorage.getItem('tabCount');
+        // this.logger.log('[SIDEBAR] openChat chatTabCount ', chatTabCount);
+        // if (chatTabCount) {
+        //     if (+chatTabCount > 0) {
+        //         this.logger.log('[SIDEBAR] openChat chatTabCount > 0 ')
+
+        //         this.openWindow('Tiledesk - Open Source Live Chat', url + '?conversation_detail');
+        //         // this.focusWin('Tiledesk - Open Source Live Chat')
+        //         // window.open('Tiledesk - Open Source Live Chat', url).focus();
+        //     } else if (chatTabCount && +chatTabCount === 0) {
+        //         this.openWindow('Tiledesk - Open Source Live Chat', url);
+        //     }
+        // } else {
+        //     this.openWindow('Tiledesk - Open Source Live Chat', url);
+        // }
 
     }
 

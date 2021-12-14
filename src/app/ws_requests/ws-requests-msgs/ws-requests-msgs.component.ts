@@ -2272,25 +2272,25 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.openChatToTheSelectedConversation(this.CHAT_BASE_URL, this.id_request, this.request.lead.fullname)
   }
 
-  openChatInNewWindow() {
-    // RESOLVE THE BUG: THE BUTTON 'OPEN THE CHAT' REMAIN FOCUSED AFTER PRESSED
-    this.openChatBtn.nativeElement.blur();
+  // openChatInNewWindow() {
+  //   // RESOLVE THE BUG: THE BUTTON 'OPEN THE CHAT' REMAIN FOCUSED AFTER PRESSED
+  //   this.openChatBtn.nativeElement.blur();
 
-    this.logger.log('[WS-REQUESTS-MSGS] openChatInNewWindow CHAT_BASE_URL ', this.CHAT_BASE_URL);
-    // let url = '';
-    // if (this.FIREBASE_AUTH === false) {
-    //   url = this.CHAT_BASE_URL + "/" + this.id_request + "/" + this.request.lead.fullname + "/active"
-    // } else if (this.FIREBASE_AUTH === true)  {
-    //   url = this.CHAT_BASE_URL + '?recipient=' + this.id_request;
-    // } else {
-    //   url = this.CHAT_BASE_URL + '#/conversation-detail/'+ this.id_request + "/" + this.request.lead.fullname + "/active"
-    // }
-    const url = this.CHAT_BASE_URL + '#/conversation-detail/' + this.id_request + "/" + this.request.lead.fullname + "/active"
-    this.logger.log('[WS-REQUESTS-MSGS] openChatInNewWindow url ', url);
-    window.open(url, '_blank');
-    // this.openWindow('Tiledesk - Open Source Live Chat', url)
-    // this.focusWin('Tiledesk - Open Source Live Chat')
-  }
+  //   this.logger.log('[WS-REQUESTS-MSGS] openChatInNewWindow CHAT_BASE_URL ', this.CHAT_BASE_URL);
+  //   // let url = '';
+  //   // if (this.FIREBASE_AUTH === false) {
+  //   //   url = this.CHAT_BASE_URL + "/" + this.id_request + "/" + this.request.lead.fullname + "/active"
+  //   // } else if (this.FIREBASE_AUTH === true)  {
+  //   //   url = this.CHAT_BASE_URL + '?recipient=' + this.id_request;
+  //   // } else {
+  //   //   url = this.CHAT_BASE_URL + '#/conversation-detail/'+ this.id_request + "/" + this.request.lead.fullname + "/active"
+  //   // }
+  //   const url = this.CHAT_BASE_URL + '#/conversation-detail/' + this.id_request + "/" + this.request.lead.fullname + "/active"
+  //   this.logger.log('[WS-REQUESTS-MSGS] openChatInNewWindow url ', url);
+  //   window.open(url, '_blank');
+  //   // this.openWindow('Tiledesk - Open Source Live Chat', url)
+  //   // this.focusWin('Tiledesk - Open Source Live Chat')
+  // }
 
   openWindow(winName: any, winURL: any) {
     const myWindows = new Array();
@@ -2335,23 +2335,29 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
     // ---- new
 
-    const chatTabCount = localStorage.getItem('tabCount')
-    console.log('[WS-REQUESTS-MSGS] chatWithAgent chatTabCount ', chatTabCount)
+    let baseUrl = this.CHAT_BASE_URL + '#/conversation-detail/'
+    let url = baseUrl + + agentId + '/' + agentFullname + '/new'
+    const myWindow = window.open(url, 'Tiledesk - Open Source Live Chat');
+    myWindow.focus();
 
-    let url = ''
-    if (chatTabCount) {
-      if (+chatTabCount > 0) {
-        this.logger.log('[WS-REQUESTS-MSGS]  chatWithAgent chatTabCount > 0 ')
-        url = this.CHAT_BASE_URL + '#/conversation-detail?contact_id=' + agentId + '&contact_fullname=' + agentFullname
-        this.openWindow('Tiledesk - Open Source Live Chat', url)
-      } else if (chatTabCount && +chatTabCount === 0) {
-        url = this.CHAT_BASE_URL + '#/conversation-detail/' + agentId + '/' + agentFullname + '/new'
-        this.openWindow('Tiledesk - Open Source Live Chat', url)
-      }
-    } else {
-      url = this.CHAT_BASE_URL + '#/conversation-detail/' + agentId + '/' + agentFullname + '/new'
-      this.openWindow('Tiledesk - Open Source Live Chat', url)
-    }
+
+    // const chatTabCount = localStorage.getItem('tabCount')
+    // console.log('[WS-REQUESTS-MSGS] chatWithAgent chatTabCount ', chatTabCount)
+    // let url = ''
+    // if (chatTabCount) {
+    //   if (+chatTabCount > 0) {
+    //     console.log('[WS-REQUESTS-MSGS]  chatWithAgent chatTabCount > 0 ')
+    //     url = this.CHAT_BASE_URL + '#/conversation-detail?contact_id=' + agentId + '&contact_fullname=' + agentFullname
+    //     this.openWindow('Tiledesk - Open Source Live Chat', url)
+    //   } else if (chatTabCount && +chatTabCount === 0) {
+    //     console.log('[WS-REQUESTS-MSGS]  chatWithAgent chatTabCount = 0 ')
+    //     url = this.CHAT_BASE_URL + '#/conversation-detail/' + agentId + '/' + agentFullname + '/new'
+    //     this.openWindow('Tiledesk - Open Source Live Chat', url)
+    //   }
+    // } else {
+    //   url = this.CHAT_BASE_URL + '#/conversation-detail/' + agentId + '/' + agentFullname + '/new'
+    //   this.openWindow('Tiledesk - Open Source Live Chat', url)
+    // }
 
   }
 

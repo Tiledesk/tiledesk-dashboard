@@ -79,7 +79,10 @@ export class WsSharedComponent implements OnInit {
 
   ngOnInit() { }
 
-
+  // myWindow = window.open('https://console.tiledesk.com/v2/chat5-dev/#/conversation-detail?convId=222', 'Tiledesk - Open Source Live Chat');
+  // myWindow.document.write("<p>This is 'myWindow'</p>");
+  // if(doFocus)
+  //     myWindow.focus();
   // getIndexOfPriority(priorityname: string) {
   //   const index = this.priority.findIndex(x => x.name === priorityname);
   //   return index
@@ -87,23 +90,28 @@ export class WsSharedComponent implements OnInit {
   openChatToTheSelectedConversation(CHAT_BASE_URL: string, requestid: string, requester_fullanme: string) {
     this.logger.log('[WS-SHARED] - openChatToTheSelectedConversation - requestid', requestid);
     this.logger.log('[WS-SHARED] - openChatToTheSelectedConversation - requester_fullanme', requester_fullanme);
+    this.logger.log('[WS-SHARED] - openChatToTheSelectedConversation - CHAT_BASE_URL', CHAT_BASE_URL);
     const chatTabCount = localStorage.getItem('tabCount')
     this.logger.log('[WS-SHARED] openChatToTheSelectedConversation chatTabCount ', chatTabCount)
 
-    let url = ''
-    if (chatTabCount) {
-      if (+chatTabCount > 0) {
-        this.logger.log('[WS-SHARED] openChatToTheSelectedConversation chatTabCount > 0 ')
-        url = CHAT_BASE_URL + '#/conversation-detail?convId=' + requestid
-        this.openWindow('Tiledesk - Open Source Live Chat', url)
-      } else if (chatTabCount && +chatTabCount === 0) {
-        url = CHAT_BASE_URL + '#/conversation-detail/' + requestid + "/" + requester_fullanme + "/active"
-        this.openWindow('Tiledesk - Open Source Live Chat', url)
-      }
-    } else {
-      url = CHAT_BASE_URL + '#/conversation-detail/' + requestid + "/" + requester_fullanme + "/active"
-      this.openWindow('Tiledesk - Open Source Live Chat', url)
-    }
+    let baseUrl = CHAT_BASE_URL + '#/conversation-detail/'
+    let url = baseUrl + requestid + '/' + requester_fullanme + '/active'
+    const myWindow = window.open(url, 'Tiledesk - Open Source Live Chat');
+    myWindow.focus();
+    // if (chatTabCount) {
+    //   if (+chatTabCount > 0) {
+    //     this.logger.log('[WS-SHARED] openChatToTheSelectedConversation chatTabCount > 0 ')
+
+    //     url = CHAT_BASE_URL + '#/conversation-detail?convId=' + requestid
+    //     this.openWindow('Tiledesk - Open Source Live Chat', url)
+    //   } else if (chatTabCount && +chatTabCount === 0) {
+    //     url = CHAT_BASE_URL + '#/conversation-detail/' + requestid + "/" + requester_fullanme + "/active"
+    //     this.openWindow('Tiledesk - Open Source Live Chat', url)
+    //   }
+    // } else {
+    //   url = CHAT_BASE_URL + '#/conversation-detail/' + requestid + "/" + requester_fullanme + "/active"
+    //   this.openWindow('Tiledesk - Open Source Live Chat', url)
+    // }
   }
 
   openWindow(winName: any, winURL: any) {
