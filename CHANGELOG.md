@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.30-rc4
+ Improves methods to prevent the chat from opening in a new browser tab if the chat tab is already open
+
 ### 2.2.30-rc3
 - Adds the ability in the configuration page of the widget to enable or disable the "Customer satisfaction" form of the widget in which the requester can give an opinion on customer service
 
