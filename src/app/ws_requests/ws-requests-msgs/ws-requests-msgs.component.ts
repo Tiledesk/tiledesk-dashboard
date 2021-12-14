@@ -2336,7 +2336,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // ---- new
 
     let baseUrl = this.CHAT_BASE_URL + '#/conversation-detail/'
-    let url = baseUrl + + agentId + '/' + agentFullname + '/new'
+    let url = baseUrl + agentId + '/' + agentFullname + '/new'
     const myWindow = window.open(url, 'Tiledesk - Open Source Live Chat');
     myWindow.focus();
 
