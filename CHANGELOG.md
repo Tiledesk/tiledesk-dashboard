@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.30
+- Deploys in production 
+
 ### 2.2.30-rc4
 - Improves methods to prevent the chat from opening in a new browser tab if the chat tab is already open
 
