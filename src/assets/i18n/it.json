@@ -1950,5 +1950,6 @@
     "You_are_successfully_added_to_the_chat": "Sei stato aggiunto con successo alla chat",
     "ByPressingOkTheConversationWillBeAssignedToYourself": "Premendo 'OK' la conversazione sarà assegnata a te stesso",
     "AutoRating":"Valutazione automatica",
-    "AtTheEndOfThConversationAFormIsProposedToEvaluateTheConversation":"Al termine della conversazione viene proposto automaticamente un modulo con la richiesta di valutare la qualità della conversazione"
+    "AtTheEndOfThConversationAFormIsProposedToEvaluateTheConversation":"Al termine della conversazione viene proposto automaticamente un modulo con la richiesta di valutare la qualità della conversazione",
+    "ActionNotAllowed": "Azione non consentita"
 }
