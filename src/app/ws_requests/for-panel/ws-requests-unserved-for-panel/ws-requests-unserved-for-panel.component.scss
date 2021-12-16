@@ -1274,11 +1274,16 @@ $f21blue: #039be5;
     grid-area: arrow-container;
 }
 
+.lead--avatar-wrap{
+    // line-height: 50px;
+    position:relative;
+}
+
 .lead--avatar {
     width: 50px;
     min-width: 50px;
     height: 50px;
-    line-height: 50px;
+    padding: 13px 3px 0 3px;
     margin: 0 8px 0 0;
     border-radius: 50%;
     font-size: 20px;
@@ -1319,6 +1324,12 @@ $f21blue: #039be5;
 }
 .action--btn:hover {
     box-shadow: unset;
+}
+
+.action--btn:disabled,
+.action--btn[disabled]{
+    color: rgba(0,0,0,0.4) !important;
+    // font-weight: 200;
 }
 
 .request--first-message {

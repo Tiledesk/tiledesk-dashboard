@@ -109,7 +109,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
   selectedRequest: any;
 
   SHOW_NO_REQUEST_MSG: boolean
-
+  USER_ROLE: string
   /**
    * 
    * @param wsRequestsService 
@@ -164,6 +164,18 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
     this.getTranslations();
     this.setPerfectScrollbar();
     this.listenToParentPostMessage();
+    this.getUserRole();
+  }
+
+  getUserRole() {
+    this.usersService.project_user_role_bs
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((userRole) => {
+        console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
+        this.USER_ROLE = userRole;
+      })
   }
 
   listenToParentPostMessage() {
