@@ -425,7 +425,7 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
       .subscribe((wsmsgs) => {
 
         this.messagesList = wsmsgs;
-        this.logger.log('[REQUEST-DTLS-X-PANEL] - getWsMsgs$ *** this.messagesList *** ', this.messagesList)
+        console.log('[REQUEST-DTLS-X-PANEL] - getWsMsgs$ *** this.messagesList *** ', this.messagesList)
 
 
         let i: number
@@ -477,7 +477,7 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
     if (message && message.attributes && message.attributes.subtype) {
       message_subtype = message.attributes.subtype
     }
-    return (i === 0 || this.messagesList[i - 1] && this.messagesList[i - 1].sender !== message.sender) && message_subtype !== 'info';
+    return (i === 0 || this.messagesList[i - 1] && this.messagesList[i - 1].sender !== message.sender) && message_subtype !== 'info' && message_subtype !== 'info/support';
   }
 
   isLastMessageOfGroup(message, i): boolean {
@@ -485,7 +485,7 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
     if (message && message.attributes && message.attributes.subtype) {
       message_subtype = message.attributes.subtype
     }
-    return (i === this.messagesList.length - 1 || this.messagesList[i + 1] && this.messagesList[i + 1].sender !== message.sender) && message_subtype !== 'info';
+    return (i === this.messagesList.length - 1 || this.messagesList[i + 1] && this.messagesList[i + 1].sender !== message.sender) && message_subtype !== 'info' && message_subtype !== 'info/support';
   }
 
   isInfoMessage(message, i): boolean {
@@ -493,7 +493,7 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
     if (message && message.attributes && message.attributes.subtype) {
       message_subtype = message.attributes.subtype
     }
-    return (i === this.messagesList.length - 1 || this.messagesList[i + 1]) && message_subtype === 'info';
+    return (i === this.messagesList.length - 1 || this.messagesList[i + 1]) && message_subtype === 'info' || message_subtype === 'info/support';
   }
 
   isFirstInfoMessage(message, i): boolean {
