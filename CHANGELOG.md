@@ -1,11 +1,11 @@
 
 # tiledesk-dashboard
 
-### 2.2.30
-- Deploys in production 
-
 ### 2.2.30-rc4
 - Improves methods to prevent the chat from opening in a new browser tab if the chat tab is already open
+- Fixed bug: 'info/support' messages are not displayed correctly in the "conversation details" page displayed in the iframe of  the chat left panel
+- Disables the "archive" button available in the list of unassigned conversations displayed in the left panel iframe of the chat if the agent has the "agent" role
+- Adds the ability to upload bot profile photo in .png format 
 
 ### 2.2.30-rc3
 - Adds the ability in the configuration page of the widget to enable or disable the "Customer satisfaction" form of the widget in which the requester can give an opinion on customer service
