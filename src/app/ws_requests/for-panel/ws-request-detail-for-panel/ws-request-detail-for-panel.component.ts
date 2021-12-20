@@ -22,6 +22,7 @@ import PerfectScrollbar from 'perfect-scrollbar';
 import { ContactsService } from '../../../services/contacts.service';
 import { LoggerService } from '../../../services/logger/logger.service';
 import * as moment from 'moment';
+import { WebSocketJs } from 'app/services/websocket/websocket-js';
 @Component({
   selector: 'appdashboard-ws-request-detail-for-panel',
   templateUrl: './ws-request-detail-for-panel.component.html',
@@ -67,6 +68,8 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
   ROLE_IS_AGENT: boolean;
   currentYear: any;
   browserLang: string;
+  join_polling: any
+  archive_polling: any
   constructor(
     private wsMsgsService: WsMsgsService,
     public appConfigService: AppConfigService,
@@ -80,7 +83,8 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
     public auth: AuthService,
     public translate: TranslateService,
     public contactsService: ContactsService,
-    public logger: LoggerService
+    public logger: LoggerService,
+    public webSocketJs: WebSocketJs
   ) { super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate); }
 
   ngOnInit() {
@@ -137,8 +141,8 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
   }
   setMomentLocale() {
     this.browserLang = this.translate.getBrowserLang();
-    if ( this.browserLang) {
-      if ( this.browserLang === 'it') {
+    if (this.browserLang) {
+      if (this.browserLang === 'it') {
         moment.locale('it')
       } else {
         moment.locale('en')
@@ -168,6 +172,16 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
       });
   }
 
+  joinRequest(request_id: string) {
+    const msg = { action: 'openJoinConversationModal', parameter: request_id, calledBy: 'ws_request_detail_for_panel' }
+    window.top.postMessage(msg, '*')
+    this.logger.log('[REQUEST-DTLS-X-PANEL] JOIN-REQUEST - currentUserID ', this.currentUserID);
+    // ------------------------
+    // For test
+    // ------------------------
+    // this.onJoinHandledinWsRequestDetailForPanel(request_id, this.currentUserID)
+  }
+
   listenToParentPostMessage() {
     window.addEventListener("message", (event) => {
       this.logger.log("[REQUEST-DTLS-X-PANEL] message event ", event);
@@ -177,11 +191,83 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
           this.logger.log("[REQUEST-DTLS-X-PANEL] message event ", event.data.action);
           this.logger.log("[REQUEST-DTLS-X-PANEL] message parameter ", event.data.parameter);
           this.logger.log("[REQUEST-DTLS-X-PANEL] currentUserID ", this.currentUserID);
-          this.onJoinHandled(event.data.parameter, this.currentUserID, "postMessage");
+          this.onJoinHandledinWsRequestDetailForPanel(event.data.parameter, this.currentUserID, "postMessage");
         }
       }
     })
   }
+
+  onJoinHandledinWsRequestDetailForPanel(id_request: string, currentUserID: string, postmessage?: string) {
+    // this.getFirebaseToken(() => {
+    // console.log('[WS-SHARED] - onJoinHandled postmessage ', postmessage)
+    this.logger.log('[WS-SHARED][REQUEST-DTLS-X-PANEL][WS-REQUESTS-UNSERVED-X-PANEL][WS-REQUESTS-LIST][SERVED][UNSERVED] - JOIN PRESSED');
+    this.logger.log('[WS-SHARED][REQUEST-DTLS-X-PANEL][WS-REQUESTS-UNSERVED-X-PANEL][WS-REQUESTS-LIST][SERVED][UNSERVED] - JOIN PRESSED postmessage', postmessage);
+    this.logger.log('[REQUEST-DTLS-X-PANEL] JOIN waiting for service-worker to be ready - current state', this.webSocketJs.ws.readyState)
+    this.join_polling = setInterval(() => {
+      if (this.webSocketJs.ws.readyState === 1) {
+        if (this.webSocketJs.ws.readyState === 1) {
+          clearInterval(this.join_polling);
+        }
+        // this.logger.log('[REQUEST-DTLS-X-PANEL] JOIN service-worker is ready ', this.webSocketJs.ws.readyState, ' - run ADD PARTCIPANT')
+        this.wsRequestsService.addParticipant(id_request, currentUserID)
+          .subscribe((data: any) => {
+
+            // console.log('[WS-SHARED] - onJoinHandled data ', data)
+            this.logger.log('[WS-SHARED][REQUEST-DTLS-X-PANEL][WS-REQUESTS-UNSERVED-X-PANEL][WS-REQUESTS-LIST][SERVED][UNSERVED] - addParticipant TO CHAT GROUP ', data);
+          }, (err) => {
+            this.logger.error('[WS-SHARED][REQUEST-DTLS-X-PANEL][WS-REQUESTS-UNSERVED-X-PANEL][WS-REQUESTS-LIST][SERVED][UNSERVED] - addParticipant TO CHAT GROUP - ERROR ', err);
+
+          }, () => {
+            this.logger.log('[REQUEST-DTLS-X-PANEL] JOIN  * COMPLETE *')
+            // this.logger.log('[WS-SHARED][REQUEST-DTLS-X-PANEL][WS-REQUESTS-UNSERVED-X-PANEL][WS-REQUESTS-LIST][SERVED][UNSERVED] - addParticipant TO CHAT GROUP * COMPLETE *');
+            if (postmessage === undefined) {
+              this.getTranslationsDisplayInAppNotification()
+
+            } else {
+
+              this.getTranslationsAndPostMessage()
+            }
+          });
+      }
+    }, 100);
+  }
+
+  archiveRequest(request_id) {
+    // this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg);
+    this.logger.log('[REQUEST-DTLS-X-PANEL] - HAS CLICKED ARCHIVE REQUEST ');
+
+    // console.log('[REQUEST-DTLS-X-PANEL]  ARCHIVE waiting for service-worker to be ready - current state', this.webSocketJs.ws.readyState)
+    this.archive_polling = setInterval(() => {
+      if (this.webSocketJs.ws.readyState === 1) {
+        if (this.webSocketJs.ws.readyState === 1) {
+          clearInterval(this.archive_polling);
+        }
+        // console.log('[REQUEST-DTLS-X-PANEL] ARCHIVE service-worker is ready ', this.webSocketJs.ws.readyState, ' - run ARCHIVE')
+        this._closeSupportGroupAndCloseConvsDeatail(request_id)
+      }
+    }, 100);
+
+  }
+
+  _closeSupportGroupAndCloseConvsDeatail(request_id) {
+    this.wsRequestsService.closeSupportGroup(request_id)
+      .subscribe((data: any) => {
+        this.logger.log('[REQUEST-DTLS-X-PANEL] - CLOSE SUPPORT GROUP - DATA ', data);
+      }, (err) => {
+        this.logger.error('[REQUEST-DTLS-X-PANEL] - CLOSE SUPPORT GROUP - ERROR ', err);
+
+        //  NOTIFY ERROR 
+        // this.notify.showNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
+      }, () => {
+        // console.log('[REQUEST-DTLS-X-PANEL] ARCHIVE  * COMPLETE *')
+        this.logger.log('[REQUEST-DTLS-X-PANEL] CLOSE SUPPORT GROUP - COMPLETE');
+        this.closeRightSideBar();
+        //  NOTIFY SUCCESS;
+        // this.notify.showRequestIsArchivedNotification(this.requestHasBeenArchivedNoticationMsg_part1);
+
+      });
+  }
+
 
   ngOnDestroy() {
     this.logger.log('[REQUEST-DTLS-X-PANEL] - ngOnDestroy')
@@ -286,7 +372,6 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
   }
 
   getWsRequesterPresence() {
-
     this.wsRequestsService.wsRequesterStatus$
       .pipe(
         takeUntil(this.unsubscribe$)
@@ -332,37 +417,6 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
         this.logger.log('[REQUEST-DTLS-X-PANEL] GET CURRENT USER  > currentUserID ', this.currentUserID);
       }
     });
-  }
-
-  joinRequest(request_id: string) {
-    const msg = { action: 'openJoinConversationModal', parameter: request_id, calledBy: 'ws_request_detail_for_panel' }
-    window.top.postMessage(msg, '*')
-
-    this.logger.log('[REQUEST-DTLS-X-PANEL] JOIN-REQUEST - currentUserID ', this.currentUserID);
-
-  }
-
-  archiveRequest(request_id) {
-    // this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg);
-    this.logger.log('[REQUEST-DTLS-X-PANEL] - HAS CLICKED ARCHIVE REQUEST ');
-
-
-    this.wsRequestsService.closeSupportGroup(request_id)
-      .subscribe((data: any) => {
-        this.logger.log('[REQUEST-DTLS-X-PANEL] - CLOSE SUPPORT GROUP - DATA ', data);
-      }, (err) => {
-        this.logger.error('[REQUEST-DTLS-X-PANEL] - CLOSE SUPPORT GROUP - ERROR ', err);
-
-        //  NOTIFY ERROR 
-        // this.notify.showNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
-      }, () => {
-
-        this.logger.log('[REQUEST-DTLS-X-PANEL] CLOSE SUPPORT GROUP - COMPLETE');
-        this.closeRightSideBar();
-        //  NOTIFY SUCCESS;
-        // this.notify.showRequestIsArchivedNotification(this.requestHasBeenArchivedNoticationMsg_part1);
-
-      });
   }
 
   onInitUsersListModalHeight() {
@@ -425,9 +479,7 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
       .subscribe((wsmsgs) => {
 
         this.messagesList = wsmsgs;
-        console.log('[REQUEST-DTLS-X-PANEL] - getWsMsgs$ *** this.messagesList *** ', this.messagesList)
-
-
+        // console.log('[REQUEST-DTLS-X-PANEL] - getWsMsgs$ *** this.messagesList *** ', this.messagesList)
         let i: number
         for (i = 0; i < this.messagesList.length; i++) {
           this.logger.log('MSG - i: ', i, ' - requester_id ', this.requester_id)

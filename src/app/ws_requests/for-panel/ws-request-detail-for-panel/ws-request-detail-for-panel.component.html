@@ -149,7 +149,7 @@ padding-right: 0px;
 
                 <span style="position: relative;top: 1px;">
 
-                    <span class="dept-avatar-detail-for-panel"
+                    <span *ngIf="request?.dept" class="dept-avatar-detail-for-panel"
                         [ngStyle]="{'background-color': request?.dept?.dept_name_fillcolour }">
                         {{ request?.dept?.dept_name_initial }}
                     </span>
@@ -422,14 +422,11 @@ padding-right: 0px;
                 [disabled]="request?.currentUserIsJoined === false && ROLE_IS_AGENT === true">
 
                 <i class="material-icons">archive</i>
-                <span style=" min-width: fit-content;
-                text-align: center;
-                top: -8px;
-                border-radius: 3px;
-                padding: 3px 10px;
-                font-size: 10px;
-                line-height: 12px;" class="top">
-                    <span style="text-transform: capitalize;"> {{ 'VisitorsPage.Archive' | translate }} </span>
+                <span
+                    style="min-width: fit-content; text-align: center; top: -8px; border-radius: 3px; padding: 3px 10px; font-size: 10px; line-height: 12px;"
+                    class="top">
+                    <span *ngIf="ROLE_IS_AGENT !== true" style="text-transform: capitalize;"> {{ 'VisitorsPage.Archive' | translate }} </span>
+                    <span *ngIf="ROLE_IS_AGENT === true" style="text-transform: capitalize;"> {{ 'ActionNotAllowed' | translate }} </span>
                     <i></i>
                 </span>
             </button>
@@ -463,8 +460,6 @@ padding-right: 0px;
                 </span>
 
             </button>
-
-
         </div>
     </div>
 
@@ -551,9 +546,6 @@ padding-right: 0px;
                 {{ message?.text }}
             </li>
         </ul> -->
-
-
-
     </div>
 
 
@@ -576,20 +568,15 @@ padding-right: 0px;
     </div> -->
 
 
-
-
-    <!-- ---------------------------------------------------------------- -->
+    <!-- --------------------------------------------------------------- -->
     <!-- Note - the following is set to DISPLAY NONE -->
     <!-- ---------------------------------------------------------------- -->
     <div #scrollMe class="card-content"
         style="height: 500px; overflow-y: auto; padding: 0px; padding-left:25px; padding-right:25px; display: none;"
         (scroll)="onScroll($event)">
 
-
         <div *ngIf="!showSpinner" class="chat-body" style="vertical-align:baseline;">
-
             <div *ngFor="let message of messagesList">
-
                 <div class="parent">
                     <div [ngClass]="{'child' : requester_id !== message.sender}">
 
@@ -644,9 +631,5 @@ padding-right: 0px;
                 <i class="fa fa-chevron-down"></i>
             </span>
         </a>
-
     </div>
-
-
-
 </div>
