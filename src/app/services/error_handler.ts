@@ -29,10 +29,10 @@ export class ErrorHandler {
 
     public handleError(err: any, next: HttpHandler, req: HttpRequest<any>) {
         // this.snackbar.open(err.message, 'close');
-        console.error('>>> ERROR HANDLER - ERR <<<< ', err)
-        console.error('>>> ERROR HANDLER - NEXT <<<< ', next)
-        console.error('>>> ERROR HANDLER - REQUEST <<<< ', req)
-        console.error('>>> ERROR HANDLER - ERROR STATUS <<<< ', err.status)
+        // console.error('>>> ERROR HANDLER - ERR <<<< ', err)
+        // console.error('>>> ERROR HANDLER - NEXT <<<< ', next)
+        // console.error('>>> ERROR HANDLER - REQUEST <<<< ', req)
+        // console.error('>>> ERROR HANDLER - ERROR STATUS <<<< ', err.status)
         if (err.status === 403) {
 
             this.router.navigate(['project/' + this.project_id + '/unauthorized']);
@@ -43,7 +43,7 @@ export class ErrorHandler {
                 this.isRefreshingToken = true;
 
                const refreshToken = localStorage.getItem('refreshToken');
-               console.error('>>> ERROR HANDLER - REFRESH TOKEN <<<< ', refreshToken);
+            //    console.error('>>> ERROR HANDLER - REFRESH TOKEN <<<< ', refreshToken);
 
                
             }
