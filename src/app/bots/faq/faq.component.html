@@ -82,7 +82,7 @@
 
 
                   <input #fileInputBotProfileImage class="inputfile" name="uploadbotimage" id="uploadbotimage"
-                    type="file" (change)="upload($event)" accept=".jpg" />
+                    type="file" (change)="upload($event)" accept=".jpg, .JPEG, .png"/>
                   <label class="btn btn-white upload-image-btn" for="uploadbotimage"
                     style="padding-left:15px; padding-right:15px; text-transform: none; color: #7695a5">
 
@@ -159,7 +159,8 @@
                     (change)="onSelectBotDefaultlang(botDefaultSelectedLang)">
                   </ng-select> -->
 
-                  <input id="bot-default-selected-lang" name="bot-default-selected-lang" [(ngModel)]="botDefaultSelectedLang" class="input" type="text" disabled>
+                  <input id="bot-default-selected-lang" name="bot-default-selected-lang"
+                    [(ngModel)]="botDefaultSelectedLang" class="input" type="text" disabled>
                 </div>
               </div>
             </section>
@@ -213,7 +214,8 @@
             <!-- ------------------------------------------------------------------------------------------- -->
             <!--  Dialogflow bot data -->
             <!-- ------------------------------------------------------------------------------------------- -->
-            <section id="dialogflow-bot-data-section" class="dialogflow-bot-data-section" *ngIf="botType === 'dialogflow'">
+            <section id="dialogflow-bot-data-section" class="dialogflow-bot-data-section"
+              *ngIf="botType === 'dialogflow'">
 
               <!-- ------------------------------------------------------------------------------------------- -->
               <!--  Dialogflow bot - type -->
@@ -566,12 +568,13 @@
                 </p>
 
                 <!-- <span style="display: block;  cursor:pointer; font-weight: 200;margin-top: 5px;" > -->
-                  <p style="color: #7695a5;">
+                <p style="color: #7695a5;">
                   {{'ManageTheBotIn' | translate}}
 
-                  <span style="color: #0f62ff;" (click)="goToRoutingAndDepts()"> {{'RoutingAndDepts' | translate}}</span>
-                <!-- </span> -->
-              </p>
+                  <span style="color: #0f62ff;" (click)="goToRoutingAndDepts()"> {{'RoutingAndDepts' |
+                    translate}}</span>
+                  <!-- </span> -->
+                </p>
               </span>
             </span> <!-- ./end Department section (replaces Bot attributes) -->
 
