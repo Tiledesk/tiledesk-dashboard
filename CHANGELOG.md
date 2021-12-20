@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.30
+- Deploys in production 
+
 ### 2.2.30-rc4
 - Improves methods to prevent the chat from opening in a new browser tab if the chat tab is already open
 - Fixed bug: 'info/support' messages are not displayed correctly in the "conversation details" page displayed in the iframe of  the chat left panel
