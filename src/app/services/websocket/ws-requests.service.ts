@@ -35,7 +35,8 @@ export class WsRequestsService implements OnDestroy {
   requesTtotal: number;
   public wsRequestsList$: BehaviorSubject<Request[]> = new BehaviorSubject<Request[]>([]);
   public projectUsersOfProject$: BehaviorSubject<[]> = new BehaviorSubject<[]>([]);
-
+  public wsOnDataUnservedConvs$: BehaviorSubject<Request[]> = new BehaviorSubject<Request[]>([]);
+ 
   public ws__RequestsList$: any;
 
   public wsRequest$ = new Subject()
@@ -271,7 +272,8 @@ export class WsRequestsService implements OnDestroy {
 
           }, function (data, notification) {
 
-            self.logger.log("[WS-REQUESTS-SERV] - UPDATE - DATA ", data);
+            self.logger.log("[WS-REQUESTS-SERV] DSHB - UPDATE - DATA ", data);
+
 
             // -------------------------------------------------------
             // @ Agents (UPDATE) pass in data agents get from snapshot
@@ -288,12 +290,49 @@ export class WsRequestsService implements OnDestroy {
 
 
           }, function (data, notification) {
-            self.logger.log("[WS-REQUESTS-SERV] - ON-DATA - DATA ", data);
+            self.logger.log("[WS-REQUESTS-SERV] DSHB - ON-DATA - DATA ", data);
+            self.logger.log("[WS-REQUESTS-SERV] DSHB - ON-DATA - NOTIFICATION ", notification);
+
+            // if (notification.event.method === 'CREATE') {
+
+              // self.wsRequestsList.push(data[0]);
+              // console.log("[WS-REQUESTS-SERV] DSHB - ON-DATA - DATA data published ",  self.wsRequestsList);
+
+              // self.wsRequestsList$.next(data);
+              // console.log("[WS-REQUESTS-SERV] DSHB - ON-DATA - DATA data published ",  data);
+
+              // if (data) {
+              //   if (Array.isArray(data)) {
+              //     // https://stackoverflow.com/questions/18983138/callback-after-all-asynchronous-foreach-callbacks-are-completed
+              //     let requests = data.map((item) => {
+              //       return new Promise((resolve) => {
+              //         self.asyncFunction(item, resolve);
+              //       });
+              //     })
+              //     Promise.all(requests).then(() => {
+              //       self.ws_All_RequestsLength$.next(data.length);
+              //     });
+              //   }
+              // }
+              // this.wsRequestsList$.next(this.wsRequestsList);
+
+
+
+              // ------------------------------- 
+              // let wsOnDataConvsList = [];
+              // wsOnDataConvsList.push(data)
+              // console.log("[WS-REQUESTS-SERV] DSHB - ON-DATA - DATA wsOnDataConvsList ", wsOnDataConvsList);
+              // // if (wsOnDataRequestsList.length > 0) {
+              // let wsOnDataConvsUnserved = wsOnDataConvsList[0].filter((el) => {
+              //   return el.status === 100;
+              // });
+              // console.log("[WS-REQUESTS-SERV] DSHB - ON-DATA - DATA ONLY UNSERVED  ", wsOnDataConvsUnserved);
+              // self.wsOnDataUnservedConvs$.next(wsOnDataConvsUnserved);
+              // }
+            // }
 
             if (data) {
-
               if (Array.isArray(data)) {
-
                 // https://stackoverflow.com/questions/18983138/callback-after-all-asynchronous-foreach-callbacks-are-completed
                 let requests = data.map((item) => {
                   return new Promise((resolve) => {
@@ -326,13 +365,14 @@ export class WsRequestsService implements OnDestroy {
   addWsRequests(request: Request) {
     if (request !== null && request !== undefined) {
       this.wsRequestsList.push(request);
+      // this.wsRequestsList$.next(this.wsRequestsList);
+     
     }
 
     if (this.wsRequestsList) {
       // -----------------------------------------------------------------------------------------------------
       // publish all REQUESTS 
       // -----------------------------------------------------------------------------------------------------
-
       if (this.timeout) {
         clearTimeout(this.timeout);
       }
@@ -796,7 +836,7 @@ export class WsRequestsService implements OnDestroy {
   // -----------------------------------------------------------------------------------------
   // @ Create internal request
   // -----------------------------------------------------------------------------------------
-  createInternalRequest(requester_id: string, request_id: string, subject: string, message: string, departmentid: string, participantid: string , ticketpriority: string) {
+  createInternalRequest(requester_id: string, request_id: string, subject: string, message: string, departmentid: string, participantid: string, ticketpriority: string) {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
@@ -804,7 +844,7 @@ export class WsRequestsService implements OnDestroy {
     const options = new RequestOptions({ headers });
     // this.logger.log('JOIN FUNCT OPTIONS  ', options);
     let body = {}
-    body = { 'sender': requester_id, 'subject': subject, 'text': message, 'departmentid': departmentid, 'channel': { 'name': 'form' } , 'priority':ticketpriority};
+    body = { 'sender': requester_id, 'subject': subject, 'text': message, 'departmentid': departmentid, 'channel': { 'name': 'form' }, 'priority': ticketpriority };
     if (participantid !== undefined) {
       body['participants'] = [participantid]
     } else {
@@ -908,7 +948,7 @@ export class WsRequestsService implements OnDestroy {
       .map((res) => res.json());
   }
 
-    // -----------------------------------------------------------------------------------------
+  // -----------------------------------------------------------------------------------------
   // Update Priority
   // -----------------------------------------------------------------------------------------
   updatePriority(request_id: string, selectedPriority: string) {
@@ -1009,13 +1049,13 @@ export class WsRequestsService implements OnDestroy {
                 request.department = request['snapshot']["department"]
 
 
-              } 
+              }
               else if (request['attributes']) {
-                if(request['attributes']['departmentId'] && request['attributes']['departmentName']) 
-                request.department = {'name': request['attributes']['departmentName'], 'id': request['attributes']['departmentId']}
+                if (request['attributes']['departmentId'] && request['attributes']['departmentName'])
+                  request.department = { 'name': request['attributes']['departmentName'], 'id': request['attributes']['departmentId'] }
               }
 
-               else if (request.department) {
+              else if (request.department) {
                 request.department = request.department
               }
 
