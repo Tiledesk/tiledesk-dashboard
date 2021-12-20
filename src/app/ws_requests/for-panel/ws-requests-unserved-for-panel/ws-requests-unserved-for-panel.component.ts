@@ -29,6 +29,7 @@ import { Location } from '@angular/common';
 const swal = require('sweetalert');
 import { ContactsService } from '../../../services/contacts.service';
 import { LoggerService } from '../../../services/logger/logger.service';
+import { WebSocketJs } from 'app/services/websocket/websocket-js';
 
 @Component({
   selector: 'appdashboard-ws-requests-unserved-for-panel',
@@ -59,9 +60,9 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
   showSpinner = true;
   firebase_token: any;
   currentUserID: string;
-  ONLY_MY_REQUESTS: boolean = false;
+  ONLY_MY_REQUESTS: boolean = true;
   ROLE_IS_AGENT: boolean;
-  displayBtnLabelSeeYourRequets = false;
+  // displayBtnLabelSeeYourRequets = false;
 
   totalRequests: any;
   i = 0
@@ -109,7 +110,9 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
   selectedRequest: any;
 
   SHOW_NO_REQUEST_MSG: boolean
-  USER_ROLE: string
+  USER_ROLE: string;
+  join_polling: any
+  archive_polling: any
   /**
    * 
    * @param wsRequestsService 
@@ -143,7 +146,8 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
     public location: Location,
     private cdref: ChangeDetectorRef,
     public contactsService: ContactsService,
-    public logger: LoggerService
+    public logger: LoggerService,
+    public webSocketJs: WebSocketJs
 
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate);
@@ -173,24 +177,116 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
         takeUntil(this.unsubscribe$)
       )
       .subscribe((userRole) => {
-        console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
+        this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
         this.USER_ROLE = userRole;
       })
   }
 
+  // ------------------------------------------
+  // Join request
+  // ------------------------------------------
+  joinRequest(request_id: string) {
+    this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] JOIN-REQUEST request_id', request_id, ' - CURRENT-USER-ID ', this.currentUserID);
+
+    const msg = { action: 'openJoinConversationModal', parameter: request_id, calledBy: 'ws_unserved_for_panel' }
+    window.top.postMessage(msg, '*')
+    // this.onJoinHandled(request_id, this.currentUserID);
+
+    // ------------------------
+    // For test
+    // ------------------------
+    // this.onJoinHandledinWsRequestsUnsevedForPanel(request_id, this.currentUserID);
+  }
+
   listenToParentPostMessage() {
     window.addEventListener("message", (event) => {
-      // console.log("[REQUEST-DTLS-X-PANEL] message event ", event);
+      this.logger.log("[REQUEST-DTLS-X-PANEL] message event ", event);
 
       if (event && event.data && event.data.action && event.data.parameter && event.data.calledBy) {
         if (event.data.action === 'joinConversation' && event.data.calledBy === 'ws_unserved_for_panel') {
           this.logger.log("[WS-REQUESTS-UNSERVED-X-PANEL] message event ", event.data.action);
           this.logger.log("[WS-REQUESTS-UNSERVED-X-PANEL] message parameter ", event.data.parameter);
           this.logger.log("[WS-REQUESTS-UNSERVED-X-PANEL] currentUserID ", this.currentUserID);
-          this.onJoinHandled(event.data.parameter, this.currentUserID, "postMessage");
+          this.onJoinHandledinWsRequestsUnsevedForPanel(event.data.parameter, this.currentUserID, "postMessage");
         }
+
+        // if (event.data.action === 'hasArchived' && event.data.calledBy === 'ws_unserved_for_panel') {
+        //   console.log("[WS-REQUESTS-UNSERVED-X-PANEL] message event ", event.data.action);
+        //   console.log("[WS-REQUESTS-UNSERVED-X-PANEL] message parameter ", event.data.parameter);
+        //   console.log("[WS-REQUESTS-UNSERVED-X-PANEL] currentUserID ", this.currentUserID);
+        // }
       }
     })
+  }
+
+
+
+  onJoinHandledinWsRequestsUnsevedForPanel(id_request: string, currentUserID: string, postmessage?: string) {
+    // this.getFirebaseToken(() => {
+    // console.log('[WS-SHARED] - onJoinHandled postmessage ', postmessage)
+    this.logger.log('[WS-SHARED][REQUEST-DTLS-X-PANEL][WS-REQUESTS-UNSERVED-X-PANEL][WS-REQUESTS-LIST][SERVED][UNSERVED] - JOIN PRESSED');
+    this.logger.log('[WS-SHARED][REQUEST-DTLS-X-PANEL][WS-REQUESTS-UNSERVED-X-PANEL][WS-REQUESTS-LIST][SERVED][UNSERVED] - JOIN PRESSED postmessage', postmessage);
+    this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] JOIN waiting for service-worker to be ready - current state', this.webSocketJs.ws.readyState)
+    this.join_polling = setInterval(() => {
+      if (this.webSocketJs.ws.readyState === 1) {
+        if (this.webSocketJs.ws.readyState === 1) {
+          clearInterval(this.join_polling);
+        }
+        this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] JOIN service-worker is ready ', this.webSocketJs.ws.readyState, ' - run ADD PARTCIPANT')
+        this.wsRequestsService.addParticipant(id_request, currentUserID)
+          .subscribe((data: any) => {
+
+            // console.log('[WS-SHARED] - onJoinHandled data ', data)
+            this.logger.log('[WS-SHARED][REQUEST-DTLS-X-PANEL][WS-REQUESTS-UNSERVED-X-PANEL][WS-REQUESTS-LIST][SERVED][UNSERVED] - addParticipant TO CHAT GROUP ', data);
+          }, (err) => {
+            this.logger.error('[WS-SHARED][REQUEST-DTLS-X-PANEL][WS-REQUESTS-UNSERVED-X-PANEL][WS-REQUESTS-LIST][SERVED][UNSERVED] - addParticipant TO CHAT GROUP - ERROR ', err);
+
+          }, () => {
+            this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] JOIN  * COMPLETE *')
+
+            this.logger.log('[WS-SHARED][REQUEST-DTLS-X-PANEL][WS-REQUESTS-UNSERVED-X-PANEL][WS-REQUESTS-LIST][SERVED][UNSERVED] - addParticipant TO CHAT GROUP * COMPLETE *');
+            if (postmessage === undefined) {
+              this.getTranslationsDisplayInAppNotification()
+
+            } else {
+
+              this.getTranslationsAndPostMessage()
+            }
+          });
+      }
+    }, 100);
+  }
+
+
+  archiveRequest(request_id) {
+    // this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg);
+    this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - HAS CLICKED ARCHIVE REQUEST ');
+  
+    this.archive_polling = setInterval(() => {
+      if (this.webSocketJs.ws.readyState === 1) {
+        if (this.webSocketJs.ws.readyState === 1) {
+          clearInterval(this.archive_polling);
+        }
+        this._closeSupportGroup(request_id)
+      }
+    }, 100);
+  }
+
+  _closeSupportGroup(request_id,) {
+    this.wsRequestsService.closeSupportGroup(request_id)
+      .subscribe((data: any) => {
+        this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - CLOSE SUPPORT GROUP - RES ', data);
+      }, (err) => {
+        this.logger.error('[WS-REQUESTS-UNSERVED-X-PANEL] - CLOSE SUPPORT GROUP - ERROR ', err);
+      }, () => {
+        this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL]- CLOSE SUPPORT GROUP * COMPLETE *');
+        // ---------------------------------------
+        // POST TO PARENT
+        // ---------------------------------------
+        // const msg = { action: 'hasArchived', parameter: request_id, calledBy: 'ws_unserved_for_panel' }
+        // window.top.postMessage(msg, '*')
+    
+      });
   }
 
   ngAfterViewInit() {
@@ -229,39 +325,6 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
     let ps = new PerfectScrollbar(container_projects_for_panel, {
       suppressScrollX: true
     });
-  }
-
-
-  // ------------------------------------------
-  // Join request
-  // ------------------------------------------
-  joinRequest(request_id: string) {
-    this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] JOIN-REQUEST request_id', request_id, ' - CURRENT-USER-ID ', this.currentUserID);
-
-    const msg = { action: 'openJoinConversationModal', parameter: request_id, calledBy: 'ws_unserved_for_panel' }
-    window.top.postMessage(msg, '*')
-    // this.onJoinHandled(request_id, this.currentUserID);
-  }
-
-  archiveRequest(request_id) {
-    // this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg);
-    this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - HAS CLICKED ARCHIVE REQUEST ');
-    this.wsRequestsService.closeSupportGroup(request_id)
-      .subscribe((data: any) => {
-        this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - CLOSE SUPPORT GROUP - RES ', data);
-      }, (err) => {
-        this.logger.error('[WS-REQUESTS-UNSERVED-X-PANEL] - CLOSE SUPPORT GROUP - ERROR ', err);
-
-        //  NOTIFY ERROR 
-        // this.notify.showNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
-      }, () => {
-
-        this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL]- CLOSE SUPPORT GROUP * COMPLETE *');
-        const msg = { action: 'hasArchived', parameter: request_id, calledBy: 'ws_unserved_for_panel' }
-        window.top.postMessage(msg, '*')
-        //  NOTIFY SUCCESS
-        // this.notify.showRequestIsArchivedNotification(this.requestHasBeenArchivedNoticationMsg_part1);
-      });
   }
 
   displayDetails(request) {
@@ -340,19 +403,22 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
       )
       .subscribe((user_role) => {
         this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - GET PROJECT-USER ROLE user_role ', user_role);
-        if (user_role) {
-          if (user_role === 'agent') {
-            this.ROLE_IS_AGENT = true
-            this.displayBtnLabelSeeYourRequets = true
-            // ------ 
-            this.ONLY_MY_REQUESTS = true
-            this.getWsRequests$();
-          } else {
-            this.ROLE_IS_AGENT = false
-            this.displayBtnLabelSeeYourRequets = false;
-            this.getWsRequests$();
-          }
-        }
+
+        this.ONLY_MY_REQUESTS = true
+        this.getWsRequests$();
+        // if (user_role) {
+        //   if (user_role === 'agent') {
+        //     this.ROLE_IS_AGENT = true
+        //     // this.displayBtnLabelSeeYourRequets = true
+        //     // ------ 
+        //     this.ONLY_MY_REQUESTS = true
+        //     this.getWsRequests$();
+        //   } else {
+        //     this.ROLE_IS_AGENT = false
+        //     // this.displayBtnLabelSeeYourRequets = false;
+        //     this.getWsRequests$();
+        //   }
+        // }
       });
   }
 
@@ -485,7 +551,6 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
       .subscribe((wsrequests) => {
         // console.log("[WS-REQUESTS-UNSERVED-X-PANEL] - subscribe getWsRequests$" , wsrequests);
         if (wsrequests) {
-
           this.addDeptObject(wsrequests)
 
           this.logger.log("[WS-REQUESTS-UNSERVED-X-PANEL] - subscribe > if (wsrequests) ", wsrequests);
@@ -523,54 +588,55 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
             });
           }
         }
+        if (this.ws_requests) {
+          this.ws_requests.forEach((request) => {
+            // console.log('[WS-REQUESTS-UNSERVED-X-PANEL] forEach request', request);
+            const user_agent_result = this.parseUserAgent(request.userAgent)
+            const ua_browser = user_agent_result.browser.name + ' ' + user_agent_result.browser.version
+            request['ua_browser'] = ua_browser;
+            const ua_os = user_agent_result.os.name + ' ' + user_agent_result.os.version
+            request['ua_os'] = ua_os;
 
-        this.ws_requests.forEach((request) => {
-          // console.log('[WS-REQUESTS-UNSERVED-X-PANEL] forEach request', request);
-          const user_agent_result = this.parseUserAgent(request.userAgent)
-          const ua_browser = user_agent_result.browser.name + ' ' + user_agent_result.browser.version
-          request['ua_browser'] = ua_browser;
-          const ua_os = user_agent_result.os.name + ' ' + user_agent_result.os.version
-          request['ua_os'] = ua_os;
+            request['currentUserIsJoined'] = this.currentUserIdIsInParticipants(request.participants, this.auth.user_bs.value._id, request.request_id);
 
-          request['currentUserIsJoined'] = this.currentUserIdIsInParticipants(request.participants, this.auth.user_bs.value._id, request.request_id);
+            if (request.status === 200) {
 
-          if (request.status === 200) {
+              // USE CASE ARRAY "new_participants" is UNDEFINED e.g. when the page is refreshed or when you enter the page (even when back from the detail) or to the "UPDATE"
+              if (!request['participanting_Agents']) {
+                this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - PARTICIPATING-AGENTS IS ', request['participanting_Agents'], ' - RUN DO ');
+                request['participanting_Agents'] = this.doParticipatingAgentsArray(request.participants, request.first_text, this.imageStorage, this.UPLOAD_ENGINE_IS_FIREBASE)
 
-            // USE CASE ARRAY "new_participants" is UNDEFINED e.g. when the page is refreshed or when you enter the page (even when back from the detail) or to the "UPDATE"
-            if (!request['participanting_Agents']) {
-              this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - PARTICIPATING-AGENTS IS ', request['participanting_Agents'], ' - RUN DO ');
-              request['participanting_Agents'] = this.doParticipatingAgentsArray(request.participants, request.first_text, this.imageStorage, this.UPLOAD_ENGINE_IS_FIREBASE)
+              } else {
+                this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - PARTICIPATING-AGENTS IS DEFINED');
+              }
+            }
 
+            if (request.lead && request.lead.fullname) {
+              request['requester_fullname_initial'] = avatarPlaceholder(request.lead.fullname);
+              request['requester_fullname_fillColour'] = getColorBck(request.lead.fullname)
             } else {
-              this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - PARTICIPATING-AGENTS IS DEFINED');
+              request['requester_fullname_initial'] = 'N/A';
+              request['requester_fullname_fillColour'] = '#6264a7';
             }
-          }
-
-          if (request.lead && request.lead.fullname) {
-            request['requester_fullname_initial'] = avatarPlaceholder(request.lead.fullname);
-            request['requester_fullname_fillColour'] = getColorBck(request.lead.fullname)
-          } else {
-            request['requester_fullname_initial'] = 'N/A';
-            request['requester_fullname_fillColour'] = '#6264a7';
-          }
 
 
-          if (request.lead && request.lead.lead_id) {
-            if (request.status === 100) {
-              this.getRequesterAvailabilityStatus(request.lead.lead_id, request)
+            if (request.lead && request.lead.lead_id) {
+              if (request.status === 100) {
+                this.getRequesterAvailabilityStatus(request.lead.lead_id, request)
+              }
             }
-          }
 
-          if (request && request.first_text) {
-            const length = 45
+            if (request && request.first_text) {
+              const length = 45
 
-            if (request.first_text.length > length) {
-              request['trimmedFirst_text'] = request.first_text.substring(0, length - 3) + "..."
-            } else {
-              request['trimmedFirst_text'] = request.first_text
+              if (request.first_text.length > length) {
+                request['trimmedFirst_text'] = request.first_text.substring(0, length - 3) + "..."
+              } else {
+                request['trimmedFirst_text'] = request.first_text
+              }
             }
-          }
-        });
+          });
+        }
 
         // -------------------------------------------------------
         // Sort requests and manage spinner
@@ -708,6 +774,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
 
       wsrequests.forEach(request => {
         if (request && request.department) {
+          // console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - addDeptObject', request)
           const deptHasName = request.department.hasOwnProperty('name')
           if (deptHasName) {
             // this.logger.log('% »»» WebSocketJs WF +++++ ws-requests--- service -  X-> REQ DEPT HAS NAME', deptHasName)

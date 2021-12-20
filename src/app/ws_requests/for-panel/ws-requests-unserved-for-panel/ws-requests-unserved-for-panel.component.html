@@ -141,8 +141,8 @@
                   <div class="tool_tip" style="width: 100%;">
                     <!-- padding: 4px 8px!important; -->
                     <button class="btn btn-block btn-primary action--btn"
-                      (click)='$event.stopPropagation();archiveRequest(request?.request_id)'
-                      style="background-color: #e4e6eb; color: #050505;" [disabled]="USER_ROLE === 'agent'">
+                      (click)='$event.stopPropagation();archiveRequest(request?.request_id, request)'
+                      style="background-color: #e4e6eb; color: #050505;" [disabled]="request?.currentUserIsJoined === false && USER_ROLE === 'agent'">
                       {{'VisitorsPage.Archive' | translate}}
                     </button>
                     <span

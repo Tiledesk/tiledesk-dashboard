@@ -17,6 +17,7 @@ import { NotifyService } from '../../../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { LoggerService } from '../../../services/logger/logger.service';
+
 const swal = require('sweetalert');
 
 @Component({
@@ -29,7 +30,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
   @Input() wsRequestsUnserved: Request[];
   @Input() ws_requests_length: number
 
-
+  wsOndataRequestArray: Array<any>
   projectId: string;
   id_request_to_archive: string;
   displayArchiveRequestModal: string;
@@ -97,10 +98,57 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     this.getTranslations();
     this.getLoggedUser();
     this.getProjectUserRole();
+
   }
 
+  // listeToChatPostMsg() {
+  //   window.addEventListener("message", (event) => {
+  //     console.log("wS-REQUEST-UNSERVED message event ", event);
+
+  //     if (event && event.data && event.data.action && event.data.parameter) {
+  //       // if (event.data.action === 'joinConversation' ) {
+  //       //   this.logger.log("[REQUEST-DTLS-X-PANEL] message event ", event.data.action);
+  //       //   this.logger.log("[REQUEST-DTLS-X-PANEL] message parameter ", event.data.parameter);
+  //       //   this.logger.log("[REQUEST-DTLS-X-PANEL] currentUserID ", this.currentUserID);
+
+  //       // }
+  //     }
+  //   })
+  // }
+
+
   ngOnChanges() {
-    this.logger.log('% »»» WebSocketJs WF - onData (ws-requests-unserved) - wsRequestsUnserved', this.wsRequestsUnserved)
+    this.logger.log('WS-REQUEST-UNSERVED from @Input »»» WebSocketJs WF - wsRequestsUnserved', this.wsRequestsUnserved)
+    // this.wsRequestsService.wsOnDataUnservedConvs$
+    //   .subscribe((ondataUnserveConvs) => {
+    //     console.log("WS-REQUEST-UNSERVED ondataUnserveConvs ", ondataUnserveConvs);
+
+    //     if (this.wsRequestsUnserved.length > 0) {
+    //       if (ondataUnserveConvs.length === this.wsRequestsUnserved.length) {
+    //         console.log('WS-REQUEST-UNSERVED the arrays of unserved conversations have the same length')
+    //         console.log('WS-REQUEST-UNSERVED from @Input »»» WebSocketJs WF - wsRequestsUnserved', this.wsRequestsUnserved)
+    //         console.log('WS-REQUEST-UNSERVED from @Input »»» WebSocketJs WF - ondataUnserveConvs', ondataUnserveConvs)
+    //       } else {
+    //         console.log('WS-REQUEST-UNSERVED the arrays of unserved conversations NOT have the same length')
+    //         console.log('WS-REQUEST-UNSERVED the arrays of unserved conversations wsRequestsUnserved', this.wsRequestsUnserved)
+    //         console.log('WS-REQUEST-UNSERVED from @Input »»» WebSocketJs WF - ondataUnserveConvs', ondataUnserveConvs)
+    //         for (let i = 0; i < this.wsRequestsUnserved.length; i++) {
+    //           for (let j = 0; j < ondataUnserveConvs.length; j++) {
+    //             if (this.wsRequestsUnserved[i]._id === ondataUnserveConvs[j]._id) {
+    //               console.log('WS-REQUEST-UNSERVED the conversation exists in both arrays - conv ', this.wsRequestsUnserved[i]._id)
+    //             } else {
+    //               console.log('WS-REQUEST-UNSERVED the conversation NOT exists in both arrays - conv ', this.wsRequestsUnserved[i]._id)
+    //             }
+  
+    //             // if (this.wsRequestsUnserved[i]['archived'] === true) {
+    //             //   console.log('WS-REQUEST-UNSERVED  wsRequestsUnserved the object with archived ', this.wsRequestsUnserved[i])
+    //             //   this.wsRequestsUnserved.splice(i, 1);
+    //             // }
+    //           }
+    //         }
+    //       }
+    //     }
+    //   });
   }
 
 
@@ -153,7 +201,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     this.conversationWillBeAssignedToYourself()
   }
 
-    // -----------------------------------------------
+  // -----------------------------------------------
   // @ Translate strings
   // -----------------------------------------------
   translateAreYouSure() {
@@ -175,7 +223,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
         this.conversationWillBeAssignedToYourselfMsg = text;
       });
   }
-  
+
 
   // -------------------------------------------------------------
   // @ Get depts
@@ -267,9 +315,9 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
   }
 
 
-  archiveRequest(request_id: string) {
+  archiveRequest(request_id: string, request: any) {
     this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg);
-    this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - HAS CLICKED ARCHIVE REQUEST (CLOSE SUPPORT GROUP) ');
+    this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - HAS CLICKED ARCHIVE CONV (CLOSE SUPPORT GROUP) - CONV: ', request);
 
 
     this.wsRequestsService.closeSupportGroup(request_id)
@@ -281,7 +329,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
         //  NOTIFY ERROR 
         this.notify.showWidgetStyleUpdateNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
       }, () => {
-
+      
         this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP - COMPLETE');
 
         //  NOTIFY SUCCESS
@@ -307,7 +355,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     // this.onJoinHandled(request_id, this.currentUserID);
   }
 
-  displayModalAreyouSureYouWantToTakeChargeOfTheConversation(requestid, currentuserid) { 
+  displayModalAreyouSureYouWantToTakeChargeOfTheConversation(requestid, currentuserid) {
     swal({
       title: this.areYouSureMsg,
       text: this.conversationWillBeAssignedToYourselfMsg,
@@ -327,11 +375,11 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
         this.logger.log('[WS-REQUESTS-LIST][UNSERVED] ARE YOU SURE TO JOIN THIS CHAT ... value', value)
 
         if (value === 'catch') {
-          this.onJoinHandled(requestid,currentuserid);
+          this.onJoinHandled(requestid, currentuserid);
         }
       })
 
-  } 
+  }
 
   // -----------------------------------------------
   // @ Translate strings

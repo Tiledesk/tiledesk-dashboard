@@ -21,7 +21,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { DepartmentService } from '../../services/department.service';
 
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators'
+import { skip, takeUntil } from 'rxjs/operators'
 
 import { browserRefresh } from '../../app.component';
 import * as uuid from 'uuid';
@@ -237,7 +237,22 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     this.getTestSiteUrl();
 
     this.translateString()
+    // this.listenToParentPostMessage()
   }
+  // listenToParentPostMessage() {
+  //   window.addEventListener("message", (event) => {
+  //     console.log("[WS-REQUESTS-LIST] message event ", event);
+
+  //     if (event && event.data && event.data.action && event.data.parameter && event.data.calledBy) {
+  //       if (event.data.action === 'hasArchived' && event.data.calledBy === 'ws_unserved_for_panel') {
+  //         console.log("[WS-REQUESTS-LIST] message event ", event.data.action);
+  //         console.log("[WS-REQUESTS-LIST] message parameter ", event.data.parameter);
+  //         console.log("[WS-REQUESTS-LIST] currentUserID ", this.currentUserID);
+          
+  //       }
+  //     }
+  //   })
+  // }
 
   // getActiveContacts() {
   //   this.contactsService.getLeadsActive().subscribe((activeleads: any) => {
@@ -917,8 +932,9 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       .pipe(
         takeUntil(this.unsubscribe$)
       )
+      
       .subscribe((wsrequests) => {
-
+        // console.log("[WS-REQUESTS-LIST] - enter subscribe to  getWsRequests$", wsrequests);
         if (wsrequests) {
           this.logger.log("[WS-REQUESTS-LIST] - getWsRequests > if (wsrequests) ", wsrequests);
           this.browserRefresh = browserRefresh;
@@ -1308,7 +1324,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         //  Sort requests
         // ----------------------------------------- 
         if (this.ws_requests) {
-          this.logger.log('[WS-REQUESTS-LIST] - getWsRequests - sort requests  * ws_requests *', this.ws_requests);
+          // console.log('[WS-REQUESTS-LIST] - getWsRequests - sort requests  * ws_requests *', this.ws_requests);
           this.wsRequestsUnserved = this.ws_requests
             .filter(r => {
               if (r['status'] === 100) {
@@ -1350,9 +1366,30 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
           // this.showSpinner = false;
         }
         this.logger.log('[WS-REQUESTS-LIST] getWsRequests - served ', this.wsRequestsServed);
-        this.logger.log('[WS-REQUESTS-LIST] getWsRequests - unserved ', this.wsRequestsUnserved);
+        this.logger.log('[WS-REQUESTS-LIST] - getWsRequests - unserved ', this.wsRequestsUnserved);
         this.logger.log('[WS-REQUESTS-LIST] getWsRequests - served length ', this.wsRequestsServed.length);
         this.logger.log('[WS-REQUESTS-LIST] getWsRequests - unserved length ', this.wsRequestsUnserved.length);
+        // .pipe(skip(1))
+        // this.wsRequestsService.wsOnDataUnservedConvs$
+          
+        //   .subscribe((ondataUnserveConvs) => {
+        //     console.log("[WS-REQUESTS-LIST] ondataUnserveConvs ", ondataUnserveConvs);
+        //     console.log('[WS-REQUESTS-LIST] getWsRequests - unserved ', this.wsRequestsUnserved);
+        //     if (ondataUnserveConvs && ondataUnserveConvs.length > 0 && this.wsRequestsUnserved.length > 0) {
+
+        //       // setTimeout(() => {
+
+
+        //         if (ondataUnserveConvs.length !== this.wsRequestsUnserved.length) {
+        //           console.log("[WS-REQUESTS-LIST] there are difference between the to array");
+        //           var result = ondataUnserveConvs.filter(e => !this.wsRequestsUnserved.find(a => e.id === a.id));
+
+        //           console.log('[WS-REQUESTS-LIST] - RESULT TEST', result)
+        //         }
+        //       // },200);
+        //     }
+        //   });
+
         const sum = this.wsRequestsServed.length + this.wsRequestsUnserved.length
         this.served_unserved_sum = sum;
         this.logger.log('[WS-REQUESTS-LIST] getWsRequests sum SERVED + UNSERVED', this.served_unserved_sum);
@@ -1498,14 +1535,14 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     this.internal_request_id = 'support-group-' + this.project_id + '-' + uiid_no_dashes
     this.logger.log('[WS-REQUESTS-LIST] create internalRequest - internal_request_id', this.internal_request_id);
     // (request_id:string, subject: string, message:string, departmentid: string)
-    this.wsRequestsService.createInternalRequest(this.selectedRequester, 
-      this.internal_request_id, 
-      this.internalRequest_subject, 
-      this.internalRequest_message, 
-      this.assignee_dept_id, 
-      this.assignee_participants_id, 
+    this.wsRequestsService.createInternalRequest(this.selectedRequester,
+      this.internal_request_id,
+      this.internalRequest_subject,
+      this.internalRequest_message,
+      this.assignee_dept_id,
+      this.assignee_participants_id,
       this.selectedPriority
-      ).subscribe((newticket: any) => {
+    ).subscribe((newticket: any) => {
       this.logger.log('[WS-REQUESTS-LIST] create internalRequest - RES ', newticket);
 
 

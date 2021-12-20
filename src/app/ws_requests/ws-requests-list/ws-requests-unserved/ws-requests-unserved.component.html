@@ -306,7 +306,7 @@
           <td [ngClass]="{'padding_5' : request?.tags?.length > 0}" (click)='goToRequestMsgs(request?.request_id)'
             style="cursor:pointer; width: 215px;">
             <!-- [innerHTML]="getRequestText(request?.first_text)" -->
-            <p class="column-td"
+            <p class="column-td" rel="tooltip" title="{{ request?._id }}"
               style="max-width: 215px;white-space: nowrap; overflow: hidden;text-overflow: ellipsis;">
               {{ request?.first_text }}
             </p>
@@ -775,7 +775,7 @@
             <!--  Archive ACTION -->
             <!-- ------------------------------------------------------ -->
             <button type="button" rel="tooltip" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}"
-              class="btn btn-tdblu btn-simple btn-xs tool_tip" (click)='archiveRequest(request?.request_id)'
+              class="btn btn-tdblu btn-simple btn-xs tool_tip" (click)='archiveRequest(request?.request_id, request)'
               [disabled]="USER_ROLE === 'agent'">
               <i class="material-icons">archive</i>
               <span style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px;" class="top">
