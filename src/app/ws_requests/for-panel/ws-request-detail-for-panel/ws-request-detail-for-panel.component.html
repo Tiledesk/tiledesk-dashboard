@@ -412,14 +412,16 @@ padding-right: 0px;
         <!-- ----------------------------------------------------- -->
         <!-- Action buttons: archive - join - open chat -->
         <!-- ----------------------------------------------------- -->
+       
         <div class="action-btns--wpr">
             <!-- ----------------------- -->
             <!-- Archive btn -->
             <!-- ----------------------- -->
+            
             <button type="button" rel="tooltip" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}"
                 class="btn btn-tdblu btn-simple btn-xs tool_tip archive-btn"
                 (click)='archiveRequest(request?.request_id)'
-                [disabled]="request?.currentUserIsJoined === false && ROLE_IS_AGENT === true">
+                [disabled]="(request?.currentUserIsJoined === false && ROLE_IS_AGENT === true) || REQUEST_STATUS === 1000">
 
                 <i class="material-icons">archive</i>
                 <span
@@ -436,7 +438,7 @@ padding-right: 0px;
             <!-- request?.currentUserIsJoined, request?.participanting_Agents, *ngIf="request?.currentUserIsJoined === false" -->
             <button type="button" rel="tooltip" title="{{ 'RequestMsgsPage.Enter' | translate }}"
                 class="btn btn-tdblu btn-simple btn-xs tool_tip join-btn" (click)='joinRequest(request?.request_id)'
-                [disabled]="request?.currentUserIsJoined === true">
+                [disabled]="request?.currentUserIsJoined === true || REQUEST_STATUS === 1000">
                 <!-- ------------------------------------------------------------------------------------------------------ -->
                 <!-- SVG font-awesome link icon -->
                 <!-- ------------------------------------------------------------------------------------------------------ -->

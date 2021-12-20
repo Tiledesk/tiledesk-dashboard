@@ -261,7 +261,7 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
       }, () => {
         // console.log('[REQUEST-DTLS-X-PANEL] ARCHIVE  * COMPLETE *')
         this.logger.log('[REQUEST-DTLS-X-PANEL] CLOSE SUPPORT GROUP - COMPLETE');
-        this.closeRightSideBar();
+        // this.closeRightSideBar();
         //  NOTIFY SUCCESS;
         // this.notify.showRequestIsArchivedNotification(this.requestHasBeenArchivedNoticationMsg_part1);
 
@@ -323,6 +323,7 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
           this.logger.log('[REQUEST-DTLS-X-PANEL] - wsrequest IS_CURRENT_USER_JOINED ', this.IS_CURRENT_USER_JOINED);
           this.request.currentUserIsJoined = this.IS_CURRENT_USER_JOINED
           this.REQUEST_STATUS = wsrequest['status']
+          this.logger.log('[REQUEST-DTLS-X-PANEL] - wsrequest REQUEST_STATUS ', this.REQUEST_STATUS);
         }
       })
   }
