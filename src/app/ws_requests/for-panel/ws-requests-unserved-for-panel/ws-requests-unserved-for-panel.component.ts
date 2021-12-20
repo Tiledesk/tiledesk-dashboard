@@ -227,11 +227,11 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
     this.logger.log('[WS-SHARED][REQUEST-DTLS-X-PANEL][WS-REQUESTS-UNSERVED-X-PANEL][WS-REQUESTS-LIST][SERVED][UNSERVED] - JOIN PRESSED');
     this.logger.log('[WS-SHARED][REQUEST-DTLS-X-PANEL][WS-REQUESTS-UNSERVED-X-PANEL][WS-REQUESTS-LIST][SERVED][UNSERVED] - JOIN PRESSED postmessage', postmessage);
     this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] JOIN waiting for service-worker to be ready - current state', this.webSocketJs.ws.readyState)
-    this.join_polling = setInterval(() => {
-      if (this.webSocketJs.ws.readyState === 1) {
-        if (this.webSocketJs.ws.readyState === 1) {
-          clearInterval(this.join_polling);
-        }
+    // this.join_polling = setInterval(() => {
+      // if (this.webSocketJs.ws.readyState === 1) {
+      //   if (this.webSocketJs.ws.readyState === 1) {
+      //     clearInterval(this.join_polling);
+      //   }
         this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] JOIN service-worker is ready ', this.webSocketJs.ws.readyState, ' - run ADD PARTCIPANT')
         this.wsRequestsService.addParticipant(id_request, currentUserID)
           .subscribe((data: any) => {
@@ -253,8 +253,8 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
               this.getTranslationsAndPostMessage()
             }
           });
-      }
-    }, 100);
+      // }
+    // }, 100);
   }
 
 
@@ -262,14 +262,14 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
     // this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg);
     this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - HAS CLICKED ARCHIVE REQUEST ');
   
-    this.archive_polling = setInterval(() => {
-      if (this.webSocketJs.ws.readyState === 1) {
-        if (this.webSocketJs.ws.readyState === 1) {
-          clearInterval(this.archive_polling);
-        }
+    // this.archive_polling = setInterval(() => {
+      // if (this.webSocketJs.ws.readyState === 1) {
+      //   if (this.webSocketJs.ws.readyState === 1) {
+      //     clearInterval(this.archive_polling);
+      //   }
         this._closeSupportGroup(request_id)
-      }
-    }, 100);
+    //   }
+    // }, 100);
   }
 
   _closeSupportGroup(request_id,) {
