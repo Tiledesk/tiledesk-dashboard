@@ -1970,5 +1970,6 @@
     "ByPressingOkTheConversationWillBeAssignedToYourself": "By pressing Ok the conversation will be assigned to yourself",
     "AutoRating": "Auto rating",
     "AtTheEndOfThConversationAFormIsProposedToEvaluateTheConversation": "At the end of the conversation, a form is automatically proposed with the request to evaluate the quality of the conversation",
-    "ActionNotAllowed": "Action not allowed"
+    "ActionNotAllowed": "Action not allowed",
+    "MoreInfo":"More info"
 }

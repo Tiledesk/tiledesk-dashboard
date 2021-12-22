@@ -1951,5 +1951,6 @@
     "ByPressingOkTheConversationWillBeAssignedToYourself": "Premendo 'OK' la conversazione sarà assegnata a te stesso",
     "AutoRating":"Valutazione automatica",
     "AtTheEndOfThConversationAFormIsProposedToEvaluateTheConversation":"Al termine della conversazione viene proposto automaticamente un modulo con la richiesta di valutare la qualità della conversazione",
-    "ActionNotAllowed": "Azione non consentita"
+    "ActionNotAllowed": "Azione non consentita",
+    "MoreInfo":"Ulteriori informazioni"
 }

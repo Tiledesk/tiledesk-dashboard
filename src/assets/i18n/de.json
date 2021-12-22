@@ -1953,5 +1953,6 @@
 	"ByPressingOkTheConversationWillBeAssignedToYourself": "Durch Drücken der OK-Taste wird Ihnen das Gespräch zugewiesen",
 	"AutoRating":"Automatische Bewertung",
 	"AtTheEndOfThConversationAFormIsProposedToEvaluateTheConversation":"Am Ende des Gesprächs wird automatisch ein Formular vorgeschlagen mit der Aufforderung, die Qualität des Gesprächs zu bewerten",
-	"ActionNotAllowed": "Aktion nicht erlaubt"
+	"ActionNotAllowed": "Aktion nicht erlaubt",
+	"MoreInfo":"Mehr Info"
 }
