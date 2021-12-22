@@ -128,7 +128,7 @@
                       <div *ngIf="request.attributes.last_abandoned_by_project_user_array[0].has_image === true">
                         <div class="pu-user-avatar-wpr white___tooltip"
                           style="width: 24px !important;height: 24px !important;">
-                          <img style="width: 24px !important;height: 24px !important; border-radius: 50%;"
+                          <img style="width: 24px !important;height: 24px !important; border-radius: 50%; object-fit: cover;"
                             src={{request.attributes.last_abandoned_by_project_user_array[0].img_url}} />
 
                           <div class="pu-user-name-wpr white___tooltiptext" style="white-space: nowrap;">
@@ -172,7 +172,7 @@
                               class="served-by-desktop-c-in-tooltip white___tooltip">
                               <div class="served-by-desktop-d-in-tooltip">
                                 <div class="served-by-desktop-e-in-tooltip">
-                                  <img style="width: 24px !important;height: 24px !important;" *ngIf="agent.has_image"
+                                  <img *ngIf="agent.has_image"
                                     src={{agent.img_url}} alt="" onerror="this.src='assets/img/no_image_user.png'">
 
                                   <div *ngIf="!agent.has_image" class="avatar-when-not-has-image"
@@ -269,7 +269,7 @@
                               class="served-by-desktop-c-in-tooltip white___tooltip">
                               <div class="served-by-desktop-d-in-tooltip">
                                 <div class="served-by-desktop-e-in-tooltip">
-                                  <img style="width: 24px !important;height: 24px !important;" *ngIf="agent.has_image"
+                                  <img *ngIf="agent.has_image"
                                     src={{agent.img_url}} alt="" onerror="this.src='assets/img/no_image_user.png'">
 
                                   <div *ngIf="!agent.has_image" class="avatar-when-not-has-image"

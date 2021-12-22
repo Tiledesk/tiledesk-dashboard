@@ -903,7 +903,8 @@ my-app .main-panel .main-content .card {
   width: 24px !important;
   height: 24px !important;
   border-radius: 50% !important;
-  /* border: 2px solid rgb(255, 255, 255); */
+  object-fit: cover;
+  border: 1px solid #444444;
 }
 /* /. Avatar inline in unserved conversation tooltip
 ---------------------------------------------------- */
