@@ -228,32 +228,32 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
     this.logger.log('[WS-SHARED][REQUEST-DTLS-X-PANEL][WS-REQUESTS-UNSERVED-X-PANEL][WS-REQUESTS-LIST][SERVED][UNSERVED] - JOIN PRESSED postmessage', postmessage);
     this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] JOIN waiting for service-worker to be ready - current state', this.webSocketJs.ws.readyState)
     // this.join_polling = setInterval(() => {
-      // if (this.webSocketJs.ws.readyState === 1) {
-      //   if (this.webSocketJs.ws.readyState === 1) {
-      //     clearInterval(this.join_polling);
-      //   }
-        this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] JOIN service-worker is ready ', this.webSocketJs.ws.readyState, ' - run ADD PARTCIPANT')
-        this.wsRequestsService.addParticipant(id_request, currentUserID)
-          .subscribe((data: any) => {
+    // if (this.webSocketJs.ws.readyState === 1) {
+    //   if (this.webSocketJs.ws.readyState === 1) {
+    //     clearInterval(this.join_polling);
+    //   }
+    this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] JOIN service-worker is ready ', this.webSocketJs.ws.readyState, ' - run ADD PARTCIPANT')
+    this.wsRequestsService.addParticipant(id_request, currentUserID)
+      .subscribe((data: any) => {
 
-            // console.log('[WS-SHARED] - onJoinHandled data ', data)
-            this.logger.log('[WS-SHARED][REQUEST-DTLS-X-PANEL][WS-REQUESTS-UNSERVED-X-PANEL][WS-REQUESTS-LIST][SERVED][UNSERVED] - addParticipant TO CHAT GROUP ', data);
-          }, (err) => {
-            this.logger.error('[WS-SHARED][REQUEST-DTLS-X-PANEL][WS-REQUESTS-UNSERVED-X-PANEL][WS-REQUESTS-LIST][SERVED][UNSERVED] - addParticipant TO CHAT GROUP - ERROR ', err);
+        // console.log('[WS-SHARED] - onJoinHandled data ', data)
+        this.logger.log('[WS-SHARED][REQUEST-DTLS-X-PANEL][WS-REQUESTS-UNSERVED-X-PANEL][WS-REQUESTS-LIST][SERVED][UNSERVED] - addParticipant TO CHAT GROUP ', data);
+      }, (err) => {
+        this.logger.error('[WS-SHARED][REQUEST-DTLS-X-PANEL][WS-REQUESTS-UNSERVED-X-PANEL][WS-REQUESTS-LIST][SERVED][UNSERVED] - addParticipant TO CHAT GROUP - ERROR ', err);
 
-          }, () => {
-            this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] JOIN  * COMPLETE *')
+      }, () => {
+        this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] JOIN  * COMPLETE *')
 
-            this.logger.log('[WS-SHARED][REQUEST-DTLS-X-PANEL][WS-REQUESTS-UNSERVED-X-PANEL][WS-REQUESTS-LIST][SERVED][UNSERVED] - addParticipant TO CHAT GROUP * COMPLETE *');
-            if (postmessage === undefined) {
-              this.getTranslationsDisplayInAppNotification()
+        this.logger.log('[WS-SHARED][REQUEST-DTLS-X-PANEL][WS-REQUESTS-UNSERVED-X-PANEL][WS-REQUESTS-LIST][SERVED][UNSERVED] - addParticipant TO CHAT GROUP * COMPLETE *');
+        if (postmessage === undefined) {
+          this.getTranslationsDisplayInAppNotification()
 
-            } else {
+        } else {
 
-              this.getTranslationsAndPostMessage()
-            }
-          });
-      // }
+          this.getTranslationsAndPostMessage()
+        }
+      });
+    // }
     // }, 100);
   }
 
@@ -261,13 +261,13 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
   archiveRequest(request_id) {
     // this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg);
     this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - HAS CLICKED ARCHIVE REQUEST ');
-  
+
     // this.archive_polling = setInterval(() => {
-      // if (this.webSocketJs.ws.readyState === 1) {
-      //   if (this.webSocketJs.ws.readyState === 1) {
-      //     clearInterval(this.archive_polling);
-      //   }
-        this._closeSupportGroup(request_id)
+    // if (this.webSocketJs.ws.readyState === 1) {
+    //   if (this.webSocketJs.ws.readyState === 1) {
+    //     clearInterval(this.archive_polling);
+    //   }
+    this._closeSupportGroup(request_id)
     //   }
     // }, 100);
   }
@@ -285,7 +285,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
         // ---------------------------------------
         // const msg = { action: 'hasArchived', parameter: request_id, calledBy: 'ws_unserved_for_panel' }
         // window.top.postMessage(msg, '*')
-    
+
       });
   }
 
@@ -549,7 +549,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
       )
       .pipe(skip(1))
       .subscribe((wsrequests) => {
-        // console.log("[WS-REQUESTS-UNSERVED-X-PANEL] - subscribe getWsRequests$" , wsrequests);
+        // console.log("[WS-REQUESTS-UNSERVED-X-PANEL] - subscribe getWsRequests$", wsrequests);
         if (wsrequests) {
           this.addDeptObject(wsrequests)
 
@@ -615,6 +615,8 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
               request['requester_fullname_initial'] = avatarPlaceholder(request.lead.fullname);
               request['requester_fullname_fillColour'] = getColorBck(request.lead.fullname)
             } else {
+              // console.log('here y getContactById')
+              this.getContactById(request)
               request['requester_fullname_initial'] = 'N/A';
               request['requester_fullname_fillColour'] = '#6264a7';
             }
@@ -694,6 +696,33 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
         this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - getWsRequests$  */* COMPLETE */*')
       })
   }
+
+  getContactById(request) {
+    this.contactsService.getLeadById(request.lead)
+      .subscribe((lead: any) => {
+
+        if (lead) {
+          this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - GET LEAD BY  ID ', lead);
+          request.lead = { "createdAt": lead.createdAt, "createdBy": lead.createdBy, "email": lead.email, "fullname": lead.fullname, "id_project": lead.id_project, "lead_id": lead.lead_id, "status": lead.status, "_id":lead }
+          request['requester_fullname_initial'] = avatarPlaceholder(lead.fullname);
+          request['requester_fullname_fillColour'] = getColorBck(lead.fullname)
+        } else {
+          request['requester_fullname_initial'] = 'N/A';
+          request['requester_fullname_fillColour'] = '#6264a7';
+        }
+      }, (error) => {
+
+        this.logger.error('[WS-REQUESTS-UNSERVED-X-PANEL] - GET LEAD BY  ID - ERROR ', error);
+        request['requester_fullname_initial'] = 'N/A';
+        request['requester_fullname_fillColour'] = '#6264a7';
+
+
+      }, () => {
+        this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - GET LEAD BY  ID * COMPLETE *');
+      });
+  }
+
+
 
   getRequesterAvailabilityStatus(requester_id: string, request: any) {
     this.logger.log('WS-REQUEST-USVER-FOR-PANEL - GET REQUESTER AVAILABILITY STATUS --- requester_id ', requester_id)
