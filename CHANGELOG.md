@@ -1,6 +1,11 @@
 
 # tiledesk-dashboard
 
+### 2.2.30.1
+- Fixed bug: in the detail of the conversation displayed in the iframe of the left side panel of the chat, the messages are not displayed correctly if the "requester_id" property is not defined
+- Adds in the conversation detail displayed in the iframe of the left side panel of the chat, an accordion to view more details
+- Fixed bug: in the detail of the conversation displayed in the iframe of the left side panel of the chat, the messages do not take up all the available space
+
 ### 2.2.30
 - Deploys in production 
 
