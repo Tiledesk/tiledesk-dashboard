@@ -337,13 +337,13 @@ ul li {
     font-size: 12px;
     font-weight: 400;
     overflow-x: hidden;
-   
+
     .chat-messages {
         position: relative;
         // padding: 16px 40px 40px 0px;
         // padding: 16px 40px 30px 0px;
-        padding: 16px 5px 30px 0px;
-      
+        padding: 16px 5px 8px 0px;
+
         .message-row.info {
             position: relative;
             display: flex;
@@ -371,7 +371,7 @@ ul li {
                 // margin-bottom: 12px;
             }
         }
-        .message-row.info + .first-of-group.last-of-group{
+        .message-row.info + .first-of-group.last-of-group {
             margin-top: 12px;
         }
 
@@ -383,8 +383,6 @@ ul li {
             justify-content: flex-end;
             // padding: 0 16px 4px 16px;
             padding: 0 8px 4px 8px;
-
-            
 
             .avatar {
                 position: absolute;
@@ -404,7 +402,7 @@ ul li {
                     // white-space: pre-wrap;
                     line-height: 1.2;
                 }
-              
+
                 .time {
                     position: absolute;
                     display: none;
@@ -415,7 +413,7 @@ ul li {
                     left: 0;
                     white-space: nowrap;
                     font-weight: 400;
-                    color: #aaaaaa
+                    color: #aaaaaa;
                 }
             }
 
@@ -688,7 +686,7 @@ ul li {
     }
 }
 
-// END new CHAT 
+// END new CHAT
 
 // -----------------------------------
 // Action buttons tooltip
@@ -697,9 +695,9 @@ ul li {
     position: relative;
     display: inline-block;
     // border-bottom: 1px dotted black;
-  }
-  
-  .action-tooltip .action-tooltiptext {
+}
+
+.action-tooltip .action-tooltiptext {
     visibility: hidden;
     width: 120px;
     background-color: black;
@@ -712,9 +710,9 @@ ul li {
     bottom: 150%;
     left: 50%;
     margin-left: -60px;
-  }
-  
-  .action-tooltip .action-tooltiptext::after {
+}
+
+.action-tooltip .action-tooltiptext::after {
     content: "";
     position: absolute;
     top: 100%;
@@ -723,8 +721,61 @@ ul li {
     border-width: 5px;
     border-style: solid;
     border-color: black transparent transparent transparent;
-  }
-  
-  .action-tooltip:hover .action-tooltiptext {
+}
+
+.action-tooltip:hover .action-tooltiptext {
     visibility: visible;
-  }
+}
+
+// ---------------------------
+// @ More info accordion
+// ---------------------------
+.accordion {
+    background-color: #fff;
+    color: #444;
+    cursor: pointer;
+    margin-top: 8px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    transition: 0.4s;
+    font-weight: 400;
+    font-size: 12px;
+    position: relative;
+    left: -6px;
+    margin-bottom: 3px;
+}
+
+.active,
+.accordion:hover {
+    background-color: #f7f8fc;
+}
+
+.accordion:after {
+    content: "\f107";
+    font-family: FontAwesome;
+    color: #039be5;
+    font-weight: bold;
+    float: right;
+    margin-left: 5px;
+    font-size: 18px;
+}
+
+.active:after {
+    content: "\f106";
+    font-family: FontAwesome;
+}
+
+.more-info-panel {
+    //  padding: 0 18px;
+    background-color: white;
+    max-height: 0;
+    overflow: hidden;
+    // transition: max-height 0.2s ease-out;
+}
+
+.requester_fullname_initial-undefined-in-ws-request-dtl-for-panel {
+    position: relative;
+    top: -10px;
+}

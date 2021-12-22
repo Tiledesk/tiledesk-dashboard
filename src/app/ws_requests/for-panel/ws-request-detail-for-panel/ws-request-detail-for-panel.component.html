@@ -109,7 +109,7 @@ padding-right: 0px;
         </div>
     </div>
 
-    <div class="row" style="margin-top:5px" *ngIf="request?.language">
+    <!-- <div class="row" style="margin-top:5px" *ngIf="request?.language">
         <div class="col-sm-12">
             <p style="margin-bottom: 0px;">
 
@@ -130,7 +130,7 @@ padding-right: 0px;
                 </span>
             </p>
         </div>
-    </div>
+    </div> -->
 
 
     <div class="row" style="margin-top:5px">
@@ -167,82 +167,109 @@ padding-right: 0px;
             </p>
         </div>
     </div>
+    <button class="accordion" (click)="openMoreInfoAccordion()"> {{'MoreInfo' | translate}}</button>
+    <div class="more-info-panel">
+        <div class="row" style="margin-top:5px" >
+            <div class="col-sm-12">
+                <p style="margin-bottom: 0px;">
 
-    <div class="row" style="margin-top:5px">
-        <div class="col-sm-12">
-            <p style="margin-bottom: 0px;" *ngIf="request?.userAgent">
+                    <span class="tool_tip">
+                        <i class="material-icons"
+                            style="vertical-align: middle; color: #394f5a;font-size:14px; padding: 6px; background: #e4e6eb; border-radius: 50%;">flag</i>
+                        <span class="top"
+                            style="min-width: fit-content; text-align: center ; top:-8px; border-radius: 3px; padding: 3px 10px; font-size: 10px; line-height: 12px;">
+                            {{ "Language" | translate }}
+                            <i></i>
+                        </span>
+                    </span>
 
-                <span class="tool_tip">
+                    <span style="position: relative;top: 1px;">
+                        <span style="color: #7695a5; font-weight: 400; font-size: 12px; text-transform: uppercase;" *ngIf="request?.language">
+                            {{ request?.language }}
+                        </span>
+                        <span style="color: #7695a5; font-weight: 400; font-size: 12px; text-transform: lowercase;" *ngIf="!request?.language">
+                            {{'Unavailable' | translate}}
+                        </span>
+                    </span>
+                </p>
+            </div>
+        </div>
 
-                    <!-- ---------------------------------------------------------------- -->
-                    <!-- @ OS - if not is -->
-                    <!-- ---------------------------------------------------------------- -->
-                    <span *ngIf="(request?.ua_os?.indexOf('Android') === -1) && 
+        <div class="row" style="margin-top:5px">
+            <div class="col-sm-12">
+                <!-- *ngIf="request?.userAgent" -->
+                <p style="margin-bottom: 0px;">
+                    <span class="tool_tip">
+                        <!-- ---------------------------------------------------------------- -->
+                        <!-- @ OS - if not is -->
+                        <!-- ---------------------------------------------------------------- -->
+                        <span *ngIf="(request?.ua_os?.indexOf('Android') === -1) && 
                                 (request?.ua_os?.indexOf('Mac OS') === -1) && 
                                 (request?.ua_os?.indexOf('iOS') === -1) &&
                                 (request?.ua_os?.indexOf('Windows') === -1) &&
                                 (request?.ua_os?.indexOf('Ubuntu') === -1)">
 
-                        <img class="ua-os-icon--right-sidebar" style="margin-top: 2px;"
-                            src="assets/img/user_agent/laptop.svg" />
+                            <img class="ua-os-icon--right-sidebar" style="margin-top: 2px;"
+                                src="assets/img/user_agent/laptop.svg" />
+                        </span>
+
+                        <!-- ---------------------------------------------------------------- -->
+                        <!-- if is Android -->
+                        <!-- ---------------------------------------------------------------- -->
+                        <span *ngIf="request?.ua_os?.indexOf('Android') !== -1">
+                            <img class="ua-os-icon--right-sidebar" src="assets/img/user_agent/android.svg" />
+                        </span>
+
+                        <!-- ---------------------------------------------------------------- -->
+                        <!-- if is Mac OS or iOS -->
+                        <!-- ---------------------------------------------------------------- -->
+                        <span *ngIf="request?.ua_os?.indexOf('Mac OS') !== -1 || request?.ua_os.indexOf('iOS') !== -1">
+                            <img class="ua-os-icon--right-sidebar" style="margin-bottom: 2px;"
+                                src="assets/img/user_agent/apple.svg" />
+                        </span>
+
+
+                        <!-- ---------------------------------------------------------------- -->
+                        <!-- if is Windows -->
+                        <!-- ---------------------------------------------------------------- -->
+                        <span *ngIf="request?.ua_os?.indexOf('Windows') !== -1">
+                            <img class="ua-os-icon--right-sidebar" style="margin-top: 2px;"
+                                src="assets/img/user_agent/windows.svg" />
+                        </span>
+
+                        <!-- ---------------------------------------------------------------- -->
+                        <!-- if is Ubuntu -->
+                        <!-- ---------------------------------------------------------------- -->
+                        <span *ngIf="request?.ua_os?.indexOf('Ubuntu') !== -1">
+                            <img class="ua-os-icon--right-sidebar" src="assets/img/user_agent/ubuntu.svg" />
+                        </span>
+
+                        <span class="top"
+                            style="min-width: fit-content; text-align: center ; top:-8px; border-radius: 3px; padding: 3px 10px; font-size: 10px; line-height: 12px;">
+                            {{ 'OperatingSystem' | translate }}
+                            <i></i>
+                        </span>
+
                     </span>
-
-                    <!-- ---------------------------------------------------------------- -->
-                    <!-- if is Android -->
-                    <!-- ---------------------------------------------------------------- -->
-                    <span *ngIf="request?.ua_os?.indexOf('Android') !== -1">
-                        <img class="ua-os-icon--right-sidebar" src="assets/img/user_agent/android.svg" />
+                    <span style="color: #7695a5; font-weight: 400; font-size: 12px;">
+                        <span *ngIf="request?.ua_os !== 'undefined undefined'"> {{ request?.ua_os }} </span>
+                        <span *ngIf="request?.ua_os === 'undefined undefined'"> {{'Unavailable' | translate}} </span>
                     </span>
-
-                    <!-- ---------------------------------------------------------------- -->
-                    <!-- if is Mac OS or iOS -->
-                    <!-- ---------------------------------------------------------------- -->
-                    <span *ngIf="request?.ua_os?.indexOf('Mac OS') !== -1 || request?.ua_os.indexOf('iOS') !== -1">
-                        <img class="ua-os-icon--right-sidebar" style="margin-bottom: 2px;"
-                            src="assets/img/user_agent/apple.svg" />
-                    </span>
-
-
-                    <!-- ---------------------------------------------------------------- -->
-                    <!-- if is Windows -->
-                    <!-- ---------------------------------------------------------------- -->
-                    <span *ngIf="request?.ua_os?.indexOf('Windows') !== -1">
-                        <img class="ua-os-icon--right-sidebar" style="margin-top: 2px;"
-                            src="assets/img/user_agent/windows.svg" />
-                    </span>
-
-                    <!-- ---------------------------------------------------------------- -->
-                    <!-- if is Ubuntu -->
-                    <!-- ---------------------------------------------------------------- -->
-                    <span *ngIf="request?.ua_os?.indexOf('Ubuntu') !== -1">
-                        <img class="ua-os-icon--right-sidebar" src="assets/img/user_agent/ubuntu.svg" />
-                    </span>
-
-                    <span class="top"
-                        style="min-width: fit-content; text-align: center ; top:-8px; border-radius: 3px; padding: 3px 10px; font-size: 10px; line-height: 12px;">
-                        {{ 'OperatingSystem' | translate }}
-                        <i></i>
-                    </span>
-
-                </span>
-                <span style="color: #7695a5; font-weight: 400; font-size: 12px;">
-                    <span *ngIf="request?.ua_os !== 'undefined undefined'"> {{ request?.ua_os }} </span>
-                    <span *ngIf="request?.ua_os === 'undefined undefined'"> {{'Unavailable' | translate}} </span>
-                </span>
-            </p>
+                </p>
+            </div>
         </div>
-    </div>
 
-    <div class="row" style="margin-top:5px">
-        <div class="col-sm-12">
-            <p style="margin-bottom: 0px;" *ngIf="request?.userAgent">
+        <div class="row" style="margin-top:5px">
+            <div class="col-sm-12">
+                <!-- *ngIf="request?.userAgent" -->
+                <p style="margin-bottom: 0px;" >
 
-                <span class="tool_tip">
+                    <span class="tool_tip">
 
-                    <!-- ---------------------------------------------------------------- -->
-                    <!-- @ Browser - if not is -->
-                    <!-- ---------------------------------------------------------------- -->
-                    <span *ngIf="(request?.ua_browser?.indexOf('Chrome') === -1) && 
+                        <!-- ---------------------------------------------------------------- -->
+                        <!-- @ Browser - if not is -->
+                        <!-- ---------------------------------------------------------------- -->
+                        <span *ngIf="(request?.ua_browser?.indexOf('Chrome') === -1) && 
                                 (request?.ua_browser?.indexOf('Chromium') === -1) &&
                                 (request?.ua_browser?.indexOf('Firefox') === -1) &&
                                 (request?.ua_browser?.indexOf('Edge') === -1) &&
@@ -250,104 +277,110 @@ padding-right: 0px;
                                 (request?.ua_browser?.indexOf('Safari') === -1) &&
                                 (request?.ua_browser?.indexOf('IE') === -1)">
 
-                        <img class="ua_browser_icon--right-sidebar" src="assets/img/user_agent/globe.svg" />
+                            <img class="ua_browser_icon--right-sidebar" src="assets/img/user_agent/globe.svg" />
 
+                        </span>
+
+
+                        <!-- ---------------------------------------------------------------- -->
+                        <!-- Chrome or Chromium -->
+                        <!-- ---------------------------------------------------------------- -->
+                        <span
+                            *ngIf="request?.ua_browser?.indexOf('Chrome') !== -1 || request?.ua_browser.indexOf('Chromium') !== -1">
+                            <img class="ua_browser_icon--right-sidebar" src="assets/img/user_agent/chrome.svg" />
+                        </span>
+
+
+                        <!-- ---------------------------------------------------------------- -->
+                        <!-- Firefox -->
+                        <!-- ---------------------------------------------------------------- -->
+                        <span *ngIf="request?.ua_browser?.indexOf('Firefox') !== -1">
+                            <img class="ua_browser_icon--right-sidebar" src="assets/img/user_agent/firefox.svg" />
+                        </span>
+
+
+                        <!-- ---------------------------------------------------------------- -->
+                        <!-- Edge -->
+                        <!-- ---------------------------------------------------------------- -->
+                        <span *ngIf="request?.ua_browser?.indexOf('Edge') !== -1">
+                            <img class="ua_browser_icon--right-sidebar" src="assets/img/user_agent/edge.svg" />
+                        </span>
+
+
+                        <!-- ---------------------------------------------------------------- -->
+                        <!-- Opera -->
+                        <!-- ---------------------------------------------------------------- -->
+                        <span *ngIf="request?.ua_browser?.indexOf('Opera') !== -1">
+                            <img class="ua_browser_icon--right-sidebar" src="assets/img/user_agent/opera.svg" />
+                        </span>
+
+
+                        <!-- ---------------------------------------------------------------- -->
+                        <!-- Safari -->
+                        <!-- ---------------------------------------------------------------- -->
+                        <span *ngIf="request?.ua_browser?.indexOf('Safari') !== -1">
+                            <img class="ua_browser_icon--right-sidebar" src="assets/img/user_agent/safari.svg" />
+                        </span>
+
+
+                        <!-- ---------------------------------------------------------------- -->
+                        <!-- Explorer -->
+                        <!-- ---------------------------------------------------------------- -->
+                        <span *ngIf="request?.ua_browser?.indexOf('IE') !== -1">
+                            <img class="ua_browser_icon--right-sidebar" src="assets/img/user_agent/explorer.svg" />
+                        </span>
+
+
+                        <span class="top"
+                            style="min-width: fit-content; text-align: center ; top:-8px; border-radius: 3px; padding: 3px 10px; font-size: 10px; line-height: 12px;">
+                            Browser
+                            <i></i>
+                        </span>
                     </span>
 
-
-                    <!-- ---------------------------------------------------------------- -->
-                    <!-- Chrome or Chromium -->
-                    <!-- ---------------------------------------------------------------- -->
-                    <span
-                        *ngIf="request?.ua_browser?.indexOf('Chrome') !== -1 || request?.ua_browser.indexOf('Chromium') !== -1">
-                        <img class="ua_browser_icon--right-sidebar" src="assets/img/user_agent/chrome.svg" />
+                    <span style="color: #7695a5; font-weight: 400; font-size: 12px;">
+                        <span *ngIf="request?.ua_browser !== 'undefined undefined'"> {{ request?.ua_browser }} </span>
+                        <span *ngIf="request?.ua_browser === 'undefined undefined'"> {{'Unavailable' | translate}}
+                        </span>
                     </span>
 
-
-                    <!-- ---------------------------------------------------------------- -->
-                    <!-- Firefox -->
-                    <!-- ---------------------------------------------------------------- -->
-                    <span *ngIf="request?.ua_browser?.indexOf('Firefox') !== -1">
-                        <img class="ua_browser_icon--right-sidebar" src="assets/img/user_agent/firefox.svg" />
-                    </span>
-
-
-                    <!-- ---------------------------------------------------------------- -->
-                    <!-- Edge -->
-                    <!-- ---------------------------------------------------------------- -->
-                    <span *ngIf="request?.ua_browser?.indexOf('Edge') !== -1">
-                        <img class="ua_browser_icon--right-sidebar" src="assets/img/user_agent/edge.svg" />
-                    </span>
-
-
-                    <!-- ---------------------------------------------------------------- -->
-                    <!-- Opera -->
-                    <!-- ---------------------------------------------------------------- -->
-                    <span *ngIf="request?.ua_browser?.indexOf('Opera') !== -1">
-                        <img class="ua_browser_icon--right-sidebar" src="assets/img/user_agent/opera.svg" />
-                    </span>
-
-
-                    <!-- ---------------------------------------------------------------- -->
-                    <!-- Safari -->
-                    <!-- ---------------------------------------------------------------- -->
-                    <span *ngIf="request?.ua_browser?.indexOf('Safari') !== -1">
-                        <img class="ua_browser_icon--right-sidebar" src="assets/img/user_agent/safari.svg" />
-                    </span>
-
-
-                    <!-- ---------------------------------------------------------------- -->
-                    <!-- Explorer -->
-                    <!-- ---------------------------------------------------------------- -->
-                    <span *ngIf="request?.ua_browser?.indexOf('IE') !== -1">
-                        <img class="ua_browser_icon--right-sidebar" src="assets/img/user_agent/explorer.svg" />
-                    </span>
-
-
-                    <span class="top"
-                        style="min-width: fit-content; text-align: center ; top:-8px; border-radius: 3px; padding: 3px 10px; font-size: 10px; line-height: 12px;">
-                        Browser
-                        <i></i>
-                    </span>
-                </span>
-
-                <span style="color: #7695a5; font-weight: 400; font-size: 12px;">
-                    <span *ngIf="request?.ua_browser !== 'undefined undefined'"> {{ request?.ua_browser }} </span>
-                    <span *ngIf="request?.ua_browser === 'undefined undefined'"> {{'Unavailable' | translate}} </span>
-                </span>
-
-            </p>
+                </p>
+            </div>
         </div>
-    </div>
 
-    <div *ngIf="request?.sourcePage" class="row" style="margin-top:5px">
-        <div class="col-sm-12">
-            <p style="margin-bottom:0px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 95%;"
-                class="tool_tip">
-                <span>
-                    <img style="width: 26px;
+        <div  class="row" style="margin-top:5px">
+            <div class="col-sm-12">
+                <p style="margin-bottom:0px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 95%;"
+                    class="tool_tip">
+                    <span>
+                        <img style="width: 26px;
                     padding: 6px;
                     background: #e4e6eb;
                     border-radius: 50%;
                     height: 26px;" class="request_details___ua_browser_icon"
-                        src="assets/img/user_agent/source_page.svg" />
-                </span>
+                            src="assets/img/user_agent/source_page.svg" />
+                    </span>
 
-                <span style="position: relative;top: 1px;">
-                    <span style=" font-weight: 400; font-size: 12px;">
-                        <!-- word-wrap: break-word; -->
-                        <span>
-                            <a href="{{request?.sourcePage}}" target="_blank">{{request?.sourcePage}}</a>
+                    <span style="position: relative;top: 1px;">
+                        <span style=" font-weight: 400; font-size: 12px;">
+                            <!-- word-wrap: break-word; -->
+                            <span *ngIf="request?.sourcePage">
+                                <a href="{{request?.sourcePage}}" target="_blank">{{request?.sourcePage}}</a>
+                            </span>
+                            <span *ngIf="!request?.sourcePage" style="color: #7695a5; font-weight: 400; font-size: 12px;">
+                                {{'Unavailable' | translate}}
+                            </span>
                         </span>
                     </span>
-                </span>
-                <!-- <span class="top"
+                    <!-- <span class="top"
                     style="min-width: fit-content; text-align: center ; top:-8px; border-radius: 3px; padding: 3px 10px; font-size: 10px; line-height: 12px;">
                     {{ "RequestMsgsPage.SourcePage" | translate }}
                     <i></i>
                 </span> -->
-            </p>
+                </p>
+            </div>
         </div>
+
     </div>
 
 
@@ -401,7 +434,7 @@ padding-right: 0px;
                 </span>
 
                 <span *ngIf="!request?.lead?.fullname"
-                    [ngClass]="{'requester_fullname_initial-undefined' : !request?.lead?.fullname}">
+                    [ngClass]="{'requester_fullname_initial-undefined-in-ws-request-dtl-for-panel' : !request?.lead?.fullname}">
                     N/A
                 </span>
             </div>
@@ -412,12 +445,12 @@ padding-right: 0px;
         <!-- ----------------------------------------------------- -->
         <!-- Action buttons: archive - join - open chat -->
         <!-- ----------------------------------------------------- -->
-       
+
         <div class="action-btns--wpr">
             <!-- ----------------------- -->
             <!-- Archive btn -->
             <!-- ----------------------- -->
-            
+
             <button type="button" rel="tooltip" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}"
                 class="btn btn-tdblu btn-simple btn-xs tool_tip archive-btn"
                 (click)='archiveRequest(request?.request_id)'
@@ -427,8 +460,10 @@ padding-right: 0px;
                 <span
                     style="min-width: fit-content; text-align: center; top: -8px; border-radius: 3px; padding: 3px 10px; font-size: 10px; line-height: 12px;"
                     class="top">
-                    <span *ngIf="ROLE_IS_AGENT !== true" style="text-transform: capitalize;"> {{ 'VisitorsPage.Archive' | translate }} </span>
-                    <span *ngIf="ROLE_IS_AGENT === true" style="text-transform: capitalize;"> {{ 'ActionNotAllowed' | translate }} </span>
+                    <span *ngIf="ROLE_IS_AGENT !== true" style="text-transform: capitalize;"> {{ 'VisitorsPage.Archive'
+                        | translate }} </span>
+                    <span *ngIf="ROLE_IS_AGENT === true" style="text-transform: capitalize;"> {{ 'ActionNotAllowed' |
+                        translate }} </span>
                     <i></i>
                 </span>
             </button>

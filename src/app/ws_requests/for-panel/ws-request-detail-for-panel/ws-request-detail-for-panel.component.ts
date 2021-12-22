@@ -70,6 +70,8 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
   browserLang: string;
   join_polling: any
   archive_polling: any
+  MORE_INFO_ACCORDION_IS_OPENED: boolean = false;
+
   constructor(
     private wsMsgsService: WsMsgsService,
     public appConfigService: AppConfigService,
@@ -124,7 +126,7 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
       this.subscribeToWs_MsgsByRequestId(this.requestid);
     }
 
-    this.onInitUsersListModalHeight();
+    this.onInitChatContentHeight();
     this.getTranslations();
 
     // chat-messages-container
@@ -132,8 +134,11 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
     this.listenToParentPostMessage();
     this.getProjectUserRole();
     this.setMomentLocale();
-    this.getCurrentYear()
+    this.getCurrentYear();
+    this.manageMoreInfoAccordion();
   }
+
+
 
   getCurrentYear() {
     this.currentYear = moment().format('YYYY');
@@ -208,26 +213,26 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
     //     if (this.webSocketJs.ws.readyState === 1) {
     //       clearInterval(this.join_polling);
     //     }
-        // this.logger.log('[REQUEST-DTLS-X-PANEL] JOIN service-worker is ready ', this.webSocketJs.ws.readyState, ' - run ADD PARTCIPANT')
-        this.wsRequestsService.addParticipant(id_request, currentUserID)
-          .subscribe((data: any) => {
+    // this.logger.log('[REQUEST-DTLS-X-PANEL] JOIN service-worker is ready ', this.webSocketJs.ws.readyState, ' - run ADD PARTCIPANT')
+    this.wsRequestsService.addParticipant(id_request, currentUserID)
+      .subscribe((data: any) => {
 
-            // console.log('[WS-SHARED] - onJoinHandled data ', data)
-            this.logger.log('[WS-SHARED][REQUEST-DTLS-X-PANEL][WS-REQUESTS-UNSERVED-X-PANEL][WS-REQUESTS-LIST][SERVED][UNSERVED] - addParticipant TO CHAT GROUP ', data);
-          }, (err) => {
-            this.logger.error('[WS-SHARED][REQUEST-DTLS-X-PANEL][WS-REQUESTS-UNSERVED-X-PANEL][WS-REQUESTS-LIST][SERVED][UNSERVED] - addParticipant TO CHAT GROUP - ERROR ', err);
+        // console.log('[WS-SHARED] - onJoinHandled data ', data)
+        this.logger.log('[WS-SHARED][REQUEST-DTLS-X-PANEL][WS-REQUESTS-UNSERVED-X-PANEL][WS-REQUESTS-LIST][SERVED][UNSERVED] - addParticipant TO CHAT GROUP ', data);
+      }, (err) => {
+        this.logger.error('[WS-SHARED][REQUEST-DTLS-X-PANEL][WS-REQUESTS-UNSERVED-X-PANEL][WS-REQUESTS-LIST][SERVED][UNSERVED] - addParticipant TO CHAT GROUP - ERROR ', err);
 
-          }, () => {
-            this.logger.log('[REQUEST-DTLS-X-PANEL] JOIN  * COMPLETE *')
-            // this.logger.log('[WS-SHARED][REQUEST-DTLS-X-PANEL][WS-REQUESTS-UNSERVED-X-PANEL][WS-REQUESTS-LIST][SERVED][UNSERVED] - addParticipant TO CHAT GROUP * COMPLETE *');
-            if (postmessage === undefined) {
-              this.getTranslationsDisplayInAppNotification()
+      }, () => {
+        this.logger.log('[REQUEST-DTLS-X-PANEL] JOIN  * COMPLETE *')
+        // this.logger.log('[WS-SHARED][REQUEST-DTLS-X-PANEL][WS-REQUESTS-UNSERVED-X-PANEL][WS-REQUESTS-LIST][SERVED][UNSERVED] - addParticipant TO CHAT GROUP * COMPLETE *');
+        if (postmessage === undefined) {
+          this.getTranslationsDisplayInAppNotification()
 
-            } else {
+        } else {
 
-              this.getTranslationsAndPostMessage()
-            }
-          });
+          this.getTranslationsAndPostMessage()
+        }
+      });
     //   }
     // }, 100);
   }
@@ -238,12 +243,12 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
 
     // console.log('[REQUEST-DTLS-X-PANEL]  ARCHIVE waiting for service-worker to be ready - current state', this.webSocketJs.ws.readyState)
     // this.archive_polling = setInterval(() => {
-      // if (this.webSocketJs.ws.readyState === 1) {
-      //   if (this.webSocketJs.ws.readyState === 1) {
-      //     clearInterval(this.archive_polling);
-      //   }
-        // console.log('[REQUEST-DTLS-X-PANEL] ARCHIVE service-worker is ready ', this.webSocketJs.ws.readyState, ' - run ARCHIVE')
-        this._closeSupportGroupAndCloseConvsDeatail(request_id)
+    // if (this.webSocketJs.ws.readyState === 1) {
+    //   if (this.webSocketJs.ws.readyState === 1) {
+    //     clearInterval(this.archive_polling);
+    //   }
+    // console.log('[REQUEST-DTLS-X-PANEL] ARCHIVE service-worker is ready ', this.webSocketJs.ws.readyState, ' - run ARCHIVE')
+    this._closeSupportGroupAndCloseConvsDeatail(request_id)
     //   }
     // }, 100);
 
@@ -419,14 +424,41 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
       }
     });
   }
+  openMoreInfoAccordion() {
+    this.MORE_INFO_ACCORDION_IS_OPENED = !this.MORE_INFO_ACCORDION_IS_OPENED;
+    // console.log('[REQUEST-DTLS-X-PANEL] MORE_INFO_ACCORDION_IS_OPENED',this.MORE_INFO_ACCORDION_IS_OPENED);
+    this.onInitChatContentHeight()
+    this.scrollCardContetToBottom();
+  }
 
-  onInitUsersListModalHeight() {
+  manageMoreInfoAccordion() {
+    var acc = document.getElementsByClassName("accordion");
+    var i;
+
+    for (i = 0; i < acc.length; i++) {
+      acc[i].addEventListener("click", function () {
+        this.classList.toggle("active");
+        var panel = this.nextElementSibling;
+        if (panel.style.maxHeight) {
+          panel.style.maxHeight = null;
+        } else {
+          panel.style.maxHeight = panel.scrollHeight + "px";
+        }
+      });
+    }
+  }
+
+  onInitChatContentHeight() {
     const windowActualHeight = window.innerHeight;
     this.logger.log('[REQUEST-DTLS-X-PANEL] - ACTUAL HEIGHT ', windowActualHeight);
     // 457
-    this.chat_content_height = windowActualHeight - 332
+    if (!this.MORE_INFO_ACCORDION_IS_OPENED) {
+    this.chat_content_height = windowActualHeight - 234//332
     this.logger.log('[REQUEST-DTLS-X-PANEL] CHAT CONTENT HEIGHT ', this.chat_content_height);
-
+  } else {
+    this.chat_content_height = windowActualHeight - 366
+  }
+  this.logger.log('[REQUEST-DTLS-X-PANEL] chat_content_height', this.chat_content_height);
     return { 'height': this.chat_content_height += 'px' };
   }
 
@@ -434,11 +466,15 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     const newInnerHeight = event.target.innerHeight;
-    this.chat_content_height = newInnerHeight - 332
+    if (!this.MORE_INFO_ACCORDION_IS_OPENED) {
+    this.chat_content_height = newInnerHeight - 234//332
+    } else {
+      this.chat_content_height = newInnerHeight - 366
+    }
 
     this.logger.log('[REQUEST-DTLS-X-PANEL] - ON-RESIZE NEW INNER HEIGHT ', newInnerHeight);
     this.logger.log('[REQUEST-DTLS-X-PANEL] - ON-RESIZE CHAT CONTENT HEIGHT ', this.chat_content_height);
-
+    this.logger.log('[REQUEST-DTLS-X-PANEL] chat_content_height', this.chat_content_height);
     return { 'height': this.chat_content_height += 'px' };
   }
 
@@ -483,8 +519,12 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
         // console.log('[REQUEST-DTLS-X-PANEL] - getWsMsgs$ *** this.messagesList *** ', this.messagesList)
         let i: number
         for (i = 0; i < this.messagesList.length; i++) {
-          this.logger.log('MSG - i: ', i, ' - requester_id ', this.requester_id)
-          this.logger.log('MSG - i: ', i, ' - message.sender ', this.messagesList[i].sender)
+
+          // -----------------------------------------------------------------------
+          // Important for debug
+          // -----------------------------------------------------------------------
+          // this.logger.log('MSG - i: ', i, ' - requester_id ', this.requester_id)
+          // this.logger.log('MSG - i: ', i, ' - message.sender ', this.messagesList[i].sender)
 
           if (this.messagesList[i].sender === 'system') {
 
@@ -592,8 +632,8 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
     // this.logger.log('[REQUEST-DTLS-X-PANEL] ON SCROLL - SCROLL HEIGHT ', scrollHeight);
 
     const scrollHeighLessScrollPosition = scrollHeight - scrollPosition;
-    // this.logger.log('[REQUEST-DTLS-X-PANEL] ON SCROLL - SCROLL OVERFLOW ', scrollHeighLessScrollPosition);
-    if (scrollHeighLessScrollPosition > 500) {
+    this.logger.log('[REQUEST-DTLS-X-PANEL] ON SCROLL - SCROLL OVERFLOW ', scrollHeighLessScrollPosition);
+    if (scrollHeighLessScrollPosition > 200) {
       this.displayBtnScrollToBottom = 'block';
     } else {
       this.displayBtnScrollToBottom = 'none';
