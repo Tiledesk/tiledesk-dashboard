@@ -849,12 +849,12 @@ export class BasetriggerComponent implements OnInit {
           { id: false, label_key: 'False' }
         ],
         'language': [
-          { id: 'zh-CN', label_key: 'Chinese' },
-          { id: 'en-GB', label_key: 'English' },
-          { id: 'fr-FR', label_key: 'French' },
-          { id: 'it-IT', label_key: 'Italian' },
-          { id: 'de-DE', label_key: 'German' },
-          { id: 'es-ES', label_key: 'Spanish' },
+          { id: 'zh', label_key: 'Chinese' },
+          { id: 'en', label_key: 'English' },
+          { id: 'fr', label_key: 'French' },
+          { id: 'it', label_key: 'Italian' },
+          { id: 'de', label_key: 'German' },
+          { id: 'es', label_key: 'Spanish' },
         ],
         // 'request.language': [
         //   { id: 'zh-CN', label_key: 'Chinese' },
@@ -1052,9 +1052,10 @@ export class BasetriggerComponent implements OnInit {
             'department': [{ id: 'id_bot', label_key: 'True' },
             { id: 'id__bot', label_key: 'False' }
             ],
-            'language': [{ id: 'zh-CN', label_key: 'Chinese' },
+            'language': [
+            { id: 'zh-CN', label_key: 'Chinese' },
             { id: 'en-GB', label_key: 'English' },
-            { id: 'fr-FR', label_key: 'Franch' },
+            { id: 'fr-FR', label_key: 'French' },
             { id: 'it-IT', label_key: 'Italian' },
             { id: 'de-DE', label_key: 'German' },
             { id: 'es-ES', label_key: 'Spanish' },
