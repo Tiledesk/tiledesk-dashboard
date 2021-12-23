@@ -1336,12 +1336,12 @@
 				},
 				"chat": {
 					"groupId": {
-						"VisitorInformation": "Visitor information",
-						"PageInformation": "Page information",
-						"SoftwareOfVisitor": "Software/Computer of visitor",
-						"ChatInformation": "Char-related information",
-						"ChannelInformation": "Channel information",
-						"LocationVisitor": "Location of visitor"
+						"VisitorInformation": "Besucherinformationen",
+						"PageInformation": "Seiteninformationen",
+						"SoftwareOfVisitor": "Software/Computer des Besuchers",
+						"ChatInformation": "Chatbezogene Informationen",
+						"ChannelInformation": "Kanalinformationen",
+						"LocationVisitor": "Standort des Besuchers"
 					},
 					"label_key": {
 						"VisitorSearchTerm": "Nachricht",
@@ -1422,23 +1422,23 @@
 			"ActionArray": {
 				"label_key": {
 					"SendMessageToVisitor": "Nachricht an Besucher senden",
-					"AssignToDep": "Zu einer Abteilung hinzufügen",
+					"AssignToDep": "Der Abteilung zuordnen",
 					"ReAssignToSameDep": "Neu zu der selben Abteilung hinzufügen",
-					"RequestUpdateStatus": "Anfrage Status aktualisieren",
-					"RequestClose": "Anfrage schließen",
-					"RequestReopen": "Anfrage wieder öffnen",
-					"RequestParticipantsJoin": "Teilnehmer Beitritts-Anfrage",
-					"RequestParticipantsLeave": "Teilnehmer Verlassens-Anfrage",
-					"RequestCreate": "Anfrage erstellen",
-					"AssignLabel": "Etikett zuweisen",
-					"LaunchDeptBot": "Abteilungsbot starten"
+					"RequestUpdateStatus": "Ändern Sie den Status der Konversation",
+					"RequestClose": "Beende das Gespräch",
+					"RequestReopen": "Konversation wieder öffnen",
+					"RequestParticipantsJoin": "Fügen Sie der Unterhaltung einen Agenten oder Bot hinzu",
+					"RequestParticipantsLeave": "Einen Agenten oder Bot aus der Konversation entfernen",
+					"RequestCreate": "Erstellen Sie eine Unterhaltung",
+					"AssignLabel": "Ein Etikett zuweisen",
+					"LaunchDeptBot": "Starten Sie den Abteilungsbot"
 				},
 				"placeholder": {
-					"NameAgent": "Namen der Agenten",
+					"NameAgent": "Agentenname",
 					"SelectDepartment": "Abteilung auswählen",
 					"SelectStatus": "Status auswählen",
 					"SelectAgent": "Agent auswählen",
-					"Label": "Etikette"
+					"Label": "Etikett"
 				}
 			}
 		}

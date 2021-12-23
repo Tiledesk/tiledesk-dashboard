@@ -1356,7 +1356,7 @@
                         "SoftwareOfVisitor": "Software/Computer of visitor",
                         "ChatInformation": "Chat-related information",
                         "ChannelInformation": "Channel information",
-                        "LocationVisitor": "Location of visitor"
+                        "LocationVisitor": "Visitor's location"
                     },
                     "label_key": {
                         "VisitorSearchTerm": "Message text",
@@ -1436,24 +1436,24 @@
             },
             "ActionArray": {
                 "label_key": {
-                    "SendMessageToVisitor": "Send message to visitor",
-                    "AssignToDep": "Assign to department",
+                    "SendMessageToVisitor": "Send a message to the visitor",
+                    "AssignToDep": "Assign to the department",
                     "ReAssignToSameDep": "Reassign to the same department",
-                    "RequestUpdateStatus": "Change conversation status",
-                    "RequestClose": "Close conversation",
-                    "RequestReopen": "Reopen conversation",
-                    "RequestParticipantsJoin": "Participant join conversation",
-                    "RequestParticipantsLeave": "Participant leave conversation",
+                    "RequestUpdateStatus": "Changes the status of the conversation",
+                    "RequestClose": "Close the conversation",
+                    "RequestReopen": "Reopen the conversation",
+                    "RequestParticipantsJoin": "Adds an agent or a bot to the conversation",
+                    "RequestParticipantsLeave": "Remove an agent or bot from the conversation",
                     "RequestCreate": "Create a conversation",
-                    "AssignLabel": "Assign label",
-                    "LaunchDeptBot": "Launch dept. bot"
+                    "AssignLabel": "Assign a tag",
+                    "LaunchDeptBot": "Launch the department bot"
                 },
                 "placeholder": {
-                    "NameAgent": "Name of agents",
+                    "NameAgent": "Agent name",
                     "SelectDepartment": "Select department",
                     "SelectStatus": "Select status",
                     "SelectAgent": "Select agent",
-                    "Label": "Label"
+                    "Label": "Tag"
                 }
             }
         }

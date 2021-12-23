@@ -1339,7 +1339,7 @@
                         "SoftwareOfVisitor": "Software/Computer del visitatore",
                         "ChatInformation": "Info correlate alla chat",
                         "ChannelInformation": "Informazioni sul canale",
-                        "LocationVisitor": "Ubicazione del visitatore"
+                        "LocationVisitor": "Luogo del visitatore"
                     },
                     "label_key": {
                         "VisitorSearchTerm": "Messaggio",
@@ -1419,16 +1419,16 @@
             },
             "ActionArray": {
                 "label_key": {
-                    "SendMessageToVisitor": "Invia messaggio al visitatore",
-                    "AssignToDep": "Assegna a dipartimento",
+                    "SendMessageToVisitor": "Invia un messaggio al visitatore",
+                    "AssignToDep": "Assegna al dipartimento",
                     "ReAssignToSameDep": "Riassegna allo stesso dipartimento",
-                    "RequestUpdateStatus": "Cambia stato della conversazione",
-                    "RequestClose": "Chiudi conversazione",
-                    "RequestReopen": "Riapri conversazione",
-                    "RequestParticipantsJoin": "Partecipa alla conversazione",
-                    "RequestParticipantsLeave": "Lascia la conversazione",
+                    "RequestUpdateStatus": "Cambia lo stato della conversazione",
+                    "RequestClose": "Chiudi la conversazione",
+                    "RequestReopen": "Riapri la conversazione",
+                    "RequestParticipantsJoin": "Aggiungi un agente o un bot alla conversazione",
+                    "RequestParticipantsLeave": "Rimuovi un agente o un bot dalla conversazione",
                     "RequestCreate": "Crea una conversazione",
-                    "AssignLabel": "Assegna etichetta",
+                    "AssignLabel": "Assegna un etichetta",
                     "LaunchDeptBot": "Avvia il bot del dipartimento"
                 },
                 "placeholder": {
