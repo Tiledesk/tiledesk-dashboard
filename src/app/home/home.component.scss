@@ -1176,6 +1176,12 @@
 .wrap-shortcut-icon {
   width: 90px;
   margin: auto;
+  transition: all 0.28s cubic-bezier(0.15, 0, 0.15, 1) 0s;
+}
+
+.wrap-shortcut-icon:hover {
+  // opacity: 0.6;
+  transform: scale(1.1);
 }
 
 .wrap-shortcut-title {
