@@ -43,6 +43,7 @@
 
     function tiledesk_widget_logout() {
       window.tiledesk.logout();
+      window.tiledesk.signInAnonymous()//.then(response =>  console.log('signinnnnn', response)).catch(e => console.log('errorrrrrr', e))
     }
 
     function tiledesk_widget_login() {
@@ -51,6 +52,7 @@
       // window.tiledeskSettings.g. autoStart = false;
       window.tiledesk.angularcomponent.component.g.autoStart = false;
       console.log('tiledeskSettings autoStart ', window.tiledesk.angularcomponent.component.g.autoStart)
+      window.tiledesk.angularcomponent.component.g.preChatForm = false;
       // window.Tiledesk('logout');
       // window.tiledesk.hide()
       window.tiledesk.logout();
@@ -120,6 +122,7 @@
       };
       const remote_support_project_userId = projectId + "_" + td_userId;
       const td_firstname = user.firstname;
+      const td_lastname = user.lastname;
       const td_lastname = user.lastname;
 
       xmlhttp.send("id=" + remote_support_project_userId + "&firstname=" + td_firstname + "&lastname=" + td_lastname);
