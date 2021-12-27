@@ -43,7 +43,8 @@
 
     function tiledesk_widget_logout() {
       window.tiledesk.logout();
-      window.tiledesk.signInAnonymous()//.then(response =>  console.log('signinnnnn', response)).catch(e => console.log('errorrrrrr', e))
+      // window.tiledesk.signInAnonymous()
+      //.then(response =>  console.log('signinnnnn', response)).catch(e => console.log('errorrrrrr', e))
     }
 
     function tiledesk_widget_login() {
@@ -123,7 +124,7 @@
       const remote_support_project_userId = projectId + "_" + td_userId;
       const td_firstname = user.firstname;
       const td_lastname = user.lastname;
-      const td_lastname = user.lastname;
+    
 
       xmlhttp.send("id=" + remote_support_project_userId + "&firstname=" + td_firstname + "&lastname=" + td_lastname);
     }
