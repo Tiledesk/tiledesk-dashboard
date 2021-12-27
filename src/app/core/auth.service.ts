@@ -802,6 +802,11 @@ export class AuthService {
   signOut(calledby: string) {
     this.logger.log('[AUTH-SERV] Signout calledby +++++ ', calledby)
 
+    if (window && window['tiledesk_widget_logout']) {
+      console.log('window', window)
+      window['tiledesk_widget_logout']();
+    } 
+
     // if (this.router.url.indexOf("request-for-panel") > -1) {
     //   this.logger.log('[AUTH-SERV] Signout current url contains request-for-panel ')
     // }
