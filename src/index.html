@@ -22,11 +22,116 @@
   <!-- <link href='https://fonts.googleapis.com/css?family=Roboto:400,700,300|Material+Icons' rel='stylesheet'ì type='text/css'> -->
   <link href='https://fonts.googleapis.com/css?family=Google+Sans:400,500' rel='stylesheet' type='text/css'>
 
+  <!-- the new one start -------- -->
+  <script type="application/javascript">
+    const projectId = "61ae2f221c081a001a045961";
+    window.tiledeskSettings =
+    {
+      projectid: projectId,
+      autoStart: true,
+      preChatForm: false
+    };
+    (function (d, s, id) {
+      var w = window; var d = document; var i = function () { i.c(arguments); };
+      i.q = []; i.c = function (args) { i.q.push(args); }; w.Tiledesk = i;
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s);
+      js.id = id; js.async = true; js.src = "https://console.native.tiledesk.com/widget/launch.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'tiledesk-jssdk'));
+
+    function tiledesk_widget_logut() {
+      window.tiledesk.logout();
+    }
+
+    function tiledesk_widget_login() {
+      alert('Ciao !');
+
+      // window.tiledeskSettings.g. autoStart = false;
+      window.tiledesk.angularcomponent.component.g.autoStart = false;
+      console.log('tiledeskSettings autoStart ', window.tiledesk.angularcomponent.component.g.autoStart)
+      // window.Tiledesk('logout');
+      // window.tiledesk.hide()
+      window.tiledesk.logout();
+      console.log('tiledeskSettings 1', window.tiledeskSettings)
+
+      // setTimeout(() => {
+        customAuth((token) => {
+          console.log("customAuth token ", token);
+          if (token) {
+            console.log("customAuth HERE Y ", token);
+            window.tiledesk.signInWithCustomToken(token);
+          }
+          else {
+            console.log("No user found.");
+          }
+        });
+      // }, 1000);
+    }
+
+    window.Tiledesk('onAuthStateChanged', function(event_data) {
+        console.log("onAuthStateChanged FIRED ", event_data);
+        if(event_data.detail.isLogged){
+          console.log("isLogged!!!!", event_data);
+          // window.Tiledesk('show')
+          window.tiledesk.show()
+        }
+
+    });
+
+    // window.Tiledesk('onLoadParams',(event_data) => {
+    //     console.log("Initialized!");
+    //     customAuth((token) => {
+    //         if (token) {
+    //             window.tiledesk.signInWithCustomToken(token);
+    //         }
+    //         else {
+    //             console.log("No user found.");
+    //         }
+    //     });
+    // });
+
+    function customAuth(callback) {
+      console.log('Calling customAuth ')
+      console.log('tiledeskSettings 2 (customAuth)', window.tiledeskSettings)
+      const storedUser = localStorage.getItem('user');
+      console.log('tiledeskSettings 2 (customAuth) - storedUser', storedUser)
+      let user = null;
+      if (storedUser) {
+        user = JSON.parse(storedUser);
+      }
+      if (!user) {
+        callback(null);
+        return;
+      }
+      const td_userId = user._id;
+      console.log('tiledeskSettings 2 (customAuth) - td_userId', td_userId)
+      const URL = 'https://tiledesk-custom-jwt-authentication.tiledesk.repl.co/tiledeskauth';
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.open("POST", URL, true);
+      xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      xmlhttp.onreadystatechange = function () {
+        if (callback && xmlhttp.readyState == 4 && xmlhttp.status == 200 && xmlhttp.responseText) {
+          console.log('tiledeskSettings 2 (customAuth) - xmlhttp.readyState', xmlhttp.readyState)
+          console.log('tiledeskSettings 2 (customAuth) - xmlhttp.status', xmlhttp.status)
+          callback(xmlhttp.responseText);
+        }
+      };
+      const remote_support_project_userId = projectId + "_" + td_userId;
+      const td_firstname = user.firstname;
+      const td_lastname = user.lastname;
+
+      xmlhttp.send("id=" + remote_support_project_userId + "&firstname=" + td_firstname + "&lastname=" + td_lastname);
+    }
+  </script>
+  <!-- The new one /end ------------ -->
 
 
 
 
-<!-- <script type="application/javascript">
+
+  <!-- <script type="application/javascript">
   window.tiledeskSettings= 
   {
       projectid: "6066e60cc3dade4e7389d182",
