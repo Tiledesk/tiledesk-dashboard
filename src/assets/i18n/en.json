@@ -1339,7 +1339,7 @@
                         "OfficesAreOpen": "Offices are open",
                         "RequestStatus": "Conversation status",
                         "ChannelName": "Channel name",
-                        "VisitorCountryRegion": "Visitor country region",
+                        "VisitorCountryRegion": "Language",
                         "VisitorCountryCode": "Visitor country code",
                         "VisitorCountryName": "Visitor country name"
                     },
@@ -1378,7 +1378,7 @@
                         "VisitorServed": "Visitor served",
                         "RequestStatus": "Conversation status",
                         "ChannelName": "Channel name",
-                        "VisitorCountryRegion": "Visitor country region",
+                        "VisitorCountryRegion": "Language",
                         "VisitorCountryCode": "Visitor country code",
                         "VisitorCountryName": "Visitor country name"
                     },
@@ -1444,6 +1444,7 @@
                     "RequestReopen": "Reopen the conversation",
                     "RequestParticipantsJoin": "Adds an agent or a bot to the conversation",
                     "RequestParticipantsLeave": "Remove an agent or bot from the conversation",
+                    "LaunchBot":"Launch bot",
                     "RequestCreate": "Create a conversation",
                     "AssignLabel": "Assign a tag",
                     "LaunchDeptBot": "Launch the department bot"
@@ -1452,7 +1453,8 @@
                     "NameAgent": "Agent name",
                     "SelectDepartment": "Select department",
                     "SelectStatus": "Select status",
-                    "SelectAgent": "Select agent",
+                    "SelectAgent": "Select agent or bot",
+                    "SelectBot": "Select bot",
                     "Label": "Tag"
                 }
             }

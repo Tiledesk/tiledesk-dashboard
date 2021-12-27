@@ -1363,7 +1363,7 @@
 						"VisitorServed": "Anfrage wird bearbeitet",
 						"RequestStatus": "Anfrage Status",
 						"ChannelName": "Kanal Name",
-						"VisitorCountryRegion": "Besucher Region",
+						"VisitorCountryRegion": "Sprache",
 						"VisitorCountryCode": "Besucher Ländercode",
 						"VisitorCountryName": "Besucher Land"
 					},
@@ -1429,6 +1429,7 @@
 					"RequestReopen": "Konversation wieder öffnen",
 					"RequestParticipantsJoin": "Fügen Sie der Unterhaltung einen Agenten oder Bot hinzu",
 					"RequestParticipantsLeave": "Einen Agenten oder Bot aus der Konversation entfernen",
+					"LaunchBot":"Bot starten",
 					"RequestCreate": "Erstellen Sie eine Unterhaltung",
 					"AssignLabel": "Ein Etikett zuweisen",
 					"LaunchDeptBot": "Starten Sie den Abteilungsbot"
@@ -1437,7 +1438,8 @@
 					"NameAgent": "Agentenname",
 					"SelectDepartment": "Abteilung auswählen",
 					"SelectStatus": "Status auswählen",
-					"SelectAgent": "Agent auswählen",
+					"SelectAgent": "Agent oder Bot auswählen",
+					"SelectBot": "Bot auswählen",
 					"Label": "Etikett"
 				}
 			}
