@@ -327,23 +327,25 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   toggleDisplayTeammates() {
-    if (this.DISPLAY_TEAMMATES === false) {
-      this.DISPLAY_TEAMMATES = true;
-      this.logger.log('[HOME] > DISPLAY_TEAMMATES', this.DISPLAY_TEAMMATES)
-    } else if (this.DISPLAY_TEAMMATES === true) {
-      this.DISPLAY_TEAMMATES = false;
-      this.logger.log('[HOME] > DISPLAY_TEAMMATES', this.DISPLAY_TEAMMATES)
-    }
+    this.DISPLAY_TEAMMATES = !this.DISPLAY_TEAMMATES
+    // if (this.DISPLAY_TEAMMATES === false) {
+    //   this.DISPLAY_TEAMMATES = true;
+    //   this.logger.log('[HOME] > DISPLAY_TEAMMATES', this.DISPLAY_TEAMMATES)
+    // } else if (this.DISPLAY_TEAMMATES === true) {
+    //   this.DISPLAY_TEAMMATES = false;
+    //   this.logger.log('[HOME] > DISPLAY_TEAMMATES', this.DISPLAY_TEAMMATES)
+    // }
   }
 
   toggleDisplayChatbots() {
-    if (this.DISPLAY_CHATBOTS === false) {
-      this.DISPLAY_CHATBOTS = true;
-      this.logger.log('[HOME] > DISPLAY_CHATBOTS', this.DISPLAY_CHATBOTS)
-    } else if (this.DISPLAY_CHATBOTS === true) {
-      this.DISPLAY_CHATBOTS = false;
-      this.logger.log('[HOME] > DISPLAY_CHATBOTS', this.DISPLAY_CHATBOTS)
-    }
+    this.DISPLAY_CHATBOTS = !this.DISPLAY_CHATBOTS
+    // if (this.DISPLAY_CHATBOTS === false) {
+    //   this.DISPLAY_CHATBOTS = true;
+    //   this.logger.log('[HOME] > DISPLAY_CHATBOTS', this.DISPLAY_CHATBOTS)
+    // } else if (this.DISPLAY_CHATBOTS === true) {
+    //   this.DISPLAY_CHATBOTS = false;
+    //   this.logger.log('[HOME] > DISPLAY_CHATBOTS', this.DISPLAY_CHATBOTS)
+    // }
   }
 
 

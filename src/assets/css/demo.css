@@ -572,7 +572,14 @@ my-app .main-panel .main-content .card {
   padding-right: 8px;
   border-radius: 18px;
   margin-bottom: 16px;
+  cursor: pointer;
 }
+
+.served-by-desktop-a--home-header:hover {
+  /* background: rgba(85, 94, 127, 0.3); */
+  background: #144fca;
+}
+
 
 .served-by-desktop-a--home-header-operating-hours {
   display: flex;
@@ -587,6 +594,12 @@ my-app .main-panel .main-content .card {
   border-radius: 18px;
   height: 35px;
   margin-bottom: 16px;
+  cursor: pointer;
+}
+
+.served-by-desktop-a--home-header-operating-hours:hover { 
+  /* background: rgba(85, 94, 127, 0.3); */
+  background: #144fca;
 }
 
 .served-by-desktop-e-no-hover-effect {
@@ -624,6 +637,12 @@ my-app .main-panel .main-content .card {
   border-radius: 18px;
   height: 35px;
   margin-bottom: 16px;
+  cursor: pointer;
+}
+
+.home-header-whats-new-a:hover { 
+  /* background: rgba(85, 94, 127, 0.3); */
+  background: #144fca;
 }
 
 .home-header-whats-new-b {

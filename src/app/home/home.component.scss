@@ -243,12 +243,11 @@
 }
 
 .project-plan-no-link {
-  cursor: unset
+  cursor: unset;
 }
 
-.project-plan-no-link:hover  { 
+.project-plan-no-link:hover {
   opacity: 1;
-
 }
 
 .project-plan:hover {
@@ -875,7 +874,7 @@
   margin-bottom: 7px;
 }
 
-.statistis-count-number-to-the-side{
+.statistis-count-number-to-the-side {
   font-size: 42px;
   font-weight: 900;
   line-height: 1.14;
@@ -944,7 +943,7 @@
 }
 
 .percentage-symbol {
-  font-size:36px
+  font-size: 36px;
 }
 
 @media (max-width: 992px) {
@@ -1037,7 +1036,14 @@
     opacity: 1;
   }
 }
-
+.add-operators-icons {
+  vertical-align: middle;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 18px;
+  position: relative;
+  cursor: pointer;
+  transform: rotate(-90deg);
+}
 .add-operators-icons:hover {
   color: #ffffff !important;
 }

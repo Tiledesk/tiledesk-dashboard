@@ -37,7 +37,7 @@
 
         <!-- // HUMAN AGENTS -->
         <div class="project-temmates" style="align-items: center;display: flex; flex-wrap: wrap;">
-          <div class="served-by-desktop-a--home-header">
+          <div class="served-by-desktop-a--home-header" (click)="toggleDisplayTeammates()">
 
             <ng-container *ngIf="!DISPLAY_TEAMMATES">
               <div class="served-by-desktop-b">
@@ -99,8 +99,8 @@
               <span *ngIf="projectUsers?.length === 1"> {{'Teammate' | translate}} </span>
               <span *ngIf="projectUsers?.length > 1 || projectUsers?.length === 0"> {{'Teammates' | translate}} </span>
               <span class="tool_tip" *ngIf="!DISPLAY_TEAMMATES">
-                <span class="material-icons add-operators-icons tool_tip" (click)="toggleDisplayTeammates()"
-                  style="vertical-align: middle;color:  rgba(255,255,255,0.8); font-size:18px; position: relative;cursor: pointer;transform: rotate(-90deg);">
+                <!-- (click)="toggleDisplayTeammates()" -->
+                <span class="material-icons add-operators-icons tool_tip" >
                   filter_list
                 </span>
 
@@ -125,7 +125,8 @@
               </span>
 
               <span class="tool_tip" *ngIf="DISPLAY_TEAMMATES">
-                <span class="material-icons add-operators-icons tool_tip" (click)="toggleDisplayTeammates()"
+                <!-- (click)="toggleDisplayTeammates()" -->
+                <span class="material-icons add-operators-icons tool_tip" 
                   style="vertical-align: middle;color:  rgba(255,255,255,0.8); font-size:18px; position: relative;cursor: pointer;transform: rotate(90deg);">
                   filter_list
                 </span>
@@ -139,7 +140,7 @@
           </div>
 
           <!-- /// CHATBOT AGENTS -->
-          <div class="served-by-desktop-a--home-header">
+          <div class="served-by-desktop-a--home-header" (click)="toggleDisplayChatbots()">
             <ng-container *ngIf="!DISPLAY_CHATBOTS">
               <div class="served-by-desktop-b">
                 <div class="served-by-desktop-d">
@@ -177,7 +178,6 @@
                         alt="" onerror="this.src='assets/img/avatar_bot_tiledesk_white.svg'"
                         style="width: 32px;height: 32px;">
 
-
                     </div>
 
                     <div *ngIf="bot.type === 'internal'">
@@ -213,17 +213,14 @@
             </ng-container>
 
             <span style="padding-left: 4px;color: rgba(255,255,255,0.8);font-size: 13px;font-weight: 400;">
-
               {{chatbots?.length}}
               <span *ngIf="chatbots?.length === 1"> chatbot </span>
               <span *ngIf="chatbots?.length > 1 || chatbots?.length === 0"> chatbots </span>
-
               <span class="tool_tip" *ngIf="!DISPLAY_CHATBOTS && chatbots?.length > 0">
-                <span class="material-icons add-operators-icons tool_tip" (click)="toggleDisplayChatbots()"
+                <span class="material-icons add-operators-icons tool_tip"
                   style="vertical-align: middle;color:  rgba(255,255,255,0.8); font-size:18px; position: relative;cursor: pointer;transform: rotate(-90deg);">
                   filter_list
                 </span>
-
                 <span class="bottom-home-header" style="top: 34px">
                   <span *ngIf="chatbots?.length > 1">{{'ViewChatbots' | translate}} </span>
                   <span *ngIf="chatbots?.length === 1">{{'ViewChatbot' | translate}} </span>
@@ -291,14 +288,13 @@
 
 
             <span *ngIf="isVisibleOPH"
-              style="padding-left: 4px;color: rgba(255,255,255,0.8);font-size: 13px;font-weight: 400;">
+              style="padding-left: 4px;color: rgba(255,255,255,0.8);font-size: 13px;font-weight: 400;" (click)="goToOperatingHours()">
               <span *ngIf="!OPERATING_HOURS_ACTIVE || DISPLAY_OPH_AS_DISABLED"> {{'OperatingHoursDisabled' | translate
                 }}</span>
               <span *ngIf="OPERATING_HOURS_ACTIVE && !DISPLAY_OPH_AS_DISABLED"> {{'OperatingHoursEnabled' | translate}}
               </span>
               <span class="tool_tip">
                 <span *ngIf="USER_ROLE !== 'agent'" class="material-icons add-operators-icons tool_tip"
-                  (click)="goToOperatingHours()"
                   style="vertical-align: middle;color:  rgba(255,255,255,0.8); font-size:18px; position: relative;cursor: pointer;transform: rotate(-90deg);top: -1px;">
                   filter_list
                 </span>
@@ -315,7 +311,7 @@
           <!-- --------------------------------------------------- -->
           <!-- @ What's new - Link to changelog  -->
           <!-- --------------------------------------------------- -->
-          <div class="home-header-whats-new-a">
+          <div class="home-header-whats-new-a" (click)="goToChangelogBlog()">
             <div class="home-header-whats-new-b">
               <div class="home-header-whats-new-d">
                 <div size="32" class="home-header-whats-new-e">
@@ -328,7 +324,7 @@
                 style="padding-left: 4px;color: rgba(255,255,255,0.8);font-size: 13px;font-weight: 400;position: relative;top: 5px;">
                 <span> {{'WhatsNew' | translate}} </span>
                 <span class="tool_tip">
-                  <span class="material-icons add-operators-icons tool_tip" (click)="goToChangelogBlog()"
+                  <span class="material-icons add-operators-icons tool_tip" 
                     style="vertical-align: middle;color:  rgba(255,255,255,0.8); font-size:18px; position: relative;cursor: pointer;transform: rotate(-90deg);top: 0px;">
                     filter_list
                   </span>
