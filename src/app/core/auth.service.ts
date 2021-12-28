@@ -107,7 +107,7 @@ export class AuthService {
     // public ssoService: SsoService
   ) {
     this.http = http;
-    // this.logger.log('[AUTH-SERV] !!! ====== HELLO AUTH SERVICE ====== DASHBOARD version ', this.version)
+    this.logger.log('[AUTH-SERV] !!! ====== HELLO AUTH SERVICE ====== DASHBOARD version ', this.version)
     this.APP_IS_DEV_MODE = isDevMode();
     // this.logger.log('[AUTH-SERV] ====== isDevMode ', this.APP_IS_DEV_MODE);
 
@@ -161,6 +161,19 @@ export class AuthService {
     // this.logger.log('[AUTH-SERV] »> »> PUBLISH STORED USER ', storedUser);
     if (storedUser !== null) {
       this.user_bs.next(JSON.parse(storedUser));
+
+
+     
+        try {
+          if (window && window['tiledesk_widget_login']) {
+            console.log('window', window)
+            window['tiledesk_widget_login']();
+          }
+        } catch (err) {
+          this.logger.error('[AUTH-SERVICE] tiledesk_widget_login error', err);
+        }
+      
+
 
       // /**
       //  * *** WIDGET - pass data to the widget function setTiledeskWidgetUser in index.html ***
@@ -511,7 +524,7 @@ export class AuthService {
         ///////////////////
         this.logger.log('[AUH-SERV] SSO - LOGIN 1. POST DATA ', jsonRes);
         if (jsonRes['success'] === true) {
-          
+
           this.logger.log('[AUTH-SERV] SSO - LOGIN getConfig firebaseAuth', this.appConfigService.getConfig().firebaseAuth);
 
           if (this.appConfigService.getConfig().firebaseAuth === true) {
@@ -801,11 +814,23 @@ export class AuthService {
 
   signOut(calledby: string) {
     this.logger.log('[AUTH-SERV] Signout calledby +++++ ', calledby)
+   
+      if (window && window['tiledesk_widget_logout']) {
+        console.log('window', window)
+        window['tiledesk_widget_logout']();
+      }
 
-    if (window && window['tiledesk_widget_logout']) {
-      console.log('window', window)
-      window['tiledesk_widget_logout']();
-    } 
+    // setTimeout(() => {
+    //   var tiledeskiframe = document.getElementById('tiledeskiframe') as HTMLIFrameElement;
+    //   console.log('[APP-COMPONENT] tiledeskiframe', tiledeskiframe)
+    //   if (tiledeskiframe) {
+    //     if (window &&window['tiledesk_widget_login']) {
+    //       console.log('window', window)
+    //       window['tiledesk_widget_login']();
+    //     }
+    //   }
+    // }, 5000);
+
 
     // if (this.router.url.indexOf("request-for-panel") > -1) {
     //   this.logger.log('[AUTH-SERV] Signout current url contains request-for-panel ')
@@ -850,9 +875,9 @@ export class AuthService {
     // this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK
     this.logger.log('[AUTH-SERV] signOut getConfig pushEngine', this.appConfigService.getConfig().pushEngine)
     this.logger.log('[AUTH-SERV] signOut getConfig firebaseAuth', this.appConfigService.getConfig().firebaseAuth)
-    
+
     // && this.appConfigService.getConfig().firebaseAuth === true
-    if (this.appConfigService.getConfig().pushEngine === 'firebase' ) {
+    if (this.appConfigService.getConfig().pushEngine === 'firebase') {
       this.logger.log('[AUTH-SERV] signOut pushEngine FIREBASE');
       if (!this.APP_IS_DEV_MODE && this.FCM_Supported === true) {
 
@@ -912,7 +937,7 @@ export class AuthService {
   }
 
 
-  removeInstanceIdAndSignout(calledby, FCMcurrentToken, userId ) {
+  removeInstanceIdAndSignout(calledby, FCMcurrentToken, userId) {
     // console.log('[AUTH-SERV] - removeInstanceIdAndSignout calledby ', calledby)
     // console.log('[AUTH-SERV] - removeInstanceIdAndSignout - FCM Token: ', FCMcurrentToken);
     // console.log('[AUTH-SERV] - removeInstanceIdAndSignout - USER ID: ', userId);
