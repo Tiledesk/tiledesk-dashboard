@@ -158,7 +158,14 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 browserRefresh = !router.navigated;
             }
         });
+
+
+
+
     }
+
+
+
 
     setFavicon(brand) {
         var link = document.querySelector("link[rel*='icon']") || document.createElement('link');
@@ -493,13 +500,24 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ngAfterViewInit() {
         this.runOnRouteChange();
-        this.setPrechatFormInWidgetSettings();
+        // this.setPrechatFormInWidgetSettings();
 
 
         const elemFooter = <HTMLElement>document.querySelector('footer');
-        const eleWidget = <HTMLElement>document.querySelector('#tiledesk-container');
+        // const eleWidget = <HTMLElement>document.querySelector('#tiledesk-container');
         // this.logger.log('APP.COMP - elem FOOTER ', elemFooter);
-        this.logger.log('[APP-COMPONENT] - elem WIDGET ', eleWidget);
+        // setTimeout(() => {
+        // console.log('[APP-COMPONENT] window', window)
+        // var tiledeskiframe = document.getElementById('tiledeskiframe') as HTMLIFrameElement;
+        // console.log('[APP-COMPONENT] tiledeskiframe', tiledeskiframe)
+        // if (tiledeskiframe) {
+        //     if (window && window['tiledesk'] && window['tiledesk']['angularcomponent']) {
+        //         window['tiledesk'].angularcomponent.component.g.preChatForm = false
+        //     }
+        // }
+        // }, 3000);
+
+
 
         /* HIDE FOOTER IF IS LOGIN PAGE - SIGNUP PAGE */
         this.router.events.subscribe((val) => {
@@ -572,32 +590,32 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
 
-    setPrechatFormInWidgetSettings() {
-        this.router.events.subscribe((val) => {
-            if (this.location.path() !== '') {
-                this.route = this.location.path();
-                // this.logger.log('»> ', this.route)
-                // tslint:disable-next-line:max-line-length
-                if ((this.route === '/login') || (this.route === '/signup') || (this.route === '/forgotpsw') || (this.route.indexOf('/signup-on-invitation') !== -1)) {
+    // setPrechatFormInWidgetSettings() {
+    //     this.router.events.subscribe((val) => {
+    //         if (this.location.path() !== '') {
+    //             this.route = this.location.path();
+    //             // this.logger.log('»> ', this.route)
+    //             // tslint:disable-next-line:max-line-length
+    //             if ((this.route === '/login') || (this.route === '/signup') || (this.route === '/forgotpsw') || (this.route.indexOf('/signup-on-invitation') !== -1)) {
 
-                    this.isPageWithNav = false;
+    //                 this.isPageWithNav = false;
 
-                    if (window && window['tiledeskSettings']) {
-                        window['tiledeskSettings']['preChatForm'] = true
-                    }
-                } else {
+    //                 if (window && window['tiledeskSettings']) {
+    //                     window['tiledeskSettings']['preChatForm'] = true
+    //                 }
+    //             } else {
 
-                    this.isPageWithNav = true;
-                    if (window && window['tiledeskSettings']) {
-                        if (window['tiledeskSettings']['preChatForm']) {
-                            delete window['tiledeskSettings']['preChatForm'];
-                        }
-                    }
-                }
-                // this.logger.log('APP.COMP currentUrl ', this.route, 'tiledeskSettings ', window['tiledeskSettings']);
-            }
-        });
-    }
+    //                 this.isPageWithNav = true;
+    //                 if (window && window['tiledeskSettings']) {
+    //                     if (window['tiledeskSettings']['preChatForm']) {
+    //                         delete window['tiledeskSettings']['preChatForm'];
+    //                     }
+    //                 }
+    //             }
+    //             // this.logger.log('APP.COMP currentUrl ', this.route, 'tiledeskSettings ', window['tiledeskSettings']);
+    //         }
+    //     });
+    // }
 
     isMaps(path) {
         var titlee = this.location.prepareExternalUrl(this.location.path());
