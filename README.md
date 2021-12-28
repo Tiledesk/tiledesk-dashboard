@@ -368,4 +368,5 @@ You can run an embedded version of the dashboard inside an existing app using, f
 
 ```
 
+# Translation process
 [![Crowdin](https://badges.crowdin.net/tiledesk/localized.svg)](https://crowdin.com/project/tiledesk)
