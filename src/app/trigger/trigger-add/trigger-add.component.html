@@ -49,7 +49,8 @@
                   <div class="form-group row" style="margin-top: 16px;">
                     <label class="col-sm-2 custom-label">{{ "Trigger.Add_Edit.TriggerName" | translate }}</label>
                     <div class="col-sm-4">
-                      <input [ngClass]="{'form-submitted': submitted}" type="text" class="custom-input" style="width: 100%" formControlName="name" />
+                      <input [ngClass]="{'form-submitted': submitted}" type="text" class="custom-input"
+                        style="width: 100%" formControlName="name" />
                       <div *ngIf="form.name.invalid && submitted" class="row is-invalid">
                         {{ "Trigger.Add_Edit.TriggerRequiredFieldError" | translate }}</div>
                     </div>
@@ -76,26 +77,28 @@
                   </div>
 
                   <div class="form-group row">
-                    <label for="triggerEvent"
-                      class="col-sm-2 custom-label">{{ "Trigger.Add_Edit.RunTrigger" | translate }}</label>
+                    <label for="triggerEvent" class="col-sm-2 custom-label">{{ "Trigger.Add_Edit.RunTrigger" | translate
+                      }}</label>
                     <div class="col-sm-4" formGroupName="trigger">
                       <ng-select formControlName="key"
                         placeholder='{{ "Trigger.Add_Edit.RunTrigger_dropdownElements.Placeholder" | translate }}'
                         (change)=onTriggerKey($event) [searchable]="false" [clearable]="false" style="width: 100%;">
                         <ng-option [value]="'message.create.from.requester'">
                           {{ "Trigger.Add_Edit.RunTrigger_dropdownElements.WhenMessageIsSent" | translate }}</ng-option>
-                          <ng-option [value]="'request.create'">
-                            {{ "Trigger.Add_Edit.RunTrigger_dropdownElements.WhenRequestChat" | translate }}</ng-option>
-                        <ng-option [value]="'user.login'">
-                          {{ "Trigger.Add_Edit.RunTrigger_dropdownElements.WhenUserIsLogged" | translate }}</ng-option>
+                        <ng-option [value]="'request.create'">
+                          {{ "Trigger.Add_Edit.RunTrigger_dropdownElements.WhenRequestChat" | translate }}</ng-option>
+                        <!-- <ng-option [value]="'user.login'">
+                          {{ "Trigger.Add_Edit.RunTrigger_dropdownElements.WhenUserIsLogged" | translate }}
+                        </ng-option> -->
                         <ng-option [value]="'event.emit'">
-                          {{ "Trigger.Add_Edit.RunTrigger_dropdownElements.NewEvent" | translate }}</ng-option>
+                          {{ "Trigger.Add_Edit.RunTrigger_dropdownElements.NewEvent" | translate }}
+                        </ng-option>
                       </ng-select>
                     </div>
                   </div>
 
                   <div class="form-group row">
-                    <label class="col-sm-2 custom-label"  style="white-space: nowrap">
+                    <label class="col-sm-2 custom-label" style="white-space: nowrap">
                       {{ "Trigger.Add_Edit.CheckConditions" | translate }}
                     </label>
                     <div class="col-sm-4">
@@ -124,7 +127,7 @@
                             <!-- -----first condition------- -->
 
                             <div class="col-sm-3">
-                              <ng-select  class="custom-select" (change)="onSelectedCondition($event, condition)"
+                              <ng-select class="custom-select" (change)="onSelectedCondition($event, condition)"
                                 formControlName="path" [items]="temp_cond" bindLabel="label_key" bindValue="id"
                                 groupBy="groupId"
                                 placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}'
@@ -194,7 +197,7 @@
                               </ng-select>
                             </div>
 
-                            <div class="add-remove-icons-wrap" style="">
+                            <div class="add-remove-icons-wrap">
                               <span class="icon" style="padding-right:8px; cursor: pointer;" (click)=removeCondition(i)>
                                 <i class="material-icons custom-icon">remove</i>
                               </span>
@@ -316,7 +319,7 @@
 
 
 
-                            <div class="add-remove-icons-wrap" style="">
+                            <div class="add-remove-icons-wrap">
                               <span class="icon" style="padding-right:8px; cursor: pointer;" (click)=removeCondition(i)>
                                 <i class="material-icons custom-icon">remove</i>
                               </span>
@@ -337,7 +340,7 @@
                 </div>
                 <!-- >>>>>>>>>>>>-------section PERSONALIZZA TRIGGER END------<<<<<<<<< -->
 
-                <!-- >>>>>>>>>>>>-------section AZIONI TRIGGER START------<<<<<<<<< -->
+                <!-- >>>>>>>>>>>>-------section ACTIONS TRIGGER START------<<<<<<<<< -->
                 <div>
                   <div class="form-group row condition" style="background-color: #fff">
                     <label class="col-sm-12 custom-label"
@@ -347,10 +350,10 @@
                   </div>
 
 
-                  <!-- 
-                  // ---------------------------------------------------------------
-                  // ARRAY !!!ACTIONS!!! START
-                  // --------------------------------------------------------------- -->
+
+                  <!-- --------------------------------------------------------------- -->
+                  <!-- ARRAY !!!ACTIONS!!! START -->
+                  <!-- --------------------------------------------------------------- -->
                   <div>
                     <div formArrayName="actions"
                       *ngFor="let action of triggerForm.get('actions').controls; let j = index">
@@ -358,10 +361,10 @@
 
                         <div class="form-group row condition">
 
-                          <!-- 
-                          // ---------------------------
-                          // First condition
-                          // --------------------------- -->
+
+                          <!-- --------------------------- -->
+                          <!-- First condition -->
+                          <!-- --------------------------- -->
                           <div class="col-sm-3">
                             <ng-select #myselect class="custom-select" formControlName="key"
                               (change)="onSelectedAction($event, action)"
@@ -390,10 +393,10 @@
                             action.value.key !== 'request.department.bot.launch'" formGroupName="parameters">
 
 
-                            <!-- 
-                            // ----------------------------------------------------------------------------------------
-                            // @ Action Second condition
-                            // ---------------------------------------------------------------------------------------- -->
+
+                            <!-- ---------------------------------------------------------------------------------------- -->
+                            <!-- @ Action Second condition -->
+                            <!-- ---------------------------------------------------------------------------------------- -->
                             <div class="col-sm-3" *ngIf="action.value.type==='input' ">
                               <input class="custom-input" formControlName="fullName" type="text"
                                 [placeholder]="action.value.placeholder">
@@ -405,9 +408,8 @@
                               <div
                                 *ngIf="action.value.key === 'request.create' || action.value.key === 'request.department.route'">
 
-                                <ng-select class="custom-select"
-                                  formControlName="fullName" [placeholder]="action.value.placeholder"
-                                  [searchable]="false" [clearable]="false">
+                                <ng-select class="custom-select" formControlName="fullName"
+                                  [placeholder]="action.value.placeholder" [searchable]="false" [clearable]="false">
                                   <ng-option *ngFor="let operator of operator[action.value.key]" [value]="operator.id">
                                     {{operator.label_key}}
                                   </ng-option>
@@ -434,7 +436,7 @@
                             // note: the text input field is not displayed  if the action key is request.tags.add
                             // note: the text input field is displayed if the action key is message.send (that is a select type)
                             // ------------------------------------------------------------------------------------------------- -->
-                            <div class="col-sm-3" 
+                            <div class="col-sm-3"
                               *ngIf="(action.value.type==='input' || action.value.key === 'message.send') && (action.value.key !== 'request.tags.add')"
                               style="padding-right: 3px;">
 
@@ -485,8 +487,8 @@
                 <!-- >>>>>>>>>>>>-------section AZIONI TRIGGER END------<<<<<<<<< -->
 
                 <div class="form-group" style="border-top: solid 1px #ddd; padding-top: 18px;margin-top: 16px;">
-                  <button class="btn btn-primary"
-                    type="submit">{{ "Trigger.Add_Edit.CreateTriggerButton" | translate }}</button>
+                  <button class="btn btn-primary" type="submit">{{ "Trigger.Add_Edit.CreateTriggerButton" | translate
+                    }}</button>
                   <!-- <button class="btn btn-light" type='button'  (click)="goBack()">{{ "Trigger.Add_Edit.CancelButton" | translate }}</button> -->
                 </div>
 

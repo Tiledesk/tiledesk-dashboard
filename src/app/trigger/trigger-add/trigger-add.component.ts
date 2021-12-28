@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
 import { UsersService } from '../../services/users.service';
 import { FaqKbService } from '../../services/faq-kb.service';
 import { LoggerService } from '../../services/logger/logger.service';
-
+import { browserRefresh } from './../../app.component';
 @Component({
   selector: 'appdashboard-trigger-add',
   templateUrl: './trigger-add.component.html',
@@ -50,8 +50,8 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
   loadingActions: boolean;
 
   selected_dept: string;
-
-
+  action_clone: any
+  public browserRefresh: boolean;
   // departments = new Array;     --> get from BaseTriggerComponent
 
   // messageCondition: string;    --> get from BaseTriggerComponent
@@ -76,6 +76,7 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
 
   ngOnInit() {
     super.ngOnInit()
+    this.detectBrowserRefresh();
 
     this.triggerForm = this.formBuilder.group({
       name: ['', Validators.required],
@@ -94,26 +95,55 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
 
     })
 
-    // this.getDepartments();
-    // this.selected_dept = this.getDefaultDept()  this.selected_dept 
+    // ---------------------------------------------------------------------------------------------------------------------
+    // the action Launch bot is available for selection in the action combo box only for the trigger with key request.create
+    // (displayed label in the "Run trigger" field: "When a visitor request a chat" )
+    // Note the same filter is runned im the method "onTriggerKey" 
+    // ---------------------------------------------------------------------------------------------------------------------
+    if (this.action) {
+      this.action_clone = JSON.parse(JSON.stringify(this.action))
+      this.logger.log('[TRIGGER-ADD] - >>> ON INIT action_clone ', this.action_clone);
+
+      var filtered = this.action.filter((actoinObjct) => {
+        // console.log('[TRIGGER-ADD] .action.filter actoinObjct', actoinObjct)
+        return actoinObjct.key !== 'request.bot.launch';
+      });
+      this.action = filtered;
+    }
+
+
+
     this.logger.log('[TRIGGER-ADD] - >>> DEFAULT DEPT ID ', this.default_dept_id);
 
     // because the trigger.key is set to default to message.received temp_cond filter
     // the condition in order of this key value
-    this.temp_cond = this.condition.filter(b => b.triggerType === 'message.create.from.requester');
+    if (this.condition) {
+      this.temp_cond = this.condition.filter(b => b.triggerType === 'message.create.from.requester');
+    }
     this.temp_act = this.action
 
     // set the initial value to action to the first element of this.action array
     const init_act = this.triggerForm.get('actions') as FormArray
-    init_act.patchValue([{
-      'key': this.action[0].key,
-      'type': this.action[0].type,
-      'placeholder': this.action[0].placeholder
-    }])
+    if (this.action) {
+      init_act.patchValue([{
+        'key': this.action[0].key,
+        'type': this.action[0].type,
+        'placeholder': this.action[0].placeholder
+      }])
+    }
 
     this.cleanForm();
 
 
+  }
+
+  detectBrowserRefresh() {
+    this.logger.log('[TRIGGER-ADD] - CALLING browserRefresh')
+    this.browserRefresh = browserRefresh;
+
+    if (this.browserRefresh) {
+      this._location.back();
+    }
   }
 
 
@@ -245,6 +275,60 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
       this.temp_cond = this.condition.filter(b => b.triggerType === 'message.create.from.requester');
     }
 
+    // ---------------------------------------------------------------------------------------------------------------------
+    // the action Launch bot is available for selection in the action combo box only for the trigger with key request.create
+    // (displayed label in the "Run trigger" field: "When a visitor request a chat" )
+    // Note the same filter is runned im the lifehook "ngOnit" 
+    // ---------------------------------------------------------------------------------------------------------------------
+    if (value !== "request.create") {
+      // console.log('[TRIGGER-ADD] value !== "request.create" action ', this.action)
+      if (this.action) {
+        var filtered = this.action.filter((actoinObjct) => {
+          // console.log('[TRIGGER-ADD] .action.filter actoinObjct', actoinObjct)
+          return actoinObjct.key !== 'request.bot.launch';
+        });
+      }
+      this.action = filtered
+      // console.log('[TRIGGER-ADD] this.action filtered', this.action)
+
+
+      // ------------------------------------------------------------------------------
+      // Set "message.send" (i.e. Send message to the visitor) as the default action when selecting another trigger 
+      // in the "Run trigger" combo box if the trigger being created has "request.create" 
+      // as key and "request.bot.launch" as action and then, before its creation,
+      // the trigger key is changed
+      // ------------------------------------------------------------------------------
+      this.actions = this.triggerForm.get('actions') as FormArray;
+      this.logger.log('[TRIGGER-ADD] - onTriggerKey actions', this.actions);
+      // this.logger.log('[TRIGGER-EDIT] - onTriggerKey actions > this.actions.value[0].key', this.actions.value[0].key);
+
+      if (this.actions.value[0].key === "request.bot.launch") {
+        const init_act = this.triggerForm.get('actions') as FormArray
+        init_act.patchValue([{
+          'key': this.action[0].key,
+          'type': this.action[0].type,
+          'placeholder': this.action[0].placeholder
+        }]);
+        this.cleanFullnameControl();
+
+        for (let w = 1; w < this.triggerForm.value.actions.length; w++) { 
+          this.logger.log('[TRIGGER-ADD] - onTriggerKey actions > triggerForm.value.actions[w]', this.triggerForm.value.actions[w]);
+          this.actions.removeAt(w);
+        }
+      }
+      // if (this.actions.value[0].key === ) {
+
+      // }
+
+
+
+    } else if (value === "request.create") {
+      // this.temp_act = this.action
+      // console.log('[TRIGGER-ADD] action_clone', this.action_clone)
+      this.action = this.action_clone;
+    }
+
+
 
     // ------------------------------------------------------------------------------------
     // if user select NEW EVENT in run trigger the only action available is request.create
@@ -280,6 +364,18 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
     this.logger.log('[TRIGGER-ADD] - onTriggerKey value', value);
     this.logger.log('[TRIGGER-ADD] - onTriggerKey temp_cond', this.temp_cond);
     this.logger.log('[TRIGGER-ADD] - onTriggerKey temp_action', this.temp_act);
+  }
+
+
+  cleanFullnameControl() {
+    let action_controls = this.triggerForm.get('actions')['controls'][0]
+    this.logger.log('[TRIGGER-ADD] - onTriggerKey action_controls after patch', action_controls);
+    let parameters_fullname_value = action_controls.controls['parameters'].value.fullName;
+    this.logger.log('[TRIGGER-ADD] - onTriggerKey action_controls > parameters_fullname_value after patch', parameters_fullname_value);
+    action_controls.get('parameters')
+    const action_parameters_fullname_control = action_controls.get('parameters.fullName')
+    this.logger.log('[TRIGGER-ADD] - onTriggerKey > action_parameters_fullname_control: ', action_parameters_fullname_control);
+    action_parameters_fullname_control.setValue(null)
   }
 
   onSelectedCondition($event: any, condition: FormGroup) {
@@ -334,7 +430,7 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
       'type': selectedCondition.type,
       'operator': this.options[selectedCondition.type + 'Opt'][0].id,
       // 'value': (selectedCondition.key.includes('department')) ? this.operator[selectedCondition.key][0].id: undefined, 
-      'value': (selectedCondition.key === "message.request.department.name") ? this.operator[selectedCondition.key][0].id: undefined, 
+      'value': (selectedCondition.key === "message.request.department.name") ? this.operator[selectedCondition.key][0].id : undefined,
       // 'value': undefined,
       'key': selectedCondition.key,
       'placeholder': selectedCondition.placeholder
@@ -408,7 +504,7 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
       'type': this.action.filter(b => b.key === event)[0].type,
       'placeholder': this.action.filter(b => b.key === event)[0].placeholder,
       'parameters': {
-        'fullName': (action.value.key === 'request.create' || action.value.key === 'request.department.route') ? this.operator[action.value.key][0].id: undefined, 
+        'fullName': (action.value.key === 'request.create' || action.value.key === 'request.department.route') ? this.operator[action.value.key][0].id : undefined,
         // 'fullName': undefined,
         'text': event === 'request.create' || event === 'message.send' ? '' : ' '
       }
@@ -479,10 +575,12 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
       // Actions key for which it is made:
       // - request.participants.join (i.e. 'Participant join request')
       // - request.participants.leave (i.e. 'Participant leave request')
+      // - request.bot.launch (i.e. 'Launch bot') - note: this action is avilable only for the trigger key "request.create" (i.e. When a visitor request a chat)
       // --------------------------------------------------------------------------------------------------------------------------------------------
       if (
         (this.triggerForm.value.actions[w].key === 'request.participants.join') ||
-        (this.triggerForm.value.actions[w].key === 'request.participants.leave')
+        (this.triggerForm.value.actions[w].key === 'request.participants.leave') ||
+        (this.triggerForm.value.actions[w].key === 'request.bot.launch')
       ) {
         this.logger.log('[TRIGGER-ADD] ->>>>> onSubmit action key is: ', this.triggerForm.value.actions[w].key);
 
@@ -516,14 +614,14 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
         }
       }
 
-            // nk 
+      // nk 
       // --------------------------------------------------------------------------------------------------------------------------------------------
       // Rename the parameters key 'fullName' in 'sender', and add the string 'bot_' if the select agent is a bot
       // Actions key for which it is made:
       // - 'message.send' (i.e. 'Send message to visitor')
       // --------------------------------------------------------------------------------------------------------------------------------------------
       if (
-        (this.triggerForm.value.actions[w].key === 'message.send') 
+        (this.triggerForm.value.actions[w].key === 'message.send')
       ) {
         this.logger.log('[TRIGGER-ADD] ->>>>> onSubmit action key is: ', this.triggerForm.value.actions[w].key);
 

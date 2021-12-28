@@ -25,9 +25,11 @@ export class BasetriggerComponent implements OnInit {
   departments = []
   projectUsersList: any;
   bots: any;
+  projectUserAndBotsArray = [];
 
-  // projectUserAndBotsArray= [];
-  projectUserAndBotsArray = []
+  botsWithoutIdentityBot: any;
+  projectUserAndBotsWithoutIdentityBotArray = []
+  botsWithoutIdentityBotArray = []
   default_dept_id: string;
   constructor(
     public translate: TranslateService,
@@ -36,7 +38,6 @@ export class BasetriggerComponent implements OnInit {
     public faqKbService: FaqKbService,
     public logger: LoggerService
   ) {
-
   }
 
   ngOnInit() {
@@ -46,7 +47,69 @@ export class BasetriggerComponent implements OnInit {
     this.translateBasicINFO();
     // this.getTranslateAndDepartmentCallsEnd()
     this.getProjectUsersAndBots();
+    this.getProjectUsersAndBotsWithoutIdentityBot();
+  }
+  // -----------------------------------------------------------------------------------------------------
+  // @ Get all project's Agents excluding the identity bot(project-users & bots but not the identity bot ) 
+  // -----------------------------------------------------------------------------------------------------
+  getProjectUsersAndBotsWithoutIdentityBot() {
+    // https://stackoverflow.com/questions/44004144/how-to-wait-for-two-observables-in-rxjs
 
+    // this.projectUserAndBotsArray 
+    const projectUsers = this.usersService.getProjectUsersByProjectId();
+    const botsWithoutIdentityBot = this.faqKbService.getFaqKbByProjectId();
+
+    Observable
+      .zip(projectUsers, botsWithoutIdentityBot, (_projectUsers: any, _botsWithoutIdentity: any) => ({ _projectUsers, _botsWithoutIdentity }))
+      .subscribe(pair => {
+        this.logger.log('[TRIGGER][BASE-TRIGGER] - GET P-USERS-&-BOTS - PROJECT USERS : ', pair._projectUsers);
+        this.logger.log('[TRIGGER][BASE-TRIGGER] - GET P-USERS-&-BOTS - BOTS WITHOUT IDENTITY BOT: ', pair._botsWithoutIdentity);
+
+        if (pair && pair._projectUsers) {
+          this.projectUsersList = pair._projectUsers;
+
+          this.projectUsersList.forEach(p_user => {
+            this.projectUserAndBotsWithoutIdentityBotArray.push({ id: p_user.id_user._id, label_key: p_user.id_user.firstname + ' ' + p_user.id_user.lastname });
+
+          });
+
+        }
+
+        if (pair && pair._botsWithoutIdentity) {
+
+          this.botsWithoutIdentityBot = pair._botsWithoutIdentity
+            .filter(bot => {
+              if (bot['trashed'] === false) {
+                return true
+              } else {
+                return false
+              }
+            })
+          this.logger.log('[TRIGGER][BASE-TRIGGER] - GET P-USERS-&-BOTS-WITHOUT-IDENTITY-BOT - botsWithoutIdentityBot : ', this.botsWithoutIdentityBot);
+
+          this.botsWithoutIdentityBot.forEach(bot => {
+            this.projectUserAndBotsWithoutIdentityBotArray.push({ id: bot._id, label_key: bot.name + ' (bot)' })
+          });
+
+          this.botsWithoutIdentityBot.forEach(bot => {
+            this.botsWithoutIdentityBotArray.push({ id: bot._id, label_key: bot.name + ' (bot)' })
+          });
+        }
+
+        this.logger.log('[TRIGGER][BASE-TRIGGER] - GET P-USERS-&-BOTS - PROJECT-USER & BOTS ARRAY WITHOUT IDENTITY BOT : ', this.projectUserAndBotsWithoutIdentityBotArray);
+       
+        // this.botsWithoutIdentityBotArray = this.projectUserAndBotsWithoutIdentityBotArray.filter((item) => {
+        //   // this.logger.log('[TRIGGER][BASE-TRIGGER] - FILTER ARRAY P-USERS-&-BOTS  WITHOUT IDENTITY BOT - item: ', item);
+        //   return item.label_key.includes('bot');
+        // });
+        // this.logger.log('[TRIGGER][BASE-TRIGGER] -  P-USERS-&-BOTS  WITHOUT IDENTITY BOT - ARRAY: ',  this.botsWithoutIdentityBotArray);
+       
+
+      }, error => {
+        this.logger.error('[TRIGGER][BASE-TRIGGER] - GET P-USERS-&-BOTS WITHOUT IDENTITY BOT - ERROR: ', error);
+      }, () => {
+        this.logger.log('[TRIGGER][BASE-TRIGGER] - GET P-USERS-&-BOTS WITHOUT IDENTITY BOT - COMPLETE');
+      });
   }
 
   // ----------------------------------------------------
@@ -55,7 +118,6 @@ export class BasetriggerComponent implements OnInit {
   getProjectUsersAndBots() {
     // https://stackoverflow.com/questions/44004144/how-to-wait-for-two-observables-in-rxjs
 
-    // this.projectUserAndBotsArray 
     const projectUsers = this.usersService.getProjectUsersByProjectId();
     const bots = this.faqKbService.getAllBotByProjectId();
 
@@ -733,7 +795,7 @@ export class BasetriggerComponent implements OnInit {
           key: 'message.send',
           label_key: translateAction.label_key.SendMessageToVisitor,
           type: 'select',
-          placeholder: translateAction.placeholder.NameAgent
+          placeholder: translateAction.placeholder.SelectAgent
         },
         {
           key: 'request.department.route',
@@ -783,7 +845,15 @@ export class BasetriggerComponent implements OnInit {
           label_key: translateAction.label_key.RequestParticipantsLeave,
           type: 'select',
           placeholder: translateAction.placeholder.SelectAgent
-        }, // dropdown con elenco utenti e bot
+        },
+        {
+          key: 'request.bot.launch',
+          label_key: translateAction.label_key.LaunchBot,
+          type: 'select',
+          placeholder: translateAction.placeholder.SelectBot
+        },
+
+        // dropdown con elenco utenti e bot
         //{ key: 'request.create', label_key: translateAction.label_key.RequestCreate, type: 'input', placeholder: translateAction.placeholder.NameAgent, parameters: [{key:"fullname", placeholder: "placeholder", required:true}]}
         {
           key: 'request.create',
@@ -886,16 +956,9 @@ export class BasetriggerComponent implements OnInit {
           { id: true, label_key: 'True' },
           { id: false, label_key: 'False' }
         ],
-        // 'request.participants.join': [
-        //   { id: true, label_key: 'True' },
-        //   { id: false, label_key: 'False' }
-        // ],
-        'request.participants.join': this.projectUserAndBotsArray,
-        // 'request.participants.leave': [
-        //   { id: true, label_key: 'True' },
-        //   { id: false, label_key: 'False' }
-        // ],
-        'request.participants.leave': this.projectUserAndBotsArray,
+        'request.participants.join': this.projectUserAndBotsWithoutIdentityBotArray,
+        'request.participants.leave': this.projectUserAndBotsWithoutIdentityBotArray,
+        'request.bot.launch': this.botsWithoutIdentityBotArray,
         'request.status.update': [
           { id: 100, label_key: 'Pooled' },
           { id: 200, label_key: 'Assigned' }
@@ -1053,12 +1116,12 @@ export class BasetriggerComponent implements OnInit {
             { id: 'id__bot', label_key: 'False' }
             ],
             'language': [
-            { id: 'zh-CN', label_key: 'Chinese' },
-            { id: 'en-GB', label_key: 'English' },
-            { id: 'fr-FR', label_key: 'French' },
-            { id: 'it-IT', label_key: 'Italian' },
-            { id: 'de-DE', label_key: 'German' },
-            { id: 'es-ES', label_key: 'Spanish' },
+              { id: 'zh-CN', label_key: 'Chinese' },
+              { id: 'en-GB', label_key: 'English' },
+              { id: 'fr-FR', label_key: 'French' },
+              { id: 'it-IT', label_key: 'Italian' },
+              { id: 'de-DE', label_key: 'German' },
+              { id: 'es-ES', label_key: 'Spanish' },
             ]
           }
 
