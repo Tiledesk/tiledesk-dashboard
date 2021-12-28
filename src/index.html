@@ -56,7 +56,8 @@
     // }
 
     function tiledesk_widget_logout() {
-      window.Tiledesk('logout');
+       window.tiledesk.logout();
+      // window.Tiledesk('logout');
       // window.tiledesk.signInAnonymous()
       window.Tiledesk('signInAnonymous');
       // if (window && window.tiledesk) {
@@ -72,10 +73,10 @@
     function tiledesk_widget_login() {
       console.log('tiledesk_widget_login')
 
-      window.Tiledesk('setParameter', {key: 'autoStart', value: false})
-      // if (window && window.tiledesk && window.tiledesk.angularcomponent) {
-        // window.tiledesk.angularcomponent.component.g.autoStart = false;
-      // }
+      // window.Tiledesk('setParameter', {key: 'autoStart', value: false})
+      // window.Tiledesk('setParameter', {key: 'preChatForm', value: false})
+    
+      window.tiledesk.angularcomponent.component.g.autoStart = false;
       // console.log('tiledeskSettings autoStart ', window.tiledesk.angularcomponent.component.g.autoStart)
 
 
