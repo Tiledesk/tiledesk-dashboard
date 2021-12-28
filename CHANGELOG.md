@@ -1,6 +1,21 @@
 
 # tiledesk-dashboard
 
+### 2.2.31-rc1
+- Fixes the bug: when a language is selected for a trigger that has the key "request.create" the value of the selected language contains the country code
+- Improves the translations of the labels displayed in the combo boxes in the pages of creating and editing a trigger
+- Implements translations of missing trigger labels in it.json and de.json files
+- Adds animation to home page "shortcut" buttons on hover
+- Improve the usability of the buttons on the home page: "View teammates", "View Bot", "Adjust operating hours" and "Go to changelog"
+- Adds in the signin.component the tiledesk_widget_login() function
+- Adds in index.html the new widget script
+- Adds in the signOut() method of the auth.service the tiledesk_widget_logout() function
+- Adds for the trigger "When a visitor requests a chat" the action "Launch bot"
+- Renames the trigger "Participant join conversation" in "Add an agent or a bot to the conversation"
+- Renames the trigger "Participant leave conversation" in "Remove an agent or bot from the conversation"
+- Excludes the identity bot from the "actions" combo box: "Add an agent or bot to conversation", "Remove an agent or bot from conversation" and "Launch bot"
+- Removes the trigger "When a visitor is logged in"
+
 ### 2.2.30.1
 - Fixed bug: in the detail of the conversation displayed in the iframe of the left side panel of the chat, the messages are not displayed correctly if the "requester_id" property is not defined
 - Adds in the conversation detail displayed in the iframe of the left side panel of the chat, an accordion to view more details
