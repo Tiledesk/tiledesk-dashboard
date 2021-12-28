@@ -24,13 +24,16 @@
 
   <!-- the new one start -------- -->
   <script type="application/javascript">
+
     const projectId = "61ae2f221c081a001a045961";
     window.tiledeskSettings =
     {
       projectid: projectId,
       autoStart: true,
-      preChatForm: false
+      preChatForm: false,
+
     };
+
     (function (d, s, id) {
       var w = window; var d = document; var i = function () { i.c(arguments); };
       i.q = []; i.c = function (args) { i.q.push(args); }; w.Tiledesk = i;
@@ -41,45 +44,69 @@
       fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'tiledesk-jssdk'));
 
+    // window.tiledesk.angularcomponent.component.g.preChatForm = false
+
+    function tiledesk_widget_autologin() {
+      if (window && window.tiledesk) {
+        window.tiledesk.logout();
+        setTimeout(() => {
+          tiledesk_widget_login();
+        }, 1000);
+      }
+    }
+
     function tiledesk_widget_logout() {
-      window.tiledesk.logout();
+      window.Tiledesk('logout');
+      // window.tiledesk.signInAnonymous()
+      window.Tiledesk('signInAnonymous');
+      // if (window && window.tiledesk) {
+        
+      //   console.log('tiledeskSettings LOGOUT ')
+      // } else {
+      //   console.log('tiledeskSettings NO LOGOUT ')
+      // }
       // window.tiledesk.signInAnonymous()
       //.then(response =>  console.log('signinnnnn', response)).catch(e => console.log('errorrrrrr', e))
     }
 
     function tiledesk_widget_login() {
-      alert('Ciao !');
+      console.log('tiledesk_widget_login')
+      
+      window.Tiledesk('setParameter', {key: 'autoStart', value: false})
+      // if (window && window.tiledesk && window.tiledesk.angularcomponent) {
+        // window.tiledesk.angularcomponent.component.g.autoStart = false;
+      // }
+      // console.log('tiledeskSettings autoStart ', window.tiledesk.angularcomponent.component.g.autoStart)
 
-      // window.tiledeskSettings.g. autoStart = false;
-      window.tiledesk.angularcomponent.component.g.autoStart = false;
-      console.log('tiledeskSettings autoStart ', window.tiledesk.angularcomponent.component.g.autoStart)
-      window.tiledesk.angularcomponent.component.g.preChatForm = false;
-      // window.Tiledesk('logout');
+
+      window.Tiledesk('logout');
       // window.tiledesk.hide()
-      window.tiledesk.logout();
+      // window.tiledesk.logout();
+      // window.tiledesk.reinit();
       console.log('tiledeskSettings 1', window.tiledeskSettings)
 
       // setTimeout(() => {
-        customAuth((token) => {
-          console.log("customAuth token ", token);
-          if (token) {
-            console.log("customAuth HERE Y ", token);
-            window.tiledesk.signInWithCustomToken(token);
-          }
-          else {
-            console.log("No user found.");
-          }
-        });
+      customAuth((token) => {
+        console.log("customAuth token ", token);
+        if (token) {
+          console.log("customAuth HERE Y ", token);
+          // window.tiledesk.signInWithCustomToken(token);
+          window.Tiledesk('signInWithCustomToken', token);
+        }
+        else {
+          console.log("No user found.");
+        }
+      });
       // }, 1000);
     }
 
-    window.Tiledesk('onAuthStateChanged', function(event_data) {
-        console.log("onAuthStateChanged FIRED ", event_data);
-        if(event_data.detail.isLogged){
-          console.log("isLogged!!!!", event_data);
-          // window.Tiledesk('show')
-          window.tiledesk.show()
-        }
+    window.Tiledesk('onAuthStateChanged', function (event_data) {
+      console.log("onAuthStateChanged FIRED ", event_data);
+      if (event_data.detail.isLogged) {
+        console.log("isLogged!!!!", event_data);
+        window.Tiledesk('show')
+        // window.tiledesk.show()
+      }
 
     });
 
@@ -124,7 +151,7 @@
       const remote_support_project_userId = projectId + "_" + td_userId;
       const td_firstname = user.firstname;
       const td_lastname = user.lastname;
-    
+
 
       xmlhttp.send("id=" + remote_support_project_userId + "&firstname=" + td_firstname + "&lastname=" + td_lastname);
     }
