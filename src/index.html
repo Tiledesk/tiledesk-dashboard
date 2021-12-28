@@ -46,14 +46,14 @@
 
     // window.tiledesk.angularcomponent.component.g.preChatForm = false
 
-    function tiledesk_widget_autologin() {
-      if (window && window.tiledesk) {
-        window.tiledesk.logout();
-        setTimeout(() => {
-          tiledesk_widget_login();
-        }, 1000);
-      }
-    }
+    // function tiledesk_widget_autologin() {
+    //   if (window && window.tiledesk) {
+    //     window.tiledesk.logout();
+    //     setTimeout(() => {
+    //       tiledesk_widget_login();
+    //     }, 1000);
+    //   }
+    // }
 
     function tiledesk_widget_logout() {
       window.Tiledesk('logout');
@@ -71,7 +71,7 @@
 
     function tiledesk_widget_login() {
       console.log('tiledesk_widget_login')
-      
+
       window.Tiledesk('setParameter', {key: 'autoStart', value: false})
       // if (window && window.tiledesk && window.tiledesk.angularcomponent) {
         // window.tiledesk.angularcomponent.component.g.autoStart = false;
@@ -151,9 +151,10 @@
       const remote_support_project_userId = projectId + "_" + td_userId;
       const td_firstname = user.firstname;
       const td_lastname = user.lastname;
+      const td_email = user.email;
 
-
-      xmlhttp.send("id=" + remote_support_project_userId + "&firstname=" + td_firstname + "&lastname=" + td_lastname);
+      // xmlhttp.send("id=" + remote_support_project_userId + "&firstname=" + td_firstname + "&lastname=" + td_lastname);
+      xmlhttp.send("id=" + remote_support_project_userId + "&firstname=" + td_firstname + "&lastname=" + td_lastname + "&email="+td_email);
     }
   </script>
   <!-- The new one /end ------------ -->
