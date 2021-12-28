@@ -333,10 +333,12 @@ export class AuthGuard implements CanActivate {
     this.logger.log('[AUTH-GUARD] SSO - CAN ACTIVATE next ', next);
     this.logger.log('[AUTH-GUARD] SSO - CAN ACTIVATE state ', state);
     const url = state.url;
-
+    const _url = next['_routerState'].url
     this.logger.log('[AUTH-GUARD] SSO - CAN ACTIVATE state url  ', url);
+    this.logger.log('[AUTH-GUARD] SSO - CAN ACTIVATE next _url  ', _url);
 
     const route = url.substring(0, url.indexOf('?token='));
+
     this.logger.log('[AUTH-GUARD] SSO - CAN ACTIVATE route in url ', route);
 
 
