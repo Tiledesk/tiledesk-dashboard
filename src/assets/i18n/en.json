@@ -1312,8 +1312,8 @@
             "ConditionArray": {
                 "message": {
                     "groupId": {
-                        "MessageInformation": "Message information",
-                        "RequestInformation": "Request information",
+                        "MessageInformation": "Message info",
+                        "RequestInformation": "Conversation info",
                         "VisitorInformation": "Visitor information",
                         "PageInformation": "Page information",
                         "SoftwareOfVisitor": "Software/Computer of visitor",
@@ -1321,7 +1321,7 @@
                     },
                     "label_key": {
                         "VisitorSearchTerm": "Message text",
-                        "VisitorName": "Sender name",
+                        "VisitorName": "Contact name",
                         "VisitorMail": "Visitor mail",
                         "VisitorDepartment": "Visitor department",
                         "VisitorReferrer": "Visitor referrer (Client)",
@@ -1356,12 +1356,12 @@
                         "SoftwareOfVisitor": "Software/Computer of visitor",
                         "ChatInformation": "Chat-related information",
                         "ChannelInformation": "Channel information",
-                        "LocationVisitor": "Visitor's location"
+                        "LocationVisitor": "Visitor's language"
                     },
                     "label_key": {
                         "VisitorSearchTerm": "Message text",
                         "VisitorName": "Visitor name",
-                        "VisitorMail": "Visitor mail",
+                        "VisitorMail": "Visitor email",
                         "VisitorFirstText": "First message text",
                         "VisitorDepartment": "Visitor department",
                         "VisitorReferrer": "Visitor referrer (Client)",
@@ -1415,7 +1415,7 @@
                         "EventSourcePage": "Source page"
                     },
                     "placeholder": {
-                        "SelectDepartment": "Select department",
+                        "SelectDepartment": "Select a department",
                         "SelectStatus": "Select status"
                     }
                 }

@@ -1309,6 +1309,8 @@
             "ConditionArray": {
                 "message": {
                     "groupId": {
+                        "MessageInformation": "Info messaggio",
+                        "RequestInformation": "Info conversazione",
                         "VisitorInformation": "Info visitatore",
                         "PageInformation": "Info pagina",
                         "SoftwareOfVisitor": "Software/Computer del visitatore",
@@ -1316,20 +1318,32 @@
                     },
                     "label_key": {
                         "VisitorSearchTerm": "Messaggio",
-                        "VisitorName": "Nome mittente",
-                        "VisitorMail": "Indirizzo e-mail visitatore",
+                        "VisitorName": "Nome contatto",
+                        "VisitorMail": "Email del visitatore",
                         "VisitorDepartment": "Dipartimento visitatore",
-                        "VisitorReferrer": "Referente visitatore",
+                        "VisitorReferrer": "Referrer del visitatore (Client)",
                         "VisitorURL": "URL pagina visitatore",
                         "VisitorPageTitle": "Titolo pagina visitatore",
                         "VisitorBrowser": "Browser visitatore",
                         "VisitorPlatform": "Piattaforma visitatore",
                         "Department": "Dipartimento",
-                        "VisitorServed": "Visitatore assistito"
+                        "VisitorServed": "Visitatore assistito",
+                        "VisitorFirstText": "Testo del primo messaggio",
+                        "VisitoruserAgent": "User agent del visitatore",
+                        "VisitoruserAgentAvailable": "Numero di agenti disponibili",
+                        "NumberOfParticipatingBot": "Numero di bot partecipanti",
+                        "DepartmentHasBot": "Il dipartimento ha bot",
+                        "OfficesAreOpen": "Gli uffici sono aperti",
+                        "RequestStatus": "Stato della conversazione",
+                        "ChannelName": "Nome del canale",
+                        "VisitorCountryRegion": "Lingua",
+                        "VisitorCountryCode": "Codice Paese del visitatore",
+                        "VisitorCountryName": "Nome Paese del visitatore"
                     },
                     "placeholder": {
                         "SelectDepartment": "Seleziona dipartimento",
-                        "SelectStatus": "Seleziona stato"
+                        "SelectStatus": "Seleziona stato",
+                        "SelectLanguage": "Seleziona lingua"
                     }
                 },
                 "chat": {
@@ -1339,15 +1353,15 @@
                         "SoftwareOfVisitor": "Software/Computer del visitatore",
                         "ChatInformation": "Info correlate alla chat",
                         "ChannelInformation": "Informazioni sul canale",
-                        "LocationVisitor": "Luogo del visitatore"
+                        "LocationVisitor": "Lingua del visitatore"
                     },
                     "label_key": {
                         "VisitorSearchTerm": "Messaggio",
                         "VisitorName": "Nome visitatore",
-                        "VisitorMail": "Indirizzo e-mail visitatore",
+                        "VisitorMail": "Email visitatore",
                         "VisitorFirstText": "Primo messaggio",
                         "VisitorDepartment": "Dipartimento visitatore",
-                        "VisitorReferrer": "Referente visitatore",
+                        "VisitorReferrer": "Referrer del visitatore (Client)",
                         "VisitoruserAgent": "Numero di agenti",
                         "VisitoruserAgentAvailable": "Numero di agenti disponibili",
                         "NumberOfParticipatingBot": "Numero di bot partecipanti",
@@ -1362,8 +1376,8 @@
                         "RequestStatus": "Stato conversazione",
                         "ChannelName": "Nome del canale",
                         "VisitorCountryRegion": "Lingua",
-                        "VisitorCountryCode": "Codice paese visitatore",
-                        "VisitorCountryName": "Nome paese visitatore"
+                        "VisitorCountryCode": "Codice Paese visitatore",
+                        "VisitorCountryName": "Nome Paese visitatore"
                     },
                     "placeholder": {
                         "SelectDepartment": "Seleziona dipartimento",
@@ -1379,9 +1393,9 @@
                         "ChatInformation": "Info correlate alla chat"
                     },
                     "label_key": {
-                        "VisitorName": "Nome visitatore",
-                        "VisitorLastName": "Cognome visitatore",
-                        "VisitorMail": "Indirizzo e-mail visitatore"
+                        "VisitorName": "Nome del visitatore",
+                        "VisitorLastName": "Cognome del visitatore",
+                        "VisitorMail": "Email del visitatore"
                     },
                     "placeholder": {
                         "SelectDepartment": "Seleziona dipartimento",

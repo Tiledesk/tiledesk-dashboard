@@ -1311,6 +1311,8 @@
 			"ConditionArray": {
 				"message": {
 					"groupId": {
+						"MessageInformation": "Nachrichteninformationen",
+                        "RequestInformation": "Gesprächsinformationen",
 						"VisitorInformation": "Besucher Information",
 						"PageInformation": "Seite Information",
 						"SoftwareOfVisitor": "Software/Rechner des Besuchers",
@@ -1318,7 +1320,7 @@
 					},
 					"label_key": {
 						"VisitorSearchTerm": "Nachricht",
-						"VisitorName": "Besucher Name",
+						"VisitorName": "Kontaktname",
 						"VisitorMail": "Besucher Email",
 						"VisitorDepartment": "Besucher Abteilung",
 						"VisitorReferrer": "Besucher Referrer (Client)",
@@ -1327,11 +1329,23 @@
 						"VisitorBrowser": "Besucher Browser",
 						"VisitorPlatform": "Besucher Plattform",
 						"Department": "Abteilung",
-						"VisitorServed": "Anfrage wird bearbeitet"
+						"VisitorServed": "Anfrage wird bearbeitet",
+						"VisitorFirstText": "Erster Nachrichtentext",
+						"VisitoruserAgent": "Besucher-Benutzeragent",
+						"VisitoruserAgentAvailable": "Anzahl verfügbarer Agenten",
+						"NumberOfParticipatingBot": "Anzahl der teilnehmenden Bots",
+						"DepartmentHasBot": "Abteilung hat Bot",
+						"OfficesAreOpen": "Büros sind geöffnet",
+						"RequestStatus": "Konversationsstatus",
+						"ChannelName": "Kanal Name",
+						"VisitorCountryRegion": "Sprache",
+						"VisitorCountryCode": "Ländercode des Besuchers",
+						"VisitorCountryName": "Landname des Besuchers"
 					},
 					"placeholder": {
 						"SelectDepartment": "Abteilung auswählen",
-						"SelectStatus": "Status auswählen"
+						"SelectStatus": "Status auswählen",
+						"SelectLanguage": "Sprache auswählen"
 					}
 				},
 				"chat": {
@@ -1341,13 +1355,13 @@
 						"SoftwareOfVisitor": "Software/Computer des Besuchers",
 						"ChatInformation": "Chatbezogene Informationen",
 						"ChannelInformation": "Kanalinformationen",
-						"LocationVisitor": "Standort des Besuchers"
+						"LocationVisitor": "Besuchersprache"
 					},
 					"label_key": {
-						"VisitorSearchTerm": "Nachricht",
+						"VisitorSearchTerm": "Nachrichtentext",
 						"VisitorName": "Besucher Name",
 						"VisitorMail": "Besucher Email",
-						"VisitorFirstText": "Erste Nachricht",
+						"VisitorFirstText": "Erster Nachrichtentext",
 						"VisitorDepartment": "Besucher Abteilung",
 						"VisitorReferrer": "Besucher Referrer (Client)",
 						"VisitoruserAgent": "Besucher User Agent",
