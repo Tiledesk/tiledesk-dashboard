@@ -237,7 +237,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
         this.unsetNavbarBoxShadow();
-
+        // this.hideWidgetInComponentDisplayedInChat()
         // -----------------------------------------------------------------------------------------------------
         // Websocket connection
         // -----------------------------------------------------------------------------------------------------
@@ -384,6 +384,36 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         })
     }
 
+    hideWidgetInComponentDisplayedInChat() {
+        this.router.events.subscribe((val) => {
+            if (this.location.path() !== '') {
+                this.route = this.location.path();
+                this.logger.log('hideWidgetInComponentDisplayedInChat »> route', this.route)
+                // tslint:disable-next-line:max-line-length
+                if ((this.route.indexOf('/unserved-request-for-panel') !== -1)) {
+                    this.logger.log('hideWidgetInComponentDisplayedInChat HERE 1')
+                    // try {
+                    //     if (window && window['tiledeskSettings'] && window['tiledeskSettings'].angularcomponent && window['tiledeskSettings'].angularcomponent.g) {
+                    //         this.logger.log('hideWidgetInComponentDisplayedInChat HERE 2')
+                    //         window['tiledeskSettings'].angularcomponent.g.setParameter('isShown', false)
+                    //     }
+                    // } catch (e) {
+                    //     this.logger.log('hideWidgetInComponentDisplayedInChat ERROR' ,e)
+                    // }
+
+                    let wContext: any = window;
+                    // console.log('windowContext 0', wContext);
+                    if (window.frameElement && window.frameElement.getAttribute('tiledesk_context') === 'parent') {
+                        wContext = window.parent;
+                        console.log('hideWidgetInComponentDisplayedInChat HERE 1', wContext)
+
+                    }
+                }
+
+            }
+        })
+    }
+
 
     hideElementsInAuthPage() {
         // GET THE HTML ELEMENT NAVBAR AND SIDEBAR THAT WILL BE HIDDEN IF IS DETECTED THE LOGIN PAGE
@@ -501,8 +531,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     ngAfterViewInit() {
         this.runOnRouteChange();
         // this.setPrechatFormInWidgetSettings();
-
-
         const elemFooter = <HTMLElement>document.querySelector('footer');
         // const eleWidget = <HTMLElement>document.querySelector('#tiledesk-container');
         // this.logger.log('APP.COMP - elem FOOTER ', elemFooter);
