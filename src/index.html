@@ -46,22 +46,30 @@
 
     // window.tiledesk.angularcomponent.component.g.preChatForm = false
 
-    // function tiledesk_widget_autologin() {
-    //   if (window && window.tiledesk) {
-    //     window.tiledesk.logout();
-    //     setTimeout(() => {
-    //       tiledesk_widget_login();
-    //     }, 1000);
-    //   }
-    // }
+    function tiledesk_widget_autologin() {
+      console.log('widget tiledesk_widget_autologin window', window)
+      setTimeout(() => {
+        if (window && window.tiledesk) {
+          // window.tiledesk.logout();
+          // window.Tiledesk('logout');
+          console.log('widget tiledesk_widget_autologin logout')
+          setTimeout(() => {
+            tiledesk_widget_login();
+            console.log('widget tiledesk_widget_autologin tiledesk_widget_login')
+          }, 500);
+
+        }
+      }, 1000);
+    }
 
     function tiledesk_widget_logout() {
-       window.tiledesk.logout();
+      window.tiledesk.logout();
+      console.log('widget tiledesk_widget_logout')
       // window.Tiledesk('logout');
       // window.tiledesk.signInAnonymous()
       window.Tiledesk('signInAnonymous');
       // if (window && window.tiledesk) {
-        
+
       //   console.log('tiledeskSettings LOGOUT ')
       // } else {
       //   console.log('tiledeskSettings NO LOGOUT ')
@@ -71,11 +79,11 @@
     }
 
     function tiledesk_widget_login() {
-      console.log('tiledesk_widget_login')
+      console.log('widget tiledesk_widget_login')
 
       // window.Tiledesk('setParameter', {key: 'autoStart', value: false})
       // window.Tiledesk('setParameter', {key: 'preChatForm', value: false})
-    
+
       window.tiledesk.angularcomponent.component.g.autoStart = false;
       // console.log('tiledeskSettings autoStart ', window.tiledesk.angularcomponent.component.g.autoStart)
 
@@ -155,7 +163,7 @@
       const td_email = user.email;
 
       // xmlhttp.send("id=" + remote_support_project_userId + "&firstname=" + td_firstname + "&lastname=" + td_lastname);
-      xmlhttp.send("id=" + remote_support_project_userId + "&firstname=" + td_firstname + "&lastname=" + td_lastname + "&email="+td_email);
+      xmlhttp.send("id=" + remote_support_project_userId + "&firstname=" + td_firstname + "&lastname=" + td_lastname + "&email=" + td_email);
     }
   </script>
   <!-- The new one /end ------------ -->
