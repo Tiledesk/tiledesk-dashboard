@@ -163,16 +163,16 @@ export class AuthService {
       this.user_bs.next(JSON.parse(storedUser));
 
 
-     
-        try {
-          if (window && window['tiledesk_widget_login']) {
-            console.log('window', window)
-            window['tiledesk_widget_login']();
-          }
-        } catch (err) {
-          this.logger.error('[AUTH-SERVICE] tiledesk_widget_login error', err);
+
+      try {
+        if (window && window['tiledesk_widget_login']) {
+          console.log('window', window)
+          window['tiledesk_widget_login']();
         }
-      
+      } catch (err) {
+        this.logger.error('[AUTH-SERVICE] tiledesk_widget_login error', err);
+      }
+
 
 
       // /**
@@ -200,6 +200,17 @@ export class AuthService {
     if (storedUser !== null) {
 
       this.user_bs.next(JSON.parse(storedUser));
+
+      try {
+        this.logger.log('[AUTH-SERV] Calling tiledesk_widget_autologin ')
+        if (window && window['tiledesk_widget_autologin']) {
+          console.log('window', window)
+          window['tiledesk_widget_autologin']();
+        }
+      } catch (err) {
+        this.logger.log('[AUTH-SERV] Calling tiledesk_widget_autologin err', err)
+      }
+
     }
   }
 
@@ -812,13 +823,21 @@ export class AuthService {
   }
 
 
+
   signOut(calledby: string) {
+
+
     this.logger.log('[AUTH-SERV] Signout calledby +++++ ', calledby)
-   
-      if (window && window['tiledesk_widget_logout']) {
-        console.log('window', window)
-        window['tiledesk_widget_logout']();
+    if (calledby !== 'autologin') {
+      try {
+        if (window && window['tiledesk_widget_logout']) {
+          console.log('window', window)
+          window['tiledesk_widget_logout']();
+        }
+      } catch (err) {
+        this.logger.log('[AUTH-SERV] Signout err ', err)
       }
+    }
 
     // setTimeout(() => {
     //   var tiledeskiframe = document.getElementById('tiledeskiframe') as HTMLIFrameElement;
