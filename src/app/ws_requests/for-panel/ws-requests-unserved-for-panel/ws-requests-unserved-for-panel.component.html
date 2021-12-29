@@ -33,18 +33,16 @@
       </div>
 
 
-      <div *ngIf="!showSpinner && wsRequestsUnserved?.length === 0">
+      <div *ngIf="!showSpinner && (wsRequestsUnserved?.length === 0 || !wsRequestsUnserved)">
         <!-- <div *ngIf="!showSpinner"> -->
 
-        <!--
-        // ----------------------------------------------------------------
-        // No request message
-        // ---------------------------------------------------------------- -->
+        
+        <!-- ---------------------------------------------------------------- -->
+        <!-- No request message -->
+        <!-- ---------------------------------------------------------------- -->
         <div class="no-request-msg-wrapper">
-          <!-- <span class="material-icons no-request-icon">
-            sms_failed
-          </span> -->
-          <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+          <img src="assets/img/disconnected from_social_media.svg" class="img-fluid" style="max-width: 250px; height: auto;"/> 
+          <!-- <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
             y="0px" viewBox="0 0 499.5 514.5" style="enable-background:new 0 0 499.5 514.5;" xml:space="preserve">
             <style type="text/css">
               .st0 {
@@ -70,7 +68,7 @@
                 <rect x="80.5" y="223.4" class="st1" width="160.9" height="16.5" />
               </g>
             </g>
-          </svg>
+          </svg> -->
           <span class="no-request-msg">
             {{'NoRequests' | translate}}
           </span>
