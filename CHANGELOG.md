@@ -1,6 +1,10 @@
 
 # tiledesk-dashboard
 
+### 2.2.31-rc2
+- Fixes the bug: the placeholder "No conversation" is not displayed in the iframe of the left side panel of the chat if at least one conversation does not exist (even if assigned)
+- Change the placeholder image "No Conversation" in the iframe of the left side panel of the chat
+
 ### 2.2.31-rc1
 - Fixes the bug: when a language is selected for a trigger that has the key "request.create" the value of the selected language contains the country code
 - Improves the translations of the labels displayed in the combo boxes in the pages of creating and editing a trigger
