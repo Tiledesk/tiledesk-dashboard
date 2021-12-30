@@ -7,7 +7,7 @@
 
 # Tiledesk-dashboard
 
-<img  width="1200"  alt="home_screenshot"  src="https://user-images.githubusercontent.com/new_dashboard_homepage.png"  width="500">
+<img  width="1200"  alt="home_screenshot"  src="new_dashboard_homepage.png"  width="500">
 
 
 Tiledesk.com backoffice application is available on GitHub with the AGPL-3.0 licence.
