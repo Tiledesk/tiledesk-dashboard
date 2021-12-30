@@ -53,7 +53,8 @@ Feel free to ask for support on https://tiledesk.com, using the live chat widget
 - Ticketing System
 - Data export + Analytics
 - Canned responses
-- And more.
+
+And more.
 
 ## Prerequisites
 
