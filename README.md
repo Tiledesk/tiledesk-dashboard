@@ -1,5 +1,5 @@
 [![npm version](https://badge.fury.io/js/%40tiledesk%2Ftiledesk-dashboard.svg)](https://badge.fury.io/js/%40tiledesk%2Ftiledesk-dashboard)
-
+[![Crowdin](https://badges.crowdin.net/e/3854b0895f673c8ea3af7c8fba62f587/localized.svg)](https://tiledesk.crowdin.com/tiledesk-dashboard)
 > ***🚀 Do you want to install Tiledesk on your server with just one click?***
 > 
 > ***Use [Docker Compose Tiledesk installation](https://github.com/Tiledesk/tiledesk-deployment/blob/master/docker-compose/README.md) guide***
