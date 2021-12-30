@@ -37,20 +37,23 @@ Consider that Tiledesk.com cloud service makes every module available with the s
 Feel free to ask for support on https://tiledesk.com, using the live chat widget on the the website.
 
   
-
 ## Features
 
   
 
-- Angular 5.0
-
-- Firebase Auth
-
-- Firebase Database CRUD (Firestore & Realtime DB)
-
-- MongoDB CRUD
-
-  
+- Unlimited chat conversations
+- Widget customization tools
+- Conversation labels and notes 
+- Apps marketplace
+- CRM
+- Operating hours
+- Up to 200,000 messages from bot/month
+- Departments and agents groups
+- Chat history
+- Ticketing System
+- Data export + Analytics
+- Canned responses
+- And more.
 
 ## Prerequisites
 
