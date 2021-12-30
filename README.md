@@ -372,3 +372,8 @@ You can run an embedded version of the dashboard inside an existing app using, f
 
 ```
 
+# Translation process
+The translation process for Tiledesk Dashboard and Chat is managed at [https://tiledesk.crowdin.com/tiledesk-dashboard](https://tiledesk.crowdin.com/tiledesk-dashboard) using Crowdin. Please read the [translation guide](https://support.crowdin.com/enterprise/getting-started-for-volunteers/) for contributing to Tiledesk.
+
+
+
