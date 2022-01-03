@@ -7,6 +7,8 @@
 	"Teammate": "teamkollege",
     "Teammates":"teamkollegen",
 	"TeammateInitial": "T",
+	"ProjectSettings_Initials": "PE",
+	"ProjectSettings": "Projekt Einstellungen",
 	"Groups": "Gruppen",
 	"Name": "Name",
 	"Available": "verfügbar",
@@ -148,19 +150,15 @@
 	"owner": "Eigentümer",
 	"admin": "Administrator",
 	"agent": "Agent",
-	"GreetingsAndCallout": "Begrüßung und Callout",
 	"Greetings": "Begrüßung",
 	"Callout": "Callout",
-	"CustomizeHowYouGreetYourSiteVisitors": "Passen Sie an wie Sie Ihre Kunden begrüßen wenn sie auf das {{company_name}} Widget klicken",
-	"CustomizeHowYouGreetInCallout": "Passen Sie an wie Sie am besten die Aufmerksamkeit Ihrer Kunden durch das Widget erwerben können",
-	"CustomizeHowYouGreetInCalloutShort": "Passen Sie an wie Sie Ihre Kunden ermutigen sich an Sie zu wenden",
 	"openUserProfile": "Profilbild setzen",
 	"openUserProfileDesc": "Ein Profilbild erhöht die Vertrauenswürdigkeit Ihres Profils und ist einer der ersten Eindrücke für Ihre Besucher",
 	"openWidget": "Widget installieren und anpassen",
 	"openWidgetDesc": "Sie können ihr Widget anpassen um Ihre Marke widerzuspiegeln. Sie können Logo, Farben und mehr anpassen",
 	"openChat": "Chat öffnen",
 	"openChatDesc": "Live Chat öffnen um Unterhaltungen zu sehen",
-	"PS": "PS",
+	
 	"ChangeAvailabilitySuccessNoticationMsg": "Status erfolgreich aktualisiert",
 	"ChangeAvailabilityErrorNoticationMsg": "Ein Fehler ist während der Aktualisierung des Status aufgetreteb",
 	"RemoveProjectUserSuccessNoticationMsg": "Mitglied erfolgreich entfernt",
@@ -618,7 +616,6 @@
 	},
 	"NavBar": {
 		"ViewAllProjects": "Alle Projekte anzeigen",
-		"ProjectSettings": "Projekt Einstellungen",
 		"UserProfile": "PROFIL ANZEIGEN",
 		"RunChatInAStandAloneTab": "Chat in eigenem Tab anzeigen",
 		"PendingVerification": "Account noch nicht bestätigt",
@@ -640,7 +637,6 @@
 	},
 	"SideBar": {
 		"ViewAllProjects": "Alle Projekte anzeigen",
-		"ProjectSettings": "Projekteinstellungen",
 		"UserProfile": "PROFIL ANZEIGEN",
 		"UserProfile2": "PROFIL ANZEIGEN"
 	},
@@ -664,7 +660,6 @@
 		"Continue": "Weiter"
 	},
 	"ProjectEditPage": {
-		"ProjectSettings": "Projekteinstellungen",
 		"YourProject": "Ihr Projekt",
 		"ProjectName": "Projektname",
 		"ProjectId": "Projekt Id",

@@ -589,7 +589,8 @@
       <li *ngIf="SHOW_SETTINGS_SUBMENU" routerLinkActive="active" (click)="stopScroll()">
         <a *ngIf="project" class="customAncor" routerLink="project/{{ project._id }}/project-settings/general">
           <p class="onBlackBckgrnd">
-            <span class="sidebar-mini">{{ 'PS' | translate }} </span> {{ 'NavBar.ProjectSettings' | translate }}
+            <span class="sidebar-mini">{{ 'ProjectSettings_Initials' | translate }} </span> 
+            {{ 'ProjectSettings' | translate }}
           </p>
 
           <!-- <i class="material-icons sidebar-icons">settings</i>

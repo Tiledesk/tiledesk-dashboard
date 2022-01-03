@@ -7,6 +7,8 @@
     "Teammate": "teammate",
     "Teammates": "teammates",
     "TeammateInitial": "T",
+    "ProjectSettings_Initials": "PS",
+    "ProjectSettings": "Project Settings",
     "Groups": "Groups",
     "Name": "Name",
     "Available": "available",
@@ -148,19 +150,15 @@
     "owner": "Owner",
     "admin": "Administrator",
     "agent": "Agent",
-    "GreetingsAndCallout": "Greetings and Callout",
     "Greetings": "Greetings",
     "Callout": "Callout",
-    "CustomizeHowYouGreetYourSiteVisitors": "Customize how you greet your site visitors when they click on your {{company_name}} Widget",
-    "CustomizeHowYouGreetInCallout": "Customize the messages to engage with your website visitors encouraging them to start a chat with you",
-    "CustomizeHowYouGreetInCalloutShort": "Customize the messages to encourage  your website visitors to start a chat with you",
     "openUserProfile": "Set your profile image",
     "openUserProfileDesc": "Including a profile photo increases the credibility of your profile and is one of the first impressions you make on visitors",
     "openWidget": "Install and style the widget",
     "openWidgetDesc": "You can easily customize the widget's style to suit your brand. You can add your own logo, choose the colors and more",
     "openChat": "Open the Chat",
     "openChatDesc": "Open the live chat from which you can manage and reply to conversations",
-    "PS": "PS",
+   
     "ChangeAvailabilitySuccessNoticationMsg": "Status successfully updated",
     "ChangeAvailabilityErrorNoticationMsg": "An error occurred while updating status",
     "RemoveProjectUserSuccessNoticationMsg": "Teammate successfully removed",
@@ -618,7 +616,6 @@
     },
     "NavBar": {
         "ViewAllProjects": "View all projects",
-        "ProjectSettings": "Project settings",
         "UserProfile": "VIEW PROFILE",
         "RunChatInAStandAloneTab": "Run chat in a stand-alone tab",
         "PendingVerification": "Pending email verification",
@@ -640,7 +637,6 @@
     },
     "SideBar": {
         "ViewAllProjects": "View all projects",
-        "ProjectSettings": "Project settings",
         "UserProfile": "VIEW PROFILE",
         "UserProfile2": "VIEW YOUR PROFILE"
     },
@@ -664,7 +660,6 @@
         "Continue": "Continue"
     },
     "ProjectEditPage": {
-        "ProjectSettings": "Project Settings",
         "YourProject": "Your project",
         "ProjectName": "Project Name",
         "ProjectId": "Project Id",

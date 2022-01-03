@@ -7,6 +7,8 @@
     "Teammate": "collaboratore",
     "Teammates":"collaboratori",
     "TeammateInitial": "C",
+    "ProjectSettings_Initials": "IP",
+    "ProjectSettings": "Impostazioni progetto",
     "Groups": "Gruppi",
     "Name": "Nome",
     "Available": "disponibile",
@@ -148,19 +150,14 @@
     "owner": "Proprietario",
     "admin": "Amministratore",
     "agent": "Agente",
-    "GreetingsAndCallout": "Greetings e Callout",
     "Greetings": "Greetings",
     "Callout": "Callout",
-    "CustomizeHowYouGreetYourSiteVisitors": "Personalizza il modo in cui saluti i visitatori del tuo sito quando fanno clic sul widget {{company_name}}",
-    "CustomizeHowYouGreetInCallout": "Personalizza i messaggi per interagire con i visitatori del tuo sito web incoraggiandoli a iniziare una chat con te",
-    "CustomizeHowYouGreetInCalloutShort": "Personalizza i messaggi per incoraggiare i visitatori del tuo sito Web a iniziare una chat con te",
     "openUserProfile": "Imposta l'immagine del tuo profilo",
     "openUserProfileDesc": "Includere una foto del profilo aumenta la credibilità del tuo profilo ed è una delle prime impressioni che fai sui visitatori",
     "openWidget": "Installa e modella il widget",
     "openWidgetDesc": "Puoi personalizzare facilmente lo stile del widget per adattarlo al tuo marchio. Puoi aggiungere il tuo logo, scegliere i colori e altro",
     "openChat": "Apri la Chat",
     "openChatDesc": "Apri la live chat da cui puoi gestire e rispondere alle conversazioni",
-    "PS": "IP",
     "ChangeAvailabilitySuccessNoticationMsg": "Stato aggiornato con successo",
     "ChangeAvailabilityErrorNoticationMsg": "Si è verificato un errore durante l'aggiornamento dello stato",
     "RemoveProjectUserSuccessNoticationMsg": "Membro rimosso con successo",
@@ -614,7 +611,6 @@
     },
     "NavBar": {
         "ViewAllProjects": "Visualizza tutti i progetti",
-        "ProjectSettings": "Impostazioni progetto",
         "UserProfile": "VEDI PROFILO",
         "RunChatInAStandAloneTab": "Esegui la chat in una scheda autonoma",
         "PendingVerification": "Indirizzo email non verificato",
@@ -636,7 +632,6 @@
     },
     "SideBar": {
         "ViewAllProjects": "Visualizza tutti i progetti",
-        "ProjectSettings": "Impostazioni progetto",
         "UserProfile": "VEDI PROFILO",
         "UserProfile2": "VEDI IL TUO PROFILO"
     },
@@ -660,7 +655,6 @@
         "Continue": "Continua"
     },
     "ProjectEditPage": {
-        "ProjectSettings": "Impostazioni Progetto",
         "YourProject": "Il tuo progetto",
         "ProjectName": "Nome Progetto",
         "ProjectId": "Id Progetto",
