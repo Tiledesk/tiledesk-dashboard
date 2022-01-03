@@ -602,9 +602,9 @@ export class UsersComponent implements OnInit, OnDestroy {
     // this.logger.log('Confirm Delete Project-User');
     this.usersService.deleteProjectUser(this.id_projectUser).subscribe((projectUsers: any) => {
       this.logger.log('[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USERS - RES ', projectUsers);
-
-      this.ngOnInit();
-
+      this.logger.log('[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USER ID  ', this.id_projectUser);
+      // this.ngOnInit();
+      
     }, error => {
       this.showSpinner = false;
       this.logger.error('[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USERS - ERROR ', error);
@@ -615,6 +615,14 @@ export class UsersComponent implements OnInit, OnDestroy {
         this.logger.log('[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USERS * COMPLETE *');
         // NOTIFY SUCCESS 
         this.notify.showNotification(this.deleteProjectUserSuccessNoticationMsg, 2, 'done');
+        
+        for (let i = 0; i < this.projectUsersList.length; i++) {
+          if (this.id_projectUser === this.projectUsersList[i]._id) { 
+            this.projectUsersList.splice(i, 1);
+            localStorage.removeItem('dshbrd----' + this.id_projectUser)
+          }
+         }
+
       });
   }
 
