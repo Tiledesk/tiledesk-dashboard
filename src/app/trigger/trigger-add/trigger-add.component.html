@@ -573,9 +573,6 @@
 
           <!--             SERVER ERROR             -->
           <span *ngIf="!SHOW_CIRCULAR_SPINNER && SHOW_ERROR_CROSS && errorMESSAGE_server">
-            <!-- <i class="material-icons" style="color:#ff5252">error</i>
-              <p style="color:#ff5252; font-weight: 500"> {{ "Trigger.Error" | translate }} </p> -->
-
             <div class="error-banmark">
               <div class="ban-icon">
                 <span class="icon-line line-long-invert"></span>
@@ -586,15 +583,13 @@
             </div>
             <h3
               style="text-align: center;  color: #8894ab; font-size: 22px; margin-bottom: 10px;margin-top: 10px;min-height: 33px;">
-              {{ "Trigger.Error" | translate }}
+              <!-- {{ "Trigger.Error" | translate }} -->
+              {{ "Error" | translate }}
             </h3>
           </span>
 
           <!--             FORM ERROR             -->
           <span *ngIf="!SHOW_CIRCULAR_SPINNER && SHOW_ERROR_CROSS && errorMESSAGE">
-            <!-- <i class="material-icons" style="color:#f5750c">warning</i>
-              <p style="color:#f5750c; font-weight: 500"> {{ "Trigger.Error" | translate }} </p> -->
-
             <div class="error-banmark">
               <div class="ban-icon">
                 <span class="icon-line line-long-invert"></span>
@@ -606,7 +601,8 @@
 
             <h3
               style="text-align: center;  color: #8894ab; font-size: 22px; margin-bottom: 10px;margin-top: 10px;min-height: 33px;">
-              {{ "Trigger.Error" | translate }}
+              <!-- {{ "Trigger.Error" | translate }} -->
+              {{ "Error" | translate }}
             </h3>
           </span>
         </div>
