@@ -1,6 +1,5 @@
 {
 	"Change dashboard Language": "Dashboard Sprache ändern",
-	
 	"UsersAndGroups": "Teamkollegen und Gruppen",
 	"UsersAndGroupsInitials": "T&G",
 	"RoutingAndDeptsInitials": "R&A",
@@ -14,7 +13,6 @@
 	"Unavailable": "nicht verfügbar",
 	"Visitors": "Besucher",
 	"Requests": "Gespräche",
-	"SupportRequests": "Support Anfragen",
 	"History": "Verlauf",
 	"Settings": "Einstellungen",
 	"Notification": "Benachrichtigungen",
@@ -756,7 +754,7 @@
 		"Trashed": "entfernt",
 		"AllUsers": "Alle Teamkollegen",
 		"UpdateRoutingRules": "Routing-Regeln aktualisieren",
-		"QuickTips": "Quick Tips",
+	
 		"Processing": "Verarbeiten...",
 		"Completed": "Abgeschlossen",
 		"RoutingRulesSuccessfullyUpdated": "Routing-Regeln erfolgreich aktualisiert",
@@ -840,7 +838,7 @@
 		"NoGroups": "Keine Gruppen",
 		"GroupId": "Gruppen Id",
 		"PendingAddMembers": "offene Einladungen",
-		"QuickTips": "Quick Tips",
+		
 		"tooltipEditGroup": "Gruppe bearbeiten",
 		"tooltipDeleteGroup": "Gruppe löschen",
 		"DeleteGroup": "Gruppe löschen",
@@ -865,7 +863,6 @@
 		"MemberAddedtoGroup": "Mitglied wurde zur Gruppe hinzugefügt",
 		"MembersAddedtoGroup": "Mitglieder wurden zur Gruppe hinzugefügt",
 		"CreateGroup": "Gruppe erstellen",
-		"QuickTips": "Quick Tips",
 		"UpdateGroupName": "Gruppenname aktualisieren",
 		"GroupAttributes": "Attribute",
 		"GroupID": "Groppen Id",
@@ -1067,7 +1064,6 @@
 		"SelectAnExistingOne": "wählen Sie eine vorhandene oder",
 		"CreateDept": "Abteilung erstellen",
 		"UpdateDept": "Abteilung aktualisieren",
-		"QuickTips": "Quick Tips",
 		"Description": "Beschreibung",
 		"DeptId": "Abt. ID",
 		"DeptBot": "Abt. Bot",

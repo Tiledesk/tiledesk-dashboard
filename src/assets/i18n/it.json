@@ -1,6 +1,5 @@
 {
     "Change dashboard Language": "Cambia lingua dashboard",
-
     "UsersAndGroups": "Collaboratori e Gruppi",
     "UsersAndGroupsInitials": "C&G",
     "RoutingAndDeptsInitials":"R&D",
@@ -14,7 +13,6 @@
     "Unavailable": "non disponibile",
     "Visitors": "Visitatori",
     "Requests": "Conversazioni",
-    "SupportRequests": "Conversazioni supporto",
     "History": "Cronologia",
     "Settings": "Impostazioni",
     "Notification": "Notifiche",
@@ -753,7 +751,7 @@
         "Trashed": "eliminato",
         "AllUsers": "Tutti gli utenti",
         "UpdateRoutingRules": "Aggiorna le regole di routing",
-        "QuickTips": "Consigli veloci",
+      
         "Processing": "Elaborazione...",
         "Completed": "Completato",
         "RoutingRulesSuccessfullyUpdated": "Regole di routing aggiornate con successo",
@@ -837,7 +835,7 @@
         "NoGroups": "Nessun Gruppo",
         "GroupId": "Id gruppo",
         "PendingAddMembers": "in sospeso aggiungi membri",
-        "QuickTips": "Consigli veloci",
+      
         "tooltipEditGroup": "Modifica gruppo",
         "tooltipDeleteGroup": "Elimina gruppo",
         "DeleteGroup": "Elimina gruppo",
@@ -862,7 +860,6 @@
         "MemberAddedtoGroup": "Membro aggiunto al gruppo",
         "MembersAddedtoGroup": "Membri aggiunti al gruppo",
         "CreateGroup": "Crea Gruppo",
-        "QuickTips": "Consigli veloci",
         "UpdateGroupName": "Aggiorna nome Gruppo",
         "GroupAttributes": "Attributi gruppo",
         "GroupID": "Id gruppo",
@@ -1064,7 +1061,6 @@
         "SelectAnExistingOne": "seleziona uno esistente o",
         "CreateDept": "Crea Dipartimento",
         "UpdateDept": "Aggiorna Dipartimento",
-        "QuickTips": "Consigli veloci",
         "Description": "Descrizione",
         "DeptId": "ID dipart.",
         "DeptBot": "Bot dipart.",
