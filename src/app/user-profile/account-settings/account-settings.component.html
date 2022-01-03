@@ -210,7 +210,8 @@
       <div class="modal-footer" style="margin-top: 0px; text-align: center;height: 60px;">
         <button *ngIf="hasClickedDeleteAccount === false" class="btn btn-white" (click)="closeDeleteAccountModal()"
           style="padding:12px 16px;">
-          {{ "VisitorsPage.Cancel" | translate }}
+          <!-- {{ "VisitorsPage.Cancel" | translate }} -->
+          {{ "Cancel" | translate }}
         </button>
 
         <button *ngIf="hasClickedDeleteAccount === false" style="margin-top:0px" class="btn btn-danger"
