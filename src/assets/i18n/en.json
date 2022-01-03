@@ -89,11 +89,9 @@
     "Department": "Department",
     "SelectADepartment": "Select a department",
     "DepartmentId": "Department id",
-    "ProjectName": "Project name",
     "ProjectId": "Project id",
     "Message": "Message",
     "ServedBy": "Assigned To",
-    "Rating": "Rating",
     "SentThe": "sent the",
     "ToTheDepartment": "to the department",
     "Cancel": "Cancel",
@@ -158,7 +156,6 @@
     "openWidgetDesc": "You can easily customize the widget's style to suit your brand. You can add your own logo, choose the colors and more",
     "openChat": "Open the Chat",
     "openChatDesc": "Open the live chat from which you can manage and reply to conversations",
-   
     "ChangeAvailabilitySuccessNoticationMsg": "Status successfully updated",
     "ChangeAvailabilityErrorNoticationMsg": "An error occurred while updating status",
     "RemoveProjectUserSuccessNoticationMsg": "Teammate successfully removed",
@@ -1071,9 +1068,7 @@
         "Default": "Default",
         "Requester": "Requester",
         "Message": "Message",
-        "ServedBy": "Assigned to",
         "AssignedTo": "Assigned to",
-        "Published": "Created",
         "Archive": "Archive",
         "tootipArchiveRequest": "Close conversation",
         "NoVisitor": "No active visitors",
@@ -1137,8 +1132,6 @@
         "RequestServedBy": "Conversation assigned",
         "InternalRequestServedBy": "Ticket assigned",
         "RequestId": "Conversation Id",
-        "Published": "Published",
-        "Created": "Created",
         "Date": "Date",
         "Requester": "Requester",
         "RequesterName": "Requester name",
@@ -1199,9 +1192,6 @@
     "HistoryPage": {
         "Requester": "Requester",
         "Message": "Message",
-        "ServedBy": "Assigned To",
-        "Rating": "Rating",
-        "Published": "Created",
         "NoRequests": "No Conversation",
         "RequestId": "Conversation Id:",
         "RequesterId": "Requester Id:",
@@ -1415,7 +1405,7 @@
                     "RequestReopen": "Reopen the conversation",
                     "RequestParticipantsJoin": "Adds an agent or a bot to the conversation",
                     "RequestParticipantsLeave": "Remove an agent or bot from the conversation",
-                    "LaunchBot":"Launch bot",
+                    "LaunchBot": "Launch bot",
                     "RequestCreate": "Create a conversation",
                     "AssignLabel": "Assign a tag",
                     "LaunchDeptBot": "Launch the department bot"
@@ -1940,5 +1930,5 @@
     "AutoRating": "Auto rating",
     "AtTheEndOfThConversationAFormIsProposedToEvaluateTheConversation": "At the end of the conversation, a form is automatically proposed with the request to evaluate the quality of the conversation",
     "ActionNotAllowed": "Action not allowed",
-    "MoreInfo":"More info"
+    "MoreInfo": "More info"
 }
