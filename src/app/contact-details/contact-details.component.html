@@ -29,16 +29,8 @@
             </div>
 
             <table class="table table-hover">
-              <!-- <thead class="text">
-                <tr>
-                  <th colspan="2" style="line-height: 26px;">
-                    {{ 'Requests' | translate }}
-                  </th>
-                </tr>
-              </thead> -->
-
+          
               <tbody>
-
                 <!-- ===== IF THERE ISN'T CONTACT REQUEST ===== -->
                 <tr *ngIf="requests_list && requests_list.length === 0">
                   <td colspan="2" style="text-align: center; padding-top: 16px; cursor: pointer">
