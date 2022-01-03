@@ -27,7 +27,7 @@
 
           <loading-spinner *ngIf="showSpinner"></loading-spinner>
           <!-- style="overflow:visible;" -->
-          <div *ngIf="!showSpinner" class="card-content table-responsive" >
+          <div *ngIf="!showSpinner" class="card-content table-responsive">
             <table class="table table-hover">
               <thead>
                 <tr>
@@ -45,7 +45,7 @@
                       <!-- {{ "BotsPage.ExternalBot" | translate }} -->
                       {{ "BotsAddEditPage.Type" | translate }}
                     </span>
-                  </th> 
+                  </th>
 
                   <th *ngIf="isVisibleAnalytics" class="column-th-span">
                     {{ "BotsAddEditPage.Messages" | translate }}
@@ -113,14 +113,14 @@
                 <tr *ngFor="let faqkb of faqkbList; let i = index">
                   <!--  style="width: 1%; white-space: nowrap;" -->
                   <td style="white-space: nowrap; width: 1%; cursor: pointer;">
-                    <span class="tool_tip"  (click)='goToFaqPage(faqkb?._id, faqkb?.type)'>
+                    <span class="tool_tip" (click)='goToFaqPage(faqkb?._id, faqkb?.type)'>
                       <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
                         style="vertical-align: middle; width: 52px; height: 52px; border-radius: 50%; border: 1px solid #eee; margin-right: 6px;"
                         class="user-img"
                         src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{faqkb?._id}}%2Fphoto.jpg?alt=media"
                         onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
 
-                        <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
+                      <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
                         style="vertical-align: middle; width: 52px; height: 52px; border-radius: 50%; border: 1px solid #eee; margin-right: 6px;"
                         class="user-img"
                         src="{{baseUrl}}images?path=uploads%2Fusers%2F{{faqkb?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
@@ -145,7 +145,7 @@
                       <div class="right" style="padding: 2px 9px;min-width: fit-content;">
                         <h4>{{ 'BotsPage.BotId' | translate }}</h4>
 
-                        {{ faqkb?._id  }}
+                        {{ faqkb?._id }}
                         <i></i>
                       </div>
 
@@ -224,17 +224,16 @@
                       {{ faqkb?.name }}
                     </span>
 
-                    <div *ngIf="faqkb?.description" class="tool_tip"
-                      style="color: #7695a5; font-weight: 400; line-height:18px; font-size:12px; 
+                    <div *ngIf="faqkb?.description" class="tool_tip" style="color: #7695a5; font-weight: 400; line-height:18px; font-size:12px; 
                       display: block; display: -webkit-box;
                       -webkit-line-clamp: 2;
                       -webkit-box-orient: vertical;
                       overflow: hidden;
                       text-overflow: ellipsis;">
-                      
-                      <div class="bot--truncated--desc"> {{ faqkb?.truncated_desc}} </div> 
-                      <div class="bot--full--desc"> {{ faqkb?.description}} </div> 
-                      
+
+                      <div class="bot--truncated--desc"> {{ faqkb?.truncated_desc}} </div>
+                      <div class="bot--full--desc"> {{ faqkb?.description}} </div>
+
 
                       <!-- <div class="top">
                         <h4>{{ 'Description' | translate }}</h4>
@@ -250,9 +249,11 @@
                   </td>
 
                   <td>
-                  
-                    <span *ngIf="faqkb?.type !== 'internal'" style="text-transform: capitalize;font-weight:400;"> {{ faqkb?.type}} </span>
-                    <span *ngIf="faqkb?.type === 'internal'" style="text-transform: capitalize;font-weight:400;"> resolution </span>
+
+                    <span *ngIf="faqkb?.type !== 'internal'" style="text-transform: capitalize;font-weight:400;"> {{
+                      faqkb?.type}} </span>
+                    <span *ngIf="faqkb?.type === 'internal'" style="text-transform: capitalize;font-weight:400;">
+                      resolution </span>
                     <!-- <div class="checkbox">
                       <label>
                         <input style="opacity: 0.5!important;" type="checkbox" name="optionsCheckboxes"
@@ -272,8 +273,8 @@
                       <i class="material-icons">edit</i>
                     </button>
 
-                    <button *ngIf="!faqkb?.is_system_identity_bot" type="button" rel="tooltip" title="{{ 'BotsPage.tooltipDeleteBot' | translate }}"
-                      class="btn btn-danger btn-simple btn-xs"
+                    <button *ngIf="!faqkb?.is_system_identity_bot" type="button" rel="tooltip"
+                      title="{{ 'BotsPage.tooltipDeleteBot' | translate }}" class="btn btn-danger btn-simple btn-xs"
                       (click)='openDeleteModal(faqkb?._id, faqkb?.name, faqkb?.has_faq, faqkb?.type)'>
                       <i class="material-icons">close</i>
                     </button>
@@ -322,120 +323,13 @@
   </div>
 </div>
 
-<!-- ============ MODAL WINDOW ============ -->
+<!-- --------------------------------------------- -->
+<!-- MODAL WINDOW  -->
+<!-- --------------------------------------------- -->
 
-<!-- !!! no more used MODAL DELETE BOT -->
-<!-- <div class="backdrop" [ngStyle]="{'display':display}"></div> -->
-<!-- <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}" style="background-color: rgba(90,90,90,0.5);">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
-              <span aria-hidden="true">&times;</span>
-            </button>         
-            <h4 class="modal-title">
-              {{ 'BotsPage.DeleteBotWithId' | translate }}
-              <code>{{id_toDelete}}</code>
-            </h4>    
-          </div>
-          <span *ngIf="!HAS_FAQ_RELATED">
-            <div class="modal-body">    
-              <p> {{ 'BotsPage.AreYouSureDeleteBot' | translate }}</p>
-              </div>
-          </span>
-          <span *ngIf="HAS_FAQ_RELATED ">
-            <div class="modal-body">
-              <p> {{ 'BotsPage.AreYouSureDeleteBotAndRElatedFAq' | translate }} </p>
-            </div>
-          </span>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-danger" (click)="onCloseDeleteModalHandled()">
-              {{ 'BotsPage.Confirm' | translate }} 
-            </button>
-          </div>
-        </div>
-      </div>
-    </div> -->
-
-<!-- !!! no more used MODAL - INFO WINDOWS  - 'DELETE ACTION' COMPLETED -->
-<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayDeleteInfoModal}"
-  style="background-color: rgba(90,90,90,0.5);">
-  <div class="modal-dialog modal-sm" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
-          <span aria-hidden="true">&times;</span>
-        </button>
-
-        <h4 class="modal-title">
-          {{ "BotsPage.DeleteBot" | translate }}
-          <!-- <code>{{id_toDelete}}</code> -->
-        </h4>
-      </div>
-
-      <div class="modal-body" style="padding-right: 15px; padding-top:15px; padding-bottom:15px">
-
-        <span *ngIf="SHOW_CIRCULAR_SPINNER">
-          <div class="loader" style="top:25%;">
-            <svg class="circular" viewBox="25 25 50 50">
-              <circle class="path" cx="50" cy="50" r="15" fill="none" stroke-width="2" stroke-miterlimit="10" />
-            </svg>
-
-          </div>
-          <p style="margin-top: 60px; text-align: center; color: #566787; font-weight: 500">
-            {{ "BotsPage.Processing" | translate }}
-          </p>
-        </span>
-
-        <span *ngIf="!SHOW_CIRCULAR_SPINNER && !DELETE_BOT_ERROR ">
-
-          <div style="text-align: center">
-            <i class="material-icons" style="color:#70b665">done</i>
-            <p style="color:#70b665; font-weight: 500">
-              {{ "BotsPage.Completed" | translate }}
-            </p>
-
-          </div>
-          <p style="margin-top:10px; text-align: center; color: #566787; font-weight: 500">
-            {{ "BotsPage.BotDeleted" | translate }}
-          </p>
-        </span>
-
-        <!-- IF THERE IS AN ERROR -->
-        <span *ngIf="!SHOW_CIRCULAR_SPINNER && DELETE_BOT_ERROR ">
-
-          <div style="text-align: center ">
-            <i class="material-icons" style="color:#ff5252">report_problem</i>
-            <p style="color:#ff5252; font-weight: 500">
-              <!-- {{ "BotsPage.Error" | translate }} -->
-              {{ "Error" | translate }}
-            </p>
-
-          </div>
-          <p style="margin-top:10px; text-align: center; color: #566787; font-weight: 500">
-            {{ "BotsPage.AnErrorHasOccurred" | translate }}
-          </p>
-        </span>
-      </div>
-
-      <div class="modal-footer" style="text-align: center;">
-        <button class="btn btn-primary" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="onCloseInfoModalHandled()">
-          {{ "BotsPage.Continue" | translate }}
-        </button>
-      </div>
-
-    </div>
-    <!-- /.modal-content -->
-  </div>
-  <!-- /.modal-dialog -->
-</div>
-<!-- // END MODAL - INFO WINDOWS  - 'DELETE ACTION' COMPLETED -->
-
-
-<!-- 
-    ***********************************  
-    *** NEW DELETE BOT MODAL WINDOW ***
-    *********************************** -->
+<!-- --------------------------------- -->
+<!-- NEW DELETE BOT MODAL WINDOW  -->
+<!-- --------------------------------- -->
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayDeleteBotModal}"
   style="background-color: rgba(90,90,90,0.5);">
   <div class="modal-dialog" role="document">

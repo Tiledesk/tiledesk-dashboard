@@ -90,7 +90,6 @@
     "SelectADepartment": "Seleziona un departimento",
     "DepartmentId": "Id dipartimento",
     "ProjectId": "Id progetto",
-    "Message": "Messaggio",
     "ServedBy": "Assegnata a",
     "SentThe": "inviato il",
     "ToTheDepartment": "al dipartimento",
@@ -118,9 +117,6 @@
     "Customize": "Personalizza",
     "View": "Vedi",
     "AdvancedWidgetConfigurations": "Configurazioni widget avanzate",
-    "HiWelcomeToTiledesk": "Ciao, benvenuto su {{company_name}}",
-    "HowCanWeHelp": "Come possiamo aiutare?",
-    "PreviousConversations": "Conversazioni precedenti",
     "YourConversations": "Le tue conversazioni",
     "NewConversation": "Nuova conversazione",
     "WidgetAppearance": "Aspetto del widget",
@@ -584,7 +580,7 @@
         "YourDetails": "I tuoi dettagli",
         "AddYourOwnPicture": "⚡️ Aggiungi la tua foto per dare alle tue conversazioni un'atmosfera più intima!",
         "AddYourOwnPicture_": "⚡️ Aggiungi la tua foto per dare alle tue conversazioni un'atmosfera più intima, poiché il tuo visitatore può vedere con chi sta parlando!",
-        "PreferredSize": "Dimensione preferita immagine 128 x 128 px"
+        "PreferredSize": "Dimensione preferita immagine 128x128 px - Formato immagine: .jpeg o .png"
     },
     "ChangePsw": {
         "ChangePsw": "Cambia password",
@@ -881,7 +877,6 @@
         "DeleteBotWithId": "Elimina Bot con id:",
         "AreYouSureDeleteBot": "Sei sicuro di voler eliminare questo Bot?",
         "AreYouSureDeleteBotAndRElatedFAq": "Sei sicuro di voler eliminare questo Bot e le FAQ a questo correlate?",
-        "Confirm": "Conferma",
         "DeleteBot": "Elimina Bot",
         "TheBot": "Il bot",
         "TheBotWithID": "Il bot con Id",

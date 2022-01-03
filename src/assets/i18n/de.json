@@ -90,7 +90,6 @@
 	"SelectADepartment": "Abteilung auswählen",
 	"DepartmentId": "Abteilung Id",
 	"ProjectId": "Projekt id",
-	"Message": "Nachricht",
 	"ServedBy": "Zugewiesen an",
 	"SentThe": "wurde gesendet",
 	"ToTheDepartment": "an die Abteilung",
@@ -118,9 +117,6 @@
 	"Customize": "Anpassen",
 	"View": "Anzeigen",
 	"AdvancedWidgetConfigurations": "Erweiterte Anpassung des Widgets",
-	"HiWelcomeToTiledesk": "Hallo, willkommen zu {{company_name}}",
-	"HowCanWeHelp": "Wie können wir behilflich sein?",
-	"PreviousConversations": "Vorherige Unterhaltungen",
 	"YourConversations": "Ihre Gespräche",
 	"NewConversation": "Unterhaltung",
 	"WidgetAppearance": "Widget Aussehen",
@@ -588,7 +584,7 @@
 		"YourDetails": "Deine Details",
 		"AddYourOwnPicture": "Fügen Sie Ihr eigenes Bild hinzu, um Ihren Gesprächen ein intimeres Gefühl zu verleihen!",
 		"AddYourOwnPicture_": "Fügen Sie Ihr eigenes Bild hinzu, um Ihren Gesprächen ein intimeres Gefühl zu verleihen, da Ihr Besucher sehen kann, mit wem er spricht!",
-		"PreferredSize": "Bevorzugte Bildgröße"
+		"PreferredSize": "Bevorzugte Bildgröße 128x128 px - Bildformat: .jpeg oder .png"
 	},
 	"ChangePsw": {
 		"ChangePsw": "Passwort ändern",
@@ -884,7 +880,6 @@
 		"DeleteBotWithId": "Lösche Bot mit Id:",
 		"AreYouSureDeleteBot": "Wollen Sie diesen Bot wirklich löschen?",
 		"AreYouSureDeleteBotAndRElatedFAq": "Wollen Sie diesen Bot mit den zugewiesenen FAQs wirklich löschen?",
-		"Confirm": "Bestätigen",
 		"DeleteBot": "Bot löschen",
 		"TheBot": "Der Bot",
 		"TheBotWithID": "Der Bot mit der Id",

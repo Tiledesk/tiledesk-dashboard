@@ -162,8 +162,8 @@ export class WsRequestsService implements OnDestroy {
         // per risolvere: se il cambio progetto vien effettuato quando si è nella pagina del dettaglio conversazioni unsuscibe da request by id viene fatto con un path sbagliato
         // id-nuovo-progetto/requests/id-richiesta invece che con - id-vecchio-progetto/requests/id-richiesta (vedi in ws-msgs.service unsubsToWS_MsgsByRequestId e unsubscribeTo_wsRequestById in questo componente)
         if (this.subscribed_request_id) {
-          this.webSocketJs.unsubscribe('/' + this.project_id + '/requests/' + this.subscribed_request_id); // AL CAMBIO PROGETTO ESEGUO UNSUSCIBE DALLA RICHIESTA BY ID A CUI EVENTUALMENTE è SOTTOSCRITTO
-          this.webSocketJs.unsubscribe('/' + this.project_id + '/requests/' + this.subscribed_request_id + '/messages'); // COME SOPRA MA PER I MESSAGGI
+          this.webSocketJs.unsubscribe('/' + this.project_id + '/requests/' + this.subscribed_request_id); // WHEN CHANGING THE PROJECT I UNSUBSCRIBE FROM THE "REQUEST BY ID" TO WHICH IT IS POSSIBLY SUBSCRIBED
+          this.webSocketJs.unsubscribe('/' + this.project_id + '/requests/' + this.subscribed_request_id + '/messages'); // AS ABOVE BUT FOR MESSAGES
         }
         //  unsuscribe requester presence al cambio progetto
         if (this.subscribed_requester_id) {

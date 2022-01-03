@@ -67,7 +67,7 @@
                                 Avatar
                             </label>
                             <div class="col-sm-10">
-                                <div class="card-avatar" style="padding-bottom:15px; min-height: 95px;">
+                                <div class="card-avatar" style="padding-bottom:15px; min-height: 85px;">
                                     <img *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true"
                                         class="user-img user-profile-image" [src]="getUserProfileImage()"
                                         onerror="this.src='assets/img/no_image_user.png'" />
@@ -128,10 +128,11 @@
 
                             </label>
                             <div class="col-sm-10" style="margin-bottom: 12px;">
-
-                                <span style="color: #7695a5; font-size: 12px; display: block;"> {{
-                                    "UserProfile.PreferredSize" | translate }}</span>
-                                <!-- <span style="display: block;color: #7695a5; font-size: 12px; display: block;"> {{ "UserProfile.AddYourOwnPicture" | translate }}</span> -->
+                                <span style="display: block;color: #7695a5; font-size: 12px; display: block;"> {{ "UserProfile.AddYourOwnPicture" | translate }}</span>
+                                <span style="color: #7695a5; font-size: 12px; display: block;"> 
+                                    {{ "UserProfile.PreferredSize" | translate }}
+                                </span>
+                               
                             </div>
                         </div>
 

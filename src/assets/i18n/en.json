@@ -90,7 +90,6 @@
     "SelectADepartment": "Select a department",
     "DepartmentId": "Department id",
     "ProjectId": "Project id",
-    "Message": "Message",
     "ServedBy": "Assigned To",
     "SentThe": "sent the",
     "ToTheDepartment": "to the department",
@@ -118,9 +117,6 @@
     "Customize": "Customize",
     "View": "View",
     "AdvancedWidgetConfigurations": "Advanced widget configurations",
-    "HiWelcomeToTiledesk": "Hi, welcome to {{company_name}}",
-    "HowCanWeHelp": "How can we help?",
-    "PreviousConversations": "Previous conversations",
     "YourConversations": "Your conversations",
     "NewConversation": "New conversation",
     "WidgetAppearance": "Widget Appearance",
@@ -588,7 +584,7 @@
         "YourDetails": "Your Details",
         "AddYourOwnPicture": "⚡️ Add your own picture to gives your conversations a more intimate feel!",
         "AddYourOwnPicture_": "⚡️ Add your own picture to gives your conversations a more intimate feel, as your visitor can see who they are talking to!",
-        "PreferredSize": "Preferred image size 128 x 128 px"
+        "PreferredSize": "Preferred image size 128x128 px - Image format: .jpeg or .png"
     },
     "ChangePsw": {
         "ChangePsw": "Change password",
@@ -885,7 +881,6 @@
         "DeleteBotWithId": "Delete bot with id:",
         "AreYouSureDeleteBot": "Are you sure you want to delete this bot?",
         "AreYouSureDeleteBotAndRElatedFAq": "Are you sure you want to delete this bot and the related FAQs?",
-        "Confirm": "Confirm",
         "DeleteBot": "Delete Bot",
         "TheBot": "The bot",
         "TheBotWithID": "The bot with Id",
