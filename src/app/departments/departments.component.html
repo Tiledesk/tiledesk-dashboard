@@ -750,10 +750,13 @@
       </div>
 
       <div class="modal-footer" style="margin-top: 0px;">
-        <button class="btn btn-white" (click)="onCloseModal()" style="padding:12px 16px;">{{ "DepartmentsPage.Cancel" |
-          translate }}</button>
-        <button type="button" class="btn btn-danger" (click)="onCloseDeleteModalHandled()">{{ "DepartmentsPage.Confirm"
-          | translate }}</button>
+        <button class="btn btn-white" (click)="onCloseModal()" style="padding:12px 16px;">
+          <!-- {{ "DepartmentsPage.Cancel" | translate }} -->
+          {{ "Cancel" | translate }}
+        </button>
+        <button type="button" class="btn btn-danger" (click)="onCloseDeleteModalHandled()">
+          {{ "DepartmentsPage.Confirm" | translate }}
+        </button>
       </div>
 
     </div>

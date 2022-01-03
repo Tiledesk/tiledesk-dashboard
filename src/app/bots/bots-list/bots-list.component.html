@@ -484,9 +484,10 @@
         </div>
       </div>
       <!-- margin-top: 75px; -->
-      <div class="modal-footer" style="">
+      <div class="modal-footer">
         <button class="btn btn-white" (click)="onCloseDeleteBotModal()" style="padding:12px 16px;">
-          {{ "BotsPage.Cancel" | translate }}
+          <!-- {{ "BotsPage.Cancel" | translate }} -->
+          {{ "Cancel" | translate }}
         </button>
         <button style="margin-top:0px" class="btn btn-danger" [disabled]="!ID_BOT_TYPED_MATCHES_THE_BOT_ID"
           (click)="trashTheBot()">
