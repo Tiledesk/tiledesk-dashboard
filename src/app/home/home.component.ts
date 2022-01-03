@@ -31,7 +31,7 @@ import { takeUntil } from 'rxjs/operators'
 const swal = require('sweetalert');
 @Component({
   selector: 'home',
-  templateUrl: './new-home.component.html',
+  templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
