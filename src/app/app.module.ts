@@ -66,8 +66,6 @@ import { SignupComponent } from './auth/signup/signup.component';
 import { UnauthorizedComponent } from './auth/unauthorized/unauthorized.component';
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { ChannelsComponent } from './channels/channels.component';
-
 import { UserEditAddComponent } from './user-edit-add/user-edit-add.component';
 
 import { LocalDbService } from './services/users-local-db.service';
@@ -309,7 +307,6 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     SigninComponent,
     SignupComponent,
     UnauthorizedComponent,
-    ChannelsComponent,
     FaqTestComponent,
     UserEditAddComponent,
     VerifyEmailComponent,

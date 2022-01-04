@@ -56,9 +56,6 @@ import { AutologinComponent } from './auth/autologin/autologin.component';
 import { WidgetSetUp } from './widget_components/widget-set-up/widget-set-up.component';
 import { WidgetMultilanguageComponent } from './widget_components/widget-multilanguage/widget-multilanguage.component';
 
-import { ChannelsComponent } from './channels/channels.component';
-
-
 import { UserEditAddComponent } from './user-edit-add/user-edit-add.component';
 import { VerifyEmailComponent } from './verify-email/verify-email.component';
 
@@ -310,9 +307,6 @@ const routes: Routes = [
   { path: 'project/:projectid/widget/translations', component: WidgetMultilanguageComponent, canActivate: [AuthGuard] }, // old
   { path: 'project/:projectid/widget-set-up', component: WidgetSetUp, canActivate: [AuthGuard] },
 
-
-  { path: 'project/:projectid/channels', component: ChannelsComponent, canActivate: [AuthGuard] },
- 
   // CHANGE PSWRD if project is defined (use case: THE USER SELECTED A PROJECT)
   { path: 'project/:projectid/user/:userid/password/change', component: ChangePasswordComponent, canActivate: [AuthGuard] },
   // CHANGE PSWRD if project is undefined (use case: THE USER HAS NOT YET SELECTED A PROJECT)
