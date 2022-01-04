@@ -694,6 +694,7 @@
 		"YouCanSpecifyAgentsIndividualChatLimit": "Sie können Ihren Teamkollegen individuelle Chat-Limits zuweisen: Wählen Sie dazu unter Einstellungen > Teamkollegen & Gruppen einen Teamkollegen aus und geben Sie einen Wert in das Feld Chat-Limit ein",
 		"Reassignment": "Neuzuweisung",
 		"ReassignChatIf": "Der Chat wird neu zugewiesen, wenn der Agent den zugewiesenen Chat nicht innerhalb eines bestimmten Zeitraums bedient",
+		"ItReassignChatIf": "Es weist den Chat neu zu, wenn der Agent den zugewiesenen Chat nicht innerhalb eines bestimmten Zeitrahmens bedient",
 		"TheChatWillBeBetweenTheUnassigned": "Wenn keine Agenten auf den zugewiesenen Chat antworten, wird der Chat als nicht zugewiesen aufgeführt",
 		"ReassignmentTimeout": "Neuzuweisung Timeout",
 		"TimeWithNoResponse": "Zeit (in Sekunden) ohne Antwort bevor ein Chat neu zugewiesen wird",
@@ -1447,12 +1448,6 @@
 		"EnterYourScriptHere": "Fügen Sie hier Ihr Script ein",
 		"Save": "Speichern"
 	},
-	"ChannelsPage": {
-		"ConnectWithFacebook": "Mit Facebook verbinden",
-		"ConnectWithTwitter": "Mit Twitter verbinden",
-		"EmailIntegration_1": "Email Integration in {{ company_name }} Support funktioniert jetzt Out-of-the-Box. Emails, die an Ihre Support-Adresse gesendet werden: ",
-		"EmailIntegration_2": "werden automatisch zu neuen Anfragen."
-	},
 	"VerifyEmailPage": {
 		"VerifyEmail": "Email bestätigen",
 		"EmailVerificationFailed": "Email-Bestätigung fehlgeschlagen",
@@ -1500,8 +1495,8 @@
 	"Saturday": "Samstag",
 	"Analytics": {
 		"AnalyticsTITLE": "Analytics",
-		"HeatMapTitle": "Anfragen pro Stunde pro Tag",
 		"PanoramicaComponentTitle": "Überblick",
+		"HeatMapTitle": "Anfragen pro Stunde pro Tag",
 		"MetricsComponentTitle": "Metriken",
 		"Metrics": {
 			"Requests": "Gespräche",
@@ -1722,6 +1717,7 @@
 	"Last30DaysConversations": "Gespräche der letzten 30 Tage",
 	"Last7DaysConversations": "Gespräche der letzten 7 Tage",
 	"Last30DaysVisitors": "Einzigartige Besucher in den letzten 30 Tagen",
+	"Last30DaysEvents": "Ereignisse der letzten 30 Tage",
 	"Last30DaysConversationsHandledByBots": "Letzte 30 Tage Gespräche von Bots geführt",
 	"Last30DaysConversationsHandledByBotsPercentage": "Prozentsatz der Gespräche der letzten 30 Tage, die von Bots geführt werden",
 	"FilterReportInAnalytics": "Filterbericht in Analytics",

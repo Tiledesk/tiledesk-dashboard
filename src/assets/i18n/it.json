@@ -1102,7 +1102,6 @@
         "RequestAttributes": "Attributi conversazione",
         "RequestDetails": "Dettagli conversazione",
         "Enter": "Partecipa alla chat",
-        "Enter_": "Partecipa alla chat",
         "ToChat": "Partecipa alla chat",
         "OpenTheChat": "Apri la chat",
         "Loading": "Elaborazione",
@@ -1448,12 +1447,6 @@
         "EnterYourScript": "Inserisci il tuo script",
         "EnterYourScriptHere": "Inserisci qui il tuo script",
         "Save": "Salva"
-    },
-    "ChannelsPage": {
-        "ConnectWithFacebook": "Connettiti con Facebook",
-        "ConnectWithTwitter": "Connettiti con Twitter",
-        "EmailIntegration_1": "Integrazione nativa dell' email nel Supporto {{ company_name }}. Le email inviate al tuo indirizzo di supporto: ",
-        "EmailIntegration_2": "diventano automaticamente conversazioni."
     },
     "VerifyEmailPage": {
         "VerifyEmail": "Verifica email",
