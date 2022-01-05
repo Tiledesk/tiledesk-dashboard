@@ -358,13 +358,26 @@ export class ProjectService {
       .map((res) => res.json());
   }
 
+  public getEmailTemplate(temaplateName) {
+    const url = this.SERVER_BASE_PATH + this.projectID + '/emails/templates/' + temaplateName;
+
+    this.logger.log('[PROJECT-SERV] - GET SUBSCRIPTION BY ID - URL', url);
+
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.json());
+  }
+
   public updateEmailTempalte(temaplateName: string, template: any) {
 
     let url = this.PROJECTS_URL + this.projectID;
     // let  settings = {email: {templates: {}}
     // url += this.projectID;
     this.logger.log('[PROJECT-SERV] UPDATE AUTO SEND TRASCRIPT TO REQUESTER - PUT URL ', url);
-    
+
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
@@ -381,15 +394,18 @@ export class ProjectService {
     //   httpParams = httpParams.set(temaplateName, params[temaplateName]);
     // });
     //   let body = {}
+    const body = { "settings.email.templates": template }
+    Object.keys(body).forEach(k => {
+      console.log('body key: ', k)
+      k + temaplateName
+    });
+    // let body = { settings: { email: { templates: { }} } }
+
+    // body.settings.email.templates[temaplateName] = template
+
+
     // const body = { "settings.email.templates.assignedRequest" : template }
-
-    let body = { settings: { email: { templates: { }} } }
-    // let body = { settings.email.templates } }
-    body.settings.email.templates[temaplateName] = template
-
-
-  // const body = { "settings.email.templates.assignedRequest" : template }
-  //   this.logger.log('[PROJECT-SERV] UPDATE AUTO SEND TRASCRIPT TO REQUESTER - PUT BODY ', body);
+    //   this.logger.log('[PROJECT-SERV] UPDATE AUTO SEND TRASCRIPT TO REQUESTER - PUT BODY ', body);
 
     return this.http
       .put(url, JSON.stringify(body), options)
