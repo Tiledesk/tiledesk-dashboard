@@ -64,6 +64,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   prjct_name: string;
   prjct_profile_name: string;
+  profile_name: string;
   prjct_profile_type: string;
   prjct_trial_expired: boolean;
   subscription_is_active: boolean;
@@ -653,10 +654,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   translateModalOnlyOwnerCanManageProjectAccount() {
     this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
       .subscribe((translation: any) => {
-
         this.onlyOwnerCanManageTheAccountPlanMsg = translation;
       });
-
 
     this.translate.get('LearnMoreAboutDefaultRoles')
       .subscribe((translation: any) => {
@@ -834,6 +833,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
           this.prjct_name = projectProfileData.name;
           this.prjct_profile_name = projectProfileData.profile_name;
+          this.profile_name = projectProfileData.profile_name;
           this.prjct_trial_expired = projectProfileData.trial_expired;
           this.prjct_profile_type = projectProfileData.profile_type;
           this.subscription_is_active = projectProfileData.subscription_is_active;
@@ -852,51 +852,88 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
             if (this.prjct_trial_expired === false) {
               this.logger.log('[HOME] getProjectPlan BRS-LANG 2 ', this.browserLang);
 
-              if (this.browserLang === 'it') {
+              this.getProPlanTrialTranslation();
+              // if (this.browserLang === 'it') {
 
-                this.prjct_profile_name = 'Piano Pro (trial)'
+              //   this.prjct_profile_name = 'Piano Pro (trial)'
 
-              } else if (this.browserLang !== 'it') {
-                this.prjct_profile_name = 'Pro (trial) Plan'
+              // } else if (this.browserLang !== 'it') {
+              //   this.prjct_profile_name = 'Pro (trial) Plan'
 
-              }
+              // }
             } else {
+
+              this.getPaidPlanTranslation(projectProfileData.profile_name);
               this.logger.log('[HOME] getProjectPlan BRS-LANG 3 ', this.browserLang);
-              if (this.browserLang === 'it') {
+              // if (this.browserLang === 'it') {
 
-                this.prjct_profile_name = 'Piano ' + projectProfileData.profile_name;
+              //   this.prjct_profile_name = 'Piano ' + projectProfileData.profile_name;
 
-              } else if (this.browserLang !== 'it') {
+              // } else if (this.browserLang !== 'it') {
 
-                this.prjct_profile_name = projectProfileData.profile_name + ' Plan';
+              //   this.prjct_profile_name = projectProfileData.profile_name + ' Plan';
 
-              }
+              // }
             }
           } else if (this.prjct_profile_type === 'payment') {
+            this.getPaidPlanTranslation(projectProfileData.profile_name);
+
             this.logger.log('[HOME] getProjectPlan BRS-LANG 4 ', this.browserLang);
-            if (this.browserLang === 'it') {
+            // if (this.browserLang === 'it') {
 
-              this.prjct_profile_name = 'Piano ' + projectProfileData.profile_name;
+            //   this.prjct_profile_name = 'Piano ' + projectProfileData.profile_name;
 
-            } else if (this.browserLang !== 'it') {
+            // } else if (this.browserLang !== 'it') {
 
-              this.prjct_profile_name = projectProfileData.profile_name + ' Plan';
-            }
+            //   this.prjct_profile_name = projectProfileData.profile_name + ' Plan';
+            // }
           }
         }
       }, error => {
 
         this.logger.error('[HOME] - getProjectPlan - ERROR', error);
       }, () => {
-
         this.logger.log('[HOME] - getProjectPlan * COMPLETE *')
+      });
+  }
 
+  getProPlanTrialTranslation() {
+    this.translate.get('ProPlanTrial')
+      .subscribe((translation: any) => {
+        this.prjct_profile_name = translation;
+      });
+  }
+
+  getPaidPlanTranslation(project_profile_name) {
+    this.translate.get('PaydPlanName', { projectprofile: project_profile_name })
+      .subscribe((text: string) => {
+        this.prjct_profile_name = text;
+        this.logger.log('+ + + PaydPlanName ', text)
       });
   }
 
 
+
   goToPricingOrOpenModalSubsExpired() {
     this.logger.log('[HOME] goToPricingOrOpenModalSubsExpired')
+    // if (this.USER_ROLE === 'owner') {
+    //   if (this.prjct_profile_type === 'free') {
+
+    //     this.router.navigate(['project/' + this.projectId + '/pricing']);
+
+    //   } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+
+    //     this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+    //     // this.notify.showCheckListModal(true);
+    //   } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true) {
+
+    //     this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
+    //   }
+
+    // } else {
+    //   this.presentModalOnlyOwnerCanManageTheAccountPlan();
+    // }
+
     if (this.USER_ROLE === 'owner') {
       if (this.prjct_profile_type === 'free') {
 
@@ -904,11 +941,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
       } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
 
-        this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
-        // this.notify.showCheckListModal(true);
-      } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true) {
+        if (this.profile_name !== 'enterprise') {
+          this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+        } else if (this.profile_name === 'enterprise') {
 
-        this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
+          this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+        }
       }
 
     } else {

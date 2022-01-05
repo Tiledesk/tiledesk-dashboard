@@ -472,24 +472,11 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
       }, () => {
         this.logger.log('+ + + translateTranslationDeleted  * COMPLETE *');
         this.notify.showWidgetStyleUpdateNotification(this.translationDeleted, 2, 'done');
-
-
-
       });
-
-
   }
-
-
-
 
   goBack() {
     this.location.back();
   }
-
-
-  
-
-
 
 }

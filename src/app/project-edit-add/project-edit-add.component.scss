@@ -485,7 +485,6 @@ $f21blue: #039be5;
   margin-left: 16px;
 }
 
-
 .card_title__underlined {
   text-transform: none;
   color: #566787;
@@ -527,7 +526,22 @@ $f21blue: #039be5;
 }
 
 .payment-is-disabled {
-  pointer-events:none; //This makes it not clickable
-  opacity:0.6;  
+  pointer-events: none; //This makes it not clickable
+  opacity: 0.6;
 }
 
+.auto-send-transcript-by-email-unavailable-with-current-plan {
+  display: block;
+  font-size: 12px;
+  font-weight: 400;
+  color: #7695a5;
+  line-height: 1.2em;
+  padding-top: 3px;
+}
+
+.upgrade-plan-btn-to-enable-auto-send-transcript-by-email {
+  color: #039be5;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 400;
+}

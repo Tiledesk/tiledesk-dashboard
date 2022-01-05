@@ -30,7 +30,13 @@
               </i>
               <span class="expired__Tooltiptext"
                 style="font-size:14px; top: 43px;padding: 5px; height: 44px; cursor:pointer">
-                {{ 'Pricing.SubscriptionPaymentProblem' | translate }} </span>
+                <span *ngIf="profile_name !== 'enterprise'">
+                  {{ 'Pricing.SubscriptionPaymentProblem' | translate }}
+                </span>
+                <span *ngIf="profile_name === 'enterprise'">
+                  {{ 'Pricing.ThePlanHasExpired' | translate }}
+                </span>
+              </span>
             </span>
           </span>
         </h2>
@@ -66,7 +72,7 @@
                       <!-- --------------------------------------------------- -->
                       <!-- USECASE uploadEngine Native -->
                       <!-- --------------------------------------------------- -->
-                   
+
                       <img *ngIf="projectUser?.hasImage && !UPLOAD_ENGINE_IS_FIREBASE"
                         src="{{baseUrl}}images?path=uploads%2Fusers%2F{{projectUser?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                         alt="" onerror="this.src='assets/img/no_image_user.png'" style="width: 32px;height: 32px;">
@@ -100,7 +106,7 @@
               <span *ngIf="projectUsers?.length > 1 || projectUsers?.length === 0"> {{'Teammates' | translate}} </span>
               <span class="tool_tip" *ngIf="!DISPLAY_TEAMMATES">
                 <!-- (click)="toggleDisplayTeammates()" -->
-                <span class="material-icons add-operators-icons tool_tip" >
+                <span class="material-icons add-operators-icons tool_tip">
                   filter_list
                 </span>
 
@@ -126,7 +132,7 @@
 
               <span class="tool_tip" *ngIf="DISPLAY_TEAMMATES">
                 <!-- (click)="toggleDisplayTeammates()" -->
-                <span class="material-icons add-operators-icons tool_tip" 
+                <span class="material-icons add-operators-icons tool_tip"
                   style="vertical-align: middle;color:  rgba(255,255,255,0.8); font-size:18px; position: relative;cursor: pointer;transform: rotate(90deg);">
                   filter_list
                 </span>
@@ -288,7 +294,8 @@
 
 
             <span *ngIf="isVisibleOPH"
-              style="padding-left: 4px;color: rgba(255,255,255,0.8);font-size: 13px;font-weight: 400;" (click)="goToOperatingHours()">
+              style="padding-left: 4px;color: rgba(255,255,255,0.8);font-size: 13px;font-weight: 400;"
+              (click)="goToOperatingHours()">
               <span *ngIf="!OPERATING_HOURS_ACTIVE || DISPLAY_OPH_AS_DISABLED"> {{'OperatingHoursDisabled' | translate
                 }}</span>
               <span *ngIf="OPERATING_HOURS_ACTIVE && !DISPLAY_OPH_AS_DISABLED"> {{'OperatingHoursEnabled' | translate}}
@@ -324,7 +331,7 @@
                 style="padding-left: 4px;color: rgba(255,255,255,0.8);font-size: 13px;font-weight: 400;position: relative;top: 5px;">
                 <span> {{'WhatsNew' | translate}} </span>
                 <span class="tool_tip">
-                  <span class="material-icons add-operators-icons tool_tip" 
+                  <span class="material-icons add-operators-icons tool_tip"
                     style="vertical-align: middle;color:  rgba(255,255,255,0.8); font-size:18px; position: relative;cursor: pointer;transform: rotate(-90deg);top: 0px;">
                     filter_list
                   </span>

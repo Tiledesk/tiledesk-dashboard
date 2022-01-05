@@ -110,6 +110,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     projectId: string;
 
     prjct_profile_name: string;
+    profile_name: string;
     prjct_profile_type: string;
     prjct_trial_expired: boolean;
 
@@ -678,6 +679,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
             this.logger.log('[NAVBAR] - getProjectPlan project Profile Data', projectProfileData)
             if (projectProfileData) {
                 this.prjct_profile_name = projectProfileData.profile_name;
+                this.profile_name = projectProfileData.profile_name;
                 this.prjct_trial_expired = projectProfileData.trial_expired;
                 this.prjc_trial_days_left = projectProfileData.trial_days_left;
                 this.prjct_profile_type = projectProfileData.profile_type;
@@ -700,22 +702,28 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                 }
                 if (this.prjct_profile_type === 'payment') {
                     this.logger.log('[NAVBAR] browserLang ', this.browserLang);
-                    if (this.browserLang === 'it') {
-                        this.prjct_profile_name = 'Piano ' + projectProfileData.profile_name;
-                    } else if (this.browserLang !== 'it') {
-                        this.prjct_profile_name = projectProfileData.profile_name + ' Plan';
-                    }
+                    this.getPaidPlanTranslation( projectProfileData.profile_name);
+                    // if (this.browserLang === 'it') {
+                    //     this.prjct_profile_name = 'Piano ' + projectProfileData.profile_name;
+                    // } else if (this.browserLang !== 'it') {
+                    //     this.prjct_profile_name = projectProfileData.profile_name + ' Plan';
+                    // }
                 }
             }
         }, error => {
-
             this.logger.error('[NAVBAR] - getProjectPlan - ERROR', error);
         }, () => {
-
             this.logger.log('[NAVBAR] - getProjectPlan - COMPLETE')
-
         });
     }
+
+    getPaidPlanTranslation( project_profile_name) {
+        this.translate.get('PaydPlanName', { projectprofile: project_profile_name })
+        .subscribe((text: string) => {
+          this.prjct_profile_name = text;
+          this.logger.log('+ + + PaydPlanName ', text)
+        });
+      }
 
     /**
      * *! ############ CANCEL SUBSCRIPTION ############ !*
@@ -744,11 +752,22 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
 
     openModalSubsExpired() {
+        // if (this.USER_ROLE === 'owner') {
+        //     this.notifyService.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+        // } else {
+        //     this.presentModalOnlyOwnerCanManageTheAccountPlan()
+        // }
+
         if (this.USER_ROLE === 'owner') {
-            this.notifyService.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
-        } else {
-            this.presentModalOnlyOwnerCanManageTheAccountPlan()
-        }
+            if (this.profile_name !== 'enterprise') {
+              this.notifyService.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+            } else if (this.profile_name === 'enterprise') {
+                this.notifyService.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+            }
+          } else {
+            this.presentModalOnlyOwnerCanManageTheAccountPlan();
+          }
+        
     }
 
     round5(x) {

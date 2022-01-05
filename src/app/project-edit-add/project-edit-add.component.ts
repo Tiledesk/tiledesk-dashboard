@@ -65,6 +65,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   prjct_name: string;
   prjct_profile_name: string;
+  profile_name: string;
   prjct_trial_expired: boolean;
   prjc_trial_days_left: any;
   prjct_profile_type: string;
@@ -587,6 +588,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     this.router.navigate(['project/' + this.id_project + '/project-settings/notification'])
   }
 
+  goToCustomizeNotificationEmailPage() {
+    this.router.navigate(['project/' + this.id_project + '/notification-email'])    
+  }
+
   // "SubscriptionSuccessfullyCanceled":"Abbonamento annullato correttamente",
   // "AnErrorOccurredWhileCancellingSubscription": "Si è verificato un errore durante l'annullamento dell'abbonamento",
   // TRANSLATION
@@ -610,13 +615,11 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       if (projectProfileData) {
         this.prjct_name = projectProfileData.name;
         this.prjct_profile_name = projectProfileData.profile_name;
+        this.profile_name = projectProfileData.profile_name
         this.prjct_trial_expired = projectProfileData.trial_expired;
         this.prjc_trial_days_left = projectProfileData.trial_days_left;
 
         this.numberOf_agents_seats = projectProfileData.profile_agents
-
-        // nk new
-
         this.prjct_profile_type = projectProfileData.profile_type;
         this.subscription_is_active = projectProfileData.subscription_is_active;
         this.subscription_end_date = projectProfileData.subscription_end_date;
@@ -661,17 +664,17 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan days_to_next_renew ', this.days_to_next_renew, ' SUBSCRIPTION_BUFFER_DAYS ', this.SUBSCRIPTION_BUFFER_DAYS);
         }
 
-
-        // if (this.prjct_profile_name === 'free') {
         if (this.prjct_profile_type === 'free') {
           if (this.prjct_trial_expired === false) {
-            this.prjct_profile_name = 'Pro (free trial 30gg)'
+            this.getProPlanTrialTranslation()
+            // this.prjct_profile_name = 'Pro (free trial 30gg)'
           } else {
-            this.prjct_profile_name = projectProfileData.profile_name;
+            this.getPaidPlanTranslation(projectProfileData.profile_name)
+            // this.prjct_profile_name = projectProfileData.profile_name;
           }
         } else if (this.prjct_profile_type === 'payment') {
-
-          this.prjct_profile_name = projectProfileData.profile_name;
+          this.getPaidPlanTranslation(projectProfileData.profile_name)
+          // this.prjct_profile_name = projectProfileData.profile_name;
         }
 
 
@@ -697,43 +700,39 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
 
 
-  openModalSubsExpired() {
-    this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+  getProPlanTrialTranslation() {
+    this.translate.get('ProPlanTrial')
+      .subscribe((translation: any) => {
+        this.prjct_profile_name = translation;
+      });
   }
 
-  // !!! NOT USED -- RETRIEVE THE CURRENT SUBSCRIPTION FROM STRIPE
-  // getSubscriptionByID(subscription_id: string) {
-  //   this.projectService.getSubscriptionById(subscription_id)
-  //     .subscribe((subscription: any) => {
-  //       this.stripe_subscription_objct = subscription;
-  //       this.logger.log('»»»»» ProjectEditAddComponent get subscription by id ', subscription);
+  getPaidPlanTranslation(project_profile_name) {
+    this.translate.get('PaydPlanName', { projectprofile: project_profile_name })
+      .subscribe((text: string) => {
+        this.prjct_profile_name = text;
+        // this.logger.log('+ + + PaydPlanName ', text)
+      });
+  }
 
-  //       // RETURN THE CURRENT DAY AT THE TIME 00:00:00
-  //       // const today = moment().startOf('day')
 
-  //       // RETURN THE CURRENT DAY AT THE CURRENT TIME
-  //       const today = moment();
 
-  //       const current_sub_end_date = moment(subscription.current_period_end * 1000)
-  //       this.logger.log('»»»»» ProjectEditAddComponent get subscription by id today ', today);
-  //       this.logger.log('»»»»» ProjectEditAddComponent get subscription by id current_sub_end_date ', current_sub_end_date);
+  openModalSubsExpired() {
+    if (this.USER_ROLE === 'owner') {
+      if (this.profile_name !== 'enterprise') {
+        this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+      } else {
+        if (this.profile_name === 'enterprise') {
 
-  //       this.days_to_next_renew = current_sub_end_date.diff(today, 'days');
-  //       this.logger.log('»»»»» ProjectEditAddComponent get subscription by id days_to_next_renew ', this.days_to_next_renew);
+          this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+        }
+      }
+    } else {
+      this.presentModalOnlyOwnerCanManageTheAccountPlan();
+    }
+  }
 
-  //       if (this.days_to_next_renew === 0) {
 
-  //         const timeOfNextRenew = moment(current_sub_end_date).format('HH.mm')
-  //         this.logger.log('»»»»» ProjectEditAddComponent get subscription by id timeOfNextRenew ', timeOfNextRenew);
-  //       }
-
-  //     }, (error) => {
-  //       this.logger.log('»»»»» ProjectEditAddComponent get subscription by id ', error);
-
-  //     }, () => {
-  //       this.logger.log('»»»»» ProjectEditAddComponent get subscription by id * COMPLETE * ');
-  //     });
-  // }
 
   // GET THE SUBSCRIPTION PAYMENT SAVED IN OUR DB
   getSubscriptionPayments(subscription_id) {
@@ -862,7 +861,11 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   // }
 
   goToPayments() {
-    this.router.navigate(['project/' + this.id_project + '/payments']);
+    if (this.USER_ROLE === 'owner') {
+      this.router.navigate(['project/' + this.id_project + '/payments']);
+    } else {
+      this.presentModalOnlyOwnerCanManageTheAccountPlan();
+    }
   }
 
   // openLetsChatModal() {
@@ -870,7 +873,11 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   //   this.logger.log('openLetsChatModal')
   // }
   getMoreOperatorsSeats() {
-    this.notify._displayContactUsModal(true, 'upgrade_plan');
+    if (this.USER_ROLE === 'owner') {
+      this.notify._displayContactUsModal(true, 'upgrade_plan');
+    } else {
+      this.presentModalOnlyOwnerCanManageTheAccountPlan();
+    }
   }
 
   closeContactUsModal() {

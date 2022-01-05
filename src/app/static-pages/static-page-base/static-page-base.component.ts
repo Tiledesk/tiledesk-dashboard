@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -12,7 +12,11 @@ export class StaticPageBaseComponent implements OnInit {
   prjct_profile_name: string;
 
   constructor(
-  ) { }
+    public translate: TranslateService
+  ) { 
+   
+  
+  }
 
   ngOnInit() { }
 
@@ -23,19 +27,30 @@ export class StaticPageBaseComponent implements OnInit {
     // console.log('[STATIC-PAGE-BASE] BUILD PLAN NAME - planName ', planName, ' browserLang  ', browserLang);
 
     if (planType === 'payment') {
-      if (browserLang === 'it') {
 
-        this.prjct_profile_name = 'Piano ' + planName;
+      this.getPaidPlanTranslation(planName)
+      // if (browserLang === 'it') {
 
-        return this.prjct_profile_name
+      //   this.prjct_profile_name = 'Piano ' + planName;
 
-      } else if (browserLang !== 'it') {
+      //   return this.prjct_profile_name
 
-        this.prjct_profile_name = planName + ' Plan';
+      // } else if (browserLang !== 'it') {
 
-        return this.prjct_profile_name
-      }
+      //   this.prjct_profile_name = planName + ' Plan';
+
+      //   return this.prjct_profile_name
+      // }
     }
+    
+  }
+
+  getPaidPlanTranslation(project_profile_name) {
+    this.translate.get('PaydPlanName', { projectprofile: project_profile_name })
+      .subscribe((text: string) => {
+        this.prjct_profile_name = text;
+        // this.logger.log('+ + + PaydPlanName ', text)
+      });
   }
 
 

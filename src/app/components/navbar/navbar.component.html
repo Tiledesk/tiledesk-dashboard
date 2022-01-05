@@ -164,8 +164,14 @@
                   error_outline
                 </i>
                 <span class="expired__Tooltiptext"
-                  style="font-size:14px; top: 100%;text-transform:none; cursor: pointer; height: 44px;">
-                  {{ 'Pricing.SubscriptionPaymentProblem' | translate }}
+                  style="font-size:14px; top: 100%;text-transform:none; cursor: pointer; height: fit-content;vertical-align: middle;">
+                  
+                  <span *ngIf="profile_name !== 'enterprise'">
+                    {{ 'Pricing.SubscriptionPaymentProblem' | translate }}
+                  </span>
+                  <span *ngIf="profile_name === 'enterprise'">
+                    {{ 'Pricing.ThePlanHasExpired' | translate }}
+                  </span>
                 </span>
               </span>
             </a>

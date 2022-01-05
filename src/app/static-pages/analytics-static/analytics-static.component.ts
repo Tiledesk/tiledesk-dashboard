@@ -25,7 +25,7 @@ export class AnalyticsStaticComponent extends StaticPageBaseComponent implements
   subscription_is_active: any;
   prjct_profile_name: string;
   subscription_end_date: Date;
-
+  profile_name: string;
 
   imageUrlArray = [
     { url: 'assets/img/new_analitycs_1_v6.png', backgroundSize: 'contain' },
@@ -40,12 +40,12 @@ export class AnalyticsStaticComponent extends StaticPageBaseComponent implements
   constructor(
     private router: Router,
     public auth: AuthService,
-    private translate: TranslateService,
+    public translate: TranslateService,
     private prjctPlanService: ProjectPlanService,
     private notify: NotifyService,
     private usersService: UsersService,
     private logger: LoggerService
-  ) { super(); }
+  ) { super(translate); }
 
   ngOnInit() {
     this.getCurrentProject();
@@ -104,17 +104,26 @@ export class AnalyticsStaticComponent extends StaticPageBaseComponent implements
         this.subscription_is_active = projectProfileData.subscription_is_active;
 
         this.subscription_end_date = projectProfileData.subscription_end_date
+        this.profile_name = projectProfileData.profile_name
 
-        this.prjct_profile_name = this.buildPlanName(projectProfileData.profile_name, this.browserLang, this.prjct_profile_type);
+        this.buildPlanName(projectProfileData.profile_name, this.browserLang, this.prjct_profile_type);
 
         if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
           if (this.USER_ROLE === 'owner') {
-            this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date)
+
+            if (this.profile_name !== 'enterprise') {
+
+              this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date)
+            
+            } else if (this.profile_name === 'enterprise') {
+
+              this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+            }
           }
         }
       }
     }, err => {
-      this.logger.error('[ANALYTICS-STATIC] GET PROJECT PROFILE - ERROR',err);
+      this.logger.error('[ANALYTICS-STATIC] GET PROJECT PROFILE - ERROR', err);
     }, () => {
       this.logger.log('[ANALYTICS-STATIC] GET PROJECT PROFILE * COMPLETE *');
     });

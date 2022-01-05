@@ -27,6 +27,7 @@ export class NotifyService {
   displayCheckLIstModal: string;
 
   displayModalSubsExpired: string;
+  displayModalEnterpiseSubsExpired : string;
   displayContactUsModal = 'none';
   viewCancelSubscriptionModal = 'none';
   displayDataExportNotAvailable = 'none';
@@ -64,12 +65,25 @@ export class NotifyService {
     this._prjctPlanName = prjctPlanName;
   }
 
+
+  displayEnterprisePlanHasExpiredModal(subHasExpired: boolean, prjctPlanName: string, prjctPlanSubsEndDate: Date) { 
+    if (subHasExpired === true) {
+      this.displayModalEnterpiseSubsExpired = 'block';
+    }
+    this.logger.log('[NOTIFY-SERVICE] - HasExpiredEnterpriseModal prjctPlanName ', prjctPlanName);
+  }
+
+  closeModalEnterpiseSubsExpired() {
+    this.displayModalEnterpiseSubsExpired = 'none';
+  }
+
   closeModalSubsExpired() {
     this.displayModalSubsExpired = 'none';
   }
 
   closeThisModalAndDisplayCancelSubscriptionModal() {
     this.logger.log('[NOTIFY-SERVICE] - closeThisModalAndDisplayCancelSubscriptionModal');
+    this.displayModalEnterpiseSubsExpired = 'none';
     this.displayModalSubsExpired = 'none';
     this.viewCancelSubscriptionModal = 'block';
   }

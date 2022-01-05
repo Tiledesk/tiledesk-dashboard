@@ -38,7 +38,7 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   WIDGET_URL: string;
   has_copied = false;
-
+  tprojectprofilemane: any;
   constructor(
     public notify: NotifyService,
     public auth: AuthService,
@@ -52,6 +52,7 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
   ) {
     const brand = brandService.getBrand();
     this.tparams = brand;
+
     if (brand) {
       this.company_name = brand['company_name'];
     }
@@ -87,9 +88,12 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
 
         this.trial_expired = projectProfileData.trial_expired;
 
-        this.subscription_end_date = projectProfileData.subscription_end_date
+        this.subscription_end_date = projectProfileData.subscription_end_date;
+        
+        const projectprofile = projectProfileData.profile_name.toUpperCase()
+        this.tprojectprofilemane = { projectprofile: projectprofile }
 
-        this.prjct_profile_name = this.buildPlanName(projectProfileData.profile_name, this.browserLang, this.prjct_profile_type);
+        this.buildPlanName(projectProfileData.profile_name, this.browserLang, this.prjct_profile_type);
       }
     }, err => {
       this.logger.error('[NOTIFICATION-MSG] GET PROJECT PROFILE - ERROR', err);
@@ -106,14 +110,25 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
     this.logger.log('[NOTIFICATION-MSG] buildPlanName - planName ', planName, ' browserLang  ', browserLang);
 
     if (planType === 'payment') {
-      if (browserLang === 'it') {
-        this.prjct_profile_name = 'Piano ' + planName;
-        return this.prjct_profile_name
-      } else if (browserLang !== 'it') {
-        this.prjct_profile_name = planName + ' Plan';
-        return this.prjct_profile_name
-      }
+
+      this.getPaidPlanTranslation(planName)
+      // if (browserLang === 'it') {
+      //   this.prjct_profile_name = 'Piano ' + planName;
+      //   return this.prjct_profile_name
+      // } else if (browserLang !== 'it') {
+      //   this.prjct_profile_name = planName + ' Plan';
+      //   return this.prjct_profile_name
+      // }
     }
+  }
+
+  getPaidPlanTranslation(project_profile_name) {
+    this.translate.get('PaydPlanName', { projectprofile: project_profile_name })
+      .subscribe((text: string) => {
+        this.prjct_profile_name = text;
+
+        // this.logger.log('+ + + PaydPlanName ', text)
+      });
   }
 
 
@@ -128,6 +143,8 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
       this.router.navigate(['project/' + this.projectId + '/pricing']);
     }
   }
+
+
 
   // closeExportCSVnotAvailable
 
