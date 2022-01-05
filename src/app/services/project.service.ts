@@ -7,7 +7,7 @@ import 'rxjs/add/operator/map';
 import { environment } from '../../environments/environment';
 import { AuthService } from '../core/auth.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { AppConfigService } from '../services/app-config.service';
 import { LoggerService } from '../services/logger/logger.service';
 @Injectable()
@@ -352,6 +352,44 @@ export class ProjectService {
     const body = { 'settings.email.autoSendTranscriptToRequester': autosend }
 
     this.logger.log('[PROJECT-SERV] UPDATE AUTO SEND TRASCRIPT TO REQUESTER - PUT BODY ', body);
+
+    return this.http
+      .put(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+  }
+
+  public updateEmailTempalte(temaplateName: string, template: any) {
+
+    let url = this.PROJECTS_URL + this.projectID;
+    // let  settings = {email: {templates: {}}
+    // url += this.projectID;
+    this.logger.log('[PROJECT-SERV] UPDATE AUTO SEND TRASCRIPT TO REQUESTER - PUT URL ', url);
+    
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+    // let  settings = {};
+    // settings{''}
+
+    // const params = {
+    //   'settings.email.templates': template
+    // }
+    // let httpParams = new HttpParams();
+    // Object.keys(params).forEach(k => {
+    //   httpParams = httpParams.set(temaplateName, params[temaplateName]);
+    // });
+    //   let body = {}
+    // const body = { "settings.email.templates.assignedRequest" : template }
+
+    let body = { settings: { email: { templates: { }} } }
+    // let body = { settings.email.templates } }
+    body.settings.email.templates[temaplateName] = template
+
+
+  // const body = { "settings.email.templates.assignedRequest" : template }
+  //   this.logger.log('[PROJECT-SERV] UPDATE AUTO SEND TRASCRIPT TO REQUESTER - PUT BODY ', body);
 
     return this.http
       .put(url, JSON.stringify(body), options)

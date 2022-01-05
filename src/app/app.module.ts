@@ -211,7 +211,7 @@ import { SanitizeHtmlPipe } from './sanitize-html.pipe';
 import { UnauthorizedForProjectComponent } from './auth/unauthorized-for-project/unauthorized-for-project.component';
 import { Autolinkerjs } from './autolinkerjs.pipe';
 import { HtmlEntitiesEncodePipe } from './html-entities-encode.pipe';
-import { ColdObservable } from 'rxjs/testing/ColdObservable';
+import { NotificationEmailComponent } from './project-edit-add/notification-email/notification-email.component';
 
 
 
@@ -403,6 +403,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     UnauthorizedForProjectComponent,
     Autolinkerjs,
     HtmlEntitiesEncodePipe,
+    NotificationEmailComponent,
   ],
   imports: [
     /* PRIVATE */

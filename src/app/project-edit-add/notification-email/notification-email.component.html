@@ -1,0 +1,37 @@
+<div class="navbar-brand" style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px">
+  <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" rel="tooltip" title="go back"
+    (click)="goBack()">keyboard_arrow_left</i>
+  
+    {{ 'ProjectEditPage.CustomizeEmailTemplateBtn' | translate }}
+</div>
+
+<div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
+  <div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
+    <div class="row">
+      <div class="col-xs-12 col-md-6">
+       
+        <textarea id="text-input" rows="24"
+        [(ngModel)]="assignedRequestTemplate" (keyup)="refresh()"
+        style="width: 100%; border-radius: 5px;border: solid 1px #ddd; padding: 8px;font-weight: 400;"></textarea>
+
+
+        <button (click)="saveEmailNotificationTemplate()" class="btn btn-primary" style="margin-top:5px; font-weight: 500; ">
+          {{ "Save" | translate }}
+        </button>
+      </div>
+      <!-- [attr.srcDoc]=  -->
+      <div class="col-xs-12 col-md-6">
+        <!-- <iframe  sandbox="allow-same-Origin" [srcdoc]="assignedRequestTemplate"></iframe> -->
+        <!-- <iframe src="data:text/html,{{assignedRequestTemplate}}"></iframe> -->
+        <!-- <iframe sandbox="allow-scripts" srcdoc='{{assignedRequestTemplate}}'></iframe> -->
+
+        <!-- <iframe id="output-display"></iframe> -->
+
+        <div>
+          <div style="border: 1px solid #ddd; width: auto; height: auto" id="output-display" disabled></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

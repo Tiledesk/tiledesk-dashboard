@@ -87,7 +87,7 @@ import { TriggerComponent } from './trigger/trigger.component';
 import { TriggerEditComponent } from './trigger/trigger-edit/trigger-edit.component';
 import { TriggerAddComponent } from './trigger/trigger-add/trigger-add.component';
 import { TriggerStaticComponent } from './static-pages/trigger-static/trigger-static.component';
-
+import { NotificationEmailComponent } from './project-edit-add/notification-email/notification-email.component';
 // import { UserProfileComponent } from './ui/user-profile/user-profile.component';
 
 /* PRIVATE */
@@ -153,6 +153,8 @@ const routes: Routes = [
   { path: 'project/:projectid/project-settings/payments', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/project-settings/auth', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/project-settings/advanced', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/notification-email', component: NotificationEmailComponent, canActivate: [AuthGuard] },
+  
   { path: 'project/:projectid/project-settings/notification', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
 
   // { path: 'home', component: HomeComponent, canActivate: [AuthGuard]}, // , canDeactivate: [AuthGuard]
