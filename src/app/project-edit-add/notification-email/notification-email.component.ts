@@ -32,8 +32,22 @@ export class NotificationEmailComponent implements OnInit, AfterViewInit {
   goBack() {
     this.location.back();
   }
-
   getAssignedRequestTemplate() {
+    this.projectService.getEmailTemplate('assignedRequest.html').subscribe((res: any) => {
+      console.log('GET ASSIGNED REQUESTS TEMPALTE res ', res)
+      if (res) {
+        this.assignedRequestTemplate = res.template
+      }
+    }, (error) => {
+     console.log('GET ASSIGNED REQUESTS TEMPALTE ', error);
+    }, () => {
+      console.log('GET ASSIGNED REQUESTS TEMPALTE * COMPLETE *');
+
+    });
+  }
+
+
+  _getAssignedRequestTemplate() {
     this.assignedRequestTemplate = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
     <html xmlns="http://www.w3.org/1999/xhtml" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
     
@@ -227,7 +241,7 @@ export class NotificationEmailComponent implements OnInit, AfterViewInit {
   }
 
   saveEmailNotificationTemplate() {
-    this.projectService.updateEmailTempalte('assignedRequest.html',JSON.stringify(this.assignedRequestTemplate))
+    this.projectService.updateEmailTempalte('assignedRequest.html', JSON.stringify(this.assignedRequestTemplate))
       .subscribe((res: any) => {
 
         console.log('saveEmailNotificationTemplate res ', res)
