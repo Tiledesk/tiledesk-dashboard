@@ -141,6 +141,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   USER_ROLE: string;
 
   onlyOwnerCanManageTheAccountPlanMsg: string;
+  onlyOwnerCanManageEmailTempalte: string;
   learnMoreAboutDefaultRoles: string;
   TESTSITE_BASE_URL: string;
   TEST_WIDGET_API_BASE_URL: string;
@@ -283,6 +284,12 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       .subscribe((translation: any) => {
         // this.logger.log('[PRJCT-EDIT-ADD] onlyOwnerCanManageTheAccountPlanMsg text', translation)
         this.onlyOwnerCanManageTheAccountPlanMsg = translation;
+      });
+
+      this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheEmailTemplate')
+      .subscribe((translation: any) => {
+        // this.logger.log('[PRJCT-EDIT-ADD] onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        this.onlyOwnerCanManageEmailTempalte = translation;
       });
 
 
@@ -548,6 +555,24 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.presentModalOnlyOwnerCanManageTheAccountPlan()
     }
   }
+  
+
+  presentModalOnlyOwnerCanManageEmailTempalte() {
+    // https://github.com/t4t5/sweetalert/issues/845
+    const el = document.createElement('div')
+    el.innerHTML = this.onlyOwnerCanManageEmailTempalte + '. ' + "<a href='https://docs.tiledesk.com/knowledge-base/understanding-default-roles/' target='_blank'>" + this.learnMoreAboutDefaultRoles + "</a>"
+
+    swal({
+      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
+      content: el,
+      icon: "info",
+      // buttons: true,
+      button: {
+        text: "OK",
+      },
+      dangerMode: false,
+    })
+  }
 
   presentModalOnlyOwnerCanManageTheAccountPlan() {
     // https://github.com/t4t5/sweetalert/issues/845
@@ -589,8 +614,15 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
 
   goToCustomizeNotificationEmailPage() {
-    this.router.navigate(['project/' + this.id_project + '/notification-email'])    
+    if (this.USER_ROLE === 'owner') {
+      this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_Payments ');
+      this.router.navigate(['project/' + this.id_project + '/notification-email']) 
+    } else {
+      this.presentModalOnlyOwnerCanManageEmailTempalte()
+    }
   }
+
+  
 
   // "SubscriptionSuccessfullyCanceled":"Abbonamento annullato correttamente",
   // "AnErrorOccurredWhileCancellingSubscription": "Si è verificato un errore durante l'annullamento dell'abbonamento",
