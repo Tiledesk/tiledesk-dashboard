@@ -532,8 +532,8 @@
 		"Tomorrow": "Morgen",
 		"HasExpired": "ist abgelaufen",
 		"YourSubscriptionIsActive": "Ihr Abo ist aktiv",
-		"ThePlanIsActive":"Der Plan ist aktiv",
-		"ThePlanHasExpired":"Der Plan ist abgelaufen",
+		"ThePlanIsActive": "Der Plan ist aktiv",
+		"ThePlanHasExpired": "Der Plan ist abgelaufen",
 		"AddMoreOperators": "Fügen Sie weitere Sitzplätze hinzu",
 		"ContactUs": "Jetzt anfragen",
 		"PlanChange": "Version ändern",
@@ -703,8 +703,10 @@
 		"ReassignmentTimeout": "Neuzuweisung Timeout",
 		"TimeWithNoResponse": "Zeit (in Sekunden) ohne Antwort bevor ein Chat neu zugewiesen wird",
 		"CustomizeEmailTemplate": "Passen Sie die Benachrichtigungs-E-Mail-Vorlage an",
-		"CustomizeEmailTemplateSubTitle":"Passen Sie den Inhalt von E-Mails an, die an Teamkollegen gesendet werden",
-		"CustomizeEmailTemplateBtn":"E-Mails anpassen",
+		"CustomizeEmailTemplateSubTitle": "Passen Sie den Inhalt von E-Mails an, die an Teamkollegen gesendet werden",
+		"CustomizeEmailTemplateBtn": "E-Mails anpassen",
+		"SeeThePreviewOfTheEmail": "Sehen Sie sich die Vorschau der E-Mail an, indem Sie auf die Schaltfläche Vorschau anzeigen klicken",
+		"SeePreview": "Siehe Vorschau",
 		"NotificationMsgs": {
 			"UpdateProjectSuccess": "Projekt erfolgreich aktualisiert",
 			"UpdateProjectError": "Ein Fehler ist während der Aktualisierung des Projekts aufgetreten",
@@ -1810,6 +1812,7 @@
 	"NewRequesterCreatedSuccessfully": "Neuer Anforderer erfolgreich erstellt",
 	"ViewRequesterDetails": "Anfordererdetails anzeigen",
 	"OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan": "Nur Benutzer mit der Eigentümerrolle können den Plan des Kontos verwalten",
+	"OnlyUsersWithTheOwnerRoleCanManageTheEmailTemplate": "Nur Teammitglieder mit der Eigentümerrolle können E-Mail-Vorlagen verwalten",
 	"LearnMoreAboutDefaultRoles": "Weitere Informationen zu Standardrollen",
 	"HookTheBot": "Aktiviere diesen Bot",
 	"ActivateBotsForNewConversations": "Aktiviere den Bot für neue Gespräche",
@@ -1916,6 +1919,9 @@
 	"AtTheEndOfThConversationAFormIsProposedToEvaluateTheConversation": "Am Ende des Gesprächs wird automatisch ein Formular vorgeschlagen mit der Aufforderung, die Qualität des Gesprächs zu bewerten",
 	"ActionNotAllowed": "Aktion nicht erlaubt",
 	"MoreInfo": "Mehr Info",
-	"ProPlanTrial":"Pro-Plan (Testversion)",
-	"PaydPlanName":"{{projectprofile}}-Plan"
+	"ProPlanTrial": "Pro-Plan (Testversion)",
+	"PaydPlanName": "{{projectprofile}}-Plan",
+	"assignedRequest.html": "Zugewiesene Konversation",
+	"assignedEmailMessage.html": "Zugewiesene E-Mail-Nachricht",
+	"pooledRequest.html": "Gepoolte Konversation"
 }

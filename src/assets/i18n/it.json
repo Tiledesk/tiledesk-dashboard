@@ -705,6 +705,8 @@
         "CustomizeEmailTemplate": "Personalizza il modello delle email di notifica",
         "CustomizeEmailTemplateSubTitle":"Personalizza il contenuto delle email inviate ai membri del team",
         "CustomizeEmailTemplateBtn":"Personalizza le email",
+        "SeeThePreviewOfTheEmail":"Visualizza l'anteprima dell'e-mail facendo clic sul pulsante Visualizza anteprima",
+        "SeePreview":"Vedi anteprima",
         "NotificationMsgs": {
             "UpdateProjectSuccess": "Progetto aggiornato con successo",
             "UpdateProjectError": "Si è verificato un errore durante l'aggiornamento del progetto",
@@ -1809,7 +1811,8 @@
     "NameIsRequired": "Il nome è obbligatorio",
     "NewRequesterCreatedSuccessfully": "Nuovo richiedente creato con successo",
     "ViewRequesterDetails": "Vedi dettagli richiedente",
-    "OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan": "Solo gli utenti con il ruolo di proprietario possono gestire il piano dell'account",
+    "OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan": "Solo i membri del team con il ruolo di proprietario possono gestire il piano dell'account",
+    "OnlyUsersWithTheOwnerRoleCanManageTheEmailTemplate": "Solo i membri del team con il ruolo di proprietario possono gestire i modelli delle email",
     "LearnMoreAboutDefaultRoles": "Ulteriori informazioni sui ruoli predefiniti",
     "HookTheBot": "Attiva questo bot",
     "ActivateBotsForNewConversations": "Attiva il bot per le nuove conversazioni",
@@ -1917,5 +1920,8 @@
     "ActionNotAllowed": "Azione non consentita",
     "MoreInfo": "Ulteriori informazioni",
     "ProPlanTrial":"Piano Pro (trial)",
-    "PaydPlanName":"Piano {{projectprofile}}"
+    "PaydPlanName":"Piano {{projectprofile}}",
+    "assignedRequest.html":"Conversazione assegnate",
+    "assignedEmailMessage.html":"Messaggio email assegnato",
+    "pooledRequest.html":"Conversazione pooled"
 }

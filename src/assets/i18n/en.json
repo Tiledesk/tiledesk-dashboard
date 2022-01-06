@@ -705,6 +705,8 @@
         "CustomizeEmailTemplate": "Customize the notification email template",
         "CustomizeEmailTemplateSubTitle":"Customize the content of emails sent to teammates",
         "CustomizeEmailTemplateBtn":"Customize emails",
+        "SeeThePreviewOfTheEmail":"See the preview of the email by clicking on the see preview button",
+        "SeePreview":"See Preview",
         "NotificationMsgs": {
             "UpdateProjectSuccess": "Project successfully updated",
             "UpdateProjectError": "An error occurred while updating project",
@@ -1809,7 +1811,8 @@
     "NameIsRequired": "Name is required",
     "NewRequesterCreatedSuccessfully": "New requester created successfully",
     "ViewRequesterDetails": "View requester details",
-    "OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan": "Only users with the owner role can manage the account’s plan",
+    "OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan": "Only teammates with the owner role can manage the account’s plan",
+    "OnlyUsersWithTheOwnerRoleCanManageTheEmailTemplate": "Only team members with the owner role can manage email templates",
     "LearnMoreAboutDefaultRoles": "Learn more about default roles",
     "HookTheBot": "Activate this bot",
     "ActivateBotsForNewConversations": "Activate bots for new conversations",
@@ -1917,5 +1920,8 @@
     "ActionNotAllowed": "Action not allowed",
     "MoreInfo": "More info",
     "ProPlanTrial":"Pro Plan (trial)",
-    "PaydPlanName":"{{projectprofile}} Plan"
+    "PaydPlanName":"{{projectprofile}} Plan",
+    "assignedRequest.html":"Assigned conversation",
+    "assignedEmailMessage.html":"Assigned email message",
+    "pooledRequest.html":"Pooled Conversation"
 }
