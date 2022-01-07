@@ -69,6 +69,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     // hidechangelogrocket = brand.sidebar__hide_changelog_rocket;
     tparams: any;
     sidebarLogoWhite_Url: string;
+    sidebarLogoNoText: string;
     hidechangelogrocket: boolean;
 
     // background_bottom_section = brand.sidebar.background_bottom_section
@@ -148,6 +149,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     ANALITYCS_ROUTE_IS_ACTIVE: boolean;
     HOME_ROUTE_IS_ACTIVE: boolean;
     TRIGGER_ROUTE_IS_ACTIVE: boolean;
+    NOTIFICATION_EMAIL_IS_ACTIVE: boolean;
     prjct_profile_name: string;
     prjct_trial_expired: boolean;
     prjc_trial_days_left: number
@@ -193,6 +195,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         if (brand) {
             this.sidebarLogoWhite_Url = brand['company_logo_white__url'];
             this.hidechangelogrocket = brand['sidebar__hide_changelog_rocket'];
+            this.sidebarLogoNoText = brand['company_logo_no_text__url'];
         }
     }
 
@@ -442,6 +445,17 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                     // this.logger.log('[SIDEBAR] NavigationEnd - THE home route IS NOT ACTIVE  ', event.url);
                     this.TRIGGER_ROUTE_IS_ACTIVE = false;
                 }
+
+                if (event.url.indexOf('/notification-email') !== -1) {
+                    // this.logger.log('[SIDEBAR] NavigationEnd - THE home route IS ACTIVE  ', event.url);
+                    this.NOTIFICATION_EMAIL_IS_ACTIVE = true;
+                    this.smallSidebar(true)
+                } else {
+                    // this.logger.log('[SIDEBAR] NavigationEnd - THE home route IS NOT ACTIVE  ', event.url);
+                    this.NOTIFICATION_EMAIL_IS_ACTIVE = false;
+                    this.smallSidebar(false)
+                }
+          
             });
     }
 
@@ -1139,40 +1153,45 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         const elemSidebarWrapper = <HTMLElement>document.querySelector('.sidebar-wrapper');
         const elemSidebar = <HTMLElement>document.querySelector('.sidebar');
         const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
+        const elemHtmlTag = <HTMLElement>document.querySelector('html');
+        console.log('[SIDEBAR] smallSidebar' ,elemHtmlTag ) 
+        elemHtmlTag.style.overflowY  = 'auto';
         // this.logger.log('elemAppSidebar', elemAppSidebar)
 
         if (IS_SMALL === true) {
             elemSidebar.setAttribute('style', 'width: 70px;');
             elemSidebarWrapper.setAttribute('style', 'width: 70px; background-color: #2d323e!important');
             elemMainPanel.setAttribute('style', 'width:calc(100% - 70px);');
+            elemMainPanel.style.overflowX  = 'hidden';
+            elemSidebarWrapper.style.height = "calc(100vh - 45px)";
+            // [].forEach.call(
+            //     document.querySelectorAll('.nav-container ul li a p'),
+            //     function (el) {
+            //         el.setAttribute('style', 'display: none');
+            //     }
+            // );
 
-            [].forEach.call(
-                document.querySelectorAll('.nav-container ul li a p'),
-                function (el) {
-                    el.setAttribute('style', 'display: none');
-                }
-            );
-
-            [].forEach.call(
-                document.querySelectorAll('.nav-container ul li a'),
-                function (el) {
-                    el.setAttribute('style', 'height: 40px');
-                }
-            );
+            // [].forEach.call(
+            //     document.querySelectorAll('.nav-container ul li a'),
+            //     function (el) {
+            //         el.setAttribute('style', 'height: 40px');
+            //     }
+            // );
 
         } else {
             elemSidebar.setAttribute('style', 'width: 260px;');
             elemSidebarWrapper.setAttribute('style', 'width: 260px;background-color: #2d323e!important');
             elemMainPanel.setAttribute('style', 'width:calc(100% - 260px);');
+            elemSidebarWrapper.style.height = "calc(100vh - 60px)";
 
 
 
-            [].forEach.call(
-                document.querySelectorAll('.nav-container ul li a p'),
-                function (el) {
-                    el.setAttribute('style', 'display: block');
-                }
-            );
+            // [].forEach.call(
+            //     document.querySelectorAll('.nav-container ul li a p'),
+            //     function (el) {
+            //         el.setAttribute('style', 'display: block');
+            //     }
+            // );
         }
     }
 

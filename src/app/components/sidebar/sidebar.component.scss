@@ -262,11 +262,10 @@ button.close {
 
 .sidebar-is-busy-icon {
   font-size: 16px;
-  color: #FEB92C;
+  color: #feb92c;
   background-color: #2d323e;
   border-radius: 50%;
 }
-
 
 .sidebar--isBusy-text {
   // content: url("../../../assets/img/clock_hands.svg");
@@ -275,7 +274,7 @@ button.close {
   // background-repeat: no-repeat;
   // background-size: cover;
   font-size: 11px;
-  color: #FEB92C;
+  color: #feb92c;
   animation: sidebarisBusy 5s;
   -moz-animation: sidebarisBusy 5s infinite; /* Firefox */
   -webkit-animation: sidebarisBusy 5s infinite; /* Safari and Chrome */
@@ -345,7 +344,20 @@ button.close {
   margin-top: 0px;
 }
 
+.logo-img-wpr {
+  text-transform: none; padding-left: 40px; min-height: 40px;
+}
+
 /* *** SMALL SIDEBAR STYLE ***  */
+.small-sidebar-tiledesk-nav-user {
+  height: 70px;
+  min-height: 70px;
+  max-height: 70px;
+}
+.small-sidebar-avatar {
+  top: 12px;
+}
+
 .small-sidebar-avatar .avatar {
   width: 50px;
   height: 50px;
@@ -368,7 +380,8 @@ button.close {
 }
 
 .small-sidebar-camera-icon {
-  top: 86px !important;
+  // top: 86px !important;
+  top: 20px !important;
 }
 
 /* OVERWRITE THE DEFAULT STYLE */
@@ -423,8 +436,8 @@ button.close {
   margin-right: 16px;
   padding: 0 12px 0 24px;
   white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 /* SIDEBAR NAV ITEMS  */
 
@@ -1093,9 +1106,15 @@ button.close {
 
 .sidebar__logo {
   width: 45% !important;
-  top: 20px !important;
-  left: 26px !important;
+  top: 20px;
+  left: 26px;
 }
+.small-sidebar__logo {
+  left: 20px;
+  top: 12px !important;
+}
+
+
 .sidebar__logo_no_rocket {
   left: unset !important;
   width: 50% !important;
