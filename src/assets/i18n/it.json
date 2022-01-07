@@ -1921,7 +1921,7 @@
     "MoreInfo": "Ulteriori informazioni",
     "ProPlanTrial":"Piano Pro (trial)",
     "PaydPlanName":"Piano {{projectprofile}}",
-    "assignedRequest.html":"Conversazione assegnate",
-    "assignedEmailMessage.html":"Messaggio email assegnato",
-    "pooledRequest.html":"Conversazione pooled"
+    "assignedRequest":"Conversazione assegnate",
+    "assignedEmailMessage":"Messaggio email assegnato",
+    "pooledRequest":"Conversazione pooled"
 }

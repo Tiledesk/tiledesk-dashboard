@@ -1921,7 +1921,7 @@
 	"MoreInfo": "Mehr Info",
 	"ProPlanTrial": "Pro-Plan (Testversion)",
 	"PaydPlanName": "{{projectprofile}}-Plan",
-	"assignedRequest.html": "Zugewiesene Konversation",
-	"assignedEmailMessage.html": "Zugewiesene E-Mail-Nachricht",
-	"pooledRequest.html": "Gepoolte Konversation"
+	"assignedRequest": "Zugewiesene Konversation",
+	"assignedEmailMessage": "Zugewiesene E-Mail-Nachricht",
+	"pooledRequest": "Gepoolte Konversation"
 }

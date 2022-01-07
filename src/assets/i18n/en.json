@@ -1921,7 +1921,7 @@
     "MoreInfo": "More info",
     "ProPlanTrial":"Pro Plan (trial)",
     "PaydPlanName":"{{projectprofile}} Plan",
-    "assignedRequest.html":"Assigned conversation",
-    "assignedEmailMessage.html":"Assigned email message",
-    "pooledRequest.html":"Pooled Conversation"
+    "assignedRequest":"Assigned conversation",
+    "assignedEmailMessage":"Assigned email message",
+    "pooledRequest":"Pooled Conversation"
 }
