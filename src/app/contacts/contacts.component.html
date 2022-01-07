@@ -125,71 +125,16 @@
 
 
 
-              <!-- <!- - ------====== INPUT 'FULL TEXT' + CLEAR FULL-TEXT SEARCH BTN !DISPLAY NONE  ======------ - ->
-          <div class="row" style="display: none">
-            <div class="col-sm-8">
-              <div class="buttonInside">
-                <!- - INPUT 'FULL TEXT' - ->
-                <input name="fullText" type="text" [(ngModel)]="fullText" class="form-control full-text-search"
-                  autocomplete="off" placeholder="{{ 'SearchYourContacts' | translate }}"
-                  style="padding-left: 8px;">
-
-                <!- - // CLEAR SEARCH FULL-TEXT BTN - ->
-                <span id="clear-fulltext-search" *ngIf="fullText?.length > 0"
-                  class="glyphicon glyphicon-remove tooltipx" aria-hidden="true" (click)="clearFullText()">
-                  <span style="font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif !important;"
-                    class="tooltiptext-custom">
-                    {{ 'ClearSearch' | translate }}
-                  </span>
-                </span>
-              </div>
-            </div>
-
-            <div class="col-sm-4">
-              <input style="margin-top:2px" name="contactEmail" [(ngModel)]="selectedContactEmail"
-                class="form-control" type="email" style="background-image: none !important"
-                placeholder="{{ 'SearchByEmail' | translate }}">
-            </div>
-          </div>
-
-          <!- - -------====== BTNS SEARCH  & CLEAR SEARCH & EXPORT TO CSV !DISPLAY NONE ======------ - ->
-          <div class="row" style="display: none">
-            <div class="col-sm-12">
-              <button style="padding: 9px 30px;" type="submit" class="btn btn-white searchbtn" (click)="search()">
-                <span class="glyphicon glyphicon-search" aria-hidden="true" style="color:#7695a5"></span>
-              </button>
-
-              <button style="padding: 9px 30px; color: #7695a5" type="submit" class="btn btn-white clearsearchbtn"
-                (click)="clearSearch()">
-
-                {{ 'HistoryPage.ClearSearch' | translate }}
-              </button>
-
-              <button style="padding: 9px 30px; color: #7695a5" class="btn btn-white pull-right export-to-csv-btn"
-                (click)="exportContactsToCsv()">
-
-                {{ 'ExportToCSV' | translate }}
-              </button>
-
-              <button style="padding: 9px 30px; color: #7695a5" class="btn btn-white pull-right export-to-csv-btn"
-                (click)="openTrashedContact()">
-                <span class="material-icons">
-                  delete
-                </span>
-              </button>
-            </div>
-          </div> -->
-
             </form>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- 
-    // -------------------------------------------------------
-    // Contacts sidebar
-    // ------------------------------------------------------- -->
+     
+    <!-- ------------------------------------------------------- -->
+    <!-- Contacts sidebar -->
+    <!-- ------------------------------------------------------- -->
     <div id="contacts-page">
       <div id="contacts-sideBar">
         <div class="card nav-card" style="margin-bottom: 0px;margin-top: 0px; padding: 15px 0px;">
