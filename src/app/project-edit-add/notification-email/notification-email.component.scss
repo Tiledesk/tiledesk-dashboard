@@ -2,126 +2,245 @@
 
 // - start - BOTTOM NAVBAR  //
 .email-tmplt-bottom-nav {
-    background-color: #fff;
-    width: 100%;
-    z-index: 1028;
-    position: relative;
-    top: 5px;
-    box-shadow: 0 2px 2px rgba(0, 0, 60, 0.08);
-    padding-bottom: 5px;
-    float: left;
-    height: 50px;
-    padding-left: 0px;
-    display: flex;
-    flex-grow: 1;
-  }
-  
-  .email-tmplt-bottom-nav li {
-    float: left;
-    padding: 15px;
-    list-style: none;
-    position: relative;
-    display: block;   
-    height: 52px;
-    cursor: pointer;
-  }
-  
-  .email-tmplt-bottom-nav li a {
-    padding: 18px 15px;
-    color: #797979;
-    line-height: 20px;
-  }
-  
-  .email-tmplt-bottom-nav li a:hover{
-    text-decoration: none;
+  background-color: #fff;
+  width: 100%;
+  z-index: 1028;
+  position: relative;
+  top: 5px;
+  box-shadow: 0 2px 2px rgba(0, 0, 60, 0.08);
+  padding-bottom: 5px;
+  float: left;
+  height: 50px;
+  padding-left: 0px;
+  display: flex;
+  flex-grow: 1;
+  white-space: nowrap;
+ 
+}  
+.email-tmplt-bottom-nav li {
+  float: left;
+  padding: 15px;
+  list-style: none;
+  position: relative;
+  display: block;
+  height: 52px;
+  cursor: pointer;
+}
+
+.email-tmplt-bottom-nav li a {
+  padding: 18px 15px;
+  color: #797979;
+  line-height: 20px;
+}
+
+.email-tmplt-bottom-nav li a:hover {
+  text-decoration: none;
   //  background-color: #eee;
-  }
-  
-  .li-active  {
-    border-bottom: 3px solid $brand-primary !important;
-    color: $brand-primary !important;
-    cursor: default !important;
-  }
-  
-  .li-active  a {
-    color: $brand-primary!important;
-  }
-  
-  $f21blue: #039be5;
-  .btn-with-border-effect {
-    background: none;
-    border: 0;
-    box-sizing: border-box;
-    // margin: 1em;
-    // padding: 1em 2em;
+}
+
+.li-active {
+  border-bottom: 3px solid $brand-primary !important;
+  color: $brand-primary !important;
+  cursor: default !important;
+}
+
+.li-active a {
+  color: $brand-primary !important;
+}
+
+$f21blue: #039be5;
+.btn-with-border-effect {
+  background: none;
+  border: 0;
+  box-sizing: border-box;
+  // margin: 1em;
+  // padding: 1em 2em;
   //   padding-bottom: 37px;
-    font-size: 14px;
-    font-weight: 300;
-  
-    // Required, since we're setting absolute on pseudo-elements
-    position: relative;
-    vertical-align: middle;
-  
-    &::before,
-    &::after {
-      box-sizing: inherit;
-      content: '';
-      position: absolute;
-      width: 100%;
-      height: 100%;
-    }
+  font-size: 14px;
+  font-weight: 300;
+
+  // Required, since we're setting absolute on pseudo-elements
+  position: relative;
+  vertical-align: middle;
+
+  &::before,
+  &::after {
+    box-sizing: inherit;
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
   }
-  
-  .border-from-center {
-    &:hover {
-      color: $brand-primary;
-    }
-  
-    // Set up base styles, we're going to scale instead of animating width/height
-    &::before,
-    &::after {
+}
+
+.border-from-center {
+  &:hover {
+    color: $brand-primary;
+  }
+
+  // Set up base styles, we're going to scale instead of animating width/height
+  &::before,
+  &::after {
     //   top: 3px;
-      top: 0px;
-      left: 0;
-      height: 100%;
-      width: 100%;
-      transform-origin: center; // Ensure scaling is done from the center (expands outwards)
-    }
-  
-    // scale3d(<scale-horizontal>, <scale-vertical>, <scale-depth>);
-    &::before {
-      // border-top: 2px solid $purple;
-      border-bottom: 3px solid $brand-primary;
-      transform: scale3d(0,1,1); // Shrink only width
-    }
-  
-     &:hover::before,
-    &:hover::after {
-      transform: scale3d(1,1,1); // Show full-size
-      transition: transform 0.5s;
-    }
+    top: 0px;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    transform-origin: center; // Ensure scaling is done from the center (expands outwards)
   }
-  
-  @media (max-width: 991px){
-    .email-tmplt-bottom-nav { 
-        top: -2px !important;
-    }
 
+  // scale3d(<scale-horizontal>, <scale-vertical>, <scale-depth>);
+  &::before {
+    // border-top: 2px solid $purple;
+    border-bottom: 3px solid $brand-primary;
+    transform: scale3d(0, 1, 1); // Shrink only width
   }
-  
-  
-  @media (max-width: 370px){
-    .email-tmplt-bottom-nav { 
-        height: 37px!important;
-    }
-  
-    .email-tmplt-bottom-nav li {
-        padding: 6px !important;
-        height: 39px;
-    }    
-  }
-  // - end - BOTTOM NAVBAR  //
 
-  #iframe-placeholder {
-    text-align:center; line-height: 484px;
+  &:hover::before,
+  &:hover::after {
+    transform: scale3d(1, 1, 1); // Show full-size
+    transition: transform 0.5s;
   }
+}
+
+@media (max-width: 991px) {
+  .email-tmplt-bottom-nav {
+    top: -2px !important;
+  }
+}
+
+@media (max-width: 370px) {
+  .email-tmplt-bottom-nav {
+    height: 37px !important;
+  }
+
+  .email-tmplt-bottom-nav li {
+    padding: 6px !important;
+    height: 39px;
+  }
+}
+// - end - BOTTOM NAVBAR  //
+
+// LEFT NAVBAR
+#contacts-page {
+  display: flex;
+  // height: calc( 100vh - 30px);
+  /* calculate the height. Header is 30px */
+}
+
+#contacts-sideBar {
+  width: 240px;
+  min-width: 240px;
+  max-width: 240px;
+  margin-right: 10px;
+}
+
+#contacts-content {
+ 
+  flex: 1 0 auto;
+  /* enable grow, disable shrink */
+}
+
+.nav-contacts-li {
+  height: 40px;
+  border-radius: 0 20px 20px 0;
+  margin-right: 16px;
+  line-height: 39px;
+  font-weight: 400;
+  cursor: pointer;
+  padding-left: 8px;
+}
+.nav-contacts-li:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.nav-contacts-li-active:hover {
+  background-color: #3ea9f5;
+  color: #fff !important;
+}
+
+.nav-contacts-li-active {
+  background-color: #3ea9f5;
+  color: #fff !important;
+}
+
+.nav-contacts-li-active i {
+
+  color: #fff !important;
+}
+// END LEFT NAVBAR
+
+// -------------------------------------------------
+// stretch spinner https://tobiasahlin.com/spinkit/
+// -------------------------------------------------
+.stretchspinner_in_app_install {
+  margin: 100px auto;
+  width: 50px;
+  height: 40px;
+  text-align: center;
+  font-size: 10px;
+  position: absolute;
+  margin: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.stretchspinner_in_app_install > div {
+  background-color: $brand-primary;
+  height: 100%;
+  width: 6px;
+  display: inline-block;
+
+  -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
+  animation: sk-stretchdelay 1.2s infinite ease-in-out;
+}
+
+.stretchspinner_in_app_install .rect2 {
+  -webkit-animation-delay: -1.1s;
+  animation-delay: -1.1s;
+}
+
+.stretchspinner_in_app_install .rect3 {
+  -webkit-animation-delay: -1s;
+  animation-delay: -1s;
+}
+
+.stretchspinner_in_app_install .rect4 {
+  -webkit-animation-delay: -0.9s;
+  animation-delay: -0.9s;
+}
+
+.stretchspinner_in_app_install .rect5 {
+  -webkit-animation-delay: -0.8s;
+  animation-delay: -0.8s;
+}
+
+@-webkit-keyframes sk-stretchdelay {
+  0%,
+  40%,
+  100% {
+    -webkit-transform: scaleY(0.4);
+  }
+  20% {
+    -webkit-transform: scaleY(1);
+  }
+}
+
+@keyframes sk-stretchdelay {
+  0%,
+  40%,
+  100% {
+    transform: scaleY(0.4);
+    -webkit-transform: scaleY(0.4);
+  }
+  20% {
+    transform: scaleY(1);
+    -webkit-transform: scaleY(1);
+  }
+}
+
+.hide-stretchspinner {
+  display: none;
+}
