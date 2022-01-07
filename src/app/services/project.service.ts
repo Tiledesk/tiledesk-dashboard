@@ -361,7 +361,7 @@ export class ProjectService {
   public getEmailTemplate(temaplateName) {
     const url = this.SERVER_BASE_PATH + this.projectID + '/emails/templates/' + temaplateName;
 
-    this.logger.log('[PROJECT-SERV] - GET SUBSCRIPTION BY ID - URL', url);
+    this.logger.log('[PROJECT-SERV] - GET EMAIL TEMPLATE - URL', url);
 
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -373,11 +373,11 @@ export class ProjectService {
 
   public updateEmailTempalte(temaplateName: string, template: any) {
 
-    let url = this.PROJECTS_URL + this.projectID;
+    let url = this.PROJECTS_URL + this.projectID + '/'
    
     console.log('[PROJECT-SERV] UPDATE EMAIL TEMPLATE - PUT URL ', url);
     console.log('[PROJECT-SERV] UPDATE EMAIL TEMPLATE - temaplateName ', temaplateName);
-    console.log('[PROJECT-SERV] UPDATE EMAIL TEMPLATE - temaplateName ', template);
+    // console.log('[PROJECT-SERV] UPDATE EMAIL TEMPLATE - template ', template);
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
