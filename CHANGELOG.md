@@ -4,6 +4,12 @@
 ### 2.2.31-rc2
 - Fixes the bug: the placeholder "No conversation" is not displayed in the iframe of the left side panel of the chat if at least one conversation does not exist (even if assigned)
 - Change the placeholder image "No Conversation" in the iframe of the left side panel of the chat
+- Add style rule to prevent text in sidebar menu items from going over two lines
+- Improves the method used for deleting a teammate in the teammate list
+- Implement custom modal windows, custom titles and custom tooltips for the "ENTERPRISE" project profile
+- Adds the ability to customize notification email templates
+- Allows only to teammates with the role of owner of projects with an "Enterprise" plan to manage notification email templates
+- Adds the ability to configure SMTP settings
 
 ### 2.2.31-rc1
 - Fixes the bug: when a language is selected for a trigger that has the key "request.create" the value of the selected language contains the country code
