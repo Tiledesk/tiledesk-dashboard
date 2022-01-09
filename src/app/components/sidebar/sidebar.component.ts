@@ -107,7 +107,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     // IS_UNAVAILABLE = false;
     IS_AVAILABLE: boolean;
     IS_BUSY: boolean;
-    SIDEBAR_IS_SMALL: boolean;
+    SIDEBAR_IS_SMALL: boolean = false;
     projectUser_id: string;
 
     project: Project;
@@ -150,6 +150,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     HOME_ROUTE_IS_ACTIVE: boolean;
     TRIGGER_ROUTE_IS_ACTIVE: boolean;
     NOTIFICATION_EMAIL_IS_ACTIVE: boolean;
+    YOUR_PROJECT_ROUTE_IS_ACTIVE: boolean;
+    AUTOLOGIN_ROUTE_IS_ACTIVE: boolean;
     prjct_profile_name: string;
     prjct_trial_expired: boolean;
     prjc_trial_days_left: number
@@ -389,7 +391,36 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             .subscribe(event => {
                 // this.logger.log('[SIDEBAR] NavigationEnd ', event.url);
 
-                // USED FOR THE BADGE 'NEW'
+                // this.nav_project_id !== 'email' &&
+                // url_segments[1] !== 'user' &&
+                // url_segments[1] !== 'handle-invitation' &&
+                // url_segments[1] !== 'signup-on-invitation' &&
+                // url_segments[1] !== 'resetpassword' &&
+                // url_segments[1] !== 'autologin' &&
+                // current_url !== '/projects'
+
+                if (event.url.indexOf('/autologin') !== -1) {
+                    this.logger.log('[SIDEBAR] NavigationEnd - THE activities-demo route IS ACTIVE  ', event.url);
+                    this.AUTOLOGIN_ROUTE_IS_ACTIVE = true;
+                    // const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
+                    // this.logger.log('[SIDEBAR] NavigationEnd - elemMainPanel  ', elemMainPanel);
+                    // elemMainPanel.style.width = "100% !important"
+                } else {
+                    // this.logger.log('[SIDEBAR] NavigationEnd - THE activities-demo route IS NOT ACTIVE  ', event.url);
+                    this.AUTOLOGIN_ROUTE_IS_ACTIVE = false;
+                }
+                
+                if (event.url === '/projects') {
+                    this.logger.log('[SIDEBAR] NavigationEnd - THE activities-demo route IS ACTIVE  ', event.url);
+                    this.YOUR_PROJECT_ROUTE_IS_ACTIVE = true;
+                    // const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
+                    // this.logger.log('[SIDEBAR] NavigationEnd - elemMainPanel  ', elemMainPanel);
+                    // elemMainPanel.style.width = "100% !important"
+                } else {
+                    // this.logger.log('[SIDEBAR] NavigationEnd - THE activities-demo route IS NOT ACTIVE  ', event.url);
+                    this.YOUR_PROJECT_ROUTE_IS_ACTIVE = false;
+                }
+
                 if (event.url.indexOf('/activities') !== -1) {
                     // this.logger.log('[SIDEBAR] NavigationEnd - THE activities-demo route IS ACTIVE  ', event.url);
                     this.ACTIVITIES_ROUTE_IS_ACTIVE = true;
@@ -449,13 +480,13 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 if (event.url.indexOf('/notification-email') !== -1) {
                     // this.logger.log('[SIDEBAR] NavigationEnd - THE home route IS ACTIVE  ', event.url);
                     this.NOTIFICATION_EMAIL_IS_ACTIVE = true;
-                    this.smallSidebar(true)
+                    // this.smallSidebar(true)
                 } else {
                     // this.logger.log('[SIDEBAR] NavigationEnd - THE home route IS NOT ACTIVE  ', event.url);
                     this.NOTIFICATION_EMAIL_IS_ACTIVE = false;
-                    this.smallSidebar(false)
+                    // this.smallSidebar(false)
                 }
-          
+
             });
     }
 
@@ -898,14 +929,38 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
 
     isMobileMenu() {
+        // console.log('SIDEBAR_IS_SMALL', this.SIDEBAR_IS_SMALL)
         if ($(window).width() > 991) {
             this.IS_MOBILE_MENU = false
             // this.logger.log('[SIDEBAR] - IS MOBILE MENU ', this.IS_MOBILE_MENU);
+            // USED FOR THE SMALL SIDEBAR
+            // const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
+            // const elemSidebar = <HTMLElement>document.querySelector('.sidebar');
+            // const elemSidebarWrapper = <HTMLElement>document.querySelector('.sidebar-wrapper');
+            // if (this.SIDEBAR_IS_SMALL === false) {
+            //     if (this.YOUR_PROJECT_ROUTE_IS_ACTIVE === false && this.AUTOLOGIN_ROUTE_IS_ACTIVE) {
+            //         elemMainPanel.style.width = "calc(100% - 260px)";
+            //         elemSidebar.style.width = "260px"
+            //         elemSidebarWrapper.setAttribute('style', 'width: 260px;background-color: #2d323e!important');
+            //     }
+            // } else if (this.SIDEBAR_IS_SMALL === true) {
+            //     elemMainPanel.style.width = "calc(100% - 70px)"
+            //     elemSidebar.style.width = "70px"
+            //     elemSidebarWrapper.setAttribute('style', 'width: 70px; background-color: #2d323e!important');
+            // }
             return false;
         }
+
         this.IS_MOBILE_MENU = true
 
-        // this.logger.log('[SIDEBAR] - IS MOBILE MENU ', this.IS_MOBILE_MENU);
+        // USED FOR THE SMALL SIDEBAR
+        // const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
+        // const elemSidebarWrapper = <HTMLElement>document.querySelector('.sidebar-wrapper');
+        // const elemSidebar = <HTMLElement>document.querySelector('.sidebar');
+        // elemMainPanel.style.width = "100%"
+        // elemSidebarWrapper.setAttribute('style', 'width: 260px;background-color: #2d323e!important');
+        // elemSidebar.style.width = "260px"
+        // // this.logger.log('[SIDEBAR] - IS MOBILE MENU ', this.IS_MOBILE_MENU);
 
         return true;
     };
@@ -927,8 +982,86 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
         } else {
             this.IS_MOBILE_MENU = true
+
+
         }
     }
+
+    smallSidebar(IS_SMALL) {
+        this.SIDEBAR_IS_SMALL = IS_SMALL;
+        this.logger.log('[SIDEBAR] smallSidebar ', IS_SMALL)
+
+        const elemSidebarWrapper = <HTMLElement>document.querySelector('.sidebar-wrapper');
+        const elemSidebar = <HTMLElement>document.querySelector('.sidebar');
+        const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
+        const elemHtmlTag = <HTMLElement>document.querySelector('html');
+        console.log('[SIDEBAR] smallSidebar', elemHtmlTag)
+        elemHtmlTag.style.overflowY = 'auto';
+        // this.logger.log('elemAppSidebar', elemAppSidebar)
+
+        if (IS_SMALL === true) {
+            elemSidebar.setAttribute('style', 'width: 70px;');
+            elemSidebarWrapper.setAttribute('style', 'width: 70px; background-color: #2d323e!important');
+            elemMainPanel.setAttribute('style', 'width:calc(100% - 70px);');
+            elemMainPanel.style.overflowX = 'hidden';
+            elemSidebarWrapper.style.height = "calc(100vh - 45px)";
+
+            // if (this.IS_MOBILE_MENU === false) {
+            //     elemMainPanel.style.width = "calc(100% - 70px)"
+            // } else {
+            //     elemMainPanel.style.width = "100%"
+            // }
+
+            // if (window.matchMedia(`(min-width: 992px)`).matches ) {
+            //     console.log('[SIDEBAR] smallSidebar TRUE matchMedia' ) 
+            //     elemMainPanel.style.width = "100%"
+            //  }
+            // [].forEach.call(
+            //     document.querySelectorAll('.nav-container ul li a p'),
+            //     function (el) {
+            //         el.setAttribute('style', 'display: none');
+            //     }
+            // );
+
+            // [].forEach.call(
+            //     document.querySelectorAll('.nav-container ul li a'),
+            //     function (el) {
+            //         el.setAttribute('style', 'height: 40px');
+            //     }
+            // );
+
+        } else {
+            if (this.YOUR_PROJECT_ROUTE_IS_ACTIVE === false && this.AUTOLOGIN_ROUTE_IS_ACTIVE === false) {
+                elemSidebar.setAttribute('style', 'width: 260px;');
+                elemSidebarWrapper.setAttribute('style', 'width: 260px;background-color: #2d323e!important');
+                elemMainPanel.setAttribute('style', 'width:calc(100% - 260px);');
+                elemSidebarWrapper.style.height = "calc(100vh - 60px)";
+            }
+            // if (this.IS_MOBILE_MENU === false) {
+            //     elemMainPanel.style.width = "calc(100% - 260px)"
+            // } else {
+            //     elemMainPanel.style.width = "100%"
+            // }
+
+
+            //  if (window.matchMedia(`(max-width: 991px)`).matches ) {
+            //     console.log('[SIDEBAR] smallSidebar FALSE matchMedia' ) 
+            //     elemMainPanel.style.width = "100%"
+            //  }
+
+
+
+            // [].forEach.call(
+            //     document.querySelectorAll('.nav-container ul li a p'),
+            //     function (el) {
+            //         el.setAttribute('style', 'display: block');
+            //     }
+            // );
+        }
+    }
+
+
+
 
     onScroll(event: any): void {
         // this.logger.log('[SIDEBAR] RICHIAMO ON SCROLL ');
@@ -1146,54 +1279,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     // }
 
 
-    smallSidebar(IS_SMALL) {
-        this.SIDEBAR_IS_SMALL = IS_SMALL;
-        this.logger.log('[SIDEBAR] smallSidebar ', IS_SMALL)
 
-        const elemSidebarWrapper = <HTMLElement>document.querySelector('.sidebar-wrapper');
-        const elemSidebar = <HTMLElement>document.querySelector('.sidebar');
-        const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
-        const elemHtmlTag = <HTMLElement>document.querySelector('html');
-        console.log('[SIDEBAR] smallSidebar' ,elemHtmlTag ) 
-        elemHtmlTag.style.overflowY  = 'auto';
-        // this.logger.log('elemAppSidebar', elemAppSidebar)
-
-        if (IS_SMALL === true) {
-            elemSidebar.setAttribute('style', 'width: 70px;');
-            elemSidebarWrapper.setAttribute('style', 'width: 70px; background-color: #2d323e!important');
-            elemMainPanel.setAttribute('style', 'width:calc(100% - 70px);');
-            elemMainPanel.style.overflowX  = 'hidden';
-            elemSidebarWrapper.style.height = "calc(100vh - 45px)";
-            // [].forEach.call(
-            //     document.querySelectorAll('.nav-container ul li a p'),
-            //     function (el) {
-            //         el.setAttribute('style', 'display: none');
-            //     }
-            // );
-
-            // [].forEach.call(
-            //     document.querySelectorAll('.nav-container ul li a'),
-            //     function (el) {
-            //         el.setAttribute('style', 'height: 40px');
-            //     }
-            // );
-
-        } else {
-            elemSidebar.setAttribute('style', 'width: 260px;');
-            elemSidebarWrapper.setAttribute('style', 'width: 260px;background-color: #2d323e!important');
-            elemMainPanel.setAttribute('style', 'width:calc(100% - 260px);');
-            elemSidebarWrapper.style.height = "calc(100vh - 60px)";
-
-
-
-            // [].forEach.call(
-            //     document.querySelectorAll('.nav-container ul li a p'),
-            //     function (el) {
-            //         el.setAttribute('style', 'display: block');
-            //     }
-            // );
-        }
-    }
 
 
 

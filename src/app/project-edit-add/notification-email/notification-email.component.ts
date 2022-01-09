@@ -35,7 +35,7 @@ export class NotificationEmailComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit() {
-    this.setPerfectScrollbar();
+    // this.setPerfectScrollbar();
     // this.showSpinner = true
     // this.getAssignedRequestTemplate();
     this.subscribeToCurrentProjectAndGetProjectById()
@@ -43,20 +43,20 @@ export class NotificationEmailComponent implements OnInit, AfterViewInit {
     console.log('[NOTIFICATION-EMAIL] - GET EMAIL TEMPALTE - ACTIVE TEMPLATE ', this.active_template);
     this.auth.checkRoleForCurrentProjectPermissionOnlyToOwner
 
-    if (window.matchMedia(`(min-width: 960px)`).matches) {
-      const bottom_navbar = <HTMLElement>document.querySelector('.email-tmplt-bottom-nav');
-      let ps = new PerfectScrollbar(bottom_navbar, {suppressScrollY: true});
-      ps.update();
-    }
+    // if (window.matchMedia(`(min-width: 960px)`).matches) {
+    //   const bottom_navbar = <HTMLElement>document.querySelector('.email-tmplt-bottom-nav');
+    //   let ps = new PerfectScrollbar(bottom_navbar, {suppressScrollY: true});
+    //   ps.update();
+    // }
   }
 
-  setPerfectScrollbar() {
-    const bottom_navbar = <HTMLElement>document.querySelector('.email-tmplt-bottom-nav');
-    console.log('[NOTIFICATION-EMAIL] bottom_navbar', bottom_navbar);
-    let ps = new PerfectScrollbar(bottom_navbar, {suppressScrollY: true});
-    ps.update();
-  }
-  // 
+  // setPerfectScrollbar() {
+  //   const bottom_navbar = <HTMLElement>document.querySelector('.email-tmplt-bottom-nav');
+  //   console.log('[NOTIFICATION-EMAIL] bottom_navbar', bottom_navbar);
+  //   let ps = new PerfectScrollbar(bottom_navbar, {suppressScrollY: true});
+  //   ps.update();
+  // }
+
 
   subscribeToCurrentProjectAndGetProjectById() {
     this.auth.project_bs.subscribe((project) => {

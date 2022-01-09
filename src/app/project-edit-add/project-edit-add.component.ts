@@ -142,6 +142,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   onlyOwnerCanManageTheAccountPlanMsg: string;
   onlyOwnerCanManageEmailTempalte: string;
+  onlyAvailableWithEnterprisePlan: string;
   learnMoreAboutDefaultRoles: string;
   TESTSITE_BASE_URL: string;
   TEST_WIDGET_API_BASE_URL: string;
@@ -286,10 +287,16 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         this.onlyOwnerCanManageTheAccountPlanMsg = translation;
       });
 
-      this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheEmailTemplate')
+    this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheEmailTemplate')
       .subscribe((translation: any) => {
         // this.logger.log('[PRJCT-EDIT-ADD] onlyOwnerCanManageTheAccountPlanMsg text', translation)
         this.onlyOwnerCanManageEmailTempalte = translation;
+      });
+
+      this.translate.get('ProjectEditPage.FeatureOnlyAvailableWithTheEnterprisePlan')
+      .subscribe((translation: any) => {
+        // this.logger.log('[PRJCT-EDIT-ADD] onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        this.onlyAvailableWithEnterprisePlan = translation;
       });
 
 
@@ -555,7 +562,20 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.presentModalOnlyOwnerCanManageTheAccountPlan()
     }
   }
-  
+  presentModalFeautureAvailableOnlyWithEnterprisePlan () {
+    const el = document.createElement('div')
+    el.innerHTML = this.onlyAvailableWithEnterprisePlan
+    swal({
+      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
+      content: el,
+      icon: "info",
+      // buttons: true,
+      button: {
+        text: "OK",
+      },
+      dangerMode: false,
+    })
+  }
 
   presentModalOnlyOwnerCanManageEmailTempalte() {
     // https://github.com/t4t5/sweetalert/issues/845
@@ -614,15 +634,38 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
 
   goToCustomizeNotificationEmailPage() {
-    if (this.USER_ROLE === 'owner') {
-      this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_Payments ');
-      this.router.navigate(['project/' + this.id_project + '/notification-email']) 
-    } else {
-      this.presentModalOnlyOwnerCanManageEmailTempalte()
+    console.log('goToCustomizeNotificationEmailPage profile_name ', this.profile_name )
+    if (this.profile_name === 'enterprise') {
+      if (this.USER_ROLE === 'owner') {
+        this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToCustomizeNotificationEmailPage ');
+        this.router.navigate(['project/' + this.id_project + '/notification-email'])
+      } else {
+        this.presentModalOnlyOwnerCanManageEmailTempalte()
+      }
+    } else{
+      this.presentModalFeautureAvailableOnlyWithEnterprisePlan()
+    }
+  }
+
+  goToManageEmailSettings() {
+    console.log('goToManageEmailSettings profile_name ', this.profile_name )
+    if (this.profile_name === 'enterprise') {
+      if (this.USER_ROLE === 'owner') {
+        this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToManageEmailSettings');
+        this.router.navigate(['project/' + this.id_project + '/smtp-settings'])
+      } else {
+        this.presentModalOnlyOwnerCanManageEmailTempalte()
+      }
+    } else{
+      this.presentModalFeautureAvailableOnlyWithEnterprisePlan()
     }
   }
 
   
+
+ 
+
+
 
   // "SubscriptionSuccessfullyCanceled":"Abbonamento annullato correttamente",
   // "AnErrorOccurredWhileCancellingSubscription": "Si è verificato un errore durante l'annullamento dell'abbonamento",

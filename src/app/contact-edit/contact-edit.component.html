@@ -10,7 +10,7 @@
     <div class="row">
 
       <div class="col-md-12">
-        <div class="card" style="padding-top: 25px;">
+        <div class="card card--no-border" style="padding-top: 25px;">
           <loading-spinner *ngIf="showSpinner"></loading-spinner>
           <!--  -->
           <form>
@@ -208,7 +208,7 @@
             <div class="card-footer" style="border-color: #e8f0f5 !important;">
               <button type="submit" #editleadbtn class="btn btn-primary" (click)="editContact()"
                 [disabled]="!EMAIL_IS_VALID">
-                {{ "EditContact" | translate }}
+                {{ "UpdateContact" | translate }}
               </button>
             </div>
           </form>
