@@ -132,6 +132,7 @@
     "TeamIntro": "Introduzione del team",
     "IntroduceYourTeam": "Presenta il tuo team e spiega come puoi aiutare i tuoi visitatori",
     "EditContact": "Modifica Contatto",
+    "UpdateContact": "Aggiorna contatto",
     "EnterValidEmail": "Inserire un indirizzo email valido",
     "AreYouSure": "Sei sicuro",
     "YouAreAboutToDeleteTheContact": "Stai per eliminare il contatto",
@@ -707,6 +708,17 @@
         "CustomizeEmailTemplateBtn":"Personalizza le email",
         "SeeThePreviewOfTheEmail":"Visualizza l'anteprima dell'e-mail facendo clic sul pulsante Visualizza anteprima",
         "SeePreview":"Vedi anteprima",
+        "FeatureOnlyAvailableWithTheEnterprisePlan": "Spiacenti, questa funzione è disponibile solo con il piano Enterprise",
+        "SMTPSettings": "Impostazioni SMTP",
+        "SMTPSettingsSubTitle": "Configura le impostazioni SMTP",
+        "ManageSMTPSettings": "Gestisci le impostazioni SMTP",
+        "HostName": "nome Host",
+        "Port":"Numero porta", 
+        "SenderAddress":"Indirizzo mittente",
+        "SMTPAuthenticationAndSecurity":"Autenticazione e Sicurezza",
+        "UserName":"Nome utente",
+        "ConnectionSecurity":"Sicurezza della connessione",
+        "SendSMPTTestEmail": "Invia email di prova",
         "NotificationMsgs": {
             "UpdateProjectSuccess": "Progetto aggiornato con successo",
             "UpdateProjectError": "Si è verificato un errore durante l'aggiornamento del progetto",
@@ -1923,5 +1935,9 @@
     "PaydPlanName":"Piano {{projectprofile}}",
     "assignedRequest":"Conversazione assegnate",
     "assignedEmailMessage":"Messaggio email assegnato",
-    "pooledRequest":"Conversazione pooled"
+    "pooledRequest":"Conversazione pooled",
+    "pooledEmailMessage":"Messaggio email pooled",
+    "newMessage":"Nuovo messaggio",
+    "ticket":"Ticket",
+    "sendTranscript": "Invia chat transcript"
 }
