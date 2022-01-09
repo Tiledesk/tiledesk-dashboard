@@ -1185,22 +1185,6 @@
                   </h3>
                 </div>
 
-                <!-- SWITCH BUTTON -->
-                <!-- <div class="col-md-6">
-                  <h3 class="card-title onoffswitch_container_first_line">
-
-                    <div class="onoffswitch">
-                      <input (change)="toggleProjectUnassignedConversation($event)"
-                        [checked]="unassigned_conv_on === true" type="checkbox" name="unassigned_conv_onoffswitch"
-                        class="onoffswitch-checkbox" id="unassigned_conv_onoffswitch">
-                      <label class="onoffswitch-label" for="unassigned_conv_onoffswitch">
-                        <span class="onoffswitch-inner"></span>
-                        <span class="onoffswitch-switch"></span>
-                      </label>
-                    </div>
-                  </h3>
-                </div> -->
-
                 <!-- SUBTITLE -->
                 <div class="col-md-12">
                   <div class="section-subtitle"></div>
@@ -1209,7 +1193,8 @@
                 </div>
 
                 <div class="col-xs-12">
-                  <button (click)="goToCustomizeNotificationEmailPage()" class="btn btn-primary" style="margin-top:5px; padding:6px 15px ">
+                  <button (click)="goToCustomizeNotificationEmailPage()" class="btn btn-primary"
+                    style="margin-top:5px; padding:6px 15px ">
                     {{ "ProjectEditPage.CustomizeEmailTemplateBtn" | translate }}
                   </button>
                 </div>
@@ -1217,6 +1202,34 @@
 
               </div>
               <!-- END CUSTOMIZE EMAILS SENT TO AGENTS -->
+
+              <!-- CONFIGURE EMAIL SMTP  -->
+              <div class="row" style="margin-top: 40px;">
+                <div class="col-md-6">
+                  <h3 class="card_title__underlined">
+                    <span class="card_title__underline">
+                      {{ "ProjectEditPage.SMTPSettings" | translate }}
+                    </span>
+                  </h3>
+                </div>
+
+                <!-- SUBTITLE -->
+                <div class="col-md-12">
+                  <div class="section-subtitle"></div>
+                  <p style="margin-top: -10px;">
+                    {{ "ProjectEditPage.SMTPSettingsSubTitle" | translate }}</p>
+                </div>
+
+                <div class="col-xs-12">
+                  <button (click)="goToManageEmailSettings()" class="btn btn-primary"
+                    style="margin-top:5px; padding:6px 15px ">
+                    {{ "ProjectEditPage.ManageSMTPSettings" | translate }}
+                  </button>
+                </div>
+
+
+              </div>
+              <!-- END CONFIGURE EMAIL SMTP -->
 
             </span>
 

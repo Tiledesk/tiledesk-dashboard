@@ -372,9 +372,7 @@ export class ProjectService {
   }
 
   public updateEmailTempalte(temaplateName: string, template: any) {
-
     let url = this.PROJECTS_URL + this.projectID + '/'
-   
     console.log('[PROJECT-SERV] UPDATE EMAIL TEMPLATE - PUT URL ', url);
     console.log('[PROJECT-SERV] UPDATE EMAIL TEMPLATE - temaplateName ', temaplateName);
     // console.log('[PROJECT-SERV] UPDATE EMAIL TEMPLATE - template ', template);
@@ -393,6 +391,38 @@ export class ProjectService {
 
     let body = {}
     body["settings.email.templates." + temaplateName] = template;
+    // -------------------------------------------------------
+    // Andrea L
+    // -------------------------------------------------------
+    // let body = { settings: { email: { templates: { }} } }
+    // body.settings.email.templates[temaplateName] = template
+
+
+    return this.http
+      .put(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+  }
+
+  public updateSMPTSettigs(smtp_host_name,  smtp_port ,sender_email_address, smtp_usermame, smtp_pswd, smtp_connetion_security) {
+    let url = this.PROJECTS_URL + this.projectID + '/'
+    console.log('[PROJECT-SERV] SAVE SMTP SETTINGS - PUT URL ', url);
+    console.log('[PROJECT-SERV] SAVE SMTP SETTINGS - smtp_host_name ', smtp_host_name);
+    // console.log('[PROJECT-SERV] UPDATE EMAIL TEMPLATE - template ', template);
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+
+
+    // const body = { "settings.email.templates": template }
+    // Object.keys(body).forEach(k => {
+    //   console.log('body key: ', k)
+    //   k + temaplateName
+    // });
+
+    let body = {}
+    // body["settings.email.templates." + temaplateName] = template;
     // -------------------------------------------------------
     // Andrea L
     // -------------------------------------------------------

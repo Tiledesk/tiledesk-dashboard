@@ -1,0 +1,153 @@
+<div class="navbar-brand" style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px">
+  <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" rel="tooltip" title="go back"
+    (click)="goBack()">keyboard_arrow_left</i>
+
+  {{ 'ProjectEditPage.SMTPSettings' | translate }}
+</div>
+
+<div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
+  <div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
+
+    <!-- -------- -->
+    <div class="row">
+
+      <div class="col-md-12">
+        <div class="card card--no-border">
+          <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
+
+          <form>
+            <!-- *ngIf="!showSpinner" -->
+            <div class="card-content">
+
+              <!-- --------------------------------------- -->
+              <!-- Host -->
+              <!-- --------------------------------------- -->
+              <div class="row">
+                <label class="col-sm-3  custom-label">
+                  {{'ProjectEditPage.HostName' | translate}}
+                </label>
+                <div class="col-xs-12 col-sm-6 col-md-5 col-lg-4">
+                  <input name="smtphost" [(ngModel)]="smtp_host_name" class="input" type="text">
+                </div>
+              </div>
+
+              <!-- --------------------------------------- -->
+              <!-- SMTP Port -->
+              <!-- --------------------------------------- -->
+              <div class="row">
+                <label class="col-sm-3  custom-label">
+                  {{ "ProjectEditPage.Port" | translate }}
+                </label>
+                <div class="col-xs-12 col-sm-6 col-md-5 col-lg-4">
+                  <input name="smtp_port" [(ngModel)]="smtp_port" class="input" type="text">
+                </div>
+              </div>
+
+              <!-- --------------------------------------- -->
+              <!-- Sender email Address -->
+              <!-- --------------------------------------- -->
+              <div class="row">
+                <label class="col-sm-3  custom-label">
+                  {{ "ProjectEditPage.SenderAddress" | translate }}
+                </label>
+                <div class="col-xs-12 col-sm-6 col-md-5 col-lg-4">
+                  <input name="senderaddress" [(ngModel)]="sender_email_address"
+                    (ngModelChange)="senderEmailChange($event)" class="input" type="email"
+                    [ngClass]="{'invalid-email' : !SENDER_EMAIL_IS_VALID}" style="margin-bottom:3px">
+                  <span *ngIf="!SENDER_EMAIL_IS_VALID" style="color: #f44336; font-size: 12px;">
+                    {{ "EnterValidEmail" | translate }}
+                  </span>
+                </div>
+              </div>
+
+              <!-- --------------------------------------------------------- -->
+              <!-- SMTP Authentication and security section -->
+              <!-- --------------------------------------------------------- -->
+              <div class="row">
+                <div class="col-md-12 col-12-section-title" style="margin-top: 25px;">
+                  <h3 class="card_title__underlined">
+                    <span class="card_title__underline">
+                      {{'ProjectEditPage.SMTPAuthenticationAndSecurity' | translate}}
+                    </span>
+                    <span class="card_title__gray_underline">
+                    </span>
+                  </h3>
+                </div>
+              </div>
+
+              <!-- --------------------------------------- -->
+              <!-- SMTP User name -->
+              <!-- --------------------------------------- -->
+              <div class="row">
+                <label class="col-sm-3  custom-label">
+                  {{ "ProjectEditPage.UserName" | translate }}
+                </label>
+                <div class="col-xs-12 col-sm-6 col-md-5 col-lg-4">
+                  <input name="smtpemail" [(ngModel)]="smtp_usermame" class="input" type="text">
+
+                </div>
+              </div>
+
+              <!-- --------------------------------------- -->
+              <!-- SMTP PSWD -->
+              <!-- --------------------------------------- -->
+              <div class="row">
+                <label class="col-sm-3  custom-label">
+                  Password
+                </label>
+                <div class="col-xs-12 col-sm-6 col-md-5 col-lg-4">
+                  <input name="smtpswd" [(ngModel)]="smtp_pswd" class="input" type="password"
+                    autocomplete="new-password">
+                </div>
+              </div>
+
+
+              <!-- --------------------------------------- -->
+              <!-- SMTP Connection security -->
+              <!-- --------------------------------------- -->
+              <div class="row">
+                <label class="col-sm-3  custom-label">
+                  {{ 'ProjectEditPage.ConnectionSecurity' | translate}}
+                </label>
+                <div class="col-xs-12 col-sm-6 col-md-5 col-lg-4">
+                  <div class="checkbox">
+                    <label>
+                      <input [(ngModel)]="smtp_connetion_security" type="checkbox" name="connectionSecurity">
+
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div> <!-- ./ card-content-->
+
+            <!-- [disabled]="!EMAIL_IS_VALID" -->
+            <!-- <div class="card-footer" style="border-color: #e8f0f5 !important;"> -->
+       
+              <div class="row" style="border-top:1px solid  #ddd !important;width: calc((100% / 3) + 360px); margin-left:18px">
+                <div class="col-xs-6" style=" padding-left:0px">
+                  <button class="btn btn-primary" (click)="sendSMTPTestEmail()" style="background: transparent;
+                  border: 1px solid #3ea9f5;
+                  color: #3ea9f5;">
+                    {{ "ProjectEditPage.SendSMPTTestEmail" | translate }}
+                  </button>
+                </div>
+                <div class="col-xs-6" style="text-align: right; padding-right:0px">
+                  <button type="submit" class="btn btn-primary" (click)="saveSMTPConfiguration()" >
+                    {{ "Save" | translate }}
+                  </button>
+                </div>
+              </div>
+            <!-- </div> -->
+          </form>
+        </div>
+      </div>
+      <!-- /. end col-md-8 -->
+
+
+
+    </div>
+
+
+    <!-- --------------- -->
+  </div>
+</div>
