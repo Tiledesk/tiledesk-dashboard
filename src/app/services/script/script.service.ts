@@ -49,18 +49,6 @@ export class ScriptService {
       this.loadRemoteConfig(environment['remoteConfigUrl'])
 
     }
-
-
-    // ScriptStore.forEach((script: any) => {
-    //   this.scripts[script.name] = {
-    //     loaded: false,
-    //     src: script.src
-    //   };
-    // });
-
-    // this.logger.log('ScriptService ScriptStore scripts', this.scripts);
-
-
   }
 
 
@@ -94,7 +82,6 @@ export class ScriptService {
   }
 
   buildScriptArray(scriptString) {
-
     var scriptArray = scriptString.split(",");
     this.logger.log('[SCRIPT-SERV] scriptArray', scriptArray);
 
