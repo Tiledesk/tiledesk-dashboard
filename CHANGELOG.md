@@ -10,6 +10,7 @@
 - Adds the ability to customize notification email templates
 - Allows only to teammates with the role of owner of projects with an "Enterprise" plan to manage notification email templates
 - Adds the ability to configure SMTP settings and send test emails
+- Adds the chat21 widget
 
 ### 2.2.31-rc1
 - Fixes the bug: when a language is selected for a trigger that has the key "request.create" the value of the selected language contains the country code
