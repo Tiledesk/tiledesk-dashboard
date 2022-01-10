@@ -96,8 +96,25 @@
                   Password
                 </label>
                 <div class="col-xs-12 col-sm-6 col-md-5 col-lg-4">
-                  <input name="smtpswd" [(ngModel)]="smtp_pswd" class="input" type="password"
-                    autocomplete="new-password">
+                  <!-- <input name="smtpswd" [(ngModel)]="smtp_pswd" class="input" type="password"
+                    autocomplete="new-password"> -->
+
+                  <div class="input-group">
+                    <input [(ngModel)]="smtp_pswd" class="input" [type]="showPswd ? 'text' : 'password'" name="smtpswd"
+                      style="border-top-right-radius: 0px; border-bottom-right-radius: 0px" autocomplete="new-password">
+                    <span class="input-group-btn" style="padding-right: 0px;padding-left: 0px;">
+                      <button class="btn btn-primary show-password-btn" (click)="showPassword()"
+                        style="padding-bottom: 9px; margin-bottom: 9px; padding-top: 10px; border-top-right-radius: 5px; border-bottom-right-radius: 5px">
+                        <span *ngIf="!showPswd" class="material-icons">
+                          visibility_off
+                        </span>
+                        <span *ngIf="showPswd" class="material-icons">
+                          visibility
+                        </span>
+                      </button>
+                    </span>
+                  </div>
+
                 </div>
               </div>
 
@@ -120,34 +137,34 @@
               </div>
             </div> <!-- ./ card-content-->
 
-            <!-- [disabled]="!EMAIL_IS_VALID" -->
-            <!-- <div class="card-footer" style="border-color: #e8f0f5 !important;"> -->
-       
-              <div class="row" style="border-top:1px solid  #ddd !important;width: calc((100% / 3) + 360px); margin-left:18px">
-                <div class="col-xs-6" style=" padding-left:0px">
-                  <button class="btn btn-primary" (click)="sendSMTPTestEmail()" style="background: transparent;
-                  border: 1px solid #3ea9f5;
-                  color: #3ea9f5;">
-                    {{ "ProjectEditPage.SendSMPTTestEmail" | translate }}
-                  </button>
-                </div>
-                <div class="col-xs-6" style="text-align: right; padding-right:0px">
-                  <button type="submit" class="btn btn-primary" (click)="saveSMTPConfiguration()" >
-                    {{ "Save" | translate }}
-                  </button>
-                </div>
+      
+            <div class="row"
+              style="border-top:1px solid  #ddd !important;width: calc((100% / 3) + 360px); margin-left:18px">
+              <div class="col-xs-6" style=" padding-left:0px">
+                <button class="btn btn-primary send-smtp-test-email" (click)="sendSMTPTestEmail()">
+                  <span class="material-icons">
+                    play_arrow 
+                  </span>
+                  {{ "ProjectEditPage.SendSMPTTestEmail" | translate }}
+                </button>
               </div>
-            <!-- </div> -->
+              <div class="col-xs-6" style="text-align: right; padding-right:0px">
+                
+                <button type="submit" class="btn btn-white reset-to-default-smtp-configuration" (click)="resetToDefaultSMTPConfiguration()" style="color:#ff9800">
+                  {{ "ResetToDefaults" | translate }}
+                </button>
+
+                <button type="submit" class="btn btn-primary update-smtp-configuration" (click)="updateSMTPConfiguration()">
+                  {{ "Update" | translate }}
+                </button>
+              </div>
+            </div>
+           
           </form>
         </div>
       </div>
-      <!-- /. end col-md-8 -->
-
-
-
+  
     </div>
 
-
-    <!-- --------------- -->
   </div>
 </div>

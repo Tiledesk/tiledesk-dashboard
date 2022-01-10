@@ -104,9 +104,17 @@ input[type="email"].invalid-email {
     border-bottom: 1px solid #ddd;
     width: calc((100% / 3) + 372px);
     z-index: 1;
-  }
-  
-  
-  .col-12-section-title {
+}
+
+.col-12-section-title {
     margin-bottom: 20px;
-  }
+}
+
+.send-smtp-test-email {
+    background: transparent !important;
+    border: 1px solid #3ea9f5 !important;
+    color: #3ea9f5 !important;
+    // box-shadow: unset !important;
+}
+
+
