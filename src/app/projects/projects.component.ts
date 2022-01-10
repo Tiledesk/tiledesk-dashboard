@@ -116,11 +116,13 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
 
   ngOnDestroy() {
-    this.projects.forEach(project => {
-      if (project.id_project.status !== 0) {
-        this.usersService.unsubsToWS_CurrentUser_allProject(project.id_project._id, project._id)
-      }
-    });
+    if (this.projects) {
+      this.projects.forEach(project => {
+        if (project.id_project.status !== 0) {
+          this.usersService.unsubsToWS_CurrentUser_allProject(project.id_project._id, project._id)
+        }
+      });
+    }
 
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
@@ -303,7 +305,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   //   this.logger.log('[PROJECTS] !!! GO TO HOME >  display_loading - loadingInProjectCardEle ', loadingInProjectCardEle)
   //   loadingInProjectCardEle.style.color = "red";
   // }
- 
+
   goToHome(
     project: any,
     project_id: string,

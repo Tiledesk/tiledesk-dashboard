@@ -133,10 +133,12 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.projects.forEach(project => {
-      // this.logger.log('[PROJECTS-X-PANEL] - unsubsToWS_CurrentUser_allProject ', project);
-      this.usersService.unsubsToWS_CurrentUser_allProject(project.id_project._id, project._id)
-    });
+    if (this.projects) {
+      this.projects.forEach(project => {
+        // this.logger.log('[PROJECTS-X-PANEL] - unsubsToWS_CurrentUser_allProject ', project);
+        this.usersService.unsubsToWS_CurrentUser_allProject(project.id_project._id, project._id)
+      });
+    }
 
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
@@ -232,14 +234,14 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
     project_trial_expired: string,
     project_trial_days_left: number,
     project_status: number) {
-      this.logger.log('[PROJECTS-X-PANEL] - GO TO UNSERVED-REQUEST - PROJECT SELECTED ', project)
-   
+    this.logger.log('[PROJECTS-X-PANEL] - GO TO UNSERVED-REQUEST - PROJECT SELECTED ', project)
+
     // ------------------------------------------------------------------------------------------------------------
     // POST MESSAGE hasChangedProject (communicates to the parent (chat-ionic) that the agent has changed project)
     // ------------------------------------------------------------------------------------------------------------
     localStorage.setItem('last_project', JSON.stringify(project))
     window.top.postMessage('hasChangedProject', '*')
-    
+
     this.logger.log('[PROJECTS-X-PANEL] - GO TO UNSERVED-REQUEST - PROJECT status ', project_status)
 
     if (project_status !== 0) {
