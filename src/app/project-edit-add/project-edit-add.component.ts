@@ -634,7 +634,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
 
   goToCustomizeNotificationEmailPage() {
-    console.log('goToCustomizeNotificationEmailPage profile_name ', this.profile_name )
+    this.logger.log('goToCustomizeNotificationEmailPage profile_name ', this.profile_name )
     if (this.profile_name === 'enterprise') {
       if (this.USER_ROLE === 'owner') {
         this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToCustomizeNotificationEmailPage ');
@@ -648,7 +648,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
 
   goToManageEmailSettings() {
-    console.log('goToManageEmailSettings profile_name ', this.profile_name )
+    this.logger.log('goToManageEmailSettings profile_name ', this.profile_name )
     if (this.profile_name === 'enterprise') {
       if (this.USER_ROLE === 'owner') {
         this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToManageEmailSettings');
