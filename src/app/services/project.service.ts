@@ -371,10 +371,13 @@ export class ProjectService {
       .map((response) => response.json());
   }
 
+  // ------------------------------
+  // Update Emai template
+  // ------------------------------
   public updateEmailTempalte(temaplateName: string, template: any) {
     let url = this.PROJECTS_URL + this.projectID + '/'
-    console.log('[PROJECT-SERV] UPDATE EMAIL TEMPLATE - PUT URL ', url);
-    console.log('[PROJECT-SERV] UPDATE EMAIL TEMPLATE - temaplateName ', temaplateName);
+    this.logger.log('[PROJECT-SERV] UPDATE EMAIL TEMPLATE - PUT URL ', url);
+    this.logger.log('[PROJECT-SERV] UPDATE EMAIL TEMPLATE - temaplateName ', temaplateName);
     // console.log('[PROJECT-SERV] UPDATE EMAIL TEMPLATE - template ', template);
     const headers = new Headers();
     headers.append('Accept', 'application/json');
@@ -397,16 +400,23 @@ export class ProjectService {
     // let body = { settings: { email: { templates: { }} } }
     // body.settings.email.templates[temaplateName] = template
 
-
     return this.http
       .put(url, JSON.stringify(body), options)
       .map((res) => res.json());
   }
 
-  public updateSMPTSettigs(smtp_host_name,  smtp_port ,sender_email_address, smtp_usermame, smtp_pswd, smtp_connetion_security) {
+  // ------------------------------
+  // Update SMTP settings
+  // ------------------------------
+  public updateSMPTSettings(smtp_host_name, smtp_port, sender_email_address, smtp_usermame, smtp_pswd, smtp_connetion_security) {
     let url = this.PROJECTS_URL + this.projectID + '/'
-    console.log('[PROJECT-SERV] SAVE SMTP SETTINGS - PUT URL ', url);
-    console.log('[PROJECT-SERV] SAVE SMTP SETTINGS - smtp_host_name ', smtp_host_name);
+    // console.log('[PROJECT-SERV] SAVE SMTP SETTINGS - PUT URL ', url);
+    // console.log('[PROJECT-SERV] SAVE SMTP SETTINGS - smtp_host_name ', smtp_host_name);
+    // console.log('[PROJECT-SERV] SAVE SMTP SETTINGS - smtp_port ', smtp_port);
+    // console.log('[PROJECT-SERV] SAVE SMTP SETTINGS - sender_email_address ', sender_email_address);
+    // console.log('[PROJECT-SERV] SAVE SMTP SETTINGS - smtp_usermame ', smtp_usermame);
+    // console.log('[PROJECT-SERV] SAVE SMTP SETTINGS - smtp_pswd ', smtp_pswd);
+    // console.log('[PROJECT-SERV] SAVE SMTP SETTINGS - smtp_connetion_security ', smtp_connetion_security);
     // console.log('[PROJECT-SERV] UPDATE EMAIL TEMPLATE - template ', template);
     const headers = new Headers();
     headers.append('Accept', 'application/json');
@@ -415,20 +425,15 @@ export class ProjectService {
     const options = new RequestOptions({ headers });
 
 
-    // const body = { "settings.email.templates": template }
-    // Object.keys(body).forEach(k => {
-    //   console.log('body key: ', k)
-    //   k + temaplateName
-    // });
 
-    let body = {}
-    // body["settings.email.templates." + temaplateName] = template;
-    // -------------------------------------------------------
-    // Andrea L
-    // -------------------------------------------------------
-    // let body = { settings: { email: { templates: { }} } }
-    // body.settings.email.templates[temaplateName] = template
-
+    const body = {
+      'settings.email.from': sender_email_address,
+      'settings.email.config.host': smtp_host_name,
+      'settings.email.config.port': smtp_port,
+      'settings.email.config.secure': smtp_connetion_security,
+      'settings.email.config.user': smtp_usermame,
+      'settings.email.config.pass': smtp_pswd,
+    }
 
     return this.http
       .put(url, JSON.stringify(body), options)
@@ -436,11 +441,70 @@ export class ProjectService {
   }
 
 
+  // ------------------------------
+  // Reset to default SMTP settings
+  // ------------------------------
+  public resetToDefaultSMPTSettings() {
+    let url = this.PROJECTS_URL + this.projectID + '/'
+    // console.log('[PROJECT-SERV] SAVE SMTP SETTINGS - PUT URL ', url);
+    // console.log('[PROJECT-SERV] SAVE SMTP SETTINGS - smtp_host_name ', smtp_host_name);
+    // console.log('[PROJECT-SERV] SAVE SMTP SETTINGS - smtp_port ', smtp_port);
+    // console.log('[PROJECT-SERV] SAVE SMTP SETTINGS - sender_email_address ', sender_email_address);
+    // console.log('[PROJECT-SERV] SAVE SMTP SETTINGS - smtp_usermame ', smtp_usermame);
+    // console.log('[PROJECT-SERV] SAVE SMTP SETTINGS - smtp_pswd ', smtp_pswd);
+    // console.log('[PROJECT-SERV] SAVE SMTP SETTINGS - smtp_connetion_security ', smtp_connetion_security);
+    // console.log('[PROJECT-SERV] UPDATE EMAIL TEMPLATE - template ', template);
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+    
+    // project.settings.email.config=undefined
+  
+    // const body = {
+    //   'settings.email.from': "",
+    //   'settings.email.config': "",
+    // }
+    // const body = {
+    
+    // }
+    let body = {}
+    body["settings.email.from"] = undefined;
+    body["settings.email.config"] = undefined;
+
+    this.logger.log('[PROJECT-SERV] RESET TO DEFAULT SMTP - body ', body);
+
+    return this.http
+      .put(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+  }
+
+  public sendTestEmail(recipientemail, smtp_host_name) {
+    let url = this.SERVER_BASE_PATH + this.projectID + '/emails/test/send'
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+    
+    // {"to":"andrea.leo@frontiere21.it", "config":{"host":"testprj2"}}' http://localhost:3001/61d7f94260608866810b39bd/emails/test/send
+    const body = {"to":recipientemail, "config":{"host":smtp_host_name}}
+    
+
+    this.logger.log('[PROJECT-SERV] SEND TEST EMAIL POST - body ', body);
+
+    return this.http
+      .post(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+  }
+  
+
+
   // -----------------------------------------------------------------
   // UPDATE WIDGET PROJECT  - todo from put to patch
   // -----------------------------------------------------------------
   public updateWidgetProject(widget_settings: any) {
-
     let url = this.PROJECTS_URL + this.projectID;
     // url += this.projectID;
     this.logger.log('[PROJECT-SERV] - UPDATE WIDGET PROJECT - PUT URL ', url);
