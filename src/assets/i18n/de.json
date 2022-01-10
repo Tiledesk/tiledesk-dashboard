@@ -719,6 +719,8 @@
 		"UserName":"Nutzername",
 		"ConnectionSecurity":"Verbindungssicherheit",
 		"SendSMPTTestEmail": "Test-E-Mail senden",
+		"SMTPConfigurationUpdatedSuccessfully":"SMTP-Konfiguration erfolgreich aktualisiert",
+		"AnErrorOccurredWhileUpdatingSMTPConfiguration":"Beim Aktualisieren der SMTP-Konfiguration ist ein Fehler aufgetreten",
 		"NotificationMsgs": {
 			"UpdateProjectSuccess": "Projekt erfolgreich aktualisiert",
 			"UpdateProjectError": "Ein Fehler ist während der Aktualisierung des Projekts aufgetreten",
@@ -1939,5 +1941,12 @@
 	"pooledEmailMessage":"Gepoolte E-Mail-Nachricht",
 	"newMessage":"Neue Nachricht",
 	"ticket":"Fahrkarte",
-	"sendTranscript":"Chat-Transkript senden"
+	"sendTranscript":"Chat-Transkript senden",
+	"ResetToDefaults": "Voreinstellung",
+	"ThisActionIsNotReversible":"Diese Aktion kann nicht rückgängig gemacht werden und entfernt alle Ihre Änderungen",
+	"SendTo":"Senden an",
+	"Send":"Senden",
+	"AuthenticationFailed":"Authentifizierung fehlgeschlagen, die Test-E-Mail konnte nicht gesendet werden",
+	"AnErrorHasOccurred": "Ein Fehler ist aufgetreten",
+	"EmailTemplateUpdatedSuccessfully":"E-Mail-Vorlage erfolgreich aktualisiert"
 }

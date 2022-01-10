@@ -719,6 +719,8 @@
         "UserName":"User name",
         "ConnectionSecurity":"Connection security",
         "SendSMPTTestEmail": "Send test email",
+        "SMTPConfigurationUpdatedSuccessfully":"SMTP configuration updated successfully",
+        "AnErrorOccurredWhileUpdatingSMTPConfiguration":"An error occurred while updating the SMTP configuration",
         "NotificationMsgs": {
             "UpdateProjectSuccess": "Project successfully updated",
             "UpdateProjectError": "An error occurred while updating project",
@@ -1939,5 +1941,12 @@
     "pooledEmailMessage":"Pooled email message",
     "newMessage":"New Message",
     "ticket":"Ticket",
-    "sendTranscript": "Send chat transcript"
+    "sendTranscript": "Send chat transcript",
+    "ResetToDefaults": "Reset to defaults",
+    "ThisActionIsNotReversible":"This action is not reversible and will remove all you changes",
+    "SendTo":"Send to",
+    "Send":"Send",
+    "AuthenticationFailed":"Authentication failed, the test email could not be sent",
+    "AnErrorHasOccurred": "An error has occurred",
+    "EmailTemplateUpdatedSuccessfully":"Email template updated successfully"
 }

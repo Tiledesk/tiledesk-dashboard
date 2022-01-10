@@ -719,6 +719,8 @@
         "UserName":"Nome utente",
         "ConnectionSecurity":"Sicurezza della connessione",
         "SendSMPTTestEmail": "Invia email di prova",
+        "SMTPConfigurationUpdatedSuccessfully":"Configurazione SMTP aggiornata correttamente",
+        "AnErrorOccurredWhileUpdatingSMTPConfiguration":"Si è verificato un errore durante l'aggiornamento della configurazione SMTP",
         "NotificationMsgs": {
             "UpdateProjectSuccess": "Progetto aggiornato con successo",
             "UpdateProjectError": "Si è verificato un errore durante l'aggiornamento del progetto",
@@ -1939,5 +1941,12 @@
     "pooledEmailMessage":"Messaggio email pooled",
     "newMessage":"Nuovo messaggio",
     "ticket":"Ticket",
-    "sendTranscript": "Invia chat transcript"
+    "sendTranscript": "Invia chat transcript",
+    "ResetToDefaults": "Ripristina predefiniti",
+    "ThisActionIsNotReversible":"Questa azione non è reversibile e rimuoverà tutte le modifiche",
+    "SendTo":"Invia a",
+    "Send":"Invia",
+    "AuthenticationFailed":"Autenticazione fallita, non è stato possibile inviare l'e-mail di prova",
+    "AnErrorHasOccurred": "Si è verificato un errore",
+    "EmailTemplateUpdatedSuccessfully":"Modello email aggiornato con successo"
 }
