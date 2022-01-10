@@ -19,6 +19,7 @@ import 'firebase/database'
 import { AppConfigService } from '../services/app-config.service';
 import { WebSocketJs } from '../services/websocket/websocket-js';
 import { LoggerService } from '../services/logger/logger.service';
+import { ScriptService } from '../services/script/script.service';
 // import { SsoService } from './sso.service';
 
 // start SUPER USER
@@ -102,7 +103,8 @@ export class AuthService {
     public location: Location,
     public appConfigService: AppConfigService,
     public webSocketJs: WebSocketJs,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private scriptService: ScriptService
 
     // public ssoService: SsoService
   ) {
@@ -163,10 +165,9 @@ export class AuthService {
       this.user_bs.next(JSON.parse(storedUser));
 
 
-
       try {
         if (window && window['tiledesk_widget_login']) {
-          console.log('window', window)
+          // console.log('window', window)
           window['tiledesk_widget_login']();
         }
       } catch (err) {
@@ -201,16 +202,19 @@ export class AuthService {
 
       this.user_bs.next(JSON.parse(storedUser));
 
-      try {
-        this.logger.log('[AUTH-SERV] Calling tiledesk_widget_autologin ')
-        if (window && window['tiledesk_widget_autologin']) {
-          console.log('window', window)
-          window['tiledesk_widget_autologin']();
+      window.addEventListener("load",() => {
+        this.logger.log('[AUTH-SERV] window load - window ' ,window )
+        try {
+          this.logger.log('[AUTH-SERV] Calling tiledesk_widget_autologin ')
+          if (window && window['tiledesk_widget_autologin']) {
+            // console.log('window', window)
+            window['tiledesk_widget_autologin']();
+          }
+        } catch (err) {
+          this.logger.error('[AUTH-SERV] Calling tiledesk_widget_autologin err', err)
         }
-      } catch (err) {
-        this.logger.log('[AUTH-SERV] Calling tiledesk_widget_autologin err', err)
-      }
-
+      });
+      
     }
   }
 
@@ -863,11 +867,11 @@ export class AuthService {
     if (calledby !== 'autologin') {
       try {
         if (window && window['tiledesk_widget_logout']) {
-          console.log('window', window)
+          // console.log('window', window)
           window['tiledesk_widget_logout']();
         }
       } catch (err) {
-        this.logger.log('[AUTH-SERV] Signout err ', err)
+        this.logger.error('[AUTH-SERV] tiledesk_widget_logout err ', err)
       }
     }
 
