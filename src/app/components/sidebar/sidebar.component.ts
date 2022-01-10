@@ -995,7 +995,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         const elemSidebar = <HTMLElement>document.querySelector('.sidebar');
         const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
         const elemHtmlTag = <HTMLElement>document.querySelector('html');
-        console.log('[SIDEBAR] smallSidebar', elemHtmlTag)
+        this.logger.log('[SIDEBAR] smallSidebar', elemHtmlTag)
         elemHtmlTag.style.overflowY = 'auto';
         // this.logger.log('elemAppSidebar', elemAppSidebar)
 

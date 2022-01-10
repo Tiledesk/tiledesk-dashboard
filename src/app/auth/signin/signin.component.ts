@@ -308,7 +308,7 @@ export class SigninComponent implements OnInit {
         //   }
         // }, 2000);
         if (window && window['tiledesk_widget_login']) {
-          console.log('window', window)
+          // console.log('window', window)
           window['tiledesk_widget_login']();
         } 
 
