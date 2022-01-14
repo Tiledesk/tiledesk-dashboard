@@ -812,7 +812,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
         this.subscription_end_date = projectProfileData.subscription_end_date;
         this.trial_expired = projectProfileData.trial_expired
 
-        this.prjct_profile_name = this.buildPlanName(projectProfileData.profile_name, this.browserLang, this.prjct_profile_type);
+        this.buildPlanName(projectProfileData.profile_name, this.browserLang, this.prjct_profile_type);
       }
     }, error => {
 
@@ -826,14 +826,24 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
   buildPlanName(planName: string, browserLang: string, planType: string) {
     if (planType === 'payment') {
-      if (browserLang === 'it') {
-        this.prjct_profile_name = 'Piano ' + planName;
-        return this.prjct_profile_name
-      } else if (browserLang !== 'it') {
-        this.prjct_profile_name = planName + ' Plan';
-        return this.prjct_profile_name
-      }
+      this.getPaidPlanTranslation(planName)
+      // if (browserLang === 'it') {
+      //   this.prjct_profile_name = 'Piano ' + planName;
+      //   return this.prjct_profile_name
+      // } else if (browserLang !== 'it') {
+      //   this.prjct_profile_name = planName + ' Plan';
+      //   return this.prjct_profile_name
+      // }
     }
+  }
+
+
+  getPaidPlanTranslation(project_profile_name) {
+    this.translate.get('PaydPlanName', { projectprofile: project_profile_name })
+      .subscribe((text: string) => {
+        this.prjct_profile_name = text;
+        // this.logger.log('+ + + PaydPlanName ', text)
+      });
   }
 
   getWindowWidth() {

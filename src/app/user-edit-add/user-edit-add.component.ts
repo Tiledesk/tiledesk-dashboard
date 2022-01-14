@@ -90,7 +90,8 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
 
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
-  KNOWLEDGE_BASE_USER_ROLE_URL = helpdocurl_users_role
+  KNOWLEDGE_BASE_USER_ROLE_URL = helpdocurl_users_role;
+  profile_name : string;
 
   private unsubscribe$: Subject<any> = new Subject<any>();
   constructor(
@@ -318,8 +319,9 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
 
           this.subscription_is_active = projectProfileData.subscription_is_active;
           this.subscription_end_date = projectProfileData.subscription_end_date
+          this.profile_name = projectProfileData.profile_name
 
-          this.prjct_profile_name = this.buildPlanName(projectProfileData.profile_name, this.browserLang, this.prjct_profile_type);
+          this.buildPlanName(projectProfileData.profile_name, this.browserLang, this.prjct_profile_type);
         }
       }, err => {
         this.logger.error('[USER-EDIT-ADD] GET PROJECT PROFILE - ERROR', err);
@@ -340,14 +342,23 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
     this.logger.log('[USER-EDIT-ADD] buildPlanName - planName ', planName, ' browserLang  ', browserLang);
 
     if (planType === 'payment') {
-      if (browserLang === 'it') {
-        this.prjct_profile_name = 'Piano ' + planName;
-        return this.prjct_profile_name
-      } else if (browserLang !== 'it') {
-        this.prjct_profile_name = planName + ' Plan';
-        return this.prjct_profile_name
-      }
+      this.getPaidPlanTranslation(planName)
+      // if (browserLang === 'it') {
+      //   this.prjct_profile_name = 'Piano ' + planName;
+      //   return this.prjct_profile_name
+      // } else if (browserLang !== 'it') {
+      //   this.prjct_profile_name = planName + ' Plan';
+      //   return this.prjct_profile_name
+      // }
     }
+  }
+
+  getPaidPlanTranslation(project_profile_name) {
+    this.translate.get('PaydPlanName', { projectprofile: project_profile_name })
+      .subscribe((text: string) => {
+        this.prjct_profile_name = text;
+        // this.logger.log('+ + + PaydPlanName ', text)
+      });
   }
 
   getMoreOperatorsSeats() {
@@ -357,8 +368,18 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
   openModalSubsExpired() {
     this.logger.log('[USER-EDIT-ADD] - openModalSubsExpired ');
 
+    // if (this.CURRENT_USER_ROLE === 'owner') {
+    //   this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+    // } else {
+    //   this.presentModalOnlyOwnerCanManageTheAccountPlan();
+    // }
+
     if (this.CURRENT_USER_ROLE === 'owner') {
-      this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+      if (this.profile_name !== 'enterprise') {
+        this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+      } else if (this.profile_name === 'enterprise') {
+          this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+      }
     } else {
       this.presentModalOnlyOwnerCanManageTheAccountPlan();
     }
