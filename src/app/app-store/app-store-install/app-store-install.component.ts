@@ -83,7 +83,7 @@ export class AppStoreInstallComponent implements OnInit {
             // this.URL = this.sanitizer.bypassSecurityTrustResourceUrl(parsed_json.installActionURL + '?project_id=' + params.projectid + '&token=' + this.TOKEN);
             this.URL = this.sanitizer.bypassSecurityTrustResourceUrl(parsed_json.installActionURL + '?project_id=' + params.projectid + '&app_id=' + params.appid + '&token=' + this.TOKEN);
             this.logger.log("[APP-STORE-INSTALL] - URL IFRAME: ", this.URL)
-            this.getIframeHaLoaded()
+            this.getIframeHasLoaded()
 
           } else {
             this.logger.log("[APP-STORE-INSTALL] - GET USER TOKEN: FAILED");
@@ -101,7 +101,7 @@ export class AppStoreInstallComponent implements OnInit {
     })
   }
 
-  getIframeHaLoaded() {
+  getIframeHasLoaded() {
     var self = this;
     var iframe = document.getElementById('i_frame') as HTMLIFrameElement;;
     this.logger.log('[APP-STORE-INSTALL] GET iframe ', iframe)
