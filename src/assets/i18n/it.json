@@ -1948,5 +1948,7 @@
     "Send":"Invia",
     "AuthenticationFailed":"Autenticazione fallita, non è stato possibile inviare l'e-mail di prova",
     "AnErrorHasOccurred": "Si è verificato un errore",
-    "EmailTemplateUpdatedSuccessfully":"Modello email aggiornato con successo"
+    "EmailTemplateUpdatedSuccessfully":"Modello email aggiornato con successo",
+    "PinThisProjectInTheChatWindow":"Fissa questo progetto nella finestra della chat per monitorare facilmente le conversazioni del progetto e modificare il tuo stato",
+    "SelectAnotherProject":"Seleziona un altro progetto"
 }

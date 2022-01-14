@@ -1948,5 +1948,7 @@
 	"Send":"Senden",
 	"AuthenticationFailed":"Authentifizierung fehlgeschlagen, die Test-E-Mail konnte nicht gesendet werden",
 	"AnErrorHasOccurred": "Ein Fehler ist aufgetreten",
-	"EmailTemplateUpdatedSuccessfully":"E-Mail-Vorlage erfolgreich aktualisiert"
+	"EmailTemplateUpdatedSuccessfully":"E-Mail-Vorlage erfolgreich aktualisiert",
+	"PinThisProjectInTheChatWindow":"Fixieren Sie dieses Projekt im Chatfenster, um Projektgespräche einfach zu verfolgen und Ihren Status zu ändern",
+	"SelectAnotherProject":"Anderes Projekt auswählen"
 }
