@@ -6,11 +6,13 @@ import { ProjectService } from '../../services/project.service';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { ProjectPlanService } from '../../services/project-plan.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { AppConfigService } from '../../services/app-config.service';
 import { BrandService } from '../../services/brand.service';
 import { LoggerService } from '../../services/logger/logger.service';
-
+import { UsersService } from '../../services/users.service';
+import { takeUntil } from 'rxjs/operators';
+const swal = require('sweetalert');
 @Component({
   selector: 'notification-message',
   templateUrl: './notification-message.component.html',
@@ -18,7 +20,7 @@ import { LoggerService } from '../../services/logger/logger.service';
   encapsulation: ViewEncapsulation.None,
 })
 export class NotificationMessageComponent implements OnInit, OnDestroy {
-
+  private unsubscribe$: Subject<any> = new Subject<any>();
   tparams: any;
   company_name: string;
   displayExpiredSessionModal: string;
@@ -39,6 +41,11 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
   WIDGET_URL: string;
   has_copied = false;
   tprojectprofilemane: any;
+  USER_ROLE: string;
+  profile_name: string;
+  onlyOwnerCanManageTheAccountPlanMsg: string;
+  learnMoreAboutDefaultRoles: string;
+
   constructor(
     public notify: NotifyService,
     public auth: AuthService,
@@ -48,7 +55,8 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
     private prjctPlanService: ProjectPlanService,
     public appConfigService: AppConfigService,
     public brandService: BrandService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private usersService: UsersService,
   ) {
     const brand = brandService.getBrand();
     this.tparams = brand;
@@ -64,9 +72,38 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
     // this.getProjectById();
     this.translateMsgSubscriptionCanceledSuccessfully();
     this.translateMsgSubscriptionCanceledError();
+    this.getUserRole();
     this.getProjectPlan();
     this.getWidgetUrl();
     this.getChatUrl();
+    this.translateModalOnlyOwnerCanManageProjectAccount();
+  }
+
+
+  translateModalOnlyOwnerCanManageProjectAccount() {
+    this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
+      .subscribe((translation: any) => {
+        this.onlyOwnerCanManageTheAccountPlanMsg = translation;
+      });
+
+    this.translate.get('LearnMoreAboutDefaultRoles')
+      .subscribe((translation: any) => {
+        this.learnMoreAboutDefaultRoles = translation;
+      });
+  }
+
+
+  getUserRole() {
+    this.usersService.project_user_role_bs
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((userRole) => {
+
+        this.logger.log('[NOTIFICATION-MSG] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
+        // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
+        this.USER_ROLE = userRole;
+      })
   }
 
   getChatUrl() {
@@ -89,10 +126,10 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
         this.trial_expired = projectProfileData.trial_expired;
 
         this.subscription_end_date = projectProfileData.subscription_end_date;
-        
+
         const projectprofile = projectProfileData.profile_name.toUpperCase()
         this.tprojectprofilemane = { projectprofile: projectprofile }
-
+        this.profile_name = projectProfileData.profile_name;
         this.buildPlanName(projectProfileData.profile_name, this.browserLang, this.prjct_profile_type);
       }
     }, err => {
@@ -133,15 +170,51 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
 
 
   openModalExpiredSubscOrGoToPricing() {
-    if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-      this.notify.closeDataExportNotAvailable();
-      this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
-    }
+    // if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+    //   this.notify.closeDataExportNotAvailable();
+    //   this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+    // }
 
-    if (this.prjct_profile_type === 'free' && this.trial_expired === true) {
-      this.notify.closeDataExportNotAvailable();
-      this.router.navigate(['project/' + this.projectId + '/pricing']);
+    // if (this.prjct_profile_type === 'free' && this.trial_expired === true) {
+    //   this.notify.closeDataExportNotAvailable();
+    //   this.router.navigate(['project/' + this.projectId + '/pricing']);
+    // }
+
+    if (this.USER_ROLE === 'owner') {
+      if (this.prjct_profile_type === 'free' && this.trial_expired === true) {
+        this.notify.closeDataExportNotAvailable();
+        this.router.navigate(['project/' + this.projectId + '/pricing']);
+
+      } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+        this.notify.closeDataExportNotAvailable();
+        if (this.profile_name !== 'enterprise') {
+          this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+        } else if (this.profile_name === 'enterprise') {
+
+          this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+        }
+      }
+
+    } else {
+      this.presentModalOnlyOwnerCanManageTheAccountPlan();
     }
+  }
+
+  presentModalOnlyOwnerCanManageTheAccountPlan() {
+    const el = document.createElement('div')
+    el.innerHTML = this.onlyOwnerCanManageTheAccountPlanMsg + '. ' + "<a href='https://docs.tiledesk.com/knowledge-base/understanding-default-roles/' target='_blank'>" + this.learnMoreAboutDefaultRoles + "</a>"
+
+    swal({
+      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
+      content: el,
+      icon: "info",
+      // buttons: true,
+      button: {
+        text: "OK",
+      },
+      dangerMode: false,
+    })
+
   }
 
 
