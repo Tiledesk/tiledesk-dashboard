@@ -71,6 +71,7 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
   MT: boolean;
 
   window_width_is_60: boolean;
+ LAST_STORED_PRJCT_ID:  string
 
   private unsubscribe$: Subject<any> = new Subject<any>();
 
@@ -122,7 +123,22 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
     this.setPerfectScrollbar();
     this.listenHasDeleteUserProfileImage();
     window.top.postMessage('onInitProjectsForPanel', '*')
+
+    this.getLastStoredProject()
   }
+  getLastStoredProject() {
+    const lastStoredProjectObjct = localStorage.getItem('last_project')
+    if (lastStoredProjectObjct) {
+      const lastStoredProject = JSON.parse(lastStoredProjectObjct);
+      // console.log('[PROJECTS-X-PANEL] GET LAST STORED PROJECT - lastStoredProject ', lastStoredProject)
+      this.LAST_STORED_PRJCT_ID = lastStoredProject.id_project.id
+      this.logger.log('[PROJECTS-X-PANEL] GET LAST STORED PROJECT - LAST_STORED_PRJCT_ID ', this.LAST_STORED_PRJCT_ID)
+    }
+
+  }
+
+
+
   setPerfectScrollbar() {
     const container_projects_for_panel = <HTMLElement>document.querySelector('.main-content-projects-for-panel');
     this.logger.log('[PROJECTS-X-PANEL] main-content-projects-for-panel', container_projects_for_panel);

@@ -16,11 +16,10 @@
 
       <div class="left-sidebar-projects" style="margin-right: -10px;" *ngIf="!showSpinner">
 
+        <!-- style="cursor:pointer" -->
+        <div *ngFor="let project of projects; let i = index">
 
-        <div *ngFor="let project of projects; let i = index" style="cursor:pointer">
-
-          <div class="small-projects-sidebar"
-            (click)='goToUnservedRequests(project, project?.id_project?._id, project?.id_project?.name, project?.id_project?.profile?.name, project?.id_project?.trialExpired, project?.id_project?.trialDaysLeft, project?.id_project?.status)'>
+          <div class="small-projects-sidebar">
 
             <div *ngIf="project?.id_project?.status !== 0" class="flex-container project-row">
               <div class="flex-child-left">
@@ -76,7 +75,7 @@
                     </div>
                   </div>
 
-              
+
                   <span *ngIf="project?.ws_projct_user_available === true"
                     class="availibility-status-text--prjcts-for-panel"
                     [ngClass]="{'online-text-color' : project?.ws_projct_user_available === true, 'offline-text-color' : project?.ws_projct_user_available === false}">
@@ -116,11 +115,27 @@
                   east
                 </span> -->
 
-                <div id="arrow_1" class="arrow-wrapper">
+                <!-- <div id="arrow_1" class="arrow-wrapper">
                   <div class="arrow arrow--right">
                     <span></span>
                   </div>
+                </div> -->
+
+                <div class="push-pin-icon-wpr" [ngClass]="{'tooltip-pfp':  project?.id_project?._id !== LAST_STORED_PRJCT_ID}"
+                  (click)='goToUnservedRequests(project, project?.id_project?._id, project?.id_project?.name, project?.id_project?.profile?.name, project?.id_project?.trialExpired, project?.id_project?.trialDaysLeft, project?.id_project?.status)'>
+                  <span class="material-icons push-pin-icon-as-btn" [ngClass]="{'pinned-project':  project?.id_project?._id === LAST_STORED_PRJCT_ID}">
+                    push_pin
+                  </span>
+                  <span *ngIf="project?.id_project?._id !== LAST_STORED_PRJCT_ID" class="tooltiptext-pfp">{{'PinThisProjectInTheChatWindow' | translate}}</span>
                 </div>
+
+                <!-- <button  type="button" rel="tooltip"
+                       class="btn btn-simple btn-xs"
+                        (click)='goToEditAddPage_EDIT(faq?._id)'>
+                        <span class="material-icons" style="color: #b1b4b8;">
+                          push_pin
+                          </span>
+                      </button> -->
               </div>
 
 

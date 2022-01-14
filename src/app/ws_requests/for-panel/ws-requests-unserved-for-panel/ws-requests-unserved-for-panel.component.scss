@@ -21,7 +21,7 @@ button:hover span {
     background: #fff;
     position: relative; // requirements for perfect scrollbar
     height: 400px; // requirements for perfect scrollbar
-  
+
     // height: 100vh;
 }
 
@@ -793,7 +793,7 @@ $f21blue: #039be5;
     align-items: center;
     height: 160px;
     line-height: 40px;
-    margin:100px auto;
+    margin: 100px auto;
 }
 
 .no-request-icon {
@@ -1274,9 +1274,9 @@ $f21blue: #039be5;
     grid-area: arrow-container;
 }
 
-.lead--avatar-wrap{
+.lead--avatar-wrap {
     // line-height: 50px;
-    position:relative;
+    position: relative;
 }
 
 .lead--avatar {
@@ -1309,7 +1309,7 @@ $f21blue: #039be5;
     text-align: right;
     overflow: hidden;
     text-overflow: ellipsis;
-    color:#666666;
+    color: #666666;
     font-family: "Helvetica Neue", sans-serif;
 
     // color: #7695a5;
@@ -1327,18 +1327,18 @@ $f21blue: #039be5;
 }
 
 .action--btn:disabled,
-.action--btn[disabled]{
-    color: rgba(0,0,0,0.4) !important;
+.action--btn[disabled] {
+    color: rgba(0, 0, 0, 0.4) !important;
     // font-weight: 200;
 }
 
 .request--first-message {
     line-height: normal;
-    
+
     color: #999;
     font-size: 12px;
     font-weight: 400;
-  
+
     max-width: 95%;
 }
 
@@ -1347,4 +1347,60 @@ $f21blue: #039be5;
         // display: none;
         min-width: 52px;
     }
+}
+
+// ------------------------------------------------------------
+// Tooltip in project for panel
+// ------------------------------------------------------------
+/* Tooltip container */
+.tooltip-ufp {
+    position: relative;
+    display: inline-block;
+    // border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.tooltip-ufp .tooltiptext-ufp {
+    visibility: hidden;
+    width: 150px;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    color: #000 !important;
+    text-align: center;
+    padding: 3px 3px;
+    border-radius: 4px;
+
+    /* Position the tooltip text */
+    position: absolute;
+    z-index: 1;
+    // bottom: 125%;
+    // left: 50%;
+    // margin-left: -60px;
+
+    top: 8px;
+    left: 105%;
+    /* Fade in tooltip */
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.2;
+}
+
+/* Tooltip arrow */
+.tooltip-ufp .tooltiptext-ufp::after {
+    content: " ";
+    position: absolute;
+    top: 50%;
+    right: 100%; /* To the left of the tooltip */
+    margin-top: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent #fff transparent transparent;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip-ufp:hover .tooltiptext-ufp {
+    visibility: visible;
+    opacity: 1;
 }

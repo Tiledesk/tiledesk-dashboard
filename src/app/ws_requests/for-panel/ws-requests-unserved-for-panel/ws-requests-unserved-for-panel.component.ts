@@ -167,9 +167,41 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
     this.getLoggedUser();
     this.getTranslations();
     this.setPerfectScrollbar();
-    this.listenToParentPostMessage();
+    
     this.getUserRole();
   }
+
+
+ 
+
+  ngAfterViewInit() {
+    this.getProjectUserRole();
+    this.cdref.detectChanges();
+    // window.top.postMessage('finished', '*')
+    this.listenToParentPostMessage();
+  }
+
+  ngOnDestroy() {
+    this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - ngOnDestroy')
+    if (this.subscription) {
+      this.subscription.unsubscribe()
+    }
+
+    if (this.wsRequestsUnserved) {
+      this.wsRequestsUnserved.forEach(request => {
+
+        this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - ngOnDestroy request', request)
+        if (request && request.lead) {
+          this.unsuscribeRequesterPresence(request.lead.lead_id)
+        }
+      });
+    }
+
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+ 
 
   getUserRole() {
     this.usersService.project_user_role_bs
@@ -200,7 +232,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
 
   listenToParentPostMessage() {
     window.addEventListener("message", (event) => {
-      this.logger.log("[REQUEST-DTLS-X-PANEL] message event ", event);
+      console.log("[WS-REQUESTS-UNSERVED-X-PANEL] message event ", event);
 
       if (event && event.data && event.data.action && event.data.parameter && event.data.calledBy) {
         if (event.data.action === 'joinConversation' && event.data.calledBy === 'ws_unserved_for_panel') {
@@ -216,6 +248,40 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
         //   console.log("[WS-REQUESTS-UNSERVED-X-PANEL] currentUserID ", this.currentUserID);
         // }
       }
+      // && window['tiledesk_widget_hide']
+      if (event && event.data && event.data.action && event.data.calledBy) {
+        if (event.data.action === "hidewidget" && event.data.calledBy === "unassigned-convs") {
+          try {
+            if (window ) {
+              console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - HIDE WIDGET - HERE 1')
+              // setTimeout(() => {
+                // window['Tiledesk']('hide');
+                // window['tiledesk_widget_hide']();
+              // }, 1500);
+              window['Tiledesk']('onLoadParams', (event_data) => {
+                console.log("[WS-REQUESTS-UNSERVED-X-PANEL] onLoadParams Initialized!");
+               
+                window['Tiledesk']('setParameter', { key: 'autoStart', value: false })
+                window['tiledesk_widget_hide']();
+                console.log('[WS-REQUESTS-UNSERVED-X-PANEL]  window[Tiledesk]' ,  window['Tiledesk'] )
+                // customAuth((token) => {
+                //     if (token) {
+                //         window.tiledesk.signInWithCustomToken(token);
+                //     }
+                //     else {
+                //         console.log("No user found.");
+                //     }
+                // });
+              });
+
+            }
+          } catch (e) {
+            this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] tiledesk_widget_hide ERROR', e)
+          }
+        }
+      }
+
+      // const msg = { action: "hidewidget", calledBy: 'unassigned-convs' }
     })
   }
 
@@ -289,31 +355,8 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
       });
   }
 
-  ngAfterViewInit() {
-    this.getProjectUserRole();
-    this.cdref.detectChanges();
-    // window.top.postMessage('finished', '*')
-  }
 
-  ngOnDestroy() {
-    this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - ngOnDestroy')
-    if (this.subscription) {
-      this.subscription.unsubscribe()
-    }
 
-    if (this.wsRequestsUnserved) {
-      this.wsRequestsUnserved.forEach(request => {
-
-        this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - ngOnDestroy request', request)
-        if (request && request.lead) {
-          this.unsuscribeRequesterPresence(request.lead.lead_id)
-        }
-      });
-    }
-
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
 
   unsuscribeRequesterPresence(requester_id) {
     this.wsRequestsService.unsubscribeToWS_RequesterPresence(requester_id);
@@ -703,7 +746,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
 
         if (lead) {
           this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - GET LEAD BY  ID ', lead);
-          request.lead = { "createdAt": lead.createdAt, "createdBy": lead.createdBy, "email": lead.email, "fullname": lead.fullname, "id_project": lead.id_project, "lead_id": lead.lead_id, "status": lead.status, "_id":lead }
+          request.lead = { "createdAt": lead.createdAt, "createdBy": lead.createdBy, "email": lead.email, "fullname": lead.fullname, "id_project": lead.id_project, "lead_id": lead.lead_id, "status": lead.status, "_id": lead }
           request['requester_fullname_initial'] = avatarPlaceholder(lead.fullname);
           request['requester_fullname_fillColour'] = getColorBck(lead.fullname)
         } else {
