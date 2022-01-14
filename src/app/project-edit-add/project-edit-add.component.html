@@ -520,7 +520,7 @@
                 <!-- ------------------------------------------------------------------------------------------------ -->
                 <!-- SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - CANCEL SUBSCRIPTION  -->
                 <!-- ------------------------------------------------------------------------------------------------ -->
-                <div class="row" *ngIf="prjct_profile_type !== 'free'">
+                <div class="row" *ngIf="prjct_profile_type !== 'free' && profile_name !== 'enterprise'">
                   <label class="col-sm-2"> </label>
                   <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                     <button class="btn btn-danger" (click)="viewCancelSubscription()"
