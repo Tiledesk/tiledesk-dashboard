@@ -307,8 +307,12 @@ export class SigninComponent implements OnInit {
         //     self.logger.log('[SIGN-IN] SetTiledeskWidgetUserSignin (Signin) error', err);
         //   }
         // }, 2000);
+
+
+        // --------------------------------------------
+        // Run widget login
+        // --------------------------------------------
         if (window && window['tiledesk_widget_login']) {
-          // console.log('window', window)
           window['tiledesk_widget_login']();
         } 
 
