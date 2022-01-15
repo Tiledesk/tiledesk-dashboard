@@ -390,17 +390,17 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             if (e instanceof NavigationEnd) {
 
 
-                console.log('[APP-COMP] - HIDE WIDGET -> CURRENT URL ', e.url);
+                this.logger.log('[APP-COMP] - HIDE WIDGET -> CURRENT URL ', e.url);
                 if ((e.url.indexOf('/unserved-request-for-panel') !== -1) || (e.url.indexOf('/projects-for-panel') !== -1) || (e.url.indexOf('/request-for-panel') !== -1)) {
                     // window.addEventListener("load", () => {
-                        console.log('[APP-COMP] - HIDE WIDGET - PAGE LOAD')
+                        this.logger.log('[APP-COMP] - HIDE WIDGET - PAGE LOAD')
                     try {
                         if (window && window['tiledesk_widget_hide']) {
-                            console.log('[APP-COMP] - HIDE WIDGET - HERE 1')
+                            this.logger.log('[APP-COMP] - HIDE WIDGET - HERE 1')
                             window['tiledesk_widget_hide']();
                         }
                     } catch (e) {
-                        this.logger.log('tiledesk_widget_hide ERROR', e)
+                        this.logger.error('tiledesk_widget_hide ERROR', e)
                     }
                 }
                 // )};
