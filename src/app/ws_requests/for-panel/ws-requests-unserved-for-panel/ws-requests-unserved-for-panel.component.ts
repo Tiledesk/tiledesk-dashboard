@@ -492,6 +492,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
 
         if (totalrequests === 0) {
           this.SHOW_SIMULATE_REQUEST_BTN = true
+      
           this.showSpinner = false;
           this.SHOW_NO_REQUEST_MSG = true
           this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - listenToRequestsLength SHOW_SIMULATE_REQUEST_BTN ', this.SHOW_SIMULATE_REQUEST_BTN)
