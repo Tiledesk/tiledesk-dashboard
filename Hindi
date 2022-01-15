@@ -1948,5 +1948,7 @@
     "Send": "Send",
     "AuthenticationFailed": "Authentication failed, the test email could not be sent",
     "AnErrorHasOccurred": "An error has occurred",
-    "EmailTemplateUpdatedSuccessfully": "Email template updated successfully"
+    "EmailTemplateUpdatedSuccessfully": "Email template updated successfully",
+    "PinThisProjectInTheChatWindow": "Pin this project in the chat window to easily track project conversations and change your status",
+    "SelectAnotherProject": "Select another project"
 }
