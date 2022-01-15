@@ -237,7 +237,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
         this.unsetNavbarBoxShadow();
-        // this.hideWidgetInComponentDisplayedInChat()
+        this.hideWidgetInComponentDisplayedInChat()
         // -----------------------------------------------------------------------------------------------------
         // Websocket connection
         // -----------------------------------------------------------------------------------------------------
@@ -385,33 +385,68 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     hideWidgetInComponentDisplayedInChat() {
-        this.router.events.subscribe((val) => {
-            if (this.location.path() !== '') {
-                this.route = this.location.path();
-                this.logger.log('hideWidgetInComponentDisplayedInChat »> route', this.route)
-                // tslint:disable-next-line:max-line-length
-                if ((this.route.indexOf('/unserved-request-for-panel') !== -1)) {
-                    this.logger.log('hideWidgetInComponentDisplayedInChat HERE 1')
-                    // try {
-                    //     if (window && window['tiledeskSettings'] && window['tiledeskSettings'].angularcomponent && window['tiledeskSettings'].angularcomponent.g) {
-                    //         this.logger.log('hideWidgetInComponentDisplayedInChat HERE 2')
-                    //         window['tiledeskSettings'].angularcomponent.g.setParameter('isShown', false)
-                    //     }
-                    // } catch (e) {
-                    //     this.logger.log('hideWidgetInComponentDisplayedInChat ERROR' ,e)
-                    // }
 
-                    let wContext: any = window;
-                    // console.log('windowContext 0', wContext);
-                    if (window.frameElement && window.frameElement.getAttribute('tiledesk_context') === 'parent') {
-                        wContext = window.parent;
-                        console.log('hideWidgetInComponentDisplayedInChat HERE 1', wContext)
+        this.subscription = this.router.events.subscribe((e) => {
+            if (e instanceof NavigationEnd) {
 
+
+                console.log('[APP-COMP] - HIDE WIDGET -> CURRENT URL ', e.url);
+                if ((e.url.indexOf('/unserved-request-for-panel') !== -1) || (e.url.indexOf('/projects-for-panel') !== -1) || (e.url.indexOf('/request-for-panel') !== -1)) {
+                    // window.addEventListener("load", () => {
+                        console.log('[APP-COMP] - HIDE WIDGET - PAGE LOAD')
+                    try {
+                        if (window && window['tiledesk_widget_hide']) {
+                            console.log('[APP-COMP] - HIDE WIDGET - HERE 1')
+                            window['tiledesk_widget_hide']();
+                        }
+                    } catch (e) {
+                        this.logger.log('tiledesk_widget_hide ERROR', e)
                     }
                 }
-
+                // )};
             }
-        })
+           
+
+        });
+
+
+
+        // this.router.events.subscribe((val) => {
+        //     if (this.location.path() !== '') {
+        //         this.route = this.location.path();
+        //         this.logger.log('hideWidgetInComponentDisplayedInChat »> route', this.route)
+        //         // tslint:disable-next-line:max-line-length
+        //         if ((this.route.indexOf('/unserved-request-for-panel') !== -1) || (this.route.indexOf('/projects-for-panel') !== -1) || (this.route.indexOf('/request-for-panel') !== -1)){
+        //             console.log('hideWidgetInComponentDisplayedInChat HERE 1')
+        //             // try {
+        //             //     if (window && window['tiledeskSettings'] && window['tiledeskSettings'].angularcomponent && window['tiledeskSettings'].angularcomponent.g) {
+        //             //         this.logger.log('hideWidgetInComponentDisplayedInChat HERE 2')
+        //             //         window['tiledeskSettings'].angularcomponent.g.setParameter('isShown', false)
+        //             //     }
+        //             // } catch (e) {
+        //             //     this.logger.log('hideWidgetInComponentDisplayedInChat ERROR' ,e)
+        //             // }
+
+        //             // let wContext: any = window;
+        //             // // console.log('windowContext 0', wContext);
+        //             // if (window.frameElement && window.frameElement.getAttribute('tiledesk_context') === 'parent') {
+        //             //     wContext = window.parent;
+        //             //     console.log('hideWidgetInComponentDisplayedInChat HERE 1', wContext)
+
+        //             // }
+        //             // window.addEventListener("load", () => {
+        //                 try {
+        //                     if (window && window['tiledesk_widget_hide']) {
+        //                         window['tiledesk_widget_hide']();
+        //                     }
+        //                 } catch (e) {
+        //                     this.logger.log('tiledesk_widget_hide ERROR', e)
+        //                 }
+        //             }
+        //         //    )};
+
+        //     }
+        // })
     }
 
 
