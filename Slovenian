@@ -811,7 +811,7 @@
         "Invites": "Invite",
         "Update": "Update",
         "UserRoles": "Teammate Roles",
-        "ThereAreThreeRolesIn": "There are three roles in {{company_name}} owner, amministrator and agent",
+        "ThereAreThreeRolesIn": "There are three roles in {{company_name}} owner, administrator and agent",
         "Owner": "Owner",
         "TheOwnerIs": "The owner is the person who created the project",
         "AnOwenerHas": "Owners can control each and every aspect of a {{ company_name }}.",
