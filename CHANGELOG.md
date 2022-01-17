@@ -1,8 +1,11 @@
 
 # tiledesk-dashboard
 
+### 2.2.31-rc4
+- Fixes the bug: modal windows for updating the plan are also displayed when they shouldn't
+
 ### 2.2.31-rc3
-- Fix the bug: in the "faq" and "user-edit-add" components the method that return the name of the plan according to the language of the browser is not correct
+- Fixes the bug: in the "faq" and "user-edit-add" components the method that return the name of the plan according to the language of the browser is not correct
 - Enhances the components that are loaded in the left panel of the chat
 - Fix the bug: the modals displayed when a teammates download the csv of the faq are not correct when the enterprise profile is expired
 
