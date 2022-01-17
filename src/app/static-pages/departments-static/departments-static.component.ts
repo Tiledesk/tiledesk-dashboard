@@ -8,6 +8,7 @@ import { ProjectPlanService } from '../../services/project-plan.service';
 import { TranslateService } from '@ngx-translate/core';
 import { UsersService } from '../../services/users.service';
 import { LoggerService } from '../../services/logger/logger.service';
+import { AppConfigService } from 'app/services/app-config.service';
 const swal = require('sweetalert');
 // node_modules/ng-simple-slideshow/src/app/modules/slideshow/IImage.d.ts
 // src/app/static-pages/departments-static/departments-static.component.ts
@@ -46,17 +47,52 @@ export class DepartmentsStaticComponent extends StaticPageBaseComponent implemen
     private notify: NotifyService,
     public translate: TranslateService,
     private usersService: UsersService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    public appConfigService: AppConfigService
   ) {
     super(translate);
   }
 
   ngOnInit() {
+    this.getOSCODE();
     this.getCurrentProject();
     this.getProjectPlan();
     this.getProjectUserRole();
     this.getTranslationStrings();
+
   }
+
+  getOSCODE() {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    this.logger.log('[DEPTS-BASECOMP] AppConfigService getAppConfig public_Key', this.public_Key)
+    this.logger.log('[DEPTS-BASECOMP] public_Key', this.public_Key)
+
+    let keys = this.public_Key.split("-");
+    // this.logger.log('PUBLIC-KEY (Navbar) - public_Key keys', keys)
+
+    keys.forEach(key => {
+      // this.logger.log('NavbarComponent public_Key key', key)
+      if (key.includes("PAY")) {
+        this.logger.log('[DEPTS-STATIC] PUBLIC-KEY - key', key);
+        let pay = key.split(":");
+        // this.logger.log('PUBLIC-KEY (Navbar) - pay key&value', pay);
+        if (pay[1] === "F") {
+          this.payIsVisible = false;
+          this.logger.log('[DEPTS-STATIC] - pay isVisible', this.payIsVisible);
+        } else {
+          this.payIsVisible = true;
+          this.logger.log('[DEPTS-STATIC] - pay isVisible', this.payIsVisible);
+        }
+      }
+    });
+
+    if (!this.public_Key.includes("PAY")) {
+      this.payIsVisible = false;
+      this.logger.log('[DEPTS-STATIC] - pay isVisible', this.payIsVisible);
+    }
+  }
+
+
 
   getProjectUserRole() {
     this.usersService.project_user_role_bs.subscribe((user_role) => {
@@ -135,14 +171,18 @@ export class DepartmentsStaticComponent extends StaticPageBaseComponent implemen
 
   goToPricing() {
     this.logger.log('[DEPTS-STATIC] - goToPricing projectId ', this.projectId);
-    if (this.USER_ROLE === 'owner') {
-      if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-        this.notify._displayContactUsModal(true, 'upgrade_plan');
+    if (this.payIsVisible) {
+      if (this.USER_ROLE === 'owner') {
+        if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+          this.notify._displayContactUsModal(true, 'upgrade_plan');
+        } else {
+          this.router.navigate(['project/' + this.projectId + '/pricing']);
+        }
       } else {
-        this.router.navigate(['project/' + this.projectId + '/pricing']);
+        this.presentModalOnlyOwnerCanManageTheAccountPlan();
       }
     } else {
-      this.presentModalOnlyOwnerCanManageTheAccountPlan();
+      this.notify._displayContactUsModal(true, 'upgrade_plan');
     }
   }
 

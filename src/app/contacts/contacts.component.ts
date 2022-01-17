@@ -98,6 +98,8 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   CHAT_BASE_URL: string;
   id_request: string;
+  payIsVisible: boolean;
+  public_Key: any;
 
   constructor(
     private http: Http,
@@ -114,7 +116,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     this.getTranslation();
-
+    this.getOSCODE();
     // this.auth.checkRoleForCurrentProject();
     this.getContacts();
     this.getCurrentProject();
@@ -135,15 +137,39 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
       "click": function () { this.closable = true; },
       "hide.bs.dropdown": function () { return this.closable; }
     });
+  }
 
+  getOSCODE() {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+  
+    let keys = this.public_Key.split("-");
+
+    keys.forEach(key => {
+
+      if (key.includes("PAY")) {
+        this.logger.log('[CONTACTS-COMP] PUBLIC-KEY - key', key);
+        let pay = key.split(":");
+
+        if (pay[1] === "F") {
+          this.payIsVisible = false;
+          this.logger.log('[CONTACTS-COMP] - pay isVisible', this.payIsVisible);
+        } else {
+          this.payIsVisible = true;
+          this.logger.log('[CONTACTS-COMP] - pay isVisible', this.payIsVisible);
+        }
+      }
+    });
+
+    if (!this.public_Key.includes("PAY")) {
+      this.payIsVisible = false;
+      this.logger.log('[CONTACTS-COMP] - pay isVisible', this.payIsVisible);
+    }
   }
 
 
   getTranslation() {
-
     this.translate.get('DeleteLeadSuccessNoticationMsg')
       .subscribe((text: string) => {
-
         this.deleteLeadSuccessNoticationMsg = text;
         // this.logger.log('[CONTACTS-COMP] + + + DeleteLeadSuccessNoticationMsg', text)
       });
@@ -249,7 +275,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
         this.subscription_end_date = projectProfileData.subscription_end_date;
         this.trial_expired = projectProfileData.trial_expired
 
-        this.prjct_profile_name = this.buildPlanName(projectProfileData.profile_name, this.browserLang, this.prjct_profile_type);
+        this.buildPlanName(projectProfileData.profile_name, this.browserLang, this.prjct_profile_type);
       }
     }, error => {
 
@@ -267,14 +293,23 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   buildPlanName(planName: string, browserLang: string, planType: string) {
     if (planType === 'payment') {
-      if (browserLang === 'it') {
-        this.prjct_profile_name = 'Piano ' + planName;
-        return this.prjct_profile_name
-      } else if (browserLang !== 'it') {
-        this.prjct_profile_name = planName + ' Plan';
-        return this.prjct_profile_name
-      }
+      this.getPaidPlanTranslation(planName)
+      // if (browserLang === 'it') {
+      //   this.prjct_profile_name = 'Piano ' + planName;
+      //   return this.prjct_profile_name
+      // } else if (browserLang !== 'it') {
+      //   this.prjct_profile_name = planName + ' Plan';
+      //   return this.prjct_profile_name
+      // }
     }
+  }
+
+  getPaidPlanTranslation(project_profile_name) {
+    this.translate.get('PaydPlanName', { projectprofile: project_profile_name })
+      .subscribe((text: string) => {
+        this.prjct_profile_name = text;
+        // this.logger.log('+ + + PaydPlanName ', text)
+      });
   }
 
 
@@ -852,26 +887,30 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   exportContactsToCsv() {
-    if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false || this.prjct_profile_type === 'free' && this.trial_expired === true) {
-      this.notify.openDataExportNotAvailable()
+    if (this.payIsVisible) {
+      if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false || this.prjct_profile_type === 'free' && this.trial_expired === true) {
+        this.notify.openDataExportNotAvailable()
+      } else {
+        const exportToCsvBtn = <HTMLElement>document.querySelector('.export-to-csv-btn');
+        this.logger.log('[CONTACTS-COMP] - EXPORT TO CSV BTN', exportToCsvBtn)
+        exportToCsvBtn.blur()
+
+        this.contactsService.exportLeadToCsv(this.queryString, 0, this.hasClickedTrashed).subscribe((leads_object: any) => {
+          // this.logger.log('!!!! CONTACTS - EXPORT CONTACT TO CSV RESPONSE ', leads_object);
+
+          // this.logger.log('!!!! CONTACTS - CONTACTS LIST ', this.contacts);
+          if (leads_object) {
+            this.logger.log('[CONTACTS-COMP] - EXPORT CONTACTS TO CSV RESPONSE', leads_object);
+            this.downloadFile(leads_object);
+          }
+        }, (error) => {
+          this.logger.error('[CONTACTS-COMP]- EXPORT CONTACT TO CSV - ERROR  ', error);
+        }, () => {
+          this.logger.log('[CONTACTS-COMP] - EXPORT CONTACT TO CSV * COMPLETE *');
+        });
+      }
     } else {
-      const exportToCsvBtn = <HTMLElement>document.querySelector('.export-to-csv-btn');
-      this.logger.log('[CONTACTS-COMP] - EXPORT TO CSV BTN', exportToCsvBtn)
-      exportToCsvBtn.blur()
-
-      this.contactsService.exportLeadToCsv(this.queryString, 0, this.hasClickedTrashed).subscribe((leads_object: any) => {
-        // this.logger.log('!!!! CONTACTS - EXPORT CONTACT TO CSV RESPONSE ', leads_object);
-
-        // this.logger.log('!!!! CONTACTS - CONTACTS LIST ', this.contacts);
-        if (leads_object) {
-          this.logger.log('[CONTACTS-COMP] - EXPORT CONTACTS TO CSV RESPONSE', leads_object);
-          this.downloadFile(leads_object);
-        }
-      }, (error) => {
-        this.logger.error('[CONTACTS-COMP]- EXPORT CONTACT TO CSV - ERROR  ', error);
-      }, () => {
-        this.logger.log('[CONTACTS-COMP] - EXPORT CONTACT TO CSV * COMPLETE *');
-      });
+      this.notify._displayContactUsModal(true, 'upgrade_plan');
     }
   }
 
@@ -912,7 +951,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   chatWithAgent(contact) {
     this.logger.log("[CONTACTS-COMP] CHAT WITH AGENT > CONTACT : ", contact);
 
-  
+
     // const url = this.CHAT_BASE_URL + '?' + 'recipient=' + contact._id + '&recipientFullname=' + contact.fullname;
     const url = this.CHAT_BASE_URL + '#/conversation-detail/' + contact._id + '/' + contact.fullname + '/new'
     this.logger.log("[CONTACTS-COMP] CHAT WITH AGENT -> CHAT URL ", url);

@@ -310,11 +310,12 @@
           <div class="card-content">
 
             <i class="material-icons" style="vertical-align: middle; color: #00bcd4;">info</i>
-            <span class="msg-alert">
+            <span class="msg-alert ">
               <!-- History is only available for the past 14 days. Renew your subscription for unlimited chat history -->
               {{ 'HistoryPage.HistoryIsOnlyAvailableForThePast14Days' | translate }}.
-              <span style="color: #039be5; cursor:pointer" (click)="openModalSubsExpiredOrGoToPricing()">{{
-                "Pricing.UpgradeYourPlan" | translate }} </span>
+              <span class="upgrade-plan-for-unlimited-history" style="color: #039be5; cursor:pointer" (click)="openModalSubsExpiredOrGoToPricing()">
+                {{ "Pricing.UpgradeYourPlan" | translate }} 
+              </span>
               {{ 'HistoryPage.ForUnlimitedChatHistory' | translate }}
             </span>
 

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { AppConfigService } from 'app/services/app-config.service';
+
 
 
 @Component({
@@ -10,15 +12,22 @@ import { TranslateService } from '@ngx-translate/core';
 export class StaticPageBaseComponent implements OnInit {
 
   prjct_profile_name: string;
-
+  public_Key:any
+  payIsVisible: boolean;
   constructor(
-    public translate: TranslateService
+    public translate: TranslateService,
+    
+  
   ) { 
    
   
   }
 
-  ngOnInit() { }
+  ngOnInit() { 
+    
+  }
+
+
 
 
   // ADDS 'Plan' to the project plan's name

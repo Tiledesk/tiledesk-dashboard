@@ -34,10 +34,6 @@ const swal = require('sweetalert');
 export class FaqComponent extends BotsBaseComponent implements OnInit {
   @ViewChild('editbotbtn') private elementRef: ElementRef;
 
-
-
-
-
   faq: Faq[];
   question: string;
   answer: string;
@@ -156,6 +152,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   botDefaultSelectedLangCode: string
   botDefaultSelectedLang: any
   language: string;
+  payIsVisible: boolean;
 
   @ViewChild('fileInputBotProfileImage') fileInputBotProfileImage: any;
 
@@ -762,23 +759,21 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
-    // this.logger.log('AppConfigService getAppConfig (BOT LIST) public_Key', this.public_Key);
+ 
     let keys = this.public_Key.split("-");
-    // this.logger.log('PUBLIC-KEY (BOT LIST) keys', keys)
+ 
     keys.forEach(key => {
 
       if (key.includes("ANA")) {
-        // this.logger.log('PUBLIC-KEY (BOT LIST) - key', key);
+       
         let ana = key.split(":");
-        // this.logger.log('PUBLIC-KEY (BOT LIST) - ana key&value', ana);
+   
         if (ana[1] === "F") {
           this.isVisibleAnalytics = false;
         } else {
           this.isVisibleAnalytics = true;
         }
-
       }
-
       if (key.includes("DEP")) {
         let dep = key.split(":");
         if (dep[1] === "F") {
@@ -789,6 +784,18 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
           // this.logger.log('PUBLIC-KEY (Faqcomponent) - isVisibleDEP', this.isVisibleDEP);
         }
       }
+      if (key.includes("PAY")) {
+        this.logger.log('[FAQ-COMP] PUBLIC-KEY - key', key);
+        let pay = key.split(":");
+        // this.logger.log('PUBLIC-KEY (Navbar) - pay key&value', pay);
+        if (pay[1] === "F") {
+          this.payIsVisible = false;
+          this.logger.log('[FAQ-COMP] - pay isVisible', this.payIsVisible);
+        } else {
+          this.payIsVisible = true;
+          this.logger.log('[FAQ-COMP] - pay isVisible', this.payIsVisible);
+        }
+      }
     });
 
     if (!this.public_Key.includes("DEP")) {
@@ -797,6 +804,11 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
     if (!this.public_Key.includes("ANA")) {
       this.isVisibleAnalytics = false;
+    }
+
+    if (!this.public_Key.includes("PAY")) {
+      this.payIsVisible = false;
+      this.logger.log('[FAQ-COMP] - pay isVisible', this.payIsVisible);
     }
 
   }
@@ -1191,20 +1203,24 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
   exportFaqsToCsv() {
     // tslint:disable-next-line:max-line-length
-    if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false || this.prjct_profile_type === 'free' && this.trial_expired === true) {
-      this.notify.openDataExportNotAvailable()
-    } else {
-      this.faqService.exsportFaqsToCsv(this.id_faq_kb).subscribe((faq: any) => {
-        this.logger.log('[FAQ-COMP] - EXPORT FAQ TO CSV - FAQS', faq)
+    if (this.payIsVisible) {
+      if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false || this.prjct_profile_type === 'free' && this.trial_expired === true) {
+        this.notify.openDataExportNotAvailable()
+      } else {
+        this.faqService.exsportFaqsToCsv(this.id_faq_kb).subscribe((faq: any) => {
+          this.logger.log('[FAQ-COMP] - EXPORT FAQ TO CSV - FAQS', faq)
 
-        if (faq) {
-          this.downloadFile(faq, 'faqs.csv');
-        }
-      }, (error) => {
-        this.logger.error('[FAQ-COMP] - EXPORT FAQ TO CSV - ERROR', error);
-      }, () => {
-        this.logger.log('[FAQ-COMP] - EXPORT FAQ TO CSV - COMPLETE');
-      });
+          if (faq) {
+            this.downloadFile(faq, 'faqs.csv');
+          }
+        }, (error) => {
+          this.logger.error('[FAQ-COMP] - EXPORT FAQ TO CSV - ERROR', error);
+        }, () => {
+          this.logger.log('[FAQ-COMP] - EXPORT FAQ TO CSV - COMPLETE');
+        });
+      }
+    } else {
+      this.notify._displayContactUsModal(true, 'upgrade_plan');
     }
   }
 

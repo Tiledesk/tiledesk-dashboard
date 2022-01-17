@@ -293,7 +293,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         this.onlyOwnerCanManageEmailTempalte = translation;
       });
 
-      this.translate.get('ProjectEditPage.FeatureOnlyAvailableWithTheEnterprisePlan')
+    this.translate.get('ProjectEditPage.FeatureOnlyAvailableWithTheEnterprisePlan')
       .subscribe((translation: any) => {
         // this.logger.log('[PRJCT-EDIT-ADD] onlyOwnerCanManageTheAccountPlanMsg text', translation)
         this.onlyAvailableWithEnterprisePlan = translation;
@@ -562,7 +562,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.presentModalOnlyOwnerCanManageTheAccountPlan()
     }
   }
-  presentModalFeautureAvailableOnlyWithEnterprisePlan () {
+  presentModalFeautureAvailableOnlyWithEnterprisePlan() {
     const el = document.createElement('div')
     el.innerHTML = this.onlyAvailableWithEnterprisePlan
     swal({
@@ -634,7 +634,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
 
   goToCustomizeNotificationEmailPage() {
-    this.logger.log('goToCustomizeNotificationEmailPage profile_name ', this.profile_name )
+    this.logger.log('goToCustomizeNotificationEmailPage profile_name ', this.profile_name)
     if (this.profile_name === 'enterprise') {
       if (this.USER_ROLE === 'owner') {
         this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToCustomizeNotificationEmailPage ');
@@ -642,13 +642,13 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       } else {
         this.presentModalOnlyOwnerCanManageEmailTempalte()
       }
-    } else{
+    } else {
       this.presentModalFeautureAvailableOnlyWithEnterprisePlan()
     }
   }
 
   goToManageEmailSettings() {
-    this.logger.log('goToManageEmailSettings profile_name ', this.profile_name )
+    this.logger.log('goToManageEmailSettings profile_name ', this.profile_name)
     if (this.profile_name === 'enterprise') {
       if (this.USER_ROLE === 'owner') {
         this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToManageEmailSettings');
@@ -656,14 +656,14 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       } else {
         this.presentModalOnlyOwnerCanManageEmailTempalte()
       }
-    } else{
+    } else {
       this.presentModalFeautureAvailableOnlyWithEnterprisePlan()
     }
   }
 
-  
 
- 
+
+
 
 
 
@@ -793,17 +793,21 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
 
   openModalSubsExpired() {
-    if (this.USER_ROLE === 'owner') {
-      if (this.profile_name !== 'enterprise') {
-        this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
-      } else {
-        if (this.profile_name === 'enterprise') {
+    if (this.isVisiblePaymentTab) {
+      if (this.USER_ROLE === 'owner') {
+        if (this.profile_name !== 'enterprise') {
+          this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+        } else {
+          if (this.profile_name === 'enterprise') {
 
-          this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+            this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+          }
         }
+      } else {
+        this.presentModalOnlyOwnerCanManageTheAccountPlan();
       }
     } else {
-      this.presentModalOnlyOwnerCanManageTheAccountPlan();
+      this.notify._displayContactUsModal(true, 'upgrade_plan');
     }
   }
 
@@ -968,8 +972,18 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
 
   goToPricing() {
-    this.router.navigate(['project/' + this.id_project + '/pricing']);
+    if (this.isVisiblePaymentTab) {
+      if (this.USER_ROLE === 'owner') {
+        this.router.navigate(['project/' + this.id_project + '/pricing']);
+      } else {
+        this.presentModalOnlyOwnerCanManageTheAccountPlan();
+      }
+    } else {
+      this.notify._displayContactUsModal(true, 'upgrade_plan');
+    }
   }
+
+
 
   // !!! NO MORE USED - GO BACK TO PROJECT LIST
   goBackToProjectsList() {

@@ -88,6 +88,8 @@ export class UsersComponent implements OnInit, OnDestroy {
   customtext = true;
   text_to_display = "LearnMoreAboutDefaultRoles" // is diplayed if customtext = true
   UPLOAD_ENGINE_IS_FIREBASE: boolean
+  profile_name: string;
+
   constructor(
     private usersService: UsersService,
     private router: Router,
@@ -323,18 +325,20 @@ export class UsersComponent implements OnInit, OnDestroy {
         this.subscription_is_active = projectProfileData.subscription_is_active;
         this.subscription_end_date = projectProfileData.subscription_end_date
         this.prjct_profile_type = projectProfileData.profile_type;
-
+        this.profile_name = projectProfileData.profile_name
         // ADDS 'Plan' to the project plan's name
         // NOTE: IF THE PLAN IS OF FREE TYPE IN THE USER INTERFACE THE MESSAGE 'You currently have ...' IS NOT DISPLAYED
         if (this.prjct_profile_type === 'payment') {
-          if (this.browserLang === 'it') {
 
-            this.prjct_profile_name = 'Piano ' + projectProfileData.profile_name;
+          this.getPaidPlanTranslation(this.profile_name)
+          // if (this.browserLang === 'it') {
 
-          } else if (this.browserLang !== 'it') {
+          //   this.prjct_profile_name = 'Piano ' + projectProfileData.profile_name;
 
-            this.prjct_profile_name = projectProfileData.profile_name + ' Plan';
-          }
+          // } else if (this.browserLang !== 'it') {
+
+          //   this.prjct_profile_name = projectProfileData.profile_name + ' Plan';
+          // }
         }
       }
     }, err => {
@@ -344,16 +348,35 @@ export class UsersComponent implements OnInit, OnDestroy {
     });
   }
 
+  getPaidPlanTranslation(project_profile_name) {
+    this.translate.get('PaydPlanName', { projectprofile: project_profile_name })
+      .subscribe((text: string) => {
+        this.prjct_profile_name = text;
+        // this.logger.log('+ + + PaydPlanName ', text)
+      });
+  }
+
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
 
   openModalSubsExpired() {
+    // if (this.USER_ROLE === 'owner') {
+    //   this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+    // } else {
+    //   this.presentModalOnlyOwnerCanManageTheAccountPlan();
+    // }
+
     if (this.USER_ROLE === 'owner') {
-      this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+      if (this.profile_name !== 'enterprise') {
+        this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+      } else if (this.profile_name === 'enterprise') {
+        this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+      }
     } else {
       this.presentModalOnlyOwnerCanManageTheAccountPlan();
     }
+
   }
 
   getMoreOperatorsSeats() {
@@ -515,7 +538,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.usersService.getPendingUsersByIdAndResendEmail(pendingInvitationId)
       .subscribe((pendingInvitation: any) => {
         this.logger.log('[USERS] - GET PENDING INVITATION BY ID AND RESEND INVITE - RES ', pendingInvitation);
-        
+
         this.pendingInvitationEmail = pendingInvitation['Resend invitation email to']['email'];
         this.logger.log('[USERS] - GET PENDING INVITATION BY ID AND RESEND INVITE - RES  email', this.pendingInvitationEmail);
       }, error => {
@@ -604,26 +627,26 @@ export class UsersComponent implements OnInit, OnDestroy {
       this.logger.log('[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USERS - RES ', projectUsers);
       this.logger.log('[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USER ID  ', this.id_projectUser);
       // this.ngOnInit();
-      
+
     }, error => {
       this.showSpinner = false;
       this.logger.error('[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USERS - ERROR ', error);
-    
+
       // NOTIFY ERROR 
       this.notify.showNotification(this.deleteProjectUserErrorNoticationMsg, 4, 'report_problem');
     }, () => {
-        this.logger.log('[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USERS * COMPLETE *');
-        // NOTIFY SUCCESS 
-        this.notify.showNotification(this.deleteProjectUserSuccessNoticationMsg, 2, 'done');
-        
-        for (let i = 0; i < this.projectUsersList.length; i++) {
-          if (this.id_projectUser === this.projectUsersList[i]._id) { 
-            this.projectUsersList.splice(i, 1);
-            localStorage.removeItem('dshbrd----' + this.id_projectUser)
-          }
-         }
+      this.logger.log('[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USERS * COMPLETE *');
+      // NOTIFY SUCCESS 
+      this.notify.showNotification(this.deleteProjectUserSuccessNoticationMsg, 2, 'done');
 
-      });
+      for (let i = 0; i < this.projectUsersList.length; i++) {
+        if (this.id_projectUser === this.projectUsersList[i]._id) {
+          this.projectUsersList.splice(i, 1);
+          localStorage.removeItem('dshbrd----' + this.id_projectUser)
+        }
+      }
+
+    });
   }
 
   onCloseModal() {
@@ -654,12 +677,12 @@ export class UsersComponent implements OnInit, OnDestroy {
 
     }, (error) => {
       this.logger.error('[USERS] - CHANGE AVAILABILITY STATUS - UPDATED PROJECT-USER - ERROR ', error);
-      
+
       //  NOTIFY ERROR
       this.notify.showWidgetStyleUpdateNotification(this.changeAvailabilityErrorNoticationMsg, 4, 'report_problem');
     }, () => {
       this.logger.log('[USERS] - CHANGE AVAILABILITY STATUS - UPDATED PROJECT-USER * COMPLETE *');
-      
+
       //  NOTIFY SUCCESS 
       this.notify.showWidgetStyleUpdateNotification(this.changeAvailabilitySuccessNoticationMsg, 2, 'done');
 

@@ -8,6 +8,7 @@ import { ProjectPlanService } from '../../services/project-plan.service';
 import { StaticPageBaseComponent } from './../static-page-base/static-page-base.component';
 import { UsersService } from '../../services/users.service';
 import { LoggerService } from '../../services/logger/logger.service';
+import { AppConfigService } from 'app/services/app-config.service';
 const swal = require('sweetalert');
 
 @Component({
@@ -44,10 +45,12 @@ export class AnalyticsStaticComponent extends StaticPageBaseComponent implements
     private prjctPlanService: ProjectPlanService,
     private notify: NotifyService,
     private usersService: UsersService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    public appConfigService: AppConfigService
   ) { super(translate); }
 
   ngOnInit() {
+    this.getOSCODE();
     this.getCurrentProject();
     this.getBrowserLang();
     this.getProjectPlan();
@@ -55,6 +58,38 @@ export class AnalyticsStaticComponent extends StaticPageBaseComponent implements
     this.getProjectUserRole();
     this.getTranslationStrings();
   }
+
+  getOSCODE() {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    this.logger.log('[TRIGGER-BASECOMP] AppConfigService getAppConfig public_Key', this.public_Key)
+    this.logger.log('[TRIGGER-BASECOMP] public_Key', this.public_Key)
+
+    let keys = this.public_Key.split("-");
+    // this.logger.log('PUBLIC-KEY (Navbar) - public_Key keys', keys)
+
+    keys.forEach(key => {
+      // this.logger.log('NavbarComponent public_Key key', key)
+      if (key.includes("PAY")) {
+        this.logger.log('[ANALYTICS-STATIC] PUBLIC-KEY - key', key);
+        let pay = key.split(":");
+        // this.logger.log('PUBLIC-KEY (Navbar) - pay key&value', pay);
+        if (pay[1] === "F") {
+          this.payIsVisible = false;
+          this.logger.log('[ANALYTICS-STATIC] - pay isVisible', this.payIsVisible);
+        } else {
+          this.payIsVisible = true;
+          this.logger.log('[ANALYTICS-STATIC] - pay isVisible', this.payIsVisible);
+        }
+      }
+    });
+
+    if (!this.public_Key.includes("PAY")) {
+      this.payIsVisible = false;
+      this.logger.log('[ANALYTICS-STATIC] - pay isVisible', this.payIsVisible);
+    }
+  }
+
+
 
   getBrowserLang() {
     this.browserLang = this.translate.getBrowserLang();
@@ -114,7 +149,7 @@ export class AnalyticsStaticComponent extends StaticPageBaseComponent implements
             if (this.profile_name !== 'enterprise') {
 
               this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date)
-            
+
             } else if (this.profile_name === 'enterprise') {
 
               this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
@@ -132,14 +167,18 @@ export class AnalyticsStaticComponent extends StaticPageBaseComponent implements
 
   goToPricing() {
     this.logger.log('[ANALYTICS-STATIC] - goToPricing projectId ', this.projectId);
-    if (this.USER_ROLE === 'owner') {
-      if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-        this.notify._displayContactUsModal(true, 'upgrade_plan');
+    if (this.payIsVisible) {
+      if (this.USER_ROLE === 'owner') {
+        if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+          this.notify._displayContactUsModal(true, 'upgrade_plan');
+        } else {
+          this.router.navigate(['project/' + this.projectId + '/pricing']);
+        }
       } else {
-        this.router.navigate(['project/' + this.projectId + '/pricing']);
+        this.presentModalOnlyOwnerCanManageTheAccountPlan();
       }
     } else {
-      this.presentModalOnlyOwnerCanManageTheAccountPlan();
+      this.notify._displayContactUsModal(true, 'upgrade_plan');
     }
   }
 
