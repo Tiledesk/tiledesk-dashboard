@@ -663,65 +663,7 @@
   </div>
 </div>
 
-<!-- ////// SIDEBAR FOOTER START-->
-<!-- <div *ngIf="isMobileMenu()" class="sidebar-footer">
-  <div class="row">
 
-    <div class="col-sm-12" (click)="openLogoutModal()">
-      <i class="material-icons" style=" color: #fff; vertical-align: middle">
-        exit_to_app
-      </i>
-      <span style="color: #fff;  vertical-align: middle">
-        {{ 'NavBar.LogOut' | translate }}
-      </span>
-    </div>
-  </div>
-</div> -->
-<!-- ////// SIDEBAR FOOTER end-->
-
-
-
-<!--
-<div class="sidebar-footer">
-  <div class="row">
-    <div class="col-sm-6">
-      <div style="text-align:center; font-weight:400">
-        <span *ngIf="prjct_profile_name === 'free'">  Pro (trial)</span>  
-     
-        <span *ngIf="prjct_trial_expired === false" class="upgrade-btn" (click)="goToPricing()"> 
-          upgrade
-        </span>
-        <span *ngIf="prjct_trial_expired === true" style=" color: #fff; font-size: 12px;display: block;"> 
-          {{ 'TrialExpired' | translate}}
-        </span>
-      </div>
-    </div>
-
-    <div class="col-sm-6">
-      <div *ngIf="prjct_trial_expired === false"> 
-   
-        <div id="progress" class="progress"  [attr.data-percentage]="prjc_trial_days_left_percentage" >
-          <span class="progress-left">
-            <span class="progress-bar"></span>
-          </span>
-          <span class="progress-right">
-            <span class="progress-bar"></span>
-          </span>
-          <div class="progress-value">
-            <div> 
-
-               {{ prjc_trial_days_left }}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div *ngIf="prjct_trial_expired === true"> 
-        <button class="btn upgrade-btn-trial-expired" (click)="goToPricing()"> upgrade </button>
-      </div>
-    </div>
-  </div>
-</div>
--->
 
 
 

@@ -1266,10 +1266,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         // this.logger.log('[SIDEBAR] Mouse Over Avatar Container ', _isOverAvar)
     }
 
-    goToPricing() {
-        this.router.navigate(['project/' + this.projectId + '/pricing']);
-    }
-
+ 
     // goToAnalytics() {
     //     this.router.navigate(['project/' + this.projectId + '/analytics']);
     // }
