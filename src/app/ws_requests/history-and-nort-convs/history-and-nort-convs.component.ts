@@ -954,7 +954,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
     //   this.presentModalOnlyOwnerCanManageTheAccountPlan();
     // }
-    console.log('openModalSubsExpiredOrGoToPricing this.payIsVisible ', this.payIsVisible) 
+    // console.log('openModalSubsExpiredOrGoToPricing this.payIsVisible ', this.payIsVisible) 
     if (this.payIsVisible) {
 
       if (this.CURRENT_USER_ROLE === 'owner') {
@@ -1505,7 +1505,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
   exportRequestsToCSV() {
     // tslint:disable-next-line:max-line-length
-    console.log('exportRequestsToCSV this.payIsVisible ', this.payIsVisible) 
+    // console.log('exportRequestsToCSV this.payIsVisible ', this.payIsVisible) 
     if (this.payIsVisible) {
       if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false || this.prjct_profile_type === 'free' && this.trial_expired === true) {
         this.notify.openDataExportNotAvailable()

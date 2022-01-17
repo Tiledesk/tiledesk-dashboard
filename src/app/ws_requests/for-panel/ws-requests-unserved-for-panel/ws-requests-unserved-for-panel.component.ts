@@ -253,17 +253,17 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
         if (event.data.action === "hidewidget" && event.data.calledBy === "unassigned-convs") {
           try {
             if (window ) {
-              console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - HIDE WIDGET - HERE 1')
+              this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - HIDE WIDGET - HERE 1')
               // setTimeout(() => {
                 // window['Tiledesk']('hide');
                 // window['tiledesk_widget_hide']();
               // }, 1500);
               window['Tiledesk']('onLoadParams', (event_data) => {
-                console.log("[WS-REQUESTS-UNSERVED-X-PANEL] onLoadParams Initialized!");
+                this.logger.log("[WS-REQUESTS-UNSERVED-X-PANEL] onLoadParams Initialized!");
                
                 window['Tiledesk']('setParameter', { key: 'autoStart', value: false })
                 window['tiledesk_widget_hide']();
-                console.log('[WS-REQUESTS-UNSERVED-X-PANEL]  window[Tiledesk]' ,  window['Tiledesk'] )
+                this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL]  window[Tiledesk]' ,  window['Tiledesk'] )
                 // customAuth((token) => {
                 //     if (token) {
                 //         window.tiledesk.signInWithCustomToken(token);
@@ -276,7 +276,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
 
             }
           } catch (e) {
-            this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] tiledesk_widget_hide ERROR', e)
+            this.logger.error('[WS-REQUESTS-UNSERVED-X-PANEL] tiledesk_widget_hide ERROR', e)
           }
         }
       }
