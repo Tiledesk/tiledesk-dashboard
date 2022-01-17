@@ -15,9 +15,8 @@
 - Add style rule to prevent text in sidebar menu items from going over two lines
 - Improves the method used for deleting a teammate in the teammate list
 - Implement custom modal windows, custom titles and custom tooltips for the "ENTERPRISE" project profile
-- Adds the ability to customize notification email templates
-- Allows only to teammates with the role of owner of projects with an "Enterprise" plan to manage notification email templates
-- Adds the ability to configure SMTP settings and send test emails
+- Adds the ability (only to teammates with the role of owner of projects with an "Enterprise" plan) to manage notification email templates
+- Adds the ability (only to teammates with the role of owner of projects with an "Enterprise" plan) to configure SMTP settings and send test emails
 - Adds the chat21 widget
 
 ### 2.2.31-rc1
