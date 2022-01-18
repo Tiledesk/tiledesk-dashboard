@@ -1055,7 +1055,7 @@
         "CreateDept": "Crear departamento",
         "UpdateDept": "Actualizar departamento",
         "Description": "Descripción",
-        "DeptId": "Dept ID",
+        "DeptId": "ID de departamento",
         "DeptBot": "Dept Bot",
         "DeptAgents": "Dept Agents",
         "AssignTo": "Assign to",
