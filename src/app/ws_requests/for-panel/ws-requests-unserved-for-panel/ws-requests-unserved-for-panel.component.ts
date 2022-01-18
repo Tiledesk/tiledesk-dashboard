@@ -232,7 +232,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
 
   listenToParentPostMessage() {
     window.addEventListener("message", (event) => {
-      console.log("[WS-REQUESTS-UNSERVED-X-PANEL] message event ", event);
+      this.logger.log("[WS-REQUESTS-UNSERVED-X-PANEL] message event ", event);
 
       if (event && event.data && event.data.action && event.data.parameter && event.data.calledBy) {
         if (event.data.action === 'joinConversation' && event.data.calledBy === 'ws_unserved_for_panel') {
@@ -252,7 +252,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
       if (event && event.data && event.data.action && event.data.calledBy) {
         if (event.data.action === "hidewidget" && event.data.calledBy === "unassigned-convs") {
           try {
-            if (window ) {
+            if (window &&  window['Tiledesk'] ) {
               this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - HIDE WIDGET - HERE 1')
               // setTimeout(() => {
                 // window['Tiledesk']('hide');
