@@ -122,11 +122,13 @@
                 </div> -->
 
                 <div class="push-pin-icon-wpr" [ngClass]="{'tooltip-pfp':  project?.id_project?._id !== LAST_STORED_PRJCT_ID}"
-                  (click)='goToUnservedRequests(project, project?.id_project?._id, project?.id_project?.name, project?.id_project?.profile?.name, project?.id_project?.trialExpired, project?.id_project?.trialDaysLeft, project?.id_project?.status)'>
+                  (click)='hasChangedPRJCT(project, project?.id_project?._id, project?.id_project?.name, project?.id_project?.profile?.name, project?.id_project?.trialExpired, project?.id_project?.trialDaysLeft, project?.id_project?.status)'>
                   <span class="material-icons push-pin-icon-as-btn" [ngClass]="{'pinned-project':  project?.id_project?._id === LAST_STORED_PRJCT_ID}">
                     push_pin
                   </span>
-                  <span *ngIf="project?.id_project?._id !== LAST_STORED_PRJCT_ID" class="tooltiptext-pfp">{{'PinThisProjectInTheChatWindow' | translate}}</span>
+                  <span *ngIf="project?.id_project?._id !== LAST_STORED_PRJCT_ID" class="tooltiptext-pfp">
+                    {{'PinThisProjectInTheChatWindow' | translate}}
+                  </span>
                 </div>
 
                 <!-- <button  type="button" rel="tooltip"
@@ -137,8 +139,6 @@
                           </span>
                       </button> -->
               </div>
-
-
             </div>
           </div>
 

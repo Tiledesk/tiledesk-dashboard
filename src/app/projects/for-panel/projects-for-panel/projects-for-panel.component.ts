@@ -242,7 +242,7 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
   }
 
 
-  goToUnservedRequests(
+  hasChangedPRJCT(
     project: any,
     project_id: string,
     project_name: string,
@@ -250,7 +250,7 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
     project_trial_expired: string,
     project_trial_days_left: number,
     project_status: number) {
-    this.logger.log('[PROJECTS-X-PANEL] - GO TO UNSERVED-REQUEST - PROJECT SELECTED ', project)
+    this.logger.log('[PROJECTS-X-PANEL] - hasChangedPRJCT - PROJECT SELECTED ', project)
 
     // ------------------------------------------------------------------------------------------------------------
     // POST MESSAGE hasChangedProject (communicates to the parent (chat-ionic) that the agent has changed project)
@@ -258,13 +258,14 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
     localStorage.setItem('last_project', JSON.stringify(project))
     window.top.postMessage('hasChangedProject', '*')
 
-    this.logger.log('[PROJECTS-X-PANEL] - GO TO UNSERVED-REQUEST - PROJECT status ', project_status)
+    this.logger.log('[PROJECTS-X-PANEL] - hasChangedPRJCT - PROJECT status ', project_status)
 
     if (project_status !== 0) {
 
       window.top.postMessage('open', '*')
 
-      this.router.navigate([`/project/${project_id}/unserved-request-for-panel`]);
+      // this.router.navigate([`/project/${project_id}/unserved-request-for-panel`]);
+
       // WHEN THE USER SELECT A PROJECT ITS ID and NAME IS SEND IN THE AUTH SERVICE THAT PUBLISHES IT
       const project: Project = {
         _id: project_id,
@@ -275,7 +276,7 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
       }
 
       this.auth.projectSelected(project)
-      this.logger.log('[PROJECTS-X-PANEL] - UNSERVED-REQUEST - PROJECT ', project)
+      this.logger.log('[PROJECTS-X-PANEL] - hasChangedPRJCT - PROJECT ', project)
 
     }
     /* !!! NO MORE USED - NOW THE ALL PROJECTS ARE SETTED IN THE STORAGE IN getProjectsAndSaveInStorage()
