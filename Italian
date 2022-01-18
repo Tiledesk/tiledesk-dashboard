@@ -2150,6 +2150,10 @@
         "VIEW_ALL_CONVERSATIONS": "View all conversations",
         "CONVERSATIONS_IN_QUEUE": "conversations in queue, on hold",
         "PIN_A_PROJECT": "Pin a Project",
-        "PINNED_PROJECT": "Pinned project"
+        "PINNED_PROJECT": "Pinned project",
+        "CHANGE_PINNED_PROJECT": "Change pinned project",
+        "CHANGE_TO_AVAILABLE_UNAVAILABLE": "change to available/unavailable",
+        "CHANGE_TO_YOUR_STATUS_TO_AVAILABLE": "change to your status to available",
+        "CHANGE_TO_YOUR_STATUS_TO_UNAVAILABLE": "change to your status to unavailable"
     }
 }
