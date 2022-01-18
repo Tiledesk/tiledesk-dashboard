@@ -1035,7 +1035,7 @@
         "VisibleColumnTooltip": "Only if at least two departments have visibility status set to 'Visible' they will be displayed in the widget's departments selection menu",
         "DepartmentsAreAGreatWayToSeparateChats": "Departments are a great way to separate chats and teammates into logical support groups",
         "DirectUsersToTheTeamWhoCanAnswerTheUsersQuestionsBest": "Direct users to the team who can answer the users questions best.",
-        "DeptId": "Deptartment Id"
+        "DeptId": "Department Id"
     },
     "DeptsAddEditPage": {
         "AddDept": "Add Department",
