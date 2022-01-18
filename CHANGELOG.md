@@ -1,6 +1,10 @@
 
 # tiledesk-dashboard
 
+### 2.2.31-rc5
+- Removes from the list of projects loaded in the left panel of the chat the redirect to the unassigned conversations
+- Removes from the unassigned conversations loaded in the left panel of the chat the "go back" to the list of projects
+
 ### 2.2.31-rc4
 - Fixes the bug: modal windows for updating the plan are also displayed when they shouldn't
 
