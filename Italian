@@ -1639,7 +1639,7 @@
         "RequiredFiled": "*Required field",
         "SelectEvent": "Select event",
         "SharedSecretGenerated": "Webhook Secret Generated",
-        "UseThisSecret": "Use this to manage your wehook throughh Webhoos APIs",
+        "UseThisSecret": "Use this to manage your webhook throughh Webhooks APIs",
         "ThisIsYourSharedSecret": "This is your shared secret",
         "Copy": "Copy",
         "NoteThatWillBeDisplayedOnce": "Note that this shared secret will only be displayed once",
