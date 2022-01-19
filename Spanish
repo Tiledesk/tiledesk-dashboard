@@ -375,7 +375,7 @@
     "ImANewUser": "Soy un nuevo compañero",
     "PleaseClickTheBelowButtonToCreateYourTiledeskAccount": "Por favor, haz clic en el botón de abajo para crear tu cuenta de {{ company_name }}",
     "AfterRegistrationYouWillBeAbleToJoin": "Después de registrarte podrás unirte",
-    "FromTheRecentPojectPage": "from the Recent Projects page",
+    "FromTheRecentPojectPage": "de la página Proyectos recientes",
     "IAlreadyHaveAnAccount": "Ya tengo una cuenta",
     "IfYouAreAlreadyRegisteredOnTiledeskWwithADifferentEmailPleaseContact": "Si ya estás registrado en {{ company_name }} con un correo electrónico diferente, por favor contacta",
     "YouHaveAlreadyInvitedThisUserSeeThePendingInvitations": "Ya has invitado a este compañero (ver las invitaciones pendientes)",
@@ -391,7 +391,7 @@
     "WhatYoureMissing": "Lo que te falta",
     "OnceYourTrialHasEndedYouWillMissing": "Una vez que tu prueba haya terminado, te faltará",
     "On": "en",
-    "InstallNow": "Install now",
+    "InstallNow": "Instalar ahora",
     "AssigneeAgent": "Agente cesionario",
     "Assignee": "Cesionario",
     "WidgetTranslations": "Traducciones de Widget",
@@ -811,7 +811,7 @@
         "Invites": "Invitar",
         "Update": "Actualizar",
         "UserRoles": "Funciones de compañero",
-        "ThereAreThreeRolesIn": "There are three roles in {{company_name}} owner, administrator and agent",
+        "ThereAreThreeRolesIn": "Hay tres roles en {{company_name}} propietario, administrador y agente",
         "Owner": "Propietario",
         "TheOwnerIs": "El propietario es la persona que creó el proyecto",
         "AnOwenerHas": "Los propietarios pueden controlar cada uno de los aspectos de un {{ company_name }}.",
@@ -1035,7 +1035,7 @@
         "VisibleColumnTooltip": "Solo si al menos dos departamentos tienen estado de visibilidad establecido en 'Visible' se mostrarán en el menú de selección de departamentos del widget",
         "DepartmentsAreAGreatWayToSeparateChats": "Los departamentos son una gran manera de separar chats y compañeros de equipo en grupos de apoyo lógicos",
         "DirectUsersToTheTeamWhoCanAnswerTheUsersQuestionsBest": "Dirige a los usuarios al equipo que pueden responder mejor a las preguntas de los usuarios.",
-        "DeptId": "Department Id"
+        "DeptId": "Id del departamento"
     },
     "DeptsAddEditPage": {
         "AddDept": "Añadir departamento",
@@ -1639,7 +1639,7 @@
         "RequiredFiled": "* Campo requerido",
         "SelectEvent": "Seleccionar evento",
         "SharedSecretGenerated": "Secreto de Webhook generado",
-        "UseThisSecret": "Use esto para administrar su webhook a través de las API de Webhooks",
+        "UseThisSecret": "Use this to manage your webhook throughh Webhooks APIs",
         "ThisIsYourSharedSecret": "Este es tu secreto compartido",
         "Copy": "Copiar",
         "NoteThatWillBeDisplayedOnce": "Tenga en cuenta que este secreto compartido sólo se mostrará una vez",
@@ -2151,9 +2151,9 @@
         "CONVERSATIONS_IN_QUEUE": "conversaciones en cola, en espera",
         "PIN_A_PROJECT": "Anclar un proyecto",
         "PINNED_PROJECT": "Proyecto anclado",
-        "CHANGE_PINNED_PROJECT": "Change pinned project",
-        "CHANGE_TO_AVAILABLE_UNAVAILABLE": "change to available/unavailable",
-        "CHANGE_TO_YOUR_STATUS_TO_AVAILABLE": "change to your status to available",
-        "CHANGE_TO_YOUR_STATUS_TO_UNAVAILABLE": "change to your status to unavailable"
+        "CHANGE_PINNED_PROJECT": "Cambiar proyecto anclado",
+        "CHANGE_TO_AVAILABLE_UNAVAILABLE": "cambiar a disponible/no disponible",
+        "CHANGE_TO_YOUR_STATUS_TO_AVAILABLE": "cambia tu estado a disponible",
+        "CHANGE_TO_YOUR_STATUS_TO_UNAVAILABLE": "cambiar su estado a no disponible"
     }
 }
