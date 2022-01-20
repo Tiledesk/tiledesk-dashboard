@@ -136,19 +136,23 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         translate.setDefaultLang('en');
 
         const browserLang = this.translate.getBrowserLang();
-        this.logger.log('[APP-COMPONENT] !!! ===== HELLO APP.COMP ===== BRS LANG ', browserLang)
+        console.log('[APP-COMPONENT] !!! ===== HELLO APP.COMP ===== BRS LANG ', browserLang)
         if (browserLang) {
-            if (browserLang === 'it') {
-                this.translate.use('it');
-                moment.locale('it')
 
-            } else if (browserLang === 'de') {
-                this.translate.use('de');
-                moment.locale('de')
+            this.translate.use(browserLang);
+            moment.locale(browserLang)
 
-            } else {
-                this.translate.use('en');
-            }
+            // if (browserLang === 'it') {
+            //     this.translate.use('it');
+            //     moment.locale('it')
+
+            // } else if (browserLang === 'de') {
+            //     this.translate.use('de');
+            //     moment.locale('de')
+
+            // } else {
+            //     this.translate.use('en');
+            // }
         }
         // this.unservedRequestCount = 0
 
@@ -158,10 +162,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 browserRefresh = !router.navigated;
             }
         });
-
-
-
-
     }
 
 

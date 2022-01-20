@@ -150,7 +150,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
 
   getBrowserLanguage() {
     this.browser_lang = this.translate.getBrowserLang();
-    this.logger.log('[ActivitiesComponent] - browser_lang ', this.browser_lang)
+    console.log('[ActivitiesComponent] - browser_lang ', this.browser_lang)
   }
 
   getCurrentProject() {
@@ -359,13 +359,14 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
               }
 
               // moment.locale('en-gb')
-              if (this.browser_lang === 'it') {
-                moment.locale('it')
-                const date = moment(activity.updatedAt).format('dddd, DD MMM YYYY - HH:mm:ss');
+              if (this.browser_lang === 'en') {
+                moment.locale('en')
+                const date = moment(activity.updatedAt).format('dddd, MMM DD, YYYY - HH:mm:ss');
                 this.logger.log('[ActivitiesComponent] - getActivities - updatedAt date', date);
                 activity.date = date;
               } else {
-                const date = moment(activity.updatedAt).format('dddd, MMM DD, YYYY - HH:mm:ss');
+                moment.locale(this.browser_lang)
+                const date = moment(activity.updatedAt).format('dddd, DD MMM YYYY - HH:mm:ss');
                 this.logger.log('[ActivitiesComponent] - getActivities - updatedAt date', date);
                 activity.date = date;
               }
