@@ -26,12 +26,12 @@ export class AppConfigService {
       // console.log('[APP-CONFIG-SERVICE] loadAppConfig data: ', data);
 
       const dataObject = JSON.parse(data['_body'])
-  
+
       const allconfig = dataObject
       // console.log('[APP-CONFIG-SERVICE] - loadAppConfig allconfig: ', allconfig);
 
       if (allconfig.hasOwnProperty('wsUrlRel')) {
-     
+
         // console.log('[APP-CONFIG-SERVICE] - loadAppConfig allconfig !!!! exist wsUrlRel ->: ',  allconfig.wsUrlRel);
         var wsUrlRelIsEmpty = this.isEmpty(allconfig.wsUrlRel)
         // console.log('[APP-CONFIG-SERVICE] - loadAppConfig allconfig !!!! exist wsUrlRel -> wsUrlRelIsEmpty ?', wsUrlRelIsEmpty);
@@ -59,15 +59,26 @@ export class AppConfigService {
 
             // console.log(window.location)
 
+            // if (window.location.protocol === 'http:') {
+            //   allconfig.wsUrl = 'ws://' + window.location.hostname + '/ws/'
+
+            // } else if (window.location.protocol === 'https:') {
+
+            //   allconfig.wsUrl = 'wss://' + window.location.hostname + '/ws/'
+            // } else {
+
+            //   allconfig.wsUrl = 'ws://' + window.location.hostname + '/ws/'
+            // }
+
             if (window.location.protocol === 'http:') {
-              allconfig.wsUrl = 'ws://' + window.location.hostname + '/ws/'
+              allconfig.wsUrl = 'ws://' + window.location.hostname + ':' + window.location.port + allconfig.wsUrlRel
 
             } else if (window.location.protocol === 'https:') {
 
-              allconfig.wsUrl = 'wss://' + window.location.hostname + '/ws/'
+              allconfig.wsUrl = 'wss://' + window.location.hostname + ':' + window.location.port + allconfig.wsUrlRel
             } else {
 
-              allconfig.wsUrl = 'ws://' + window.location.hostname + '/ws/'
+              allconfig.wsUrl = 'ws://' + window.location.hostname + ':' + window.location.port + allconfig.wsUrlRel
             }
           }
 
@@ -76,7 +87,7 @@ export class AppConfigService {
         }
 
       } else {
-      
+
         // console.log('[APP-CONFIG-SERVICE] loadAppConfig allconfig !!!! does not exist wsUrlRel');
       }
 
