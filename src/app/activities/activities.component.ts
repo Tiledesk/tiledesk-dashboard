@@ -150,7 +150,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
 
   getBrowserLanguage() {
     this.browser_lang = this.translate.getBrowserLang();
-    console.log('[ActivitiesComponent] - browser_lang ', this.browser_lang)
+    // console.log('[ActivitiesComponent] - browser_lang ', this.browser_lang)
   }
 
   getCurrentProject() {

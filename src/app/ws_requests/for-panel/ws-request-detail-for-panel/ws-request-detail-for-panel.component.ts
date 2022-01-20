@@ -145,13 +145,17 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
     this.logger.log('[REQUEST-DTLS-X-PANEL] - currentYear ', this.currentYear)
   }
   setMomentLocale() {
+   
     this.browserLang = this.translate.getBrowserLang();
+    console.log('[REQUEST-DTLS-X-PANEL] - setMomentLocale browserLang', this.browserLang)
     if (this.browserLang) {
-      if (this.browserLang === 'it') {
-        moment.locale('it')
-      } else {
-        moment.locale('en')
-      }
+      moment.locale(this.browserLang)
+
+      // if (this.browserLang === 'it') {
+      //   moment.locale('it')
+      // } else {
+      //   moment.locale('en')
+      // }
     }
   }
 
