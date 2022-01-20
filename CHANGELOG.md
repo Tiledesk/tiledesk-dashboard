@@ -1,6 +1,10 @@
 
 # tiledesk-dashboard
 
+### 2.2.31-rc6
+- Fixes the bug: in AppConfigProvider the "wsUrl" is incorrect (window.location.port is missing)
+- Adds spanish language
+
 ### 2.2.31-rc5
 - Removes from the list of projects loaded in the left panel of the chat the redirect to the unassigned conversations
 - Removes from the unassigned conversations loaded in the left panel of the chat the "go back" to the list of projects
