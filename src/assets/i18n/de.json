@@ -404,6 +404,7 @@
 	"en": "Englisch",
 	"it": "Italienisch",
 	"de": "Deutsch",
+	"es": "Spanisch",
 	"ChooseALanguage": "Sprache auswählen",
 	"Delete": "Löschen",
 	"NoUnservedRequests": "Keine nicht zugewiesenen Gespräche",
@@ -1950,5 +1951,8 @@
 	"AnErrorHasOccurred": "Ein Fehler ist aufgetreten",
 	"EmailTemplateUpdatedSuccessfully":"E-Mail-Vorlage erfolgreich aktualisiert",
 	"PinThisProjectInTheChatWindow":"Fixieren Sie dieses Projekt im Chatfenster, um Projektgespräche einfach zu verfolgen und Ihren Status zu ändern",
-	"SelectAnotherProject":"Anderes Projekt auswählen"
+	"SelectAnotherProject":"Anderes Projekt auswählen",
+	"DashboardLanguage":"Dashboard-Sprache",
+	"AutomaticDashboardLanguage":"Automatisch (Browsersprache)",
+	"PreferredDashboardLanguage":"Wählen Sie Ihre bevorzugte Sprache"
 }

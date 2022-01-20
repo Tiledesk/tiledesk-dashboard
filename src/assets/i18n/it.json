@@ -404,6 +404,7 @@
     "en": "Inglese",
     "it": "Italiano",
     "de": "Tedesco",
+    "es":"Spagnolo",
     "ChooseALanguage": "Scegli una lingua",
     "Delete": "Elimina",
     "NoUnservedRequests": "Nessuna conversazione non assegnata",
@@ -1950,5 +1951,8 @@
     "AnErrorHasOccurred": "Si è verificato un errore",
     "EmailTemplateUpdatedSuccessfully":"Modello email aggiornato con successo",
     "PinThisProjectInTheChatWindow":"Fissa questo progetto nella finestra della chat per monitorare facilmente le conversazioni del progetto e modificare il tuo stato",
-    "SelectAnotherProject":"Seleziona un altro progetto"
+    "SelectAnotherProject":"Seleziona un altro progetto",
+    "DashboardLanguage":"Lingua della dashboard",
+    "AutomaticDashboardLanguage":"Automatica (lingua del browser)",
+    "PreferredDashboardLanguage":"Scegli la tua lingua preferita"
 }
