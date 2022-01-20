@@ -404,6 +404,7 @@
     "en": "English",
     "it": "Italian",
     "de": "German",
+    "es": "Spanish",
     "ChooseALanguage": "Choose a language",
     "Delete": "Delete",
     "NoUnservedRequests": "No unassigned conversations",
@@ -1951,6 +1952,9 @@
     "EmailTemplateUpdatedSuccessfully": "Email template updated successfully",
     "PinThisProjectInTheChatWindow": "Pin this project in the chat window to easily track project conversations and change your status",
     "SelectAnotherProject": "Select another project",
+    "DashboardLanguage": "Dashboard language",
+    "AutomaticDashboardLanguage": "Automatic (browser language)",
+    "PreferredDashboardLanguage": "Choose your preferred language",
     "CHAT_IONIC": {
         "LABEL_TU": "you: ",
         "LABEL_MSG_PUSH_START_CHAT": "No conversation yet",
