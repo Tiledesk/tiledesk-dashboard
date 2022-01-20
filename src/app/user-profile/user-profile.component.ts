@@ -15,6 +15,7 @@ import { takeUntil } from 'rxjs/operators'
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from '../services/logger/logger.service';
 
+
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
@@ -47,11 +48,37 @@ export class UserProfileComponent implements OnInit {
   showSpinnerInUploadImageBtn = false;
   userRole: string;
   profilePhotoWasUploaded: string;
-
+  browser_lang: string;
+  selected_dashboard_language: any
   // used to unsuscribe from behaviour subject
   private unsubscribe$: Subject<any> = new Subject<any>();
 
   @ViewChild('fileInputUserProfileImage') fileInputUserProfileImage: any;
+
+
+  dashboard_languages = [
+    {
+      id: 1,
+      name: 'it',
+      avatar: 'assets/img/language_flag/it.png'
+    },
+    {
+      id: 2,
+      name: 'en',
+      avatar: 'assets/img/language_flag/en.png'
+    },
+    {
+      id: 3,
+      name: 'de',
+      avatar: 'assets/img/language_flag/de.png'
+    },
+    {
+      id: 4,
+      name: 'es',
+      avatar: 'assets/img/language_flag/es.png'
+    },
+  ];
+
 
   constructor(
     public auth: AuthService,
@@ -77,7 +104,18 @@ export class UserProfileComponent implements OnInit {
     this.checkUserImageExist();
     this.getProjectUserRole();
 
-    this.translateStrings()
+    this.translateStrings();
+    this.getBrowserLanguage();
+  }
+
+  getBrowserLanguage() {
+    this.browser_lang = this.translate.getBrowserLang();
+    console.log('[USER-PROFILE] - browser_lang ', this.browser_lang)
+  }
+
+  onSelectDsbrdLang(selectedLanguage) {
+    this.logger.log('[USER-PROFILE] onChangeSelectedPriority selectedLanguage ', selectedLanguage)
+    this.selected_dashboard_language = selectedLanguage;
   }
 
   translateStrings() {
