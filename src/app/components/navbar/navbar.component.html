@@ -41,34 +41,7 @@
           </a>
         </li>
 
-        <!-- 
-        // ------------------------------------------------------
-        // test site
-        // ------------------------------------------------------   -->
-        <ng-container class="test-site">
-          <li *ngIf="project">
-            <button class="btn btn-success-no-boxshadow simulate-visitor-btn" style="font-size: 12px;margin-top: 14px;padding: 0px 11px 0px 4px !important; max-height:24px; border-radius: 30px;
-            font-family: 'Google Sans', sans-serif !important;" (click)="testWidgetPage()">
-              <i class="material-icons" style="padding-top: 0px;font-size: 24px;">play_arrow</i>
-              <span>{{ 'VisitorsPage.SimulateVisitor' | translate }} </span>
-            </button>
-          </li>
-        </ng-container>
 
-        <!-- <ng-container class="test-site">
-          <li *ngIf="project">
-            <a class="tool_tip" style="cursor: pointer;padding-top: 13px; padding-bottom: 9px;"
-              (click)="testWidgetPage()">
-              <i class="material-icons navbar-test-site-btn" style="padding: 5px;">play_arrow</i>
-              <p class="hidden-lg hidden-md">testwidget</p>
-              <div class="bottom"
-                style="text-align: center; padding: 4px; border-radius: 3px; text-transform: none;  min-width: fit-content; white-space: nowrap; top: 50px;">
-                {{ 'VisitorsPage.SimulateVisitor' | translate }}
-                <i></i>
-              </div>
-            </a>
-          </li>
-        </ng-container> -->
 
 
         <!-- 
@@ -149,10 +122,10 @@
         <ng-container *ngIf="isVisible">
           <li *ngIf="project && prjct_profile_type === 'payment' && HOME_ROUTE_IS_ACTIVE === false">
             <a>
-              <span class="project-plan-nav" style="text-transform:capitalize;padding-right: 8px;padding-left: 14px;"
+              <!-- <span class="project-plan-nav" style="text-transform:capitalize;padding-right: 8px;padding-left: 14px;"
                 (click)="goToPayment()">
                 {{ prjct_profile_name }}
-              </span>
+              </span> -->
 
 
               <!--  ------------------------------------------------ -->
@@ -160,12 +133,12 @@
               <!--  ------------------------------------------------ -->
               <span *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false" style="color:#f44336;"
                 (click)="openModalSubsExpired()" class="expired__Tooltip">
-                <i class="material-icons" style="vertical-align: middle; color:#f44336; cursor:pointer">
+                <i class="material-icons" style="vertical-align: middle; color:#f44336; cursor:pointer; position: relative; top: 2px">
                   error_outline
                 </i>
                 <span class="expired__Tooltiptext"
-                  style="font-size:14px; top: 100%;text-transform:none; cursor: pointer; height: fit-content;vertical-align: middle;">
-                  
+                  style="font-size:12px; top: 27px;text-transform:none; cursor: pointer; height: fit-content;vertical-align: middle;">
+
                   <span *ngIf="profile_name !== 'enterprise'">
                     {{ 'Pricing.SubscriptionPaymentProblem' | translate }}
                   </span>
@@ -177,10 +150,6 @@
             </a>
           </li>
         </ng-container>
-
-
-
-
 
         <!-- <ng-container class="operating-hours">
           <li *ngIf="project">
@@ -206,6 +175,33 @@
         </ng-container> -->
 
 
+        <!-- ------------------------------------------------------ -->
+        <!-- test site btn -->
+        <!-- ------------------------------------------------------ -->
+        <ng-container class="test-site">
+          <li *ngIf="project">
+            <button class="btn btn-success-no-boxshadow simulate-visitor-btn" style="font-size: 12px;margin-top: 14px;padding: 0px 11px 0px 4px !important; max-height:24px; border-radius: 30px;
+            font-family: 'Google Sans', sans-serif !important;" (click)="testWidgetPage()">
+              <i class="material-icons" style="padding-top: 0px;font-size: 24px;">play_arrow</i>
+              <span>{{ 'VisitorsPage.SimulateVisitor' | translate }} </span>
+            </button>
+          </li>
+        </ng-container>
+        <!-- <ng-container class="test-site">
+          <li *ngIf="project">
+            <a class=" navbar-test-site-ancor" (click)="testWidgetPage()">
+              <div class="navbar-test-site-btn-wpr tool_tip">
+                <i class="material-icons navbar-test-site-icon" style="vertical-align: middle;">play_arrow</i>
+                <p class="hidden-lg hidden-md">testwidget</p>
+                <div class="bottom"
+                  style="text-align: center; padding:2px 5px; border-radius: 3px; text-transform: none;  min-width: fit-content; white-space: nowrap; top: 31px; opacity: 1;">
+                  {{ 'VisitorsPage.SimulateVisitor' | translate }}
+                  <i></i>
+                </div>
+              </div>
+            </a>
+          </li>
+        </ng-container> -->
 
         <!--  ------------------------------------------------ -->
         <!--  ------ PROJECTS  DROPDOWN ------ -->
@@ -252,10 +248,7 @@
                 {{ 'AddProject' | translate }}
               </a>
             </li>
-
             <li class="divider"></li>
-
-
 
             <!--  ------------------------------------------------ -->
             <!--  RECENT PROJECTS -->
@@ -343,6 +336,21 @@
           </a>
         </li>
 
+         <!--  ------------------------------------------------ -->
+        <!--  Dashboard language -->
+        <!--  ------------------------------------------------ -->
+        <li *ngIf="project">
+          <a routerLink="project/{{ project._id }}/user-profile" fragment="language" style="cursor: pointer;">
+            <span class="expired__Tooltip">
+            <img [src]="flag_url"  style="width: auto;height: 19px; position: relative;top: -1px;">
+           
+            <span class="expired__Tooltiptext"  style="font-size:12px; top: 27px;text-transform:none; cursor: pointer; height: fit-content;vertical-align: middle;">
+              
+              {{'TheDashboardIsTranslatedInto' | translate: tlangparams }}
+            </span>
+          </span>
+          </a>
+        </li>
 
         <!--  ------------------------------------------------ -->
         <!--  USER -->
@@ -367,10 +375,9 @@
             <div class="card card-profile">
               <div class="card-avatar user-profile-avatar">
                 <a>
-               
-                  <img
-                    *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true" class="user-img-in-dropdown"
-                    [src]="getUserProfileImage()" />
+
+                  <img *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true"
+                    class="user-img-in-dropdown" [src]="getUserProfileImage()" />
 
                   <img *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true" class="user-img"
                     src="assets/img/no_image_user.png" />

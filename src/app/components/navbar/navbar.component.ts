@@ -143,7 +143,9 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
     onlyOwnerCanManageTheAccountPlanMsg: string;
     learnMoreAboutDefaultRoles: string;
-
+    flag_url: string;
+    dsbrd_lang : string;
+    tlangparams: any
     constructor(
         location: Location,
         private element: ElementRef,
@@ -239,6 +241,51 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         this.subscription.unsubscribe();
         this.unsubscribe$.next();
         this.unsubscribe$.complete();
+    }
+
+
+    getLoggedUser() {
+        this.auth.user_bs.subscribe((user) => {
+            this.logger.log('[NAVBAR] »»» »»» USER GET IN NAVBAR ', user)
+            // tslint:disable-next-line:no-debugger
+            // debugger
+            this.user = user;
+
+            // GET ALL PROJECTS WHEN IS PUBLISHED THE USER
+            if (this.user) {
+
+                const stored_preferred_lang = localStorage.getItem(this.user._id + '_lang')
+
+                if (stored_preferred_lang) {
+                    this.dsbrd_lang = stored_preferred_lang;
+                    this.getLangTranslation(this.dsbrd_lang)
+                    this.flag_url = "assets/img/language_flag/" + stored_preferred_lang + ".png"
+
+                    console.log('[NAVBAR] flag_url (from stored_preferred_lang) ', this.flag_url)
+                 
+                  console.log('[USER-PROFILE] stored_preferred_lang ', stored_preferred_lang)
+                } else {
+                    this.browserLang = this.translate.getBrowserLang();
+                    this.dsbrd_lang = this.browserLang; 
+                    this.getLangTranslation(this.dsbrd_lang)
+                    console.log('[NAVBAR] - browser_lang ', this.browserLang)
+                    this.flag_url = "assets/img/language_flag/" + this.browserLang + ".png"
+                  
+                  console.log('[NAVBAR] flag_url (from browser_lang) ', this.flag_url)
+                }
+
+                this.currentUserId = this.user._id;
+                this.getProjects();
+            }
+        });
+    }
+
+    getLangTranslation(dsbrd_lang_code) {
+        this.translate.get(dsbrd_lang_code)
+        .subscribe((translation: any) => {
+            console.log('[NAVBAR] getLangTranslation', translation)
+            this.tlangparams = {language_name: translation}
+        });
     }
 
     translateStrings() {
@@ -815,20 +862,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
     }
 
-    getLoggedUser() {
-        this.auth.user_bs.subscribe((user) => {
-            this.logger.log('[NAVBAR] »»» »»» USER GET IN NAVBAR ', user)
-            // tslint:disable-next-line:no-debugger
-            // debugger
-            this.user = user;
 
-            // GET ALL PROJECTS WHEN IS PUBLISHED THE USER
-            if (this.user) {
-                this.currentUserId = this.user._id;
-                this.getProjects();
-            }
-        });
-    }
 
     getIfIsCreatedNewProject() {
         this.projectService.hasCreatedNewProject$.subscribe((hasCreatedNewProject) => {
