@@ -55,9 +55,24 @@
   </li>
 
 </ul>
+<!-- (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) { -->
+
 
 <div class="main-content" style="padding-top:0px">
   <div class="container-fluid">
+
+    <div *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false" class="row">
+      <div class="col-sm-12">
+        <div class="payment--problem-wpr">
+          <div class="payment--problem-text">
+            {{ "Pricing.WeWereUnableToAutomaticallyRenewYourSubscription" | translate }}.
+            {{ "Pricing.PleaseContactUs" | translate }}
+            {{ "Pricing.ToUpdateYourPaymentInformation" | translate }}.
+            <span style="text-decoration: underline; cursor: pointer;" (click)="launchWidget()"> {{'ContactUs' | translate}} </span> 
+          </div>
+        </div>
+      </div>
+    </div>
 
     <div *ngIf="PROJECT_SETTINGS_ADVANCED_ROUTE" class="row" style="margin-right: -30px; margin-left: -30px;">
       <div class="col-xs-12"
@@ -87,7 +102,7 @@
     <div class="row">
       <div class="col-md-12">
         <!-- min-height: 518px -->
-        <div class="card card--no-border" style="min-height: 425px">
+        <div class="card card--no-border" style="min-height: 425px; margin-top: 0px;">
           <loading-spinner *ngIf="showSpinner"></loading-spinner>
 
           <div *ngIf="!showSpinner" class="card-content">
@@ -153,17 +168,18 @@
 
 
 
-            <!-- 
-            // --------------------------------------------------------
-            // Payments
-            // -------------------------------------------------------- -->
+
+            <!-- -------------------------------------------------------- -->
+            <!-- Payments -->
+            <!-- -------------------------------------------------------- -->
             <span *ngIf="PROJECT_SETTINGS_PAYMENTS_ROUTE">
 
               <div class="row">
                 <div class="col-md-12">
                   <h3 class="card_title__underlined">
                     <span class="card_title__underline">
-                      {{ "ProjectEditPage.Your" | translate }} {{ "ProjectEditPage.ProjectPlan" | translate }}
+                      <!-- {{ "ProjectEditPage.Your" | translate }} {{ "ProjectEditPage.ProjectPlan" | translate }} -->
+                      {{ "ProjectEditPage.YourPlan" | translate }}
                     </span>
                   </h3>
                 </div>

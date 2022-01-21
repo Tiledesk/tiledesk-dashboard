@@ -148,7 +148,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   TEST_WIDGET_API_BASE_URL: string;
   projectId: string;
   projectName: string;
-
+  contactUsEmail: string;
   /**
    * 
    * @param projectService 
@@ -181,7 +181,9 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   ) {
     const brand = brandService.getBrand();
     this.tparams = brand;
-
+    if (brand) {
+      this.contactUsEmail = brand['contact_us_email'];
+    }
   }
 
   ngOnInit() {
@@ -550,6 +552,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     }
 
   }
+
+
 
 
   goToProjectSettings_Payments() {
@@ -968,7 +972,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     //   window['tiledesk'].open();
     // }
 
-    window.open('mailto:info@tiledesk.com', 'mail')
+    window.open('mailto:' + this.contactUsEmail, 'mail')
   }
 
   goToPricing() {
