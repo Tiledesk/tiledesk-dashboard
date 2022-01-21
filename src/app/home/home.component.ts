@@ -912,7 +912,15 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
 
-
+  goToPayment() {
+    if (this.USER_ROLE === 'owner') {
+      if (this.prjct_profile_type === 'payment') {
+        this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
+      }
+    } else {
+      this.presentModalOnlyOwnerCanManageTheAccountPlan()
+    }
+  }
 
   goToPricingOrOpenModalSubsExpired() {
     this.logger.log('[HOME] goToPricingOrOpenModalSubsExpired')
@@ -947,6 +955,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
           this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
         }
+      } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true) {
+        this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
       }
 
     } else {
