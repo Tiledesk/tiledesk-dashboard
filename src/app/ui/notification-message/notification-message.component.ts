@@ -45,6 +45,7 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
   profile_name: string;
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
+  contactUsEmail: string;
 
   constructor(
     public notify: NotifyService,
@@ -63,7 +64,9 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
 
     if (brand) {
       this.company_name = brand['company_name'];
+      this.contactUsEmail = brand['contact_us_email'];
     }
+  
   }
 
   ngOnInit() {
@@ -291,7 +294,7 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
     // if (window && window['tiledesk']) {
     //   window['tiledesk'].open();
     // }
-    window.open('mailto:info@tiledesk.com', 'mail')
+    window.open('mailto:' + this.contactUsEmail, 'mail')
   }
 
 
