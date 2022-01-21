@@ -6,6 +6,9 @@ import { UsersService } from '../../services/users.service';
 import { AuthService } from '../../core/auth.service';
 import { Router } from '@angular/router';
 import { LoggerService } from '../../services/logger/logger.service';
+import { TranslateService } from '@ngx-translate/core';
+const swal = require('sweetalert');
+
 @Component({
   selector: 'appdashboard-change-password',
   templateUrl: './change-password.component.html',
@@ -27,18 +30,37 @@ export class ChangePasswordComponent implements OnInit, AfterViewInit {
   CURRENT_PSW_INVALID_ERROR: boolean;
   CHANGE_PSW_OTHER_ERROR: boolean;
 
+  warning: string;
+  selectAProjectToManageNotificationEmails: string;
+
   constructor(
     private _location: Location,
     private route: ActivatedRoute,
     private usersService: UsersService,
     public auth: AuthService,
     private router: Router,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private translate: TranslateService
   ) { }
 
   ngOnInit() {
     this.getUserIdFromRouteParams();
     this.getCurrentProject();
+    this.translateStrings();
+  }
+
+  translateStrings() {
+      this.translate.get('Warning')
+      .subscribe((text: string) => {
+
+        this.warning = text;
+      });
+
+      this.translate.get('ItIsNecessaryToSelectAProjectToManageNotificationEmails')
+      .subscribe((text: string) => {
+
+        this.selectAProjectToManageNotificationEmails = text;
+      });
   }
 
   getCurrentProject() {
@@ -203,10 +225,21 @@ export class ChangePasswordComponent implements OnInit, AfterViewInit {
   goToNotificationSettings() {
     this.logger.log('USER-PROFILE][CHANGE-PSW] »» GO TO USER  NOTIFICATION SETTINGS - PROJECT ID ', this.projectId)
     if (this.projectId === undefined) {
-      this.router.navigate(['user/' + this.userId + '/notifications']);
+      // this.router.navigate(['user/' + this.userId + '/notifications']);
+      this.presentModalSelectAProjectToManageEmailNotification();
     } else {
       this.router.navigate(['project/' + this.projectId + '/user/' + this.userId + '/notifications']);
     }
+  }
+
+  presentModalSelectAProjectToManageEmailNotification() {
+    swal({
+      title: this.warning,
+      text: this.selectAProjectToManageNotificationEmails,
+      icon: "warning",
+      button: "Ok",
+      dangerMode: false,
+    })
   }
 
 
