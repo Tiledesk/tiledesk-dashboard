@@ -658,6 +658,7 @@
     },
     "ProjectEditPage": {
         "YourProject": "Your project",
+        "YourPlan": "Your Plan",
         "ProjectName": "Project Name",
         "ProjectId": "Project Id",
         "TranscriptByEmail": "Auto send transcript by email",
@@ -1955,6 +1956,11 @@
     "DashboardLanguage":"Dashboard language",
     "AutomaticDashboardLanguage":"Automatic (browser language)",
     "PreferredDashboardLanguage":"Choose your preferred language",
+    "PleaseSelectALanguage":"Please select a language",
+    "ItIsNecessaryToSelectAProjectToManageNotificationEmails":"It is necessary to select a project to manage whether or not to receive notification emails when a conversation is assigned to you or when there is a new unassigned conversation",
+    "TheDashboardIsTranslatedInto":"The dashboard is translated into {{language_name}}. To change language click on the flag",
+    "TheSettingsWillBeAppliedAfterRefreshingTheDashboard": "The settings will be applied after refreshing the Dashboard.",
+    "RefreshNow": "Refresh now",
     "CHAT_IONIC": {
         "LABEL_TU": "you: ",
         "LABEL_MSG_PUSH_START_CHAT": "No conversation yet",

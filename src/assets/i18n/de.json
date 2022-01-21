@@ -658,6 +658,7 @@
 	},
 	"ProjectEditPage": {
 		"YourProject": "Ihr Projekt",
+		"YourPlan": "Dein Plan",
 		"ProjectName": "Projektname",
 		"ProjectId": "Projekt Id",
 		"TranscriptByEmail": "Transkript automatisch per E-Mail",
@@ -1954,5 +1955,10 @@
 	"SelectAnotherProject":"Anderes Projekt auswählen",
 	"DashboardLanguage":"Dashboard-Sprache",
 	"AutomaticDashboardLanguage":"Automatisch (Browsersprache)",
-	"PreferredDashboardLanguage":"Wählen Sie Ihre bevorzugte Sprache"
+	"PreferredDashboardLanguage":"Wählen Sie Ihre bevorzugte Sprache",
+	"PleaseSelectALanguage":"Bitte wähle eine Sprache",
+	"ItIsNecessaryToSelectAProjectToManageNotificationEmails":"Sie müssen ein Projekt auswählen, um zu verwalten, ob Sie Benachrichtigungs-E-Mails erhalten möchten, wenn Ihnen eine Konversation zugewiesen wird oder wenn es eine neue nicht zugewiesene Konversation gibt",
+	"TheDashboardIsTranslatedInto":"Das Dashboard ist ins {{language_name}} übersetzt. Um die Sprache zu ändern, klicken Sie auf die Flagge",
+	"TheSettingsWillBeAppliedAfterRefreshingTheDashboard": "Die Einstellungen werden nach der Aktualisierung des Dashboards angewendet.",
+    "RefreshNow": "Jetzt aktualisieren"
 }

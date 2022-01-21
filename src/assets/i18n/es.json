@@ -658,6 +658,7 @@
     },
     "ProjectEditPage": {
         "YourProject": "Tu proyecto",
+        "YourPlan": "Tu plan",
         "ProjectName": "Nombre del proyecto",
         "ProjectId": "Id del proyecto",
         "TranscriptByEmail": "Enviar automáticamente la transcripción por correo electrónico",
@@ -1955,6 +1956,11 @@
     "DashboardLanguage":"Idioma del panel",
     "AutomaticDashboardLanguage":"Automático (idioma del navegador)",
     "PreferredDashboardLanguage":"Elige tu idioma preferido",
+    "PleaseSelectALanguage":"Por favor, seleccione un idioma",
+    "ItIsNecessaryToSelectAProjectToManageNotificationEmails":"Es necesario seleccionar un proyecto para administrar si desea o no recibir correos electrónicos de notificación cuando se le asigna una conversación o cuando hay una nueva conversación sin asignar",
+    "TheDashboardIsTranslatedInto":"El tablero de instrumentos está traducido al {{language_name}}. Para cambiar de idioma haz click en la bandera",
+    "TheSettingsWillBeAppliedAfterRefreshingTheDashboard": "La configuración se aplicará después de actualizar el Tablero.",
+    "RefreshNow": "Refresca ahora",
     "CHAT_IONIC": {
         "LABEL_TU": "tú: ",
         "LABEL_MSG_PUSH_START_CHAT": "Aún no hay conversación",
