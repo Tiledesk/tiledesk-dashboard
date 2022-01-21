@@ -15,7 +15,7 @@
     <li class="btn-with-border-effect border-from-center" (click)="goToAccountSettings()">
         <a>{{ "Settings" | translate }} </a>
     </li>
-    <li *ngIf="projectId" class="btn-with-border-effect border-from-center" (click)="goToNotificationSettings()">
+    <li class="btn-with-border-effect border-from-center" (click)="goToNotificationSettings()">
         <a>{{ "Notification" | translate }} </a>
     </li>
 </ul>
@@ -117,9 +117,6 @@
                                             <i></i>
                                         </span>
                                     </button>
-
-
-
                                 </div>
                             </div>
                         </div>
@@ -133,7 +130,6 @@
                                 <span style="color: #7695a5; font-size: 12px; display: block;">
                                     {{ "UserProfile.PreferredSize" | translate }}
                                 </span>
-
                             </div>
                         </div>
 
@@ -224,11 +220,11 @@
 
 
                         <!-- --------------------------------------------------------------- -->
-                        <!-- Preferences -->
+                        <!-- Language Preferences -->
                         <!-- --------------------------------------------------------------- -->
-                        <!-- <div class="row">
+                        <div class="row language">
                             <div class="col-md-12">
-                                <h3 class="card_title__underlined" style="">
+                                <h3 class="card_title__underlined">
                                     <span class="card_title__underline">
                                         {{ "DashboardLanguage" | translate }}
                                     </span>
@@ -237,48 +233,99 @@
                             <div class="col-md-12">
                                 <div class="section-subtitle"> </div>
                             </div>
-                        </div> -->
+                        </div>
 
-                        <!-- <div class="row">
+                        <div class="row" style="min-height:83px">
                             <div class="col-md-12 automatic-dshbrd-lang">
-                                <div class="radio">
+                                <div class="radio" style="margin-bottom: 2px;">
                                     <label style="color: #7695a5;">
-                                        <input type="radio" name="dashboardLanguage">
+                                        <input (change)="onSelectBrowserLangFromRadioBtn($event)" type="radio"
+                                            name="dashboardLanguage" value="browserlang"
+                                            [checked]="!HAS_SELECTED_PREFERRED_LANG">
                                         {{'AutomaticDashboardLanguage' | translate }}
                                     </label>
                                 </div>
-                            </div>
-                           
-                            <div class="col-sm-12">
-                                {{ browser_lang | translate}}
-                            </div>
-                        </div> -->
-                        <!-- <div class="row">
-                            <div class="col-md-12 preferred-dshbrd-lang">
-                                <div class="radio">
+
+                                <!-- <div class="checkbox" style="margin-bottom: 2px;">
                                     <label style="color: #7695a5;">
-                                        <input type="radio" name="dashboardLanguage">
+                                        <input (change)="onSelectBrowserLangFromRadioBtn($event)" type="checkbox"
+                                            name="dashboardLanguage" [checked]="!HAS_SELECTED_PREFERRED_LANG">
+                                        {{'AutomaticDashboardLanguage' | translate }}
+                                    </label>
+                                </div> -->
+                            </div>
+
+                            <div class="col-sm-12">
+                                <div class="browser-lang-wpr"
+                                    [ngClass]="{'browser-lang-disabled-wpr':HAS_SELECTED_PREFERRED_LANG }">
+
+
+                                    <img [src]="flag_url"
+                                        style="width: 15px;height: 15px; position: relative;top: -2px;">
+                                    {{ browser_lang | translate}}
+                                </div>
+
+                                <div *ngIf="display_msg_refresh_page_for_browser_lang && hasSelectedBrowserLangRadioBtn"
+                                    class="refresh-page" style="margin-top: 3px;">
+                                    {{'TheSettingsWillBeAppliedAfterRefreshingTheDashboard' | translate}}
+                                    <span style="color: #03a5e8;cursor: pointer;" (click)="refreshPage()">
+                                        {{'RefreshNow' | translate}}
+                                    </span>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        <div class="row" style="min-height: 102px;">
+                            <div class="col-md-12 preferred-dshbrd-lang">
+                                <!-- <label class="custom-label">
+                                    {{'PreferredDashboardLanguage' | translate }}
+                                </label> -->
+                                <div class="radio" style="margin-bottom: 6px;">
+                                    <label style="color: hsl(200, 21%, 55%);">
+                                        <input type="radio" value="preferredlang"
+                                            (change)="onSelectPreferredLangFromRadioBtn($event)"
+                                            name="dashboardLanguage" [checked]="HAS_SELECTED_PREFERRED_LANG">
                                         {{'PreferredDashboardLanguage' | translate }}
                                     </label>
                                 </div>
                             </div>
-                            
-                            <div class="col-sm-12" >
-                                
-                                <ng-select [items]="dashboard_languages" bindLabel="name" bindValue="name" [clearable]="false"
-                                [(ngModel)]="selected_dashboard_language" (change)="onSelectDsbrdLang(selected_dashboard_language)">
-                                <ng-template ng-label-tmp let-item="item">
-                                  <img style="width: 15px;height: 15px;" height="15" width="15" [src]="item.avatar" />
-                                  {{item.name | translate}}
-                                </ng-template>
-                                <ng-template ng-option-tmp let-item="item" let-index="index">
-                                  <img style="width: 15px;height: 15px;" height="15" width="15" [src]="item.avatar" />
-                                  {{item.name | translate }}
-                                </ng-template>
-                           
-                              </ng-select>
+
+                            <div class="col-sm-12">
+                                <div class="preferred-lang-selection-wpr" style="margin-left: 35px; max-width: 365px;">
+                                    <ng-select [items]="dashboard_languages" bindLabel="name" bindValue="name"
+                                        [clearable]="false" [(ngModel)]="selected_dashboard_language"
+                                        [searchable]="false"
+                                        (change)="onSelectPreferredDsbrdLang(selected_dashboard_language)"
+                                        placeholder="{{'PreferredDashboardLanguage' | translate}}">
+                                        <ng-template ng-label-tmp let-item="item">
+                                            <img style="width: 15px;height: 15px;" height="15" width="15"
+                                                [src]="item.avatar" />
+                                            {{item.name | translate}}
+                                        </ng-template>
+                                        <ng-template ng-option-tmp let-item="item" let-index="index">
+                                            <img style="width: 15px;height: 15px;" height="15" width="15"
+                                                [src]="item.avatar" />
+                                            {{item.name | translate }}
+                                        </ng-template>
+
+                                    </ng-select>
+                                </div>
+                                <div *ngIf="display_msg_please_select_language" class="language-not-selected">
+                                    {{'PleaseSelectALanguage' | translate}}
+                                </div>
+
+
+                                <div *ngIf="display_msg_refresh_page_for_selected_lang && hasSelectedPreferredLangRadioBtn"
+                                    class="refresh-page">
+                                    {{'TheSettingsWillBeAppliedAfterRefreshingTheDashboard' | translate}} 
+                                    <span style="color: #03a5e8;cursor: pointer;" (click)="refreshPage()">
+                                    {{'RefreshNow' | translate}}
+                                   </span>
+                                </div>
                             </div>
-                        </div> -->
+                        </div>
 
                     </div>
                 </div>

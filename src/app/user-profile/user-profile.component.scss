@@ -341,3 +341,26 @@ button.close {
   border-top: 1px solid #ddd;
   // width: calc((100% / 3) + 372px);
 }
+
+.browser-lang-wpr {
+  margin-left:35px;color: #85ae52; font-weight: 400;
+}
+
+.browser-lang-disabled-wpr {
+  font-weight: 200 !important;
+  color: #7695a5 !important
+}
+
+.language-not-selected {
+  margin-left: 35px;
+  font-size: 12px;
+  font-weight: 300;
+  color: #f44336;
+}
+
+.refresh-page {
+  color: #ffc107;
+  font-size: 14px;
+  margin-left: 35px;
+  margin-top: 8px;
+}

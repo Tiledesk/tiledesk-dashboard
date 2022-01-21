@@ -8,12 +8,13 @@ import { UsersService } from '../services/users.service';
 import { UploadImageService } from '../services/upload-image.service';
 import { UploadImageNativeService } from '../services/upload-image-native.service';
 import { NotifyService } from '../core/notify.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AppConfigService } from '../services/app-config.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from '../services/logger/logger.service';
+const swal = require('sweetalert');
 
 
 @Component({
@@ -50,8 +51,19 @@ export class UserProfileComponent implements OnInit {
   profilePhotoWasUploaded: string;
   browser_lang: string;
   selected_dashboard_language: any
+  flag_url: string;
+  display_msg_please_select_language: boolean = false;
+  display_msg_refresh_page_for_browser_lang: boolean = false;
+  display_msg_refresh_page_for_selected_lang: boolean = false;
+  warning: string;
+  selectAProjectToManageNotificationEmails: string;
+  hasSelectedBrowserLangRadioBtn: boolean;
+  hasSelectedPreferredLangRadioBtn: boolean;
   // used to unsuscribe from behaviour subject
   private unsubscribe$: Subject<any> = new Subject<any>();
+
+  HAS_SELECTED_PREFERRED_LANG: boolean = false;
+  private fragment: string;
 
   @ViewChild('fileInputUserProfileImage') fileInputUserProfileImage: any;
 
@@ -90,7 +102,8 @@ export class UserProfileComponent implements OnInit {
     private uploadImageNativeService: UploadImageNativeService,
     public appConfigService: AppConfigService,
     private translate: TranslateService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
@@ -106,22 +119,138 @@ export class UserProfileComponent implements OnInit {
 
     this.translateStrings();
     this.getBrowserLanguage();
+
+    this.route.fragment.subscribe(fragment => {
+      this.fragment = fragment;
+      console.log('[USER-PROFILE] - FRAGMENT ', this.fragment)
+    });
+ 
+  }
+
+  ngAfterViewInit(): void {
+    try {
+      // name of the class of the html div = . + fragment
+      const languageEl = <HTMLElement>document.querySelector('.' + this.fragment)
+      console.log('[USER-PROFILE] - QUERY SELECTOR language  ', languageEl)
+      languageEl.scrollIntoView();
+      // document.querySelector('#' + this.fragment).scrollIntoView();
+      // this.logger.log( document.querySelector('#' + this.fragment).scrollIntoView())
+    } catch (e) {
+      console.log('[USER-PROFILE] - QUERY SELECTOR language ERROR  ', e)
+    }
+  }
+
+  getLoggedUser() {
+    this.auth.user_bs.subscribe((user) => {
+      this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - USER', user)
+
+      if (user) {
+        this.user = user;
+        this.userFirstname = user.firstname;
+        this.userLastname = user.lastname;
+        this.userId = user._id;
+        this.userEmail = user.email;
+        this.firstnameCurrentValue = user.firstname;
+        this.lastnameCurrentValue = user.lastname;
+        this.emailverified = user.emailverified;
+        this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - EMAIL VERIFIED ', this.emailverified)
+        this.showSpinner = false;
+
+        const stored_preferred_lang = localStorage.getItem(this.userId + '_lang')
+
+        if (stored_preferred_lang) {
+          this.HAS_SELECTED_PREFERRED_LANG = true;
+          this.selected_dashboard_language = stored_preferred_lang;
+          console.log('[USER-PROFILE] HAS_SELECTED_PREFERRED_LANG ', this.HAS_SELECTED_PREFERRED_LANG)
+          console.log('[USER-PROFILE] stored_preferred_lang ', stored_preferred_lang)
+        } else {
+          this.HAS_SELECTED_PREFERRED_LANG = false;
+          console.log('[USER-PROFILE] HAS_SELECTED_PREFERRED_LANG ', this.HAS_SELECTED_PREFERRED_LANG)
+          console.log('[USER-PROFILE] stored_preferred_lang ', stored_preferred_lang)
+        }
+      }
+
+    }, (error) => {
+      this.logger.error('[USER-PROFILE] - USER GET IN USER PROFILE - ERROR', error);
+      this.showSpinner = false;
+    }, () => {
+      this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE * COMPLETE *');
+    });
   }
 
   getBrowserLanguage() {
     this.browser_lang = this.translate.getBrowserLang();
     console.log('[USER-PROFILE] - browser_lang ', this.browser_lang)
+    this.flag_url = "assets/img/language_flag/" + this.browser_lang + ".png"
   }
 
-  onSelectDsbrdLang(selectedLanguage) {
-    this.logger.log('[USER-PROFILE] onChangeSelectedPriority selectedLanguage ', selectedLanguage)
-    this.selected_dashboard_language = selectedLanguage;
+  onSelectPreferredDsbrdLang(selectedLanguageCode) {
+    console.log('[USER-PROFILE] onSelectPreferredDsbrdLang -  selectedLanguage ', selectedLanguageCode)
+    this.selected_dashboard_language = selectedLanguageCode;
+    localStorage.setItem(this.userId + '_lang', selectedLanguageCode);
+    this.HAS_SELECTED_PREFERRED_LANG = true;
+    this.display_msg_please_select_language = false;
+    this.display_msg_refresh_page_for_selected_lang = true;
+
+   
+  }
+
+  onSelectPreferredLangFromRadioBtn($event) {
+    console.log('[USER-PROFILE] onSelectPreferredLangFromRadioBtn -  event ', $event.target.checked);
+    // this.selected_dashboard_language = this.browser_lang;
+    this.HAS_SELECTED_PREFERRED_LANG = true;
+    this.hasSelectedPreferredLangRadioBtn= $event.target.checked;
+    this.hasSelectedBrowserLangRadioBtn = false
+    console.log('[USER-PROFILE]  hasSelectedBrowserLangRadioBtn  ', this.hasSelectedBrowserLangRadioBtn);
+
+    if ($event.target.checked === true && this.selected_dashboard_language === undefined) {
+
+      console.log('[USER-PROFILE]  this.selected_dashboard_language  ', this.selected_dashboard_language);
+      this.display_msg_please_select_language = true;
+    }
+
+    if ($event.target.checked === true && this.selected_dashboard_language !== undefined) {
+      console.log('[USER-PROFILE]  this.selected_dashboard_language  ', this.selected_dashboard_language);
+      this.display_msg_refresh_page_for_selected_lang = true;
+      this.hasSelectedBrowserLangRadioBtn = false;
+    }
+
+  }
+
+  onSelectBrowserLangFromRadioBtn($event) {
+    console.log('[USER-PROFILE] onSelectBrowserLangFromRadioBtn -  event ', $event.target.checked)
+    localStorage.removeItem(this.userId + '_lang');
+    this.HAS_SELECTED_PREFERRED_LANG = false;
+    this.hasSelectedBrowserLangRadioBtn = $event.target.checked
+    this.hasSelectedPreferredLangRadioBtn = false;
+    console.log('[USER-PROFILE]  hasSelectedPreferredLangRadioBtn  ', this.hasSelectedPreferredLangRadioBtn);
+    if ($event.target.checked === true ) {
+   
+      this.display_msg_refresh_page_for_browser_lang = true;
+      console.log('[USER-PROFILE] onSelectBrowserLangFromRadioBtn  ', this.display_msg_refresh_page_for_browser_lang);
+    }
+  }
+
+  refreshPage() {
+    location.reload();
   }
 
   translateStrings() {
     this.translate.get('YourProfilePhotoHasBeenUploadedSuccessfully')
       .subscribe((text: string) => {
         this.profilePhotoWasUploaded = text;
+      });
+
+      this.translate.get('Warning')
+      .subscribe((text: string) => {
+
+        this.warning = text;
+      });
+
+      this.translate.get('ItIsNecessaryToSelectAProjectToManageNotificationEmails')
+      .subscribe((text: string) => {
+
+        this.selectAProjectToManageNotificationEmails = text;
       });
   }
 
@@ -276,7 +405,7 @@ export class UserProfileComponent implements OnInit {
         this.projectId = project._id
         this.logger.log('[USER-PROFILE] - GET CURRENT PROJECT project ', project)
       } else {
-        this.logger.log('[USER-PROFILE] - GET CURRENT PROJECT project ', project , ' - HIDE SIDEBAR')
+        this.logger.log('[USER-PROFILE] - GET CURRENT PROJECT project ', project, ' - HIDE SIDEBAR')
         this.selectSidebar();
       }
     });
@@ -293,30 +422,7 @@ export class UserProfileComponent implements OnInit {
     elemMainPanel.setAttribute('style', 'width:100% !important; overflow-x: hidden !important;');
   }
 
-  getLoggedUser() {
-    this.auth.user_bs.subscribe((user) => {
-      this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - USER', user)
-    
-      if (user) {
-        this.user = user;
-        this.userFirstname = user.firstname;
-        this.userLastname = user.lastname;
-        this.userId = user._id;
-        this.userEmail = user.email;
-        this.firstnameCurrentValue = user.firstname;
-        this.lastnameCurrentValue = user.lastname;
-        this.emailverified = user.emailverified;
-        this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - EMAIL VERIFIED ', this.emailverified)
-        this.showSpinner = false;
-      }
 
-    }, (error) => {
-      this.logger.error('[USER-PROFILE] - USER GET IN USER PROFILE - ERROR', error);
-      this.showSpinner = false;
-    }, () => {
-      this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE * COMPLETE *');
-    });
-  }
 
 
   onEditFirstname(updatedFirstname) {
@@ -391,15 +497,15 @@ export class UserProfileComponent implements OnInit {
         this.notify.showResendingVerifyEmailNotification(this.userEmail);
       }
     }, (error) => {
-        this.logger.error('[USER-PROFILE] - RESEND VERIFY EMAIL - ERROR ', error);
-        const error_body = JSON.parse(error._body);
-        this.logger.error('[USER-PROFILE] - RESEND VERIFY EMAIL - ERROR BODY', error_body);
-        if (error_body['success'] === false) {
-          this.notify.showNotification('An error has occurred sending verification link', 4, 'report_problem')
-        }
-      }, () => {
-        this.logger.log('[USER-PROFILE] - RESEND VERIFY EMAIL * COMPLETE *');
-      });
+      this.logger.error('[USER-PROFILE] - RESEND VERIFY EMAIL - ERROR ', error);
+      const error_body = JSON.parse(error._body);
+      this.logger.error('[USER-PROFILE] - RESEND VERIFY EMAIL - ERROR BODY', error_body);
+      if (error_body['success'] === false) {
+        this.notify.showNotification('An error has occurred sending verification link', 4, 'report_problem')
+      }
+    }, () => {
+      this.logger.log('[USER-PROFILE] - RESEND VERIFY EMAIL * COMPLETE *');
+    });
   }
 
 
@@ -428,9 +534,20 @@ export class UserProfileComponent implements OnInit {
   goToNotificationSettings() {
     this.logger.log('[USER-PROFILE] - GO TO USER  NOTIFICATION SETTINGS - PROJECT ID ', this.projectId)
     if (this.projectId === undefined) {
-      this.router.navigate(['user/' + this.userId + '/notifications']);
+      // this.router.navigate(['user/' + this.userId + '/notifications']);
+      this.presentModalSelectAProjectToManageEmailNotification();
     } else {
       this.router.navigate(['project/' + this.projectId + '/user/' + this.userId + '/notifications']);
     }
+  }
+
+  presentModalSelectAProjectToManageEmailNotification() {
+    swal({
+      title: this.warning,
+      text: this.selectAProjectToManageNotificationEmails,
+      icon: "warning",
+      button: "Ok",
+      dangerMode: false,
+    })
   }
 }
