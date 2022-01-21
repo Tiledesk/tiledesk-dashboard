@@ -144,19 +144,28 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
     this.currentYear = moment().format('YYYY');
     this.logger.log('[REQUEST-DTLS-X-PANEL] - currentYear ', this.currentYear)
   }
+
+  
   setMomentLocale() {
-   
     this.browserLang = this.translate.getBrowserLang();
     console.log('[REQUEST-DTLS-X-PANEL] - setMomentLocale browserLang', this.browserLang)
-    if (this.browserLang) {
-      moment.locale(this.browserLang)
 
-      // if (this.browserLang === 'it') {
-      //   moment.locale('it')
-      // } else {
-      //   moment.locale('en')
-      // }
+    const stored_preferred_lang = localStorage.getItem(this.auth.user_bs.value._id + '_lang')
+    let dshbrd_lang = ''
+    if (this.browserLang && !stored_preferred_lang) {
+      dshbrd_lang = this.browserLang
+    } else if (this.browserLang && stored_preferred_lang) {
+      dshbrd_lang = stored_preferred_lang
     }
+    moment.locale(this.browserLang)
+
+    // if (this.browserLang) {
+    //   if (this.browserLang === 'it') {
+    //     moment.locale('it')
+    //   } else {
+    //     moment.locale('en')
+    //   }
+    // }
   }
 
   getProjectUserRole() {
@@ -457,12 +466,12 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
     this.logger.log('[REQUEST-DTLS-X-PANEL] - ACTUAL HEIGHT ', windowActualHeight);
     // 457
     if (!this.MORE_INFO_ACCORDION_IS_OPENED) {
-    this.chat_content_height = windowActualHeight - 234//332
-    this.logger.log('[REQUEST-DTLS-X-PANEL] CHAT CONTENT HEIGHT ', this.chat_content_height);
-  } else {
-    this.chat_content_height = windowActualHeight - 366
-  }
-  this.logger.log('[REQUEST-DTLS-X-PANEL] chat_content_height', this.chat_content_height);
+      this.chat_content_height = windowActualHeight - 234//332
+      this.logger.log('[REQUEST-DTLS-X-PANEL] CHAT CONTENT HEIGHT ', this.chat_content_height);
+    } else {
+      this.chat_content_height = windowActualHeight - 366
+    }
+    this.logger.log('[REQUEST-DTLS-X-PANEL] chat_content_height', this.chat_content_height);
     return { 'height': this.chat_content_height += 'px' };
   }
 
@@ -471,7 +480,7 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
   onResize(event: any) {
     const newInnerHeight = event.target.innerHeight;
     if (!this.MORE_INFO_ACCORDION_IS_OPENED) {
-    this.chat_content_height = newInnerHeight - 234//332
+      this.chat_content_height = newInnerHeight - 234//332
     } else {
       this.chat_content_height = newInnerHeight - 366
     }

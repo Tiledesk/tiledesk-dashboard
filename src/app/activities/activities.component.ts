@@ -358,14 +358,21 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
                 }
               }
 
-              // moment.locale('en-gb')
-              if (this.browser_lang === 'en') {
+              const stored_preferred_lang = localStorage.getItem(this.auth.user_bs.value._id + '_lang')
+              let dshbrd_lang = ''
+              if (this.browser_lang && !stored_preferred_lang) {
+                  dshbrd_lang = this.browser_lang
+              } else if (this.browser_lang && stored_preferred_lang) {
+                  dshbrd_lang = stored_preferred_lang
+              }
+
+              if (dshbrd_lang === 'en') {
                 moment.locale('en')
                 const date = moment(activity.updatedAt).format('dddd, MMM DD, YYYY - HH:mm:ss');
                 this.logger.log('[ActivitiesComponent] - getActivities - updatedAt date', date);
                 activity.date = date;
               } else {
-                moment.locale(this.browser_lang)
+                moment.locale(dshbrd_lang)
                 const date = moment(activity.updatedAt).format('dddd, DD MMM YYYY - HH:mm:ss');
                 this.logger.log('[ActivitiesComponent] - getActivities - updatedAt date', date);
                 activity.date = date;
