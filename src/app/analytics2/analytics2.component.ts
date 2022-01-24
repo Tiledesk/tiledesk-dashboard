@@ -117,7 +117,7 @@ export class Analytics2Component implements OnInit, OnDestroy {
     this.getBrowserLangAndSwitchMonthName();
     this.getCurrentUrl();
 
-    // console.log(moment.monthsShort(aMoment)) 
+  
     // this.setMomentLocale()
   }
 
@@ -133,7 +133,7 @@ export class Analytics2Component implements OnInit, OnDestroy {
     } else if (this.browserLang && stored_preferred_lang) {
       dshbrd_lang = stored_preferred_lang
     }
-    console.log('[ANALYTICS] - setMomentLocale dshbrd_lang', dshbrd_lang)
+    this.logger.log('[ANALYTICS] - setMomentLocale dshbrd_lang', dshbrd_lang)
     moment.locale(dshbrd_lang)
 
 
@@ -142,40 +142,40 @@ export class Analytics2Component implements OnInit, OnDestroy {
     
     const arrayDay =  moment.weekdaysShort()
     arrayDay.push(arrayDay.shift())
-    console.log('[ANALYTICS] - setMomentLocale  weekdaysShort test', arrayDay )
-    console.log('[ANALYTICS] - setMomentLocale  weekdaysShort', moment.weekdaysShort(0) )
-    console.log('[ANALYTICS] - setMomentLocale  weekdaysShort', moment.weekdaysShort(1) )
-    console.log('[ANALYTICS] - setMomentLocale  weekdaysShort', moment.weekdaysShort(2) )
-    console.log('[ANALYTICS] - setMomentLocale  weekdaysShort', moment.weekdaysShort(3) )
-    console.log('[ANALYTICS] - setMomentLocale  weekdaysShort', moment.weekdaysShort(4) )
-    console.log('[ANALYTICS] - setMomentLocale  weekdaysShort', moment.weekdaysShort(5) )
-    console.log('[ANALYTICS] - setMomentLocale  weekdaysShort', moment.weekdaysShort(6) )
-    console.log('[ANALYTICS] - setMomentLocale hour',moment("01:00", "HH:mm").format("hh:mm A") )
-    console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("01:00", "HH:mm").format('LT') )
-    console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("02:00", "HH:mm").format('LT') )
-    console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("03:00", "HH:mm").format('LT') )
-    console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("04:00", "HH:mm").format('LT') )
-    console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("04:00", "HH:mm").format('LT') )
-    console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("05:00", "HH:mm").format('LT') )
-    console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("06:00", "HH:mm").format('LT') )
-    console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("07:00", "HH:mm").format('LT') )
-    console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("08:00", "HH:mm").format('LT') )
-    console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("09:00", "HH:mm").format('LT') )
-    console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("10:00", "HH:mm").format('LT') )
-    console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("11:00", "HH:mm").format('LT') )
-    console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("12:00", "HH:mm").format('LT') )
-    console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("13:00", "HH:mm").format('LT') )
-    console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("14:00", "HH:mm").format('LT') )
-    console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("15:00", "HH:mm").format('LT') )
-    console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("16:00", "HH:mm").format('LT') )
-    console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("17:00", "HH:mm").format('LT') )
-    console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("18:00", "HH:mm").format('LT') )
-    console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("19:00", "HH:mm").format('LT') )
-    console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("20:00", "HH:mm").format('LT') )
-    console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("21:00", "HH:mm").format('LT') )
-    console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("22:00", "HH:mm").format('LT') )
-    console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("23:00", "HH:mm").format('LT') )
-    console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("24:00", "HH:mm").format('LT') )
+    // console.log('[ANALYTICS] - setMomentLocale  weekdaysShort test', arrayDay )
+    // console.log('[ANALYTICS] - setMomentLocale  weekdaysShort', moment.weekdaysShort(0) )
+    // console.log('[ANALYTICS] - setMomentLocale  weekdaysShort', moment.weekdaysShort(1) )
+    // console.log('[ANALYTICS] - setMomentLocale  weekdaysShort', moment.weekdaysShort(2) )
+    // console.log('[ANALYTICS] - setMomentLocale  weekdaysShort', moment.weekdaysShort(3) )
+    // console.log('[ANALYTICS] - setMomentLocale  weekdaysShort', moment.weekdaysShort(4) )
+    // console.log('[ANALYTICS] - setMomentLocale  weekdaysShort', moment.weekdaysShort(5) )
+    // console.log('[ANALYTICS] - setMomentLocale  weekdaysShort', moment.weekdaysShort(6) )
+    // console.log('[ANALYTICS] - setMomentLocale hour',moment("01:00", "HH:mm").format("hh:mm A") )
+    // console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("01:00", "HH:mm").format('LT') )
+    // console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("02:00", "HH:mm").format('LT') )
+    // console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("03:00", "HH:mm").format('LT') )
+    // console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("04:00", "HH:mm").format('LT') )
+    // console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("04:00", "HH:mm").format('LT') )
+    // console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("05:00", "HH:mm").format('LT') )
+    // console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("06:00", "HH:mm").format('LT') )
+    // console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("07:00", "HH:mm").format('LT') )
+    // console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("08:00", "HH:mm").format('LT') )
+    // console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("09:00", "HH:mm").format('LT') )
+    // console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("10:00", "HH:mm").format('LT') )
+    // console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("11:00", "HH:mm").format('LT') )
+    // console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("12:00", "HH:mm").format('LT') )
+    // console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("13:00", "HH:mm").format('LT') )
+    // console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("14:00", "HH:mm").format('LT') )
+    // console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("15:00", "HH:mm").format('LT') )
+    // console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("16:00", "HH:mm").format('LT') )
+    // console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("17:00", "HH:mm").format('LT') )
+    // console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("18:00", "HH:mm").format('LT') )
+    // console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("19:00", "HH:mm").format('LT') )
+    // console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("20:00", "HH:mm").format('LT') )
+    // console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("21:00", "HH:mm").format('LT') )
+    // console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("22:00", "HH:mm").format('LT') )
+    // console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("23:00", "HH:mm").format('LT') )
+    // console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("24:00", "HH:mm").format('LT') )
 
   }
 
