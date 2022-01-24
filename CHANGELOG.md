@@ -1,6 +1,15 @@
 
 # tiledesk-dashboard
 
+### 2.2.31-rc7
+- Adds in Project Settings > Accounts an alert that is displayed when the subscription to the plan has expired
+- Fixes the bug: in "notification.component" the company email was hardcoded rather than taken from the "brand"
+- Adds on the User Profile page > Profile tab the ability to select a preferred language for the dashboard translation
+- Fixes the bug: the "Notification" tab is accessible even if the teammate accesses his "User Profile" page without having selected a project
+- Adds the ability for teammates with owner role to access the "Account" tab of the Project Settings page by clicking on the plan name displayed on the home page
+- Adds a flag in the navigation bar that indicates the current language of the dashboard, and the possibility, by clicking on it, to be redirected to the "User Profile" page > Profile tab to be able to modify it
+- Manages the language used for translations by the "moment" library depending on whether the current language of the dashboard has been selected by the user or is the language of the browser settings
+
 ### 2.2.31-rc6
 - Fixes the bug: in AppConfigProvider the "wsUrl" is incorrect (window.location.port is missing)
 - Adds spanish language
