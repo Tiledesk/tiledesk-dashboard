@@ -1126,6 +1126,7 @@
         "Messages": "Messaggi",
         "RequestAttributes": "Attributi conversazione",
         "RequestDetails": "Dettagli conversazione",
+        "Details": "Dettagli",
         "Enter": "Partecipa alla chat",
         "ToChat": "Partecipa alla chat",
         "OpenTheChat": "Apri la chat",
@@ -1527,7 +1528,7 @@
             "Requests": "Conversazioni",
             "Sentiment": "Sentiment",
             "ResponseTime": "Tempi risposta",
-            "ConversationLenght": "Durata conversazione",
+            "ConversationLenght": "Durata della conversazione",
             "Satisfaction": "Gradimento",
             "Events": "Eventi"
         },
@@ -1546,10 +1547,19 @@
         "FilterByDay": "Giorni",
         "FilterBy": "Filtra per",
         "Last": "Ultimi",
+        "Milliseconds":"Millisecondi",
+        "Seconds":"Secondi",
+        "Second":"Secondo",
+        "Minutes": "Minuti",
+        "Minute": "Minuto",
+        "Hours":"Ore",
+		"Hour":"Ora",
         "Days": "Giorni",
+        "Day": "Giorno",
         "Month": "Mese",
         "Months": "Mesi",
         "Year": "Anno",
+        "Years": "Anni",
         "DataRangeRequest": "Range date ",
         "RealTimeMonitoring": "Monitoraggio in tempo reale",
         "SentimentTitle": "Feedback cliente",
@@ -1573,7 +1583,7 @@
             "SatisfactionStar": "Media Gradimento",
             "StatisfactionValueLabel": "Il gradimento medio relativo al tuo team è ",
             "NoSatisfactionValue": "Il tuo team non ha ancora ricevuto valutazioni.",
-            "DailySatisfactionTrend": "Trend Giornaliero del Gradimento negli Ultimi"
+            "DailySatisfactionTrend": "Andamento quotidiano della soddisfazione degli ultimi"
         },
         "Events": {
             "EventsMonitoring": "Monitoraggio Eventi",
@@ -1960,5 +1970,12 @@
     "ItIsNecessaryToSelectAProjectToManageNotificationEmails":"È necessario selezionare un progetto per gestire se ricevere o meno email di notifica quando una conversazione ti viene assegnata o quando c'è una nuova conversazione non assegnata",
     "TheDashboardIsTranslatedInto":"La dashboard è tradotta in {{language_name}}. Per cambiare lingua clicca sulla bandiera",
     "TheSettingsWillBeAppliedAfterRefreshingTheDashboard": "Le impostazioni verranno applicate dopo l'aggiornamento della Dashboard.",
-    "RefreshNow": "Aggiorna ora"
+    "RefreshNow": "Aggiorna ora",
+    "ServedByHumans":"Servite da umani",
+    "ServedByBots":"Servite da bots",
+    "AverageResponseTime":"Tempo medio di risposta",
+    "AverageLengthOfConversation":"Durata media della conversazione",
+    "New Conversation":"Nuova conversazione",
+    "Authentication Triggers":"Trigger di autenticazione",
+    "DailyAverage":"Media giornaliera"
 }
