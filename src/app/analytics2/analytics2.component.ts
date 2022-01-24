@@ -67,7 +67,7 @@ export class Analytics2Component implements OnInit, OnDestroy {
   ylabel_eng = ['1am', '2am', '3am', '4am', '5am', '6am', '7am', '8am', '9am', '10am', '11am', '12am', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm', '9pm', '10pm', '11pm']
   weekday: any;
   hour: any;
-  lang: string;
+  browserLang: string;
 
   langService: HumanizeDurationLanguage = new HumanizeDurationLanguage();
   humanizer: HumanizeDuration = new HumanizeDuration(this.langService);
@@ -116,6 +116,67 @@ export class Analytics2Component implements OnInit, OnDestroy {
     // this.getAllUsersOfCurrentProject();
     this.getBrowserLangAndSwitchMonthName();
     this.getCurrentUrl();
+
+    // console.log(moment.monthsShort(aMoment)) 
+    // this.setMomentLocale()
+  }
+
+
+  setMomentLocale() {
+    this.browserLang = this.translate.getBrowserLang();
+    // console.log('[ANALYTICS] - setMomentLocale browserLang', this.browserLang)
+
+    const stored_preferred_lang = localStorage.getItem(this.auth.user_bs.value._id + '_lang')
+    let dshbrd_lang = ''
+    if (this.browserLang && !stored_preferred_lang) {
+      dshbrd_lang = this.browserLang
+    } else if (this.browserLang && stored_preferred_lang) {
+      dshbrd_lang = stored_preferred_lang
+    }
+    console.log('[ANALYTICS] - setMomentLocale dshbrd_lang', dshbrd_lang)
+    moment.locale(dshbrd_lang)
+
+
+    // console.log(moment.monthsShort('January')) 
+    console.log('[ANALYTICS] - setMomentLocale MONTHS', moment.monthsShort() )
+    
+    const arrayDay =  moment.weekdaysShort()
+    arrayDay.push(arrayDay.shift())
+    console.log('[ANALYTICS] - setMomentLocale  weekdaysShort test', arrayDay )
+    console.log('[ANALYTICS] - setMomentLocale  weekdaysShort', moment.weekdaysShort(0) )
+    console.log('[ANALYTICS] - setMomentLocale  weekdaysShort', moment.weekdaysShort(1) )
+    console.log('[ANALYTICS] - setMomentLocale  weekdaysShort', moment.weekdaysShort(2) )
+    console.log('[ANALYTICS] - setMomentLocale  weekdaysShort', moment.weekdaysShort(3) )
+    console.log('[ANALYTICS] - setMomentLocale  weekdaysShort', moment.weekdaysShort(4) )
+    console.log('[ANALYTICS] - setMomentLocale  weekdaysShort', moment.weekdaysShort(5) )
+    console.log('[ANALYTICS] - setMomentLocale  weekdaysShort', moment.weekdaysShort(6) )
+    console.log('[ANALYTICS] - setMomentLocale hour',moment("01:00", "HH:mm").format("hh:mm A") )
+    console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("01:00", "HH:mm").format('LT') )
+    console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("02:00", "HH:mm").format('LT') )
+    console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("03:00", "HH:mm").format('LT') )
+    console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("04:00", "HH:mm").format('LT') )
+    console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("04:00", "HH:mm").format('LT') )
+    console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("05:00", "HH:mm").format('LT') )
+    console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("06:00", "HH:mm").format('LT') )
+    console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("07:00", "HH:mm").format('LT') )
+    console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("08:00", "HH:mm").format('LT') )
+    console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("09:00", "HH:mm").format('LT') )
+    console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("10:00", "HH:mm").format('LT') )
+    console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("11:00", "HH:mm").format('LT') )
+    console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("12:00", "HH:mm").format('LT') )
+    console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("13:00", "HH:mm").format('LT') )
+    console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("14:00", "HH:mm").format('LT') )
+    console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("15:00", "HH:mm").format('LT') )
+    console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("16:00", "HH:mm").format('LT') )
+    console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("17:00", "HH:mm").format('LT') )
+    console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("18:00", "HH:mm").format('LT') )
+    console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("19:00", "HH:mm").format('LT') )
+    console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("20:00", "HH:mm").format('LT') )
+    console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("21:00", "HH:mm").format('LT') )
+    console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("22:00", "HH:mm").format('LT') )
+    console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("23:00", "HH:mm").format('LT') )
+    console.log('[ANALYTICS] - setMomentLocale hour 2 ',moment("24:00", "HH:mm").format('LT') )
+
   }
 
   getCurrentUrl() {
@@ -302,8 +363,8 @@ export class Analytics2Component implements OnInit, OnDestroy {
   buildgraph() {
 
     // get the language of browser
-    this.lang = this.translate.getBrowserLang();
-    this.logger.log('[ANALYTICS] buildgraph LANGUAGE ', this.lang);
+    this.browserLang = this.translate.getBrowserLang();
+    this.logger.log('[ANALYTICS] buildgraph LANGUAGE ', this.browserLang);
     this.cellSettings = {
       border: {
         radius: 4,
@@ -330,7 +391,7 @@ export class Analytics2Component implements OnInit, OnDestroy {
       const data: object = res;
       this.logger.log('[ANALYTICS] getDataHeatMap data from servoice->', res);
 
-      if (this.lang === 'it') {
+      if (this.browserLang === 'it') {
         this.weekday = { '1': 'Lun', '2': 'Mar', '3': 'Mer', '4': 'Gio', '5': 'Ven', '6': 'Sab', '7': 'Dom' }
         this.hour = {
           '1': '01:00', '2': '02:00', '3': '03:00', '4': '04:00', '5': '05:00', '6': '06:00', '7': '07:00', '8': '08:00', '9': '09:00', '10': '10:00',
@@ -400,7 +461,7 @@ export class Analytics2Component implements OnInit, OnDestroy {
   humanizeDurations(timeInMillisecond) {
     let result;
     if (timeInMillisecond) {
-      if (this.lang == 'en') {
+      if (this.browserLang == 'en') {
         if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24 * 30 * 12))) > 0) {//year
           result = result === 1 ? result + " Year" : result + " Years";
         } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24 * 30))) > 0) {//months
@@ -457,7 +518,7 @@ export class Analytics2Component implements OnInit, OnDestroy {
         this.numberAVGtime = splitString[0];
         this.unitAVGtime = splitString[1];
 
-        this.responseAVGtime = this.humanizer.humanize(res[0].waiting_time_avg, { round: true, language: this.lang })
+        this.responseAVGtime = this.humanizer.humanize(res[0].waiting_time_avg, { round: true, language: this.browserLang })
 
         this.logger.log('[ANALYTICS] avarageWaitingTimeCLOCK Waiting time: humanize', this.humanizer.humanize(res[0].waiting_time_avg))
         this.logger.log('[ANALYTICS] avarageWaitingTimeCLOCK waiting time funtion:', avarageWaitingTimestring);
