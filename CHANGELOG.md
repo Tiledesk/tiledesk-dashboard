@@ -9,6 +9,7 @@
 - Adds the ability for teammates with owner role to access the "Account" tab of the Project Settings page by clicking on the plan name displayed on the home page
 - Adds a flag in the navigation bar that indicates the current language of the dashboard, and the possibility, by clicking on it, to be redirected to the "User Profile" page > Profile tab to be able to modify it
 - Manages the language used for translations by the "moment" library depending on whether the current language of the dashboard has been selected by the user or is the language of the browser settings
+- Fixes the bug: in all sections of Analytics the translation of the texts is hard-coded for English and Italian
 
 ### 2.2.31-rc6
 - Fixes the bug: in AppConfigProvider the "wsUrl" is incorrect (window.location.port is missing)
