@@ -103,7 +103,8 @@
                     {{ event }}
                   </ng-option> -->
                   <ng-option *ngFor="let event of staticEventsNameList" [value]="event.value">
-                    {{ event.name }}
+                   
+                    {{ event.name | translate }}
                   </ng-option>
                 </ng-select>
               </div>

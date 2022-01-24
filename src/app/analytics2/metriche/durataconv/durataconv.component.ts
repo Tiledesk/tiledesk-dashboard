@@ -10,6 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { Observable } from 'rxjs';
 import { LoggerService } from './../../..//services/logger/logger.service';
+import { AuthService } from 'app/core/auth.service';
 
 @Component({
   selector: 'appdashboard-durataconv',
@@ -59,7 +60,8 @@ export class DurataconvComponent implements OnInit {
     private departmentService: DepartmentService,
     private usersService: UsersService,
     private faqKbService: FaqKbService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private auth: AuthService
     ) {
 
     this.lang = this.translate.getBrowserLang();
@@ -228,13 +230,29 @@ export class DurataconvComponent implements OnInit {
 
   getBrowserLangAndSwitchMonthName() {
 
-    if (this.lang) {
-      if (this.lang === 'it') {
-        this.monthNames = { '1': 'Gen', '2': 'Feb', '3': 'Mar', '4': 'Apr', '5': 'Mag', '6': 'Giu', '7': 'Lug', '8': 'Ago', '9': 'Set', '10': 'Ott', '11': 'Nov', '12': 'Dic' }
-      } else {
-        this.monthNames = { '1': 'Jan', '2': 'Feb', '3': 'Mar', '4': 'Apr', '5': 'May', '6': 'Jun', '7': 'Jul', '8': 'Aug', '9': 'Sep', '10': 'Oct', '11': 'Nov', '12': 'Dec' }
-      }
+    // if (this.lang) {
+    //   if (this.lang === 'it') {
+    //     this.monthNames = { '1': 'Gen', '2': 'Feb', '3': 'Mar', '4': 'Apr', '5': 'Mag', '6': 'Giu', '7': 'Lug', '8': 'Ago', '9': 'Set', '10': 'Ott', '11': 'Nov', '12': 'Dic' }
+    //   } else {
+    //     this.monthNames = { '1': 'Jan', '2': 'Feb', '3': 'Mar', '4': 'Apr', '5': 'May', '6': 'Jun', '7': 'Jul', '8': 'Aug', '9': 'Sep', '10': 'Oct', '11': 'Nov', '12': 'Dec' }
+    //   }
+    // }
+    this.monthNames =
+    {
+      '1': moment.monthsShort(0),
+      '2': moment.monthsShort(1),
+      '3': moment.monthsShort(2),
+      '4': moment.monthsShort(3),
+      '5': moment.monthsShort(4),
+      '6': moment.monthsShort(5),
+      '7': moment.monthsShort(6),
+      '8': moment.monthsShort(7),
+      '9': moment.monthsShort(8),
+      '10': moment.monthsShort(9),
+      '11': moment.monthsShort(10),
+      '12': moment.monthsShort(11)
     }
+
   }
 
   durationConvTimeCLOCK() {
@@ -256,8 +274,16 @@ export class DurataconvComponent implements OnInit {
             this.numberDurationCNVtime = this.msToTIME(res[0].duration_avg); // --> show in format h:m:s
             this.unitDurationCNVtime = splitString[1];
 
+            const browserLang = this.translate.getBrowserLang();
+            const stored_preferred_lang = localStorage.getItem(this.auth.user_bs.value._id + '_lang')
+            let dshbrd_lang = ''
+            if (browserLang && !stored_preferred_lang) {
+              dshbrd_lang = browserLang
+            } else if (browserLang && stored_preferred_lang) {
+              dshbrd_lang = stored_preferred_lang
+            }
 
-            this.responseDurationtime = this.humanizer.humanize(res[0].duration_avg, { round: true, language: this.lang });
+            this.responseDurationtime = this.humanizer.humanize(res[0].duration_avg, { round: true, language: dshbrd_lang });
 
 
             this.logger.log('[ANALYTICS - DURATACONV] Waiting time: humanize', this.humanizer.humanize(res[0].duration_avg))
@@ -469,7 +495,7 @@ export class DurataconvComponent implements OnInit {
           },
           tooltips: {
             callbacks: {
-              label: function (tooltipItem, data) {
+              label:  (tooltipItem, data) => {
                 // var label = data.datasets[tooltipItem.datasetIndex].label || '';
                 // if (label) {
                 //     label += ': ';
@@ -483,11 +509,22 @@ export class DurataconvComponent implements OnInit {
                 // humanizer.setOptions({ round: true })
                 // //this.logger.log("humanize", humanizer.humanize(currentItemValue))
                 // return data.datasets[tooltipItem.datasetIndex].label + ': ' + humanizer.humanize(currentItemValue)
-                if (lang === 'it') {
-                  return 'Lunghezza conversazione media: ' + humanizer.humanize(currentItemValue, { round: true, language: lang, units: ['y', 'mo', 'w', 'd', 'h', 'm', 's'] });
-                } else {
-                  return 'Median Conversation Lenght: ' + humanizer.humanize(currentItemValue, { round: true, language: lang, units: ['y', 'mo', 'w', 'd', 'h', 'm', 's'] });
+
+                const browserLang = this.translate.getBrowserLang();
+                const stored_preferred_lang = localStorage.getItem(this.auth.user_bs.value._id + '_lang')
+                let dshbrd_lang = ''
+                if (browserLang && !stored_preferred_lang) {
+                  dshbrd_lang = browserLang
+                } else if (browserLang && stored_preferred_lang) {
+                  dshbrd_lang = stored_preferred_lang
                 }
+                return this.translate.instant('AverageLengthOfConversation') + ": " + humanizer.humanize(currentItemValue, { round: true, language: dshbrd_lang, units: ['y', 'mo', 'w', 'd', 'h', 'm', 's'] });
+
+                // if (lang === 'it') {
+                //   return 'Lunghezza conversazione media: ' + humanizer.humanize(currentItemValue, { round: true, language: lang, units: ['y', 'mo', 'w', 'd', 'h', 'm', 's'] });
+                // } else {
+                //   return 'Median Conversation Lenght: ' + humanizer.humanize(currentItemValue, { round: true, language: lang, units: ['y', 'mo', 'w', 'd', 'h', 'm', 's'] });
+                // }
               }
             }
           }

@@ -28,6 +28,8 @@ export class PanoramicaComponent implements OnInit {
   legendSettings: any; // nk
   paletteSettings: Object;
   customData = [];
+  xlabel: any;
+  ylabel: any;
   xlabel_ita = ['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'];
   xlabel_eng = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   ylabel_ita = ['01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00', '24:00']
@@ -50,6 +52,7 @@ export class PanoramicaComponent implements OnInit {
   numberDurationCNVtime: String;
   unitDurationCNVtime: String;
   responseDurationtime: String;
+  consversationLabel: string
 
   langService: HumanizeDurationLanguage = new HumanizeDurationLanguage();
   humanizer: HumanizeDuration = new HumanizeDuration(this.langService);
@@ -65,8 +68,13 @@ export class PanoramicaComponent implements OnInit {
     this.logger.log('[ANALYTICS - OVERVIEW] LANGUAGE ', this.lang);
     this.getBrowserLangAndSwitchMonthName();
     this.getHeatMapSeriesDataByLang();
+
     //this.startTimer();
   }
+
+
+
+
 
   ngOnInit() {
     this.auth.checkRoleForCurrentProject();
@@ -108,55 +116,137 @@ export class PanoramicaComponent implements OnInit {
 
   getHeatMapSeriesDataByLang() {
 
-    if (this.lang === 'it') {
-      this.weekday = { '1': 'Dom', '2': 'Lun', '3': 'Mar', '4': 'Mer', '5': 'Gio', '6': 'Ven', '7': 'Sab' }
-      this.hour = {
-        '1': '01:00', '2': '02:00', '3': '03:00', '4': '04:00', '5': '05:00', '6': '06:00', '7': '07:00', '8': '08:00', '9': '09:00', '10': '10:00',
-        '11': '11:00', '12': '12:00', '13': '13:00', '14': '14:00', '15': '15:00', '16': '16:00', '17': '17:00', '18': '18:00', '19': '19:00', '20': '20:00',
-        '21': '21:00', '22': '22:00', '23': '23:00', '24': '24:00'
-      }
-      this.yAxis = { labels: this.ylabel_ita };
-      this.xAxis = { labels: this.xlabel_ita };
 
-      this.titleSettings = {
-        text: 'Richieste per ora del giorno',
-        textStyle: {
-          size: '15px',
-          fontWeight: '500',
-          fontStyle: 'Normal'
-        }
-      };
-
-    } else {
-      this.weekday = { '1': 'Sun', '2': 'Mon', '3': 'Tue', '4': 'Wed', '5': 'Thu', '6': 'Fri', '7': 'Sat' }
-      this.hour = {
-        '1': '1am', '2': '2am', '3': '3am', '4': '4am', '5': '5am', '6': '6am', '7': '7am', '8': '8am', '9': '9am', '10': '10am',
-        '11': '11am', '12': '12am', '13': '1pm', '14': '2pm', '15': '3pm', '16': '4pm', '17': '5pm', '18': '6pm', '19': '7pm', '20': '8pm',
-        '21': '9pm', '22': '10pm', '23': '11pm', '24': '12pm'
-      }
-
-      this.yAxis = { labels: this.ylabel_eng };
-      this.xAxis = { labels: this.xlabel_eng };
-      this.titleSettings = {
-        text: 'Requests per hour of day',
-        textStyle: {
-          size: '15px',
-          fontWeight: '500',
-          fontStyle: 'Normal'
-        }
-      };
-
+    // this.weekday = { '1': 'Dom', '2': 'Lun', '3': 'Mar', '4': 'Mer', '5': 'Gio', '6': 'Ven', '7': 'Sab' }
+    this.weekday = {
+      '1': moment.weekdaysShort(0),
+      '2': moment.weekdaysShort(1),
+      '3': moment.weekdaysShort(2),
+      '4': moment.weekdaysShort(3),
+      '5': moment.weekdaysShort(4),
+      '6': moment.weekdaysShort(5),
+      '7': moment.weekdaysShort(6)
     }
+    // this.hour = {
+    //   '1': '01:00', '2': '02:00', '3': '03:00', '4': '04:00', '5': '05:00', '6': '06:00', '7': '07:00', '8': '08:00', '9': '09:00', '10': '10:00',
+    //   '11': '11:00', '12': '12:00', '13': '13:00', '14': '14:00', '15': '15:00', '16': '16:00', '17': '17:00', '18': '18:00', '19': '19:00', '20': '20:00',
+    //   '21': '21:00', '22': '22:00', '23': '23:00', '24': '24:00'
+    // }
+
+    this.hour = {
+      '1': moment("01:00", "HH:mm").format('LT'),
+      '2': moment("02:00", "HH:mm").format('LT'),
+      '3': moment("03:00", "HH:mm").format('LT'),
+      '4': moment("04:00", "HH:mm").format('LT'),
+      '5': moment("05:00", "HH:mm").format('LT'),
+      '6': moment("06:00", "HH:mm").format('LT'),
+      '7': moment("07:00", "HH:mm").format('LT'),
+      '8': moment("08:00", "HH:mm").format('LT'),
+      '9': moment("09:00", "HH:mm").format('LT'),
+      '10': moment("10:00", "HH:mm").format('LT'),
+      '11': moment("11:00", "HH:mm").format('LT'),
+      '12': moment("12:00", "HH:mm").format('LT'),
+      '13': moment("13:00", "HH:mm").format('LT'),
+      '14': moment("14:00", "HH:mm").format('LT'),
+      '15': moment("15:00", "HH:mm").format('LT'),
+      '16': moment("16:00", "HH:mm").format('LT'),
+      '17': moment("17:00", "HH:mm").format('LT'),
+      '18': moment("18:00", "HH:mm").format('LT'),
+      '19': moment("19:00", "HH:mm").format('LT'),
+      '20': moment("20:00", "HH:mm").format('LT'),
+      '21': moment("21:00", "HH:mm").format('LT'),
+      '22': moment("22:00", "HH:mm").format('LT'),
+      '23': moment("23:00", "HH:mm").format('LT'),
+      '24': moment("24:00", "HH:mm").format('LT')
+    }
+
+    // console.log('[ANALYTICS - OVERVIEW] existent this.weekday', this.weekday)
+    this.yAxis = {
+      labels: [
+        moment("01:00", "HH:mm").format('LT'),
+        moment("02:00", "HH:mm").format('LT'),
+        moment("03:00", "HH:mm").format('LT'),
+        moment("04:00", "HH:mm").format('LT'),
+        moment("05:00", "HH:mm").format('LT'),
+        moment("06:00", "HH:mm").format('LT'),
+        moment("07:00", "HH:mm").format('LT'),
+        moment("08:00", "HH:mm").format('LT'),
+        moment("09:00", "HH:mm").format('LT'),
+        moment("10:00", "HH:mm").format('LT'),
+        moment("11:00", "HH:mm").format('LT'),
+        moment("12:00", "HH:mm").format('LT'),
+        moment("13:00", "HH:mm").format('LT'),
+        moment("14:00", "HH:mm").format('LT'),
+        moment("15:00", "HH:mm").format('LT'),
+        moment("16:00", "HH:mm").format('LT'),
+        moment("17:00", "HH:mm").format('LT'),
+        moment("18:00", "HH:mm").format('LT'),
+        moment("19:00", "HH:mm").format('LT'),
+        moment("20:00", "HH:mm").format('LT'),
+        moment("21:00", "HH:mm").format('LT'),
+        moment("22:00", "HH:mm").format('LT'),
+        moment("23:00", "HH:mm").format('LT'),
+        moment("24:00", "HH:mm").format('LT')
+      ]
+    };
+    const arrayDay = moment.weekdaysShort()
+    arrayDay.push(arrayDay.shift())
+    this.xAxis = { labels: arrayDay };
+
+    this.titleSettings = {
+      text: 'Requests per hour of day',
+      textStyle: {
+        size: '15px',
+        fontWeight: '500',
+        fontStyle: 'Normal'
+      }
+    };
+
+    // } else {
+    //   this.weekday = { '1': 'Sun', '2': 'Mon', '3': 'Tue', '4': 'Wed', '5': 'Thu', '6': 'Fri', '7': 'Sat' }
+    //   this.hour = {
+    //     '1': '1am', '2': '2am', '3': '3am', '4': '4am', '5': '5am', '6': '6am', '7': '7am', '8': '8am', '9': '9am', '10': '10am',
+    //     '11': '11am', '12': '12am', '13': '1pm', '14': '2pm', '15': '3pm', '16': '4pm', '17': '5pm', '18': '6pm', '19': '7pm', '20': '8pm',
+    //     '21': '9pm', '22': '10pm', '23': '11pm', '24': '12pm'
+    //   }
+
+    //   this.yAxis = { labels: this.ylabel_eng };
+    //   this.xAxis = { labels: this.xlabel_eng };
+    //   this.titleSettings = {
+    //     text: 'Requests per hour of day',
+    //     textStyle: {
+    //       size: '15px',
+    //       fontWeight: '500',
+    //       fontStyle: 'Normal'
+    //     }
+    //   };
+    // }
   }
   getBrowserLangAndSwitchMonthName() {
-
-    if (this.lang) {
-      if (this.lang === 'it') {
-        this.monthNames = { '1': 'Gen', '2': 'Feb', '3': 'Mar', '4': 'Apr', '5': 'Mag', '6': 'Giu', '7': 'Lug', '8': 'Ago', '9': 'Set', '10': 'Ott', '11': 'Nov', '12': 'Dic' }
-      } else {
-        this.monthNames = { '1': 'Jan', '2': 'Feb', '3': 'Mar', '4': 'Apr', '5': 'May', '6': 'Jun', '7': 'Jul', '8': 'Aug', '9': 'Sep', '10': 'Oct', '11': 'Nov', '12': 'Dec' }
-      }
+    // if (this.lang) {
+    //   if (this.lang === 'it') {
+    //     this.monthNames = { '1': 'Gen', '2': 'Feb', '3': 'Mar', '4': 'Apr', '5': 'Mag', '6': 'Giu', '7': 'Lug', '8': 'Ago', '9': 'Set', '10': 'Ott', '11': 'Nov', '12': 'Dic' }
+    //   } else {
+    //     this.monthNames = { '1': 'Jan', '2': 'Feb', '3': 'Mar', '4': 'Apr', '5': 'May', '6': 'Jun', '7': 'Jul', '8': 'Aug', '9': 'Sep', '10': 'Oct', '11': 'Nov', '12': 'Dec' }
+    //   }
+    // }
+    // console.log('[ANALYTICS - OVERVIEW] existent this.monthNames', this.monthNames)
+    this.monthNames =
+    {
+      '1': moment.monthsShort(0),
+      '2': moment.monthsShort(1),
+      '3': moment.monthsShort(2),
+      '4': moment.monthsShort(3),
+      '5': moment.monthsShort(4),
+      '6': moment.monthsShort(5),
+      '7': moment.monthsShort(6),
+      '8': moment.monthsShort(7),
+      '9': moment.monthsShort(8),
+      '10': moment.monthsShort(9),
+      '11': moment.monthsShort(10),
+      '12': moment.monthsShort(11)
     }
+
   }
 
   getMaxOfArray(requestsByDay_series_array) {
@@ -166,6 +256,7 @@ export class PanoramicaComponent implements OnInit {
 
   // -----------LAST 7 DAYS GRAPH-----------------------
   getRequestByLast7Day() {
+
     this.subscription = this.analyticsService.requestsByDay(7).subscribe((requestsByDay: any) => {
       this.logger.log('[ANALYTICS - OVERVIEW] - REQUESTS BY DAY ', requestsByDay);
 
@@ -306,8 +397,8 @@ export class PanoramicaComponent implements OnInit {
           },
           tooltips: {
             callbacks: {
-              label: function (tooltipItem, data) {
-
+              label: (tooltipItem, data) => {
+                var self = this
 
                 // var label = data.datasets[tooltipItem.datasetIndex].label || '';
                 // if (label) {
@@ -322,11 +413,20 @@ export class PanoramicaComponent implements OnInit {
                 // humanizer.setOptions({ round: true })
                 //this.logger.log("humanize", humanizer.humanize(currentItemValue))
                 //return data.datasets[tooltipItem.datasetIndex].label + ': ' + currentItemValue
-                if (lang === 'it') {
-                  return 'Conversazioni: ' + currentItemValue;
-                } else {
-                  return 'Conversations:' + currentItemValue;
-                }
+
+                // this.translate.get('Requests')
+                // .subscribe((text: string) => {
+                //    this.consversationLabel = text;
+                //    console.log('[ANALYTICS - OVERVIEW] consversationLabel ', this.consversationLabel) 
+                // });
+
+                return this.translate.instant('Requests') + ':' + currentItemValue;
+
+                // if (lang === 'it') {
+                //   return 'Conversazioni: ' + currentItemValue;
+                // } else {
+                //   return 'Conversations:' + currentItemValue;
+                // }
 
               }
             }
@@ -357,10 +457,20 @@ export class PanoramicaComponent implements OnInit {
     });
   }
 
+  // getConvsTranslations(currentItemValue) {
+  //   const instant = this.translate.instant('Requests')
+  //   console.log('[ANALYTICS - OVERVIEW] instant ', instant)
+  //   this.translate.get('Requests')
+  //     .subscribe((text: string) => {
+  //       this.consversationLabel = text + ':' + currentItemValue;
+  //       console.log('[ANALYTICS - OVERVIEW] consversationLabel ', this.consversationLabel)
+  //     });
+  // }
+
+
+
   //-----------REQUEST PER HOUR OF DAY-----------------------
   heatMap() {
-
-    // get the language of browser
 
     this.cellSettings = {
       border: {
@@ -514,7 +624,17 @@ export class PanoramicaComponent implements OnInit {
 
             this.numberAVGtime = this.msToTIME(res[0].waiting_time_avg); //--> show in format h:m:s
 
-            this.responseAVGtime = this.humanizer.humanize(res[0].waiting_time_avg, { round: true, language: this.lang })
+            const browserLang = this.translate.getBrowserLang();
+            const stored_preferred_lang = localStorage.getItem(this.auth.user_bs.value._id + '_lang')
+            let dshbrd_lang = ''
+            if (browserLang && !stored_preferred_lang) {
+              dshbrd_lang = browserLang
+            } else if (browserLang && stored_preferred_lang) {
+              dshbrd_lang = stored_preferred_lang
+            }
+            this.logger.log('[ANALYTICS  - OVERVIEW] - setMomentLocale durationConvTimeCLOCK dshbrd_lang', dshbrd_lang)
+
+            this.responseAVGtime = this.humanizer.humanize(res[0].waiting_time_avg, { round: true, language: dshbrd_lang })
 
             this.logger.log('[ANALYTICS - OVERVIEW] avarageWaitingTimeCLOCK Waiting time: humanize', this.humanizer.humanize(res[0].waiting_time_avg))
             this.logger.log('[ANALYTICS - OVERVIEW] waiting time funtion:', this.humanizeDurations(res[0].waiting_time_avg));
@@ -564,9 +684,20 @@ export class PanoramicaComponent implements OnInit {
             this.numberDurationCNVtime = this.msToTIME(res[0].duration_avg);// --> show in format h:m:s
             this.unitDurationCNVtime = splitString[1];
 
+            const browserLang = this.translate.getBrowserLang();
+            // console.log('[ANALYTICS] - setMomentLocale browserLang', this.browserLang)
 
-            this.responseDurationtime = this.humanizer.humanize(res[0].duration_avg, { round: true, language: this.lang });
+            const stored_preferred_lang = localStorage.getItem(this.auth.user_bs.value._id + '_lang')
+            let dshbrd_lang = ''
+            if (browserLang && !stored_preferred_lang) {
+              dshbrd_lang = browserLang
+            } else if (browserLang && stored_preferred_lang) {
+              dshbrd_lang = stored_preferred_lang
+            }
+            this.logger.log('[ANALYTICS  - OVERVIEW] - setMomentLocale durationConvTimeCLOCK dshbrd_lang', dshbrd_lang)
 
+            // this.responseDurationtime = this.humanizer.humanize(res[0].duration_avg, { round: true, language: this.lang });
+            this.responseDurationtime = this.humanizer.humanize(res[0].duration_avg, { round: true, language: dshbrd_lang });
 
             this.logger.log('[ANALYTICS - OVERVIEW] durationConvTimeCLOCK Waiting time: humanize', this.humanizer.humanize(res[0].duration_avg))
             this.logger.log('[ANALYTICS - OVERVIEW] durationConvTimeCLOCK waiting time funtion:', avarageWaitingTimestring);
@@ -583,7 +714,7 @@ export class PanoramicaComponent implements OnInit {
         }
       } else {
         this.setToNa('duration');
-        
+
         this.logger.log('[ANALYTICS - OVERVIEW] durationConvTimeCLOCK Waiting time: humanize', this.humanizer.humanize(0))
         this.logger.log('[ANALYTICS - OVERVIEW] durationConvTimeCLOCK waiting time funtion:', avarageWaitingTimestring);
       }
@@ -614,40 +745,56 @@ export class PanoramicaComponent implements OnInit {
   humanizeDurations(timeInMillisecond) {
     let result;
     if (timeInMillisecond) {
-      if (this.lang == 'en') {
-        if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24 * 30 * 12))) > 0) {//year
-          result = result === 1 ? result + " Year" : result + " Years";
-        } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24 * 30))) > 0) {//months
-          result = result === 1 ? result + " Month" : result + " Months";
-        } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24))) > 0) {//days
-          result = result === 1 ? result + " Day" : result + " Days";
-        } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60))) > 0) {//Hours
-          result = result === 1 ? result + " Hours" : result + " Hours";
-        } else if ((result = Math.round(timeInMillisecond / (1000 * 60))) > 0) {//minute
-          result = result === 1 ? result + " Minute" : result + " Minutes";
-        } else if ((result = Math.round(timeInMillisecond / 1000)) > 0) {//second
-          result = result === 1 ? result + " Second" : result + " Seconds";
-        } else {
-          result = timeInMillisecond + " Millisec";
-        }
+
+      if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24 * 30 * 12))) > 0) {//year
+        result = result === 1 ? result + " " + this.translate.instant('Analytics.Year') : result + " " + this.translate.instant('Analytics.Years');
+      } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24 * 30))) > 0) {//months
+        result = result === 1 ? result + " " + this.translate.instant('Analytics.Month') : result + " " + this.translate.instant('Analytics.Months');
+      } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24))) > 0) {//days
+        result = result === 1 ? result + " " + this.translate.instant('Analytics.Day') : result + " " + this.translate.instant('Analytics.Days');
+      } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60))) > 0) {//Hours
+        result = result === 1 ? result + " " + this.translate.instant('Analytics.Hour'): result + " " + this.translate.instant('Analytics.Hours');
+      } else if ((result = Math.round(timeInMillisecond / (1000 * 60))) > 0) {//minute
+        result = result === 1 ? result + " " + this.translate.instant('Analytics.Minute') : result + " " + this.translate.instant('Analytics.Minutes');
+      } else if ((result = Math.round(timeInMillisecond / 1000)) > 0) {//second
+        result = result === 1 ? result + " " + this.translate.instant('Analytics.Second') : result + " " + this.translate.instant('Analytics.Seconds');
+      } else {
+        result = timeInMillisecond + " " + this.translate.instant('Analytics.Milliseconds');
       }
-      else {
-        if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24 * 30 * 12))) > 0) {//year
-          result = result === 1 ? result + " Anno" : result + " Anni";
-        } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24 * 30))) > 0) {//months
-          result = result === 1 ? result + " Mese" : result + " Mesi";
-        } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24))) > 0) {//days
-          result = result === 1 ? result + " Giorno" : result + " Giorni";
-        } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60))) > 0) {//Hours
-          result = result === 1 ? result + " Ora" : result + " Ore";
-        } else if ((result = Math.round(timeInMillisecond / (1000 * 60))) > 0) {//minute
-          result = result === 1 ? result + " Minuto" : result + " Minuti";
-        } else if ((result = Math.round(timeInMillisecond / 1000)) > 0) {//second
-          result = result === 1 ? result + " Secondo" : result + " Secondi";
-        } else {
-          result = timeInMillisecond + " Millisecondi";
-        }
-      }
+      // if (this.lang == 'en') {
+      //   if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24 * 30 * 12))) > 0) {//year
+      //     result = result === 1 ? result + " Year" : result + " Years";
+      //   } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24 * 30))) > 0) {//months
+      //     result = result === 1 ? result + " Month" : result + " Months";
+      //   } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24))) > 0) {//days
+      //     result = result === 1 ? result + " Day" : result + " Days";
+      //   } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60))) > 0) {//Hours
+      //     result = result === 1 ? result + " Hours" : result + " Hours";
+      //   } else if ((result = Math.round(timeInMillisecond / (1000 * 60))) > 0) {//minute
+      //     result = result === 1 ? result + " Minute" : result + " Minutes";
+      //   } else if ((result = Math.round(timeInMillisecond / 1000)) > 0) {//second
+      //     result = result === 1 ? result + " Second" : result + " Seconds";
+      //   } else {
+      //     result = timeInMillisecond + " Millisec";
+      //   }
+      // }
+      // else {
+      //   if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24 * 30 * 12))) > 0) {//year
+      //     result = result === 1 ? result + " Anno" : result + " Anni";
+      //   } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24 * 30))) > 0) {//months
+      //     result = result === 1 ? result + " Mese" : result + " Mesi";
+      //   } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24))) > 0) {//days
+      //     result = result === 1 ? result + " Giorno" : result + " Giorni";
+      //   } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60))) > 0) {//Hours
+      //     result = result === 1 ? result + " Ora" : result + " Ore";
+      //   } else if ((result = Math.round(timeInMillisecond / (1000 * 60))) > 0) {//minute
+      //     result = result === 1 ? result + " Minuto" : result + " Minuti";
+      //   } else if ((result = Math.round(timeInMillisecond / 1000)) > 0) {//second
+      //     result = result === 1 ? result + " Secondo" : result + " Secondi";
+      //   } else {
+      //     result = timeInMillisecond + " Millisecondi";
+      //   }
+      // }
       return result;
 
     }

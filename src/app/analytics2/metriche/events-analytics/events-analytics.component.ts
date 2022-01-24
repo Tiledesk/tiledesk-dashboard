@@ -72,12 +72,27 @@ export class EventsAnalyticsComponent implements OnInit {
   }
 
   switchMonthName() {
-    if (this.lang) {
-      if (this.lang === 'it') {
-        this.monthNames = { '1': 'Gen', '2': 'Feb', '3': 'Mar', '4': 'Apr', '5': 'Mag', '6': 'Giu', '7': 'Lug', '8': 'Ago', '9': 'Set', '10': 'Ott', '11': 'Nov', '12': 'Dic' }
-      } else {
-        this.monthNames = { '1': 'Jan', '2': 'Feb', '3': 'Mar', '4': 'Apr', '5': 'May', '6': 'Jun', '7': 'Jul', '8': 'Aug', '9': 'Sep', '10': 'Oct', '11': 'Nov', '12': 'Dec' }
-      }
+    // if (this.lang) {
+    //   if (this.lang === 'it') {
+    //     this.monthNames = { '1': 'Gen', '2': 'Feb', '3': 'Mar', '4': 'Apr', '5': 'Mag', '6': 'Giu', '7': 'Lug', '8': 'Ago', '9': 'Set', '10': 'Ott', '11': 'Nov', '12': 'Dic' }
+    //   } else {
+    //     this.monthNames = { '1': 'Jan', '2': 'Feb', '3': 'Mar', '4': 'Apr', '5': 'May', '6': 'Jun', '7': 'Jul', '8': 'Aug', '9': 'Sep', '10': 'Oct', '11': 'Nov', '12': 'Dec' }
+    //   }
+    // }
+    this.monthNames =
+    {
+      '1': moment.monthsShort(0),
+      '2': moment.monthsShort(1),
+      '3': moment.monthsShort(2),
+      '4': moment.monthsShort(3),
+      '5': moment.monthsShort(4),
+      '6': moment.monthsShort(5),
+      '7': moment.monthsShort(6),
+      '8': moment.monthsShort(7),
+      '9': moment.monthsShort(8),
+      '10': moment.monthsShort(9),
+      '11': moment.monthsShort(10),
+      '12': moment.monthsShort(11)
     }
   }
 
@@ -242,14 +257,15 @@ export class EventsAnalyticsComponent implements OnInit {
           },
           tooltips: {
             callbacks: {
-              label: function (tooltipItem, data) {
+              label:  (tooltipItem, data) => {
                 const currentItemValue = tooltipItem.yLabel
-
-                if (lang == 'it') {
-                  return 'Eventi: ' + currentItemValue;
-                } else {
-                  return 'Events: ' + currentItemValue;
-                }
+                
+                return this.translate.instant('Analytics.Metrics.Events') + ": " + currentItemValue;
+                // if (lang == 'it') {
+                //   return 'Eventi: ' + currentItemValue;
+                // } else {
+                //   return 'Events: ' + currentItemValue;
+                // }
               }
             }
           }
