@@ -16,6 +16,7 @@ import { takeUntil } from 'rxjs/operators';
 import { BrandService } from '../services/brand.service';
 import { WsRequestsService } from '../services/websocket/ws-requests.service';
 import { LoggerService } from '../services/logger/logger.service';
+import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'projects',
   templateUrl: './projects.component.html',
@@ -69,6 +70,10 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   public_Key: string;
   MT: boolean;
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
+  flag_url: string;
+  dsbrd_lang : string;
+  tlangparams: any
+  browserLang : string;
 
   private unsubscribe$: Subject<any> = new Subject<any>();
 
@@ -83,7 +88,8 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     public appConfigService: AppConfigService,
     public brandService: BrandService,
     public wsRequestsService: WsRequestsService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private translate: TranslateService,
   ) {
     const brand = brandService.getBrand();
 
@@ -138,6 +144,27 @@ export class ProjectsComponent implements OnInit, OnDestroy {
         this.logger.log('[PROJECTS] - Current USER ID ', this.currentUserId)
 
 
+        const stored_preferred_lang = localStorage.getItem(this.currentUserId + '_lang')
+
+        if (stored_preferred_lang) {
+            this.dsbrd_lang = stored_preferred_lang;
+            this.getLangTranslation(this.dsbrd_lang)
+            this.flag_url = "assets/img/language_flag/" + stored_preferred_lang + ".png"
+
+            console.log('[PROJECTS] flag_url (from stored_preferred_lang) ', this.flag_url)
+         
+          console.log('[PROJECTS] stored_preferred_lang ', stored_preferred_lang)
+        } else {
+            this.browserLang = this.translate.getBrowserLang();
+            this.dsbrd_lang = this.browserLang; 
+            this.getLangTranslation(this.dsbrd_lang)
+            console.log('[PROJECTS] - browser_lang ', this.browserLang)
+            this.flag_url = "assets/img/language_flag/" + this.browserLang + ".png"
+          
+          console.log('[PROJECTS] flag_url (from browser_lang) ', this.flag_url)
+        }
+
+
         if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
           this.UPLOAD_ENGINE_IS_FIREBASE = true
           this.ckeckUserPhotoProfileOnFirebase(user);
@@ -148,6 +175,14 @@ export class ProjectsComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+  getLangTranslation(dsbrd_lang_code) {
+    this.translate.get(dsbrd_lang_code)
+    .subscribe((translation: any) => {
+        console.log('[NAVBAR] getLangTranslation', translation)
+        this.tlangparams = {language_name: translation}
+    });
+}
 
   ckeckUserPhotoProfileOnFirebase(user) {
     const firebase_conf = this.appConfigService.getConfig().firebase;
@@ -550,6 +585,16 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     this.sidebarVisible = true;
     const elemAppSidebar = <HTMLElement>document.querySelector('app-sidebar');
     elemAppSidebar.setAttribute('style', 'display:block;');
+
+    try {
+      if (window && window['tiledesk_widget_hide']) {
+          this.logger.log('[PROJECTS] - HIDE WIDGET - HERE 1')
+          window['tiledesk_widget_hide']();
+      }
+  } catch (e) {
+      this.logger.error('tiledesk_widget_hide ERROR', e)
+  }
+
   };
   sidebarClose() {
     const body = document.getElementsByTagName('body')[0];
@@ -559,6 +604,15 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
     const elemAppSidebar = <HTMLElement>document.querySelector('app-sidebar');
     elemAppSidebar.setAttribute('style', 'display:none;');
+
+    try {
+      if (window && window['tiledesk_widget_show']) {
+          this.logger.log('[PROJECTS] - SHOW WIDGET - HERE 1')
+          window['tiledesk_widget_show']();
+      }
+  } catch (e) {
+      this.logger.error('tiledesk_widget_show ERROR', e)
+  }
   };
   sidebarToggle() {
     // const toggleButton = this.toggleButton;

@@ -345,7 +345,9 @@ button.close {
 }
 
 .logo-img-wpr {
-  text-transform: none; padding-left: 40px; min-height: 40px;
+  text-transform: none;
+  padding-left: 40px;
+  min-height: 40px;
 }
 
 /* *** SMALL SIDEBAR STYLE ***  */
@@ -1114,8 +1116,26 @@ button.close {
   top: 12px !important;
 }
 
-
 .sidebar__logo_no_rocket {
   left: unset !important;
   width: 50% !important;
 }
+
+.nav-mobile-menu-user-profile {
+  border-radius: 10px !important;
+}
+
+.nav-mobile-menu-logout {
+  width: 100%;
+  border-radius: 10px !important;
+}
+
+.nav-mobile-menu-language {
+  cursor: pointer !important;
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+  text-align: center !important;
+  border-radius: 10px !important;
+}
+
+

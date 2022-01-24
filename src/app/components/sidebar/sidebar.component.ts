@@ -168,7 +168,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     storageBucket: string;
     baseUrl: string;
     default_dept_id: string;
-
+    browserLang: string;
+    dsbrd_lang : string;
+    tlangparams: any
+    flag_url: string;
     private unsubscribe$: Subject<any> = new Subject<any>();
 
     constructor(
@@ -242,8 +245,36 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
             if (user) {
                 this.currentUserId = user._id;
-                this.logger.log('[SIDEBAR] Current USER ID ', this.currentUserId)
+                this.logger.log('[SIDEBAR] Current USER ID ', this.currentUserId);
+                
+                const stored_preferred_lang = localStorage.getItem(this.user._id + '_lang')
+
+                if (stored_preferred_lang) {
+                    this.dsbrd_lang = stored_preferred_lang;
+                    this.getLangTranslation(this.dsbrd_lang)
+                    this.flag_url = "assets/img/language_flag/" + stored_preferred_lang + ".png"
+
+                    this.logger.log('[SIDEBAR] flag_url (from stored_preferred_lang) ', this.flag_url)
+                 
+                    this.logger.log('[SIDEBAR] stored_preferred_lang ', stored_preferred_lang)
+                } else {
+                    this.browserLang = this.translate.getBrowserLang();
+                    this.dsbrd_lang = this.browserLang; 
+                    this.getLangTranslation(this.dsbrd_lang)
+                    this.logger.log('[SIDEBAR] - browser_lang ', this.browserLang)
+                    this.flag_url = "assets/img/language_flag/" + this.browserLang + ".png"
+                  
+                    this.logger.log('[SIDEBAR] flag_url (from browser_lang) ', this.flag_url)
+                }
             }
+        });
+    }
+
+     getLangTranslation(dsbrd_lang_code) {
+        this.translate.get(dsbrd_lang_code)
+        .subscribe((translation: any) => {
+            this.logger.log('[SIDEBAR] getLangTranslation', translation)
+            this.tlangparams = {language_name: translation}
         });
     }
 

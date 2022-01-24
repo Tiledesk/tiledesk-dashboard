@@ -25,6 +25,23 @@
             </li> -->
             <!-- // ======= ./END - TEST - LOGOUT FROM FIREBASE ======= // -->
 
+                  <!--  ------------------------------------------------ -->
+        <!--  Dashboard language -->
+        <!--  ------------------------------------------------ -->
+        <li>
+          <a routerLink="/user-profile" fragment="language" style="cursor: pointer;">
+            <span class="expired__Tooltip">
+            <img [src]="flag_url"  style="width: auto;height: 19px; position: relative;top: -1px;">
+           
+            <span class="expired__Tooltiptext"  style="font-size:12px; top: 27px;text-transform:none; cursor: pointer; height: fit-content;vertical-align: middle;">
+              
+              {{'TheDashboardIsTranslatedInto' | translate: tlangparams }}
+            </span>
+          </span>
+          </a>
+        </li>
+
+
             <li class="dropdown">
               <!-- class="dropdown-toggle" -->
               <!-- margin-top:56px; display:block; text-align:right; padding-top:15px;padding-bottom:15px; padding-right:28px; color: #555555;" -->

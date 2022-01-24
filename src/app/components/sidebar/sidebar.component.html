@@ -160,7 +160,7 @@
 
     <li *ngIf="user" style="display: inline">
 
-      <a style="margin-bottom:0px; text-align: center; color: #fff" routerLink="/user-profile">
+      <a class="nav-mobile-menu-user-profile" style="margin-top:0px; margin-bottom:0px; text-align: center; color: #fff" routerLink="/user-profile">
 
         <!-- VEDI PROFILO  -->
         {{ "SideBar.UserProfile" | translate }}
@@ -183,6 +183,22 @@
               </span> -->
       <!-- </button> -->
       <!-- </a> -->
+    </li>
+
+    <!-- ---------------------------- -->
+    <!-- Dashboard Language -->
+    <!-- ---------------------------- -->
+    <li *ngIf="project">
+      <a class="nav-mobile-menu-language" routerLink="project/{{ project._id }}/user-profile" fragment="language">
+        
+        <img [src]="flag_url"  style="width: auto;height: 19px; position: relative;top: -1px;">
+      </a>
+    </li>
+    <li *ngIf="!project">
+      <a class="nav-mobile-menu-language" routerLink="/user-profile" fragment="language" >
+       
+        <img [src]="flag_url"  style="width: auto;height: 19px; position: relative;top: -1px;">
+      </a>
     </li>
 
     <!-- <li *ngIf="user" style="display: inline">
@@ -616,7 +632,7 @@
       margin-right: 15px;
       border-radius: 10px;
       margin-top: 25px;">
-        <a class="customAncor">
+        <a class="customAncor nav-mobile-menu-logout" style="cursor: pointer;">
           <i class="material-icons sidebar-icons" style="color:#fff; margin-right: 0px;">exit_to_app</i>
           <p class="onBlackBckgrnd" style="color:#fff"> {{ 'NavBar.LogOut' | translate }}</p>
         </a>
