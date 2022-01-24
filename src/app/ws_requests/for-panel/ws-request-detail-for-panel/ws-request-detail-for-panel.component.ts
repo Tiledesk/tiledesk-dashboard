@@ -157,7 +157,7 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
     } else if (this.browserLang && stored_preferred_lang) {
       dshbrd_lang = stored_preferred_lang
     }
-    moment.locale(this.browserLang)
+    moment.locale(dshbrd_lang)
 
     // if (this.browserLang) {
     //   if (this.browserLang === 'it') {

@@ -24,7 +24,7 @@ padding-right: 0px;
 
         <div class="row">
             <div class="col-xs-8">
-                <h4>{{'RequestMsgsPage.RequestDetails' | translate}}</h4>
+                <h4>{{'RequestMsgsPage.Details' | translate}}</h4>
             </div>
             <!-- <div class="col-xs-2" style="text-align: right;">
 
@@ -170,7 +170,7 @@ padding-right: 0px;
     </div>
     <button class="accordion" (click)="openMoreInfoAccordion()"> {{'MoreInfo' | translate}}</button>
     <div class="more-info-panel">
-        <div class="row" style="margin-top:5px" >
+        <div class="row" style="margin-top:5px">
             <div class="col-sm-12">
                 <p style="margin-bottom: 0px;">
 
@@ -185,10 +185,12 @@ padding-right: 0px;
                     </span>
 
                     <span style="position: relative;top: 1px;">
-                        <span style="color: #7695a5; font-weight: 400; font-size: 12px; text-transform: uppercase;" *ngIf="request?.language">
+                        <span style="color: #7695a5; font-weight: 400; font-size: 12px; text-transform: uppercase;"
+                            *ngIf="request?.language">
                             {{ request?.language }}
                         </span>
-                        <span style="color: #7695a5; font-weight: 400; font-size: 12px; text-transform: lowercase;" *ngIf="!request?.language">
+                        <span style="color: #7695a5; font-weight: 400; font-size: 12px; text-transform: lowercase;"
+                            *ngIf="!request?.language">
                             {{'Unavailable' | translate}}
                         </span>
                     </span>
@@ -263,7 +265,7 @@ padding-right: 0px;
         <div class="row" style="margin-top:5px">
             <div class="col-sm-12">
                 <!-- *ngIf="request?.userAgent" -->
-                <p style="margin-bottom: 0px;" >
+                <p style="margin-bottom: 0px;">
 
                     <span class="tool_tip">
 
@@ -349,7 +351,7 @@ padding-right: 0px;
             </div>
         </div>
 
-        <div  class="row" style="margin-top:5px">
+        <div class="row" style="margin-top:5px">
             <div class="col-sm-12">
                 <p style="margin-bottom:0px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 95%;"
                     class="tool_tip">
@@ -368,7 +370,8 @@ padding-right: 0px;
                             <span *ngIf="request?.sourcePage">
                                 <a href="{{request?.sourcePage}}" target="_blank">{{request?.sourcePage}}</a>
                             </span>
-                            <span *ngIf="!request?.sourcePage" style="color: #7695a5; font-weight: 400; font-size: 12px;">
+                            <span *ngIf="!request?.sourcePage"
+                                style="color: #7695a5; font-weight: 400; font-size: 12px;">
                                 {{'Unavailable' | translate}}
                             </span>
                         </span>

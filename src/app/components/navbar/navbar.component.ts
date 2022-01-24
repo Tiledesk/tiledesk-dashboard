@@ -144,7 +144,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     onlyOwnerCanManageTheAccountPlanMsg: string;
     learnMoreAboutDefaultRoles: string;
     flag_url: string;
-    dsbrd_lang : string;
+    dsbrd_lang: string;
     tlangparams: any
     constructor(
         location: Location,
@@ -261,17 +261,17 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                     this.getLangTranslation(this.dsbrd_lang)
                     this.flag_url = "assets/img/language_flag/" + stored_preferred_lang + ".png"
 
-                    console.log('[NAVBAR] flag_url (from stored_preferred_lang) ', this.flag_url)
-                 
-                  console.log('[USER-PROFILE] stored_preferred_lang ', stored_preferred_lang)
+                    this.logger.log('[NAVBAR] flag_url (from stored_preferred_lang) ', this.flag_url)
+
+                    this.logger.log('[USER-PROFILE] stored_preferred_lang ', stored_preferred_lang)
                 } else {
                     this.browserLang = this.translate.getBrowserLang();
-                    this.dsbrd_lang = this.browserLang; 
+                    this.dsbrd_lang = this.browserLang;
                     this.getLangTranslation(this.dsbrd_lang)
-                    console.log('[NAVBAR] - browser_lang ', this.browserLang)
+                    this.logger.log('[NAVBAR] - browser_lang ', this.browserLang)
                     this.flag_url = "assets/img/language_flag/" + this.browserLang + ".png"
-                  
-                  console.log('[NAVBAR] flag_url (from browser_lang) ', this.flag_url)
+
+                    this.logger.log('[NAVBAR] flag_url (from browser_lang) ', this.flag_url)
                 }
 
                 this.currentUserId = this.user._id;
@@ -282,10 +282,10 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
     getLangTranslation(dsbrd_lang_code) {
         this.translate.get(dsbrd_lang_code)
-        .subscribe((translation: any) => {
-            console.log('[NAVBAR] getLangTranslation', translation)
-            this.tlangparams = {language_name: translation}
-        });
+            .subscribe((translation: any) => {
+                this.logger.log('[NAVBAR] getLangTranslation', translation)
+                this.tlangparams = { language_name: translation }
+            });
     }
 
     translateStrings() {
@@ -749,7 +749,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                 }
                 if (this.prjct_profile_type === 'payment') {
                     this.logger.log('[NAVBAR] browserLang ', this.browserLang);
-                    this.getPaidPlanTranslation( projectProfileData.profile_name);
+                    this.getPaidPlanTranslation(projectProfileData.profile_name);
                     // if (this.browserLang === 'it') {
                     //     this.prjct_profile_name = 'Piano ' + projectProfileData.profile_name;
                     // } else if (this.browserLang !== 'it') {
@@ -764,13 +764,13 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         });
     }
 
-    getPaidPlanTranslation( project_profile_name) {
+    getPaidPlanTranslation(project_profile_name) {
         this.translate.get('PaydPlanName', { projectprofile: project_profile_name })
-        .subscribe((text: string) => {
-          this.prjct_profile_name = text;
-          this.logger.log('+ + + PaydPlanName ', text)
-        });
-      }
+            .subscribe((text: string) => {
+                this.prjct_profile_name = text;
+                this.logger.log('+ + + PaydPlanName ', text)
+            });
+    }
 
     /**
      * *! ############ CANCEL SUBSCRIPTION ############ !*
@@ -807,14 +807,14 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
         if (this.USER_ROLE === 'owner') {
             if (this.profile_name !== 'enterprise') {
-              this.notifyService.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+                this.notifyService.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
             } else if (this.profile_name === 'enterprise') {
                 this.notifyService.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
             }
-          } else {
+        } else {
             this.presentModalOnlyOwnerCanManageTheAccountPlan();
-          }
-        
+        }
+
     }
 
     round5(x) {
@@ -1381,6 +1381,15 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
             this.sidebarVisible = true;
         }
+
+        try {
+            if (window && window['tiledesk_widget_hide']) {
+                this.logger.log('[NAV] - HIDE WIDGET - HERE 1')
+                window['tiledesk_widget_hide']();
+            }
+        } catch (e) {
+            this.logger.error('tiledesk_widget_hide ERROR', e)
+        }
     };
     sidebarClose() {
         // this.logger.log('[NAVBAR] sidebarClose clicked')
@@ -1390,6 +1399,16 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         }
         this.sidebarVisible = false;
         body.classList.remove('nav-open');
+
+        try {
+            if (window && window['tiledesk_widget_show']) {
+                this.logger.log('[NAV] - SHOW WIDGET - HERE 1')
+                window['tiledesk_widget_show']();
+            }
+        } catch (e) {
+            this.logger.error('tiledesk_widget_show ERROR', e)
+        }
+
     };
 
     sidebarToggle() {

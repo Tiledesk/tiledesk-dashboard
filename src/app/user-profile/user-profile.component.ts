@@ -122,7 +122,7 @@ export class UserProfileComponent implements OnInit {
 
     this.route.fragment.subscribe(fragment => {
       this.fragment = fragment;
-      console.log('[USER-PROFILE] - FRAGMENT ', this.fragment)
+      this.logger.log('[USER-PROFILE] - FRAGMENT ', this.fragment)
     });
  
   }
@@ -131,12 +131,12 @@ export class UserProfileComponent implements OnInit {
     try {
       // name of the class of the html div = . + fragment
       const languageEl = <HTMLElement>document.querySelector('.' + this.fragment)
-      console.log('[USER-PROFILE] - QUERY SELECTOR language  ', languageEl)
+      this.logger.log('[USER-PROFILE] - QUERY SELECTOR language  ', languageEl)
       languageEl.scrollIntoView();
       // document.querySelector('#' + this.fragment).scrollIntoView();
       // this.logger.log( document.querySelector('#' + this.fragment).scrollIntoView())
     } catch (e) {
-      console.log('[USER-PROFILE] - QUERY SELECTOR language ERROR  ', e)
+      this.logger.error('[USER-PROFILE] - QUERY SELECTOR language ERROR  ', e)
     }
   }
 
@@ -161,12 +161,12 @@ export class UserProfileComponent implements OnInit {
         if (stored_preferred_lang) {
           this.HAS_SELECTED_PREFERRED_LANG = true;
           this.selected_dashboard_language = stored_preferred_lang;
-          console.log('[USER-PROFILE] HAS_SELECTED_PREFERRED_LANG ', this.HAS_SELECTED_PREFERRED_LANG)
-          console.log('[USER-PROFILE] stored_preferred_lang ', stored_preferred_lang)
+          this.logger.log('[USER-PROFILE] HAS_SELECTED_PREFERRED_LANG ', this.HAS_SELECTED_PREFERRED_LANG)
+          this.logger.log('[USER-PROFILE] stored_preferred_lang ', stored_preferred_lang)
         } else {
           this.HAS_SELECTED_PREFERRED_LANG = false;
-          console.log('[USER-PROFILE] HAS_SELECTED_PREFERRED_LANG ', this.HAS_SELECTED_PREFERRED_LANG)
-          console.log('[USER-PROFILE] stored_preferred_lang ', stored_preferred_lang)
+          this.logger.log('[USER-PROFILE] HAS_SELECTED_PREFERRED_LANG ', this.HAS_SELECTED_PREFERRED_LANG)
+          this.logger.log('[USER-PROFILE] stored_preferred_lang ', stored_preferred_lang)
         }
       }
 
@@ -180,37 +180,38 @@ export class UserProfileComponent implements OnInit {
 
   getBrowserLanguage() {
     this.browser_lang = this.translate.getBrowserLang();
-    console.log('[USER-PROFILE] - browser_lang ', this.browser_lang)
+    this.logger.log('[USER-PROFILE] - browser_lang ', this.browser_lang)
     this.flag_url = "assets/img/language_flag/" + this.browser_lang + ".png"
   }
 
   onSelectPreferredDsbrdLang(selectedLanguageCode) {
-    console.log('[USER-PROFILE] onSelectPreferredDsbrdLang -  selectedLanguage ', selectedLanguageCode)
+    this.logger.log('[USER-PROFILE] onSelectPreferredDsbrdLang -  selectedLanguage ', selectedLanguageCode)
     this.selected_dashboard_language = selectedLanguageCode;
     localStorage.setItem(this.userId + '_lang', selectedLanguageCode);
     this.HAS_SELECTED_PREFERRED_LANG = true;
     this.display_msg_please_select_language = false;
     this.display_msg_refresh_page_for_selected_lang = true;
-
+    this.hasSelectedBrowserLangRadioBtn = false;
+    this.hasSelectedPreferredLangRadioBtn= true;
    
   }
 
   onSelectPreferredLangFromRadioBtn($event) {
-    console.log('[USER-PROFILE] onSelectPreferredLangFromRadioBtn -  event ', $event.target.checked);
+    this.logger.log('[USER-PROFILE] onSelectPreferredLangFromRadioBtn -  event ', $event.target.checked);
     // this.selected_dashboard_language = this.browser_lang;
     this.HAS_SELECTED_PREFERRED_LANG = true;
     this.hasSelectedPreferredLangRadioBtn= $event.target.checked;
     this.hasSelectedBrowserLangRadioBtn = false
-    console.log('[USER-PROFILE]  hasSelectedBrowserLangRadioBtn  ', this.hasSelectedBrowserLangRadioBtn);
+    this.logger.log('[USER-PROFILE]  hasSelectedBrowserLangRadioBtn  ', this.hasSelectedBrowserLangRadioBtn);
 
     if ($event.target.checked === true && this.selected_dashboard_language === undefined) {
 
-      console.log('[USER-PROFILE]  this.selected_dashboard_language  ', this.selected_dashboard_language);
+      this.logger.log('[USER-PROFILE]  this.selected_dashboard_language  ', this.selected_dashboard_language);
       this.display_msg_please_select_language = true;
     }
 
     if ($event.target.checked === true && this.selected_dashboard_language !== undefined) {
-      console.log('[USER-PROFILE]  this.selected_dashboard_language  ', this.selected_dashboard_language);
+      this.logger.log('[USER-PROFILE]  this.selected_dashboard_language  ', this.selected_dashboard_language);
       this.display_msg_refresh_page_for_selected_lang = true;
       this.hasSelectedBrowserLangRadioBtn = false;
     }
@@ -218,16 +219,16 @@ export class UserProfileComponent implements OnInit {
   }
 
   onSelectBrowserLangFromRadioBtn($event) {
-    console.log('[USER-PROFILE] onSelectBrowserLangFromRadioBtn -  event ', $event.target.checked)
+    this.logger.log('[USER-PROFILE] onSelectBrowserLangFromRadioBtn -  event ', $event.target.checked)
     localStorage.removeItem(this.userId + '_lang');
     this.HAS_SELECTED_PREFERRED_LANG = false;
     this.hasSelectedBrowserLangRadioBtn = $event.target.checked
     this.hasSelectedPreferredLangRadioBtn = false;
-    console.log('[USER-PROFILE]  hasSelectedPreferredLangRadioBtn  ', this.hasSelectedPreferredLangRadioBtn);
+    this.logger.log('[USER-PROFILE]  hasSelectedPreferredLangRadioBtn  ', this.hasSelectedPreferredLangRadioBtn);
     if ($event.target.checked === true ) {
    
       this.display_msg_refresh_page_for_browser_lang = true;
-      console.log('[USER-PROFILE] onSelectBrowserLangFromRadioBtn  ', this.display_msg_refresh_page_for_browser_lang);
+      this.logger.log('[USER-PROFILE] onSelectBrowserLangFromRadioBtn  ', this.display_msg_refresh_page_for_browser_lang);
     }
   }
 
