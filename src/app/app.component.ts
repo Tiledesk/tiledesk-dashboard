@@ -133,27 +133,38 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         }
 
         this.logger.log('[APP-COMPONENT] !!! =========== HELLO APP.COMP (constructor) ===========')
+
         translate.setDefaultLang('en');
 
         const browserLang = this.translate.getBrowserLang();
+        console.log('[APP-COMPONENT] this.auth.user_bs.value._id ', this.auth.user_bs.value._id)
+        const stored_preferred_lang = localStorage.getItem(this.auth.user_bs.value._id + '_lang')
+        console.log('[APP-COMPONENT] stored_preferred_lang', stored_preferred_lang)
         // console.log('[APP-COMPONENT] !!! ===== HELLO APP.COMP ===== BRS LANG ', browserLang)
-        if (browserLang) {
-
-            this.translate.use(browserLang);
-            moment.locale(browserLang)
-
-            // if (browserLang === 'it') {
-            //     this.translate.use('it');
-            //     moment.locale('it')
-
-            // } else if (browserLang === 'de') {
-            //     this.translate.use('de');
-            //     moment.locale('de')
-
-            // } else {
-            //     this.translate.use('en');
-            // }
+        let dshbrd_lang = ''
+        if (browserLang && !stored_preferred_lang) {
+            dshbrd_lang = browserLang
+        } else if (browserLang && stored_preferred_lang) {
+            dshbrd_lang = stored_preferred_lang
         }
+
+        this.translate.use(dshbrd_lang);
+
+        moment.locale(dshbrd_lang)
+
+        // if (browserLang) {
+        //     // if (browserLang === 'it') {
+        //     //     this.translate.use('it');
+        //     //     moment.locale('it')
+
+        //     // } else if (browserLang === 'de') {
+        //     //     this.translate.use('de');
+        //     //     moment.locale('de')
+
+        //     // } else {
+        //     //     this.translate.use('en');
+        //     // }
+        // }
         // this.unservedRequestCount = 0
 
 
@@ -393,7 +404,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.logger.log('[APP-COMP] - HIDE WIDGET -> CURRENT URL ', e.url);
                 if ((e.url.indexOf('/unserved-request-for-panel') !== -1) || (e.url.indexOf('/projects-for-panel') !== -1) || (e.url.indexOf('/request-for-panel') !== -1)) {
                     // window.addEventListener("load", () => {
-                        this.logger.log('[APP-COMP] - HIDE WIDGET - PAGE LOAD')
+                    this.logger.log('[APP-COMP] - HIDE WIDGET - PAGE LOAD')
                     try {
                         if (window && window['tiledesk_widget_hide']) {
                             this.logger.log('[APP-COMP] - HIDE WIDGET - HERE 1')
@@ -405,7 +416,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
                 // )};
             }
-           
+
 
         });
 
