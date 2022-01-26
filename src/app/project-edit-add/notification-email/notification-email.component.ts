@@ -91,8 +91,8 @@ export class NotificationEmailComponent implements OnInit, AfterViewInit {
   getProjectById(project_id: string) {
     this.projectService.getProjectById(project_id).subscribe((project: any) => {
       this.logger.log('[NOTIFICATION-EMAIL] - GET PROJECT BY ID - project ', project);
-
-      if (project && project.settings && project.settings.email && project.settings.email.templates && project.settings.email.templates) {
+      // console.log('[NOTIFICATION-EMAIL] - GET PROJECT BY ID - project.settings.email.templates ', project.settings.email.templates);
+      if (project && project.settings && project.settings.email && project.settings.email.templates ) {
         this.logger.log('[NOTIFICATION-EMAIL] - GET PROJECT BY ID - project.settings.email.templates ', project.settings.email.templates);
 
 
@@ -108,6 +108,9 @@ export class NotificationEmailComponent implements OnInit, AfterViewInit {
           this.logger.log('[NOTIFICATION-EMAIL] - GET PROJECT BY ID - project.settings.email.templates NOT hasOwnProperty ', this.active_template, 'RUN GET DEFAULT TEMPLATE');
           this.getAssignedRequestTemplate();
         }
+      } else {
+        this.logger.log('[NOTIFICATION-EMAIL] - GET PROJECT BY ID - NOT EXIST project.settings.email.templates ');
+        this.getAssignedRequestTemplate();
       }
 
     }, error => {
