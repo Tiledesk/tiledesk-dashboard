@@ -1171,6 +1171,7 @@
         "YouHaveNotAddedAnyTags": "Non hai ancora aggiunto tag",
         "DoYouReallyWantToCancelTheTag": "Vuoi davvero cancellare la tag?",
         "SelectTag": "Seleziona tag",
+        "TagsAreLabelsThatYouCanAddToConversationsAndTicket":"Le tag sono etichette che puoi aggiungere a conversazioni e Ticket. Ti aiutano a classificare e organizzare tutte le comunicazioni con i clienti.",
         "Color": {
             "red": "Rosso",
             "orange": "Arancio",

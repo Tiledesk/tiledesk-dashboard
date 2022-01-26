@@ -1159,16 +1159,17 @@
         "NoAgent": "Aucun agent"
     },
     "Tags": {
-        "Tags": "Mots clés",
-        "Tag": "Étiqueter",
+        "Tags": "Balises",
+        "Tag": "Balise",
         "TagName": "Nom de la balise",
         "ManageTags": "Gérer les balises",
-        "AddTags": "Ajouter une étiquette",
+        "AddTags": "Ajouter une balise",
         "DeleteLabel": "Supprimer la balise",
         "TypeALabelAndPressEnter": "Tapez une balise et appuyez sur Entrée",
-        "YouHaveNotAddedAnyTags": "Vous n'avez ajouté aucun tag",
-        "DoYouReallyWantToCancelTheTag": "Voulez-vous vraiment supprimer la balise ?",
+        "YouHaveNotAddedAnyTags": "Vous n'avez ajouté aucun balise",
+        "DoYouReallyWantToCancelTheTag": "Voulez-vous vraiment supprimer la balise?",
         "SelectTag": "Sélectionner la balise",
+        "TagsAreLabelsThatYouCanAddToConversationsAndTicket":"Les balises sont des étiquettes que vous pouvez ajouter aux conversations et au ticket. Ils vous aident à catégoriser et à organiser toutes les communications avec les clients.",
         "Color": {
             "red": "Rouge",
             "orange": "Orange",

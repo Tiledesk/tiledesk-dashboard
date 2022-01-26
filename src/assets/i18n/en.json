@@ -1169,6 +1169,7 @@
         "YouHaveNotAddedAnyTags": "You have not added any tags",
         "DoYouReallyWantToCancelTheTag": "Do you really want to delete the tag?",
         "SelectTag": "Select tag",
+        "TagsAreLabelsThatYouCanAddToConversationsAndTicket":"Tags are labels that you can add to conversations and Ticket. They help you categorize and organize all customer communication.",
         "Color": {
             "red": "Red",
             "orange": "Orange",

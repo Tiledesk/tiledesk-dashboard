@@ -1169,6 +1169,7 @@
         "YouHaveNotAddedAnyTags": "No has añadido ninguna etiqueta",
         "DoYouReallyWantToCancelTheTag": "¿Realmente desea eliminar la etiqueta?",
         "SelectTag": "Seleccionar etiqueta",
+        "TagsAreLabelsThatYouCanAddToConversationsAndTicket":"Las etiquetas son etiquetas que puede agregar a conversaciones y Tickets. Le ayudan a categorizar y organizar toda la comunicación con el cliente.",
         "Color": {
             "red": "Rojo",
             "orange": "Naranja",
