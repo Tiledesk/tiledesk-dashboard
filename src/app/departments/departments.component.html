@@ -1,7 +1,7 @@
 <p style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px" class="navbar-brand">
   <!-- {{ "Departments" | translate }} -->
   <span *ngIf="isVisibleDEP"> {{'RoutingAndDepts' | translate}} </span>
-  <span *ngIf="!isVisibleDEP"> Routing </span>
+  <span *ngIf="!isVisibleDEP"> {{'Routing' | translate}} </span>
 </p>
 <div class="main-content" style="padding-top:0px">
   <div class="container-fluid">
@@ -71,7 +71,7 @@
                 <div class="col-xs-12">
                   <h3 class="table-title--underlined">
                     <span class="table-title--underline">
-                      Routing
+                      {{'Routing' | translate}} 
                     </span>
                   </h3>
                 </div>
@@ -99,7 +99,7 @@
 
                     <th>
                       <span class="r-d--column-th-span">
-                        Routing
+                        {{'Routing' | translate}} 
                       </span>
                     </th>
 
@@ -145,7 +145,7 @@
                                 unpublished
                               </span>
                               <span class="right" style="white-space: normal;padding: 5px;font-weight: 200;">
-                                <h4 style="font-weight:400"> Default Department {{ 'Disabled' | translate }}</h4>
+                                <h4 style="font-weight:400"> {{'DefaultDepartment' | translate}} {{ 'Disabled' | translate }}</h4>
                                 <!-- {{'TheDefaulDeptIsDisabledBecause' | translate}} -->
                                 {{'TheDefaulDeptIsDisabledBecause_2' | translate}}
                                 <i></i>
@@ -161,7 +161,7 @@
                                 check_circle
                               </span>
                               <span class="right" style="white-space: normal;padding: 5px;font-weight: 200;">
-                                <h4 style="font-weight:400"> Default Department {{ 'Enabled' | translate }}</h4>
+                                <h4 style="font-weight:400"> {{'DefaultDepartment' | translate}} {{ 'Enabled' | translate }}</h4>
                                 <!-- {{'TheDefaulDeptIsEnabledBecause' | translate}} -->
                                 {{'TheDefaulDeptIsEnabledBecause_2' | translate}}
                                 <i></i>
@@ -366,7 +366,7 @@
 
                     <th>
                       <span class="r-d--column-th-span">
-                        Routing
+                       {{ 'Routing' | translate}}
                       </span>
                     </th>
 
@@ -673,7 +673,7 @@
               {{ "DeptQuickTips_2" | translate }}
             </p>
             <p class="title-attribute" style="margin-bottom: 3px">
-              Default Department
+              {{'DefaultDepartment' | translate }}
             </p>
             <p style="color:#7695a5">
               {{ "DeptQuickTips_3" | translate }}
@@ -687,7 +687,7 @@
 
             <ng-container *ngIf="isVisibleDEP">
               <p class="title-attribute" style="margin-bottom: 3px">
-                Widget & Routing
+                Widget & {{'Routing' | translate}}
               </p>
               <p style="color:#7695a5">
                 {{ "DeptQuickTips_6" | translate }}
