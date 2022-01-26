@@ -89,6 +89,16 @@ export class UserProfileComponent implements OnInit {
       name: 'es',
       avatar: 'assets/img/language_flag/es.png'
     },
+    {
+      id: 5,
+      name: 'pt',
+      avatar: 'assets/img/language_flag/pt.png'
+    },
+    {
+      id: 6,
+      name: 'fr',
+      avatar: 'assets/img/language_flag/fr.png'
+    }
   ];
 
 
@@ -180,7 +190,8 @@ export class UserProfileComponent implements OnInit {
 
   getBrowserLanguage() {
     this.browser_lang = this.translate.getBrowserLang();
-    this.logger.log('[USER-PROFILE] - browser_lang ', this.browser_lang)
+
+   console.log('[USER-PROFILE] - browser_lang ', this.browser_lang)
     this.flag_url = "assets/img/language_flag/" + this.browser_lang + ".png"
   }
 
