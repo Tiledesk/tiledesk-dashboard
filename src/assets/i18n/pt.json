@@ -410,6 +410,8 @@
     "es": "Espanhol",
     "pt":"Português",
     "fr":"Francês",
+    "ru":"Russo",
+    "tr":"Turco",
     "ChooseALanguage": "Escolha um idioma",
     "Delete": "Excluir",
     "NoUnservedRequests": "Nenhuma conversa não atribuída",
@@ -1120,7 +1122,7 @@
         "LeaveChat": "Sair do bate-papo",
         "Leave": "Sair",
         "AreYouSureLeftTheChat": "Tem certeza de que deseja sair do bate-papo?",
-        "ChatLeft": "Bate-papo à esquerda",
+        "ChatLeft": "Você deixou o bate-papo",
         "AuthenticatedUser": "Usuário autenticado",
         "ViewRequestDetails": "Ver detalhes da conversa",
         "Open": "Aberto"
