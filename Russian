@@ -1990,7 +1990,7 @@
         "LABEL_TU": "ты: ",
         "LABEL_MSG_PUSH_START_CHAT": "Разговора пока нет",
         "LABEL_MSG_START_CHAT": "Начать чат",
-        "LABEL_ACTIVE_NOW": "в данный момент активен",
+        "LABEL_ACTIVE_NOW": "available",
         "LABEL_AVAILABLE": "доступный",
         "LABEL_NOT_AVAILABLE": "недоступно",
         "LABEL_NO_MSG_HERE": "До сих пор нет сообщения здесь...",
