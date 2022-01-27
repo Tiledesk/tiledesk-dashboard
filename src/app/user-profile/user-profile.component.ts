@@ -98,6 +98,11 @@ export class UserProfileComponent implements OnInit {
       id: 6,
       name: 'fr',
       avatar: 'assets/img/language_flag/fr.png'
+    },
+    {
+      id: 7,
+      name: 'ru',
+      avatar: 'assets/img/language_flag/ru.png'
     }
   ];
 
