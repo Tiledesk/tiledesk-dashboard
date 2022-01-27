@@ -499,18 +499,6 @@ export class ProjectService {
       .map((res) => res.json());
   }
 
-//   "email" : {
-//     "from" : "support@frontiere21.it",
-//     "config" : {
-//         "host" : "smtp.gmail.com",
-//         "port" : 465,
-//         "secure" : true,
-//         "user" : "andrea.leo@frontiere21.it",
-//         "pass" : "googlefronti21,"
-//     }
-// }
-  
-
 
   // -----------------------------------------------------------------
   // UPDATE WIDGET PROJECT  - todo from put to patch
