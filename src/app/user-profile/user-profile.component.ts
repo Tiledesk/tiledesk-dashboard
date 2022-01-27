@@ -103,6 +103,11 @@ export class UserProfileComponent implements OnInit {
       id: 7,
       name: 'ru',
       avatar: 'assets/img/language_flag/ru.png'
+    },
+    {
+      id: 8,
+      name: 'tr',
+      avatar: 'assets/img/language_flag/tr.png'
     }
   ];
 
@@ -139,7 +144,7 @@ export class UserProfileComponent implements OnInit {
       this.fragment = fragment;
       this.logger.log('[USER-PROFILE] - FRAGMENT ', this.fragment)
     });
- 
+
   }
 
   ngAfterViewInit(): void {
@@ -196,7 +201,7 @@ export class UserProfileComponent implements OnInit {
   getBrowserLanguage() {
     this.browser_lang = this.translate.getBrowserLang();
 
-   console.log('[USER-PROFILE] - browser_lang ', this.browser_lang)
+    console.log('[USER-PROFILE] - browser_lang ', this.browser_lang)
     this.flag_url = "assets/img/language_flag/" + this.browser_lang + ".png"
   }
 
@@ -208,15 +213,15 @@ export class UserProfileComponent implements OnInit {
     this.display_msg_please_select_language = false;
     this.display_msg_refresh_page_for_selected_lang = true;
     this.hasSelectedBrowserLangRadioBtn = false;
-    this.hasSelectedPreferredLangRadioBtn= true;
-   
+    this.hasSelectedPreferredLangRadioBtn = true;
+
   }
 
   onSelectPreferredLangFromRadioBtn($event) {
     this.logger.log('[USER-PROFILE] onSelectPreferredLangFromRadioBtn -  event ', $event.target.checked);
     // this.selected_dashboard_language = this.browser_lang;
     this.HAS_SELECTED_PREFERRED_LANG = true;
-    this.hasSelectedPreferredLangRadioBtn= $event.target.checked;
+    this.hasSelectedPreferredLangRadioBtn = $event.target.checked;
     this.hasSelectedBrowserLangRadioBtn = false
     this.logger.log('[USER-PROFILE]  hasSelectedBrowserLangRadioBtn  ', this.hasSelectedBrowserLangRadioBtn);
 
@@ -241,8 +246,8 @@ export class UserProfileComponent implements OnInit {
     this.hasSelectedBrowserLangRadioBtn = $event.target.checked
     this.hasSelectedPreferredLangRadioBtn = false;
     this.logger.log('[USER-PROFILE]  hasSelectedPreferredLangRadioBtn  ', this.hasSelectedPreferredLangRadioBtn);
-    if ($event.target.checked === true ) {
-   
+    if ($event.target.checked === true) {
+
       this.display_msg_refresh_page_for_browser_lang = true;
       this.logger.log('[USER-PROFILE] onSelectBrowserLangFromRadioBtn  ', this.display_msg_refresh_page_for_browser_lang);
     }
@@ -258,13 +263,13 @@ export class UserProfileComponent implements OnInit {
         this.profilePhotoWasUploaded = text;
       });
 
-      this.translate.get('Warning')
+    this.translate.get('Warning')
       .subscribe((text: string) => {
 
         this.warning = text;
       });
 
-      this.translate.get('ItIsNecessaryToSelectAProjectToManageNotificationEmails')
+    this.translate.get('ItIsNecessaryToSelectAProjectToManageNotificationEmails')
       .subscribe((text: string) => {
 
         this.selectAProjectToManageNotificationEmails = text;
