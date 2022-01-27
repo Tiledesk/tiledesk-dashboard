@@ -410,6 +410,8 @@
     "es": "Spanish",
     "pt": "Portuguese",
     "fr": "French",
+    "ru": "Russian",
+    "tr": "Turkish",
     "ChooseALanguage": "Scegli una lingua",
     "Delete": "Elimina",
     "NoUnservedRequests": "Nessuna conversazione non assegnata",
@@ -1120,7 +1122,7 @@
         "LeaveChat": "Leave chat",
         "Leave": "Leave",
         "AreYouSureLeftTheChat": "Are you sure you want to left the chat?",
-        "ChatLeft": "Chat left",
+        "ChatLeft": "You left the chat",
         "AuthenticatedUser": "Authenticated User",
         "ViewRequestDetails": "View conversation details",
         "Open": "Open"
