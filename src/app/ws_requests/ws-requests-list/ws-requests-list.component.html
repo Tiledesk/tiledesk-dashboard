@@ -209,7 +209,35 @@
 
     <!-- <div class="row"> -->
     <div class="row">
-      <!-- style="padding-left: 10px !important;" -->
+
+      <div class="col-sm-12">
+        <div class="open-chat-tool-wpr" >
+          <div class="open-chat-tool-text">
+           This is the real time conversations monitoring panel. To manage your conversations use the  
+            <span style="text-decoration: underline; cursor: pointer;" (click)="openChat()"> chat tool </span>
+            <span class="open-chat-tool-chat-logo-wpr" style="margin-left: 12px;cursor: pointer;" (click)="openChat()">
+              <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+              viewBox="0 0 175.7 175.7" style="enable-background:new 0 0 175.7 175.7;" xml:space="preserve" style="    width: 24px;
+              height: auto;
+              vertical-align: middle;">
+           <style type="text/css">
+             .st0{fill:#F17467;}
+             .st1{fill:#F6746C;}
+           </style>
+           <path class="st0" d="M146.8,28.3C131,12.3,109.9,3.6,87.5,3.6C41.2,3.6,3.6,41.4,3.6,87.9c0,14.8,3.9,29.3,11.2,42.1l-5.9,35.7
+             l38.5-3.7c12.2,6.7,26,10.3,40.1,10.3h0c46.2,0,84.7-37.8,84.7-84.3C172.2,65.4,162.6,44.2,146.8,28.3z M87.5,158
+             c-12.5,0-24.8-3.4-35.5-9.8l-2.5-1.5L27,148.6l3-20.9l-1.7-2.7c-7-11.2-10.7-24-10.7-37.3c0-38.6,31.3-70,69.8-70
+             c18.6,0,36.1,7.3,49.3,20.5S158,69.2,158,87.9C158,126.5,125.9,158,87.5,158z"/>
+           <path class="st1" d="M124,106.1c-5.6,9.6-19.4,16.3-35.6,16.3c-16,0-29.7-6.6-35.4-16.1c-4.9,2.5-9.6,5.2-14.6,7.3
+             c9,15,27.8,25.3,49.5,25.3c21.6,0,40.4-10.2,49.4-25.1C132.9,111.3,128.4,108.8,124,106.1z"/>
+           </svg>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- style="padding-left: 10px !important;" -->
+    <div class="row">
       <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
 
 
@@ -985,8 +1013,8 @@ l-4.9-13l18-14.8L22.1,34.4z" />
                   src="{{baseUrl}}images?path=uploads%2Fusers%2F{{item.id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                   alt="" onerror="this.src='assets/img/default-avatar-x-select.png'">
 
-                <img *ngIf="item.requestertype === 'lead'" height="24" width="24" style="border-radius:50%;object-fit: cover;"
-                  src="assets/img/default-avatar-x-select.png" alt="">
+                <img *ngIf="item.requestertype === 'lead'" height="24" width="24"
+                  style="border-radius:50%;object-fit: cover;" src="assets/img/default-avatar-x-select.png" alt="">
                 <span style="font-weight: 400;">{{ item.name }}</span> <span class="requester-role-or-type">
                   ({{item.role}}) </span>
 
@@ -1009,8 +1037,8 @@ l-4.9-13l18-14.8L22.1,34.4z" />
                   src="{{baseUrl}}images?path=uploads%2Fusers%2F{{item.id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                   alt="" onerror="this.src='assets/img/default-avatar-x-select.png'">
 
-                <img *ngIf="item.requestertype === 'lead'" height="24" width="24" style="border-radius:50%; object-fit: cover;"
-                  src="assets/img/default-avatar-x-select.png" alt="">
+                <img *ngIf="item.requestertype === 'lead'" height="24" width="24"
+                  style="border-radius:50%; object-fit: cover;" src="assets/img/default-avatar-x-select.png" alt="">
                 <span style="font-weight: 400;">{{ item.name }}</span> <span class="requester-role-or-type">
                   ({{item.role}}) </span> <br />
                 <small style="font-weight:400;font-size: 13px; margin-left: 28px; position: relative;top: -3px;">
@@ -1065,7 +1093,7 @@ l-4.9-13l18-14.8L22.1,34.4z" />
             {{ 'Priority' | translate }}
           </label>
           <div class="col-sm-12" style="margin-bottom: 20px;">
-         
+
             <ng-select [items]="priority" bindLabel="name" bindValue="name" [clearable]="false" [hideSelected]="true"
               [(ngModel)]="selectedPriority" (change)="onChangeSelectedPriority(selectedPriority)">
               <ng-template ng-label-tmp let-item="item">
@@ -1224,7 +1252,7 @@ l-4.9-13l18-14.8L22.1,34.4z" />
           </div>
 
           <label class="col-sm-12" style="text-align: left; color:#7695a5;">
-            Email 
+            Email
             <!-- <span style="color:rgb(195,46,42)"> *</span> -->
           </label>
           <div class="col-sm-12" style="margin-bottom: 10px;">

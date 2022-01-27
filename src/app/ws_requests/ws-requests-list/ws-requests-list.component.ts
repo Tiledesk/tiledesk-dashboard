@@ -276,6 +276,19 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     });
   }
 
+  openChat() {
+ 
+    // const url = this.CHAT_BASE_URL;
+    // this.openWindow('Tiledesk - Open Source Live Chat', url)
+    // this.focusWin('Tiledesk - Open Source Live Chat')
+    // --- new 
+
+    let baseUrl = this.CHAT_BASE_URL + '#/conversation-detail/'
+    let url = baseUrl
+    const myWindow = window.open(url, 'Tiledesk - Open Source Live Chat');
+    myWindow.focus();
+  }
+
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
       this.logger.log('[WS-REQUESTS-LIST] - GET PROJECT-PLAN - project Profile Data', projectProfileData)
