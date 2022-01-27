@@ -322,6 +322,8 @@
       <ng-container *ngIf="isVisibleAPP && USER_ROLE !== 'agent'">
         <li *ngIf="project" routerLinkActive="active">
           <a class="customAncor" routerLink="project/{{ project._id }}/app-store">
+            <span class="_badge" style="font-size: 9px;"
+              [ngClass]="{'change-badge-bckgrnd' : APPS_ROUTE_IS_ACTIVE === true}">NEWS</span>
             <i class="material-icons sidebar-icons">apps</i>
             <p class="onBlackBckgrnd">Apps</p>
           </a>

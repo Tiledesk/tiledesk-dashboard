@@ -149,6 +149,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     ANALITYCS_ROUTE_IS_ACTIVE: boolean;
     HOME_ROUTE_IS_ACTIVE: boolean;
     TRIGGER_ROUTE_IS_ACTIVE: boolean;
+    APPS_ROUTE_IS_ACTIVE: boolean;
     NOTIFICATION_EMAIL_IS_ACTIVE: boolean;
     YOUR_PROJECT_ROUTE_IS_ACTIVE: boolean;
     AUTOLOGIN_ROUTE_IS_ACTIVE: boolean;
@@ -515,6 +516,16 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 } else {
                     // this.logger.log('[SIDEBAR] NavigationEnd - THE home route IS NOT ACTIVE  ', event.url);
                     this.NOTIFICATION_EMAIL_IS_ACTIVE = false;
+                    // this.smallSidebar(false)
+                }
+
+                if (event.url.indexOf('/app-store') !== -1) {
+                    // this.logger.log('[SIDEBAR] NavigationEnd - THE home route IS ACTIVE  ', event.url);
+                    this.APPS_ROUTE_IS_ACTIVE = true;
+                    // this.smallSidebar(true)
+                } else {
+                    // this.logger.log('[SIDEBAR] NavigationEnd - THE home route IS NOT ACTIVE  ', event.url);
+                    this.APPS_ROUTE_IS_ACTIVE = false;
                     // this.smallSidebar(false)
                 }
 
