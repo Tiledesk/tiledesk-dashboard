@@ -1787,7 +1787,7 @@
     "DeptQuickTips_2": "Her departmanın kendi aracıları, chatbotları ve yönlendirme kuralları olabilir; bu, diğer departmanlarınızdan bağımsız bir destek sürecini özelleştirmenize olanak tanır.",
     "DeptQuickTips_3": "Varsayılan Departman, siz projeyi oluşturduktan hemen sonra oluşturulur.",
     "DeptQuickTips_4": "Bu departmanlar silinemez, ancak her zaman değiştirilebilir.",
-    "DeptQuickTips_5": "Görünürlük durumu görünür olarak ayarlanmış en az bir başka departman varsa, Default Departmanı otomatik olarak devre dışı bırakılır",
+    "DeptQuickTips_5": "The Default Department will be automatically disabled if there is at least one other department whose visibility status is set to visible",
     "DeptQuickTips_6": "Yalnızca Varsayılan Departman varsa veya başka departmanlar varsa ancak görünürlük durumu 'Görünmez' olarak ayarlanmışsa, ziyaretçilerin talepleri Varsayılan Departman kurallarına göre yönlendirilecektir.",
     "DeptQuickTips_7": "Birden fazla departman varsa ancak yalnızca birinin görünürlük durumu 'Görünür' olarak ayarlanmışsa, ziyaretçinin istekleri bu departmanın kurallarına göre dolaylı olarak yönlendirilecektir (istekleri API aracılığıyla 'Görünmez' departmanlara yönlendirmek hala mümkündür)",
     "DeptQuickTips_8": "En az iki departmanın görünürlük durumu 'Görünür' olarak ayarlanmışsa, ziyaretçiler uygun pencere öğesi seçim menüsü aracılığıyla istekleri hangi departmana yönlendireceklerini seçebilecekler.",
