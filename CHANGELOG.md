@@ -1,6 +1,17 @@
 
 # tiledesk-dashboard
 
+### 2.2.31-rc8
+- Adds the Portuguese language
+- Adds the French language
+- Adds the Russian language
+- Adds the Turkish language
+- Fixes the bug: in Project settings > Notification > Customize the notification email template: the default templates are not displayed
+- Fixes the bug: in Project settings > Notifications > SMTP settings: not all parameters are passed to the service when the button "send test email" is clicked
+- Fixes the bug: some texts are hardcode and cannot be translated 
+- Adds a banner on the conversation list page with the link to open the chat
+- Adds the "NEWS" badge to the "APPS" sidebar menu item
+
 ### 2.2.31-rc7
 - Adds in Project Settings > Accounts an alert that is displayed when the subscription to the plan has expired
 - Fixes the bug: in "notification.component" the company email was hardcoded rather than taken from the "brand"
@@ -13,7 +24,7 @@
 
 ### 2.2.31-rc6
 - Fixes the bug: in AppConfigProvider the "wsUrl" is incorrect (window.location.port is missing)
-- Adds spanish language
+- Adds the Spanish language
 
 ### 2.2.31-rc5
 - Removes from the list of projects loaded in the left panel of the chat the redirect to the unassigned conversations
