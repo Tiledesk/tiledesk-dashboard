@@ -1787,7 +1787,7 @@
     "DeptQuickTips_2": "Chaque département peut avoir ses propres agents, chatbot et règles de routage ; cela vous permet de personnaliser un processus de support indépendant de vos autres départements.",
     "DeptQuickTips_3": "The Default Department is created immediately after you create the project.",
     "DeptQuickTips_4": "Ce département ne peut pas être supprimé mais peut toujours être modifié.",
-    "DeptQuickTips_5": "The DDefault Department will be automatically disabled if there is at least one other department whose visibility status is set to visible",
+    "DeptQuickTips_5": "The Default Department will be automatically disabled if there is at least one other department whose visibility status is set to visible",
     "DeptQuickTips_6": "If exists only the Default Department or if there are other departments but with visibility status set to 'Not Visible', the visitors' requests will be routed according to the rules of the Default Department.",
     "DeptQuickTips_7": "S'il y a plusieurs départements mais qu'un seul a le statut de visibilité défini sur 'Visible', les requêtes des visiteurs seront implicitement acheminées selon les règles de ce département (il est toujours possible d'acheminer les requêtes via API vers les départements 'Non Visible')",
     "DeptQuickTips_8": "Si au moins deux départements ont le statut de visibilité défini sur \"Visible\", les visiteurs pourront choisir le département vers lequel acheminer les demandes via le menu de sélection de widget approprié.",
