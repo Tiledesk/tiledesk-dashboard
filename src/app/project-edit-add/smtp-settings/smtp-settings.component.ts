@@ -208,10 +208,23 @@ export class SmtpSettingsComponent implements OnInit {
       });
   }
 
+  //   "email" : {
+//     "from" : "support@frontiere21.it",
+//     "config" : {
+//         "host" : "smtp.gmail.com",
+//         "port" : 465,
+//         "secure" : true,
+//         "user" : "andrea.leo@frontiere21.it",
+//         "pass" : "googlefronti21,"
+//     }
+// }
+
   sendTestEmail(recipientemail) {
-    this.projectService.sendTestEmail(recipientemail.toLowerCase(), this.smtp_host_name)
+    this.smtp_usermame, this.smtp_pswd, this.smtp_connetion_security
+    // this.smtp_port, this.smtp_connetion_security, this.smtp_usermame, this.smtp_pswd,
+    this.projectService.sendTestEmail(recipientemail.toLowerCase(), this.smtp_host_name,  this.smtp_port,this.smtp_connetion_security,  this.smtp_usermame, this.smtp_pswd)
       .subscribe((res: any) => {
-        this.logger.log('[SMTP-SETTINGS] sendTestEmail res ', res)
+       console.log('[SMTP-SETTINGS] sendTestEmail res ', res)
         if (res && res.error && res.error.code === "EAUTH") {
           this.notify.showWidgetStyleUpdateNotification(this.authenticationFailedMsg, 4, 'report_problem');
         }

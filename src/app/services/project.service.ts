@@ -480,7 +480,7 @@ export class ProjectService {
       .map((res) => res.json());
   }
 
-  public sendTestEmail(recipientemail, smtp_host_name) {
+  public sendTestEmail(recipientemail, smtp_host_name , smtp_port_number, smtp_connetion_security,  smtp_usermame, smtp_pswd ) {
     let url = this.SERVER_BASE_PATH + this.projectID + '/emails/test/send'
     const headers = new Headers();
     headers.append('Accept', 'application/json');
@@ -489,7 +489,7 @@ export class ProjectService {
     const options = new RequestOptions({ headers });
     
     // {"to":"andrea.leo@frontiere21.it", "config":{"host":"testprj2"}}' http://localhost:3001/61d7f94260608866810b39bd/emails/test/send
-    const body = {"to":recipientemail, "config":{"host":smtp_host_name}}
+    const body = {"to":recipientemail, "config":{"host":smtp_host_name, 'port':smtp_port_number, 'secure': smtp_connetion_security, 'user':smtp_usermame, 'pass':smtp_pswd  }}
     
 
     this.logger.log('[PROJECT-SERV] SEND TEST EMAIL POST - body ', body);
@@ -498,6 +498,17 @@ export class ProjectService {
       .post(url, JSON.stringify(body), options)
       .map((res) => res.json());
   }
+
+//   "email" : {
+//     "from" : "support@frontiere21.it",
+//     "config" : {
+//         "host" : "smtp.gmail.com",
+//         "port" : 465,
+//         "secure" : true,
+//         "user" : "andrea.leo@frontiere21.it",
+//         "pass" : "googlefronti21,"
+//     }
+// }
   
 
 
