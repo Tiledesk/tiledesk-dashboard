@@ -1,5 +1,7 @@
 {
     "ChangeDashboardLanguage": "Изменить язык панели инструментов",
+    "ThisIsTheRealTimeConversationsMonitoringPanel":"Это панель мониторинга разговоров в реальном времени. Для управления беседами используйте",
+    "chatTool":"инструмент чата",
     "UsersAndGroups": "Товарищи по команде и Группы",
     "UsersAndGroupsInitials": "Т&Г",
     "RoutingAndDeptsInitials": "М&Д",

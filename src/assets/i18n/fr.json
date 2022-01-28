@@ -1,5 +1,7 @@
 {
     "ChangeDashboardLanguage": "Changer la langue du tableau de bord",
+    "ThisIsTheRealTimeConversationsMonitoringPanel":"Il s'agit du panneau de surveillance des conversations en temps réel. Pour gérer vos conversations, utilisez ",
+    "chatTool":"l'outil de chat",
     "UsersAndGroups": "Coéquipiers et groupes",
     "UsersAndGroupsInitials": "C&G",
     "RoutingAndDeptsInitials": "R&D",

@@ -1,5 +1,7 @@
 {
     "ChangeDashboardLanguage": "Cambiar idioma del panel",
+    "ThisIsTheRealTimeConversationsMonitoringPanel":"Este es el panel de monitoreo de conversaciones en tiempo real. Para gestionar tus conversaciones utiliza la",
+    "chatTool":"herramienta de chat",
     "UsersAndGroups": "Compañeros y grupos",
     "UsersAndGroupsInitials": "C&G",
     "RoutingAndDeptsInitials": "E&D",
