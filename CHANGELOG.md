@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.31-rc9
+- Change the initials of menu items to icons in the sidebar
+
 ### 2.2.31-rc8
 - Adds the Portuguese language
 - Adds the French language
