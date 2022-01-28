@@ -332,26 +332,26 @@ export class SignupComponent implements OnInit, AfterViewInit {
       // tslint:disable-next-line:no-debugger
       // debugger
       if (!error) {
-        self.widgetReInit();
+        // self.widgetReInit();
         /**
          * *** WIDGET - pass data to the widget method setTiledeskWidgetUser in index.html ***
          */
-        const storedUser = localStorage.getItem('user')
-        self.logger.log('Signup - STORED USER  ', storedUser)
-        if (storedUser !== null) {
-          const _storedUser = JSON.parse(storedUser);
-          self.logger.log('[SIGN-UP] autoSignin SetTiledeskWidgetUserSignin (Signup) - userFullname', _storedUser.firstname + _storedUser.lastname)
-          self.logger.log('[SIGN-UP] autoSignin SetTiledeskWidgetUserSignin (Signup) - userEmail', _storedUser.email);
-          self.logger.log('[SIGN-UP] autoSignin SetTiledeskWidgetUserSignin (Signup) - userId', _storedUser._id);
+        // const storedUser = localStorage.getItem('user')
+        // self.logger.log('Signup - STORED USER  ', storedUser)
+        // if (storedUser !== null) {
+        //   const _storedUser = JSON.parse(storedUser);
+        //   self.logger.log('[SIGN-UP] autoSignin SetTiledeskWidgetUserSignin (Signup) - userFullname', _storedUser.firstname + _storedUser.lastname)
+        //   self.logger.log('[SIGN-UP] autoSignin SetTiledeskWidgetUserSignin (Signup) - userEmail', _storedUser.email);
+        //   self.logger.log('[SIGN-UP] autoSignin SetTiledeskWidgetUserSignin (Signup) - userId', _storedUser._id);
 
-          setTimeout(() => {
-            try {
-              window['[SIGN-UP] setTiledeskWidgetUser'](_storedUser.firstname + ' ' + _storedUser.lastname, _storedUser.email, _storedUser._id);
-            } catch (err) {
-              self.logger.error('[SIGN-UP] SetTiledeskWidgetUser (Signup) - error', err);
-            }
-          }, 2000);
-        }
+        //   setTimeout(() => {
+        //     try {
+        //       window['[SIGN-UP] setTiledeskWidgetUser'](_storedUser.firstname + ' ' + _storedUser.lastname, _storedUser.email, _storedUser._id);
+        //     } catch (err) {
+        //       self.logger.error('[SIGN-UP] SetTiledeskWidgetUser (Signup) - error', err);
+        //     }
+        //   }, 2000);
+        // }
 
         if (self.SKIP_WIZARD === false) {
           self.router.navigate(['/create-project']);
