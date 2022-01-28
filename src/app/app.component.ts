@@ -137,20 +137,26 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         translate.setDefaultLang('en');
 
         const browserLang = this.translate.getBrowserLang();
-        this.logger.log('[APP-COMPONENT] this.auth.user_bs.value._id ', this.auth.user_bs.value._id)
-        const stored_preferred_lang = localStorage.getItem(this.auth.user_bs.value._id + '_lang')
-        this.logger.log('[APP-COMPONENT] stored_preferred_lang', stored_preferred_lang)
-        // console.log('[APP-COMPONENT] !!! ===== HELLO APP.COMP ===== BRS LANG ', browserLang)
-        let dshbrd_lang = ''
-        if (browserLang && !stored_preferred_lang) {
-            dshbrd_lang = browserLang
-        } else if (browserLang && stored_preferred_lang) {
-            dshbrd_lang = stored_preferred_lang
+        
+        if (this.auth.user_bs && this.auth.user_bs.value) {
+            this.logger.log('[APP-COMPONENT] this.auth.user_bs.value._id ', this.auth.user_bs.value._id)
+            const stored_preferred_lang = localStorage.getItem(this.auth.user_bs.value._id + '_lang')
+            this.logger.log('[APP-COMPONENT] stored_preferred_lang', stored_preferred_lang)
+            // console.log('[APP-COMPONENT] !!! ===== HELLO APP.COMP ===== BRS LANG ', browserLang)
+            let dshbrd_lang = ''
+            if (browserLang && !stored_preferred_lang) {
+                dshbrd_lang = browserLang
+            } else if (browserLang && stored_preferred_lang) {
+                dshbrd_lang = stored_preferred_lang
+            }
+
+            this.translate.use(dshbrd_lang);
+
+            moment.locale(dshbrd_lang)
+        } else {
+            this.logger.log('[APP-COMPONENT] There is no logged in user')
+            
         }
-
-        this.translate.use(dshbrd_lang);
-
-        moment.locale(dshbrd_lang)
 
         // if (browserLang) {
         //     // if (browserLang === 'it') {
