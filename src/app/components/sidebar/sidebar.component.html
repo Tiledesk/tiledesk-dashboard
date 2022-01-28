@@ -296,7 +296,11 @@
       <!-- WITHOUT THE CONDITION *ngIf="projectid" THE MENU ITEM 'HOME' IT IS NOT RENDERED AS ACTIVE -->
       <li *ngIf="project" routerLinkActive="active">
         <a #homebtn class="customAncor" routerLink="project/{{ project._id }}/home">
-          <i class="material-icons sidebar-icons">dashboard</i>
+          <!-- <i class="material-icons sidebar-icons">dashboard</i> -->
+          <i class="material-icons sidebar-icons">
+            home
+          </i>
+            
           <p class="onBlackBckgrnd">Home</p>
         </a>
       </li>
@@ -400,10 +404,13 @@
       <ng-container *ngIf="isVisibleCAR">
         <li *ngIf="SHOW_SETTINGS_SUBMENU && USER_ROLE !== 'agent'" routerLinkActive="active" (click)="stopScroll()">
           <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/cannedresponses">
+            <i class="material-icons sidebar-icons" style="font-size:24px !important">
+              bolt
+            </i>
             <p class="onBlackBckgrnd">
-              <span class="sidebar-mini">
+              <!-- <span class="sidebar-mini">
                 {{'CannedResponses.CR' | translate}}
-              </span>
+              </span> -->
               {{'CannedResponses.CannedResponses' | translate}}
             </p>
           </a>
@@ -418,9 +425,10 @@
         <li *ngIf="SHOW_SETTINGS_SUBMENU && USER_ROLE !== 'agent'" routerLinkActive="active" (click)="stopScroll()">
           <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/labels">
             <p class="onBlackBckgrnd">
-              <span class="sidebar-mini">
+              <i class="fa fa-tag sidebar-icons" style="font-size: 18px !important;" ></i>
+              <!-- <span class="sidebar-mini">
                 T
-              </span>
+              </span> -->
               {{'Tags.Tags' | translate}}
             </p>
           </a>
@@ -470,12 +478,13 @@
       // ------------------------------------------------------- -->
       <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
         <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/departments">
+          <i class="fa fa-university sidebar-icons" style="font-size:16px !important"></i>
           <p class="onBlackBckgrnd">
-            <span class="sidebar-mini">
+            <!-- <span class="sidebar-mini">
 
               <span *ngIf="isVisibleDEP"> {{'RoutingAndDeptsInitials' | translate}} </span>
               <span *ngIf="!isVisibleDEP"> R </span>
-            </span>
+            </span> -->
             <span *ngIf="isVisibleDEP"> {{'RoutingAndDepts' | translate}} </span>
             <span *ngIf="!isVisibleDEP"> Routing </span>
 
@@ -488,10 +497,15 @@
       <ng-container *ngIf="isVisibleTRI">
         <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
           <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/trigger">
+    
+            <i class="material-icons sidebar-icons" style="
+            font-size:23px; position:relative; left:1px">
+              generating_tokens
+            </i>
             <span class="_badge" style="font-size: 9px;"
               [ngClass]="{'change-badge-bckgrnd' : TRIGGER_ROUTE_IS_ACTIVE === true}">BETA</span>
             <p class="onBlackBckgrnd">
-              <span class="sidebar-mini">T </span>
+              <!-- <span class="sidebar-mini">T </span> -->
               {{ 'Trigger.Trigger' | translate }}
             </p>
           </a>
@@ -501,14 +515,16 @@
       <!-- USERS (ALIAS MEMBERS) -->
       <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
         <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/users">
-
+          <i class="material-icons sidebar-icons">
+            groups
+          </i>
           <p class="onBlackBckgrnd">
             <span *ngIf="isVisibleGRO">
-              <span class="sidebar-mini">{{'UsersAndGroupsInitials' | translate}} </span>
+              <!-- <span class="sidebar-mini">{{'UsersAndGroupsInitials' | translate}} </span> -->
               {{ 'UsersAndGroups' | translate }}
             </span>
             <span *ngIf="!isVisibleGRO">
-              <span class="sidebar-mini">{{'TeammateInitial' | translate }} </span> 
+              <!-- <span class="sidebar-mini">{{'TeammateInitial' | translate }} </span>  -->
               <span style="text-transform: capitalize;"> {{ 'Teammates' | translate }} </span> 
             </span>
           </p>
@@ -528,9 +544,12 @@
       <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
         <!-- routerLink="project/{{ project._id }}/faqkb" -->
         <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/bots">
-
+          <i class="material-icons sidebar-icons">
+            smart_toy
+          </i>
           <p class="onBlackBckgrnd">
-            <span class="sidebar-mini">B </span> Bots
+            <!-- <span class="sidebar-mini">B </span> -->
+             Bots
           </p>
 
           <!-- <span class="sidebar-mini">
@@ -561,8 +580,14 @@
         (click)="stopScroll()">
         <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/widget-set-up">
           <!-- <span class="_badge" [ngClass]="{'change-badge-bckgrnd' : WIDGET_ROUTE_IS_ACTIVE === true}">New</span> -->
+          <i class="material-icons sidebar-icons">
+            chat_bubble
+          </i>
+          
+          
           <p class="onBlackBckgrnd">
-            <span class="sidebar-mini">W </span>Widget
+            <!-- <span class="sidebar-mini">W </span> -->
+            Widget
           </p>
 
           <!-- <span class="sidebar-mini">
@@ -589,9 +614,13 @@
         <!-- , onEvent($event) -->
         <li *ngIf="SHOW_SETTINGS_SUBMENU" routerLinkActive="active" (click)="stopScroll()">
           <a *ngIf="project" class="customAncor" routerLink="project/{{ project._id }}/hours">
-
+            <i class="material-icons sidebar-icons">
+              watch_later
+            </i>
             <p class="onBlackBckgrnd">
-              <span class="sidebar-mini">O </span>{{ 'Hours' | translate }}
+              <!-- <span class="sidebar-mini">O </span> -->
+              
+              {{ 'Hours' | translate }}
             </p>
 
             <!-- <span class="sidebar-mini">
@@ -609,8 +638,16 @@
       <!-- style="margin-bottom:65px" -->
       <li *ngIf="SHOW_SETTINGS_SUBMENU" routerLinkActive="active" (click)="stopScroll()">
         <a *ngIf="project" class="customAncor" routerLink="project/{{ project._id }}/project-settings/general">
+          <!-- <i class="material-icons sidebar-icons" >
+            miscellaneous_services
+          </i> -->
+          <i class="material-icons sidebar-icons">
+            construction
+          </i>
           <p class="onBlackBckgrnd">
-            <span class="sidebar-mini">{{ 'ProjectSettings_Initials' | translate }} </span> 
+            <!-- <span class="sidebar-mini">
+              {{ 'ProjectSettings_Initials' | translate }}
+             </span>  -->
             {{ 'ProjectSettings' | translate }}
           </p>
 
