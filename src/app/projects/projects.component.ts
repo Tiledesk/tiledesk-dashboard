@@ -71,9 +71,9 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   MT: boolean;
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
   flag_url: string;
-  dsbrd_lang : string;
+  dsbrd_lang: string;
   tlangparams: any
-  browserLang : string;
+  browserLang: string;
 
   private unsubscribe$: Subject<any> = new Subject<any>();
 
@@ -147,21 +147,21 @@ export class ProjectsComponent implements OnInit, OnDestroy {
         const stored_preferred_lang = localStorage.getItem(this.currentUserId + '_lang')
 
         if (stored_preferred_lang) {
-            this.dsbrd_lang = stored_preferred_lang;
-            this.getLangTranslation(this.dsbrd_lang)
-            this.flag_url = "assets/img/language_flag/" + stored_preferred_lang + ".png"
+          this.dsbrd_lang = stored_preferred_lang;
+          this.getLangTranslation(this.dsbrd_lang)
+          this.flag_url = "assets/img/language_flag/" + stored_preferred_lang + ".png"
 
-            console.log('[PROJECTS] flag_url (from stored_preferred_lang) ', this.flag_url)
-         
-          console.log('[PROJECTS] stored_preferred_lang ', stored_preferred_lang)
+          // console.log('[PROJECTS] flag_url (from stored_preferred_lang) ', this.flag_url)
+
+          // console.log('[PROJECTS] stored_preferred_lang ', stored_preferred_lang)
         } else {
-            this.browserLang = this.translate.getBrowserLang();
-            this.dsbrd_lang = this.browserLang; 
-            this.getLangTranslation(this.dsbrd_lang)
-            console.log('[PROJECTS] - browser_lang ', this.browserLang)
-            this.flag_url = "assets/img/language_flag/" + this.browserLang + ".png"
-          
-          console.log('[PROJECTS] flag_url (from browser_lang) ', this.flag_url)
+          this.browserLang = this.translate.getBrowserLang();
+          this.dsbrd_lang = this.browserLang;
+          this.getLangTranslation(this.dsbrd_lang)
+          // console.log('[PROJECTS] - browser_lang ', this.browserLang)
+          this.flag_url = "assets/img/language_flag/" + this.browserLang + ".png"
+
+          // console.log('[PROJECTS] flag_url (from browser_lang) ', this.flag_url)
         }
 
 
@@ -178,11 +178,11 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
   getLangTranslation(dsbrd_lang_code) {
     this.translate.get(dsbrd_lang_code)
-    .subscribe((translation: any) => {
-        console.log('[NAVBAR] getLangTranslation', translation)
-        this.tlangparams = {language_name: translation}
-    });
-}
+      .subscribe((translation: any) => {
+        this.logger.log('[PROJECTS] getLangTranslation', translation)
+        this.tlangparams = { language_name: translation }
+      });
+  }
 
   ckeckUserPhotoProfileOnFirebase(user) {
     const firebase_conf = this.appConfigService.getConfig().firebase;
@@ -588,12 +588,12 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
     try {
       if (window && window['tiledesk_widget_hide']) {
-          this.logger.log('[PROJECTS] - HIDE WIDGET - HERE 1')
-          window['tiledesk_widget_hide']();
+        this.logger.log('[PROJECTS] - HIDE WIDGET - HERE 1')
+        window['tiledesk_widget_hide']();
       }
-  } catch (e) {
+    } catch (e) {
       this.logger.error('tiledesk_widget_hide ERROR', e)
-  }
+    }
 
   };
   sidebarClose() {
@@ -607,12 +607,12 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
     try {
       if (window && window['tiledesk_widget_show']) {
-          this.logger.log('[PROJECTS] - SHOW WIDGET - HERE 1')
-          window['tiledesk_widget_show']();
+        this.logger.log('[PROJECTS] - SHOW WIDGET - HERE 1')
+        window['tiledesk_widget_show']();
       }
-  } catch (e) {
+    } catch (e) {
       this.logger.error('tiledesk_widget_show ERROR', e)
-  }
+    }
   };
   sidebarToggle() {
     // const toggleButton = this.toggleButton;

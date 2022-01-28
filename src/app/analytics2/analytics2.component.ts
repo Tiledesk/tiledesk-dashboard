@@ -138,7 +138,7 @@ export class Analytics2Component implements OnInit, OnDestroy {
 
 
     // console.log(moment.monthsShort('January')) 
-    console.log('[ANALYTICS] - setMomentLocale MONTHS', moment.monthsShort() )
+    // console.log('[ANALYTICS] - setMomentLocale MONTHS', moment.monthsShort() )
     
     const arrayDay =  moment.weekdaysShort()
     arrayDay.push(arrayDay.shift())

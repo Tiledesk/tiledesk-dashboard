@@ -214,7 +214,7 @@ export class SmtpSettingsComponent implements OnInit {
     // this.smtp_port, this.smtp_connetion_security, this.smtp_usermame, this.smtp_pswd,
     this.projectService.sendTestEmail(recipientemail.toLowerCase(), this.smtp_host_name,  this.smtp_port,this.smtp_connetion_security,  this.smtp_usermame, this.smtp_pswd)
       .subscribe((res: any) => {
-       console.log('[SMTP-SETTINGS] sendTestEmail res ', res)
+      //  console.log('[SMTP-SETTINGS] sendTestEmail res ', res)
         if (res && res.error && res.error.code === "EAUTH") {
           this.notify.showWidgetStyleUpdateNotification(this.authenticationFailedMsg, 4, 'report_problem');
         }
