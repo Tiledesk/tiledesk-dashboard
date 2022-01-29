@@ -2195,6 +2195,7 @@
         "CHANGE_PINNED_PROJECT": "Gepinntes Projekt ändern",
         "CHANGE_TO_AVAILABLE_UNAVAILABLE": "auf verfügbar/nicht verfügbar ändern",
         "CHANGE_TO_YOUR_STATUS_TO_AVAILABLE": "ändern Sie Ihren Status auf verfügbar",
-        "CHANGE_TO_YOUR_STATUS_TO_UNAVAILABLE": "ändern Sie Ihren Status auf nicht verfügbar"
+        "CHANGE_TO_YOUR_STATUS_TO_UNAVAILABLE": "ändern Sie Ihren Status auf nicht verfügbar",
+        "ALL_CONVS_SERVED": "Were all conversations served? Good job!"
     }
 }
