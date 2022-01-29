@@ -625,7 +625,11 @@ export class PanoramicaComponent implements OnInit {
             this.numberAVGtime = this.msToTIME(res[0].waiting_time_avg); //--> show in format h:m:s
 
             const browserLang = this.translate.getBrowserLang();
-            const stored_preferred_lang = localStorage.getItem(this.auth.user_bs.value._id + '_lang')
+            let stored_preferred_lang = undefined
+            if (this.auth.user_bs && this.auth.user_bs.value) {
+              stored_preferred_lang = localStorage.getItem(this.auth.user_bs.value._id + '_lang')
+            }
+            // const stored_preferred_lang = localStorage.getItem(this.auth.user_bs.value._id + '_lang')
             let dshbrd_lang = ''
             if (browserLang && !stored_preferred_lang) {
               dshbrd_lang = browserLang
@@ -687,7 +691,11 @@ export class PanoramicaComponent implements OnInit {
             const browserLang = this.translate.getBrowserLang();
             // console.log('[ANALYTICS] - setMomentLocale browserLang', this.browserLang)
 
-            const stored_preferred_lang = localStorage.getItem(this.auth.user_bs.value._id + '_lang')
+            let stored_preferred_lang = undefined
+            if (this.auth.user_bs && this.auth.user_bs.value) {
+              stored_preferred_lang = localStorage.getItem(this.auth.user_bs.value._id + '_lang')
+            }
+            // const stored_preferred_lang = localStorage.getItem(this.auth.user_bs.value._id + '_lang')
             let dshbrd_lang = ''
             if (browserLang && !stored_preferred_lang) {
               dshbrd_lang = browserLang

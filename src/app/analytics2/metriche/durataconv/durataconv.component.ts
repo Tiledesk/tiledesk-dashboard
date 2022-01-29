@@ -275,13 +275,20 @@ export class DurataconvComponent implements OnInit {
             this.unitDurationCNVtime = splitString[1];
 
             const browserLang = this.translate.getBrowserLang();
-            const stored_preferred_lang = localStorage.getItem(this.auth.user_bs.value._id + '_lang')
+           
+            let stored_preferred_lang = undefined
+            if (this.auth.user_bs && this.auth.user_bs.value) {
+              stored_preferred_lang = localStorage.getItem(this.auth.user_bs.value._id + '_lang')
+            }
+            
+            
             let dshbrd_lang = ''
             if (browserLang && !stored_preferred_lang) {
               dshbrd_lang = browserLang
             } else if (browserLang && stored_preferred_lang) {
               dshbrd_lang = stored_preferred_lang
             }
+            
 
             this.responseDurationtime = this.humanizer.humanize(res[0].duration_avg, { round: true, language: dshbrd_lang });
 
@@ -511,7 +518,12 @@ export class DurataconvComponent implements OnInit {
                 // return data.datasets[tooltipItem.datasetIndex].label + ': ' + humanizer.humanize(currentItemValue)
 
                 const browserLang = this.translate.getBrowserLang();
-                const stored_preferred_lang = localStorage.getItem(this.auth.user_bs.value._id + '_lang')
+                let stored_preferred_lang = undefined
+                if (this.auth.user_bs && this.auth.user_bs.value) {
+                  stored_preferred_lang = localStorage.getItem(this.auth.user_bs.value._id + '_lang')
+                }
+
+              
                 let dshbrd_lang = ''
                 if (browserLang && !stored_preferred_lang) {
                   dshbrd_lang = browserLang

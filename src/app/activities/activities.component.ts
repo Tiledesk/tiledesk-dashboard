@@ -358,7 +358,11 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
                 }
               }
 
-              const stored_preferred_lang = localStorage.getItem(this.auth.user_bs.value._id + '_lang')
+              let stored_preferred_lang = undefined
+              if (this.auth.user_bs && this.auth.user_bs.value) {
+                stored_preferred_lang = localStorage.getItem(this.auth.user_bs.value._id + '_lang')
+              }
+         
               let dshbrd_lang = ''
               if (this.browser_lang && !stored_preferred_lang) {
                   dshbrd_lang = this.browser_lang
