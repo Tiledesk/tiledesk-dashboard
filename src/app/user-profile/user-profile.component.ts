@@ -201,7 +201,7 @@ export class UserProfileComponent implements OnInit {
   getBrowserLanguage() {
     this.browser_lang = this.translate.getBrowserLang();
 
-    console.log('[USER-PROFILE] - browser_lang ', this.browser_lang)
+    this.logger.log('[USER-PROFILE] - browser_lang ', this.browser_lang)
     this.flag_url = "assets/img/language_flag/" + this.browser_lang + ".png"
   }
 
