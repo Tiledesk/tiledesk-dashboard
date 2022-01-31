@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.31
+- Deploys in production
+
 ### 2.2.31-rc9
 - Change the initials of menu items to icons in the sidebar
 - Fixes the bug: when the get of the preferred language saved in the storage is executed, the app crashes if the user is not yet logged
