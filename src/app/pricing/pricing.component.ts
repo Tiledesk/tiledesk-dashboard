@@ -66,6 +66,9 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   DISPLAY_BTN_PLAN_LIVE_20_CENTSXUNIT_PROD: boolean = false;
   DISPLAY_BTN_PLAN_TEST_3_EURXUNIT_PRE: boolean = false;
+
+  contactUsEmail: string;
+  
   constructor(
     public location: Location,
     public auth: AuthService,
@@ -80,6 +83,7 @@ export class PricingComponent implements OnInit, OnDestroy {
 
     const brand = brandService.getBrand();
     this.company_name = brand['company_name'];
+    this.contactUsEmail = brand['contact_us_email'];
   }
 
   /**
@@ -546,7 +550,7 @@ export class PricingComponent implements OnInit, OnDestroy {
 
     // const mailTo = "mailto:info@tiledesk.com";
     // window.location.href = mailTo;
-    window.open('mailto:info@tiledesk.com', 'mail')
+    window.open('mailto:{{contactUsEmail}}', 'mail')
   }
 
   openReportPaymentModal() {
