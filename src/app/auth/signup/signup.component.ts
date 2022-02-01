@@ -333,6 +333,12 @@ export class SignupComponent implements OnInit, AfterViewInit {
       // debugger
       if (!error) {
         // self.widgetReInit();
+        // --------------------------------------------
+        // Run widget login
+        // --------------------------------------------
+        if (window && window['tiledesk_widget_login']) {
+          window['tiledesk_widget_login']();
+        } 
         /**
          * *** WIDGET - pass data to the widget method setTiledeskWidgetUser in index.html ***
          */
