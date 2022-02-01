@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.31.1
+- Fixes the bug: the "widget login" does not run after registering a new teammates
+
 ### 2.2.31
 - Deploys in production
 
