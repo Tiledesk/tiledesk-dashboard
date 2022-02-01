@@ -2,7 +2,7 @@
   {{ 'Trigger.Trigger' | translate }} <span style="color: #f44336; font-size: 14px;  font-weight: 400;;">(Beta) </span> 
 </p>
 
-<ul class="bottom-nav">
+<!-- <ul class="bottom-nav">
 
 
   <li class="btn-with-border-effect" [ngClass]="{'li-active' : !has_selected_system, 'border-from-center': has_selected_system}"
@@ -15,15 +15,64 @@
     <a> {{ "SystemTrigger" | translate }} </a>
   </li>
 
-</ul>
+</ul> -->
 
 
 
-<div class="main-content" style="padding-top:0px">
-  <div class="container-fluid">
+<div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
+  <div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
 
-    <appdashboard-docs-url-row [text_to_display]="text_to_display" [customtext]="customtext" [doctitle]="trigger_docs_title" [docurl]="trigger_docs_url">  </appdashboard-docs-url-row>
-  
+
+    <!-- <appdashboard-docs-url-row [text_to_display]="text_to_display" [customtext]="customtext" [doctitle]="trigger_docs_title" [docurl]="trigger_docs_url">  </appdashboard-docs-url-row> -->
+  <div class="content-wpr" style="display: flex;">
+
+      <appdashboard-settings-sidebar> </appdashboard-settings-sidebar>
+      <div class="teplate-content" style="flex: 1 1 auto; margin-left: 20px;">
+
+        <ul class="bottom-nav" style="top:-9px; box-shadow: unset">
+
+
+          <li class="btn-with-border-effect" [ngClass]="{'li-active' : !has_selected_system, 'border-from-center': has_selected_system}"
+           (click)="triggerTabSelected('customtrigger')">
+            <a>{{ "CustomTrigger" | translate }} </a>
+          </li>
+        
+          <li class="btn-with-border-effect"  [ngClass]="{'li-active' : has_selected_system, 'border-from-center': !has_selected_system}" 
+          (click)="triggerTabSelected('systemtrigger')">
+            <a> {{ "SystemTrigger" | translate }} </a>
+          </li>
+        
+        </ul>
+        
+      <div class="link-to-trigger-docs">
+        <div class="row" style="background-color: rgb(241,241,241);
+        margin-right: 0px;
+        margin-left: 0px;
+        padding-bottom: 12px;">
+          <div class="col-md-12">
+            <span style="margin-left: 15px;">
+              <svg style="width: 25px;height:auto; vertical-align: middle;" aria-hidden="true" focusable="false"
+                data-prefix="fab" data-icon="readme" class="svg-inline--fa fa-readme fa-w-18" role="img"
+                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                <path fill="#0f62ff"
+                  d="M528.3 46.5H388.5c-48.1 0-89.9 33.3-100.4 80.3-10.6-47-52.3-80.3-100.4-80.3H48c-26.5 0-48 21.5-48 48v245.8c0 26.5 21.5 48 48 48h89.7c102.2 0 132.7 24.4 147.3 75 .7 2.8 5.2 2.8 6 0 14.7-50.6 45.2-75 147.3-75H528c26.5 0 48-21.5 48-48V94.6c0-26.4-21.3-47.9-47.7-48.1zM242 311.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5V289c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5V251zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm259.3 121.7c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5V228c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5v-22.8c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5V190z">
+                </path>
+              </svg>
+            </span>
+            <a style="color:#0f62ff !important; vertical-align: middle; font-size: 14px; font-weight: 400;
+            cursor: pointer; margin-left: 8px; text-decoration: underline;" (click)="goToTriggerDocs()">
+              <span *ngIf="customtext === false">
+                {{ 'HowWorks' | translate: translateparam }}
+              </span>
+              <span *ngIf="customtext === true">
+                {{ text_to_display | translate }}
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+
 
     <!--TRIGGER LIST -->
     <div class="row">
@@ -164,6 +213,8 @@
         </div>
       </div>
     </div>
+  </div>
+  </div>
   </div>
 </div>
 

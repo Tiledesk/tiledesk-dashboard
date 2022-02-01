@@ -4,135 +4,141 @@
 <div class="main-content main-content-no-padding" style="">
   <div class="container-fluid">
 
-    <div class="row">
-      <div class="col-sm-7 left-col-custom-padding">
-        <div class="card card-custom-margin">
-          <div class="card-header card-header-custom-bkgrnd">
+    <div class="content-wpr" style="display: flex;">
+      <appdashboard-settings-sidebar> </appdashboard-settings-sidebar>
+      <div class="teplate-content" style="flex: 1 1 auto; margin-left: 20px;">
 
-            <button class="btn btn-primary" style="padding: 8px 16px; margin: 0px;min-width: 146px;"
-              (click)="presentResponseModal_inAddMode()">
-              <span class="icon" style="padding-right:8px">
-                <i class="material-icons">add_circle</i>
-              </span>
-              {{ "CannedResponses.AddResponses" | translate }}
-            </button>
-          </div>
+        <div class="row">
+          <div class="col-sm-7 left-col-custom-padding">
+            <div class="card card-custom-margin">
+              <div class="card-header card-header-custom-bkgrnd">
 
-          <loading-spinner *ngIf="showSpinner"></loading-spinner>
-          <div *ngIf="!showSpinner" class="card-content table-responsive">
-            <table class="table table-hover">
-              <thead>
-                <tr>
-                  <th>
-                    <span class="column-th-span">
+                <button class="btn btn-primary" style="padding: 8px 16px; margin: 0px;min-width: 146px;"
+                  (click)="presentResponseModal_inAddMode()">
+                  <span class="icon" style="padding-right:8px">
+                    <i class="material-icons">add_circle</i>
+                  </span>
+                  {{ "CannedResponses.AddResponses" | translate }}
+                </button>
+              </div>
 
-                      {{ "CannedResponses.Responses" | translate }}
-                    </span>
-                  </th>
+              <loading-spinner *ngIf="showSpinner"></loading-spinner>
+              <div *ngIf="!showSpinner" class="card-content table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>
+                        <span class="column-th-span">
 
-                  <th>
-                    <span class="column-th-span">
+                          {{ "CannedResponses.Responses" | translate }}
+                        </span>
+                      </th>
 
-                      {{ "Actions" | translate }}
-                    </span>
-                  </th>
+                      <th>
+                        <span class="column-th-span">
 
-                </tr>
-              </thead>
+                          {{ "Actions" | translate }}
+                        </span>
+                      </th>
 
-              <tbody>
-                <!-- IF THERE ISN'T CANNED RESPONSES -->
-                <tr *ngIf="responsesList && responsesList?.length === 0">
-                  <td colspan="2" style="text-align: center; padding-top: 24px;">
-                    <p style="font-size:1em; margin-bottom: 0px; color:#7695a5; font-weight: 400">
-                      <i class="material-icons" style="vertical-align: middle; margin-bottom: 2px;color: #00bcd4;"> info
-                      </i>
-                      {{ 'CannedResponses.YouHaveNotAddedAnyCannedResponses' | translate }}
-                    </p>
-                  </td>
-                </tr>
+                    </tr>
+                  </thead>
 
-                <tr *ngFor="let response of responsesList; let i = index">
-                  <!--  style="width: 1%; white-space: nowrap;" -->
-                  <td>
+                  <tbody>
+                    <!-- IF THERE ISN'T CANNED RESPONSES -->
+                    <tr *ngIf="responsesList && responsesList?.length === 0">
+                      <td colspan="2" style="text-align: center; padding-top: 24px;">
+                        <p style="font-size:1em; margin-bottom: 0px; color:#7695a5; font-weight: 400">
+                          <i class="material-icons" style="vertical-align: middle; margin-bottom: 2px;color: #00bcd4;">
+                            info
+                          </i>
+                          {{ 'CannedResponses.YouHaveNotAddedAnyCannedResponses' | translate }}
+                        </p>
+                      </td>
+                    </tr>
 
-                    <span style="display: block;font-weight: 500;font-size: 14px;color: rgba(0, 0, 0, 0.87)">
-                      {{response?.title}}
-                    </span>
-                    <span style="display: block;color:#7695a5; font-size: 13px;">
-                      {{response?.text}}
-                    </span>
-                  </td>
+                    <tr *ngFor="let response of responsesList; let i = index">
+                      <!--  style="width: 1%; white-space: nowrap;" -->
+                      <td>
+
+                        <span style="display: block;font-weight: 500;font-size: 14px;color: rgba(0, 0, 0, 0.87)">
+                          {{response?.title}}
+                        </span>
+                        <span style="display: block;color:#7695a5; font-size: 13px;">
+                          {{response?.text}}
+                        </span>
+                      </td>
 
 
-                  <td class="td-actions text-right" style="padding-top:20px">
-                    <button type="button" rel="tooltip" title="" class="btn btn-primary btn-simple btn-xs"
-                      (click)='presentResponseModal_inEditMode(response?._id)'>
-                      <i class="material-icons">edit</i>
-                    </button>
+                      <td class="td-actions text-right" style="padding-top:20px">
+                        <button type="button" rel="tooltip" title="" class="btn btn-primary btn-simple btn-xs"
+                          (click)='presentResponseModal_inEditMode(response?._id)'>
+                          <i class="material-icons">edit</i>
+                        </button>
 
-                    <button type="button" rel="tooltip" title="" class="btn btn-danger btn-simple btn-xs"
-                      (click)='deleteCannedResponse(response?._id)'>
-                      <i class="material-icons">close</i>
-                    </button>
-                  </td>
+                        <button type="button" rel="tooltip" title="" class="btn btn-danger btn-simple btn-xs"
+                          (click)='deleteCannedResponse(response?._id)'>
+                          <i class="material-icons">close</i>
+                        </button>
+                      </td>
 
-                </tr>
-              </tbody>
-            </table>
+                    </tr>
+                  </tbody>
+                </table>
 
-          </div>
-        </div>
-      </div>
-      <!-- /. end col-md-8 -->
-
-      <!-- // RIGHT SIDEBAR -->
-      <div class="col-sm-5 right-col-custom-padding">
-        <div class="card card-custom-margin">
-          <div class="card-content">
-            <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 15px">
-              {{ "QuickTips" | translate }}
-            </h4>
-
-            <p style="color:#7695a5">
-              {{ "CannedResponses.QuickTips.1" | translate }}
-
-            </p>
-            <p style="color:#7695a5">
-              {{ "CannedResponses.QuickTips.1B" | translate }}
-            </p>
-            <p style="color:#7695a5">
-              {{ "CannedResponses.QuickTips.1C" | translate }}
-            </p>
-            <div>
-              <img src="assets/img/canned_response_2.gif">
+              </div>
             </div>
-            <!-- <p style="color:#7695a5;">
+          </div>
+          <!-- /. end col-md-8 -->
+
+          <!-- // RIGHT SIDEBAR -->
+          <div class="col-sm-5 right-col-custom-padding">
+            <div class="card card-custom-margin">
+              <div class="card-content">
+                <h4 class="card-title"
+                  style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 15px">
+                  {{ "QuickTips" | translate }}
+                </h4>
+
+                <p style="color:#7695a5">
+                  {{ "CannedResponses.QuickTips.1" | translate }}
+
+                </p>
+                <p style="color:#7695a5">
+                  {{ "CannedResponses.QuickTips.1B" | translate }}
+                </p>
+                <p style="color:#7695a5">
+                  {{ "CannedResponses.QuickTips.1C" | translate }}
+                </p>
+                <div>
+                  <img src="assets/img/canned_response_2.gif">
+                </div>
+                <!-- <p style="color:#7695a5;">
               {{ "CannedResponses.QuickTips.2" | translate }}
             </p>
             <p style="color:#7695a5">
               {{ "CannedResponses.QuickTips.3" | translate }}
             </p> -->
-            <p style="color:#7695a5;  margin-top: 10px;">
-             {{ "CannedResponses.QuickTips.4" | translate }}
-            </p>
-            <p style="color:#7695a5">
-              {{ "CannedResponses.QuickTips.5" | translate }}
-            </p>
-            <p style="color:#7695a5">
-              {{ "CannedResponses.QuickTips.6" | translate }}
-            </p>
-            <p style="color:#7695a5">
-              {{ "CannedResponses.QuickTips.7" | translate }}
-            </p>
+                <p style="color:#7695a5;  margin-top: 10px;">
+                  {{ "CannedResponses.QuickTips.4" | translate }}
+                </p>
+                <p style="color:#7695a5">
+                  {{ "CannedResponses.QuickTips.5" | translate }}
+                </p>
+                <p style="color:#7695a5">
+                  {{ "CannedResponses.QuickTips.6" | translate }}
+                </p>
+                <p style="color:#7695a5">
+                  {{ "CannedResponses.QuickTips.7" | translate }}
+                </p>
+              </div>
+            </div>
           </div>
+
         </div>
+
       </div>
-
     </div>
-
-
-
   </div>
 </div>
 

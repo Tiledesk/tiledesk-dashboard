@@ -1,271 +1,278 @@
 <p style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px" class="navbar-brand">
   {{ 'Tags.Tags' | translate }}
 </p>
-<div class="main-content" style="padding-top:0px">
-  <div class="container-fluid">
+<div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
+  <div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
 
-    <div class="row">
-      <div class="col-md-9 col-lg-8">
-        <div class="card">
-          <div class="card-header card-header-custom-bkgrnd">
-            <div class="tag-input-wrapper">
+    <div class="content-wpr" style="display: flex;">
+      <appdashboard-settings-sidebar> </appdashboard-settings-sidebar>
+      <div class="teplate-content" style="flex: 1 1 auto; margin-left: 20px;">
 
-              <!-- 
-              // -------------------------------------------------------
-              // Dropdown select tag color
-              // ------------------------------------------------------- -->
-              <div class="dropdown" style="float: left;">
-                <a href="#" class="btn dropdown-toggle" data-toggle="dropdown"
-                  style="background: #fff; border: 1px solid #d9d9d9;margin-top: 0px;margin-bottom: 0px;margin-right: -1px!important;padding: 8px 15px; border-top-right-radius: 0px;border-bottom-right-radius: 0px;">
 
-                  <b class="caret" style="color:#000000"></b>
-                </a>
-                <ul class="dropdown-menu">
-                  <li *ngFor="let color of tagColor" class="{{color.name}}">
+        <div class="row">
+          <div class="col-md-9 col-lg-8">
+            <div class="card" style="margin-top: 5px;">
+              <div class="card-header card-header-custom-bkgrnd">
+                <div class="tag-input-wrapper">
 
-                    <a (click)="tagSelectedColor(color?.hex)">
-                      <!-- <div style="height: 18px; width: 18px;"> </div> -->
-                      <!-- <i [ngStyle]="{'color':color.hex}" class="material-icons">fiber_manual_record</i> -->
-                      <svg style="" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag"
-                        class="svg-inline--fa fa-tag fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 512 512">
-                        <style type="text/css">
+                   
+              <!-- ------------------------------------------------------- -->
+              <!-- Dropdown select tag color -->
+              <!-- ------------------------------------------------------- -->
+                  <div class="dropdown" style="float: left;">
+                    <a href="#" class="btn dropdown-toggle" data-toggle="dropdown"
+                      style="background: #fff; border: 1px solid #d9d9d9;margin-top: 0px;margin-bottom: 0px;margin-right: -1px!important;padding: 8px 15px; border-top-right-radius: 0px;border-bottom-right-radius: 0px;">
 
-                        </style>
-                        <path [ngStyle]="{'fill':color.hex}" class="tag_icon"
-                          d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z">
-                        </path>
-                      </svg>
-                      {{ 'Tags.Color.' + color?.name | translate }}
-                      <!-- {{ color?.name }} -->
+                      <b class="caret" style="color:#000000"></b>
                     </a>
-                  </li>
-                </ul>
-              </div>
+                    <ul class="dropdown-menu">
+                      <li *ngFor="let color of tagColor" class="{{color.name}}">
+
+                        <a (click)="tagSelectedColor(color?.hex)">
+                          <!-- <div style="height: 18px; width: 18px;"> </div> -->
+                          <!-- <i [ngStyle]="{'color':color.hex}" class="material-icons">fiber_manual_record</i> -->
+                          <svg style="" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag"
+                            class="svg-inline--fa fa-tag fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 512 512">
+                            <style type="text/css">
+
+                            </style>
+                            <path [ngStyle]="{'fill':color.hex}" class="tag_icon"
+                              d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z">
+                            </path>
+                          </svg>
+                          {{ 'Tags.Color.' + color?.name | translate }}
+                          <!-- {{ color?.name }} -->
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
 
 
-              <form>
-                <input id="tag_name" name="tag_name" [(ngModel)]="tagname" (ngModelChange)="onChangeTagname($event)"
-                  class="input" type="text" placeholder="{{ 'Tags.AddTags' | translate }} ...">
-                <div class="tag-color-round-div--in-input" [ngStyle]="{'background-color':tag_selected_color}"></div>
+                  <form>
+                    <input id="tag_name" name="tag_name" [(ngModel)]="tagname" (ngModelChange)="onChangeTagname($event)"
+                      class="input" type="text" placeholder="{{ 'Tags.AddTags' | translate }} ...">
+                    <div class="tag-color-round-div--in-input" [ngStyle]="{'background-color':tag_selected_color}">
+                    </div>
 
-                <!-- 
+                    <!-- 
                 // -------------------------------------------------------
                 // Add tag btn
                 // ------------------------------------------------------- -->
-                <button class="btn btn-primary create-tag-btn" style="padding: 8px 16px; margin: 0px;"
-                  (click)="createTag()" type="submit">
-                  <span class="icon" style="padding-right:8px">
-                    <i class="material-icons">add_circle</i>
-                  </span>
-                  {{ "Tags.AddTags" | translate }}
-                </button>
+                    <button class="btn btn-primary create-tag-btn" style="padding: 8px 16px; margin: 0px;"
+                      (click)="createTag()" type="submit">
+                      <span class="icon" style="padding-right:8px">
+                        <i class="material-icons">add_circle</i>
+                      </span>
+                      {{ "Tags.AddTags" | translate }}
+                    </button>
 
-                <div *ngIf="hasError === true" class="error-message" style="color: #f6303a;font-size: 14px;position: relative;
+                    <div *ngIf="hasError === true" class="error-message" style="color: #f6303a;font-size: 14px;position: relative;
                 left: -197px;top: 4px;">
-                  {{'CannedResponses.PleaseFillOutThisField' | translate }}
+                      {{'CannedResponses.PleaseFillOutThisField' | translate }}
+                    </div>
+                  </form>
+
                 </div>
-              </form>
+              </div>
 
-            </div>
-          </div>
+              <loading-spinner *ngIf="showSpinner"></loading-spinner>
+              <div *ngIf="!showSpinner" class="card-content">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>
+                        <span class="column-th-span">
+                          {{ "Tags.TagName" | translate }}
+                        </span>
+                      </th>
 
-          <loading-spinner *ngIf="showSpinner"></loading-spinner>
-          <div *ngIf="!showSpinner" class="card-content">
-            <table class="table table-hover">
-              <thead>
-                <tr>
-                  <th>
-                    <span class="column-th-span">
-                      {{ "Tags.TagName" | translate }}
-                    </span>
-                  </th>
+                      <th>
+                        <span class="column-th-span">
+                          {{ "Created" | translate }}
+                        </span>
+                      </th>
 
-                  <th>
-                    <span class="column-th-span">
-                      {{ "Created" | translate }}
-                    </span>
-                  </th>
+                      <th>
+                        <span class="column-th-span">
+                          {{ "CreatedBy" | translate }}
+                        </span>
+                      </th>
 
-                  <th>
-                    <span class="column-th-span">
-                      {{ "CreatedBy" | translate }}
-                    </span>
-                  </th>
+                      <th>
+                        <span class="column-th-span">
+                          {{ "Actions" | translate }}
+                        </span>
+                      </th>
 
-                  <th>
-                    <span class="column-th-span">
-                      {{ "Actions" | translate }}
-                    </span>
-                  </th>
+                    </tr>
+                  </thead>
 
-                </tr>
-              </thead>
+                  <tbody>
+                    <!-- IF THERE TAGS -->
+                    <tr *ngIf="tagsList && tagsList.length === 0">
+                      <td colspan="4" style="text-align: center; padding-top: 24px;">
+                        <p style="font-size:1em; margin-bottom: 0px; color:#7695a5; font-weight: 400">
+                          <i class="material-icons" style="vertical-align: middle; margin-bottom: 2px;color: #00bcd4;">
+                            info
+                          </i>
+                          {{ 'Tags.YouHaveNotAddedAnyTags' | translate }}
+                        </p>
+                      </td>
+                    </tr>
 
-              <tbody>
-                <!-- IF THERE TAGS -->
-                <tr *ngIf="tagsList && tagsList.length === 0">
-                  <td colspan="4" style="text-align: center; padding-top: 24px;">
-                    <p style="font-size:1em; margin-bottom: 0px; color:#7695a5; font-weight: 400">
-                      <i class="material-icons" style="vertical-align: middle; margin-bottom: 2px;color: #00bcd4;"> info
-                      </i>
-                      {{ 'Tags.YouHaveNotAddedAnyTags' | translate }}
-                    </p>
-                  </td>
-                </tr>
+                    <tr *ngFor="let tag of tagsList; let i = index">
+                      <!--  style="width: 1%; white-space: nowrap;" -->
+                      <td>
 
-                <tr *ngFor="let tag of tagsList; let i = index">
-                  <!--  style="width: 1%; white-space: nowrap;" -->
-                  <td>
-
-                    <!-- 
+                        <!-- 
                     // -------------------------------------------------------
                     // Tag icon
                     // ------------------------------------------------------- -->
 
 
-                    <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag"
-                      class="svg-inline--fa-in-table-row fa-tag fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 512 512">
-                      <style type="text/css">
+                        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag"
+                          class="svg-inline--fa-in-table-row fa-tag fa-w-16" role="img"
+                          xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                          <style type="text/css">
 
-                      </style>
-                      <path [ngStyle]="{'fill':tag.color}" class="tag_icon"
-                        d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z">
-                      </path>
-                    </svg>
+                          </style>
+                          <path [ngStyle]="{'fill':tag.color}" class="tag_icon"
+                            d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z">
+                          </path>
+                        </svg>
 
-                    <!-- 
+                        <!-- 
                     // -------------------------------------------------------
                     // Dropdown (to edit the tag color) and Tag name  
                     // ------------------------------------------------------- -->
-                    <div class="tag-input-wrapper" style="display: inline-block;">
-                      <div class="dropdown {{'drop_down_' + i }}">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"
-                          style="background: #fff; margin-top: 0px; margin-bottom: 0px; padding: 0px;">
+                        <div class="tag-input-wrapper" style="display: inline-block;">
+                          <div class="dropdown {{'drop_down_' + i }}">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"
+                              style="background: #fff; margin-top: 0px; margin-bottom: 0px; padding: 0px;">
 
-                          <!-- <b class="caret" style="color:#000000"></b> -->
-                          <i class="material-icons open-dropdown-icon" style="color: #3C4858;font-size: 18px;">
-                            expand_more </i>
-                        </a>
-
-                        <ul class="dropdown-menu dropdown-menu-inline" style="">
-                          <li *ngFor="let color of tagColor" class="{{color.name}}"
-                            style="display: inline-block;float:left;">
-
-                            <a (click)="editTag(tag.tag, color?.hex, tag._id, i)"
-                              style="padding:10px !important; margin-left:0px; margin-right:0px">
-                              <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag"
-                                class="svg-inline--fa-horizontal-dropdown fa-tag fa-w-16" role="img"
-                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-
-                                <path [ngStyle]="{'fill':color.hex}" class="tag_icon"
-                                  d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z">
-                                </path>
-                              </svg>
-                              <!-- {{ 'Tags.Color.' + color?.name | translate }} -->
-
+                              <!-- <b class="caret" style="color:#000000"></b> -->
+                              <i class="material-icons open-dropdown-icon" style="color: #3C4858;font-size: 18px;">
+                                expand_more </i>
                             </a>
-                          </li>
-                        </ul>
 
-                      </div>
-                    </div>
+                            <ul class="dropdown-menu dropdown-menu-inline" style="">
+                              <li *ngFor="let color of tagColor" class="{{color.name}}"
+                                style="display: inline-block;float:left;">
+
+                                <a (click)="editTag(tag.tag, color?.hex, tag._id, i)"
+                                  style="padding:10px !important; margin-left:0px; margin-right:0px">
+                                  <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag"
+                                    class="svg-inline--fa-horizontal-dropdown fa-tag fa-w-16" role="img"
+                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+
+                                    <path [ngStyle]="{'fill':color.hex}" class="tag_icon"
+                                      d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z">
+                                    </path>
+                                  </svg>
+                                  <!-- {{ 'Tags.Color.' + color?.name | translate }} -->
+
+                                </a>
+                              </li>
+                            </ul>
+
+                          </div>
+                        </div>
 
 
-                    <!-- 
+                        <!-- 
                     // -------------------------------------------------------
                     // Tag name
                     // ------------------------------------------------------- -->
 
-                    <span class="td-tag-table">
-                      {{ tag?.tag}}
-                    </span>
-                  </td>
+                        <span class="td-tag-table">
+                          {{ tag?.tag}}
+                        </span>
+                      </td>
 
 
-                  <!-- 
+                      <!-- 
                     // -------------------------------------------------------
                     // Created at
                     // ------------------------------------------------------- -->
-                  <td>
-                    <span class="td-tag-table">
-                      {{ tag?.createdAt | amTimeAgo}}
-                    </span>
-                  </td>
+                      <td>
+                        <span class="td-tag-table">
+                          {{ tag?.createdAt | amTimeAgo}}
+                        </span>
+                      </td>
 
 
-                  <!-- 
+                      <!-- 
                   // -------------------------------------------------------
                   // Created By
                   // ------------------------------------------------------- -->
-                  <td>
+                      <td>
 
-                    <!-- --------------------------------------------------- -->
-                    <!-- USECASE uploadEngine Firebase -->
-                    <!-- --------------------------------------------------- -->
-                    <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
-                      class="user-img-in-tags"
-                      src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{tag?.createdBy}}%2Fphoto.jpg?alt=media"
-                      onerror="this.src='assets/img/no_image_user.png'" />
+                        <!-- --------------------------------------------------- -->
+                        <!-- USECASE uploadEngine Firebase -->
+                        <!-- --------------------------------------------------- -->
+                        <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="user-img-in-tags"
+                          src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{tag?.createdBy}}%2Fphoto.jpg?alt=media"
+                          onerror="this.src='assets/img/no_image_user.png'" />
 
-                    <!-- --------------------------------------------------- -->
-                    <!-- USECASE uploadEngine Native -->
-                    <!-- --------------------------------------------------- -->
-                    <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
-                      class="user-img-in-tags"
-                      src="{{baseUrl}}images?path=uploads%2Fusers%2F{{tag?.createdBy}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
-                      onerror="this.src='assets/img/no_image_user.png'" />
+                        <!-- --------------------------------------------------- -->
+                        <!-- USECASE uploadEngine Native -->
+                        <!-- --------------------------------------------------- -->
+                        <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="user-img-in-tags"
+                          src="{{baseUrl}}images?path=uploads%2Fusers%2F{{tag?.createdBy}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                          onerror="this.src='assets/img/no_image_user.png'" />
 
-                    <span class="td-tag-table">
-                      <span *ngIf="tag.createdBy_user">
-                        {{ tag?.createdBy_user?.firstname }} {{ tag?.createdBy_user?.lastname }}
-                      </span>
+                        <span class="td-tag-table">
+                          <span *ngIf="tag.createdBy_user">
+                            {{ tag?.createdBy_user?.firstname }} {{ tag?.createdBy_user?.lastname }}
+                          </span>
 
-                      <span *ngIf="!tag.createdBy_user">
-                        n.d
-                      </span>
-                    </span>
+                          <span *ngIf="!tag.createdBy_user">
+                            n.d
+                          </span>
+                        </span>
 
-                  </td>
+                      </td>
 
-                  <td class="td-actions text-right" style="padding-top:20px">
-                    <!-- <button type="button" rel="tooltip" title="" class="btn btn-primary btn-simple btn-xs"
+                      <td class="td-actions text-right" style="padding-top:20px">
+                        <!-- <button type="button" rel="tooltip" title="" class="btn btn-primary btn-simple btn-xs"
                       (click)='presentModaleditTag(tag?._id)'>
                       <i class="material-icons">edit</i>
                     </button> -->
 
-                    <button type="button" rel="tooltip" title="" class="btn btn-danger btn-simple btn-xs"
-                      (click)='presentModalDeleteTag(tag?._id, tag?.tag)'>
-                      <i class="material-icons">close</i>
-                    </button>
-                  </td>
+                        <button type="button" rel="tooltip" title="" class="btn btn-danger btn-simple btn-xs"
+                          (click)='presentModalDeleteTag(tag?._id, tag?.tag)'>
+                          <i class="material-icons">close</i>
+                        </button>
+                      </td>
 
-                </tr>
-              </tbody>
-            </table>
+                    </tr>
+                  </tbody>
+                </table>
 
+              </div>
+            </div>
+          </div>
+          <!-- /. end col-md-8 -->
+
+          <!-- // RIGHT SIDEBAR -->
+          <div class="col-md-3 col-lg-4">
+            <div class="card" style="margin-top: 5px;">
+              <div class="card-content">
+                <h4 class="card-title"
+                  style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 15px">
+                  {{ "QuickTips" | translate }}
+                </h4>
+
+                <p style="color:#7695a5">
+                  {{'Tags.TagsAreLabelsThatYouCanAddToConversationsAndTicket' | translate}}
+                </p>
+
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      <!-- /. end col-md-8 -->
-
-      <!-- // RIGHT SIDEBAR -->
-      <div class="col-md-3 col-lg-4">
-        <div class="card">
-          <div class="card-content">
-            <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 15px">
-              {{ "QuickTips" | translate }}
-            </h4>
-
-            <p style="color:#7695a5">
-            {{'Tags.TagsAreLabelsThatYouCanAddToConversationsAndTicket' | translate}}
-            </p>
-
-          </div>
-        </div>
-      </div>
-
     </div>
   </div>
 </div>

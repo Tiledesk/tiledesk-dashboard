@@ -40,6 +40,7 @@ export class TriggerComponent implements OnInit {
   trigger_docs_title = 'trigger'; // is diplayed if customtext = false
   customtext = false;
   text_to_display = '' // is diplayed if customtext = true
+  translateparam: any; 
   constructor(
     private auth: AuthService,
     private triggerService: TriggerService,
@@ -50,6 +51,7 @@ export class TriggerComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.translateparam = { helpdoc: this.trigger_docs_title };
     this.showSpinner = true;
     this.getCurrentProject();
     this.getAllTrigger();
@@ -177,6 +179,11 @@ export class TriggerComponent implements OnInit {
       this.query = 'custom'
     }
 
+  }
+
+  goToTriggerDocs() {
+    const url = helpdocurl_triggers
+    window.open(url, '_blank');
   }
 
 }

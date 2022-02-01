@@ -1,3 +1,4 @@
+
 <!-- *ngIf="project"  -->
 <div class="logo" style="background-color:#1e2129!important; padding-bottom: 5px;min-height: 60px;">
   <a class="logo-img-wpr" [ngClass]="{'small-sidebar-logo-img-wpr' : SIDEBAR_IS_SMALL === true }">
@@ -6,21 +7,22 @@
     <div class="logo-img" (click)="goToHome()" style="cursor: pointer;">
 
       <!-- assets/img/tiledesk-logo_white_orange.svg -->
-
+   
       <!-- note to center the logo remove > left: 26px -->
       <!-- <img style="width:45%; top:20px;left: 26px" src="assets/img/tiledesk-logo_white_orange.svg" /> -->
-      <!-- <img *ngIf="SIDEBAR_IS_SMALL === false" class="sidebar__logo" [ngClass]="{'sidebar__logo_no_rocket' : hidechangelogrocket === true }"
-        [src]="sidebarLogoWhite_Url" /> -->
-      <img class="small-sidebar__logo" [src]="sidebarLogoNoText" />
+      <img *ngIf="SIDEBAR_IS_SMALL === false" class="sidebar__logo" [ngClass]="{'sidebar__logo_no_rocket' : hidechangelogrocket === true }"
+        [src]="sidebarLogoWhite_Url" />
+        <img *ngIf="SIDEBAR_IS_SMALL === true" class="small-sidebar__logo"
+        [src]="sidebarLogoNoText" />
     </div>
 
-    <!-- <div *ngIf="!hidechangelogrocket" class="link-to-tiledesk-changelog-blog" (click)="goToBlogChangelog()"
+    <div *ngIf="!hidechangelogrocket" class="link-to-tiledesk-changelog-blog" (click)="goToBlogChangelog()"
       style="position: absolute; top: 18px; right: 25px; cursor:pointer">
       <div class="news-rocket" style="cursor: pointer;">
         <img style="height: auto; width: 18px;" src="assets/img/t_rocket.svg" />
       </div>
       <div class="flame_icon">1 </div>
-    </div> -->
+    </div>
   </a>
 
   <!-- https://codepen.io/Ultimate-Fortnite-Gamer/pen/VOQENV -->
@@ -52,8 +54,8 @@
 <div class="sidebar-wrapper" (scroll)="onScroll($event)">
 
   <!-- // NK start NEW: AVATAR ON THE SIDEBAR  -->
-  <div class="user tiledesk-nav-user" [ngClass]="{'small-sidebar-tiledesk-nav-user' : SIDEBAR_IS_SMALL === true }"
-    fxlayout="column" style="flex-direction: column; box-sizing: border-box; display: flex;">
+  <div class="user tiledesk-nav-user" [ngClass]="{'small-sidebar-tiledesk-nav-user' : SIDEBAR_IS_SMALL === true }"  fxlayout="column"
+    style="flex-direction: column; box-sizing: border-box; display: flex;">
     <div *ngIf="user" class="h3 username" style="font-size: 16px;font-weight: 400;margin-top: 15px; margin-bottom: 5px;"
       [ngClass]="{'small-sidebar-userfullname' : SIDEBAR_IS_SMALL === true }">
 
@@ -65,11 +67,11 @@
 
       {{ user.email }}
 
-      <!-- <div style="text-align: center;" *ngIf="IS_BUSY === true">
+      <div style="text-align: center;" *ngIf="IS_BUSY === true">
         <span class="sidebar--isBusy-text">
           {{ 'Busy' | translate }}
         </span>
-      </div> -->
+      </div>
     </div>
 
     <!-- routerLink="project/{{ project._id }}/user-profile" -->
@@ -118,15 +120,69 @@
     </div>
   </div>
 
-  <!-- ---------------------------------------- -->
-  <!-- Nav mobile menu -->
-  <!-- ---------------------------------------- -->
+  <!-- <div class="middle"> -->
+
+  <!-- </div> -->
+  <!-- // NK ./end NEW: AVATAR ON THE SIDEBAR  -->
+
+  <!-- SEARCH MOBILE MENU -->
+  <!-- <form class="navbar-form navbar-right" role="search" *ngIf="isMobileMenu()">
+        <div class="form-group form-black is-empty">
+            <input type="text" class="form-control" placeholder="Search">
+            <span class="material-input"></span>
+        </div>
+        <button type="submit" class="btn btn-white btn-round btn-just-icon">
+            <i class="material-icons">search</i><div class="ripple-container"></div>
+        </button>
+    </form> -->
+
   <ul class="nav nav-mobile-menu" *ngIf="isMobileMenu()">
-    <li *ngIf="user" style="display: inline">
-      <a class="nav-mobile-menu-user-profile" style="margin-top:0px; margin-bottom:0px; text-align: center; color: #fff"
-        routerLink="/user-profile">
-        {{ "SideBar.UserProfile" | translate }}
+    <!-- <li  *ngIf="project">
+      <a style="margin-bottom:0px"> 
+        <i class="material-icons sidebar-icons" style="margin-right: 0px">apps</i>
+        <p class="hidden-lg hidden-md">{{ project?.name }}  </p>
       </a>
+    </li> -->
+
+    <!-- 
+    <li *ngIf="user">
+      <a>
+          <i class="material-icons sidebar-icons"  style="margin-right: 0px">person</i>
+         
+          <p class="hidden-lg hidden-md">
+       
+             {{ user?.firstname }} {{ user?.lastname }}
+              
+          </p>
+      </a>
+    </li> -->
+
+
+    <li *ngIf="user" style="display: inline">
+
+      <a class="nav-mobile-menu-user-profile" style="margin-top:0px; margin-bottom:0px; text-align: center; color: #fff" routerLink="/user-profile">
+
+        <!-- VEDI PROFILO  -->
+        {{ "SideBar.UserProfile" | translate }}
+        <!-- </button> -->
+      </a>
+
+      <!-- <button (click)="openLogoutModal()"> 
+          <i class="material-icons" style="font-size:28px; color: #fff">
+              exit_to_app
+          </i>
+        </button> -->
+
+      <!-- <a style="text-align: center; cursor: pointer;" (click)="openLogoutModal()"> -->
+      <!-- <button class="btn" style=""> -->
+      <!-- {{ 'NavBar.LogOut' | translate }} -->
+
+      <!-- {{ 'NavBar.LogOut' | translate }} -->
+      <!-- <span style="display: block; color: #fff">
+                 
+              </span> -->
+      <!-- </button> -->
+      <!-- </a> -->
     </li>
 
     <!-- ---------------------------- -->
@@ -134,36 +190,102 @@
     <!-- ---------------------------- -->
     <li *ngIf="project">
       <a class="nav-mobile-menu-language" routerLink="project/{{ project._id }}/user-profile" fragment="language">
-
-        <img [src]="flag_url" style="width: auto;height: 19px; position: relative;top: -1px;">
+        
+        <img [src]="flag_url"  style="width: auto;height: 19px; position: relative;top: -1px;">
       </a>
     </li>
     <li *ngIf="!project">
-      <a class="nav-mobile-menu-language" routerLink="/user-profile" fragment="language">
-
-        <img [src]="flag_url" style="width: auto;height: 19px; position: relative;top: -1px;">
+      <a class="nav-mobile-menu-language" routerLink="/user-profile" fragment="language" >
+       
+        <img [src]="flag_url"  style="width: auto;height: 19px; position: relative;top: -1px;">
       </a>
     </li>
+
+    <!-- <li *ngIf="user" style="display: inline">
+      <a style="text-align: center; cursor: pointer" (click)="openLogoutModal()">
+          <button class="btn btn-primary btn-sm" style=" padding-top:12px; padding-bottom:12px">
+          <i class="material-icons" style=" color: #fff">
+              exit_to_app
+          </i>
+          {{ 'NavBar.LogOut' | translate }}
+        </button>
+        </a>
+      
+    </li> -->
 
     <li *ngIf="project">
       <a style="text-align: center; color: #fff" (click)="goToProjects()">
+
         {{ "SideBar.ViewAllProjects" | translate }}
+        <!-- </button> -->
       </a>
     </li>
+
+
   </ul>
-  <!-- ./end Nav mobile menu -->
 
   <div class="nav-container">
-    <!-- [ngClass]="{'is-desktop-menu' : IS_MOBILE_MENU === false, 'is-mobile-menu' : IS_MOBILE_MENU === true  }" -->
-    <ul style="padding-bottom: 65px;" class="nav">
+    <ul style="padding-bottom: 65px;" class="nav"
+      [ngClass]="{'is-desktop-menu' : IS_MOBILE_MENU === false, 'is-mobile-menu' : IS_MOBILE_MENU === true  }">
 
+      <!-- SELECT AVAILABLE / UNAVAILABLE -->
+      <!-- <li *ngIf="project" style="margin-left: 10px;">
+          <a *ngIf="IS_AVAILABLE" 
+            style="background-color: rgba(255,255,255,0.2);                  
+              border-radius: 10px;
+              display:block;
+              margin:0 auto;
+              width: 200px;
+              padding: 5px 10px; 
+              cursor: pointer" 
+              (click)="changeAvailabilityState(IS_AVAILABLE = !IS_AVAILABLE)">
+
+            <i class="material-icons" style="font-size: 16px; color: #1eb848; margin-right:0px; padding-right: 8px">
+              fiber_manual_record
+            </i>
+
+            <p style="color:#fff ;">
+              <span style="padding-left: 8px">
+                {{ 'Available' | translate }}
+              </span>
+            </p>
+          </a>
+
+          <a *ngIf="!IS_AVAILABLE" 
+            style="background-color: rgba(255,255,255,0.2); 
+                    border-radius: 10px;
+                    display:block;
+                    margin:0 auto;
+                    width: 200px;  
+                    padding: 5px 10px; 
+                    cursor: pointer" 
+              (click)="changeAvailabilityState(IS_AVAILABLE = !IS_AVAILABLE)">
+
+            <i class="material-icons" style=" font-size: 16px; color: #cac9c9; margin-right:0px; padding-right: 8px ">
+              fiber_manual_record
+            </i>           
+            <p style="color:#cac9c9">
+              <span style="padding-left: 8px">
+                {{ 'Unavailable' | translate }}
+              </span>
+            </p>
+          </a>
+        </li> -->
+
+      <!-- !!!! NO MORE USED HOME - VISITORS (alias REQUESTS) - CHAT -->
+      <!-- <li routerLinkActive="active" *ngFor="let menuItem of menuItems" class="{{menuItem.class}}">
+            <a  [routerLink]="[menuItem.path]">
+                <i class="material-icons">{{menuItem.icon}}</i>
+                <p>{{menuItem.title}}</p>
+            </a>
+        </li> -->
 
       <!-- CHAT  -->
       <li *ngIf="project" routerLinkActive="active">
         <!-- <a class="customAncor" routerLink="/chat"> -->
         <!-- <a class="customAncor" routerLink="project/{{ project._id }}/chat"> -->
-        <!-- (click)="openChat()" target="_blank"  href="{{ CHAT_BASE_URL }}"  (click)="removeChatBtnFocus()" -->
-        <a #openchatbtn class="customAncor" (click)="openChat()" style="cursor: pointer;">
+          <!-- (click)="openChat()" target="_blank"  href="{{ CHAT_BASE_URL }}"  (click)="removeChatBtnFocus()" -->
+        <a #openchatbtn class="customAncor"  (click)="openChat()" style="cursor: pointer;">
           <i class="material-icons sidebar-icons">chat</i>
           <p class="onBlackBckgrnd">Chat</p>
         </a>
@@ -178,7 +300,7 @@
           <i class="material-icons sidebar-icons">
             home
           </i>
-
+            
           <p class="onBlackBckgrnd">Home</p>
         </a>
       </li>
@@ -211,6 +333,9 @@
           </a>
         </li>
       </ng-container>
+
+
+
 
       <!-- CHAT AS TARGET BLANK // SEE ABOVE: IS NO MORE NECESSARY TO LINK THE CHAT IN A EXTERNAL PAGE-->
       <!-- <li>
@@ -264,18 +389,18 @@
           <i class="material-icons sidebar-icons">settings</i>
           <p class="onBlackBckgrnd">
             {{ 'Settings' | translate }}
-            <!-- <b class="caret" style="position: absolute;right: 18px; margin-top: 13px"
-              [ngStyle]="{'transform': trasform}"></b> -->
+            <b class="caret" style="position: absolute;right: 18px; margin-top: 13px"
+              [ngStyle]="{'transform': trasform}"></b>
           </p>
         </a>
       </li>
 
 
 
-
-      <!-- ------------------------------------------------------- -->
-      <!-- Canned responses -->
-      <!-- ------------------------------------------------------- -->
+      <!--
+    // ------------------------------------------------------- 
+    // Canned responses
+    // ------------------------------------------------------- -->
       <ng-container *ngIf="isVisibleCAR">
         <li *ngIf="SHOW_SETTINGS_SUBMENU && USER_ROLE !== 'agent'" routerLinkActive="active" (click)="stopScroll()">
           <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/cannedresponses">
@@ -292,15 +417,15 @@
         </li>
       </ng-container>
 
-
-      <!-- -------------------------------------------------------------  -->
-      <!-- Tags (menu item name 'Labels' then renamend tags 26gen21)  -->
-      <!-- ------------------------------------------------------------- -->
+      <!--
+    // ------------------------------------------------------- 
+    // Tags (menu item name 'Labels' then renamend tags 26gen21) 
+    // ------------------------------------------------------- -->
       <ng-container *ngIf="isVisibleLBS">
         <li *ngIf="SHOW_SETTINGS_SUBMENU && USER_ROLE !== 'agent'" routerLinkActive="active" (click)="stopScroll()">
           <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/labels">
             <p class="onBlackBckgrnd">
-              <i class="fa fa-tag sidebar-icons" style="font-size: 18px !important;"></i>
+              <i class="fa fa-tag sidebar-icons" style="font-size: 18px !important;" ></i>
               <!-- <span class="sidebar-mini">
                 T
               </span> -->
@@ -311,10 +436,46 @@
       </ng-container>
 
 
+      <!-- SECTION OF SETTINGS SUBMENU -->
 
-      <!-- ------------------------------------------------------- -->
-      <!-- New:MERGE ROUTING / DEPT - Routing & depts -->
-      <!-- ------------------------------------------------------- -->
+      <!-- BOT: NO MORE USED - THE CURRENT BOT (see down) IS FAQKB RENAMED TO BOT-->
+      <!-- <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" style="" >
+            <a  *ngIf="project" routerLink="project/{{ project._id }}/bots">
+                <span class="sidebar-mini">
+                    B 
+                </span>
+                <span class="sidebar-normal">Bots</span> 
+            </a>
+        </li> -->
+
+      <!-- 
+      // --------------------------------------------------------
+      //  ROUTING  !!!! REPLACED WITH THE MERGE ROUTING / DEPT 
+      // -------------------------------------------------------- -->
+      <!-- <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
+        <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/routing/{{default_dept_id}}">
+          <p class="onBlackBckgrnd">
+            <span class="sidebar-mini">R </span> Routing
+          </p>
+        </a>
+      </li> -->
+
+
+      <!-- <ng-container *ngIf="isVisibleDEP">
+        <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
+          <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/departments">
+
+            <p class="onBlackBckgrnd">
+              <span class="sidebar-mini">D </span>{{ 'Departments' | translate }}
+            </p>
+          </a>
+        </li>
+      </ng-container> -->
+
+      <!--   
+      // -------------------------------------------------------
+      // New:MERGE ROUTING / DEPT - Routing & depts
+      // ------------------------------------------------------- -->
       <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
         <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/departments">
           <i class="fa fa-university sidebar-icons" style="font-size:16px !important"></i>
@@ -327,18 +488,16 @@
             <span *ngIf="isVisibleDEP"> {{'RoutingAndDepts' | translate}} </span>
             <span *ngIf="!isVisibleDEP"> Routing </span>
 
+
           </p>
         </a>
       </li>
 
-
-      <!-- ------------------------------------------------------- -->
       <!-- TRIGGER -->
-      <!-- ------------------------------------------------------- -->
       <ng-container *ngIf="isVisibleTRI">
         <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
           <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/trigger">
-
+    
             <i class="material-icons sidebar-icons" style="
             font-size:23px; position:relative; left:1px">
               generating_tokens
@@ -353,9 +512,7 @@
         </li>
       </ng-container>
 
-      <!-- ------------------------------------------------------- -->
-      <!-- Teammates & Groups -->
-      <!-- ------------------------------------------------------- -->
+      <!-- USERS (ALIAS MEMBERS) -->
       <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
         <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/users">
           <i class="material-icons sidebar-icons">
@@ -368,16 +525,21 @@
             </span>
             <span *ngIf="!isVisibleGRO">
               <!-- <span class="sidebar-mini">{{'TeammateInitial' | translate }} </span>  -->
-              <span style="text-transform: capitalize;"> {{ 'Teammates' | translate }} </span>
+              <span style="text-transform: capitalize;"> {{ 'Teammates' | translate }} </span> 
             </span>
           </p>
         </a>
       </li>
 
+      <!-- GROUPS -->
+      <!-- <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
+          <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/groups">
+            <p class="onBlackBckgrnd">
+              <span class="sidebar-mini">G </span> {{ 'Groups' | translate }} 
+            </p>
+          </a>
+        </li> -->
 
-      <!-- ------------------------------------------------------- -->
-      <!-- Chatbot -->
-      <!-- ------------------------------------------------------- -->
       <!-- FAQ (alias FAQKB) HAS BEEN RENAMED IN BOT (BOT - see above - IS CURRENTLY COMMENTED) -->
       <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
         <!-- routerLink="project/{{ project._id }}/faqkb" -->
@@ -387,7 +549,7 @@
           </i>
           <p class="onBlackBckgrnd">
             <!-- <span class="sidebar-mini">B </span> -->
-            Bots
+             Bots
           </p>
 
           <!-- <span class="sidebar-mini">
@@ -399,10 +561,21 @@
         </a>
       </li>
 
+      <!-- 
+      // --------------------------------------------------------
+      //  DEPARTMENT  !!!! REPLACED WITH THE MERGE ROUTING / DEPT
+      // -------------------------------------------------------- -->
+      <!-- <ng-container *ngIf="isVisibleDEP">
+        <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
+          <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/departments">
 
-      <!-- -------------------------------------------------------- -->
-      <!--  Widget  -->
-      <!-- -------------------------------------------------------- -->
+            <p class="onBlackBckgrnd">
+              <span class="sidebar-mini">D </span>{{ 'Departments' | translate }}
+            </p>
+          </a>
+        </li>
+      </ng-container> -->
+
       <li style="display: block;" *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active"
         (click)="stopScroll()">
         <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/widget-set-up">
@@ -410,8 +583,8 @@
           <i class="material-icons sidebar-icons">
             chat_bubble
           </i>
-
-
+          
+          
           <p class="onBlackBckgrnd">
             <!-- <span class="sidebar-mini">W </span> -->
             Widget
@@ -427,12 +600,18 @@
       </li>
 
 
+      <!-- Moved in Project Settings -> Developer -->
+      <!-- <li style="display: block;" *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active"
+        (click)="stopScroll()">
+        <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/webhook">
+          <p class="onBlackBckgrnd">
+            <span class="sidebar-mini">W </span>Webhooks
+          </p>
+        </a>
+      </li> -->
 
-      <!-- -------------------------------------------------------- -->
-      <!--  Operatinf Hours  -->
-      <!-- -------------------------------------------------------- -->
       <ng-container *ngIf="isVisibleOPH">
-
+        <!-- , onEvent($event) -->
         <li *ngIf="SHOW_SETTINGS_SUBMENU" routerLinkActive="active" (click)="stopScroll()">
           <a *ngIf="project" class="customAncor" routerLink="project/{{ project._id }}/hours">
             <i class="material-icons sidebar-icons">
@@ -440,7 +619,7 @@
             </i>
             <p class="onBlackBckgrnd">
               <!-- <span class="sidebar-mini">O </span> -->
-
+              
               {{ 'Hours' | translate }}
             </p>
 
@@ -455,9 +634,8 @@
       </ng-container>
 
 
-      <!-- -------------------------------------------------------- -->
-      <!--  Project Settings  -->
-      <!-- -------------------------------------------------------- -->
+      <!-- margin-bottom:95px -->
+      <!-- style="margin-bottom:65px" -->
       <li *ngIf="SHOW_SETTINGS_SUBMENU" routerLinkActive="active" (click)="stopScroll()">
         <a *ngIf="project" class="customAncor" routerLink="project/{{ project._id }}/project-settings/general">
           <!-- <i class="material-icons sidebar-icons" >
@@ -483,10 +661,10 @@
 
 
 
-       
-      <!-- ------------------------------------------------  -->
-      <!-- Logout  --> 
-      <!-- ------------------------------------------------ -->
+      <!-- 
+      // ------------------------------------------------ 
+      // Logout 
+      // ------------------------------------------------ -->
       <li *ngIf="isMobileMenu()" (click)="openLogoutModal()" style="background-color: #1e2129 !important;
       text-align: center;
       margin-left: 15px;

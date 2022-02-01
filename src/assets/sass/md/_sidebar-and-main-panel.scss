@@ -1,5 +1,4 @@
-
- .wrapper{
+.wrapper {
     position: relative;
     top: 0;
     height: 100vh;
@@ -9,7 +8,7 @@
     top: 0;
     bottom: 0;
     left: 0;
-    width: 260px; 
+    width: 260px;
     display: block;
     z-index: 1;
     color: #fff;
@@ -18,7 +17,7 @@
     background-position: center center;
 }
 .sidebar,
-.off-canvas-sidebar{
+.off-canvas-sidebar {
     position: fixed;
     top: 0;
     bottom: 0;
@@ -26,32 +25,46 @@
     z-index: 1;
     // @include shadow-big(); nk commented 8set20
 
+    // ----------------------------------------------
+    // @ Large sidebar
+    // ----------------------------------------------
+    // .sidebar-wrapper{
+    //     position: relative;
+    //     // height: calc(100vh - 75px);
+    //     height: calc(100vh - 60px); // nk custom
+    //     overflow: auto;
+    //     width: 260px;
+    //     // width: 109px; // NK new-sidebar
+    //     z-index: 4;
+    //     //background-color: $white-color;
+    // }
 
-    .sidebar-wrapper{
+    // ----------------------------------------------
+    // @ Small sidebar
+    // ----------------------------------------------
+    .sidebar-wrapper {
         position: relative;
-        // height: calc(100vh - 75px); 
         height: calc(100vh - 60px); // nk custom
         overflow: auto;
-        width: 260px; 
-        // width: 109px; // NK new-sidebar
+        width: 60px;
         z-index: 4;
-        //background-color: $white-color;
     }
-    .logo-img{
+
+    .logo-img {
         width: 30px;
         display: inline-block;
         max-height: 30px;
         margin-left: 10px;
         margin-right: 15px;
 
-        img{
+        img {
             width: 35px;
             top: 16px;
             position: absolute;
         }
     }
 
-    .logo-tim{
+    .logo-tim {
         border-radius: 50%;
         border: 1px solid #333;
         display: block;
@@ -60,41 +73,39 @@
         float: left;
         overflow: hidden;
 
-        img{
+        img {
             width: 60px;
             height: 60px;
         }
     }
 
-
-
-    .nav{
+    .nav {
         margin-top: 20px;
 
-        li{
-            > a{
+        li {
+            > a {
                 margin: 10px 15px;
                 border-radius: $border-radius-base;
                 color: $black-color;
                 @extend .animation-transition-general;
             }
 
-            &:hover > a{
+            &:hover > a {
                 background: rgba(200, 200, 200, 0.2);
                 color: $black-color;
             }
 
-            &.active > a{
-                color: #FFFFFF;
+            &.active > a {
+                color: #ffffff;
 
-                i{
+                i {
                     // color: #FFFFFF;
-                    color: $brand-sidebar-active-item-icon-color
+                    color: $brand-sidebar-active-item-icon-color;
                 }
             }
         }
 
-        p{
+        p {
             margin: 0;
             line-height: 30px;
             font-size: 14px;
@@ -102,7 +113,7 @@
             // text-transform: uppercase;
         }
 
-        i{
+        i {
             font-size: 24px;
             float: left;
             margin-right: 15px;
@@ -110,11 +121,11 @@
             width: 30px;
             text-align: center;
             // color: #a9afbb;
-            color: $brand-sidebar-inactive-item-icon-color
+            color: $brand-sidebar-inactive-item-icon-color;
         }
     }
 
-    .sidebar-background{
+    .sidebar-background {
         position: absolute;
         z-index: 1;
         height: 100%;
@@ -125,35 +136,34 @@
         background-size: cover;
         background-position: center center;
 
-        &:after{
+        &:after {
             position: absolute;
             z-index: 3;
             width: 100%;
             height: 100%;
             content: "";
             display: block;
-            background: #FFFFFF;
-            opacity: .93;
+            background: #ffffff;
+            opacity: 0.93;
         }
     }
 
-    .logo{
+    .logo {
         position: relative;
         padding: $padding-base $padding-base;
         z-index: 4;
 
-        &:after{
-            content: '';
+        &:after {
+            content: "";
             position: absolute;
             bottom: 0;
             right: 10%;
             height: 1px;
             width: 80%;
-            background-color: rgba(180,180,180, .3);
-
+            background-color: rgba(180, 180, 180, 0.3);
         }
 
-        p{
+        p {
             float: left;
             font-size: 20px;
             margin: 10px 10px;
@@ -162,7 +172,7 @@
             font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         }
 
-        .simple-text{
+        .simple-text {
             text-transform: uppercase;
             padding: $padding-small-vertical $padding-zero;
             display: block;
@@ -174,7 +184,7 @@
         }
     }
 
-    .logo-tim{
+    .logo-tim {
         border-radius: 50%;
         border: 1px solid #333;
         display: block;
@@ -183,14 +193,14 @@
         float: left;
         overflow: hidden;
 
-        img{
+        img {
             width: 60px;
             height: 60px;
         }
     }
 
     &:after,
-    &:before{
+    &:before {
         display: block;
         content: "";
         position: absolute;
@@ -201,90 +211,91 @@
         z-index: 2;
     }
 
-    &:before{
-        opacity: .33;
+    &:before {
+        opacity: 0.33;
         // background: #000000;
     }
 
-    &:after{
-    //    @include set-background-color-button($font-background-light-grey, $background-lighter-grey);
-       z-index: 3;
-       opacity: 1;
+    &:after {
+        //    @include set-background-color-button($font-background-light-grey, $background-lighter-grey);
+        z-index: 3;
+        opacity: 1;
     }
 
     &[data-image]:after,
-    &.has-image:after{
-        opacity: .77;
+    &.has-image:after {
+        opacity: 0.77;
     }
 
-    &[data-color="blue"]{
+    &[data-color="blue"] {
         @include set-background-color-button($brand-info);
     }
-    &[data-color="green"]{
+    &[data-color="green"] {
         @include set-background-color-button($brand-success);
     }
-    &[data-color="orange"]{
+    &[data-color="orange"] {
         @include set-background-color-button($brand-warning);
     }
-    &[data-color="red"]{
+    &[data-color="red"] {
         @include set-background-color-button($brand-danger);
     }
-    &[data-color="purple"]{
+    &[data-color="purple"] {
         @include set-background-color-button($brand-primary);
     }
 }
 
-.off-canvas-sidebar{
+.off-canvas-sidebar {
     .nav {
         > li > a,
-        > li > a:hover{
+        > li > a:hover {
             color: $white-color;
         }
 
-        > li > a:focus{
+        > li > a:focus {
             background: rgba(200, 200, 200, 0.2);
         }
     }
 }
 
-
-.main-panel{
+.main-panel {
     //background: rgba(203,203,210,.15);
     position: relative;
     // z-index: 2;
     float: right;
     min-height: 100%;
-    width: $sidebar-width;
+    // width: $sidebar-width;
+    width: calc(100% - 60px); // for small sidebar
 
-    .main-content{
+
+    .main-content {
         margin-top: 70px;
         padding: 30px 15px;
         min-height: calc(100% - 123px);
     }
-    div{
-        .footer{
+    div {
+        .footer {
             border-top: 1px solid #e7e7e7;
         }
     }
-    > .navbar{
+    > .navbar {
         margin-bottom: 0;
     }
 }
-.bootstrap-navbar .nav{
+.bootstrap-navbar .nav {
     margin-top: 20px;
     float: none;
 }
-.main-panel{
+.main-panel {
     position: relative;
     height: 100%;
 }
 .sidebar,
-.main-panel{
-    -webkit-transition-property: top,bottom,width;
-    transition-property: top,bottom,width;
-    -webkit-transition-duration: .2s,.2s,.35s;
-    transition-duration: .2s,.2s,.35s;
-    -webkit-transition-timing-function: linear,linear,ease;
-    transition-timing-function: linear,linear,ease;
+.main-panel {
+    -webkit-transition-property: top, bottom, width;
+    transition-property: top, bottom, width;
+    -webkit-transition-duration: 0.2s, 0.2s, 0.35s;
+    transition-duration: 0.2s, 0.2s, 0.35s;
+    -webkit-transition-timing-function: linear, linear, ease;
+    transition-timing-function: linear, linear, ease;
     -webkit-overflow-scrolling: touch;
 }

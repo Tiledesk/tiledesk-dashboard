@@ -70,7 +70,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     tparams: any;
     sidebarLogoWhite_Url: string;
     sidebarLogoNoText: string;
-    hidechangelogrocket: boolean;
+    // hidechangelogrocket: boolean;
 
     // background_bottom_section = brand.sidebar.background_bottom_section
     // public_Key = environment.t2y12PruGU9wUtEGzBJfolMIgK; // now get from appconfig
@@ -107,7 +107,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     // IS_UNAVAILABLE = false;
     IS_AVAILABLE: boolean;
     IS_BUSY: boolean;
-    SIDEBAR_IS_SMALL: boolean = false;
+    SIDEBAR_IS_SMALL: boolean = true;
     projectUser_id: string;
 
     project: Project;
@@ -200,7 +200,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.tparams = brand;
         if (brand) {
             this.sidebarLogoWhite_Url = brand['company_logo_white__url'];
-            this.hidechangelogrocket = brand['sidebar__hide_changelog_rocket'];
+           
             this.sidebarLogoNoText = brand['company_logo_no_text__url'];
         }
     }
@@ -231,7 +231,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.getOSCODE();
 
         this.brandLog();
-        this.getHasOpenBlogKey()
+        // this.getHasOpenBlogKey()
         this.getChatUrl();
         this.isMac();
         this.listenHasDeleteUserProfileImage();
@@ -284,18 +284,18 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         // this.logger.log('[SIDEBAR] AppConfigService getAppConfig CHAT_BASE_URL', this.CHAT_BASE_URL);
     }
 
-    getHasOpenBlogKey() {
-        const hasOpenedBlog = this.usersLocalDbService.getStoredChangelogDate();
-        this.logger.log('[SIDEBAR] »»»»»»»»» hasOpenedBlog ', hasOpenedBlog);
-        if (hasOpenedBlog === true) {
-            this.hidechangelogrocket = true;
-        }
-    }
+    // getHasOpenBlogKey() {
+    //     const hasOpenedBlog = this.usersLocalDbService.getStoredChangelogDate();
+    //     this.logger.log('[SIDEBAR] »»»»»»»»» hasOpenedBlog ', hasOpenedBlog);
+    //     if (hasOpenedBlog === true) {
+    //         this.hidechangelogrocket = true;
+    //     }
+    // }
 
     brandLog() {
         // this.logger.log('BRAND_JSON - SIDEBAR ', brand);
         this.logger.log('[SIDEBAR] BRAND_JSON - sidebarlogourl ', this.sidebarLogoWhite_Url);
-        this.logger.log('[SIDEBAR] BRAND_JSON - hidechangelogrocket ', this.hidechangelogrocket);
+        
     }
 
     getProfileImageStorage() {
@@ -1142,13 +1142,13 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     // }
 
 
-    goToBlogChangelog() {
-        const url = 'https://www.tiledesk.com/category/changelog/';
-        window.open(url, '_blank');
+    // goToBlogChangelog() {
+    //     const url = 'https://www.tiledesk.com/category/changelog/';
+    //     window.open(url, '_blank');
 
-        this.usersLocalDbService.savChangelogDate()
-        this.hidechangelogrocket = true;
-    }
+    //     this.usersLocalDbService.savChangelogDate()
+    //     this.hidechangelogrocket = true;
+    // }
 
     goToProjects() {
         this.logger.log('[SIDEBAR] IS MOBILE -  HAS CLICCKED GO TO PROJECT')
