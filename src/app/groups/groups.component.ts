@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { UsersService } from '../services/users.service';
 import { NotifyService } from '../core/notify.service';
 import { LoggerService } from '../services/logger/logger.service';
+import { helpdocurl_groups } from '../utils/util';
 @Component({
   selector: 'app-groups',
   templateUrl: './groups.component.html',
@@ -87,6 +88,11 @@ export class GroupsComponent implements OnInit {
 
   goToEditAddPage_edit(id_group: string) {
     this.router.navigate(['project/' + this.project_id + '/group/edit/' + id_group]);
+  }
+
+  goToGroupsDoc() {
+    const url = helpdocurl_groups
+    window.open(url, '_blank');
   }
 
   openDeleteModal(id_group: string, group_name: string) {

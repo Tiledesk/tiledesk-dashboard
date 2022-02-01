@@ -148,11 +148,22 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     WIDGET_ROUTE_IS_ACTIVE: boolean;
     ANALITYCS_ROUTE_IS_ACTIVE: boolean;
     HOME_ROUTE_IS_ACTIVE: boolean;
-    TRIGGER_ROUTE_IS_ACTIVE: boolean;
     APPS_ROUTE_IS_ACTIVE: boolean;
     NOTIFICATION_EMAIL_IS_ACTIVE: boolean;
     YOUR_PROJECT_ROUTE_IS_ACTIVE: boolean;
     AUTOLOGIN_ROUTE_IS_ACTIVE: boolean;
+    // settings route
+    TRIGGER_ROUTE_IS_ACTIVE: boolean;
+    TAG_ROUTE_IS_ACTIVE: boolean;
+    CANNED_RESPONSES_ROUTE_IS_ACTIVE: boolean;
+    DEPTS_ROUTE_IS_ACTIVE: boolean;
+    TEAMMATES_ROUTE_IS_ACTIVE: boolean;
+    GROUPS_ROUTE_IS_ACTIVE: boolean;
+    WIDGET_SETUP_ROUTE_IS_ACTIVE: boolean;
+    CHATBOT_ROUTE_IS_ACTIVE: boolean;
+    PROJECT_SETTINGS_ROUTE_IS_ACTIVE: boolean;
+    OPERATING_HOURS_ROUTE_IS_ACTIVE: boolean;
+
     prjct_profile_name: string;
     prjct_trial_expired: boolean;
     prjc_trial_days_left: number
@@ -170,7 +181,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     baseUrl: string;
     default_dept_id: string;
     browserLang: string;
-    dsbrd_lang : string;
+    dsbrd_lang: string;
     tlangparams: any
     flag_url: string;
     private unsubscribe$: Subject<any> = new Subject<any>();
@@ -200,7 +211,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.tparams = brand;
         if (brand) {
             this.sidebarLogoWhite_Url = brand['company_logo_white__url'];
-           
+
             this.sidebarLogoNoText = brand['company_logo_no_text__url'];
         }
     }
@@ -247,7 +258,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             if (user) {
                 this.currentUserId = user._id;
                 this.logger.log('[SIDEBAR] Current USER ID ', this.currentUserId);
-                
+
                 const stored_preferred_lang = localStorage.getItem(this.user._id + '_lang')
 
                 if (stored_preferred_lang) {
@@ -256,27 +267,27 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                     this.flag_url = "assets/img/language_flag/" + stored_preferred_lang + ".png"
 
                     this.logger.log('[SIDEBAR] flag_url (from stored_preferred_lang) ', this.flag_url)
-                 
+
                     this.logger.log('[SIDEBAR] stored_preferred_lang ', stored_preferred_lang)
                 } else {
                     this.browserLang = this.translate.getBrowserLang();
-                    this.dsbrd_lang = this.browserLang; 
+                    this.dsbrd_lang = this.browserLang;
                     this.getLangTranslation(this.dsbrd_lang)
                     this.logger.log('[SIDEBAR] - browser_lang ', this.browserLang)
                     this.flag_url = "assets/img/language_flag/" + this.browserLang + ".png"
-                  
+
                     this.logger.log('[SIDEBAR] flag_url (from browser_lang) ', this.flag_url)
                 }
             }
         });
     }
 
-     getLangTranslation(dsbrd_lang_code) {
+    getLangTranslation(dsbrd_lang_code) {
         this.translate.get(dsbrd_lang_code)
-        .subscribe((translation: any) => {
-            this.logger.log('[SIDEBAR] getLangTranslation', translation)
-            this.tlangparams = {language_name: translation}
-        });
+            .subscribe((translation: any) => {
+                this.logger.log('[SIDEBAR] getLangTranslation', translation)
+                this.tlangparams = { language_name: translation }
+            });
     }
 
     getChatUrl() {
@@ -295,7 +306,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     brandLog() {
         // this.logger.log('BRAND_JSON - SIDEBAR ', brand);
         this.logger.log('[SIDEBAR] BRAND_JSON - sidebarlogourl ', this.sidebarLogoWhite_Url);
-        
+
     }
 
     getProfileImageStorage() {
@@ -421,15 +432,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     getCurrentRoute() {
         this.router.events.filter((event: any) => event instanceof NavigationEnd)
             .subscribe(event => {
-                // this.logger.log('[SIDEBAR] NavigationEnd ', event.url);
-
-                // this.nav_project_id !== 'email' &&
-                // url_segments[1] !== 'user' &&
-                // url_segments[1] !== 'handle-invitation' &&
-                // url_segments[1] !== 'signup-on-invitation' &&
-                // url_segments[1] !== 'resetpassword' &&
-                // url_segments[1] !== 'autologin' &&
-                // current_url !== '/projects'
 
                 if (event.url.indexOf('/autologin') !== -1) {
                     this.logger.log('[SIDEBAR] NavigationEnd - THE activities-demo route IS ACTIVE  ', event.url);
@@ -441,7 +443,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                     // this.logger.log('[SIDEBAR] NavigationEnd - THE activities-demo route IS NOT ACTIVE  ', event.url);
                     this.AUTOLOGIN_ROUTE_IS_ACTIVE = false;
                 }
-                
+
                 if (event.url === '/projects') {
                     this.logger.log('[SIDEBAR] NavigationEnd - THE activities-demo route IS ACTIVE  ', event.url);
                     this.YOUR_PROJECT_ROUTE_IS_ACTIVE = true;
@@ -501,14 +503,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                     this.HOME_ROUTE_IS_ACTIVE = false;
                 }
 
-                if (event.url.indexOf('/trigger') !== -1) {
-                    // this.logger.log('[SIDEBAR] NavigationEnd - THE home route IS ACTIVE  ', event.url);
-                    this.TRIGGER_ROUTE_IS_ACTIVE = true;
-                } else {
-                    // this.logger.log('[SIDEBAR] NavigationEnd - THE home route IS NOT ACTIVE  ', event.url);
-                    this.TRIGGER_ROUTE_IS_ACTIVE = false;
-                }
-
                 if (event.url.indexOf('/notification-email') !== -1) {
                     // this.logger.log('[SIDEBAR] NavigationEnd - THE home route IS ACTIVE  ', event.url);
                     this.NOTIFICATION_EMAIL_IS_ACTIVE = true;
@@ -527,6 +521,100 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                     // this.logger.log('[SIDEBAR] NavigationEnd - THE home route IS NOT ACTIVE  ', event.url);
                     this.APPS_ROUTE_IS_ACTIVE = false;
                     // this.smallSidebar(false)
+                }
+                // ------------------------------------------------------------------------------------------------
+                // the following are also route of settings
+                // ------------------------------------------------------------------------------------------------
+                if (event.url.indexOf('/trigger') !== -1) {
+                    // this.logger.log('[SIDEBAR] NavigationEnd - THE home route IS ACTIVE  ', event.url);
+                    this.TRIGGER_ROUTE_IS_ACTIVE = true;
+                    console.log('[SIDEBAR] NavigationEnd - TRIGGER_ROUTE_IS_ACTIVE ', this.TRIGGER_ROUTE_IS_ACTIVE);
+                } else {
+                    // this.logger.log('[SIDEBAR] NavigationEnd - THE home route IS NOT ACTIVE  ', event.url);
+                    this.TRIGGER_ROUTE_IS_ACTIVE = false;
+                    console.log('[SIDEBAR] NavigationEnd - TRIGGER_ROUTE_IS_ACTIVE ', this.TRIGGER_ROUTE_IS_ACTIVE);
+                }
+
+                if (event.url.indexOf('/labels') !== -1) {
+
+                    this.TAG_ROUTE_IS_ACTIVE = true;
+                    console.log('[SIDEBAR] NavigationEnd - TAG_ROUTE_IS_ACTIVE ', this.TAG_ROUTE_IS_ACTIVE);
+                } else {
+
+                    this.TAG_ROUTE_IS_ACTIVE = false;
+                    console.log('[SIDEBAR] NavigationEnd - TAG_ROUTE_IS_ACTIVE ', this.TAG_ROUTE_IS_ACTIVE);
+                }
+
+                if (event.url.indexOf('/cannedresponses') !== -1) {
+
+                    this.CANNED_RESPONSES_ROUTE_IS_ACTIVE = true;
+                    console.log('[SIDEBAR] NavigationEnd - CANNED_RESPONSES_ROUTE_IS_ACTIVE ', this.CANNED_RESPONSES_ROUTE_IS_ACTIVE);
+                } else {
+
+                    this.CANNED_RESPONSES_ROUTE_IS_ACTIVE = false;
+                    console.log('[SIDEBAR] NavigationEnd - CANNED_RESPONSES_ROUTE_IS_ACTIVE ', this.CANNED_RESPONSES_ROUTE_IS_ACTIVE);
+                }
+
+                if (event.url.indexOf('/departments') !== -1) {
+
+                    this.DEPTS_ROUTE_IS_ACTIVE = true;
+                    console.log('[SIDEBAR] NavigationEnd - DEPTS_ROUTE_IS_ACTIVE ', this.DEPTS_ROUTE_IS_ACTIVE);
+                } else {
+
+                    this.DEPTS_ROUTE_IS_ACTIVE = false;
+                    console.log('[SIDEBAR] NavigationEnd - DEPTS_ROUTE_IS_ACTIVE ', this.DEPTS_ROUTE_IS_ACTIVE);
+                }
+
+                if (event.url.indexOf('/users') !== -1) {
+
+                    this.TEAMMATES_ROUTE_IS_ACTIVE = true;
+                    console.log('[SIDEBAR] NavigationEnd - TEAMMATES_ROUTE_IS_ACTIVE ', this.TEAMMATES_ROUTE_IS_ACTIVE);
+                } else {
+
+                    this.TEAMMATES_ROUTE_IS_ACTIVE = false;
+                    console.log('[SIDEBAR] NavigationEnd - TEAMMATES_ROUTE_IS_ACTIVE ', this.TEAMMATES_ROUTE_IS_ACTIVE);;
+                }
+
+                if (event.url.indexOf('/groups') !== -1) {
+
+                    this.GROUPS_ROUTE_IS_ACTIVE = true;
+                    console.log('[SIDEBAR] NavigationEnd - GROUPS_ROUTE_IS_ACTIVE ', this.GROUPS_ROUTE_IS_ACTIVE);
+                } else {
+
+                    this.GROUPS_ROUTE_IS_ACTIVE = false;
+                    console.log('[SIDEBAR] NavigationEnd - GROUPS_ROUTE_IS_ACTIVE ', this.GROUPS_ROUTE_IS_ACTIVE);
+                }
+
+                if (event.url.indexOf('/widget-set-up') !== -1) {
+                    this.WIDGET_SETUP_ROUTE_IS_ACTIVE = true;
+                    console.log('[SIDEBAR] NavigationEnd - WIDGET_SETUP_ROUTE_IS_ACTIVE ', this.WIDGET_SETUP_ROUTE_IS_ACTIVE);
+                } else {
+                    this.WIDGET_SETUP_ROUTE_IS_ACTIVE = false;
+                    console.log('[SIDEBAR] NavigationEnd - WIDGET_SETUP_ROUTE_IS_ACTIVE ', this.WIDGET_SETUP_ROUTE_IS_ACTIVE);
+                }
+
+                if (event.url.indexOf('/bots') !== -1) {
+                    this.CHATBOT_ROUTE_IS_ACTIVE = true;
+                    console.log('[SIDEBAR] NavigationEnd - CHATBOT_ROUTE_IS_ACTIVE ', this.CHATBOT_ROUTE_IS_ACTIVE);
+                } else {
+                    this.CHATBOT_ROUTE_IS_ACTIVE = false;
+                    console.log('[SIDEBAR] NavigationEnd - CHATBOT_ROUTE_IS_ACTIVE ', this.CHATBOT_ROUTE_IS_ACTIVE);
+                }
+
+                if (event.url.indexOf('/hours') !== -1) {
+                    this.OPERATING_HOURS_ROUTE_IS_ACTIVE = true;
+                    console.log('[SIDEBAR] NavigationEnd - OPERATING_HOURS_ROUTE_IS_ACTIVE ', this.OPERATING_HOURS_ROUTE_IS_ACTIVE);
+                } else {
+                    this.OPERATING_HOURS_ROUTE_IS_ACTIVE = false;
+                    console.log('[SIDEBAR] NavigationEnd - OPERATING_HOURS_ROUTE_IS_ACTIVE ', this.OPERATING_HOURS_ROUTE_IS_ACTIVE);
+                }
+
+                if (event.url.indexOf('/project-settings/') !== -1) {
+                    this.PROJECT_SETTINGS_ROUTE_IS_ACTIVE = true;
+                    console.log('[SIDEBAR] NavigationEnd - PROJECT_SETTINGS_ROUTE_IS_ACTIVE ', this.PROJECT_SETTINGS_ROUTE_IS_ACTIVE);
+                } else {
+                    this.PROJECT_SETTINGS_ROUTE_IS_ACTIVE = false;
+                    console.log('[SIDEBAR] NavigationEnd - SETTINGS_IS_ACTIVE ', this.PROJECT_SETTINGS_ROUTE_IS_ACTIVE);
                 }
 
             });
@@ -1021,11 +1109,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         // this.logger.log('SIDEBAR - WINDOW WIDTH ON RESIZE', event.target.innerWidth);
         if (event.target.innerWidth > 991) {
             this.IS_MOBILE_MENU = false
-
         } else {
             this.IS_MOBILE_MENU = true
-
-
         }
     }
 
@@ -1136,6 +1221,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     goToHome() {
         this.router.navigate(['/project/' + this.projectId + '/home']);
+    }
+
+    goToCannedResponses() {
+        this.router.navigate(['project/' + this.projectId + '/cannedresponses']);
     }
     // goToOperatingHours() {
     //     this.router.navigate(['/project/' + this.projectId + '/hours']);
@@ -1308,7 +1397,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         // this.logger.log('[SIDEBAR] Mouse Over Avatar Container ', _isOverAvar)
     }
 
- 
+
     // goToAnalytics() {
     //     this.router.navigate(['project/' + this.projectId + '/analytics']);
     // }

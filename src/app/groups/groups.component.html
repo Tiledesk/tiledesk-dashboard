@@ -2,57 +2,64 @@
     {{ "Groups" | translate }} 
 </p>
 
-<!--
-<button (click)="goToUsers()" style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px; padding-right: 30px;"
-  class="navbar-brand btn-with-border-effect center">
-  {{ "Users" | translate }}
-</button>  
 
-<p style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px;color: #039be5; padding-right: 30px; border-bottom: 3px solid #039be5; padding-bottom: 39px;" 
-class="navbar-brand">
-    {{ "Groups" | translate }}
-</p> 
--->
-
-<ul class="bottom-nav">
-
+<!-- <ul class="bottom-nav">
     <li class="btn-with-border-effect  border-from-center" (click)="goToUsers()">
         <a> {{ "Users" | translate }} </a>
     </li>
     <li class="btn-with-border-effect li-active">
         <a> {{ "Groups" | translate }} </a>
     </li>
+</ul> -->
 
+
+
+
+<div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
+  <div class="container-fluid" style="padding-left: 5px;padding-right: 5px;" >
+    <!-- *** this row to prevent that the two columns in the below row being displayed on two lines -->
+    <div class="row"></div>
+
+    <div class="content-wpr" style="display: flex;">
+
+      <appdashboard-settings-sidebar> </appdashboard-settings-sidebar>
+      <div class="teplate-content" style="flex: 1 1 auto; margin-left: 20px;">
+     
+        <!-- box-shadow: unset -->
+<ul class="bottom-nav" style="top:-9px; ">
+  <li class="btn-with-border-effect  border-from-center" (click)="goToUsers()">
+      <a  style="text-transform: capitalize;"> {{ "Teammates" | translate }} </a>
+  </li>
+  <li class="btn-with-border-effect li-active">
+      <a> {{ "Groups" | translate }} </a>
+  </li>
 </ul>
 
 
-
-
-<div class="main-content" style="padding-top:0px">
-  <div class="container-fluid">
-    <!-- *** this row to prevent that the two columns in the below row being displayed on two lines -->
-    <div class="row"></div>
-        <!-- <ul class="nav nav-pills nav-pills-info custom">
-          <li>
-            <a href="#pill1" data-toggle="tab" (click)="goToUsers()">
-              {{ "Users" | translate }}
-            </a>
-          </li>
-          <li class="active">
-            <a href="#pill2" data-toggle="tab">
-              {{ "Groups" | translate }}
-            </a>
-          </li>
-        </ul> -->
-
-    <!-- <div class="create" style="text-align: left!important; padding-top:5px; padding-bottom:0px">
-      <button class="btn btn-primary btn-primary-custom" style="padding-left:8px; padding-right: 16px; margin-bottom: 0px" (click)="goToEditAddPage_create()">
-        <span class="icon" style="padding-right:8px">
-          <i class="material-icons">add_circle</i>
-        </span>
-          {{ "GroupsPage.AddGroup" | translate }} 
-      </button>
-    </div> -->
+<div class="link-to-groups-docs">
+  <div class="row" style="background-color: rgb(241,241,241);
+margin-right: 0px;
+margin-left: 0px;
+padding-bottom: 12px;">
+    <div class="col-md-12">
+      <span style="margin-left: 15px;">
+        <svg style="width: 25px;height:auto; vertical-align: middle;" aria-hidden="true" focusable="false"
+          data-prefix="fab" data-icon="readme" class="svg-inline--fa fa-readme fa-w-18" role="img"
+          xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+          <path fill="#0f62ff"
+            d="M528.3 46.5H388.5c-48.1 0-89.9 33.3-100.4 80.3-10.6-47-52.3-80.3-100.4-80.3H48c-26.5 0-48 21.5-48 48v245.8c0 26.5 21.5 48 48 48h89.7c102.2 0 132.7 24.4 147.3 75 .7 2.8 5.2 2.8 6 0 14.7-50.6 45.2-75 147.3-75H528c26.5 0 48-21.5 48-48V94.6c0-26.4-21.3-47.9-47.7-48.1zM242 311.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5V289c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5V251zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm259.3 121.7c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5V228c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5v-22.8c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5V190z">
+          </path>
+        </svg>
+      </span>
+      <a style="color:#0f62ff !important; vertical-align: middle; font-size: 14px; font-weight: 400;
+    cursor: pointer; margin-left: 8px; text-decoration: underline;" (click)="goToGroupsDoc()">
+ 
+          {{ 'LearnHowCreateAGroup' | translate }}
+       
+      </a>
+    </div>
+  </div>
+</div>
   
 
     <div class="row">
@@ -205,7 +212,8 @@ class="navbar-brand">
           </div>
         </div>
       </div>
-
+    </div>
+    </div>
     </div>
   </div>
 </div>

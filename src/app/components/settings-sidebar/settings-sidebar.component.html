@@ -1,6 +1,4 @@
-<div class="left-sidebar-menu" style="position: relative; display: flex;     flex-direction: column; flex: 1 0 auto; width: 200px;
-min-width: 200px;
-max-width: 200px;     margin-top: 5px;">
+<div class="settings-sidebar-wpr" style="">
 
   <ul class="settings-sidebar" style="padding-left: 0px;    list-style: none;">
         <!-- ------------------------------------------------------- -->
@@ -74,7 +72,7 @@ max-width: 200px;     margin-top: 5px;">
       <!-- ------------------------------------------------------- -->
       <!-- Teammates & Groups -->
       <!-- ------------------------------------------------------- -->
-      <li [ngClass]="{'active-item': TEAMMATES_ROUTE_IS_ACTIVE}" (click)="goToTeammates()"> 
+      <li [ngClass]="{'active-item': TEAMMATES_ROUTE_IS_ACTIVE || GROUPS_ROUTE_IS_ACTIVE}" (click)="goToTeammates()"> 
         <a class="custom_ancor" *ngIf="project" >
           <!-- <i class="material-icons sidebar-icons">
             groups
@@ -102,7 +100,7 @@ max-width: 200px;     margin-top: 5px;">
             smart_toy
           </i> -->
           <p class="custom_paragraph">
-            Chatbots
+            Bots
           </p>
         </a>
       </li>

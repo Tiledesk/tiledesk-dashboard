@@ -1,63 +1,61 @@
-<p style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px" class="navbar-brand">Bot</p>
-<div class="main-content" style="padding-top:0px">
-  <div class="container-fluid">
+<p style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px" class="navbar-brand">
+  Bot
+</p>
+<div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
+  <div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
 
-    <!-- <div class="create" style="padding-top:5px; padding-bottom:0px">
-        <button class="btn btn-info" style="padding-left:8px; padding-right: 16px; margin-bottom: 0px;" 
-        (click)="goToEditAddPage_CREATE()">
-          <span class="icon" style="padding-right:8px">
-            <i class="material-icons">add_circle</i>
-          </span>
-        {{ "BotsPage.AddBot" | translate }} 
-        </button>
-      </div> -->
+    <div class="content-wpr" style="display: flex;">
 
-    <div class="row">
-      <div class="col-md-9 col-lg-8">
-        <div class="card card--no-border" style="margin-top: 16px;">
-          <div class="card-header card-header-custom-bkgrnd">
-            <!-- goToEditAddPage_CREATE() -->
-            <button class="btn btn-primary" style="padding: 8px 16px; margin: 0px;" (click)="goToSelectBotType()">
-              <span class="icon" style="padding-right:8px">
-                <i class="material-icons">add_circle</i>
-              </span>
-              {{ "BotsPage.AddBot" | translate }}
-            </button>
-          </div>
+      <appdashboard-settings-sidebar> </appdashboard-settings-sidebar>
+      <div class="teplate-content" style="flex: 1 1 auto; margin-left: 20px;">
 
-          <loading-spinner *ngIf="showSpinner"></loading-spinner>
-          <!-- style="overflow:visible;" -->
-          <div *ngIf="!showSpinner" class="card-content table-responsive">
-            <table class="table table-hover">
-              <thead>
-                <tr>
-                  <th></th>
+        <div class="row">
+          <div class="col-md-9 col-lg-8">
+            <!-- card--no-border -->
+            <div class="card" style="margin-top: 5px;">
+              <div class="card-header card-header-custom-bkgrnd">
+                <!-- goToEditAddPage_CREATE() -->
+                <button class="btn btn-primary" style="padding: 8px 16px; margin: 0px;" (click)="goToSelectBotType()">
+                  <span class="icon" style="padding-right:8px">
+                    <i class="material-icons">add_circle</i>
+                  </span>
+                  {{ "BotsPage.AddBot" | translate }}
+                </button>
+              </div>
 
-                  <th>
-                    <span class="column-th-span">
-                      {{ "BotsPage.Name" | translate }}
-                      <!-- Bot -->
-                    </span>
-                  </th>
+              <loading-spinner *ngIf="showSpinner"></loading-spinner>
+              <!-- style="overflow:visible;" -->
+              <div *ngIf="!showSpinner" class="card-content table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th></th>
 
-                  <th>
-                    <span class="column-th-span">
-                      <!-- {{ "BotsPage.ExternalBot" | translate }} -->
-                      {{ "BotsAddEditPage.Type" | translate }}
-                    </span>
-                  </th>
+                      <th>
+                        <span class="column-th-span">
+                          {{ "BotsPage.Name" | translate }}
+                          <!-- Bot -->
+                        </span>
+                      </th>
 
-                  <th *ngIf="isVisibleAnalytics" class="column-th-span">
-                    {{ "BotsAddEditPage.Messages" | translate }}
-                  </th>
+                      <th>
+                        <span class="column-th-span">
+                          <!-- {{ "BotsPage.ExternalBot" | translate }} -->
+                          {{ "BotsAddEditPage.Type" | translate }}
+                        </span>
+                      </th>
 
-                  <!-- <th style="">
+                      <th *ngIf="isVisibleAnalytics" class="column-th-span">
+                        {{ "BotsAddEditPage.Messages" | translate }}
+                      </th>
+
+                      <!-- <th style="">
                       <span style="color: #566787">
                         <strong>Id</strong>
                       </span>
                     </th> -->
 
-                  <!-- <th>
+                      <!-- <th>
                       <span style="color: #566787">
                         <strong>
                           {{ "BotsPage.RemoteId" | translate }} 
@@ -65,13 +63,13 @@
                       </span> 
                     </th> -->
 
-                  <!-- <th>
+                      <!-- <th>
                       <span style="color: #566787">
                         <strong> Url</strong>
                       </span> 
                     </th> -->
 
-                  <!-- <th>
+                      <!-- <th>
                       <span style="color: #566787">
                         <strong>
                           {{ "BotsPage.CreationDate" | translate }} 
@@ -79,14 +77,14 @@
                       </span>  
                     </th> -->
 
-                  <th>
-                    <span class="column-th-span">
-                      <!-- {{ "BotsPage.Actions" | translate }} -->
-                      {{ "Actions" | translate }}
-                    </span>
-                  </th>
+                      <th>
+                        <span class="column-th-span">
+                          <!-- {{ "BotsPage.Actions" | translate }} -->
+                          {{ "Actions" | translate }}
+                        </span>
+                      </th>
 
-                  <!-- <th colspan="2">
+                      <!-- <th colspan="2">
                       <span style="color: #566787">
                         <strong> 
                           FAQ 
@@ -94,65 +92,66 @@
                       </span>  
                     </th> -->
 
-                </tr>
-              </thead>
+                    </tr>
+                  </thead>
 
-              <tbody>
-                <!-- IF THERE ISN'T BOT -->
-                <tr *ngIf="faqkbList && faqkbList?.length === 0">
-                  <td colspan="4" style="text-align: center; padding-top: 16px;">
-                    <!-- color: #ff5252   -->
-                    <p style="font-size:1em; margin-bottom: 0px; color:#7695a5; font-weight: 400">
-                      <i class="material-icons" style="vertical-align: middle; margin-bottom: 2px;color: #00bcd4;"> info
-                      </i>
-                      {{ 'BotsPage.NoBot' | translate }}
-                    </p>
-                  </td>
-                </tr>
+                  <tbody>
+                    <!-- IF THERE ISN'T BOT -->
+                    <tr *ngIf="faqkbList && faqkbList?.length === 0">
+                      <td colspan="4" style="text-align: center; padding-top: 16px;">
+                        <!-- color: #ff5252   -->
+                        <p style="font-size:1em; margin-bottom: 0px; color:#7695a5; font-weight: 400">
+                          <i class="material-icons" style="vertical-align: middle; margin-bottom: 2px;color: #00bcd4;">
+                            info
+                          </i>
+                          {{ 'BotsPage.NoBot' | translate }}
+                        </p>
+                      </td>
+                    </tr>
 
-                <tr *ngFor="let faqkb of faqkbList; let i = index">
-                  <!--  style="width: 1%; white-space: nowrap;" -->
-                  <td style="white-space: nowrap; width: 1%; cursor: pointer;">
-                    <span class="tool_tip" (click)='goToFaqPage(faqkb?._id, faqkb?.type)'>
-                      <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
-                        style="vertical-align: middle; width: 52px; height: 52px; border-radius: 50%; border: 1px solid #eee; margin-right: 6px;"
-                        class="user-img"
-                        src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{faqkb?._id}}%2Fphoto.jpg?alt=media"
-                        onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
+                    <tr *ngFor="let faqkb of faqkbList; let i = index">
+                      <!--  style="width: 1%; white-space: nowrap;" -->
+                      <td style="white-space: nowrap; width: 1%; cursor: pointer;">
+                        <span class="tool_tip" (click)='goToFaqPage(faqkb?._id, faqkb?.type)'>
+                          <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
+                            style="vertical-align: middle; width: 52px; height: 52px; border-radius: 50%; border: 1px solid #eee; margin-right: 6px;"
+                            class="user-img"
+                            src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{faqkb?._id}}%2Fphoto.jpg?alt=media"
+                            onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
 
-                      <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
-                        style="vertical-align: middle; width: 52px; height: 52px; border-radius: 50%; border: 1px solid #eee; margin-right: 6px;"
-                        class="user-img"
-                        src="{{baseUrl}}images?path=uploads%2Fusers%2F{{faqkb?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
-                        onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
+                          <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
+                            style="vertical-align: middle; width: 52px; height: 52px; border-radius: 50%; border: 1px solid #eee; margin-right: 6px;"
+                            class="user-img"
+                            src="{{baseUrl}}images?path=uploads%2Fusers%2F{{faqkb?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                            onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
 
-                      <span *ngIf="faqkb.type === 'internal'">
-                        <img class="bot-type-logo" src="assets/img/tiledesk_logo_no_text.png" />
-                      </span>
+                          <span *ngIf="faqkb.type === 'internal'">
+                            <img class="bot-type-logo" src="assets/img/tiledesk_logo_no_text.png" />
+                          </span>
 
-                      <span *ngIf="faqkb.type === 'external'">
-                        <img class="bot-type-logo" src="assets/img/external_bot_logo.png" />
-                      </span>
+                          <span *ngIf="faqkb.type === 'external'">
+                            <img class="bot-type-logo" src="assets/img/external_bot_logo.png" />
+                          </span>
 
-                      <span *ngIf="faqkb.type === 'dialogflow'">
-                        <img class="bot-type-logo" src="assets/img/Dialogflow_logo_no_text.png" />
-                      </span>
+                          <span *ngIf="faqkb.type === 'dialogflow'">
+                            <img class="bot-type-logo" src="assets/img/Dialogflow_logo_no_text.png" />
+                          </span>
 
-                      <!-- <span class="tooltiptext">
+                          <!-- <span class="tooltiptext">
                         {{ 'BotsPage.BotId' | translate }}: <br> {{ faqkb?._id  }}
                       </span> -->
 
-                      <div class="right" style="padding: 2px 9px;min-width: fit-content;">
-                        <h4>{{ 'BotsPage.BotId' | translate }}</h4>
+                          <div class="right" style="padding: 2px 9px;min-width: fit-content;">
+                            <h4>{{ 'BotsPage.BotId' | translate }}</h4>
 
-                        {{ faqkb?._id }}
-                        <i></i>
-                      </div>
+                            {{ faqkb?._id }}
+                            <i></i>
+                          </div>
 
-                    </span>
+                        </span>
 
 
-                    <!-- <span *ngIf="!faqkb?.external"
+                        <!-- <span *ngIf="!faqkb?.external"
                       style="font-weight:400; font-size:12px; display:block; color:#7695a5; margin-top: 4px;">
                       # FAQs:
                       <span *ngIf="!faqkb?.has_faq">
@@ -175,7 +174,7 @@
                       </span>
                     </span> -->
 
-                    <!-- <span *ngIf="faqkb?.external"
+                        <!-- <span *ngIf="faqkb?.external"
                       style="font-weight:400; font-size:12px; display:block; color:#7695a5; margin-top: 4px;">
 
                       <span [ngClass]="{'url-top-position' : faqkb?.url }"> Url: </span>
@@ -212,30 +211,30 @@
                         </span>
                       </span>
                     </span> -->
-                  </td>
+                      </td>
 
-                  <!-- 
+                      <!-- 
                   // -----------------------------------------------------
                   // Bot name & truncated description
                   // ----------------------------------------------------- -->
-                  <td>
-                    <span style="font-weight:400; cursor: pointer;font-size:13px"
-                      (click)='goToFaqPage(faqkb?._id, faqkb?.type)'>
-                      {{ faqkb?.name }}
-                    </span>
+                      <td>
+                        <span style="font-weight:400; cursor: pointer;font-size:13px"
+                          (click)='goToFaqPage(faqkb?._id, faqkb?.type)'>
+                          {{ faqkb?.name }}
+                        </span>
 
-                    <div *ngIf="faqkb?.description" class="tool_tip" style="color: #7695a5; font-weight: 400; line-height:18px; font-size:12px; 
+                        <div *ngIf="faqkb?.description" class="tool_tip" style="color: #7695a5; font-weight: 400; line-height:18px; font-size:12px; 
                       display: block; display: -webkit-box;
                       -webkit-line-clamp: 2;
                       -webkit-box-orient: vertical;
                       overflow: hidden;
                       text-overflow: ellipsis;">
 
-                      <div class="bot--truncated--desc"> {{ faqkb?.truncated_desc}} </div>
-                      <div class="bot--full--desc"> {{ faqkb?.description}} </div>
+                          <div class="bot--truncated--desc"> {{ faqkb?.truncated_desc}} </div>
+                          <div class="bot--full--desc"> {{ faqkb?.description}} </div>
 
 
-                      <!-- <div class="top">
+                          <!-- <div class="top">
                         <h4>{{ 'Description' | translate }}</h4>
 
                        <div class="line-clamp" style="display: -webkit-box;
@@ -245,80 +244,81 @@
                        text-overflow: ellipsis;">{{ faqkb?.description}}  </div> 
                         <i></i>
                       </div> -->
-                    </div>
-                  </td>
+                        </div>
+                      </td>
 
-                  <td>
+                      <td>
 
-                    <span *ngIf="faqkb?.type !== 'internal'" style="text-transform: capitalize;font-weight:400;"> {{
-                      faqkb?.type}} </span>
-                    <span *ngIf="faqkb?.type === 'internal'" style="text-transform: capitalize;font-weight:400;">
-                      resolution </span>
-                    <!-- <div class="checkbox">
+                        <span *ngIf="faqkb?.type !== 'internal'" style="text-transform: capitalize;font-weight:400;"> {{
+                          faqkb?.type}} </span>
+                        <span *ngIf="faqkb?.type === 'internal'" style="text-transform: capitalize;font-weight:400;">
+                          resolution </span>
+                        <!-- <div class="checkbox">
                       <label>
                         <input style="opacity: 0.5!important;" type="checkbox" name="optionsCheckboxes"
                           [checked]="faqkb?.external" disabled>
                       </label>
                     </div>
                     <div class="overlay"></div> -->
-                  </td>
+                      </td>
 
-                  <td *ngIf="isVisibleAnalytics" style="text-transform: capitalize;font-weight:400;">
-                    <span style="text-transform: capitalize;font-weight:400;"> {{ faqkb?.message_count}} </span>
-                  </td>
+                      <td *ngIf="isVisibleAnalytics" style="text-transform: capitalize;font-weight:400;">
+                        <span style="text-transform: capitalize;font-weight:400;"> {{ faqkb?.message_count}} </span>
+                      </td>
 
-                  <td class="td-actions text-right" style="padding-top:18px !important">
-                    <button type="button" rel="tooltip" title="{{ 'BotsPage.tooltipEditBot' | translate }}"
-                      class="btn btn-primary btn-simple btn-xs" (click)='goToFaqPage(faqkb?._id, faqkb?.type)'>
-                      <i class="material-icons">edit</i>
-                    </button>
+                      <td class="td-actions text-right" style="padding-top:18px !important">
+                        <button type="button" rel="tooltip" title="{{ 'BotsPage.tooltipEditBot' | translate }}"
+                          class="btn btn-primary btn-simple btn-xs" (click)='goToFaqPage(faqkb?._id, faqkb?.type)'>
+                          <i class="material-icons">edit</i>
+                        </button>
 
-                    <button *ngIf="!faqkb?.is_system_identity_bot" type="button" rel="tooltip"
-                      title="{{ 'BotsPage.tooltipDeleteBot' | translate }}" class="btn btn-danger btn-simple btn-xs"
-                      (click)='openDeleteModal(faqkb?._id, faqkb?.name, faqkb?.has_faq, faqkb?.type)'>
-                      <i class="material-icons">close</i>
-                    </button>
-                  </td>
+                        <button *ngIf="!faqkb?.is_system_identity_bot" type="button" rel="tooltip"
+                          title="{{ 'BotsPage.tooltipDeleteBot' | translate }}" class="btn btn-danger btn-simple btn-xs"
+                          (click)='openDeleteModal(faqkb?._id, faqkb?.name, faqkb?.has_faq, faqkb?.type)'>
+                          <i class="material-icons">close</i>
+                        </button>
+                      </td>
 
-                </tr>
-              </tbody>
-            </table>
+                    </tr>
+                  </tbody>
+                </table>
 
-          </div>
-        </div>
-      </div>
-      <!-- /. end col-md-8 -->
-
-      <!-- // RIGHT SIDEBAR -->
-      <div class="col-md-3 col-lg-4">
-        <div class="card card--no-border" style="margin-top: 0px">
-          <div class="card-content">
-
-            <div class="row">
-              <div class="col-sm-12 col-md-12">
-                <h3 class="card_title__underlined">
-                  <span class="card_title__underline">
-                    {{ "QuickTips" | translate }}
-                  </span>
-                </h3>
-              </div>
-              <div class="col-sm-12 col-md-12">
-                <div class="section-subtitle"> </div>
               </div>
             </div>
+          </div>
+          <!-- /. end col-md-8 -->
 
-            <!-- <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 15px">
+          <!-- // RIGHT SIDEBAR -->
+          <div class="col-md-3 col-lg-4">
+            <div class="card card--no-border" style="margin-top: 0px">
+              <div class="card-content" style="padding:12px 20px">
+
+                <div class="row">
+                  <div class="col-sm-12 col-md-12">
+                    <h3 class="card_title__underlined">
+                      <span class="card_title__underline">
+                        {{ "QuickTips" | translate }}
+                      </span>
+                    </h3>
+                  </div>
+                  <div class="col-sm-12 col-md-12">
+                    <div class="section-subtitle"> </div>
+                  </div>
+                </div>
+
+                <!-- <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 15px">
               {{ "QuickTips" | translate }}
             </h4> -->
 
-            <p style="color:#7695a5">
-              {{ "BotsPage.BotQuickTipsText" | translate: tparams }}
+                <p style="color:#7695a5">
+                  {{ "BotsPage.BotQuickTipsText" | translate: tparams }}
 
-            </p>
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-
     </div>
   </div>
 </div>

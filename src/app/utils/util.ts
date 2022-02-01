@@ -101,7 +101,7 @@ export function replaceEndOfLine(text) {
 
 export const helpdocurl_triggers = 'https://docs.tiledesk.com/knowledge-base/getting-started-with-triggers/'
 export const helpdocurl_users_role = 'https://docs.tiledesk.com/knowledge-base/understanding-default-roles/'
-
+export const helpdocurl_groups = 'https://docs.tiledesk.com/knowledge-base/creating-groups/'
 
 //LOG LEVEL
 // export enum LogLevel {

@@ -316,6 +316,11 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.router.navigate(['project/' + this.id_project + '/users/pending']);
   }
 
+  goToTeammatesRolesDoc () {
+      const url = helpdocurl_users_role
+      window.open(url, '_blank');
+  }
+
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
       this.logger.log('[USERS] - GET PROJECT PLAN - RES ', projectProfileData)

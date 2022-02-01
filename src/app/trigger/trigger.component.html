@@ -1,5 +1,5 @@
 <p style="margin-top:6px; padding-left:30px;position: relative;z-index: 1050;" class="navbar-brand">
-  {{ 'Trigger.Trigger' | translate }} <span style="color: #f44336; font-size: 14px;  font-weight: 400;;">(Beta) </span> 
+  {{ 'Trigger.Trigger' | translate }} <span style="color: #f44336; font-size: 14px;  font-weight: 400;;">(Beta) </span>
 </p>
 
 <!-- <ul class="bottom-nav">
@@ -24,7 +24,7 @@
 
 
     <!-- <appdashboard-docs-url-row [text_to_display]="text_to_display" [customtext]="customtext" [doctitle]="trigger_docs_title" [docurl]="trigger_docs_url">  </appdashboard-docs-url-row> -->
-  <div class="content-wpr" style="display: flex;">
+    <div class="content-wpr" style="display: flex;">
 
       <appdashboard-settings-sidebar> </appdashboard-settings-sidebar>
       <div class="teplate-content" style="flex: 1 1 auto; margin-left: 20px;">
@@ -32,170 +32,171 @@
         <ul class="bottom-nav" style="top:-9px; box-shadow: unset">
 
 
-          <li class="btn-with-border-effect" [ngClass]="{'li-active' : !has_selected_system, 'border-from-center': has_selected_system}"
-           (click)="triggerTabSelected('customtrigger')">
+          <li class="btn-with-border-effect"
+            [ngClass]="{'li-active' : !has_selected_system, 'border-from-center': has_selected_system}"
+            (click)="triggerTabSelected('customtrigger')">
             <a>{{ "CustomTrigger" | translate }} </a>
           </li>
-        
-          <li class="btn-with-border-effect"  [ngClass]="{'li-active' : has_selected_system, 'border-from-center': !has_selected_system}" 
-          (click)="triggerTabSelected('systemtrigger')">
+
+          <li class="btn-with-border-effect"
+            [ngClass]="{'li-active' : has_selected_system, 'border-from-center': !has_selected_system}"
+            (click)="triggerTabSelected('systemtrigger')">
             <a> {{ "SystemTrigger" | translate }} </a>
           </li>
-        
+
         </ul>
-        
-      <div class="link-to-trigger-docs">
-        <div class="row" style="background-color: rgb(241,241,241);
+
+        <div class="link-to-trigger-docs">
+          <div class="row" style="background-color: rgb(241,241,241);
         margin-right: 0px;
         margin-left: 0px;
         padding-bottom: 12px;">
-          <div class="col-md-12">
-            <span style="margin-left: 15px;">
-              <svg style="width: 25px;height:auto; vertical-align: middle;" aria-hidden="true" focusable="false"
-                data-prefix="fab" data-icon="readme" class="svg-inline--fa fa-readme fa-w-18" role="img"
-                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-                <path fill="#0f62ff"
-                  d="M528.3 46.5H388.5c-48.1 0-89.9 33.3-100.4 80.3-10.6-47-52.3-80.3-100.4-80.3H48c-26.5 0-48 21.5-48 48v245.8c0 26.5 21.5 48 48 48h89.7c102.2 0 132.7 24.4 147.3 75 .7 2.8 5.2 2.8 6 0 14.7-50.6 45.2-75 147.3-75H528c26.5 0 48-21.5 48-48V94.6c0-26.4-21.3-47.9-47.7-48.1zM242 311.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5V289c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5V251zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm259.3 121.7c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5V228c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5v-22.8c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5V190z">
-                </path>
-              </svg>
-            </span>
-            <a style="color:#0f62ff !important; vertical-align: middle; font-size: 14px; font-weight: 400;
+            <div class="col-md-12">
+              <span style="margin-left: 15px;">
+                <svg style="width: 25px;height:auto; vertical-align: middle;" aria-hidden="true" focusable="false"
+                  data-prefix="fab" data-icon="readme" class="svg-inline--fa fa-readme fa-w-18" role="img"
+                  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                  <path fill="#0f62ff"
+                    d="M528.3 46.5H388.5c-48.1 0-89.9 33.3-100.4 80.3-10.6-47-52.3-80.3-100.4-80.3H48c-26.5 0-48 21.5-48 48v245.8c0 26.5 21.5 48 48 48h89.7c102.2 0 132.7 24.4 147.3 75 .7 2.8 5.2 2.8 6 0 14.7-50.6 45.2-75 147.3-75H528c26.5 0 48-21.5 48-48V94.6c0-26.4-21.3-47.9-47.7-48.1zM242 311.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5V289c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5V251zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm259.3 121.7c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5V228c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5v-22.8c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5V190z">
+                  </path>
+                </svg>
+              </span>
+              <a style="color:#0f62ff !important; vertical-align: middle; font-size: 14px; font-weight: 400;
             cursor: pointer; margin-left: 8px; text-decoration: underline;" (click)="goToTriggerDocs()">
-              <span *ngIf="customtext === false">
-                {{ 'HowWorks' | translate: translateparam }}
-              </span>
-              <span *ngIf="customtext === true">
-                {{ text_to_display | translate }}
-              </span>
-            </a>
+                
+                  {{ 'HowTriggersWorks' | translate }}
+              
+               
+              </a>
+            </div>
           </div>
         </div>
-      </div>
 
 
 
-    <!--TRIGGER LIST -->
-    <div class="row">
-      <div class="col-md-12">
-        <div class="card">
+        <!--TRIGGER LIST -->
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
 
-          <div *ngIf="has_selected_system === false" class="card-header card-header-custom-bkgrnd">
-            <button class="btn btn-primary" style="padding: 8px 16px;margin:0px;" (click)="goToAddTrigger()">
-              <span class="icon" style="padding-right:8px">
-                <i class="material-icons">add_circle</i>
-              </span>
-              {{ "Trigger.AddTrigger" | translate }}
-            </button>
+              <div *ngIf="has_selected_system === false" class="card-header card-header-custom-bkgrnd">
+                <button class="btn btn-primary" style="padding: 8px 16px;margin:0px;" (click)="goToAddTrigger()">
+                  <span class="icon" style="padding-right:8px">
+                    <i class="material-icons">add_circle</i>
+                  </span>
+                  {{ "Trigger.AddTrigger" | translate }}
+                </button>
 
-          </div>
+              </div>
 
-          <loading-spinner *ngIf="showSpinner"></loading-spinner>
+              <loading-spinner *ngIf="showSpinner"></loading-spinner>
 
-          <div *ngIf="!showSpinner" class="card-content table-responsive">
+              <div *ngIf="!showSpinner" class="card-content table-responsive">
 
-            <table class="table table-hover">
-              <thead>
-                <tr>
-                  <!-- style="width: 25%;" -->
-                  <th>
-                    <span class="column-th-span">
-                      <!-- Trigger Name -->
-                      {{ "Name" | translate }}
-                    </span>
-                  </th>
-                  <!-- style="width: 60%;" -->
-                  <th>
-                    <span class="column-th-span">
-                      <!-- Trigger Description -->
-                      {{ "Trigger.TriggerListDescription" | translate }}
-                    </span>
-                  </th>
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <!-- style="width: 25%;" -->
+                      <th>
+                        <span class="column-th-span">
+                          <!-- Trigger Name -->
+                          {{ "Name" | translate }}
+                        </span>
+                      </th>
+                      <!-- style="width: 60%;" -->
+                      <th>
+                        <span class="column-th-span">
+                          <!-- Trigger Description -->
+                          {{ "Trigger.TriggerListDescription" | translate }}
+                        </span>
+                      </th>
 
-                  <!-- style="width: 5%;" -->
-                  <th>
-                    <span class="column-th-span">
-                      <!-- Trigger Active/notActive -->
-                      {{ "Trigger.TriggerListActivated" | translate }}
-                    </span>
-                  </th>
+                      <!-- style="width: 5%;" -->
+                      <th>
+                        <span class="column-th-span">
+                          <!-- Trigger Active/notActive -->
+                          {{ "Trigger.TriggerListActivated" | translate }}
+                        </span>
+                      </th>
 
-                  <!-- style="width: 20%;" -->
-                  <th>
-                    <span class="column-th-span">
-                      <!-- Trigger Active/notActive -->
-                      {{ "Actions" | translate }}
-                    </span>
-                  </th>
+                      <!-- style="width: 20%;" -->
+                      <th>
+                        <span class="column-th-span">
+                          <!-- Trigger Active/notActive -->
+                          {{ "Actions" | translate }}
+                        </span>
+                      </th>
 
-              </thead>
+                  </thead>
 
-              <tbody>
+                  <tbody>
 
-                <!-- IF THERE ISN'T TRIGGER -->
-                <tr *ngIf="triggers?.length === 0">
-                  <td colspan="4" style="text-align: center; padding-top: 16px;">
-                    <!-- color: #ff5252   -->
-                    <p style="font-size:1em; color:#7695a5; font-weight: 400">
-                      {{ 'Trigger.NoTrigger' | translate }}
-                    </p>
-                  </td>
-                </tr>
+                    <!-- IF THERE ISN'T TRIGGER -->
+                    <tr *ngIf="triggers?.length === 0">
+                      <td colspan="4" style="text-align: center; padding-top: 16px;">
+                        <!-- color: #ff5252   -->
+                        <p style="font-size:1em; color:#7695a5; font-weight: 400">
+                          {{ 'Trigger.NoTrigger' | translate }}
+                        </p>
+                      </td>
+                    </tr>
 
-                <tr *ngFor="let trigger of triggers | filterArray: query " style="cursor:pointer;" class="trigger">
-                  <!-- style="max-width: 20px" -->
-                  <td (click)='goToEditTrigger(trigger?._id)' >
-                    <span style="font-weight: 400;font-size:13px">
-                      {{ trigger?.name }}
-                    </span>
-                  </td>
+                    <tr *ngFor="let trigger of triggers | filterArray: query " style="cursor:pointer;" class="trigger">
+                      <!-- style="max-width: 20px" -->
+                      <td (click)='goToEditTrigger(trigger?._id)'>
+                        <span style="font-weight: 400;font-size:13px">
+                          {{ trigger?.name }}
+                        </span>
+                      </td>
 
-                  <!-- // DESCRIPTION -->
-                  <!-- max-width: 50px -->
-                  <td style="white-space: normal !important; word-wrap: break-word;font-size:13px; font-weight:400;" 
-                    (click)='goToEditTrigger(trigger?._id)'>
-                    <span style="font-weight:400;font-size:13px"> {{ trigger?.description }}</span>
-                  </td>
+                      <!-- // DESCRIPTION -->
+                      <!-- max-width: 50px -->
+                      <td style="white-space: normal !important; word-wrap: break-word;font-size:13px; font-weight:400;"
+                        (click)='goToEditTrigger(trigger?._id)'>
+                        <span style="font-weight:400;font-size:13px"> {{ trigger?.description }}</span>
+                      </td>
 
-                  <!-- // ACTIVATED -->
-                  <!-- font-weight:400; text-align: center -->
-                  <td style="padding-top:16px" (click)='goToEditTrigger(trigger?._id)'>
-                    <span *ngIf="trigger?.enabled === true">
-                      <i class="material-icons" style="font-weight:600; font-size:17px; color: #3ecf8e; margin-left:16px">done</i>
-                    </span>
-                  </td>
+                      <!-- // ACTIVATED -->
+                      <!-- font-weight:400; text-align: center -->
+                      <td style="padding-top:16px" (click)='goToEditTrigger(trigger?._id)'>
+                        <span *ngIf="trigger?.enabled === true">
+                          <i class="material-icons"
+                            style="font-weight:600; font-size:17px; color: #3ecf8e; margin-left:16px">done</i>
+                        </span>
+                      </td>
 
-                  <!-- // ACTIONS -->
-                  <!-- font-weight:400; text-align: center; display: flex; overflow: unset -->
-                  <td class="td-actions text-right" style="">
+                      <!-- // ACTIONS -->
+                      <!-- font-weight:400; text-align: center; display: flex; overflow: unset -->
+                      <td class="td-actions text-right" style="">
 
-                    <!-- EDIT - BRAND VERSION-->
-                    <button style="" type="button"
-                      class="btn btn-primary btn-simple btn-xs tooltipx" (click)='goToEditTrigger(trigger?._id)'>
-                      <i class="material-icons">edit</i>
-                      <span class="tooltiptext-custom" style="text-transform:none">
-                        <!-- {{ "Trigger.EditTrigger" | translate }} -->
-                      </span>
-                    </button>
-                    <!-- DELETE - BRAND VERSION -->
-                    <button *ngIf="!trigger.type"  type="button"
-                      class="btn btn-danger btn-simple btn-xs tooltipx" (click)='onDeleteTriggerModal(trigger)'>
-                      <i class="material-icons">close</i>
-                      <span class="tooltiptext-custom" style="text-transform:none">
-                        <!-- {{ "Trigger.ModalDeleteTriggerTitle" | translate }} -->
-                      </span>
-                    </button>
+                        <!-- EDIT - BRAND VERSION-->
+                        <button style="" type="button" class="btn btn-primary btn-simple btn-xs tooltipx"
+                          (click)='goToEditTrigger(trigger?._id)'>
+                          <i class="material-icons">edit</i>
+                          <span class="tooltiptext-custom" style="text-transform:none">
+                            <!-- {{ "Trigger.EditTrigger" | translate }} -->
+                          </span>
+                        </button>
+                        <!-- DELETE - BRAND VERSION -->
+                        <button *ngIf="!trigger.type" type="button" class="btn btn-danger btn-simple btn-xs tooltipx"
+                          (click)='onDeleteTriggerModal(trigger)'>
+                          <i class="material-icons">close</i>
+                          <span class="tooltiptext-custom" style="text-transform:none">
+                            <!-- {{ "Trigger.ModalDeleteTriggerTitle" | translate }} -->
+                          </span>
+                        </button>
 
 
-                    <!-- EDIT -->
-                    <!-- <span class="White__Tooltip">
+                        <!-- EDIT -->
+                        <!-- <span class="White__Tooltip">
                       <i class="material-icons" style="color:#9c27b0; font-size:17px;margin-right:6px;"
                         (click)='goToEditTrigger(trigger?._id)'>edit</i>
                       <span class="White__Tooltiptext" style="text-transform:capitalize; display: block; ">
                         {{ "Trigger.EditTrigger" | translate }}
                       </span>
                     </span> -->
-                    <!-- DELETE -->
-                    <!-- <span class="White__Tooltip">
+                        <!-- DELETE -->
+                        <!-- <span class="White__Tooltip">
                       <i class="material-icons" style="color:red; font-size:17px;"
                         (click)='onDeleteTriggerModal(trigger)'>close</i>
                       <span class="White__Tooltiptext" style="text-transform:capitalize; display: block; ">
@@ -203,18 +204,18 @@
                       </span>
                     </span> -->
 
-                  </td>
+                      </td>
 
-                </tr>
-              </tbody>
-            </table>
+                    </tr>
+                  </tbody>
+                </table>
 
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  </div>
   </div>
 </div>
 

@@ -256,9 +256,20 @@
         </a>
       </li>
 
-      <!-- SETTINGS -->
-      <li *ngIf="project && USER_ROLE !== 'agent'"
-        (click)="has_clicked_settings(SHOW_SETTINGS_SUBMENU = !SHOW_SETTINGS_SUBMENU)" style="cursor:pointer">
+      <!-- SETTINGS has_clicked_settings(SHOW_SETTINGS_SUBMENU = !SHOW_SETTINGS_SUBMENU)"-->
+      <li *ngIf="project && USER_ROLE !== 'agent'" 
+      [ngClass]="{'active': 
+      TRIGGER_ROUTE_IS_ACTIVE || 
+      TAG_ROUTE_IS_ACTIVE || 
+      CANNED_RESPONSES_ROUTE_IS_ACTIVE || 
+      DEPTS_ROUTE_IS_ACTIVE || 
+      TEAMMATES_ROUTE_IS_ACTIVE || 
+      GROUPS_ROUTE_IS_ACTIVE || 
+      WIDGET_SETUP_ROUTE_IS_ACTIVE ||
+      CHATBOT_ROUTE_IS_ACTIVE ||
+      PROJECT_SETTINGS_ROUTE_IS_ACTIVE ||
+      OPERATING_HOURS_ROUTE_IS_ACTIVE }"
+        (click)="goToCannedResponses()"  style="cursor:pointer">
         <!-- routerLink="/settings" -->
         <a class="customAncor">
           <i class="material-icons sidebar-icons">settings</i>

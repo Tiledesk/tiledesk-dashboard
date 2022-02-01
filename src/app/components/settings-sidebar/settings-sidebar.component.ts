@@ -25,6 +25,7 @@ export class SettingsSidebarComponent implements OnInit {
   DEPTS_ROUTE_IS_ACTIVE: boolean;
   TRIGGER_ROUTE_IS_ACTIVE: boolean;
   TEAMMATES_ROUTE_IS_ACTIVE: boolean;
+  GROUPS_ROUTE_IS_ACTIVE: boolean;
   WIDGET_SETUP_ROUTE_IS_ACTIVE: boolean;
   CHATBOT_ROUTE_IS_ACTIVE: boolean;
   PROJECT_SETTINGS_ROUTE_IS_ACTIVE: boolean;
@@ -171,10 +172,8 @@ export class SettingsSidebarComponent implements OnInit {
   }
 
   goToCannedResponses() {
-
     this.router.navigate(['project/' + this.project._id + '/cannedresponses']);
   }
-
 
   goToTags() {
     // routerLink="project/{{ project._id }}/labels"
@@ -186,21 +185,15 @@ export class SettingsSidebarComponent implements OnInit {
     this.router.navigate(['project/' + this.project._id + '/departments']);
   }
 
-
-
   goToTrigger() {
     //   routerLink="project/{{ project._id }}/trigger
     this.router.navigate(['project/' + this.project._id + '/trigger']);
   }
 
-
-
   goToTeammates() {
     // routerLink="project/{{ project._id }}/users"
     this.router.navigate(['project/' + this.project._id + '/users']);
   }
-
-
 
   goToChatbot() {
     // routerLink="project/{{ project._id }}/bots
@@ -212,19 +205,15 @@ export class SettingsSidebarComponent implements OnInit {
     this.router.navigate(['project/' + this.project._id + '/widget-set-up']);
   }
 
-
   goToOperatingHours() {
     // routerLink="project/{{ project._id }}/hours"
     this.router.navigate(['project/' + this.project._id + '/hours']);
   }
 
-
   goToProjectSettings() {
     // routerLink="project/{{ project._id }}/project-settings/general"
     this.router.navigate(['project/' + this.project._id + '/project-settings/general']);
   }
-
-
 
   getCurrentRoute() {
     // this.router.events.filter((event: any) => event instanceof NavigationEnd)
@@ -237,96 +226,83 @@ export class SettingsSidebarComponent implements OnInit {
 
 
     if (this.route.indexOf('/labels') !== -1) {
-
       this.TAG_ROUTE_IS_ACTIVE = true;
       console.log('[SETTING-SIDEBAR] - TAG_ROUTE_IS_ACTIVE  ', this.TAG_ROUTE_IS_ACTIVE);
     } else {
-
       this.TAG_ROUTE_IS_ACTIVE = false;
       console.log('[SETTING-SIDEBAR] - TAG_ROUTE_IS_ACTIVE  ', this.TAG_ROUTE_IS_ACTIVE);
     }
 
-
     if (this.route.indexOf('/cannedresponses') !== -1) {
-
       this.CANNED_RESPONSES_ROUTE_IS_ACTIVE = true;
       console.log('[SETTING-SIDEBAR] - CANNED_RESPONSES_ROUTE_IS_ACTIVE  ', this.CANNED_RESPONSES_ROUTE_IS_ACTIVE);
     } else {
-
       this.CANNED_RESPONSES_ROUTE_IS_ACTIVE = false;
       console.log('[SETTING-SIDEBAR] - CANNED_RESPONSES_ROUTE_IS_ACTIVE  ', this.CANNED_RESPONSES_ROUTE_IS_ACTIVE);
     }
 
     if (this.route.indexOf('/departments') !== -1) {
-
       this.DEPTS_ROUTE_IS_ACTIVE = true;
       console.log('[SETTING-SIDEBAR] - DEPTS_ROUTE_IS_ACTIVE  ', this.DEPTS_ROUTE_IS_ACTIVE);
     } else {
-
       this.DEPTS_ROUTE_IS_ACTIVE = false;
       console.log('[SETTING-SIDEBAR] - DEPTS_ROUTE_IS_ACTIVE  ', this.DEPTS_ROUTE_IS_ACTIVE);
     }
 
     if (this.route.indexOf('/trigger') !== -1) {
-
       this.TRIGGER_ROUTE_IS_ACTIVE = true;
       console.log('[SETTING-SIDEBAR] - TRIGGER_ROUTE_IS_ACTIVE  ', this.TRIGGER_ROUTE_IS_ACTIVE);
     } else {
-
       this.TRIGGER_ROUTE_IS_ACTIVE = false;
       console.log('[SETTING-SIDEBAR] - TRIGGER_ROUTE_IS_ACTIVE  ', this.TRIGGER_ROUTE_IS_ACTIVE);
     }
 
     if (this.route.indexOf('/users') !== -1) {
-
       this.TEAMMATES_ROUTE_IS_ACTIVE = true;
       console.log('[SETTING-SIDEBAR] - TEAMMATES_ROUTE_IS_ACTIVE  ', this.TEAMMATES_ROUTE_IS_ACTIVE);
     } else {
-
       this.TEAMMATES_ROUTE_IS_ACTIVE = false;
       console.log('[SETTING-SIDEBAR] - TEAMMATES_ROUTE_IS_ACTIVE  ', this.TEAMMATES_ROUTE_IS_ACTIVE);
     }
 
-    if (this.route.indexOf('/widget-set-up') !== -1) {
+    if (this.route.indexOf('/groups') !== -1) {
 
+      this.GROUPS_ROUTE_IS_ACTIVE = true;
+      console.log('[SETTING-SIDEBAR] - GROUPS_ROUTE_IS_ACTIVE  ', this.GROUPS_ROUTE_IS_ACTIVE);
+    } else {
+
+      this.GROUPS_ROUTE_IS_ACTIVE = false;
+      console.log('[SETTING-SIDEBAR] - GROUPS_ROUTE_IS_ACTIVE  ', this.GROUPS_ROUTE_IS_ACTIVE);
+    }
+
+    if (this.route.indexOf('/widget-set-up') !== -1) {
       this.WIDGET_SETUP_ROUTE_IS_ACTIVE = true;
       console.log('[SETTING-SIDEBAR] - WIDGET_SETUP_ROUTE_IS_ACTIVE  ', this.WIDGET_SETUP_ROUTE_IS_ACTIVE);
     } else {
-
       this.WIDGET_SETUP_ROUTE_IS_ACTIVE = false;
       console.log('[SETTING-SIDEBAR] - WIDGET_SETUP_ROUTE_IS_ACTIVE  ', this.WIDGET_SETUP_ROUTE_IS_ACTIVE);
     }
 
     if (this.route.indexOf('/bots') !== -1) {
-
       this.CHATBOT_ROUTE_IS_ACTIVE = true;
       console.log('[SETTING-SIDEBAR] - CHATBOT_ROUTE_IS_ACTIVE  ', this.CHATBOT_ROUTE_IS_ACTIVE);
     } else {
-
-
       this.CHATBOT_ROUTE_IS_ACTIVE = false;
       console.log('[SETTING-SIDEBAR] - CHATBOT_ROUTE_IS_ACTIVE  ', this.CHATBOT_ROUTE_IS_ACTIVE);
     }
 
     if (this.route.indexOf('/hours') !== -1) {
-
       this.OPERATING_HOURS_ROUTE_IS_ACTIVE = true;
       console.log('[SETTING-SIDEBAR] - OPERATING_HOURS_ROUTE_IS_ACTIVE  ', this.OPERATING_HOURS_ROUTE_IS_ACTIVE);
     } else {
-
-
       this.OPERATING_HOURS_ROUTE_IS_ACTIVE = false;
       console.log('[SETTING-SIDEBAR] - OPERATING_HOURS_ROUTE_IS_ACTIVE  ', this.OPERATING_HOURS_ROUTE_IS_ACTIVE);
     }
 
-
-    if (this.route.indexOf('/project-settings/general') !== -1) {
-
+    if (this.route.indexOf('/project-settings/') !== -1) {
       this.PROJECT_SETTINGS_ROUTE_IS_ACTIVE = true;
       console.log('[SETTING-SIDEBAR] - PROJECT_SETTINGS_ROUTE_IS_ACTIVE  ', this.PROJECT_SETTINGS_ROUTE_IS_ACTIVE);
     } else {
-
-
       this.PROJECT_SETTINGS_ROUTE_IS_ACTIVE = false;
       console.log('[SETTING-SIDEBAR] - PROJECT_SETTINGS_ROUTE_IS_ACTIVE  ', this.PROJECT_SETTINGS_ROUTE_IS_ACTIVE);
     }
