@@ -290,7 +290,15 @@
       ENTERPRISE_NOTIFICATION_EMAIL_ROUTE_IS_ACTIVE ||
       ENTERPRISE_SMTP_SETTINGS_ROUTE_IS_ACTIVE ||
       PRJCT_SETTINGS_WEBHOOK_ROUTE_IS_ACTIVE || 
-      PRJCT_SETTINGS_PAYMENTS_ROUTE_IS_ACTIVE}"
+      PRJCT_SETTINGS_PAYMENTS_ROUTE_IS_ACTIVE ||
+      INVITE_TEAMMATE_ROUTE_IS_ACTIVE ||
+      EDIT_PROJECT_USER_ROUTE_IS_ACTIVE ||
+      EDIT_DEPT_ROUTE_IS_ACTIVE ||
+      CREATE_GROUP_ROUTE_IS_ACTIVE ||
+      EDIT_GROUP_ROUTE_IS_ACTIVE || 
+      CREATE_FAQ_ROUTE_IS_ACTIVE ||
+      EDIT_FAQ_ROUTE_IS_ACTIVE ||
+      BOT_TEST_ROUTE_IS_ACTIVE}"
         (click)="goToCannedResponses()"  style="cursor:pointer" 
         matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Settings' | translate }}"  #tooltip="matTooltip"   matTooltipPosition='right' matTooltipHideDelay="100">
         <!-- routerLink="/settings" -->

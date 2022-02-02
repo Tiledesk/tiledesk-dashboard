@@ -157,15 +157,23 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     TAG_ROUTE_IS_ACTIVE: boolean;
     CANNED_RESPONSES_ROUTE_IS_ACTIVE: boolean;
     DEPTS_ROUTE_IS_ACTIVE: boolean;
+    EDIT_DEPT_ROUTE_IS_ACTIVE: boolean;
     TEAMMATES_ROUTE_IS_ACTIVE: boolean;
     GROUPS_ROUTE_IS_ACTIVE: boolean;
+    CREATE_GROUP_ROUTE_IS_ACTIVE: boolean;
+    EDIT_GROUP_ROUTE_IS_ACTIVE: boolean;
     WIDGET_SETUP_ROUTE_IS_ACTIVE: boolean;
     CHATBOT_ROUTE_IS_ACTIVE: boolean;
+    CREATE_FAQ_ROUTE_IS_ACTIVE: boolean;
+    EDIT_FAQ_ROUTE_IS_ACTIVE: boolean;
+    BOT_TEST_ROUTE_IS_ACTIVE: boolean;
     PROJECT_SETTINGS_ROUTE_IS_ACTIVE: boolean;
     ENTERPRISE_NOTIFICATION_EMAIL_ROUTE_IS_ACTIVE: boolean;
     ENTERPRISE_SMTP_SETTINGS_ROUTE_IS_ACTIVE: boolean;
     PRJCT_SETTINGS_WEBHOOK_ROUTE_IS_ACTIVE: boolean;
     PRJCT_SETTINGS_PAYMENTS_ROUTE_IS_ACTIVE: boolean;
+    INVITE_TEAMMATE_ROUTE_IS_ACTIVE: boolean;
+    EDIT_PROJECT_USER_ROUTE_IS_ACTIVE: boolean;
     OPERATING_HOURS_ROUTE_IS_ACTIVE: boolean;
 
     prjct_profile_name: string;
@@ -561,6 +569,15 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                     // console.log('[SIDEBAR] NavigationEnd - DEPTS_ROUTE_IS_ACTIVE ', this.DEPTS_ROUTE_IS_ACTIVE);
                 }
 
+                if (event.url.indexOf('/department/edit/') !== -1) {
+                    this.EDIT_DEPT_ROUTE_IS_ACTIVE = true;
+                    // console.log('[SIDEBAR] NavigationEnd - EDIT_DEPT_ROUTE_IS_ACTIVE ', this.EDIT_DEPT_ROUTE_IS_ACTIVE);
+                } else {
+                    this.EDIT_DEPT_ROUTE_IS_ACTIVE = false;
+                    // console.log('[SIDEBAR] NavigationEnd - EDIT_DEPT_ROUTE_IS_ACTIVE ', this.EDIT_DEPT_ROUTE_IS_ACTIVE);
+                }
+
+
                 if (event.url.indexOf('/users') !== -1) {
                     this.TEAMMATES_ROUTE_IS_ACTIVE = true;
                     // console.log('[SIDEBAR] NavigationEnd - TEAMMATES_ROUTE_IS_ACTIVE ', this.TEAMMATES_ROUTE_IS_ACTIVE);
@@ -577,6 +594,23 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                     // console.log('[SIDEBAR] NavigationEnd - GROUPS_ROUTE_IS_ACTIVE ', this.GROUPS_ROUTE_IS_ACTIVE);
                 }
 
+                if (event.url.indexOf('/group/create') !== -1) {
+                    this.CREATE_GROUP_ROUTE_IS_ACTIVE = true;
+                    // console.log('[SIDEBAR] NavigationEnd - CREATE_GROUP_ROUTE_IS_ACTIVE ', this.CREATE_GROUP_ROUTE_IS_ACTIVE);
+                } else {
+                    this.CREATE_GROUP_ROUTE_IS_ACTIVE = false;
+                    // console.log('[SIDEBAR] NavigationEnd - CREATE_GROUP_ROUTE_IS_ACTIVE ', this.CREATE_GROUP_ROUTE_IS_ACTIVE);
+                }
+
+                if (event.url.indexOf('/group/edit') !== -1) {
+                    this.EDIT_GROUP_ROUTE_IS_ACTIVE = true;
+                    // console.log('[SIDEBAR] NavigationEnd - EDIT_GROUP_ROUTE_IS_ACTIVE ', this.EDIT_GROUP_ROUTE_IS_ACTIVE);
+                } else {
+                    this.EDIT_GROUP_ROUTE_IS_ACTIVE = false;
+                    // console.log('[SIDEBAR] NavigationEnd - EDIT_GROUP_ROUTE_IS_ACTIVE ', this.EDIT_GROUP_ROUTE_IS_ACTIVE);
+                }
+
+
                 if (event.url.indexOf('/widget-set-up') !== -1) {
                     this.WIDGET_SETUP_ROUTE_IS_ACTIVE = true;
                     // console.log('[SIDEBAR] NavigationEnd - WIDGET_SETUP_ROUTE_IS_ACTIVE ', this.WIDGET_SETUP_ROUTE_IS_ACTIVE);
@@ -592,6 +626,31 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                     this.CHATBOT_ROUTE_IS_ACTIVE = false;
                     // console.log('[SIDEBAR] NavigationEnd - CHATBOT_ROUTE_IS_ACTIVE ', this.CHATBOT_ROUTE_IS_ACTIVE);
                 }
+
+                if (event.url.indexOf('/createfaq') !== -1) {
+                    this.CREATE_FAQ_ROUTE_IS_ACTIVE = true;
+                    // console.log('[SIDEBAR] NavigationEnd - CREATE_FAQ_ROUTE_IS_ACTIVE ', this.CREATE_FAQ_ROUTE_IS_ACTIVE);
+                } else {
+                    this.CREATE_FAQ_ROUTE_IS_ACTIVE = false;
+                    // console.log('[SIDEBAR] NavigationEnd - CREATE_FAQ_ROUTE_IS_ACTIVE ', this.CREATE_FAQ_ROUTE_IS_ACTIVE);
+                }
+
+                if (event.url.indexOf('/editfaq') !== -1) {
+                    this.EDIT_FAQ_ROUTE_IS_ACTIVE = true;
+                    // console.log('[SIDEBAR] NavigationEnd - EDIT_FAQ_ROUTE_IS_ACTIVE ', this.EDIT_FAQ_ROUTE_IS_ACTIVE);
+                } else {
+                    this.EDIT_FAQ_ROUTE_IS_ACTIVE = false;
+                    // console.log('[SIDEBAR] NavigationEnd - EDIT_FAQ_ROUTE_IS_ACTIVE ', this.EDIT_FAQ_ROUTE_IS_ACTIVE);
+                }
+
+                if (event.url.indexOf('/faq/test/') !== -1) {
+                    this.BOT_TEST_ROUTE_IS_ACTIVE = true;
+                    // console.log('[SIDEBAR] NavigationEnd - BOT_TEST_ROUTE_IS_ACTIVE ', this.BOT_TEST_ROUTE_IS_ACTIVE);
+                } else {
+                    this.BOT_TEST_ROUTE_IS_ACTIVE = false;
+                    // console.log('[SIDEBAR] NavigationEnd - BOT_TEST_ROUTE_IS_ACTIVE ', this.BOT_TEST_ROUTE_IS_ACTIVE);
+                }
+       
 
                 if (event.url.indexOf('/hours') !== -1) {
                     this.OPERATING_HOURS_ROUTE_IS_ACTIVE = true;
@@ -639,6 +698,22 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 } else {
                     this.PRJCT_SETTINGS_PAYMENTS_ROUTE_IS_ACTIVE = false;
                     // console.log('[SIDEBAR] NavigationEnd - PRJCT_SETTINGS_PAYMENTS_ROUTE_IS_ACTIVE ', this.PRJCT_SETTINGS_PAYMENTS_ROUTE_IS_ACTIVE);
+                }
+
+                if (event.url.indexOf('/user/add') !== -1) {
+                    this.INVITE_TEAMMATE_ROUTE_IS_ACTIVE = true;
+                    // console.log('[SIDEBAR] NavigationEnd - INVITE_TEAMMATE_ROUTE_IS_ACTIVE ', this.INVITE_TEAMMATE_ROUTE_IS_ACTIVE);
+                } else {
+                    this.INVITE_TEAMMATE_ROUTE_IS_ACTIVE = false;
+                    // console.log('[SIDEBAR] NavigationEnd - INVITE_TEAMMATE_ROUTE_IS_ACTIVE ', this.INVITE_TEAMMATE_ROUTE_IS_ACTIVE);
+                }
+
+                if (event.url.indexOf('/user/edit/') !== -1) {
+                    this.EDIT_PROJECT_USER_ROUTE_IS_ACTIVE = true;
+                    // console.log('[SIDEBAR] NavigationEnd - EDIT_PROJECT_USER_ROUTE_IS_ACTIVE ', this.EDIT_PROJECT_USER_ROUTE_IS_ACTIVE);
+                } else {
+                    this.EDIT_PROJECT_USER_ROUTE_IS_ACTIVE = false;
+                    // console.log('[SIDEBAR] NavigationEnd - EDIT_PROJECT_USER_ROUTE_IS_ACTIVE ', this.EDIT_PROJECT_USER_ROUTE_IS_ACTIVE);
                 }
 
             });
