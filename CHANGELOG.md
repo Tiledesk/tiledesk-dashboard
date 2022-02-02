@@ -1,6 +1,13 @@
 
 # tiledesk-dashboard
 
+### 2.2.32-rc1
+- Installs the "angular material" module
+- Replaces the sidebar with a smaller one and implements the "Settings Sidebar"
+- Removes sidebar responsiveness
+- Change the name of the "Account" tab to "Subscription" in Settings > Project Settings
+- Fixes the bug: the strings in the modal displayed after the password change are not correctly translated
+
 ### 2.2.31
 - Deploys in production
 
