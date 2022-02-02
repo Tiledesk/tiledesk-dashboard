@@ -162,6 +162,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     WIDGET_SETUP_ROUTE_IS_ACTIVE: boolean;
     CHATBOT_ROUTE_IS_ACTIVE: boolean;
     PROJECT_SETTINGS_ROUTE_IS_ACTIVE: boolean;
+    ENTERPRISE_NOTIFICATION_EMAIL_ROUTE_IS_ACTIVE: boolean;
+    ENTERPRISE_SMTP_SETTINGS_ROUTE_IS_ACTIVE: boolean;
+    PRJCT_SETTINGS_WEBHOOK_ROUTE_IS_ACTIVE: boolean;
+    PRJCT_SETTINGS_PAYMENTS_ROUTE_IS_ACTIVE: boolean;
     OPERATING_HOURS_ROUTE_IS_ACTIVE: boolean;
 
     prjct_profile_name: string;
@@ -603,6 +607,38 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 } else {
                     this.PROJECT_SETTINGS_ROUTE_IS_ACTIVE = false;
                     // console.log('[SIDEBAR] NavigationEnd - SETTINGS_IS_ACTIVE ', this.PROJECT_SETTINGS_ROUTE_IS_ACTIVE);
+                }
+
+                if (event.url.indexOf('/notification-email') !== -1) {
+                    this.ENTERPRISE_NOTIFICATION_EMAIL_ROUTE_IS_ACTIVE = true;
+                    // console.log('[SIDEBAR] NavigationEnd - ENTERPRISE_NOTIFICATION_EMAIL_ROUTE_IS_ACTIVE ', this.ENTERPRISE_NOTIFICATION_EMAIL_ROUTE_IS_ACTIVE);
+                } else {
+                    this.ENTERPRISE_NOTIFICATION_EMAIL_ROUTE_IS_ACTIVE = false;
+                    // console.log('[SIDEBAR] NavigationEnd - ENTERPRISE_NOTIFICATION_EMAIL_ROUTE_IS_ACTIVE ', this.ENTERPRISE_NOTIFICATION_EMAIL_ROUTE_IS_ACTIVE);
+                }
+
+                if (event.url.indexOf('/smtp-settings') !== -1) {
+                    this.ENTERPRISE_SMTP_SETTINGS_ROUTE_IS_ACTIVE = true;
+                    // console.log('[SIDEBAR] NavigationEnd - ENTERPRISE_SMTP_SETTINGS_ROUTE_IS_ACTIVE ', this.ENTERPRISE_SMTP_SETTINGS_ROUTE_IS_ACTIVE);
+                } else {
+                    this.ENTERPRISE_SMTP_SETTINGS_ROUTE_IS_ACTIVE = false;
+                    // console.log('[SIDEBAR] NavigationEnd - ENTERPRISE_SMTP_SETTINGS_ROUTE_IS_ACTIVE ', this.ENTERPRISE_SMTP_SETTINGS_ROUTE_IS_ACTIVE);
+                }
+
+                if (event.url.indexOf('/webhook') !== -1) {
+                    this.PRJCT_SETTINGS_WEBHOOK_ROUTE_IS_ACTIVE = true;
+                    // console.log('[SIDEBAR] NavigationEnd - PRJCT_SETTINGS_WEBHOOK_ROUTE_IS_ACTIVE ', this.PRJCT_SETTINGS_WEBHOOK_ROUTE_IS_ACTIVE);
+                } else {
+                    this.PRJCT_SETTINGS_WEBHOOK_ROUTE_IS_ACTIVE = false;
+                    // console.log('[SIDEBAR] NavigationEnd - PRJCT_SETTINGS_WEBHOOK_ROUTE_IS_ACTIVE ', this.PRJCT_SETTINGS_WEBHOOK_ROUTE_IS_ACTIVE);
+                }
+
+                if (event.url.indexOf('/payments') !== -1) {
+                    this.PRJCT_SETTINGS_PAYMENTS_ROUTE_IS_ACTIVE = true;
+                    // console.log('[SIDEBAR] NavigationEnd - PRJCT_SETTINGS_PAYMENTS_ROUTE_IS_ACTIVE ', this.PRJCT_SETTINGS_PAYMENTS_ROUTE_IS_ACTIVE);
+                } else {
+                    this.PRJCT_SETTINGS_PAYMENTS_ROUTE_IS_ACTIVE = false;
+                    // console.log('[SIDEBAR] NavigationEnd - PRJCT_SETTINGS_PAYMENTS_ROUTE_IS_ACTIVE ', this.PRJCT_SETTINGS_PAYMENTS_ROUTE_IS_ACTIVE);
                 }
 
             });

@@ -286,7 +286,11 @@
       WIDGET_SETUP_ROUTE_IS_ACTIVE ||
       CHATBOT_ROUTE_IS_ACTIVE ||
       PROJECT_SETTINGS_ROUTE_IS_ACTIVE ||
-      OPERATING_HOURS_ROUTE_IS_ACTIVE }"
+      OPERATING_HOURS_ROUTE_IS_ACTIVE ||
+      ENTERPRISE_NOTIFICATION_EMAIL_ROUTE_IS_ACTIVE ||
+      ENTERPRISE_SMTP_SETTINGS_ROUTE_IS_ACTIVE ||
+      PRJCT_SETTINGS_WEBHOOK_ROUTE_IS_ACTIVE || 
+      PRJCT_SETTINGS_PAYMENTS_ROUTE_IS_ACTIVE}"
         (click)="goToCannedResponses()"  style="cursor:pointer" 
         matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Settings' | translate }}"  #tooltip="matTooltip"   matTooltipPosition='right' matTooltipHideDelay="100">
         <!-- routerLink="/settings" -->
