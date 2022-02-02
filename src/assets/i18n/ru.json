@@ -1991,6 +1991,7 @@
     "New Conversation": "Новый разговор",
     "Authentication Triggers": "Триггеры аутентификации",
     "DailyAverage": "В среднем за день",
+    "Apps":"Приложения",
     "CHAT_IONIC": {
         "LABEL_TU": "ты: ",
         "LABEL_MSG_PUSH_START_CHAT": "Разговора пока нет",

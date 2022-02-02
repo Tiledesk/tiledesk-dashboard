@@ -1988,6 +1988,7 @@
     "New Conversation": "Yeni Konuşma",
     "Authentication Triggers": "Kimlik Doğrulama Tetikleyicileri",
     "DailyAverage": "Günlük ortalama",
+    "Apps":"Uygulamalar",
     "CHAT_IONIC": {
         "LABEL_TU": "sen: ",
         "LABEL_MSG_PUSH_START_CHAT": "Henüz görüşme yok",
