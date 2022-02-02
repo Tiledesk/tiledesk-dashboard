@@ -261,9 +261,6 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
   closeRightSidebar(event) {
     this.logger.log('[FAQ-TEST-COMP] »»»» CLOSE RIGHT SIDEBAR ', event);
     this.OPEN_RIGHT_SIDEBAR = event;
-
-    // const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
-    // _elemMainPanel.setAttribute('style', 'overflow-x: hidden !important;');
   }
 
 }

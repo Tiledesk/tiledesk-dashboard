@@ -1,7 +1,8 @@
 <p style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px" class="navbar-brand">
-  <!-- {{ "Departments" | translate }} -->
-  <span *ngIf="isVisibleDEP"> {{'RoutingAndDepts' | translate}} </span>
-  <span *ngIf="!isVisibleDEP"> {{'Routing' | translate}} </span>
+
+  <!-- <span *ngIf="isVisibleDEP"> {{'RoutingAndDepts' | translate}} </span>
+  <span *ngIf="!isVisibleDEP"> {{'Routing' | translate}} </span> -->
+  {{ 'Settings' | translate }}
 </p>
 <div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
   <div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
@@ -14,7 +15,7 @@
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8">
 
             <!-- card--no-border -->
-            <div class="card" style="margin-top: 5px;">
+            <div class="card card card--no-border" style="margin-top: -2px;">
 
               <!--
           // ---------------------------------------------------
@@ -63,10 +64,10 @@
               <div *ngIf="!showSpinner" class="card-content table-responsive" style="min-height: 200px;">
 
 
-                <!-- 
-            // --------------------------------------------------------------------- 
-            // DAFAULT ROUTING 
-            // --------------------------------------------------------------------- -->
+                 
+            <!-- --------------------------------------------------------------------- -->
+            <!-- DAFAULT ROUTING -->
+            <!-- --------------------------------------------------------------------- -->
                 <section class="default-department-table" style="margin-bottom: 36px;">
 
                   <div class="row table-title-wpr">
@@ -309,10 +310,10 @@
                 </section>
                 <!-- ----- ./ DEFAULT DEPTS ------ -->
 
-                <!-- 
-            // ---------------------------------------------------------- 
-            // DEPT LIST TABLE SECTION
-            // ---------------------------------------------------------- -->
+                 
+            <!-- ---------------------------------------------------------- --> 
+            <!-- DEPT LIST TABLE SECTION -->
+            <!-- ---------------------------------------------------------- -->
                 <section class="departments-table" *ngIf="isVisibleDEP">
 
                   <div class="row table-title-wpr">
@@ -663,20 +664,32 @@
           </div> <!-- /. col-md-12 -->
 
 
-          <!-- 
-      // ---------------------------------------------------
-      // @ Right sidebar
-      // --------------------------------------------------- -->
+           
+      <!-- --------------------------------------------------- -->
+      <!-- @ Right sidebar -->
+      <!-- --------------------------------------------------- -->
 
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
 
-            <div class="card" style="padding-top: 8px;margin-top: 5px;">
+            <div class="card card--no-border" style="padding-top: 8px;margin-top: 5px;">
               <div class="card-content" style="padding-top: 0px;">
-                <h4 class="card-title"
+                <!-- <h4 class="card-title"
                   style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 15px">
-                  <!-- {{ "RoutingPage.QuickTips" | translate }} -->
                   {{ "QuickTips" | translate }}
-                </h4>
+                </h4> -->
+
+                <div class="row">
+                  <div class="col-sm-12 col-md-12">
+                    <h3 class="card_title__underlined">
+                      <span class="card_title__underline">
+                        {{ "QuickTips" | translate }}
+                      </span>
+                    </h3>
+                  </div>
+                  <div class="col-sm-12 col-md-12">
+                    <div class="section-subtitle"> </div>
+                  </div>
+                </div>
 
                 <p style="color:#7695a5">
                   {{ "DeptQuickTips_1" | translate }}

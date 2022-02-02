@@ -9,13 +9,17 @@ import { TranslateModule } from '@ngx-translate/core';
 import { SmallSidebarComponent } from './small-sidebar/small-sidebar.component';
 import { NavbarForPanelComponent } from './navbar-for-panel/navbar-for-panel.component';
 import { NavbarForPanelService } from './navbar-for-panel/navbar-for-panel.service';
+import { MatTooltipModule }  from '@angular/material/tooltip';
+import { MatButtonModule }  from '@angular/material/button';
 
 
 @NgModule({
   imports: [
     CommonModule,
     RouterModule,
-    TranslateModule
+    TranslateModule,
+    MatTooltipModule,
+    MatButtonModule
   ],
   declarations: [
     FooterComponent,

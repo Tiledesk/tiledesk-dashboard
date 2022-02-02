@@ -184,6 +184,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     dsbrd_lang: string;
     tlangparams: any
     flag_url: string;
+    tooltip_text_for_availability_status: string
+
     private unsubscribe$: Subject<any> = new Subject<any>();
 
     constructor(
@@ -436,9 +438,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 if (event.url.indexOf('/autologin') !== -1) {
                     this.logger.log('[SIDEBAR] NavigationEnd - THE activities-demo route IS ACTIVE  ', event.url);
                     this.AUTOLOGIN_ROUTE_IS_ACTIVE = true;
-                    // const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
-                    // this.logger.log('[SIDEBAR] NavigationEnd - elemMainPanel  ', elemMainPanel);
-                    // elemMainPanel.style.width = "100% !important"
+               
                 } else {
                     // this.logger.log('[SIDEBAR] NavigationEnd - THE activities-demo route IS NOT ACTIVE  ', event.url);
                     this.AUTOLOGIN_ROUTE_IS_ACTIVE = false;
@@ -447,9 +447,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 if (event.url === '/projects') {
                     this.logger.log('[SIDEBAR] NavigationEnd - THE activities-demo route IS ACTIVE  ', event.url);
                     this.YOUR_PROJECT_ROUTE_IS_ACTIVE = true;
-                    // const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
-                    // this.logger.log('[SIDEBAR] NavigationEnd - elemMainPanel  ', elemMainPanel);
-                    // elemMainPanel.style.width = "100% !important"
+          
                 } else {
                     // this.logger.log('[SIDEBAR] NavigationEnd - THE activities-demo route IS NOT ACTIVE  ', event.url);
                     this.YOUR_PROJECT_ROUTE_IS_ACTIVE = false;
@@ -528,93 +526,83 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 if (event.url.indexOf('/trigger') !== -1) {
                     // this.logger.log('[SIDEBAR] NavigationEnd - THE home route IS ACTIVE  ', event.url);
                     this.TRIGGER_ROUTE_IS_ACTIVE = true;
-                    console.log('[SIDEBAR] NavigationEnd - TRIGGER_ROUTE_IS_ACTIVE ', this.TRIGGER_ROUTE_IS_ACTIVE);
+                    // console.log('[SIDEBAR] NavigationEnd - TRIGGER_ROUTE_IS_ACTIVE ', this.TRIGGER_ROUTE_IS_ACTIVE);
                 } else {
                     // this.logger.log('[SIDEBAR] NavigationEnd - THE home route IS NOT ACTIVE  ', event.url);
                     this.TRIGGER_ROUTE_IS_ACTIVE = false;
-                    console.log('[SIDEBAR] NavigationEnd - TRIGGER_ROUTE_IS_ACTIVE ', this.TRIGGER_ROUTE_IS_ACTIVE);
+                    // console.log('[SIDEBAR] NavigationEnd - TRIGGER_ROUTE_IS_ACTIVE ', this.TRIGGER_ROUTE_IS_ACTIVE);
                 }
 
                 if (event.url.indexOf('/labels') !== -1) {
-
                     this.TAG_ROUTE_IS_ACTIVE = true;
-                    console.log('[SIDEBAR] NavigationEnd - TAG_ROUTE_IS_ACTIVE ', this.TAG_ROUTE_IS_ACTIVE);
+                    // console.log('[SIDEBAR] NavigationEnd - TAG_ROUTE_IS_ACTIVE ', this.TAG_ROUTE_IS_ACTIVE);
                 } else {
-
                     this.TAG_ROUTE_IS_ACTIVE = false;
-                    console.log('[SIDEBAR] NavigationEnd - TAG_ROUTE_IS_ACTIVE ', this.TAG_ROUTE_IS_ACTIVE);
+                    // console.log('[SIDEBAR] NavigationEnd - TAG_ROUTE_IS_ACTIVE ', this.TAG_ROUTE_IS_ACTIVE);
                 }
 
                 if (event.url.indexOf('/cannedresponses') !== -1) {
-
                     this.CANNED_RESPONSES_ROUTE_IS_ACTIVE = true;
-                    console.log('[SIDEBAR] NavigationEnd - CANNED_RESPONSES_ROUTE_IS_ACTIVE ', this.CANNED_RESPONSES_ROUTE_IS_ACTIVE);
+                    // console.log('[SIDEBAR] NavigationEnd - CANNED_RESPONSES_ROUTE_IS_ACTIVE ', this.CANNED_RESPONSES_ROUTE_IS_ACTIVE);
                 } else {
-
                     this.CANNED_RESPONSES_ROUTE_IS_ACTIVE = false;
-                    console.log('[SIDEBAR] NavigationEnd - CANNED_RESPONSES_ROUTE_IS_ACTIVE ', this.CANNED_RESPONSES_ROUTE_IS_ACTIVE);
+                    // console.log('[SIDEBAR] NavigationEnd - CANNED_RESPONSES_ROUTE_IS_ACTIVE ', this.CANNED_RESPONSES_ROUTE_IS_ACTIVE);
                 }
 
                 if (event.url.indexOf('/departments') !== -1) {
-
                     this.DEPTS_ROUTE_IS_ACTIVE = true;
-                    console.log('[SIDEBAR] NavigationEnd - DEPTS_ROUTE_IS_ACTIVE ', this.DEPTS_ROUTE_IS_ACTIVE);
+                    // console.log('[SIDEBAR] NavigationEnd - DEPTS_ROUTE_IS_ACTIVE ', this.DEPTS_ROUTE_IS_ACTIVE);
                 } else {
-
                     this.DEPTS_ROUTE_IS_ACTIVE = false;
-                    console.log('[SIDEBAR] NavigationEnd - DEPTS_ROUTE_IS_ACTIVE ', this.DEPTS_ROUTE_IS_ACTIVE);
+                    // console.log('[SIDEBAR] NavigationEnd - DEPTS_ROUTE_IS_ACTIVE ', this.DEPTS_ROUTE_IS_ACTIVE);
                 }
 
                 if (event.url.indexOf('/users') !== -1) {
-
                     this.TEAMMATES_ROUTE_IS_ACTIVE = true;
-                    console.log('[SIDEBAR] NavigationEnd - TEAMMATES_ROUTE_IS_ACTIVE ', this.TEAMMATES_ROUTE_IS_ACTIVE);
+                    // console.log('[SIDEBAR] NavigationEnd - TEAMMATES_ROUTE_IS_ACTIVE ', this.TEAMMATES_ROUTE_IS_ACTIVE);
                 } else {
-
                     this.TEAMMATES_ROUTE_IS_ACTIVE = false;
-                    console.log('[SIDEBAR] NavigationEnd - TEAMMATES_ROUTE_IS_ACTIVE ', this.TEAMMATES_ROUTE_IS_ACTIVE);;
+                    // console.log('[SIDEBAR] NavigationEnd - TEAMMATES_ROUTE_IS_ACTIVE ', this.TEAMMATES_ROUTE_IS_ACTIVE);;
                 }
 
                 if (event.url.indexOf('/groups') !== -1) {
-
                     this.GROUPS_ROUTE_IS_ACTIVE = true;
-                    console.log('[SIDEBAR] NavigationEnd - GROUPS_ROUTE_IS_ACTIVE ', this.GROUPS_ROUTE_IS_ACTIVE);
+                    // console.log('[SIDEBAR] NavigationEnd - GROUPS_ROUTE_IS_ACTIVE ', this.GROUPS_ROUTE_IS_ACTIVE);
                 } else {
-
                     this.GROUPS_ROUTE_IS_ACTIVE = false;
-                    console.log('[SIDEBAR] NavigationEnd - GROUPS_ROUTE_IS_ACTIVE ', this.GROUPS_ROUTE_IS_ACTIVE);
+                    // console.log('[SIDEBAR] NavigationEnd - GROUPS_ROUTE_IS_ACTIVE ', this.GROUPS_ROUTE_IS_ACTIVE);
                 }
 
                 if (event.url.indexOf('/widget-set-up') !== -1) {
                     this.WIDGET_SETUP_ROUTE_IS_ACTIVE = true;
-                    console.log('[SIDEBAR] NavigationEnd - WIDGET_SETUP_ROUTE_IS_ACTIVE ', this.WIDGET_SETUP_ROUTE_IS_ACTIVE);
+                    // console.log('[SIDEBAR] NavigationEnd - WIDGET_SETUP_ROUTE_IS_ACTIVE ', this.WIDGET_SETUP_ROUTE_IS_ACTIVE);
                 } else {
                     this.WIDGET_SETUP_ROUTE_IS_ACTIVE = false;
-                    console.log('[SIDEBAR] NavigationEnd - WIDGET_SETUP_ROUTE_IS_ACTIVE ', this.WIDGET_SETUP_ROUTE_IS_ACTIVE);
+                    // console.log('[SIDEBAR] NavigationEnd - WIDGET_SETUP_ROUTE_IS_ACTIVE ', this.WIDGET_SETUP_ROUTE_IS_ACTIVE);
                 }
 
                 if (event.url.indexOf('/bots') !== -1) {
                     this.CHATBOT_ROUTE_IS_ACTIVE = true;
-                    console.log('[SIDEBAR] NavigationEnd - CHATBOT_ROUTE_IS_ACTIVE ', this.CHATBOT_ROUTE_IS_ACTIVE);
+                    // console.log('[SIDEBAR] NavigationEnd - CHATBOT_ROUTE_IS_ACTIVE ', this.CHATBOT_ROUTE_IS_ACTIVE);
                 } else {
                     this.CHATBOT_ROUTE_IS_ACTIVE = false;
-                    console.log('[SIDEBAR] NavigationEnd - CHATBOT_ROUTE_IS_ACTIVE ', this.CHATBOT_ROUTE_IS_ACTIVE);
+                    // console.log('[SIDEBAR] NavigationEnd - CHATBOT_ROUTE_IS_ACTIVE ', this.CHATBOT_ROUTE_IS_ACTIVE);
                 }
 
                 if (event.url.indexOf('/hours') !== -1) {
                     this.OPERATING_HOURS_ROUTE_IS_ACTIVE = true;
-                    console.log('[SIDEBAR] NavigationEnd - OPERATING_HOURS_ROUTE_IS_ACTIVE ', this.OPERATING_HOURS_ROUTE_IS_ACTIVE);
+                    // console.log('[SIDEBAR] NavigationEnd - OPERATING_HOURS_ROUTE_IS_ACTIVE ', this.OPERATING_HOURS_ROUTE_IS_ACTIVE);
                 } else {
                     this.OPERATING_HOURS_ROUTE_IS_ACTIVE = false;
-                    console.log('[SIDEBAR] NavigationEnd - OPERATING_HOURS_ROUTE_IS_ACTIVE ', this.OPERATING_HOURS_ROUTE_IS_ACTIVE);
+                    // console.log('[SIDEBAR] NavigationEnd - OPERATING_HOURS_ROUTE_IS_ACTIVE ', this.OPERATING_HOURS_ROUTE_IS_ACTIVE);
                 }
 
                 if (event.url.indexOf('/project-settings/') !== -1) {
                     this.PROJECT_SETTINGS_ROUTE_IS_ACTIVE = true;
-                    console.log('[SIDEBAR] NavigationEnd - PROJECT_SETTINGS_ROUTE_IS_ACTIVE ', this.PROJECT_SETTINGS_ROUTE_IS_ACTIVE);
+                    // console.log('[SIDEBAR] NavigationEnd - PROJECT_SETTINGS_ROUTE_IS_ACTIVE ', this.PROJECT_SETTINGS_ROUTE_IS_ACTIVE);
                 } else {
                     this.PROJECT_SETTINGS_ROUTE_IS_ACTIVE = false;
-                    console.log('[SIDEBAR] NavigationEnd - SETTINGS_IS_ACTIVE ', this.PROJECT_SETTINGS_ROUTE_IS_ACTIVE);
+                    // console.log('[SIDEBAR] NavigationEnd - SETTINGS_IS_ACTIVE ', this.PROJECT_SETTINGS_ROUTE_IS_ACTIVE);
                 }
 
             });
@@ -904,9 +892,15 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 takeUntil(this.unsubscribe$)
             )
             .subscribe((currentuser_availability) => {
-                // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER AVAILABILITY - IS AVAILABLE? ', currentuser_availability);
+                console.log('[SIDEBAR] - GET WS CURRENT-USER AVAILABILITY - IS AVAILABLE? ', currentuser_availability);
                 if (currentuser_availability !== null) {
                     this.IS_AVAILABLE = currentuser_availability;
+
+                    if (this.IS_AVAILABLE === true) {
+                        this.tooltip_text_for_availability_status = this.translate.instant('CHANGE_TO_YOUR_STATUS_TO_UNAVAILABLE')
+                    } else {
+                        this.tooltip_text_for_availability_status = this.translate.instant('CHANGE_TO_YOUR_STATUS_TO_AVAILABLE')
+                    }
                 }
             }, error => {
                 this.logger.error('[SIDEBAR] - GET WS CURRENT-USER AVAILABILITY * error * ', error)
@@ -1114,78 +1108,34 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         }
     }
 
-    smallSidebar(IS_SMALL) {
-        this.SIDEBAR_IS_SMALL = IS_SMALL;
-        this.logger.log('[SIDEBAR] smallSidebar ', IS_SMALL)
+    // smallSidebar(IS_SMALL) {
+    //     this.SIDEBAR_IS_SMALL = IS_SMALL;
+    //     this.logger.log('[SIDEBAR] smallSidebar ', IS_SMALL)
 
-        const elemSidebarWrapper = <HTMLElement>document.querySelector('.sidebar-wrapper');
-        const elemSidebar = <HTMLElement>document.querySelector('.sidebar');
-        const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
-        const elemHtmlTag = <HTMLElement>document.querySelector('html');
-        this.logger.log('[SIDEBAR] smallSidebar', elemHtmlTag)
-        elemHtmlTag.style.overflowY = 'auto';
-        // this.logger.log('elemAppSidebar', elemAppSidebar)
+    //     const elemSidebarWrapper = <HTMLElement>document.querySelector('.sidebar-wrapper');
+    //     const elemSidebar = <HTMLElement>document.querySelector('.sidebar');
+    //     const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
+    //     const elemHtmlTag = <HTMLElement>document.querySelector('html');
+    //     this.logger.log('[SIDEBAR] smallSidebar', elemHtmlTag)
+    //     elemHtmlTag.style.overflowY = 'auto';
+    //     // this.logger.log('elemAppSidebar', elemAppSidebar)
 
-        if (IS_SMALL === true) {
-            elemSidebar.setAttribute('style', 'width: 70px;');
-            elemSidebarWrapper.setAttribute('style', 'width: 70px; background-color: #2d323e!important');
-            elemMainPanel.setAttribute('style', 'width:calc(100% - 70px);');
-            elemMainPanel.style.overflowX = 'hidden';
-            elemSidebarWrapper.style.height = "calc(100vh - 45px)";
+    //     if (IS_SMALL === true) {
+    //         elemSidebar.setAttribute('style', 'width: 70px;');
+    //         elemSidebarWrapper.setAttribute('style', 'width: 70px; background-color: #2d323e!important');
+    //         elemMainPanel.setAttribute('style', 'width:calc(100% - 70px);');
+    //         elemMainPanel.style.overflowX = 'hidden';
+    //         elemSidebarWrapper.style.height = "calc(100vh - 45px)";
 
-            // if (this.IS_MOBILE_MENU === false) {
-            //     elemMainPanel.style.width = "calc(100% - 70px)"
-            // } else {
-            //     elemMainPanel.style.width = "100%"
-            // }
-
-            // if (window.matchMedia(`(min-width: 992px)`).matches ) {
-            //     console.log('[SIDEBAR] smallSidebar TRUE matchMedia' ) 
-            //     elemMainPanel.style.width = "100%"
-            //  }
-            // [].forEach.call(
-            //     document.querySelectorAll('.nav-container ul li a p'),
-            //     function (el) {
-            //         el.setAttribute('style', 'display: none');
-            //     }
-            // );
-
-            // [].forEach.call(
-            //     document.querySelectorAll('.nav-container ul li a'),
-            //     function (el) {
-            //         el.setAttribute('style', 'height: 40px');
-            //     }
-            // );
-
-        } else {
-            if (this.YOUR_PROJECT_ROUTE_IS_ACTIVE === false && this.AUTOLOGIN_ROUTE_IS_ACTIVE === false) {
-                elemSidebar.setAttribute('style', 'width: 260px;');
-                elemSidebarWrapper.setAttribute('style', 'width: 260px;background-color: #2d323e!important');
-                elemMainPanel.setAttribute('style', 'width:calc(100% - 260px);');
-                elemSidebarWrapper.style.height = "calc(100vh - 60px)";
-            }
-            // if (this.IS_MOBILE_MENU === false) {
-            //     elemMainPanel.style.width = "calc(100% - 260px)"
-            // } else {
-            //     elemMainPanel.style.width = "100%"
-            // }
-
-
-            //  if (window.matchMedia(`(max-width: 991px)`).matches ) {
-            //     console.log('[SIDEBAR] smallSidebar FALSE matchMedia' ) 
-            //     elemMainPanel.style.width = "100%"
-            //  }
-
-
-
-            // [].forEach.call(
-            //     document.querySelectorAll('.nav-container ul li a p'),
-            //     function (el) {
-            //         el.setAttribute('style', 'display: block');
-            //     }
-            // );
-        }
-    }
+    //     } else {
+    //         if (this.YOUR_PROJECT_ROUTE_IS_ACTIVE === false && this.AUTOLOGIN_ROUTE_IS_ACTIVE === false) {
+    //             elemSidebar.setAttribute('style', 'width: 260px;');
+    //             elemSidebarWrapper.setAttribute('style', 'width: 260px;background-color: #2d323e!important');
+    //             elemMainPanel.setAttribute('style', 'width:calc(100% - 260px);');
+    //             elemSidebarWrapper.style.height = "calc(100vh - 60px)";
+    //         }
+    //     }
+    // }
 
 
 

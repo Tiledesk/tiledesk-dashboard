@@ -389,8 +389,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
 
   onFileChange(event: any) {
-    // this.elemProgressPercent = <HTMLElement>document.querySelector('.percent');
-    // this.logger.log('PROGRESS ELEMENT ', this.elemProgressPercent);
+    
 
     this.logger.log('[FAQ-COMP] onFileChange - event.target.files ', event.target.files);
     this.logger.log('[FAQ-COMP] onFileChange - event.target.files.length ', event.target.files.length);

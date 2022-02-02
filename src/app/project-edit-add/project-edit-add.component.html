@@ -1,11 +1,12 @@
 <!-- NEW FOR THIS TEMPLATE -->
 <p class="navbar-brand" style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px;">
-  <!-- (click)="goBackToProjectsList() -->
-  <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
-    (click)="goBack()">keyboard_arrow_left</i>
+
+  <!-- <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
+    (click)="goBack()">keyboard_arrow_left</i> -->
 
   <!-- {{ "ProjectEditPage.ProjectSettings" | translate }} -->
-  {{ "ProjectSettings" | translate }}
+  <!-- {{ "ProjectSettings" | translate }} -->
+  {{ 'Settings' | translate }}
 </p>
 
 
@@ -66,33 +67,34 @@
             [ngClass]="{ 'li-active' : PROJECT_SETTINGS_ROUTE === true, 'border-from-center': PROJECT_SETTINGS_ROUTE === false}">
             <a> {{ "General" | translate }} </a>
           </li>
-        
+
           <li *ngIf="isVisiblePaymentTab" (click)="goToProjectSettings_Payments()" class="btn-with-border-effect"
             [ngClass]="{ 'li-active' : PROJECT_SETTINGS_PAYMENTS_ROUTE === true, 'border-from-center': PROJECT_SETTINGS_PAYMENTS_ROUTE === false}">
             <a> {{ "ProjectEditPage.Account" | translate }}</a>
           </li>
-        
+
           <li *ngIf="isVisibleDeveloperTab" (click)="goToProjectSettings_Auth()" class="btn-with-border-effect"
             [ngClass]="{ 'li-active' : PROJECT_SETTINGS_AUTH_ROUTE === true, 'border-from-center': PROJECT_SETTINGS_AUTH_ROUTE === false }">
             <a> {{ "ProjectEditPage.Authentication" | translate }}</a>
           </li>
-        
+
           <!-- <li *ngIf="(isVisibleAdvancedTab && DISPLAY_ADVANCED_TAB === true) || (isUNIS === true)" -->
           <li *ngIf="isVisibleAdvancedTab && USER_ROLE !== 'agent'" (click)="goToProjectSettings_Advanced()"
             class="btn-with-border-effect"
             [ngClass]="{ 'li-active' : PROJECT_SETTINGS_ADVANCED_ROUTE === true, 'border-from-center': PROJECT_SETTINGS_ADVANCED_ROUTE === false }">
             <a> {{ "SmartAssign" | translate }}</a>
           </li>
-        
-          <li *ngIf="isVisibleNotificationTab" (click)="goToProjectSettings_Notification()" class="btn-with-border-effect"
+
+          <li *ngIf="isVisibleNotificationTab" (click)="goToProjectSettings_Notification()"
+            class="btn-with-border-effect"
             [ngClass]="{'li-active': PROJECT_SETTINGS_NOTIFICATION_ROUTE, 'border-from-center': PROJECT_SETTINGS_NOTIFICATION_ROUTE === false }">
             <a> {{ "Notification" | translate }}</a>
           </li>
         </ul>
 
-        <div *ngIf="PROJECT_SETTINGS_ADVANCED_ROUTE" class="row" style="margin-right: -30px; margin-left: -30px;">
+        <div *ngIf="PROJECT_SETTINGS_ADVANCED_ROUTE" class="row" style="margin-right: -30px; margin-right: 40px;">
           <div class="col-xs-12 link-to-automatic-assignment-doc"
-            style="background-color: rgb(241,241,241);margin-top: -17px;	padding: 20px 20px 10px 36px;margin-left: 50px;">
+            style="background-color: rgb(241,241,241);margin-top: -17px;	padding: 20px 20px 10px 36px;margin-left: 35px;">
 
             <div style="font-size: 14px;font-weight: 400;margin-bottom: 6px;line-height: 20px;">
               <span>
@@ -111,6 +113,34 @@
               </span>
             </div>
           </div>
+          <!-- <div class="col-xs-12">
+            <div class="row">
+              <div class="link-to-automatic-assignment-doc">
+                <div style="background-color: rgb(241,241,241);  margin-right: 0px;  margin-left: 0px;padding-bottom: 12px;">
+                  <div class="col-md-12">
+                    <span style="margin-left: 15px;">
+                      <svg style="width: 25px;height:auto; vertical-align: middle;" aria-hidden="true" focusable="false"
+                        data-prefix="fab" data-icon="readme" class="svg-inline--fa fa-readme fa-w-18" role="img"
+                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                        <path fill="#0f62ff"
+                          d="M528.3 46.5H388.5c-48.1 0-89.9 33.3-100.4 80.3-10.6-47-52.3-80.3-100.4-80.3H48c-26.5 0-48 21.5-48 48v245.8c0 26.5 21.5 48 48 48h89.7c102.2 0 132.7 24.4 147.3 75 .7 2.8 5.2 2.8 6 0 14.7-50.6 45.2-75 147.3-75H528c26.5 0 48-21.5 48-48V94.6c0-26.4-21.3-47.9-47.7-48.1zM242 311.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5V289c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5V251zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm259.3 121.7c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5V228c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5v-22.8c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5V190z">
+                        </path>
+                      </svg>
+                    </span>
+                    <a style="color:#0f62ff !important; vertical-align: middle; font-size: 14px; font-weight: 400; cursor: pointer; margin-left: 8px; text-decoration: underline;"
+                      (click)="goToKBDocsSettingUpAutomaticAssignment()">
+
+                      {{'SettingUpAutomaticAssignment' | translate}}
+
+
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> -->
+
+
         </div>
 
 
@@ -750,10 +780,10 @@
                 </span> <!-- /. AUTH ROUTE -->
 
 
-                 
-            <!-- -------------------------------------------------------- -->
-            <!-- Advanced -->
-            <!-- -------------------------------------------------------- -->
+
+                <!-- -------------------------------------------------------- -->
+                <!-- Advanced -->
+                <!-- -------------------------------------------------------- -->
                 <span *ngIf="PROJECT_SETTINGS_ADVANCED_ROUTE">
 
 
@@ -859,10 +889,10 @@
                       </label>
                       <div class="col-xs-12 col-sm-10">
 
-                
-                    <!--  -------------------------------------------------------- -->
-                    <!--  Maximum chats input -->
-                    <!--  -------------------------------------------------------- -->
+
+                        <!--  -------------------------------------------------------- -->
+                        <!--  Maximum chats input -->
+                        <!--  -------------------------------------------------------- -->
                         <div class="chat-limit">
                           <input type="number" [(ngModel)]="max_agent_assigned_chat"
                             (ngModelChange)="onChangeMaximum_chats($event)" class="input" id="chat_limit"
@@ -892,10 +922,10 @@
                     </div>
                   </div>
 
-                   
-            <!-- -------------------------------------------------------- -->
-            <!-- Reassigment -->
-            <!-- -------------------------------------------------------- -->
+
+                  <!-- -------------------------------------------------------- -->
+                  <!-- Reassigment -->
+                  <!-- -------------------------------------------------------- -->
                   <div class="row">
                     <div class="col-md-6">
                       <h3 class="card_title__underlined" style="margin-top:30px">
@@ -947,10 +977,10 @@
 
                         <div class="chat-limit">
 
-                           
-                      <!-- -------------------------------------------------------- -->
-                      <!-- Reassignment Timeout input -->
-                      <!-- -------------------------------------------------------- -->
+
+                          <!-- -------------------------------------------------------- -->
+                          <!-- Reassignment Timeout input -->
+                          <!-- -------------------------------------------------------- -->
                           <input type="number" [(ngModel)]="reassignment_delay"
                             (ngModelChange)="onChangeReassignment_timeout($event)" class="input"
                             id="reassignment_timeout" name="reassignment_timeout" min="1" max="10000000"
@@ -974,10 +1004,10 @@
                     </div>
                   </div>
 
-                   
-            <!-- -------------------------------------------------------- -->
-            <!-- Automatic Unavailable Status -->
-            <!-- -------------------------------------------------------- -->
+
+                  <!-- -------------------------------------------------------- -->
+                  <!-- Automatic Unavailable Status -->
+                  <!-- -------------------------------------------------------- -->
                   <div class="row">
                     <div class="col-md-6">
                       <h3 class="card_title__underlined" style="margin-top:30px">
@@ -1033,10 +1063,10 @@
 
                         <div class="chat-limit">
 
-                           
-                      <!-- -------------------------------------------------------- -->
-                      <!-- Automatic Unavailable Status input -->
-                      <!-- -------------------------------------------------------- -->
+
+                          <!-- -------------------------------------------------------- -->
+                          <!-- Automatic Unavailable Status input -->
+                          <!-- -------------------------------------------------------- -->
                           <input type="number" [(ngModel)]="automatic_idle_chats"
                             (ngModelChange)="onChangeAutomaticUnavailable($event)" class="input"
                             id="automatic_idle_chats" name="automatic_idle_chats" style="margin-bottom: 1px;"
@@ -1292,9 +1322,10 @@
         <!-- ./ row -->
         <div class="row" *ngIf="PROJECT_SETTINGS_ROUTE">
 
-          <div *ngIf="DISPLAY_DELETE_PRJCT_BTN === true" class="col-md-12"
-            style="text-align: center; border-top: 1px solid #cccccc; margin-top:25px">
-            <div style="color: rgba(0, 0, 0, 0.54); margin-top:25px; cursor:pointer" (click)="openDeleteModal()">
+          <div *ngIf="DISPLAY_DELETE_PRJCT_BTN === true" class="col-md-12" style="text-align: center;">
+            <div class="delete-prjct-wpr"
+              style="color: rgba(0, 0, 0, 0.54); padding-top: 25px;margin-top:25px; cursor:pointer; border-top: 1px solid #cccccc; "
+              (click)="openDeleteModal()">
               <i class="material-icons" style="vertical-align: middle">delete_forever</i>
               <span style="vertical-align: middle; text-transform: uppercase">
                 <!-- ELIMINA PROGETTO -->

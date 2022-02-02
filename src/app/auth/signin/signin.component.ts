@@ -93,20 +93,7 @@ export class SigninComponent implements OnInit {
     // this.logger.log('xxxx ', this.userForm)
     this.buildForm();
     this.getWindowWidthAndHeight();
-    // const x = document.getElementsByTagName('input');
-    // this.logger.log('XX ', x)
-    // for (let i = 0; i <= x.length - 1; i++) {
-    //   if (x.item(i).type !== 'button') {
-    //     x.item(i).value = '';
-    //   }
-    // }
 
-
-    // const elemLeftPanelSignin = <HTMLElement>document.querySelector('.centered');
-    // const elemLoginContainer = <HTMLElement>document.querySelector('.login-container');
-    // this.logger.log('SIGN-IN - ACTUAL INNER WIDTH elem Left Panel Signin ',  elemLeftPanelSignin);
-    // this.logger.log('SIGN-IN - ACTUAL INNER WIDTH elem Left Panel Signin div offsetTop ',  elemLeftPanelSignin.getBoundingClientRect());
-    // this.logger.log('SIGN-IN - ACTUAL INNER WIDTH elem Left Panel Login Container offsetTop',  elemLoginContainer.offsetTop);
   
   }
 

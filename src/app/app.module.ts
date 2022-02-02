@@ -214,8 +214,8 @@ import { HtmlEntitiesEncodePipe } from './html-entities-encode.pipe';
 import { NotificationEmailComponent } from './project-edit-add/notification-email/notification-email.component';
 import { SmtpSettingsComponent } from './project-edit-add/smtp-settings/smtp-settings.component';
 import { SettingsSidebarComponent } from './components/settings-sidebar/settings-sidebar.component';
-
-
+import { MatTooltipModule }  from '@angular/material/tooltip';
+import { MatButtonModule }  from '@angular/material/button';
 
 // console.log('************** APPMODULE ******************');
 // AoT requires an exported function for factories
@@ -410,6 +410,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     SettingsSidebarComponent,
   ],
   imports: [
+    MatTooltipModule,
+    MatButtonModule,
     /* PRIVATE */
     PricingModule,
     /* PRIVATE */

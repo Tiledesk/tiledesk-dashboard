@@ -1,5 +1,6 @@
 <p style="margin-top:6px; padding-left:30px;position: relative;z-index: 1050;" class="navbar-brand">
-  {{ 'Trigger.Trigger' | translate }} <span style="color: #f44336; font-size: 14px;  font-weight: 400;;">(Beta) </span>
+  <!-- {{ 'Trigger.Trigger' | translate }} <span style="color: #f44336; font-size: 14px;  font-weight: 400;;">(Beta) </span> -->
+  {{ 'Settings' | translate }}
 </p>
 
 <!-- <ul class="bottom-nav">
@@ -77,7 +78,7 @@
         <!--TRIGGER LIST -->
         <div class="row">
           <div class="col-md-12">
-            <div class="card">
+            <div class="card card card--no-border">
 
               <div *ngIf="has_selected_system === false" class="card-header card-header-custom-bkgrnd">
                 <button class="btn btn-primary" style="padding: 8px 16px;margin:0px;" (click)="goToAddTrigger()">
@@ -93,7 +94,7 @@
 
               <div *ngIf="!showSpinner" class="card-content table-responsive">
 
-                <table class="table table-hover">
+                <table class="table table-responsive">
                   <thead>
                     <tr>
                       <!-- style="width: 25%;" -->

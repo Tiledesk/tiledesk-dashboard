@@ -1,5 +1,6 @@
 <p style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px" class="navbar-brand">
-  {{ 'CannedResponses.CannedResponses' | translate }}
+  <!-- {{ 'CannedResponses.CannedResponses' | translate }} -->
+  {{ 'Settings' | translate }}
 </p>
 <!-- main-content-no-padding" -->
 <div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
@@ -10,8 +11,9 @@
       <div class="teplate-content" style="flex: 1 1 auto; margin-left: 20px;">
 
         <div class="row">
-          <div class="col-sm-7 left-col-custom-padding">
-            <div class="card card-custom-margin">
+          <!-- left-col-custom-padding -->
+          <div class="col-sm-7">
+            <div class="card card-custom-margin card--no-border">
               <div class="card-header card-header-custom-bkgrnd">
 
                 <button class="btn btn-primary" style="padding: 8px 16px; margin: 0px;min-width: 146px;"
@@ -93,13 +95,27 @@
           <!-- /. end col-md-8 -->
 
           <!-- // RIGHT SIDEBAR -->
-          <div class="col-sm-5 right-col-custom-padding">
-            <div class="card card-custom-margin">
+          <!-- right-col-custom-padding -->
+          <div class="col-sm-5 ">
+            <div class="card card-custom-margin card--no-border">
               <div class="card-content">
-                <h4 class="card-title"
+                <!-- <h4 class="card-title"
                   style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 15px">
                   {{ "QuickTips" | translate }}
-                </h4>
+                </h4> -->
+
+                <div class="row">
+                  <div class="col-sm-12 col-md-12">
+                    <h3 class="card_title__underlined">
+                      <span class="card_title__underline">
+                        {{ "QuickTips" | translate }}
+                      </span>
+                    </h3>
+                  </div>
+                  <div class="col-sm-12 col-md-12">
+                    <div class="section-subtitle"> </div>
+                  </div>
+                </div>
 
                 <p style="color:#7695a5">
                   {{ "CannedResponses.QuickTips.1" | translate }}

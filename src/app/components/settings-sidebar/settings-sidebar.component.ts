@@ -222,89 +222,89 @@ export class SettingsSidebarComponent implements OnInit {
     // if (this.location.path() !== '') {
     // this.route = this.location.path();
     this.route = this.router.url
-    console.log('[SETTINGS-SIDEBAR] route ', this.route);
+    // this.logger.log('[SETTINGS-SIDEBAR] route ', this.route);
 
 
     if (this.route.indexOf('/labels') !== -1) {
       this.TAG_ROUTE_IS_ACTIVE = true;
-      console.log('[SETTING-SIDEBAR] - TAG_ROUTE_IS_ACTIVE  ', this.TAG_ROUTE_IS_ACTIVE);
+      this.logger.log('[SETTING-SIDEBAR] - TAG_ROUTE_IS_ACTIVE  ', this.TAG_ROUTE_IS_ACTIVE);
     } else {
       this.TAG_ROUTE_IS_ACTIVE = false;
-      console.log('[SETTING-SIDEBAR] - TAG_ROUTE_IS_ACTIVE  ', this.TAG_ROUTE_IS_ACTIVE);
+      this.logger.log('[SETTING-SIDEBAR] - TAG_ROUTE_IS_ACTIVE  ', this.TAG_ROUTE_IS_ACTIVE);
     }
 
     if (this.route.indexOf('/cannedresponses') !== -1) {
       this.CANNED_RESPONSES_ROUTE_IS_ACTIVE = true;
-      console.log('[SETTING-SIDEBAR] - CANNED_RESPONSES_ROUTE_IS_ACTIVE  ', this.CANNED_RESPONSES_ROUTE_IS_ACTIVE);
+      this.logger.log('[SETTING-SIDEBAR] - CANNED_RESPONSES_ROUTE_IS_ACTIVE  ', this.CANNED_RESPONSES_ROUTE_IS_ACTIVE);
     } else {
       this.CANNED_RESPONSES_ROUTE_IS_ACTIVE = false;
-      console.log('[SETTING-SIDEBAR] - CANNED_RESPONSES_ROUTE_IS_ACTIVE  ', this.CANNED_RESPONSES_ROUTE_IS_ACTIVE);
+      this.logger.log('[SETTING-SIDEBAR] - CANNED_RESPONSES_ROUTE_IS_ACTIVE  ', this.CANNED_RESPONSES_ROUTE_IS_ACTIVE);
     }
 
     if (this.route.indexOf('/departments') !== -1) {
       this.DEPTS_ROUTE_IS_ACTIVE = true;
-      console.log('[SETTING-SIDEBAR] - DEPTS_ROUTE_IS_ACTIVE  ', this.DEPTS_ROUTE_IS_ACTIVE);
+      this.logger.log('[SETTING-SIDEBAR] - DEPTS_ROUTE_IS_ACTIVE  ', this.DEPTS_ROUTE_IS_ACTIVE);
     } else {
       this.DEPTS_ROUTE_IS_ACTIVE = false;
-      console.log('[SETTING-SIDEBAR] - DEPTS_ROUTE_IS_ACTIVE  ', this.DEPTS_ROUTE_IS_ACTIVE);
+      this.logger.log('[SETTING-SIDEBAR] - DEPTS_ROUTE_IS_ACTIVE  ', this.DEPTS_ROUTE_IS_ACTIVE);
     }
 
     if (this.route.indexOf('/trigger') !== -1) {
       this.TRIGGER_ROUTE_IS_ACTIVE = true;
-      console.log('[SETTING-SIDEBAR] - TRIGGER_ROUTE_IS_ACTIVE  ', this.TRIGGER_ROUTE_IS_ACTIVE);
+      this.logger.log('[SETTING-SIDEBAR] - TRIGGER_ROUTE_IS_ACTIVE  ', this.TRIGGER_ROUTE_IS_ACTIVE);
     } else {
       this.TRIGGER_ROUTE_IS_ACTIVE = false;
-      console.log('[SETTING-SIDEBAR] - TRIGGER_ROUTE_IS_ACTIVE  ', this.TRIGGER_ROUTE_IS_ACTIVE);
+      this.logger.log('[SETTING-SIDEBAR] - TRIGGER_ROUTE_IS_ACTIVE  ', this.TRIGGER_ROUTE_IS_ACTIVE);
     }
 
     if (this.route.indexOf('/users') !== -1) {
       this.TEAMMATES_ROUTE_IS_ACTIVE = true;
-      console.log('[SETTING-SIDEBAR] - TEAMMATES_ROUTE_IS_ACTIVE  ', this.TEAMMATES_ROUTE_IS_ACTIVE);
+      this.logger.log('[SETTING-SIDEBAR] - TEAMMATES_ROUTE_IS_ACTIVE  ', this.TEAMMATES_ROUTE_IS_ACTIVE);
     } else {
       this.TEAMMATES_ROUTE_IS_ACTIVE = false;
-      console.log('[SETTING-SIDEBAR] - TEAMMATES_ROUTE_IS_ACTIVE  ', this.TEAMMATES_ROUTE_IS_ACTIVE);
+      this.logger.log('[SETTING-SIDEBAR] - TEAMMATES_ROUTE_IS_ACTIVE  ', this.TEAMMATES_ROUTE_IS_ACTIVE);
     }
 
     if (this.route.indexOf('/groups') !== -1) {
 
       this.GROUPS_ROUTE_IS_ACTIVE = true;
-      console.log('[SETTING-SIDEBAR] - GROUPS_ROUTE_IS_ACTIVE  ', this.GROUPS_ROUTE_IS_ACTIVE);
+      this.logger.log('[SETTING-SIDEBAR] - GROUPS_ROUTE_IS_ACTIVE  ', this.GROUPS_ROUTE_IS_ACTIVE);
     } else {
 
       this.GROUPS_ROUTE_IS_ACTIVE = false;
-      console.log('[SETTING-SIDEBAR] - GROUPS_ROUTE_IS_ACTIVE  ', this.GROUPS_ROUTE_IS_ACTIVE);
+      this.logger.log('[SETTING-SIDEBAR] - GROUPS_ROUTE_IS_ACTIVE  ', this.GROUPS_ROUTE_IS_ACTIVE);
     }
 
     if (this.route.indexOf('/widget-set-up') !== -1) {
       this.WIDGET_SETUP_ROUTE_IS_ACTIVE = true;
-      console.log('[SETTING-SIDEBAR] - WIDGET_SETUP_ROUTE_IS_ACTIVE  ', this.WIDGET_SETUP_ROUTE_IS_ACTIVE);
+      this.logger.log('[SETTING-SIDEBAR] - WIDGET_SETUP_ROUTE_IS_ACTIVE  ', this.WIDGET_SETUP_ROUTE_IS_ACTIVE);
     } else {
       this.WIDGET_SETUP_ROUTE_IS_ACTIVE = false;
-      console.log('[SETTING-SIDEBAR] - WIDGET_SETUP_ROUTE_IS_ACTIVE  ', this.WIDGET_SETUP_ROUTE_IS_ACTIVE);
+      this.logger.log('[SETTING-SIDEBAR] - WIDGET_SETUP_ROUTE_IS_ACTIVE  ', this.WIDGET_SETUP_ROUTE_IS_ACTIVE);
     }
 
     if (this.route.indexOf('/bots') !== -1) {
       this.CHATBOT_ROUTE_IS_ACTIVE = true;
-      console.log('[SETTING-SIDEBAR] - CHATBOT_ROUTE_IS_ACTIVE  ', this.CHATBOT_ROUTE_IS_ACTIVE);
+      this.logger.log('[SETTING-SIDEBAR] - CHATBOT_ROUTE_IS_ACTIVE  ', this.CHATBOT_ROUTE_IS_ACTIVE);
     } else {
       this.CHATBOT_ROUTE_IS_ACTIVE = false;
-      console.log('[SETTING-SIDEBAR] - CHATBOT_ROUTE_IS_ACTIVE  ', this.CHATBOT_ROUTE_IS_ACTIVE);
+      this.logger.log('[SETTING-SIDEBAR] - CHATBOT_ROUTE_IS_ACTIVE  ', this.CHATBOT_ROUTE_IS_ACTIVE);
     }
 
     if (this.route.indexOf('/hours') !== -1) {
       this.OPERATING_HOURS_ROUTE_IS_ACTIVE = true;
-      console.log('[SETTING-SIDEBAR] - OPERATING_HOURS_ROUTE_IS_ACTIVE  ', this.OPERATING_HOURS_ROUTE_IS_ACTIVE);
+      this.logger.log('[SETTING-SIDEBAR] - OPERATING_HOURS_ROUTE_IS_ACTIVE  ', this.OPERATING_HOURS_ROUTE_IS_ACTIVE);
     } else {
       this.OPERATING_HOURS_ROUTE_IS_ACTIVE = false;
-      console.log('[SETTING-SIDEBAR] - OPERATING_HOURS_ROUTE_IS_ACTIVE  ', this.OPERATING_HOURS_ROUTE_IS_ACTIVE);
+      this.logger.log('[SETTING-SIDEBAR] - OPERATING_HOURS_ROUTE_IS_ACTIVE  ', this.OPERATING_HOURS_ROUTE_IS_ACTIVE);
     }
 
     if (this.route.indexOf('/project-settings/') !== -1) {
       this.PROJECT_SETTINGS_ROUTE_IS_ACTIVE = true;
-      console.log('[SETTING-SIDEBAR] - PROJECT_SETTINGS_ROUTE_IS_ACTIVE  ', this.PROJECT_SETTINGS_ROUTE_IS_ACTIVE);
+      this.logger.log('[SETTING-SIDEBAR] - PROJECT_SETTINGS_ROUTE_IS_ACTIVE  ', this.PROJECT_SETTINGS_ROUTE_IS_ACTIVE);
     } else {
       this.PROJECT_SETTINGS_ROUTE_IS_ACTIVE = false;
-      console.log('[SETTING-SIDEBAR] - PROJECT_SETTINGS_ROUTE_IS_ACTIVE  ', this.PROJECT_SETTINGS_ROUTE_IS_ACTIVE);
+      this.logger.log('[SETTING-SIDEBAR] - PROJECT_SETTINGS_ROUTE_IS_ACTIVE  ', this.PROJECT_SETTINGS_ROUTE_IS_ACTIVE);
     }
 
 

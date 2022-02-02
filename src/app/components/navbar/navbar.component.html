@@ -3,6 +3,14 @@
 <!-- <div class="col-md-11 col-md-offset-1 col-sm-11 col-sm-offset-1 col-xs-9 col-xs-offset-3" style="right:25px"> -->
 <!-- navbar-transparent -->
 <nav class="navbar navbar-absolute">
+  <!-- <div *ngIf="HIDE_PENDING_EMAIL_NOTIFICATION === false"> 
+    <div (click)="goToUserProfile()" *ngIf="user?.emailverified == false">
+
+{{"NavBar.PendingVerification" | translate }}
+    </div>
+
+  </div> -->
+  
   <div class="container-fluid">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" style="margin-top:3px" data-toggle="collapse"
@@ -210,7 +218,7 @@
           <a href="#" class="dropdown-toggle project-dropdown" data-toggle="dropdown">
             <i class="material-icons" style="margin-right: 3px;">keyboard_arrow_down</i>
             <span style="text-transform: none"> {{ project.name }} </span>
-            <p class="hidden-lg hidden-md">Projects</p>
+            <!-- <p class="hidden-lg hidden-md">Projects</p> -->
           </a>
 
           <ul id="navbar_dropdown" class="dropdown-menu" style="max-height: 240px;overflow-y: auto;">
@@ -311,11 +319,11 @@
         <li *ngIf="project">
           <a style="cursor: pointer;" *ngIf="NOTIFICATION_SOUND === 'enabled'" (click)="soundOFF()">
             <i class="material-icons">volume_up</i>
-            <p class="hidden-lg hidden-md">soundon</p>
+            <!-- <p class="hidden-lg hidden-md">soundon</p> -->
           </a>
           <a style="cursor: pointer;" *ngIf="NOTIFICATION_SOUND === 'disabled'" (click)="soundON()">
             <i class="material-icons">volume_off</i>
-            <p class="hidden-lg hidden-md">soundoff</p>
+            <!-- <p class="hidden-lg hidden-md">soundoff</p> -->
           </a>
         </li>
 
@@ -332,7 +340,7 @@
               <span class="notification">{{ unservedRequestCount + currentUserRequestCount }}</span>
             </span>
 
-            <p class="hidden-lg hidden-md">Notifications</p>
+            <!-- <p class="hidden-lg hidden-md">Notifications</p> -->
           </a>
         </li>
 
@@ -368,7 +376,7 @@
               </span>
             </span>
 
-            <p class="hidden-lg hidden-md">Profile</p>
+            <!-- <p class="hidden-lg hidden-md">Profile</p> -->
           </a>
 
           <ul *ngIf="user" class="dropdown-menu">

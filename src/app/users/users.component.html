@@ -1,5 +1,6 @@
 <p style="margin-top:6px; padding-left:30px;position: relative;z-index: 1050;" class="navbar-brand">
-  <span style="text-transform: capitalize;"> {{ 'Teammates' | translate }} </span>
+  <!-- <span style="text-transform: capitalize;"> {{ 'Teammates' | translate }} </span> -->
+  {{ 'Settings' | translate }}
 </p>
 
 
@@ -62,7 +63,7 @@
         <!-- *********** start PROJECT PROFILE INFO  *********** -->
         <div class="row" *ngIf="prjct_profile_type === 'payment'">
           <div class="col-md-12">
-            <div class="card" style="margin-top: 0px; margin-bottom: 0px;">
+            <div class="card card card--no-border" style="margin-top: 0px; margin-bottom: 0px;">
               <div class="card-content">
                 <span *ngIf="subscription_is_active === true">
                   <i class="material-icons" style="vertical-align: middle; color: #039be5;"> info </i>
@@ -95,7 +96,7 @@
 
         <div class="row">
           <div class="col-md-12">
-            <div class="card" style="min-height: 195px;margin-top: 15px;">
+            <div class="card card card--no-border" style="min-height: 195px;margin-top: 15px;">
 
 
               <!-- table-responsive -->
