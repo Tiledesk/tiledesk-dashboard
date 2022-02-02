@@ -70,7 +70,7 @@
 
           <li *ngIf="isVisiblePaymentTab" (click)="goToProjectSettings_Payments()" class="btn-with-border-effect"
             [ngClass]="{ 'li-active' : PROJECT_SETTINGS_PAYMENTS_ROUTE === true, 'border-from-center': PROJECT_SETTINGS_PAYMENTS_ROUTE === false}">
-            <a> {{ "ProjectEditPage.Account" | translate }}</a>
+            <a> {{ "ProjectEditPage.Subscription" | translate }}</a>
           </li>
 
           <li *ngIf="isVisibleDeveloperTab" (click)="goToProjectSettings_Auth()" class="btn-with-border-effect"
