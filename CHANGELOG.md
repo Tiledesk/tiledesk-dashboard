@@ -7,6 +7,7 @@
 - Removes sidebar responsiveness
 - Change the name of the "Account" tab to "Subscription" in Settings > Project Settings
 - Fixes the bug: the strings in the modal displayed after the password change are not correctly translated
+- Fixes the bug: in Settings> Project Settings> Notifications> Customize email in the left sidebar the text overlaps when it goes on two line
 
 ### 2.2.31
 - Deploys in production
