@@ -475,8 +475,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
         // this.logger.log('xxxx xxxx elemNavbar', elemNavbar)
         // const elemContentainerFluid = <HTMLElement>document.querySelector('.container-fluid');
-
-        const elemNavbarToogle = <HTMLElement>document.querySelector('.navbar-toggle');
         const elemSidebarWrapper = <HTMLElement>document.querySelector('.sidebar-wrapper')
         /**
          * DETECT IF IS THE LOGIN PAGE - SIGNUP - WELCOME - VERIFY-EMAIL - ...
@@ -536,7 +534,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
                     elemSidebarWrapper.style.height = "100vh";
                 } else {
-                    elemSidebarWrapper.style.height = "calc(100vh - 60px)";
+                    // elemSidebarWrapper.style.height = "calc(100vh - 60px)";
+                    elemSidebarWrapper.style.height = "calc(100vh - 35px)";
                     // elemSidebarWrapper.setAttribute('style', `background-color: ${this.background_bottom_section} !important;`);
                 }
 
