@@ -52,6 +52,11 @@ li.active a p.onBlackBckgrnd .sidebar-mini {
   color: $brand-sidebar-active-item-icon-color !important;
 }
 
+.nav>li>a:hover {
+  text-decoration: none;
+  background-color: #eee;
+}
+
 // .sidebar-wrapper-in-projects {
 //   height: 100vh !important;
 // }
@@ -1130,7 +1135,7 @@ button.close {
 }
 .small-sidebar__logo {
   left: 19px;
-  top: 18px !important; 
+  top: 12px !important; 
   width: 25px !important;
 }
 
