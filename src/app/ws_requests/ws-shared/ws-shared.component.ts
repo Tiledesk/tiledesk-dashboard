@@ -96,7 +96,7 @@ export class WsSharedComponent implements OnInit {
 
     let baseUrl = CHAT_BASE_URL + '#/conversation-detail/'
     let url = baseUrl + requestid + '/' + requester_fullanme + '/active'
-    const myWindow = window.open(url, 'Tiledesk - Open Source Live Chat');
+    const myWindow = window.open(url, '_self', 'Tiledesk - Open Source Live Chat');
     myWindow.focus();
     // if (chatTabCount) {
     //   if (+chatTabCount > 0) {

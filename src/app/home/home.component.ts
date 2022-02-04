@@ -1146,7 +1146,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
     let baseUrl = this.CHAT_BASE_URL + '#/conversation-detail/'
     let url = baseUrl
-    const myWindow = window.open(url, 'Tiledesk - Open Source Live Chat');
+    const myWindow = window.open(url, '_self', 'Tiledesk - Open Source Live Chat');
     myWindow.focus();
     // const chatTabCount = localStorage.getItem('tabCount');
     // this.logger.log('[HOME] openChat chatTabCount ', chatTabCount);

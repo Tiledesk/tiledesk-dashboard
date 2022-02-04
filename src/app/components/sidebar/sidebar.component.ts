@@ -1003,7 +1003,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 takeUntil(this.unsubscribe$)
             )
             .subscribe((currentuser_availability) => {
-                console.log('[SIDEBAR] - GET WS CURRENT-USER AVAILABILITY - IS AVAILABLE? ', currentuser_availability);
+                this.logger.log('[SIDEBAR] - GET WS CURRENT-USER AVAILABILITY - IS AVAILABLE? ', currentuser_availability);
                 if (currentuser_availability !== null) {
                     this.IS_AVAILABLE = currentuser_availability;
 
@@ -1392,7 +1392,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
         let baseUrl = this.CHAT_BASE_URL + '#/conversation-detail/'
         let url = baseUrl
-        const myWindow = window.open(url, 'Tiledesk - Open Source Live Chat');
+        const myWindow = window.open(url, '_self', 'Tiledesk - Open Source Live Chat');
         myWindow.focus();
         // const chatTabCount = localStorage.getItem('tabCount');
         // this.logger.log('[SIDEBAR] openChat chatTabCount ', chatTabCount);

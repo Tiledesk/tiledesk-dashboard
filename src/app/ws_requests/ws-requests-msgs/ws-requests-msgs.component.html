@@ -1949,7 +1949,7 @@
                           </span>
                         </span>
 
-                        <span *ngIf="agent.isBot === false">
+                        <span *ngIf="agent.isBot === false && CHAT_PANEL_MODE === false">
                           <span class="White__Tooltip">
                             <i class="material-icons chat-with-agent-ws-request-detail"
                               (click)="chatWithAgent( agent?._id, agent?.firstname, agent?.lastname)">
