@@ -1,6 +1,13 @@
 
 # tiledesk-dashboard
 
+### 2.2.32-rc2
+- Fixes the bug: the iframe of the installed application is not correctly displayed in "app-store-install"
+- Removes the navbar "toggle sidebar"  button
+- Decreases the height of the wrapper of the  logo of the sidebar
+- Increase the height of the sidebar wrapper
+- Changes the links that open the chat to open in the same tab as the dashboard
+
 ### 2.2.32-rc1
 - Installs the "angular material" module
 - Replaces the sidebar with a smaller one and implements the "Settings Sidebar"
