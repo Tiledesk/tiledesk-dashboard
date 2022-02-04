@@ -187,7 +187,7 @@
       <!-- HOME  -->
       <!-- WITHOUT THE CONDITION *ngIf="projectid" THE MENU ITEM 'HOME' IT IS NOT RENDERED AS ACTIVE -->
       <li *ngIf="project" routerLinkActive="active"
-      matTooltipClass="custom-mat-tooltip" matTooltip="home"  #tooltip="matTooltip"   matTooltipPosition='right' matTooltipHideDelay="100">
+      matTooltipClass="custom-mat-tooltip" matTooltip="Home"  #tooltip="matTooltip"   matTooltipPosition='right' matTooltipHideDelay="100">
         <a #homebtn class="customAncor" routerLink="project/{{ project._id }}/home">
           <i class="material-icons sidebar-icons">
             home
