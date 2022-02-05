@@ -9,24 +9,26 @@ import { TranslateModule } from '@ngx-translate/core';
 import { SmallSidebarComponent } from './small-sidebar/small-sidebar.component';
 import { NavbarForPanelComponent } from './navbar-for-panel/navbar-for-panel.component';
 import { NavbarForPanelService } from './navbar-for-panel/navbar-for-panel.service';
-import { MatTooltipModule }  from '@angular/material/tooltip';
-import { MatButtonModule }  from '@angular/material/button';
-
-
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { SidebarUserDetailsComponent } from './sidebar-user-details/sidebar-user-details.component';
 @NgModule({
   imports: [
     CommonModule,
     RouterModule,
     TranslateModule,
     MatTooltipModule,
-    MatButtonModule
+    MatButtonModule,
+    MatSidenavModule
   ],
   declarations: [
     FooterComponent,
     NavbarComponent,
     SidebarComponent,
     SmallSidebarComponent,
-    NavbarForPanelComponent
+    NavbarForPanelComponent,
+    SidebarUserDetailsComponent,
   ],
   exports: [
     FooterComponent,
