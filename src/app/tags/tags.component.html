@@ -32,7 +32,7 @@
                         <a (click)="tagSelectedColor(color?.hex)">
                           <!-- <div style="height: 18px; width: 18px;"> </div> -->
                           <!-- <i [ngStyle]="{'color':color.hex}" class="material-icons">fiber_manual_record</i> -->
-                          <svg style="" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag"
+                          <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag"
                             class="svg-inline--fa fa-tag fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 512 512">
                             <style type="text/css">
@@ -56,16 +56,16 @@
                     <div class="tag-color-round-div--in-input" [ngStyle]="{'background-color':tag_selected_color}">
                     </div>
 
-                    <!-- 
-                // -------------------------------------------------------
-                // Add tag btn
-                // ------------------------------------------------------- -->
-                    <button class="btn btn-primary create-tag-btn" style="padding: 8px 16px; margin: 0px;"
+                     
+                <!-- ------------------------------------------------------- -->
+                <!-- Add tag btn -->
+                <!-- ------------------------------------------------------- -->
+                    <button class="btn btn-primary create-tag-btn"
                       (click)="createTag()" type="submit">
-                      <span class="icon" style="padding-right:8px">
+                      <span class="icon add-tag-icon" >
                         <i class="material-icons">add_circle</i>
                       </span>
-                      {{ "Tags.AddTags" | translate }}
+                     <span class="add-tags-text"> {{ "Tags.AddTags" | translate }} </span>
                     </button>
 
                     <div *ngIf="hasError === true" class="error-message" style="color: #f6303a;font-size: 14px;position: relative;
