@@ -217,6 +217,7 @@ import { SettingsSidebarComponent } from './components/settings-sidebar/settings
 import { MatTooltipModule }  from '@angular/material/tooltip';
 import { MatButtonModule }  from '@angular/material/button';
 
+
 // console.log('************** APPMODULE ******************');
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -408,6 +409,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     NotificationEmailComponent,
     SmtpSettingsComponent,
     SettingsSidebarComponent,
+ 
   ],
   imports: [
     MatTooltipModule,
