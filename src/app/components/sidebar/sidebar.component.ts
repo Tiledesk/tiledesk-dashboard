@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, NgModule, ElementRef, ViewChild, HostListener } from '@angular/core';
+import { Component, OnInit, AfterViewInit, NgModule, ElementRef, ViewChild, HostListener, EventEmitter, Output, Input } from '@angular/core';
 
 import { Router, NavigationEnd } from '@angular/router';
 import { Location } from '@angular/common';
@@ -79,6 +79,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     @ViewChild('openchatbtn') private elementRef: ElementRef;
     @ViewChild('homebtn') private homeBtnElement: ElementRef;
 
+    HAS_CLICKED_OPEN_USER_DETAIL : boolean = false
     menuItems: any[];
 
     checked_route: string;
@@ -1458,6 +1459,17 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         // this.logger.log('[SIDEBAR] Mouse Over Avatar Container ', _isOverAvar)
     }
 
+
+    openUserDetailSidePanel() {
+        console.log('[SIDEBAR] OPEN UESER DTLS SIDE PANEL') 
+        this.HAS_CLICKED_OPEN_USER_DETAIL = true
+        console.log('[SIDEBAR] OPEN USER DTLS SIDE PANEL ', this.HAS_CLICKED_OPEN_USER_DETAIL) 
+    }
+
+    HAS_CLICKED_CLOSE_USER_DETAIL($event) {
+        console.log('[SIDEBAR] HAS_CLICKED_CLOSE_USER_DETAIL ', $event) 
+        this.HAS_CLICKED_OPEN_USER_DETAIL = $event
+    }
 
     // goToAnalytics() {
     //     this.router.navigate(['project/' + this.projectId + '/analytics']);
