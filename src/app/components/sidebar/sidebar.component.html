@@ -107,7 +107,8 @@
     </div>
     <!-- CAMERA ICONS OVER THE AVATAR -->
     <!--  [ngClass]="{'hover-effect' : isOverAvar}"  -->
-    <i *ngIf="project" routerLink="project/{{ project._id }}/user-profile" class="material-icons is-over-camera"
+    <!-- routerLink="project/{{ project._id }}/user-profile" -->
+    <i *ngIf="project" (click)="openUserDetailSidePanel()" class="material-icons is-over-camera"
       [ngClass]="{'small-sidebar-camera-icon' : SIDEBAR_IS_SMALL === true, 'is-over-camera-decrease-top':IS_BUSY === true }">
       camera_alt
     </i>
@@ -570,9 +571,15 @@
     </ul>
   </div>
 </div>
+<!--  -->
+
+<appdashboard-sidebar-user-details 
+[HAS_CLICKED_OPEN_USER_DETAIL]='HAS_CLICKED_OPEN_USER_DETAIL'
+(valueChange)='HAS_CLICKED_CLOSE_USER_DETAIL($event)'
+> 
 
 
-
+</appdashboard-sidebar-user-details>
 
 
 
