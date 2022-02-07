@@ -145,7 +145,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     learnMoreAboutDefaultRoles: string;
     flag_url: string;
     dsbrd_lang: string;
-    tlangparams: any
+    tlangparams: any;
     constructor(
         location: Location,
         private element: ElementRef,
@@ -263,7 +263,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
                     this.logger.log('[NAVBAR] flag_url (from stored_preferred_lang) ', this.flag_url)
 
-                    this.logger.log('[USER-PROFILE] stored_preferred_lang ', stored_preferred_lang)
+                    this.logger.log('[NAVBAR] stored_preferred_lang ', stored_preferred_lang)
                 } else {
                     this.browserLang = this.translate.getBrowserLang();
                     this.dsbrd_lang = this.browserLang;
