@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { CannedResponsesService } from '../services/canned-responses.service';
 import { TranslateService } from '@ngx-translate/core';
 import { NotifyService } from '../core/notify.service';
@@ -19,7 +19,7 @@ export class CannedResponsesListComponent implements OnInit {
   deleteErrorMsg: string;
   deleteSuccessMsg: string;
   showSpinner = true;
-
+  innerWidthLessThan992: boolean;
   constructor(
     public cannedResponsesService: CannedResponsesService,
     public translate: TranslateService,
@@ -30,6 +30,7 @@ export class CannedResponsesListComponent implements OnInit {
   ngOnInit() {
     this.getResponses();
     this.translateNotificationMsgs();
+    this.getMainPanelAndSetOverflow();
   }
 
   translateNotificationMsgs() {
@@ -38,9 +39,45 @@ export class CannedResponsesListComponent implements OnInit {
         this.logger.log('[CANNED-RES-LIST]  translateNotificationMsgs text', translation)
         this.deleteErrorMsg = translation.DeleteCannedResError;
         this.deleteSuccessMsg = translation.DeleteCannedResSuccess;
-   
+
       });
   }
+
+  getMainPanelAndSetOverflow() {
+    const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');   
+    console.log('[CANNED-RES-LIST] elemMainPanel ',elemMainPanel) 
+    const elemMainPanelClientWidth = elemMainPanel.clientWidth
+    console.log('[CANNED-RES-LIST] elemMainPanelClientWidth  ',elemMainPanelClientWidth) 
+    if (elemMainPanelClientWidth < 992 ){
+      this.innerWidthLessThan992 = true;
+      elemMainPanel.style.overflowX = "visible"
+    } 
+    // else {
+    //   this.innerWidthLessThan992 = false;
+    //   elemMainPanel.style.overflowX = "hidden"
+    // }
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+
+    // const elemMainContent = <HTMLElement>document.querySelector('.main-content');   
+    // console.log('[SETTINGS-SIDEBAR] elemMainContent ',elemMainContent) 
+    const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');   
+    console.log('[CANNED-RES-LIST] elemMainPanel ',elemMainPanel) 
+   const innerWidth =  event.target.innerWidth;
+    console.log('[CANNED-RES-LIST] onResize innerWidth',innerWidth) 
+    if (innerWidth < 992 ){
+      this.innerWidthLessThan992 = true;
+      elemMainPanel.style.overflowX = "visible"
+    } else {
+      this.innerWidthLessThan992 = false;
+      elemMainPanel.style.overflowX = "hidden"
+    }
+  }
+
+
+
 
 
   //   "NotificationMsgs": {
