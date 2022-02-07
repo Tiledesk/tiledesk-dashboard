@@ -1,13 +1,85 @@
+<!-- style="    
+position: absolute;
+z-index: 100;
+top: 0;
+right: 0;
+width: 33%;
+height: 100%;
+overflow-y: auto;
+overflow-x: hidden;
+background: #fff;
+padding-top:15px;
+padding-left: 15px;
+padding-right: 15px;
+padding-bottom: 15px;" -->
+<!-- <div class="main-content" style="padding-top: 0px">
+    <div class="container-fluid"> -->
+
 <div id="user-details">
 
+    <div class="user-details-dshbrd-lang" matTooltipClass="custom-mat-tooltip"
+        matTooltip="{{'TheDashboardIsTranslatedInto' | translate: tlangparams }}" #tooltip="matTooltip"
+        matTooltipPosition='left' matTooltipHideDelay="100" (click)="goToUserProfileLanguageSection()">
+        <!-- <a routerLink="project/{{ projectId }}/user-profile" fragment="language"> -->
+        <span class="user-details-dshbrd-lang-code" style="text-transform: uppercase;color: #647491;">
+            {{dsbrd_lang}}</span>
+        <img [src]="flag_url" style="width: auto;height: 19px;">
+        <!-- </a> -->
+    </div>
+
     <button class="user-details-btn-close" type="button" (click)="closeUserDetailSidePanel()">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-            viewBox="0 0 24 24">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
             <path
                 d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z">
             </path>
             <path d="M0 0h24v24H0z" fill="none"></path>
         </svg>
     </button>
+    <!-- [ngStyle]="{'background-image': 'url('+object.image+')'}" -->
+
+
+    <div role="button" class="user-details-avatar">
+        
+
+            <img class="user-img-in-sidebar-user-details" *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true"
+            [src]="getUserProfileImage()" onerror="this.src='assets/img/no_image_user.svg'" />
+
+            <img class="user-img-in-sidebar-user-details" *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true"
+            src="assets/img/no_image_user.png" />
+
+       
+    </div>
+
+    <div class="camera-on-hover" (click)="goToUserProfile()">
+        <i class="material-icons is-over-camera">
+            camera_alt
+        </i>
+    </div>
+
+    <div class="user-details-info">
+        <h3> {{ user?.firstname }} {{ user?.lastname }} </h3>
+        <h2> {{ user?.email }} </h2>
+    </div>
+
+    <section class="availability-section">
+        <mat-slide-toggle (change)="changeAvailabilityState(IS_AVAILABLE = !IS_AVAILABLE)"
+            class="custom-mat-slide-toggle" [checked]="IS_AVAILABLE" labelPosition="before">
+
+            <span *ngIf="IS_AVAILABLE" style="font-weight: 300 !important; text-transform: capitalize; font-size:12px">
+                {{ 'Available' | translate }}
+            </span>
+            <span *ngIf="!IS_AVAILABLE" style="font-weight: 300 !important;text-transform: capitalize;font-size:12px">
+                {{ 'Unavailable' | translate }}
+            </span>
+        </mat-slide-toggle>
+    </section>
+
+
+
+
 
 </div>
+
+
+<!-- </div>
+</div> -->
