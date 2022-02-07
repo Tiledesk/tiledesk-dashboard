@@ -581,7 +581,6 @@ my-app .main-panel .main-content .card {
   background: #144fca;
 }
 
-
 .served-by-desktop-a--home-header-operating-hours {
   display: flex;
   -webkit-box-align: center;
@@ -598,7 +597,7 @@ my-app .main-panel .main-content .card {
   cursor: pointer;
 }
 
-.served-by-desktop-a--home-header-operating-hours:hover { 
+.served-by-desktop-a--home-header-operating-hours:hover {
   /* background: rgba(85, 94, 127, 0.3); */
   background: #144fca;
 }
@@ -641,7 +640,7 @@ my-app .main-panel .main-content .card {
   cursor: pointer;
 }
 
-.home-header-whats-new-a:hover { 
+.home-header-whats-new-a:hover {
   /* background: rgba(85, 94, 127, 0.3); */
   background: #144fca;
 }
@@ -985,7 +984,7 @@ my-app .main-panel .main-content .card {
 /* 
  * CUSTOM STYLE FOR THE CHAT SECTION IN REQUEST DETAIL FOR PANEL
  * ------------------------------------------------------------- */
- /* Removes in "ws-request-detail-for-panel.component" the bottom margin from the paragraph created by the marked pipe */
+/* Removes in "ws-request-detail-for-panel.component" the bottom margin from the paragraph created by the marked pipe */
 #chat-content > div > div > div > div.message > p {
   margin-bottom: 0px !important;
 }
@@ -1053,6 +1052,21 @@ div.card-content > div > div > div > div > div > div > div.txt > div > div > p >
   height: 20px;
   border-top: 1px solid #ddd;
   /*  width: calc((100% / 3) + 372px); */
+}
+
+// -------------------------------------------------
+// Added when the user details sidebar is opened
+// -------------------------------------------------
+.navbar-absolute-custom-class{
+  z-index: 0 !important;
+  // position: fixed !important;
+}
+
+// -------------------------------------------------
+// Added when the user details sidebar is opened
+// -------------------------------------------------
+.navbar-brand-z-index-zero {
+  z-index: 0 !important;
 }
 
 
