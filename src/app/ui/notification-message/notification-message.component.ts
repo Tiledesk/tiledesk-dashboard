@@ -46,7 +46,7 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
   contactUsEmail: string;
-
+  IS_AVAILABLE: boolean;
   constructor(
     public notify: NotifyService,
     public auth: AuthService,
@@ -80,7 +80,15 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
     this.getWidgetUrl();
     this.getChatUrl();
     this.translateModalOnlyOwnerCanManageProjectAccount();
+    this.getUserAvailability()
   }
+
+  getUserAvailability() {
+    this.usersService.user_is_available_bs.subscribe((user_available) => {
+        this.IS_AVAILABLE = user_available;
+        this.logger.log('[NAVBAR]- USER IS AVAILABLE ', this.IS_AVAILABLE);
+    });
+}
 
 
   translateModalOnlyOwnerCanManageProjectAccount() {
@@ -220,6 +228,12 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
 
   }
 
+
+  onLogoutModalHandled() {
+    this.notify.closeLogoutModal()
+    this.auth.signOut('userdetailsidebar');
+    
+  }
 
 
   // closeExportCSVnotAvailable

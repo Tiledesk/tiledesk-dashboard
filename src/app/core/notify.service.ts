@@ -28,6 +28,7 @@ export class NotifyService {
 
   displayModalSubsExpired: string;
   displayModalEnterpiseSubsExpired : string;
+
   displayContactUsModal = 'none';
   viewCancelSubscriptionModal = 'none';
   displayDataExportNotAvailable = 'none';
@@ -47,7 +48,7 @@ export class NotifyService {
   public cancelSubscriptionCompleted$ = new Subject();
 
   showSubtitleAllOperatorsSeatsUsed: boolean;
-
+displayLogoutModal = 'none';
   constructor(
     public location: Location,
     private logger: LoggerService
@@ -160,6 +161,15 @@ export class NotifyService {
     this.viewCancelSubscriptionModal = 'none';
     this.cancelSubscriptionCompleted$.next(hasDone);
   }
+
+  presentLogoutModal() { 
+      this.displayLogoutModal = 'block';
+  }
+
+  closeLogoutModal() {
+    this.displayLogoutModal = 'none';
+  }
+
 
   update(content: string, style: 'error' | 'info' | 'success') {
     const msg: Msg = { content, style };
