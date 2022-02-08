@@ -25,6 +25,8 @@ import { Location } from '@angular/common';
 import { SelectOptionsTranslatePipe } from '../../selectOptionsTranslate.pipe';
 import { TagsService } from '../../services/tags.service';
 import { LoggerService } from '../../services/logger/logger.service';
+import { ProjectService } from 'app/services/project.service';
+import { v } from '@angular/core/src/render3';
 // import swal from 'sweetalert';
 // https://github.com/t4t5/sweetalert/issues/890 <- issue ERROR in node_modules/sweetalert/typings/sweetalert.d.ts(4,9): error TS2403
 
@@ -206,7 +208,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   profile_name: string;
   payIsVisible: boolean;
   public_Key: any;
-
+  current_selected_prjct: any;
   /**
    * 
    * @param router 
@@ -242,7 +244,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     public location: Location,
     public selectOptionsTranslatePipe: SelectOptionsTranslatePipe,
     private tagsService: TagsService,
-    public logger: LoggerService
+    public logger: LoggerService,
+    private projectService: ProjectService
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate);
   }
@@ -522,6 +525,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
 
   openChatAtSelectedConversation(requestid: string, requester_fullanme: string) {
+    localStorage.setItem('last_project', JSON.stringify(this.current_selected_prjct))
     this.openChatToTheSelectedConversation(this.CHAT_BASE_URL, requestid, requester_fullanme)
   }
 
@@ -1603,7 +1607,25 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       this.logger.log('[HISTORY & NORT-CONVS] - PRJCT FROM SUBSCRIPTION TO AUTH SERV  ', project)
       if (project) {
         this.projectId = project._id;
+        this.findCurrentProjectAmongAll(this.projectId)
       }
+    });
+  }
+
+  findCurrentProjectAmongAll(projectId: string) {
+
+    this.projectService.getProjects().subscribe((projects: any) => {
+      // const current_selected_prjct = projects.filter(prj => prj.id_project.id === projectId);
+      // console.log('[SIDEBAR] - GET PROJECTS - current_selected_prjct ', current_selected_prjct);
+
+      this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
+      console.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct ', this.current_selected_prjct);
+
+      console.log('[HISTORY & NORT-CONVS] - GET PROJECTS - projects ', projects);
+    }, error => {
+      console.log('[HISTORY & NORT-CONVS] - GET PROJECTS - ERROR: ', error);
+    }, () => {
+      console.log('[HISTORY & NORT-CONVS] - GET PROJECTS * COMPLETE * ');
     });
   }
 

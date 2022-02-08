@@ -29,6 +29,7 @@ import { avatarPlaceholder, getColorBck } from '../../utils/util';
 import { LoggerService } from '../../services/logger/logger.service';
 
 import 'firebase/database';
+import { ProjectService } from 'app/services/project.service';
 const swal = require('sweetalert');
 
 @Component({
@@ -213,6 +214,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   selectedPriority: any;
   priority_updated_successfully_msg: string;
   priority_update_failed: string;
+  current_selected_prjct:any;
 
   /**
    * Constructor
@@ -253,8 +255,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     public translate: TranslateService,
     private tagsService: TagsService,
     public contactsService: ContactsService,
-    public logger: LoggerService
-
+    public logger: LoggerService,
+    private projectService: ProjectService
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate)
     this.jira_issue_types = [
@@ -500,8 +502,26 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
           this.id_project = project._id;
           this.project_name = project.name;
+          this.findCurrentProjectAmongAll(this.id_project)
         }
       });
+  }
+
+  findCurrentProjectAmongAll(projectId: string) {
+   
+    this.projectService.getProjects().subscribe((projects: any) => {
+      // const current_selected_prjct = projects.filter(prj => prj.id_project.id === projectId);
+      // console.log('[SIDEBAR] - GET PROJECTS - current_selected_prjct ', current_selected_prjct);
+
+      this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
+      console.log('[WS-REQUESTS-MSGS] - GET PROJECTS - current_selected_prjct ', this.current_selected_prjct);
+
+      console.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects ', projects);
+    }, error => {
+      console.log('[WS-REQUESTS-MSGS] - GET PROJECTS - ERROR: ', error);
+    }, () => {
+      console.log('[WS-REQUESTS-MSGS] - GET PROJECTS * COMPLETE * ');
+    });
   }
 
   // -------------------------------------------------------------
@@ -2269,6 +2289,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   openChatAtSelectedConversation() {
     this.openChatBtn.nativeElement.blur();
+    localStorage.setItem('last_project', JSON.stringify(this.current_selected_prjct))
     this.openChatToTheSelectedConversation(this.CHAT_BASE_URL, this.id_request, this.request.lead.fullname)
   }
 
@@ -2310,6 +2331,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       this.logger.log('[HOME] - cannot focus closed or nonexistant window');
     }
   }
+
+
   chatWithAgent(agentId, agentFirstname, agentLastname) {
     this.logger.log('[WS-REQUESTS-MSGS] - CHAT WITH AGENT - agentId: ', agentId, ' - agentFirstname: ', agentFirstname, ' - agentLastname: ', agentLastname);
 
@@ -2334,7 +2357,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
     // ---- new
-
+    localStorage.setItem('last_project', JSON.stringify(this.current_selected_prjct))
     let baseUrl = this.CHAT_BASE_URL + '#/conversation-detail/'
     let url = baseUrl + agentId + '/' + agentFullname + '/new'
     const myWindow = window.open(url, '_self', 'Tiledesk - Open Source Live Chat');

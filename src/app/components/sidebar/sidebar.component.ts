@@ -79,7 +79,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     @ViewChild('openchatbtn') private elementRef: ElementRef;
     @ViewChild('homebtn') private homeBtnElement: ElementRef;
 
-    HAS_CLICKED_OPEN_USER_DETAIL : boolean = false
+    HAS_CLICKED_OPEN_USER_DETAIL: boolean = false
     menuItems: any[];
 
     checked_route: string;
@@ -200,6 +200,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     tooltip_text_for_availability_status: string
 
     private unsubscribe$: Subject<any> = new Subject<any>();
+    current_selected_prjct: any;
 
     constructor(
         private router: Router,
@@ -211,12 +212,12 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         private usersLocalDbService: LocalDbService,
         private notify: NotifyService,
         private uploadImageService: UploadImageService,
+        private uploadImageNativeService: UploadImageNativeService,
         private translate: TranslateService,
         public appConfigService: AppConfigService,
         private deptService: DepartmentService,
         public brandService: BrandService,
         public wsRequestsService: WsRequestsService,
-        private uploadImageNativeService: UploadImageNativeService,
         private logger: LoggerService
     ) {
         this.logger.log('[SIDEBAR] !!!!! HELLO SIDEBAR')
@@ -451,7 +452,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 if (event.url.indexOf('/autologin') !== -1) {
                     this.logger.log('[SIDEBAR] NavigationEnd - THE activities-demo route IS ACTIVE  ', event.url);
                     this.AUTOLOGIN_ROUTE_IS_ACTIVE = true;
-               
+
                 } else {
                     // this.logger.log('[SIDEBAR] NavigationEnd - THE activities-demo route IS NOT ACTIVE  ', event.url);
                     this.AUTOLOGIN_ROUTE_IS_ACTIVE = false;
@@ -460,7 +461,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 if (event.url === '/projects') {
                     this.logger.log('[SIDEBAR] NavigationEnd - THE activities-demo route IS ACTIVE  ', event.url);
                     this.YOUR_PROJECT_ROUTE_IS_ACTIVE = true;
-          
+
                 } else {
                     // this.logger.log('[SIDEBAR] NavigationEnd - THE activities-demo route IS NOT ACTIVE  ', event.url);
                     this.YOUR_PROJECT_ROUTE_IS_ACTIVE = false;
@@ -651,7 +652,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                     this.BOT_TEST_ROUTE_IS_ACTIVE = false;
                     // console.log('[SIDEBAR] NavigationEnd - BOT_TEST_ROUTE_IS_ACTIVE ', this.BOT_TEST_ROUTE_IS_ACTIVE);
                 }
-       
+
 
                 if (event.url.indexOf('/hours') !== -1) {
                     this.OPERATING_HOURS_ROUTE_IS_ACTIVE = true;
@@ -946,7 +947,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     getProjectUser() {
         this.logger.log('[SIDEBAR]  !!! SIDEBAR CALL GET-PROJECT-USER')
         this.usersService.getProjectUserByUserId(this.currentUserId).subscribe((projectUser: any) => {
-
+            console.log('[SIDEBAR] PROJECT-USER GET BY USER-ID  ', projectUser);
             this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - PROJECT-ID ', this.projectId);
             this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - CURRENT-USER-ID ', this.user._id);
             this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - PROJECT USER ', projectUser);
@@ -1065,13 +1066,15 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.logger.log('[SIDEBAR] - CALLING GET CURRENT PROJECT  ', this.project)
         this.auth.project_bs.subscribe((project) => {
             this.project = project
-            // this.logger.log('[SIDEBAR] project from AUTH service subscription  ', this.project)
+            console.log('[SIDEBAR] project from AUTH service subscription  ', this.project)
 
             if (this.project) {
 
                 this.getDeptsAndFilterDefaultDept();
 
                 this.projectId = this.project._id
+
+                this.findCurrentProjectAmongAll(this.projectId)
 
                 this.prjct_profile_name = this.project.profile_name;
                 this.prjct_trial_expired = this.project.trial_expired;
@@ -1128,6 +1131,24 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 // WHEN THE PAGE IS REFRESHED
                 this.getProjectUser();
             }
+        });
+    }
+
+    findCurrentProjectAmongAll(projectId: string) {
+
+        this.projectService.getProjects().subscribe((projects: any) => {
+
+            // const current_selected_prjct = projects.filter(prj => prj.id_project.id === projectId);
+            // console.log('[SIDEBAR] - GET PROJECTS - current_selected_prjct ', current_selected_prjct);
+
+            this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
+            console.log('[SIDEBAR] - GET PROJECTS - _current_selected_prjct ', this.current_selected_prjct);
+
+            console.log('[SIDEBAR] - GET PROJECTS - projects ', projects);
+        }, error => {
+            console.log('[SIDEBAR] - GET PROJECTS - ERROR: ', error);
+        }, () => {
+            console.log('[SIDEBAR] - GET PROJECTS * COMPLETE * ');
         });
     }
 
@@ -1390,11 +1411,12 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         // this.openWindow('Tiledesk - Open Source Live Chat', url)
         // this.focusWin('Tiledesk - Open Source Live Chat')
         // --- new 
-
+        localStorage.setItem('last_project', JSON.stringify(this.current_selected_prjct))
         let baseUrl = this.CHAT_BASE_URL + '#/conversation-detail/'
         let url = baseUrl
         const myWindow = window.open(url, '_self', 'Tiledesk - Open Source Live Chat');
         myWindow.focus();
+
         // const chatTabCount = localStorage.getItem('tabCount');
         // this.logger.log('[SIDEBAR] openChat chatTabCount ', chatTabCount);
         // if (chatTabCount) {
@@ -1461,14 +1483,35 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
 
     openUserDetailSidePanel() {
-        console.log('[SIDEBAR] OPEN UESER DTLS SIDE PANEL') 
+        console.log('[SIDEBAR] OPEN UESER DTLS SIDE PANEL')
         this.HAS_CLICKED_OPEN_USER_DETAIL = true
-        console.log('[SIDEBAR] OPEN USER DTLS SIDE PANEL ', this.HAS_CLICKED_OPEN_USER_DETAIL) 
+        console.log('[SIDEBAR] OPEN USER DTLS SIDE PANEL ', this.HAS_CLICKED_OPEN_USER_DETAIL)
+        const elemNavbar = <HTMLElement>document.querySelector('.navbar-absolute');
+        console.log('[SIDEBAR] elemNavBar ', elemNavbar)
+        if (elemNavbar) {
+            elemNavbar.classList.add("navbar-absolute-custom-class");
+        }
+        const elemNavbarBrand = <HTMLElement>document.querySelector('.navbar-brand');
+        console.log('[SIDEBAR] elemNavbarBrand ', elemNavbarBrand)
+        if (elemNavbarBrand) {
+            elemNavbarBrand.classList.add("navbar-brand-z-index-zero")
+        }
     }
 
-    HAS_CLICKED_CLOSE_USER_DETAIL($event) {
-        console.log('[SIDEBAR] HAS_CLICKED_CLOSE_USER_DETAIL ', $event) 
+    onCloseUserDetailsSidebar($event) {
+        console.log('[SIDEBAR] HAS_CLICKED_CLOSE_USER_DETAIL ', $event)
         this.HAS_CLICKED_OPEN_USER_DETAIL = $event
+        const elemNavbar = <HTMLElement>document.querySelector('.navbar-absolute');
+        console.log('[SIDEBAR] elemNavBar ', elemNavbar)
+        if (elemNavbar) {
+            elemNavbar.classList.remove("navbar-absolute-custom-class")
+        }
+
+        const elemNavbarBrand = <HTMLElement>document.querySelector('.navbar-brand');
+        console.log('[SIDEBAR] elemNavbarBrand ', elemNavbarBrand)
+        if (elemNavbarBrand) {
+            elemNavbarBrand.classList.remove("navbar-brand-z-index-zero")
+        }
     }
 
     // goToAnalytics() {

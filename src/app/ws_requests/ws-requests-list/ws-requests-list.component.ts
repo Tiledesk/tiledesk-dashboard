@@ -174,6 +174,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   project_id: string;
 
   selectedPriority: string;
+  current_selected_prjct:any;
 
   /**
    * 
@@ -226,7 +227,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     this.getDepartments();
     // this.getActiveContacts();
 
-    this.getCurrentProjectAndThenGetProjectById();
+    this.getCurrentProject();
     this.getProjectPlan();
     this.getLoggedUser();
     this.getProjectUserRole();
@@ -277,12 +278,11 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   }
 
   openChat() {
- 
     // const url = this.CHAT_BASE_URL;
     // this.openWindow('Tiledesk - Open Source Live Chat', url)
     // this.focusWin('Tiledesk - Open Source Live Chat')
     // --- new 
-
+    localStorage.setItem('last_project', JSON.stringify(this.current_selected_prjct))
     let baseUrl = this.CHAT_BASE_URL + '#/conversation-detail/'
     let url = baseUrl
     const myWindow = window.open(url, '_self', 'Tiledesk - Open Source Live Chat');
@@ -667,7 +667,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   // -----------------------------------------------------------------------------------------------------
   // @ Subscribe to get the published current project (called On init)
   // -----------------------------------------------------------------------------------------------------
-  getCurrentProjectAndThenGetProjectById() {
+  getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
       // this.logger.log('[WS-REQUESTS-LIST] GET CURRENT-PRJCT AND THEN GET PROJECT BY ID - CURRENT-PRJCT', project)
       if (project) {
@@ -677,7 +677,25 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         this.OPERATING_HOURS_ACTIVE = project.operatingHours
 
         this.getProjectById(this.projectId)
+        this.findCurrentProjectAmongAll(this.projectId)
       }
+    });
+  }
+
+  findCurrentProjectAmongAll(projectId: string) {
+   
+    this.projectService.getProjects().subscribe((projects: any) => {
+      // const current_selected_prjct = projects.filter(prj => prj.id_project.id === projectId);
+      // console.log('[SIDEBAR] - GET PROJECTS - current_selected_prjct ', current_selected_prjct);
+
+      this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
+      console.log('[WS-REQUESTS-LIST] - GET PROJECTS - current_selected_prjct ', this.current_selected_prjct);
+
+      console.log('[WS-REQUESTS-LIST] - GET PROJECTS - projects ', projects);
+    }, error => {
+      console.log('[WS-REQUESTS-LIST] - GET PROJECTS - ERROR: ', error);
+    }, () => {
+      console.log('[WS-REQUESTS-LIST] - GET PROJECTS * COMPLETE * ');
     });
   }
 

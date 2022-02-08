@@ -28,6 +28,7 @@ import { avatarPlaceholder, getColorBck } from '../utils/util';
 import { LoggerService } from '../services/logger/logger.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
+import { ProjectService } from 'app/services/project.service';
 const swal = require('sweetalert');
 @Component({
   selector: 'home',
@@ -103,7 +104,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   learnMoreAboutDefaultRoles: string;
   DISPLAY_OPH_AS_DISABLED: boolean;
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
-
+  current_selected_prjct: any;
   constructor(
     public auth: AuthService,
     private route: ActivatedRoute,
@@ -119,7 +120,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     private analyticsService: AnalyticsService,
     private contactsService: ContactsService,
     private faqKbService: FaqKbService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private projectService: ProjectService,
   ) {
     const brand = brandService.getBrand();
     this.company_name = brand['company_name'];
@@ -295,9 +297,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         if (project) {
           this.project = project
           this.projectId = this.project._id
+
           this.OPERATING_HOURS_ACTIVE = this.project.operatingHours
           this.logger.log('[HOME] > OPERATING_HOURS_ACTIVE', this.OPERATING_HOURS_ACTIVE)
 
+          this.findCurrentProjectAmongAll(this.projectId)
           this.init()
         }
       }, (error) => {
@@ -306,6 +310,23 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       }, () => {
         this.logger.log('[HOME] $UBSCIBE TO PUBLISHED PROJECT * COMPLETE *');
       });
+  }
+
+  findCurrentProjectAmongAll(projectId: string) {
+   
+    this.projectService.getProjects().subscribe((projects: any) => {
+      // const current_selected_prjct = projects.filter(prj => prj.id_project.id === projectId);
+      // console.log('[SIDEBAR] - GET PROJECTS - current_selected_prjct ', current_selected_prjct);
+
+      this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
+      console.log('[HOME] - GET PROJECTS - current_selected_prjct ', this.current_selected_prjct);
+
+      console.log('[HOME] - GET PROJECTS - projects ', projects);
+    }, error => {
+      console.log('[HOME] - GET PROJECTS - ERROR: ', error);
+    }, () => {
+      console.log('[HOME] - GET PROJECTS * COMPLETE * ');
+    });
   }
 
 
@@ -1143,7 +1164,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     // window.open(url, '_blank');
 
     // --- new
-
+    localStorage.setItem('last_project', JSON.stringify(this.current_selected_prjct))
     let baseUrl = this.CHAT_BASE_URL + '#/conversation-detail/'
     let url = baseUrl
     const myWindow = window.open(url, '_self', 'Tiledesk - Open Source Live Chat');
