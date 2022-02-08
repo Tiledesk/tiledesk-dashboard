@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'app/core/auth.service';
@@ -11,6 +11,7 @@ import { UploadImageNativeService } from 'app/services/upload-image-native.servi
 import { WsRequestsService } from 'app/services/websocket/ws-requests.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { NotifyService } from '../../core/notify.service'; 
 
 // import { slideInOutAnimation } from '../../../_animations/index';
 @Component({
@@ -43,6 +44,7 @@ export class SidebarUserDetailsComponent implements OnInit {
   timeStamp: any;
   userProfileImageurl: string;
   project; any
+  private wasInside = false;
   private unsubscribe$: Subject<any> = new Subject<any>();
   constructor(
     public auth: AuthService,
@@ -55,10 +57,13 @@ export class SidebarUserDetailsComponent implements OnInit {
     private uploadImageService: UploadImageService,
     private uploadImageNativeService: UploadImageNativeService,
     public wsRequestsService: WsRequestsService,
+    private eRef: ElementRef,
+    private notify: NotifyService
   ) { }
 
 
   ngOnInit() {
+    console.log('HELLO SIDEBAR-USER-DETAILS')
     this.getLoggedUserAndCurrentDshbrdLang();
     this.getCurrentProject();
     this.getProfileImageStorage();
@@ -68,7 +73,67 @@ export class SidebarUserDetailsComponent implements OnInit {
     this.hasChangedAvailabilityStatusInUsersComp();
     this.checkUserImageUploadIsComplete();
     this.listenHasDeleteUserProfileImage();
+    this.getUserRole();
+    
   }
+
+  logout() {
+    this.closeUserDetailSidePanel()
+    this.notify.presentLogoutModal()
+  }
+
+
+  getUserRole() {
+    this.usersService.project_user_role_bs
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((userRole) => {
+
+        this.logger.log('[SIDEBAR-USER-DETAILS] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
+        // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
+        this.USER_ROLE = userRole;
+      })
+  }
+
+
+  @HostListener('document:click', ['$event'])
+  clickout(event) {
+    console.log('[SIDEBAR-USER-DETAILS] clickout event.target)', event.target)
+    console.log('[SIDEBAR-USER-DETAILS] clickout event.target)', event.target.id)
+    const clicked_element_id = event.target.id
+    if (this.eRef.nativeElement.contains(event.target)) {
+
+
+      console.log('[SIDEBAR-USER-DETAILS] clicked inside')
+    } else {
+
+      console.log('[SIDEBAR-USER-DETAILS] HAS_CLICKED_OPEN_USER_DETAIL ', this.HAS_CLICKED_OPEN_USER_DETAIL)
+      if (this.HAS_CLICKED_OPEN_USER_DETAIL === true) {
+        if (!clicked_element_id.startsWith("sidebaravatar")) {
+          this.closeUserDetailSidePanel();
+        }
+        console.log('[SIDEBAR-USER-DETAILS] clicked outside')
+      }
+    }
+  }
+
+
+
+  // @HostListener('click')
+  // clickInside() {
+  //   console.log('[SIDEBAR-USER-DETAILS] clicked inside')
+  //   this.wasInside = true;
+  // }
+
+  // @HostListener('document:click')
+  // clickout() {
+  //   if (!this.wasInside) {
+  //     console.log('[SIDEBAR-USER-DETAILS] clicked outside')
+  //     // this.closeUserDetailSidePanel();
+  //   }
+  //   this.wasInside = false;
+  // }
 
 
   hasChangedAvailabilityStatusInUsersComp() {
@@ -83,13 +148,13 @@ export class SidebarUserDetailsComponent implements OnInit {
   }
 
   getProjectUser() {
-    this.logger.log('[SIDEBAR]  !!! SIDEBAR CALL GET-PROJECT-USER')
+    this.logger.log('[SIDEBAR-USER-DETAILS]  !!! SIDEBAR CALL GET-PROJECT-USER')
     this.usersService.getProjectUserByUserId(this.user._id).subscribe((projectUser: any) => {
 
-      this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - PROJECT-ID ', this.projectId);
-      this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - CURRENT-USER-ID ', this.user._id);
-      this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - PROJECT USER ', projectUser);
-      this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - PROJECT USER LENGTH', projectUser.length);
+      this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT-USER GET BY USER-ID - PROJECT-ID ', this.projectId);
+      this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT-USER GET BY USER-ID - CURRENT-USER-ID ', this.user._id);
+      this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT-USER GET BY USER-ID - PROJECT USER ', projectUser);
+      this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT-USER GET BY USER-ID - PROJECT USER LENGTH', projectUser.length);
       if ((projectUser) && (projectUser.length !== 0)) {
         // this.logger.log('[SIDEBAR] PROJECT-USER ID ', projectUser[0]._id)
         // this.logger.log('[SIDEBAR] USER IS AVAILABLE ', projectUser[0].user_available)
@@ -105,7 +170,7 @@ export class SidebarUserDetailsComponent implements OnInit {
 
         // ADDED 21 AGO
         if (projectUser[0].role !== undefined) {
-          this.logger.log('[SIDEBAR] GET PROJECT USER ROLE FOR THE PROJECT ', this.projectId, ' »» ', projectUser[0].role);
+          this.logger.log('[SIDEBAR-USER-DETAILS] GET PROJECT USER ROLE FOR THE PROJECT ', this.projectId, ' »» ', projectUser[0].role);
 
           // ASSIGN THE projectUser[0].role VALUE TO USER_ROLE
           this.USER_ROLE = projectUser[0].role;
@@ -116,19 +181,19 @@ export class SidebarUserDetailsComponent implements OnInit {
         }
       } else {
         // this could be the case in which the current user was deleted as a member of the current project
-        this.logger.log('[SIDEBAR] PROJECT-USER UNDEFINED ')
+        this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT-USER UNDEFINED ')
       }
 
     }, (error) => {
-      this.logger.error('[SIDEBAR] PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID  ', error);
+      this.logger.error('[SIDEBAR-USER-DETAILS] PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID  ', error);
     }, () => {
-      this.logger.log('[SIDEBAR] PROJECT-USER GET BY PROJECT ID & CURRENT-USER-ID  * COMPLETE *');
+      this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT-USER GET BY PROJECT ID & CURRENT-USER-ID  * COMPLETE *');
     });
   }
 
 
   subsTo_WsCurrentUser(currentuserprjctuserid) {
-    this.logger.log('[SIDEBAR] - SUBSCRIBE TO WS CURRENT-USER AVAILABILITY  prjct user id of current user ', currentuserprjctuserid);
+    this.logger.log('[SIDEBAR-USER-DETAILS] - SUBSCRIBE TO WS CURRENT-USER AVAILABILITY  prjct user id of current user ', currentuserprjctuserid);
     // this.usersService.subscriptionToWsCurrentUser(currentuserprjctuserid);
     this.wsRequestsService.subscriptionToWsCurrentUser(currentuserprjctuserid);
 
@@ -154,9 +219,9 @@ export class SidebarUserDetailsComponent implements OnInit {
           // }
         }
       }, error => {
-        this.logger.error('[SIDEBAR] - GET WS CURRENT-USER AVAILABILITY * error * ', error)
+        this.logger.error('[SIDEBAR-USER-DETAILS] - GET WS CURRENT-USER AVAILABILITY * error * ', error)
       }, () => {
-        this.logger.log('[SIDEBAR] - GET WS CURRENT-USER AVAILABILITY *** complete *** ')
+        this.logger.log('[SIDEBAR-USER-DETAILS] - GET WS CURRENT-USER AVAILABILITY *** complete *** ')
       });
   }
 
@@ -173,9 +238,9 @@ export class SidebarUserDetailsComponent implements OnInit {
           // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER (from ws)- this.IS_BUSY? ', this.IS_BUSY);
         }
       }, error => {
-        this.logger.error('[SIDEBAR] - GET WS CURRENT-USER IS BUSY * error * ', error)
+        this.logger.error('[SIDEBAR-USER-DETAILS] - GET WS CURRENT-USER IS BUSY * error * ', error)
       }, () => {
-        this.logger.log('[SIDEBAR] - GET WS CURRENT-USER IS BUSY *** complete *** ')
+        this.logger.log('[SIDEBAR-USER-DETAILS] - GET WS CURRENT-USER IS BUSY *** complete *** ')
       });
 
 
@@ -185,12 +250,12 @@ export class SidebarUserDetailsComponent implements OnInit {
 
   checkUserImageExist() {
     this.usersService.userProfileImageExist.subscribe((image_exist) => {
-      this.logger.log('[SIDEBAR] - USER PROFILE EXIST ? ', image_exist);
+      this.logger.log('[SIDEBAR-USER-DETAILS] - USER PROFILE EXIST ? ', image_exist);
       this.userProfileImageExist = image_exist;
 
       if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
         if (this.storageBucket && this.userProfileImageExist === true) {
-          this.logger.log('[SIDEBAR] - USER PROFILE EXIST - BUILD userProfileImageurl');
+          this.logger.log('[SIDEBAR-USER-DETAILS] - USER PROFILE EXIST - BUILD userProfileImageurl');
           this.setImageProfileUrl(this.storageBucket)
         }
       } else {
@@ -203,7 +268,7 @@ export class SidebarUserDetailsComponent implements OnInit {
 
   setImageProfileUrl_Native(storage) {
     this.userProfileImageurl = storage + 'images?path=uploads%2Fusers%2F' + this.user._id + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
-    this.logger.log('[SIDEBAR] PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
+    this.logger.log('[SIDEBAR-USER-DETAILS] PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
     this.timeStamp = (new Date()).getTime();
   }
 
@@ -223,10 +288,10 @@ export class SidebarUserDetailsComponent implements OnInit {
   checkUserImageUploadIsComplete() {
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
       this.uploadImageService.userImageWasUploaded.subscribe((image_exist) => {
-        this.logger.log('[SIDEBAR] - IMAGE UPLOADING IS COMPLETE ? ', image_exist, '(usecase Firebase)');
+        this.logger.log('[SIDEBAR-USER-DETAILS] - IMAGE UPLOADING IS COMPLETE ? ', image_exist, '(usecase Firebase)');
         this.userImageHasBeenUploaded = image_exist;
         if (this.storageBucket && this.userImageHasBeenUploaded === true) {
-          this.logger.log('[SIDEBAR] - IMAGE UPLOADING IS COMPLETE - BUILD userProfileImageurl ');
+          this.logger.log('[SIDEBAR-USER-DETAILS] - IMAGE UPLOADING IS COMPLETE - BUILD userProfileImageurl ');
           this.setImageProfileUrl(this.storageBucket)
         }
       });
@@ -234,7 +299,7 @@ export class SidebarUserDetailsComponent implements OnInit {
 
       // NATIVE
       this.uploadImageNativeService.userImageWasUploaded_Native.subscribe((image_exist) => {
-        this.logger.log('[SIDEBAR] USER PROFILE IMAGE - IMAGE UPLOADING IS COMPLETE ? ', image_exist, '(usecase Native)');
+        this.logger.log('[SIDEBAR-USER-DETAILS] USER PROFILE IMAGE - IMAGE UPLOADING IS COMPLETE ? ', image_exist, '(usecase Native)');
 
         this.userImageHasBeenUploaded = image_exist;
         this.uploadImageNativeService.userImageDownloadUrl_Native.subscribe((imageUrl) => {
@@ -248,13 +313,13 @@ export class SidebarUserDetailsComponent implements OnInit {
   listenHasDeleteUserProfileImage() {
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
       this.uploadImageService.hasDeletedUserPhoto.subscribe((hasDeletedImage) => {
-        this.logger.log('[SIDEBAR] - hasDeletedImage ? ', hasDeletedImage, '(usecase Firebase)');
+        this.logger.log('[SIDEBAR-USER-DETAILS] - hasDeletedImage ? ', hasDeletedImage, '(usecase Firebase)');
         this.userImageHasBeenUploaded = false
         this.userProfileImageExist = false
       });
     } else {
       this.uploadImageNativeService.hasDeletedUserPhoto.subscribe((hasDeletedImage) => {
-        this.logger.log('[SIDEBAR] - hasDeletedImage ? ', hasDeletedImage, '(usecase Native)');
+        this.logger.log('[SIDEBAR-USER-DETAILS] - hasDeletedImage ? ', hasDeletedImage, '(usecase Native)');
         this.userImageHasBeenUploaded = false
         this.userProfileImageExist = false
       });

@@ -38,43 +38,63 @@ padding-bottom: 15px;" -->
     <!-- [ngStyle]="{'background-image': 'url('+object.image+')'}" -->
 
 
-    <div role="button" class="user-details-avatar">
-        
+    <div role="button" class="user-details-avatar" (click)="goToUserProfile()">
+        <img class="user-img-in-sidebar-user-details"
+            *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true" [src]="getUserProfileImage()"
+            onerror="this.src='assets/img/no_image_user.svg'" />
 
-            <img class="user-img-in-sidebar-user-details" *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true"
-            [src]="getUserProfileImage()" onerror="this.src='assets/img/no_image_user.svg'" />
-
-            <img class="user-img-in-sidebar-user-details" *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true"
+        <img class="user-img-in-sidebar-user-details"
+            *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true"
             src="assets/img/no_image_user.png" />
-
-       
     </div>
 
-    <div class="camera-on-hover" (click)="goToUserProfile()">
+    <div class="user-details-user-isbusy" *ngIf="IS_BUSY === true" style="cursor:pointer"
+    matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Busy' | translate }}"  #tooltip="matTooltip"   matTooltipPosition='right' matTooltipHideDelay="100">
+      <span class="material-icons user-details-user-isbusy-icon">
+        access_time
+      </span>
+    </div>
+    <!-- <div class="camera-on-hover" (click)="goToUserProfile()">
         <i class="material-icons is-over-camera">
             camera_alt
         </i>
+    </div> -->
+
+    <div class="user-details-fullname">
+        <h3> {{ user?.firstname }} {{ user?.lastname }} </h3>
     </div>
 
-    <div class="user-details-info">
-        <h3> {{ user?.firstname }} {{ user?.lastname }} </h3>
-        <h2> {{ user?.email }} </h2>
+    <div class="user-details-email">
+        <h3>{{ user?.email }} </h3>
+    </div>
+
+    <div class="user-details-role">
+        <h3>{{ USER_ROLE }} </h3>
     </div>
 
     <section class="availability-section">
         <mat-slide-toggle (change)="changeAvailabilityState(IS_AVAILABLE = !IS_AVAILABLE)"
             class="custom-mat-slide-toggle" [checked]="IS_AVAILABLE" labelPosition="before">
 
-            <span *ngIf="IS_AVAILABLE" style="font-weight: 300 !important; text-transform: capitalize; font-size:12px">
+            <span *ngIf="IS_AVAILABLE" style="font-weight: 300 !important; text-transform: capitalize; font-size:12px;">
                 {{ 'Available' | translate }}
             </span>
-            <span *ngIf="!IS_AVAILABLE" style="font-weight: 300 !important;text-transform: capitalize;font-size:12px">
+            <span *ngIf="!IS_AVAILABLE" style="font-weight: 300 !important;text-transform: capitalize;font-size:12px;">
                 {{ 'Unavailable' | translate }}
             </span>
         </mat-slide-toggle>
     </section>
 
+    <hr style="margin-top: 355px;border: 0;
+    border-top: 1px solid rgba(255, 255,255, 0.2);">
 
+    <section class="user-details-footer-section" (click)=logout()>
+        <i class="material-icons user-details-logout-icon">
+            logout
+        </i>
+        <div> Logout</div>
+    </section>
+   
 
 
 
