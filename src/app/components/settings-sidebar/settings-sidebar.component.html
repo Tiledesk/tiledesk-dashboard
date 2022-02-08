@@ -1,158 +1,159 @@
-<div class="settings-sidebar-wpr" style="">
+<!-- [ngStyle]="{'height': sidebar_settings_height}" -->
+<div class="settings-sidebar-wpr" >
 
   <ul class="settings-sidebar" style="padding-left: 0px;    list-style: none;">
-        <!-- ------------------------------------------------------- -->
-      <!-- Canned responses -->
-      <!-- ------------------------------------------------------- -->
-      <ng-container *ngIf="isVisibleCAR">
-        <li [ngClass]="{'active-item': CANNED_RESPONSES_ROUTE_IS_ACTIVE}" (click)="goToCannedResponses()">
-          <a class="custom_ancor" *ngIf="project">
-            <!-- <i class="material-icons sidebar-icons" style="font-size:24px !important">
+    <!-- ------------------------------------------------------- -->
+    <!-- Canned responses -->
+    <!-- ------------------------------------------------------- -->
+    <ng-container *ngIf="isVisibleCAR">
+      <li [ngClass]="{'active-item': CANNED_RESPONSES_ROUTE_IS_ACTIVE}" (click)="goToCannedResponses()">
+        <a class="custom_ancor" *ngIf="project">
+          <!-- <i class="material-icons sidebar-icons" style="font-size:24px !important">
               bolt
             </i> -->
-            <p class="custom_paragraph">
-  
-              {{'CannedResponses.CannedResponses' | translate}}
-            </p>
-          </a>
-        </li>
-      </ng-container>
-
-      <!-- -------------------------------------------------------------  -->
-      <!-- Tags (menu item name 'Labels' then renamend tags 26gen21)  -->
-      <!-- ------------------------------------------------------------- -->
-      <ng-container *ngIf="isVisibleLBS">
-        <li [ngClass]="{'active-item': TAG_ROUTE_IS_ACTIVE}"  (click)="goToTags()">
-          <a class="custom_ancor" *ngIf="project" >
-            <p class="custom_paragraph">
-              <!-- <i class="fa fa-tag sidebar-icons" style="font-size: 18px !important;"></i> -->
-     
-              {{'Tags.Tags' | translate}}
-            </p>
-          </a>
-        </li>
-      </ng-container>
-
-      <!-- ------------------------------------------------------- -->
-      <!-- Routing & depts -->
-      <!-- ------------------------------------------------------- -->
-      <li [ngClass]="{'active-item': DEPTS_ROUTE_IS_ACTIVE}" (click)="goToDepartments()">
-        <a class="custom_ancor" *ngIf="project" >
-          <!-- <i class="fa fa-university sidebar-icons" style="font-size:16px !important"></i> -->
           <p class="custom_paragraph">
-  
-            <span *ngIf="isVisibleDEP"> {{'RoutingAndDepts' | translate}} </span>
-            <span *ngIf="!isVisibleDEP"> Routing </span>
 
+            {{'CannedResponses.CannedResponses' | translate}}
           </p>
         </a>
       </li>
+    </ng-container>
 
-      <!-- ------------------------------------------------------- -->
-      <!-- TRIGGER -->
-      <!-- ------------------------------------------------------- -->
-      <ng-container *ngIf="isVisibleTRI">
-        <li [ngClass]="{'active-item': TRIGGER_ROUTE_IS_ACTIVE}" (click)="goToTrigger()">
-          <a class="custom_ancor" *ngIf="project" >
+    <!-- -------------------------------------------------------------  -->
+    <!-- Tags (menu item name 'Labels' then renamend tags 26gen21)  -->
+    <!-- ------------------------------------------------------------- -->
+    <ng-container *ngIf="isVisibleLBS">
+      <li [ngClass]="{'active-item': TAG_ROUTE_IS_ACTIVE}" (click)="goToTags()">
+        <a class="custom_ancor" *ngIf="project">
+          <p class="custom_paragraph">
+            <!-- <i class="fa fa-tag sidebar-icons" style="font-size: 18px !important;"></i> -->
 
-            <!-- <i class="material-icons sidebar-icons" style="
+            {{'Tags.Tags' | translate}}
+          </p>
+        </a>
+      </li>
+    </ng-container>
+
+    <!-- ------------------------------------------------------- -->
+    <!-- Routing & depts -->
+    <!-- ------------------------------------------------------- -->
+    <li [ngClass]="{'active-item': DEPTS_ROUTE_IS_ACTIVE}" (click)="goToDepartments()">
+      <a class="custom_ancor" *ngIf="project">
+        <!-- <i class="fa fa-university sidebar-icons" style="font-size:16px !important"></i> -->
+        <p class="custom_paragraph">
+
+          <span *ngIf="isVisibleDEP"> {{'RoutingAndDepts' | translate}} </span>
+          <span *ngIf="!isVisibleDEP"> Routing </span>
+
+        </p>
+      </a>
+    </li>
+
+    <!-- ------------------------------------------------------- -->
+    <!-- TRIGGER -->
+    <!-- ------------------------------------------------------- -->
+    <ng-container *ngIf="isVisibleTRI">
+      <li [ngClass]="{'active-item': TRIGGER_ROUTE_IS_ACTIVE}" (click)="goToTrigger()">
+        <a class="custom_ancor" *ngIf="project">
+
+          <!-- <i class="material-icons sidebar-icons" style="
             font-size:23px; position:relative; left:1px">
               generating_tokens
             </i> -->
-            <!-- <span class="_badge" style="font-size: 9px;"
+          <!-- <span class="_badge" style="font-size: 9px;"
               [ngClass]="{'change-badge-bckgrnd' : TRIGGER_ROUTE_IS_ACTIVE === true}">BETA</span> -->
-            <p class="custom_paragraph">
-            
-              {{ 'Trigger.Trigger' | translate }}
-              <span style="color: #f44336;  font-weight: 400;;">(Beta) </span>
-            </p>
-          </a>
-        </li>
-      </ng-container>
+          <p class="custom_paragraph">
 
-      <!-- ------------------------------------------------------- -->
-      <!-- Teammates & Groups -->
-      <!-- ------------------------------------------------------- -->
-      <li [ngClass]="{'active-item': TEAMMATES_ROUTE_IS_ACTIVE || GROUPS_ROUTE_IS_ACTIVE}" (click)="goToTeammates()"> 
-        <a class="custom_ancor" *ngIf="project" >
-          <!-- <i class="material-icons sidebar-icons">
+            {{ 'Trigger.Trigger' | translate }}
+            <span style="color: #f44336;  font-weight: 400;;">(Beta) </span>
+          </p>
+        </a>
+      </li>
+    </ng-container>
+
+    <!-- ------------------------------------------------------- -->
+    <!-- Teammates & Groups -->
+    <!-- ------------------------------------------------------- -->
+    <li [ngClass]="{'active-item': TEAMMATES_ROUTE_IS_ACTIVE || GROUPS_ROUTE_IS_ACTIVE}" (click)="goToTeammates()">
+      <a class="custom_ancor" *ngIf="project">
+        <!-- <i class="material-icons sidebar-icons">
             groups
           </i> -->
-          <p class="custom_paragraph">
-            <span *ngIf="isVisibleGRO">
-             
-              {{ 'UsersAndGroups' | translate }}
-            </span>
-            <span *ngIf="!isVisibleGRO">
-         
-              <span style="text-transform: capitalize;"> {{ 'Teammates' | translate }} </span>
-            </span>
-          </p>
-        </a>
-      </li>
+        <p class="custom_paragraph">
+          <span *ngIf="isVisibleGRO">
+
+            {{ 'UsersAndGroups' | translate }}
+          </span>
+          <span *ngIf="!isVisibleGRO">
+
+            <span style="text-transform: capitalize;"> {{ 'Teammates' | translate }} </span>
+          </span>
+        </p>
+      </a>
+    </li>
 
 
-      <!-- ------------------------------------------------------- -->
-      <!-- Chatbot -->
-      <!-- ------------------------------------------------------- -->
-      <li [ngClass]="{'active-item': CHATBOT_ROUTE_IS_ACTIVE}" (click)="goToChatbot()"> 
-        <a class="custom_ancor" *ngIf="project" >
-          <!-- <i class="material-icons sidebar-icons">
+    <!-- ------------------------------------------------------- -->
+    <!-- Chatbot -->
+    <!-- ------------------------------------------------------- -->
+    <li [ngClass]="{'active-item': CHATBOT_ROUTE_IS_ACTIVE}" (click)="goToChatbot()">
+      <a class="custom_ancor" *ngIf="project">
+        <!-- <i class="material-icons sidebar-icons">
             smart_toy
           </i> -->
-          <p class="custom_paragraph">
-            Bots
-          </p>
-        </a>
-      </li>
+        <p class="custom_paragraph">
+          Bots
+        </p>
+      </a>
+    </li>
 
-      <!-- -------------------------------------------------------- -->
-      <!--  Widget  -->
-      <!-- -------------------------------------------------------- -->
-      <li [ngClass]="{'active-item': WIDGET_SETUP_ROUTE_IS_ACTIVE}"  (click)="goToWidgetSetUp()"> 
-        <a class="custom_ancor" *ngIf="project">
-          <!-- <i class="material-icons sidebar-icons">
+    <!-- -------------------------------------------------------- -->
+    <!--  Widget  -->
+    <!-- -------------------------------------------------------- -->
+    <li [ngClass]="{'active-item': WIDGET_SETUP_ROUTE_IS_ACTIVE}" (click)="goToWidgetSetUp()">
+      <a class="custom_ancor" *ngIf="project">
+        <!-- <i class="material-icons sidebar-icons">
             chat_bubble
           </i> -->
-          <p class="custom_paragraph">
-            <!-- <span class="sidebar-mini">W </span> -->
-            Widget
-          </p>
-        </a>
-      </li>
+        <p class="custom_paragraph">
+          <!-- <span class="sidebar-mini">W </span> -->
+          Widget
+        </p>
+      </a>
+    </li>
 
-      <!-- -------------------------------------------------------- -->
-      <!--  Operatinf Hours  -->
-      <!-- -------------------------------------------------------- -->
-      <ng-container *ngIf="isVisibleOPH"> 
+    <!-- -------------------------------------------------------- -->
+    <!--  Operatinf Hours  -->
+    <!-- -------------------------------------------------------- -->
+    <ng-container *ngIf="isVisibleOPH">
 
-        <li [ngClass]="{'active-item': OPERATING_HOURS_ROUTE_IS_ACTIVE}" (click)="goToOperatingHours()">
-          <a *ngIf="project" class="custom_ancor"  >
-            <!-- <i class="material-icons sidebar-icons">
+      <li [ngClass]="{'active-item': OPERATING_HOURS_ROUTE_IS_ACTIVE}" (click)="goToOperatingHours()">
+        <a *ngIf="project" class="custom_ancor">
+          <!-- <i class="material-icons sidebar-icons">
               watch_later
             </i> -->
-            <p class="custom_paragraph">
-              {{ 'Hours' | translate }}
-            </p>
-          </a>
-        </li>
-      </ng-container>
-
-
-      <!-- -------------------------------------------------------- -->
-      <!--  Project Settings  -->
-      <!-- -------------------------------------------------------- -->
-      <li [ngClass]="{'active-item': PROJECT_SETTINGS_ROUTE_IS_ACTIVE}" (click)="goToProjectSettings()"> 
-        <a *ngIf="project" class="custom_ancor" >
-          <!-- <i class="material-icons sidebar-icons">
-            construction
-          </i> -->
           <p class="custom_paragraph">
-
-            {{ 'ProjectSettings' | translate }}
+            {{ 'Hours' | translate }}
           </p>
         </a>
       </li>
+    </ng-container>
+
+
+    <!-- -------------------------------------------------------- -->
+    <!--  Project Settings  -->
+    <!-- -------------------------------------------------------- -->
+    <li [ngClass]="{'active-item': PROJECT_SETTINGS_ROUTE_IS_ACTIVE}" (click)="goToProjectSettings()">
+      <a *ngIf="project" class="custom_ancor">
+        <!-- <i class="material-icons sidebar-icons">
+            construction
+          </i> -->
+        <p class="custom_paragraph">
+
+          {{ 'ProjectSettings' | translate }}
+        </p>
+      </a>
+    </li>
   </ul>
 
 </div>

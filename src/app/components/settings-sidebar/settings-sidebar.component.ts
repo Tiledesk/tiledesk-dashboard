@@ -35,6 +35,7 @@ export class SettingsSidebarComponent implements OnInit {
   CHAT_BASE_URL: string;
   project: any;
   route: string;
+  sidebar_settings_height: any;
 
   constructor(
     public appConfigService: AppConfigService,
@@ -49,14 +50,34 @@ export class SettingsSidebarComponent implements OnInit {
     this.getChatUrl();
     this.getCurrentProject();
     this.getCurrentRoute();
+    // this.getMainContentHeight();
   }
+
+  getMainContentHeight() {
+    const elemMainContent = <HTMLElement>document.querySelector('.main-content');   
+    console.log('[SETTINGS-SIDEBAR] elemMainContent ',elemMainContent) 
+      // setTimeout(() => {
+        const main_content_height = elemMainContent.clientHeight
+        console.log('[SETTINGS-SIDEBAR] clientHeight main_content_height ',main_content_height) 
+
+        const _main_content_height = elemMainContent.offsetHeight
+        console.log('[SETTINGS-SIDEBAR] offsetHeight main_content_height ',_main_content_height) 
+
+        let h = window.innerHeight;
+        console.log('[SETTINGS-SIDEBAR] window.innerHeight main_content_height ',h) 
+      // }, 500);
+  //  const main_content_height = elemMainContent.clientHeight
+  //  console.log('[SETTINGS-SIDEBAR] main_content_height ',main_content_height) 
+   this.sidebar_settings_height = main_content_height + 70 + 'px'
+  }
+
 
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
-    this.logger.log('[SIDEBAR] AppConfigService getAppConfig public_Key', this.public_Key);
+    this.logger.log('[SETTINGS-SIDEBAR] AppConfigService getAppConfig public_Key', this.public_Key);
 
     let keys = this.public_Key.split("-");
-    this.logger.log('[SIDEBAR] PUBLIC-KEY - public_Key keys', keys)
+    this.logger.log('[SETTINGS-SIDEBAR] PUBLIC-KEY - public_Key keys', keys)
 
     keys.forEach(key => {
 
