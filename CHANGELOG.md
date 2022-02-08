@@ -1,6 +1,15 @@
 
 # tiledesk-dashboard
 
+### 2.2.32-rc3
+- Adds the "user details" drawer 
+- Fixes the bug: the section titles overlap the "user details" drawer
+- Changes the format of the "demo" style file from css to scss
+- Fixes the bug: when window width is less than 992px the navbar changes height
+- Fixes the bug: the "Canned Responses" page is not responsive
+- Saves the current project in the local storage with the key "last_project" for each occurrence of the "open chat" method
+- Allows to close the "user details" sidebar by clicking outside it
+
 ### 2.2.32-rc2
 - Fixes the bug: the iframe of the installed application is not correctly displayed in "app-store-install"
 - Removes the navbar "toggle sidebar"  button
