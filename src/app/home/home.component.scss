@@ -1370,30 +1370,34 @@
   background-color: #1a73e8;
   // padding: 25px 140px 65px 197px;
   // padding: 25px 190px 35px 190px
-  padding: 25px 190px 12px 190px;
+  padding: 12px 190px 12px 190px;
+  margin-top: 20px;
 }
 
 @media (max-width: 1440px) {
   .n-header-home {
-    padding: 25px 160px 12px 160px;
+    padding: 12px 160px 12px 160px;
+    margin-top: 20px;
   }
 }
 
 @media (max-width: 1281px) {
   .n-header-home {
-    padding: 25px 100px 12px 100px;
+    padding: 12px 100px 12px 100px;
   }
 }
 
 @media (max-width: 1161px) {
   .n-header-home {
-    padding: 25px 40px 12px 40px;
+    padding: 12px 40px 12px 40px;
+    margin-top: 19px;
   }
 }
 
 @media (max-width: 992px) {
   .n-header-home {
-    padding: 80px 40px 12px 40px;
+    padding: 12px 40px 12px 40px;
+    margin-top: 77px;
   }
 }
 @media (max-width: 992px) {
