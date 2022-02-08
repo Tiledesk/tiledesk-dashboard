@@ -1,5 +1,5 @@
 <!-- *ngIf="project"  -->
-<div class="logo" style="background-color:#1e2129!important; padding-bottom: 5px;min-height: 50px;">
+<div class="logo" style="background-color:#1e2129!important; padding-bottom: 5px;min-height: 60px;">
   <a class="logo-img-wpr" [ngClass]="{'small-sidebar-logo-img-wpr' : SIDEBAR_IS_SMALL === true }">
     <!-- routerLink="project/{{ project._id }}/home" -->
 
@@ -76,17 +76,18 @@
     <!-- (mouseover)="mouseOver(true)" 
         (mouseout)="mouseOver(false)" -->
     <!--  -->
-    <div class="avatar-container tiledesk-nav-avatar" [ngClass]="{'small-sidebar-avatar' : SIDEBAR_IS_SMALL === true }">
+    <div id="sidebaravatar-img-wpr" class="avatar-container tiledesk-nav-avatar" (click)="openUserDetailSidePanel()"  [ngClass]="{'small-sidebar-avatar' : SIDEBAR_IS_SMALL === true }">
 
-      <img class="avatar" *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true"
+      <img id="sidebaravatar-img" class="avatar"  *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true"
         [src]="getUserProfileImage()" onerror="this.src='assets/img/no_image_user.svg'" />
 
-      <img class="avatar" *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true"
+      <img id="sidebaravatar-no-img"  class="avatar" *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true"
         src="assets/img/no_image_user.png" />
 
-      <div *ngIf="project" (click)="changeAvailabilityState(IS_AVAILABLE = !IS_AVAILABLE)" class="status-icon"
-        [ngClass]="{'is-user-online' : IS_AVAILABLE === true, 'is-user-offline' : IS_AVAILABLE === false, 'small-sidebar-status-icon' : SIDEBAR_IS_SMALL === true  }"
-        matTooltipClass="custom-mat-tooltip" matTooltip="{{ tooltip_text_for_availability_status}}"  #tooltip="matTooltip"   matTooltipPosition='right' matTooltipHideDelay="100">
+        <!-- (click)="changeAvailabilityState(IS_AVAILABLE = !IS_AVAILABLE)" -->
+        <!-- matTooltipClass="custom-mat-tooltip" matTooltip="{{ tooltip_text_for_availability_status}}"  #tooltip="matTooltip"   matTooltipPosition='right' matTooltipHideDelay="100" -->
+      <div id="sidebaravatar-status-icon>"  *ngIf="project" class="status-icon"
+        [ngClass]="{'is-user-online' : IS_AVAILABLE === true, 'is-user-offline' : IS_AVAILABLE === false, 'small-sidebar-status-icon' : SIDEBAR_IS_SMALL === true  }">
     
         <!-- <span style="position:relative; top: -5px;left: 14px; cursor:pointer"
           [ngClass]="{'small-sidebar-status-text' : SIDEBAR_IS_SMALL === true }">
@@ -108,10 +109,10 @@
     <!-- CAMERA ICONS OVER THE AVATAR -->
     <!--  [ngClass]="{'hover-effect' : isOverAvar}"  -->
     <!-- routerLink="project/{{ project._id }}/user-profile" -->
-    <i *ngIf="project" (click)="openUserDetailSidePanel()" class="material-icons is-over-camera"
+    <!-- <i *ngIf="project" (click)="openUserDetailSidePanel()" class="material-icons is-over-camera"
       [ngClass]="{'small-sidebar-camera-icon' : SIDEBAR_IS_SMALL === true, 'is-over-camera-decrease-top':IS_BUSY === true }">
       camera_alt
-    </i>
+    </i> -->
 
 
     <div class="sidebar--isBusy-icon-wpr" *ngIf="IS_BUSY === true" style="cursor:pointer"
@@ -575,9 +576,7 @@
 
 <appdashboard-sidebar-user-details 
 [HAS_CLICKED_OPEN_USER_DETAIL]='HAS_CLICKED_OPEN_USER_DETAIL'
-(valueChange)='HAS_CLICKED_CLOSE_USER_DETAIL($event)'
-> 
-
+(onCloseUserDetailsSidebar)='onCloseUserDetailsSidebar($event)'> 
 
 </appdashboard-sidebar-user-details>
 
