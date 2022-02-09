@@ -49,10 +49,11 @@ padding-bottom: 15px;" -->
     </div>
 
     <div class="user-details-user-isbusy" *ngIf="IS_BUSY === true" style="cursor:pointer"
-    matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Busy' | translate }}"  #tooltip="matTooltip"   matTooltipPosition='right' matTooltipHideDelay="100">
-      <span class="material-icons user-details-user-isbusy-icon">
-        access_time
-      </span>
+        matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Busy' | translate }}" #tooltip="matTooltip"
+        matTooltipPosition='right' matTooltipHideDelay="100">
+        <span class="material-icons user-details-user-isbusy-icon">
+            access_time
+        </span>
     </div>
     <!-- <div class="camera-on-hover" (click)="goToUserProfile()">
         <i class="material-icons is-over-camera">
@@ -85,8 +86,35 @@ padding-bottom: 15px;" -->
         </mat-slide-toggle>
     </section>
 
-    <hr style="margin-top: 355px;border: 0;
+    <hr class="first-divider" style="margin-top: 355px;border: 0;
     border-top: 1px solid rgba(255, 255,255, 0.2);">
+
+    <section class="user-details-plan-info">
+        <span style="text-transform: uppercase; color: #a9afbb;"> {{'Plan' | translate}}: </span>
+        <span style="text-transform: capitalize; color: #a9afbb;">
+            {{ _prjct_profile_name }}
+
+            <span *ngIf="plan_type === 'payment' && plan_subscription_is_active === false"
+                style="color:#f44336; position:relative; top: -1px;">
+                <i *ngIf="plan_name !== 'enterprise'" class="material-icons" style="vertical-align: middle; color:#f44336; cursor:pointer;    
+                font-size: 16px;"  matTooltipClass="custom-mat-tooltip"
+        matTooltip="{{ 'Pricing.SubscriptionPaymentProblem' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+        matTooltipHideDelay="100">
+                    error_outline
+                </i>
+                <i *ngIf="plan_name === 'enterprise'" class="material-icons" style="vertical-align: middle; color:#f44336; cursor:pointer;    
+                font-size: 16px;"  matTooltipClass="custom-mat-tooltip"
+        matTooltip="{{ 'Pricing.ThePlanHasExpired' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+        matTooltipHideDelay="100">
+                    error_outline
+                </i>
+            </span>
+        </span>
+    </section>
+
+    <hr class="second-divider" style="margin-top: 20px;border: 0;
+    border-top: 1px solid rgba(255, 255,255, 0.2);">
+
 
     <section class="user-details-footer-section" (click)=logout()>
         <i class="material-icons user-details-logout-icon">
@@ -94,7 +122,7 @@ padding-bottom: 15px;" -->
         </i>
         <div> Logout</div>
     </section>
-   
+
 
 
 

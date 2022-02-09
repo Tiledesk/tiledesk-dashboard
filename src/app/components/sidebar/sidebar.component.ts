@@ -178,6 +178,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     OPERATING_HOURS_ROUTE_IS_ACTIVE: boolean;
 
     prjct_profile_name: string;
+   
     prjct_trial_expired: boolean;
     prjc_trial_days_left: number
     prjc_trial_days_left_percentage: number
@@ -190,6 +191,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     isVisibleCAR: boolean;
     isVisibleLBS: boolean;
     isVisibleAPP: boolean;
+    isVisiblePAY: boolean;
     storageBucket: string;
     baseUrl: string;
     default_dept_id: string;
@@ -198,7 +200,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     tlangparams: any
     flag_url: string;
     tooltip_text_for_availability_status: string
-
+    plan_subscription_is_active: boolean;
+plan_name: string;
+_prjct_profile_name: string;
+plan_type: string;
     private unsubscribe$: Subject<any> = new Subject<any>();
     current_selected_prjct: any;
 
@@ -429,6 +434,17 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                     this.isVisibleAPP = true;
                 }
             }
+
+            if (key.includes("PAY")) {
+
+                let pay = key.split(":");
+
+                if (pay[1] === "F") {
+                    this.isVisiblePAY = false;
+                } else {
+                    this.isVisiblePAY = true;
+                }
+            }
         });
 
         if (!this.public_Key.includes("CAR")) {
@@ -442,6 +458,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         if (!this.public_Key.includes("APP")) {
             this.isVisibleAPP = false;
         }
+        if (!this.public_Key.includes("PAY")) {
+            this.isVisiblePAY = false;
+        }
+
     }
 
 
@@ -1090,59 +1110,55 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
                 this.prjc_trial_days_left_percentage = this.round5(perc)
                 // this.logger.log('[SIDEBAR] project trial days left % rounded', this.prjc_trial_days_left_percentage);
-                // if (roundedPercentage === 0) {
-                //     this.prjc_trial_days_left_percentage = 0;
-                // }
 
-
-
-                // FOR TEST
-                // this.prjc_trial_days_left_percentage = 5;
-                // this.prjc_trial_days_left_percentage = 10;
-                // this.prjc_trial_days_left_percentage = 15;
-                // this.prjc_trial_days_left_percentage = 20;
-                // this.prjc_trial_days_left_percentage = 25;
-                // this.prjc_trial_days_left_percentage = 30;
-                // this.prjc_trial_days_left_percentage = 35;
-                // this.prjc_trial_days_left_percentage = 40;
-                // this.prjc_trial_days_left_percentage = 45;
-
-                // this.prjc_trial_days_left_percentage = 50;
-                // this.prjc_trial_days_left_percentage = 55;
-                // this.prjc_trial_days_left_percentage = 60;
-                // this.prjc_trial_days_left_percentage = 65;
-                // this.prjc_trial_days_left_percentage = 70;
-                // this.prjc_trial_days_left_percentage = 75;
-                // this.prjc_trial_days_left_percentage = 80;
-                // this.prjc_trial_days_left_percentage = 85;
-                // this.prjc_trial_days_left_percentage = 90;
-                // this.prjc_trial_days_left_percentage = 95;
-                // this.prjc_trial_days_left_percentage = 100;
-
-                // this.logger.log('[SIDEBAR] project profile name ', this.prjct_profile_name);
-                // this.logger.log('[SIDEBAR] project trial expired ', this.prjct_trial_expired);
-                // this.logger.log('[SIDEBAR] project trial expired ', this.prjct_trial_expired);
-                // this.logger.log('[SIDEBAR] project trial days left  ', this.prjc_trial_days_left);
-                // this.logger.log('[SIDEBAR] project trial days left % ', this.prjc_trial_days_left_percentage);
-
-
-
-                // IS USED TO GET THE PROJECT-USER AND DETERMINE IF THE USER IS AVAILAVLE / UNAVAILABLE
-                // WHEN THE PAGE IS REFRESHED
                 this.getProjectUser();
             }
         });
     }
 
+
+
     findCurrentProjectAmongAll(projectId: string) {
-
         this.projectService.getProjects().subscribe((projects: any) => {
-
             // const current_selected_prjct = projects.filter(prj => prj.id_project.id === projectId);
             // console.log('[SIDEBAR] - GET PROJECTS - current_selected_prjct ', current_selected_prjct);
 
             this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
             console.log('[SIDEBAR] - GET PROJECTS - _current_selected_prjct ', this.current_selected_prjct);
+
+
+            if (this.current_selected_prjct) {
+                console.log('[SIDEBAR] PROJECT PROFILE TYPE', this.current_selected_prjct.id_project.profile.type);
+                console.log('[SIDEBAR] PROJECT PROFILE NAME', this.current_selected_prjct.id_project.profile.name)
+                console.log('[SIDEBAR] PROJECT TRIAL EXPIRED', this.current_selected_prjct.id_project.trialExpired) 
+                console.log('[SIDEBAR] PROJECT SUBSCRIPTION IS ACTIVE', this.current_selected_prjct.id_project.isActiveSubscription)
+                this.plan_subscription_is_active = this.current_selected_prjct.id_project.isActiveSubscription
+                this.plan_name = this.current_selected_prjct.id_project.profile.name
+                this.plan_type = this.current_selected_prjct.id_project.profile.type
+                if (this.current_selected_prjct.id_project.profile.type === 'free') {
+                    if (this.current_selected_prjct.id_project.trialExpired === false) {
+                        if (this.isVisiblePAY) {
+                            this.getProPlanTrialTranslation();
+                        } else {
+                            this.getUnavailablePlanProfile()
+                        }
+                    } else {
+                        if (this.isVisiblePAY) {
+                            this.getPaidPlanTranslation(this.current_selected_prjct.id_project.profile.name);
+                        } else {
+                            this.getUnavailablePlanProfile()
+                        }
+                    }
+                } else if (this.current_selected_prjct.id_project.profile.type === 'payment') {
+                    if (this.isVisiblePAY) {
+                        this.getPaidPlanTranslation(this.current_selected_prjct.id_project.profile.name);
+                    }else {
+                        this.getUnavailablePlanProfile()
+                    }
+                }
+            }
+
+
 
             console.log('[SIDEBAR] - GET PROJECTS - projects ', projects);
         }, error => {
@@ -1151,6 +1167,31 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             console.log('[SIDEBAR] - GET PROJECTS * COMPLETE * ');
         });
     }
+
+    getProPlanTrialTranslation() {
+        this.translate.get('ProPlanTrial')
+            .subscribe((translation: any) => {
+                this._prjct_profile_name = translation;
+
+                console.log('[SIDEBAR] PLAN NAME ', this._prjct_profile_name)
+            });
+    }
+
+    getPaidPlanTranslation(project_profile_name) {
+        this.translate.get('PaydPlanName', { projectprofile: project_profile_name })
+            .subscribe((text: string) => {
+                this._prjct_profile_name = text;
+                console.log('[SIDEBAR] PLAN NAME ', this._prjct_profile_name)
+            });
+    }
+
+    getUnavailablePlanProfile() {
+          this.translate.get('ProfileNotAvailable')
+        .subscribe((text: string) => {
+            this._prjct_profile_name = text;
+            console.log('[SIDEBAR] PLAN NAME ', this._prjct_profile_name)
+        });
+    } 
 
     getDeptsAndFilterDefaultDept() {
         this.deptService.getDeptsByProjectId().subscribe((departments: any) => {

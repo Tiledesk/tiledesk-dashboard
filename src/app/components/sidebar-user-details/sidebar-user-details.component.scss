@@ -18,6 +18,17 @@
     // display: none;
 }
 
+#user-details::-webkit-scrollbar {
+    width: 6px;
+}
+#user-details::-webkit-scrollbar-track {
+    background-color: #1c2b45;
+}
+#user-details::-webkit-scrollbar-thumb {
+    background-color: #3c485b;
+    border-radius: 3px;
+}
+
 #user-details.active {
     transform: translate(0);
     display: block;
@@ -191,6 +202,10 @@ button.user-details-btn-close {
     left: 3px;
 }
 
+.user-details-plan-info {
+    font-size: 12px;
+}
+
 .user-details-footer-section {
     -webkit-transform: translateX(-50%);
     transform: translateX(-50%);
@@ -199,6 +214,9 @@ button.user-details-btn-close {
     position: absolute;
     text-align: center;
     cursor: pointer;
+    padding-bottom: 15px;
+    padding-top: 100px;
+    // bottom: 50px;
     // top:355px
 }
 .user-details-logout-icon {

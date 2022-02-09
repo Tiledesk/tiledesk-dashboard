@@ -11,7 +11,7 @@ import { UploadImageNativeService } from 'app/services/upload-image-native.servi
 import { WsRequestsService } from 'app/services/websocket/ws-requests.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { NotifyService } from '../../core/notify.service'; 
+import { NotifyService } from '../../core/notify.service';
 
 // import { slideInOutAnimation } from '../../../_animations/index';
 @Component({
@@ -23,6 +23,10 @@ import { NotifyService } from '../../core/notify.service';
 export class SidebarUserDetailsComponent implements OnInit {
   @Input() HAS_CLICKED_OPEN_USER_DETAIL: boolean = false;
   @Output() onCloseUserDetailsSidebar = new EventEmitter();
+  @Input() _prjct_profile_name: string;
+  @Input() plan_subscription_is_active: boolean
+  @Input() plan_name: string;
+  @Input() plan_type: string;
 
   flag_url: string;
   dsbrd_lang: string;
@@ -74,7 +78,7 @@ export class SidebarUserDetailsComponent implements OnInit {
     this.checkUserImageUploadIsComplete();
     this.listenHasDeleteUserProfileImage();
     this.getUserRole();
-    
+
   }
 
   logout() {

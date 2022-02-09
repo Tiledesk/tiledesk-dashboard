@@ -49,7 +49,7 @@
 
 
 <!-- background-color: #191919 -->
-<div class="sidebar-wrapper" (scroll)="onScroll($event)">
+<div id="sidebar_wrapper" class="sidebar-wrapper" (scroll)="onScroll($event)">
 
   <!-- // NK start NEW: AVATAR ON THE SIDEBAR  -->
   <div class="user tiledesk-nav-user" [ngClass]="{'small-sidebar-tiledesk-nav-user' : SIDEBAR_IS_SMALL === true }"
@@ -76,19 +76,22 @@
     <!-- (mouseover)="mouseOver(true)" 
         (mouseout)="mouseOver(false)" -->
     <!--  -->
-    <div id="sidebaravatar-img-wpr" class="avatar-container tiledesk-nav-avatar" (click)="openUserDetailSidePanel()"  [ngClass]="{'small-sidebar-avatar' : SIDEBAR_IS_SMALL === true }">
+    <div id="sidebaravatar-img-wpr" class="avatar-container tiledesk-nav-avatar" (click)="openUserDetailSidePanel()"
+      [ngClass]="{'small-sidebar-avatar' : SIDEBAR_IS_SMALL === true }">
 
-      <img id="sidebaravatar-img" class="avatar"  *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true"
-        [src]="getUserProfileImage()" onerror="this.src='assets/img/no_image_user.svg'" />
+      <img id="sidebaravatar-img" class="avatar"
+        *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true" [src]="getUserProfileImage()"
+        onerror="this.src='assets/img/no_image_user.svg'" />
 
-      <img id="sidebaravatar-no-img"  class="avatar" *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true"
+      <img id="sidebaravatar-no-img" class="avatar"
+        *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true"
         src="assets/img/no_image_user.png" />
 
-        <!-- (click)="changeAvailabilityState(IS_AVAILABLE = !IS_AVAILABLE)" -->
-        <!-- matTooltipClass="custom-mat-tooltip" matTooltip="{{ tooltip_text_for_availability_status}}"  #tooltip="matTooltip"   matTooltipPosition='right' matTooltipHideDelay="100" -->
-      <div id="sidebaravatar-status-icon>"  *ngIf="project" class="status-icon"
+      <!-- (click)="changeAvailabilityState(IS_AVAILABLE = !IS_AVAILABLE)" -->
+      <!-- matTooltipClass="custom-mat-tooltip" matTooltip="{{ tooltip_text_for_availability_status}}"  #tooltip="matTooltip"   matTooltipPosition='right' matTooltipHideDelay="100" -->
+      <div id="sidebaravatar-status-icon>" *ngIf="project" class="status-icon"
         [ngClass]="{'is-user-online' : IS_AVAILABLE === true, 'is-user-offline' : IS_AVAILABLE === false, 'small-sidebar-status-icon' : SIDEBAR_IS_SMALL === true  }">
-    
+
         <!-- <span style="position:relative; top: -5px;left: 14px; cursor:pointer"
           [ngClass]="{'small-sidebar-status-text' : SIDEBAR_IS_SMALL === true }">
           <span style="
@@ -116,7 +119,8 @@
 
 
     <div class="sidebar--isBusy-icon-wpr" *ngIf="IS_BUSY === true" style="cursor:pointer"
-    matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Busy' | translate }}"  #tooltip="matTooltip"   matTooltipPosition='right' matTooltipHideDelay="100">
+      matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Busy' | translate }}" #tooltip="matTooltip"
+      matTooltipPosition='right' matTooltipHideDelay="100">
       <span class="material-icons sidebar-is-busy-icon">
         access_time
       </span>
@@ -173,8 +177,8 @@
 
 
       <!-- CHAT  -->
-      <li *ngIf="project" routerLinkActive="active"
-      matTooltipClass="custom-mat-tooltip" matTooltip="Chat"  #tooltip="matTooltip"   matTooltipPosition='right' matTooltipHideDelay="100">
+      <li *ngIf="project" routerLinkActive="active" matTooltipClass="custom-mat-tooltip" matTooltip="Chat"
+        #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
 
         <!-- <a class="customAncor" routerLink="/chat"> -->
         <!-- <a class="customAncor" routerLink="project/{{ project._id }}/chat"> -->
@@ -188,8 +192,8 @@
 
       <!-- HOME  -->
       <!-- WITHOUT THE CONDITION *ngIf="projectid" THE MENU ITEM 'HOME' IT IS NOT RENDERED AS ACTIVE -->
-      <li *ngIf="project" routerLinkActive="active"
-      matTooltipClass="custom-mat-tooltip" matTooltip="Home"  #tooltip="matTooltip"   matTooltipPosition='right' matTooltipHideDelay="100">
+      <li *ngIf="project" routerLinkActive="active" matTooltipClass="custom-mat-tooltip" matTooltip="Home"
+        #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
         <a #homebtn class="customAncor" routerLink="project/{{ project._id }}/home">
           <i class="material-icons sidebar-icons">
             home
@@ -200,8 +204,9 @@
       </li>
 
       <!-- REQUESTS (VISITORS)  -->
-      <li *ngIf="project" routerLinkActive="active"
-      matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Requests' | translate }}"  #tooltip="matTooltip"   matTooltipPosition='right' matTooltipHideDelay="100">
+      <li *ngIf="project" routerLinkActive="active" matTooltipClass="custom-mat-tooltip"
+        matTooltip="{{ 'Requests' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+        matTooltipHideDelay="100">
         <a class="customAncor" routerLink="project/{{ project._id }}/wsrequests">
           <i class="material-icons sidebar-icons">forum</i>
           <!-- <p class="onBlackBckgrnd">{{ 'Requests' | translate }}</p> -->
@@ -209,8 +214,9 @@
       </li>
 
       <!-- CONTACTS (LEADS)  -->
-      <li *ngIf="project" routerLinkActive="active"
-      matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Contacts' | translate }}"  #tooltip="matTooltip"   matTooltipPosition='right' matTooltipHideDelay="100">
+      <li *ngIf="project" routerLinkActive="active" matTooltipClass="custom-mat-tooltip"
+        matTooltip="{{ 'Contacts' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+        matTooltipHideDelay="100">
         <a class="customAncor" routerLink="project/{{ project._id }}/contacts">
           <i class="material-icons sidebar-icons">contacts</i>
           <!-- <p class="onBlackBckgrnd">{{ 'Contacts' | translate }}</p> -->
@@ -219,8 +225,9 @@
 
       <!-- APPS  -->
       <ng-container *ngIf="isVisibleAPP && USER_ROLE !== 'agent'">
-        <li *ngIf="project" routerLinkActive="active" 
-        matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Apps' | translate }}"  #tooltip="matTooltip"   matTooltipPosition='right' matTooltipHideDelay="100">
+        <li *ngIf="project" routerLinkActive="active" matTooltipClass="custom-mat-tooltip"
+          matTooltip="{{ 'Apps' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+          matTooltipHideDelay="100">
           <a class="customAncor" routerLink="project/{{ project._id }}/app-store">
             <!-- <span class="_badge" style="font-size: 9px;"
               [ngClass]="{'change-badge-bckgrnd' : APPS_ROUTE_IS_ACTIVE === true}">NEW</span> -->
@@ -242,7 +249,8 @@
       <ng-container *ngIf="isVisibleANA">
         <li *ngIf="project && USER_ROLE !== 'agent'" routerLinkActive="active"
           [ngClass]="{'active' : ANALYTICS_DEMO_ROUTE_IS_ACTIVE === true}" (click)="stopScroll()"
-          matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Analytics.AnalyticsTITLE' | translate }}"  #tooltip="matTooltip"   matTooltipPosition='right' matTooltipHideDelay="100">
+          matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Analytics.AnalyticsTITLE' | translate }}"
+          #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
           <a class="customAncor" routerLink="project/{{ project._id }}/analytics">
             <i class="material-icons sidebar-icons">trending_up</i>
             <!-- <span class="_badge" [ngClass]="{'change-badge-bckgrnd' : ANALITYCS_ROUTE_IS_ACTIVE === true}">New</span> -->
@@ -257,7 +265,8 @@
       <ng-container *ngIf="isVisibleACT">
         <li *ngIf="project && USER_ROLE !== 'agent'" routerLinkActive="active"
           [ngClass]="{'active' : ACTIVITIES_DEMO_ROUTE_IS_ACTIVE === true}" (click)="stopScroll()"
-          matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Activities' | translate }}"  #tooltip="matTooltip"   matTooltipPosition='right' matTooltipHideDelay="100">
+          matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Activities' | translate }}" #tooltip="matTooltip"
+          matTooltipPosition='right' matTooltipHideDelay="100">
           <a class="customAncor" routerLink="project/{{ project._id }}/activities">
             <!-- <i class="material-icons sidebar-icons">view_list</i> -->
             <i class="material-icons sidebar-icons">assignment</i>
@@ -268,8 +277,9 @@
       </ng-container>
 
       <!-- REQUESTS HISTORY -->
-      <li *ngIf="project" routerLinkActive="active" (click)="stopScroll()" 
-      matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'History' | translate }}"  #tooltip="matTooltip"   matTooltipPosition='right' matTooltipHideDelay="100">
+      <li *ngIf="project" routerLinkActive="active" (click)="stopScroll()" matTooltipClass="custom-mat-tooltip"
+        matTooltip="{{ 'History' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+        matTooltipHideDelay="100">
         <a class="customAncor" routerLink="project/{{ project._id }}/history">
           <i class="material-icons sidebar-icons">history</i>
           <!-- <p class="onBlackBckgrnd">{{ 'History' | translate }}</p> -->
@@ -277,8 +287,7 @@
       </li>
 
       <!-- SETTINGS has_clicked_settings(SHOW_SETTINGS_SUBMENU = !SHOW_SETTINGS_SUBMENU)"-->
-      <li *ngIf="project && USER_ROLE !== 'agent'" 
-      [ngClass]="{'active': 
+      <li *ngIf="project && USER_ROLE !== 'agent'" [ngClass]="{'active': 
       TRIGGER_ROUTE_IS_ACTIVE || 
       TAG_ROUTE_IS_ACTIVE || 
       CANNED_RESPONSES_ROUTE_IS_ACTIVE || 
@@ -300,9 +309,9 @@
       EDIT_GROUP_ROUTE_IS_ACTIVE || 
       CREATE_FAQ_ROUTE_IS_ACTIVE ||
       EDIT_FAQ_ROUTE_IS_ACTIVE ||
-      BOT_TEST_ROUTE_IS_ACTIVE}"
-        (click)="goToCannedResponses()"  style="cursor:pointer" 
-        matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Settings' | translate }}"  #tooltip="matTooltip"   matTooltipPosition='right' matTooltipHideDelay="100">
+      BOT_TEST_ROUTE_IS_ACTIVE}" (click)="goToCannedResponses()" style="cursor:pointer"
+        matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Settings' | translate }}" #tooltip="matTooltip"
+        matTooltipPosition='right' matTooltipHideDelay="100">
         <!-- routerLink="/settings" -->
         <a class="customAncor">
           <i class="material-icons sidebar-icons">settings</i>
@@ -567,9 +576,11 @@
 </div>
 <!--  -->
 
-<appdashboard-sidebar-user-details 
-[HAS_CLICKED_OPEN_USER_DETAIL]='HAS_CLICKED_OPEN_USER_DETAIL'
-(onCloseUserDetailsSidebar)='onCloseUserDetailsSidebar($event)'> 
+<appdashboard-sidebar-user-details [HAS_CLICKED_OPEN_USER_DETAIL]='HAS_CLICKED_OPEN_USER_DETAIL'
+  [_prjct_profile_name]="_prjct_profile_name" [plan_subscription_is_active]="plan_subscription_is_active"
+  [plan_name]="plan_name"
+  [plan_type]="plan_type"
+  (onCloseUserDetailsSidebar)='onCloseUserDetailsSidebar($event)'>
 
 </appdashboard-sidebar-user-details>
 
