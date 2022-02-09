@@ -248,6 +248,7 @@
     "AssignedTo": "assegnata a",
     "UpgradeNow": "Aggiorna ora",
     "Plan": "Piano",
+    "ProfileNotAvailable":"Profilo non disponibile",
     "Upgrade": "Upgrade",
     "TrialExpired": "prova scaduta",
     "Train": "Addestra",
@@ -490,6 +491,11 @@
     "Update": "Aggiorna",
     "Warning": "Attenzione!",
     "CreationDate": "Data creazione",
+    "ThisConversationIsAssignedToYou":"Questa conversazione è assegnata a te. Per scrivere un messaggio, fai clic su \"Apri chat\".",
+	"OpenChat":"Apri chat",
+    "ThisConversationIsNotAssignedToYou":"Questa conversazione non è assegnata a te. Per partecipare alla conversazione, fai clic su \"Partecipa\".",
+    "ThereHasBeenAnErrorProcessing":"Si è verificato un errore durante l'elaborazione della tua richiesta",
+    "PleaseWaitWhileWeAreProcessingYourRequest":"Si prega di attendere mentre stiamo elaborando la tua richiesta",
     "CannedResponses": {
         "QuickTips": {
             "1": "Le Risposte Predefinite sono messaggi predefiniti che è possibile richiamare facilmente durante la chat.",

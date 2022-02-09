@@ -245,6 +245,7 @@
     "AssignedTo": "atandı",
     "UpgradeNow": "Hemen Yükselt",
     "Plan": "Plan",
+    "ProfileNotAvailable":"Profil mevcut değil",
     "Upgrade": "Güncelleme",
     "TrialExpired": "deneme süresi sona erdi",
     "Train": "Tren",
@@ -487,6 +488,11 @@
     "Update": "Güncelleme",
     "Warning": "Dikkat!",
     "CreationDate": "Oluşturulma tarihi",
+    "ThisConversationIsAssignedToYou":"Bu konuşma size atanmıştır. Mesaj yazmak için \"Sohbeti aç\"a tıklayın.",
+    "OpenChat":"Sohbeti aç",
+    "ThisConversationIsNotAssignedToYou":"Bu görüşme size atanmamış. Sohbete katılmak için \"Katıl\"ı tıklayın.",
+    "ThereHasBeenAnErrorProcessing":"İsteğiniz işlenirken bir hata oluştu",
+    "PleaseWaitWhileWeAreProcessingYourRequest":"Lütfen isteğinizi işleme koyarken bekleyin",
     "CannedResponses": {
         "QuickTips": {
             "1": "Hazır yanıtlar, sohbet sırasında kolayca hatırlayabileceğiniz önceden hazırlanmış mesajlardır.",

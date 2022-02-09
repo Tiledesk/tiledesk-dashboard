@@ -248,6 +248,7 @@
     "AssignedTo": "atribuído a",
     "UpgradeNow": "Atualize agora",
     "Plan": "Plano",
+    "ProfileNotAvailable":"Perfil não disponível",
     "Upgrade": "Melhoria",
     "TrialExpired": "versao de teste expirada",
     "Train": "Trem",
@@ -490,6 +491,11 @@
     "Update": "Atualizar",
     "Warning": "Atenção!",
     "CreationDate": "Data de criação",
+    "ThisConversationIsAssignedToYou":"Esta conversa foi atribuída a você. Para escrever uma mensagem, clique em \"Abrir bate-papo\".",
+	"OpenChat":"Abrir bate-papo",
+    "ThisConversationIsNotAssignedToYou":"Esta conversa não foi atribuída a você. Para participar da conversa, clique em \"Participar\".",
+    "ThereHasBeenAnErrorProcessing":"Ocorreu um erro ao processar sua solicitação",
+    "PleaseWaitWhileWeAreProcessingYourRequest":"Aguarde enquanto processamos sua solicitação",
     "CannedResponses": {
         "QuickTips": {
             "1": "As respostas predefinidas são mensagens pré-criadas que você pode lembrar facilmente durante o bate-papo.",

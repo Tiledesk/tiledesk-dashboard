@@ -248,6 +248,7 @@
     "AssignedTo": "назначен на",
     "UpgradeNow": "Обнови сейчас",
     "Plan": "План",
+    "ProfileNotAvailable":"Профиль недоступен",
     "Upgrade": "Обновление",
     "TrialExpired": "пробный период истек",
     "Train": "Тренироваться",
@@ -490,6 +491,11 @@
     "Update": "Обновлять",
     "Warning": "Внимание!",
     "CreationDate": "Дата создания",
+    "ThisConversationIsAssignedToYou":"Эта беседа назначена вам. Для того, чтобы написать сообщение, нажмите «Открыть чат».",
+	"OpenChat":"Открыть чат",
+    "ThisConversationIsNotAssignedToYou":"Эта беседа не назначена вам. Чтобы присоединиться к беседе, нажмите «Присоединиться».",
+    "ThereHasBeenAnErrorProcessing":"При обработке вашего запроса произошла ошибка",
+    "PleaseWaitWhileWeAreProcessingYourRequest":"Пожалуйста, подождите, пока мы обрабатываем ваш запрос",
     "CannedResponses": {
         "QuickTips": {
             "1": "Готовые ответы — это готовые сообщения, которые вы можете легко вспомнить во время чата.",

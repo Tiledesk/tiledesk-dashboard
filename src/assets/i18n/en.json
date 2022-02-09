@@ -248,6 +248,7 @@
     "AssignedTo": "assigned to",
     "UpgradeNow": "Upgrade now",
     "Plan": "Plan",
+    "ProfileNotAvailable":"Profile not available",
     "Upgrade": "Upgrade",
     "TrialExpired": "trial expired",
     "Train": "Train",
@@ -490,6 +491,11 @@
     "Update": "Update",
     "Warning": "Attention!",
     "CreationDate": "Creation date",
+    "ThisConversationIsAssignedToYou":"This conversation is assigned to you. In order to write a message, click \"Open chat\".",
+    "OpenChat":"Open chat",
+    "ThisConversationIsNotAssignedToYou":"This conversation is not assigned to you. To join the conversation, click \"Join\".",
+    "ThereHasBeenAnErrorProcessing":"There has been an error processing your request",
+    "PleaseWaitWhileWeAreProcessingYourRequest":"Please wait while we are processing your request",
     "CannedResponses": {
         "QuickTips": {
             "1": "Canned responses are pre-made messages you can recall easily during chat.",
