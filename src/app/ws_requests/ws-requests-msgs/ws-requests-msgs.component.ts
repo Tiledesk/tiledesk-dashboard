@@ -2163,6 +2163,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.logger.log('[WS-REQUESTS-MSGS] - LEAVE THE GROUP * COMPLETE');
         this.SHOW_CIRCULAR_SPINNER = false;
         this.LEAVE_CHAT_ERROR = false;
+        this.HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST = false;
       });
   }
 

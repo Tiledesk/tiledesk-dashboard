@@ -284,7 +284,6 @@
     position: relative;
     // margin: 0 0 25px;
     &.alt {
-
       // background: #75d5fd !important;
       background: #0099ff !important;
     }
@@ -364,10 +363,6 @@
     }
   }
 }
-
-
-
-
 
 .message-img {
   width: unset !important;
@@ -1698,8 +1693,8 @@ and also iPads specifically.
   margin-bottom: 6px;
   margin-top: 0px;
   // width: 70px;
-  min-width: 70px; 
-  height: 22px; 
+  min-width: 70px;
+  height: 22px;
 }
 
 .delete_note_icon:hover {
@@ -2070,7 +2065,7 @@ and also iPads specifically.
 // }
 
 .right-sidebar-header {
-  border-bottom: 1px solid #eeeeee;
+  border-bottom: 1px solid #e5effe;
   margin-bottom: 0px;
 }
 .right-sidebar-header-no-border-bottom {
@@ -2601,6 +2596,60 @@ and also iPads specifically.
   top: -9px;
   left: -14px;
   object-fit: cover;
+}
+
+.chat-footer-wpr::before {
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: 0px;
+  width: 100%;
+  height: 3px;
+  background: rgb(5, 102, 255);
+  z-index: 2;
+}
+
+.chat-btns-and-text-wpr {
+  flex-direction: row;
+  -webkit-box-pack: start;
+  justify-content: flex-start;
+  // padding: 10px 20px;
+  z-index: 1;
+  display: flex !important;
+  -webkit-box-align: center;
+  align-items: center;
+}
+
+.chat-text-wpr {
+  flex: 1 1 0%;
+  margin-right: 6px;
+}
+
+.h-100 {
+  height: 100%;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.plr-0 {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.chat-footer-btns-and-text-row {
+  height: 62px;
+}
+
+.chat-footer-text-wpr {
+  height: 100%;
+  display: flex !important;
+  -webkit-box-align: center;
+  align-items: center;
+  color: #080f1a;
+  font-size: 14px;
+  font-weight: 400;
 }
 
 /* SWAL SM SIZE - moved in demo css to avoid the use of  encapsulation: ViewEncapsulation.None */
