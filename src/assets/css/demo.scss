@@ -1069,4 +1069,10 @@ div.card-content > div > div > div > div > div > div > div.txt > div > div > p >
   z-index: 0 !important;
 }
 
+// Custom angular material tooltip style
+::ng-deep .custom-mat-tooltip {
+  background-color: #2d323e;
+  font-size: 12px;
+}
+
 
