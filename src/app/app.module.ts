@@ -214,7 +214,7 @@ import { HtmlEntitiesEncodePipe } from './html-entities-encode.pipe';
 import { NotificationEmailComponent } from './project-edit-add/notification-email/notification-email.component';
 import { SmtpSettingsComponent } from './project-edit-add/smtp-settings/smtp-settings.component';
 import { SettingsSidebarComponent } from './components/settings-sidebar/settings-sidebar.component';
-
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 // console.log('************** APPMODULE ******************');
@@ -411,6 +411,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
  
   ],
   imports: [
+    MatTooltipModule,
     /* PRIVATE */
     PricingModule,
     /* PRIVATE */
