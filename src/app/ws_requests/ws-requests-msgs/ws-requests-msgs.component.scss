@@ -859,13 +859,14 @@ and also iPads specifically.
 }
 
 .request-category {
-  font-family: "Google Sans", sans-serif !important;
+  font-family: "Poppins";
   // font-weight: 500;
   font-size: 18px;
 }
 
 .row-header {
-  font-family: "Google Sans", sans-serif !important;
+  // font-family: "Google Sans", sans-serif !important;
+  font-family: "Poppins";
   color: #394f5a;
   font-weight: 500;
   margin-bottom: 5px;
@@ -2307,17 +2308,7 @@ and also iPads specifically.
   margin-top: -5px !important;
 }
 
-.request_details___ua_browser_icon {
-  width: 13px !important;
-  margin-left: 1px;
-  margin-right: 1px;
-}
 
-.request_details___os_icon {
-  width: 13px !important;
-  margin-left: 1px;
-  margin-right: 1px;
-}
 
 // SPINNER USED WHEN THE DASHBOARD RUN ON MOBILE
 .sk-fading-circle {
@@ -2496,10 +2487,7 @@ and also iPads specifically.
   object-fit: cover;
 }
 
-.channel-icon {
-  width: 14px;
-  height: auto;
-}
+
 
 .chat-panel-mode-project-name {
   margin-bottom: 0px;
@@ -2650,6 +2638,49 @@ and also iPads specifically.
   color: #080f1a;
   font-size: 14px;
   font-weight: 400;
+}
+
+.bordered-btn {
+  border: 1px solid #3ea9f5;
+  box-shadow: unset;
+  color: #3ea9f5;
+  padding: 9px 10px !important;
+}
+
+.bordered-btn:hover {
+  // opacity: 0.5;
+  background-color: #3ea9f5;
+  color: #fff;
+}
+
+.conv-details-sidebar-icon {
+  vertical-align: middle;
+  color: #394f5a;
+  font-size: 22px;
+  cursor: default;
+}
+
+.conv-details-sidebar-text {
+  color: #080f1a ;
+  font-weight: 400;
+  font-size: 13px;
+}
+
+.request_details___ua_browser_icon {
+  width: 18px !important;
+  margin-left: 1px;
+  margin-right: 1px;
+}
+
+.request_details___os_icon {
+  width: 18px !important;
+  margin-left: 1px;
+  margin-right: 1px;
+}
+
+.channel-icon {
+  width: 19px;
+  height: auto;
 }
 
 /* SWAL SM SIZE - moved in demo css to avoid the use of  encapsulation: ViewEncapsulation.None */

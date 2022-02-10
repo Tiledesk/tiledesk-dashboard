@@ -20,22 +20,11 @@
           [ngClass]="{'hidden-if-chat-panel-mode' : CHAT_PANEL_MODE === true, 'chat-col-normal-mode': CHAT_PANEL_MODE === false }">
           <div class="card chat-card" [ngClass]="{'chat-card-normal-mode': CHAT_PANEL_MODE === false}"
             style="padding-top:0px; padding-bottom:0px;">
-            <div class="row" style="border-bottom: 1px solid #eeeeee; padding-left:25px; padding-right:25px">
-              <div class="col-sm-12">
+            <div class="row" style="padding-left:25px; padding-right:25px">
+              <div class="col-sm-12" style="border-bottom: 1px solid #e5effe;">
                 <div class="two-div-wrapper">
-                  <div style="float: left; width: 50%; height: 59px;">
+                  <div style="float: left; width: 40%; height: 59px;">
                     <span *ngIf="!showSpinner">
-                      <!-- <h4 class="card-title"
-                      style="text-transform: none; color: #566787; font-weight:400; margin-top: 18px; margin-bottom: 0px; padding-bottom: 15px;">
-                      {{ "RequestMsgsPage.Messages" | translate }}
-                    
-                      </h4> -->
-                      <!-- <div class="contact-details">
-
-                        <i class="material-icons">
-                          more_vert
-                          </i>
-                      </div> -->
 
                       <!-- -----new REQUESTER -->
                       <span style="cursor: pointer;" (click)='goToContactDetails()' class="requester-avatar-wrapper">
@@ -77,9 +66,8 @@
 
                       <!-- <span style="color:#394f5a;"> {{ "RequestMsgsPage.RequesterName" | translate }}: </span>  -->
                       <div class="contact_info">
-                        <span [ngClass]="{'requester-verified' : REQUESTER_IS_VERIFIED === true}"
-                          style="cursor:pointer; margin-top: 20px; display: block; font-size: 18px;white-space: nowrap;"
-                          (click)="goToContactDetails()">
+                        <span [ngClass]="{'requester-verified' : REQUESTER_IS_VERIFIED === true}" style="cursor:pointer; margin-top: 20px; display: block; font-size: 18px;white-space: nowrap; overflow: hidden;
+                          text-overflow: ellipsis;" (click)="goToContactDetails()">
                           <!-- {{ requester_fullname }} -->
                           {{request?.lead?.fullname}}
                         </span>
@@ -88,42 +76,19 @@
                           style="cursor:pointer; margin-left: 2px;">
                           n.a.
                         </span>
-
-                        <!-- <span style="position: relative; top: -4px;"
-                          [ngClass]="{'requester-verified' : REQUESTER_IS_VERIFIED === true}">
-                          <i class="material-icons"
-                            style="vertical-align: middle; color: #7695a5;font-size:12px; position: relative; top: 1px;">
-                            email
-                          </i>
-                          <span style="position: relative;top: 1px;">
-  
-                            <a style="font-size: 13px;" target="_blank" *ngIf="request?.lead?.email"
-                              href="mailto:{{request?.lead?.email}}">
-                              {{request?.lead?.email}}
-                            </a>
-                            <a *ngIf="!request?.lead?.email" style="color:#7695a5;font-size: 13px;">n.a.</a>
-
-                            <span *ngIf="NODEJS_REQUEST_CNTCT_FOUND" style="display: none;">
-                              <span (click)="goToContactDetails()" class="" style="margin-left: 30px;  color: #03a5e8; font-size: 12px; font-weight: 400;cursor:pointer">
-                                {{ 'ViewDetails' | translate}}
-                              </span>
-                            </span>
-                          </span>
-                        </span> -->
-
                       </div>
                       <!-- -----new REQUESTER -->
 
                     </span>
                   </div>
 
-                  <div style="float: right; width: 50%; ">
+                  <div style="float: right; width: 60%; ">
 
-                    <!-- 
-                      // ------------------------------------------------------------ 
-                      // CONTACT INFO DROPDOWN MENU  
-                      // ------------------------------------------------------------  -->
-                    <div *ngIf="NODEJS_REQUEST_CNTCT_FOUND" class="dropdown pull-right">
+
+                    <!-- ------------------------------------------------------------ -->
+                    <!-- CONTACT INFO DROPDOWN MENU  -->
+                    <!-- ------------------------------------------------------------  -->
+                    <div *ngIf="NODEJS_REQUEST_CNTCT_FOUND" class="dropdown pull-right" style="left: 14px;top: -3px;">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <span class="material-icons" style="color:rgba(0, 0, 0, 0.87); margin-top: 20px;">
                           more_vert
@@ -138,9 +103,17 @@
                       </ul>
                     </div>
 
+                    <button class="btn btn-white bordered-btn pull-right" (click)='openleaveChatModal()'
+                      [disabled]="IS_CURRENT_USER_JOINED === false" matTooltipClass="custom-mat-tooltip"
+                      matTooltip="{{ 'UnassignYouFromTheConversation' | translate }}" #tooltip="matTooltip"
+                      matTooltipPosition='below' matTooltipHideDelay="100">
+                      <i class="material-icons">exit_to_app</i>
+                      <span> {{ 'VisitorsPage.LeaveChat' | translate }} </span>
+                    </button>
+
                     <!-- ---------------------------------------------- -->
                     <!--  ACTIONS DROPDOWN MENU -->
-                    <!--  HERE is HIDDEN - moved in the right sidebar -->
+                    <!--  THIS is HIDDEN - moved in the right sidebar -->
                     <!-- ---------------------------------------------- -->
                     <div class="dropdown pull-right" style="display: none;">
                       <a href="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
@@ -460,33 +433,12 @@
 
             </div>
 
-            <div class="card-footer" style="text-align: center; margin-bottom: 0px;padding-top: 2px; margin:auto">
+            <div class="card-footer" style="text-align: center; margin-bottom: 0px;padding-top: 2px; margin:auto; max-height:69px">
               <div class="stats" style="width: 100%; min-height: 69px;">
 
-                <!--  start new three btn -->
-                <div class="row" style="width: 100%">
-
-                  <!-- --------------------------------------------------------------- -->
-                  <!-- CLOSE CHAT - MOVED IN DROPDOWN -->
-                  <!-- --------------------------------------------------------------- -->
-                  <!-- <div class="col-xs-4 col-sm-4 col-md-4" style="padding-right:5px">
-                    <button type="button" class="btn btn-danger btn-block tooltipx"
-                      (click)='openArchiveRequestModal(request?.request_id)' style="vertical-align: middle; padding-left: 0px;padding-right: 0px;" 
-                      [disabled]="request?.status == 1000">
-                        {{ 'RequestMsgsPage.Close' | translate }}
-                      <span class="tooltiptext">{{ 'RequestMsgsPage.CloseTheRequest' | translate }}</span>
-                    </button>
-                  </div> -->
-
-                  <!-- --------------------------------------------------------------- -->
-                  <!-- BTNS SWITCH: OPEN THE CHAT, ENTER, LOADING, ERROR  -->
-                  <!-- --------------------------------------------------------------- -->
-                  <!-- [disabled]="request?.status == 1000" -->
-                  HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST {{HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST}}
-                  IS_CURRENT_USER_JOINED {{IS_CURRENT_USER_JOINED}}
+                <!-- <div class="row" style="width: 100%">
                   <div class="col-xs-12" style="padding-left:5px; padding-right:5px">
-
-                    <!-- (click)="openChatInNewWindow()" -->
+                
                     <div class="centered-buttons" style="width: 100%; padding: 0px 35px;">
                       <span
                         *ngIf="HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === true || IS_CURRENT_USER_JOINED === true">
@@ -523,27 +475,14 @@
 
                       <span *ngIf="JOIN_TO_GROUP_HAS_ERROR === true">
                         <button class="btn btn-danger btn-block" disabled style="padding-left: 0px;padding-right: 0px;">
-                          <!-- {{ 'RequestMsgsPage.Error' | translate }} -->
+                      
                           {{ 'Error' | translate }}
                         </button>
                       </span>
                     </div>
-
-                    <!--  -------------------====== BTN REASSIGN REQUETS - MOVED IN DROPDOWN ======----------------- -->
-                    <!-- <div class="col-xs-4 col-sm-4 col-md-4" style="padding-left:5px;">
-                      <button type="button" class="btn btn-warning btn-block tooltipx"
-                          (click)='openSelectUsersModal()' 
-                          style="vertical-align: middle; padding-left: 0px;padding-right: 0px;" 
-                          [disabled]="request?.status == 1000">
-                          {{ 'VisitorsPage.Reassign' | translate }}
-                        
-                        <span class="tooltiptext" style="text-transform:none">
-                          {{ 'VisitorsPage.ReassignRequest' | translate }}
-                        </span>
-                      </button>
-                    </div> -->
                   </div>
-                </div> <!-- ./end ROW -->
+                </div>  -->
+                <!-- ./end ROW -->
 
 
                 <!-- nk new -->
@@ -602,7 +541,7 @@
                           </div>
                         </div>
                         <div class="col-xs-4">
-                          <button class="btn btn-primary btn-block plr-0 pull-right"   style="min-width: 110px;">
+                          <button class="btn btn-primary btn-block plr-0 pull-right" style="min-width: 110px;">
                             <i class="fa fa-spinner fa-spin" style="margin-right: 5px;"></i>
                             {{ 'RequestMsgsPage.Loading' | translate }}
                           </button>
@@ -1227,36 +1166,22 @@
                   <!-- border-top: 1px solid #e1eef4;" -->
 
                   <div class="col-sm-12">
-                    <!-- <p (click)="goToProjectHomeInNewTab()" class="chat-panel-mode-project-name" style="">
-                      <i class="material-icons" style="vertical-align: middle; color: #394f5a;font-size:16px">apps</i>
-                      <span style="position: relative;top: 1px;">
-                        <span
-                          style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
-                          {{ "Project" | translate }}
-                        </span>
-                        <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
-                          {{ project_name }}
-                        </span>
-                        <i (click)="goToProjectHomeInNewTab()" class="material-icons"
-                          style="vertical-align: middle; color: #0f62ff;font-size:12px; cursor: pointer;">open_in_new</i>
-
-                      </span>
-                    </p> -->
-
                     <span style="position: relative;top: 1px;">
                       <div class="row">
                         <!-- (click)="goToProjectHomeInNewTab()" -->
                         <div class="col-xs-10" style="padding-right:10px">
-                          <p (click)="goToProjectHomeInNewTab()" class="chat-panel-mode-project-name"
-                            style="margin-top: 0px;">
-                            <i class="material-icons"
-                              style="vertical-align: middle; color: #394f5a;font-size:16px">apps</i>
+                          <p class="chat-panel-mode-project-name" style="margin-top: 0px;">
+                            <i class="material-icons conv-details-sidebar-icon" matTooltipClass="custom-mat-tooltip"
+                              matTooltip="{{ 'Project' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+                              matTooltipHideDelay="100">
+                              apps
+                            </i>
                             <span style="position: relative;top: 1px;">
-                              <span
+                              <!-- <span
                                 style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
                                 {{ "Project" | translate }}
-                              </span>
-                              <span style="color: #7695a5; font-weight: 400; font-size: 12px;">
+                              </span> -->
+                              <span class="conv-details-sidebar-text">
                                 {{ project_name }}
                               </span>
                               <!-- <i (click)="goToProjectHomeInNewTab()" class="material-icons"
@@ -1276,7 +1201,6 @@
                       </div>
                     </span>
                   </div>
-
                 </div>
 
                 <!-- --------------------------------------------------------------------- -->
@@ -1286,13 +1210,17 @@
                   <!-- border-top: 1px solid #e1eef4;" -->
                   <div class="col-sm-12">
                     <p class="" style="margin-bottom: 0px">
-                      <i class="material-icons" style="vertical-align: middle; color: #394f5a;font-size:16px">code</i>
+                      <i class="material-icons conv-details-sidebar-icon" matTooltipClass="custom-mat-tooltip"
+                        matTooltip="{{ 'TicketId' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+                        matTooltipHideDelay="100">
+                        info
+                      </i>
                       <span style="position: relative;top: 1px;">
-                        <span
+                        <!-- <span
                           style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
-                          Ticket id
-                        </span>
-                        <span style="color: #7695a5; font-weight: 400; font-size: 12px;">
+                          {{'TicketId' | translate}}
+                        </span> -->
+                        <span class="conv-details-sidebar-text">
                           #{{ request?.ticket_id}}
                         </span>
                       </span>
@@ -1300,29 +1228,30 @@
                   </div>
                 </div>
 
-
                 <!-- --------------------------------------------------------------------- -->
                 <!-- Subject -->
                 <!-- --------------------------------------------------------------------- -->
-                <div class="row" *ngIf="request?.subject" style="margin-top:5px">
-                  <!-- border-top: 1px solid #e1eef4;" -->
+                <div *ngIf="request?.subject" class="row" style="margin-top:5px">
+
                   <div class="col-sm-12">
                     <p class="" style="margin-bottom: 0px">
-                      <i class="material-icons"
-                        style="vertical-align: middle; color: #394f5a;font-size:16px">short_text</i>
+                      <i class="material-icons conv-details-sidebar-icon" matTooltipClass="custom-mat-tooltip"
+                        matTooltip="{{ 'RequestMsgsPage.Subject' | translate }}" #tooltip="matTooltip"
+                        matTooltipPosition='right' matTooltipHideDelay="100">
+                        subject
+                      </i>
                       <span style="position: relative;top: 1px;">
-                        <span
+                        <!-- <span
                           style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
                           {{ "RequestMsgsPage.Subject" | translate }}
-                        </span>
-                        <span style="color: #7695a5; font-weight: 400; font-size: 12px;">
+                        </span> -->
+                        <span class="conv-details-sidebar-text">
                           {{ request?.subject}}
                         </span>
                       </span>
                     </p>
                   </div>
                 </div>
-
 
                 <!-- --------------------------------------------------------------------- -->
                 <!-- Contact email -->
@@ -1333,15 +1262,18 @@
                   <div class="col-xs-10">
                     <!-- margin-top: 6px; -->
                     <p [ngClass]="{'no-top-margin' : request?.subject}" style="margin-bottom: 0px;">
-                      <i class="material-icons"
-                        style="vertical-align: middle; color: #394f5a;font-size:14px;  margin-left: 1px;">email</i>
+                      <i class="material-icons conv-details-sidebar-icon" matTooltipClass="custom-mat-tooltip"
+                        matTooltip="{{ 'ContactEmail' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+                        matTooltipHideDelay="100">
+                        email
+                      </i>
                       <span style="position: relative;top: 1px;">
-                        <span
+                        <!-- <span
                           style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
                           {{ "ContactEmail" | translate }}
-                        </span>
+                        </span> -->
 
-                        <a style="font-size: 12px;font-weight: 400; text-transform: lowercase;" target="_blank"
+                        <a style="font-size: 13px;font-weight: 400; text-transform: lowercase;" target="_blank"
                           *ngIf="request?.lead?.email" href="mailto:{{request?.lead?.email}}">
                           {{request?.lead?.email}}
                         </a>
@@ -1366,24 +1298,26 @@
                 <!-- Created At -->
                 <!-- --------------------------------------------------------------------- -->
                 <div class="row" style="margin-top:5px">
-                  <!-- border-top: 1px solid #e1eef4;" -->
-                  <!-- border-bottom: 1px solid #e1eef4; -->
-                  <div class="col-sm-12">
-                    <!-- margin-top: 6px; -->
-                    <p [ngClass]="{'no-top-margin' : request?.subject}" style="margin-bottom: 0px;">
-                      <i class="material-icons"
-                        style="vertical-align: middle; color: #394f5a;font-size:14px;  margin-left: 1px;">calendar_today</i>
-                      <span style="position: relative;top: 1px;">
-                        <span
-                          style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
-                          <!-- {{ "RequestMsgsPage.Created" | translate }} -->
-                          {{ "Created" | translate }}
-                        </span>
 
-                        <span style="color: #7695a5; font-weight: 400; font-size: 12px;">
+                  <div class="col-sm-12">
+
+                    <p [ngClass]="{'no-top-margin' : request?.subject}" style="margin-bottom: 0px;">
+                      <i class="material-icons conv-details-sidebar-icon" matTooltipClass="custom-mat-tooltip"
+                        matTooltip="{{ 'Created' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+                        matTooltipHideDelay="100">
+                        calendar_today
+                      </i>
+                      <span style="position: relative;top: 1px;">
+                        <!-- <span
+                          style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
+                          {{ "Created" | translate }}
+                        </span> -->
+
+                        <span class="conv-details-sidebar-text">
                           {{ request?.createdAt | amTimeAgo }}
 
-                          <span *ngIf="CHAT_PANEL_MODE === false">({{ request?.createdAt | date: 'd/M/y HH:mm:ss' }})
+                          <span *ngIf="CHAT_PANEL_MODE === false">
+                            ({{ request?.createdAt | date: 'd/M/y HH:mm:ss' }})
                           </span>
                         </span>
                       </span>
@@ -1396,17 +1330,20 @@
                 <!-- Language -->
                 <!-- --------------------------------------------------------------------- -->
                 <div class="row" style="margin-top:5px">
-                  <!-- border-top: 1px solid #e1eef4;" -->
                   <div class="col-sm-12">
                     <p class="" style="margin-bottom: 0px;">
-                      <i class="material-icons"
-                        style="vertical-align: middle; color: #394f5a;font-size:16px">outlined_flag</i>
+                      <i class="material-icons conv-details-sidebar-icon" matTooltipClass="custom-mat-tooltip"
+                        matTooltip="{{ 'Language' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+                        matTooltipHideDelay="100">
+                        language
+                      </i>
                       <span style="position: relative;top: 1px;">
-                        <span
+                        <!-- <span
                           style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
-                          {{ "Language" | translate }}</span>
+                          {{ "Language" | translate }}
+                        </span> -->
 
-                        <span style="color: #7695a5; font-weight: 400; font-size: 12px;">
+                        <span class="conv-details-sidebar-text" style="text-transform: uppercase;">
                           {{ request?.language }}
                         </span>
                       </span>
@@ -1420,28 +1357,22 @@
                 <!-- ------------------------------------------------------ -->
                 <div class="row" style="margin-top:5px">
                   <div class="col-sm-12">
-                    <!-- <p class="" style="margin-bottom: 0px;">
-                      <i class="material-icons" style="vertical-align: middle; color: #394f5a;font-size:16px">code</i>
-                      <span style="position: relative;top: 1px;">
-                        <span
-                          style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
-                          {{ "RequestMsgsPage.RequestId" | translate }}</span>
-                        <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
-                          {{ id_request }}
-                        </span>
-                      </span>
-                    </p> -->
+           
 
                     <span style="position: relative;top: 1px;">
                       <div class="row">
                         <div class="col-xs-10" style="padding-right:10px">
-                          <div class="" [ngClass]="{'id_request-wrap': !showAllIdRequest}">
-                            <i class="material-icons"
-                              style="vertical-align: middle; color: #394f5a;font-size:16px">code</i>
-                            <span
+                          <div [ngClass]="{'id_request-wrap': !showAllIdRequest}">
+                            <i class="material-icons conv-details-sidebar-icon" matTooltipClass="custom-mat-tooltip"
+                            matTooltip="{{ 'RequestMsgsPage.RequestId' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+                            matTooltipHideDelay="100">
+                              info
+                            </i>
+                            <!-- <span
                               style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
-                              {{ "RequestMsgsPage.RequestId" | translate }}</span>
-                            <span style="color: #7695a5; font-weight: 400; font-size: 12px;">
+                              {{ "RequestMsgsPage.RequestId" | translate }}
+                            </span> -->
+                            <span class="conv-details-sidebar-text">
                               <span *ngIf="showAllIdRequest">
                                 {{id_request}}
                               </span>
@@ -1465,8 +1396,6 @@
                   </div>
                 </div>
 
-
-
                 <!-- ------------------------------------------------------ -->
                 <!-- Department -->
                 <!-- ------------------------------------------------------ -->
@@ -1474,28 +1403,28 @@
                   <div class="col-sm-12">
                     <p [ngClass]="{'yes-margin' : !request?.sourcePage && CHAT_PANEL_MODE === false, 'no-margin': request?.channel?.name !== 'chat21'}"
                       style="margin-bottom: 0px;">
-                      <i class="material-icons"
-                        style="vertical-align: middle; color: #394f5a;font-size:16px">account_balance</i>
+                      <i class="material-icons conv-details-sidebar-icon" matTooltipClass="custom-mat-tooltip"
+                      matTooltip="{{ 'Department' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+                      matTooltipHideDelay="100">
+                        account_balance
+                      </i>
                       <span style="position: relative;top: 1px;">
-                        <span
+                        <!-- <span
                           style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
                           {{ "Department" | translate }}
-                        </span>
-                        <span style="color: #7695a5; font-weight: 400; font-size: 12px;">
-
+                        </span> -->
+                        <span class="conv-details-sidebar-text">
                           <span *ngIf="request?.department">
                             {{request?.department?.name}}
                           </span>
                           <span *ngIf="!request?.department" style="text-transform: lowercase;">
                             {{'DepartmentsPage.NoDept' | translate}}
                           </span>
-
                         </span>
                       </span>
                     </p>
                   </div>
                 </div>
-
 
                 <!-- --------------------------------------------------------------------- -->
                 <!-- Source page - note when a requets is internal source page there isn't -->
@@ -1506,14 +1435,17 @@
                       <span style="position: relative;top: 1px;">
                         <div class="row">
                           <div class="col-xs-10" style="padding-right:10px">
-                            <!-- <i class="material-icons" style="vertical-align: middle; color: #394f5a;font-size:16px">language</i> -->
+                            
                             <div [ngClass]="{'source-page-wrap': !showAllSourcePageString}">
                               <img class="request_details___ua_browser_icon"
-                                src="assets/img/user_agent/source_page.svg" />
-                              <span
+                                src="assets/img/user_agent/source_page.svg"  matTooltipClass="custom-mat-tooltip"
+                                matTooltip="{{ 'RequestMsgsPage.SourcePage' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+                                matTooltipHideDelay="100"/>
+                              <!-- <span
                                 style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
-                                {{ "RequestMsgsPage.SourcePage" | translate }}</span>
-                              <span style=" font-weight: 400; font-size: 12px;">
+                                {{ "RequestMsgsPage.SourcePage" | translate }
+                              </span> -->
+                              <span style="font-weight: 400; font-size: 13px;">
                                 <span *ngIf="showAllSourcePageString" style="word-wrap: break-word;">
                                   <a href="{{request?.sourcePage}}" target="_blank">{{request?.sourcePage}}</a>
                                 </span>
@@ -1546,7 +1478,7 @@
                 <div *ngIf="request?.userAgent" class="row" style="margin-top:5px">
                   <!-- border-top: 1px solid #e1eef4;" -->
                   <div class="col-sm-12">
-                    <p class="" style="margin-bottom: 0px;">
+                    <p style="margin-bottom: 0px;">
 
                       <span *ngIf="(request?.ua_browser.indexOf('Chrome') === -1) && 
                       (request?.ua_browser.indexOf('Chromium') === -1) &&
@@ -1556,7 +1488,9 @@
                       (request?.ua_browser.indexOf('Safari') === -1) &&
                       (request?.ua_browser.indexOf('IE') === -1)">
 
-                        <img class="request_details___ua_browser_icon" src="assets/img/user_agent/globe.svg" />
+                        <img class="request_details___ua_browser_icon" src="assets/img/user_agent/globe.svg" matTooltipClass="custom-mat-tooltip"
+                        matTooltip="{{ 'Browser' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+                        matTooltipHideDelay="100"/>
 
                       </span>
 
@@ -1566,7 +1500,9 @@
                       <!--  ---------------------------------------------------------------- -->
                       <span
                         *ngIf="request?.ua_browser.indexOf('Chrome') !== -1 || request?.ua_browser.indexOf('Chromium') !== -1">
-                        <img class="request_details___ua_browser_icon" src="assets/img/user_agent/chrome.svg" />
+                        <img class="request_details___ua_browser_icon" src="assets/img/user_agent/chrome.svg" matTooltipClass="custom-mat-tooltip"
+                        matTooltip="{{ 'Browser' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+                        matTooltipHideDelay="100"/>
                       </span>
 
 
@@ -1574,7 +1510,9 @@
                       <!--  Firefox -->
                       <!--  ---------------------------------------------------------------- -->
                       <span *ngIf="request?.ua_browser.indexOf('Firefox') !== -1">
-                        <img class="request_details___ua_browser_icon" src="assets/img/user_agent/firefox.svg" />
+                        <img class="request_details___ua_browser_icon" src="assets/img/user_agent/firefox.svg" matTooltipClass="custom-mat-tooltip"
+                        matTooltip="{{ 'Browser' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+                        matTooltipHideDelay="100"/>
                       </span>
 
 
@@ -1582,7 +1520,9 @@
                       <!-- Edge -->
                       <!-- ---------------------------------------------------------------- -->
                       <span *ngIf="request?.ua_browser.indexOf('Edge') !== -1">
-                        <img class="request_details___ua_browser_icon" src="assets/img/user_agent/edge.svg" />
+                        <img class="request_details___ua_browser_icon" src="assets/img/user_agent/edge.svg" matTooltipClass="custom-mat-tooltip"
+                        matTooltip="{{ 'Browser' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+                        matTooltipHideDelay="100"/>
                       </span>
 
                       <!-- 
@@ -1590,7 +1530,9 @@
                       // Opera
                       // ---------------------------------------------------------------- -->
                       <span *ngIf="request?.ua_browser.indexOf('Opera') !== -1">
-                        <img class="request_details___ua_browser_icon" src="assets/img/user_agent/opera.svg" />
+                        <img class="request_details___ua_browser_icon" src="assets/img/user_agent/opera.svg" matTooltipClass="custom-mat-tooltip"
+                        matTooltip="{{ 'Browser' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+                        matTooltipHideDelay="100"/>
                       </span>
 
 
@@ -1598,7 +1540,9 @@
                       <!--  Safari -->
                       <!--  ---------------------------------------------------------------- -->
                       <span *ngIf="request?.ua_browser.indexOf('Safari') !== -1">
-                        <img class="request_details___ua_browser_icon" src="assets/img/user_agent/safari.svg" />
+                        <img class="request_details___ua_browser_icon" src="assets/img/user_agent/safari.svg" matTooltipClass="custom-mat-tooltip"
+                        matTooltip="{{ 'Browser' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+                        matTooltipHideDelay="100"/>
                       </span>
 
 
@@ -1606,18 +1550,21 @@
                       <!--  Explorer -->
                       <!--  ---------------------------------------------------------------- -->
                       <span *ngIf="request?.ua_browser.indexOf('IE') !== -1">
-                        <img class="request_details___ua_browser_icon" src="assets/img/user_agent/explorer.svg" />
+                        <img class="request_details___ua_browser_icon" src="assets/img/user_agent/explorer.svg" matTooltipClass="custom-mat-tooltip"
+                        matTooltip="{{ 'Browser' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+                        matTooltipHideDelay="100"/>
                       </span>
 
 
                       <!-- ------------------------------------------------------ -->
 
                       <span style="position: relative;top: 1px;">
-                        <span
+                        <!-- <span
                           style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
-                          Browser</span>
+                          Browser
+                        </span> -->
 
-                        <span style="color: #7695a5; font-weight: 400; font-size: 12px;">
+                        <span class="conv-details-sidebar-text">
                           <!-- <span *ngIf="request?.ua_browser !== 'undefined undefined'"> {{ request?.ua_browser }} </span> -->
                           <!-- <span *ngIf="request?.ua_browser === 'undefined undefined'"> N/A </span> -->
                           <span>{{ request?.ua_browser }}</span>
@@ -1635,9 +1582,7 @@
                   <!-- border-top: 1px solid #e1eef4;" -->
                   <div class="col-sm-12">
                     <!-- [ngClass]="{'no-bottom-margin': request?.channel?.name !== 'chat21'}" -->
-                    <p>
-
-
+                    <p style="margin-bottom: 0px;">
                       <!-- ---------------------------------------------------------------- -->
                       <!-- @ OS - if not is -->
                       <!-- ---------------------------------------------------------------- -->
@@ -1647,7 +1592,9 @@
                                    (request?.ua_os?.indexOf('Windows') === -1) &&
                                    (request?.ua_os?.indexOf('Ubuntu') === -1)">
 
-                        <img class="request_details___os_icon" src="assets/img/user_agent/laptop.svg" />
+                        <img class="request_details___os_icon" src="assets/img/user_agent/laptop.svg" matTooltipClass="custom-mat-tooltip"
+                        matTooltip="{{ 'OperatingSystem' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+                        matTooltipHideDelay="100" />
                       </span>
 
 
@@ -1655,7 +1602,9 @@
                       <!-- if is Android -->
                       <!-- ---------------------------------------------------------------- -->
                       <span *ngIf="request?.ua_os.indexOf('Android') !== -1">
-                        <img class="request_details___os_icon" src="assets/img/user_agent/android.svg" />
+                        <img class="request_details___os_icon" src="assets/img/user_agent/android.svg" matTooltipClass="custom-mat-tooltip"
+                        matTooltip="{{ 'OperatingSystem' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+                        matTooltipHideDelay="100"/>
                       </span>
 
 
@@ -1663,7 +1612,9 @@
                       <!-- if is Mac OS or iOS -->
                       <!-- ---------------------------------------------------------------- -->
                       <span *ngIf="request?.ua_os.indexOf('Mac OS') !== -1 || request?.ua_os.indexOf('iOS') !== -1">
-                        <img class="request_details___os_icon" src="assets/img/user_agent/apple.svg" />
+                        <img class="request_details___os_icon" src="assets/img/user_agent/apple.svg" matTooltipClass="custom-mat-tooltip"
+                        matTooltip="{{ 'OperatingSystem' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+                        matTooltipHideDelay="100"/>
                       </span>
 
 
@@ -1671,7 +1622,9 @@
                       <!--  if is Windows -->
                       <!--  ---------------------------------------------------------------- -->
                       <span *ngIf="request?.ua_os.indexOf('Windows') !== -1">
-                        <img class="request_details___os_icon" src="assets/img/user_agent/windows.svg" />
+                        <img class="request_details___os_icon" src="assets/img/user_agent/windows.svg" matTooltipClass="custom-mat-tooltip"
+                        matTooltip="{{ 'OperatingSystem' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+                        matTooltipHideDelay="100"/>
                       </span>
 
 
@@ -1679,19 +1632,21 @@
                       <!--  if is Ubuntu -->
                       <!--  ---------------------------------------------------------------- -->
                       <span *ngIf="request?.ua_os.indexOf('Ubuntu') !== -1">
-                        <img class="request_details___os_icon" src="assets/img/user_agent/ubuntu.svg" />
+                        <img class="request_details___os_icon" src="assets/img/user_agent/ubuntu.svg" matTooltipClass="custom-mat-tooltip"
+                        matTooltip="{{ 'OperatingSystem' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+                        matTooltipHideDelay="100"/>
                       </span>
 
 
                       <span style="position: relative;top: 1px;">
-                        <span
+                        <!-- <span
                           style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
                           {{ 'OperatingSystem' | translate }}
-                        </span>
+                        </span> -->
 
 
                         <!-- 'Ubuntu undefined' problem in operating system -->
-                        <span style="color: #7695a5; font-weight: 400; font-size: 12px;">
+                        <span class="conv-details-sidebar-text">
                           <!-- <span *ngIf="request?.ua_os !== 'undefined undefined'"> {{ request?.ua_os }} </span> -->
                           <!-- <span *ngIf="request?.ua_os === 'undefined undefined'"> N/A </span> -->
                           <span>{{ request?.ua_os }}</span>
@@ -1704,6 +1659,7 @@
                 <!-- ---------------------------------------- -->
                 <!-- Message Channel  -->
                 <!-- ---------------------------------------- -->
+                <!--  -->
                 <div *ngIf="request?.channel?.name !== 'chat21'" class="row" style="margin-top:5px">
                   <div class="col-sm-12">
                     <!-- [ngClass]="{'no-bottom-margin' : CHAT_PANEL_MODE === true}" -->
@@ -1711,16 +1667,20 @@
                       <!-- ---------------------------------------- -->
                       <!-- Channel - Telegram -->
                       <!-- ---------------------------------------- -->
-                      <span *ngIf="request?.channel?.name === 'telegram'">
-                        <img class="channel-icon" src="assets/img/channel_icons/telegram-logo.svg" />
+                      <!--  -->
+                      <span *ngIf="request?.channel?.name === 'telegram'" >
+                     
+                        <img class="channel-icon" src="assets/img/channel_icons/telegram-logo.svg"  matTooltipClass="custom-mat-tooltip"
+                        matTooltip="{{ 'MessageChannel' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+                        matTooltipHideDelay="100"/>
                       </span>
 
                       <span *ngIf="request?.channel?.name === 'telegram'" style="position: relative;top: 1px;">
-                        <span
+                        <!-- <span
                           style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
                           {{ 'MessageChannel' | translate }}
-                        </span>
-                        <span style="color: #7695a5; font-weight: 400; font-size: 12px;">
+                        </span> -->
+                        <span class="conv-details-sidebar-text">
                           <span>Telegram</span>
                         </span>
                       </span>
@@ -1729,17 +1689,19 @@
                       <!-- ---------------------------------------- -->
                       <!-- Channel - WhatsApp -->
                       <!-- ---------------------------------------- -->
-
+                     
                       <span *ngIf="request?.channel?.name === 'whatsapp'">
-                        <img class="channel-icon" src="assets/img/channel_icons/whatsapp-logo.svg" />
+                        <img class="channel-icon" src="assets/img/channel_icons/whatsapp-logo.svg" matTooltipClass="custom-mat-tooltip"
+                        matTooltip="{{ 'MessageChannel' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+                        matTooltipHideDelay="100" />
                       </span>
 
                       <span *ngIf="request?.channel?.name === 'whatsapp'" style="position: relative;top: 1px;">
-                        <span
+                        <!-- <span
                           style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
                           {{ 'MessageChannel' | translate }}
-                        </span>
-                        <span style="color: #7695a5; font-weight: 400; font-size: 12px;">
+                        </span> -->
+                        <span class="conv-details-sidebar-text">
                           <span>WhatsApp</span>
                         </span>
                       </span>
@@ -1751,34 +1713,36 @@
                       <!-- Channel - Messenger -->
                       <!-- ---------------------------------------- -->
                       <span *ngIf="request?.channel?.name === 'messenger'">
-                        <img class="channel-icon" src="assets/img/channel_icons/messenger-logo.svg" />
+                        <img class="channel-icon" src="assets/img/channel_icons/messenger-logo.svg" matTooltipClass="custom-mat-tooltip"
+                        matTooltip="{{ 'MessageChannel' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+                        matTooltipHideDelay="100" />
                       </span>
 
                       <span *ngIf="request?.channel?.name === 'messenger'" style="position: relative;top: 1px;">
-                        <span
+                        <!-- <span
                           style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
                           {{ 'MessageChannel' | translate }}
-                        </span>
-                        <span style="color: #7695a5; font-weight: 400; font-size: 12px;">
+                        </span> -->
+                        <span class="conv-details-sidebar-text">
                           <span>Messenger</span>
                         </span>
                       </span>
-
-
 
                       <!-- ---------------------------------------- -->
                       <!-- Channel - Email -->
                       <!-- ---------------------------------------- -->
                       <span *ngIf="request?.channel?.name === 'email'">
-                        <img class="channel-icon" src="assets/img/channel_icons/email-logo.svg" />
+                        <img class="channel-icon" src="assets/img/channel_icons/email-logo.svg" style="width: 17px; margin-left: 2px;" matTooltipClass="custom-mat-tooltip"
+                        matTooltip="{{ 'MessageChannel' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+                        matTooltipHideDelay="100"/>
                       </span>
 
                       <span *ngIf="request?.channel?.name === 'email'" style="position: relative;top: 1px;">
-                        <span
+                        <!-- <span
                           style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
                           {{ 'MessageChannel' | translate }}
-                        </span>
-                        <span style="color: #7695a5; font-weight: 400; font-size: 12px;">
+                        </span> -->
+                        <span class="conv-details-sidebar-text">
                           <span>Email</span>
                         </span>
                       </span>
@@ -1786,16 +1750,18 @@
                       <!-- ---------------------------------------- -->
                       <!-- Channel - Form -->
                       <!-- ---------------------------------------- -->
-                      <span style="margin-left: 1px;" *ngIf="request?.channel?.name === 'form'">
-                        <img class="channel-icon" src="assets/img/channel_icons/form-logo_v2.svg" />
+                      <span *ngIf="request?.channel?.name === 'form'"  style="margin-left: 1px;" >
+                        <img class="channel-icon" src="assets/img/channel_icons/form-logo_v2.svg" matTooltipClass="custom-mat-tooltip"
+                        matTooltip="{{ 'MessageChannel' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+                        matTooltipHideDelay="100" style="width: 17px; margin-left:1px;"/>
                       </span>
 
                       <span *ngIf="request?.channel?.name === 'form'" style="position: relative;top: 1px;">
-                        <span
+                        <!-- <span
                           style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
                           {{ 'MessageChannel' | translate }}
-                        </span>
-                        <span style="color: #7695a5; font-weight: 400; font-size: 12px;">
+                        </span> -->
+                        <span class="conv-details-sidebar-text">
                           <span>Form</span>
                         </span>
                       </span>
@@ -1850,17 +1816,18 @@
                 <!--  ---------------------------------------------------------------- -->
                 <div *ngIf="request?.attributes?.preChatForm" class="row">
                   <div class="col-sm-12 attributes-pre-chat-form-accordion-wpr"
-                    style="padding-left: 0px; padding-right: 0px;">
+                    style="padding-left: 0px; padding-right: 0px; margin-top:10px">
                     <p class="row-header  attributes-pre-chat-form-accordion"
                       (click)="openAttributesPrechatFormAccordion()"
                       style="padding-left: 15px; padding-right: 15px;font-size: 14px;">
-
+ <!-- fill: #2C3E48; -->
                       <span>
                         <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
                           xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 18 18"
                           style="enable-background:new 0 0 18 18;width: 24px; height: 24px;" xml:space="preserve">
                           <style type="text/css">
                             .st0_prechat-form {
+                             
                               fill: #2C3E48;
                             }
                           </style>
