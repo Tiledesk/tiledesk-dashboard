@@ -1,9 +1,12 @@
 {
     "ChangeDashboardLanguage": "Pano Dilini değiştir",
+    "ThisIsTheRealTimeConversationsMonitoringPanel":"Bu, gerçek zamanlı konuşmaları izleme panelidir. Konuşmalarınızı yönetmek için şunu kullanın",
+    "chatTool":"sohbet aracı",
     "UsersAndGroups": "Takım Arkadaşları ve Gruplar",
     "UsersAndGroupsInitials": "T&G",
     "RoutingAndDeptsInitials": "Y&D",
     "RoutingAndDepts": "Yönlendirme ve Departmanlar",
+    "RoutingAndDepartments": "Yönlendirme ve Departmanlar",
     "Routing": "Yönlendirme",
     "DefaultDepartment": "Varsayılan Departman",
     "Default Department": "Varsayılan Departman",
@@ -1996,6 +1999,11 @@
     "Authentication Triggers": "Kimlik Doğrulama Tetikleyicileri",
     "DailyAverage": "Günlük ortalama",
     "Apps":"Uygulamalar",
+    "CHANGE_TO_YOUR_STATUS_TO_AVAILABLE": "Durumunuzu müsait olarak değiştirin",
+    "CHANGE_TO_YOUR_STATUS_TO_UNAVAILABLE": "Durumunuzu kullanılamaz olarak değiştirin",
+    "UnassignYouFromTheConversation":"Görüşmeden atamanızı kaldırın",
+    "TicketId":"Bilet kimliği",
+    "BeSureThatYourWebServiceMeetsAllTheWebhookRequirements":"Web hizmetinizin, bu aracıda etkinleştirilen API sürümüne özgü tüm web kancası gereksinimlerini karşıladığından emin olun.",
     "CHAT_IONIC": {
         "LABEL_TU": "sen: ",
         "LABEL_MSG_PUSH_START_CHAT": "Henüz görüşme yok",
@@ -2202,6 +2210,7 @@
         "CHANGE_PINNED_PROJECT": "Sabitlenmiş projeyi değiştir",
         "CHANGE_TO_AVAILABLE_UNAVAILABLE": "mevcut/kullanılamaz olarak değiştirin",
         "CHANGE_TO_YOUR_STATUS_TO_AVAILABLE": "durumunuzu müsait olarak değiştirin",
-        "CHANGE_TO_YOUR_STATUS_TO_UNAVAILABLE": "durumunuzu kullanılamaz olarak değiştirin"
+        "CHANGE_TO_YOUR_STATUS_TO_UNAVAILABLE": "durumunuzu kullanılamaz olarak değiştirin",
+        "ALL_CONVS_SERVED": "Tüm konuşmalar servis edildi mi? İyi iş!"
     }
 }

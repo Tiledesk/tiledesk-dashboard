@@ -1652,6 +1652,7 @@
     "TheOptimumImageSizeIs78x78": "La dimensione ottimale dell'immagine è 78px x 78px",
     "PNGorGIFwithTransparentBackgroundWorksBest": "Un immagine in formato PNG o GIF con uno sfondo trasparente è preferibile",
     "HowWorks": "Come funzionano i {{ helpdoc }}",
+    "HowTriggersWorks":"Come funzionano i trigger",
     "ThisScreenDisplayAMaximumOf100RealTime": "questa pagina visualizza un massimo di 100 conversazioni in tempo reale. Per vedere tutte le conversazioni o per una ricerca più avanzata clicca qui.",
     "AllConversations": "Tutte le conversazioni",
     "FilterFor": "Filtra per",
@@ -1858,6 +1859,7 @@
     "OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan": "Solo i membri del team con il ruolo di proprietario possono gestire il piano dell'account",
     "OnlyUsersWithTheOwnerRoleCanManageTheEmailTemplate": "Solo i membri del team con il ruolo di proprietario possono gestire i modelli delle email",
     "LearnMoreAboutDefaultRoles": "Ulteriori informazioni sui ruoli predefiniti",
+    "LearnHowCreateAGroup":"Impara a creare un gruppo",
     "HookTheBot": "Attiva questo bot",
     "ActivateBotsForNewConversations": "Attiva il bot per le nuove conversazioni",
     "DoYouWantToActivateTheBotForNewConversations": "Vuoi attivare il bot <span class='bot_name_bold'>{{ bot_name }}</span> per le nuove conversazioni?",
@@ -1996,6 +1998,10 @@
     "New Conversation":"Nuova conversazione",
     "Authentication Triggers":"Trigger di autenticazione",
     "DailyAverage":"Media giornaliera",
-    "Apps":"App"
-
+    "Apps":"App",
+    "CHANGE_TO_YOUR_STATUS_TO_AVAILABLE": "Cambia il tuo stato in disponibile",
+    "CHANGE_TO_YOUR_STATUS_TO_UNAVAILABLE": "Cambia il tuo stato in non disponibile",
+    "UnassignYouFromTheConversation":"Annulla l'assegnazione dalla conversazione",
+    "TicketId":"ID ticket",
+    "BeSureThatYourWebServiceMeetsAllTheWebhookRequirements":"Assicurati che il tuo servizio web soddisfi tutti i requisiti webhook specifici per la versione API abilitata in questo agente."
 }

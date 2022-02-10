@@ -1999,6 +1999,11 @@
     "Authentication Triggers": "Триггеры аутентификации",
     "DailyAverage": "В среднем за день",
     "Apps":"Приложения",
+    "CHANGE_TO_YOUR_STATUS_TO_AVAILABLE": "Измените свой статус на доступный",
+    "CHANGE_TO_YOUR_STATUS_TO_UNAVAILABLE": "Измените свой статус на недоступный",
+    "UnassignYouFromTheConversation":"Удалить вас из беседы",
+    "TicketId":"ID билета",
+    "BeSureThatYourWebServiceMeetsAllTheWebhookRequirements":"Убедитесь, что ваша веб-служба соответствует всем требованиям к веб-перехватчикам, характерным для версии API, включенной в этом агенте.",
     "CHAT_IONIC": {
         "LABEL_TU": "ты: ",
         "LABEL_MSG_PUSH_START_CHAT": "Разговора пока нет",

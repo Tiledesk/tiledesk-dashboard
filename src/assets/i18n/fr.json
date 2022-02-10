@@ -1999,6 +1999,11 @@
     "Authentication Triggers": "Déclencheurs d'authentification",
     "DailyAverage": "Moyenne quotidienne",
     "Apps":"Applications",
+    "CHANGE_TO_YOUR_STATUS_TO_AVAILABLE": "Changez votre statut en disponible",
+    "CHANGE_TO_YOUR_STATUS_TO_UNAVAILABLE": "Changez votre statut en indisponible",
+    "UnassignYouFromTheConversation":"Vous désassigner de la conversation",
+    "TicketId":"Identifiant du ticket",
+    "BeSureThatYourWebServiceMeetsAllTheWebhookRequirements":"Assurez-vous que votre service Web répond à toutes les exigences de webhook spécifiques à la version d'API activée dans cet agent.",
     "CHAT_IONIC": {
         "LABEL_TU": "vous: ",
         "LABEL_MSG_PUSH_START_CHAT": "Pas encore de conversation",

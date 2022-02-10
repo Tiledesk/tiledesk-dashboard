@@ -1999,8 +1999,11 @@
     "Authentication Triggers":"Authentication Triggers",
     "DailyAverage":"Daily average",
     "Apps":"Apps",
-    "CHANGE_TO_YOUR_STATUS_TO_AVAILABLE": "Change to your status to available",
-    "CHANGE_TO_YOUR_STATUS_TO_UNAVAILABLE": "Change to your status to unavailable",
+    "CHANGE_TO_YOUR_STATUS_TO_AVAILABLE": "Change your status to available",
+    "CHANGE_TO_YOUR_STATUS_TO_UNAVAILABLE": "Change your status to unavailable",
+    "UnassignYouFromTheConversation":"Unassign you from the conversation",
+    "TicketId":"Ticket ID",
+    "BeSureThatYourWebServiceMeetsAllTheWebhookRequirements":"Be sure that your web service meets all the webhook requirements specific to the API version enabled in this agent.",
     "CHAT_IONIC": {
         "LABEL_TU": "you: ",
         "LABEL_MSG_PUSH_START_CHAT": "No conversation yet",
@@ -2206,8 +2209,8 @@
         "PINNED_PROJECT": "Pinned project",
         "CHANGE_PINNED_PROJECT": "Change pinned project",
         "CHANGE_TO_AVAILABLE_UNAVAILABLE": "change to available/unavailable",
-        "CHANGE_TO_YOUR_STATUS_TO_AVAILABLE": "change to your status to available",
-        "CHANGE_TO_YOUR_STATUS_TO_UNAVAILABLE": "change to your status to unavailable",
+        "CHANGE_TO_YOUR_STATUS_TO_AVAILABLE": "Change your status to available",
+        "CHANGE_TO_YOUR_STATUS_TO_UNAVAILABLE": "Change your status to unavailable",
         "ALL_CONVS_SERVED": "Were all conversations served? Good job!"
     }
 }
