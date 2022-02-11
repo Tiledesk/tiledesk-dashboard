@@ -89,34 +89,35 @@ padding-bottom: 15px;" -->
     <hr class="first-divider" style="margin-top: 355px;border: 0;
     border-top: 1px solid rgba(255, 255,255, 0.2);">
 
-    <section class="user-details-plan-info">
-        <span style="text-transform: uppercase; color: #a9afbb;"> {{'Plan' | translate}}: </span>
+    <section class="user-details-plan-info" *ngIf="isVisiblePAY">
+        <!-- <span style="text-transform: uppercase; color: #a9afbb;"> {{'Plan' | translate}}: </span> -->
         <span style="text-transform: capitalize; color: #a9afbb;">
-            {{ _prjct_profile_name }}
+            <div> {{prjct_name}} </div>
+            <div> {{ _prjct_profile_name }} </div>
 
             <span *ngIf="plan_type === 'payment' && plan_subscription_is_active === false"
                 style="color:#f44336; position:relative; top: -1px;">
                 <i *ngIf="plan_name !== 'enterprise'" class="material-icons" style="vertical-align: middle; color:#f44336; cursor:pointer;    
-                font-size: 16px;"  matTooltipClass="custom-mat-tooltip"
-        matTooltip="{{ 'Pricing.SubscriptionPaymentProblem' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
-        matTooltipHideDelay="100">
+                font-size: 16px;" matTooltipClass="custom-mat-tooltip"
+                    matTooltip="{{ 'Pricing.SubscriptionPaymentProblem' | translate }}" #tooltip="matTooltip"
+                    matTooltipPosition='right' matTooltipHideDelay="100">
                     error_outline
                 </i>
                 <i *ngIf="plan_name === 'enterprise'" class="material-icons" style="vertical-align: middle; color:#f44336; cursor:pointer;    
-                font-size: 16px;"  matTooltipClass="custom-mat-tooltip"
-        matTooltip="{{ 'Pricing.ThePlanHasExpired' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
-        matTooltipHideDelay="100">
+                font-size: 16px;" matTooltipClass="custom-mat-tooltip"
+                    matTooltip="{{ 'Pricing.ThePlanHasExpired' | translate }}" #tooltip="matTooltip"
+                    matTooltipPosition='right' matTooltipHideDelay="100">
                     error_outline
                 </i>
             </span>
         </span>
     </section>
 
-    <hr class="second-divider" style="margin-top: 20px;border: 0;
-    border-top: 1px solid rgba(255, 255,255, 0.2);">
+    <!-- <hr class="second-divider" style="margin-top: 20px;border: 0;
+    border-top: 1px solid rgba(255, 255,255, 0.2);"> -->
 
 
-    <section class="user-details-footer-section" (click)=logout()>
+    <section class="user-details-footer-section" (click)=logout() [ngClass]="{'footer-margin-top-pricing-no-visible': isVisiblePAY ===false }">
         <i class="material-icons user-details-logout-icon">
             logout
         </i>

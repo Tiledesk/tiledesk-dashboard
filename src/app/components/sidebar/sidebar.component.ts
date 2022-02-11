@@ -178,7 +178,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     OPERATING_HOURS_ROUTE_IS_ACTIVE: boolean;
 
     prjct_profile_name: string;
-   
+
     prjct_trial_expired: boolean;
     prjc_trial_days_left: number
     prjc_trial_days_left_percentage: number
@@ -201,9 +201,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     flag_url: string;
     tooltip_text_for_availability_status: string
     plan_subscription_is_active: boolean;
-plan_name: string;
-_prjct_profile_name: string;
-plan_type: string;
+    plan_name: string;
+    _prjct_profile_name: string;
+    plan_type: string;
+    prjct_name: string;
     private unsubscribe$: Subject<any> = new Subject<any>();
     current_selected_prjct: any;
 
@@ -1129,12 +1130,13 @@ plan_type: string;
 
             if (this.current_selected_prjct) {
                 console.log('[SIDEBAR] PROJECT PROFILE TYPE', this.current_selected_prjct.id_project.profile.type);
-                console.log('[SIDEBAR] PROJECT PROFILE NAME', this.current_selected_prjct.id_project.profile.name)
-                console.log('[SIDEBAR] PROJECT TRIAL EXPIRED', this.current_selected_prjct.id_project.trialExpired) 
-                console.log('[SIDEBAR] PROJECT SUBSCRIPTION IS ACTIVE', this.current_selected_prjct.id_project.isActiveSubscription)
-                this.plan_subscription_is_active = this.current_selected_prjct.id_project.isActiveSubscription
-                this.plan_name = this.current_selected_prjct.id_project.profile.name
-                this.plan_type = this.current_selected_prjct.id_project.profile.type
+                console.log('[SIDEBAR] PROJECT PROFILE NAME', this.current_selected_prjct.id_project.profile.name);
+                console.log('[SIDEBAR] PROJECT TRIAL EXPIRED', this.current_selected_prjct.id_project.trialExpired);
+                console.log('[SIDEBAR] PROJECT SUBSCRIPTION IS ACTIVE', this.current_selected_prjct.id_project.isActiveSubscription);
+                this.plan_subscription_is_active = this.current_selected_prjct.id_project.isActiveSubscription;
+                this.plan_name = this.current_selected_prjct.id_project.profile.name;
+                this.plan_type = this.current_selected_prjct.id_project.profile.type;
+                this.prjct_name = this.current_selected_prjct.id_project.name;
                 if (this.current_selected_prjct.id_project.profile.type === 'free') {
                     if (this.current_selected_prjct.id_project.trialExpired === false) {
                         if (this.isVisiblePAY) {
@@ -1152,7 +1154,7 @@ plan_type: string;
                 } else if (this.current_selected_prjct.id_project.profile.type === 'payment') {
                     if (this.isVisiblePAY) {
                         this.getPaidPlanTranslation(this.current_selected_prjct.id_project.profile.name);
-                    }else {
+                    } else {
                         this.getUnavailablePlanProfile()
                     }
                 }
@@ -1186,12 +1188,12 @@ plan_type: string;
     }
 
     getUnavailablePlanProfile() {
-          this.translate.get('ProfileNotAvailable')
-        .subscribe((text: string) => {
-            this._prjct_profile_name = text;
-            console.log('[SIDEBAR] PLAN NAME ', this._prjct_profile_name)
-        });
-    } 
+        this.translate.get('ProfileNotAvailable')
+            .subscribe((text: string) => {
+                this._prjct_profile_name = text;
+                console.log('[SIDEBAR] PLAN NAME ', this._prjct_profile_name)
+            });
+    }
 
     getDeptsAndFilterDefaultDept() {
         this.deptService.getDeptsByProjectId().subscribe((departments: any) => {
