@@ -12,6 +12,7 @@ import { WsRequestsService } from 'app/services/websocket/ws-requests.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NotifyService } from '../../core/notify.service';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 // import { slideInOutAnimation } from '../../../_animations/index';
 @Component({
@@ -24,9 +25,11 @@ export class SidebarUserDetailsComponent implements OnInit {
   @Input() HAS_CLICKED_OPEN_USER_DETAIL: boolean = false;
   @Output() onCloseUserDetailsSidebar = new EventEmitter();
   @Input() _prjct_profile_name: string;
-  @Input() plan_subscription_is_active: boolean
+  @Input() plan_subscription_is_active: boolean;
   @Input() plan_name: string;
   @Input() plan_type: string;
+  @Input() isVisiblePAY: boolean;
+  @Input() prjct_name: string;
 
   flag_url: string;
   dsbrd_lang: string;
@@ -48,7 +51,7 @@ export class SidebarUserDetailsComponent implements OnInit {
   timeStamp: any;
   userProfileImageurl: string;
   project; any
-  private wasInside = false;
+  youAreCurrentlySetToUnavailable: string
   private unsubscribe$: Subject<any> = new Subject<any>();
   constructor(
     public auth: AuthService,
@@ -78,7 +81,16 @@ export class SidebarUserDetailsComponent implements OnInit {
     this.checkUserImageUploadIsComplete();
     this.listenHasDeleteUserProfileImage();
     this.getUserRole();
+    this.getTranslations();
+  }
 
+  getTranslations() {
+    this.translate.get('YouAreCurrentlySetToUnavailable')
+    .subscribe((text: string) => {
+      // this.deleteContact_msg = text;
+      // this.logger.log('+ + + BotsPage translation: ', text)
+      this.youAreCurrentlySetToUnavailable = text;
+    });
   }
 
   logout() {
@@ -479,7 +491,7 @@ export class SidebarUserDetailsComponent implements OnInit {
     });
   }
   openSnackBar() {
-    let snackBarRef = this.snackBar.open('You are currently set to Unavailable and are not receiving new conversations', 'x', {
+    let snackBarRef = this.snackBar.open(this.youAreCurrentlySetToUnavailable, 'x', {
       duration: 9000,
       verticalPosition: 'top',
       horizontalPosition: 'center',
