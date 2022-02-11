@@ -862,8 +862,14 @@ and also iPads specifically.
   font-family: "Poppins";
   // font-weight: 500;
   font-size: 18px;
+  position: relative;
+  top: -1px;
+  cursor: default;
 }
-
+span .conv-svg-icon {
+  position: relative;
+  top: 9px;
+}
 .row-header {
   // font-family: "Google Sans", sans-serif !important;
   font-family: "Poppins";
@@ -1540,13 +1546,18 @@ and also iPads specifically.
   // background-color: #eee;
   color: #444;
   cursor: pointer;
-  padding: 8px 0px;
+  // padding: 8px 0px;
   width: 100%;
   border: none;
   text-align: left;
   outline: none;
   font-size: 15px;
   transition: 0.4s;
+  padding-left: 13px;
+  padding-right: 15px;
+  font-size: 14px;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 
 // .active,
@@ -1566,6 +1577,7 @@ and also iPads specifically.
   // margin-left: 5px;
   font-size: 20px;
   padding-right: 4px;
+  margin-top: 3px;
 }
 .attributes-pre-chat-form-accordion.active:after {
   content: "\f106";
@@ -1786,6 +1798,8 @@ and also iPads specifically.
   width: 100%;
   min-width: 100%;
 }
+
+
 
 #chat .center {
   padding: 32px !important;
@@ -2081,7 +2095,7 @@ and also iPads specifically.
 }
 
 .right-sidebar-header-with-request {
-  min-height: 50px;
+  min-height: 55px;
 }
 
 .visible-if-chat-panel-mode {
@@ -2308,8 +2322,6 @@ and also iPads specifically.
   margin-top: -5px !important;
 }
 
-
-
 // SPINNER USED WHEN THE DASHBOARD RUN ON MOBILE
 .sk-fading-circle {
   margin: 100px auto;
@@ -2487,8 +2499,6 @@ and also iPads specifically.
   object-fit: cover;
 }
 
-
-
 .chat-panel-mode-project-name {
   margin-bottom: 0px;
   margin-top: 8px;
@@ -2653,15 +2663,27 @@ and also iPads specifically.
   color: #fff;
 }
 
+.btn-as-link {
+  box-shadow: unset;
+  color: #3ea9f5;
+  padding: 0px;
+  margin-right: 5px;
+}
+
+// .btn-as-link:hover {
+//   opacity: 0.6;
+// }
+
 .conv-details-sidebar-icon {
   vertical-align: middle;
   color: #394f5a;
   font-size: 22px;
   cursor: default;
+  margin-bottom: 3px;
 }
 
 .conv-details-sidebar-text {
-  color: #080f1a ;
+  color: #080f1a;
   font-weight: 400;
   font-size: 13px;
 }
@@ -2670,17 +2692,39 @@ and also iPads specifically.
   width: 18px !important;
   margin-left: 1px;
   margin-right: 1px;
+  margin-bottom: 3px;
 }
 
 .request_details___os_icon {
   width: 18px !important;
   margin-left: 1px;
   margin-right: 1px;
+  margin-bottom:3px;
 }
 
 .channel-icon {
   width: 19px;
   height: auto;
+}
+
+.margin-top-without-above-accordion {
+  margin-top: 5px;
+}
+
+#chat-wpr::-webkit-scrollbar {
+  width: 6px;
+}
+#chat-wpr::-webkit-scrollbar-track {
+  background-color: #F9F9F9;
+}
+#chat-wpr::-webkit-scrollbar-thumb {
+  background-color: #B9B9B9;
+  border-radius: 3px;
+}
+
+#chat-wpr::-webkit-scrollbar-thumb:hover {
+  background-color: #727272;
+
 }
 
 /* SWAL SM SIZE - moved in demo css to avoid the use of  encapsulation: ViewEncapsulation.None */
