@@ -82,7 +82,7 @@
 
 
                   <input #fileInputBotProfileImage class="inputfile" name="uploadbotimage" id="uploadbotimage"
-                    type="file" (change)="upload($event)" accept=".jpg, .JPEG, .png"/>
+                    type="file" (change)="upload($event)" accept=".jpg, .JPEG, .png" />
                   <label class="btn btn-white upload-image-btn" for="uploadbotimage"
                     style="padding-left:15px; padding-right:15px; text-transform: none; color: #7695a5">
 
@@ -402,6 +402,10 @@
                 <div class="col-xs-10">
                   <p style="color:#2b313f; font-weight: 300;">
                     {{'YourWebServiceWillReceivePostRequestFrom' | translate: tparams}}
+                    {{'BeSureThatYourWebServiceMeetsAllTheWebhookRequirements' | translate}}
+                    <span class="custom-link" (click)="openWebhookRequirementsDoc()">
+                      {{'LearnMoreAboutWebhookRequirements' | translate }}
+                    </span>
                   </p>
                 </div>
               </div>
@@ -571,8 +575,9 @@
                 <p style="color: #7695a5;">
                   {{'ManageTheBotIn' | translate}}
 
-                  <span style="color: #0f62ff;" (click)="goToRoutingAndDepts()"> {{'RoutingAndDepts' |
-                    translate}}</span>
+                  <span class="custom-link" (click)="goToRoutingAndDepts()"> 
+                    {{'RoutingAndDepts' | translate}}
+                  </span>
                   <!-- </span> -->
                 </p>
               </span>
@@ -597,9 +602,9 @@
 
               <p style="color:#7695a5">
                 {{ 'ResolutionBotDescription' | translate}}.
-                <span style="display: block;" (click)="openDocsResolutionBotConfigureYourFirstChatbot()"
-                  style="color: #0f62ff; text-decoration: underline;cursor:pointer"> {{'Resourcepage.HereHow' |
-                  translate}}
+                <span style="display: block;" class="custom-link"
+                  (click)="openDocsResolutionBotConfigureYourFirstChatbot()">
+                  {{'Resourcepage.HereHow' | translate}}
                 </span>
               </p>
 
@@ -619,7 +624,7 @@
 
               <p style="color:#7695a5">
                 {{'Resolution_bot_train_StylingYouReplies' | translate: tparams }}.
-                <span style="color: #0f62ff; text-decoration: underline;cursor: pointer;"
+                <span class="custom-link"
                   (click)="openResolutionBotDocsStylingYourChatbotReplies()">
                   {{'HereHowStylingYourReplies' | translate }}
                 </span>
@@ -627,7 +632,7 @@
 
               <p style="color:#7695a5">
                 {{'Resolution_bot_train_SendImagesVideoAndMore' | translate: tparams }}.
-                <span style="color: #0f62ff; text-decoration: underline;cursor: pointer;"
+                <span class="custom-link"
                   (click)="openDocsResolutionBotSendImageVideosMore()">
                   {{'HereHowSendImageVideosMore' | translate }}
                 </span>
@@ -650,7 +655,7 @@
               <p style="color:#7695a5">
                 {{'DoYouWantToHandoffToHumanAgentDuringAChatbotConversation' | translate}}
 
-                <span style="color: #0f62ff; text-decoration: underline;cursor: pointer;"
+                <span class="custom-link"
                   (click)="openDocsResolutionBotHandoffToHumanAgent()">
                   <!-- {{'HereHowToHandoffToTheHumanAgent' | translate }}. -->
                   {{'Resourcepage.HereHow' | translate}}
@@ -678,7 +683,7 @@
 
               <p style="color:#7695a5">
                 {{'YouNeedAServiceAccountPrivateKeyFileToConnectTheDialogflowAgent' | translate: tparams}}.
-                <span style="color: #0f62ff; text-decoration: underline;cursor: pointer;"
+                <span class="custom-link"
                   (click)="openDeveloperTiledeskGenerateDFCredentialFile()">
                   {{'FollowThisGuideToFindOutHowToCreateThisFile' | translate }}.
                 </span>
@@ -704,7 +709,7 @@
 
               <p style="color:#7695a5">
                 {{'DoYouWantToSendImagesVideosButtonsAndMore' | translate }}
-                <span style="color: #0f62ff; text-decoration: underline;cursor: pointer;"
+                <span class="custom-link"
                   (click)="openDocsTiledeskDialogflowConnector()">
                   {{'FollowTheMicrolanguageGuide' | translate }}.
                 </span>
@@ -734,7 +739,7 @@
               <p style="color:#7695a5">
                 {{'DoYouWantToHandoffToHumanAgentDuringAChatbotConversation' | translate}}
                 {{'SimplyReplyAgentOnTheLastResponseLine' | translate}}.
-                <span style="color: #0f62ff; text-decoration: underline;cursor: pointer;"
+                <span class="custom-link"
                   (click)="openDocsDialogFlowHandoffToHumanAgent()">
                   {{'Resourcepage.HereHow' | translate}}
                 </span>
@@ -762,7 +767,7 @@
 
               <p style="color:#7695a5">
                 {{ "BotsPage.ExternabotQuickTips" | translate: tparams }}
-                <span style="color: #0f62ff; display: block; cursor:pointer"
+                <span style="display: block;" class="custom-link"
                   (click)="openExternalBotIntegrationTutorial()">
                   <!-- {{ "HereTheTutorial" | translate: tparams }} -->
                   {{ "HereThe_Tutorial" | translate }}

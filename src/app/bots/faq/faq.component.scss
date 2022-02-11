@@ -819,3 +819,14 @@ input[type="text"]:disabled::placeholder {
   margin-top: 3px;
 }
 
+
+// text-decoration: underline;
+.custom-link {
+  color: #0f62ff;
+  cursor:pointer;
+}
+
+.custom-link:hover {
+  text-decoration: underline;
+}
+

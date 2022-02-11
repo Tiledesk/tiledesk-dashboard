@@ -1160,6 +1160,8 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
   }
 
+ 
+
 
   // -----------------------------------------------------------------------------------------
   // GET ONLY THE FAQ WITH THE FAQ-KB ID PASSED FROM FAQ-KB COMPONENT & THEN GET REPLIES COUNT
@@ -1472,6 +1474,15 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     const url = 'https://developer.tiledesk.com/external-chatbot/connect-your-own-chatbot';
     window.open(url, '_blank');
   }
+
+  openWebhookRequirementsDoc() {
+    const url = 'https://developer.tiledesk.com/resolution-bot-programming/webhook-data-model';
+    window.open(url, '_blank');
+  } 
+
+
+
+
 
 
 
