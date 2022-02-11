@@ -12,8 +12,9 @@
 - Improves the buttons in the footer of the chat section on the "conversation details" page
 - Fixed bug: when a teammate leaves the conversation the open chat button remains active
 - Replaces the texts with tooltips in the sidebar on the conversation detail page
-- Adds the "Leave chat" button to the header of the chat section on the conversation detail page
-- Renames Webhook with Fulfillment on the detail page of the "Resolution" bot type and adds a links to the documentation
+- Adds the "Resolve chat" button to the header of left sidebar on the conversation detail page
+- Renames Webhook with Fulfillment on the detail page of the "Resolution" bot type and adds a links to the "webhook requirements" documentation
+- Replaces all occurrences of "Archive" with "Resolve"
 
 ### 2.2.32-rc2
 - Fixes the bug: the iframe of the installed application is not correctly displayed in "app-store-install"
