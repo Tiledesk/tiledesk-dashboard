@@ -156,13 +156,13 @@
                       (click)='$event.stopPropagation();archiveRequest(request?.request_id, request)'
                       style="background-color: #e4e6eb; color: #050505;"
                       [disabled]="request?.currentUserIsJoined === false && USER_ROLE === 'agent'">
-                      {{'VisitorsPage.Archive' | translate}}
+                      {{'VisitorsPage.Resolve' | translate}}
                     </button>
                     <span
                       style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px; white-space: nowrap;"
                       class="top">
                       <span *ngIf="USER_ROLE !== 'agent'" style="text-transform: capitalize;">
-                        {{ 'VisitorsPage.Archive' | translate }}
+                        {{ 'VisitorsPage.Resolve' | translate }}
                       </span>
                       <span *ngIf="USER_ROLE === 'agent'" style="text-transform: capitalize;">
                         {{ 'ActionNotAllowed' | translate }}
