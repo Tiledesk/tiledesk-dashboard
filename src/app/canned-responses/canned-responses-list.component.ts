@@ -30,7 +30,7 @@ export class CannedResponsesListComponent implements OnInit {
   ngOnInit() {
     this.getResponses();
     this.translateNotificationMsgs();
-    this.getMainPanelAndSetOverflow();
+    // this.getMainPanelAndSetOverflow();
   }
 
   translateNotificationMsgs() {
@@ -44,37 +44,32 @@ export class CannedResponsesListComponent implements OnInit {
   }
 
   getMainPanelAndSetOverflow() {
-    const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');   
-    console.log('[CANNED-RES-LIST] elemMainPanel ',elemMainPanel) 
+    const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
+    this.logger.log('[CANNED-RES-LIST] elemMainPanel ', elemMainPanel)
     const elemMainPanelClientWidth = elemMainPanel.clientWidth
-    console.log('[CANNED-RES-LIST] elemMainPanelClientWidth  ',elemMainPanelClientWidth) 
-    if (elemMainPanelClientWidth < 992 ){
+    this.logger.log('[CANNED-RES-LIST] elemMainPanelClientWidth  ', elemMainPanelClientWidth)
+    if (elemMainPanelClientWidth < 992) {
       this.innerWidthLessThan992 = true;
       elemMainPanel.style.overflowX = "visible"
-    } 
-    // else {
-    //   this.innerWidthLessThan992 = false;
-    //   elemMainPanel.style.overflowX = "hidden"
-    // }
-  }
-
-  @HostListener('window:resize', ['$event'])
-  onResize(event: any) {
-
-    // const elemMainContent = <HTMLElement>document.querySelector('.main-content');   
-    // console.log('[SETTINGS-SIDEBAR] elemMainContent ',elemMainContent) 
-    const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');   
-    console.log('[CANNED-RES-LIST] elemMainPanel ',elemMainPanel) 
-   const innerWidth =  event.target.innerWidth;
-    console.log('[CANNED-RES-LIST] onResize innerWidth',innerWidth) 
-    if (innerWidth < 992 ){
-      this.innerWidthLessThan992 = true;
-      elemMainPanel.style.overflowX = "visible"
-    } else {
-      this.innerWidthLessThan992 = false;
-      elemMainPanel.style.overflowX = "hidden"
     }
+  
   }
+
+  // @HostListener('window:resize', ['$event'])
+  // onResize(event: any) {
+ 
+  //   const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
+  //   this.logger.log('[CANNED-RES-LIST] elemMainPanel ', elemMainPanel)
+  //   const innerWidth = event.target.innerWidth;
+  //   this.logger.log('[CANNED-RES-LIST] onResize innerWidth', innerWidth)
+  //   if (innerWidth < 992) {
+  //     this.innerWidthLessThan992 = true;
+  //     elemMainPanel.style.overflowX = "visible"
+  //   } else {
+  //     this.innerWidthLessThan992 = false;
+  //     elemMainPanel.style.overflowX = "hidden"
+  //   }
+  // }
 
 
 
