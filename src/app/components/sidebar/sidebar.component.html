@@ -89,7 +89,7 @@
 
       <!-- (click)="changeAvailabilityState(IS_AVAILABLE = !IS_AVAILABLE)" -->
       <!-- matTooltipClass="custom-mat-tooltip" matTooltip="{{ tooltip_text_for_availability_status}}"  #tooltip="matTooltip"   matTooltipPosition='right' matTooltipHideDelay="100" -->
-      <div id="sidebaravatar-status-icon>" *ngIf="project" class="status-icon"
+      <div id="sidebaravatar-status-icon" *ngIf="project" class="status-icon"
         [ngClass]="{'is-user-online' : IS_AVAILABLE === true, 'is-user-offline' : IS_AVAILABLE === false, 'small-sidebar-status-icon' : SIDEBAR_IS_SMALL === true  }">
 
         <!-- <span style="position:relative; top: -5px;left: 14px; cursor:pointer"
@@ -576,14 +576,14 @@
 </div>
 <!--  -->
 
-<appdashboard-sidebar-user-details [HAS_CLICKED_OPEN_USER_DETAIL]='HAS_CLICKED_OPEN_USER_DETAIL'
+<appdashboard-sidebar-user-details 
+  [HAS_CLICKED_OPEN_USER_DETAIL]='HAS_CLICKED_OPEN_USER_DETAIL'
   [_prjct_profile_name]="_prjct_profile_name" [plan_subscription_is_active]="plan_subscription_is_active"
   [plan_name]="plan_name"
   [plan_type]="plan_type"
   [isVisiblePAY]="isVisiblePAY"
   [prjct_name]="prjct_name"
   (onCloseUserDetailsSidebar)='onCloseUserDetailsSidebar($event)'>
-
 </appdashboard-sidebar-user-details>
 
 

@@ -54,21 +54,21 @@ export class SettingsSidebarComponent implements OnInit {
   }
 
   getMainContentHeight() {
-    const elemMainContent = <HTMLElement>document.querySelector('.main-content');   
-    console.log('[SETTINGS-SIDEBAR] elemMainContent ',elemMainContent) 
-      // setTimeout(() => {
-        const main_content_height = elemMainContent.clientHeight
-        console.log('[SETTINGS-SIDEBAR] clientHeight main_content_height ',main_content_height) 
+    const elemMainContent = <HTMLElement>document.querySelector('.main-content');
+    this.logger.log('[SETTINGS-SIDEBAR] elemMainContent ', elemMainContent)
+    // setTimeout(() => {
+    const main_content_height = elemMainContent.clientHeight
+    this.logger.log('[SETTINGS-SIDEBAR] clientHeight main_content_height ', main_content_height)
 
-        const _main_content_height = elemMainContent.offsetHeight
-        console.log('[SETTINGS-SIDEBAR] offsetHeight main_content_height ',_main_content_height) 
+    const _main_content_height = elemMainContent.offsetHeight
+    this.logger.log('[SETTINGS-SIDEBAR] offsetHeight main_content_height ', _main_content_height)
 
-        let h = window.innerHeight;
-        console.log('[SETTINGS-SIDEBAR] window.innerHeight main_content_height ',h) 
-      // }, 500);
-  //  const main_content_height = elemMainContent.clientHeight
-  //  console.log('[SETTINGS-SIDEBAR] main_content_height ',main_content_height) 
-   this.sidebar_settings_height = main_content_height + 70 + 'px'
+    let h = window.innerHeight;
+    this.logger.log('[SETTINGS-SIDEBAR] window.innerHeight main_content_height ', h)
+    // }, 500);
+    //  const main_content_height = elemMainContent.clientHeight
+    //  console.log('[SETTINGS-SIDEBAR] main_content_height ',main_content_height) 
+    this.sidebar_settings_height = main_content_height + 70 + 'px'
   }
 
 

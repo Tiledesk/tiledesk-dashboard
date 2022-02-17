@@ -1087,7 +1087,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.logger.log('[SIDEBAR] - CALLING GET CURRENT PROJECT  ', this.project)
         this.auth.project_bs.subscribe((project) => {
             this.project = project
-            console.log('[SIDEBAR] project from AUTH service subscription  ', this.project)
+            this.logger.log('[SIDEBAR] project from AUTH service subscription  ', this.project)
 
             if (this.project) {
 
@@ -1125,14 +1125,14 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             // console.log('[SIDEBAR] - GET PROJECTS - current_selected_prjct ', current_selected_prjct);
 
             this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
-            console.log('[SIDEBAR] - GET PROJECTS - _current_selected_prjct ', this.current_selected_prjct);
+            this.logger.log('[SIDEBAR] - GET PROJECTS - _current_selected_prjct ', this.current_selected_prjct);
 
 
             if (this.current_selected_prjct) {
-                console.log('[SIDEBAR] PROJECT PROFILE TYPE', this.current_selected_prjct.id_project.profile.type);
-                console.log('[SIDEBAR] PROJECT PROFILE NAME', this.current_selected_prjct.id_project.profile.name);
-                console.log('[SIDEBAR] PROJECT TRIAL EXPIRED', this.current_selected_prjct.id_project.trialExpired);
-                console.log('[SIDEBAR] PROJECT SUBSCRIPTION IS ACTIVE', this.current_selected_prjct.id_project.isActiveSubscription);
+                this.logger.log('[SIDEBAR] PROJECT PROFILE TYPE', this.current_selected_prjct.id_project.profile.type);
+                this.logger.log('[SIDEBAR] PROJECT PROFILE NAME', this.current_selected_prjct.id_project.profile.name);
+                this.logger.log('[SIDEBAR] PROJECT TRIAL EXPIRED', this.current_selected_prjct.id_project.trialExpired);
+                this.logger.log('[SIDEBAR] PROJECT SUBSCRIPTION IS ACTIVE', this.current_selected_prjct.id_project.isActiveSubscription);
                 this.plan_subscription_is_active = this.current_selected_prjct.id_project.isActiveSubscription;
                 this.plan_name = this.current_selected_prjct.id_project.profile.name;
                 this.plan_type = this.current_selected_prjct.id_project.profile.type;
@@ -1159,14 +1159,11 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                     }
                 }
             }
-
-
-
-            console.log('[SIDEBAR] - GET PROJECTS - projects ', projects);
+            this.logger.log('[SIDEBAR] - GET PROJECTS - projects ', projects);
         }, error => {
-            console.log('[SIDEBAR] - GET PROJECTS - ERROR: ', error);
+            this.logger.error('[SIDEBAR] - GET PROJECTS - ERROR: ', error);
         }, () => {
-            console.log('[SIDEBAR] - GET PROJECTS * COMPLETE * ');
+            this.logger.log('[SIDEBAR] - GET PROJECTS * COMPLETE * ');
         });
     }
 
@@ -1175,7 +1172,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             .subscribe((translation: any) => {
                 this._prjct_profile_name = translation;
 
-                console.log('[SIDEBAR] PLAN NAME ', this._prjct_profile_name)
+                this.logger.log('[SIDEBAR] PLAN NAME ', this._prjct_profile_name)
             });
     }
 
@@ -1183,7 +1180,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.translate.get('PaydPlanName', { projectprofile: project_profile_name })
             .subscribe((text: string) => {
                 this._prjct_profile_name = text;
-                console.log('[SIDEBAR] PLAN NAME ', this._prjct_profile_name)
+                this.logger.log('[SIDEBAR] PLAN NAME ', this._prjct_profile_name)
             });
     }
 
@@ -1191,7 +1188,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.translate.get('ProfileNotAvailable')
             .subscribe((text: string) => {
                 this._prjct_profile_name = text;
-                console.log('[SIDEBAR] PLAN NAME ', this._prjct_profile_name)
+                this.logger.log('[SIDEBAR] PLAN NAME ', this._prjct_profile_name)
             });
     }
 
@@ -1526,32 +1523,32 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
 
     openUserDetailSidePanel() {
-        console.log('[SIDEBAR] OPEN UESER DTLS SIDE PANEL')
+        this.logger.log('[SIDEBAR] OPEN UESER DTLS SIDE PANEL')
         this.HAS_CLICKED_OPEN_USER_DETAIL = true
-        console.log('[SIDEBAR] OPEN USER DTLS SIDE PANEL ', this.HAS_CLICKED_OPEN_USER_DETAIL)
+        this.logger.log('[SIDEBAR] OPEN USER DTLS SIDE PANEL ', this.HAS_CLICKED_OPEN_USER_DETAIL)
         const elemNavbar = <HTMLElement>document.querySelector('.navbar-absolute');
-        console.log('[SIDEBAR] elemNavBar ', elemNavbar)
+        this.logger.log('[SIDEBAR] elemNavBar ', elemNavbar)
         if (elemNavbar) {
             elemNavbar.classList.add("navbar-absolute-custom-class");
         }
         const elemNavbarBrand = <HTMLElement>document.querySelector('.navbar-brand');
-        console.log('[SIDEBAR] elemNavbarBrand ', elemNavbarBrand)
+        this.logger.log('[SIDEBAR] elemNavbarBrand ', elemNavbarBrand)
         if (elemNavbarBrand) {
             elemNavbarBrand.classList.add("navbar-brand-z-index-zero")
         }
     }
 
     onCloseUserDetailsSidebar($event) {
-        console.log('[SIDEBAR] HAS_CLICKED_CLOSE_USER_DETAIL ', $event)
+        this.logger.log('[SIDEBAR] HAS_CLICKED_CLOSE_USER_DETAIL ', $event)
         this.HAS_CLICKED_OPEN_USER_DETAIL = $event
         const elemNavbar = <HTMLElement>document.querySelector('.navbar-absolute');
-        console.log('[SIDEBAR] elemNavBar ', elemNavbar)
+        this.logger.log('[SIDEBAR] elemNavBar ', elemNavbar)
         if (elemNavbar) {
             elemNavbar.classList.remove("navbar-absolute-custom-class")
         }
 
         const elemNavbarBrand = <HTMLElement>document.querySelector('.navbar-brand');
-        console.log('[SIDEBAR] elemNavbarBrand ', elemNavbarBrand)
+        this.logger.log('[SIDEBAR] elemNavbarBrand ', elemNavbarBrand)
         if (elemNavbarBrand) {
             elemNavbarBrand.classList.remove("navbar-brand-z-index-zero")
         }
