@@ -508,19 +508,18 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   findCurrentProjectAmongAll(projectId: string) {
-   
     this.projectService.getProjects().subscribe((projects: any) => {
       // const current_selected_prjct = projects.filter(prj => prj.id_project.id === projectId);
       // console.log('[SIDEBAR] - GET PROJECTS - current_selected_prjct ', current_selected_prjct);
 
       this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
-      console.log('[WS-REQUESTS-MSGS] - GET PROJECTS - current_selected_prjct ', this.current_selected_prjct);
+      this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - current_selected_prjct ', this.current_selected_prjct);
 
-      console.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects ', projects);
+      this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects ', projects);
     }, error => {
-      console.log('[WS-REQUESTS-MSGS] - GET PROJECTS - ERROR: ', error);
+      this.logger.error('[WS-REQUESTS-MSGS] - GET PROJECTS - ERROR: ', error);
     }, () => {
-      console.log('[WS-REQUESTS-MSGS] - GET PROJECTS * COMPLETE * ');
+      this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS * COMPLETE * ');
     });
   }
 
