@@ -319,13 +319,13 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       // console.log('[SIDEBAR] - GET PROJECTS - current_selected_prjct ', current_selected_prjct);
 
       this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
-      console.log('[HOME] - GET PROJECTS - current_selected_prjct ', this.current_selected_prjct);
+      this.logger.log('[HOME] - GET PROJECTS - current_selected_prjct ', this.current_selected_prjct);
 
-      console.log('[HOME] - GET PROJECTS - projects ', projects);
+      this.logger.log('[HOME] - GET PROJECTS - projects ', projects);
     }, error => {
-      console.log('[HOME] - GET PROJECTS - ERROR: ', error);
+      this.logger.error('[HOME] - GET PROJECTS - ERROR: ', error);
     }, () => {
-      console.log('[HOME] - GET PROJECTS * COMPLETE * ');
+      this.logger.log('[HOME] - GET PROJECTS * COMPLETE * ');
     });
   }
 
