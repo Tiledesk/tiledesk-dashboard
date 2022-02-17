@@ -233,7 +233,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.tparams = brand;
         if (brand) {
             this.sidebarLogoWhite_Url = brand['company_logo_white__url'];
-
             this.sidebarLogoNoText = brand['company_logo_no_text__url'];
         }
     }
@@ -1526,16 +1525,24 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.logger.log('[SIDEBAR] OPEN UESER DTLS SIDE PANEL')
         this.HAS_CLICKED_OPEN_USER_DETAIL = true
         this.logger.log('[SIDEBAR] OPEN USER DTLS SIDE PANEL ', this.HAS_CLICKED_OPEN_USER_DETAIL)
-        const elemNavbar = <HTMLElement>document.querySelector('.navbar-absolute');
-        this.logger.log('[SIDEBAR] elemNavBar ', elemNavbar)
-        if (elemNavbar) {
-            elemNavbar.classList.add("navbar-absolute-custom-class");
+
+        const elSidebarUserDtls = <HTMLElement>document.querySelector('#user-details');
+        console.log('[SIDEBAR] OPEN USER DTLS SIDE PANEL elSidebarUserDtls ', elSidebarUserDtls)
+        if (elSidebarUserDtls) {
+            elSidebarUserDtls.classList.add("active");
+            // this.events.publish('userdetailsidebar:opened', true);
         }
-        const elemNavbarBrand = <HTMLElement>document.querySelector('.navbar-brand');
-        this.logger.log('[SIDEBAR] elemNavbarBrand ', elemNavbarBrand)
-        if (elemNavbarBrand) {
-            elemNavbarBrand.classList.add("navbar-brand-z-index-zero")
-        }
+
+        // const elemNavbar = <HTMLElement>document.querySelector('.navbar-absolute');
+        // this.logger.log('[SIDEBAR] elemNavBar ', elemNavbar)
+        // if (elemNavbar) {
+        //     elemNavbar.classList.add("navbar-absolute-custom-class");
+        // }
+        // const elemNavbarBrand = <HTMLElement>document.querySelector('.navbar-brand');
+        // this.logger.log('[SIDEBAR] elemNavbarBrand ', elemNavbarBrand)
+        // if (elemNavbarBrand) {
+        //     elemNavbarBrand.classList.add("navbar-brand-z-index-zero")
+        // }
     }
 
     onCloseUserDetailsSidebar($event) {

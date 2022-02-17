@@ -35,6 +35,7 @@ import { SidebarUserDetailsComponent } from './sidebar-user-details/sidebar-user
     FooterComponent,
     NavbarComponent,
     SidebarComponent,
+    SidebarUserDetailsComponent,
     SmallSidebarComponent,
     NavbarForPanelComponent,
     TranslateModule

@@ -118,7 +118,7 @@
     </i> -->
 
 
-    <div class="sidebar--isBusy-icon-wpr" *ngIf="IS_BUSY === true" style="cursor:pointer"
+    <div id="sidebaravatar-isbusy" class="sidebar--isBusy-icon-wpr" *ngIf="IS_BUSY === true" style="cursor:pointer"
       matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Busy' | translate }}" #tooltip="matTooltip"
       matTooltipPosition='right' matTooltipHideDelay="100">
       <span class="material-icons sidebar-is-busy-icon">
@@ -576,7 +576,7 @@
 </div>
 <!--  -->
 
-<appdashboard-sidebar-user-details 
+<!-- <appdashboard-sidebar-user-details 
   [HAS_CLICKED_OPEN_USER_DETAIL]='HAS_CLICKED_OPEN_USER_DETAIL'
   [_prjct_profile_name]="_prjct_profile_name" [plan_subscription_is_active]="plan_subscription_is_active"
   [plan_name]="plan_name"
@@ -584,7 +584,7 @@
   [isVisiblePAY]="isVisiblePAY"
   [prjct_name]="prjct_name"
   (onCloseUserDetailsSidebar)='onCloseUserDetailsSidebar($event)'>
-</appdashboard-sidebar-user-details>
+</appdashboard-sidebar-user-details> -->
 
 
 

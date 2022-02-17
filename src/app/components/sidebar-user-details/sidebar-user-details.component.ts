@@ -12,6 +12,7 @@ import { WsRequestsService } from 'app/services/websocket/ws-requests.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NotifyService } from '../../core/notify.service';
+import { ProjectService } from 'app/services/project.service';
 
 // import { slideInOutAnimation } from '../../../_animations/index';
 @Component({
@@ -21,14 +22,14 @@ import { NotifyService } from '../../core/notify.service';
 
 })
 export class SidebarUserDetailsComponent implements OnInit {
-  @Input() HAS_CLICKED_OPEN_USER_DETAIL: boolean = false;
-  @Output() onCloseUserDetailsSidebar = new EventEmitter();
-  @Input() _prjct_profile_name: string;
-  @Input() plan_subscription_is_active: boolean;
-  @Input() plan_name: string;
-  @Input() plan_type: string;
-  @Input() isVisiblePAY: boolean;
-  @Input() prjct_name: string;
+  public HAS_CLICKED_OPEN_USER_DETAIL: boolean = false;
+  // @Output() onCloseUserDetailsSidebar = new EventEmitter();
+  public _prjct_profile_name: string;
+  public plan_subscription_is_active: boolean;
+  public plan_name: string;
+  public plan_type: string;
+  public isVisiblePAY: boolean;
+  public prjct_name: string;
 
   flag_url: string;
   dsbrd_lang: string;
@@ -52,6 +53,9 @@ export class SidebarUserDetailsComponent implements OnInit {
   project; any
   youAreCurrentlySetToUnavailable: string
   private unsubscribe$: Subject<any> = new Subject<any>();
+  current_selected_prjct: any;
+  public_Key: any;
+
   constructor(
     public auth: AuthService,
     private logger: LoggerService,
@@ -64,11 +68,13 @@ export class SidebarUserDetailsComponent implements OnInit {
     private uploadImageNativeService: UploadImageNativeService,
     public wsRequestsService: WsRequestsService,
     private eRef: ElementRef,
-    private notify: NotifyService
+    private notify: NotifyService,
+    private projectService: ProjectService,
   ) { }
 
 
   ngOnInit() {
+    this.getOSCODE();
     this.logger.log('HELLO SIDEBAR-USER-DETAILS')
     this.getLoggedUserAndCurrentDshbrdLang();
     this.getCurrentProject();
@@ -83,13 +89,107 @@ export class SidebarUserDetailsComponent implements OnInit {
     this.getTranslations();
   }
 
+
+
+  getOSCODE() {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    this.logger.log('[SIDEBAR] AppConfigService getAppConfig public_Key', this.public_Key);
+    let keys = this.public_Key.split("-");
+    this.logger.log('[SIDEBAR] PUBLIC-KEY - public_Key keys', keys)
+    keys.forEach(key => {
+      if (key.includes("PAY")) {
+        let pay = key.split(":");
+        if (pay[1] === "F") {
+          this.isVisiblePAY = false;
+        } else {
+          this.isVisiblePAY = true;
+        }
+      }
+    });
+    if (!this.public_Key.includes("PAY")) {
+      this.isVisiblePAY = false;
+    }
+  }
+
+  getCurrentProject() {
+    // this.project = this.auth.project_bs.value;
+    this.auth.project_bs.subscribe((project) => {
+      if (project) {
+        this.project = project
+        this.projectId = project._id;
+        console.log('[SIDEBAR-USER-DETAILS] projectId ', this.projectId);
+        this.findCurrentProjectAmongAll(this.projectId)
+        // this.projectName = project.name;
+      }
+    });
+  }
+
+  findCurrentProjectAmongAll(projectId: string) {
+    this.projectService.getProjects().subscribe((projects: any) => {
+
+      this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
+      this.logger.log('[SIDEBAR] - GET PROJECTS - _current_selected_prjct ', this.current_selected_prjct);
+
+
+      if (this.current_selected_prjct) {
+        this.logger.log('[SIDEBAR] PROJECT PROFILE TYPE', this.current_selected_prjct.id_project.profile.type);
+        this.logger.log('[SIDEBAR] PROJECT PROFILE NAME', this.current_selected_prjct.id_project.profile.name);
+        this.logger.log('[SIDEBAR] PROJECT TRIAL EXPIRED', this.current_selected_prjct.id_project.trialExpired);
+        this.logger.log('[SIDEBAR] PROJECT SUBSCRIPTION IS ACTIVE', this.current_selected_prjct.id_project.isActiveSubscription);
+        this.plan_subscription_is_active = this.current_selected_prjct.id_project.isActiveSubscription;
+        this.plan_name = this.current_selected_prjct.id_project.profile.name;
+        this.plan_type = this.current_selected_prjct.id_project.profile.type;
+        this.prjct_name = this.current_selected_prjct.id_project.name;
+        if (this.current_selected_prjct.id_project.profile.type === 'free') {
+          if (this.current_selected_prjct.id_project.trialExpired === false) {
+
+            this.getProPlanTrialTranslation();
+
+          } else {
+
+            this.getPaidPlanTranslation(this.current_selected_prjct.id_project.profile.name);
+
+
+          }
+        } else if (this.current_selected_prjct.id_project.profile.type === 'payment') {
+
+          this.getPaidPlanTranslation(this.current_selected_prjct.id_project.profile.name);
+
+        }
+      }
+      this.logger.log('[SIDEBAR-USER-DETAILS] - GET PROJECTS - projects ', projects);
+    }, error => {
+      this.logger.error('[SIDEBAR-USER-DETAILS] - GET PROJECTS - ERROR: ', error);
+    }, () => {
+      this.logger.log('[SIDEBAR-USER-DETAILS] - GET PROJECTS * COMPLETE * ');
+    });
+  }
+
+  getProPlanTrialTranslation() {
+    this.translate.get('ProPlanTrial')
+      .subscribe((translation: any) => {
+        this._prjct_profile_name = translation;
+
+        this.logger.log('[SIDEBAR] PLAN NAME ', this._prjct_profile_name)
+      });
+  }
+
+  getPaidPlanTranslation(project_profile_name) {
+    this.translate.get('PaydPlanName', { projectprofile: project_profile_name })
+      .subscribe((text: string) => {
+        this._prjct_profile_name = text;
+        this.logger.log('[SIDEBAR] PLAN NAME ', this._prjct_profile_name)
+      });
+  }
+
+
   getTranslations() {
     this.translate.get('YouAreCurrentlySetToUnavailable')
-    .subscribe((text: string) => {
-      // this.deleteContact_msg = text;
-      // this.logger.log('+ + + BotsPage translation: ', text)
-      this.youAreCurrentlySetToUnavailable = text;
-    });
+      .subscribe((text: string) => {
+        // this.deleteContact_msg = text;
+        // this.logger.log('+ + + BotsPage translation: ', text)
+        this.youAreCurrentlySetToUnavailable = text;
+      });
   }
 
   logout() {
@@ -257,8 +357,6 @@ export class SidebarUserDetailsComponent implements OnInit {
       }, () => {
         this.logger.log('[SIDEBAR-USER-DETAILS] - GET WS CURRENT-USER IS BUSY *** complete *** ')
       });
-
-
   }
 
 
@@ -343,7 +441,6 @@ export class SidebarUserDetailsComponent implements OnInit {
   }
 
   getProfileImageStorage() {
-
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
       this.UPLOAD_ENGINE_IS_FIREBASE = true
       const firebase_conf = this.appConfigService.getConfig().firebase;
@@ -359,17 +456,7 @@ export class SidebarUserDetailsComponent implements OnInit {
     }
   }
 
-  getCurrentProject() {
-    // this.project = this.auth.project_bs.value;
-    this.auth.project_bs.subscribe((project) => {
-      if (project) {
-        this.project = project
-        this.projectId = project._id;
-        this.logger.log('[SIDEBAR-USER-DETAILS] projectId ', this.projectId);
-        // this.projectName = project.name;
-      }
-    });
-  }
+
 
   goToUserProfileLanguageSection() {
     this.router.navigate(['project/' + this.projectId + '/user-profile'], { fragment: 'language' });
@@ -437,7 +524,7 @@ export class SidebarUserDetailsComponent implements OnInit {
     var element = document.getElementById('user-details');
     element.classList.remove("active");
     this.logger.log('[SIDEBAR-USER-DETAILS] element', element)
-    this.onCloseUserDetailsSidebar.emit(false);
+    // this.onCloseUserDetailsSidebar.emit(false);
   }
 
 
