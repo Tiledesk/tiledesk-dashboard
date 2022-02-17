@@ -10,9 +10,8 @@ import { SmallSidebarComponent } from './small-sidebar/small-sidebar.component';
 import { NavbarForPanelComponent } from './navbar-for-panel/navbar-for-panel.component';
 import { NavbarForPanelService } from './navbar-for-panel/navbar-for-panel.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatButtonModule } from '@angular/material/button';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { SidebarUserDetailsComponent } from './sidebar-user-details/sidebar-user-details.component';
 @NgModule({
   imports: [
@@ -20,10 +19,9 @@ import { SidebarUserDetailsComponent } from './sidebar-user-details/sidebar-user
     RouterModule,
     TranslateModule,
     MatTooltipModule,
-    MatButtonModule,
     MatSlideToggleModule,
     MatSnackBarModule
-   
+
   ],
   declarations: [
     FooterComponent,
