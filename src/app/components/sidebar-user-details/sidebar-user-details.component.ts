@@ -12,7 +12,6 @@ import { WsRequestsService } from 'app/services/websocket/ws-requests.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NotifyService } from '../../core/notify.service';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 // import { slideInOutAnimation } from '../../../_animations/index';
 @Component({
@@ -70,7 +69,7 @@ export class SidebarUserDetailsComponent implements OnInit {
 
 
   ngOnInit() {
-    console.log('HELLO SIDEBAR-USER-DETAILS')
+    this.logger.log('HELLO SIDEBAR-USER-DETAILS')
     this.getLoggedUserAndCurrentDshbrdLang();
     this.getCurrentProject();
     this.getProfileImageStorage();
@@ -115,21 +114,21 @@ export class SidebarUserDetailsComponent implements OnInit {
 
   @HostListener('document:click', ['$event'])
   clickout(event) {
-    console.log('[SIDEBAR-USER-DETAILS] clickout event.target)', event.target)
-    console.log('[SIDEBAR-USER-DETAILS] clickout event.target)', event.target.id)
+    this.logger.log('[SIDEBAR-USER-DETAILS] clickout event.target)', event.target)
+    this.logger.log('[SIDEBAR-USER-DETAILS] clickout event.target)', event.target.id)
     const clicked_element_id = event.target.id
     if (this.eRef.nativeElement.contains(event.target)) {
 
 
-      console.log('[SIDEBAR-USER-DETAILS] clicked inside')
+      this.logger.log('[SIDEBAR-USER-DETAILS] clicked inside')
     } else {
 
-      console.log('[SIDEBAR-USER-DETAILS] HAS_CLICKED_OPEN_USER_DETAIL ', this.HAS_CLICKED_OPEN_USER_DETAIL)
+      this.logger.log('[SIDEBAR-USER-DETAILS] HAS_CLICKED_OPEN_USER_DETAIL ', this.HAS_CLICKED_OPEN_USER_DETAIL)
       if (this.HAS_CLICKED_OPEN_USER_DETAIL === true) {
         if (!clicked_element_id.startsWith("sidebaravatar")) {
           this.closeUserDetailSidePanel();
         }
-        console.log('[SIDEBAR-USER-DETAILS] clicked outside')
+        this.logger.log('[SIDEBAR-USER-DETAILS] clicked outside')
       }
     }
   }
@@ -349,13 +348,13 @@ export class SidebarUserDetailsComponent implements OnInit {
       this.UPLOAD_ENGINE_IS_FIREBASE = true
       const firebase_conf = this.appConfigService.getConfig().firebase;
       this.storageBucket = firebase_conf['storageBucket'];
-      console.log('[SIDEBAR-USER-DETAILS] IMAGE STORAGE ', this.storageBucket, '(usecase Firebase)')
+      this.logger.log('[SIDEBAR-USER-DETAILS] IMAGE STORAGE ', this.storageBucket, '(usecase Firebase)')
 
     } else {
       this.UPLOAD_ENGINE_IS_FIREBASE = false
       this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
 
-      console.log('[SIDEBAR-USER-DETAILS] IMAGE STORAGE ', this.baseUrl, 'usecase native')
+      this.logger.log('[SIDEBAR-USER-DETAILS] IMAGE STORAGE ', this.baseUrl, 'usecase native')
 
     }
   }
@@ -366,7 +365,7 @@ export class SidebarUserDetailsComponent implements OnInit {
       if (project) {
         this.project = project
         this.projectId = project._id;
-        console.log('[SIDEBAR-USER-DETAILS] projectId ', this.projectId);
+        this.logger.log('[SIDEBAR-USER-DETAILS] projectId ', this.projectId);
         // this.projectName = project.name;
       }
     });
@@ -396,7 +395,7 @@ export class SidebarUserDetailsComponent implements OnInit {
 
         if (stored_preferred_lang) {
           this.dsbrd_lang = stored_preferred_lang;
-          console.log('[SIDEBAR-USER-DETAILS] - dsbrd_lang ', this.dsbrd_lang)
+          this.logger.log('[SIDEBAR-USER-DETAILS] - dsbrd_lang ', this.dsbrd_lang)
           this.getLangTranslation(this.dsbrd_lang)
           this.flag_url = "assets/img/language_flag/" + stored_preferred_lang + ".png"
 
@@ -407,10 +406,10 @@ export class SidebarUserDetailsComponent implements OnInit {
           this.browserLang = this.translate.getBrowserLang();
           this.dsbrd_lang = this.browserLang;
           this.getLangTranslation(this.dsbrd_lang)
-          console.log('[SIDEBAR-USER-DETAILS] - dsbrd_lang ', this.dsbrd_lang)
+          this.logger.log('[SIDEBAR-USER-DETAILS] - dsbrd_lang ', this.dsbrd_lang)
           this.flag_url = "assets/img/language_flag/" + this.browserLang + ".png"
 
-          console.log('[SIDEBAR-USER-DETAILS] flag_url (from browser_lang) ', this.flag_url)
+          this.logger.log('[SIDEBAR-USER-DETAILS] flag_url (from browser_lang) ', this.flag_url)
         }
       }
     });
@@ -425,9 +424,9 @@ export class SidebarUserDetailsComponent implements OnInit {
   }
 
   ngOnChanges() {
-    console.log('[SIDEBAR-USER-DETAILS] HAS_CLICKED_OPEN_USER_DETAIL', this.HAS_CLICKED_OPEN_USER_DETAIL)
+    this.logger.log('[SIDEBAR-USER-DETAILS] HAS_CLICKED_OPEN_USER_DETAIL', this.HAS_CLICKED_OPEN_USER_DETAIL)
     var element = document.getElementById('user-details');
-    console.log('[SIDEBAR-USER-DETAILS] element', element)
+    this.logger.log('[SIDEBAR-USER-DETAILS] element', element)
     if (this.HAS_CLICKED_OPEN_USER_DETAIL === true) {
       element.classList.add("active");
     }
@@ -437,7 +436,7 @@ export class SidebarUserDetailsComponent implements OnInit {
   closeUserDetailSidePanel() {
     var element = document.getElementById('user-details');
     element.classList.remove("active");
-    console.log('[SIDEBAR-USER-DETAILS] element', element)
+    this.logger.log('[SIDEBAR-USER-DETAILS] element', element)
     this.onCloseUserDetailsSidebar.emit(false);
   }
 
@@ -445,7 +444,7 @@ export class SidebarUserDetailsComponent implements OnInit {
   getUserAvailability() {
     this.usersService.user_is_available_bs.subscribe((user_available) => {
       this.IS_AVAILABLE = user_available;
-      console.log('[SIDEBAR-USER-DETAILS] - USER IS AVAILABLE ', this.IS_AVAILABLE);
+      this.logger.log('[SIDEBAR-USER-DETAILS] - USER IS AVAILABLE ', this.IS_AVAILABLE);
     });
   }
 
@@ -454,16 +453,16 @@ export class SidebarUserDetailsComponent implements OnInit {
       this.IS_BUSY = user_isbusy;
       // THE VALUE OS  IS_BUSY IS THEN UPDATED WITH THE VALUE RETURNED FROM THE WEBSOCKET getWsCurrentUserIsBusy$()
       // WHEN, FOR EXAMPLE IN PROJECT-SETTINGS > ADVANCED THE NUM OF MAX CHAT IS 3 AND THE 
-      console.log('[SIDEBAR-USER-DETAILS] - USER IS BUSY (from db)', this.IS_BUSY);
+      this.logger.log('[SIDEBAR-USER-DETAILS] - USER IS BUSY (from db)', this.IS_BUSY);
     });
   }
 
   changeAvailabilityState(IS_AVAILABLE) {
-    console.log('[SIDEBAR-USER-DETAILS] - CHANGE STATUS - USER IS AVAILABLE ? ', IS_AVAILABLE);
+    this.logger.log('[SIDEBAR-USER-DETAILS] - CHANGE STATUS - USER IS AVAILABLE ? ', IS_AVAILABLE);
 
     this.usersService.updateCurrentUserAvailability(this.projectId, IS_AVAILABLE).subscribe((projectUser: any) => { // non 
 
-      console.log('[SIDEBAR-USER-DETAILS] PROJECT-USER UPDATED ', projectUser)
+      this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT-USER UPDATED ', projectUser)
 
       if (projectUser.user_available === false) {
         this.openSnackBar()
@@ -473,13 +472,13 @@ export class SidebarUserDetailsComponent implements OnInit {
       this.usersService.availability_btn_clicked(true)
 
     }, (error) => {
-      console.error('[SIDEBAR-USER-DETAILS] PROJECT-USER UPDATED ERR  ', error);
+      this.logger.error('[SIDEBAR-USER-DETAILS] PROJECT-USER UPDATED ERR  ', error);
       // =========== NOTIFY ERROR ===========
       // this.notify.showNotification('An error occurred while updating status', 4, 'report_problem');
       // this.notify.showWidgetStyleUpdateNotification(this.changeAvailabilityErrorNoticationMsg, 4, 'report_problem');
 
     }, () => {
-      console.log('[SIDEBAR-USER-DETAILS] PROJECT-USER UPDATED  * COMPLETE *');
+      this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT-USER UPDATED  * COMPLETE *');
 
       // =========== NOTIFY SUCCESS===========
       // this.notify.showNotification('status successfully updated', 2, 'done');

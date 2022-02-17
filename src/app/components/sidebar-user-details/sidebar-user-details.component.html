@@ -70,28 +70,29 @@ padding-bottom: 15px;" -->
     </div>
 
     <div class="user-details-role">
-        <h3>{{ USER_ROLE }} </h3>
+        <h3>{{ USER_ROLE | translate }} </h3>
     </div>
 
     <section class="availability-section">
         <mat-slide-toggle (change)="changeAvailabilityState(IS_AVAILABLE = !IS_AVAILABLE)"
             class="custom-mat-slide-toggle" [checked]="IS_AVAILABLE" labelPosition="before">
 
-            <span *ngIf="IS_AVAILABLE" style="font-weight: 300 !important; text-transform: capitalize; font-size:12px;">
+            <span *ngIf="IS_AVAILABLE"
+                style="font-weight: 400 !important; text-transform: capitalize; font-size:14px; color:#a9afbb;  -webkit-font-smoothing: antialiased;">
                 {{ 'Available' | translate }}
             </span>
-            <span *ngIf="!IS_AVAILABLE" style="font-weight: 300 !important;text-transform: capitalize;font-size:12px;">
+            <span *ngIf="!IS_AVAILABLE"
+                style="font-weight: 400 !important;text-transform: capitalize;font-size:14px;color:#a9afbb;  -webkit-font-smoothing: antialiased;">
                 {{ 'Unavailable' | translate }}
             </span>
         </mat-slide-toggle>
     </section>
 
-    <hr class="first-divider" style="margin-top: 355px;border: 0;
-    border-top: 1px solid rgba(255, 255,255, 0.2);">
+    <hr class="first-divider">
 
     <section class="user-details-plan-info" *ngIf="isVisiblePAY">
         <!-- <span style="text-transform: uppercase; color: #a9afbb;"> {{'Plan' | translate}}: </span> -->
-        <span style="text-transform: capitalize; color: #a9afbb;">
+        <span>
             <div> {{prjct_name}} </div>
             <div> {{ _prjct_profile_name }} </div>
 
@@ -117,7 +118,8 @@ padding-bottom: 15px;" -->
     border-top: 1px solid rgba(255, 255,255, 0.2);"> -->
 
 
-    <section class="user-details-footer-section" (click)=logout() [ngClass]="{'footer-margin-top-pricing-no-visible': isVisiblePAY ===false }">
+    <section class="user-details-footer-section" (click)=logout()
+        [ngClass]="{'footer-margin-top-pricing-no-visible': isVisiblePAY ===false }">
         <i class="material-icons user-details-logout-icon">
             logout
         </i>
