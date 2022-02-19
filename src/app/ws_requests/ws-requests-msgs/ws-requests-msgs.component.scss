@@ -1799,8 +1799,6 @@ span .conv-svg-icon {
   min-width: 100%;
 }
 
-
-
 #chat .center {
   padding: 32px !important;
   max-width: 1400px;
@@ -2065,7 +2063,7 @@ span .conv-svg-icon {
   box-shadow: unset;
   border-radius: unset;
   min-height: 100vh;
-  border:unset !important
+  border: unset !important;
 }
 
 .no-padding {
@@ -2701,7 +2699,7 @@ span .conv-svg-icon {
   width: 18px !important;
   margin-left: 1px;
   margin-right: 1px;
-  margin-bottom:3px;
+  margin-bottom: 3px;
 }
 
 .channel-icon {
@@ -2719,15 +2717,19 @@ span .conv-svg-icon {
   height: 8px;
 }
 #chat-wpr::-webkit-scrollbar-track {
-  background-color: #F9F9F9;
+  background-color: #f9f9f9;
 }
 #chat-wpr::-webkit-scrollbar-thumb {
-  background-color: #B9B9B9;
+  background-color: #b9b9b9;
   border-radius: 0px;
 }
 
 #chat-wpr::-webkit-scrollbar-thumb:hover {
   background-color: #727272;
+}
+
+.users-list-modal-margin-left-on-desktop {
+  left: 60px;
 }
 
 // Custom scollbar fo the chat right sidebar
@@ -2745,7 +2747,6 @@ span .conv-svg-icon {
 // .chat-panel-mode-on-desktop::-webkit-scrollbar-thumb:hover {
 //   background-color: #727272;
 // }
-
 
 /* SWAL SM SIZE - moved in demo css to avoid the use of  encapsulation: ViewEncapsulation.None */
 // .swal-size-sm {

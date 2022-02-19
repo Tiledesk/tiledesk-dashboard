@@ -2474,7 +2474,7 @@
     <!-- ---------------------------------------------------------------------------------------- -->
     <!--  USERS - BOTS - DEPTS LIST MODAL - FULL WIDTH MODAL -->
     <!-- ---------------------------------------------------------------------------------------- -->
-    <div class="modal" tabindex="-1" role="dialog"
+    <div class="modal" tabindex="-1" role="dialog" [ngClass]="{'users-list-modal-margin-left-on-desktop': CHAT_PANEL_MODE === false}"
       [ngStyle]="{'display': displayUsersListModal , 'height': users_list_modal_height}"
       style="background-color: rgba(90,90,90,0.5);">
       <div class="modal-dialog modal-lg users-list-modal"
@@ -2524,7 +2524,7 @@
               <div class="col-md-12" [ngClass]="{'no-padding' : CHAT_PANEL_MODE === true}">
 
                 <div class="card" style="margin-top:5px; margin-bottom:5px"
-                  [ngClass]="{'modal-card-chat-panel-mode' : CHAT_PANEL_MODE === true}">
+                  [ngClass]="{'modal-card-chat-panel-mode' : CHAT_PANEL_MODE === true, 'card--no-border' : CHAT_PANEL_MODE === true}">
 
                   <loading-spinner *ngIf="showSpinner_inModalUserList"></loading-spinner>
 
