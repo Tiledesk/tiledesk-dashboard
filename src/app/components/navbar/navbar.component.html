@@ -347,7 +347,7 @@
          <!--  ------------------------------------------------ -->
         <!--  Dashboard language -->
         <!--  ------------------------------------------------ -->
-        <li *ngIf="project">
+        <!-- <li *ngIf="project">
           <a routerLink="project/{{ project._id }}/user-profile" fragment="language" style="cursor: pointer;">
             <span class="expired__Tooltip">
             <img [src]="flag_url"  style="width: auto;height: 19px; position: relative;top: -1px;">
@@ -358,12 +358,12 @@
             </span>
           </span>
           </a>
-        </li>
+        </li> -->
 
         <!--  ------------------------------------------------ -->
         <!--  USER -->
         <!--  ------------------------------------------------ -->
-        <li class="dropdown">
+        <!-- <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <i class="material-icons">person</i>
             <span class="tooltipx">
@@ -375,8 +375,6 @@
                 </span>
               </span>
             </span>
-
-            <!-- <p class="hidden-lg hidden-md">Profile</p> -->
           </a>
 
           <ul *ngIf="user" class="dropdown-menu">
@@ -389,21 +387,6 @@
 
                   <img *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true" class="user-img"
                     src="assets/img/no_image_user.png" />
-
-                  <!-- --------------------------------------------------------------------- -->
-                  <!-- test -->
-                  <!-- --------------------------------------------------------------------- -->
-
-                  <!-- <img style="width:80px; height:80px"
-                    *ngIf="userImageHasBeenUploaded === true" class="user-img"
-                    [src]="getUserProfileImage()" />
-
-                  <img *ngIf="userImageHasBeenUploaded !== true" class="user-img"
-                    src="assets/img/no_image_user.png" /> -->
-
-                  <!-- --------------------------------------------------------------------- -->
-                  <!-- ./ test -->
-                  <!-- --------------------------------------------------------------------- -->
                 </a>
               </div>
               <div class="content">
@@ -426,13 +409,12 @@
 
               <li class="divider"></li>
               <button type="submit" class="btn btn-white logout-user-profile-btn" (click)="openLogoutModal()">
-                <!-- Log Out -->
                 {{ 'NavBar.LogOut' | translate }}
               </button>
             </div>
 
           </ul>
-        </li>
+        </li> -->
       </ul>
 
     </div>
