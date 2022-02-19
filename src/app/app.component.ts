@@ -541,12 +541,19 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
                 if (this.route.indexOf('/request-for-panel') !== -1) {
                     this.IS_REQUEST_X_PANEL_ROUTE = true
+                    // #right-col
+                    // const elemMainPanel = <HTMLElement>document.querySelector('appdashboard-ws-requests-msgs');
+                    // console.log('[APP-COMP] request-for-panel elemMainPanel' , elemMainPanel) 
 
-                    const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
-
-                    if (this.IS_REQUEST_X_PANEL_ROUTE === true && !this.isMobile()) {
-                        let ps = new PerfectScrollbar(elemMainPanel);
-                    }
+                    // if (this.IS_REQUEST_X_PANEL_ROUTE === true && !this.isMobile()) {
+                    //     let ps = new PerfectScrollbar(elemMainPanel, {
+                    //         wheelSpeed: 0,
+                    //         wheelPropagation: true,
+                    //         maxScrollbarLength: 20
+                    //       });
+                    //       ps.update();
+                    // }
+                    
 
 
                 } else {
