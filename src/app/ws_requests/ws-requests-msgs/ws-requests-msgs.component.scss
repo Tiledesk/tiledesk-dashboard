@@ -2065,6 +2065,7 @@ span .conv-svg-icon {
   box-shadow: unset;
   border-radius: unset;
   min-height: 100vh;
+  border:unset !important
 }
 
 .no-padding {
@@ -2668,6 +2669,7 @@ span .conv-svg-icon {
   color: #3ea9f5;
   padding: 0px;
   margin-right: 5px;
+  text-transform: capitalize;
 }
 
 // .btn-as-link:hover {
@@ -2711,21 +2713,39 @@ span .conv-svg-icon {
   margin-top: 5px;
 }
 
+// Custom scollbar fo the chat section
 #chat-wpr::-webkit-scrollbar {
   width: 6px;
+  height: 8px;
 }
 #chat-wpr::-webkit-scrollbar-track {
   background-color: #F9F9F9;
 }
 #chat-wpr::-webkit-scrollbar-thumb {
   background-color: #B9B9B9;
-  border-radius: 3px;
+  border-radius: 0px;
 }
 
 #chat-wpr::-webkit-scrollbar-thumb:hover {
   background-color: #727272;
-
 }
+
+// Custom scollbar fo the chat right sidebar
+// .chat-panel-mode-on-desktop::-webkit-scrollbar {
+//   width: 6px;
+//   height: 6px;
+// }
+// .chat-panel-mode-on-desktop::-webkit-scrollbar-track {
+//   background-color: #F9F9F9;
+// }
+// .chat-panel-mode-on-desktop::-webkit-scrollbar-thumb {
+//   background-color: #B9B9B9;
+//   border-radius: 0px;
+// }
+// .chat-panel-mode-on-desktop::-webkit-scrollbar-thumb:hover {
+//   background-color: #727272;
+// }
+
 
 /* SWAL SM SIZE - moved in demo css to avoid the use of  encapsulation: ViewEncapsulation.None */
 // .swal-size-sm {

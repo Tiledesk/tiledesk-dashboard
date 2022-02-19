@@ -433,7 +433,7 @@
 
             </div>
 
-            <div class="card-footer" 
+            <div class="card-footer"
               style="text-align: center; margin-bottom: 0px;padding-top: 2px; margin:auto; max-height:69px;    border-top: 3px solid #3ea9f5;">
               <div class="stats" style="width: 100%; min-height: 69px;">
 
@@ -577,12 +577,12 @@
           </div> <!-- ./ card   -->
         </div> <!-- ./ col-md-7 -->
 
-        <!-- 
-        // -----------------------------------------------------------------------------
-        // @ RIGHT SIDEBAR
-        // ----------------------------------------------------------------------------- -->
-        <div class="right-col"
-          [ngClass]="{'col-sm-5' : CHAT_PANEL_MODE === false, 'col-sm-12 no-padding' : CHAT_PANEL_MODE === true}">
+         
+        <!-- ----------------------------------------------------------------------------- -->
+        <!-- @ RIGHT SIDEBAR -->
+        <!-- ----------------------------------------------------------------------------- -->
+        <div id="right-col" class="right-col" 
+          [ngClass]="{'col-sm-5' : CHAT_PANEL_MODE === false, 'col-sm-12 no-padding' : CHAT_PANEL_MODE === true, 'chat-panel-mode-on-desktop' :CHAT_PANEL_MODE === true && !isMobile}">
 
           <div class="card right-card" style="padding-top:0px; padding-bottom:5px;margin-bottom: 10px;"
             [ngClass]="{'right-card-chat-panel-mode' : CHAT_PANEL_MODE === true, 'right-card-normal-mode' : CHAT_PANEL_MODE === false}">
@@ -623,465 +623,466 @@
                 <!-- ----------------------------------------------------------------------------- -->
                 <div class="row">
                   <div class="col-sm-12" style="height: 65px">
-                <div class="right-sidebar-header" [ngClass]="{
+                    <div class="right-sidebar-header" [ngClass]="{
                     'right-sidebar-header-with-contact' : CHAT_PANEL_MODE === true,
                   'right-sidebar-header-with-request': CHAT_PANEL_MODE === false, 
                   'right-sidebar-header-no-border-bottom': request?.attributes?.decoded_jwt && REQUESTER_IS_VERIFIED}">
-                  <!-- (click)="goToContactDetailsInNewTab() style="cursor: pointer;"" -->
-                  <div class="contact-in-right-sidebar"
-                    [ngClass]="{'visible-if-chat-panel-mode' : CHAT_PANEL_MODE === true}">
+                      <!-- (click)="goToContactDetailsInNewTab() style="cursor: pointer;"" -->
+                      <div class="contact-in-right-sidebar"
+                        [ngClass]="{'visible-if-chat-panel-mode' : CHAT_PANEL_MODE === true}">
 
-                    <!-- [ngStyle]="{'background-color': fillColour }" -->
-                    <span class="requester-avatar-wrapper-in-right-sidebar">
-                      <span class="_requester-avatar_as_title-in-right-sidebar"
-                        [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + fillColour + ')'}"
-                        [ngClass]="{'requester_fullname-undefined' : !request?.lead?.fullname, '_requester-avatar_as_title-in-chat': CHAT_PANEL_MODE === true}">
-                        <span style="color: #ffffff"> {{ requester_fullname_initial }} </span>
-                        <div class="requester-status-icon-avatar_as_title-in-right-sidebar"
-                          [ngClass]="{'requester_is_online' : REQUESTER_IS_ONLINE}">
-                        </div>
-                      </span>
-                      <span *ngIf="REQUESTER_IS_VERIFIED === true" class="tooltipx">
-                        <svg [ngClass]="{'chat-panel-mode-requester-verified' : CHAT_PANEL_MODE === true }"
-                          version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
-                          xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 26.6 26.6" width="17"
-                          height="17" style="position: relative;left: -61px;top: -7px;" xml:space="preserve">
-                          <style type="text/css">
-                            .st0 {
-                              fill: none;
-                            }
+                        <!-- [ngStyle]="{'background-color': fillColour }" -->
+                        <span class="requester-avatar-wrapper-in-right-sidebar">
+                          <span class="_requester-avatar_as_title-in-right-sidebar"
+                            [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + fillColour + ')'}"
+                            [ngClass]="{'requester_fullname-undefined' : !request?.lead?.fullname, '_requester-avatar_as_title-in-chat': CHAT_PANEL_MODE === true}">
+                            <span style="color: #ffffff"> {{ requester_fullname_initial }} </span>
+                            <div class="requester-status-icon-avatar_as_title-in-right-sidebar"
+                              [ngClass]="{'requester_is_online' : REQUESTER_IS_ONLINE}">
+                            </div>
+                          </span>
+                          <span *ngIf="REQUESTER_IS_VERIFIED === true" class="tooltipx">
+                            <svg [ngClass]="{'chat-panel-mode-requester-verified' : CHAT_PANEL_MODE === true }"
+                              version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                              xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 26.6 26.6"
+                              width="17" height="17" style="position: relative;left: -61px;top: -7px;"
+                              xml:space="preserve">
+                              <style type="text/css">
+                                .st0 {
+                                  fill: none;
+                                }
 
-                            .st1 {
-                              fill: #FFFFFF;
-                            }
+                                .st1 {
+                                  fill: #FFFFFF;
+                                }
 
-                            .st2 {
-                              fill: #18BDF7;
-                            }
-                          </style>
-                          <path class="st0" d="M1.3,1.3h24v24h-24V1.3z" />
-                          <path class="st1"
-                            d="M13.3,0L2.4,4.9v7.3c0,6.7,4.6,13,10.9,14.5c6.2-1.5,10.9-7.8,10.9-14.5V4.9L13.3,0z" />
-                          <path class="st2" d="M13.3,2.3l-9,4v6c0,5.5,3.8,10.7,9,12c5.2-1.3,9-6.5,9-12v-6L13.3,2.3z M11.3,18.3l-4-4l1.4-1.4l2.6,2.6
+                                .st2 {
+                                  fill: #18BDF7;
+                                }
+                              </style>
+                              <path class="st0" d="M1.3,1.3h24v24h-24V1.3z" />
+                              <path class="st1"
+                                d="M13.3,0L2.4,4.9v7.3c0,6.7,4.6,13,10.9,14.5c6.2-1.5,10.9-7.8,10.9-14.5V4.9L13.3,0z" />
+                              <path class="st2" d="M13.3,2.3l-9,4v6c0,5.5,3.8,10.7,9,12c5.2-1.3,9-6.5,9-12v-6L13.3,2.3z M11.3,18.3l-4-4l1.4-1.4l2.6,2.6
                           l6.6-6.6l1.4,1.4L11.3,18.3z" />
-                        </svg>
-                        <span class="tooltiptext"> {{ "VisitorsPage.AuthenticatedUser" | translate }} </span>
-                      </span>
-                      <!-- <div style="display: none;" class="requester-status-icon-avatar_as_title-in-right-sidebar"
+                            </svg>
+                            <span class="tooltiptext"> {{ "VisitorsPage.AuthenticatedUser" | translate }} </span>
+                          </span>
+                          <!-- <div style="display: none;" class="requester-status-icon-avatar_as_title-in-right-sidebar"
                         [ngClass]="{'requester_is_online' : REQUESTER_IS_ONLINE}">
                       </div> -->
-                    </span>
+                        </span>
 
-                    <div class="contact_info_in_right-sidebar"
-                      [ngClass]="{'contact_info_in_right-sidebar-verified':REQUESTER_IS_VERIFIED === true }">
-                      <span style="font-weight: 700; font-family: 'Helvetica Neue', sans-serif; display: block; font-size: 18px;white-space: nowrap;
+                        <div class="contact_info_in_right-sidebar"
+                          [ngClass]="{'contact_info_in_right-sidebar-verified':REQUESTER_IS_VERIFIED === true }">
+                          <span style="font-weight: 700; font-family: 'Helvetica Neue', sans-serif; display: block; font-size: 18px;white-space: nowrap;
                         overflow: hidden;
                         text-overflow: ellipsis;">
 
-                        {{request?.lead?.fullname}}
-                      </span>
-                      <span *ngIf="!request?.lead?.fullname" style="margin-left: 2px;">
-                        N/A
-                      </span>
+                            {{request?.lead?.fullname}}
+                          </span>
+                          <span *ngIf="!request?.lead?.fullname" style="margin-left: 2px;">
+                            N/A
+                          </span>
 
 
-                      <div class="chat-panel-mode-contact-email">
-                        <a style="margin-top: 8px; text-transform: lowercase; text-decoration: underline;cursor:pointer ; font-size:14px; font-weight: 400; color: #3880ff;"
-                          target="_blank" *ngIf="request?.lead?.email" href="mailto:{{request?.lead?.email}}">
-                          {{request?.lead?.email}}
-                        </a>
-                        <a *ngIf="!request?.lead?.email"
-                          style="color: #7695a5; margin-top: 8px;font-size:14px; font-weight: 400;">
-                          {{'EmailNotAvailable' | translate}}
-                        </a>
-                      </div>
-                    </div>
-                  </div> <!-- contact in right sidebar -->
+                          <div class="chat-panel-mode-contact-email">
+                            <a style="margin-top: 8px; text-transform: lowercase; text-decoration: underline;cursor:pointer ; font-size:14px; font-weight: 400; color: #3880ff;"
+                              target="_blank" *ngIf="request?.lead?.email" href="mailto:{{request?.lead?.email}}">
+                              {{request?.lead?.email}}
+                            </a>
+                            <a *ngIf="!request?.lead?.email"
+                              style="color: #7695a5; margin-top: 8px;font-size:14px; font-weight: 400;">
+                              {{'EmailNotAvailable' | translate}}
+                            </a>
+                          </div>
+                        </div>
+                      </div> <!-- contact in right sidebar -->
 
-                  <div class="request-icons-in-right-sidebar"
-                    [ngClass]="{'hidden-if-chat-panel-mode' : CHAT_PANEL_MODE === true}">
-                     
-                    <!-- ------------------------------------- -->
-                    <!-- IF IS A CLOSED REQUEST -->
-                    <!-- ------------------------------------- -->
-                    <span *ngIf="request?.status == 1000 && !request?.subject">
-                      <svg class="conv-svg-icon" viewBox="0 0 58.1 53.9" style="width: 35px" xml:space="preserve">
-                        <style type="text/css">
-                          .st0-chat-closed {
-                            fill: none;
-                            stroke: #999999;
-                            stroke-width: 2;
-                            stroke-miterlimit: 10;
-                          }
+                      <div class="request-icons-in-right-sidebar"
+                        [ngClass]="{'hidden-if-chat-panel-mode' : CHAT_PANEL_MODE === true}">
 
-                          .st1-chat-closed {
-                            fill: #999999;
-                          }
-                        </style>
-                        <path class="st0-chat-closed" d="M30.1,2.6c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3C8.9,41.4,7.9,47.2,5.1,50c0,0,8.6-1.2,14.4-4.7
+                        <!-- ------------------------------------- -->
+                        <!-- IF IS A CLOSED REQUEST -->
+                        <!-- ------------------------------------- -->
+                        <span *ngIf="request?.status == 1000 && !request?.subject">
+                          <svg class="conv-svg-icon" viewBox="0 0 58.1 53.9" style="width: 35px" xml:space="preserve">
+                            <style type="text/css">
+                              .st0-chat-closed {
+                                fill: none;
+                                stroke: #999999;
+                                stroke-width: 2;
+                                stroke-miterlimit: 10;
+                              }
+
+                              .st1-chat-closed {
+                                fill: #999999;
+                              }
+                            </style>
+                            <path class="st0-chat-closed" d="M30.1,2.6c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3C8.9,41.4,7.9,47.2,5.1,50c0,0,8.6-1.2,14.4-4.7
                       c3.2,1.4,6.8,2.1,10.6,2.1c13.8,0,25-10,25-22.4S43.9,2.6,30.1,2.6z" />
-                        <path class="st1-chat-closed" d="M30.4,13.8c-6.3,0-11.4,5-11.4,11.2h-3.8l4.9,4.9l0.1,0.2l5.1-5h-3.8c0-4.8,4-8.7,8.9-8.7s8.9,3.9,8.9,8.7
+                            <path class="st1-chat-closed" d="M30.4,13.8c-6.3,0-11.4,5-11.4,11.2h-3.8l4.9,4.9l0.1,0.2l5.1-5h-3.8c0-4.8,4-8.7,8.9-8.7s8.9,3.9,8.9,8.7
                       s-4,8.7-8.9,8.7c-2.5,0-4.7-1-6.3-2.6L22.3,33c2.1,2,4.9,3.3,8.1,3.3c6.3,0,11.4-5,11.4-11.2S36.7,13.8,30.4,13.8z M29.1,20v6.2
                       l5.4,3.2l0.9-1.5L31,25.3V20H29.1z" />
-                      </svg>
-                      <span class="request-category" style="color: #999999" matTooltipClass="custom-mat-tooltip"
-                        matTooltip="{{ 'RequestMsgsPage.RequestResolved' | translate }}" #tooltip="matTooltip"
-                        matTooltipPosition='below' matTooltipHideDelay="100">
-                        <!-- {{ "RequestMsgsPage.RequestClosed" | translate }} -->
-                        {{ "RequestMsgsPage.Resolved_F" | translate }}
-                      </span>
-                    </span>
+                          </svg>
+                          <span class="request-category" style="color: #999999" matTooltipClass="custom-mat-tooltip"
+                            matTooltip="{{ 'RequestMsgsPage.RequestResolved' | translate }}" #tooltip="matTooltip"
+                            matTooltipPosition='below' matTooltipHideDelay="100">
+                            <!-- {{ "RequestMsgsPage.RequestClosed" | translate }} -->
+                            {{ "RequestMsgsPage.Resolved_F" | translate }}
+                          </span>
+                        </span>
 
-                     
-                    <!-- ------------------------------------- -->
-                    <!-- IF IS AN INTERNAL CLOSED REQUEST -->
-                    <!-- ------------------------------------- -->
-                    <span *ngIf="request?.status == 1000 && request?.subject">
-                      <svg class="conv-svg-icon" version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
-                        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 58.1 53.9"
-                        style="width: 35px" xml:space="preserve">
-                        <style type="text/css">
-                          .closed_Internal_st0 {
-                            fill: none;
-                            stroke: #999999;
-                            stroke-width: 2;
-                            stroke-miterlimit: 10;
-                          }
 
-                          .closed_Internal_st1 {
-                            fill: #999999;
-                          }
-                        </style>
-                        <path class="closed_Internal_st0" d="M29,3.2c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3C7.8,42,6.8,47.9,4,50.7c0,0,8.6-1.2,14.4-4.7
+                        <!-- ------------------------------------- -->
+                        <!-- IF IS AN INTERNAL CLOSED REQUEST -->
+                        <!-- ------------------------------------- -->
+                        <span *ngIf="request?.status == 1000 && request?.subject">
+                          <svg class="conv-svg-icon" version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 58.1 53.9"
+                            style="width: 35px" xml:space="preserve">
+                            <style type="text/css">
+                              .closed_Internal_st0 {
+                                fill: none;
+                                stroke: #999999;
+                                stroke-width: 2;
+                                stroke-miterlimit: 10;
+                              }
+
+                              .closed_Internal_st1 {
+                                fill: #999999;
+                              }
+                            </style>
+                            <path class="closed_Internal_st0" d="M29,3.2c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3C7.8,42,6.8,47.9,4,50.7c0,0,8.6-1.2,14.4-4.7
                           C21.6,47.4,25.2,48,29,48c13.8,0,25-10,25-22.4S42.8,3.2,29,3.2z" />
-                        <path class="closed_Internal_st1" d="M22.8,22.4h12.5v9.1H22.8V22.4z M38.5,27c0,1.3,0.8,2.3,1.9,2.3v4.5c0,1.3-0.8,2.3-1.9,2.3H19.6
+                            <path class="closed_Internal_st1" d="M22.8,22.4h12.5v9.1H22.8V22.4z M38.5,27c0,1.3,0.8,2.3,1.9,2.3v4.5c0,1.3-0.8,2.3-1.9,2.3H19.6
                           c-1,0-1.9-1-1.9-2.3v-4.5c1,0,1.9-1,1.9-2.3s-0.8-2.3-1.9-2.3v-4.5c0-1.3,0.8-2.3,1.9-2.3h18.8c1,0,1.9,1,1.9,2.3v4.5
                           C39.3,24.7,38.5,25.7,38.5,27z M36.6,22c0-0.6-0.4-1.1-0.9-1.1H22.5c-0.5,0-0.9,0.5-0.9,1.1v9.8c0,0.6,0.4,1.1,0.9,1.1h13.2
                           c0.5,0,0.9-0.5,0.9-1.1V22z" />
-                      </svg>
-                      <span class="request-category" style="color: #999999" matTooltipClass="custom-mat-tooltip"
-                        matTooltip="{{ 'RequestMsgsPage.InternalRequestResolved' | translate }}" #tooltip="matTooltip"
-                        matTooltipPosition='below' matTooltipHideDelay="100">
-                        <!-- {{ "RequestMsgsPage.InternalRequestClosed" | translate }} -->
+                          </svg>
+                          <span class="request-category" style="color: #999999" matTooltipClass="custom-mat-tooltip"
+                            matTooltip="{{ 'RequestMsgsPage.InternalRequestResolved' | translate }}"
+                            #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+                            <!-- {{ "RequestMsgsPage.InternalRequestClosed" | translate }} -->
 
-                        {{ "RequestMsgsPage.Resolved_M" | translate }}
-                      </span>
-                    </span>
+                            {{ "RequestMsgsPage.Resolved_M" | translate }}
+                          </span>
+                        </span>
 
-                     
-                    <!-- ------------------------------------- -->
-                    <!-- IF IS AN UNSERVED REQUEST -->
-                    <!-- ------------------------------------- -->
-                    <span *ngIf="request?.status === 100 && !request?.subject">
-                      <svg class="conv-svg-icon" viewBox="0 0 58.1 53.9" style="width: 35px" xml:space="preserve">
-                        <style type="text/css">
-                          .st0-unserved {
-                            fill: none;
-                            stroke: #ED4537;
-                            stroke-width: 2;
-                            stroke-miterlimit: 10;
-                          }
 
-                          .st1-unserved {
-                            fill: #ED4537;
-                          }
-                        </style>
-                        <path class="st0-unserved" d="M30.5,3.3c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3c-0.3,4.1-1.3,9.9-4.1,12.7c0,0,8.6-1.2,14.4-4.7
+                        <!-- ------------------------------------- -->
+                        <!-- IF IS AN UNSERVED REQUEST -->
+                        <!-- ------------------------------------- -->
+                        <span *ngIf="request?.status === 100 && !request?.subject">
+                          <svg class="conv-svg-icon" viewBox="0 0 58.1 53.9" style="width: 35px" xml:space="preserve">
+                            <style type="text/css">
+                              .st0-unserved {
+                                fill: none;
+                                stroke: #ED4537;
+                                stroke-width: 2;
+                                stroke-miterlimit: 10;
+                              }
+
+                              .st1-unserved {
+                                fill: #ED4537;
+                              }
+                            </style>
+                            <path class="st0-unserved" d="M30.5,3.3c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3c-0.3,4.1-1.3,9.9-4.1,12.7c0,0,8.6-1.2,14.4-4.7
                         c3.2,1.4,6.8,2.1,10.6,2.1c13.8,0,25-10,25-22.4S44.3,3.3,30.5,3.3z" />
-                        <g>
-                          <path class="st1-unserved"
-                            d="M30.6,38.9c-1.7,0-3.1-1.4-3.1-3c0-1.7,1.4-3,3.1-3c1.7,0,3.1,1.4,3.1,3C33.6,37.6,32.3,38.9,30.6,38.9z" />
-                          <path class="st1-unserved" d="M34.8,18l-1.5,10c-0.2,1.5-1.6,2.5-3.1,2.3c-1.2-0.2-2.1-1.1-2.3-2.2l-1.6-10c-0.4-2.3,1.2-4.5,3.6-4.9
+                            <g>
+                              <path class="st1-unserved"
+                                d="M30.6,38.9c-1.7,0-3.1-1.4-3.1-3c0-1.7,1.4-3,3.1-3c1.7,0,3.1,1.4,3.1,3C33.6,37.6,32.3,38.9,30.6,38.9z" />
+                              <path class="st1-unserved" d="M34.8,18l-1.5,10c-0.2,1.5-1.6,2.5-3.1,2.3c-1.2-0.2-2.1-1.1-2.3-2.2l-1.6-10c-0.4-2.3,1.2-4.5,3.6-4.9
                           c2.4-0.4,4.6,1.2,5,3.5C34.9,17.1,34.9,17.6,34.8,18z" />
-                        </g>
-                      </svg>
-                      <span class="request-category" style="color: #f44336" matTooltipClass="custom-mat-tooltip"
-                        matTooltip="{{ 'RequestMsgsPage.RequestUnserved' | translate }}" #tooltip="matTooltip"
-                        matTooltipPosition='below' matTooltipHideDelay="100">
-                        <!-- {{ "RequestMsgsPage.RequestUnserved" | translate }} -->
-                        {{ "Unserved" | translate }}
+                            </g>
+                          </svg>
+                          <span class="request-category" style="color: #f44336" matTooltipClass="custom-mat-tooltip"
+                            matTooltip="{{ 'RequestMsgsPage.RequestUnserved' | translate }}" #tooltip="matTooltip"
+                            matTooltipPosition='below' matTooltipHideDelay="100">
+                            <!-- {{ "RequestMsgsPage.RequestUnserved" | translate }} -->
+                            {{ "Unserved" | translate }}
 
-                      </span>
-                    </span>
+                          </span>
+                        </span>
 
-                    <!-- 
-                    // -------------------------------------
-                    // IF IS AN INTERNAL UNSERVED REQUEST 
-                    // ------------------------------------- -->
-                    <span *ngIf="request?.status === 100 && request?.subject">
-                      <svg class="conv-svg-icon" version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
-                        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 58.1 53.9"
-                        style="width: 35px" xml:space="preserve">
-                        <style type="text/css">
-                          .unserved_Internal_st0 {
-                            fill: none;
-                            stroke: #ED4537;
-                            stroke-width: 2;
-                            stroke-miterlimit: 10;
-                          }
+                         
+                    <!-- ------------------------------------- -->
+                    <!-- IF IS AN INTERNAL UNSERVED REQUEST  -->
+                    <!-- ------------------------------------- -->
+                        <span *ngIf="request?.status === 100 && request?.subject">
+                          <svg class="conv-svg-icon" version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 58.1 53.9"
+                            style="width: 35px" xml:space="preserve">
+                            <style type="text/css">
+                              .unserved_Internal_st0 {
+                                fill: none;
+                                stroke: #ED4537;
+                                stroke-width: 2;
+                                stroke-miterlimit: 10;
+                              }
 
-                          .unserved_Internal_st1 {
-                            fill: #ED4537;
-                          }
-                        </style>
-                        <path class="unserved_Internal_st0" d="M29,3.2c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3C7.8,42,6.8,47.9,4,50.7c0,0,8.6-1.2,14.4-4.7
+                              .unserved_Internal_st1 {
+                                fill: #ED4537;
+                              }
+                            </style>
+                            <path class="unserved_Internal_st0" d="M29,3.2c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3C7.8,42,6.8,47.9,4,50.7c0,0,8.6-1.2,14.4-4.7
                             C21.6,47.4,25.2,48,29,48c13.8,0,25-10,25-22.4S42.8,3.2,29,3.2z" />
-                        <path class="unserved_Internal_st1" d="M22.8,22.4h12.5v9.1H22.8V22.4z M38.5,27c0,1.3,0.8,2.3,1.9,2.3v4.5c0,1.3-0.8,2.3-1.9,2.3H19.6
+                            <path class="unserved_Internal_st1" d="M22.8,22.4h12.5v9.1H22.8V22.4z M38.5,27c0,1.3,0.8,2.3,1.9,2.3v4.5c0,1.3-0.8,2.3-1.9,2.3H19.6
                           c-1,0-1.9-1-1.9-2.3v-4.5c1,0,1.9-1,1.9-2.3s-0.8-2.3-1.9-2.3v-4.5c0-1.3,0.8-2.3,1.9-2.3h18.8c1,0,1.9,1,1.9,2.3v4.5
                           C39.3,24.7,38.5,25.7,38.5,27z M36.6,22c0-0.6-0.4-1.1-0.9-1.1H22.5c-0.5,0-0.9,0.5-0.9,1.1v9.8c0,0.6,0.4,1.1,0.9,1.1h13.2
                           c0.5,0,0.9-0.5,0.9-1.1V22z" />
-                      </svg>
+                          </svg>
 
-                      <span class="request-category" style="color: #999999" matTooltipClass="custom-mat-tooltip"
-                        matTooltip="{{ 'RequestMsgsPage.InternalRequestUnserved' | translate }}" #tooltip="matTooltip"
-                        matTooltipPosition='below' matTooltipHideDelay="100">
-                        <!-- {{ "RequestMsgsPage.InternalRequestUnserved" | translate }} -->
-                        {{ "Unserved" | translate }}
-                      </span>
-                    </span>
+                          <span class="request-category" style="color: #999999" matTooltipClass="custom-mat-tooltip"
+                            matTooltip="{{ 'RequestMsgsPage.InternalRequestUnserved' | translate }}"
+                            #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+                            <!-- {{ "RequestMsgsPage.InternalRequestUnserved" | translate }} -->
+                            {{ "Unserved" | translate }}
+                          </span>
+                        </span>
 
-                    <!-- IF IS A SERVED REQUEST AND BETWEEN THE MEMBERS THERE IS THE CURRENT USER -->
-                    <!-- <span *ngIf="request?.status == 200 && request?.currentUserIsJoined === true"> -->
-                    <span *ngIf="request?.status == 200 && IS_CURRENT_USER_JOINED === true && !request?.subject">
-                      <svg class="conv-svg-icon" viewBox="0 0 58.1 53.9" style="width: 35px" xml:space="preserve">
-                        <style type="text/css">
-                          .st0-served-by-cu {
-                            fill: none;
-                            stroke: #4DAF4F;
-                            stroke-width: 2;
-                            stroke-miterlimit: 10;
-                          }
+                        <!-- IF IS A SERVED REQUEST AND BETWEEN THE MEMBERS THERE IS THE CURRENT USER -->
+                        <!-- <span *ngIf="request?.status == 200 && request?.currentUserIsJoined === true"> -->
+                        <span *ngIf="request?.status == 200 && IS_CURRENT_USER_JOINED === true && !request?.subject">
+                          <svg class="conv-svg-icon" viewBox="0 0 58.1 53.9" style="width: 35px" xml:space="preserve">
+                            <style type="text/css">
+                              .st0-served-by-cu {
+                                fill: none;
+                                stroke: #4DAF4F;
+                                stroke-width: 2;
+                                stroke-miterlimit: 10;
+                              }
 
-                          .st1-served-by-cu {
-                            fill: #4DAF4F;
-                          }
-                        </style>
-                        <path class="st0-served-by-cu" d="M29.8,3.7c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3c-0.3,4.1-1.3,9.9-4.1,12.7c0,0,8.6-1.2,14.4-4.7
+                              .st1-served-by-cu {
+                                fill: #4DAF4F;
+                              }
+                            </style>
+                            <path class="st0-served-by-cu" d="M29.8,3.7c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3c-0.3,4.1-1.3,9.9-4.1,12.7c0,0,8.6-1.2,14.4-4.7
                       c3.2,1.4,6.8,2.1,10.6,2.1c13.8,0,25-10,25-22.4S43.6,3.7,29.8,3.7z" />
-                        <g id="XMLID_146_">
-                          <path id="XMLID_158_" class="st1-served-by-cu" d="M25.8,36.5l-8.4-7.4c-1.1-0.9-1.1-2.4,0-3.3c1.1-0.9,2.8-0.9,3.8,0l4.6,4.1l12.6-10.9
+                            <g id="XMLID_146_">
+                              <path id="XMLID_158_" class="st1-served-by-cu" d="M25.8,36.5l-8.4-7.4c-1.1-0.9-1.1-2.4,0-3.3c1.1-0.9,2.8-0.9,3.8,0l4.6,4.1l12.6-10.9
                         c1.1-0.9,2.8-0.9,3.8,0c1,0.9,1,2.4,0,3.3L25.8,36.5z" />
-                        </g>
-                      </svg>
+                            </g>
+                          </svg>
 
-                      <span class="request-category" style="color: #4CAF50" matTooltipClass="custom-mat-tooltip"
-                        matTooltip="{{ 'RequestMsgsPage.ConversationAssignedToYou' | translate }}" #tooltip="matTooltip"
-                        matTooltipPosition='below' matTooltipHideDelay="100">
-                        <!-- {{ "RequestMsgsPage.RequestServedBy" | translate }} -->
-                        {{ "Served" | translate }}
+                          <span class="request-category" style="color: #4CAF50" matTooltipClass="custom-mat-tooltip"
+                            matTooltip="{{ 'RequestMsgsPage.ConversationAssignedToYou' | translate }}"
+                            #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+                            <!-- {{ "RequestMsgsPage.RequestServedBy" | translate }} -->
+                            {{ "Served" | translate }}
 
-                      </span>
-                    </span>
+                          </span>
+                        </span>
 
-                    <!-- IF IS A INTERNAL SERVED REQUEST AND BETWEEN THE MEMBERS THERE IS THE CURRENT USER -->
-                    <!-- <span *ngIf="request?.status == 200 && request?.currentUserIsJoined === true"> -->
-                    <span *ngIf="request?.status == 200 && IS_CURRENT_USER_JOINED === true && request?.subject">
-                      <svg class="conv-svg-icon" version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
-                        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 58.1 53.9"
-                        style="width: 35px" xml:space="preserve">
-                        <style type="text/css">
-                          .served_bycu_Internal_st0 {
-                            fill: none;
-                            stroke: #4DAF4F;
-                            stroke-width: 2;
-                            stroke-miterlimit: 10;
-                          }
+                        <!-- IF IS A INTERNAL SERVED REQUEST AND BETWEEN THE MEMBERS THERE IS THE CURRENT USER -->
+                        <!-- <span *ngIf="request?.status == 200 && request?.currentUserIsJoined === true"> -->
+                        <span *ngIf="request?.status == 200 && IS_CURRENT_USER_JOINED === true && request?.subject">
+                          <svg class="conv-svg-icon" version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 58.1 53.9"
+                            style="width: 35px" xml:space="preserve">
+                            <style type="text/css">
+                              .served_bycu_Internal_st0 {
+                                fill: none;
+                                stroke: #4DAF4F;
+                                stroke-width: 2;
+                                stroke-miterlimit: 10;
+                              }
 
-                          .served_bycu_Internal_st1 {
-                            fill: #4DAF4F;
-                          }
-                        </style>
-                        <path class="served_bycu_Internal_st0" d="M29,3.2c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3C7.8,42,6.8,47.9,4,50.7c0,0,8.6-1.2,14.4-4.7
+                              .served_bycu_Internal_st1 {
+                                fill: #4DAF4F;
+                              }
+                            </style>
+                            <path class="served_bycu_Internal_st0" d="M29,3.2c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3C7.8,42,6.8,47.9,4,50.7c0,0,8.6-1.2,14.4-4.7
                           C21.6,47.4,25.2,48,29,48c13.8,0,25-10,25-22.4S42.8,3.2,29,3.2z" />
-                        <path class="served_bycu_Internal_st1" d="M22.8,22.4h12.5v9.1H22.8V22.4z M38.5,27c0,1.3,0.8,2.3,1.9,2.3v4.5c0,1.3-0.8,2.3-1.9,2.3H19.6
+                            <path class="served_bycu_Internal_st1" d="M22.8,22.4h12.5v9.1H22.8V22.4z M38.5,27c0,1.3,0.8,2.3,1.9,2.3v4.5c0,1.3-0.8,2.3-1.9,2.3H19.6
                           c-1,0-1.9-1-1.9-2.3v-4.5c1,0,1.9-1,1.9-2.3s-0.8-2.3-1.9-2.3v-4.5c0-1.3,0.8-2.3,1.9-2.3h18.8c1,0,1.9,1,1.9,2.3v4.5
                           C39.3,24.7,38.5,25.7,38.5,27z M36.6,22c0-0.6-0.4-1.1-0.9-1.1H22.5c-0.5,0-0.9,0.5-0.9,1.1v9.8c0,0.6,0.4,1.1,0.9,1.1h13.2
                           c0.5,0,0.9-0.5,0.9-1.1V22z" />
-                      </svg>
+                          </svg>
 
-                      <span class="request-category" style="color: #4CAF50" matTooltipClass="custom-mat-tooltip"
-                        matTooltip="{{ 'RequestMsgsPage.TicketAssignedToYou' | translate }}" #tooltip="matTooltip"
-                        matTooltipPosition='below' matTooltipHideDelay="100">
-                        <!-- {{ "RequestMsgsPage.InternalRequestServedBy" | translate }} -->
-                        {{ "Served" | translate }}
-                      </span>
-                    </span>
+                          <span class="request-category" style="color: #4CAF50" matTooltipClass="custom-mat-tooltip"
+                            matTooltip="{{ 'RequestMsgsPage.TicketAssignedToYou' | translate }}" #tooltip="matTooltip"
+                            matTooltipPosition='below' matTooltipHideDelay="100">
+                            <!-- {{ "RequestMsgsPage.InternalRequestServedBy" | translate }} -->
+                            {{ "Served" | translate }}
+                          </span>
+                        </span>
 
 
-                    <!-- IF IS A SERVED REQUEST AND BETWEEN THE MEMBERS THERE ISN'T THE CURRENT USER -->
-                    <!-- <span *ngIf="request?.status == 200 && !request?.currentUserIsJoined"> -->
-                    <span *ngIf="request?.status == 200 && !IS_CURRENT_USER_JOINED && !request?.subject">
+                        <!-- IF IS A SERVED REQUEST AND BETWEEN THE MEMBERS THERE ISN'T THE CURRENT USER -->
+                        <!-- <span *ngIf="request?.status == 200 && !request?.currentUserIsJoined"> -->
+                        <span *ngIf="request?.status == 200 && !IS_CURRENT_USER_JOINED && !request?.subject">
 
-                      <svg class="conv-svg-icon" viewBox="0 0 58.1 53.9" style="width: 35px" xml:space="preserve">
-                        <style type="text/css">
-                          .st0-served {
-                            fill: none;
-                            stroke: #05BDD4;
-                            stroke-width: 2;
-                            stroke-miterlimit: 10;
-                          }
+                          <svg class="conv-svg-icon" viewBox="0 0 58.1 53.9" style="width: 35px" xml:space="preserve">
+                            <style type="text/css">
+                              .st0-served {
+                                fill: none;
+                                stroke: #05BDD4;
+                                stroke-width: 2;
+                                stroke-miterlimit: 10;
+                              }
 
-                          .st1-served {
-                            fill: #05BDD4;
-                          }
-                        </style>
-                        <g>
-                          <path class="st0-served" d="M30.5,3c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3c-0.3,4.1-1.3,9.9-4.1,12.7c0,0,8.6-1.2,14.4-4.7
+                              .st1-served {
+                                fill: #05BDD4;
+                              }
+                            </style>
+                            <g>
+                              <path class="st0-served" d="M30.5,3c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3c-0.3,4.1-1.3,9.9-4.1,12.7c0,0,8.6-1.2,14.4-4.7
                         c3.2,1.4,6.8,2.1,10.6,2.1c13.8,0,25-10,25-22.4S44.3,3,30.5,3z" />
-                          <g>
-                            <circle class="st1-served" cx="17.5" cy="26.7" r="3" />
-                            <circle class="st1-served" cx="30.5" cy="26.7" r="3" />
-                            <circle class="st1-served" cx="43.5" cy="26.7" r="3" />
-                          </g>
-                        </g>
-                      </svg>
+                              <g>
+                                <circle class="st1-served" cx="17.5" cy="26.7" r="3" />
+                                <circle class="st1-served" cx="30.5" cy="26.7" r="3" />
+                                <circle class="st1-served" cx="43.5" cy="26.7" r="3" />
+                              </g>
+                            </g>
+                          </svg>
 
-                      <span class="request-category" style="color: #00bcd4;"
-                        matTooltipClass="custom-mat-tooltip"
-                        matTooltip="{{ 'RequestMsgsPage.RequestServedBy' | translate }}" #tooltip="matTooltip"
-                        matTooltipPosition='below' matTooltipHideDelay="100">
+                          <span class="request-category" style="color: #00bcd4;" matTooltipClass="custom-mat-tooltip"
+                            matTooltip="{{ 'RequestMsgsPage.RequestServedBy' | translate }}" #tooltip="matTooltip"
+                            matTooltipPosition='below' matTooltipHideDelay="100">
 
-                        <!-- {{ "RequestMsgsPage.RequestServedBy" | translate }} -->
-                        {{ "Served" | translate }}
+                            <!-- {{ "RequestMsgsPage.RequestServedBy" | translate }} -->
+                            {{ "Served" | translate }}
 
-                      </span>
-                    </span>
+                          </span>
+                        </span>
 
-                    <!-- IF IS AN INTERNAL SERVED REQUEST AND BETWEEN THE MEMBERS THERE ISN'T THE CURRENT USER -->
-                    <!-- <span *ngIf="request?.status == 200 && !request?.currentUserIsJoined"> -->
-                    <span *ngIf="request?.status == 200 && !IS_CURRENT_USER_JOINED && request?.subject">
+                        <!-- IF IS AN INTERNAL SERVED REQUEST AND BETWEEN THE MEMBERS THERE ISN'T THE CURRENT USER -->
+                        <!-- <span *ngIf="request?.status == 200 && !request?.currentUserIsJoined"> -->
+                        <span *ngIf="request?.status == 200 && !IS_CURRENT_USER_JOINED && request?.subject">
 
-                      <svg class="conv-svg-icon" version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
-                        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 58.1 53.9"
-                        style="width: 35px" xml:space="preserve">
-                        <style type="text/css">
-                          .served__Internal_st0 {
-                            fill: none;
-                            stroke: #05BDD4;
-                            stroke-width: 2;
-                            stroke-miterlimit: 10;
-                          }
+                          <svg class="conv-svg-icon" version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 58.1 53.9"
+                            style="width: 35px" xml:space="preserve">
+                            <style type="text/css">
+                              .served__Internal_st0 {
+                                fill: none;
+                                stroke: #05BDD4;
+                                stroke-width: 2;
+                                stroke-miterlimit: 10;
+                              }
 
-                          .served__Internal_st1 {
-                            fill: #05BDD4;
-                          }
-                        </style>
-                        <path class="served__Internal_st0" d="M29,3.2c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3C7.8,42,6.8,47.9,4,50.7c0,0,8.6-1.2,14.4-4.7
+                              .served__Internal_st1 {
+                                fill: #05BDD4;
+                              }
+                            </style>
+                            <path class="served__Internal_st0" d="M29,3.2c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3C7.8,42,6.8,47.9,4,50.7c0,0,8.6-1.2,14.4-4.7
                           C21.6,47.4,25.2,48,29,48c13.8,0,25-10,25-22.4S42.8,3.2,29,3.2z" />
-                        <path class="served__Internal_st1" d="M22.8,22.4h12.5v9.1H22.8V22.4z M38.5,27c0,1.3,0.8,2.3,1.9,2.3v4.5c0,1.3-0.8,2.3-1.9,2.3H19.6
+                            <path class="served__Internal_st1" d="M22.8,22.4h12.5v9.1H22.8V22.4z M38.5,27c0,1.3,0.8,2.3,1.9,2.3v4.5c0,1.3-0.8,2.3-1.9,2.3H19.6
                           c-1,0-1.9-1-1.9-2.3v-4.5c1,0,1.9-1,1.9-2.3s-0.8-2.3-1.9-2.3v-4.5c0-1.3,0.8-2.3,1.9-2.3h18.8c1,0,1.9,1,1.9,2.3v4.5
                           C39.3,24.7,38.5,25.7,38.5,27z M36.6,22c0-0.6-0.4-1.1-0.9-1.1H22.5c-0.5,0-0.9,0.5-0.9,1.1v9.8c0,0.6,0.4,1.1,0.9,1.1h13.2
                           c0.5,0,0.9-0.5,0.9-1.1V22z" />
-                      </svg>
+                          </svg>
 
-                      <span class="request-category" style="color: #00bcd4;"
-                        matTooltipClass="custom-mat-tooltip"
-                        matTooltip="{{ 'RequestMsgsPage.InternalRequestServedBy' | translate }}" #tooltip="matTooltip"
-                        matTooltipPosition='below' matTooltipHideDelay="100">
+                          <span class="request-category" style="color: #00bcd4;" matTooltipClass="custom-mat-tooltip"
+                            matTooltip="{{ 'RequestMsgsPage.InternalRequestServedBy' | translate }}"
+                            #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
 
-                        <!-- {{ "RequestMsgsPage.InternalRequestServedBy" | translate }} -->
-                        {{ "Served" | translate }}
+                            <!-- {{ "RequestMsgsPage.InternalRequestServedBy" | translate }} -->
+                            {{ "Served" | translate }}
 
-                      </span>
-                    </span>
+                          </span>
+                        </span>
 
 
-                    <!-- <div class="id__request"
+                        <!-- <div class="id__request"
                       style="color: #7695a5 !important; font-size: 10px; display: block; margin-left: 43px; margin-top: -26px;font-weight: 400;">
                     <span style="color:#394f5a;"> id: </span>
                       {{ id_request }}
                     </div> -->
 
-                  </div>
+                      </div>
 
-                  <div class="right-sidebar-actions"
-                    [ngClass]="{'right-sidebar-actions-with-contact' : CHAT_PANEL_MODE === true,'right-sidebar-actions-with-request': CHAT_PANEL_MODE === false}">
-                    <!-- btn btn-primary  -->
-                    <!-- style="padding:6px 15px; margin-top: 15px" -->
-                    <div class="dropdown pull-right">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                      <div class="right-sidebar-actions"
+                        [ngClass]="{'right-sidebar-actions-with-contact' : CHAT_PANEL_MODE === true,'right-sidebar-actions-with-request': CHAT_PANEL_MODE === false}">
+                        <!-- btn btn-primary  -->
+                        <!-- style="padding:6px 15px; margin-top: 15px" -->
+                        <div class="dropdown pull-right">
+                          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
 
 
-                        <span class="material-icons" *ngIf="CHAT_PANEL_MODE === true"
-                          style="color:rgba(0, 0, 0, 0.87);position: relative; right: 6px;top: 6px;">
-                          more_horiz
-                        </span>
-                        <span class="material-icons" *ngIf="CHAT_PANEL_MODE === false"
-                          style="color:rgba(0, 0, 0, 0.87);margin-top: 6px;">
-                          more_vert
-                        </span>
-                      </a>
-                      <ul class="dropdown-menu">
-                        <li *ngIf="CHAT_PANEL_MODE === true"
-                          [ngClass]="{'disable-dropdown-menu-btn' : request?.status == 1000 || DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true}">
-                          <a (click)='archiveRequest(request?.request_id)'
-                            style="padding-left: 15px; padding-right: 15px;">
-                            <i class="material-icons" style="padding-right: 5px;">archive</i>
-                            <span style="position: relative; top: 1px; cursor:pointer">
-                              {{ 'VisitorsPage.Resolve' | translate }}
+                            <span class="material-icons" *ngIf="CHAT_PANEL_MODE === true"
+                              style="color:rgba(0, 0, 0, 0.87);position: relative; right: 6px;top: 6px;">
+                              more_horiz
+                            </span>
+                            <span class="material-icons" *ngIf="CHAT_PANEL_MODE === false"
+                              style="color:rgba(0, 0, 0, 0.87);margin-top: 6px;">
+                              more_vert
                             </span>
                           </a>
-                        </li>
-                        <li class="divider"></li>
-                        <!-- [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_AGENT === true}" -->
-                        <li [ngClass]="{'disable-dropdown-menu-btn' : DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true}">
-                          <a (click)='openSelectUsersModal(action = "reassign")'
-                            style="padding-left: 15px; padding-right: 15px;">
-                            <i class="material-icons" style="padding-right: 5px;">swap_horiz</i>
-                            <span style="position: relative; top: 1px; cursor:pointer">
-                              <!-- {{ 'VisitorsPage.ReassignRequest' | translate }} -->
-                              {{ 'VisitorsPage.Reassign' | translate }}
-                            </span>
-                          </a>
-                        </li>
-                        <!-- [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_AGENT === true}" -->
-                        <li [ngClass]="{'disable-dropdown-menu-btn' : DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true}">
-                          <a (click)='openSelectUsersModal(action = "invite")'
-                            style="padding-left: 15px; padding-right: 15px;">
-                            <i class="material-icons" style="padding-right: 5px;">person_add</i>
-                            <span style="position: relative; top: 1px; cursor:pointer">
-                              {{ 'VisitorsPage.AddAgent' | translate }}
-                            </span>
-                          </a>
-                        </li>
+                          <ul class="dropdown-menu">
+                            <li *ngIf="CHAT_PANEL_MODE === true"
+                              [ngClass]="{'disable-dropdown-menu-btn' : request?.status == 1000 || DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true}">
+                              <!-- <a (click)='archiveRequest(request?.request_id)'
+                              style="padding-left: 15px; padding-right: 15px;">
+                              <i class="material-icons" style="padding-right: 5px;">archive</i>
+                              <span style="position: relative; top: 1px; cursor:pointer">
+                                {{ 'VisitorsPage.Resolve' | translate }}
+                              </span>
+                            </a> -->
+                            </li>
+                            <!-- <li class="divider"></li> -->
+                            <!-- [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_AGENT === true}" -->
+                            <li
+                              [ngClass]="{'disable-dropdown-menu-btn' : DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true}">
+                              <a (click)='openSelectUsersModal(action = "reassign")'
+                                style="padding-left: 15px; padding-right: 15px;">
+                                <i class="material-icons" style="padding-right: 5px;">swap_horiz</i>
+                                <span style="position: relative; top: 1px; cursor:pointer">
+                                  <!-- {{ 'VisitorsPage.ReassignRequest' | translate }} -->
+                                  {{ 'VisitorsPage.Reassign' | translate }}
+                                </span>
+                              </a>
+                            </li>
+                            <!-- [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_AGENT === true}" -->
+                            <li
+                              [ngClass]="{'disable-dropdown-menu-btn' : DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true}">
+                              <a (click)='openSelectUsersModal(action = "invite")'
+                                style="padding-left: 15px; padding-right: 15px;">
+                                <i class="material-icons" style="padding-right: 5px;">person_add</i>
+                                <span style="position: relative; top: 1px; cursor:pointer">
+                                  {{ 'VisitorsPage.AddAgent' | translate }}
+                                </span>
+                              </a>
+                            </li>
 
-                        <li class="divider"></li>
+                            <li class="divider"></li>
 
-                        <li [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_JOINED === false}">
+                            <li [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_JOINED === false}">
 
-                          <a (click)='openleaveChatModal()' style="padding-left: 15px; padding-right: 15px;">
-                            <i class="material-icons" style="padding-right: 5px;">exit_to_app</i>
-                            <span style="position: relative; top: 1px; cursor:pointer">
-                              <!-- {{ 'VisitorsPage.LeaveChat' | translate }} -->
-                              {{ 'VisitorsPage.Leave' | translate }}
-                            </span>
-                          </a>
-                        </li>
+                              <a (click)='openleaveChatModal()' style="padding-left: 15px; padding-right: 15px;">
+                                <i class="material-icons" style="padding-right: 5px;">exit_to_app</i>
+                                <span style="position: relative; top: 1px; cursor:pointer">
+                                  <!-- {{ 'VisitorsPage.LeaveChat' | translate }} -->
+                                  {{ 'VisitorsPage.Leave' | translate }}
+                                </span>
+                              </a>
+                            </li>
 
-                        <!-- *ngIf="CHAT_PANEL_MODE === false" -->
-                        <li class="divider"></li>
-                        <li>
-                          <a (click)='openTranscript()' style="padding-left: 15px; padding-right: 15px;">
-                            <i class="material-icons" style="padding-right: 5px;">open_in_new</i>
-                            <span style="position: relative; top: 1px; cursor:pointer">
+                            <!-- *ngIf="CHAT_PANEL_MODE === false" -->
+                            <li class="divider"></li>
+                            <li>
+                              <a (click)='openTranscript()' style="padding-left: 15px; padding-right: 15px;">
+                                <i class="material-icons" style="padding-right: 5px;">open_in_new</i>
+                                <span style="position: relative; top: 1px; cursor:pointer">
 
-                              {{ 'VisitorsPage.Open' | translate }} transcript
-                            </span>
-                          </a>
-                        </li>
-                      </ul>
+                                  {{ 'VisitorsPage.Open' | translate }} transcript
+                                </span>
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+
+                        <button *ngIf="CHAT_PANEL_MODE === false" class="btn btn-white btn-as-link pull-right"
+                          (click)='archiveRequest(request?.request_id)'
+                          [disabled]="request?.status == 1000 || DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true">
+                          <i class="material-icons">archive</i>
+                          <span> {{ 'VisitorsPage.Resolve' | translate }} </span>
+                        </button>
+
+
+                      </div>
                     </div>
-
-                    <button *ngIf="CHAT_PANEL_MODE === false" class="btn btn-white btn-as-link pull-right"
-                     (click)='archiveRequest(request?.request_id)'
-                      [disabled]="request?.status == 1000 || DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true">
-                      <i class="material-icons">archive</i>
-                      <span> {{ 'VisitorsPage.Resolve' | translate }} </span>
-                    </button>
-
-
-                  </div>
-                </div>
                   </div>
                 </div>
                 <!-- <span class="row-body">
@@ -1356,10 +1357,12 @@
                           {{ "Language" | translate }}
                         </span> -->
 
-                          <span *ngIf="request?.language" class="conv-details-sidebar-text" style="text-transform: uppercase;">
+                          <span *ngIf="request?.language" class="conv-details-sidebar-text"
+                            style="text-transform: uppercase;">
                             {{ request?.language }}
                           </span>
-                          <span *ngIf="!request?.language" class="conv-details-sidebar-text" style="text-transform: uppercase;">
+                          <span *ngIf="!request?.language" class="conv-details-sidebar-text"
+                            style="text-transform: uppercase;">
                             n.a.
                           </span>
                         </span>
@@ -1676,22 +1679,22 @@
                   <!-- Message Channel  -->
                   <!-- ---------------------------------------- -->
                   <!--   -->
-                  <div  *ngIf="request?.channel?.name !== 'chat21'" class="row" style="margin-top:5px">
+                  <div *ngIf="request?.channel?.name !== 'chat21'" class="row" style="margin-top:5px">
                     <div class="col-sm-12">
                       <!-- [ngClass]="{'no-bottom-margin' : CHAT_PANEL_MODE === true}" -->
-                      <p style="margin-bottom: 3px;"> 
+                      <p style="margin-bottom: 3px;">
                         <!-- ---------------------------------------- -->
                         <!-- Channel - Telegram -->
                         <!-- ---------------------------------------- -->
                         <!--  -->
-                        <span *ngIf="request?.channel?.name === 'telegram'" >
+                        <span *ngIf="request?.channel?.name === 'telegram'">
 
                           <img class="channel-icon" src="assets/img/channel_icons/telegram-logo.svg"
                             matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'MessageChannel' | translate }}"
                             #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" />
                         </span>
                         <!--  -->
-                        <span *ngIf="request?.channel?.name === 'telegram'"  style="position: relative;top: 1px;">
+                        <span *ngIf="request?.channel?.name === 'telegram'" style="position: relative;top: 1px;">
                           <!-- <span
                           style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
                           {{ 'MessageChannel' | translate }}
@@ -1836,8 +1839,7 @@
                   <div class="col-sm-12 attributes-pre-chat-form-accordion-wpr"
                     style="padding-left: 0px; padding-right: 0px; margin-top:10px">
                     <p class="row-header  attributes-pre-chat-form-accordion"
-                      (click)="openAttributesPrechatFormAccordion()"
-                      style="">
+                      (click)="openAttributesPrechatFormAccordion()" style="">
                       <!-- fill: #2C3E48; -->
                       <span>
                         <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
@@ -1952,7 +1954,7 @@
                 <!-- ----------------------------------------------------------------------------- -->
                 <!-- Agents -->
                 <!-- ----------------------------------------------------------------------------- -->
-                
+
                 <div class="row">
                   <div class="col-sm-12" style="border-bottom: 1px solid #eeeeee; border-top: 1px solid #eeeeee;">
                     <p class="row-header">
