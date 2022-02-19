@@ -13,7 +13,7 @@
         <div class="row">
           <div class="col-md-9 col-lg-8">
             <!-- card--no-border -->
-            <div class="card card card--no-border" style="margin-top: 5px;">
+            <div class="card card--no-border" style="margin-top: 5px;">
               <div class="card-header card-header-custom-bkgrnd">
                 <!-- goToEditAddPage_CREATE() -->
                 <button class="btn btn-primary" style="padding: 8px 16px; margin: 0px;" (click)="goToSelectBotType()">
@@ -250,10 +250,12 @@
 
                       <td>
 
-                        <span *ngIf="faqkb?.type !== 'internal'" style="text-transform: capitalize;font-weight:400;"> {{
-                          faqkb?.type}} </span>
+                        <span *ngIf="faqkb?.type !== 'internal'" style="text-transform: capitalize;font-weight:400;"> 
+                          {{ faqkb?.type}} 
+                        </span>
                         <span *ngIf="faqkb?.type === 'internal'" style="text-transform: capitalize;font-weight:400;">
-                          resolution </span>
+                          resolution 
+                        </span>
                         <!-- <div class="checkbox">
                       <label>
                         <input style="opacity: 0.5!important;" type="checkbox" name="optionsCheckboxes"
@@ -263,7 +265,7 @@
                     <div class="overlay"></div> -->
                       </td>
 
-                      <td *ngIf="isVisibleAnalytics" style="text-transform: capitalize;font-weight:400;">
+                      <td *ngIf="isVisibleAnalytics" style="text-transform: capitalize;font-weight:400;text-align: center">
                         <span style="text-transform: capitalize;font-weight:400;"> {{ faqkb?.message_count}} </span>
                       </td>
 

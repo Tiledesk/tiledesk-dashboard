@@ -1032,11 +1032,11 @@ div.card-content > div > div > div > div > div > div > div.txt > div > div > p >
   margin-bottom: 0px;
   height: 40px !important;
   position: relative;
-  font-family: Google Sans, sans-serif;
+  font-family: "Poppins";
   height: 30px;
   font-size: 16px;
   margin-top: 10px;
-  z-index: 0;
+  // z-index: 0;
 }
 
 .card_title__underline {
@@ -1044,7 +1044,7 @@ div.card-content > div > div > div > div > div > div > div.txt > div > div > p >
   top: 0;
   left: 0;
   bottom: -1px;
-  border-bottom: 3px solid $brand-primary;
+  border-bottom: 2px solid $brand-primary;
   z-index: 1;
 }
 
