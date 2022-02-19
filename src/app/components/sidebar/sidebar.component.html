@@ -117,10 +117,9 @@
       camera_alt
     </i> -->
 
-
-    <div id="sidebaravatar-isbusy" class="sidebar--isBusy-icon-wpr" *ngIf="IS_BUSY === true" style="cursor:pointer"
-      matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Busy' | translate }}" #tooltip="matTooltip"
-      matTooltipPosition='right' matTooltipHideDelay="100">
+    <!-- matTooltipClass="sidebar-custom-mat-tooltip" matTooltip="{{ 'Busy' | translate }}" #tooltip="matTooltip"
+    matTooltipPosition='right' matTooltipHideDelay="100" -->
+    <div id="sidebaravatar-isbusy" class="sidebar--isBusy-icon-wpr" *ngIf="IS_BUSY === true" style="cursor:pointer">
       <span class="material-icons sidebar-is-busy-icon">
         access_time
       </span>
