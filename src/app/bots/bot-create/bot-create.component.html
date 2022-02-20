@@ -23,8 +23,7 @@
               </path>
             </svg>
           </span>
-          <span *ngIf="botType === 'resolution'"
-            style="margin-left: 8px;vertical-align: middle;color: #0f62ff; font-size: 14px;font-weight: 400; cursor: pointer; text-decoration: underline;"
+          <span *ngIf="botType === 'resolution'" class="link-to-doc-in-header"
             (click)="openDocsResolutionBotConfigureYourFirstChatbot()">
             {{'HereHowCreateABot' | translate}}
           </span>
@@ -47,14 +46,12 @@
             {{'HereHowToHandoffToTheHumanAgent' | translate}}
           </span> -->
 
-          <span *ngIf="botType === 'external'"
-            style="margin-left: 8px;vertical-align: middle;color: #0f62ff; font-size: 14px;font-weight: 400; cursor: pointer; text-decoration: underline;"
+          <span *ngIf="botType === 'external'" class="link-to-doc-in-header"
             (click)="openExternalBotIntegrationTutorial()">
             {{ "ConnectYourExternalChatbotsTo" | translate: tparams }}
           </span>
 
-          <span *ngIf="botType === 'dialogflow'"
-            style="margin-left: 8px;vertical-align: middle;color: #0f62ff; font-size: 14px;font-weight: 400; cursor: pointer; text-decoration: underline;"
+          <span *ngIf="botType === 'dialogflow'" class="link-to-doc-in-header"
             (click)="openDeveloperTiledeskGenerateDFCredentialFile()">
             {{'HowToGenerateDialogflowGoogleCredentialsFile' | translate}}
           </span>
@@ -376,8 +373,8 @@
 
               <p style="color:#7695a5">
                 {{ 'ResolutionBotDescription' | translate}}.
-                <span style="display: block;" (click)="openDocsResolutionBotConfigureYourFirstChatbot()"
-                  style="color: #0f62ff; text-decoration: underline;cursor:pointer">
+                <span style="display: block;" class="link-in-right-sidebar"
+                  (click)="openDocsResolutionBotConfigureYourFirstChatbot()">
                   {{'Resourcepage.HereHow' | translate}}
                 </span>
               </p>
@@ -398,16 +395,14 @@
 
               <p style="color:#7695a5">
                 {{'Resolution_bot_train_StylingYouReplies' | translate: tparams }}.
-                <span style="color: #0f62ff; text-decoration: underline;cursor: pointer;"
-                  (click)="openResolutionBotDocsStylingYourChatbotReplies()">
+                <span class="link-in-right-sidebar" (click)="openResolutionBotDocsStylingYourChatbotReplies()">
                   {{'HereHowStylingYourReplies' | translate }}
                 </span>
               </p>
 
               <p style="color:#7695a5">
                 {{'Resolution_bot_train_SendImagesVideoAndMore' | translate: tparams }}.
-                <span style="color: #0f62ff; text-decoration: underline;cursor: pointer;"
-                  (click)="openDocsResolutionBotSendImageVideosMore()">
+                <span style="" (click)="openDocsResolutionBotSendImageVideosMore()">
                   {{'HereHowSendImageVideosMore' | translate }}
                 </span>
               </p>
@@ -429,17 +424,13 @@
               <p style="color:#7695a5">
                 {{'DoYouWantToHandoffToHumanAgentDuringAChatbotConversation' | translate}}
 
-                <span style="color: #0f62ff; text-decoration: underline;cursor: pointer;"
-                  (click)="openDocsResolutionBotHandoffToHumanAgent()">
+                <span class="link-in-right-sidebar" (click)="openDocsResolutionBotHandoffToHumanAgent()">
                   <!-- {{'HereHowToHandoffToTheHumanAgent' | translate }}. -->
                   {{'Resourcepage.HereHow' | translate}}
                 </span>
               </p>
-
-
             </section>
             <!-- ./ end section Resolution -->
-
 
             <!-- ------------------------------------------------- -->
             <!-- RIGHT SIDEBAR External  -->
@@ -460,8 +451,7 @@
 
               <p style="color:#7695a5">
                 {{ "BotsPage.ExternabotQuickTips" | translate: tparams }}
-                <span style="color: #0f62ff; display: block; cursor:pointer"
-                  (click)="openExternalBotIntegrationTutorial()">
+                <span class="link-in-right-sidebar" (click)="openExternalBotIntegrationTutorial()">
                   <!-- {{ "HereTheTutorial" | translate: tparams }} -->
                   {{ "HereThe_Tutorial" | translate }}
 
@@ -512,8 +502,7 @@
 
               <p style="color:#7695a5">
                 {{'YouNeedAServiceAccountPrivateKeyFileToConnectTheDialogflowAgent' | translate: tparams}}.
-                <span style="color: #0f62ff; text-decoration: underline;cursor: pointer;"
-                  (click)="openDeveloperTiledeskGenerateDFCredentialFile()">
+                <span class="link-in-right-sidebar" (click)="openDeveloperTiledeskGenerateDFCredentialFile()">
                   {{'FollowThisGuideToFindOutHowToCreateThisFile' | translate }}.
                 </span>
               </p>
@@ -538,8 +527,7 @@
 
               <p style="color:#7695a5">
                 {{'DoYouWantToSendImagesVideosButtonsAndMore' | translate }}
-                <span style="color: #0f62ff; text-decoration: underline;cursor: pointer;"
-                  (click)="openDocsTiledeskDialogflowConnector()">
+                <span class="link-in-right-sidebar" (click)="openDocsTiledeskDialogflowConnector()">
                   {{'FollowTheMicrolanguageGuide' | translate }}.
                 </span>
               </p>
@@ -568,8 +556,7 @@
               <p style="color:#7695a5">
                 {{'DoYouWantToHandoffToHumanAgentDuringAChatbotConversation' | translate}}
                 {{'SimplyReplyAgentOnTheLastResponseLine' | translate}}.
-                <span style="color: #0f62ff; text-decoration: underline;cursor: pointer;"
-                  (click)="openDocsDialogFlowHandoffToHumanAgent()">
+                <span class="link-in-right-sidebar" (click)="openDocsDialogFlowHandoffToHumanAgent()">
                   {{'Resourcepage.HereHow' | translate}}
                 </span>
               </p>
@@ -729,12 +716,9 @@
 <!-- MODAL - ATTACH_BOT_TO_DEPT -->
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayModalAttacchBotToDept }"
   style="background-color: rgba(90,90,90,0.5);">
-
   <div class="modal-dialog" role="document">
-
     <div class="modal-content">
-
-      <div class="modal-header custom--modal-header" style="">
+      <div class="modal-header custom--modal-header">
         <button type="button" class="close" aria-label="Close" (click)="onCloseModalAttacchBotToDept()"
           style="position: absolute; right: 14px;top: 20px;">
           <span aria-hidden="true">
