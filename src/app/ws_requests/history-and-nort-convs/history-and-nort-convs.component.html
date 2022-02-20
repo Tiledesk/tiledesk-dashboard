@@ -305,12 +305,12 @@
     <div class="col-md-12">
       <div
         *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false ||  prjct_profile_type === 'free' && trial_expired === true">
-
-        <div class="card" style="margin-top: 6px; margin-bottom: 0px;">
+        <!-- card--no-border -->
+        <div class="card " style="margin-top: 6px; margin-bottom: 0px;">
           <div class="card-content">
 
-            <i class="material-icons" style="vertical-align: middle; color: #00bcd4;">info</i>
-            <span class="msg-alert ">
+            <i class="material-icons" style="vertical-align: middle; color: #3ea9f5;">info</i>
+            <span class="msg-alert">
               <!-- History is only available for the past 14 days. Renew your subscription for unlimited chat history -->
               {{ 'HistoryPage.HistoryIsOnlyAvailableForThePast14Days' | translate }}.
               <span class="upgrade-plan-for-unlimited-history" style="color: #039be5; cursor:pointer" (click)="openModalSubsExpiredOrGoToPricing()">

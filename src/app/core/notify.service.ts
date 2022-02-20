@@ -3,6 +3,8 @@ import { Subject } from 'rxjs/Subject';
 import { Location } from '@angular/common';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { LoggerService } from '../services/logger/logger.service';
+import { URL_understanding_default_roles } from './../utils/util';
+const swal = require('sweetalert');
 declare var $: any;
 /// Notify users about errors and other helpful stuff
 export interface Msg {
@@ -27,7 +29,7 @@ export class NotifyService {
   displayCheckLIstModal: string;
 
   displayModalSubsExpired: string;
-  displayModalEnterpiseSubsExpired : string;
+  displayModalEnterpiseSubsExpired: string;
 
   displayContactUsModal = 'none';
   viewCancelSubscriptionModal = 'none';
@@ -48,11 +50,19 @@ export class NotifyService {
   public cancelSubscriptionCompleted$ = new Subject();
 
   showSubtitleAllOperatorsSeatsUsed: boolean;
-displayLogoutModal = 'none';
+  displayLogoutModal = 'none';
+
+  public URL_UNDERSTANDING_DEFAULT_ROLES = URL_understanding_default_roles
+
   constructor(
     public location: Location,
     private logger: LoggerService
-  ) {   }
+  
+  ) { 
+   
+  }
+
+
 
   displaySubscripionHasExpiredModal(subHasExpired: boolean, prjctPlanName: string, prjctPlanSubsEndDate: Date) {
     if (subHasExpired === true) {
@@ -67,7 +77,7 @@ displayLogoutModal = 'none';
   }
 
 
-  displayEnterprisePlanHasExpiredModal(subHasExpired: boolean, prjctPlanName: string, prjctPlanSubsEndDate: Date) { 
+  displayEnterprisePlanHasExpiredModal(subHasExpired: boolean, prjctPlanName: string, prjctPlanSubsEndDate: Date) {
     if (subHasExpired === true) {
       this.displayModalEnterpiseSubsExpired = 'block';
     }
@@ -162,8 +172,8 @@ displayLogoutModal = 'none';
     this.cancelSubscriptionCompleted$.next(hasDone);
   }
 
-  presentLogoutModal() { 
-      this.displayLogoutModal = 'block';
+  presentLogoutModal() {
+    this.displayLogoutModal = 'block';
   }
 
   closeLogoutModal() {
@@ -416,7 +426,7 @@ displayLogoutModal = 'none';
         '<span data-notify="message" style="display: inline; vertical-align: middle; padding-left:8px">' + msg_part1 + '</span>'
     })
   }
- 
+
   showAllRequestHaveBeenArchivedNotification(msg_part1) {
     // tslint:disable-next-line:max-line-length
     // this.notifyArchivingRequest.update({ 'type': 'success', 'message': '<i class="material-icons" style="vertical-align: middle;"> done </i> <span style="vertical-align: middle; display: inline-block; padding-right:5px">' + msg_part1 + request_id + msg_part2 + '</span> <span style="padding-left:28px">' + '</span>' })
@@ -441,6 +451,25 @@ displayLogoutModal = 'none';
       'type': 'success',
       'message': '<i class="material-icons" style="vertical-align: middle;padding: 3px;background-color: #449d48; border-radius: 50%; font-size:16px"> done </i> <span style="vertical-align: middle; display: inline-block; padding-right:5px">' + msg + '</span> <span style="padding-left:28px">' + '</span>'
     })
+  }
+
+
+  presentModalOnlyOwnerCanManageTheAccountPlan(onlyOwnerCanManageTheAccountPlanMsg: string, learnMoreAboutDefaultRoles: string) {
+   
+    const el = document.createElement('div')
+    // el.innerHTML = onlyOwnerCanManageTheAccountPlanMsg + '. ' + "<a href='https://docs.tiledesk.com/knowledge-base/understanding-default-roles/' target='_blank'>" + learnMoreAboutDefaultRoles + "</a>"
+    el.innerHTML = onlyOwnerCanManageTheAccountPlanMsg + '. ' +`<a href=${this.URL_UNDERSTANDING_DEFAULT_ROLES} target='_blank'>` + learnMoreAboutDefaultRoles + "</a>"
+    swal({
+      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
+      content: el,
+      icon: "info",
+      // buttons: true,
+      button: {
+        text: "OK",
+      },
+      dangerMode: false,
+    })
+
   }
 
 

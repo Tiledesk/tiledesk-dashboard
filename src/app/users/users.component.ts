@@ -9,7 +9,7 @@ import { ProjectPlanService } from '../services/project-plan.service';
 import { Subscription } from 'rxjs';
 import { AppConfigService } from '../services/app-config.service';
 import { avatarPlaceholder, getColorBck } from '../utils/util';
-import { helpdocurl_users_role } from '../utils/util';
+import { URL_understanding_default_roles } from '../utils/util';
 import { LoggerService } from '../services/logger/logger.service';
 const swal = require('sweetalert');
 
@@ -82,11 +82,6 @@ export class UsersComponent implements OnInit, OnDestroy {
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
 
-  // input passed to docs-url-row
-  trigger_docs_url = helpdocurl_users_role;
-  trigger_docs_title = ''; // is diplayed if customtext = false
-  customtext = true;
-  text_to_display = "LearnMoreAboutDefaultRoles" // is diplayed if customtext = true
   UPLOAD_ENGINE_IS_FIREBASE: boolean
   profile_name: string;
 
@@ -317,7 +312,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
   goToTeammatesRolesDoc () {
-      const url = helpdocurl_users_role
+      const url = URL_understanding_default_roles
       window.open(url, '_blank');
   }
 
@@ -366,11 +361,6 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
   openModalSubsExpired() {
-    // if (this.USER_ROLE === 'owner') {
-    //   this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
-    // } else {
-    //   this.presentModalOnlyOwnerCanManageTheAccountPlan();
-    // }
 
     if (this.USER_ROLE === 'owner') {
       if (this.profile_name !== 'enterprise') {
@@ -393,20 +383,21 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
   presentModalOnlyOwnerCanManageTheAccountPlan() {
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
     // https://github.com/t4t5/sweetalert/issues/845
-    const el = document.createElement('div')
-    el.innerHTML = this.onlyOwnerCanManageTheAccountPlanMsg + '. ' + "<a href='https://docs.tiledesk.com/knowledge-base/understanding-default-roles/' target='_blank'>" + this.learnMoreAboutDefaultRoles + "</a>"
+    // const el = document.createElement('div')
+    // el.innerHTML = this.onlyOwnerCanManageTheAccountPlanMsg + '. ' + "<a href='https://docs.tiledesk.com/knowledge-base/understanding-default-roles/' target='_blank'>" + this.learnMoreAboutDefaultRoles + "</a>"
 
-    swal({
-      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      content: el,
-      icon: "info",
-      // buttons: true,
-      button: {
-        text: "OK",
-      },
-      dangerMode: false,
-    })
+    // swal({
+    //   // title: this.onlyOwnerCanManageTheAccountPlanMsg,
+    //   content: el,
+    //   icon: "info",
+    //   // buttons: true,
+    //   button: {
+    //     text: "OK",
+    //   },
+    //   dangerMode: false,
+    // })
   }
 
   getUploadEgine() {

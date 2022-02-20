@@ -99,9 +99,7 @@ export function replaceEndOfLine(text) {
     return newText;
 }
 
-export const helpdocurl_triggers = 'https://docs.tiledesk.com/knowledge-base/getting-started-with-triggers/'
-export const helpdocurl_users_role = 'https://docs.tiledesk.com/knowledge-base/understanding-default-roles/'
-export const helpdocurl_groups = 'https://docs.tiledesk.com/knowledge-base/creating-groups/'
+
 
 //LOG LEVEL
 // export enum LogLevel {
@@ -116,9 +114,7 @@ export const helpdocurl_groups = 'https://docs.tiledesk.com/knowledge-base/creat
 //     Warn = 1,
 //     Info = 2,
 //     Debug = 3
-   
 // }
-
 
 export const LogLevel = {
     'ERROR': 0,
@@ -127,3 +123,9 @@ export const LogLevel = {
     'DEBUG': 3
 }
 
+
+// Links to documentation
+export const URL_understanding_default_roles = 'https://gethelp.tiledesk.com/articles/understanding-default-roles/' // 'https://docs.tiledesk.com/knowledge-base/understanding-default-roles/'
+export const helpdocurl_triggers = 'https://docs.tiledesk.com/knowledge-base/getting-started-with-triggers/'
+
+export const helpdocurl_groups = 'https://docs.tiledesk.com/knowledge-base/creating-groups/'

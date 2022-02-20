@@ -172,19 +172,20 @@ export class TriggerStaticComponent extends StaticPageBaseComponent implements O
 
   presentModalOnlyOwnerCanManageTheAccountPlan() {
     // https://github.com/t4t5/sweetalert/issues/845
-    const el = document.createElement('div')
-    el.innerHTML = this.onlyOwnerCanManageTheAccountPlanMsg + '. ' + "<a href='https://docs.tiledesk.com/knowledge-base/understanding-default-roles/' target='_blank'>" + this.learnMoreAboutDefaultRoles + "</a>"
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles) 
+    // const el = document.createElement('div')
+    // el.innerHTML = this.onlyOwnerCanManageTheAccountPlanMsg + '. ' + "<a href='https://docs.tiledesk.com/knowledge-base/understanding-default-roles/' target='_blank'>" + this.learnMoreAboutDefaultRoles + "</a>"
 
-    swal({
-      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      content: el,
-      icon: "info",
-      // buttons: true,
-      button: {
-        text: "OK",
-      },
-      dangerMode: false,
-    })
+    // swal({
+    //   // title: this.onlyOwnerCanManageTheAccountPlanMsg,
+    //   content: el,
+    //   icon: "info",
+    //   // buttons: true,
+    //   button: {
+    //     text: "OK",
+    //   },
+    //   dangerMode: false,
+    // })
   }
 
   ngOnDestroy() {

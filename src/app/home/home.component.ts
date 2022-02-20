@@ -945,23 +945,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   goToPricingOrOpenModalSubsExpired() {
     this.logger.log('[HOME] goToPricingOrOpenModalSubsExpired')
-    // if (this.USER_ROLE === 'owner') {
-    //   if (this.prjct_profile_type === 'free') {
-
-    //     this.router.navigate(['project/' + this.projectId + '/pricing']);
-
-    //   } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-
-    //     this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
-    //     // this.notify.showCheckListModal(true);
-    //   } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true) {
-
-    //     this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
-    //   }
-
-    // } else {
-    //   this.presentModalOnlyOwnerCanManageTheAccountPlan();
-    // }
 
     if (this.USER_ROLE === 'owner') {
       if (this.prjct_profile_type === 'free') {
@@ -986,19 +969,20 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   presentModalOnlyOwnerCanManageTheAccountPlan() {
-    const el = document.createElement('div')
-    el.innerHTML = this.onlyOwnerCanManageTheAccountPlanMsg + '. ' + "<a href='https://docs.tiledesk.com/knowledge-base/understanding-default-roles/' target='_blank'>" + this.learnMoreAboutDefaultRoles + "</a>"
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
+    // const el = document.createElement('div')
+    // el.innerHTML = this.onlyOwnerCanManageTheAccountPlanMsg + '. ' + "<a href='https://docs.tiledesk.com/knowledge-base/understanding-default-roles/' target='_blank'>" + this.learnMoreAboutDefaultRoles + "</a>"
 
-    swal({
-      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      content: el,
-      icon: "info",
-      // buttons: true,
-      button: {
-        text: "OK",
-      },
-      dangerMode: false,
-    })
+    // swal({
+    //   // title: this.onlyOwnerCanManageTheAccountPlanMsg,
+    //   content: el,
+    //   icon: "info",
+    //   // buttons: true,
+    //   button: {
+    //     text: "OK",
+    //   },
+    //   dangerMode: false,
+    // })
 
   }
 
