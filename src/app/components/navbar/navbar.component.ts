@@ -26,7 +26,7 @@ import { AppConfigService } from '../../services/app-config.service';
 
 // import { publicKey } from '../../utils/util';
 // import { public_Key } from '../../utils/util';
-import { environment } from '../../../environments/environment';
+// import { environment } from '../../../environments/environment';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { Subscription } from 'rxjs/Subscription';
@@ -35,6 +35,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { BrandService } from './../../services/brand.service';
 import { LocalDbService } from '../../services/users-local-db.service';
 import { LoggerService } from '../../services/logger/logger.service';
+import { URL_understanding_default_roles } from '../../utils/util';
 const swal = require('sweetalert');
 
 
@@ -44,7 +45,8 @@ const swal = require('sweetalert');
     styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit, AfterViewInit, AfterContentChecked, OnDestroy, AfterViewChecked {
-
+   
+    URL_UNDERSTANDING_DEFAULT_ROLES = URL_understanding_default_roles
     // used to unsuscribe from behaviour subject
     private unsubscribe$: Subject<any> = new Subject<any>();
 
@@ -799,11 +801,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
 
     openModalSubsExpired() {
-        // if (this.USER_ROLE === 'owner') {
-        //     this.notifyService.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
-        // } else {
-        //     this.presentModalOnlyOwnerCanManageTheAccountPlan()
-        // }
+
 
         if (this.USER_ROLE === 'owner') {
             if (this.profile_name !== 'enterprise') {
@@ -835,30 +833,34 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     }
 
     goToPayment() {
+        var _this = this;
         if (this.USER_ROLE === 'owner') {
             if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true) {
                 this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
             }
         } else {
-            this.presentModalOnlyOwnerCanManageTheAccountPlan()
+           this.presentModalOnlyOwnerCanManageTheAccountPlan()
         }
     }
 
 
     presentModalOnlyOwnerCanManageTheAccountPlan() {
-        const el = document.createElement('div')
-        el.innerHTML = this.onlyOwnerCanManageTheAccountPlanMsg + '. ' + "<a href='https://docs.tiledesk.com/knowledge-base/understanding-default-roles/' target='_blank'>" + this.learnMoreAboutDefaultRoles + "</a>"
-
-        swal({
-            // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-            content: el,
-            icon: "info",
-            // buttons: true,
-            button: {
-                text: "OK",
-            },
-            dangerMode: false,
-        })
+        this.notifyService.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
+        // const el = document.createElement('div')
+        // // `${id}`
+        // // el.innerHTML = this.onlyOwnerCanManageTheAccountPlanMsg + '. ' +`<a href='https://docs.tiledesk.com/knowledge-base/understanding-default-roles/' target='_blank'>` + this.learnMoreAboutDefaultRoles + "</a>"
+        // el.innerHTML = this.onlyOwnerCanManageTheAccountPlanMsg + '. ' +`<a href=${this.URL_UNDERSTANDING_DEFAULT_ROLES} target='_blank'>` + this.learnMoreAboutDefaultRoles + "</a>"
+        
+        // swal({
+        //     // title: this.onlyOwnerCanManageTheAccountPlanMsg,
+        //     content: el,
+        //     icon: "info",
+        //     // buttons: true,
+        //     button: {
+        //         text: "OK",
+        //     },
+        //     dangerMode: false,
+        // })
 
     }
 
