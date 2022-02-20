@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { UsersService } from '../services/users.service';
 import { NotifyService } from '../core/notify.service';
 import { LoggerService } from '../services/logger/logger.service';
-import { helpdocurl_groups } from '../utils/util';
+import { URL_creating_groups } from '../utils/util';
 @Component({
   selector: 'app-groups',
   templateUrl: './groups.component.html',
@@ -91,7 +91,7 @@ export class GroupsComponent implements OnInit {
   }
 
   goToGroupsDoc() {
-    const url = helpdocurl_groups
+    const url = URL_creating_groups;
     window.open(url, '_blank');
   }
 

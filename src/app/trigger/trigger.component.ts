@@ -7,7 +7,7 @@ import { AuthService } from 'app/core/auth.service';
 import { NotifyService } from 'app/core/notify.service';
 import { Trigger } from 'app/models/trigger-model';
 import { TranslateService } from '@ngx-translate/core';
-import { helpdocurl_triggers } from '../utils/util';
+import { URL_getting_started_with_triggers } from '../utils/util';
 import { LoggerService } from '../services/logger/logger.service';
 
 @Component({
@@ -36,7 +36,7 @@ export class TriggerComponent implements OnInit {
   query: any;
 
   // input passed to docs-url-row
-  trigger_docs_url = helpdocurl_triggers;
+  trigger_docs_url = URL_getting_started_with_triggers;
   trigger_docs_title = 'trigger'; // is diplayed if customtext = false
   customtext = false;
   text_to_display = '' // is diplayed if customtext = true
@@ -182,7 +182,7 @@ export class TriggerComponent implements OnInit {
   }
 
   goToTriggerDocs() {
-    const url = helpdocurl_triggers
+    const url = this.trigger_docs_url;
     window.open(url, '_blank');
   }
 
