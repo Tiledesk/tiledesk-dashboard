@@ -186,13 +186,13 @@ button.close {
 }
 
 .title-attribute {
-  font-family: "Google Sans", sans-serif !important;
+  font-family: "Poppins";
   color: #394f5a;
   font-weight: 500;
 }
 
 .msg-alert {
-  font-family: "Google Sans", sans-serif !important;
+  font-family: "Poppins";
   font-weight: 400;
 }
 
@@ -365,6 +365,24 @@ input:checked + .slider:before {
   object-fit: cover;
 }
 
+.card-custom-margin {
+  margin-top: 5px;
+}
+
+.right-col-custom-padding {
+  padding-right: 10px !important;
+  padding-left: 5px !important;
+}
+
+@media (max-width: 768px) {
+  .left-col-custom-padding {
+    padding-right: 10px !important;
+  }
+
+  .right-col-custom-padding {
+    padding-left: 10px !important;
+  }
+}
 // .onoffswitch-checkbox__availability_status:disabled + .onoffswitch-label__availability_status .onoffswitch-inner__availability_status:before, .onoffswitch-switch__availability_status:after{
 //   color: #999999;
 // }
