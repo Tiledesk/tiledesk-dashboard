@@ -14,7 +14,14 @@ import { DepartmentService } from '../../services/department.service';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../services/brand.service';
 import { LoggerService } from '../../services/logger/logger.service';
-import { URL_microlanguage_for_dialogflow_images_videos, URL_dialogflow_connector_handoff_to_human_agent_example, URL_styling_your_chatbot_replies, URL_response_bot_images_buttons_videos_and_more, URL_handoff_to_human_agents, URL_configure_your_first_chatbot, URL_connect_your_dialogflow_agent } from '../../utils/util';
+import {
+  URL_microlanguage_for_dialogflow_images_videos,
+  URL_dialogflow_connector_handoff_to_human_agent_example,
+  URL_styling_your_chatbot_replies,
+  URL_response_bot_images_buttons_videos_and_more,
+  URL_handoff_to_human_agents, URL_configure_your_first_chatbot,
+  URL_connect_your_dialogflow_agent
+} from '../../utils/util';
 
 @Component({
   selector: 'bot-create',
@@ -567,7 +574,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
 
   onFileChange(event: any) {
 
-  
+
 
     this.logger.log('[BOT-CREATE] ----> FILE - event.target.files ', event.target.files);
     this.logger.log('[BOT-CREATE] ----> FILE - event.target.files.length ', event.target.files.length);
@@ -720,8 +727,8 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
   }
 
   openDocsTiledeskDialogflowConnector() {
-   
-    const url =  URL_microlanguage_for_dialogflow_images_videos
+
+    const url = URL_microlanguage_for_dialogflow_images_videos
     window.open(url, '_blank');
   }
 
@@ -729,7 +736,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
 
     // const url = 'https://gethelp.tiledesk.com/articles/dialogflow-connector-handoff-to-human-agent-example/';
     const url = URL_dialogflow_connector_handoff_to_human_agent_example
-   
+
     window.open(url, '_blank');
   }
 
@@ -776,7 +783,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
 
   openDocsResolutionBotConfigureYourFirstChatbot() {
     // const url = 'https://docs.tiledesk.com/knowledge-base/create-a-bot/'; (replaced by configure-your-first-chatbot/ )
-  
+
     // const url = 'https://gethelp.tiledesk.com/articles/configure-your-first-chatbot/';
     const url = URL_configure_your_first_chatbot;
     window.open(url, '_blank');
