@@ -13,13 +13,13 @@
   <div class="row" style=" margin-left: -15px; margin-right: -15px;">
 
 
-    
+
     <div class="col-md-12" style="padding-left: 0px; padding-right: 0px;  margin-top: -25px;">
       <div class="n-header-home">
         <h2 class="n-header-home-title">
           {{ prjct_name }}
 
-  
+
           <!-- // PLAN TYPE BADGE -->
           <span *ngIf="isVisible" style="font-family: roboto;">
             <span class="project-plan" (click)="goToPayment()"
@@ -348,14 +348,15 @@
             </div>
           </div>
 
+        
 
           <!-- --------------------------------------------------- -->
           <!-- @ Take A Shortcut for Owner And Admin  -->
           <!-- --------------------------------------------------- -->
           <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-              <div class="card"
-                style="border: unset !important;  background: #1a73e8;margin-top: 18px;margin-bottom: 18px;">
+              <div class="shortcuts-text"> {{ 'Shortcuts' | translate }} </div>
+              <div class="card shortcuts-card">
                 <div class="card-content" style="padding-left:0px; padding-right:0px">
                   <!-- <h3 class="getting-started-card-title-home-header">{{'TakeAShortcut' | translate}}</h3>
                   <p class="getting-started-card-subtitle-home-header">{{'JumpStraightToTheMostPopularSettingsInTheDashboard' | translate}}. </p> -->
@@ -1252,7 +1253,8 @@
                     <span>January 2022</span>
                   </p>
                   <p>
-                    Adds the following languages into which the dashboard can be translated: Portuguese, French, Russian, Spanish, and Turkish
+                    Adds the following languages into which the dashboard can be translated: Portuguese, French,
+                    Russian, Spanish, and Turkish
                   </p>
                 </div>
                 <div class="slide">
@@ -1261,7 +1263,8 @@
                     <span>January 2022</span>
                   </p>
                   <p>
-                    Adds the Tiledesk widget allowing teammates to chat with the support service directly from within the dashboard
+                    Adds the Tiledesk widget allowing teammates to chat with the support service directly from within
+                    the dashboard
                   </p>
                 </div>
                 <div class="slide">
