@@ -1507,12 +1507,12 @@
     "UnauthorizedPage": {
         "UnauthorizedAccess": "L'accès non autorisé!",
         "OopsYouDontHave": "Oups! Vous n'êtes pas autorisé à accéder à cette page.",
-        "OopsYoudontBelongToTheProject": "Oups! Il semble que ce ne soit pas votre projet."
+        "OopsYoudontBelongToTheProject": "Oups! Il semble que vous n'apparteniez pas à ce projet."
     },
     "HoursPage": {
         "ActivateTimetables": "Activer les heures d'ouverture",
         "TheProject": "Le projet ",
-        "IsSettedTo": "est réglé sur :",
+        "IsSettedTo": "est réglé sur:",
         "YouAreCurrentlyAt": "Vous êtes actuellement à :",
         "SetProjectToYourTimeZone": "Définir le projet sur votre fuseau horaire",
         "TheProjectIsAlreadySettedOnYourTZ": "le projet est déjà réglé sur votre fuseau horaire",

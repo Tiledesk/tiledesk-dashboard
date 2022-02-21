@@ -1508,7 +1508,7 @@
 	"UnauthorizedPage": {
 		"UnauthorizedAccess": "Nicht authorisierter Zugriff!",
 		"OopsYouDontHave": "Oops! Sie haben keine Rechte um diese Seite zu sehen.",
-		"OopsYoudontBelongToTheProject": "Oops! Das ist anscheinend nicht dein Projekt"
+		"OopsYoudontBelongToTheProject": "Hoppla! Es scheint, dass Sie nicht zu diesem Projekt gehören."
 	},
 	"HoursPage": {
 		"ActivateTimetables": "Öffnungszeiten aktivieren",

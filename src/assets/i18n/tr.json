@@ -1507,7 +1507,7 @@
     "UnauthorizedPage": {
         "UnauthorizedAccess": "Yetkisiz Erişim!",
         "OopsYouDontHave": "Hata! Bu sayfaya erişim izniniz yok.",
-        "OopsYoudontBelongToTheProject": "Hata! Görünüşe göre bu senin projen değil."
+        "OopsYoudontBelongToTheProject": "Hata! Görünüşe göre bu projeye ait değilsin."
     },
     "HoursPage": {
         "ActivateTimetables": "Çalışma saatlerini etkinleştir",

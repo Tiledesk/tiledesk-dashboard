@@ -1507,7 +1507,7 @@
     "UnauthorizedPage": {
         "UnauthorizedAccess": "Несанкционированный доступ!",
         "OopsYouDontHave": "Ой! У вас нет разрешения на доступ к этой странице.",
-        "OopsYoudontBelongToTheProject": "Ой! Похоже, это не ваш проект."
+        "OopsYoudontBelongToTheProject": "Ой! Кажется, вы не принадлежите к этому проекту."
     },
     "HoursPage": {
         "ActivateTimetables": "Активировать часы работы",
