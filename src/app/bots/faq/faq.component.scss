@@ -417,6 +417,12 @@ and also iPads specifically.
   .custom-label {
     height: 0px !important;
   }
+  .webhook-url-label {
+    text-align: left !important;
+    position: relative;
+    top: -17px;
+    margin-top: 16px;
+  }
 }
 
 .checkbox-label {
