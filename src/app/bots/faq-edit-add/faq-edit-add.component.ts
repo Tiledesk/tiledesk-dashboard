@@ -8,6 +8,13 @@ import { NotifyService } from '../../core/notify.service';
 import { Location } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from '../../services/logger/logger.service';
+import {
+  URL_styling_your_chatbot_replies,
+  URL_response_bot_images_buttons_videos_and_more,
+  URL_handoff_to_human_agents, 
+  URL_advanced_chatbot_styling_buttons
+} from '../../utils/util';
+
 const swal = require('sweetalert');
 @Component({
   selector: 'faq-edit-add',
@@ -419,37 +426,40 @@ export class FaqEditAddComponent implements OnInit {
   }
 
 
-
-
   goToKBArticle_ResolutionBotImagesVideosButtonsAndMore() {
-    const url = 'https://docs.tiledesk.com/knowledge-base/response-bot-images-buttons-videos-and-more/';
+    // const url = 'https://docs.tiledesk.com/knowledge-base/response-bot-images-buttons-videos-and-more/'; // NOT FOUND on gethelp
+    const url = URL_response_bot_images_buttons_videos_and_more; // NOT FOUND on gethelp
     window.open(url, '_blank');
   }
 
   goToKBArticleAnchor_SendImages() {
-    const url = 'https://docs.tiledesk.com/knowledge-base/response-bot-images-buttons-videos-and-more/#send-images';
+    // const url = 'https://docs.tiledesk.com/knowledge-base/response-bot-images-buttons-videos-and-more/#send-images'; // NOT FOUND on gethelp
+    const url = URL_response_bot_images_buttons_videos_and_more + '#send-images'; // NOT FOUND on gethelp
     window.open(url, '_blank');
   }
 
   goToKBArticleAnchor_TextButton() {
-    const url = 'https://docs.tiledesk.com/knowledge-base/response-bot-images-buttons-videos-and-more/#text-buttons';
+    // const url = 'https://docs.tiledesk.com/knowledge-base/response-bot-images-buttons-videos-and-more/#text-buttons'; // NOT FOUND on gethelp
+    const url = URL_response_bot_images_buttons_videos_and_more + '#text-buttons'; // NOT FOUND on gethelp
     window.open(url, '_blank');
   }
 
   goToKBArticle_HandoffToHumanAgents() {
-    const url = 'https://docs.tiledesk.com/knowledge-base/handoff-to-human-agents/';
+    // const url = 'https://gethelp.tiledesk.com/articles/handoff-to-human-agents/';
+    const url = URL_handoff_to_human_agents;
     window.open(url, '_blank');
   }
 
   goToKBArticle_AdvancedChatbotStyling() {
     this.logger.log('goToKBArticle_AdvancedChatbotStyling');
-    const url = 'https://docs.tiledesk.com/knowledge-base/advanced-chatbot-styling-buttons/';
+    // const url = 'https://gethelp.tiledesk.com/articles/advanced-chatbot-styling-buttons/';
+    const url = URL_advanced_chatbot_styling_buttons;
     window.open(url, '_blank');
   }
 
   goToKBArticle_StylingYourChatbotReplies() {
-    this.logger.log('[FAQ-EDIT-ADD] goToKBArticle_StylingYourChatbotReplies');
-    const url = 'https://docs.tiledesk.com/knowledge-base/styling-your-chatbot-replies/';
+    // const url = 'https://gethelp.tiledesk.com/articles/styling-your-chatbot-replies/';
+    const url = URL_styling_your_chatbot_replies;
     window.open(url, '_blank');
   }
 
