@@ -19,10 +19,9 @@
 				<!--  Widget Set Up  HEADER -->
 				<!-- ------------------------------- -->
 				<div class="row">
-					<div class="col-xs-12"
-						style="background-color: rgb(241,241,241);margin-top: -15px;	padding: 20px 20px 10px 36px; margin-bottom: 24px;margin-left:32px">
-						<!-- style="margin-left: 20px;font-size: 18px;font-weight: 600;	margin-bottom: 6px;line-height: 28px;" -->
-						<div style="font-size: 22px;font-weight: 600;margin-bottom: 6px;line-height: 32px;">
+					<div class="col-xs-12 widget-set-up-col">
+						
+						<div class="widget-set-up-text">
 							{{ 'WidgetSetUp' | translate }}
 						</div>
 
@@ -30,11 +29,7 @@
 					Setting up the Widget for visitors lets you chat with people when they're on your website.
 				</div> -->
 
-						<div style="font-size: 14px;font-weight: 400;margin-bottom: 6px;line-height: 20px;">
-							<!-- <span class="material-icons" style="vertical-align: middle;color: #0f62ff">
-						menu_book
-					</span> -->
-
+						<div class="widget-set-up-link-to-docs-wpr">
 							<span>
 								<svg style="width: 25px;height:auto; vertical-align: middle;" aria-hidden="true"
 									focusable="false" data-prefix="fab" data-icon="readme"
@@ -45,8 +40,8 @@
 									</path>
 								</svg>
 							</span>
-							<span
-								style="margin-left: 8px;vertical-align: middle;color: #0f62ff; font-size: 14px;font-weight: 400; cursor: pointer; text-decoration: underline;"
+							<span class="widget-set-up-link-to-docs"
+								style=""
 								(click)="goToWidgetWebSdk()">
 								{{'LearnAboutAdvancedWidgetConfiguration'| translate}}
 							</span>
@@ -295,7 +290,7 @@
 														</span>
 														<span class="install-widget-step-text">
 															{{'GoToGoogleTagManagerAnd' | translate}}
-															<span style="color: #0f62ff;text-decoration: underline;"
+															<span class="install-widget-with-tag-manager-link"
 																(click)="goToInstallWithTagManagerDocs()">
 																{{'FollowTheseInstructions' | translate}}
 															</span>
@@ -901,7 +896,7 @@
 												{{ 'WidgetPreviewIsDisplayedIn' | translate }} <span
 													style="font-weight: bold;">{{selectedLangName}} </span>.<br>
 												<!-- {{'ChangePreviewToCustomizeTheFollowingFieldsInAnotherLanguage' | translate}} -->
-												{{'ChangePreviewIn' | translate}} <span style="color:#0f62ff">
+												{{'ChangePreviewIn' | translate}} <span class="anchor-to-multilanguage-section">
 													{{'MultilanguageSection' | translate}}</span>
 												{{'ToCustomizeTheFollowingFieldsInAnotherLanguage' | translate}}
 											</label>
@@ -1202,7 +1197,7 @@
 												{{ 'WidgetPreviewIsDisplayedIn' | translate }} <span
 													style="font-weight: bold;">{{selectedLangName}} </span>.<br>
 												<!-- {{'ChangePreviewToCustomizeTheFollowingFieldsInAnotherLanguage' | translate}} -->
-												{{'ChangePreviewIn' | translate}} <span style="color:#0f62ff">
+												{{'ChangePreviewIn' | translate}} <span class="anchor-to-multilanguage-section">
 													{{'MultilanguageSection' | translate}}</span>
 												{{'ToCustomizeTheFollowingFieldsInAnotherLanguage' | translate}}
 											</label>
@@ -1405,7 +1400,7 @@
 												{{ 'WidgetPreviewIsDisplayedIn' | translate }} <span
 													style="font-weight: bold;">{{selectedLangName}} </span>.<br>
 												<!-- {{'ChangePreviewToCustomizeTheFollowingFieldsInAnotherLanguage' | translate}} -->
-												{{'ChangePreviewIn' | translate}} <span style="color:#0f62ff">
+												{{'ChangePreviewIn' | translate}} <span class="anchor-to-multilanguage-section">
 													{{'MultilanguageSection' | translate}}</span>
 												{{'ToCustomizeTheFollowingFieldsInAnotherLanguage' | translate}}
 											</label>
@@ -1577,13 +1572,13 @@
 										<h4 class="widget-section-header__title-underlined">
 											Pre-Chat form
 
-											<span *ngIf="preChatForm === true" style="text-transform: lowercase;">
+											<span *ngIf="preChatForm === true" class="pre-chat-form-on-badge">
 												<!-- ({{ 'Enabled' | translate }}) -->
-												(ON)
+												On
 											</span>
-											<span *ngIf="preChatForm === false" style="text-transform: lowercase;">
+											<span *ngIf="preChatForm === false" class="pre-chat-form-off-badge">
 												<!-- ({{ 'Disabled' | translate}}) -->
-												(OFF)
+												Off
 											</span>
 										</h4>
 									</div>
@@ -1785,9 +1780,9 @@
 											</span>
 											<h5 style="color:#687882; font-size:14px; font-weight: 400;">
 												{{ 'IfYouWantToTranslateOrEditWidgetPhrases' | translate }}
-												<span style="color: #039be5; cursor:pointer"
+												<span class="add-languages-link"
 													(click)="goToWidgetMultilanguage()">
-													- {{ 'ClickHere' | translate }}
+													- {{ 'AddLanguages' | translate }}
 												</span>
 
 											</h5>

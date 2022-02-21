@@ -20,7 +20,8 @@ import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts
 import { LoggerService } from '../../services/logger/logger.service';
 import { UsersService } from '../../services/users.service';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators'
+import { takeUntil } from 'rxjs/operators';
+import { URL_google_tag_manager_add_tiledesk_to_your_sites } from '../../utils/util';
 
 const swal = require('sweetalert');
 
@@ -2118,7 +2119,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       this.logger.log('[WIDGET-SET-UP] - IS ENABLE Auto Rating ', event.target.checked)
     } else {
       this.nativeRating = false;
-    
+
       // *** REMOVE PROPERTY
       delete this.widgetObj['nativeRating'];
       this.widgetService.updateWidgetProject(this.widgetObj)
@@ -2211,7 +2212,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
   goToInstallWithTagManagerDocs() {
-    const url = 'https://docs.tiledesk.com/knowledge-base/google-tag-manager-add-tiledesk-to-your-sites/';
+    const url =  URL_google_tag_manager_add_tiledesk_to_your_sites;
     window.open(url, '_blank');
   }
   goToWidgetWebSdk() {
