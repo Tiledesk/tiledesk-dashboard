@@ -131,10 +131,13 @@ export const URL_creating_groups = 'https://gethelp.tiledesk.com/articles/creati
 
 export const URL_microlanguage_for_dialogflow_images_videos = 'https://docs.tiledesk.com/knowledge-base/microlanguage-for-dialogflow-images-videos/'; // NOT FOUND on gethelp
 export const URL_dialogflow_connector_handoff_to_human_agent_example = 'https://gethelp.tiledesk.com/articles/dialogflow-connector-handoff-to-human-agent-example/' // 'https://docs.tiledesk.com/knowledge-base/dialogflow-connector-handoff-to-human-agent-example/'
-export const URL_styling_your_chatbot_replies ='https://gethelp.tiledesk.com/articles/styling-your-chatbot-replies/'  // https://docs.tiledesk.com/knowledge-base/styling-your-chatbot-replies/ 
+export const URL_styling_your_chatbot_replies = 'https://gethelp.tiledesk.com/articles/styling-your-chatbot-replies/'  // https://docs.tiledesk.com/knowledge-base/styling-your-chatbot-replies/ 
 export const URL_response_bot_images_buttons_videos_and_more = 'https://docs.tiledesk.com/knowledge-base/response-bot-images-buttons-videos-and-more/'; // NOT FOUND on gethelp
 export const URL_handoff_to_human_agents = 'https://gethelp.tiledesk.com/articles/handoff-to-human-agents/' // https://docs.tiledesk.com/knowledge-base/handoff-to-human-agents/
 export const URL_configure_your_first_chatbot = 'https://gethelp.tiledesk.com/articles/configure-your-first-chatbot/' //  https://docs.tiledesk.com/knowledge-base/configure-your-first-chatbot/ 
 export const URL_connect_your_dialogflow_agent = 'https://docs.tiledesk.com/knowledge-base/connect-your-dialogflow-agent/'; // NOT FOUND on gethelp
-export const URL_advanced_chatbot_styling_buttons= 'https://gethelp.tiledesk.com/articles/advanced-chatbot-styling-buttons/';
+export const URL_advanced_chatbot_styling_buttons = 'https://gethelp.tiledesk.com/articles/advanced-chatbot-styling-buttons/'; // https://docs.tiledesk.com/knowledge-base/advanced-chatbot-styling-buttons/
 
+export const URL_getting_started_for_admins = 'https://gethelp.tiledesk.com/categories/getting-started-for-admins/' // https://docs.tiledesk.com/knowledge-base-category/getting-started-for-admins/
+export const URL_getting_started_for_agents = 'https://gethelp.tiledesk.com/categories/getting-started-for-agents/' //'https://docs.tiledesk.com/knowledge-base-category/getting-started-for-agents/'
+export const URL_google_tag_manager_add_tiledesk_to_your_sites = 'https://docs.tiledesk.com/knowledge-base/google-tag-manager-add-tiledesk-to-your-sites/' // NOT FOUND on gethelp
