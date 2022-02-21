@@ -136,4 +136,5 @@ export const URL_response_bot_images_buttons_videos_and_more = 'https://docs.til
 export const URL_handoff_to_human_agents = 'https://gethelp.tiledesk.com/articles/handoff-to-human-agents/' // https://docs.tiledesk.com/knowledge-base/handoff-to-human-agents/
 export const URL_configure_your_first_chatbot = 'https://gethelp.tiledesk.com/articles/configure-your-first-chatbot/' //  https://docs.tiledesk.com/knowledge-base/configure-your-first-chatbot/ 
 export const URL_connect_your_dialogflow_agent = 'https://docs.tiledesk.com/knowledge-base/connect-your-dialogflow-agent/'; // NOT FOUND on gethelp
+export const URL_advanced_chatbot_styling_buttons= 'https://gethelp.tiledesk.com/articles/advanced-chatbot-styling-buttons/';
 
