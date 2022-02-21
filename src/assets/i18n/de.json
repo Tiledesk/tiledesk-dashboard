@@ -2013,5 +2013,8 @@
 	"BeSureThatYourWebServiceMeetsAllTheWebhookRequirements":"Stellen Sie sicher, dass Ihr Webdienst alle Webhook-Anforderungen erfüllt, die für die in diesem Agenten aktivierte API-Version spezifisch sind.",
 	"LearnMoreAboutWebhookRequirements":"Erfahren Sie mehr über die Webhook-Anforderungen",
 	"YouAreCurrentlySetToUnavailable":"Sie sind derzeit auf Nicht verfügbar eingestellt und erhalten keine neuen Konversationen",
-	"Shortcuts":"Direkte Verbindungen"
+	"Shortcuts":"Direkte Verbindungen",
+	"AddLanguages": "Sprachen hinzufügen",
+	"TheLanguageWillBeRemovedFromYourProject":"Die Sprache {{ language_name }} wird aus Ihrem Projekt entfernt"
+	
 }

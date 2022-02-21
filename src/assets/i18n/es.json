@@ -2014,6 +2014,8 @@
     "LearnMoreAboutWebhookRequirements":"Más información sobre los requisitos de los webhooks",
     "YouAreCurrentlySetToUnavailable":"Actualmente está configurado como No disponible y no está recibiendo nuevas conversaciones",
     "Shortcuts":"Accesos directos",
+    "AddLanguages": "Agregar idiomas",
+    "TheLanguageWillBeRemovedFromYourProject":"El idioma {{ language_name }} se eliminará de su proyecto",
     "CHAT_IONIC": {
         "LABEL_TU": "tú: ",
         "LABEL_MSG_PUSH_START_CHAT": "Aún no hay conversación",

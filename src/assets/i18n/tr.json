@@ -2014,6 +2014,8 @@
     "LearnMoreAboutWebhookRequirements":"Web kancası gereksinimleri hakkında daha fazla bilgi edinin",
     "YouAreCurrentlySetToUnavailable":"Şu anda Uygun Değil olarak ayarlandınız ve yeni konuşma almıyorsunuz",
     "Shortcuts":"Kısayollar",
+    "AddLanguages": "Dil ekle",
+    "TheLanguageWillBeRemovedFromYourProject":"{{ language_name }} dili projenizden kaldırılacak",
     "CHAT_IONIC": {
         "LABEL_TU": "sen: ",
         "LABEL_MSG_PUSH_START_CHAT": "Henüz görüşme yok",
