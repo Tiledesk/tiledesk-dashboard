@@ -23,6 +23,15 @@ import { BrandService } from '../../services/brand.service';
 import { DepartmentService } from '../../services/department.service';
 import { avatarPlaceholder, getColorBck } from '../../utils/util';
 import { LoggerService } from '../../services/logger/logger.service';
+import {
+  URL_microlanguage_for_dialogflow_images_videos,
+  URL_dialogflow_connector_handoff_to_human_agent_example,
+  URL_styling_your_chatbot_replies,
+  URL_response_bot_images_buttons_videos_and_more,
+  URL_handoff_to_human_agents,
+  URL_configure_your_first_chatbot
+} from '../../utils/util';
+
 const swal = require('sweetalert');
 // import $ = require('jquery');
 // declare const $: any;
@@ -389,7 +398,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
 
   onFileChange(event: any) {
-    
+
 
     this.logger.log('[FAQ-COMP] onFileChange - event.target.files ', event.target.files);
     this.logger.log('[FAQ-COMP] onFileChange - event.target.files.length ', event.target.files.length);
@@ -758,15 +767,15 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
- 
+
     let keys = this.public_Key.split("-");
- 
+
     keys.forEach(key => {
 
       if (key.includes("ANA")) {
-       
+
         let ana = key.split(":");
-   
+
         if (ana[1] === "F") {
           this.isVisibleAnalytics = false;
         } else {
@@ -1160,7 +1169,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
   }
 
- 
+
 
 
   // -----------------------------------------------------------------------------------------
@@ -1428,23 +1437,27 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   // Resolution bot doc link
   // -----------------------------------------------------------------------
   openResolutionBotDocsStylingYourChatbotReplies() {
-    const url = 'https://docs.tiledesk.com/knowledge-base/styling-your-chatbot-replies/';
+
+
+    const url = URL_styling_your_chatbot_replies;
     window.open(url, '_blank');
   }
 
   openDocsResolutionBotSendImageVideosMore() {
-    const url = 'https://docs.tiledesk.com/knowledge-base/response-bot-images-buttons-videos-and-more/';
+    const url = URL_response_bot_images_buttons_videos_and_more
     window.open(url, '_blank');
   }
 
   openDocsResolutionBotHandoffToHumanAgent() {
-    const url = 'https://docs.tiledesk.com/knowledge-base/handoff-to-human-agents/';
+    // const url = 'https://gethelp.tiledesk.com/articles/handoff-to-human-agents/';
+    const url = URL_handoff_to_human_agents
     window.open(url, '_blank');
   }
 
   openDocsResolutionBotConfigureYourFirstChatbot() {
-    // const url = 'https://docs.tiledesk.com/knowledge-base/create-a-bot/';
-    const url = 'https://docs.tiledesk.com/knowledge-base/configure-your-first-chatbot/';
+    // const url = 'https://docs.tiledesk.com/knowledge-base/create-a-bot/'; (replaced by configure-your-first-chatbot/ )
+    // const url = 'https://gethelp.tiledesk.com/articles/configure-your-first-chatbot/';
+    const url = URL_configure_your_first_chatbot;
     window.open(url, '_blank');
   }
 
@@ -1457,12 +1470,14 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   }
 
   openDocsTiledeskDialogflowConnector() {
-    const url = 'https://docs.tiledesk.com/knowledge-base/microlanguage-for-dialogflow-images-videos/';
+    // const url = 'https://docs.tiledesk.com/knowledge-base/microlanguage-for-dialogflow-images-videos/'; // NOT FOUND on gethelp
+    const url = URL_microlanguage_for_dialogflow_images_videos // NOT FOUND on gethelp
     window.open(url, '_blank');
   }
 
   openDocsDialogFlowHandoffToHumanAgent() {
-    const url = 'https://docs.tiledesk.com/knowledge-base/dialogflow-connector-handoff-to-human-agent-example/';
+    // https://docs.tiledesk.com/knowledge-base/dialogflow-connector-handoff-to-human-agent-example/ 
+    const url = URL_dialogflow_connector_handoff_to_human_agent_example
     window.open(url, '_blank');
   }
 
@@ -1478,7 +1493,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   openWebhookRequirementsDoc() {
     const url = 'https://developer.tiledesk.com/resolution-bot-programming/webhook-data-model';
     window.open(url, '_blank');
-  } 
+  }
 
 
 

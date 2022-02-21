@@ -964,111 +964,13 @@
                           (change)="checkValueTopic($event)" />
                         <span class="dropdown-item"> {{ 'FaqPage.Topic' | translate }}</span>
                       </li>
-
                     </ul>
                   </div>
-
-
-
                 </div>
                 <div class="col-md-12">
                   <div class="section-subtitle"> </div>
                 </div>
               </div> <!-- ./end row-->
-
-
-
-              <!-- <h4 class="faq-table-title" style="margin-bottom:2px;"> -->
-              <!-- -----------------------------------------------  -->
-              <!--  BUTTON ADD FAQ - moved on top -->
-              <!-- ----------------------------------------------- -->
-              <!-- <button class="btn btn-white tooltipx text_primary"
-                  [ngClass]="{'add-padding' : windowWidthMore764 === true}"
-                  style="padding:4px;  margin-top: 0px; margin-bottom: 0px; margin-left: 15px; border-radius: 50px;"
-                  (click)="goToEditAddPage_CREATE()">
-
-                  <span class="icon" style="padding-right:0px">
-                    <i class="material-icons" style="font-size:18px; top:0px">add</i>
-                    <span *ngIf="windowWidthMore764"
-                      style="position: relative; top: 1px; text-transform: initial; text-transform: initial;">
-                      {{ 'NewAnswer' | translate }}
-                    </span>
-                  </span>
-                  <span *ngIf="windowWidthMore764 === false" class="tooltiptext" style="text-transform:none">
-                    {{ 'NewAnswer' | translate }} </span>
-                </button> -->
-
-
-              <!-- ----------------------------------------------- -->
-              <!-- BUTTON ADD FAQs FROM CSV FILE - moved on top -->
-              <!-- ----------------------------------------------- -->
-              <!-- <button class="btn btn-white tooltipx text_primary"
-                  [ngClass]="{'add-padding' : windowWidthMore764 === true}"
-                  style="padding:4px; text-transform:none; margin-top: 0px; margin-bottom: 0px; margin-left: 10px; border-radius: 50px;"
-                  (click)="openImportModal()">
-                  <span class="icon" style="padding-right:0px;">
-                    <i class="material-icons" style="font-size:18px; top:0px">file_upload</i>
-                    <span *ngIf="windowWidthMore764"
-                      style="position: relative; top: 1px; text-transform: initial; text-transform: initial;">
-                      {{ 'UploadAnswersFromCsv' | translate }}
-                    </span>
-                  </span>
-                  <span *ngIf="windowWidthMore764 === false" class="tooltiptext" style="text-transform:none">{{
-                    'UploadAnswersFromCsv' | translate }}</span>
-                </button> -->
-
-
-              <!-- ----------------------------------------------- -->
-              <!-- BUTTON EXPORT FAQs TO CSV - moved on top -->
-              <!-- ----------------------------------------------- -->
-              <!-- <button class="btn btn-white tooltipx text_primary"
-                  [ngClass]="{'add-padding' : windowWidthMore764 === true}"
-                  style="padding:4px; text-transform:none; margin-top: 0px; margin-bottom: 0px; margin-left: 10px; border-radius: 50px;"
-                  (click)="exportFaqsToCsv()">
-
-                  <span class="icon" style="padding-right:0px;">
-
-                    <i class="material-icons" style="font-size:18px; top:0px">save_alt</i>
-                    <span *ngIf="windowWidthMore764"
-                      style="position: relative; top: 1px; text-transform: initial; text-transform: initial;">
-                      {{ 'ExportAnswersToCsv' | translate }}
-                    </span>
-                  </span>
-                  <span *ngIf="windowWidthMore764 === false" class="tooltiptext" style="text-transform:none">{{
-                    'ExportAnswersToCsv' | translate }}</span>
-                </button> -->
-
-
-
-              <!-- ----------------------------------------------- -->
-              <!-- BUTTON TEST BOT - moved on top -->
-              <!-- ----------------------------------------------- -->
-              <!-- <button class="btn btn-white text_primary"
-                  style="padding:4px; margin-top: 0px; margin-bottom: 0px; margin-left: 10px; border-radius: 50px;float: right;"
-                  (click)="goToTestFaqPage()">
-                  <span class="icon" style="padding-right:0px; text-transform:none;padding-left: 9px;">
-                    <span style="position: relative; top: 1px;"> Bot test </span>
-                    <i class="material-icons" style="font-size:18px; top:0px;">play_arrow</i>
-                  </span>
-                </button> -->
-
-
-              <!-- ----------------------------------------------- -->
-              <!-- FAKE BUTTON ** FOR DEMO - OPEN RIGHT SIDEBAR -->
-              <!-- ----------------------------------------------- -->
-              <!-- <button class="btn btn-info tooltipx" [ngClass]="{'add-padding' : windowWidthMore764 === true}" 
-                style="padding:4px; text-transform:none; margin-top: 0px; margin-bottom: 0px; margin-left: 10px; border-radius: 50px;" 
-                (click)="openRightSidebar()">
-                <span class="icon" style="padding-right:0px;">           
-                  <i class="material-icons" style="font-size:18px; top:0px">file_upload</i>
-                    <span *ngIf="windowWidthMore764" style="position: relative; top: 1px; text-transform: initial; text-transform: initial;">
-                      Create from ...
-                    </span>
-                </span>
-                <span *ngIf="windowWidthMore764 === false" class="tooltiptext" style="text-transform:none"> Create from ...</span>
-              </button> -->
-              <!-- </h4> -->
-
             </div>
 
             <loading-spinner *ngIf="showSpinner"></loading-spinner>
@@ -1077,7 +979,6 @@
               <table class="table table-hover">
                 <thead>
                   <tr>
-
                     <th *ngIf="display_intent_name_in_table === true">
 
                       <span class="column-th-span">
@@ -1183,7 +1084,7 @@
                     </td>
 
                     <td *ngIf="isVisibleAnalytics"
-                      style="white-space: normal !important; word-wrap: break-word;font-size:13px; font-weight:400; word-break: break-all;">
+                      style="white-space: normal !important; word-wrap: break-word;font-size:13px; font-weight:400; word-break: break-all; text-align: center;">
                       <span *ngIf="faq.message_count" class="tooltipx">
                         {{ faq?.message_count }}
                         <span class="tooltiptext" style="white-space: nowrap; cursor: pointer;">
