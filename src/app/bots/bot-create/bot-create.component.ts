@@ -783,7 +783,6 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
 
   openDocsResolutionBotConfigureYourFirstChatbot() {
     // const url = 'https://docs.tiledesk.com/knowledge-base/create-a-bot/'; (replaced by configure-your-first-chatbot/ )
-
     // const url = 'https://gethelp.tiledesk.com/articles/configure-your-first-chatbot/';
     const url = URL_configure_your_first_chatbot;
     window.open(url, '_blank');
