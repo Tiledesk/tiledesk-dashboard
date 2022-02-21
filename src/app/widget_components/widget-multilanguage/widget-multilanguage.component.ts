@@ -5,6 +5,8 @@ import { BaseTranslationComponent } from './base-translation/base-translation.co
 import { NotifyService } from '../../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from '../../services/logger/logger.service';
+const swal = require('sweetalert');
+
 @Component({
   selector: 'appdashboard-widget-multilanguage',
   templateUrl: './widget-multilanguage.component.html',
@@ -40,6 +42,9 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
   translationDeleted: string;
   defaultLangName: string;
   defaultLangCode: string;
+  areYouSureMsg: string;
+  deleteMsg: string;
+  cancelMsg: string;
   constructor(
     public location: Location,
     public widgetService: WidgetService,
@@ -63,17 +68,36 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
 
   getTranslation() {
     this.translateGetTranslationErrorMsg();
+    this.translateAreYouSure();
+    this.translateDelete();
+    this.translateCancel();
   }
 
   translateGetTranslationErrorMsg() {
     this.translate.get('UserEditAddPage.AnErrorHasOccurred')
       .subscribe((text: string) => {
-
         this.errorNoticationMsg = text;
-        // this.logger.log('+ + + An Error Has Occurred Notication Msg', text)
       });
   }
 
+  translateAreYouSure() {
+    this.translate.get('AreYouSure').subscribe((text: string) => {
+      this.areYouSureMsg = text;
+    });
+  }
+
+  translateDelete() {
+    this.translate.get('Delete')
+      .subscribe((text: string) => {
+        this.deleteMsg = text;
+      });
+  }
+  translateCancel() {
+    this.translate.get('Cancel')
+      .subscribe((text: string) => {
+        this.cancelMsg = text;
+      });
+  }
 
   public generateFake(count: number): Array<number> {
     const indexes = [];
@@ -113,7 +137,7 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
     const self = this
     this.widgetService.getLabels().subscribe((labels: any) => {
       this.logger.log('Multilanguage (widget-multilanguage) labels ***** - RES', labels);
-      this.logger.log('Multilanguage (widget-multilanguage) labels ***** - RES typeof',typeof labels);
+      this.logger.log('Multilanguage (widget-multilanguage) labels ***** - RES typeof', typeof labels);
       // && labels.length > 0 
       if (labels && Object.keys(labels).length > 0) {
         // this.translation = labels[0].data[0];
@@ -155,7 +179,7 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
             this.logger.log('Multilanguage (widget-multilanguage) ***** GET labels ***** - languages_codes.length', this.languages_codes.length);
             if (this.languages_codes.length === 0) {
               this._selectTranslationTab('add', '');
-            } 
+            }
 
 
             /* old */
@@ -202,7 +226,7 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
   makeDefaultLanguage(languageCode) {
     this.logger.log('Multilanguage (widget-multilanguage) - MAKE DAFAULT LANG - languageCode: ', languageCode);
 
-    this.widgetService.setDefaultLanguage(languageCode).subscribe((translation: any) => { 
+    this.widgetService.setDefaultLanguage(languageCode).subscribe((translation: any) => {
       this.logger.log('Multilanguage (widget-multilanguage) - MAKE DAFAULT LANG - RES ', translation);
 
       if (translation.default === true) {
@@ -216,7 +240,7 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
       this.logger.log('Multilanguage (widget-multilanguage) - MAKE DAFAULT LANG ***** * COMPLETE *');
 
       // this.getLabels()
-     
+
     });
   }
 
@@ -350,11 +374,11 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
 
     if (this.selectedTranslationCode === this.defaultLangCode) {
       isdefault = true
-    }  else {
+    } else {
       isdefault = false
     }
 
-    this.widgetService.editLabels(this.selectedTranslationCode.toUpperCase(), isdefault ,this.currentTraslationClone)
+    this.widgetService.editLabels(this.selectedTranslationCode.toUpperCase(), isdefault, this.currentTraslationClone)
       .subscribe((labels: any) => {
         this.logger.log('Multilanguage (widget-multilanguage) - editLang RES ', labels);
 
@@ -385,7 +409,7 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
       });
   }
 
-  onFocusSelectLang () {
+  onFocusSelectLang() {
     this.logger.log('Multilanguage onFocusSelectLang translations ', this.translations);
   }
 
@@ -406,8 +430,28 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
   }
 
 
-  deleteLang() {
+  presentSwalModalDeleteLanguage() {
+    // console.log('Multilanguage deleteLang selected Translation Label', this.selectedTranslationLabel)
+    swal({
+      title: this.areYouSureMsg + '?',
+      text: this.translate.instant('TheLanguageWillBeRemovedFromYourProject', {language_name: this.selectedTranslationLabel }),
+      icon: "warning",
+      buttons: [this.cancelMsg, this.deleteMsg],
+      dangerMode: true,
+    })
+      .then((WillDelete) => {
+        if (WillDelete) {
+          this.deleteLang();
+          // console.log('[Multilanguage] swal WillDelete ', WillDelete)
+        } else {
+          // console.log('[Multilanguage] swal WillDelete (else)', swal)
+        }
+      });
+  }
 
+
+
+  deleteLang() {
     this.logger.log('Multilanguage deleteLang selected Translation Label', this.selectedTranslationLabel);
     const btn_delete_lang = <HTMLElement>document.querySelector('.btn_delete_lang');
     if (btn_delete_lang) {

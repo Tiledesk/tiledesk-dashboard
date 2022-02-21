@@ -111,10 +111,10 @@
                 // --------------------------------------------------------------
                 // @ Delete translation
                 // -------------------------------------------------------------- -->
-                <!-- <button *ngIf="selectedTranslationCode !== 'add' && selectedTranslationCode !== 'en'" -->
+                <!-- deleteLang() -->
                 <button *ngIf="selectedTranslationCode !== 'add' && selectedTranslationCode !== defaultLangCode"
                   class="btn btn-danger btn_delete_lang" style="margin-top: 2px; margin-bottom: 1px; float: right;"
-                  (click)="deleteLang()">
+                  (click)="presentSwalModalDeleteLanguage()">
                   {{ 'Delete' | translate }}
                 </button>
 
