@@ -13,26 +13,20 @@
       <div class="col-sm-12">
 
 
-        <h1 style="font-size: 20px;line-height: 28px;color: rgba(0,0,0,.54);margin-bottom: 0px;font-weight: 400;">
+        <h1 class="select-bot-type-page-title">
           {{ "ChooseBotType" | translate }}
         </h1>
-        <h5 style="
-        color: #222222;
-        font-weight: 400;
-        font-family: Google Sans;
-        font-size: 24px;
-        line-height: 28px;
-        margin-top: 28px;">
+        <h5 class="select-bot-type-page-subtitle">
           {{ "BotsPage.SelectAndConfigureABot" | translate }} </h5>
       </div>
     </div>
 
     <div class="row">
 
-      <!-- 
-        // --------------------------------------------------------------
-        // @ Native bot -> then renamemed in Resolution bot
-        // -------------------------------------------------------------- -->
+       
+        <!-- -------------------------------------------------------------- -->
+        <!-- @ Native bot -> then renamemed in Resolution bot -->
+        <!-- -------------------------------------------------------------- -->
       <div [ngClass]="{'col-sm-12 col-md-3' : dgfIsVisible === true && natIsVisible === true,
         'col-sm-12 col-md-4' : dgfIsVisible === false && natIsVisible === true, 
         'is_hidden' :  natIsVisible === false}">
@@ -54,9 +48,8 @@
               </svg>
 
             </div>
-            <h4 class="title" style="font-family: 'Google Sans', sans-serif;font-weight: 400; margin-top: 8px;">
-              <!-- Native -->
-              Resolution
+            <h4 class="title-in-select-bot-card">
+              Resolution  <!-- Native -->
             </h4>
             <h5 style="color:#7695a5; font-size: 14px;">
               <!-- Our native, easy and powerful NPL (Natural Language Processing) chatbot -->
@@ -69,10 +62,9 @@
         </div>
       </div>
 
-      <!-- 
-      // --------------------------------------------------------------
-      // @ Dialogflow bot
-      // -------------------------------------------------------------- -->
+      <!-- -------------------------------------------------------------- -->
+      <!-- @ Dialogflow bot -->
+      <!-- -------------------------------------------------------------- -->
       <!-- class="col-sm-12 col-md-4" -->
       <div [ngClass]="{'col-sm-12 col-md-3' : dgfIsVisible === true && natIsVisible === true, 
         'col-sm-12 col-md-4' : dgfIsVisible === true && natIsVisible === false, 
@@ -118,7 +110,7 @@
                 </g>
               </svg>
             </div>
-            <h4 class="title" style="font-family: 'Google Sans', sans-serif;font-weight: 400; margin-top: 8px;">
+            <h4 class="title-in-select-bot-card">
               Dialogflow
             </h4>
             <h5 style="color:#7695a5; font-size: 14px;">
@@ -135,10 +127,10 @@
       </div>
 
       <!-- 'col-sm-12 col-md-6' : dgfIsVisible === true && natIsVisible === false, -->
-      <!-- 
-      // --------------------------------------------------------------
-      // @ External bot
-      // -------------------------------------------------------------- -->
+       
+      <!-- -------------------------------------------------------------- -->
+      <!-- @ External bot -->
+      <!-- -------------------------------------------------------------- -->
       <!-- class="col-sm-12 col-md-4" -->
       <div [ngClass]="{'col-sm-12 col-md-3' : dgfIsVisible === true && natIsVisible === true, 
                         'col-sm-12 col-md-4' : (natIsVisible === false && dgfIsVisible === true) || (natIsVisible === true && dgfIsVisible === false),
@@ -177,7 +169,7 @@
               </svg>
 
             </div>
-            <h4 class="title" style="font-family: 'Google Sans', sans-serif;font-weight: 400; margin-top: 8px;">
+            <h4 class="title-in-select-bot-card">
               External
             </h4>
             <h5 style="color:#7695a5; font-size: 14px;">
@@ -190,13 +182,11 @@
             </h5>
           </div>
         </div>
-
       </div>
 
-      <!-- 
-      // --------------------------------------------------------------
-      // @ Identity bot
-      // -------------------------------------------------------------- -->
+      <!-- -------------------------------------------------------------- -->
+      <!-- @ Identity bot -->
+      <!-- -------------------------------------------------------------- -->
       <div [ngClass]="{'col-sm-12 col-md-3' : dgfIsVisible === true && natIsVisible === true, 
                         'col-sm-12 col-md-4' : (natIsVisible === false && dgfIsVisible === true) || (natIsVisible === true && dgfIsVisible === false),
                         'col-sm-6 col-md-6' : dgfIsVisible === false && natIsVisible === false 
@@ -239,7 +229,7 @@
               </svg>
 
             </div>
-            <h4 class="title" style="font-family: 'Google Sans', sans-serif;font-weight: 400; margin-top: 8px;">
+            <h4 class="title-in-select-bot-card">
               Identity Bot
             </h4>
             <h5 style="color:#7695a5; font-size: 14px;">
