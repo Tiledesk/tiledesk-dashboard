@@ -2013,6 +2013,7 @@
     "BeSureThatYourWebServiceMeetsAllTheWebhookRequirements":"Убедитесь, что ваша веб-служба соответствует всем требованиям к веб-перехватчикам, характерным для версии API, включенной в этом агенте.",
     "LearnMoreAboutWebhookRequirements":"Узнайте больше о требованиях к веб-перехватчикам",
     "YouAreCurrentlySetToUnavailable":"В настоящее время для вас установлено значение «Недоступно», и вы не получаете новые разговоры.",
+    "Shortcuts":"Быстрый доступ",
     "CHAT_IONIC": {
         "LABEL_TU": "ты: ",
         "LABEL_MSG_PUSH_START_CHAT": "Разговора пока нет",

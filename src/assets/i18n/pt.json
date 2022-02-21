@@ -2013,6 +2013,7 @@
     "BeSureThatYourWebServiceMeetsAllTheWebhookRequirements":"Assicurati che il tuo servizio web soddisfi tutti i requisiti webhook specifici per la versione API abilitata in questo agente.",
     "LearnMoreAboutWebhookRequirements":"Saiba mais sobre os requisitos de webhook",
     "YouAreCurrentlySetToUnavailable":"No momento, você está definido como Indisponível e não está recebendo novas conversas",
+    "Shortcuts":"Atalhos",
     "CHAT_IONIC": {
         "LABEL_TU": "vocês: ",
         "LABEL_MSG_PUSH_START_CHAT": "Nenhuma conversa ainda",

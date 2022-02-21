@@ -2012,5 +2012,6 @@
     "TicketId":"ID ticket",
     "BeSureThatYourWebServiceMeetsAllTheWebhookRequirements":"Assicurati che il tuo servizio web soddisfi tutti i requisiti webhook specifici per la versione API abilitata in questo agente.",
     "LearnMoreAboutWebhookRequirements":"Ulteriori informazioni sui requisiti del webhook",
-    "YouAreCurrentlySetToUnavailable":"Al momento sei impostato su Non disponibile e non riceverai nuove conversazioni"
+    "YouAreCurrentlySetToUnavailable":"Al momento sei impostato su Non disponibile e non riceverai nuove conversazioni",
+    "Shortcuts":"Scorciatoie"
 }
