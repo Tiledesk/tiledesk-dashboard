@@ -14,8 +14,8 @@ import {
   URL_handoff_to_human_agents, 
   URL_advanced_chatbot_styling_buttons
 } from '../../utils/util';
-
 const swal = require('sweetalert');
+
 @Component({
   selector: 'faq-edit-add',
   templateUrl: './faq-edit-add.component.html',
