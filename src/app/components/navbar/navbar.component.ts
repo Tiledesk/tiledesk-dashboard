@@ -846,22 +846,6 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
     presentModalOnlyOwnerCanManageTheAccountPlan() {
         this.notifyService.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
-        // const el = document.createElement('div')
-        // // `${id}`
-        // // el.innerHTML = this.onlyOwnerCanManageTheAccountPlanMsg + '. ' +`<a href='https://docs.tiledesk.com/knowledge-base/understanding-default-roles/' target='_blank'>` + this.learnMoreAboutDefaultRoles + "</a>"
-        // el.innerHTML = this.onlyOwnerCanManageTheAccountPlanMsg + '. ' +`<a href=${this.URL_UNDERSTANDING_DEFAULT_ROLES} target='_blank'>` + this.learnMoreAboutDefaultRoles + "</a>"
-        
-        // swal({
-        //     // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-        //     content: el,
-        //     icon: "info",
-        //     // buttons: true,
-        //     button: {
-        //         text: "OK",
-        //     },
-        //     dangerMode: false,
-        // })
-
     }
 
 
