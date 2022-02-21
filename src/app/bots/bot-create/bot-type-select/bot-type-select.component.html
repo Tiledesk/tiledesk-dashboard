@@ -61,8 +61,7 @@
             <h5 style="color:#7695a5; font-size: 14px;">
               <!-- Our native, easy and powerful NPL (Natural Language Processing) chatbot -->
               {{ 'ResolutionBotDescription' | translate}}.
-              <span (click)="$event.stopPropagation();openDocsTiledeskCreateABot()"
-                style="color: #0f62ff; text-decoration: underline;cursor: pointer;">
+              <span class="link-in-select-bot-card" (click)="$event.stopPropagation();openDocsTiledeskCreateABot()">
                 {{'HereHowCreateABot' | translate}}
               </span>
             </h5>
@@ -125,7 +124,7 @@
             <h5 style="color:#7695a5; font-size: 14px;">
               <!-- Use Dialogflow to train you bot with our native and innovative Dialogflow integration -->
               {{ 'UseDialogflowToTrainYourBot...' | translate}}.
-              <span style="color: #0f62ff; text-decoration: underline;cursor: pointer;"
+              <span class="link-in-select-bot-card"
                 (click)="$event.stopPropagation();openDocsTiledeskDialogflowConnector()">
                 {{"HereHowConnectYourDialogflowAgents" | translate}}
               </span>
@@ -184,9 +183,8 @@
             <h5 style="color:#7695a5; font-size: 14px;">
               <!-- Use your favourite technology to embed your chatbot with Tiledesk. Take a look at our -->
               {{'UseYourFavouriteTechnology...' | translate: tparams}}
-              <span style="color: #0f62ff; text-decoration: underline;cursor: pointer;"
+              <span class="link-in-select-bot-card"
                 (click)="$event.stopPropagation();openExternalBotIntegrationTutorial()">
-
                 {{'GetStartedTutorial' | translate}}
               </span>
             </h5>

@@ -1,4 +1,3 @@
-
 // .bot-card {
 //   height: 100%;
 //   display: flex;
@@ -19,8 +18,6 @@
 }
 
 .bot-card:hover {
-
-
   /* old hover effect */
 
   // .dflogo_st2 {
@@ -42,23 +39,21 @@
   //   fill: #7c7c7c !important;
   // }
 
-
   .card---header--external-bot {
-    background-image: linear-gradient(to right,#1391E1,#0f74b4);
+    background-image: linear-gradient(to right, #1391e1, #0f74b4);
   }
 
   .card---header--dialogflow-bot {
-    background-image: linear-gradient(to right,#FD8509,#E95507);
+    background-image: linear-gradient(to right, #fd8509, #e95507);
   }
 
   .card---header--resolution-bot {
-    background-image: linear-gradient(to right,#E9695B,#b62819);
+    background-image: linear-gradient(to right, #e9695b, #b62819);
   }
 
   .card---header--identity-bot {
-    background-image: linear-gradient(to right,#D5400C,#aa330a);
+    background-image: linear-gradient(to right, #d5400c, #aa330a);
   }
-
 }
 
 .card---header {
@@ -66,8 +61,6 @@
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;
 }
-
-
 
 .bot-image {
   height: 140px;
@@ -85,3 +78,11 @@
   display: none;
 }
 
+.link-in-select-bot-card {
+  color: #0f62ff;
+  cursor: pointer;
+}
+
+.link-in-select-bot-card:hover {
+  text-decoration: underline;
+}
