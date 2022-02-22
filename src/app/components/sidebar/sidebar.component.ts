@@ -968,7 +968,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     getProjectUser() {
         this.logger.log('[SIDEBAR]  !!! SIDEBAR CALL GET-PROJECT-USER')
         this.usersService.getProjectUserByUserId(this.currentUserId).subscribe((projectUser: any) => {
-            console.log('[SIDEBAR] PROJECT-USER GET BY USER-ID  ', projectUser);
+            this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID  ', projectUser);
             this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - PROJECT-ID ', this.projectId);
             this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - CURRENT-USER-ID ', this.user._id);
             this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - PROJECT USER ', projectUser);
@@ -1528,13 +1528,13 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     openUserDetailSidePanel() {
         this.countClickOnOpenUserDetailSidebar++
-        console.log('[SIDEBAR] countClickOnOpenUserDetailSidebar', this.countClickOnOpenUserDetailSidebar)
+        this.logger.log('[SIDEBAR] countClickOnOpenUserDetailSidebar', this.countClickOnOpenUserDetailSidebar)
         // const countClickOnOpenUserDetailSidebarIsAnOddNum = this.isOdd(this.countClickOnOpenUserDetailSidebar)
         // console.log('[SIDEBAR] countClickOnOpenUserDetailSidebarIsAnOddNum', countClickOnOpenUserDetailSidebarIsAnOddNum)
        
-       
         const elSidebarUserDtls = <HTMLElement>document.querySelector('#user-details');
-        console.log('[SIDEBAR] OPEN USER DTLS SIDE PANEL elSidebarUserDtls ', elSidebarUserDtls)
+        this.logger.log('[SIDEBAR] OPEN USER DTLS SIDE PANEL elSidebarUserDtls ', elSidebarUserDtls)
+       
         if (elSidebarUserDtls && this.countClickOnOpenUserDetailSidebar === 1) {
             elSidebarUserDtls.classList.add("active");
         }
@@ -1542,10 +1542,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         if (elSidebarUserDtls && this.countClickOnOpenUserDetailSidebar > 1) {
             // console.log('[SIDEBAR] this.countClickOnOpenUserDetailSidebar HERE', this.countClickOnOpenUserDetailSidebar)
             if (elSidebarUserDtls.classList.contains('active')) {
-                console.log('[SIDEBAR] elSidebarUserDtls contains class ACTIVE', elSidebarUserDtls)
+                this.logger.log('[SIDEBAR] elSidebarUserDtls contains class ACTIVE', elSidebarUserDtls)
                 elSidebarUserDtls.classList.remove("active");
             } else if (!elSidebarUserDtls.classList.contains('active')) {
-                console.log('[SIDEBAR] elSidebarUserDtls NOT contains class ACTIVE', elSidebarUserDtls)
+                this.logger.log('[SIDEBAR] elSidebarUserDtls NOT contains class ACTIVE', elSidebarUserDtls)
                 elSidebarUserDtls.classList.add("active");
             }
         }
