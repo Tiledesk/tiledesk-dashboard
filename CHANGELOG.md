@@ -1,12 +1,25 @@
 
 # tiledesk-dashboard
 
+### 2.2.32-rc4
+- Fixes the bug: the "User Details" sidebar moves up when opened
+- Adds in the modal window "Reset to default" of the 'System Trigger' page the text "This action is not reversible ..." 
+- Removes the flag indicating the language in which the dashboard  is translated and the user's drop-down menu from the navigation bar
+- Removes the "Resolve conversation" action from the action dropdown menu in the right sidebar of the conversation detail page
+- Fixes the bug: the sidebar overlaps the contents of the modal windows "Reassign conversation" and "Add agent"
+- Removes the borders of the "Reassign request" and "Add teammate" modals when the right sidebar of the conversation detail is displayed in the chat
+- Changes the endpoint of the link "Understanding predefined roles" and centralize the modal window that show the link to "Understanding predefined roles" in the notification service
+- Changes the "Beta" text of the Trigger menu item of the "Settings sidebar" to a "Badge"
+- Changes endpoints of links to documentation with domain "docs.tiledesk.com" with endpoints with domain "gethelp.tiledesk.com"
+- Outsources endpoints to documentation in "utils"
+- Adds a modal window to confirm the deletion of a language on the "multilanguage" page
+- Adds and the ability to open and close the "user detail sidebar" by clicking on the avatar of the teammate present on the sidebar
+
 ### 2.2.32-rc3
 - Adds the "user details" drawer 
 - Fixes the bug: the section titles overlap the "user details" drawer
 - Changes the format of the "demo" style file from css to scss
 - Fixes the bug: when window width is less than 992px the navbar changes height
-- Fixes the bug: the "Canned Responses" page is not responsive
 - Saves the current project in the local storage with the key "last_project" for each occurrence of the "open chat" method
 - Allows to close the "user details" sidebar by clicking outside it
 - Improves the buttons in the footer of the chat section on the "conversation details" page
