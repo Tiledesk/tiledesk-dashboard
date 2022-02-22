@@ -2016,6 +2016,8 @@
     "Shortcuts":"Быстрый доступ",
     "AddLanguages": "Добавить языки", 
     "TheLanguageWillBeRemovedFromYourProject":"Язык {{ language_name }} будет удален из вашего проекта",
+    "HowWebhooksWorks":"Как работают вебхуки",
+    "WebhooksQuickTipsIntroduction":"Веб-перехватчики — это мощный ресурс, который можно использовать для автоматизации сценариев использования и повышения производительности.",
     "CHAT_IONIC": {
         "LABEL_TU": "ты: ",
         "LABEL_MSG_PUSH_START_CHAT": "Разговора пока нет",

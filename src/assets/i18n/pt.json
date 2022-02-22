@@ -2016,6 +2016,8 @@
     "Shortcuts":"Atalhos",
     "AddLanguages": "Adicionar idiomas",
     "TheLanguageWillBeRemovedFromYourProject":"O idioma {{ language_name }} será removido do seu projeto",
+    "HowWebhooksWorks":"Como funciona o webhooks",
+    "WebhooksQuickTipsIntroduction":"Os webhooks são um recurso poderoso que você pode usar para automatizar seus casos de uso e melhorar sua produtividade.",
     "CHAT_IONIC": {
         "LABEL_TU": "vocês: ",
         "LABEL_MSG_PUSH_START_CHAT": "Nenhuma conversa ainda",

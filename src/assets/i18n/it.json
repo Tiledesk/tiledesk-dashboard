@@ -2015,5 +2015,7 @@
     "YouAreCurrentlySetToUnavailable":"Al momento sei impostato su Non disponibile e non riceverai nuove conversazioni",
     "Shortcuts":"Scorciatoie",
     "AddLanguages": "Aggiungi lingue",
-    "TheLanguageWillBeRemovedFromYourProject":"La lingua {{ language_name }} verrà rimossa dal tuo progetto"
+    "TheLanguageWillBeRemovedFromYourProject":"La lingua {{ language_name }} verrà rimossa dal tuo progetto",
+    "HowWebhooksWorks":"Come funzionano i webhook",
+    "WebhooksQuickTipsIntroduction":"I webhook sono una potente risorsa che puoi utilizzare per automatizzare i tuoi casi d'uso e migliorare la tua produttività."
 }

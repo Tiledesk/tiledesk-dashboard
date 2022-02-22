@@ -2016,6 +2016,8 @@
     "Shortcuts":"Kısayollar",
     "AddLanguages": "Dil ekle",
     "TheLanguageWillBeRemovedFromYourProject":"{{ language_name }} dili projenizden kaldırılacak",
+    "HowWebhooksWorks":"Web kancaları nasıl çalışır",
+    "WebhooksQuickTipsIntroduction":"Web kancaları, kullanım durumlarınızı otomatikleştirmek ve üretkenliğinizi artırmak için kullanabileceğiniz güçlü bir kaynaktır.",
     "CHAT_IONIC": {
         "LABEL_TU": "sen: ",
         "LABEL_MSG_PUSH_START_CHAT": "Henüz görüşme yok",
