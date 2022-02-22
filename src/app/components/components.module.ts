@@ -13,6 +13,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { SidebarUserDetailsComponent } from './sidebar-user-details/sidebar-user-details.component';
+
+
 @NgModule({
   imports: [
     CommonModule,
@@ -41,7 +43,7 @@ import { SidebarUserDetailsComponent } from './sidebar-user-details/sidebar-user
     TranslateModule
   ],
   providers: [
-    NavbarForPanelService,
+    NavbarForPanelService
 
   ]
 })
