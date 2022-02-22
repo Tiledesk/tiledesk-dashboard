@@ -141,3 +141,6 @@ export const URL_advanced_chatbot_styling_buttons = 'https://gethelp.tiledesk.co
 export const URL_getting_started_for_admins = 'https://gethelp.tiledesk.com/categories/getting-started-for-admins/' // https://docs.tiledesk.com/knowledge-base-category/getting-started-for-admins/
 export const URL_getting_started_for_agents = 'https://gethelp.tiledesk.com/categories/getting-started-for-agents/' //'https://docs.tiledesk.com/knowledge-base-category/getting-started-for-agents/'
 export const URL_google_tag_manager_add_tiledesk_to_your_sites = 'https://docs.tiledesk.com/knowledge-base/google-tag-manager-add-tiledesk-to-your-sites/' // NOT FOUND on gethelp
+export const URL_setting_up_automatic_assignment = 'https://gethelp.tiledesk.com/articles/setting-up-automatic-assignment/' // https://docs.tiledesk.com/knowledge-base/setting-up-automatic-assignment/
+
+
