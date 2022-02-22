@@ -1620,13 +1620,13 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       // console.log('[SIDEBAR] - GET PROJECTS - current_selected_prjct ', current_selected_prjct);
 
       this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
-      console.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct ', this.current_selected_prjct);
+      this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct ', this.current_selected_prjct);
 
-      console.log('[HISTORY & NORT-CONVS] - GET PROJECTS - projects ', projects);
+      this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - projects ', projects);
     }, error => {
-      console.log('[HISTORY & NORT-CONVS] - GET PROJECTS - ERROR: ', error);
+      this.logger.error('[HISTORY & NORT-CONVS] - GET PROJECTS - ERROR: ', error);
     }, () => {
-      console.log('[HISTORY & NORT-CONVS] - GET PROJECTS * COMPLETE * ');
+      this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS * COMPLETE * ');
     });
   }
 
