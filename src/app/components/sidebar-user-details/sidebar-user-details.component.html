@@ -1,25 +1,11 @@
-<!-- style="    
-position: absolute;
-z-index: 100;
-top: 0;
-right: 0;
-width: 33%;
-height: 100%;
-overflow-y: auto;
-overflow-x: hidden;
-background: #fff;
-padding-top:15px;
-padding-left: 15px;
-padding-right: 15px;
-padding-bottom: 15px;" -->
-<!-- <div class="main-content" style="padding-top: 0px">
-    <div class="container-fluid"> -->
+
 
 <div id="user-details">
+    <!-- matTooltipClass="custom-mat-tooltip" matTooltip="{{'TheDashboardIsTranslatedInto' | translate: tlangparams }}" #tooltip="matTooltip"
+    matTooltipPosition='left' matTooltipHideDelay="100"  -->
 
-    <div class="user-details-dshbrd-lang" matTooltipClass="custom-mat-tooltip"
-        matTooltip="{{'TheDashboardIsTranslatedInto' | translate: tlangparams }}" #tooltip="matTooltip"
-        matTooltipPosition='left' matTooltipHideDelay="100" (click)="goToUserProfileLanguageSection()">
+    <div class="user-details-dshbrd-lang" 
+        (click)="goToUserProfileLanguageSection()">
         <!-- <a routerLink="project/{{ projectId }}/user-profile" fragment="language"> -->
         <span class="user-details-dshbrd-lang-code" style="text-transform: uppercase;color: #647491;">
             {{dsbrd_lang}}</span>
@@ -48,9 +34,10 @@ padding-bottom: 15px;" -->
             src="assets/img/no_image_user.png" />
     </div>
 
-    <div class="user-details-user-isbusy" *ngIf="IS_BUSY === true" style="cursor:pointer"
+    <!-- style="cursor:pointer"
         matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Busy' | translate }}" #tooltip="matTooltip"
-        matTooltipPosition='right' matTooltipHideDelay="100">
+        matTooltipPosition='right' matTooltipHideDelay="100" -->
+    <div class="user-details-user-isbusy" *ngIf="IS_BUSY === true" >
         <span class="material-icons user-details-user-isbusy-icon">
             access_time
         </span>
@@ -94,23 +81,23 @@ padding-bottom: 15px;" -->
         <!-- <span style="text-transform: uppercase; color: #a9afbb;"> {{'Plan' | translate}}: </span> -->
         <span>
             <div> {{prjct_name}} </div>
-            <div> {{ _prjct_profile_name }} </div>
+            <div style="display: inline-block;"> {{ _prjct_profile_name }} </div>
 
-            <span *ngIf="plan_type === 'payment' && plan_subscription_is_active === false"
-                style="color:#f44336; position:relative; top: -1px;">
+            <div *ngIf="plan_type === 'payment' && plan_subscription_is_active === false"
+                style="color:#f44336; position:relative; top: -1px;display: inline-block;">
                 <i *ngIf="plan_name !== 'enterprise'" class="material-icons" style="vertical-align: middle; color:#f44336; cursor:pointer;    
-                font-size: 16px;" matTooltipClass="custom-mat-tooltip"
+                font-size: 16px;" matTooltipClass="user-details-sidebar-custom-mat-tooltip"
                     matTooltip="{{ 'Pricing.SubscriptionPaymentProblem' | translate }}" #tooltip="matTooltip"
                     matTooltipPosition='right' matTooltipHideDelay="100">
                     error_outline
                 </i>
                 <i *ngIf="plan_name === 'enterprise'" class="material-icons" style="vertical-align: middle; color:#f44336; cursor:pointer;    
-                font-size: 16px;" matTooltipClass="custom-mat-tooltip"
+                font-size: 16px;" matTooltipClass="user-details-sidebar-custom-mat-tooltip"
                     matTooltip="{{ 'Pricing.ThePlanHasExpired' | translate }}" #tooltip="matTooltip"
                     matTooltipPosition='right' matTooltipHideDelay="100">
                     error_outline
                 </i>
-            </span>
+            </div>
         </span>
     </section>
 

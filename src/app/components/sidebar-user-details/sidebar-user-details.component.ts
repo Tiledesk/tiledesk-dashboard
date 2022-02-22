@@ -117,7 +117,7 @@ export class SidebarUserDetailsComponent implements OnInit {
       if (project) {
         this.project = project
         this.projectId = project._id;
-        console.log('[SIDEBAR-USER-DETAILS] projectId ', this.projectId);
+        this.logger.log('[SIDEBAR-USER-DETAILS] projectId ', this.projectId);
         this.findCurrentProjectAmongAll(this.projectId)
         // this.projectName = project.name;
       }
@@ -222,12 +222,14 @@ export class SidebarUserDetailsComponent implements OnInit {
 
       this.logger.log('[SIDEBAR-USER-DETAILS] clicked inside')
     } else {
-
+      const elSidebarUserDtls = <HTMLElement>document.querySelector('#user-details');
+      this.logger.log('[SIDEBAR-USER-DETAILS] clicked outside elSidebarUserDtls ', elSidebarUserDtls)
+      
       this.logger.log('[SIDEBAR-USER-DETAILS] HAS_CLICKED_OPEN_USER_DETAIL ', this.HAS_CLICKED_OPEN_USER_DETAIL)
-      if (this.HAS_CLICKED_OPEN_USER_DETAIL === true) {
+      // if (this.HAS_CLICKED_OPEN_USER_DETAIL === true) {
         if (!clicked_element_id.startsWith("sidebaravatar")) {
           this.closeUserDetailSidePanel();
-        }
+        // }
         this.logger.log('[SIDEBAR-USER-DETAILS] clicked outside')
       }
     }
@@ -469,6 +471,7 @@ export class SidebarUserDetailsComponent implements OnInit {
   }
 
   getLoggedUserAndCurrentDshbrdLang() {
+  //  console.log('[SIDEBAR-USER-DETAILS] BrowserLang ', this.translate.getBrowserLang())
     this.auth.user_bs.subscribe((user) => {
       this.logger.log('[SIDEBAR-USER-DETAILS] »»» »»» USER GET IN SIDEBAR-USER-DETAILS', user)
       // tslint:disable-next-line:no-debugger
@@ -552,7 +555,7 @@ export class SidebarUserDetailsComponent implements OnInit {
       this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT-USER UPDATED ', projectUser)
 
       if (projectUser.user_available === false) {
-        this.openSnackBar()
+        // this.openSnackBar()
       }
 
       // NOTIFY TO THE USER SERVICE WHEN THE AVAILABLE / UNAVAILABLE BUTTON IS CLICKED
