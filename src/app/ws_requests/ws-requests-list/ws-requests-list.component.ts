@@ -771,18 +771,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   }
 
   presentModalAgentCannotManageAvancedSettings() {
-    const el = document.createElement('div')
-    el.innerHTML = this.agentCannotManageAdvancedOptions + '. ' + "<a href='https://docs.tiledesk.com/knowledge-base/understanding-default-roles/' target='_blank'>" + this.learnMoreAboutDefaultRoles + "</a>"
-
-    swal({
-
-      content: el,
-      icon: "info",
-      button: {
-        text: "OK",
-      },
-      dangerMode: false,
-    })
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.agentCannotManageAdvancedOptions, this.learnMoreAboutDefaultRoles)
   }
 
   // NOT USED 
