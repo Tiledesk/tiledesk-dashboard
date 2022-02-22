@@ -75,6 +75,8 @@ export class WebhookComponent implements OnInit {
   }
 
   presentWebhookModal_inAddMode() {
+    const webhook_add_subscription_btn = <HTMLElement>document.querySelector('.webhook-add-subscription-btn');
+    webhook_add_subscription_btn.blur();
     this.selectWebhookId = null;
     this.displayModal_AddEditWebhook = 'block';
     this.modalMode = 'add';
@@ -128,6 +130,11 @@ export class WebhookComponent implements OnInit {
 
   onSaveSubscription() {
     this.getSubscriptions();
+  }
+
+  openWebhookDoc() {
+    const url = 'https://developer.tiledesk.com/apis/webhooks'
+    window.open(url, '_blank');
   }
 
 }
