@@ -79,7 +79,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     @ViewChild('openchatbtn') private elementRef: ElementRef;
     @ViewChild('homebtn') private homeBtnElement: ElementRef;
 
-    HAS_CLICKED_OPEN_USER_DETAIL: boolean = false
+    
+    countClickOnOpenUserDetailSidebar: number = 0
     menuItems: any[];
 
     checked_route: string;
@@ -1521,17 +1522,39 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
 
 
-    openUserDetailSidePanel() {
-        this.logger.log('[SIDEBAR] OPEN UESER DTLS SIDE PANEL')
-        this.HAS_CLICKED_OPEN_USER_DETAIL = true
-        this.logger.log('[SIDEBAR] OPEN USER DTLS SIDE PANEL ', this.HAS_CLICKED_OPEN_USER_DETAIL)
+    isOdd(countClickOnOpenUserDetailSidebar) {
+        return countClickOnOpenUserDetailSidebar % 2;
+    }
 
+    openUserDetailSidePanel() {
+        this.countClickOnOpenUserDetailSidebar++
+        console.log('[SIDEBAR] countClickOnOpenUserDetailSidebar', this.countClickOnOpenUserDetailSidebar)
+        // const countClickOnOpenUserDetailSidebarIsAnOddNum = this.isOdd(this.countClickOnOpenUserDetailSidebar)
+        // console.log('[SIDEBAR] countClickOnOpenUserDetailSidebarIsAnOddNum', countClickOnOpenUserDetailSidebarIsAnOddNum)
+       
+       
         const elSidebarUserDtls = <HTMLElement>document.querySelector('#user-details');
         console.log('[SIDEBAR] OPEN USER DTLS SIDE PANEL elSidebarUserDtls ', elSidebarUserDtls)
-        if (elSidebarUserDtls) {
+        if (elSidebarUserDtls && this.countClickOnOpenUserDetailSidebar === 1) {
             elSidebarUserDtls.classList.add("active");
-            // this.events.publish('userdetailsidebar:opened', true);
         }
+
+        if (elSidebarUserDtls && this.countClickOnOpenUserDetailSidebar > 1) {
+            // console.log('[SIDEBAR] this.countClickOnOpenUserDetailSidebar HERE', this.countClickOnOpenUserDetailSidebar)
+            if (elSidebarUserDtls.classList.contains('active')) {
+                console.log('[SIDEBAR] elSidebarUserDtls contains class ACTIVE', elSidebarUserDtls)
+                elSidebarUserDtls.classList.remove("active");
+            } else if (!elSidebarUserDtls.classList.contains('active')) {
+                console.log('[SIDEBAR] elSidebarUserDtls NOT contains class ACTIVE', elSidebarUserDtls)
+                elSidebarUserDtls.classList.add("active");
+            }
+        }
+        // if (elSidebarUserDtls && countClickOnOpenUserDetailSidebarIsAnOddNum === 1) {
+        //     elSidebarUserDtls.classList.add("active");
+        // }
+        // if (elSidebarUserDtls && countClickOnOpenUserDetailSidebarIsAnOddNum === 0) {
+        //     elSidebarUserDtls.classList.remove("active");
+        // }
 
         // const elemNavbar = <HTMLElement>document.querySelector('.navbar-absolute');
         // this.logger.log('[SIDEBAR] elemNavBar ', elemNavbar)
@@ -1545,21 +1568,21 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         // }
     }
 
-    onCloseUserDetailsSidebar($event) {
-        this.logger.log('[SIDEBAR] HAS_CLICKED_CLOSE_USER_DETAIL ', $event)
-        this.HAS_CLICKED_OPEN_USER_DETAIL = $event
-        const elemNavbar = <HTMLElement>document.querySelector('.navbar-absolute');
-        this.logger.log('[SIDEBAR] elemNavBar ', elemNavbar)
-        if (elemNavbar) {
-            elemNavbar.classList.remove("navbar-absolute-custom-class")
-        }
+    // onCloseUserDetailsSidebar($event) {
+    //     this.logger.log('[SIDEBAR] HAS_CLICKED_CLOSE_USER_DETAIL ', $event)
+    //     // this.HAS_CLICKED_OPEN_USER_DETAIL = $event
+    //     const elemNavbar = <HTMLElement>document.querySelector('.navbar-absolute');
+    //     this.logger.log('[SIDEBAR] elemNavBar ', elemNavbar)
+    //     if (elemNavbar) {
+    //         elemNavbar.classList.remove("navbar-absolute-custom-class")
+    //     }
 
-        const elemNavbarBrand = <HTMLElement>document.querySelector('.navbar-brand');
-        this.logger.log('[SIDEBAR] elemNavbarBrand ', elemNavbarBrand)
-        if (elemNavbarBrand) {
-            elemNavbarBrand.classList.remove("navbar-brand-z-index-zero")
-        }
-    }
+    //     const elemNavbarBrand = <HTMLElement>document.querySelector('.navbar-brand');
+    //     this.logger.log('[SIDEBAR] elemNavbarBrand ', elemNavbarBrand)
+    //     if (elemNavbarBrand) {
+    //         elemNavbarBrand.classList.remove("navbar-brand-z-index-zero")
+    //     }
+    // }
 
     // goToAnalytics() {
     //     this.router.navigate(['project/' + this.projectId + '/analytics']);
