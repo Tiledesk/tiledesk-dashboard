@@ -2018,6 +2018,7 @@
     "TheLanguageWillBeRemovedFromYourProject":"{{ language_name }} dili projenizden kaldırılacak",
     "HowWebhooksWorks":"Web kancaları nasıl çalışır",
     "WebhooksQuickTipsIntroduction":"Web kancaları, kullanım durumlarınızı otomatikleştirmek ve üretkenliğinizi artırmak için kullanabileceğiniz güçlü bir kaynaktır.",
+    "LearnHowToConnectDialogflowAgents":"Dialogflow aracılarını nasıl bağlayacağınızı öğrenin",
     "CHAT_IONIC": {
         "LABEL_TU": "sen: ",
         "LABEL_MSG_PUSH_START_CHAT": "Henüz görüşme yok",

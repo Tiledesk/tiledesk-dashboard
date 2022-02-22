@@ -2017,5 +2017,6 @@
     "AddLanguages": "Aggiungi lingue",
     "TheLanguageWillBeRemovedFromYourProject":"La lingua {{ language_name }} verrà rimossa dal tuo progetto",
     "HowWebhooksWorks":"Come funzionano i webhook",
-    "WebhooksQuickTipsIntroduction":"I webhook sono una potente risorsa che puoi utilizzare per automatizzare i tuoi casi d'uso e migliorare la tua produttività."
+    "WebhooksQuickTipsIntroduction":"I webhook sono una potente risorsa che puoi utilizzare per automatizzare i tuoi casi d'uso e migliorare la tua produttività.",
+    "LearnHowToConnectDialogflowAgents":"Scopri come connettere gli agenti Dialogflow"
 }

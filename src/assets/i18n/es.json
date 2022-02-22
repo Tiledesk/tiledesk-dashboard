@@ -2018,6 +2018,7 @@
     "TheLanguageWillBeRemovedFromYourProject":"El idioma {{ language_name }} se eliminará de su proyecto",
     "HowWebhooksWorks":"Cómo funcionan los webhooks",
     "WebhooksQuickTipsIntroduction":"Los webhooks son un recurso poderoso que puede usar para automatizar sus casos de uso y mejorar su productividad.",
+    "LearnHowToConnectDialogflowAgents":"Aprenda a conectar agentes de Dialogflow",
     "CHAT_IONIC": {
         "LABEL_TU": "tú: ",
         "LABEL_MSG_PUSH_START_CHAT": "Aún no hay conversación",
