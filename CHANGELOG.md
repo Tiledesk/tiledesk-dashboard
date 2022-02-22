@@ -14,6 +14,7 @@
 - Outsources endpoints to documentation in "utils"
 - Adds a modal window to confirm the deletion of a language on the "multilanguage" page
 - Adds and the ability to open and close the "user detail sidebar" by clicking on the avatar of the teammate present on the sidebar
+- Improves the webhook page
 
 ### 2.2.32-rc3
 - Adds the "user details" drawer 
