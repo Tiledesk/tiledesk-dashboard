@@ -836,3 +836,16 @@ input[type="text"]:disabled::placeholder {
   text-decoration: underline;
 }
 
+.link-to-dialogflow-connector-doc{
+  margin-left: 8px;
+  vertical-align: middle;
+  color: #0f62ff;
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.link-to-dialogflow-connector-doc:hover {
+  text-decoration: underline;
+}
+
