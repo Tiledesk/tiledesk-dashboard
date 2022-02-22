@@ -1057,17 +1057,16 @@ div.card-content > div > div > div > div > div > div > div.txt > div > div > p >
 // -------------------------------------------------
 // Added when the user details sidebar is opened
 // -------------------------------------------------
-.navbar-absolute-custom-class{
-  z-index: 0 !important;
-  // position: fixed !important;
-}
+// .navbar-absolute-custom-class{
+//   z-index: 0 !important;
+// }
 
 // -------------------------------------------------
 // Added when the user details sidebar is opened
 // -------------------------------------------------
-.navbar-brand-z-index-zero {
-  z-index: 0 !important;
-}
+// .navbar-brand-z-index-zero {
+//   z-index: 0 !important;
+// }
 
 // Custom angular material tooltip style
 ::ng-deep .custom-mat-tooltip {
