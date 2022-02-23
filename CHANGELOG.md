@@ -1,6 +1,10 @@
 
 # tiledesk-dashboard
 
+### 2.2.32-rc7
+- Fixes the bug: the sidebar menu item 'Chat' is not translated
+- Enhances the style of the sidebar tooltip
+
 ### 2.2.32-rc6
 - Removes the "open dashboard in new window" button from the right sidebar of the conversation detail page
 - Align the on/off badge on the widget configuration page to the text "Pre-chat module"
