@@ -2719,6 +2719,15 @@ span .conv-svg-icon {
   height: 170px
 }
 
+::ng-deep .custom-mat-tooltip {
+  background-color: #2d323e  !important;
+  font-size: 12px  !important;
+  border-radius: 2px !important;
+  font-family: 'Poppins' !important;
+  padding-top:8px!important;
+  padding-bottom:8px!important;
+}
+
 // Custom scollbar fo the chat right sidebar
 // .chat-panel-mode-on-desktop::-webkit-scrollbar {
 //   width: 6px;

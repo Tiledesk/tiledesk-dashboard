@@ -286,11 +286,11 @@ button.user-details-btn-close {
     color: #eee;
 }
 
-::ng-deep .user-details-sidebar-custom-mat-tooltip {
-    background-color: #2d323e;
-    font-size: 12px;
-    position: relative;
-    z-index: 1054 !important;
+::ng-deep .custom-mat-tooltip {
+    background-color: #2d323e  !important;
+    font-size: 12px  !important;
+    border-radius: 2px !important;
+    font-family: 'Poppins' !important;
 }
 
 .tooltip {
