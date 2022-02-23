@@ -86,13 +86,13 @@
             <div *ngIf="plan_type === 'payment' && plan_subscription_is_active === false"
                 style="color:#f44336; position:relative; top: -1px;display: inline-block;">
                 <i *ngIf="plan_name !== 'enterprise'" class="material-icons" style="vertical-align: middle; color:#f44336; cursor:pointer;    
-                font-size: 16px;" matTooltipClass="user-details-sidebar-custom-mat-tooltip"
+                font-size: 16px;" matTooltipClass="custom-mat-tooltip"
                     matTooltip="{{ 'Pricing.SubscriptionPaymentProblem' | translate }}" #tooltip="matTooltip"
                     matTooltipPosition='right' matTooltipHideDelay="100">
                     error_outline
                 </i>
                 <i *ngIf="plan_name === 'enterprise'" class="material-icons" style="vertical-align: middle; color:#f44336; cursor:pointer;    
-                font-size: 16px;" matTooltipClass="user-details-sidebar-custom-mat-tooltip"
+                font-size: 16px;" matTooltipClass="custom-mat-tooltip"
                     matTooltip="{{ 'Pricing.ThePlanHasExpired' | translate }}" #tooltip="matTooltip"
                     matTooltipPosition='right' matTooltipHideDelay="100">
                     error_outline
