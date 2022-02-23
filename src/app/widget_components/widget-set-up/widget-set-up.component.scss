@@ -2530,18 +2530,22 @@ pre {
   background-color: #e8e8e8;
   border-color: #e8e8e8;
   color: #737376;
-  padding: 2px 6px;
+  padding: 2px 8px;
   font-size: 12px;
   font-weight: 500;
   border-radius: 4px;
+  position: relative;
+  top: -2px;
 }
 
 .pre-chat-form-on-badge {
   background-color: #d7efdc;
   border-color: #d7efdc;
   color: #0f8a40;
-  padding: 2px 6px;
+  padding: 2px 8px;
   font-size: 12px;
   font-weight: 500;
   border-radius: 4px;
+  position: relative;
+  top: -2px;
 }
