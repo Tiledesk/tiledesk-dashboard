@@ -1,6 +1,10 @@
 
 # tiledesk-dashboard
 
+### 2.2.32-rc5
+- Adds the link to the documentation "Connect Dialogflow Agents" in the detail of the "Dialogflow" type bots
+- Adds a custom scroll bar to the left sidebar of the conversation detail page when it is loaded into the chat iframe
+
 ### 2.2.32-rc4
 - Fixes the bug: the "User Details" sidebar moves up when opened
 - Adds in the modal window "Reset to default" of the 'System Trigger' page the text "This action is not reversible ..." 
@@ -13,7 +17,7 @@
 - Changes endpoints of links to documentation with domain "docs.tiledesk.com" with endpoints with domain "gethelp.tiledesk.com"
 - Outsources endpoints to documentation in "utils"
 - Adds a modal window to confirm the deletion of a language on the "multilanguage" page
-- Adds and the ability to open and close the "user detail sidebar" by clicking on the avatar of the teammate present on the sidebar
+- Adds the ability to open and close the "user detail sidebar" by clicking on the avatar of the logged teammate present on the sidebar
 - Improves the webhook page
 
 ### 2.2.32-rc3
