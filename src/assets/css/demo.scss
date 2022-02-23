@@ -1074,4 +1074,32 @@ div.card-content > div > div > div > div > div > div > div.txt > div > div > p >
   font-size: 12px;
 }
 
+// ::-webkit-scrollbar {
+//   width: 6px;
+// }
+// ::-webkit-scrollbar-track {
+//   background-color: #1c2b45;
+// }
+// ::-webkit-scrollbar-thumb {
+//   background-color: #3c485b;
+//   border-radius: 3px;
+// }
 
+// -----
+.main-panel-chat-panel-mode::-webkit-scrollbar {
+  width: 6px;
+  height: 8px;
+}
+
+.main-panel-chat-panel-mode::-webkit-scrollbar-track {
+  background: #f9f9f9;
+}
+
+.main-panel-chat-panel-mode::-webkit-scrollbar-thumb {
+  background-color: #b9b9b9;
+  border-radius: 0px;
+}
+
+.main-panel-chat-panel-mode::-webkit-scrollbar-thumb:hover {
+  background-color: #727272;
+}

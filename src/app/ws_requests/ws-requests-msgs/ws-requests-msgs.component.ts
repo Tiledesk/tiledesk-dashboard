@@ -421,10 +421,21 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.CHAT_PANEL_MODE = false
     if (this.router.url.indexOf('/request-for-panel') !== -1) {
       this.CHAT_PANEL_MODE = true;
-      this.logger.log('[WS-REQUESTS-MSGS] - CHAT_PANEL_MODE »»» ', this.CHAT_PANEL_MODE)
+      this.logger.log('[WS-REQUESTS-MSGS] - CHAT_PANEL_MODE »»» ', this.CHAT_PANEL_MODE);
+
+      const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
+      // console.log('[WS-REQUESTS-MSGS] - CHAT_PANEL_MODE »»» _elemMainPanel', _elemMainPanel);
+      _elemMainPanel.classList.add("main-panel-chat-panel-mode");
+      
     } else {
       this.CHAT_PANEL_MODE = false;
-      this.logger.log('[WS-REQUESTS-MSGS] - CHAT_PANEL_MODE »»» ', this.CHAT_PANEL_MODE)
+      this.logger.log('[WS-REQUESTS-MSGS] - CHAT_PANEL_MODE »»» ', this.CHAT_PANEL_MODE);
+      const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
+      // console.log('[WS-REQUESTS-MSGS] - CHAT_PANEL_MODE »»» _elemMainPanel', _elemMainPanel);
+      if (_elemMainPanel.classList.contains('main-panel-chat-panel-mode')) {
+        _elemMainPanel.classList.remove("main-panel-chat-panel-mode");
+      }
+     
     }
   }
 
