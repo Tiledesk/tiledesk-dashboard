@@ -1,9 +1,14 @@
 
 # tiledesk-dashboard
 
+### 2.2.32-rc6
+- Removes the "open dashboard in new window" button from the right sidebar of the conversation detail page
+- Align the on/off badge on the widget configuration page to the text "Pre-chat module"
+- Align the "Beta" badge in the settings sidebar with the text "Trigger"
+
 ### 2.2.32-rc5
 - Adds the link to the documentation "Connect Dialogflow Agents" in the detail of the "Dialogflow" type bots
-- Adds a custom scroll bar to the left sidebar of the conversation detail page when it is loaded into the chat iframe
+- Adds a custom scrollbar to the right sidebar of the conversation detail page when it is loaded into the chat iframe
 
 ### 2.2.32-rc4
 - Fixes the bug: the "User Details" sidebar moves up when opened
