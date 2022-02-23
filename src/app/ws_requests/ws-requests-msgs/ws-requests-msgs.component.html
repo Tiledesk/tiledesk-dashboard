@@ -621,7 +621,7 @@
                 <!-- ----------------------------------------------------------------------------- -->
                 <!-- @ RIGHT SIDEBAR - CONTACT IF CHAT PANEL MODE IS TRUE -->
                 <!-- ----------------------------------------------------------------------------- -->
-                <div class="row">
+                <div class="row" [ngClass]="{'row-height-chat-panel-mode' : CHAT_PANEL_MODE === true}">
                   <div class="col-sm-12" style="height: 65px">
                     <div class="right-sidebar-header" [ngClass]="{
                     'right-sidebar-header-with-contact' : CHAT_PANEL_MODE === true,
@@ -1175,15 +1175,13 @@
                   <!-- --------------------------------------------------------------------- -->
                   <!-- Project name -->
                   <!-- --------------------------------------------------------------------- -->
-                  <!--  -->
-                  <div *ngIf="CHAT_PANEL_MODE === true" class="row" style="margin-top:5px">
+                  <div *ngIf="CHAT_PANEL_MODE === true" class="row" style="margin-top:8px">
                     <!-- border-top: 1px solid #e1eef4;" -->
-
                     <div class="col-sm-12">
-                      <span style="position: relative;top: 1px;">
-                        <div class="row">
+                      <!-- <span style="position: relative;top: 1px;"> -->
+                        <!-- <div class="row"> -->
                           <!-- (click)="goToProjectHomeInNewTab()" -->
-                          <div class="col-xs-10" style="padding-right:10px">
+                          <!-- <div class="col-xs-12" style="padding-right:10px"> -->
                             <p class="chat-panel-mode-project-name" style="margin-top: 0px;">
                               <i class="material-icons conv-details-sidebar-icon" matTooltipClass="custom-mat-tooltip"
                                 matTooltip="{{ 'Project' | translate }}" #tooltip="matTooltip"
@@ -1191,29 +1189,22 @@
                                 apps
                               </i>
                               <span style="position: relative;top: 1px;">
-                                <!-- <span
-                                style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
-                                {{ "Project" | translate }}
-                              </span> -->
                                 <span class="conv-details-sidebar-text">
                                   {{ project_name }}
                                 </span>
-                                <!-- <i (click)="goToProjectHomeInNewTab()" class="material-icons"
-                                style="vertical-align: middle; color: #0f62ff;font-size:12px; cursor: pointer;">open_in_new</i> -->
-
                               </span>
                             </p>
-                          </div>
+                          <!-- </div> -->
 
-                          <div class="col-xs-2" style="text-align: right;">
+                          <!-- <div class="col-xs-2" style="text-align: right;">
                             <i id="request_id_arrow_down" class="material-icons rotate"
                               style="cursor: pointer; color: #039be5; font-size:18px;position:relative; top:2px"
                               (click)="goToProjectHomeInNewTab()">
                               open_in_new
                             </i>
-                          </div>
-                        </div>
-                      </span>
+                          </div> -->
+                        <!-- </div> -->
+                      <!-- </span> -->
                     </div>
                   </div>
 
