@@ -313,8 +313,6 @@ button.close {
   color: #7695a5;
 }
 
-
-
 // .card_title__underlined {
 //   text-transform: none;
 //   color: #566787;
@@ -343,12 +341,14 @@ button.close {
 // }
 
 .browser-lang-wpr {
-  margin-left:35px;color: #85ae52; font-weight: 400;
+  margin-left: 35px;
+  color: #85ae52;
+  font-weight: 400;
 }
 
 .browser-lang-disabled-wpr {
   font-weight: 200 !important;
-  color: #7695a5 !important
+  color: #7695a5 !important;
 }
 
 .language-not-selected {
@@ -363,4 +363,13 @@ button.close {
   font-size: 14px;
   margin-left: 35px;
   margin-top: 8px;
+}
+.not-available-language {
+  color: #f44336;
+  text-transform: uppercase;
+}
+
+.not-available-language-string {
+  color: #7695a5;
+  font-size: 12px;
 }

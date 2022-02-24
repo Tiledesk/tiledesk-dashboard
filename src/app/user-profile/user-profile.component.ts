@@ -14,6 +14,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from '../services/logger/logger.service';
+import { tranlatedLanguage } from 'app/utils/util';
 const swal = require('sweetalert');
 
 
@@ -64,7 +65,7 @@ export class UserProfileComponent implements OnInit {
 
   HAS_SELECTED_PREFERRED_LANG: boolean = false;
   private fragment: string;
-
+  i18n_for_this_brower_language_is_available = false
   @ViewChild('fileInputUserProfileImage') fileInputUserProfileImage: any;
 
 
@@ -200,9 +201,20 @@ export class UserProfileComponent implements OnInit {
 
   getBrowserLanguage() {
     this.browser_lang = this.translate.getBrowserLang();
-
+    if (tranlatedLanguage.includes(this.browser_lang)) {
+      this.logger.log('[USER-PROFILE] - browser_lang includes', tranlatedLanguage.includes(this.browser_lang)) 
+      this.i18n_for_this_brower_language_is_available = true;
+      this.logger.log('[USER-PROFILE] - browser_lang', this.browser_lang) 
+      this.logger.log('[USER-PROFILE] - this.i18n_for_this_brower_language_is_available', this.i18n_for_this_brower_language_is_available) 
+   
     this.logger.log('[USER-PROFILE] - browser_lang ', this.browser_lang)
     this.flag_url = "assets/img/language_flag/" + this.browser_lang + ".png"
+    } else {
+      this.logger.log('[USER-PROFILE] - browser_lang includes', tranlatedLanguage.includes(this.browser_lang)) 
+      this.i18n_for_this_brower_language_is_available = false;
+      this.logger.log('[USER-PROFILE] - this.i18n_for_this_brower_language_is_available', this.i18n_for_this_brower_language_is_available) 
+      this.flag_url = "assets/img/language_flag/not_found_language.svg"
+    }
   }
 
   onSelectPreferredDsbrdLang(selectedLanguageCode) {
