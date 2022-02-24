@@ -4,7 +4,7 @@
 ### 2.2.32-rc7
 - Fixes the bug: the sidebar menu item 'Chat' is not translated
 - Enhances the style of the sidebar tooltips
-- Adds a message in the language selection section of the dashboard if the browser language is not supported
+- Adds the message "Language not supported ..." in the language selection section of the dashboard if the browser language is not supported
 - Displays the English flag if the browser language is not among the unsupported ones
 
 ### 2.2.32-rc6
