@@ -2019,6 +2019,9 @@
     "HowWebhooksWorks":"How webhooks works",
     "WebhooksQuickTipsIntroduction":"Webhooks are a powerful resource that you can use to automate your use cases and improve your productivity.",
     "LearnHowToConnectDialogflowAgents":"Learn how to connect Dialogflow agents",
+    "TheDashboardIsTranslatedIntoEnglish": "The dashboard is translated into English. To change language click on the flag",
+    "LanguageIsNotAvailableDashboardWillBeTranslatedIntoEnglish":"Sorry, this language is not yet available, the dashboard will be translated into English",
+    "LanguageIsNotAvailableDashboardHasBeenTranslatedIntoEnglish": "Sorry, this language is not yet available, the dashboard has been translated into English",
     "CHAT_IONIC": {
         "LABEL_TU": "you: ",
         "LABEL_MSG_PUSH_START_CHAT": "No conversation yet",

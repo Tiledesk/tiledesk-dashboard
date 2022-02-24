@@ -2018,5 +2018,8 @@
 	"TheLanguageWillBeRemovedFromYourProject":"Die Sprache {{ language_name }} wird aus Ihrem Projekt entfernt",
 	"HowWebhooksWorks":"Wie Webhooks funktionieren",
 	"WebhooksQuickTipsIntroduction":"Webhooks sind eine leistungsstarke Ressource, mit der Sie Ihre Anwendungsfälle automatisieren und Ihre Produktivität verbessern können.",
-	"LearnHowToConnectDialogflowAgents":"Erfahren Sie, wie Sie Dialogflow-Agents verbinden"
+	"LearnHowToConnectDialogflowAgents":"Erfahren Sie, wie Sie Dialogflow-Agents verbinden",
+	"TheDashboardIsTranslatedIntoEnglish": "The dashboard is translated into English. To change language click on the flag",
+	"LanguageIsNotAvailableDashboardWillBeTranslatedIntoEnglish":"Entschuldigung, diese Sprache ist noch nicht verfügbar, das Dashboard wird ins Englische übersetzt",
+    "LanguageIsNotAvailableDashboardHasBeenTranslatedIntoEnglish": "Entschuldigung, diese Sprache ist noch nicht verfügbar, das Dashboard wurde ins Englische übersetzt"
 }
