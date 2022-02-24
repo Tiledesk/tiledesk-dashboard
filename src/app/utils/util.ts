@@ -123,6 +123,7 @@ export const LogLevel = {
     'DEBUG': 3
 }
 
+export const tranlatedLanguage = ['it', 'en', 'de', 'es', 'pt', 'fr', 'ru', 'tr']
 
 // Links to documentation
 export const URL_understanding_default_roles = 'https://gethelp.tiledesk.com/articles/understanding-default-roles/' // 'https://docs.tiledesk.com/knowledge-base/understanding-default-roles/'

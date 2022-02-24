@@ -17,6 +17,7 @@ import { BrandService } from '../services/brand.service';
 import { WsRequestsService } from '../services/websocket/ws-requests.service';
 import { LoggerService } from '../services/logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
+import { tranlatedLanguage } from 'app/utils/util';
 @Component({
   selector: 'projects',
   templateUrl: './projects.component.html',
@@ -74,7 +75,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   dsbrd_lang: string;
   tlangparams: any
   browserLang: string;
-
+  languageNotSupported: boolean = false
   private unsubscribe$: Subject<any> = new Subject<any>();
 
   constructor(
@@ -164,6 +165,17 @@ export class ProjectsComponent implements OnInit, OnDestroy {
           // console.log('[PROJECTS] flag_url (from browser_lang) ', this.flag_url)
         }
 
+        
+        if (!tranlatedLanguage.includes(this.dsbrd_lang)) {
+          this.logger.log('[PROJECTS] - browser_lang includes', tranlatedLanguage.includes(this.dsbrd_lang)) 
+         
+          this.logger.log('[PROJECTS] - browser_lang', this.dsbrd_lang) 
+          this.flag_url = "assets/img/language_flag/en.png"
+          this.languageNotSupported = true
+        }  else {
+          this.languageNotSupported = false
+        }
+
 
         if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
           this.UPLOAD_ENGINE_IS_FIREBASE = true
@@ -176,6 +188,8 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     });
   }
 
+
+  
   getLangTranslation(dsbrd_lang_code) {
     this.translate.get(dsbrd_lang_code)
       .subscribe((translation: any) => {

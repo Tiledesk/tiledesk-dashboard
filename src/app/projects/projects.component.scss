@@ -718,20 +718,20 @@ input[type="text"] {
 // ---------------------------------
 // TOOLTIP START
 // ---------------------------------
-.expired__Tooltip {
+.tooltip-language-in-your-prjcts {
   position: relative;
   display: inline-block;
   // border-bottom: 1px dotted black;
 }
 
-.expired__Tooltip .expired__Tooltiptext {
+.tooltip-language-in-your-prjcts .tooltip-language-in-your-prjcts__tooltiptext {
   visibility: hidden;
   width: 140px;
   background-color: #fff;
-  color: #f44336;
+  color: #3C4858;
   text-align: center;
-  border-radius: 6px;
-  padding: 5px 0;
+  border-radius: 2px;
+  padding: 5px 3px;
   position: absolute;
   z-index: 1;
   bottom: 100%;
@@ -747,7 +747,7 @@ input[type="text"] {
   transition: opacity 1s;
 }
 
-.expired__Tooltip:hover .expired__Tooltiptext {
+.tooltip-language-in-your-prjcts:hover .tooltip-language-in-your-prjcts__tooltiptext {
   visibility: visible;
   opacity: 1;
 }

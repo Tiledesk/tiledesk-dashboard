@@ -13,6 +13,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NotifyService } from '../../core/notify.service';
 import { ProjectService } from 'app/services/project.service';
+import { tranlatedLanguage } from 'app/utils/util';
 
 // import { slideInOutAnimation } from '../../../_animations/index';
 @Component({
@@ -487,7 +488,7 @@ export class SidebarUserDetailsComponent implements OnInit {
           this.dsbrd_lang = stored_preferred_lang;
           this.logger.log('[SIDEBAR-USER-DETAILS] - dsbrd_lang ', this.dsbrd_lang)
           this.getLangTranslation(this.dsbrd_lang)
-          this.flag_url = "assets/img/language_flag/" + stored_preferred_lang + ".png"
+          this.flag_url = "assets/img/language_flag/" + this.dsbrd_lang + ".png"
 
           this.logger.log('[SIDEBAR-USER-DETAILS] flag_url (from stored_preferred_lang) ', this.flag_url)
 
@@ -497,9 +498,20 @@ export class SidebarUserDetailsComponent implements OnInit {
           this.dsbrd_lang = this.browserLang;
           this.getLangTranslation(this.dsbrd_lang)
           this.logger.log('[SIDEBAR-USER-DETAILS] - dsbrd_lang ', this.dsbrd_lang)
-          this.flag_url = "assets/img/language_flag/" + this.browserLang + ".png"
-
+          this.flag_url = "assets/img/language_flag/" + this.dsbrd_lang  + ".png"
           this.logger.log('[SIDEBAR-USER-DETAILS] flag_url (from browser_lang) ', this.flag_url)
+        }
+
+      
+        if (tranlatedLanguage.includes(this.dsbrd_lang)) {
+          console.log('[SIDEBAR-USER-DETAILS] tranlatedLanguage includes', this.dsbrd_lang, ': ', tranlatedLanguage.includes(this.dsbrd_lang))
+        
+          this.flag_url = "assets/img/language_flag/" + this.dsbrd_lang + ".png"
+        } else {
+          console.log('[SIDEBAR-USER-DETAILS] tranlatedLanguage includes', this.dsbrd_lang, ': ', tranlatedLanguage.includes(this.dsbrd_lang))
+          this.translate.use('en');
+          this.flag_url = "assets/img/language_flag/en.png"
+          this.dsbrd_lang = 'en'
         }
       }
     });
