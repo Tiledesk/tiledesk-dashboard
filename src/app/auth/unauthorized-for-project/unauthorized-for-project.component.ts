@@ -17,15 +17,15 @@ export class UnauthorizedForProjectComponent implements OnInit {
 
   ngOnInit() {
     this.CHAT_PANEL_MODE = this.inIframe();
-    console.log('[UNAUTHORIZED-FOR-PROJECT] IS IN IFRAME ' , this.CHAT_PANEL_MODE)
+    this.logger.log('[UNAUTHORIZED-FOR-PROJECT] IS IN IFRAME ' , this.CHAT_PANEL_MODE)
   }
 
   inIframe() {
     try {
-      
+
       return window.self !== window.top;
     } catch (e) {
-      console.log('[UNAUTHORIZED-FOR-PROJECT] error ' ,e)
+      this.logger.log('[UNAUTHORIZED-FOR-PROJECT] error ' ,e)
       return true;
     }
   }
