@@ -504,11 +504,11 @@ export class SidebarUserDetailsComponent implements OnInit {
 
       
         if (tranlatedLanguage.includes(this.dsbrd_lang)) {
-          console.log('[SIDEBAR-USER-DETAILS] tranlatedLanguage includes', this.dsbrd_lang, ': ', tranlatedLanguage.includes(this.dsbrd_lang))
+          this.logger.log('[SIDEBAR-USER-DETAILS] tranlatedLanguage includes', this.dsbrd_lang, ': ', tranlatedLanguage.includes(this.dsbrd_lang))
         
           this.flag_url = "assets/img/language_flag/" + this.dsbrd_lang + ".png"
         } else {
-          console.log('[SIDEBAR-USER-DETAILS] tranlatedLanguage includes', this.dsbrd_lang, ': ', tranlatedLanguage.includes(this.dsbrd_lang))
+          this.logger.log('[SIDEBAR-USER-DETAILS] tranlatedLanguage includes', this.dsbrd_lang, ': ', tranlatedLanguage.includes(this.dsbrd_lang))
           this.translate.use('en');
           this.flag_url = "assets/img/language_flag/en.png"
           this.dsbrd_lang = 'en'
