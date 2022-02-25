@@ -6,7 +6,10 @@
 - Enhances the style of the sidebar tooltips
 - Adds the message "Language not supported ..." in the language selection section of the dashboard if the browser language is not supported
 - Displays the English flag if the browser language is not among the unsupported ones
-- Removes from the header of  the conversation list the button "open chat in a new window"
+- Removes from the header of the conversation list the button "open chat in a new window"
+- Fixes the bug: fix the URL of the avatar placeholder image in the sidebar and in the sidebar of the user detail
+- Removes the go to your projects button from the "Unauthorized access" page when it is loaded in the "info-conversation" iframe of the chat
+- Fixes the bug: Email is broken on dashes in user details sidebar
 
 ### 2.2.32-rc6
 - Removes the "open dashboard in new window" button from the right sidebar of the conversation detail page
