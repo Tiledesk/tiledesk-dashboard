@@ -8,7 +8,7 @@ import { LoggerService } from '../../services/logger/logger.service';
   styleUrls: ['./unauthorized-for-project.component.scss']
 })
 export class UnauthorizedForProjectComponent implements OnInit {
-
+  CHAT_PANEL_MODE: boolean;
   constructor(
     private auth: AuthService,
     private router: Router,
@@ -16,7 +16,32 @@ export class UnauthorizedForProjectComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.CHAT_PANEL_MODE = this.inIframe();
+    console.log('[UNAUTHORIZED-FOR-PROJECT] IS IN IFRAME ' , this.CHAT_PANEL_MODE)
   }
+
+  inIframe() {
+    try {
+      
+      return window.self !== window.top;
+    } catch (e) {
+      console.log('[UNAUTHORIZED-FOR-PROJECT] error ' ,e)
+      return true;
+    }
+  }
+
+  // getIfRouteUrlIsRequestForPanel() {
+  //   this.CHAT_PANEL_MODE = false
+  //   if (this.router.url.indexOf('/request-for-panel') !== -1) {
+  //     this.CHAT_PANEL_MODE = true;
+  //     console.log('[UNAUTHORIZED-FOR-PROJECT] - CHAT_PANEL_MODE »»» ', this.CHAT_PANEL_MODE);
+
+  //   } else {
+  //     this.CHAT_PANEL_MODE = false;
+  //     console.log('[UNAUTHORIZED-FOR-PROJECT] - CHAT_PANEL_MODE »»» ', this.CHAT_PANEL_MODE);
+
+  //   }
+  // }
 
   goToProjects() {
     this.logger.log('[UNAUTHORIZED-FOR-PROJECT] HAS CLICCKED GO TO PROJECT ')
@@ -24,6 +49,6 @@ export class UnauthorizedForProjectComponent implements OnInit {
     // (in AUTH SERVICE ) RESET PROJECT_BS AND REMOVE ITEM PROJECT FROM STORAGE WHEN THE USER GO TO PROJECTS PAGE
     this.auth.hasClickedGoToProjects();
 
-}
+  }
 
 }
