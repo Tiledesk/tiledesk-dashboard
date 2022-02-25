@@ -28,7 +28,7 @@
     <div role="button" class="user-details-avatar" (click)="goToUserProfile()">
         <img class="user-img-in-sidebar-user-details"
             *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true" [src]="getUserProfileImage()"
-            onerror="this.src='assets/img/no_image_user.svg'" />
+            onerror="this.src='assets/img/no_image_user.png'" />
 
         <img class="user-img-in-sidebar-user-details"
             *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true"

@@ -81,7 +81,7 @@
 
       <img id="sidebaravatar-img" class="avatar"
         *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true" [src]="getUserProfileImage()"
-        onerror="this.src='assets/img/no_image_user.svg'" />
+        onerror="this.src='assets/img/no_image_user.png'" />
 
       <img id="sidebaravatar-no-img" class="avatar"
         *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true"

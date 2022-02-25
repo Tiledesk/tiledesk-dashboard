@@ -81,7 +81,7 @@
     <div class="avatar-container tiledesk-nav-avatar" [ngClass]="{'small-sidebar-avatar' : SIDEBAR_IS_SMALL === true }">
 
       <img class="avatar" *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true"
-        [src]="getUserProfileImage()" onerror="this.src='assets/img/no_image_user.svg'" />
+        [src]="getUserProfileImage()" onerror="this.src='assets/img/no_image_user.png'" />
 
       <img class="avatar" *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true"
         src="assets/img/no_image_user.png" />
