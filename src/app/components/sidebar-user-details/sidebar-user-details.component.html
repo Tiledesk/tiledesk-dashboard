@@ -1,18 +1,23 @@
-
-
 <div id="user-details">
     <!-- matTooltipClass="custom-mat-tooltip" matTooltip="{{'TheDashboardIsTranslatedInto' | translate: tlangparams }}" #tooltip="matTooltip"
     matTooltipPosition='left' matTooltipHideDelay="100"  -->
 
-    <div class="user-details-dshbrd-lang" 
-        (click)="goToUserProfileLanguageSection()">
-        <!-- <a routerLink="project/{{ projectId }}/user-profile" fragment="language"> -->
+
+    <div class="user-details-dshbrd-lang" (click)="goToUserProfileLanguageSection()">
+
         <span class="user-details-dshbrd-lang-code" style="text-transform: uppercase;color: #647491;">
             {{dsbrd_lang}}
         </span>
         <img [src]="flag_url" style="width: auto;height: 19px;">
-        <!-- </a> -->
+
     </div>
+
+    <!-- <button class="user-details-btn-close" type="button" (click)="closeUserDetailSidePanel()" style="left:13px">
+        <span class="user-details-dshbrd-lang-code" style="text-transform: uppercase;color: #647491;">
+            {{dsbrd_lang}}
+        </span>
+        <img [src]="flag_url" style="width: auto;height: 19px;">
+    </button> -->
 
     <button class="user-details-btn-close" type="button" (click)="closeUserDetailSidePanel()">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -38,7 +43,7 @@
     <!-- style="cursor:pointer"
         matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Busy' | translate }}" #tooltip="matTooltip"
         matTooltipPosition='right' matTooltipHideDelay="100" -->
-    <div class="user-details-user-isbusy" *ngIf="IS_BUSY === true" >
+    <div class="user-details-user-isbusy" *ngIf="IS_BUSY === true">
         <span class="material-icons user-details-user-isbusy-icon">
             access_time
         </span>
