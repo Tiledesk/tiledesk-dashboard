@@ -2021,5 +2021,6 @@
     "LearnHowToConnectDialogflowAgents":"Scopri come connettere gli agenti Dialogflow",
     "TheDashboardIsTranslatedIntoEnglish": "The dashboard is translated into English. To change language click on the flag",
     "LanguageIsNotAvailableDashboardWillBeTranslatedIntoEnglish": "Spiacenti, questa lingua non è ancora disponibile, la dashboard verrà tradotta in inglese",
-    "LanguageIsNotAvailableDashboardHasBeenTranslatedIntoEnglish": "Spiacenti, questa lingua non è ancora disponibile, la dashboard è stata tradotta in inglese"
+    "LanguageIsNotAvailableDashboardHasBeenTranslatedIntoEnglish": "Spiacenti, questa lingua non è ancora disponibile, la dashboard è stata tradotta in inglese",
+    "OnlyATeammateWithTheOwnerRoleCanDeleteAProject":"Solo un membro del team con il ruolo di Proprietario può eliminare un progetto"
 }

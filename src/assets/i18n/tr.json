@@ -2021,6 +2021,7 @@
     "LearnHowToConnectDialogflowAgents":"Dialogflow aracılarını nasıl bağlayacağınızı öğrenin",
     "LanguageIsNotAvailableDashboardWillBeTranslatedIntoEnglish": "Maalesef bu dil henüz mevcut değil, gösterge tablosu İngilizce'ye çevrilecek",
     "LanguageIsNotAvailableDashboardHasBeenTranslatedIntoEnglish": "Maalesef bu dil henüz mevcut değil, gösterge tablosu İngilizce'ye çevrildi",
+    "OnlyATeammateWithTheOwnerRoleCanDeleteAProject":"Yalnızca Sahip rolüne sahip bir takım arkadaşı bir projeyi silebilir",
     "CHAT_IONIC": {
         "LABEL_TU": "sen: ",
         "LABEL_MSG_PUSH_START_CHAT": "Henüz görüşme yok",

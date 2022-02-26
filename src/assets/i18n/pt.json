@@ -2022,6 +2022,7 @@
     "TheDashboardIsTranslatedIntoEnglish": "The dashboard is translated into English. To change language click on the flag",
     "LanguageIsNotAvailableDashboardWillBeTranslatedIntoEnglish": "Desculpe, este idioma ainda não está disponível, o painel será traduzido para o inglês",
     "LanguageIsNotAvailableDashboardHasBeenTranslatedIntoEnglish": "Desculpe, este idioma ainda não está disponível, o painel foi traduzido para o inglês",
+    "OnlyATeammateWithTheOwnerRoleCanDeleteAProject":"Apenas um colega de equipe com a função de Proprietário pode excluir um projeto",
     "CHAT_IONIC": {
         "LABEL_TU": "vocês: ",
         "LABEL_MSG_PUSH_START_CHAT": "Nenhuma conversa ainda",
