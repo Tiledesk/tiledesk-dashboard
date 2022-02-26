@@ -131,6 +131,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   is_disabled_reassignment_section: boolean;
   is_disabled_unavailable_status_section: boolean;
   notificationNothingToSave: string;
+  onlyATeammateWithTheOwnerRoleCanDeleteAProject_lbl: string;
   project_id_to_delete: string;
   SHOW_CIRCULAR_SPINNER = false;
   DISPLAY_DELETE_PRJCT_BTN: boolean;
@@ -241,13 +242,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         this.logger.log('[PRJCT-EDIT-ADD] - USER ROLE ', user_role);
         if (user_role) {
           this.USER_ROLE = user_role
-          if (user_role === 'owner') {
-
-            this.DISPLAY_DELETE_PRJCT_BTN = true
-          } else {
-            this.DISPLAY_DELETE_PRJCT_BTN = false
-
-          }
+     
         }
       });
   }
@@ -256,7 +251,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     this.translateNotificationMsgs();
     this.translateMsgSubscriptionCanceledSuccessfully();
     this.translateMsgSubscriptionCanceledError();
-    this.translateModalOnlyOwnerCanManageProjectAccount()
+    this.translateModalOnlyOwnerCanManageProjectAccount();
+    this.translateOnlyATeammateWithTheOwnerRoleCanDeleteAProject();
   }
 
 
@@ -274,12 +270,15 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
     this.translate.get('NotificationNothingToSave')
       .subscribe((translation: any) => {
-        // this.logger.log('[PRJCT-EDIT-ADD]  translateNotificationMsgs text', translation)
-
         this.notificationNothingToSave = translation;
-
       });
+  }
 
+  translateOnlyATeammateWithTheOwnerRoleCanDeleteAProject() {
+    this.translate.get('OnlyATeammateWithTheOwnerRoleCanDeleteAProject')
+    .subscribe((translation: any) => {
+      this.onlyATeammateWithTheOwnerRoleCanDeleteAProject_lbl = translation;
+    });
   }
 
 
@@ -1437,7 +1436,11 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
    */
   openDeleteModal() {
     this.logger.log('[PRJCT-EDIT-ADD] - OPEN DELETE MODAL -> PROJECT ID ', this.id_project);
-    this.display = 'block';
+    if (this.USER_ROLE === 'owner') {
+      this.display = 'block';
+    } else {
+      this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyATeammateWithTheOwnerRoleCanDeleteAProject_lbl, this.learnMoreAboutDefaultRoles)
+    }
   }
 
   onCloseModal() {

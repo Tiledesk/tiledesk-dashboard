@@ -201,11 +201,31 @@
                     </div>
                   </div>
 
-                  <!-- SECTION DIVIDER -->
-                  <div class="row section-divider">
-                    <div class="col-sm-12"></div>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <h3 class="card_title__underlined" style="margin-top: 30px;">
+                        <span class="card_title__underline">
+                          {{ "ExtremeMeasures" | translate }}
+                        </span>
+                      </h3>
+                    </div>
+                    <div class="col-md-12">
+                      <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"> </div>
+                    </div>
                   </div>
-                </span> <!-- /. PROJECT_SETTINGS_ROUTE -->
+
+                  <div class="row">
+                    <div  class="col-md-12">
+                      <button _ngcontent-c8="" class="btn btn-danger" style="margin-top:0px"  (click)="openDeleteModal()">
+                        <i class="material-icons" style="vertical-align: middle">delete_forever</i>
+                        {{ "ProjectEditPage.DeleteProject" | translate }}
+                      </button>
+                    </div>
+                  </div>
+
+                </span> 
+                
+                <!-- /. PROJECT_SETTINGS_ROUTE -->
 
                 <!-- -------------------------------------------------------- -->
                 <!-- Payments -->
@@ -603,8 +623,6 @@
                       </div>
                     </div>
 
-
-
                     <!-- ------------------------------------------------------------------------------------------------ -->
                     <!--  PROFILE TYPE: FREE - SUBSCRIPTION BUTTON @ MEDIA < 768  -->
                     <!-- ------------------------------------------------------------------------------------------------ -->
@@ -629,8 +647,6 @@
                 <!-- -------------------------------------------------------- -->
                 <span *ngIf="PROJECT_SETTINGS_AUTH_ROUTE">
                   <!-- SECTION SHARED SECRET - TITLE AND SUBTITLE -->
-         
-
                   <div class="row">
                     <div class="col-md-12">
                       <h3 class="card_title__underlined">
@@ -771,8 +787,6 @@
                 <!-- Advanced -->
                 <!-- -------------------------------------------------------- -->
                 <span *ngIf="PROJECT_SETTINGS_ADVANCED_ROUTE">
-
-
                   <!-- -------------------------------------------------------- -->
                   <!-- Automatic Assignment -->
                   <!-- -------------------------------------------------------- -->
@@ -1277,10 +1291,10 @@
               <!-- ./ card-content -->
 
 
-              <!-- 
-          // --------------------------------------------------------
-          // Save btn displayed only for the tab 'Advanced'
-          // -------------------------------------------------------- -->
+               
+          <!-- -------------------------------------------------------- -->
+          <!-- Save btn displayed only for the tab 'Advanced' -->
+          <!-- -------------------------------------------------------- -->
               <span *ngIf="PROJECT_SETTINGS_ADVANCED_ROUTE">
                 <div class="card-footer" style="border-color: #e8f0f5 !important;">
 
@@ -1306,21 +1320,18 @@
 
         </div>
         <!-- ./ row -->
-        <div class="row" *ngIf="PROJECT_SETTINGS_ROUTE">
-
+        <!-- <div class="row" *ngIf="PROJECT_SETTINGS_ROUTE">
           <div *ngIf="DISPLAY_DELETE_PRJCT_BTN === true" class="col-md-12" style="text-align: center;">
             <div class="delete-prjct-wpr"
               style="color: rgba(0, 0, 0, 0.54); padding-top: 25px;margin-top:25px; cursor:pointer; border-top: 1px solid #cccccc; margin-right: 19px;"
               (click)="openDeleteModal()">
               <i class="material-icons" style="vertical-align: middle">delete_forever</i>
               <span style="vertical-align: middle; text-transform: uppercase">
-                <!-- ELIMINA PROGETTO -->
                 {{ "ProjectEditPage.DeleteProject" | translate }}
               </span>
             </div>
-            <!-- <h5 style="color:#aaaaaa; margin-top:25px; font-size:1em">ELIMINA PROGETTO</h5> -->
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
