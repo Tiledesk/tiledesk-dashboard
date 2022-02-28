@@ -1,7 +1,16 @@
-<p style="margin-top:6px; padding-left:30px;position: relative;z-index: 1050;" class="navbar-brand">
-  <!-- {{ "Groups" | translate }}  -->
+<!-- <p style="margin-top:6px; padding-left:30px;position: relative;z-index: 1050;" class="navbar-brand">
   {{ 'Settings' | translate }}
-</p>
+</p> -->
+
+<span class="navbar-brand navbar-brand-sidebar-settings"
+  [ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
+  <i class="material-icons">settings</i>
+
+  <span *ngIf="IS_OPEN_SETTINGS_SIDEBAR">{{ 'Settings' | translate }} </span>
+</span>
+<span class="navbar-brand navbar-brand-title">
+  {{ "Groups" | translate }}
+</span>
 
 
 <!-- <ul class="bottom-nav">
@@ -13,9 +22,6 @@
     </li>
 </ul> -->
 
-
-
-
 <div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
   <div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
     <!-- *** this row to prevent that the two columns in the below row being displayed on two lines -->
@@ -23,7 +29,7 @@
 
     <div class="content-wpr" style="display: flex;">
 
-      <appdashboard-settings-sidebar> </appdashboard-settings-sidebar>
+      <appdashboard-settings-sidebar style="border-right:1px solid #e5effe !important"> </appdashboard-settings-sidebar>
       <div class="teplate-content" style="flex: 1 1 auto; margin-left: 20px;">
 
         <!-- box-shadow: unset -->

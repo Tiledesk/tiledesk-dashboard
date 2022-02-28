@@ -1,15 +1,13 @@
 @import "./src/assets/sass/md/_variables.scss";
+
 .settings-sidebar-wpr {
     position: relative;
     display: flex;
     flex-direction: column;
     flex: 1 0 auto;
-    width: 215px;
-    min-width: 215px;
-    max-width: 215px;
-    // z-index: 1;
     font-size: 12px;
     margin-top: 5px;
+    padding-right: 10px;
     // background-color: aliceblue;
     // min-height: calc(100% - 123px);
     // min-height: 100% ;
@@ -23,21 +21,29 @@
     // height: calc(100% + 39px);
 }
 
+.settings-sidebar-wpr-opened {
+    width: 215px;
+    min-width: 215px;
+    max-width: 215px;
+}
+.settings-sidebar-wpr-closed {
+    width: 40px;
+    min-width: 40px;
+    max-width: 40px;
+}
+
 .settings-sidebar > li {
-    height: 40px;
-    // border-radius: 0 20px 20px 0;
+    // height: 40px;
+    height: 35px;
     border-radius: 4px;
     margin-right: 6px;
-    // line-height: 39px;
     font-weight: 400;
     cursor: pointer;
-    // background-color: aliceblue;
     width: 100%;
     padding-right: 6px;
     display: flex;
     align-items: center;
-    // color: rgb(100, 116, 145);
-    // color: rgba(0,0,0, 0.87);
+    margin-bottom: 3px;
 }
 
 .active-item {
@@ -53,6 +59,15 @@
     line-height: 1.2;
     margin-bottom: 0px;
     padding-left: 8px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.settings-sidebar-icons {
+    color: rgb(100, 116, 145);
+    vertical-align: middle;
+    font-size: 18px;
+    margin-left: 6px;
 }
 
 .settings-sidebar > li:hover {
@@ -60,8 +75,13 @@
     color: rgb(8, 15, 26);
 }
 
+
 .settings-sidebar > li:hover .custom_paragraph {
     // background-color: rgba(100, 116, 145, 0.08);
+    color: rgb(8, 15, 26);
+}
+
+.settings-sidebar > li:hover .settings-sidebar-icons {
     color: rgb(8, 15, 26);
 }
 
@@ -69,7 +89,11 @@ li.active a p.custom_paragraph {
     color: $brand-sidebar-active-item-text-color !important;
 }
 
-li > a.custom_ancor {
+li.active a i.settings-sidebar-icons {
+    color: $brand-sidebar-active-item-text-color !important;
+}
+
+li > a {
     /* margin: 5px 15px !important; */
 
     margin-top: 5px !important;
@@ -91,4 +115,37 @@ li > a.custom_ancor {
     position: relative;
     top: -1px;
     // text-transform: uppercase;
+}
+
+.toggle-setting-sidebar-icon-wpr {
+    position: absolute;
+    top: 22px;
+    z-index: 1050;
+    width: 22px;
+    height: 22px;
+    background: #fff;
+    padding-top: 1px;
+} 
+
+.toggle-setting-sidebar-icon-wpr.is_opened {
+    left: 215px;
+}
+
+.toggle-setting-sidebar-icon-wpr.is_closed {
+    left: 40px;
+  
+}
+
+.toggle-setting-sidebar-icon {
+    background: #fff;
+    border: 1px solid #e5effe !important;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.toggle-setting-sidebar-icon:hover {
+    background: #f5f8fa;
 }

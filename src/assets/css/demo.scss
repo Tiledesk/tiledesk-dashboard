@@ -1103,3 +1103,38 @@ div.card-content > div > div > div > div > div > div > div.txt > div > div > p >
 .main-panel-chat-panel-mode::-webkit-scrollbar-thumb:hover {
   background-color: #727272;
 }
+
+// --------------------------------------
+// NAVBAR BRAND IN SIDEBAR SETTINGS
+// --------------------------------------
+span.navbar-brand-sidebar-settings {
+  z-index: 1050;
+  position: relative;
+  margin-top: 6px;
+  
+  border-right: 1px solid #e5effe;
+}
+span.navbar-brand-sidebar-settings.is_opened {
+  width: 226px;
+}
+
+span.navbar-brand-sidebar-settings.is_closed {
+  width: 51px;
+}
+
+span.navbar-brand-sidebar-settings > i {
+  vertical-align: middle;
+  margin-right: 3px;
+  margin-left: -2px;
+}
+
+span.navbar-brand-sidebar-settings > span {
+  vertical-align: middle;
+}
+
+span.navbar-brand-title {
+  z-index: 1050;
+    position: relative;
+    margin-top: 8px;
+    margin-left: 4px;
+}

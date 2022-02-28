@@ -1,18 +1,28 @@
 <!-- [ngStyle]="{'height': sidebar_settings_height}" -->
-<div class="settings-sidebar-wpr" >
 
-  <ul class="settings-sidebar" style="padding-left: 0px;    list-style: none;">
+<div class="toggle-setting-sidebar-icon-wpr" [ngClass]="{'is_opened': IS_OPEN, 'is_closed':!IS_OPEN  }" (click)="toggleSettingsSidebar(IS_OPEN = !IS_OPEN)">
+  <span *ngIf="IS_OPEN" class="material-icons toggle-setting-sidebar-icon">
+    chevron_left
+  </span>
+  <span *ngIf="!IS_OPEN" class="material-icons toggle-setting-sidebar-icon">
+    chevron_right
+  </span>
+</div>
+
+<div class="settings-sidebar-wpr" [ngClass]="{'settings-sidebar-wpr-opened': IS_OPEN, 'settings-sidebar-wpr-closed': !IS_OPEN }">
+
+  <ul class="settings-sidebar" style="padding-left: 0px;list-style: none;">
     <!-- ------------------------------------------------------- -->
     <!-- Canned responses -->
     <!-- ------------------------------------------------------- -->
     <ng-container *ngIf="isVisibleCAR">
       <li [ngClass]="{'active-item': CANNED_RESPONSES_ROUTE_IS_ACTIVE}" (click)="goToCannedResponses()">
-        <a class="custom_ancor" *ngIf="project">
-          <!-- <i class="material-icons sidebar-icons" style="font-size:24px !important">
-              bolt
-            </i> -->
-          <p class="custom_paragraph">
-
+        <a class="" *ngIf="project">
+          <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">
+            <!-- bolt -->
+            offline_bolt
+          </i>
+          <p *ngIf="IS_OPEN === true" class="custom_paragraph">
             {{'CannedResponses.CannedResponses' | translate}}
           </p>
         </a>
@@ -24,10 +34,10 @@
     <!-- ------------------------------------------------------------- -->
     <ng-container *ngIf="isVisibleLBS">
       <li [ngClass]="{'active-item': TAG_ROUTE_IS_ACTIVE}" (click)="goToTags()">
-        <a class="custom_ancor" *ngIf="project">
-          <p class="custom_paragraph">
-            <!-- <i class="fa fa-tag sidebar-icons" style="font-size: 18px !important;"></i> -->
-
+        <a class="" *ngIf="project">
+          <!-- <i *ngIf="IS_OPEN" class="fa fa-tag settings-sidebar-icons"></i> -->
+          <i *ngIf="IS_OPEN === true || IS_OPEN === false"  class="material-icons settings-sidebar-icons">local_offer</i>
+          <p *ngIf="IS_OPEN === true" class="custom_paragraph">
             {{'Tags.Tags' | translate}}
           </p>
         </a>
@@ -38,9 +48,10 @@
     <!-- Routing & depts -->
     <!-- ------------------------------------------------------- -->
     <li [ngClass]="{'active-item': DEPTS_ROUTE_IS_ACTIVE}" (click)="goToDepartments()">
-      <a class="custom_ancor" *ngIf="project">
-        <!-- <i class="fa fa-university sidebar-icons" style="font-size:16px !important"></i> -->
-        <p class="custom_paragraph">
+      <a class="" *ngIf="project">
+        <!-- <i *ngIf="IS_OPEN" class="fa fa-university settings-sidebar-icons" ></i> -->
+        <i *ngIf="IS_OPEN === true || IS_OPEN === false"  class="material-icons settings-sidebar-icons">  account_balance</i>
+        <p *ngIf="IS_OPEN === true" class="custom_paragraph">
 
           <span *ngIf="isVisibleDEP"> {{'RoutingAndDepts' | translate}} </span>
           <span *ngIf="!isVisibleDEP"> Routing </span>
@@ -54,15 +65,10 @@
     <!-- ------------------------------------------------------- -->
     <ng-container *ngIf="isVisibleTRI">
       <li [ngClass]="{'active-item': TRIGGER_ROUTE_IS_ACTIVE}" (click)="goToTrigger()">
-        <a class="custom_ancor" *ngIf="project">
+        <a class="" *ngIf="project">
 
-          <!-- <i class="material-icons sidebar-icons" style="
-            font-size:23px; position:relative; left:1px">
-              generating_tokens
-            </i> -->
-          <!-- <span class="_badge" style="font-size: 9px;"
-              [ngClass]="{'change-badge-bckgrnd' : TRIGGER_ROUTE_IS_ACTIVE === true}">BETA</span> -->
-          <p class="custom_paragraph">
+          <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">generating_tokens</i>
+          <p *ngIf="IS_OPEN === true" class="custom_paragraph">
             {{ 'Trigger.Trigger' | translate }}
             <span class="trigger-beta-badge">Beta</span>
           </p>
@@ -74,17 +80,14 @@
     <!-- Teammates & Groups -->
     <!-- ------------------------------------------------------- -->
     <li [ngClass]="{'active-item': TEAMMATES_ROUTE_IS_ACTIVE || GROUPS_ROUTE_IS_ACTIVE}" (click)="goToTeammates()">
-      <a class="custom_ancor" *ngIf="project">
-        <!-- <i class="material-icons sidebar-icons">
-            groups
-          </i> -->
-        <p class="custom_paragraph">
+      <a class="" *ngIf="project">
+        <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">supervisor_account</i>
+        <p *ngIf="IS_OPEN === true" class="custom_paragraph">
           <span *ngIf="isVisibleGRO">
 
             {{ 'UsersAndGroups' | translate }}
           </span>
           <span *ngIf="!isVisibleGRO">
-
             <span style="text-transform: capitalize;"> {{ 'Teammates' | translate }} </span>
           </span>
         </p>
@@ -96,11 +99,9 @@
     <!-- Chatbot -->
     <!-- ------------------------------------------------------- -->
     <li [ngClass]="{'active-item': CHATBOT_ROUTE_IS_ACTIVE}" (click)="goToChatbot()">
-      <a class="custom_ancor" *ngIf="project">
-        <!-- <i class="material-icons sidebar-icons">
-            smart_toy
-          </i> -->
-        <p class="custom_paragraph">
+      <a class="" *ngIf="project">
+        <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">smart_toy</i>
+        <p *ngIf="IS_OPEN === true" class="custom_paragraph">
           Bots
         </p>
       </a>
@@ -110,11 +111,9 @@
     <!--  Widget  -->
     <!-- -------------------------------------------------------- -->
     <li [ngClass]="{'active-item': WIDGET_SETUP_ROUTE_IS_ACTIVE}" (click)="goToWidgetSetUp()">
-      <a class="custom_ancor" *ngIf="project">
-        <!-- <i class="material-icons sidebar-icons">
-            chat_bubble
-          </i> -->
-        <p class="custom_paragraph">
+      <a class="" *ngIf="project">
+        <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">chat_bubble</i>
+        <p *ngIf="IS_OPEN === true" class="custom_paragraph">
           <!-- <span class="sidebar-mini">W </span> -->
           Widget
         </p>
@@ -127,11 +126,9 @@
     <ng-container *ngIf="isVisibleOPH">
 
       <li [ngClass]="{'active-item': OPERATING_HOURS_ROUTE_IS_ACTIVE}" (click)="goToOperatingHours()">
-        <a *ngIf="project" class="custom_ancor">
-          <!-- <i class="material-icons sidebar-icons">
-              watch_later
-            </i> -->
-          <p class="custom_paragraph">
+        <a *ngIf="project" class="">
+          <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">watch_later</i>
+          <p *ngIf="IS_OPEN === true" class="custom_paragraph">
             {{ 'Hours' | translate }}
           </p>
         </a>
@@ -143,12 +140,9 @@
     <!--  Project Settings  -->
     <!-- -------------------------------------------------------- -->
     <li [ngClass]="{'active-item': PROJECT_SETTINGS_ROUTE_IS_ACTIVE}" (click)="goToProjectSettings()">
-      <a *ngIf="project" class="custom_ancor">
-        <!-- <i class="material-icons sidebar-icons">
-            construction
-          </i> -->
-        <p class="custom_paragraph">
-
+      <a *ngIf="project" class="">
+        <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">construction</i>
+        <p *ngIf="IS_OPEN === true" class="custom_paragraph">
           {{ 'ProjectSettings' | translate }}
         </p>
       </a>

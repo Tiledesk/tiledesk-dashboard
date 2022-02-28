@@ -43,7 +43,7 @@ export class TagsComponent implements OnInit, AfterViewInit {
     { name: 'blue', hex: '#43B1F2' },
     { name: 'violet', hex: '#CB80DD' },
   ];
-
+  IS_OPEN_SETTINGS_SIDEBAR: boolean;
   constructor(
     public translate: TranslateService,
     private notify: NotifyService,
@@ -60,8 +60,15 @@ export class TagsComponent implements OnInit, AfterViewInit {
     this.getTag();
     this.translateNotificationMsgs();
     this.getImageStorage();
+    this.listenSidebarIsOpened();
   }
 
+  listenSidebarIsOpened() {
+    this.auth.settingSidebarIsOpned.subscribe((isopened) => {
+      this.logger.log('[TAGS] SETTINGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
+      this.IS_OPEN_SETTINGS_SIDEBAR = isopened
+    });
+  }
   ngAfterViewInit() { }
 
   getImageStorage() {

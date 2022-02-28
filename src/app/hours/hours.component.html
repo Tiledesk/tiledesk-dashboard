@@ -2,15 +2,28 @@
     <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBack()">keyboard_arrow_left</i>
     {{ "Hours" | translate }}
 </div> -->
-<p style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px" class="navbar-brand">
-  <!-- {{ "Hours" | translate }} -->
+<!-- <p style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px" class="navbar-brand">
   {{ 'Settings' | translate }}
-</p>
+</p> -->
+
+<span class="navbar-brand navbar-brand-sidebar-settings"
+  [ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
+  
+  <i class="material-icons">settings</i>
+
+  <span *ngIf="IS_OPEN_SETTINGS_SIDEBAR">{{ 'Settings' | translate }} </span>
+</span>
+<span class="navbar-brand navbar-brand-title">
+  {{ "Hours" | translate }}
+</span>
+
+
+
 <div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
   <div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
     <div class="content-wpr" style="display: flex;">
 
-      <appdashboard-settings-sidebar> </appdashboard-settings-sidebar>
+      <appdashboard-settings-sidebar style="border-right:1px solid #e5effe !important"> </appdashboard-settings-sidebar>
       <div class="teplate-content" style="flex: 1 1 auto; margin-left: 20px;">
 
         <div class="row">

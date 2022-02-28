@@ -151,6 +151,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   projectId: string;
   projectName: string;
   contactUsEmail: string;
+  IS_OPEN_SETTINGS_SIDEBAR: boolean;
   /**
    * 
    * @param projectService 
@@ -203,8 +204,15 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     this.getTestSiteUrl();
     this.getCurrentProject();
     //this.checkCurrentStatus();
+    this.listenSidebarIsOpened();
   }
 
+  listenSidebarIsOpened() {
+    this.auth.settingSidebarIsOpned.subscribe((isopened) => {
+      this.logger.log('[PRJCT-EDIT-ADD] SETTINGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
+      this.IS_OPEN_SETTINGS_SIDEBAR = isopened
+    });
+  }
 
   ngOnDestroy() {
     this.subscription.unsubscribe();

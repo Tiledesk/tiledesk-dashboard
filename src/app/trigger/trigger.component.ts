@@ -41,6 +41,7 @@ export class TriggerComponent implements OnInit {
   customtext = false;
   text_to_display = '' // is diplayed if customtext = true
   translateparam: any; 
+  IS_OPEN_SETTINGS_SIDEBAR: boolean;
   constructor(
     private auth: AuthService,
     private triggerService: TriggerService,
@@ -59,7 +60,14 @@ export class TriggerComponent implements OnInit {
 
     this.query = 'custom';
     this.has_selected_system = false;
+    this.listenSidebarIsOpened();
+  }
 
+  listenSidebarIsOpened() {
+    this.auth.settingSidebarIsOpned.subscribe((isopened) => {
+      this.logger.log('[TRIGGER] SETTINGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
+      this.IS_OPEN_SETTINGS_SIDEBAR = isopened
+    });
   }
 
 

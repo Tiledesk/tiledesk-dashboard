@@ -1,14 +1,29 @@
-<p style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px" class="navbar-brand">
-
-  <!-- <span *ngIf="isVisibleDEP"> {{'RoutingAndDepts' | translate}} </span>
-  <span *ngIf="!isVisibleDEP"> {{'Routing' | translate}} </span> -->
+<!-- <p style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px" class="navbar-brand">
   {{ 'Settings' | translate }}
-</p>
+</p> -->
+
+<span class="navbar-brand navbar-brand-sidebar-settings"
+  [ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
+
+  <i class="material-icons">settings</i>
+
+  <span *ngIf="IS_OPEN_SETTINGS_SIDEBAR">{{ 'Settings' | translate }} </span>
+</span>
+<span *ngIf="isVisibleDEP" class="navbar-brand navbar-brand-title">
+  {{'RoutingAndDepts' | translate}}
+</span>
+<span *ngIf="!isVisibleDEP" class="navbar-brand navbar-brand-title">
+  {{'Routing' | translate}}
+</span>
+
+
+
+
 <div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
   <div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
 
     <div class="content-wpr" style="display: flex;">
-      <appdashboard-settings-sidebar> </appdashboard-settings-sidebar>
+      <appdashboard-settings-sidebar style="border-right:1px solid #e5effe !important"> </appdashboard-settings-sidebar>
       <div class="teplate-content" style="flex: 1 1 auto; margin-left: 20px;">
 
         <div class="row">
@@ -64,10 +79,10 @@
               <div *ngIf="!showSpinner" class="card-content table-responsive" style="min-height: 200px;">
 
 
-                 
-            <!-- --------------------------------------------------------------------- -->
-            <!-- DAFAULT ROUTING -->
-            <!-- --------------------------------------------------------------------- -->
+
+                <!-- --------------------------------------------------------------------- -->
+                <!-- DAFAULT ROUTING -->
+                <!-- --------------------------------------------------------------------- -->
                 <section class="default-department-table" style="margin-bottom: 36px;">
 
                   <div class="row table-title-wpr">
@@ -310,10 +325,10 @@
                 </section>
                 <!-- ----- ./ DEFAULT DEPTS ------ -->
 
-                 
-            <!-- ---------------------------------------------------------- --> 
-            <!-- DEPT LIST TABLE SECTION -->
-            <!-- ---------------------------------------------------------- -->
+
+                <!-- ---------------------------------------------------------- -->
+                <!-- DEPT LIST TABLE SECTION -->
+                <!-- ---------------------------------------------------------- -->
                 <section class="departments-table" *ngIf="isVisibleDEP">
 
                   <div class="row table-title-wpr">
@@ -664,10 +679,10 @@
           </div> <!-- /. col-md-12 -->
 
 
-           
-      <!-- --------------------------------------------------- -->
-      <!-- @ Right sidebar -->
-      <!-- --------------------------------------------------- -->
+
+          <!-- --------------------------------------------------- -->
+          <!-- @ Right sidebar -->
+          <!-- --------------------------------------------------- -->
 
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
 

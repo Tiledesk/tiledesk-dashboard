@@ -201,7 +201,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   public preChatFormCustomFieldsEnabled: boolean;
   public HAS_ACTIVATED_PRECHAT_CUSTOM_FIELDS: boolean;
   public USER_ROLE: string;
-
+  IS_OPEN_SETTINGS_SIDEBAR: boolean;
   constructor(
     private notify: NotifyService,
     public location: Location,
@@ -261,6 +261,14 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.logger.log('[WIDGET-SET-UP] window.matchMedia ', window.matchMedia)
     this.lang = this.translate.getBrowserLang();
     this.logger.log('[WIDGET-SET-UP] LANGUAGE ', this.lang);
+    this.listenSidebarIsOpened();
+  }
+
+  listenSidebarIsOpened() {
+    this.auth.settingSidebarIsOpned.subscribe((isopened) => {
+      this.logger.log('[WIDGET-SET-UP] SETTINGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
+      this.IS_OPEN_SETTINGS_SIDEBAR = isopened
+    });
   }
 
 
@@ -308,7 +316,6 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   getWidgetUrl() {
     this.WIDGET_URL = this.appConfigService.getConfig().widgetUrl;
     this.logger.log('[WIDGET-SET-UP] getAppConfig WIDGET_URL ', this.WIDGET_URL)
-
   }
 
 

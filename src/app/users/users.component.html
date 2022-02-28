@@ -1,7 +1,17 @@
-<p style="margin-top:6px; padding-left:30px;position: relative;z-index: 1050;" class="navbar-brand">
-  <!-- <span style="text-transform: capitalize;"> {{ 'Teammates' | translate }} </span> -->
+<!-- <p style="margin-top:6px; padding-left:30px;position: relative;z-index: 1050;" class="navbar-brand">
   {{ 'Settings' | translate }}
-</p>
+</p> -->
+
+<span class="navbar-brand navbar-brand-sidebar-settings"
+  [ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
+  <i class="material-icons">settings</i>
+
+  <span *ngIf="IS_OPEN_SETTINGS_SIDEBAR">{{ 'Settings' | translate }} </span>
+</span>
+<span class="navbar-brand navbar-brand-title" style="text-transform: capitalize;">
+  {{ 'Teammates' | translate }}
+</span>
+
 
 
 <!-- <ul class="bottom-nav">
@@ -21,7 +31,7 @@
     <div class="row"></div>
 
     <div class="content-wpr" style="display: flex;">
-      <appdashboard-settings-sidebar> </appdashboard-settings-sidebar>
+      <appdashboard-settings-sidebar style="border-right:1px solid #e5effe !important"> </appdashboard-settings-sidebar>
       <div class="teplate-content" style="flex: 1 1 auto; margin-left: 20px;">
 
         <ul class="bottom-nav" style="top:-9px; box-shadow: unset">
