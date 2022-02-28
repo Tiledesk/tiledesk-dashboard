@@ -511,7 +511,6 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
           if (isfirebaseuploadengine === true) {
             imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + imagestorage + "/o/profiles%2F" + projectuser.id_user._id + "%2Fphoto.jpg?alt=media";
           } else {
-
             imgUrl = imagestorage + "images?path=uploads%2Fusers%2F" + projectuser.id_user._id + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
           }
 

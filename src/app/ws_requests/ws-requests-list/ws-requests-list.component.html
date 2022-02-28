@@ -485,11 +485,12 @@
                           <!-- ---------------------------------------- -->
                           <!-- Usecase No profile image -->
                           <!-- ---------------------------------------- -->
+                          <!-- [ngStyle]="{'background-color': agent?.id_user?.fillColour }"  -->
                           <div *ngIf="!agent?.hasImage" size="42" class="served-by-conv-e">
-                            <div class="altenative-conv-avatar-wrap"
-                              [ngStyle]="{'background-color': agent?.id_user?.fillColour }">
+                            <div class="altenative-conv-avatar-wrap" style="width: 43px; height: 43px; top: -1px;"
+                              [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + agent?.id_user?.fillColour + ')'}">
 
-                              <span class="altenative-conv-avatar">
+                              <span class="altenative-conv-avatar" style="line-height: 40px;">
                                 {{ agent?.id_user?.fullname_initial }}
                               </span>
 
