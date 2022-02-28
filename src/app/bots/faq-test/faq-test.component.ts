@@ -4,7 +4,7 @@ import { AuthService } from '../../core/auth.service';
 import { Project } from '../../models/project-model';
 import { ActivatedRoute } from '@angular/router';
 import { FaqService } from '../../services/faq.service';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+
 // USED FOR go back last page
 import { Location } from '@angular/common';
 import { FaqKbService } from '../../services/faq-kb.service';
