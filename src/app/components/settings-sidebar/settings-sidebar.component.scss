@@ -40,7 +40,7 @@
     font-weight: 400;
     cursor: pointer;
     width: 100%;
-    padding-right: 6px;
+    // padding-right: 6px;
     display: flex;
     align-items: center;
     margin-bottom: 3px;
@@ -61,6 +61,10 @@
     padding-left: 8px;
     display: inline-block;
     vertical-align: middle;
+    width: 170px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .settings-sidebar-icons {
@@ -97,7 +101,7 @@ li > a {
     /* margin: 5px 15px !important; */
 
     margin-top: 5px !important;
-    margin-right: 15px !important;
+    margin-right: 5px !important;
     margin-bottom: 5px !important;
     margin-left: 0px !important;
     // width: 60px;
