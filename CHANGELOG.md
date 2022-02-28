@@ -14,6 +14,7 @@
 - Enhances the "General" page of the Project Settings
 - Adds the ability to toggle the width of the settings sidebar
 - Displays tooltips when the settings sidebar is minimized
+- Prevents the settings sidebar text from being displayed on two lines
 
 ### 2.2.32-rc6
 - Removes the "open dashboard in new window" button from the right sidebar of the conversation detail page
