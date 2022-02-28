@@ -79,13 +79,22 @@
     <div id="sidebaravatar-img-wpr" class="avatar-container tiledesk-nav-avatar" (click)="openUserDetailSidePanel()"
       [ngClass]="{'small-sidebar-avatar' : SIDEBAR_IS_SMALL === true }">
 
+     
       <img id="sidebaravatar-img" class="avatar"
         *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true" [src]="getUserProfileImage()"
         onerror="this.src='assets/img/no_image_user.png'" />
-
-      <img id="sidebaravatar-no-img" class="avatar"
+        <!-- [ngStyle]="{'background-color': user?.fillColour }" -->
+      <div id="sidebaravatar-no-img"  class="avatar"
         *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true"
-        src="assets/img/no_image_user.png" />
+        [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + user?.fillColour + ')'}">
+        <span id="sidebaravatar-altenative-user-avatar" class="altenative-user-avatar" style="line-height: 2.9; font-weight: 400;">
+          {{ user?.fullname_initial }}
+        </span>
+      </div>
+
+      <!-- <img id="sidebaravatar-no-img" class="avatar"
+        *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true"
+        src="assets/img/no_image_user.png" /> -->
 
       <!-- (click)="changeAvailabilityState(IS_AVAILABLE = !IS_AVAILABLE)" -->
       <!-- matTooltipClass="custom-mat-tooltip" matTooltip="{{ tooltip_text_for_availability_status}}"  #tooltip="matTooltip"   matTooltipPosition='right' matTooltipHideDelay="100" -->

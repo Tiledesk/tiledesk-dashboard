@@ -14,7 +14,7 @@ import { takeUntil } from 'rxjs/operators';
 import { NotifyService } from '../../core/notify.service';
 import { ProjectService } from 'app/services/project.service';
 import { tranlatedLanguage } from 'app/utils/util';
-
+import { avatarPlaceholder, getColorBck } from '../../utils/util'
 // import { slideInOutAnimation } from '../../../_animations/index';
 @Component({
   selector: 'appdashboard-sidebar-user-details',
@@ -56,6 +56,7 @@ export class SidebarUserDetailsComponent implements OnInit {
   private unsubscribe$: Subject<any> = new Subject<any>();
   current_selected_prjct: any;
   public_Key: any;
+  currentUserId: string;
 
   constructor(
     public auth: AuthService,
@@ -215,23 +216,21 @@ export class SidebarUserDetailsComponent implements OnInit {
 
   @HostListener('document:click', ['$event'])
   clickout(event) {
-    this.logger.log('[SIDEBAR-USER-DETAILS] clickout event.target)', event.target)
-    this.logger.log('[SIDEBAR-USER-DETAILS] clickout event.target)', event.target.id)
+    console.log('[SIDEBAR-USER-DETAILS] clickout event.target)', event.target)
+    console.log('[SIDEBAR-USER-DETAILS] clickout event.target)', event.target.id)
     const clicked_element_id = event.target.id
     if (this.eRef.nativeElement.contains(event.target)) {
-
-
-      this.logger.log('[SIDEBAR-USER-DETAILS] clicked inside')
+      console.log('[SIDEBAR-USER-DETAILS] clicked inside')
     } else {
       const elSidebarUserDtls = <HTMLElement>document.querySelector('#user-details');
-      this.logger.log('[SIDEBAR-USER-DETAILS] clicked outside elSidebarUserDtls ', elSidebarUserDtls)
+      console.log('[SIDEBAR-USER-DETAILS] clicked outside elSidebarUserDtls ', elSidebarUserDtls)
       
-      this.logger.log('[SIDEBAR-USER-DETAILS] HAS_CLICKED_OPEN_USER_DETAIL ', this.HAS_CLICKED_OPEN_USER_DETAIL)
+      console.log('[SIDEBAR-USER-DETAILS] HAS_CLICKED_OPEN_USER_DETAIL ', this.HAS_CLICKED_OPEN_USER_DETAIL)
       // if (this.HAS_CLICKED_OPEN_USER_DETAIL === true) {
         if (!clicked_element_id.startsWith("sidebaravatar")) {
           this.closeUserDetailSidePanel();
         // }
-        this.logger.log('[SIDEBAR-USER-DETAILS] clicked outside')
+        console.log('[SIDEBAR-USER-DETAILS] clicked outside')
       }
     }
   }
@@ -481,6 +480,7 @@ export class SidebarUserDetailsComponent implements OnInit {
 
       // GET ALL PROJECTS WHEN IS PUBLISHED THE USER
       if (this.user) {
+        this.currentUserId = user._id;
 
         const stored_preferred_lang = localStorage.getItem(this.user._id + '_lang')
 
@@ -513,9 +513,57 @@ export class SidebarUserDetailsComponent implements OnInit {
           this.flag_url = "assets/img/language_flag/en.png"
           this.dsbrd_lang = 'en'
         }
+
+        let imgUrl = ''
+        if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+          imgUrl = 'https://firebasestorage.googleapis.com/v0/b/' +  this.appConfigService.getConfig().firebase.storageBucket +   '/o/profiles%2F' +   this.currentUserId +  '%2Fphoto.jpg?alt=media'
+        
+        } else {
+          imgUrl =  this.appConfigService.getConfig().SERVER_BASE_URL + 'images?path=uploads%2Fusers%2F' + this.currentUserId + '%2Fimages%2Fthumbnails_200_200-photo.jpg'
+        }
+        this.checkImageExists(imgUrl, (existsImage) => {
+          if (existsImage == true) {
+            
+            user['hasImage'] = true
+            console.log( '[SIDEBAR] - IMAGE EXIST X PROJECT USERS',user)
+          } else {
+           
+            user['hasImage'] = false;
+            console.log( '[SIDEBAR] - IMAGE EXIST X PROJECT USERS',user)
+            this.createUserAvatar(user)
+          }
+        })
       }
     });
   }
+
+  checkImageExists(imageUrl, callBack) {
+    var imageData = new Image()
+    imageData.onload = function () {
+      callBack(true)
+    }
+    imageData.onerror = function () {
+      callBack(false)
+    }
+    imageData.src = imageUrl
+  }
+
+  createUserAvatar(user) {
+    this.logger.log('[USERS] - createProjectUserAvatar ', user)
+    let fullname = ''
+    if (user && user.firstname && user.lastname) {
+      fullname = user.firstname + ' ' + user.lastname
+      user['fullname_initial'] = avatarPlaceholder(fullname)
+      user['fillColour'] = getColorBck(fullname)
+    } else if (user && user.firstname) {
+      fullname = user.firstname
+      user['fullname_initial'] = avatarPlaceholder(fullname)
+      user['fillColour'] = getColorBck(fullname)
+    } else {
+      user['fullname_initial'] = 'N/A'
+      user['fillColour'] = 'rgb(98, 100, 167)'
+    }
+ }
 
   getLangTranslation(dsbrd_lang_code) {
     this.translate.get(dsbrd_lang_code)

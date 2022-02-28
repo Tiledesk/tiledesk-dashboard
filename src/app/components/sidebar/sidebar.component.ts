@@ -29,6 +29,7 @@ import { environment } from '../../../environments/environment';
 import { BrandService } from '../../services/brand.service';
 import { WsRequestsService } from './../../services/websocket/ws-requests.service';
 import { LoggerService } from './../../services/logger/logger.service';
+import { avatarPlaceholder, getColorBck } from '../../utils/util'
 declare const $: any;
 
 declare interface RouteInfo {
@@ -300,8 +301,59 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
                     this.logger.log('[SIDEBAR] flag_url (from browser_lang) ', this.flag_url)
                 }
+
+                let imgUrl = ''
+                if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+                  imgUrl = 'https://firebasestorage.googleapis.com/v0/b/' +  this.appConfigService.getConfig().firebase.storageBucket +   '/o/profiles%2F' +   this.currentUserId +  '%2Fphoto.jpg?alt=media'
+                 
+                } else {
+                  imgUrl =  this.appConfigService.getConfig().SERVER_BASE_URL + 'images?path=uploads%2Fusers%2F' + this.currentUserId + '%2Fimages%2Fthumbnails_200_200-photo.jpg'
+                 
+                }
+    
+                this.checkImageExists(imgUrl, (existsImage) => {
+                  if (existsImage == true) {
+                    
+                    user['hasImage'] = true
+                    console.log( '[SIDEBAR] - IMAGE EXIST X PROJECT USERS',user)
+                  } else {
+                   
+                    user['hasImage'] = false;
+                    console.log( '[SIDEBAR] - IMAGE EXIST X PROJECT USERS',user)
+                    this.createUserAvatar(user)
+                  }
+                })
+
             }
         });
+    }
+
+    checkImageExists(imageUrl, callBack) {
+        var imageData = new Image()
+        imageData.onload = function () {
+          callBack(true)
+        }
+        imageData.onerror = function () {
+          callBack(false)
+        }
+        imageData.src = imageUrl
+    }
+
+    createUserAvatar(user) {
+        this.logger.log('[USERS] - createProjectUserAvatar ', user)
+        let fullname = ''
+        if (user && user.firstname && user.lastname) {
+          fullname = user.firstname + ' ' + user.lastname
+          user['fullname_initial'] = avatarPlaceholder(fullname)
+          user['fillColour'] = getColorBck(fullname)
+        } else if (user && user.firstname) {
+          fullname = user.firstname
+          user['fullname_initial'] = avatarPlaceholder(fullname)
+          user['fillColour'] = getColorBck(fullname)
+        } else {
+          user['fullname_initial'] = 'N/A'
+          user['fillColour'] = 'rgb(98, 100, 167)'
+        }
     }
 
     getLangTranslation(dsbrd_lang_code) {
