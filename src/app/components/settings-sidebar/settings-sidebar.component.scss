@@ -149,3 +149,14 @@ li > a {
 .toggle-setting-sidebar-icon:hover {
     background: #f5f8fa;
 }
+
+::ng-deep .custom-mat-tooltip-in-settings-sidebar {
+    background-color: #fff  !important;
+    color: #555555 !important;
+    font-size: 12px  !important;
+    border-radius: 2px !important;
+    font-family: 'Poppins' !important;
+    padding-top:8px!important;
+    padding-bottom:8px!important;
+    border: 1px solid #e5effe!important;
+  }

@@ -4,6 +4,7 @@ import { AppConfigService } from '../../services/app-config.service'
 import { AuthService } from '../../core/auth.service'
 import { NavigationEnd, Router } from '@angular/router'
 import { Location } from '@angular/common'
+import { TranslateService } from '@ngx-translate/core'
 @Component({
   selector: 'appdashboard-settings-sidebar',
   templateUrl: './settings-sidebar.component.html',
@@ -45,12 +46,15 @@ export class SettingsSidebarComponent implements OnInit {
   route: string
   sidebar_settings_height: any
   IS_OPEN: boolean = true
+  routing_and_depts_lbl: string;
+  teammatates_and_groups_lbl: string;
   constructor(
     public appConfigService: AppConfigService,
     private logger: LoggerService,
     private auth: AuthService,
     public router: Router,
     public location: Location,
+    private translate: TranslateService,
   ) {}
 
   ngOnInit() {
@@ -114,81 +118,85 @@ export class SettingsSidebarComponent implements OnInit {
         let ana = key.split(':')
 
         if (ana[1] === 'F') {
-          this.isVisibleANA = false
+          this.isVisibleANA = false;
         } else {
-          this.isVisibleANA = true
+          this.isVisibleANA = true;
         }
       }
 
       if (key.includes('ACT')) {
         let act = key.split(':')
         if (act[1] === 'F') {
-          this.isVisibleACT = false
+          this.isVisibleACT = false;
         } else {
-          this.isVisibleACT = true
+          this.isVisibleACT = true;
         }
       }
 
       if (key.includes('TRI')) {
         let tri = key.split(':')
         if (tri[1] === 'F') {
-          this.isVisibleTRI = false
+          this.isVisibleTRI = false;
         } else {
-          this.isVisibleTRI = true
+          this.isVisibleTRI = true;
         }
       }
 
       if (key.includes('GRO')) {
         let gro = key.split(':')
         if (gro[1] === 'F') {
-          this.isVisibleGRO = false
+          this.isVisibleGRO = false;
+          this.getTeammatesTraslantion()
         } else {
-          this.isVisibleGRO = true
+          this.isVisibleGRO = true;
+          this.getTeammatesAndGroupTraslantion()
         }
       }
 
       if (key.includes('DEP')) {
         let dep = key.split(':')
         if (dep[1] === 'F') {
-          this.isVisibleDEP = false
+          this.isVisibleDEP = false;
+          this.getRoutingTranslation();
         } else {
-          this.isVisibleDEP = true
+          this.isVisibleDEP = true;
+          this.getDeptsAndRoutingTranslation();
         }
       }
 
       if (key.includes('OPH')) {
         let oph = key.split(':')
         if (oph[1] === 'F') {
-          this.isVisibleOPH = false
+          this.isVisibleOPH = false;
         } else {
-          this.isVisibleOPH = true
+          this.isVisibleOPH = true;
         }
       }
 
       if (key.includes('CAR')) {
         let car = key.split(':')
         if (car[1] === 'F') {
-          this.isVisibleCAR = false
+          this.isVisibleCAR = false;
         } else {
-          this.isVisibleCAR = true
+          this.isVisibleCAR = true;
         }
       }
 
       if (key.includes('LBS')) {
         let lbs = key.split(':')
         if (lbs[1] === 'F') {
-          this.isVisibleLBS = false
+          this.isVisibleLBS = false;
         } else {
-          this.isVisibleLBS = true
+          this.isVisibleLBS = true;
         }
       }
 
       if (key.includes('APP')) {
         let lbs = key.split(':')
         if (lbs[1] === 'F') {
-          this.isVisibleAPP = false
+          this.isVisibleAPP = false;
         } else {
-          this.isVisibleAPP = true
+          this.isVisibleAPP = true;
         }
       }
     })
@@ -204,6 +212,35 @@ export class SettingsSidebarComponent implements OnInit {
     if (!this.public_Key.includes('APP')) {
       this.isVisibleAPP = false
     }
+  }
+
+  getRoutingTranslation() {
+    this.translate.get('Routing')
+    .subscribe((text: string) => {
+      this.routing_and_depts_lbl = text;
+    });
+  }
+
+  getDeptsAndRoutingTranslation() {
+    this.translate.get('RoutingAndDepts')
+    .subscribe((text: string) => {
+      this.routing_and_depts_lbl = text;
+    });
+  } 
+
+  getTeammatesTraslantion() {
+    this.translate.get('Teammates')
+    .subscribe((text: string) => {
+      this.teammatates_and_groups_lbl = text.replace(/\b\w/g, l => l.toUpperCase());
+    });
+  }
+
+  getTeammatesAndGroupTraslantion() {
+    this.translate.get('UsersAndGroups')
+    .subscribe((text: string) => {
+
+      this.teammatates_and_groups_lbl = text;
+    });
   }
 
   getChatUrl() {
