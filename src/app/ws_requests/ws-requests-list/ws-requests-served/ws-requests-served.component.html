@@ -775,10 +775,11 @@
                         <!-- --------------------------------------- -->
                         <!-- Usecase  No Profile image -->
                         <!-- --------------------------------------- -->
+                        <!-- [ngStyle]="{'background-color': agent?.fillColour }" -->
                         <div *ngIf="!agent?.hasImage"
                           [ngClass]="{'current-user-member-border' : agent._id === currentUserID}"
-                          class="altenative-avatar-wrap" [ngStyle]="{'background-color': agent?.fillColour }">
-
+                          class="altenative-avatar-wrap" 
+                          [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + agent?.fillColour + ')'}">
                           <span class="altenative-avatar">
                             {{ agent?.fullname_initial }}
                           </span>
