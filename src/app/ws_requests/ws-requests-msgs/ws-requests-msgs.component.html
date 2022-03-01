@@ -1981,7 +1981,7 @@
                           <!-- --------------------------------------- -->
                           <!-- Usecase  Firebase -->
                           <!-- --------------------------------------- -->
-                          <img *ngIf="agent.isBot === false && UPLOAD_ENGINE_IS_FIREBASE"
+                          <img *ngIf="agent.isBot === false && agent.hasImage && UPLOAD_ENGINE_IS_FIREBASE"
                             class="teammate-img-conv-detail"
                             src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fphoto.jpg?alt=media"
                             onerror="this.src='assets/img/no_image_user.png'" />
@@ -1989,10 +1989,12 @@
                           <!-- --------------------------------------- -->
                           <!-- Usecase  Native -->
                           <!-- --------------------------------------- -->
-                          <img *ngIf="agent.isBot === false && !UPLOAD_ENGINE_IS_FIREBASE"
+                          <img *ngIf="agent.isBot === false && agent.hasImage && !UPLOAD_ENGINE_IS_FIREBASE"
                             class="teammate-img-conv-detail"
                             src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                             onerror="this.src='assets/img/no_image_user.png'" />
+
+                       
 
                           <!-- --------------------------------------- -->
                           <!-- Usecase  Firebase (bot) -->
@@ -2010,15 +2012,52 @@
                             src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id | slice:4}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                             onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
 
-                          <span [ngClass]="{'current_user_is_agent' : agent?._id === currentUserID}"
+                          <!-- --------------------------------------- -->
+                          <!-- Name of the bot -->
+                          <!-- --------------------------------------- -->
+                          <span  *ngIf="agent.isBot === true" class="agent-fullname-has-image-and-chat-with"
                             style="font-size:12px; font-weight: 400">
                             {{agent?.firstname}} {{agent?.lastname}}
+                            <span *ngIf="agent.isBot === true">(bot) </span>
+                          </span>
+
+                          <!-- --------------------------------------- -->
+                          <!--  Chat with when agent has image -->
+                          <!-- --------------------------------------- -->
+                          <span *ngIf="agent.hasImage" class="agent-fullname-has-image-and-chat-with" [ngClass]="{'current_user_is_agent' : agent?._id === currentUserID}"
+                            style="font-size:12px; font-weight: 400" matTooltipClass="custom-mat-tooltip-in-conv-detail-sidebar" matTooltip="{{'ChatWith' | translate }}  {{agent?.firstname}} {{agent?.lastname}}"
+                            #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
+                            {{agent?.firstname}} {{agent?.lastname}}
+
+                            <i class="material-icons chat-with-agent-ws-request-detail" *ngIf="agent.isBot === false && CHAT_PANEL_MODE === false"
+                              (click)="chatWithAgent( agent?._id, agent?.firstname, agent?.lastname)">
+                              chat
+                            </i>
 
                             <span *ngIf="agent.isBot === true">(bot) </span>
                           </span>
                         </span>
 
-                        <span *ngIf="agent.isBot === false && CHAT_PANEL_MODE === false">
+                           <!-- --------------------------------------- -->
+                          <!-- Usecase No Profile image & Chat with -->
+                          <!-- --------------------------------------- -->
+                          <div *ngIf="agent.isBot === false && !agent.hasImage"  class="altenative-avatar-conv-detail-wpr"
+                          [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + agent?.userfillColour + ')'}" >
+                            <div class="altenative-avatar-conv-detail">
+                              {{ agent?.userFullname }}
+                            </div>
+                            <span class="agent-fullname-not-has-image-and-chat-with" [ngClass]="{'current_user_is_agent' : agent?._id === currentUserID}"
+                            style="font-size:12px; font-weight: 400" matTooltipClass="custom-mat-tooltip-in-conv-detail-sidebar" matTooltip="{{'ChatWith' | translate }}  {{agent?.firstname}} {{agent?.lastname}}"
+                            #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
+                            {{agent?.firstname}} {{agent?.lastname}}
+                            <i class="material-icons chat-with-agent-ws-request-detail" *ngIf="agent.isBot === false && CHAT_PANEL_MODE === false && !agent.hasImage"
+                              (click)="chatWithAgent( agent?._id, agent?.firstname, agent?.lastname)">
+                              chat
+                            </i>
+                          </span>
+                          </div>
+
+                        <!-- <span *ngIf="agent.isBot === false && CHAT_PANEL_MODE === false && !agent.hasImage">
                           <span class="White__Tooltip">
                             <i class="material-icons chat-with-agent-ws-request-detail"
                               (click)="chatWithAgent( agent?._id, agent?.firstname, agent?.lastname)">
@@ -2030,7 +2069,7 @@
                               <span style="display:block"> {{agent?.firstname}} {{agent?.lastname }} </span>
                             </span>
                           </span>
-                        </span>
+                        </span> -->
                       </div>
                     </div>
                   </div>

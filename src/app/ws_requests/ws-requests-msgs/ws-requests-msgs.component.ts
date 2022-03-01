@@ -214,7 +214,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   selectedPriority: any;
   priority_updated_successfully_msg: string;
   priority_update_failed: string;
-  current_selected_prjct:any;
+  current_selected_prjct: any;
+  imageStorage: any;
 
   /**
    * Constructor
@@ -392,10 +393,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       this.UPLOAD_ENGINE_IS_FIREBASE = true;
       const firebase_conf = this.appConfigService.getConfig().firebase;
       this.storageBucket = firebase_conf['storageBucket'];
+      this.imageStorage = firebase_conf['storageBucket']
       this.logger.log('[WS-REQUESTS-MSGS] IMAGE STORAGE ', this.storageBucket, 'usecase firebase')
     } else {
       this.UPLOAD_ENGINE_IS_FIREBASE = false;
       this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
+      this.imageStorage = this.appConfigService.getConfig().SERVER_BASE_URL;
       this.logger.log('[WS-REQUESTS-MSGS] IMAGE STORAGE ', this.baseUrl, 'usecase native')
     }
   }
@@ -1089,7 +1092,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
           }
 
-          this.createAgentsArrayFromParticipantsId(this.members_array, this.requester_id)
+          this.createAgentsArrayFromParticipantsId(this.members_array, this.requester_id, this.UPLOAD_ENGINE_IS_FIREBASE, this.imageStorage)
           this.createRequesterAvatar(this.request.lead);
           this.IS_CURRENT_USER_JOINED = this.currentUserIdIsInParticipants(this.request.participants, this.currentUserID, this.request.request_id);
           this.logger.log('[WS-REQUESTS-MSGS] - IS_CURRENT_USER_JOINED? ', this.IS_CURRENT_USER_JOINED)

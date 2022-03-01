@@ -2498,6 +2498,39 @@ span .conv-svg-icon {
   object-fit: cover;
 }
 
+.altenative-avatar-conv-detail-wpr {
+  vertical-align: middle;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #eee;
+  margin-right: 3px;
+  // object-fit: cover;
+  text-align: center;
+  position: relative;
+  display: flex!important;
+}
+.altenative-avatar-conv-detail {
+  font-family: "Poppins";
+  font-weight: 400;
+  position: absolute;
+  color: #fff;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  flex: 0 0 auto!important;
+}
+
+.agent-fullname-not-has-image-and-chat-with {
+  white-space: nowrap;
+  position: relative;
+  left: 37px;
+  top: 6px;
+  // background: aliceblue;
+  height: 19px;
+}
+
 .chat-panel-mode-project-name {
   margin-bottom: 0px;
   margin-top: 8px;
@@ -2726,6 +2759,17 @@ span .conv-svg-icon {
   font-family: 'Poppins' !important;
   padding-top:8px!important;
   padding-bottom:8px!important;
+}
+
+::ng-deep .custom-mat-tooltip-in-conv-detail-sidebar {
+  background-color: #fff  !important;
+  color: #555555 !important;
+  font-size: 12px  !important;
+  border-radius: 2px !important;
+  font-family: 'Poppins' !important;
+  padding-top:8px!important;
+  padding-bottom:8px!important;
+  border: 1px solid #e5effe!important;
 }
 
 // Custom scollbar fo the chat right sidebar
