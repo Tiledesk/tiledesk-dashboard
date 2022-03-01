@@ -216,21 +216,21 @@ export class SidebarUserDetailsComponent implements OnInit {
 
   @HostListener('document:click', ['$event'])
   clickout(event) {
-    console.log('[SIDEBAR-USER-DETAILS] clickout event.target)', event.target)
-    console.log('[SIDEBAR-USER-DETAILS] clickout event.target)', event.target.id)
+    this.logger.log('[SIDEBAR-USER-DETAILS] clickout event.target)', event.target)
+    this.logger.log('[SIDEBAR-USER-DETAILS] clickout event.target)', event.target.id)
     const clicked_element_id = event.target.id
     if (this.eRef.nativeElement.contains(event.target)) {
-      console.log('[SIDEBAR-USER-DETAILS] clicked inside')
+      this.logger.log('[SIDEBAR-USER-DETAILS] clicked inside')
     } else {
       const elSidebarUserDtls = <HTMLElement>document.querySelector('#user-details');
-      console.log('[SIDEBAR-USER-DETAILS] clicked outside elSidebarUserDtls ', elSidebarUserDtls)
+      this.logger.log('[SIDEBAR-USER-DETAILS] clicked outside elSidebarUserDtls ', elSidebarUserDtls)
       
-      console.log('[SIDEBAR-USER-DETAILS] HAS_CLICKED_OPEN_USER_DETAIL ', this.HAS_CLICKED_OPEN_USER_DETAIL)
+      this.logger.log('[SIDEBAR-USER-DETAILS] HAS_CLICKED_OPEN_USER_DETAIL ', this.HAS_CLICKED_OPEN_USER_DETAIL)
       // if (this.HAS_CLICKED_OPEN_USER_DETAIL === true) {
         if (!clicked_element_id.startsWith("sidebaravatar")) {
           this.closeUserDetailSidePanel();
         // }
-        console.log('[SIDEBAR-USER-DETAILS] clicked outside')
+        this.logger.log('[SIDEBAR-USER-DETAILS] clicked outside')
       }
     }
   }
@@ -525,11 +525,11 @@ export class SidebarUserDetailsComponent implements OnInit {
           if (existsImage == true) {
             
             user['hasImage'] = true
-            console.log( '[SIDEBAR] - IMAGE EXIST X PROJECT USERS',user)
+            this.logger.log( '[SIDEBAR] - IMAGE EXIST X PROJECT USERS',user)
           } else {
            
             user['hasImage'] = false;
-            console.log( '[SIDEBAR] - IMAGE EXIST X PROJECT USERS',user)
+            this.logger.log( '[SIDEBAR] - IMAGE EXIST X PROJECT USERS',user)
             this.createUserAvatar(user)
           }
         })

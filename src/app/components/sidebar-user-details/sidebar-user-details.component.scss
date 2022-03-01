@@ -289,10 +289,17 @@ button.user-details-btn-close {
 }
 
 ::ng-deep .custom-mat-tooltip {
-    background-color: #2d323e  !important;
-    font-size: 12px  !important;
+    background-color: #2d323e !important;
+    font-size: 12px !important;
     border-radius: 2px !important;
-    font-family: 'Poppins' !important;
+    font-family: "Poppins" !important;
+}
+
+.altenative-sidebar-user-details-avatar {
+    line-height: 3.2;
+    font-weight: 400;
+    font-family: "Poppins";
+    font-size: 32px;
 }
 
 .tooltip {
@@ -300,9 +307,9 @@ button.user-details-btn-close {
     display: inline-block;
     border-bottom: 1px dotted black;
     z-index: 1054 !important;
-  }
-  
-  .tooltip .tooltiptext {
+}
+
+.tooltip .tooltiptext {
     visibility: hidden;
     width: 120px;
     background-color: black;
@@ -310,12 +317,12 @@ button.user-details-btn-close {
     text-align: center;
     border-radius: 6px;
     padding: 5px 0;
-  
+
     /* Position the tooltip */
     position: absolute;
     z-index: 1;
-  }
-  
-  .tooltip:hover .tooltiptext {
+}
+
+.tooltip:hover .tooltiptext {
     visibility: visible;
-  }
+}
