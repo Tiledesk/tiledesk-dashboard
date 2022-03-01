@@ -52,7 +52,7 @@ li.active a p.onBlackBckgrnd .sidebar-mini {
   color: $brand-sidebar-active-item-icon-color !important;
 }
 
-.nav>li>a:hover {
+.nav > li > a:hover {
   text-decoration: none;
   background-color: #eee;
 }
@@ -437,9 +437,6 @@ button.close {
 //   background: #555;
 //   /* width: 10px !important; */
 // }
-
-
-
 
 #sidebar_wrapper::-webkit-scrollbar {
   width: 6px;
@@ -1155,7 +1152,7 @@ button.close {
 }
 .small-sidebar__logo {
   left: 19px;
-  top: 17px !important; 
+  top: 17px !important;
   width: 25px !important;
 }
 
@@ -1181,14 +1178,17 @@ button.close {
   border-radius: 10px !important;
 }
 
-
 ::ng-deep .custom-mat-tooltip {
-  background-color: #2d323e  !important;
-  font-size: 12px  !important;
+  background-color: #2d323e !important;
+  font-size: 12px !important;
   border-radius: 2px !important;
-  font-family: 'Poppins' !important;
-  padding-top:8px!important;
-  padding-bottom:8px!important;
+  font-family: "Poppins" !important;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
 }
 
-
+#sidebaravatar-altenative-user-avatar {
+  line-height: 2.9;
+  font-weight: 400;
+  font-family: "Poppins";
+}

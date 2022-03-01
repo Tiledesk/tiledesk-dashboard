@@ -87,7 +87,7 @@
       <div id="sidebaravatar-no-img"  class="avatar"
         *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true"
         [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + user?.fillColour + ')'}">
-        <span id="sidebaravatar-altenative-user-avatar" class="altenative-user-avatar" style="line-height: 2.9; font-weight: 400;">
+        <span id="sidebaravatar-altenative-user-avatar" class="sidebar-altenative-user-avatar">
           {{ user?.fullname_initial }}
         </span>
       </div>

@@ -315,11 +315,11 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                   if (existsImage == true) {
                     
                     user['hasImage'] = true
-                    console.log( '[SIDEBAR] - IMAGE EXIST X PROJECT USERS',user)
+                    this.logger.log( '[SIDEBAR] - IMAGE EXIST X PROJECT USERS',user)
                   } else {
                    
                     user['hasImage'] = false;
-                    console.log( '[SIDEBAR] - IMAGE EXIST X PROJECT USERS',user)
+                    this.logger.log( '[SIDEBAR] - IMAGE EXIST X PROJECT USERS',user)
                     this.createUserAvatar(user)
                   }
                 })
