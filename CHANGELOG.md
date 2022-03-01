@@ -15,6 +15,10 @@
 - Adds the ability to toggle the width of the settings sidebar
 - Displays tooltips when the settings sidebar is minimized
 - Prevents the settings sidebar text from being displayed on two lines
+- Fixes the bug: in the conversation list the teammate who does not have a profile picture is not the same size as the teammate with profile picture
+- Replaces the profile picture placeholder in the user's sidebar and sidebar with a placeholder built with the initials of the logged teammate
+- Replaces the profile picture placeholder in the conversation detail right sidebar with a placeholder built with the initials of the logged teammate
+- Adds a gradient to the requesters avatars and contacts avatars
 
 ### 2.2.32-rc6
 - Removes the "open dashboard in new window" button from the right sidebar of the conversation detail page
