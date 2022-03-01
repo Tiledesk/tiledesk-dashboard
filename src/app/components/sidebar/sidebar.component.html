@@ -84,7 +84,8 @@
         *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true" [src]="getUserProfileImage()"
         onerror="this.src='assets/img/no_image_user.png'" />
         <!-- [ngStyle]="{'background-color': user?.fillColour }" -->
-      <div id="sidebaravatar-no-img"  class="avatar"
+      
+        <div id="sidebaravatar-no-img"  class="avatar"
         *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true"
         [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + user?.fillColour + ')'}">
         <span id="sidebaravatar-altenative-user-avatar" class="sidebar-altenative-user-avatar">

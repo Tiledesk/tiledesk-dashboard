@@ -14,7 +14,8 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from '../services/logger/logger.service';
-import { tranlatedLanguage } from 'app/utils/util';
+import { tranlatedLanguage, avatarPlaceholder, getColorBck } from 'app/utils/util';
+
 const swal = require('sweetalert');
 
 
@@ -153,7 +154,9 @@ export class UserProfileComponent implements OnInit {
       // name of the class of the html div = . + fragment
       const languageEl = <HTMLElement>document.querySelector('.' + this.fragment)
       this.logger.log('[USER-PROFILE] - QUERY SELECTOR language  ', languageEl)
-      languageEl.scrollIntoView();
+      if (languageEl) {
+        languageEl.scrollIntoView();
+      }
       // document.querySelector('#' + this.fragment).scrollIntoView();
       // this.logger.log( document.querySelector('#' + this.fragment).scrollIntoView())
     } catch (e) {
@@ -176,6 +179,8 @@ export class UserProfileComponent implements OnInit {
         this.emailverified = user.emailverified;
         this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - EMAIL VERIFIED ', this.emailverified)
         this.showSpinner = false;
+        
+        this.createUserAvatar(user);
 
         const stored_preferred_lang = localStorage.getItem(this.userId + '_lang')
 
@@ -189,6 +194,7 @@ export class UserProfileComponent implements OnInit {
           this.logger.log('[USER-PROFILE] HAS_SELECTED_PREFERRED_LANG ', this.HAS_SELECTED_PREFERRED_LANG)
           this.logger.log('[USER-PROFILE] stored_preferred_lang ', stored_preferred_lang)
         }
+
       }
 
     }, (error) => {
@@ -198,6 +204,23 @@ export class UserProfileComponent implements OnInit {
       this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE * COMPLETE *');
     });
   }
+
+createUserAvatar(user) {
+    this.logger.log('[USER-PROFILE] - createProjectUserAvatar ', user)
+    let fullname = ''
+    if (user && user.firstname && user.lastname) {
+      fullname = user.firstname + ' ' + user.lastname
+      user['fullname_initial'] = avatarPlaceholder(fullname)
+      user['fillColour'] = getColorBck(fullname)
+    } else if (user && user.firstname) {
+      fullname = user.firstname
+      user['fullname_initial'] = avatarPlaceholder(fullname)
+      user['fillColour'] = getColorBck(fullname)
+    } else {
+      user['fullname_initial'] = 'N/A'
+      user['fillColour'] = 'rgb(98, 100, 167)'
+    }
+}
 
   getBrowserLanguage() {
     this.browser_lang = this.translate.getBrowserLang();
@@ -375,6 +398,7 @@ export class UserProfileComponent implements OnInit {
   }
 
   checkUserImageExist() {
+    
     this.usersService.userProfileImageExist.subscribe((image_exist) => {
       this.logger.log('[USER-PROFILE] PROFILE IMAGE - USER PROFILE IMAGE EXIST ? ', image_exist);
       this.userProfileImageExist = image_exist;
@@ -406,7 +430,7 @@ export class UserProfileComponent implements OnInit {
 
   deleteUserProfileImage() {
     this.logger.log('[USER-PROFILE] - deleteUserProfileImage')
-
+ 
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
       this.logger.log('[USER-PROFILE] IMAGE deleteUserProfileImage with firebase service')
       this.uploadImageService.deleteUserProfileImage(this.userId);

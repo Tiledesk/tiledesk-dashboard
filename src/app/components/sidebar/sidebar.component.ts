@@ -279,6 +279,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             this.user = user;
 
             if (user) {
+                this.createUserAvatar(user)
                 this.currentUserId = user._id;
                 this.logger.log('[SIDEBAR] Current USER ID ', this.currentUserId);
 
@@ -301,43 +302,11 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
                     this.logger.log('[SIDEBAR] flag_url (from browser_lang) ', this.flag_url)
                 }
-
-                let imgUrl = ''
-                if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
-                  imgUrl = 'https://firebasestorage.googleapis.com/v0/b/' +  this.appConfigService.getConfig().firebase.storageBucket +   '/o/profiles%2F' +   this.currentUserId +  '%2Fphoto.jpg?alt=media'
-                 
-                } else {
-                  imgUrl =  this.appConfigService.getConfig().SERVER_BASE_URL + 'images?path=uploads%2Fusers%2F' + this.currentUserId + '%2Fimages%2Fthumbnails_200_200-photo.jpg'
-                 
-                }
-    
-                this.checkImageExists(imgUrl, (existsImage) => {
-                  if (existsImage == true) {
-                    
-                    user['hasImage'] = true
-                    this.logger.log( '[SIDEBAR] - IMAGE EXIST X PROJECT USERS',user)
-                  } else {
-                   
-                    user['hasImage'] = false;
-                    this.logger.log( '[SIDEBAR] - IMAGE EXIST X PROJECT USERS',user)
-                    this.createUserAvatar(user)
-                  }
-                })
-
             }
         });
     }
 
-    checkImageExists(imageUrl, callBack) {
-        var imageData = new Image()
-        imageData.onload = function () {
-          callBack(true)
-        }
-        imageData.onerror = function () {
-          callBack(false)
-        }
-        imageData.src = imageUrl
-    }
+ 
 
     createUserAvatar(user) {
         this.logger.log('[USERS] - createProjectUserAvatar ', user)
@@ -821,6 +790,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
 
     listenHasDeleteUserProfileImage() {
+        this.getLoggedUser()
         if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
             this.uploadImageService.hasDeletedUserPhoto.subscribe((hasDeletedImage) => {
                 this.logger.log('[SIDEBAR] - hasDeletedImage ? ', hasDeletedImage, '(usecase Firebase)');

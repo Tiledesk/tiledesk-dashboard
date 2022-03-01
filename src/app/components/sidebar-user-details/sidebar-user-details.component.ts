@@ -476,11 +476,13 @@ export class SidebarUserDetailsComponent implements OnInit {
       this.logger.log('[SIDEBAR-USER-DETAILS] »»» »»» USER GET IN SIDEBAR-USER-DETAILS', user)
       // tslint:disable-next-line:no-debugger
       // debugger
-      this.user = user;
-
+      
       // GET ALL PROJECTS WHEN IS PUBLISHED THE USER
-      if (this.user) {
+      if (user) {
+        this.user = user;
         this.currentUserId = user._id;
+
+        this.createUserAvatar(user);
 
         const stored_preferred_lang = localStorage.getItem(this.user._id + '_lang')
 
@@ -513,39 +515,8 @@ export class SidebarUserDetailsComponent implements OnInit {
           this.flag_url = "assets/img/language_flag/en.png"
           this.dsbrd_lang = 'en'
         }
-
-        let imgUrl = ''
-        if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
-          imgUrl = 'https://firebasestorage.googleapis.com/v0/b/' +  this.appConfigService.getConfig().firebase.storageBucket +   '/o/profiles%2F' +   this.currentUserId +  '%2Fphoto.jpg?alt=media'
-        
-        } else {
-          imgUrl =  this.appConfigService.getConfig().SERVER_BASE_URL + 'images?path=uploads%2Fusers%2F' + this.currentUserId + '%2Fimages%2Fthumbnails_200_200-photo.jpg'
-        }
-        this.checkImageExists(imgUrl, (existsImage) => {
-          if (existsImage == true) {
-            
-            user['hasImage'] = true
-            this.logger.log( '[SIDEBAR] - IMAGE EXIST X PROJECT USERS',user)
-          } else {
-           
-            user['hasImage'] = false;
-            this.logger.log( '[SIDEBAR] - IMAGE EXIST X PROJECT USERS',user)
-            this.createUserAvatar(user)
-          }
-        })
       }
     });
-  }
-
-  checkImageExists(imageUrl, callBack) {
-    var imageData = new Image()
-    imageData.onload = function () {
-      callBack(true)
-    }
-    imageData.onerror = function () {
-      callBack(false)
-    }
-    imageData.src = imageUrl
   }
 
   createUserAvatar(user) {

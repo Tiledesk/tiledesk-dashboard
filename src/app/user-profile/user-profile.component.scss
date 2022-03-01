@@ -301,6 +301,20 @@ button.close {
   border: 1px solid #eee;
   margin-right: 15px;
   object-fit: cover;
+  text-align: center;
+  position: relative;
+}
+
+.user-profile-altenative-user-avatar {
+  display: block;
+  font-size: 25px;
+  font-family: "Poppins";
+  font-weight: 400;
+  position: absolute;
+  color: #fff;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .avatar_label {
@@ -373,3 +387,5 @@ button.close {
   color: #7695a5;
   font-size: 12px;
 }
+
+
