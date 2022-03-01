@@ -1176,9 +1176,10 @@
                 <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer;white-space: nowrap;
                   width: 1%;" rel="tooltip" title="{{ request?.requester_id }}">
 
+                  <!-- [ngStyle]="{'background-color': request?.requester_fullname_fillColour }" -->
                   <span class="requester-avatar-wrapper">
                     <span class="requester-avatar--in-history"
-                      [ngStyle]="{'background-color': request?.requester_fullname_fillColour }"
+                      [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + request?.requester_fullname_fillColour + ')'}"
                       [ngClass]="{'requester_fullname_undefined' : !request?.lead?.fullname}">
                       <span style="color: #ffffff"> {{ request?.requester_fullname_initial }} </span>
                     </span>

@@ -27,8 +27,10 @@
                     <span *ngIf="!showSpinner">
 
                       <!-- -----new REQUESTER -->
+                      <!-- [ngStyle]="{'background-color': fillColour }" -->
                       <span style="cursor: pointer;" (click)='goToContactDetails()' class="requester-avatar-wrapper">
-                        <span class="_requester-avatar_as_title" [ngStyle]="{'background-color': fillColour }"
+                        <span class="_requester-avatar_as_title" 
+                          [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + fillColour + ')'}"
                           [ngClass]="{'requester_fullname-undefined' : !request?.lead?.fullname}">
                           <span style="color: #ffffff"> {{ requester_fullname_initial }} </span>
                         </span>
@@ -238,14 +240,14 @@
                         <!-- ////// REQUESTER -->
                         <!-- requester_id: {{requester_id}} message_sender {{message.sender}} type
                       {{message?.attributes?.subtype}} -->
+                        <!-- [ngStyle]="{'background-color': fillColour }" -->
                         <div *ngIf="requester_id === message.sender && message?.attributes?.subtype !== 'info'"
                           class="bubble">
                           <div class="avatar"
                             style="  width: 35px; height: 35px; position: absolute; left: -50px; bottom: 36px;">
                             <div class="requester-avatar-wrapper"
                               style="display: block;border-radius: 50%; height: 100%; margin-top: 35px;"
-                              [ngStyle]="{'background-color': fillColour }">
-
+                              [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + fillColour + ')'}">
                               <span class="_requester-avatar-inchat">
                                 {{ requester_fullname_initial }}
                               </span>

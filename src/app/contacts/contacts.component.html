@@ -146,7 +146,7 @@
 
                 <i style="vertical-align: middle; color:rgba(32, 33, 36, 0.54); padding-left: 10px;"
                   class="material-icons">contacts</i>
-                <span style="padding-left: 15px;">{{'Contacts'| translate}} </span>
+                <span style="padding-left: 8px;">{{'Contacts'| translate}} </span>
 
                 <span style="float: right; margin-right: 20px;"> {{ countOfActiveContacts }}</span>
               </li>
@@ -156,7 +156,7 @@
                   <i style="vertical-align: middle; color:rgba(32, 33, 36, 0.54); padding-left: 10px;"
                     class="material-icons">delete</i>
                   <!-- <span class="notification_on_trash">{{ trashedContanctCount }}</span> -->
-                  <span style="padding-left: 15px;"> {{'TrashContacts' | translate}}</span>
+                  <span style="padding-left: 8px;"> {{'TrashContacts' | translate}}</span>
 
                   <span style="float: right; margin-right: 20px;"> {{ trashedContanctCount }}</span>
                 </span>
@@ -315,9 +315,10 @@
                     <tr *ngFor="let contact of contacts">
 
                       <!-- ===== CONTACT NAME ===== -->
+                      <!-- [ngStyle]="{'background-color': contact?.avatar_fill_colour }" -->
                       <td (click)='goToContactDetails(contact?._id)' style="cursor:pointer">
-
-                        <span class="avatar" [ngStyle]="{'background-color': contact?.avatar_fill_colour }">
+                        <span class="avatar" 
+                        [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + contact?.avatar_fill_colour + ')'}">
                           <span style="color: #ffffff"> {{ contact?.name_initial }} </span>
                         </span>
                         <span *ngIf="contact?.contact_is_verified === true" class="tooltipx">

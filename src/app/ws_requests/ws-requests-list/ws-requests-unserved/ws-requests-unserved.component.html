@@ -541,8 +541,10 @@
             rel="tooltip" title="requester id:{{ request?.lead?.fullname }}">
 
             <!-- REQUESTER VERIFIED ICON (UNSERVED REQUEST SECTION)-->
+            <!-- [ngStyle]="{'background-color': request?.requester_fullname_fillColour }" -->
             <span class="requester-avatar-wrapper">
-              <span class="requester-avatar" [ngStyle]="{'background-color': request?.requester_fullname_fillColour }"
+              <span class="requester-avatar" 
+                [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + request?.requester_fullname_fillColour + ')'}"
                 [ngClass]="{'requester_fullname-undefined' : !request?.lead?.fullname,  requester_avatar_not_has_email: !request?.lead?.email }">
                 <span style="color: #ffffff"> {{ request?.requester_fullname_initial }} </span>
               </span>
