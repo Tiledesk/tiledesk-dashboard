@@ -228,32 +228,34 @@
 
       <!-- ---------------------------------- -->
       <!-- Bot  CHATBOT_ROUTE_IS_ACTIVE ||  -->
-      <!-- ---------------------------------- -->
-      <li id="bot-anchor-wpr" *ngIf="project" routerLinkActive="active" matTooltipClass="custom-mat-tooltip" matTooltip="Bots"
-        #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" [ngClass]="{'active': CHATBOT_ROUTE_IS_ACTIVE || EDIT_FAQ_ROUTE_IS_ACTIVE || CREATE_FAQ_ROUTE_IS_ACTIVE || BOT_TEST_ROUTE_IS_ACTIVE}">
-        <a id="bot-anchor" #botbtn class="customAncor" routerLink="project/{{ project._id }}/bots" style="height: 40px;">
-        <span class="bot-icon-wpr">
-          <svg version="1.1" id="Objects" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-              viewBox="0 0 30 30" style="enable-background:new 0 0 30 30;" xml:space="preserve">
-            <g>
-              <g>
-                <path class="chat-bot-icon-st0" d="M24.6,12.6c-0.1,0-0.2,0-0.3,0c-1.6-2.9-4.5-5.8-9.2-5.8c-4.7,0-7.6,2.9-9.2,5.8c-0.2,0-0.4-0.1-0.6-0.1
-                  c-2,0-3.5,2.3-3.5,5c0,2.8,1.6,5,3.5,5c0.1,0,0.3,0,0.4,0c2.3,3.6,7,3.9,9.4,3.9c2.3,0,6.9-0.5,9.2-3.9c0.1,0,0.1,0,0.2,0
-                  c2,0,3.5-2.3,3.5-5C28.1,14.8,26.6,12.6,24.6,12.6z M22,21.1c0,0-7.8,2.3-14.3-0.1c0,0-0.8-4.1-0.5-7.2c0,0,8.1-3.2,15.6,0.3
-                  C22.8,14.1,23.3,19.1,22,21.1z"/>
-                <ellipse class="chat-bot-icon-st0" cx="11.9" cy="17.4" rx="0.7" ry="1.4"/>
-                <ellipse class="chat-bot-icon-st0" cx="18.1" cy="17.4" rx="0.7" ry="1.4"/>
-                <path class="chat-bot-icon-st0" d="M14.5,5.3v1.1h1V5.3c0.3-0.2,0.5-0.5,0.5-0.8c0-0.5-0.4-0.9-1-0.9c-0.5,0-0.9,0.4-0.9,0.9
-                  C14.1,4.8,14.2,5.1,14.5,5.3z"/>
-              </g>
-              <rect class="chat-bot-icon-st1" width="30" height="30"/>
-            </g>
-            </svg>
-        </span>
+      <!-- ---------------------------------- --> 
+      <ng-container *ngIf="USER_ROLE !== 'agent'">
+        <li id="bot-anchor-wpr" *ngIf="project" routerLinkActive="active" matTooltipClass="custom-mat-tooltip" matTooltip="Bots"
+          #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" [ngClass]="{'active': CHATBOT_ROUTE_IS_ACTIVE || EDIT_FAQ_ROUTE_IS_ACTIVE || CREATE_FAQ_ROUTE_IS_ACTIVE || BOT_TEST_ROUTE_IS_ACTIVE}">
+          <a id="bot-anchor" #botbtn class="customAncor" routerLink="project/{{ project._id }}/bots" style="height: 40px;">
+            <span class="bot-icon-wpr">
+              <svg version="1.1" id="Objects" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                  viewBox="0 0 30 30" style="enable-background:new 0 0 30 30;" xml:space="preserve">
+                <g>
+                  <g>
+                    <path class="chat-bot-icon-st0" d="M24.6,12.6c-0.1,0-0.2,0-0.3,0c-1.6-2.9-4.5-5.8-9.2-5.8c-4.7,0-7.6,2.9-9.2,5.8c-0.2,0-0.4-0.1-0.6-0.1
+                      c-2,0-3.5,2.3-3.5,5c0,2.8,1.6,5,3.5,5c0.1,0,0.3,0,0.4,0c2.3,3.6,7,3.9,9.4,3.9c2.3,0,6.9-0.5,9.2-3.9c0.1,0,0.1,0,0.2,0
+                      c2,0,3.5-2.3,3.5-5C28.1,14.8,26.6,12.6,24.6,12.6z M22,21.1c0,0-7.8,2.3-14.3-0.1c0,0-0.8-4.1-0.5-7.2c0,0,8.1-3.2,15.6,0.3
+                      C22.8,14.1,23.3,19.1,22,21.1z"/>
+                    <ellipse class="chat-bot-icon-st0" cx="11.9" cy="17.4" rx="0.7" ry="1.4"/>
+                    <ellipse class="chat-bot-icon-st0" cx="18.1" cy="17.4" rx="0.7" ry="1.4"/>
+                    <path class="chat-bot-icon-st0" d="M14.5,5.3v1.1h1V5.3c0.3-0.2,0.5-0.5,0.5-0.8c0-0.5-0.4-0.9-1-0.9c-0.5,0-0.9,0.4-0.9,0.9
+                      C14.1,4.8,14.2,5.1,14.5,5.3z"/>
+                  </g>
+                  <rect class="chat-bot-icon-st1" width="30" height="30"/>
+                </g>
+                </svg>
+            </span>
 
-          <!-- <p class="onBlackBckgrnd">Home</p> -->
-        </a>
-      </li>
+            <!-- <p class="onBlackBckgrnd">Home</p> -->
+          </a>
+        </li>
+      </ng-container>
 
       <!-- REQUESTS (VISITORS)  -->
       <li *ngIf="project" routerLinkActive="active" matTooltipClass="custom-mat-tooltip"
