@@ -2,7 +2,6 @@
 # tiledesk-dashboard
 
 ### 2.2.32-rc7
-- Fixes the bug: the sidebar menu item 'Chat' is not translated
 - Enhances the style of the sidebar tooltips
 - Adds the message "Language not supported ..." in the language selection section of the dashboard if the browser language is not supported
 - Displays the English flag if the browser language is not among the unsupported ones
@@ -18,7 +17,11 @@
 - Fixes the bug: in the conversation list the teammate who does not have a profile picture is not the same size as the teammate with profile picture
 - Replaces the profile picture placeholder in the user's sidebar and sidebar with a placeholder built with the initials of the logged teammate
 - Replaces the profile picture placeholder in the conversation detail right sidebar with a placeholder built with the initials of the logged teammate
-- Adds a gradient to the requesters avatars and contacts avatars
+- Adds a gradient to the requesters avatars, to the contacts avatars and to the teammates avatars built with the initials of their name when he profile picture is not available
+- Removes the link to the project settings from the "projects" dropdown on the navbar
+- Fixes the bug: the context menu does not open on the menu item 'chat' of the sidebar
+- Removes the animated gif from the "Quick tips" sidebar in the "canned responses" page
+- Moves the "Bot" menu item from the settings sidebar to the left sidebar
 
 ### 2.2.32-rc6
 - Removes the "open dashboard in new window" button from the right sidebar of the conversation detail page
