@@ -150,7 +150,7 @@
                   // User Avatar
                   // --------------------------------- -->
                       <th>
-                        <span class="column-th-span">
+                        <span class="column-th-span" style="white-space: nowrap">
                           {{ "UsersPage.User" | translate }}
                         </span>
                       </th>
@@ -247,9 +247,10 @@
                           <!-- --------------------------------------------------- -->
                           <!-- USECASE No profile Image -->
                           <!-- --------------------------------------------------- -->
+                          <!-- [ngStyle]="{'background-color': projectUser?.id_user?.fillColour }" -->
                           <div *ngIf="projectUser?.hasImage === false"
                             style="vertical-align: middle; width: 52px; height: 52px; border-radius: 50%; border: 1px solid #eee;"
-                            [ngStyle]="{'background-color': projectUser?.id_user?.fillColour }">
+                            [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + projectUser?.id_user?.fillColour + ')'}">
                             <span class="altenative-projetuser-avatar">
                               {{ projectUser?.id_user?.fullname_initial }}
                             </span>
