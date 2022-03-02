@@ -21,7 +21,7 @@
 - Removes the link to the project settings from the "projects" dropdown on the navbar
 - Fixes the bug: the context menu does not open on the menu item 'chat' of the sidebar
 - Removes the animated gif from the "Quick tips" sidebar in the "canned responses" page
-- Moves the "Bot" menu item from the settings sidebar to the left sidebar
+- Moves the "Bot" menu item from the "settings sidebar" to the "left sidebar"
 
 ### 2.2.32-rc6
 - Removes the "open dashboard in new window" button from the right sidebar of the conversation detail page
