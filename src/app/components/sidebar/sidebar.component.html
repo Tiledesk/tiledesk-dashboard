@@ -185,15 +185,15 @@
     <ul style="padding-bottom: 65px;" class="nav">
 
 
-      <!-- CHAT  -->
-      <li *ngIf="project" routerLinkActive="active" matTooltipClass="custom-mat-tooltip" matTooltip="{{'Chat' | translate}}"
+      <!-- CHAT  {{'Chat' | translate}}-->
+      <li id="openchat-a" *ngIf="project" routerLinkActive="active" matTooltipClass="custom-mat-tooltip" matTooltip="Chat"
         #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
 
         <!-- <a class="customAncor" routerLink="/chat"> -->
         <!-- <a class="customAncor" routerLink="project/{{ project._id }}/chat"> -->
         <!-- (click)="openChat()" target="_blank"  href="{{ CHAT_BASE_URL }}"  (click)="removeChatBtnFocus()" -->
-        <a #openchatbtn class="customAncor" (click)="openChat()" style="cursor: pointer;">
-          <i class="material-icons sidebar-icons">chat</i>
+        <a id="openchat-a" #openchatbtn class="customAncor" target="_self"  href="{{ CHAT_BASE_URL }}" (click)="openChat()" style="cursor: pointer;">
+          <i id="openchat-i" class="material-icons sidebar-icons">chat</i>
           <!-- <p class="onBlackBckgrnd">Chat</p> -->
         </a>
       </li>

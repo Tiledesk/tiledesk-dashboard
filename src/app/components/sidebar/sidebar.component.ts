@@ -1469,16 +1469,17 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     openChat() {
         this.elementRef.nativeElement.blur();
         this.notify.publishHasClickedChat(true);
-        // const url = this.CHAT_BASE_URL;
-        // this.openWindow('Tiledesk - Open Source Live Chat', url)
-        // this.focusWin('Tiledesk - Open Source Live Chat')
+        console.log('SIDEBAR openChat ' )
+     
         // --- new 
         localStorage.setItem('last_project', JSON.stringify(this.current_selected_prjct))
-        let baseUrl = this.CHAT_BASE_URL + '#/conversation-detail/'
-        let url = baseUrl
-        const myWindow = window.open(url, '_self', 'Tiledesk - Open Source Live Chat');
-        myWindow.focus();
+        // let baseUrl = this.CHAT_BASE_URL + '#/conversation-detail/'
+        // let url = baseUrl
+        // const myWindow = window.open(url, '_self', 'Tiledesk - Open Source Live Chat');
+        // myWindow.focus();
 
+
+        // --- already commented ---
         // const chatTabCount = localStorage.getItem('tabCount');
         // this.logger.log('[SIDEBAR] openChat chatTabCount ', chatTabCount);
         // if (chatTabCount) {
@@ -1494,8 +1495,32 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         // } else {
         //     this.openWindow('Tiledesk - Open Source Live Chat', url);
         // }
-
     }
+    
+    @HostListener('document:mousedown', ['$event'])
+    onMouseDown(event) {
+    // console.log('mousedown event', event)
+    // console.log('mousedown event.target', event.target.id)
+    // console.log('mousedown event.which', event.which)
+
+    if ((event.target.id.startsWith('openchat') && event.which === 3) || (event.target.id.startsWith('openchat') && event.which === 1)) {
+        this.logger.log('SIDEBAR openChat HAS CLIKED ON OPEN CHAT WITH THE RIGHT BTN')
+        localStorage.setItem('last_project', JSON.stringify(this.current_selected_prjct))
+    } 
+ 
+  // we make sure only draggables on the document elements are selected
+//   if (event.target.getAttribute('draggable')) {
+//     console.log('mousedown');
+
+//     this.currentX = event.clientX;
+//     this.currentY = event.clientY;
+//     this.selectedElement = event.target;
+//     // ##### add this code.
+//     event.preventDefault();    // choose one
+//     // ##### or add this code.
+//     return false;    // choose one
+//   }
+}
 
     openWindow(winName: any, winURL: any) {
         const myWindows = new Array();
