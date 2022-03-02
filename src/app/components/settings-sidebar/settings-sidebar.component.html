@@ -12,6 +12,53 @@
 <div *ngIf="project" class="settings-sidebar-wpr" [ngClass]="{'settings-sidebar-wpr-opened': IS_OPEN, 'settings-sidebar-wpr-closed': !IS_OPEN }">
 
   <ul class="settings-sidebar" style="padding-left: 0px;list-style: none;">
+
+    <!-- -------------------------------------------------------- -->
+    <!--  Widget  -->
+    <!-- -------------------------------------------------------- -->
+    <li [ngClass]="{'active-item': WIDGET_SETUP_ROUTE_IS_ACTIVE}" (click)="goToWidgetSetUp()" 
+     matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="Widget" #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN" >
+      <a>
+        <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">chat_bubble</i>
+        <p *ngIf="IS_OPEN === true" class="custom_paragraph">
+          Widget
+        </p>
+      </a>
+    </li>
+
+    <!-- ------------------------------------------------------- -->
+    <!-- Routing & depts -->
+    <!-- ------------------------------------------------------- -->
+    <li [ngClass]="{'active-item': DEPTS_ROUTE_IS_ACTIVE}" (click)="goToDepartments()"
+    matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="{{routing_and_depts_lbl}}" #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN">
+      <a>
+        <i *ngIf="IS_OPEN === true || IS_OPEN === false"  class="material-icons settings-sidebar-icons">  account_balance</i>
+        <p *ngIf="IS_OPEN === true" class="custom_paragraph">
+          <span *ngIf="isVisibleDEP"> {{'RoutingAndDepts' | translate}} </span>
+          <span *ngIf="!isVisibleDEP"> {{'Routing' | translate}} </span>
+
+        </p>
+      </a>
+    </li>
+
+    <!-- ------------------------------------------------------- -->
+    <!-- Teammates & Groups -->
+    <!-- ------------------------------------------------------- -->
+    <li [ngClass]="{'active-item': TEAMMATES_ROUTE_IS_ACTIVE || GROUPS_ROUTE_IS_ACTIVE}" (click)="goToTeammates()"
+    matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="{{ teammatates_and_groups_lbl }}" #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN">
+      <a>
+        <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">supervisor_account</i>
+        <p *ngIf="IS_OPEN === true" class="custom_paragraph">
+          <span *ngIf="isVisibleGRO">
+            {{ 'UsersAndGroups' | translate }}
+          </span>
+          <span *ngIf="!isVisibleGRO">
+            <span style="text-transform: capitalize;"> {{ 'Teammates' | translate }} </span>
+          </span>
+        </p>
+      </a>
+    </li>
+
     <!-- ------------------------------------------------------- -->
     <!-- Canned responses -->
     <!-- ------------------------------------------------------- -->
@@ -44,20 +91,7 @@
       </li>
     </ng-container>
 
-    <!-- ------------------------------------------------------- -->
-    <!-- Routing & depts -->
-    <!-- ------------------------------------------------------- -->
-    <li [ngClass]="{'active-item': DEPTS_ROUTE_IS_ACTIVE}" (click)="goToDepartments()"
-    matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="{{routing_and_depts_lbl}}" #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN">
-      <a>
-        <i *ngIf="IS_OPEN === true || IS_OPEN === false"  class="material-icons settings-sidebar-icons">  account_balance</i>
-        <p *ngIf="IS_OPEN === true" class="custom_paragraph">
-          <span *ngIf="isVisibleDEP"> {{'RoutingAndDepts' | translate}} </span>
-          <span *ngIf="!isVisibleDEP"> {{'Routing' | translate}} </span>
-
-        </p>
-      </a>
-    </li>
+   
 
     <!-- ------------------------------------------------------- -->
     <!-- TRIGGER -->
@@ -75,29 +109,13 @@
       </li>
     </ng-container>
 
-    <!-- ------------------------------------------------------- -->
-    <!-- Teammates & Groups -->
-    <!-- ------------------------------------------------------- -->
-    <li [ngClass]="{'active-item': TEAMMATES_ROUTE_IS_ACTIVE || GROUPS_ROUTE_IS_ACTIVE}" (click)="goToTeammates()"
-    matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="{{ teammatates_and_groups_lbl }}" #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN">
-      <a>
-        <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">supervisor_account</i>
-        <p *ngIf="IS_OPEN === true" class="custom_paragraph">
-          <span *ngIf="isVisibleGRO">
-            {{ 'UsersAndGroups' | translate }}
-          </span>
-          <span *ngIf="!isVisibleGRO">
-            <span style="text-transform: capitalize;"> {{ 'Teammates' | translate }} </span>
-          </span>
-        </p>
-      </a>
-    </li>
+
 
 
     <!-- ------------------------------------------------------- -->
     <!-- Chatbot -->
     <!-- ------------------------------------------------------- -->
-    <li [ngClass]="{'active-item': CHATBOT_ROUTE_IS_ACTIVE}" (click)="goToChatbot()"  
+    <!-- <li [ngClass]="{'active-item': CHATBOT_ROUTE_IS_ACTIVE}" (click)="goToChatbot()"  
     matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="Bots" #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN" >
       <a>
         <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">smart_toy</i>
@@ -105,20 +123,9 @@
           Bots
         </p>
       </a>
-    </li>
+    </li> -->
 
-    <!-- -------------------------------------------------------- -->
-    <!--  Widget  -->
-    <!-- -------------------------------------------------------- -->
-    <li [ngClass]="{'active-item': WIDGET_SETUP_ROUTE_IS_ACTIVE}" (click)="goToWidgetSetUp()" 
-     matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="Widget" #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN" >
-      <a>
-        <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">chat_bubble</i>
-        <p *ngIf="IS_OPEN === true" class="custom_paragraph">
-          Widget
-        </p>
-      </a>
-    </li>
+   
 
     <!-- -------------------------------------------------------- -->
     <!--  Operatinf Hours  -->

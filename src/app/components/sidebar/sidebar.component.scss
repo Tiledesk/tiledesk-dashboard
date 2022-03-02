@@ -1192,3 +1192,26 @@ button.close {
   font-weight: 400;
   font-family: "Poppins";
 }
+
+.bot-icon-wpr {
+  width: 25px;
+  display: block;
+  position: relative;
+  left: 3px;
+  top: 2px;
+}
+
+.chat-bot-icon-st0 {
+  fill: #a9afbb;
+  // fill:#000
+}
+.chat-bot-icon-st1 {
+  fill: none;
+}
+// #bot-anchor-wpr.active > .chat-bot-icon-st0 {
+//   fill: #ffffff !important;
+// }
+
+#bot-anchor-wpr.active > #bot-anchor > .bot-icon-wpr > svg > g > g > .chat-bot-icon-st0{
+  fill: #ffffff !important;
+}

@@ -673,10 +673,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
                 if (event.url.indexOf('/createfaq') !== -1) {
                     this.CREATE_FAQ_ROUTE_IS_ACTIVE = true;
-                    // console.log('[SIDEBAR] NavigationEnd - CREATE_FAQ_ROUTE_IS_ACTIVE ', this.CREATE_FAQ_ROUTE_IS_ACTIVE);
+                    console.log('[SIDEBAR] NavigationEnd - CREATE_FAQ_ROUTE_IS_ACTIVE ', this.CREATE_FAQ_ROUTE_IS_ACTIVE);
                 } else {
                     this.CREATE_FAQ_ROUTE_IS_ACTIVE = false;
-                    // console.log('[SIDEBAR] NavigationEnd - CREATE_FAQ_ROUTE_IS_ACTIVE ', this.CREATE_FAQ_ROUTE_IS_ACTIVE);
+                    console.log('[SIDEBAR] NavigationEnd - CREATE_FAQ_ROUTE_IS_ACTIVE ', this.CREATE_FAQ_ROUTE_IS_ACTIVE);
                 }
 
                 if (event.url.indexOf('/editfaq') !== -1) {
@@ -1500,11 +1500,12 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     @HostListener('document:mousedown', ['$event'])
     onMouseDown(event) {
     // console.log('mousedown event', event)
-    // console.log('mousedown event.target', event.target.id)
+    // console.log('mousedown event.target.id', event.target.id)
+    // console.log('mousedown event.target', event.target)
     // console.log('mousedown event.which', event.which)
 
     if ((event.target.id.startsWith('openchat') && event.which === 3) || (event.target.id.startsWith('openchat') && event.which === 1)) {
-        this.logger.log('SIDEBAR openChat HAS CLIKED ON OPEN CHAT WITH THE RIGHT BTN')
+        console.log('SIDEBAR openChat HAS CLIKED ON OPEN CHAT WITH THE RIGHT BTN')
         localStorage.setItem('last_project', JSON.stringify(this.current_selected_prjct))
     } 
  
