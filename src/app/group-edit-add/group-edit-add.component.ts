@@ -372,7 +372,7 @@ export class GroupEditAddComponent implements OnInit {
       this.logger.error('[GROUP-EDIT-ADD] UPDATED GROUP WITH UPDATED NAME - ERROR ', error);
       // =========== NOTIFY ERROR ===========
       // this.notify.showNotification('An error occurred while updating the group', 4, 'report_problem');
-      this.notify.showNotification(this.updateGroupErrorNoticationMsg, 4, 'report_problem');
+      this.notify.showWidgetStyleUpdateNotification(this.updateGroupErrorNoticationMsg, 4, 'report_problem');
     }, () => {
       this.logger.log('[GROUP-EDIT-ADD] UPDATED GROUP WITH UPDATED NAME * COMPLETE *');
 
@@ -380,7 +380,7 @@ export class GroupEditAddComponent implements OnInit {
 
       // =========== NOTIFY SUCCESS===========
       // this.notify.showNotification('group successfully updated', 2, 'done');
-      this.notify.showNotification(this.updateGroupSuccessNoticationMsg, 2, 'done');
+      this.notify.showWidgetStyleUpdateNotification(this.updateGroupSuccessNoticationMsg, 2, 'done');
 
       // UPDATE THE GROUP LIST
       // this.ngOnInit()
@@ -470,7 +470,7 @@ export class GroupEditAddComponent implements OnInit {
 
       // =========== NOTIFY SUCCESS===========
       // this.notify.showNotification('group successfully updated', 2, 'done');
-      this.notify.showNotification(this.updateGroupSuccessNoticationMsg, 2, 'done');
+      this.notify.showWidgetStyleUpdateNotification(this.updateGroupSuccessNoticationMsg, 2, 'done');
 
       // UPDATE THE GROUP LIST
       this.ngOnInit()
@@ -511,14 +511,14 @@ export class GroupEditAddComponent implements OnInit {
         this.logger.error('[GROUP-EDIT-ADD] - UPDATED GROUP WITH THE USER SELECTED - ERROR ', error);
         // =========== NOTIFY ERROR ===========
         // this.notify.showNotification('An error occurred while removing the member', 4, 'report_problem');
-        this.notify.showNotification(this.removeGroupMemberErrorNoticationMsg, 4, 'report_problem');
+        this.notify.showWidgetStyleUpdateNotification(this.removeGroupMemberErrorNoticationMsg, 4, 'report_problem');
 
       }, () => {
         this.logger.log('[GROUP-EDIT-ADD] - UPDATED GROUP WITH THE USER SELECTED* COMPLETE *');
 
         // =========== NOTIFY SUCCESS===========
         // this.notify.showNotification('member successfully removed', 2, 'done');
-        this.notify.showNotification(this.removeGroupMemberSuccessNoticationMsg, 2, 'done');
+        this.notify.showWidgetStyleUpdateNotification(this.removeGroupMemberSuccessNoticationMsg, 2, 'done');
 
         // UPDATE THE GROUP LIST
         this.ngOnInit()
