@@ -136,6 +136,21 @@ p.member:hover {
   // padding: 10px 11px;
   padding-top: 10px;
   display: inline-block;
+  position: relative;
+}
+
+.contact-avatar-fullname-initials {
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 400;
+  display: block;
+  font-family: "Poppins";
+  font-weight: 400;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 
 .contact-verified {

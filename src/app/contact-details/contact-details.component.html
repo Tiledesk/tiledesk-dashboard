@@ -252,12 +252,12 @@
                   <!-- <span class="card_title__underline" style="white-space: nowrap;">
                     {{ "ContactDetails" | translate }}
                   </span> -->
-
+                  <!-- [ngStyle]="{'background-color': fillColour }" -->
                   <span class="contact-avatar-wrapper" style="position: relative;top: -6px;">
-                    <span class="contact-avatar" [ngStyle]="{'background-color': fillColour }"
+                    <span class="contact-avatar" 
+                      [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + fillColour + ')'}"
                       style="float: left; margin-right: 8px;">
-                      <span style="color: #ffffff;font-size: 18px;font-weight: 400; position: relative;
-                      top: 1px;">
+                      <span class="contact-avatar-fullname-initials">
                         {{ contact_fullname_initial }}
                       </span>
 
