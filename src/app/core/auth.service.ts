@@ -645,10 +645,7 @@ export class AuthService {
                     .auth()
                     .signInWithCustomToken(fbtoken)
                     .then((firebase_user) => {
-                      this.logger.log(
-                        '[AUTH-SERV] SSO - LOGIN - 4. FIREBASE CUSTOM AUTH DATA ',
-                        firebase_user,
-                      )
+                      this.logger.log( '[AUTH-SERV] SSO - LOGIN - 4. FIREBASE CUSTOM AUTH DATA ',  firebase_user )
 
                       if (
                         this.appConfigService.getConfig().pushEngine ===
@@ -706,11 +703,8 @@ export class AuthService {
       // messaging.requestPermission()
       Notification.requestPermission()
         .then((permission) => {
-          this.logger.log('[AUTH-SERV] SSO - LOGIN - 5B. >>>> getPermission Notification permission granted.' )
-          this.logger.log(
-            '[AUTH-SERV] SSO - LOGIN - 5B. - vapidKey >>>> ',
-            this.appConfigService.getConfig().firebase.vapidKey,
-          )
+          console.log('[AUTH-SERV] SSO - LOGIN - 5B. >>>> getPermission Notification permission granted. - permission', permission)
+          this.logger.log( '[AUTH-SERV] SSO - LOGIN - 5B. - vapidKey >>>> ',  this.appConfigService.getConfig().firebase.vapidKey)
           return messaging.getToken({
             vapidKey: this.appConfigService.getConfig().firebase.vapidKey,
           })
@@ -722,7 +716,7 @@ export class AuthService {
           this.updateToken(FCMtoken)
         })
         .catch((err) => {
-          this.logger.error( '[AUTH-SERV] SSO - LOGIN - 5C. >>>> getPermission Unable to get permission to notify.',err)
+          console.log( '[AUTH-SERV] SSO - LOGIN - 5C. >>>> getPermission Unable to get permission to notify.',err )
         })
     } else {
       this.logger.log('[AUTH-SERV] SSO - LOGIN - 5F. FCM NOT SUPPORTED')
