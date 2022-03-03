@@ -22,6 +22,9 @@
 - Fixes the bug: the context menu does not open on the menu item 'chat' of the sidebar
 - Removes the animated gif from the "Quick tips" sidebar in the "canned responses" page
 - Moves the "Bot" menu item from the "settings sidebar" to the "left sidebar"
+- Fixes the bug: the menu items "Conversations", "Contacts" and "Bots" in the sidebar do not remain in the active state when browsing the related sub-pages
+- Fixes the bug: in the contact avatar on the contact details page, the initials of the full name are not centered
+- Adds links to social networks Twitter, Facebook and Linkedin in the footer
 
 ### 2.2.32-rc6
 - Removes the "open dashboard in new window" button from the right sidebar of the conversation detail page
