@@ -470,6 +470,25 @@ button.close {
   box-shadow: none !important;
   -webkit-box-shadow: none !important;
 }
+
+.menu_item_active {
+  height: 40px;
+  background-color: $brand-sidebar-active-item-bckgrnd;
+  color: #fff !important;
+}
+
+.menu_item_active > a > i {
+  color: #ffffff;
+}
+
+#bot-anchor-wpr.active > #bot-anchor > .bot-icon-wpr > svg > g > g > .chat-bot-icon-st0 {
+  fill: #ffffff !important;
+}
+
+#bot-anchor-wpr.menu_item_active > #bot-anchor > .bot-icon-wpr > svg > g > g > .chat-bot-icon-st0 {
+  fill: #ffffff !important;
+}
+
 .nav > li > a {
   padding: 5px 15px !important;
   // border-radius: 0 20px 20px 0; // commented fo small sidebar
@@ -1211,7 +1230,3 @@ button.close {
 // #bot-anchor-wpr.active > .chat-bot-icon-st0 {
 //   fill: #ffffff !important;
 // }
-
-#bot-anchor-wpr.active > #bot-anchor > .bot-icon-wpr > svg > g > g > .chat-bot-icon-st0{
-  fill: #ffffff !important;
-}

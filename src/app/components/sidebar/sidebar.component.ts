@@ -178,6 +178,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     INVITE_TEAMMATE_ROUTE_IS_ACTIVE: boolean;
     EDIT_PROJECT_USER_ROUTE_IS_ACTIVE: boolean;
     OPERATING_HOURS_ROUTE_IS_ACTIVE: boolean;
+    CONV_DETAIL_ROUTE_IS_ACTIVE: boolean;
+    CONTACT_EDIT_ROUTE_IS_ACTIVE: boolean;
+    CONTACT_CONVS_ROUTE_IS_ACTIVE: boolean;
 
     prjct_profile_name: string;
 
@@ -759,6 +762,36 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                     this.EDIT_PROJECT_USER_ROUTE_IS_ACTIVE = false;
                     // console.log('[SIDEBAR] NavigationEnd - EDIT_PROJECT_USER_ROUTE_IS_ACTIVE ', this.EDIT_PROJECT_USER_ROUTE_IS_ACTIVE);
                 }
+
+                if (event.url.indexOf('/messages') !== -1) {
+                    this.CONV_DETAIL_ROUTE_IS_ACTIVE = true;
+                    // console.log('[SIDEBAR] NavigationEnd - CONV_DETAIL_ROUTE_IS_ACTIVE ', this.CONV_DETAIL_ROUTE_IS_ACTIVE);
+                } else {
+                    this.CONV_DETAIL_ROUTE_IS_ACTIVE = false;
+                    // console.log('[SIDEBAR] NavigationEnd - CONV_DETAIL_ROUTE_IS_ACTIVE ', this.CONV_DETAIL_ROUTE_IS_ACTIVE);
+                }
+
+                if (event.url.indexOf('/contact/edit/') !== -1) {
+                    this.CONTACT_EDIT_ROUTE_IS_ACTIVE = true;
+                    // console.log('[SIDEBAR] NavigationEnd - CONTACT_EDIT_ROUTE_IS_ACTIVE ', this.CONTACT_EDIT_ROUTE_IS_ACTIVE);
+                } else {
+                    this.CONTACT_EDIT_ROUTE_IS_ACTIVE = false;
+                    // console.log('[SIDEBAR] NavigationEnd - CONTACT_EDIT_ROUTE_IS_ACTIVE ', this.CONTACT_EDIT_ROUTE_IS_ACTIVE);
+                }
+
+                if (event.url.indexOf('/contact/') !== -1) {
+                    this.CONTACT_CONVS_ROUTE_IS_ACTIVE = true;
+                    // console.log('[SIDEBAR] NavigationEnd - CONTACT_CONVS_ROUTE_IS_ACTIVE ', this.CONTACT_CONVS_ROUTE_IS_ACTIVE);
+                } else {
+                    this.CONTACT_CONVS_ROUTE_IS_ACTIVE = false;
+                    // console.log('[SIDEBAR] NavigationEnd - CONTACT_CONVS_ROUTE_IS_ACTIVE ', this.CONTACT_CONVS_ROUTE_IS_ACTIVE);
+                }
+
+                
+
+                
+
+                
 
             });
     }
@@ -1368,9 +1401,14 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.router.navigate(['/project/' + this.projectId + '/home']);
     }
 
+    // @ No more used - replaced with goToWidgetSetUp()
     goToCannedResponses() {
         this.router.navigate(['project/' + this.projectId + '/cannedresponses']);
     }
+
+    goToWidgetSetUp() {
+        this.router.navigate(['project/' + this.project._id + '/widget-set-up'])
+      }
     // goToOperatingHours() {
     //     this.router.navigate(['/project/' + this.projectId + '/hours']);
     // }
