@@ -676,10 +676,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
                 if (event.url.indexOf('/createfaq') !== -1) {
                     this.CREATE_FAQ_ROUTE_IS_ACTIVE = true;
-                    console.log('[SIDEBAR] NavigationEnd - CREATE_FAQ_ROUTE_IS_ACTIVE ', this.CREATE_FAQ_ROUTE_IS_ACTIVE);
+                    // console.log('[SIDEBAR] NavigationEnd - CREATE_FAQ_ROUTE_IS_ACTIVE ', this.CREATE_FAQ_ROUTE_IS_ACTIVE);
                 } else {
                     this.CREATE_FAQ_ROUTE_IS_ACTIVE = false;
-                    console.log('[SIDEBAR] NavigationEnd - CREATE_FAQ_ROUTE_IS_ACTIVE ', this.CREATE_FAQ_ROUTE_IS_ACTIVE);
+                    // console.log('[SIDEBAR] NavigationEnd - CREATE_FAQ_ROUTE_IS_ACTIVE ', this.CREATE_FAQ_ROUTE_IS_ACTIVE);
                 }
 
                 if (event.url.indexOf('/editfaq') !== -1) {
