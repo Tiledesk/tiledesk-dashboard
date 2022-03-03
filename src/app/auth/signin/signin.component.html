@@ -179,7 +179,7 @@
               </div>
 
             <label for="password">Password</label>
-            <input type="password" id="password" class="input" formControlName="password" required>
+            <input type="password" id="password" class="input" formControlName="password"  autocomplete="on" required>
 
             <div *ngIf="formErrors.password" class="is-danger" translate>
               {{ formErrors.password }}
@@ -231,27 +231,26 @@
 
 
 
-<!-- 
-// --------------------------------------------------------------------------------------------
-// Old login template
-// -------------------------------------------------------------------------------------------- -->
-<div class="main-content" style="padding-top:0px; display: none;">
+ 
+<!-- -------------------------------------------------------------------------------------------- -->
+<!-- Old login template -->
+<!-- -------------------------------------------------------------------------------------------- -->
+<!-- <div class="main-content" style="padding-top:0px; display: none;">
  
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12">
-        <!-- (click)="goToTileDeskDotCom()" -->
+     
         <div style="text-align: center; cursor: pointer; margin-top: -70px;">
-          <!-- max-width: 100%; -->
-          <!-- <a href="http://www.tiledesk.com" target="_blank"> -->
+       
           <a [href]="company_site_url" target="_blank">
-            <!-- <img src="assets/img/tiledesk-logo.svg" class="img-fluid" style="max-width: 150px; height: auto; padding-top:25px"/> -->
+          
             <img [src]="companyLogoBlack_Url" class="img-fluid"
               style="max-width: 150px; height: auto; padding-top:25px" />
           </a>
         </div>
 
-        <!-- ALERT WITH ERROR MESSAGE -->
+        <!- - ALERT WITH ERROR MESSAGE - ->
         <div class="row" *ngIf="signin_errormsg" [ngStyle]="{'display':display}" style="transform: translateY(30%);">
           <div class="col-md-4 col-md-offset-4" align="center">
             <div class="alert alert-danger" style="max-width: 400px;">
@@ -264,18 +263,18 @@
 
         <div class="signin-title" style="text-align:center">
           <h2 style="font-family: 'Google Sans', sans-serif !important;">
-            <!-- {{ "SignInToTiledesk" | translate}} -->
+           
             {{ "SignInTo" | translate}} {{ company_name }}
 
           </h2>
         </div>
 
         <div class="login-container" style="padding-top: 15px;">
-          <!-- <div class="signin-container"> -->
+         
           <form [formGroup]="userForm" (ngSubmit)="signin()">
 
             <label for="email">Email</label>
-            <!-- id="email" -->
+        
             <input type="email" class="input" formControlName="email" id="email_old" required autocapitalize="off"
               spellcheck="false">
 
@@ -292,25 +291,20 @@
 
             <button type="submit" class="btn signin-button" [disabled]="!userForm.valid">
               <span *ngIf="!showSpinnerInLoginBtn">
-                <!-- Login  -->
+                
                 {{ 'Login' | translate}}
               </span>
               <span *ngIf="showSpinnerInLoginBtn"> <i class="fa fa-spinner fa-spin"></i></span>
             </button>
 
-            <!-- <span *ngIf="userForm.valid" class="help is-success">Form Looks Valid</span> -->
+          
             <div style="margin-top:16px; text-align: center">
-              <!-- <p class="btn button is-small" (click)="toggleForm()">Non hai ancora un account? Registrati</p> -->
-              <!-- <a (click)="toggleForm()">Non hai ancora un account? Registrati</a> -->
-              <!-- <a (click)="toggleForm()">Don't have an account yet? Sign up</a> -->
               <a routerLink="/signup" style="color: #666666; font-size: 1.1em">
-                <!-- Don't have an account yet?  -->
                 {{ "DontHaveAnAccountYet" | translate }}
                 <span style="color: #03a5e8">
-                  <!-- Sign up -->
                   {{ "SignUp" | translate }}
-
-                </span></a>
+                </span>
+              </a>
             </div>
 
             <p style="color: #666666; font-size: 1.1em; text-align: center; margin-top: 16px;">
@@ -319,12 +313,9 @@
                 {{ "ClickHere" | translate }}
               </span>
             </p>
-            <!-- <a *ngIf="!passReset && userForm.controls.email.valid" class="help is-info" (click)="resetPassword()">Reset Password for {{userForm.value.email}}?</a>
-            <p *ngIf="passReset" class="help is-info">Reset requested. Check your email instructions.</p> -->
-
           </form>
-
         </div>
       </div>
     </div>
   </div>
+</div> -->
