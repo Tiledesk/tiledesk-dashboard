@@ -1,6 +1,10 @@
 
 # tiledesk-dashboard
 
+### 2.2.32-rc8
+- Adds a custom scrollbar to the chat section of the conversation detail page
+- Changes the style of the left sidebar
+
 ### 2.2.32-rc7
 - Enhances the style of the sidebar tooltips
 - Adds the message "Language not supported ..." in the language selection section of the dashboard if the browser language is not supported
