@@ -19,7 +19,7 @@
 }
 
 #user-details::-webkit-scrollbar {
-    width: 6px;
+    width: 3px;
 }
 #user-details::-webkit-scrollbar-track {
     background-color: #1c2b45;
@@ -209,17 +209,19 @@ button.user-details-btn-close {
     background-color: #2d323e;
     border-radius: 50%;
     position: absolute;
-    top: 92px;
-    width: 24px;
-    height: 24px;
+    top: 96px;
+    width: 21px;
+    height: 21px;
     left: 101px;
 }
 
 .user-details-user-isbusy-icon {
     font-size: 18px !important;
     position: relative;
-    top: 3px;
-    left: 3px;
+    // top: 3px;
+    // left: 3px;
+    top: 2px;
+    left: 2px;
 }
 
 .user-details-plan-info {
@@ -288,11 +290,12 @@ button.user-details-btn-close {
     color: #eee;
 }
 
-::ng-deep .custom-mat-tooltip {
+::ng-deep .user-sidebar-custom-mat-tooltip {
     background-color: #2d323e !important;
     font-size: 12px !important;
     border-radius: 2px !important;
     font-family: "Poppins" !important;
+    z-index: 1052 !important;
 }
 
 .altenative-sidebar-user-details-avatar {
@@ -300,6 +303,7 @@ button.user-details-btn-close {
     font-weight: 400;
     font-family: "Poppins";
     font-size: 32px;
+    -webkit-font-smoothing: antialiased;
 }
 
 .tooltip {
