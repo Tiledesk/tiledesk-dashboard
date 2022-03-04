@@ -52,10 +52,7 @@ li.active a p.onBlackBckgrnd .sidebar-mini {
   color: $brand-sidebar-active-item-icon-color !important;
 }
 
-.nav > li > a:hover {
-  text-decoration: none;
-  background-color: #eee;
-}
+
 
 // .sidebar-wrapper-in-projects {
 //   height: 100vh !important;
@@ -223,7 +220,7 @@ button.close {
 }
 
 .username {
-  font-family: "Google Sans", sans-serif !important;
+  font-family: "Poppins", sans-serif !important;
 }
 .avatar-container {
   text-align: center;
@@ -263,23 +260,8 @@ button.close {
   background-color: #4caf50;
 }
 
-.sidebar--isBusy-icon-wpr {
-  width: 14px;
-  height: 14px;
-  position: absolute;
-  // top: 94px;
-  // right: 150px;
-  top: 12px; // for small sidebar
-  right: 37px; // for small sidebar
-}
 
-.sidebar-is-busy-icon {
-  font-size: 14px;
-  color: #feb92c;
-  background-color: #2d323e;
-  border-radius: 50%;
-}
-
+// --------------
 .sidebar--isBusy-text {
   // content: url("../../../assets/img/clock_hands.svg");
   // background-image: url('../../../assets/img/clock_hands.svg');
@@ -358,7 +340,7 @@ button.close {
 }
 
 .logo {
-  background-color: #1e2129 !important;
+  background-color: #2d323e !important;
   padding-bottom: 5px;
   min-height: 60px;
   width: 60px; // for SMALL SIDEBAR
@@ -377,12 +359,26 @@ button.close {
   max-height: 40px;
 }
 .small-sidebar-avatar {
-  top: 12px;
+  // top: 12px;
+  top: 8px;
 }
 
 .small-sidebar-avatar .avatar {
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
+}
+
+#sidebaravatar-altenative-user-avatar {
+  // line-height: 2.9;
+  font-weight: 400;
+  font-family: "Poppins";
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  position: absolute;
+  -webkit-font-smoothing: antialiased;
+  font-size:14px
 }
 
 .small-sidebar-email {
@@ -390,10 +386,32 @@ button.close {
 }
 
 .small-sidebar-status-icon {
-  left: 33px !important;
-  bottom: 4px !important;
+  // left: 33px !important;
+  // bottom: 4px !important;
+  left: 29px !important;
+  bottom: 3px !important;
   width: 12px !important;
   height: 12px !important;
+}
+
+.sidebar--isBusy-icon-wpr {
+  // width: 14px;
+  // height: 14px;
+  width: 12px;
+  height: 12px;
+  position: absolute;
+  // top: 94px;
+  // right: 150px;
+  top: 0px; // for small sidebar
+  right: 29px; // for small sidebar
+}
+
+.sidebar-is-busy-icon {
+  // font-size: 14px;
+  font-size: 12px;
+  color: #feb92c;
+  background-color: #2d323e;
+  border-radius: 50%;
 }
 
 .small-sidebar-status-text {
@@ -403,6 +421,123 @@ button.close {
 .small-sidebar-userfullname {
   display: none;
 }
+#sidebar_wrapper > div > ul > li > a > i {
+  color: #647491;
+}
+
+#sidebar_wrapper > div > ul > li:hover > a {
+  background-color: transparent!important;
+}
+
+
+#sidebar_wrapper > div > ul > li:hover > a > i {
+  color: #a9afbb;
+  background-color: transparent!important;
+}
+
+#sidebar_wrapper > div > ul > li:hover > a > #openchat-span > svg{
+  color: #a9afbb;
+  background-color: transparent!important;
+}
+.chat21-icon {
+ 
+  fill: #647491
+}
+
+#openchat-a:hover > #openchat-a > #openchat-span > svg > .chat21-icon {
+  fill: #a9afbb;
+}
+
+.chat-bot-icon-st0 {
+  // fill: #a9afbb;
+  fill: #647491
+}
+.chat-bot-icon-st1 {
+  fill: none;
+}
+
+.realtime-icon-st0{
+  fill:none;
+}
+
+.realtime-icon-st1{
+  fill:#647491;
+}
+
+#sidebar_wrapper > div > ul > #bot-anchor-wpr.active > #bot-anchor > .bot-icon-wpr > svg > g > g > .chat-bot-icon-st0 {
+  fill: #ffffff !important;
+}
+
+#sidebar_wrapper > div > ul > #bot-anchor-wpr.menu_item_active > #bot-anchor > .bot-icon-wpr > svg > g > g > .chat-bot-icon-st0 {
+  fill: #ffffff !important;
+}
+
+#bot-anchor-wpr:hover > #bot-anchor > .bot-icon-wpr > svg > g > g > .chat-bot-icon-st0 {
+  fill: #a9afbb ;
+}
+
+li:hover > a > .realtime-icon-wpr > svg  > path {
+  fill: #a9afbb;
+}
+
+// .chat21-icon:hover {
+//   fill: #a9afbb;
+//   // fill: #647491
+// }
+
+
+
+.active {
+  height: 40px;
+  // background-color: $brand-sidebar-active-item-bckgrnd;
+  color: #fff !important;
+}
+
+
+
+.active a {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+}
+
+.menu_item_active {
+  height: 40px;
+  // background-color: $brand-sidebar-active-item-bckgrnd;
+  color: #fff !important;
+}
+
+#sidebar_wrapper > div > ul > li.active > a > i {
+  color: #ffffff;
+}
+
+#sidebar_wrapper > div > ul > li.menu_item_active > a > i {
+  color: #ffffff;
+}
+
+
+.menu_item_active > a > i {
+  color: #ffffff;
+}
+
+
+
+
+.nav > li > a {
+  padding: 5px 15px !important;
+  // border-radius: 0 20px 20px 0; // commented fo small sidebar
+  // margin-right: 16px; // commented fo small sidebar
+  padding: 0 12px 0 24px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// No more used
+// .nav > li > a:hover {
+//   text-decoration: none;
+//   background-color: #eee;
+// }
 
 .small-sidebar-camera-icon {
   // top: 86px !important;
@@ -439,7 +574,7 @@ button.close {
 // }
 
 #sidebar_wrapper::-webkit-scrollbar {
-  width: 6px;
+  width: 3px;
 }
 #sidebar_wrapper::-webkit-scrollbar-track {
   background-color: #1c2b45;
@@ -457,47 +592,7 @@ button.close {
 /* NK end CUSTOM SCROLL BAR */
 
 /* SIDEBAR NAV ITEMS  */
-.active {
-  height: 40px;
-  // border-radius: 0 20px 20px 0; // commented fo small sidebar
-  // margin-right: 16px;  // commented fo small sidebar
-  background-color: $brand-sidebar-active-item-bckgrnd;
-  color: #fff !important;
-}
 
-.active a {
-  background-color: transparent !important;
-  box-shadow: none !important;
-  -webkit-box-shadow: none !important;
-}
-
-.menu_item_active {
-  height: 40px;
-  background-color: $brand-sidebar-active-item-bckgrnd;
-  color: #fff !important;
-}
-
-.menu_item_active > a > i {
-  color: #ffffff;
-}
-
-#bot-anchor-wpr.active > #bot-anchor > .bot-icon-wpr > svg > g > g > .chat-bot-icon-st0 {
-  fill: #ffffff !important;
-}
-
-#bot-anchor-wpr.menu_item_active > #bot-anchor > .bot-icon-wpr > svg > g > g > .chat-bot-icon-st0 {
-  fill: #ffffff !important;
-}
-
-.nav > li > a {
-  padding: 5px 15px !important;
-  // border-radius: 0 20px 20px 0; // commented fo small sidebar
-  // margin-right: 16px; // commented fo small sidebar
-  padding: 0 12px 0 24px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
 /* SIDEBAR NAV ITEMS  */
 
 ._badge {
@@ -1206,12 +1301,6 @@ button.close {
   padding-bottom: 8px !important;
 }
 
-#sidebaravatar-altenative-user-avatar {
-  line-height: 2.9;
-  font-weight: 400;
-  font-family: "Poppins";
-}
-
 .bot-icon-wpr {
   width: 25px;
   display: block;
@@ -1220,13 +1309,7 @@ button.close {
   top: 2px;
 }
 
-.chat-bot-icon-st0 {
-  fill: #a9afbb;
-  // fill:#000
-}
-.chat-bot-icon-st1 {
-  fill: none;
-}
+
 // #bot-anchor-wpr.active > .chat-bot-icon-st0 {
 //   fill: #ffffff !important;
 // }

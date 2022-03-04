@@ -1,47 +1,43 @@
 <!-- *ngIf="project"  -->
-<div class="logo" style="background-color:#1e2129!important; padding-bottom: 5px;min-height: 60px;">
-  <a class="logo-img-wpr" [ngClass]="{'small-sidebar-logo-img-wpr' : SIDEBAR_IS_SMALL === true }">
-    <!-- routerLink="project/{{ project._id }}/home" -->
-
+<div class="logo">
+  <!-- <a class="logo-img-wpr" [ngClass]="{'small-sidebar-logo-img-wpr' : SIDEBAR_IS_SMALL === true }">
     <div class="logo-img" (click)="goToHome()" style="cursor: pointer;">
 
-      <!-- assets/img/tiledesk-logo_white_orange.svg -->
-
-      <!-- note to center the logo remove > left: 26px -->
-      <!-- <img style="width:45%; top:20px;left: 26px" src="assets/img/tiledesk-logo_white_orange.svg" /> -->
-      <!-- <img *ngIf="SIDEBAR_IS_SMALL === false" class="sidebar__logo" [ngClass]="{'sidebar__logo_no_rocket' : hidechangelogrocket === true }"
-        [src]="sidebarLogoWhite_Url" /> -->
       <img class="small-sidebar__logo" [src]="sidebarLogoNoText" />
     </div>
+  </a> -->
+  <div id="sidebaravatar-img-wpr" class="avatar-container tiledesk-nav-avatar" (click)="openUserDetailSidePanel()"
+    [ngClass]="{'small-sidebar-avatar' : SIDEBAR_IS_SMALL === true }">
+    <img id="sidebaravatar-img" class="avatar"
+      *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true" [src]="getUserProfileImage()"
+      onerror="this.src='assets/img/no_image_user.png'" />
+    <!-- [ngStyle]="{'background-color': user?.fillColour }" -->
 
-    <!-- <div *ngIf="!hidechangelogrocket" class="link-to-tiledesk-changelog-blog" (click)="goToBlogChangelog()"
-      style="position: absolute; top: 18px; right: 25px; cursor:pointer">
-      <div class="news-rocket" style="cursor: pointer;">
-        <img style="height: auto; width: 18px;" src="assets/img/t_rocket.svg" />
-      </div>
-      <div class="flame_icon">1 </div>
-    </div> -->
-  </a>
+    <div id="sidebaravatar-no-img" class="avatar"
+      *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true"
+      [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + user?.fillColour + ')'}">
+      <span id="sidebaravatar-altenative-user-avatar" class="sidebar-altenative-user-avatar">
+        {{ user?.fullname_initial }}
+      </span>
+    </div>
 
-  <!-- https://codepen.io/Ultimate-Fortnite-Gamer/pen/VOQENV -->
-  <!-- <div class="rocket-content" style="
-  /* width: 70px; */
-  /* height: 100px; */
-  width: 0px;
-  height: 0px;
-  /* float: left; */
-  /* margin-left: 50px; */
-  /* position: relative; */
-  position:absolute;
-  top:51px;
-  right:66px;
-  transform-origin: center bottom;
-  animation: flame 6ms ease-in 100ms infinite alternate;">
-    <div class="flame Color_red"></div>
-    <div class="flame Color_orange"></div>
-    <div class="flame Color_yellow"></div>
-    <div class="flame Color_white"></div>
-  </div> -->
+    <!-- <img id="sidebaravatar-no-img" class="avatar"
+    *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true"
+    src="assets/img/no_image_user.png" /> -->
+
+    <!-- (click)="changeAvailabilityState(IS_AVAILABLE = !IS_AVAILABLE)" -->
+    <!-- matTooltipClass="custom-mat-tooltip" matTooltip="{{ tooltip_text_for_availability_status}}"  #tooltip="matTooltip"   matTooltipPosition='right' matTooltipHideDelay="100" -->
+    <div id="sidebaravatar-status-icon" *ngIf="project" class="status-icon"
+      [ngClass]="{'is-user-online' : IS_AVAILABLE === true, 'is-user-offline' : IS_AVAILABLE === false, 'small-sidebar-status-icon' : SIDEBAR_IS_SMALL === true  }">
+    </div>
+
+    <div id="sidebaravatar-isbusy" class="sidebar--isBusy-icon-wpr" *ngIf="IS_BUSY === true" style="cursor:pointer">
+      <span class="material-icons sidebar-is-busy-icon">
+        access_time
+      </span>
+    </div>
+
+  </div>
 
 </div>
 
@@ -52,7 +48,7 @@
 <div id="sidebar_wrapper" class="sidebar-wrapper" (scroll)="onScroll($event)">
 
   <!-- // NK start NEW: AVATAR ON THE SIDEBAR  -->
-  <div class="user tiledesk-nav-user" [ngClass]="{'small-sidebar-tiledesk-nav-user' : SIDEBAR_IS_SMALL === true }"
+  <!-- <div class="user tiledesk-nav-user" [ngClass]="{'small-sidebar-tiledesk-nav-user' : SIDEBAR_IS_SMALL === true }"
     fxlayout="column" style="flex-direction: column; box-sizing: border-box; display: flex;">
     <div *ngIf="user" class="h3 username" style="font-size: 16px;font-weight: 400;margin-top: 15px; margin-bottom: 5px;"
       [ngClass]="{'small-sidebar-userfullname' : SIDEBAR_IS_SMALL === true }">
@@ -62,79 +58,35 @@
     <div *ngIf="user" class="h5 email hint-text mt-8"
       style="color: rgba(255,255,255,.5)!important;font-size: 13px;margin-top: 0px!important;font-weight: 400;"
       [ngClass]="{'small-sidebar-email' : SIDEBAR_IS_SMALL === true }">
-
       {{ user.email }}
-
-      <!-- <div style="text-align: center;" *ngIf="IS_BUSY === true">
-        <span class="sidebar--isBusy-text">
-          {{ 'Busy' | translate }}
-        </span>
-      </div> -->
     </div>
 
-    <!-- routerLink="project/{{ project._id }}/user-profile" -->
-    <!-- (mouseover)="mouseOver(true)" 
-        (mouseout)="mouseOver(false)" -->
-    <!--  -->
     <div id="sidebaravatar-img-wpr" class="avatar-container tiledesk-nav-avatar" (click)="openUserDetailSidePanel()"
       [ngClass]="{'small-sidebar-avatar' : SIDEBAR_IS_SMALL === true }">
-
-     
       <img id="sidebaravatar-img" class="avatar"
         *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true" [src]="getUserProfileImage()"
         onerror="this.src='assets/img/no_image_user.png'" />
-        <!-- [ngStyle]="{'background-color': user?.fillColour }" -->
-      
-        <div id="sidebaravatar-no-img"  class="avatar"
+     
+      <div id="sidebaravatar-no-img" class="avatar"
         *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true"
         [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + user?.fillColour + ')'}">
         <span id="sidebaravatar-altenative-user-avatar" class="sidebar-altenative-user-avatar">
           {{ user?.fullname_initial }}
         </span>
       </div>
-
-      <!-- <img id="sidebaravatar-no-img" class="avatar"
-        *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true"
-        src="assets/img/no_image_user.png" /> -->
-
-      <!-- (click)="changeAvailabilityState(IS_AVAILABLE = !IS_AVAILABLE)" -->
-      <!-- matTooltipClass="custom-mat-tooltip" matTooltip="{{ tooltip_text_for_availability_status}}"  #tooltip="matTooltip"   matTooltipPosition='right' matTooltipHideDelay="100" -->
       <div id="sidebaravatar-status-icon" *ngIf="project" class="status-icon"
         [ngClass]="{'is-user-online' : IS_AVAILABLE === true, 'is-user-offline' : IS_AVAILABLE === false, 'small-sidebar-status-icon' : SIDEBAR_IS_SMALL === true  }">
-
-        <!-- <span style="position:relative; top: -5px;left: 14px; cursor:pointer"
-          [ngClass]="{'small-sidebar-status-text' : SIDEBAR_IS_SMALL === true }">
-          <span style="
-                  color: rgba(255,255,255,.5)!important; 
-                  font-size: 12px;" *ngIf="IS_AVAILABLE">
-            {{ 'Available' | translate }}
-          </span>
-          <span style="
-                color: rgba(255,255,255,.5)!important;
-                font-size: 12px; white-space: nowrap" *ngIf="!IS_AVAILABLE">
-            {{ 'Unavailable' | translate }}
-          </span>
-
-        </span> -->
       </div>
 
     </div>
-    <!-- CAMERA ICONS OVER THE AVATAR -->
-    <!--  [ngClass]="{'hover-effect' : isOverAvar}"  -->
-    <!-- routerLink="project/{{ project._id }}/user-profile" -->
-    <!-- <i *ngIf="project" (click)="openUserDetailSidePanel()" class="material-icons is-over-camera"
-      [ngClass]="{'small-sidebar-camera-icon' : SIDEBAR_IS_SMALL === true, 'is-over-camera-decrease-top':IS_BUSY === true }">
-      camera_alt
-    </i> -->
-
-    <!-- matTooltipClass="sidebar-custom-mat-tooltip" matTooltip="{{ 'Busy' | translate }}" #tooltip="matTooltip"
-    matTooltipPosition='right' matTooltipHideDelay="100" -->
     <div id="sidebaravatar-isbusy" class="sidebar--isBusy-icon-wpr" *ngIf="IS_BUSY === true" style="cursor:pointer">
       <span class="material-icons sidebar-is-busy-icon">
         access_time
       </span>
     </div>
-  </div>
+  </div> -->
+
+  <!-- // NK end NEW: AVATAR ON THE SIDEBAR  -->
 
   <!-- ---------------------------------------- -->
   <!-- Nav mobile menu -->
@@ -182,33 +134,34 @@
 
   <div class="nav-container">
     <!-- [ngClass]="{'is-desktop-menu' : IS_MOBILE_MENU === false, 'is-mobile-menu' : IS_MOBILE_MENU === true  }" -->
-    <ul style="padding-bottom: 65px;" class="nav">
+    <!-- padding-bottom: 65px;  -->
+    <ul style="margin-top: 0px;" class="nav">
 
 
       <!-- CHAT  {{'Chat' | translate}}-->
-      <li id="openchat-a" *ngIf="project" routerLinkActive="active" matTooltipClass="custom-mat-tooltip" matTooltip="Chat"
-        #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
+      <li id="openchat-a" *ngIf="project" routerLinkActive="active" matTooltipClass="custom-mat-tooltip"
+        matTooltip="Chat" #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
 
         <!-- <a class="customAncor" routerLink="/chat"> -->
         <!-- <a class="customAncor" routerLink="project/{{ project._id }}/chat"> -->
         <!-- (click)="openChat()" target="_blank"  href="{{ CHAT_BASE_URL }}"  (click)="removeChatBtnFocus()" -->
-        <a id="openchat-a" #openchatbtn class="customAncor" target="_self"  href="{{ CHAT_BASE_URL }}" (click)="openChat()" style="cursor: pointer; text-align: center;height: 40px;">
+        <a id="openchat-a" #openchatbtn class="customAncor" target="_self" href="{{ CHAT_BASE_URL }}"
+          (click)="openChat()" style="cursor: pointer; text-align: center;height: 40px;">
           <!-- <i id="openchat-i" class="material-icons sidebar-icons">chat</i> -->
           <!-- <p class="onBlackBckgrnd">Chat</p> -->
-         
+
 
           <span id="openchat-span" style="position: relative;top: 3px;vertical-align: middle;">
-            <svg id="openchat-svg" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-              viewBox="0 0 23 21" style="enable-background:new 0 0 23 21;" xml:space="preserve" style="width:20px;height:20px; vertical-align: middle;">
-            <style type="text/css">
-              .chat21-icon{fill:#a9afbb;}
-            </style>
-            <path id="openchat-path" class="chat21-icon" d="M11.5,0.5C5.8,0.5,1.3,5,1.3,10.5c0,1.8,0.5,3.5,1.4,5l-0.8,4.3l4.4-0.8c1.5,0.9,3.3,1.4,5.3,1.4
+            <svg id="openchat-svg" version="1.1" xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 23 21"
+              style="enable-background:new 0 0 23 21;" xml:space="preserve"
+              style="width:20px;height:20px; vertical-align: middle;">
+              <path id="openchat-path" class="chat21-icon" d="M11.5,0.5C5.8,0.5,1.3,5,1.3,10.5c0,1.8,0.5,3.5,1.4,5l-0.8,4.3l4.4-0.8c1.5,0.9,3.3,1.4,5.3,1.4
               c5.7,0,10.2-4.5,10.2-10S17.2,0.5,11.5,0.5z M11.5,17.2c-2.5,0-4.6-1.3-5.7-2.6c0.6-0.2,0.8-0.8,1.4-1c0.7,0.9,2.5,2.1,4.4,2.1
-              c1.9,0,3.6-1.2,4.2-2.1c0.5,0.2,0.9,0.6,1.4,0.9C16.1,15.8,14,17.2,11.5,17.2z"/>
+              c1.9,0,3.6-1.2,4.2-2.1c0.5,0.2,0.9,0.6,1.4,0.9C16.1,15.8,14,17.2,11.5,17.2z" />
             </svg>
           </span>
-         
+
         </a>
       </li>
 
@@ -228,29 +181,31 @@
 
       <!-- ---------------------------------- -->
       <!-- Bot  CHATBOT_ROUTE_IS_ACTIVE ||  -->
-      <!-- ---------------------------------- --> 
+      <!-- ---------------------------------- -->
       <ng-container *ngIf="USER_ROLE !== 'agent'">
-        <li id="bot-anchor-wpr" *ngIf="project" routerLinkActive="active" matTooltipClass="custom-mat-tooltip" matTooltip="Bots"
-          #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" 
+        <li id="bot-anchor-wpr" *ngIf="project" routerLinkActive="active" matTooltipClass="custom-mat-tooltip"
+          matTooltip="Bots" #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100"
           [ngClass]="{'active': CHATBOT_ROUTE_IS_ACTIVE || EDIT_FAQ_ROUTE_IS_ACTIVE, 'menu_item_active': CREATE_FAQ_ROUTE_IS_ACTIVE || BOT_TEST_ROUTE_IS_ACTIVE}">
-          <a id="bot-anchor" #botbtn class="customAncor" routerLink="project/{{ project._id }}/bots" style="height: 40px;">
+          <a id="bot-anchor" #botbtn class="customAncor" routerLink="project/{{ project._id }}/bots"
+            style="height: 40px;">
             <span class="bot-icon-wpr">
-              <svg version="1.1" id="Objects" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                  viewBox="0 0 30 30" style="enable-background:new 0 0 30 30;" xml:space="preserve">
+              <svg version="1.1" id="Objects" xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 30 30"
+                style="enable-background:new 0 0 30 30;" xml:space="preserve">
                 <g>
                   <g>
                     <path class="chat-bot-icon-st0" d="M24.6,12.6c-0.1,0-0.2,0-0.3,0c-1.6-2.9-4.5-5.8-9.2-5.8c-4.7,0-7.6,2.9-9.2,5.8c-0.2,0-0.4-0.1-0.6-0.1
                       c-2,0-3.5,2.3-3.5,5c0,2.8,1.6,5,3.5,5c0.1,0,0.3,0,0.4,0c2.3,3.6,7,3.9,9.4,3.9c2.3,0,6.9-0.5,9.2-3.9c0.1,0,0.1,0,0.2,0
                       c2,0,3.5-2.3,3.5-5C28.1,14.8,26.6,12.6,24.6,12.6z M22,21.1c0,0-7.8,2.3-14.3-0.1c0,0-0.8-4.1-0.5-7.2c0,0,8.1-3.2,15.6,0.3
-                      C22.8,14.1,23.3,19.1,22,21.1z"/>
-                    <ellipse class="chat-bot-icon-st0" cx="11.9" cy="17.4" rx="0.7" ry="1.4"/>
-                    <ellipse class="chat-bot-icon-st0" cx="18.1" cy="17.4" rx="0.7" ry="1.4"/>
+                      C22.8,14.1,23.3,19.1,22,21.1z" />
+                    <ellipse class="chat-bot-icon-st0" cx="11.9" cy="17.4" rx="0.7" ry="1.4" />
+                    <ellipse class="chat-bot-icon-st0" cx="18.1" cy="17.4" rx="0.7" ry="1.4" />
                     <path class="chat-bot-icon-st0" d="M14.5,5.3v1.1h1V5.3c0.3-0.2,0.5-0.5,0.5-0.8c0-0.5-0.4-0.9-1-0.9c-0.5,0-0.9,0.4-0.9,0.9
-                      C14.1,4.8,14.2,5.1,14.5,5.3z"/>
+                      C14.1,4.8,14.2,5.1,14.5,5.3z" />
                   </g>
-                  <rect class="chat-bot-icon-st1" width="30" height="30"/>
+                  <rect class="chat-bot-icon-st1" width="30" height="30" />
                 </g>
-                </svg>
+              </svg>
             </span>
 
             <!-- <p class="onBlackBckgrnd">Home</p> -->
@@ -261,17 +216,27 @@
       <!-- Conversation list  -->
       <li *ngIf="project" routerLinkActive="active" matTooltipClass="custom-mat-tooltip"
         matTooltip="{{ 'Requests' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
-        matTooltipHideDelay="100" [ngClass]="{'menu_item_active': CONV_DETAIL_ROUTE_IS_ACTIVE }">
-        <a class="customAncor" routerLink="project/{{ project._id }}/wsrequests">
-          <i class="material-icons sidebar-icons">forum</i>
+        matTooltipHideDelay="100" [ngClass]="{'menu_item_active': CONV_DETAIL_ROUTE_IS_ACTIVE }" style="text-align: center;">
+        <a class="customAncor" routerLink="project/{{ project._id }}/wsrequests"  style="height: 40px;">
+          <!-- <i class="material-icons sidebar-icons">forum</i> -->
           <!-- <p class="onBlackBckgrnd">{{ 'Requests' | translate }}</p> -->
+          <span  class="realtime-icon-wpr" >
+            <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+            viewBox="0 0 24 24" style="enable-background:new 0 0 24 24;" xml:space="preserve" style="width: 25px;margin-top: 3px;">
+                <g>
+                  <rect y="0" class="realtime-icon-st0" width="24" height="24"/>
+                </g>
+              <path class="realtime-icon-st1" d="M21,10.3h-4.7l-4.2,3.3L6,7.7L3,9.8v2.5l2.8-2l6.2,6l5-4h4V10.3z"/>
+            </svg>
+          </span>
         </a>
       </li>
 
       <!-- CONTACTS (LEADS)  -->
       <li *ngIf="project" routerLinkActive="active" matTooltipClass="custom-mat-tooltip"
         matTooltip="{{ 'Contacts' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
-        matTooltipHideDelay="100" [ngClass]="{'menu_item_active': CONTACT_EDIT_ROUTE_IS_ACTIVE || CONTACT_CONVS_ROUTE_IS_ACTIVE}">
+        matTooltipHideDelay="100"
+        [ngClass]="{'menu_item_active': CONTACT_EDIT_ROUTE_IS_ACTIVE || CONTACT_CONVS_ROUTE_IS_ACTIVE}">
         <a class="customAncor" routerLink="project/{{ project._id }}/contacts">
           <i class="material-icons sidebar-icons">contacts</i>
           <!-- <p class="onBlackBckgrnd">{{ 'Contacts' | translate }}</p> -->
@@ -286,7 +251,8 @@
           <a class="customAncor" routerLink="project/{{ project._id }}/app-store">
             <!-- <span class="_badge" style="font-size: 9px;"
               [ngClass]="{'change-badge-bckgrnd' : APPS_ROUTE_IS_ACTIVE === true}">NEW</span> -->
-            <i class="material-icons sidebar-icons">apps</i>
+            <!-- <i class="material-icons sidebar-icons">apps</i> -->
+            <i class="material-icons sidebar-icons">dashboard_customize</i>
             <!-- <p class="onBlackBckgrnd">Apps</p> -->
           </a>
         </li>
@@ -307,7 +273,10 @@
           matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Analytics.AnalyticsTITLE' | translate }}"
           #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
           <a class="customAncor" routerLink="project/{{ project._id }}/analytics">
-            <i class="material-icons sidebar-icons">trending_up</i>
+            <!-- <i class="material-icons sidebar-icons">trending_up</i> -->
+            <!-- <i class="material-icons sidebar-icons"> analytics </i> -->
+            <i class="material-icons sidebar-icons">  bar_chart </i>
+              
             <!-- <span class="_badge" [ngClass]="{'change-badge-bckgrnd' : ANALITYCS_ROUTE_IS_ACTIVE === true}">New</span> -->
             <!-- <p class="onBlackBckgrnd">
               {{ 'Analytics.AnalyticsTITLE' | translate }}
@@ -340,7 +309,7 @@
           <!-- <p class="onBlackBckgrnd">{{ 'History' | translate }}</p> -->
         </a>
       </li>
-      
+
       <li *ngIf="project && USER_ROLE !== 'agent'" [ngClass]="{'active': 
       TRIGGER_ROUTE_IS_ACTIVE || 
       TAG_ROUTE_IS_ACTIVE || 
