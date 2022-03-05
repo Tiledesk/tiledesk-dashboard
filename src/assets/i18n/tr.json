@@ -2019,6 +2019,7 @@
     "HowWebhooksWorks":"Web kancaları nasıl çalışır",
     "WebhooksQuickTipsIntroduction":"Web kancaları, kullanım durumlarınızı otomatikleştirmek ve üretkenliğinizi artırmak için kullanabileceğiniz güçlü bir kaynaktır.",
     "LearnHowToConnectDialogflowAgents":"Dialogflow aracılarını nasıl bağlayacağınızı öğrenin",
+    "TheDashboardIsTranslatedIntoEnglish": "Gösterge paneli İngilizce'ye çevrilmiştir. Dili değiştirmek için bayrağa tıklayın",
     "LanguageIsNotAvailableDashboardWillBeTranslatedIntoEnglish": "Maalesef bu dil henüz mevcut değil, gösterge tablosu İngilizce'ye çevrilecek",
     "LanguageIsNotAvailableDashboardHasBeenTranslatedIntoEnglish": "Maalesef bu dil henüz mevcut değil, gösterge tablosu İngilizce'ye çevrildi",
     "OnlyATeammateWithTheOwnerRoleCanDeleteAProject":"Yalnızca Sahip rolüne sahip bir takım arkadaşı bir projeyi silebilir",
