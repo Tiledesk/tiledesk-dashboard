@@ -448,37 +448,61 @@ button.close {
   fill: #a9afbb;
 }
 
+// Bot icon sidebar menu item default color 
 .chat-bot-icon-st0 {
   // fill: #a9afbb;
   fill: #647491
 }
+// Bot icon sidebar menu item default color 
 .chat-bot-icon-st1 {
   fill: none;
 }
 
-.realtime-icon-st0{
-  fill:none;
-}
-
-.realtime-icon-st1{
-  fill:#647491;
-}
-
+// Bot icon sidebar menu item active
 #sidebar_wrapper > div > ul > #bot-anchor-wpr.active > #bot-anchor > .bot-icon-wpr > svg > g > g > .chat-bot-icon-st0 {
   fill: #ffffff !important;
 }
 
+// Bot icon sidebar menu item active
 #sidebar_wrapper > div > ul > #bot-anchor-wpr.menu_item_active > #bot-anchor > .bot-icon-wpr > svg > g > g > .chat-bot-icon-st0 {
   fill: #ffffff !important;
 }
 
+// Bot icon sidebar menu item hover
 #bot-anchor-wpr:hover > #bot-anchor > .bot-icon-wpr > svg > g > g > .chat-bot-icon-st0 {
   fill: #a9afbb ;
 }
 
+// RT monitor sidebar menu item default color 
+.realtime-icon-st3{
+  fill:#647491;
+}
+
+// RT monitor sidebar menu item hover 
 li:hover > a > .realtime-icon-wpr > svg  > path {
   fill: #a9afbb;
 }
+
+#sidebar_wrapper > div > ul > li.menu_item_active > a > .realtime-icon-wpr > svg  > .realtime-icon-st3 {
+  fill: #ffffff !important;
+}
+
+#sidebar_wrapper > div > ul > li.active > a > .realtime-icon-wpr > svg  > .realtime-icon-st3 {
+  fill: #ffffff !important;
+}
+
+
+// No more used - classs of an old svg icon used for the RT monitor sidebar menu item 
+// .realtime-icon-st0{
+//   fill:none;
+// }
+
+// No more used - classs of an old svg icon used for the RT monitor sidebar menu item 
+// .realtime-icon-st1{
+//   fill:#647491;
+// }
+
+
 
 // .chat21-icon:hover {
 //   fill: #a9afbb;
