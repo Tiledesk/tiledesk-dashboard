@@ -1,10 +1,12 @@
 
 # tiledesk-dashboard
 
+### 2.2.32-rc10
+- Fixes the bug: the "No Agent" placeholder is displayed in the "Agents" section of the conversation details page even if the agents exist
+
 ### 2.2.32-rc9
 - Changes the icon of the "Conversations" menu item to the left sidebar
 - Adds Serbian language
-- Fixes the bug: the "No Agent" placeholder is displayed in the "Agents" section of the conversation details page even if the agents exist
 
 ### 2.2.32-rc8
 - Adds a custom scrollbar to the chat section of the conversation detail page
