@@ -640,7 +640,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.request = wsrequest;
 
         if (this.request) {
-         console.log('[WS-REQUESTS-MSGS] - this.request: ', this.request);
+        //  console.log('[WS-REQUESTS-MSGS] - this.request: ', this.request);
 
           // -------------------------------------------------------------------
           // User Agent
