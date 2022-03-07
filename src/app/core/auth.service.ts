@@ -145,7 +145,7 @@ export class AuthService {
     this.SIGNIN_BASE_URL = this.SERVER_BASE_PATH + 'auth/signin'
     this.VERIFY_EMAIL_URL = this.SERVER_BASE_PATH + 'auth/verifyemail/'
     this.CREATE_CUSTOM_TOKEN_URL =
-      this.SERVER_BASE_PATH + 'chat21/firebase/auth/createCustomToken'
+    this.SERVER_BASE_PATH + 'chat21/firebase/auth/createCustomToken'
 
     // this.logger.log('[AUTH-SERV] AppConfigService getAppConfig SERVER_BASE_PATH', this.SERVER_BASE_PATH);
     // this.logger.log('[AUTH-SERV] AppConfigService getAppConfig SIGNUP_BASE_URL', this.SIGNUP_BASE_URL);
@@ -703,7 +703,7 @@ export class AuthService {
       // messaging.requestPermission()
       Notification.requestPermission()
         .then((permission) => {
-          console.log('[AUTH-SERV] SSO - LOGIN - 5B. >>>> getPermission Notification permission granted. - permission', permission)
+          this.logger.log('[AUTH-SERV] SSO - LOGIN - 5B. >>>> getPermission Notification permission granted. - permission', permission)
           this.logger.log( '[AUTH-SERV] SSO - LOGIN - 5B. - vapidKey >>>> ',  this.appConfigService.getConfig().firebase.vapidKey)
           return messaging.getToken({
             vapidKey: this.appConfigService.getConfig().firebase.vapidKey,
@@ -716,7 +716,7 @@ export class AuthService {
           this.updateToken(FCMtoken)
         })
         .catch((err) => {
-          console.log( '[AUTH-SERV] SSO - LOGIN - 5C. >>>> getPermission Unable to get permission to notify.',err )
+          this.logger.log( '[AUTH-SERV] SSO - LOGIN - 5C. >>>> getPermission Unable to get permission to notify.',err )
         })
     } else {
       this.logger.log('[AUTH-SERV] SSO - LOGIN - 5F. FCM NOT SUPPORTED')
