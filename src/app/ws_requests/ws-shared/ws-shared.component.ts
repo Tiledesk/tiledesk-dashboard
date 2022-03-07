@@ -135,7 +135,7 @@ export class WsSharedComponent implements OnInit {
       if (member_id && member_id !== 'system') {
 
         this.cleaned_members_array.push(member_id);
-        // this.logger.log('%%% WsRequestsMsgsComponent - CLEANED MEMBERS ARRAY ', this.cleaned_members_array);
+       console.log('%%% WsRequestsMsgsComponent - CLEANED MEMBERS ARRAY ', this.cleaned_members_array);
 
         const memberIsBot = member_id.includes('bot_');
 

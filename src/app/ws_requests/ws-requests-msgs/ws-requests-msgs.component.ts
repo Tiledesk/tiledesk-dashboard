@@ -640,7 +640,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.request = wsrequest;
 
         if (this.request) {
-          this.logger.log('[WS-REQUESTS-MSGS] - this.request: ', this.request);
+         console.log('[WS-REQUESTS-MSGS] - this.request: ', this.request);
 
           // -------------------------------------------------------------------
           // User Agent
@@ -1078,8 +1078,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           // DISPLAY / HIDE THE VIEW 'CONTACT' DETAIL BUTTON 
           // AND GET THE CONTACT-ID USED TO GO TO THE CONTACT DETAILS
           // -----------------------------------------------------------
-          if (this.request) {
-
+         
+            this.logger.log('[WS-REQUESTS-MSGS]: NODEJS REQUEST > CONTACT ID ', this.request);
             if (this.request.lead) {
               this.contact_id = this.request.lead._id
               this.logger.log('[WS-REQUESTS-MSGS]: NODEJS REQUEST > CONTACT ID ', this.contact_id);
@@ -1090,7 +1090,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
               this.logger.log('[WS-REQUESTS-MSGS]: NODEJS REQUEST > FOUND ? ', this.NODEJS_REQUEST_CNTCT_FOUND);
             }
 
-          }
+          
 
           this.createAgentsArrayFromParticipantsId(this.members_array, this.requester_id, this.UPLOAD_ENGINE_IS_FIREBASE, this.imageStorage)
           this.createRequesterAvatar(this.request.lead);

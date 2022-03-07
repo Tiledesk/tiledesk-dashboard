@@ -1961,7 +1961,8 @@
                       <!-- ------------------------------------------------------ -->
                       <!-- No Agent -->
                       <!-- ------------------------------------------------------ -->
-                      <div *ngIf="agents_array?.length === 0" class="row-body" style="margin-bottom: 10px;">
+                      <!-- <div *ngIf="agents_array?.length === 0" class="row-body" style="margin-bottom: 10px;"> -->
+                      <div  *ngIf="request?.participants?.length === 0" class="row-body" style="margin-bottom: 10px;">
                         <div class="ws_request_msgs___served_by">
                           <img style="height: auto; width: 22px;margin-left: 5px;margin-top: 5px;"
                             src="assets/img/user-alt-slash-solid.svg" />
@@ -2047,11 +2048,11 @@
                               {{ agent?.userFullname }}
                             </div>
                             <span class="agent-fullname-not-has-image-and-chat-with" [ngClass]="{'current_user_is_agent' : agent?._id === currentUserID}"
-                            style="font-size:12px; font-weight: 400" matTooltipClass="custom-mat-tooltip-in-conv-detail-sidebar" matTooltip="{{'ChatWith' | translate }}  {{agent?.firstname}} {{agent?.lastname}}"
-                            #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
+                            style="font-size:12px; font-weight: 400">
                             {{agent?.firstname}} {{agent?.lastname}}
                             <i class="material-icons chat-with-agent-ws-request-detail" *ngIf="agent.isBot === false && CHAT_PANEL_MODE === false && !agent.hasImage"
-                              (click)="chatWithAgent( agent?._id, agent?.firstname, agent?.lastname)">
+                              (click)="chatWithAgent( agent?._id, agent?.firstname, agent?.lastname)" matTooltipClass="custom-mat-tooltip-in-conv-detail-sidebar" matTooltip="{{'ChatWith' | translate }}  {{agent?.firstname}} {{agent?.lastname}}"
+                              #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
                               chat
                             </i>
                           </span>
@@ -2074,6 +2075,8 @@
                     </div>
                   </div>
                 </div>
+
+
 
                 <!--  ----------------------------------------------------------------------------- -->
                 <!--  Tags -->
