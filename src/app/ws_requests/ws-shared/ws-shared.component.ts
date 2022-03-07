@@ -135,7 +135,7 @@ export class WsSharedComponent implements OnInit {
       if (member_id && member_id !== 'system') {
 
         this.cleaned_members_array.push(member_id);
-       console.log('%%% WsRequestsMsgsComponent - CLEANED MEMBERS ARRAY ', this.cleaned_members_array);
+        this.logger.log('%%% WsRequestsMsgsComponent - CLEANED MEMBERS ARRAY ', this.cleaned_members_array);
 
         const memberIsBot = member_id.includes('bot_');
 
@@ -161,72 +161,11 @@ export class WsSharedComponent implements OnInit {
           const user = this.usersLocalDbService.getMemberFromStorage(member_id);
 
           if (user) {
-  
+            this.logger.log('[WS-SHARED][WS-REQUESTS-MSGS] - STORED USER ', user)
             if (member_id === user['_id']) {
-              let imgUrl = ''
-              if (isFirebaseUploadEngine === true) {
-                // ------------------------------------------------------------------------------
-                // Usecase uploadEngine Firebase 
-                // -----------------------------------------------------------------------------
-                imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + imageStorage + "/o/profiles%2F" + user['_id'] + "%2Fphoto.jpg?alt=media"
-                this.logger.log('[WS-SHARED] createAgentsArrayFromParticipantsId  use case firebase imgUrl ', imgUrl) 
-              } else {
-                // ------------------------------------------------------------------------------
-                // Usecase uploadEngine Native 
-                // ------------------------------------------------------------------------------
-                imgUrl = imageStorage + "images?path=uploads%2Fusers%2F" + user['_id'] + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
-                this.logger.log('[WS-SHARED] createAgentsArrayFromParticipantsId  use case firebase imgUrl ', imgUrl) 
-              }
 
-              // this.agents_array.push({ '_id': user['_id'], 'firstname': user['firstname'], 'lastname': user['lastname'], 'isBot': false, 'hasImage': user.hasImage })
-             
-              this.checkImageExists(imgUrl, (existsImage) => {
-                if (existsImage == true) {
-                  this.logger.log('[WS-SHARED] createAgentsArrayFromParticipantsId  existsImage ', existsImage) 
-                  user.hasImage = true
-              
-                  let userFullname = ''
-                  let userfillColour  = ''
-                  this.logger.log('[USERS] - createProjectUserAvatar ', user)
-                  let fullname = ''
-                  if (user && user.firstname && user.lastname) {
-                    fullname = user.firstname + ' ' + user.lastname
-                    userFullname = avatarPlaceholder(fullname)
-                    userfillColour = getColorBck(fullname)
-                  } else if (user && user.firstname) {
-                    fullname = user.firstname
-                    userFullname = avatarPlaceholder(fullname)
-                    userfillColour = getColorBck(fullname)
-                  } else {
-                    userFullname = 'N/A'
-                    userfillColour = 'rgb(98, 100, 167)'
-                  }
-                    this.agents_array.push({ '_id': user['_id'], 'firstname': user['firstname'], 'lastname': user['lastname'], 'isBot': false, 'hasImage': user.hasImage,  'userfillColour' :  userfillColour,  'userFullname': userFullname})
-                  }
-                else {
-                  this.logger.log('[WS-SHARED] createAgentsArrayFromParticipantsId  existsImage ', existsImage) 
-                  user.hasImage = false
-                  let userFullname = ''
-                  let userfillColour  = ''
-                  this.logger.log('[USERS] - createProjectUserAvatar ', user)
-                  let fullname = ''
-                  if (user && user.firstname && user.lastname) {
-                    fullname = user.firstname + ' ' + user.lastname
-                    userFullname = avatarPlaceholder(fullname)
-                    userfillColour = getColorBck(fullname)
-                  } else if (user && user.firstname) {
-                    fullname = user.firstname
-                    userFullname = avatarPlaceholder(fullname)
-                    userfillColour = getColorBck(fullname)
-                  } else {
-                    userFullname = 'N/A'
-                    userfillColour = 'rgb(98, 100, 167)'
-                  }
-                  this.agents_array.push({ '_id': user['_id'], 'firstname': user['firstname'], 'lastname': user['lastname'], 'isBot': false, 'hasImage': user.hasImage ,  'userfillColour' :  userfillColour,  'userFullname': userFullname})
-                }
-              });
-              // this.request.push(user)
-              // this.logger.log('--> THIS REQUEST - USER ', user)
+              this.agents_array.push({ '_id': user['_id'], 'firstname': user['firstname'], 'lastname': user['lastname'], 'isBot': false , 'hasImage': user.hasImage , 'userfillColour' :  user.fillColour,  'userFullname':  user.fullname_initial})
+
             }
           } else {
             this.agents_array.push({ '_id': member_id, 'firstname': member_id, 'isBot': false })
