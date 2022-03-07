@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.32-rc11
+- Updates the storage when the profile picture of the registered teammate is uploaded and when it is deleted
+
 ### 2.2.32-rc10
 - Fixes the bug: the "No Agent" placeholder is displayed in the "Agents" section of the conversation details page even if the agents exist
 
