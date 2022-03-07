@@ -15,6 +15,7 @@ import { takeUntil } from 'rxjs/operators'
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from '../services/logger/logger.service';
 import { tranlatedLanguage, avatarPlaceholder, getColorBck } from 'app/utils/util';
+import { LocalDbService } from 'app/services/users-local-db.service';
 
 const swal = require('sweetalert');
 
@@ -130,7 +131,8 @@ export class UserProfileComponent implements OnInit {
     public appConfigService: AppConfigService,
     private translate: TranslateService,
     private logger: LoggerService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private usersLocalDbService: LocalDbService
   ) { }
 
   ngOnInit() {
@@ -183,6 +185,7 @@ export class UserProfileComponent implements OnInit {
         this.lastnameCurrentValue = user.lastname;
         this.emailverified = user.emailverified;
         this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - EMAIL VERIFIED ', this.emailverified)
+        this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - this.user ', this.user)
         this.showSpinner = false;
         
         this.createUserAvatar(user);
@@ -387,6 +390,11 @@ createUserAvatar(user) {
 
           this.logger.log('[USER-PROFILE] - IMAGE UPLOADING IS COMPLETE - BUILD userProfileImageurl ');
           this.setImageProfileUrl(this.storageBucket)
+          
+          const stored_user = this.usersLocalDbService.getMemberFromStorage(this.userId);
+          this.logger.log('[USER-PROFILE] stored_user', stored_user ) 
+          stored_user['hasImage'] = true;
+          this.usersLocalDbService.saveMembersInStorage(this.userId, stored_user);
         }
       });
     } else {
@@ -396,6 +404,10 @@ createUserAvatar(user) {
 
         this.userImageHasBeenUploaded = image_exist;
         this.showSpinnerInUploadImageBtn = false;
+        const stored_user = this.usersLocalDbService.getMemberFromStorage(this.userId);
+        this.logger.log('[USER-PROFILE] stored_user', stored_user ) 
+        stored_user['hasImage'] = true;
+        this.usersLocalDbService.saveMembersInStorage(this.userId, stored_user);
         // here "setImageProfileUrl" is missing because in the "upload" method there is the subscription to the downoload 
         // url published by the BehaviourSubject in the service "upload-image-native"
       })
@@ -403,7 +415,6 @@ createUserAvatar(user) {
   }
 
   checkUserImageExist() {
-    
     this.usersService.userProfileImageExist.subscribe((image_exist) => {
       this.logger.log('[USER-PROFILE] PROFILE IMAGE - USER PROFILE IMAGE EXIST ? ', image_exist);
       this.userProfileImageExist = image_exist;
@@ -446,6 +457,11 @@ createUserAvatar(user) {
 
     this.userProfileImageExist = false;
     this.userImageHasBeenUploaded = false
+
+    const stored_user = this.usersLocalDbService.getMemberFromStorage(this.userId);
+    this.logger.log('[USER-PROFILE] stored_user', stored_user ) 
+    stored_user['hasImage'] = false;
+    this.usersLocalDbService.saveMembersInStorage(this.userId, stored_user);
 
     const delete_user_image_btn = <HTMLElement>document.querySelector('.delete-user-image');
     delete_user_image_btn.blur();
