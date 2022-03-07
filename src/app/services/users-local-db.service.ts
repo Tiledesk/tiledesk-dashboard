@@ -34,6 +34,7 @@ export class LocalDbService {
 
   saveMembersInStorage(member_id: string, member_object: any): void {
     if (member_id) {
+      // console.log('saveMembersInStorage member_id: ' , member_id , 'member_object: ', member_object) 
 
       /**
        * *** OLD: WITHOUT PREFIX ***

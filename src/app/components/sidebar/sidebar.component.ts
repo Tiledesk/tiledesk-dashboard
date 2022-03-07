@@ -1507,7 +1507,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     openChat() {
         this.elementRef.nativeElement.blur();
         this.notify.publishHasClickedChat(true);
-        console.log('SIDEBAR openChat ' )
+        // console.log('SIDEBAR openChat ' )
      
         // --- new 
         localStorage.setItem('last_project', JSON.stringify(this.current_selected_prjct))
@@ -1543,7 +1543,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     // console.log('mousedown event.which', event.which)
 
     if ((event.target.id.startsWith('openchat') && event.which === 3) || (event.target.id.startsWith('openchat') && event.which === 1)) {
-        console.log('SIDEBAR openChat HAS CLIKED ON OPEN CHAT WITH THE RIGHT BTN')
+        this.logger.log('SIDEBAR openChat HAS CLIKED ON OPEN CHAT WITH THE RIGHT BTN')
         localStorage.setItem('last_project', JSON.stringify(this.current_selected_prjct))
     } 
  
