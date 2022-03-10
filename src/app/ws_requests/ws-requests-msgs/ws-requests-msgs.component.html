@@ -740,6 +740,7 @@
                         <!-- IF IS AN INTERNAL CLOSED REQUEST -->
                         <!-- ------------------------------------- -->
                         <span *ngIf="request?.status == 1000 && request?.subject">
+                          
                           <svg class="conv-svg-icon" version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
                             xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 58.1 53.9"
                             style="width: 35px" xml:space="preserve">
@@ -802,15 +803,15 @@
                             matTooltip="{{ 'RequestMsgsPage.RequestUnserved' | translate }}" #tooltip="matTooltip"
                             matTooltipPosition='below' matTooltipHideDelay="100">
                             <!-- {{ "RequestMsgsPage.RequestUnserved" | translate }} -->
-                            {{ "Unserved" | translate }}
+                            {{ "NotAssigned_F" | translate }}
 
                           </span>
                         </span>
 
                          
-                    <!-- ------------------------------------- -->
-                    <!-- IF IS AN INTERNAL UNSERVED REQUEST  -->
-                    <!-- ------------------------------------- -->
+                        <!-- ------------------------------------- -->
+                        <!-- IF IS AN INTERNAL UNSERVED REQUEST  -->
+                        <!-- ------------------------------------- -->
                         <span *ngIf="request?.status === 100 && request?.subject">
                           <svg class="conv-svg-icon" version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
                             xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 58.1 53.9"
@@ -839,7 +840,7 @@
                             matTooltip="{{ 'RequestMsgsPage.InternalRequestUnserved' | translate }}"
                             #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
                             <!-- {{ "RequestMsgsPage.InternalRequestUnserved" | translate }} -->
-                            {{ "Unserved" | translate }}
+                            {{ "NotAssigned_M" | translate }}
                           </span>
                         </span>
 
@@ -871,13 +872,13 @@
                             matTooltip="{{ 'RequestMsgsPage.ConversationAssignedToYou' | translate }}"
                             #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
                             <!-- {{ "RequestMsgsPage.RequestServedBy" | translate }} -->
-                            {{ "Served" | translate }}
+                            {{ "Assigned_F" | translate }}
 
                           </span>
                         </span>
 
                         <!-- IF IS A INTERNAL SERVED REQUEST AND BETWEEN THE MEMBERS THERE IS THE CURRENT USER -->
-                        <!-- <span *ngIf="request?.status == 200 && request?.currentUserIsJoined === true"> -->
+                
                         <span *ngIf="request?.status == 200 && IS_CURRENT_USER_JOINED === true && request?.subject">
                           <svg class="conv-svg-icon" version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
                             xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 58.1 53.9"
@@ -906,7 +907,7 @@
                             matTooltip="{{ 'RequestMsgsPage.TicketAssignedToYou' | translate }}" #tooltip="matTooltip"
                             matTooltipPosition='below' matTooltipHideDelay="100">
                             <!-- {{ "RequestMsgsPage.InternalRequestServedBy" | translate }} -->
-                            {{ "Served" | translate }}
+                            {{ "Assigned_M" | translate }}
                           </span>
                         </span>
 
