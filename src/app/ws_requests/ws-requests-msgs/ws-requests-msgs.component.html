@@ -637,7 +637,7 @@
                         <span class="requester-avatar-wrapper-in-right-sidebar">
                           <span class="_requester-avatar_as_title-in-right-sidebar"
                             [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + fillColour + ')'}"
-                            [ngClass]="{'requester_fullname-undefined' : !request?.lead?.fullname, '_requester-avatar_as_title-in-chat': CHAT_PANEL_MODE === true}">
+                            [ngClass]="{'requester_fullname-undefined' : !request?.lead?.fullname, '_requester-avatar_as_title-in-chat': CHAT_PANEL_MODE === true && REQUESTER_IS_VERIFIED === false, '_requester-verified-avatar_as_title-in-chat' : CHAT_PANEL_MODE === true && REQUESTER_IS_VERIFIED === true}">
                             <span style="color: #ffffff"> {{ requester_fullname_initial }} </span>
                             <div class="requester-status-icon-avatar_as_title-in-right-sidebar"
                               [ngClass]="{'requester_is_online' : REQUESTER_IS_ONLINE}">

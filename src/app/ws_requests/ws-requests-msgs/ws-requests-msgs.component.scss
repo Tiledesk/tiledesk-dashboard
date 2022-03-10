@@ -960,11 +960,12 @@ span .conv-svg-icon {
 }
 
 .chat-panel-mode-requester-verified {
-  position: relative;
+  position: absolute !important;
   // left: -83px !important;
   // top: -20px !important;
   left: -104px !important;
-  top: -36px !important;
+  // top: -36px !important;
+  top: -55px !important;
   width: 22px;
   height: 24px;
 }
@@ -2126,6 +2127,11 @@ span .conv-svg-icon {
   position: relative;
 }
 
+._requester-verified-avatar_as_title-in-chat {
+  margin-right: -2px;
+  position: relative;
+}
+
 .requester-status-icon-avatar_as_title-in-right-sidebar {
   position: absolute;
   width: 14px;
@@ -2145,7 +2151,7 @@ span .conv-svg-icon {
 }
 
 .contact_info_in_right-sidebar-verified {
-  margin-right: 28px;
+  margin-right: 0px;
 }
 
 .right-sidebar-actions {
