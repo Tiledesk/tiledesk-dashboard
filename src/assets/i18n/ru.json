@@ -2024,6 +2024,10 @@
     "LanguageIsNotAvailableDashboardWillBeTranslatedIntoEnglish": "Извините, этот язык пока недоступен, дашборд будет переведен на английский",
     "LanguageIsNotAvailableDashboardHasBeenTranslatedIntoEnglish": "Извините, этот язык пока недоступен, дашборд переведен на английский",
     "OnlyATeammateWithTheOwnerRoleCanDeleteAProject":"Только товарищ по команде с ролью владельца может удалить проект",
+    "NotAssigned_M": "Неназначенный",
+	"NotAssigned_F": "Неназначенный",
+    "Assigned_M": "Назначено",
+	"Assigned_F": "Назначено",
     "CHAT_IONIC": {
         "LABEL_TU": "ты: ",
         "LABEL_MSG_PUSH_START_CHAT": "Разговора пока нет",

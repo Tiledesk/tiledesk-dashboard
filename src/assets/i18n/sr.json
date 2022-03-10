@@ -2024,6 +2024,10 @@
     "LanguageIsNotAvailableDashboardWillBeTranslatedIntoEnglish":"Жао нам је, овај језик још није доступан, контролна табла ће бити преведена на енглески",
     "LanguageIsNotAvailableDashboardHasBeenTranslatedIntoEnglish": "Жао нам је, овај језик још није доступан, контролна табла је преведена на енглески",
     "OnlyATeammateWithTheOwnerRoleCanDeleteAProject":"Само саиграч са улогом власника може да избрише пројекат",
+    "NotAssigned_M": "Унассигнед",
+	"NotAssigned_F": "Унассигнед",
+    "Assigned_M": "Додељен",
+	"Assigned_F": "Додељен",
     "CHAT_IONIC": {
         "LABEL_TU": "ти: ",
         "LABEL_MSG_PUSH_START_CHAT": "Још нема разговора",

@@ -2024,6 +2024,10 @@
     "LanguageIsNotAvailableDashboardWillBeTranslatedIntoEnglish":"Sorry, this language is not yet available, the dashboard will be translated into English",
     "LanguageIsNotAvailableDashboardHasBeenTranslatedIntoEnglish": "Sorry, this language is not yet available, the dashboard has been translated into English",
     "OnlyATeammateWithTheOwnerRoleCanDeleteAProject":"Only a teammate with the Owner role can delete a project",
+    "NotAssigned_M": "Not assigned",
+	"NotAssigned_F": "Not assigned",
+    "Assigned_M": "Assigned",
+	"Assigned_F": "Assigned",
     "CHAT_IONIC": {
         "LABEL_TU": "you: ",
         "LABEL_MSG_PUSH_START_CHAT": "No conversation yet",

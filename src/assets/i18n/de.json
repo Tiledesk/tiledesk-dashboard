@@ -2023,5 +2023,9 @@
 	"TheDashboardIsTranslatedIntoEnglish": "The dashboard is translated into English. To change language click on the flag",
 	"LanguageIsNotAvailableDashboardWillBeTranslatedIntoEnglish":"Entschuldigung, diese Sprache ist noch nicht verfügbar, das Dashboard wird ins Englische übersetzt",
     "LanguageIsNotAvailableDashboardHasBeenTranslatedIntoEnglish": "Entschuldigung, diese Sprache ist noch nicht verfügbar, das Dashboard wurde ins Englische übersetzt",
-	"OnlyATeammateWithTheOwnerRoleCanDeleteAProject":"Nur ein Teamkollege mit der Rolle „Eigentümer“ kann ein Projekt löschen"
+	"OnlyATeammateWithTheOwnerRoleCanDeleteAProject":"Nur ein Teamkollege mit der Rolle „Eigentümer“ kann ein Projekt löschen",
+	"NotAssigned_M": "Nicht zugeordnet",
+	"NotAssigned_F": "Nicht zugeordnet",
+	"Assigned_M": "Zugewiesen",
+	"Assigned_F": "Zugewiesen"
 }
