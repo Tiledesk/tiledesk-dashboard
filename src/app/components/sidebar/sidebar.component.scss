@@ -478,6 +478,14 @@ button.close {
   fill:#647491;
 }
 
+// Replaces realtime-icon-st3
+.convs-monitor--st0{
+  fill:none;
+}
+.convs-monitor--st1{
+  fill:#647491;
+}
+
 // RT monitor sidebar menu item hover 
 li:hover > a > .realtime-icon-wpr > svg  > path {
   fill: #a9afbb;

@@ -213,24 +213,36 @@
         </li>
       </ng-container>
 
-      <!-- Conversation list  -->
-      <li *ngIf="project" routerLinkActive="active" matTooltipClass="custom-mat-tooltip"
-        matTooltip="{{ 'Requests' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
-        matTooltipHideDelay="100" [ngClass]="{'menu_item_active': CONV_DETAIL_ROUTE_IS_ACTIVE }" style="text-align: center;">
-        <a class="customAncor" routerLink="project/{{ project._id }}/wsrequests"  style="height: 40px;">
-          <!-- <i class="material-icons sidebar-icons">forum</i> -->
-          <!-- <p class="onBlackBckgrnd">{{ 'Requests' | translate }}</p> -->
-           <span  class="realtime-icon-wpr" >
+      <!-- Conversation list {{ 'Requests' | translate }} -->
+      <ng-container *ngIf="USER_ROLE !== 'agent'">
+        <li *ngIf="project" routerLinkActive="active" matTooltipClass="custom-mat-tooltip"
+          matTooltip="Monitor" #tooltip="matTooltip" matTooltipPosition='right'
+          matTooltipHideDelay="100" [ngClass]="{'menu_item_active': CONV_DETAIL_ROUTE_IS_ACTIVE }" style="text-align: center;">
+          <a class="customAncor" routerLink="project/{{ project._id }}/wsrequests"  style="height: 40px;">
+            <!-- <i class="material-icons sidebar-icons">forum</i> -->
+            <!-- <p class="onBlackBckgrnd">{{ 'Requests' | translate }}</p> -->
+            <span  class="realtime-icon-wpr" >
 
-            <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-              viewBox="0 0 24 24" style="enable-background:new 0 0 24 24;" xml:space="preserve">
-           
-            <path class="realtime-icon-st3" d="M17.9,11.6l-1.4,1.9l-3.2-5.6l-1-2l-0.2,0.2l-3.7,6.4l-3-4.8L2.7,9.9v2.4l2.4-1.8L9,16.2l3.3-6.2l4,6.7l2.7-3.3
-              l0.9,0c0.5-0.7,1-1.4,1.4-2L17.9,11.6z"/>
-            </svg>
-          </span>
-        </a>
-      </li>
+              <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                viewBox="0 0 24 24" style="enable-background:new 0 0 24 24;" xml:space="preserve">
+            
+              <path class="realtime-icon-st3" d="M17.9,11.6l-1.4,1.9l-3.2-5.6l-1-2l-0.2,0.2l-3.7,6.4l-3-4.8L2.7,9.9v2.4l2.4-1.8L9,16.2l3.3-6.2l4,6.7l2.7-3.3
+                l0.9,0c0.5-0.7,1-1.4,1.4-2L17.9,11.6z"/>
+              </svg>
+
+              <!-- <svg  viewBox="0 0 24 24" style="enable-background:new 0 0 24 24;" xml:space="preserve" style="width: 25px;">
+                <rect y="0" class="convs-monitor--st0" width="24" height="24"/>
+                <g>
+                  <path class="convs-monitor--st1" d="M19.9,18.5c0.4-0.7,0.7-1.5,0.7-2.4c0-2.5-2-4.5-4.5-4.5s-4.5,2-4.5,4.5s2,4.5,4.5,4.5c0.9,0,1.7-0.3,2.4-0.7
+                    l3.1,3.1l1.4-1.4L19.9,18.5z M16.1,18.6c-1.4,0-2.5-1.1-2.5-2.5s1.1-2.5,2.5-2.5s2.5,1.1,2.5,2.5S17.5,18.6,16.1,18.6z M15.7,10.1
+                    c-0.7,0-1.4,0.2-2.1,0.4l-0.6-0.8l-3.8,6.2l-3-3.5l-3.6,5.8L1,17l5-8l3,3.5L13,6L15.7,10.1z M18.3,10.6c-0.6-0.3-1.3-0.4-2-0.5
+                    L21.4,2L23,3.2L18.3,10.6z"/>
+                </g>
+                </svg> -->
+            </span>
+          </a>
+        </li>
+      </ng-container>
 
       <!-- CONTACTS (LEADS)  -->
       <li *ngIf="project" routerLinkActive="active" matTooltipClass="custom-mat-tooltip"
