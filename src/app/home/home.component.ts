@@ -1090,6 +1090,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.router.navigate(['project/' + this.projectId + '/wsrequests']);
   }
 
+  goToWidgetHistory() {
+    this.router.navigate(['project/' + this.projectId + '/history']);
+  }
+
   goToAppStore() {
     this.router.navigate(['project/' + this.projectId + '/app-store']);
   }
