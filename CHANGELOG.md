@@ -1,6 +1,16 @@
 
 # tiledesk-dashboard
 
+### 2.2.32-rc12
+- Fixes the bug: in the right sidebar of the chat "conversation info" the avatar of the requester is not centered when it is a verified requester
+- Fix the bug: in the modal window "Create ticket" if there are two requester with the same id the link "view requester details" is incorrect if the "lead" requester is selected
+- Fixes the bug: in the modal window "Create ticket" if after having filled in the obligatory fields "Subject" and "Message" the same are deleted, the "Create ticket" button remains active
+- Fixes the bug: Ticket icons are missing on the contact details page
+- Fixes the bug: in the right sidebar of the conversation detail page corrects the text associated with the icon indicating the status of the conversation
+- Fixes the bug: in the modal window "Create ticket" when a new requester is created the link "view requester details" does not work
+- Change the text of the "Conversations" menu item in the left sidebar to "Monitor"
+- Hides the analytics section in the Home if the teammate has the role of agent
+
 ### 2.2.32-rc11
 - Updates the storage when the profile picture of the registered teammate is uploaded and when it is deleted
 
