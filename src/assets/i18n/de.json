@@ -2027,5 +2027,6 @@
 	"NotAssigned_M": "Nicht zugeordnet",
 	"NotAssigned_F": "Nicht zugeordnet",
 	"Assigned_M": "Zugewiesen",
-	"Assigned_F": "Zugewiesen"
+	"Assigned_F": "Zugewiesen",
+	"ViewTheConversationsHistory":"Ansicht chronologie Gespräche"
 }

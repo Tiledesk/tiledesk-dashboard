@@ -2028,6 +2028,7 @@
 	"NotAssigned_F": "Неназначенный",
     "Assigned_M": "Назначено",
 	"Assigned_F": "Назначено",
+    "ViewTheConversationsHistory":"Посмотреть историю бесед",
     "CHAT_IONIC": {
         "LABEL_TU": "ты: ",
         "LABEL_MSG_PUSH_START_CHAT": "Разговора пока нет",

@@ -2028,6 +2028,7 @@
 	"NotAssigned_F": "Atanmamış",
     "Assigned_M": "Atanmış",
 	"Assigned_F": "Atanmış",
+    "ViewTheConversationsHistory":"Görüşme geçmişini görüntüleyin",
     "CHAT_IONIC": {
         "LABEL_TU": "sen: ",
         "LABEL_MSG_PUSH_START_CHAT": "Henüz görüşme yok",

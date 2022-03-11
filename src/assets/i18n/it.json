@@ -2027,5 +2027,6 @@
     "NotAssigned_M": "Non assegnato",
 	"NotAssigned_F": "Non assegnata",
     "Assigned_M": "Assegnato",
-	"Assigned_F": "Assegnata"
+	"Assigned_F": "Assegnata",
+    "ViewTheConversationsHistory":"Visualizza la cronologia delle conversazioni"
 }

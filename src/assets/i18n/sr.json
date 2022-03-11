@@ -2028,6 +2028,7 @@
 	"NotAssigned_F": "Унассигнед",
     "Assigned_M": "Додељен",
 	"Assigned_F": "Додељен",
+    "ViewTheConversationsHistory":"Прегледајте историју конверзација",
     "CHAT_IONIC": {
         "LABEL_TU": "ти: ",
         "LABEL_MSG_PUSH_START_CHAT": "Још нема разговора",

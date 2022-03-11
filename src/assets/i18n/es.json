@@ -2028,6 +2028,7 @@
 	"NotAssigned_F": "No asignada",
     "Assigned_M": "Asignado",
 	"Assigned_F": "Asignada",
+    "ViewTheConversationsHistory":"Ver el historial de conversaciones",
     "CHAT_IONIC": {
         "LABEL_TU": "tú: ",
         "LABEL_MSG_PUSH_START_CHAT": "Aún no hay conversación",
