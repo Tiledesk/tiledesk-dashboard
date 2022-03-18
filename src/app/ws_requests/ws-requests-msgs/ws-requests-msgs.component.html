@@ -29,7 +29,7 @@
                       <!-- -----new REQUESTER -->
                       <!-- [ngStyle]="{'background-color': fillColour }" -->
                       <span style="cursor: pointer;" (click)='goToContactDetails()' class="requester-avatar-wrapper">
-                        <span class="_requester-avatar_as_title" 
+                        <span class="_requester-avatar_as_title"
                           [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + fillColour + ')'}"
                           [ngClass]="{'requester_fullname-undefined' : !request?.lead?.fullname}">
                           <span style="color: #ffffff"> {{ requester_fullname_initial }} </span>
@@ -579,11 +579,11 @@
           </div> <!-- ./ card   -->
         </div> <!-- ./ col-md-7 -->
 
-         
+
         <!-- ----------------------------------------------------------------------------- -->
         <!-- @ RIGHT SIDEBAR -->
         <!-- ----------------------------------------------------------------------------- -->
-        <div id="right-col" class="right-col" 
+        <div id="right-col" class="right-col"
           [ngClass]="{'col-sm-5' : CHAT_PANEL_MODE === false, 'col-sm-12 no-padding' : CHAT_PANEL_MODE === true, 'chat-panel-mode-on-desktop' :CHAT_PANEL_MODE === true && !isMobile}">
 
           <div class="card right-card" style="padding-top:0px; padding-bottom:5px;margin-bottom: 10px;"
@@ -740,7 +740,7 @@
                         <!-- IF IS AN INTERNAL CLOSED REQUEST -->
                         <!-- ------------------------------------- -->
                         <span *ngIf="request?.status == 1000 && request?.subject">
-                          
+
                           <svg class="conv-svg-icon" version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
                             xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 58.1 53.9"
                             style="width: 35px" xml:space="preserve">
@@ -808,7 +808,7 @@
                           </span>
                         </span>
 
-                         
+
                         <!-- ------------------------------------- -->
                         <!-- IF IS AN INTERNAL UNSERVED REQUEST  -->
                         <!-- ------------------------------------- -->
@@ -878,7 +878,7 @@
                         </span>
 
                         <!-- IF IS A INTERNAL SERVED REQUEST AND BETWEEN THE MEMBERS THERE IS THE CURRENT USER -->
-                
+
                         <span *ngIf="request?.status == 200 && IS_CURRENT_USER_JOINED === true && request?.subject">
                           <svg class="conv-svg-icon" version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
                             xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 58.1 53.9"
@@ -1182,31 +1182,31 @@
                     <!-- border-top: 1px solid #e1eef4;" -->
                     <div class="col-sm-12">
                       <!-- <span style="position: relative;top: 1px;"> -->
-                        <!-- <div class="row"> -->
-                          <!-- (click)="goToProjectHomeInNewTab()" -->
-                          <!-- <div class="col-xs-12" style="padding-right:10px"> -->
-                            <p class="chat-panel-mode-project-name" style="margin-top: 0px;">
-                              <i class="material-icons conv-details-sidebar-icon" matTooltipClass="custom-mat-tooltip"
-                                matTooltip="{{ 'Project' | translate }}" #tooltip="matTooltip"
-                                matTooltipPosition='right' matTooltipHideDelay="100">
-                                apps
-                              </i>
-                              <span style="position: relative;top: 1px;">
-                                <span class="conv-details-sidebar-text">
-                                  {{ project_name }}
-                                </span>
-                              </span>
-                            </p>
-                          <!-- </div> -->
+                      <!-- <div class="row"> -->
+                      <!-- (click)="goToProjectHomeInNewTab()" -->
+                      <!-- <div class="col-xs-12" style="padding-right:10px"> -->
+                      <p class="chat-panel-mode-project-name" style="margin-top: 0px;">
+                        <i class="material-icons conv-details-sidebar-icon" matTooltipClass="custom-mat-tooltip"
+                          matTooltip="{{ 'Project' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+                          matTooltipHideDelay="100">
+                          apps
+                        </i>
+                        <span style="position: relative;top: 1px;">
+                          <span class="conv-details-sidebar-text">
+                            {{ project_name }}
+                          </span>
+                        </span>
+                      </p>
+                      <!-- </div> -->
 
-                          <!-- <div class="col-xs-2" style="text-align: right;">
+                      <!-- <div class="col-xs-2" style="text-align: right;">
                             <i id="request_id_arrow_down" class="material-icons rotate"
                               style="cursor: pointer; color: #039be5; font-size:18px;position:relative; top:2px"
                               (click)="goToProjectHomeInNewTab()">
                               open_in_new
                             </i>
                           </div> -->
-                        <!-- </div> -->
+                      <!-- </div> -->
                       <!-- </span> -->
                     </div>
                   </div>
@@ -1963,7 +1963,7 @@
                       <!-- No Agent -->
                       <!-- ------------------------------------------------------ -->
                       <div *ngIf="agents_array?.length === 0" class="row-body" style="margin-bottom: 10px;">
-                      <!-- <div  *ngIf="request?.participants?.length === 0" class="row-body" style="margin-bottom: 10px;"> -->
+                        <!-- <div  *ngIf="request?.participants?.length === 0" class="row-body" style="margin-bottom: 10px;"> -->
                         <div class="ws_request_msgs___served_by">
                           <img style="height: auto; width: 22px;margin-left: 5px;margin-top: 5px;"
                             src="assets/img/user-alt-slash-solid.svg" />
@@ -1996,7 +1996,7 @@
                             src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                             onerror="this.src='assets/img/no_image_user.png'" />
 
-                       
+
 
                           <!-- --------------------------------------- -->
                           <!-- Usecase  Firebase (bot) -->
@@ -2017,7 +2017,7 @@
                           <!-- --------------------------------------- -->
                           <!-- Name of the bot -->
                           <!-- --------------------------------------- -->
-                          <span  *ngIf="agent.isBot === true" class="agent-fullname-has-image-and-chat-with"
+                          <span *ngIf="agent.isBot === true" class="agent-fullname-has-image-and-chat-with"
                             style="font-size:12px; font-weight: 400">
                             {{agent?.firstname}} {{agent?.lastname}}
                             <span *ngIf="agent.isBot === true">(bot) </span>
@@ -2026,12 +2026,16 @@
                           <!-- --------------------------------------- -->
                           <!--  Chat with when agent has image -->
                           <!-- --------------------------------------- -->
-                          <span *ngIf="agent.hasImage" class="agent-fullname-has-image-and-chat-with" [ngClass]="{'current_user_is_agent' : agent?._id === currentUserID}"
-                            style="font-size:12px; font-weight: 400" matTooltipClass="custom-mat-tooltip-in-conv-detail-sidebar" matTooltip="{{'ChatWith' | translate }}  {{agent?.firstname}} {{agent?.lastname}}"
+                          <span *ngIf="agent.hasImage" class="agent-fullname-has-image-and-chat-with"
+                            [ngClass]="{'current_user_is_agent' : agent?._id === currentUserID}"
+                            style="font-size:12px; font-weight: 400"
+                            matTooltipClass="custom-mat-tooltip-in-conv-detail-sidebar"
+                            matTooltip="{{'ChatWith' | translate }}  {{agent?.firstname}} {{agent?.lastname}}"
                             #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
                             {{agent?.firstname}} {{agent?.lastname}}
 
-                            <i class="material-icons chat-with-agent-ws-request-detail" *ngIf="agent.isBot === false && CHAT_PANEL_MODE === false"
+                            <i class="material-icons chat-with-agent-ws-request-detail"
+                              *ngIf="agent.isBot === false && CHAT_PANEL_MODE === false"
                               (click)="chatWithAgent( agent?._id, agent?.firstname, agent?.lastname)">
                               chat
                             </i>
@@ -2040,24 +2044,28 @@
                           </span>
                         </span>
 
-                           <!-- --------------------------------------- -->
-                          <!-- Usecase No Profile image & Chat with -->
-                          <!-- --------------------------------------- -->
-                          <div *ngIf="agent.isBot === false && !agent.hasImage"  class="altenative-avatar-conv-detail-wpr"
-                          [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + agent?.userfillColour + ')'}" >
-                            <div class="altenative-avatar-conv-detail">
-                              {{ agent?.userFullname }}
-                            </div>
-                            <span class="agent-fullname-not-has-image-and-chat-with" [ngClass]="{'current_user_is_agent' : agent?._id === currentUserID}"
+                        <!-- --------------------------------------- -->
+                        <!-- Usecase No Profile image & Chat with -->
+                        <!-- --------------------------------------- -->
+                        <div *ngIf="agent.isBot === false && !agent.hasImage" class="altenative-avatar-conv-detail-wpr"
+                          [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + agent?.userfillColour + ')'}">
+                          <div class="altenative-avatar-conv-detail">
+                            {{ agent?.userFullname }}
+                          </div>
+                          <span class="agent-fullname-not-has-image-and-chat-with"
+                            [ngClass]="{'current_user_is_agent' : agent?._id === currentUserID}"
                             style="font-size:12px; font-weight: 400">
                             {{agent?.firstname}} {{agent?.lastname}}
-                            <i class="material-icons chat-with-agent-ws-request-detail" *ngIf="agent.isBot === false && CHAT_PANEL_MODE === false && !agent.hasImage"
-                              (click)="chatWithAgent( agent?._id, agent?.firstname, agent?.lastname)" matTooltipClass="custom-mat-tooltip-in-conv-detail-sidebar" matTooltip="{{'ChatWith' | translate }}  {{agent?.firstname}} {{agent?.lastname}}"
+                            <i class="material-icons chat-with-agent-ws-request-detail"
+                              *ngIf="agent.isBot === false && CHAT_PANEL_MODE === false && !agent.hasImage"
+                              (click)="chatWithAgent( agent?._id, agent?.firstname, agent?.lastname)"
+                              matTooltipClass="custom-mat-tooltip-in-conv-detail-sidebar"
+                              matTooltip="{{'ChatWith' | translate }}  {{agent?.firstname}} {{agent?.lastname}}"
                               #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
                               chat
                             </i>
                           </span>
-                          </div>
+                        </div>
 
                         <!-- <span *ngIf="agent.isBot === false && CHAT_PANEL_MODE === false && !agent.hasImage">
                           <span class="White__Tooltip">
@@ -2152,34 +2160,7 @@
 
                     <div class="col-sm-12" style="padding-left: 0px;padding-right: 0px;">
                       <div *ngIf="diplayAddTagInput === true" class="tag-input-wrap" style="margin-bottom: 6px;">
-                        <!-- <input (keyup.enter)="addTag()" [(ngModel)]="tag" type="text" id="tag" class="input" 
-                        placeholder="{{ 'Tags.TypeALabelAndPressEnter' | translate}}"> -->
 
-
-                        <!-- [closeOnSelect]="true" -->
-                        <!--   -->
-                        <!--  -->
-                        <!-- [closeOnSelect]="true" 
-                        [clearSearchOnAdd]="true"
-                        bindLabel="tag"
-                        [items]="tagsList"
-                        placeholder="{{ 'Tags.TypeALabelAndPressEnter' | translate}}" -->
-                        <!-- <span [style.background-color]="tag.color"  style="height: 16px;width: 16px;"> </span> -->
-                        <!--  -->
-                        <!-- <ng-select [(ngModel)]="tag" (change)="addTag()" [clearSearchOnAdd]="true" [clearable]="false"
-                        placeholder="{{ 'Tags.TypeALabelAndPressEnter' | translate}}">
-
-                        <ng-option *ngFor="let tag of tagsList" [value]="tag">
-                          <ng-template>
-                            Custom footer
-                          </ng-template>
-                  
-                                             {{ tag.tag }}
-                                        
-                        </ng-option>
-
-                      </ng-select> -->
-                        <!-- 'Tags.TypeALabelAndPressEnter' | translate -->
                         <!-- // ------------------------------------------------------ -->
                         <ng-select (change)="addTag()" [items]="tagsList" bindLabel="tag" bindValue="_id"
                           [clearable]="false" [clearSearchOnAdd]="true" placeholder="{{ typeALabelAndPressEnter}}"
@@ -2196,6 +2177,46 @@
                             <i [style.color]="item.color" class="fa fa-tag"
                               style="font-size: 18px;position: relative;top: 2px;margin-right: 5px;"></i>
                             {{item.tag}}
+                          </ng-template>
+                          <!-- (ngModelChange)="onChangeTagnameInConvDetail($event)" -->
+                          <ng-template ng-footer-tmp>
+                            <!-- position:relative -->
+                            <div class="input-group create-new-tag">
+                              <input id="tag_name_in_conv_detail" class="tag-name-in-conv-detail" name="tag_name_in_conv_detail" [(ngModel)]="tag_name"
+                                type="text" placeholder="{{ 'TypeNewTagHere' | translate }}" style="padding-left: 27px;">
+                              <i class="fa fa-circle" style="font-size: 18px; position: absolute;
+                                left: 7px;
+                                top: 13px;" [ngStyle]="{'color':tag_selected_color}"></i>
+                              <span class="input-group-btn">
+                                <button class="btn btn-xs btn-primary add-tag-btn-cov-detail"
+                                  (click)="createTag()" [disabled]="tag_name?.length === 0 || !tag_name">
+                                  {{'Add' | translate}}
+                                </button>
+                              </span>
+                            </div>
+                            <div class="tag--colors" style="padding-top:4px; padding-left: 7px;">
+                              <i class="fa fa-circle" style="font-size: 18px; color:#43B1F2; cursor: pointer;" 
+                                (click)="tagSelectedColor('#43B1F2')">
+                              </i>
+                              <i class="fa fa-circle" style="font-size: 18px; color:#CB80DD; cursor: pointer;"
+                               (click)="tagSelectedColor('#CB80DD')">
+                              </i>
+                              <i class="fa fa-circle" style="font-size: 18px; color:#66C549; cursor: pointer;"
+                               (click)="tagSelectedColor('#66C549')">
+                              </i>
+                              <i class="fa fa-circle" style="font-size: 18px; color:#F3C835; cursor: pointer;"
+                               (click)="tagSelectedColor('#F3C835')">
+                              </i>
+                              <i class="fa fa-circle" style="font-size: 18px; color:#F89D34; cursor: pointer;"
+                               (click)="tagSelectedColor('#F89D34')">
+                              </i>
+                              <i class="fa fa-circle" style="font-size: 18px; color:#FF5C55; cursor: pointer;"
+                               (click)="tagSelectedColor('#FF5C55')">
+                              </i>
+                            </div>
+                            <!-- tag_name: string;
+                          tag_selected_color = '#43B1F2';
+                          tag_new_selected_color: string; -->
                           </ng-template>
 
                         </ng-select>
@@ -2510,7 +2531,8 @@
     <!-- ---------------------------------------------------------------------------------------- -->
     <!--  USERS - BOTS - DEPTS LIST MODAL - FULL WIDTH MODAL -->
     <!-- ---------------------------------------------------------------------------------------- -->
-    <div class="modal" tabindex="-1" role="dialog" [ngClass]="{'users-list-modal-margin-left-on-desktop': CHAT_PANEL_MODE === false}"
+    <div class="modal" tabindex="-1" role="dialog"
+      [ngClass]="{'users-list-modal-margin-left-on-desktop': CHAT_PANEL_MODE === false}"
       [ngStyle]="{'display': displayUsersListModal , 'height': users_list_modal_height}"
       style="background-color: rgba(90,90,90,0.5);">
       <div class="modal-dialog modal-lg users-list-modal"

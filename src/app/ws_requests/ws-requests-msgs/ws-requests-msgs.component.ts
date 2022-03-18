@@ -216,6 +216,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   priority_update_failed: string;
   current_selected_prjct: any;
   imageStorage: any;
+  tag_name: string;
+  tag_selected_color = '#43B1F2';
+  tag_new_selected_color: string;
 
   /**
    * Constructor
@@ -429,7 +432,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
       // console.log('[WS-REQUESTS-MSGS] - CHAT_PANEL_MODE »»» _elemMainPanel', _elemMainPanel);
       _elemMainPanel.classList.add("main-panel-chat-panel-mode");
-      
+
     } else {
       this.CHAT_PANEL_MODE = false;
       this.logger.log('[WS-REQUESTS-MSGS] - CHAT_PANEL_MODE »»» ', this.CHAT_PANEL_MODE);
@@ -438,7 +441,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       if (_elemMainPanel.classList.contains('main-panel-chat-panel-mode')) {
         _elemMainPanel.classList.remove("main-panel-chat-panel-mode");
       }
-     
+
     }
   }
 
@@ -640,7 +643,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.request = wsrequest;
 
         if (this.request) {
-        //  console.log('[WS-REQUESTS-MSGS] - this.request: ', this.request);
+          //  console.log('[WS-REQUESTS-MSGS] - this.request: ', this.request);
 
           // -------------------------------------------------------------------
           // User Agent
@@ -1078,19 +1081,19 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           // DISPLAY / HIDE THE VIEW 'CONTACT' DETAIL BUTTON 
           // AND GET THE CONTACT-ID USED TO GO TO THE CONTACT DETAILS
           // -----------------------------------------------------------
-         
-            this.logger.log('[WS-REQUESTS-MSGS]: NODEJS REQUEST > CONTACT ID ', this.request);
-            if (this.request.lead) {
-              this.contact_id = this.request.lead._id
-              this.logger.log('[WS-REQUESTS-MSGS]: NODEJS REQUEST > CONTACT ID ', this.contact_id);
-              this.NODEJS_REQUEST_CNTCT_FOUND = true;
-              this.logger.log('[WS-REQUESTS-MSGS]: NODEJS REQUEST > FOUND ? ', this.NODEJS_REQUEST_CNTCT_FOUND);
-            } else {
-              this.NODEJS_REQUEST_CNTCT_FOUND = false;
-              this.logger.log('[WS-REQUESTS-MSGS]: NODEJS REQUEST > FOUND ? ', this.NODEJS_REQUEST_CNTCT_FOUND);
-            }
 
-          
+          this.logger.log('[WS-REQUESTS-MSGS]: NODEJS REQUEST > CONTACT ID ', this.request);
+          if (this.request.lead) {
+            this.contact_id = this.request.lead._id
+            this.logger.log('[WS-REQUESTS-MSGS]: NODEJS REQUEST > CONTACT ID ', this.contact_id);
+            this.NODEJS_REQUEST_CNTCT_FOUND = true;
+            this.logger.log('[WS-REQUESTS-MSGS]: NODEJS REQUEST > FOUND ? ', this.NODEJS_REQUEST_CNTCT_FOUND);
+          } else {
+            this.NODEJS_REQUEST_CNTCT_FOUND = false;
+            this.logger.log('[WS-REQUESTS-MSGS]: NODEJS REQUEST > FOUND ? ', this.NODEJS_REQUEST_CNTCT_FOUND);
+          }
+
+
 
           this.createAgentsArrayFromParticipantsId(this.members_array, this.requester_id, this.UPLOAD_ENGINE_IS_FIREBASE, this.imageStorage)
           this.createRequesterAvatar(this.request.lead);
@@ -1271,9 +1274,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     const foundtag = this.tagsList.filter((obj: any) => {
       return obj._id === this.tag;
     });
-
+    let tagObject = {}
     this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - foundtag: ', foundtag);
-    const tagObject = { tag: foundtag[0].tag, color: foundtag[0].color }
+    if (foundtag) {
+      tagObject = { tag: foundtag[0].tag, color: foundtag[0].color }
+    }
 
     this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - tagObject: ', tagObject);
     this.tagsArray.push(tagObject);
@@ -1286,7 +1291,22 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.getTag()
 
     this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - TAGS ARRAY AFTER PUSH: ', this.tagsArray);
-    this.wsRequestsService.updateRequestsById_UpdateTag(this.id_request, this.tagsArray)
+    this.updateRequestTags(this.id_request, this.tagsArray, 'add')
+    // this.wsRequestsService.updateRequestsById_UpdateTag(this.id_request, this.tagsArray)
+    //   .subscribe((data: any) => {
+    //     this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - RES: ', data);
+    //   }, (err) => {
+    //     this.logger.error('[WS-REQUESTS-MSGS] - ADD TAG - ERROR: ', err);
+    //     this.notify.showWidgetStyleUpdateNotification(this.create_label_error, 4, 'report_problem');
+    //   }, () => {
+    //     this.logger.log('[WS-REQUESTS-MSGS] * COMPLETE *');
+    //     this.notify.showWidgetStyleUpdateNotification(this.create_label_success, 2, 'done');
+    //   });
+  }
+
+  updateRequestTags(id_request, tagsArray, fromaction) {
+    this.logger.log('[WS-REQUESTS-MSGS] - UPDATE REQUEST TAGS fromaction: ', fromaction);
+    this.wsRequestsService.updateRequestsById_UpdateTag(id_request, tagsArray)
       .subscribe((data: any) => {
         this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - RES: ', data);
       }, (err) => {
@@ -1311,11 +1331,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.logger.log('[WS-REQUESTS-MSGS] - GET TAGS - tagsArray', this.tagsArray);
         this.logger.log('[WS-REQUESTS-MSGS] - GET TAGS - tagsList length', this.tagsList.length);
 
-        if (this.tagsList.length > 0) {
-          this.typeALabelAndPressEnter = "Type a label and press Enter";
-        } else {
-          this.typeALabelAndPressEnter = "No item Found";
-        }
+        // if (this.tagsList.length > 0) {
+          this.typeALabelAndPressEnter = this.translate.instant('SelectATagOrCreateANewOne');
+        // } else {
+        //   this.typeALabelAndPressEnter = this.translate.instant('Tags.YouHaveNotAddedAnyTags');
+        // }
         // -----------------------------------------------------------------------------------
         // Splice tags from the tagslist the tags already present in the "this.request" object
         // ------------------------------------------------------------------------------------
@@ -1328,6 +1348,52 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       this.logger.log('[WS-REQUESTS-MSGS] - GET TAGS * COMPLETE *');
       this.loadingTags = false
     });
+  }
+
+  // tag_name: string;
+  // tag_selected_color = '#43B1F2';
+  // tag_new_selected_color: string;
+
+  tagSelectedColor(hex: any) {
+    this.logger.log('[TAGS] - TAG SELECTED COLOR ', hex);
+    this.tag_selected_color = hex;
+  }
+
+  createTag() {
+    this.logger.log('[TAGS] - CREATE TAG - TAG-NAME: ', this.tag_name, ' TAG-COLOR: ', this.tag_selected_color)
+    // const createTagBtn = <HTMLElement>document.querySelector('.create-tag-btn')
+    // createTagBtn.blur();
+
+    if (this.tag_name && this.tag_name.length > 0) {
+      // this.hasError = false;
+
+      this.tagsService.createTag(this.tag_name, this.tag_selected_color)
+        .subscribe((tag: any) => {
+          this.logger.log('[TAGS] - CREATE TAG - RES ', tag);
+
+          const tagObject = { tag: tag.tag, color: tag.color }
+          this.tagsArray.push(tagObject);
+
+          this.updateRequestTags(this.id_request, this.tagsArray, 'create')
+
+        }, (error) => {
+          this.logger.error('[TAGS] - CREATE TAG - ERROR  ', error);
+          this.notify.showWidgetStyleUpdateNotification(this.create_label_error, 4, 'report_problem');
+        }, () => {
+          this.logger.log('[TAGS] - CREATE TAG * COMPLETE *');
+          // this.notify.showWidgetStyleUpdateNotification(this.create_label_success, 2, 'done');
+
+          this.tag_name = '';
+          this.tag_selected_color = '#43B1F2';
+
+          this.getTag();
+        });
+
+    } else {
+
+      // this.hasError = true;
+    }
+
   }
 
   // -----------------------------------------------------------------------------------
