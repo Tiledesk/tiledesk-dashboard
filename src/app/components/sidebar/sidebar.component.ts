@@ -80,7 +80,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     @ViewChild('openchatbtn') private elementRef: ElementRef;
     @ViewChild('homebtn') private homeBtnElement: ElementRef;
 
-    
+
     countClickOnOpenUserDetailSidebar: number = 0
     menuItems: any[];
 
@@ -309,22 +309,22 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         });
     }
 
- 
+
 
     createUserAvatar(user) {
         this.logger.log('[USERS] - createProjectUserAvatar ', user)
         let fullname = ''
         if (user && user.firstname && user.lastname) {
-          fullname = user.firstname + ' ' + user.lastname
-          user['fullname_initial'] = avatarPlaceholder(fullname)
-          user['fillColour'] = getColorBck(fullname)
+            fullname = user.firstname + ' ' + user.lastname
+            user['fullname_initial'] = avatarPlaceholder(fullname)
+            user['fillColour'] = getColorBck(fullname)
         } else if (user && user.firstname) {
-          fullname = user.firstname
-          user['fullname_initial'] = avatarPlaceholder(fullname)
-          user['fillColour'] = getColorBck(fullname)
+            fullname = user.firstname
+            user['fullname_initial'] = avatarPlaceholder(fullname)
+            user['fillColour'] = getColorBck(fullname)
         } else {
-          user['fullname_initial'] = 'N/A'
-          user['fillColour'] = 'rgb(98, 100, 167)'
+            user['fullname_initial'] = 'N/A'
+            user['fillColour'] = 'rgb(98, 100, 167)'
         }
     }
 
@@ -787,11 +787,11 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                     // console.log('[SIDEBAR] NavigationEnd - CONTACT_CONVS_ROUTE_IS_ACTIVE ', this.CONTACT_CONVS_ROUTE_IS_ACTIVE);
                 }
 
-                
 
-                
 
-                
+
+
+
 
             });
     }
@@ -1401,14 +1401,25 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.router.navigate(['/project/' + this.projectId + '/home']);
     }
 
-    // @ No more used - replaced with goToWidgetSetUp()
+   
+  
+
+
+    goToWidgetSetUpOrToCannedResponses () {
+        if (this.USER_ROLE !== 'agent') {
+            this.goToWidgetSetUp() 
+        } else if (this.USER_ROLE === 'agent') {
+            this.goToCannedResponses()
+        }
+
+    }
+    goToWidgetSetUp() {
+        this.router.navigate(['project/' + this.project._id + '/widget-set-up'])
+    }
+
     goToCannedResponses() {
         this.router.navigate(['project/' + this.projectId + '/cannedresponses']);
     }
-
-    goToWidgetSetUp() {
-        this.router.navigate(['project/' + this.project._id + '/widget-set-up'])
-      }
     // goToOperatingHours() {
     //     this.router.navigate(['/project/' + this.projectId + '/hours']);
     // }
@@ -1508,7 +1519,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.elementRef.nativeElement.blur();
         this.notify.publishHasClickedChat(true);
         // console.log('SIDEBAR openChat ' )
-     
+
         // --- new 
         localStorage.setItem('last_project', JSON.stringify(this.current_selected_prjct))
         // let baseUrl = this.CHAT_BASE_URL + '#/conversation-detail/'
@@ -1534,32 +1545,32 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         //     this.openWindow('Tiledesk - Open Source Live Chat', url);
         // }
     }
-    
+
     @HostListener('document:mousedown', ['$event'])
     onMouseDown(event) {
-    // console.log('mousedown event', event)
-    // console.log('mousedown event.target.id', event.target.id)
-    // console.log('mousedown event.target', event.target)
-    // console.log('mousedown event.which', event.which)
+        // console.log('mousedown event', event)
+        // console.log('mousedown event.target.id', event.target.id)
+        // console.log('mousedown event.target', event.target)
+        // console.log('mousedown event.which', event.which)
 
-    if ((event.target.id.startsWith('openchat') && event.which === 3) || (event.target.id.startsWith('openchat') && event.which === 1)) {
-        this.logger.log('SIDEBAR openChat HAS CLIKED ON OPEN CHAT WITH THE RIGHT BTN')
-        localStorage.setItem('last_project', JSON.stringify(this.current_selected_prjct))
-    } 
- 
-  // we make sure only draggables on the document elements are selected
-//   if (event.target.getAttribute('draggable')) {
-//     console.log('mousedown');
+        if ((event.target.id.startsWith('openchat') && event.which === 3) || (event.target.id.startsWith('openchat') && event.which === 1)) {
+            this.logger.log('SIDEBAR openChat HAS CLIKED ON OPEN CHAT WITH THE RIGHT BTN')
+            localStorage.setItem('last_project', JSON.stringify(this.current_selected_prjct))
+        }
 
-//     this.currentX = event.clientX;
-//     this.currentY = event.clientY;
-//     this.selectedElement = event.target;
-//     // ##### add this code.
-//     event.preventDefault();    // choose one
-//     // ##### or add this code.
-//     return false;    // choose one
-//   }
-}
+        // we make sure only draggables on the document elements are selected
+        //   if (event.target.getAttribute('draggable')) {
+        //     console.log('mousedown');
+
+        //     this.currentX = event.clientX;
+        //     this.currentY = event.clientY;
+        //     this.selectedElement = event.target;
+        //     // ##### add this code.
+        //     event.preventDefault();    // choose one
+        //     // ##### or add this code.
+        //     return false;    // choose one
+        //   }
+    }
 
     openWindow(winName: any, winURL: any) {
         const myWindows = new Array();
@@ -1617,10 +1628,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.logger.log('[SIDEBAR] countClickOnOpenUserDetailSidebar', this.countClickOnOpenUserDetailSidebar)
         // const countClickOnOpenUserDetailSidebarIsAnOddNum = this.isOdd(this.countClickOnOpenUserDetailSidebar)
         // console.log('[SIDEBAR] countClickOnOpenUserDetailSidebarIsAnOddNum', countClickOnOpenUserDetailSidebarIsAnOddNum)
-       
+
         const elSidebarUserDtls = <HTMLElement>document.querySelector('#user-details');
         this.logger.log('[SIDEBAR] OPEN USER DTLS SIDE PANEL elSidebarUserDtls ', elSidebarUserDtls)
-       
+
         if (elSidebarUserDtls && this.countClickOnOpenUserDetailSidebar === 1) {
             elSidebarUserDtls.classList.add("active");
         }

@@ -321,8 +321,8 @@
           <!-- <p class="onBlackBckgrnd">{{ 'History' | translate }}</p> -->
         </a>
       </li>
-
-      <li *ngIf="project && USER_ROLE !== 'agent'" [ngClass]="{'active': 
+      <!-- && USER_ROLE !== 'agent' -->
+      <li *ngIf="project" [ngClass]="{'active': 
       TRIGGER_ROUTE_IS_ACTIVE || 
       TAG_ROUTE_IS_ACTIVE || 
       CANNED_RESPONSES_ROUTE_IS_ACTIVE || 
@@ -340,7 +340,7 @@
       EDIT_PROJECT_USER_ROUTE_IS_ACTIVE ||
       EDIT_DEPT_ROUTE_IS_ACTIVE ||
       CREATE_GROUP_ROUTE_IS_ACTIVE ||
-      EDIT_GROUP_ROUTE_IS_ACTIVE }" (click)="goToWidgetSetUp()" style="cursor:pointer"
+      EDIT_GROUP_ROUTE_IS_ACTIVE }" (click)="goToWidgetSetUpOrToCannedResponses()" style="cursor:pointer"
         matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Settings' | translate }}" #tooltip="matTooltip"
         matTooltipPosition='right' matTooltipHideDelay="100">
         <!-- routerLink="/settings" -->

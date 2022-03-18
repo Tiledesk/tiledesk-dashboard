@@ -5,6 +5,9 @@ import { AuthService } from '../../core/auth.service'
 import { NavigationEnd, Router } from '@angular/router'
 import { Location } from '@angular/common'
 import { TranslateService } from '@ngx-translate/core'
+import { UsersService } from 'app/services/users.service'
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'appdashboard-settings-sidebar',
   templateUrl: './settings-sidebar.component.html',
@@ -40,7 +43,7 @@ export class SettingsSidebarComponent implements OnInit {
   PROJECT_SETTINGS_ROUTE_IS_ACTIVE: boolean
   OPERATING_HOURS_ROUTE_IS_ACTIVE: boolean
   public_Key: string
-  USER_ROLE: string
+  USER_ROLE: any
   CHAT_BASE_URL: string
   project: any
   route: string
@@ -48,6 +51,7 @@ export class SettingsSidebarComponent implements OnInit {
   IS_OPEN: boolean = true
   routing_and_depts_lbl: string;
   teammatates_and_groups_lbl: string;
+  private unsubscribe$: Subject<any> = new Subject<any>();
   constructor(
     public appConfigService: AppConfigService,
     private logger: LoggerService,
@@ -55,16 +59,30 @@ export class SettingsSidebarComponent implements OnInit {
     public router: Router,
     public location: Location,
     private translate: TranslateService,
+    private usersService: UsersService,
   ) {}
 
   ngOnInit() {
-    this.getOSCODE()
-    this.getChatUrl()
-    this.getCurrentProject()
-    this.getCurrentRoute()
+    this.getOSCODE();
+    this.getChatUrl();
+    this.getCurrentProject();
+    this.getCurrentRoute();
     // this.getMainContentHeight();
-    this.listenSidebarIsOpened()
+    this.listenSidebarIsOpened();
+    this.getUserRole();
   }
+
+  getUserRole() {
+    this.usersService.project_user_role_bs
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((userRole) => {
+       console.log('[SETTINGS-SIDEBAR]] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
+        this.USER_ROLE = userRole;
+      })
+  }
+
   listenSidebarIsOpened() {
     this.auth.settingSidebarIsOpned.subscribe((isopened) => {
       this.logger.log( '[SETTINGS-SIDEBAR] SETTINGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
