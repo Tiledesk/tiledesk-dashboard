@@ -1117,7 +1117,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
         this.ws_requests.forEach((request) => {
 
-          this.logger.log('[WS-REQUESTS-LIST] - request ', request)
+          // console.log('[WS-REQUESTS-LIST] - request ', request)
 
           const user_agent_result = this.parseUserAgent(request.userAgent)
           this.logger.log('[WS-REQUESTS-LIST] - request userAgent - USER-AGENT RESULT ', user_agent_result)
