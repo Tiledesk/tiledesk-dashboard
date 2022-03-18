@@ -1190,7 +1190,7 @@
         "DeleteLabel": "Etiketi sil",
         "TypeALabelAndPressEnter": "Bir etiket yazın ve Enter'a basın",
         "YouHaveNotAddedAnyTags": "Hiç etiket eklemediniz",
-        "DoYouReallyWantToCancelTheTag": "Etiketi gerçekten silmek istiyor musunuz?",
+        "DoYouReallyWantToCancelTheTag": "Etiketi gerçekten silmek istiyor musunuz",
         "SelectTag": "Etiket seçin",
         "TagsAreLabelsThatYouCanAddToConversationsAndTicket": "Etiketler, konuşmalara ve Bilete ekleyebileceğiniz etiketlerdir. Tüm müşteri iletişimini kategorize etmenize ve düzenlemenize yardımcı olurlar.",
         "Color": {
@@ -2029,6 +2029,9 @@
     "Assigned_M": "Atanmış",
 	"Assigned_F": "Atanmış",
     "ViewTheConversationsHistory":"Görüşme geçmişini görüntüleyin",
+    "SelectATagOrCreateANewOne":"Bir etiket seçin veya yeni bir tane oluşturun",
+    "CreateNewTag":"Yeni bir etiket oluştur",
+    "TypeNewTagHere":"Buraya yeni bir etiket yazın",
     "CHAT_IONIC": {
         "LABEL_TU": "sen: ",
         "LABEL_MSG_PUSH_START_CHAT": "Henüz görüşme yok",

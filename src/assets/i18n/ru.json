@@ -1190,7 +1190,7 @@
         "DeleteLabel": "Удалить тег",
         "TypeALabelAndPressEnter": "Введите тег и нажмите Enter",
         "YouHaveNotAddedAnyTags": "Вы не добавили ни одного тега",
-        "DoYouReallyWantToCancelTheTag": "Вы действительно хотите удалить тег?",
+        "DoYouReallyWantToCancelTheTag": "Вы действительно хотите удалить тег",
         "SelectTag": "Выберите тег",
         "TagsAreLabelsThatYouCanAddToConversationsAndTicket": "Теги — это метки, которые вы можете добавлять к разговорам и билетам. Они помогут вам классифицировать и организовать всю коммуникацию с клиентами.",
         "Color": {
@@ -2029,6 +2029,9 @@
     "Assigned_M": "Назначено",
 	"Assigned_F": "Назначено",
     "ViewTheConversationsHistory":"Посмотреть историю бесед",
+    "SelectATagOrCreateANewOne":"Выберите тег или создайте новый",
+    "CreateNewTag":"Создать новый тег",
+    "TypeNewTagHere":"Введите новый тег здесь",
     "CHAT_IONIC": {
         "LABEL_TU": "ты: ",
         "LABEL_MSG_PUSH_START_CHAT": "Разговора пока нет",

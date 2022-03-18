@@ -1192,7 +1192,7 @@
         "DeleteLabel": "Elimina tag",
         "TypeALabelAndPressEnter": "Digita una tag e premi Invio",
         "YouHaveNotAddedAnyTags": "Non hai ancora aggiunto tag",
-        "DoYouReallyWantToCancelTheTag": "Vuoi davvero cancellare la tag?",
+        "DoYouReallyWantToCancelTheTag": "Vuoi davvero cancellare la tag",
         "SelectTag": "Seleziona tag",
         "TagsAreLabelsThatYouCanAddToConversationsAndTicket":"Le tag sono etichette che puoi aggiungere a conversazioni e Ticket. Ti aiutano a classificare e organizzare tutte le comunicazioni con i clienti.",
         "Color": {
@@ -2028,5 +2028,8 @@
 	"NotAssigned_F": "Non assegnata",
     "Assigned_M": "Assegnato",
 	"Assigned_F": "Assegnata",
-    "ViewTheConversationsHistory":"Visualizza la cronologia delle conversazioni"
+    "ViewTheConversationsHistory":"Visualizza la cronologia delle conversazioni",
+    "SelectATagOrCreateANewOne":"Seleziona un tag o creane uno nuovo",
+    "CreateNewTag":"Crea un nuovo tag",
+    "TypeNewTagHere":"Digita qui un nuovo tag"
 }

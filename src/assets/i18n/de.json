@@ -1191,7 +1191,7 @@
 		"DeleteLabel": "Tag löschen",
 		"TypeALabelAndPressEnter": "Geben Sie ein Tag ein und drücken Sie die Eingabetaste",
 		"YouHaveNotAddedAnyTags": "Sie haben keine Tags hinzugefügt",
-		"DoYouReallyWantToCancelTheTag": "Möchten Sie das Tag wirklich löschen?",
+		"DoYouReallyWantToCancelTheTag": "Möchten Sie das Tag wirklich löschen",
 		"SelectTag": "Tag auswählen",
 		"TagsAreLabelsThatYouCanAddToConversationsAndTicket":"Tags sind Labels, die Sie Konversationen und Tickets hinzufügen können. Sie helfen Ihnen, die gesamte Kundenkommunikation zu kategorisieren und zu organisieren.",
 		"Color": {
@@ -2028,5 +2028,8 @@
 	"NotAssigned_F": "Nicht zugeordnet",
 	"Assigned_M": "Zugewiesen",
 	"Assigned_F": "Zugewiesen",
-	"ViewTheConversationsHistory":"Ansicht chronologie Gespräche"
+	"ViewTheConversationsHistory":"Ansicht chronologie Gespräche",
+	"SelectATagOrCreateANewOne":"Wählen Sie ein Tag aus oder erstellen Sie ein neues",
+	"CreateNewTag":"Erstellen Sie ein neues Tag",
+	"TypeNewTagHere":"Geben Sie hier ein neues Tag ein"
 }

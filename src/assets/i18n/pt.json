@@ -1190,7 +1190,7 @@
         "DeleteLabel": "Excluir etiqueta",
         "TypeALabelAndPressEnter": "Digite uma etiqueta e pressione Enter",
         "YouHaveNotAddedAnyTags": "Você não adicionou nenhuma etiquetas",
-        "DoYouReallyWantToCancelTheTag": "Deseja realmente excluir a etiqueta?",
+        "DoYouReallyWantToCancelTheTag": "Deseja realmente excluir a etiqueta",
         "SelectTag": "Selecionar etiqueta",
         "TagsAreLabelsThatYouCanAddToConversationsAndTicket":"Etiquetas são rótulos que você pode adicionar às conversas e ao Ticket. Eles ajudam você a categorizar e organizar toda a comunicação com o cliente.",
         "Color": {
@@ -2029,6 +2029,9 @@
     "Assigned_M": "Atribuído",
 	"Assigned_F": "Atribuída",
     "ViewTheConversationsHistory":"Ver histórico de conversas",
+    "SelectATagOrCreateANewOne":"Selecione uma tag ou crie uma nova",
+    "CreateNewTag":"Criar uma nova etiqueta",
+    "TypeNewTagHere":"Digite uma nova tag aqui",
     "CHAT_IONIC": {
         "LABEL_TU": "vocês: ",
         "LABEL_MSG_PUSH_START_CHAT": "Nenhuma conversa ainda",
