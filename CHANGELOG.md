@@ -1,6 +1,10 @@
 
 # tiledesk-dashboard
 
+### 2.2.32-rc14
+- Adds the ability in the detail page of the conversation to create tags from the right sidebar
+- Makes the "Tags" and "Canned Responses" pages accessible to teammates with agent roles
+
 ### 2.2.32-rc12
 - Fixes the bug: in the right sidebar of the chat "conversation info" the avatar of the requester is not centered when it is a verified requester
 - Fix the bug: in the modal window "Create ticket" if there are two requester with the same id the link "view requester details" is incorrect if the "lead" requester is selected
