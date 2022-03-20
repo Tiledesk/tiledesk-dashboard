@@ -63,13 +63,14 @@ export class SettingsSidebarComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.getUserRole();
     this.getOSCODE();
     this.getChatUrl();
     this.getCurrentProject();
     this.getCurrentRoute();
     // this.getMainContentHeight();
     this.listenSidebarIsOpened();
-    this.getUserRole();
+   
   }
 
   getUserRole() {
