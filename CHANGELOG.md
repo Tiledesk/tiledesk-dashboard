@@ -1,6 +1,10 @@
 
 # tiledesk-dashboard
 
+### 2.2.32-rc15
+- Fix the bug: in the conversations detail, if the "Add Tag" combo box is opened and the teammate types a new tag and then closes the combobox without saving the new tag, an empty tag is created
+- Adds the ability to add a new tag by pressing the enter key  in the "Create a new tag" field
+
 ### 2.2.32-rc14
 - Adds the ability in the detail page of the conversation to create tags from the right sidebar
 - Makes the "Tags" and "Canned Responses" pages accessible to teammates with agent roles
