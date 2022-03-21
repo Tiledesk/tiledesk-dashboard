@@ -2162,7 +2162,7 @@
                       <div *ngIf="diplayAddTagInput === true" class="tag-input-wrap" style="margin-bottom: 6px;">
 
                         <!-- // ------------------------------------------------------ -->
-                        <ng-select (change)="addTag()" [items]="tagsList" bindLabel="tag" bindValue="_id"
+                        <ng-select #Selecter (change)="addTag()" [items]="tagsList" bindLabel="tag" bindValue="_id"
                           [clearable]="false" [clearSearchOnAdd]="true" placeholder="{{ typeALabelAndPressEnter}}"
                           [(ngModel)]="tag" [loading]=loadingTags loadingText='Loading...'>
 
@@ -2182,13 +2182,16 @@
                           <ng-template ng-footer-tmp>
                             <!-- position:relative -->
                             <div class="input-group create-new-tag">
-                              <input id="tag_name_in_conv_detail" class="tag-name-in-conv-detail" name="tag_name_in_conv_detail" [(ngModel)]="tag_name"
+                              <input id="tag_name_in_conv_detail" (keyup.enter)="onPressEnterInIputTypeNewTag()" 
+                                (focus)="onFocusInIputTypeNewTag()"
+                                (blur)="onBlurIputTypeNewTag()"
+                                class="tag-name-in-conv-detail" name="tag_name_in_conv_detail" [(ngModel)]="tag_name"
                                 type="text" placeholder="{{ 'TypeNewTagHere' | translate }}" style="padding-left: 27px;">
                               <i class="fa fa-circle" style="font-size: 18px; position: absolute;
                                 left: 7px;
                                 top: 13px;" [ngStyle]="{'color':tag_selected_color}"></i>
                               <span class="input-group-btn">
-                                <button class="btn btn-xs btn-primary add-tag-btn-cov-detail"
+                                <button class="btn btn-xs btn-primary add-tag-btn-cov-detail" 
                                   (click)="createTag()" [disabled]="tag_name?.length === 0 || !tag_name">
                                   {{'Add' | translate}}
                                 </button>

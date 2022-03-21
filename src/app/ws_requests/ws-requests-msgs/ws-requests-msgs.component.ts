@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ElementRef, ViewChild, HostListener, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ElementRef, ViewChild, HostListener, OnDestroy, ViewEncapsulation, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { WsRequestsService } from '../../services/websocket/ws-requests.service';
@@ -30,6 +30,7 @@ import { LoggerService } from '../../services/logger/logger.service';
 
 import 'firebase/database';
 import { ProjectService } from 'app/services/project.service';
+import { NgSelectComponent } from '@ng-select/ng-select';
 const swal = require('sweetalert');
 
 @Component({
@@ -219,7 +220,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   tag_name: string;
   tag_selected_color = '#43B1F2';
   tag_new_selected_color: string;
-
+ 
+  @ViewChild('Selecter') ngselect: NgSelectComponent;
   /**
    * Constructor
    * @param router 
@@ -270,6 +272,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   @ViewChild('cont') contEl: any;
+ 
 
   // -----------------------------------------------------------------------------------------------------
   // @ HostListener window:resize
@@ -1268,7 +1271,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.logger.log('[WS-REQUESTS-MSGS] - toggleAddTagInputAndGetTags - DISPLAY TAG INPUT : ', this.diplayAddTagInput);
   }
 
-
   addTag() {
     this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - this.tag TO ADD: ', this.tag);
     const foundtag = this.tagsList.filter((obj: any) => {
@@ -1276,22 +1278,27 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     });
     let tagObject = {}
     this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - foundtag: ', foundtag);
-    if (foundtag) {
+    if (foundtag.length > 0) {
       tagObject = { tag: foundtag[0].tag, color: foundtag[0].color }
     }
-
     this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - tagObject: ', tagObject);
-    this.tagsArray.push(tagObject);
-
     setTimeout(() => {
       this.tag = null;
     })
-
-    // this.removeTagFromTaglistIfAlreadyAssigned(this.tagsList, this.tagsArray);
-    this.getTag()
+    const tagObjectsize = Object.keys(tagObject).length
+    this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - tagObject LENGTH: ', tagObjectsize);
+    if (tagObjectsize > 0) {
+      this.tagsArray.push(tagObject);
+      this.getTag()
+    }
 
     this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - TAGS ARRAY AFTER PUSH: ', this.tagsArray);
-    this.updateRequestTags(this.id_request, this.tagsArray, 'add')
+    // const firstTagObjectsize = Object.keys(this.tagsArray[0]).length
+    // console.log('[WS-REQUESTS-MSGS] - ADD TAG - TAG firstTagObjectsize: ', firstTagObjectsize);
+    // console.log('[WS-REQUESTS-MSGS] - ADD TAG - TAG this.tagsArray.length: ', this.tagsArray.length);
+    if (tagObjectsize > 0) {
+      this.updateRequestTags(this.id_request, this.tagsArray, 'add')
+    }
     // this.wsRequestsService.updateRequestsById_UpdateTag(this.id_request, this.tagsArray)
     //   .subscribe((data: any) => {
     //     this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - RES: ', data);
@@ -1306,6 +1313,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   updateRequestTags(id_request, tagsArray, fromaction) {
     this.logger.log('[WS-REQUESTS-MSGS] - UPDATE REQUEST TAGS fromaction: ', fromaction);
+    this.logger.log('[WS-REQUESTS-MSGS] - UPDATE REQUEST TAGS  tagsArray: ', tagsArray);
     this.wsRequestsService.updateRequestsById_UpdateTag(id_request, tagsArray)
       .subscribe((data: any) => {
         this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - RES: ', data);
@@ -1332,7 +1340,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.logger.log('[WS-REQUESTS-MSGS] - GET TAGS - tagsList length', this.tagsList.length);
 
         // if (this.tagsList.length > 0) {
-          this.typeALabelAndPressEnter = this.translate.instant('SelectATagOrCreateANewOne');
+        this.typeALabelAndPressEnter = this.translate.instant('SelectATagOrCreateANewOne');
         // } else {
         //   this.typeALabelAndPressEnter = this.translate.instant('Tags.YouHaveNotAddedAnyTags');
         // }
@@ -1355,21 +1363,20 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // tag_new_selected_color: string;
 
   tagSelectedColor(hex: any) {
-    this.logger.log('[TAGS] - TAG SELECTED COLOR ', hex);
+    this.logger.log('[WS-REQUESTS-MSGS] - TAG SELECTED COLOR ', hex);
     this.tag_selected_color = hex;
   }
 
   createTag() {
-    this.logger.log('[TAGS] - CREATE TAG - TAG-NAME: ', this.tag_name, ' TAG-COLOR: ', this.tag_selected_color)
-    // const createTagBtn = <HTMLElement>document.querySelector('.create-tag-btn')
-    // createTagBtn.blur();
+    this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG - TAG-NAME: ', this.tag_name, ' TAG-COLOR: ', this.tag_selected_color)
+    this.ngselect.close()
 
     if (this.tag_name && this.tag_name.length > 0) {
       // this.hasError = false;
 
       this.tagsService.createTag(this.tag_name, this.tag_selected_color)
         .subscribe((tag: any) => {
-          this.logger.log('[TAGS] - CREATE TAG - RES ', tag);
+          this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG - RES ', tag);
 
           const tagObject = { tag: tag.tag, color: tag.color }
           this.tagsArray.push(tagObject);
@@ -1377,10 +1384,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           this.updateRequestTags(this.id_request, this.tagsArray, 'create')
 
         }, (error) => {
-          this.logger.error('[TAGS] - CREATE TAG - ERROR  ', error);
+          this.logger.error('[WS-REQUESTS-MSGS] - CREATE TAG - ERROR  ', error);
           this.notify.showWidgetStyleUpdateNotification(this.create_label_error, 4, 'report_problem');
         }, () => {
-          this.logger.log('[TAGS] - CREATE TAG * COMPLETE *');
+          this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG * COMPLETE *');
           // this.notify.showWidgetStyleUpdateNotification(this.create_label_success, 2, 'done');
 
           this.tag_name = '';
@@ -1390,11 +1397,52 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         });
 
     } else {
-
       // this.hasError = true;
     }
-
   }
+
+  onPressEnterInIputTypeNewTag() {
+    this.logger.log('[WS-REQUESTS-MSGS] - ON PRESS ENTER IN INPUT TYPE NEW TAG');
+    if (this.tag_name.length > 0) {
+      this.createTag();
+      const inputElm = <HTMLElement>document.querySelector('.tag-name-in-conv-detail');
+      inputElm.blur();
+      this.ngselect.close()
+     
+    }
+  }
+
+  onFocusInIputTypeNewTag() {
+    this.logger.log('[WS-REQUESTS-MSGS] - ON FOCUS IN INPUT TYPE NEW TAG tagsList', this.tagsList);
+    for (let i = 0; i < this.tagsList.length; i++) {
+      this.tagsList[i].disabled = true
+      this.tagsList = this.tagsList.slice(0)
+    }
+  }
+
+  onBlurIputTypeNewTag() {
+    this.logger.log('[WS-REQUESTS-MSGS] - ON  BLUR TYPE NEW TAG tagsList', this.tagsList);
+    for (let i = 0; i < this.tagsList.length; i++) {
+      this.tagsList[i].disabled = false
+      this.tagsList = this.tagsList.slice(0)
+    }
+  }
+
+  @HostListener('window:click', ['$event.target'])
+  onClick(targetElement: any) {
+
+    if (targetElement.classList.contains('ng-option-disabled')) {
+      this.logger.log('[WS-REQUESTS-MSGS] HostListener onClick', targetElement);
+      for (let i = 0; i < this.tagsList.length; i++) {
+        this.tagsList[i].disabled = false
+        this.tagsList = this.tagsList.slice(0)
+      }
+      const inputElm = <HTMLElement>document.querySelector('.tag-name-in-conv-detail');
+      inputElm.blur()
+      this.logger.log(`inputElm`, inputElm);
+    }
+  }
+
 
   // -----------------------------------------------------------------------------------
   // Splice tags from the tagslist the tags already present in the "this.request" object

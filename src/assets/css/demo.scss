@@ -1138,3 +1138,7 @@ span.navbar-brand-title {
     margin-top: 8px;
     margin-left: 4px;
 }
+
+.tag-input-wrap .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-disabled {
+  color: rgba(0,0,0,0.87) !important;
+}
