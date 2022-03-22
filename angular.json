@@ -134,11 +134,7 @@
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "node_modules/perfect-scrollbar/css/perfect-scrollbar.css",
               "src/assets/sass/material-dashboard.scss",
-<<<<<<< .merge_file_KDqD7k
-              "src/assets/css/demo.css",
-=======
               "src/assets/css/demo.scss",
->>>>>>> .merge_file_zAaaaT
               "node_modules/@ng-select/ng-select/themes/default.theme.css"
             ],
             "assets": [
