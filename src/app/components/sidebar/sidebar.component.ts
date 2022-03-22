@@ -1401,13 +1401,13 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.router.navigate(['/project/' + this.projectId + '/home']);
     }
 
-   
-  
 
 
-    goToWidgetSetUpOrToCannedResponses () {
+
+
+    goToWidgetSetUpOrToCannedResponses() {
         if (this.USER_ROLE !== 'agent') {
-            this.goToWidgetSetUp() 
+            this.goToWidgetSetUp()
         } else if (this.USER_ROLE === 'agent') {
             this.goToCannedResponses()
         }
@@ -1552,24 +1552,14 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         // console.log('mousedown event.target.id', event.target.id)
         // console.log('mousedown event.target', event.target)
         // console.log('mousedown event.which', event.which)
-
+        // --------------------------------------------------------------------
+        // event.which === 1  left button - event.which === 3 right button
+        // --------------------------------------------------------------------
         if ((event.target.id.startsWith('openchat') && event.which === 3) || (event.target.id.startsWith('openchat') && event.which === 1)) {
             this.logger.log('SIDEBAR openChat HAS CLIKED ON OPEN CHAT WITH THE RIGHT BTN')
             localStorage.setItem('last_project', JSON.stringify(this.current_selected_prjct))
         }
 
-        // we make sure only draggables on the document elements are selected
-        //   if (event.target.getAttribute('draggable')) {
-        //     console.log('mousedown');
-
-        //     this.currentX = event.clientX;
-        //     this.currentY = event.clientY;
-        //     this.selectedElement = event.target;
-        //     // ##### add this code.
-        //     event.preventDefault();    // choose one
-        //     // ##### or add this code.
-        //     return false;    // choose one
-        //   }
     }
 
     openWindow(winName: any, winURL: any) {
