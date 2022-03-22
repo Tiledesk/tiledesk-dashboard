@@ -27,8 +27,7 @@ const swal = require('sweetalert');
 
 @Component({
   selector: 'appdashboard-widget-set-up',
-  templateUrl: './widget-set-up.component.html',
-
+  templateUrl: './widget-set-up.component_new.html',
   styleUrls: ['./widget-set-up.component.scss']
 })
 
