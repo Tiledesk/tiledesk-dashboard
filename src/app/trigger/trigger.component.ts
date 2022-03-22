@@ -7,7 +7,7 @@ import { AuthService } from 'app/core/auth.service';
 import { NotifyService } from 'app/core/notify.service';
 import { Trigger } from 'app/models/trigger-model';
 import { TranslateService } from '@ngx-translate/core';
-import { helpdocurl_triggers } from '../utils/util';
+import { URL_getting_started_with_triggers } from '../utils/util';
 import { LoggerService } from '../services/logger/logger.service';
 
 @Component({
@@ -36,10 +36,12 @@ export class TriggerComponent implements OnInit {
   query: any;
 
   // input passed to docs-url-row
-  trigger_docs_url = helpdocurl_triggers;
+  trigger_docs_url = URL_getting_started_with_triggers;
   trigger_docs_title = 'trigger'; // is diplayed if customtext = false
   customtext = false;
   text_to_display = '' // is diplayed if customtext = true
+  translateparam: any; 
+  IS_OPEN_SETTINGS_SIDEBAR: boolean;
   constructor(
     private auth: AuthService,
     private triggerService: TriggerService,
@@ -50,6 +52,7 @@ export class TriggerComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.translateparam = { helpdoc: this.trigger_docs_title };
     this.showSpinner = true;
     this.getCurrentProject();
     this.getAllTrigger();
@@ -57,7 +60,14 @@ export class TriggerComponent implements OnInit {
 
     this.query = 'custom';
     this.has_selected_system = false;
+    this.listenSidebarIsOpened();
+  }
 
+  listenSidebarIsOpened() {
+    this.auth.settingSidebarIsOpned.subscribe((isopened) => {
+      this.logger.log('[TRIGGER] SETTINGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
+      this.IS_OPEN_SETTINGS_SIDEBAR = isopened
+    });
   }
 
 
@@ -177,6 +187,11 @@ export class TriggerComponent implements OnInit {
       this.query = 'custom'
     }
 
+  }
+
+  goToTriggerDocs() {
+    const url = this.trigger_docs_url;
+    window.open(url, '_blank');
   }
 
 }

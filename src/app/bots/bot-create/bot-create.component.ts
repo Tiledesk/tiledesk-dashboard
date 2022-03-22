@@ -14,6 +14,14 @@ import { DepartmentService } from '../../services/department.service';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../services/brand.service';
 import { LoggerService } from '../../services/logger/logger.service';
+import {
+  URL_microlanguage_for_dialogflow_images_videos,
+  URL_dialogflow_connector_handoff_to_human_agent_example,
+  URL_styling_your_chatbot_replies,
+  URL_response_bot_images_buttons_videos_and_more,
+  URL_handoff_to_human_agents, URL_configure_your_first_chatbot,
+  URL_connect_your_dialogflow_agent
+} from '../../utils/util';
 
 @Component({
   selector: 'bot-create',
@@ -566,8 +574,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
 
   onFileChange(event: any) {
 
-    // this.elemProgressPercent = <HTMLElement>document.querySelector('.percent');
-    // this.logger.log('PROGRESS ELEMENT ', this.elemProgressPercent);
+
 
     this.logger.log('[BOT-CREATE] ----> FILE - event.target.files ', event.target.files);
     this.logger.log('[BOT-CREATE] ----> FILE - event.target.files.length ', event.target.files.length);
@@ -706,13 +713,6 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     };
   }
 
-
-
-
-
-
-
-
   // openDialogGenerateCredentialTutorial() {
   //   const url = 'https://developer.tiledesk.com/apis/tutorials/generate-dialgoflow-google-credentials-file';
   //   window.open(url, '_blank');
@@ -727,12 +727,16 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
   }
 
   openDocsTiledeskDialogflowConnector() {
-    const url = 'https://docs.tiledesk.com/knowledge-base/microlanguage-for-dialogflow-images-videos/';
+
+    const url = URL_microlanguage_for_dialogflow_images_videos
     window.open(url, '_blank');
   }
 
   openDocsDialogFlowHandoffToHumanAgent() {
-    const url = 'https://docs.tiledesk.com/knowledge-base/dialogflow-connector-handoff-to-human-agent-example/';
+
+    // const url = 'https://gethelp.tiledesk.com/articles/dialogflow-connector-handoff-to-human-agent-example/';
+    const url = URL_dialogflow_connector_handoff_to_human_agent_example
+
     window.open(url, '_blank');
   }
 
@@ -761,23 +765,26 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
   // Resolution bot doc link
   // -----------------------------------------------------------------------
   openResolutionBotDocsStylingYourChatbotReplies() {
-    const url = 'https://docs.tiledesk.com/knowledge-base/styling-your-chatbot-replies/';
+    // const url = 'https://gethelp.tiledesk.com/articles/styling-your-chatbot-replies/';
+    const url = URL_styling_your_chatbot_replies;
     window.open(url, '_blank');
   }
 
   openDocsResolutionBotSendImageVideosMore() {
-    const url = 'https://docs.tiledesk.com/knowledge-base/response-bot-images-buttons-videos-and-more/';
+    const url = URL_response_bot_images_buttons_videos_and_more; // NOT FOUND on gethelp
     window.open(url, '_blank');
   }
 
   openDocsResolutionBotHandoffToHumanAgent() {
-    const url = 'https://docs.tiledesk.com/knowledge-base/handoff-to-human-agents/';
+    // const url = 'https://gethelp.tiledesk.com/articles/handoff-to-human-agents/';
+    const url = URL_handoff_to_human_agents;
     window.open(url, '_blank');
   }
 
   openDocsResolutionBotConfigureYourFirstChatbot() {
-    // const url = 'https://docs.tiledesk.com/knowledge-base/create-a-bot/';
-    const url = 'https://docs.tiledesk.com/knowledge-base/configure-your-first-chatbot/';
+    // const url = 'https://docs.tiledesk.com/knowledge-base/create-a-bot/'; (replaced by configure-your-first-chatbot/ )
+    // const url = 'https://gethelp.tiledesk.com/articles/configure-your-first-chatbot/';
+    const url = URL_configure_your_first_chatbot;
     window.open(url, '_blank');
   }
 
@@ -794,12 +801,8 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
 
   goToKBArticle_Connect_your_Dialogflow_Agent() {
     this.logger.log('[BOT-CREATE] goToKBArticle_Connect_your_Dialogflow_Agent');
-    const url = 'https://docs.tiledesk.com/knowledge-base/connect-your-dialogflow-agent/';
+    const url = URL_connect_your_dialogflow_agent; // NOT FOUND on gethelp
     window.open(url, '_blank');
   }
-
-
-
-
 
 }

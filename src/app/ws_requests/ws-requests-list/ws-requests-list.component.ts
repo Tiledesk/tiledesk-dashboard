@@ -124,9 +124,9 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
   projectUserAndLeadsArray = []
   projectUserBotsAndDeptsArray = []
-  cars: any
+
   selectedRequester: any;
-  selectedCar: number;
+ 
   page_No = 0
   items = [];
   HAS_CLICKED_CREATE_NEW_LEAD: boolean = false;
@@ -174,6 +174,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   project_id: string;
 
   selectedPriority: string;
+  current_selected_prjct:any;
 
   /**
    * 
@@ -226,7 +227,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     this.getDepartments();
     // this.getActiveContacts();
 
-    this.getCurrentProjectAndThenGetProjectById();
+    this.getCurrentProject();
     this.getProjectPlan();
     this.getLoggedUser();
     this.getProjectUserRole();
@@ -277,15 +278,14 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   }
 
   openChat() {
- 
     // const url = this.CHAT_BASE_URL;
     // this.openWindow('Tiledesk - Open Source Live Chat', url)
     // this.focusWin('Tiledesk - Open Source Live Chat')
     // --- new 
-
+    localStorage.setItem('last_project', JSON.stringify(this.current_selected_prjct))
     let baseUrl = this.CHAT_BASE_URL + '#/conversation-detail/'
     let url = baseUrl
-    const myWindow = window.open(url, 'Tiledesk - Open Source Live Chat');
+    const myWindow = window.open(url, '_self', 'Tiledesk - Open Source Live Chat');
     myWindow.focus();
   }
 
@@ -511,7 +511,6 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
           if (isfirebaseuploadengine === true) {
             imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + imagestorage + "/o/profiles%2F" + projectuser.id_user._id + "%2Fphoto.jpg?alt=media";
           } else {
-
             imgUrl = imagestorage + "images?path=uploads%2Fusers%2F" + projectuser.id_user._id + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
           }
 
@@ -667,7 +666,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   // -----------------------------------------------------------------------------------------------------
   // @ Subscribe to get the published current project (called On init)
   // -----------------------------------------------------------------------------------------------------
-  getCurrentProjectAndThenGetProjectById() {
+  getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
       // this.logger.log('[WS-REQUESTS-LIST] GET CURRENT-PRJCT AND THEN GET PROJECT BY ID - CURRENT-PRJCT', project)
       if (project) {
@@ -677,7 +676,25 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         this.OPERATING_HOURS_ACTIVE = project.operatingHours
 
         this.getProjectById(this.projectId)
+        this.findCurrentProjectAmongAll(this.projectId)
       }
+    });
+  }
+
+  findCurrentProjectAmongAll(projectId: string) {
+   
+    this.projectService.getProjects().subscribe((projects: any) => {
+      // const current_selected_prjct = projects.filter(prj => prj.id_project.id === projectId);
+      // console.log('[SIDEBAR] - GET PROJECTS - current_selected_prjct ', current_selected_prjct);
+
+      this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
+      this.logger.log('[WS-REQUESTS-LIST] - GET PROJECTS - current_selected_prjct ', this.current_selected_prjct);
+
+      this.logger.log('[WS-REQUESTS-LIST] - GET PROJECTS - projects ', projects);
+    }, error => {
+      this.logger.error('[WS-REQUESTS-LIST] - GET PROJECTS - ERROR: ', error);
+    }, () => {
+      this.logger.log('[WS-REQUESTS-LIST] - GET PROJECTS * COMPLETE * ');
     });
   }
 
@@ -753,18 +770,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   }
 
   presentModalAgentCannotManageAvancedSettings() {
-    const el = document.createElement('div')
-    el.innerHTML = this.agentCannotManageAdvancedOptions + '. ' + "<a href='https://docs.tiledesk.com/knowledge-base/understanding-default-roles/' target='_blank'>" + this.learnMoreAboutDefaultRoles + "</a>"
-
-    swal({
-
-      content: el,
-      icon: "info",
-      button: {
-        text: "OK",
-      },
-      dangerMode: false,
-    })
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.agentCannotManageAdvancedOptions, this.learnMoreAboutDefaultRoles)
   }
 
   // NOT USED 
@@ -1111,7 +1117,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
         this.ws_requests.forEach((request) => {
 
-          this.logger.log('[WS-REQUESTS-LIST] - request ', request)
+          // console.log('[WS-REQUESTS-LIST] - request ', request)
 
           const user_agent_result = this.parseUserAgent(request.userAgent)
           this.logger.log('[WS-REQUESTS-LIST] - request userAgent - USER-AGENT RESULT ', user_agent_result)
@@ -1537,7 +1543,6 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     this.logger.log('[WS-REQUESTS-LIST] create internalRequest - assignee_participants_id ', this.assignee_participants_id);
     this.logger.log('[WS-REQUESTS-LIST] create internalRequest - internalRequest_subject', this.internalRequest_subject);
 
-
     const uiid = uuid.v4();
     this.logger.log('[WS-REQUESTS-LIST] create internalRequest - uiid', uiid);
     this.logger.log('[WS-REQUESTS-LIST] create internalRequest - uiid typeof', typeof uiid);
@@ -1567,8 +1572,6 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       this.logger.log('[WS-REQUESTS-LIST] create internalRequest * COMPLETE *')
       this.showSpinner_createInternalRequest = false;
       this.createNewInternalRequest_hasError = false;
-
-
     });
   }
 
@@ -1626,7 +1629,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     this.logger.log("[WS-REQUESTS-LIST] - SELECT ASSIGNEE HAS FOUND IN DEPTS: ", hasFound);
 
     if (hasFound.length === 0) {
-
+      this.logger.log("[WS-REQUESTS-LIST] - SELECT ASSIGNEE NOT HAS FOUND IN DEPTS: ", hasFound);
       this.assignee_dept_id = undefined
       this.assignee_participants_id = this.assignee_id
     } else {
@@ -1644,34 +1647,41 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
 
   // used nella select requester OF CREATE TICKET
-  selectRequester() {
+  selectRequester($event) {
     this.logger.log('[WS-REQUESTS-LIST] - SELECT REQUESTER ID', this.selectedRequester);
-    this.logger.log('[WS-REQUESTS-LIST] - SELECT REQUESTER ROLE',);
+    this.logger.log('[CREATE-TICKET] - SELECT REQUESTER $event requester_id ', $event.requester_id)
+    this.logger.log('[CREATE-TICKET] - SELECT REQUESTER $event requestertype ', $event.requestertype)
 
-    const hasFound = this.projectUserAndLeadsArray.filter((obj: any) => {
+    this.id_for_view_requeter_dtls =  $event.requester_id
+    this.requester_type = $event.requestertype
 
-      return obj.id === this.selectedRequester;
+  //   const hasFound = this.projectUserAndLeadsArray.filter((obj: any) => {
 
-    });
+  //     return obj.id === this.selectedRequester;
 
-    this.logger.log('[WS-REQUESTS-LIST] - hasFound REQUESTER ', hasFound);
+  //   });
 
-    if (hasFound.length > 0)
+  //  console.log('[WS-REQUESTS-LIST] - hasFound REQUESTER ', hasFound);
 
-      this.id_for_view_requeter_dtls = hasFound[0]['requester_id'],
-        this.logger.log('[WS-REQUESTS-LIST] - hasFound REQUESTER id_for_view_requeter_dtls', this.id_for_view_requeter_dtls);
+  //   if (hasFound.length > 0)
 
-    if (hasFound[0]['requestertype'] === "agent") {
+  //     this.id_for_view_requeter_dtls = hasFound[0]['requester_id'],
+  //       console.log('[WS-REQUESTS-LIST] - hasFound REQUESTER id_for_view_requeter_dtls', this.id_for_view_requeter_dtls);
 
-      this.requester_type = "agent"
-      this.logger.log('[WS-REQUESTS-LIST] - hasFound REQUESTER requester_type', this.requester_type);
-    } else {
-      this.requester_type = "lead"
-      this.logger.log('[WS-REQUESTS-LIST] - hasFound REQUESTER requester_type', this.requester_type);
-    }
+  //   if (hasFound[0]['requestertype'] === "agent") {
+
+  //     this.requester_type = "agent"
+  //     console.log('[WS-REQUESTS-LIST] - hasFound REQUESTER requester_type', this.requester_type);
+  //   } else {
+  //     this.requester_type = "lead"
+  //     console.log('[WS-REQUESTS-LIST] - hasFound REQUESTER requester_type', this.requester_type);
+  //   }
   }
 
   openRequesterDetails() {
+    // console.log('[WS-REQUESTS-LIST] - OPEN REQUESTER DTLS - selectedRequester ',this.selectedRequester) 
+    // console.log('[WS-REQUESTS-LIST] - OPEN REQUESTER DTLS - requester_type ',this.requester_type) 
+    // console.log('[WS-REQUESTS-LIST] - OPEN REQUESTER DTLS - id_for_view_requeter_dtls ',this.id_for_view_requeter_dtls) 
     if (this.selectedRequester) {
       if (this.requester_type === "agent") {
         // this.router.navigate(['project/' + this.projectId + '/user/edit/' + this.id_for_view_requeter_dtls]);
@@ -1703,6 +1713,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     this.HAS_CLICKED_CREATE_NEW_LEAD = false
     this.HAS_COMPLETED_CREATE_NEW_LEAD = false
     this.id_for_view_requeter_dtls = undefined;
+    this.requester_type = undefined;
   }
 
   closeCreateNewUserModal() {
@@ -1739,9 +1750,11 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   createNewContact(lead_id: string, lead_name: string, lead_email: string) {
     this.contactsService.createNewLead(lead_id, lead_name, lead_email).subscribe(lead => {
       this.logger.log('[WS-REQUESTS-LIST] - CREATE-NEW-USER - CREATE-NEW-LEAD -  RES ', lead);
-      this.projectUserAndLeadsArray.push({ id: lead.lead_id, name: lead.fullname, role: 'lead', email: lead_email, requestertype: 'lead' });
+      this.projectUserAndLeadsArray.push({ id: lead.lead_id, name: lead.fullname, role: 'lead', email: lead_email, requestertype: 'lead', requester_id: lead._id });
       // this.projectUserAndLeadsArray.push({ id: lead.lead_id, name: lead.fullname + ' (lead)' });
       this.projectUserAndLeadsArray = this.projectUserAndLeadsArray.slice(0);
+      this.id_for_view_requeter_dtls = lead._id;
+      this.requester_type = "lead";
 
     }, error => {
 
@@ -1782,12 +1795,12 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   // https://www.freakyjolly.com/ng-select-multiple-property-search-using-custom-filter-function/#.YDEDaJP0l7g
   // https://stackblitz.com/edit/so-angular-ng-select-searchfunc?file=app%2Fapp.component.ts
   customSearchFn(term: string, item: any) {
-    this.logger.log('[WS-REQUESTS-LIST] - GET P-USERS-&-LEADS - customSearchFn term : ', term);
+    // console.log('[WS-REQUESTS-LIST] - GET P-USERS-&-LEADS - customSearchFn term : ', term);
 
     term = term.toLocaleLowerCase();
-    this.logger.log('[WS-REQUESTS-LIST] - GET P-USERS-&-LEADS - customSearchFn item : ', item);
+    // console.log('[WS-REQUESTS-LIST] - GET P-USERS-&-LEADS - customSearchFn item : ', item);
 
-    this.logger.log('[WS-REQUESTS-LIST] - GET P-USERS-&-LEADS - customSearchFn item.name.toLocaleLowerCase().indexOf(term) : ', item.name.toLocaleLowerCase().indexOf(term) > -1);
+    // console.log('[WS-REQUESTS-LIST] - GET P-USERS-&-LEADS - customSearchFn item.name.toLocaleLowerCase().indexOf(term) : ', item.name.toLocaleLowerCase().indexOf(term) > -1);
 
     return item.name.toLocaleLowerCase().indexOf(term) > -1 || item.email.toLocaleLowerCase().indexOf(term) > -1;
   }

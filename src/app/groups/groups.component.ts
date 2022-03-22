@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { UsersService } from '../services/users.service';
 import { NotifyService } from '../core/notify.service';
 import { LoggerService } from '../services/logger/logger.service';
+import { URL_creating_groups } from '../utils/util';
+import { AppConfigService } from 'app/services/app-config.service';
 @Component({
   selector: 'app-groups',
   templateUrl: './groups.component.html',
@@ -32,20 +34,57 @@ export class GroupsComponent implements OnInit {
   displayDeleteModal = 'none';
   id_group_to_delete: string;
   name_group_to_delete: string;
-
+  IS_OPEN_SETTINGS_SIDEBAR: boolean;
+  public_Key: any;
+  isVisibleGRO
   constructor(
     private auth: AuthService,
     private groupsService: GroupService,
     private router: Router,
     private usersService: UsersService,
     private notify: NotifyService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    public appConfigService: AppConfigService,
   ) { }
 
   ngOnInit() {
     this.auth.checkRoleForCurrentProject();
     this.getCurrentProject();
+    this.getOSCODE();
     this.getGroupsByProjectId();
+    this.listenSidebarIsOpened();
+    this.getOSCODE();
+  }
+
+  getOSCODE() {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    this.logger.log('[GROUPS] AppConfigService getAppConfig public_Key', this.public_Key);
+
+    let keys = this.public_Key.split("-");
+    this.logger.log('[GROUPS] PUBLIC-KEY - public_Key keys', keys)
+
+    keys.forEach(key => {
+      if (key.includes("GRO")) {
+        let gro = key.split(":");
+        if (gro[1] === "F") {
+          this.isVisibleGRO = false;
+          this.router.navigate([`project/${this.project_id}/unauthorized`])
+        } else {
+          this.isVisibleGRO = true;
+        }
+      }
+    });
+
+    if (!this.public_Key.includes("GRO")) {
+      this.isVisibleGRO = false;
+    }
+  }
+
+  listenSidebarIsOpened() {
+    this.auth.settingSidebarIsOpned.subscribe((isopened) => {
+      this.logger.log('[GROUPS] SETTINGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
+      this.IS_OPEN_SETTINGS_SIDEBAR = isopened
+    });
   }
 
   getCurrentProject() {
@@ -87,6 +126,11 @@ export class GroupsComponent implements OnInit {
 
   goToEditAddPage_edit(id_group: string) {
     this.router.navigate(['project/' + this.project_id + '/group/edit/' + id_group]);
+  }
+
+  goToGroupsDoc() {
+    const url = URL_creating_groups;
+    window.open(url, '_blank');
   }
 
   openDeleteModal(id_group: string, group_name: string) {

@@ -20,7 +20,8 @@ import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts
 import { LoggerService } from '../../services/logger/logger.service';
 import { UsersService } from '../../services/users.service';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators'
+import { takeUntil } from 'rxjs/operators';
+import { URL_google_tag_manager_add_tiledesk_to_your_sites } from '../../utils/util';
 
 const swal = require('sweetalert');
 
@@ -200,7 +201,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   public preChatFormCustomFieldsEnabled: boolean;
   public HAS_ACTIVATED_PRECHAT_CUSTOM_FIELDS: boolean;
   public USER_ROLE: string;
-
+  IS_OPEN_SETTINGS_SIDEBAR: boolean;
   constructor(
     private notify: NotifyService,
     public location: Location,
@@ -260,6 +261,14 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.logger.log('[WIDGET-SET-UP] window.matchMedia ', window.matchMedia)
     this.lang = this.translate.getBrowserLang();
     this.logger.log('[WIDGET-SET-UP] LANGUAGE ', this.lang);
+    this.listenSidebarIsOpened();
+  }
+
+  listenSidebarIsOpened() {
+    this.auth.settingSidebarIsOpned.subscribe((isopened) => {
+      this.logger.log('[WIDGET-SET-UP] SETTINGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
+      this.IS_OPEN_SETTINGS_SIDEBAR = isopened
+    });
   }
 
 
@@ -307,7 +316,6 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   getWidgetUrl() {
     this.WIDGET_URL = this.appConfigService.getConfig().widgetUrl;
     this.logger.log('[WIDGET-SET-UP] getAppConfig WIDGET_URL ', this.WIDGET_URL)
-
   }
 
 
@@ -2118,7 +2126,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       this.logger.log('[WIDGET-SET-UP] - IS ENABLE Auto Rating ', event.target.checked)
     } else {
       this.nativeRating = false;
-    
+
       // *** REMOVE PROPERTY
       delete this.widgetObj['nativeRating'];
       this.widgetService.updateWidgetProject(this.widgetObj)
@@ -2211,7 +2219,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
   goToInstallWithTagManagerDocs() {
-    const url = 'https://docs.tiledesk.com/knowledge-base/google-tag-manager-add-tiledesk-to-your-sites/';
+    const url =  URL_google_tag_manager_add_tiledesk_to_your_sites;
     window.open(url, '_blank');
   }
   goToWidgetWebSdk() {

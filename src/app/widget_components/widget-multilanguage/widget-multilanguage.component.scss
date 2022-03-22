@@ -1,7 +1,7 @@
 .bottom-nav-widget-translations {
   background-color: #fff;
   width: 100%;
-  z-index: 1028;
+  // z-index: 1028;
   position: relative;
   top: 4px;
   box-shadow: 0 2px 2px rgba(0, 0, 60, 0.08);
@@ -139,8 +139,8 @@ $f21blue: #039be5;
   font-size: 12px;
   line-height: 1.42857143;
   color: #262f3c;
-  font-weight: 600;
-  font-family: 'Google Sans', sans-serif !important;
+  font-weight: 500;
+  font-family: 'Poppins';
 }
 
 .ml__label_value {

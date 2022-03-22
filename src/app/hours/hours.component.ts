@@ -141,6 +141,7 @@ export class HoursComponent implements OnInit, OnDestroy {
 
   showSpinner = true;
   public_Key: string;
+  IS_OPEN_SETTINGS_SIDEBAR: boolean;
   // hasSaved: boolean
 
   constructor(
@@ -202,7 +203,14 @@ export class HoursComponent implements OnInit, OnDestroy {
 
     });
     this.logger.log('[HOURS] - TIMEZONE NAME & OFFSET ARRAY ', this.timezone_NamesAndUTC_list);
+    this.listenSidebarIsOpened();
+  }
 
+  listenSidebarIsOpened() {
+    this.auth.settingSidebarIsOpned.subscribe((isopened) => {
+      this.logger.log('[HOURS] SETTINGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
+      this.IS_OPEN_SETTINGS_SIDEBAR = isopened
+    });
   }
 
 
@@ -213,13 +221,10 @@ export class HoursComponent implements OnInit, OnDestroy {
     // this.logger.log('[HOURS] PUBLIC-KEY keys', keys)
     keys.forEach(key => {
       // this.logger.log('HOURS COMP public_Key key', key)
-
-
       if (key.includes("OPH")) {
         // this.logger.log('[HOURS] PUBLIC-KEY - key', key);
         let oph = key.split(":");
         // this.logger.log('[HOURS] PUBLIC-KEY - oph key&value', oph);
-
         if (oph[1] === "F") {
           this.router.navigate([`project/${this.projectid}/unauthorized`]);
         }

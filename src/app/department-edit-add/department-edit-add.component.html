@@ -23,7 +23,7 @@
 
     <div class="row">
       <div class="col-sm-8 col-md-8 no_padding_left_col">
-        <div class="card card-padding" style="padding-top:12px; padding-bottom:12px; margin-top: 5px;">
+        <div class="card card--no-border" style="margin-top: 5px;">
           <loading-spinner *ngIf="showSpinner"></loading-spinner>
           <div *ngIf="!showSpinner" class="card-content">
 
@@ -442,12 +442,24 @@
       // --------------------------------------------------- -->
       <div *ngIf="CREATE_VIEW" class="col-sm-4 col-md-4 no_padding_right_col"
         [ngClass]="{'sidebar-hidden-767': OPEN_CREATE_GROUP_RIGHT_SIDEBAR}">
-        <div class="card" style="padding-top: 8px;margin-top: 5px;">
+        <div class="card  card--no-border" style="margin-top: 5px;">
           <div class="card-content" style="padding-top: 0px;">
-            <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 15px">
-              <!-- {{ "RoutingPage.QuickTips" | translate }} -->
+            <!-- <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 15px">
               {{ "QuickTips" | translate }}
-            </h4>
+            </h4> -->
+
+            <div class="row">
+              <div class="col-sm-12 col-md-12">
+                <h3 class="card_title__underlined">
+                  <span class="card_title__underline">
+                    {{ "QuickTips" | translate }}
+                  </span>
+                </h3>
+              </div>
+              <div class="col-sm-12 col-md-12">
+                <div class="section-subtitle"> </div>
+              </div>
+            </div>
 
             <p class="title-attribute" style="margin-bottom: 3px">
               Assigned

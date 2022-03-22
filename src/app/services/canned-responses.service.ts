@@ -99,7 +99,7 @@ export class CannedResponsesService {
 
     const url = this.SERVER_BASE_PATH + this.projectId + '/canned/'
     this.logger.log('[CANNED-RES.SERV] - CREATE CANNED-RES URL', url);
-
+    this.logger.log('[CANNED-RES.SERV] - CREATE CANNED-RES TOKEN', this.TOKEN);
     return this.http
       .post(url, JSON.stringify(body), options)
       .map((res) => res.json());

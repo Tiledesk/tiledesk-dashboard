@@ -118,8 +118,8 @@
       //  EDIT VIEW 
       // ------------------------------------------------------------------------------------- -->
       <span *ngIf="EDIT_VIEW">
-        <div class="col-md-8">
-          <div class="card" style="padding-top:25px; padding-bottom:0px; margin-top: 15px;">
+        <div class="col-md-8 left-col-custom-padding">
+          <div class="card card--no-border" style="padding-top:25px; padding-bottom:0px; margin-top: 15px;">
             <loading-spinner *ngIf="showSpinner"></loading-spinner>
             <div *ngIf="!showSpinner" class="card-content">
 
@@ -275,13 +275,25 @@
       </span>
 
       <!-- RIGHT SIDEBAR -->
-      <div class="col-md-4">
-        <div class="card" style="padding-top:16px; padding-bottom:16px; margin-top: 15px;">
-          <div class="card-content" style="padding-top: 0px;">
-            <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 5px">
-              <!-- User Roles -->
+      <div class="col-md-4 right-col-custom-padding">
+        <div class="card card-custom-margin card--no-border">
+          <div class="card-content">
+            <!-- <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 5px">
               {{ "UserEditAddPage.UserRoles" | translate }}
-            </h4>
+            </h4> -->
+
+            <div class="row">
+              <div class="col-sm-12 col-md-12">
+                <h3 class="card_title__underlined">
+                  <span class="card_title__underline">
+                    {{ "UserEditAddPage.UserRoles" | translate }}
+                  </span>
+                </h3>
+              </div>
+              <div class="col-sm-12 col-md-12">
+                <div class="section-subtitle"> </div>
+              </div>
+            </div>
 
             
             <p style="color:#7695a5">

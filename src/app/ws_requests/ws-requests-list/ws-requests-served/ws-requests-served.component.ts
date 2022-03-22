@@ -16,6 +16,7 @@ import { DepartmentService } from '../../../services/department.service';
 import { NotifyService } from '../../../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from '../../../services/logger/logger.service';
+import { ProjectService } from 'app/services/project.service';
 
 const swal = require('sweetalert');
 
@@ -28,7 +29,8 @@ const swal = require('sweetalert');
 export class WsRequestsServedComponent extends WsSharedComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() wsRequestsServed: Request[];
-  @Input() ws_requests_length: number
+  @Input() ws_requests_length: number;
+  @Input() current_selected_prjct: any;
 
   CHAT_BASE_URL: string;
   storageBucket: string;
@@ -61,6 +63,9 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   areYouSureMsg: string
   isMobile: boolean;
   FIREBASE_AUTH: boolean;
+
+
+
   /**
    * Constructor
    * @param botLocalDbService 
@@ -88,7 +93,8 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     private departmentService: DepartmentService,
     public notify: NotifyService,
     public translate: TranslateService,
-    public logger: LoggerService
+    public logger: LoggerService,
+    private projectService: ProjectService
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate);
   }
@@ -275,9 +281,28 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
         if (project) {
           this.projectId = project._id;
           this.logger.log('[WS-REQUESTS-LIST][SERVED] - GET CURRENT PROJECT - PROJECT ID ', this.projectId)
+          // this.findCurrentProjectAmongAll(this.projectId)
+          this.logger.log('[WS-REQUESTS-LIST][SERVED] -  current_selected_prjct ', this.current_selected_prjct)
         }
       });
   }
+
+  // findCurrentProjectAmongAll(projectId: string) {
+
+  //   this.projectService.getProjects().subscribe((projects: any) => {
+  //     // const current_selected_prjct = projects.filter(prj => prj.id_project.id === projectId);
+  //     // console.log('[WS-REQUESTS-LIST][SERVED] - GET PROJECTS - current_selected_prjct ', current_selected_prjct);
+
+  //     this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
+  //     console.log('[WS-REQUESTS-LIST][SERVED] - GET PROJECTS - current_selected_prjct ', this.current_selected_prjct);
+
+  //     console.log('[WS-REQUESTS-LIST][SERVED] - GET PROJECTS - projects ', projects);
+  //   }, error => {
+  //     console.log('[WS-REQUESTS-LIST][SERVED] - GET PROJECTS - ERROR: ', error);
+  //   }, () => {
+  //     console.log('[WS-REQUESTS-LIST][SERVED]] - GET PROJECTS * COMPLETE * ');
+  //   });
+  // }
 
 
   // SERVED_BY : add this
@@ -478,6 +503,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   }
 
   openChatAtSelectedConversation(requestid: string, requester_fullanme: string) {
+    localStorage.setItem('last_project', JSON.stringify(this.current_selected_prjct))
     this.openChatToTheSelectedConversation(this.CHAT_BASE_URL, requestid, requester_fullanme)
   }
 
@@ -486,7 +512,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   //   this.logger.log('[WS-REQUESTS-LIST][SERVED] - openChatInNewWindow - requester_fullanme', requester_fullanme);
   //   const chatTabCount = localStorage.getItem('tabCount')
   //   console.log('[WS-REQUESTS-LIST][SERVED] openChatInNewWindow chatTabCount ', chatTabCount)
-  
+
   //   let url = ''
   //   if (chatTabCount && +chatTabCount > 0) {
   //     console.log('[WS-REQUESTS-LIST][SERVED] openChatInNewWindow chatTabCount > 0 - FOCUS')
@@ -509,7 +535,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   //   //   url = this.CHAT_BASE_URL + '#/conversation-detail/' + requestid + "/" + requester_fullanme + "/active"
   //   // }
   //   // const url = this.CHAT_BASE_URL + '#/conversation-detail/' + requestid + "/" + requester_fullanme + "/active"
-   
+
 
   //   // this.openWindow('Tiledesk - Open Source Live Chat', url)
   //   // this.focusWin('Tiledesk - Open Source Live Chat')

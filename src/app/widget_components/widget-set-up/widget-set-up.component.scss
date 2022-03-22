@@ -1465,31 +1465,31 @@ button.buttonRounded:hover {
   font-size: 14px;
 }
 
-.section-subtitle {
-  height: 20px;
-  border-top: 1px solid #ddd;
-  // width: calc((100% / 3) + 372px);
-}
+// .card_title__underlined {
+//   text-transform: none;
+//   color: #566787;
+//   margin-bottom: 0px;
+//   height: 40px !important;
+//   position: relative;
+//   font-family: Google Sans, sans-serif;
+//   font-size: 16px;
+//   margin-top: 10px;
+// }
 
-.card_title__underlined {
-  text-transform: none;
-  color: #566787;
-  margin-bottom: 0px;
-  height: 40px !important;
-  position: relative;
-  font-family: Google Sans, sans-serif;
-  font-size: 16px;
-  margin-top: 10px;
-}
+// .card_title__underline {
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   bottom: -1px;
+//   border-bottom: 2px solid $brand-primary;
+//   z-index: 1;
+// }
 
-.card_title__underline {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: -1px;
-  border-bottom: 2px solid $brand-primary;
-  z-index: 1;
-}
+// .section-subtitle {
+//   height: 20px;
+//   border-top: 1px solid #ddd;
+//   // width: calc((100% / 3) + 372px);
+// }
 
 .card-title {
   text-transform: none;
@@ -1689,7 +1689,7 @@ button.buttonRounded:hover {
   margin-bottom: 0px;
   height: 40px !important;
   position: relative;
-  font-family: Google Sans, sans-serif;
+  font-family: "Poppins";
   // font-size: 18px;
   font-size: 18px;
   margin-top: 10px;
@@ -1811,12 +1811,12 @@ button.buttonRounded:hover {
   color: #566787 !important;
   text-align: left;
   padding-bottom: 12px;
-  font-family: "Google Sans", sans-serif;
-  font-weight: 500 !important;
+  font-family: "Poppins";
+  font-weight: 300 !important;
 }
 
 .widget-settings-control-head-label-info {
-  font-family: "Google Sans", sans-serif;
+  font-family: "Poppins";
   color: #566787 !important;
   text-align: left;
   padding: 6px 12px;
@@ -1830,7 +1830,7 @@ button.buttonRounded:hover {
 
 .widget-settings-control-subhead-label {
   display: block;
-  font-weight: 100!important;
+  font-weight: 100 !important;
   margin-top: 3px;
 }
 
@@ -2050,16 +2050,18 @@ button.buttonRounded:hover {
   vertical-align: middle;
   color: #3ecf8e;
   font-size: 18px !important;
+  position: relative;
+  top: -2px;
 }
 
 .current-language-text {
   color: #3ecf8e;
-  font-family: "Google Sans", sans-serif !important;
+  font-family: "Poppins";
   font-weight: 400;
 }
 
 .language-name {
-  font-family: "Google Sans", sans-serif !important;
+  font-family: "Poppins";
   font-weight: 400;
 }
 .selected-language-name {
@@ -2068,11 +2070,14 @@ button.buttonRounded:hover {
 
 .preview-language-icon {
   font-size: 18px !important;
+  position: relative;
+  top: -2px;
+  margin-right: 1px;
 }
 
 .preview-button-text {
   line-height: 42px;
-  font-family: "Google Sans", sans-serif !important;
+  font-family: "Poppins";
 }
 
 // ./end new switch left / right widget alignment
@@ -2374,7 +2379,7 @@ pre {
   border-radius: 50%;
   cursor: pointer;
 }
-.circle-bg:hover { 
+.circle-bg:hover {
   opacity: 0.8;
 }
 
@@ -2439,7 +2444,7 @@ pre {
 
 .widget-live-test-text {
   cursor: pointer;
-  font-family: "Google Sans", sans-serif !important;
+  font-family: "Poppins";
   font-size: 18px;
   color: #1bb978;
 }
@@ -2457,4 +2462,90 @@ pre {
 
 .widget-live-test-icon:hover {
   opacity: 0.8;
+}
+
+.install-widget-with-tag-manager-link {
+  color: #0f62ff;
+  cursor: pointer;
+}
+
+.install-widget-with-tag-manager-link:hover {
+  text-decoration: underline;
+}
+
+.widget-set-up-col {
+  background-color: rgb(241, 241, 241);
+  margin-top: -15px;
+  padding: 20px 20px 10px 36px;
+  margin-bottom: 24px;
+  margin-left: 32px;
+}
+
+.widget-set-up-text {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  line-height: 32px;
+}
+
+.widget-set-up-link-to-docs-wpr {
+  font-size: 14px;
+  font-weight: 400;
+  margin-bottom: 6px;
+  line-height: 20px;
+}
+
+.widget-set-up-link-to-docs {
+  margin-left: 8px;
+  vertical-align: middle;
+  color: #0f62ff;
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.widget-set-up-link-to-docs:hover {
+  text-decoration: underline;
+}
+
+.anchor-to-multilanguage-section {
+  color: #0f62ff;
+  cursor: pointer;
+}
+
+.anchor-to-multilanguage-section:hover {
+  text-decoration: underline;
+}
+
+.add-languages-link {
+  color: #039be5;
+  cursor: pointer;
+}
+
+.add-languages-link:hover {
+  text-decoration: underline;
+}
+
+.pre-chat-form-off-badge {
+  background-color: #e8e8e8;
+  border-color: #e8e8e8;
+  color: #737376;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 4px;
+  position: relative;
+  top: -2px;
+}
+
+.pre-chat-form-on-badge {
+  background-color: #d7efdc;
+  border-color: #d7efdc;
+  color: #0f8a40;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 4px;
+  position: relative;
+  top: -2px;
 }

@@ -24,7 +24,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <div class="card" style="padding-top: 0px;padding-bottom: 25px;">
+                <div class="card card--no-border" style="padding-top: 0px;padding-bottom: 25px;">
                     <!-- <div class="row">
                         <div class="col-md-12">
                             <ul class="nav nav-pills nav-pills-info custom"
@@ -51,14 +51,14 @@
 
                         <div class="row">
                             <div class="col-md-12">
-                                <h3 class="card_title__underlined" style="">
+                                <h3 class="card_title__underlined">
                                     <span class="card_title__underline">
                                         {{ "UserProfile.YourDetails" | translate }}
                                     </span>
                                 </h3>
                             </div>
                             <div class="col-md-12">
-                                <div class="section-subtitle"> </div>
+                                <div class="section-subtitle" style="width: calc((100% / 3) + 372px);"> </div>
                             </div>
                         </div>
 
@@ -68,28 +68,27 @@
                             </label>
                             <div class="col-sm-10">
                                 <div class="card-avatar" style="padding-bottom:15px; min-height: 85px;">
+                                    
                                     <img *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true"
                                         class="user-img user-profile-image" [src]="getUserProfileImage()"
                                         onerror="this.src='assets/img/no_image_user.png'" />
 
-                                    <img *ngIf="userProfileImageExist === false && userImageHasBeenUploaded !== true"
-                                        class="user-img user-profile-image" src="assets/img/no_image_user.png" />
+                                       <!-- <p>userProfileImageExist > {{ userProfileImageExist }}  </p>  
+                                       <p>userImageHasBeenUploaded > {{ userImageHasBeenUploaded}} </p>  
+                                       <p> fullname_initial > {{ user?.fullname_initial }} </p>  
+                                       <p>user_fillColour > {{user?.fillColour}} </p>   -->
+                                        <div  class="user-img user-profile-image"
+                                        *ngIf="userProfileImageExist === false && userImageHasBeenUploaded !== true"
+                                        [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + user?.fillColour + ')'}">
+                                        <span id="user-profile-altenative-user-avatar" class="user-profile-altenative-user-avatar">
+                                          {{ user?.fullname_initial }}
+                                        </span>
+                                      </div>
 
-                                    <!-- --------------------------------------------------------------------- -->
-                                    <!-- test -->
-                                    <!-- --------------------------------------------------------------------- -->
-
-                                    <!-- <img *ngIf="userImageHasBeenUploaded === true"
-                                        class="user-img user-profile-image" [src]="getUserProfileImage()"
-                                        onerror="this.src='assets/img/no_image_user.png'" />
-                                        
-                                      
-                                    <img *ngIf="userImageHasBeenUploaded !== true"
+                                    <!-- <img *ngIf="userProfileImageExist === false && userImageHasBeenUploaded !== true"
                                         class="user-img user-profile-image" src="assets/img/no_image_user.png" /> -->
 
-                                    <!-- --------------------------------------------------------------------- -->
-                                    <!-- ./ test -->
-                                    <!-- --------------------------------------------------------------------- -->
+     
 
                                     <input #fileInputUserProfileImage class="inputfile" name="teammate-image-profile"
                                         id="teammate-image-profile" type="file" (change)="upload($event)"
@@ -231,7 +230,7 @@
                                 </h3>
                             </div>
                             <div class="col-md-12">
-                                <div class="section-subtitle"> </div>
+                                <div class="section-subtitle" style="width: calc((100% / 3) + 372px);"> </div>
                             </div>
                         </div>
 
@@ -259,10 +258,23 @@
                                 <div class="browser-lang-wpr"
                                     [ngClass]="{'browser-lang-disabled-wpr':HAS_SELECTED_PREFERRED_LANG }">
 
-
+                                   
                                     <img [src]="flag_url"
                                         style="width: 15px;height: 15px; position: relative;top: -2px;">
-                                    {{ browser_lang | translate}}
+                                
+                                        <span class="browser-lang"
+                                            [ngClass]="{'not-available-language': !i18n_for_this_brower_language_is_available}">
+                                            {{ browser_lang | translate}}
+                                        </span>
+                                        <span class="not-available-language-string"
+                                            *ngIf="!i18n_for_this_brower_language_is_available && hasSelectedBrowserLangRadioBtn && !HAS_SELECTED_PREFERRED_LANG">
+                                            ({{'LanguageIsNotAvailableDashboardWillBeTranslatedIntoEnglish'|translate}})
+                                        </span>
+                                        <span class="not-available-language-string"
+                                            *ngIf="!i18n_for_this_brower_language_is_available && !hasSelectedBrowserLangRadioBtn && !HAS_SELECTED_PREFERRED_LANG">
+                                            ({{'LanguageIsNotAvailableDashboardHasBeenTranslatedIntoEnglish'|translate}})
+                                        </span>
+                                   
                                 </div>
                                 <!-- <p>display_msg_refresh_page_for_selected_lang {{display_msg_refresh_page_for_selected_lang }}</p> 
                                 <p>hasSelectedPreferredLangRadioBtn {{hasSelectedPreferredLangRadioBtn }}</p>  -->
@@ -317,14 +329,14 @@
                                     {{'PleaseSelectALanguage' | translate}}
                                 </div>
 
-                               <!-- <p>display_msg_refresh_page_for_selected_lang {{display_msg_refresh_page_for_selected_lang }}</p> 
+                                <!-- <p>display_msg_refresh_page_for_selected_lang {{display_msg_refresh_page_for_selected_lang }}</p> 
                                <p>hasSelectedPreferredLangRadioBtn {{hasSelectedPreferredLangRadioBtn }}</p>  -->
                                 <div *ngIf="display_msg_refresh_page_for_selected_lang && hasSelectedPreferredLangRadioBtn"
                                     class="refresh-page">
-                                    {{'TheSettingsWillBeAppliedAfterRefreshingTheDashboard' | translate}} 
+                                    {{'TheSettingsWillBeAppliedAfterRefreshingTheDashboard' | translate}}
                                     <span style="color: #03a5e8;cursor: pointer;" (click)="refreshPage()">
-                                    {{'RefreshNow' | translate}}
-                                   </span>
+                                        {{'RefreshNow' | translate}}
+                                    </span>
                                 </div>
                             </div>
                         </div>

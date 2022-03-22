@@ -1,8 +1,116 @@
 
 # tiledesk-dashboard
 
-### 2.2.31.1
-- Fixes the bug: the method "tiledesk_widget_login" does not run after registering a new teammates
+
+### 2.2.32-rc15
+- Fixes the bug: in the conversations detail, if the "Add Tag" combo box is opened and the teammate types a new tag and then closes the combobox without saving the new tag, an empty tag is created
+- Adds the ability to add a new tag by pressing the enter key  in the "Create a new tag" field
+
+### 2.2.32-rc14
+- Adds the ability in the detail page of the conversation to create tags from the right sidebar
+- Makes the "Tags" and "Canned Responses" pages accessible to teammates with agent roles
+
+### 2.2.32-rc12
+- Fixes the bug: in the right sidebar of the chat "conversation info" the avatar of the requester is not centered when it is a verified requester
+- Fix the bug: in the modal window "Create ticket" if there are two requester with the same id the link "view requester details" is incorrect if the "lead" requester is selected
+- Fixes the bug: in the modal window "Create ticket" if after having filled in the obligatory fields "Subject" and "Message" the same are deleted, the "Create ticket" button remains active
+- Fixes the bug: Ticket icons are missing on the contact details page
+- Fixes the bug: in the right sidebar of the conversation detail page corrects the text associated with the icon indicating the status of the conversation
+- Fixes the bug: in the modal window "Create ticket" when a new requester is created the link "view requester details" does not work
+- Change the text of the "Conversations" menu item in the left sidebar to "Monitor"
+- Hides the analytics section in the Home if the teammate has the role of agent
+
+### 2.2.32-rc11
+- Updates the storage when the profile picture of the registered teammate is uploaded and when it is deleted
+
+### 2.2.32-rc10
+- Fixes the bug: the "No Agent" placeholder is displayed in the "Agents" section of the conversation details page even if the agents exist
+
+### 2.2.32-rc9
+- Changes the icon of the "Conversations" menu item to the left sidebar
+- Adds Serbian language
+
+### 2.2.32-rc8
+- Adds a custom scrollbar to the chat section of the conversation detail page
+- Changes the style of the left sidebar
+
+### 2.2.32-rc7
+- Enhances the style of the sidebar tooltips
+- Adds the message "Language not supported ..." in the language selection section of the dashboard if the browser language is not supported
+- Displays the English flag if the browser language is not among the unsupported ones
+- Removes from the header of the conversation list the button "open chat in a new window"
+- Fixes the bug: fix the URL of the avatar placeholder image in the sidebar and in the sidebar of the user detail
+- Removes the go to your projects button from the "Unauthorized access" page when it is loaded in the "info-conversation" iframe of the chat
+- Fixes the bug: Email is broken on dashes in user details sidebar
+- Fixes the bug: in the user details sidebar the current language button is not fully clickable
+- Enhances the "General" page of the Project Settings
+- Adds the ability to toggle the width of the settings sidebar
+- Displays tooltips when the settings sidebar is minimized
+- Prevents the settings sidebar text from being displayed on two lines
+- Fixes the bug: in the conversation list the teammate who does not have a profile picture is not the same size as the teammate with profile picture
+- Replaces the profile picture placeholder in the user's sidebar and sidebar with a placeholder built with the initials of the logged teammate
+- Replaces the profile picture placeholder in the conversation detail right sidebar with a placeholder built with the initials of the logged teammate
+- Adds a gradient to the requesters avatars, to the contacts avatars and to the teammates avatars built with the initials of their name when he profile picture is not available
+- Removes the link to the project settings from the "projects" dropdown on the navbar
+- Fixes the bug: the context menu does not open on the menu item 'chat' of the sidebar
+- Removes the animated gif from the "Quick tips" sidebar in the "canned responses" page
+- Moves the "Bot" menu item from the "settings sidebar" to the "left sidebar"
+- Fixes the bug: the menu items "Conversations", "Contacts" and "Bots" in the sidebar do not remain in the active state when browsing the related sub-pages
+- Fixes the bug: in the contact avatar on the contact details page, the initials of the full name are not centered
+- Adds links to social networks Twitter, Facebook and Linkedin in the footer
+
+### 2.2.32-rc6
+- Removes the "open dashboard in new window" button from the right sidebar of the conversation detail page
+- Align the on/off badge on the widget configuration page to the text "Pre-chat module"
+- Align the "Beta" badge in the settings sidebar with the text "Trigger"
+
+### 2.2.32-rc5
+- Adds the link to the documentation "Connect Dialogflow Agents" in the detail of the "Dialogflow" type bots
+- Adds a custom scrollbar to the right sidebar of the conversation detail page when it is loaded into the chat iframe
+
+### 2.2.32-rc4
+- Fixes the bug: the "User Details" sidebar moves up when opened
+- Adds in the modal window "Reset to default" of the 'System Trigger' page the text "This action is not reversible ..." 
+- Removes the flag indicating the language in which the dashboard  is translated and the user's drop-down menu from the navigation bar
+- Removes the "Resolve conversation" action from the action dropdown menu in the right sidebar of the conversation detail page
+- Fixes the bug: the sidebar overlaps the contents of the modal windows "Reassign conversation" and "Add agent"
+- Removes the borders of the "Reassign request" and "Add teammate" modals when the right sidebar of the conversation detail is displayed in the chat
+- Changes the endpoint of the link "Understanding predefined roles" and centralize the modal window that show the link to "Understanding predefined roles" in the notification service
+- Changes the "Beta" text of the Trigger menu item of the "Settings sidebar" to a "Badge"
+- Changes endpoints of links to documentation with domain "docs.tiledesk.com" with endpoints with domain "gethelp.tiledesk.com"
+- Outsources endpoints to documentation in "utils"
+- Adds a modal window to confirm the deletion of a language on the "multilanguage" page
+- Adds the ability to open and close the "user detail sidebar" by clicking on the avatar of the logged teammate present on the sidebar
+- Improves the webhook page
+
+### 2.2.32-rc3
+- Adds the "user details" drawer 
+- Fixes the bug: the section titles overlap the "user details" drawer
+- Changes the format of the "demo" style file from css to scss
+- Fixes the bug: when window width is less than 992px the navbar changes height
+- Saves the current project in the local storage with the key "last_project" for each occurrence of the "open chat" method
+- Allows to close the "user details" sidebar by clicking outside it
+- Improves the buttons in the footer of the chat section on the "conversation details" page
+- Fixed bug: when a teammate leaves the conversation the open chat button remains active
+- Replaces the texts with tooltips in the sidebar on the conversation detail page
+- Adds the "Resolve" button to the header of left sidebar on the conversation detail page
+- Renames Webhook with Fulfillment on the detail page of the "Resolution" bot type and adds a links to the "webhook requirements" documentation
+- Replaces all occurrences of "Archive" with "Resolve"
+
+### 2.2.32-rc2
+- Fixes the bug: the iframe of the installed application is not correctly displayed in "app-store-install"
+- Removes the navbar "toggle sidebar"  button
+- Decreases the height of the wrapper of the  logo of the sidebar
+- Increase the height of the sidebar wrapper
+- Changes the links that open the chat to open in the same tab as the dashboard
+
+### 2.2.32-rc1
+- Installs the "angular material" module
+- Replaces the sidebar with a smaller one and implements the "Settings Sidebar"
+- Removes sidebar responsiveness
+- Change the name of the "Account" tab to "Subscription" in Settings > Project Settings
+- Fixes the bug: the strings in the modal displayed after the password change are not correctly translated
+- Fixes the bug: in Settings> Project Settings> Notifications> Customize email in the left sidebar the text overlaps when it goes on two line
 
 ### 2.2.31
 - Deploys in production
@@ -57,6 +165,9 @@
 - Adds the ability (only to teammates with the role of owner of projects with an "Enterprise" plan) to manage notification email templates
 - Adds the ability (only to teammates with the role of owner of projects with an "Enterprise" plan) to configure SMTP settings and send test emails
 - Adds the chat21 widget
+
+### 2.2.31.1
+- Fixes the bug: the method "tiledesk_widget_login" does not run after registering a new teammates
 
 ### 2.2.31-rc1
 - Fixes the bug: when a language is selected for a trigger that has the key "request.create" the value of the selected language contains the country code

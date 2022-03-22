@@ -1,154 +1,143 @@
-<p style="margin-top:6px; padding-left:30px;position: relative;z-index: 1050;" class="navbar-brand">
-  <span style="text-transform: capitalize;"> {{ 'Teammates' | translate }} </span> 
-</p>
+<!-- <p style="margin-top:6px; padding-left:30px;position: relative;z-index: 1050;" class="navbar-brand">
+  {{ 'Settings' | translate }}
+</p> -->
+
+<span class="navbar-brand navbar-brand-sidebar-settings"
+  [ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
+  <i class="material-icons">settings</i>
+
+  <span *ngIf="IS_OPEN_SETTINGS_SIDEBAR">{{ 'Settings' | translate }} </span>
+</span>
+<span class="navbar-brand navbar-brand-title" style="text-transform: capitalize;">
+  {{ 'Teammates' | translate }}
+</span>
 
 
-<!--
-<p style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px;color: #039be5; padding-right: 30px; border-bottom: 3px solid #039be5; padding-bottom: 39px;" 
-class="navbar-brand">
-  {{ "Users" | translate }}
-</p>
 
-<button (click)="goToGroups()" style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px; padding-right: 30px;" 
-  class="navbar-brand btn-with-border-effect center">
-   {{ "Groups" | translate }} 
-</button>
--->
-
-<ul class="bottom-nav">
-
+<!-- <ul class="bottom-nav">
   <li class="btn-with-border-effect li-active">
     <a style="text-transform: capitalize;"> {{ "Teammates" | translate }} </a>
   </li>
-
-
   <li *ngIf="isVisible" class="btn-with-border-effect border-from-center" (click)="goToGroups()">
     <a>{{ "Groups" | translate }} </a>
   </li>
+</ul> -->
 
-</ul>
+<div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
+  <div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
 
-<div class="main-content" style="padding-top:0px;">
-  <div class="container-fluid">
-
-    <appdashboard-docs-url-row [text_to_display]="text_to_display" [customtext]="customtext"
-      [doctitle]="trigger_docs_title" [docurl]="trigger_docs_url"> </appdashboard-docs-url-row>
+    
     <!-- *** this row to prevent that the two columns in the below row being displayed on two lines -->
-    <div class="row" style="margin-top: 16px;"></div>
-    <!-- <ul class="nav nav-pills nav-pills-info custom">
-        <li class="active">
-          <a href="#pill1" data-toggle="tab">
-            {{ "Users" | translate }}
-          </a>
-        </li>
-        <li>
-          <a href="#pill2" data-toggle="tab" (click)="goToGroups()">
-            {{ "Groups" | translate }}
-          </a>
-        </li>
-      </ul> -->
+    <div class="row"></div>
 
+    <div class="content-wpr" style="display: flex;">
+      <appdashboard-settings-sidebar style="border-right:1px solid #e5effe !important"> </appdashboard-settings-sidebar>
+      <div class="teplate-content" style="flex: 1 1 auto; margin-left: 20px;">
 
-    <!-- <div class="row">
-      <div class="col-md-3" style="padding-left:0px">
-        <div class="nav-items" style="margin-top:100px; position: relative;left: -15px;">
-          <div class="nav-item">
-            <div class="nav-link" style="
-              background-color: #039be5!important;
-              color: #fff!important;  
-              height: 40px;
-              padding: 0 12px 0 24px;
-              border-radius: 0 20px 20px 0;
-              margin-right: 16px;
-              position: relative;
-              overflow: hidden;
-              cursor: pointer;">
-              <span style="padding-top: 9px; display: inline-block;"> Utenti</span> 
+        <ul class="bottom-nav" style="top:-9px; box-shadow: unset">
+          <li class="btn-with-border-effect li-active">
+            <a style="text-transform: capitalize;"> {{ "Teammates" | translate }} </a>
+          </li>
+          <li *ngIf="isVisible" class="btn-with-border-effect border-from-center" (click)="goToGroups()">
+            <a>{{ "Groups" | translate }} </a>
+          </li>
+        </ul>
+
+        <div class="link-to-teammates-roles-docs">
+          <div class="row" style="background-color: rgb(241,241,241);
+        margin-right: 0px;
+        margin-left: 0px;
+        padding-bottom: 12px;">
+            <div class="col-md-12">
+              <span style="margin-left: 15px;">
+                <svg style="width: 25px;height:auto; vertical-align: middle;" aria-hidden="true" focusable="false"
+                  data-prefix="fab" data-icon="readme" class="svg-inline--fa fa-readme fa-w-18" role="img"
+                  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                  <path fill="#0f62ff"
+                    d="M528.3 46.5H388.5c-48.1 0-89.9 33.3-100.4 80.3-10.6-47-52.3-80.3-100.4-80.3H48c-26.5 0-48 21.5-48 48v245.8c0 26.5 21.5 48 48 48h89.7c102.2 0 132.7 24.4 147.3 75 .7 2.8 5.2 2.8 6 0 14.7-50.6 45.2-75 147.3-75H528c26.5 0 48-21.5 48-48V94.6c0-26.4-21.3-47.9-47.7-48.1zM242 311.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5V289c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5V251zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm259.3 121.7c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5V228c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5v-22.8c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5V190z">
+                  </path>
+                </svg>
+              </span>
+              <a style="color:#0f62ff !important; vertical-align: middle; font-size: 14px; font-weight: 400;
+            cursor: pointer; margin-left: 8px; text-decoration: underline;" (click)="goToTeammatesRolesDoc()">
+              
+                  {{ 'LearnMoreAboutDefaultRoles' | translate }}
+               
+      
+              </a>
             </div>
-          </div>
-          <div class="nav-item">
-            <div class="nav-link" style="
-              height: 40px;
-              padding: 0 12px 0 24px;
-              border-radius: 0 20px 20px 0;
-              margin-right: 16px;
-              position: relative;
-              overflow: hidden;
-              cursor: pointer;">
-              <span style="padding-top: 9px; display: inline-block;"> Gruppi</span> 
-            </div>
-
           </div>
         </div>
-      </div> -->
 
-    <!-- *********** start PROJECT PROFILE INFO  *********** -->
-    <div class="row" *ngIf="prjct_profile_type === 'payment'">
-      <div class="col-md-12">
-        <div class="card" style="margin-top: 0px; margin-bottom: 0px;">
-          <div class="card-content">
-            <span *ngIf="subscription_is_active === true">
-              <i class="material-icons" style="vertical-align: middle; color: #039be5;"> info </i>
-              <span class="msg-alert">
-                {{ "YouCurrentlyAreUsing" | translate }} {{ this.projectUsersLength + this.countOfPendingInvites }}
-                {{ "Of" | translate }} {{ projectPlanAgentsNo }} {{ "ActiveOperatorSeatsInThe" | translate }}
-                <span style="text-transform: capitalize">
-                  {{ prjct_profile_name }}</span> - <span style="color: #039be5; cursor:pointer"
-                  (click)="getMoreOperatorsSeats()">{{ "GetMore" | translate }} </span>
-              </span>
-            </span>
-            <span *ngIf="subscription_is_active === false">
-              <i class="material-icons" style="vertical-align: middle; color: #f44336;">error_outline</i>
-              <span class="msg-alert">{{ "Pricing.YourSubscriptionToThe" | translate}}
-                <span style="text-transform: capitalize">
-                  {{ prjct_profile_name }}
+
+        <!-- *********** start PROJECT PROFILE INFO  *********** -->
+        <div class="row" *ngIf="prjct_profile_type === 'payment'">
+          <div class="col-md-12">
+            <div class="card card card--no-border" style="margin-top: 0px; margin-bottom: 0px;">
+              <div class="card-content">
+                <span *ngIf="subscription_is_active === true">
+                  <i class="material-icons" style="vertical-align: middle; color: #039be5;"> info </i>
+                  <span class="msg-alert">
+                    {{ "YouCurrentlyAreUsing" | translate }} {{ this.projectUsersLength + this.countOfPendingInvites }}
+                    {{ "Of" | translate }} {{ projectPlanAgentsNo }} {{ "ActiveOperatorSeatsInThe" | translate }}
+                    <span style="text-transform: capitalize">
+                      {{ prjct_profile_name }}</span> - <span style="color: #039be5; cursor:pointer"
+                      (click)="getMoreOperatorsSeats()">{{ "GetMore" | translate }} </span>
+                  </span>
                 </span>
-                {{ "Pricing.HasExpiredOn" | translate}} {{ subscription_end_date | date: 'dd/MM/y' }} -
+                <span *ngIf="subscription_is_active === false">
+                  <i class="material-icons" style="vertical-align: middle; color: #f44336;">error_outline</i>
+                  <span class="msg-alert">{{ "Pricing.YourSubscriptionToThe" | translate}}
+                    <span style="text-transform: capitalize">
+                      {{ prjct_profile_name }}
+                    </span>
+                    {{ "Pricing.HasExpiredOn" | translate}} {{ subscription_end_date | date: 'dd/MM/y' }} -
 
-                <span style="color: #039be5; cursor:pointer" (click)="openModalSubsExpired()">{{ "Pricing.UpgradePlan" |
-                  translate }} </span>
-              </span>
-            </span>
+                    <span style="color: #039be5; cursor:pointer" (click)="openModalSubsExpired()">{{
+                      "Pricing.UpgradePlan" |
+                      translate }} </span>
+                  </span>
+                </span>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-    <!-- *********** ./end PROJECT PROFILE INFO  *********** -->
+        <!-- *********** ./end PROJECT PROFILE INFO  *********** -->
 
-    <div class="row">
-      <div class="col-md-12">
-        <div class="card" style="min-height: 195px;margin-top: 15px;">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card card card--no-border" style="min-height: 195px;margin-top: 15px;">
 
 
-          <!-- table-responsive -->
+              <!-- table-responsive -->
 
-          <div class="card-header card-header-custom-bckgrnd">
-            <button *ngIf="USER_ROLE !== 'agent'" class="btn btn-primary" style="padding: 8px 16px;margin:0px;"
-              (click)="goToAddUser()">
-              <span class="icon" style="padding-right:8px">
-                <i class="material-icons">add_circle</i>
-              </span>
-              {{ "UsersPage.Invites" | translate }}
-            </button>
+              <div class="card-header card-header-custom-bckgrnd">
+                <button *ngIf="USER_ROLE !== 'agent'" class="btn btn-primary" style="padding: 8px 16px;margin:0px;"
+                  (click)="goToAddUser()">
+                  <span class="icon" style="padding-right:8px">
+                    <i class="material-icons">add_circle</i>
+                  </span>
+                  {{ "UsersPage.Invites" | translate }}
+                </button>
 
-            <!-- <div class="pull-right" style="padding: 8px 16px;color: #039be5;font-weight: 500; cursor: pointer" (click)="goToPendingInvitation()"> 
+                <!-- <div class="pull-right" style="padding: 8px 16px;color: #039be5;font-weight: 500; cursor: pointer" (click)="goToPendingInvitation()"> 
                 {{ "UsersPage.PendingInvitation" | translate }} ({{ countOfPendingInvites }})
               </div> -->
-          </div>
+              </div>
 
-          <loading-spinner *ngIf="showSpinner"></loading-spinner>
+              <loading-spinner *ngIf="showSpinner"></loading-spinner>
 
 
-          <div *ngIf="!showSpinner" class="card-content table-responsive" style="padding-top:0px">
+              <div *ngIf="!showSpinner" class="card-content table-responsive" style="padding-top:0px">
 
-            <table class="table table-hover">
-              <thead>
-                <tr>
-                  <!-- 
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <!-- 
                   // ---------------------------------
                   // FOR DEBUG: ID OF THE PROJECT-USER  
                   // --------------------------------- -->
-                  <!-- <th>
+                      <!-- <th>
                     <span style="color: #566787">
                       <strong>
                         Project_User Id
@@ -156,60 +145,60 @@ class="navbar-brand">
                     </span>
                   </th> -->
 
-                  <!-- 
+                      <!-- 
                   // ---------------------------------
                   // User Avatar
                   // --------------------------------- -->
-                  <th>
-                    <span class="column-th-span">
-                      {{ "UsersPage.User" | translate }}
-                    </span>
-                  </th>
+                      <th>
+                        <span class="column-th-span" style="white-space: nowrap">
+                          {{ "UsersPage.User" | translate }}
+                        </span>
+                      </th>
 
-                  <!-- 
+                      <!-- 
                   // ---------------------------------
                   // User Fullname
                   // --------------------------------- -->
-                  <th> </th>
+                      <th> </th>
 
-                  <!-- 
+                      <!-- 
                   // ---------------------------------
                   // Chat with
                   // --------------------------------- -->
-                  <th> </th>
+                      <th> </th>
 
-                  <!-- 
+                      <!-- 
                   // ---------------------------------
                   // Role
                   // --------------------------------- -->
-                  <th>
-                    <span class="column-th-span">
-                      {{ "UsersPage.Role" | translate }}
-                    </span>
-                  </th>
+                      <th>
+                        <span class="column-th-span">
+                          {{ "UsersPage.Role" | translate }}
+                        </span>
+                      </th>
 
-                  <!-- 
+                      <!-- 
                   // ---------------------------------
                   // SWITCH BTN AVAILABLE / UNAVAILABLE
                   // --------------------------------- -->
-                  <th>
-                    <span class="column-th-span">
-                      {{ "UsersPage.Available" | translate }}
-                    </span>
-                  </th>
+                      <th>
+                        <span class="column-th-span">
+                          {{ "UsersPage.Available" | translate }}
+                        </span>
+                      </th>
 
-                  <!-- 
+                      <!-- 
                   // ---------------------------------
                   // IS BUSY
                   // --------------------------------- -->
-                  <!-- <th>  </th> -->
+                      <!-- <th>  </th> -->
 
 
-                  <!-- 
+                      <!-- 
                   // ---------------------------------
                   // FOR DEBUG: USER ID  
                   // --------------------------------- -->
-                  <!-- 
+                      <!-- 
                     <th>
                     <span style="color: #566787">
                       <strong>
@@ -217,133 +206,136 @@ class="navbar-brand">
                       </strong>
                     </span>
                   </th> -->
-                  <th>
-                    <span class="column-th-span">
-                      <!-- {{ "UsersPage.Actions" | translate }} -->
-                      {{ "Actions" | translate }}
-                    </span>
-                  </th>
-                </tr>
-              </thead>
+                      <th>
+                        <span class="column-th-span">
+                          <!-- {{ "UsersPage.Actions" | translate }} -->
+                          {{ "Actions" | translate }}
+                        </span>
+                      </th>
+                    </tr>
+                  </thead>
 
-              <tbody>
-                <!-- trackBy: trackByFn  -- trackBy: trackImageId-->
-                <tr #divItem *ngFor="let projectUser of projectUsersList;let i = index;">
-                  <!-- FOR DEBUG: ID OF THE PROJECT-USER  -->
-                  <!-- <td>
+                  <tbody>
+                    <!-- trackBy: trackByFn  -- trackBy: trackImageId-->
+                    <tr #divItem *ngFor="let projectUser of projectUsersList;let i = index;">
+                      <!-- FOR DEBUG: ID OF THE PROJECT-USER  -->
+                      <!-- <td>
                     {{ projectUser?._id }}
                   </td> -->
-                  <!-- goToMemberProfile(projectUser?.id_user?._id) -->
-                  <td (click)="goToEditUser(projectUser?._id)"
-                    style="cursor:pointer; width:1%;white-space:nowrap; text-align: center">
+                      <!-- goToMemberProfile(projectUser?.id_user?._id) -->
+                      <td (click)="goToEditUser(projectUser?._id)"
+                        style="cursor:pointer; width:1%;white-space:nowrap; text-align: center">
 
-                    <div class="user-avatar-wrap">
+                        <div class="user-avatar-wrap">
 
-                      <!-- --------------------------------------------------- -->
-                      <!-- USECASE uploadEngine Firebase -->
-                      <!-- --------------------------------------------------- -->
-                      <img *ngIf="projectUser?.hasImage && UPLOAD_ENGINE_IS_FIREBASE" style=""
-                        class="user-img-in-teammates-list"
-                        src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media"
-                        onerror="this.src='assets/img/no_image_user.png'" />
+                          <!-- --------------------------------------------------- -->
+                          <!-- USECASE uploadEngine Firebase -->
+                          <!-- --------------------------------------------------- -->
+                          <img *ngIf="projectUser?.hasImage && UPLOAD_ENGINE_IS_FIREBASE" style=""
+                            class="user-img-in-teammates-list"
+                            src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media"
+                            onerror="this.src='assets/img/no_image_user.png'" />
 
-                      <!-- --------------------------------------------------- -->
-                      <!-- USECASE uploadEngine Native -->
-                      <!-- --------------------------------------------------- -->
-                      <img *ngIf="projectUser?.hasImage && !UPLOAD_ENGINE_IS_FIREBASE"
-                        class="user-img-in-teammates-list"
-                        src="{{baseUrl}}images?path=uploads%2Fusers%2F{{projectUser?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
-                        onerror="this.src='assets/img/no_image_user.png'" />
+                          <!-- --------------------------------------------------- -->
+                          <!-- USECASE uploadEngine Native -->
+                          <!-- --------------------------------------------------- -->
+                          <img *ngIf="projectUser?.hasImage && !UPLOAD_ENGINE_IS_FIREBASE"
+                            class="user-img-in-teammates-list"
+                            src="{{baseUrl}}images?path=uploads%2Fusers%2F{{projectUser?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                            onerror="this.src='assets/img/no_image_user.png'" />
 
-                      <!-- --------------------------------------------------- -->
-                      <!-- USECASE No profile Image -->
-                      <!-- --------------------------------------------------- -->
-                      <div *ngIf="projectUser?.hasImage === false"
-                        style="vertical-align: middle; width: 52px; height: 52px; border-radius: 50%; border: 1px solid #eee;"
-                        [ngStyle]="{'background-color': projectUser?.id_user?.fillColour }">
-                        <span class="altenative-projetuser-avatar">
-                          {{ projectUser?.id_user?.fullname_initial }}
-                        </span>
-                      </div>
+                          <!-- --------------------------------------------------- -->
+                          <!-- USECASE No profile Image -->
+                          <!-- --------------------------------------------------- -->
+                          <!-- [ngStyle]="{'background-color': projectUser?.id_user?.fillColour }" -->
+                          <div *ngIf="projectUser?.hasImage === false"
+                            style="vertical-align: middle; width: 52px; height: 52px; border-radius: 50%; border: 1px solid #eee;"
+                            [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + projectUser?.id_user?.fillColour + ')'}">
+                            <span class="altenative-projetuser-avatar">
+                              {{ projectUser?.id_user?.fullname_initial }}
+                            </span>
+                          </div>
 
-                      <div *ngIf="projectUser?.isBusy" class="user-is-busy">
-                        <span class="tool__tip">
-                          <img src="assets/img/clock_hands.svg" class="img-fluid" style="width:16px;" />
+                          <div *ngIf="projectUser?.isBusy" class="user-is-busy">
+                            <span class="tool__tip">
+                              <img src="assets/img/clock_hands.svg" class="img-fluid" style="width:16px;" />
 
-                          <span class="top">
-                            {{ 'Busy' | translate }}
-                            <i></i>
-                          </span>
-                        </span>
-                      </div>
+                              <span class="top">
+                                {{ 'Busy' | translate }}
+                                <i></i>
+                              </span>
+                            </span>
+                          </div>
 
-                    </div>
+                        </div>
 
-                    <!-- <div *ngIf="projectUser?.isBusy" class="is-busy-text is-busy-color-transition">
+                        <!-- <div *ngIf="projectUser?.isBusy" class="is-busy-text is-busy-color-transition">
                       {{ 'Busy' | translate }}
                     </div> -->
-                  </td>
+                      </td>
 
-                  <!-- goToMemberProfile(projectUser?.id_user?._id)  -->
-                  <td (click)="goToEditUser(projectUser?._id)" style="cursor:pointer; white-space: nowrap;  width: 1%;">
-                    <span class="White__Tooltip">
-                      <span style="font-weight:400; font-size: 13px"> {{ projectUser?.id_user?.firstname }} </span>
-                      <span style="text-transform: uppercase; font-weight:400; font-size: 13px ">
-                        {{ projectUser?.id_user?.lastname }} </span>
+                      <!-- goToMemberProfile(projectUser?.id_user?._id)  -->
+                      <td (click)="goToEditUser(projectUser?._id)"
+                        style="cursor:pointer; white-space: nowrap;  width: 1%;">
+                        <span class="White__Tooltip">
+                          <span style="font-weight:400; font-size: 13px"> {{ projectUser?.id_user?.firstname }} </span>
+                          <span style="text-transform: uppercase; font-weight:400; font-size: 13px ">
+                            {{ projectUser?.id_user?.lastname }} </span>
 
-                      <!-- <span class="White__Tooltiptext">
+                          <!-- <span class="White__Tooltiptext">
                         {{"UsersPage.ViewProfileUser" | translate }} <span style="font-size:10px; display:block">
                           {{projectUser?.id_user?._id}}</span>
                       </span> -->
 
-                      <span style="display: block; color:#7695a5; font-size: 12px; font-weight: 400">
-                        {{ projectUser?.id_user?.email }}
-                      </span>
-                    </span>
-                  </td>
-
-                  <td>
-                    <span>
-                      <span class="White__Tooltip">
-                        <i class="material-icons chat-with-agent"
-                          (click)="chatWithAgent(projectUser?.id_user?._id, projectUser?.id_user?.firstname, projectUser?.id_user?.lastname)">
-                          chat
-                        </i>
-                        <span class="White__Tooltiptext" style="font-size: 12px; white-space: nowrap;font-weight: 100;">
-                          {{"ChatWith" | translate }}:
-                          <span style="display:block">
-                            {{projectUser?.id_user?.firstname}} {{projectUser?.id_user?.lastname }}
+                          <span style="display: block; color:#7695a5; font-size: 12px; font-weight: 400">
+                            {{ projectUser?.id_user?.email }}
                           </span>
                         </span>
-                      </span>
-                    </span>
-                  </td>
+                      </td>
 
-                  <!-- goToMemberProfile(projectUser?.id_user?._id)     -->
-                  <td (click)="goToEditUser(projectUser?._id)" style="cursor:pointer">
-                    <span class="White__Tooltip">
-                      <span style="font-weight:400; font-size: 13px">
-                        {{ projectUser?.role | translate}}
-                      </span>
-                      <!-- <span class="White__Tooltiptext">
+                      <td>
+                        <span>
+                          <span class="White__Tooltip">
+                            <i class="material-icons chat-with-agent"
+                              (click)="chatWithAgent(projectUser?.id_user?._id, projectUser?.id_user?.firstname, projectUser?.id_user?.lastname)">
+                              chat
+                            </i>
+                            <span class="White__Tooltiptext"
+                              style="font-size: 12px; white-space: nowrap;font-weight: 100;">
+                              {{"ChatWith" | translate }}:
+                              <span style="display:block">
+                                {{projectUser?.id_user?.firstname}} {{projectUser?.id_user?.lastname }}
+                              </span>
+                            </span>
+                          </span>
+                        </span>
+                      </td>
+
+                      <!-- goToMemberProfile(projectUser?.id_user?._id)     -->
+                      <td (click)="goToEditUser(projectUser?._id)" style="cursor:pointer">
+                        <span class="White__Tooltip">
+                          <span style="font-weight:400; font-size: 13px">
+                            {{ projectUser?.role | translate}}
+                          </span>
+                          <!-- <span class="White__Tooltiptext">
                         {{"UsersPage.ViewProfileUser" | translate }} <span style="font-size:10px; display:block">
                           {{projectUser?.id_user?._id}}</span>
                       </span> -->
-                    </span>
-                  </td>
+                        </span>
+                      </td>
 
 
-                  <!-- SWITCH AVAILABLE / UNAILABLE  -->
-                  <td>
-                    <label class="switch" style="margin-bottom: -6px;">
-                      <input type="checkbox"
-                        (click)="changeAvailabilityStatus(projectUser?.user_available, projectUser?._id)"
-                        [checked]="projectUser?.user_available === true">
-                      <span class="slider round"></span>
-                    </label>
-                  </td>
+                      <!-- SWITCH AVAILABLE / UNAILABLE  -->
+                      <td>
+                        <label class="switch" style="margin-bottom: -6px;">
+                          <input type="checkbox"
+                            (click)="changeAvailabilityStatus(projectUser?.user_available, projectUser?._id)"
+                            [checked]="projectUser?.user_available === true">
+                          <span class="slider round"></span>
+                        </label>
+                      </td>
 
-                  <!-- <td>
+                      <!-- <td>
                     <span *ngIf="projectUser?.isBusy === true">
                     <span class="material-icons" style="font-size: 16px; color:#fedd00;">
                       access_time
@@ -356,85 +348,87 @@ class="navbar-brand">
                   </td> -->
 
 
-                  <!-- FOR DEBUG: USER ID -->
-                  <!-- <td (click)="goToMemberProfile(projectUser?.id_user?._id)">
+                      <!-- FOR DEBUG: USER ID -->
+                      <!-- <td (click)="goToMemberProfile(projectUser?.id_user?._id)">
                     {{ projectUser?.id_user?._id }}
                   </td> -->
 
-                  <!-- ACTIONS -->
-                  <td class="td-actions text-right">
-                    <!-- *ngIf="projectUser?.role !== 'owner' && CURRENT_USER_ID !== projectUser?.id_user?._id" -->
-                    <span style="position: relative;top: 15px;">
-                      <button type="button" rel="tooltip" title=""
-                        class="btn btn-primary btn-simple btn-xs White__Tooltip"
-                        (click)='goToEditUser(projectUser?._id)'>
-                        <i class="material-icons">edit</i>
-                        <span class="White__Tooltiptext" style="text-transform:capitalize">
-                          {{ 'UsersPage.tootipEditUser' | translate }} </span>
-                      </button>
+                      <!-- ACTIONS -->
+                      <td class="td-actions text-right">
+                        <!-- *ngIf="projectUser?.role !== 'owner' && CURRENT_USER_ID !== projectUser?.id_user?._id" -->
+                        <span style="position: relative;top: 15px;">
+                          <button type="button" rel="tooltip" title=""
+                            class="btn btn-primary btn-simple btn-xs White__Tooltip"
+                            (click)='goToEditUser(projectUser?._id)'>
+                            <i class="material-icons">edit</i>
+                            <span class="White__Tooltiptext" style="text-transform:capitalize">
+                              {{ 'UsersPage.tootipEditUser' | translate }} </span>
+                          </button>
 
 
-                      <button *ngIf="projectUser?.role !== 'owner' && CURRENT_USER_ID !== projectUser?.id_user?._id"
-                        type="button" rel="tooltip" title="{{ 'UsersPage.tootipDeleteUser' | translate }}"
-                        class="btn btn-danger btn-simple btn-xs"
-                        (click)='openDeleteModal(projectUser?._id, projectUser?.id_user?._id, projectUser?.id_user?.firstname, projectUser?.id_user?.lastname)'>
-                        <i class="material-icons">close</i>
-                      </button>
-                    </span>
-                  </td>
+                          <button *ngIf="projectUser?.role !== 'owner' && CURRENT_USER_ID !== projectUser?.id_user?._id"
+                            type="button" rel="tooltip" title="{{ 'UsersPage.tootipDeleteUser' | translate }}"
+                            class="btn btn-danger btn-simple btn-xs"
+                            (click)='openDeleteModal(projectUser?._id, projectUser?.id_user?._id, projectUser?.id_user?.firstname, projectUser?.id_user?.lastname)'>
+                            <i class="material-icons">close</i>
+                          </button>
+                        </span>
+                      </td>
 
-                </tr>
+                    </tr>
 
 
-                <!-- 
+                    <!-- 
                 // --------------------------------------------------------------
                 // @ Pending invitation
                 // -------------------------------------------------------------- -->
-                <tr *ngFor="let invites of pendingInvitationList">
-                  <td style="text-align: center; width:1%; white-space:nowrap; ">
-                    <i class="material-icons" style="color: rgba(0,0,0,0.54); vertical-align: middle">
-                      query_builder
-                    </i>
-                  </td>
+                    <tr *ngFor="let invites of pendingInvitationList">
+                      <td style="text-align: center; width:1%; white-space:nowrap; ">
+                        <i class="material-icons" style="color: rgba(0,0,0,0.54); vertical-align: middle">
+                          query_builder
+                        </i>
+                      </td>
 
-                  <td>
-                    <span style="font-weight:400">
-                      {{ invites?.email }}
-                    </span>
-                    <span
-                      style="display: block; color:#7695a5; font-size: 12px; font-weight: 400; white-space: nowrap;">
-                      {{ "UsersPage.DateOfSending" | translate }}: {{ invites?.createdAt | date: 'dd/MM/yy' }}
-                    </span>
-                  </td>
+                      <td>
+                        <span style="font-weight:400">
+                          {{ invites?.email }}
+                        </span>
+                        <span
+                          style="display: block; color:#7695a5; font-size: 12px; font-weight: 400; white-space: nowrap;">
+                          {{ "UsersPage.DateOfSending" | translate }}: {{ invites?.createdAt | date: 'dd/MM/yy' }}
+                        </span>
+                      </td>
 
-                  <td>
-                    <span style="font-weight:400;font-weight:400; font-size: 13px">
-                      {{ "UsersPage.InvitedToBecome" | translate }}
-                      <span style="text-transform:capitalize">
-                        {{ invites?.role | translate }}
-                      </span>
-                    </span>
-                  </td>
+                      <td>
+                        <span style="font-weight:400;font-weight:400; font-size: 13px">
+                          {{ "UsersPage.InvitedToBecome" | translate }}
+                          <span style="text-transform:capitalize">
+                            {{ invites?.role | translate }}
+                          </span>
+                        </span>
+                      </td>
 
-                  <td> </td>
-                  <td> </td>
+                      <td> </td>
+                      <td> </td>
 
-                  <td class="td-actions text-right">
-                    <button type="button" rel="tooltip" title=""
-                      class="btn btn-primary btn-simple btn-xs White__Tooltip" (click)='resendInvite(invites?._id)'>
-                      <i class="material-icons">send</i>
-                      <span class="White__Tooltiptext" style="text-transform:capitalize; display: block; ">
-                        {{ "UsersPage.ResendInvite" | translate }}
-                      </span>
-                    </button>
-                    <button type="button" rel="tooltip" title="" class="btn btn-danger btn-simple btn-xs "
-                      (click)='openCancelInvitationModal(invites?._id, invites?.email )' style="margin-left: 4px;">
-                      <i class="material-icons">close</i>
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                      <td class="td-actions text-right">
+                        <button type="button" rel="tooltip" title=""
+                          class="btn btn-primary btn-simple btn-xs White__Tooltip" (click)='resendInvite(invites?._id)'>
+                          <i class="material-icons">send</i>
+                          <span class="White__Tooltiptext" style="text-transform:capitalize; display: block; ">
+                            {{ "UsersPage.ResendInvite" | translate }}
+                          </span>
+                        </button>
+                        <button type="button" rel="tooltip" title="" class="btn btn-danger btn-simple btn-xs "
+                          (click)='openCancelInvitationModal(invites?._id, invites?.email )' style="margin-left: 4px;">
+                          <i class="material-icons">close</i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -8,6 +8,7 @@ import { AppConfigService } from '../../../services/app-config.service';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../../services/brand.service';
 import { LoggerService } from '../../../services/logger/logger.service';
+import {  URL_configure_your_first_chatbot, URL_connect_your_dialogflow_agent } from '../../../utils/util';
 
 @Component({
   selector: 'appdashboard-bot-type-select',
@@ -116,16 +117,20 @@ export class BotTypeSelectComponent implements OnInit {
 
   openExternalBotIntegrationTutorial() {
     const url = 'https://developer.tiledesk.com/external-chatbot/connect-your-own-chatbot';
+    
     window.open(url, '_blank');
   }
 
   openDocsTiledeskCreateABot() {
-    const url = 'https://docs.tiledesk.com/knowledge-base/configure-your-first-chatbot/';
+    
+    // const url = 'https://gethelp.tiledesk.com/articles/configure-your-first-chatbot/';
+    const url = URL_configure_your_first_chatbot;
     window.open(url, '_blank');
   }
 
   openDocsTiledeskDialogflowConnector() {
-    const url = 'https://docs.tiledesk.com/knowledge-base/connect-your-dialogflow-agent/';
+    // const url = 'https://docs.tiledesk.com/knowledge-base/connect-your-dialogflow-agent/'; // NOT FOUND on gethelp
+    const url = URL_connect_your_dialogflow_agent
     window.open(url, '_blank');
   }
 

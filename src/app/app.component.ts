@@ -408,6 +408,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
                 this.logger.log('[APP-COMP] - HIDE WIDGET -> CURRENT URL ', e.url);
+            //    console.log('[APP-COMP] - HIDE WIDGET -> CURRENT URL ', e.url);
                 if ((e.url.indexOf('/unserved-request-for-panel') !== -1) || (e.url.indexOf('/projects-for-panel') !== -1) || (e.url.indexOf('/request-for-panel') !== -1)) {
                     // window.addEventListener("load", () => {
                     this.logger.log('[APP-COMP] - HIDE WIDGET - PAGE LOAD')
@@ -536,18 +537,26 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
                     elemSidebarWrapper.style.height = "100vh";
                 } else {
-                    elemSidebarWrapper.style.height = "calc(100vh - 60px)";
+                    // elemSidebarWrapper.style.height = "calc(100vh - 60px)";
+                    elemSidebarWrapper.style.height = "calc(100vh - 35px)";
                     // elemSidebarWrapper.setAttribute('style', `background-color: ${this.background_bottom_section} !important;`);
                 }
 
                 if (this.route.indexOf('/request-for-panel') !== -1) {
                     this.IS_REQUEST_X_PANEL_ROUTE = true
+                    // #right-col
+                    // const elemMainPanel = <HTMLElement>document.querySelector('appdashboard-ws-requests-msgs');
+                    // console.log('[APP-COMP] request-for-panel elemMainPanel' , elemMainPanel) 
 
-                    const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
-
-                    if (this.IS_REQUEST_X_PANEL_ROUTE === true && !this.isMobile()) {
-                        let ps = new PerfectScrollbar(elemMainPanel);
-                    }
+                    // if (this.IS_REQUEST_X_PANEL_ROUTE === true && !this.isMobile()) {
+                    //     let ps = new PerfectScrollbar(elemMainPanel, {
+                    //         wheelSpeed: 0,
+                    //         wheelPropagation: true,
+                    //         maxScrollbarLength: 20
+                    //       });
+                    //       ps.update();
+                    // }
+                    
 
 
                 } else {

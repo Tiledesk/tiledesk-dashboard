@@ -43,7 +43,7 @@ export class TagsComponent implements OnInit, AfterViewInit {
     { name: 'blue', hex: '#43B1F2' },
     { name: 'violet', hex: '#CB80DD' },
   ];
-
+  IS_OPEN_SETTINGS_SIDEBAR: boolean;
   constructor(
     public translate: TranslateService,
     private notify: NotifyService,
@@ -56,12 +56,19 @@ export class TagsComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit() {
-    this.auth.checkRoleForCurrentProject();
+    // this.auth.checkRoleForCurrentProject();
     this.getTag();
     this.translateNotificationMsgs();
     this.getImageStorage();
+    this.listenSidebarIsOpened();
   }
 
+  listenSidebarIsOpened() {
+    this.auth.settingSidebarIsOpned.subscribe((isopened) => {
+      this.logger.log('[TAGS] SETTINGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
+      this.IS_OPEN_SETTINGS_SIDEBAR = isopened
+    });
+  }
   ngAfterViewInit() { }
 
   getImageStorage() {
@@ -146,13 +153,13 @@ export class TagsComponent implements OnInit, AfterViewInit {
 
 
   tagSelectedColor(hex: any) {
-    this.logger.log('[TAGS] - TAG SELECTED COLOR ', hex);
+    console.log('[TAGS] - TAG SELECTED COLOR ', hex);
     this.tag_selected_color = hex;
   }
 
 
   createTag() {
-    this.logger.log('[TAGS] - CREATE TAG - TAG-NAME: ', this.tagname, ' TAG-COLOR: ', this.tag_selected_color)
+    console.log('[TAGS] - CREATE TAG - TAG-NAME: ', this.tagname, ' TAG-COLOR: ', this.tag_selected_color)
     const createTagBtn = <HTMLElement>document.querySelector('.create-tag-btn');
 
     createTagBtn.blur();

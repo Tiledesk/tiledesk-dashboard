@@ -28,6 +28,13 @@ import { avatarPlaceholder, getColorBck } from '../utils/util';
 import { LoggerService } from '../services/logger/logger.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
+import { ProjectService } from 'app/services/project.service';
+import {
+  URL_getting_started_for_admins,
+  URL_getting_started_for_agents,
+  URL_google_tag_manager_add_tiledesk_to_your_sites
+} from '../utils/util';
+
 const swal = require('sweetalert');
 @Component({
   selector: 'home',
@@ -103,7 +110,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   learnMoreAboutDefaultRoles: string;
   DISPLAY_OPH_AS_DISABLED: boolean;
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
-
+  current_selected_prjct: any;
   constructor(
     public auth: AuthService,
     private route: ActivatedRoute,
@@ -119,7 +126,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     private analyticsService: AnalyticsService,
     private contactsService: ContactsService,
     private faqKbService: FaqKbService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private projectService: ProjectService,
   ) {
     const brand = brandService.getBrand();
     this.company_name = brand['company_name'];
@@ -295,9 +303,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         if (project) {
           this.project = project
           this.projectId = this.project._id
+
           this.OPERATING_HOURS_ACTIVE = this.project.operatingHours
           this.logger.log('[HOME] > OPERATING_HOURS_ACTIVE', this.OPERATING_HOURS_ACTIVE)
 
+          this.findCurrentProjectAmongAll(this.projectId)
           this.init()
         }
       }, (error) => {
@@ -306,6 +316,23 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       }, () => {
         this.logger.log('[HOME] $UBSCIBE TO PUBLISHED PROJECT * COMPLETE *');
       });
+  }
+
+  findCurrentProjectAmongAll(projectId: string) {
+   
+    this.projectService.getProjects().subscribe((projects: any) => {
+      // const current_selected_prjct = projects.filter(prj => prj.id_project.id === projectId);
+      // console.log('[SIDEBAR] - GET PROJECTS - current_selected_prjct ', current_selected_prjct);
+
+      this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
+      this.logger.log('[HOME] - GET PROJECTS - current_selected_prjct ', this.current_selected_prjct);
+
+      this.logger.log('[HOME] - GET PROJECTS - projects ', projects);
+    }, error => {
+      this.logger.error('[HOME] - GET PROJECTS - ERROR: ', error);
+    }, () => {
+      this.logger.log('[HOME] - GET PROJECTS * COMPLETE * ');
+    });
   }
 
 
@@ -924,23 +951,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   goToPricingOrOpenModalSubsExpired() {
     this.logger.log('[HOME] goToPricingOrOpenModalSubsExpired')
-    // if (this.USER_ROLE === 'owner') {
-    //   if (this.prjct_profile_type === 'free') {
-
-    //     this.router.navigate(['project/' + this.projectId + '/pricing']);
-
-    //   } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-
-    //     this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
-    //     // this.notify.showCheckListModal(true);
-    //   } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true) {
-
-    //     this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
-    //   }
-
-    // } else {
-    //   this.presentModalOnlyOwnerCanManageTheAccountPlan();
-    // }
 
     if (this.USER_ROLE === 'owner') {
       if (this.prjct_profile_type === 'free') {
@@ -965,20 +975,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   presentModalOnlyOwnerCanManageTheAccountPlan() {
-    const el = document.createElement('div')
-    el.innerHTML = this.onlyOwnerCanManageTheAccountPlanMsg + '. ' + "<a href='https://docs.tiledesk.com/knowledge-base/understanding-default-roles/' target='_blank'>" + this.learnMoreAboutDefaultRoles + "</a>"
-
-    swal({
-      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      content: el,
-      icon: "info",
-      // buttons: true,
-      button: {
-        text: "OK",
-      },
-      dangerMode: false,
-    })
-
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
   }
 
 
@@ -1093,6 +1090,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.router.navigate(['project/' + this.projectId + '/wsrequests']);
   }
 
+  goToWidgetHistory() {
+    this.router.navigate(['project/' + this.projectId + '/history']);
+  }
+
   goToAppStore() {
     this.router.navigate(['project/' + this.projectId + '/app-store']);
   }
@@ -1143,10 +1144,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     // window.open(url, '_blank');
 
     // --- new
-
+    localStorage.setItem('last_project', JSON.stringify(this.current_selected_prjct))
     let baseUrl = this.CHAT_BASE_URL + '#/conversation-detail/'
     let url = baseUrl
-    const myWindow = window.open(url, 'Tiledesk - Open Source Live Chat');
+    const myWindow = window.open(url, '_self', 'Tiledesk - Open Source Live Chat');
     myWindow.focus();
     // const chatTabCount = localStorage.getItem('tabCount');
     // this.logger.log('[HOME] openChat chatTabCount ', chatTabCount);
@@ -1221,23 +1222,14 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   goToAdminDocs() {
-    let url = ''
-    if (this.browserLang === 'it') {
-      url = 'https://docs.tiledesk.com/knowledge-base-category/getting-started-for-admins/';
-    } else {
-      url = 'https://docs.tiledesk.com/knowledge-base-category/getting-started-for-admins/';
-    }
+  
+    const url = URL_getting_started_for_admins
     window.open(url, '_blank');
   }
 
 
   goToAgentDocs() {
-    let url = ''
-    if (this.browserLang === 'it') {
-      url = 'https://docs.tiledesk.com/knowledge-base-category/getting-started-for-agents/';
-    } else {
-      url = 'https://docs.tiledesk.com/knowledge-base-category/getting-started-for-agents/';
-    }
+    const url = URL_getting_started_for_agents
     window.open(url, '_blank');
   }
 
@@ -1250,12 +1242,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   goToInstallWithTagManagerDocs() {
-    let url = ''
-    if (this.browserLang === 'it') {
-      url = 'https://docs.tiledesk.com/knowledge-base/google-tag-manager-add-tiledesk-to-your-sites/';
-    } else {
-      url = 'https://docs.tiledesk.com/knowledge-base/google-tag-manager-add-tiledesk-to-your-sites/';
-    }
+    const url = URL_google_tag_manager_add_tiledesk_to_your_sites;
     window.open(url, '_blank');
   }
 
@@ -1268,7 +1255,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getHasOpenBlogKey() {
     const hasOpenedBlog = this.usersLocalDbService.getStoredChangelogDate();
-    this.logger.log('[HOME]  »»»»»»»»» hasOpenedBlog ', hasOpenedBlog);
+    this.logger.log('[HOME]  »»»»»»»»» hasOpenedBlog ', hasOpenedBlog);
     if (hasOpenedBlog === true) {
       this.hidechangelogrocket = true;
     } else {

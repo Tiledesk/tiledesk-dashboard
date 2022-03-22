@@ -4,7 +4,7 @@ import { AuthService } from '../../core/auth.service';
 import { Project } from '../../models/project-model';
 import { ActivatedRoute } from '@angular/router';
 import { FaqService } from '../../services/faq.service';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+
 // USED FOR go back last page
 import { Location } from '@angular/common';
 import { FaqKbService } from '../../services/faq-kb.service';
@@ -261,9 +261,6 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
   closeRightSidebar(event) {
     this.logger.log('[FAQ-TEST-COMP] »»»» CLOSE RIGHT SIDEBAR ', event);
     this.OPEN_RIGHT_SIDEBAR = event;
-
-    // const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
-    // _elemMainPanel.setAttribute('style', 'overflow-x: hidden !important;');
   }
 
 }

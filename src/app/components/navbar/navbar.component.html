@@ -3,15 +3,23 @@
 <!-- <div class="col-md-11 col-md-offset-1 col-sm-11 col-sm-offset-1 col-xs-9 col-xs-offset-3" style="right:25px"> -->
 <!-- navbar-transparent -->
 <nav class="navbar navbar-absolute">
+  <!-- <div *ngIf="HIDE_PENDING_EMAIL_NOTIFICATION === false"> 
+    <div (click)="goToUserProfile()" *ngIf="user?.emailverified == false">
+
+{{"NavBar.PendingVerification" | translate }}
+    </div>
+
+  </div> -->
+  
   <div class="container-fluid">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle" style="margin-top:3px" data-toggle="collapse"
+      <!-- <button type="button" class="navbar-toggle" style="margin-top:3px" data-toggle="collapse"
         (click)="sidebarToggle()">
         <span class="sr-only">Toggle navigation</span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
-      </button>
+      </button> -->
       <!-- <a class="navbar-brand" href="#">{{getTitle()}}</a> -->
       <!-- <a class="navbar-brand" href="#">Testina</a> -->
     </div>
@@ -181,7 +189,7 @@
         <ng-container class="test-site">
           <li *ngIf="project">
             <button class="btn btn-success-no-boxshadow simulate-visitor-btn" style="font-size: 12px;margin-top: 14px;padding: 0px 11px 0px 4px !important; max-height:24px; border-radius: 30px;
-            font-family: 'Google Sans', sans-serif !important;" (click)="testWidgetPage()">
+            font-family: 'Poppins';" (click)="testWidgetPage()">
               <i class="material-icons" style="padding-top: 0px;font-size: 24px;">play_arrow</i>
               <span>{{ 'VisitorsPage.SimulateVisitor' | translate }} </span>
             </button>
@@ -210,7 +218,7 @@
           <a href="#" class="dropdown-toggle project-dropdown" data-toggle="dropdown">
             <i class="material-icons" style="margin-right: 3px;">keyboard_arrow_down</i>
             <span style="text-transform: none"> {{ project.name }} </span>
-            <p class="hidden-lg hidden-md">Projects</p>
+            <!-- <p class="hidden-lg hidden-md">Projects</p> -->
           </a>
 
           <ul id="navbar_dropdown" class="dropdown-menu" style="max-height: 240px;overflow-y: auto;">
@@ -219,12 +227,12 @@
             <!--  ------------------------------------------------ -->
             <!--  PROJECT SETTINGS  -->
             <!--  ------------------------------------------------ -->
-            <li *ngIf="ROLE_IS_AGENT === false">
+            <!-- <li *ngIf="ROLE_IS_AGENT === false">
               <a routerLink="/project/{{ project?._id }}/project-settings/general">
                 <i class="material-icons" style="padding-right: 5px; margin-bottom: 2px; font-size: 20px">settings</i>
                 {{ 'ProjectSettings' | translate }}
               </a>
-            </li>
+            </li> -->
 
 
             <!--  ------------------------------------------------ -->
@@ -311,11 +319,11 @@
         <li *ngIf="project">
           <a style="cursor: pointer;" *ngIf="NOTIFICATION_SOUND === 'enabled'" (click)="soundOFF()">
             <i class="material-icons">volume_up</i>
-            <p class="hidden-lg hidden-md">soundon</p>
+            <!-- <p class="hidden-lg hidden-md">soundon</p> -->
           </a>
           <a style="cursor: pointer;" *ngIf="NOTIFICATION_SOUND === 'disabled'" (click)="soundON()">
             <i class="material-icons">volume_off</i>
-            <p class="hidden-lg hidden-md">soundoff</p>
+            <!-- <p class="hidden-lg hidden-md">soundoff</p> -->
           </a>
         </li>
 
@@ -332,14 +340,14 @@
               <span class="notification">{{ unservedRequestCount + currentUserRequestCount }}</span>
             </span>
 
-            <p class="hidden-lg hidden-md">Notifications</p>
+            <!-- <p class="hidden-lg hidden-md">Notifications</p> -->
           </a>
         </li>
 
          <!--  ------------------------------------------------ -->
         <!--  Dashboard language -->
         <!--  ------------------------------------------------ -->
-        <li *ngIf="project">
+        <!-- <li *ngIf="project">
           <a routerLink="project/{{ project._id }}/user-profile" fragment="language" style="cursor: pointer;">
             <span class="expired__Tooltip">
             <img [src]="flag_url"  style="width: auto;height: 19px; position: relative;top: -1px;">
@@ -350,12 +358,12 @@
             </span>
           </span>
           </a>
-        </li>
+        </li> -->
 
         <!--  ------------------------------------------------ -->
         <!--  USER -->
         <!--  ------------------------------------------------ -->
-        <li class="dropdown">
+        <!-- <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <i class="material-icons">person</i>
             <span class="tooltipx">
@@ -367,8 +375,6 @@
                 </span>
               </span>
             </span>
-
-            <p class="hidden-lg hidden-md">Profile</p>
           </a>
 
           <ul *ngIf="user" class="dropdown-menu">
@@ -381,21 +387,6 @@
 
                   <img *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true" class="user-img"
                     src="assets/img/no_image_user.png" />
-
-                  <!-- --------------------------------------------------------------------- -->
-                  <!-- test -->
-                  <!-- --------------------------------------------------------------------- -->
-
-                  <!-- <img style="width:80px; height:80px"
-                    *ngIf="userImageHasBeenUploaded === true" class="user-img"
-                    [src]="getUserProfileImage()" />
-
-                  <img *ngIf="userImageHasBeenUploaded !== true" class="user-img"
-                    src="assets/img/no_image_user.png" /> -->
-
-                  <!-- --------------------------------------------------------------------- -->
-                  <!-- ./ test -->
-                  <!-- --------------------------------------------------------------------- -->
                 </a>
               </div>
               <div class="content">
@@ -418,13 +409,12 @@
 
               <li class="divider"></li>
               <button type="submit" class="btn btn-white logout-user-profile-btn" (click)="openLogoutModal()">
-                <!-- Log Out -->
                 {{ 'NavBar.LogOut' | translate }}
               </button>
             </div>
 
           </ul>
-        </li>
+        </li> -->
       </ul>
 
     </div>

@@ -1,0 +1,139 @@
+<div id="user-details">
+    <!-- matTooltipClass="custom-mat-tooltip" matTooltip="{{'TheDashboardIsTranslatedInto' | translate: tlangparams }}" #tooltip="matTooltip"
+    matTooltipPosition='left' matTooltipHideDelay="100"  -->
+
+
+    <div class="user-details-dshbrd-lang" (click)="goToUserProfileLanguageSection()">
+
+        <span class="user-details-dshbrd-lang-code" style="text-transform: uppercase;color: #647491;">
+            {{dsbrd_lang}}
+        </span>
+        <img [src]="flag_url" style="width: auto;height: 19px;">
+
+    </div>
+
+    <!-- <button class="user-details-btn-close" type="button" (click)="closeUserDetailSidePanel()" style="left:13px">
+        <span class="user-details-dshbrd-lang-code" style="text-transform: uppercase;color: #647491;">
+            {{dsbrd_lang}}
+        </span>
+        <img [src]="flag_url" style="width: auto;height: 19px;">
+    </button> -->
+
+    <button class="user-details-btn-close" type="button" (click)="closeUserDetailSidePanel()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+            <path
+                d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z">
+            </path>
+            <path d="M0 0h24v24H0z" fill="none"></path>
+        </svg>
+    </button>
+    <!-- [ngStyle]="{'background-image': 'url('+object.image+')'}" -->
+
+
+    <div role="button" class="user-details-avatar" (click)="goToUserProfile()">
+        <img class="user-img-in-sidebar-user-details"
+            *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true" [src]="getUserProfileImage()"
+            onerror="this.src='assets/img/no_image_user.png'" />
+
+        <div class="user-img-in-sidebar-user-details"
+            *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true"
+            [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + user?.fillColour + ')'}">
+            <span class="altenative-sidebar-user-details-avatar" >
+              {{ user?.fullname_initial }}
+            </span>
+        </div>    
+
+        <!-- <img class="user-img-in-sidebar-user-details"
+            *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true"
+            src="assets/img/no_image_user.png" /> -->
+
+
+    </div>
+
+    <!-- style="cursor:pointer"
+        matTooltipClass="user-sidebar-custom-mat-tooltip" matTooltip="{{ 'Busy' | translate }}" #tooltip="matTooltip"
+        matTooltipPosition='right' matTooltipHideDelay="100" -->
+    <div class="user-details-user-isbusy" *ngIf="IS_BUSY === true">
+        <span class="material-icons user-details-user-isbusy-icon">
+            access_time
+        </span>
+    </div>
+    <!-- <div class="camera-on-hover" (click)="goToUserProfile()">
+        <i class="material-icons is-over-camera">
+            camera_alt
+        </i>
+    </div> -->
+
+    <div class="user-details-fullname">
+        <h3> {{ user?.firstname }} {{ user?.lastname }} </h3>
+    </div>
+
+    <div class="user-details-email">
+        <h3>{{ user?.email }} </h3>
+    </div>
+
+    <div class="user-details-role">
+        <h3>{{ USER_ROLE | translate }} </h3>
+    </div>
+
+    <section class="availability-section">
+        <mat-slide-toggle (change)="changeAvailabilityState(IS_AVAILABLE = !IS_AVAILABLE)"
+            class="custom-mat-slide-toggle" [checked]="IS_AVAILABLE" labelPosition="before">
+
+            <span *ngIf="IS_AVAILABLE"
+                style="font-weight: 400 !important; text-transform: capitalize; font-size:14px; color:#a9afbb;  -webkit-font-smoothing: antialiased;">
+                {{ 'Available' | translate }}
+            </span>
+            <span *ngIf="!IS_AVAILABLE"
+                style="font-weight: 400 !important;text-transform: capitalize;font-size:14px;color:#a9afbb;  -webkit-font-smoothing: antialiased;">
+                {{ 'Unavailable' | translate }}
+            </span>
+        </mat-slide-toggle>
+    </section>
+
+    <hr class="first-divider">
+
+    <section class="user-details-plan-info" *ngIf="isVisiblePAY">
+        <!-- <span style="text-transform: uppercase; color: #a9afbb;"> {{'Plan' | translate}}: </span> -->
+        <span>
+            <div> {{prjct_name}} </div>
+            <div style="display: inline-block;"> {{ _prjct_profile_name }} </div>
+
+            <div *ngIf="plan_type === 'payment' && plan_subscription_is_active === false"
+                style="color:#f44336; position:relative; top: -1px;display: inline-block;">
+                <i *ngIf="plan_name !== 'enterprise'" class="material-icons" style="vertical-align: middle; color:#f44336; cursor:pointer;    
+                font-size: 16px;" matTooltipClass="custom-mat-tooltip"
+                    matTooltip="{{ 'Pricing.SubscriptionPaymentProblem' | translate }}" #tooltip="matTooltip"
+                    matTooltipPosition='right' matTooltipHideDelay="100">
+                    error_outline
+                </i>
+                <i *ngIf="plan_name === 'enterprise'" class="material-icons" style="vertical-align: middle; color:#f44336; cursor:pointer;    
+                font-size: 16px;" matTooltipClass="custom-mat-tooltip"
+                    matTooltip="{{ 'Pricing.ThePlanHasExpired' | translate }}" #tooltip="matTooltip"
+                    matTooltipPosition='right' matTooltipHideDelay="100">
+                    error_outline
+                </i>
+            </div>
+        </span>
+    </section>
+
+    <!-- <hr class="second-divider" style="margin-top: 20px;border: 0;
+    border-top: 1px solid rgba(255, 255,255, 0.2);"> -->
+
+
+    <section class="user-details-footer-section" (click)=logout()
+        [ngClass]="{'footer-margin-top-pricing-no-visible': isVisiblePAY ===false }">
+        <i class="material-icons user-details-logout-icon">
+            logout
+        </i>
+        <div> Logout</div>
+    </section>
+
+
+
+
+</div>
+
+
+<!-- </div>
+</div> -->

@@ -3,15 +3,14 @@
     <nav class="navbar navbar-transparent navbar-absolute">
       <div class="container-fluid">
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle" style="margin-top:-3px; color:#fff" data-toggle="collapse"
+          <!-- <button type="button" class="navbar-toggle" style="margin-top:-3px; color:#fff" data-toggle="collapse"
             (click)="sidebarToggle()">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
-          </button>
-          <!-- <a class="navbar-brand" href="#">{{getTitle()}}</a> -->
-          <!-- <a class="navbar-brand" href="#">Testina</a> -->
+          </button> -->
+       
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -30,12 +29,16 @@
         <!--  ------------------------------------------------ -->
         <li>
           <a routerLink="/user-profile" fragment="language" style="cursor: pointer;">
-            <span class="expired__Tooltip">
+            <span class="tooltip-language-in-your-prjcts">
             <img [src]="flag_url"  style="width: auto;height: 19px; position: relative;top: -1px;">
            
-            <span class="expired__Tooltiptext"  style="font-size:12px; top: 27px;text-transform:none; cursor: pointer; height: fit-content;vertical-align: middle;">
-              
+            <span class="tooltip-language-in-your-prjcts__tooltiptext"  style="font-size:12px; top: 27px;text-transform:none; cursor: pointer; height: fit-content;vertical-align: middle;">
+              <span *ngIf="!languageNotSupported"> 
               {{'TheDashboardIsTranslatedInto' | translate: tlangparams }}
+            </span>
+            <span *ngIf="languageNotSupported"> 
+              {{'TheDashboardIsTranslatedIntoEnglish'  | translate }}
+            </span>
             </span>
           </span>
           </a>

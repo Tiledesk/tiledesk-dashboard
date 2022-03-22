@@ -96,7 +96,7 @@ export class WsSharedComponent implements OnInit {
 
     let baseUrl = CHAT_BASE_URL + '#/conversation-detail/'
     let url = baseUrl + requestid + '/' + requester_fullanme + '/active'
-    const myWindow = window.open(url, 'Tiledesk - Open Source Live Chat');
+    const myWindow = window.open(url, '_self', 'Tiledesk - Open Source Live Chat');
     myWindow.focus();
     // if (chatTabCount) {
     //   if (+chatTabCount > 0) {
@@ -127,7 +127,7 @@ export class WsSharedComponent implements OnInit {
   // -----------------------------------------------------------------------------------------------------
   // @ Create the agent array from the request's participant id (used in ws-requests-msgs) 
   // -----------------------------------------------------------------------------------------------------
-  createAgentsArrayFromParticipantsId(members_array: any, requester_id: string) {
+  createAgentsArrayFromParticipantsId(members_array: any, requester_id: string, isFirebaseUploadEngine: boolean, imageStorage: any) {
     this.agents_array = [];
     this.cleaned_members_array = [];
     members_array.forEach(member_id => {
@@ -135,7 +135,7 @@ export class WsSharedComponent implements OnInit {
       if (member_id && member_id !== 'system') {
 
         this.cleaned_members_array.push(member_id);
-        // this.logger.log('%%% WsRequestsMsgsComponent - CLEANED MEMBERS ARRAY ', this.cleaned_members_array);
+        this.logger.log('%%% WsRequestsMsgsComponent - CLEANED MEMBERS ARRAY ', this.cleaned_members_array);
 
         const memberIsBot = member_id.includes('bot_');
 
@@ -161,12 +161,11 @@ export class WsSharedComponent implements OnInit {
           const user = this.usersLocalDbService.getMemberFromStorage(member_id);
 
           if (user) {
+            this.logger.log('[WS-SHARED][WS-REQUESTS-MSGS] - STORED USER ', user)
             if (member_id === user['_id']) {
-              // tslint:disable-next-line:max-line-length
-              this.agents_array.push({ '_id': user['_id'], 'firstname': user['firstname'], 'lastname': user['lastname'], 'isBot': false })
 
-              // this.request.push(user)
-              // this.logger.log('--> THIS REQUEST - USER ', user)
+              this.agents_array.push({ '_id': user['_id'], 'firstname': user['firstname'], 'lastname': user['lastname'], 'isBot': false , 'hasImage': user.hasImage , 'userfillColour' :  user.fillColour,  'userFullname':  user.fullname_initial})
+
             }
           } else {
             this.agents_array.push({ '_id': member_id, 'firstname': member_id, 'isBot': false })
@@ -177,6 +176,8 @@ export class WsSharedComponent implements OnInit {
 
     this.logger.log('[WS-SHARED][WS-REQUESTS-MSGS] - CREATE-AGENT-ARRAY-FROM-PARTICIPANTS-ID - AGENT ARRAY ', this.agents_array)
   }
+
+ 
 
 
   // -----------------------------------------------------------------------------------------------------

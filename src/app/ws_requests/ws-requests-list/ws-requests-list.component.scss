@@ -512,7 +512,7 @@ span .switch-agent-admin-requests-btn {
 .bottom-nav {
   background-color: #fff;
   width: 100%;
-  z-index: 1028;
+  // z-index: 1028;
   position: relative;
   top: -5px;
   box-shadow: 0 2px 2px rgba(0, 0, 60, 0.08);
@@ -559,7 +559,7 @@ span .switch-agent-admin-requests-btn {
   .bottom-bottom-nav {
     background-color: #fff;
     width: 100%;
-    z-index: 1028;
+    // z-index: 1028;
     position: relative;
     top: -5px;
     box-shadow: 0 2px 2px rgba(0, 0, 60, 0.08);
@@ -805,8 +805,8 @@ $f21blue: #039be5;
   justify-content: center;
   // top: 39px;
   // left: 38px;
-  top: 27px;
-  left: 27px;
+  top: 29px;
+  left: 29px;
 }
 
 .is-user-online {
@@ -1416,6 +1416,7 @@ $f21blue: #039be5;
 .open-requester-details-disable {
   cursor: not-allowed;
   opacity: 0.5;
+  display: none;
 }
 
 .conv-option-icon {
@@ -1469,10 +1470,11 @@ $f21blue: #039be5;
 }
 
 .open-chat-tool-wpr{
-  background:#FEEDAF;
+  // background:#FEEDAF;
+  background:#e8f0fe; 
   position: relative;
   margin-left: -30px;
-  top: -14px;
+  top: -13px;
   margin-right: -30px;
   height: 44px;
   vertical-align: middle;
@@ -1482,10 +1484,11 @@ $f21blue: #039be5;
   justify-content: center;
   color: #6F5502;
   font-weight: 400;
+  padding:30px
 }
 
 .chat-tool-link:hover{
-  text-decoration: underline;
+  // text-decoration: underline;
 }
 // canvas {
 //   background: radial-gradient(circle at center, rgba(0,0,0,0) 0, rgba(0,0,0,0) 55%, rgba(0,0,0,0.2) 56%, rgba(0,0,0,0.2) 60%, rgba(0,0,0,0.2) 64%, rgba(0,0,0,0) 65%,rgba(0,0,0,0) 100%);

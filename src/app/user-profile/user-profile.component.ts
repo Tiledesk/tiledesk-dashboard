@@ -14,6 +14,9 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from '../services/logger/logger.service';
+import { tranlatedLanguage, avatarPlaceholder, getColorBck } from 'app/utils/util';
+import { LocalDbService } from 'app/services/users-local-db.service';
+
 const swal = require('sweetalert');
 
 
@@ -64,7 +67,7 @@ export class UserProfileComponent implements OnInit {
 
   HAS_SELECTED_PREFERRED_LANG: boolean = false;
   private fragment: string;
-
+  i18n_for_this_brower_language_is_available = false
   @ViewChild('fileInputUserProfileImage') fileInputUserProfileImage: any;
 
 
@@ -108,6 +111,11 @@ export class UserProfileComponent implements OnInit {
       id: 8,
       name: 'tr',
       avatar: 'assets/img/language_flag/tr.png'
+    },
+    {
+      id: 9,
+      name: 'sr',
+      avatar: 'assets/img/language_flag/sr.png'
     }
   ];
 
@@ -123,7 +131,8 @@ export class UserProfileComponent implements OnInit {
     public appConfigService: AppConfigService,
     private translate: TranslateService,
     private logger: LoggerService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private usersLocalDbService: LocalDbService
   ) { }
 
   ngOnInit() {
@@ -152,7 +161,9 @@ export class UserProfileComponent implements OnInit {
       // name of the class of the html div = . + fragment
       const languageEl = <HTMLElement>document.querySelector('.' + this.fragment)
       this.logger.log('[USER-PROFILE] - QUERY SELECTOR language  ', languageEl)
-      languageEl.scrollIntoView();
+      if (languageEl) {
+        languageEl.scrollIntoView();
+      }
       // document.querySelector('#' + this.fragment).scrollIntoView();
       // this.logger.log( document.querySelector('#' + this.fragment).scrollIntoView())
     } catch (e) {
@@ -174,7 +185,10 @@ export class UserProfileComponent implements OnInit {
         this.lastnameCurrentValue = user.lastname;
         this.emailverified = user.emailverified;
         this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - EMAIL VERIFIED ', this.emailverified)
+        this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - this.user ', this.user)
         this.showSpinner = false;
+        
+        this.createUserAvatar(user);
 
         const stored_preferred_lang = localStorage.getItem(this.userId + '_lang')
 
@@ -188,6 +202,7 @@ export class UserProfileComponent implements OnInit {
           this.logger.log('[USER-PROFILE] HAS_SELECTED_PREFERRED_LANG ', this.HAS_SELECTED_PREFERRED_LANG)
           this.logger.log('[USER-PROFILE] stored_preferred_lang ', stored_preferred_lang)
         }
+
       }
 
     }, (error) => {
@@ -198,11 +213,39 @@ export class UserProfileComponent implements OnInit {
     });
   }
 
+createUserAvatar(user) {
+    this.logger.log('[USER-PROFILE] - createProjectUserAvatar ', user)
+    let fullname = ''
+    if (user && user.firstname && user.lastname) {
+      fullname = user.firstname + ' ' + user.lastname
+      user['fullname_initial'] = avatarPlaceholder(fullname)
+      user['fillColour'] = getColorBck(fullname)
+    } else if (user && user.firstname) {
+      fullname = user.firstname
+      user['fullname_initial'] = avatarPlaceholder(fullname)
+      user['fillColour'] = getColorBck(fullname)
+    } else {
+      user['fullname_initial'] = 'N/A'
+      user['fillColour'] = 'rgb(98, 100, 167)'
+    }
+}
+
   getBrowserLanguage() {
     this.browser_lang = this.translate.getBrowserLang();
-
+    if (tranlatedLanguage.includes(this.browser_lang)) {
+      this.logger.log('[USER-PROFILE] - browser_lang includes', tranlatedLanguage.includes(this.browser_lang)) 
+      this.i18n_for_this_brower_language_is_available = true;
+      this.logger.log('[USER-PROFILE] - browser_lang', this.browser_lang) 
+      this.logger.log('[USER-PROFILE] - this.i18n_for_this_brower_language_is_available', this.i18n_for_this_brower_language_is_available) 
+   
     this.logger.log('[USER-PROFILE] - browser_lang ', this.browser_lang)
     this.flag_url = "assets/img/language_flag/" + this.browser_lang + ".png"
+    } else {
+      this.logger.log('[USER-PROFILE] - browser_lang includes', tranlatedLanguage.includes(this.browser_lang)) 
+      this.i18n_for_this_brower_language_is_available = false;
+      this.logger.log('[USER-PROFILE] - this.i18n_for_this_brower_language_is_available', this.i18n_for_this_brower_language_is_available) 
+      this.flag_url = "assets/img/language_flag/not_found_language.svg"
+    }
   }
 
   onSelectPreferredDsbrdLang(selectedLanguageCode) {
@@ -347,6 +390,11 @@ export class UserProfileComponent implements OnInit {
 
           this.logger.log('[USER-PROFILE] - IMAGE UPLOADING IS COMPLETE - BUILD userProfileImageurl ');
           this.setImageProfileUrl(this.storageBucket)
+          
+          const stored_user = this.usersLocalDbService.getMemberFromStorage(this.userId);
+          this.logger.log('[USER-PROFILE] stored_user', stored_user ) 
+          stored_user['hasImage'] = true;
+          this.usersLocalDbService.saveMembersInStorage(this.userId, stored_user);
         }
       });
     } else {
@@ -356,6 +404,10 @@ export class UserProfileComponent implements OnInit {
 
         this.userImageHasBeenUploaded = image_exist;
         this.showSpinnerInUploadImageBtn = false;
+        const stored_user = this.usersLocalDbService.getMemberFromStorage(this.userId);
+        this.logger.log('[USER-PROFILE] stored_user', stored_user ) 
+        stored_user['hasImage'] = true;
+        this.usersLocalDbService.saveMembersInStorage(this.userId, stored_user);
         // here "setImageProfileUrl" is missing because in the "upload" method there is the subscription to the downoload 
         // url published by the BehaviourSubject in the service "upload-image-native"
       })
@@ -394,7 +446,7 @@ export class UserProfileComponent implements OnInit {
 
   deleteUserProfileImage() {
     this.logger.log('[USER-PROFILE] - deleteUserProfileImage')
-
+ 
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
       this.logger.log('[USER-PROFILE] IMAGE deleteUserProfileImage with firebase service')
       this.uploadImageService.deleteUserProfileImage(this.userId);
@@ -405,6 +457,11 @@ export class UserProfileComponent implements OnInit {
 
     this.userProfileImageExist = false;
     this.userImageHasBeenUploaded = false
+
+    const stored_user = this.usersLocalDbService.getMemberFromStorage(this.userId);
+    this.logger.log('[USER-PROFILE] stored_user', stored_user ) 
+    stored_user['hasImage'] = false;
+    this.usersLocalDbService.saveMembersInStorage(this.userId, stored_user);
 
     const delete_user_image_btn = <HTMLElement>document.querySelector('.delete-user-image');
     delete_user_image_btn.blur();

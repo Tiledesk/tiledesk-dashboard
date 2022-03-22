@@ -20,6 +20,7 @@
 .left-col-custom-padding {
     padding-right: 5px !important;
     padding-left: 10px !important;
+    padding-top: 7px;
 }
 
 .main-content-no-padding {
@@ -87,4 +88,18 @@ input[type="text"] {
     border-radius: 5px;
     background-color: #fff;
   }
+
+  .webhook-link-to-doc {
+    margin-left: 8px;
+    vertical-align: middle;
+    color: #0f62ff;
+    font-size: 14px;
+    font-weight: 400;
+    cursor: pointer;
+  }
+  
+  .webhook-link-to-doc:hover {
+    text-decoration: underline;
+  }
+  
 

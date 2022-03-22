@@ -441,8 +441,10 @@
             <!-- <p style="font-size:0.9em">{{ request.sender_fullname }}</p> -->
 
             <!-- REQUESTER VERIFIED ICON (SERVED REQUEST SECTION) -->
+            <!-- [ngStyle]="{'background-color': request?.requester_fullname_fillColour }" -->
             <span class="requester-avatar-wrapper">
-              <span class="requester-avatar" [ngStyle]="{'background-color': request?.requester_fullname_fillColour }"
+              <span class="requester-avatar" 
+                [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + request?.requester_fullname_fillColour + ')'}"
                 [ngClass]="{'requester_fullname-undefined' : !request?.lead?.fullname, requester_avatar_not_has_email: !request?.lead?.email }">
                 <span style="color: #ffffff"> {{ request?.requester_fullname_initial }} </span>
                 <!-- <span class="requester-presence"
@@ -773,10 +775,11 @@
                         <!-- --------------------------------------- -->
                         <!-- Usecase  No Profile image -->
                         <!-- --------------------------------------- -->
+                        <!-- [ngStyle]="{'background-color': agent?.fillColour }" -->
                         <div *ngIf="!agent?.hasImage"
                           [ngClass]="{'current-user-member-border' : agent._id === currentUserID}"
-                          class="altenative-avatar-wrap" [ngStyle]="{'background-color': agent?.fillColour }">
-
+                          class="altenative-avatar-wrap" 
+                          [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + agent?.fillColour + ')'}">
                           <span class="altenative-avatar">
                             {{ agent?.fullname_initial }}
                           </span>
@@ -873,7 +876,7 @@
 
               <!-- // tooltip text 'Archive' -->
               <span style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px;" class="top">
-                <span style="text-transform: capitalize;"> {{ 'VisitorsPage.Archive' | translate }} </span>
+                <span style="text-transform: capitalize;"> {{ 'VisitorsPage.Resolve' | translate }} </span>
                 <i></i>
               </span>
             </button>

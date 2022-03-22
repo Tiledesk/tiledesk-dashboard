@@ -367,7 +367,7 @@ and also iPads specifically.
 }
 
 .title-attribute {
-  font-family: "Google Sans", sans-serif !important;
+  font-family: "Poppins";
   color: #394f5a;
   font-weight: 500;
 }
@@ -416,6 +416,12 @@ and also iPads specifically.
 @media (max-width: 768px) {
   .custom-label {
     height: 0px !important;
+  }
+  .webhook-url-label {
+    text-align: left !important;
+    position: relative;
+    top: -17px;
+    margin-top: 16px;
   }
 }
 
@@ -588,32 +594,33 @@ input[type="text"]:disabled::placeholder {
   border-color: transparent transparent #f76949 transparent;
 }
 
-.card_title__underlined {
-  text-transform: none;
-  color: #566787;
-  margin-bottom: 0px;
-  height: 40px !important;
-  position: relative;
-  font-family: Google Sans, sans-serif;
-  height: 30px;
-  font-size: 16px;
-  margin-top: 10px;
-}
+// .card_title__underlined {
+//   text-transform: none;
+//   color: #566787;
+//   margin-bottom: 0px;
+//   height: 40px !important;
+//   position: relative;
+//   font-family: Google Sans, sans-serif;
+//   height: 30px;
+//   font-size: 16px;
+//   margin-top: 10px;
+//   z-index: 0;
+// }
 
-.card_title__underline {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: -1px;
-  border-bottom: 2px solid $brand-primary;
-  z-index: 1;
-}
+// .card_title__underline {
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   bottom: -1px;
+//   border-bottom: 2px solid $brand-primary;
+//   z-index: 1;
+// }
 
-.section-subtitle {
-  height: 20px;
-  border-top: 1px solid #ddd;
-  // width: calc((100% / 3) + 372px);
-}
+// .section-subtitle {
+//   height: 20px;
+//   border-top: 1px solid #ddd;
+//   // width: calc((100% / 3) + 372px);
+// }
 
 .onoffswitch-wrapper {
   float: right;
@@ -816,5 +823,29 @@ input[type="text"]:disabled::placeholder {
   display: block;
   font-weight: 100;
   margin-top: 3px;
+}
+
+
+// text-decoration: underline;
+.custom-link {
+  color: #0f62ff;
+  cursor:pointer;
+}
+
+.custom-link:hover {
+  text-decoration: underline;
+}
+
+.link-to-dialogflow-connector-doc{
+  margin-left: 8px;
+  vertical-align: middle;
+  color: #0f62ff;
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.link-to-dialogflow-connector-doc:hover {
+  text-decoration: underline;
 }
 

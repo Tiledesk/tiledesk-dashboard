@@ -6,21 +6,40 @@
   <!-- (click)="goBackToProjectsList() -->
   <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
     (click)="goBack()">keyboard_arrow_left</i>
-
   <!-- Webhook -->
   Webhook
-
 </p>
 
 <div class="main-content main-content-no-padding">
   <div class="container-fluid">
+    
+    <div class="row">
+      <div class="col-xs-12 link-to-automatic-assignment-doc"
+        style="background-color: rgb(241,241,241);margin-top: -17px;	padding: 20px 20px 10px 36px;">
+
+        <div style="font-size: 14px;font-weight: 400;margin-bottom: 6px;line-height: 20px;">
+          <span>
+            <svg style="width: 25px;height:auto; vertical-align: middle;" aria-hidden="true" focusable="false"
+              data-prefix="fab" data-icon="readme" class="svg-inline--fa fa-readme fa-w-18" role="img"
+              xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+              <path fill="#0f62ff"
+                d="M528.3 46.5H388.5c-48.1 0-89.9 33.3-100.4 80.3-10.6-47-52.3-80.3-100.4-80.3H48c-26.5 0-48 21.5-48 48v245.8c0 26.5 21.5 48 48 48h89.7c102.2 0 132.7 24.4 147.3 75 .7 2.8 5.2 2.8 6 0 14.7-50.6 45.2-75 147.3-75H528c26.5 0 48-21.5 48-48V94.6c0-26.4-21.3-47.9-47.7-48.1zM242 311.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5V289c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5V251zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm259.3 121.7c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5V228c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5v-22.8c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5V190z">
+              </path>
+            </svg>
+          </span>
+          <span class="webhook-link-to-doc" (click)="openWebhookDoc()">
+            {{'HowWebhooksWorks' | translate}}
+          </span>
+        </div>
+      </div>
+    </div>
 
     <div class="row">
-      <div class="col-sm-7 left-col-custom-padding">
-        <div class="card card-custom-margin">
+      <div class="col-sm-8 left-col-custom-padding">
+        <div class="card card--no-border card-custom-margin">
           <div class="card-header card-header-custom-bkgrnd">
 
-            <button class="btn btn-primary" style="padding: 8px 16px; margin: 0px;min-width: 146px;"
+            <button class="btn btn-primary webhook-add-subscription-btn" style="padding: 8px 16px; margin: 0px;min-width: 146px;"
               (click)="presentWebhookModal_inAddMode()">
               <span class="icon" style="padding-right: 8px;">
                 <i class="material-icons">add_circle</i>
@@ -54,7 +73,7 @@
                 <tr *ngIf="subscriptionsList && subscriptionsList?.length === 0">
                   <td colspan="2" style="text-align: center;">
                     <p style="font-size:1em; margin-bottom: 0px; margin-top: 10px; color:#7695a5; font-weight: 400">
-                      <i class="material-icons" style="vertical-align: middle; margin-bottom: 2px;color: #00bcd4;"> info
+                      <i class="material-icons" style="vertical-align: middle; margin-bottom: 2px;color: #3ea9f5;"> info
                       </i>
                       {{ "Webhook.NoWebhookSubscriptions" | translate }}
                     </p>
@@ -94,15 +113,33 @@
       </div>
 
       <!-- // RIGHT SIDEBAR -->
-      <div class="col-sm-5 right-col-custom-padding">
-        <div class="card card-custom-margin">
+      <div class="col-sm-4 right-col-custom-padding">
+        <div class="card card--no-border card-custom-margin">
           <div class="card-content">
-            <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 15px">
+            <!-- <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 15px">
               Webhook
-            </h4>
+            </h4> -->
+
+            <div class="row">
+              <div class="col-sm-12 col-md-12">
+                <h3 class="card_title__underlined">
+                  <span class="card_title__underline">
+                    {{ "QuickTips" | translate }}
+                  </span>
+                </h3>
+              </div>
+              <div class="col-sm-12 col-md-12">
+                <div class="section-subtitle"> </div>
+              </div>
+            </div>
+
+            <!-- <p style="color:#7695a5">
+              {{ "Webhook.MoreInfoWebhook" | translate }} <a href="https://developer.tiledesk.com/apis/webhooks"
+                target="_blank">https://developer.tiledesk.com/apis/webhooks</a>
+            </p> -->
 
             <p style="color:#7695a5">
-              {{ "Webhook.MoreInfoWebhook" | translate }} <a href="https://developer.tiledesk.com/apis/webhooks" target="_blank">https://developer.tiledesk.com/apis/webhooks</a>
+              {{ "WebhooksQuickTipsIntroduction" | translate }}
             </p>
           </div>
         </div>
@@ -208,7 +245,6 @@
 </div>
 
 <appdashboard-webhook-add-edit *ngIf="displayModal_AddEditWebhook === 'block'"
-  (closeModal)="closeModal_AddEditWebhook()" (createdWebhook)="showSecretModal($event)" (hasSavedSubscription)='onSaveSubscription()' [modalMode]="modalMode"
-  [selectWebhookId]="selectWebhookId">
+  (closeModal)="closeModal_AddEditWebhook()" (createdWebhook)="showSecretModal($event)"
+  (hasSavedSubscription)='onSaveSubscription()' [modalMode]="modalMode" [selectWebhookId]="selectWebhookId">
 </appdashboard-webhook-add-edit>
-

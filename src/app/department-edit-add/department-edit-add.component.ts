@@ -313,10 +313,7 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
     const elemMainContent = <HTMLElement>document.querySelector('.main-content');
     this.train_bot_sidebar_height = elemMainContent.clientHeight + 10 + 'px'
     this.logger.log('[DEPT-EDIT-ADD] - OPEN CREATE GROUP SIDEBAR -> RIGHT SIDEBAR HEIGHT', this.train_bot_sidebar_height);
-    // const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
 
-    // const elemFooter = <HTMLElement>document.querySelector('footer');
-    // elemFooter.setAttribute('style', 'display:none;');
 
   }
 
@@ -324,9 +321,6 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
   handleCloseCreateGroupSidebar(event) {
     this.OPEN_CREATE_GROUP_RIGHT_SIDEBAR = event;
     this.logger.log('[DEPT-EDIT-ADD] - CLOSE CREATE GROUP SIDEBAR ', this.OPEN_CREATE_GROUP_RIGHT_SIDEBAR);
-
-    // const elemFooter = <HTMLElement>document.querySelector('footer');
-    // elemFooter.setAttribute('style', '');
   }
 
   // HALDLE OUTPUT 'GROUP CREATED' * CREATE GROUP RIGHT SIDEBAR *
@@ -359,7 +353,7 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
     const elemMainContent = <HTMLElement>document.querySelector('.main-content');
     this.train_bot_sidebar_height = elemMainContent.clientHeight + 10 + 'px'
     this.logger.log('[DEPT-EDIT-ADD]  - OPEN CREATE BOT SIDEBAR -> RIGHT SIDEBAR HEIGHT', this.train_bot_sidebar_height);
-    // const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
+
     const elemFooter = <HTMLElement>document.querySelector('footer');
     elemFooter.setAttribute('style', 'display:none;');
     // _elemMainPanel.setAttribute('style', 'overflow-x: unset !important;');

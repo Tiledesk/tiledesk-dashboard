@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ElementRef, ViewChild, HostListener, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ElementRef, ViewChild, HostListener, OnDestroy, ViewEncapsulation, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { WsRequestsService } from '../../services/websocket/ws-requests.service';
@@ -29,6 +29,8 @@ import { avatarPlaceholder, getColorBck } from '../../utils/util';
 import { LoggerService } from '../../services/logger/logger.service';
 
 import 'firebase/database';
+import { ProjectService } from 'app/services/project.service';
+import { NgSelectComponent } from '@ng-select/ng-select';
 const swal = require('sweetalert');
 
 @Component({
@@ -213,7 +215,13 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   selectedPriority: any;
   priority_updated_successfully_msg: string;
   priority_update_failed: string;
-
+  current_selected_prjct: any;
+  imageStorage: any;
+  tag_name: string;
+  tag_selected_color = '#43B1F2';
+  tag_new_selected_color: string;
+ 
+  @ViewChild('Selecter') ngselect: NgSelectComponent;
   /**
    * Constructor
    * @param router 
@@ -253,8 +261,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     public translate: TranslateService,
     private tagsService: TagsService,
     public contactsService: ContactsService,
-    public logger: LoggerService
-
+    public logger: LoggerService,
+    private projectService: ProjectService
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate)
     this.jira_issue_types = [
@@ -264,6 +272,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   @ViewChild('cont') contEl: any;
+ 
 
   // -----------------------------------------------------------------------------------------------------
   // @ HostListener window:resize
@@ -390,10 +399,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       this.UPLOAD_ENGINE_IS_FIREBASE = true;
       const firebase_conf = this.appConfigService.getConfig().firebase;
       this.storageBucket = firebase_conf['storageBucket'];
+      this.imageStorage = firebase_conf['storageBucket']
       this.logger.log('[WS-REQUESTS-MSGS] IMAGE STORAGE ', this.storageBucket, 'usecase firebase')
     } else {
       this.UPLOAD_ENGINE_IS_FIREBASE = false;
       this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
+      this.imageStorage = this.appConfigService.getConfig().SERVER_BASE_URL;
       this.logger.log('[WS-REQUESTS-MSGS] IMAGE STORAGE ', this.baseUrl, 'usecase native')
     }
   }
@@ -419,10 +430,21 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.CHAT_PANEL_MODE = false
     if (this.router.url.indexOf('/request-for-panel') !== -1) {
       this.CHAT_PANEL_MODE = true;
-      this.logger.log('[WS-REQUESTS-MSGS] - CHAT_PANEL_MODE »»» ', this.CHAT_PANEL_MODE)
+      this.logger.log('[WS-REQUESTS-MSGS] - CHAT_PANEL_MODE »»» ', this.CHAT_PANEL_MODE);
+
+      const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
+      // console.log('[WS-REQUESTS-MSGS] - CHAT_PANEL_MODE »»» _elemMainPanel', _elemMainPanel);
+      _elemMainPanel.classList.add("main-panel-chat-panel-mode");
+
     } else {
       this.CHAT_PANEL_MODE = false;
-      this.logger.log('[WS-REQUESTS-MSGS] - CHAT_PANEL_MODE »»» ', this.CHAT_PANEL_MODE)
+      this.logger.log('[WS-REQUESTS-MSGS] - CHAT_PANEL_MODE »»» ', this.CHAT_PANEL_MODE);
+      const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
+      // console.log('[WS-REQUESTS-MSGS] - CHAT_PANEL_MODE »»» _elemMainPanel', _elemMainPanel);
+      if (_elemMainPanel.classList.contains('main-panel-chat-panel-mode')) {
+        _elemMainPanel.classList.remove("main-panel-chat-panel-mode");
+      }
+
     }
   }
 
@@ -500,8 +522,25 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
           this.id_project = project._id;
           this.project_name = project.name;
+          this.findCurrentProjectAmongAll(this.id_project)
         }
       });
+  }
+
+  findCurrentProjectAmongAll(projectId: string) {
+    this.projectService.getProjects().subscribe((projects: any) => {
+      // const current_selected_prjct = projects.filter(prj => prj.id_project.id === projectId);
+      // console.log('[SIDEBAR] - GET PROJECTS - current_selected_prjct ', current_selected_prjct);
+
+      this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
+      this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - current_selected_prjct ', this.current_selected_prjct);
+
+      this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects ', projects);
+    }, error => {
+      this.logger.error('[WS-REQUESTS-MSGS] - GET PROJECTS - ERROR: ', error);
+    }, () => {
+      this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS * COMPLETE * ');
+    });
   }
 
   // -------------------------------------------------------------
@@ -607,7 +646,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.request = wsrequest;
 
         if (this.request) {
-          this.logger.log('[WS-REQUESTS-MSGS] - this.request: ', this.request);
+          //  console.log('[WS-REQUESTS-MSGS] - this.request: ', this.request);
 
           // -------------------------------------------------------------------
           // User Agent
@@ -1045,21 +1084,21 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           // DISPLAY / HIDE THE VIEW 'CONTACT' DETAIL BUTTON 
           // AND GET THE CONTACT-ID USED TO GO TO THE CONTACT DETAILS
           // -----------------------------------------------------------
-          if (this.request) {
 
-            if (this.request.lead) {
-              this.contact_id = this.request.lead._id
-              this.logger.log('[WS-REQUESTS-MSGS]: NODEJS REQUEST > CONTACT ID ', this.contact_id);
-              this.NODEJS_REQUEST_CNTCT_FOUND = true;
-              this.logger.log('[WS-REQUESTS-MSGS]: NODEJS REQUEST > FOUND ? ', this.NODEJS_REQUEST_CNTCT_FOUND);
-            } else {
-              this.NODEJS_REQUEST_CNTCT_FOUND = false;
-              this.logger.log('[WS-REQUESTS-MSGS]: NODEJS REQUEST > FOUND ? ', this.NODEJS_REQUEST_CNTCT_FOUND);
-            }
-
+          this.logger.log('[WS-REQUESTS-MSGS]: NODEJS REQUEST > CONTACT ID ', this.request);
+          if (this.request.lead) {
+            this.contact_id = this.request.lead._id
+            this.logger.log('[WS-REQUESTS-MSGS]: NODEJS REQUEST > CONTACT ID ', this.contact_id);
+            this.NODEJS_REQUEST_CNTCT_FOUND = true;
+            this.logger.log('[WS-REQUESTS-MSGS]: NODEJS REQUEST > FOUND ? ', this.NODEJS_REQUEST_CNTCT_FOUND);
+          } else {
+            this.NODEJS_REQUEST_CNTCT_FOUND = false;
+            this.logger.log('[WS-REQUESTS-MSGS]: NODEJS REQUEST > FOUND ? ', this.NODEJS_REQUEST_CNTCT_FOUND);
           }
 
-          this.createAgentsArrayFromParticipantsId(this.members_array, this.requester_id)
+
+
+          this.createAgentsArrayFromParticipantsId(this.members_array, this.requester_id, this.UPLOAD_ENGINE_IS_FIREBASE, this.imageStorage)
           this.createRequesterAvatar(this.request.lead);
           this.IS_CURRENT_USER_JOINED = this.currentUserIdIsInParticipants(this.request.participants, this.currentUserID, this.request.request_id);
           this.logger.log('[WS-REQUESTS-MSGS] - IS_CURRENT_USER_JOINED? ', this.IS_CURRENT_USER_JOINED)
@@ -1232,28 +1271,50 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.logger.log('[WS-REQUESTS-MSGS] - toggleAddTagInputAndGetTags - DISPLAY TAG INPUT : ', this.diplayAddTagInput);
   }
 
-
   addTag() {
     this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - this.tag TO ADD: ', this.tag);
     const foundtag = this.tagsList.filter((obj: any) => {
       return obj._id === this.tag;
     });
-
+    let tagObject = {}
     this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - foundtag: ', foundtag);
-    const tagObject = { tag: foundtag[0].tag, color: foundtag[0].color }
-
+    if (foundtag.length > 0) {
+      tagObject = { tag: foundtag[0].tag, color: foundtag[0].color }
+    }
     this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - tagObject: ', tagObject);
-    this.tagsArray.push(tagObject);
-
     setTimeout(() => {
       this.tag = null;
     })
-
-    // this.removeTagFromTaglistIfAlreadyAssigned(this.tagsList, this.tagsArray);
-    this.getTag()
+    const tagObjectsize = Object.keys(tagObject).length
+    this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - tagObject LENGTH: ', tagObjectsize);
+    if (tagObjectsize > 0) {
+      this.tagsArray.push(tagObject);
+      this.getTag()
+    }
 
     this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - TAGS ARRAY AFTER PUSH: ', this.tagsArray);
-    this.wsRequestsService.updateRequestsById_UpdateTag(this.id_request, this.tagsArray)
+    // const firstTagObjectsize = Object.keys(this.tagsArray[0]).length
+    // console.log('[WS-REQUESTS-MSGS] - ADD TAG - TAG firstTagObjectsize: ', firstTagObjectsize);
+    // console.log('[WS-REQUESTS-MSGS] - ADD TAG - TAG this.tagsArray.length: ', this.tagsArray.length);
+    if (tagObjectsize > 0) {
+      this.updateRequestTags(this.id_request, this.tagsArray, 'add')
+    }
+    // this.wsRequestsService.updateRequestsById_UpdateTag(this.id_request, this.tagsArray)
+    //   .subscribe((data: any) => {
+    //     this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - RES: ', data);
+    //   }, (err) => {
+    //     this.logger.error('[WS-REQUESTS-MSGS] - ADD TAG - ERROR: ', err);
+    //     this.notify.showWidgetStyleUpdateNotification(this.create_label_error, 4, 'report_problem');
+    //   }, () => {
+    //     this.logger.log('[WS-REQUESTS-MSGS] * COMPLETE *');
+    //     this.notify.showWidgetStyleUpdateNotification(this.create_label_success, 2, 'done');
+    //   });
+  }
+
+  updateRequestTags(id_request, tagsArray, fromaction) {
+    this.logger.log('[WS-REQUESTS-MSGS] - UPDATE REQUEST TAGS fromaction: ', fromaction);
+    this.logger.log('[WS-REQUESTS-MSGS] - UPDATE REQUEST TAGS  tagsArray: ', tagsArray);
+    this.wsRequestsService.updateRequestsById_UpdateTag(id_request, tagsArray)
       .subscribe((data: any) => {
         this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - RES: ', data);
       }, (err) => {
@@ -1278,11 +1339,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.logger.log('[WS-REQUESTS-MSGS] - GET TAGS - tagsArray', this.tagsArray);
         this.logger.log('[WS-REQUESTS-MSGS] - GET TAGS - tagsList length', this.tagsList.length);
 
-        if (this.tagsList.length > 0) {
-          this.typeALabelAndPressEnter = "Type a label and press Enter";
-        } else {
-          this.typeALabelAndPressEnter = "No item Found";
-        }
+        // if (this.tagsList.length > 0) {
+        this.typeALabelAndPressEnter = this.translate.instant('SelectATagOrCreateANewOne');
+        // } else {
+        //   this.typeALabelAndPressEnter = this.translate.instant('Tags.YouHaveNotAddedAnyTags');
+        // }
         // -----------------------------------------------------------------------------------
         // Splice tags from the tagslist the tags already present in the "this.request" object
         // ------------------------------------------------------------------------------------
@@ -1296,6 +1357,92 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       this.loadingTags = false
     });
   }
+
+  // tag_name: string;
+  // tag_selected_color = '#43B1F2';
+  // tag_new_selected_color: string;
+
+  tagSelectedColor(hex: any) {
+    this.logger.log('[WS-REQUESTS-MSGS] - TAG SELECTED COLOR ', hex);
+    this.tag_selected_color = hex;
+  }
+
+  createTag() {
+    this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG - TAG-NAME: ', this.tag_name, ' TAG-COLOR: ', this.tag_selected_color)
+    this.ngselect.close()
+
+    if (this.tag_name && this.tag_name.length > 0) {
+      // this.hasError = false;
+
+      this.tagsService.createTag(this.tag_name, this.tag_selected_color)
+        .subscribe((tag: any) => {
+          this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG - RES ', tag);
+
+          const tagObject = { tag: tag.tag, color: tag.color }
+          this.tagsArray.push(tagObject);
+
+          this.updateRequestTags(this.id_request, this.tagsArray, 'create')
+
+        }, (error) => {
+          this.logger.error('[WS-REQUESTS-MSGS] - CREATE TAG - ERROR  ', error);
+          this.notify.showWidgetStyleUpdateNotification(this.create_label_error, 4, 'report_problem');
+        }, () => {
+          this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG * COMPLETE *');
+          // this.notify.showWidgetStyleUpdateNotification(this.create_label_success, 2, 'done');
+
+          this.tag_name = '';
+          this.tag_selected_color = '#43B1F2';
+
+          this.getTag();
+        });
+
+    } else {
+      // this.hasError = true;
+    }
+  }
+
+  onPressEnterInIputTypeNewTag() {
+    this.logger.log('[WS-REQUESTS-MSGS] - ON PRESS ENTER IN INPUT TYPE NEW TAG');
+    if (this.tag_name.length > 0) {
+      this.createTag();
+      const inputElm = <HTMLElement>document.querySelector('.tag-name-in-conv-detail');
+      inputElm.blur();
+      this.ngselect.close()
+     
+    }
+  }
+
+  onFocusInIputTypeNewTag() {
+    this.logger.log('[WS-REQUESTS-MSGS] - ON FOCUS IN INPUT TYPE NEW TAG tagsList', this.tagsList);
+    for (let i = 0; i < this.tagsList.length; i++) {
+      this.tagsList[i].disabled = true
+      this.tagsList = this.tagsList.slice(0)
+    }
+  }
+
+  onBlurIputTypeNewTag() {
+    this.logger.log('[WS-REQUESTS-MSGS] - ON  BLUR TYPE NEW TAG tagsList', this.tagsList);
+    for (let i = 0; i < this.tagsList.length; i++) {
+      this.tagsList[i].disabled = false
+      this.tagsList = this.tagsList.slice(0)
+    }
+  }
+
+  @HostListener('window:click', ['$event.target'])
+  onClick(targetElement: any) {
+
+    if (targetElement.classList.contains('ng-option-disabled')) {
+      this.logger.log('[WS-REQUESTS-MSGS] HostListener onClick', targetElement);
+      for (let i = 0; i < this.tagsList.length; i++) {
+        this.tagsList[i].disabled = false
+        this.tagsList = this.tagsList.slice(0)
+      }
+      const inputElm = <HTMLElement>document.querySelector('.tag-name-in-conv-detail');
+      inputElm.blur()
+      this.logger.log(`inputElm`, inputElm);
+    }
+  }
+
 
   // -----------------------------------------------------------------------------------
   // Splice tags from the tagslist the tags already present in the "this.request" object
@@ -2143,6 +2290,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.logger.log('[WS-REQUESTS-MSGS] - LEAVE THE GROUP * COMPLETE');
         this.SHOW_CIRCULAR_SPINNER = false;
         this.LEAVE_CHAT_ERROR = false;
+        this.HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST = false;
       });
   }
 
@@ -2269,6 +2417,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   openChatAtSelectedConversation() {
     this.openChatBtn.nativeElement.blur();
+    localStorage.setItem('last_project', JSON.stringify(this.current_selected_prjct))
     this.openChatToTheSelectedConversation(this.CHAT_BASE_URL, this.id_request, this.request.lead.fullname)
   }
 
@@ -2310,6 +2459,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       this.logger.log('[HOME] - cannot focus closed or nonexistant window');
     }
   }
+
+
   chatWithAgent(agentId, agentFirstname, agentLastname) {
     this.logger.log('[WS-REQUESTS-MSGS] - CHAT WITH AGENT - agentId: ', agentId, ' - agentFirstname: ', agentFirstname, ' - agentLastname: ', agentLastname);
 
@@ -2334,10 +2485,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
     // ---- new
-
+    localStorage.setItem('last_project', JSON.stringify(this.current_selected_prjct))
     let baseUrl = this.CHAT_BASE_URL + '#/conversation-detail/'
     let url = baseUrl + agentId + '/' + agentFullname + '/new'
-    const myWindow = window.open(url, 'Tiledesk - Open Source Live Chat');
+    const myWindow = window.open(url, '_self', 'Tiledesk - Open Source Live Chat');
     myWindow.focus();
 
 

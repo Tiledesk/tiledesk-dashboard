@@ -46,7 +46,7 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
   contactUsEmail: string;
-
+  IS_AVAILABLE: boolean;
   constructor(
     public notify: NotifyService,
     public auth: AuthService,
@@ -80,7 +80,15 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
     this.getWidgetUrl();
     this.getChatUrl();
     this.translateModalOnlyOwnerCanManageProjectAccount();
+    this.getUserAvailability()
   }
+
+  getUserAvailability() {
+    this.usersService.user_is_available_bs.subscribe((user_available) => {
+        this.IS_AVAILABLE = user_available;
+        this.logger.log('[NAVBAR]- USER IS AVAILABLE ', this.IS_AVAILABLE);
+    });
+}
 
 
   translateModalOnlyOwnerCanManageProjectAccount() {
@@ -199,27 +207,18 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
       }
 
     } else {
-      this.presentModalOnlyOwnerCanManageTheAccountPlan();
+      this.notify.closeDataExportNotAvailable()
+      this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles );
     }
   }
 
-  presentModalOnlyOwnerCanManageTheAccountPlan() {
-    const el = document.createElement('div')
-    el.innerHTML = this.onlyOwnerCanManageTheAccountPlanMsg + '. ' + "<a href='https://docs.tiledesk.com/knowledge-base/understanding-default-roles/' target='_blank'>" + this.learnMoreAboutDefaultRoles + "</a>"
 
-    swal({
-      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      content: el,
-      icon: "info",
-      // buttons: true,
-      button: {
-        text: "OK",
-      },
-      dangerMode: false,
-    })
 
+  onLogoutModalHandled() {
+    this.notify.closeLogoutModal()
+    this.auth.signOut('userdetailsidebar');
+    
   }
-
 
 
   // closeExportCSVnotAvailable

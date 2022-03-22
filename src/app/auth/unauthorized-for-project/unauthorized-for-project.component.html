@@ -21,7 +21,7 @@
             {{ "UnauthorizedPage.OopsYoudontBelongToTheProject" | translate }}
           </h3>
         </div>
-        <div class="col-md-12">
+        <div *ngIf="CHAT_PANEL_MODE === false" class="col-md-12">
           <button class="btn btn-lg btn-primary" style="margin-top: 64px;" (click)="goToProjects()">
 
             {{ "GoToYourProjects" | translate }}

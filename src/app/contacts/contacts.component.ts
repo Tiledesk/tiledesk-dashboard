@@ -476,9 +476,6 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     //   // ---------------------------------------------------------------------
     //   // Programmatically open Dropdown Menu
     //   // ---------------------------------------------------------------------
-    //   const elemInputGroupDropdown = <HTMLInputElement>document.querySelector('#dropdown_input_group_btn');
-    //   this.logger.log('!!! CONTACTS - elemInputGroupDropdown ', elemInputGroupDropdown);
-
 
     if (this.selectedContactEmail) {
       const elemBtnDropdown = <HTMLInputElement>document.querySelector('#dropdown_btn');
@@ -495,14 +492,6 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
         ev.stopPropagation();
       }
     }
-
-    // const elemDropdownMenu = <HTMLInputElement>document.querySelector('.dropdown-menu');
-    // this.logger.log('[CONTACTS-COMP] - elemDropdownMenu ', elemDropdownMenu);
-
-
-    // elemDropdownMenu.addEventListener(
-    //   "click", function (e) {   e.stopPropagation();  }   );
-
   }
 
   clearFullText() {

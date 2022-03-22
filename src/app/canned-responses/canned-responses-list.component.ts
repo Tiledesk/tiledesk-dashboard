@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { CannedResponsesService } from '../services/canned-responses.service';
 import { TranslateService } from '@ngx-translate/core';
 import { NotifyService } from '../core/notify.service';
 import { LoggerService } from '../services/logger/logger.service';
+import { AuthService } from 'app/core/auth.service';
 
 @Component({
   selector: 'appdashboard-canned-responses-list',
@@ -19,17 +20,29 @@ export class CannedResponsesListComponent implements OnInit {
   deleteErrorMsg: string;
   deleteSuccessMsg: string;
   showSpinner = true;
+  innerWidthLessThan992: boolean;
+  IS_OPEN_SETTINGS_SIDEBAR: boolean;
 
   constructor(
     public cannedResponsesService: CannedResponsesService,
     public translate: TranslateService,
     private notify: NotifyService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private auth: AuthService,
   ) { }
 
   ngOnInit() {
     this.getResponses();
     this.translateNotificationMsgs();
+    // this.getMainPanelAndSetOverflow();
+    this.listenSidebarIsOpened();
+  }
+
+  listenSidebarIsOpened() {
+    this.auth.settingSidebarIsOpned.subscribe((isopened) => {
+      this.logger.log('[PRJCT-EDIT-ADD] SETTINGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
+      this.IS_OPEN_SETTINGS_SIDEBAR = isopened
+    });
   }
 
   translateNotificationMsgs() {
@@ -38,9 +51,40 @@ export class CannedResponsesListComponent implements OnInit {
         this.logger.log('[CANNED-RES-LIST]  translateNotificationMsgs text', translation)
         this.deleteErrorMsg = translation.DeleteCannedResError;
         this.deleteSuccessMsg = translation.DeleteCannedResSuccess;
-   
+
       });
   }
+
+  getMainPanelAndSetOverflow() {
+    const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
+    this.logger.log('[CANNED-RES-LIST] elemMainPanel ', elemMainPanel)
+    const elemMainPanelClientWidth = elemMainPanel.clientWidth
+    this.logger.log('[CANNED-RES-LIST] elemMainPanelClientWidth  ', elemMainPanelClientWidth)
+    if (elemMainPanelClientWidth < 992) {
+      this.innerWidthLessThan992 = true;
+      elemMainPanel.style.overflowX = "visible"
+    }
+  
+  }
+
+  // @HostListener('window:resize', ['$event'])
+  // onResize(event: any) {
+ 
+  //   const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
+  //   this.logger.log('[CANNED-RES-LIST] elemMainPanel ', elemMainPanel)
+  //   const innerWidth = event.target.innerWidth;
+  //   this.logger.log('[CANNED-RES-LIST] onResize innerWidth', innerWidth)
+  //   if (innerWidth < 992) {
+  //     this.innerWidthLessThan992 = true;
+  //     elemMainPanel.style.overflowX = "visible"
+  //   } else {
+  //     this.innerWidthLessThan992 = false;
+  //     elemMainPanel.style.overflowX = "hidden"
+  //   }
+  // }
+
+
+
 
 
   //   "NotificationMsgs": {

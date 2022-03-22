@@ -83,7 +83,7 @@ top: 51px;">Open Modal</button> -->
 
               <div class="form-group" style="margin-top: 0px;">
                 <input id="canned-response-title" name="canned-response-title" [(ngModel)]="cannedResponseTitle"
-                  value="" placeholder="{{ 'Enter canned response title'}}" class="form-control" />
+                  value="" placeholder="{{ 'CannedResponses.EnterCannedResponseTitle' | translate }}" class="form-control" />
               </div>
             </div>
           </div>
@@ -127,7 +127,7 @@ top: 51px;">Open Modal</button> -->
                   name="canned-response-message" [ngClass]="{'texarea-is-empty' : texareaIsEmpty === true}"
                   [(ngModel)]="cannedResponseMessage" (ngModelChange)="cannedResponseMessageChanged($event)" rows="4"
                   class="form-control canned-response-texarea"
-                  placeholder="{{'Write a canned response message to send to your visitors' | translate}}"> </textarea>
+                  placeholder="{{'CannedResponses.WriteMsgToSendToYourVisitors' | translate}}"> </textarea>
 
                 <span *ngIf="texareaIsEmpty === true" class="error-message" style="color: #f6303a;font-size: 14px;">
                   {{'CannedResponses.PleaseFillOutThisField' | translate }}

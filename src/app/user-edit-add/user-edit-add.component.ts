@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
 import { AppConfigService } from '../services/app-config.service';
 import { Location } from '@angular/common';
 import { BrandService } from '../services/brand.service';
-import { helpdocurl_users_role } from '../utils/util';
+import { URL_understanding_default_roles } from '../utils/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { LoggerService } from '../services/logger/logger.service';
@@ -90,8 +90,8 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
 
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
-  KNOWLEDGE_BASE_USER_ROLE_URL = helpdocurl_users_role;
-  profile_name : string;
+  KNOWLEDGE_BASE_USER_ROLE_URL = URL_understanding_default_roles;
+  profile_name: string;
 
   private unsubscribe$: Subject<any> = new Subject<any>();
   constructor(
@@ -378,7 +378,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
       if (this.profile_name !== 'enterprise') {
         this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
       } else if (this.profile_name === 'enterprise') {
-          this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+        this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
       }
     } else {
       this.presentModalOnlyOwnerCanManageTheAccountPlan();
@@ -386,20 +386,8 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
   }
 
   presentModalOnlyOwnerCanManageTheAccountPlan() {
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
     // https://github.com/t4t5/sweetalert/issues/845
-    const el = document.createElement('div')
-    el.innerHTML = this.onlyOwnerCanManageTheAccountPlanMsg + '. ' + "<a href='https://docs.tiledesk.com/knowledge-base/understanding-default-roles/' target='_blank'>" + this.learnMoreAboutDefaultRoles + "</a>"
-
-    swal({
-      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      content: el,
-      icon: "info",
-      // buttons: true,
-      button: {
-        text: "OK",
-      },
-      dangerMode: false,
-    })
   }
 
 

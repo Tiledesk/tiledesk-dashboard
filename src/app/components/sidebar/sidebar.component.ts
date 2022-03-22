@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, NgModule, ElementRef, ViewChild, HostListener } from '@angular/core';
+import { Component, OnInit, AfterViewInit, NgModule, ElementRef, ViewChild, HostListener, EventEmitter, Output, Input } from '@angular/core';
 
 import { Router, NavigationEnd } from '@angular/router';
 import { Location } from '@angular/common';
@@ -29,6 +29,7 @@ import { environment } from '../../../environments/environment';
 import { BrandService } from '../../services/brand.service';
 import { WsRequestsService } from './../../services/websocket/ws-requests.service';
 import { LoggerService } from './../../services/logger/logger.service';
+import { avatarPlaceholder, getColorBck } from '../../utils/util'
 declare const $: any;
 
 declare interface RouteInfo {
@@ -70,7 +71,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     tparams: any;
     sidebarLogoWhite_Url: string;
     sidebarLogoNoText: string;
-    hidechangelogrocket: boolean;
+    // hidechangelogrocket: boolean;
 
     // background_bottom_section = brand.sidebar.background_bottom_section
     // public_Key = environment.t2y12PruGU9wUtEGzBJfolMIgK; // now get from appconfig
@@ -79,6 +80,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     @ViewChild('openchatbtn') private elementRef: ElementRef;
     @ViewChild('homebtn') private homeBtnElement: ElementRef;
 
+
+    countClickOnOpenUserDetailSidebar: number = 0
     menuItems: any[];
 
     checked_route: string;
@@ -107,7 +110,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     // IS_UNAVAILABLE = false;
     IS_AVAILABLE: boolean;
     IS_BUSY: boolean;
-    SIDEBAR_IS_SMALL: boolean = false;
+    SIDEBAR_IS_SMALL: boolean = true;
     projectUser_id: string;
 
     project: Project;
@@ -148,12 +151,39 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     WIDGET_ROUTE_IS_ACTIVE: boolean;
     ANALITYCS_ROUTE_IS_ACTIVE: boolean;
     HOME_ROUTE_IS_ACTIVE: boolean;
-    TRIGGER_ROUTE_IS_ACTIVE: boolean;
     APPS_ROUTE_IS_ACTIVE: boolean;
     NOTIFICATION_EMAIL_IS_ACTIVE: boolean;
     YOUR_PROJECT_ROUTE_IS_ACTIVE: boolean;
     AUTOLOGIN_ROUTE_IS_ACTIVE: boolean;
+    // settings route
+    TRIGGER_ROUTE_IS_ACTIVE: boolean;
+    TAG_ROUTE_IS_ACTIVE: boolean;
+    CANNED_RESPONSES_ROUTE_IS_ACTIVE: boolean;
+    DEPTS_ROUTE_IS_ACTIVE: boolean;
+    EDIT_DEPT_ROUTE_IS_ACTIVE: boolean;
+    TEAMMATES_ROUTE_IS_ACTIVE: boolean;
+    GROUPS_ROUTE_IS_ACTIVE: boolean;
+    CREATE_GROUP_ROUTE_IS_ACTIVE: boolean;
+    EDIT_GROUP_ROUTE_IS_ACTIVE: boolean;
+    WIDGET_SETUP_ROUTE_IS_ACTIVE: boolean;
+    CHATBOT_ROUTE_IS_ACTIVE: boolean;
+    CREATE_FAQ_ROUTE_IS_ACTIVE: boolean;
+    EDIT_FAQ_ROUTE_IS_ACTIVE: boolean;
+    BOT_TEST_ROUTE_IS_ACTIVE: boolean;
+    PROJECT_SETTINGS_ROUTE_IS_ACTIVE: boolean;
+    ENTERPRISE_NOTIFICATION_EMAIL_ROUTE_IS_ACTIVE: boolean;
+    ENTERPRISE_SMTP_SETTINGS_ROUTE_IS_ACTIVE: boolean;
+    PRJCT_SETTINGS_WEBHOOK_ROUTE_IS_ACTIVE: boolean;
+    PRJCT_SETTINGS_PAYMENTS_ROUTE_IS_ACTIVE: boolean;
+    INVITE_TEAMMATE_ROUTE_IS_ACTIVE: boolean;
+    EDIT_PROJECT_USER_ROUTE_IS_ACTIVE: boolean;
+    OPERATING_HOURS_ROUTE_IS_ACTIVE: boolean;
+    CONV_DETAIL_ROUTE_IS_ACTIVE: boolean;
+    CONTACT_EDIT_ROUTE_IS_ACTIVE: boolean;
+    CONTACT_CONVS_ROUTE_IS_ACTIVE: boolean;
+
     prjct_profile_name: string;
+
     prjct_trial_expired: boolean;
     prjc_trial_days_left: number
     prjc_trial_days_left_percentage: number
@@ -166,14 +196,22 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     isVisibleCAR: boolean;
     isVisibleLBS: boolean;
     isVisibleAPP: boolean;
+    isVisiblePAY: boolean;
     storageBucket: string;
     baseUrl: string;
     default_dept_id: string;
     browserLang: string;
-    dsbrd_lang : string;
+    dsbrd_lang: string;
     tlangparams: any
     flag_url: string;
+    tooltip_text_for_availability_status: string
+    plan_subscription_is_active: boolean;
+    plan_name: string;
+    _prjct_profile_name: string;
+    plan_type: string;
+    prjct_name: string;
     private unsubscribe$: Subject<any> = new Subject<any>();
+    current_selected_prjct: any;
 
     constructor(
         private router: Router,
@@ -185,12 +223,12 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         private usersLocalDbService: LocalDbService,
         private notify: NotifyService,
         private uploadImageService: UploadImageService,
+        private uploadImageNativeService: UploadImageNativeService,
         private translate: TranslateService,
         public appConfigService: AppConfigService,
         private deptService: DepartmentService,
         public brandService: BrandService,
         public wsRequestsService: WsRequestsService,
-        private uploadImageNativeService: UploadImageNativeService,
         private logger: LoggerService
     ) {
         this.logger.log('[SIDEBAR] !!!!! HELLO SIDEBAR')
@@ -200,7 +238,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.tparams = brand;
         if (brand) {
             this.sidebarLogoWhite_Url = brand['company_logo_white__url'];
-            this.hidechangelogrocket = brand['sidebar__hide_changelog_rocket'];
             this.sidebarLogoNoText = brand['company_logo_no_text__url'];
         }
     }
@@ -231,7 +268,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.getOSCODE();
 
         this.brandLog();
-        this.getHasOpenBlogKey()
+        // this.getHasOpenBlogKey()
         this.getChatUrl();
         this.isMac();
         this.listenHasDeleteUserProfileImage();
@@ -245,9 +282,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             this.user = user;
 
             if (user) {
+                this.createUserAvatar(user)
                 this.currentUserId = user._id;
                 this.logger.log('[SIDEBAR] Current USER ID ', this.currentUserId);
-                
+
                 const stored_preferred_lang = localStorage.getItem(this.user._id + '_lang')
 
                 if (stored_preferred_lang) {
@@ -256,27 +294,46 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                     this.flag_url = "assets/img/language_flag/" + stored_preferred_lang + ".png"
 
                     this.logger.log('[SIDEBAR] flag_url (from stored_preferred_lang) ', this.flag_url)
-                 
+
                     this.logger.log('[SIDEBAR] stored_preferred_lang ', stored_preferred_lang)
                 } else {
                     this.browserLang = this.translate.getBrowserLang();
-                    this.dsbrd_lang = this.browserLang; 
+                    this.dsbrd_lang = this.browserLang;
                     this.getLangTranslation(this.dsbrd_lang)
                     this.logger.log('[SIDEBAR] - browser_lang ', this.browserLang)
                     this.flag_url = "assets/img/language_flag/" + this.browserLang + ".png"
-                  
+
                     this.logger.log('[SIDEBAR] flag_url (from browser_lang) ', this.flag_url)
                 }
             }
         });
     }
 
-     getLangTranslation(dsbrd_lang_code) {
+
+
+    createUserAvatar(user) {
+        this.logger.log('[USERS] - createProjectUserAvatar ', user)
+        let fullname = ''
+        if (user && user.firstname && user.lastname) {
+            fullname = user.firstname + ' ' + user.lastname
+            user['fullname_initial'] = avatarPlaceholder(fullname)
+            user['fillColour'] = getColorBck(fullname)
+        } else if (user && user.firstname) {
+            fullname = user.firstname
+            user['fullname_initial'] = avatarPlaceholder(fullname)
+            user['fillColour'] = getColorBck(fullname)
+        } else {
+            user['fullname_initial'] = 'N/A'
+            user['fillColour'] = 'rgb(98, 100, 167)'
+        }
+    }
+
+    getLangTranslation(dsbrd_lang_code) {
         this.translate.get(dsbrd_lang_code)
-        .subscribe((translation: any) => {
-            this.logger.log('[SIDEBAR] getLangTranslation', translation)
-            this.tlangparams = {language_name: translation}
-        });
+            .subscribe((translation: any) => {
+                this.logger.log('[SIDEBAR] getLangTranslation', translation)
+                this.tlangparams = { language_name: translation }
+            });
     }
 
     getChatUrl() {
@@ -284,18 +341,18 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         // this.logger.log('[SIDEBAR] AppConfigService getAppConfig CHAT_BASE_URL', this.CHAT_BASE_URL);
     }
 
-    getHasOpenBlogKey() {
-        const hasOpenedBlog = this.usersLocalDbService.getStoredChangelogDate();
-        this.logger.log('[SIDEBAR] »»»»»»»»» hasOpenedBlog ', hasOpenedBlog);
-        if (hasOpenedBlog === true) {
-            this.hidechangelogrocket = true;
-        }
-    }
+    // getHasOpenBlogKey() {
+    //     const hasOpenedBlog = this.usersLocalDbService.getStoredChangelogDate();
+    //     this.logger.log('[SIDEBAR] »»»»»»»»» hasOpenedBlog ', hasOpenedBlog);
+    //     if (hasOpenedBlog === true) {
+    //         this.hidechangelogrocket = true;
+    //     }
+    // }
 
     brandLog() {
         // this.logger.log('BRAND_JSON - SIDEBAR ', brand);
         this.logger.log('[SIDEBAR] BRAND_JSON - sidebarlogourl ', this.sidebarLogoWhite_Url);
-        this.logger.log('[SIDEBAR] BRAND_JSON - hidechangelogrocket ', this.hidechangelogrocket);
+
     }
 
     getProfileImageStorage() {
@@ -402,6 +459,17 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                     this.isVisibleAPP = true;
                 }
             }
+
+            if (key.includes("PAY")) {
+
+                let pay = key.split(":");
+
+                if (pay[1] === "F") {
+                    this.isVisiblePAY = false;
+                } else {
+                    this.isVisiblePAY = true;
+                }
+            }
         });
 
         if (!this.public_Key.includes("CAR")) {
@@ -415,39 +483,30 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         if (!this.public_Key.includes("APP")) {
             this.isVisibleAPP = false;
         }
+        if (!this.public_Key.includes("PAY")) {
+            this.isVisiblePAY = false;
+        }
+
     }
 
 
     getCurrentRoute() {
         this.router.events.filter((event: any) => event instanceof NavigationEnd)
             .subscribe(event => {
-                // this.logger.log('[SIDEBAR] NavigationEnd ', event.url);
-
-                // this.nav_project_id !== 'email' &&
-                // url_segments[1] !== 'user' &&
-                // url_segments[1] !== 'handle-invitation' &&
-                // url_segments[1] !== 'signup-on-invitation' &&
-                // url_segments[1] !== 'resetpassword' &&
-                // url_segments[1] !== 'autologin' &&
-                // current_url !== '/projects'
 
                 if (event.url.indexOf('/autologin') !== -1) {
                     this.logger.log('[SIDEBAR] NavigationEnd - THE activities-demo route IS ACTIVE  ', event.url);
                     this.AUTOLOGIN_ROUTE_IS_ACTIVE = true;
-                    // const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
-                    // this.logger.log('[SIDEBAR] NavigationEnd - elemMainPanel  ', elemMainPanel);
-                    // elemMainPanel.style.width = "100% !important"
+
                 } else {
                     // this.logger.log('[SIDEBAR] NavigationEnd - THE activities-demo route IS NOT ACTIVE  ', event.url);
                     this.AUTOLOGIN_ROUTE_IS_ACTIVE = false;
                 }
-                
+
                 if (event.url === '/projects') {
                     this.logger.log('[SIDEBAR] NavigationEnd - THE activities-demo route IS ACTIVE  ', event.url);
                     this.YOUR_PROJECT_ROUTE_IS_ACTIVE = true;
-                    // const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
-                    // this.logger.log('[SIDEBAR] NavigationEnd - elemMainPanel  ', elemMainPanel);
-                    // elemMainPanel.style.width = "100% !important"
+
                 } else {
                     // this.logger.log('[SIDEBAR] NavigationEnd - THE activities-demo route IS NOT ACTIVE  ', event.url);
                     this.YOUR_PROJECT_ROUTE_IS_ACTIVE = false;
@@ -501,14 +560,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                     this.HOME_ROUTE_IS_ACTIVE = false;
                 }
 
-                if (event.url.indexOf('/trigger') !== -1) {
-                    // this.logger.log('[SIDEBAR] NavigationEnd - THE home route IS ACTIVE  ', event.url);
-                    this.TRIGGER_ROUTE_IS_ACTIVE = true;
-                } else {
-                    // this.logger.log('[SIDEBAR] NavigationEnd - THE home route IS NOT ACTIVE  ', event.url);
-                    this.TRIGGER_ROUTE_IS_ACTIVE = false;
-                }
-
                 if (event.url.indexOf('/notification-email') !== -1) {
                     // this.logger.log('[SIDEBAR] NavigationEnd - THE home route IS ACTIVE  ', event.url);
                     this.NOTIFICATION_EMAIL_IS_ACTIVE = true;
@@ -528,6 +579,219 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                     this.APPS_ROUTE_IS_ACTIVE = false;
                     // this.smallSidebar(false)
                 }
+                // ------------------------------------------------------------------------------------------------
+                // the following are also route of settings
+                // ------------------------------------------------------------------------------------------------
+                if (event.url.indexOf('/trigger') !== -1) {
+                    // this.logger.log('[SIDEBAR] NavigationEnd - THE home route IS ACTIVE  ', event.url);
+                    this.TRIGGER_ROUTE_IS_ACTIVE = true;
+                    // console.log('[SIDEBAR] NavigationEnd - TRIGGER_ROUTE_IS_ACTIVE ', this.TRIGGER_ROUTE_IS_ACTIVE);
+                } else {
+                    // this.logger.log('[SIDEBAR] NavigationEnd - THE home route IS NOT ACTIVE  ', event.url);
+                    this.TRIGGER_ROUTE_IS_ACTIVE = false;
+                    // console.log('[SIDEBAR] NavigationEnd - TRIGGER_ROUTE_IS_ACTIVE ', this.TRIGGER_ROUTE_IS_ACTIVE);
+                }
+
+                if (event.url.indexOf('/labels') !== -1) {
+                    this.TAG_ROUTE_IS_ACTIVE = true;
+                    // console.log('[SIDEBAR] NavigationEnd - TAG_ROUTE_IS_ACTIVE ', this.TAG_ROUTE_IS_ACTIVE);
+                } else {
+                    this.TAG_ROUTE_IS_ACTIVE = false;
+                    // console.log('[SIDEBAR] NavigationEnd - TAG_ROUTE_IS_ACTIVE ', this.TAG_ROUTE_IS_ACTIVE);
+                }
+
+                if (event.url.indexOf('/cannedresponses') !== -1) {
+                    this.CANNED_RESPONSES_ROUTE_IS_ACTIVE = true;
+                    // console.log('[SIDEBAR] NavigationEnd - CANNED_RESPONSES_ROUTE_IS_ACTIVE ', this.CANNED_RESPONSES_ROUTE_IS_ACTIVE);
+                } else {
+                    this.CANNED_RESPONSES_ROUTE_IS_ACTIVE = false;
+                    // console.log('[SIDEBAR] NavigationEnd - CANNED_RESPONSES_ROUTE_IS_ACTIVE ', this.CANNED_RESPONSES_ROUTE_IS_ACTIVE);
+                }
+
+                if (event.url.indexOf('/departments') !== -1) {
+                    this.DEPTS_ROUTE_IS_ACTIVE = true;
+                    // console.log('[SIDEBAR] NavigationEnd - DEPTS_ROUTE_IS_ACTIVE ', this.DEPTS_ROUTE_IS_ACTIVE);
+                } else {
+                    this.DEPTS_ROUTE_IS_ACTIVE = false;
+                    // console.log('[SIDEBAR] NavigationEnd - DEPTS_ROUTE_IS_ACTIVE ', this.DEPTS_ROUTE_IS_ACTIVE);
+                }
+
+                if (event.url.indexOf('/department/edit/') !== -1) {
+                    this.EDIT_DEPT_ROUTE_IS_ACTIVE = true;
+                    // console.log('[SIDEBAR] NavigationEnd - EDIT_DEPT_ROUTE_IS_ACTIVE ', this.EDIT_DEPT_ROUTE_IS_ACTIVE);
+                } else {
+                    this.EDIT_DEPT_ROUTE_IS_ACTIVE = false;
+                    // console.log('[SIDEBAR] NavigationEnd - EDIT_DEPT_ROUTE_IS_ACTIVE ', this.EDIT_DEPT_ROUTE_IS_ACTIVE);
+                }
+
+
+                if (event.url.indexOf('/users') !== -1) {
+                    this.TEAMMATES_ROUTE_IS_ACTIVE = true;
+                    // console.log('[SIDEBAR] NavigationEnd - TEAMMATES_ROUTE_IS_ACTIVE ', this.TEAMMATES_ROUTE_IS_ACTIVE);
+                } else {
+                    this.TEAMMATES_ROUTE_IS_ACTIVE = false;
+                    // console.log('[SIDEBAR] NavigationEnd - TEAMMATES_ROUTE_IS_ACTIVE ', this.TEAMMATES_ROUTE_IS_ACTIVE);;
+                }
+
+                if (event.url.indexOf('/groups') !== -1) {
+                    this.GROUPS_ROUTE_IS_ACTIVE = true;
+                    // console.log('[SIDEBAR] NavigationEnd - GROUPS_ROUTE_IS_ACTIVE ', this.GROUPS_ROUTE_IS_ACTIVE);
+                } else {
+                    this.GROUPS_ROUTE_IS_ACTIVE = false;
+                    // console.log('[SIDEBAR] NavigationEnd - GROUPS_ROUTE_IS_ACTIVE ', this.GROUPS_ROUTE_IS_ACTIVE);
+                }
+
+                if (event.url.indexOf('/group/create') !== -1) {
+                    this.CREATE_GROUP_ROUTE_IS_ACTIVE = true;
+                    // console.log('[SIDEBAR] NavigationEnd - CREATE_GROUP_ROUTE_IS_ACTIVE ', this.CREATE_GROUP_ROUTE_IS_ACTIVE);
+                } else {
+                    this.CREATE_GROUP_ROUTE_IS_ACTIVE = false;
+                    // console.log('[SIDEBAR] NavigationEnd - CREATE_GROUP_ROUTE_IS_ACTIVE ', this.CREATE_GROUP_ROUTE_IS_ACTIVE);
+                }
+
+                if (event.url.indexOf('/group/edit') !== -1) {
+                    this.EDIT_GROUP_ROUTE_IS_ACTIVE = true;
+                    // console.log('[SIDEBAR] NavigationEnd - EDIT_GROUP_ROUTE_IS_ACTIVE ', this.EDIT_GROUP_ROUTE_IS_ACTIVE);
+                } else {
+                    this.EDIT_GROUP_ROUTE_IS_ACTIVE = false;
+                    // console.log('[SIDEBAR] NavigationEnd - EDIT_GROUP_ROUTE_IS_ACTIVE ', this.EDIT_GROUP_ROUTE_IS_ACTIVE);
+                }
+
+
+                if (event.url.indexOf('/widget-set-up') !== -1) {
+                    this.WIDGET_SETUP_ROUTE_IS_ACTIVE = true;
+                    // console.log('[SIDEBAR] NavigationEnd - WIDGET_SETUP_ROUTE_IS_ACTIVE ', this.WIDGET_SETUP_ROUTE_IS_ACTIVE);
+                } else {
+                    this.WIDGET_SETUP_ROUTE_IS_ACTIVE = false;
+                    // console.log('[SIDEBAR] NavigationEnd - WIDGET_SETUP_ROUTE_IS_ACTIVE ', this.WIDGET_SETUP_ROUTE_IS_ACTIVE);
+                }
+
+                if (event.url.indexOf('/bots') !== -1) {
+                    this.CHATBOT_ROUTE_IS_ACTIVE = true;
+                    // console.log('[SIDEBAR] NavigationEnd - CHATBOT_ROUTE_IS_ACTIVE ', this.CHATBOT_ROUTE_IS_ACTIVE);
+                } else {
+                    this.CHATBOT_ROUTE_IS_ACTIVE = false;
+                    // console.log('[SIDEBAR] NavigationEnd - CHATBOT_ROUTE_IS_ACTIVE ', this.CHATBOT_ROUTE_IS_ACTIVE);
+                }
+
+                if (event.url.indexOf('/createfaq') !== -1) {
+                    this.CREATE_FAQ_ROUTE_IS_ACTIVE = true;
+                    // console.log('[SIDEBAR] NavigationEnd - CREATE_FAQ_ROUTE_IS_ACTIVE ', this.CREATE_FAQ_ROUTE_IS_ACTIVE);
+                } else {
+                    this.CREATE_FAQ_ROUTE_IS_ACTIVE = false;
+                    // console.log('[SIDEBAR] NavigationEnd - CREATE_FAQ_ROUTE_IS_ACTIVE ', this.CREATE_FAQ_ROUTE_IS_ACTIVE);
+                }
+
+                if (event.url.indexOf('/editfaq') !== -1) {
+                    this.EDIT_FAQ_ROUTE_IS_ACTIVE = true;
+                    // console.log('[SIDEBAR] NavigationEnd - EDIT_FAQ_ROUTE_IS_ACTIVE ', this.EDIT_FAQ_ROUTE_IS_ACTIVE);
+                } else {
+                    this.EDIT_FAQ_ROUTE_IS_ACTIVE = false;
+                    // console.log('[SIDEBAR] NavigationEnd - EDIT_FAQ_ROUTE_IS_ACTIVE ', this.EDIT_FAQ_ROUTE_IS_ACTIVE);
+                }
+
+                if (event.url.indexOf('/faq/test/') !== -1) {
+                    this.BOT_TEST_ROUTE_IS_ACTIVE = true;
+                    // console.log('[SIDEBAR] NavigationEnd - BOT_TEST_ROUTE_IS_ACTIVE ', this.BOT_TEST_ROUTE_IS_ACTIVE);
+                } else {
+                    this.BOT_TEST_ROUTE_IS_ACTIVE = false;
+                    // console.log('[SIDEBAR] NavigationEnd - BOT_TEST_ROUTE_IS_ACTIVE ', this.BOT_TEST_ROUTE_IS_ACTIVE);
+                }
+
+
+                if (event.url.indexOf('/hours') !== -1) {
+                    this.OPERATING_HOURS_ROUTE_IS_ACTIVE = true;
+                    // console.log('[SIDEBAR] NavigationEnd - OPERATING_HOURS_ROUTE_IS_ACTIVE ', this.OPERATING_HOURS_ROUTE_IS_ACTIVE);
+                } else {
+                    this.OPERATING_HOURS_ROUTE_IS_ACTIVE = false;
+                    // console.log('[SIDEBAR] NavigationEnd - OPERATING_HOURS_ROUTE_IS_ACTIVE ', this.OPERATING_HOURS_ROUTE_IS_ACTIVE);
+                }
+
+                if (event.url.indexOf('/project-settings/') !== -1) {
+                    this.PROJECT_SETTINGS_ROUTE_IS_ACTIVE = true;
+                    // console.log('[SIDEBAR] NavigationEnd - PROJECT_SETTINGS_ROUTE_IS_ACTIVE ', this.PROJECT_SETTINGS_ROUTE_IS_ACTIVE);
+                } else {
+                    this.PROJECT_SETTINGS_ROUTE_IS_ACTIVE = false;
+                    // console.log('[SIDEBAR] NavigationEnd - SETTINGS_IS_ACTIVE ', this.PROJECT_SETTINGS_ROUTE_IS_ACTIVE);
+                }
+
+                if (event.url.indexOf('/notification-email') !== -1) {
+                    this.ENTERPRISE_NOTIFICATION_EMAIL_ROUTE_IS_ACTIVE = true;
+                    // console.log('[SIDEBAR] NavigationEnd - ENTERPRISE_NOTIFICATION_EMAIL_ROUTE_IS_ACTIVE ', this.ENTERPRISE_NOTIFICATION_EMAIL_ROUTE_IS_ACTIVE);
+                } else {
+                    this.ENTERPRISE_NOTIFICATION_EMAIL_ROUTE_IS_ACTIVE = false;
+                    // console.log('[SIDEBAR] NavigationEnd - ENTERPRISE_NOTIFICATION_EMAIL_ROUTE_IS_ACTIVE ', this.ENTERPRISE_NOTIFICATION_EMAIL_ROUTE_IS_ACTIVE);
+                }
+
+                if (event.url.indexOf('/smtp-settings') !== -1) {
+                    this.ENTERPRISE_SMTP_SETTINGS_ROUTE_IS_ACTIVE = true;
+                    // console.log('[SIDEBAR] NavigationEnd - ENTERPRISE_SMTP_SETTINGS_ROUTE_IS_ACTIVE ', this.ENTERPRISE_SMTP_SETTINGS_ROUTE_IS_ACTIVE);
+                } else {
+                    this.ENTERPRISE_SMTP_SETTINGS_ROUTE_IS_ACTIVE = false;
+                    // console.log('[SIDEBAR] NavigationEnd - ENTERPRISE_SMTP_SETTINGS_ROUTE_IS_ACTIVE ', this.ENTERPRISE_SMTP_SETTINGS_ROUTE_IS_ACTIVE);
+                }
+
+                if (event.url.indexOf('/webhook') !== -1) {
+                    this.PRJCT_SETTINGS_WEBHOOK_ROUTE_IS_ACTIVE = true;
+                    // console.log('[SIDEBAR] NavigationEnd - PRJCT_SETTINGS_WEBHOOK_ROUTE_IS_ACTIVE ', this.PRJCT_SETTINGS_WEBHOOK_ROUTE_IS_ACTIVE);
+                } else {
+                    this.PRJCT_SETTINGS_WEBHOOK_ROUTE_IS_ACTIVE = false;
+                    // console.log('[SIDEBAR] NavigationEnd - PRJCT_SETTINGS_WEBHOOK_ROUTE_IS_ACTIVE ', this.PRJCT_SETTINGS_WEBHOOK_ROUTE_IS_ACTIVE);
+                }
+
+                if (event.url.indexOf('/payments') !== -1) {
+                    this.PRJCT_SETTINGS_PAYMENTS_ROUTE_IS_ACTIVE = true;
+                    // console.log('[SIDEBAR] NavigationEnd - PRJCT_SETTINGS_PAYMENTS_ROUTE_IS_ACTIVE ', this.PRJCT_SETTINGS_PAYMENTS_ROUTE_IS_ACTIVE);
+                } else {
+                    this.PRJCT_SETTINGS_PAYMENTS_ROUTE_IS_ACTIVE = false;
+                    // console.log('[SIDEBAR] NavigationEnd - PRJCT_SETTINGS_PAYMENTS_ROUTE_IS_ACTIVE ', this.PRJCT_SETTINGS_PAYMENTS_ROUTE_IS_ACTIVE);
+                }
+
+                if (event.url.indexOf('/user/add') !== -1) {
+                    this.INVITE_TEAMMATE_ROUTE_IS_ACTIVE = true;
+                    // console.log('[SIDEBAR] NavigationEnd - INVITE_TEAMMATE_ROUTE_IS_ACTIVE ', this.INVITE_TEAMMATE_ROUTE_IS_ACTIVE);
+                } else {
+                    this.INVITE_TEAMMATE_ROUTE_IS_ACTIVE = false;
+                    // console.log('[SIDEBAR] NavigationEnd - INVITE_TEAMMATE_ROUTE_IS_ACTIVE ', this.INVITE_TEAMMATE_ROUTE_IS_ACTIVE);
+                }
+
+                if (event.url.indexOf('/user/edit/') !== -1) {
+                    this.EDIT_PROJECT_USER_ROUTE_IS_ACTIVE = true;
+                    // console.log('[SIDEBAR] NavigationEnd - EDIT_PROJECT_USER_ROUTE_IS_ACTIVE ', this.EDIT_PROJECT_USER_ROUTE_IS_ACTIVE);
+                } else {
+                    this.EDIT_PROJECT_USER_ROUTE_IS_ACTIVE = false;
+                    // console.log('[SIDEBAR] NavigationEnd - EDIT_PROJECT_USER_ROUTE_IS_ACTIVE ', this.EDIT_PROJECT_USER_ROUTE_IS_ACTIVE);
+                }
+
+                if (event.url.indexOf('/messages') !== -1) {
+                    this.CONV_DETAIL_ROUTE_IS_ACTIVE = true;
+                    // console.log('[SIDEBAR] NavigationEnd - CONV_DETAIL_ROUTE_IS_ACTIVE ', this.CONV_DETAIL_ROUTE_IS_ACTIVE);
+                } else {
+                    this.CONV_DETAIL_ROUTE_IS_ACTIVE = false;
+                    // console.log('[SIDEBAR] NavigationEnd - CONV_DETAIL_ROUTE_IS_ACTIVE ', this.CONV_DETAIL_ROUTE_IS_ACTIVE);
+                }
+
+                if (event.url.indexOf('/contact/edit/') !== -1) {
+                    this.CONTACT_EDIT_ROUTE_IS_ACTIVE = true;
+                    // console.log('[SIDEBAR] NavigationEnd - CONTACT_EDIT_ROUTE_IS_ACTIVE ', this.CONTACT_EDIT_ROUTE_IS_ACTIVE);
+                } else {
+                    this.CONTACT_EDIT_ROUTE_IS_ACTIVE = false;
+                    // console.log('[SIDEBAR] NavigationEnd - CONTACT_EDIT_ROUTE_IS_ACTIVE ', this.CONTACT_EDIT_ROUTE_IS_ACTIVE);
+                }
+
+                if (event.url.indexOf('/contact/') !== -1) {
+                    this.CONTACT_CONVS_ROUTE_IS_ACTIVE = true;
+                    // console.log('[SIDEBAR] NavigationEnd - CONTACT_CONVS_ROUTE_IS_ACTIVE ', this.CONTACT_CONVS_ROUTE_IS_ACTIVE);
+                } else {
+                    this.CONTACT_CONVS_ROUTE_IS_ACTIVE = false;
+                    // console.log('[SIDEBAR] NavigationEnd - CONTACT_CONVS_ROUTE_IS_ACTIVE ', this.CONTACT_CONVS_ROUTE_IS_ACTIVE);
+                }
+
+
+
+
+
+
 
             });
     }
@@ -559,6 +823,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
 
     listenHasDeleteUserProfileImage() {
+        this.getLoggedUser()
         if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
             this.uploadImageService.hasDeletedUserPhoto.subscribe((hasDeletedImage) => {
                 this.logger.log('[SIDEBAR] - hasDeletedImage ? ', hasDeletedImage, '(usecase Firebase)');
@@ -758,7 +1023,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     getProjectUser() {
         this.logger.log('[SIDEBAR]  !!! SIDEBAR CALL GET-PROJECT-USER')
         this.usersService.getProjectUserByUserId(this.currentUserId).subscribe((projectUser: any) => {
-
+            this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID  ', projectUser);
             this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - PROJECT-ID ', this.projectId);
             this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - CURRENT-USER-ID ', this.user._id);
             this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - PROJECT USER ', projectUser);
@@ -816,9 +1081,15 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 takeUntil(this.unsubscribe$)
             )
             .subscribe((currentuser_availability) => {
-                // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER AVAILABILITY - IS AVAILABLE? ', currentuser_availability);
+                this.logger.log('[SIDEBAR] - GET WS CURRENT-USER AVAILABILITY - IS AVAILABLE? ', currentuser_availability);
                 if (currentuser_availability !== null) {
                     this.IS_AVAILABLE = currentuser_availability;
+
+                    if (this.IS_AVAILABLE === true) {
+                        this.tooltip_text_for_availability_status = this.translate.instant('CHANGE_TO_YOUR_STATUS_TO_UNAVAILABLE')
+                    } else {
+                        this.tooltip_text_for_availability_status = this.translate.instant('CHANGE_TO_YOUR_STATUS_TO_AVAILABLE')
+                    }
                 }
             }, error => {
                 this.logger.error('[SIDEBAR] - GET WS CURRENT-USER AVAILABILITY * error * ', error)
@@ -871,13 +1142,15 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.logger.log('[SIDEBAR] - CALLING GET CURRENT PROJECT  ', this.project)
         this.auth.project_bs.subscribe((project) => {
             this.project = project
-            // this.logger.log('[SIDEBAR] project from AUTH service subscription  ', this.project)
+            this.logger.log('[SIDEBAR] project from AUTH service subscription  ', this.project)
 
             if (this.project) {
 
                 this.getDeptsAndFilterDefaultDept();
 
                 this.projectId = this.project._id
+
+                this.findCurrentProjectAmongAll(this.projectId)
 
                 this.prjct_profile_name = this.project.profile_name;
                 this.prjct_trial_expired = this.project.trial_expired;
@@ -893,48 +1166,85 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
                 this.prjc_trial_days_left_percentage = this.round5(perc)
                 // this.logger.log('[SIDEBAR] project trial days left % rounded', this.prjc_trial_days_left_percentage);
-                // if (roundedPercentage === 0) {
-                //     this.prjc_trial_days_left_percentage = 0;
-                // }
 
-
-
-                // FOR TEST
-                // this.prjc_trial_days_left_percentage = 5;
-                // this.prjc_trial_days_left_percentage = 10;
-                // this.prjc_trial_days_left_percentage = 15;
-                // this.prjc_trial_days_left_percentage = 20;
-                // this.prjc_trial_days_left_percentage = 25;
-                // this.prjc_trial_days_left_percentage = 30;
-                // this.prjc_trial_days_left_percentage = 35;
-                // this.prjc_trial_days_left_percentage = 40;
-                // this.prjc_trial_days_left_percentage = 45;
-
-                // this.prjc_trial_days_left_percentage = 50;
-                // this.prjc_trial_days_left_percentage = 55;
-                // this.prjc_trial_days_left_percentage = 60;
-                // this.prjc_trial_days_left_percentage = 65;
-                // this.prjc_trial_days_left_percentage = 70;
-                // this.prjc_trial_days_left_percentage = 75;
-                // this.prjc_trial_days_left_percentage = 80;
-                // this.prjc_trial_days_left_percentage = 85;
-                // this.prjc_trial_days_left_percentage = 90;
-                // this.prjc_trial_days_left_percentage = 95;
-                // this.prjc_trial_days_left_percentage = 100;
-
-                // this.logger.log('[SIDEBAR] project profile name ', this.prjct_profile_name);
-                // this.logger.log('[SIDEBAR] project trial expired ', this.prjct_trial_expired);
-                // this.logger.log('[SIDEBAR] project trial expired ', this.prjct_trial_expired);
-                // this.logger.log('[SIDEBAR] project trial days left  ', this.prjc_trial_days_left);
-                // this.logger.log('[SIDEBAR] project trial days left % ', this.prjc_trial_days_left_percentage);
-
-
-
-                // IS USED TO GET THE PROJECT-USER AND DETERMINE IF THE USER IS AVAILAVLE / UNAVAILABLE
-                // WHEN THE PAGE IS REFRESHED
                 this.getProjectUser();
             }
         });
+    }
+
+
+
+    findCurrentProjectAmongAll(projectId: string) {
+        this.projectService.getProjects().subscribe((projects: any) => {
+            // const current_selected_prjct = projects.filter(prj => prj.id_project.id === projectId);
+            // console.log('[SIDEBAR] - GET PROJECTS - current_selected_prjct ', current_selected_prjct);
+
+            this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
+            this.logger.log('[SIDEBAR] - GET PROJECTS - _current_selected_prjct ', this.current_selected_prjct);
+
+
+            if (this.current_selected_prjct) {
+                this.logger.log('[SIDEBAR] PROJECT PROFILE TYPE', this.current_selected_prjct.id_project.profile.type);
+                this.logger.log('[SIDEBAR] PROJECT PROFILE NAME', this.current_selected_prjct.id_project.profile.name);
+                this.logger.log('[SIDEBAR] PROJECT TRIAL EXPIRED', this.current_selected_prjct.id_project.trialExpired);
+                this.logger.log('[SIDEBAR] PROJECT SUBSCRIPTION IS ACTIVE', this.current_selected_prjct.id_project.isActiveSubscription);
+                this.plan_subscription_is_active = this.current_selected_prjct.id_project.isActiveSubscription;
+                this.plan_name = this.current_selected_prjct.id_project.profile.name;
+                this.plan_type = this.current_selected_prjct.id_project.profile.type;
+                this.prjct_name = this.current_selected_prjct.id_project.name;
+                if (this.current_selected_prjct.id_project.profile.type === 'free') {
+                    if (this.current_selected_prjct.id_project.trialExpired === false) {
+                        if (this.isVisiblePAY) {
+                            this.getProPlanTrialTranslation();
+                        } else {
+                            this.getUnavailablePlanProfile()
+                        }
+                    } else {
+                        if (this.isVisiblePAY) {
+                            this.getPaidPlanTranslation(this.current_selected_prjct.id_project.profile.name);
+                        } else {
+                            this.getUnavailablePlanProfile()
+                        }
+                    }
+                } else if (this.current_selected_prjct.id_project.profile.type === 'payment') {
+                    if (this.isVisiblePAY) {
+                        this.getPaidPlanTranslation(this.current_selected_prjct.id_project.profile.name);
+                    } else {
+                        this.getUnavailablePlanProfile()
+                    }
+                }
+            }
+            this.logger.log('[SIDEBAR] - GET PROJECTS - projects ', projects);
+        }, error => {
+            this.logger.error('[SIDEBAR] - GET PROJECTS - ERROR: ', error);
+        }, () => {
+            this.logger.log('[SIDEBAR] - GET PROJECTS * COMPLETE * ');
+        });
+    }
+
+    getProPlanTrialTranslation() {
+        this.translate.get('ProPlanTrial')
+            .subscribe((translation: any) => {
+                this._prjct_profile_name = translation;
+
+                this.logger.log('[SIDEBAR] PLAN NAME ', this._prjct_profile_name)
+            });
+    }
+
+    getPaidPlanTranslation(project_profile_name) {
+        this.translate.get('PaydPlanName', { projectprofile: project_profile_name })
+            .subscribe((text: string) => {
+                this._prjct_profile_name = text;
+                this.logger.log('[SIDEBAR] PLAN NAME ', this._prjct_profile_name)
+            });
+    }
+
+    getUnavailablePlanProfile() {
+        this.translate.get('ProfileNotAvailable')
+            .subscribe((text: string) => {
+                this._prjct_profile_name = text;
+                this.logger.log('[SIDEBAR] PLAN NAME ', this._prjct_profile_name)
+            });
     }
 
     getDeptsAndFilterDefaultDept() {
@@ -1021,86 +1331,39 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         // this.logger.log('SIDEBAR - WINDOW WIDTH ON RESIZE', event.target.innerWidth);
         if (event.target.innerWidth > 991) {
             this.IS_MOBILE_MENU = false
-
         } else {
             this.IS_MOBILE_MENU = true
-
-
         }
     }
 
-    smallSidebar(IS_SMALL) {
-        this.SIDEBAR_IS_SMALL = IS_SMALL;
-        this.logger.log('[SIDEBAR] smallSidebar ', IS_SMALL)
+    // smallSidebar(IS_SMALL) {
+    //     this.SIDEBAR_IS_SMALL = IS_SMALL;
+    //     this.logger.log('[SIDEBAR] smallSidebar ', IS_SMALL)
 
-        const elemSidebarWrapper = <HTMLElement>document.querySelector('.sidebar-wrapper');
-        const elemSidebar = <HTMLElement>document.querySelector('.sidebar');
-        const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
-        const elemHtmlTag = <HTMLElement>document.querySelector('html');
-        this.logger.log('[SIDEBAR] smallSidebar', elemHtmlTag)
-        elemHtmlTag.style.overflowY = 'auto';
-        // this.logger.log('elemAppSidebar', elemAppSidebar)
+    //     const elemSidebarWrapper = <HTMLElement>document.querySelector('.sidebar-wrapper');
+    //     const elemSidebar = <HTMLElement>document.querySelector('.sidebar');
+    //     const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
+    //     const elemHtmlTag = <HTMLElement>document.querySelector('html');
+    //     this.logger.log('[SIDEBAR] smallSidebar', elemHtmlTag)
+    //     elemHtmlTag.style.overflowY = 'auto';
+    //     // this.logger.log('elemAppSidebar', elemAppSidebar)
 
-        if (IS_SMALL === true) {
-            elemSidebar.setAttribute('style', 'width: 70px;');
-            elemSidebarWrapper.setAttribute('style', 'width: 70px; background-color: #2d323e!important');
-            elemMainPanel.setAttribute('style', 'width:calc(100% - 70px);');
-            elemMainPanel.style.overflowX = 'hidden';
-            elemSidebarWrapper.style.height = "calc(100vh - 45px)";
+    //     if (IS_SMALL === true) {
+    //         elemSidebar.setAttribute('style', 'width: 70px;');
+    //         elemSidebarWrapper.setAttribute('style', 'width: 70px; background-color: #2d323e!important');
+    //         elemMainPanel.setAttribute('style', 'width:calc(100% - 70px);');
+    //         elemMainPanel.style.overflowX = 'hidden';
+    //         elemSidebarWrapper.style.height = "calc(100vh - 45px)";
 
-            // if (this.IS_MOBILE_MENU === false) {
-            //     elemMainPanel.style.width = "calc(100% - 70px)"
-            // } else {
-            //     elemMainPanel.style.width = "100%"
-            // }
-
-            // if (window.matchMedia(`(min-width: 992px)`).matches ) {
-            //     console.log('[SIDEBAR] smallSidebar TRUE matchMedia' ) 
-            //     elemMainPanel.style.width = "100%"
-            //  }
-            // [].forEach.call(
-            //     document.querySelectorAll('.nav-container ul li a p'),
-            //     function (el) {
-            //         el.setAttribute('style', 'display: none');
-            //     }
-            // );
-
-            // [].forEach.call(
-            //     document.querySelectorAll('.nav-container ul li a'),
-            //     function (el) {
-            //         el.setAttribute('style', 'height: 40px');
-            //     }
-            // );
-
-        } else {
-            if (this.YOUR_PROJECT_ROUTE_IS_ACTIVE === false && this.AUTOLOGIN_ROUTE_IS_ACTIVE === false) {
-                elemSidebar.setAttribute('style', 'width: 260px;');
-                elemSidebarWrapper.setAttribute('style', 'width: 260px;background-color: #2d323e!important');
-                elemMainPanel.setAttribute('style', 'width:calc(100% - 260px);');
-                elemSidebarWrapper.style.height = "calc(100vh - 60px)";
-            }
-            // if (this.IS_MOBILE_MENU === false) {
-            //     elemMainPanel.style.width = "calc(100% - 260px)"
-            // } else {
-            //     elemMainPanel.style.width = "100%"
-            // }
-
-
-            //  if (window.matchMedia(`(max-width: 991px)`).matches ) {
-            //     console.log('[SIDEBAR] smallSidebar FALSE matchMedia' ) 
-            //     elemMainPanel.style.width = "100%"
-            //  }
-
-
-
-            // [].forEach.call(
-            //     document.querySelectorAll('.nav-container ul li a p'),
-            //     function (el) {
-            //         el.setAttribute('style', 'display: block');
-            //     }
-            // );
-        }
-    }
+    //     } else {
+    //         if (this.YOUR_PROJECT_ROUTE_IS_ACTIVE === false && this.AUTOLOGIN_ROUTE_IS_ACTIVE === false) {
+    //             elemSidebar.setAttribute('style', 'width: 260px;');
+    //             elemSidebarWrapper.setAttribute('style', 'width: 260px;background-color: #2d323e!important');
+    //             elemMainPanel.setAttribute('style', 'width:calc(100% - 260px);');
+    //             elemSidebarWrapper.style.height = "calc(100vh - 60px)";
+    //         }
+    //     }
+    // }
 
 
 
@@ -1137,18 +1400,38 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     goToHome() {
         this.router.navigate(['/project/' + this.projectId + '/home']);
     }
+
+
+
+
+
+    goToWidgetSetUpOrToCannedResponses() {
+        if (this.USER_ROLE !== 'agent') {
+            this.goToWidgetSetUp()
+        } else if (this.USER_ROLE === 'agent') {
+            this.goToCannedResponses()
+        }
+
+    }
+    goToWidgetSetUp() {
+        this.router.navigate(['project/' + this.project._id + '/widget-set-up'])
+    }
+
+    goToCannedResponses() {
+        this.router.navigate(['project/' + this.projectId + '/cannedresponses']);
+    }
     // goToOperatingHours() {
     //     this.router.navigate(['/project/' + this.projectId + '/hours']);
     // }
 
 
-    goToBlogChangelog() {
-        const url = 'https://www.tiledesk.com/category/changelog/';
-        window.open(url, '_blank');
+    // goToBlogChangelog() {
+    //     const url = 'https://www.tiledesk.com/category/changelog/';
+    //     window.open(url, '_blank');
 
-        this.usersLocalDbService.savChangelogDate()
-        this.hidechangelogrocket = true;
-    }
+    //     this.usersLocalDbService.savChangelogDate()
+    //     this.hidechangelogrocket = true;
+    // }
 
     goToProjects() {
         this.logger.log('[SIDEBAR] IS MOBILE -  HAS CLICCKED GO TO PROJECT')
@@ -1235,15 +1518,17 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     openChat() {
         this.elementRef.nativeElement.blur();
         this.notify.publishHasClickedChat(true);
-        // const url = this.CHAT_BASE_URL;
-        // this.openWindow('Tiledesk - Open Source Live Chat', url)
-        // this.focusWin('Tiledesk - Open Source Live Chat')
-        // --- new 
+        // console.log('SIDEBAR openChat ' )
 
-        let baseUrl = this.CHAT_BASE_URL + '#/conversation-detail/'
-        let url = baseUrl
-        const myWindow = window.open(url, 'Tiledesk - Open Source Live Chat');
-        myWindow.focus();
+        // --- new 
+        localStorage.setItem('last_project', JSON.stringify(this.current_selected_prjct))
+        // let baseUrl = this.CHAT_BASE_URL + '#/conversation-detail/'
+        // let url = baseUrl
+        // const myWindow = window.open(url, '_self', 'Tiledesk - Open Source Live Chat');
+        // myWindow.focus();
+
+
+        // --- already commented ---
         // const chatTabCount = localStorage.getItem('tabCount');
         // this.logger.log('[SIDEBAR] openChat chatTabCount ', chatTabCount);
         // if (chatTabCount) {
@@ -1259,6 +1544,21 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         // } else {
         //     this.openWindow('Tiledesk - Open Source Live Chat', url);
         // }
+    }
+
+    @HostListener('document:mousedown', ['$event'])
+    onMouseDown(event) {
+        // console.log('mousedown event', event)
+        // console.log('mousedown event.target.id', event.target.id)
+        // console.log('mousedown event.target', event.target)
+        // console.log('mousedown event.which', event.which)
+        // --------------------------------------------------------------------
+        // event.which === 1  left button - event.which === 3 right button
+        // --------------------------------------------------------------------
+        if ((event.target.id.startsWith('openchat') && event.which === 3) || (event.target.id.startsWith('openchat') && event.which === 1)) {
+            this.logger.log('SIDEBAR openChat HAS CLIKED ON OPEN CHAT WITH THE RIGHT BTN')
+            localStorage.setItem('last_project', JSON.stringify(this.current_selected_prjct))
+        }
 
     }
 
@@ -1308,7 +1608,69 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         // this.logger.log('[SIDEBAR] Mouse Over Avatar Container ', _isOverAvar)
     }
 
- 
+
+    isOdd(countClickOnOpenUserDetailSidebar) {
+        return countClickOnOpenUserDetailSidebar % 2;
+    }
+
+    openUserDetailSidePanel() {
+        this.countClickOnOpenUserDetailSidebar++
+        this.logger.log('[SIDEBAR] countClickOnOpenUserDetailSidebar', this.countClickOnOpenUserDetailSidebar)
+        // const countClickOnOpenUserDetailSidebarIsAnOddNum = this.isOdd(this.countClickOnOpenUserDetailSidebar)
+        // console.log('[SIDEBAR] countClickOnOpenUserDetailSidebarIsAnOddNum', countClickOnOpenUserDetailSidebarIsAnOddNum)
+
+        const elSidebarUserDtls = <HTMLElement>document.querySelector('#user-details');
+        this.logger.log('[SIDEBAR] OPEN USER DTLS SIDE PANEL elSidebarUserDtls ', elSidebarUserDtls)
+
+        if (elSidebarUserDtls && this.countClickOnOpenUserDetailSidebar === 1) {
+            elSidebarUserDtls.classList.add("active");
+        }
+
+        if (elSidebarUserDtls && this.countClickOnOpenUserDetailSidebar > 1) {
+            // console.log('[SIDEBAR] this.countClickOnOpenUserDetailSidebar HERE', this.countClickOnOpenUserDetailSidebar)
+            if (elSidebarUserDtls.classList.contains('active')) {
+                this.logger.log('[SIDEBAR] elSidebarUserDtls contains class ACTIVE', elSidebarUserDtls)
+                elSidebarUserDtls.classList.remove("active");
+            } else if (!elSidebarUserDtls.classList.contains('active')) {
+                this.logger.log('[SIDEBAR] elSidebarUserDtls NOT contains class ACTIVE', elSidebarUserDtls)
+                elSidebarUserDtls.classList.add("active");
+            }
+        }
+        // if (elSidebarUserDtls && countClickOnOpenUserDetailSidebarIsAnOddNum === 1) {
+        //     elSidebarUserDtls.classList.add("active");
+        // }
+        // if (elSidebarUserDtls && countClickOnOpenUserDetailSidebarIsAnOddNum === 0) {
+        //     elSidebarUserDtls.classList.remove("active");
+        // }
+
+        // const elemNavbar = <HTMLElement>document.querySelector('.navbar-absolute');
+        // this.logger.log('[SIDEBAR] elemNavBar ', elemNavbar)
+        // if (elemNavbar) {
+        //     elemNavbar.classList.add("navbar-absolute-custom-class");
+        // }
+        // const elemNavbarBrand = <HTMLElement>document.querySelector('.navbar-brand');
+        // this.logger.log('[SIDEBAR] elemNavbarBrand ', elemNavbarBrand)
+        // if (elemNavbarBrand) {
+        //     elemNavbarBrand.classList.add("navbar-brand-z-index-zero")
+        // }
+    }
+
+    // onCloseUserDetailsSidebar($event) {
+    //     this.logger.log('[SIDEBAR] HAS_CLICKED_CLOSE_USER_DETAIL ', $event)
+    //     // this.HAS_CLICKED_OPEN_USER_DETAIL = $event
+    //     const elemNavbar = <HTMLElement>document.querySelector('.navbar-absolute');
+    //     this.logger.log('[SIDEBAR] elemNavBar ', elemNavbar)
+    //     if (elemNavbar) {
+    //         elemNavbar.classList.remove("navbar-absolute-custom-class")
+    //     }
+
+    //     const elemNavbarBrand = <HTMLElement>document.querySelector('.navbar-brand');
+    //     this.logger.log('[SIDEBAR] elemNavbarBrand ', elemNavbarBrand)
+    //     if (elemNavbarBrand) {
+    //         elemNavbarBrand.classList.remove("navbar-brand-z-index-zero")
+    //     }
+    // }
+
     // goToAnalytics() {
     //     this.router.navigate(['project/' + this.projectId + '/analytics']);
     // }

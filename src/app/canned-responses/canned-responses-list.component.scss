@@ -1,3 +1,4 @@
+@import "./src/assets/sass/md/_variables.scss";
 .card-header-custom-bkgrnd {
   // display:none;
   box-shadow: none;
@@ -6,7 +7,7 @@
   border-radius: 3px 3px 0px 0px;
   // background-color: #f2f6f8;
   background-color: #ffffff;
-  border-bottom: 1px solid #eff3f5;
+  // border-bottom: 1px solid #eff3f5;
   padding-top: 12px;
   padding-bottom: 12px;
 }
@@ -41,11 +42,40 @@
 @media (max-width: 768px) {
   .left-col-custom-padding {
     padding-right: 10px !important;
-    
   }
 
   .right-col-custom-padding {
-  
     padding-left: 10px !important;
   }
 }
+
+.isHidden {
+display: none;
+}
+
+// .card_title__underlined {
+//   text-transform: none;
+//   color: #566787;
+//   margin-bottom: 0px;
+//   height: 40px !important;
+//   position: relative;
+//   font-family: Google Sans, sans-serif;
+//   height: 30px;
+//   font-size: 16px;
+//   margin-top: 10px;
+// }
+
+// .card_title__underline {
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   bottom: -1px;
+//   border-bottom: 2px solid $brand-primary;
+//   z-index: 1;
+// }
+
+// .section-subtitle {
+//   height: 20px;
+//   border-top: 1px solid #ddd;
+//   // width: calc((100% / 3) + 372px);
+// }

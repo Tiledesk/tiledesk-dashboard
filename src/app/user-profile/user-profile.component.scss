@@ -173,7 +173,7 @@ button.close {
 .bottom-nav {
   background-color: #fff;
   width: 100%;
-  z-index: 1028;
+  // z-index: 1028;
   position: relative;
   top: -5px;
   box-shadow: 0 2px 2px rgba(0, 0, 60, 0.08);
@@ -301,6 +301,20 @@ button.close {
   border: 1px solid #eee;
   margin-right: 15px;
   object-fit: cover;
+  text-align: center;
+  position: relative;
+}
+
+.user-profile-altenative-user-avatar {
+  display: block;
+  font-size: 25px;
+  font-family: "Poppins";
+  font-weight: 400;
+  position: absolute;
+  color: #fff;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .avatar_label {
@@ -313,42 +327,42 @@ button.close {
   color: #7695a5;
 }
 
+// .card_title__underlined {
+//   text-transform: none;
+//   color: #566787;
+//   margin-bottom: 0px;
+//   height: 40px !important;
+//   position: relative;
+//   font-family: Google Sans, sans-serif;
+//   height: 30px;
+//   font-size: 16px;
+//   margin-top: 10px;
+// }
 
+// .card_title__underline {
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   bottom: -1px;
+//   border-bottom: 2px solid $brand-primary;
+//   z-index: 1;
+// }
 
-.card_title__underlined {
-  text-transform: none;
-  color: #566787;
-  margin-bottom: 0px;
-  height: 40px !important;
-  position: relative;
-  font-family: Google Sans, sans-serif;
-  height: 30px;
-  font-size: 16px;
-  margin-top: 10px;
-}
-
-.card_title__underline {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: -1px;
-  border-bottom: 2px solid $brand-primary;
-  z-index: 1;
-}
-
-.section-subtitle {
-  height: 20px;
-  border-top: 1px solid #ddd;
-  // width: calc((100% / 3) + 372px);
-}
+// .section-subtitle {
+//   height: 20px;
+//   border-top: 1px solid #ddd;
+//   // width: calc((100% / 3) + 372px);
+// }
 
 .browser-lang-wpr {
-  margin-left:35px;color: #85ae52; font-weight: 400;
+  margin-left: 35px;
+  color: #85ae52;
+  font-weight: 400;
 }
 
 .browser-lang-disabled-wpr {
   font-weight: 200 !important;
-  color: #7695a5 !important
+  color: #7695a5 !important;
 }
 
 .language-not-selected {
@@ -364,3 +378,14 @@ button.close {
   margin-left: 35px;
   margin-top: 8px;
 }
+.not-available-language {
+  color: #f44336;
+  text-transform: uppercase;
+}
+
+.not-available-language-string {
+  color: #7695a5;
+  font-size: 12px;
+}
+
+

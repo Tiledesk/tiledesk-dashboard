@@ -70,6 +70,7 @@ export class BotListComponent implements OnInit {
   public_Key: string;
   isVisibleAnalytics: boolean;
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
+  IS_OPEN_SETTINGS_SIDEBAR: boolean;
 
   constructor(
     private faqKbService: FaqKbService,
@@ -99,8 +100,15 @@ export class BotListComponent implements OnInit {
     this.getOSCODE();
     // this.getFaqKb();
     this.getFaqKbByProjectId();
+    this.getTranslations();
+    this.listenSidebarIsOpened();
+  }
 
-    this.getTranslations()
+  listenSidebarIsOpened() {
+    this.auth.settingSidebarIsOpned.subscribe((isopened) => {
+      this.logger.log('[BOTS-LIST] SETTINGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
+      this.IS_OPEN_SETTINGS_SIDEBAR = isopened
+    });
   }
 
   getTranslations() {

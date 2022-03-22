@@ -54,7 +54,7 @@
               {{ "Webhook.SelectEvent" | translate }}
             </label>
             <div class="col-xs-9">
-              <ng-select placeholder="Seleziona evento" [(ngModel)]="subscriptionEvent">
+              <ng-select placeholder="{{'Webhook.SelectEvent' | translate}}" [(ngModel)]="subscriptionEvent">
                 <ng-option [value]="'request.create'">Request Create</ng-option>
                 <ng-option [value]="'request.update'">Request Update</ng-option>
                 <ng-option [value]="'request.close'">Request Close</ng-option>
@@ -106,14 +106,14 @@
       <div class="modal-footer" style="margin-top: 0px; text-align: center; background-color: #fff;">
         
         <!-- CASE: CREATE NEW SUBSCRIPTION -->
-        <section *ngIf="modalMode === 'add'">
+        <section *ngIf="modalMode === 'add'" style="margin-bottom: 15px;">
           <button style="margin-top: 0px; padding: 12px 16px;" class="btn btn-primary" (click)="createSubscription()">
             {{ "Webhook.CreateSubscription" | translate }}
           </button>
         </section>
 
         <!-- CASE: UPDATE EXISTING SUBSCRIPTION -->
-        <section *ngIf="modalMode === 'edit'">
+        <section *ngIf="modalMode === 'edit'" style="margin-bottom: 15px;">
           <button style="margin-top: 0px; padding: 12px 16px;" class="btn btn-primary" (click)="updateSubscription()">
             {{ "Webhook.UpdateSubscription" | translate }}
           </button>

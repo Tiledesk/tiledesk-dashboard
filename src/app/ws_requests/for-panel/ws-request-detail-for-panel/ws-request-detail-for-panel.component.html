@@ -464,7 +464,7 @@ padding-right: 0px;
                 <span
                     style="min-width: fit-content; text-align: center; top: -8px; border-radius: 3px; padding: 3px 10px; font-size: 10px; line-height: 12px;"
                     class="top">
-                    <span *ngIf="ROLE_IS_AGENT !== true" style="text-transform: capitalize;"> {{ 'VisitorsPage.Archive'
+                    <span *ngIf="ROLE_IS_AGENT !== true" style="text-transform: capitalize;"> {{ 'VisitorsPage.Resolve'
                         | translate }} </span>
                     <span *ngIf="ROLE_IS_AGENT === true" style="text-transform: capitalize;"> {{ 'ActionNotAllowed' |
                         translate }} </span>
@@ -591,22 +591,7 @@ padding-right: 0px;
 
 
 
-    <!-- <div class="StickyFooter">
-        <div class="row">
-            <div class="col-xs-6">
-                <button class="btn btn-primary btn-no-boxshadow" 
-                    (click)='joinRequest(request?.request_id)' style="padding: 6px 27px;" [disabled]="IS_CURRENT_USER_JOINED === true">
-                    {{ 'RequestMsgsPage.Enter' | translate }}
-                </button>
-            </div>
-            <div class="col-xs-6">
-                <button class="btn btn-primary btn-no-boxshadow" (click)='archiveRequest(request?.request_id)'
-                [disabled]="REQUEST_STATUS == 1000"  style="padding: 6px 27px;background-color: #e4e6eb; color: #050505;">
-                    {{ 'VisitorsPage.Archive' | translate }}
-                </button>
-            </div>
-        </div>
-    </div> -->
+
 
 
     <!-- --------------------------------------------------------------- -->

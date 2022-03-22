@@ -23,6 +23,7 @@ import { takeUntil } from 'rxjs/operators'
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../services/brand.service';
 import { LoggerService } from '../services/logger/logger.service';
+import { URL_setting_up_automatic_assignment } from './../utils/util';
 const swal = require('sweetalert');
 
 @Component({
@@ -130,6 +131,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   is_disabled_reassignment_section: boolean;
   is_disabled_unavailable_status_section: boolean;
   notificationNothingToSave: string;
+  onlyATeammateWithTheOwnerRoleCanDeleteAProject_lbl: string;
   project_id_to_delete: string;
   SHOW_CIRCULAR_SPINNER = false;
   DISPLAY_DELETE_PRJCT_BTN: boolean;
@@ -149,6 +151,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   projectId: string;
   projectName: string;
   contactUsEmail: string;
+  IS_OPEN_SETTINGS_SIDEBAR: boolean;
   /**
    * 
    * @param projectService 
@@ -201,8 +204,15 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     this.getTestSiteUrl();
     this.getCurrentProject();
     //this.checkCurrentStatus();
+    this.listenSidebarIsOpened();
   }
 
+  listenSidebarIsOpened() {
+    this.auth.settingSidebarIsOpned.subscribe((isopened) => {
+      this.logger.log('[PRJCT-EDIT-ADD] SETTINGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
+      this.IS_OPEN_SETTINGS_SIDEBAR = isopened
+    });
+  }
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
@@ -240,13 +250,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         this.logger.log('[PRJCT-EDIT-ADD] - USER ROLE ', user_role);
         if (user_role) {
           this.USER_ROLE = user_role
-          if (user_role === 'owner') {
-
-            this.DISPLAY_DELETE_PRJCT_BTN = true
-          } else {
-            this.DISPLAY_DELETE_PRJCT_BTN = false
-
-          }
+     
         }
       });
   }
@@ -255,7 +259,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     this.translateNotificationMsgs();
     this.translateMsgSubscriptionCanceledSuccessfully();
     this.translateMsgSubscriptionCanceledError();
-    this.translateModalOnlyOwnerCanManageProjectAccount()
+    this.translateModalOnlyOwnerCanManageProjectAccount();
+    this.translateOnlyATeammateWithTheOwnerRoleCanDeleteAProject();
   }
 
 
@@ -273,12 +278,15 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
     this.translate.get('NotificationNothingToSave')
       .subscribe((translation: any) => {
-        // this.logger.log('[PRJCT-EDIT-ADD]  translateNotificationMsgs text', translation)
-
         this.notificationNothingToSave = translation;
-
       });
+  }
 
+  translateOnlyATeammateWithTheOwnerRoleCanDeleteAProject() {
+    this.translate.get('OnlyATeammateWithTheOwnerRoleCanDeleteAProject')
+    .subscribe((translation: any) => {
+      this.onlyATeammateWithTheOwnerRoleCanDeleteAProject_lbl = translation;
+    });
   }
 
 
@@ -583,36 +591,13 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   presentModalOnlyOwnerCanManageEmailTempalte() {
     // https://github.com/t4t5/sweetalert/issues/845
-    const el = document.createElement('div')
-    el.innerHTML = this.onlyOwnerCanManageEmailTempalte + '. ' + "<a href='https://docs.tiledesk.com/knowledge-base/understanding-default-roles/' target='_blank'>" + this.learnMoreAboutDefaultRoles + "</a>"
-
-    swal({
-      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      content: el,
-      icon: "info",
-      // buttons: true,
-      button: {
-        text: "OK",
-      },
-      dangerMode: false,
-    })
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageEmailTempalte, this.learnMoreAboutDefaultRoles) 
   }
 
   presentModalOnlyOwnerCanManageTheAccountPlan() {
     // https://github.com/t4t5/sweetalert/issues/845
-    const el = document.createElement('div')
-    el.innerHTML = this.onlyOwnerCanManageTheAccountPlanMsg + '. ' + "<a href='https://docs.tiledesk.com/knowledge-base/understanding-default-roles/' target='_blank'>" + this.learnMoreAboutDefaultRoles + "</a>"
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles) 
 
-    swal({
-      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      content: el,
-      icon: "info",
-      // buttons: true,
-      button: {
-        text: "OK",
-      },
-      dangerMode: false,
-    })
   }
 
 
@@ -1459,7 +1444,11 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
    */
   openDeleteModal() {
     this.logger.log('[PRJCT-EDIT-ADD] - OPEN DELETE MODAL -> PROJECT ID ', this.id_project);
-    this.display = 'block';
+    if (this.USER_ROLE === 'owner') {
+      this.display = 'block';
+    } else {
+      this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyATeammateWithTheOwnerRoleCanDeleteAProject_lbl, this.learnMoreAboutDefaultRoles)
+    }
   }
 
   onCloseModal() {
@@ -1514,7 +1503,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
 
   goToKBDocsSettingUpAutomaticAssignment() {
-    const url = 'https://docs.tiledesk.com/knowledge-base/setting-up-automatic-assignment/'
+    const url = URL_setting_up_automatic_assignment
     window.open(url, '_blank');
   }
 

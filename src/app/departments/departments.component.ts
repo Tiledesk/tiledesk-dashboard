@@ -59,6 +59,7 @@ export class DepartmentsComponent implements OnInit {
   subscription_is_active: boolean;
   trialExpired: boolean;
   subscriptionInactiveOrTrialExpired: boolean;
+  IS_OPEN_SETTINGS_SIDEBAR: boolean;
   constructor(
     private deptService: DepartmentService,
     private router: Router,
@@ -82,6 +83,14 @@ export class DepartmentsComponent implements OnInit {
     this.translateNotificationMsgs();
     this.getProjectPlan();
     this.getBrowserLanguage();
+    this.listenSidebarIsOpened();
+  }
+
+  listenSidebarIsOpened() {
+    this.auth.settingSidebarIsOpned.subscribe((isopened) => {
+      this.logger.log('[DEPTS] SETTNGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
+      this.IS_OPEN_SETTINGS_SIDEBAR = isopened
+    });
   }
 
 

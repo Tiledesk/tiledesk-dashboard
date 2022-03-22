@@ -62,23 +62,36 @@ textarea {
   font-size: 12px;
   color: #394f5a;
   font-weight: 400;
-  font-family: "Google Sans", sans-serif !important;
+  font-family: "Poppins";
 }
 
 .faq-right-sidebar-attribute-value {
   color: #7695a5;
-  font-weight: 400;
+  // font-weight: 400;
   font-size: 12px;
   line-height: 15px;
 }
 
 .faq-right-sidebar-link {
-  color:#0f62ff;
+  color: #0f62ff;
   cursor: pointer;
+}
+.faq-right-sidebar-link:hover {
   text-decoration: underline;
 }
 
+.faq-related-knowledge-base-right-sidebar-link {
+  color: #0f62ff !important;
+  vertical-align: middle;
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+  margin-left: 8px;
+}
 
+.faq-related-knowledge-base-right-sidebar-link:hover {
+  text-decoration: underline;
+}
 
 
 // -------------------------
@@ -103,31 +116,38 @@ textarea {
   font-weight: 200 !important;
 }
 
-.card_title__underlined {
-  text-transform: none;
-  color: #566787;
-  margin-bottom: 0px;
-  height: 40px !important;
-  position: relative;
-  font-family: Google Sans, sans-serif;
-  height: 30px;
-  font-size: 16px;
-  margin-top: 10px;
-}
+// .card_title__underlined {
+//   text-transform: none;
+//   color: #566787;
+//   margin-bottom: 0px;
+//   height: 40px !important;
+//   position: relative;
+//   font-family: Google Sans, sans-serif;
+//   height: 30px;
+//   font-size: 16px;
+//   margin-top: 10px;
+//   z-index: 0;
+// }
 
-.card_title__underline {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: -1px;
-  border-bottom: 2px solid $brand-primary;
-  z-index: 1;
-}
+// .card_title__underline {
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   bottom: -1px;
+//   border-bottom: 3px solid $brand-primary;
+//   z-index: 1;
+// }
 
-.section-subtitle {
-  height: 20px;
-  border-top: 1px solid #ddd;
-  // width: calc((100% / 3) + 372px);
+// .section-subtitle {
+//   height: 20px;
+//   border-top: 1px solid #ddd;
+//   // width: calc((100% / 3) + 372px);
+// }
+
+@media (max-width: 768px) {
+  .div-spacer {
+    height: 90px !important;
+  }
 }
 
 .enable-webhook-description-wpr {
@@ -135,7 +155,6 @@ textarea {
   position: relative;
   top: -12px;
 }
-
 
 .enable-webhook-description {
   font-size: 14px;
@@ -198,5 +217,3 @@ textarea {
   right: 0px;
 }
 // --------- ./end new on-off btn logo ---------
-
-

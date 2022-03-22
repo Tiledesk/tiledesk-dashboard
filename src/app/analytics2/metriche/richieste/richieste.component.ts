@@ -443,7 +443,7 @@ export class RichiesteComponent implements OnInit {
           },
           tooltips: {
             callbacks: {
-              label: (tooltipItem, data) =>  {
+              label: (tooltipItem, data) => {
 
                 // var label = data.datasets[tooltipItem.datasetIndex].label || '';
                 // if (label) {
@@ -458,8 +458,8 @@ export class RichiesteComponent implements OnInit {
                 // humanizer.setOptions({ round: true })
                 //this.logger.log("humanize", humanizer.humanize(currentItemValue))
                 //return data.datasets[tooltipItem.datasetIndex].label + ': ' + currentItemValue
-console.log('xxxx ' , this.translate.instant('Requests') + ':' + currentItemValue) 
-                return  this.translate.instant('Requests') + ':' + currentItemValue;
+                // console.log('xxxx ', this.translate.instant('Requests') + ':' + currentItemValue)
+                return this.translate.instant('Requests') + ':' + currentItemValue;
 
                 // if (lang === 'it') {
                 //   return 'Richieste: ' + currentItemValue;
@@ -706,7 +706,7 @@ console.log('xxxx ' , this.translate.instant('Requests') + ':' + currentItemValu
             },
             tooltips: {
               callbacks: {
-                label:  (tooltipItem, data) => {
+                label: (tooltipItem, data) => {
 
                   // var label = data.datasets[tooltipItem.datasetIndex].label || '';
                   // if (label) {
