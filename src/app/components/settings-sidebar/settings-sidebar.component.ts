@@ -79,7 +79,7 @@ export class SettingsSidebarComponent implements OnInit {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((userRole) => {
-       console.log('[SETTINGS-SIDEBAR]] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
+      //  console.log('[SETTINGS-SIDEBAR]] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
         this.USER_ROLE = userRole;
       })
   }
