@@ -1,23 +1,22 @@
 <div class="wrapper">
-     <!-- <div class="sidebar" data-color='red' data-image=""> -->
-    <div class="sidebar" data-color='orange' data-image="" >
-    <div class="sidebar">
-       <app-sidebar></app-sidebar>
-        <!-- <appdashboard-small-sidebar></appdashboard-small-sidebar> -->
-        <!-- <div class="sidebar-background" style="background-image: url(../assets/img/sidebar-4.jpg)"></div> -->
-    </div>
-    <div class="user-details-sidebar" >
-        <appdashboard-sidebar-user-details> </appdashboard-sidebar-user-details>
-      </div>
+    <!-- <div class="sidebar" data-color='red' data-image=""> -->
+   <div class="sidebar">
+      <app-sidebar></app-sidebar>
+       <!-- <appdashboard-small-sidebar></appdashboard-small-sidebar> -->
+       <!-- <div class="sidebar-background" style="background-image: url(../assets/img/sidebar-4.jpg)"></div> -->
+   </div>
+   <div class="user-details-sidebar" >
+       <appdashboard-sidebar-user-details> </appdashboard-sidebar-user-details>
+     </div>
 
-    <div class="main-panel">
-        <app-navbar></app-navbar>
+   <div class="main-panel">
+       <app-navbar></app-navbar>
 
-        <notification-message></notification-message>
-        
-        <router-outlet (activate)="changeOfRoutes()"></router-outlet>
-        <div *ngIf="isMaps('maps')">
-            <app-footer></app-footer>
-        </div>
-    </div>
+       <notification-message></notification-message>
+       
+       <router-outlet (activate)="changeOfRoutes()"></router-outlet>
+       <div *ngIf="isMaps('maps')">
+           <app-footer></app-footer>
+       </div>
+   </div>
 </div>
