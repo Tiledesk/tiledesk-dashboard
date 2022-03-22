@@ -1190,7 +1190,7 @@
         "DeleteLabel": "Delete tag",
         "TypeALabelAndPressEnter": "Type a tag and press Enter",
         "YouHaveNotAddedAnyTags": "You have not added any tags",
-        "DoYouReallyWantToCancelTheTag": "Do you really want to delete the tag?",
+        "DoYouReallyWantToCancelTheTag": "Do you really want to delete the tag",
         "SelectTag": "Select tag",
         "TagsAreLabelsThatYouCanAddToConversationsAndTicket": "Tags are labels that you can add to conversations and Ticket. They help you categorize and organize all customer communication.",
         "Color": {
@@ -2024,6 +2024,14 @@
     "LanguageIsNotAvailableDashboardWillBeTranslatedIntoEnglish": "Sorry, this language is not yet available, the dashboard will be translated into English",
     "LanguageIsNotAvailableDashboardHasBeenTranslatedIntoEnglish": "Sorry, this language is not yet available, the dashboard has been translated into English",
     "OnlyATeammateWithTheOwnerRoleCanDeleteAProject": "Only a teammate with the Owner role can delete a project",
+    "NotAssigned_M": "Not assigned",
+    "NotAssigned_F": "Not assigned",
+    "Assigned_M": "Assigned",
+    "Assigned_F": "Assigned",
+    "ViewTheConversationsHistory": "View the conversations history",
+    "SelectATagOrCreateANewOne": "Select a tag or create a new one",
+    "CreateNewTag": "Create a new tag",
+    "TypeNewTagHere": "Type a new tag here",
     "CHAT_IONIC": {
         "LABEL_TU": "sie: ",
         "LABEL_MSG_PUSH_START_CHAT": "Noch kein Gespräch",
