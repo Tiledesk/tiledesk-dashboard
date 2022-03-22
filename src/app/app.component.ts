@@ -407,7 +407,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             if (e instanceof NavigationEnd) {
 
 
-                this.logger.log('[APP-COMP] - HIDE WIDGET -> CURRENT URL ', e.url);
             //    console.log('[APP-COMP] - HIDE WIDGET -> CURRENT URL ', e.url);
                 if ((e.url.indexOf('/unserved-request-for-panel') !== -1) || (e.url.indexOf('/projects-for-panel') !== -1) || (e.url.indexOf('/request-for-panel') !== -1)) {
                     // window.addEventListener("load", () => {
@@ -476,8 +475,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
         // this.logger.log('xxxx xxxx elemNavbar', elemNavbar)
         // const elemContentainerFluid = <HTMLElement>document.querySelector('.container-fluid');
-
-        const elemNavbarToogle = <HTMLElement>document.querySelector('.navbar-toggle');
         const elemSidebarWrapper = <HTMLElement>document.querySelector('.sidebar-wrapper')
         /**
          * DETECT IF IS THE LOGIN PAGE - SIGNUP - WELCOME - VERIFY-EMAIL - ...
