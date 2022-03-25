@@ -2031,5 +2031,11 @@
 	"ViewTheConversationsHistory":"Ansicht chronologie Gespräche",
 	"SelectATagOrCreateANewOne":"Wählen Sie ein Tag aus oder erstellen Sie ein neues",
 	"CreateNewTag":"Erstellen Sie ein neues Tag",
-	"TypeNewTagHere":"Geben Sie hier ein neues Tag ein"
+	"TypeNewTagHere":"Geben Sie hier ein neues Tag ein",
+	"userFullname": "Vollständiger Name",
+	"userEmail": "Email",
+	"userPhone":"Telefon",
+	"acceptedTermsPrivacy": "Bedingungen und Datenschutz akzeptieren",
+	"termsPrivacyLabel":"Bedingungen und Datenschutz-Compliance",
+	"firstMessage": "Erste Nachricht"
 }

@@ -2031,5 +2031,11 @@
     "ViewTheConversationsHistory":"Visualizza la cronologia delle conversazioni",
     "SelectATagOrCreateANewOne":"Seleziona un tag o creane uno nuovo",
     "CreateNewTag":"Crea un nuovo tag",
-    "TypeNewTagHere":"Digita qui un nuovo tag"
+    "TypeNewTagHere":"Digita qui un nuovo tag",
+    "userFullname": "Nome completo",
+    "userEmail": "E-mail",
+    "userPhone":"Telefono",
+    "acceptedTermsPrivacy": "Accetta i termini e la privacy",
+    "termsPrivacyLabel":"Conformità alle condizioni e alla privacy",
+    "firstMessage": "Primo Messaggio"
 }

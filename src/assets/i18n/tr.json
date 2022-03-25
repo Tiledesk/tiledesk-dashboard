@@ -2032,6 +2032,12 @@
     "SelectATagOrCreateANewOne":"Bir etiket seçin veya yeni bir tane oluşturun",
     "CreateNewTag":"Yeni bir etiket oluştur",
     "TypeNewTagHere":"Buraya yeni bir etiket yazın",
+    "userFullname": "Tam isim",
+    "userEmail": "E-posta",
+    "userPhone":"Telefon",
+    "acceptedTermsPrivacy": "Accept terms and privacy",
+    "termsPrivacyLabel":"Şartlar ve gizlilik Uyumluluk",
+    "firstMessage": "İlk mesaj",
     "CHAT_IONIC": {
         "LABEL_TU": "sen: ",
         "LABEL_MSG_PUSH_START_CHAT": "Henüz görüşme yok",

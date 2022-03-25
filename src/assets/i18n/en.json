@@ -2032,6 +2032,12 @@
     "SelectATagOrCreateANewOne":"Select a tag or create a new one",
     "CreateNewTag":"Create a new tag",
     "TypeNewTagHere":"Type a new tag here",
+    "userFullname": "Full name",
+    "userEmail": "Email",
+    "userPhone":"Phone",
+    "acceptedTermsPrivacy": "Accept terms and privacy ",
+    "termsPrivacyLabel":"Terms and privacy Compliance",
+    "firstMessage": "First message",
     "CHAT_IONIC": {
         "LABEL_TU": "you: ",
         "LABEL_MSG_PUSH_START_CHAT": "No conversation yet",

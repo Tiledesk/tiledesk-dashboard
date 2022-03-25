@@ -2032,6 +2032,12 @@
     "SelectATagOrCreateANewOne":"Изаберите ознаку или креирајте нову",
     "CreateNewTag":"Направите нову ознаку",
     "TypeNewTagHere":"Откуцајте нову ознаку овде",
+    "userFullname": "Пуно име",
+    "userEmail": "ЭЕмаил",
+    "userPhone":"Телефон",
+    "acceptedTermsPrivacy": "Прихватите услове и приватност",
+    "termsPrivacyLabel":"Услови и приватности усклађеност",
+    "firstMessage": "Прва порука",
     "CHAT_IONIC": {
         "LABEL_TU": "ти: ",
         "LABEL_MSG_PUSH_START_CHAT": "Још нема разговора",

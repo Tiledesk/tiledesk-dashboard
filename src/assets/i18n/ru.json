@@ -2032,6 +2032,12 @@
     "SelectATagOrCreateANewOne":"Выберите тег или создайте новый",
     "CreateNewTag":"Создать новый тег",
     "TypeNewTagHere":"Введите новый тег здесь",
+    "userFullname": "Полное имя",
+    "userEmail": "Электронная почта",
+    "userPhone":"Телефон",
+    "acceptedTermsPrivacy": "Принять условия и конфиденциальность",
+    "termsPrivacyLabel":"Условия и конфиденциальность Соответствие требованиям",
+    "firstMessage": "Первое сообщение",
     "CHAT_IONIC": {
         "LABEL_TU": "ты: ",
         "LABEL_MSG_PUSH_START_CHAT": "Разговора пока нет",
