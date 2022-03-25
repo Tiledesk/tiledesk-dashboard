@@ -591,7 +591,7 @@ div.clear {
 
 .c21-waiting-time {
     font-size: 13px;
-    // font-weight: 200;
+    font-weight: 300;
     padding: 0 24px 10px;
     font-family: Roboto, "Google Sans", Helvetica, Arial, sans-serif;
 }
@@ -712,6 +712,10 @@ div.clear {
     cursor: pointer;
 }
 
+.c21-button-primary:hover {
+    opacity: 0.8;
+}
+
 .c21-button-primary .c21-label-button {
     margin-left: 8px;
     font-weight: 600;
@@ -729,9 +733,7 @@ div.clear {
 }
 
 #chat21-home-component .c21-footer_nk {
-    // position: absolute;
     position: relative;
-    // bottom: 50px;
     bottom: -48px;
     height: auto;
     background-color: #fff;
@@ -745,14 +747,14 @@ div.clear {
 
 #chat21-home-component .c21-footer_nk #c21-powered-by {
     width: 100%;
-    height: 31px;
+    height: 34px;
     text-align: center;
     padding: 0;
     margin: 2px 0;
     color: #777;
-    border-top: 1px solid rgba(191,191,191,.2);
-    -webkit-box-shadow: 0 0 10px 0 rgba(191,191,191,.2);
-    box-shadow: 0 0 10px 0 rgba(191,191,191,.2);
+    border-top: 1px solid rgba(191, 191, 191, 0.2);
+    -webkit-box-shadow: 0 0 10px 0 rgba(191, 191, 191, 0.2);
+    box-shadow: 0 0 10px 0 rgba(191, 191, 191, 0.2);
     z-index: 20;
 }
 #chat21-home-component .c21-header-container {
@@ -765,7 +767,7 @@ div.clear {
 }
 .c21-header-container .c21-text .c21-text-wellcome {
     line-height: normal;
-    font-family: 'Google Sans',sans-serif!important;
+    font-family: "Google Sans", sans-serif !important;
     max-height: 75px;
 }
 
@@ -828,7 +830,6 @@ div.clear {
     user-select: none;
     font-weight: 500;
 }
-
 
 // #chat21-home-component .c21-header-container .c21-logo img {
 //     max-width: 100%;
