@@ -5,10 +5,10 @@
 </div> -->
 
 <span class="navbar-brand navbar-brand-sidebar-settings"
-  [ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
-  <i class="material-icons">settings</i>
+	[ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
+	<i class="material-icons">settings</i>
 
-  <span *ngIf="IS_OPEN_SETTINGS_SIDEBAR">{{ 'Settings' | translate }} </span>
+	<span *ngIf="IS_OPEN_SETTINGS_SIDEBAR">{{ 'Settings' | translate }} </span>
 </span>
 <span class="navbar-brand navbar-brand-title">
 	{{'WidgetSetUp' | translate}}
@@ -18,14 +18,15 @@
 	<div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
 
 		<div class="content-wpr" style="display: flex;">
-			<appdashboard-settings-sidebar style="border-right:1px solid #e5effe !important"> </appdashboard-settings-sidebar>
+			<appdashboard-settings-sidebar style="border-right:1px solid #e5effe !important">
+			</appdashboard-settings-sidebar>
 			<div class="teplate-content" style="flex: 1 1 auto;">
 				<!-- ------------------------------- -->
 				<!--  Widget Set Up  HEADER -->
 				<!-- ------------------------------- -->
 				<div class="row">
 					<div class="col-xs-12 widget-set-up-col">
-						
+
 						<div class="widget-set-up-text">
 							{{ 'WidgetSetUp' | translate }}
 						</div>
@@ -45,8 +46,7 @@
 									</path>
 								</svg>
 							</span>
-							<span class="widget-set-up-link-to-docs"
-								(click)="goToWidgetWebSdk()">
+							<span class="widget-set-up-link-to-docs" (click)="goToWidgetWebSdk()">
 								{{'LearnAboutAdvancedWidgetConfiguration'| translate}}
 							</span>
 						</div>
@@ -374,10 +374,10 @@
 								<div class="widget-section-container"
 									style="height: auto; transition-duration: 0.613s;">
 									<div class="section-offset" style="height: 512px;">
-										<!--
-								// ----------------------------------------
-								// Preset colors
-								// ---------------------------------------- -->
+										
+										<!-- ---------------------------------------- -->
+										<!-- Preset colors -->
+										<!-- ---------------------------------------- -->
 										<div class="form-group"
 											style="max-width: 640px; margin-left: -15px; margin-right: -15px;">
 											<label class="col-sm-12 control-label widget-settings-control-head-label"
@@ -546,13 +546,10 @@
 											</div>
 										</div>
 
-										<!--
-								// ----------------------------------------
-								// Select Primary color
-								// ---------------------------------------- -->
-
+										<!-- ---------------------------------------- -->
+										<!-- Select Primary color -->
+										<!-- ---------------------------------------- -->
 										<div class="row">
-
 											<label class="col-sm-12 control-label widget-settings-control-head-label"
 												style="padding-top:12px; padding-bottom: 2px;">
 												<!-- Background Color: -->
@@ -623,9 +620,6 @@
 																</div>
 															</div>
 														</div>
-
-
-
 													</div>
 													<div id="custom-colors-secondary">
 														<div class="form-group"
@@ -690,10 +684,10 @@
 												</div>
 											</div>
 										</div>
-										<!--
-								// ----------------------------------------
-								// Logo on /off switch
-								// ---------------------------------------- -->
+										
+										<!-- ---------------------------------------- -->
+										<!-- Logo on /off switch -->
+										<!-- ---------------------------------------- -->
 										<div class="form-group"
 											style="max-width: 640px; margin-left: -15px; 	margin-right: -15px;">
 
@@ -755,14 +749,12 @@
 										</div>
 
 
-										<!--
-								// ----------------------------------------
-								// Logo url
-								// ---------------------------------------- -->
+
+										<!-- ---------------------------------------- -->
+										<!-- Logo url -->
+										<!-- ---------------------------------------- -->
 										<div class="form-group"
 											style="max-width: 640px; margin-left: -15px; margin-right: -15px;margin-top: 0px;">
-
-
 
 											<label
 												class="col-sm-12 control-label widget-settings-control-label padding-top-2">
@@ -802,12 +794,9 @@
 											</div>
 										</div>
 
-
-
-										<!--
-								// ----------------------------------------
-								// Widget Alignment
-								// ---------------------------------------- -->
+										<!-- ---------------------------------------- -->
+										<!-- Widget Alignment -->
+										<!-- ---------------------------------------- -->
 										<div class="form-group"
 											style="max-width: 640px; margin-left: -15px; 	margin-right: -15px;">
 											<label class="col-sm-12 control-label widget-settings-control-head-label">
@@ -831,11 +820,9 @@
 											</div>
 										</div>
 
-
-										<!-- 
-								// -------------------------------------
-								// Save
-								// ------------------------------------- -->
+										<!-- ------------------------------------- -->
+										<!-- Save -->
+										<!-- ------------------------------------- -->
 										<div class="form-group"
 											style="max-width: 640px; margin-left: -15px; 	margin-right: -15px;">
 											<!-- /// APPEARANCE SAVE BTN ON BOTTOM -->
@@ -852,10 +839,10 @@
 									</div>
 								</div>
 
-								<!--
-						// ----------------------------------------------------------------------------
-						// @ Greetings SECTION
-						// ---------------------------------------------------------------------------- -->
+
+								<!-- ---------------------------------------------------------------------------- -->
+								<!-- @ Greetings SECTION -->
+								<!-- ---------------------------------------------------------------------------- -->
 								<button type="button" class="widget-section-accordion widget-section-header">
 
 									<div class="widget-section-title">
@@ -885,11 +872,9 @@
 									style="height: auto; transition-duration: 0.613s;">
 									<div class="section-offset">
 
-
-										<!--
-								// ----------------------------------------
-								// Welcome Message
-								// ---------------------------------------- -->
+										<!-- ---------------------------------------- -->
+										<!-- Welcome Message -->
+										<!-- ---------------------------------------- -->
 										<div class="form-group"
 											style="max-width: 640px; margin-left: -15px; 	margin-right: -15px;">
 
@@ -900,7 +885,8 @@
 												{{ 'WidgetPreviewIsDisplayedIn' | translate }} <span
 													style="font-weight: bold;">{{selectedLangName}} </span>.<br>
 												<!-- {{'ChangePreviewToCustomizeTheFollowingFieldsInAnotherLanguage' | translate}} -->
-												{{'ChangePreviewIn' | translate}} <span class="anchor-to-multilanguage-section">
+												{{'ChangePreviewIn' | translate}} <span
+													class="anchor-to-multilanguage-section">
 													{{'MultilanguageSection' | translate}}</span>
 												{{'ToCustomizeTheFollowingFieldsInAnotherLanguage' | translate}}
 											</label>
@@ -951,10 +937,10 @@
 											</div>
 										</div>
 
-										<!--
-								// ----------------------------------------
-								// Team Intro
-								// ---------------------------------------- -->
+
+										<!-- ---------------------------------------- -->
+										<!-- Team Intro -->
+										<!-- ---------------------------------------- -->
 										<div class="form-group"
 											style="max-width: 640px; margin-left: -15px; 	margin-right: -15px; margin-top: 0px;">
 											<label class="col-sm-12 control-label widget-settings-control-label"
@@ -1013,8 +999,7 @@
 											</label>
 
 
-											<label class="col-sm-12 control-label widget-settings-control-label"
-												style="">
+											<label class="col-sm-12 control-label widget-settings-control-label">
 
 												{{ "OnlineMessage" | translate}}
 
@@ -1045,15 +1030,12 @@
 											</div>
 										</div>
 
-
-
 										<!-- -------------------------- -->
 										<!--  Offline Message -->
 										<!-- -------------------------- -->
 										<div class="form-group"
 											style="max-width: 640px; margin-left: -15px; margin-right: -15px; margin-top: 0px;">
-											<label class="col-sm-12 control-label widget-settings-control-label"
-												style="">
+											<label class="col-sm-12 control-label widget-settings-control-label">
 
 												{{ "OfflineMessage" | translate}}
 
@@ -1085,14 +1067,12 @@
 											</div>
 										</div>
 
-
 										<!-- -------------------------- -->
 										<!--  OFFICE CLOSED -->
 										<!-- -------------------------- -->
 										<div class="form-group"
 											style="max-width: 640px; margin-left: -15px; margin-right: -15px; margin-top: 0px;">
-											<label class="col-sm-12 control-label widget-settings-control-label"
-												style="">
+											<label class="col-sm-12 control-label widget-settings-control-label">
 
 												{{ "OfficeClosedMessage" | translate}}
 
@@ -1145,13 +1125,11 @@
 											</div>
 										</div>
 									</div> <!-- ./	section-offset -->
-
 								</div>
 
-								<!--
-						// ----------------------------------------------------------------------------
-						// @ Reply time SECTION 
-						// ---------------------------------------------------------------------------- -->
+								<!-- ---------------------------------------------------------------------------- -->
+								<!-- @ Reply time SECTION -->
+								<!-- ---------------------------------------------------------------------------- -->
 								<button type="button" class="widget-section-accordion widget-section-header">
 									<div class="widget-section-title">
 										<div class="widget-setting-icon-wrap">
@@ -1186,14 +1164,12 @@
 								<div class="widget-section-container"
 									style="height: auto; transition-duration: 0.613s;">
 									<div class="section-offset" style="height: 556px;">
-										<!--
-								// ---------------------------------------------------
-								// Reply time messages
-								// --------------------------------------------------- -->
 
+										<!-- --------------------------------------------------- -->
+										<!-- Reply time messages -->
+										<!-- --------------------------------------------------- -->
 										<div class="form-group"
 											style="max-width: 640px; margin-left: -15px; margin-right: -15px;">
-
 
 											<label
 												class="col-sm-12 control-label widget-settings-control-head-label-info"
@@ -1201,7 +1177,8 @@
 												{{ 'WidgetPreviewIsDisplayedIn' | translate }} <span
 													style="font-weight: bold;">{{selectedLangName}} </span>.<br>
 												<!-- {{'ChangePreviewToCustomizeTheFollowingFieldsInAnotherLanguage' | translate}} -->
-												{{'ChangePreviewIn' | translate}} <span class="anchor-to-multilanguage-section">
+												{{'ChangePreviewIn' | translate}} <span
+													class="anchor-to-multilanguage-section">
 													{{'MultilanguageSection' | translate}}</span>
 												{{'ToCustomizeTheFollowingFieldsInAnotherLanguage' | translate}}
 											</label>
@@ -1216,11 +1193,10 @@
 											{{'SayHowSoonYourTeamUsuallyReplies' | translate}}:
 										</div> -->
 
-												<!--
-										// ---------------------------------------------------
-										// Static Reply time messages
-										// --------------------------------------------------- -->
 
+												<!-- --------------------------------------------------- -->
+												<!-- Static Reply time messages -->
+												<!-- --------------------------------------------------- -->
 												<div class="radio"
 													style="margin-left: -10px;margin-top: 10px;    margin-bottom: -6px;">
 													<label style="color: #566787 !important;">
@@ -1245,10 +1221,9 @@
 
 												</div>
 
-												<!--
-										// ---------------------------------------------------
-										// Dimanic Reply time messages
-										// --------------------------------------------------- -->
+												<!-- --------------------------------------------------- -->
+												<!-- Dimanic Reply time messages -->
+												<!-- --------------------------------------------------- -->
 												<div class="radio"
 													style="margin-left: -10px;margin-top: 10px;  margin-bottom: -6px;">
 													<label style="color: #566787 !important;">
@@ -1260,7 +1235,6 @@
 														{{'DynamicallySharingAverageResponseTime' | translate}}
 													</label>
 												</div>
-
 
 												<!-- --- average reply time is available --- -->
 												<div class="wrapper-reply-time-found" style="margin-top: 3px;">
@@ -1310,7 +1284,6 @@
 													</button>
 												</div>
 
-
 												<!-- --- average reply time is not available --- -->
 												<div class="wrapper-reply-time-not-found" style="margin-top: 3px;">
 													<label class="col-sm-12 control-label widget-settings-control-label"
@@ -1337,8 +1310,6 @@
 											</div>
 										</div>
 
-
-
 										<!-- ------------------------------------- -->
 										<!-- Save Reply time and translations -->
 										<!-- ------------------------------------- -->
@@ -1358,11 +1329,9 @@
 									</div> <!-- ./	section-offset -->
 								</div>
 
-
-
-								<!-- ----------------------------------------------------------------------------
-						// @ Callout SECTION 
-						// ---------------------------------------------------------------------------- -->
+								<!-- ---------------------------------------------------------------------------- -->
+								<!-- @ Callout SECTION  -->
+								<!-- ---------------------------------------------------------------------------- -->
 								<button type="button" class="widget-section-accordion widget-section-header">
 									<div class="widget-section-title">
 										<div class="widget-setting-icon-wrap">
@@ -1395,8 +1364,6 @@
 									<div class="section-offset">
 										<div class="form-group"
 											style="max-width: 640px; margin-left: -15px; margin-right: -15px; margin-top: 0px;">
-
-
 											<label
 												class="col-sm-12 control-label widget-settings-control-head-label-info"
 												(click)="scroll(multilanguage)">
@@ -1404,7 +1371,8 @@
 												{{ 'WidgetPreviewIsDisplayedIn' | translate }} <span
 													style="font-weight: bold;">{{selectedLangName}} </span>.<br>
 												<!-- {{'ChangePreviewToCustomizeTheFollowingFieldsInAnotherLanguage' | translate}} -->
-												{{'ChangePreviewIn' | translate}} <span class="anchor-to-multilanguage-section">
+												{{'ChangePreviewIn' | translate}} <span
+													class="anchor-to-multilanguage-section">
 													{{'MultilanguageSection' | translate}}</span>
 												{{'ToCustomizeTheFollowingFieldsInAnotherLanguage' | translate}}
 											</label>
@@ -1427,7 +1395,6 @@
 												</div>
 											</div>
 										</div>
-
 
 										<div class="form-group"
 											style="max-width: 640px; margin-left: -15px; margin-right: -15px; margin-top: 0px;">
@@ -1463,9 +1430,7 @@
 													{{calloutTimerSecondSelected}} {{ 'Resourcepage.Seconds' | translate
 													}}
 												</p>
-
 											</div>
-
 										</div>
 
 										<div class="form-group"
@@ -1516,8 +1481,6 @@
 														{{ 'Resourcepage.CustomizeTheCalloutMsg' | translate }}
 													</span>
 												</span>
-
-
 											</label>
 
 											<div class="col-sm-12">
@@ -1534,7 +1497,6 @@
 												</div>
 											</div>
 										</div>
-
 
 										<!-- ------------------------------------- -->
 										<!-- Save -->
@@ -1556,11 +1518,11 @@
 									</div>
 								</div>
 
-
 								<!-- ---------------------------------------------------------------------------- -->
 								<!-- @ Pre-chat form SECTION -->
 								<!-- ---------------------------------------------------------------------------- -->
-								<button type="button" class="widget-section-accordion widget-section-header">
+								<button (click)="hasOpenedPrechaFormSection()" type="button"
+									class="widget-section-accordion widget-section-header">
 									<div class="widget-section-title">
 										<div class="widget-setting-icon-wrap">
 											<svg xmlns='http://www.w3.org/2000/svg' class='ionicon'
@@ -1574,7 +1536,7 @@
 											</svg>
 										</div>
 										<h4 class="widget-section-header__title-underlined">
-											Pre-Chat form
+											{{'PreChatForm' | translate}}
 
 											<span *ngIf="preChatForm === true" class="pre-chat-form-on-badge">
 												<!-- ({{ 'Enabled' | translate }}) -->
@@ -1593,12 +1555,11 @@
 										</i>
 									</div>
 								</button>
-								<!-- [ngClass]="{'panel-prechatform-height': preChatFormCustomFieldsEnabled === true}" -->
+								
 								<div class="widget-section-container prechatform"
 									style="height: auto; transition-duration: 0.613s;"
 									[ngClass]="{'panel-prechatform-height': HAS_ACTIVATED_PRECHAT_CUSTOM_FIELDS === true}">
 									<div class="section-offset">
-
 
 										<!-- ------------------------------------------------------ -->
 										<!-- Enable / Disable default PreChetForm (Name & Email) -->
@@ -1610,6 +1571,11 @@
 												{{'AskYourVisitorForTheirNameAndEmailBeforeStartingAChat' | translate}}
 											</label>
 
+										
+											<label class="col-sm-12 control-label widget-settings-control-label"
+											style="position: relative;top: -6px;">
+											{{ 'EnableDisable' | translate }} pre-chat form
+											</label>
 											<div class="col-sm-12">
 												<div class="nw-onoffswitch-wrapper" style="clear: both;">
 													<div class="nw-onoffswitch">
@@ -1622,13 +1588,24 @@
 													</div>
 												</div>
 											</div>
-											<!-- style="padding-top: 14px;" -->
-											<label class="col-sm-12 control-label widget-settings-control-label"
-												style="position: relative;top: -6px;">
-												{{ 'EnableDisable' | translate }} pre-chat form
-											</label>
-										</div>
+										
+										
 
+											<label class="col-sm-12 control-label widget-settings-control-label">
+												{{'PreChatFormTitle' | translate}}
+											</label>
+											<span class="active-language-label" style="margin-left: 15px;">
+												{{selectedLangName}}
+											</span>
+
+											<div class="col-sm-12">
+												<textarea [(ngModel)]="LABEL_COMPLETE_FORM"
+													(ngModelChange)="onChangeLabelCompleteForm($event)" rows="2"
+													style="width: 100%; border-radius: 5px;border: solid 1px #ddd; padding: 8px;font-weight: 400;resize: vertical">	
+												</textarea>
+											</div>
+
+										</div>
 
 										<!-- ------------------------------------------------------ -->
 										<!-- Customize the pre-chat form -->
@@ -1641,6 +1618,15 @@
 												translate}}
 											</label>
 
+											<label class="col-sm-12 control-label widget-settings-control-label"
+											style="position: relative;top: -6px;">
+											{{'EnableDisableCustomPreChatForm' | translate}}
+											<!-- <span style="color:#03a5e8; cursor:pointer"
+												(click)="goToPrechatFormExample()">
+												{{'HereSomeExamples' | translate}}. 
+											</span> -->
+											</label>
+
 											<div class="col-sm-12">
 												<div class="nw-onoffswitch-wrapper" style="clear: both;">
 													<div class="nw-onoffswitch">
@@ -1648,30 +1634,134 @@
 															type="checkbox" name="nw-prechatformfield-switch"
 															class="nw-onoffswitch-checkbox"
 															id="nw-prechatformfield-switch" tabindex="0"
-															[checked]="preChatFormCustomFieldsEnabled"
+															[checked]="preChatFormCustomFieldsEnabled === true"
 															[disabled]="preChatForm === false">
 														<label class="nw-onoffswitch-label"
-															for="nw-prechatformfield-switch"></label>
+															for="nw-prechatformfield-switch">
+														</label>
 													</div>
 												</div>
 											</div>
-											<!-- style="padding-top: 14px;" -->
-											<label class="col-sm-12 control-label widget-settings-control-label"
-												style="position: relative;top: -6px;">
-												{{ 'CustomizeThePreChatForm' | translate }}.
-												<span style="color:#03a5e8; cursor:pointer"
-													(click)="goToPrechatFormExample()">
-													{{'HereSomeExamples' | translate}}. </span>
-
-											</label>
+										
+										
 
 											<!--  -->
 											<div class="col-sm-12" *ngIf="preChatFormCustomFieldsEnabled === true">
 												<!-- [ngModel]="prechatFormTexareaJson | json" (ngModelChange)="onChangePrechatFormTexareaJson($event)" -->
 												<!-- (paste)="onPastePrechatFormJSON($event)" -->
-												<textarea id="prechat-form-texarea" rows="24"
+												<div class="pre-chat-form-fields-wpr"	*ngFor="let field of prechatFormArray">
+													<!-- {{ field.name }} -->
+													<div class="row">
+														<div class="col-xs-12">
+															<div class="row aligned-row">
+																<div class="col-xs-9 col-sm-10" style="padding-right: 1px;">
+																	<div class="pre-chat-form-field-div">
+																		<a href="#" class="close" data-dismiss="alert"
+																			aria-label="close"
+																			(click)="removePrechatFormField(field)">&times;</a>
+
+																		{{field?.name | translate }}
+																		<input *ngIf="field.name === 'userFullname'"
+																			(ngModelChange)="onChangeUserFullNameLabel($event)"
+																			[(ngModel)]="LABEL_PRECHAT_USER_FULLNAME"
+																			type="{{field.type}}" id="{{field.name}}">
+																		<input *ngIf="field.name === 'userEmail'"
+																			(ngModelChange)="onChangeEmailLabel($event)"
+																			[(ngModel)]="LABEL_PRECHAT_USER_EMAIL"
+																			type="{{field.type}}" id="{{field.name}}">
+																		<input *ngIf="field.name === 'userPhone'"
+																			(ngModelChange)="onChangePhoneLabel($event)"
+																			[(ngModel)]="LABEL_PRECHAT_USER_PHONE"
+																			type="{{field.type}}" id="{{field.name}}">
+																		<input
+																			*ngIf="field.name === 'acceptedTermsPrivacy'"
+																			(ngModelChange)="onChangeAcceptTermsPrivacyLabel($event)"
+																			[(ngModel)]="LABEL_PRECHAT_ACCEPT_TERMS_PRIVACY"
+																			type="text" id="{{field.name}}">
+																		<textarea
+																			*ngIf="field.name === 'termsPrivacyLabel'"
+																			(ngModelChange)="onChangeTermsPrivacyLabel($event)"
+																			row="2"
+																			[(ngModel)]="LABEL_PRECHAT_STATIC_TERMS_PRIVACY"
+																			id="{{field.name}}"></textarea>
+																		<input *ngIf="field?.name === 'firstMessage'"
+																			(ngModelChange)="onChangeFirstMessagel($event)"
+																			[(ngModel)]="LABEL_PRECHAT_FIRST_MESSAGE"
+																			id="{{field?.name}}">
+																		<div class="checkbox"
+																			*ngIf="field.name !== 'termsPrivacyLabel'"
+																			style="padding-top: 3px;">
+																			<label style="color:#fff">
+																				<input type="checkbox"
+																					name="{{field.name}}"
+																					(change)="onChangeFieldIsRequired($event, field )"
+																					[checked]="field.mandatory">
+																				<span style="position: relative;top: 3px;">
+																					{{'Mandatory' | translate}} 
+																				</span>
+																			</label>
+																		</div>
+																	</div>
+																</div>
+																<div class="col-xs-2 col-sm-1"  style="margin-bottom: 7px; padding-left: 1px; padding-right: 1px;">
+																	<div
+																		class="pre-chat-form-field-move-up-and-down-wpr">
+																		<div class="move-up-field-btn" id="{{field.name + '_btn_up'}}" (click)="moveUp(field)">
+																			<span class="material-icons move-up-material-icons">
+																				expand_less
+																			</span>
+																		</div>
+																		<div class="move-down-field-btn" id="{{field.name + '_btn_down'}}" (click)="moveDown(field)">
+																			<span class="material-icons move-down-material-icons">
+																				expand_more
+																			</span>
+																		</div>
+																	</div>
+																</div>
+																<!-- <div class="col-xs-2"  style="margin-bottom: 5px; padding-left: 5px;">
+																	<div class="pre-chat-form-remove-field-btn--wpr" (click)="removePrechatFormField(field)">
+																		<div class="remove-field-btn" id="{{field.name + '_remove_field'}}">
+																		 <span class="material-icons remove-field-material-icons">
+																			close
+																			</span>
+																		</div>
+																	</div>
+																</div> -->
+															</div>
+														</div>
+														<!-- <div class="col-xs-2"></div> -->
+
+													</div>
+												</div>
+
+												<div id="select-prechat-fomrm-fields-wpr">
+													<ng-select #Selecter (change)="addPrechatFormField($event)"
+														[items]="preChatFormFields" bindLabel="name" bindValue="name"
+														[(ngModel)]="preChatFormFieldName" [clearable]="false"
+														[clearSearchOnAdd]="true"
+														(focus)="focusOnSelectaddPrechatFormField()"
+														placeholder="{{'SelectFields' | translate}}" 
+														dropdownPosition='top'>
+
+														<ng-template ng-label-tmp let-item="item">
+
+
+															{{item.name | translate}}
+														</ng-template>
+														<ng-template ng-option-tmp let-item="item" let-index="index">
+
+															{{item.name | translate}}
+														</ng-template>
+														<!-- (ngModelChange)="onChangeTagnameInConvDetail($event)" -->
+														<!-- <ng-template ng-footer-tmp>
+													</ng-template> -->
+													</ng-select>
+												</div>
+
+												<!-- <textarea id="prechat-form-texarea" rows="24"
 													[(ngModel)]="prechatFormTexareaJson"
-													style="width: 100%; border-radius: 5px;border: solid 1px #ddd; padding: 8px;font-weight: 400;resize: none"></textarea>
+													style="width: 100%; border-radius: 5px;border: solid 1px #ddd; padding: 8px;font-weight: 400;resize: none; max-height: 100px;">
+												</textarea> -->
 
 											</div>
 										</div>
@@ -1684,7 +1774,7 @@
 											<div class="col-sm-12">
 												<button class="btn btn-success-no-boxshadow  prechatform-savejson-btn"
 													style="margin-top: 15px; margin-bottom: 15px;font-size: 12px; letter-spacing: 1px;"
-													(click)="savePrechatFormCustomFields();saveTranslation()">
+													(click)="savePrechatFormCustomFields(); saveTranslation()">
 													{{ 'UpdateWidget' | translate }}
 												</button>
 											</div>
@@ -1784,8 +1874,7 @@
 											</span>
 											<h5 style="color:#687882; font-size:14px; font-weight: 400;">
 												{{ 'IfYouWantToTranslateOrEditWidgetPhrases' | translate }}
-												<span class="add-languages-link"
-													(click)="goToWidgetMultilanguage()">
+												<span class="add-languages-link" (click)="goToWidgetMultilanguage()">
 													- {{ 'AddLanguages' | translate }}
 												</span>
 
@@ -1919,9 +2008,24 @@
 											[offlineMsg]="offlineMsg" [projectName]="projectName"
 											[UPLOAD_ENGINE_IS_FIREBASE]="UPLOAD_ENGINE_IS_FIREBASE"
 											[imageUrl]="imageUrl" [currentUserId]="currentUserId"
-											[current_user_name]="current_user_name"
-											[LABEL_PLACEHOLDER]="LABEL_PLACEHOLDER" >
+											[current_user_name]="current_user_name">
 										</appdashboard-widget-chat>
+
+										<appdashboard-widget-prechat-form *ngIf="DISPLAY_WIDGET_PRECHAT_FORM"
+											[primaryColor]="primaryColor" [secondaryColor]="secondaryColor"
+											[newConversation]="newConversation"
+											[preChatFormCustomFieldsEnabled]="preChatFormCustomFieldsEnabled"
+											[prechatFormArray]="prechatFormArray"
+											[LABEL_PRECHAT_USER_FULLNAME]="LABEL_PRECHAT_USER_FULLNAME"
+											[LABEL_PRECHAT_USER_EMAIL]="LABEL_PRECHAT_USER_EMAIL"
+											[LABEL_PRECHAT_USER_PHONE]="LABEL_PRECHAT_USER_PHONE"
+											[LABEL_PRECHAT_FIRST_MESSAGE]="LABEL_PRECHAT_FIRST_MESSAGE"
+											[LABEL_PRECHAT_STATIC_TERMS_PRIVACY]="LABEL_PRECHAT_STATIC_TERMS_PRIVACY"
+											[LABEL_PRECHAT_ACCEPT_TERMS_PRIVACY]="LABEL_PRECHAT_ACCEPT_TERMS_PRIVACY"
+											[LABEL_COMPLETE_FORM]="LABEL_COMPLETE_FORM">
+
+
+										</appdashboard-widget-prechat-form>
 									</div>
 
 

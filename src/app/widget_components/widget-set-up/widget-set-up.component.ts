@@ -22,7 +22,7 @@ import { UsersService } from '../../services/users.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { URL_google_tag_manager_add_tiledesk_to_your_sites } from '../../utils/util';
-
+import { NgSelectComponent } from '@ng-select/ng-select';
 const swal = require('sweetalert');
 
 @Component({
@@ -38,6 +38,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
   @ViewChild('testwidgetbtn') private elementRef: ElementRef;
   @ViewChild("multilanguage") private multilanguageRef: ElementRef;
+  @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
   tparams: any;
   company_name: any;
   company_site_url: any;
@@ -129,7 +130,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   public noConversation: string // NO_CONVERSATION
   public waitingTimeNotFoundMsg: string; // WAITING_TIME_NOT_FOUND
   public waitingTimeFoundMsg: string; //  WAITING_TIME_FOUND
-
+  public LABEL_PLACEHOLDER: string; //  "type your message.."
   placeholderOnlineMsg: string;
   placeholderOfflineMsg: string;
   placeholderofficeClosedMsg: string;
@@ -144,6 +145,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   DISPLAY_CALLOUT = false;
   DISPLAY_WIDGET_CHAT = false;
   DISPLAY_LAUNCER_BUTTON = false
+  DISPLAY_WIDGET_PRECHAT_FORM = false
 
   HAS_FOCUSED_ONLINE_MSG = false;
   HAS_FOCUSED_OFFLINE_MSG = false;
@@ -156,15 +158,66 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
   imageUrl: string;
   currentUserId: string;
+  preChatFormFieldName: string
+  preChatFormFields = [
+    {
+      "name": "userFullname",
+      "type": "text",
+      "mandatory": true,
+      "label": "LABEL_PRECHAT_USER_FULLNAME",
+      "errorLabel": "LABEL_PRECHAT_USER_FULLNAME_ERROR"
+    },
+    {
+      "name": "userEmail",
+      "type": "text",
+      "mandatory": true,
+      "regex": "/^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)+$/",
+      "label": "LABEL_PRECHAT_USER_EMAIL",
+      "errorLabel": "LABEL_PRECHAT_USER_EMAIL_ERROR"
+    },
+    {
+      "name": "userPhone",
+      "type": "text",
+      "mandatory": true,
+      "label": "LABEL_PRECHAT_USER_PHONE",
+      "errorLabel": "LABEL_PRECHAT_USER_PHONE_ERROR"
+    },
+    {
+      "type": "checkbox",
+      "name": "acceptedTermsPrivacy",
+      "label": "LABEL_PRECHAT_ACCEPT_TERMS_PRIVACY",
+      "errorLabel": "LABEL_PRECHAT_ACCEPT_TERMS_PRIVACY_ERROR",
+      "mandatory": "true"
+    },
+    {
+      "name": "termsPrivacyLabel",
+      "type": "static",
+      "label": "LABEL_PRECHAT_STATIC_TERMS_PRIVACY"
+    },
+    {
+      "name": "firstMessage",
+      "rows": 5,
+      "type": "textarea",
+      "mandatory": false,
+      "label": "LABEL_PRECHAT_FIRST_MESSAGE"
+    }
+  ]
 
-
+  LABEL_PRECHAT_USER_FULLNAME: string;
+  LABEL_PRECHAT_USER_EMAIL: string;
+  LABEL_PRECHAT_USER_PHONE: string;
+  LABEL_PRECHAT_FIRST_MESSAGE: string;
+  LABEL_PRECHAT_STATIC_TERMS_PRIVACY: string;
+  LABEL_PRECHAT_ACCEPT_TERMS_PRIVACY: string;
+  LABEL_COMPLETE_FORM: string;
   widget_preview_selected = '0000';
   widget_preview_status = [
     { id: '0000', name: 'Home' },
     { id: '0001', name: 'Home with converations' },
     { id: '0002', name: 'Chat' },
     { id: '0003', name: 'Callout' },
-    { id: '0004', name: 'Closed' }
+    { id: '0004', name: 'Closed' },
+    { id: '0005', name: 'Pre-chat form' }
   ];
 
   lang: any;
@@ -183,6 +236,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   current_user_name: string
 
   warningMsg: string;
+  warning_translated: string;
+  custom_prechat_form_is_empty_and_will_be_disabled_msg: string;
   noDefaultLanguageIsSetUpMsg: string;
   noLanguagesAreSetUpMsg: string;
   goToMultilanguagePageMsg: string;
@@ -196,7 +251,9 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   public nativeRating: boolean;
   public enablePrechatformFieldsCheckBox: boolean;
   public prechatFormTexareaJson: any;
+  public prechatFormArray: Array<any> = [];
   public preChatFormJson: any;
+  public preChatFormFielsBtnsArray: Array<any> = [];
   public preChatFormCustomFieldsEnabled: boolean;
   public HAS_ACTIVATED_PRECHAT_CUSTOM_FIELDS: boolean;
   public USER_ROLE: string;
@@ -261,6 +318,20 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.lang = this.translate.getBrowserLang();
     this.logger.log('[WIDGET-SET-UP] LANGUAGE ', this.lang);
     this.listenSidebarIsOpened();
+    this.geti118nTranslations();
+  }
+  geti118nTranslations() {
+    this.translate.get('Warning')
+      .subscribe((text: any) => {
+        this.warning_translated = text
+      })
+
+
+    this.translate.get('TheCustomPreChatFormIsEmptyAndWillBeDisabled')
+      .subscribe((text: any) => {
+        this.custom_prechat_form_is_empty_and_will_be_disabled_msg = text
+      })
+
   }
 
   listenSidebarIsOpened() {
@@ -306,6 +377,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       var lastPanel = <HTMLElement>lastAccordion.nextElementSibling;
       lastAccordion.classList.add("active");
       lastPanel.style.maxHeight = lastPanel.scrollHeight + "px";
+     
       var arrow_icon_div = lastAccordion.children[1];
       var arrow_icon = arrow_icon_div.children[0]
       arrow_icon.classList.add("arrow-up");
@@ -361,18 +433,20 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       this.DISPLAY_WIDGET_CHAT = false;
       this.DISPLAY_CALLOUT = false;
       this.C21_BODY_HOME = false;
+      this.DISPLAY_WIDGET_PRECHAT_FORM = false;
     } else if (previewselected === '0000') {
       this.DISPLAY_WIDGET_HOME = true;
       this.DISPLAY_LAUNCER_BUTTON = false;
       this.DISPLAY_WIDGET_CHAT = false;
       this.DISPLAY_CALLOUT = false;
       this.C21_BODY_HOME = true;
+      this.DISPLAY_WIDGET_PRECHAT_FORM = false;
     } else if (previewselected === '0004') {
       this.DISPLAY_WIDGET_HOME = true;
       this.DISPLAY_LAUNCER_BUTTON = true
       this.DISPLAY_WIDGET_CHAT = false;
       this.DISPLAY_CALLOUT = false;
-
+      this.DISPLAY_WIDGET_PRECHAT_FORM = false;
     }
 
     if (previewselected === '0002') {
@@ -382,13 +456,21 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       this.HAS_FOCUSED_ONLINE_MSG = true;
       this.HAS_FOCUSED_OFFLINE_MSG = false;
       this.HAS_FOCUSED_OFFICE_CLOSED_MSG = false;
-
+      this.DISPLAY_WIDGET_PRECHAT_FORM = false;
     }
 
     if (previewselected === '0003') {
       this.DISPLAY_WIDGET_CHAT = false;
       this.DISPLAY_WIDGET_HOME = false;
       this.DISPLAY_CALLOUT = true;
+      this.DISPLAY_WIDGET_PRECHAT_FORM = false;
+    }
+
+    if (previewselected === '0005') {
+      this.DISPLAY_WIDGET_CHAT = false;
+      this.DISPLAY_WIDGET_HOME = false;
+      this.DISPLAY_CALLOUT = false;
+      this.DISPLAY_WIDGET_PRECHAT_FORM = true;
     }
 
   }
@@ -543,6 +625,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
       firstAccordion.classList.add("active");
       firstPanel.style.maxHeight = firstPanel.scrollHeight + "px";
+      console.log('[WIDGET-SET-UP] firstPanel.style.maxHeight  ', firstPanel.style.maxHeight)
 
       var arrow_icon_div = firstAccordion.children[1];
       // this.logger.log('[WIDGET-SET-UP] ACCORDION ARROW ICON WRAP DIV', arrow_icon_div);
@@ -569,6 +652,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           self.HAS_ACTIVATED_PRECHAT_CUSTOM_FIELDS = false
         } else {
           panel.style.maxHeight = panel.scrollHeight + "px";
+        console.log('[WIDGET-SET-UP] firstPanel.style.maxHeight  ', panel.style.maxHeight)
         }
       });
     }
@@ -811,7 +895,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       if (translation.lang.toLowerCase() === selectedLangCode) {
 
         this.selected_translation = translation.data
-        this.logger.log('[WIDGET-SET-UP] ***** selected translation: ', this.selected_translation)
+        console.log('[WIDGET-SET-UP] ***** selected translation: ', this.selected_translation)
 
         // ---------------------------------------------------------------------------------------------
         // @ New Conversation (not editable in the widhet setting page but only from multilanguage page)
@@ -882,6 +966,18 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         this.waitingTimeFoundMsg = this.selected_translation["WAITING_TIME_FOUND"]
         this.logger.log('[WIDGET-SET-UP] - ***** selected translation waitingTimeNotFoundMsg: ', this.waitingTimeNotFoundMsg);
         this.logger.log('[WIDGET-SET-UP] - ***** selected translation waitingTimeFoundMsg: ', this.waitingTimeFoundMsg);
+
+        this.LABEL_COMPLETE_FORM = this.selected_translation["LABEL_COMPLETE_FORM"]
+        this.LABEL_PLACEHOLDER = this.selected_translation["LABEL_PLACEHOLDER"]
+        console.log('[WIDGET-SET-UP] - ***** selected translation LABEL_PLACEHOLDER: ', this.LABEL_PLACEHOLDER);
+        this.LABEL_PRECHAT_USER_FULLNAME = this.selected_translation["LABEL_PRECHAT_USER_FULLNAME"]
+        this.LABEL_PRECHAT_USER_EMAIL = this.selected_translation["LABEL_PRECHAT_USER_EMAIL"]
+        this.LABEL_PRECHAT_USER_PHONE = this.selected_translation["LABEL_PRECHAT_USER_PHONE"]
+        this.LABEL_PRECHAT_FIRST_MESSAGE = this.selected_translation["LABEL_PRECHAT_FIRST_MESSAGE"]
+        this.LABEL_PRECHAT_STATIC_TERMS_PRIVACY = this.selected_translation["LABEL_PRECHAT_STATIC_TERMS_PRIVACY"]
+        this.LABEL_PRECHAT_ACCEPT_TERMS_PRIVACY = this.selected_translation["LABEL_PRECHAT_ACCEPT_TERMS_PRIVACY"]
+
+
       }
     });
   }
@@ -948,6 +1044,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.DISPLAY_WIDGET_HOME = true;
     this.DISPLAY_CALLOUT = false;
     this.DISPLAY_WIDGET_CHAT = false;
+    this.DISPLAY_WIDGET_PRECHAT_FORM = false;
     this.widget_preview_selected = "0000"
 
     if (value === 'reply_time_dynamic_msg') {
@@ -1124,6 +1221,15 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.selected_translation["WAITING_TIME_NOT_FOUND"] = this.waitingTimeNotFoundMsg;
     this.selected_translation["WAITING_TIME_FOUND"] = this.waitingTimeFoundMsg;
 
+    
+    this.selected_translation["LABEL_COMPLETE_FORM"] = this.LABEL_COMPLETE_FORM;
+    this.selected_translation["LABEL_PRECHAT_USER_FULLNAME"] = this.LABEL_PRECHAT_USER_FULLNAME;
+    this.selected_translation["LABEL_PRECHAT_USER_EMAIL"] = this.LABEL_PRECHAT_USER_EMAIL;
+    this.selected_translation["LABEL_PRECHAT_USER_PHONE"] = this.LABEL_PRECHAT_USER_PHONE;
+    this.selected_translation["LABEL_PRECHAT_ACCEPT_TERMS_PRIVACY"] = this.LABEL_PRECHAT_ACCEPT_TERMS_PRIVACY;
+    this.selected_translation["LABEL_PRECHAT_STATIC_TERMS_PRIVACY"] = this.LABEL_PRECHAT_STATIC_TERMS_PRIVACY;
+    this.selected_translation["LABEL_PRECHAT_FIRST_MESSAGE"] = this.LABEL_PRECHAT_FIRST_MESSAGE;
+   
 
     this.logger.log('[WIDGET-SET-UP] - saveTranslation: ', this.selected_translation);
 
@@ -1278,15 +1384,17 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         if (project.widget.preChatFormJson) {
 
           // this.prechatFormTexareaJson = JSON.stringify(this.widgetDefaultSettings.preChatFormJson);
-
+          this.prechatFormArray = project.widget.preChatFormJson;
           this.prechatFormTexareaJson = JSON.stringify(project.widget.preChatFormJson, null, 4);
-          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) PRE-CHAT-FORM-JSON DEFINED: ', project.widget.preChatFormJson)
+          this.removepreChatFormFieldsIfAlreadyUsed(this.preChatFormFields, project.widget.preChatFormJson);
+          console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) PRE-CHAT-FORM-JSON DEFINED: ', project.widget.preChatFormJson)
           this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) PRE-CHAT-FORM-JSON DEFINED typeof: ', typeof project.widget.preChatFormJson)
         } else {
-
-          this.prechatFormTexareaJson = JSON.stringify(this.widgetDefaultSettings.preChatFormJson, null, 4);
-          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) PRE-CHAT-FORM-JSON UNDEFINED: ', this.widgetDefaultSettings.preChatFormJson)
-          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) PRE-CHAT-FORM-JSON UNDEFINED typeof: ', typeof this.widgetDefaultSettings.preChatFormJson)
+          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) PRE-CHAT-FORM-JSON NOT DEFINED ')
+          // this.prechatFormObject = this.widgetDefaultSettings.preChatFormJson;
+          // this.prechatFormTexareaJson = JSON.stringify(this.widgetDefaultSettings.preChatFormJson, null, 4);
+          // this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) PRE-CHAT-FORM-JSON UNDEFINED: ', this.widgetDefaultSettings.preChatFormJson)
+          // this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) PRE-CHAT-FORM-JSON UNDEFINED typeof: ', typeof this.widgetDefaultSettings.preChatFormJson)
 
         }
 
@@ -1430,8 +1538,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // -----------------------------------------------------------------------
         this.preChatForm = false;
         this.preChatFormCustomFieldsEnabled = false;
-        this.prechatFormTexareaJson = JSON.stringify(this.widgetDefaultSettings.preChatFormJson, null, 4);
-
+        // this.prechatFormTexareaJson = JSON.stringify(this.widgetDefaultSettings.preChatFormJson, null, 4);
+        // this.prechatFormObject = this.widgetDefaultSettings.preChatFormJson;
         // -----------------------------------------------------------------------
         // @ nativeRating
         // WIDGET UNDEFINED
@@ -1474,22 +1582,29 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       this.DISPLAY_WIDGET_HOME = true;
       this.DISPLAY_CALLOUT = false;
       this.DISPLAY_WIDGET_CHAT = false;
+      this.DISPLAY_WIDGET_PRECHAT_FORM = false;
     }
 
     if (this.widget_preview_selected === '0002') {
       this.DISPLAY_WIDGET_HOME = false;
       this.DISPLAY_CALLOUT = false;
       this.DISPLAY_WIDGET_CHAT = true;
+      this.DISPLAY_WIDGET_PRECHAT_FORM = false;
     }
 
     if (this.widget_preview_selected === '0003') {
       this.DISPLAY_WIDGET_HOME = false;
       this.DISPLAY_CALLOUT = true;
       this.DISPLAY_WIDGET_CHAT = false;
+      this.DISPLAY_WIDGET_PRECHAT_FORM = false;
     }
 
     if (this.widget_preview_selected === '0004') {
       this.widget_preview_selected = "0004"
+    }
+
+    if (this.widget_preview_selected === '0005') {
+      this.widget_preview_selected = "0005"
     }
 
     this.logger.log('[WIDGET-SET-UP] - setPresetCombOne ', primaryColor, secondaryColor);
@@ -1518,23 +1633,32 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       this.DISPLAY_WIDGET_HOME = true;
       this.DISPLAY_CALLOUT = false;
       this.DISPLAY_WIDGET_CHAT = false;
+      this.DISPLAY_WIDGET_PRECHAT_FORM = false;
     }
 
     if (this.widget_preview_selected === '0002') {
       this.DISPLAY_WIDGET_HOME = false;
       this.DISPLAY_CALLOUT = false;
       this.DISPLAY_WIDGET_CHAT = true;
+      this.DISPLAY_WIDGET_PRECHAT_FORM = false;
     }
 
     if (this.widget_preview_selected === '0003') {
       this.DISPLAY_WIDGET_HOME = false;
       this.DISPLAY_CALLOUT = true;
       this.DISPLAY_WIDGET_CHAT = false;
+      this.DISPLAY_WIDGET_PRECHAT_FORM = false;
     }
 
     if (this.widget_preview_selected === '0004') {
       this.widget_preview_selected = "0004"
     }
+
+    if (this.widget_preview_selected === '0005') {
+      this.widget_preview_selected = "0005"
+    }
+
+
 
     this.primaryColor = $event
 
@@ -1553,22 +1677,29 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       this.DISPLAY_WIDGET_HOME = true;
       this.DISPLAY_CALLOUT = false;
       this.DISPLAY_WIDGET_CHAT = false;
+      this.DISPLAY_WIDGET_PRECHAT_FORM = false;
     }
 
     if (this.widget_preview_selected === '0002') {
       this.DISPLAY_WIDGET_HOME = false;
       this.DISPLAY_CALLOUT = false;
       this.DISPLAY_WIDGET_CHAT = true;
+      this.DISPLAY_WIDGET_PRECHAT_FORM = false;
     }
 
     if (this.widget_preview_selected === '0003') {
       this.DISPLAY_WIDGET_HOME = false;
       this.DISPLAY_CALLOUT = true;
       this.DISPLAY_WIDGET_CHAT = false;
+      this.DISPLAY_WIDGET_PRECHAT_FORM = false;
     }
 
     if (this.widget_preview_selected === '0004') {
       this.widget_preview_selected = "0004"
+    }
+
+    if (this.widget_preview_selected === '0005') {
+      this.widget_preview_selected = "0005"
     }
   }
 
@@ -1578,22 +1709,29 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       this.DISPLAY_WIDGET_HOME = true;
       this.DISPLAY_CALLOUT = false;
       this.DISPLAY_WIDGET_CHAT = false;
+      this.DISPLAY_WIDGET_PRECHAT_FORM = false;
     }
 
     if (this.widget_preview_selected === '0002') {
       this.DISPLAY_WIDGET_HOME = false;
       this.DISPLAY_CALLOUT = false;
       this.DISPLAY_WIDGET_CHAT = true;
+      this.DISPLAY_WIDGET_PRECHAT_FORM = false;
     }
 
     if (this.widget_preview_selected === '0003') {
       this.DISPLAY_WIDGET_HOME = false;
       this.DISPLAY_CALLOUT = true;
       this.DISPLAY_WIDGET_CHAT = false;
+      this.DISPLAY_WIDGET_PRECHAT_FORM = false;
     }
 
     if (this.widget_preview_selected === '0004') {
       this.widget_preview_selected = "0004"
+    }
+
+    if (this.widget_preview_selected === '0005') {
+      this.widget_preview_selected = "0005"
     }
   }
 
@@ -1666,22 +1804,28 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       this.DISPLAY_WIDGET_HOME = true;
       this.DISPLAY_CALLOUT = false;
       this.DISPLAY_WIDGET_CHAT = false;
+      this.DISPLAY_WIDGET_PRECHAT_FORM = false;
     }
 
     if (this.widget_preview_selected === '0002') {
       this.DISPLAY_WIDGET_HOME = false;
       this.DISPLAY_CALLOUT = false;
       this.DISPLAY_WIDGET_CHAT = true;
+      this.DISPLAY_WIDGET_PRECHAT_FORM = false;
     }
 
     if (this.widget_preview_selected === '0003') {
       this.DISPLAY_WIDGET_HOME = false;
       this.DISPLAY_CALLOUT = true;
       this.DISPLAY_WIDGET_CHAT = false;
+      this.DISPLAY_WIDGET_PRECHAT_FORM = false;
     }
 
     if (this.widget_preview_selected === '0004') {
       this.widget_preview_selected = "0004"
+    }
+    if (this.widget_preview_selected === '0005') {
+      this.widget_preview_selected = "0005"
     }
 
     this.logger.log('[WIDGET-SET-UP] - onChangeSecondaryColor ', event);
@@ -1709,22 +1853,29 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       this.DISPLAY_WIDGET_HOME = true;
       this.DISPLAY_CALLOUT = false;
       this.DISPLAY_WIDGET_CHAT = false;
+      this.DISPLAY_WIDGET_PRECHAT_FORM = false;
     }
 
     if (this.widget_preview_selected === '0002') {
       this.DISPLAY_WIDGET_HOME = false;
       this.DISPLAY_CALLOUT = false;
       this.DISPLAY_WIDGET_CHAT = true;
+      this.DISPLAY_WIDGET_PRECHAT_FORM = false;
     }
 
     if (this.widget_preview_selected === '0003') {
       this.DISPLAY_WIDGET_HOME = false;
       this.DISPLAY_CALLOUT = true;
       this.DISPLAY_WIDGET_CHAT = false;
+      this.DISPLAY_WIDGET_PRECHAT_FORM = false;
     }
 
     if (this.widget_preview_selected === '0004') {
       this.widget_preview_selected = "0004"
+    }
+
+    if (this.widget_preview_selected === '0005') {
+      this.widget_preview_selected = "0005"
     }
 
   }
@@ -1735,22 +1886,29 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       this.DISPLAY_WIDGET_HOME = true;
       this.DISPLAY_CALLOUT = false;
       this.DISPLAY_WIDGET_CHAT = false;
+      this.DISPLAY_WIDGET_PRECHAT_FORM = false;
     }
 
     if (this.widget_preview_selected === '0002') {
       this.DISPLAY_WIDGET_HOME = false;
       this.DISPLAY_CALLOUT = false;
       this.DISPLAY_WIDGET_CHAT = true;
+      this.DISPLAY_WIDGET_PRECHAT_FORM = false;
     }
 
     if (this.widget_preview_selected === '0003') {
       this.DISPLAY_WIDGET_HOME = false;
       this.DISPLAY_CALLOUT = true;
       this.DISPLAY_WIDGET_CHAT = false;
+      this.DISPLAY_WIDGET_PRECHAT_FORM = false;
     }
 
     if (this.widget_preview_selected === '0004') {
       this.widget_preview_selected = "0004"
+    }
+
+    if (this.widget_preview_selected === '0005') {
+      this.widget_preview_selected = "0005"
     }
   }
 
@@ -1759,6 +1917,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.DISPLAY_CALLOUT = false;
     this.DISPLAY_WIDGET_CHAT = false;
     this.widget_preview_selected = "0000"
+    this.DISPLAY_WIDGET_PRECHAT_FORM = false;
   }
 
   onFocusWelcomeTitle() {
@@ -1766,6 +1925,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.DISPLAY_CALLOUT = false;
     this.DISPLAY_WIDGET_CHAT = false;
     this.widget_preview_selected = "0000"
+    this.DISPLAY_WIDGET_PRECHAT_FORM = false;
   }
 
   onFocusReplyTime() {
@@ -1773,6 +1933,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.DISPLAY_CALLOUT = false;
     this.DISPLAY_WIDGET_CHAT = false;
     this.widget_preview_selected = "0000"
+    this.DISPLAY_WIDGET_PRECHAT_FORM = false;
   }
 
   // ---- NEW
@@ -1785,6 +1946,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.HAS_FOCUSED_OFFLINE_MSG = false;
     this.HAS_FOCUSED_OFFICE_CLOSED_MSG = false;
     this.widget_preview_selected = "0002"
+    this.DISPLAY_WIDGET_PRECHAT_FORM = false;
   }
 
   onFocusOfflineGreetings() {
@@ -1796,6 +1958,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.HAS_FOCUSED_OFFLINE_MSG = true;
     this.HAS_FOCUSED_OFFICE_CLOSED_MSG = false;
     this.widget_preview_selected = "0002"
+    this.DISPLAY_WIDGET_PRECHAT_FORM = false;
 
   }
 
@@ -1808,11 +1971,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.HAS_FOCUSED_OFFLINE_MSG = false;
     this.HAS_FOCUSED_OFFICE_CLOSED_MSG = true;
     this.widget_preview_selected = "0002"
+    this.DISPLAY_WIDGET_PRECHAT_FORM = false;
   }
-
-
-
-
 
 
 
@@ -1865,6 +2025,16 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
   // SWITCH BTN ON / OFF
   onLogoOnOff($event) {
+    this.DISPLAY_WIDGET_HOME = true;
+    this.DISPLAY_LAUNCER_BUTTON = false;
+    this.DISPLAY_WIDGET_CHAT = false;
+    this.DISPLAY_CALLOUT = false;
+    this.C21_BODY_HOME = true;
+    this.DISPLAY_WIDGET_PRECHAT_FORM = false;
+    this.widget_preview_selected = "0000"
+
+
+
     this.logger.log('[WIDGET-SET-UP] - LOGO ON/OFF ', $event.target.checked)
     this.LOGO_IS_ON = false
 
@@ -1959,6 +2129,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.DISPLAY_WIDGET_CHAT = false;
     this.logger.log('toggleCallout', this.widget_preview_selected)
     this.widget_preview_selected = '0003'
+    this.DISPLAY_WIDGET_PRECHAT_FORM = false;
 
 
 
@@ -1981,20 +2152,25 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.DISPLAY_WIDGET_HOME = false;
     this.DISPLAY_CALLOUT = true;
     this.DISPLAY_WIDGET_CHAT = false;
+    this.DISPLAY_WIDGET_PRECHAT_FORM = false;
+    this.widget_preview_selected = '0003'
   }
 
   onFocusCalloutMsg() {
     this.DISPLAY_WIDGET_HOME = false;
     this.DISPLAY_CALLOUT = true;
     this.DISPLAY_WIDGET_CHAT = false;
+    this.DISPLAY_WIDGET_PRECHAT_FORM = false;
+    this.widget_preview_selected = '0003'
   }
 
 
   setSelectedCalloutTimer() {
-
     this.DISPLAY_WIDGET_HOME = false;
     this.DISPLAY_CALLOUT = true;
     this.DISPLAY_WIDGET_CHAT = false;
+    this.DISPLAY_WIDGET_PRECHAT_FORM = false;
+    this.widget_preview_selected = '0003'
     // if (this.calloutTimerSecondSelected !== -1) {
     // if (this.CALLOUT_IS_DISABLED = false) {
     this.logger.log('[WIDGET-SET-UP] CALLOUT TIMER - TIMER SELECTED', this.calloutTimerSecondSelected);
@@ -2035,7 +2211,21 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   // -----------------------------------------------------------------------
   //  @ Pre-chat form  
   // -----------------------------------------------------------------------
+  hasOpenedPrechaFormSection() {
+    console.log('hasOpenedPrechaFormSection')
+    this.DISPLAY_CALLOUT = false;
+    this.DISPLAY_WIDGET_HOME = false;
+    this.DISPLAY_WIDGET_CHAT = false;
+    this.DISPLAY_WIDGET_PRECHAT_FORM = true;
+    this.widget_preview_selected = '0005'
+  }
+
   togglePrechatformCheckBox(event) {
+    this.DISPLAY_CALLOUT = false;
+    this.DISPLAY_WIDGET_HOME = false;
+    this.DISPLAY_WIDGET_CHAT = false;
+    this.DISPLAY_WIDGET_PRECHAT_FORM = true;
+    this.widget_preview_selected = '0005'
     if (event.target.checked) {
       this.preChatForm = true;
       // *** ADD PROPERTY
@@ -2062,15 +2252,22 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
   customizePrechatformFieldsCheckBox(event) {
     if (event.target.checked) {
+      this.DISPLAY_CALLOUT = false;
+      this.DISPLAY_WIDGET_HOME = false;
+      this.DISPLAY_WIDGET_CHAT = false;
+      this.DISPLAY_WIDGET_PRECHAT_FORM = true;
+      this.widget_preview_selected = '0005'
+
       this.preChatFormCustomFieldsEnabled = true;
       this.HAS_ACTIVATED_PRECHAT_CUSTOM_FIELDS = true
       // *** ADD PROPERTY
       this.widgetObj['preChatFormCustomFieldsEnabled'] = this.preChatFormCustomFieldsEnabled;
-
-      const parsedPrechatFormTexareaJson = JSON.parse(this.prechatFormTexareaJson)
-      this.widgetObj['preChatFormJson'] = parsedPrechatFormTexareaJson;
-
-      this.widgetService.updateWidgetProject(this.widgetObj)
+      if (this.prechatFormTexareaJson) {
+        const parsedPrechatFormTexareaJson = JSON.parse(this.prechatFormTexareaJson)
+        this.widgetObj['preChatFormJson'] = parsedPrechatFormTexareaJson;
+        this.prechatFormArray = parsedPrechatFormTexareaJson;
+        this.widgetService.updateWidgetProject(this.widgetObj)
+      }
       this.logger.log('[WIDGET-SET-UP] - ENABLE CUSTOMIZE PRE CHAT FORM ', event.target.checked)
     } else {
       this.preChatFormCustomFieldsEnabled = false;
@@ -2083,6 +2280,165 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     }
   }
 
+  onChangeLabelCompleteForm($event) {
+    console.log('[WIDGET-SET-UP] - onChangeLabelCompleteForm ', $event),
+      this.LABEL_COMPLETE_FORM = $event
+  }
+
+  onChangeUserFullNameLabel($event) {
+    console.log('[WIDGET-SET-UP] - onChangeUserFullNameLabel ', $event),
+      this.LABEL_PRECHAT_USER_FULLNAME = $event
+  }
+  onChangeEmailLabel($event) {
+    console.log('[WIDGET-SET-UP] - onChangeEmailLabel ', $event);
+    this.LABEL_PRECHAT_USER_EMAIL = $event
+  }
+  onChangePhoneLabel($event) {
+    console.log('[WIDGET-SET-UP] - onChangePhoneLabel ', $event)
+    this.LABEL_PRECHAT_USER_PHONE = $event
+  }
+  onChangeAcceptTermsPrivacyLabel($event) {
+    console.log('[WIDGET-SET-UP] - onChangeAcceptTermsPrivacyLabel ', $event)
+    this.LABEL_PRECHAT_ACCEPT_TERMS_PRIVACY = $event
+  }
+  onChangeTermsPrivacyLabel($event) {
+    console.log('[WIDGET-SET-UP] - onChangeTermsPrivacyLabel ', $event)
+    this.LABEL_PRECHAT_STATIC_TERMS_PRIVACY = $event
+  }
+  onChangeFirstMessagel($event) {
+    console.log('[WIDGET-SET-UP] - onChangeFirstMessagel ', $event)
+    this.LABEL_PRECHAT_FIRST_MESSAGE = $event
+  }
+
+  focusOnSelectaddPrechatFormField() {
+    this.DISPLAY_CALLOUT = false;
+    this.DISPLAY_WIDGET_HOME = false;
+    this.DISPLAY_WIDGET_CHAT = false;
+    this.DISPLAY_WIDGET_PRECHAT_FORM = true;
+    this.widget_preview_selected = '0005'
+  }
+
+  addPrechatFormField($event) {
+    this.preChatFormFieldName = $event.name
+    console.log('[WIDGET-SET-UP] - addPrechatFormField $preChatFormFieldName', this.preChatFormFieldName)
+    console.log('[WIDGET-SET-UP] - addPrechatFormField $event', $event)
+    this.prechatFormArray.push($event)
+    console.log('[WIDGET-SET-UP] - addPrechatFormField  prechatFormArray', this.prechatFormArray)
+    this.prechatFormTexareaJson = JSON.stringify(this.prechatFormArray, null, 4);
+
+    // this.ngSelectComponent.clearModel();
+    setTimeout(() => {
+      this.preChatFormFieldName = null;
+    }, 0)
+    this.preChatFormFielsBtnsArray = JSON.parse(this.prechatFormTexareaJson)
+    console.log('[WIDGET-SET-UP] - addPrechatFormField  preChatFormFielsBtnsArray', this.preChatFormFielsBtnsArray)
+    this.removepreChatFormFieldsIfAlreadyUsed(this.preChatFormFields, JSON.parse(this.prechatFormTexareaJson))
+  }
+
+
+  // -----------------------------------------------------------------------------------
+  // Splice item from the select if is from already present in the prechatFormTexareaJson
+  // ------------------------------------------------------------------------------------
+  removepreChatFormFieldsIfAlreadyUsed(preChatFormFields: any, prechatFormTexareaJson: any) {
+    console.log('[WIDGET-SET-UP]  preChatFormFields - ', this.preChatFormFields);
+    // remove from the taglist (tags that the administrator has set on the tag management page and that are displayed in the combo box 'Add tag' of this template)
+    // the tag that are already in the tagArray (the tags present in the "this.request" object)
+    for (var i = preChatFormFields.length - 1; i >= 0; i--) {
+      for (var j = 0; j < prechatFormTexareaJson.length; j++) {
+        if (preChatFormFields[i] && (preChatFormFields[i].name === prechatFormTexareaJson[j].name)) {
+
+          preChatFormFields.splice(i, 1);
+        }
+      }
+    }
+    this.preChatFormFields = this.preChatFormFields.slice(0)
+    console.log('[WIDGET-SET-UP] -  preChatFormFields - AFTER SPLICE ', this.preChatFormFields);
+  }
+
+  removePrechatFormField(prechatformfield) {
+    console.log('[WIDGET-SET-UP] - REMOVE PRECHAT FORM FIELD ', prechatformfield)
+    //  console.log('[WIDGET-SET-UP] - REMOVE PRECHAT FORM TEXTAREA JSON ', this.prechatFormTexareaJson)
+    const prechatFormTexareaObjct = JSON.parse(this.prechatFormTexareaJson)
+    console.log('[WIDGET-SET-UP] - REMOVE PRECHAT FORM TEXTAREA OBJCT ', prechatFormTexareaObjct)
+    for (var i = 0; i < prechatFormTexareaObjct.length; i++) {
+
+      if (prechatFormTexareaObjct[i].name === prechatformfield.name) {
+
+        prechatFormTexareaObjct.splice(i, 1);
+        this.preChatFormFields.push(prechatformfield)
+        this.preChatFormFields = this.preChatFormFields.slice(0)
+      }
+    }
+    console.log('[WIDGET-SET-UP] - REMOVE PRECHAT FORM TEXTAREA OBJCT ', prechatFormTexareaObjct)
+    console.log('[WIDGET-SET-UP] - REMOVE PRECHAT FORM FIELD (those displayed in the select) ', this.preChatFormFields)
+    this.prechatFormArray = prechatFormTexareaObjct
+    this.prechatFormTexareaJson = JSON.stringify(prechatFormTexareaObjct, null, 4);
+  }
+
+  onChangeFieldIsRequired($event, field) {
+    console.log('[WIDGET-SET-UP] - ON CHANGE FIELD IS REQUIRED - IS CHECKED', $event.target.checked)
+    console.log('[WIDGET-SET-UP] - ON CHANGE FIELD IS REQUIRED - field', field)
+    const prechatFormTexareaObjct = JSON.parse(this.prechatFormTexareaJson)
+    if ($event.target.checked === false) {
+      for (var i = 0; i < prechatFormTexareaObjct.length; i++) {
+
+        if (prechatFormTexareaObjct[i].name === field.name) {
+
+          prechatFormTexareaObjct[i].mandatory = false
+          this.prechatFormTexareaJson = JSON.stringify(prechatFormTexareaObjct, null, 4);
+        }
+      }
+    }
+
+    if ($event.target.checked === true) {
+      for (var i = 0; i < prechatFormTexareaObjct.length; i++) {
+
+        if (prechatFormTexareaObjct[i].name === field.name) {
+
+          prechatFormTexareaObjct[i].mandatory = true;
+          this.prechatFormTexareaJson = JSON.stringify(prechatFormTexareaObjct, null, 4);
+        }
+      }
+    }
+  }
+
+  moveUp(field) {
+    console.log('[WIDGET-SET-UP] - MOVE UP - field', field)
+    console.log('[WIDGET-SET-UP] - MOVE UP - this.prechatFormArray', this.prechatFormArray)
+    // const prechatFormTexareaObjct = JSON.parse(this.prechatFormTexareaJson)
+    let index = this.prechatFormArray.findIndex(e => e.name == field.name);
+    console.log('[WIDGET-SET-UP] - MOVE UP - field index', index)
+    if (index > 0) {
+      let el = this.prechatFormArray[index];
+      console.log('[WIDGET-SET-UP] - MOVE UP - field index', el)
+      this.prechatFormArray[index] = this.prechatFormArray[index - 1];
+      this.prechatFormArray[index - 1] = el;
+      // this.prechatFormArray = this.prechatFormTexareaJson
+      this.prechatFormTexareaJson = JSON.stringify(this.prechatFormArray, null, 4);
+    }
+    console.log('[WIDGET-SET-UP] - MOVE UP - this.prechatFormArray', this.prechatFormArray)
+
+    //  const moveUpBtnEl = <HTMLInputElement>document.getElementById(field.name + '_btn_up');
+    //  console.log('[WIDGET-SET-UP] - MOVE UP - moveUpBtnEl', moveUpBtnEl)
+    //  moveUpBtnEl.classList.add("active");
+  }
+
+  moveDown(field) {
+    console.log('[WIDGET-SET-UP] - MOVE DOWN - field', field)
+
+    let index = this.prechatFormArray.findIndex(e => e.name == field.name);
+    console.log('[WIDGET-SET-UP] - MOVE DOWN - field index', index)
+    if (index !== -1 && index < this.prechatFormArray.length - 1) {
+      let el = this.prechatFormArray[index];
+      this.prechatFormArray[index] = this.prechatFormArray[index + 1];
+      this.prechatFormArray[index + 1] = el;
+    }
+
+    // const moveDownBtnEl = <HTMLInputElement>document.getElementById(field.name + '_btn_down');
+    // console.log('[WIDGET-SET-UP] - MOVE UP - moveUpBtnEl', moveDownBtnEl)
+    // moveDownBtnEl.classList.add("active");
+  }
+
   savePrechatFormCustomFields() {
     const prechatform_savejson_btn = <HTMLElement>document.querySelector('.prechatform-savejson-btn');
     this.logger.log('[WIDGET-SET-UP] - prechatform_savejson_btn: ', prechatform_savejson_btn);
@@ -2090,17 +2446,24 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       prechatform_savejson_btn.blur()
     }
 
+    console.log('[WIDGET-SET-UP] - SAVE PRE-CHAT-FORM-JSON this.prechatFormArray', this.prechatFormArray)
 
-    this.logger.log('[WIDGET-SET-UP] - SAVE PRE-CHAT-FORM-JSON', this.prechatFormTexareaJson)
-    if (this.prechatFormTexareaJson !== '' && this.isJsonString(this.prechatFormTexareaJson) === true) {
-      const parsedPrechatFormTexareaJson = JSON.parse(this.prechatFormTexareaJson)
+    if (this.prechatFormArray.length > 0) {
+      console.log('[WIDGET-SET-UP] - SAVE PRE-CHAT-FORM-JSON prechatFormTexareaJson', this.prechatFormTexareaJson)
+      console.log('[WIDGET-SET-UP] - SAVE PRE-CHAT-FORM-JSON this.isJsonString(this.prechatFormTexareaJson)', this.isJsonString(this.prechatFormTexareaJson))
+      if (this.prechatFormTexareaJson !== '' && this.isJsonString(this.prechatFormTexareaJson) === true) {
+        const parsedPrechatFormTexareaJson = JSON.parse(this.prechatFormTexareaJson)
 
-      this.logger.log('[WIDGET-SET-UP] - SAVE PRE-CHAT-FORM-JSON PARSED', parsedPrechatFormTexareaJson)
+        this.logger.log('[WIDGET-SET-UP] - SAVE PRE-CHAT-FORM-JSON PARSED', parsedPrechatFormTexareaJson)
 
-      this.widgetObj['preChatFormJson'] = parsedPrechatFormTexareaJson;
-      this.widgetService.updateWidgetProject(this.widgetObj)
+        this.widgetObj['preChatFormJson'] = parsedPrechatFormTexareaJson;
+        this.widgetService.updateWidgetProject(this.widgetObj)
+      } else {
+        this.notify.showWidgetStyleUpdateNotification(this.invalidJSON_ErrorMsg, 4, 'report_problem');
+      }
     } else {
-      this.notify.showWidgetStyleUpdateNotification(this.invalidJSON_ErrorMsg, 4, 'report_problem');
+      this.displayModalNoFieldInCustomPrechatForm();
+
     }
   }
 
@@ -2111,6 +2474,37 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       return false;
     }
     return true;
+  }
+
+  displayModalNoFieldInCustomPrechatForm() {
+
+    swal({
+      title: this.warning_translated,
+      text: this.custom_prechat_form_is_empty_and_will_be_disabled_msg,
+      icon: "warning",
+      buttons: 'Ok',
+      dangerMode: false,
+    })
+      .then((value) => {
+        console.log('[WIDGET-SET-UP] - displayModalNoFieldInCustomPrechatForm value', value)
+
+        if (value === true) {
+          console.log('[WIDGET-SET-UP] - SAVE PRE-CHAT-FORM-JSON The custom prechat form contains no fields')
+          console.log('[WIDGET-SET-UP] - SAVE PRE-CHAT-FORM-JSON preChatFormCustomFieldsEnabled ', this.preChatFormCustomFieldsEnabled)
+
+          if (this.widgetObj.hasOwnProperty('preChatFormJson')) {
+            console.log('[WIDGET-SET-UP] - SAVE PRE-CHAT-FORM-JSON widgetObj HAS TEH KEY preChatFormJson')
+            delete this.widgetObj['preChatFormJson']
+          }
+          if (this.widgetObj.hasOwnProperty('preChatFormCustomFieldsEnabled')) {
+            this.preChatFormCustomFieldsEnabled = false;
+            delete this.widgetObj['preChatFormCustomFieldsEnabled'];
+            console.log('[WIDGET-SET-UP] - SAVE PRE-CHAT-FORM-JSON this.preChatFormCustomFieldsEnabled ', this.preChatFormCustomFieldsEnabled)
+
+          }
+          this.widgetService.updateWidgetProject(this.widgetObj)
+        }
+      })
   }
 
   // -----------------------------------------------------------------------
@@ -2185,6 +2579,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.DISPLAY_WIDGET_HOME = false;
     this.DISPLAY_CALLOUT = true;
     this.DISPLAY_WIDGET_CHAT = false;
+    this.DISPLAY_WIDGET_PRECHAT_FORM = false;
 
     this.logger.log('[WIDGET-SET-UP] - LEFT ALIGNMENT SELECTED ', left_selected);
     this.hasSelectedLeftAlignment = true;
@@ -2199,6 +2594,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.DISPLAY_CALLOUT = true;
     this.DISPLAY_WIDGET_HOME = false;
     this.DISPLAY_WIDGET_CHAT = false;
+    this.DISPLAY_WIDGET_PRECHAT_FORM = false;
     this.logger.log('[WIDGET-SET-UP] - RIGHT ALIGNMENT SELECTED ', right_selected);
     this.hasSelectedLeftAlignment = false;
     this.hasSelectedRightAlignment = true;
@@ -2218,7 +2614,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
   goToInstallWithTagManagerDocs() {
-    const url =  URL_google_tag_manager_add_tiledesk_to_your_sites;
+    const url = URL_google_tag_manager_add_tiledesk_to_your_sites;
     window.open(url, '_blank');
   }
   goToWidgetWebSdk() {
