@@ -1748,7 +1748,7 @@
     "GoToGoogleTagManagerAnd": "Vai a Google Tag Manager e",
     "FollowTheseInstructions": "segui queste istruzioni",
     "OpenYourWebsite": "Apri il tuo sito web",
-    "AskYourVisitorForTheirNameAndEmailBeforeStartingAChat": "Chiedi al tuo visitatore il suo nome e la sua email o altre informazioni prima di iniziare una chat abilitando il modulo di pre-chat",
+    "AskYourVisitorForTheirNameAndEmailBeforeStartingAChat": "Chiedi al tuo visitatore il suo nome e la sua email prima di iniziare una chat abilitando il modulo pre-chat",
     "MakeDefault": "Rendi predefinita",
     "CurrentlyDisplayedInThePreview": "Attualmente visualizzata nell'anteprima",
     "CurrentlySelected": "Attualmente selezionato",
@@ -2037,5 +2037,10 @@
     "userPhone":"Telefono",
     "acceptedTermsPrivacy": "Accetta i termini e la privacy",
     "termsPrivacyLabel":"Conformità alle condizioni e alla privacy",
-    "firstMessage": "Primo Messaggio"
+    "firstMessage": "Primo Messaggio",
+    "TheCustomPreChatFormIsEmptyAndWillBeDisabled":"Il modulo di pre-chat personalizzato è vuoto e verrà disabilitato",
+    "EnableDisableCustomPreChatForm":"Abilita / disabilita il modulo pre-chat personalizzato",
+    "SelectFields": "Seleziona i campi",
+    "PreChatForm": "Modulo pre-chat",
+    "Mandatory":"Obbligatorio"
 }
