@@ -1,0 +1,260 @@
+<div class="widget-container">
+  <!-- [ngStyle]="{'background-color': primaryColor}" -->
+  <div class="card td-widget-preview-card"
+    style="box-shadow: rgba(0, 0, 0, 0.18) 0 0 38px!important; border: unset;">
+    <div class="card-content td-widget-preview-card-content"  [ngStyle]="{'color': secondaryColor, 'background-image': linearGradient }">
+
+
+
+      <!-- <span class="card-header-left">
+        <svg aria-labelledby="altIconTitle" height="20px" role="img" viewBox="0 0 24 24" width="24px"
+          xmlns="http://www.w3.org/2000/svg" [ngStyle]="{'fill': secondaryColor }">
+          <path d="M0 0h24v24H0V0z" fill="none"></path>
+          <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59z">
+          </path>
+        </svg>
+
+        <span [ngStyle]="{'color': secondaryColor }"
+          style="position: relative; top: -4px;  font-weight: 500; font-size: 16px;">
+          {{projectName}}
+        </span>
+      </span> -->
+
+      <span class="card-header-right">
+        <!-- <span class="option-icon">
+          <svg aria-labelledby="altIconTitle" height="21" viewBox="0 0 24 24" width="21"
+            xmlns="http://www.w3.org/2000/svg" [ngStyle]="{'fill': secondaryColor }">
+            <path d="M0 0h24v24H0V0z" fill="none"></path>
+            <path
+              d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z">
+            </path>
+          </svg>
+        </span> -->
+        <span class="td-preview-close-icon">
+          <svg aria-labelledby="altIconTitle" height="21px" role="img" viewBox="0 0 24 24" width="21px"
+            xmlns="http://www.w3.org/2000/svg" [ngStyle]="{'fill': secondaryColor }">
+            <path d="M0 0h24v24H0V0z" fill="none"></path>
+            <path
+              d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z">
+            </path>
+          </svg>
+        </span>
+      </span>
+    </div>
+
+    <div id="pre-chat-form-fields-wpr" class="card-footer td-widget-preview-card-footer" style="height: 523px; overflow: auto;">
+
+      <div class="prechat-form-content-wpr" style="padding-bottom: 30px;">
+
+        <div class="prechat-form-title-wpr" style="padding: 25px 30px;
+        position: relative;
+        left: 0;
+        right: 0;">
+          <div class="prechat-form-title" style="padding: 0;
+          margin: 0;
+          line-height: 1.2em;
+          color: #616161;
+          font-size: 1.5em;
+          text-align: center;
+          font-size: 15px;
+          font-weight: 400;
+          word-wrap: break-word;">
+            {{LABEL_COMPLETE_FORM}}
+          </div>
+        </div>
+        <!-- background: aqua; -->
+        <div *ngIf="!preChatFormCustomFieldsEnabled" class="row"
+          style="width: 100%; margin: auto; padding-left: 15px;padding-right: 15px;">
+          <div class="col-sm-12">
+            <div class="form-group label-floating" style="width: 100%;">
+              <label class="control-label">{{LABEL_PRECHAT_USER_FULLNAME}}</label>
+              <input type="email" class="form-control">
+            </div>
+          </div>
+          <div class="col-sm-12">
+            <div class="form-group label-floating" style="width: 100%;margin-top: 20px;">
+              <label class="control-label">{{LABEL_PRECHAT_USER_EMAIL}}</label>
+              <input type="email" class="form-control">
+            </div>
+          </div>
+        </div>
+        <!-- prechatFormTexareaJson {{ customPrechatFormArray | json }} -->
+        <!-- [formGroup]="preChatFormGroupCustom" -->
+        <div *ngIf="preChatFormCustomFieldsEnabled" class="row"
+          style="width: 100%; margin: auto; padding-left: 15px;padding-right: 15px;">
+          <!-- <div id="chat21-form-container"  > -->
+          <span *ngFor="let element of customPrechatFormArray">
+            <!-- element >  {{ element | json}} -->
+            <div *ngIf="preChatFormCustomFieldsEnabled" class="row" style="width: 100%; margin: auto;">
+
+              <div class="col-sm-12" *ngIf="element?.type === 'text' || element?.type === 'email'">
+                <div class="form-group label-floating" style="width: 100%; margin-top: 15px;">
+                  <label class="control-label">
+                    <span *ngIf="element?.name === 'userFullname'"> {{ LABEL_PRECHAT_USER_FULLNAME }} </span>
+                    <span *ngIf="element?.name === 'userEmail'"> {{ LABEL_PRECHAT_USER_EMAIL }} </span>
+                    <span *ngIf="element?.name === 'userPhone'"> {{ LABEL_PRECHAT_USER_PHONE }} </span>
+                  </label>
+                  <input type="element?.type" class="form-control">
+                </div>
+              </div>
+            
+
+            <div class="col-sm-12" *ngIf="element?.type === 'static'">
+              <div class="form-group label-floating" style="width: 100%; margin-top: 15px;">
+                <label *ngIf="element?.name === 'termsPrivacyLabel'" style="color: #616161;" [innerHTML]="LABEL_PRECHAT_STATIC_TERMS_PRIVACY">
+                </label>
+              </div>
+            </div>
+            
+            <div class="col-sm-12" *ngIf="element?.type === 'checkbox'">
+              <!-- <div class="checkbox" style="margin-top: 0px;margin-bottom: 0px;">
+                <label>
+                  <input type="checkbox" name="element?.name">
+                   <span *ngIf="element?.name === 'acceptedTermsPrivacy'">
+                     {{LABEL_PRECHAT_ACCEPT_TERMS_PRIVACY}} 
+                    </span> 
+                </label>
+              </div> -->
+              <input  class="form-check-input" 
+              type="checkbox" style="height: 16px;
+              width: 16px;
+              margin-right: 8px;">
+              
+            <label class="c21-form-message-field" style="color: #616161;vertical-align: middle;margin-bottom: 9px;">
+              {{LABEL_PRECHAT_ACCEPT_TERMS_PRIVACY}}
+            </label>
+            </div>
+
+            <div class="col-sm-12" *ngIf="element?.type === 'textarea'">
+              <div class="form-group label-floating" style="width: 100%; margin-top: 15px;">
+                <label class="control-label">
+                  <span *ngIf="element?.name === 'firstMessage'"> 
+                    {{LABEL_PRECHAT_FIRST_MESSAGE}}
+                  </span>
+
+                </label>
+                <textarea class="form-control" rows="5"></textarea>
+              </div>
+            </div>
+          </div>
+
+          </span>
+          <!-- </div> -->
+        </div>
+
+        <div class="new-conv-btn" style="width: 100%;padding-top: 35px;margin: auto; padding-left: 30px;">
+          <button class="c21-button-primary" style="margin: 13px 0px 16px 0px !important"
+            [ngStyle]="{'background-color': primaryColor, 'border-color': primaryColor, 'color': secondaryColor }">
+            <span class="v-align-center">
+              <svg height="20" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" [ngStyle]="{'fill': secondaryColor }">
+                </path>
+                <path d="M0 0h24v24H0z" fill="none"></path>
+              </svg>
+            </span>
+            <span class="v-align-center c21-label-button" style="font-size: 12px;	margin-left: 8px;font-weight: 400;">
+              <!-- {{'NewConversation' | translate}} -->
+              <!-- {{ selected_translation?.LABEL_START_NW_CONV }} -->
+              {{ newConversation }}
+            </span>
+            <div class="clear"></div>
+          </button>
+        </div>
+
+        <!-- <div class="td-widget-preview-slide-in-left" role="messaggio">Bot</div>
+
+      <div class="td-widget-preview-avatar-image">
+        <img src="assets/img/avatar_bot_tiledesk.svg">
+      </div>
+
+      <div *ngIf="HAS_FOCUSED_ONLINE_MSG" class="td-widget-preview-msg_receive">
+        <p [innerHTML]="onlineMsg" class="td-widget-preview-msg_receive-p"></p>
+      </div>
+
+      <div *ngIf="HAS_FOCUSED_OFFLINE_MSG" class="td-widget-preview-msg_receive">
+        <p [innerHTML]="offlineMsg" class="td-widget-preview-msg_receive-p"></p>
+      </div>
+
+
+      <div *ngIf="HAS_FOCUSED_OFFICE_CLOSED_MSG" class="td-widget-preview-msg_receive">
+        <p [innerHTML]="officeClosedMsg" class="td-widget-preview-msg_receive-p"></p>
+      </div> -->
+
+        <!-- <div style="position: relative;">
+        <div style="text-align: right;
+      padding: 6px 12px;
+      background-color: #62a8ea;
+      color: #fff;
+      margin-right: 0;
+      margin-left: 114px;
+      margin-top: 10px;
+      border-radius: 8px;"> Hi, i'm having trouble logging in.</div>
+
+
+        <div class="td-widget-preview-slide-in-left" role="messaggio">{{current_user_name}}</div>
+
+        <div class="td-widget-preview-avatar-image" style="top: 64px;left: 0;">
+
+          <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
+            src="https://firebasestorage.googleapis.com/v0/b/{{imageUrl}}/o/profiles%2F{{currentUserId}}%2Fphoto.jpg?alt=media"
+            onerror="this.src='assets/img/no_image_user.png'" />
+
+
+          <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
+            src="{{imageUrl}}images?path=uploads%2Fusers%2F{{currentUserId}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+            onerror="this.src='assets/img/no_image_user.png'" />
+        </div>
+        <div>
+          <div
+            style="text-align: right; padding: 6px 12px;  background-color: #f7f7f7; color: #1a1a1a; margin-left: 66px; margin-top: 0px; border-radius: 8px;">
+            Can you tell me more?
+          </div>
+        </div>
+      </div> -->
+      </div>
+
+
+
+      <div id="chat21-footer" style="position: absolute; 
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    -webkit-box-shadow: 0 -1px 0 0 rgba(191,191,191,.2);
+    box-shadow: 0 -1px 0 0 rgba(191,191,191,.2);
+    background: #fff;    border-bottom-left-radius: 25px;    border-bottom-right-radius: 25px;">
+
+
+        <!-- <div style="height: 40px;">
+        <label class="chat21-textarea-button active ng-star-inserted" id="chat21-start-upload-doc">
+          <div style="    position: absolute;
+           left: 39px;
+           top: 9px;
+           font-size: 16px;
+           font-weight: 200;"> type your message... </div>
+          <span class="v-align-center">
+            <svg height="24" viewBox="0 0 28 28" width="24" xmlns="http://www.w3.org/2000/svg"
+              style="fill: rgb(42, 106, 193); position: relative; top: 9px; left: 11px;">
+              <path
+                d="M16.5 6v11.5c0 2.21-1.79 4-4 4s-4-1.79-4-4V5c0-1.38 1.12-2.5 2.5-2.5s2.5 1.12 2.5 2.5v10.5c0 .55-.45 1-1 1s-1-.45-1-1V6H10v9.5c0 1.38 1.12 2.5 2.5 2.5s2.5-1.12 2.5-2.5V5c0-2.21-1.79-4-4-4S7 2.79 7 5v12.5c0 3.04 2.46 5.5 5.5 5.5s5.5-2.46 5.5-5.5V6h-1.5z">
+              </path>
+            </svg>
+          </span>
+        </label>
+
+        <div class="chat21-textarea-button" id="chat21-button-send">
+          <span class="v-align-center" style="right: 0px; position: absolute; top: 17px;">
+            <svg height="24" viewBox="0 0 28 28" width="24" xmlns="http://www.w3.org/2000/svg"
+              style="fill: rgb(42, 106, 193);top: -7px;left: -5px;position: relative;">
+              <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path>
+            </svg>
+          </span>
+        </div>
+      </div> -->
+
+
+
+      </div>
+    </div>
+  </div>

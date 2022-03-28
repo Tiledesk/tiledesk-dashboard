@@ -215,6 +215,7 @@ import { NotificationEmailComponent } from './project-edit-add/notification-emai
 import { SmtpSettingsComponent } from './project-edit-add/smtp-settings/smtp-settings.component';
 import { SettingsSidebarComponent } from './components/settings-sidebar/settings-sidebar.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { WidgetPrechatFormComponent } from './widget-prechat-form/widget-prechat-form.component';
 
 
 // console.log('************** APPMODULE ******************');
@@ -408,6 +409,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     NotificationEmailComponent,
     SmtpSettingsComponent,
     SettingsSidebarComponent,
+    WidgetPrechatFormComponent,
  
   ],
   imports: [
