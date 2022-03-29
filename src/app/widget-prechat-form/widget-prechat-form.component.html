@@ -87,12 +87,15 @@
             <!-- element >  {{ element | json}} -->
             <div *ngIf="preChatFormCustomFieldsEnabled" class="row" style="width: 100%; margin: auto;">
 
-              <div class="col-sm-12" *ngIf="element?.type === 'text' || element?.type === 'email'">
+              <div class="col-sm-12" *ngIf="element?.type === 'text'">
                 <div class="form-group label-floating" style="width: 100%; margin-top: 15px;">
                   <label class="control-label">
                     <span *ngIf="element?.name === 'userFullname'"> {{ LABEL_PRECHAT_USER_FULLNAME }} </span>
                     <span *ngIf="element?.name === 'userEmail'"> {{ LABEL_PRECHAT_USER_EMAIL }} </span>
                     <span *ngIf="element?.name === 'userPhone'"> {{ LABEL_PRECHAT_USER_PHONE }} </span>
+                    <span *ngIf="element?.name !== 'userPhone' && element?.name !== 'userEmail' && element?.name !== 'userFullname'"> 
+                      {{ customFieldLabel }}
+                    </span>
                   </label>
                   <input type="element?.type" class="form-control">
                 </div>

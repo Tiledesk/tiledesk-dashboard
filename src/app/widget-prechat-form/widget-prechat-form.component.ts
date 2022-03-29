@@ -20,6 +20,7 @@ export class WidgetPrechatFormComponent implements OnInit, OnChanges {
   @Input() LABEL_PRECHAT_STATIC_TERMS_PRIVACY: string;
   @Input() LABEL_PRECHAT_ACCEPT_TERMS_PRIVACY: string;
   @Input() LABEL_COMPLETE_FORM: string;
+  @Input() customFieldLabel: string;
   customPrechatFormArray: any;
   primaryColorRGBA_1: any;
   primaryColorRGBA_050: any;
