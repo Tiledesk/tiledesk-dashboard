@@ -33,7 +33,7 @@ export class WidgetChatComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    console.log('[WIDGET-CHAT-COMP] LABEL_PLACEHOLDER ', this.LABEL_PLACEHOLDER)
+    // console.log('[WIDGET-CHAT-COMP] LABEL_PLACEHOLDER ', this.LABEL_PLACEHOLDER)
     this.generateLinearGradient(this.primaryColor)
   }
 
