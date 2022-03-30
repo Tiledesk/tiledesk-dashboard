@@ -2159,84 +2159,77 @@
         style="padding-top: 0px; padding-bottom: 0px; padding-right: 34px; padding-left: 34px; line-height: 1;">
 
         <div class="row">
-          <div class="col-sm-12">
-						<div class="custom-field-select-wpr" style="margin-top: 6px;">
-							<div class="row">
-								<div class="col-xs-10">
-									<label for="">Field type</label>
-									<ng-select #SelectType [(ngModel)]="customFieldType" 
-										(change)="onChangeCustomFieldType($event)"
-										[items]="preChatformCustomFieldTypeSelect" bindLabel="name" bindValue="name"
-										[clearable]="false"
-										[clearSearchOnAdd]="true"
-										placeholder="Select field tipe" 
-										dropdownPosition='auto'>
-										<ng-template ng-label-tmp let-item="item">
-											{{item.name | translate}}
-										</ng-template>
-										<ng-template ng-option-tmp let-item="item" let-index="index">
-											{{item.name | translate}}
-										</ng-template>										
-									</ng-select>
-								</div>
-								<div class="col-xs-2">
-									<label for="">Row</label>
-									<input style="color: #3c4858;" type="number" [(ngModel)]="customFieldTextAreaRow" 
-									 (ngModelChange)="onChangeCustomFieldTextAreaRow($event)">
-								</div>
-          		</div>
+          	<div class="col-sm-12">
+				<div class="custom-field-select-wpr" style="margin-top: 6px;">
+					<div class="row">
+						<div class="col-xs-10">
+							<label for="">Field type</label>
+							<ng-select #SelectType [(ngModel)]="customFieldType" 
+								(change)="onChangeCustomFieldType($event)"
+								[items]="preChatformCustomFieldTypeSelect" bindLabel="name" bindValue="name"
+								[clearable]="false"
+								[clearSearchOnAdd]="true"
+								placeholder="Select field tipe" 
+								dropdownPosition='auto'>
+								<ng-template ng-label-tmp let-item="item">
+									{{item.name | translate}}
+								</ng-template>
+								<ng-template ng-option-tmp let-item="item" let-index="index">
+									{{item.name | translate}}
+								</ng-template>										
+							</ng-select>
 						</div>
-          </div>
+						<div class="col-xs-2">
+							<label for="">Row</label>
+							<input style="color: #3c4858;" type="number" [(ngModel)]="customFieldTextAreaRow" 
+								(ngModelChange)="onChangeCustomFieldTextAreaRow($event)">
+						</div>
+          			</div>
+				</div>
+          	</div>
 
-					<div class="col-sm-12"> 
-						<div class="custom-field-label-wpr" style="margin-top: 6px;">
-							<label for="">Field label</label>
-							<input style="color: #3c4858;" type="text" [(ngModel)]="customFieldLabel"  (ngModelChange)="onChangeCustomFieldName($event)">
-						</div>
+			<div class="col-sm-12"> 
+				<div class="custom-field-label-wpr" style="margin-top: 6px;">
+					<label for="">Field label</label>
+					<input style="color: #3c4858;" type="text" [(ngModel)]="customFieldLabel"  (ngModelChange)="onChangeCustomFieldName($event)">
+				</div>
+			</div>
+
+			<div class="col-sm-12"> 
+				<div class="custom-field-mandatory-checkbox-wpr" style="margin-top: 6px;">
+					<div class="checkbox">
+						<label>
+							<input type="checkbox" name="optionsCheckboxes"
+							(change)="onChangeCustomFieldIsRequired($event)"
+							[checked]="field?.mandatory">
+							<span style="position: relative;top: 3px;">
+								{{'Mandatory' | translate}} 
+							</span>
+						</label>
 					</div>
-
-					<div class="col-sm-12"> 
-						<div class="custom-field-mandatory-checkbox-wpr" style="margin-top: 6px;">
-							<div class="checkbox">
-								<label>
-									<input type="checkbox" name="optionsCheckboxes"
-									(change)="onChangeCustomFieldIsRequired($event)"
-									[checked]="field?.mandatory">
-									<span style="position: relative;top: 3px;">
-										{{'Mandatory' | translate}} 
-									</span>
-								</label>
-							</div>
-						</div>
-					</div>
-					<div class="col-sm-12"> 
-						<div class="custom-field-regex-expression-validation-wpr" style="">
-							<label for="">Regex pattern validation</label>
-							<input style="color: #3c4858;" type="text" [(ngModel)]="customFieldRegex"  (ngModelChange)="onChangeRegexFieldValidation($event)">
-						</div>
-					</div>
-					<div class="col-sm-12"> 
-						<div class="custom-field-regex-expression-validation-wpr" style="">
-							<label for="">Field label validation error</label>
-							<input style="color: #3c4858;" type="text" [(ngModel)]="customFieldErrorLabel"  (ngModelChange)="onChangeErrorLabel($event)">
-						</div>
-					</div>
-
-
-
+				</div>
+			</div>
+			<div class="col-sm-12"> 
+				<div class="custom-field-regex-expression-validation-wpr" style="">
+					<label for="">Regex pattern validation</label>
+					<input style="color: #3c4858;" type="text" [(ngModel)]="customFieldRegex"  (ngModelChange)="onChangeRegexFieldValidation($event)">
+				</div>
+			</div>
+			<div class="col-sm-12"> 
+				<div class="custom-field-regex-expression-validation-wpr" style="">
+					<label for="">Field label validation error</label>
+					<input style="color: #3c4858;" type="text" [(ngModel)]="customFieldErrorLabel"  (ngModelChange)="onChangeErrorLabel($event)">
+				</div>
+			</div>
         </div>
       </div>
 
       <div class="modal-footer"
         style="margin-top: 0px; background-color: #fff; border-top:none; border-bottom-left-radius:6px; border-bottom-right-radius:6px">
         <div style="text-align: center; margin-bottom: 15px;">
-
-         
-			
 			<button type="button" class="btn btn-primary" (click)="createCustomField()">
 				Add
 			</button>
-
 		  	<button type="button" class="btn btn-secondary"
 				(click)="closeModalCreateCustomField()" style="padding:12px 36px;">
 				{{ "Cancel" | translate }}
