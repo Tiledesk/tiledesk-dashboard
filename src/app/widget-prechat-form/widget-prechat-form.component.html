@@ -93,9 +93,9 @@
                     <span *ngIf="element?.name === 'userFullname'"> {{ LABEL_PRECHAT_USER_FULLNAME }} </span>
                     <span *ngIf="element?.name === 'userEmail'"> {{ LABEL_PRECHAT_USER_EMAIL }} </span>
                     <span *ngIf="element?.name === 'userPhone'"> {{ LABEL_PRECHAT_USER_PHONE }} </span>
-                    <span *ngIf="element?.name !== 'userPhone' && element?.name !== 'userEmail' && element?.name !== 'userFullname'"> 
-                      {{ customFieldLabel }}
-                    </span>
+                    <!-- <span *ngIf="element?.name !== 'userPhone' && element?.name !== 'userEmail' && element?.name !== 'userFullname'"> 
+                     {{element?.label }} 
+                    </span> -->
                   </label>
                   <input type="element?.type" class="form-control">
                 </div>

@@ -27,7 +27,7 @@ const swal = require('sweetalert');
 
 @Component({
   selector: 'appdashboard-widget-set-up',
-  templateUrl: './widget-set-up.component_new.html',
+  templateUrl: './widget-set-up.component.html',
   styleUrls: ['./widget-set-up.component.scss']
 })
 
@@ -159,13 +159,13 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   imageUrl: string;
   currentUserId: string;
   preChatFormFieldName: string
+
   preChatFormFields = [
     {
       "name": "userFullname",
       "type": "text",
       "mandatory": true,
       "label": "LABEL_PRECHAT_USER_FULLNAME",
-      "errorLabel": "LABEL_PRECHAT_USER_FULLNAME_ERROR"
     },
     {
       "name": "userEmail",
@@ -183,16 +183,16 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       "errorLabel": "LABEL_PRECHAT_USER_PHONE_ERROR"
     },
     {
+      "name": "termsPrivacyLabel",
+      "type": "static",
+      "label": "LABEL_PRECHAT_STATIC_TERMS_PRIVACY"
+    },
+    {
       "type": "checkbox",
       "name": "acceptedTermsPrivacy",
       "label": "LABEL_PRECHAT_ACCEPT_TERMS_PRIVACY",
       "errorLabel": "LABEL_PRECHAT_ACCEPT_TERMS_PRIVACY_ERROR",
       "mandatory": "true"
-    },
-    {
-      "name": "termsPrivacyLabel",
-      "type": "static",
-      "label": "LABEL_PRECHAT_STATIC_TERMS_PRIVACY"
     },
     {
       "name": "firstMessage",
@@ -202,6 +202,35 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       "label": "LABEL_PRECHAT_FIRST_MESSAGE"
     }
   ]
+  preChatformCustomFieldTypeSelect = [
+    { id: 'text', name: 'Input' },
+    { id: 2, name: 'Label' },
+    { id: 3, name: 'Checkbox' },
+    { id: 4, name: 'Texarea' }
+  ];
+
+  displayModalCreateCustomField: string = 'none'
+  customFieldName: string;
+  customFieldType: string;
+  // customFieldType: string = 'Input'
+  customFieldLabel: string;
+  customFieldRegexExpression: string;
+  customFieldErrorLabel: string;
+  customFieldTextAreaRow: number;
+
+  // preChatFieldModel = {
+  //   "name": "",
+  //   "rows": "",
+  //   "type": "",
+  //   "mandatory": "",
+  //   "label": "",
+  //   "regex": "",
+  //   "errorLabel": "",
+  // }
+
+  @ViewChild('Selecter') ngselect: NgSelectComponent;
+
+
 
   LABEL_PRECHAT_USER_FULLNAME: string;
   LABEL_PRECHAT_USER_EMAIL: string;
@@ -377,7 +406,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       var lastPanel = <HTMLElement>lastAccordion.nextElementSibling;
       lastAccordion.classList.add("active");
       lastPanel.style.maxHeight = lastPanel.scrollHeight + "px";
-     
+
       var arrow_icon_div = lastAccordion.children[1];
       var arrow_icon = arrow_icon_div.children[0]
       arrow_icon.classList.add("arrow-up");
@@ -625,7 +654,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
       firstAccordion.classList.add("active");
       firstPanel.style.maxHeight = firstPanel.scrollHeight + "px";
-      console.log('[WIDGET-SET-UP] firstPanel.style.maxHeight  ', firstPanel.style.maxHeight)
+      
 
       var arrow_icon_div = firstAccordion.children[1];
       // this.logger.log('[WIDGET-SET-UP] ACCORDION ARROW ICON WRAP DIV', arrow_icon_div);
@@ -652,7 +681,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           self.HAS_ACTIVATED_PRECHAT_CUSTOM_FIELDS = false
         } else {
           panel.style.maxHeight = panel.scrollHeight + "px";
-        console.log('[WIDGET-SET-UP] firstPanel.style.maxHeight  ', panel.style.maxHeight)
+      
         }
       });
     }
@@ -895,7 +924,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       if (translation.lang.toLowerCase() === selectedLangCode) {
 
         this.selected_translation = translation.data
-        console.log('[WIDGET-SET-UP] ***** selected translation: ', this.selected_translation)
+        // console.log('[WIDGET-SET-UP] ***** selected translation: ', this.selected_translation)
 
         // ---------------------------------------------------------------------------------------------
         // @ New Conversation (not editable in the widhet setting page but only from multilanguage page)
@@ -969,7 +998,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
         this.LABEL_COMPLETE_FORM = this.selected_translation["LABEL_COMPLETE_FORM"]
         this.LABEL_PLACEHOLDER = this.selected_translation["LABEL_PLACEHOLDER"]
-        console.log('[WIDGET-SET-UP] - ***** selected translation LABEL_PLACEHOLDER: ', this.LABEL_PLACEHOLDER);
+        // console.log('[WIDGET-SET-UP] - ***** selected translation LABEL_PLACEHOLDER: ', this.LABEL_PLACEHOLDER);
         this.LABEL_PRECHAT_USER_FULLNAME = this.selected_translation["LABEL_PRECHAT_USER_FULLNAME"]
         this.LABEL_PRECHAT_USER_EMAIL = this.selected_translation["LABEL_PRECHAT_USER_EMAIL"]
         this.LABEL_PRECHAT_USER_PHONE = this.selected_translation["LABEL_PRECHAT_USER_PHONE"]
@@ -1221,7 +1250,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.selected_translation["WAITING_TIME_NOT_FOUND"] = this.waitingTimeNotFoundMsg;
     this.selected_translation["WAITING_TIME_FOUND"] = this.waitingTimeFoundMsg;
 
-    
+
     this.selected_translation["LABEL_COMPLETE_FORM"] = this.LABEL_COMPLETE_FORM;
     this.selected_translation["LABEL_PRECHAT_USER_FULLNAME"] = this.LABEL_PRECHAT_USER_FULLNAME;
     this.selected_translation["LABEL_PRECHAT_USER_EMAIL"] = this.LABEL_PRECHAT_USER_EMAIL;
@@ -1229,7 +1258,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.selected_translation["LABEL_PRECHAT_ACCEPT_TERMS_PRIVACY"] = this.LABEL_PRECHAT_ACCEPT_TERMS_PRIVACY;
     this.selected_translation["LABEL_PRECHAT_STATIC_TERMS_PRIVACY"] = this.LABEL_PRECHAT_STATIC_TERMS_PRIVACY;
     this.selected_translation["LABEL_PRECHAT_FIRST_MESSAGE"] = this.LABEL_PRECHAT_FIRST_MESSAGE;
-   
+
 
     this.logger.log('[WIDGET-SET-UP] - saveTranslation: ', this.selected_translation);
 
@@ -1387,7 +1416,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           this.prechatFormArray = project.widget.preChatFormJson;
           this.prechatFormTexareaJson = JSON.stringify(project.widget.preChatFormJson, null, 4);
           this.removepreChatFormFieldsIfAlreadyUsed(this.preChatFormFields, project.widget.preChatFormJson);
-          console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) PRE-CHAT-FORM-JSON DEFINED: ', project.widget.preChatFormJson)
+          // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) PRE-CHAT-FORM-JSON DEFINED: ', project.widget.preChatFormJson)
           this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) PRE-CHAT-FORM-JSON DEFINED typeof: ', typeof project.widget.preChatFormJson)
         } else {
           this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) PRE-CHAT-FORM-JSON NOT DEFINED ')
@@ -2212,7 +2241,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   //  @ Pre-chat form  
   // -----------------------------------------------------------------------
   hasOpenedPrechaFormSection() {
-    console.log('hasOpenedPrechaFormSection')
+    // console.log('hasOpenedPrechaFormSection')
     this.DISPLAY_CALLOUT = false;
     this.DISPLAY_WIDGET_HOME = false;
     this.DISPLAY_WIDGET_CHAT = false;
@@ -2281,32 +2310,32 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
   onChangeLabelCompleteForm($event) {
-    console.log('[WIDGET-SET-UP] - onChangeLabelCompleteForm ', $event),
+    // console.log('[WIDGET-SET-UP] - onChangeLabelCompleteForm ', $event),
       this.LABEL_COMPLETE_FORM = $event
   }
 
   onChangeUserFullNameLabel($event) {
-    console.log('[WIDGET-SET-UP] - onChangeUserFullNameLabel ', $event),
+    // console.log('[WIDGET-SET-UP] - onChangeUserFullNameLabel ', $event),
       this.LABEL_PRECHAT_USER_FULLNAME = $event
   }
   onChangeEmailLabel($event) {
-    console.log('[WIDGET-SET-UP] - onChangeEmailLabel ', $event);
+    // console.log('[WIDGET-SET-UP] - onChangeEmailLabel ', $event);
     this.LABEL_PRECHAT_USER_EMAIL = $event
   }
   onChangePhoneLabel($event) {
-    console.log('[WIDGET-SET-UP] - onChangePhoneLabel ', $event)
+    // console.log('[WIDGET-SET-UP] - onChangePhoneLabel ', $event)
     this.LABEL_PRECHAT_USER_PHONE = $event
   }
   onChangeAcceptTermsPrivacyLabel($event) {
-    console.log('[WIDGET-SET-UP] - onChangeAcceptTermsPrivacyLabel ', $event)
+    // console.log('[WIDGET-SET-UP] - onChangeAcceptTermsPrivacyLabel ', $event)
     this.LABEL_PRECHAT_ACCEPT_TERMS_PRIVACY = $event
   }
   onChangeTermsPrivacyLabel($event) {
-    console.log('[WIDGET-SET-UP] - onChangeTermsPrivacyLabel ', $event)
+    // console.log('[WIDGET-SET-UP] - onChangeTermsPrivacyLabel ', $event)
     this.LABEL_PRECHAT_STATIC_TERMS_PRIVACY = $event
   }
   onChangeFirstMessagel($event) {
-    console.log('[WIDGET-SET-UP] - onChangeFirstMessagel ', $event)
+    // console.log('[WIDGET-SET-UP] - onChangeFirstMessagel ', $event)
     this.LABEL_PRECHAT_FIRST_MESSAGE = $event
   }
 
@@ -2320,10 +2349,10 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
   addPrechatFormField($event) {
     this.preChatFormFieldName = $event.name
-    console.log('[WIDGET-SET-UP] - addPrechatFormField $preChatFormFieldName', this.preChatFormFieldName)
-    console.log('[WIDGET-SET-UP] - addPrechatFormField $event', $event)
+    // console.log('[WIDGET-SET-UP] - addPrechatFormField $preChatFormFieldName', this.preChatFormFieldName)
+    // console.log('[WIDGET-SET-UP] - addPrechatFormField $event', $event)
     this.prechatFormArray.push($event)
-    console.log('[WIDGET-SET-UP] - addPrechatFormField  prechatFormArray', this.prechatFormArray)
+    // console.log('[WIDGET-SET-UP] - addPrechatFormField  prechatFormArray', this.prechatFormArray)
     this.prechatFormTexareaJson = JSON.stringify(this.prechatFormArray, null, 4);
 
     // this.ngSelectComponent.clearModel();
@@ -2331,8 +2360,90 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       this.preChatFormFieldName = null;
     }, 0)
     this.preChatFormFielsBtnsArray = JSON.parse(this.prechatFormTexareaJson)
-    console.log('[WIDGET-SET-UP] - addPrechatFormField  preChatFormFielsBtnsArray', this.preChatFormFielsBtnsArray)
+    // console.log('[WIDGET-SET-UP] - addPrechatFormField  preChatFormFielsBtnsArray', this.preChatFormFielsBtnsArray)
     this.removepreChatFormFieldsIfAlreadyUsed(this.preChatFormFields, JSON.parse(this.prechatFormTexareaJson))
+  }
+
+  // ---------------------------------------------
+  // Create pre-chat form custom field
+  // ---------------------------------------------
+  presentModalCreateCustomField() {
+    // this.preChatFieldModel.name = ""
+    // this.preChatFieldModel.label = ""
+    // this.preChatFieldModel.type = ""
+    // console.log('presentModalCreateCustomField preChatFieldModel' , this.preChatFieldModel) 
+    this.customFieldType = undefined
+    this.customFieldLabel = undefined
+    this.customFieldName = undefined
+    this.ngselect.close()
+    this.displayModalCreateCustomField = 'block'
+  }
+  closeModalCreateCustomField() {
+    this.displayModalCreateCustomField = 'none'
+  } 
+  createCustomField() {
+    this.displayModalCreateCustomField = 'none'
+
+    
+    // this.prechatFormArray.push(this.preChatFieldModel)
+    // console.log('createCustomField field' , field) 
+    const obj = {}
+ 
+    // if(this.customFieldTypeName === 'Input') {
+    //   this.preChatFieldModel.type = 'text'
+    // }
+    obj['type'] = this.customFieldType
+    obj['name'] = this.customFieldName
+    obj['label'] = this.customFieldLabel
+    // console.log('createCustomField obj' ,obj)
+   
+    // console.log('createCustomField preChatFieldModel' , this.preChatFieldModel)
+   
+    this.prechatFormArray.push(obj)
+    this.prechatFormTexareaJson = JSON.stringify(this.prechatFormArray, null, 4);
+  }
+
+  onChangeCustomFieldType($event) {
+    // console.log('[WIDGET-SET-UP] - onChangeCustomFieldType  TypeSelected', $event)
+    this.customFieldType = $event.id
+    // if(this.customFieldTypeName === 'Input') {
+    //   // this.preChatFieldModel.type = 'text'
+    // }
+    // this.customFieldType
+    // customFieldType
+    // customFieldTypeName
+  }
+  onChangeCustomFieldTextAreaRow($event) {
+    // console.log('[WIDGET-SET-UP] - ON CHANGE TEXAREA ROW - NUM OF ROW', $event)
+    // console.log('[WIDGET-SET-UP] - ON CHANGE TEXAREA ROW - NUM OF ROW', this.customFieldTextAreaRow)
+ 
+  }
+
+  onChangeCustomFieldName($event) {
+    // console.log('[WIDGET-SET-UP] - ON CHANGE CUSTOM FIELD NAME - EVENT', $event)
+    // console.log('[WIDGET-SET-UP] - ON CHANGE CUSTOM FIELD NAME - customFieldLabel', this.customFieldLabel)
+   
+    const fieldNameUndescore =  $event.replace(/ /g,"_")
+    // console.log('[WIDGET-SET-UP] - ON CHANGE CUSTOM FIELD NAME - FIELD NAME FROM EVENT ', fieldNameUndescore)
+
+    // $event.replace(/ /g,"_")
+   const customFieldId = '_' + Math.random().toString(36).slice(2)
+  //  console.log('[WIDGET-SET-UP] - ON CHANGE CUSTOM FIELD NAME - CUSTOM FIELD ID ', customFieldId)
+  
+   this.customFieldName = fieldNameUndescore + customFieldId
+  }
+
+  onChangeCustomFieldIsRequired($event) {
+    // console.log('[WIDGET-SET-UP] - ON CHANGE CUSTOM FIELD IS REQUIRED - IS CHECKED', $event.target.checked)
+   
+  }
+
+  onChangeRegexFieldValidation($event) {
+    // console.log('[WIDGET-SET-UP] - ON CHANGE REGEX FIELD VALIDATION - REGEX EXPRESSION', this.customFieldRegexExpression)
+   
+  }
+  onChangeErrorLabel($event) {
+    // console.log('[WIDGET-SET-UP] - ON CHANGE ERROR LABEL - LABEL', this.customFieldErrorLabel)
   }
 
 
@@ -2340,9 +2451,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   // Splice item from the select if is from already present in the prechatFormTexareaJson
   // ------------------------------------------------------------------------------------
   removepreChatFormFieldsIfAlreadyUsed(preChatFormFields: any, prechatFormTexareaJson: any) {
-    console.log('[WIDGET-SET-UP]  preChatFormFields - ', this.preChatFormFields);
-    // remove from the taglist (tags that the administrator has set on the tag management page and that are displayed in the combo box 'Add tag' of this template)
-    // the tag that are already in the tagArray (the tags present in the "this.request" object)
+    // console.log('[WIDGET-SET-UP]  preChatFormFields - ', this.preChatFormFields);
+    // remove from the custom field select list the field that are already in the preChatFormFields
     for (var i = preChatFormFields.length - 1; i >= 0; i--) {
       for (var j = 0; j < prechatFormTexareaJson.length; j++) {
         if (preChatFormFields[i] && (preChatFormFields[i].name === prechatFormTexareaJson[j].name)) {
@@ -2352,14 +2462,14 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       }
     }
     this.preChatFormFields = this.preChatFormFields.slice(0)
-    console.log('[WIDGET-SET-UP] -  preChatFormFields - AFTER SPLICE ', this.preChatFormFields);
+    // console.log('[WIDGET-SET-UP] -  preChatFormFields - AFTER SPLICE ', this.preChatFormFields);
   }
 
   removePrechatFormField(prechatformfield) {
-    console.log('[WIDGET-SET-UP] - REMOVE PRECHAT FORM FIELD ', prechatformfield)
-    //  console.log('[WIDGET-SET-UP] - REMOVE PRECHAT FORM TEXTAREA JSON ', this.prechatFormTexareaJson)
+    // console.log('[WIDGET-SET-UP] - REMOVE PRECHAT FORM FIELD ', prechatformfield)
+
     const prechatFormTexareaObjct = JSON.parse(this.prechatFormTexareaJson)
-    console.log('[WIDGET-SET-UP] - REMOVE PRECHAT FORM TEXTAREA OBJCT ', prechatFormTexareaObjct)
+    // console.log('[WIDGET-SET-UP] - REMOVE PRECHAT FORM TEXTAREA OBJCT ', prechatFormTexareaObjct)
     for (var i = 0; i < prechatFormTexareaObjct.length; i++) {
 
       if (prechatFormTexareaObjct[i].name === prechatformfield.name) {
@@ -2369,15 +2479,15 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         this.preChatFormFields = this.preChatFormFields.slice(0)
       }
     }
-    console.log('[WIDGET-SET-UP] - REMOVE PRECHAT FORM TEXTAREA OBJCT ', prechatFormTexareaObjct)
-    console.log('[WIDGET-SET-UP] - REMOVE PRECHAT FORM FIELD (those displayed in the select) ', this.preChatFormFields)
+    // console.log('[WIDGET-SET-UP] - REMOVE PRECHAT FORM TEXTAREA OBJCT ', prechatFormTexareaObjct)
+    // console.log('[WIDGET-SET-UP] - REMOVE PRECHAT FORM FIELD (those displayed in the select) ', this.preChatFormFields)
     this.prechatFormArray = prechatFormTexareaObjct
     this.prechatFormTexareaJson = JSON.stringify(prechatFormTexareaObjct, null, 4);
   }
 
   onChangeFieldIsRequired($event, field) {
-    console.log('[WIDGET-SET-UP] - ON CHANGE FIELD IS REQUIRED - IS CHECKED', $event.target.checked)
-    console.log('[WIDGET-SET-UP] - ON CHANGE FIELD IS REQUIRED - field', field)
+    // console.log('[WIDGET-SET-UP] - ON CHANGE FIELD IS REQUIRED - IS CHECKED', $event.target.checked)
+    // console.log('[WIDGET-SET-UP] - ON CHANGE FIELD IS REQUIRED - field', field)
     const prechatFormTexareaObjct = JSON.parse(this.prechatFormTexareaJson)
     if ($event.target.checked === false) {
       for (var i = 0; i < prechatFormTexareaObjct.length; i++) {
@@ -2403,40 +2513,33 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
   moveUp(field) {
-    console.log('[WIDGET-SET-UP] - MOVE UP - field', field)
-    console.log('[WIDGET-SET-UP] - MOVE UP - this.prechatFormArray', this.prechatFormArray)
-    // const prechatFormTexareaObjct = JSON.parse(this.prechatFormTexareaJson)
+    // console.log('[WIDGET-SET-UP] - MOVE UP - field', field)
+    // console.log('[WIDGET-SET-UP] - MOVE UP - this.prechatFormArray', this.prechatFormArray)
+   
     let index = this.prechatFormArray.findIndex(e => e.name == field.name);
-    console.log('[WIDGET-SET-UP] - MOVE UP - field index', index)
+    // console.log('[WIDGET-SET-UP] - MOVE UP - field index', index)
     if (index > 0) {
       let el = this.prechatFormArray[index];
-      console.log('[WIDGET-SET-UP] - MOVE UP - field index', el)
+      // console.log('[WIDGET-SET-UP] - MOVE UP - field index', el)
       this.prechatFormArray[index] = this.prechatFormArray[index - 1];
       this.prechatFormArray[index - 1] = el;
       // this.prechatFormArray = this.prechatFormTexareaJson
       this.prechatFormTexareaJson = JSON.stringify(this.prechatFormArray, null, 4);
     }
-    console.log('[WIDGET-SET-UP] - MOVE UP - this.prechatFormArray', this.prechatFormArray)
+    // console.log('[WIDGET-SET-UP] - MOVE UP - this.prechatFormArray', this.prechatFormArray)
 
-    //  const moveUpBtnEl = <HTMLInputElement>document.getElementById(field.name + '_btn_up');
-    //  console.log('[WIDGET-SET-UP] - MOVE UP - moveUpBtnEl', moveUpBtnEl)
-    //  moveUpBtnEl.classList.add("active");
   }
 
   moveDown(field) {
-    console.log('[WIDGET-SET-UP] - MOVE DOWN - field', field)
+    // console.log('[WIDGET-SET-UP] - MOVE DOWN - field', field)
 
     let index = this.prechatFormArray.findIndex(e => e.name == field.name);
-    console.log('[WIDGET-SET-UP] - MOVE DOWN - field index', index)
+    // console.log('[WIDGET-SET-UP] - MOVE DOWN - field index', index)
     if (index !== -1 && index < this.prechatFormArray.length - 1) {
       let el = this.prechatFormArray[index];
       this.prechatFormArray[index] = this.prechatFormArray[index + 1];
       this.prechatFormArray[index + 1] = el;
     }
-
-    // const moveDownBtnEl = <HTMLInputElement>document.getElementById(field.name + '_btn_down');
-    // console.log('[WIDGET-SET-UP] - MOVE UP - moveUpBtnEl', moveDownBtnEl)
-    // moveDownBtnEl.classList.add("active");
   }
 
   savePrechatFormCustomFields() {
@@ -2446,11 +2549,11 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       prechatform_savejson_btn.blur()
     }
 
-    console.log('[WIDGET-SET-UP] - SAVE PRE-CHAT-FORM-JSON this.prechatFormArray', this.prechatFormArray)
+    // console.log('[WIDGET-SET-UP] - SAVE PRE-CHAT-FORM-JSON this.prechatFormArray', this.prechatFormArray)
 
     if (this.prechatFormArray.length > 0) {
-      console.log('[WIDGET-SET-UP] - SAVE PRE-CHAT-FORM-JSON prechatFormTexareaJson', this.prechatFormTexareaJson)
-      console.log('[WIDGET-SET-UP] - SAVE PRE-CHAT-FORM-JSON this.isJsonString(this.prechatFormTexareaJson)', this.isJsonString(this.prechatFormTexareaJson))
+      // console.log('[WIDGET-SET-UP] - SAVE PRE-CHAT-FORM-JSON prechatFormTexareaJson', this.prechatFormTexareaJson)
+      // console.log('[WIDGET-SET-UP] - SAVE PRE-CHAT-FORM-JSON this.isJsonString(this.prechatFormTexareaJson)', this.isJsonString(this.prechatFormTexareaJson))
       if (this.prechatFormTexareaJson !== '' && this.isJsonString(this.prechatFormTexareaJson) === true) {
         const parsedPrechatFormTexareaJson = JSON.parse(this.prechatFormTexareaJson)
 
@@ -2486,20 +2589,20 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       dangerMode: false,
     })
       .then((value) => {
-        console.log('[WIDGET-SET-UP] - displayModalNoFieldInCustomPrechatForm value', value)
+        // console.log('[WIDGET-SET-UP] - displayModalNoFieldInCustomPrechatForm value', value)
 
         if (value === true) {
-          console.log('[WIDGET-SET-UP] - SAVE PRE-CHAT-FORM-JSON The custom prechat form contains no fields')
-          console.log('[WIDGET-SET-UP] - SAVE PRE-CHAT-FORM-JSON preChatFormCustomFieldsEnabled ', this.preChatFormCustomFieldsEnabled)
+          // console.log('[WIDGET-SET-UP] - SAVE PRE-CHAT-FORM-JSON The custom prechat form contains no fields')
+          // console.log('[WIDGET-SET-UP] - SAVE PRE-CHAT-FORM-JSON preChatFormCustomFieldsEnabled ', this.preChatFormCustomFieldsEnabled)
 
           if (this.widgetObj.hasOwnProperty('preChatFormJson')) {
-            console.log('[WIDGET-SET-UP] - SAVE PRE-CHAT-FORM-JSON widgetObj HAS TEH KEY preChatFormJson')
+            // console.log('[WIDGET-SET-UP] - SAVE PRE-CHAT-FORM-JSON widgetObj HAS TEH KEY preChatFormJson')
             delete this.widgetObj['preChatFormJson']
           }
           if (this.widgetObj.hasOwnProperty('preChatFormCustomFieldsEnabled')) {
             this.preChatFormCustomFieldsEnabled = false;
             delete this.widgetObj['preChatFormCustomFieldsEnabled'];
-            console.log('[WIDGET-SET-UP] - SAVE PRE-CHAT-FORM-JSON this.preChatFormCustomFieldsEnabled ', this.preChatFormCustomFieldsEnabled)
+            // console.log('[WIDGET-SET-UP] - SAVE PRE-CHAT-FORM-JSON this.preChatFormCustomFieldsEnabled ', this.preChatFormCustomFieldsEnabled)
 
           }
           this.widgetService.updateWidgetProject(this.widgetObj)

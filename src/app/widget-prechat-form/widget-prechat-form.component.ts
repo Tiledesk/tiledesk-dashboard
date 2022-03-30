@@ -20,7 +20,7 @@ export class WidgetPrechatFormComponent implements OnInit, OnChanges {
   @Input() LABEL_PRECHAT_STATIC_TERMS_PRIVACY: string;
   @Input() LABEL_PRECHAT_ACCEPT_TERMS_PRIVACY: string;
   @Input() LABEL_COMPLETE_FORM: string;
-  @Input() customFieldLabel: string;
+  
   customPrechatFormArray: any;
   primaryColorRGBA_1: any;
   primaryColorRGBA_050: any;
@@ -36,18 +36,17 @@ export class WidgetPrechatFormComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit() {
-    // console.log('WIDGET PRE CHAT FORM prechatFormTexareaJson' ,this.prechatFormTexareaJson)
+    
     this.customPrechatFormArray = this.prechatFormArray
-    console.log('WIDGET PRE CHAT FORM customPrechatFormArray', this.customPrechatFormArray)
-    console.log('WIDGET PRE CHAT FORM LABEL_PRECHAT_USER_FULLNAME', this.LABEL_PRECHAT_USER_FULLNAME)
-    console.log('WIDGET PRE CHAT FORM LABEL_PRECHAT_USER_EMAIL', this.LABEL_PRECHAT_USER_EMAIL)
-    console.log('WIDGET PRE CHAT FORM LABEL_PRECHAT_USER_PHONE', this.LABEL_PRECHAT_USER_PHONE)
-    console.log('WIDGET PRE CHAT FORM LABEL_PRECHAT_FIRST_MESSAGE', this.LABEL_PRECHAT_FIRST_MESSAGE)
-    console.log('WIDGET PRE CHAT FORM LABEL_PRECHAT_STATIC_TERMS_PRIVACY', this.LABEL_PRECHAT_STATIC_TERMS_PRIVACY)
-    console.log('WIDGET PRE CHAT FORM LABEL_PRECHAT_ACCEPT_TERMS_PRIVACY', this.LABEL_PRECHAT_ACCEPT_TERMS_PRIVACY)
-    console.log('WIDGET PRE CHAT FORM LABEL_COMPLETE_FORM', this.LABEL_COMPLETE_FORM)
-
-    console.log('[WIDGET PRE CHAT FORM] primaryColor', this.primaryColor)
+    // console.log('WIDGET PRE CHAT FORM customPrechatFormArray', this.customPrechatFormArray)
+    // console.log('WIDGET PRE CHAT FORM LABEL_PRECHAT_USER_FULLNAME', this.LABEL_PRECHAT_USER_FULLNAME)
+    // console.log('WIDGET PRE CHAT FORM LABEL_PRECHAT_USER_EMAIL', this.LABEL_PRECHAT_USER_EMAIL)
+    // console.log('WIDGET PRE CHAT FORM LABEL_PRECHAT_USER_PHONE', this.LABEL_PRECHAT_USER_PHONE)
+    // console.log('WIDGET PRE CHAT FORM LABEL_PRECHAT_FIRST_MESSAGE', this.LABEL_PRECHAT_FIRST_MESSAGE)
+    // console.log('WIDGET PRE CHAT FORM LABEL_PRECHAT_STATIC_TERMS_PRIVACY', this.LABEL_PRECHAT_STATIC_TERMS_PRIVACY)
+    // console.log('WIDGET PRE CHAT FORM LABEL_PRECHAT_ACCEPT_TERMS_PRIVACY', this.LABEL_PRECHAT_ACCEPT_TERMS_PRIVACY)
+    // console.log('WIDGET PRE CHAT FORM LABEL_COMPLETE_FORM', this.LABEL_COMPLETE_FORM)
+    // console.log('[WIDGET PRE CHAT FORM] primaryColor', this.primaryColor)
 
   }
 
@@ -55,9 +54,9 @@ export class WidgetPrechatFormComponent implements OnInit, OnChanges {
 
 
   ngOnChanges() {
-    console.log()
+   
     this.customPrechatFormArray = this.prechatFormArray
-    console.log('WIDGET PRE CHAT FORM customPrechatFormArray', this.customPrechatFormArray)
+    // console.log('WIDGET PRE CHAT FORM customPrechatFormArray', this.customPrechatFormArray)
     this.elementRef.nativeElement.style.setProperty('--themeColor', this.primaryColor);
     this.elementRef.nativeElement.style.setProperty('--foregroundColor', this.secondaryColor);
 
@@ -67,11 +66,11 @@ export class WidgetPrechatFormComponent implements OnInit, OnChanges {
   generateLinearGradient(primaryColor) {
     this.primaryColorRGBA_1 = this.hexToRgbA_1(primaryColor)
     this.primaryColorRGBA_050 = this.hexToRgbA_050(primaryColor)
-    console.log('[WIDGET PRE CHAT FORM] primaryColorRGBA_1', this.primaryColorRGBA_1)
-    console.log('[WIDGET PRE CHAT FORM] primaryColorRGBA_050', this.primaryColorRGBA_050)
+    // console.log('[WIDGET PRE CHAT FORM] primaryColorRGBA_1', this.primaryColorRGBA_1)
+    // console.log('[WIDGET PRE CHAT FORM] primaryColorRGBA_050', this.primaryColorRGBA_050)
 
     this.linearGradient = 'linear-gradient( 180grad, ' + this.primaryColorRGBA_1 + ', ' + this.primaryColorRGBA_050 + ')';
-    console.log('[WIDGET PRE CHAT FORM] linearGradient', this.linearGradient)
+    // console.log('[WIDGET PRE CHAT FORM] linearGradient', this.linearGradient)
   }
 
 

@@ -642,9 +642,9 @@ input[type="text"]:disabled {
 .pre-chat-form-field-div {
   padding: 8px;
   margin-bottom: 5px;
-  background-color: #3ea9f5;
+  background-color: #f7f8fc;
   border-radius: 4px;
-  color: #fff;
+  color: #3c4858;
   border: 1px solid transparent;
 }
 
@@ -655,23 +655,23 @@ input[type="text"]:disabled {
 }
 
 .move-up-field-btn {
-  background-color: #3ea9f5;
+  background-color: #f7f8fc;
   height: 50%;
   border-radius: 4px 4px 0px 0px;
   cursor: pointer;
 }
 .move-up-field-btn:hover {
-  opacity: 0.8;
+  opacity: 0.6;
 }
 
 .move-up-material-icons {
   position: relative;
   bottom: -12px;
-  color: #fff;
+  color: #3c4858;
 }
 
 .move-down-field-btn {
-  background-color: #3ea9f5;
+  background-color: #f7f8fc;
   margin-top: 2px;
   width: 100%;
   height: 50%;
@@ -681,13 +681,13 @@ input[type="text"]:disabled {
 }
 .move-down-field-btn:hover {
   // background: #47a7f5 radial-gradient(circle, transparent 1%, #47a7f5 1%) center/15000%;
-  opacity: 0.8;
+  opacity: 0.6;
 }
 
 .move-down-material-icons {
   position: relative;
   bottom: -12px;
-  color: #fff;
+  color: #3c4858;
 }
 
 .pre-chat-form-field-div > input {
@@ -718,13 +718,13 @@ input[type="text"]:disabled {
 
 .pre-chat-form-remove-field-btn--wpr {
   height: 100%;
-  background-color: #3ea9f5;
+  background-color: #f7f8fc;
   cursor: pointer;
   border-radius: 4px 4px 4px 4px;
 }
 
 .pre-chat-form-remove-field-btn--wpr:hover {
-  opacity: 0.8;
+  opacity: 0.6;
 }
 .remove-field-btn {
   text-align: center;
@@ -734,7 +734,7 @@ input[type="text"]:disabled {
 .remove-field-material-icons {
   // position: relative;
   // bottom: 38px;
-  color: #fff;
+  color: #3c4858;
 }
 
 // ------------------
@@ -2300,7 +2300,7 @@ button.buttonRounded:hover {
 }
 
 .panel-prechatform-height {
-  max-height: 960px !important;
+  max-height: 1460px !important;
 }
 
 pre {
