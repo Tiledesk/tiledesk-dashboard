@@ -2044,6 +2044,7 @@
     "PreChatFormTitle":"Sohbet öncesi form başlığıа",
     "PreChatForm": "Ön sohbet formu",
     "Mandatory":"Zorunlu",
+    "EnableDisablePreChatForm":"Sohbet öncesi modülünü Etkinleştir / Devre Dışı Bırak",
     "CHAT_IONIC": {
         "LABEL_TU": "sen: ",
         "LABEL_MSG_PUSH_START_CHAT": "Henüz görüşme yok",

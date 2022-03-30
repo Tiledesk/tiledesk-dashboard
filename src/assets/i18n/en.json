@@ -2044,6 +2044,7 @@
     "PreChatFormTitle":"Pre-chat form title",
     "PreChatForm": "Pre-chat form",
     "Mandatory":"Mandatory",
+    "EnableDisablePreChatForm":"Enable / Disable pre-chat form",
     "CHAT_IONIC": {
         "LABEL_TU": "you: ",
         "LABEL_MSG_PUSH_START_CHAT": "No conversation yet",

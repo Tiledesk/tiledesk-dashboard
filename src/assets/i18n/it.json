@@ -2042,5 +2042,6 @@
     "EnableDisableCustomPreChatForm":"Abilita / disabilita il modulo pre-chat personalizzato",
     "SelectFields": "Seleziona i campi",
     "PreChatForm": "Modulo pre-chat",
-    "Mandatory":"Obbligatorio"
+    "Mandatory":"Obbligatorio",
+    "EnableDisablePreChatForm":"Abilita / Disabilita il modulo di pre-chat"
 }

@@ -2039,11 +2039,12 @@
     "termsPrivacyLabel":"Términos y privacidad Cumplimiento",
     "firstMessage": "Primer mensaje",
     "TheCustomPreChatFormIsEmptyAndWillBeDisabled":"El formulario personalizado previo al chat está vacío y se desactivará",
-    "EnableDisableCustomPreChatForm":"Habilitar/deshabilitar el formulario previo al chat personalizado",
+    "EnableDisableCustomPreChatForm":"Habilitar / deshabilitar el formulario previo al chat personalizado",
     "SelectFields": "Seleccionar campos",
     "PreChatFormTitle":"Título del formulario previo al chat",
     "PreChatForm": "Formulario previo al chat",
     "Mandatory":"Obligatorio",
+    "EnableDisablePreChatForm":"Activar / Desactivar formulario previo al chat",
     "CHAT_IONIC": {
         "LABEL_TU": "tú: ",
         "LABEL_MSG_PUSH_START_CHAT": "Aún no hay conversación",

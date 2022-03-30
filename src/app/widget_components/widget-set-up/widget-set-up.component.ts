@@ -654,7 +654,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
       firstAccordion.classList.add("active");
       firstPanel.style.maxHeight = firstPanel.scrollHeight + "px";
-      
+
 
       var arrow_icon_div = firstAccordion.children[1];
       // this.logger.log('[WIDGET-SET-UP] ACCORDION ARROW ICON WRAP DIV', arrow_icon_div);
@@ -681,7 +681,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           self.HAS_ACTIVATED_PRECHAT_CUSTOM_FIELDS = false
         } else {
           panel.style.maxHeight = panel.scrollHeight + "px";
-      
+
         }
       });
     }
@@ -2311,12 +2311,12 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
   onChangeLabelCompleteForm($event) {
     // console.log('[WIDGET-SET-UP] - onChangeLabelCompleteForm ', $event),
-      this.LABEL_COMPLETE_FORM = $event
+    this.LABEL_COMPLETE_FORM = $event
   }
 
   onChangeUserFullNameLabel($event) {
     // console.log('[WIDGET-SET-UP] - onChangeUserFullNameLabel ', $event),
-      this.LABEL_PRECHAT_USER_FULLNAME = $event
+    this.LABEL_PRECHAT_USER_FULLNAME = $event
   }
   onChangeEmailLabel($event) {
     // console.log('[WIDGET-SET-UP] - onChangeEmailLabel ', $event);
@@ -2380,15 +2380,15 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
   closeModalCreateCustomField() {
     this.displayModalCreateCustomField = 'none'
-  } 
+  }
   createCustomField() {
     this.displayModalCreateCustomField = 'none'
 
-    
+
     // this.prechatFormArray.push(this.preChatFieldModel)
     // console.log('createCustomField field' , field) 
     const obj = {}
- 
+
     // if(this.customFieldTypeName === 'Input') {
     //   this.preChatFieldModel.type = 'text'
     // }
@@ -2396,9 +2396,9 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     obj['name'] = this.customFieldName
     obj['label'] = this.customFieldLabel
     // console.log('createCustomField obj' ,obj)
-   
+
     // console.log('createCustomField preChatFieldModel' , this.preChatFieldModel)
-   
+
     this.prechatFormArray.push(obj)
     this.prechatFormTexareaJson = JSON.stringify(this.prechatFormArray, null, 4);
   }
@@ -2416,31 +2416,33 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   onChangeCustomFieldTextAreaRow($event) {
     // console.log('[WIDGET-SET-UP] - ON CHANGE TEXAREA ROW - NUM OF ROW', $event)
     // console.log('[WIDGET-SET-UP] - ON CHANGE TEXAREA ROW - NUM OF ROW', this.customFieldTextAreaRow)
- 
+
   }
 
   onChangeCustomFieldName($event) {
     // console.log('[WIDGET-SET-UP] - ON CHANGE CUSTOM FIELD NAME - EVENT', $event)
     // console.log('[WIDGET-SET-UP] - ON CHANGE CUSTOM FIELD NAME - customFieldLabel', this.customFieldLabel)
-   
-    const fieldNameUndescore =  $event.replace(/ /g,"_")
+
+    const fieldNameUndescore = $event.replace(/ /g, "_")
     // console.log('[WIDGET-SET-UP] - ON CHANGE CUSTOM FIELD NAME - FIELD NAME FROM EVENT ', fieldNameUndescore)
 
-    // $event.replace(/ /g,"_")
-   const customFieldId = '_' + Math.random().toString(36).slice(2)
-  //  console.log('[WIDGET-SET-UP] - ON CHANGE CUSTOM FIELD NAME - CUSTOM FIELD ID ', customFieldId)
-  
-   this.customFieldName = fieldNameUndescore + customFieldId
+    // https://www.codegrepper.com/code-examples/javascript/how+to+generate+random+id+in+javascript
+    // Math.random should be unique because of its seeding algorithm.
+    // Convert it to base 36 (numbers + letters), and grab the first 9 characters after the decimal.
+    const customFieldId = '_' + Math.random().toString(36).slice(2)
+    //  console.log('[WIDGET-SET-UP] - ON CHANGE CUSTOM FIELD NAME - CUSTOM FIELD ID ', customFieldId)
+
+    this.customFieldName = fieldNameUndescore + customFieldId
   }
 
   onChangeCustomFieldIsRequired($event) {
     // console.log('[WIDGET-SET-UP] - ON CHANGE CUSTOM FIELD IS REQUIRED - IS CHECKED', $event.target.checked)
-   
+
   }
 
   onChangeRegexFieldValidation($event) {
     // console.log('[WIDGET-SET-UP] - ON CHANGE REGEX FIELD VALIDATION - REGEX EXPRESSION', this.customFieldRegexExpression)
-   
+
   }
   onChangeErrorLabel($event) {
     // console.log('[WIDGET-SET-UP] - ON CHANGE ERROR LABEL - LABEL', this.customFieldErrorLabel)
@@ -2515,7 +2517,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   moveUp(field) {
     // console.log('[WIDGET-SET-UP] - MOVE UP - field', field)
     // console.log('[WIDGET-SET-UP] - MOVE UP - this.prechatFormArray', this.prechatFormArray)
-   
+
     let index = this.prechatFormArray.findIndex(e => e.name == field.name);
     // console.log('[WIDGET-SET-UP] - MOVE UP - field index', index)
     if (index > 0) {

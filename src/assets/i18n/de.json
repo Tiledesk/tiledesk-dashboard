@@ -2043,5 +2043,6 @@
 	"SelectFields": "Wählen Sie Felder aus",
 	"PreChatFormTitle":"Titel des Pre-Chat-Formulars",
 	"PreChatForm": "Pre-Chat-Formular",
-	"Mandatory":"Obligatorisch"
+	"Mandatory":"Obligatorisch",
+	"EnableDisablePreChatForm":"Aktivieren / Deaktivieren Sie das Pre-Chat-Formular"
 }

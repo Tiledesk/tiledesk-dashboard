@@ -2044,6 +2044,7 @@
     "PreChatFormTitle":"Título do formulário pré-chat",
     "PreChatForm": "Formulário pré-chat",
     "Mandatory":"Obrigatório",
+    "EnableDisablePreChatForm":"Ativar/Desativar formulário de pré-chat",
     "CHAT_IONIC": {
         "LABEL_TU": "vocês: ",
         "LABEL_MSG_PUSH_START_CHAT": "Nenhuma conversa ainda",
