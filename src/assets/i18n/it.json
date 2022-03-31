@@ -2043,5 +2043,7 @@
     "SelectFields": "Seleziona i campi",
     "PreChatForm": "Modulo pre-chat",
     "Mandatory":"Obbligatorio",
-    "EnableDisablePreChatForm":"Abilita / Disabilita il modulo di pre-chat"
+    "EnableDisablePreChatForm":"Abilita / Disabilita il modulo di pre-chat",
+    "WelcomeToTheNewMenu":"Benvenuti nel nuovo menù",
+	"NowYouHaveMoreSpaceToUseYourChatBotsApps":"Ora hai più spazio per usare la tua chat, i bot e le app. Divertiti!"
 }

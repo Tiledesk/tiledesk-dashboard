@@ -2045,6 +2045,8 @@
     "PreChatForm": "Formulário pré-chat",
     "Mandatory":"Obrigatório",
     "EnableDisablePreChatForm":"Ativar/Desativar formulário de pré-chat",
+    "WelcomeToTheNewMenu":"Bem vindo ao novo cardápio",
+	"NowYouHaveMoreSpaceToUseYourChatBotsApps":"Agora você tem mais espaço para usar seu Chat, Bots e Apps. Aproveitar!",
     "CHAT_IONIC": {
         "LABEL_TU": "vocês: ",
         "LABEL_MSG_PUSH_START_CHAT": "Nenhuma conversa ainda",
