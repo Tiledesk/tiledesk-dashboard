@@ -111,7 +111,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   DISPLAY_OPH_AS_DISABLED: boolean;
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
   current_selected_prjct: any;
-  popup_visibility: string = 'hidden'
+  popup_visibility: string = 'none'
   constructor(
     public auth: AuthService,
     private route: ActivatedRoute,
@@ -169,14 +169,19 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   diplayPopup() {
     const hasClosedPopup = localStorage.getItem('dshbrd----hasclosedpopup')
     console.log('[HOME] hasClosedPopup', hasClosedPopup)
-    if (!hasClosedPopup) {
-      this.popup_visibility = 'visible'
+    if (hasClosedPopup === null) {
+      this.popup_visibility = 'block'
+      console.log('[HOME] popup_visibility', this.popup_visibility)
+    }
+    if (hasClosedPopup === 'true') {
+      this.popup_visibility = 'none'
     }
   }
   closeEverythingStartsHerePopup() {
     console.log('[HOME] closeEverythingStartsHerePopup')
     localStorage.setItem('dshbrd----hasclosedpopup', 'true')
-    this.popup_visibility = 'hidden'
+    this.popup_visibility = 'none'
+    console.log('[HOME] closeEverythingStartsHerePopup popup_visibility ',  this.popup_visibility)
   }
 
 
