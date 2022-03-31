@@ -322,7 +322,7 @@
         </a>
       </li>
       <!-- && USER_ROLE !== 'agent' -->
-      <li *ngIf="project" [ngClass]="{'active': 
+      <li *ngIf="project && USER_ROLE !== 'agent'" [ngClass]="{'active': 
       TRIGGER_ROUTE_IS_ACTIVE || 
       TAG_ROUTE_IS_ACTIVE || 
       CANNED_RESPONSES_ROUTE_IS_ACTIVE || 

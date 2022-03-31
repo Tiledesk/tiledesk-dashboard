@@ -75,7 +75,7 @@
     <!-- ------------------------------------------------------- -->
     <!-- Canned responses -->
     <!-- ------------------------------------------------------- -->
-    <ng-container *ngIf="isVisibleCAR">
+    <ng-container *ngIf="isVisibleCAR && USER_ROLE !== 'agent'">
       <li [ngClass]="{'active-item': CANNED_RESPONSES_ROUTE_IS_ACTIVE}" (click)="goToCannedResponses()"
         matTooltipClass="custom-mat-tooltip-in-settings-sidebar"
         matTooltip="{{'CannedResponses.CannedResponses' | translate}}" #tooltip="matTooltip" matTooltipPosition='right'
@@ -94,7 +94,7 @@
     <!-- -------------------------------------------------------------  -->
     <!-- Tags (menu item name 'Labels' then renamend tags 26gen21)  -->
     <!-- ------------------------------------------------------------- -->
-    <ng-container *ngIf="isVisibleLBS">
+    <ng-container *ngIf="isVisibleLBS && USER_ROLE !== 'agent'">
       <li [ngClass]="{'active-item': TAG_ROUTE_IS_ACTIVE}" (click)="goToTags()"
         matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip=" {{'Tags.Tags' | translate}}"
         #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN">
