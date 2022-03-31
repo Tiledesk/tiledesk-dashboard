@@ -902,7 +902,7 @@ export class WsRequestsService implements OnDestroy {
     this.logger.log('[WS-REQUESTS-SERV] UPDATE TAG - BODY ', body);
 
     const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + request_id
-    this.logger.log('[WS-REQUESTS-SERV] UPDATE TAG - URL ', body);
+    this.logger.log('[WS-REQUESTS-SERV] UPDATE TAG - URL ', url);
 
     return this.http
       .patch(url, JSON.stringify(body), options)
