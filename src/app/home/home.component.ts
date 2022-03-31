@@ -168,20 +168,20 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   diplayPopup() {
     const hasClosedPopup = localStorage.getItem('dshbrd----hasclosedpopup')
-    console.log('[HOME] hasClosedPopup', hasClosedPopup)
+    // console.log('[HOME] hasClosedPopup', hasClosedPopup)
     if (hasClosedPopup === null) {
       this.popup_visibility = 'block'
-      console.log('[HOME] popup_visibility', this.popup_visibility)
+      // console.log('[HOME] popup_visibility', this.popup_visibility)
     }
     if (hasClosedPopup === 'true') {
       this.popup_visibility = 'none'
     }
   }
   closeEverythingStartsHerePopup() {
-    console.log('[HOME] closeEverythingStartsHerePopup')
+    // console.log('[HOME] closeEverythingStartsHerePopup')
     localStorage.setItem('dshbrd----hasclosedpopup', 'true')
     this.popup_visibility = 'none'
-    console.log('[HOME] closeEverythingStartsHerePopup popup_visibility ',  this.popup_visibility)
+    // console.log('[HOME] closeEverythingStartsHerePopup popup_visibility ',  this.popup_visibility)
   }
 
 
