@@ -2,7 +2,7 @@
 <div class="widget-container">
   <div id="chat21-container" *ngIf="!DISPLAY_LAUNCER_BUTTON">
     <!-- height':  (LOGO_IS_ON === true ) ? '480px' : '428px' -->
-    <div class="chat21-window chat21-sheet" id="chat21-conversations" style="border-radius: 10px; z-index:1029"
+    <div class="chat21-window chat21-sheet" id="chat21-conversations" style="border-radius: 16px; z-index:1029"
       [ngStyle]="{'height':  (LOGO_IS_ON === true ) ? '577px' : '527px' }">
       <div class="modal-page active">
         <div id="chat21-home-component">
@@ -219,13 +219,14 @@
             </div>
           </div>
           <!-- style="bottom: 47px;" -->
-          <div class="c21-footer_nk"  [ngStyle]="{'bottom':  (C21_BODY_HOME === true ) ? '-48px' : '50px' }">
+          <!-- C21_BODY_HOME > {{ C21_BODY_HOME }} -->
+          <div class="c21-footer_nk"  [ngStyle]="{'bottom':  (C21_BODY_HOME === true) ? '-42px' : '57px'}">
             <div id="c21-powered-by">
            
 
                 <svg _ngcontent-c10="" xml:space="preserve" xmlns:xlink="http://www.w3.org/1999/xlink" height="22"
                   id="Livello_1"
-                  style="enable-background:new -113 139 24 24; border-radius: 4px;margin-top: 4px;margin-left: 4px;float:left"
+                  style="enable-background:new -113 139 24 24; border-radius: 4px;margin-top: 5px;margin-left: 5px;float:left"
                   version="1.0" viewBox="-113 139 24 24" width="22" x="0px" xmlns="http://www.w3.org/2000/svg" y="0px">
 
                   <path _ngcontent-c10="" class="svg-icon" d="M-90.7,148.6l-1.6-0.2c-0.2-0.5-0.4-1.1-0.6-1.6l0.9-1.4c0.4-0.6,0.3-1.3-0.2-1.8l-1.4-1.4
@@ -254,10 +255,10 @@
                 font-size: 11px;
                 font-weight: 500;
                 line-height: 28px;">
-                <span style="position: relative;left: -13px;">
+                <span style="position: relative;left: -18px;  top: 6px; font-weight:400">
                   POWERED BY 
                   <!-- <b>{{company_name}}</b>  -->
-                  <img style="width: 65px; height:auto;margin-left: 7px;position:relative;top: -1px;" src="assets/img/logos/tiledesk-logo.svg">
+                  <img style="width: 60px; height:auto;margin-left: 0px;position:relative;top: -2px;" src="assets/img/logos/tiledesk-logo.svg">
                 </span>
               </a>
             </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, HostListener, OnInit } from '@angular/core'
 import { LoggerService } from './../../services/logger/logger.service'
 import { AppConfigService } from '../../services/app-config.service'
 import { AuthService } from '../../core/auth.service'
@@ -60,7 +60,7 @@ export class SettingsSidebarComponent implements OnInit {
     public location: Location,
     private translate: TranslateService,
     private usersService: UsersService,
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.getUserRole();
@@ -70,7 +70,13 @@ export class SettingsSidebarComponent implements OnInit {
     this.getCurrentRoute();
     // this.getMainContentHeight();
     this.listenSidebarIsOpened();
-   
+
+  }
+
+  ngAfterContentInit() {
+    setTimeout(() => {
+      this.getWindowWidthOnInit();
+    }, 0);
   }
 
   getUserRole() {
@@ -79,14 +85,14 @@ export class SettingsSidebarComponent implements OnInit {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((userRole) => {
-       console.log('[SETTINGS-SIDEBAR]] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
+        //  console.log('[SETTINGS-SIDEBAR]] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
         this.USER_ROLE = userRole;
       })
   }
 
   listenSidebarIsOpened() {
     this.auth.settingSidebarIsOpned.subscribe((isopened) => {
-      this.logger.log( '[SETTINGS-SIDEBAR] SETTINGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
+      this.logger.log('[SETTINGS-SIDEBAR] SETTINGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
       this.IS_OPEN = isopened
     })
   }
@@ -97,6 +103,32 @@ export class SettingsSidebarComponent implements OnInit {
     this.auth.toggleSettingsSidebar(IS_OPEN)
   }
 
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    const newInnerWidth = event.target.innerWidth;
+   
+    // console.log('SETTINGS-SIDEBAR] ON RESIZE WINDOW WIDTH ', newInnerWidth);
+    if (newInnerWidth < 1200) {
+      this.toggleSettingsSidebar(false)
+    }
+    if (newInnerWidth >= 1200) {
+      this.toggleSettingsSidebar(true)
+    }
+  }
+
+
+  getWindowWidthOnInit() {
+    const onInitWindoeWidth = window.innerWidth;
+    // console.log('SETTINGS-SIDEBAR] ON INIT WINDOW WIDTH ', onInitWindoeWidth);
+    if (onInitWindoeWidth < 1200) {
+      this.toggleSettingsSidebar(false)
+    }
+    if (onInitWindoeWidth >= 1200) {
+      this.toggleSettingsSidebar(true)
+    }
+  }
+
+  // @ Not used 
   getMainContentHeight() {
     const elemMainContent = <HTMLElement>document.querySelector('.main-content')
     const elemAppdashboardSettingsSidebar = <HTMLElement>(
@@ -109,7 +141,7 @@ export class SettingsSidebarComponent implements OnInit {
     }, 0)
 
     const main_content_height = elemMainContent.clientHeight
-    this.logger.log( '[SETTINGS-SIDEBAR] elemMainContent.clientHeight ', main_content_height)
+    this.logger.log('[SETTINGS-SIDEBAR] elemMainContent.clientHeight ', main_content_height)
 
     const _main_content_height = elemMainContent.offsetHeight
     this.logger.log('[SETTINGS-SIDEBAR]  elemMainContent.offsetHeight ', _main_content_height)
@@ -235,31 +267,31 @@ export class SettingsSidebarComponent implements OnInit {
 
   getRoutingTranslation() {
     this.translate.get('Routing')
-    .subscribe((text: string) => {
-      this.routing_and_depts_lbl = text;
-    });
+      .subscribe((text: string) => {
+        this.routing_and_depts_lbl = text;
+      });
   }
 
   getDeptsAndRoutingTranslation() {
     this.translate.get('RoutingAndDepts')
-    .subscribe((text: string) => {
-      this.routing_and_depts_lbl = text;
-    });
-  } 
+      .subscribe((text: string) => {
+        this.routing_and_depts_lbl = text;
+      });
+  }
 
   getTeammatesTraslantion() {
     this.translate.get('Teammates')
-    .subscribe((text: string) => {
-      this.teammatates_and_groups_lbl = text.replace(/\b\w/g, l => l.toUpperCase());
-    });
+      .subscribe((text: string) => {
+        this.teammatates_and_groups_lbl = text.replace(/\b\w/g, l => l.toUpperCase());
+      });
   }
 
   getTeammatesAndGroupTraslantion() {
     this.translate.get('UsersAndGroups')
-    .subscribe((text: string) => {
+      .subscribe((text: string) => {
 
-      this.teammatates_and_groups_lbl = text;
-    });
+        this.teammatates_and_groups_lbl = text;
+      });
   }
 
   getChatUrl() {

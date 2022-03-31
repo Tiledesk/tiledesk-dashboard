@@ -148,7 +148,7 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
   
   setMomentLocale() {
     this.browserLang = this.translate.getBrowserLang();
-    console.log('[REQUEST-DTLS-X-PANEL] - setMomentLocale browserLang', this.browserLang)
+    // console.log('[REQUEST-DTLS-X-PANEL] - setMomentLocale browserLang', this.browserLang)
 
     let stored_preferred_lang = undefined
     if (this.auth.user_bs && this.auth.user_bs.value) {

@@ -1,10 +1,18 @@
 
 # tiledesk-dashboard
 
+### 2.2.32-rc16
+- Updates the widget preview graphic to match the changes made to the widget
+- Closes automatically the "Settings sidebar" if the window width is less than 1200 px
+- Adds the teammate details drawer available by clicking on the sidebar avatar
+- Adds the ability to add and remove custom fields for to the custom pre-chat form
+- Adds a 'welcome' dialog to the home page
+- Does not allow teammates with agent role to access the "settings sidebar"
+- Updates the home section "Latest updates"
 
 ### 2.2.32-rc15
 - Fixes the bug: in the conversations detail, if the "Add Tag" combo box is opened and the teammate types a new tag and then closes the combobox without saving the new tag, an empty tag is created
-- Adds the ability to add a new tag by pressing the enter key  in the "Create a new tag" field
+- Adds the ability to add a new tag by pressing the enter key in the "Create a new tag" field
 
 ### 2.2.32-rc14
 - Adds the ability in the detail page of the conversation to create tags from the right sidebar
@@ -111,6 +119,10 @@
 - Change the name of the "Account" tab to "Subscription" in Settings > Project Settings
 - Fixes the bug: the strings in the modal displayed after the password change are not correctly translated
 - Fixes the bug: in Settings> Project Settings> Notifications> Customize email in the left sidebar the text overlaps when it goes on two line
+
+### 2.2.31.1
+- Fixes the bug: the "widget login" does not run after registering a new teammates
+- Fixes the bug: the method "tiledesk_widget_login" does not run after registering a new teammates
 
 ### 2.2.31
 - Deploys in production

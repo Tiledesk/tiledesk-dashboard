@@ -153,13 +153,13 @@ export class TagsComponent implements OnInit, AfterViewInit {
 
 
   tagSelectedColor(hex: any) {
-    console.log('[TAGS] - TAG SELECTED COLOR ', hex);
+    // console.log('[TAGS] - TAG SELECTED COLOR ', hex);
     this.tag_selected_color = hex;
   }
 
 
   createTag() {
-    console.log('[TAGS] - CREATE TAG - TAG-NAME: ', this.tagname, ' TAG-COLOR: ', this.tag_selected_color)
+    // console.log('[TAGS] - CREATE TAG - TAG-NAME: ', this.tagname, ' TAG-COLOR: ', this.tag_selected_color)
     const createTagBtn = <HTMLElement>document.querySelector('.create-tag-btn');
 
     createTagBtn.blur();

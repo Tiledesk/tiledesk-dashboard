@@ -111,6 +111,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   DISPLAY_OPH_AS_DISABLED: boolean;
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
   current_selected_prjct: any;
+  popup_visibility: string = 'none'
   constructor(
     public auth: AuthService,
     private route: ActivatedRoute,
@@ -160,9 +161,29 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getOSCODE();
     this.getChatUrl();
     this.getHasOpenBlogKey()
+    this.diplayPopup();
     // this.startChabgelogAnimation()
     // this.pauseResumeLastUpdateSlider() // https://stackoverflow.com/questions/5804444/how-to-pause-and-resume-css3-animation-using-javascript
   }
+
+  diplayPopup() {
+    const hasClosedPopup = localStorage.getItem('dshbrd----hasclosedpopup')
+    // console.log('[HOME] hasClosedPopup', hasClosedPopup)
+    if (hasClosedPopup === null) {
+      this.popup_visibility = 'block'
+      // console.log('[HOME] popup_visibility', this.popup_visibility)
+    }
+    if (hasClosedPopup === 'true') {
+      this.popup_visibility = 'none'
+    }
+  }
+  closeEverythingStartsHerePopup() {
+    // console.log('[HOME] closeEverythingStartsHerePopup')
+    localStorage.setItem('dshbrd----hasclosedpopup', 'true')
+    this.popup_visibility = 'none'
+    // console.log('[HOME] closeEverythingStartsHerePopup popup_visibility ',  this.popup_visibility)
+  }
+
 
 
   ngAfterViewInit() { }
@@ -319,7 +340,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   findCurrentProjectAmongAll(projectId: string) {
-   
+
     this.projectService.getProjects().subscribe((projects: any) => {
       // const current_selected_prjct = projects.filter(prj => prj.id_project.id === projectId);
       // console.log('[SIDEBAR] - GET PROJECTS - current_selected_prjct ', current_selected_prjct);
@@ -1222,7 +1243,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   goToAdminDocs() {
-  
+
     const url = URL_getting_started_for_admins
     window.open(url, '_blank');
   }

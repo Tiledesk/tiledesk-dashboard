@@ -1142,3 +1142,11 @@ span.navbar-brand-title {
 .tag-input-wrap .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-disabled {
   color: rgba(0,0,0,0.87) !important;
 }
+
+#select-prechat-form-fields-wpr .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+  padding: 7px 10px !important;
+}
+
+.modal {
+  z-index: 1055!important; // default bottstrap css value  1050
+}
