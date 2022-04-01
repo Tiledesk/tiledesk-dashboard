@@ -25,14 +25,12 @@
               <div class="card-header card-header-custom-bkgrnd">
                 <div class="tag-input-wrapper">
 
-                   
-              <!-- ------------------------------------------------------- -->
-              <!-- Dropdown select tag color -->
-              <!-- ------------------------------------------------------- -->
+                  <!-- ------------------------------------------------------- -->
+                  <!-- Dropdown select tag color -->
+                  <!-- ------------------------------------------------------- -->
                   <div class="dropdown" style="float: left;">
                     <a href="#" class="btn dropdown-toggle" data-toggle="dropdown"
                       style="background: #fff; border: 1px solid #d9d9d9;margin-top: 0px;margin-bottom: 0px;margin-right: -1px!important;padding: 8px 15px; border-top-right-radius: 0px;border-bottom-right-radius: 0px;">
-
                       <b class="caret" style="color:#000000"></b>
                     </a>
                     <ul class="dropdown-menu">
@@ -58,7 +56,6 @@
                     </ul>
                   </div>
 
-
                   <form>
                     <input id="tag_name" name="tag_name" [(ngModel)]="tagname" (ngModelChange)="onChangeTagname($event)"
                       class="input" type="text" placeholder="{{ 'Tags.AddTags' | translate }} ...">
@@ -66,9 +63,9 @@
                     </div>
 
                      
-                <!-- ------------------------------------------------------- -->
-                <!-- Add tag btn -->
-                <!-- ------------------------------------------------------- -->
+                    <!-- ------------------------------------------------------- -->
+                    <!-- Add tag btn -->
+                    <!-- ------------------------------------------------------- -->
                     <button class="btn btn-primary create-tag-btn"
                       (click)="createTag()" type="submit">
                       <span class="icon add-tag-icon" >
@@ -134,13 +131,9 @@
                     <tr *ngFor="let tag of tagsList; let i = index">
                       <!--  style="width: 1%; white-space: nowrap;" -->
                       <td>
-
-                        <!-- 
-                    // -------------------------------------------------------
-                    // Tag icon
-                    // ------------------------------------------------------- -->
-
-
+                        <!-- ------------------------------------------------------- -->
+                        <!-- Tag icon -->
+                        <!-- ------------------------------------------------------- -->
                         <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag"
                           class="svg-inline--fa-in-table-row fa-tag fa-w-16" role="img"
                           xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -152,10 +145,10 @@
                           </path>
                         </svg>
 
-                        <!-- 
-                    // -------------------------------------------------------
-                    // Dropdown (to edit the tag color) and Tag name  
-                    // ------------------------------------------------------- -->
+                         
+                        <!-- ------------------------------------------------------- -->
+                        <!-- Dropdown (to edit the tag color) and Tag name  -->
+                        <!-- ------------------------------------------------------- -->
                         <div class="tag-input-wrapper" style="display: inline-block;">
                           <div class="dropdown {{'drop_down_' + i }}">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown"
@@ -189,35 +182,27 @@
                           </div>
                         </div>
 
-
-                        <!-- 
-                    // -------------------------------------------------------
-                    // Tag name
-                    // ------------------------------------------------------- -->
-
+                        <!-- ------------------------------------------------------- -->
+                        <!-- Tag name -->
+                        <!-- ------------------------------------------------------- -->
                         <span class="td-tag-table">
                           {{ tag?.tag}}
                         </span>
                       </td>
 
-
-                      <!-- 
-                    // -------------------------------------------------------
-                    // Created at
-                    // ------------------------------------------------------- -->
+                      <!-- ------------------------------------------------------- -->
+                      <!-- Created at -->
+                      <!-- ------------------------------------------------------- -->
                       <td>
                         <span class="td-tag-table">
                           {{ tag?.createdAt | amTimeAgo}}
                         </span>
                       </td>
-
-
-                      <!-- 
-                  // -------------------------------------------------------
-                  // Created By
-                  // ------------------------------------------------------- -->
+                      
+                      <!-- ------------------------------------------------------- -->
+                      <!-- Created By -->
+                      <!-- ------------------------------------------------------- -->
                       <td>
-
                         <!-- --------------------------------------------------- -->
                         <!-- USECASE uploadEngine Firebase -->
                         <!-- --------------------------------------------------- -->
@@ -241,14 +226,13 @@
                             n.d
                           </span>
                         </span>
-
                       </td>
 
                       <td class="td-actions text-right" style="padding-top:20px">
                         <!-- <button type="button" rel="tooltip" title="" class="btn btn-primary btn-simple btn-xs"
-                      (click)='presentModaleditTag(tag?._id)'>
-                      <i class="material-icons">edit</i>
-                    </button> -->
+                          (click)='presentModaleditTag(tag?._id)'>
+                          <i class="material-icons">edit</i>
+                       </button> -->
 
                         <button type="button" rel="tooltip" title="" class="btn btn-danger btn-simple btn-xs"
                           (click)='presentModalDeleteTag(tag?._id, tag?.tag)'>

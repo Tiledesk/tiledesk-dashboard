@@ -119,7 +119,6 @@ export class TagsComponent implements OnInit, AfterViewInit {
           if (user !== null) {
             tag.createdBy_user = user;
           } else {
-
             // -----------------------------------------------------
             // From remote if not exist in the local storage
             // -----------------------------------------------------
