@@ -50,7 +50,16 @@
 }
 
 .isHidden {
-display: none;
+  display: none;
+}
+
+.user-img-in-canned {
+  vertical-align: middle;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  border: 1px solid #eee;
+  object-fit: cover;
 }
 
 // .card_title__underlined {
