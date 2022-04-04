@@ -2,7 +2,7 @@
 # tiledesk-dashboard
 
 ### 2.2.32-rc18
-- Displays the avatar of the teammate who created the canned response on the canned responses page-
+- Displays the avatar of the teammate who created the canned response on the canned responses page
 - Adds the ability to add and remove custom fields for the custom pre-chat form only for the projects for which it has not already been created
 
 ### 2.2.32-rc16
