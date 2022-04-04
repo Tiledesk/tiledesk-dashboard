@@ -1,6 +1,10 @@
 
 # tiledesk-dashboard
 
+### 2.2.32-rc18
+- Displays the avatar of the teammate who created the canned response on the canned responses page-
+- Adds the ability to add and remove custom fields for the custom pre-chat form only for the projects for which it has not already been created
+
 ### 2.2.32-rc16
 - Updates the widget preview graphic to match the changes made to the widget
 - Closes automatically the "Settings sidebar" if the window width is less than 1200 px
@@ -119,6 +123,10 @@
 - Change the name of the "Account" tab to "Subscription" in Settings > Project Settings
 - Fixes the bug: the strings in the modal displayed after the password change are not correctly translated
 - Fixes the bug: in Settings> Project Settings> Notifications> Customize email in the left sidebar the text overlaps when it goes on two line
+
+### 2.2.31.1
+- Fixes the bug: the "widget login" does not run after registering a new teammates
+- Fixes the bug: the method "tiledesk_widget_login" does not run after registering a new teammates
 
 ### 2.2.31
 - Deploys in production
