@@ -1,8 +1,8 @@
 <div class="widget-container">
   <!-- [ngStyle]="{'background-color': primaryColor}" -->
-  <div class="card td-widget-preview-card"
-    style="box-shadow: rgba(0, 0, 0, 0.18) 0 0 38px!important; border: unset;">
-    <div class="card-content td-widget-preview-card-content"  [ngStyle]="{'color': secondaryColor, 'background-image': linearGradient }">
+  <div class="card td-widget-preview-card" style="box-shadow: rgba(0, 0, 0, 0.18) 0 0 38px!important; border: unset;">
+    <div class="card-content td-widget-preview-card-content"
+      [ngStyle]="{'color': secondaryColor, 'background-image': linearGradient }">
 
 
 
@@ -42,7 +42,8 @@
       </span>
     </div>
 
-    <div id="pre-chat-form-fields-wpr" class="card-footer td-widget-preview-card-footer" style="height: 523px; overflow: auto;">
+    <div id="pre-chat-form-fields-wpr" class="card-footer td-widget-preview-card-footer"
+      style="height: 523px; overflow: auto;">
 
       <div class="prechat-form-content-wpr" style="padding-bottom: 30px;">
 
@@ -67,22 +68,30 @@
           style="width: 100%; margin: auto; padding-left: 15px;padding-right: 15px;">
           <div class="col-sm-12">
             <div class="form-group label-floating" style="width: 100%;">
-              <label class="control-label">{{LABEL_PRECHAT_USER_FULLNAME}}</label>
+              <!-- <label *ngIf="displayNewCustomPrechatFormBuilder === true"
+                class="control-label">{{LABEL_FIELD_NAME}}</label> -->
+              <!-- *ngIf="displayNewCustomPrechatFormBuilder === false" -->
+              <label class="control-label">{{LABEL_FIELD_NAME}}</label>
               <input type="email" class="form-control">
             </div>
           </div>
           <div class="col-sm-12">
             <div class="form-group label-floating" style="width: 100%;margin-top: 20px;">
-              <label class="control-label">{{LABEL_PRECHAT_USER_EMAIL}}</label>
+              <!-- <label *ngIf="displayNewCustomPrechatFormBuilder === true"
+                class="control-label">{{LABEL_FIELD_NAME}}</label> -->
+              <!-- *ngIf="displayNewCustomPrechatFormBuilder === false"  -->
+              <label class="control-label">{{LABEL_FIELD_EMAIL}}</label>
               <input type="email" class="form-control">
             </div>
           </div>
         </div>
-        <!-- prechatFormTexareaJson {{ customPrechatFormArray | json }} -->
-        <!-- [formGroup]="preChatFormGroupCustom" -->
-        <div *ngIf="preChatFormCustomFieldsEnabled" class="row"
+
+        <!-- --------------------------------------------------------------------------------- -->
+        <!-- For the new projects (when displayNewCustomPrechatFormBuilder is true) -->
+        <!-- --------------------------------------------------------------------------------- -->
+        <div *ngIf="preChatFormCustomFieldsEnabled && displayNewCustomPrechatFormBuilder === true" class="row"
           style="width: 100%; margin: auto; padding-left: 15px;padding-right: 15px;">
-          <!-- <div id="chat21-form-container"  > -->
+
           <span *ngFor="let element of customPrechatFormArray">
             <!-- element >  {{ element | json}} -->
             <div *ngIf="preChatFormCustomFieldsEnabled" class="row" style="width: 100%; margin: auto;">
@@ -93,6 +102,9 @@
                     <span *ngIf="element?.name === 'userFullname'"> {{ LABEL_PRECHAT_USER_FULLNAME }} </span>
                     <span *ngIf="element?.name === 'userEmail'"> {{ LABEL_PRECHAT_USER_EMAIL }} </span>
                     <span *ngIf="element?.name === 'userPhone'"> {{ LABEL_PRECHAT_USER_PHONE }} </span>
+                    <!-- -------------------------------------------------------------------------------------- -->
+                    <!-- decomment the following snippet when there is the possibility ro create custom pre-chat form fields -->
+                    <!-- -------------------------------------------------------------------------------------- -->
                     <!-- <span *ngIf="element?.name !== 'userPhone' && element?.name !== 'userEmail' && element?.name !== 'userFullname'"> 
                      {{element?.label }} 
                     </span> -->
@@ -100,49 +112,119 @@
                   <input type="element?.type" class="form-control">
                 </div>
               </div>
-            
 
-            <div class="col-sm-12" *ngIf="element?.type === 'static'">
-              <div class="form-group label-floating" style="width: 100%; margin-top: 15px;">
-                <label *ngIf="element?.name === 'termsPrivacyLabel'" style="color: #616161;" [innerHTML]="LABEL_PRECHAT_STATIC_TERMS_PRIVACY">
+              <div class="col-sm-12" *ngIf="element?.type === 'static'">
+                <div class="form-group label-floating" style="width: 100%; margin-top: 15px;">
+                  <label *ngIf="element?.name === 'termsPrivacyLabel'" style="color: #616161;"
+                    [innerHTML]="LABEL_PRECHAT_STATIC_TERMS_PRIVACY">
+                  </label>
+                </div>
+              </div>
+
+              <div class="col-sm-12" *ngIf="element?.type === 'checkbox'">
+
+                <input class="form-check-input" type="checkbox" style="height: 16px;
+                width: 16px;
+                margin-right: 8px;">
+
+                <label class="c21-form-message-field" style="color: #616161;vertical-align: middle;margin-bottom: 9px;">
+                  {{LABEL_PRECHAT_ACCEPT_TERMS_PRIVACY}}
                 </label>
               </div>
-            </div>
-            
-            <div class="col-sm-12" *ngIf="element?.type === 'checkbox'">
-              <!-- <div class="checkbox" style="margin-top: 0px;margin-bottom: 0px;">
-                <label>
-                  <input type="checkbox" name="element?.name">
-                   <span *ngIf="element?.name === 'acceptedTermsPrivacy'">
-                     {{LABEL_PRECHAT_ACCEPT_TERMS_PRIVACY}} 
-                    </span> 
-                </label>
-              </div> -->
-              <input  class="form-check-input" 
-              type="checkbox" style="height: 16px;
-              width: 16px;
-              margin-right: 8px;">
-              
-            <label class="c21-form-message-field" style="color: #616161;vertical-align: middle;margin-bottom: 9px;">
-              {{LABEL_PRECHAT_ACCEPT_TERMS_PRIVACY}}
-            </label>
-            </div>
 
-            <div class="col-sm-12" *ngIf="element?.type === 'textarea'">
-              <div class="form-group label-floating" style="width: 100%; margin-top: 15px;">
-                <label class="control-label">
-                  <span *ngIf="element?.name === 'firstMessage'"> 
-                    {{LABEL_PRECHAT_FIRST_MESSAGE}}
-                  </span>
+              <div class="col-sm-12" *ngIf="element?.type === 'textarea'">
+                <div class="form-group label-floating" style="width: 100%; margin-top: 15px;">
+                  <label class="control-label">
+                    <span *ngIf="element?.name === 'firstMessage'">
+                      {{LABEL_PRECHAT_FIRST_MESSAGE}}
+                    </span>
 
-                </label>
-                <textarea class="form-control" rows="5"></textarea>
+                  </label>
+                  <textarea class="form-control" rows="{{element?.rows}}"></textarea>
+                </div>
               </div>
+            </div>
+          </span>
+        </div>
+
+        <!-- --------------------------------------------------------------------------------- -->
+        <!-- For the old projects (when displayNewCustomPrechatFormBuilder is false) -->
+        <!-- --------------------------------------------------------------------------------- -->
+        <!-- *ngIf="preChatFormCustomFieldsEnabled && displayNewCustomPrechatFormBuilder === false" -->
+        <div *ngIf="preChatFormCustomFieldsEnabled && displayNewCustomPrechatFormBuilder === false" class="row"
+          style="width: 100%; margin: auto; padding-left: 15px;padding-right: 15px;">
+          <div class="prechat-form-preview-not-available-wpr">
+            <div class="prechat-form-preview-not-available-icon">
+              <span class="material-icons">
+                error_outline
+              </span>
+            </div>
+
+            <div class="prechat-form-preview-not-available-text">
+              {{'PreviewNotAvailable' | translate}}
             </div>
           </div>
 
-          </span>
-          <!-- </div> -->
+          <!-- <span *ngFor="let element of customPrechatFormArray_built_without_visualtool">
+          
+            <div *ngIf="preChatFormCustomFieldsEnabled" class="row" style="width: 100%; margin: auto;">
+
+              <div class="col-sm-12" *ngIf="element?.type === 'text' || element?.type === 'string' || !element?.type">
+                <div class="form-group label-floating" style="width: 100%; margin-top: 15px;">
+                  
+                  <label class="control-label" >
+                    
+                    <span *ngIf="element?.label?.en">
+                      {{ element?.label?.en }} 
+                    </span>
+                    <span *ngIf="!element?.label?.en">
+                      {{ element?.label?.default }} 
+                    </span>
+                
+                  </label>
+                  <input type="element?.type" class="form-control">
+                </div>
+              </div>
+
+              <div class="col-sm-12" *ngIf="element?.type === 'static'">
+                <div class="form-group label-floating" style="width: 100%; margin-top: 15px;">
+                  <label *ngIf="element?.label?.en" style="color: #616161;" [innerHTML]="element?.label.en"> </label>
+                  <label *ngIf="!element?.label?.en" style="color: #616161;" [innerHTML]="element?.label?.default"> </label>
+                </div>
+              </div>
+
+              <div class="col-sm-12" *ngIf="element?.type === 'checkbox'">
+
+                <input class="form-check-input" type="checkbox" style="height: 16px;
+                width: 16px;
+                margin-right: 8px;">
+
+                <label class="c21-form-message-field" style="color: #616161;vertical-align: middle;margin-bottom: 9px;">
+                  <span *ngIf="element?.label?.en">
+                    {{ element?.label?.en }} 
+                  </span>
+                  <span *ngIf="!element?.label?.en">
+                    {{ element?.label?.default }} 
+                  </span>
+                </label>
+              </div>
+
+              <div class="col-sm-12" *ngIf="element?.type === 'textarea'">
+                <div class="form-group label-floating" style="width: 100%; margin-top: 15px;">
+                  <label class="control-label">
+                    <span *ngIf="element?.label?.en">
+                      {{ element?.label?.en }} 
+                    </span>
+                    <span *ngIf="!element?.label?.en">
+                      {{ element?.label?.default }} 
+                    </span>
+
+                  </label>
+                  <textarea class="form-control" rows="{{element?.rows}}"></textarea>
+                </div>
+              </div>
+            </div>
+          </span> -->
         </div>
 
         <div class="new-conv-btn" style="width: 100%;padding-top: 35px;margin: auto; padding-left: 30px;">

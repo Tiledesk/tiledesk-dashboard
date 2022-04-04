@@ -12,7 +12,7 @@ export class WidgetPrechatFormComponent implements OnInit, OnChanges {
   @Input() secondaryColor: string;
   @Input() newConversation: string;
   @Input() preChatFormCustomFieldsEnabled: boolean;
-  @Input() prechatFormArray: any;
+  @Input() prechatFormArray: any; //used for the new projects
   @Input() LABEL_PRECHAT_USER_FULLNAME: string;
   @Input() LABEL_PRECHAT_USER_EMAIL: string;
   @Input() LABEL_PRECHAT_USER_PHONE: string;
@@ -20,14 +20,18 @@ export class WidgetPrechatFormComponent implements OnInit, OnChanges {
   @Input() LABEL_PRECHAT_STATIC_TERMS_PRIVACY: string;
   @Input() LABEL_PRECHAT_ACCEPT_TERMS_PRIVACY: string;
   @Input() LABEL_COMPLETE_FORM: string;
-  
+  @Input() LABEL_FIELD_NAME: string; // for default prechat-form
+  @Input() LABEL_FIELD_EMAIL: string; // for default prechat-form
+  @Input() displayNewCustomPrechatFormBuilder: boolean;
+  @Input() prechatFormTexareaJson //used for the old projects
   customPrechatFormArray: any;
+  customPrechatFormArray_built_without_visualtool: any;
   primaryColorRGBA_1: any;
   primaryColorRGBA_050: any;
   linearGradient: any;
   // @Output() onErrorRenderForm = new EventEmitter()
   preChatFormGroupCustom: FormGroup;
-
+  objectKeys = Object.keys;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -36,9 +40,10 @@ export class WidgetPrechatFormComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit() {
+
     
-    this.customPrechatFormArray = this.prechatFormArray
-    // console.log('WIDGET PRE CHAT FORM customPrechatFormArray', this.customPrechatFormArray)
+    // console.log('WIDGET PRE CHAT FORM displayNewCustomPrechatFormBuilder', this.displayNewCustomPrechatFormBuilder)
+
     // console.log('WIDGET PRE CHAT FORM LABEL_PRECHAT_USER_FULLNAME', this.LABEL_PRECHAT_USER_FULLNAME)
     // console.log('WIDGET PRE CHAT FORM LABEL_PRECHAT_USER_EMAIL', this.LABEL_PRECHAT_USER_EMAIL)
     // console.log('WIDGET PRE CHAT FORM LABEL_PRECHAT_USER_PHONE', this.LABEL_PRECHAT_USER_PHONE)
@@ -54,7 +59,13 @@ export class WidgetPrechatFormComponent implements OnInit, OnChanges {
 
 
   ngOnChanges() {
-   
+    this.customPrechatFormArray = this.prechatFormArray
+    // console.log('WIDGET PRE CHAT FORM customPrechatFormArray', this.customPrechatFormArray);
+    // console.log('WIDGET PRE CHAT FORM prechatFormTexareaJson', this.prechatFormTexareaJson); 
+    if (this.prechatFormTexareaJson) {
+      this.customPrechatFormArray_built_without_visualtool = JSON.parse(this.prechatFormTexareaJson)
+    }
+    // console.log('WIDGET PRE CHAT FORM customPrechatFormArray_built_without_visualtool', this.customPrechatFormArray_built_without_visualtool)
     this.customPrechatFormArray = this.prechatFormArray
     // console.log('WIDGET PRE CHAT FORM customPrechatFormArray', this.customPrechatFormArray)
     this.elementRef.nativeElement.style.setProperty('--themeColor', this.primaryColor);
