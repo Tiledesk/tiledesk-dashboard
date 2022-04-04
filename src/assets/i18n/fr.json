@@ -2047,6 +2047,8 @@
     "EnableDisablePreChatForm":"Activer / Désactiver le formulaire de pré-chat",
     "WelcomeToTheNewMenu":"Bienvenue dans le nouveau menu",
 	"NowYouHaveMoreSpaceToUseYourChatBotsApps":"Vous avez maintenant plus d'espace pour utiliser votre chat, vos bots et vos applications. Prendre plaisir!",
+    "PreviewNotAvailable":"Aperçu non disponible",
+    "TextareaRows":"Lignes Textarea",
     "CHAT_IONIC": {
         "LABEL_TU": "vous: ",
         "LABEL_MSG_PUSH_START_CHAT": "Pas encore de conversation",

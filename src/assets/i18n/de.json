@@ -2046,5 +2046,7 @@
 	"Mandatory":"Obligatorisch",
 	"EnableDisablePreChatForm":"Aktivieren / Deaktivieren Sie das Pre-Chat-Formular",
 	"WelcomeToTheNewMenu":"Willkommen im neuen Menü",
-	"NowYouHaveMoreSpaceToUseYourChatBotsApps":"Jetzt haben Sie mehr Platz, um Ihren Chat, Bots und Apps zu nutzen. Genießen!"
+	"NowYouHaveMoreSpaceToUseYourChatBotsApps":"Jetzt haben Sie mehr Platz, um Ihren Chat, Bots und Apps zu nutzen. Genießen!",
+	"PreviewNotAvailable":"Vorschau nicht verfügbar",
+	"TextareaRows":"Textarea-Zeilen"
 }

@@ -2047,6 +2047,8 @@
     "EnableDisablePreChatForm":"Омогућите / онемогућите модул пре-ћаскања",
     "WelcomeToTheNewMenu":"Добро дошли у нови мени",
 	"NowYouHaveMoreSpaceToUseYourChatBotsApps":"Сада имате више простора да користите своје ћаскање, ботове и апликације. Уживати!",
+    "PreviewNotAvailable":"Преглед није доступан",
+    "TextareaRows":"Тектареа ровс",
     "CHAT_IONIC": {
         "LABEL_TU": "ти: ",
         "LABEL_MSG_PUSH_START_CHAT": "Још нема разговора",

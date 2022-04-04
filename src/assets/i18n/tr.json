@@ -2047,6 +2047,8 @@
     "EnableDisablePreChatForm":"Sohbet öncesi modülünü Etkinleştir / Devre Dışı Bırak",
     "WelcomeToTheNewMenu":"Yeni menüye hoş geldiniz",
 	"NowYouHaveMoreSpaceToUseYourChatBotsApps":"Artık Sohbetinizi, Botlarınızı ve Uygulamalarınızı kullanmak için daha fazla alanınız var. Zevk almak!",
+    "PreviewNotAvailable":"Önizleme kullanılamıyor",
+    "TextareaRows":"Textarea satırları",
     "CHAT_IONIC": {
         "LABEL_TU": "sen: ",
         "LABEL_MSG_PUSH_START_CHAT": "Henüz görüşme yok",

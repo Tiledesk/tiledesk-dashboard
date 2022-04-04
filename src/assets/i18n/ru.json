@@ -2047,6 +2047,8 @@
     "EnableDisablePreChatForm":"Включить / отключить форму предварительного чата",
     "WelcomeToTheNewMenu":"Добро пожаловать в новое меню",
 	"NowYouHaveMoreSpaceToUseYourChatBotsApps":"Теперь у вас есть больше места для использования чата, ботов и приложений. Наслаждаться!",
+    "PreviewNotAvailable":"Предпросмотр недоступен",
+    "TextareaRows":"Строки текстовой области",
     "CHAT_IONIC": {
         "LABEL_TU": "ты: ",
         "LABEL_MSG_PUSH_START_CHAT": "Разговора пока нет",
