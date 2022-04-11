@@ -317,9 +317,10 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
                   {{'GetProPlan' | translate}}
 
               </button>
+
+             
               <!-- <button type="button" *ngIf="perMonth === true" class="btn outline-btn btn-lg pro-plan-outline-btn"             
                 id="checkout-button-plan_EjFHNnzJXE3jul"  role="link"  (click)="stripeProPlanPerMonthCheckout()">
-                
                   Get Pro Plan (PerMonth)
               </button>
   
@@ -328,20 +329,20 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
             
                   Get Pro Plan (PerYear)
               </button> -->
+             
             </div>
 
 
           </div>  <!-- ./ card-content x pro-plan-->
 
-          <!-- 
-          ########################################################################
-          ################### card-content for enterprise plan ################### 
-          ########################################################################-->
+           
+         <!-- ------------------------------------------------------------------------- -->
+         <!--   card-content for enterprise plan  -->
+         <!-- ------------------------------------------------------------------------- -->
           <div class="card-content" *ngIf="selectedPlanName === 'enterprise'">
               <div class="row">
                 <div class="col-md-12" style="text-align:center"> 
                 <h2>
-                  <!-- Contact us -->
                   {{'ContactUs' | translate}}
                 </h2>
       
@@ -494,7 +495,7 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
           <div class="row">
               <div class="col-md-12" style="text-align:center">
                   <!-- margin-left: -109px; -->
-                  <div class="total" style="">
+                  <div class="total">
                   <h2 style="margin-top: 10px"> <span style="font-size: 32px; padding-right: 16px;color: #8894ab;"> 
                     {{'Total' | translate}} 
                   </span> 
