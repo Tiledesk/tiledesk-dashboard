@@ -2048,5 +2048,10 @@
 	"WelcomeToTheNewMenu":"Willkommen im neuen Menü",
 	"NowYouHaveMoreSpaceToUseYourChatBotsApps":"Jetzt haben Sie mehr Platz, um Ihren Chat, Bots und Apps zu nutzen. Genießen!",
 	"PreviewNotAvailable":"Vorschau nicht verfügbar",
-	"TextareaRows":"Textarea-Zeilen"
+	"TextareaRows":"Textarea-Zeilen",
+	"ChangeCard": "Kreditkarte ändern",
+	"ExpirationDate":"Verfallsdatum",
+	"CardNumber":"Kartennummer",
+	"CardChangedSuccessfully":"Kreditkarte erfolgreich geändert",
+	"PaymentInformation":"Zahlungsinformationen"
 }

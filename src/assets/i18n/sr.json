@@ -2049,6 +2049,11 @@
 	"NowYouHaveMoreSpaceToUseYourChatBotsApps":"Сада имате више простора да користите своје ћаскање, ботове и апликације. Уживати!",
     "PreviewNotAvailable":"Преглед није доступан",
     "TextareaRows":"Тектареа ровс",
+    "ChangeCard":"Промена кредитне картице",
+    "ExpirationDate":"Expiration datev",
+    "CardNumber":"Број картице",
+    "CardChangedSuccessfully":"Картица је успешно промењена",
+    "PaymentInformation":"Информације о плаћању",
     "CHAT_IONIC": {
         "LABEL_TU": "ти: ",
         "LABEL_MSG_PUSH_START_CHAT": "Још нема разговора",

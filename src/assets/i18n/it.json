@@ -2047,5 +2047,10 @@
     "WelcomeToTheNewMenu":"Benvenuti nel nuovo menù",
 	"NowYouHaveMoreSpaceToUseYourChatBotsApps":"Ora hai più spazio per usare la tua chat, i bot e le app. Divertiti!",
     "PreviewNotAvailable":"Anteprima non disponibile",
-    "TextareaRows":"Righe dell'area di testo"
+    "TextareaRows":"Righe dell'area di testo",
+    "ChangeCard":"Cambia carta",
+    "ExpirationDate":"Data di scadenza",
+    "CardNumber":"Numero di carta",
+    "CardChangedSuccessfully":"Carta cambiata con successo",
+    "PaymentInformation":"Informazioni sul pagamento"
 }

@@ -2049,6 +2049,11 @@
 	"NowYouHaveMoreSpaceToUseYourChatBotsApps":"Agora você tem mais espaço para usar seu Chat, Bots e Apps. Aproveitar!",
     "PreviewNotAvailable":"Pré-visualização não disponível",
     "TextareaRows":"Linhas de área de texto",
+    "ChangeCard":"Alterar cartão",
+    "ExpirationDate":"Data de validade",
+    "CardNumber":"Número do cartão",
+    "CardChangedSuccessfully":"Cartão alterado com sucesso",
+    "PaymentInformation":"Informações de pagamento",
     "CHAT_IONIC": {
         "LABEL_TU": "vocês: ",
         "LABEL_MSG_PUSH_START_CHAT": "Nenhuma conversa ainda",

@@ -2049,6 +2049,11 @@
 	"NowYouHaveMoreSpaceToUseYourChatBotsApps":"Artık Sohbetinizi, Botlarınızı ve Uygulamalarınızı kullanmak için daha fazla alanınız var. Zevk almak!",
     "PreviewNotAvailable":"Önizleme kullanılamıyor",
     "TextareaRows":"Textarea satırları",
+    "ChangeCard":"Kredi kartını değiştirin",
+    "ExpirationDate":"Son kullanma tarihi",
+    "CardNumber":"Kart numarası",
+    "CardChangedSuccessfully":"Kart başarıyla değiştirildi",
+    "PaymentInformation":"Ödeme bilgileri",
     "CHAT_IONIC": {
         "LABEL_TU": "sen: ",
         "LABEL_MSG_PUSH_START_CHAT": "Henüz görüşme yok",
