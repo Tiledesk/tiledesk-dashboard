@@ -177,6 +177,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   SPINNER_IN_ADD_CARD_MODAL: boolean;
   CVC_LENGHT:number;
   DISPLAY_ADD_CARD_COMPLETED: boolean = false;
+  no_default_payment_method_id_array: Array<string>
 
   formErrors: FormErrors = {
     'creditCard': '',
@@ -293,51 +294,26 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       return;
     }
     const { expirationDate } = this.form.controls
-    console.log('onValueChanged expirationDate', expirationDate)
-    console.log('onValueChanged expirationDate status', expirationDate.status)
-    if (expirationDate.value) {
-    console.log('onValueChanged expirationDate status expirationDate.value.length', expirationDate.value.length)
-  }
+    this.logger.log('onValueChanged expirationDate', expirationDate)
+    this.logger.log('onValueChanged expirationDate status', expirationDate.status)
+
     if (expirationDate.value && expirationDate.value.length === 7) {
-     if (expirationDate.status === 'INVALID') {
-     
-        this.CARD_HAS_ERROR = true 
-        this.SPINNER_IN_ADD_CARD_MODAL = false
-        this.credit_card_error_msg = "The expiration date is invalid"
-        console.log('onValueChanged expirationDate INVALID credit_card_error_msg', this.credit_card_error_msg)
-      }
+      this.logger.log('onValueChanged expirationDate status expirationDate.value.length', expirationDate.value.length)
+      if (expirationDate.status === 'INVALID') {
+      
+          this.CARD_HAS_ERROR = true 
+          this.SPINNER_IN_ADD_CARD_MODAL = false
+          this.credit_card_error_msg = "The expiration date is invalid"
+          this.logger.log('onValueChanged expirationDate INVALID credit_card_error_msg', this.credit_card_error_msg)
+        }
       if (expirationDate.status === 'VALID') {
-     
+      
         this.CARD_HAS_ERROR = null 
         this.SPINNER_IN_ADD_CARD_MODAL = null
         this.credit_card_error_msg = null
-        console.log('onValueChanged expirationDate INVALID credit_card_error_msg', this.credit_card_error_msg)
+        this.logger.log('onValueChanged expirationDate INVALID credit_card_error_msg', this.credit_card_error_msg)
       }
     }
-    // console.log('onValueChanged',data)
-   
-    // const form = this.form;
-    // for (const field in this.formErrors) {
-    //   // console.log('field in this.formErrors', field)
-    //   // tslint:disable-next-line:max-line-length
-    //   if (Object.prototype.hasOwnProperty.call(this.formErrors, field) && (field === 'creditCard' || field === 'expirationDate' || field === 'cvc')) {
-    //     // clear previous error message (if any)
-    //     this.formErrors[field] = '';
-    //     const control = form.get(field);
-    //     if (control && control.dirty && !control.valid) {
-    //       const messages = this.validationMessages[field];
-    //       if (control.errors) {
-    //         console.log('control.errors', control.errors)
-    //         for (const key in control.errors) {
-    //           if (Object.prototype.hasOwnProperty.call(control.errors, key)) {
-    //             this.formErrors[field] += `${(messages as { [key: string]: string })[key]} `;
-    //             console.log('this.formErrors[field]', this.formErrors[field])
-    //           }
-    //         }
-    //       }
-    //     }
-    //   }
-    // }
   }
 
 
@@ -568,7 +544,6 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
 
   getCurrentUrlAndSwitchView() {
-
     const currentUrl = this.router.url;
     this.logger.log('[PRJCT-EDIT-ADD] current_url ', currentUrl);
 
@@ -1016,7 +991,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   getCustomerAndPaymentMethods() {
     this.projectService.getStripeCustomer().subscribe((customer: any) => {
-      console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer ', customer);
+      // console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer ', customer);
       if (customer) {
         this.customer_id = customer.id
         console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer id', this.customer_id);
@@ -1028,12 +1003,14 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           // console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer >  paymentMethods ', customer.paymentMethods.data);
           customer.paymentMethods.data.forEach(paymentmethod => {
           // console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer >  paymentMethod ', paymentmethod);
-         if (this.customer_default_payment_method_id === paymentmethod.id) {
-          console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer >  paymentMethod ', paymentmethod);
-          if (paymentmethod.card) 
-              this.default_card_brand_name = paymentmethod.card.brand;
-              this.card_last_four_digits = paymentmethod.card.last4;
+          if (this.customer_default_payment_method_id === paymentmethod.id) {
+            console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer > default paymentMethod ', paymentmethod);
+            if (paymentmethod.card) {
+                this.default_card_brand_name = paymentmethod.card.brand;
+                this.card_last_four_digits = paymentmethod.card.last4;
+            }
           }
+         
         });
       }
 
@@ -1053,16 +1030,20 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   openModalAddPaymentMethod() {
     this.displayAddPaymentMethodModal = 'block'
-   const creditCardInput = this.ccNumberField.nativeElement;
-   console.log('openModalAddPaymentMethod creditCardInput ', creditCardInput) 
+  
    this.DISPLAY_ADD_CARD_COMPLETED = false;
+   console.log('openModalAddPaymentMethod DISPLAY_ADD_CARD_COMPLETED ', this.DISPLAY_ADD_CARD_COMPLETED) 
    this.CARD_HAS_ERROR = null;
    this.SPINNER_IN_ADD_CARD_MODAL= null;
     this.form.reset()
 
+    if (this.ccNumberField) {
+    const creditCardInput = this.ccNumberField.nativeElement;
+    // console.log('openModalAddPaymentMethod creditCardInput ', creditCardInput) 
      setTimeout(() => {
       creditCardInput.focus()
-     }, 100);
+     }, 200);
+    }
   }
 
   // https://stackoverflow.com/questions/50416301/angular-how-to-do-credit-card-input
@@ -1143,9 +1124,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     let pastedText = clipboardData.getData('text');
     console.log('onPasteCreditCardNumber pastedText',pastedText) 
     this.ccExpdateField.nativeElement.focus()
- 
   }
-
 
 
   onSubmit(form) {
@@ -1168,9 +1147,6 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     this.updateCustomer(creditcardnum, expirationDateMonth, expirationDateYear, creditcardcvc)
     }
   }
-
- 
-
 
   updateCustomer(creditcardnum: string, expirationDateMonth: string, expirationDateYear: string, creditcardcvc: string) {
     this.SPINNER_IN_ADD_CARD_MODAL = true;
@@ -1198,9 +1174,24 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.CARD_HAS_ERROR = false;
       this.SPINNER_IN_ADD_CARD_MODAL = false
       this.DISPLAY_ADD_CARD_COMPLETED = true
-      this.getCustomerAndPaymentMethods()
+      this.getCustomerAndPaymentMethods();
+      this.getCustomerPaymentMethodsListAndDeleteNotDefault()
     });
   }
+
+  getCustomerPaymentMethodsListAndDeleteNotDefault() {
+    this.projectService.getCustomerPaymentMethodsList(this.customer_id).subscribe((paymentMethodsList: any) => {
+      console.log('[PRJCT-EDIT-ADD] - GET PAYMENT METHODS LIST paymentMethodsList ', paymentMethodsList);
+   
+    }, (error) => {
+      console.log('[PRJCT-EDIT-ADD] - GET PAYMENT METHODS LIST * ERROR *', error);
+     
+    }, () => {
+      console.log('[PRJCT-EDIT-ADD] - GET PAYMENT METHODS LIST * COMPLETE *');
+    });
+
+  }
+  
 
 
   // createCardToken() {

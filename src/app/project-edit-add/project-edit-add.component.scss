@@ -619,31 +619,51 @@ $f21blue: #039be5;
   margin-right: 12px;
 }
 
-#cc-exp-date::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-  color: #B7B7B7;
+#cc-exp-date::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #b7b7b7;
   opacity: 1; /* Firefox */
 }
-#cc-exp-date:-ms-input-placeholder { /* Internet Explorer 10-11 */
-  color: #B7B7B7;
+#cc-exp-date:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: #b7b7b7;
 }
-#cc-exp-date::-ms-input-placeholder { /* Microsoft Edge */
-  color: #B7B7B7;
+#cc-exp-date::-ms-input-placeholder {
+  /* Microsoft Edge */
+  color: #b7b7b7;
 }
 
-
-#cc-number::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-  color: #B7B7B7;
+#cc-number::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #b7b7b7;
   opacity: 1; /* Firefox */
 }
-#cc-number:-ms-input-placeholder { /* Internet Explorer 10-11 */
-  color: #B7B7B7;
+#cc-number:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: #b7b7b7;
 }
-#cc-number::-ms-input-placeholder { /* Microsoft Edge */
-  color: #B7B7B7;
+#cc-number::-ms-input-placeholder {
+  /* Microsoft Edge */
+  color: #b7b7b7;
 }
 
-.BrandIcon {
-  height:16px;
+.change-card-label {
+  color: #262f3c;
+}
+
+
+.cc-number-field--cc-image-wpr {
+  opacity: 1;
+  position: absolute;
+  right: 35px;
+  top: 35px;
+  padding-right: 8px;
+  align-items: center;
+  display: flex;
+}
+
+.cc-brand-img {
+  height: 16px;
   margin-right: 3px;
 }
 
