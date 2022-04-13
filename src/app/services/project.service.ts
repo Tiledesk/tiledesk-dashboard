@@ -243,8 +243,9 @@ export class ProjectService {
   // ----------------------------
   public getSubscriptionById(subscriptionId: string): Observable<[]> {
     const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/stripesubs/' + subscriptionId;
-    this.logger.log('[PROJECT-SERV] - GET SUBSCRIPTION BY ID - ID', subscriptionId);
-    this.logger.log('[PROJECT-SERV] - GET SUBSCRIPTION BY ID - URL', url);
+    // const url =  'https://cabd-151-35-162-143.ngrok.io/modules/payments/stripe/stripesubs/' + subscriptionId;
+    console.log('[PROJECT-SERV] - GET SUBSCRIPTION BY ID - ID', subscriptionId);
+    console.log('[PROJECT-SERV] - GET SUBSCRIPTION BY ID - URL', url);
 
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -253,6 +254,154 @@ export class ProjectService {
       .get(url, { headers })
       .map((response) => response.json());
   }
+
+  // ----------------------------
+  //  GET CUSTOMER by ID
+  // ----------------------------
+  public getCustomerById(customerId: string): Observable<[]> {
+
+    const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/customers/' + customerId;
+    // const url =  'https://cabd-151-35-162-143.ngrok.io/modules/payments/stripe/customers/' + customerId;
+    console.log('[PROJECT-SERV] - GET CUSTOMER BY ID - ID', customerId);
+    console.log('[PROJECT-SERV] - GET CUSTOMER BY ID - URL', url);
+
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.json());
+  }
+
+
+
+  public getStripeCustomer() {
+ 
+    const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/customer/' + this.projectID
+    // const url = 'https://cabd-151-35-162-143.ngrok.io/modules/payments/stripe/customer/' + this.projectID
+
+    console.log('[PROJECT-SERV] GET STRIPE CUSTOMER - URL ', url);
+
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+
+    return this.http
+      .get(url, options)
+      .map((res) => res.json());
+  }
+
+
+
+  public updateStripeCustomer(customerid, creditcardnum, expirationDateMonth, expirationDateYear, creditcardcvc) {
+   
+    const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/customers/' + customerid
+    // const url = 'https://cabd-151-35-162-143.ngrok.io/modules/payments/stripe/customers/' + customerid
+
+    console.log('[PROJECT-SERV] UPDATE STRIPE CUSTOMER - URL ', url);
+
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+    const expirationDateMonthNum = +expirationDateMonth;
+    const expirationDateYearNum = +expirationDateYear;
+    const body = {
+      'credit_card_num': creditcardnum,
+      'expiration_date_month': expirationDateMonthNum,
+      'expiration_date_year': expirationDateYearNum,
+      'credit_card_cvc': creditcardcvc
+    };
+
+    this.logger.log('[PROJECT-SERV] UPDATE STRIPE CUSTOMER POST  BODY ', body);
+
+    return this.http
+      .post(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+  }
+
+  getCustomerPaymentMethodsList(customerid) {
+    const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/payment_methods/' + customerid
+    // const url = 'https://cabd-151-35-162-143.ngrok.io/modules/payments/stripe/payment_methods/' + customerid
+
+    console.log('[PROJECT-SERV]  GET PAYMENT METHODS LIST', url);
+
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+
+    return this.http
+      .get(url, options)
+      .map((res) => res.json());
+
+  }
+
+    // ----------------------------
+  //  GET CUSTOMER CARD LIST
+  // ----------------------------
+  // public getCustomerCardList(customerId: string): Observable<[]> {
+  //   // const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/customers/' + customerId;
+
+  //   const url = 'https://cabd-151-35-162-143.ngrok.io/modules/payments/stripe/customers/' + customerId + '/sources/';
+  //   console.log('[PROJECT-SERV] - GET CARD CUSTOMER BY ID - ID', customerId);
+  //   console.log('[PROJECT-SERV] - GET CARD CUSTOMER BY ID - URL', url);
+
+  //   const headers = new Headers();
+  //   headers.append('Content-Type', 'application/json');
+  //   headers.append('Authorization', this.TOKEN);
+  //   return this.http
+  //     .get(url, { headers })
+  //     .map((response) => response.json());
+  // }
+
+  // public createCustomerPortal() {
+  //   // const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/updatesubscription';
+  //   // 
+  //   const url = 'https://cabd-151-35-162-143.ngrok.io/modules/payments/stripe/billingPortal/sessions'
+
+  //   console.log('[PROJECT-SERV] CREATE CUSTOMER PORTAL ', url);
+
+  //   const headers = new Headers();
+  //   headers.append('Accept', 'application/json');
+  //   headers.append('Content-type', 'application/json');
+  //   headers.append('Authorization', this.TOKEN);
+  //   const options = new RequestOptions({ headers });
+
+  //   // const body = { 'projectid': this.projectID};
+
+  //   // this.logger.log('[PROJECT-SERV] CREATE CUSTOMER PORTAL ', body);
+
+  //   return this.http
+  //     .post(url, null, options)
+  //     .map((res) => res.json());
+  // }
+
+  // public createCardToken() {
+  //   // const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/updatesubscription';
+  //   // 
+  //   const url = 'https://cabd-151-35-162-143.ngrok.io/modules/payments/stripe/tokens'
+
+  //   console.log('[PROJECT-SERV] UPDATE STRIPE CUSTOMER - URL ', url);
+
+  //   const headers = new Headers();
+  //   headers.append('Accept', 'application/json');
+  //   headers.append('Content-type', 'application/json');
+  //   headers.append('Authorization', this.TOKEN);
+  //   const options = new RequestOptions({ headers });
+
+  //   const body = { 'projectid': this.projectID};
+
+  //   this.logger.log('[PROJECT-SERV] UPDATE STRIPE CUSTOMER POST  BODY ', body);
+
+  //   return this.http
+  //     .post(url, JSON.stringify(body), options)
+  //     .map((res) => res.json());
+  // }
 
 
   // ----------------------------------------------------------------------
@@ -459,15 +608,15 @@ export class ProjectService {
     headers.append('Content-type', 'application/json');
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
-    
+
     // project.settings.email.config=undefined
-  
+
     // const body = {
     //   'settings.email.from': "",
     //   'settings.email.config': "",
     // }
     // const body = {
-    
+
     // }
     let body = {}
     body["settings.email.from"] = undefined;
@@ -480,17 +629,17 @@ export class ProjectService {
       .map((res) => res.json());
   }
 
-  public sendTestEmail(recipientemail, smtp_host_name , smtp_port_number, smtp_connetion_security,  smtp_usermame, smtp_pswd ) {
+  public sendTestEmail(recipientemail, smtp_host_name, smtp_port_number, smtp_connetion_security, smtp_usermame, smtp_pswd) {
     let url = this.SERVER_BASE_PATH + this.projectID + '/emails/test/send'
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
-    
+
     // {"to":"andrea.leo@frontiere21.it", "config":{"host":"testprj2"}}' http://localhost:3001/61d7f94260608866810b39bd/emails/test/send
-    const body = {"to":recipientemail, "config":{"host":smtp_host_name, 'port':smtp_port_number, 'secure': smtp_connetion_security, 'user':smtp_usermame, 'pass':smtp_pswd  }}
-    
+    const body = { "to": recipientemail, "config": { "host": smtp_host_name, 'port': smtp_port_number, 'secure': smtp_connetion_security, 'user': smtp_usermame, 'pass': smtp_pswd } }
+
 
     this.logger.log('[PROJECT-SERV] SEND TEST EMAIL POST - body ', body);
 
