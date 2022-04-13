@@ -383,7 +383,108 @@ input:checked + .slider:before {
     padding-left: 10px !important;
   }
 }
-// .onoffswitch-checkbox__availability_status:disabled + .onoffswitch-label__availability_status .onoffswitch-inner__availability_status:before, .onoffswitch-switch__availability_status:after{
-//   color: #999999;
-// }
-// ./end SWITCH BTN
+
+// ---------------------------------------
+// Tag
+// ---------------------------------------
+
+.tag-input-wrapper input[type="text"] {
+  height: 35px;
+  font-size: 14px;
+  //   width: 100%;
+  margin-bottom: 10px;
+  -webkit-appearance: none;
+  background: #fff;
+  border: 1px solid #d9d9d9;
+  padding-right: 8px;
+  padding-left: 26px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  //   border-radius: 5px;
+  float: left;
+  margin-right: 15px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  margin-bottom: 0px;
+}
+
+.tag-input-wrapper-pu-detail .dropdown .btn {
+  box-shadow: none !important;
+  background: #fff;
+  border: 1px solid #d9d9d9;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-right: -1px !important;
+  // padding: 8px 15px;
+  padding-top: 9px;
+  padding-bottom: 8px;
+  padding-left: 15px;
+  padding-right: 15px;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+
+.tag-input-wrapper-pu-detail .dropdown .dropdown-toggle {
+  box-shadow: none !important;
+}
+
+.tag-input-wrapper-pu-detail .dropdown .dropdown-toggle a {
+  padding-top: 8px;
+}
+
+.tag-input-wrapper-pu-detail .dropdown .dropdown-toggle:hover {
+  box-shadow: none !important;
+}
+
+.tag-input-wrapper-pu-detail .dropdown-menu li a:hover,
+.tag-input-wrapper-pu-detail .dropdown-menu li a:focus,
+.tag-input-wrapper-pu-detail .dropdown-menu li a:active {
+  background-color: transparent;
+  color: #000;
+}
+
+.tag-color-round-div--in-input-pu {
+  position: absolute;
+  top: 10px;
+  left: 61px;
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+}
+
+.svg-inline--fa {
+  width: 18px;
+  height: auto;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+.create-tag-btn {
+  margin-top: 0px;
+  margin-left: 0px;
+  padding-top: 9px;
+  padding-bottom: 9px;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  padding-right: 15px;
+    padding-left: 15px;
+}
+
+.tag-delete {
+  opacity: 0;
+}
+
+.tag:hover {
+
+  .tag_icon_in_ws_msgs {
+    fill: rgba(233, 235, 238, 0.3) !important;
+  }
+  .tag-delete {
+    opacity: 1;
+    font-size: 16px;
+    position: relative;
+    // top: -3px;
+    // left: -2px;
+    top: 3px;
+  }
+}

@@ -94,6 +94,19 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
   profile_name: string;
 
   private unsubscribe$: Subject<any> = new Subject<any>();
+  tagname: string;
+  tag_selected_color = '#43B1F2';
+  hasError = false;
+  tagsArray: Array<any> =  [];
+  tagColor = [
+    { name: 'red', hex: '#FF5C55' },
+    { name: 'orange', hex: '#F89D34' },
+    { name: 'yellow', hex: '#F3C835' },
+    { name: 'green', hex: '#66C549' },
+    { name: 'blue', hex: '#43B1F2' },
+    { name: 'violet', hex: '#CB80DD' },
+  ];
+
   constructor(
     private router: Router,
     private auth: AuthService,
@@ -424,8 +437,9 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
 
       this.projectUser = projectUser;
 
-      this.logger.log('[USER-EDIT-ADD] PROJECT-USER DETAILS (GET getProjectUsersById): ', projectUser);
-
+      console.log('[USER-EDIT-ADD] PROJECT-USER DETAILS (GET getProjectUsersById): ', projectUser);
+      this.tagsArray = projectUser.tags
+      console.log('[USER-EDIT-ADD] PROJECT-USER DETAILS (GET getProjectUsersById) projectUser > tags ', this.tagsArray);
       this.user_id = projectUser.id_user._id;
       this.user_fullname = projectUser.id_user.firstname + ' ' + projectUser.id_user.lastname
 
@@ -472,6 +486,95 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
       this.notify.showWidgetStyleUpdateNotification(this.changeAvailabilitySuccessNoticationMsg, 2, 'done');
 
     });
+  }
+
+  tagSelectedColor(hex: any) {
+    console.log('[USER-EDIT-ADD] - TAG SELECTED COLOR ', hex);
+    this.tag_selected_color = hex;
+  }
+
+  onChangeTagname($event) {
+    this.logger.log('[USER-EDIT-ADD] - ON-CHANGE-TAG-NAME ', $event);
+
+    if ($event.length > 0) {
+      this.hasError = false;
+    }
+  }
+
+
+  // curl -v -X PUT -H 'Content-Type:application/json' -u andrea.leo@f21.it:123456 -d '{"tags":[{"tag": "inprogress", "color": "#66C549"}]}'
+  //  http://localhost:3001/6256ac8c729977ad37f0aee6/project_users/ID_PROJECT_USER
+  addTagToProjectUser() {
+    // this.tagsArray = []
+    console.log('[USER-EDIT-ADD] - ADD TAG - tag name TO ADD: ', this.tagname);
+    console.log('[USER-EDIT-ADD] - ADD TAG - tag color TO ADD: ', this.tag_selected_color);
+    
+    // const foundtag = this.tagsList.filter((obj: any) => {
+    //   return obj._id === this.tag;
+    // });
+    let tagObject = {}
+    // this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - foundtag: ', foundtag);
+    // if (foundtag.length > 0) {
+      tagObject = { tag: this.tagname, color: this.tag_selected_color }
+    // }
+    this.logger.log('[USER-EDIT-ADD] - ADD TAG - tagObject: ', tagObject);
+    setTimeout(() => {
+      // this.tag = null;
+    })
+    const tagObjectsize = Object.keys(tagObject).length
+    this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - tagObject LENGTH: ', tagObjectsize);
+    if (tagObjectsize > 0) {
+      this.tagsArray.push(tagObject);
+      // this.getTag()
+    }
+    this.upadateProjectUserTag(this.tagsArray)
+    console.log('[USER-EDIT-ADD] - ADD TAG - TAGS ARRAY AFTER PUSH: ', this.tagsArray);
+    // const firstTagObjectsize = Object.keys(this.tagsArray[0]).length
+    // console.log('[WS-REQUESTS-MSGS] - ADD TAG - TAG firstTagObjectsize: ', firstTagObjectsize);
+    // console.log('[WS-REQUESTS-MSGS] - ADD TAG - TAG this.tagsArray.length: ', this.tagsArray.length);
+    if (tagObjectsize > 0) {
+      // this.updateRequestTags(this.id_request, this.tagsArray, 'add')
+    }
+    // this.wsRequestsService.updateRequestsById_UpdateTag(this.id_request, this.tagsArray)
+    //   .subscribe((data: any) => {
+    //     this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - RES: ', data);
+    //   }, (err) => {
+    //     this.logger.error('[WS-REQUESTS-MSGS] - ADD TAG - ERROR: ', err);
+    //     this.notify.showWidgetStyleUpdateNotification(this.create_label_error, 4, 'report_problem');
+    //   }, () => {
+    //     this.logger.log('[WS-REQUESTS-MSGS] * COMPLETE *');
+    //     this.notify.showWidgetStyleUpdateNotification(this.create_label_success, 2, 'done');
+    //   });
+  }
+  // } 
+
+  removeTagFromProjectUser(tag: string) {
+    // if (this.DISABLE_ADD_NOTE_AND_TAGS === false) {
+     
+      var index = this.tagsArray.indexOf(tag);
+      if (index !== -1) {
+        this.tagsArray.splice(index, 1);
+      }
+
+      console.log('[USER-EDIT-ADD] - this.tagsArray After REMOVE: ', this.tagsArray);
+      this.upadateProjectUserTag(this.tagsArray)
+      // this.removeTagFromTaglistIfAlreadyAssigned(this.tagsList, this.tagsArray);
+      // this.getTag();
+
+      // this.logger.log('[WS-REQUESTS-MSGS] -  REMOVE TAG - TAGS ARRAY AFTER SPLICE: ', this.tagsArray);
+      // this.wsRequestsService.updateRequestsById_UpdateTag(this.id_request, this.tagsArray)
+      //   .subscribe((data: any) => {
+
+      //     this.logger.log('[WS-REQUESTS-MSGS] - REMOVE TAG - RES: ', data);
+      //   }, (err) => {
+      //     this.logger.error('[WS-REQUESTS-MSGS] - REMOVE TAG - ERROR: ', err);
+      //     this.notify.showWidgetStyleUpdateNotification(this.delete_label_error, 4, 'report_problem');
+
+      //   }, () => {
+      //     this.logger.log('[WS-REQUESTS-MSGS] - REMOVE TAG * COMPLETE *');
+      //     this.notify.showWidgetStyleUpdateNotification(this.delete_label_success, 2, 'done');
+      //   });
+    // }
   }
 
   updateUserRoleAndMaxchat() {
@@ -524,6 +627,23 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
         this.notify.showWidgetStyleUpdateNotification(this.successfullyUpdatedNoticationMsg, 2, 'done');
 
       });
+  }
+// curl -v -X PUT -H 'Content-Type:application/json' -u andrea.leo@f21.it:123456 -d '{"tags":[{"tag": "inprogress", "color": "#66C549"}]}'
+  //  http://localhost:3001/6256ac8c729977ad37f0aee6/project_users/ID_PROJECT_USER
+  upadateProjectUserTag(tagsArray) {
+    this.usersService.updateProjectUserTags(this.project_user_id, tagsArray)
+    .subscribe((projectUser: any) => {
+      console.log('[USER-EDIT-ADD] - updateProjectUserTags - PROJECT-USER DETAILS - PROJECT-USER UPDATED - RES ', projectUser)
+
+    }, (error) => {
+      console.error('[USER-EDIT-ADD] - updateProjectUserTags - PROJECT-USER DETAILS - PROJECT-USER UPDATED ERROR  ', error);
+
+      
+    }, () => {
+      console.log('[USER-EDIT-ADD] - updateUserRoleAndMaxchat - PROJECT-USER DETAILS - PROJECT-USER UPDATED  * COMPLETE *');
+
+    });
+
   }
 
   getCurrentProject() {

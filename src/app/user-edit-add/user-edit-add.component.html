@@ -129,7 +129,7 @@
                 <label
                   style="height: 36px; padding-top: 20px; padding-left: 16px; padding-right: 16px; text-align: right; margin-top: 12px; color: #7695a5"
                   class="col-sm-2 avatar_label">
-                 Avatar
+                   Avatar
                 </label>
                 <div class="col-sm-10">
 
@@ -245,11 +245,113 @@
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                   <input style="margin-bottom: 1px;" [(ngModel)]="max_assigned_chat" type="number" [disabled]="CURRENT_USER_ROLE === 'agent'">
                   <span
-                  style="display: block; font-size: 12px; font-weight: 100;color: #7695a5;line-height: 1.2em;padding-top: 3px;">
+                  style="display: block; font-size: 12px; font-weight: 400;color: #7695a5;line-height: 1.2em;padding-top: 3px;">
                   {{ "UserEditAddPage.NumberOfChatsAgentIsAllowedToTake" | translate  }}
                 </span>
                 </div>
               </div>
+
+              <div *ngIf="CURRENT_USER_ROLE !== 'agent'" class="row" style="margin-top: 12px;">
+                <label class="col-sm-2 custom-label" style="white-space: nowrap;">
+                  Tag
+                </label>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                  <div class="tag-input-wrapper-pu-detail" style="display: flex;">
+
+                    <!-- ------------------------------------------------------- -->
+                    <!-- Dropdown select tag color -->
+                    <!-- ------------------------------------------------------- -->
+                    <div class="dropdown" style="float: left;">
+                      <a href="#" class="btn dropdown-toggle" data-toggle="dropdown"
+                        style="">
+                        <b class="caret" style="color:#000000"></b>
+                      </a>
+                      <ul class="dropdown-menu">
+                        <li *ngFor="let color of tagColor" class="{{color.name}}">
+  
+                          <a (click)="tagSelectedColor(color?.hex)">
+                            <!-- <div style="height: 18px; width: 18px;"> </div> -->
+                            <!-- <i [ngStyle]="{'color':color.hex}" class="material-icons">fiber_manual_record</i> -->
+                            <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag"
+                              class="svg-inline--fa fa-tag fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 512 512">
+                              <style type="text/css">
+  
+                              </style>
+                              <path [ngStyle]="{'fill':color.hex}" class="tag_icon"
+                                d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z">
+                              </path>
+                            </svg>
+                            {{ 'Tags.Color.' + color?.name | translate }}
+                            
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+
+  
+                   
+                      <input id="tag_name" name="tag_name" [(ngModel)]="tagname" (ngModelChange)="onChangeTagname($event)"
+                        class="input" type="text" placeholder="{{ 'Tags.AddTags' | translate }} ..." style="padding-left: 25px;border-top-right-radius: 0px;
+                        border-bottom-right-radius: 0px;border-top-left-radius: 0px; border-bottom-left-radius: 0px;">
+                      <div class="tag-color-round-div--in-input-pu" [ngStyle]="{'background-color':tag_selected_color}">
+                      </div>
+  
+                       
+                      <!-- ------------------------------------------------------- -->
+                      <!-- Add tag btn -->
+                      <!-- ------------------------------------------------------- -->
+                      <button class="btn btn-primary create-tag-btn"
+                        (click)="addTagToProjectUser()" type="submit">
+                        <span class="icon add-tag-icon" >
+                          <i class="material-icons">add_circle</i>
+                        </span>
+                        <!-- {{ "Tags.AddTags" | translate }} -->
+                       <span class="add-tags-text"> Add </span>
+                      </button>
+  
+                      <div *ngIf="hasError === true" class="error-message" style="color: #f6303a;font-size: 14px;position: relative;
+                  left: -197px;top: 4px;">
+                        {{'CannedResponses.PleaseFillOutThisField' | translate }}
+                      </div>
+                  
+  
+                  </div>
+                </div>
+              </div>
+              <label class="col-sm-2 custom-label">  </label>
+              <!-- <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">  margin: -3px -2px; -->
+                <form  style="position: relative;">
+              <div class="tags-container" style="display: flex;
+              flex-flow: row wrap;
+              -webkit-box-align: center;
+              align-items: center; ">
+                <span class="tag" *ngFor="let tag of tagsArray" role="button" style="display: flex;padding-right: 12px;">
+
+
+                
+                  <div (click)="removeTagFromProjectUser(tag)">
+                    <div class="icon-container" style="display: inline-block;">
+                      <svg style="width: 13px; height: auto;position:absolute;margin-top: 6px;"
+                        aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag"
+                        class="svg-inline--fa-tag-icon fa-tag fa-w-16" role="img"
+                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+
+                        <path [ngStyle]="{'fill':tag.color}" class="tag_icon_in_ws_msgs"
+                          d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z">
+                        </path>
+                      </svg>
+                      <span class="tag-delete">
+                        <i class="material-icons delete_note_icon" style="font-size: 16px;"> close </i>
+                      </span>
+                    </div>
+                    {{ tag.tag}}
+                  </div>
+
+                </span>
+              </div>
+            </form>
+            <!-- </div> -->
 
 
               <!-- end new -->
@@ -263,7 +365,7 @@
                 <div class="col-sm-10">
             
                   <!-- [disabled]="ROLE_NOT_SELECTED === true" -->
-                  <button [disabled]="CURRENT_USER_ROLE === 'agent'" class="btn btn-primary update-pu-btn"  (click)="updateUserRoleAndMaxchat()">
+                  <button [disabled]="CURRENT_USER_ROLE === 'agent'" class="btn btn-primary update-pu-btn"  (click)="updateUserRoleAndMaxchat(); ">
                     {{ "UserEditAddPage.Update" | translate }}
                   </button>
                 </div>
