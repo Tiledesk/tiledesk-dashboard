@@ -336,7 +336,7 @@
 
 				<div class="widget-all-settings-wrap" role="main">
 					<div class="row no-gap" style="margin-left: 0; margin-right: 0;">
-						<div class="col-xs-7" id="widget-settings-manage">
+						<div class="col-xs-12 col-sm-7" id="widget-settings-manage">
 							<div id="widget-all-settings-form" class="form-horizontal">
 
 								<!-- ---------------------------------------------------------------------------- -->
@@ -1547,22 +1547,48 @@
 									style="height: auto; transition-duration: 0.613s; "
 									[ngClass]="{'panel-prechatform-height': HAS_ACTIVATED_PRECHAT_CUSTOM_FIELDS === true}">
 									<div class="section-offset">
+										
+										<div class="form-group"
+										 style="max-width: 640px; margin-left: -15px; margin-right: -15px; margin-top: 0px;">
+											<label 
+											class="col-sm-12 control-label widget-settings-control-head-label-info"
+											(click)="scroll(multilanguage)" style="margin-left: 14px;
+											margin-bottom: 6px !important;
+											margin-top: 12px;
+											padding-right: 30px;">
 
-										<!-- ------------------------------------------------------ -->
-										<!-- Enable / Disable default PreChetForm (Name & Email) -->
-										<!-- ------------------------------------------------------ -->
+											{{ 'WidgetPreviewIsDisplayedIn' | translate }} <span
+												style="font-weight: bold;">{{selectedLangName}} </span><br>
+											<!-- {{'ChangePreviewToCustomizeTheFollowingFieldsInAnotherLanguage' | translate}} -->
+											{{'ChangePreviewIn' | translate}} <span
+												class="anchor-to-multilanguage-section">
+												{{'MultilanguageSection' | translate}}</span>
+											{{'ToCustomizeTheFollowingFieldsInAnotherLanguage' | translate}}
+											</label>
+										</div>
+									
 										<div class="form-group"
 											style="max-width: 640px; margin-left: -15px; margin-right: -15px; margin-top: 0px;">
 
-											<label class="col-sm-12 control-label widget-settings-control-head-label">
+											<!-- ------------------------------------------------------ -->
+											<!-- Enable / Disable default PreChetForm (Name & Email) -->
+											<!-- ------------------------------------------------------ -->
+											<div class="default-prechat-form-switch-wpr" style="display: flex;">
+												<label class="col-sm-12 control-label widget-settings-control-label default-prechat-form-switch-label"
+												style="position: relative;top: -6px; font-size: 14px !important; width: fit-content;">
+												{{ 'EnableDisablePreChatForm' | translate }}
+												</label>
+												<!-- "position: relative;top: 3px; -->
+												<i class="material-icons" style="font-size:18px; color:#566787; cursor: pointer;vertical-align: middle;"  matTooltipClass="custom-mat-tooltip-in-widget-setup" 
+												matTooltip=" {{'AskYourVisitorForTheirNameAndEmailBeforeStartingAChat' | translate}}"
+												#tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
+													help_outline
+												</i>
+											</div>
+											<!-- <label class="col-sm-12 control-label widget-settings-control-head-label" style="font-size:12px!important; padding-top: 2px;
+											margin-top: -8px;padding-bottom: 4px;">
 												{{'AskYourVisitorForTheirNameAndEmailBeforeStartingAChat' | translate}}
-											</label>
-
-										
-											<label class="col-sm-12 control-label widget-settings-control-label"
-											style="position: relative;top: -6px;">
-											{{ 'EnableDisablePreChatForm' | translate }}
-											</label>
+											</label> -->
 											<div class="col-sm-12">
 												<div class="nw-onoffswitch-wrapper" style="clear: both;">
 													<div class="nw-onoffswitch">
@@ -1575,22 +1601,9 @@
 													</div>
 												</div>
 											</div>
-											<!-- *ngIf="displayNewCustomPrechatFormBuilder === true" -->
-											<label 
-												class="col-sm-12 control-label widget-settings-control-head-label-info"
-												(click)="scroll(multilanguage)" style="margin-left: 14px;
-												margin-bottom: 6px !important;
-												margin-top: 12px;
-												padding-right: 30px;">
-
-												{{ 'WidgetPreviewIsDisplayedIn' | translate }} <span
-													style="font-weight: bold;">{{selectedLangName}} </span><br>
-												<!-- {{'ChangePreviewToCustomizeTheFollowingFieldsInAnotherLanguage' | translate}} -->
-												{{'ChangePreviewIn' | translate}} <span
-													class="anchor-to-multilanguage-section">
-													{{'MultilanguageSection' | translate}}</span>
-												{{'ToCustomizeTheFollowingFieldsInAnotherLanguage' | translate}}
-											</label>
+											<!-- ------------------------------------------------------ -->
+											<!-- ./ Enable - Disable default PreChetForm (Name & Email) -->
+											<!-- ------------------------------------------------------ -->
 
 											<!-- -------------------------------------------------------------------------- -->
 											<!-- PRE-CHAT FORM TITLE -->
@@ -1604,41 +1617,94 @@
 
 											<div class="col-sm-12">
 												<textarea [(ngModel)]="LABEL_COMPLETE_FORM"
-													(ngModelChange)="onChangeLabelCompleteForm($event)" rows="2"
-													style="width: 100%; border-radius: 5px;border: solid 1px #ddd; padding: 8px;font-weight: 400;resize: vertical">	
+													(ngModelChange)="onChangeLabelCompleteForm($event)" rows="1"
+													style="width: 100%; border-radius: 5px;border: solid 1px #ddd; padding: 8px;font-weight: 400;resize: vertical" [disabled]="preChatForm === false" >	
 												</textarea>
 											</div>
+											<!-- -------------------------------------------------------------------------- -->
+											<!-- ./ PRE-CHAT FORM TITLE -->
+											<!-- -------------------------------------------------------------------------- -->
 
 											<!-- -------------------------------------------------------------------------- -->
-											<!-- DEFAULT PRE-CHAT FORM NAME -->
+											<!-- Enable / disable custom pre-chat form style="display: flex;"-->
 											<!-- -------------------------------------------------------------------------- -->
-											<label class="col-sm-12 control-label widget-settings-control-label">
-												{{'Name' | translate}}
-											</label>
-											<span class="active-language-label" style="margin-left: 15px;">
-												{{selectedLangName}}
-											</span>
-
-											<div class="col-sm-12">
-												<input class="custom-input" [(ngModel)]="LABEL_FIELD_NAME"
-													(ngModelChange)="onChangeDafultPrechatFormName($event)" 
-													[ngClass]="{'field-disabled' : preChatFormCustomFieldsEnabled === true}">	
+											<div class="custom-prechat-form-switch-wpr">
+												<label class="col-sm-12 control-label widget-settings-control-label custom-prechat-form-switch-label"
+												style="position: relative;top: -6px;  font-size: 14px !important; margin-top: 6px; width: fit-content;">
+													{{'EnableDisableCustomPreChatForm' | translate}}
+												</label>
+												<i class="material-icons custom-prechat-form-help-icon" style="font-size:18px; color:#566787; cursor: pointer; vertical-align: middle;position: relative;
+												top: 4px;"  matTooltipClass="custom-mat-tooltip-in-widget-setup" 
+													matTooltip=" {{'CustomizeTheInformationYouRequestFromCustomersInThePreChatForm' | translate}}"
+													#tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" >
+														help_outline
+												</i>
+											
+												<!-- <label class="col-sm-12 control-label widget-settings-control-head-label" style="font-size:12px!important; padding-top: 2px;
+												margin-top: -8px;padding-bottom: 4px;">
+													{{'CustomizeTheInformationYouRequestFromCustomersInThePreChatForm' |
+													translate}}
+												</label> -->
 											</div>
-
-											<!-- -------------------------------------------------------------------------- -->
-											<!-- DEFAULT PRE-CHAT FORM EMAIL -->
-											<!-- -------------------------------------------------------------------------- -->
-											<label class="col-sm-12 control-label widget-settings-control-label" style="margin-top: 4px;">
-												{{'RequestMsgsPage.ChatFormUserEmail' | translate}}
+											<label  *ngIf="displayNewCustomPrechatFormBuilder === false" style="color:#03a5e8; cursor:pointer;font-size:12px!important; padding-top: 2px;
+											margin-top: 3px;padding-bottom: 4px;width: 100%; text-align: left;padding-left: 15px;position: absolute;right: 0;"
+													(click)="goToPrechatFormExample()">
+													{{'HereSomeExamples' | translate}}. 
 											</label>
-											<span class="active-language-label" style="margin-left: 15px;">
-												{{selectedLangName}}
-											</span>
 
-											<div class="col-sm-12">
-												<input class="custom-input" [(ngModel)]="LABEL_FIELD_EMAIL"
-													(ngModelChange)="onChangeDafultPrechatFormEmail($event)" 
-													[ngClass]="{'field-disabled' : preChatFormCustomFieldsEnabled === true}">	
+											<div class="col-sm-12"  [ngStyle]="{'margin-top':displayNewCustomPrechatFormBuilder === false ? '14px' : 0 }">
+												<div class="nw-onoffswitch-wrapper" style="clear: both;">
+													<div class="nw-onoffswitch">
+														<input (change)="customizePrechatformFieldsCheckBox($event)"
+															type="checkbox" name="nw-prechatformfield-switch"
+															class="nw-onoffswitch-checkbox"
+															id="nw-prechatformfield-switch" tabindex="0"
+															[checked]="preChatFormCustomFieldsEnabled === true"
+															[disabled]="preChatForm === false">
+														<label class="nw-onoffswitch-label"
+															for="nw-prechatformfield-switch">
+														</label>
+													</div>
+												</div>
+											</div>
+											
+											<!-- -------------------------------------------------------------------------- -->
+											<!-- ./ Enable / disable custom pre-chat form -->
+											<!-- -------------------------------------------------------------------------- -->
+
+											
+											<div class="default-pre-chat-form-field-wpr" *ngIf="preChatFormCustomFieldsEnabled === false">
+												<!-- -------------------------------------------------------------------------- -->
+												<!-- DEFAULT PRE-CHAT FORM NAME -->
+												<!-- -------------------------------------------------------------------------- -->
+												<label class="col-sm-12 control-label widget-settings-control-label">
+													{{'Name' | translate}}
+												</label>
+												<span class="active-language-label" style="margin-left: 15px;">
+													{{selectedLangName}}
+												</span>
+
+												<div class="col-sm-12">
+													<input class="custom-input" [(ngModel)]="LABEL_FIELD_NAME"
+														(ngModelChange)="onChangeDafultPrechatFormName($event)" 
+														[ngClass]="{'field-disabled' : preChatForm === false}">	
+												</div>
+
+												<!-- -------------------------------------------------------------------------- -->
+												<!-- DEFAULT PRE-CHAT FORM EMAIL -->
+												<!-- -------------------------------------------------------------------------- -->
+												<label class="col-sm-12 control-label widget-settings-control-label" style="margin-top: 4px;">
+													{{'RequestMsgsPage.ChatFormUserEmail' | translate}}
+												</label>
+												<span class="active-language-label" style="margin-left: 15px;">
+													{{selectedLangName}}
+												</span>
+
+												<div class="col-sm-12">
+													<input class="custom-input" [(ngModel)]="LABEL_FIELD_EMAIL"
+														(ngModelChange)="onChangeDafultPrechatFormEmail($event)" 
+														[ngClass]="{'field-disabled' : preChatForm === false}">	
+												</div>
 											</div>
 										</div>
 										<!-- ------------------------------------- -->
@@ -1661,35 +1727,7 @@
 										<div class="form-group"
 											style="max-width: 640px; margin-left: -15px;margin-right: -15px;">
 
-											<label class="col-sm-12 control-label widget-settings-control-head-label">
-												{{'CustomizeTheInformationYouRequestFromCustomersInThePreChatForm' |
-												translate}}
-											</label>
-
-											<label class="col-sm-12 control-label widget-settings-control-label"
-											style="position: relative;top: -6px;">
-											{{'EnableDisableCustomPreChatForm' | translate}}
-											<span  *ngIf="displayNewCustomPrechatFormBuilder === false" style="color:#03a5e8; cursor:pointer"
-												(click)="goToPrechatFormExample()">
-												{{'HereSomeExamples' | translate}}. 
-											</span>
-											</label>
-
-											<div class="col-sm-12">
-												<div class="nw-onoffswitch-wrapper" style="clear: both;">
-													<div class="nw-onoffswitch">
-														<input (change)="customizePrechatformFieldsCheckBox($event)"
-															type="checkbox" name="nw-prechatformfield-switch"
-															class="nw-onoffswitch-checkbox"
-															id="nw-prechatformfield-switch" tabindex="0"
-															[checked]="preChatFormCustomFieldsEnabled === true"
-															[disabled]="preChatForm === false">
-														<label class="nw-onoffswitch-label"
-															for="nw-prechatformfield-switch">
-														</label>
-													</div>
-												</div>
-											</div>
+									
 										
 											<div class="col-sm-12" *ngIf="preChatFormCustomFieldsEnabled === true">
 												<ng-container *ngIf="displayNewCustomPrechatFormBuilder === true">
@@ -2019,7 +2057,7 @@
 						</div>
 
 						<!-- ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ -->
-						<div class="col-xs-5 appearance-preview-wrapper" id="appearance-widget-preview-wpr" style="overflow: hidden;
+						<div class="col-xs-12 col-sm-5 appearance-preview-wrapper" id="appearance-widget-preview-wpr" style="overflow: hidden;
 					position: sticky;
 					position: -webkit-sticky;
 					top: -20px;
