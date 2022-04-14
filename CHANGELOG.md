@@ -3,6 +3,10 @@
 
 ### 2.2.32-rc19
 - Adds the ability to change the credit card of the payment method
+- Refactors the graphics of the pre-chat form section
+- Adds the ability in the teammate detail page to add tag for the teammate
+- Adds the Serbian language among the pre-translated languages
+- Fixes the bug: during the project creation wizard sometimes the default language is not saved
 
 ### 2.2.32-rc18
 - Displays the avatar of the teammate who created the canned response on the canned responses page
