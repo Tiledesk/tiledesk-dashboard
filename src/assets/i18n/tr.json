@@ -2054,6 +2054,7 @@
     "CardNumber":"Kart numarası",
     "CardChangedSuccessfully":"Kart başarıyla değiştirildi",
     "PaymentInformation":"Ödeme bilgileri",
+    "TagNameIsRequired":"Etiket adı gerekli",
     "CHAT_IONIC": {
         "LABEL_TU": "sen: ",
         "LABEL_MSG_PUSH_START_CHAT": "Henüz görüşme yok",

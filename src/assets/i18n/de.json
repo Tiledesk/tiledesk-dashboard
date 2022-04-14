@@ -2053,5 +2053,6 @@
 	"ExpirationDate":"Verfallsdatum",
 	"CardNumber":"Kartennummer",
 	"CardChangedSuccessfully":"Kreditkarte erfolgreich geändert",
-	"PaymentInformation":"Zahlungsinformationen"
+	"PaymentInformation":"Zahlungsinformationen",
+	"TagNameIsRequired":"Tag-Name ist erforderlich"
 }

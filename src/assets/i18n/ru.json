@@ -2054,6 +2054,7 @@
     "CardNumber":"Номер карты",
     "CardChangedSuccessfully":"Кредитная карта успешно изменена",
     "PaymentInformation":"Платежная информация",
+    "TagNameIsRequired":"Укажите имя тега",
     "CHAT_IONIC": {
         "LABEL_TU": "ты: ",
         "LABEL_MSG_PUSH_START_CHAT": "Разговора пока нет",

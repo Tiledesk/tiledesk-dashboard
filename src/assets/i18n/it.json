@@ -2052,5 +2052,6 @@
     "ExpirationDate":"Data di scadenza",
     "CardNumber":"Numero di carta",
     "CardChangedSuccessfully":"Carta cambiata con successo",
-    "PaymentInformation":"Informazioni sul pagamento"
+    "PaymentInformation":"Informazioni sul pagamento",
+    "TagNameIsRequired":"Il nome del tag è obbligatorio"
 }

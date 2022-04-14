@@ -2054,6 +2054,7 @@
     "CardNumber":"Número do cartão",
     "CardChangedSuccessfully":"Cartão alterado com sucesso",
     "PaymentInformation":"Informações de pagamento",
+    "TagNameIsRequired":"O nome da tag é obrigatório",
     "CHAT_IONIC": {
         "LABEL_TU": "vocês: ",
         "LABEL_MSG_PUSH_START_CHAT": "Nenhuma conversa ainda",
