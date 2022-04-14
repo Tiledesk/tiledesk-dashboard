@@ -408,7 +408,11 @@ input:checked + .slider:before {
   margin-bottom: 0px;
 }
 
-.tag-input-wrapper-pu-detail .dropdown .btn {
+.pu-tag-input-wrapper {
+  display: flex;
+}
+
+.pu-tag-input-wrapper .dropdown .btn {
   box-shadow: none !important;
   background: #fff;
   border: 1px solid #d9d9d9;
@@ -424,26 +428,26 @@ input:checked + .slider:before {
   border-bottom-right-radius: 0px;
 }
 
-.tag-input-wrapper-pu-detail .dropdown .dropdown-toggle {
+.pu-tag-input-wrapper .dropdown .dropdown-toggle {
   box-shadow: none !important;
 }
 
-.tag-input-wrapper-pu-detail .dropdown .dropdown-toggle a {
+.pu-tag-input-wrapper .dropdown .dropdown-toggle a {
   padding-top: 8px;
 }
 
-.tag-input-wrapper-pu-detail .dropdown .dropdown-toggle:hover {
+.pu-tag-input-wrapper .dropdown .dropdown-toggle:hover {
   box-shadow: none !important;
 }
 
-.tag-input-wrapper-pu-detail .dropdown-menu li a:hover,
-.tag-input-wrapper-pu-detail .dropdown-menu li a:focus,
-.tag-input-wrapper-pu-detail .dropdown-menu li a:active {
+.pu-tag-input-wrapper .dropdown-menu li a:hover,
+.pu-tag-input-wrapper .dropdown-menu li a:focus,
+.pu-tag-input-wrapper .dropdown-menu li a:active {
   background-color: transparent;
   color: #000;
 }
 
-.tag-color-round-div--in-input-pu {
+.tag-color-dot {
   position: absolute;
   top: 10px;
   left: 61px;
@@ -459,7 +463,7 @@ input:checked + .slider:before {
   margin-right: 8px;
 }
 
-.create-tag-btn {
+.add-tag-to-pu-btn {
   margin-top: 0px;
   margin-left: 0px;
   padding-top: 9px;
@@ -467,15 +471,33 @@ input:checked + .slider:before {
   border-top-left-radius: 0px;
   border-bottom-left-radius: 0px;
   padding-right: 15px;
-    padding-left: 15px;
+  padding-left: 15px;
+  margin-bottom: 0px;
 }
 
 .tag-delete {
   opacity: 0;
 }
 
-.tag:hover {
+.pu-tags-container {
+  display: flex;
+  flex-flow: row wrap;
+  -webkit-box-align: center;
+  align-items: center;
+}
 
+.pu-tag {
+  display: flex;
+  padding-right: 6px;
+  background-color: rgba(233, 235, 238, 0.7);
+  border: none;
+  border-radius: 4px;
+  color: #444950;
+  margin-right: 8px;
+  margin-top: 8px;
+}
+
+.pu-tag:hover {
   .tag_icon_in_ws_msgs {
     fill: rgba(233, 235, 238, 0.3) !important;
   }
@@ -487,4 +509,24 @@ input:checked + .slider:before {
     // left: -2px;
     top: 3px;
   }
+}
+
+.icon-container {
+  display: inline-block;
+  padding-left: 4px;
+}
+
+#tag_name {
+  padding-left: 25px;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  margin-bottom: 0px;
+}
+.tag-name-required-error {
+  color: #f6303a;
+  font-size: 12px;
+  top: 4px;
+  font-weight: 400;
 }
