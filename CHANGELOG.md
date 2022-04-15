@@ -7,6 +7,8 @@
 - Adds the ability in the teammate detail page to add tag for the teammate
 - Adds the Serbian language among the pre-translated languages
 - Fixes the bug: during the project creation wizard sometimes the default language is not saved
+- Fixes the bug: in the teammate settings drawer the logout button area is too large
+- Not allows the cancellation of the account or the cancellation of the project if there are active subscriptions
 
 ### 2.2.32-rc18
 - Displays the avatar of the teammate who created the canned response on the canned responses page
