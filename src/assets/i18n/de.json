@@ -2054,5 +2054,6 @@
 	"CardNumber":"Kartennummer",
 	"CardChangedSuccessfully":"Kreditkarte erfolgreich geändert",
 	"PaymentInformation":"Zahlungsinformationen",
-	"TagNameIsRequired":"Tag-Name ist erforderlich"
+	"TagNameIsRequired":"Tag-Name ist erforderlich",
+	"Logout": "Ausloggen"
 }

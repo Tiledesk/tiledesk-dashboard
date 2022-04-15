@@ -2053,5 +2053,6 @@
     "CardNumber":"Numero di carta",
     "CardChangedSuccessfully":"Carta cambiata con successo",
     "PaymentInformation":"Informazioni sul pagamento",
-    "TagNameIsRequired":"Il nome del tag è obbligatorio"
+    "TagNameIsRequired":"Il nome del tag è obbligatorio",
+    "Logout": "Disconnettersi"
 }

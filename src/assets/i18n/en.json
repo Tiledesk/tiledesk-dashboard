@@ -2055,6 +2055,7 @@
     "CardChangedSuccessfully":"Card changed successfully",
     "PaymentInformation":"Payment information",
     "TagNameIsRequired":"Tag name is required",
+    "Logout": "Logout",
     "CHAT_IONIC": {
         "LABEL_TU": "you: ",
         "LABEL_MSG_PUSH_START_CHAT": "No conversation yet",

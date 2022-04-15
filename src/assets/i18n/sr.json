@@ -2055,6 +2055,7 @@
     "CardChangedSuccessfully":"Картица је успешно промењена",
     "PaymentInformation":"Информације о плаћању",
     "TagNameIsRequired":"Назив ознаке је обавезан",
+    "Logout": "Одјава",
     "CHAT_IONIC": {
         "LABEL_TU": "ти: ",
         "LABEL_MSG_PUSH_START_CHAT": "Још нема разговора",
