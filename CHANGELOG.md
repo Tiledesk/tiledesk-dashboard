@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.32-rc20
+- Merge branch 'features/new-sidebar'
+
 ### 2.2.32-rc19
 - Adds the ability to change the credit card of the payment method
 - Refactors the graphics of the pre-chat form section
