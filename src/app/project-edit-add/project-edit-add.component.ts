@@ -41,7 +41,7 @@ type FormErrors = { [u in UserFields]: string };
 export class ProjectEditAddComponent implements OnInit, OnDestroy {
   @ViewChild('ccNumber') ccNumberField: ElementRef;
   @ViewChild('ccExpdate') ccExpdateField: ElementRef;
-  
+
   private unsubscribe$: Subject<any> = new Subject<any>();
   // tparams = brand;
   tparams: any;
@@ -175,10 +175,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   credit_card_error_msg: string;
   CARD_HAS_ERROR: boolean;
   SPINNER_IN_ADD_CARD_MODAL: boolean;
-  CVC_LENGHT:number;
+  CVC_LENGHT: number;
   DISPLAY_ADD_CARD_COMPLETED: boolean = false;
   no_default_payment_method_id_array: Array<string>
-
+  isActiveSubscription : boolean = false;
   formErrors: FormErrors = {
     'creditCard': '',
     'expirationDate': '',
@@ -300,15 +300,15 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     if (expirationDate.value && expirationDate.value.length === 7) {
       this.logger.log('onValueChanged expirationDate status expirationDate.value.length', expirationDate.value.length)
       if (expirationDate.status === 'INVALID') {
-      
-          this.CARD_HAS_ERROR = true 
-          this.SPINNER_IN_ADD_CARD_MODAL = false
-          this.credit_card_error_msg = "The expiration date is invalid"
-          this.logger.log('onValueChanged expirationDate INVALID credit_card_error_msg', this.credit_card_error_msg)
-        }
+
+        this.CARD_HAS_ERROR = true
+        this.SPINNER_IN_ADD_CARD_MODAL = false
+        this.credit_card_error_msg = "The expiration date is invalid"
+        this.logger.log('onValueChanged expirationDate INVALID credit_card_error_msg', this.credit_card_error_msg)
+      }
       if (expirationDate.status === 'VALID') {
-      
-        this.CARD_HAS_ERROR = null 
+
+        this.CARD_HAS_ERROR = null
         this.SPINNER_IN_ADD_CARD_MODAL = null
         this.credit_card_error_msg = null
         this.logger.log('onValueChanged expirationDate INVALID credit_card_error_msg', this.credit_card_error_msg)
@@ -778,7 +778,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      console.log('[PRJCT-EDIT-ADD] - getProjectPlan project Profile Data', projectProfileData)
+      this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan project Profile Data', projectProfileData)
       if (projectProfileData) {
         this.prjct_name = projectProfileData.name;
         this.prjct_profile_name = projectProfileData.profile_name;
@@ -793,7 +793,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         this.subscription_start_date = projectProfileData.subscription_start_date;
         this.subscription_creation_date = projectProfileData.subscription_creation_date;
         this.prjct_profile_type = projectProfileData.profile_type;
-        console.log('[PRJCT-EDIT-ADD] - getProjectPlan project Profile Data > prjct_profile_type', this.prjct_profile_type)
+        this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan project Profile Data > prjct_profile_type', this.prjct_profile_type)
 
 
         /**
@@ -860,7 +860,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         // ------------------------------------------------------------------------------------------------------------------------------------------------
         if (projectProfileData.subscription_id) {
           this.subscription_id = projectProfileData.subscription_id;
-          console.log('[PRJCT-EDIT-ADD] this.subscription_id ', this.subscription_id)
+          this.logger.log('[PRJCT-EDIT-ADD] this.subscription_id ', this.subscription_id)
           this.getSubscriptionPayments(projectProfileData.subscription_id);
           this.getCustomerAndPaymentMethods()
           // this.getSubscriptionByID(projectProfileData.subscription_id);
@@ -994,31 +994,31 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       // console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer ', customer);
       if (customer) {
         this.customer_id = customer.id
-        console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer id', this.customer_id);
+        this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer id', this.customer_id);
         if (customer.invoice_settings) {
           this.customer_default_payment_method_id = customer.invoice_settings.default_payment_method
-          console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer_default_payment_method_id ', this.customer_default_payment_method_id);
+          this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer_default_payment_method_id ', this.customer_default_payment_method_id);
         }
         if (customer.paymentMethods)
           // console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer >  paymentMethods ', customer.paymentMethods.data);
           customer.paymentMethods.data.forEach(paymentmethod => {
-          // console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer >  paymentMethod ', paymentmethod);
-          if (this.customer_default_payment_method_id === paymentmethod.id) {
-            console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer > default paymentMethod ', paymentmethod);
-            if (paymentmethod.card) {
+            // console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer >  paymentMethod ', paymentmethod);
+            if (this.customer_default_payment_method_id === paymentmethod.id) {
+              this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer > default paymentMethod ', paymentmethod);
+              if (paymentmethod.card) {
                 this.default_card_brand_name = paymentmethod.card.brand;
                 this.card_last_four_digits = paymentmethod.card.last4;
+              }
             }
-          }
-         
-        });
+
+          });
       }
 
     }, (error) => {
       this.logger.error('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER error ', error);
 
     }, () => {
-      console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER * COMPLETE * ');
+      this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER * COMPLETE * ');
 
     });
   }
@@ -1030,19 +1030,19 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   openModalAddPaymentMethod() {
     this.displayAddPaymentMethodModal = 'block'
-  
-   this.DISPLAY_ADD_CARD_COMPLETED = false;
-   console.log('openModalAddPaymentMethod DISPLAY_ADD_CARD_COMPLETED ', this.DISPLAY_ADD_CARD_COMPLETED) 
-   this.CARD_HAS_ERROR = null;
-   this.SPINNER_IN_ADD_CARD_MODAL= null;
+
+    this.DISPLAY_ADD_CARD_COMPLETED = false;
+    this.logger.log('openModalAddPaymentMethod DISPLAY_ADD_CARD_COMPLETED ', this.DISPLAY_ADD_CARD_COMPLETED)
+    this.CARD_HAS_ERROR = null;
+    this.SPINNER_IN_ADD_CARD_MODAL = null;
     this.form.reset()
 
     if (this.ccNumberField) {
-    const creditCardInput = this.ccNumberField.nativeElement;
-    // console.log('openModalAddPaymentMethod creditCardInput ', creditCardInput) 
-     setTimeout(() => {
-      creditCardInput.focus()
-     }, 200);
+      const creditCardInput = this.ccNumberField.nativeElement;
+      // console.log('openModalAddPaymentMethod creditCardInput ', creditCardInput) 
+      setTimeout(() => {
+        creditCardInput.focus()
+      }, 200);
     }
   }
 
@@ -1051,7 +1051,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     const input = this.ccNumberField.nativeElement;
     const { selectionStart } = input;
     const { creditCard } = this.form.controls;
-    console.log('creditCardNumberSpacing creditCard value ', creditCard.value) 
+    this.logger.log('creditCardNumberSpacing creditCard value ', creditCard.value)
     if (creditCard.value) {
       let trimmedCardNum = creditCard.value.replace(/\s+/g, '');
 
@@ -1060,9 +1060,9 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       }
 
       /* Handle American Express 4-6-5 spacing */
-      const partitions = trimmedCardNum.startsWith('34') || trimmedCardNum.startsWith('37') 
-                        ? [4,6,5] 
-                        : [4,4,4,4];
+      const partitions = trimmedCardNum.startsWith('34') || trimmedCardNum.startsWith('37')
+        ? [4, 6, 5]
+        : [4, 4, 4, 4];
 
       const numbers = [];
       let position = 0;
@@ -1079,40 +1079,40 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         input.setSelectionRange(selectionStart, selectionStart, 'none');
       }
 
-      this.card_brand =  this.creditCardTypeFromNumber(creditCard.value);
-      console.log('card_brand ', this.card_brand) 
+      this.card_brand = this.creditCardTypeFromNumber(creditCard.value);
+      this.logger.log('card_brand ', this.card_brand)
       if (this.card_brand === 'amex') {
         this.CVC_LENGHT = 4
-      }  else[
+      } else[
         this.CVC_LENGHT = 3
       ]
     }
 
-  // this.creditCardNumberSpacing()
-  }  
+    // this.creditCardNumberSpacing()
+  }
   // https://stackoverflow.com/questions/30008556/regex-and-keyup-for-credit-card-detection
   // https://gist.github.com/michaelkeevildown/9096cd3aac9029c4e6e05588448a8841 (list of credit card regex)
-  creditCardTypeFromNumber( num ) {
+  creditCardTypeFromNumber(num) {
     // Sanitise number  
-    console.log('creditCardTypeFromNumber num ', num) 
-    num = num.replace(/[^\d]/g,'');
+    this.logger.log('creditCardTypeFromNumber num ', num)
+    num = num.replace(/[^\d]/g, '');
 
     var regexps = {
-        'mastercard' : /^5[1-5][0-9]{5,}$/,
-        'visa' : /^4[0-9]{6,}$/,
-        'amex' : /^3[47][0-9]{5,}$/,
-        'discover' : /^6(?:011|5[0-9]{2})[0-9]{3,}$/,
-        'diners' : /^3(?:0[0-5]|[68][0-9])[0-9]{4,}$/,
-        'jcb' : /^(?:2131|1800|35[0-9]{3})[0-9]{3,}$/,
-        'unionpay' : /^(62[0-9]{14,17})$/,
-        'unknown' : /.*/,
+      'mastercard': /^5[1-5][0-9]{5,}$/,
+      'visa': /^4[0-9]{6,}$/,
+      'amex': /^3[47][0-9]{5,}$/,
+      'discover': /^6(?:011|5[0-9]{2})[0-9]{3,}$/,
+      'diners': /^3(?:0[0-5]|[68][0-9])[0-9]{4,}$/,
+      'jcb': /^(?:2131|1800|35[0-9]{3})[0-9]{3,}$/,
+      'unionpay': /^(62[0-9]{14,17})$/,
+      'unknown': /.*/,
     };
 
-    for( var card in regexps ) {
-        if ( num.match( regexps[ card ] ) ) {
-            console.log( card );
-            return card;
-        }
+    for (var card in regexps) {
+      if (num.match(regexps[card])) {
+        this.logger.log(card);
+        return card;
+      }
     }
   }
 
@@ -1122,29 +1122,29 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     const { creditCard } = this.form.controls;
     let clipboardData = event.clipboardData;
     let pastedText = clipboardData.getData('text');
-    console.log('onPasteCreditCardNumber pastedText',pastedText) 
+    this.logger.log('onPasteCreditCardNumber pastedText', pastedText)
     this.ccExpdateField.nativeElement.focus()
   }
 
 
   onSubmit(form) {
     this.submitted = true;
-    console.log('onSubmit form', form);
-    if ( form.expirationDate !== '') {
-    const expirationDateSegment = form.expirationDate.split('/');
-    console.log('onSubmit expirationDateSegment', expirationDateSegment);
-    const expirationDateMonth = expirationDateSegment[0].trim()
-    const expirationDateYear = expirationDateSegment[1].trim()
-    const creditcardnum = form.creditCard.replace(/\s/g, '')
-    console.log('onSubmit creditCard NUM', creditcardnum);
-      
-    console.log('onSubmit expirationDateMonth', expirationDateMonth);
-    console.log('onSubmit expirationDateYear', expirationDateYear);
-    const creditcardcvc =  form.cvc
-    console.log('onSubmit cvc', creditcardcvc);
+    this.logger.log('onSubmit form', form);
+    if (form.expirationDate !== '') {
+      const expirationDateSegment = form.expirationDate.split('/');
+      this.logger.log('onSubmit expirationDateSegment', expirationDateSegment);
+      const expirationDateMonth = expirationDateSegment[0].trim()
+      const expirationDateYear = expirationDateSegment[1].trim()
+      const creditcardnum = form.creditCard.replace(/\s/g, '')
+      this.logger.log('onSubmit creditCard NUM', creditcardnum);
 
-    
-    this.updateCustomer(creditcardnum, expirationDateMonth, expirationDateYear, creditcardcvc)
+      this.logger.log('onSubmit expirationDateMonth', expirationDateMonth);
+      this.logger.log('onSubmit expirationDateYear', expirationDateYear);
+      const creditcardcvc = form.cvc
+      this.logger.log('onSubmit cvc', creditcardcvc);
+
+
+      this.updateCustomer(creditcardnum, expirationDateMonth, expirationDateYear, creditcardcvc)
     }
   }
 
@@ -1152,7 +1152,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     this.SPINNER_IN_ADD_CARD_MODAL = true;
     this.CARD_HAS_ERROR = null
     this.projectService.updateStripeCustomer(this.customer_id, creditcardnum, expirationDateMonth, expirationDateYear, creditcardcvc).subscribe((updatedcustomer: any) => {
-      console.log('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER - customer ', updatedcustomer);
+      this.logger.log('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER - customer ', updatedcustomer);
       // if (updatedcustomer) {
 
       //   console.log('[PRJCT-EDIT-ADD] - UPDATE - customer_id ', this.customer_id);
@@ -1161,16 +1161,16 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     }, (error) => {
       // console.log('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER error ', error);  
       // console.log('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER error _body', error._body);
-      
+
       const error_body = JSON.parse(error._body)
-      console.log('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER error_body ', error_body);
+      this.logger.log('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER error_body ', error_body);
       this.credit_card_error_msg = error_body.msg.raw.message;
-      console.log('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER credit_card_error_msg ',   this.credit_card_error_msg);
+      this.logger.log('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER credit_card_error_msg ', this.credit_card_error_msg);
       this.CARD_HAS_ERROR = true;
       this.SPINNER_IN_ADD_CARD_MODAL = false
       this.DISPLAY_ADD_CARD_COMPLETED = false
     }, () => {
-      console.log('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER * COMPLETE * ');
+      this.logger.log('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER * COMPLETE * ');
       this.CARD_HAS_ERROR = false;
       this.SPINNER_IN_ADD_CARD_MODAL = false
       this.DISPLAY_ADD_CARD_COMPLETED = true
@@ -1181,17 +1181,17 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   getCustomerPaymentMethodsListAndDeleteNotDefault() {
     this.projectService.getCustomerPaymentMethodsList(this.customer_id).subscribe((paymentMethodsList: any) => {
-      console.log('[PRJCT-EDIT-ADD] - GET PAYMENT METHODS LIST paymentMethodsList ', paymentMethodsList);
-   
+      this.logger.log('[PRJCT-EDIT-ADD] - GET PAYMENT METHODS LIST paymentMethodsList ', paymentMethodsList);
+
     }, (error) => {
-      console.log('[PRJCT-EDIT-ADD] - GET PAYMENT METHODS LIST * ERROR *', error);
-     
+      this.logger.log('[PRJCT-EDIT-ADD] - GET PAYMENT METHODS LIST * ERROR *', error);
+
     }, () => {
-      console.log('[PRJCT-EDIT-ADD] - GET PAYMENT METHODS LIST * COMPLETE *');
+      this.logger.log('[PRJCT-EDIT-ADD] - GET PAYMENT METHODS LIST * COMPLETE *');
     });
 
   }
-  
+
 
 
   // createCardToken() {
@@ -1799,6 +1799,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     } else {
       this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyATeammateWithTheOwnerRoleCanDeleteAProject_lbl, this.learnMoreAboutDefaultRoles)
     }
+
+    if (this.USER_ROLE === 'owner' && this.prjct_profile_type === 'payment') {
+      this.isActiveSubscription = true
+    }
   }
 
   onCloseModal() {
@@ -1818,26 +1822,30 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
 
   deleteProject() {
-    this.SHOW_CIRCULAR_SPINNER = true;
-    this.logger.log('[PRJCT-EDIT-ADD] - deleteProject ID PROJECT TO DELETE ', this.project_id_to_delete);
-    this.logger.log('[PRJCT-EDIT-ADD] - deleteProject ID PROJECT ', this.id_project);
+    // if (this.prjct_profile_type !== 'payment') {
+      this.SHOW_CIRCULAR_SPINNER = true;
+      this.logger.log('[PRJCT-EDIT-ADD] - deleteProject ID PROJECT TO DELETE ', this.project_id_to_delete);
+      this.logger.log('[PRJCT-EDIT-ADD] - deleteProject ID PROJECT ', this.id_project);
 
-    this.projectService.deleteProject(this.id_project).subscribe((data) => {
-      this.logger.log('[PRJCT-EDIT-ADD] - deleteProject RES ', data);
+      this.projectService.deleteProject(this.id_project).subscribe((data) => {
+        this.logger.log('[PRJCT-EDIT-ADD] - deleteProject RES ', data);
 
-    }, (error) => {
-      this.SHOW_CIRCULAR_SPINNER = false;
-      this.logger.error('[PRJCT-EDIT-ADD] - deleteProject - ERROR ', error);
-      this.notify.showWidgetStyleUpdateNotification(this.deleteErrorMsg, 4, 'report_problem');
-    }, () => {
-      this.logger.log('[PRJCT-EDIT-ADD] - deleteProject * COMPLETE *');
-
-      setTimeout(() => {
+      }, (error) => {
         this.SHOW_CIRCULAR_SPINNER = false;
-        this.notify.showNotificationChangeProject(this.deleteSuccessMsg, 2, 'done');
-        this.router.navigate(['/projects']);
-      }, 1500);
-    });
+        this.logger.error('[PRJCT-EDIT-ADD] - deleteProject - ERROR ', error);
+        this.notify.showWidgetStyleUpdateNotification(this.deleteErrorMsg, 4, 'report_problem');
+      }, () => {
+        this.logger.log('[PRJCT-EDIT-ADD] - deleteProject * COMPLETE *');
+
+        setTimeout(() => {
+          this.SHOW_CIRCULAR_SPINNER = false;
+          this.notify.showNotificationChangeProject(this.deleteSuccessMsg, 2, 'done');
+          this.router.navigate(['/projects']);
+        }, 1500);
+      });
+    // } else {
+    //   console.log('[PRJCT-EDIT-ADD] - deleteProject > project profile type' , this.prjct_profile_type );
+    // }
   }
 
 

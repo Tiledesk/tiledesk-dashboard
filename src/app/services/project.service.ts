@@ -244,8 +244,8 @@ export class ProjectService {
   public getSubscriptionById(subscriptionId: string): Observable<[]> {
     const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/stripesubs/' + subscriptionId;
     // const url =  'https://cabd-151-35-162-143.ngrok.io/modules/payments/stripe/stripesubs/' + subscriptionId;
-    console.log('[PROJECT-SERV] - GET SUBSCRIPTION BY ID - ID', subscriptionId);
-    console.log('[PROJECT-SERV] - GET SUBSCRIPTION BY ID - URL', url);
+    this.logger.log('[PROJECT-SERV] - GET SUBSCRIPTION BY ID - ID', subscriptionId);
+    this.logger.log('[PROJECT-SERV] - GET SUBSCRIPTION BY ID - URL', url);
 
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -262,8 +262,8 @@ export class ProjectService {
 
     const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/customers/' + customerId;
     // const url =  'https://cabd-151-35-162-143.ngrok.io/modules/payments/stripe/customers/' + customerId;
-    console.log('[PROJECT-SERV] - GET CUSTOMER BY ID - ID', customerId);
-    console.log('[PROJECT-SERV] - GET CUSTOMER BY ID - URL', url);
+    this.logger.log('[PROJECT-SERV] - GET CUSTOMER BY ID - ID', customerId);
+    this.logger.log('[PROJECT-SERV] - GET CUSTOMER BY ID - URL', url);
 
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -280,7 +280,7 @@ export class ProjectService {
     const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/customer/' + this.projectID
     // const url = 'https://cabd-151-35-162-143.ngrok.io/modules/payments/stripe/customer/' + this.projectID
 
-    console.log('[PROJECT-SERV] GET STRIPE CUSTOMER - URL ', url);
+    this.logger.log('[PROJECT-SERV] GET STRIPE CUSTOMER - URL ', url);
 
     const headers = new Headers();
     headers.append('Accept', 'application/json');
@@ -300,7 +300,7 @@ export class ProjectService {
     const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/customers/' + customerid
     // const url = 'https://cabd-151-35-162-143.ngrok.io/modules/payments/stripe/customers/' + customerid
 
-    console.log('[PROJECT-SERV] UPDATE STRIPE CUSTOMER - URL ', url);
+    this.logger.log('[PROJECT-SERV] UPDATE STRIPE CUSTOMER - URL ', url);
 
     const headers = new Headers();
     headers.append('Accept', 'application/json');
@@ -327,7 +327,7 @@ export class ProjectService {
     const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/payment_methods/' + customerid
     // const url = 'https://cabd-151-35-162-143.ngrok.io/modules/payments/stripe/payment_methods/' + customerid
 
-    console.log('[PROJECT-SERV]  GET PAYMENT METHODS LIST', url);
+    this.logger.log('[PROJECT-SERV]  GET PAYMENT METHODS LIST', url);
 
     const headers = new Headers();
     headers.append('Accept', 'application/json');
