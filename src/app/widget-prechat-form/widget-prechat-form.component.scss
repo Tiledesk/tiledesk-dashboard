@@ -145,6 +145,24 @@ input[type="checkbox"]:checked {
     background-image: linear-gradient(var(--themeColor), var(--themeColor)), linear-gradient(#d2d2d2, #d2d2d2) !important;
 }
 
+.prechat-form-preview-not-available-wpr {
+    text-align: center;
+    width: 100%;
+}
+.prechat-form-preview-not-available-icon {
+    width: 100%;
+    
+    color: #f8d7da;
+}
+.prechat-form-preview-not-available-icon span {
+    font-size: 95px;
+}
+.prechat-form-preview-not-available-text {
+    width: 100%;
+    // color: #721c24;
+    font-weight: 400;
+}
+
 // input[type="checkbox"]:checked:before {
 //     color: green;
 // }

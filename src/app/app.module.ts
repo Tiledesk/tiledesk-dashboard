@@ -8,6 +8,7 @@ import { MetricheComponent } from './analytics2/metriche/metriche.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app.routing';
@@ -217,7 +218,8 @@ import { SettingsSidebarComponent } from './components/settings-sidebar/settings
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { WidgetPrechatFormComponent } from './widget-prechat-form/widget-prechat-form.component';
 
-
+import { CreditCardDirectivesModule } from 'angular-cc-library';
+import { OnlynumberDirective } from './_directives/onlynumber.directive';
 // console.log('************** APPMODULE ******************');
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -292,6 +294,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
 
 @NgModule({
   declarations: [
+    OnlynumberDirective,
     AppComponent,
     UserProfileComponent,
     HomeComponent,
@@ -413,6 +416,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
  
   ],
   imports: [
+    CreditCardDirectivesModule,
     MatTooltipModule,
     /* PRIVATE */
     PricingModule,

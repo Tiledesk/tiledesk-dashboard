@@ -1,4 +1,3 @@
-
 <span class="navbar-brand navbar-brand-sidebar-settings"
   [ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
   <!-- <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
@@ -220,7 +219,7 @@
 
                   <div class="row">
                     <div class="col-md-12">
-                      <button _ngcontent-c8="" class="btn btn-danger" style="margin-top:0px"
+                      <button id="delete-project-btn" class="btn btn-danger" style="margin-top:0px"
                         (click)="openDeleteModal()">
                         <i class="material-icons" style="vertical-align: middle">delete_forever</i>
                         {{ "ProjectEditPage.DeleteProject" | translate }}
@@ -443,6 +442,8 @@
                             </span>
                           </span>
 
+                     
+
                           <!-- -------------------------------------------------------------------------------------  -->
                           <!-- SUBSCRIPTION STATUS - PROFILE TYPE:  FREE   -->
                           <!-- -------------------------------------------------------------------------------------  -->
@@ -481,6 +482,78 @@
                             </span>
                           </span>
                         </span>
+                      </div>
+                    </div>
+
+                    <!-- ------------------------------------------------- -->
+                    <!-- TEST GET SUBSCRIPTION -->
+                    <!-- ------------------------------------------------- -->
+                    <!-- <form method="POST" action="/create-customer-portal-session" (click)="createCustomerPortal()">
+                      <button type="submit">Manage billing</button>
+                    </form> -->
+                    <!-- <button (click)="updateCustomer()">UPDATE CUSTOMER</button> -->
+
+                    <!-- <div class="cc-form-wpr"> -->
+                      <!-- <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate> -->
+                        <!-- <input id="cc-number" formControlName="creditCard" name="creditCard" type="tel" ccNumber>
+                        <span *ngIf="form.controls.creditCard.value?.length > 0">
+                          <div *ngIf="form.controls.creditCard.invalid" class="is-danger" translate>
+                            invalid creditCard
+                          </div>
+                        </span>
+                   
+                        <input id="cc-exp-date" formControlName="expirationDate" name="expirationDate" type="tel" ccExp>
+                      
+                        <div *ngIf="formErrors.expirationDate" class="is-danger" translate>
+                          {{ formErrors.expirationDate }}
+                        </div>
+                        <input id="cc-cvc" formControlName="cvc" name="cvc" type="tel" autocomplete="off" ccCvc>
+                        <div *ngIf="formErrors.cvc" class="is-danger" translate>
+                          {{ formErrors.cvc }}
+                        </div> -->
+
+                        <!-- the good before to remove -->
+                        <!-- <input id="cc-number" formControlName="creditCard" name="creditCard" type="tel">
+                      
+                   
+                        <input id="cc-exp-date" formControlName="expirationDate" name="expirationDate" type="tel" ccExp>
+                      
+                     
+                        <input id="cc-cvc" formControlName="cvc" name="cvc" type="tel" autocomplete="off" ccCvc>
+
+                        <button type="submit" class="btn signin-button">
+                          Submit
+                        </button> -->
+                      <!-- </form> -->
+                      <!-- form value {{form.value | json }}
+                      form status: {{ form.status | json }} -->
+                    <!-- </div> -->
+
+                    <!-- -------------------------------------------------------------------------------------  -->
+                    <!-- SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - SUBSCRIPTION CARD -->
+                    <!-- -------------------------------------------------------------------------------------  -->
+
+                    <div class="row" *ngIf="prjct_profile_type !== 'free'" style="margin-top: 16px;">
+                      <label class="col-sm-2 custom-label">
+                        {{"PaymentInformation"  | translate }}
+                      </label>
+                      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <!-- style="margin-top: 5px;" -->
+                        <span class="subscription-info" >
+                         
+                          <i class="material-icons" style="vertical-align: middle;color: #697386;">
+                            credit_card
+                          </i>
+                          <span style="font-weight: 400;  padding: 5px;height:31px;position: relative;top: 2px; text-transform: capitalize;">
+
+                            {{default_card_brand_name}} &nbsp; **** **** **** {{card_last_four_digits}}
+                          </span>
+
+                          <span class="add-more-operator-btn" (click)="openModalAddPaymentMethod()">
+                            {{'ChangeCard' | translate}}
+                          </span>
+                        </span>
+
                       </div>
                     </div>
 
@@ -567,7 +640,7 @@
                           <span style="font-weight: 400;  padding: 5px;height:31px;position: relative;top: 2px;">
                             {{ numberOf_agents_seats }}
                           </span>
-                          <span class="add-more-operator" (click)="getMoreOperatorsSeats()">
+                          <span class="add-more-operator-btn" (click)="getMoreOperatorsSeats()">
                             {{ "Pricing.AddMoreOperators" | translate }}
                           </span>
                         </span>
@@ -981,8 +1054,6 @@
                       <div class="col-xs-12 col-sm-10">
 
                         <div class="chat-limit">
-
-
                           <!-- -------------------------------------------------------- -->
                           <!-- Reassignment Timeout input -->
                           <!-- -------------------------------------------------------- -->
@@ -1295,8 +1366,6 @@
               </div>
               <!-- ./ card-content -->
 
-
-
               <!-- -------------------------------------------------------- -->
               <!-- Save btn displayed only for the tab 'Advanced' -->
               <!-- -------------------------------------------------------- -->
@@ -1346,9 +1415,9 @@
 <!-- ./ main-content -->
 
 
-<!-- ******************************  
-*** DELETE PROJECT MODAL WINDOW ***
-*********************************** -->
+<!-- ------------------------------------------- -->
+<!-- DELETE PROJECT MODAL WINDOW -->
+<!-- ------------------------------------------- -->
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}"
   style="background-color: rgba(90,90,90,0.5);">
   <div class="modal-dialog" role="document">
@@ -1368,6 +1437,8 @@
           <!-- Il progetto verrà eliminato -->
           {{ "ProjectEditPage.TheProjectWillBeDeleted" | translate }}
         </h4>
+
+      
       </div>
       <div class="modal-body" style="min-height: 135px;">
 
@@ -1392,11 +1463,17 @@
               <strong> {{ id_project }}</strong>
             </span>
           </label>
-          <div class="col-sm-10">
 
+        
+          <div class="col-sm-10">
             <input class="" [(ngModel)]="project_id_to_delete" (ngModelChange)="onProjectIdToDeleteChange($event)"
-              type="text" placeholder="{{ 'ProjectEditPage.ProjectId' | translate }}">
+              type="text" placeholder="{{ 'ProjectEditPage.ProjectId' | translate }}" [disabled]="isActiveSubscription">
           </div>
+          <div class="col-sm-10">
+          <span *ngIf="isActiveSubscription" style="display: block; font-size: 14px; color: #f44336;">
+            {{'CancelAnyActiveSubscriptionsBeforeProceeding' | translate }}.
+          </span>
+        </div>
 
         </span>
       </div>
@@ -1407,7 +1484,7 @@
         </button>
 
         <button (click)="deleteProject()" style="margin-top:0px" class="btn btn-danger"
-          [disabled]="DISABLE_DELETE_PROJECT_BTN === true">
+          [disabled]="DISABLE_DELETE_PROJECT_BTN === true || isActiveSubscription">
 
           {{ "ProjectEditPage.DeleteProject" | translate }}
         </button>
@@ -1416,9 +1493,9 @@
   </div>
 </div>
 
-<!-- *******************************************************  
-  *** CONFIRM THE CREATION OF THE SHARED SECRET MODAL INFO ***
-  ************************************************************ -->
+<!-- -----------------------------------------------------------  --> 
+<!-- CONFIRM THE CREATION OF THE SHARED SECRET MODAL INFO -->
+<!-- -----------------------------------------------------------  --> 
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayConfirmJwtSecretCreationModal}"
   style="background-color: rgba(90,90,90,0.5);">
   <!-- modal-sm -->
@@ -1458,9 +1535,9 @@
   </div>
 </div>
 
-<!-- *************************************  
-*** SHARED SECRET GENERATED MODAL INFO ***
-****************************************** -->
+<!-- -----------------------------------------------------------  --> 
+<!-- SHARED SECRET GENERATED MODAL INFO -->
+<!-- -----------------------------------------------------------  --> 
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayJwtSecretGeneratedModal}"
   style="background-color: rgba(90,90,90,0.5);">
   <div class="modal-dialog" role="document">
@@ -1514,8 +1591,9 @@
   </div>
 </div>
 
-
-<!-- ============= "CONTACT US - LET'S CHAT" MODAL ============= -->
+<!-- -----------------------------------------------------------  --> 
+<!--  "CONTACT US - LET'S CHAT" MODAL  -->
+<!-- -----------------------------------------------------------  --> 
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayContactUsModal}"
   style="background-color: rgba(90,90,90,0.9); z-index: 1051 !important;">
   <div class="modal-dialog" role="document">
@@ -1532,13 +1610,6 @@
             </svg>
           </span>
         </button>
-
-        <!-- <div class="close-payment-report-modal" style="font-weight: 100; right: 6px; position: absolute;cursor:pointer" (click)="closeContactUsModal()">
-          <i class="material-icons close-payment-report-icon" style="font-size: 35px; opacity: 0.5;">
-            clear
-          </i>
-        </div> -->
-
         <h2 class="modal-title"
           style="color: #262f3c; text-align: center; font-family: 'Google Sans', sans-serif !important; margin-top: 25px">
           <span style="vertical-align: middle;">
@@ -1554,10 +1625,7 @@
         <div class="row">
           <div class="col-sm-12">
             <h3 style="text-align: center;  color: #8894ab; font-size: 24px">
-              <!-- Contact us via chat and tell us how many operator seats you want to add to the project -->
-              <!-- {{ "Pricing.ContactUsViaChatAndTellIUsHowManyOperator" | translate}} -->
               {{ "Pricing.ContactUsViaEmailAndTellIUsHowManyOperator" | translate}}
-
             </h3>
           </div>
         </div>
@@ -1565,15 +1633,195 @@
 
       <div class="modal-footer" style="margin-top: 0px; background-color: #fff; border-top:none">
         <div style="text-align: center; margin-bottom: 25px;">
-
           <button type="button"
             style="background-color:#3EA9F5;color:#FFF;padding:12px 16px;border:0;border-radius:4px;font-size:18px"
             id="checkout-button-plan_EjFHNnzJXE3jul" role="link" (click)="launchWidget()">
-            <!-- PerMonth -->
-            <!-- Let's chat -->
             {{'ContactUs' | translate}}
           </button>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- --------------------------------------------------------------------------------  --> 
+<!--  Add Payment Method to customer modal -->
+<!-- --------------------------------------------------------------------------------  --> 
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayAddPaymentMethodModal}"
+  style="background-color: rgba(90,90,90,0.9);">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" style="border-top-left-radius:6px; border-top-right-radius:6px">
+      <div class="modal-header" style="padding:4px 16px!important; border-bottom:none!important;">
+
+        <button type="button" class="close" aria-label="Close" (click)="closePaymentMethodModal()" style="margin-top: 16px;">
+          <span aria-hidden="true">
+            
+            <svg class="tide-icon " width="24" height="24" viewBox="0 0 24 24">
+              <path
+                d="M13.357 11.993l10.256 10.295c0.39 0.391 0.39 1.024 0 1.415-0.194 0.195-0.449 0.292-0.704 0.292s-0.51-0.097-0.705-0.292l-10.257-10.295-10.256 10.295c-0.194 0.195-0.449 0.292-0.704 0.292s-0.51-0.097-0.705-0.292c-0.39-0.391-0.39-1.024 0-1.415l10.256-10.295-10.256-10.294c-0.39-0.391-0.39-1.024 0-1.415s1.020-0.391 1.409 0l10.256 10.294 10.256-10.294c0.39-0.391 1.020-0.391 1.41 0 0.389 0.391 0.389 1.024 0 1.415l-10.256 10.294z">
+              </path>
+            </svg>
+          </span>
+        </button>
+        <h2 class="modal-title"
+          style="color: #262f3c; text-align: center; font-family: 'Poppins', sans-serif !important;">
+          <span style="vertical-align: middle;">
+            {{'ChangeCard' | translate}}
+          </span>
+        </h2>
+
+      </div>
+      <hr class="custom-hr" style="margin-top:0px; margin-bottom:24px">
+      <div class="modal-body" *ngIf="DISPLAY_ADD_CARD_COMPLETED === false"
+        style="padding-top: 0px; padding-bottom: 0px; padding-right: 35px; padding-left: 35px; line-height: 1">
+
+        <div class="cc-form-wpr">
+          <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>
+            <div class="row">
+              <!--   -->
+                <label class="col-sm-12 change-card-label" for="creditCard">{{'CardNumber' | translate }}</label>
+                <div class="col-sm-12" style="position: relative;">
+                  <input placeholder="1234 1234 1234 1234" #ccNumber id="cc-number" formControlName="creditCard" name="creditCard" type="tel" autocomplete="off"  appOnlynumber
+                  (blur)="creditCardNumberSpacing()"
+                  (paste)="onPasteCreditCardNumber($event)"
+                  (keyup)="creditCardNumberSpacing()">
+                </div>
+                <div class="cc-number-field--cc-image-wpr">
+                  <!-- ---------------------------------------------------------------------------- -->
+                  <!-- card image displayed when the credit card number field is empty  -->
+                  <!-- ---------------------------------------------------------------------------- -->
+                  <div style="transform: none;">
+                    <span class="cc-number-field--cc-image" *ngIf="form?.get('creditCard')?.value?.length < 7 ">
+                      <img src="assets/img/cc_brand/visa.svg" alt="visa" class="cc-brand-img">
+                    </span>
+                  </div>
+                  <div style="transform: none;">
+                    <span class="cc-number-field--cc-image"  *ngIf="form?.get('creditCard')?.value?.length < 7">
+                      <img src="assets/img/cc_brand/mastercard.svg" alt="mastercard" class="cc-brand-img">
+                    </span>
+                  </div>
+                  <div style="transform: none;">
+                    <span class="cc-number-field--cc-image"  *ngIf="form?.get('creditCard')?.value?.length < 7">
+                      <img src="assets/img/cc_brand/amex.svg" alt="amex" class="cc-brand-img">
+                    </span>
+                  </div>
+                  <div style="transform: none;">
+                    <span class="cc-number-field--cc-image"  *ngIf="form?.get('creditCard')?.value?.length < 7">
+                      <img src="assets/img/cc_brand/unionpay.svg" alt="unionpay" class="cc-brand-img">
+                    </span>
+                  </div>
+
+                  <!-- ---------------------------------------------------------------------------- -->
+                  <!-- card image displayed when the credit card number field is fullfilled  -->
+                  <!-- ---------------------------------------------------------------------------- -->
+                  <div style="transform: none;">
+                    <span class="cc-number-field--cc-image" *ngIf="form?.get('creditCard')?.value?.length > 7 && card_brand === 'visa'">
+                      <img src="assets/img/cc_brand/visa.svg" alt="visa" class="cc-brand-img">
+                    </span>
+                  </div>
+                  <div style="transform: none;">
+                    <span class="cc-number-field--cc-image"  *ngIf="form?.get('creditCard')?.value?.length > 7 && card_brand === 'mastercard'">
+                      <img src="assets/img/cc_brand/mastercard.svg" alt="mastercard" class="cc-brand-img">
+                    </span>
+                  </div>
+                  <div style="transform: none;">
+                    <span class="cc-number-field--cc-image"  *ngIf="form?.get('creditCard')?.value?.length > 7 && card_brand === 'amex'">
+                      <img src="assets/img/cc_brand/amex.svg" alt="amex" class="cc-brand-img">
+                    </span>
+                  </div>
+                  <div style="transform: none;">
+                    <span class="cc-number-field--cc-image"  *ngIf="form?.get('creditCard')?.value?.length > 7 && card_brand === 'unionpay'">
+                      <img src="assets/img/cc_brand/unionpay.svg" alt="unionpay" class="cc-brand-img">
+                    </span>
+                  </div>
+                  <div style="transform: none;">
+                    <span class="cc-number-field--cc-image"  *ngIf="form?.get('creditCard')?.value?.length > 7 && card_brand === 'discover'">
+                      <img src="assets/img/cc_brand/discover.svg" alt="discover" class="cc-brand-img">
+                    </span>
+                  </div>
+                  <div style="transform: none;">
+                    <span class="cc-number-field--cc-image"  *ngIf="form?.get('creditCard')?.value?.length > 7 && card_brand === 'diners'">
+                      <img src="assets/img/cc_brand/diners.svg" alt="diners" class="cc-brand-img">
+                    </span>
+                  </div>
+                  <div style="transform: none;">
+                    <span class="cc-number-field--cc-image"  *ngIf="form?.get('creditCard')?.value?.length > 7 && card_brand === 'jcb'">
+                      <img src="assets/img/cc_brand/jcb.svg" alt="jcb" class="cc-brand-img">
+                    </span>
+                  </div>
+                  <div style="transform: none;">
+                    <span class="cc-number-field--cc-image"  *ngIf="form?.get('creditCard')?.value?.length > 7 && card_brand === 'unknown'">
+                      <img src="assets/img/cc_brand/unknown.svg" alt="jcb" class="cc-brand-img">
+                    </span>
+                  </div>
+                </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-8">
+              <label class="change-card-label" for="expirationDate">{{'ExpirationDate' | translate }}</label>
+              <input  #ccExpdate id="cc-exp-date" placeholder="MM / YY" formControlName="expirationDate" name="expirationDate" type="tel" autocomplete="off" ccExp minlength="7" maxlength="7">
+            </div>
+              <div class="col-sm-4">
+                <label class="change-card-label"  for="cvc">CVC</label>
+                <input id="cc-cvc" formControlName="cvc" name="cvc" type="tel" autocomplete="off" ccCvc appOnlynumber minlength="{{CVC_LENGHT}}" maxlength="{{CVC_LENGHT}}">
+              </div>
+            </div>
+            <div class="row" style="min-height: 16px; margin-top: 4px;">
+              <!-- margin-top: 6px; min-height: 20px;-->
+              <div class="col-sm-12" style="text-align: center;">
+               <span *ngIf="CARD_HAS_ERROR === true && SPINNER_IN_ADD_CARD_MODAL === false" style="color: #f44336">
+                {{ credit_card_error_msg }}
+              </span> 
+              <span *ngIf="!CARD_HAS_ERROR && SPINNER_IN_ADD_CARD_MODAL === true" class="change-card-label">
+                {{'Processing' | translate }}
+              </span> 
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12" style="text-align: center;margin-top: 12px;margin-bottom: 3px;">
+              
+                  <button class="close-add-card-btn" (click)="closePaymentMethodModal()" [disabled]="!CARD_HAS_ERROR && SPINNER_IN_ADD_CARD_MODAL === true">
+                    {{'Cancel' | translate}}
+                  </button>
+                <button class="add-card-btn" type="submit" [disabled]="!form.valid || (!CARD_HAS_ERROR && SPINNER_IN_ADD_CARD_MODAL === true) " [ngClass]="{'add-card-btn-disabled': !form.valid || (!CARD_HAS_ERROR && SPINNER_IN_ADD_CARD_MODAL === true)}">
+                  {{'ChangeCard' | translate}}
+                </button>
+              </div>
+            </div>
+          </form>
+          <!-- form value {{form.value | json }}
+          form status: {{ form.status | json }} -->
+        </div>
+
+      </div> <!-- ./ modal-body of the form -->
+      <div class="modal-body" style="padding-right: 15px;padding-top:0px;padding-bottom: 15px;" *ngIf="DISPLAY_ADD_CARD_COMPLETED === true">
+        <div class="success-checkmark" style="top:5px">
+          <div class="check-icon">
+            <span class="success-icon-line success-line-tip"></span>
+            <span class="success-icon-line success-line-long"></span>
+            <div class="success-icon-circle"></div>
+            <div class="success-icon-fix"></div>
+          </div>
+        </div>
+
+        <h3 style="text-align: center;  color: #8894ab; font-size: 22px; margin-bottom: 13px; margin-top: 15px;">
+          {{ "CardChangedSuccessfully" | translate }}
+        </h3>
+
+        <div class="row">
+          <div class="col-sm-12" style="text-align: center;margin-top: 10px;">
+              <button class="add-card-btn" (click)="closePaymentMethodModal()" style="margin-left: 0px;">
+               {{ "UserProfile.Continue" | translate }}
+              </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer" style="margin-top: 0px; background-color: #fff; border-top:none">
+     
+        
       </div>
     </div>
   </div>

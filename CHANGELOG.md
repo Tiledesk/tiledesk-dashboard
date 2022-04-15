@@ -1,6 +1,19 @@
 
 # tiledesk-dashboard
 
+### 2.2.32-rc19
+- Adds the ability to change the credit card of the payment method
+- Refactors the graphics of the pre-chat form section
+- Adds the ability in the teammate detail page to add tag for the teammate
+- Adds the Serbian language among the pre-translated languages
+- Fixes the bug: during the project creation wizard sometimes the default language is not saved
+- Fixes the bug: in the teammate settings drawer the logout button area is too large
+- Not allows the cancellation of the account or the cancellation of the project if there are active subscriptions
+
+### 2.2.32-rc18
+- Displays the avatar of the teammate who created the canned response on the canned responses page
+- Adds the ability to add and remove custom fields for the custom pre-chat form only for the projects for which it has not already been created
+
 ### 2.2.32-rc16
 - Updates the widget preview graphic to match the changes made to the widget
 - Closes automatically the "Settings sidebar" if the window width is less than 1200 px

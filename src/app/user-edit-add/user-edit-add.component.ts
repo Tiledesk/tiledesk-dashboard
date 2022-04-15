@@ -94,6 +94,24 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
   profile_name: string;
 
   private unsubscribe$: Subject<any> = new Subject<any>();
+  tagname: string;
+  tag_selected_color = '#43B1F2';
+  display_tag_name_required: boolean = false;
+
+  tagsArray: Array<any> = [];
+  tagColor = [
+    { name: 'red', hex: '#FF5C55' },
+    { name: 'orange', hex: '#F89D34' },
+    { name: 'yellow', hex: '#F3C835' },
+    { name: 'green', hex: '#66C549' },
+    { name: 'blue', hex: '#43B1F2' },
+    { name: 'violet', hex: '#CB80DD' },
+  ];
+  createLabelSuccess_mgs: string;
+  createLabelError_mgs: string;
+  deleteLabelSuccess_mgs: string;
+  deleteLabelError_mgs: string;
+
   constructor(
     private router: Router,
     private auth: AuthService,
@@ -140,7 +158,20 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
     this.hasChangedAvailabilityStatusInSidebar();
     this.getOSCODE();
     this.getCurrentUrl();
+    this.translateTagNotificationMsgs();
   }
+
+
+  translateTagNotificationMsgs() {
+    this.translate.get('Tags.NotificationMsgs')
+      .subscribe((translation: any) => {
+        // this.logger.log('% »»» WebSocketJs WF >>> ws-m  translateNotificationMsgs text', translation)
+        this.createLabelSuccess_mgs = translation.CreateLabelSuccess;
+        this.createLabelError_mgs = translation.CreateLabelError;
+        this.deleteLabelSuccess_mgs = translation.DeleteLabelSuccess;
+        this.deleteLabelError_mgs = translation.DeleteLabelError;
+      });
+    }
 
 
   getCurrentUrl() {
@@ -188,7 +219,6 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
       // this.logger.log('[USER-EDIT-ADD] PUBLIC-KEY - key.includes("PSA")', this.public_Key.includes("PSA"));
       this.isVisibleAdvancedFeatureChatLimit = false;
     }
-
   }
 
   getLoggedUser() {
@@ -425,7 +455,8 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
       this.projectUser = projectUser;
 
       this.logger.log('[USER-EDIT-ADD] PROJECT-USER DETAILS (GET getProjectUsersById): ', projectUser);
-
+      this.tagsArray = projectUser.tags
+      this.logger.log('[USER-EDIT-ADD] PROJECT-USER DETAILS (GET getProjectUsersById) projectUser > tags ', this.tagsArray);
       this.user_id = projectUser.id_user._id;
       this.user_fullname = projectUser.id_user.firstname + ' ' + projectUser.id_user.lastname
 
@@ -472,6 +503,65 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
       this.notify.showWidgetStyleUpdateNotification(this.changeAvailabilitySuccessNoticationMsg, 2, 'done');
 
     });
+  }
+
+  tagSelectedColor(hex: any) {
+    this.logger.log('[USER-EDIT-ADD] - TAG SELECTED COLOR ', hex);
+    this.tag_selected_color = hex;
+  }
+
+  onPressEnterInIputTypeNewTag() {
+    this.logger.log('[USER-EDIT-ADD] - has press ENTER key tagname ', this.tagname);
+  
+    if (this.tagname === undefined || (this.tagname !== undefined && this.tagname.length === 0)) {
+      this.logger.log('[USER-EDIT-ADD] - Display tag name is required ');
+      this.display_tag_name_required = true
+    } else {
+      this.addTagToProjectUser();
+    }
+  }
+
+  onChangeTagname($event) {
+    this.logger.log('[USER-EDIT-ADD] - onChangeTagname $event ', $event);
+    if ($event && $event.length > 0) {
+      if (this.display_tag_name_required === true) {
+        this.display_tag_name_required = false;
+      }
+    }
+  }
+
+ 
+  addTagToProjectUser() {
+    const add_tag_to_pu_btn = <HTMLElement>document.querySelector('.add-tag-to-pu-btn');
+    this.logger.log('[USER-EDIT-ADD] - ADD TAG - add_tag_to_pu_btn: ', add_tag_to_pu_btn);
+    add_tag_to_pu_btn.blur();
+
+    this.logger.log('[USER-EDIT-ADD] - ADD TAG - tag name TO ADD: ', this.tagname);
+    this.logger.log('[USER-EDIT-ADD] - ADD TAG - tag color TO ADD: ', this.tag_selected_color);
+
+    let tagObject = {}
+    tagObject = { tag: this.tagname, color: this.tag_selected_color }
+    this.logger.log('[USER-EDIT-ADD] - ADD TAG - tagObject: ', tagObject);
+
+    const tagObjectsize = Object.keys(tagObject).length
+    this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - tagObject LENGTH: ', tagObjectsize);
+    if (tagObjectsize > 0) {
+      this.tagsArray.push(tagObject);
+    }
+    this.upadateProjectUserTag(this.tagsArray, 'add')
+    this.logger.log('[USER-EDIT-ADD] - ADD TAG - TAGS ARRAY AFTER PUSH: ', this.tagsArray);
+    this.tagname = undefined;
+    this.tag_selected_color = '#43B1F2';
+  }
+ 
+
+  removeTagFromProjectUser(tag: string) {
+    var index = this.tagsArray.indexOf(tag);
+    if (index !== -1) {
+      this.tagsArray.splice(index, 1);
+    }
+    this.logger.log('[USER-EDIT-ADD] - this.tagsArray After REMOVE: ', this.tagsArray);
+    this.upadateProjectUserTag(this.tagsArray, 'remove' )
   }
 
   updateUserRoleAndMaxchat() {
@@ -524,6 +614,33 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
         this.notify.showWidgetStyleUpdateNotification(this.successfullyUpdatedNoticationMsg, 2, 'done');
 
       });
+  }
+ 
+  upadateProjectUserTag(tagsArray: any, action: string) {
+    this.usersService.updateProjectUserTags(this.project_user_id, tagsArray)
+      .subscribe((projectUser: any) => {
+        this.logger.log('[USER-EDIT-ADD] - updateProjectUserTags - PROJECT-USER DETAILS - PROJECT-USER UPDATED - RES ', projectUser)
+
+      }, (error) => {
+        this.logger.error('[USER-EDIT-ADD] - updateProjectUserTags - PROJECT-USER DETAILS - PROJECT-USER UPDATED ERROR  ', error);
+
+        if (action === 'add') {
+          this.notify.showWidgetStyleUpdateNotification(this.createLabelError_mgs, 4, 'report_problem');
+        } else if (action === 'remove') {
+          this.notify.showWidgetStyleUpdateNotification(this.deleteLabelError_mgs, 4, 'report_problem');
+        }
+
+      }, () => {
+        if (action === 'add') {
+          this.notify.showWidgetStyleUpdateNotification(this.createLabelSuccess_mgs, 2, 'done');
+        } else if (action === 'remove') {
+          this.notify.showWidgetStyleUpdateNotification(this.deleteLabelSuccess_mgs,2, 'done');
+        }
+
+        this.logger.log('[USER-EDIT-ADD] - updateUserRoleAndMaxchat - PROJECT-USER DETAILS - PROJECT-USER UPDATED  * COMPLETE *');
+      
+      });
+
   }
 
   getCurrentProject() {

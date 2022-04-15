@@ -108,8 +108,8 @@
       </div>
 
       <div class="row">
-        <div class="col-sm-12" style="">
-          <button class="btn btn-lg btn-primary" (click)="continueToHome()">
+        <div class="col-sm-12">
+          <button class="btn btn-lg btn-primary" (click)="continueToHome()" [disabled]="continue_btn_disabled">
               {{ "ProjectsPage.Continue" | translate }}
           </button>
         </div>

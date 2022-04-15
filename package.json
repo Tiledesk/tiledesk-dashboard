@@ -1,6 +1,6 @@
 {
   "name": "@tiledesk/tiledesk-dashboard",
-  "version": "2.2.32-rc16",
+  "version": "2.2.32-rc19",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --aot",
@@ -42,6 +42,7 @@
     "@types/node": "^11.15.54",
     "@types/ua-parser-js": "^0.7.36",
     "amazing-time-picker": "^1.5.3",
+    "angular-cc-library": "^1.2.5",
     "angular2-moment": "^1.8.0",
     "arrive": "2.4.1",
     "autolinker": "^3.15.0",

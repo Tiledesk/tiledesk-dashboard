@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { UsersService } from '../../services/users.service';
@@ -7,6 +7,10 @@ import { Router } from '@angular/router';
 import { ProjectService } from '../../services/project.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs/Subscription';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators'
+import { ProjectPlanService } from 'app/services/project-plan.service';
 const swal = require('sweetalert');
 
 @Component({
@@ -14,7 +18,9 @@ const swal = require('sweetalert');
   templateUrl: './account-settings.component.html',
   styleUrls: ['./account-settings.component.scss']
 })
-export class AccountSettingsComponent implements OnInit {
+export class AccountSettingsComponent implements OnInit, OnDestroy {
+
+  private unsubscribe$: Subject<any> = new Subject<any>();
   userId: string;
   projectId: string;
 
@@ -24,10 +30,15 @@ export class AccountSettingsComponent implements OnInit {
   showSpinner_deleteAccount: boolean;
   delete_account_completed = false;
   projects_length: number;
-  translateparam: any;
+  countOfPrjctsInWichAreOwner: number;
+  countOfPrjctsProfileTypePayment: number;
+  translateparamCountOfPrjct: any;
   warning: string;
   selectAProjectToManageNotificationEmails: string;
-
+  USER_ROLE: string; ù
+  subscription: Subscription;
+  prjct_profile_type: string;
+  isActiveSubscription: boolean;
   constructor(
     private _location: Location,
     private route: ActivatedRoute,
@@ -36,7 +47,8 @@ export class AccountSettingsComponent implements OnInit {
     private router: Router,
     private projectService: ProjectService,
     private logger: LoggerService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private prjctPlanService: ProjectPlanService,
   ) { }
 
   ngOnInit() {
@@ -44,19 +56,60 @@ export class AccountSettingsComponent implements OnInit {
     this.getCurrentProject();
     this.getProjects();
     this.translateStrings();
+    this.getProjectPlan();
+    this.getProjectUserRole();
   }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+    this.subscription.unsubscribe()
+  }
+
+  getProjectPlan() {
+    this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
+      this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS]] - getProjectPlan project Profile Data', projectProfileData)
+      if (projectProfileData) {
+
+        this.prjct_profile_type = projectProfileData.profile_type;
+        this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS] - getProjectPlan project Profile Data > prjct_profile_type', this.prjct_profile_type)
+
+      }
+    }, error => {
+      this.logger.error('[USER-PROFILE][ACCOUNT-SETTINGS]] - getProjectPlan - ERROR', error);
+    }, () => {
+
+      this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS] - getProjectPlan * COMPLETE *')
+
+    });
+  }
+
+
+  getProjectUserRole() {
+    this.usersService.project_user_role_bs
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((user_role) => {
+        this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS] - USER ROLE ', user_role);
+        if (user_role) {
+          this.USER_ROLE = user_role
+        }
+      });
+  }
+
 
   translateStrings() {
     this.translate.get('Warning')
-    .subscribe((text: string) => {
-      this.warning = text;
-    });
+      .subscribe((text: string) => {
+        this.warning = text;
+      });
 
     this.translate.get('ItIsNecessaryToSelectAProjectToManageNotificationEmails')
-    .subscribe((text: string) => {
-      this.selectAProjectToManageNotificationEmails = text;
-    });
-}
+      .subscribe((text: string) => {
+        this.selectAProjectToManageNotificationEmails = text;
+      });
+  }
 
   /**
    * GET PROJECTS   
@@ -66,10 +119,27 @@ export class AccountSettingsComponent implements OnInit {
       this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS] - GET PROJECTS ', projects);
 
       if (projects) {
+        this.countOfPrjctsInWichAreOwner = 0;
+        this.countOfPrjctsProfileTypePayment = 0;
+        projects.forEach(project => {
+          this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS] - project ', project);
+          this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS] - project role', project.role);
+          if (project.role === 'owner' && project.id_project.status !== 0) {
+            this.countOfPrjctsInWichAreOwner = this.countOfPrjctsInWichAreOwner + 1;
+          }
+          if (project.role === 'owner') {
+            if (project.id_project && project.id_project.profile.type === "payment") {
+              this.countOfPrjctsProfileTypePayment = this.countOfPrjctsProfileTypePayment + 1;
+            }
+          }
+        });
+        this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS] - count Of Prjcts In Wich Are Owner ', this.countOfPrjctsInWichAreOwner);
+        this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS] - count Of Prjcts Progile type Payment ', this.countOfPrjctsProfileTypePayment);
+
         this.projects_length = projects.length;
         this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS] - GET PROJECTS - LENGTH ', this.projects_length);
 
-        this.translateparam = { projects_length: this.projects_length };
+        this.translateparamCountOfPrjct = { projects_length: this.countOfPrjctsInWichAreOwner };
       }
     }, error => {
 
@@ -87,9 +157,9 @@ export class AccountSettingsComponent implements OnInit {
         this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS] - GET CURRENT PROJECT - project ', project)
         this.projectId = project._id;
         this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS] - GET CURRENT PROJECT - project ID', this.projectId)
-    
+
       } else {
-        this.logger.log('ACCOUNT_SETTINGS - GET CURRENT PROJECT ', project , ' HIDE-SIDEBAR')
+        this.logger.log('ACCOUNT_SETTINGS - GET CURRENT PROJECT ', project, ' HIDE-SIDEBAR')
         this.hideSidebar();
       }
     });
@@ -116,8 +186,18 @@ export class AccountSettingsComponent implements OnInit {
   openDeleteAccountModal() {
     this.displayDeleteAccountModal = 'block'
     this.hasClickedDeleteAccount = false;
-
+    if (this.USER_ROLE === 'owner' && this.prjct_profile_type === 'payment') {
+      this.isActiveSubscription = true
+    }
+    // else if (this.USER_ROLE === 'owner' && this.prjct_profile_type !== 'payment') {
+    //   this.displayDeleteAccountModal = 'block'
+    // } else if (this.USER_ROLE !== 'owner') {
+    //   this.displayDeleteAccountModal = 'block'
+    // }
   }
+
+
+
 
   closeDeleteAccountModal() {
     this.displayDeleteAccountModal = 'none'

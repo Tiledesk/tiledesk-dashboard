@@ -120,13 +120,21 @@
     <!-- <hr class="second-divider" style="margin-top: 20px;border: 0;
     border-top: 1px solid rgba(255, 255,255, 0.2);"> -->
 
-
-    <section class="user-details-footer-section" (click)=logout()
+    <!-- (click)=logout() -->
+    <section class="user-details-footer-section" 
         [ngClass]="{'footer-margin-top-pricing-no-visible': isVisiblePAY ===false }">
-        <i class="material-icons user-details-logout-icon">
+        <!-- <i class="material-icons user-details-logout-icon">
             logout
         </i>
-        <div> Logout</div>
+        <div> Logout</div> -->
+        <div role="button" class="logout-btn-wpr" (click)=logout()>
+            <i class="material-icons user-details-logout-icon" >
+                logout
+            </i>
+            <div class="user-details-logout-text"> 
+                 {{'Logout' | translate  }} 
+            </div>
+        </div>
     </section>
 
 

@@ -474,11 +474,57 @@ export class ConfigureWidgetComponent extends WidgetSetUpBaseComponent implement
   }
 
 
-  // -----------------------------------------------------
+
+
+
+  continueToInstallScript() {
+    // this.router.navigate(['project/' + this.projectId + '/department/edit/' + deptid]);
+    this.router.navigate([`/project/${this.projectId}/install-widget/` +  this.temp_SelectedLangCode + '/' + this.temp_SelectedLangName]);
+    this.logger.log('[WIZARD - CONFIGURE-WIDGET] ***** CONTINUE  this.temp_SelectedLangCode', this.temp_SelectedLangCode);
+    this.logger.log('[WIZARD - CONFIGURE-WIDGET] ***** CONTINUE  this.temp_SelectedLangCode', this.temp_SelectedLangName)
+    // this.addNewLanguage();
+    this.saveWidgetApparance()
+  }
+
+  saveWidgetApparance() {
+    this.widgetService.updateWidgetProject(this.widgetObj)
+  }
+
+  addNewLanguage() {
+    this.selectedTranslationCode = this.temp_SelectedLangCode
+    this.selectedTranslationLabel = this.temp_SelectedLangName
+    this.logger.log('[WIZARD - CONFIGURE-WIDGET] ***** ADD-NEW-LANG selectedTranslationCode', this.selectedTranslationCode);
+    this.logger.log('[WIZARD - CONFIGURE-WIDGET]***** ADD-NEW-LANG selectedTranslationLabel', this.selectedTranslationLabel);
+
+    // cloneLabel CHE RITORNERA IN RESPONSE LA NUOVA LINGUA (l'inglese nel caso non sia una delle nostre lingue pretradotte)
+    this.widgetService.cloneLabel(this.temp_SelectedLangCode.toUpperCase())
+      .subscribe((res: any) => {
+        // this.logger.log('Multilanguage - addNewLanguage - CLONE LABEL RES ', res);
+        this.logger.log('[WIZARD - CONFIGURE-WIDGET] - ADD-NEW-LANG (clone-label) RES ', res.data);
+
+        // if (res) {
+        //   // UPDATE THE ARRAY TRANSLATION CREATED ON INIT
+        // }
+
+      }, error => {
+        this.logger.error('[WIZARD - CONFIGURE-WIDGET] ADD-NEW-LANG (clone-label) - ERROR ', error)
+      }, () => {
+        this.logger.log('[WIZARD - CONFIGURE-WIDGET] ADD-NEW-LANG (clone-label) * COMPLETE *')
+
+      });
+
+    // // ADD THE NEW LANGUAGE TO BOTTOM NAV
+    const newLang = { code: this.temp_SelectedLangCode, name: this.temp_SelectedLangName };
+    this.logger.log('[WIZARD - CONFIGURE-WIDGET] Multilanguage saveNewLanguage newLang objct ', newLang);
+
+    this.availableTranslations.push(newLang)
+    this.logger.log('[WIZARD - CONFIGURE-WIDGET] Multilanguage saveNewLanguage availableTranslations ', this.availableTranslations)
+  }
+
+    // -----------------------------------------------------
   // Select default language
   // -----------------------------------------------------
   getEnDefaultTranslation() {
-
     this.widgetService.getEnDefaultLabels().subscribe((labels: any) => {
       this.logger.log('[WIZARD - CONFIGURE-WIDGET] ***** GET labels ***** - RES', labels);
       if (labels) {
@@ -516,50 +562,6 @@ export class ConfigureWidgetComponent extends WidgetSetUpBaseComponent implement
       this.logger.log('[WIZARD - CONFIGURE-WIDGET] ***** GET labels ***** * COMPLETE *')
 
     });
-  }
-
-
-  continueToInstallScript() {
-    this.router.navigate([`/project/${this.projectId}/install-widget`]);
-    this.logger.log('[WIZARD - CONFIGURE-WIDGET] ***** CONTINUE  this.temp_SelectedLangCode', this.temp_SelectedLangCode);
-    this.logger.log('[WIZARD - CONFIGURE-WIDGET] ***** CONTINUE  this.temp_SelectedLangCode', this.temp_SelectedLangName)
-    this.addNewLanguage();
-    this.saveWidgetApparance()
-  }
-
-  saveWidgetApparance() {
-    this.widgetService.updateWidgetProject(this.widgetObj)
-  }
-
-  addNewLanguage() {
-    this.selectedTranslationCode = this.temp_SelectedLangCode
-    this.selectedTranslationLabel = this.temp_SelectedLangName
-    this.logger.log('[WIZARD - CONFIGURE-WIDGET] ***** ADD-NEW-LANG selectedTranslationCode', this.selectedTranslationCode);
-    this.logger.log('[WIZARD - CONFIGURE-WIDGET]***** ADD-NEW-LANG selectedTranslationLabel', this.selectedTranslationLabel);
-
-    // cloneLabel CHE RITORNERA IN RESPONSE LA NUOVA LINGUA (l'inglese nel caso non sia una delle nostre lingue pretradotte)
-    this.widgetService.cloneLabel(this.temp_SelectedLangCode.toUpperCase())
-      .subscribe((res: any) => {
-        // this.logger.log('Multilanguage - addNewLanguage - CLONE LABEL RES ', res);
-        this.logger.log('[WIZARD - CONFIGURE-WIDGET] - ADD-NEW-LANG (clone-label) RES ', res.data);
-
-        // if (res) {
-        //   // UPDATE THE ARRAY TRANSLATION CREATED ON INIT
-        // }
-
-      }, error => {
-        this.logger.error('[WIZARD - CONFIGURE-WIDGET] ADD-NEW-LANG (clone-label) - ERROR ', error)
-      }, () => {
-        this.logger.log('[WIZARD - CONFIGURE-WIDGET] ADD-NEW-LANG (clone-label) * COMPLETE *')
-
-      });
-
-    // // ADD THE NEW LANGUAGE TO BOTTOM NAV
-    const newLang = { code: this.temp_SelectedLangCode, name: this.temp_SelectedLangName };
-    this.logger.log('[WIZARD - CONFIGURE-WIDGET] Multilanguage saveNewLanguage newLang objct ', newLang);
-
-    this.availableTranslations.push(newLang)
-    this.logger.log('[WIZARD - CONFIGURE-WIDGET] Multilanguage saveNewLanguage availableTranslations ', this.availableTranslations)
   }
 
 }

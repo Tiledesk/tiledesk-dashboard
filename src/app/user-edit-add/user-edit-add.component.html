@@ -3,8 +3,8 @@
     (click)="goBack()">keyboard_arrow_left</i>
   <span *ngIf="CREATE_VIEW">
     <!-- {{ "UserEditAddPage.AddUserToThe" | translate }}   -->
-  <!-- {{ "UserEditAddPage.AddUser" | translate }} -->
-  {{ "UsersPage.Invites" | translate }}
+    <!-- {{ "UserEditAddPage.AddUser" | translate }} -->
+    {{ "UsersPage.Invites" | translate }}
     <!-- <span style="color: #566787; font-weight:400">{{project_name}}</span>  {{ "UserEditAddPage.Project" | translate }} -->
   </span>
 
@@ -29,7 +29,7 @@
                 <span *ngIf="subscription_is_active === true">
                   <i class="material-icons" style="vertical-align: middle; color: #039be5;"> info </i>
                   <span class="msg-alert">
-                    {{ "YouCurrentlyAreUsing" |  translate }} {{ this.projectUsersLength + this.countOfPendingInvites }}
+                    {{ "YouCurrentlyAreUsing" | translate }} {{ this.projectUsersLength + this.countOfPendingInvites }}
                     {{ "Of" | translate }} {{ projectPlanAgentsNo }} {{ "ActiveOperatorSeatsInThe" | translate }}
                     <span style="text-transform: capitalize">
                       {{ prjct_profile_name }}</span> - <span style="color: #039be5; cursor:pointer"
@@ -45,8 +45,8 @@
 
                     {{ "Pricing.HasExpiredOn" | translate}} {{ subscription_end_date | date: 'dd/MM/y' }} -
 
-                    <span style="color: #039be5; cursor:pointer"
-                      (click)="openModalSubsExpired()">{{ "Pricing.UpgradePlan" | translate }} </span>
+                    <span style="color: #039be5; cursor:pointer" (click)="openModalSubsExpired()">{{
+                      "Pricing.UpgradePlan" | translate }} </span>
                   </span>
                 </span>
 
@@ -129,18 +129,16 @@
                 <label
                   style="height: 36px; padding-top: 20px; padding-left: 16px; padding-right: 16px; text-align: right; margin-top: 12px; color: #7695a5"
                   class="col-sm-2 avatar_label">
-                 Avatar
+                  Avatar
                 </label>
                 <div class="col-sm-10">
 
                   <div class="card-avatar" style="padding-bottom:15px">
-                    <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
-                      class="user-img-in-edit-profile"
+                    <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="user-img-in-edit-profile"
                       src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{ user_id }}%2Fphoto.jpg?alt=media"
                       onerror="this.src='assets/img/no_image_user.png'" />
 
-                      <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
-                      class="user-img-in-edit-profile"
+                    <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="user-img-in-edit-profile"
                       src="{{baseUrl}}images?path=uploads%2Fusers%2F{{user_id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                       onerror="this.src='assets/img/no_image_user.png'" />
                   </div>
@@ -159,7 +157,7 @@
 
               <!-- SPACER -->
               <div class="col-sm-12" style="height:10px"></div>
-        
+
               <div class="row">
                 <label class="col-sm-2 custom-label">
                   Email
@@ -179,7 +177,7 @@
                   {{ "UserEditAddPage.Role" | translate }}
                 </label>
 
-                
+
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                   <div *ngIf="user_role">
                     <select #selectElem (change)="setSelected(selectElem.value)" style="width: 100%;" id="userrole"
@@ -193,7 +191,7 @@
                         {{ "UserEditAddPage.Admin" | translate }}
                       </option>
                       <option value="agent" [selected]="user_role === 'agent'">
-                    
+
                         {{ "UserEditAddPage.Agent" | translate }}
                       </option>
                     </select>
@@ -222,13 +220,14 @@
 
                   <!-- currentUser_projectUserID !== projectUser?._id && -->
                   <div class="onoffswitch__availability_status">
-                    <input (change)="changeAvailabilityStatus($event, projectUser?._id)" 
-                      [checked]="projectUser?.user_available === true"
-                       type="checkbox" name="onoffswitch" 
-                       class="onoffswitch-checkbox__availability_status" id="roleonoffswitch" [disabled]="CURRENT_USER_ROLE === 'agent'">
-                    <label class="onoffswitch-label__availability_status" for="roleonoffswitch" style="margin-bottom: 0px;">
-                        <span class="onoffswitch-inner__availability_status"></span>
-                        <span class="onoffswitch-switch__availability_status"></span>
+                    <input (change)="changeAvailabilityStatus($event, projectUser?._id)"
+                      [checked]="projectUser?.user_available === true" type="checkbox" name="onoffswitch"
+                      class="onoffswitch-checkbox__availability_status" id="roleonoffswitch"
+                      [disabled]="CURRENT_USER_ROLE === 'agent'">
+                    <label class="onoffswitch-label__availability_status" for="roleonoffswitch"
+                      style="margin-bottom: 0px;">
+                      <span class="onoffswitch-inner__availability_status"></span>
+                      <span class="onoffswitch-switch__availability_status"></span>
                     </label>
                   </div>
                 </div>
@@ -243,27 +242,112 @@
                   {{'ChatLimit' | translate}}
                 </label>
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                  <input style="margin-bottom: 1px;" [(ngModel)]="max_assigned_chat" type="number" [disabled]="CURRENT_USER_ROLE === 'agent'">
+                  <input style="margin-bottom: 1px;" [(ngModel)]="max_assigned_chat" type="number"
+                    [disabled]="CURRENT_USER_ROLE === 'agent'">
                   <span
-                  style="display: block; font-size: 12px; font-weight: 100;color: #7695a5;line-height: 1.2em;padding-top: 3px;">
-                  {{ "UserEditAddPage.NumberOfChatsAgentIsAllowedToTake" | translate  }}
-                </span>
+                    style="display: block; font-size: 12px; font-weight: 400;color: #7695a5;line-height: 1.2em;padding-top: 3px;">
+                    {{ "UserEditAddPage.NumberOfChatsAgentIsAllowedToTake" | translate }}
+                  </span>
                 </div>
               </div>
 
+              <div *ngIf="CURRENT_USER_ROLE !== 'agent'" class="row" style="margin-top: 12px;">
+                <label class="col-sm-2 custom-label" style="white-space: nowrap;">
+                  {{'Tags.Tag'  | translate}}
+                </label>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                  <div class="pu-tag-input-wrapper">
 
-              <!-- end new -->
+                    <!-- ------------------------------------------------------- -->
+                    <!-- Dropdown select tag color -->
+                    <!-- ------------------------------------------------------- -->
+                    <div class="dropdown" style="float: left;">
+                      <a href="#" class="btn dropdown-toggle" data-toggle="dropdown">
+                        <b class="caret" style="color:#000000"></b>
+                      </a>
+                      <ul class="dropdown-menu">
+                        <li *ngFor="let color of tagColor" class="{{color.name}}">
 
-            </div>  <!-- ./ card-content -->
+                          <a (click)="tagSelectedColor(color?.hex)">
+                            <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag"
+                              class="svg-inline--fa fa-tag fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 512 512">
+                             
+                              <path [ngStyle]="{'fill':color.hex}" class="tag_icon"
+                                d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z">
+                              </path>
+                            </svg>
+                            {{ 'Tags.Color.' + color?.name | translate }}
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <input id="tag_name" name="tag_name" (keyup.enter)="onPressEnterInIputTypeNewTag()"
+                      (ngModelChange)="onChangeTagname($event)" [(ngModel)]="tagname" class="input" type="text"
+                      placeholder="{{ 'Tags.AddTags' | translate }} ...">
+                    <div class="tag-color-dot" [ngStyle]="{'background-color':tag_selected_color}"></div>
+
+
+                    <!-- ------------------------------------------------------- -->
+                    <!-- Add tag btn -->
+                    <!-- ------------------------------------------------------- -->
+                    <button class="btn btn-primary add-tag-to-pu-btn" (click)="addTagToProjectUser()" type="submit"
+                      [disabled]="!tagname || tagname?.length === 0 ">
+                      <span class="icon add-tag-icon">
+                        <i class="material-icons">add_circle</i>
+                      </span>
+                      <!-- {{ "Tags.AddTags" | translate }} -->
+                      <!-- <span class="add-tags-text"> Add </span> -->
+                    </button>
+                  </div>
+
+                  <div *ngIf="display_tag_name_required === true" class="tag-name-required-error">
+                    {{'TagNameIsRequired' | translate }}
+                  </div>
+                </div>
+              </div>
+
+              <label class="col-sm-2 custom-label"> </label>
+              <!-- <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">  margin: -3px -2px; -->
+              <form style="position: relative;">
+                <div class="pu-tags-container">
+                  <span class="pu-tag" *ngFor="let tag of tagsArray" role="button">
+
+                    <div (click)="removeTagFromProjectUser(tag)">
+                      <div class="icon-container" style="display: inline-block;">
+                        <svg style="width: 13px; height: auto;position:absolute;margin-top: 6px;" aria-hidden="true"
+                          focusable="false" data-prefix="fas" data-icon="tag"
+                          class="svg-inline--fa-tag-icon fa-tag fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 512 512">
+
+                          <path [ngStyle]="{'fill':tag.color}" class="tag_icon_in_ws_msgs"
+                            d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z">
+                          </path>
+                        </svg>
+                        <span class="tag-delete">
+                          <i class="material-icons delete_note_icon" style="font-size: 16px;"> close </i>
+                        </span>
+                      </div>
+                      {{ tag.tag}}
+                    </div>
+
+                  </span>
+                </div>
+              </form>
+
+
+            </div> <!-- ./ card-content -->
 
             <div class="card-footer" style="border-color: #e8f0f5 !important;">
 
               <div class="row">
-                <!-- <label class="col-sm-2"></label> -->
+               
                 <div class="col-sm-10">
-            
-                  <!-- [disabled]="ROLE_NOT_SELECTED === true" -->
-                  <button [disabled]="CURRENT_USER_ROLE === 'agent'" class="btn btn-primary update-pu-btn"  (click)="updateUserRoleAndMaxchat()">
+
+                 
+                  <button [disabled]="CURRENT_USER_ROLE === 'agent'" class="btn btn-primary update-pu-btn"
+                    (click)="updateUserRoleAndMaxchat(); ">
                     {{ "UserEditAddPage.Update" | translate }}
                   </button>
                 </div>
@@ -295,7 +379,7 @@
               </div>
             </div>
 
-            
+
             <p style="color:#7695a5">
               {{ "UserEditAddPage.ThereAreThreeRolesIn" | translate: tparams }}
             </p>
@@ -304,16 +388,17 @@
             </p>
 
             <p style="color:#7695a5">
-             
-              {{ "UserEditAddPage.TheOwnerIs" | translate: tparams }}.  {{ "UserEditAddPage.AnOwenerHas" | translate: tparams }}
+
+              {{ "UserEditAddPage.TheOwnerIs" | translate: tparams }}. {{ "UserEditAddPage.AnOwenerHas" | translate:
+              tparams }}
             </p>
- 
+
             <p class="title-attribute" style="margin-bottom: 3px">
               {{ "UserEditAddPage.Admin" | translate }}
             </p>
 
             <p style="color:#7695a5">
-             
+
               {{ "UserEditAddPage.AnAdministratorHas" | translate: tparams }}
             </p>
 
@@ -329,12 +414,12 @@
             </p>
 
             <p class="title-attribute" style="margin-bottom: 3px">
-              
+
               {{ "RelatedKnowledgeBase" | translate }}
-              
+
             </p>
             <p style="color:#7695a5">
-             
+
               <span>
                 <svg style="width: 25px;height:auto; vertical-align: middle;" aria-hidden="true" focusable="false"
                   data-prefix="fab" data-icon="readme" class="svg-inline--fa fa-readme fa-w-18" role="img"
@@ -344,11 +429,12 @@
                   </path>
                 </svg>
               </span>
-              <a style="color:#0f62ff !important; vertical-align: middle; font-size: 14px; font-weight: 400;cursor: pointer; margin-left: 8px; text-decoration: underline;" href="{{KNOWLEDGE_BASE_USER_ROLE_URL}}" target="_blank">
+              <a style="color:#0f62ff !important; vertical-align: middle; font-size: 14px; font-weight: 400;cursor: pointer; margin-left: 8px; text-decoration: underline;"
+                href="{{KNOWLEDGE_BASE_USER_ROLE_URL}}" target="_blank">
 
                 {{ 'LearnMoreAboutDefaultRoles' | translate }}
               </a>
-            </p>           
+            </p>
           </div>
         </div>
       </div>

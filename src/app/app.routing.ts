@@ -142,7 +142,7 @@ const routes: Routes = [
   // USED WHEN THE USER CLICK ON 'ADD NEW PROJECT' FROM THE NAVBAR
   { path: 'create-new-project', component: CreateProjectComponent, canActivate: [AuthGuard] }, // wizard 
   { path: 'project/:projectid/configure-widget', component: ConfigureWidgetComponent, canActivate: [AuthGuard] }, // wizard step 2
-  { path: 'project/:projectid/install-widget', component: InstallWidgetComponent, canActivate: [AuthGuard] }, // wizard step 3
+  { path: 'project/:projectid/install-widget/:langcode/:langname', component: InstallWidgetComponent, canActivate: [AuthGuard] }, // wizard step 3
 
   { path: 'project/:projectid/cannedresponses', component: CannedResponsesListComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/labels', component: TagsComponent, canActivate: [AuthGuard] },

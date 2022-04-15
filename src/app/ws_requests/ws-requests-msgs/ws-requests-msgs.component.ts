@@ -1780,7 +1780,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.selectedQuestion = message;
 
 
-    // questo non funziona se è commented BUG RESOLVE
+    // this not works if is commented BUG RESOLVE
     const elemMainContent = <HTMLElement>document.querySelector('.main-content');
     this.train_bot_sidebar_height = elemMainContent.clientHeight + 10 + 'px'
     this.logger.log('[WS-REQUESTS-MSGS] - REQUEST-MSGS - ON OPEN RIGHT SIDEBAR -> RIGHT SIDEBAR HEIGHT', this.train_bot_sidebar_height);

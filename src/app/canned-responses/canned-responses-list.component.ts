@@ -4,7 +4,9 @@ import { TranslateService } from '@ngx-translate/core';
 import { NotifyService } from '../core/notify.service';
 import { LoggerService } from '../services/logger/logger.service';
 import { AuthService } from 'app/core/auth.service';
-
+import { LocalDbService } from 'app/services/users-local-db.service';
+import { UsersService } from 'app/services/users.service';
+import { AppConfigService } from '../services/app-config.service';
 @Component({
   selector: 'appdashboard-canned-responses-list',
   templateUrl: './canned-responses-list.component.html',
@@ -22,6 +24,9 @@ export class CannedResponsesListComponent implements OnInit {
   showSpinner = true;
   innerWidthLessThan992: boolean;
   IS_OPEN_SETTINGS_SIDEBAR: boolean;
+  UPLOAD_ENGINE_IS_FIREBASE: boolean;
+  storageBucket: string;
+  baseUrl: string;
 
   constructor(
     public cannedResponsesService: CannedResponsesService,
@@ -29,6 +34,9 @@ export class CannedResponsesListComponent implements OnInit {
     private notify: NotifyService,
     private logger: LoggerService,
     private auth: AuthService,
+    private usersLocalDbService: LocalDbService,
+    private usersService: UsersService,
+    public appConfigService: AppConfigService
   ) { }
 
   ngOnInit() {
@@ -36,11 +44,26 @@ export class CannedResponsesListComponent implements OnInit {
     this.translateNotificationMsgs();
     // this.getMainPanelAndSetOverflow();
     this.listenSidebarIsOpened();
+    this.getImageStorage();
+  }
+
+  getImageStorage() {
+    if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+      this.UPLOAD_ENGINE_IS_FIREBASE = true;
+      const firebase_conf = this.appConfigService.getConfig().firebase;
+      this.storageBucket = firebase_conf['storageBucket'];
+      this.logger.log('[CANNED-RES-LIST IMAGE STORAGE ', this.storageBucket, 'usecase native')
+    } else {
+      this.UPLOAD_ENGINE_IS_FIREBASE = false;
+
+      this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
+      this.logger.log('[CANNED-RES-LIST IMAGE STORAGE ', this.baseUrl, 'usecase native')
+    }
   }
 
   listenSidebarIsOpened() {
     this.auth.settingSidebarIsOpned.subscribe((isopened) => {
-      this.logger.log('[PRJCT-EDIT-ADD] SETTINGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
+      this.logger.log('[CANNED-RES-LIST] SETTINGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
       this.IS_OPEN_SETTINGS_SIDEBAR = isopened
     });
   }
@@ -48,7 +71,7 @@ export class CannedResponsesListComponent implements OnInit {
   translateNotificationMsgs() {
     this.translate.get('CannedResponses.NotificationMsgs')
       .subscribe((translation: any) => {
-        this.logger.log('[CANNED-RES-LIST]  translateNotificationMsgs text', translation)
+        this.logger.log('[CANNED-RES-LIST] translateNotificationMsgs text', translation)
         this.deleteErrorMsg = translation.DeleteCannedResError;
         this.deleteSuccessMsg = translation.DeleteCannedResSuccess;
 
@@ -64,12 +87,11 @@ export class CannedResponsesListComponent implements OnInit {
       this.innerWidthLessThan992 = true;
       elemMainPanel.style.overflowX = "visible"
     }
-  
   }
 
   // @HostListener('window:resize', ['$event'])
   // onResize(event: any) {
- 
+
   //   const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
   //   this.logger.log('[CANNED-RES-LIST] elemMainPanel ', elemMainPanel)
   //   const innerWidth = event.target.innerWidth;
@@ -82,11 +104,6 @@ export class CannedResponsesListComponent implements OnInit {
   //     elemMainPanel.style.overflowX = "hidden"
   //   }
   // }
-
-
-
-
-
   //   "NotificationMsgs": {
   //     "DeleteCannedResError": "An error occurred while deleting response",
   //     "DeleteCannedResSuccess": "Response successfully deleted"
@@ -95,9 +112,24 @@ export class CannedResponsesListComponent implements OnInit {
   getResponses() {
     // this.contactsService.getLeads(this.queryString, this.pageNo).subscribe((leads_object: any) => {
     this.cannedResponsesService.getCannedResponses().subscribe((responses: any) => {
-      this.logger.log('[CANNED-RES-LIST] - GET CANNED RESP - RES ', responses);
+      // console.log('[CANNED-RES-LIST] - GET CANNED RESP - RES ', responses);
+      if (responses) {
+        this.responsesList = responses;
 
-      this.responsesList = responses;
+        this.responsesList.forEach(cannedresponse => {
+          const user = this.usersLocalDbService.getMemberFromStorage(cannedresponse.createdBy);
+          // console.log('[CANNED-RES-LIST] - GET CANNED RESP - canned response user from local', user);
+          // console.log('[CANNED-RES-LIST] - GET CANNED RESP - canned response ', cannedresponse);
+          if (user !== null) {
+            cannedresponse.createdBy_user = user;
+          } else {
+            // -----------------------------------------------------
+            // From remote if not exist in the local storage
+            // -----------------------------------------------------
+            this.getMemberFromRemote(cannedresponse, cannedresponse.createdBy);
+          }
+        });
+      }
 
     }, (error) => {
       this.logger.error('[CANNED-RES-LIST]- GET CANNED RESP - ERROR  ', error);
@@ -106,6 +138,20 @@ export class CannedResponsesListComponent implements OnInit {
       this.logger.log('[CANNED-RES-LIST] - GET CANNED RESP * COMPLETE *');
       this.showSpinner = false
     });
+  }
+
+  getMemberFromRemote(tag: any, userid: string) {
+    this.usersService.getProjectUserById(userid)
+      .subscribe((projectuser) => {
+        this.logger.log('[CANNED-RES-LIST]- getMemberFromRemote ID ', projectuser);
+
+        tag.createdBy_user = projectuser[0].id_user;
+
+      }, (error) => {
+        this.logger.error('[CANNED-RES-LIST] - getMemberFromRemote - ERROR ', error);
+      }, () => {
+        this.logger.log('[CANNED-RES-LIST] - getMemberFromRemote * COMPLETE *');
+      });
   }
 
   deleteCannedResponse(cannedresponseid) {

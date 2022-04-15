@@ -1165,6 +1165,11 @@ input[type="text"]:disabled {
   cursor: not-allowed;
 }
 
+.field-disabled {
+  background-color: #f8f9f9;
+  pointer-events: none;
+}
+
 .breakpoint {
   width: 100%;
 }
@@ -1345,6 +1350,19 @@ input[type="text"]:disabled {
 @media (max-width: 768px) {
   .appearance-save-btn-desktop {
     display: none;
+  }
+  .custom-prechat-form-switch-label{
+    margin-top: 12px !important;
+    padding-bottom: 0px !important;
+  }
+
+  .default-prechat-form-switch-label{
+    margin-top: 7px !important;
+    padding-bottom: 0px !important;
+  }
+
+  .custom-prechat-form-help-icon {
+    top: -6px!important
   }
 }
 
@@ -2300,7 +2318,11 @@ button.buttonRounded:hover {
 }
 
 .panel-prechatform-height {
-  max-height: 1460px !important;
+  max-height: 1860px !important;
+}
+
+.select-prechat-form-field {
+max-width: 570px;
 }
 
 pre {
@@ -2649,3 +2671,16 @@ pre {
   position: relative;
   top: -2px;
 }
+
+::ng-deep .custom-mat-tooltip-in-widget-setup {
+  background-color: #555555  !important;
+  color: #fff !important;
+  font-size: 12px  !important;
+  line-height: 1.2;
+  border-radius: 2px !important;
+  font-family: 'Poppins' !important;
+  padding-top:8px!important;
+  padding-bottom:8px!important;
+  border: 1px solid #555555!important;
+}
+

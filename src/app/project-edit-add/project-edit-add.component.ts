@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { ProjectService } from '../services/project.service';
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -24,7 +24,14 @@ import { takeUntil } from 'rxjs/operators'
 import { BrandService } from '../services/brand.service';
 import { LoggerService } from '../services/logger/logger.service';
 import { URL_setting_up_automatic_assignment } from './../utils/util';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CreditCardValidator } from 'angular-cc-library';
+
+
 const swal = require('sweetalert');
+
+type UserFields = 'creditCard' | 'expirationDate' | 'cvc';
+type FormErrors = { [u in UserFields]: string };
 
 @Component({
   selector: 'app-project-edit-add',
@@ -32,6 +39,8 @@ const swal = require('sweetalert');
   styleUrls: ['./project-edit-add.component.scss']
 })
 export class ProjectEditAddComponent implements OnInit, OnDestroy {
+  @ViewChild('ccNumber') ccNumberField: ElementRef;
+  @ViewChild('ccExpdate') ccExpdateField: ElementRef;
 
   private unsubscribe$: Subject<any> = new Subject<any>();
   // tparams = brand;
@@ -152,6 +161,45 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   projectName: string;
   contactUsEmail: string;
   IS_OPEN_SETTINGS_SIDEBAR: boolean;
+  subscription_id: string;
+  customer_id: string;
+  card_id: string;
+  ccform: FormGroup;
+  submitted: boolean = false;
+  customer_default_payment_method_id: string
+  default_card_brand_name: string;
+  card_brand: string;
+  card_last_four_digits: string;
+  form: FormGroup;
+  displayAddPaymentMethodModal: string = 'none'
+  credit_card_error_msg: string;
+  CARD_HAS_ERROR: boolean;
+  SPINNER_IN_ADD_CARD_MODAL: boolean;
+  CVC_LENGHT: number;
+  DISPLAY_ADD_CARD_COMPLETED: boolean = false;
+  no_default_payment_method_id_array: Array<string>
+  isActiveSubscription : boolean = false;
+  formErrors: FormErrors = {
+    'creditCard': '',
+    'expirationDate': '',
+    'cvc': '',
+  };
+  validationMessages = {
+    'creditCard': {
+
+      'pattern': 'CC Nunber must be a valid',
+    },
+    'expirationDate': {
+
+      'pattern': 'expirationDate  must be  valid',
+    },
+    'cvc': {
+      'required': 'is required.',
+
+    },
+
+  };
+
   /**
    * 
    * @param projectService 
@@ -179,7 +227,9 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     private translate: TranslateService,
     public appConfigService: AppConfigService,
     public brandService: BrandService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private _fb: FormBuilder,
+    // private formGroup: FormGroup
 
   ) {
     const brand = brandService.getBrand();
@@ -205,7 +255,67 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     this.getCurrentProject();
     //this.checkCurrentStatus();
     this.listenSidebarIsOpened();
+
+    this.buildCreditCardForm()
   }
+
+  buildCreditCardForm() {
+
+    // this.ccform = this._fb.group({
+    //  cardNumber: ['', [CreditCardValidator.validateCardNumber],
+    // cardExpDate: ['', [CreditCardValidator.validateCardExpiry],
+    // cardCvv: ['', [CreditCardValidator.validateCardCvc],
+    // });
+
+    // this.formBuilder = new FormBuilder();
+    // this.ccform = this.formBuilder.group({
+    //   cardNumber: ['', [CreditCardValidator.validateCardNumber],
+    //   cardExpDate: ['', [CreditCardValidator.validateCardExpiry],
+    //   cardCvv: ['', [CreditCardValidator.validateCardCvc],
+    // });
+    this.form = this._fb.group({
+      creditCard: ['', [Validators.required]],
+      expirationDate: ['', [<any>CreditCardValidator.validateExpDate]],
+      cvc: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(4)]]
+    });
+
+    // this.form = this._fb.group({
+    //   creditCard: ['', [Validators.required]],
+    //   expirationDate: ['', [Validators.required]],
+    //   cvc: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(4)]] 
+    // });
+
+    this.form.valueChanges.subscribe((data) => this.onValueChanged(data));
+    this.onValueChanged();
+  }
+
+  onValueChanged(data?: any) {
+    if (!this.form) {
+      return;
+    }
+    const { expirationDate } = this.form.controls
+    this.logger.log('onValueChanged expirationDate', expirationDate)
+    this.logger.log('onValueChanged expirationDate status', expirationDate.status)
+
+    if (expirationDate.value && expirationDate.value.length === 7) {
+      this.logger.log('onValueChanged expirationDate status expirationDate.value.length', expirationDate.value.length)
+      if (expirationDate.status === 'INVALID') {
+
+        this.CARD_HAS_ERROR = true
+        this.SPINNER_IN_ADD_CARD_MODAL = false
+        this.credit_card_error_msg = "The expiration date is invalid"
+        this.logger.log('onValueChanged expirationDate INVALID credit_card_error_msg', this.credit_card_error_msg)
+      }
+      if (expirationDate.status === 'VALID') {
+
+        this.CARD_HAS_ERROR = null
+        this.SPINNER_IN_ADD_CARD_MODAL = null
+        this.credit_card_error_msg = null
+        this.logger.log('onValueChanged expirationDate INVALID credit_card_error_msg', this.credit_card_error_msg)
+      }
+    }
+  }
+
 
   listenSidebarIsOpened() {
     this.auth.settingSidebarIsOpned.subscribe((isopened) => {
@@ -250,7 +360,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         this.logger.log('[PRJCT-EDIT-ADD] - USER ROLE ', user_role);
         if (user_role) {
           this.USER_ROLE = user_role
-     
+
         }
       });
   }
@@ -284,9 +394,9 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   translateOnlyATeammateWithTheOwnerRoleCanDeleteAProject() {
     this.translate.get('OnlyATeammateWithTheOwnerRoleCanDeleteAProject')
-    .subscribe((translation: any) => {
-      this.onlyATeammateWithTheOwnerRoleCanDeleteAProject_lbl = translation;
-    });
+      .subscribe((translation: any) => {
+        this.onlyATeammateWithTheOwnerRoleCanDeleteAProject_lbl = translation;
+      });
   }
 
 
@@ -434,7 +544,6 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
 
   getCurrentUrlAndSwitchView() {
-
     const currentUrl = this.router.url;
     this.logger.log('[PRJCT-EDIT-ADD] current_url ', currentUrl);
 
@@ -591,12 +700,12 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   presentModalOnlyOwnerCanManageEmailTempalte() {
     // https://github.com/t4t5/sweetalert/issues/845
-    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageEmailTempalte, this.learnMoreAboutDefaultRoles) 
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageEmailTempalte, this.learnMoreAboutDefaultRoles)
   }
 
   presentModalOnlyOwnerCanManageTheAccountPlan() {
     // https://github.com/t4t5/sweetalert/issues/845
-    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles) 
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
 
   }
 
@@ -650,12 +759,6 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     }
   }
 
-
-
-
-
-
-
   // "SubscriptionSuccessfullyCanceled":"Abbonamento annullato correttamente",
   // "AnErrorOccurredWhileCancellingSubscription": "Si è verificato un errore durante l'annullamento dell'abbonamento",
   // TRANSLATION
@@ -684,11 +787,15 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         this.prjc_trial_days_left = projectProfileData.trial_days_left;
 
         this.numberOf_agents_seats = projectProfileData.profile_agents
-        this.prjct_profile_type = projectProfileData.profile_type;
+
         this.subscription_is_active = projectProfileData.subscription_is_active;
         this.subscription_end_date = projectProfileData.subscription_end_date;
         this.subscription_start_date = projectProfileData.subscription_start_date;
         this.subscription_creation_date = projectProfileData.subscription_creation_date;
+        this.prjct_profile_type = projectProfileData.profile_type;
+        this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan project Profile Data > prjct_profile_type', this.prjct_profile_type)
+
+
         /**
          * *** GET THE subscription_creation_date FROM THE PTOJECT PROFILE ***
          */
@@ -748,8 +855,14 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           this.DISPLAY_ADVANCED_TAB = true;
         }
 
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+        // If the subscription id is present in the project profile, the methods getSubscriptionPayments() getCustomerAndPaymentMethods() and  are executed
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
         if (projectProfileData.subscription_id) {
-          this.getSubscriptionPayments(projectProfileData.subscription_id)
+          this.subscription_id = projectProfileData.subscription_id;
+          this.logger.log('[PRJCT-EDIT-ADD] this.subscription_id ', this.subscription_id)
+          this.getSubscriptionPayments(projectProfileData.subscription_id);
+          this.getCustomerAndPaymentMethods()
           // this.getSubscriptionByID(projectProfileData.subscription_id);
         }
       }
@@ -876,6 +989,243 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     });
   }
 
+  getCustomerAndPaymentMethods() {
+    this.projectService.getStripeCustomer().subscribe((customer: any) => {
+      // console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer ', customer);
+      if (customer) {
+        this.customer_id = customer.id
+        this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer id', this.customer_id);
+        if (customer.invoice_settings) {
+          this.customer_default_payment_method_id = customer.invoice_settings.default_payment_method
+          this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer_default_payment_method_id ', this.customer_default_payment_method_id);
+        }
+        if (customer.paymentMethods)
+          // console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer >  paymentMethods ', customer.paymentMethods.data);
+          customer.paymentMethods.data.forEach(paymentmethod => {
+            // console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer >  paymentMethod ', paymentmethod);
+            if (this.customer_default_payment_method_id === paymentmethod.id) {
+              this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer > default paymentMethod ', paymentmethod);
+              if (paymentmethod.card) {
+                this.default_card_brand_name = paymentmethod.card.brand;
+                this.card_last_four_digits = paymentmethod.card.last4;
+              }
+            }
+
+          });
+      }
+
+    }, (error) => {
+      this.logger.error('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER error ', error);
+
+    }, () => {
+      this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER * COMPLETE * ');
+
+    });
+  }
+
+
+  closePaymentMethodModal() {
+    this.displayAddPaymentMethodModal = 'none'
+  }
+
+  openModalAddPaymentMethod() {
+    this.displayAddPaymentMethodModal = 'block'
+
+    this.DISPLAY_ADD_CARD_COMPLETED = false;
+    this.logger.log('openModalAddPaymentMethod DISPLAY_ADD_CARD_COMPLETED ', this.DISPLAY_ADD_CARD_COMPLETED)
+    this.CARD_HAS_ERROR = null;
+    this.SPINNER_IN_ADD_CARD_MODAL = null;
+    this.form.reset()
+
+    if (this.ccNumberField) {
+      const creditCardInput = this.ccNumberField.nativeElement;
+      // console.log('openModalAddPaymentMethod creditCardInput ', creditCardInput) 
+      setTimeout(() => {
+        creditCardInput.focus()
+      }, 200);
+    }
+  }
+
+  // https://stackoverflow.com/questions/50416301/angular-how-to-do-credit-card-input
+  creditCardNumberSpacing() {
+    const input = this.ccNumberField.nativeElement;
+    const { selectionStart } = input;
+    const { creditCard } = this.form.controls;
+    this.logger.log('creditCardNumberSpacing creditCard value ', creditCard.value)
+    if (creditCard.value) {
+      let trimmedCardNum = creditCard.value.replace(/\s+/g, '');
+
+      if (trimmedCardNum.length > 16) {
+        trimmedCardNum = trimmedCardNum.substr(0, 16);
+      }
+
+      /* Handle American Express 4-6-5 spacing */
+      const partitions = trimmedCardNum.startsWith('34') || trimmedCardNum.startsWith('37')
+        ? [4, 6, 5]
+        : [4, 4, 4, 4];
+
+      const numbers = [];
+      let position = 0;
+      partitions.forEach(partition => {
+        const part = trimmedCardNum.substr(position, partition);
+        if (part) numbers.push(part);
+        position += partition;
+      })
+
+      creditCard.setValue(numbers.join(' '));
+
+      /* Handle caret position if user edits the number later */
+      if (selectionStart < creditCard.value.length - 1) {
+        input.setSelectionRange(selectionStart, selectionStart, 'none');
+      }
+
+      this.card_brand = this.creditCardTypeFromNumber(creditCard.value);
+      this.logger.log('card_brand ', this.card_brand)
+      if (this.card_brand === 'amex') {
+        this.CVC_LENGHT = 4
+      } else[
+        this.CVC_LENGHT = 3
+      ]
+    }
+
+    // this.creditCardNumberSpacing()
+  }
+  // https://stackoverflow.com/questions/30008556/regex-and-keyup-for-credit-card-detection
+  // https://gist.github.com/michaelkeevildown/9096cd3aac9029c4e6e05588448a8841 (list of credit card regex)
+  creditCardTypeFromNumber(num) {
+    // Sanitise number  
+    this.logger.log('creditCardTypeFromNumber num ', num)
+    num = num.replace(/[^\d]/g, '');
+
+    var regexps = {
+      'mastercard': /^5[1-5][0-9]{5,}$/,
+      'visa': /^4[0-9]{6,}$/,
+      'amex': /^3[47][0-9]{5,}$/,
+      'discover': /^6(?:011|5[0-9]{2})[0-9]{3,}$/,
+      'diners': /^3(?:0[0-5]|[68][0-9])[0-9]{4,}$/,
+      'jcb': /^(?:2131|1800|35[0-9]{3})[0-9]{3,}$/,
+      'unionpay': /^(62[0-9]{14,17})$/,
+      'unknown': /.*/,
+    };
+
+    for (var card in regexps) {
+      if (num.match(regexps[card])) {
+        this.logger.log(card);
+        return card;
+      }
+    }
+  }
+
+  onPasteCreditCardNumber(event: ClipboardEvent) {
+    const input = this.ccNumberField.nativeElement;
+    const { selectionStart } = input;
+    const { creditCard } = this.form.controls;
+    let clipboardData = event.clipboardData;
+    let pastedText = clipboardData.getData('text');
+    this.logger.log('onPasteCreditCardNumber pastedText', pastedText)
+    this.ccExpdateField.nativeElement.focus()
+  }
+
+
+  onSubmit(form) {
+    this.submitted = true;
+    this.logger.log('onSubmit form', form);
+    if (form.expirationDate !== '') {
+      const expirationDateSegment = form.expirationDate.split('/');
+      this.logger.log('onSubmit expirationDateSegment', expirationDateSegment);
+      const expirationDateMonth = expirationDateSegment[0].trim()
+      const expirationDateYear = expirationDateSegment[1].trim()
+      const creditcardnum = form.creditCard.replace(/\s/g, '')
+      this.logger.log('onSubmit creditCard NUM', creditcardnum);
+
+      this.logger.log('onSubmit expirationDateMonth', expirationDateMonth);
+      this.logger.log('onSubmit expirationDateYear', expirationDateYear);
+      const creditcardcvc = form.cvc
+      this.logger.log('onSubmit cvc', creditcardcvc);
+
+
+      this.updateCustomer(creditcardnum, expirationDateMonth, expirationDateYear, creditcardcvc)
+    }
+  }
+
+  updateCustomer(creditcardnum: string, expirationDateMonth: string, expirationDateYear: string, creditcardcvc: string) {
+    this.SPINNER_IN_ADD_CARD_MODAL = true;
+    this.CARD_HAS_ERROR = null
+    this.projectService.updateStripeCustomer(this.customer_id, creditcardnum, expirationDateMonth, expirationDateYear, creditcardcvc).subscribe((updatedcustomer: any) => {
+      this.logger.log('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER - customer ', updatedcustomer);
+      // if (updatedcustomer) {
+
+      //   console.log('[PRJCT-EDIT-ADD] - UPDATE - customer_id ', this.customer_id);
+      // }
+
+    }, (error) => {
+      // console.log('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER error ', error);  
+      // console.log('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER error _body', error._body);
+
+      const error_body = JSON.parse(error._body)
+      this.logger.log('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER error_body ', error_body);
+      this.credit_card_error_msg = error_body.msg.raw.message;
+      this.logger.log('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER credit_card_error_msg ', this.credit_card_error_msg);
+      this.CARD_HAS_ERROR = true;
+      this.SPINNER_IN_ADD_CARD_MODAL = false
+      this.DISPLAY_ADD_CARD_COMPLETED = false
+    }, () => {
+      this.logger.log('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER * COMPLETE * ');
+      this.CARD_HAS_ERROR = false;
+      this.SPINNER_IN_ADD_CARD_MODAL = false
+      this.DISPLAY_ADD_CARD_COMPLETED = true
+      this.getCustomerAndPaymentMethods();
+      this.getCustomerPaymentMethodsListAndDeleteNotDefault()
+    });
+  }
+
+  getCustomerPaymentMethodsListAndDeleteNotDefault() {
+    this.projectService.getCustomerPaymentMethodsList(this.customer_id).subscribe((paymentMethodsList: any) => {
+      this.logger.log('[PRJCT-EDIT-ADD] - GET PAYMENT METHODS LIST paymentMethodsList ', paymentMethodsList);
+
+    }, (error) => {
+      this.logger.log('[PRJCT-EDIT-ADD] - GET PAYMENT METHODS LIST * ERROR *', error);
+
+    }, () => {
+      this.logger.log('[PRJCT-EDIT-ADD] - GET PAYMENT METHODS LIST * COMPLETE *');
+    });
+
+  }
+
+
+
+  // createCardToken() {
+  //   this.projectService.createCardToken().subscribe((token: any) => {
+  //     console.log('[PRJCT-EDIT-ADD] - CREATE CARD TOKEN - token ', token);
+  //     if (token) {
+  //       this.card_id = token.card.id
+  //       console.log('[PRJCT-EDIT-ADD] -  CREATE CARD TOKEN card_id ', this.card_id);
+  //     }
+
+  //   }, (error) => {
+  //     this.logger.error('[PRJCT-EDIT-ADD] - CREATE CARD TOKEN error ', error);
+
+  //   }, () => {
+  //     console.log('[PRJCT-EDIT-ADD] - CREATE CARD TOKEN * COMPLETE * ');
+
+  //   });
+  // }
+
+  // createCustomerPortal() {
+  //   this.projectService.createCustomerPortal().subscribe((customer: any) => {
+  //     console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER - customer ', customer);
+  //     // if (customer ) {
+  //     //   const customerId = 
+  //     // }
+
+  //   }, (error) => {
+  //     this.logger.error('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER error ', error);
+
+  //   }, () => {
+  //     console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER * COMPLETE * ');
+
+  //   });
+  // }
 
   /**
    * *** CANCEL SUBSCRIPTION ***
@@ -1449,6 +1799,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     } else {
       this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyATeammateWithTheOwnerRoleCanDeleteAProject_lbl, this.learnMoreAboutDefaultRoles)
     }
+
+    if (this.USER_ROLE === 'owner' && this.prjct_profile_type === 'payment') {
+      this.isActiveSubscription = true
+    }
   }
 
   onCloseModal() {
@@ -1468,26 +1822,30 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
 
   deleteProject() {
-    this.SHOW_CIRCULAR_SPINNER = true;
-    this.logger.log('[PRJCT-EDIT-ADD] - deleteProject ID PROJECT TO DELETE ', this.project_id_to_delete);
-    this.logger.log('[PRJCT-EDIT-ADD] - deleteProject ID PROJECT ', this.id_project);
+    // if (this.prjct_profile_type !== 'payment') {
+      this.SHOW_CIRCULAR_SPINNER = true;
+      this.logger.log('[PRJCT-EDIT-ADD] - deleteProject ID PROJECT TO DELETE ', this.project_id_to_delete);
+      this.logger.log('[PRJCT-EDIT-ADD] - deleteProject ID PROJECT ', this.id_project);
 
-    this.projectService.deleteProject(this.id_project).subscribe((data) => {
-      this.logger.log('[PRJCT-EDIT-ADD] - deleteProject RES ', data);
+      this.projectService.deleteProject(this.id_project).subscribe((data) => {
+        this.logger.log('[PRJCT-EDIT-ADD] - deleteProject RES ', data);
 
-    }, (error) => {
-      this.SHOW_CIRCULAR_SPINNER = false;
-      this.logger.error('[PRJCT-EDIT-ADD] - deleteProject - ERROR ', error);
-      this.notify.showWidgetStyleUpdateNotification(this.deleteErrorMsg, 4, 'report_problem');
-    }, () => {
-      this.logger.log('[PRJCT-EDIT-ADD] - deleteProject * COMPLETE *');
-
-      setTimeout(() => {
+      }, (error) => {
         this.SHOW_CIRCULAR_SPINNER = false;
-        this.notify.showNotificationChangeProject(this.deleteSuccessMsg, 2, 'done');
-        this.router.navigate(['/projects']);
-      }, 1500);
-    });
+        this.logger.error('[PRJCT-EDIT-ADD] - deleteProject - ERROR ', error);
+        this.notify.showWidgetStyleUpdateNotification(this.deleteErrorMsg, 4, 'report_problem');
+      }, () => {
+        this.logger.log('[PRJCT-EDIT-ADD] - deleteProject * COMPLETE *');
+
+        setTimeout(() => {
+          this.SHOW_CIRCULAR_SPINNER = false;
+          this.notify.showNotificationChangeProject(this.deleteSuccessMsg, 2, 'done');
+          this.router.navigate(['/projects']);
+        }, 1500);
+      });
+    // } else {
+    //   console.log('[PRJCT-EDIT-ADD] - deleteProject > project profile type' , this.prjct_profile_type );
+    // }
   }
 
 
