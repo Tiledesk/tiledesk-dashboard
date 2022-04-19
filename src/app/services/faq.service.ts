@@ -120,12 +120,26 @@ export class FaqService {
    * @param id_faq_kb 
    * @returns 
    */
-  public getFaqByFaqKbId(id_faq_kb: string): Observable<Faq[]> {
+  public getPaginatedFaqByFaqKbId(id_faq_kb: string,  pagenum: number, faqxpagelimit:number , textosearch: string): Observable<Faq[]> {
     // let url = 'http://localhost:3000/app1/faq/?id_faq_kb=5a81598721333b920c3e5949';
-    let url = this.FAQ_URL;
-    url += '?id_faq_kb=' + `${id_faq_kb}`;
+  
+  
 
-    this.logger.log('[FAQ-SERV] - GET FAQ BY FAQ-KB ID (BOT-ID) - URL', url);
+    console.log('[FAQ-SERV] - GET PAGINATED FAQ BY BOT-ID - pagenum', pagenum);
+    console.log('[FAQ-SERV] - GET PAGINATED FAQ BY BOT-ID - faqxpagelimit', faqxpagelimit);
+    console.log('[FAQ-SERV] - GET PAGINATED FAQ BY BOT-ID - textosearch', textosearch);
+    let queryString = '' // queryString = + '&text=' + textosearch
+    let url = ''
+    if (textosearch === undefined) {
+      url = this.FAQ_URL + '?id_faq_kb=' + id_faq_kb + '&page=' + pagenum + '&limit=' + faqxpagelimit;
+    } else {
+      url = this.FAQ_URL + '?id_faq_kb=' + id_faq_kb + '&page=' + pagenum + '&limit=' + faqxpagelimit + '&text=' + textosearch; 
+    }
+    
+    
+    // url += '?id_faq_kb=' + `${id_faq_kb}`;
+
+    console.log('[FAQ-SERV] - GET PAGINATED FAQ BY BOT-ID - URL', url);
 
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -134,6 +148,26 @@ export class FaqService {
       .get(url, { headers })
       .map((response) => response.json());
   }
+
+    /**
+   * GET FAQ BY FAQ-KB ID (alias BY BOT ID)
+   * @param id_faq_kb 
+   * @returns 
+   */
+     public getAllFaqByFaqKbId(id_faq_kb: string): Observable<Faq[]> {
+      // let url = 'http://localhost:3000/app1/faq/?id_faq_kb=5a81598721333b920c3e5949';
+      let url = this.FAQ_URL + '?id_faq_kb=' + id_faq_kb;
+      // url += '?id_faq_kb=' + `${id_faq_kb}`;
+  
+      this.logger.log('[FAQ-SERV] - GET FAQ BY FAQ-KB ID (BOT-ID) - URL', url);
+  
+      const headers = new Headers();
+      headers.append('Content-Type', 'application/json');
+      headers.append('Authorization', this.TOKEN);
+      return this.http
+        .get(url, { headers })
+        .map((response) => response.json());
+    }
 
 /**
  * GET FAQ BY TEXT (CONTAINED IN THE QUESTION OR IN THE ANSWER)

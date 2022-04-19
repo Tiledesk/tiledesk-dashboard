@@ -68,7 +68,7 @@ select {
 /* TABLE CONTENT TOP ALIGNMENT */
 .table td,
 .table th {
-  vertical-align: top !important;
+  vertical-align: middle !important;
 }
 
 /* MODAL START */
@@ -307,47 +307,47 @@ Max width before this PARTICULAR table gets nasty
 This query will take effect for any screen smaller than 760px
 and also iPads specifically.
 */
-@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
-  /* Force table to not be like tables anymore */
-  table,
-  thead,
-  tbody,
-  th,
-  td,
-  tr {
-    display: block;
-  }
+// @media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
+//   /* Force table to not be like tables anymore */
+//   table,
+//   thead,
+//   tbody,
+//   th,
+//   td,
+//   tr {
+//     display: block;
+//   }
 
-  /* Hide table headers (but not display: none;, for accessibility) */
-  thead tr {
-    position: absolute;
-    top: -9999px;
-    left: -9999px;
-  }
+//   /* Hide table headers (but not display: none;, for accessibility) */
+//   thead tr {
+//     position: absolute;
+//     top: -9999px;
+//     left: -9999px;
+//   }
 
-  tr {
-    border: 1px solid #ccc;
-  }
+//   tr {
+//     border: 1px solid #ccc;
+//   }
 
-  td {
-    /* Behave  like a "row" */
-    border: none;
-    border-bottom: 1px solid #eee;
-    position: relative;
-    padding-left: 50%;
-  }
+//   td {
+//     /* Behave  like a "row" */
+//     border: none;
+//     border-bottom: 1px solid #eee;
+//     position: relative;
+//     padding-left: 50%;
+//   }
 
-  td:before {
-    /* Now like a table header */
-    position: absolute;
-    /* Top/left values mimic padding */
-    top: 6px;
-    left: 6px;
-    width: 45%;
-    padding-right: 10px;
-    white-space: nowrap;
-  }
-}
+//   td:before {
+//     /* Now like a table header */
+//     position: absolute;
+//     /* Top/left values mimic padding */
+//     top: 6px;
+//     left: 6px;
+//     width: 45%;
+//     padding-right: 10px;
+//     white-space: nowrap;
+//   }
+// }
 /* END NEW FOR TABLE */
 
 /**
@@ -449,21 +449,21 @@ input[type="text"]:disabled::placeholder {
 
 ::placeholder {
   /* Chrome, Firefox, Opera, Safari 10.1+ */
-  color: #d9d9d9 !important;
-  font-weight: 200 !important;
+  color: #A0A0A0 !important;
+  font-weight: 300 !important;
   opacity: 1; /* Firefox */
 }
 
 :-ms-input-placeholder {
   /* Internet Explorer 10-11 */
-  color: #d9d9d9 !important;
-  font-weight: 200 !important;
+  color: #A0A0A0 !important;
+  font-weight: 300 !important;
 }
 
 ::-ms-input-placeholder {
   /* Microsoft Edge */
-  color: #d9d9d9 !important;
-  font-weight: 200 !important;
+  color: #A0A0A0 !important;
+  font-weight: 300 !important;
 }
 
 .add-padding {
@@ -629,12 +629,9 @@ input[type="text"]:disabled::placeholder {
 }
 
 @media (max-width: 991px) {
-  // .onoffswitch-wrapper {
-  //   top: -41px;
+  // .btn-light-blu {
+  //   top: -2px !important;
   // }
-  .btn-light-blu {
-    top: -2px !important;
-  }
 }
 
 @media (max-width: 767px) {
@@ -648,17 +645,17 @@ input[type="text"]:disabled::placeholder {
 }
 
 @media (max-width: 764px) {
-  .btn-light-blu.upload-csv {
-    left: 170px !important;
-  }
+  // .btn-light-blu.upload-csv {
+  //   left: 170px !important;
+  // }
 
-  .btn-light-blu.export-csv {
-    left: 210px !important;
-  }
+  // .btn-light-blu.export-csv {
+  //   left: 210px !important;
+  // }
 
-  .btn-light-blu.test-bot {
-    left: 251px !important;
-  }
+  // .btn-light-blu.test-bot {
+  //   left: 251px !important;
+  // }
 }
 @media (max-width: 1055px) {
   .customize-table-btn-name {
@@ -669,8 +666,8 @@ input[type="text"]:disabled::placeholder {
   padding: 8px;
   margin-top: 0px;
   margin-bottom: 0px;
-  position: absolute;
-  top: 9px;
+  // position: absolute;
+  // top: 9px;
   background: #e7f3ff;
   color: #1876f2;
   box-shadow: unset;
@@ -680,12 +677,17 @@ input[type="text"]:disabled::placeholder {
   padding: 8px;
   margin-top: 0px;
   margin-bottom: 0px;
-  position: absolute;
-  top: -41px;
+  // position: absolute;
+  // top: -34px;
   background: #e4e6eb;
   color: #050505;
   box-shadow: unset;
 }
+
+// .btn-light-grey.customize-table {
+//   right: 5px;
+// }
+
 
 .btn-light-blu:hover {
   background: #d3e0ef;
@@ -697,25 +699,22 @@ input[type="text"]:disabled::placeholder {
   box-shadow: unset;
 }
 
-.btn-light-blu.add-answer {
-  left: 130px;
-}
+// .btn-light-blu.add-answer {
+//   left: 130px;
+// }
 
-.btn-light-blu.upload-csv {
-  left: 242px;
-}
+// .btn-light-blu.upload-csv {
+//   left: 242px;
+// }
 
-.btn-light-blu.export-csv {
-  left: 377px;
-}
+// .btn-light-blu.export-csv {
+//   left: 377px;
+// }
 
-.btn-light-blu.test-bot {
-  left: 497px;
-}
+// .btn-light-blu.test-bot {
+//   left: 497px;
+// }
 
-.btn-light-grey.customize-table {
-  right: 5px;
-}
 
 .blob.white {
   background: white;
@@ -825,18 +824,17 @@ input[type="text"]:disabled::placeholder {
   margin-top: 3px;
 }
 
-
 // text-decoration: underline;
 .custom-link {
   color: #0f62ff;
-  cursor:pointer;
+  cursor: pointer;
 }
 
 .custom-link:hover {
   text-decoration: underline;
 }
 
-.link-to-dialogflow-connector-doc{
+.link-to-dialogflow-connector-doc {
   margin-left: 8px;
   vertical-align: middle;
   color: #0f62ff;
@@ -849,3 +847,103 @@ input[type="text"]:disabled::placeholder {
   text-decoration: underline;
 }
 
+
+// -----------------------------------
+// Answers search 
+// -----------------------------------
+.answers-count {
+  color: #353f45;
+  padding: 6px 12px;
+  font-family: 'Poppins';
+  font-weight: 500;
+  margin-left: 9px;
+  margin-top: 0px;
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+
+.search-input-wpr {
+  padding: 13px 0;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  flex-wrap: wrap;
+  font-size: 16.1px;
+  background-color: #fff;
+  justify-content: center;
+}
+
+
+.full-text-search-input-group {
+  background: #eef0f1;
+  transition: all 0.5s ease;
+  border-radius: 5px;
+  max-width: 460px;
+  width: 100%;
+  margin-left: 5px;
+}
+
+.full-text-search-input {
+  border-radius: 0 !important;
+  border-color: transparent !important;
+  width: 100%;
+  background: transparent;
+  height: 50px;
+  padding: 5px 10px;
+}
+
+.full-text-search-input:focus {
+  outline: 0px;
+}
+
+.full-text-search-input-group:focus-within {
+  border: 1px solid #d9d9d9;
+  background: rgba(255, 255, 255, 1);
+}
+
+.custom-input-group-faq--btn {
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  width: 37px;
+  height: 37px;
+}
+
+.custom-input-group-faq--btn:hover{
+  background-color: rgba(60, 64, 67, 0.08);
+  -webkit-transition: background-color 300ms linear;
+  -ms-transition: background-color 300ms linear;
+  transition: background-color 300ms linear;
+
+  .fa-search-btn {
+    color: black !important;
+  }
+ 
+  .fa-clear-search-btn {
+    color: black !important;
+  }
+}
+
+.fa-search-btn {
+  margin-top: 5px;
+  cursor: pointer;
+  border-radius: 50%;
+  padding: 4px 4px;
+}
+
+// PLACEHOLDER CUSTOM FONT-SIZE
+#full-text-search::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: grey;
+  font-weight: 300 !important;
+}
+#full-text-search:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: grey;
+  font-weight: 300 !important;
+}
+#full-text-search::-ms-input-placeholder {
+  /* Microsoft Edge */
+  color: grey;
+  font-weight: 300 !important;
+}
