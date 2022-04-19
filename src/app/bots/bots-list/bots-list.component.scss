@@ -254,6 +254,11 @@ input[type="checkbox"]:disabled {
   }
 }
 
+
+.bot--img {
+  vertical-align: middle; width: 52px; height: 52px; border-radius: 50%; border: 1px solid #eee; margin-right: 6px; object-fit: cover;
+}
+
 // .card_title__underlined {
 //   text-transform: none;
 //   color: #566787;

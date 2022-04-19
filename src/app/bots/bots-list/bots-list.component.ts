@@ -222,7 +222,7 @@ export class BotListComponent implements OnInit {
       }
 
 
-      /* this.showSpinner = false moved in getFaqByFaqKbId:
+      /* this.showSpinner = false moved in getAllFaqByFaqKbId:
        * in this callback stop the spinner only if there isn't faq-kb and
        * if there is an error */
       // this.showSpinner = false;
@@ -234,7 +234,7 @@ export class BotListComponent implements OnInit {
       () => {
         this.logger.log('[BOTS-LIST] GET BOTS COMPLETE');
         // FOR ANY FAQ-KB ID GET THE FAQ ASSOCIATED
-        this.getFaqByFaqKbId();
+        this.getAllFaqByFaqKbId();
       });
 
   }
@@ -279,15 +279,15 @@ export class BotListComponent implements OnInit {
 
  
 
-  getFaqByFaqKbId() {
+  getAllFaqByFaqKbId() {
     // FOR ANY FAQ-KB ID GET THE FAQ ASSOCIATED
     let i: number;
     for (i = 0; i < this.faqkbList.length; i++) {
       this.logger.log('[BOTS-LIST] getFaqByFaqKbId ID FAQ KB ', this.faqkbList[i]._id);
       this.faqKbId = this.faqkbList[i]._id;
 
-      this.faqService.getFaqByFaqKbId(this.faqKbId).subscribe((faq: any) => {
-        this.logger.log('[BOTS-LIST] getFaqByFaqKbId GET BOT FAQs - FAQs ARRAY ', faq);
+      this.faqService.getAllFaqByFaqKbId(this.faqKbId).subscribe((faq: any) => {
+        this.logger.log('[BOTS-LIST] getAllFaqByFaqKbId GET BOT FAQs - FAQs ARRAY ', faq);
 
         if (faq) {
           let j: number;
@@ -415,14 +415,13 @@ export class BotListComponent implements OnInit {
    */
 
   onCloseDeleteBotModal() {
-
     this.displayDeleteBotModal = 'none';
   }
+
   // ENABLED THE BUTTON 'DELETE BOT' IF THE BOT ID TYPED BY THE USER
   // MATCHES TO THE BOT ID
   checkIdBotTyped() {
     this.logger.log('[BOTS-LIST] BOT ID TYPED BY USER', this.bot_id_typed);
-
     if (this.id_toDelete === this.bot_id_typed) {
       this.ID_BOT_TYPED_MATCHES_THE_BOT_ID = true;
       this.logger.log('[BOTS-LIST] »» BOT ID TYPED MATCHES THE BOT ID ', this.ID_BOT_TYPED_MATCHES_THE_BOT_ID)

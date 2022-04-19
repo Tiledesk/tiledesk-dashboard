@@ -128,14 +128,14 @@
                       <td style="white-space: nowrap; width: 1%; cursor: pointer;">
                         <span class="tool_tip" (click)='goToFaqPage(faqkb?._id, faqkb?.type)'>
                           <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
-                            style="vertical-align: middle; width: 52px; height: 52px; border-radius: 50%; border: 1px solid #eee; margin-right: 6px;"
-                            class="user-img"
+                            style=""
+                            class="bot--img"
                             src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{faqkb?._id}}%2Fphoto.jpg?alt=media"
                             onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
 
                           <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
-                            style="vertical-align: middle; width: 52px; height: 52px; border-radius: 50%; border: 1px solid #eee; margin-right: 6px;"
-                            class="user-img"
+                            style=""
+                            class="bot--img"
                             src="{{baseUrl}}images?path=uploads%2Fusers%2F{{faqkb?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                             onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
 
