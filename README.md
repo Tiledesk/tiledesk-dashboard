@@ -68,6 +68,11 @@ And more.
 
 - tiledesk-server installed and running (https://github.com/Tiledesk/tiledesk-server.git)
 
+# Run Tiledesk with Docker Compose
+
+Do you want to install all the Tiledesk components on your server with just one click?
+Use [Docker Compose Tiledesk installation guide](https://github.com/Tiledesk/tiledesk-deployment/blob/master/docker-compose/README.md)
+
 
 # Install from source code
 
