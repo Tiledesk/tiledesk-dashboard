@@ -989,6 +989,7 @@
         "Topic": "Тема",
         "CreationDate": "Датум израде",
         "NoFAQ": "Нема честа питања",
+        "NoAnswer": "Нема одговора",
         "FaqId": "Ид честа питања",
         "tooltipEditFaq": "Уреди одговор",
         "DeleteFaq": "Обриши одговор",
@@ -2056,6 +2057,10 @@
     "PaymentInformation":"Информације о плаћању",
     "TagNameIsRequired":"Назив ознаке је обавезан",
     "Logout": "Одјава",
+    "NoAnswersMatchedYourSearch":"Ниједан одговор није одговарао вашој претрази",
+    "WebhookDisabledForThisIntent": "Вебхоок је онемогућен за ову intent",
+    "WebhookEnabledForThisIntent":"Вебхоок је омогућен за ову intent",
+    "BotTest":"Бот тест",
     "CHAT_IONIC": {
         "LABEL_TU": "ти: ",
         "LABEL_MSG_PUSH_START_CHAT": "Још нема разговора",

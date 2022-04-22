@@ -989,6 +989,7 @@
         "Topic": "Тема",
         "CreationDate": "Дата создания",
         "NoFAQ": "Нет часто задаваемых вопросов",
+        "NoAnswer": "Без ответа",
         "FaqId": "Идентификатор часто задаваемых вопросов",
         "tooltipEditFaq": "Изменить ответ",
         "DeleteFaq": "Удалить ответ",
@@ -2056,6 +2057,10 @@
     "PaymentInformation":"Платежная информация",
     "TagNameIsRequired":"Укажите имя тега",
     "Logout": "Выйти из системы",
+    "NoAnswersMatchedYourSearch":"Нет ответов, соответствующих вашему запросу",
+    "WebhookDisabledForThisIntent": "Вебхук отключен для этого intent",
+    "WebhookEnabledForThisIntent":"Вебхук включен для этого intent",
+    "BotTest":"Тест бота",
     "CHAT_IONIC": {
         "LABEL_TU": "ты: ",
         "LABEL_MSG_PUSH_START_CHAT": "Разговора пока нет",

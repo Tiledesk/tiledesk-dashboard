@@ -989,6 +989,7 @@
 		"Topic": "Thema",
 		"CreationDate": "Erstelldatum",
 		"NoFAQ": "Kein FAQ",
+		"NoAnswer": "Keine Antwort",
 		"FaqId": "FAQ Id",
 		"tooltipEditFaq": "Antwort bearbeiten",
 		"DeleteFaq": "Antwort löschen",
@@ -2055,5 +2056,9 @@
 	"CardChangedSuccessfully":"Kreditkarte erfolgreich geändert",
 	"PaymentInformation":"Zahlungsinformationen",
 	"TagNameIsRequired":"Tag-Name ist erforderlich",
-	"Logout": "Ausloggen"
+	"Logout": "Ausloggen",
+	"NoAnswersMatchedYourSearch":"Keine Antworten stimmten mit Ihrer Suche überein",
+	"WebhookDisabledForThisIntent": "Webhook für diesen Intent deaktiviert",
+	"WebhookEnabledForThisIntent":"Webhook für diesen Intent aktiviert",
+	"BotTest":"Bot-Test"
 }

@@ -300,7 +300,7 @@
     "DoYouReallyWantToCancelYourSubscription": "Vuoi davvero cancellare il tuo abbonamento?",
     "OnceYouCancelTheSubscription": "Una volta annullato l'abbonamento il tuo account passerà a Free e non potrai accedere alle nostre funzionalità {{projectprofile}}",
     "YouCurrentlyAreUsing": "Attualmente stai utilizzando",
-    "Of": "dei",
+    "Of": "di",
     "ActiveOperatorSeatsInThe": "posti attivi nel",
     "GetMore": "Ottieni altri",
     "AvailableWithTheProPlan": "Disponibile con il piano Pro o con il piano Enterprise",
@@ -989,6 +989,7 @@
         "Topic": "Argomento",
         "CreationDate": "Data creazione",
         "NoFAQ": "Nessuna FAQ",
+        "NoAnswer": "Nessuna risposta",
         "FaqId": "Id FAQ",
         "tooltipEditFaq": "Modifica risposta",
         "DeleteFaq": "Elimina risposta",
@@ -2054,5 +2055,9 @@
     "CardChangedSuccessfully":"Carta cambiata con successo",
     "PaymentInformation":"Informazioni sul pagamento",
     "TagNameIsRequired":"Il nome del tag è obbligatorio",
-    "Logout": "Disconnettersi"
+    "Logout": "Disconnettersi",
+    "NoAnswersMatchedYourSearch":"Nessuna risposta corrisponde alla tua ricerca",
+    "WebhookDisabledForThisIntent": "Webhook disabilitato per questo intent",
+    "WebhookEnabledForThisIntent":"Webhook abilitato per questo intent",
+    "BotTest":"Prova del bot"
 }

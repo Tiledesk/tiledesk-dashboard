@@ -989,6 +989,7 @@
         "Topic": "Başlık",
         "CreationDate": "Oluşturulma tarihi",
         "NoFAQ": "SSS yok",
+        "NoAnswer": "Cevap yok",
         "FaqId": "SSS Kimliği",
         "tooltipEditFaq": "Cevabı düzenle",
         "DeleteFaq": "Cevabı sil",
@@ -2056,6 +2057,10 @@
     "PaymentInformation":"Ödeme bilgileri",
     "TagNameIsRequired":"Etiket adı gerekli",
     "Logout": "Çıkış Yap",
+    "NoAnswersMatchedYourSearch":"Aramanızla eşleşen yanıt yok",
+    "WebhookDisabledForThisIntent": "Web kancası bu intent için devre dışı bırakıldı",
+    "WebhookEnabledForThisIntent":"Web kancası bu intent için etkinleştirildi",
+    "BotTest":"Bot testi",
     "CHAT_IONIC": {
         "LABEL_TU": "sen: ",
         "LABEL_MSG_PUSH_START_CHAT": "Henüz görüşme yok",

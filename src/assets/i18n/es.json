@@ -989,6 +989,7 @@
         "Topic": "Tema",
         "CreationDate": "Fecha de creación",
         "NoFAQ": "Sin FAQ",
+        "NoAnswer": "Ninguna respuesta",
         "FaqId": "Id FAQ",
         "tooltipEditFaq": "Editar respuesta",
         "DeleteFaq": "Eliminar respuesta",
@@ -2056,6 +2057,10 @@
     "PaymentInformation":"Informacion de pago",
     "TagNameIsRequired":"El nombre de la etiqueta es obligatorio",
     "Logout": "Finalizar la sesión",
+    "NoAnswersMatchedYourSearch":"Ninguna respuesta coincidió con su búsqueda",
+    "WebhookDisabledForThisIntent": "Webhook deshabilitado para este intent",
+    "WebhookEnabledForThisIntent":"Webhook habilitado para este intent",
+    "BotTest":"Prueba de bot",
     "CHAT_IONIC": {
         "LABEL_TU": "tú: ",
         "LABEL_MSG_PUSH_START_CHAT": "Aún no hay conversación",

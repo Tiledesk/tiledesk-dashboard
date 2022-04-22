@@ -989,6 +989,7 @@
         "Topic": "Topic",
         "CreationDate": "Creation date",
         "NoFAQ": "No FAQ",
+        "NoAnswer": "No answer",
         "FaqId": "FAQ Id",
         "tooltipEditFaq": "Edit answer",
         "DeleteFaq": "Delete answer",
@@ -2056,6 +2057,10 @@
     "PaymentInformation":"Payment information",
     "TagNameIsRequired":"Tag name is required",
     "Logout": "Logout",
+    "NoAnswersMatchedYourSearch":"No answers matched your search",
+    "WebhookDisabledForThisIntent": "Webhook disabled for this intent",
+    "WebhookEnabledForThisIntent":"Webhook enabled for this intent",
+    "BotTest":"Bot test",
     "CHAT_IONIC": {
         "LABEL_TU": "you: ",
         "LABEL_MSG_PUSH_START_CHAT": "No conversation yet",
