@@ -32,7 +32,7 @@ import {
   URL_configure_your_first_chatbot,
   URL_dialogflow_connector
 } from '../../utils/util';
-import { Console } from 'console';
+
 
 const swal = require('sweetalert');
 // import $ = require('jquery');
@@ -175,6 +175,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   fullText: string;
   fullText_temp: string;
   queryString: string;
+  paginated_answers_count: number;
 
   @ViewChild('fileInputBotProfileImage') fileInputBotProfileImage: any;
 
@@ -1276,6 +1277,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     // this.queryString = this.fullText_temp
     console.log('[FAQ-COMP] - FULL TEXT SEARCH ', this.queryString)
     this.getPaginatedFaqByFaqKbIdAndRepliesCount();
+    this.getAllSearcedFaq()
   }
 
 
@@ -1298,17 +1300,19 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   // GET PAGINATED FAQS
   // -----------------------------------------------------------------------------------------
   getPaginatedFaqByFaqKbIdAndRepliesCount() {
+    this.showSpinner = true;
     this.faqService.getPaginatedFaqByFaqKbId(this.id_faq_kb, this.pageNo, this.faqPerPageLimit, this.queryString).subscribe((faq: any) => {
       console.log('[FAQ-COMP] - GET Paginated FAQS', faq);
-      this.faq = faq;
+      
 
       if (faq) {
-
-        if (this.has_searched === true) {
-          this.faq_lenght = faq.length
-          const totalPagesNo = faq.length / this.faqPerPageLimit;
-          this.totalPagesNo_roundToUp = Math.ceil(totalPagesNo);
-        }
+        this.faq = faq;
+        this.paginated_answers_count = faq.length
+        // if (this.has_searched === true) {
+        //   this.faq_lenght = faq.length
+        //   const totalPagesNo = faq.length / this.faqPerPageLimit;
+        //   this.totalPagesNo_roundToUp = Math.ceil(totalPagesNo);
+        // }
         // this.faq_lenght = faq.length
         // in aggiornamento
         this.faqService.getCountOfFaqReplies(this.id_faq_kb).subscribe((res: any) => {
@@ -1338,6 +1342,35 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
       this.logger.log('[FAQ-COMP] >> FAQs GOT BY FAQ-KB ID - COMPLETE');
     });
   }
+
+// -----------------------------------------------------------------------------------------
+  // GET ALL serched faq
+  // -----------------------------------------------------------------------------------------
+  getAllSearcedFaq() {
+
+    this.faqService.getCountOfAllSearcedFaq(this.id_faq_kb, this.queryString).subscribe((faq: any) => {
+      console.log('[FAQ-COMP] - GET ALL SEARCHED FAQS', faq);
+      // this.faq = faq;
+
+      if (faq) {
+        // this.paginated_answers_count = faq.length
+        if (this.has_searched === true) {
+          this.faq_lenght = faq.length
+          const totalPagesNo = faq.length / this.faqPerPageLimit;
+          this.totalPagesNo_roundToUp = Math.ceil(totalPagesNo);
+        }
+        // this.faq_lenght = faq.length
+   
+      }
+    }, (error) => {
+    
+      this.logger.error('[FAQ-COMP] >> GET ALL SEARCHED FAQS - ERROR', error);
+    }, () => {
+   
+      this.logger.log('[FAQ-COMP] >> GET ALL SEARCHED FAQS - COMPLETE');
+    });
+
+  } 
 
 
 

@@ -122,9 +122,6 @@ export class FaqService {
    */
   public getPaginatedFaqByFaqKbId(id_faq_kb: string,  pagenum: number, faqxpagelimit:number , textosearch: string): Observable<Faq[]> {
     // let url = 'http://localhost:3000/app1/faq/?id_faq_kb=5a81598721333b920c3e5949';
-  
-  
-
     console.log('[FAQ-SERV] - GET PAGINATED FAQ BY BOT-ID - pagenum', pagenum);
     console.log('[FAQ-SERV] - GET PAGINATED FAQ BY BOT-ID - faqxpagelimit', faqxpagelimit);
     console.log('[FAQ-SERV] - GET PAGINATED FAQ BY BOT-ID - textosearch', textosearch);
@@ -135,11 +132,30 @@ export class FaqService {
     } else {
       url = this.FAQ_URL + '?id_faq_kb=' + id_faq_kb + '&page=' + pagenum + '&limit=' + faqxpagelimit + '&text=' + textosearch; 
     }
-    
-    
-    // url += '?id_faq_kb=' + `${id_faq_kb}`;
-
+  
     console.log('[FAQ-SERV] - GET PAGINATED FAQ BY BOT-ID - URL', url);
+
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.json());
+  }
+
+  public getCountOfAllSearcedFaq(id_faq_kb: string , textosearch: string): Observable<Faq[]> {
+    // let url = 'http://localhost:3000/app1/faq/?id_faq_kb=5a81598721333b920c3e5949';
+ 
+    console.log('[FAQ-SERV] - GET ALL SEARCED - textosearch', textosearch);
+   
+    let url = ''
+    if (textosearch !== undefined) {
+      
+ 
+      url = this.FAQ_URL + '?id_faq_kb=' + id_faq_kb + '&text=' + textosearch; 
+    }
+  
+    console.log('[FAQ-SERV] - GET ALL SEARCED - URL', url);
 
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
