@@ -2061,6 +2061,8 @@
     "WebhookDisabledForThisIntent": "Вебхоок је онемогућен за ову intent",
     "WebhookEnabledForThisIntent":"Вебхоок је омогућен за ову intent",
     "BotTest":"Бот тест",
+    "BotLanguage":"Језик бота",
+    "AddIntent":"Додајте intent",
     "CHAT_IONIC": {
         "LABEL_TU": "ти: ",
         "LABEL_MSG_PUSH_START_CHAT": "Још нема разговора",

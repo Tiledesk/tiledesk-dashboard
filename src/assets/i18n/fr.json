@@ -2061,6 +2061,8 @@
     "WebhookDisabledForThisIntent": "Webhook désactivé pour cet intent",
     "WebhookEnabledForThisIntent":"Webhook activé pour cet intent",
     "BotTest":"Test de bot",
+    "BotLanguage":"Langage bot",
+    "AddIntent":"Ajouter intent",
     "CHAT_IONIC": {
         "LABEL_TU": "vous: ",
         "LABEL_MSG_PUSH_START_CHAT": "Pas encore de conversation",

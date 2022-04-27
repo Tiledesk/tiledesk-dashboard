@@ -2059,5 +2059,7 @@
     "NoAnswersMatchedYourSearch":"Nessuna risposta corrisponde alla tua ricerca",
     "WebhookDisabledForThisIntent": "Webhook disabilitato per questo intent",
     "WebhookEnabledForThisIntent":"Webhook abilitato per questo intent",
-    "BotTest":"Prova del bot"
+    "BotTest":"Prova del bot",
+    "BotLanguage":"Lingua bot",
+    "AddIntent":"Aggiungi intent"
 }

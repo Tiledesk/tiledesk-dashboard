@@ -2061,6 +2061,8 @@
     "WebhookDisabledForThisIntent": "Вебхук отключен для этого intent",
     "WebhookEnabledForThisIntent":"Вебхук включен для этого intent",
     "BotTest":"Тест бота",
+    "BotLanguage":"Язык бота",
+    "AddIntent":"Добавить intent",
     "CHAT_IONIC": {
         "LABEL_TU": "ты: ",
         "LABEL_MSG_PUSH_START_CHAT": "Разговора пока нет",

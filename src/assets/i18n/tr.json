@@ -2061,6 +2061,8 @@
     "WebhookDisabledForThisIntent": "Web kancası bu intent için devre dışı bırakıldı",
     "WebhookEnabledForThisIntent":"Web kancası bu intent için etkinleştirildi",
     "BotTest":"Bot testi",
+    "BotLanguage":"Bot dili",
+    "AddIntent":"Intent ekle",
     "CHAT_IONIC": {
         "LABEL_TU": "sen: ",
         "LABEL_MSG_PUSH_START_CHAT": "Henüz görüşme yok",
