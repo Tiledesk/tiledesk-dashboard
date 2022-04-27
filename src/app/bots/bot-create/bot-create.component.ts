@@ -494,11 +494,13 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
       let bot_type = ''
       if (this.botType === 'resolution') {
         bot_type = 'native'
+        this.router.navigate(['project/' + this.project._id + '/bots/intents/' + this.newBot_Id + "/" + bot_type  ]);
       } else {
-        bot_type = this.botType
+        bot_type = this.botType;
+        this.router.navigate(['project/' + this.project._id + '/bots/' + this.newBot_Id + "/" + bot_type]);
       }
       // this.router.navigate(['project/' + this.project._id + '/bots/' + this.newBot_Id + "/" + this.botType]);
-      this.router.navigate(['project/' + this.project._id + '/bots/' + this.newBot_Id + "/" + bot_type]);
+      
     } else {
       this.present_modal_attacch_bot_to_dept()
     }
@@ -514,12 +516,14 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     let bot_type = ''
     if (this.botType === 'resolution') {
       bot_type = 'native'
+      this.router.navigate(['project/' + this.project._id + '/chatbots/' + this.newBot_Id + "/" + bot_type + "/intents"]);
     } else {
       bot_type = this.botType
+      this.router.navigate(['project/' + this.project._id + '/bots/' + this.newBot_Id + "/" + bot_type]);
+
     }
     // this.router.navigate(['project/' + this.project._id + '/bots/' + this.newBot_Id + "/" + this.botType]);
-    this.router.navigate(['project/' + this.project._id + '/bots/' + this.newBot_Id + "/" + bot_type]);
-
+   
   }
 
   hookBotToDept() {

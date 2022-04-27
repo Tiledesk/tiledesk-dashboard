@@ -220,6 +220,8 @@ import { WidgetPrechatFormComponent } from './widget-prechat-form/widget-prechat
 
 import { CreditCardDirectivesModule } from 'angular-cc-library';
 import { OnlynumberDirective } from './_directives/onlynumber.directive';
+import { NativeBotSidebarComponent } from './bots/native-bot-sidebar/native-bot-sidebar.component';
+import { NativeBotComponent } from './bots/native-bot/native-bot.component';
 // console.log('************** APPMODULE ******************');
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -413,7 +415,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     SmtpSettingsComponent,
     SettingsSidebarComponent,
     WidgetPrechatFormComponent,
- 
+    NativeBotSidebarComponent,
+    NativeBotComponent
   ],
   imports: [
     CreditCardDirectivesModule,

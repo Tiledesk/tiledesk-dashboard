@@ -1,0 +1,1146 @@
+<div class="navbar-brand" style="z-index: 1050;position: relative;margin-top:6px; padding-left:12px">
+  <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" rel="tooltip" title=""
+    (click)="goBack()">keyboard_arrow_left</i>
+  
+  {{ 'FaqPage.EditBOT' | translate }}
+  <!-- <span style="color: #566787; font-weight:400">
+    “{{ faqKb_name }}”
+  </span> -->
+</div>
+<div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
+  <div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
+
+    <div class="content-wpr" style="display: flex;">
+
+      <appdashboard-native-bot-sidebar style="border-right:1px solid #e5effe !important" 
+      [faqKb_name]="faqKb_name"
+        [botDefaultSelectedLang]="botDefaultSelectedLang" [botType]="botType" [id_faq_kb]="id_faq_kb"  [botProfileImageExist]="botProfileImageExist"
+        [botImageHasBeenUploaded]="botImageHasBeenUploaded"
+        [botProfileImageurl]="botProfileImageurl">
+      </appdashboard-native-bot-sidebar>
+
+      <div class="teplate-content" style="flex: 1 1 auto; margin-left: 20px;">
+       
+        <div class="row">
+          <div class="col-md-8" [ngStyle]="{'display': INTENTS_ROUTE_IS_ACTIVE === true ? 'none' : block }">
+            <div class="card custom_card card--no-border"
+              style="padding-top: 0px;padding-bottom:5px;margin-bottom: 5px;margin-top: 0px;">
+              <!-- style="margin-top: 16px" -->
+
+              <loading-spinner *ngIf="showSpinnerInUpdateBotCard"></loading-spinner>
+              <div *ngIf="!showSpinnerInUpdateBotCard" class="card-content" style="padding-left:0px; padding-top:0px">
+
+                <!-- ---------------------------------------------------------- -->
+                <!-- General -->
+                <!-- ---------------------------------------------------------- -->
+                <section *ngIf="GENERAL_ROUTE_IS_ACTIVE === true">
+                  <div class="row">
+                    <div class="col-sm-10 col-md-10">
+                      <h3 class="card_title__underlined">
+                        <span class="card_title__underline">
+                          <!-- <span *ngIf="botType === 'native'" style="text-transform:capitalize"> Resolution </span> -->
+                          {{ "BotDetails" | translate }}
+                        </span>
+                      </h3>
+                    </div>
+                    <div class="col-sm-10 col-md-10">
+                      <div class="section-subtitle"> </div>
+                    </div>
+                  </div>
+
+                  <!--  --------------------------------------------------------------------------------------------------- -->
+                  <!--  Bot avatar (for all bot type) -->
+                  <!--  --------------------------------------------------------------------------------------------------- -->
+                  <div class="row">
+                    <label class="col-sm-2 bot_avatar_label">
+                      Avatar
+                    </label>
+                    <div class="col-sm-10">
+                      <!-- [ngStyle]="{'margin-left':botType === 'dialogflow' ? '35px' : 0 }" -->
+                      <div class="card-avatar" style="padding-bottom:15px; min-height: 95px;">
+                        <div class="bot_avatar" style="float: left;width: 80px; height: 80px;margin-right: 21px;">
+
+                          <img *ngIf="botProfileImageExist === true || botImageHasBeenUploaded === true"
+                            class="bot-profile-img" [src]="getBotProfileImage()"
+                            onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
+
+                          <img *ngIf="botProfileImageExist === false && botImageHasBeenUploaded !== true"
+                            class="bot-profile-img" src="assets/img/avatar_bot_tiledesk.svg" />
+                        </div>
+
+
+                        <input #fileInputBotProfileImage class="inputfile" name="uploadbotimage" id="uploadbotimage"
+                          type="file" (change)="upload($event)" accept=".jpg, .JPEG, .png" />
+                        <label class="btn btn-white upload-image-btn" for="uploadbotimage"
+                          style="padding-left:15px; padding-right:15px; text-transform: none; color: #7695a5">
+
+
+                          <span *ngIf="!showSpinnerInUploadImageBtn">
+                            {{ "UserProfile.UploadImage" | translate }}
+                          </span>
+                          <span *ngIf="showSpinnerInUploadImageBtn">
+                            {{ 'VisitorsPage.Loading' | translate }}
+                            <i class="fa fa-spinner fa-spin"></i>
+                          </span>
+                        </label>
+
+                        <button class="btn btn-white delete_bot_image_btn tool_tip" (click)="deleteBotProfileImage()"
+                          style="padding: 9px 15px; margin-top: 20px;">
+                          <span class="material-icons" style="font-size: 24px; color: #f44336">
+                            delete_forever
+                          </span>
+
+                          <span class="bottom"
+                            style="min-width: fit-content;padding: 5px;border-radius: 3px; text-transform: none;">
+                            {{'RemovePhoto' | translate}}
+                            <i></i>
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- ------------------------------------------------------------------------------------------- -->
+                  <!--  Bot type  -->
+                  <!-- ------------------------------------------------------------------------------------------- -->
+                  <div class="row" style="margin-bottom: 8px;">
+                    <label class="col-sm-2 custom-label">
+                      {{ "BotsAddEditPage.Type" | translate }}
+                    </label>
+                    <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+                      <input id="bot_type" name="bot_type" [(ngModel)]="botTypeForInput" class="input" type="text"
+                        style="margin-bottom: 0px; color:#808080" disabled>
+                    </div>
+                  </div>
+
+
+                  <!-- ------------------------------------------------------------------------------------------- -->
+                  <!-- Bot name  -->
+                  <!-- ------------------------------------------------------------------------------------------- -->
+                  <div class="row" style="margin-bottom: 8px;">
+                    <label class="col-sm-2 custom-label">
+                      {{ "BotsAddEditPage.BotName" | translate }}
+                    </label>
+                    <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+                      <input id="faqKb_name" name="faqKb_name" [(ngModel)]="faqKb_name" class="input" type="text">
+                    </div>
+                  </div>
+
+                  <!-- ------------------------------------------------------------------------------------------- -->
+                  <!-- Bot language  -->
+                  <!-- ------------------------------------------------------------------------------------------- -->
+                  <div class="row" style="margin-bottom: 8px;">
+                    <!-- style="padding-top: 0px; line-height: 1.2;" -->
+                    <label class="col-sm-2 custom-label">
+                      {{ "ResolutionBotLanguage" | translate }}
+                    </label>
+                    <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+
+                      <input id="bot-default-selected-lang" name="bot-default-selected-lang"
+                        [(ngModel)]="botDefaultSelectedLang" class="input" type="text" disabled>
+                    </div>
+                  </div>
+
+                  <!-- SPACER -->
+                  <div class="col-sm-12" style="height:10px"></div>
+
+                  <!-- ------------------------------------------------------------------------------------------- -->
+                  <!-- Description  -->
+                  <!-- ------------------------------------------------------------------------------------------- -->
+                  <div class="row">
+                    <label class="col-sm-2 custom-label">
+                      {{ 'Description' | translate }}
+                    </label>
+                    <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+                      <textarea id="bot_description" name="bot_description" [(ngModel)]="faqKb_description" rows="2"
+                        style="resize: vertical;" class="input" type="text"
+                        placeholder="{{ 'Description' | translate }}">
+                    </textarea>
+                    </div>
+                  </div>
+
+
+                  <!-- ------------------------------------------------------------------------------------------- -->
+                  <!-- Update button  -->
+                  <!-- ------------------------------------------------------------------------------------------- -->
+                  <div class="row">
+                    <label class="col-xs-2"></label>
+                    <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+                      <button id="update-bot-btn" style="margin-top: 12px;margin-bottom: 5px;" #editbotbtn
+                        class="btn btn-primary  pull-right" (click)="editBot()"
+                        [disabled]="faqKb_name?.length === 0">
+                        {{ "BotsAddEditPage.UpdateBotName" | translate }}
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- ---------------------------------------------------------- -->
+                  <!-- Department to which the bot is associated -->
+                  <!-- ---------------------------------------------------------- -->
+                  <div *ngIf="isVisibleDEP === true" class="row" style="margin-bottom: 4px;">
+
+                    
+                      <div class="col-sm-10 col-md-10">
+                        <h3 class="card_title__underlined">
+                          <span class="card_title__underline">
+                            
+                            {{ 'Departments' | translate }}
+                          </span>
+                        </h3>
+                      </div>
+                      <div class="col-sm-10 col-md-10">
+                        <div class="section-subtitle"> </div>
+                      </div>
+               
+                    <!-- USE CASE: THE BOT IS ASSOCIATED -->
+                    <div *ngIf="DEPTS_BOT_IS_ASSOCIATED_WITH_ARRAY.length > 0"
+                      class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+                      <span style="font-family: 'Poppins';color: #394f5a; font-weight: 400;">
+                        {{ "DepartmentsThisBotIsAssociatedWith" | translate }}
+                      </span>
+                      <div *ngFor="let dept of DEPTS_BOT_IS_ASSOCIATED_WITH_ARRAY" style="margin-bottom: 8px;">
+                        <span class="dept-avatar-wrapper" (click)="goToEditAddPage_EDIT_DEPT(dept?._id, dept?.default)">
+
+                          <span class="dept-avatar-in-bot-dtl"
+                            [ngStyle]="{'background-color': dept?.dept_name_fillcolour }">
+                            {{ dept?.dept_name_initial }}
+                          </span>
+                          <span class="dept-name-in-bot-dtl">
+                            {{ dept?.name }}
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+
+                    <!-- USE CASE: THIS BOT IS NOT ASSOCIATED BUT ALL DEPARTMENTS ALREADY HAVE A BOT -->
+                    <div *ngIf="DEPTS_HAVE_BOT_BUT_NOT_THIS === true && depts_without_bot_array?.length === 0"
+                      class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+                      <span style="font-family: 'Poppins';color: #394f5a; font-weight: 400;">
+                        {{ 'NoDeptsAreAssociatedWithThisBot' | translate}}
+                      </span>
+                    </div>
+
+                    <!-- USE CASE: THIS BOT IS NOT ASSOCIATED AND SOME DEPARTMENTS DON'T HAVE A BOT -->
+                    <div *ngIf="depts_without_bot_array?.length > 0 && DEPTS_BOT_IS_ASSOCIATED_WITH_ARRAY?.length === 0"
+                      class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+                      <span style="font-family: 'Poppins';color: #394f5a; font-weight: 400;">
+                        {{ 'NoDeptsAreAssociatedWithThisBot' | translate}}
+                      </span>
+
+                      <div class="input-group" *ngIf="depts_without_bot_array?.length > 0">
+                        <ng-select [items]="depts_without_bot_array" bindValue="id" bindLabel="name"
+                          placeholder="{{'SelectDepartment'|translate}}" [(ngModel)]="selected_dept_id"
+                          (change)="onSelectDept()">
+                        </ng-select>
+
+                        <span class="input-group-btn">
+                          <button class="btn btn-tdblu-no-boxshadow" (click)="hookBotToDept()"
+                            [disabled]="!selected_dept_id" style="margin-top:0px; padding-top: 8px !important;padding-bottom: 8px!important; margin-bottom: 0px; border-top-left-radius: 3px;
+                        border-bottom-left-radius: 3px;">
+                            <span> {{ 'ActivateBot' | translate}} </span>
+                          </button>
+                        </span>
+                      </div>
+                    </div>
+
+                  </div>
+                  <div class="row">
+                   
+                    <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+                      <span style="color: #7695a5;font-size: 12px;font-weight: 400;">
+                        {{'ManageTheBotIn' | translate}}
+
+                        <span class="custom-link" (click)="goToRoutingAndDepts()">
+                          {{'RoutingAndDepts' | translate}}
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </section>
+
+                <!-- ---------------------------------------------------------- -->
+                <!-- WEBHOOK -->
+                <!-- ---------------------------------------------------------- -->
+                <section *ngIf="FULFILLMENT_ROUTE_IS_ACTIVE === true">
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4">
+                      <h3 class="card_title__underlined">
+                        <span class="card_title__underline">
+                          Fulfillment
+                        </span>
+                      </h3>
+                    </div>
+
+                    <div class="col-sm-6 col-md-6">
+                      <div class="onoffswitch-wrapper">
+                        <div style="display: inline-block;position: relative;top: -13px;margin-right: 12px;">
+
+                          <span *ngIf="webhook_is_enabled === true"
+                            style="color:#3ea9f5; text-transform: uppercase; font-weight: 400;">
+                            {{'Enabled' | translate}}
+                          </span>
+                          <span *ngIf="webhook_is_enabled === false"
+                            style="color:#818895; text-transform: uppercase; font-weight: 400;">
+                            {{'Disabled' | translate}}
+                          </span>
+
+                        </div>
+                        <div class="nw-onoffswitch-wrapper" style="clear: both;display: inline-block;">
+                          <div class="nw-onoffswitch">
+                            <input (change)="toggleWebhook($event)" type="checkbox" name="webhook-switch"
+                              class="nw-onoffswitch-checkbox" id="webhook-switch"
+                              [checked]="webhook_is_enabled === true">
+                            <label class="nw-onoffswitch-label" for="webhook-switch"></label>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                    <div class="col-sm-10 col-md-10">
+                      <div class="section-subtitle" style="height: 8px;"> </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <!-- <label class="col-xs-2 custom-label"></label> -->
+                    <!-- <div class="col-xs-10 col-sm-8 col-md-8 col-lg-8"> -->
+                    <div class="col-xs-10">
+                      <p style="color:#2b313f; font-weight: 300;">
+                        {{'YourWebServiceWillReceivePostRequestFrom' | translate: tparams}}
+                        {{'BeSureThatYourWebServiceMeetsAllTheWebhookRequirements' | translate}}
+                        <span class="custom-link" (click)="openWebhookRequirementsDoc()">
+                          {{'LearnMoreAboutWebhookRequirements' | translate }}
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="row" *ngIf="webhook_is_enabled">
+                    <label class="col-xs-12 col-sm-3 col-md-3 col-lg-3 custom-label webhook-url-label">
+                      <span>Webhook URL</span>
+                      <span style="color:#ff5252">*</span>
+                    </label>
+                    <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7">
+                      <input id="weebhook-url" name="weebhook-url" [(ngModel)]="webhookUrl"
+                        (ngModelChange)="onChangeWebhookUrl($event)" class="input" type="text"
+                        style="margin-bottom: 3px;" placeholder="{{'EnterWebhookURL' | translate}}" autocomplete="off">
+
+                      <div class="webhook-url-errors" *ngIf="WEBHOOK_URL_IS_EMPTY === true">
+                        {{'ThisUrlWilReceiveAPostRequestFrom' | translate: tparams}}
+                      </div>
+                      <div class="webhook-url-errors"
+                        *ngIf="WEBHOOK_URL_IS_EMPTY === false && WEBHOOK_URL_IS_HTTP_or_HTTPS === false">
+                        {{'WebhookmentUrlMustBeAHttpsUrl' | translate}}
+                      </div>
+
+                      <div class="webhook-url-errors"
+                        *ngIf="WEBHOOK_URL_IS_EMPTY === false && WEBHOOK_URL_IS_HTTP_or_HTTPS === true && WEBHOOK_URL_IS_VALID === false">
+                        {{'WebhookmentUrlMustBeAValidUrl' | translate}}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <label class="col-xs-2"></label>
+                    <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+                      <button id="update-bot-btn" style="margin-top: 12px;margin-bottom: 5px;" #editbotbtn
+                        class="btn btn-primary  pull-right" (click)="editBot()"
+                        [disabled]="(webhook_is_enabled === true && WEBHOOK_URL_HAS_ERROR === true) || (webhook_is_enabled === false  && webhookUrl === undefined)">
+                        {{ "BotsAddEditPage.UpdateBotName" | translate }}
+                      </button>
+                    </div>
+                  </div>
+
+                </section>
+
+              </div> <!-- ./ card-content -->
+            </div> <!-- ./ card -->
+          </div> <!-- ./ col-md-8 -->
+        
+        </div> <!-- ./ row -->
+
+
+        <!-- --------------------------------------------------------------------------------------------------- -->
+        <!-- Native bot FAQs (alias RESOLUTION BOT)-->
+        <!-- --------------------------------------------------------------------------------------------------- -->
+        <section class="native-bot-answers" *ngIf="INTENTS_ROUTE_IS_ACTIVE === true">
+          <div class="row">
+            <div class="col-md-8">
+              <div class="row">
+                <div class="col-sm-10 col-md-10">
+                  <h3 class="card_title__underlined">
+                    <span class="card_title__underline">
+                      <!-- {{ 'Answers' | translate }} -->
+                      Intents
+                    </span>
+                  </h3>
+                </div>
+                <!-- width: calc((100% / 3) + 372px); -->
+                <div class="col-sm-10 col-md-10">
+                  <div class="section-subtitle" style=" height: 8px;"> </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card card--no-border" style="margin-top: 0px;">
+
+                <div class="card-header card-header-custom-bkgrnd"
+                  style="border-bottom:unset; padding-top:0px; padding-bottom:0px">
+
+                  <div class="row" style="margin-left: -33px;">
+                    <div class="col-md-12">
+
+                      <!-- --------------------------------------------------- -->
+                      <!-- button add answer -->
+                      <!-- --------------------------------------------------- -->
+                      <button class="btn btn-light-blu add-answer tooltipx"
+                        [ngClass]="{'add-padding' : windowWidthMore764 === true}" (click)="goToEditAddPage_CREATE()">
+                        <span class="icon" style="padding-right:0px">
+                          <i class="material-icons" style="font-size:18px; top:0px">add</i>
+                          <span *ngIf="windowWidthMore764"
+                            style="position: relative; top: 1px; text-transform: initial; text-transform: initial;">
+                            {{ 'AddIntent' | translate }}
+                          </span>
+                        </span>
+                        <span *ngIf="windowWidthMore764 === false" class="tooltiptext" style="text-transform:none">
+                          {{ 'AddIntent' | translate }} </span>
+                      </button> <!-- ./ button add answer -->
+
+                      <!-- --------------------------------------------------- -->
+                      <!-- BUTTON ADD FAQs FROM CSV FILE -->
+                      <!-- --------------------------------------------------- -->
+                      <button class="btn btn-light-blu upload-csv tooltipx"
+                        [ngClass]="{'add-padding' : windowWidthMore764 === true}" (click)="openImportModal()">
+
+                        <span class="icon" style="padding-right:0px;">
+
+                          <i class="material-icons" style="font-size:18px; top:0px">file_upload</i>
+                          <span *ngIf="windowWidthMore764"
+                            style="position: relative; top: 1px; text-transform: initial; text-transform: initial;">
+                            {{ 'UploadFromCsv' | translate }}
+                          </span>
+                        </span>
+                        <span *ngIf="windowWidthMore764 === false" class="tooltiptext" style="text-transform:none">
+                          {{ 'UploadAnswersFromCsv' | translate }}</span>
+                      </button>
+
+
+                      <!-- --------------------------------------------------- -->
+                      <!-- BUTTON EXPORT FAQs TO CSV  -->
+                      <!-- --------------------------------------------------- -->
+                      <button class="btn btn-light-blu export-csv tooltipx"
+                        [ngClass]="{'add-padding' : windowWidthMore764 === true}" (click)="exportFaqsToCsv()">
+
+                        <span class="icon" style="padding-right:0px;">
+                          <i class="material-icons" style="font-size:18px; top:0px">save_alt</i>
+                          <span *ngIf="windowWidthMore764"
+                            style="position: relative; top: 1px; text-transform: initial;">
+                            {{ 'ExportToCsv' | translate }}
+                          </span>
+                        </span>
+                        <span *ngIf="windowWidthMore764 === false" class="tooltiptext" style="text-transform:none">
+                          {{'ExportAnswersToCsv' | translate }}
+                        </span>
+                      </button>
+
+                      <!-- --------------------------------------------------- -->
+                      <!-- BUTTON TEST BOT  -->
+                      <!-- --------------------------------------------------- -->
+                      <!-- <button class="btn btn-light-blu test-bot"
+                        [ngClass]="{'add-padding' : windowWidthMore764 === true}" (click)="goToTestFaqPage()">
+                        <span style="padding-right:0px; text-transform:none;padding-left: 9px;">
+                          <span style="padding-right: 6px;">{{'BotTest' | translate}} </span>
+                        
+                          <span class="material-icons blob white test-bot-icon"> play_arrow </span>
+                        </span>
+                      </button> -->
+
+                      <!-- --------------------------------------------------- -->
+                      <!-- Customize table  -->
+                      <!-- --------------------------------------------------- -->
+                      <div class="dropdown pull-right">
+                        <a href="#" class="btn btn-light-grey customize-table dropdown-toggle tooltipx"
+                          data-toggle="dropdown">
+                          <span class="material-icons" style="font-size:18px"> view_column </span>
+                          <span class="customize-table-btn-name" style="text-transform:none">
+                            {{'Customize' | translate}}
+                          </span>
+                          <span class="tooltiptext" style="text-transform:none">
+                            {{'HideShowColumns' | translate }}
+                          </span>
+                        </a>
+                        <ul class="dropdown-menu pull-right" style="padding:12px">
+                          <li>
+                            <input type="checkbox" [(ngModel)]="display_intent_name_in_table"
+                              [checked]="display_intent_name_in_table" (change)="checkValueIntentName($event)" />
+                            <span class="dropdown-item"> {{ 'IntentName' | translate }} </span>
+                          </li>
+                          <li>
+                            <input type="checkbox" [checked]="display_questions_in_table"
+                              [(ngModel)]="display_questions_in_table" (change)="checkQuestions($event)" />
+                            <span class="dropdown-item">{{ 'Questions' | translate }} </span>
+                          </li>
+                          <li>
+                            <input type="checkbox" [checked]="display_answer_in_table"
+                              [(ngModel)]="display_answer_in_table" (change)="checkAnswer($event)" />
+                            <span class="dropdown-item"> {{ 'FaqPage.Answer' | translate }} </span>
+                          </li>
+                          <li *ngIf="isVisibleAnalytics">
+                            <input type="checkbox" [(ngModel)]="display_message_in_table"
+                              [checked]="display_message_in_table" (change)="checkValueMessage($event)" />
+                            <span class="dropdown-item">{{ "BotsAddEditPage.Messages" | translate }} </span>
+                          </li>
+
+                        </ul>
+                      </div>
+                    </div>
+
+                  </div> <!-- ./end row-->
+
+                  <!-- --------------------------------------- -->
+                  <!-- Search answer -->
+                  <!-- --------------------------------------- -->
+                  <div class="row">
+                    <div class="search-input-wpr"
+                      [ngClass]="{'search-input-wpr-to-left' : windowWidthMore764 === false}">
+                      <div class="input-group full-text-search-input-group">
+                        <!-- // SEARCH FULL-TEXT BTN -->
+                        <span class="input-group-btn" style="padding-right: 0px; padding-left: 4px;">
+                          <button class="custom-input-group-faq--btn" [disabled]="!fullText || fullText.length === 0"
+                            type="submit">
+                            <i class="fa fa-search fa-search-btn" (click)="search()"
+                              style="color:grey; font-size: 18px;"></i>
+
+                          </button>
+                        </span>
+
+                        <input id="full-text-search" name="fullText" [(ngModel)]="fullText"
+                          (ngModelChange)="fulltextChange($event)" autocomplete="off" class="full-text-search-input"
+                          placeholder="{{ 'Search' | translate }}" (keypress)="searchOnEnterPressed($event)">
+
+                        <!-- // CLEAR SEARCH FULL-TEXT BTN -->
+                        <span *ngIf="fullText?.length > 0" class="input-group-btn" style="padding-right: 2px;">
+                          <button class="custom-input-group-faq--btn" type="button">
+                            <i class="fa fa-times fa-clear-search-btn" (click)="clearFullText()" style="color:grey; font-size: 18px; top: 5px;
+                        position: relative;left: 1px;"></i>
+
+                          </button>
+                        </span>
+                      </div><!-- /input-group -->
+
+                      <div class="answer-pagination" style="position: absolute;right: 15px;">
+
+                        <span style="font-size: 12px; font-weight: 400;">
+                          {{paginated_answers_count}} {{'Of'| translate}} {{faq_lenght }}
+                        </span>
+
+                        <button [disabled]="pageNo + 1 === 1"
+                          [ngClass]="{'pagination-icon-left-wpr-disabled': pageNo + 1 === 1}"
+                          class="pagination-icon-left-wpr" (click)="decreasePageNumber()">
+                          <span class="material-icons pagination-icon-decrease"
+                            [ngClass]="{'decrease-page-disabled-icon': pageNo + 1 === 1}">
+                            chevron_left
+                          </span>
+                        </button>
+
+                        <button [disabled]="pageNo + 1 === totalPagesNo_roundToUp || totalPagesNo_roundToUp === 0"
+                          [ngClass]="{'pagination-icon-right-wpr-disabled':pageNo + 1 === totalPagesNo_roundToUp || totalPagesNo_roundToUp === 0}"
+                          class="pagination-icon-right-wpr" (click)="increasePageNumber()">
+                          <span class="material-icons pagination-icon-increase"
+                            [ngClass]="{'increase-page-disabled-icon':pageNo + 1 === totalPagesNo_roundToUp || totalPagesNo_roundToUp === 0}">
+                            chevron_right
+                          </span>
+                        </button>
+
+                        <!-- <span *ngIf="has_searched === false"> Total answers: {{faq_lenght }} </span>
+                    <span *ngIf="has_searched === true"> Number of answers that match your search: {{faq_lenght }} </span> -->
+                      </div>
+
+                    </div>
+                  </div>
+
+
+
+
+                  <!-- <div class="row">
+                <div class="col-xs-12  answers-count">
+                  <span *ngIf="has_searched === false"> Total answers: {{faq_lenght }} </span>
+                  <span *ngIf="has_searched === true"> Number of answers that match your search: {{faq_lenght }} </span>
+                </div>
+              </div> -->
+
+
+                </div>
+
+                <loading-spinner *ngIf="showSpinner"></loading-spinner>
+
+                <div *ngIf="!showSpinner" class="card-content table-responsive" style="padding-top:12px">
+                  <table class="table table-hover">
+                    <thead>
+                      <!-- webhook icon -->
+
+                      <tr>
+                        <!-- webhook icon -->
+                        <th></th>
+
+                        <th *ngIf="display_intent_name_in_table === true">
+
+                          <span class="column-th-span">
+                            {{ 'IntentName' | translate }}
+                          </span>
+                        </th>
+
+                        <th *ngIf="display_questions_in_table === true">
+                          <span class="column-th-span">
+                            {{ 'FaqPage.Question' | translate }}
+                          </span>
+                        </th>
+
+                        <th *ngIf="display_answer_in_table === true">
+                          <span class="column-th-span">
+                            {{ 'FaqPage.Answer' | translate }}
+                          </span>
+                        </th>
+
+                        <th style="text-align: center" *ngIf="isVisibleAnalytics && display_message_in_table === true">
+                          <span class="column-th-span">
+                            {{ "BotsAddEditPage.Messages" | translate }}
+                          </span>
+                        </th>
+
+                        <!-- <th *ngIf="display_topic_in_table === true">
+                   
+                      <span class="column-th-span">
+                        {{ 'FaqPage.Topic' | translate }}
+                      </span>
+                    </th> -->
+
+                        <th>
+                          <span class="column-th-span">
+                            {{ 'Actions' | translate }}
+                          </span>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!-- IF THERE ISN'T FAQ -->
+                      <tr *ngIf="faq?.length === 0">
+                        <td colspan="5" style="text-align: center; padding-top: 16px !important;">
+                          <p *ngIf="has_searched === false && faq?.length === 0 "
+                            style="font-size:1em; color:#7695a5; font-weight: 400">
+                            {{ 'FaqPage.NoAnswer' | translate }}
+                          </p>
+                          <p *ngIf="has_searched === true && faq?.length === 0"
+                            style="font-size:1em; color:#7695a5; font-weight: 400">
+
+                            {{ 'NoAnswersMatchedYourSearch' | translate }}
+                          </p>
+                        </td>
+                      </tr>
+
+                      <tr *ngFor="let faq of faq">
+
+                        <td>
+                          <div class="webhook-icon-wpr">
+                            <!-- ------------------------------------------ -->
+                            <!-- Webkook disabled icon -->
+                            <!-- ------------------------------------------ -->
+                            <!-- <span *ngIf="faq?.webhook_enabled === false"
+                              matTooltipClass="custom-mat-tooltip-in-faq-table"
+                              matTooltip="{{ 'WebhookDisabledForThisIntent' | translate }}" #tooltip="matTooltip"
+                              matTooltipPosition='left' matTooltipHideDelay="100">
+                              <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="20px"
+                                viewBox="0 0 24 24" width="20px" fill="#aaaaaa">
+                                <g>
+                                  <rect fill="none" height="24" width="24" />
+                                </g>
+                                <g>
+                                  <path
+                                    d="M10,15l5.88,0c0.27-0.31,0.67-0.5,1.12-0.5c0.83,0,1.5,0.67,1.5,1.5c0,0.83-0.67,1.5-1.5,1.5c-0.44,0-0.84-0.19-1.12-0.5 l-3.98,0c-0.46,2.28-2.48,4-4.9,4c-2.76,0-5-2.24-5-5c0-2.42,1.72-4.44,4-4.9l0,2.07C4.84,13.58,4,14.7,4,16c0,1.65,1.35,3,3,3 s3-1.35,3-3V15z M12.5,4c1.65,0,3,1.35,3,3h2c0-2.76-2.24-5-5-5l0,0c-2.76,0-5,2.24-5,5c0,1.43,0.6,2.71,1.55,3.62l-2.35,3.9 C6.02,14.66,5.5,15.27,5.5,16c0,0.83,0.67,1.5,1.5,1.5s1.5-0.67,1.5-1.5c0-0.16-0.02-0.31-0.07-0.45l3.38-5.63 C10.49,9.61,9.5,8.42,9.5,7C9.5,5.35,10.85,4,12.5,4z M17,13c-0.64,0-1.23,0.2-1.72,0.54l-3.05-5.07C11.53,8.35,11,7.74,11,7 c0-0.83,0.67-1.5,1.5-1.5S14,6.17,14,7c0,0.15-0.02,0.29-0.06,0.43l2.19,3.65C16.41,11.03,16.7,11,17,11l0,0c2.76,0,5,2.24,5,5 c0,2.76-2.24,5-5,5c-1.85,0-3.47-1.01-4.33-2.5l2.67,0C15.82,18.82,16.39,19,17,19c1.65,0,3-1.35,3-3S18.65,13,17,13z" />
+                                </g>
+                              </svg>
+                            </span> -->
+                            <!-- ------------------------------------------ -->
+                            <!-- Webkook enabled icon -->
+                            <!-- ------------------------------------------ -->
+                            <span *ngIf="faq?.webhook_enabled === true"
+                              matTooltipClass="custom-mat-tooltip-in-faq-table"
+                              matTooltip="{{'WebhookEnabledForThisIntent' | translate}}" #tooltip="matTooltip"
+                              matTooltipPosition='left' matTooltipHideDelay="100">
+                              <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                                xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 24"
+                                style="enable-background:new 0 0 24 24;" xml:space="preserve" height="20px"
+                                width="20px">
+                                <style type="text/css">
+                                  .st0 {
+                                    fill: none;
+                                  }
+
+                                  .st1 {
+                                    fill: #4A4A4A;
+                                  }
+
+                                  .st2 {
+                                    fill: #C73A63;
+                                  }
+
+                                  .st3 {
+                                    fill: #4B4B4B;
+                                  }
+                                </style>
+                                <g>
+                                  <rect y="0" class="st0" width="24" height="24" />
+                                </g>
+                                <path class="st1"
+                                  d="M10,15h5.9c0.3-0.3,0.7-0.5,1.1-0.5c0.8,0,1.5,0.7,1.5,1.5s-0.7,1.5-1.5,1.5c-0.4,0-0.8-0.2-1.1-0.5h-4
+                         c-0.5,2.3-2.5,4-4.9,4c-2.8,0-5-2.2-5-5c0-2.4,1.7-4.4,4-4.9v2.1c-1.2,0.4-2,1.5-2,2.8c0,1.6,1.3,3,3,3s3-1.4,3-3V15z" />
+                                <path class="st2" d="M12.5,4c1.6,0,3,1.3,3,3h2c0-2.8-2.2-5-5-5l0,0c-2.8,0-5,2.2-5,5c0,1.4,0.6,2.7,1.6,3.6l-2.3,3.9
+                         C6,14.7,5.5,15.3,5.5,16c0,0.8,0.7,1.5,1.5,1.5s1.5-0.7,1.5-1.5c0-0.2,0-0.3-0.1-0.4l3.4-5.6C10.5,9.6,9.5,8.4,9.5,7
+                         C9.5,5.4,10.9,4,12.5,4z" />
+                                <path class="st3" d="M17,13c-0.6,0-1.2,0.2-1.7,0.5l-3.1-5.1C11.5,8.4,11,7.7,11,7c0-0.8,0.7-1.5,1.5-1.5S14,6.2,14,7
+                         c0,0.2,0,0.3-0.1,0.4l2.2,3.7C16.4,11,16.7,11,17,11l0,0c2.8,0,5,2.2,5,5s-2.2,5-5,5c-1.9,0-3.5-1-4.3-2.5h2.7
+                         c0.5,0.3,1,0.5,1.7,0.5c1.6,0,3-1.4,3-3S18.6,13,17,13z" />
+                              </svg>
+                            </span>
+
+                          </div>
+                        </td>
+                        <td style="font-size:13px; font-weight:400" *ngIf="display_intent_name_in_table === true">
+                          <span style="white-space: pre-wrap; word-wrap: break-word">{{ faq?.intent_display_name
+                            }}</span>
+                        </td>
+
+                        <td style="font-size:13px; font-weight:400; vertical-align: middle !important;"
+                          *ngIf="display_questions_in_table === true">
+                          <span style="white-space: pre-wrap; word-wrap: break-word">{{ faq?.question }}</span>
+                        </td>
+                        <!-- white-space: normal !important; word-wrap: break-word; word-break: break-all;  -->
+                        <td *ngIf="display_answer_in_table === true"
+                          style="font-size:13px; font-weight:400;vertical-align: middle !important;">
+                          {{ faq?.answer }}
+                        </td>
+                        <!-- white-space: normal !important; word-wrap: break-word;word-break: break-all; -->
+                        <td *ngIf="isVisibleAnalytics && display_message_in_table === true"
+                          style="font-size:13px; font-weight:400;  text-align: center;">
+                          <span *ngIf="faq.message_count" class="tooltipx">
+                            {{ faq?.message_count }}
+                            <span class="tooltiptext" style="white-space: nowrap; cursor: pointer;">
+                              {{'NumberOfReplies' | translate}}:{{ faq?.message_count }}
+                            </span>
+                          </span>
+                          <span *ngIf="!faq.message_count" class="tooltipx">
+                            0
+                            <span class="tooltiptext" style="white-space: nowrap;cursor: pointer;">
+                              {{'NumberOfReplies' | translate}}: 0
+                            </span>
+                          </span>
+                        </td>
+
+                        <!-- <td *ngIf="display_topic_in_table === true">
+                      <span class="tooltipx" style="font-size:13px; font-weight:400">
+                        {{ faq?.topic }}
+                      </span>
+                    </td> -->
+
+
+                        <!-- NEW -->
+                        <td class="td-actions text-right">
+                          <button id="edit-faq" style="padding-bottom:0px" type="button" rel="tooltip"
+                            title="{{ 'FaqPage.tooltipEditFaq' | translate }}" class="btn btn-primary btn-simple btn-xs"
+                            (click)='goToEditAddPage_EDIT(faq?._id)'>
+                            <i class="material-icons">edit</i>
+                          </button>
+
+                          <button id="delete-faq" style="padding-bottom:0px" type="button" rel="tooltip"
+                            title="{{ 'FaqPage.DeleteFaq' | translate }}" class="btn btn-danger btn-simple btn-xs"
+                            (click)='$event.stopPropagation();openDeleteModal(faq?._id)'>
+                            <i class="material-icons">close</i>
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div> <!-- ./ card-content -->
+
+                <div class="card-footer" style="text-align:center">
+                  <div class="stats">
+
+                    <div style="width: 120px; margin: 0 auto; margin-top: 10px ">
+                      <div class="input-group" style="background: unset; border: unset;">
+
+                        <!-- -------====== BTN DECREASE PAGE  ======------ -->
+                        <span class="input-group-btn" style="padding-right:0px;  padding-left: 0px;">
+                          <button [disabled]="pageNo + 1 === 1" class="btn btn-tdblu" type="button"
+                            (click)="decreasePageNumber()" style="padding: 6px 8px">
+                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                          </button>
+                        </span>
+
+                        <!-- -------====== DISPLAY No PAGE / No TOTAL PAGES   ======------ -->
+                        <span class="input-group-btn" style="padding-right:0px;">
+                          <button class="btn btn-tdblu" type="button" style="padding: 6px 8px">
+                            {{ pageNo + 1 }} / {{ totalPagesNo_roundToUp }}
+                          </button>
+                        </span>
+
+                        <!-- -------====== BTN INCREASE PAGE  ======------ -->
+                        <span class="input-group-btn" style="padding-right:0px">
+                          <button [disabled]="pageNo + 1 === totalPagesNo_roundToUp || totalPagesNo_roundToUp === 0"
+                            class="btn btn-tdblu" type="button" (click)="increasePageNumber()" style="padding: 6px 8px">
+                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                          </button>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
+<div>
+  <div>
+    <div *ngIf="OPEN_RIGHT_SIDEBAR === true" class="view-side">
+      <!-- 
+          ****************************************  
+          ** FAKE ** FOR DEMO - RIGHT SIDEBAR
+          **************************************** -->
+      <appdashboard-faq-sidebar [ngStyle]="{'height':train_bot_sidebar_height }"
+        (valueChange)='closeRightSidebar($event)'>
+      </appdashboard-faq-sidebar>
+    </div>
+
+
+    <!-- -------------------------------------------------------------------------------- -->
+    <!-- MODAL WINDOWS -->
+    <!-- -------------------------------------------------------------------------------- -->
+
+    <!--  MODAL DELETE FAQ  -->
+    <!-- <div class="backdrop" [ngStyle]="{'display':display}"></div> -->
+    <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayDeleteFaqModal}"
+      style="background-color: rgba(90,90,90,0.5);">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header" style="background-color: #ff5252; border-radius: 6px 6px 0px 0px;">
+            <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
+              <span aria-hidden="true" style="color: #fff">&times;</span>
+            </button>
+
+            <h4 class="modal-title" style="color: #fff">
+              <!-- Update FAQ with id: -->
+              <i class="material-icons" style="vertical-align: middle">
+                report_problem
+              </i>
+              <span style="vertical-align: middle; padding-left:8px">
+                {{ "FaqPage.DeleteFaq" | translate }}
+              </span>
+            </h4>
+
+            <h4 class="modal-title" style="color: #fff; padding-top:10px; font-size: 1.1em">
+              <!-- Delete FAQ with id: -->
+              {{ 'FaqPage.TheFaqWithID' | translate }}
+              <code>{{id_toDelete}}</code>
+              {{ 'FaqPage.WillBeDeleted' | translate }}
+            </h4>
+
+          </div>
+
+          <div class="modal-body">
+
+            <!-- <p> Are you sure you want to delete this FAQ ?</p> -->
+            <p style="font-weight: 400; color: rgba(0,0,0,0.87);">
+              <!-- Sei sicuro di voler eliminare questa FAQ? -->
+              {{ 'FaqPage.AreYouSure' | translate }}
+            </p>
+          </div>
+
+          <div class="modal-footer">
+            <button class="btn btn-white" (click)="onCloseModal()" style="padding:12px 16px;">
+              <!-- {{ "GroupsPage.Cancel" | translate }} -->
+              {{ "Cancel" | translate }}
+            </button>
+            <!-- Confirm -->
+            <button type="button" class="btn btn-danger" (click)="onCloseDeleteModalHandled()">
+              <!-- Conferma -->
+              {{ 'FaqPage.DeleteFaq' | translate }}
+            </button>
+          </div>
+
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+
+
+    <!-- MODAL - INPORT CSV  -->
+    <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayImportModal}"
+      style="background-color: rgba(90,90,90,0.5);">
+      <!-- modal-sm   -->
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header" style="padding: 8px 15px;">
+            <!-- class="close" -->
+            <button type="button" class="close-modal-window" aria-label="Close" (click)="onCloseModal()">
+              <span aria-hidden="true"
+                style="color: rgb(6, 6, 6) !important;position: relative;top: -2px;">&times;</span>
+            </button>
+
+            <h4 class="modal-title" style="line-height: 2!important;">
+              <!-- Import CSV file -->
+              {{ 'FaqPage.ImportCsvFile' | translate }}
+            </h4>
+          </div>
+
+          <div class="modal-body" style="padding-bottom: 20px !important; padding-top: 20px;">
+
+            <div class="row" style="margin-right: 0px; margin-bottom:8px">
+              <div class="col-xs-10 col-xs-offset-1"
+                style="text-align:center; border: 1px solid #3ea9f5;background-color:#3ea9f5; color: #fff">
+                <p (click)="downloadExampleCsv()" style="margin:5px; cursor:pointer"> <i class="material-icons"
+                    style="font-size:18px; top: 4px; position: relative;">save_alt</i>
+                  {{ 'download' | translate }} <span style="font-weight:400"> {{ 'examplecsv' | translate }} </span>
+                </p>
+              </div>
+              <div class="col-xs-10 col-xs-offset-1"
+                style="text-align:center; border-left: 1px solid #eeeeee; border-right: 1px solid #eeeeee">
+                <p style="margin:5px; font-weight: 400;">
+                  <!-- --------------------- -->
+                  <!-- Question -->
+                  <!-- --------------------- -->
+                  <span>
+                    <em>
+                      {{ 'FaqPage.Question' | translate }}
+                    </em>
+                  </span>
+
+                  <!-- --------------------- -->
+                  <!-- Columns Delimiter -->
+                  <!-- --------------------- -->
+                  <span>
+                    <strong>
+                      {{csvColumnsDelimiter}}
+                    </strong>
+                  </span>
+
+                  <!-- --------------------- -->
+                  <!-- Answer -->
+                  <!-- --------------------- -->
+                  <span>
+                    <em>
+                      {{ 'FaqPage.Answer' | translate }}
+                    </em>
+                  </span>
+
+                  <!-- --------------------- -->
+                  <!-- Columns Delimiter -->
+                  <!-- --------------------- -->
+                  <span>
+                    <strong>
+                      {{csvColumnsDelimiter}}
+                    </strong>
+                  </span>
+
+                  <!-- --------------------- -->
+                  <!-- intent_id -->
+                  <!-- --------------------- -->
+                  <span>
+                    <em>
+                      intent id
+                    </em>
+                  </span>
+
+                  <!-- --------------------- -->
+                  <!-- Columns Delimiter -->
+                  <!-- --------------------- -->
+                  <span>
+                    <strong>
+                      {{csvColumnsDelimiter}}
+                    </strong>
+                  </span>
+
+                  <!-- --------------------- -->
+                  <!-- intent_display_name -->
+                  <!-- --------------------- -->
+                  <span>
+                    <em>
+                      intent name
+                    </em>
+                  </span>
+
+                  <!-- --------------------- -->
+                  <!-- Columns Delimiter -->
+                  <!-- --------------------- -->
+                  <span>
+                    <strong>
+                      {{csvColumnsDelimiter}}
+                    </strong>
+                  </span>
+
+                  <!-- --------------------- -->
+                  <!-- webhook_enabled -->
+                  <!-- --------------------- -->
+                  <span>
+                    <em>
+                      webhook enabled
+                    </em>
+                  </span>
+
+                </p>
+              </div>
+
+            </div>
+            <div class="row" style="margin-right: 0px;">
+              <div class="col-sm-12">
+                <label
+                  style="height: 36px; padding-top:10px; padding-left:16px; padding-right:16px; text-align:right; color: #7695a5;font-weight: 300 !important;"
+                  class="col-xs-6 col-sm-6 ">
+                  <!-- Columns separated with: -->
+                  {{ 'FaqPage.ColumnsSeparatedWith' | translate }}
+                </label>
+                <div class="col-xs-6 col-sm-6" style="text-align:start">
+                  <input style="padding-left:5px; margin-top:7px; width:55px; border-radius: 5px;
+                      border: 1px solid #d9d9d9 !important;
+                      font-weight: 600;
+                      padding-left: 10px;" [(ngModel)]="csvColumnsDelimiter" (keyup)="countDelimiterDigit($event)">
+                </div>
+
+              </div>
+              <div class="col-sm-12" style="text-align: center">
+
+                <span *ngIf="modalChoosefileDisabled" style="color:#ff5252">
+                  <!-- Delimiter option must be one character long  -->
+                  {{ 'FaqPage.DelimiterOptionMustBe' | translate }}
+                </span>
+              </div>
+
+            </div>
+
+
+          </div>
+
+          <div class="modal-footer" style="text-align: center;
+              padding-top: 0px !important;
+              padding-bottom: 10px;
+              background-color: #fff;
+              border-top: unset;
+              border-bottom-left-radius: 6px;
+              border-bottom-right-radius: 6px;">
+
+            <input style="display:inline" name="fileChangeUploadCSV" id="fileChangeUploadCSV" class="inputfile"
+              type="file" (change)="fileChangeUploadCSV($event)" accept=".csv" />
+            <label class="btn btn-primary" for="fileChangeUploadCSV"
+              style="padding-left:15px; padding-right:15px; text-transform: none"
+              [ngClass]="{'disabled': modalChoosefileDisabled }">
+              <!-- <i class="material-icons">file_upload</i> -->
+              <!-- CHOOSE FILE  -->
+              {{ 'FaqPage.ChooseFile' | translate }}
+            </label>
+          </div>
+
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+
+
+    <!-- MODAL - INFO WINDOWS -->
+    <!-- <div class="backdrop" [ngStyle]="{'display':display}"></div> -->
+    <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayInfoModal}"
+      style="background-color: rgba(90,90,90,0.5);">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+
+            <h4 class="modal-title">
+              <!-- Upload CSV -->
+              {{ 'FaqPage.UploadCsv' | translate }}
+            </h4>
+          </div>
+
+          <div class="modal-body">
+
+            <span *ngIf="SHOW_CIRCULAR_SPINNER">
+              <div class="loader" style="top:25%">
+                <svg class="circular" viewBox="25 25 50 50">
+                  <circle class="path" cx="50" cy="50" r="15" fill="none" stroke-width="2" stroke-miterlimit="10" />
+                </svg>
+
+              </div>
+              <p style="margin-top: 50px; text-align: center;">
+                <!-- {{ "FaqPage.Processing" | translate }} -->
+                {{ "Processing" | translate }}
+              </p>
+            </span>
+
+            <span *ngIf="!SHOW_CIRCULAR_SPINNER">
+              <div class="loader" style="top:5%">
+
+                <!-- // IF SUCCESSFULLY UPLOADED -->
+                <span *ngIf="parse_done">
+                  <i class="material-icons" style="color:#70b665">done</i>
+                  <span style="color:#70b665">
+                    {{ "FaqPage.Completed" | translate }}
+                  </span>
+                </span>
+
+                <!-- // IF AN ERROR OCCURRED DURING THE UPLOAD -->
+                <span *ngIf="parse_err">
+                  <i class="material-icons" style="color:#ff5252">report_problem</i>
+                  <br>
+                  <span style="color:#ff5252">
+                    <!-- {{ "FaqPage.Error" | translate }} -->
+                    {{ "Error" | translate }}
+                  </span>
+                </span>
+
+              </div>
+
+              <!-- // IF SUCCESSFULLY UPLOADED -->
+              <span *ngIf="parse_done">
+                <p style="margin-top: 50px; text-align: center;">
+                  <!-- FAQs successfully uploaded -->
+                  {{ "FaqPage.FaqsSuccessfullyUploaded" | translate }}
+                </p>
+              </span>
+
+              <!-- // IF AN ERROR OCCURRED DURING THE UPLOAD -->
+              <span *ngIf="parse_err">
+                <p style="margin-top: 50px; text-align: center;">
+                  <!-- An error occurred during the upload -->
+                  {{ "FaqPage.AnErrorOccurredDuringTheUpload" | translate }}
+                </p>
+              </span>
+
+            </span>
+          </div>
+
+          <div class="modal-footer" style="text-align: center;">
+            <!-- // IF SUCCESSFULLY UPLOADED -->
+            <button *ngIf="parse_done" class="btn btn-primary" [disabled]="SHOW_CIRCULAR_SPINNER"
+              (click)="onCloseInfoModalHandledSuccess()">
+              Ok
+            </button>
+            <button *ngIf="parse_err" class="btn btn-primary" [disabled]="SHOW_CIRCULAR_SPINNER"
+              (click)="onCloseInfoModalHandledError()">
+              <!-- Continue -->
+              {{ "FaqPage.Continue" | translate }}
+            </button>
+          </div>
+
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
