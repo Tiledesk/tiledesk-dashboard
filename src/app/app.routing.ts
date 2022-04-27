@@ -112,6 +112,7 @@ import { WebhookComponent } from './webhook/webhook.component';
 import { NotificationSettingsComponent } from './user-profile/notification-settings/notification-settings.component';
 import { MessagesComponent } from './analytics2/metriche/messages/messages.component';
 import { RichiesteComponent } from './analytics2/metriche/richieste/richieste.component';
+import { NativeBotComponent } from './bots/native-bot/native-bot.component';
 
 
 // /Users/nicola/TILEDESK-DSHBRD-ENTP/src/app/analytics2/metriche/messages/messages.component.ts
@@ -248,6 +249,15 @@ const routes: Routes = [
   // { path: 'project/:projectid/faq/:faqkbid', component: FaqComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/bots/:faqkbid/:type', component: FaqComponent, canActivate: [AuthGuard] },
 
+  // new component for native bot (i.e. resolution-bot)
+  
+  { path: 'project/:projectid/bots/general/:faqkbid/:type', component: NativeBotComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/bots/intents/:faqkbid/:type', component: NativeBotComponent, canActivate: [AuthGuard] }, 
+  { path: 'project/:projectid/bots/fulfillment/:faqkbid/:type', component: NativeBotComponent, canActivate: [AuthGuard] },  
+
+  { path: 'project/:projectid/faq/test/:faqkbid', component: FaqTestComponent, canActivate: [AuthGuard] },
+
+
   { path: 'project/:projectid/createfaq/:faqkbid/:bottype', component: FaqEditAddComponent, canActivate: [AuthGuard] },
 
   { path: 'project/:projectid/editfaq/:faqkbid/:faqid/:bottype', component: FaqEditAddComponent, canActivate: [AuthGuard] },
@@ -255,8 +265,7 @@ const routes: Routes = [
   // TEST-FAQ PAGE
   // { path: 'project/:projectid/faq/test/:remoteFaqKbKey/:faqkbid', component: FaqTestComponent, canActivate: [AuthGuard] },
   // TEST-FAQ PAGE NEW URL
-  { path: 'project/:projectid/faq/test/:faqkbid', component: FaqTestComponent, canActivate: [AuthGuard] },
-
+ 
   { path: 'project/:projectid/analytics', component: Analytics2Component, canActivate: [AuthGuard, ProjectProfileGuard] },
   { path: 'project/:projectid/analytics/metrics', component: Analytics2Component, canActivate: [AuthGuard, ProjectProfileGuard] },
   { path: 'project/:projectid/analytics/metrics/visitors', component: Analytics2Component, canActivate: [AuthGuard, ProjectProfileGuard] },
