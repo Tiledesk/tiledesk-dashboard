@@ -1,0 +1,122 @@
+<div class="navbar-brand" style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px">
+  <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBack()">
+    keyboard_arrow_left
+  </i>
+  Prebuilt Resolution bot
+</div>
+
+<div class="main-content" style="padding-top:0px; background-color: #fff;">
+  <div class="container-fluid">
+
+    <div class="row">
+      <div class="col-sm-12">
+
+        <!-- 1. Blank chatbot, Basic chatbot with start e defaultFallback
+2. Handoff chatbot, Basic chatbot with start, defaultFallback and Agent handoff intent
+3. Example chatbot. A chatbot with a showcase of the main features -->
+
+        <h1 class="select-bot-type-page-title">
+          Choose Resolution bot type
+        </h1>
+        <h5 class="select-bot-type-page-subtitle">
+          These are pre-built, customizable resolution bot
+        </h5>
+
+      </div>
+    </div>
+  <div class="cards-wpr " style="margin-top: 60px;">
+    <div class="row">
+      <div class="col-sm-4 nb-card-wpr">
+        <div class="nb-card" (click)="goToCreateBot('blank')">
+          <div class="nb-card-header" style="background: linear-gradient(150deg, #53f 15%, #05d5ff 70%, #a6ffcb 94%);">
+         
+            <i class="material-icons" style="padding: 22px;
+            background: #fff;
+            border-radius: 50%;
+            font-size: 40px;
+            color: rgb(69,187,246);">
+              chat_bubble
+            </i>
+          </div>
+          <div class="nb-card-content-wpr">
+            <div  class="nb-card-content">
+              
+              <p class="nb-card-content-text-wpr">
+                <span style="display: block;">  Blank </span> 
+              <span  style="display: block;    font-size: 14px;">  Basic chatbot with start e defaultFallback </span> 
+              
+              </p>
+           
+              <span class="nb-card-footer">
+                Create
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-4 nb-card-wpr" >
+        <div class="nb-card" (click)="goToCreateBot('handoff')">
+          <div class="nb-card-header" style="background: linear-gradient(150deg, #05d5ff 15%, #53f 70%, #a6ffcb 94%);">
+         
+            <i class="material-icons" style="padding: 22px;
+            background: #fff;
+            border-radius: 50%;
+            font-size: 40px;
+            color: rgb(69,187,135);">
+              swap_vertical_circle
+            </i>
+          </div>
+          <div class="nb-card-content-wpr">
+            <div  class="nb-card-content">
+              
+              <p class="nb-card-content-text-wpr">
+                <span style="display: block;">  Handoff </span> 
+              <span  style="display: block;    font-size: 14px;"> Basic chatbot with start, defaultFallback and Agent handoff intent </span> 
+              
+              </p>
+           
+              <span class="nb-card-footer">
+                Create
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-4 nb-card-wpr">
+        <div class="nb-card" (click)="goToCreateBot('example')">
+          <div class="nb-card-header" style="background: linear-gradient(150deg, #a6ffcb 15%, #53f 70%, #05d5ff 94%);">
+         
+            <i class="material-icons" style="padding: 22px;
+            background: #fff;
+            border-radius: 50%;
+            font-size: 40px;
+            color: rgb(122,23,193);">
+              tips_and_updates
+            </i>
+          </div>
+          <div class="nb-card-content-wpr">
+            <div  class="nb-card-content">
+              
+              <p class="nb-card-content-text-wpr">
+                <span style="display: block;">  Example </span> 
+              <span  style="display: block;    font-size: 14px;"> A chatbot with a showcase of the main features </span> 
+              
+              </p>
+           
+              <span class="nb-card-footer">
+                Create
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+
+
+  </div>
+</div>

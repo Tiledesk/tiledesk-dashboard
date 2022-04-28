@@ -113,6 +113,7 @@ import { NotificationSettingsComponent } from './user-profile/notification-setti
 import { MessagesComponent } from './analytics2/metriche/messages/messages.component';
 import { RichiesteComponent } from './analytics2/metriche/richieste/richieste.component';
 import { NativeBotComponent } from './bots/native-bot/native-bot.component';
+import { NativeBotSelectTypeComponent } from './bots/native-bot-select-type/native-bot-select-type.component';
 
 
 // /Users/nicola/TILEDESK-DSHBRD-ENTP/src/app/analytics2/metriche/messages/messages.component.ts
@@ -241,6 +242,9 @@ const routes: Routes = [
   { path: 'project/:projectid/bots/bot-select-type', component: BotTypeSelectComponent, canActivate: [AuthGuard] },
   // { path: 'project/:projectid/bots/createfaqkb', component: BotCreateComponent, canActivate: [AuthGuard] }, // replaced by the bottom path
   { path: 'project/:projectid/bots/create/:type', component: BotCreateComponent, canActivate: [AuthGuard] },
+
+  // native bot (to create these is required to pass the template )
+  { path: 'project/:projectid/bots/create/:type/:template', component: BotCreateComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/editfaqkb/:faqkbid', component: BotCreateComponent, canActivate: [AuthGuard] },
 
   // { path: 'faq/:faqkbid', component: FaqComponent, canActivate: [AuthGuard] }, // used to pass the faq kb id from  in faq page
@@ -250,10 +254,11 @@ const routes: Routes = [
   { path: 'project/:projectid/bots/:faqkbid/:type', component: FaqComponent, canActivate: [AuthGuard] },
 
   // new component for native bot (i.e. resolution-bot)
-  
   { path: 'project/:projectid/bots/general/:faqkbid/:type', component: NativeBotComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/bots/intents/:faqkbid/:type', component: NativeBotComponent, canActivate: [AuthGuard] }, 
   { path: 'project/:projectid/bots/fulfillment/:faqkbid/:type', component: NativeBotComponent, canActivate: [AuthGuard] },  
+  { path: 'project/:projectid/bots/prebuilt', component: NativeBotSelectTypeComponent, canActivate: [AuthGuard] },  
+
 
   { path: 'project/:projectid/faq/test/:faqkbid', component: FaqTestComponent, canActivate: [AuthGuard] },
 

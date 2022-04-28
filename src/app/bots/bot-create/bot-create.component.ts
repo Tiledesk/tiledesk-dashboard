@@ -107,7 +107,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
   botDefaultSelectedLang: string = 'English - en';
   botDefaultSelectedLangCode: string = 'en'
   language: string;
-
+template: string;
   constructor(
     private faqKbService: FaqKbService,
     private router: Router,
@@ -184,10 +184,10 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
   getParamsBotTypeAndDepts() {
     this.route.params.subscribe((params) => {
       this.botType = params.type;
-      this.logger.log('[BOT-CREATE] --->  PARAMS', params);
+      console.log('[BOT-CREATE] --->  PARAMS', params);
       this.logger.log('[BOT-CREATE] --->  PARAMS botType', this.botType);
 
-
+      this.template = params.template;
       if (this.botType === 'native') {
         this.botType = 'resolution'
       }
@@ -346,7 +346,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
   }
 
 
-  // CREATE (mongoDB)
+  // CREATE (
   createBot() {
     this.displayInfoModal = 'block'
     this.SHOW_CIRCULAR_SPINNER = true;
@@ -355,7 +355,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     this.logger.log('[BOT-CREATE] Create Bot - NAME ', this.faqKbName);
     this.logger.log('[BOT-CREATE] Create Bot - URL ', this.faqKbUrl);
     this.logger.log('[BOT-CREATE] Create Bot - PROJ ID ', this.project._id);
-    this.logger.log('[BOT-CREATE] Create Bot - Bot Type ', this.botType);
+    console.log('[BOT-CREATE] Create Bot - Bot Type ', this.botType);
     this.logger.log('[BOT-CREATE] Create Bot - Bot DESCRIPTION ', this.bot_description);
 
     let _botType = ''
@@ -364,16 +364,19 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
       // the type 'native' needs to be changed into 'internal' for the service
       _botType = 'internal'
       this.language = this.botDefaultSelectedLangCode;
+
+
     } else {
       _botType = this.botType
+
+      
     }
 
-    // this.is_external_bot
+
     // ------------------------------------------------------------------------------------------------------------------------------
     // Create bot - note for the creation of a dialogflow bot see the bottom uploaddialogflowBotCredential() called in the complete() 
     // ------------------------------------------------------------------------------------------------------------------------------
-    this.faqKbService.addFaqKb(this.faqKbName, this.faqKbUrl, _botType, this.bot_description, this.language)
-
+    this.faqKbService.creteFaqKb(this.faqKbName, this.faqKbUrl, _botType, this.bot_description, this.language, this.template)
       .subscribe((faqKb) => {
         this.logger.log('[BOT-CREATE] CREATE FAQKB - RES ', faqKb);
 
@@ -393,8 +396,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
           this.botLocalDbService.saveBotsInStorage(this.newBot_Id, faqKb);
         }
 
-      },
-        (error) => {
+      },(error) => {
 
           this.logger.error('[BOT-CREATE] CREATE FAQKB - POST REQUEST ERROR ', error);
 
@@ -456,6 +458,9 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
           }
         });
   }
+
+  
+
 
   uploaddialogflowBotCredential(bot_Id, formData) {
     this.faqKbService.uploadDialogflowBotCredetial(bot_Id, formData).subscribe((res) => {
