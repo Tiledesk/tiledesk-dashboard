@@ -330,7 +330,7 @@
     "PostChatSurveys": "Sondaggi post-chat",
     "WidgetUnbranding": "Widget senza marchio",
     "DedicatedAccountManager": "Account manager dedicato",
-    "Training": "Formazione",
+    "Training": "Addestramento",
     "SoftwareEngineerSupport": "Supporto per ingegnere del software",
     "AdvancedAnalytics": "Analytics avanzato",
     "SubscriptionStartDate": "Data di inizio dell'abbonamento",
@@ -1894,7 +1894,7 @@
     "WebhookmentUrlMustBeAHttpsUrl": "L'URL del webhook deve essere un URL https o http",
     "WebhookmentUrlMustBeAValidUrl": "L'URL del webhook deve essere un URL valido",
     "EnableWebhookCallForThisIntent": "Abilita la chiamata webhook per questo intent",
-    "HideShowColumns": "nascondi / mostra colonne",
+    "HideShowColumns": "Personalizza tabella: nascondi/mostra colonne",
     "AnswerWithTheIntentNameAlreadyExists": "La risposta con nome intent {{intent_name}} esiste già",
     "HowToGenerateDialogflowGoogleCredentialsFile": "Come generare il file delle credenziali di Google Dialogflow",
     "MicrolanguageGuide": "Guida microlingua",
@@ -2061,5 +2061,9 @@
     "WebhookEnabledForThisIntent":"Webhook abilitato per questo intent",
     "BotTest":"Prova del bot",
     "BotLanguage":"Lingua bot",
-    "AddIntent":"Aggiungi intent"
+    "AddIntent":"Aggiungi intent",
+    "ChooseAtemplate":"Scegli un modello",
+    "PrebuiltResolutionBots":"Resolution bot predefiniti",
+    "TheseArePreBuiltCustomizableResolutionbot":"Questi sono Resolution bot predefiniti e personalizzabili",
+    "Create": "Crea"
 }

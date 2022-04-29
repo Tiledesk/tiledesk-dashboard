@@ -330,7 +330,7 @@
 	"PostChatSurveys": "Post-Chat Bewertungen",
 	"WidgetUnbranding": "Widget Unbranding",
 	"DedicatedAccountManager": "Dedizierten Account Manager",
-	"Training": "Training",
+	"Training": "Ausbildung",
 	"SoftwareEngineerSupport": "Softwareentwickler Support",
 	"AdvancedAnalytics": "Erweiterte Analyse",
 	"SubscriptionStartDate": "Abo Start Datum",
@@ -1894,7 +1894,7 @@
 	"WebhookmentUrlMustBeAHttpsUrl": "Die Webhook-URL muss eine https- oder http-URL sein",
 	"WebhookmentUrlMustBeAValidUrl": "Die Webhook-URL muss eine gültige URL sein",
 	"EnableWebhookCallForThisIntent": "Aktivieren Sie den Webhook-Aufruf für diese Absicht",
-	"HideShowColumns": "Spalten ausblenden / einblenden",
+	"HideShowColumns": "Tabelle anpassen: Spalten ein-/ausblenden",
 	"AnswerWithTheIntentNameAlreadyExists": "Antwort mit dem Intent-Namen {{intent_name}} ist bereits vorhanden",
 	"HowToGenerateDialogflowGoogleCredentialsFile": "So generieren Sie eine Dialogflow Google-Anmeldeinformationsdatei",
 	"MicrolanguageGuide": "Anleitung für Mikrosprache",
@@ -2062,5 +2062,9 @@
 	"WebhookEnabledForThisIntent":"Webhook für diesen Intent aktiviert",
 	"BotTest":"Bot-Test",
 	"BotLanguage":"Bot-Sprache",
-	"AddIntent":"Intent hinzufügen"
+	"AddIntent":"Intent hinzufügen",
+	"ChooseAtemplate":"Wählen Sie eine Vorlage",
+	"PrebuiltResolutionBots":"Vorgefertigte Resolution-Bots",
+	"TheseArePreBuiltCustomizableResolutionbot":"Dies sind vorgefertigte, anpassbare Resolution-Bots",
+	"Create": "Erstellen"
 }
