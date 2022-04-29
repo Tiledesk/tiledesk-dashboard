@@ -107,8 +107,12 @@ export class BotTypeSelectComponent implements OnInit {
 
 
   goToCreateBot(type: string) {
-    this.logger.log('[BOT-TYPE-SELECT] Bot Type Selected type ', type)
+   console.log('[BOT-TYPE-SELECT] Bot Type Selected type ', type)
+   if (type !== 'native') { 
     this.router.navigate(['project/' + this.projectId + '/bots/create/' + type]);
+   } else if (type === 'native') {
+    this.router.navigate(['project/' + this.projectId + '/bots/prebuilt']);
+   }
   }
 
   goBack() {

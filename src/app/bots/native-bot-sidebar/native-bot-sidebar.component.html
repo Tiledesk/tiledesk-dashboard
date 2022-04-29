@@ -1,11 +1,12 @@
-<div class="toggle-setting-sidebar-icon-wpr" [ngClass]="{'is_opened': IS_OPEN, 'is_closed':!IS_OPEN  }"
+<!-- (click)="toggleSettingsSidebar(IS_OPEN = !IS_OPEN) -->
+<div class="toggle-setting-sidebar-icon-wpr" [ngClass]="{'is_opened': IS_OPEN, 'is_closed':!IS_OPEN }"
   (click)="toggleSettingsSidebar(IS_OPEN = !IS_OPEN)">
-  <span *ngIf="IS_OPEN" class="material-icons toggle-setting-sidebar-icon">
+  <!-- <span *ngIf="IS_OPEN" class="material-icons toggle-setting-sidebar-icon">
     chevron_left
   </span>
   <span *ngIf="!IS_OPEN" class="material-icons toggle-setting-sidebar-icon">
     chevron_right
-  </span>
+  </span> -->
 </div>
 
 <div *ngIf="project" class="settings-sidebar-wpr"
@@ -17,8 +18,8 @@
     <!--  @ Bot general settings  -->
     <!-- -------------------------------------------------------- -->
     <ng-container *ngIf="USER_ROLE !== 'agent'">
-      <li [ngClass]="{'active-item': GENERAL_ROUTE_IS_ACTIVE}" (click)="goToBotGeneralSettings()"
-        >
+      <li [ngClass]="{'active-item': GENERAL_ROUTE_IS_ACTIVE}" (click)="goToBotGeneralSettings()"  matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="{{'General' | translate}}"
+      #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
 
         <div  class="sidebar-bot-profile-img-wpr" style="width: 0%;">
         <img *ngIf="botProfileImageExist === true || botImageHasBeenUploaded === true" class="sidebar-bot-profile-img"
@@ -30,8 +31,6 @@
         <a>
           <p *ngIf="IS_OPEN === true" class="custom_paragraph" style="position: relative;left: 27px;margin-top: 8px;">
             {{ faqKb_name_truncated }}
-
-            
             <span class="bot-lang-badge" matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="{{'BotLanguage' | translate}}"
             #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100"> 
           
@@ -41,8 +40,7 @@
 
           <div class="settings-icon-wpr" style="float: right;height: 30px;
           width: 30px; position: relative;top: 5px;"  >
-            <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons" matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="{{'General' | translate}}"
-            #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
+            <i *ngIf="IS_OPEN === true" class="material-icons settings-sidebar-icons">
               settings
             </i>
           </div>
@@ -50,11 +48,9 @@
         </a>
        
       </li>
-      <!-- <div class="bot-language-bage">
-        <span class="bot-lang-badge"> {{ bot_lang_in_badge }} </span>
-      </div> -->
+   
     </ng-container>
-<!-- <hr> -->
+
     <!-- ------------------------------------------------------- -->
     <!-- @ Bot Intents -->
     <!-- ------------------------------------------------------- -->
@@ -99,11 +95,11 @@
         matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="{{'BotTest' | translate}}"
         #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN">
         <a>
-          <i class="material-icons settings-sidebar-icons">
+          <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">
             school
           </i>
-          <p class="custom_paragraph">
-            {{'BotTest' | translate}}
+          <p *ngIf="IS_OPEN === true" class="custom_paragraph">
+            {{'Training' | translate}}
           </p>
         </a>
       </li>

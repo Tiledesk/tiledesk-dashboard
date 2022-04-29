@@ -7,6 +7,7 @@ import 'rxjs/add/operator/map';
 import { AuthService } from '../core/auth.service';
 import { AppConfigService } from '../services/app-config.service';
 import { LoggerService } from '../services/logger/logger.service';
+import { BehaviorSubject } from 'rxjs';
 @Injectable()
 export class FaqKbService {
 
@@ -17,7 +18,7 @@ export class FaqKbService {
   TOKEN: string;
   user: any;
   project: any;
-
+  public $nativeBotName: BehaviorSubject<string> = new BehaviorSubject<string>('')
   constructor(
     http: Http,
     private auth: AuthService,
@@ -79,6 +80,12 @@ export class FaqKbService {
     } else {
       this.logger.log('[FAQ-KB.SERV] No user is signed in');
     }
+  }
+
+
+  publishFaqName(faqKb_name) {
+    console.log('[FAQ-KB.SERV] publishFaqName faqKb_name ', faqKb_name);
+    this.$nativeBotName.next(faqKb_name) 
   }
 
   /**
@@ -182,9 +189,10 @@ export class FaqKbService {
       .get(url, { headers })
       .map((response) => response.json());
   }
+  
 
   /**
-   * CREATE (POST)
+   * CREATE BOT external or dialogflow (POST)
    * 
    * @param name 
    * @param urlfaqkb 
@@ -192,23 +200,28 @@ export class FaqKbService {
    * @param description 
    * @returns 
    */
-  public addFaqKb(name: string, urlfaqkb: string, bottype: string, description: string, resbotlanguage: string) {
+  public creteFaqKb(name: string, urlfaqkb: string, bottype: string, description: string, resbotlanguage: string, resbottemplate: string) {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
 
+    const url = this.FAQKB_URL;
+    console.log('[BOT-CREATE][FAQ-KB.SERV] - CREATE FAQ-KB - URL ', url);
+
     // const isPreDeploy = false
     let body = {}
     body = { 'name': name, 'url': urlfaqkb, 'id_project': this.project._id, 'type': bottype, 'description': description };
     if (bottype === 'internal') {
       body['language'] = resbotlanguage
+      body['template'] = resbottemplate
     }
   
-    this.logger.log('[BOT-CREATE][FAQ-KB.SERV] - CREATE FAQ-KB - BODY ', body);
+    console.log('[BOT-CREATE][FAQ-KB.SERV] - CREATE FAQ-KB - BODY ', body);
 
-    const url = this.FAQKB_URL;
+
+   
     // let url = `http://localhost:3000/${project_id}/faq_kb/`;
     this.logger.log('[BOT-CREATE][FAQ-KB.SERV] - CREATE FAQ-KB - URL ', url);
 
@@ -331,7 +344,7 @@ export class FaqKbService {
 
     let url = this.FAQKB_URL + id;
     // url = url += `${id}`;
-    this.logger.log('update BOT - URL ', url);
+    console.log('update BOT - URL ', url);
 
     const headers = new Headers();
     headers.append('Accept', 'application/json');
@@ -346,9 +359,9 @@ export class FaqKbService {
       body['webhook_url'] = webhookurl
       body['language'] = resbotlanguage
     }
-    this.logger.log('[FAQ-KB.SERV] updateFaqKb - BODY ', body);
+    console.log('[FAQ-KB.SERV] updateFaqKb - BODY ', body);
 
-    this.logger.log('[FAQ-KB.SERV] updateFaqKb - PUT BODY ', body);
+
     return this.http
       .put(url, JSON.stringify(body), options)
       .map((res) => res.json());

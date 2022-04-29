@@ -17,16 +17,15 @@
           {{ "ChooseBotType" | translate }}
         </h1>
         <h5 class="select-bot-type-page-subtitle">
-          {{ "BotsPage.SelectAndConfigureABot" | translate }} </h5>
+          {{ "BotsPage.SelectAndConfigureABot" | translate }}
+         </h5>
       </div>
     </div>
 
     <div class="row">
-
-       
-        <!-- -------------------------------------------------------------- -->
-        <!-- @ Native bot -> then renamemed in Resolution bot -->
-        <!-- -------------------------------------------------------------- -->
+      <!-- -------------------------------------------------------------- -->
+      <!-- @ Native bot -> then renamemed in Resolution bot -->
+      <!-- -------------------------------------------------------------- -->
       <div [ngClass]="{'col-sm-12 col-md-3' : dgfIsVisible === true && natIsVisible === true,
         'col-sm-12 col-md-4' : dgfIsVisible === false && natIsVisible === true, 
         'is_hidden' :  natIsVisible === false}">
@@ -49,7 +48,8 @@
 
             </div>
             <h4 class="title-in-select-bot-card">
-              Resolution  <!-- Native -->
+              Resolution
+             
             </h4>
             <h5 style="color:#7695a5; font-size: 14px;">
               <!-- Our native, easy and powerful NPL (Natural Language Processing) chatbot -->
@@ -127,7 +127,7 @@
       </div>
 
       <!-- 'col-sm-12 col-md-6' : dgfIsVisible === true && natIsVisible === false, -->
-       
+
       <!-- -------------------------------------------------------------- -->
       <!-- @ External bot -->
       <!-- -------------------------------------------------------------- -->

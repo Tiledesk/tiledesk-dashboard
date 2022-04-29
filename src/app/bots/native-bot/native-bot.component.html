@@ -1,26 +1,34 @@
 <div class="navbar-brand" style="z-index: 1050;position: relative;margin-top:6px; padding-left:12px">
   <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" rel="tooltip" title=""
     (click)="goBack()">keyboard_arrow_left</i>
-  
   {{ 'FaqPage.EditBOT' | translate }}
-  <!-- <span style="color: #566787; font-weight:400">
-    “{{ faqKb_name }}”
-  </span> -->
 </div>
+
+<!-- <span class="navbar-brand navbar-brand-sidebar-settings"
+  [ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
+  <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBack()">
+    keyboard_arrow_left
+  </i>
+  <span *ngIf="IS_OPEN_SETTINGS_SIDEBAR">{{ 'FaqPage.EditBOT' | translate }} </span>
+</span>
+<span *ngIf="!IS_OPEN_SETTINGS_SIDEBAR"class="navbar-brand navbar-brand-title">
+  {{ 'FaqPage.EditBOT' | translate }}
+</span> -->
+
+
 <div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
   <div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
 
     <div class="content-wpr" style="display: flex;">
 
-      <appdashboard-native-bot-sidebar style="border-right:1px solid #e5effe !important" 
-      [faqKb_name]="faqKb_name"
-        [botDefaultSelectedLang]="botDefaultSelectedLang" [botType]="botType" [id_faq_kb]="id_faq_kb"  [botProfileImageExist]="botProfileImageExist"
-        [botImageHasBeenUploaded]="botImageHasBeenUploaded"
+      <appdashboard-native-bot-sidebar style="border-right:1px solid #e5effe !important" [faqKb_name]="faqKb_name"
+        [botDefaultSelectedLang]="botDefaultSelectedLang" [botType]="botType" [id_faq_kb]="id_faq_kb"
+        [botProfileImageExist]="botProfileImageExist" [botImageHasBeenUploaded]="botImageHasBeenUploaded"
         [botProfileImageurl]="botProfileImageurl">
       </appdashboard-native-bot-sidebar>
 
       <div class="teplate-content" style="flex: 1 1 auto; margin-left: 20px;">
-       
+
         <div class="row">
           <div class="col-md-8" [ngStyle]="{'display': INTENTS_ROUTE_IS_ACTIVE === true ? 'none' : block }">
             <div class="card custom_card card--no-border"
@@ -167,8 +175,7 @@
                     <label class="col-xs-2"></label>
                     <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
                       <button id="update-bot-btn" style="margin-top: 12px;margin-bottom: 5px;" #editbotbtn
-                        class="btn btn-primary  pull-right" (click)="editBot()"
-                        [disabled]="faqKb_name?.length === 0">
+                        class="btn btn-primary  pull-right" (click)="editBot()" [disabled]="faqKb_name?.length === 0">
                         {{ "BotsAddEditPage.UpdateBotName" | translate }}
                       </button>
                     </div>
@@ -179,19 +186,19 @@
                   <!-- ---------------------------------------------------------- -->
                   <div *ngIf="isVisibleDEP === true" class="row" style="margin-bottom: 4px;">
 
-                    
-                      <div class="col-sm-10 col-md-10">
-                        <h3 class="card_title__underlined">
-                          <span class="card_title__underline">
-                            
-                            {{ 'Departments' | translate }}
-                          </span>
-                        </h3>
-                      </div>
-                      <div class="col-sm-10 col-md-10">
-                        <div class="section-subtitle"> </div>
-                      </div>
-               
+
+                    <div class="col-sm-10 col-md-10">
+                      <h3 class="card_title__underlined">
+                        <span class="card_title__underline">
+
+                          {{ 'Departments' | translate }}
+                        </span>
+                      </h3>
+                    </div>
+                    <div class="col-sm-10 col-md-10">
+                      <div class="section-subtitle"> </div>
+                    </div>
+
                     <!-- USE CASE: THE BOT IS ASSOCIATED -->
                     <div *ngIf="DEPTS_BOT_IS_ASSOCIATED_WITH_ARRAY.length > 0"
                       class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
@@ -245,7 +252,7 @@
 
                   </div>
                   <div class="row">
-                   
+
                     <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
                       <span style="color: #7695a5;font-size: 12px;font-weight: 400;">
                         {{'ManageTheBotIn' | translate}}
@@ -356,7 +363,7 @@
               </div> <!-- ./ card-content -->
             </div> <!-- ./ card -->
           </div> <!-- ./ col-md-8 -->
-        
+
         </div> <!-- ./ row -->
 
 
@@ -364,6 +371,101 @@
         <!-- Native bot FAQs (alias RESOLUTION BOT)-->
         <!-- --------------------------------------------------------------------------------------------------- -->
         <section class="native-bot-answers" *ngIf="INTENTS_ROUTE_IS_ACTIVE === true">
+
+          <div class="btn-wpr" style="margin-top: 8px;margin-bottom: 8px;">
+            <div class="row">
+              <div class="col-md-12">
+                <!-- --------------------------------------------------- -->
+                <!-- button add answer -->
+                <!-- --------------------------------------------------- -->
+                <button class="btn btn-light-blu add-answer tooltipx"
+                  [ngClass]="{'add-padding' : windowWidthMore764 === true}" (click)="goToEditAddPage_CREATE()">
+                  <span class="icon" style="padding-right:0px">
+                    <i class="material-icons" style="font-size:18px; top:0px">add</i>
+                    <span *ngIf="windowWidthMore764"
+                      style="position: relative; top: 1px; text-transform: initial; text-transform: initial;">
+                      {{ 'AddIntent' | translate }}
+                    </span>
+                  </span>
+                  <span *ngIf="windowWidthMore764 === false" class="tooltiptext" style="text-transform:none">
+                    {{ 'AddIntent' | translate }} </span>
+                </button>
+                <!-- ./ button add answer -->
+
+                <!-- --------------------------------------------------- -->
+                <!-- BUTTON ADD FAQs FROM CSV FILE -->
+                <!-- --------------------------------------------------- -->
+                <button class="btn btn-light-blu upload-csv tooltipx"
+                  [ngClass]="{'add-padding' : windowWidthMore764 === true}" (click)="openImportModal()">
+                  <span class="icon" style="padding-right:0px;">
+                    <i class="material-icons" style="font-size:18px; top:0px">file_upload</i>
+                    <span *ngIf="windowWidthMore764"
+                      style="position: relative; top: 1px; text-transform: initial; text-transform: initial;">
+                      {{ 'UploadFromCsv' | translate }}
+                    </span>
+                  </span>
+                  <span *ngIf="windowWidthMore764 === false" class="tooltiptext" style="text-transform:none">
+                    {{ 'UploadAnswersFromCsv' | translate }}</span>
+                </button>
+                <!-- ./ button upload-csv -->
+
+                <!-- --------------------------------------------------- -->
+                <!-- BUTTON EXPORT FAQs TO CSV  -->
+                <!-- --------------------------------------------------- -->
+                <button class="btn btn-light-blu export-csv tooltipx"
+                  [ngClass]="{'add-padding' : windowWidthMore764 === true}" (click)="exportFaqsToCsv()">
+                  <span class="icon" style="padding-right:0px;">
+                    <i class="material-icons" style="font-size:18px; top:0px">save_alt</i>
+                    <span *ngIf="windowWidthMore764" style="position: relative; top: 1px; text-transform: initial;">
+                      {{ 'ExportToCsv' | translate }}
+                    </span>
+                  </span>
+                  <span *ngIf="windowWidthMore764 === false" class="tooltiptext" style="text-transform:none">
+                    {{'ExportAnswersToCsv' | translate }}
+                  </span>
+                </button>
+                <!-- ./ button export-csv -->
+
+                <!-- --------------------------------------------------- -->
+                <!-- Customize table  -->
+                <!-- --------------------------------------------------- -->
+                <div class="dropdown pull-right" style="padding-right: 20px;">
+                  <a href="#" class="btn btn-light-grey customize-table dropdown-toggle" data-toggle="dropdown"
+                    matTooltipClass="custom-mat-tooltip" matTooltip="{{'HideShowColumns' | translate }}"
+                    #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
+                    <span class="material-icons" style="font-size:18px"> view_column </span>
+                    <span class="customize-table-btn-name" style="text-transform:none">
+                      {{'Customize' | translate}}
+                    </span>
+                  </a>
+                  <ul class="dropdown-menu pull-right" style="padding:12px">
+                    <li>
+                      <input type="checkbox" [(ngModel)]="display_intent_name_in_table"
+                        [checked]="display_intent_name_in_table" (change)="checkValueIntentName($event)" />
+                      <span class="dropdown-item"> {{ 'IntentName' | translate }} </span>
+                    </li>
+                    <li>
+                      <input type="checkbox" [checked]="display_questions_in_table"
+                        [(ngModel)]="display_questions_in_table" (change)="checkQuestions($event)" />
+                      <span class="dropdown-item">{{ 'Questions' | translate }} </span>
+                    </li>
+                    <li>
+                      <input type="checkbox" [checked]="display_answer_in_table" [(ngModel)]="display_answer_in_table"
+                        (change)="checkAnswer($event)" />
+                      <span class="dropdown-item"> {{ 'FaqPage.Answer' | translate }} </span>
+                    </li>
+                    <li *ngIf="isVisibleAnalytics">
+                      <input type="checkbox" [(ngModel)]="display_message_in_table" [checked]="display_message_in_table"
+                        (change)="checkValueMessage($event)" />
+                      <span class="dropdown-item">{{ "BotsAddEditPage.Messages" | translate }} </span>
+                    </li>
+
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div class="row">
             <div class="col-md-8">
               <div class="row">
@@ -389,8 +491,10 @@
 
                 <div class="card-header card-header-custom-bkgrnd"
                   style="border-bottom:unset; padding-top:0px; padding-bottom:0px">
-
-                  <div class="row" style="margin-left: -33px;">
+                  <!-- -------------------------------------------------------------------------- -->
+                  <!-- Buttons DISPLAY NONE!!!!!!! - moved moved over the table -->
+                  <!-- -------------------------------------------------------------------------- -->
+                  <div class="row" style="margin-left: -33px; display: none;">
                     <div class="col-md-12">
 
                       <!-- --------------------------------------------------- -->
@@ -498,7 +602,10 @@
                       </div>
                     </div>
 
-                  </div> <!-- ./end row-->
+                  </div>
+                  <!-- -------------------------------------------------------------------------- -->
+                  <!-- ./ end row Buttons DISPLAY NONE!!!!!!! - moved moved over the table -->
+                  <!-- -------------------------------------------------------------------------- -->
 
                   <!-- --------------------------------------- -->
                   <!-- Search answer -->

@@ -76,8 +76,10 @@ color: #fff!important; margin-left:-20px; margin-right:-20px; margin-top:-15px">
       placeholder="{{ 'AddAnotherAnswerToTheCurrentQuestion' | translate }}"></textarea>
       <!-- btn-block btn-outline-primary -->
      <button class="btn btn-primary" style="margin-top:0px; margin-bottom:16px" (click)="create()" [disabled]="answer?.length < 1"> 
-     <!-- {{ 'AddAnswerToTheCurrentQuestion' | translate }} -->
-     {{ 'AddAnswer' | translate }}
+   
+     <!-- {{ 'AddAnswer' | translate }} -->
+     {{ 'AddIntent' | translate }}
+     
      
      </button>
   </div>

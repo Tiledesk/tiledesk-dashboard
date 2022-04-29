@@ -1,5 +1,5 @@
 
-import { Component, HostListener, Input, OnChanges, OnInit } from '@angular/core'
+import { Component, HostListener, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core'
 import { LoggerService } from './../../services/logger/logger.service'
 import { AppConfigService } from '../../services/app-config.service'
 import { AuthService } from '../../core/auth.service'
@@ -9,6 +9,7 @@ import { TranslateService } from '@ngx-translate/core'
 import { UsersService } from 'app/services/users.service'
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { FaqKbService } from 'app/services/faq-kb.service'
 @Component({
   selector: 'appdashboard-native-bot-sidebar',
   templateUrl: './native-bot-sidebar.component.html',
@@ -24,7 +25,7 @@ export class NativeBotSidebarComponent implements OnInit, OnChanges {
   @Input() botProfileImageExist: boolean;
   @Input() botImageHasBeenUploaded: boolean;
   @Input() botProfileImageurl: string;
-  public faqKb_name_truncated:  string;
+  public faqKb_name_truncated: string;
 
   public botTypeForInput: string;
   public bot_lang_in_badge: string;
@@ -35,30 +36,11 @@ export class NativeBotSidebarComponent implements OnInit, OnChanges {
 
   ///// ./ Nk -------------------------------------------------
 
-
-
-
-  isVisibleANA: boolean
-  isVisibleACT: boolean
-  isVisibleTRI: boolean
-  isVisibleGRO: boolean
-  isVisibleDEP: boolean
-  isVisibleOPH: boolean
-  isVisibleCAR: boolean
-  isVisibleLBS: boolean
-  isVisibleAPP: boolean
-
-
-
-  public_Key: string
   USER_ROLE: any
-  CHAT_BASE_URL: string
   project: any
   route: string
-  sidebar_settings_height: any
   IS_OPEN: boolean = true
-  routing_and_depts_lbl: string;
-  teammatates_and_groups_lbl: string;
+
   private unsubscribe$: Subject<any> = new Subject<any>();
   constructor(
     public appConfigService: AppConfigService,
@@ -68,33 +50,51 @@ export class NativeBotSidebarComponent implements OnInit, OnChanges {
     public location: Location,
     private translate: TranslateService,
     private usersService: UsersService,
+    private faqKbService: FaqKbService
   ) { }
 
   ngOnInit() {
     this.getUserRole();
-
     this.getCurrentProject();
-    this.getCurrentRoute();
-    // this.getMainContentHeight();
+    this.getCurrentRoute()
     this.listenSidebarIsOpened();
-
+    this.subscribeToBotName()
   }
-  ngOnChanges() {
+
+  subscribeToBotName() {
+    this.faqKbService.$nativeBotName.subscribe((botname) => {
+      console.log('[NATIVE-BOT-SIDEBAR] SETTINGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', botname)
+       
+      
+     });
+      }
+
+  ngOnChanges(changes: SimpleChanges) {
+    console.log('[NATIVE-BOT-SIDEBAR] changes ', changes)
+
+    console.log('[NATIVE-BOT-SIDEBAR] changes faqKb_name ', changes.faqKb_name)
     console.log('[NATIVE-BOT-SIDEBAR] faqKb_name ', this.faqKb_name)
-
-    if (this.faqKb_name && this.faqKb_name.length > 20 ) {
-      this.faqKb_name_truncated = this.faqKb_name.substring(0, 18) + '...';
-    } else   if (this.faqKb_name && this.faqKb_name.length < 20 ) {
-      this.faqKb_name_truncated = this.faqKb_name
+    const botNameClone = JSON.stringify(this.faqKb_name)
+    console.log('[NATIVE-BOT-SIDEBAR] botNameClone ', botNameClone)
+    let botNameCloneNoBracket = ''
+    if (botNameClone) {
+      botNameCloneNoBracket = botNameClone.replace(/"/g, '')
+      console.log('[NATIVE-BOT-SIDEBAR] botNameCloneNoBracket ', botNameCloneNoBracket)
     }
-    
-   
-    console.log('[NATIVE-BOT-SIDEBAR] bot type ', this.botType)
-    console.log('[NATIVE-BOT-SIDEBAR] botDefaultSelectedLang ', this.botDefaultSelectedLang)
-    console.log('[NATIVE-BOT-SIDEBAR] botProfileImageExist ', this.botProfileImageExist)
-    console.log('[NATIVE-BOT-SIDEBAR] botImageHasBeenUploaded ', this.botImageHasBeenUploaded)
-    console.log('[NATIVE-BOT-SIDEBAR] botProfileImageurl ', this.botProfileImageurl)
 
+    // if (this.faqKb_name !== botNameCloneNoBracket) {
+      if (this.faqKb_name && this.faqKb_name.length > 20) {
+        this.faqKb_name_truncated = this.faqKb_name.substring(0, 18) + '...';
+      } else if (this.faqKb_name && this.faqKb_name.length < 20) {
+        this.faqKb_name_truncated = this.faqKb_name
+      }
+
+      console.log('[NATIVE-BOT-SIDEBAR] bot type ', this.botType)
+      console.log('[NATIVE-BOT-SIDEBAR] botDefaultSelectedLang ', this.botDefaultSelectedLang)
+      console.log('[NATIVE-BOT-SIDEBAR] botProfileImageExist ', this.botProfileImageExist)
+      console.log('[NATIVE-BOT-SIDEBAR] botImageHasBeenUploaded ', this.botImageHasBeenUploaded)
+      console.log('[NATIVE-BOT-SIDEBAR] botProfileImageurl ', this.botProfileImageurl)
+    // }
     if (this.botDefaultSelectedLang) {
       const botDefaultSelectedLangSegments = this.botDefaultSelectedLang.split('-')
       console.log('[NATIVE-BOT-SIDEBAR] botDefaultSelectedLangSegments ', botDefaultSelectedLangSegments);
@@ -104,8 +104,6 @@ export class NativeBotSidebarComponent implements OnInit, OnChanges {
     if (this.botType && this.botType === 'native') {
       this.botTypeForInput = 'Resolution'
     }
-
-
   }
 
   ngAfterContentInit() {
@@ -113,6 +111,19 @@ export class NativeBotSidebarComponent implements OnInit, OnChanges {
       this.getWindowWidthOnInit();
     }, 0);
   }
+
+  listenSidebarIsOpened() {
+    this.auth.settingSidebarIsOpned.subscribe((isopened) => {
+      this.logger.log('[NATIVE-BOT-SIDEBAR] NATIVE-BOT-SIDEBAR is opened (FROM SUBSCRIPTION) ', isopened)
+      this.IS_OPEN = isopened
+    })
+  }
+
+  // toggleSettingsSidebar(IS_OPEN) {
+  //   console.log('[SETTINGS-SIDEBAR] IS_OPEN ', IS_OPEN)
+  //   this.IS_OPEN = IS_OPEN;
+  //   this.auth.toggleSettingsSidebar(IS_OPEN)
+  // }
 
   getUserRole() {
     this.usersService.project_user_role_bs
@@ -125,41 +136,32 @@ export class NativeBotSidebarComponent implements OnInit, OnChanges {
       })
   }
 
-  listenSidebarIsOpened() {
-    this.auth.settingSidebarIsOpned.subscribe((isopened) => {
-      this.logger.log('[NATIVE-BOT-SIDEBAR] NATIVE-BOT-SIDEBAR is opened (FROM SUBSCRIPTION) ', isopened)
-      this.IS_OPEN = isopened
-    })
-  }
-
-  toggleSettingsSidebar(IS_OPEN) {
-    this.logger.log('[NATIVE-BOT-SIDEBAR] IS_OPEN ', IS_OPEN)
-    // this.IS_OPEN = IS_OPEN
-    this.auth.toggleSettingsSidebar(IS_OPEN)
-  }
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     const newInnerWidth = event.target.innerWidth;
-
-    // console.log('SETTINGS-SIDEBAR] ON RESIZE WINDOW WIDTH ', newInnerWidth);
+    // console.log('[NATIVE-BOT-SIDEBAR] ON RESIZE WINDOW WIDTH ', newInnerWidth);
     if (newInnerWidth < 1200) {
-      this.toggleSettingsSidebar(false)
+      this.IS_OPEN = false
+      // this.toggleSettingsSidebar(false)
     }
     if (newInnerWidth >= 1200) {
-      this.toggleSettingsSidebar(true)
+      this.IS_OPEN = true
+      // this.toggleSettingsSidebar(true)
     }
   }
 
 
   getWindowWidthOnInit() {
     const onInitWindoeWidth = window.innerWidth;
-    // console.log('SETTINGS-SIDEBAR] ON INIT WINDOW WIDTH ', onInitWindoeWidth);
+    // console.log('[NATIVE-BOT-SIDEBAR] ON INIT WINDOW WIDTH ', onInitWindoeWidth);
     if (onInitWindoeWidth < 1200) {
-      this.toggleSettingsSidebar(false)
+      this.IS_OPEN = false
+      // this.toggleSettingsSidebar(false)
     }
     if (onInitWindoeWidth >= 1200) {
-      this.toggleSettingsSidebar(true)
+      this.IS_OPEN = true
+      // this.toggleSettingsSidebar(true)
     }
   }
 
@@ -168,7 +170,7 @@ export class NativeBotSidebarComponent implements OnInit, OnChanges {
     this.logger.log('[NATIVE-BOT-SIDEBAR] - CALLING GET CURRENT PROJECT  ', this.project)
     this.auth.project_bs.subscribe((project) => {
       this.project = project
-      // this.logger.log('[SIDEBAR] project from AUTH service subscription  ', this.project)
+      // this.logger.log('[NATIVE-BOT-SIDEBAR] project from AUTH service subscription  ', this.project)
     })
   }
 
@@ -187,9 +189,6 @@ export class NativeBotSidebarComponent implements OnInit, OnChanges {
   goToBotTraining() {
     this.router.navigate(['project/' + this.project._id + '/faq/test', this.id_faq_kb]);
   }
-
-
-
 
 
   getCurrentRoute() {

@@ -181,7 +181,7 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
   fullText_temp: string;
   queryString: string;
   paginated_answers_count: number;
-
+  IS_OPEN_SETTINGS_SIDEBAR: boolean;
   _route: string
   public GENERAL_ROUTE_IS_ACTIVE: boolean = false
   public INTENTS_ROUTE_IS_ACTIVE: boolean = false
@@ -213,11 +213,11 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
 
     const brand = brandService.getBrand();
     this.tparams = brand;
-    this.route.params.subscribe((params) => {
-
-
-    })
+   
+   
   }
+
+ 
 
   ngOnInit() {
     this.auth.checkRoleForCurrentProject();
@@ -247,7 +247,18 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
     this.getTranslations();
 
     this.getDeptsByProjectId();
+    // this.listenSidebarIsOpened();
+    
+  }
 
+ 
+
+
+  listenSidebarIsOpened() {
+    this.auth.nativeBotSidebarIsOpened.subscribe((isopened) => {
+     console.log('[NATIVE-BOT] SETTINGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
+      this.IS_OPEN_SETTINGS_SIDEBAR = isopened
+    });
   }
 
   getParamsBotIdAndThenInit() {
@@ -850,12 +861,45 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
           // this.logger.log('PUBLIC-KEY (Faqcomponent) - isVisibleDEP', this.isVisibleDEP);
         }
       }
+      if (key.includes("PAY")) {
+        this.logger.log('[FAQ-COMP] PUBLIC-KEY - key', key);
+        let pay = key.split(":");
+        // this.logger.log('PUBLIC-KEY (Navbar) - pay key&value', pay);
+        if (pay[1] === "F") {
+          this.payIsVisible = false;
+          this.logger.log('[FAQ-COMP] - pay isVisible', this.payIsVisible);
+        } else {
+          this.payIsVisible = true;
+          this.logger.log('[FAQ-COMP] - pay isVisible', this.payIsVisible);
+        }
+      }
+      if (key.includes("ANA")) {
+
+        let ana = key.split(":");
+
+        if (ana[1] === "F") {
+          this.isVisibleAnalytics = false;
+        } else {
+          this.isVisibleAnalytics = true;
+        }
+      }
 
     });
 
     if (!this.public_Key.includes("DEP")) {
       this.isVisibleDEP = false;
     }
+
+    if (!this.public_Key.includes("ANA")) {
+      this.isVisibleAnalytics = false;
+    }
+
+    if (!this.public_Key.includes("PAY")) {
+      this.payIsVisible = false;
+      // this.logger.log('[FAQ-COMP] - pay isVisible', this.payIsVisible);
+    }
+
+
   }
 
   getProjectPlan() {
@@ -979,9 +1023,11 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
 
       this.faq_kb_remoteKey = faqkb.kbkey_remote
       console.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID - FAQKB REMOTE KEY ', this.faq_kb_remoteKey);
-
+      
       this.faqKb_name = faqkb.name;
       console.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID - FAQKB NAME', this.faqKb_name);
+    
+      this.faqKbService.publishFaqName(this.faqKb_name)
 
       this.faqKb_id = faqkb._id;
       console.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID - FAQKB ID', this.faqKb_id);
@@ -1186,8 +1232,8 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
 
   goBack() {
     // this.logger.log('FaqComponent NAVIGATION - urlAfterRedirects PREVIOUS PAGE IS CREATE BOT (goBack) ', this.previousPageIsCreateBot);
-    // this.router.navigate(['project/' + this.project._id + '/bots']);
-    this.location.back();
+    this.router.navigate(['project/' + this.project._id + '/bots']);
+    // this.location.back();
     // if (this.previousPageIsCreateBot === true) {
     //   this.router.navigate(['project/' + this.project._id + '/bots']);
     // } else {

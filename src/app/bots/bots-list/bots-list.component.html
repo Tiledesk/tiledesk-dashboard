@@ -128,13 +128,11 @@
                       <td style="white-space: nowrap; width: 1%; cursor: pointer;">
                         <span class="tool_tip" (click)='goToFaqPage(faqkb?._id, faqkb?.type)'>
                           <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
-                            style=""
                             class="bot--img"
                             src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{faqkb?._id}}%2Fphoto.jpg?alt=media"
                             onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
 
                           <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
-                            style=""
                             class="bot--img"
                             src="{{baseUrl}}images?path=uploads%2Fusers%2F{{faqkb?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                             onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
@@ -227,10 +225,10 @@
                     </span> -->
                       </td>
 
-                      <!-- 
-                  // -----------------------------------------------------
-                  // Bot name & truncated description
-                  // ----------------------------------------------------- -->
+                       
+                      <!-- ----------------------------------------------------- -->
+                      <!-- Bot name & truncated description -->
+                      <!-- ----------------------------------------------------- -->
                       <td>
                         <span style="font-weight:400; cursor: pointer;font-size:13px"
                           (click)='goToFaqPage(faqkb?._id, faqkb?.type)'>
@@ -246,18 +244,6 @@
 
                           <div class="bot--truncated--desc"> {{ faqkb?.truncated_desc}} </div>
                           <div class="bot--full--desc"> {{ faqkb?.description}} </div>
-
-
-                          <!-- <div class="top">
-                        <h4>{{ 'Description' | translate }}</h4>
-
-                       <div class="line-clamp" style="display: -webkit-box;
-                       -webkit-line-clamp: 3;
-                       -webkit-box-orient: vertical;
-                       overflow: hidden;
-                       text-overflow: ellipsis;">{{ faqkb?.description}}  </div> 
-                        <i></i>
-                      </div> -->
                         </div>
                       </td>
 
@@ -269,13 +255,7 @@
                         <span *ngIf="faqkb?.type === 'internal'" style="text-transform: capitalize;font-weight:400;">
                           resolution 
                         </span>
-                        <!-- <div class="checkbox">
-                      <label>
-                        <input style="opacity: 0.5!important;" type="checkbox" name="optionsCheckboxes"
-                          [checked]="faqkb?.external" disabled>
-                      </label>
-                    </div>
-                    <div class="overlay"></div> -->
+          
                       </td>
 
                       <td *ngIf="isVisibleAnalytics" style="text-transform: capitalize;font-weight:400;text-align: center">

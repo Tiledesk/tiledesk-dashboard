@@ -16,11 +16,34 @@
 }
 
 // ------------------------------------
-// Resolution bot type cards
+// Resolution bot temlate type cards
 // ------------------------------------
 .nb-card-wpr {
     display: flex;
+}
+
+.nb-card-wpr.right {
+    justify-content: right;
+}
+
+.nb-card-wpr.center {
     justify-content: center;
+}
+
+.nb-card-wpr.left {
+    justify-content: left;
+}
+
+@media (max-width: 768px) {
+    .nb-card-wpr.right {
+        justify-content: center;
+    }
+    .nb-card-wpr.center {
+        justify-content: center;
+    }
+    .nb-card-wpr.left {
+        justify-content: center;
+    }
 }
 
 .nb-card {
@@ -65,8 +88,16 @@
     justify-content: center;
     align-items: center;
     color: #fff;
-    font-family: 'Poppins';
+    font-family: "Poppins";
     font-size: 21px;
+}
+
+.nb-card-header-icon {
+    padding: 22px;
+    background: #fff;
+    border-radius: 50%;
+    font-size: 40px;
+    width: 84px;
 }
 
 .nb-card-content-wpr {
@@ -108,6 +139,11 @@
     font-weight: 400;
 }
 
+.nb-card-content-subtitle {
+    display: block;
+    font-weight: 300;
+    font-size: 14px;
+}
 
 .nb-card-footer {
     background: transparent;
@@ -121,4 +157,4 @@
     outline: 0px;
     text-align: center;
     transition: color 0.1s ease-in-out 0s;
-  }
+}

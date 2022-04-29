@@ -277,7 +277,7 @@ export class BotListComponent implements OnInit {
     this.rowIndexSelected = undefined;
   }
 
- 
+
 
   getAllFaqByFaqKbId() {
     // FOR ANY FAQ-KB ID GET THE FAQ ASSOCIATED
@@ -543,12 +543,15 @@ export class BotListComponent implements OnInit {
     let _botType = ""
     if (botType === 'internal') {
       _botType = 'native'
+     
+      this.router.navigate(['project/' + this.project._id + '/bots/intents/', idFaqKb, _botType]);
     } else {
       _botType = botType
+      this.router.navigate(['project/' + this.project._id + '/bots', idFaqKb, _botType]);
     }
 
     this.logger.log('[BOTS-LIST] ID OF THE BOT (FAQKB) SELECTED ', idFaqKb, 'bot type ', botType);
-    this.router.navigate(['project/' + this.project._id + '/bots', idFaqKb, _botType]);
+
   }
 
 
