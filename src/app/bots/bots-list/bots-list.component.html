@@ -126,7 +126,7 @@
                     <tr *ngFor="let faqkb of faqkbList; let i = index">
                       <!--  style="width: 1%; white-space: nowrap;" -->
                       <td style="white-space: nowrap; width: 1%; cursor: pointer;">
-                        <span class="tool_tip" (click)='goToFaqPage(faqkb?._id, faqkb?.type)'>
+                        <span class="tool_tip" (click)='goToBotDtls(faqkb?._id, faqkb?.type,  faqkb?.name)'>
                           <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
                             class="bot--img"
                             src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{faqkb?._id}}%2Fphoto.jpg?alt=media"
@@ -229,18 +229,12 @@
                       <!-- ----------------------------------------------------- -->
                       <!-- Bot name & truncated description -->
                       <!-- ----------------------------------------------------- -->
-                      <td>
-                        <span style="font-weight:400; cursor: pointer;font-size:13px"
-                          (click)='goToFaqPage(faqkb?._id, faqkb?.type)'>
+                      <td (click)='goToBotDtls(faqkb?._id, faqkb?.type, faqkb?.name )' style="cursor: pointer;">
+                        <span style="font-weight:400; cursor: pointer;font-size:13px">
                           {{ faqkb?.name }}
                         </span>
 
-                        <div *ngIf="faqkb?.description" class="tool_tip" style="color: #7695a5; font-weight: 400; line-height:18px; font-size:12px; 
-                      display: block; display: -webkit-box;
-                      -webkit-line-clamp: 2;
-                      -webkit-box-orient: vertical;
-                      overflow: hidden;
-                      text-overflow: ellipsis;">
+                        <div *ngIf="faqkb?.description" class="bot_description_wpr" style="">
 
                           <div class="bot--truncated--desc"> {{ faqkb?.truncated_desc}} </div>
                           <div class="bot--full--desc"> {{ faqkb?.description}} </div>
@@ -248,14 +242,12 @@
                       </td>
 
                       <td>
-
                         <span *ngIf="faqkb?.type !== 'internal'" style="text-transform: capitalize;font-weight:400;"> 
                           {{ faqkb?.type}} 
                         </span>
                         <span *ngIf="faqkb?.type === 'internal'" style="text-transform: capitalize;font-weight:400;">
                           resolution 
                         </span>
-          
                       </td>
 
                       <td *ngIf="isVisibleAnalytics" style="text-transform: capitalize;font-weight:400;text-align: center">
@@ -264,7 +256,7 @@
 
                       <td class="td-actions text-right" style="padding-top:18px !important">
                         <button type="button" rel="tooltip" title="{{ 'BotsPage.tooltipEditBot' | translate }}"
-                          class="btn btn-primary btn-simple btn-xs" (click)='goToFaqPage(faqkb?._id, faqkb?.type)'>
+                          class="btn btn-primary btn-simple btn-xs" (click)='goToBotDtls(faqkb?._id, faqkb?.type,  faqkb?.name)'>
                           <i class="material-icons">edit</i>
                         </button>
 

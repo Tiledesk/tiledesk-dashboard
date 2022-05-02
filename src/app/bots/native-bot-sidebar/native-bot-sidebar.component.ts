@@ -70,16 +70,15 @@ export class NativeBotSidebarComponent implements OnInit, OnChanges {
       }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log('[NATIVE-BOT-SIDEBAR] changes ', changes)
-
-    console.log('[NATIVE-BOT-SIDEBAR] changes faqKb_name ', changes.faqKb_name)
-    console.log('[NATIVE-BOT-SIDEBAR] faqKb_name ', this.faqKb_name)
+    // console.log('[NATIVE-BOT-SIDEBAR] changes ', changes)
+    // console.log('[NATIVE-BOT-SIDEBAR] changes faqKb_name ', changes.faqKb_name)
+    // console.log('[NATIVE-BOT-SIDEBAR] faqKb_name ', this.faqKb_name)
     const botNameClone = JSON.stringify(this.faqKb_name)
-    console.log('[NATIVE-BOT-SIDEBAR] botNameClone ', botNameClone)
+    // console.log('[NATIVE-BOT-SIDEBAR] botNameClone ', botNameClone)
     let botNameCloneNoBracket = ''
     if (botNameClone) {
       botNameCloneNoBracket = botNameClone.replace(/"/g, '')
-      console.log('[NATIVE-BOT-SIDEBAR] botNameCloneNoBracket ', botNameCloneNoBracket)
+      // console.log('[NATIVE-BOT-SIDEBAR] botNameCloneNoBracket ', botNameCloneNoBracket)
     }
 
     // if (this.faqKb_name !== botNameCloneNoBracket) {
@@ -89,17 +88,17 @@ export class NativeBotSidebarComponent implements OnInit, OnChanges {
         this.faqKb_name_truncated = this.faqKb_name
       }
 
-      console.log('[NATIVE-BOT-SIDEBAR] bot type ', this.botType)
-      console.log('[NATIVE-BOT-SIDEBAR] botDefaultSelectedLang ', this.botDefaultSelectedLang)
-      console.log('[NATIVE-BOT-SIDEBAR] botProfileImageExist ', this.botProfileImageExist)
-      console.log('[NATIVE-BOT-SIDEBAR] botImageHasBeenUploaded ', this.botImageHasBeenUploaded)
-      console.log('[NATIVE-BOT-SIDEBAR] botProfileImageurl ', this.botProfileImageurl)
+      // console.log('[NATIVE-BOT-SIDEBAR] bot type ', this.botType)
+      // console.log('[NATIVE-BOT-SIDEBAR] botDefaultSelectedLang ', this.botDefaultSelectedLang)
+      // console.log('[NATIVE-BOT-SIDEBAR] botProfileImageExist ', this.botProfileImageExist)
+      // console.log('[NATIVE-BOT-SIDEBAR] botImageHasBeenUploaded ', this.botImageHasBeenUploaded)
+      // console.log('[NATIVE-BOT-SIDEBAR] botProfileImageurl ', this.botProfileImageurl)
     // }
     if (this.botDefaultSelectedLang) {
       const botDefaultSelectedLangSegments = this.botDefaultSelectedLang.split('-')
-      console.log('[NATIVE-BOT-SIDEBAR] botDefaultSelectedLangSegments ', botDefaultSelectedLangSegments);
+      // console.log('[NATIVE-BOT-SIDEBAR] botDefaultSelectedLangSegments ', botDefaultSelectedLangSegments);
       this.bot_lang_in_badge = botDefaultSelectedLangSegments[1].trim();
-      console.log('[NATIVE-BOT-SIDEBAR] bot_lang_in_badge ', this.bot_lang_in_badge);
+      // console.log('[NATIVE-BOT-SIDEBAR] bot_lang_in_badge ', this.bot_lang_in_badge);
     }
     if (this.botType && this.botType === 'native') {
       this.botTypeForInput = 'Resolution'
@@ -113,17 +112,17 @@ export class NativeBotSidebarComponent implements OnInit, OnChanges {
   }
 
   listenSidebarIsOpened() {
-    this.auth.settingSidebarIsOpned.subscribe((isopened) => {
+    this.auth.nativeBotSidebarIsOpened.subscribe((isopened) => {
       this.logger.log('[NATIVE-BOT-SIDEBAR] NATIVE-BOT-SIDEBAR is opened (FROM SUBSCRIPTION) ', isopened)
       this.IS_OPEN = isopened
     })
   }
 
-  // toggleSettingsSidebar(IS_OPEN) {
-  //   console.log('[SETTINGS-SIDEBAR] IS_OPEN ', IS_OPEN)
-  //   this.IS_OPEN = IS_OPEN;
-  //   this.auth.toggleSettingsSidebar(IS_OPEN)
-  // }
+  toggleNativeBotSidebar(IS_OPEN) {
+    // console.log('[SETTINGS-SIDEBAR] IS_OPEN ', IS_OPEN)
+    this.IS_OPEN = IS_OPEN;
+    this.auth.toggleNativeBotSidebar(IS_OPEN)
+  }
 
   getUserRole() {
     this.usersService.project_user_role_bs
@@ -143,11 +142,11 @@ export class NativeBotSidebarComponent implements OnInit, OnChanges {
     // console.log('[NATIVE-BOT-SIDEBAR] ON RESIZE WINDOW WIDTH ', newInnerWidth);
     if (newInnerWidth < 1200) {
       this.IS_OPEN = false
-      // this.toggleSettingsSidebar(false)
+      this.toggleNativeBotSidebar(false)
     }
     if (newInnerWidth >= 1200) {
       this.IS_OPEN = true
-      // this.toggleSettingsSidebar(true)
+      this.toggleNativeBotSidebar(true)
     }
   }
 
@@ -157,11 +156,11 @@ export class NativeBotSidebarComponent implements OnInit, OnChanges {
     // console.log('[NATIVE-BOT-SIDEBAR] ON INIT WINDOW WIDTH ', onInitWindoeWidth);
     if (onInitWindoeWidth < 1200) {
       this.IS_OPEN = false
-      // this.toggleSettingsSidebar(false)
+      this.toggleNativeBotSidebar(false)
     }
     if (onInitWindoeWidth >= 1200) {
       this.IS_OPEN = true
-      // this.toggleSettingsSidebar(true)
+      this.toggleNativeBotSidebar(true)
     }
   }
 
@@ -195,34 +194,34 @@ export class NativeBotSidebarComponent implements OnInit, OnChanges {
     this.route = this.router.url
     if (this.route.indexOf('/bots/general') !== -1) {
       this.GENERAL_ROUTE_IS_ACTIVE = true
-      console.log('[NATIVE-BOT-SIDEBAR] - GENERAL_ROUTE_IS_ACTIVE  ', this.GENERAL_ROUTE_IS_ACTIVE)
+      // console.log('[NATIVE-BOT-SIDEBAR] - GENERAL_ROUTE_IS_ACTIVE  ', this.GENERAL_ROUTE_IS_ACTIVE)
     } else {
       this.GENERAL_ROUTE_IS_ACTIVE = false
-      console.log('[NATIVE-BOT-SIDEBAR] - GENERAL_ROUTE_IS_ACTIVE  ', this.GENERAL_ROUTE_IS_ACTIVE)
+      // console.log('[NATIVE-BOT-SIDEBAR] - GENERAL_ROUTE_IS_ACTIVE  ', this.GENERAL_ROUTE_IS_ACTIVE)
     }
 
     if (this.route.indexOf('/bots/intents') !== -1) {
       this.INTENTS_ROUTE_IS_ACTIVE = true
-      console.log('[NATIVE-BOT-SIDEBAR] - INTENTS_ROUTE_IS_ACTIVE  ', this.INTENTS_ROUTE_IS_ACTIVE)
+      // console.log('[NATIVE-BOT-SIDEBAR] - INTENTS_ROUTE_IS_ACTIVE  ', this.INTENTS_ROUTE_IS_ACTIVE)
     } else {
       this.INTENTS_ROUTE_IS_ACTIVE = false
-      console.log('[NATIVE-BOT-SIDEBAR] - INTENTS_ROUTE_IS_ACTIVE  ', this.INTENTS_ROUTE_IS_ACTIVE)
+      // console.log('[NATIVE-BOT-SIDEBAR] - INTENTS_ROUTE_IS_ACTIVE  ', this.INTENTS_ROUTE_IS_ACTIVE)
     }
 
     if (this.route.indexOf('/bots/fulfillment') !== -1) {
       this.FULFILLMENT_ROUTE_IS_ACTIVE = true
-      console.log('[NATIVE-BOT-SIDEBAR] - FULFILLMENT_ROUTE_IS_ACTIVE  ', this.FULFILLMENT_ROUTE_IS_ACTIVE)
+      // console.log('[NATIVE-BOT-SIDEBAR] - FULFILLMENT_ROUTE_IS_ACTIVE  ', this.FULFILLMENT_ROUTE_IS_ACTIVE)
     } else {
       this.FULFILLMENT_ROUTE_IS_ACTIVE = false
-      console.log('[NATIVE-BOT-SIDEBAR] - FULFILLMENT_ROUTE_IS_ACTIVE  ', this.FULFILLMENT_ROUTE_IS_ACTIVE)
+      // console.log('[NATIVE-BOT-SIDEBAR] - FULFILLMENT_ROUTE_IS_ACTIVE  ', this.FULFILLMENT_ROUTE_IS_ACTIVE)
     }
 
     if (this.route.indexOf('/faq/test/') !== -1) {
       this.TRAINING_ROUTE_IS_ACTIVE = true;
-      console.log('[NATIVE-BOT-SIDEBAR] - TRAINING_ROUTE_IS_ACTIVE  ', this.TRAINING_ROUTE_IS_ACTIVE)
+      // console.log('[NATIVE-BOT-SIDEBAR] - TRAINING_ROUTE_IS_ACTIVE  ', this.TRAINING_ROUTE_IS_ACTIVE)
     } else {
       this.TRAINING_ROUTE_IS_ACTIVE = false;
-      console.log('[NATIVE-BOT-SIDEBAR] - TRAINING_ROUTE_IS_ACTIVE  ', this.TRAINING_ROUTE_IS_ACTIVE)
+      // console.log('[NATIVE-BOT-SIDEBAR] - TRAINING_ROUTE_IS_ACTIVE  ', this.TRAINING_ROUTE_IS_ACTIVE)
     }
   }
 }

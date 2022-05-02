@@ -99,10 +99,10 @@ export class SettingsSidebarComponent implements OnInit {
   }
 
   toggleSettingsSidebar(IS_OPEN) {
-    console.log('[SETTINGS-SIDEBAR] IS_OPEN >>>>>', IS_OPEN)
+    this.logger.log('[SETTINGS-SIDEBAR] IS_OPEN >>>>>', IS_OPEN)
     // this.IS_OPEN = IS_OPENù
     this.USER_HAS_TOGGLE_SIDEBAR = true
-    console.log('[SETTINGS-SIDEBAR] toggleSettingsSidebar USER_HAS_TOGGLE_SIDEBAR >>>>>',  this.USER_HAS_TOGGLE_SIDEBAR)
+    this.logger.log('[SETTINGS-SIDEBAR] toggleSettingsSidebar USER_HAS_TOGGLE_SIDEBAR >>>>>',  this.USER_HAS_TOGGLE_SIDEBAR)
     this.auth.toggleSettingsSidebar(IS_OPEN)
   }
 
@@ -124,8 +124,8 @@ export class SettingsSidebarComponent implements OnInit {
 
   getWindowWidthOnInit() {
     const onInitWindoeWidth = window.innerWidth;
-    console.log('SETTINGS-SIDEBAR] ON INIT WINDOW WIDTH >>>>>> ', onInitWindoeWidth);
-    console.log('SETTINGS-SIDEBAR] ON INIT USER_HAS_TOGGLE_SIDEBAR >>>>>> ',this.USER_HAS_TOGGLE_SIDEBAR);
+    this.logger.log('SETTINGS-SIDEBAR] ON INIT WINDOW WIDTH >>>>>> ', onInitWindoeWidth);
+    this.logger.log('SETTINGS-SIDEBAR] ON INIT USER_HAS_TOGGLE_SIDEBAR >>>>>> ',this.USER_HAS_TOGGLE_SIDEBAR);
     // if (this.USER_HAS_TOGGLE_SIDEBAR === false) {
       if (onInitWindoeWidth < 1200) {
         this.toggleSettingsSidebar(false)

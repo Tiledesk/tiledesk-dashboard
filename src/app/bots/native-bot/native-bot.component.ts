@@ -247,7 +247,7 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
     this.getTranslations();
 
     this.getDeptsByProjectId();
-    // this.listenSidebarIsOpened();
+    this.listenSidebarIsOpened();
     
   }
 
@@ -256,14 +256,14 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
 
   listenSidebarIsOpened() {
     this.auth.nativeBotSidebarIsOpened.subscribe((isopened) => {
-     console.log('[NATIVE-BOT] SETTINGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
+      this.logger.log('[NATIVE-BOT] SETTINGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
       this.IS_OPEN_SETTINGS_SIDEBAR = isopened
     });
   }
 
   getParamsBotIdAndThenInit() {
     this.id_faq_kb = this.route.snapshot.params['faqkbid'];
-    console.log('[NATIVE-BOT] id_faq_kb ', this.id_faq_kb);
+    this.logger.log('[NATIVE-BOT] id_faq_kb ', this.id_faq_kb);
 
     if (this.id_faq_kb) {
       if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
@@ -271,9 +271,9 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
       } else {
         this.checkBotImageExistOnNative();
       }
-      console.log('[NATIVE-BOT] - GENERAL_ROUTE_IS_ACTIVE  ', this.GENERAL_ROUTE_IS_ACTIVE)
-      console.log('[NATIVE-BOT] - INTENTS_ROUTE_IS_ACTIVE  ', this.INTENTS_ROUTE_IS_ACTIVE)
-      console.log('[NATIVE-BOT] - FULFILLMENT_ROUTE_IS_ACTIVE  ', this.FULFILLMENT_ROUTE_IS_ACTIVE)
+      this.logger.log('[NATIVE-BOT] - GENERAL_ROUTE_IS_ACTIVE  ', this.GENERAL_ROUTE_IS_ACTIVE)
+      this.logger.log('[NATIVE-BOT] - INTENTS_ROUTE_IS_ACTIVE  ', this.INTENTS_ROUTE_IS_ACTIVE)
+      this.logger.log('[NATIVE-BOT] - FULFILLMENT_ROUTE_IS_ACTIVE  ', this.FULFILLMENT_ROUTE_IS_ACTIVE)
       this.getFaqKbById();
       this.getAllFaqByFaqKbId();
       this.getPaginatedFaqByFaqKbIdAndRepliesCount()
@@ -285,26 +285,26 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
     this._route = this.router.url
     if (this._route.indexOf('/bots/general') !== -1) {
       this.GENERAL_ROUTE_IS_ACTIVE = true
-      console.log('[NATIVE-BOT] - GENERAL_ROUTE_IS_ACTIVE  ', this.GENERAL_ROUTE_IS_ACTIVE)
+      this.logger.log('[NATIVE-BOT] - GENERAL_ROUTE_IS_ACTIVE  ', this.GENERAL_ROUTE_IS_ACTIVE)
     } else {
       this.GENERAL_ROUTE_IS_ACTIVE = false
-      console.log('[NATIVE-BOT] - GENERAL_ROUTE_IS_ACTIVE  ', this.GENERAL_ROUTE_IS_ACTIVE)
+      this.logger.log('[NATIVE-BOT] - GENERAL_ROUTE_IS_ACTIVE  ', this.GENERAL_ROUTE_IS_ACTIVE)
     }
 
     if (this._route.indexOf('/bots/intents') !== -1) {
       this.INTENTS_ROUTE_IS_ACTIVE = true
-      console.log('[NATIVE-BOT] - INTENTS_ROUTE_IS_ACTIVE  ', this.INTENTS_ROUTE_IS_ACTIVE)
+      this.logger.log('[NATIVE-BOT] - INTENTS_ROUTE_IS_ACTIVE  ', this.INTENTS_ROUTE_IS_ACTIVE)
     } else {
       this.INTENTS_ROUTE_IS_ACTIVE = false
-      console.log('[NATIVE-BOT] - INTENTS_ROUTE_IS_ACTIVE  ', this.INTENTS_ROUTE_IS_ACTIVE)
+      this.logger.log('[NATIVE-BOT] - INTENTS_ROUTE_IS_ACTIVE  ', this.INTENTS_ROUTE_IS_ACTIVE)
     }
 
     if (this._route.indexOf('/bots/fulfillment') !== -1) {
       this.FULFILLMENT_ROUTE_IS_ACTIVE = true
-      console.log('[NATIVE-BOT] - FULFILLMENT_ROUTE_IS_ACTIVE  ', this.FULFILLMENT_ROUTE_IS_ACTIVE)
+      this.logger.log('[NATIVE-BOT] - FULFILLMENT_ROUTE_IS_ACTIVE  ', this.FULFILLMENT_ROUTE_IS_ACTIVE)
     } else {
       this.FULFILLMENT_ROUTE_IS_ACTIVE = false
-      console.log('[NATIVE-BOT] - FULFILLMENT_ROUTE_IS_ACTIVE  ', this.FULFILLMENT_ROUTE_IS_ACTIVE)
+      this.logger.log('[NATIVE-BOT] - FULFILLMENT_ROUTE_IS_ACTIVE  ', this.FULFILLMENT_ROUTE_IS_ACTIVE)
     }
 
 
@@ -355,9 +355,9 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
 
   getParamsBotType() {
     this.route.params.subscribe((params) => {
-      console.log('[NATIVE-BOT] - params ', params)
+      this.logger.log('[NATIVE-BOT] - params ', params)
       this.botType = params.type;
-      console.log('[NATIVE-BOT] - this.botType ', this.botType)
+      this.logger.log('[NATIVE-BOT] - this.botType ', this.botType)
       if (this.botType && this.botType === 'native') {
         this.botTypeForInput = 'Resolution'
       }
@@ -438,14 +438,14 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
   }
 
   checkValueMessage($event) {
-    console.log('[FAQ-COMP] check value display_message_in_table', this.display_message_in_table)
+    this.logger.log('[FAQ-COMP] check value display_message_in_table', this.display_message_in_table)
   }
   checkQuestions($event) {
-    console.log('[FAQ-COMP] check value display_questions_in_table', this.display_questions_in_table)
+    this.logger.log('[FAQ-COMP] check value display_questions_in_table', this.display_questions_in_table)
   }
 
   checkAnswer($event) {
-    console.log('[FAQ-COMP] check value display_answer_in_table', this.display_answer_in_table)
+    this.logger.log('[FAQ-COMP] check value display_answer_in_table', this.display_answer_in_table)
   }
 
 
@@ -1022,36 +1022,36 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
       this.logger.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID (SUBSTITUTE BOT) ', faqkb);
 
       this.faq_kb_remoteKey = faqkb.kbkey_remote
-      console.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID - FAQKB REMOTE KEY ', this.faq_kb_remoteKey);
+      this.logger.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID - FAQKB REMOTE KEY ', this.faq_kb_remoteKey);
       
       this.faqKb_name = faqkb.name;
-      console.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID - FAQKB NAME', this.faqKb_name);
+      this.logger.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID - FAQKB NAME', this.faqKb_name);
     
-      this.faqKbService.publishFaqName(this.faqKb_name)
+      // this.faqKbService.publishFaqName(this.faqKb_name)
 
       this.faqKb_id = faqkb._id;
-      console.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID - FAQKB ID', this.faqKb_id);
+      this.logger.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID - FAQKB ID', this.faqKb_id);
 
       this.faqKb_created_at = faqkb.createdAt;
-      console.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID - CREATED AT ', this.faqKb_created_at);
+      this.logger.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID - CREATED AT ', this.faqKb_created_at);
 
       this.faqKb_description = faqkb.description;
-      console.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID - Description ', this.faqKb_description);
+      this.logger.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID - Description ', this.faqKb_description);
 
       this.webhook_is_enabled = faqkb.webhook_enabled
-      console.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID - webhook_is_enabled ', this.webhook_is_enabled);
+      this.logger.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID - webhook_is_enabled ', this.webhook_is_enabled);
 
       this.webhookUrl = faqkb.webhook_url
-      console.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID - webhookUrl ', this.webhookUrl);
+      this.logger.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID - webhookUrl ', this.webhookUrl);
 
-      console.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID - LANGUAGE ', faqkb.language);
+      this.logger.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID - LANGUAGE ', faqkb.language);
 
       // for the comnobobox "select bot language" -now not used because the user cannot change the language of the bot he chose during creation
       // this.botDefaultSelectedLang = this.botDefaultLanguages[this.getIndexOfbotDefaultLanguages(faqkb.language)]
       // this.logger.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID  (ONLY FOR NATIVE BOT i.e. Resolution) LANGUAGE ', this.botDefaultSelectedLang);
       if (faqkb && faqkb.language) {
         this.botDefaultSelectedLang = this.botDefaultLanguages[this.getIndexOfbotDefaultLanguages(faqkb.language)].name
-        console.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID  (ONLY FOR NATIVE BOT i.e. Resolution) LANGUAGE ', this.botDefaultSelectedLang);
+        this.logger.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID  (ONLY FOR NATIVE BOT i.e. Resolution) LANGUAGE ', this.botDefaultSelectedLang);
       }
 
       if (faqkb.webhook_enabled) {
@@ -1249,7 +1249,7 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
   // -----------------------------------------------------------------------------------------
   getAllFaqByFaqKbId() {
     this.faqService.getAllFaqByFaqKbId(this.id_faq_kb).subscribe((faq: any) => {
-      console.log('[FAQ-COMP] - GET FAQS', faq);
+      this.logger.log('[FAQ-COMP] - GET FAQS', faq);
       // this.faq = faq;
 
       if (faq) {
@@ -1277,16 +1277,16 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
         // })
       }
     }, (error) => {
-      this.logger.log('[FAQ-COMP] >> FAQs GOT BY FAQ-KB ID - ERR ', error);
+      this.logger.error('[FAQ-COMP] >> FAQs GOT BY FAQ-KB ID - ERR ', error);
     }, () => {
       this.logger.log('[FAQ-COMP] >> FAQs GOT BY FAQ-KB ID - COMPLETE');
     });
   }
 
   fulltextChange($event) {
-    console.log('[FAQ-COMP] - fulltextChange ', $event);
+    this.logger.log('[FAQ-COMP] - fulltextChange ', $event);
     this.fullText = $event
-    console.log('[FAQ-COMP] - fulltextChange  $event length', $event.length);
+    this.logger.log('[FAQ-COMP] - fulltextChange  $event length', $event.length);
     if ($event.length === 0) {
       this.queryString = undefined;
       this.has_searched = false;
@@ -1304,7 +1304,7 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
   }
 
   searchOnEnterPressed(event: any) {
-    console.log('searchOnEnterPressed event', event);
+    this.logger.log('searchOnEnterPressed event', event);
     if (event.key === "Enter") {
       this.search()
     }
@@ -1322,7 +1322,7 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
     // }
 
     // this.queryString = this.fullText_temp
-    console.log('[FAQ-COMP] - FULL TEXT SEARCH ', this.queryString)
+    this.logger.log('[FAQ-COMP] - FULL TEXT SEARCH ', this.queryString)
     this.getPaginatedFaqByFaqKbIdAndRepliesCount();
     this.getAllSearcedFaq()
   }
@@ -1333,13 +1333,13 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
   // ------------------------------------------------------------------------------
   decreasePageNumber() {
     this.pageNo -= 1;
-    console.log('[FAQ-COMP] - DECREASE PAGE NUMBER ', this.pageNo);
+    this.logger.log('[FAQ-COMP] - DECREASE PAGE NUMBER ', this.pageNo);
     this.getPaginatedFaqByFaqKbIdAndRepliesCount()
   }
 
   increasePageNumber() {
     this.pageNo += 1;
-    console.log('[FAQ-COMP] - INCREASE PAGE NUMBER ', this.pageNo);
+    this.logger.log('[FAQ-COMP] - INCREASE PAGE NUMBER ', this.pageNo);
     this.getPaginatedFaqByFaqKbIdAndRepliesCount()
   }
 
@@ -1349,7 +1349,7 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
   getPaginatedFaqByFaqKbIdAndRepliesCount() {
     this.showSpinner = true;
     this.faqService.getPaginatedFaqByFaqKbId(this.id_faq_kb, this.pageNo, this.faqPerPageLimit, this.queryString).subscribe((faq: any) => {
-      console.log('[FAQ-COMP] - GET Paginated FAQS', faq);
+      this.logger.log('[FAQ-COMP] - GET Paginated FAQS', faq);
 
 
       if (faq) {
@@ -1396,7 +1396,7 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
   getAllSearcedFaq() {
 
     this.faqService.getCountOfAllSearcedFaq(this.id_faq_kb, this.queryString).subscribe((faq: any) => {
-      console.log('[FAQ-COMP] - GET ALL SEARCHED FAQS', faq);
+      this.logger.log('[FAQ-COMP] - GET ALL SEARCHED FAQS', faq);
       // this.faq = faq;
 
       if (faq) {

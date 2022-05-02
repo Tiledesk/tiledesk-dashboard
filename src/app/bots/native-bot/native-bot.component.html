@@ -1,10 +1,10 @@
-<div class="navbar-brand" style="z-index: 1050;position: relative;margin-top:6px; padding-left:12px">
+<!-- <div class="navbar-brand" style="z-index: 1050;position: relative;margin-top:6px; padding-left:12px">
   <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" rel="tooltip" title=""
     (click)="goBack()">keyboard_arrow_left</i>
   {{ 'FaqPage.EditBOT' | translate }}
-</div>
+</div> -->
 
-<!-- <span class="navbar-brand navbar-brand-sidebar-settings"
+<span class="navbar-brand navbar-brand-sidebar-settings"
   [ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
   <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBack()">
     keyboard_arrow_left
@@ -13,7 +13,7 @@
 </span>
 <span *ngIf="!IS_OPEN_SETTINGS_SIDEBAR"class="navbar-brand navbar-brand-title">
   {{ 'FaqPage.EditBOT' | translate }}
-</span> -->
+</span>
 
 
 <div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
@@ -637,8 +637,8 @@
                           </button>
                         </span>
                       </div><!-- /input-group -->
-
-                      <div class="answer-pagination" style="position: absolute;right: 15px;">
+                      <!-- position: absolute;right: 15px; -->
+                      <div class="answer-pagination">
 
                         <span style="font-size: 12px; font-weight: 400;">
                           {{paginated_answers_count}} {{'Of'| translate}} {{faq_lenght }}
@@ -825,8 +825,9 @@
                           <span style="white-space: pre-wrap; word-wrap: break-word">{{ faq?.question }}</span>
                         </td>
                         <!-- white-space: normal !important; word-wrap: break-word; word-break: break-all;  -->
-                        <td *ngIf="display_answer_in_table === true"
-                          style="font-size:13px; font-weight:400;vertical-align: middle !important;">
+                        <td class="bot-answer" *ngIf="display_answer_in_table === true"
+                          style="font-size:13px; font-weight:400;vertical-align: middle !important;    max-width: 250px;
+                          word-break: break-all;">
                           {{ faq?.answer }}
                         </td>
                         <!-- white-space: normal !important; word-wrap: break-word;word-break: break-all; -->

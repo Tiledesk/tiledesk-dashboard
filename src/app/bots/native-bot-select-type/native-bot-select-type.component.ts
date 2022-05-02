@@ -33,7 +33,7 @@ export class NativeBotSelectTypeComponent implements OnInit {
  
 
   goToCreateBot(template) {
-    console.log('[NATIVE-BOT-SELECT-TYPE] template ', template)
+    // console.log('[NATIVE-BOT-SELECT-TYPE] template ', template)
     
      this.router.navigate(['project/' + this.projectId + '/bots/create/' + 'native/' + template]);
  

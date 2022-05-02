@@ -83,10 +83,10 @@ export class FaqKbService {
   }
 
 
-  publishFaqName(faqKb_name) {
-    console.log('[FAQ-KB.SERV] publishFaqName faqKb_name ', faqKb_name);
-    this.$nativeBotName.next(faqKb_name) 
-  }
+  // publishBotName(faqKb_name) {
+  //   console.log('[FAQ-KB.SERV] publishFaqName faqKb_name ', faqKb_name);
+  //   this.$nativeBotName.next(faqKb_name) 
+  // }
 
   /**
    * READ (GET) !!! NO MORE USED
@@ -200,7 +200,7 @@ export class FaqKbService {
    * @param description 
    * @returns 
    */
-  public creteFaqKb(name: string, urlfaqkb: string, bottype: string, description: string, resbotlanguage: string, resbottemplate: string) {
+  public createFaqKb(name: string, urlfaqkb: string, bottype: string, description: string, resbotlanguage: string, resbottemplate: string) {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
@@ -208,7 +208,7 @@ export class FaqKbService {
     const options = new RequestOptions({ headers });
 
     const url = this.FAQKB_URL;
-    console.log('[BOT-CREATE][FAQ-KB.SERV] - CREATE FAQ-KB - URL ', url);
+    this.logger.log('[BOT-CREATE][FAQ-KB.SERV] - CREATE FAQ-KB - URL ', url);
 
     // const isPreDeploy = false
     let body = {}
@@ -218,7 +218,7 @@ export class FaqKbService {
       body['template'] = resbottemplate
     }
   
-    console.log('[BOT-CREATE][FAQ-KB.SERV] - CREATE FAQ-KB - BODY ', body);
+    this.logger.log('[BOT-CREATE][FAQ-KB.SERV] - CREATE FAQ-KB - BODY ', body);
 
 
    
@@ -344,7 +344,7 @@ export class FaqKbService {
 
     let url = this.FAQKB_URL + id;
     // url = url += `${id}`;
-    console.log('update BOT - URL ', url);
+    this.logger.log('update BOT - URL ', url);
 
     const headers = new Headers();
     headers.append('Accept', 'application/json');
@@ -359,7 +359,7 @@ export class FaqKbService {
       body['webhook_url'] = webhookurl
       body['language'] = resbotlanguage
     }
-    console.log('[FAQ-KB.SERV] updateFaqKb - BODY ', body);
+    this.logger.log('[FAQ-KB.SERV] updateFaqKb - BODY ', body);
 
 
     return this.http

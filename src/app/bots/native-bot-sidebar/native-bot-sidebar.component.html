@@ -1,12 +1,12 @@
 <!-- (click)="toggleSettingsSidebar(IS_OPEN = !IS_OPEN) -->
 <div class="toggle-setting-sidebar-icon-wpr" [ngClass]="{'is_opened': IS_OPEN, 'is_closed':!IS_OPEN }"
-  (click)="toggleSettingsSidebar(IS_OPEN = !IS_OPEN)">
-  <!-- <span *ngIf="IS_OPEN" class="material-icons toggle-setting-sidebar-icon">
+  (click)="toggleNativeBotSidebar(IS_OPEN = !IS_OPEN)">
+  <span *ngIf="IS_OPEN" class="material-icons toggle-setting-sidebar-icon">
     chevron_left
   </span>
   <span *ngIf="!IS_OPEN" class="material-icons toggle-setting-sidebar-icon">
     chevron_right
-  </span> -->
+  </span>
 </div>
 
 <div *ngIf="project" class="settings-sidebar-wpr"
@@ -31,8 +31,9 @@
         <a>
           <p *ngIf="IS_OPEN === true" class="custom_paragraph" style="position: relative;left: 27px;margin-top: 8px;">
             {{ faqKb_name_truncated }}
-            <span class="bot-lang-badge" matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="{{'BotLanguage' | translate}}"
-            #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100"> 
+            <!-- matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="{{'BotLanguage' | translate}}"
+            #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" -->
+            <span class="bot-lang-badge" > 
           
             {{ bot_lang_in_badge }} 
           </span>
@@ -88,11 +89,11 @@
     </ng-container>
 
     <!-- ------------------------------------------------------- -->
-    <!-- Bot Trainung -->
+    <!-- Bot Training -->
     <!-- ------------------------------------------------------- -->
     <ng-container>
       <li [ngClass]="{'active-item': TRAINING_ROUTE_IS_ACTIVE}" (click)="goToBotTraining()"
-        matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="{{'BotTest' | translate}}"
+        matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="{{'Training' | translate}}"
         #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN">
         <a>
           <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">

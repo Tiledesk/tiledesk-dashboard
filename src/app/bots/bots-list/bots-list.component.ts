@@ -538,12 +538,18 @@ export class BotListComponent implements OnInit {
   // ---------------------------------------------------------------------------
   // Go to faq.component to: Add / Edit FAQ, Edit Bot name
   // ---------------------------------------------------------------------------
-  goToFaqPage(idFaqKb: string, botType: string) {
-
+  goToBotDtls(idFaqKb: string, botType: string, botname: string) {
+    this.logger.log('[BOTS-LIST] NAME OF THE BOT SELECTED ', botname);
     let _botType = ""
     if (botType === 'internal') {
       _botType = 'native'
-     
+
+      // -------------------------------------------------------------------------------------------
+      // Publish the bot name to be able to check in the native bot sidebar if the bot name changes,
+      // to prevent the bot name from updating every time a bot sidebar menu item is clicked
+      // -------------------------------------------------------------------------------------------
+      // this.faqKbService.publishBotName(botname)
+
       this.router.navigate(['project/' + this.project._id + '/bots/intents/', idFaqKb, _botType]);
     } else {
       _botType = botType
@@ -555,17 +561,9 @@ export class BotListComponent implements OnInit {
   }
 
 
-  // !! NO MORE USED - REPLACED WITH goToFaqPage (see above)
-  // GO TO THE COMPONENT FAQ-KB-EDIT-ADD
-  // goToEditAddPage_EDIT(idFaqKb: string) {
-  //   this.router.navigate(['project/' + this.project._id + '/editfaqkb', idFaqKb]);
-  // }
-
-
-
+  // to  check if is used 
   goToTestFaqPage(remoteFaqKbKey: string) {
     this.logger.log('[BOTS-LIST] REMOTE FAQKB KEY SELECTED ', remoteFaqKbKey);
-
     this.router.navigate(['project/' + this.project._id + '/faq/test', remoteFaqKbKey]);
   }
 

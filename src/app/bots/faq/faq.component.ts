@@ -375,14 +375,14 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   }
 
   checkValueMessage($event) {
-    console.log('[FAQ-COMP] check value display_message_in_table', this.display_message_in_table)
+    this.logger.log('[FAQ-COMP] check value display_message_in_table', this.display_message_in_table)
   }
   checkQuestions($event) {
-    console.log('[FAQ-COMP] check value display_questions_in_table', this.display_questions_in_table)
+    this.logger.log('[FAQ-COMP] check value display_questions_in_table', this.display_questions_in_table)
   }
 
   checkAnswer($event) {
-    console.log('[FAQ-COMP] check value display_answer_in_table', this.display_answer_in_table)
+    this.logger.log('[FAQ-COMP] check value display_answer_in_table', this.display_answer_in_table)
   }
 
 
@@ -1202,7 +1202,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   // -----------------------------------------------------------------------------------------
   getAllFaqByFaqKbId() {
     this.faqService.getAllFaqByFaqKbId(this.id_faq_kb).subscribe((faq: any) => {
-      console.log('[FAQ-COMP] - GET FAQS', faq);
+      this.logger.log('[FAQ-COMP] - GET FAQS', faq);
       // this.faq = faq;
 
       if (faq) {
@@ -1237,9 +1237,9 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   }
 
   fulltextChange($event) {
-    console.log('[FAQ-COMP] - fulltextChange ', $event);
+    this.logger.log('[FAQ-COMP] - fulltextChange ', $event);
     this.fullText = $event
-    console.log('[FAQ-COMP] - fulltextChange  $event length', $event.length);
+    this.logger.log('[FAQ-COMP] - fulltextChange  $event length', $event.length);
     if ($event.length === 0) {
       this.queryString = undefined;
       this.has_searched = false;
@@ -1257,7 +1257,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   }
 
   searchOnEnterPressed(event: any) {
-    console.log('searchOnEnterPressed event', event);
+    this.logger.log('searchOnEnterPressed event', event);
     if (event.key === "Enter") {
       this.search()
     }
@@ -1275,7 +1275,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     // }
 
     // this.queryString = this.fullText_temp
-    console.log('[FAQ-COMP] - FULL TEXT SEARCH ', this.queryString)
+    this.logger.log('[FAQ-COMP] - FULL TEXT SEARCH ', this.queryString)
     this.getPaginatedFaqByFaqKbIdAndRepliesCount();
     this.getAllSearcedFaq()
   }
@@ -1286,13 +1286,13 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   // ------------------------------------------------------------------------------
   decreasePageNumber() {
     this.pageNo -= 1;
-    console.log('[FAQ-COMP] - DECREASE PAGE NUMBER ', this.pageNo);
+    this.logger.log('[FAQ-COMP] - DECREASE PAGE NUMBER ', this.pageNo);
     this.getPaginatedFaqByFaqKbIdAndRepliesCount()
   }
 
   increasePageNumber() {
     this.pageNo += 1;
-    console.log('[FAQ-COMP] - INCREASE PAGE NUMBER ', this.pageNo);
+    this.logger.log('[FAQ-COMP] - INCREASE PAGE NUMBER ', this.pageNo);
     this.getPaginatedFaqByFaqKbIdAndRepliesCount()
   }
 
@@ -1302,7 +1302,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   getPaginatedFaqByFaqKbIdAndRepliesCount() {
     this.showSpinner = true;
     this.faqService.getPaginatedFaqByFaqKbId(this.id_faq_kb, this.pageNo, this.faqPerPageLimit, this.queryString).subscribe((faq: any) => {
-      console.log('[FAQ-COMP] - GET Paginated FAQS', faq);
+      this.logger.log('[FAQ-COMP] - GET Paginated FAQS', faq);
       
 
       if (faq) {
@@ -1349,7 +1349,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   getAllSearcedFaq() {
 
     this.faqService.getCountOfAllSearcedFaq(this.id_faq_kb, this.queryString).subscribe((faq: any) => {
-      console.log('[FAQ-COMP] - GET ALL SEARCHED FAQS', faq);
+      this.logger.log('[FAQ-COMP] - GET ALL SEARCHED FAQS', faq);
       // this.faq = faq;
 
       if (faq) {
