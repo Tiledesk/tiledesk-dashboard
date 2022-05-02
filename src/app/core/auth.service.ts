@@ -73,6 +73,7 @@ export class AuthService {
   public user_bs: BehaviorSubject<User> = new BehaviorSubject<User>(null)
   public project_bs: BehaviorSubject<Project> = new BehaviorSubject<Project>(null)
   public settingSidebarIsOpned: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true)
+  public nativeBotSidebarIsOpened: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null)
 
   show_ExpiredSessionPopup: boolean
 
@@ -270,6 +271,11 @@ export class AuthService {
   toggleSettingsSidebar(isopened) {
     this.logger.log('[AUTH-SERV] - TOGGLE SETTINGS SIDEBAR IS OPENED ', isopened)
     this.settingSidebarIsOpned.next(isopened)
+  }
+
+  toggleNativeBotSidebar(isopened) {
+    this.logger.log('[AUTH-SERV] - TOGGLE NATIVE BOT SIDEBAR IS OPENED ', isopened)
+    this.nativeBotSidebarIsOpened.next(isopened)
   }
 
   /**
