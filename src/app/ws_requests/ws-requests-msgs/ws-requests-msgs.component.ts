@@ -2530,14 +2530,19 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
         let botType = ''
         if (bot.type === 'internal') {
+
           botType = 'native'
+          if (this.CURRENT_USER_ROLE !== 'agent') {
+            this.router.navigate(['project/' + this.id_project + '/bots/intents/', id_bot, botType]);
+          }
         } else {
+          if (this.CURRENT_USER_ROLE !== 'agent') {
+            this.router.navigate(['project/' + this.id_project + '/bots', id_bot, botType]);
+          }
           botType = bot.type
         }
 
-        if (this.CURRENT_USER_ROLE !== 'agent') {
-          this.router.navigate(['project/' + this.id_project + '/bots', id_bot, botType]);
-        }
+      
       } else {
         // this.router.navigate(['project/' + this.id_project + '/member/' + member_id]);
         this.getProjectuserbyUseridAndGoToEditProjectuser(member_id);
