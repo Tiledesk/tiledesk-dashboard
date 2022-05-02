@@ -1916,7 +1916,7 @@
     "ThisFeatureIsAvailableWithTheProPlan": "Ова функција је доступна са Про планом или Ентерпрajс планом",
     "From": "Од",
     "To": "До",
-    "TheAnswerWillBeDeleted": "Одговор {{intent_name}} ће бити обрисан",
+    "TheAnswerWillBeDeleted": "Intent {{intent_name}} ће бити обрисан",
     "NumberOfReplies": "Број одговора",
     "YourProfilePhotoHasBeenUploadedSuccessfully!": "Ваша профилна слика је успешно отпремљена!",
     "RemovePhoto": "Уклони слику",
@@ -2067,6 +2067,8 @@
     "PrebuiltResolutionBots":"Унапред изграђени ботови Resolution",
     "TheseArePreBuiltCustomizableResolutionbot":"Ово су унапред изграђени, прилагодљиви ботови Resolution",
     "Create": "Креирај",
+    "EditIntent":"Измени intent",
+    "DeleteIntent":"Избриши intent",
     "CHAT_IONIC": {
         "LABEL_TU": "ти: ",
         "LABEL_MSG_PUSH_START_CHAT": "Још нема разговора",

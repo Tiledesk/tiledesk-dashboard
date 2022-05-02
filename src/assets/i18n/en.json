@@ -1916,7 +1916,7 @@
     "ThisFeatureIsAvailableWithTheProPlan": "This feature is available with the Pro plan or the Enterprise plan",
     "From": "From",
     "To": "To",
-    "TheAnswerWillBeDeleted": "The Answer {{intent_name}} will be deleted",
+    "TheAnswerWillBeDeleted": "The intent {{intent_name}} will be deleted",
     "NumberOfReplies": "Number of replies",
     "YourProfilePhotoHasBeenUploadedSuccessfully!": "Your profile photo has been uploaded successfully!",
     "RemovePhoto": "Remove Image",
@@ -2067,6 +2067,8 @@
     "PrebuiltResolutionBots":"Pre-built Resolution bots",
     "TheseArePreBuiltCustomizableResolutionbot":"These are pre-built, customizable resolution bots",
     "Create": "Create",
+    "EditIntent":"Edit intent",
+    "DeleteIntent":"Delete intent",
     "CHAT_IONIC": {
         "LABEL_TU": "you: ",
         "LABEL_MSG_PUSH_START_CHAT": "No conversation yet",

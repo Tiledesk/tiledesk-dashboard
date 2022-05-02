@@ -1916,7 +1916,7 @@
 	"ThisFeatureIsAvailableWithTheProPlan": "Diese Funktion ist mit dem Pro-Plan und dem Enterprise-Plan verfügbar",
 	"From": "Von",
 	"To": "bis",
-	"TheAnswerWillBeDeleted": "Die Antwort {{intent_name}} wird gelöscht",
+	"TheAnswerWillBeDeleted": "Die intent {{intent_name}} wird gelöscht",
 	"NumberOfReplies": "Anzahl der Antworten",
 	"YourProfilePhotoHasBeenUploadedSuccessfully!": "Ihr Profilfoto wurde erfolgreich hochgeladen!",
 	"RemovePhoto": "Entferne Bild",
@@ -2066,5 +2066,7 @@
 	"ChooseAtemplate":"Wählen Sie eine Vorlage",
 	"PrebuiltResolutionBots":"Vorgefertigte Resolution-Bots",
 	"TheseArePreBuiltCustomizableResolutionbot":"Dies sind vorgefertigte, anpassbare Resolution-Bots",
-	"Create": "Erstellen"
+	"Create": "Erstellen",
+	"EditIntent":"Intent bearbeiten",
+	"DeleteIntent":"Intent löschen"
 }

@@ -1916,7 +1916,7 @@
     "ThisFeatureIsAvailableWithTheProPlan": "Эта функция доступна в тарифном плане Pro или Enterprise",
     "From": "От",
     "To": "К",
-    "TheAnswerWillBeDeleted": "Ответ {{intent_name}} будет удален",
+    "TheAnswerWillBeDeleted": "Intent {{intent_name}} будет удален",
     "NumberOfReplies": "Количество ответов",
     "YourProfilePhotoHasBeenUploadedSuccessfully!": "Фотография вашего профиля успешно загружена!",
     "RemovePhoto": "Удалить изображение",
@@ -2067,6 +2067,8 @@
     "PrebuiltResolutionBots":"Предварительно созданные боты Resolution",
     "TheseArePreBuiltCustomizableResolutionbot":"Это предварительно созданные и настраиваемые боты Resolution",
     "Create": "Создавать",
+    "EditIntent":"Изменить intent",
+    "DeleteIntent":"Удалить intent",
     "CHAT_IONIC": {
         "LABEL_TU": "ты: ",
         "LABEL_MSG_PUSH_START_CHAT": "Разговора пока нет",

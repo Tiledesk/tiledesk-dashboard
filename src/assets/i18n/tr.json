@@ -1916,7 +1916,7 @@
     "ThisFeatureIsAvailableWithTheProPlan": "Bu özellik, Profesyonel planda veya Kurumsal planda mevcuttur",
     "From": "İtibaren",
     "To": "İle",
-    "TheAnswerWillBeDeleted": "Cevap {{intent_name}} silinecek",
+    "TheAnswerWillBeDeleted": "Intent {{intent_name}} silinecek",
     "NumberOfReplies": "Yanıt sayısı",
     "YourProfilePhotoHasBeenUploadedSuccessfully!": "Profil fotoğrafınız başarıyla yüklendi!",
     "RemovePhoto": "Resmi Kaldır",
@@ -2067,6 +2067,8 @@
     "PrebuiltResolutionBots":"Önceden oluşturulmuş Resolution botları",
     "TheseArePreBuiltCustomizableResolutionbot":"Bunlar önceden oluşturulmuş, özelleştirilebilir Resolution botlardır",
     "Create": "Yaratmak", 
+    "EditIntent":"Intent i düzenle",
+    "DeleteIntent":"Intent sil",
     "CHAT_IONIC": {
         "LABEL_TU": "sen: ",
         "LABEL_MSG_PUSH_START_CHAT": "Henüz görüşme yok",
