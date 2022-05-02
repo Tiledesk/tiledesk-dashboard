@@ -261,7 +261,8 @@ $f21blue: #039be5;
 
  @media (max-width: 991px){
     .bottom-nav-analytics { 
-        top: -2px !important;
+        top: -6px !important;
+        z-index: 1049;
     }
 
     .chart-wrapper {

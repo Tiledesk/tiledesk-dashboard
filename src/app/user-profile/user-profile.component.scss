@@ -183,6 +183,7 @@ button.close {
   padding-left: 0px;
   display: flex;
   flex-grow: 1;
+  z-index: 1049;
 }
 
 .bottom-nav li {
@@ -273,7 +274,7 @@ button.close {
 
 @media (max-width: 991px) {
   .bottom-nav {
-    top: -2px !important;
+    // top: -2px !important;
   }
 
   .chart-wrapper {

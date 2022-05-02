@@ -532,6 +532,7 @@ span .switch-agent-admin-requests-btn {
   display: block;
   height: 52px;
   cursor: pointer;
+  z-index: 1049;
 }
 
 .bottom-nav li a {
@@ -568,6 +569,7 @@ span .switch-agent-admin-requests-btn {
     height: 50px;
     padding-left: 0px;
     display: block !important;
+    z-index: 1049;
   }
 
   .bottom-bottom-nav li {
@@ -1474,7 +1476,7 @@ $f21blue: #039be5;
   background:#e8f0fe; 
   position: relative;
   margin-left: -30px;
-  top: -13px;
+  top: -9px;
   margin-right: -30px;
   height: 44px;
   vertical-align: middle;
