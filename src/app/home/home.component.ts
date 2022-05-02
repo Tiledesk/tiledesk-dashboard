@@ -1125,12 +1125,19 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     let botType = ''
     if (bot_type === 'internal') {
       botType = 'native'
+
+      if (this.USER_ROLE !== 'agent') {
+        this.router.navigate(['project/' + this.project._id + '/bots/intents/',  bot_id, botType]);
+      }
+
     } else {
       botType = bot_type
+
+      if (this.USER_ROLE !== 'agent') {
+        this.router.navigate(['project/' + this.projectId + '/bots', bot_id, botType]);
+      }
     }
-    if (this.USER_ROLE !== 'agent') {
-      this.router.navigate(['project/' + this.projectId + '/bots', bot_id, botType]);
-    }
+   
   }
 
   goToAgentProfile(member_id) {
