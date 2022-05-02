@@ -1,6 +1,16 @@
 
 # tiledesk-dashboard
 
+### 2.2.32-rc22
+- Adds a left sidebar for the bots of "Resolution" type
+- Adds the ability to select a template for the  "resolution" bot type
+- Fixes the bug: "Bottom navigation bar" menu items are not clickable when the window width is less than 992 px
+
+### 2.2.32-rc21
+- Fixes the bug: the bot avatar images are displayed stretched in the chatbot list
+- Adds the ability to search for answers in the bot details
+- Adds paging of answers on the bot's detail page
+
 ### 2.2.32-rc20
 - Merge branch 'features/new-sidebar'
 
