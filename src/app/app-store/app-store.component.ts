@@ -17,7 +17,7 @@ export class AppStoreComponent implements OnInit {
   projectId: string;
   showSpinner = true;
   TOKEN: string;
-
+  isChromeVerGreaterThan100: boolean;
   constructor(
     public appStoreService: AppStoreService,
     private router: Router,
@@ -30,7 +30,15 @@ export class AppStoreComponent implements OnInit {
     this.getApps();
     this.getCurrentProject();
     this.getToken()
+    this.getBrowserVersion()
   }
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
+     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+    //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
+   }
 
   getToken() {
     this.auth.user_bs.subscribe((user) => {

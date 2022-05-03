@@ -31,7 +31,7 @@ import { ScriptService } from '../services/script/script.service'
 export class SuperUser {
   constructor(
     public email: string, // FOR SUPERUSER
-  ) {}
+  ) { }
 }
 const superusers = [
   new SuperUser('andrea.sponziello21@frontiere21.it'),
@@ -74,7 +74,7 @@ export class AuthService {
   public project_bs: BehaviorSubject<Project> = new BehaviorSubject<Project>(null)
   public settingSidebarIsOpned: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true)
   public nativeBotSidebarIsOpened: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null)
-
+  public isChromeVerGreaterThan100: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null)
   show_ExpiredSessionPopup: boolean
 
   _user_role: string
@@ -122,19 +122,28 @@ export class AuthService {
     this.checkStoredProjectAndPublishIfPublishedProjectIsNull()
 
     this.logger.log(
-      '[AUTH-SERV] appConfigService.getConfig().pushEngine 1 ',
-      appConfigService.getConfig().pushEngine,
-    )
+      '[AUTH-SERV] appConfigService.getConfig().pushEngine 1 ', appConfigService.getConfig().pushEngine)
     if (appConfigService.getConfig().pushEngine === 'firebase') {
-      this.logger.log(
-        '[AUTH-SERV] appConfigService.getConfig().pushEngine 2 ',
-        appConfigService.getConfig().pushEngine,
-      )
+      this.logger.log('[AUTH-SERV] appConfigService.getConfig().pushEngine 2 ', appConfigService.getConfig().pushEngine)
       this.checkIfFCMIsSupported()
     }
 
     this.checkIfExpiredSessionModalIsOpened()
     this.getAppConfigAnBuildUrl()
+  }
+
+  browserNameAndVersion(browserName, browserVersion) {
+    // console.log('[AUTH-SERV] browserName ', browserName)
+    // console.log('[AUTH-SERV] browserVersion ', browserVersion)
+    const browserbrowserVersionArray = browserVersion.split(" ")
+    // console.log('[AUTH-SERV] browserbrowserVersionArray ', browserbrowserVersionArray)
+    if (browserName === 'chrome') {
+      const version = +browserbrowserVersionArray[1];
+      // console.log('[AUTH-SERV] version ', version)
+      if (version === 101 || version > 101) {
+        this.isChromeVerGreaterThan100.next(true)
+      }
+    }
   }
 
   getAppConfigAnBuildUrl() {
@@ -146,7 +155,7 @@ export class AuthService {
     this.SIGNIN_BASE_URL = this.SERVER_BASE_PATH + 'auth/signin'
     this.VERIFY_EMAIL_URL = this.SERVER_BASE_PATH + 'auth/verifyemail/'
     this.CREATE_CUSTOM_TOKEN_URL =
-    this.SERVER_BASE_PATH + 'chat21/firebase/auth/createCustomToken'
+      this.SERVER_BASE_PATH + 'chat21/firebase/auth/createCustomToken'
 
     // this.logger.log('[AUTH-SERV] AppConfigService getAppConfig SERVER_BASE_PATH', this.SERVER_BASE_PATH);
     // this.logger.log('[AUTH-SERV] AppConfigService getAppConfig SIGNUP_BASE_URL', this.SIGNUP_BASE_URL);
@@ -160,7 +169,7 @@ export class AuthService {
   // -------------------------------------------------------------------------
   public checkTrialExpired(): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
-      this.logger.log( '[AUTH-SERV] »> »> PROJECT-PROFILE GUARD (WF in AUTH SERV) called checkTrialExpired!')
+      this.logger.log('[AUTH-SERV] »> »> PROJECT-PROFILE GUARD (WF in AUTH SERV) called checkTrialExpired!')
       resolve(this.project_trial_expired)
     })
   }
@@ -291,7 +300,7 @@ export class AuthService {
   checkStoredProjectAndPublishIfPublishedProjectIsNull() {
     this.project_bs.subscribe((prjct) => {
       this.logger.log(
-        '[AUTH-SERV] - PROJECT FROM SUBSCRIPTION TO project_bs ',prjct)
+        '[AUTH-SERV] - PROJECT FROM SUBSCRIPTION TO project_bs ', prjct)
 
       if (prjct !== null && prjct._id !== undefined) {
         this.project_trial_expired = prjct.trial_expired
@@ -304,7 +313,7 @@ export class AuthService {
 
       if (prjct == null) {
         this.logger.log(
-          '[AUTH-SERV] - PROJECT FROM SUBSCRIPTION TO project_bs IS NULL ',prjct)
+          '[AUTH-SERV] - PROJECT FROM SUBSCRIPTION TO project_bs IS NULL ', prjct)
 
         this.subscription = this.router.events.subscribe((e) => {
           if (e instanceof NavigationEnd) {
@@ -315,7 +324,7 @@ export class AuthService {
             )
 
             const url_segments = current_url.split('/')
-            this.logger.log( '[AUTH-SERV] - NavigationEnd CURRENT-URL SEGMENTS ',url_segments)
+            this.logger.log('[AUTH-SERV] - NavigationEnd CURRENT-URL SEGMENTS ', url_segments)
 
             this.nav_project_id = url_segments[2]
             this.logger.log(
@@ -326,7 +335,7 @@ export class AuthService {
             // USECASE: ROUTES /projects (i.e., Recent Projects) /create-new-project
             if (this.nav_project_id === undefined) {
               this.logger.log(
-                '[AUTH-SERV] - CURRENT-URL SEGMENTS > NAVIGATION-PROJECT-ID IS UNDEFINED 1',this.nav_project_id,' - UNSUBSCRIBE FROM ROUTER-EVENTS')
+                '[AUTH-SERV] - CURRENT-URL SEGMENTS > NAVIGATION-PROJECT-ID IS UNDEFINED 1', this.nav_project_id, ' - UNSUBSCRIBE FROM ROUTER-EVENTS')
               this.subscription.unsubscribe()
             }
             /**
@@ -352,14 +361,14 @@ export class AuthService {
               current_url !== '/projects'
             ) {
               this.logger.log(
-                '[AUTH-SERV] NAVIGATION-PROJECT-ID IS UNDEFINED 2',this.nav_project_id,' - UNSUBSCRIBE FROM ROUTER-EVENTS')
+                '[AUTH-SERV] NAVIGATION-PROJECT-ID IS UNDEFINED 2', this.nav_project_id, ' - UNSUBSCRIBE FROM ROUTER-EVENTS')
 
               this.subscription.unsubscribe()
 
               const storedProjectJson = localStorage.getItem(
                 this.nav_project_id,
               )
-              this.logger.log( '[AUTH-SERV] - JSON OF STORED PROJECT: ',storedProjectJson)
+              this.logger.log('[AUTH-SERV] - JSON OF STORED PROJECT: ', storedProjectJson)
 
               // RUN THE BELOW ONLY IF EXIST THE PROJECT JSON SAVED IN THE STORAGE
               if (storedProjectJson) {
@@ -377,7 +386,7 @@ export class AuthService {
                 const storedProjectOH = storedProjectObject['operatingHours']
 
                 // tslint:disable-next-line:max-line-length
-                this.logger.log('[AUTH-SERV] - PROJECT NAME GET FROM STORAGE: ',project_name)
+                this.logger.log('[AUTH-SERV] - PROJECT NAME GET FROM STORAGE: ', project_name)
 
                 const project: Project = {
                   _id: this.nav_project_id,
@@ -393,13 +402,13 @@ export class AuthService {
                 /**** ******* ******* NEW BUG FIX ***** *** ** ***/
 
                 this.logger.log(
-                  '[AUTH-SERV] BEFORE TO PUBLISH this.project_bs.value ',  this.project_bs.value )
+                  '[AUTH-SERV] BEFORE TO PUBLISH this.project_bs.value ', this.project_bs.value)
                 if (this.project_bs.value == null) {
-                  this.logger.log(  '[AUTH-SERV] PROJECT (get from storage) THAT IS PUBLISHED ', project)
+                  this.logger.log('[AUTH-SERV] PROJECT (get from storage) THAT IS PUBLISHED ', project)
                   this.project_bs.next(project)
                 }
               } else {
-                this.logger.log('[AUTH-SERV] THERE IS NOT STORED PRJCT-JSON - FOR THE PROJECT WITH ID ',this.nav_project_id,'SEE AUTH GUARD')
+                this.logger.log('[AUTH-SERV] THERE IS NOT STORED PRJCT-JSON - FOR THE PROJECT WITH ID ', this.nav_project_id, 'SEE AUTH GUARD')
                 // USE-CASE: FOR THE ID (GOT FROM URL) OF THE CURRENT PROJECT THERE IS NO THE JSON SAVED IN THE STORAGE:
                 // IT IS THE CASE IN WHICH THE USER ACCESS TO A NEW PROJECT IN THE DASHBOARD BY LINKS
                 // WITHOUT BEING PASSED FROM THE PROJECT LIST.
@@ -414,7 +423,7 @@ export class AuthService {
                 const project: Project = {
                   _id: this.nav_project_id,
                 }
-                this.logger.log( '[AUTH-SERV] PROJECT THAT IS PUBLISHED (ONLY THE PROJECT ID BECAUSE THE PROJECT IS NOT PRESENT IN THE STORAGE)',project)
+                this.logger.log('[AUTH-SERV] PROJECT THAT IS PUBLISHED (ONLY THE PROJECT ID BECAUSE THE PROJECT IS NOT PRESENT IN THE STORAGE)', project)
 
                 this.project_bs.next(project)
               }
@@ -437,11 +446,11 @@ export class AuthService {
     }
 
     const storedProjectJson = localStorage.getItem(project_id)
-    this.logger.log( '[AUTH-SERV] - CHECK ROLE - JSON OF STORED PROJECT iD',project_id)
-    this.logger.log('[AUTH-SERV] - CHECK ROLE - JSON OF STORED PROJECT',  storedProjectJson)
+    this.logger.log('[AUTH-SERV] - CHECK ROLE - JSON OF STORED PROJECT iD', project_id)
+    this.logger.log('[AUTH-SERV] - CHECK ROLE - JSON OF STORED PROJECT', storedProjectJson)
     if (storedProjectJson) {
       const storedProjectObject = JSON.parse(storedProjectJson)
-      this.logger.log( '[AUTH-SERV] - CHECK ROLE - OBJECT OF STORED PROJECT', storedProjectObject)
+      this.logger.log('[AUTH-SERV] - CHECK ROLE - OBJECT OF STORED PROJECT', storedProjectObject)
 
       this._user_role = storedProjectObject['role']
 
@@ -469,7 +478,7 @@ export class AuthService {
   }
 
   checkRoleForCurrentProject() {
-    this.logger.log( '[AUTH-SERV] - CHECK ROLE »»»»» CALLING CHECK-ROLE-FOR-CURRENT-PRJCT')
+    this.logger.log('[AUTH-SERV] - CHECK ROLE »»»»» CALLING CHECK-ROLE-FOR-CURRENT-PRJCT')
     let project_id = ''
     if (this.nav_project_id !== undefined) {
       project_id = this.nav_project_id
@@ -478,22 +487,22 @@ export class AuthService {
     }
 
     const storedProjectJson = localStorage.getItem(project_id)
-    this.logger.log('[AUTH-SERV] - CHECK ROLE - JSON OF STORED PROJECT iD',project_id)
-    this.logger.log( '[AUTH-SERV] - CHECK ROLE - JSON OF STORED PROJECT',storedProjectJson)
+    this.logger.log('[AUTH-SERV] - CHECK ROLE - JSON OF STORED PROJECT iD', project_id)
+    this.logger.log('[AUTH-SERV] - CHECK ROLE - JSON OF STORED PROJECT', storedProjectJson)
     if (storedProjectJson) {
       const storedProjectObject = JSON.parse(storedProjectJson)
-      this.logger.log( '[AUTH-SERV] - CHECK ROLE - OBJECT OF STORED PROJECT', storedProjectObject)
+      this.logger.log('[AUTH-SERV] - CHECK ROLE - OBJECT OF STORED PROJECT', storedProjectObject)
 
       this._user_role = storedProjectObject['role']
 
       if (this._user_role) {
         if (this._user_role === 'agent' || this._user_role === undefined) {
-          this.logger.log( '[AUTH-SERV] - CHECK ROLE (GOT FROM STORAGE) »»» ', this._user_role )
+          this.logger.log('[AUTH-SERV] - CHECK ROLE (GOT FROM STORAGE) »»» ', this._user_role)
 
           this.router.navigate([`project/${project_id}/unauthorized`])
           // this.router.navigate(['/unauthorized']);
         } else {
-          this.logger.log(  '[AUTH-SERV] - CHECK ROLE (GOT FROM STORAGE) »»» ', this._user_role)
+          this.logger.log('[AUTH-SERV] - CHECK ROLE (GOT FROM STORAGE) »»» ', this._user_role)
         }
       }
     }
@@ -503,7 +512,7 @@ export class AuthService {
   // USED FOR PRICING WHOSE ACCESS IS PERMITTED ONLY TO THE OWNERS
   // -------------------------------------------------------------
   checkRoleForCurrentProjectAndRedirectAdminAndAgent() {
-    this.logger.log( '[AUTH-SERV] - CHECK ROLE »»»»» CALLING CHECK-ROLE-FOR-CURRENT-PRJCT (USED X PRICING) AND BLOCK ADMIN AND AGENT' )
+    this.logger.log('[AUTH-SERV] - CHECK ROLE »»»»» CALLING CHECK-ROLE-FOR-CURRENT-PRJCT (USED X PRICING) AND BLOCK ADMIN AND AGENT')
 
     let project_id = ''
     if (this.nav_project_id !== undefined) {
@@ -513,7 +522,7 @@ export class AuthService {
     }
 
     const storedProjectJson = localStorage.getItem(project_id)
-    this.logger.log( '[AUTH-SERV] - CHECK ROLE - JSON OF STORED PROJECT iD',project_id)
+    this.logger.log('[AUTH-SERV] - CHECK ROLE - JSON OF STORED PROJECT iD', project_id)
     this.logger.log('[AUTH-SERV] - CHECK ROLE - JSON OF STORED PROJECT', storedProjectJson,)
     if (storedProjectJson) {
       const storedProjectObject = JSON.parse(storedProjectJson)
@@ -639,7 +648,7 @@ export class AuthService {
             this.chat21CreateFirebaseCustomToken(jsonRes['token']).subscribe(
               (fbtoken) => {
                 // this.firebaseSignin(email, password).subscribe(fbtoken => {
-                this.logger.log( '[AUTH-SERV] SSO - LOGIN 2. FIREBASE SIGNIN RESPO ',fbtoken)
+                this.logger.log('[AUTH-SERV] SSO - LOGIN 2. FIREBASE SIGNIN RESPO ', fbtoken)
 
                 if (fbtoken) {
                   // Firebase Sign in using custom token
@@ -651,7 +660,7 @@ export class AuthService {
                     .auth()
                     .signInWithCustomToken(fbtoken)
                     .then((firebase_user) => {
-                      this.logger.log( '[AUTH-SERV] SSO - LOGIN - 4. FIREBASE CUSTOM AUTH DATA ',  firebase_user )
+                      this.logger.log('[AUTH-SERV] SSO - LOGIN - 4. FIREBASE CUSTOM AUTH DATA ', firebase_user)
 
                       if (
                         this.appConfigService.getConfig().pushEngine ===
@@ -671,7 +680,7 @@ export class AuthService {
                       callback(error)
                       // Handle Errors here.
                       // const errorCode = error.code;
-                      self.logger.error( '[AUTH-SERV] SSO - LOGIN - FIREBASE CUSTOM AUTH ERROR CODE ', error)
+                      self.logger.error('[AUTH-SERV] SSO - LOGIN - FIREBASE CUSTOM AUTH ERROR CODE ', error)
                     })
                 } else {
                   callback({
@@ -682,7 +691,7 @@ export class AuthService {
               },
             )
           } else {
-            this.logger.log( '[AUTH-SERV] SSO - LOGIN - FIREBASE- AUTH false - !!!! SIGNIN WITHOUT FIREBASE CUSTOM TOKEN ')
+            this.logger.log('[AUTH-SERV] SSO - LOGIN - FIREBASE- AUTH false - !!!! SIGNIN WITHOUT FIREBASE CUSTOM TOKEN ')
 
             if (this.appConfigService.getConfig().pushEngine === 'firebase') {
               this.getPermission()
@@ -696,7 +705,7 @@ export class AuthService {
         }
       })
       .catch(function (error) {
-        self.logger.error('[AUTH-SERV] SSO - LOGIN - SIGNIN POST REQUEST ERROR',error)
+        self.logger.error('[AUTH-SERV] SSO - LOGIN - SIGNIN POST REQUEST ERROR', error)
         callback(error)
       })
   }
@@ -710,7 +719,7 @@ export class AuthService {
       Notification.requestPermission()
         .then((permission) => {
           this.logger.log('[AUTH-SERV] SSO - LOGIN - 5B. >>>> getPermission Notification permission granted. - permission', permission)
-          this.logger.log( '[AUTH-SERV] SSO - LOGIN - 5B. - vapidKey >>>> ',  this.appConfigService.getConfig().firebase.vapidKey)
+          this.logger.log('[AUTH-SERV] SSO - LOGIN - 5B. - vapidKey >>>> ', this.appConfigService.getConfig().firebase.vapidKey)
           return messaging.getToken({
             vapidKey: this.appConfigService.getConfig().firebase.vapidKey,
           })
@@ -722,7 +731,7 @@ export class AuthService {
           this.updateToken(FCMtoken)
         })
         .catch((err) => {
-          this.logger.log( '[AUTH-SERV] SSO - LOGIN - 5C. >>>> getPermission Unable to get permission to notify.',err )
+          this.logger.log('[AUTH-SERV] SSO - LOGIN - 5C. >>>> getPermission Unable to get permission to notify.', err)
         })
     } else {
       this.logger.log('[AUTH-SERV] SSO - LOGIN - 5F. FCM NOT SUPPORTED')
@@ -752,7 +761,7 @@ export class AuthService {
 
     updates[connectionsRefinstancesId + connection] = device_model
 
-    this.logger.log('[AUTH-SERV] Firebase Cloud Messaging  - Update token updates ',updates )
+    this.logger.log('[AUTH-SERV] Firebase Cloud Messaging  - Update token updates ', updates)
     firebase.database().ref().update(updates)
   }
 
@@ -770,7 +779,7 @@ export class AuthService {
     return this.http.post(url, null, options).map((res) => {
       // tslint:disable-next-line:no-debugger
       // debugger
-      this.logger.log( '[AUTH-SERV] SSO - chat21CreateFirebaseCustomToken RES: ',res)
+      this.logger.log('[AUTH-SERV] SSO - chat21CreateFirebaseCustomToken RES: ', res)
       // const firebaseToken = res.text()
       return res.text()
     })
@@ -805,7 +814,7 @@ export class AuthService {
   // * WHEN THE USER VERIFY HIS EMAIL THE VERIFY-EMAIL.COMP SENT UPDATED USER OBJECT
   // TO AUTH SERVICE (THIS COMPONENT) THAT REPUBLISH IT
   public publishUpdatedUser(updated_user) {
-    this.logger.log('[AUTH-SERV] - UPDATED USER OBJECT RECEIVED FROM USER.SERV or VERY-EMAIL.COM (BEFORE TO REPUBLISH IT): ',updated_user)
+    this.logger.log('[AUTH-SERV] - UPDATED USER OBJECT RECEIVED FROM USER.SERV or VERY-EMAIL.COM (BEFORE TO REPUBLISH IT): ', updated_user)
 
     // REPUBLISH THE (UPDATED) USER OBJECT
     this.user_bs.next(updated_user)
@@ -837,7 +846,7 @@ export class AuthService {
       '[AUTH-SERV] - HAS CLICKED GO TO PROJECT - PUBLISH PRJCT = ',
       this.project_bs.next(null),
     )
-    this.logger.log('[AUTH-SERV] - HAS CLICKED GO TO PROJECT - PRJCT VALUE = ',this.project_bs.value)
+    this.logger.log('[AUTH-SERV] - HAS CLICKED GO TO PROJECT - PRJCT VALUE = ', this.project_bs.value)
     // this.logger.log('!!C-U »»»»» AUTH SERV - HAS BEEN CALLED "HAS CLICKED GOTO PROJECTS" - PUBLISH PRJCT = ', this.project_bs.next(null))
     localStorage.removeItem('project') // NOTE: questo serve????
   }
@@ -868,10 +877,10 @@ export class AuthService {
   showExpiredSessionPopup(showExpiredSessionPopup) {
     if (this.appConfigService.getConfig().firebaseAuth === true) {
       this.show_ExpiredSessionPopup = showExpiredSessionPopup
-      this.logger.log( '[AUTH-SERV]- SHOW EXPIRED SESSION POPUP - (USE CASE FIREBASE AUTH) ', this.show_ExpiredSessionPopup)
+      this.logger.log('[AUTH-SERV]- SHOW EXPIRED SESSION POPUP - (USE CASE FIREBASE AUTH) ', this.show_ExpiredSessionPopup)
     } else {
       this.show_ExpiredSessionPopup = false
-      this.logger.log('[AUTH-SERV] - SHOW EXPIRED SESSION POPUP - (USE CASE NO FIREBASE AUTH) ',  this.show_ExpiredSessionPopup)
+      this.logger.log('[AUTH-SERV] - SHOW EXPIRED SESSION POPUP - (USE CASE NO FIREBASE AUTH) ', this.show_ExpiredSessionPopup)
     }
   }
 
@@ -881,13 +890,13 @@ export class AuthService {
   // PASSED FROM APP.COMPONENT.TS
   userIsSignedIn(user_is_signed_in: boolean) {
     if (this.appConfigService.getConfig().firebaseAuth === true) {
-      this.logger.log( '[AUTH-SERV] - USER-IS-SIGNED-IN - SHOW EXPIRED SESSION POPUP - (USE CASE FIREBASE AUTH) ', user_is_signed_in)
+      this.logger.log('[AUTH-SERV] - USER-IS-SIGNED-IN - SHOW EXPIRED SESSION POPUP - (USE CASE FIREBASE AUTH) ', user_is_signed_in)
 
       if (this.show_ExpiredSessionPopup === true) {
         this.notify.showExiperdSessionPopup(user_is_signed_in)
       }
     } else {
-      this.logger.log('[AUTH-SERV] - USER-IS-SIGNED-IN - SHOW EXPIRED SESSION POPUP - (USE CASE NO FIREBASE AUTH) - DOES NOT RUN this.notify.showExiperdSessionPopup' )
+      this.logger.log('[AUTH-SERV] - USER-IS-SIGNED-IN - SHOW EXPIRED SESSION POPUP - (USE CASE NO FIREBASE AUTH) - DOES NOT RUN this.notify.showExiperdSessionPopup')
     }
   }
 
@@ -901,7 +910,7 @@ export class AuthService {
       )
       this.notify.isOpenedExpiredSessionModal.subscribe(
         (isOpenedExpiredSession: boolean) => {
-          this.logger.log('[AUTH-SERV] - isOpenedExpiredSession ',isOpenedExpiredSession, '*** >>>> FCM is Supported: ',this.FCM_Supported)
+          this.logger.log('[AUTH-SERV] - isOpenedExpiredSession ', isOpenedExpiredSession, '*** >>>> FCM is Supported: ', this.FCM_Supported)
           if (isOpenedExpiredSession) {
             this.logger.log('[AUTH-SERV] - CHECK-IF-EXPIRED-SESSSION-MODAL-IS-OPENED (USE CASE FIREBASE) checkIfFCMIsSupported')
             if (this.FCM_Supported === undefined) {
@@ -919,10 +928,10 @@ export class AuthService {
   // @ Run when hasOpenedLogoutModal checkIfFCMIsSupported IF uploadEngine === 'firebase'
   // -----------------------------------------------------------------------------------
   hasOpenedLogoutModal(isOpenedlogoutModal: boolean) {
-    this.logger.log('[AUTH-SERV] - HAS-OPENED-LOGOUT-MODAL getConfig pushEngine',this.appConfigService.getConfig().pushEngine)
+    this.logger.log('[AUTH-SERV] - HAS-OPENED-LOGOUT-MODAL getConfig pushEngine', this.appConfigService.getConfig().pushEngine)
     if (this.appConfigService.getConfig().pushEngine === 'firebase') {
       this.logger.log('[AUTH-SERV] - HAS-OPENED-LOGOUT-MODAL - WORKS WITH FIREBASE  RUN checkIfFCMIsSupported',)
-      this.logger.log('[AUTH-SERV] - HAS-OPENED-LOGOUT-MODAL ', isOpenedlogoutModal, '*** >>>> FCM is Supported: ',this.FCM_Supported )
+      this.logger.log('[AUTH-SERV] - HAS-OPENED-LOGOUT-MODAL ', isOpenedlogoutModal, '*** >>>> FCM is Supported: ', this.FCM_Supported)
       if (isOpenedlogoutModal) {
         if (this.FCM_Supported === undefined) {
           this.checkIfFCMIsSupported()
@@ -973,13 +982,13 @@ export class AuthService {
     localStorage.removeItem('role')
 
     // if (calledby !== 'autologin') {
-    this.logger.log('[AUTH-SERV] Signout this.router.url +++++ ',this.router.url)
+    this.logger.log('[AUTH-SERV] Signout this.router.url +++++ ', this.router.url)
     const current_url = this.router.url
     if (current_url.indexOf('request-for-panel') === -1) {
       this.logger.log('[AUTH-SERV] Signout current url  NOT contains request-for-panel ')
 
-      const chat_sv5__currentUser = localStorage.getItem( 'chat_sv5__currentUser')
-      this.logger.log('[AUTH-SERV] SIGNOUT - STORED chat_sv5__currentUser : ',chat_sv5__currentUser)
+      const chat_sv5__currentUser = localStorage.getItem('chat_sv5__currentUser')
+      this.logger.log('[AUTH-SERV] SIGNOUT - STORED chat_sv5__currentUser : ', chat_sv5__currentUser)
       if (chat_sv5__currentUser) {
         localStorage.removeItem('chat_sv5__currentUser')
       }
@@ -987,7 +996,7 @@ export class AuthService {
       const chat_sv5__tiledeskToken = localStorage.getItem('chat_sv5__tiledeskToken')
       if (chat_sv5__tiledeskToken) {
         localStorage.removeItem('chat_sv5__tiledeskToken')
-        this.logger.log('[AUTH-SERV] SIGNOUT - STORED chat_sv5__tiledeskToken : ',chat_sv5__tiledeskToken)
+        this.logger.log('[AUTH-SERV] SIGNOUT - STORED chat_sv5__tiledeskToken : ', chat_sv5__tiledeskToken)
       }
 
       this.webSocketClose()
@@ -1013,7 +1022,7 @@ export class AuthService {
     if (this.appConfigService.getConfig().pushEngine === 'firebase') {
       this.logger.log('[AUTH-SERV] signOut pushEngine FIREBASE')
       if (!this.APP_IS_DEV_MODE && this.FCM_Supported === true) {
-        this.logger.log( '[AUTH-SERV] signOut this.FCMcurrentToken ', this.FCMcurrentToken )
+        this.logger.log('[AUTH-SERV] signOut this.FCMcurrentToken ', this.FCMcurrentToken)
         this.logger.log('[AUTH-SERV] signOut here 1 ')
         if (this.FCMcurrentToken !== undefined && this.userId !== undefined) {
           this.logger.log('[AUTH-SERV] signOut here 2 ')
@@ -1042,7 +1051,7 @@ export class AuthService {
               this.FCMcurrentToken = FCMtoken
               const storedUser = localStorage.getItem('user')
               const storedUserObj = JSON.parse(storedUser)
-              this.logger.log(  '[AUTH-SERV] signOut >>>> getToken storedUserObj ',  storedUserObj )
+              this.logger.log('[AUTH-SERV] signOut >>>> getToken storedUserObj ', storedUserObj)
               if (storedUserObj) {
                 this.userId = storedUserObj._id
               }
@@ -1130,7 +1139,7 @@ export class AuthService {
           }
         },
         function (error) {
-          that.logger.error('[AUTH-SERV] firebaseSignout SIGN-OUT - Error', error )
+          that.logger.error('[AUTH-SERV] firebaseSignout SIGN-OUT - Error', error)
           // that.widgetReInit()
 
           if (calledby !== 'autologin') {

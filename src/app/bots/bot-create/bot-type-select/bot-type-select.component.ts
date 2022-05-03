@@ -26,7 +26,7 @@ export class BotTypeSelectComponent implements OnInit {
 
   // tparams = brand;
   tparams:any;
-
+  isChromeVerGreaterThan100: boolean;
   constructor(
     private router: Router,
     public location: Location,
@@ -41,9 +41,17 @@ export class BotTypeSelectComponent implements OnInit {
    }
 
   ngOnInit() {
+    this.getBrowserVersion();
     this.getCurrentProject()
     this.getOSCODE();
   }
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
+     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+    //  console.log("[BOT-TYPE-SELECT] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
+   }  
 
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
@@ -107,7 +115,7 @@ export class BotTypeSelectComponent implements OnInit {
 
 
   goToCreateBot(type: string) {
-   console.log('[BOT-TYPE-SELECT] Bot Type Selected type ', type)
+  //  console.log('[BOT-TYPE-SELECT] Bot Type Selected type ', type)
    if (type !== 'native') { 
     this.router.navigate(['project/' + this.projectId + '/bots/create/' + type]);
    } else if (type === 'native') {

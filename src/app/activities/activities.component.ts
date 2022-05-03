@@ -66,6 +66,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   projectUsersArray: any;
   objectKeys = Object.keys;
+  isChromeVerGreaterThan100:boolean;
   constructor(
     private usersService: UsersService,
     public auth: AuthService,
@@ -87,7 +88,15 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
     this.getAllProjectUsers();
     this.buildActivitiesOptions();
     // this.getProjectUsers();
+    this.getBrowserVersion();
   }
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
+     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+    //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
+   }
 
   ngOnDestroy() {
     this.logger.log('[ActivitiesComponent] % »»» WebSocketJs WF +++++ ws-requests--- activities ngOnDestroy')

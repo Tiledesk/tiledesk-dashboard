@@ -80,7 +80,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
   attributesDecodedJWTArray: Array<any>
   attributesDecodedJWTAttributesArray: Array<any>
   attributesDecodedJWTArrayMerged: Array<any>
-
+  isChromeVerGreaterThan100: boolean;
   constructor(
     public location: Location,
     private route: ActivatedRoute,
@@ -119,7 +119,15 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
     this.getCurrentUser();
     this.getTranslation();
     this.getChatUrl();
+    this.getBrowserVersion()
   }
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
+     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+    //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
+   }
 
   getChatUrl() {
     this.CHAT_BASE_URL = this.appConfigService.getConfig().CHAT_BASE_URL;

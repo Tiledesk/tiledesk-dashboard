@@ -1156,3 +1156,9 @@ span.navbar-brand-title {
   border: 1px solid #ccc;
 }
 
+// fix for CHROME version 101.XXX  
+// .navbar-brand { 
+//   position: absolute !important;
+//     top: 0px;
+// }
+

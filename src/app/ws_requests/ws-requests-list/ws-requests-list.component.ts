@@ -175,7 +175,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
   selectedPriority: string;
   current_selected_prjct:any;
-
+  isChromeVerGreaterThan100:boolean;
   /**
    * 
    * @param wsRequestsService 
@@ -221,6 +221,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
   ngOnInit() {
     // console.log('SELECTED PRIORITY ', this.selectedPriority)
+    this.getBrowserVersion()
     this.getOSCODE();
 
     this.getImageStorageAndThenProjectUsers();
@@ -240,6 +241,14 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     this.translateString()
     // this.listenToParentPostMessage()
   }
+
+  getBrowserVersion() {
+   this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
+    this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+    console.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+   })
+  }  
+
   // listenToParentPostMessage() {
   //   window.addEventListener("message", (event) => {
   //     console.log("[WS-REQUESTS-LIST] message event ", event);

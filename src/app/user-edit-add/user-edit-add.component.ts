@@ -111,7 +111,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
   createLabelError_mgs: string;
   deleteLabelSuccess_mgs: string;
   deleteLabelError_mgs: string;
-
+  isChromeVerGreaterThan100: boolean;
   constructor(
     private router: Router,
     private auth: AuthService,
@@ -159,7 +159,16 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
     this.getOSCODE();
     this.getCurrentUrl();
     this.translateTagNotificationMsgs();
+    this.getBrowserVersion()
   }
+
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
+     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+    //  console.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
+   } 
 
 
   translateTagNotificationMsgs() {

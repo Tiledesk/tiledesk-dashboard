@@ -1,4 +1,4 @@
-<span class="navbar-brand navbar-brand-sidebar-settings"
+<span class="navbar-brand navbar-brand-sidebar-settings" [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }"
   [ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
   <!-- <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
     (click)="goBack()">keyboard_arrow_left</i> -->
@@ -9,9 +9,9 @@
 
   <span *ngIf="IS_OPEN_SETTINGS_SIDEBAR">{{ 'Settings' | translate }} </span>
 </span>
-<span class="navbar-brand navbar-brand-title">
+<!-- <span class="navbar-brand navbar-brand-title">
   {{ "ProjectSettings" | translate }}
-</span>
+</span> -->
 
 
 <!-- <ul class="bottom-nav">
@@ -530,15 +530,15 @@
                     <!-- </div> -->
 
                     <!-- -------------------------------------------------------------------------------------  -->
-                    <!-- SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - SUBSCRIPTION CARD -->
+                    <!-- SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - SUBSCRIPTION CREDIT CARD -->
                     <!-- -------------------------------------------------------------------------------------  -->
 
-                    <div class="row" *ngIf="prjct_profile_type !== 'free'" style="margin-top: 16px;">
+                    <!-- <div class="row" *ngIf="prjct_profile_type !== 'free'" style="margin-top: 16px;">
                       <label class="col-sm-2 custom-label">
                         {{"PaymentInformation"  | translate }}
                       </label>
                       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                        <!-- style="margin-top: 5px;" -->
+                        
                         <span class="subscription-info" >
                          
                           <i class="material-icons" style="vertical-align: middle;color: #697386;">
@@ -555,7 +555,7 @@
                         </span>
 
                       </div>
-                    </div>
+                    </div> -->
 
                     <!-- -------------------------------------------------------------------------------------  -->
                     <!-- SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - SUBSCRIPTION START DATE  -->

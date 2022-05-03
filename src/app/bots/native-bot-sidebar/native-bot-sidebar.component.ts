@@ -63,11 +63,10 @@ export class NativeBotSidebarComponent implements OnInit, OnChanges {
 
   subscribeToBotName() {
     this.faqKbService.$nativeBotName.subscribe((botname) => {
-      console.log('[NATIVE-BOT-SIDEBAR] SETTINGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', botname)
-       
-      
-     });
-      }
+      // console.log('[NATIVE-BOT-SIDEBAR] SETTINGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', botname)
+
+    });
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     // console.log('[NATIVE-BOT-SIDEBAR] changes ', changes)
@@ -82,17 +81,17 @@ export class NativeBotSidebarComponent implements OnInit, OnChanges {
     }
 
     // if (this.faqKb_name !== botNameCloneNoBracket) {
-      if (this.faqKb_name && this.faqKb_name.length > 20) {
-        this.faqKb_name_truncated = this.faqKb_name.substring(0, 18) + '...';
-      } else if (this.faqKb_name && this.faqKb_name.length < 20) {
-        this.faqKb_name_truncated = this.faqKb_name
-      }
+    if (this.faqKb_name && this.faqKb_name.length > 20) {
+      this.faqKb_name_truncated = this.faqKb_name.substring(0, 18) + '...';
+    } else if (this.faqKb_name && this.faqKb_name.length < 20) {
+      this.faqKb_name_truncated = this.faqKb_name
+    }
 
-      // console.log('[NATIVE-BOT-SIDEBAR] bot type ', this.botType)
-      // console.log('[NATIVE-BOT-SIDEBAR] botDefaultSelectedLang ', this.botDefaultSelectedLang)
-      // console.log('[NATIVE-BOT-SIDEBAR] botProfileImageExist ', this.botProfileImageExist)
-      // console.log('[NATIVE-BOT-SIDEBAR] botImageHasBeenUploaded ', this.botImageHasBeenUploaded)
-      // console.log('[NATIVE-BOT-SIDEBAR] botProfileImageurl ', this.botProfileImageurl)
+    // console.log('[NATIVE-BOT-SIDEBAR] bot type ', this.botType)
+    // console.log('[NATIVE-BOT-SIDEBAR] botDefaultSelectedLang ', this.botDefaultSelectedLang)
+    // console.log('[NATIVE-BOT-SIDEBAR] botProfileImageExist ', this.botProfileImageExist)
+    // console.log('[NATIVE-BOT-SIDEBAR] botImageHasBeenUploaded ', this.botImageHasBeenUploaded)
+    // console.log('[NATIVE-BOT-SIDEBAR] botProfileImageurl ', this.botProfileImageurl)
     // }
     if (this.botDefaultSelectedLang) {
       const botDefaultSelectedLangSegments = this.botDefaultSelectedLang.split('-')

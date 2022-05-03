@@ -108,6 +108,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
   botDefaultSelectedLangCode: string = 'en'
   language: string;
   template: string;
+  isChromeVerGreaterThan100: boolean;
   constructor(
     private faqKbService: FaqKbService,
     private router: Router,
@@ -130,6 +131,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
   ngOnInit() {
     this.logger.log('[BOT-CREATE] »»»» Bot Create Component on Init !!!')
     this.auth.checkRoleForCurrentProject();
+    this.getBrowserVersion();
 
     this.detectBrowserLang();
 
@@ -155,6 +157,13 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     this.translateFileTypeNotSupported();
 
   }
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
+     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+    //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
+   } 
 
   onSelectBotDefaultlang(selectedDefaultBotLang) {
     this.logger.log('onSelectBotDefaultlang > selectedDefaultBotLang ', selectedDefaultBotLang)

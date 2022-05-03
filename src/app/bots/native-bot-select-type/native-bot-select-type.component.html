@@ -1,4 +1,6 @@
-<div class="navbar-brand" style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px">
+<!-- margin-top:6px; -->
+<div class="navbar-brand" style="z-index: 1050;position: relative; padding-left:30px"
+[ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
   <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBack()">
     keyboard_arrow_left
   </i>
@@ -26,7 +28,7 @@
     </div>
     <div class="cards-wpr " style="margin-top: 60px;">
       <div class="row">
-        <div class="col-sm-4 nb-card-wpr right">
+        <div class="col-sm-6 nb-card-wpr right">
           <div class="nb-card" (click)="goToCreateBot('blank')">
             <div class="nb-card-header"
               style="background: linear-gradient(150deg, #53f 15%, #05d5ff 70%, #a6ffcb 94%);">
@@ -53,7 +55,7 @@
           </div>
         </div>
 
-        <div class="col-sm-4 nb-card-wpr center">
+        <!-- <div class="col-sm-4 nb-card-wpr center">
           <div class="nb-card" (click)="goToCreateBot('handoff')">
             <div class="nb-card-header"
               style="background: linear-gradient(150deg, #05d5ff 15%, #53f 70%, #a6ffcb 94%);">
@@ -78,9 +80,9 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
 
-        <div class="col-sm-4 nb-card-wpr left">
+        <div class="col-sm-6 nb-card-wpr left">
           <div class="nb-card" (click)="goToCreateBot('example')">
             <div class="nb-card-header"
               style="background: linear-gradient(150deg, #a6ffcb 15%, #53f 70%, #05d5ff 94%);">

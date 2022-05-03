@@ -91,7 +91,7 @@ export class Analytics2Component implements OnInit, OnDestroy {
 
   storageBucket: string;
   childToSelect: string
-
+  isChromeVerGreaterThan100: boolean;
   /**
    * 
    * @param auth 
@@ -117,9 +117,16 @@ export class Analytics2Component implements OnInit, OnDestroy {
     this.getBrowserLangAndSwitchMonthName();
     this.getCurrentUrl();
 
-  
+    this.getBrowserVersion()
     // this.setMomentLocale()
   }
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
+     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+    //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
+   }
 
 
   setMomentLocale() {

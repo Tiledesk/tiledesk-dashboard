@@ -27,7 +27,7 @@ export class CannedResponsesListComponent implements OnInit {
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
   storageBucket: string;
   baseUrl: string;
-
+  isChromeVerGreaterThan100: boolean
   constructor(
     public cannedResponsesService: CannedResponsesService,
     public translate: TranslateService,
@@ -45,7 +45,15 @@ export class CannedResponsesListComponent implements OnInit {
     // this.getMainPanelAndSetOverflow();
     this.listenSidebarIsOpened();
     this.getImageStorage();
+    this.getBrowserVersion()
   }
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
+     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+    //  console.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
+   } 
 
   getImageStorage() {
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {

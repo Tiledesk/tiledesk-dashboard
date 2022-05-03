@@ -179,6 +179,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   DISPLAY_ADD_CARD_COMPLETED: boolean = false;
   no_default_payment_method_id_array: Array<string>
   isActiveSubscription : boolean = false;
+  isChromeVerGreaterThan100: boolean 
   formErrors: FormErrors = {
     'creditCard': '',
     'expirationDate': '',
@@ -241,6 +242,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.auth.checkRoleForCurrentProject();
+    this.getBrowserVersion()
     this.getCurrentUrlAndSwitchView();
     this.getProjectPlan();
     this.listenCancelSubscription();
@@ -258,6 +260,14 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
     this.buildCreditCardForm()
   }
+
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
+     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+    //  console.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
+   } 
 
   buildCreditCardForm() {
 

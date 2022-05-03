@@ -71,7 +71,7 @@ export class BotListComponent implements OnInit {
   isVisibleAnalytics: boolean;
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
   IS_OPEN_SETTINGS_SIDEBAR: boolean;
-
+  isChromeVerGreaterThan100: boolean;
   constructor(
     private faqKbService: FaqKbService,
     private router: Router,
@@ -91,6 +91,7 @@ export class BotListComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getBrowserVersion();
     this.auth.checkRoleForCurrentProject();
     this.getProfileImageStorage();
     this.translateTrashBotSuccessMsg();
@@ -103,6 +104,13 @@ export class BotListComponent implements OnInit {
     this.getTranslations();
     this.listenSidebarIsOpened();
   }
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
+     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+    //  console.log("[BOTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
+   }  
 
   listenSidebarIsOpened() {
     this.auth.settingSidebarIsOpned.subscribe((isopened) => {

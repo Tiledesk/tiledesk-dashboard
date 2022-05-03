@@ -143,7 +143,7 @@ export class HoursComponent implements OnInit, OnDestroy {
   public_Key: string;
   IS_OPEN_SETTINGS_SIDEBAR: boolean;
   // hasSaved: boolean
-
+  isChromeVerGreaterThan100: boolean;
   constructor(
     private auth: AuthService,
     private projectService: ProjectService,
@@ -204,7 +204,15 @@ export class HoursComponent implements OnInit, OnDestroy {
     });
     this.logger.log('[HOURS] - TIMEZONE NAME & OFFSET ARRAY ', this.timezone_NamesAndUTC_list);
     this.listenSidebarIsOpened();
+    this.getBrowserVersion() 
   }
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
+     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+    //  console.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
+   } 
 
   listenSidebarIsOpened() {
     this.auth.settingSidebarIsOpned.subscribe((isopened) => {

@@ -178,7 +178,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   paginated_answers_count: number;
 
   @ViewChild('fileInputBotProfileImage') fileInputBotProfileImage: any;
-
+  isChromeVerGreaterThan100:boolean;
   constructor(
     private faqService: FaqService,
     private router: Router,
@@ -233,8 +233,15 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     this.getTranslations();
 
     this.getDeptsByProjectId();
-
+    this.getBrowserVersion();
   }
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
+     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+    //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
+   }
 
   onSelectBotDefaultlang(selectedDefaultBotLang) {
     this.logger.log('onSelectBotDefaultlang > selectedDefaultBotLang ', selectedDefaultBotLang)

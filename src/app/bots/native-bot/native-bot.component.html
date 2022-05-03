@@ -4,16 +4,18 @@
   {{ 'FaqPage.EditBOT' | translate }}
 </div> -->
 
-<span class="navbar-brand navbar-brand-sidebar-settings"
+<span class="navbar-brand navbar-brand-sidebar-settings" [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }"
   [ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
   <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBack()">
     keyboard_arrow_left
   </i>
   <span *ngIf="IS_OPEN_SETTINGS_SIDEBAR">{{ 'FaqPage.EditBOT' | translate }} </span>
 </span>
-<span *ngIf="!IS_OPEN_SETTINGS_SIDEBAR"class="navbar-brand navbar-brand-title">
+<span *ngIf="!IS_OPEN_SETTINGS_SIDEBAR"class="navbar-brand navbar-brand-title" 
+[ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-61px' : '6px', 'margin-left':isChromeVerGreaterThan100 === true ? '55px' : '4px'}">
   {{ 'FaqPage.EditBOT' | translate }}
 </span>
+
 
 
 <div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">

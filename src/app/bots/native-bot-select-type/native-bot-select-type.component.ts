@@ -10,6 +10,7 @@ import { AuthService } from 'app/core/auth.service';
 export class NativeBotSelectTypeComponent implements OnInit {
   
   projectId: string;
+  isChromeVerGreaterThan100: boolean;
 
   constructor(
     public location: Location,
@@ -18,8 +19,16 @@ export class NativeBotSelectTypeComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getCurrentProject()
+    this.getBrowserVersion();
+    this.getCurrentProject();
   }
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
+     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+     console.log("[NATIVE-BOT-SELECT] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
+   } 
 
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {

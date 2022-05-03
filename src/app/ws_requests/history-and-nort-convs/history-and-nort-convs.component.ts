@@ -209,6 +209,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   payIsVisible: boolean;
   public_Key: any;
   current_selected_prjct: any;
+  isChromeVerGreaterThan100: boolean;
   /**
    * 
    * @param router 
@@ -273,7 +274,15 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.detectMobile();
     this.getTag();
     this.getFirebaseAuth();
+    this.getBrowserVersion()
   }
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
+     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+    //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
+   }
 
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;

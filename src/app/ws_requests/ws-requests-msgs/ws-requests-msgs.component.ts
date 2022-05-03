@@ -220,7 +220,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   tag_name: string;
   tag_selected_color = '#43B1F2';
   tag_new_selected_color: string;
- 
+  isChromeVerGreaterThan100: boolean;
   @ViewChild('Selecter') ngselect: NgSelectComponent;
   /**
    * Constructor
@@ -324,9 +324,18 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.getOSCODE();
     this.getFirebaseAuth();
     this.getBrowserLang();
-
+    this.getBrowserVersion()
 
   }
+
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
+     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+    //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
+   } 
+
   ngAfterViewInit() {
     // -----------------------------------
     // Right sidebar width after view init

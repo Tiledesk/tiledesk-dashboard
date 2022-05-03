@@ -187,7 +187,7 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
   public INTENTS_ROUTE_IS_ACTIVE: boolean = false
   public FULFILLMENT_ROUTE_IS_ACTIVE: boolean = false
   public TRAINING_ROUTE_IS_ACTIVE: boolean = false
-
+  isChromeVerGreaterThan100: boolean;
   @ViewChild('fileInputBotProfileImage') fileInputBotProfileImage: any;
 
   constructor(
@@ -248,9 +248,16 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
 
     this.getDeptsByProjectId();
     this.listenSidebarIsOpened();
-    
+    this.getBrowserVersion() 
   }
 
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
+     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+    //  console.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
+   }  
  
 
 

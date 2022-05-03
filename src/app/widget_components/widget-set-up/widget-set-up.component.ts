@@ -306,6 +306,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   public HAS_ACTIVATED_PRECHAT_CUSTOM_FIELDS: boolean;
   public USER_ROLE: string;
   IS_OPEN_SETTINGS_SIDEBAR: boolean;
+  isChromeVerGreaterThan100: boolean;
   constructor(
     private notify: NotifyService,
     public location: Location,
@@ -368,7 +369,18 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.logger.log('[WIDGET-SET-UP] LANGUAGE ', this.lang);
     this.listenSidebarIsOpened();
     this.geti118nTranslations();
+    this.getBrowserVersion() 
   }
+
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
+     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+    //  console.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
+   }  
+
+
   geti118nTranslations() {
     this.translate.get('Warning')
       .subscribe((text: any) => {
