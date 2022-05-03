@@ -2067,5 +2067,6 @@
     "TheseArePreBuiltCustomizableResolutionbot":"Questi sono Resolution bot predefiniti e personalizzabili",
     "Create": "Crea",
     "EditIntent":"Modifica intent",
-    "DeleteIntent":"Elimina intent"
+    "DeleteIntent":"Elimina intent",
+    "UpdateIntent":"Aggiorna intent"
 }

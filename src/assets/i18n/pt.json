@@ -2069,6 +2069,7 @@
     "Create": "Criar",
     "EditIntent":"Editar intent",
     "DeleteIntent":"Excluir intent",
+    "UpdateIntent":"Atualizar intent",
     "CHAT_IONIC": {
         "LABEL_TU": "vocês: ",
         "LABEL_MSG_PUSH_START_CHAT": "Nenhuma conversa ainda",
