@@ -996,7 +996,7 @@
         "TheFaqWithID": "Kimlikli SSS",
         "WillBeDeleted": "silinecek",
         "modalDeleteFaqWithId": "Kimlikli SSS'yi Sil",
-        "AreYouSure": "Bu SSS'yi silmek istediğinizden emin misiniz?",
+        "AreYouSure": "Bu intent'yi silmek istediğinizden emin misiniz?",
         "Confirm": "Teyit etmek",
         "ImportCsvFile": "CSV Dosyasını İçe Aktar",
         "ColumnsSeparatedWith": "İle ayrılmış sütunlar:",

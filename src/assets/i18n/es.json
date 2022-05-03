@@ -996,7 +996,7 @@
         "TheFaqWithID": "Las FAQ con Id",
         "WillBeDeleted": "será eliminado",
         "modalDeleteFaqWithId": "Eliminar FAQ con Id",
-        "AreYouSure": "¿Está seguro que desea eliminar este FAQ?",
+        "AreYouSure": "¿Está seguro que desea eliminar este intent?",
         "Confirm": "Confirmar",
         "ImportCsvFile": "Importar archivo CSV",
         "ColumnsSeparatedWith": "Columnas separadas con:",

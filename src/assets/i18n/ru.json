@@ -996,7 +996,7 @@
         "TheFaqWithID": "FAQ с идентификатором",
         "WillBeDeleted": "будет удален",
         "modalDeleteFaqWithId": "Удалить FAQ с идентификатором",
-        "AreYouSure": "Вы уверены, что хотите удалить этот FAQ?",
+        "AreYouSure": "Вы уверены, что хотите удалить этот intent?",
         "Confirm": "Подтверждать",
         "ImportCsvFile": "Импорт файла CSV",
         "ColumnsSeparatedWith": "Столбцы разделены:",
