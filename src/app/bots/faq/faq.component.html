@@ -1267,13 +1267,13 @@
                     <!-- NEW -->
                     <td class="td-actions text-right">
                       <button id="edit-faq" style="padding-bottom:0px" type="button" rel="tooltip"
-                        title="{{ 'FaqPage.tooltipEditFaq' | translate }}" class="btn btn-primary btn-simple btn-xs"
+                        title="{{ 'DeleteIntent' | translate }}" class="btn btn-primary btn-simple btn-xs"
                         (click)='goToEditAddPage_EDIT(faq?._id)'>
                         <i class="material-icons">edit</i>
                       </button>
 
                       <button id="delete-faq" style="padding-bottom:0px" type="button" rel="tooltip"
-                        title="{{ 'FaqPage.DeleteFaq' | translate }}" class="btn btn-danger btn-simple btn-xs"
+                        title="{{ 'DeleteIntent' | translate }}" class="btn btn-danger btn-simple btn-xs"
                         (click)='$event.stopPropagation();openDeleteModal(faq?._id)'>
                         <i class="material-icons">close</i>
                       </button>
@@ -1353,16 +1353,16 @@
                     report_problem
                   </i>
                   <span style="vertical-align: middle; padding-left:8px">
-                    {{ "FaqPage.DeleteFaq" | translate }}
+                    {{ "DeleteIntent" | translate }}
                   </span>
                 </h4>
 
-                <h4 class="modal-title" style="color: #fff; padding-top:10px; font-size: 1.1em">
-                  <!-- Delete FAQ with id: -->
+                <!-- <h4 class="modal-title" style="color: #fff; padding-top:10px; font-size: 1.1em">
+                
                   {{ 'FaqPage.TheFaqWithID' | translate }}
                   <code>{{id_toDelete}}</code>
                   {{ 'FaqPage.WillBeDeleted' | translate }}
-                </h4>
+                </h4> -->
 
               </div>
 
@@ -1383,7 +1383,7 @@
                 <!-- Confirm -->
                 <button type="button" class="btn btn-danger" (click)="onCloseDeleteModalHandled()">
                   <!-- Conferma -->
-                  {{ 'FaqPage.DeleteFaq' | translate }}
+                  {{ 'DeleteIntent' | translate }}
                 </button>
               </div>
 
