@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.32-rc
+- Fix graphics issues due to chrome update
+
 ### 2.2.32-rc22
 - Adds a left sidebar for the bots of "Resolution" type
 - Adds the ability to select a template for the  "resolution" bot type
