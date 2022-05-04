@@ -26,7 +26,7 @@ export class NativeBotSelectTypeComponent implements OnInit {
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-     console.log("[NATIVE-BOT-SELECT] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    //  console.log("[NATIVE-BOT-SELECT] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
    } 
 
