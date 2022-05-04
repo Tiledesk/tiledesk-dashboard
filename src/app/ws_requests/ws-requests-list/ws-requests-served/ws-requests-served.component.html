@@ -789,12 +789,15 @@
                     </div>
 
                     <span
-                      style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px; white-space: nowrap;"
+                      style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px; white-space: nowrap; text-align: center;"
                       class="top">
                       <span style="text-transform: capitalize;"> {{ agent?.firstname }}
                         <span *ngIf="agent?.lastname">
                           {{ agent?.lastname | slice:0:1 }}.
                         </span>
+                        <!-- <span style="display: block; font-weight: 300;font-size: 10px; text-transform: lowercase" *ngIf="agent._id === currentUserID">
+                         ({{'AssignedToYou'|translate}}) 
+                        </span> -->
 
                       </span>
                       <i></i>
