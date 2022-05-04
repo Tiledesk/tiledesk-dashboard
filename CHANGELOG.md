@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.32
+- Deploys in production
+
 ### 2.2.32-rc23
 - Fix graphics issues due to chrome update
 - Displays the complete date in the left sidebar "conversation detail" displayed in the chat
