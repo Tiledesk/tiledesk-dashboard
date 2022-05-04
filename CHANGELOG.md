@@ -1,7 +1,7 @@
 
 # tiledesk-dashboard
 
-### 2.2.32-rc
+### 2.2.32-rc23
 - Fix graphics issues due to chrome update
 - Displays the complete date in the left sidebar "conversation detail" displayed in the chat
 - Adds a tooltip to the "notifications" badge of the navbar that indicates the number of conversations assigned to the current user and the number of unassigned conversations
