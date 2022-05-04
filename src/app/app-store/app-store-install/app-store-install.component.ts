@@ -26,7 +26,7 @@ export class AppStoreInstallComponent implements OnInit {
   TOKEN: string;
   showSpinner: boolean;
   projectId: string;
-
+  isChromeVerGreaterThan100: boolean;
   constructor(
     public route: ActivatedRoute,
     private sanitizer: DomSanitizer,
@@ -45,7 +45,15 @@ export class AppStoreInstallComponent implements OnInit {
   ngOnInit() {
     // this.getCurrentProject();
     this.onInitframeHeight();
+    this.getBrowserVersion()
+  }
 
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+      //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
   }
 
   ngOnDestroy() {

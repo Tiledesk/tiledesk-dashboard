@@ -37,6 +37,7 @@ export class GroupsComponent implements OnInit {
   IS_OPEN_SETTINGS_SIDEBAR: boolean;
   public_Key: any;
   isVisibleGRO
+  isChromeVerGreaterThan100: boolean
   constructor(
     private auth: AuthService,
     private groupsService: GroupService,
@@ -54,7 +55,15 @@ export class GroupsComponent implements OnInit {
     this.getGroupsByProjectId();
     this.listenSidebarIsOpened();
     this.getOSCODE();
+    this.getBrowserVersion()
   }
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
+     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+    //  console.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
+   }
 
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
