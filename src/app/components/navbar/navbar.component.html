@@ -331,13 +331,17 @@
         <!--  ------------------------------------------------ -->
         <!--  NOTIFICATION -->
         <!--  ------------------------------------------------ -->
-        <li *ngIf="project" class="dropdown">
+        <li *ngIf="project" class="dropdown" matTooltipClass="custom-mat-tooltip-navbar"
+        matTooltip="{{ 'Unserved' | translate }}: {{ unservedRequestCount }} - {{ 'AssignedToYou' | translate}}: {{currentUserRequestCount}}" 
+        #tooltip="matTooltip" matTooltipPosition='left' matTooltipHideDelay="100">
           <a routerLink="project/{{ project._id }}/wsrequests" class="dropdown-toggle" data-toggle="dropdown">
             <i class="material-icons">notifications</i>
 
             <!-- SHOW THE BADGE OVER NOTIFICATION IF THE COUNT OF UNSERVED OR TO ASSIGNED TO CURRENT USER REQUESTS IS > 0 -->
             <span *ngIf="unservedRequestCount > 0 || currentUserRequestCount > 0 ">
-              <span class="notification">{{ unservedRequestCount + currentUserRequestCount }}</span>
+              <span class="notification" >
+              {{ unservedRequestCount + currentUserRequestCount }}
+            </span>
             </span>
 
             <!-- <p class="hidden-lg hidden-md">Notifications</p> -->
