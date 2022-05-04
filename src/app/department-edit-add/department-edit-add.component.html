@@ -495,10 +495,23 @@
       <!--  --------------------------------------------------- -->
       <div id="right_edit_card" *ngIf="EDIT_VIEW" class="col-sm-4 col-md-4 no_padding_right_col"
         [ngClass]="{'sidebar-hidden-767': OPEN_CREATE_GROUP_RIGHT_SIDEBAR}">
-        <div class="card" style="padding-top: 8px;margin-top: 5px;">
+        <div class="card card--no-border" style="padding-top: 8px;margin-top: 5px;">
 
           <loading-spinner *ngIf="showSpinner"></loading-spinner>
           <div *ngIf="!showSpinner" class="card-content" style="padding-top: 0px;">
+
+            <div class="row">
+              <div class="col-sm-12 col-md-12">
+                <h3 class="card_title__underlined" style="margin-top: 0px;">
+                  <span class="card_title__underline">
+                    {{ "RequestMsgsPage.Details" | translate }}
+                  </span>
+                </h3>
+              </div>
+              <div class="col-sm-12 col-md-12">
+                <div class="section-subtitle"> </div>
+              </div>
+            </div>
 
             <div class="row" style="height: 50px;">
               <div class="col-xs-12">
@@ -589,10 +602,10 @@
 
             <!--
             // ---------------------------------------------------------------------
-            // Bot
+            // Bot style="border-top: 1px solid #dadde1;"
             // --------------------------------------------------------------------- -->
             <div class="row" style="margin-top:5px">
-              <div class="col-sm-12" style="border-top: 1px solid #dadde1;">
+              <div class="col-sm-12" >
 
                 <p class="row-header">
                   <span style="vertical-align: middle;">
@@ -669,13 +682,13 @@
                       style="vertical-align: middle; color: #394f5a;font-size:14px;  margin-left: 1px;">subject</i>
 
                     <span
-                      style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
+                      style="font-size: 12px; color: #394f5a; font-weight: 400;font-family: 'Poppins';">
                       {{'DeptsAddEditPage.Description' | translate}}
                     </span>
 
                     <!-- </span>
                     </span> -->
-                    <span class="bot_description" style="color: #7695a5; font-weight: 500; font-size: 12px;">
+                    <span class="bot_description" style="color: #7695a5; font-weight: 400; font-size: 12px;">
                       {{ bot_description }}
 
                     </span>
@@ -697,8 +710,8 @@
             // Agent
             // --------------------------------------------------------------------- -->
             <div class="row" style="margin-top:0px">
-              <!-- border-bottom: 1px solid #dadde1; -->
-              <div class="col-sm-12" style="border-top: 1px solid #dadde1;">
+              <!-- border-top: 1px solid #dadde1; -->
+              <div class="col-sm-12">
 
                 <p class="row-header">
                   <span style="vertical-align: middle;">
@@ -720,7 +733,7 @@
                       {{ group_name }}
 
                       <span class="edit-group-link tool_tip" (click)="goToEditGroup()">
-                        ({{'Edit' | translate}})
+                        <span style="text-transform:capitalize" >({{'Edit' | translate}}) </span> 
 
                         <span class="bottom"
                           style="min-width: fit-content; text-align: center;top: 30px;line-height: 15px;">

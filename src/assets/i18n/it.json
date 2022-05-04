@@ -1811,7 +1811,7 @@
     "DeptQuickTips_6": "Se esiste solo il 'Default Department' o se sono presenti altri dipartimenti ma con stato di visibilità impostato su 'Non visibile', le richieste dei visitatori verranno instradate secondo le regole del 'Default Department'.",
     "DeptQuickTips_7": "Se sono presenti più dipartimenti ma solo uno ha lo stato di visibilità impostato su 'Visibile', le richieste dei visitatori verranno indirizzate implicitamente secondo le regole di questo reparto (è comunque possibile instradare le richieste tramite API ai dipartimenti 'Non visibili')",
     "DeptQuickTips_8": "Se almeno due dipartimenti hanno lo stato di visibilità impostato su 'Visibile', i visitatori potranno scegliere a quale dipartimento indirizzare le richieste tramite l'apposito menu di selezione del widget.",
-    "Edit": "edit",
+    "Edit": "Modifica",
     "IsSetToVisible": "è impostato a visibile",
     "IsSetToNotVisible": "è impostato a non visibile",
     "LatestUpdates": "Ultimi aggiornamenti",

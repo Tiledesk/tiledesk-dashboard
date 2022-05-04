@@ -63,7 +63,7 @@ export class GroupEditAddComponent implements OnInit {
   storageBucket: string;
   baseUrl: string;
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
-
+  isChromeVerGreaterThan100: boolean;
   constructor(
     private router: Router,
     private auth: AuthService,
@@ -91,7 +91,15 @@ export class GroupEditAddComponent implements OnInit {
 
     this.getCurrentProject();
     this.getProfileImageStorage();
+    this.getBrowserVersion();
   }
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
+     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+    //  console.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
+   } 
 
   getProfileImageStorage() {
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
