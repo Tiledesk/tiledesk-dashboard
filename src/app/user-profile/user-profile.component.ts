@@ -68,6 +68,7 @@ export class UserProfileComponent implements OnInit {
   HAS_SELECTED_PREFERRED_LANG: boolean = false;
   private fragment: string;
   i18n_for_this_brower_language_is_available = false
+
   @ViewChild('fileInputUserProfileImage') fileInputUserProfileImage: any;
 
 
@@ -118,7 +119,7 @@ export class UserProfileComponent implements OnInit {
       avatar: 'assets/img/language_flag/sr.png'
     }
   ];
-
+  isChromeVerGreaterThan100: boolean;
 
   constructor(
     public auth: AuthService,
@@ -153,8 +154,15 @@ export class UserProfileComponent implements OnInit {
       this.fragment = fragment;
       this.logger.log('[USER-PROFILE] - FRAGMENT ', this.fragment)
     });
-
+    this.getBrowserVersion() 
   }
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
+     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+    //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
+   }
 
   ngAfterViewInit(): void {
     try {

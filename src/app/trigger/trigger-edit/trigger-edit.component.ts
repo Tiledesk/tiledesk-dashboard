@@ -16,6 +16,7 @@ import { UsersService } from '../../services/users.service';
 import { FaqKbService } from '../../services/faq-kb.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { browserRefresh } from './../../app.component';
+import { AuthService } from 'app/core/auth.service';
 
 @Component({
   selector: 'appdashboard-trigger-edit',
@@ -63,6 +64,7 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
   RESET_SETTINGS_COMPLETED = false;
   action_clone: any
   public browserRefresh: boolean;
+  isChromeVerGreaterThan100: boolean;
   // messageCondition: string;    --> get from BaseTriggerComponent
   // messageAction: string;       --> get from BaseTriggerComponent
   // messageServerError: string;  --> get from BaseTriggerComponent
@@ -77,7 +79,8 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
     public translate: TranslateService,
     public usersService: UsersService,
     public faqKbService: FaqKbService,
-    public logger: LoggerService
+    public logger: LoggerService,
+    private auth: AuthService
   ) {
     super(translate, departmentService, usersService, faqKbService, logger)
   }
@@ -156,8 +159,15 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
     this.temp_act = this.action
     this.logger.log('[TRIGGER-EDIT] GET TRIGGER DETAIL temp_act ', this.temp_act);
     this.logger.log('form', this.triggerForm.value)
-
+    this.getBrowserVersion()
   }
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
+     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+    //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
+   }
 
   detectBrowserRefresh() {
     this.logger.log('[TRIGGER-EDIT] - CALLING browserRefresh')

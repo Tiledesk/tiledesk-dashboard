@@ -39,6 +39,7 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   prjct_profile_type: string;
   isActiveSubscription: boolean;
+  isChromeVerGreaterThan100: boolean;
   constructor(
     private _location: Location,
     private route: ActivatedRoute,
@@ -58,7 +59,15 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
     this.translateStrings();
     this.getProjectPlan();
     this.getProjectUserRole();
+    this.getBrowserVersion()
   }
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
+     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+    //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
+   }
 
   ngOnDestroy() {
     this.unsubscribe$.next();

@@ -53,7 +53,8 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
   selected_dept: string;
   action_clone: any
   public browserRefresh: boolean;
- 
+  isChromeVerGreaterThan100: boolean;
+  
   // departments = new Array;     --> get from BaseTriggerComponent
 
   // messageCondition: string;    --> get from BaseTriggerComponent
@@ -71,7 +72,7 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
     public usersService: UsersService,
     public faqKbService: FaqKbService,
     public logger: LoggerService,
-    private auth: AuthService,
+    private auth: AuthService
   ) {
 
     super(translate, departmentService, usersService, faqKbService, logger)
@@ -136,9 +137,16 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
     }
 
     this.cleanForm();
+
+    this.getBrowserVersion()
   }
 
-
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
+     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+    //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
+   }
 
   detectBrowserRefresh() {
     this.logger.log('[TRIGGER-ADD] - CALLING browserRefresh')
