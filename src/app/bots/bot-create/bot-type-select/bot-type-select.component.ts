@@ -119,7 +119,8 @@ export class BotTypeSelectComponent implements OnInit {
    if (type !== 'native') { 
     this.router.navigate(['project/' + this.projectId + '/bots/create/' + type]);
    } else if (type === 'native') {
-    this.router.navigate(['project/' + this.projectId + '/bots/prebuilt']);
+    // this.router.navigate(['project/' + this.projectId + '/bots/prebuilt']);
+    this.router.navigate(['project/' + this.projectId + '/bots/create/' + type]);
    }
   }
 

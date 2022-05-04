@@ -532,7 +532,7 @@ span .switch-agent-admin-requests-btn {
   display: block;
   height: 52px;
   cursor: pointer;
-  z-index: 1049;
+ 
 }
 
 .bottom-nav li a {
@@ -675,6 +675,10 @@ $f21blue: #039be5;
     top: -2px !important;
   }
 
+  .bottom-nav li { 
+    z-index: 1049
+  }
+
   // .chart-wrapper {
   //     margin-top:60px !important;
   // }
@@ -706,6 +710,7 @@ $f21blue: #039be5;
   border: 1px solid #eee;
   margin-top: 1px;
   margin-bottom: 1px;
+  object-fit: cover;
 }
 
 // #team-container {

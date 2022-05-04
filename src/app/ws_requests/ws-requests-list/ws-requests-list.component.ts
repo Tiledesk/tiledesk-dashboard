@@ -962,7 +962,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       )
       
       .subscribe((wsrequests) => {
-        console.log("[WS-REQUESTS-LIST] - enter subscribe to  getWsRequests$", wsrequests);
+        // console.log("[WS-REQUESTS-LIST] - enter subscribe to  getWsRequests$", wsrequests);
         if (wsrequests) {
           this.logger.log("[WS-REQUESTS-LIST] - getWsRequests > if (wsrequests) ", wsrequests);
           this.browserRefresh = browserRefresh;

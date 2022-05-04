@@ -1,5 +1,6 @@
 <!-- *ngIf="ROUTING_PAGE_MODE === false"  -->
-<div #navbarbrand class="navbar-brand" style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px">
+<!-- margin-top:6px; -->
+<div #navbarbrand class="navbar-brand" style="z-index: 1050;position: relative; padding-left:30px" [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
   <!-- (click)="goBack()" -->
   <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
     (click)="goBackToDeptsList()">keyboard_arrow_left</i>
@@ -616,8 +617,7 @@
                       <!-- Bot profile photo usecase uploadEngine Firebase -->
                       <!-- --------------------------------------------------------------------- -->
                       <img *ngIf="selectedId && UPLOAD_ENGINE_IS_FIREBASE"
-                        style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #eee; margin-right: 6px;"
-                        class="user-img"
+                        class="bot-img-dept-edit-add"
                         src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{selectedId}}%2Fphoto.jpg?alt=media"
                         onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
 
@@ -625,8 +625,7 @@
                       <!-- Bot profile photo usecase uploadEngine Native -->
                       <!-- --------------------------------------------------------------------- -->
                       <img *ngIf="selectedId && !UPLOAD_ENGINE_IS_FIREBASE"
-                        style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #eee; margin-right: 6px;"
-                        class="user-img"
+                        class="bot-img-dept-edit-add"
                         src="{{baseUrl}}images?path=uploads%2Fusers%2F{{selectedId}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                         onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
 
