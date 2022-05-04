@@ -2068,5 +2068,6 @@
     "Create": "Crea",
     "EditIntent":"Modifica intent",
     "DeleteIntent":"Elimina intent",
-    "UpdateIntent":"Aggiorna intent"
+    "UpdateIntent":"Aggiorna intent",
+    "AssignedToYou":"Assegnate a te"
 }

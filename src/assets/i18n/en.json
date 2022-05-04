@@ -2070,6 +2070,7 @@
     "EditIntent":"Edit intent",
     "DeleteIntent":"Delete intent",
     "UpdateIntent":"Update intent",
+    "AssignedToYou":"Assigned to you",
     "CHAT_IONIC": {
         "LABEL_TU": "you: ",
         "LABEL_MSG_PUSH_START_CHAT": "No conversation yet",

@@ -2069,5 +2069,6 @@
 	"Create": "Erstellen",
 	"EditIntent":"Intent bearbeiten",
 	"DeleteIntent":"Intent löschen",
-	"UpdateIntent":"Intent aktualisieren"
+	"UpdateIntent":"Intent aktualisieren",
+	"AssignedToYou":"Ihnen zugeteilt"
 }

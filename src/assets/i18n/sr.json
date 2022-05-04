@@ -2070,6 +2070,7 @@
     "EditIntent":"Измени intent",
     "DeleteIntent":"Избриши intent",
     "UpdateIntent":"Ажурирајте intent",
+    "AssignedToYou":"Додељен вама",
     "CHAT_IONIC": {
         "LABEL_TU": "ти: ",
         "LABEL_MSG_PUSH_START_CHAT": "Још нема разговора",

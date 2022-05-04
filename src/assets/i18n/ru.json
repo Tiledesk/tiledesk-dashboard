@@ -2070,6 +2070,7 @@
     "EditIntent":"Изменить intent",
     "DeleteIntent":"Удалить intent",
     "UpdateIntent":"Обновить intent",
+    "AssignedToYou":"Назначено вам",
     "CHAT_IONIC": {
         "LABEL_TU": "ты: ",
         "LABEL_MSG_PUSH_START_CHAT": "Разговора пока нет",
