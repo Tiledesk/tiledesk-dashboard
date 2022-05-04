@@ -1162,3 +1162,7 @@ span.navbar-brand-title {
 //     top: 0px;
 // }
 
+.cdk-overlay-container {
+  position: fixed;
+  z-index: 1050 !important;
+}
