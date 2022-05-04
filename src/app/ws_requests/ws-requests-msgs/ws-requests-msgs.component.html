@@ -1324,8 +1324,8 @@
 
                           <span class="conv-details-sidebar-text">
                             {{ request?.createdAt | amTimeAgo }}
-
-                            <span *ngIf="CHAT_PANEL_MODE === false">
+                            <!-- *ngIf="CHAT_PANEL_MODE === false" -->
+                            <span >
                               ({{ request?.createdAt | date: 'd/M/y HH:mm:ss' }})
                             </span>
                           </span>
