@@ -3,6 +3,7 @@
 
 ### 2.2.32-rc
 - Fix graphics issues due to chrome update
+- Displays the complete date in the left sidebar "conversation detail" displayed in the chat
 
 ### 2.2.32-rc22
 - Adds a left sidebar for the bots of "Resolution" type
