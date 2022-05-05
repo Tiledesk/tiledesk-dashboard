@@ -353,8 +353,9 @@ export class FaqEditAddComponent implements OnInit {
         // this.notify.showNotification('FAQ successfully created', 2, 'done');
         this.notify.showWidgetStyleUpdateNotification(this.createFaqSuccessNoticationMsg, 2, 'done');
 
-        // this.router.navigate(['project/' + this.project._id  + '/faq', this.id_faq_kb]);
-        this.router.navigate(['project/' + this.project._id + '/bots', this.id_faq_kb, this.botType]);
+       
+        // this.router.navigate(['project/' + this.project._id + '/bots', this.id_faq_kb, this.botType]);
+        this.router.navigate(['project/' + this.project._id + '/bots/intents/' + this.id_faq_kb + "/" + this.botType]);
       });
 
   }
