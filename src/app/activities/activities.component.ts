@@ -484,11 +484,13 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
       let botType = ''
       if (bot.type === 'internal') {
         botType = 'native'
+        this.router.navigate(['project/' + this.projectId + '/bots/intents/' + bot_id + "/" + botType]);
       } else {
         botType = bot.type
+        this.router.navigate(['project/' + this.projectId + '/bots', bot_id, botType]);
       }
 
-      this.router.navigate(['project/' + this.projectId + '/bots', bot_id, botType]);
+     
 
     } else {
 

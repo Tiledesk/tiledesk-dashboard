@@ -5,6 +5,7 @@ import { BaseTranslationComponent } from './base-translation/base-translation.co
 import { NotifyService } from '../../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from '../../services/logger/logger.service';
+import { AuthService } from 'app/core/auth.service';
 const swal = require('sweetalert');
 
 @Component({
@@ -45,11 +46,13 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
   areYouSureMsg: string;
   deleteMsg: string;
   cancelMsg: string;
+  isChromeVerGreaterThan100: boolean;
   constructor(
     public location: Location,
     public widgetService: WidgetService,
     private notify: NotifyService,
     private translate: TranslateService,
+    public auth: AuthService,
     private logger: LoggerService
   ) {
     super();
@@ -61,8 +64,15 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
     this.getTranslation()
     this.getEnDefaultTranslation();
     // this.getLabels();
-
+    this.getBrowserVersion()
   }
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
+     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+    //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
+   }
 
 
 
