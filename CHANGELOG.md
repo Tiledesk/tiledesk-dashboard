@@ -1,8 +1,11 @@
 
 # tiledesk-dashboard
 
+### 2.2.33-rc1
+- Adds the tab "Security" in Project settings
+
 ### 2.2.32.1
-- Fix bug and minor improvements 
+- Fixes bug and minor improvements 
 
 ### 2.2.32
 - Deploys in production
