@@ -3,6 +3,7 @@
 
 ### 2.2.33-rc1
 - Adds the tab "Security" in Project settings
+- Adds in the right sidebar "conversation info" displayed in the chat the ability to change the full name of the contact (in progress)
 
 ### 2.2.32.1
 - Fixes bug and minor improvements 
