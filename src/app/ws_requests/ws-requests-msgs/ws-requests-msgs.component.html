@@ -1,6 +1,6 @@
 <!-- margin-top:6px; -->
-<div *ngIf="CHAT_PANEL_MODE === false" class="navbar-brand"
-  style="z-index: 1050;position: relative; padding-left:30px" [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
+<div *ngIf="CHAT_PANEL_MODE === false" class="navbar-brand" style="z-index: 1050;position: relative; padding-left:30px"
+  [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
   <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
     (click)="goBack()">keyboard_arrow_left</i>
   <!-- Request  -->
@@ -678,28 +678,105 @@
 
                         <div class="contact_info_in_right-sidebar"
                           [ngClass]="{'contact_info_in_right-sidebar-verified':REQUESTER_IS_VERIFIED === true }">
-                          <span style="font-weight: 700; font-family: 'Helvetica Neue', sans-serif; display: block; font-size: 18px;white-space: nowrap;
-                        overflow: hidden;
-                        text-overflow: ellipsis;">
-
-                            {{request?.lead?.fullname}}
-                          </span>
-                          <span *ngIf="!request?.lead?.fullname" style="margin-left: 2px;">
-                            N/A
-                          </span>
-
-
-                          <div class="chat-panel-mode-contact-email">
-                            <a style="margin-top: 8px; text-transform: lowercase; text-decoration: underline;cursor:pointer ; font-size:14px; font-weight: 400; color: #3880ff;"
-                              target="_blank" *ngIf="request?.lead?.email" href="mailto:{{request?.lead?.email}}">
-                              {{request?.lead?.email}}
-                            </a>
-                            <a *ngIf="!request?.lead?.email"
-                              style="color: #7695a5; margin-top: 8px;font-size:14px; font-weight: 400;">
-                              {{'EmailNotAvailable' | translate}}
-                            </a>
+                          <div class="contact-fullname-in-right-sidebar" (mouseover)="displayEditButton()"
+                            (mouseout)="hideEditButton()" (click)="openDropDown()">
+                            <span *ngIf="request?.lead?.fullname">
+                              {{request?.lead?.fullname}}
+                            </span>
+                            <span *ngIf="!request?.lead?.fullname">
+                              N/A
+                            </span>
                           </div>
                         </div>
+                        <div *ngIf="DISPLAY_EDIT_FULLNAME_ICON" class="edit-icon-wpr"
+                          style="float: right;margin-top: -19px;">
+                          <i class="material-icons" style="font-size: 16px;color: rgb(139,153,174);margin-right: 3px;">
+                            edit
+                          </i>
+                        </div>
+
+                        <div class="dropdown__menu ">
+                          <div class="dropdown__content" style="    background-color: #fff;
+                          border-radius: 8px;
+                          box-shadow: 0 8px 24px 0 rgb(60 72 91 / 32%);
+                          margin-bottom: 10px;
+                          padding: 8px;">
+                            <form class="css-xmld2u et9tjuw0" style="    width: 256px;
+                            text-align: left;">
+                              <div class="input-wrapper">
+                                <label for="first-name-input" style="margin-bottom: 4px;">
+                                  First name
+                                </label>
+                                <input id="first-name-input" type="text" class="dropdown--input" name="contact_new_first_name" [(ngModel)]="contactNewFirstName">
+                                  <label for="last-name-input" style="margin-bottom: 4px;">
+                                    Last name
+                                  </label>
+                                  <input id="last-name-input" type="text" class="dropdown--input" name="contact_new_last_name" [(ngModel)]="contactNewLastName" >
+                                </div>
+                                <div class="drpdown-btn-wpr" style=" border-top: 1px solid rgb(211, 219, 229);text-align: center;"> 
+                                  <button  class="btn btn-secondary dropdown-action--btn dropdown-action-cancel--btn" (click)="closeDropdown()">
+                                    Cancel
+                                  </button>
+
+                                  <button type="submit" class="btn btn-secondary  dropdown-action--btn dropdown-done-action--btn" (click)="saveContactFullName()">
+                                    Done
+                                  </button>
+                                  
+
+                                <button  type="submit" style="  display: none;  width: calc(100% - 16px);
+                                background-color: rgb(255, 255, 255);
+                                border-right: none;
+                                border-bottom: none;
+                                border-left: none;
+                                border-top: none;
+                                border-image: initial;
+                               
+                                outline: none;
+                                font-size: 16px;
+                                line-height: 20px;
+                                letter-spacing: -0.01em;
+                                color: rgb(5, 102, 255);
+                                cursor: pointer;
+                                padding: 14px 0px 6px;
+                                margin-left: 8px;
+                                margin-right: 8px;">Done
+                                </button>
+
+                                <button type="submit" style=" display: none;   width: calc(100% - 16px);
+                                background-color: rgb(255, 255, 255);
+                                border-right: none;
+                                border-bottom: none;
+                                border-left: none;
+                                border-top: none;
+                                border-image: initial;
+                               
+                                outline: none;
+                                font-size: 16px;
+                                line-height: 20px;
+                                letter-spacing: -0.01em;
+                                color: rgb(5, 102, 255);
+                                cursor: pointer;
+                                padding: 14px 0px 6px;
+                                margin-left: 8px;
+                                margin-right: 8px;">Cancel
+                                </button>
+                                </div>
+                            </form>
+                          </div>
+                        </div>
+
+
+                        <div class="chat-panel-mode-contact-email">
+                          <a style="margin-top: 8px; text-transform: lowercase; text-decoration: underline;cursor:pointer ; font-size:14px; font-weight: 400; color: #3880ff;"
+                            target="_blank" *ngIf="request?.lead?.email" href="mailto:{{request?.lead?.email}}">
+                            {{request?.lead?.email}}
+                          </a>
+                          <a *ngIf="!request?.lead?.email"
+                            style="color: #7695a5; margin-top: 8px;font-size:14px; font-weight: 400;">
+                            {{'EmailNotAvailable' | translate}}
+                          </a>
+                        </div>
+
                       </div> <!-- contact in right sidebar -->
 
                       <div class="request-icons-in-right-sidebar"
@@ -1325,7 +1402,7 @@
                           <span class="conv-details-sidebar-text">
                             {{ request?.createdAt | amTimeAgo }}
                             <!-- *ngIf="CHAT_PANEL_MODE === false" -->
-                            <span >
+                            <span>
                               ({{ request?.createdAt | date: 'd/M/y HH:mm:ss' }})
                             </span>
                           </span>
@@ -2183,39 +2260,39 @@
                           <ng-template ng-footer-tmp>
                             <!-- position:relative -->
                             <div class="input-group create-new-tag">
-                              <input id="tag_name_in_conv_detail" (keyup.enter)="onPressEnterInIputTypeNewTag()" 
-                                (focus)="onFocusInIputTypeNewTag()"
-                                (blur)="onBlurIputTypeNewTag()"
+                              <input id="tag_name_in_conv_detail" (keyup.enter)="onPressEnterInIputTypeNewTag()"
+                                (focus)="onFocusInIputTypeNewTag()" (blur)="onBlurIputTypeNewTag()"
                                 class="tag-name-in-conv-detail" name="tag_name_in_conv_detail" [(ngModel)]="tag_name"
-                                type="text" placeholder="{{ 'TypeNewTagHere' | translate }}" style="padding-left: 27px;">
+                                type="text" placeholder="{{ 'TypeNewTagHere' | translate }}"
+                                style="padding-left: 27px;">
                               <i class="fa fa-circle" style="font-size: 18px; position: absolute;
                                 left: 7px;
                                 top: 13px;" [ngStyle]="{'color':tag_selected_color}"></i>
                               <span class="input-group-btn">
-                                <button class="btn btn-xs btn-primary add-tag-btn-cov-detail" 
-                                  (click)="createTag()" [disabled]="tag_name?.length === 0 || !tag_name">
+                                <button class="btn btn-xs btn-primary add-tag-btn-cov-detail" (click)="createTag()"
+                                  [disabled]="tag_name?.length === 0 || !tag_name">
                                   {{'Add' | translate}}
                                 </button>
                               </span>
                             </div>
                             <div class="tag--colors" style="padding-top:4px; padding-left: 7px;">
-                              <i class="fa fa-circle" style="font-size: 18px; color:#43B1F2; cursor: pointer;" 
+                              <i class="fa fa-circle" style="font-size: 18px; color:#43B1F2; cursor: pointer;"
                                 (click)="tagSelectedColor('#43B1F2')">
                               </i>
                               <i class="fa fa-circle" style="font-size: 18px; color:#CB80DD; cursor: pointer;"
-                               (click)="tagSelectedColor('#CB80DD')">
+                                (click)="tagSelectedColor('#CB80DD')">
                               </i>
                               <i class="fa fa-circle" style="font-size: 18px; color:#66C549; cursor: pointer;"
-                               (click)="tagSelectedColor('#66C549')">
+                                (click)="tagSelectedColor('#66C549')">
                               </i>
                               <i class="fa fa-circle" style="font-size: 18px; color:#F3C835; cursor: pointer;"
-                               (click)="tagSelectedColor('#F3C835')">
+                                (click)="tagSelectedColor('#F3C835')">
                               </i>
                               <i class="fa fa-circle" style="font-size: 18px; color:#F89D34; cursor: pointer;"
-                               (click)="tagSelectedColor('#F89D34')">
+                                (click)="tagSelectedColor('#F89D34')">
                               </i>
                               <i class="fa fa-circle" style="font-size: 18px; color:#FF5C55; cursor: pointer;"
-                               (click)="tagSelectedColor('#FF5C55')">
+                                (click)="tagSelectedColor('#FF5C55')">
                               </i>
                             </div>
                             <!-- tag_name: string;

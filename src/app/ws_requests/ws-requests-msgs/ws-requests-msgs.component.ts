@@ -221,6 +221,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   tag_selected_color = '#43B1F2';
   tag_new_selected_color: string;
   isChromeVerGreaterThan100: boolean;
+  DISPLAY_EDIT_FULLNAME_ICON: boolean = false
+  contactNewFirstName: string;
+  contactNewLastName: string;
   @ViewChild('Selecter') ngselect: NgSelectComponent;
   /**
    * Constructor
@@ -2751,6 +2754,37 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       .subscribe((text: string) => {
         this.priority_update_failed = text;
       });
+  }
+
+  displayEditButton() {
+    this.DISPLAY_EDIT_FULLNAME_ICON = true;
+    console.log('mouse over full name ', this.DISPLAY_EDIT_FULLNAME_ICON)
+
+    // 
+  }
+
+  hideEditButton() {
+    this.DISPLAY_EDIT_FULLNAME_ICON = false;
+    console.log('mouse out full name ', this.DISPLAY_EDIT_FULLNAME_ICON)
+  }
+
+  openDropDown() {
+    const elemDropDown = <HTMLElement>document.querySelector('.dropdown__menu');
+    console.log('openDropDown ', elemDropDown)
+    elemDropDown.classList.add("dropdown__menu--active");
+  }
+
+  closeDropdown() {
+    const elemDropDown = <HTMLElement>document.querySelector('.dropdown__menu');
+    elemDropDown.classList.remove("dropdown__menu--active");
+  
+  }
+
+  saveContactFullName() {
+    const elemDropDown = <HTMLElement>document.querySelector('.dropdown__menu');
+    elemDropDown.classList.remove("dropdown__menu--active");
+    console.log('saveContactFullName  contactNewFirstName', this.contactNewFirstName)
+    console.log('saveContactFullName  contactNewLastName', this.contactNewLastName)
   }
 
 

@@ -1403,7 +1403,6 @@ span .conv-svg-icon {
 }
 
 .tag:hover {
-
   .tag_icon_in_ws_msgs {
     fill: rgba(233, 235, 238, 0.3) !important;
   }
@@ -2146,10 +2145,75 @@ span .conv-svg-icon {
 .contact_info_in_right-sidebar {
   // float: left;
   margin-top: 9px;
+  max-width: 253px;
 }
 
 .contact_info_in_right-sidebar-verified {
   margin-right: 0px;
+}
+
+.contact-fullname-in-right-sidebar {
+  font-weight: 700;
+  font-family: "Helvetica Neue", sans-serif;
+  display: block;
+  font-size: 18px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.contact-fullname-in-right-sidebar:hover {
+  background-color: #e4e6eb;
+  border-radius: 4px;
+}
+
+.dropdown__menu {
+  left: 6px;
+  min-width: 192px;
+  opacity: 0;
+  position: absolute;
+  top: 133px;
+  visibility: hidden;
+  z-index: 20;
+}
+
+.dropdown__menu--active {
+  opacity: 1;
+  transform: translateY(4px);
+  visibility: visible;
+}
+
+
+.dropdown--input {
+  margin-bottom: 16px;
+  display: block;
+  width: 100%;
+  font-size: 16px;
+  height: 36px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: rgb(255, 255, 255);
+  padding: 0px 12px;
+  outline: none;
+  color: rgb(8, 15, 26);
+}
+
+.dropdown-action--btn {
+  margin-top: 14px;
+  box-shadow: unset;
+  text-transform: none;
+
+  padding: 8px 16px;
+}
+.dropdown-action-cancel--btn {
+  background-color: #e4e6eb; color: #050505;
+  margin-right: 6px;
+}
+
+.dropdown-done-action--btn {
+  background-color: #3ea9f5; color: #fff;
+  margin-left: 6px;
 }
 
 .right-sidebar-actions {
@@ -2512,7 +2576,7 @@ span .conv-svg-icon {
   // object-fit: cover;
   text-align: center;
   position: relative;
-  display: flex!important;
+  display: flex !important;
 }
 .altenative-avatar-conv-detail {
   font-family: "Poppins";
@@ -2523,7 +2587,7 @@ span .conv-svg-icon {
   top: 50%;
   -webkit-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
-  flex: 0 0 auto!important;
+  flex: 0 0 auto !important;
 }
 
 .agent-fullname-not-has-image-and-chat-with {
@@ -2753,27 +2817,27 @@ span .conv-svg-icon {
 }
 
 .row-height-chat-panel-mode {
-  height: 170px
+  height: 170px;
 }
 
 ::ng-deep .custom-mat-tooltip {
-  background-color: #2d323e  !important;
-  font-size: 12px  !important;
+  background-color: #2d323e !important;
+  font-size: 12px !important;
   border-radius: 2px !important;
-  font-family: 'Poppins' !important;
-  padding-top:8px!important;
-  padding-bottom:8px!important;
+  font-family: "Poppins" !important;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
 }
 
 ::ng-deep .custom-mat-tooltip-in-conv-detail-sidebar {
-  background-color: #fff  !important;
+  background-color: #fff !important;
   color: #555555 !important;
-  font-size: 12px  !important;
+  font-size: 12px !important;
   border-radius: 2px !important;
-  font-family: 'Poppins' !important;
-  padding-top:8px!important;
-  padding-bottom:8px!important;
-  border: 1px solid #e5effe!important;
+  font-family: "Poppins" !important;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+  border: 1px solid #e5effe !important;
 }
 
 // Custom scollbar fo the chat right sidebar
@@ -2782,10 +2846,10 @@ span .conv-svg-icon {
   height: 6px;
 }
 #chat-wpr::-webkit-scrollbar-track {
-  background-color: #F9F9F9;
+  background-color: #f9f9f9;
 }
 #chat-wpr::-webkit-scrollbar-thumb {
-  background-color: #B9B9B9;
+  background-color: #b9b9b9;
   border-radius: 0px;
 }
 #chat-wpr::-webkit-scrollbar-thumb:hover {
