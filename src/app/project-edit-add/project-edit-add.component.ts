@@ -55,6 +55,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   PROJECT_SETTINGS_AUTH_ROUTE: boolean;
   PROJECT_SETTINGS_ADVANCED_ROUTE: boolean;
   PROJECT_SETTINGS_NOTIFICATION_ROUTE: boolean;
+  PROJECT_SETTINGS_SECURITY_ROUTE: boolean;
 
   showSpinner = true;
 
@@ -149,6 +150,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   assigned_conv_on: boolean;
   unassigned_conv_on: boolean;
+  ip_restrictions_on: boolean;
   USER_ROLE: string;
 
   onlyOwnerCanManageTheAccountPlanMsg: string;
@@ -188,7 +190,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   validationMessages = {
     'creditCard': {
 
-      'pattern': 'CC Nunber must be a valid',
+      'pattern': 'CC Number must be a valid',
     },
     'expirationDate': {
 
@@ -200,7 +202,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     },
 
   };
-
+  allowedIP:any
   /**
    * 
    * @param projectService 
@@ -592,7 +594,9 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       (currentUrl.indexOf('/project-settings/payments') === -1) &&
       (currentUrl.indexOf('/project-settings/auth') === -1) &&
       (currentUrl.indexOf('/project-settings/advanced') === -1) &&
-      (currentUrl.indexOf('/project-settings/notification') === -1)
+      (currentUrl.indexOf('/project-settings/notification') === -1) &&
+      (currentUrl.indexOf('/project-settings/security') === -1) 
+      
     ) {
       this.logger.log('%ProjectEditAddComponent router.url', this.router.url);
 
@@ -601,19 +605,21 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.PROJECT_SETTINGS_AUTH_ROUTE = false;
       this.PROJECT_SETTINGS_ADVANCED_ROUTE = false;
       this.PROJECT_SETTINGS_NOTIFICATION_ROUTE = false;
+      this.PROJECT_SETTINGS_SECURITY_ROUTE = false;
       this.logger.log('[PRJCT-EDIT-ADD] - is PROJECT_SETTINGS_ROUTE ', this.PROJECT_SETTINGS_ROUTE);
       this.logger.log('[PRJCT-EDIT-ADD] - is PROJECT_SETTINGS_PAYMENTS_ROUTE ', this.PROJECT_SETTINGS_PAYMENTS_ROUTE);
       this.logger.log('[PRJCT-EDIT-ADD] - is PROJECT_SETTINGS_AUTH_ROUTE ', this.PROJECT_SETTINGS_AUTH_ROUTE);
       this.logger.log('[PRJCT-EDIT-ADD] - is PROJECT_SETTINGS_ADVANCED_ROUTE ', this.PROJECT_SETTINGS_ADVANCED_ROUTE);
       this.logger.log('[PRJCT-EDIT-ADD] - is PROJECT_SETTINGS_NOTIFICATION ', this.PROJECT_SETTINGS_NOTIFICATION_ROUTE);
-
+      console.log('[PRJCT-EDIT-ADD] - is PROJECT_SETTINGS_SECURITY_ROUTE ', this.PROJECT_SETTINGS_SECURITY_ROUTE);
       /** THE ACTIVE ROUTE IS /project-settings/payments */
     } else if (
       (currentUrl.indexOf('/project-settings/general') === -1) &&
       (currentUrl.indexOf('/project-settings/payments') !== -1) &&
       (currentUrl.indexOf('/project-settings/auth') === -1) &&
       (currentUrl.indexOf('/project-settings/advanced') === -1) &&
-      (currentUrl.indexOf('/project-settings/notification') === -1)
+      (currentUrl.indexOf('/project-settings/notification') === -1) &&
+      (currentUrl.indexOf('/project-settings/security') === -1) 
 
     ) {
       this.PROJECT_SETTINGS_ROUTE = false;
@@ -621,6 +627,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.PROJECT_SETTINGS_AUTH_ROUTE = false;
       this.PROJECT_SETTINGS_ADVANCED_ROUTE = false;
       this.PROJECT_SETTINGS_NOTIFICATION_ROUTE = false;
+      this.PROJECT_SETTINGS_SECURITY_ROUTE = false;
 
       // this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_ROUTE ', this.PROJECT_SETTINGS_ROUTE);
       // this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_PAYMENTS_ROUTE ', this.PROJECT_SETTINGS_PAYMENTS_ROUTE);
@@ -633,13 +640,15 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       (currentUrl.indexOf('/project-settings/payments') === -1) &&
       (currentUrl.indexOf('/project-settings/auth') !== -1) &&
       (currentUrl.indexOf('/project-settings/advanced') === -1) &&
-      (currentUrl.indexOf('/project-settings/notification') === -1)
+      (currentUrl.indexOf('/project-settings/notification') === -1) &&
+      (currentUrl.indexOf('/project-settings/security') === -1) 
     ) {
       this.PROJECT_SETTINGS_ROUTE = false;
       this.PROJECT_SETTINGS_PAYMENTS_ROUTE = false;
       this.PROJECT_SETTINGS_AUTH_ROUTE = true;
       this.PROJECT_SETTINGS_ADVANCED_ROUTE = false;
       this.PROJECT_SETTINGS_NOTIFICATION_ROUTE = false;
+      this.PROJECT_SETTINGS_SECURITY_ROUTE = false;
       // this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_ROUTE ', this.PROJECT_SETTINGS_ROUTE);
       // this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_PAYMENTS_ROUTE ', this.PROJECT_SETTINGS_PAYMENTS_ROUTE);
       // this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_AUTH_ROUTE ', this.PROJECT_SETTINGS_AUTH_ROUTE);
@@ -651,13 +660,15 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       (currentUrl.indexOf('/project-settings/payments') === -1) &&
       (currentUrl.indexOf('/project-settings/auth') === -1) &&
       (currentUrl.indexOf('/project-settings/advanced') !== -1) &&
-      (currentUrl.indexOf('/project-settings/notification') === -1)
+      (currentUrl.indexOf('/project-settings/notification') === -1) &&
+      (currentUrl.indexOf('/project-settings/security') === -1)
     ) {
       this.PROJECT_SETTINGS_ROUTE = false;
       this.PROJECT_SETTINGS_PAYMENTS_ROUTE = false;
       this.PROJECT_SETTINGS_AUTH_ROUTE = false;
       this.PROJECT_SETTINGS_ADVANCED_ROUTE = true;
       this.PROJECT_SETTINGS_NOTIFICATION_ROUTE = false;
+      this.PROJECT_SETTINGS_SECURITY_ROUTE = false;
       // this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_ROUTE ', this.PROJECT_SETTINGS_ROUTE);
       // this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_PAYMENTS_ROUTE ', this.PROJECT_SETTINGS_PAYMENTS_ROUTE);
       // this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_AUTH_ROUTE ', this.PROJECT_SETTINGS_AUTH_ROUTE);
@@ -669,13 +680,31 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       (currentUrl.indexOf('/project-settings/payments') === -1) &&
       (currentUrl.indexOf('/project-settings/auth') === -1) &&
       (currentUrl.indexOf('/project-settings/advanced') === -1) &&
-      (currentUrl.indexOf('/project-settings/notification') !== -1)
+      (currentUrl.indexOf('/project-settings/notification') !== -1) &&
+      (currentUrl.indexOf('/project-settings/security') === -1)
     ) {
       this.PROJECT_SETTINGS_ROUTE = false;
       this.PROJECT_SETTINGS_PAYMENTS_ROUTE = false;
       this.PROJECT_SETTINGS_AUTH_ROUTE = false;
       this.PROJECT_SETTINGS_ADVANCED_ROUTE = false;
       this.PROJECT_SETTINGS_NOTIFICATION_ROUTE = true;
+      this.PROJECT_SETTINGS_SECURITY_ROUTE = false;
+    }
+
+    else if (
+      (currentUrl.indexOf('/project-settings/general') === -1) &&
+      (currentUrl.indexOf('/project-settings/payments') === -1) &&
+      (currentUrl.indexOf('/project-settings/auth') === -1) &&
+      (currentUrl.indexOf('/project-settings/advanced') === -1) &&
+      (currentUrl.indexOf('/project-settings/notification') === -1) &&
+      (currentUrl.indexOf('/project-settings/security') !== -1)
+    ) {
+      this.PROJECT_SETTINGS_ROUTE = false;
+      this.PROJECT_SETTINGS_PAYMENTS_ROUTE = false;
+      this.PROJECT_SETTINGS_AUTH_ROUTE = false;
+      this.PROJECT_SETTINGS_ADVANCED_ROUTE = false;
+      this.PROJECT_SETTINGS_NOTIFICATION_ROUTE = false;
+      this.PROJECT_SETTINGS_SECURITY_ROUTE = true;
     }
 
   }
@@ -739,6 +768,11 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   goToProjectSettings_Notification() {
     this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_Notification');
     this.router.navigate(['project/' + this.id_project + '/project-settings/notification'])
+  }
+
+  goToProjectSettings_Security() {
+   console.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_Security');
+    this.router.navigate(['project/' + this.id_project + '/project-settings/security'])
   }
 
   goToCustomizeNotificationEmailPage() {
@@ -1562,6 +1596,14 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.logger.error("PRJCT-EDIT-ADD] Error during  ENABLE/DISABLED UNASSIGNED NOTIFICATION updating: ", err)
       this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem')
     })
+  }
+
+  toggleEnableIPrestrictions($event) {
+    this.ip_restrictions_on = $event.target.checked;
+  }
+
+  saveIPranges() {
+    console.log("PRJCT-EDIT-ADD] SAVE IP RANGES - allowedIPranges", this.allowedIP)
   }
 
 

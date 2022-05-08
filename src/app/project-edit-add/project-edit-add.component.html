@@ -1,4 +1,5 @@
-<span class="navbar-brand navbar-brand-sidebar-settings" [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }"
+<span class="navbar-brand navbar-brand-sidebar-settings"
+  [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }"
   [ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
   <!-- <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
     (click)="goBack()">keyboard_arrow_left</i> -->
@@ -55,8 +56,8 @@
             {{ "Pricing.WeWereUnableToAutomaticallyRenewYourSubscription" | translate }}.
             {{ "Pricing.PleaseContactUs" | translate }}
             {{ "Pricing.ToUpdateYourPaymentInformation" | translate }}.
-            <span style="text-decoration: underline; cursor: pointer;" (click)="launchWidget()"> {{'ContactUs' |
-              translate}} </span>
+            <span style="text-decoration: underline; cursor: pointer;" (click)="launchWidget()">
+              {{'ContactUs' | translate}} </span>
           </div>
         </div>
       </div>
@@ -94,6 +95,12 @@
             [ngClass]="{'li-active': PROJECT_SETTINGS_NOTIFICATION_ROUTE, 'border-from-center': PROJECT_SETTINGS_NOTIFICATION_ROUTE === false }">
             <a> {{ "Notification" | translate }}</a>
           </li>
+
+          <li (click)="goToProjectSettings_Security()" class="btn-with-border-effect"
+            [ngClass]="{'li-active': PROJECT_SETTINGS_SECURITY_ROUTE, 'border-from-center': PROJECT_SETTINGS_SECURITY_ROUTE === false }">
+            <a> Security</a>
+          </li>
+
         </ul>
 
         <div *ngIf="PROJECT_SETTINGS_ADVANCED_ROUTE" class="row" style="margin-right: -30px; margin-right: 40px;">
@@ -442,7 +449,7 @@
                             </span>
                           </span>
 
-                     
+
 
                           <!-- -------------------------------------------------------------------------------------  -->
                           <!-- SUBSCRIPTION STATUS - PROFILE TYPE:  FREE   -->
@@ -494,8 +501,8 @@
                     <!-- <button (click)="updateCustomer()">UPDATE CUSTOMER</button> -->
 
                     <!-- <div class="cc-form-wpr"> -->
-                      <!-- <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate> -->
-                        <!-- <input id="cc-number" formControlName="creditCard" name="creditCard" type="tel" ccNumber>
+                    <!-- <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate> -->
+                    <!-- <input id="cc-number" formControlName="creditCard" name="creditCard" type="tel" ccNumber>
                         <span *ngIf="form.controls.creditCard.value?.length > 0">
                           <div *ngIf="form.controls.creditCard.invalid" class="is-danger" translate>
                             invalid creditCard
@@ -512,8 +519,8 @@
                           {{ formErrors.cvc }}
                         </div> -->
 
-                        <!-- the good before to remove -->
-                        <!-- <input id="cc-number" formControlName="creditCard" name="creditCard" type="tel">
+                    <!-- the good before to remove -->
+                    <!-- <input id="cc-number" formControlName="creditCard" name="creditCard" type="tel">
                       
                    
                         <input id="cc-exp-date" formControlName="expirationDate" name="expirationDate" type="tel" ccExp>
@@ -524,8 +531,8 @@
                         <button type="submit" class="btn signin-button">
                           Submit
                         </button> -->
-                      <!-- </form> -->
-                      <!-- form value {{form.value | json }}
+                    <!-- </form> -->
+                    <!-- form value {{form.value | json }}
                       form status: {{ form.status | json }} -->
                     <!-- </div> -->
 
@@ -1363,8 +1370,131 @@
 
                 </span>
 
+
+                <!-- -------------------------------------------------------- -->
+                <!-- Security -->
+                <!-- -------------------------------------------------------- -->
+                <span *ngIf="PROJECT_SETTINGS_SECURITY_ROUTE">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="security-section-title" style="width: calc((100% / 3) + 372px); margin-bottom: 16px;">
+                        You can restrict access to Tiledesk to only those users within a range of IP addresses.
+                        For example, to restrict access to users in your company, add the IP addresses of your comapany.
+                        You can also allow your customers to bypass the restriction
+                      </div>
+
+                    </div>
+                  </div>
+                  <!-- ASSIGNED CONVERSATION -->
+                  <div class="row">
+                    <div class="col-md-6">
+                      <h3 class="card_title__underlined">
+                        <span class="card_title__underline">
+                          Enable IP restrictions
+                        </span>
+                      </h3>
+                    </div>
+
+                    <!-- SWITCH BUTTON -->
+                    <div class="col-md-6">
+                      <h3 class="card-title onoffswitch_container_first_line">
+
+                        <div class="onoffswitch">
+                          <input (change)="toggleEnableIPrestrictions($event)" [checked]="ip_restrictions_on === true"
+                            type="checkbox" name="ip_restrictions_onoffswitch" class="onoffswitch-checkbox"
+                            id="ip_restrictions_onoffswitch">
+                          <label class="onoffswitch-label" for="ip_restrictions_onoffswitch">
+                            <span class="onoffswitch-inner"></span>
+                            <span class="onoffswitch-switch"></span>
+                          </label>
+                        </div>
+                      </h3>
+                    </div>
+
+                    <!-- SUBTITLE -->
+                    <div class="col-md-12">
+                      <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"></div>
+                        <p style="margin-top: -10px;margin-bottom: 2px;">
+                          This will affects:
+                        </p>
+                        <ul>
+                          <li>
+                            Sign in for all Tiledesk products
+                          </li>
+                          <li>
+                            Access to functionality within Support, Guide, Talk and Explore
+                          </li>
+                          <li>
+                            API calls for Support, Guide, Talk and Explore
+                          </li>
+                        </ul>
+                      </div>
+
+
+                      <div class="row" style="margin-top: 40px;">
+                        <div class="col-md-8" style="max-width:645px">
+                          <h3 style="font-size: 16px;
+                          font-weight: 300;
+                          font-family: 'Poppins';
+                          margin-left: 15px;
+                          margin-bottom: 0px; margin-bottom: 3px;">
+                            Allowed IP ranges
+                          </h3>
+
+                          <!-- style="width: calc((100% / 3) + 372px); -->
+                          <div class="security-section-title"  style="margin-bottom: 16px; margin-left: 15px;">
+                            Add the IP ranges that need Tildesk access. Separate multiple IP with spaces.
+                            Use <span style="font-weight: 500;"> n.n.n.n  </span> or<span style="font-weight: 500;"> n.n.n/n </span>  syntax where n is a number or an asterisk (*) wildcard
+
+                            <!-- (ngModelChange)="onProjectIdToDeleteChange($event)" -->
+                            <input style="margin-top: 6px;" [(ngModel)]="allowedIP" 
+                            type="text" placeholder="example: xx.xxx.xxx.xxx" [disabled]="!ip_restrictions_on ">
+                          </div>
+                        </div>
+                      </div>
+
+
+                      <div  class="row">
+                        <div class="col-sm-8">
+                          <div  style="background-color: #fcf8e3;
+                          border: 1px solid #faebcc;
+                          box-shadow: none;
+                          padding: 10px;
+                          margin-left: 15px;
+                          color: rgb(161, 99, 0);">
+                            <span style="display: flex;">
+                              <i class="material-icons" style="vertical-align: middle; display: inline-flex;  color:rgb(161, 99, 0); margin-right: 3px;font-size: 20px;">report_problem
+                              </i>
+                              <span style="vertical-align: middle; display: inline-flex;">
+                                Enabling IP-based access restrictions can break third-party integrations. Allow all external IPs that need to access your account via Tiledesk API.
+                              </span>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+                </span> <!-- ./ security -->
+
+                <!-- <i class="material-icons"
+                style="vertical-align: middle; color:#ec971f; font-size: 12px; padding-left: 8px">
+                report_problem
+              </i> -->
+
               </div>
               <!-- ./ card-content -->
+               <!-- -------------------------------------------------------- -->
+                <!-- Save btn displayed only for the Security  tab -->
+                <!-- -------------------------------------------------------- -->
+              <span *ngIf="PROJECT_SETTINGS_SECURITY_ROUTE">
+                <div class="card-footer" style="border-color: #e8f0f5 !important;">
+
+                  <button class="btn btn-primary btn_edit_advanced_settings" (click)="saveIPranges()"
+                    [disabled]="!ip_restrictions_on">
+                    {{ 'ScriptPage.Save' | translate }}
+                  </button>
+
+                </div>
+              </span>
 
               <!-- -------------------------------------------------------- -->
               <!-- Save btn displayed only for the tab 'Advanced' -->
@@ -1438,7 +1568,7 @@
           {{ "ProjectEditPage.TheProjectWillBeDeleted" | translate }}
         </h4>
 
-      
+
       </div>
       <div class="modal-body" style="min-height: 135px;">
 
@@ -1464,16 +1594,16 @@
             </span>
           </label>
 
-        
+
           <div class="col-sm-10">
             <input class="" [(ngModel)]="project_id_to_delete" (ngModelChange)="onProjectIdToDeleteChange($event)"
               type="text" placeholder="{{ 'ProjectEditPage.ProjectId' | translate }}" [disabled]="isActiveSubscription">
           </div>
           <div class="col-sm-10">
-          <span *ngIf="isActiveSubscription" style="display: block; font-size: 14px; color: #f44336;">
-            {{'CancelAnyActiveSubscriptionsBeforeProceeding' | translate }}.
-          </span>
-        </div>
+            <span *ngIf="isActiveSubscription" style="display: block; font-size: 14px; color: #f44336;">
+              {{'CancelAnyActiveSubscriptionsBeforeProceeding' | translate }}.
+            </span>
+          </div>
 
         </span>
       </div>
@@ -1493,9 +1623,9 @@
   </div>
 </div>
 
-<!-- -----------------------------------------------------------  --> 
+<!-- -----------------------------------------------------------  -->
 <!-- CONFIRM THE CREATION OF THE SHARED SECRET MODAL INFO -->
-<!-- -----------------------------------------------------------  --> 
+<!-- -----------------------------------------------------------  -->
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayConfirmJwtSecretCreationModal}"
   style="background-color: rgba(90,90,90,0.5);">
   <!-- modal-sm -->
@@ -1535,9 +1665,9 @@
   </div>
 </div>
 
-<!-- -----------------------------------------------------------  --> 
+<!-- -----------------------------------------------------------  -->
 <!-- SHARED SECRET GENERATED MODAL INFO -->
-<!-- -----------------------------------------------------------  --> 
+<!-- -----------------------------------------------------------  -->
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayJwtSecretGeneratedModal}"
   style="background-color: rgba(90,90,90,0.5);">
   <div class="modal-dialog" role="document">
@@ -1591,9 +1721,9 @@
   </div>
 </div>
 
-<!-- -----------------------------------------------------------  --> 
+<!-- -----------------------------------------------------------  -->
 <!--  "CONTACT US - LET'S CHAT" MODAL  -->
-<!-- -----------------------------------------------------------  --> 
+<!-- -----------------------------------------------------------  -->
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayContactUsModal}"
   style="background-color: rgba(90,90,90,0.9); z-index: 1051 !important;">
   <div class="modal-dialog" role="document">
@@ -1645,18 +1775,19 @@
 </div>
 
 
-<!-- --------------------------------------------------------------------------------  --> 
+<!-- --------------------------------------------------------------------------------  -->
 <!--  Add Payment Method to customer modal -->
-<!-- --------------------------------------------------------------------------------  --> 
+<!-- --------------------------------------------------------------------------------  -->
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayAddPaymentMethodModal}"
   style="background-color: rgba(90,90,90,0.9);">
   <div class="modal-dialog" role="document">
     <div class="modal-content" style="border-top-left-radius:6px; border-top-right-radius:6px">
       <div class="modal-header" style="padding:4px 16px!important; border-bottom:none!important;">
 
-        <button type="button" class="close" aria-label="Close" (click)="closePaymentMethodModal()" style="margin-top: 16px;">
+        <button type="button" class="close" aria-label="Close" (click)="closePaymentMethodModal()"
+          style="margin-top: 16px;">
           <span aria-hidden="true">
-            
+
             <svg class="tide-icon " width="24" height="24" viewBox="0 0 24 24">
               <path
                 d="M13.357 11.993l10.256 10.295c0.39 0.391 0.39 1.024 0 1.415-0.194 0.195-0.449 0.292-0.704 0.292s-0.51-0.097-0.705-0.292l-10.257-10.295-10.256 10.295c-0.194 0.195-0.449 0.292-0.704 0.292s-0.51-0.097-0.705-0.292c-0.39-0.391-0.39-1.024 0-1.415l10.256-10.295-10.256-10.294c-0.39-0.391-0.39-1.024 0-1.415s1.020-0.391 1.409 0l10.256 10.294 10.256-10.294c0.39-0.391 1.020-0.391 1.41 0 0.389 0.391 0.389 1.024 0 1.415l-10.256 10.294z">
@@ -1680,112 +1811,124 @@
           <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>
             <div class="row">
               <!--   -->
-                <label class="col-sm-12 change-card-label" for="creditCard">{{'CardNumber' | translate }}</label>
-                <div class="col-sm-12" style="position: relative;">
-                  <input placeholder="1234 1234 1234 1234" #ccNumber id="cc-number" formControlName="creditCard" name="creditCard" type="tel" autocomplete="off"  appOnlynumber
-                  (blur)="creditCardNumberSpacing()"
-                  (paste)="onPasteCreditCardNumber($event)"
-                  (keyup)="creditCardNumberSpacing()">
+              <label class="col-sm-12 change-card-label" for="creditCard">{{'CardNumber' | translate }}</label>
+              <div class="col-sm-12" style="position: relative;">
+                <input placeholder="1234 1234 1234 1234" #ccNumber id="cc-number" formControlName="creditCard"
+                  name="creditCard" type="tel" autocomplete="off" appOnlynumber (blur)="creditCardNumberSpacing()"
+                  (paste)="onPasteCreditCardNumber($event)" (keyup)="creditCardNumberSpacing()">
+              </div>
+              <div class="cc-number-field--cc-image-wpr">
+                <!-- ---------------------------------------------------------------------------- -->
+                <!-- card image displayed when the credit card number field is empty  -->
+                <!-- ---------------------------------------------------------------------------- -->
+                <div style="transform: none;">
+                  <span class="cc-number-field--cc-image" *ngIf="form?.get('creditCard')?.value?.length < 7 ">
+                    <img src="assets/img/cc_brand/visa.svg" alt="visa" class="cc-brand-img">
+                  </span>
                 </div>
-                <div class="cc-number-field--cc-image-wpr">
-                  <!-- ---------------------------------------------------------------------------- -->
-                  <!-- card image displayed when the credit card number field is empty  -->
-                  <!-- ---------------------------------------------------------------------------- -->
-                  <div style="transform: none;">
-                    <span class="cc-number-field--cc-image" *ngIf="form?.get('creditCard')?.value?.length < 7 ">
-                      <img src="assets/img/cc_brand/visa.svg" alt="visa" class="cc-brand-img">
-                    </span>
-                  </div>
-                  <div style="transform: none;">
-                    <span class="cc-number-field--cc-image"  *ngIf="form?.get('creditCard')?.value?.length < 7">
-                      <img src="assets/img/cc_brand/mastercard.svg" alt="mastercard" class="cc-brand-img">
-                    </span>
-                  </div>
-                  <div style="transform: none;">
-                    <span class="cc-number-field--cc-image"  *ngIf="form?.get('creditCard')?.value?.length < 7">
-                      <img src="assets/img/cc_brand/amex.svg" alt="amex" class="cc-brand-img">
-                    </span>
-                  </div>
-                  <div style="transform: none;">
-                    <span class="cc-number-field--cc-image"  *ngIf="form?.get('creditCard')?.value?.length < 7">
-                      <img src="assets/img/cc_brand/unionpay.svg" alt="unionpay" class="cc-brand-img">
-                    </span>
-                  </div>
+                <div style="transform: none;">
+                  <span class="cc-number-field--cc-image" *ngIf="form?.get('creditCard')?.value?.length < 7">
+                    <img src="assets/img/cc_brand/mastercard.svg" alt="mastercard" class="cc-brand-img">
+                  </span>
+                </div>
+                <div style="transform: none;">
+                  <span class="cc-number-field--cc-image" *ngIf="form?.get('creditCard')?.value?.length < 7">
+                    <img src="assets/img/cc_brand/amex.svg" alt="amex" class="cc-brand-img">
+                  </span>
+                </div>
+                <div style="transform: none;">
+                  <span class="cc-number-field--cc-image" *ngIf="form?.get('creditCard')?.value?.length < 7">
+                    <img src="assets/img/cc_brand/unionpay.svg" alt="unionpay" class="cc-brand-img">
+                  </span>
+                </div>
 
-                  <!-- ---------------------------------------------------------------------------- -->
-                  <!-- card image displayed when the credit card number field is fullfilled  -->
-                  <!-- ---------------------------------------------------------------------------- -->
-                  <div style="transform: none;">
-                    <span class="cc-number-field--cc-image" *ngIf="form?.get('creditCard')?.value?.length > 7 && card_brand === 'visa'">
-                      <img src="assets/img/cc_brand/visa.svg" alt="visa" class="cc-brand-img">
-                    </span>
-                  </div>
-                  <div style="transform: none;">
-                    <span class="cc-number-field--cc-image"  *ngIf="form?.get('creditCard')?.value?.length > 7 && card_brand === 'mastercard'">
-                      <img src="assets/img/cc_brand/mastercard.svg" alt="mastercard" class="cc-brand-img">
-                    </span>
-                  </div>
-                  <div style="transform: none;">
-                    <span class="cc-number-field--cc-image"  *ngIf="form?.get('creditCard')?.value?.length > 7 && card_brand === 'amex'">
-                      <img src="assets/img/cc_brand/amex.svg" alt="amex" class="cc-brand-img">
-                    </span>
-                  </div>
-                  <div style="transform: none;">
-                    <span class="cc-number-field--cc-image"  *ngIf="form?.get('creditCard')?.value?.length > 7 && card_brand === 'unionpay'">
-                      <img src="assets/img/cc_brand/unionpay.svg" alt="unionpay" class="cc-brand-img">
-                    </span>
-                  </div>
-                  <div style="transform: none;">
-                    <span class="cc-number-field--cc-image"  *ngIf="form?.get('creditCard')?.value?.length > 7 && card_brand === 'discover'">
-                      <img src="assets/img/cc_brand/discover.svg" alt="discover" class="cc-brand-img">
-                    </span>
-                  </div>
-                  <div style="transform: none;">
-                    <span class="cc-number-field--cc-image"  *ngIf="form?.get('creditCard')?.value?.length > 7 && card_brand === 'diners'">
-                      <img src="assets/img/cc_brand/diners.svg" alt="diners" class="cc-brand-img">
-                    </span>
-                  </div>
-                  <div style="transform: none;">
-                    <span class="cc-number-field--cc-image"  *ngIf="form?.get('creditCard')?.value?.length > 7 && card_brand === 'jcb'">
-                      <img src="assets/img/cc_brand/jcb.svg" alt="jcb" class="cc-brand-img">
-                    </span>
-                  </div>
-                  <div style="transform: none;">
-                    <span class="cc-number-field--cc-image"  *ngIf="form?.get('creditCard')?.value?.length > 7 && card_brand === 'unknown'">
-                      <img src="assets/img/cc_brand/unknown.svg" alt="jcb" class="cc-brand-img">
-                    </span>
-                  </div>
+                <!-- ---------------------------------------------------------------------------- -->
+                <!-- card image displayed when the credit card number field is fullfilled  -->
+                <!-- ---------------------------------------------------------------------------- -->
+                <div style="transform: none;">
+                  <span class="cc-number-field--cc-image"
+                    *ngIf="form?.get('creditCard')?.value?.length > 7 && card_brand === 'visa'">
+                    <img src="assets/img/cc_brand/visa.svg" alt="visa" class="cc-brand-img">
+                  </span>
                 </div>
+                <div style="transform: none;">
+                  <span class="cc-number-field--cc-image"
+                    *ngIf="form?.get('creditCard')?.value?.length > 7 && card_brand === 'mastercard'">
+                    <img src="assets/img/cc_brand/mastercard.svg" alt="mastercard" class="cc-brand-img">
+                  </span>
+                </div>
+                <div style="transform: none;">
+                  <span class="cc-number-field--cc-image"
+                    *ngIf="form?.get('creditCard')?.value?.length > 7 && card_brand === 'amex'">
+                    <img src="assets/img/cc_brand/amex.svg" alt="amex" class="cc-brand-img">
+                  </span>
+                </div>
+                <div style="transform: none;">
+                  <span class="cc-number-field--cc-image"
+                    *ngIf="form?.get('creditCard')?.value?.length > 7 && card_brand === 'unionpay'">
+                    <img src="assets/img/cc_brand/unionpay.svg" alt="unionpay" class="cc-brand-img">
+                  </span>
+                </div>
+                <div style="transform: none;">
+                  <span class="cc-number-field--cc-image"
+                    *ngIf="form?.get('creditCard')?.value?.length > 7 && card_brand === 'discover'">
+                    <img src="assets/img/cc_brand/discover.svg" alt="discover" class="cc-brand-img">
+                  </span>
+                </div>
+                <div style="transform: none;">
+                  <span class="cc-number-field--cc-image"
+                    *ngIf="form?.get('creditCard')?.value?.length > 7 && card_brand === 'diners'">
+                    <img src="assets/img/cc_brand/diners.svg" alt="diners" class="cc-brand-img">
+                  </span>
+                </div>
+                <div style="transform: none;">
+                  <span class="cc-number-field--cc-image"
+                    *ngIf="form?.get('creditCard')?.value?.length > 7 && card_brand === 'jcb'">
+                    <img src="assets/img/cc_brand/jcb.svg" alt="jcb" class="cc-brand-img">
+                  </span>
+                </div>
+                <div style="transform: none;">
+                  <span class="cc-number-field--cc-image"
+                    *ngIf="form?.get('creditCard')?.value?.length > 7 && card_brand === 'unknown'">
+                    <img src="assets/img/cc_brand/unknown.svg" alt="jcb" class="cc-brand-img">
+                  </span>
+                </div>
+              </div>
             </div>
 
             <div class="row">
               <div class="col-sm-8">
-              <label class="change-card-label" for="expirationDate">{{'ExpirationDate' | translate }}</label>
-              <input  #ccExpdate id="cc-exp-date" placeholder="MM / YY" formControlName="expirationDate" name="expirationDate" type="tel" autocomplete="off" ccExp minlength="7" maxlength="7">
-            </div>
+                <label class="change-card-label" for="expirationDate">{{'ExpirationDate' | translate }}</label>
+                <input #ccExpdate id="cc-exp-date" placeholder="MM / YY" formControlName="expirationDate"
+                  name="expirationDate" type="tel" autocomplete="off" ccExp minlength="7" maxlength="7">
+              </div>
               <div class="col-sm-4">
-                <label class="change-card-label"  for="cvc">CVC</label>
-                <input id="cc-cvc" formControlName="cvc" name="cvc" type="tel" autocomplete="off" ccCvc appOnlynumber minlength="{{CVC_LENGHT}}" maxlength="{{CVC_LENGHT}}">
+                <label class="change-card-label" for="cvc">CVC</label>
+                <input id="cc-cvc" formControlName="cvc" name="cvc" type="tel" autocomplete="off" ccCvc appOnlynumber
+                  minlength="{{CVC_LENGHT}}" maxlength="{{CVC_LENGHT}}">
               </div>
             </div>
             <div class="row" style="min-height: 16px; margin-top: 4px;">
               <!-- margin-top: 6px; min-height: 20px;-->
               <div class="col-sm-12" style="text-align: center;">
-               <span *ngIf="CARD_HAS_ERROR === true && SPINNER_IN_ADD_CARD_MODAL === false" style="color: #f44336">
-                {{ credit_card_error_msg }}
-              </span> 
-              <span *ngIf="!CARD_HAS_ERROR && SPINNER_IN_ADD_CARD_MODAL === true" class="change-card-label">
-                {{'Processing' | translate }}
-              </span> 
+                <span *ngIf="CARD_HAS_ERROR === true && SPINNER_IN_ADD_CARD_MODAL === false" style="color: #f44336">
+                  {{ credit_card_error_msg }}
+                </span>
+                <span *ngIf="!CARD_HAS_ERROR && SPINNER_IN_ADD_CARD_MODAL === true" class="change-card-label">
+                  {{'Processing' | translate }}
+                </span>
               </div>
             </div>
             <div class="row">
               <div class="col-sm-12" style="text-align: center;margin-top: 12px;margin-bottom: 3px;">
-              
-                  <button class="close-add-card-btn" (click)="closePaymentMethodModal()" [disabled]="!CARD_HAS_ERROR && SPINNER_IN_ADD_CARD_MODAL === true">
-                    {{'Cancel' | translate}}
-                  </button>
-                <button class="add-card-btn" type="submit" [disabled]="!form.valid || (!CARD_HAS_ERROR && SPINNER_IN_ADD_CARD_MODAL === true) " [ngClass]="{'add-card-btn-disabled': !form.valid || (!CARD_HAS_ERROR && SPINNER_IN_ADD_CARD_MODAL === true)}">
+
+                <button class="close-add-card-btn" (click)="closePaymentMethodModal()"
+                  [disabled]="!CARD_HAS_ERROR && SPINNER_IN_ADD_CARD_MODAL === true">
+                  {{'Cancel' | translate}}
+                </button>
+                <button class="add-card-btn" type="submit"
+                  [disabled]="!form.valid || (!CARD_HAS_ERROR && SPINNER_IN_ADD_CARD_MODAL === true) "
+                  [ngClass]="{'add-card-btn-disabled': !form.valid || (!CARD_HAS_ERROR && SPINNER_IN_ADD_CARD_MODAL === true)}">
                   {{'ChangeCard' | translate}}
                 </button>
               </div>
@@ -1796,7 +1939,8 @@
         </div>
 
       </div> <!-- ./ modal-body of the form -->
-      <div class="modal-body" style="padding-right: 15px;padding-top:0px;padding-bottom: 15px;" *ngIf="DISPLAY_ADD_CARD_COMPLETED === true">
+      <div class="modal-body" style="padding-right: 15px;padding-top:0px;padding-bottom: 15px;"
+        *ngIf="DISPLAY_ADD_CARD_COMPLETED === true">
         <div class="success-checkmark" style="top:5px">
           <div class="check-icon">
             <span class="success-icon-line success-line-tip"></span>
@@ -1812,16 +1956,16 @@
 
         <div class="row">
           <div class="col-sm-12" style="text-align: center;margin-top: 10px;">
-              <button class="add-card-btn" (click)="closePaymentMethodModal()" style="margin-left: 0px;">
-               {{ "UserProfile.Continue" | translate }}
-              </button>
+            <button class="add-card-btn" (click)="closePaymentMethodModal()" style="margin-left: 0px;">
+              {{ "UserProfile.Continue" | translate }}
+            </button>
           </div>
         </div>
       </div>
 
       <div class="modal-footer" style="margin-top: 0px; background-color: #fff; border-top:none">
-     
-        
+
+
       </div>
     </div>
   </div>
