@@ -675,11 +675,12 @@
                         [ngClass]="{'requester_is_online' : REQUESTER_IS_ONLINE}">
                       </div> -->
                         </span>
+                        <!-- (mouseover)="displayEditButton()"
+                        (mouseout)="hideEditButton()" (click)="openDropDown()" -->
 
-                        <div class="contact_info_in_right-sidebar"
+                        <div class="contact_info_in_right-sidebar" (click)="openDropDown()"
                           [ngClass]="{'contact_info_in_right-sidebar-verified':REQUESTER_IS_VERIFIED === true }">
-                          <div class="contact-fullname-in-right-sidebar" (mouseover)="displayEditButton()"
-                            (mouseout)="hideEditButton()" (click)="openDropDown()">
+                          <div class="contact-fullname-in-right-sidebar" >
                             <span *ngIf="request?.lead?.fullname">
                               {{request?.lead?.fullname}}
                             </span>
@@ -688,8 +689,11 @@
                             </span>
                           </div>
                         </div>
-                        <div *ngIf="DISPLAY_EDIT_FULLNAME_ICON" class="edit-icon-wpr"
-                          style="float: right;margin-top: -19px;">
+                        <!-- (mouseover)="displayEditButton()" -->
+                        <!-- (mouseout)="hideEditButton()" (click)="openDropDown()" -->
+                        <!-- *ngIf="DISPLAY_EDIT_FULLNAME_ICON" -->
+                        <div class="edit-icon-wpr" (click)="openDropDown()"
+                          style="float: right;margin-top: -19px;" >
                           <i class="material-icons" style="font-size: 16px;color: rgb(139,153,174);margin-right: 3px;">
                             edit
                           </i>
@@ -718,7 +722,8 @@
                                     Cancel
                                   </button>
 
-                                  <button type="submit" class="btn btn-secondary  dropdown-action--btn dropdown-done-action--btn" (click)="saveContactFullName()">
+                                  <button type="submit" class="btn btn-secondary  dropdown-action--btn dropdown-done-action--btn" 
+                                  (click)="saveContactFullName()" [disabled]="!contactNewFirstName || contactNewFirstName.length > 1">
                                     Done
                                   </button>
                                   

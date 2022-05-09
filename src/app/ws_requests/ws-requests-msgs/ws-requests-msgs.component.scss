@@ -2167,6 +2167,13 @@ span .conv-svg-icon {
   background-color: #e4e6eb;
   border-radius: 4px;
 }
+.contact_info_in_right-sidebar:hover~.edit-icon-wpr{ 
+  display: block;
+}
+
+.edit-icon-wpr {
+  display: none;
+}
 
 .dropdown__menu {
   left: 6px;
