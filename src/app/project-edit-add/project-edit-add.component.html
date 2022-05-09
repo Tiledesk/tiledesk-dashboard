@@ -188,7 +188,7 @@
                             class="input" type="text" placeholder="Nome Progetto"
                             style="border-top-right-radius: 0px; border-bottom-right-radius: 0px">
                           <span class="input-group-btn" style="padding-right: 0px;padding-left: 0px;">
-                            <button class="btn btn-primary" (click)="edit()" [disabled]="DISABLE_UPDATE_BTN === true"
+                            <button id="update-project-name" class="btn btn-primary" (click)="edit()" [disabled]="DISABLE_UPDATE_BTN === true"
                               style="padding-bottom: 9px; margin-bottom: 9px; padding-top: 10px; border-top-right-radius: 5px; border-bottom-right-radius: 5px">
                               {{ "ProjectEditPage.Update" | translate }}
                             </button>
@@ -1421,12 +1421,12 @@
                           <li>
                             Sign in for all Tiledesk products
                           </li>
-                          <li>
+                          <!-- <li>
                             Access to functionality within Support, Guide, Talk and Explore
                           </li>
                           <li>
                             API calls for Support, Guide, Talk and Explore
-                          </li>
+                          </li> -->
                         </ul>
                       </div>
 
@@ -1443,12 +1443,12 @@
 
                           <!-- style="width: calc((100% / 3) + 372px); -->
                           <div class="security-section-title"  style="margin-bottom: 16px; margin-left: 15px;">
-                            Add the IP ranges that need Tildesk access. Separate multiple IP with spaces.
+                            Add the IP ranges that need Tildesk access. Separate multiple IP with comma.
                             Use <span style="font-weight: 500;"> n.n.n.n  </span> or<span style="font-weight: 500;"> n.n.n/n </span>  syntax where n is a number or an asterisk (*) wildcard
 
-                            <!-- (ngModelChange)="onProjectIdToDeleteChange($event)" -->
-                            <input style="margin-top: 6px;" [(ngModel)]="allowedIP" 
-                            type="text" placeholder="example: xx.xxx.xxx.xxx" [disabled]="!ip_restrictions_on ">
+                            <!--[disabled]="!ip_restrictions_on" -->
+                            <input style="margin-top: 6px;" [(ngModel)]="allowedIPs" (ngModelChange)="allowedIPsChanged($event)" 
+                            type="text" placeholder="example: xx.xxx.xxx.xxx, xx.xxx.xxx.xxx" [disabled]="!ip_restrictions_on">
                           </div>
                         </div>
                       </div>
@@ -1487,9 +1487,8 @@
                 <!-- -------------------------------------------------------- -->
               <span *ngIf="PROJECT_SETTINGS_SECURITY_ROUTE">
                 <div class="card-footer" style="border-color: #e8f0f5 !important;">
-
-                  <button class="btn btn-primary btn_edit_advanced_settings" (click)="saveIPranges()"
-                    [disabled]="!ip_restrictions_on">
+                  <!-- [disabled]="!allowedIPs" -->
+                  <button class="btn btn-primary btn_edit_advanced_settings" (click)="saveIPranges()" >
                     {{ 'ScriptPage.Save' | translate }}
                   </button>
 

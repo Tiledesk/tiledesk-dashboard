@@ -451,6 +451,28 @@ export class ProjectService {
   }
 
 
+  public addAllowedIPranges(id: string , ipFilterEnabled: boolean, ipFilterArray: any) {
+
+    let url = this.PROJECTS_URL + id;
+
+    this.logger.log('[PROJECT-SERV] - ADD ALLOWED IP RANGES - PUT URL ', url);
+
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+
+    const body = { 'ipFilterEnabled': ipFilterEnabled, 'ipFilter': ipFilterArray };
+
+    this.logger.log('[PROJECT-SERV] - ADD ALLOWED IP RANGES - PUT BODY ', body);
+
+    return this.http
+      .put(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+  }
+
+
 
   // --------------------------------
   // UPDATE PROJECT ADVANCED SETTINGS

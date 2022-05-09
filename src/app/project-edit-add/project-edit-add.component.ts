@@ -180,8 +180,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   CVC_LENGHT: number;
   DISPLAY_ADD_CARD_COMPLETED: boolean = false;
   no_default_payment_method_id_array: Array<string>
-  isActiveSubscription : boolean = false;
-  isChromeVerGreaterThan100: boolean 
+  isActiveSubscription: boolean = false;
+  isChromeVerGreaterThan100: boolean
   formErrors: FormErrors = {
     'creditCard': '',
     'expirationDate': '',
@@ -202,7 +202,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     },
 
   };
-  allowedIP:any
+  allowedIPs: any
   /**
    * 
    * @param projectService 
@@ -265,11 +265,11 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
 
   getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
-     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-    //  console.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+      //  console.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
-   } 
+  }
 
   buildCreditCardForm() {
 
@@ -595,8 +595,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       (currentUrl.indexOf('/project-settings/auth') === -1) &&
       (currentUrl.indexOf('/project-settings/advanced') === -1) &&
       (currentUrl.indexOf('/project-settings/notification') === -1) &&
-      (currentUrl.indexOf('/project-settings/security') === -1) 
-      
+      (currentUrl.indexOf('/project-settings/security') === -1)
+
     ) {
       this.logger.log('%ProjectEditAddComponent router.url', this.router.url);
 
@@ -619,7 +619,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       (currentUrl.indexOf('/project-settings/auth') === -1) &&
       (currentUrl.indexOf('/project-settings/advanced') === -1) &&
       (currentUrl.indexOf('/project-settings/notification') === -1) &&
-      (currentUrl.indexOf('/project-settings/security') === -1) 
+      (currentUrl.indexOf('/project-settings/security') === -1)
 
     ) {
       this.PROJECT_SETTINGS_ROUTE = false;
@@ -641,7 +641,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       (currentUrl.indexOf('/project-settings/auth') !== -1) &&
       (currentUrl.indexOf('/project-settings/advanced') === -1) &&
       (currentUrl.indexOf('/project-settings/notification') === -1) &&
-      (currentUrl.indexOf('/project-settings/security') === -1) 
+      (currentUrl.indexOf('/project-settings/security') === -1)
     ) {
       this.PROJECT_SETTINGS_ROUTE = false;
       this.PROJECT_SETTINGS_PAYMENTS_ROUTE = false;
@@ -771,12 +771,12 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
 
   goToProjectSettings_Security() {
-   console.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_Security');
+    console.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_Security');
     this.router.navigate(['project/' + this.id_project + '/project-settings/security'])
   }
 
   goToCustomizeNotificationEmailPage() {
-    
+
     this.logger.log('goToCustomizeNotificationEmailPage profile_name ', this.profile_name)
     if (this.profile_name === 'enterprise') {
       if (this.USER_ROLE === 'owner') {
@@ -1394,12 +1394,23 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
    */
   getProjectById() {
     this.projectService.getProjectById(this.id_project).subscribe((project: any) => {
-      this.logger.log('[PRJCT-EDIT-ADD] - GET PROJECT BY ID - PROJECT OBJECT: ', project);
+      // console.log('[PRJCT-EDIT-ADD] - GET PROJECT BY ID - PROJECT OBJECT: ', project);
 
       if (project) {
         this.projectName_toUpdate = project.name;
         this.logger.log('[PRJCT-EDIT-ADD] - PROJECT NAME TO UPDATE: ', this.projectName_toUpdate);
 
+        if (project.ipFilter) {
+          let IP_filterArrayToString = project.ipFilter.toString()
+          // console.log('[PRJCT-EDIT-ADD] - IP FILTER ARRAY : ', IP_filterArrayToString);
+          let IP_filterArrayToStringSpaced = IP_filterArrayToString.replace(/,/g, ', ');
+          // console.log('[PRJCT-EDIT-ADD] - IP FILTER ARRAY : ', IP_filterArrayToStringSpaced);
+          this.allowedIPs = IP_filterArrayToStringSpaced
+        }
+
+        if (project.ipFilterEnabled) {
+          this.ip_restrictions_on = project.ipFilterEnabled
+        }
         // used in onProjectNameChange to enable / disable the 'update project name' btn
         this.project_name = project.name;
 
@@ -1602,9 +1613,89 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     this.ip_restrictions_on = $event.target.checked;
   }
 
-  saveIPranges() {
-    console.log("PRJCT-EDIT-ADD] SAVE IP RANGES - allowedIPranges", this.allowedIP)
+  allowedIPsChanged($event) {
+    // console.log("[PRJCT-EDIT-ADD] allowedIPsChanged $event ", $event)
   }
+
+  saveIPranges() {
+    this.logger.log("[PRJCT-EDIT-ADD] SAVE IP RANGES - id_project", this.id_project)
+    this.logger.log("[PRJCT-EDIT-ADD] SAVE IP RANGES - allowedIPranges", this.allowedIPs)
+
+    console.log("[PRJCT-EDIT-ADD] SAVE IP RANGES - ip_restrictions_on", this.ip_restrictions_on)
+   let allowedIPsArray = []
+    if (this.allowedIPs) {
+      const allowedIPsTrimmed = this.allowedIPs.replace(/\s/g, '');
+      this.logger.log("[PRJCT-EDIT-ADD] SAVE IP RANGES - allowedIPranges allowedIPsTrimmed ", allowedIPsTrimmed)
+       allowedIPsArray = allowedIPsTrimmed.split(',')
+       this.logger.log("[PRJCT-EDIT-ADD] SAVE IP RANGES - allowedIPranges split ", allowedIPsArray)
+      // if (allowedIPsArray.length === 0) {
+      //   console.log("[PRJCT-EDIT-ADD] SAVE IP RANGES - allowedIPranges is empty ")
+      // }
+    } else {
+      this.logger.log("[PRJCT-EDIT-ADD] SAVE IP RANGES - allowedIPs is empty ")
+      this.ip_restrictions_on = false;
+    }
+
+
+    if (this.ip_restrictions_on && allowedIPsArray.length > 0) {
+      swal({
+        title: "Are you sure?",
+        text: "Adding IP-based access restrictions can break Tiledesk access!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      })
+        .then((willAddIpRanges) => {
+          if (willAddIpRanges) {
+
+            console.log('[PRJCT-EDIT-ADD] swal willAddIpRanges', willAddIpRanges)
+            // this.id_project,
+
+            this.projectService.addAllowedIPranges(this.id_project, this.ip_restrictions_on, allowedIPsArray).subscribe((res: any) => {
+              this.logger.log('[PRJCT-EDIT-ADD] addAllowedIPranges res ', res)
+
+            }, (error) => {
+              this.logger.error('[PRJCT-EDIT-ADD] addAllowedIPranges - ERROR ', error);
+
+              swal("Sorry, an error occurred saving IPs addresses", {
+                icon: "error",
+              });
+
+            }, () => {
+              this.logger.log('[PRJCT-EDIT-ADD] addAllowedIPranges * COMPLETE *');
+
+              swal("IP addresses successfully added", {
+                icon: "success",
+              }).then((okpressed) => {
+
+              });
+
+            });
+
+
+            // swal("Poof! Your imaginary file has been deleted!", {
+            //   icon: "success",
+            // });
+          } else {
+            // swal("Your imaginary file is safe!");
+          }
+        });
+    } else if (this.ip_restrictions_on === false || allowedIPsArray.length === 0) {
+      
+      this.projectService.addAllowedIPranges(this.id_project, this.ip_restrictions_on, allowedIPsArray).subscribe((res: any) => {
+        this.logger.log('[PRJCT-EDIT-ADD] addAllowedIPranges res ', res)
+
+      }, (error) => {
+        this.logger.error('[PRJCT-EDIT-ADD] addAllowedIPranges - ERROR ', error);
+      }, () => {
+        this.logger.log('[PRJCT-EDIT-ADD] addAllowedIPranges * COMPLETE *');
+
+
+      });
+    }
+  }
+
+
 
 
   onProjectNameChange(event) {
@@ -1876,26 +1967,26 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   deleteProject() {
     // if (this.prjct_profile_type !== 'payment') {
-      this.SHOW_CIRCULAR_SPINNER = true;
-      this.logger.log('[PRJCT-EDIT-ADD] - deleteProject ID PROJECT TO DELETE ', this.project_id_to_delete);
-      this.logger.log('[PRJCT-EDIT-ADD] - deleteProject ID PROJECT ', this.id_project);
+    this.SHOW_CIRCULAR_SPINNER = true;
+    this.logger.log('[PRJCT-EDIT-ADD] - deleteProject ID PROJECT TO DELETE ', this.project_id_to_delete);
+    this.logger.log('[PRJCT-EDIT-ADD] - deleteProject ID PROJECT ', this.id_project);
 
-      this.projectService.deleteProject(this.id_project).subscribe((data) => {
-        this.logger.log('[PRJCT-EDIT-ADD] - deleteProject RES ', data);
+    this.projectService.deleteProject(this.id_project).subscribe((data) => {
+      this.logger.log('[PRJCT-EDIT-ADD] - deleteProject RES ', data);
 
-      }, (error) => {
+    }, (error) => {
+      this.SHOW_CIRCULAR_SPINNER = false;
+      this.logger.error('[PRJCT-EDIT-ADD] - deleteProject - ERROR ', error);
+      this.notify.showWidgetStyleUpdateNotification(this.deleteErrorMsg, 4, 'report_problem');
+    }, () => {
+      this.logger.log('[PRJCT-EDIT-ADD] - deleteProject * COMPLETE *');
+
+      setTimeout(() => {
         this.SHOW_CIRCULAR_SPINNER = false;
-        this.logger.error('[PRJCT-EDIT-ADD] - deleteProject - ERROR ', error);
-        this.notify.showWidgetStyleUpdateNotification(this.deleteErrorMsg, 4, 'report_problem');
-      }, () => {
-        this.logger.log('[PRJCT-EDIT-ADD] - deleteProject * COMPLETE *');
-
-        setTimeout(() => {
-          this.SHOW_CIRCULAR_SPINNER = false;
-          this.notify.showNotificationChangeProject(this.deleteSuccessMsg, 2, 'done');
-          this.router.navigate(['/projects']);
-        }, 1500);
-      });
+        this.notify.showNotificationChangeProject(this.deleteSuccessMsg, 2, 'done');
+        this.router.navigate(['/projects']);
+      }, 1500);
+    });
     // } else {
     //   console.log('[PRJCT-EDIT-ADD] - deleteProject > project profile type' , this.prjct_profile_type );
     // }
