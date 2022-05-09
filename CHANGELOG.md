@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.33-rc3
+- Adds the ability to restrict access to only those users within an IP address range
+
 ### 2.2.33-rc2
 - Change the URL of the environment variable "CHAT_BASE_URL" from absolute to relative
 
