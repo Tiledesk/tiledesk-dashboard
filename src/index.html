@@ -215,6 +215,93 @@
   });
 </script> -->
 
+  <!-- ---------------------------------------------------- -->
+  <!-- Disables the creation of a new project -->
+  <!-- ---------------------------------------------------- -->
+  <!-- <script>
+    var href = document.location.href;
+    console.log('Disable Creation of a new project href ', href)
+    if (href.indexOf('intelcia') > -1) {
+      console.log('Disable Creation href contains intelcia', href)
+    } else {
+      // var oldHref = document.location.href;
+      console.log('Disable Creation href NOT contains intelcia', href)
+      var navbar_createprjct_btn = ''
+      var projects_list_createprjct_card = ''
+
+      window.onload = function () {
+
+        // var navbard = document.getElementById("navbar_dropdown")
+
+        disable_navbar_create_project_btn()
+        // disable_projects_list_create_project_card(oldHref)
+        disable_projects_list_create_project_card(href)
+
+        var
+          bodyList = document.querySelector("body")
+
+          , observer = new MutationObserver(function (mutations) {
+
+            mutations.forEach(function (mutation) {
+
+
+              if (!navbar_createprjct_btn) {
+                console.log('DUMMY SCRIPT navbar_createprjct_btn is null', navbar_createprjct_btn)
+                disable_navbar_create_project_btn()
+              }
+
+              // disable_projects_list_create_project_card(oldHref)
+              disable_projects_list_create_project_card(href)
+
+            });
+          });
+
+        var config = {
+          childList: true,
+          subtree: true
+        };
+
+        observer.observe(bodyList, config);
+      };
+
+      function disable_navbar_create_project_btn() {
+        navbar_createprjct_btn = document.getElementById("navbar_create_prjct");
+        console.log('DUMMY SCRIPT navbar_createprjct_btn', navbar_createprjct_btn);
+        if (navbar_createprjct_btn) {
+          //  navbar_createprjct_btn.setAttribute("class", "disable-dropdown-menu-btn");
+          var btn_new_class = "disable-dropdown-menu-btn";
+
+          var btn_class_array = navbar_createprjct_btn.className.split(" ");
+          if (btn_class_array.indexOf(btn_new_class) == -1) {
+            navbar_createprjct_btn.className += " " + btn_new_class;
+          }
+        }
+      }
+
+
+      function disable_projects_list_create_project_card(url) {
+        var lastURLSegment = url.substr(url.lastIndexOf('/') + 1);
+        console.log('disable_projects_list_create_project_card ', url)
+        if (lastURLSegment == 'projects') {
+          console.log('DUMMY SCRIPT disable_projects_list_create_project_card lastURLSegment ', lastURLSegment);
+
+          projects_list_createprjct_card = document.getElementById("create-prjct-card");
+          console.log('DUMMY SCRIPT projects_list_createprjct_card', projects_list_createprjct_card);
+          if (projects_list_createprjct_card) {
+
+            var card_new_class = "disabled-card-add-project";
+
+            var card_class_array = projects_list_createprjct_card.className.split(" ");
+            if (card_class_array.indexOf(card_new_class) == -1) {
+              projects_list_createprjct_card.className += " " + card_new_class;
+            }
+          }
+        }
+
+      }
+    }
+  </script> -->
+
 
 </head>
 
