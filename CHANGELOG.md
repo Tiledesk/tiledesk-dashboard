@@ -3,6 +3,11 @@
 
 ### 2.2.33-rc5
 - Fixes the bug: the drop-down menu for project selection goes under the "bottom navigation bar"
+- Allows agents to use the "Monitor" page
+- Fixes the bug: the dashboard language does not match the icon indicating the language in which the dashboard should be translated
+- Fixes the bug: in the teammate drawer if the full name is too long it overlaps the email
+- Fixes the bug: in the teammate drawer if the email is too long it exceeds the width of the drawer
+- Adds the ability in the left sidebar " conversation info" displayed in the chat to change the requester's full name and email on the fly
 
 ### 2.2.33-rc4
 - Adds script
