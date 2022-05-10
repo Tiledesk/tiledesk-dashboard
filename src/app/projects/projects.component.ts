@@ -146,12 +146,12 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
 
         const stored_preferred_lang = localStorage.getItem(this.currentUserId + '_lang')
-
+         console.log('[PROJECTS] stored_preferred_lang ', stored_preferred_lang)
         if (stored_preferred_lang) {
           this.dsbrd_lang = stored_preferred_lang;
           this.getLangTranslation(this.dsbrd_lang)
           this.flag_url = "assets/img/language_flag/" + stored_preferred_lang + ".png"
-
+          this.translate.use(this.dsbrd_lang);
           // console.log('[PROJECTS] flag_url (from stored_preferred_lang) ', this.flag_url)
 
           // console.log('[PROJECTS] stored_preferred_lang ', stored_preferred_lang)
@@ -159,9 +159,9 @@ export class ProjectsComponent implements OnInit, OnDestroy {
           this.browserLang = this.translate.getBrowserLang();
           this.dsbrd_lang = this.browserLang;
           this.getLangTranslation(this.dsbrd_lang)
-          // console.log('[PROJECTS] - browser_lang ', this.browserLang)
+          console.log('[PROJECTS] - browser_lang ', this.browserLang)
           this.flag_url = "assets/img/language_flag/" + this.browserLang + ".png"
-
+          this.translate.use(this.dsbrd_lang);
           // console.log('[PROJECTS] flag_url (from browser_lang) ', this.flag_url)
         }
 
