@@ -380,7 +380,6 @@ $f21blue: #039be5;
   padding-left: 0px;
   display: flex;
   flex-grow: 1;
-  z-index: 1049;
 }
 
 .bottom-nav li {
@@ -391,6 +390,12 @@ $f21blue: #039be5;
   display: block;
   height: 52px;
   cursor: pointer;
+}
+
+@media (max-width: 991px) {
+  .bottom-nav li { 
+    z-index: 1049
+  }
 }
 
 .bottom-nav li a {
