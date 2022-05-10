@@ -540,6 +540,7 @@ input[type="text"] {
 .disabled-card-add-project {
   pointer-events: none;
   opacity: 0.6;
+  cursor: not-allowed;
 }
 
 // .loading {
