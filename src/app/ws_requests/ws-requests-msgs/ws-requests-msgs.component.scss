@@ -970,9 +970,6 @@ span .conv-svg-icon {
   height: 24px;
 }
 
-.chat-panel-mode-contact-email {
-  margin-top: 8px;
-}
 
 .requester-status-icon {
   position: absolute;
@@ -2175,53 +2172,27 @@ span .conv-svg-icon {
   display: none;
 }
 
-.dropdown__menu {
-  left: 6px;
-  min-width: 192px;
-  opacity: 0;
-  position: absolute;
-  top: 133px;
-  visibility: hidden;
-  z-index: 20;
+
+.chat-panel-mode-contact-email {
+  margin-top: 8px;
+  height: 21px;
+  cursor: pointer;
 }
 
-.dropdown__menu--active {
-  opacity: 1;
-  transform: translateY(4px);
-  visibility: visible;
-}
-
-
-.dropdown--input {
-  margin-bottom: 16px;
-  display: block;
-  width: 100%;
-  font-size: 16px;
-  height: 36px;
-  border: 1px solid #ccc;
+.chat-panel-mode-contact-email:hover {
+  background-color: #e4e6eb;
   border-radius: 4px;
-  background-color: rgb(255, 255, 255);
-  padding: 0px 12px;
-  outline: none;
-  color: rgb(8, 15, 26);
 }
 
-.dropdown-action--btn {
-  margin-top: 14px;
-  box-shadow: unset;
-  text-transform: none;
-
-  padding: 8px 16px;
+.chat-panel-mode-contact-email:hover~.edit-email-icon-wpr{
+  opacity: 1;
 }
-.dropdown-action-cancel--btn {
-  background-color: #e4e6eb; color: #050505;
-  margin-right: 6px;
+.edit-email-icon-wpr {
+  opacity: 0;
+  height: 21px;
 }
 
-.dropdown-done-action--btn {
-  background-color: #3ea9f5; color: #fff;
-  margin-left: 6px;
-}
+
 
 .right-sidebar-actions {
   float: right;
@@ -2870,6 +2841,89 @@ span .conv-svg-icon {
   padding-bottom: 7px !important;
   border-radius: 4px !important;
 }
+
+// -------------------------------------------------
+// Dropdown pane change contact fullname on-the-fly
+// -------------------------------------------------
+
+.dropdown__menu {
+  left: 6px;
+  min-width: 192px;
+  opacity: 0;
+  position: absolute;
+  top: 133px;
+  visibility: hidden;
+  z-index: 20;
+}
+
+.dropdown__menu_edit_email {
+  left: 6px;
+  min-width: 192px;
+  opacity: 0;
+  position: absolute;
+  top: 160px;
+  visibility: hidden;
+  z-index: 20;
+}
+
+.dropdown__menu_edit_email--active {
+  opacity: 1;
+  transform: translateY(4px);
+  visibility: visible;
+}
+.dropdown__menu--active {
+  opacity: 1;
+  transform: translateY(4px);
+  visibility: visible;
+}
+
+
+.dropdown__content {
+  background-color: #fff;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  padding: 8px;
+}
+
+.dropdown__content_form {
+  width: 256px;
+  text-align: left;
+}
+
+.dropdown--input {
+  margin-bottom: 16px;
+  display: block;
+  width: 100%;
+  font-size: 16px;
+  height: 36px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: rgb(255, 255, 255);
+  padding: 0px 12px;
+  outline: none;
+  color: rgb(8, 15, 26);
+}
+
+.dropdown-action--btn {
+  margin-top: 14px;
+  box-shadow: unset;
+  text-transform: none;
+
+  padding: 8px 16px;
+}
+.dropdown-action-cancel--btn {
+  background-color: #e4e6eb; color: #050505;
+  margin-right: 6px;
+}
+
+.dropdown-done-action--btn {
+  background-color: #3ea9f5; color: #fff;
+  margin-left: 6px;
+}
+
+
+
+
 /* SWAL SM SIZE - moved in demo css to avoid the use of  encapsulation: ViewEncapsulation.None */
 // .swal-size-sm {
 //   width: 260px !important;

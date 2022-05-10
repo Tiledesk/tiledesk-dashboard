@@ -262,6 +262,60 @@ export class ContactsService {
       .map((response) => response.json());
   }
 
+    // ---------------------------------------------
+  // @ Update lead Fullname
+  // ---------------------------------------------
+  public updateLeadFullname(leadid: string,fullName: string ) {
+
+    const url = this.SERVER_BASE_PATH + this.projectId + '/leads/' + leadid;
+
+    /****** use this to test *******/
+    // const url = 'https://api.tiledesk.com/v1/5bcf51dbc375420015542b5f/leads/' + id;
+    this.logger.log('[CONTACTS-SERV] UPDATE LEAD - URL ', url);
+
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+
+    const body = {
+      'fullname': fullName,
+    };
+
+    this.logger.log('[CONTACTS-SERV] UPDATE LEAD REQUEST - BODY ', body);
+    return this.http
+      .put(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+  }
+
+      // ---------------------------------------------
+  // @ Update lead Fullname
+  // ---------------------------------------------
+  public updateLeadEmail(leadid: string,lead_email: string ) {
+
+    const url = this.SERVER_BASE_PATH + this.projectId + '/leads/' + leadid;
+
+    /****** use this to test *******/
+    // const url = 'https://api.tiledesk.com/v1/5bcf51dbc375420015542b5f/leads/' + id;
+    this.logger.log('[CONTACTS-SERV] UPDATE LEAD - URL ', url);
+
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+
+    const body = {
+      'email': lead_email
+    };
+
+    this.logger.log('[CONTACTS-SERV] UPDATE LEAD REQUEST - BODY ', body);
+    return this.http
+      .put(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+  }
+
   // ---------------------------------------------
   // @ Update lead
   // ---------------------------------------------

@@ -675,12 +675,11 @@
                         [ngClass]="{'requester_is_online' : REQUESTER_IS_ONLINE}">
                       </div> -->
                         </span>
-                        <!-- (mouseover)="displayEditButton()"
-                        (mouseout)="hideEditButton()" (click)="openDropDown()" -->
+
 
                         <div class="contact_info_in_right-sidebar" (click)="openDropDown()"
                           [ngClass]="{'contact_info_in_right-sidebar-verified':REQUESTER_IS_VERIFIED === true }">
-                          <div class="contact-fullname-in-right-sidebar" >
+                          <div class="contact-fullname-in-right-sidebar">
                             <span *ngIf="request?.lead?.fullname">
                               {{request?.lead?.fullname}}
                             </span>
@@ -689,89 +688,50 @@
                             </span>
                           </div>
                         </div>
-                        <!-- (mouseover)="displayEditButton()" -->
-                        <!-- (mouseout)="hideEditButton()" (click)="openDropDown()" -->
-                        <!-- *ngIf="DISPLAY_EDIT_FULLNAME_ICON" -->
-                        <div class="edit-icon-wpr" (click)="openDropDown()"
-                          style="float: right;margin-top: -19px;" >
+
+                        <div class="edit-icon-wpr" (click)="openDropDown()" style="float: right;margin-top: -19px;">
                           <i class="material-icons" style="font-size: 16px;color: rgb(139,153,174);margin-right: 3px;">
                             edit
                           </i>
                         </div>
 
-                        <div class="dropdown__menu ">
-                          <div class="dropdown__content" style="    background-color: #fff;
-                          border-radius: 8px;
-                          box-shadow: 0 8px 24px 0 rgb(60 72 91 / 32%);
-                          margin-bottom: 10px;
-                          padding: 8px;">
-                            <form class="css-xmld2u et9tjuw0" style="    width: 256px;
-                            text-align: left;">
+                        <div class="dropdown__menu">
+                          <div class="dropdown__content" style="box-shadow: 0 8px 24px 0 rgb(60 72 91 / 32%);">
+                            <form class="dropdown__content_form">
                               <div class="input-wrapper">
                                 <label for="first-name-input" style="margin-bottom: 4px;">
-                                  First name
+                                  {{'FirstName' | translate}}
                                 </label>
-                                <input id="first-name-input" type="text" class="dropdown--input" name="contact_new_first_name" [(ngModel)]="contactNewFirstName">
-                                  <label for="last-name-input" style="margin-bottom: 4px;">
-                                    Last name
-                                  </label>
-                                  <input id="last-name-input" type="text" class="dropdown--input" name="contact_new_last_name" [(ngModel)]="contactNewLastName" >
-                                </div>
-                                <div class="drpdown-btn-wpr" style=" border-top: 1px solid rgb(211, 219, 229);text-align: center;"> 
-                                  <button  class="btn btn-secondary dropdown-action--btn dropdown-action-cancel--btn" (click)="closeDropdown()">
-                                    Cancel
-                                  </button>
-
-                                  <button type="submit" class="btn btn-secondary  dropdown-action--btn dropdown-done-action--btn" 
-                                  (click)="saveContactFullName()" [disabled]="!contactNewFirstName || contactNewFirstName.length > 1">
-                                    Done
-                                  </button>
-                                  
-
-                                <button  type="submit" style="  display: none;  width: calc(100% - 16px);
-                                background-color: rgb(255, 255, 255);
-                                border-right: none;
-                                border-bottom: none;
-                                border-left: none;
-                                border-top: none;
-                                border-image: initial;
-                               
-                                outline: none;
-                                font-size: 16px;
-                                line-height: 20px;
-                                letter-spacing: -0.01em;
-                                color: rgb(5, 102, 255);
-                                cursor: pointer;
-                                padding: 14px 0px 6px;
-                                margin-left: 8px;
-                                margin-right: 8px;">Done
+                                <input id="first-name-input" type="text" class="dropdown--input"
+                                  name="contact_new_first_name" autocomplete="off" [(ngModel)]="contactNewFirstName">
+                                <label for="last-name-input" style="margin-bottom: 4px;">
+                                  {{'LastName' | translate}}
+                                </label>
+                                <input id="last-name-input" type="text" class="dropdown--input"
+                                  name="contact_new_last_name" autocomplete="off" [(ngModel)]="contactNewLastName">
+                              </div>
+                              <div class="drpdown-btn-wpr"
+                                style=" border-top: 1px solid rgb(211, 219, 229);text-align: center;">
+                                <button class="btn btn-secondary dropdown-action--btn dropdown-action-cancel--btn"
+                                  (click)="closeDropdown()">
+                                  {{'Cancel' | translate}}
                                 </button>
 
-                                <button type="submit" style=" display: none;   width: calc(100% - 16px);
-                                background-color: rgb(255, 255, 255);
-                                border-right: none;
-                                border-bottom: none;
-                                border-left: none;
-                                border-top: none;
-                                border-image: initial;
-                               
-                                outline: none;
-                                font-size: 16px;
-                                line-height: 20px;
-                                letter-spacing: -0.01em;
-                                color: rgb(5, 102, 255);
-                                cursor: pointer;
-                                padding: 14px 0px 6px;
-                                margin-left: 8px;
-                                margin-right: 8px;">Cancel
+                                <button type="submit"
+                                  class="btn btn-secondary  dropdown-action--btn dropdown-done-action--btn"
+                                  (click)="updateContactFullName()"
+                                  [disabled]="!contactNewFirstName || contactNewFirstName.length < 2">
+
+                                  {{'Update' | translate}}
                                 </button>
-                                </div>
+
+                              </div>
                             </form>
                           </div>
                         </div>
 
 
-                        <div class="chat-panel-mode-contact-email">
+                        <div class="chat-panel-mode-contact-email" (click)="openDropDownEditEmail()">
                           <a style="margin-top: 8px; text-transform: lowercase; text-decoration: underline;cursor:pointer ; font-size:14px; font-weight: 400; color: #3880ff;"
                             target="_blank" *ngIf="request?.lead?.email" href="mailto:{{request?.lead?.email}}">
                             {{request?.lead?.email}}
@@ -780,6 +740,47 @@
                             style="color: #7695a5; margin-top: 8px;font-size:14px; font-weight: 400;">
                             {{'EmailNotAvailable' | translate}}
                           </a>
+                        </div>
+
+                        <div class="edit-email-icon-wpr" (click)="openDropDownEditEmail()"
+                          style="margin-top: -19px; width: 16px;position:relative; right: -233px;">
+                          <i class="material-icons" style="font-size: 16px;color: rgb(139,153,174);margin-right: 3px;">
+                            edit
+                          </i>
+                        </div>
+
+                        <div class="dropdown__menu_edit_email">
+                          <div class="dropdown__content" style="box-shadow: 0 8px 24px 0 rgb(60 72 91 / 32%);">
+                            <form class="dropdown__content_form">
+                              <div class="input-wrapper">
+                                <label for="email-input" style="margin-bottom: 4px;">
+                                  {{'ContactEmail' | translate}}
+                                </label>
+                                <input id="email-input" type="email" class="dropdown--input"
+                                  name="contact_new_email" autocomplete="off" [(ngModel)]="contactNewEmail" (ngModelChange)="emailChange($event)" >
+                                  <span *ngIf="!EMAIL_IS_VALID" style="color: #f44336; position: relative;  top: -8px; font-size: 12px;font-weight: 400;">
+                                    {{ "EnterValidEmail" | translate }}
+                                  </span>
+                              </div>
+
+                              <div class="drpdown-btn-wpr"
+                                style=" border-top: 1px solid rgb(211, 219, 229);text-align: center;">
+                                <button class="btn btn-secondary dropdown-action--btn dropdown-action-cancel--btn"
+                                  (click)="closeDropdownEditEmail()">
+                                  {{'Cancel' | translate}}
+                                </button>
+
+                                <button type="submit"
+                                  class="btn btn-secondary  dropdown-action--btn dropdown-done-action--btn"
+                                  (click)="updateContactEmail()"
+                                  [disabled]="!contactNewEmail">
+
+                                  {{'Update' | translate}}
+                                </button>
+
+                              </div>
+                            </form>
+                          </div>
                         </div>
 
                       </div> <!-- contact in right sidebar -->

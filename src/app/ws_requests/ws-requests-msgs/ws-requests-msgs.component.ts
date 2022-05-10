@@ -224,6 +224,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   DISPLAY_EDIT_FULLNAME_ICON: boolean = false
   contactNewFirstName: string;
   contactNewLastName: string;
+  contactNewEmail: string;
+  EMAIL_IS_VALID : boolean = true
   @ViewChild('Selecter') ngselect: NgSelectComponent;
   /**
    * Constructor
@@ -275,7 +277,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   @ViewChild('cont') contEl: any;
- 
+
 
   // -----------------------------------------------------------------------------------------------------
   // @ HostListener window:resize
@@ -333,11 +335,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
   getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
-     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-    //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+      //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
-   } 
+  }
 
   ngAfterViewInit() {
     // -----------------------------------
@@ -1420,7 +1422,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       const inputElm = <HTMLElement>document.querySelector('.tag-name-in-conv-detail');
       inputElm.blur();
       this.ngselect.close()
-     
+
     }
   }
 
@@ -2554,7 +2556,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           botType = bot.type
         }
 
-      
+
       } else {
         // this.router.navigate(['project/' + this.id_project + '/member/' + member_id]);
         this.getProjectuserbyUseridAndGoToEditProjectuser(member_id);
@@ -2756,36 +2758,121 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       });
   }
 
-  displayEditButton() {
-    this.DISPLAY_EDIT_FULLNAME_ICON = true;
-    console.log('mouse over full name ', this.DISPLAY_EDIT_FULLNAME_ICON)
-
-    // 
-  }
-
-  hideEditButton() {
-    this.DISPLAY_EDIT_FULLNAME_ICON = false;
-    console.log('mouse out full name ', this.DISPLAY_EDIT_FULLNAME_ICON)
-  }
+ 
 
   openDropDown() {
     const elemDropDown = <HTMLElement>document.querySelector('.dropdown__menu');
-    console.log('openDropDown ', elemDropDown)
+    this.logger.log('openDropDown ', elemDropDown)
     elemDropDown.classList.add("dropdown__menu--active");
+    this.contactNewFirstName  = undefined;
+    this.contactNewLastName = undefined;
+  }
+
+  openDropDownEditEmail() {
+    const elemDropDownEditEmail = <HTMLElement>document.querySelector('.dropdown__menu_edit_email');
+    this.logger.log('elemDropDownEditEmail ', elemDropDownEditEmail)
+    elemDropDownEditEmail.classList.add("dropdown__menu_edit_email--active");
+    this.contactNewEmail = undefined;
   }
 
   closeDropdown() {
     const elemDropDown = <HTMLElement>document.querySelector('.dropdown__menu');
     elemDropDown.classList.remove("dropdown__menu--active");
-  
   }
 
-  saveContactFullName() {
+  closeDropdownEditEmail() {
+    const elemDropDown = <HTMLElement>document.querySelector('.dropdown__menu_edit_email');
+    elemDropDown.classList.remove("dropdown__menu_edit_email--active");
+  } 
+
+  updateContactEmail() {
+    const elemDropDown = <HTMLElement>document.querySelector('.dropdown__menu_edit_email');
+    elemDropDown.classList.remove("dropdown__menu_edit_email--active");
+    this.logger.log('[WS-REQUESTS-MSGS] saveContactFullName  contactNewEmail', this.contactNewEmail)
+    this.logger.log('[WS-REQUESTS-MSGS] saveContactFullName  request', this.request)
+    this.request.lead.email = this.contactNewEmail
+
+    this.updateContactemail(this.request.lead._id,  this.contactNewEmail);
+  }
+
+  emailChange(event) {
+    this.EMAIL_IS_VALID = this.validateEmail(event)
+  }
+
+
+  validateEmail(email) {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    return re.test(String(email).toLowerCase());
+  }
+
+  updateContactFullName() {
     const elemDropDown = <HTMLElement>document.querySelector('.dropdown__menu');
     elemDropDown.classList.remove("dropdown__menu--active");
-    console.log('saveContactFullName  contactNewFirstName', this.contactNewFirstName)
-    console.log('saveContactFullName  contactNewLastName', this.contactNewLastName)
+    this.logger.log('[WS-REQUESTS-MSGS] saveContactFullName  contactNewFirstName', this.contactNewFirstName)
+    this.logger.log('[WS-REQUESTS-MSGS] saveContactFullName  contactNewLastName', this.contactNewLastName)
+    this.logger.log('[WS-REQUESTS-MSGS] saveContactFullName  request', this.request)
+    // request?.lead?.fullname
+    if (this.contactNewFirstName && !this.contactNewLastName) {
+
+      const lead_fullname = this.contactNewFirstName
+      this.logger.log('[WS-REQUESTS-MSGS] saveContactFullName usecase only contactNewFirstName - lead_fullname', lead_fullname)
+      this._createRequesterAvatar(lead_fullname)
+
+      this.request.lead.fullname = lead_fullname
+      this.updateContactName(this.request.lead._id, lead_fullname);
+    } else if (this.contactNewFirstName && this.contactNewLastName) {
+
+      const lead_fullname = this.contactNewFirstName + ' ' + this.contactNewLastName
+      this.logger.log('[WS-REQUESTS-MSGS] saveContactFullName usecase  contactNewFirstName & contactNewLastName - lead_fullname', lead_fullname)
+      this.request.lead.fullname = lead_fullname
+      this._createRequesterAvatar(lead_fullname)
+      this.updateContactName(this.request.lead._id, lead_fullname);
+    }
   }
+  _createRequesterAvatar(lead_fullname) {
+    if (lead_fullname) {
+      this.requester_fullname_initial = avatarPlaceholder(lead_fullname);
+      this.fillColour = getColorBck(lead_fullname)
+    } else {
+
+      this.requester_fullname_initial = 'N/A';
+      this.fillColour = 'rgb(98, 100, 167)';
+    }
+
+  }
+
+  updateContactName(lead_id, lead_fullname) {
+    this.contactsService.updateLeadFullname(lead_id, lead_fullname)
+      .subscribe((contact) => {
+        this.logger.log('[WS-REQUESTS-MSGS] - UPDATED CONTACT ', contact);
+      }, (error) => {
+        this.logger.error('[WS-REQUESTS-MSGS] - UPDATE CONTACT - ERROR ', error);
+        // =========== NOTIFY ERROR ===========
+        // this.notify.showNotification('An error occurred while updating contact', 4, 'report_problem');
+      }, () => {
+        this.logger.log('[WS-REQUESTS-MSGS] - UPDATE CONTACT * COMPLETE *');
+        // =========== NOTIFY SUCCESS===========
+        // this.notify.showNotification('Contact successfully updated', 2, 'done')
+      });
+  }
+
+  updateContactemail(lead_id, lead_email) {
+    this.contactsService.updateLeadEmail(lead_id, lead_email)
+      .subscribe((contact) => {
+        this.logger.log('[WS-REQUESTS-MSGS] - UPDATED CONTACT ', contact);
+      }, (error) => {
+        this.logger.error('[WS-REQUESTS-MSGS] - UPDATE CONTACT - ERROR ', error);
+        // =========== NOTIFY ERROR ===========
+        // this.notify.showNotification('An error occurred while updating contact', 4, 'report_problem');
+      }, () => {
+        this.logger.log('[WS-REQUESTS-MSGS] - UPDATE CONTACT * COMPLETE *');
+        // =========== NOTIFY SUCCESS===========
+        // this.notify.showNotification('Contact successfully updated', 2, 'done')
+      });
+  }
+
+
 
 
   // NO MORE USED - REPLACED BY getProjectUsersAndBots
