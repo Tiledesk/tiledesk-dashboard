@@ -1,6 +1,12 @@
 
 # tiledesk-dashboard
 
+### 2.2.33-rc5
+- Fixes the bug: the drop-down menu for project selection goes under the "bottom navigation bar"
+
+### 2.2.33-rc4
+- Adds script
+
 ### 2.2.33-rc3
 - Adds the ability to restrict access to only those users within an IP address range
 
