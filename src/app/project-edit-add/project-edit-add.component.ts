@@ -112,6 +112,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   isVisibleAdvancedTab: boolean;
   isVisibleDeveloperTab: boolean;
   isVisibleNotificationTab: boolean;
+  isVisibleSecurityTab: boolean;
   max_agent_assigned_chat: number
   reassignment_delay: number
   automatic_idle_chats: number
@@ -531,6 +532,19 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         }
       }
 
+      if (key.includes("IPS")) {
+        // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
+        let ips = key.split(":");
+      //  console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - ips key&value', ips);
+        if (ips[1] === "F") {
+          this.isVisibleSecurityTab = false;
+          // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleSecurityTab', this.isVisibleSecurityTab);
+        } else {
+          this.isVisibleSecurityTab = true;
+          // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleSecurityTab', this.isVisibleSecurityTab);
+        }
+      }
+
     });
 
     if (!this.public_Key.includes("PAY")) {
@@ -551,6 +565,11 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     if (!this.public_Key.includes("NOT")) {
       // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("NOT")', this.public_Key.includes("NOT"));
       this.isVisibleNotificationTab = false;
+    }
+
+    if (!this.public_Key.includes("IPS")) {
+    //  console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("IPS")', this.public_Key.includes("IPS"));
+      this.isVisibleSecurityTab = false;
     }
 
   }
@@ -611,7 +630,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.logger.log('[PRJCT-EDIT-ADD] - is PROJECT_SETTINGS_AUTH_ROUTE ', this.PROJECT_SETTINGS_AUTH_ROUTE);
       this.logger.log('[PRJCT-EDIT-ADD] - is PROJECT_SETTINGS_ADVANCED_ROUTE ', this.PROJECT_SETTINGS_ADVANCED_ROUTE);
       this.logger.log('[PRJCT-EDIT-ADD] - is PROJECT_SETTINGS_NOTIFICATION ', this.PROJECT_SETTINGS_NOTIFICATION_ROUTE);
-      console.log('[PRJCT-EDIT-ADD] - is PROJECT_SETTINGS_SECURITY_ROUTE ', this.PROJECT_SETTINGS_SECURITY_ROUTE);
+      this.logger.log('[PRJCT-EDIT-ADD] - is PROJECT_SETTINGS_SECURITY_ROUTE ', this.PROJECT_SETTINGS_SECURITY_ROUTE);
       /** THE ACTIVE ROUTE IS /project-settings/payments */
     } else if (
       (currentUrl.indexOf('/project-settings/general') === -1) &&
@@ -771,7 +790,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
 
   goToProjectSettings_Security() {
-    console.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_Security');
+    this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_Security');
     this.router.navigate(['project/' + this.id_project + '/project-settings/security'])
   }
 
@@ -1621,7 +1640,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     this.logger.log("[PRJCT-EDIT-ADD] SAVE IP RANGES - id_project", this.id_project)
     this.logger.log("[PRJCT-EDIT-ADD] SAVE IP RANGES - allowedIPranges", this.allowedIPs)
 
-    console.log("[PRJCT-EDIT-ADD] SAVE IP RANGES - ip_restrictions_on", this.ip_restrictions_on)
+    this.logger.log("[PRJCT-EDIT-ADD] SAVE IP RANGES - ip_restrictions_on", this.ip_restrictions_on)
    let allowedIPsArray = []
     if (this.allowedIPs) {
       const allowedIPsTrimmed = this.allowedIPs.replace(/\s/g, '');
@@ -1648,7 +1667,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         .then((willAddIpRanges) => {
           if (willAddIpRanges) {
 
-            console.log('[PRJCT-EDIT-ADD] swal willAddIpRanges', willAddIpRanges)
+            this.logger.log('[PRJCT-EDIT-ADD] swal willAddIpRanges', willAddIpRanges)
             // this.id_project,
 
             this.projectService.addAllowedIPranges(this.id_project, this.ip_restrictions_on, allowedIPsArray).subscribe((res: any) => {

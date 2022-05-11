@@ -96,7 +96,7 @@
             <a> {{ "Notification" | translate }}</a>
           </li>
 
-          <li (click)="goToProjectSettings_Security()" class="btn-with-border-effect"
+          <li *ngIf="isVisibleSecurityTab" (click)="goToProjectSettings_Security()" class="btn-with-border-effect"
             [ngClass]="{'li-active': PROJECT_SETTINGS_SECURITY_ROUTE, 'border-from-center': PROJECT_SETTINGS_SECURITY_ROUTE === false }">
             <a> Security</a>
           </li>
