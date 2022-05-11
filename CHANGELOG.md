@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.33
+- Deploys in production
+
 ### 2.2.33-rc7
 - Adds the ticket id in the non-real time conversations table and in the archived conversations table
 - Removes from the login page the link to the old version of the dashbaord
