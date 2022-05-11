@@ -98,7 +98,7 @@
 
           <li *ngIf="isVisibleSecurityTab" (click)="goToProjectSettings_Security()" class="btn-with-border-effect"
             [ngClass]="{'li-active': PROJECT_SETTINGS_SECURITY_ROUTE, 'border-from-center': PROJECT_SETTINGS_SECURITY_ROUTE === false }">
-            <a> Security</a>
+            <a> Security <span class="security-beta-badge"> Beta</span> </a>
           </li>
 
         </ul>
@@ -1444,7 +1444,7 @@
                           <!-- style="width: calc((100% / 3) + 372px); -->
                           <div class="security-section-title"  style="margin-bottom: 16px; margin-left: 15px;">
                             Add the IP ranges that need Tildesk access. Separate multiple IP with comma.
-                            Use <span style="font-weight: 500;"> n.n.n.n  </span> or<span style="font-weight: 500;"> n.n.n/n </span>  syntax where n is a number or an asterisk (*) wildcard
+                            Use <span style="font-weight: 500;"> n.n.n.n  </span> or<span style="font-weight: 500;"> n.n.n/n </span>  syntax where n is a number
 
                             <!--[disabled]="!ip_restrictions_on" -->
                             <input style="margin-top: 6px;" [(ngModel)]="allowedIPs" (ngModelChange)="allowedIPsChanged($event)" 

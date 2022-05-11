@@ -829,3 +829,21 @@ $f21blue: #039be5;
     top: 38px;
   }
 }
+
+.security-beta-badge {
+  font-weight: 400;
+  background-color: #6c757d;
+  padding: 2px 5px;
+  border-radius: 10px;
+  font-size: 9px;
+  color: #fff;
+  position: relative;
+  top: -1px;
+}
+
+
+.disabled-card-add-project {
+  pointer-events: none;
+  opacity: 0.6;
+  cursor: not-allowed;
+}
