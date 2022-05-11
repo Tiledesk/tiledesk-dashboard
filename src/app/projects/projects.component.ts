@@ -159,7 +159,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
           this.browserLang = this.translate.getBrowserLang();
           this.dsbrd_lang = this.browserLang;
           this.getLangTranslation(this.dsbrd_lang)
-          console.log('[PROJECTS] - browser_lang ', this.browserLang)
+          // console.log('[PROJECTS] - browser_lang ', this.browserLang)
           this.flag_url = "assets/img/language_flag/" + this.browserLang + ".png"
           this.translate.use(this.dsbrd_lang);
           // console.log('[PROJECTS] flag_url (from browser_lang) ', this.flag_url)
