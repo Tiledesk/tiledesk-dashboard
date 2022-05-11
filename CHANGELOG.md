@@ -1,6 +1,10 @@
 
 # tiledesk-dashboard
 
+### 2.2.33-rc6
+- Adds the "Beta" badge to the "Security" tab available in Project Settings
+- Add style rules to disable the "Add a project" button available in the combo box of the navigation bar
+
 ### 2.2.33-rc5
 - Fixes the bug: the drop-down menu for project selection goes under the "bottom navigation bar"
 - Allows agents to use the "Monitor" page
