@@ -1,11 +1,11 @@
 <!-- margin-top:6px; -->
-<p *ngIf="IS_HERE_FOR_HISTORY" style="z-index: 1050;position: relative; padding-left:30px"
-  class="navbar-brand" [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
+<p *ngIf="IS_HERE_FOR_HISTORY" style="z-index: 1050;position: relative; padding-left:30px" class="navbar-brand"
+  [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
   {{ "History" | translate }}
 </p>
 <!-- margin-top:6px; -->
-<div *ngIf="!IS_HERE_FOR_HISTORY" class="navbar-brand"
-  style="z-index: 1050;position: relative; padding-left:30px" [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
+<div *ngIf="!IS_HERE_FOR_HISTORY" class="navbar-brand" style="z-index: 1050;position: relative; padding-left:30px"
+  [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
   <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
     (click)="goBack()">keyboard_arrow_left</i>
 
@@ -91,7 +91,7 @@
             </div>
           </div>
 
-          
+
           <!-- ---------------------------------------------------------------- -->
           <!-- Filters - central section -->
           <!-- ---------------------------------------------------------------- -->
@@ -144,7 +144,7 @@
 
           </div>
 
-          
+
           <!-- ---------------------------------------------------------------- -->
           <!-- Filters - right section -->
           <!-- ---------------------------------------------------------------- -->
@@ -165,7 +165,7 @@
           <div class="filter-bar-advanced-options" *ngIf="showAdvancedSearchOption">
             <div style="margin-top: 6px;">
               <div class="row">
- 
+
                 <!-- ---------------------------------------------------------- -->
                 <!-- Select DEPARTMENTS -->
                 <!-- ---------------------------------------------------------- -->
@@ -184,7 +184,7 @@
                   </div>
                 </div>
 
-            
+
                 <!-- ---------------------------------------------------------- -->
                 <!-- Select DATE RANGE -->
                 <!-- ---------------------------------------------------------- -->
@@ -314,8 +314,9 @@
             <span class="msg-alert">
               <!-- History is only available for the past 14 days. Renew your subscription for unlimited chat history -->
               {{ 'HistoryPage.HistoryIsOnlyAvailableForThePast14Days' | translate }}.
-              <span class="upgrade-plan-for-unlimited-history" style="color: #039be5; cursor:pointer" (click)="openModalSubsExpiredOrGoToPricing()">
-                {{ "Pricing.UpgradeYourPlan" | translate }} 
+              <span class="upgrade-plan-for-unlimited-history" style="color: #039be5; cursor:pointer"
+                (click)="openModalSubsExpiredOrGoToPricing()">
+                {{ "Pricing.UpgradeYourPlan" | translate }}
               </span>
               {{ 'HistoryPage.ForUnlimitedChatHistory' | translate }}
             </span>
@@ -668,6 +669,15 @@
                 <th> </th>
 
                 <!--  ----------------------------- -->
+                <!--  Ticket id  -->
+                <!--  ----------------------------- -->
+                <!-- <th class="table-header-text" style="text-align: center;">
+                  <span class="column-th-span">
+                    {{ 'TicketId' | translate }}
+                  </span>
+                </th> -->
+
+                <!--  ----------------------------- -->
                 <!--  REQUESTER  -->
                 <!--  ----------------------------- -->
                 <th class="table-header-text">
@@ -947,6 +957,11 @@
                 <!-- --------------------------------------- -->
                 <td [ngClass]="{'padding_5' : request?.tags?.length > 0}" (click)='goToRequestMsgs(request?.request_id)'
                   style="cursor:pointer">
+                  <span class="ticket-id-badge" style="float: left;" matTooltipClass="nort-custom-mat-tooltip"
+                    matTooltip="{{ 'TicketId' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+                    matTooltipHideDelay="100">
+                    {{request?.ticket_id }}
+                  </span>
                   <p class="column-td" [innerHTML]="getRequestText(request?.first_text)"> </p>
 
                   <!-- --------------------------------------- -->
@@ -1172,8 +1187,21 @@
                   </div>
                 </td>
 
+                <!-- ------------------------------------------------- -->
+                <!-- Ticket id  -->
+                <!-- ------------------------------------------------- -->
+                <!-- <td style="text-align: center;">
+                  <p *ngIf="request?.ticket_id" class="column-td">
+                   {{request?.ticket_id }}
+                  </p>
+                  <p *ngIf="!request?.ticket_id" class="column-td">
+                   n/a
+                  </p>
+                </td> -->
 
-                <!-- ===== REQUESTER FULL NAME ===== -->
+                <!-- ------------------------------------------------- -->
+                <!-- REQUESTER FULL NAME  -->
+                <!-- ------------------------------------------------- -->
                 <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer;white-space: nowrap;
                   width: 1%;" rel="tooltip" title="{{ request?.requester_id }}">
 

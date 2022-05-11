@@ -813,3 +813,27 @@ p.member:hover {
     width: 20px;    
   }
 }
+
+
+.ticket-id-badge {
+  float: left;
+  background-color: #e8e8e8;
+  color: #737376;
+  font-size: 11px;
+  font-weight: 500;
+  min-width: 20px;
+  text-align: center;
+  position: relative;
+  top: 1px;
+  border-radius: 4px;
+  margin-right: 3px;
+}
+
+::ng-deep .nort-custom-mat-tooltip {
+  background-color: #2d323e !important;
+  font-size: 11px !important;
+  border-radius: 2px !important;
+  font-family: "Poppins" !important;
+  padding-top: 6px !important;
+  padding-bottom: 6px !important;
+}
