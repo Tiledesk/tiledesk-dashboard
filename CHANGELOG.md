@@ -1,6 +1,11 @@
 
 # tiledesk-dashboard
 
+### 2.2.33-rc7
+- Adds the ticket id in the non-real time conversations table and in the archived conversations table
+- Removes from the login page the link to the old version of the dashbaord
+- Replaces all Tiledesk logos bearing the version number "v2" with Tiledesk logos without version number
+
 ### 2.2.33-rc6
 - Adds the "Beta" badge to the "Security" tab available in Project Settings
 - Add style rules to disable the "Add a project" button available in the combo box of the navigation bar
