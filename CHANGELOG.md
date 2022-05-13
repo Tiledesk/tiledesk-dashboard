@@ -1,6 +1,10 @@
 
 # tiledesk-dashboard
 
+### 2.2.34-rc1
+- Adds the ticket id in the table of the real time conversations
+- Adds the ability to filter by conversation type on non-real-time conversations, archived conversations, and real-time conversations
+
 ### 2.2.33
 - Deploys in production
 
