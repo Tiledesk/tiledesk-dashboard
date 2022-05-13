@@ -2070,5 +2070,7 @@
 	"EditIntent":"Intent bearbeiten",
 	"DeleteIntent":"Intent löschen",
 	"UpdateIntent":"Intent aktualisieren",
-	"AssignedToYou":"Ihnen zugeteilt"
+	"AssignedToYou":"Ihnen zugeteilt",
+	"ConversationType":"Konversationsart",
+	"SelectConversationType":"Konversationstyp auswählen"
 }

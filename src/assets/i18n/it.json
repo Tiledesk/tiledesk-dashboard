@@ -2069,5 +2069,7 @@
     "EditIntent":"Modifica intent",
     "DeleteIntent":"Elimina intent",
     "UpdateIntent":"Aggiorna intent",
-    "AssignedToYou":"Assegnate a te"
+    "AssignedToYou":"Assegnate a te",
+    "ConversationType":"Tipo di conversazione",
+    "SelectConversationType":"Seleziona il tipo di conversazione"
 }
