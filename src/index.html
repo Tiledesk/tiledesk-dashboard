@@ -218,51 +218,33 @@
   <!-- ---------------------------------------------------- -->
   <!-- Disables the creation of a new project -->
   <!-- ---------------------------------------------------- -->
-  <!-- <script>
-    var href = document.location.href;
-    var oldHref = document.location.href;
-    console.log('DUMMY SCRIPT  of a new project href ', href)
+ 
+<!-- 
+  <script>
+     var href = document.location.href;
     if (href.indexOf('intelcia') > -1) {
       console.log('DUMMY SCRIPT  href contains intelcia', href)
     } else {
-      // var oldHref = document.location.href;
-      console.log('DUMMY SCRIPT  href NOT contains intelcia', href)
-      var navbar_createprjct_btn = ''
-      var projects_list_createprjct_card = ''
-
+      var oldHref = document.location.href;
+      console.log('SCRIPT DNPC oldHref ', oldHref)
       window.onload = function () {
+        var bodyList = document.querySelector("body")
+        // console.log('SCRIPT DNPC bodyList ', bodyList)
 
-        // var navbard = document.getElementById("navbar_dropdown")
+        hide_navbar_create_project_btn()
+        hide_recent_project_create_project_card()
 
-        disable_navbar_create_project_btn()
-        // disable_projects_list_create_project_card(oldHref)
-        disable_projects_list_create_project_card(href)
-
-        var
-          bodyList = document.querySelector("body")
-
-          , observer = new MutationObserver(function (mutations) {
-
-            mutations.forEach(function (mutation) {
-
-              if (oldHref != document.location.href) {
-
-                oldHref = document.location.href;
-
-                console.log('DUMMY SCRIPT oldHref', oldHref)
-                /* Changed ! your code here */
-
-                if (!navbar_createprjct_btn) {
-                  console.log('DUMMY SCRIPT navbar_createprjct_btn is null', navbar_createprjct_btn)
-                  disable_navbar_create_project_btn()
-                }
-
-                disable_projects_list_create_project_card(oldHref)
-
-              }
-
-            });
+        var observer = new MutationObserver(function (mutations) {
+          mutations.forEach(function (mutation) {
+      
+            if (oldHref != document.location.href) {
+              oldHref = document.location.href;
+              console.log('SCRIPT DNPC HREF Changed ')
+              hide_navbar_create_project_btn()
+              hide_recent_project_create_project_card()
+            }
           });
+        });
 
         var config = {
           childList: true,
@@ -272,41 +254,33 @@
         observer.observe(bodyList, config);
       };
 
-      function disable_navbar_create_project_btn() {
-        navbar_createprjct_btn = document.getElementById("navbar_create_prjct");
-        console.log('DUMMY SCRIPT navbar_createprjct_btn', navbar_createprjct_btn);
+      if (window.performance) {
+        console.log("SCRIPT works window.performance fine on this browser");
+      }
+
+      if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
+        console.log("SCRIPT DNPC This page is reloaded");
+        hide_recent_project_create_project_card()
+      } else {
+        console.info("This page is not reloaded");
+      }
+
+      function hide_navbar_create_project_btn() {
+        var navbar_createprjct_btn = document.getElementById("navbar_create_prjct");
+        console.log('SCRIPT DNPC navbar_createprjct_btn', navbar_createprjct_btn);
         if (navbar_createprjct_btn) {
-          //  navbar_createprjct_btn.setAttribute("class", "disable-dropdown-menu-btn");
-          var btn_new_class = "disable-dropdown-menu-btn";
-
-          var btn_class_array = navbar_createprjct_btn.className.split(" ");
-          if (btn_class_array.indexOf(btn_new_class) == -1) {
-            navbar_createprjct_btn.className += " " + btn_new_class;
-          }
+          navbar_createprjct_btn.style.display = "none";
         }
       }
 
-
-      function disable_projects_list_create_project_card(url) {
-        var lastURLSegment = url.substr(url.lastIndexOf('/') + 1);
-        console.log('DUMMY SCRIPT  disable_projects_list_create_project_card ', url)
-        if (lastURLSegment == 'projects') {
-          console.log('DUMMY SCRIPT disable_projects_list_create_project_card lastURLSegment ', lastURLSegment);
-
-          projects_list_createprjct_card = document.getElementById("create-prjct-card");
-          console.log('DUMMY SCRIPT projects_list_createprjct_card', projects_list_createprjct_card);
-          if (projects_list_createprjct_card) {
-
-            var card_new_class = "disabled-card-add-project";
-
-            var card_class_array = projects_list_createprjct_card.className.split(" ");
-            if (card_class_array.indexOf(card_new_class) == -1) {
-              projects_list_createprjct_card.className += " " + card_new_class;
-            }
-          }
+      function hide_recent_project_create_project_card() {
+        var projects_list_createprjct_card = document.getElementById("create-prjct-card");
+        console.log('SCRIPT DNPC projects_list_createprjct_card', projects_list_createprjct_card);
+        if (projects_list_createprjct_card) {
+          projects_list_createprjct_card.style.display = "none";
         }
-
       }
+
     }
   </script> -->
 
