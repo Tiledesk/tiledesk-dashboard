@@ -52,6 +52,7 @@ export class WsSharedComponent implements OnInit {
   department_id: string;
   source_page: string;
   participantsInRequests: any;
+  conversationTypeInRequests: any;
 
   depts_array_noduplicate = [];
   OPEN_RIGHT_SIDEBAR = false;
@@ -164,7 +165,7 @@ export class WsSharedComponent implements OnInit {
             this.logger.log('[WS-SHARED][WS-REQUESTS-MSGS] - STORED USER ', user)
             if (member_id === user['_id']) {
 
-              this.agents_array.push({ '_id': user['_id'], 'firstname': user['firstname'], 'lastname': user['lastname'], 'isBot': false , 'hasImage': user.hasImage , 'userfillColour' :  user.fillColour,  'userFullname':  user.fullname_initial})
+              this.agents_array.push({ '_id': user['_id'], 'firstname': user['firstname'], 'lastname': user['lastname'], 'isBot': false, 'hasImage': user.hasImage, 'userfillColour': user.fillColour, 'userFullname': user.fullname_initial })
 
             }
           } else {
@@ -177,7 +178,7 @@ export class WsSharedComponent implements OnInit {
     this.logger.log('[WS-SHARED][WS-REQUESTS-MSGS] - CREATE-AGENT-ARRAY-FROM-PARTICIPANTS-ID - AGENT ARRAY ', this.agents_array)
   }
 
- 
+
 
 
   // -----------------------------------------------------------------------------------------------------
@@ -356,6 +357,49 @@ export class WsSharedComponent implements OnInit {
     return currentUserIsJoined;
   }
 
+  // [
+  //   { id: 'chat21', name: 'Chat' },
+  //   { id: 'telegram', name: 'Telegram' },
+  //   { id: 'messenger', name: 'Messenger' },
+  //   { id: 'email', name: 'Email' },
+  //   { id: 'form', name: 'Ticket' }
+  // ]
+
+  getConversationTypeInRequests(ws_requests) {
+    this.conversationTypeInRequests = [];
+    ws_requests.forEach(request => {
+      this.logger.log('[WS-SHARED] getConversationTypeInRequests request ', request)
+      let channelObjct = {}
+      if (request.channel.name === 'chat21') {
+        channelObjct['id'] =  "chat21";
+        channelObjct['name'] =  "Chat";
+      }
+      if (request.channel.name === 'telegram') {
+        channelObjct['id'] =  "telegram";
+        channelObjct['name'] =  "Telegram";
+      }
+
+      if (request.channel.name === 'email') {
+        channelObjct['id'] =  "email";
+        channelObjct['name'] =  "Email";
+      }
+
+      if (request.channel.name === 'form') {
+        channelObjct['id'] =  "form";
+        channelObjct['name'] =  "Ticket";
+      }
+
+      const index = this.conversationTypeInRequests.findIndex((e) => e.id === request.channel.name);
+      // if (this.conversationTypeInRequests.indexOf(request.channel.name) === -1) {
+        if (index === -1) {
+        this.conversationTypeInRequests.push(channelObjct)
+      } else {
+        this.logger.log('[WS-SHARED] the element already exist')
+      }
+    })
+    this.logger.log('[WS-SHARED] getConversationTypeInRequests array ', this.conversationTypeInRequests)
+  }
+
   getParticipantsInRequests(ws_requests) {
     const participantsId = [];
     this.participantsInRequests = [];
@@ -423,8 +467,6 @@ export class WsSharedComponent implements OnInit {
 
     this.logger.log('[WS-SHARED][WS-REQUESTS-LIST] getParticipantsInRequests participantsId ', participantsId);
     this.logger.log('[WS-SHARED][WS-REQUESTS-LIST] getParticipantsInRequests ', this.participantsInRequests);
-
-
   }
 
   _getProjectUserByUserId(member_id) {

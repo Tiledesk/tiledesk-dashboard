@@ -235,7 +235,7 @@
                   <div class="col-sm-12">
                     <ng-select [items]="tags_array" bindLabel="name" bindValue="name"
                       placeholder="{{'Tags.SelectTag' | translate}}" [(ngModel)]="selecteTagName"
-                      (change)="tagNameSelected()">
+                      (change)="tagNameSelected()" [clearable]='false'>
                       <ng-template ng-label-tmp let-item="item">
                         <!-- <img height="15" width="15" [src]="item.avatar" /> -->
                         <div class="tag--color" [ngStyle]="{'background-color': item.color }"></div>
@@ -264,7 +264,18 @@
                     </ng-select>
                   </div>
                 </div>
-                <div class="col-sm-6"></div>
+                <div class="col-sm-6">
+                  <label class="col-sm-12 label-7695a5">
+                    {{ 'ConversationType' | translate }}
+                  </label>
+                  <div class="col-sm-12">
+                    <ng-select name="conversationtype" [(ngModel)]="conversation_type"
+                      (change)="requestsTypeSelectFromAdvancedOption()" [items]="conversationType" bindLabel="name"
+                      [clearable]='false' [searchable]="false" bindValue="id" placeholder="{{'SelectConversationType' | translate }}">
+                    </ng-select>
+                  </div>
+
+                </div>
               </div>
 
 
@@ -273,8 +284,9 @@
               <!-- ------------------------------------------ -->
               <div class="row">
                 <div class="col-sm-12" style="margin-top: 16px;">
-                  <button #searchbtnbottom type="submit" class="btn btn-tdblu-no-boxshadow pull-right"
-                    (click)="search()" style="padding:9px 30px;     margin-right: 15px;">
+                  <button #searchbtnbottom id="search_in_advanced_filter" type="submit"
+                    class="btn btn-tdblu-no-boxshadow pull-right" (click)="search()"
+                    style="padding:9px 30px;     margin-right: 15px;">
 
                     {{ 'Search' | translate}}
                   </button>
@@ -333,7 +345,7 @@
   <!--  Applied filter -->
   <!--  ---------------------------------------------------------------- -->
   <div style="margin-top: 16px; display: flex; position: relative;margin-bottom: 9px;"
-    *ngIf="fullText_applied_filter || startDateFormatted || selectedAgentFirstname || selectedDeptName || requests_status === '200' || requests_status === '100' || selecteTagColor">
+    *ngIf="fullText_applied_filter || startDateFormatted || selectedAgentFirstname || selectedDeptName || requests_status === '200' || requests_status === '100' || selecteTagColor || conversation_type">
 
     <div class="applied-filter-title">
       {{'AppliedFilters' | translate}}
@@ -390,6 +402,23 @@
       {{selecteTagNameValue}}
     </div>
 
+    <div *ngIf="conversation_type && conversationTypeValue" class="applied-filter">
+      <span *ngIf="conversationTypeValue === 'chat21'">
+        Chat
+      </span>
+
+      <span *ngIf="conversationTypeValue === 'form'">
+        Ticket
+      </span>
+
+
+      <span style="text-transform: capitalize;"
+        *ngIf="conversationTypeValue !== 'chat21' && conversationTypeValue !== 'form'">
+        {{conversationTypeValue}}
+      </span>
+
+    </div>
+
 
     <!-- <div class="applied-filter">
       <span
@@ -407,7 +436,7 @@
   <div class="row" *ngIf="!IS_HERE_FOR_HISTORY" style="font-size: 16px;margin-bottom: 8px ">
     <div class="col-xs-12 conversations-count">
       <span
-        *ngIf="requests_status === 'all' && !fullText_applied_filter && !startDateFormatted && !selectedAgentFirstname && !selectedDeptName && !selecteTagColor">
+        *ngIf="requests_status === 'all' && !fullText_applied_filter && !startDateFormatted && !selectedAgentFirstname && !selectedDeptName && !selecteTagColor && !conversation_type">
         {{ 'TotalConversations' | translate }}:
         <!-- https://stackoverflow.com/questions/13014808/is-there-anyway-to-animate-an-ellipsis-with-css-animations -->
         <span *ngIf="showSpinner" class="loading">{{'ProcessingNoDot' | translate}} </span>
@@ -417,7 +446,7 @@
       </span>
 
       <span
-        *ngIf="fullText_applied_filter || startDateFormatted || selectedAgentFirstname || selectedDeptName || requests_status === '200' || requests_status === '100' || selecteTagColor">
+        *ngIf="fullText_applied_filter || startDateFormatted || selectedAgentFirstname || selectedDeptName || requests_status === '200' || requests_status === '100' || selecteTagColor || conversation_type">
         {{ 'ConversationsFound' | translate }}:
         <span *ngIf="showSpinner" class="loading">{{'ProcessingNoDot' | translate}} </span>
         <span *ngIf="!showSpinner">
@@ -430,7 +459,7 @@
   <div class="row" *ngIf="IS_HERE_FOR_HISTORY" style="font-size: 16px;margin-bottom: 8px">
     <div class="col-xs-12 conversations-count">
       <span
-        *ngIf="!fullText_applied_filter && !startDateFormatted && !selectedAgentFirstname && !selectedDeptName && !selecteTagColor">
+        *ngIf="!fullText_applied_filter && !startDateFormatted && !selectedAgentFirstname && !selectedDeptName && !selecteTagColor  && !conversation_type">
         {{ 'TotalConversations' | translate }}:
         <span *ngIf="showSpinner" class="loading">{{'ProcessingNoDot' | translate}} </span>
         <span *ngIf="!showSpinner">
@@ -439,7 +468,7 @@
       </span>
 
       <span
-        *ngIf="fullText_applied_filter || startDateFormatted || selectedAgentFirstname || selectedDeptName || selecteTagColor">
+        *ngIf="fullText_applied_filter || startDateFormatted || selectedAgentFirstname || selectedDeptName || selecteTagColor || conversation_type">
         {{ 'ConversationsFound' | translate }}:
         <span *ngIf="showSpinner" class="loading">{{'ProcessingNoDot' | translate}} </span>
         <span *ngIf="!showSpinner">
@@ -957,10 +986,10 @@
                 <!-- --------------------------------------- -->
                 <td [ngClass]="{'padding_5' : request?.tags?.length > 0}" (click)='goToRequestMsgs(request?.request_id)'
                   style="cursor:pointer">
-                  <span class="ticket-id-badge" style="float: left;" matTooltipClass="nort-custom-mat-tooltip"
-                    matTooltip="{{ 'TicketId' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
-                    matTooltipHideDelay="100">
-                    {{request?.ticket_id }}
+                  <span *ngIf="request?.ticket_id " class="ticket-id-badge" style="float: left;"
+                    matTooltipClass="convs-custom-mat-tooltip" matTooltip="{{ 'TicketId' | translate }}"
+                    #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
+                    #{{request?.ticket_id }}
                   </span>
                   <p class="column-td" [innerHTML]="getRequestText(request?.first_text)"> </p>
 

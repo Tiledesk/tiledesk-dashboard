@@ -99,7 +99,7 @@ input[type="email"] {
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   border-radius: 5px;
-  
+
   border: solid 1px #ddd;
 }
 
@@ -532,7 +532,6 @@ span .switch-agent-admin-requests-btn {
   display: block;
   height: 52px;
   cursor: pointer;
- 
 }
 
 .bottom-nav li a {
@@ -675,8 +674,8 @@ $f21blue: #039be5;
     top: -2px !important;
   }
 
-  .bottom-nav li { 
-    z-index: 1049
+  .bottom-nav li {
+    z-index: 1049;
   }
 
   // .chart-wrapper {
@@ -832,8 +831,8 @@ $f21blue: #039be5;
   border-radius: 50%;
   padding: 2px;
   cursor: pointer;
-  height: 24px; 
-  width: 24px; 
+  height: 24px;
+  width: 24px;
 }
 
 .scroll-div-side-btn:hover {
@@ -1432,7 +1431,7 @@ $f21blue: #039be5;
   background: rgb(221, 223, 230);
   padding: 6px;
   border-radius: 50%;
-  width: 29px;;
+  width: 29px;
 }
 
 .conv-option-icon-active {
@@ -1476,9 +1475,9 @@ $f21blue: #039be5;
   background: rgb(241, 241, 241) !important;
 }
 
-.open-chat-tool-wpr{
+.open-chat-tool-wpr {
   // background:#FEEDAF;
-  background:#e8f0fe; 
+  background: #e8f0fe;
   position: relative;
   margin-left: -30px;
   top: -9px;
@@ -1489,14 +1488,61 @@ $f21blue: #039be5;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #6F5502;
+  color: #6f5502;
   font-weight: 400;
-  padding:30px
+  padding: 30px;
 }
 
-.chat-tool-link:hover{
+.chat-tool-link:hover {
   // text-decoration: underline;
 }
 // canvas {
 //   background: radial-gradient(circle at center, rgba(0,0,0,0) 0, rgba(0,0,0,0) 55%, rgba(0,0,0,0.2) 56%, rgba(0,0,0,0.2) 60%, rgba(0,0,0,0.2) 64%, rgba(0,0,0,0) 65%,rgba(0,0,0,0) 100%);
 // }
+
+#filter-conversations-title {
+  font-family: "Poppins";
+  font-size: 16px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.54) !important;
+  margin-bottom: 8px;
+  margin-top: 0px;
+}
+
+.item-label {
+  font-size: 14px;
+  font-family: "Poppins";
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.54);
+  line-height: 2;
+}
+
+.filter-convs-title {
+  font-family: "Poppins";
+  font-size: 18px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.54) !important;
+  margin-bottom: 14px;
+  margin-top: 11px;
+}
+
+@media (min-width: 767px) {
+  .select-dept-wpr {
+    padding-right: 6px;
+    padding-left: 6px;
+  }
+
+  .select-agent-wpr {
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+
+  .select-convtype-wpr {
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+
+  .filter-convs-title-wpr {
+    padding-left: 6px;
+  }
+}

@@ -253,7 +253,7 @@
     </div>
     <!-- style="padding-left: 10px !important;" -->
     <div class="row">
-      <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+      <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
 
 
         <!-- // --- Test - COUNT OF REQUESTS: ACTIVE, SERVED & UNSERVED as graph -->
@@ -262,15 +262,17 @@
         <!-- LEGEND OF COUNT OF REQUESTS: ACTIVE, SERVED & UNSERVED -->
         <!-- ---------------------------------------------------------- -->
         <div class="row">
-          <div class="col-xs-6">
+          <div class="col-xs-5">
             <div class="graph-legend" style="padding-left: 10px;">
-              <div class="advanced-pie-legend-wrapper" style="display: inline-block;height: 116px;">
+              <div class="advanced-pie-legend-wrapper" style="display: inline-block;height: 107px;">
                 <!--  width: 420px;float: left; -->
                 <div class="advanced-legend" style="position: relative;top: 50%;transform: translate(0,-50%);">
                   <div class="total-value"
                     style="font-family: 'Lato', sans-serif; font-weight: 400;font-size: 40px; color: rgba(0, 0, 0, 0.54) !important; margin-bottom: 8px;">
 
-                    {{ wsRequestsServed?.length + wsRequestsUnserved?.length }}
+                    <span class="total-value-number-of-conversation" style="position: relative;top: 2px;"> 
+                      {{ wsRequestsServed?.length + wsRequestsUnserved?.length }}
+                    </span>
 
                     <span class="total-label" style="font-family: 'Poppins';
                           font-size: 18px;
@@ -311,27 +313,17 @@
                                 font-weight: 400;
                                 color: rgba(0, 0, 0, 0.54);
                                 line-height: 2;">{{'Unserved' | translate}}</div>
-                        <!-- <div class="item-percent">23%</div> -->
+                    
                       </div>
-                      <!-- <div class="legend-item" style="margin-right: 20px;display: inline-block;cursor: pointer;">
-                                <div class="item-color"
-                                  style="border-left: 4px solid rgb(44, 230, 155); width: 4px; height: 42px; float: left; margin-right: 7px;">
-                                </div>
-                                <div class="item-value ">7.200.000</div>
-                                <div class="item-label">France</div>
-                                <div class="item-percent">34%</div>
-                              </div> -->
                     </div>
                   </div>
-                  <!-- <div class="item-value ">7.200.000</div>
-                        <div class="item-label">France</div>
-                        <div class="item-percent">34%</div> -->
+        
                 </div>
               </div>
             </div>
           </div> <!-- ./ col-xs-4 -->
 
-          <div class="col-xs-6" style="margin-top: 8px;">
+          <div class="col-xs-7" style="margin-top: 8px;">
             <!-- <div class="card" style="margin-top:0px"> -->
             <!-- <div class="card-content"> -->
             <!-- <div class="requests-chart-container" style="  width: 150px; height: 150px;float: left;"> -->
@@ -362,31 +354,22 @@
                   </div> -->
 
             <div class="row" style="margin-bottom: 16px;">
-              <div class="col-sm-12">
-                <div
-                  style="font-family: 'Poppins'; font-size: 18px; font-weight: 400;  color: rgba(0, 0, 0, 0.54) !important; margin-bottom: 14px; margin-top: 16px;">
-                  <!-- Filter conversations -->
+              <div class="col-sm-12 filter-convs-title-wpr">
+                <div class="filter-convs-title">
+                
                   {{ 'FilterConversations' | translate }}
                 </div>
               </div>
               <!-- -------------------------------------------------------- -->
               <!-- @ Department filter -->
               <!-- -------------------------------------------------------- -->
-              <div class="col-sm-6">
-                <!-- <label class="col-sm-12" style="text-align: left; color:#7695a5;padding-left:0px; font-size: 12px; margin-bottom: 1px;">
-                  {{ 'HistoryPage.FilterByDepartment' | translate }}
-                </label> -->
-
+              <div class="col-sm-4 select-dept-wpr">
+  
                 <ng-select attr.aria-label="{{ 'FilterBy' | translate }} {{ 'Department' | translate }}" class="custom"
                   name="dept" [(ngModel)]="selectedDeptId" (change)="onChangeDepts()" (clear)="clearDeptFilter()"
                   placeholder="{{ 'HistoryPage.AllDepts' | translate }}">
-
-                  <!-- <ng-option *ngFor="let dept of depts_array_noduplicate" [value]="dept?._id"> -->
                   <ng-option *ngFor="let dept of departments" [value]="dept?._id">
-                    <!-- // use this if do the for with departments -->
                     {{dept?.name}}
-                    <!-- // use this if do the for with depts_array_noduplicate -->
-                    <!-- {{dept?.deptName}} -->
                   </ng-option>
                 </ng-select>
               </div>
@@ -395,15 +378,12 @@
               <!-- -------------------------------------------------------- -->
               <!-- @ Angent filter -->
               <!-- -------------------------------------------------------- -->
-              <div class="col-sm-6">
-                <!-- <label class="col-sm-12" style="text-align: left; color: #7695a5;padding-left:0px; font-size: 12px; margin-bottom: 1px;">
-                  {{ 'HistoryPage.Agent' | translate }}
-                </label> -->
+              <div class="col-sm-4 select-agent-wpr" >
+       
                 <ng-select attr.aria-label="{{ 'FilterBy' | translate }} {{ 'HistoryPage.Agent' | translate }}"
                   name="agent" [(ngModel)]="selectedAgentId" placeholder="{{ 'HistoryPage.AllAgents' | translate }}"
                   (clear)="clearAgentFilter()" (change)="onChangeAgent()">
-                  <!-- <ng-option [value]="''">{{ 'HistoryPage.AllAgents' | translate }}</ng-option> -->
-                  <!-- user_and_bot_array -->
+             
                   <ng-option [value]="1">{{ 'HumanAgentsOnly' | translate }}</ng-option>
                   <ng-option [value]="2">{{ 'BotsOnly' | translate }}</ng-option>
                   <ng-option *ngFor="let agent of participantsInRequests" [value]="agent?._id">
@@ -412,29 +392,26 @@
                 </ng-select>
               </div>
 
-              <!--
-                      <div class="col-sm-4">                    
-                        <label></label>
-                        <button type="submit" class="btn btn-white" (click)="clearSearch()"
-                          style="color:#7695a5">
-                          {{ 'HistoryPage.ClearSearch' | translate }}
-                        </button>
-                      </div> -->
+               <!-- -------------------------------------------------------- -->
+              <!-- @ Conversation type filter -->
+              <!-- -------------------------------------------------------- -->
+              <div class="col-sm-4 select-convtype-wpr">
+                
+                <ng-select attr.aria-label="{{ 'FilterBy' | translate }} {{ 'ConversationType' | translate }}"
+                  name="conversationtype" [(ngModel)]="selectedConversationTypeId" placeholder="{{ 'ConversationType' | translate }}"
+                  (clear)="clearConversationTypeFilter()" (change)="onChangeConversationType()">
+               
+                  <ng-option *ngFor="let conversationType of conversationTypeInRequests" [value]="conversationType?.id">
+                    {{ conversationType?.name }}
+                  </ng-option>
+                </ng-select>
+              </div>
+
 
             </div>
           </div>
 
-          <!-- </div>  -->
-          <!-- ./ card-content -->
-          <!-- </div>  -->
-          <!-- ./ card -->
-
         </div> <!-- ./ row -->
-
-        <!-- </div>  -->
-
-
-
 
         <div class="row">
 
@@ -560,18 +537,18 @@
           <!-- /.new ********* -->
         </div>
       </div>
-
+ 
       <!-- // REQUESTS FOR DEPARTMENTS style="padding-right: 10px !important;"-->
-      <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
-        <div class="card" style="margin: 5px 0;">
+      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <div class="card" style="margin: 5px 0; border: unset !important;">
           <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-              <h4 class="customh4" style="padding-left:22px; margin-bottom: 0px; white-space: nowrap;">
+              <h4 class="customh4" style="padding-left:22px; font-size:18px; margin-bottom: 0px; white-space: nowrap;">
                 {{ "RequestsForDept" | translate }}
               </h4>
             </div>
           </div>
-          <div class="card-content" style="padding-top:5px; padding-top: 5px;
+          <div class="card-content" style="padding-top:5px; border-left: 1px solid #eff3f5 !important;
             min-height: 130px;
             overflow: auto;
             height: 130px;">
@@ -580,14 +557,15 @@
                 <table class="table table-hover">
                   <thead style="background-color: rgba(242, 246, 248, 1);">
                     <tr>
-                      <th style="padding-top: 4px;">
+                      <th style="padding-top: 4px;padding-bottom: 4px !important;">
                         <span class="table-head-span">
                           {{ "Department" | translate }}
                         </span>
                       </th>
-                      <th style="padding-top: 4px;">
+                      <th style="padding-top: 4px;padding-bottom: 4px !important;">
                         <span class="table-head-span">
-                          # {{ "Requests" | translate }}
+                          # 
+                          <!-- {{ "Requests" | translate }} -->
                         </span>
 
                       </th>

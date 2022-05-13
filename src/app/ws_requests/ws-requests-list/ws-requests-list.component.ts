@@ -80,6 +80,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   departments: any;
   selectedDeptId: string;
   selectedAgentId: any;
+  selectedConversationTypeId: string;
 
   TESTSITE_BASE_URL: string;
   projectName: string;
@@ -87,7 +88,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   participantsInRequests: any;
   deptsArrayBuildFromRequests: any;
 
-  filter: any[] = [{ 'deptId': null }, { 'agentId': null }];
+  filter: any[] = [{ 'deptId': null }, { 'agentId': null }, {'conversationTypeId': null}];
   hasFiltered = false;
   public browserRefresh: boolean;
   displayInternalRequestModal = 'none';
@@ -945,11 +946,32 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
   }
 
+
   clearAgentFilter() {
     this.filter[1]['agentId'] = null;
     this.hasFiltered = false
     this.logger.log('[WS-REQUESTS-LIST] - CLEAR AGENT FILTER - selectedAgentId', this.selectedAgentId)
   }
+
+  onChangeConversationType() {
+    this.hasFiltered = true;
+
+    console.log('[WS-REQUESTS-LIST] - ON-CHANGE-CONVERSAION-TYPE - filter', this.filter)
+    this.filter[2]['conversationTypeId'] = this.selectedConversationTypeId;
+
+    console.log('[WS-REQUESTS-LIST] - ON-CHANGE-AGENT - selectedAgentId', this.selectedConversationTypeId)
+
+    this.getWsRequests$();
+  }
+
+  clearConversationTypeFilter() {
+    this.filter[2]['conversationTypeId'] = null;
+    this.hasFiltered = false
+    console.log('[WS-REQUESTS-LIST] - CLEAR CONVERSAION-TYPE FILTER - selectedConversationTypeId', this.selectedConversationTypeId)
+  }
+
+
+ 
 
   // -----------------------------------------------------------------------------------------------------
   // @ Subscribe to get the published requests (called On init)
@@ -1015,34 +1037,38 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
 
           this.getParticipantsInRequests(this.ws_requests);
+          this.getConversationTypeInRequests(this.ws_requests);
 
           if (this.hasFiltered === true) {
             this.ws_requests = this.ws_requests.filter(r => {
+              // console.log('[WS-REQUESTS-LIST] - request: ', r);
+              console.log('[WS-REQUESTS-LIST] - filter: ', this.filter);
+              console.log('[WS-REQUESTS-LIST] - filter filter[0]: ', this.filter[0]);
+              console.log('[WS-REQUESTS-LIST] - filter filter[1]: ', this.filter[1]);
+              console.log('[WS-REQUESTS-LIST] - filter filter[2]: ', this.filter[2]);
 
-              this.logger.log('[WS-REQUESTS-LIST] - filter: ', this.filter);
-              this.logger.log('[WS-REQUESTS-LIST] - filter filter[0]: ', this.filter[0]);
-              this.logger.log('[WS-REQUESTS-LIST] - filter filter[1]: ', this.filter[1]);
 
-
-              // -----------------------------------------------------------------------------------------------------------
+              // -----------------------------------------------------------------------------------------------------------------------------------------------------------
               // USECASE: filter only for department
-              // -----------------------------------------------------------------------------------------------------------
-              if (this.filter[0] !== undefined && this.filter[0]['deptId'] !== null && this.filter[1]['agentId'] === null) {
-                this.logger.log('[WS-REQUESTS-LIST] FILTER USECASE 1 - filter only for department ');
-                this.logger.log('[WS-REQUESTS-LIST] FILTER USECASE 1 - filter[deptId] ', this.filter[0]['deptId']);
-                this.logger.log('[WS-REQUESTS-LIST] FILTER USECASE 1 - r[dept] ', r['dept']);
+              // -----------------------------------------------------------------------------------------------------------------------------------------------------------
+              if (this.filter[0] !== undefined && this.filter[0]['deptId'] !== null && this.filter[1]['agentId'] === null && this.filter[2]['conversationTypeId'] === null) {
+                console.log('[WS-REQUESTS-LIST] FILTER USECASE 1 - filter only for department ');
+                console.log('[WS-REQUESTS-LIST] FILTER USECASE 1 - filter[deptId] ', this.filter[0]['deptId']);
+                console.log('[WS-REQUESTS-LIST] FILTER USECASE 1 - r[dept] ', r['dept']);
 
-                if (r['dept']['_id'] === this.filter[0]['deptId']) {
+                if (r['dept'] && r['dept']['_id'] === this.filter[0]['deptId']) {
                   return true
                 } else {
                   return false
                 }
               }
 
-              // -----------------------------------------------------------------------------------------------------------
+       
+
+              // -----------------------------------------------------------------------------------------------------------------------------------------------------------
               // USECASE: filter only for participant
-              // -----------------------------------------------------------------------------------------------------------
-              if (this.filter[1] !== undefined && this.filter[1]['agentId'] !== null && this.filter[0]['deptId'] === null) {
+              // -----------------------------------------------------------------------------------------------------------------------------------------------------------
+              if (this.filter[1] !== undefined && this.filter[1]['agentId'] !== null && this.filter[0]['deptId'] === null && this.filter[2]['conversationTypeId'] === null) {
                 this.logger.log('[WS-REQUESTS-LIST] FILTER USECASE 1 - filter only for participant');
                 this.logger.log('[WS-REQUESTS-LIST] FILTER USECASE 1 - filter[agentId] ', this.filter[1]['agentId']);
 
@@ -1081,30 +1107,79 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
                 }
               }
 
+              // -----------------------------------------------------------------------------------------------------------------------------------------------------------
+              // USECASE: filter only for conversation type
+              // -----------------------------------------------------------------------------------------------------------------------------------------------------------
+              if (this.filter[2] !== undefined && this.filter[2]['conversationTypeId'] !== null && this.filter[1]['agentId'] === null && this.filter[0]['deptId'] === null) {
+                this.logger.log('[WS-REQUESTS-LIST] FILTER USECASE  - filter only for conversation type ');
+                this.logger.log('[WS-REQUESTS-LIST] FILTER USECASE  - filter[conversationTypeId] ', this.filter[2]['conversationTypeId']);
+                this.logger.log('[WS-REQUESTS-LIST] FILTER USECASE  - [channel][name]] ', r['channel']['name']);
+
+                if (r['channel']['name'] === this.filter[2]['conversationTypeId']) {
+                  return true
+                } else {
+                  return false
+                }
+              }
+
               // -----------------------------------------------------------------------------------------------------------
               // USECASE: filter for department & participant
               // -----------------------------------------------------------------------------------------------------------
-              if (this.filter[1] !== undefined && this.filter[1]['agentId'] !== null && this.filter[0] !== undefined && this.filter[0]['deptId'] !== null) {
-                this.logger.log('[WS-REQUESTS-LIST] FILTER USECASE 3 - filter for dept & participant');
-                this.logger.log('[WS-REQUESTS-LIST] FILTER USECASE 3 - filter[agentId] ', this.filter[1]['agentId']);
-                this.logger.log('[WS-REQUESTS-LIST] FILTER USECASE 3 - filter[deptId] ', this.filter[0]['deptId']);
+              if (this.filter[1] !== undefined && this.filter[1]['agentId'] !== null && this.filter[0] !== undefined && this.filter[0]['deptId'] !== null && this.filter[2]['conversationTypeId'] === null) {
+              console.log('[WS-REQUESTS-LIST] FILTER USECASE 3 - filter for dept & participant');
+                this.logger.log('[WS-REQUESTS-LIST] FILTER USECASE  - filter[agentId] ', this.filter[1]['agentId']);
+                this.logger.log('[WS-REQUESTS-LIST] FILTER USECASE  - filter[deptId] ', this.filter[0]['deptId']);
 
                 if (this.filter[1]['agentId'] === 1) {
-                  if (this.humanAgentsIdArray.some(participantid => r['participants'].includes(participantid)) && (r['dept']['_id'] === this.filter[0]['deptId'])) {
+                  if (this.humanAgentsIdArray.some(participantid => r['participants'].includes(participantid)) && (r['dept'] && r['dept']['_id'] === this.filter[0]['deptId'])) {
                     return true;
                   } else {
                     return false;
                   }
 
                 } else if (this.filter[1]['agentId'] === 2) {
-                  if (this.botAgentsIdArray.some(participantid => r['participants'].includes(participantid)) && (r['dept']['_id'] === this.filter[0]['deptId'])) {
+                  if (this.botAgentsIdArray.some(participantid => r['participants'].includes(participantid)) && (r['dept'] && r['dept']['_id'] === this.filter[0]['deptId'])) {
                     return true;
                   } else {
                     return false;
                   }
 
 
-                } else if (r['participants'].includes(this.filter[1]['agentId']) && (r['dept']['_id'] === this.filter[0]['deptId'])) {
+                } else if (r['participants'].includes(this.filter[1]['agentId']) && (r['dept'] && r['dept']['_id'] === this.filter[0]['deptId'])) {
+                  return true;
+                } else {
+                  return false;
+                }
+
+              }
+
+        
+
+              // -----------------------------------------------------------------------------------------------------------
+              // USECASE: filter for department &  participant & conversationType 
+              // -----------------------------------------------------------------------------------------------------------
+              if (this.filter[1] !== undefined && this.filter[1]['agentId'] !== null && this.filter[0] !== undefined && this.filter[0]['deptId'] !== null &&  this.filter[2] !== undefined && this.filter[2]['conversationTypeId'] !== null) {
+                console.log('[WS-REQUESTS-LIST] FILTER USECASE  - filter for dept & participant & conversationTypeId');
+                console.log('[WS-REQUESTS-LIST] FILTER USECASE  - filter[agentId] ', this.filter[1]['agentId']);
+                console.log('[WS-REQUESTS-LIST] FILTER USECASE  - filter[deptId] ', this.filter[0]['deptId']);
+                console.log('[WS-REQUESTS-LIST] FILTER USECASE  - filter[deptId] ', this.filter[2]['conversationTypeId']);
+
+                if (this.filter[1]['agentId'] === 1) {
+                  if (this.humanAgentsIdArray.some(participantid => r['participants'].includes(participantid)) && (r['dept'] && r['dept']['_id'] === this.filter[0]['deptId']) && (r['channel']['name'] === this.filter[2]['conversationTypeId'])) {
+                    return true;
+                  } else {
+                    return false;
+                  }
+
+                } else if (this.filter[1]['agentId'] === 2) {
+                  if (this.botAgentsIdArray.some(participantid => r['participants'].includes(participantid)) && (r['dept'] && r['dept']['_id'] === this.filter[0]['deptId']) && (r['channel']['name'] === this.filter[2]['conversationTypeId'])) {
+                    return true;
+                  } else {
+                    return false;
+                  }
+
+
+                } else if (r['participants'].includes(this.filter[1]['agentId']) && (r['dept'] && r['dept']['_id'] === this.filter[0]['deptId']) &&  (r['channel']['name'] === this.filter[2]['conversationTypeId'])) {
                   return true;
                 } else {
                   return false;
@@ -1113,16 +1188,73 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
               }
 
               // -----------------------------------------------------------------------------------------------------------
+              // USECASE: filter for department & conversationType 
+              // -----------------------------------------------------------------------------------------------------------
+              if (this.filter[1]['agentId'] === null && this.filter[0] !== undefined && this.filter[0]['deptId'] !== null &&  this.filter[2] !== undefined && this.filter[2]['conversationTypeId'] !== null) {
+                console.log('[WS-REQUESTS-LIST] FILTER USECASE  - filter for dept &  conversationTypeId');
+                console.log('[WS-REQUESTS-LIST] FILTER USECASE  - filter[agentId] ', this.filter[1]['agentId']);
+                console.log('[WS-REQUESTS-LIST] FILTER USECASE  - filter[deptId] ', this.filter[0]['deptId']);
+                console.log('[WS-REQUESTS-LIST] FILTER USECASE  - filter[deptId] ', this.filter[2]['conversationTypeId']);
+
+  
+                if ((r['dept'] && r['dept']['_id'] === this.filter[0]['deptId']) &&  (r['channel']['name'] === this.filter[2]['conversationTypeId'])) {
+                  return true;
+                } else {
+                  return false;
+                }
+
+              }
+
+
+     
+              // -----------------------------------------------------------------------------------------------------------
+              // USECASE: filter for participant conversationType
+              // -----------------------------------------------------------------------------------------------------------
+              if (this.filter[1] !== undefined && this.filter[1]['agentId'] !== null && this.filter[2] !== undefined && this.filter[2]['conversationTypeId'] !== null && this.filter[0]['deptId'] === null) {
+                console.log('[WS-REQUESTS-LIST] FILTER USECASE  - filter for participant conversationType');
+                  this.logger.log('[WS-REQUESTS-LIST] FILTER USECASE  - filter[agentId] ', this.filter[1]['agentId']);
+                  this.logger.log('[WS-REQUESTS-LIST] FILTER USECASE  - filter[deptId] ', this.filter[0]['deptId']);
+                  this.logger.log('[WS-REQUESTS-LIST] FILTER USECASE  - filter[conversationTypeId] ', this.filter[2]['conversationTypeId']);
+  
+                  if (this.filter[1]['agentId'] === 1) {
+                    if (this.humanAgentsIdArray.some(participantid => r['participants'].includes(participantid)) && (r['channel']['name'] === this.filter[2]['conversationTypeId'])) {
+                      return true;
+                    } else {
+                      return false;
+                    }
+  
+                  } else if (this.filter[1]['agentId'] === 2) {
+                    if (this.botAgentsIdArray.some(participantid => r['participants'].includes(participantid)) && (r['channel']['name'] === this.filter[2]['conversationTypeId'])) {
+                      return true;
+                    } else {
+                      return false;
+                    }
+  
+  
+                  } else if (r['participants'].includes(this.filter[1]['agentId']) && (r['channel']['name'] === this.filter[2]['conversationTypeId'])) {
+                    return true;
+                  } else {
+                    return false;
+                  }
+  
+                }
+
+               // -----------------------------------------------------------------------------------------------------------
               // USECASE: all filters have been canceled
               // -----------------------------------------------------------------------------------------------------------
-              if (this.filter[1]['agentId'] === null && this.filter[0]['deptId'] === null) {
+              if (this.filter[1]['agentId'] === null && this.filter[0]['deptId'] === null && this.filter[2]['conversationTypeId'] === null) {
                 this.logger.log('[WS-REQUESTS-LIST] FILTER USECASE 4 - * all filters has been cleared *');
                 this.hasFiltered = false
                 return true
               }
+
+
+
             });
           }
         }
+
+        
 
         this.ws_requests.forEach((request) => {
 

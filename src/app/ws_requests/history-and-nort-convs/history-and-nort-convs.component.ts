@@ -117,6 +117,9 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   selecteTagColor: string; // used in applied filter
   selecteTagColor_temp: string; // used in applied filter
   selecteTagName_temp: string;  // used in applied filter
+  
+  conversation_type: any;
+  conversationTypeValue: string;  // used in applied filter
 
   subscription: Subscription;
   prjct_profile_type: string;
@@ -180,6 +183,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
   operator: string;
   requests_status: any;
+ 
   selectedDeptName: string;
   selectedDeptName_temp: string;
   selectedAgentFirstname: string;
@@ -194,6 +198,17 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     { id: '200', name: 'Served' },
     { id: 'all', name: 'All' },
   ];
+
+  conversationType = [
+    { id: 'chat21', name: 'Chat' },
+    { id: 'telegram', name: 'Telegram' },
+    { id: 'messenger', name: 'Messenger' },
+    { id: 'email', name: 'Email' },
+    { id: 'form', name: 'Ticket' }
+  ]
+
+  
+
   start_date_is_null = true
 
 
@@ -629,6 +644,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
 
+
+
   getAllRequests() {
     // this.operator = '<'
     this.requests_status = 'all'
@@ -660,7 +677,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
 
       this.wsRequestsService.getHistoryAndNortRequests(this.operator, this.requests_status, this.queryString, this.pageNo).subscribe((requests: any) => {
-        this.logger.log('[HISTORY & NORT-CONVS] - GET REQUESTS RES ', requests);
+        console.log('[HISTORY & NORT-CONVS] - GET REQUESTS RES ', requests);
         this.logger.log('[HISTORY & NORT-CONVS] - GET REQUESTS ', requests['requests']);
         this.logger.log('[HISTORY & NORT-CONVS] - GET REQUESTS COUNT ', requests['count']);
 
@@ -1143,6 +1160,12 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     }
   }
 
+  requestsTypeSelectFromAdvancedOption() {
+    console.log('this.conversation_type: ', this.conversation_type)
+  
+  
+  }
+
   fulltextChange($event) {
     this.logger.log('[HISTORY & NORT-CONVS] - fulltextChange ', $event);
     this.fullText_temp = $event
@@ -1328,6 +1351,19 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     }
 
 
+    if (this.conversation_type) {
+      this.conversationTypeValue = this.conversation_type
+      console.log('search this.conversation_type ', this.conversation_type ) 
+      console.log('search this.conversationTypeValue ', this.conversationTypeValue ) 
+ 
+    } else {
+      this.conversationTypeValue = '';
+    
+    }
+
+    
+
+
     // !!!!! NOT USED ????
     if (this.requester_email) {
       this.emailValue = this.requester_email;
@@ -1348,7 +1384,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       + 'end_date=' + this.endDateValue + '&'
       + 'participant=' + this.selectedAgentValue + '&'
       + 'requester_email=' + this.emailValue + '&'
-      + 'tags=' + this.selecteTagNameValue
+      + 'tags=' + this.selecteTagNameValue + '&'
+      + 'channel=' + this.conversationTypeValue
 
     this.logger.log('[HISTORY & NORT-CONVS] - QUERY STRING ', this.queryString);
 
@@ -1402,6 +1439,16 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       this.selecteTagColor = null
     }
 
+    if (this.conversation_type) {
+      this.conversationTypeValue = this.conversation_type
+
+    } else {
+      this.conversationTypeValue = '';
+    
+    }
+
+    
+
     if (this.requester_email) {
       this.emailValue = this.requester_email;
     } else {
@@ -1423,6 +1470,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       'requester_email=' + this.emailValue
       + '&' +
       'tags=' + this.selecteTagNameValue
+      + '&' +
+      'channel=' + this.conversationTypeValue
 
     this.pageNo = 0
     this.getRequests();
@@ -1442,6 +1491,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.selectedAgentId = '';
     this.requester_email = '';
     this.selecteTagName = '';
+    this.conversation_type = '';
 
     if (!this.IS_HERE_FOR_HISTORY) {
       this.requests_status = 'all' // I comment this because it causes bugs
@@ -1463,10 +1513,10 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.fullText_applied_filter = null;
     this.selecteTagName = null
     this.selecteTagColor = null
-
+    this.conversation_type = null
 
     // tslint:disable-next-line:max-line-length
-    this.queryString = 'full_text=' + '&' + 'dept_id=' + '&' + 'start_date=' + '&' + 'end_date=' + '&' + 'participant=' + '&' + 'requester_email=' + '&' + 'tags=';
+    this.queryString = 'full_text=' + '&' + 'dept_id=' + '&' + 'start_date=' + '&' + 'end_date=' + '&' + 'participant=' + '&' + 'requester_email=' + '&' + 'tags=' + '&' + 'channel=';
     this.pageNo = 0;
     this.logger.log('[HISTORY & NORT-CONVS] - CLEAR SEARCH fullTextValue ', this.fullTextValue)
 

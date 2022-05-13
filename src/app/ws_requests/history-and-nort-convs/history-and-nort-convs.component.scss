@@ -827,9 +827,10 @@ p.member:hover {
   top: 1px;
   border-radius: 4px;
   margin-right: 3px;
+  padding: 0px 2px;
 }
 
-::ng-deep .nort-custom-mat-tooltip {
+::ng-deep .convs-custom-mat-tooltip {
   background-color: #2d323e !important;
   font-size: 11px !important;
   border-radius: 2px !important;
