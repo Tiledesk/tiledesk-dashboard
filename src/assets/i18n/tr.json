@@ -2072,7 +2072,9 @@
     "UpdateIntent":"Intent güncellemesi",
     "AssignedToYou":"Sana atandı",
     "ConversationType":"Konuşma türü",
-    "SelectConversationType":"Görüşme türünü seçin",
+    "SelectConversationType":"Görüşme türünü seçin",  
+    "PlanExpirationDate": "Plan sona erme tarihi",
+    "PlanStartDate":"Plan başlangıç tarihi",
     "CHAT_IONIC": {
         "LABEL_TU": "sen: ",
         "LABEL_MSG_PUSH_START_CHAT": "Henüz görüşme yok",

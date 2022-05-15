@@ -2072,5 +2072,7 @@
 	"UpdateIntent":"Intent aktualisieren",
 	"AssignedToYou":"Ihnen zugeteilt",
 	"ConversationType":"Konversationsart",
-	"SelectConversationType":"Konversationstyp auswählen"
+	"SelectConversationType":"Konversationstyp auswählen",
+	"PlanExpirationDate": "Ablaufdatum planen",
+	"PlanStartDate":"Startdatum planen"
 }

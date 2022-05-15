@@ -2073,6 +2073,8 @@
     "AssignedToYou":"Назначено вам",
     "ConversationType":"Тип беседы",
     "SelectConversationType":"Выбрать тип беседы",
+    "PlanExpirationDate": "Дата истечения срока действия плана",
+    "PlanStartDate":"Планировать дату начала",
     "CHAT_IONIC": {
         "LABEL_TU": "ты: ",
         "LABEL_MSG_PUSH_START_CHAT": "Разговора пока нет",

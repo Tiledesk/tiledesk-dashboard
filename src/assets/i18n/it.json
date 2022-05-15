@@ -2071,5 +2071,7 @@
     "UpdateIntent":"Aggiorna intent",
     "AssignedToYou":"Assegnate a te",
     "ConversationType":"Tipo di conversazione",
-    "SelectConversationType":"Seleziona il tipo di conversazione"
+    "SelectConversationType":"Seleziona il tipo di conversazione",
+    "PlanExpirationDate": "Data di scadenza del piano",
+    "PlanStartDate":"Data di inizio del piano"
 }

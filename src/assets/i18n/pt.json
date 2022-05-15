@@ -2073,6 +2073,8 @@
     "AssignedToYou":"Atribuído a você",
     "ConversationType":"Tipo de conversa",
     "SelectConversationType":"Selecione o tipo de conversa",
+    "PlanExpirationDate": "Data de expiração do plano",
+    "PlanStartDate":"Data de início do plano",
     "CHAT_IONIC": {
         "LABEL_TU": "vocês: ",
         "LABEL_MSG_PUSH_START_CHAT": "Nenhuma conversa ainda",
