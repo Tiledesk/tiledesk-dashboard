@@ -564,12 +564,15 @@
                       </div>
                     </div> -->
 
-                    <!-- -------------------------------------------------------------------------------------  -->
-                    <!-- SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - SUBSCRIPTION START DATE  -->
-                    <!-- -------------------------------------------------------------------------------------  -->
+                    <!-- -------------------------------------------------------------------------------------------------------  -->
+                    <!-- SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - SUBSCRIPTION START DATE OR PLAN START DATE IF ENTERPRISE -->
+                    <!-- -------------------------------------------------------------------------------------------------------  -->
                     <div class="row" *ngIf="prjct_profile_type !== 'free'" style="margin-top: 16px;">
-                      <label class="col-sm-2 custom-label">
+                      <label class="col-sm-2 custom-label" *ngIf="profile_name !== 'enterprise'">
                         {{ "SubscriptionStartDate" | translate }}
+                      </label>
+                      <label class="col-sm-2 custom-label" *ngIf="profile_name === 'enterprise'">
+                        {{ "PlanStartDate" | translate }}
                       </label>
                       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
 
@@ -583,7 +586,8 @@
                             <!-- {{ subscription_creation_date | date: 'dd/MM/yyyy' }} -->
 
                             <!-- IF THE  subscription_creation_date IS OBTAINED FROM THE SUBSCRIPTION PAYMENT OBJECT -->
-                            {{ subscription_creation_date * 1000 | date: 'dd/MM/yyyy' }}
+                            <span *ngIf="profile_name === 'enterprise'">{{ subscription_creation_date | date: 'dd/MM/yyyy' }} </span>   
+                            <span *ngIf="profile_name !== 'enterprise'">  {{ subscription_creation_date * 1000 | date: 'dd/MM/yyyy' }} </span> 
                           </span>
                         </span>
 
@@ -612,13 +616,16 @@
                       </div>
                     </div>
 
-                    <!-- -------------------------------------------------------------------------------------  -->
-                    <!-- SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - CURRENT INVOICE END DATE -->
-                    <!-- -------------------------------------------------------------------------------------  -->
-                    <div class="row" *ngIf="prjct_profile_type !== 'free' && profile_name !== 'enterprise'"
+                    <!-- ---------------------------------------------------------------------------------------------------------------  -->
+                    <!-- SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - CURRENT INVOICE END DATE OR PLAN EXIPIRATION DATE IF ENTERPRISE -->
+                    <!-- ---------------------------------------------------------------------------------------------------------------  -->
+                    <div class="row" *ngIf="prjct_profile_type !== 'free'"
                       style="margin-top: 16px;">
-                      <label class="col-sm-2 custom-label">
+                      <label class="col-sm-2 custom-label" *ngIf="profile_name !== 'enterprise'">
                         {{ "CurrentInvoiceEndDate" | translate }}
+                      </label>
+                      <label class="col-sm-2 custom-label" *ngIf="profile_name === 'enterprise'">
+                        {{ "PlanExpirationDate" | translate }}
                       </label>
                       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                         <span class="subscription-info">
@@ -626,6 +633,7 @@
                             calendar_today
                           </i>
                           <span style="font-weight: 400;  padding: 5px;height:31px;position: relative;top: 2px;">
+                     
                             {{ subscription_end_date | date: 'dd/MM/yyyy' }}
                           </span>
                         </span>

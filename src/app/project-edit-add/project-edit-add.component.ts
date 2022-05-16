@@ -855,7 +855,14 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         this.subscription_is_active = projectProfileData.subscription_is_active;
         this.subscription_end_date = projectProfileData.subscription_end_date;
         this.subscription_start_date = projectProfileData.subscription_start_date;
+        if (projectProfileData.subscription_creation_date)  {
         this.subscription_creation_date = projectProfileData.subscription_creation_date;
+        } else {
+          this.subscription_creation_date  = projectProfileData.subscription_start_date;
+          
+
+        }
+        this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan project Profile Data > subscription_creation_date', this.subscription_creation_date)
         this.prjct_profile_type = projectProfileData.profile_type;
         this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan project Profile Data > prjct_profile_type', this.prjct_profile_type)
 
