@@ -1059,23 +1059,27 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.showSpinner = false;
     });
   }
-
+  // cus_JvdAzyrsRuRnA0
   getCustomerAndPaymentMethods() {
     this.projectService.getStripeCustomer().subscribe((customer: any) => {
-      // console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer ', customer);
+      console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer ', customer);
       if (customer) {
         this.customer_id = customer.id
-        this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer id', this.customer_id);
-        if (customer.invoice_settings) {
+        console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer id', this.customer_id);
+        if (customer.invoice_settings && customer.invoice_settings.default_payment_method !== null) {
           this.customer_default_payment_method_id = customer.invoice_settings.default_payment_method
-          this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer_default_payment_method_id ', this.customer_default_payment_method_id);
+          console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer_default_payment_method_id (from invoice_settings > default_payment_method)', this.customer_default_payment_method_id);
+        } else {
+          console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer_default_payment_method_id (from invoice_settings > default_payment_method) 2', this.customer_default_payment_method_id);
+          console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer_default_payment_method_id (from customer > default_source) 2', customer.default_source);
+          this.customer_default_payment_method_id = customer.default_source
         }
         if (customer.paymentMethods)
           // console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer >  paymentMethods ', customer.paymentMethods.data);
           customer.paymentMethods.data.forEach(paymentmethod => {
-            // console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer >  paymentMethod ', paymentmethod);
+            console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer >  paymentMethod ', paymentmethod);
             if (this.customer_default_payment_method_id === paymentmethod.id) {
-              this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer > default paymentMethod ', paymentmethod);
+             console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer > default paymentMethod ', paymentmethod);
               if (paymentmethod.card) {
                 this.default_card_brand_name = paymentmethod.card.brand;
                 this.card_last_four_digits = paymentmethod.card.last4;
