@@ -292,8 +292,8 @@
                             </div>
                             <span class="timestamp">
                               <!-- {{ message?.createdAt | date: 'd/M/y HH:mm:ss'}}  -->
-                              {{browserLang === 'en' ? (message?.createdAt | amDateFormat:'MMM DD YYYY HH:mm:ss') : (
-                              message?.createdAt | amDateFormat:'DD MMM YYYY HH:mm:ss')}}
+                              {{browserLang === 'en' ? (message?.createdAt | amDateFormat:'MMM DD YYYY (HH:mm:ss)') : (
+                              message?.createdAt | amDateFormat:'DD MMM YYYY (HH:mm:ss)')}}
                             </span>
                           </div>
                           <div class="bubble-arrow"></div>
@@ -414,8 +414,8 @@
 
                             <span class="timestamp">
                               <!-- {{ message?.createdAt | date: 'd/M/y HH:mm:ss'}} -->
-                              {{browserLang === 'en' ? (message?.createdAt | amDateFormat:'MMM DD YYYY HH:mm:ss') : (
-                              message?.createdAt | amDateFormat:'DD MMM YYYY HH:mm:ss')}}
+                              {{browserLang === 'en' ? (message?.createdAt | amDateFormat:'MMM DD YYYY (HH:mm:ss)') : (
+                              message?.createdAt | amDateFormat:'DD MMM YYYY (HH:mm:ss)')}}
                             </span>
                           </div>
                           <div class="bubble-arrow alt"></div>
