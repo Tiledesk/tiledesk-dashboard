@@ -1,6 +1,14 @@
 
 # tiledesk-dashboard
 
+### 2.2.34
+- Deploys in production
+
+### 2.2.34-rc2
+- Displays the plan creation date and plan exipiration date in the subscription tab of project settings for enterprise plans
+- Fixes the bug: if the teammate has the role of agent when switching from the dashboard to the chat and vice versa, the icons that only owners and admins have access to are displayed briefly in the left sidebar
+- Adds the "Edit Profile" button and a link to the help center in the teammate details drawer
+
 ### 2.2.34-rc1
 - Adds the ability to filter by conversation type on non-real-time conversations, archived conversations, and real-time conversations
 - Adds the ticket ID to the real time conversation table list
