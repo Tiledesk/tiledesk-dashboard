@@ -38,10 +38,10 @@
         <div class="user-img-in-sidebar-user-details"
             *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true"
             [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + user?.fillColour + ')'}">
-            <span class="altenative-sidebar-user-details-avatar" >
-              {{ user?.fullname_initial }}
+            <span class="altenative-sidebar-user-details-avatar">
+                {{ user?.fullname_initial }}
             </span>
-        </div>    
+        </div>
 
         <!-- <img class="user-img-in-sidebar-user-details"
             *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true"
@@ -74,6 +74,10 @@
 
     <div class="user-details-role">
         <h3>{{ USER_ROLE | translate }} </h3>
+
+        <div class="user-details-view-profile" (click)="goToUserProfile()">
+            {{ 'EditProfile' | translate }}
+        </div>
     </div>
 
     <section class="availability-section">
@@ -95,9 +99,14 @@
 
     <section class="user-details-plan-info" *ngIf="isVisiblePAY">
         <!-- <span style="text-transform: uppercase; color: #a9afbb;"> {{'Plan' | translate}}: </span> -->
+
+        <span class="material-icons user-details-plan-icon">
+            apps
+        </span>
+
         <span>
             <div> {{prjct_name}} </div>
-            <div style="display: inline-block;"> {{ _prjct_profile_name }} </div>
+            <div style="display: inline-block; margin-left: 26px;"> {{ _prjct_profile_name }} </div>
 
             <div *ngIf="plan_type === 'payment' && plan_subscription_is_active === false"
                 style="color:#f44336; position:relative; top: -1px;display: inline-block;">
@@ -117,22 +126,32 @@
         </span>
     </section>
 
+    <section class="user-details-help-center">
+        <span class="material-icons user-details-help-center-icon">
+            support
+        </span>
+
+        <span class="user-details-help-center" (click)="goToHelpCenter()">
+            Help center
+        </span>
+    </section>
+
     <!-- <hr class="second-divider" style="margin-top: 20px;border: 0;
     border-top: 1px solid rgba(255, 255,255, 0.2);"> -->
 
     <!-- (click)=logout() -->
-    <section class="user-details-footer-section" 
+    <section class="user-details-footer-section"
         [ngClass]="{'footer-margin-top-pricing-no-visible': isVisiblePAY ===false }">
         <!-- <i class="material-icons user-details-logout-icon">
             logout
         </i>
         <div> Logout</div> -->
         <div role="button" class="logout-btn-wpr" (click)=logout()>
-            <i class="material-icons user-details-logout-icon" >
+            <i class="material-icons user-details-logout-icon">
                 logout
             </i>
-            <div class="user-details-logout-text"> 
-                 {{'Logout' | translate  }} 
+            <div class="user-details-logout-text">
+                {{'Logout' | translate }}
             </div>
         </div>
     </section>

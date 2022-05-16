@@ -470,6 +470,11 @@ export class SidebarUserDetailsComponent implements OnInit {
     this.closeUserDetailSidePanel();
   }
 
+  goToHelpCenter() {
+    const url = "https://gethelp.tiledesk.com/"
+    window.open(url, '_blank');
+  }
+
   getLoggedUserAndCurrentDshbrdLang() {
   //  console.log('[SIDEBAR-USER-DETAILS] BrowserLang ', this.translate.getBrowserLang())
     this.auth.user_bs.subscribe((user) => {

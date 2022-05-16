@@ -171,10 +171,23 @@ button.user-details-btn-close {
     font-weight: 500;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    margin-bottom: 2px !important;
+}
+
+.user-details-view-profile {
+    font-size: 14px;
+    color: #00d5ff;
+    cursor: pointer;
+    // -webkit-font-smoothing: antialiased;
+
+}
+
+.user-details-view-profile:hover {
+   text-decoration: underline;
 }
 
 .availability-section {
-    top: 300px;
+    top: 320px;
     text-align: center;
     background-color: #2d323e;
     padding: 9px;
@@ -188,7 +201,7 @@ button.user-details-btn-close {
 }
 
 .first-divider {
-    margin-top: 355px;
+    margin-top: 365px;
     border: 0;
     border-top: 1px solid rgba(255, 255, 255, 0.2);
 }
@@ -239,6 +252,37 @@ button.user-details-btn-close {
     -webkit-font-smoothing: antialiased;
 }
 
+.user-details-plan-icon {
+    display: block;
+    float: left;
+    font-size: 20px;
+    margin-right: 6px;
+}
+
+
+
+.user-details-help-center-icon {
+    color: #a9afbb;
+    font-size: 20px;
+    vertical-align: middle;
+    margin-right: 3px;
+}
+
+.user-details-help-center {
+    margin-top: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #a9afbb;
+    -webkit-font-smoothing: antialiased;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.user-details-help-center:hover { 
+    color: #fff;
+    text-decoration: underline;
+}
+
 .user-details-footer-section {
     -webkit-transform: translateX(-50%);
     transform: translateX(-50%);
@@ -248,7 +292,7 @@ button.user-details-btn-close {
     text-align: center;
     // cursor: pointer;
     padding-bottom: 15px;
-    padding-top: 200px;
+    padding-top: 186px;
     -webkit-font-smoothing: antialiased;
     font-size: 16px;
     font-weight: 400;
