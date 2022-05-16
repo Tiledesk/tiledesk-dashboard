@@ -2073,5 +2073,6 @@
     "ConversationType":"Tipo di conversazione",
     "SelectConversationType":"Seleziona il tipo di conversazione",
     "PlanExpirationDate": "Data di scadenza del piano",
-    "PlanStartDate":"Data di inizio del piano"
+    "PlanStartDate":"Data di inizio del piano",
+    "EditProfile": "Cambia profilo"
 }

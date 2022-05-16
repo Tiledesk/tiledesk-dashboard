@@ -2075,6 +2075,7 @@
     "SelectConversationType":"Select conversation type",
     "PlanExpirationDate": "Plan expiration date",
     "PlanStartDate":"Plan start date",
+    "EditProfile": "Edit profile",
     "CHAT_IONIC": {
         "LABEL_TU": "you: ",
         "LABEL_MSG_PUSH_START_CHAT": "No conversation yet",

@@ -2075,6 +2075,7 @@
     "SelectConversationType":"Изаберите тип разговора",
     "PlanExpirationDate": "Датум истека плана",
     "PlanStartDate":"Датум почетка плана",
+    "EditProfile": "Уреди профил",
     "CHAT_IONIC": {
         "LABEL_TU": "ти: ",
         "LABEL_MSG_PUSH_START_CHAT": "Још нема разговора",

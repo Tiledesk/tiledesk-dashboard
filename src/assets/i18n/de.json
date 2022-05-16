@@ -2074,5 +2074,6 @@
 	"ConversationType":"Konversationsart",
 	"SelectConversationType":"Konversationstyp auswählen",
 	"PlanExpirationDate": "Ablaufdatum planen",
-	"PlanStartDate":"Startdatum planen"
+	"PlanStartDate":"Startdatum planen",
+	"EditProfile": "Profil bearbeiten"
 }

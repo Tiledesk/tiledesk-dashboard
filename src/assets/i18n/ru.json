@@ -2075,6 +2075,7 @@
     "SelectConversationType":"Выбрать тип беседы",
     "PlanExpirationDate": "Дата истечения срока действия плана",
     "PlanStartDate":"Планировать дату начала",
+    "EditProfile": "Редактировать профиль",
     "CHAT_IONIC": {
         "LABEL_TU": "ты: ",
         "LABEL_MSG_PUSH_START_CHAT": "Разговора пока нет",

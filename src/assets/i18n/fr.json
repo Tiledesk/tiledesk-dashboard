@@ -2075,6 +2075,7 @@
     "SelectConversationType":"Sélectionnez le type de conversation",
     "PlanExpirationDate": "Date d'expiration du forfait",
     "PlanStartDate":"Date de début du plan",
+    "EditProfile": "Editer le profil",
     "CHAT_IONIC": {
         "LABEL_TU": "vous: ",
         "LABEL_MSG_PUSH_START_CHAT": "Pas encore de conversation",
