@@ -304,7 +304,7 @@
                 </p>
                 <h4 class="category project-user-role"
                   [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}">
-                  {{ project?.role }}
+                  {{ project?.role | translate}}
                 </h4>
                 <!-- ----- new -->
                 <div class="availabily-and-busy-wpr--prjcts-for-panel">
