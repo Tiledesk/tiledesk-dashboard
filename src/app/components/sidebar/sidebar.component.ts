@@ -120,7 +120,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     ROUTES: RouteInfo[];
     displayLogoutModal = 'none';
 
-    USER_ROLE: string;
+    USER_ROLE: string = 'agent';
 
     currentUserId: string
 
@@ -244,17 +244,18 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     ngOnInit() {
         this.getLoggedUser();
+        this.getCurrentProject_andThenDepts();
         this.translateChangeAvailabilitySuccessMsg();
         this.translateChangeAvailabilityErrorMsg();
         this.getProfileImageStorage();
 
-        this.getCurrentProject_andThenDepts();
+        
 
         this.getUserAvailability();
         this.getUserUserIsBusy();
         this.getProjectUserId();
 
-        this.getProjectUserRole();
+        
 
         this.hasChangedAvailabilityStatusInUsersComp();
 
@@ -906,28 +907,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
 
 
-    getProjectUserRole() {
-        this.usersService.project_user_role_bs.subscribe((user_role) => {
-            this.USER_ROLE = user_role;
-            this.logger.log('[SIDEBAR] - 1. SUBSCRIBE PROJECT_USER_ROLE_BS ', this.USER_ROLE);
-            if (this.USER_ROLE) {
-                this.logger.log('[SIDEBAR] - PROJECT USER ROLE ', this.USER_ROLE);
-                if (this.USER_ROLE === 'agent') {
-                    this.SHOW_SETTINGS_SUBMENU = false;
-                }
-            }
-            //  else {
-            //     // used when the page is refreshed
-            //     // this.USER_ROLE = this.usersLocalDbService.getUserRoleFromStorage();
 
-            //     /*  IF USER_ROLE IS NULL FROM SUBSCRIPTION IS GOT FROM THE getProjectUser CALLBACK */
-            //     this.logger.log('!!! SIDEBAR - 2. PROJECT_USER_ROLE_BS IS NULL GET USER ROLE FROM getProjectUser CALLBACK ', this.USER_ROLE);
-            //     if (this.USER_ROLE === 'agent') {
-            //         this.SHOW_SETTINGS_SUBMENU = false;
-            //     }
-            // }
-        });
-    }
 
     getProjectUserId() {
         this.usersService.project_user_id_bs.subscribe((projectUser_id) => {
@@ -1146,10 +1126,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
             if (this.project) {
 
-                this.getDeptsAndFilterDefaultDept();
-
+                // this.getDeptsAndFilterDefaultDept();
+                
                 this.projectId = this.project._id
-
+                this.getProjectUserRole(this.projectId);
                 this.findCurrentProjectAmongAll(this.projectId)
 
                 this.prjct_profile_name = this.project.profile_name;
@@ -1170,6 +1150,29 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 this.getProjectUser();
             }
         });
+    }
+
+    getProjectUserRole(projectId) {
+        console.log('[SIDEBAR] - PROJECT USER ROLE projectId ', projectId);
+        const storedProjectJson = localStorage.getItem(projectId);
+        if (storedProjectJson) {
+            const projectObject = JSON.parse(storedProjectJson);
+            this.USER_ROLE = projectObject['role'];
+            console.log('[SIDEBAR] - PROJECT USER ROLE get from storage ', this.USER_ROLE);
+        } else {
+
+            this.usersService.project_user_role_bs.subscribe((user_role) => {
+                this.USER_ROLE = user_role;
+                this.logger.log('[SIDEBAR] - 1. SUBSCRIBE PROJECT_USER_ROLE_BS ', this.USER_ROLE);
+                if (this.USER_ROLE) {
+                    console.log('[SIDEBAR] - PROJECT USER ROLE get from $ subsription', this.USER_ROLE);
+                    if (this.USER_ROLE === 'agent') {
+                        this.SHOW_SETTINGS_SUBMENU = false;
+                    }
+                }
+
+            });
+        }
     }
 
 
@@ -1247,26 +1250,26 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             });
     }
 
-    getDeptsAndFilterDefaultDept() {
-        this.deptService.getDeptsByProjectId().subscribe((departments: any) => {
-            //   this.logger.log('[SIDEBAR] - DEPTS (FILTERED FOR PROJECT ID)', departments);
+    // getDeptsAndFilterDefaultDept() {
+    //     this.deptService.getDeptsByProjectId().subscribe((departments: any) => {
+    //         //   this.logger.log('[SIDEBAR] - DEPTS (FILTERED FOR PROJECT ID)', departments);
 
-            if (departments) {
-                departments.forEach(dept => {
-                    if (dept.default === true) {
-                        // this.logger.log('[SIDEBAR] - GET DEPTS - DEFAULT DEPT ', dept);
-                        this.default_dept_id = dept._id;
-                        // this.logger.log('[SIDEBAR] - GET DEPTS - DEFAULT DEPT ID: ', this.default_dept_id);
-                    }
-                })
-            }
-        }, error => {
-            this.logger.error('[SIDEBAR] - GET DEPTS ERR', error);
-        }, () => {
-            this.logger.log('[SIDEBAR] - GET DEPTS COMPLETE');
-        });
+    //         if (departments) {
+    //             departments.forEach(dept => {
+    //                 if (dept.default === true) {
+    //                     // this.logger.log('[SIDEBAR] - GET DEPTS - DEFAULT DEPT ', dept);
+    //                     this.default_dept_id = dept._id;
+    //                     // this.logger.log('[SIDEBAR] - GET DEPTS - DEFAULT DEPT ID: ', this.default_dept_id);
+    //                 }
+    //             })
+    //         }
+    //     }, error => {
+    //         this.logger.error('[SIDEBAR] - GET DEPTS ERR', error);
+    //     }, () => {
+    //         this.logger.log('[SIDEBAR] - GET DEPTS COMPLETE');
+    //     });
 
-    }
+    // }
 
     round5(x) {
         // const percentageRounded = Math.ceil(x / 5) * 5;

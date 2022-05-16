@@ -52,8 +52,6 @@ li.active a p.onBlackBckgrnd .sidebar-mini {
   color: $brand-sidebar-active-item-icon-color !important;
 }
 
-
-
 // .sidebar-wrapper-in-projects {
 //   height: 100vh !important;
 // }
@@ -260,7 +258,6 @@ button.close {
   background-color: #4caf50;
 }
 
-
 // --------------
 .sidebar--isBusy-text {
   // content: url("../../../assets/img/clock_hands.svg");
@@ -378,7 +375,7 @@ button.close {
   transform: translate(-50%, -50%);
   position: absolute;
   -webkit-font-smoothing: antialiased;
-  font-size:14px
+  font-size: 14px;
 }
 
 .small-sidebar-email {
@@ -426,34 +423,32 @@ button.close {
 }
 
 #sidebar_wrapper > div > ul > li:hover > a {
-  background-color: transparent!important;
+  background-color: transparent !important;
 }
-
 
 #sidebar_wrapper > div > ul > li:hover > a > i {
   color: #a9afbb;
-  background-color: transparent!important;
+  background-color: transparent !important;
 }
 
-#sidebar_wrapper > div > ul > li:hover > a > #openchat-span > svg{
+#sidebar_wrapper > div > ul > li:hover > a > #openchat-span > svg {
   color: #a9afbb;
-  background-color: transparent!important;
+  background-color: transparent !important;
 }
 .chat21-icon {
- 
-  fill: #647491
+  fill: #647491;
 }
 
 #openchat-a:hover > #openchat-a > #openchat-span > svg > .chat21-icon {
   fill: #a9afbb;
 }
 
-// Bot icon sidebar menu item default color 
+// Bot icon sidebar menu item default color
 .chat-bot-icon-st0 {
   // fill: #a9afbb;
-  fill: #647491
+  fill: #647491;
 }
-// Bot icon sidebar menu item default color 
+// Bot icon sidebar menu item default color
 .chat-bot-icon-st1 {
   fill: none;
 }
@@ -464,68 +459,70 @@ button.close {
 }
 
 // Bot icon sidebar menu item active
-#sidebar_wrapper > div > ul > #bot-anchor-wpr.menu_item_active > #bot-anchor > .bot-icon-wpr > svg > g > g > .chat-bot-icon-st0 {
+#sidebar_wrapper
+  > div
+  > ul
+  > #bot-anchor-wpr.menu_item_active
+  > #bot-anchor
+  > .bot-icon-wpr
+  > svg
+  > g
+  > g
+  > .chat-bot-icon-st0 {
   fill: #ffffff !important;
 }
 
 // Bot icon sidebar menu item hover
 #bot-anchor-wpr:hover > #bot-anchor > .bot-icon-wpr > svg > g > g > .chat-bot-icon-st0 {
-  fill: #a9afbb ;
-}
-
-// RT monitor sidebar menu item default color 
-.realtime-icon-st3{
-  fill:#647491;
-}
-
-// Replaces realtime-icon-st3
-.convs-monitor--st0{
-  fill:none;
-}
-.convs-monitor--st1{
-  fill:#647491;
-}
-
-// RT monitor sidebar menu item hover 
-li:hover > a > .realtime-icon-wpr > svg  > path {
   fill: #a9afbb;
 }
 
-#sidebar_wrapper > div > ul > li.menu_item_active > a > .realtime-icon-wpr > svg  > .realtime-icon-st3 {
+// RT monitor sidebar menu item default color
+.realtime-icon-st3 {
+  fill: #647491;
+}
+
+// Replaces realtime-icon-st3
+.convs-monitor--st0 {
+  fill: none;
+}
+.convs-monitor--st1 {
+  fill: #647491;
+}
+
+// RT monitor sidebar menu item hover
+li:hover > a > .realtime-icon-wpr > svg > path {
+  fill: #a9afbb;
+}
+
+#sidebar_wrapper > div > ul > li.menu_item_active > a > .realtime-icon-wpr > svg > .realtime-icon-st3 {
   fill: #ffffff !important;
 }
 
-#sidebar_wrapper > div > ul > li.active > a > .realtime-icon-wpr > svg  > .realtime-icon-st3 {
+#sidebar_wrapper > div > ul > li.active > a > .realtime-icon-wpr > svg > .realtime-icon-st3 {
   fill: #ffffff !important;
 }
 
-
-// No more used - classs of an old svg icon used for the RT monitor sidebar menu item 
+// No more used - classs of an old svg icon used for the RT monitor sidebar menu item
 // .realtime-icon-st0{
 //   fill:none;
 // }
 
-// No more used - classs of an old svg icon used for the RT monitor sidebar menu item 
+// No more used - classs of an old svg icon used for the RT monitor sidebar menu item
 // .realtime-icon-st1{
 //   fill:#647491;
 // }
-
-
 
 // .chat21-icon:hover {
 //   fill: #a9afbb;
 //   // fill: #647491
 // }
 
-
-
 .active {
   height: 40px;
   // background-color: $brand-sidebar-active-item-bckgrnd;
   color: #fff !important;
 }
-
-
 
 .active a {
   background-color: transparent !important;
@@ -547,13 +544,9 @@ li:hover > a > .realtime-icon-wpr > svg  > path {
   color: #ffffff;
 }
 
-
 .menu_item_active > a > i {
   color: #ffffff;
 }
-
-
-
 
 .nav > li > a {
   padding: 5px 15px !important;
@@ -1341,6 +1334,13 @@ li:hover > a > .realtime-icon-wpr > svg  > path {
   top: 2px;
 }
 
+.display-sidebar-menu-item {
+  display: block;
+}
+
+.hide-sidebar-menu-item {
+  display: none;
+}
 
 // #bot-anchor-wpr.active > .chat-bot-icon-st0 {
 //   fill: #ffffff !important;
