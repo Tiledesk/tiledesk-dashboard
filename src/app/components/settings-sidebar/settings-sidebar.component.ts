@@ -322,6 +322,10 @@ export class SettingsSidebarComponent implements OnInit {
     this.router.navigate(['project/' + this.project._id + '/cannedresponses'])
   }
 
+  goToEmailTicketing() {
+    this.router.navigate(['project/' + this.project._id + '/email'])
+  }
+
   goToTags() {
     // routerLink="project/{{ project._id }}/labels"
     this.router.navigate(['project/' + this.project._id + '/labels'])

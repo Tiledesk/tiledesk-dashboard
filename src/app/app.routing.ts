@@ -114,6 +114,7 @@ import { MessagesComponent } from './analytics2/metriche/messages/messages.compo
 import { RichiesteComponent } from './analytics2/metriche/richieste/richieste.component';
 import { NativeBotComponent } from './bots/native-bot/native-bot.component';
 import { NativeBotSelectTypeComponent } from './bots/native-bot-select-type/native-bot-select-type.component';
+import { EmailTicketingComponent } from './email-ticketing/email-ticketing.component';
 
 
 // /Users/nicola/TILEDESK-DSHBRD-ENTP/src/app/analytics2/metriche/messages/messages.component.ts
@@ -365,8 +366,8 @@ const routes: Routes = [
   // Webhook
   { path: 'project/:projectid/webhook', component: WebhookComponent, canActivate: [AuthGuard]},
   { path: 'project/:projectid/map-request', component: MapRequestComponent, canActivate: [AuthGuard]},
-
-
+  { path: 'project/:projectid/email', component:  EmailTicketingComponent, canActivate: [AuthGuard]},
+ 
 
 
 ];

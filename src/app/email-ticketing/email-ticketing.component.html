@@ -1,0 +1,165 @@
+<span class="navbar-brand navbar-brand-sidebar-settings"
+  [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }"
+  [ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
+
+  <i class="material-icons">settings</i>
+
+  <span *ngIf="IS_OPEN_SETTINGS_SIDEBAR">{{ 'Settings' | translate }} </span>
+</span>
+
+
+<div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
+  <div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
+
+    <div class="content-wpr" style="display: flex;">
+      <appdashboard-settings-sidebar style="border-right:1px solid #e5effe !important"> </appdashboard-settings-sidebar>
+      <div class="teplate-content" style="flex: 1 1 auto; margin-left: 20px;">
+
+        <div class="link-to-trigger-docs-wpr">
+          <div class="row link-to-trigger-docs">
+            <div class="col-md-12">
+              <span style="margin-left: 15px;">
+                <svg aria-hidden="true" class="svg-inline--fa fa-readme fa-w-18" data-icon="readme" data-prefix="fab"
+                  focusable="false" role="img" style="width: 25px;height:auto; vertical-align: middle;"
+                  viewBox="0 0 576 512" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M528.3 46.5H388.5c-48.1 0-89.9 33.3-100.4 80.3-10.6-47-52.3-80.3-100.4-80.3H48c-26.5 0-48 21.5-48 48v245.8c0 26.5 21.5 48 48 48h89.7c102.2 0 132.7 24.4 147.3 75 .7 2.8 5.2 2.8 6 0 14.7-50.6 45.2-75 147.3-75H528c26.5 0 48-21.5 48-48V94.6c0-26.4-21.3-47.9-47.7-48.1zM242 311.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5V289c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5V251zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm259.3 121.7c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5V228c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5v-22.8c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5V190z"
+                    fill="#0f62ff">
+                  </path>
+                </svg>
+              </span>
+              <a class="custom-anchor-to-docs" (click)="goToEmailTicketingDocs()">
+
+                How to email ticketing works
+
+
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8">
+            <div class="card card card--no-border">
+
+
+              <div class="row">
+                <div class="col-md-12">
+                  <h3 class="card_title__underlined">
+                    <span class="card_title__underline">
+                      Integrate with your mailbox provider
+                    </span>
+                  </h3>
+                </div>
+                <div class="col-md-12">
+                  <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"> </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12">
+                  <p class="paragraph-custom-margin-and-weight">
+                    To integrate your mailbox, set up automatic forwarding in your current email, to the email address
+                    below. When an end-user sends an email (also with images and attachments) it creates a ticket.
+                  </p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="ticketing-email-wpr">
+                    <input style="display: none;" type="text" id="ticketing-email" class="input" [(ngModel)]="ticketingEmail">
+
+                    <div class="input-group">
+                      <input [(ngModel)]="ticketingEmail" id="ticketing-email"
+                        class="input" type="text" >
+                      <span class="input-group-btn">
+                        <button id="copy-ticketing-email" class="btn btn-primary" (click)="copyTicketingEmail()"
+                         
+                          style="padding-bottom: 9px; margin-bottom: 10px; padding-top: 9px; border-radius: 5px;">
+                          <span class="material-icons">
+                            content_copy
+                            </span>
+                        </button>
+                      </span>
+                    </div>
+
+
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="row" style="margin-top: 18px;">
+                <div class="col-md-12">
+                  <h3 class="card_title__underlined">
+                    <span class="card_title__underline">
+                      Department's mailbox
+                    </span>
+                  </h3>
+                </div>
+                <div class="col-md-12">
+                  <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"> </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12">
+                  <p class="paragraph-custom-margin-and-weight">
+                    Instead of creating a ticket in the Tiledesk Default Department you can explicitly specify the
+                    department to which the ticket belongs by sending an email to the address genetated after the
+                    deparment selction:
+                  </p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <ng-select class="custom" name="dept" [(ngModel)]="selectedDeptId" [clearable]="false"
+                    (change)="onSelectedDeptId(selectedDeptId)" placeholder="Select a department">
+
+                    <ng-option *ngFor="let dept of departments" [value]="dept._id">
+                      {{dept.name}}
+                    </ng-option>
+                  </ng-select>
+                </div>
+              </div>
+
+
+              <div class="row">
+                <div class="col-md-12">
+                  <label for="ticketing-email-dept" style="margin-top: 12px;">
+                    Email address
+                  </label>
+
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="ticketing-email-wpr">
+                    <input style="display: none;" type="text" id="ticketing-email-dept" class="input" [(ngModel)]="ticketingEmailDept">
+
+
+                    <div class="input-group">
+                      <input [(ngModel)]="ticketingEmailDept"
+                        class="input" type="text" id="ticketing-email-dept">
+                      <span class="input-group-btn">
+                        <button id="copy-ticketing-email" class="btn btn-primary" (click)="copyTicketingEmailDept()"
+                         
+                          style="padding-bottom: 9px; margin-bottom: 10px; padding-top: 9px; border-radius: 5px;">
+                          <span class="material-icons">
+                            content_copy
+                            </span>
+                        </button>
+                      </span>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

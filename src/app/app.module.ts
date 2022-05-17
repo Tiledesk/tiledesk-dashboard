@@ -223,6 +223,7 @@ import { OnlynumberDirective } from './_directives/onlynumber.directive';
 import { NativeBotSidebarComponent } from './bots/native-bot-sidebar/native-bot-sidebar.component';
 import { NativeBotComponent } from './bots/native-bot/native-bot.component';
 import { NativeBotSelectTypeComponent } from './bots/native-bot-select-type/native-bot-select-type.component';
+import { EmailTicketingComponent } from './email-ticketing/email-ticketing.component';
 // console.log('************** APPMODULE ******************');
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -418,7 +419,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     WidgetPrechatFormComponent,
     NativeBotSidebarComponent,
     NativeBotComponent,
-    NativeBotSelectTypeComponent
+    NativeBotSelectTypeComponent,
+    EmailTicketingComponent
   ],
   imports: [
     CreditCardDirectivesModule,

@@ -1,0 +1,48 @@
+.custom-anchor-to-docs {
+    color: #0f62ff !important;
+    vertical-align: middle;
+    font-size: 14px;
+    font-weight: 400;
+    cursor: pointer;
+    margin-left: 8px;
+}
+
+.custom-anchor-to-docs:hover {
+    text-decoration: underline;
+}
+
+.link-to-trigger-docs {
+    background-color: rgb(241, 241, 241);
+    margin-right: 0px;
+    margin-left: 0px;
+    padding-bottom: 12px;
+    padding-top: 12px;
+}
+
+input[type="text"] {
+    // min-width: 307px !important;
+    height: 36px;
+    font-size: 14px;
+    width: 100%;
+    margin-bottom: 10px;
+    -webkit-appearance: none;
+    background: #fff;
+    border: 1px solid #d9d9d9 !important;
+    // border-top: 1px solid #c0c0c0;
+    /* border-radius: 2px; */
+    padding: 0 8px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    border-radius: 5px;
+    background-color: #fff !important;
+    // border: solid 1px #ddd;
+}
+
+.ticketing-email-wpr {
+    max-width: 640px;
+}
+
+.paragraph-custom-margin-and-weight {
+    margin-bottom: 6px;
+    font-weight:400;
+}
