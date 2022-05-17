@@ -302,6 +302,15 @@
                   [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}">
                   {{ project?.id_project?._id }}
                 </p>
+                <!--  -->
+                <div class="project-plan-badge" 
+                [ngClass]="{'pro-badge':  project?.plan_badge_background_type === 'pro_badge',
+                 'enterprise-badge': project?.plan_badge_background_type === 'enterprise_badge', 
+                 'free-badge': project?.plan_badge_background_type === 'free_badge' } " >
+                  <!-- {{ project?.id_project?.profile.name }} -->
+                  {{  project?.prjct_profile_name }}
+                </div>
+
                 <h4 class="category project-user-role"
                   [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}">
                   {{ project?.role | translate}}

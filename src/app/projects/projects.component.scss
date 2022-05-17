@@ -140,8 +140,8 @@ input[type="text"] {
 }
 
 .project-user-role {
-  font-size: 16px;
-  margin-top: 22px;
+  font-size: 14px;
+  margin-top: 11px;
   font-family: "Poppins", Arial, sans-serif;
   color: #7695a5;
   text-transform: capitalize;
@@ -555,6 +555,7 @@ input[type="text"] {
 .id-project {
   font-size: 12px !important;
   color: #7695a5;
+  margin-bottom: 5px;
 }
 
 // NOT USED
@@ -753,3 +754,27 @@ input[type="text"] {
 // ---------------------------------
 // TOOLTIP END
 // ---------------------------------
+
+// free #faba3e
+// pro  #3ea9f5
+// enterprise #6772e5
+.pro-badge {
+background-color: #3ea9f5;
+}
+.enterprise-badge {
+  background-color: #6772e5;
+}
+
+.free-badge {
+  background-color: #faba3e;
+}
+
+.project-plan-badge {
+  width: fit-content;
+  border-radius: 4px;
+  padding: 0px 5px;
+  color: #fff;
+  text-transform: capitalize;
+  font-size: 11px;
+  font-weight: 400;
+}

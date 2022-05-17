@@ -77,7 +77,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   browserLang: string;
   languageNotSupported: boolean = false
   private unsubscribe$: Subject<any> = new Subject<any>();
-
+  prjct_profile_name: string;
   constructor(
     private projectService: ProjectService,
     private router: Router,
@@ -146,7 +146,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
 
         const stored_preferred_lang = localStorage.getItem(this.currentUserId + '_lang')
-         console.log('[PROJECTS] stored_preferred_lang ', stored_preferred_lang)
+        console.log('[PROJECTS] stored_preferred_lang ', stored_preferred_lang)
         if (stored_preferred_lang) {
           this.dsbrd_lang = stored_preferred_lang;
           this.getLangTranslation(this.dsbrd_lang)
@@ -165,14 +165,14 @@ export class ProjectsComponent implements OnInit, OnDestroy {
           // console.log('[PROJECTS] flag_url (from browser_lang) ', this.flag_url)
         }
 
-        
+
         if (!tranlatedLanguage.includes(this.dsbrd_lang)) {
-          this.logger.log('[PROJECTS] - browser_lang includes', tranlatedLanguage.includes(this.dsbrd_lang)) 
-         
-          this.logger.log('[PROJECTS] - browser_lang', this.dsbrd_lang) 
+          this.logger.log('[PROJECTS] - browser_lang includes', tranlatedLanguage.includes(this.dsbrd_lang))
+
+          this.logger.log('[PROJECTS] - browser_lang', this.dsbrd_lang)
           this.flag_url = "assets/img/language_flag/en.png"
           this.languageNotSupported = true
-        }  else {
+        } else {
           this.languageNotSupported = false
         }
 
@@ -189,7 +189,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   }
 
 
-  
+
   getLangTranslation(dsbrd_lang_code) {
     this.translate.get(dsbrd_lang_code)
       .subscribe((translation: any) => {
@@ -449,17 +449,42 @@ export class ProjectsComponent implements OnInit, OnDestroy {
       });
   }
 
+
+  getPaidPlanTranslation(project, project_profile_name) {
+    console.log('getPaidPlanTranslation project_profile_name ', project_profile_name) 
+    if (project_profile_name === 'free'){
+      project['plan_badge_background_type'] = 'free_badge'
+    } else if (project_profile_name === 'pro') {
+      project['plan_badge_background_type'] = 'pro_badge'
+    } else if (project_profile_name === 'enterprise') { 
+      project['plan_badge_background_type'] = 'enterprise_badge'
+    }
+    this.translate.get('PaydPlanName', { projectprofile: project_profile_name })
+      .subscribe((text: string) => {
+        this.prjct_profile_name = text;
+        project['prjct_profile_name'] = this.prjct_profile_name
+        console.log('+ + + PaydPlanName ', text)
+      });
+  }
+
+  getProPlanTrialTranslation(project) {
+    project['plan_badge_background_type'] = 'pro_badge'
+    this.translate.get('ProPlanTrial')
+      .subscribe((translation: any) => {
+        this.prjct_profile_name = translation;
+        project['prjct_profile_name'] = this.prjct_profile_name
+      });
+  }
   /**
    * GET PROJECTS AND SAVE IN THE STORAGE: PROJECT ID - PROJECT NAME - USE ROLE   */
   getProjectsAndSaveInStorage() {
     this.projectService.getProjects().subscribe((projects: any) => {
-      this.logger.log('[PROJECTS] - GET PROJECTS ', projects);
+      console.log('[PROJECTS] - GET PROJECTS ', projects);
 
       this.showSpinner = false;
 
       if (projects) {
         this.projects = projects;
-
         // SET THE IDs and the NAMES OF THE PROJECT IN THE LOCAL STORAGE.
         // WHEN IS REFRESHED A PAGE THE AUTSERVICE USE THE NAVIGATION PROJECT ID TO GET FROM STORAGE THE NAME OF THE PROJECT
         // AND THEN PUBLISH PROJECT ID AND PROJECT NAME
@@ -470,6 +495,17 @@ export class ProjectsComponent implements OnInit, OnDestroy {
           this.logger.log('[PROJECTS] - SET PROJECT IN STORAGE')
           project['is_selected'] = false
 
+          if (project.id_project && project.id_project.profile.type === 'free') {
+            if (project.id_project && project.id_project.trialExpired === false) {
+              this.getProPlanTrialTranslation(project);
+            } else {
+              this.getPaidPlanTranslation(project, project.id_project.profile.name)
+            }
+
+          } else if (project.id_project && project.id_project.profile.type === 'payment') {
+            this.getPaidPlanTranslation(project, project.id_project.profile.name);
+
+          }
           if (project.id_project) {
             const prjct: Project = {
               _id: project.id_project._id,
