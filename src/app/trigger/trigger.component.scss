@@ -1,43 +1,41 @@
 @import "./src/assets/sass/md/_variables.scss";
-.table td, .table th {
-    // vertical-align: middle;
-    vertical-align: top !important;
+.table td,
+.table th {
+  // vertical-align: middle;
+  vertical-align: top !important;
 }
 
-
-
 .card-header-custom-bkgrnd {
-    box-shadow:none;
-    -webkit-box-shadow:none;
-    margin:0px;
-    border-radius: 3px 3px 0px 0px;
-    // background-color: #f2f6f8;
-    background-color: #ffffff;
-    // border-bottom: 1px solid #eff3f5;
-    padding-top: 12px;
-    padding-bottom: 12px;
-  }
-  
-  .column-th-span {
-    font-size: 14px;
-    font-weight: 500;
-    color: #353f45;
-    // font-weight: bold;
-    font-family: 'Google Sans', sans-serif !important;
-    // color: #566787;
-  }
+  box-shadow: none;
+  -webkit-box-shadow: none;
+  margin: 0px;
+  border-radius: 3px 3px 0px 0px;
+  // background-color: #f2f6f8;
+  background-color: #ffffff;
+  // border-bottom: 1px solid #eff3f5;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
 
+.column-th-span {
+  font-size: 14px;
+  font-weight: 500;
+  color: #353f45;
+  // font-weight: bold;
+  font-family: "Google Sans", sans-serif !important;
+  // color: #566787;
+}
 
 .form-check-input {
-    position: absolute;
-    margin-top: .3rem;
-    margin-left: -1.25rem;
+  position: absolute;
+  margin-top: 0.3rem;
+  margin-left: -1.25rem;
 }
 
 td {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 // TOOLTIP START
@@ -46,7 +44,7 @@ td {
   display: inline-block;
   // border-bottom: 1px dotted black;
 }
-  
+
 .White__Tooltip .White__Tooltiptext {
   visibility: hidden;
   width: fit-content;
@@ -64,7 +62,7 @@ td {
   line-height: 1.9;
   // font-size: 16px;
   // border: 1px solid #eee;
-  
+
   /* Fade in tooltip - takes 1 second to go from 0% to 100% opac: */
   opacity: 0;
   transition: opacity 1s;
@@ -75,7 +73,7 @@ td {
   box-shadow: 0 1em 2em -0.5em rgba(0, 0, 0, 0.35);
   background-color: #394f5a;
 }
-  
+
 .White__Tooltip:hover .White__Tooltiptext {
   visibility: visible;
   opacity: 1;
@@ -83,13 +81,13 @@ td {
 
 // TOOLTIP END
 
-.trigger:hover{
-  
+.trigger:hover {
   // background-color: rgba(185, 185, 185, 0.35)
 }
 
 .modal-header {
-  padding: 15px; border-bottom: 1px solid #e5e5e5;
+  padding: 15px;
+  border-bottom: 1px solid #e5e5e5;
 }
 
 // TOOLTIP START
@@ -98,7 +96,7 @@ td {
   display: inline-block;
   // border-bottom: 1px dotted black;
 }
-  
+
 .White__Tooltip .White__Tooltiptext {
   visibility: hidden;
   width: fit-content;
@@ -116,7 +114,7 @@ td {
   line-height: 1.9;
   // font-size: 16px;
   // border: 1px solid #eee;
-  
+
   /* Fade in tooltip - takes 1 second to go from 0% to 100% opac: */
   opacity: 0;
   transition: opacity 1s;
@@ -127,82 +125,82 @@ td {
   box-shadow: 0 1em 2em -0.5em rgba(0, 0, 0, 0.35);
   background-color: #394f5a;
 }
-  
+
 .White__Tooltip:hover .White__Tooltiptext {
   visibility: visible;
   opacity: 1;
   font-size: 10px;
 }
 
-
 .trashContainer {
   margin: auto;
-	height: 10px;
+  height: 10px;
   width: 10px;
 }
 
 .trash {
   width: 100%;
-	height: 100%;
+  height: 100%;
   margin-left: auto;
   margin-right: auto;
 }
 
 .tap {
   width: 100%;
-	height: 15%;
+  height: 15%;
   overflow: hidden;
 }
 
 .tap2 {
   width: 100%;
-	height: 85%;
+  height: 85%;
   overflow: hidden;
 }
 
 .tip {
-	background: #ff6873;
+  background: #ff6873;
   width: 15%;
-	height: 30%;
+  height: 30%;
   margin-left: auto;
   margin-right: auto;
-	-webkit-border-top-right-radius:3px;
-	-webkit-border-top-left-radius: 3px;
-	-moz-border-radius-topright: 3px;
-	-moz-border-radius-topleft: 3px;
-	border-top-right-radius: 3px;
-	border-top-left-radius: 3px;
+  -webkit-border-top-right-radius: 3px;
+  -webkit-border-top-left-radius: 3px;
+  -moz-border-radius-topright: 3px;
+  -moz-border-radius-topleft: 3px;
+  border-top-right-radius: 3px;
+  border-top-left-radius: 3px;
 }
 
 .top {
-	background: #ff6873;
+  background: #ff6873;
   margin-top: 1%;
   width: 80%;
-	height: 70%;
+  height: 70%;
   margin-left: auto;
   margin-right: auto;
-	-webkit-border-top-right-radius:3px;
-	-webkit-border-top-left-radius: 3px;
-	-moz-border-radius-topright: 3px;
-	-moz-border-radius-topleft: 3px;
-	border-top-right-radius: 3px;
-	border-top-left-radius: 3px;
+  -webkit-border-top-right-radius: 3px;
+  -webkit-border-top-left-radius: 3px;
+  -moz-border-radius-topright: 3px;
+  -moz-border-radius-topleft: 3px;
+  border-top-right-radius: 3px;
+  border-top-left-radius: 3px;
 }
 
 .bottom {
-	background:#ff6873;
-	width: 70%;
-	height: 98%; margin-top: 2%;
-	margin-left: auto;
+  background: #ff6873;
+  width: 70%;
+  height: 98%;
+  margin-top: 2%;
+  margin-left: auto;
   margin-right: auto;
   display: flex;
   justify-content: space-around;
-	-webkit-border-bottom-right-radius: 3px;
-	-webkit-border-bottom-left-radius: 3px;
-	-moz-border-radius-bottomright: 3px;
-	-moz-border-radius-bottomleft: 3px;
-	border-bottom-right-radius: 3px;
-	border-bottom-left-radius: 3px;
+  -webkit-border-bottom-right-radius: 3px;
+  -webkit-border-bottom-left-radius: 3px;
+  -moz-border-radius-bottomright: 3px;
+  -moz-border-radius-bottomleft: 3px;
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px;
 }
 
 .line {
@@ -213,61 +211,57 @@ td {
 }
 
 .trashContainer:hover .tap {
-	transform: rotate(45deg) translate(0, -200%);
-	transition: transform 300ms; /* Openning time */
+  transform: rotate(45deg) translate(0, -200%);
+  transition: transform 300ms; /* Openning time */
 }
 
-.trashContainer .tap{
-	transform: rotate(0deg) translate(0);
-	transition: transform 150ms; /* Closing time */
+.trashContainer .tap {
+  transform: rotate(0deg) translate(0);
+  transition: transform 150ms; /* Closing time */
 }
 
 // start TOOLTIP
 /* Tooltip container */
 .tooltipx {
-    position: relative;
-    display: inline-block;
-    // border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
-  }
-  
-  /* Tooltip text */
-  .tooltipx .tooltiptext-custom {
-    visibility: hidden;
-    // width: 120px;
-    
-    color: #fff;
-    text-align: center;
-    padding: 5px 5px;
-    border-radius: 5px;
-    font-size: 12px !important;
-    /* Position the tooltip text */
-    position: absolute;
-    z-index: 1;
-    /* Position the tooltip text - TOP */
-    // width: 420px;
-    bottom: 100%;
-    left: 50%; 
-    margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
-    
-    max-width: 10em; // only for contacts component
-    overflow-wrap: break-word; // only for contacts component
-    // NEW
-    box-shadow: 0 1em 2em -0.5em rgba(0, 0, 0, 0.35);
-    z-index: 1000;
-    background-color: #394f5a;
-    
+  position: relative;
+  display: inline-block;
+  // border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
 
-  }
-  
-  /* Show the tooltip text when you mouse over the tooltip container */
-  .tooltipx:hover .tooltiptext-custom {
-    visibility: visible;
-  }
-  // /.end TOOLTIP 
+/* Tooltip text */
+.tooltipx .tooltiptext-custom {
+  visibility: hidden;
+  // width: 120px;
 
+  color: #fff;
+  text-align: center;
+  padding: 5px 5px;
+  border-radius: 5px;
+  font-size: 12px !important;
+  /* Position the tooltip text */
+  position: absolute;
+  z-index: 1;
+  /* Position the tooltip text - TOP */
+  // width: 420px;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
 
+  max-width: 10em; // only for contacts component
+  overflow-wrap: break-word; // only for contacts component
+  // NEW
+  box-shadow: 0 1em 2em -0.5em rgba(0, 0, 0, 0.35);
+  z-index: 1000;
+  background-color: #394f5a;
+}
 
-  // - start - BOTTOM NAVBAR  //
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltipx:hover .tooltiptext-custom {
+  visibility: visible;
+}
+// /.end TOOLTIP
+
+// - start - BOTTOM NAVBAR  //
 .bottom-nav {
   background-color: #fff;
   width: 100%;
@@ -281,7 +275,7 @@ td {
   padding-left: 0px;
   display: flex;
   flex-grow: 1;
- z-index: 1049;
+  z-index: 1049;
 }
 
 .bottom-nav li {
@@ -289,7 +283,7 @@ td {
   padding: 15px;
   list-style: none;
   position: relative;
-  display: block;   
+  display: block;
   height: 52px;
   cursor: pointer;
 }
@@ -300,19 +294,19 @@ td {
   line-height: 20px;
 }
 
-.bottom-nav li a:hover{
+.bottom-nav li a:hover {
   text-decoration: none;
-//  background-color: #eee;
+  //  background-color: #eee;
 }
 
-.li-active  {
+.li-active {
   border-bottom: 3px solid #039be5 !important;
   color: #039be5 !important;
   cursor: default !important;
 }
 
-.li-active  a {
-  color: #039be5!important;
+.li-active a {
+  color: #039be5 !important;
 }
 
 $f21blue: #039be5;
@@ -322,7 +316,7 @@ $f21blue: #039be5;
   box-sizing: border-box;
   // margin: 1em;
   // padding: 1em 2em;
-//   padding-bottom: 37px;
+  //   padding-bottom: 37px;
   font-size: 14px;
   font-weight: 300;
 
@@ -333,7 +327,7 @@ $f21blue: #039be5;
   &::before,
   &::after {
     box-sizing: inherit;
-    content: '';
+    content: "";
     position: absolute;
     width: 100%;
     height: 100%;
@@ -348,7 +342,7 @@ $f21blue: #039be5;
   // Set up base styles, we're going to scale instead of animating width/height
   &::before,
   &::after {
-  //   top: 3px;
+    //   top: 3px;
     top: 0px;
     left: 0;
     height: 100%;
@@ -360,36 +354,35 @@ $f21blue: #039be5;
   &::before {
     // border-top: 2px solid $purple;
     border-bottom: 3px solid $f21blue;
-    transform: scale3d(0,1,1); // Shrink only width
+    transform: scale3d(0, 1, 1); // Shrink only width
   }
 
-   &:hover::before,
+  &:hover::before,
   &:hover::after {
-    transform: scale3d(1,1,1); // Show full-size
+    transform: scale3d(1, 1, 1); // Show full-size
     transition: transform 0.5s;
   }
 }
 
-@media (max-width: 991px){
-  .bottom-nav { 
-      top: -2px !important;
+@media (max-width: 991px) {
+  .bottom-nav {
+    top: -2px !important;
   }
 
   .chart-wrapper {
-      margin-top:60px !important;
+    margin-top: 60px !important;
   }
 }
 
-
-@media (max-width: 370px){
-  .bottom-nav { 
-      height: 37px!important;
+@media (max-width: 370px) {
+  .bottom-nav {
+    height: 37px !important;
   }
 
   .bottom-nav li {
-      padding: 6px !important;
-      height: 39px;
-  }    
+    padding: 6px !important;
+    height: 39px;
+  }
 }
 // - end - BOTTOM NAVBAR  //
 
@@ -402,4 +395,25 @@ $f21blue: #039be5;
   color: #fff;
   position: relative;
   top: -1px;
+}
+
+.custom-anchor-to-docs {
+  color: #0f62ff !important;
+  vertical-align: middle;
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+  margin-left: 8px;
+}
+
+.custom-anchor-to-docs:hover {
+  text-decoration: underline;
+}
+
+.link-to-trigger-docs {
+  background-color: rgb(241,241,241);
+  margin-right: 0px;
+  margin-left: 0px;
+  padding-bottom: 12px;
+  padding-top: 12px;
 }

@@ -1,9 +1,10 @@
 <!-- <p style="margin-top:6px; padding-left:30px;position: relative;z-index: 1050;" class="navbar-brand">
   {{ 'Settings' | translate }}
 </p> -->
-<span class="navbar-brand navbar-brand-sidebar-settings" [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }"
+<span class="navbar-brand navbar-brand-sidebar-settings"
+  [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }"
   [ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
- 
+
   <i class="material-icons">settings</i>
 
   <span *ngIf="IS_OPEN_SETTINGS_SIDEBAR">{{ 'Settings' | translate }} </span>
@@ -39,28 +40,29 @@
       <appdashboard-settings-sidebar style="border-right:1px solid #e5effe !important"> </appdashboard-settings-sidebar>
       <div class="teplate-content" style="flex: 1 1 auto; margin-left: 20px;">
 
-        <ul class="bottom-nav" style="top:-9px; box-shadow: unset">
+        <div class="row">
+          <div class="col-xs-12">
+            <ul class="bottom-nav" style="top:-9px; box-shadow: unset; margin-bottom: 0px;">
 
 
-          <li class="btn-with-border-effect"
-            [ngClass]="{'li-active' : !has_selected_system, 'border-from-center': has_selected_system}"
-            (click)="triggerTabSelected('customtrigger')">
-            <a>{{ "CustomTrigger" | translate }} </a>
-          </li>
+              <li class="btn-with-border-effect"
+                [ngClass]="{'li-active' : !has_selected_system, 'border-from-center': has_selected_system}"
+                (click)="triggerTabSelected('customtrigger')">
+                <a>{{ "CustomTrigger" | translate }} </a>
+              </li>
 
-          <li class="btn-with-border-effect"
-            [ngClass]="{'li-active' : has_selected_system, 'border-from-center': !has_selected_system}"
-            (click)="triggerTabSelected('systemtrigger')">
-            <a> {{ "SystemTrigger" | translate }} </a>
-          </li>
+              <li class="btn-with-border-effect"
+                [ngClass]="{'li-active' : has_selected_system, 'border-from-center': !has_selected_system}"
+                (click)="triggerTabSelected('systemtrigger')">
+                <a> {{ "SystemTrigger" | translate }} </a>
+              </li>
 
-        </ul>
+            </ul>
+          </div>
+        </div>
 
-        <div class="link-to-trigger-docs">
-          <div class="row" style="background-color: rgb(241,241,241);
-        margin-right: 0px;
-        margin-left: 0px;
-        padding-bottom: 12px;">
+        <div class="link-to-trigger-docs-wpr">
+          <div class="row link-to-trigger-docs">
             <div class="col-md-12">
               <span style="margin-left: 15px;">
                 <svg style="width: 25px;height:auto; vertical-align: middle;" aria-hidden="true" focusable="false"
@@ -71,12 +73,11 @@
                   </path>
                 </svg>
               </span>
-              <a style="color:#0f62ff !important; vertical-align: middle; font-size: 14px; font-weight: 400;
-            cursor: pointer; margin-left: 8px; text-decoration: underline;" (click)="goToTriggerDocs()">
-                
-                  {{ 'HowTriggersWorks' | translate }}
-              
-               
+              <a class="custom-anchor-to-docs" (click)="goToTriggerDocs()">
+
+                {{ 'HowTriggersWorks' | translate }}
+
+
               </a>
             </div>
           </div>
