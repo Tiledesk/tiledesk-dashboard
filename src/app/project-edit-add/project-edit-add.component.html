@@ -66,42 +66,45 @@
     <div class="content-wpr" style="display: flex;">
       <appdashboard-settings-sidebar style="border-right:1px solid #e5effe !important"> </appdashboard-settings-sidebar>
       <div class="teplate-content" style="flex: 1 1 auto; margin-left: 20px;">
+        <div class="row">
+          <div class="col-xs-12">
+            <ul class="bottom-nav" style="top:-9px; box-shadow: unset">
+              <li (click)="goToProjectSettings_General()" class="btn-with-border-effect"
+                [ngClass]="{ 'li-active' : PROJECT_SETTINGS_ROUTE === true, 'border-from-center': PROJECT_SETTINGS_ROUTE === false}">
+                <a> {{ "General" | translate }} </a>
+              </li>
 
-        <ul class="bottom-nav" style="top:-9px; box-shadow: unset">
-          <li (click)="goToProjectSettings_General()" class="btn-with-border-effect"
-            [ngClass]="{ 'li-active' : PROJECT_SETTINGS_ROUTE === true, 'border-from-center': PROJECT_SETTINGS_ROUTE === false}">
-            <a> {{ "General" | translate }} </a>
-          </li>
+              <li *ngIf="isVisiblePaymentTab" (click)="goToProjectSettings_Payments()" class="btn-with-border-effect"
+                [ngClass]="{ 'li-active' : PROJECT_SETTINGS_PAYMENTS_ROUTE === true, 'border-from-center': PROJECT_SETTINGS_PAYMENTS_ROUTE === false}">
+                <a> {{ "ProjectEditPage.Subscription" | translate }}</a>
+              </li>
 
-          <li *ngIf="isVisiblePaymentTab" (click)="goToProjectSettings_Payments()" class="btn-with-border-effect"
-            [ngClass]="{ 'li-active' : PROJECT_SETTINGS_PAYMENTS_ROUTE === true, 'border-from-center': PROJECT_SETTINGS_PAYMENTS_ROUTE === false}">
-            <a> {{ "ProjectEditPage.Subscription" | translate }}</a>
-          </li>
+              <li *ngIf="isVisibleDeveloperTab" (click)="goToProjectSettings_Auth()" class="btn-with-border-effect"
+                [ngClass]="{ 'li-active' : PROJECT_SETTINGS_AUTH_ROUTE === true, 'border-from-center': PROJECT_SETTINGS_AUTH_ROUTE === false }">
+                <a> {{ "ProjectEditPage.Authentication" | translate }}</a>
+              </li>
 
-          <li *ngIf="isVisibleDeveloperTab" (click)="goToProjectSettings_Auth()" class="btn-with-border-effect"
-            [ngClass]="{ 'li-active' : PROJECT_SETTINGS_AUTH_ROUTE === true, 'border-from-center': PROJECT_SETTINGS_AUTH_ROUTE === false }">
-            <a> {{ "ProjectEditPage.Authentication" | translate }}</a>
-          </li>
+              <!-- <li *ngIf="(isVisibleAdvancedTab && DISPLAY_ADVANCED_TAB === true) || (isUNIS === true)" -->
+              <li *ngIf="isVisibleAdvancedTab && USER_ROLE !== 'agent'" (click)="goToProjectSettings_Advanced()"
+                class="btn-with-border-effect"
+                [ngClass]="{ 'li-active' : PROJECT_SETTINGS_ADVANCED_ROUTE === true, 'border-from-center': PROJECT_SETTINGS_ADVANCED_ROUTE === false }">
+                <a> {{ "SmartAssign" | translate }}</a>
+              </li>
 
-          <!-- <li *ngIf="(isVisibleAdvancedTab && DISPLAY_ADVANCED_TAB === true) || (isUNIS === true)" -->
-          <li *ngIf="isVisibleAdvancedTab && USER_ROLE !== 'agent'" (click)="goToProjectSettings_Advanced()"
-            class="btn-with-border-effect"
-            [ngClass]="{ 'li-active' : PROJECT_SETTINGS_ADVANCED_ROUTE === true, 'border-from-center': PROJECT_SETTINGS_ADVANCED_ROUTE === false }">
-            <a> {{ "SmartAssign" | translate }}</a>
-          </li>
+              <li *ngIf="isVisibleNotificationTab" (click)="goToProjectSettings_Notification()"
+                class="btn-with-border-effect"
+                [ngClass]="{'li-active': PROJECT_SETTINGS_NOTIFICATION_ROUTE, 'border-from-center': PROJECT_SETTINGS_NOTIFICATION_ROUTE === false }">
+                <a> {{ "Notification" | translate }}</a>
+              </li>
 
-          <li *ngIf="isVisibleNotificationTab" (click)="goToProjectSettings_Notification()"
-            class="btn-with-border-effect"
-            [ngClass]="{'li-active': PROJECT_SETTINGS_NOTIFICATION_ROUTE, 'border-from-center': PROJECT_SETTINGS_NOTIFICATION_ROUTE === false }">
-            <a> {{ "Notification" | translate }}</a>
-          </li>
+              <li *ngIf="isVisibleSecurityTab" (click)="goToProjectSettings_Security()" class="btn-with-border-effect"
+                [ngClass]="{'li-active': PROJECT_SETTINGS_SECURITY_ROUTE, 'border-from-center': PROJECT_SETTINGS_SECURITY_ROUTE === false }">
+                <a> Security <span class="security-beta-badge"> Beta</span> </a>
+              </li>
 
-          <li *ngIf="isVisibleSecurityTab" (click)="goToProjectSettings_Security()" class="btn-with-border-effect"
-            [ngClass]="{'li-active': PROJECT_SETTINGS_SECURITY_ROUTE, 'border-from-center': PROJECT_SETTINGS_SECURITY_ROUTE === false }">
-            <a> Security <span class="security-beta-badge"> Beta</span> </a>
-          </li>
-
-        </ul>
+            </ul>
+          </div>
+        </div>
 
         <div *ngIf="PROJECT_SETTINGS_ADVANCED_ROUTE" class="row" style="margin-right: -30px; margin-right: 40px;">
           <div class="col-xs-12 link-to-automatic-assignment-doc"
@@ -188,7 +191,8 @@
                             class="input" type="text" placeholder="Nome Progetto"
                             style="border-top-right-radius: 0px; border-bottom-right-radius: 0px">
                           <span class="input-group-btn" style="padding-right: 0px;padding-left: 0px;">
-                            <button id="update-project-name" class="btn btn-primary" (click)="edit()" [disabled]="DISABLE_UPDATE_BTN === true"
+                            <button id="update-project-name" class="btn btn-primary" (click)="edit()"
+                              [disabled]="DISABLE_UPDATE_BTN === true"
                               style="padding-bottom: 9px; margin-bottom: 9px; padding-top: 10px; border-top-right-radius: 5px; border-bottom-right-radius: 5px">
                               {{ "ProjectEditPage.Update" | translate }}
                             </button>
@@ -539,19 +543,20 @@
                     <!-- -------------------------------------------------------------------------------------  -->
                     <!-- SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - SUBSCRIPTION CREDIT CARD -->
                     <!-- -------------------------------------------------------------------------------------  -->
-
-                    <div class="row" *ngIf="prjct_profile_type !== 'free'" style="margin-top: 16px;">
+                    
+                    <div class="row" *ngIf="prjct_profile_type !== 'free' && profile_name !== 'enterprise' &&  subscription_is_active === true" style="margin-top: 16px;">
                       <label class="col-sm-2 custom-label">
-                        {{"PaymentInformation"  | translate }}
+                        {{"PaymentInformation" | translate }}
                       </label>
                       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                        
-                        <span class="subscription-info" >
-                         
+
+                        <span class="subscription-info">
+
                           <i class="material-icons" style="vertical-align: middle;color: #697386;">
                             credit_card
                           </i>
-                          <span style="font-weight: 400;  padding: 5px;height:31px;position: relative;top: 2px; text-transform: capitalize;">
+                          <span
+                            style="font-weight: 400;  padding: 5px;height:31px;position: relative;top: 2px; text-transform: capitalize;">
 
                             {{default_card_brand_name}} &nbsp; **** **** **** {{card_last_four_digits}}
                           </span>
@@ -586,8 +591,10 @@
                             <!-- {{ subscription_creation_date | date: 'dd/MM/yyyy' }} -->
 
                             <!-- IF THE  subscription_creation_date IS OBTAINED FROM THE SUBSCRIPTION PAYMENT OBJECT -->
-                            <span *ngIf="profile_name === 'enterprise'">{{ subscription_creation_date | date: 'dd/MM/yyyy' }} </span>   
-                            <span *ngIf="profile_name !== 'enterprise'">  {{ subscription_creation_date * 1000 | date: 'dd/MM/yyyy' }} </span> 
+                            <span *ngIf="profile_name === 'enterprise'">{{ subscription_creation_date | date:
+                              'dd/MM/yyyy' }} </span>
+                            <span *ngIf="profile_name !== 'enterprise'"> {{ subscription_creation_date * 1000 | date:
+                              'dd/MM/yyyy' }} </span>
                           </span>
                         </span>
 
@@ -619,8 +626,7 @@
                     <!-- ---------------------------------------------------------------------------------------------------------------  -->
                     <!-- SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - CURRENT INVOICE END DATE OR PLAN EXIPIRATION DATE IF ENTERPRISE -->
                     <!-- ---------------------------------------------------------------------------------------------------------------  -->
-                    <div class="row" *ngIf="prjct_profile_type !== 'free'"
-                      style="margin-top: 16px;">
+                    <div class="row" *ngIf="prjct_profile_type !== 'free'" style="margin-top: 16px;">
                       <label class="col-sm-2 custom-label" *ngIf="profile_name !== 'enterprise'">
                         {{ "CurrentInvoiceEndDate" | translate }}
                       </label>
@@ -633,7 +639,7 @@
                             calendar_today
                           </i>
                           <span style="font-weight: 400;  padding: 5px;height:31px;position: relative;top: 2px;">
-                     
+
                             {{ subscription_end_date | date: 'dd/MM/yyyy' }}
                           </span>
                         </span>
@@ -1422,64 +1428,68 @@
                     <!-- SUBTITLE -->
                     <div class="col-md-12">
                       <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"></div>
-                        <p style="margin-top: -10px;margin-bottom: 2px;">
-                          This will affects:
-                        </p>
-                        <ul>
-                          <li>
-                            Sign in for all Tiledesk products
-                          </li>
-                          <!-- <li>
+                      <p style="margin-top: -10px;margin-bottom: 2px;">
+                        This will affects:
+                      </p>
+                      <ul>
+                        <li>
+                          Sign in for all Tiledesk products
+                        </li>
+                        <!-- <li>
                             Access to functionality within Support, Guide, Talk and Explore
                           </li>
                           <li>
                             API calls for Support, Guide, Talk and Explore
                           </li> -->
-                        </ul>
-                      </div>
+                      </ul>
+                    </div>
 
 
-                      <div class="row" style="margin-top: 40px;">
-                        <div class="col-md-8" style="max-width:645px">
-                          <h3 style="font-size: 16px;
+                    <div class="row" style="margin-top: 40px;">
+                      <div class="col-md-8" style="max-width:645px">
+                        <h3 style="font-size: 16px;
                           font-weight: 300;
                           font-family: 'Poppins';
                           margin-left: 15px;
                           margin-bottom: 0px; margin-bottom: 3px;">
-                            Allowed IP ranges
-                          </h3>
+                          Allowed IP ranges
+                        </h3>
 
-                          <!-- style="width: calc((100% / 3) + 372px); -->
-                          <div class="security-section-title"  style="margin-bottom: 16px; margin-left: 15px;">
-                            Add the IP ranges that need Tildesk access. Separate multiple IP with comma.
-                            Use <span style="font-weight: 500;"> n.n.n.n  </span> or<span style="font-weight: 500;"> n.n.n/n </span>  syntax where n is a number
+                        <!-- style="width: calc((100% / 3) + 372px); -->
+                        <div class="security-section-title" style="margin-bottom: 16px; margin-left: 15px;">
+                          Add the IP ranges that need Tildesk access. Separate multiple IP with comma.
+                          Use <span style="font-weight: 500;"> n.n.n.n </span> or<span style="font-weight: 500;">
+                            n.n.n/n </span> syntax where n is a number
 
-                            <!--[disabled]="!ip_restrictions_on" -->
-                            <input style="margin-top: 6px;" [(ngModel)]="allowedIPs" (ngModelChange)="allowedIPsChanged($event)" 
-                            type="text" placeholder="example: xx.xxx.xxx.xxx, xx.xxx.xxx.xxx" [disabled]="!ip_restrictions_on">
-                          </div>
+                          <!--[disabled]="!ip_restrictions_on" -->
+                          <input style="margin-top: 6px;" [(ngModel)]="allowedIPs"
+                            (ngModelChange)="allowedIPsChanged($event)" type="text"
+                            placeholder="example: xx.xxx.xxx.xxx, xx.xxx.xxx.xxx" [disabled]="!ip_restrictions_on">
                         </div>
                       </div>
+                    </div>
 
 
-                      <div  class="row">
-                        <div class="col-sm-8">
-                          <div  style="background-color: #fcf8e3;
+                    <div class="row">
+                      <div class="col-sm-8">
+                        <div style="background-color: #fcf8e3;
                           border: 1px solid #faebcc;
                           box-shadow: none;
                           padding: 10px;
                           margin-left: 15px;
                           color: rgb(161, 99, 0);">
-                            <span style="display: flex;">
-                              <i class="material-icons" style="vertical-align: middle; display: inline-flex;  color:rgb(161, 99, 0); margin-right: 3px;font-size: 20px;">report_problem
-                              </i>
-                              <span style="vertical-align: middle; display: inline-flex;">
-                                Enabling IP-based access restrictions can break third-party integrations. Allow all external IPs that need to access your account via Tiledesk API.
-                              </span>
+                          <span style="display: flex;">
+                            <i class="material-icons"
+                              style="vertical-align: middle; display: inline-flex;  color:rgb(161, 99, 0); margin-right: 3px;font-size: 20px;">report_problem
+                            </i>
+                            <span style="vertical-align: middle; display: inline-flex;">
+                              Enabling IP-based access restrictions can break third-party integrations. Allow all
+                              external IPs that need to access your account via Tiledesk API.
                             </span>
-                          </div>
+                          </span>
                         </div>
                       </div>
+                    </div>
                   </div>
                 </span> <!-- ./ security -->
 
@@ -1490,13 +1500,13 @@
 
               </div>
               <!-- ./ card-content -->
-               <!-- -------------------------------------------------------- -->
-                <!-- Save btn displayed only for the Security  tab -->
-                <!-- -------------------------------------------------------- -->
+              <!-- -------------------------------------------------------- -->
+              <!-- Save btn displayed only for the Security  tab -->
+              <!-- -------------------------------------------------------- -->
               <span *ngIf="PROJECT_SETTINGS_SECURITY_ROUTE">
                 <div class="card-footer" style="border-color: #e8f0f5 !important;">
                   <!-- [disabled]="!allowedIPs" -->
-                  <button class="btn btn-primary btn_edit_advanced_settings" (click)="saveIPranges()" >
+                  <button class="btn btn-primary btn_edit_advanced_settings" (click)="saveIPranges()">
                     {{ 'ScriptPage.Save' | translate }}
                   </button>
 

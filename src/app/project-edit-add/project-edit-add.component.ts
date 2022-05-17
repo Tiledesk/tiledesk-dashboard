@@ -535,7 +535,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       if (key.includes("IPS")) {
         // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
         let ips = key.split(":");
-      //  console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - ips key&value', ips);
+        //  console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - ips key&value', ips);
         if (ips[1] === "F") {
           this.isVisibleSecurityTab = false;
           // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleSecurityTab', this.isVisibleSecurityTab);
@@ -568,7 +568,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     }
 
     if (!this.public_Key.includes("IPS")) {
-    //  console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("IPS")', this.public_Key.includes("IPS"));
+      //  console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("IPS")', this.public_Key.includes("IPS"));
       this.isVisibleSecurityTab = false;
     }
 
@@ -842,7 +842,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan project Profile Data', projectProfileData)
+     console.log('[PRJCT-EDIT-ADD] - getProjectPlan project Profile Data', projectProfileData)
       if (projectProfileData) {
         this.prjct_name = projectProfileData.name;
         this.prjct_profile_name = projectProfileData.profile_name;
@@ -855,11 +855,11 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         this.subscription_is_active = projectProfileData.subscription_is_active;
         this.subscription_end_date = projectProfileData.subscription_end_date;
         this.subscription_start_date = projectProfileData.subscription_start_date;
-        if (projectProfileData.subscription_creation_date)  {
-        this.subscription_creation_date = projectProfileData.subscription_creation_date;
+        if (projectProfileData.subscription_creation_date) {
+          this.subscription_creation_date = projectProfileData.subscription_creation_date;
         } else {
-          this.subscription_creation_date  = projectProfileData.subscription_start_date;
-          
+          this.subscription_creation_date = projectProfileData.subscription_start_date;
+
 
         }
         this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan project Profile Data > subscription_creation_date', this.subscription_creation_date)
@@ -989,7 +989,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   // GET THE SUBSCRIPTION PAYMENT SAVED IN OUR DB
   getSubscriptionPayments(subscription_id) {
     this.projectService.getSubscriptionPayments(subscription_id).subscribe((subscriptionPayments: any) => {
-      this.logger.log('[PRJCT-EDIT-ADD] GET subscriptionPayments ', subscriptionPayments);
+      console.log('[PRJCT-EDIT-ADD] GET subscriptionPayments ', subscriptionPayments);
 
       this.subscriptionPaymentsLength = subscriptionPayments.length
       this.logger.log('[PRJCT-EDIT-ADD] GET subscriptionPayments Length ', this.subscriptionPaymentsLength);
@@ -1074,21 +1074,29 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer_default_payment_method_id (from customer > default_source) 2', customer.default_source);
           this.customer_default_payment_method_id = customer.default_source
         }
-        if (customer.paymentMethods)
+        console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION -  this.customer_default_payment_method_id', this.customer_default_payment_method_id);
+        if (customer.paymentMethods) {
           // console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer >  paymentMethods ', customer.paymentMethods.data);
           customer.paymentMethods.data.forEach(paymentmethod => {
             console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer >  paymentMethod ', paymentmethod);
-            if (this.customer_default_payment_method_id === paymentmethod.id) {
-             console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer > default paymentMethod ', paymentmethod);
+            if (this.customer_default_payment_method_id !== null && this.customer_default_payment_method_id === paymentmethod.id) {
+              console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer > default paymentMethod ', paymentmethod);
               if (paymentmethod.card) {
+                console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer > default paymentMethod CARD', paymentmethod.card);
+                this.default_card_brand_name = paymentmethod.card.brand;
+                this.card_last_four_digits = paymentmethod.card.last4;
+              }
+            } else if (this.customer_default_payment_method_id === null) {
+              if (paymentmethod.card) {
+                console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer > NO default paymentMethod OT deafult source - CARD', paymentmethod.card);
                 this.default_card_brand_name = paymentmethod.card.brand;
                 this.card_last_four_digits = paymentmethod.card.last4;
               }
             }
 
           });
+        }
       }
-
     }, (error) => {
       this.logger.error('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER error ', error);
 
@@ -1227,7 +1235,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     this.SPINNER_IN_ADD_CARD_MODAL = true;
     this.CARD_HAS_ERROR = null
     this.projectService.updateStripeCustomer(this.customer_id, creditcardnum, expirationDateMonth, expirationDateYear, creditcardcvc).subscribe((updatedcustomer: any) => {
-      this.logger.log('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER - customer ', updatedcustomer);
+      console.log('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER - customer ', updatedcustomer);
       // if (updatedcustomer) {
 
       //   console.log('[PRJCT-EDIT-ADD] - UPDATE - customer_id ', this.customer_id);
@@ -1249,7 +1257,9 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.CARD_HAS_ERROR = false;
       this.SPINNER_IN_ADD_CARD_MODAL = false
       this.DISPLAY_ADD_CARD_COMPLETED = true
-      this.getCustomerAndPaymentMethods();
+      setTimeout(() => {
+        this.getCustomerAndPaymentMethods();
+      }, 0);
       this.getCustomerPaymentMethodsListAndDeleteNotDefault()
     });
   }
@@ -1652,12 +1662,12 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     this.logger.log("[PRJCT-EDIT-ADD] SAVE IP RANGES - allowedIPranges", this.allowedIPs)
 
     this.logger.log("[PRJCT-EDIT-ADD] SAVE IP RANGES - ip_restrictions_on", this.ip_restrictions_on)
-   let allowedIPsArray = []
+    let allowedIPsArray = []
     if (this.allowedIPs) {
       const allowedIPsTrimmed = this.allowedIPs.replace(/\s/g, '');
       this.logger.log("[PRJCT-EDIT-ADD] SAVE IP RANGES - allowedIPranges allowedIPsTrimmed ", allowedIPsTrimmed)
-       allowedIPsArray = allowedIPsTrimmed.split(',')
-       this.logger.log("[PRJCT-EDIT-ADD] SAVE IP RANGES - allowedIPranges split ", allowedIPsArray)
+      allowedIPsArray = allowedIPsTrimmed.split(',')
+      this.logger.log("[PRJCT-EDIT-ADD] SAVE IP RANGES - allowedIPranges split ", allowedIPsArray)
       // if (allowedIPsArray.length === 0) {
       //   console.log("[PRJCT-EDIT-ADD] SAVE IP RANGES - allowedIPranges is empty ")
       // }
@@ -1711,7 +1721,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           }
         });
     } else if (this.ip_restrictions_on === false || allowedIPsArray.length === 0) {
-      
+
       this.projectService.addAllowedIPranges(this.id_project, this.ip_restrictions_on, allowedIPsArray).subscribe((res: any) => {
         this.logger.log('[PRJCT-EDIT-ADD] addAllowedIPranges res ', res)
 

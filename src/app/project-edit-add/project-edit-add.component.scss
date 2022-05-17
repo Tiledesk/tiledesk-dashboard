@@ -352,11 +352,12 @@ button.close {
   height: 52px;
   cursor: pointer;
   // z-index: 1049;
+  white-space: nowrap;
 }
 
 @media (max-width: 991px) {
   .bottom-nav li { 
-    z-index: 1049
+    // z-index: 1049
   }
 }
 
