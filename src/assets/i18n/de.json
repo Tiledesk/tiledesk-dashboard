@@ -2075,5 +2075,6 @@
 	"SelectConversationType":"Konversationstyp auswählen",
 	"PlanExpirationDate": "Ablaufdatum planen",
 	"PlanStartDate":"Startdatum planen",
-	"EditProfile": "Profil bearbeiten"
+	"EditProfile": "Profil bearbeiten",
+	"HowEmailTicketingWorks":"So funktioniert E-Mail-Ticketing"
 }

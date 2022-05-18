@@ -2076,6 +2076,7 @@
     "PlanExpirationDate": "Plan sona erme tarihi",
     "PlanStartDate":"Plan başlangıç tarihi",
     "EditProfile": "Profili Düzenle",
+    "HowEmailTicketingWorks":"E-posta biletleme nasıl çalışır",
     "CHAT_IONIC": {
         "LABEL_TU": "sen: ",
         "LABEL_MSG_PUSH_START_CHAT": "Henüz görüşme yok",

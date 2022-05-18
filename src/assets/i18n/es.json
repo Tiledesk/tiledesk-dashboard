@@ -2076,6 +2076,7 @@
     "PlanExpirationDate": "Fecha de vencimiento del plan",
     "PlanStartDate":"Fecha de inicio del plan",
     "EditProfile": "Editar perfil",
+    "HowEmailTicketingWorks":"Cómo funciona el ticketing por correo electrónico",
     "CHAT_IONIC": {
         "LABEL_TU": "tú: ",
         "LABEL_MSG_PUSH_START_CHAT": "Aún no hay conversación",
