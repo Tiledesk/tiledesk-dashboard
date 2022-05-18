@@ -1,6 +1,12 @@
 
 # tiledesk-dashboard
 
+### 2.2.35-rc1
+- Adds a badge indicating the project plan to the project cards of the "Your Projects" page
+- Fixes the bug: the role of teammates is not translated in the cards of the "Your projects" page
+- Adds the ability to change the credit card for the subscription projects 
+- Adds email ticketing, which is the ability for the end user to create a ticket by sending an email to the email address available in Settings > Email
+
 ### 2.2.34
 - Deploys in production
 
