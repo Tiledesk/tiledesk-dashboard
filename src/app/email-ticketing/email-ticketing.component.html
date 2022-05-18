@@ -29,10 +29,7 @@
                 </svg>
               </span>
               <a class="custom-anchor-to-docs" (click)="goToEmailTicketingDocs()">
-
                 {{'HowEmailTicketingWorks' | translate}}
-
-
               </a>
             </div>
           </div>
@@ -84,71 +81,71 @@
                 </div>
               </div>
 
-              <div class="row" style="margin-top: 18px;">
-                <div class="col-md-12">
-                  <h3 class="card_title__underlined">
-                    <span class="card_title__underline">
-                      Department's mailbox
-                    </span>
-                  </h3>
-                </div>
-                <div class="col-md-12">
-                  <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"> </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-12">
-                  <p class="paragraph-custom-margin-and-weight">
-                    Instead of creating a ticket in the Tiledesk Default Department you can explicitly specify the
-                    department to which the ticket belongs by sending an email to the address genetated after the
-                    deparment selction:
-                  </p>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-xs-12">
-                  <ng-select class="custom" name="dept" [(ngModel)]="selectedDeptId" [clearable]="false"
-                    (change)="onSelectedDeptId(selectedDeptId)" placeholder="Select a department" style="padding-right: 12px; max-width: 295px;">
-
-                    <ng-option *ngFor="let dept of departments" [value]="dept._id">
-                      {{dept.name}}
-                    </ng-option>
-                  </ng-select>
-                </div>
-              </div>
-
-
-              <div class="row">
-                <div class="col-md-12">
-                  <label for="ticketing-email-dept" style="margin-top: 12px;">
-                    Email address
-                  </label>
-
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="ticketing-email-wpr">
-
-
-
-                    <div class="input-group">
-                      <input [(ngModel)]="ticketingEmailDept" class="input" type="text" id="ticketing-email-dept">
-                      <span class="input-group-btn">
-                        <button id="copy-ticketing-email" class="btn btn-primary copy-btn"
-                          (click)="copyTicketingEmailDept()">
-                          <span class="material-icons">
-                            content_copy
-                          </span>
-                        </button>
+              <ng-container *ngIf="isVisibleDEP === true">
+                <div class="row" style="margin-top: 18px;">
+                  <div class="col-md-12">
+                    <h3 class="card_title__underlined">
+                      <span class="card_title__underline">
+                        Department's mailbox
                       </span>
-                    </div>
+                    </h3>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"> </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-12">
+                    <p class="paragraph-custom-margin-and-weight">
+                      Instead of creating a ticket in the Tiledesk Default Department you can explicitly specify the
+                      department to which the ticket belongs by sending an email to the address genetated after the
+                      deparment selction:
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-12">
+                    <ng-select class="custom" name="dept" [(ngModel)]="selectedDeptId" [clearable]="false"
+                      (change)="onSelectedDeptId(selectedDeptId)" placeholder="Select a department"
+                      style="padding-right: 12px; max-width: 295px;">
+
+                      <ng-option *ngFor="let dept of departments" [value]="dept._id">
+                        {{dept.name}}
+                      </ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+
+
+                <div class="row">
+                  <div class="col-md-12">
+                    <label for="ticketing-email-dept" style="margin-top: 12px;">
+                      {{ 'UserEditAddPage.EmailAddress' | translate }}
+                    </label>
 
                   </div>
                 </div>
-              </div>
+
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="ticketing-email-wpr">
+                      <div class="input-group">
+                        <input [(ngModel)]="ticketingEmailDept" class="input" type="text" id="ticketing-email-dept">
+                        <span class="input-group-btn">
+                          <button id="copy-ticketing-email" class="btn btn-primary copy-btn"
+                            (click)="copyTicketingEmailDept()">
+                            <span class="material-icons">
+                              content_copy
+                            </span>
+                          </button>
+                        </span>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
             </div>
           </div>
         </div>

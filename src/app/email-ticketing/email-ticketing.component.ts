@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'app/core/auth.service';
+import { AppConfigService } from 'app/services/app-config.service';
 import { DepartmentService } from 'app/services/department.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { URL_getting_started_with_email_ticketing } from '../utils/util';
@@ -19,10 +20,12 @@ export class EmailTicketingComponent implements OnInit {
   public selectedDeptId: string;
   public ticketingEmailDept: string;
   public hasCopiedTicketingEmail: boolean = false
+  public public_Key: any
   constructor(
     private deptService: DepartmentService,
     private auth: AuthService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    public appConfigService: AppConfigService,
   ) { }
 
   ngOnInit() {
@@ -30,6 +33,32 @@ export class EmailTicketingComponent implements OnInit {
     this.getDeptsByProjectId();
     this.getBrowserVersion();
     this.listenSidebarIsOpened();
+    this.getOSCODE();
+  }
+
+  getOSCODE() {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    // this.logger.log('[EMAIL-TICKETING] AppConfigService getAppConfig  public_Key', this.public_Key);
+
+    let keys = this.public_Key.split("-");
+    keys.forEach(key => {
+      if (key.includes("DEP")) {
+        // this.logger.log('[EMAIL-TICKETING] PUBLIC-KEY - key', key);
+        let dep = key.split(":");
+        
+        if (dep[1] === "F") {
+          this.isVisibleDEP = false;
+        } else {
+          this.isVisibleDEP = true;
+        }
+      }
+
+    });
+
+    if (!this.public_Key.includes("DEP")) {
+  
+      this.isVisibleDEP = false;
+    }
   }
 
   getBrowserVersion() {
