@@ -1153,19 +1153,19 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
 
     getProjectUserRole(projectId) {
-        console.log('[SIDEBAR] - PROJECT USER ROLE projectId ', projectId);
+        // console.log('[SIDEBAR] - PROJECT USER ROLE projectId ', projectId);
         const storedProjectJson = localStorage.getItem(projectId);
         if (storedProjectJson) {
             const projectObject = JSON.parse(storedProjectJson);
             this.USER_ROLE = projectObject['role'];
-            console.log('[SIDEBAR] - PROJECT USER ROLE get from storage ', this.USER_ROLE);
+            // console.log('[SIDEBAR] - PROJECT USER ROLE get from storage ', this.USER_ROLE);
         } else {
 
             this.usersService.project_user_role_bs.subscribe((user_role) => {
                 this.USER_ROLE = user_role;
                 this.logger.log('[SIDEBAR] - 1. SUBSCRIBE PROJECT_USER_ROLE_BS ', this.USER_ROLE);
                 if (this.USER_ROLE) {
-                    console.log('[SIDEBAR] - PROJECT USER ROLE get from $ subsription', this.USER_ROLE);
+                    // console.log('[SIDEBAR] - PROJECT USER ROLE get from $ subsription', this.USER_ROLE);
                     if (this.USER_ROLE === 'agent') {
                         this.SHOW_SETTINGS_SUBMENU = false;
                     }

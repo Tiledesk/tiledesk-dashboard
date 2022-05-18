@@ -956,10 +956,10 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   onChangeConversationType() {
     this.hasFiltered = true;
 
-    console.log('[WS-REQUESTS-LIST] - ON-CHANGE-CONVERSAION-TYPE - filter', this.filter)
+    this.logger.log('[WS-REQUESTS-LIST] - ON-CHANGE-CONVERSAION-TYPE - filter', this.filter)
     this.filter[2]['conversationTypeId'] = this.selectedConversationTypeId;
 
-    console.log('[WS-REQUESTS-LIST] - ON-CHANGE-AGENT - selectedAgentId', this.selectedConversationTypeId)
+    this.logger.log('[WS-REQUESTS-LIST] - ON-CHANGE-AGENT - selectedAgentId', this.selectedConversationTypeId)
 
     this.getWsRequests$();
   }
@@ -967,7 +967,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   clearConversationTypeFilter() {
     this.filter[2]['conversationTypeId'] = null;
     this.hasFiltered = false
-    console.log('[WS-REQUESTS-LIST] - CLEAR CONVERSAION-TYPE FILTER - selectedConversationTypeId', this.selectedConversationTypeId)
+    this.logger.log('[WS-REQUESTS-LIST] - CLEAR CONVERSAION-TYPE FILTER - selectedConversationTypeId', this.selectedConversationTypeId)
   }
 
 
@@ -1042,19 +1042,19 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
           if (this.hasFiltered === true) {
             this.ws_requests = this.ws_requests.filter(r => {
               // console.log('[WS-REQUESTS-LIST] - request: ', r);
-              console.log('[WS-REQUESTS-LIST] - filter: ', this.filter);
-              console.log('[WS-REQUESTS-LIST] - filter filter[0]: ', this.filter[0]);
-              console.log('[WS-REQUESTS-LIST] - filter filter[1]: ', this.filter[1]);
-              console.log('[WS-REQUESTS-LIST] - filter filter[2]: ', this.filter[2]);
+              this.logger.log('[WS-REQUESTS-LIST] - filter: ', this.filter);
+              this.logger.log('[WS-REQUESTS-LIST] - filter filter[0]: ', this.filter[0]);
+              this.logger.log('[WS-REQUESTS-LIST] - filter filter[1]: ', this.filter[1]);
+              this.logger.log('[WS-REQUESTS-LIST] - filter filter[2]: ', this.filter[2]);
 
 
               // -----------------------------------------------------------------------------------------------------------------------------------------------------------
               // USECASE: filter only for department
               // -----------------------------------------------------------------------------------------------------------------------------------------------------------
               if (this.filter[0] !== undefined && this.filter[0]['deptId'] !== null && this.filter[1]['agentId'] === null && this.filter[2]['conversationTypeId'] === null) {
-                console.log('[WS-REQUESTS-LIST] FILTER USECASE 1 - filter only for department ');
-                console.log('[WS-REQUESTS-LIST] FILTER USECASE 1 - filter[deptId] ', this.filter[0]['deptId']);
-                console.log('[WS-REQUESTS-LIST] FILTER USECASE 1 - r[dept] ', r['dept']);
+                this.logger.log('[WS-REQUESTS-LIST] FILTER USECASE 1 - filter only for department ');
+                this.logger.log('[WS-REQUESTS-LIST] FILTER USECASE 1 - filter[deptId] ', this.filter[0]['deptId']);
+                this.logger.log('[WS-REQUESTS-LIST] FILTER USECASE 1 - r[dept] ', r['dept']);
 
                 if (r['dept'] && r['dept']['_id'] === this.filter[0]['deptId']) {
                   return true
@@ -1126,7 +1126,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
               // USECASE: filter for department & participant
               // -----------------------------------------------------------------------------------------------------------
               if (this.filter[1] !== undefined && this.filter[1]['agentId'] !== null && this.filter[0] !== undefined && this.filter[0]['deptId'] !== null && this.filter[2]['conversationTypeId'] === null) {
-              console.log('[WS-REQUESTS-LIST] FILTER USECASE 3 - filter for dept & participant');
+                this.logger.log('[WS-REQUESTS-LIST] FILTER USECASE 3 - filter for dept & participant');
                 this.logger.log('[WS-REQUESTS-LIST] FILTER USECASE  - filter[agentId] ', this.filter[1]['agentId']);
                 this.logger.log('[WS-REQUESTS-LIST] FILTER USECASE  - filter[deptId] ', this.filter[0]['deptId']);
 
@@ -1159,10 +1159,10 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
               // USECASE: filter for department &  participant & conversationType 
               // -----------------------------------------------------------------------------------------------------------
               if (this.filter[1] !== undefined && this.filter[1]['agentId'] !== null && this.filter[0] !== undefined && this.filter[0]['deptId'] !== null &&  this.filter[2] !== undefined && this.filter[2]['conversationTypeId'] !== null) {
-                console.log('[WS-REQUESTS-LIST] FILTER USECASE  - filter for dept & participant & conversationTypeId');
-                console.log('[WS-REQUESTS-LIST] FILTER USECASE  - filter[agentId] ', this.filter[1]['agentId']);
-                console.log('[WS-REQUESTS-LIST] FILTER USECASE  - filter[deptId] ', this.filter[0]['deptId']);
-                console.log('[WS-REQUESTS-LIST] FILTER USECASE  - filter[deptId] ', this.filter[2]['conversationTypeId']);
+                this.logger.log('[WS-REQUESTS-LIST] FILTER USECASE  - filter for dept & participant & conversationTypeId');
+                this.logger.log('[WS-REQUESTS-LIST] FILTER USECASE  - filter[agentId] ', this.filter[1]['agentId']);
+                this.logger.log('[WS-REQUESTS-LIST] FILTER USECASE  - filter[deptId] ', this.filter[0]['deptId']);
+                this.logger.log('[WS-REQUESTS-LIST] FILTER USECASE  - filter[deptId] ', this.filter[2]['conversationTypeId']);
 
                 if (this.filter[1]['agentId'] === 1) {
                   if (this.humanAgentsIdArray.some(participantid => r['participants'].includes(participantid)) && (r['dept'] && r['dept']['_id'] === this.filter[0]['deptId']) && (r['channel']['name'] === this.filter[2]['conversationTypeId'])) {
@@ -1191,10 +1191,10 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
               // USECASE: filter for department & conversationType 
               // -----------------------------------------------------------------------------------------------------------
               if (this.filter[1]['agentId'] === null && this.filter[0] !== undefined && this.filter[0]['deptId'] !== null &&  this.filter[2] !== undefined && this.filter[2]['conversationTypeId'] !== null) {
-                console.log('[WS-REQUESTS-LIST] FILTER USECASE  - filter for dept &  conversationTypeId');
-                console.log('[WS-REQUESTS-LIST] FILTER USECASE  - filter[agentId] ', this.filter[1]['agentId']);
-                console.log('[WS-REQUESTS-LIST] FILTER USECASE  - filter[deptId] ', this.filter[0]['deptId']);
-                console.log('[WS-REQUESTS-LIST] FILTER USECASE  - filter[deptId] ', this.filter[2]['conversationTypeId']);
+                this.logger.log('[WS-REQUESTS-LIST] FILTER USECASE  - filter for dept &  conversationTypeId');
+                this.logger.log('[WS-REQUESTS-LIST] FILTER USECASE  - filter[agentId] ', this.filter[1]['agentId']);
+                this.logger.log('[WS-REQUESTS-LIST] FILTER USECASE  - filter[deptId] ', this.filter[0]['deptId']);
+                this.logger.log('[WS-REQUESTS-LIST] FILTER USECASE  - filter[deptId] ', this.filter[2]['conversationTypeId']);
 
   
                 if ((r['dept'] && r['dept']['_id'] === this.filter[0]['deptId']) &&  (r['channel']['name'] === this.filter[2]['conversationTypeId'])) {

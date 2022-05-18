@@ -451,7 +451,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
 
   getPaidPlanTranslation(project, project_profile_name) {
-    console.log('getPaidPlanTranslation project_profile_name ', project_profile_name) 
+    this.logger.log('getPaidPlanTranslation project_profile_name ', project_profile_name) 
     if (project_profile_name === 'free'){
       project['plan_badge_background_type'] = 'free_badge'
     } else if (project_profile_name === 'pro') {
@@ -463,7 +463,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
       .subscribe((text: string) => {
         this.prjct_profile_name = text;
         project['prjct_profile_name'] = this.prjct_profile_name
-        console.log('+ + + PaydPlanName ', text)
+        this.logger.log('+ + + PaydPlanName ', text)
       });
   }
 
@@ -479,7 +479,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
    * GET PROJECTS AND SAVE IN THE STORAGE: PROJECT ID - PROJECT NAME - USE ROLE   */
   getProjectsAndSaveInStorage() {
     this.projectService.getProjects().subscribe((projects: any) => {
-      console.log('[PROJECTS] - GET PROJECTS ', projects);
+      this.logger.log('[PROJECTS] - GET PROJECTS ', projects);
 
       this.showSpinner = false;
 

@@ -1161,7 +1161,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
   requestsTypeSelectFromAdvancedOption() {
-    console.log('this.conversation_type: ', this.conversation_type)
+    this.logger.log('this.conversation_type: ', this.conversation_type)
   
   
   }
@@ -1353,8 +1353,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
     if (this.conversation_type) {
       this.conversationTypeValue = this.conversation_type
-      console.log('search this.conversation_type ', this.conversation_type ) 
-      console.log('search this.conversationTypeValue ', this.conversationTypeValue ) 
+      this.logger.log('search this.conversation_type ', this.conversation_type ) 
+      this.logger.log('search this.conversationTypeValue ', this.conversationTypeValue ) 
  
     } else {
       this.conversationTypeValue = '';

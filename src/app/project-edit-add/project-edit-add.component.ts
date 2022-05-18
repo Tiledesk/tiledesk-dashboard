@@ -842,7 +842,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-     console.log('[PRJCT-EDIT-ADD] - getProjectPlan project Profile Data', projectProfileData)
+      this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan project Profile Data', projectProfileData)
       if (projectProfileData) {
         this.prjct_name = projectProfileData.name;
         this.prjct_profile_name = projectProfileData.profile_name;
@@ -989,7 +989,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   // GET THE SUBSCRIPTION PAYMENT SAVED IN OUR DB
   getSubscriptionPayments(subscription_id) {
     this.projectService.getSubscriptionPayments(subscription_id).subscribe((subscriptionPayments: any) => {
-      console.log('[PRJCT-EDIT-ADD] GET subscriptionPayments ', subscriptionPayments);
+      this.logger.log('[PRJCT-EDIT-ADD] GET subscriptionPayments ', subscriptionPayments);
 
       this.subscriptionPaymentsLength = subscriptionPayments.length
       this.logger.log('[PRJCT-EDIT-ADD] GET subscriptionPayments Length ', this.subscriptionPaymentsLength);
@@ -1062,33 +1062,33 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   // cus_JvdAzyrsRuRnA0
   getCustomerAndPaymentMethods() {
     this.projectService.getStripeCustomer().subscribe((customer: any) => {
-      console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer ', customer);
+      this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer ', customer);
       if (customer) {
         this.customer_id = customer.id
-        console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer id', this.customer_id);
+        this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer id', this.customer_id);
         if (customer.invoice_settings && customer.invoice_settings.default_payment_method !== null) {
           this.customer_default_payment_method_id = customer.invoice_settings.default_payment_method
-          console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer_default_payment_method_id (from invoice_settings > default_payment_method)', this.customer_default_payment_method_id);
+          this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer_default_payment_method_id (from invoice_settings > default_payment_method)', this.customer_default_payment_method_id);
         } else {
-          console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer_default_payment_method_id (from invoice_settings > default_payment_method) 2', this.customer_default_payment_method_id);
-          console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer_default_payment_method_id (from customer > default_source) 2', customer.default_source);
+          this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer_default_payment_method_id (from invoice_settings > default_payment_method) 2', this.customer_default_payment_method_id);
+          this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer_default_payment_method_id (from customer > default_source) 2', customer.default_source);
           this.customer_default_payment_method_id = customer.default_source
         }
-        console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION -  this.customer_default_payment_method_id', this.customer_default_payment_method_id);
+        this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION -  this.customer_default_payment_method_id', this.customer_default_payment_method_id);
         if (customer.paymentMethods) {
           // console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer >  paymentMethods ', customer.paymentMethods.data);
           customer.paymentMethods.data.forEach(paymentmethod => {
-            console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer >  paymentMethod ', paymentmethod);
+            this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer >  paymentMethod ', paymentmethod);
             if (this.customer_default_payment_method_id !== null && this.customer_default_payment_method_id === paymentmethod.id) {
-              console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer > default paymentMethod ', paymentmethod);
+              this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer > default paymentMethod ', paymentmethod);
               if (paymentmethod.card) {
-                console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer > default paymentMethod CARD', paymentmethod.card);
+                this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer > default paymentMethod CARD', paymentmethod.card);
                 this.default_card_brand_name = paymentmethod.card.brand;
                 this.card_last_four_digits = paymentmethod.card.last4;
               }
             } else if (this.customer_default_payment_method_id === null) {
               if (paymentmethod.card) {
-                console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer > NO default paymentMethod OT deafult source - CARD', paymentmethod.card);
+                this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer > NO default paymentMethod OT deafult source - CARD', paymentmethod.card);
                 this.default_card_brand_name = paymentmethod.card.brand;
                 this.card_last_four_digits = paymentmethod.card.last4;
               }
@@ -1235,7 +1235,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     this.SPINNER_IN_ADD_CARD_MODAL = true;
     this.CARD_HAS_ERROR = null
     this.projectService.updateStripeCustomer(this.customer_id, creditcardnum, expirationDateMonth, expirationDateYear, creditcardcvc).subscribe((updatedcustomer: any) => {
-      console.log('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER - customer ', updatedcustomer);
+      this.logger.log('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER - customer ', updatedcustomer);
       // if (updatedcustomer) {
 
       //   console.log('[PRJCT-EDIT-ADD] - UPDATE - customer_id ', this.customer_id);
