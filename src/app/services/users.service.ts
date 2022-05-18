@@ -1014,8 +1014,8 @@ export class UsersService {
           user.token = this.TOKEN;
           this.logger.log('[USER-SERV] - UPDATED USER + token (before to set in storage) ', user)
 
-          /* PUBLISH THE UPDATED USER CURRENT USER */
-          this.auth.publishUpdatedUser(user)
+          this.createUserAvatarAndPublishUpdatedUser(user)
+    
 
         } else {
           callback('error');
@@ -1028,6 +1028,25 @@ export class UsersService {
           callback('error')
         });
   }
+
+  createUserAvatarAndPublishUpdatedUser(user) {
+    this.logger.log('[USER-PROFILE] - createProjectUserAvatar ', user)
+    let fullname = ''
+    if (user && user.firstname && user.lastname) {
+      fullname = user.firstname + ' ' + user.lastname
+      user['fullname_initial'] = avatarPlaceholder(fullname)
+      user['fillColour'] = getColorBck(fullname)
+    } else if (user && user.firstname) {
+      fullname = user.firstname
+      user['fullname_initial'] = avatarPlaceholder(fullname)
+      user['fillColour'] = getColorBck(fullname)
+    } else {
+      user['fullname_initial'] = 'N/A'
+      user['fillColour'] = 'rgb(98, 100, 167)'
+    }
+      /* PUBLISH THE UPDATED USER CURRENT USER */
+      this.auth.publishUpdatedUser(user)
+}
 
   /**
    * CHANGE PSW
