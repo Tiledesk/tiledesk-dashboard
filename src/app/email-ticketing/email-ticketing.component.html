@@ -30,7 +30,7 @@
               </span>
               <a class="custom-anchor-to-docs" (click)="goToEmailTicketingDocs()">
 
-                How to email ticketing works
+                {{'HowEmailTicketingWorks' | translate}}
 
 
               </a>
@@ -67,24 +67,19 @@
               <div class="row">
                 <div class="col-md-12">
                   <div class="ticketing-email-wpr">
-                    <input style="display: none;" type="text" id="ticketing-email" class="input" [(ngModel)]="ticketingEmail">
+
 
                     <div class="input-group">
-                      <input [(ngModel)]="ticketingEmail" id="ticketing-email"
-                        class="input" type="text" >
+                      <input [(ngModel)]="ticketingEmail" id="ticketing-email" class="input" type="text">
                       <span class="input-group-btn">
-                        <button id="copy-ticketing-email" class="btn btn-primary" (click)="copyTicketingEmail()"
-                         
-                          style="padding-bottom: 9px; margin-bottom: 10px; padding-top: 9px; border-radius: 5px;">
+                        <button id="copy-ticketing-email" class="btn btn-primary copy-btn"
+                          (click)="copyTicketingEmail()">
                           <span class="material-icons">
                             content_copy
-                            </span>
+                          </span>
                         </button>
                       </span>
                     </div>
-
-
-
                   </div>
                 </div>
               </div>
@@ -112,9 +107,9 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-md-12">
+                <div class="col-xs-12">
                   <ng-select class="custom" name="dept" [(ngModel)]="selectedDeptId" [clearable]="false"
-                    (change)="onSelectedDeptId(selectedDeptId)" placeholder="Select a department">
+                    (change)="onSelectedDeptId(selectedDeptId)" placeholder="Select a department" style="padding-right: 12px; max-width: 295px;">
 
                     <ng-option *ngFor="let dept of departments" [value]="dept._id">
                       {{dept.name}}
@@ -136,19 +131,17 @@
               <div class="row">
                 <div class="col-md-12">
                   <div class="ticketing-email-wpr">
-                    <input style="display: none;" type="text" id="ticketing-email-dept" class="input" [(ngModel)]="ticketingEmailDept">
+
 
 
                     <div class="input-group">
-                      <input [(ngModel)]="ticketingEmailDept"
-                        class="input" type="text" id="ticketing-email-dept">
+                      <input [(ngModel)]="ticketingEmailDept" class="input" type="text" id="ticketing-email-dept">
                       <span class="input-group-btn">
-                        <button id="copy-ticketing-email" class="btn btn-primary" (click)="copyTicketingEmailDept()"
-                         
-                          style="padding-bottom: 9px; margin-bottom: 10px; padding-top: 9px; border-radius: 5px;">
+                        <button id="copy-ticketing-email" class="btn btn-primary copy-btn"
+                          (click)="copyTicketingEmailDept()">
                           <span class="material-icons">
                             content_copy
-                            </span>
+                          </span>
                         </button>
                       </span>
                     </div>
