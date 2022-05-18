@@ -1,6 +1,10 @@
 
 # tiledesk-dashboard
 
+### 2.2.35-rc2
+- Fixes the bug: when the user profile is updated in the dashboard it is not updated in the chat
+- Fixes the bug: in the filter by date range of the "Activities" page the field for selecting the date "to" is enabled even if the date has not been selected in the "from" field
+
 ### 2.2.35-rc1
 - Adds a badge indicating the project plan to the project cards of the "Your Projects" page
 - Fixes the bug: the role of teammates is not translated in the cards of the "Your projects" page
