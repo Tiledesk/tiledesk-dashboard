@@ -2077,6 +2077,7 @@
     "PlanStartDate":"Датум почетка плана",
     "EditProfile": "Уреди профил",
     "HowEmailTicketingWorks":"Како функционише издавање карата путем е-поште",
+    "Reopen":"Отвори поново",
     "CHAT_IONIC": {
         "LABEL_TU": "ти: ",
         "LABEL_MSG_PUSH_START_CHAT": "Још нема разговора",

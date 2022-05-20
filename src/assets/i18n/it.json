@@ -2075,5 +2075,6 @@
     "PlanExpirationDate": "Data di scadenza del piano",
     "PlanStartDate":"Data di inizio del piano",
     "EditProfile": "Cambia profilo",
-    "HowEmailTicketingWorks":"Come funziona l'e-mail ticketing"
+    "HowEmailTicketingWorks":"Come funziona l'e-mail ticketing",
+    "Reopen":"Riapri"
 }

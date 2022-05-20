@@ -2076,5 +2076,6 @@
 	"PlanExpirationDate": "Ablaufdatum planen",
 	"PlanStartDate":"Startdatum planen",
 	"EditProfile": "Profil bearbeiten",
-	"HowEmailTicketingWorks":"So funktioniert E-Mail-Ticketing"
+	"HowEmailTicketingWorks":"So funktioniert E-Mail-Ticketing",
+	"Reopen":"Öffnen Sie wieder"
 }
