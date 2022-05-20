@@ -572,6 +572,19 @@
 
                   </div>
                 </div>
+
+            
+                <div class="row" style="width: 100%;" *ngIf="request?.channel?.name === 'email' || request?.channel?.name === 'form'">
+                  <div class="col-xs-12">
+                    
+                    <textarea class="send-message-texarea" [(ngModel)]="chat_message" style="width: 100%;" placeholder="Enter a message" rows="3"></textarea>
+                    <button class="btn btn-primary pull-right" (click)="sendChatMessage()" [disabled]="!chat_message">
+                     Send
+                    </button>
+                  </div>
+
+                </div>
+
                 <!-- nk new end -->
 
               </div>
@@ -756,11 +769,13 @@
                                 <label for="email-input" style="margin-bottom: 4px;">
                                   {{'ContactEmail' | translate}}
                                 </label>
-                                <input id="email-input" type="email" class="dropdown--input"
-                                  name="contact_new_email" autocomplete="off" [(ngModel)]="contactNewEmail" (ngModelChange)="emailChange($event)" >
-                                  <span *ngIf="!EMAIL_IS_VALID" style="color: #f44336; position: relative;  top: -8px; font-size: 12px;font-weight: 400;">
-                                    {{ "EnterValidEmail" | translate }}
-                                  </span>
+                                <input id="email-input" type="email" class="dropdown--input" name="contact_new_email"
+                                  autocomplete="off" [(ngModel)]="contactNewEmail"
+                                  (ngModelChange)="emailChange($event)">
+                                <span *ngIf="!EMAIL_IS_VALID"
+                                  style="color: #f44336; position: relative;  top: -8px; font-size: 12px;font-weight: 400;">
+                                  {{ "EnterValidEmail" | translate }}
+                                </span>
                               </div>
 
                               <div class="drpdown-btn-wpr"
@@ -772,8 +787,7 @@
 
                                 <button type="submit"
                                   class="btn btn-secondary  dropdown-action--btn dropdown-done-action--btn"
-                                  (click)="updateContactEmail()"
-                                  [disabled]="!contactNewEmail">
+                                  (click)="updateContactEmail()" [disabled]="!contactNewEmail">
 
                                   {{'Update' | translate}}
                                 </button>

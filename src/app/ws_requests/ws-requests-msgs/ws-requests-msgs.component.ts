@@ -225,7 +225,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   contactNewFirstName: string;
   contactNewLastName: string;
   contactNewEmail: string;
-  EMAIL_IS_VALID : boolean = true
+  EMAIL_IS_VALID: boolean = true
+  chat_message: string;
   @ViewChild('Selecter') ngselect: NgSelectComponent;
   /**
    * Constructor
@@ -2758,13 +2759,13 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       });
   }
 
- 
+
 
   openDropDown() {
     const elemDropDown = <HTMLElement>document.querySelector('.dropdown__menu');
     this.logger.log('openDropDown ', elemDropDown)
     elemDropDown.classList.add("dropdown__menu--active");
-    this.contactNewFirstName  = undefined;
+    this.contactNewFirstName = undefined;
     this.contactNewLastName = undefined;
   }
 
@@ -2783,7 +2784,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   closeDropdownEditEmail() {
     const elemDropDown = <HTMLElement>document.querySelector('.dropdown__menu_edit_email');
     elemDropDown.classList.remove("dropdown__menu_edit_email--active");
-  } 
+  }
 
   updateContactEmail() {
     const elemDropDown = <HTMLElement>document.querySelector('.dropdown__menu_edit_email');
@@ -2792,7 +2793,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.logger.log('[WS-REQUESTS-MSGS] saveContactFullName  request', this.request)
     this.request.lead.email = this.contactNewEmail
 
-    this.updateContactemail(this.request.lead._id,  this.contactNewEmail);
+    this.updateContactemail(this.request.lead._id, this.contactNewEmail);
   }
 
   emailChange(event) {
@@ -2871,6 +2872,24 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         // this.notify.showNotification('Contact successfully updated', 2, 'done')
       });
   }
+
+  sendChatMessage() {
+   
+    this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  chat_message', this.chat_message)
+    this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  ID REQUEST ', this.id_request)
+    this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  ID PROJECT ', this.id_project)
+    this.wsMsgsService.sendChatMessage(this.id_project, this.id_request, this.chat_message)
+      .subscribe((msg) => {
+        this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE ', msg);
+      }, (error) => {
+        this.logger.error('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - ERROR ', error);
+
+      }, () => {
+        this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE * COMPLETE *');
+        this.chat_message = undefined;
+      });
+  }
+
 
 
 

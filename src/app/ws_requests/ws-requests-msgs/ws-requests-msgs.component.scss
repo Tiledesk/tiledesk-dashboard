@@ -970,7 +970,6 @@ span .conv-svg-icon {
   height: 24px;
 }
 
-
 .requester-status-icon {
   position: absolute;
   width: 14px;
@@ -2022,6 +2021,7 @@ span .conv-svg-icon {
 
 .chat-card-normal-mode {
   margin-top: 5px !important;
+  // min-height: 631px;
 }
 .right-card-normal-mode {
   margin-top: 5px !important;
@@ -2164,14 +2164,13 @@ span .conv-svg-icon {
   background-color: #e4e6eb;
   border-radius: 4px;
 }
-.contact_info_in_right-sidebar:hover~.edit-icon-wpr{ 
+.contact_info_in_right-sidebar:hover ~ .edit-icon-wpr {
   display: block;
 }
 
 .edit-icon-wpr {
   display: none;
 }
-
 
 .chat-panel-mode-contact-email {
   margin-top: 8px;
@@ -2184,15 +2183,13 @@ span .conv-svg-icon {
   border-radius: 4px;
 }
 
-.chat-panel-mode-contact-email:hover~.edit-email-icon-wpr{
+.chat-panel-mode-contact-email:hover ~ .edit-email-icon-wpr {
   opacity: 1;
 }
 .edit-email-icon-wpr {
   opacity: 0;
   height: 21px;
 }
-
-
 
 .right-sidebar-actions {
   float: right;
@@ -2878,7 +2875,6 @@ span .conv-svg-icon {
   visibility: visible;
 }
 
-
 .dropdown__content {
   background-color: #fff;
   border-radius: 8px;
@@ -2913,17 +2909,27 @@ span .conv-svg-icon {
   padding: 8px 16px;
 }
 .dropdown-action-cancel--btn {
-  background-color: #e4e6eb; color: #050505;
+  background-color: #e4e6eb;
+  color: #050505;
   margin-right: 6px;
 }
 
 .dropdown-done-action--btn {
-  background-color: #3ea9f5; color: #fff;
+  background-color: #3ea9f5;
+  color: #fff;
   margin-left: 6px;
 }
-
-
-
+.send-message-texarea {
+  font-size: 14px;
+  width: 100%;
+  -webkit-appearance: none;
+  border: 1px solid #ccc !important;
+  padding: 0 8px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  border-radius: 5px;
+  color: #3c4858;
+}
 
 /* SWAL SM SIZE - moved in demo css to avoid the use of  encapsulation: ViewEncapsulation.None */
 // .swal-size-sm {

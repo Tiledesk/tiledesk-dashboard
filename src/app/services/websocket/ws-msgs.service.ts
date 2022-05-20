@@ -5,32 +5,52 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
 import { WsMessage } from '../../models/ws-message-model';
 import { LoggerService } from '../../services/logger/logger.service';
-
+import { Http, Headers, RequestOptions } from '@angular/http';
+import { AppConfigService } from '../app-config.service';
 @Injectable()
 
 export class WsMsgsService {
-
+  http: Http;
   wsService: WebSocketJs;
   project_id: string;
   wsMsgsList: any;
   WS_IS_CONNECTED: number;
-
+  TOKEN: string
   public wsMsgsList$: BehaviorSubject<[]> = new BehaviorSubject<[]>([]);
   public wsMsgsGotAllData$: BehaviorSubject<any> = new BehaviorSubject(null);
-
+  SERVER_BASE_PATH: string;
   // public _wsMsgsList = new Subject<any>();
 
   constructor(
+    http: Http,
     public auth: AuthService,
     public webSocketJs: WebSocketJs,
-    private logger: LoggerService
+    private logger: LoggerService,
+    public appConfigService: AppConfigService
   ) {
+    this.http = http;
     this.wsMsgsList = [];
     this.logger.log('[WS-MSGS-SERV] - HELLO !!! wsMsgsList ', this.wsMsgsList)
     this.getCurrentProject();
+    this.getUserToken();
+    this.getAppConfig();
   }
 
- 
+  getAppConfig() {
+    this.SERVER_BASE_PATH = this.appConfigService.getConfig().SERVER_BASE_URL;
+    // console.log('[WS-MSGS-SERV] getAppConfig SERVER_BASE_PATH', this.SERVER_BASE_PATH);
+  }
+
+  getUserToken() {
+    this.auth.user_bs.subscribe((user) => {
+      if (user) {
+        this.TOKEN = user.token;
+        // console.log('[WS-MSGS-SERV] TOKEN ',   this.TOKEN)
+      }
+
+    });
+  }
+
 
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
@@ -148,6 +168,29 @@ export class WsMsgsService {
     this.logger.log("[WS-MSGS-SERV] - UNSUBSCRIBE TO MSGS BY REQUEST ID - request_id ", request_id);
     this.wsMsgsList = [];
     this.webSocketJs.unsubscribe('/' + this.project_id + '/requests/' + request_id + '/messages');
-   
+
   }
+
+
+
+  public sendChatMessage(projectid: string, convid: string, chatmsg:string) {
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+    // const url = "https://api.tiledesk.com/v2/5b55e806c93dde00143163dd/requests/support-group-1234/messages;" 
+    const url = this.SERVER_BASE_PATH + projectid + '/requests/' + convid + '/messages'
+    this.logger.log('[WS-MSGS-SERV] SEND CHAT MSG URL', this.SERVER_BASE_PATH)  
+    const body = { 'text': chatmsg};
+
+    this.logger.log('[WS-MSGS-SERV] SEND CHAT MSG URL BODY ', body);
+    return this.http
+      .post(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+
+  }
+
+
+
 }
