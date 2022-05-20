@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.35-rc4
+- Add the ability to send a message directly from the conversation detail page when the conversation is of type "form" or "email"
+
 ### 2.2.35-rc3
 - Fixes the bug:: Dialogflow bot creation doesn't work in pre
 
