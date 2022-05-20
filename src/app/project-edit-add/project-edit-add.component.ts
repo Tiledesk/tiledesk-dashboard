@@ -1093,7 +1093,6 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
                 this.card_last_four_digits = paymentmethod.card.last4;
               }
             }
-
           });
         }
       }
@@ -1237,7 +1236,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     this.projectService.updateStripeCustomer(this.customer_id, creditcardnum, expirationDateMonth, expirationDateYear, creditcardcvc).subscribe((updatedcustomer: any) => {
       this.logger.log('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER - customer ', updatedcustomer);
       // if (updatedcustomer) {
-
+       
       //   console.log('[PRJCT-EDIT-ADD] - UPDATE - customer_id ', this.customer_id);
       // }
 
