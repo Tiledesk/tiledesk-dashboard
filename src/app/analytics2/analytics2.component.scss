@@ -1,4 +1,4 @@
-// @import url(https://fonts.googleapis.com/css?family=Google+Sans);
+
 @import "./src/assets/sass/md/_variables.scss";
 
 
@@ -41,7 +41,7 @@
 .request_count {
     font-size: 72px;
     line-height: 72px;
-    font-family: 'Google Sans', sans-serif !important;
+    font-family: "Poppins","Roboto", "Arial", sans-serif;
     margin-top: 35px;
 }
 
@@ -53,7 +53,7 @@
 }
 
 .request_count_footer {
-    font-family: 'Google Sans', sans-serif !important;
+    font-family: "Poppins","Roboto", "Arial", sans-serif;
     font-size: 16px;
     color:rgba(0,0,0,.54); 
     text-align: center;
@@ -61,7 +61,7 @@
 // END - CARDS WITH THE COUNTS OF THE REQUESTS: TOTALS SERVED AND UNSERVED
 
 .c21-title {
-    font-family: 'Google Sans', sans-serif !important;
+    font-family: "Poppins","Roboto", "Arial", sans-serif;
     font-size: 16px;
     color:rgba(0,0,0,.54); 
 }
@@ -92,7 +92,7 @@
     padding-top: 24px;
     font-size: 18px;
     //color: #fff;
-    font-family: 'Google Sans', sans-serif !important;
+    font-family: "Poppins","Roboto", "Arial", sans-serif;
 }
 
 .ct-label {
@@ -148,12 +148,12 @@
     line-height: 0;
     padding-top: 94px;
     color: #073f74;
-    font-family: 'Google Sans', sans-serif !important;
+    font-family: "Poppins","Roboto", "Arial", sans-serif;
 }
 
 .chart-container{
     //background-color: #1e88e5;
-    font-family: 'Google Sans', sans-serif !important;
+    font-family: "Poppins","Roboto", "Arial", sans-serif;
 }
 
 // - start - BOTTOM NAVBAR  //

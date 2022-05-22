@@ -11,8 +11,6 @@
 
 .boxdays{
     height: 33px; 
-    //border: 1px solid grey;
-    //font-family: 'Google Sans', sans-serif !important;
     font-size:100%;
     display: inline-block; //-->allow content vertical align
     vertical-align: middle;
@@ -31,7 +29,7 @@
     padding-top: 24px;
     font-size: 18px;
     //color: #fff;
-    font-family: 'Google Sans', sans-serif !important;
+    font-family:'Poppins', 'Roboto',  'Arial', sans-serif;
 }
 
 .chart-wrapper {
@@ -48,7 +46,7 @@
 
 .chart-container{
     //background-color: #1e88e5;
-    font-family: 'Google Sans', sans-serif !important;
+    font-family: 'Poppins', 'Roboto',  'Arial', sans-serif;
 }
 
 .number-stars{
@@ -56,7 +54,7 @@
     line-height: 0;
     padding-top: 94px;
     color: #073f74;
-    font-family: 'Google Sans', sans-serif !important;
+    font-family: 'Poppins', 'Roboto',  'Arial', sans-serif;
 }
 
 @media screen and (min-width: 768px) {
