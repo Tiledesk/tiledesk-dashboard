@@ -2078,6 +2078,7 @@
     "EditProfile": "Profili Düzenle",
     "HowEmailTicketingWorks":"E-posta biletleme nasıl çalışır",
     "Reopen":"Yeniden aç",
+    "MostRecentComment": "En son yorum",
     "CHAT_IONIC": {
         "LABEL_TU": "sen: ",
         "LABEL_MSG_PUSH_START_CHAT": "Henüz görüşme yok",

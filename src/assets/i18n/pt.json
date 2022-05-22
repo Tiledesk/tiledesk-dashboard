@@ -2078,6 +2078,7 @@
     "EditProfile": "Editar Perfil",
     "HowEmailTicketingWorks":"Como funciona a emissão de tíquetes por e-mail",
     "Reopen":"Reabrir",
+    "MostRecentComment": "Comentário mais recente",
     "CHAT_IONIC": {
         "LABEL_TU": "vocês: ",
         "LABEL_MSG_PUSH_START_CHAT": "Nenhuma conversa ainda",

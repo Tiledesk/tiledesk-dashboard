@@ -2076,5 +2076,6 @@
     "PlanStartDate":"Data di inizio del piano",
     "EditProfile": "Cambia profilo",
     "HowEmailTicketingWorks":"Come funziona l'e-mail ticketing",
-    "Reopen":"Riapri"
+    "Reopen":"Riapri",
+    "MostRecentComment": "Commento più recente"
 }

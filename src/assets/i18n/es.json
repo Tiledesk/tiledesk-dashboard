@@ -2078,6 +2078,7 @@
     "EditProfile": "Editar perfil",
     "HowEmailTicketingWorks":"Cómo funciona el ticketing por correo electrónico",
     "Reopen":"Reabrir",
+    "MostRecentComment": "Comentario mas reciente",
     "CHAT_IONIC": {
         "LABEL_TU": "tú: ",
         "LABEL_MSG_PUSH_START_CHAT": "Aún no hay conversación",

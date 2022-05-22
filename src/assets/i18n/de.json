@@ -2077,5 +2077,6 @@
 	"PlanStartDate":"Startdatum planen",
 	"EditProfile": "Profil bearbeiten",
 	"HowEmailTicketingWorks":"So funktioniert E-Mail-Ticketing",
-	"Reopen":"Öffnen Sie wieder"
+	"Reopen":"Öffnen Sie wieder",
+	"MostRecentComment": "Neuester Kommentar"
 }
