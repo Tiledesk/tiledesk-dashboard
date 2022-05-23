@@ -1,3 +1,16 @@
+import { TooltipOptions } from 'ng2-tooltip-directive';
+
+export const CutomTooltipOptions: TooltipOptions = {
+    'show-delay': 0,
+    'tooltip-class': 'custom-ng2-tooltip',
+    'theme': 'light',
+    'shadow': true,
+    'hide-delay-mobile': 0,
+    'hideDelayAfterClick': 3000,
+    'hide-delay': 0
+  }
+
+
 export function members_as_html(members: object, requester_id: string, currentUserFireBaseUID: string): string {
     if (!members) {
         return ''

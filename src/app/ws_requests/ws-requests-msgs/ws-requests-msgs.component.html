@@ -573,8 +573,8 @@
                   </div>
                 </div>
 
-            
-                <div class="row" style="width: 100%;" *ngIf="request?.channel?.name === 'email' || request?.channel?.name === 'form'">
+                <!-- *ngIf="request?.channel?.name === 'email' || request?.channel?.name === 'form'" -->
+                <div class="row" style="width: 100%;" >
                   <div class="col-xs-12">
                     
                     <textarea class="send-message-texarea" [(ngModel)]="chat_message" style="width: 100%;" placeholder="Enter a message" rows="3"></textarea>

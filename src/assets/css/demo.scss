@@ -1173,3 +1173,78 @@ span.navbar-brand-title {
   opacity: 0.6;
   cursor: not-allowed;
 }
+
+
+.custom-ng2-tooltip {
+  font-family: "Roboto", Arial, sans-serif;
+  font-size: 12px;
+  font-style: normal;
+  letter-spacing: normal;
+  font-stretch: normal;
+  font-variant: normal;
+  font-weight: 300;
+  text-align: left !important;
+  min-width: 440px;
+  padding: 16px !important;
+  margin-left: 25px;
+}
+
+.ng2-tooltip-subject {
+  font-weight: 500;
+  font-size: 14px;
+  font-family: "Poppins","Roboto", "Arial", sans-serif;
+}
+
+.ng2-tooltip-firt-text {
+  font-weight: 400;
+  font-family: "Poppins","Roboto", "Arial", sans-serif;
+  font-size: 14px;
+}
+
+.ng2-most-recent-comment-section-title {
+  font-weight: 400;
+  font-family: "Poppins","Roboto", "Arial", sans-serif;
+  font-size: 14px;
+  color: rgb(104,115,125);
+  margin-bottom: 0px;
+  margin-top: 14px;
+}
+
+.ng2-tooltip-divider-line {
+  margin-top: 6px !important;
+  margin-bottom: 14px;
+  border: 0;
+  border-top: 1px solid rgb(226, 228,229) !important;
+}
+
+.ng2-latest-comment-sender-and-date-wpr {
+  display: flex;
+}
+
+.ng2-comment-sender {
+  font-weight: 500;
+  font-size: 14px;
+  font-family: "Poppins","Roboto", "Arial", sans-serif;
+  // float: left;
+  flex: 1;
+}
+
+.ng2-comment-date {
+  color: rgb(104,115,125);
+  font-weight: 400;
+  font-size: 12px;
+  font-family: "Poppins","Roboto", "Arial", sans-serif;
+  // float: right;
+}
+
+.ng2-latest-comment {
+  font-weight: 400;
+  font-family: "Poppins","Roboto", "Arial", sans-serif;
+  font-size: 14px;
+
+}
+
+
+
+
+

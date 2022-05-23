@@ -17,6 +17,7 @@ import { NotifyService } from '../../../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from '../../../services/logger/logger.service';
 import { ProjectService } from 'app/services/project.service';
+import { WsMsgsService } from 'app/services/websocket/ws-msgs.service';
 
 const swal = require('sweetalert');
 
@@ -94,7 +95,8 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     public notify: NotifyService,
     public translate: TranslateService,
     public logger: LoggerService,
-    private projectService: ProjectService
+    private projectService: ProjectService,
+    private wsMsgsService: WsMsgsService,
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate);
   }
@@ -112,25 +114,101 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     this.getProjectUserRole();
     this.detectMobile();
     this.getFirebaseAuth();
+
   }
 
   ngOnChanges() {
-    this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges wsRequestsServed', this.wsRequestsServed)
+    // console.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges wsRequestsServed', this.wsRequestsServed)
+    if (this.wsRequestsServed.length > 0) {
+      this.wsRequestsServed.forEach(request => {
+        // console.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges request id', request.request_id)
+        this.subscribeToWs_MsgsByRequestId(request, request.request_id)
+      });
+    }
   }
 
 
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+
+    if (this.wsRequestsServed.length > 0) {
+      this.wsRequestsServed.forEach(request => {
+        // console.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges request id', request.request_id)
+        this.subscribeToWs_MsgsByRequestId(request, request.request_id)
+        this.unsuscribeRequestById(request.request_id);
+        this.unsuscribeMessages(request.request_id);
+      });
+    }
   }
+
+  unsuscribeRequestById(idrequest) {
+    this.wsRequestsService.unsubscribeTo_wsRequestById(idrequest);
+  }
+
+  unsuscribeMessages(idrequest) {
+    this.wsMsgsService.unsubsToWS_MsgsByRequestId(idrequest);
+  }
+
+  subscribeToWs_MsgsByRequestId(request, id_request: string) {
+    this.logger.log('[WS-REQUESTS-MSGS] - subscribe To WS MSGS ByRequestId ', id_request)
+    this.wsMsgsService.subsToWS_MsgsByRequestId(id_request);
+
+    this.getWsMsgs$(request, id_request);
+  }
+
+  getWsMsgs$(request, id_request) {
+    this.wsMsgsService.wsMsgsList$
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((wsmsgs) => {
+
+        if (wsmsgs) {
+          // console.log('[WS-REQUESTS-MSGS] getWsMsgs$ request', request)
+          const msgsArray = []
+          wsmsgs.forEach((msgs, index) => {
+            // && (this.currentUserID !== msgs['sender'])
+            if ((id_request === msgs['recipient'])) {
+
+              // console.log('[WS-REQUESTS-MSGS] for id request ', id_request, ' msgs ', msgs, 'index ', index)
+              msgsArray.push(msgs)
+            }
+          });
+          // console.log('[WS-REQUESTS-MSGS] msgsArray ',msgsArray)
+
+
+
+          request['msgsArray'] = msgsArray.sort(function compare(a, b) {
+            if (a['createdAt'] > b['createdAt']) {
+              return -1;
+            }
+            if (a['createdAt'] < b['createdAt']) {
+              return 1;
+            }
+            return 0;
+          });
+        }
+
+
+
+      }, error => {
+        this.showSpinner = false;
+        this.logger.error('[WS-REQUESTS-MSGS] - getWsMsgs$ - ERROR ', error)
+      }, () => {
+        this.logger.log('[WS-REQUESTS-MSGS] - getWsMsgs$ * COMPLETE * ')
+      });
+  }
+
+
 
   getFirebaseAuth() {
     if (this.appConfigService.getConfig().firebaseAuth === true) {
       this.FIREBASE_AUTH = true;
-      this.logger.log('[HISTORY & NORT-CONVS] - FIREBASE_AUTH IS ', this.FIREBASE_AUTH);
+      this.logger.log('[WS-REQUESTS-LIST][SERVED] - FIREBASE_AUTH IS ', this.FIREBASE_AUTH);
     } else if (this.appConfigService.getConfig().firebaseAuth === false) {
       this.FIREBASE_AUTH = false;
-      this.logger.log('[HISTORY & NORT-CONVS] - FIREBASE_AUTH IS ', this.FIREBASE_AUTH);
+      this.logger.log('[WS-REQUESTS-LIST][SERVED] - FIREBASE_AUTH IS ', this.FIREBASE_AUTH);
     }
   }
 
@@ -346,7 +424,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
       }
     }
 
-   
+
   }
 
 

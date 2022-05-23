@@ -224,6 +224,9 @@ import { NativeBotSidebarComponent } from './bots/native-bot-sidebar/native-bot-
 import { NativeBotComponent } from './bots/native-bot/native-bot.component';
 import { NativeBotSelectTypeComponent } from './bots/native-bot-select-type/native-bot-select-type.component';
 import { EmailTicketingComponent } from './email-ticketing/email-ticketing.component';
+import { TooltipModule, TooltipOptions } from 'ng2-tooltip-directive';
+import { CutomTooltipOptions } from './utils/util';
+
 // console.log('************** APPMODULE ******************');
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -423,6 +426,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     EmailTicketingComponent
   ],
   imports: [
+    TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),
     CreditCardDirectivesModule,
     MatTooltipModule,
     /* PRIVATE */

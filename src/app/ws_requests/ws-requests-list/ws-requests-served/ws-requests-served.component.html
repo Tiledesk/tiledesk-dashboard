@@ -196,19 +196,22 @@
           </td>
 
           <!-- ------------------------------------------------------------------------------------------------------ -->
-          <!-- Message -->
+          <!-- Message has-details -->
           <!-- ------------------------------------------------------------------------------------------------------ -->
-          <td class="td-first-text" [ngClass]="{'padding_5' : request?.tags?.length > 0}"
-            (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer; width: 215px;">
+          <td class="td-first-text " [ngClass]="{'padding_5' : request?.tags?.length > 0}"
+            (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer; width: 215px;" >
             <span *ngIf="request?.ticket_id " class="ticket-id-badge" style="float: left;"
               matTooltipClass="convs-custom-mat-tooltip" matTooltip="{{ 'TicketId' | translate }}" #tooltip="matTooltip"
               matTooltipPosition='right' matTooltipHideDelay="100">
               #{{request?.ticket_id }}
             </span>
             <p class="column-td"
-              style="max-width: 215px;white-space: nowrap; overflow: hidden;text-overflow: ellipsis;">
+              style="max-width: 215px;white-space: nowrap; overflow: hidden;text-overflow: ellipsis;" 
+              tooltip="<p  class='ng2-tooltip-subject' *ngIf='request?.subject'>{{request?.subject}}</p> <p class='ng2-tooltip-firt-text'>{{request?.first_text}}</p> <p class='ng2-most-recent-comment-section-title'>{{'MostRecentComment' | translate}}</p>  <hr class='ng2-tooltip-divider-line'> <div class='ng2-latest-comment-sender-and-date-wpr'> <p class='ng2-comment-sender'> {{ request?.msgsArray[0]?.senderFullname}} </p> <p class='ng2-comment-date'>  {{ request?.msgsArray[0]?.createdAt | date: 'dd/MM/yyyy'}} </p> </div> <p class='ng2-latest-comment'>  {{ request?.msgsArray[0]?.text}} </p> ">
           
               {{ request?.first_text }}
+
+          
             </p>
 
 
@@ -290,7 +293,14 @@
                 </a>
                </div> -->
             </section>
+
+            <!-- <span class="details">more info here</span> -->
+         
           </td>
+
+          <!-- <ng-template #HtmlContent>
+            <p>Hello i'm a <strong>bold</strong> text!</p>
+          </ng-template> -->
 
           <!-- ---------------------------------------- -->
           <!-- @ Priority & Message Channel  -->
