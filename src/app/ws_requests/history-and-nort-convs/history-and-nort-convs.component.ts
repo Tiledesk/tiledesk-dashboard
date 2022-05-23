@@ -677,7 +677,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
 
       this.wsRequestsService.getHistoryAndNortRequests(this.operator, this.requests_status, this.queryString, this.pageNo).subscribe((requests: any) => {
-        console.log('[HISTORY & NORT-CONVS] - GET REQUESTS RES ', requests);
+        // console.log('[HISTORY & NORT-CONVS] - GET REQUESTS RES ', requests);
         this.logger.log('[HISTORY & NORT-CONVS] - GET REQUESTS ', requests['requests']);
         this.logger.log('[HISTORY & NORT-CONVS] - GET REQUESTS COUNT ', requests['count']);
 
@@ -1948,5 +1948,29 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
         }
       });
   }
+
+  reopenArchivedRequest(request_id) {
+    // console.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - REQUEST ID', request_id)
+    // unarchiveRequest
+    this.wsRequestsService.unarchiveRequest(request_id).subscribe((res: any) => {
+      this.logger.log('[HISTORY & NORT-CONVS]  REOPEN ARCHIVED REQUEST ', res)
+
+    }, (error) => {
+      this.logger.error('[HISTORY & NORT-CONVS]  REOPEN ARCHIVED REQUEST - ERROR ', error);
+
+  
+    }, () => {
+      this.logger.log('[HISTORY & NORT-CONVS]  REOPEN ARCHIVED REQUEST * COMPLETE *');
+      for( var i = 0; i < this.requestList.length; i++){ 
+    
+        if ( this.requestList[i].request_id === request_id) { 
+        // console.log('[HISTORY & NORT-CONVS]  REOPEN ARCHIVED  id of the REQUEST  REOPENED ', this.requestList[i].request_id);
+          this.requestList.splice(i, 1); 
+        }
+    
+    }
+    })
+  }
+
 
 }

@@ -699,6 +699,24 @@ export class WsRequestsService implements OnDestroy {
   }
 
   // --------------------------------------------------
+  // @ Unarchive request 
+  // --------------------------------------------------
+  public unarchiveRequest(request_id: string) {
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+
+    const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + request_id + '/reopen';
+    console.log('[WS-REQUESTS-SERV] - REOPEN REQUEST - URL ', url)
+
+    return this.http
+      .put(url, null, options)
+      .map((res) => res.json());
+  }
+
+    // --------------------------------------------------
   // @ Delete request 
   // --------------------------------------------------
   public deleteRequest(request_id: string) {
