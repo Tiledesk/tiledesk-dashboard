@@ -2079,6 +2079,7 @@
     "HowEmailTicketingWorks":"Приходите funziona la creazione di ticket по электронной почте",
     "Reopen":"Открыть заново",
     "MostRecentComment": "Самый последний комментарий",
+    "ContactConversations":"Контактные разговоры",
     "CHAT_IONIC": {
         "LABEL_TU": "ты: ",
         "LABEL_MSG_PUSH_START_CHAT": "Разговора пока нет",

@@ -2079,6 +2079,7 @@
     "HowEmailTicketingWorks":"Como funciona a emissão de tíquetes por e-mail",
     "Reopen":"Reabrir",
     "MostRecentComment": "Comentário mais recente",
+    "ContactConversations":"Conversas de contato",
     "CHAT_IONIC": {
         "LABEL_TU": "vocês: ",
         "LABEL_MSG_PUSH_START_CHAT": "Nenhuma conversa ainda",

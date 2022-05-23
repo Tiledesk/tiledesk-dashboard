@@ -2079,6 +2079,7 @@
     "HowEmailTicketingWorks":"E-posta biletleme nasıl çalışır",
     "Reopen":"Yeniden aç",
     "MostRecentComment": "En son yorum",
+    "ContactConversations":"Temasa geçmek chat",
     "CHAT_IONIC": {
         "LABEL_TU": "sen: ",
         "LABEL_MSG_PUSH_START_CHAT": "Henüz görüşme yok",

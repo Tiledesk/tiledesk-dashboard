@@ -2079,6 +2079,7 @@
     "HowEmailTicketingWorks":"Cómo funciona el ticketing por correo electrónico",
     "Reopen":"Reabrir",
     "MostRecentComment": "Comentario mas reciente",
+    "ContactConversations":"Conversaciones de contacto",
     "CHAT_IONIC": {
         "LABEL_TU": "tú: ",
         "LABEL_MSG_PUSH_START_CHAT": "Aún no hay conversación",
