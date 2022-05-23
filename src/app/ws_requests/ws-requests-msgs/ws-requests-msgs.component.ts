@@ -227,6 +227,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   contactNewEmail: string;
   EMAIL_IS_VALID: boolean = true
   chat_message: string;
+  contact_requests: any
   @ViewChild('Selecter') ngselect: NgSelectComponent;
   /**
    * Constructor
@@ -661,8 +662,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.request = wsrequest;
 
         if (this.request) {
-          //  console.log('[WS-REQUESTS-MSGS] - this.request: ', this.request);
-
+           console.log('[WS-REQUESTS-MSGS] - this.request: ', this.request);
+           if (this.request.lead ) {
+           this.getContactRequests(this.request.lead._id) 
+           }
           // -------------------------------------------------------------------
           // User Agent
           // -------------------------------------------------------------------
@@ -1127,6 +1130,57 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
 
+  }
+
+  getContactRequests(lead_id) {
+    this.contactsService.getRequestsByRequesterId(lead_id, 0)
+    
+    .subscribe((requests_object: any) => {
+
+      if (requests_object) {
+       console.log('[WS-REQUESTS-MSGS]] - get CONTACT REQUESTS OBJECTS ', requests_object);
+        this.contact_requests = requests_object['requests'];
+        console.log('[WS-REQUESTS-MSGS] - get CONTACT REQUESTS LIST (got by requester_id) ', this.contact_requests);
+
+        this.contact_requests = requests_object['requests'];
+
+
+        this.contact_requests.forEach(request => {
+          request.currentUserIsJoined = false;
+          console.log('[WS-REQUESTS-MSGS] - CONTACT REQUEST ', request)
+          request.participants.forEach(p => {
+            console.log('[WS-REQUESTS-MSGS] CONTACT REQUEST Participant ', p);
+            if (p === this.currentUserID) {
+              request.currentUserIsJoined = true;
+              return
+            }
+          })
+        });
+
+        // to test pagination
+        // const requestsCount = 83;
+        const requestsCount = requests_object['count'];
+        console.log('[WS-REQUESTS-MSGS] - CONTACT REQUESTS COUNT ', requestsCount);
+
+        
+
+        const requestsPerPage = requests_object['perPage'];
+        console.log('[WS-REQUESTS-MSGS]] - CONTACT N° OF REQUESTS X PAGE ', requestsPerPage);
+
+        const totalPagesNo = requestsCount / requestsPerPage;
+        console.log('[WS-REQUESTS-MSGS] - CONTACT REQUESTS TOTAL PAGES NUMBER', totalPagesNo);
+
+        // this.totalPagesNo_roundToUp = Math.ceil(totalPagesNo);
+        // this.logger.log('[CONTACTS-DTLS] - TOTAL PAGES NUMBER ROUND TO UP ', this.totalPagesNo_roundToUp);
+
+      }
+    }, (error) => {
+      this.showSpinner = false;
+      this.logger.error('[WS-REQUESTS-MSGS] - GET REQUEST BY REQUESTER ID - ERROR ', error);
+    }, () => {
+      this.showSpinner = false;
+      this.logger.log('[WS-REQUESTS-MSGS] - GET REQUEST BY REQUESTER ID * COMPLETE *');
+    });
   }
 
 
@@ -1752,6 +1806,28 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     document.removeEventListener('copy', listener);
 
   }
+
+
+
+    // ---------------------------------------------------------------------------------------
+  // @ Contact conversation accordion
+  // ---------------------------------------------------------------------------------------
+  openContactConversationAccordion() {
+    // var acc = document.getElementsByClassName("accordion");
+    var acc = <HTMLElement>document.querySelector('.contact-conversation-accordion');
+    // this.logger.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT - open attributes-decoded-jwt-accordion -  accordion elem ', acc);
+    acc.classList.toggle("active");
+    // var panel = acc.nextElementSibling ;
+    var panel = <HTMLElement>document.querySelector('.contact-conversation-accordion-panel')
+    // this.logger.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT-  open attributes-decoded-jwt-panel  -  panel ', panel);
+
+    if (panel.style.maxHeight) {
+      panel.style.maxHeight = null;
+    } else {
+      panel.style.maxHeight = panel.scrollHeight + "px";
+    }
+  }
+
 
   // ------------------------------------------------
   // LISTEN TO SCROLL POSITION (CALLED FROM TEMPLATE)

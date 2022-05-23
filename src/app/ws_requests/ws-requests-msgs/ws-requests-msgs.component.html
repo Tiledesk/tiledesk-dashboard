@@ -574,12 +574,13 @@
                 </div>
 
                 <!-- *ngIf="request?.channel?.name === 'email' || request?.channel?.name === 'form'" -->
-                <div class="row" style="width: 100%;" >
+                <div class="row" style="width: 100%;">
                   <div class="col-xs-12">
-                    
-                    <textarea class="send-message-texarea" [(ngModel)]="chat_message" style="width: 100%;" placeholder="Enter a message" rows="3"></textarea>
+
+                    <textarea class="send-message-texarea" [(ngModel)]="chat_message" style="width: 100%;"
+                      placeholder="Enter a message" rows="3"></textarea>
                     <button class="btn btn-primary pull-right" (click)="sendChatMessage()" [disabled]="!chat_message">
-                     Send
+                      Send
                     </button>
                   </div>
 
@@ -1931,8 +1932,7 @@
                   <div class="col-sm-12 attributes-pre-chat-form-accordion-wpr"
                     style="padding-left: 0px; padding-right: 0px; margin-top:10px">
                     <p class="row-header  attributes-pre-chat-form-accordion"
-                      (click)="openAttributesPrechatFormAccordion()" style="">
-                      <!-- fill: #2C3E48; -->
+                      (click)="openAttributesPrechatFormAccordion()">
                       <span>
                         <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
                           xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 18 18"
@@ -1950,9 +1950,6 @@
                         M13,13.9H5c-0.5,0-0.9-0.4-0.9-0.9c0-0.5,0.4-0.9,0.9-0.9h8c0.5,0,0.9,0.4,0.9,0.9C13.9,13.5,13.5,13.9,13,13.9z M13,10.9H5
                        c-0.5,0-0.9-0.4-0.9-0.9c0-0.5,0.4-0.9,0.9-0.9h8c0.5,0,0.9,0.4,0.9,0.9C13.9,10.5,13.5,10.9,13,10.9z" />
                         </svg>
-
-
-
                       </span>
                       <span style="position: relative;top: -6px;">
                         {{ "PreChatFormData" | translate }}
@@ -1972,9 +1969,6 @@
                               <div aria-expanded="false" [id]="attribute?.attributeName +'_value'"
                                 class="attribute  position: relative">
                                 {{attribute?.attributeValue }}
-
-
-
                               </div>
                             </div>
 
@@ -1987,28 +1981,93 @@
                                 content_copy
                               </span>
                             </div>
-
-                            <!-- <div *ngIf="attribute?.attributeValueL + 180 > rightSidebarWidth" class="col-xs-1"
-                              style="text-align: right;">
-                              <i [id]="attribute?.attributeName +'_arrow_icon'" class="material-icons rotate"
-                                style="cursor: pointer; color: #039be5; font-size:18px;"
-                                (click)="toggleShowAllString(attribute?.attributeName +'_value', attribute?.attributeName +'_arrow_icon', 'isActive_' + i)">
-                                keyboard_arrow_down
-                              </i>
-
-                            </div> -->
                           </div>
-                          <!--   <div class="debug_div">
-                                L : {{attribute?.attributeValueL}} <br>
-                                L + 180 : {{attribute?.attributeValueL + 180}} <br>
-                                SB WIDTH : {{rightSidebarWidth}} 
-                              </div> -->
-
                         </div>
                       </div>
                     </div>
                   </div>
                 </div> <!-- ./ end pre-chat form accordion -->
+
+
+                <!--  ---------------------------------------------------------------- -->
+                <!--  @ Contact coversation accordion -->
+                <!--  ---------------------------------------------------------------- -->
+                <div *ngIf="request?.attributes?.preChatForm" class="row">
+                  <div class="col-sm-12 contact-conversation-accordion-wpr">
+                    <p class="row-header  contact-conversation-accordion" (click)="openContactConversationAccordion()">
+                      <span>
+                        <!-- <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                          xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 18 18"
+                          style="enable-background:new 0 0 18 18;width: 24px; height: 24px;" xml:space="preserve">
+                          <style type="text/css">
+                            .st0_prechat-form {
+
+                              fill: #2C3E48;
+                            }
+                          </style>
+                          <path class="st0_prechat-form"
+                            d="M14.3,3h-3.2c-0.2-0.8-1-1.5-2-1.5S7.3,2.2,7,3H3.9C3.1,3,2.3,3.7,2.3,4.5V15c0,0.8,0.7,1.5,1.5,1.5h10.5
+                       c0.8,0,1.5-0.7,1.5-1.5V4.5C15.9,3.7,15.1,3,14.3,3z M9.1,2.8c0.3,0,0.6,0.3,0.6,0.6S9.3,4,9.1,4S8.5,3.7,8.5,3.3
+                       C8.5,3,8.8,2.8,9.1,2.8z M5,6.2h8c0.5,0,0.9,0.4,0.9,0.9c0,0.5-0.4,0.9-0.9,0.9H5c-0.5,0-0.9-0.4-0.9-0.9C4.1,6.6,4.5,6.2,5,6.2z
+                        M13,13.9H5c-0.5,0-0.9-0.4-0.9-0.9c0-0.5,0.4-0.9,0.9-0.9h8c0.5,0,0.9,0.4,0.9,0.9C13.9,13.5,13.5,13.9,13,13.9z M13,10.9H5
+                       c-0.5,0-0.9-0.4-0.9-0.9c0-0.5,0.4-0.9,0.9-0.9h8c0.5,0,0.9,0.4,0.9,0.9C13.9,10.5,13.5,10.9,13,10.9z" />
+                        </svg> -->
+
+
+                        <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"  style="width: 24px; height: 24px;">
+                          <style type="text/css">
+                            .st0_contact-conversations {
+
+                              fill: #2C3E48;
+                            }
+                          </style>
+                          <path class="st0_contact-conversations"
+                            d="M256 32C114.6 32 0 125.1 0 240c0 49.6 21.4 95 57 130.7C44.5 421.1 2.7 466 2.2 466.5c-2.2 2.3-2.8 5.7-1.5 8.7S4.8 480 8 480c66.3 0 116-31.8 140.6-51.4 32.7 12.3 69 19.4 107.4 19.4 141.4 0 256-93.1 256-208S397.4 32 256 32zM128 272c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32zm128 0c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32zm128 0c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32z" />
+                        </svg> -->
+                        <span class="material-icons" style="vertical-align: middle;
+                        color: #394f5a;
+                        font-size: 21px;
+                        cursor: default;    padding-right: 2px;">
+                          chat
+                          </span>
+                      </span>
+                      <span style="vertical-align: middle">
+                        {{ "ContactConversations" | translate }}
+                      </span>
+                    </p>
+
+                    <div class="contact-conversation-accordion-panel">
+                      <div *ngFor="let attribute of preChatFormArray; let i = index">
+                        <div class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
+
+                          <div class="row">
+                            <div class="col-xs-10" style="padding-right: 1px;padding-bottom: 5px;">
+                              <div style="float: left; margin-right: 4px;" class="ws_requets_msgs__attributes">
+                                {{attribute?.attributeName }}:
+                              </div>
+                              <!-- attribute_cutted_text -->
+                              <div aria-expanded="false" [id]="attribute?.attributeName +'_value'"
+                                class="attribute  position: relative">
+                                {{attribute?.attributeValue }}
+                              </div>
+                            </div>
+
+                            <div class="col-xs-2 copy-icon-wpr"
+                              (click)="copyToClipboardPreChatFormValue(attribute?.attributeValue, attribute?.attributeName +'_tooltip')">
+                              <div [id]="attribute?.attributeName +'_tooltip'" class="has-copied-tooltip">
+                                {{ 'Copied' | translate }}
+                              </div>
+                              <span class="material-icons-outlined copy-icon">
+                                content_copy
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div> <!-- ./ end contact convs accordion -->
+
 
                 <!-- ----------------------------------------------------------------------------- -->
                 <!-- Priority -->
