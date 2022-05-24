@@ -312,6 +312,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
   getRequests() {
     this.contactsService.getRequestsByRequesterId(this.requester_id, this.pageNo)
+    
       .subscribe((requests_object: any) => {
 
         if (requests_object) {

@@ -34,7 +34,7 @@
           
               <tbody>
                 <!-- ===== IF THERE ISN'T CONTACT REQUEST ===== -->
-                <tr *ngIf="requests_list && requests_list.length === 0">
+                <tr *ngIf="requests_list && requests_list?.length === 0">
                   <td colspan="2" style="text-align: center; padding-top: 16px; cursor: pointer">
                     <p style="font-size:1em; color:#7695a5; font-weight: 400">
                       {{ 'HistoryPage.NoRequests' | translate }}
@@ -306,7 +306,7 @@
             </table>
           </div> <!-- ./ card-content table-responsive -->
 
-          <div *ngIf="displaysFooterPagination === true" class="card-footer" style="text-align:right">
+          <div *ngIf="displaysFooterPagination === true" class="card-footer" style="text-align:center">
             <div class="stats">
 
               <div style="width: 120px; margin: 0 auto; margin-top: 10px ">
@@ -314,7 +314,7 @@
 
                   <!-- -------====== BTN DECREASE PAGE  ======------ -->
                   <span class="input-group-btn" style="padding-right:0px;  padding-left: 0px;">
-                    <button [disabled]="pageNo + 1 === 1" class="btn btn-info" type="button"
+                    <button [disabled]="pageNo + 1 === 1" class="btn btn-primary" type="button"
                       (click)="decreasePageNumber()" style="padding: 6px 8px">
                       <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
                     </button>
@@ -322,7 +322,7 @@
 
                   <!-- -------====== DISPLAY No PAGE / No TOTAL PAGES   ======------ -->
                   <span class="input-group-btn" style="padding-right:0px;">
-                    <button class="btn btn-info" type="button" style="padding: 6px 8px">
+                    <button class="btn btn-primary" type="button" style="padding: 6px 8px">
                       {{ pageNo + 1 }} / {{ totalPagesNo_roundToUp }}
                     </button>
                   </span>
@@ -330,7 +330,7 @@
                   <!-- -------====== BTN INCREASE PAGE  ======------ -->
                   <span class="input-group-btn" style="padding-right:0px">
                     <button [disabled]="pageNo + 1 === totalPagesNo_roundToUp || totalPagesNo_roundToUp === 0"
-                      class="btn btn-info" type="button" (click)="increasePageNumber()" style="padding: 6px 8px">
+                      class="btn btn-primary" type="button" (click)="increasePageNumber()" style="padding: 6px 8px">
                       <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
                     </button>
                   </span>
@@ -340,9 +340,6 @@
 
             </div>
           </div>
-
-
-
         </div>
       </div>
       <!-- /. end col-md-8 -->
