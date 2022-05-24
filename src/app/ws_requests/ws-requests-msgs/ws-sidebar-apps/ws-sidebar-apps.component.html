@@ -1,0 +1,19 @@
+<div class="apps-right-side-bar" style=" box-shadow: 0 2px 6px rgb(0 27 71 / 12%);" [ngClass]="{'apps-right-side-bar-panel-mode': SIDEBAR_APPS_IN_CHAT_PANEL_MODE}" >
+
+  <div style="border-bottom: 1px solid #eeeeee; background-color: #3c4252!important;
+    color: #fff!important; margin-left:-20px; margin-right:-20px; margin-top:-15px">
+    <h5
+      style="font-weight: 400; text-transform: none; margin-top:0px; font-size: 16px; padding-top: 15px;padding-left: 36px;">
+      <!-- Train Bot -->
+      {{ 'Apps' | translate }}
+      <i class="material-icons" style="padding-right: 25px; float: right;cursor:pointer"
+        (click)="closeAppsRightSideBar()">close</i>
+    </h5>
+  </div>
+
+  <div  *ngFor="let app of apps">
+    <iframe [src]="app.src | sanitizeHtml" style="width:100%;" frameBorder="0" allowfullscreen
+      [ngStyle]="{ 'height': app.iframeHeight + 'px'}"></iframe>
+     
+  </div>
+</div>

@@ -226,6 +226,7 @@ import { NativeBotSelectTypeComponent } from './bots/native-bot-select-type/nati
 import { EmailTicketingComponent } from './email-ticketing/email-ticketing.component';
 import { TooltipModule, TooltipOptions } from 'ng2-tooltip-directive';
 import { CutomTooltipOptions } from './utils/util';
+import { WsSidebarAppsComponent } from './ws_requests/ws-requests-msgs/ws-sidebar-apps/ws-sidebar-apps.component';
 
 // console.log('************** APPMODULE ******************');
 // AoT requires an exported function for factories
@@ -423,7 +424,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     NativeBotSidebarComponent,
     NativeBotComponent,
     NativeBotSelectTypeComponent,
-    EmailTicketingComponent
+    EmailTicketingComponent,
+    WsSidebarAppsComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),
