@@ -1479,11 +1479,17 @@ span .conv-svg-icon {
 /*
  Attributes Accordion 
  ----------------------------- */
+.attributes-accordion-wpr {
+  padding-left: 0px;
+  padding-right: 0px;
+  border-bottom: 1px solid #eee;
+}
+
 .attributes-accordion {
   // background-color: #eee;
   color: #444;
   cursor: pointer;
-  padding: 8px 0px;
+  padding: 4px 0px;
   width: 100%;
   border: none;
   text-align: left;
@@ -1509,16 +1515,13 @@ span .conv-svg-icon {
   // margin-left: 5px;
   font-size: 20px;
   padding-right: 4px;
+  margin-top: 4px;
 }
 .attributes-accordion.active:after {
   content: "\f106";
   font-family: FontAwesome;
 }
 
-// .active:after {
-//   content: "\2212";
-//   // content: "\f107";
-// }
 .attributes-panel {
   padding: 0 18px;
   background-color: white;
@@ -1530,12 +1533,37 @@ span .conv-svg-icon {
 /* ./ Attributes Accordion */
 
 /*
+ Apps row 
+ ----------------------------- */
+.app-row-wpr {
+  padding-left: 0px;
+  padding-right: 0px;
+  border-bottom: 1px solid #eee;
+}
+
+.app-row {
+  color: #444;
+  cursor: pointer;
+  padding: 4px 0px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+  transition: 0.4s;
+}
+
+.app-row:hover {
+  background-color: #f7f8fc;
+}
+/* ./ Apps row */
+
+/*
  Attributes Pre-chat Form Accordion  
  ----------------------------------- */
 .attributes-pre-chat-form-accordion-wpr {
   border-top: 1px solid #eeeeee;
 }
-
 
 .attributes-pre-chat-form-accordion {
   // background-color: #eee;
@@ -1554,7 +1582,6 @@ span .conv-svg-icon {
   padding-top: 5px;
   padding-bottom: 5px;
 }
-
 
 .attributes-pre-chat-form-accordion:hover {
   background-color: #f7f8fc;
@@ -1578,7 +1605,6 @@ span .conv-svg-icon {
   font-family: FontAwesome;
 }
 
-
 .attributes-pre-chat-form-accordion-panel {
   padding: 0 18px;
   background-color: white;
@@ -1592,7 +1618,9 @@ span .conv-svg-icon {
  ----------------------------------- */
 .contact-conversation-accordion-wpr {
   border-top: 1px solid #eeeeee;
-  padding-left: 0px; padding-right: 0px; margin-top:0px
+  padding-left: 0px;
+  padding-right: 0px;
+  margin-top: 0px;
 }
 
 .contact-conversation-accordion {
@@ -1606,17 +1634,16 @@ span .conv-svg-icon {
   outline: none;
   font-size: 15px;
   transition: 0.4s;
-  padding-left: 14px;
+  padding-left: 15px;
   padding-right: 15px;
   font-size: 14px;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  padding-top: 9px;
+  padding-bottom: 9px;
 }
 
 .contact-conversation-accordion:hover {
   background-color: #f7f8fc;
 }
-
 
 .contact-conversation-accordion:after {
   content: "\f107";
@@ -1626,23 +1653,22 @@ span .conv-svg-icon {
   float: right;
   font-size: 20px;
   padding-right: 4px;
-  margin-top: 3px;
+  margin-top: 0px;
 }
 .contact-conversation-accordion.active:after {
   content: "\f106";
   font-family: FontAwesome;
+  margin-top: 0px;
 }
 
-
 .contact-conversation-accordion-panel {
-  padding: 0 18px;
+  padding: 0 4px;
   background-color: white;
   max-height: 0;
   overflow-y: auto;
 }
 
 /* ./ Contact conversation Accordion  */
-
 
 /* 
  Attributes decoded JWT Accordion 
@@ -2194,7 +2220,7 @@ span .conv-svg-icon {
 .contact_info_in_right-sidebar {
   // float: left;
   margin-top: 9px;
-  max-width: 253px;
+  // max-width: 253px;
 }
 
 .contact_info_in_right-sidebar-verified {
@@ -2717,6 +2743,18 @@ span .conv-svg-icon {
   border: 1px solid #eee;
   margin-top: 1px;
   margin-bottom: 1px;
+  position: relative;
+  top: -9px;
+  left: -14px;
+  object-fit: cover;
+}
+
+.bot-img-in-msg-list {
+  vertical-align: middle;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid #eee;
   position: relative;
   top: -9px;
   left: -14px;

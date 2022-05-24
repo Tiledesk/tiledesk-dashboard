@@ -109,7 +109,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   contact_id: string; // Not yet used
   NODEJS_REQUEST_CNTCT_FOUND: boolean;
-  OPEN_RIGHT_SIDEBAR = false;
+  OPEN_RIGHT_SIDEBAR: boolean = false;
+  OPEN_APPS_RIGHT_SIDEBAR: boolean = false;
   selectedQuestion: string;
 
   id_request: string;
@@ -227,8 +228,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   contactNewEmail: string;
   EMAIL_IS_VALID: boolean = true
   chat_message: string;
-  contact_requests: any
   @ViewChild('Selecter') ngselect: NgSelectComponent;
+  // for accordion Contact conversations
+  contact_requests: any
+  pageNo = 0;
+  totalPagesNo_roundToUp: number;
+  displaysFooterPagination: boolean;
   /**
    * Constructor
    * @param router 
@@ -662,10 +667,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.request = wsrequest;
 
         if (this.request) {
-           console.log('[WS-REQUESTS-MSGS] - this.request: ', this.request);
-           if (this.request.lead ) {
-           this.getContactRequests(this.request.lead._id) 
-           }
+          this.logger.log('[WS-REQUESTS-MSGS] - this.request: ', this.request);
+          if (this.request.lead) {
+            this.getContactRequests(this.request.lead._id)
+          }
           // -------------------------------------------------------------------
           // User Agent
           // -------------------------------------------------------------------
@@ -1127,62 +1132,92 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById$ * COMPLETE *')
       });
 
+  }
 
 
 
+  decreasePageNumber() {
+    this.pageNo -= 1;
+
+    this.logger.log('[CONTACTS-DTLS] - DECREASE PAGE NUMBER ', this.pageNo);
+    this.getContactRequests(this.request.lead._id)
+  }
+
+  increasePageNumber() {
+    this.pageNo += 1;
+    this.logger.log('[CONTACTS-DTLS]  - INCREASE PAGE NUMBER ', this.pageNo);
+    this.getContactRequests(this.request.lead._id)
   }
 
   getContactRequests(lead_id) {
-    this.contactsService.getRequestsByRequesterId(lead_id, 0)
-    
-    .subscribe((requests_object: any) => {
+    this.contactsService.getRequestsByRequesterId(lead_id, this.pageNo)
 
-      if (requests_object) {
-       console.log('[WS-REQUESTS-MSGS]] - get CONTACT REQUESTS OBJECTS ', requests_object);
-        this.contact_requests = requests_object['requests'];
-        console.log('[WS-REQUESTS-MSGS] - get CONTACT REQUESTS LIST (got by requester_id) ', this.contact_requests);
+      .subscribe((requests_object: any) => {
 
-        this.contact_requests = requests_object['requests'];
+        if (requests_object) {
+          this.logger.log('[WS-REQUESTS-MSGS]] - get CONTACT REQUESTS OBJECTS ', requests_object);
+          this.contact_requests = requests_object['requests'];
+          this.logger.log('[WS-REQUESTS-MSGS] - get CONTACT REQUESTS LIST (got by requester_id) ', this.contact_requests);
+
+          this.contact_requests = requests_object['requests'];
 
 
-        this.contact_requests.forEach(request => {
-          request.currentUserIsJoined = false;
-          console.log('[WS-REQUESTS-MSGS] - CONTACT REQUEST ', request)
-          request.participants.forEach(p => {
-            console.log('[WS-REQUESTS-MSGS] CONTACT REQUEST Participant ', p);
-            if (p === this.currentUserID) {
-              request.currentUserIsJoined = true;
-              return
-            }
-          })
-        });
+          this.contact_requests.forEach(request => {
+            request.currentUserIsJoined = false;
+            this.logger.log('[WS-REQUESTS-MSGS] - CONTACT REQUEST ', request)
+            request.participants.forEach(p => {
+              this.logger.log('[WS-REQUESTS-MSGS] CONTACT REQUEST Participant ', p);
+              if (p === this.currentUserID) {
+                request.currentUserIsJoined = true;
+                return
+              }
+            })
+          });
 
-        // to test pagination
-        // const requestsCount = 83;
-        const requestsCount = requests_object['count'];
-        console.log('[WS-REQUESTS-MSGS] - CONTACT REQUESTS COUNT ', requestsCount);
 
-        
+          const requestsCount = requests_object['count'];
+          this.logger.log('[WS-REQUESTS-MSGS] - CONTACT REQUESTS COUNT ', requestsCount);
 
-        const requestsPerPage = requests_object['perPage'];
-        console.log('[WS-REQUESTS-MSGS]] - CONTACT N° OF REQUESTS X PAGE ', requestsPerPage);
+          this.displayHideFooterPagination(requestsCount);
 
-        const totalPagesNo = requestsCount / requestsPerPage;
-        console.log('[WS-REQUESTS-MSGS] - CONTACT REQUESTS TOTAL PAGES NUMBER', totalPagesNo);
+          const requestsPerPage = requests_object['perPage'];
+          this.logger.log('[WS-REQUESTS-MSGS]] - CONTACT N° OF REQUESTS X PAGE ', requestsPerPage);
 
-        // this.totalPagesNo_roundToUp = Math.ceil(totalPagesNo);
-        // this.logger.log('[CONTACTS-DTLS] - TOTAL PAGES NUMBER ROUND TO UP ', this.totalPagesNo_roundToUp);
+          const totalPagesNo = requestsCount / requestsPerPage;
+          this.logger.log('[WS-REQUESTS-MSGS] - CONTACT REQUESTS TOTAL PAGES NUMBER', totalPagesNo);
 
-      }
-    }, (error) => {
-      this.showSpinner = false;
-      this.logger.error('[WS-REQUESTS-MSGS] - GET REQUEST BY REQUESTER ID - ERROR ', error);
-    }, () => {
-      this.showSpinner = false;
-      this.logger.log('[WS-REQUESTS-MSGS] - GET REQUEST BY REQUESTER ID * COMPLETE *');
-    });
+          this.totalPagesNo_roundToUp = Math.ceil(totalPagesNo);
+          this.logger.log('[WS-REQUESTS-MSGS] - TOTAL PAGES NUMBER ROUND TO UP ', this.totalPagesNo_roundToUp);
+
+        }
+      }, (error) => {
+        this.showSpinner = false;
+        this.logger.error('[WS-REQUESTS-MSGS] - GET REQUEST BY REQUESTER ID - ERROR ', error);
+      }, () => {
+        this.showSpinner = false;
+        this.logger.log('[WS-REQUESTS-MSGS] - GET REQUEST BY REQUESTER ID * COMPLETE *');
+      });
   }
 
+  displayHideFooterPagination(requests_count) {
+    // DISPLAY / HIDE PAGINATION IN THE FOOTER
+    if (requests_count >= 16) {
+      this.displaysFooterPagination = true;
+
+      this.logger.log('[CONTACTS-DTLS] ', requests_count, 'DISPLAY FOOTER PAG ', this.displaysFooterPagination);
+    } else {
+      this.displaysFooterPagination = false;
+
+      this.logger.log('[CONTACTS-DTLS] ', requests_count, 'DISPLAY FOOTER PAG ', this.displaysFooterPagination);
+    }
+  }
+
+
+  goToRequestMsgs(request_recipient: string) {
+    if (this.CHAT_PANEL_MODE === false) {
+      this.router.navigate(['project/' + this.id_project + '/wsrequest/' + request_recipient + '/messages']);
+    }
+  }
 
   // -----------------------------------------------------------------------------------------------------
   // @ Messages ws-subscription and get msgs from BS subscription
@@ -1809,7 +1844,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
 
-    // ---------------------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------------------
   // @ Contact conversation accordion
   // ---------------------------------------------------------------------------------------
   openContactConversationAccordion() {
@@ -1887,14 +1922,29 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // this.train_bot_sidebar_top_pos = mainPanelScrollPosition + 'px'
   }
 
-
   handleCloseRightSidebar(event) {
     this.logger.log('[WS-REQUESTS-MSGS] - CLOSE RIGHT SIDEBAR ', event);
     this.OPEN_RIGHT_SIDEBAR = event;
-
-    // const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
-    // _elemMainPanel.setAttribute('style', 'overflow-x: hidden !important;');
   }
+
+  openAppsSidebar() {
+    this.OPEN_APPS_RIGHT_SIDEBAR = true;
+    const elemMainContent = <HTMLElement>document.querySelector('.main-content');
+    this.train_bot_sidebar_height = elemMainContent.clientHeight + 10 + 'px'
+    this.logger.log('[WS-REQUESTS-MSGS] ON OPEN APPS RIGHT SIDEBAR -> RIGHT SIDEBAR HEIGHT', this.train_bot_sidebar_height);
+    window.scroll({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
+  }
+
+  handleCloseAppsRightSidebar(event) {
+    this.logger.log('[WS-REQUESTS-MSGS] - CLOSE APPS RIGHT SIDEBAR ', event);
+    this.OPEN_APPS_RIGHT_SIDEBAR = event;
+  }
+
+
 
 
 
@@ -2950,7 +3000,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   sendChatMessage() {
-   
+
     this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  chat_message', this.chat_message)
     this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  ID REQUEST ', this.id_request)
     this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  ID PROJECT ', this.id_project)
