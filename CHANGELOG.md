@@ -1,6 +1,14 @@
 
 # tiledesk-dashboard
 
+### 2.2.35-rc5 (compatible with server v2.2.27)
+- Adds the ability to send a message directly from the conversation detail page for all type of conversations
+- Adds in the real time conversations page the ability to see the preview of the chat by hovering the mouse over the message column
+- Adds the ability to reopen an archived conversation on the history page
+- Adds a button in the left sidebar of the conversation details that opens the "apps sidebar"
+- Adds an accordion to the left sidebar of the conversation details that displays the contact's conversations
+- Add the ability in the "monitor" page to archive multiple conversations at the same time
+
 ### 2.2.35-rc4
 - Add the ability to send a message directly from the conversation detail page when the conversation is of type "form" or "email"
 
@@ -20,7 +28,7 @@
 ### 2.2.34
 - Deploys in production
 
-### 2.2.34-rc2
+### 2.2.34-rc2 
 - Displays the plan creation date and plan exipiration date in the subscription tab of project settings for enterprise plans
 - Fixes the bug: if the teammate has the role of agent when switching from the dashboard to the chat and vice versa, the icons that only owners and admins have access to are displayed briefly in the left sidebar
 - Adds the "Edit Profile" button and a link to the help center in the teammate details drawer
