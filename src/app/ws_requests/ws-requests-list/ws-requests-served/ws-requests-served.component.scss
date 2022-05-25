@@ -950,3 +950,27 @@ $f21blue: #039be5;
   padding-top: 6px !important;
   padding-bottom: 6px !important;
 }
+
+
+.custom-input-group---btn {
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+}
+
+
+// .custom-input-group---btn:hover {
+//   background-color: rgba(60, 64, 67, 0.08);
+//   -webkit-transition: background-color 300ms linear;
+//   -ms-transition: background-color 300ms linear;
+//   transition: background-color 300ms linear;
+
+//   .archive-icon-icon {
+//     color: black !important;
+//   }
+// }
+
+.custom-input-group---btn:active {
+  background-color: rgba(60, 64, 67, 0.12);
+  outline: none;
+}

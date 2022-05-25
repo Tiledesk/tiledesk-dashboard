@@ -16,7 +16,41 @@
     <table class="table table-hover unserved_requests_table">
       <thead class="text">
         <tr>
-          <th></th>
+
+          <!-- ----------------------------------------------- -->
+          <!-- Checkbox -->
+          <!-- ----------------------------------------------- -->
+          <th style="width: 46px;
+          text-align: right;
+          padding-right: 3px;
+          padding-bottom: 4px !important;">
+     
+              <label for="allCheckbox">
+                <input id="allCheckbox" [disabled]="ROLE_IS_AGENT === true" [checked]="allChecked === true"
+                  type="checkbox" class="form-check-input" style="cursor: pointer; width: 20px; height: 20px;"
+                  (click)="selectAll($event)">
+              </label>
+            
+
+          </th>
+
+          
+
+            <!-- --------------------------------------------------------- -->
+            <!-- Requests Icons th (in this th put the button to archive -->
+            <!-- ---------------------------------------------------------- -->
+            <th style="padding-top: 6px;padding-bottom: 6px !important;">
+              <button *ngIf="requests_selected.length > 0" class="custom-input-group---btn" type="button" 
+              (click)="archiveSelected()" matTooltipClass="custom-mat-tooltip"
+              matTooltip="{{'VisitorsPage.Resolve' | translate}}" #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+  
+              <span class="material-icons archive-icon"
+                style="vertical-align:middle; cursor: pointer; color:grey;">
+                archive
+              </span>
+            </button>
+  
+            </th>
 
           <!-- ------------------- -->
           <!-- MESSAGE -->
@@ -83,7 +117,7 @@
         <!-- ------------------------ -->
         <tr *ngIf="wsRequestsUnserved?.length === 0">
           <!-- <tr *ngIf="displayNoRequestString"> -->
-          <td colspan="8" style="text-align: center; padding-top: 16px;">
+          <td colspan="9" style="text-align: center; padding-top: 16px;">
             <p style="font-size:1em; color:#737376; font-weight: 100">
               {{ 'NoRequests' | translate }}
             </p>
@@ -96,6 +130,20 @@
         <!-- ------------------------- -->
         <tr *ngFor="let request of wsRequestsUnserved; trackBy: trackByFn; let i= index">
 
+          <!-- ------------------------------------------------------------------------------------------------------ -->
+          <!-- Checkbox -->
+          <!-- ------------------------------------------------------------------------------------------------------ -->
+          <td style="text-align:center; white-space: nowrap; width: 1%;">
+            <div class="checkbox">
+              <label>
+                <!-- allChecked === true -->
+                <input type="checkbox" class="form-check-input" [checked]="request?.isSelected"
+                  style="width: 16px;height: 16px;" value="{{ request.request_id }}"
+                  (click)="change(request)"
+                  [disabled]="ROLE_IS_AGENT === true">
+              </label>
+            </div>
+          </td>
 
           <!-- -------------------------------------------------------------------------------- -->
           <!-- VISIBILITY ICON -->

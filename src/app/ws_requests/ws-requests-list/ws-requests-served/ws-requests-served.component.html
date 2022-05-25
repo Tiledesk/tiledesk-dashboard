@@ -28,7 +28,39 @@
       <thead class="text">
         <tr>
           <!-- <th></th> -->
-          <th></th>
+
+          <!-- ----------------------------------------------- -->
+          <!-- Checkbox -->
+          <!-- ----------------------------------------------- -->
+          <th style="width: 46px;
+          text-align: right;
+          padding-right: 3px;
+          padding-bottom: 4px !important;">
+     
+              <label for="allCheckbox">
+                <input id="allCheckbox" [disabled]="ROLE_IS_AGENT === true" [checked]="allChecked === true"
+                  type="checkbox" class="form-check-input" style="cursor: pointer; width: 20px; height: 20px;"
+                  (click)="selectAll($event)">
+              </label>
+            
+
+          </th>
+
+          <!-- --------------------------------------------------------- -->
+          <!-- Requests Icons th (in this th put the button to archive -->
+          <!-- ---------------------------------------------------------- -->
+          <th style="padding-top: 6px;padding-bottom: 6px !important;">
+            <button *ngIf="requests_selected.length > 0" class="custom-input-group---btn tool_tip" type="button" 
+            (click)="archiveSelected()" matTooltipClass="custom-mat-tooltip"
+            matTooltip="{{'VisitorsPage.Resolve' | translate}}" #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+
+            <span class="material-icons archive-icon"
+              style="vertical-align:middle; cursor: pointer; color:grey;">
+              archive
+            </span>
+          </button>
+
+          </th>
 
           <!-- ====== SERVED REQUETS ID ===== -->
           <!-- <th>
@@ -119,7 +151,7 @@
         <!-- IF THERE ISN'T SERVED REQUEST -->
         <!-- ------------------------------------------------------------ -->
         <tr *ngIf="wsRequestsServed?.length === 0">
-          <td colspan="9" style="text-align: center; padding-top: 16px;">
+          <td colspan="10" style="text-align: center; padding-top: 16px;">
             <p style="font-size:1em; color:#737376; font-weight: 100">
 
               {{ 'NoRequests' | translate }}
@@ -128,18 +160,24 @@
         </tr>
 
         <!-- ------------------------------ -->
-        <!-- SERVED FOR -->
+        <!-- CONVS SERVED FOR -->
         <!-- ------------------------------ -->
         <tr *ngFor="let request of wsRequestsServed; trackBy: trackByFn">
 
-          <!-- FOR DEBUG: SHOW 'J' IF THE CURRENT USER UID IS BETWEEN 
-        THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has joined to the request) -->
-          <!-- <td>
-          <span *ngIf="request?.currentUserIsJoined === true"> 
-            J
-          </span>
-        </td> -->
-
+          <!-- ------------------------------------------------------------------------------------------------------ -->
+          <!-- Checkbox -->
+          <!-- ------------------------------------------------------------------------------------------------------ -->
+          <td style="text-align:center; white-space: nowrap; width: 1%;">
+            <div class="checkbox">
+              <label>
+                <!-- allChecked === true -->
+                <input type="checkbox" class="form-check-input" [checked]="request?.isSelected"
+                  style="width: 16px;height: 16px;" value="{{ request.request_id }}"
+                  (click)="change(request)"
+                  [disabled]="request?.currentUserIsJoined === false && ROLE_IS_AGENT === true">
+              </label>
+            </div>
+          </td>
 
           <!-- ------------------------------------------------------------------------------------------------------ -->
           <!-- ICONS -->
