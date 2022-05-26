@@ -1,0 +1,113 @@
+<div class="navbar-brand" style="z-index: 1050;position: relative;padding-left:30px"
+  [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-57px' : '6px' }">
+  <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
+    (click)="goBack()">keyboard_arrow_left</i>
+  New app
+</div>
+
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-8">
+        <div class="row">
+          <div [ngClass]="{'app-icon-wpr-palceholder': !app_icon_url, 'app-icon-wpr-icon': app_icon_url}">
+            <div class="app-icon">
+              <img *ngIf="app_icon_url" [src]="app_icon_url" onerror="this.src='assets/img/insert_photo.svg'" />
+
+              <img *ngIf="!app_icon_url" src="assets/img/insert_photo.svg" />
+              <span  style="color: rgb(157, 159, 162)" *ngIf="!app_icon_url"> No app icon available</span>
+            </div>
+          </div>
+
+          <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+            <input [(ngModel)]="app_icon_url" class="input" style="margin-bottom: 0px;" type="text"
+              placeholder="Enter the url of the app icon">
+          </div>
+        </div>
+
+        <div class="row">
+          <label class="col-sm-12 app-create-label">
+            App name*
+          </label>
+
+          <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+            <input [(ngModel)]="app_name" class="input" style="margin-bottom: 0px;" type="text" placeholder="App name">
+          </div>
+        </div>
+
+        <div class="row">
+          <label class="col-sm-12 app-create-label">
+            App installation url*
+          </label>
+
+          <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+            <input [(ngModel)]="app_installation_url" class="input" style="margin-bottom: 0px;" type="text"
+              placeholder="App installation url">
+          </div>
+        </div>
+
+
+
+        <div class="row">
+          <label class="col-sm-12 app-create-label">
+            Short description
+          </label>
+
+          <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+            <input [(ngModel)]="app_description" class="input" style="margin-bottom: 0px;" type="text"
+              placeholder="Description">
+          </div>
+        </div>
+
+        <div class="row">
+          <label class="col-sm-12 app-create-label">
+            Learn more URL
+          </label>
+
+          <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+            <input [(ngModel)]="app_learn_more_url" class="input" style="margin-bottom: 0px;" type="text"
+              placeholder="Learn more URL">
+          </div>
+        </div>
+
+        <div class="row">
+          <label class="col-sm-12 app-create-label">
+            Enable your app for
+          </label>
+          <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+            <ng-select [items]="where_items" bindLabel="name" bindValue="id" [clearable]="false"
+              [(ngModel)]="selectedClient" (change)="onChangeWhere(selectedClient)">
+            </ng-select>
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+            <div class="btn-wpr">
+              <button class="btn btn-primary" (click)="saveNewApp()" 
+              [disabled]="!app_installation_url || app_installation_url?.length === 0 || !app_name || app_name?.length === 0 || !app_icon_url || app_icon_url?.length === 0 || !app_description || app_description?.length === 0 || !app_learn_more_url || app_learn_more_url?.length === 0 ">
+                {{ 'ScriptPage.Save' | translate }}
+              </button>
+            </div>
+          </div>
+
+
+
+        </div>
+
+
+
+
+
+
+      </div>
+
+      <div class="col-md-4">
+
+      </div>
+
+
+
+    </div>
+  </div>

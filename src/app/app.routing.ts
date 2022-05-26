@@ -115,6 +115,7 @@ import { RichiesteComponent } from './analytics2/metriche/richieste/richieste.co
 import { NativeBotComponent } from './bots/native-bot/native-bot.component';
 import { NativeBotSelectTypeComponent } from './bots/native-bot-select-type/native-bot-select-type.component';
 import { EmailTicketingComponent } from './email-ticketing/email-ticketing.component';
+import { AppCreateComponent } from './app-store/app-create/app-create.component';
 
 
 // /Users/nicola/TILEDESK-DSHBRD-ENTP/src/app/analytics2/metriche/messages/messages.component.ts
@@ -362,6 +363,7 @@ const routes: Routes = [
   { path: 'project/:projectid/app-store', component: AppStoreComponent, canActivate: [AuthGuard] },
   //{ path: 'project/:projectid/app-store-install/:url/:apptitle', component: AppStoreInstallComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/app-store-install/:appid', component: AppStoreInstallComponent, canActivate: [AuthGuard]},
+  { path: 'project/:projectid/app-create', component: AppCreateComponent, canActivate: [AuthGuard]},
 
   // Webhook
   { path: 'project/:projectid/webhook', component: WebhookComponent, canActivate: [AuthGuard]},
