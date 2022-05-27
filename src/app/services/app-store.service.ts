@@ -27,10 +27,10 @@ export class AppStoreService {
     this.auth.user_bs.subscribe((user) => {
       if (user) {
         this.TOKEN = user.token
-       const TOKEN_NO_SPACES = user.token.replace(/ /g,'')
-        console.log('TOKEN_NO_SPACES ', TOKEN_NO_SPACES) 
-        this.TOKEN_NO_JWT_SUBSTRING = TOKEN_NO_SPACES.replace('JWT','');
-        console.log('TOKEN_NO_JWT_SUBSTRING ', this.TOKEN_NO_JWT_SUBSTRING) 
+        const TOKEN_NO_SPACES = user.token.replace(/ /g, '')
+        // console.log('TOKEN_NO_SPACES ', TOKEN_NO_SPACES) 
+        this.TOKEN_NO_JWT_SUBSTRING = TOKEN_NO_SPACES.replace('JWT', '');
+        // console.log('TOKEN_NO_JWT_SUBSTRING ', this.TOKEN_NO_JWT_SUBSTRING) 
       }
     });
   }
@@ -110,10 +110,10 @@ export class AppStoreService {
 
     console.log('[APP-STORE-SERVICE] CREATE NEW APP BODY ', body);
 
-  
+
 
     return this.http
-      .post(url,body, options)
+      .post(url, body, options)
       .map((res) => res.json());
 
   }
