@@ -8,12 +8,13 @@
 - Adds a button in the left sidebar of the conversation details that opens the "apps sidebar"
 - Adds an accordion to the left sidebar of the conversation details that displays the contact's conversations
 - Add the ability in the "monitor" page to archive multiple conversations at the same time
+- Fixes the bug: app sidebar overlaps with conversation detail content
 
 ### 2.2.35-rc4
 - Add the ability to send a message directly from the conversation detail page when the conversation is of type "form" or "email"
 
 ### 2.2.35-rc3
-- Fixes the bug:: Dialogflow bot creation doesn't work in pre
+- Fixes the bug: Dialogflow bot creation doesn't work in pre
 
 ### 2.2.35-rc2
 - Fixes the bug: when the user profile is updated in the dashboard it is not updated in the chat
