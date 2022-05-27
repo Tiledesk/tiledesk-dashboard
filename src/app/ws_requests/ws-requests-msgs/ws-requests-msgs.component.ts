@@ -116,6 +116,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   id_request: string;
 
   train_bot_sidebar_height: any;
+  apps_sidebar_height: any;
   storageBucket: string;
   baseUrl: string;
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
@@ -234,6 +235,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   pageNo = 0;
   totalPagesNo_roundToUp: number;
   displaysFooterPagination: boolean;
+  HAS_OPENED_APPS: boolean = false;
   /**
    * Constructor
    * @param router 
@@ -309,6 +311,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       this.users_list_modal_height = elemMainContent.clientHeight + 70 + 'px';
       this.logger.log('[WS-REQUESTS-MSGS] - USER LIST MODAL - ON RESIZE -> users_list_modal_height', this.users_list_modal_height);
       this.train_bot_sidebar_height = elemMainContent.clientHeight + 'px';
+
+      this.apps_sidebar_height = elemMainContent.clientHeight + 60 +'px';
+      
       this.logger.log('[WS-REQUESTS-MSGS] - MODAL HEIGHT ', this.users_list_modal_height);
     }
 
@@ -316,7 +321,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // Right sidebar width on resize
     // ------------------------------
     const rightSidebar = <HTMLElement>document.querySelector(`.right-card`);
+    if (rightSidebar) {
     this.rightSidebarWidth = rightSidebar.offsetWidth
+    }
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -353,7 +360,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // Right sidebar width after view init
     // -----------------------------------
     const rightSidebar = <HTMLElement>document.querySelector(`.right-card`);
+    if (rightSidebar) {
     this.rightSidebarWidth = rightSidebar.offsetWidth;
+    }
   }
 
   ngOnDestroy() {
@@ -1908,7 +1917,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
     // this not works if is commented BUG RESOLVE
     const elemMainContent = <HTMLElement>document.querySelector('.main-content');
-    this.train_bot_sidebar_height = elemMainContent.clientHeight + 10 + 'px'
+    this.train_bot_sidebar_height = elemMainContent.clientHeight + 10 + 'px';
+ 
+    
     this.logger.log('[WS-REQUESTS-MSGS] - REQUEST-MSGS - ON OPEN RIGHT SIDEBAR -> RIGHT SIDEBAR HEIGHT', this.train_bot_sidebar_height);
 
 
@@ -1930,8 +1941,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   openAppsSidebar() {
     this.OPEN_APPS_RIGHT_SIDEBAR = true;
     const elemMainContent = <HTMLElement>document.querySelector('.main-content');
-    this.train_bot_sidebar_height = elemMainContent.clientHeight + 10 + 'px'
-    this.logger.log('[WS-REQUESTS-MSGS] ON OPEN APPS RIGHT SIDEBAR -> RIGHT SIDEBAR HEIGHT', this.train_bot_sidebar_height);
+    this.apps_sidebar_height = elemMainContent.clientHeight + 60 + 'px'
+    
+    this.logger.log('[WS-REQUESTS-MSGS] ON OPEN APPS RIGHT SIDEBAR -> RIGHT SIDEBAR HEIGHT', this.apps_sidebar_height);
     window.scroll({
       top: 0,
       left: 0,

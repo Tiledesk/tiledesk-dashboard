@@ -3779,7 +3779,7 @@
       </div>
       <!-- [ngStyle]="{'height':train_bot_sidebar_height }" -->
       <div *ngIf="OPEN_APPS_RIGHT_SIDEBAR === true" class="view-side" >
-        <appdashboard-ws-sidebar-apps 
+        <appdashboard-ws-sidebar-apps [ngStyle]="{'height':apps_sidebar_height }"
           (valueChange)='handleCloseAppsRightSidebar($event)'>
         </appdashboard-ws-sidebar-apps>
       </div>

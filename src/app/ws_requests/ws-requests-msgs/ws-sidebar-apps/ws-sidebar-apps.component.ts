@@ -34,7 +34,8 @@ export class WsSidebarAppsComponent implements OnInit {
   ngOnInit() {
     this.getIfRouteUrlIsRequestForPanel();
     this.getCurrentProject();
-    this.getApps()
+    // this.getApps()
+    this.getInstallations()
   }
 
   ngOnDestroy() {
@@ -104,9 +105,13 @@ export class WsSidebarAppsComponent implements OnInit {
 
     getInstallations() {
       let promise = new Promise((resolve, reject) => {
-        this.appStoreService.getInstallation(this.projectId).then((res) => {
-          console.log("[WS-SIDEBAR-APPS] Get Installation Response: ", res);
-          resolve(res);
+        this.appStoreService.getInstallation(this.projectId).then((installations: any) => {
+          console.log("[WS-SIDEBAR-APPS] Get Installation Response: ", installations);
+          installations.forEach(installation => {
+            this.getAppByAppId(installation.app_id)
+          });
+          
+          resolve(installations);
         }).catch((err) => {
           console.error("[WS-SIDEBAR-APPS] Error getting installation: ", err);
           reject(err);
@@ -114,7 +119,32 @@ export class WsSidebarAppsComponent implements OnInit {
       })
       return promise;
     }
-  
+    getAppByAppId(appid) {
+
+      this.appStoreService.getAppDetail(appid).subscribe((res) => {
+        console.log("[APP-STORE-INSTALL] - GET APP DETAIL RESULT: ", res);
+        // this.result = res;
+        // //this.logger.log(this.result._body);
+        // let parsed_json = JSON.parse(this.result._body);
+        // this.logger.log("[APP-STORE-INSTALL] PARSED JSON: ", parsed_json);
+
+        // this.auth.user_bs.subscribe((user) => {
+        //   if (user) {
+        //     this.TOKEN = user.token
+        //     // this.URL = this.sanitizer.bypassSecurityTrustResourceUrl(parsed_json.installActionURL + '?project_id=' + params.projectid + '&token=' + this.TOKEN);
+        //     this.URL = this.sanitizer.bypassSecurityTrustResourceUrl(parsed_json.installActionURL + '?project_id=' + params.projectid + '&app_id=' + params.appid + '&token=' + this.TOKEN);
+        //     this.logger.log("[APP-STORE-INSTALL] - URL IFRAME: ", this.URL)
+        //     this.getIframeHasLoaded()
+
+        //   } else {
+        //     this.logger.log("[APP-STORE-INSTALL] - GET USER TOKEN: FAILED");
+        //     this.showSpinner = false;
+        //   }
+        // });
+
+      })
+
+    } 
 
 
   closeAppsRightSideBar() {
