@@ -23,7 +23,8 @@ export class AppCreateComponent implements OnInit {
   user_id: string;
   // install_action_type: string = "internal"
   install_action_type: string = "internal"
-  app_status:string = "private"
+  app_status: string = "private"
+  IMAGE_NOT_FOUND: boolean = false;
   where_items = [
     { id: 'dashboard', name: 'Dashboard' },
     { id: 'webchat', name: 'Webchat' },
@@ -82,38 +83,48 @@ export class AppCreateComponent implements OnInit {
     console.log('[APP-CREATE] SAVE NEW APP install_action_type ', this.install_action_type)
 
     console.log('[APP-CREATE] SAVE NEW APP app_installation_url', this.app_installation_url)
- 
+
     console.log('[APP-CREATE] SAVE NEW APP app_learn_more_url', this.app_learn_more_url)
     console.log('[APP-CREATE] SAVE NEW APP app_status', this.app_status)
-    console.log('[APP-CREATE] SAVE NEW APP user_id', this.user_id )
+    console.log('[APP-CREATE] SAVE NEW APP user_id', this.user_id)
     console.log('[APP-CREATE] SAVE NEW APP selectedClient', this.selectedClient) // where
-   
+
     this.appStoreService.createNewApp(
-      this.app_icon_url, 
-      this.app_name, 
-      this.app_description, 
-      this.install_action_type, 
-      this.app_installation_url , 
+      this.app_icon_url,
+      this.app_name,
+      this.app_description,
+      this.install_action_type,
+      this.app_installation_url,
       this.app_learn_more_url,
       this.app_status,
       this.user_id,
       this.selectedClient)
-    .subscribe((res) => {
-      this.logger.log("[APP-CREATE] SAVE NEW APP RESULT: ", res);
-     
-    }, (error) => {
-     
-     console.error('[APP-CREATE] SAVE NEW APP - ERROR ', error);
-    }, () => {
-      console.log('[APP-CREATE] SAVE NEW APP * COMPLETE *');
-     
-    });
+      .subscribe((res) => {
+        this.logger.log("[APP-CREATE] SAVE NEW APP RESULT: ", res);
+
+      }, (error) => {
+
+        console.error('[APP-CREATE] SAVE NEW APP - ERROR ', error);
+      }, () => {
+        console.log('[APP-CREATE] SAVE NEW APP * COMPLETE *');
+
+      });
   }
 
- 
-    goBack() {
-      this.location.back();
+
+  goBack() {
+    this.location.back();
+  }
+
+  errorHandler($event) {
+    // console.log('[APP-CREATE] IMAGE ERROR HANDLER $event', $event);
+    // console.log('[APP-CREATE] IMAGE ERROR HANDLER $event TYPE', $event.type);
+    if ($event.type === 'error') {
+      this.IMAGE_NOT_FOUND = true;
+    } else {
+      this.IMAGE_NOT_FOUND = false;
     }
-  
+  }
+
 
 }

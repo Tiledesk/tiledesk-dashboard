@@ -49,11 +49,12 @@ textarea[type="text"] {
 }
 
 .app-icon-wpr-palceholder {
-    margin-left: 9px;
+    // margin-left: 9px;
+    margin-bottom: 6px;
 }
 
 .app-icon-wpr-icon {
-    margin-left: 16px;
+    // margin-left: 16px;
     margin-bottom: 6px;
 }
 .app-icon img {
@@ -64,3 +65,46 @@ textarea[type="text"] {
 .btn-wpr {
     margin-top: 18px;
 }
+
+.form-control::-moz-placeholder {
+    font-size: 14px;
+    line-height: 1.42857;
+    color: #AAAAAA;
+    font-weight: 400;
+  }
+  .form-control:-ms-input-placeholder {
+    font-size: 14px;
+    line-height: 1.42857;
+    color: #AAAAAA;
+    font-weight: 400;
+  }
+  .form-control::-webkit-input-placeholder {
+    font-size: 14px;
+    line-height: 1.42857;
+    color: #AAAAAA;
+    font-weight: 400;
+  }
+
+  ::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: #a0a0a0 !important;
+    font-weight: 300 !important;
+    opacity: 1; /* Firefox */
+  }
+  
+  :-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: #a0a0a0 !important;
+    font-weight: 300 !important;
+  }
+  
+  ::-ms-input-placeholder {
+    /* Microsoft Edge */
+    color: #a0a0a0 !important;
+    font-weight: 300 !important;
+  }
+
+  ::-webkit-input-placeholder { 
+    color: #a0a0a0 !important;
+    font-weight: 300 !important;
+  }

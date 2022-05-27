@@ -8,14 +8,17 @@
 <div class="main-content">
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-8">
+      <div class="col-md-8" id="create-new-app-inputs-wpr">
         <div class="row">
-          <div [ngClass]="{'app-icon-wpr-palceholder': !app_icon_url, 'app-icon-wpr-icon': app_icon_url}">
-            <div class="app-icon">
-              <img *ngIf="app_icon_url" [src]="app_icon_url" onerror="this.src='assets/img/insert_photo.svg'" />
+          <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+            <div [ngClass]="{'app-icon-wpr-palceholder': !app_icon_url, 'app-icon-wpr-icon': app_icon_url}">
+              <div class="app-icon">
+                <img *ngIf="app_icon_url" [src]="app_icon_url" onerror="this.src='assets/img/insert_photo.svg'" (error)="errorHandler($event)" />
 
-              <img *ngIf="!app_icon_url" src="assets/img/insert_photo.svg" />
-              <span  style="color: rgb(157, 159, 162)" *ngIf="!app_icon_url"> No app icon available</span>
+                <img *ngIf="!app_icon_url" src="assets/img/insert_photo.svg" />
+                <span style="color: rgb(157, 159, 162)" *ngIf="!app_icon_url || app_icon_url?.length === 0 "> No app icon available</span>
+                <span style="color: rgb(157, 159, 162)" *ngIf="app_icon_url || ( app_icon_url?.length > 0 && IMAGE_NOT_FOUND === true) "> App icon not found</span>
+              </div>
             </div>
           </div>
 
@@ -50,7 +53,7 @@
 
         <div class="row">
           <label class="col-sm-12 app-create-label">
-            Short description
+            Short description*
           </label>
 
           <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
@@ -61,7 +64,7 @@
 
         <div class="row">
           <label class="col-sm-12 app-create-label">
-            Learn more URL
+            Learn more URL*
           </label>
 
           <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
@@ -85,8 +88,8 @@
         <div class="row">
           <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
             <div class="btn-wpr">
-              <button class="btn btn-primary" (click)="saveNewApp()" 
-              [disabled]="!app_installation_url || app_installation_url?.length === 0 || !app_name || app_name?.length === 0 || !app_icon_url || app_icon_url?.length === 0 || !app_description || app_description?.length === 0 || !app_learn_more_url || app_learn_more_url?.length === 0 ">
+              <button class="btn btn-primary" (click)="saveNewApp()"
+                [disabled]="!app_installation_url || app_installation_url?.length === 0 || !app_name || app_name?.length === 0 || !app_icon_url || app_icon_url?.length === 0 || !app_description || app_description?.length === 0 || !app_learn_more_url || app_learn_more_url?.length === 0 ">
                 {{ 'ScriptPage.Save' | translate }}
               </button>
             </div>
