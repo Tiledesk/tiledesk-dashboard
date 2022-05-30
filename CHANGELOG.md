@@ -1,7 +1,10 @@
 
 # tiledesk-dashboard
 
-### 2.2.35-rc5 (compatible with server v2.2.27)
+### 2.2.35 (compatible with server v2.2.27) 
+- Deploys in production
+
+### 2.2.35-rc5
 - Adds the ability to send a message directly from the conversation detail page for all type of conversations
 - Adds in the real time conversations page the ability to see the preview of the chat by hovering the mouse over the message column
 - Adds the ability to reopen an archived conversation on the history page
@@ -9,6 +12,7 @@
 - Adds an accordion to the left sidebar of the conversation details that displays the contact's conversations
 - Add the ability in the "monitor" page to archive multiple conversations at the same time
 - Fixes the bug: app sidebar overlaps with conversation detail content
+- Adds the ability to create custom apps and view them in the conversation details apps sidebar
 
 ### 2.2.35-rc4
 - Add the ability to send a message directly from the conversation detail page when the conversation is of type "form" or "email"
