@@ -123,14 +123,14 @@ export class WsSidebarAppsComponent implements OnInit {
 
         if (this.dashboardApps.length > 0) {
           this.dashboardApps.forEach(app => {
-            app['iframeUrl'] = app.runURL + '?request_id=' + this.request['request_id'] + '&project_id=' + this.projectId
+            app['iframeUrl'] = app.runURL + '?request_id=' + this.request['request_id'] + '&project_id=' + this.projectId  + '&app_name=' + app.title
             this.logger.log('[WS-SIDEBAR-APPS] apps', this.apps)
           });
         }
 
         if (this.webchatApps.length > 0) {
           this.webchatApps.forEach(app => {
-            app['iframeUrl'] = app.runURL + '?request_id=' + this.request['request_id'] + '&project_id=' + this.projectId
+            app['iframeUrl'] = app.runURL + '?request_id=' + this.request['request_id'] + '&project_id=' + this.projectId + '&app_name=' + app.title
             this.logger.log('[WS-SIDEBAR-APPS] apps', this.apps)
           });
         }
