@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../core/auth.service';
 import { Subscription } from 'rxjs/Subscription';
 import { LoggerService } from '../services/logger/logger.service';
+import { NotifyService } from 'app/core/notify.service';
 
 @Component({
   selector: 'appdashboard-app-store',
@@ -18,11 +19,14 @@ export class AppStoreComponent implements OnInit {
   showSpinner = true;
   TOKEN: string;
   isChromeVerGreaterThan100: boolean;
+
+  userId: string;
   constructor(
     public appStoreService: AppStoreService,
     private router: Router,
     public auth: AuthService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private notify: NotifyService
   ) { }
 
   ngOnInit() {
@@ -31,19 +35,21 @@ export class AppStoreComponent implements OnInit {
     this.getCurrentProject();
     this.getToken()
     this.getBrowserVersion()
+
   }
 
   getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
-     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-    //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+      //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
-   }
+  }
 
   getToken() {
     this.auth.user_bs.subscribe((user) => {
       if (user) {
         this.TOKEN = user.token
+        this.userId = user._id
       }
     });
   }
@@ -68,7 +74,7 @@ export class AppStoreComponent implements OnInit {
     this.appStoreService.getApps().subscribe((_apps: any) => {
 
       this.apps = _apps.apps;
-      this.logger.log('APP-STORE - getApps APPS ', this.apps);
+      console.log('APP-STORE - getApps APPS ', this.apps);
 
       this.apps.forEach(app => {
 
@@ -76,15 +82,6 @@ export class AppStoreComponent implements OnInit {
 
           app.description = app.description.slice(0, 118) + '...'
         }
-
-        // getRequestText(text: string): string {
-        //   if (text) {
-        //     return text.length >= 95 ?
-        //       text.slice(0, 95) + '...' :
-        //       text;
-        //   }
-        // }
-
       });
 
 
@@ -96,9 +93,13 @@ export class AppStoreComponent implements OnInit {
       this.getInstallations().then((res: any) => {
 
         for (let installation of res) {
-          this.logger.log("[APP-STORE] getInstallations INSTALLATION: ", this.apps.findIndex(x => x._id === installation.app_id ))
+          console.log("[APP-STORE] getInstallations INSTALLATION - res", res)
+          // console.log("[APP-STORE] getInstallations INSTALLATION: ", this.apps.findIndex(x => x._id === installation.app_id))
           let index = this.apps.findIndex(x => x._id === installation.app_id);
-          this.apps[index].installed = true;
+          if (this.apps[index]) {
+            this.apps[index].installed = true;
+          }
+
         }
         this.showSpinner = false;
       }).catch((err) => {
@@ -110,30 +111,108 @@ export class AppStoreComponent implements OnInit {
     });
   }
 
-  installApp(installationType: string, installationUrl: string, appTitle: string, appId: string) {
+  installApp(app, installationType: string, installationUrl: string, appTitle: string, appId: string) {
+
+    console.log('[APP-STORE] app ', app)
+    console.log('[APP-STORE] app app version', app.version)
     this.logger.log('[APP-STORE] installationType ', installationType);
     this.logger.log('[APP-STORE] installationUrl ', installationUrl);
 
-    const urlHasQueryString = this.detectQueryString(installationUrl)
-    this.logger.log('[APP-STORE] installationUrl Has QueryString ', urlHasQueryString);
+    if (app && app.version === 'v1') {
+
+      const urlHasQueryString = this.detectQueryString(installationUrl)
+      this.logger.log('[APP-STORE] installationUrl Has QueryString ', urlHasQueryString);
 
 
-    let installationUrlWithQueryString = ''
-    if (urlHasQueryString === false) {
-      installationUrlWithQueryString = installationUrl + '?project_id=' + this.projectId + '&token=' + this.TOKEN
-    } else {
-      installationUrlWithQueryString = installationUrl + '&project_id=' + this.projectId + '&token=' + this.TOKEN
-    }
+      let installationUrlWithQueryString = ''
+      if (urlHasQueryString === false) {
+        installationUrlWithQueryString = installationUrl + '?project_id=' + this.projectId + '&token=' + this.TOKEN
+      } else {
+        installationUrlWithQueryString = installationUrl + '&project_id=' + this.projectId + '&token=' + this.TOKEN
+      }
 
-    if (installationType === 'internal') {
-      this.logger.log("[APP-STORE] Navigation to: " + 'project/' + this.projectId + '/app-store-install', installationUrlWithQueryString, appTitle)
-      //this.router.navigate(['project/' + this.projectId + '/app-store-install', installationUrlWithQueryString, appTitle]);
-      this.router.navigate(['project/' + this.projectId + '/app-store-install/' + appId])
-    } else {
-      const url = installationUrlWithQueryString;
-      window.open(url, '_blank');
+      if (installationType === 'internal') {
+        this.logger.log("[APP-STORE] Navigation to: " + 'project/' + this.projectId + '/app-store-install', installationUrlWithQueryString, appTitle)
+        //this.router.navigate(['project/' + this.projectId + '/app-store-install', installationUrlWithQueryString, appTitle]);
+        this.router.navigate(['project/' + this.projectId + '/app-store-install/' + appId])
+      } else {
+        const url = installationUrlWithQueryString;
+        window.open(url, '_blank');
+      }
+    } else if (app && app.version === 'v2' || app.version === undefined) {
+      this.installV2App(this.projectId, appId)
     }
   }
+
+  installV2App(projectId, appId) {
+
+    this.appStoreService.installAppVersionTwo(projectId, appId).subscribe((res: any) => {
+      console.log('[APP-STORE] INSTALL V2 APP ', projectId, appId)
+
+    }, (error) => {
+      console.error('[APP-STORE] INSTALL V2 APP - ERROR  ', error);
+      this.notify.showWidgetStyleUpdateNotification("An error occurred while creating the app",4, 'report_problem');
+    }, () => {
+      console.log('[APP-STORE] INSTALL V2 APP - COMPLETE');
+      this.notify.showWidgetStyleUpdateNotification("App installed successfully", 2, 'done');
+      let index = this.apps.findIndex(x => x._id === appId);
+      // this.apps[index].installed = false;
+      // this.apps[index].version = 'v2';
+      setTimeout(() => {
+        this.apps[index].installed = true;
+      }, 1000);
+
+    });
+  }
+
+  unistallApp(appId) {
+    console.log('[APP-STORE] UNINSTALL V2 APP - app_id', appId);
+
+    this.appStoreService.unistallNewApp(this.projectId, appId).subscribe((res: any) => {
+      console.log('[APP-STORE] UNINSTALL V2 APP - app_id - RES', res);
+
+    }, (error) => {
+      console.error('[APP-STORE] UNINSTALL V2 APP - ERROR  ', error);
+      this.notify.showWidgetStyleUpdateNotification("An error occurred while uninstalling the app", 4, 'report_problem');
+    }, () => {
+      console.log('[APP-STORE] UNINSTALL V2 APP - COMPLETE');
+      this.notify.showWidgetStyleUpdateNotification("App uninstalled successfully", 2, 'done');
+      let index = this.apps.findIndex(x => x._id === appId);
+      // this.apps[index].installed = false;
+      // this.apps[index].version = 'v2';
+      setTimeout(() => {
+        this.apps[index].installed = false;
+      }, 1000);
+
+    });
+  }
+
+  deleteNewApp(appId) {
+    this.appStoreService.deleteNewApp(appId).subscribe((res: any) => {
+      console.log('[APP-STORE] DELETE V2 APP - app_id - RES', res);
+
+    }, (error) => {
+      console.error('[APP-STORE] DELETE V2 APP - ERROR  ', error);
+      this.notify.showWidgetStyleUpdateNotification("An error occurred while deleting the app", 4, 'report_problem');
+    }, () => {
+      console.log('[APP-STORE] DELETE V2 APP - COMPLETE');
+      this.notify.showWidgetStyleUpdateNotification("App successfully deleted", 2, 'done');
+      // let index = this.apps.findIndex(x => x._id === appId);
+      // // this.apps[index].installed = false;
+      // // this.apps[index].version = 'v2';
+      for( var i = 0; i < this.apps.length; i++){ 
+                                   
+        if ( this.apps[i]._id === appId) { 
+          this.apps.splice(i, 1); 
+            i--; 
+        }
+    }
+
+    });
+  }
+
+
+
 
   learnmore(learnmoreUrl: string) {
     this.logger.log('[APP-STORE] installationUrl ', learnmoreUrl);
@@ -145,22 +224,31 @@ export class AppStoreComponent implements OnInit {
   detectQueryString(url) {
     // regex pattern for detecting querystring
     var pattern = new RegExp(/\?.+=.*/g);
-    // this.logger.log('[APP-STORE] PATTERN TEST USL ')
+    // this.logger.log('[APP-STORE] PATTERN TEST URL ')
     return pattern.test(url);
   }
 
   getInstallations() {
     let promise = new Promise((resolve, reject) => {
       this.appStoreService.getInstallation(this.projectId).then((res) => {
-        this.logger.log("[APP-STORE] Get Installation Response: ", res);
+        //  console.log("[APP-STORE] Get Installation Response: ", res);
         resolve(res);
       }).catch((err) => {
-        this.logger.error("[APP-STORE] Error getting installation: ", err);
+        // console.error("[APP-STORE] Error getting installation: ", err);
         reject(err);
       })
     })
     return promise;
   }
+  //  project/:projectid/app-create 
+  goToCreateApp() {
+    this.router.navigate(['project/' + this.projectId + '/app-create'])
+  }
+
+  goToEditApp(appid) {
+    this.router.navigate(['project/' + this.projectId + '/app-edit/' + appid])
+  }
+
 
 
 

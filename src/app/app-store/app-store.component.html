@@ -1,29 +1,64 @@
 <!-- margin-top:6px; -->
-<p style="z-index: 1050;position: relative; padding-left:30px" class="navbar-brand" [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
+<p style="z-index: 1050;position: relative; padding-left:30px" class="navbar-brand"
+  [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
   App Store
 </p>
 
 <div class="main-content">
   <div class="container-fluid">
 
+    <div class="row">
+
+      <div class="col-xs-12">
+        <button class="btn btn-primary" style="padding: 8px 16px; margin: 0px;" (click)="goToCreateApp()">
+          <span class="icon" style="padding-right:8px">
+            <i class="material-icons">add_circle</i>
+          </span>
+          Create a new app
+        </button>
+      </div>
+    </div>
+
     <loading-spinner *ngIf="showSpinner"></loading-spinner>
-   
+
     <div *ngIf="!showSpinner" class="row">
-      
-
       <div *ngFor="let app of apps" class="col-lg-4 col-md-4 col-sm-6" style="cursor:pointer">
-
-        
-
         <div class="card card-app-store">
 
           <div class="card-content">
+            <div class="row app-card-header">
+              <div class="col-xs-6">
+                <div class="app-icon">
+                  <img [src]="app.logo" />
+                </div>
+              </div>
+              <!-- flex: 1; width: 50%; -->
+              <div class="col-xs-6">
 
-            <div class="app-icon">
-              <img [src]="app.logo" />
+                <div *ngIf="app.createdBy === userId" class="edit-app-wpr" style="height: 50px;text-align: right;"
+                  >
+                  <div class="row" >
+                    <div class="col-xs-6" style="padding-right: 2px;" (click)="goToEditApp(app._id)">
+                      <div class="edit-app-btn" role="button">
+                        <span class="material-icons app-card-icon">
+                          mode_edit
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-xs-6" style="padding-left: 2px;" (click)="deleteNewApp(app._id)">
+                      <div class="delete-app-btn" role="button">
+                        <span class="material-icons app-card-icon">
+                          delete_forever
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
+
+              </div>
             </div>
-
+            <!-- padding: 0px 20px; -->
             <h5 class="card-title" style="min-height: 52px;margin-bottom: 5px;">
               {{ app.title}}
             </h5>
@@ -37,33 +72,53 @@
 
             <div class="row" style="display: block;">
 
-              <div class="col-xs-6 app-store-left-col-btn"
-              (click)="learnmore(app.learnMore)">
+              <div class="col-xs-6 app-store-left-col-btn" (click)="learnmore(app.learnMore)">
                 <a>
                   Learn more
                 </a>
               </div>
-
-              <div *ngIf="!app.installed" class="col-xs-6 app-store-right-col-btn" 
-                (click)="installApp(app.installActionType, app.installActionURL, app.title, app._id)">
+              <!-- app.installed {{app.installed }}  app.version {{app.version }} -->
+              <div *ngIf="!app.installed" class="col-xs-6 app-store-right-col-btn"
+                (click)="installApp(app, app.installActionType, app.installActionURL, app.title, app._id)">
                 <a>
                   Install
                 </a>
               </div>
 
-              <div *ngIf="app.installed" class="col-xs-6 app-store-right-col-btn"  style="background-color: rgb(45, 88, 230);"
+              <div *ngIf="app.installed && app.version === 'v1'" class="col-xs-6 app-store-right-col-btn"
+                style="background-color: rgb(45, 88, 230);"
                 (click)="installApp(app.installActionType, app.installActionURL, app.title, app._id)">
                 <a style="color: white;">
                   Manage
                 </a>
               </div>
 
-            </div>
+              <!-- <div *ngIf="!app.installed  && app.version === 'v2' ||  app.version === undefined " class="col-xs-6 app-store-right-col-btn">
+                <a style="color: white;">
+                  Install
+                </a>
+              </div> -->
 
+              <!-- <div *ngIf="app?.installed === false && app.version === 'v2' ||  app.version === undefined" class="col-xs-6 app-store-right-col-btn"
+                style="background-color: rgb(45, 88, 230);">
+                <a style="color: white;">
+                  Installing...
+                </a>
+              </div> -->
+
+              <div *ngIf="app?.installed && (app.version === 'v2' ||  app.version === undefined)"
+                class="col-xs-6 app-store-right-col-btn" style="background-color: #f44336;"
+                (click)="unistallApp(app._id)">
+                <a style="color: white;">
+                  Uninstall
+                </a>
+              </div>
+
+
+            </div>
           </div>
         </div>
-      </div>
 
+      </div>
     </div>
   </div>
-</div>

@@ -11,6 +11,7 @@ export class AppStoreService {
   http: Http;
   TOKEN: string;
   TOKEN_NO_JWT_SUBSTRING: string;
+  userID: string;
   APPS_URL = "https://tiledesk-apps.herokuapp.com/api/apps?sort=score";
   APPS_BASE_URL = "https://tiledesk-apps.herokuapp.com/"
   constructor(
@@ -31,6 +32,8 @@ export class AppStoreService {
         // console.log('TOKEN_NO_SPACES ', TOKEN_NO_SPACES) 
         this.TOKEN_NO_JWT_SUBSTRING = TOKEN_NO_SPACES.replace('JWT', '');
         // console.log('TOKEN_NO_JWT_SUBSTRING ', this.TOKEN_NO_JWT_SUBSTRING) 
+        this.userID = user._id
+        console.log('[APP-STORE-SERVICE] userID ', this.userID)
       }
     });
   }
@@ -54,7 +57,7 @@ export class AppStoreService {
       'Authorization': this.TOKEN
     })
 
-    return this.http.get(this.APPS_BASE_URL + "/api/apps/" + appId)
+    return this.http.get(this.APPS_BASE_URL + "api/apps/" + appId)
     // return this.http.get("https://tiledesk-apps.herokuapp.com/api/apps/" + appId)
   }
 
@@ -76,22 +79,61 @@ export class AppStoreService {
     return promise;
   }
 
-  // where: selectedClient,
+  getInstallationWithApp(projectId) {
+    let promise = new Promise((resolve, reject) => {
+
+      let headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+
+      this.httpClient.get(this.APPS_BASE_URL + 'api/installation/' + projectId + '?returnapp=true', { headers: headers })
+        .toPromise().then((res) => {
+          resolve(res);
+        }).catch((err) => {
+          reject(err);
+        })
+    })
+    return promise;
+  }
+
+  public installAppVersionTwo(project_id: string, appId: string) {
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN_NO_JWT_SUBSTRING);
+    const options = new RequestOptions({ headers });
+
+    const url = this.APPS_BASE_URL + "api/installation"
+    console.log('[APP-STORE-SERVICE] INSTALL V2 APP - url', url);
+
+    const body = { project_id: project_id, app_id: appId, createdAt: Date.now(), }
+
+    console.log('[APP-STORE-SERVICE] INSTALL V2 APP - body  ', body);
+
+    return this.http
+      .post(url, body, options)
+      .map((res) => res.json());
+  }
+
+  // 
   public createNewApp(
     app_icon_url: string,
     app_name: string,
     app_description: string,
     install_action_type: string,
     app_installation_url: string,
+    app_run_url: string,
     app_learn_more_url: string,
     app_status: string,
     user_id: string,
-    selectedClient: string) {
+    clients: any) {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
     headers.append('Authorization', this.TOKEN_NO_JWT_SUBSTRING);
     const options = new RequestOptions({ headers });
+
     const url = this.APPS_BASE_URL + "api/apps"
     console.log('[APP-STORE-SERVICE] CREATE NEW APP URL ', url);
 
@@ -101,40 +143,42 @@ export class AppStoreService {
       description: app_description,
       installActionType: install_action_type,
       installActionURL: app_installation_url,
-      learnmore: app_learn_more_url,
+      runURL: app_run_url,
+      learnMore: app_learn_more_url,
       status: app_status,
       visibleForUserIds: [user_id],
-      createdBy: "test",
-      updatedBy: "test"
+      where: clients,
+      version: 'v2'
     };
 
     console.log('[APP-STORE-SERVICE] CREATE NEW APP BODY ', body);
 
-
-
     return this.http
       .post(url, body, options)
       .map((res) => res.json());
-
   }
 
 
-
-  // where: selectedClient,
-  public _createNewApp(
+  public updateNewApp(
+    app_id: string,
     app_icon_url: string,
     app_name: string,
     app_description: string,
     install_action_type: string,
     app_installation_url: string,
+    app_run_url: string,
     app_learn_more_url: string,
     app_status: string,
     user_id: string,
-    selectedClient: string) {
-    const url = this.APPS_BASE_URL + "api/apps"
-    console.log('[TILEDESK-SERVICE] - CREATE NEW APP - URL ', url);
-    const headers = { 'Authorization': this.TOKEN, 'Content-Type': 'application/json' };
+    clients: any) {
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN_NO_JWT_SUBSTRING);
+    const options = new RequestOptions({ headers });
 
+    const url = this.APPS_BASE_URL + "api/apps/" + app_id
+    console.log('[APP-STORE-SERVICE] UPDATE NEW APP URL ', url);
 
     const body = {
       logo: app_icon_url,
@@ -142,20 +186,91 @@ export class AppStoreService {
       description: app_description,
       installActionType: install_action_type,
       installActionURL: app_installation_url,
-      learnmore: app_learn_more_url,
+      runURL: app_run_url,
+      learnMore: app_learn_more_url,
       status: app_status,
       visibleForUserIds: [user_id],
-      where: selectedClient,
-      createdBy: "test",
-      updatedBy: "test"
+      where: clients,
+      version: 'v2'
     };
-    console.log('[TILEDESK-SERVICE] - CREATE NEW APP - body ', body);
-    return this.httpClient
-      .post(url, body, { headers })
-      .pipe(map((res: any) => {
-        console.log('[TILEDESK-SERVICE] - CREATE NEW PROJECT USER TO GET NEW LEAD ID url ', res);
-        return res
-      }))
+
+    console.log('[APP-STORE-SERVICE] UPDATE NEW APP BODY ', body);
+
+    return this.http
+      .put(url, body, options)
+      .map((res) => res.json());
   }
+
+
+  unistallNewApp(projectId: string, appId: string) {
+    let url = this.APPS_BASE_URL + "api/installation/" + projectId + '/' + appId
+    console.log('[APP-STORE-SERVICE] UNINSTALL NEW APP URL ', url);
+
+
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+    return this.http
+      .delete(url, options)
+      .map((res) => res.json());
+  }
+
+  deleteNewApp(appId: string) {
+    let url = this.APPS_BASE_URL + "api/apps/" + appId
+    console.log('[APP-STORE-SERVICE] UNINSTALL NEW APP URL ', url);
+
+
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+    return this.http
+      .delete(url, options)
+      .map((res) => res.json());
+  }
+
+
+
+
+  // where: selectedClient,
+  public _createNewApp(
+  app_icon_url: string,
+  app_name: string,
+  app_description: string,
+  install_action_type: string,
+  app_installation_url: string,
+  app_learn_more_url: string,
+  app_status: string,
+  user_id: string,
+  selectedClient: string) {
+  const url = this.APPS_BASE_URL + "api/apps"
+  console.log('[TILEDESK-SERVICE] - CREATE NEW APP - URL ', url);
+  const headers = { 'Authorization': this.TOKEN, 'Content-Type': 'application/json' };
+
+
+  const body = {
+    logo: app_icon_url,
+    title: app_name,
+    description: app_description,
+    installActionType: install_action_type,
+    installActionURL: app_installation_url,
+    learnmore: app_learn_more_url,
+    status: app_status,
+    visibleForUserIds: [user_id],
+    where: selectedClient,
+    createdBy: "test",
+    updatedBy: "test"
+  };
+  console.log('[TILEDESK-SERVICE] - CREATE NEW APP - body ', body);
+  return this.httpClient
+    .post(url, body, { headers })
+    .pipe(map((res: any) => {
+      console.log('[TILEDESK-SERVICE] - CREATE NEW PROJECT USER TO GET NEW LEAD ID url ', res);
+      return res
+    }))
+}
 
 }

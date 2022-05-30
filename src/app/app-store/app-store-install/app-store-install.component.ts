@@ -101,11 +101,6 @@ export class AppStoreInstallComponent implements OnInit {
 
       })
 
-      //this.app_title = params.apptitle;
-      //this.logger.log('APP-STORE-INSTALL - APP TITLE ',   this.app_title);
-
-      //this.URL = this.sanitizer.bypassSecurityTrustResourceUrl(params.url);
-      //this.logger.log("URL IFRAME: ", this.URL)
     })
   }
 

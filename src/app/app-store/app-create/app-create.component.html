@@ -2,7 +2,9 @@
   [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-57px' : '6px' }">
   <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
     (click)="goBack()">keyboard_arrow_left</i>
-  New app
+
+  <span *ngIf="CREATE_VIEW">New app </span>
+  <span *ngIf="EDIT_VIEW">Edit app </span>
 </div>
 
 <div class="main-content">
@@ -13,11 +15,13 @@
           <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
             <div [ngClass]="{'app-icon-wpr-palceholder': !app_icon_url, 'app-icon-wpr-icon': app_icon_url}">
               <div class="app-icon">
-                <img *ngIf="app_icon_url" [src]="app_icon_url" onerror="this.src='assets/img/insert_photo.svg'" (error)="errorHandler($event)" />
+                <img *ngIf="app_icon_url" [src]="app_icon_url" onerror="this.src='assets/img/insert_photo.svg'"
+                  (error)="errorHandler($event)" />
 
                 <img *ngIf="!app_icon_url" src="assets/img/insert_photo.svg" />
-                <span style="color: rgb(157, 159, 162)" *ngIf="!app_icon_url || app_icon_url?.length === 0 "> No app icon available</span>
-                <span style="color: rgb(157, 159, 162)" *ngIf="app_icon_url || ( app_icon_url?.length > 0 && IMAGE_NOT_FOUND === true) "> App icon not found</span>
+                <span style="color: rgb(157, 159, 162)" *ngIf="!app_icon_url || app_icon_url?.length === 0 "> No app
+                  icon available</span>
+                <!-- <span style="color: rgb(157, 159, 162)" *ngIf="app_icon_url || ( app_icon_url?.length > 0 && IMAGE_NOT_FOUND === true) "> App icon not found</span> -->
               </div>
             </div>
           </div>
@@ -27,7 +31,7 @@
               placeholder="Enter the url of the app icon">
           </div>
         </div>
-
+        <!-- https://fakecrm.nicolan74.repl.co -->
         <div class="row">
           <label class="col-sm-12 app-create-label">
             App name*
@@ -39,8 +43,13 @@
         </div>
 
         <div class="row">
-          <label class="col-sm-12 app-create-label">
-            App installation url*
+          <label class="col-sm-8 col-md-8 col-lg-8 app-create-label">
+            <!-- App installation url* -->
+            Configure flow webhook URL (optional)
+            <span style="color: rgb(157, 159, 162); display: block;font-size: 12px;">
+              Sent when a teammate want to use your app, so that you can show them configuration options before it's
+              inserted. Leaving this option blank will skip configuration.
+            </span>
           </label>
 
           <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
@@ -48,6 +57,20 @@
               placeholder="App installation url">
           </div>
         </div>
+
+
+        <div class="row">
+          <label class="col-sm-12 app-create-label">
+            Render URL
+
+          </label>
+
+          <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+            <input [(ngModel)]="app_run_url" class="input" style="margin-bottom: 0px;" type="text"
+              placeholder="Render app url">
+          </div>
+        </div>
+
 
 
 
@@ -78,19 +101,58 @@
             Enable your app for
           </label>
           <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
-            <ng-select [items]="where_items" bindLabel="name" bindValue="id" [clearable]="false"
+            <!-- <ng-select [items]="where_items" bindLabel="name" bindValue="id" [clearable]="false"
               [(ngModel)]="selectedClient" (change)="onChangeWhere(selectedClient)">
-            </ng-select>
+            </ng-select> -->
+
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" (change)="changeClientSelection($event)" id="checkbox-dashboard"
+                  name="selectedClientDashboard" [checked]="clients.dashboard === true">
+                Dashboard
+              </label>
+            </div>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" (change)="changeClientSelection($event)" id="checkbox-webchat"
+                  name="selectedClientWebchat" [checked]="clients.webchat === true">
+                Webchat
+              </label>
+            </div>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" (change)="changeClientSelection($event)" id="checkbox-widget"
+                  name="selectedClientWebchat" [checked]="clients.widget === true">
+                Widget
+              </label>
+            </div>
           </div>
         </div>
-
+        <!-- || 
+        clients.dashboard === false || 
+        clients.webchat ===  false || 
+        clients.widget ===  false  -->
 
         <div class="row">
           <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
             <div class="btn-wpr">
-              <button class="btn btn-primary" (click)="saveNewApp()"
-                [disabled]="!app_installation_url || app_installation_url?.length === 0 || !app_name || app_name?.length === 0 || !app_icon_url || app_icon_url?.length === 0 || !app_description || app_description?.length === 0 || !app_learn_more_url || app_learn_more_url?.length === 0 ">
-                {{ 'ScriptPage.Save' | translate }}
+              <!-- !app_installation_url || app_installation_url?.length === 0 || -->
+              <!-- ||  (clients.dashboard === false && clients.dashboard === false && clients.dashboard === false) -->
+              <button class="btn btn-primary" (click)="saveOrUpdateNewApp()" [disabled]="!app_name || 
+                app_name?.length === 0 || 
+                !app_icon_url || 
+                app_icon_url?.length === 0 || 
+                !app_description || 
+                app_description?.length === 0 || 
+                !app_learn_more_url || 
+                app_learn_more_url?.length === 0  ">
+
+                <span *ngIf="CREATE_VIEW">
+                  {{ 'ScriptPage.Save' | translate }}
+                </span>
+                <span *ngIf="EDIT_VIEW">
+                  Update
+                </span>
               </button>
             </div>
           </div>

@@ -364,7 +364,7 @@ const routes: Routes = [
   //{ path: 'project/:projectid/app-store-install/:url/:apptitle', component: AppStoreInstallComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/app-store-install/:appid', component: AppStoreInstallComponent, canActivate: [AuthGuard]},
   { path: 'project/:projectid/app-create', component: AppCreateComponent, canActivate: [AuthGuard]},
-
+  { path: 'project/:projectid/app-edit/:appid', component: AppCreateComponent, canActivate: [AuthGuard]},
   // Webhook
   { path: 'project/:projectid/webhook', component: WebhookComponent, canActivate: [AuthGuard]},
   { path: 'project/:projectid/map-request', component: MapRequestComponent, canActivate: [AuthGuard]},

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { slideInOutAnimationNoBckgrnd } from '../../../_animations/index';
 import { TranslateService } from '@ngx-translate/core';
@@ -19,9 +19,12 @@ export class WsSidebarAppsComponent implements OnInit {
   isOpenRightSidebar: boolean = true;
   SIDEBAR_APPS_IN_CHAT_PANEL_MODE: boolean;
   projectId: string;
-  // apps = [
-  //   { 'src': "http://www.frontiere21.it/", iframeHeight: 200 }]
+  @Input() request: string;
+  // for TEST
+  // apps = [ { 'src': "https://fakecrm.nicolan74.repl.co", iframeHeight: 200 }]
   apps: any;
+  dashboardApps: any;
+  webchatApps: any
   subscription: Subscription;
   constructor(
     private logger: LoggerService,
@@ -35,11 +38,11 @@ export class WsSidebarAppsComponent implements OnInit {
     this.getIfRouteUrlIsRequestForPanel();
     this.getCurrentProject();
     // this.getApps()
-    this.getInstallations()
+    this.getInstallationsPopulateWithApp()
   }
 
   ngOnDestroy() {
-    this.logger.log('[ActivitiesComponent] % »»» WebSocketJs WF +++++ ws-requests--- activities ngOnDestroy')
+    this.logger.log('[WS-SIDEBAR-APPS] ngOnDestroy')
     this.subscription.unsubscribe();
   }
   getCurrentProject() {
@@ -51,100 +54,98 @@ export class WsSidebarAppsComponent implements OnInit {
     });
   }
 
-    // --------------------------------------------------------------------------------------------------------------------------------
-    getIfRouteUrlIsRequestForPanel() {
-      this.SIDEBAR_APPS_IN_CHAT_PANEL_MODE = false
-      if (this.router.url.indexOf('/request-for-panel') !== -1) {
-        this.SIDEBAR_APPS_IN_CHAT_PANEL_MODE = true;
-        console.log('[WS-SIDEBAR-APPS] - SIDEBAR_APPS_IN_CHAT_PANEL_MODE »»» ', this.SIDEBAR_APPS_IN_CHAT_PANEL_MODE);
-  
-        // const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel')
-        // _elemMainPanel.classList.add("main-panel-chat-panel-mode");
-  
-      } else {
-        this.SIDEBAR_APPS_IN_CHAT_PANEL_MODE = false;
-       console.log('[WS-SIDEBAR-APPS] - SIDEBAR_APPS_IN_CHAT_PANEL_MODE »»» ', this.SIDEBAR_APPS_IN_CHAT_PANEL_MODE);
-        // const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
-        // if (_elemMainPanel.classList.contains('main-panel-chat-panel-mode')) {
-        //   _elemMainPanel.classList.remove("main-panel-chat-panel-mode");
-        // }
-  
-      }
+  ngOnChanges() {
+    console.log('[WS-SIDEBAR-APPS] request', this.request)
+    // for TEST
+    // this.apps.forEach(app => {
+    //   app['iframeUrl'] = app.src + '?email='+ this.request['lead']['email']
+    //   console.log('[WS-SIDEBAR-APPS] apps', this.apps)
+    // });
+
+  }
+
+
+  // --------------------------------------------------------------------------------------------------------------------------------
+  getIfRouteUrlIsRequestForPanel() {
+    this.SIDEBAR_APPS_IN_CHAT_PANEL_MODE = false
+    if (this.router.url.indexOf('/request-for-panel') !== -1) {
+      this.SIDEBAR_APPS_IN_CHAT_PANEL_MODE = true;
+      console.log('[WS-SIDEBAR-APPS] - SIDEBAR_APPS_IN_CHAT_PANEL_MODE »»» ', this.SIDEBAR_APPS_IN_CHAT_PANEL_MODE);
+
+      // const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel')
+      // _elemMainPanel.classList.add("main-panel-chat-panel-mode");
+
+    } else {
+      this.SIDEBAR_APPS_IN_CHAT_PANEL_MODE = false;
+      console.log('[WS-SIDEBAR-APPS] - SIDEBAR_APPS_IN_CHAT_PANEL_MODE »»» ', this.SIDEBAR_APPS_IN_CHAT_PANEL_MODE);
+      // const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
+      // if (_elemMainPanel.classList.contains('main-panel-chat-panel-mode')) {
+      //   _elemMainPanel.classList.remove("main-panel-chat-panel-mode");
+      // }
+
     }
+  }
 
 
-    getApps() {
-      this.appStoreService.getApps().subscribe((_apps: any) => {
-  
-        this.apps = _apps.apps;
-        console.log('[WS-SIDEBAR-APPS] - getApps APPS ', this.apps);
-  
-    
-  
-      }, (error) => {
-        console.error('[WS-SIDEBAR-APPS] - getApps ERROR  ', error);
-       
-      }, () => {
-        console.log('[WS-SIDEBAR-APPS] getApps * COMPLETE *');
-        this.getInstallations().then((res: any) => {
-  
-          for (let installation of res) {
-            console.log("[WS-SIDEBAR-APPS] getInstallations INSTALLATION: ", this.apps.findIndex(x => x['_id'] === installation.app_id ))
-            let index = this.apps.findIndex(x => x['_id']=== installation.app_id);
-            this.apps[index]['installed'] = true;
+
+
+  getInstallationsPopulateWithApp() {
+    let promise = new Promise((resolve, reject) => {
+      this.appStoreService.getInstallationWithApp(this.projectId).then((installations: any) => {
+        // console.log("[WS-SIDEBAR-APPS] Get Installation Response: ", installations);
+        this.apps = []
+        this.dashboardApps = []
+        this.webchatApps= []
+
+        installations.forEach(installation => {
+          //  console.log('getInstallationsPopulateWithApp installation ', installation)
+          if (installation.app !== null) {
+            // console.log('getInstallationsPopulateWithApp installation.app ', installation.app)
+
+
+            // this.apps.push(installation.app)
+
+            // this.dashboardApps 
+            console.log('getInstallationsPopulateWithApp installation.app  where', installation.app.where)
+            if (installation.app.where.dashboard === true) {
+              this.dashboardApps.push(installation.app)
+            }
+
+            if (installation.app.where.webchat === true) {
+              this.webchatApps.push(installation.app)
+            }
+
           }
-        
-        }).catch((err) => {
-          console.error("[WS-SIDEBAR-APPS] getInstallations ERROR: ", err)
-         
-        })
-  
-        // this.showSpinner = false;
-      });
-    }
+        });
 
-    getInstallations() {
-      let promise = new Promise((resolve, reject) => {
-        this.appStoreService.getInstallation(this.projectId).then((installations: any) => {
-          console.log("[WS-SIDEBAR-APPS] Get Installation Response: ", installations);
-          installations.forEach(installation => {
-            this.getAppByAppId(installation.app_id)
+        console.log("[WS-SIDEBAR-APPS] DASHBOARD APPS ARRAY: ", this.dashboardApps);
+        console.log("[WS-SIDEBAR-APPS] WEBCHAT APPS ARRAY: ", this.webchatApps);
+
+        if (this.dashboardApps.length > 0) {
+          this.dashboardApps.forEach(app => {
+            app['iframeUrl'] = app.runURL + '?request_id=' + this.request['request_id'] + '&project_id=' + this.projectId
+            console.log('[WS-SIDEBAR-APPS] apps', this.apps)
           });
-          
-          resolve(installations);
-        }).catch((err) => {
-          console.error("[WS-SIDEBAR-APPS] Error getting installation: ", err);
-          reject(err);
-        })
+        }
+
+        if (this.webchatApps.length > 0) {
+          this.webchatApps.forEach(app => {
+            app['iframeUrl'] = app.runURL + '?request_id=' + this.request['request_id'] + '&project_id=' + this.projectId
+            console.log('[WS-SIDEBAR-APPS] apps', this.apps)
+          });
+        }
+
+        // dashboardApps
+
+        resolve(installations);
+      }).catch((err) => {
+        console.error("[WS-SIDEBAR-APPS] Error getting installation: ", err);
+        reject(err);
       })
-      return promise;
-    }
-    getAppByAppId(appid) {
+    })
+    return promise;
+  }
 
-      this.appStoreService.getAppDetail(appid).subscribe((res) => {
-        console.log("[APP-STORE-INSTALL] - GET APP DETAIL RESULT: ", res);
-        // this.result = res;
-        // //this.logger.log(this.result._body);
-        // let parsed_json = JSON.parse(this.result._body);
-        // this.logger.log("[APP-STORE-INSTALL] PARSED JSON: ", parsed_json);
-
-        // this.auth.user_bs.subscribe((user) => {
-        //   if (user) {
-        //     this.TOKEN = user.token
-        //     // this.URL = this.sanitizer.bypassSecurityTrustResourceUrl(parsed_json.installActionURL + '?project_id=' + params.projectid + '&token=' + this.TOKEN);
-        //     this.URL = this.sanitizer.bypassSecurityTrustResourceUrl(parsed_json.installActionURL + '?project_id=' + params.projectid + '&app_id=' + params.appid + '&token=' + this.TOKEN);
-        //     this.logger.log("[APP-STORE-INSTALL] - URL IFRAME: ", this.URL)
-        //     this.getIframeHasLoaded()
-
-        //   } else {
-        //     this.logger.log("[APP-STORE-INSTALL] - GET USER TOKEN: FAILED");
-        //     this.showSpinner = false;
-        //   }
-        // });
-
-      })
-
-    } 
 
 
   closeAppsRightSideBar() {
