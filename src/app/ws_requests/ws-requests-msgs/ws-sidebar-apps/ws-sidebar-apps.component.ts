@@ -99,7 +99,7 @@ export class WsSidebarAppsComponent implements OnInit {
 
         installations.forEach(installation => {
           //  console.log('getInstallationsPopulateWithApp installation ', installation)
-          if (installation.app !== null) {
+          if (installation.app !== null && installation.app.version === 'v2') {
             // console.log('getInstallationsPopulateWithApp installation.app ', installation.app)
 
 
@@ -118,8 +118,8 @@ export class WsSidebarAppsComponent implements OnInit {
           }
         });
 
-        this.logger.log("[WS-SIDEBAR-APPS] DASHBOARD APPS ARRAY: ", this.dashboardApps);
-        this.logger.log("[WS-SIDEBAR-APPS] WEBCHAT APPS ARRAY: ", this.webchatApps);
+        console.log("[WS-SIDEBAR-APPS] DASHBOARD APPS ARRAY: ", this.dashboardApps);
+        console.log("[WS-SIDEBAR-APPS] WEBCHAT APPS ARRAY: ", this.webchatApps);
 
         if (this.dashboardApps.length > 0) {
           this.dashboardApps.forEach(app => {
