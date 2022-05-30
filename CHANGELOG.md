@@ -1,10 +1,10 @@
 
 # tiledesk-dashboard
 
-### 2.2.35 (compatible with server v2.2.27) 
+### 2.2.35 
 - Deploys in production
 
-### 2.2.35-rc5
+### 2.2.35-rc5 (compatible with server v2.2.27) 
 - Adds the ability to send a message directly from the conversation detail page for all type of conversations
 - Adds in the real time conversations page the ability to see the preview of the chat by hovering the mouse over the message column
 - Adds the ability to reopen an archived conversation on the history page
