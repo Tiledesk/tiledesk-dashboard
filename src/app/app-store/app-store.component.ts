@@ -72,14 +72,10 @@ export class AppStoreComponent implements OnInit {
   // ---------------------------
   getApps() {
     this.appStoreService.getApps().subscribe((_apps: any) => {
-
       this.apps = _apps.apps;
-      console.log('APP-STORE - getApps APPS ', this.apps);
-
+      this.logger.log('APP-STORE - getApps APPS ', this.apps);
       this.apps.forEach(app => {
-
         if (app.description.length > 118) {
-
           app.description = app.description.slice(0, 118) + '...'
         }
       });
@@ -93,7 +89,7 @@ export class AppStoreComponent implements OnInit {
       this.getInstallations().then((res: any) => {
 
         for (let installation of res) {
-          console.log("[APP-STORE] getInstallations INSTALLATION - res", res)
+          this.logger.log("[APP-STORE] getInstallations INSTALLATION - res", res)
           // console.log("[APP-STORE] getInstallations INSTALLATION: ", this.apps.findIndex(x => x._id === installation.app_id))
           let index = this.apps.findIndex(x => x._id === installation.app_id);
           if (this.apps[index]) {
@@ -113,8 +109,8 @@ export class AppStoreComponent implements OnInit {
 
   installApp(app, installationType: string, installationUrl: string, appTitle: string, appId: string) {
 
-    console.log('[APP-STORE] app ', app)
-    console.log('[APP-STORE] app app version', app.version)
+    this.logger.log('[APP-STORE] app ', app)
+    this.logger.log('[APP-STORE] app app version', app.version)
     this.logger.log('[APP-STORE] installationType ', installationType);
     this.logger.log('[APP-STORE] installationUrl ', installationUrl);
 
@@ -147,13 +143,13 @@ export class AppStoreComponent implements OnInit {
   installV2App(projectId, appId) {
 
     this.appStoreService.installAppVersionTwo(projectId, appId).subscribe((res: any) => {
-      console.log('[APP-STORE] INSTALL V2 APP ', projectId, appId)
+      this.logger.log('[APP-STORE] INSTALL V2 APP ', projectId, appId)
 
     }, (error) => {
-      console.error('[APP-STORE] INSTALL V2 APP - ERROR  ', error);
-      this.notify.showWidgetStyleUpdateNotification("An error occurred while creating the app",4, 'report_problem');
+      this.logger.error('[APP-STORE] INSTALL V2 APP - ERROR  ', error);
+      this.notify.showWidgetStyleUpdateNotification("An error occurred while creating the app", 4, 'report_problem');
     }, () => {
-      console.log('[APP-STORE] INSTALL V2 APP - COMPLETE');
+      this.logger.log('[APP-STORE] INSTALL V2 APP - COMPLETE');
       this.notify.showWidgetStyleUpdateNotification("App installed successfully", 2, 'done');
       let index = this.apps.findIndex(x => x._id === appId);
       // this.apps[index].installed = false;
@@ -166,16 +162,16 @@ export class AppStoreComponent implements OnInit {
   }
 
   unistallApp(appId) {
-    console.log('[APP-STORE] UNINSTALL V2 APP - app_id', appId);
+    this.logger.log('[APP-STORE] UNINSTALL V2 APP - app_id', appId);
 
     this.appStoreService.unistallNewApp(this.projectId, appId).subscribe((res: any) => {
-      console.log('[APP-STORE] UNINSTALL V2 APP - app_id - RES', res);
+      this.logger.log('[APP-STORE] UNINSTALL V2 APP - app_id - RES', res);
 
     }, (error) => {
-      console.error('[APP-STORE] UNINSTALL V2 APP - ERROR  ', error);
+      this.logger.error('[APP-STORE] UNINSTALL V2 APP - ERROR  ', error);
       this.notify.showWidgetStyleUpdateNotification("An error occurred while uninstalling the app", 4, 'report_problem');
     }, () => {
-      console.log('[APP-STORE] UNINSTALL V2 APP - COMPLETE');
+      this.logger.log('[APP-STORE] UNINSTALL V2 APP - COMPLETE');
       this.notify.showWidgetStyleUpdateNotification("App uninstalled successfully", 2, 'done');
       let index = this.apps.findIndex(x => x._id === appId);
       // this.apps[index].installed = false;
@@ -189,24 +185,24 @@ export class AppStoreComponent implements OnInit {
 
   deleteNewApp(appId) {
     this.appStoreService.deleteNewApp(appId).subscribe((res: any) => {
-      console.log('[APP-STORE] DELETE V2 APP - app_id - RES', res);
+      this.logger.log('[APP-STORE] DELETE V2 APP - app_id - RES', res);
 
     }, (error) => {
-      console.error('[APP-STORE] DELETE V2 APP - ERROR  ', error);
+      this.logger.error('[APP-STORE] DELETE V2 APP - ERROR  ', error);
       this.notify.showWidgetStyleUpdateNotification("An error occurred while deleting the app", 4, 'report_problem');
     }, () => {
-      console.log('[APP-STORE] DELETE V2 APP - COMPLETE');
+      this.logger.log('[APP-STORE] DELETE V2 APP - COMPLETE');
       this.notify.showWidgetStyleUpdateNotification("App successfully deleted", 2, 'done');
       // let index = this.apps.findIndex(x => x._id === appId);
       // // this.apps[index].installed = false;
       // // this.apps[index].version = 'v2';
-      for( var i = 0; i < this.apps.length; i++){ 
-                                   
-        if ( this.apps[i]._id === appId) { 
-          this.apps.splice(i, 1); 
-            i--; 
+      for (var i = 0; i < this.apps.length; i++) {
+
+        if (this.apps[i]._id === appId) {
+          this.apps.splice(i, 1);
+          i--;
         }
-    }
+      }
 
     });
   }

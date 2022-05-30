@@ -55,7 +55,7 @@ export class WsSidebarAppsComponent implements OnInit {
   }
 
   ngOnChanges() {
-    console.log('[WS-SIDEBAR-APPS] request', this.request)
+    this.logger.log('[WS-SIDEBAR-APPS] request', this.request)
     // for TEST
     // this.apps.forEach(app => {
     //   app['iframeUrl'] = app.src + '?email='+ this.request['lead']['email']
@@ -70,14 +70,14 @@ export class WsSidebarAppsComponent implements OnInit {
     this.SIDEBAR_APPS_IN_CHAT_PANEL_MODE = false
     if (this.router.url.indexOf('/request-for-panel') !== -1) {
       this.SIDEBAR_APPS_IN_CHAT_PANEL_MODE = true;
-      console.log('[WS-SIDEBAR-APPS] - SIDEBAR_APPS_IN_CHAT_PANEL_MODE »»» ', this.SIDEBAR_APPS_IN_CHAT_PANEL_MODE);
+      this.logger.log('[WS-SIDEBAR-APPS] - SIDEBAR_APPS_IN_CHAT_PANEL_MODE »»» ', this.SIDEBAR_APPS_IN_CHAT_PANEL_MODE);
 
       // const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel')
       // _elemMainPanel.classList.add("main-panel-chat-panel-mode");
 
     } else {
       this.SIDEBAR_APPS_IN_CHAT_PANEL_MODE = false;
-      console.log('[WS-SIDEBAR-APPS] - SIDEBAR_APPS_IN_CHAT_PANEL_MODE »»» ', this.SIDEBAR_APPS_IN_CHAT_PANEL_MODE);
+      this.logger.log('[WS-SIDEBAR-APPS] - SIDEBAR_APPS_IN_CHAT_PANEL_MODE »»» ', this.SIDEBAR_APPS_IN_CHAT_PANEL_MODE);
       // const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
       // if (_elemMainPanel.classList.contains('main-panel-chat-panel-mode')) {
       //   _elemMainPanel.classList.remove("main-panel-chat-panel-mode");
@@ -106,7 +106,7 @@ export class WsSidebarAppsComponent implements OnInit {
             // this.apps.push(installation.app)
 
             // this.dashboardApps 
-            console.log('getInstallationsPopulateWithApp installation.app  where', installation.app.where)
+            this.logger.log('getInstallationsPopulateWithApp installation.app  where', installation.app.where)
             if (installation.app.where.dashboard === true) {
               this.dashboardApps.push(installation.app)
             }
@@ -118,20 +118,20 @@ export class WsSidebarAppsComponent implements OnInit {
           }
         });
 
-        console.log("[WS-SIDEBAR-APPS] DASHBOARD APPS ARRAY: ", this.dashboardApps);
-        console.log("[WS-SIDEBAR-APPS] WEBCHAT APPS ARRAY: ", this.webchatApps);
+        this.logger.log("[WS-SIDEBAR-APPS] DASHBOARD APPS ARRAY: ", this.dashboardApps);
+        this.logger.log("[WS-SIDEBAR-APPS] WEBCHAT APPS ARRAY: ", this.webchatApps);
 
         if (this.dashboardApps.length > 0) {
           this.dashboardApps.forEach(app => {
             app['iframeUrl'] = app.runURL + '?request_id=' + this.request['request_id'] + '&project_id=' + this.projectId
-            console.log('[WS-SIDEBAR-APPS] apps', this.apps)
+            this.logger.log('[WS-SIDEBAR-APPS] apps', this.apps)
           });
         }
 
         if (this.webchatApps.length > 0) {
           this.webchatApps.forEach(app => {
             app['iframeUrl'] = app.runURL + '?request_id=' + this.request['request_id'] + '&project_id=' + this.projectId
-            console.log('[WS-SIDEBAR-APPS] apps', this.apps)
+            this.logger.log('[WS-SIDEBAR-APPS] apps', this.apps)
           });
         }
 
@@ -139,7 +139,7 @@ export class WsSidebarAppsComponent implements OnInit {
 
         resolve(installations);
       }).catch((err) => {
-        console.error("[WS-SIDEBAR-APPS] Error getting installation: ", err);
+        this.logger.error("[WS-SIDEBAR-APPS] Error getting installation: ", err);
         reject(err);
       })
     })

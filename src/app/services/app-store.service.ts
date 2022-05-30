@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { AuthService } from '../core/auth.service';
 import { map } from 'rxjs/operators';
-
+import { LoggerService } from '../services/logger/logger.service';
 @Injectable()
 
 export class AppStoreService {
@@ -18,6 +18,8 @@ export class AppStoreService {
     http: Http,
     private httpClient: HttpClient,
     public auth: AuthService,
+    private logger: LoggerService
+    
   ) {
     this.http = http;
 
@@ -33,7 +35,7 @@ export class AppStoreService {
         this.TOKEN_NO_JWT_SUBSTRING = TOKEN_NO_SPACES.replace('JWT', '');
         // console.log('TOKEN_NO_JWT_SUBSTRING ', this.TOKEN_NO_JWT_SUBSTRING) 
         this.userID = user._id
-        console.log('[APP-STORE-SERVICE] userID ', this.userID)
+        // console.log('[APP-STORE-SERVICE] userID ', this.userID)
       }
     });
   }
@@ -105,11 +107,11 @@ export class AppStoreService {
     const options = new RequestOptions({ headers });
 
     const url = this.APPS_BASE_URL + "api/installation"
-    console.log('[APP-STORE-SERVICE] INSTALL V2 APP - url', url);
+    this.logger.log('[APP-STORE-SERVICE] INSTALL V2 APP - url', url);
 
     const body = { project_id: project_id, app_id: appId, createdAt: Date.now(), }
 
-    console.log('[APP-STORE-SERVICE] INSTALL V2 APP - body  ', body);
+    this.logger.log('[APP-STORE-SERVICE] INSTALL V2 APP - body  ', body);
 
     return this.http
       .post(url, body, options)
@@ -135,7 +137,7 @@ export class AppStoreService {
     const options = new RequestOptions({ headers });
 
     const url = this.APPS_BASE_URL + "api/apps"
-    console.log('[APP-STORE-SERVICE] CREATE NEW APP URL ', url);
+    this.logger.log('[APP-STORE-SERVICE] CREATE NEW APP URL ', url);
 
     const body = {
       logo: app_icon_url,
@@ -151,7 +153,7 @@ export class AppStoreService {
       version: 'v2'
     };
 
-    console.log('[APP-STORE-SERVICE] CREATE NEW APP BODY ', body);
+    this.logger.log('[APP-STORE-SERVICE] CREATE NEW APP BODY ', body);
 
     return this.http
       .post(url, body, options)
@@ -178,7 +180,7 @@ export class AppStoreService {
     const options = new RequestOptions({ headers });
 
     const url = this.APPS_BASE_URL + "api/apps/" + app_id
-    console.log('[APP-STORE-SERVICE] UPDATE NEW APP URL ', url);
+    this.logger.log('[APP-STORE-SERVICE] UPDATE NEW APP URL ', url);
 
     const body = {
       logo: app_icon_url,
@@ -194,7 +196,7 @@ export class AppStoreService {
       version: 'v2'
     };
 
-    console.log('[APP-STORE-SERVICE] UPDATE NEW APP BODY ', body);
+    this.logger.log('[APP-STORE-SERVICE] UPDATE NEW APP BODY ', body);
 
     return this.http
       .put(url, body, options)
@@ -204,7 +206,7 @@ export class AppStoreService {
 
   unistallNewApp(projectId: string, appId: string) {
     let url = this.APPS_BASE_URL + "api/installation/" + projectId + '/' + appId
-    console.log('[APP-STORE-SERVICE] UNINSTALL NEW APP URL ', url);
+    this.logger.log('[APP-STORE-SERVICE] UNINSTALL NEW APP URL ', url);
 
 
     const headers = new Headers();
@@ -219,7 +221,7 @@ export class AppStoreService {
 
   deleteNewApp(appId: string) {
     let url = this.APPS_BASE_URL + "api/apps/" + appId
-    console.log('[APP-STORE-SERVICE] UNINSTALL NEW APP URL ', url);
+    this.logger.log('[APP-STORE-SERVICE] UNINSTALL NEW APP URL ', url);
 
 
     const headers = new Headers();
@@ -247,7 +249,7 @@ export class AppStoreService {
   user_id: string,
   selectedClient: string) {
   const url = this.APPS_BASE_URL + "api/apps"
-  console.log('[TILEDESK-SERVICE] - CREATE NEW APP - URL ', url);
+  this.logger.log('[TILEDESK-SERVICE] - CREATE NEW APP - URL ', url);
   const headers = { 'Authorization': this.TOKEN, 'Content-Type': 'application/json' };
 
 
@@ -264,11 +266,11 @@ export class AppStoreService {
     createdBy: "test",
     updatedBy: "test"
   };
-  console.log('[TILEDESK-SERVICE] - CREATE NEW APP - body ', body);
+  this.logger.log('[TILEDESK-SERVICE] - CREATE NEW APP - body ', body);
   return this.httpClient
     .post(url, body, { headers })
     .pipe(map((res: any) => {
-      console.log('[TILEDESK-SERVICE] - CREATE NEW PROJECT USER TO GET NEW LEAD ID url ', res);
+      this.logger.log('[TILEDESK-SERVICE] - CREATE NEW PROJECT USER TO GET NEW LEAD ID url ', res);
       return res
     }))
 }

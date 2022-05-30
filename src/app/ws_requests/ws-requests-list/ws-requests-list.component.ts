@@ -1211,7 +1211,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
               // USECASE: filter for participant conversationType
               // -----------------------------------------------------------------------------------------------------------
               if (this.filter[1] !== undefined && this.filter[1]['agentId'] !== null && this.filter[2] !== undefined && this.filter[2]['conversationTypeId'] !== null && this.filter[0]['deptId'] === null) {
-                console.log('[WS-REQUESTS-LIST] FILTER USECASE  - filter for participant conversationType');
+                this.logger.log('[WS-REQUESTS-LIST] FILTER USECASE  - filter for participant conversationType');
                   this.logger.log('[WS-REQUESTS-LIST] FILTER USECASE  - filter[agentId] ', this.filter[1]['agentId']);
                   this.logger.log('[WS-REQUESTS-LIST] FILTER USECASE  - filter[deptId] ', this.filter[0]['deptId']);
                   this.logger.log('[WS-REQUESTS-LIST] FILTER USECASE  - filter[conversationTypeId] ', this.filter[2]['conversationTypeId']);

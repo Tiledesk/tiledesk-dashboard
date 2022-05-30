@@ -146,7 +146,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
 
         const stored_preferred_lang = localStorage.getItem(this.currentUserId + '_lang')
-        console.log('[PROJECTS] stored_preferred_lang ', stored_preferred_lang)
+        // console.log('[PROJECTS] stored_preferred_lang ', stored_preferred_lang)
         if (stored_preferred_lang) {
           this.dsbrd_lang = stored_preferred_lang;
           this.getLangTranslation(this.dsbrd_lang)

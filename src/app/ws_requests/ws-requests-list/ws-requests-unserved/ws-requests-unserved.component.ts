@@ -102,11 +102,11 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     this.getTranslations();
     this.getLoggedUser();
     this.getProjectUserRole();
-   
+
   }
 
 
-    // -------------------------------------------------------------
+  // -------------------------------------------------------------
   // @ Subscribe to project user role
   // -------------------------------------------------------------
 
@@ -148,7 +148,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     //             } else {
     //               console.log('WS-REQUEST-UNSERVED the conversation NOT exists in both arrays - conv ', this.wsRequestsUnserved[i]._id)
     //             }
-  
+
     //             // if (this.wsRequestsUnserved[i]['archived'] === true) {
     //             //   console.log('WS-REQUEST-UNSERVED  wsRequestsUnserved the object with archived ', this.wsRequestsUnserved[i])
     //             //   this.wsRequestsUnserved.splice(i, 1);
@@ -253,7 +253,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
 
 
     if (e.target.checked == true) {
-      console.log('SELECT ALL e.target.checked ', e.target.checked)
+      this.logger.log('SELECT ALL e.target.checked ', e.target.checked)
       this.allChecked = true;
       for (let request of this.wsRequestsUnserved) {
         // console.log('SELECT ALL request ', request)
@@ -268,7 +268,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
         }
 
         if (request['isSelected'] === true) {
-          console.log("[WS-REQUESTS-LIST][UNSERVED]] **++ Already selected")
+          this.logger.log("[WS-REQUESTS-LIST][UNSERVED]] **++ Already selected")
         } else {
           // console.log("[WS-REQUESTS-LIST][SERVED] *+*+ Request Selected: ", request.request_id);
 
@@ -276,8 +276,8 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
 
         }
       }
-      console.log('[WS-REQUESTS-LIST][UNSERVED] - ARRAY OF SELECTED REQUEST ', this.requests_selected);
-      console.log('[WS-REQUESTS-LIST][UNSERVED] - ARRAY OF SELECTED REQUEST lenght ', this.requests_selected.length);
+      this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - ARRAY OF SELECTED REQUEST ', this.requests_selected);
+      this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - ARRAY OF SELECTED REQUEST lenght ', this.requests_selected.length);
     } else if (e.target.checked == false) {
       for (let request of this.wsRequestsUnserved) {
         // console.log('SELECT ALL request ', request)
@@ -296,8 +296,8 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
       // }
       this.allChecked = false;
       this.requests_selected = [];
-      console.log('[WS-REQUESTS-LIST][UNSERVED] - ARRAY OF SELECTED REQUEST ', this.requests_selected);
-      console.log('[WS-REQUESTS-LIST][UNSERVED] - ARRAY OF SELECTED REQUEST lenght ', this.requests_selected.length)
+      this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - ARRAY OF SELECTED REQUEST ', this.requests_selected);
+      this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - ARRAY OF SELECTED REQUEST lenght ', this.requests_selected.length)
     }
 
   }
@@ -305,11 +305,11 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
   change(request) {
     var checkbox = <HTMLInputElement>document.getElementById("allCheckbox");
     if (checkbox) {
-    console.log("[WS-REQUESTS-LIST][UNSERVED] -  change - checkbox Indeterminate: ", checkbox.indeterminate);
+      this.logger.log("[WS-REQUESTS-LIST][UNSERVED] -  change - checkbox Indeterminate: ", checkbox.indeterminate);
     }
 
 
-    console.log("[WS-REQUESTS-LIST][UNSERVED] -  change - checkbox request: ", request);
+    this.logger.log("[WS-REQUESTS-LIST][UNSERVED] -  change - checkbox request: ", request);
     if (request.hasOwnProperty('isSelected')) {
       if (request.isSelected === true) {
         request.isSelected = false
@@ -321,39 +321,39 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     }
 
 
-    console.log('[WS-REQUESTS-LIST][UNSERVED] - change - SELECTED REQUEST ID: ', request.request_id);
+    this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - change - SELECTED REQUEST ID: ', request.request_id);
     const index = this.requests_selected.indexOf(request.request_id);
-    console.log("[WS-REQUESTS-LIST][UNSERVED] - change - request selected INDEX: ", index);
+    this.logger.log("[WS-REQUESTS-LIST][UNSERVED] - change - request selected INDEX: ", index);
 
     if (index > -1) {
       this.requests_selected.splice(index, 1);
       if (checkbox) {
-      checkbox.indeterminate = true;
-      console.log("[WS-REQUESTS-LIST][UNSERVED] - change - checkbox Indeterminate: ", checkbox.indeterminate);
+        checkbox.indeterminate = true;
+        this.logger.log("[WS-REQUESTS-LIST][UNSERVED] - change - checkbox Indeterminate: ", checkbox.indeterminate);
       }
       if (this.requests_selected.length == 0) {
         if (checkbox) {
-        checkbox.indeterminate = false;
-        console.log("[WS-REQUESTS-LIST][UNSERVED] - change - checkbox Indeterminate: ", checkbox.indeterminate);
+          checkbox.indeterminate = false;
+          this.logger.log("[WS-REQUESTS-LIST][UNSERVED] - change - checkbox Indeterminate: ", checkbox.indeterminate);
         }
         this.allChecked = false;
       }
     } else {
       this.requests_selected.push(request.request_id);
       if (checkbox) {
-      checkbox.indeterminate = true;
-      console.log("[WS-REQUESTS-LIST][UNSERVED] - change - checkbox Indeterminate: ", checkbox.indeterminate);
+        checkbox.indeterminate = true;
+        this.logger.log("[WS-REQUESTS-LIST][UNSERVED] - change - checkbox Indeterminate: ", checkbox.indeterminate);
       }
       if (this.requests_selected.length == this.wsRequestsUnserved.length) {
         if (checkbox) {
-        checkbox.indeterminate = false;
-        console.log("[WS-REQUESTS-LIST][UNSERVED] - change - checkbox Indeterminate: ", checkbox.indeterminate);
+          checkbox.indeterminate = false;
+          this.logger.log("[WS-REQUESTS-LIST][UNSERVED] - change - checkbox Indeterminate: ", checkbox.indeterminate);
         }
         this.allChecked = true;
       }
     }
-    console.log('[WS-REQUESTS-LIST][UNSERVED] - ARRAY OF SELECTED REQUEST ', this.requests_selected);
-    console.log('[WS-REQUESTS-LIST][UNSERVED] - ARRAY OF SELECTED REQUEST lenght ', this.requests_selected.length);
+    this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - ARRAY OF SELECTED REQUEST ', this.requests_selected);
+    this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - ARRAY OF SELECTED REQUEST lenght ', this.requests_selected.length);
   }
 
   archiveSelected() {
@@ -361,20 +361,20 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     this.requests_selected.forEach((requestid, index) => {
       this.wsRequestsService.closeSupportGroup(requestid)
         .subscribe((data: any) => {
-          console.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP - DATA ', data);
+          this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP - DATA ', data);
 
           // this.allChecked = false;
           // this.requests_selected = []
-          console.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP - requests_selected ', this.requests_selected);
+          this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP - requests_selected ', this.requests_selected);
         }, (err) => {
-          console.error('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP - ERROR ', err);
+          this.logger.error('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP - ERROR ', err);
 
 
           //  NOTIFY ERROR 
           // this.notify.showWidgetStyleUpdateNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
         }, () => {
           // this.ngOnInit();
-          console.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP - COMPLETE');
+          this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP - COMPLETE');
           count = count + 1;
           //  NOTIFY SUCCESS
           // this.notify.showRequestIsArchivedNotification(this.requestHasBeenArchivedNoticationMsg_part1);
@@ -384,17 +384,17 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
           }
           this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg + count + '/' + this.requests_selected.length);
 
-          console.log('[WS-REQUESTS-LIST][UNSERVED] - this.requests_selected.length ', this.requests_selected.length);
-          console.log('[WS-REQUESTS-LIST][UNSERVED] - requests_selected array ', this.requests_selected);
+          this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - this.requests_selected.length ', this.requests_selected.length);
+          this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - requests_selected array ', this.requests_selected);
 
           if (this.requests_selected.length === 0) {
             this.allChecked = false;
             var checkbox = <HTMLInputElement>document.getElementById("allCheckbox");
             this.notify.showAllRequestHaveBeenArchivedNotification(this.allConversationsaveBeenArchivedMsg)
-            console.log("[WS-REQUESTS-LIST][UNSERVED] -  change - checkbox Indeterminate: ", checkbox.indeterminate);
+            this.logger.log("[WS-REQUESTS-LIST][UNSERVED] -  change - checkbox Indeterminate: ", checkbox.indeterminate);
             if (checkbox) {
               checkbox.indeterminate = false;
-        
+
             }
           }
 
@@ -507,7 +507,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
         //  NOTIFY ERROR 
         this.notify.showWidgetStyleUpdateNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
       }, () => {
-      
+
         this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP - COMPLETE');
 
         //  NOTIFY SUCCESS

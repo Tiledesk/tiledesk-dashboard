@@ -59,12 +59,12 @@ export class AppCreateComponent implements OnInit {
 
     if (this.router.url.indexOf('/app-create') !== -1) {
       this.CREATE_VIEW = true;
-      console.log('[APP-CREATE] is CREATE_VIEW', this.CREATE_VIEW);
+      this.logger.log('[APP-CREATE] is CREATE_VIEW', this.CREATE_VIEW);
       this.clients.dashboard = true
 
     } else if (this.router.url.indexOf('/app-edit') !== -1) {
       this.EDIT_VIEW = true;
-      console.log('[APP-CREATE] is EDIT_VIEW', this.EDIT_VIEW)
+      this.logger.log('[APP-CREATE] is EDIT_VIEW', this.EDIT_VIEW)
       this.getRouteParamsAndPopulateField();
     }
   }
@@ -73,14 +73,13 @@ export class AppCreateComponent implements OnInit {
   getRouteParamsAndPopulateField() {
     this.route.params.subscribe((params) => {
 
-      console.log('[APP-CREATE] - is EDIT_VIEW GET ROUTE PARAMS ', params);
+      this.logger.log('[APP-CREATE] - is EDIT_VIEW GET ROUTE PARAMS ', params);
       this.APP_ID = params.appid
       this.appStoreService.getAppDetail(params.appid).subscribe((res) => {
-        console.log("[APP-STORE-INSTALL] - GET APP DETAIL RESULT - res: ", res);
-
+        this.logger.log("[APP-STORE-INSTALL] - GET APP DETAIL RESULT - res: ", res);
         if (res) {
           const resObjct = JSON.parse(res['_body']);
-          console.log("[APP-STORE-INSTALL] - GET APP DETAIL RESULT - resObjct: ", resObjct);
+          this.logger.log("[APP-STORE-INSTALL] - GET APP DETAIL RESULT - resObjct: ", resObjct);
 
           if (resObjct.logo) {
             this.app_icon_url = resObjct.logo
@@ -107,194 +106,190 @@ export class AppCreateComponent implements OnInit {
           }
 
           if (resObjct.where) {
-           
-            if(resObjct.where.dashboard === true) {
+
+            if (resObjct.where.dashboard === true) {
               this.clients.dashboard = true
             }
-            if(resObjct.where.webchat === true) {
+            if (resObjct.where.webchat === true) {
               this.clients.webchat = true
             }
 
-            if(resObjct.where.widget === true) {
+            if (resObjct.where.widget === true) {
               this.clients.widget = true
             }
           }
         }
       });
     });
-}
-
-
-
-changeClientSelection($event) {
-  // console.log($event.target.checked)
-  var dashboard = document.getElementById("checkbox-dashboard") as HTMLInputElement
-  var webchat = document.getElementById("checkbox-webchat") as HTMLInputElement
-  var widget = document.getElementById("checkbox-widget") as HTMLInputElement
-
-  if (dashboard.checked) {
-    console.log('dashboard is checked', dashboard.checked)
-    this.clients.dashboard = true
-  } else if (!dashboard.checked) {
-    console.log('dashboard is checked', dashboard.checked)
-    this.clients.dashboard = false
-  }
-
-  if (webchat.checked) {
-    console.log('webchat is checked', webchat.checked)
-    this.clients.webchat = true
-  } else if (!webchat.checked) {
-    console.log('webchat is checked', webchat.checked)
-    this.clients.webchat = false
   }
 
 
-  if (widget.checked) {
-    console.log('widget is checked', widget.checked)
-    this.clients.widget = true
-  } else if (!widget.checked) {
-    console.log('widget is checked', widget.checked)
-    this.clients.widget = false
-  }
 
-  console.log('clients ', this.clients)
+  changeClientSelection($event) {
+    // console.log($event.target.checked)
+    var dashboard = document.getElementById("checkbox-dashboard") as HTMLInputElement
+    var webchat = document.getElementById("checkbox-webchat") as HTMLInputElement
+    var widget = document.getElementById("checkbox-widget") as HTMLInputElement
 
-}
-
-
-getLoggedUser() {
-  this.auth.user_bs.subscribe((user) => {
-    if (user) {
-      console.log('[APP-CREATE] »»» »»» USER  ', user)
-      this.user_id = user._id
+    if (dashboard.checked) {
+      this.logger.log('dashboard is checked', dashboard.checked)
+      this.clients.dashboard = true
+    } else if (!dashboard.checked) {
+      this.logger.log('dashboard is checked', dashboard.checked)
+      this.clients.dashboard = false
     }
-  })
-}
 
-getBrowserVersion() {
-  this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
-    this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-
-  })
-}
-
-getToken() {
-  this.auth.user_bs.subscribe((user) => {
-    if (user) {
-      this.TOKEN = user.token
+    if (webchat.checked) {
+      this.logger.log('webchat is checked', webchat.checked)
+      this.clients.webchat = true
+    } else if (!webchat.checked) {
+      this.logger.log('webchat is checked', webchat.checked)
+      this.clients.webchat = false
     }
-  });
-}
-
-onChangeWhere(selectedClient) {
-  console.log('[APP-CREATE] onChangeWhere - selectedClient ', selectedClient)
-}
-saveOrUpdateNewApp() {
- if( this.CREATE_VIEW === true) {
-  this.saveNewApp()
- } else if (this.EDIT_VIEW === true) {
-   this.updateNewApp()
- }
-}
 
 
-updateNewApp() {
+    if (widget.checked) {
+      this.logger.log('widget is checked', widget.checked)
+      this.clients.widget = true
+    } else if (!widget.checked) {
+      this.logger.log('widget is checked', widget.checked)
+      this.clients.widget = false
+    }
 
-  console.log('[APP-CREATE] UPDATE NEW APP app_icon_url', this.app_icon_url)
-  console.log('[APP-CREATE] UPDATE NEW APP app_name', this.app_name)
-  console.log('[APP-CREATE] UPDATE NEW APP app_description ', this.app_description)
-  console.log('[APP-CREATE] UPDATE NEW APP install_action_type ', this.install_action_type)
+    this.logger.log('clients ', this.clients)
 
-  console.log('[APP-CREATE] UPDATE NEW APP app_installation_url', this.app_installation_url)
-  console.log('[APP-CREATE] UPDATE NEW APP app_run_url', this.app_run_url)
-
-  console.log('[APP-CREATE] UPDATE NEW APP app_learn_more_url', this.app_learn_more_url)
-  console.log('[APP-CREATE] UPDATE NEW APP app_status', this.app_status)
-  console.log('[APP-CREATE] UPDATE NEW APP user_id', this.user_id)
-  console.log('[APP-CREATE] UPDATE NEW APP APP ID', this.APP_ID)
-  // console.log('[APP-CREATE] SAVE NEW APP selectedClient', this.selectedClient) // where
-
-  this.appStoreService.updateNewApp(
-    this.APP_ID,
-    this.app_icon_url,
-    this.app_name,
-    this.app_description,
-    this.install_action_type,
-    this.app_installation_url,
-    this.app_run_url,
-    this.app_learn_more_url,
-    this.app_status,
-    this.user_id,
-    this.clients)
-    .subscribe((res) => {
-      this.logger.log("[APP-CREATE] UPDATE NEW APP RESULT: ", res);
-
-    }, (error) => {
-
-      this.notify.showWidgetStyleUpdateNotification("An error occurred while updating the app", 4, 'report_problem');
-      console.error('[APP-CREATE] UPDATE NEW APP - ERROR ', error);
-    }, () => {
-      console.log('[APP-CREATE] UPDATE NEW APP * COMPLETE *');
-      this.notify.showWidgetStyleUpdateNotification("App updated successfully", 2, 'done');
-      this.goBack()
-    });
-}
-
-
-
-saveNewApp() {
-  console.log('[APP-CREATE] SAVE NEW APP app_icon_url', this.app_icon_url)
-  console.log('[APP-CREATE] SAVE NEW APP app_name', this.app_name)
-  console.log('[APP-CREATE] SAVE NEW APP app_description ', this.app_description)
-  console.log('[APP-CREATE] SAVE NEW APP install_action_type ', this.install_action_type)
-
-  console.log('[APP-CREATE] SAVE NEW APP app_installation_url', this.app_installation_url)
-  console.log('[APP-CREATE] SAVE NEW APP app_run_url', this.app_run_url)
-
-  console.log('[APP-CREATE] SAVE NEW APP app_learn_more_url', this.app_learn_more_url)
-  console.log('[APP-CREATE] SAVE NEW APP app_status', this.app_status)
-  console.log('[APP-CREATE] SAVE NEW APP user_id', this.user_id)
-  // console.log('[APP-CREATE] SAVE NEW APP selectedClient', this.selectedClient) // where
-
-  this.appStoreService.createNewApp(
-    this.app_icon_url,
-    this.app_name,
-    this.app_description,
-    this.install_action_type,
-    this.app_installation_url,
-    this.app_run_url,
-    this.app_learn_more_url,
-    this.app_status,
-    this.user_id,
-    this.clients)
-    .subscribe((res) => {
-      this.logger.log("[APP-CREATE] SAVE NEW APP RESULT: ", res);
-
-    }, (error) => {
-
-      this.notify.showWidgetStyleUpdateNotification("An error occurred while creating the app", 4, 'report_problem');
-      console.error('[APP-CREATE] SAVE NEW APP - ERROR ', error);
-    }, () => {
-      console.log('[APP-CREATE] SAVE NEW APP * COMPLETE *');
-      this.notify.showWidgetStyleUpdateNotification("App created successfully", 2, 'done');
-      this.goBack()
-    });
-}
-
-
-goBack() {
-  this.location.back();
-}
-
-errorHandler($event) {
-  // console.log('[APP-CREATE] IMAGE ERROR HANDLER $event', $event);
-  // console.log('[APP-CREATE] IMAGE ERROR HANDLER $event TYPE', $event.type);
-  if ($event.type === 'error') {
-    this.IMAGE_NOT_FOUND = true;
-  } else {
-    this.IMAGE_NOT_FOUND = false;
   }
-}
+
+
+  getLoggedUser() {
+    this.auth.user_bs.subscribe((user) => {
+      if (user) {
+        this.logger.log('[APP-CREATE] »»» »»» USER  ', user)
+        this.user_id = user._id
+      }
+    })
+  }
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+
+    })
+  }
+
+  getToken() {
+    this.auth.user_bs.subscribe((user) => {
+      if (user) {
+        this.TOKEN = user.token
+      }
+    });
+  }
+
+  onChangeWhere(selectedClient) {
+    this.logger.log('[APP-CREATE] onChangeWhere - selectedClient ', selectedClient)
+  }
+  saveOrUpdateNewApp() {
+    if (this.CREATE_VIEW === true) {
+      this.saveNewApp()
+    } else if (this.EDIT_VIEW === true) {
+      this.updateNewApp()
+    }
+  }
+
+
+  updateNewApp() {
+
+    // console.log('[APP-CREATE] UPDATE NEW APP app_icon_url', this.app_icon_url)
+    // console.log('[APP-CREATE] UPDATE NEW APP app_name', this.app_name)
+    // console.log('[APP-CREATE] UPDATE NEW APP app_description ', this.app_description)
+    // console.log('[APP-CREATE] UPDATE NEW APP install_action_type ', this.install_action_type)
+    // console.log('[APP-CREATE] UPDATE NEW APP app_installation_url', this.app_installation_url)
+    // console.log('[APP-CREATE] UPDATE NEW APP app_run_url', this.app_run_url)
+    // console.log('[APP-CREATE] UPDATE NEW APP app_learn_more_url', this.app_learn_more_url)
+    // console.log('[APP-CREATE] UPDATE NEW APP app_status', this.app_status)
+    // console.log('[APP-CREATE] UPDATE NEW APP user_id', this.user_id)
+    // console.log('[APP-CREATE] UPDATE NEW APP APP ID', this.APP_ID)
+
+
+    this.appStoreService.updateNewApp(
+      this.APP_ID,
+      this.app_icon_url,
+      this.app_name,
+      this.app_description,
+      this.install_action_type,
+      this.app_installation_url,
+      this.app_run_url,
+      this.app_learn_more_url,
+      this.app_status,
+      this.user_id,
+      this.clients)
+      .subscribe((res) => {
+        this.logger.log("[APP-CREATE] UPDATE NEW APP RESULT: ", res);
+
+      }, (error) => {
+
+        this.notify.showWidgetStyleUpdateNotification("An error occurred while updating the app", 4, 'report_problem');
+        this.logger.error('[APP-CREATE] UPDATE NEW APP - ERROR ', error);
+      }, () => {
+        this.logger.log('[APP-CREATE] UPDATE NEW APP * COMPLETE *');
+        this.notify.showWidgetStyleUpdateNotification("App updated successfully", 2, 'done');
+        this.goBack()
+      });
+  }
+
+
+
+  saveNewApp() {
+    // console.log('[APP-CREATE] SAVE NEW APP app_icon_url', this.app_icon_url)
+    // console.log('[APP-CREATE] SAVE NEW APP app_name', this.app_name)
+    // console.log('[APP-CREATE] SAVE NEW APP app_description ', this.app_description)
+    // console.log('[APP-CREATE] SAVE NEW APP install_action_type ', this.install_action_type)
+    // console.log('[APP-CREATE] SAVE NEW APP app_installation_url', this.app_installation_url)
+    // console.log('[APP-CREATE] SAVE NEW APP app_run_url', this.app_run_url)
+    // console.log('[APP-CREATE] SAVE NEW APP app_learn_more_url', this.app_learn_more_url)
+    // console.log('[APP-CREATE] SAVE NEW APP app_status', this.app_status)
+    // console.log('[APP-CREATE] SAVE NEW APP user_id', this.user_id)
+
+
+    this.appStoreService.createNewApp(
+      this.app_icon_url,
+      this.app_name,
+      this.app_description,
+      this.install_action_type,
+      this.app_installation_url,
+      this.app_run_url,
+      this.app_learn_more_url,
+      this.app_status,
+      this.user_id,
+      this.clients)
+      .subscribe((res) => {
+        this.logger.log("[APP-CREATE] SAVE NEW APP RESULT: ", res);
+
+      }, (error) => {
+
+        this.notify.showWidgetStyleUpdateNotification("An error occurred while creating the app", 4, 'report_problem');
+        this.logger.error('[APP-CREATE] SAVE NEW APP - ERROR ', error);
+      }, () => {
+        this.logger.log('[APP-CREATE] SAVE NEW APP * COMPLETE *');
+        this.notify.showWidgetStyleUpdateNotification("App created successfully", 2, 'done');
+        this.goBack()
+      });
+  }
+
+
+  goBack() {
+    this.location.back();
+  }
+
+  errorHandler($event) {
+    // console.log('[APP-CREATE] IMAGE ERROR HANDLER $event', $event);
+    // console.log('[APP-CREATE] IMAGE ERROR HANDLER $event TYPE', $event.type);
+    if ($event.type === 'error') {
+      this.IMAGE_NOT_FOUND = true;
+    } else {
+      this.IMAGE_NOT_FOUND = false;
+    }
+  }
 
 
 }

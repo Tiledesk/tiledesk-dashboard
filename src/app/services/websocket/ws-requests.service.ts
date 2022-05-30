@@ -709,7 +709,7 @@ export class WsRequestsService implements OnDestroy {
     const options = new RequestOptions({ headers });
 
     const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + request_id + '/reopen';
-    console.log('[WS-REQUESTS-SERV] - REOPEN REQUEST - URL ', url)
+    this.logger.log('[WS-REQUESTS-SERV] - REOPEN REQUEST - URL ', url)
 
     return this.http
       .put(url, null, options)

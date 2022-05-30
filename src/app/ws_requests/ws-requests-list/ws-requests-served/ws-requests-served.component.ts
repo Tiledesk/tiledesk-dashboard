@@ -791,7 +791,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     }
 
     if (e.target.checked == true) {
-      console.log('SELECT ALL e.target.checked ', e.target.checked)
+      this.logger.log('SELECT ALL e.target.checked ', e.target.checked)
       this.allChecked = true;
       for (let request of this.wsRequestsServed) {
         // console.log('SELECT ALL request ', request)
@@ -806,7 +806,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
         }
 
         if (request['isSelected'] === true) {
-          console.log("[WS-REQUESTS-LIST][SERVED] **++ Already selected")
+          this.logger.log("[WS-REQUESTS-LIST][SERVED] **++ Already selected")
         } else {
           // console.log("[WS-REQUESTS-LIST][SERVED] *+*+ Request Selected: ", request.request_id);
 
@@ -814,8 +814,8 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
 
         }
       }
-      console.log('[WS-REQUESTS-LIST][SERVED] - ARRAY OF SELECTED REQUEST ', this.requests_selected);
-      console.log('[WS-REQUESTS-LIST][SERVED] - ARRAY OF SELECTED REQUEST lenght ', this.requests_selected.length);
+      this.logger.log('[WS-REQUESTS-LIST][SERVED] - ARRAY OF SELECTED REQUEST ', this.requests_selected);
+      this.logger.log('[WS-REQUESTS-LIST][SERVED] - ARRAY OF SELECTED REQUEST lenght ', this.requests_selected.length);
     } else if (e.target.checked == false) {
       for (let request of this.wsRequestsServed) {
         // console.log('SELECT ALL request ', request)
@@ -834,8 +834,8 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
       // }
       this.allChecked = false;
       this.requests_selected = [];
-      console.log('[WS-REQUESTS-LIST][SERVED] - ARRAY OF SELECTED REQUEST ', this.requests_selected);
-      console.log('[WS-REQUESTS-LIST][SERVED] - ARRAY OF SELECTED REQUEST lenght ', this.requests_selected.length)
+      this.logger.log('[WS-REQUESTS-LIST][SERVED] - ARRAY OF SELECTED REQUEST ', this.requests_selected);
+      this.logger.log('[WS-REQUESTS-LIST][SERVED] - ARRAY OF SELECTED REQUEST lenght ', this.requests_selected.length)
     }
 
   }
@@ -843,7 +843,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   change(request) {
     var checkbox = <HTMLInputElement>document.getElementById("allCheckbox");
     if (checkbox) {
-      console.log("[WS-REQUESTS-LIST][SERVED] -  change - checkbox Indeterminate: ", checkbox.indeterminate);
+      this.logger.log("[WS-REQUESTS-LIST][SERVED] -  change - checkbox Indeterminate: ", checkbox.indeterminate);
     }
 
     console.log("[WS-REQUESTS-LIST][SERVED] -  change - checkbox request: ", request);
@@ -858,20 +858,20 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     }
 
 
-    console.log('[WS-REQUESTS-LIST][SERVED] - change - SELECTED REQUEST ID: ', request.request_id);
+    this.logger.log('[WS-REQUESTS-LIST][SERVED] - change - SELECTED REQUEST ID: ', request.request_id);
     const index = this.requests_selected.indexOf(request.request_id);
-    console.log("[WS-REQUESTS-LIST][SERVED] - change - request selected INDEX: ", index);
+    this.logger.log("[WS-REQUESTS-LIST][SERVED] - change - request selected INDEX: ", index);
 
     if (index > -1) {
       this.requests_selected.splice(index, 1);
       if (checkbox) {
         checkbox.indeterminate = true;
-        console.log("[WS-REQUESTS-LIST][SERVED] - change - checkbox Indeterminate: ", checkbox.indeterminate);
+        this.logger.log("[WS-REQUESTS-LIST][SERVED] - change - checkbox Indeterminate: ", checkbox.indeterminate);
       }
       if (this.requests_selected.length == 0) {
         if (checkbox) {
           checkbox.indeterminate = false;
-          console.log("[WS-REQUESTS-LIST][SERVED] - change - checkbox Indeterminate: ", checkbox.indeterminate);
+          this.logger.log("[WS-REQUESTS-LIST][SERVED] - change - checkbox Indeterminate: ", checkbox.indeterminate);
         }
         this.allChecked = false;
       }
@@ -879,18 +879,18 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
       this.requests_selected.push(request.request_id);
       if (checkbox) {
         checkbox.indeterminate = true;
-        console.log("[WS-REQUESTS-LIST][SERVED] - change - checkbox Indeterminate: ", checkbox.indeterminate);
+        this.logger.log("[WS-REQUESTS-LIST][SERVED] - change - checkbox Indeterminate: ", checkbox.indeterminate);
       }
       if (this.requests_selected.length == this.wsRequestsServed.length) {
         if (checkbox) {
           checkbox.indeterminate = false;
-          console.log("[WS-REQUESTS-LIST][SERVED] - change - checkbox Indeterminate: ", checkbox.indeterminate);
+          this.logger.log("[WS-REQUESTS-LIST][SERVED] - change - checkbox Indeterminate: ", checkbox.indeterminate);
         }
         this.allChecked = true;
       }
     }
-    console.log('[WS-REQUESTS-LIST][SERVED] - ARRAY OF SELECTED REQUEST ', this.requests_selected);
-    console.log('[WS-REQUESTS-LIST][SERVED] - ARRAY OF SELECTED REQUEST lenght ', this.requests_selected.length);
+    this.logger.log('[WS-REQUESTS-LIST][SERVED] - ARRAY OF SELECTED REQUEST ', this.requests_selected);
+    this.logger.log('[WS-REQUESTS-LIST][SERVED] - ARRAY OF SELECTED REQUEST lenght ', this.requests_selected.length);
   }
 
   archiveSelected() {
@@ -898,20 +898,20 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     this.requests_selected.forEach((requestid, index) => {
       this.wsRequestsService.closeSupportGroup(requestid)
         .subscribe((data: any) => {
-          console.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - DATA ', data);
+          this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - DATA ', data);
 
           // this.allChecked = false;
           // this.requests_selected = []
-          console.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - requests_selected ', this.requests_selected);
+          this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - requests_selected ', this.requests_selected);
         }, (err) => {
-          console.error('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - ERROR ', err);
+          this.logger.error('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - ERROR ', err);
 
 
           //  NOTIFY ERROR 
           // this.notify.showWidgetStyleUpdateNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
         }, () => {
           // this.ngOnInit();
-          console.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - COMPLETE');
+          this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - COMPLETE');
           count = count + 1;
           //  NOTIFY SUCCESS
           // this.notify.showRequestIsArchivedNotification(this.requestHasBeenArchivedNoticationMsg_part1);
@@ -921,14 +921,14 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
           }
           this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg + count + '/' + this.requests_selected.length);
 
-          console.log('[WS-REQUESTS-LIST][SERVED] - this.requests_selected.length ', this.requests_selected.length);
-          console.log('[WS-REQUESTS-LIST][SERVED] - requests_selected array ', this.requests_selected);
+          this.logger.log('[WS-REQUESTS-LIST][SERVED] - this.requests_selected.length ', this.requests_selected.length);
+          this.logger.log('[WS-REQUESTS-LIST][SERVED] - requests_selected array ', this.requests_selected);
 
           if (this.requests_selected.length === 0) {
             this.allChecked = false;
             var checkbox = <HTMLInputElement>document.getElementById("allCheckbox");
             this.notify.showAllRequestHaveBeenArchivedNotification(this.allConversationsaveBeenArchivedMsg)
-            console.log("[WS-REQUESTS-LIST][SERVED] -  change - checkbox Indeterminate: ", checkbox.indeterminate);
+            this.logger.log("[WS-REQUESTS-LIST][SERVED] -  change - checkbox Indeterminate: ", checkbox.indeterminate);
             if (checkbox) {
               checkbox.indeterminate = false;
 
