@@ -26,6 +26,7 @@ export class AppStoreInstallComponent implements OnInit {
   result: any;
   TOKEN: string;
   showSpinner: boolean;
+  project: any;
   projectId: string;
   isChromeVerGreaterThan100: boolean;
   constructor(
@@ -44,7 +45,7 @@ export class AppStoreInstallComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.getCurrentProject();
+    this.getCurrentProject();
     this.onInitframeHeight();
     this.getBrowserVersion()
   }
@@ -63,14 +64,14 @@ export class AppStoreInstallComponent implements OnInit {
     // }
   }
 
-  // getCurrentProject() {
-  //   this.subscription = this.auth.project_bs.subscribe((project) => {
-  //     if (project) {
-  //       this.projectId = project._id
-  //       this.logger.log('APP-STORE - projectId ', this.projectId)
-  //     }
-  //   });
-  // }
+  getCurrentProject() {
+    this.subscription = this.auth.project_bs.subscribe((project) => {
+      if (project) {
+        this.project = project
+
+      }
+    });
+  }
 
 
   getRouteParams() {
@@ -86,19 +87,19 @@ export class AppStoreInstallComponent implements OnInit {
         let parsed_json = JSON.parse(this.result._body);
         this.logger.log("[APP-STORE-INSTALL] PARSED JSON: ", parsed_json);
         let appurl = ''
-        if (parsed_json.version  === 'v1') {
+        if (parsed_json.version === 'v1') {
           appurl = parsed_json.installActionURL
-        }  else if (parsed_json.version  === 'v2') {
+        } else if (parsed_json.version === 'v2') {
           appurl = parsed_json.runURL
         }
         this.auth.user_bs.subscribe((user) => {
           if (user) {
             this.TOKEN = user.token
-   
+
             // this.URL = this.sanitizer.bypassSecurityTrustResourceUrl(parsed_json.installActionURL + '?project_id=' + params.projectid + '&app_id=' + params.appid + '&token=' + this.TOKEN);
             this.URL = this.sanitizer.bypassSecurityTrustResourceUrl(appurl + '?project_id=' + params.projectid + '&app_id=' + params.appid + '&token=' + this.TOKEN);
             this.logger.log("[APP-STORE-INSTALL] - URL IFRAME: ", this.URL)
-            this.getIframeHasLoaded(parsed_json.version)
+            this.getIframeHasLoaded(parsed_json)
 
           } else {
             this.logger.log("[APP-STORE-INSTALL] - GET USER TOKEN: FAILED");
@@ -111,19 +112,28 @@ export class AppStoreInstallComponent implements OnInit {
     })
   }
 
-  getIframeHasLoaded(appversion) {
+  getIframeHasLoaded(app) {
     var self = this;
     var iframe = document.getElementById('i_frame') as HTMLIFrameElement;;
     this.logger.log('[APP-STORE-INSTALL] GET iframe ', iframe)
     if (iframe) {
-        iframe.addEventListener("load", function () {
+      iframe.addEventListener("load", function () {
         self.logger.log("[APP-STORE-INSTALL] GET - Finish");
         let spinnerElem = <HTMLElement>document.querySelector('.stretchspinner_in_app_install')
         // let spinnerElem = document.getElementsByClassName("stretchspinner_in_app_install")  as HTMLCollectionOf<HTMLElement>;
         self.logger.log('[APP-STORE-INSTALL] GET iframeDoc readyState spinnerElem', spinnerElem)
         spinnerElem.classList.add("hide-stretchspinner")
 
-     
+        console.log("[APP-STORE-INSTALL]  - app", app)
+        if (app.version === 'v2' && app.where.appsstore === true) {
+          const isIFrame = (input: HTMLElement | null): input is HTMLIFrameElement =>
+            input !== null && input.tagName === 'IFRAME';
+
+          if (isIFrame(iframe) && iframe.contentWindow) {
+            const msg = { appname: app.title, request: JSON.stringify(self.project) }
+            iframe.contentWindow.postMessage(msg, '*');
+          }
+        }
       });
     }
   }
