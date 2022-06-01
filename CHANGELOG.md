@@ -10,11 +10,12 @@
 - Adds an accordion to the left sidebar of the conversation details that displays the contact's conversations
 - Add the ability in the "monitor" page to archive multiple conversations at the same time
 - Fixes the bug: app sidebar overlaps with conversation detail content
-- Adds the ability to create custom apps and view them in the conversation details apps sidebar
+- Adds the ability to create custom apps and view them in the conversation details "apps sidebar"
 - Displays the label "No app installed for this project" in the sidebar available in the conversation detail that displays the "v2 apps"
 - Adds 'start' button in app store for the cards of the "v2 apps" which allows to view the app in full screen
 - Adds scrolling to the top of the conversation detail page when clicking the button to open the apps sidebar
 - Increases the number of intents displayed per page on the "Resolution" chatbots edit page
+- Send through a "postMessage" the current conversation to the server which returns the app iframes displayed in the "apps sidebar"
 
 ### 2.2.35-rc4
 - Add the ability to send a message directly from the conversation detail page when the conversation is of type "form" or "email"
