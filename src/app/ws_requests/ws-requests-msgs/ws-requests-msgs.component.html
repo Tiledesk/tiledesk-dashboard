@@ -8,7 +8,7 @@
   <!-- <code style="color:#3f87a6; border: 1px solid #cee9f9; font-size:0.8em"> {{cut_support_group_from_request_id(id_request)}} </code> -->
 </div>
 
-<div id="conversation-detail-main-content" class="main-content" style="padding-top:0px"
+<div #conversationDetailMainContent id="conversation-detail-main-content" class="main-content" style="padding-top:0px"
   [ngClass]="{'main-content-chat-panel-mode' : CHAT_PANEL_MODE === true, 'main-content-normal-mode': CHAT_PANEL_MODE === false}">
   <div class="container-fluid" [ngClass]="{'container-fluid-no-padding' : CHAT_PANEL_MODE === true}">
 
@@ -200,7 +200,7 @@
 
             <div #scrollMe id="chat-wpr" class="card-content"
               style="height: 500px; overflow-y: auto; padding: 0px; padding-left:25px; padding-right:25px "
-              (scroll)="onScroll($event)">
+              (scroll)="onScrollMsgs($event)">
               <div *ngIf="!showSpinner" class="chat-body" style="vertical-align:baseline;">
 
                 <!-- style="padding-bottom: 3px;" class="answer left" -->

@@ -31,6 +31,7 @@ import { LoggerService } from '../../services/logger/logger.service';
 import 'firebase/database';
 import { ProjectService } from 'app/services/project.service';
 import { NgSelectComponent } from '@ng-select/ng-select';
+
 const swal = require('sweetalert');
 
 @Component({
@@ -44,6 +45,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   objectKeys = Object.keys;
   @ViewChild('scrollMe')
   private myScrollContainer: ElementRef;
+
+  @ViewChild('conversationDetailMainContent')
+  private mainContentContainer: ElementRef;
+
+  
 
   @ViewChild('openChatBtn')
   private openChatBtn: ElementRef;
@@ -236,6 +242,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   totalPagesNo_roundToUp: number;
   displaysFooterPagination: boolean;
   HAS_OPENED_APPS: boolean = false;
+
+
   /**
    * Constructor
    * @param router 
@@ -277,6 +285,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     public contactsService: ContactsService,
     public logger: LoggerService,
     private projectService: ProjectService
+   
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate)
     this.jira_issue_types = [
@@ -672,7 +681,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         takeUntil(this.unsubscribe$)
       )
       .subscribe((wsrequest) => {
-        console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
+        this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
         this.request = wsrequest;
 
         if (this.request) {
@@ -1876,7 +1885,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // ------------------------------------------------
   // LISTEN TO SCROLL POSITION (CALLED FROM TEMPLATE)
   // ------------------------------------------------
-  onScroll(event: any): void {
+  onScrollMsgs(event: any): void {
     // this.logger.log('[WS-REQUESTS-MSGS] CALL ON SCROLL ')
     const scrollPosition = this.myScrollContainer.nativeElement.scrollTop;
 
@@ -1944,11 +1953,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.apps_sidebar_height = elemMainContent.clientHeight + 60 + 'px'
     
     this.logger.log('[WS-REQUESTS-MSGS] ON OPEN APPS RIGHT SIDEBAR -> RIGHT SIDEBAR HEIGHT', this.apps_sidebar_height);
-    window.scroll({
-      top: 0,
-      left: 0,
-      behavior: 'smooth'
-    });
+
+    this.mainContentContainer.nativeElement.scrollIntoView();
+  
 
 
   }
