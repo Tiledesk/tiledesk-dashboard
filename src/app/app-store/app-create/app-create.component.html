@@ -45,16 +45,20 @@
         <div class="row">
           <label class="col-sm-8 col-md-8 col-lg-8 app-create-label">
             <!-- App installation url* -->
-            Configure flow webhook URL (optional)
+            Configure URL (optional)
             <span style="color: rgb(157, 159, 162); display: block;font-size: 12px;">
-              Sent when a teammate want to use your app, so that you can show them configuration options before it's
-              inserted. Leaving this option blank will skip configuration.
+              Used to create a custom configuration page for your app. 
+              Your app can in fact include a page to perform advanced configurations eg: https//myapp-for-tiledesk/ configuration. 
+              To access the custom configuration page, click on the "manage" button after installing the app
             </span>
           </label>
 
           <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
-            <input [(ngModel)]="app_installation_url" class="input" style="margin-bottom: 0px;" type="text"
+            <input [(ngModel)]="app_installation_url" (ngModelChange)="onChangeAppInstalaltionUrl($event)"class="input" style="margin-bottom: 0px;" type="text"
               placeholder="App installation url">
+              <div style="color: #f44336; font-weight: 400;font-size: 12px;" *ngIf="diplayErrorAppInstallationUrlIsNoValid === true"> 
+                Endpoint url must be a valid HTTPS URL 
+              </div>
           </div>
         </div>
 
@@ -62,12 +66,17 @@
         <div class="row">
           <label class="col-sm-12 app-create-label">
             Render URL
-
+            <span style="color: rgb(157, 159, 162); display: block;font-size: 12px;">
+              This attribute specifies the address of the page to embed in the app via an iframe
+            </span>
           </label>
 
           <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
-            <input [(ngModel)]="app_run_url" class="input" style="margin-bottom: 0px;" type="text"
+            <input (ngModelChange)="onChangeRunUrl($event)" [(ngModel)]="app_run_url" class="input" style="margin-bottom: 0px;" type="text"
               placeholder="Render app url">
+              <div style="color: #f44336; font-weight: 400;font-size: 12px;" *ngIf="diplayErrorRunUrlIsNoValid === true"> 
+                Endpoint url must be a valid HTTPS URL 
+              </div>
           </div>
         </div>
 
@@ -124,6 +133,13 @@
                 <input type="checkbox" (change)="changeClientSelection($event)" id="checkbox-widget"
                   name="selectedClientWebchat" [checked]="clients.widget === true">
                 Widget
+              </label>
+            </div>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" (change)="changeClientSelection($event)" id="checkbox-appsstore"
+                  name="selectedClientAppsStore" [checked]="clients.appsstore === true">
+                App Store
               </label>
             </div>
           </div>

@@ -34,14 +34,16 @@ export class AppCreateComponent implements OnInit {
   EDIT_VIEW = false;
   APP_ID: string;
   NO_CLIENTS_SELECTED: boolean;
+  diplayErrorRunUrlIsNoValid:boolean = false;
+  diplayErrorAppInstallationUrlIsNoValid:boolean = false;
   // no more used
-  where_items = [
-    { id: 'dashboard', name: 'Dashboard' },
-    { id: 'webchat', name: 'Webchat' },
-    { id: 'widget', name: 'Widget' },
-  ]
+  // where_items = [
+  //   { id: 'dashboard', name: 'Dashboard' },
+  //   { id: 'webchat', name: 'Webchat' },
+  //   { id: 'widget', name: 'Widget' },
+  // ]
 
-  clients = { dashboard: false, webchat: false, widget: false }
+  clients = { dashboard: false, webchat: false, widget: false, appsstore: false }
 
   constructor(
     public auth: AuthService,
@@ -82,31 +84,31 @@ export class AppCreateComponent implements OnInit {
           const resObjct = JSON.parse(res['_body']);
           this.logger.log("[APP-STORE-INSTALL] - GET APP DETAIL RESULT - resObjct: ", resObjct);
 
-          if (resObjct.logo) {
+          if (resObjct && resObjct.logo) {
             this.app_icon_url = resObjct.logo
           }
 
-          if (resObjct.installActionURL) {
+          if (resObjct && resObjct.installActionURL) {
             this.app_installation_url = resObjct.installActionURL
           }
 
-          if (resObjct.runURL) {
+          if (resObjct && resObjct.runURL) {
             this.app_run_url = resObjct.runURL
           }
 
-          if (resObjct.title) {
+          if (resObjct && resObjct.title) {
             this.app_name = resObjct.title
           }
 
-          if (resObjct.description) {
+          if (resObjct && resObjct.description) {
             this.app_description = resObjct.description
           }
 
-          if (resObjct.learnMore) {
+          if (resObjct && resObjct.learnMore) {
             this.app_learn_more_url = resObjct.learnMore
           }
 
-          if (resObjct.where) {
+          if (resObjct && resObjct.where) {
 
             if (resObjct.where.dashboard === true) {
               this.clients.dashboard = true
@@ -117,6 +119,10 @@ export class AppCreateComponent implements OnInit {
 
             if (resObjct.where.widget === true) {
               this.clients.widget = true
+            }
+
+            if (resObjct.where.appsstore === true) {
+              this.clients.appsstore = true
             }
           }
         }
@@ -131,6 +137,7 @@ export class AppCreateComponent implements OnInit {
     var dashboard = document.getElementById("checkbox-dashboard") as HTMLInputElement
     var webchat = document.getElementById("checkbox-webchat") as HTMLInputElement
     var widget = document.getElementById("checkbox-widget") as HTMLInputElement
+    var appsstore = document.getElementById("checkbox-appsstore") as HTMLInputElement
 
     if (dashboard.checked) {
       this.logger.log('dashboard is checked', dashboard.checked)
@@ -138,6 +145,14 @@ export class AppCreateComponent implements OnInit {
     } else if (!dashboard.checked) {
       this.logger.log('dashboard is checked', dashboard.checked)
       this.clients.dashboard = false
+    }
+
+    if (appsstore.checked) {
+      this.logger.log('appsstore is checked', appsstore.checked)
+      this.clients.appsstore = true
+    } else if (!appsstore.checked) {
+      this.logger.log('appsstore is checked', appsstore.checked)
+      this.clients.appsstore = false
     }
 
     if (webchat.checked) {
@@ -157,7 +172,7 @@ export class AppCreateComponent implements OnInit {
       this.clients.widget = false
     }
 
-    this.logger.log('clients ', this.clients)
+    console.log('clients ', this.clients)
 
     this.NO_CLIENTS_SELECTED = Object.keys(this.clients).every((k) => {
 
@@ -297,6 +312,45 @@ export class AppCreateComponent implements OnInit {
       this.IMAGE_NOT_FOUND = false;
     }
   }
+
+  // http://tiledesk-helloworld-webchat-example-app.nicolan74.repl.co
+  onChangeRunUrl($event) {
+    console.log('onChangeRunUrl $event', $event)
+    if ($event.length > 4) {
+    this.validateRunURL($event);
+    }
+  }
+  validateRunURL(link) {
+    if (link.indexOf("https://") == 0) {
+      console.log("The link https.");
+      this.diplayErrorRunUrlIsNoValid = false
+    }
+    else {
+      console.log("The link doesn't have https.");
+      this.diplayErrorRunUrlIsNoValid = true
+    }
+  }
+
+  onChangeAppInstalaltionUrl($event) {
+    console.log('onChangeRunUrl $event', $event)
+    if ($event.length > 4) {
+    this.validateAppInstallationURL($event);
+    }
+  }
+  validateAppInstallationURL(link) {
+    if (link.indexOf("https://") == 0) {
+      console.log("The link https.");
+      this.diplayErrorAppInstallationUrlIsNoValid = false
+    }
+    else {
+      console.log("The link doesn't have https.");
+      this.diplayErrorAppInstallationUrlIsNoValid = true
+    }
+  }
+
+
+
+  // The link has http or https.
 
 
 }
