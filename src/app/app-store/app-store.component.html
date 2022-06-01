@@ -72,13 +72,26 @@
 
             <div class="row" style="display: block;">
 
-              <div class="col-xs-6 app-store-left-col-btn" (click)="learnmore(app.learnMore)">
+              <div *ngIf="app.version === 'v1'" class="col-xs-6 app-store-left-col-btn" (click)="learnmore(app.learnMore)">
+                <a>
+                  Learn more
+                </a>
+              </div>
+
+              <div *ngIf="app.version === 'v2'" class="col-xs-4 app-store-left-col-btn" (click)="learnmore(app.learnMore)">
                 <a>
                   Learn more
                 </a>
               </div>
               <!-- app.installed {{app.installed }}  app.version {{app.version }} -->
-              <div *ngIf="!app.installed" class="col-xs-6 app-store-right-col-btn"
+              <div *ngIf="!app.installed && app.version === 'v1'" class="col-xs-6 app-store-right-col-btn"
+                (click)="installApp(app, app.installActionType, app.installActionURL, app.title, app._id)">
+                <a>
+                  Install
+                </a>
+              </div>
+
+              <div *ngIf="!app.installed && app.version === 'v2'" class="col-xs-4 app-store-right-col-btn"
                 (click)="installApp(app, app.installActionType, app.installActionURL, app.title, app._id)">
                 <a>
                   Install
@@ -87,7 +100,7 @@
 
               <div *ngIf="app.installed && app.version === 'v1'" class="col-xs-6 app-store-right-col-btn"
                 style="background-color: rgb(45, 88, 230);"
-                (click)="installApp(app.installActionType, app.installActionURL, app.title, app._id)">
+                (click)="installApp(app, app.installActionType, app.installActionURL, app.title, app._id)">
                 <a style="color: white;">
                   Manage
                 </a>
@@ -106,13 +119,23 @@
                 </a>
               </div> -->
 
+            
+
               <div *ngIf="app?.installed && (app.version === 'v2' ||  app.version === undefined)"
-                class="col-xs-6 app-store-right-col-btn" style="background-color: #f44336;"
+                class="col-xs-4 app-store-right-col-btn" style="background-color: #f44336;"
                 (click)="unistallApp(app._id)">
                 <a style="color: white;">
                   Uninstall
                 </a>
               </div>
+
+              <div *ngIf="(app.version === 'v2' ||  app.version === undefined)"
+              class="col-xs-4 app-store-right-col-btn" 
+              (click)="openInAppStoreInstall(app)"[ngClass]="{'app-not-installed-wpr': !app?.installed, 'app-installed-wpr': app?.installed}">
+              <a [ngClass]="{'app-not-installed': !app?.installed, 'app-installed': app?.installed}">
+                Start
+              </a>
+            </div>
 
 
             </div>

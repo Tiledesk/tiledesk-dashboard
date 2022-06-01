@@ -65,3 +65,22 @@
 .app-card-icon:hover {
     background:  #cfd2d7
 }
+
+
+.app-not-installed {
+ pointer-events: none;
+ cursor: not-allowed;
+ color:  rgba(0, 0, 0, 0.87)
+}
+
+.app-installed {
+    color: #fff
+}
+
+.app-installed-wpr {
+    background-color: rgb(45, 88, 230);
+}
+
+.app-not-installed-wpr {
+    background-color: #e4e6eb;
+}

@@ -135,9 +135,14 @@ export class AppStoreComponent implements OnInit {
         const url = installationUrlWithQueryString;
         window.open(url, '_blank');
       }
-    } else if (app && app.version === 'v2' || app.version === undefined) {
+    } else if (app && app.version === 'v2') {
       this.installV2App(this.projectId, appId)
     }
+  }
+
+  openInAppStoreInstall(app) {
+    this.logger.log('openInAppStoreInstall app ', app) 
+    this.router.navigate(['project/' + this.projectId + '/app-store-install/' + app._id])
   }
 
   installV2App(projectId, appId) {
