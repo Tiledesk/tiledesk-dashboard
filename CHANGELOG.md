@@ -1,8 +1,6 @@
 
 # tiledesk-dashboard
 
-### 2.2.35 (compatible with server v2.2.27) 
-- Deploys in production
 
 ### 2.2.35-rc5 (compatible with server v2.2.27) 
 - Adds the ability to send a message directly from the conversation detail page for all type of conversations
