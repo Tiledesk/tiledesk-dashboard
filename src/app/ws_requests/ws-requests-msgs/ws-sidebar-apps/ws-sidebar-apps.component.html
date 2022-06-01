@@ -11,18 +11,26 @@
         (click)="closeAppsRightSideBar()">close</i>
     </h5>
   </div>
-
+  <!-- [ngStyle]="{ 'height': app.iframeHeight + 'px'}" -->
   <div *ngIf="SIDEBAR_APPS_IN_CHAT_PANEL_MODE === false" class="dashbord-app-wpr">
     <div *ngFor="let app of dashboardApps">
-      <iframe [src]="app.iframeUrl | sanitizeHtml" style="width:100%;" frameBorder="0" allowfullscreen
-        [ngStyle]="{ 'height': app.iframeHeight + 'px'}"></iframe>
+      <iframe [src]="app.iframeUrl | sanitizeHtml" style="width:100%;height:300px " id="{{app._id}}" frameBorder="0" allowfullscreen
+        (load)="getIframeHasLoaded(app?._id, app?.title)"></iframe>
     </div>
-  </div>
 
+    <div *ngIf="dashboardApps?.length === 0" class="no-apps"> 
+      No apps installed for this project
+   </div>
+  </div>
+  <!-- [ngStyle]="{ 'height': app.iframeHeight + 'px'}" -->
   <div *ngIf="SIDEBAR_APPS_IN_CHAT_PANEL_MODE === true" class="webchat-app-wpr">
     <div *ngFor="let app of webchatApps">
-      <iframe [src]="app.iframeUrl | sanitizeHtml" style="width:100%;" frameBorder="0" allowfullscreen
-        [ngStyle]="{ 'height': app.iframeHeight + 'px'}"></iframe>
+      <iframe [src]="app.iframeUrl | sanitizeHtml" style="width:100%;height:300px" id="{{app?._id}}" frameBorder="0" allowfullscreen
+        (load)="getIframeHasLoaded(app?._id, app?.title)"></iframe>
     </div>
+    <div *ngIf="webchatApps?.length === 0" class="no-apps"> 
+       No apps installed for this project
+    </div>
+
   </div>
 </div>
