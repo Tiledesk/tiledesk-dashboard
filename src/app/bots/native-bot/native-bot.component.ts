@@ -176,7 +176,7 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
   has_searched: boolean = false;
   totalPagesNo_roundToUp: number;
   totalPagesAfterSearchNo_roundToUp: number;
-  faqPerPageLimit: number = 10;
+  faqPerPageLimit: number = 25;
   fullText: string;
   fullText_temp: string;
   queryString: string;
