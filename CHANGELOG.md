@@ -1,9 +1,12 @@
 
 # tiledesk-dashboard
 
+### 2.2.35-rc7
+- Adds a check on the "create new app page" about the validity of the installation url and the "render url" of the app
+- Displays the "Start" button in the app card of the app store page if the app is enabled for the app store
 
 ### 2.2.35-rc6
-- Fixed the bug: on the app store page, clicking on the manage button of an app redirects to the 'not found' page
+- Fixes the bug: on the app store page, clicking on the manage button of an app redirects to the 'not found' page
 
 ### 2.2.35-rc5 (compatible with server v2.2.27) 
 - Adds the ability to send a message directly from the conversation detail page for all type of conversations
@@ -27,13 +30,11 @@
 - Fixes the bug: Dialogflow bot creation doesn't work in pre
 
 ### 2.2.35-rc2
-- Fixes the bug: when the user profile is updated in the dashboard it is not updated in the chat
 - Fixes the bug: in the filter by date range of the "Activities" page the field for selecting the date "to" is enabled even if the date has not been selected in the "from" field
 
 ### 2.2.35-rc1
 - Adds a badge indicating the project plan to the project cards of the "Your Projects" page
 - Fixes the bug: the role of teammates is not translated in the cards of the "Your projects" page
-- Adds the ability to change the credit card for the subscription projects 
 - Adds email ticketing, which is the ability for the end user to create a ticket by sending an email to the email address available in Settings > Email
 
 ### 2.2.34
