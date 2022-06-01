@@ -74,14 +74,22 @@
 }
 
 .app-installed {
-    color: #fff
+    color: #07080A
 }
 
 .app-installed-wpr {
-    background-color: rgb(45, 88, 230);
+    background-color: #7aeb8d;
 }
 
 .app-not-installed-wpr {
     background-color: #e4e6eb;
     pointer-events: none;
 }
+.app-installed-wpr:hover {
+    background-color: #00a11b
+}
+
+.app-installed-wpr:hover .app-installed{
+    color: #fff
+}
+
