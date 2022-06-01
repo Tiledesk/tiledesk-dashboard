@@ -87,7 +87,7 @@ export class AppStoreInstallComponent implements OnInit {
         this.logger.log("[APP-STORE-INSTALL] PARSED JSON: ", parsed_json);
         let appurl = ''
         if (parsed_json.version  === 'v1') {
-          appurl = parsed_json.installActionUR
+          appurl = parsed_json.installActionURL
         }  else if (parsed_json.version  === 'v2') {
           appurl = parsed_json.runURL
         }
