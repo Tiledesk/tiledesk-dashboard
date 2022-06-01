@@ -33,6 +33,7 @@ export class AppCreateComponent implements OnInit {
   CREATE_VIEW = false;
   EDIT_VIEW = false;
   APP_ID: string;
+  NO_CLIENTS_SELECTED: boolean;
   // no more used
   where_items = [
     { id: 'dashboard', name: 'Dashboard' },
@@ -158,6 +159,12 @@ export class AppCreateComponent implements OnInit {
 
     this.logger.log('clients ', this.clients)
 
+    this.NO_CLIENTS_SELECTED = Object.keys(this.clients).every((k) => {
+
+      return this.clients[k] === false
+
+    });
+    this.logger.log('[APP-CREATE] ALL CLIENTS ARE UNCHECKED ', this.NO_CLIENTS_SELECTED)
   }
 
 
@@ -185,9 +192,9 @@ export class AppCreateComponent implements OnInit {
     });
   }
 
-  onChangeWhere(selectedClient) {
-    this.logger.log('[APP-CREATE] onChangeWhere - selectedClient ', selectedClient)
-  }
+  // onChangeWhere(selectedClient) {
+  //   this.logger.log('[APP-CREATE] onChangeWhere - selectedClient ', selectedClient)
+  // }
   saveOrUpdateNewApp() {
     if (this.CREATE_VIEW === true) {
       this.saveNewApp()

@@ -4,10 +4,11 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 import { AuthService } from '../core/auth.service';
 import { map } from 'rxjs/operators';
 import { LoggerService } from '../services/logger/logger.service';
+import { BehaviorSubject } from 'rxjs';
 @Injectable()
 
 export class AppStoreService {
-
+  public requestHasChanged$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null)
   http: Http;
   TOKEN: string;
   TOKEN_NO_JWT_SUBSTRING: string;
@@ -25,6 +26,18 @@ export class AppStoreService {
 
     this.getToken();
   }
+
+
+  requestObjctHasChanged() {
+    // console.log('[APP-STORE-SERVICE] requestObjctHasChanged');
+    this.requestHasChanged$.next(true)
+  }
+
+  setRequestHaChangedToNull() {
+    // console.log('[APP-STORE-SERVICE] HAS CLOSED APP SIDEABR');
+    this.requestHasChanged$.next(null)
+  }
+
 
   getToken() {
     this.auth.user_bs.subscribe((user) => {

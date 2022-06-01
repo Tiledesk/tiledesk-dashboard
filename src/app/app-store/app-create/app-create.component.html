@@ -145,7 +145,8 @@
                 !app_description || 
                 app_description?.length === 0 || 
                 !app_learn_more_url || 
-                app_learn_more_url?.length === 0  ">
+                app_learn_more_url?.length === 0 || 
+                NO_CLIENTS_SELECTED === true ">
 
                 <span *ngIf="CREATE_VIEW">
                   {{ 'ScriptPage.Save' | translate }}
