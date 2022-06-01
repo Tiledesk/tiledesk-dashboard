@@ -2,6 +2,9 @@
 # tiledesk-dashboard
 
 
+### 2.2.35-rc6
+- Fixed the bug: on the app store page, clicking on the manage button of an app redirects to the 'not found' page
+
 ### 2.2.35-rc5 (compatible with server v2.2.27) 
 - Adds the ability to send a message directly from the conversation detail page for all type of conversations
 - Adds in the real time conversations page the ability to see the preview of the chat by hovering the mouse over the message column
