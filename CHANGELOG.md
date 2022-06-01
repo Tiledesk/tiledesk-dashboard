@@ -16,7 +16,7 @@
 - Displays the label "No app installed for this project" in the sidebar available in the conversation detail that displays the "v2 apps"
 - Adds 'start' button in app store for the cards of the "v2 apps" which allows to view the app in full screen
 - Adds scrolling to the top of the conversation detail page when clicking the button to open the apps sidebar
-- Increases the number of intents displayed per page on the "Resolution" chatbots edit page.
+- Increases the number of intents displayed per page on the "Resolution" chatbots edit page
 
 ### 2.2.35-rc4
 - Add the ability to send a message directly from the conversation detail page when the conversation is of type "form" or "email"
