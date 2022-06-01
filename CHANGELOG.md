@@ -4,6 +4,8 @@
 ### 2.2.35-rc7
 - Adds a check on the "create new app page" about the validity of the installation url and the "render url" of the app
 - Displays the "Start" button in the app card of the app store page if the app is enabled for the app store
+- Adds to the "create new app" page the ability to enable the app for the App Store 
+- Sends the project via 'postMessage' to the iframe of the apps enabled for the Apps Store
 
 ### 2.2.35-rc6
 - Fixes the bug: on the app store page, clicking on the manage button of an app redirects to the 'not found' page
