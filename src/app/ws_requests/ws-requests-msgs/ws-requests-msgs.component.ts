@@ -31,6 +31,7 @@ import { LoggerService } from '../../services/logger/logger.service';
 import 'firebase/database';
 import { ProjectService } from 'app/services/project.service';
 import { NgSelectComponent } from '@ng-select/ng-select';
+import { AppStoreService } from 'app/services/app-store.service';
 
 const swal = require('sweetalert');
 
@@ -46,10 +47,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   @ViewChild('scrollMe')
   private myScrollContainer: ElementRef;
 
-  @ViewChild('conversationDetailMainContent')
-  private mainContentContainer: ElementRef;
-
-  
+  @ViewChild('navbarBrand')
+  private navbarBrand: ElementRef;
 
   @ViewChild('openChatBtn')
   private openChatBtn: ElementRef;
@@ -284,8 +283,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     private tagsService: TagsService,
     public contactsService: ContactsService,
     public logger: LoggerService,
-    private projectService: ProjectService
-   
+    private projectService: ProjectService,
+    public appStoreService: AppStoreService,
+
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate)
     this.jira_issue_types = [
@@ -321,8 +321,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       this.logger.log('[WS-REQUESTS-MSGS] - USER LIST MODAL - ON RESIZE -> users_list_modal_height', this.users_list_modal_height);
       this.train_bot_sidebar_height = elemMainContent.clientHeight + 'px';
 
-      this.apps_sidebar_height = elemMainContent.clientHeight + 60 +'px';
-      
+      this.apps_sidebar_height = elemMainContent.clientHeight + 60 + 'px';
+
       this.logger.log('[WS-REQUESTS-MSGS] - MODAL HEIGHT ', this.users_list_modal_height);
     }
 
@@ -331,7 +331,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // ------------------------------
     const rightSidebar = <HTMLElement>document.querySelector(`.right-card`);
     if (rightSidebar) {
-    this.rightSidebarWidth = rightSidebar.offsetWidth
+      this.rightSidebarWidth = rightSidebar.offsetWidth
     }
   }
 
@@ -370,7 +370,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // -----------------------------------
     const rightSidebar = <HTMLElement>document.querySelector(`.right-card`);
     if (rightSidebar) {
-    this.rightSidebarWidth = rightSidebar.offsetWidth;
+      this.rightSidebarWidth = rightSidebar.offsetWidth;
     }
   }
 
@@ -1927,8 +1927,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // this not works if is commented BUG RESOLVE
     const elemMainContent = <HTMLElement>document.querySelector('.main-content');
     this.train_bot_sidebar_height = elemMainContent.clientHeight + 10 + 'px';
- 
-    
+
+
     this.logger.log('[WS-REQUESTS-MSGS] - REQUEST-MSGS - ON OPEN RIGHT SIDEBAR -> RIGHT SIDEBAR HEIGHT', this.train_bot_sidebar_height);
 
 
@@ -1951,13 +1951,15 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.OPEN_APPS_RIGHT_SIDEBAR = true;
     const elemMainContent = <HTMLElement>document.querySelector('.main-content');
     this.apps_sidebar_height = elemMainContent.clientHeight + 60 + 'px'
-    
+
     this.logger.log('[WS-REQUESTS-MSGS] ON OPEN APPS RIGHT SIDEBAR -> RIGHT SIDEBAR HEIGHT', this.apps_sidebar_height);
 
-    this.mainContentContainer.nativeElement.scrollIntoView();
-  
-
-
+ 
+    if (this.CHAT_PANEL_MODE === false) {
+      this.navbarBrand.nativeElement.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
+    } else {
+      this.appStoreService.hasOpenAppsSidebar(true)
+    }
   }
 
   handleCloseAppsRightSidebar(event) {

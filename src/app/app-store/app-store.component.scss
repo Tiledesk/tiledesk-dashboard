@@ -11,7 +11,7 @@
     // transform: translateZ(0);
 }
 
-// .card-app-store:hover { 
+// .card-app-store:hover {
 //     box-shadow: 0 20px 50px 0 rgba(0,0,0,0.1);
 //     z-index: 1;
 // }
@@ -53,7 +53,7 @@
     border-top: 1px solid #e5effe;
 }
 
-.app-card-icon{
+.app-card-icon {
     height: 40px;
     width: 40px;
     text-align: center;
@@ -63,18 +63,17 @@
 }
 
 .app-card-icon:hover {
-    background:  #cfd2d7
+    background: #cfd2d7;
 }
 
-
 .app-not-installed {
- pointer-events: none;
- cursor: not-allowed;
- color:  rgba(0, 0, 0, 0.87)
+    pointer-events: none;
+    cursor: not-allowed;
+    color: rgba(0, 0, 0, 0.87);
 }
 
 .app-installed {
-    color: #07080A
+    color: #07080a;
 }
 
 .app-installed-wpr {
@@ -86,10 +85,50 @@
     pointer-events: none;
 }
 .app-installed-wpr:hover {
-    background-color: #00a11b
+    background-color: #00a11b;
 }
 
-.app-installed-wpr:hover .app-installed{
-    color: #fff
+.app-installed-wpr:hover .app-installed {
+    color: #fff;
 }
 
+.icon-start-app-in-app-store-istall {
+    color: rgba(0, 0, 0, 0.87);
+}
+
+.app-installed-wpr:hover .icon-start-app-in-app-store-istall {
+    color: #fff;
+}
+
+.uninstall-btn {
+    background-color: #f44336;
+}
+
+.uninstall-anchor {
+    color: rgba(0, 0, 0, 0.87);
+}
+
+.uninstall-btn:hover {
+    background-color: #8d021f;
+}
+
+.uninstall-btn:hover .uninstall-anchor {
+    color: #fff;
+}
+
+.manage-btn {
+    background-color: rgb(45, 88, 230);
+}
+
+.manage-btn:hover {
+    background-color: #1b74e4;
+}
+
+::ng-deep .custom-mat-tooltip {
+    background-color: #2d323e !important;
+    font-size: 12px !important;
+    border-radius: 2px !important;
+    font-family: "Poppins" !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+}

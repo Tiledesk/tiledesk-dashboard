@@ -172,7 +172,7 @@ export class AppCreateComponent implements OnInit {
       this.clients.widget = false
     }
 
-    console.log('clients ', this.clients)
+    this.logger.log('clients ', this.clients)
 
     this.NO_CLIENTS_SELECTED = Object.keys(this.clients).every((k) => {
 
@@ -315,42 +315,45 @@ export class AppCreateComponent implements OnInit {
 
   // http://tiledesk-helloworld-webchat-example-app.nicolan74.repl.co
   onChangeRunUrl($event) {
-    console.log('onChangeRunUrl $event', $event)
+    this.logger.log('onChangeRunUrl $event', $event)
     if ($event.length > 4) {
     this.validateRunURL($event);
     }
   }
   validateRunURL(link) {
     if (link.indexOf("https://") == 0) {
-      console.log("The link https.");
+      this.logger.log("The link https.");
       this.diplayErrorRunUrlIsNoValid = false
     }
     else {
-      console.log("The link doesn't have https.");
+      this.logger.log("The link doesn't have https.");
       this.diplayErrorRunUrlIsNoValid = true
     }
   }
 
   onChangeAppInstalaltionUrl($event) {
-    console.log('onChangeRunUrl $event', $event)
+    this.logger.log('onChangeRunUrl $event', $event)
     if ($event.length > 4) {
     this.validateAppInstallationURL($event);
     }
   }
   validateAppInstallationURL(link) {
     if (link.indexOf("https://") == 0) {
-      console.log("The link https.");
+      this.logger.log("The link https.");
       this.diplayErrorAppInstallationUrlIsNoValid = false
     }
     else {
-      console.log("The link doesn't have https.");
+      this.logger.log("The link doesn't have https.");
       this.diplayErrorAppInstallationUrlIsNoValid = true
     }
   }
 
 
 
-  // The link has http or https.
+  goToCreateNewAppDocs() {
+    // const url = this.trigger_docs_url;
+    // window.open(url, '_blank');
+  }
 
 
 }

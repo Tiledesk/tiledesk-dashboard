@@ -37,15 +37,18 @@
 
                 <div *ngIf="app.createdBy === userId" class="edit-app-wpr" style="height: 50px;text-align: right;">
                   <div class="row">
-                    <div class="col-xs-6" style="padding-right: 2px;" (click)="goToEditApp(app._id)">
-                      <div class="edit-app-btn" role="button">
+                    <div class="col-xs-4"> </div>
+                    <div class="col-xs-4" style="padding-right: 2px; padding-left: 3px;" (click)="goToEditApp(app._id)">
+                      <div class="edit-app-btn" role="button"  matTooltipClass="custom-mat-tooltip"
+                      matTooltip="Edit App" #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
                         <span class="material-icons app-card-icon">
                           mode_edit
                         </span>
                       </div>
                     </div>
-                    <div class="col-xs-6" style="padding-left: 2px;" (click)="deleteNewApp(app._id)">
-                      <div class="delete-app-btn" role="button">
+                    <div class="col-xs-4" style="padding-left: 2px;" (click)="deleteNewApp(app._id)">
+                      <div class="delete-app-btn" role="button"  matTooltipClass="custom-mat-tooltip"
+                      matTooltip="Delete App" #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
                         <span class="material-icons app-card-icon">
                           delete_forever
                         </span>
@@ -96,13 +99,13 @@
                 </a>
               </div>
               <!-- col-xs-4  class="app-store-left-col-btn"-->
-              <div *ngIf="app.version === 'v2'" [ngClass]="{'col-xs-4': app.where.appsstore === true, 'col-xs-6': app.where.appsstore === false || !app.where.appsstore}"
+              <div *ngIf="app.version === 'v2'" [ngClass]="{'col-xs-4': app.where.appsstore === true && app.installed, 'col-xs-6': (app.where.appsstore === false || !app.where.appsstore) || !app.installed}"
               class="app-store-left-col-btn" (click)="learnmore(app.learnMore)">
                 <a>
                   Learn more
                 </a>
               </div>
-              <div *ngIf="!app.installed && app.version === 'v2'" [ngClass]="{'col-xs-4': app.where.appsstore === true, 'col-xs-6': app.where.appsstore === false || !app.where.appsstore}" class="app-store-right-col-btn"
+              <div *ngIf="!app.installed && app.version === 'v2'" [ngClass]="{'col-xs-4': app.where.appsstore === true && app.installed, 'col-xs-6': (app.where.appsstore === false || !app.where.appsstore) || !app.installed}" class="app-store-right-col-btn"
                 (click)="installApp(app, app.installActionType, app.installActionURL, app.title, app._id)">
                 <a>
                   Install
