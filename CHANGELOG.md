@@ -6,6 +6,7 @@
 - Displays the "Start" button in the app card of the app store page if the app is enabled for the app store
 - Adds to the "create new app" page the ability to enable the app for the App Store 
 - Sends the project via 'postMessage' to the iframe of the apps enabled for the Apps Store
+- Adds tooltips to the conversation icons on the "monitor" page, on the "not real time" conversations page and on the history page
 
 ### 2.2.35-rc6
 - Fixes the bug: on the app store page, clicking on the manage button of an app redirects to the 'not found' page
