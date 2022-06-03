@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.35 (compatible with server v2.2.26)
+- Deploys in production
+
 ### 2.2.35-rc7
 - Adds a check on the "create new app page" about the validity of the installation url and the "render url" of the app
 - Displays the "Start" button in the app card of the app store page if the app is enabled for the app store
@@ -11,7 +14,7 @@
 ### 2.2.35-rc6
 - Fixes the bug: on the app store page, clicking on the manage button of an app redirects to the 'not found' page
 
-### 2.2.35-rc5 (compatible with server v2.2.27) 
+### 2.2.35-rc5  
 - Adds the ability to send a message directly from the conversation detail page for all type of conversations
 - Adds in the real time conversations page the ability to see the preview of the chat by hovering the mouse over the message column
 - Adds the ability to reopen an archived conversation on the history page
