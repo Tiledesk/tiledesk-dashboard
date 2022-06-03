@@ -351,8 +351,8 @@ export class AppCreateComponent implements OnInit {
 
 
   goToCreateNewAppDocs() {
-    // const url = this.trigger_docs_url;
-    // window.open(url, '_blank');
+    const url = "https://developer.tiledesk.com/apps/create-app-quick-start"
+    window.open(url, '_blank');
   }
 
 
