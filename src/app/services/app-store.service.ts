@@ -9,6 +9,7 @@ import { BehaviorSubject } from 'rxjs';
 
 export class AppStoreService {
   public requestHasChanged$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null)
+  public hasOpenAppsSidebar$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null)
   http: Http;
   TOKEN: string;
   TOKEN_NO_JWT_SUBSTRING: string;
@@ -37,6 +38,11 @@ export class AppStoreService {
     // console.log('[APP-STORE-SERVICE] HAS CLOSED APP SIDEABR');
     this.requestHasChanged$.next(null)
   }
+
+  hasOpenAppsSidebar (hasOpen) {
+    // console.log('[APP-STORE-SERVICE] HAS OPEN APP SIDEABR');
+    this.hasOpenAppsSidebar$.next(true)
+  } 
 
 
   getToken() {

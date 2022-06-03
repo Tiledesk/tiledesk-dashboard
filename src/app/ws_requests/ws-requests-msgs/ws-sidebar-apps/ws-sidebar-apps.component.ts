@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { slideInOutAnimationNoBckgrnd } from '../../../_animations/index';
 import { TranslateService } from '@ngx-translate/core';
@@ -16,7 +16,12 @@ import { takeUntil } from 'rxjs/operators';
   // tslint:disable-next-line:use-host-property-decorator
   host: { '[@slideInOutAnimationNoBckgrnd]': '' }
 })
-export class WsSidebarAppsComponent implements OnInit, OnDestroy {
+export class WsSidebarAppsComponent implements OnInit, AfterViewInit, OnDestroy {
+
+
+  @ViewChild('navbarBrand')
+  private appsSidebar: ElementRef;
+
   @Output() valueChange = new EventEmitter();
   isOpenRightSidebar: boolean = true;
   SIDEBAR_APPS_IN_CHAT_PANEL_MODE: boolean;
@@ -46,7 +51,11 @@ export class WsSidebarAppsComponent implements OnInit, OnDestroy {
     this.getCurrentProject();
     // this.getApps()
     this.getInstallationsPopulateWithApp()
-    // this.subscribeToRequetHasChanged()
+
+  }
+
+  ngAfterViewInit() {
+    // this.subscribeToHasOpenAppsSidebar()
   }
 
   ngOnDestroy() {
@@ -64,14 +73,47 @@ export class WsSidebarAppsComponent implements OnInit, OnDestroy {
     });
   }
 
-  subscribeToRequetHasChanged() {
-    this.appStoreService.requestHasChanged$
+  subscribeToHasOpenAppsSidebar() {
+    this.appStoreService.hasOpenAppsSidebar$
       .pipe(
         takeUntil(this.unsubscribe$)
       )
-      .subscribe((haschanged: boolean) => {
-        this.logger.log('[WS-SIDEBAR-APPS] - REQUEST HAS CHANGED ', haschanged)
-        this.REQUEST_HAS_CHANGED = haschanged
+      .subscribe((hasopen: boolean) => {
+        this.logger.log('[WS-SIDEBAR-APPS] - HAS OPEN RIGHT SIDEBAR ', hasopen);
+        // setTimeout(() => {
+        //   const apps_sidebar_header = <HTMLElement>document.querySelector('apps-sidebar-header');
+        //   console.log('[WS-SIDEBAR-APPS] - HAS OPEN RIGHT SIDEBAR - apps_sidebar_header ', apps_sidebar_header)
+        // }, 4000);
+        // this.logger.log('[WS-SIDEBAR-APPS] - HAS OPEN RIGHT SIDEBAR - appsSidebar 1', this.appsSidebar)
+
+        // console.log('[WS-SIDEBAR-APPS] - HAS OPEN RIGHT SIDEBAR - window',window)
+
+        // document.addEventListener('scroll', function(e) {
+        //   console.log('scroll  e ', e) 
+
+        // })
+        // console.log('[WS-SIDEBAR-APPS] - HAS OPEN RIGHT SIDEBAR - window',window.scroll(0,0))
+        // window.scrollTo(0,0)
+        // document.body.scrollTop = 0;
+
+        //  const body = document.querySelector('body')
+        //  console.log('[WS-SIDEBAR-APPS] - HAS OPEN RIGHT SIDEBAR - body',body)
+        //  body.scrollTo(0,0)
+        // window.scrollBy(0,-1000)
+        //  window.addEventListener("scroll", function(){  console.log('scrollY', this.scrollY)  })
+        // window.parent.parent.scrollTo(0,0)
+        // window.scrollTo({
+        //   top: 0,
+        //   left: 0,
+        //   behavior: 'smooth'
+        // });
+        // setTimeout(() => {
+
+        //     console.log('[WS-SIDEBAR-APPS] - HAS OPEN RIGHT SIDEBAR - appsSidebar 2', this.appsSidebar)
+        //     this.appsSidebar.nativeElement.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
+
+        // }, 2000);
+
       });
   }
 
@@ -172,9 +214,6 @@ export class WsSidebarAppsComponent implements OnInit, OnDestroy {
             // this.getIframeHasLoaded(app._id) 
           });
         }
-
-        // dashboardApps
-
         resolve(installations);
       }).catch((err) => {
         this.logger.error("[WS-SIDEBAR-APPS] Error getting installation: ", err);
@@ -187,8 +226,10 @@ export class WsSidebarAppsComponent implements OnInit, OnDestroy {
     var self = this;
     // this.logger.log('[WS-SIDEBAR-APPS] GET iframe appid', appid)
     var iframe = document.getElementById(appid) as HTMLIFrameElement;
-    //  console.log('[WS-SIDEBAR-APPS] GET iframe ', iframe)
+    // console.log('[WS-SIDEBAR-APPS] GET iframe ', iframe)
     if (iframe) {
+
+      // this.appsSidebar.nativeElement.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
       // iframe.addEventListener("load",  () => {
       // console.log("[WS-SIDEBAR-APPS] GET - Finish Load IFRAME  ", iframe);
       const isIFrame = (input: HTMLElement | null): input is HTMLIFrameElement =>
@@ -220,7 +261,6 @@ export class WsSidebarAppsComponent implements OnInit, OnDestroy {
           });
 
       }
-
     }
   }
 
