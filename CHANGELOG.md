@@ -38,7 +38,7 @@
 ### 2.2.35-rc1
 - Adds a badge indicating the project plan to the project cards of the "Your Projects" page
 - Fixes the bug: the role of teammates is not translated in the cards of the "Your projects" page
-- Adds email ticketing, which is the ability for the end user to create a ticket by sending an email to the email address available in Settings > Email
+- Adds the Email item in the menu (available in Settings> Email) in which there is the possibility for the end user to create a ticket by sending an email (email ticketing)
 
 ### 2.2.34
 - Deploys in production
