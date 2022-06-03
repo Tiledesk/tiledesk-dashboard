@@ -2023,8 +2023,8 @@
                               </tr>
 
                               <tr *ngFor="let request of contact_requests">
-
-                                <td style="text-align:center; width: 1%; white-space: nowrap;"  (click)='goToRequestMsgs(request?.request_id)'  [ngStyle]="{'cursor': CHAT_PANEL_MODE === false ? 'pointer' : null}">
+                                <!-- [ngStyle]="{'cursor': CHAT_PANEL_MODE === false ? 'pointer' : null}" -->
+                                <td style="text-align:center; width: 1%; white-space: nowrap;"  (click)='goToRequestMsgs(request?.request_id)'  style="cursor:pointer" >
 
                                   <!-- ------------------------------------- -->
                                   <!-- IF IS A CLOSED REQUEST -->

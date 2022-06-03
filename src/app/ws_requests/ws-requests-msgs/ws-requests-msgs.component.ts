@@ -1234,6 +1234,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   goToRequestMsgs(request_recipient: string) {
     if (this.CHAT_PANEL_MODE === false) {
       this.router.navigate(['project/' + this.id_project + '/wsrequest/' + request_recipient + '/messages']);
+    } else  if (this.CHAT_PANEL_MODE === true)  {
+      const url = this.dshbrdBaseUrl + '/#/project/' + this.id_project + '/wsrequest/' + request_recipient + '/messages'
+      window.open(url, '_blank');
     }
   }
 
@@ -1954,7 +1957,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
     this.logger.log('[WS-REQUESTS-MSGS] ON OPEN APPS RIGHT SIDEBAR -> RIGHT SIDEBAR HEIGHT', this.apps_sidebar_height);
 
- 
+
     if (this.CHAT_PANEL_MODE === false) {
       this.navbarBrand.nativeElement.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
     } else {
