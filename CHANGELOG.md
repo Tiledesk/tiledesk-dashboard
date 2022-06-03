@@ -1,6 +1,11 @@
 
 # tiledesk-dashboard
 
+### 2.2.35.1
+- Add 'hover' style rules to the buttons on app store page
+- Opens the contacts conversations available in the "conversation info" sidebar in a new tab
+- Adjusts the height of the app iframes visible in the "apps" sidebar to prevent the iframe scrollbar from being visible
+
 ### 2.2.35 (compatible with server v2.2.26)
 - Deploys in production
 
