@@ -19,7 +19,7 @@
 - Adds in the real time conversations page the ability to see the preview of the chat by hovering the mouse over the message column
 - Adds the ability to reopen an archived conversation on the history page
 - Adds a button in the left sidebar of the conversation details that opens the "apps sidebar"
-- Adds an accordion to the left sidebar of the conversation details that displays the contact's conversations
+- Adds an accordion to the right sidebar of the conversation details that displays the contact's conversations
 - Add the ability in the "monitor" page to archive multiple conversations at the same time
 - Fixes the bug: app sidebar overlaps with conversation detail content
 - Adds the ability to create custom apps and view them in the conversation details "apps sidebar"
