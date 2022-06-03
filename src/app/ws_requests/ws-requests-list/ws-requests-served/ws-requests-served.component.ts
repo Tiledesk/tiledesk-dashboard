@@ -785,7 +785,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
 
   selectAll(e) {
     this.logger.log("[WS-REQUESTS-LIST][SERVED] > Is checked: ", e.target.checked)
-    var checkbox = <HTMLInputElement>document.getElementById("allCheckbox");
+    var checkbox = <HTMLInputElement>document.getElementById("allServedCheckbox");
     if (checkbox) {
       this.logger.log("[WS-REQUESTS-LIST][SERVED] **++ checkbox Indeterminate: ", checkbox.indeterminate);
     }
@@ -841,12 +841,12 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   }
 
   change(request) {
-    var checkbox = <HTMLInputElement>document.getElementById("allCheckbox");
+    var checkbox = <HTMLInputElement>document.getElementById("allServedCheckbox");
     if (checkbox) {
       this.logger.log("[WS-REQUESTS-LIST][SERVED] -  change - checkbox Indeterminate: ", checkbox.indeterminate);
     }
 
-    console.log("[WS-REQUESTS-LIST][SERVED] -  change - checkbox request: ", request);
+    this.logger.log("[WS-REQUESTS-LIST][SERVED] -  change - checkbox request: ", request);
     if (request.hasOwnProperty('isSelected')) {
       if (request.isSelected === true) {
         request.isSelected = false
@@ -926,7 +926,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
 
           if (this.requests_selected.length === 0) {
             this.allChecked = false;
-            var checkbox = <HTMLInputElement>document.getElementById("allCheckbox");
+            var checkbox = <HTMLInputElement>document.getElementById("allServedCheckbox");
             this.notify.showAllRequestHaveBeenArchivedNotification(this.allConversationsaveBeenArchivedMsg)
             this.logger.log("[WS-REQUESTS-LIST][SERVED] -  change - checkbox Indeterminate: ", checkbox.indeterminate);
             if (checkbox) {

@@ -112,7 +112,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
 
   // listeToChatPostMsg() {
   //   window.addEventListener("message", (event) => {
-  //     console.log("wS-REQUEST-UNSERVED message event ", event);
+  //     this.logger.log("wS-REQUEST-UNSERVED message event ", event);
 
   //     if (event && event.data && event.data.action && event.data.parameter) {
   //       // if (event.data.action === 'joinConversation' ) {
@@ -270,8 +270,6 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
         if (request['isSelected'] === true) {
           this.logger.log("[WS-REQUESTS-LIST][UNSERVED]] **++ Already selected")
         } else {
-          // console.log("[WS-REQUESTS-LIST][SERVED] *+*+ Request Selected: ", request.request_id);
-
           request['isSelected'] = true
 
         }
@@ -306,6 +304,9 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     var checkbox = <HTMLInputElement>document.getElementById("allCheckbox");
     if (checkbox) {
       this.logger.log("[WS-REQUESTS-LIST][UNSERVED] -  change - checkbox Indeterminate: ", checkbox.indeterminate);
+      if (this.requests_selected.length === 0) {
+        checkbox.indeterminate = false
+      }
     }
 
 

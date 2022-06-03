@@ -37,8 +37,8 @@
           padding-right: 3px;
           padding-bottom: 4px !important;">
      
-              <label for="allCheckbox">
-                <input id="allCheckbox" [disabled]="ROLE_IS_AGENT === true" [checked]="allChecked === true"
+              <label for="allServedCheckbox">
+                <input id="allServedCheckbox" [disabled]="ROLE_IS_AGENT === true" [checked]="allChecked === true"
                   type="checkbox" class="form-check-input" style="cursor: pointer; width: 20px; height: 20px;"
                   (click)="selectAll($event)">
               </label>
@@ -51,7 +51,7 @@
           <!-- ---------------------------------------------------------- -->
           <th style="padding-top: 6px;padding-bottom: 6px !important;">
             <button *ngIf="requests_selected.length > 0" class="custom-input-group---btn tool_tip" type="button" 
-            (click)="archiveSelected()" matTooltipClass="custom-mat-tooltip"
+            (click)="archiveSelected()" matTooltipClass="mat-white-tooltip"
             matTooltip="{{'VisitorsPage.Resolve' | translate}}" #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
 
             <span class="material-icons archive-icon"
@@ -187,12 +187,15 @@
 
             <!-- IF THE REQUEST SUPPORT STATUS IS 200 (SERVED REQUEST) AND THE CURRENT USER UID IS BETWEEN 
             THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has joined to the request) -->
+            <!-- rel="tooltip" title="{{ 'VisitorsPage.ViewRequestDetails' | translate}}: {{request?.request_id}}" -->
             <span *ngIf="request?.status == 200 && request?.currentUserIsJoined === true">
-              <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" rel="tooltip"
-                title="{{ 'VisitorsPage.ViewRequestDetails' | translate}}: {{request?.request_id}}">
+              <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" >
 
                 <span *ngIf="!request?.subject">
-                  <img style="width: 30px;" src="assets/img/request_icons/status200_joined.svg" class="img-fluid">
+                  <img style="width: 30px;" src="assets/img/request_icons/status200_joined.svg" class="img-fluid"
+                  matTooltipClass="mat-white-tooltip"
+                  matTooltip="{{ 'RequestMsgsPage.ConversationAssignedToYou' | translate }}"
+                  #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
                 </span>
 
                 <!-- --------------------------------- -->
@@ -200,7 +203,10 @@
                 <!-- --------------------------------- -->
                 <span *ngIf="request?.subject">
                   <img style="width: 30px;" src="assets/img/request_icons/status200_joined_internal.svg"
-                    class="img-fluid">
+                    class="img-fluid"  
+                    matTooltipClass="mat-white-tooltip"
+                    matTooltip="{{ 'RequestMsgsPage.TicketAssignedToYou' | translate }}" #tooltip="matTooltip"
+                    matTooltipPosition='right' matTooltipHideDelay="100">
 
                 </span>
               </span>
@@ -210,12 +216,15 @@
             <!--  IF THE REQUEST SUPPORT STATUS IS 200 (SERVED REQUEST) BUT THE CURRENT USER UID IS NOT BETWEEN -->
             <!--  THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has not joined to the request) -->
             <!-- ------------------------------------------------------------------------------------------------------ -->
+            <!-- rel="tooltip" title="{{ 'VisitorsPage.ViewRequestDetails' | translate}}: {{request?.request_id}}" -->
             <span *ngIf="request?.status == 200 && !request?.currentUserIsJoined">
-              <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" rel="tooltip"
-                title="{{ 'VisitorsPage.ViewRequestDetails' | translate}}: {{request?.request_id}}">
+              <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
 
                 <span *ngIf="!request?.subject">
-                  <img style="width: 30px;" src="assets/img/request_icons/status200_no_joined.svg" class="img-fluid">
+                  <img style="width: 30px;" src="assets/img/request_icons/status200_no_joined.svg" class="img-fluid" 
+                  matTooltipClass="mat-white-tooltip"
+                  matTooltip="{{ 'RequestMsgsPage.RequestServedBy' | translate }}" #tooltip="matTooltip"
+                  matTooltipPosition='right' matTooltipHideDelay="100">
 
                 </span>
 
@@ -226,7 +235,10 @@
                 <span *ngIf="request?.subject">
 
                   <img style="width: 30px;" src="assets/img/request_icons/status200_no_joined_internal.svg"
-                    class="img-fluid">
+                    class="img-fluid" 
+                    matTooltipClass="mat-white-tooltip"
+                    matTooltip="{{ 'RequestMsgsPage.InternalRequestServedBy' | translate }}"
+                    #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
                 </span>
 
               </span>
@@ -239,7 +251,7 @@
           <td class="td-first-text " [ngClass]="{'padding_5' : request?.tags?.length > 0}"
             (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer; width: 215px;" >
             <span *ngIf="request?.ticket_id " class="ticket-id-badge" style="float: left;"
-              matTooltipClass="convs-custom-mat-tooltip" matTooltip="{{ 'TicketId' | translate }}" #tooltip="matTooltip"
+              matTooltipClass="mat-white-tooltip" matTooltip="{{ 'TicketId' | translate }}" #tooltip="matTooltip"
               matTooltipPosition='right' matTooltipHideDelay="100">
               #{{request?.ticket_id }}
             </span>

@@ -24,33 +24,33 @@
           text-align: right;
           padding-right: 3px;
           padding-bottom: 4px !important;">
-     
-              <label for="allCheckbox">
-                <input id="allCheckbox" [disabled]="ROLE_IS_AGENT === true" [checked]="allChecked === true"
-                  type="checkbox" class="form-check-input" style="cursor: pointer; width: 20px; height: 20px;"
-                  (click)="selectAll($event)">
-              </label>
-            
+
+            <label for="allCheckbox">
+              <input id="allCheckbox" [disabled]="ROLE_IS_AGENT === true" [checked]="allChecked === true"
+                type="checkbox" class="form-check-input" style="cursor: pointer; width: 20px; height: 20px;"
+                (click)="selectAll($event)">
+            </label>
+
 
           </th>
 
-          
 
-            <!-- --------------------------------------------------------- -->
-            <!-- Requests Icons th (in this th put the button to archive -->
-            <!-- ---------------------------------------------------------- -->
-            <th style="padding-top: 6px;padding-bottom: 6px !important;">
-              <button *ngIf="requests_selected.length > 0" class="custom-input-group---btn" type="button" 
-              (click)="archiveSelected()" matTooltipClass="custom-mat-tooltip"
-              matTooltip="{{'VisitorsPage.Resolve' | translate}}" #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
-  
-              <span class="material-icons archive-icon"
-                style="vertical-align:middle; cursor: pointer; color:grey;">
+
+          <!-- --------------------------------------------------------- -->
+          <!-- Requests Icons th (in this th put the button to archive -->
+          <!-- ---------------------------------------------------------- -->
+          <th style="padding-top: 6px;padding-bottom: 6px !important;">
+            <button *ngIf="requests_selected.length > 0" class="custom-input-group---btn" type="button"
+              (click)="archiveSelected()" matTooltipClass="mat-white-tooltip"
+              matTooltip="{{'VisitorsPage.Resolve' | translate}}" #tooltip="matTooltip" matTooltipPosition='below'
+              matTooltipHideDelay="100">
+
+              <span class="material-icons archive-icon" style="vertical-align:middle; cursor: pointer; color:grey;">
                 archive
               </span>
             </button>
-  
-            </th>
+
+          </th>
 
           <!-- ------------------- -->
           <!-- MESSAGE -->
@@ -138,8 +138,7 @@
               <label>
                 <!-- allChecked === true -->
                 <input type="checkbox" class="form-check-input" [checked]="request?.isSelected"
-                  style="width: 16px;height: 16px;" value="{{ request.request_id }}"
-                  (click)="change(request)"
+                  style="width: 16px;height: 16px;" value="{{ request.request_id }}" (click)="change(request)"
                   [disabled]="ROLE_IS_AGENT === true">
               </label>
             </div>
@@ -156,7 +155,12 @@
             <div *ngIf="request?.status === 100 && !request?.subject" style="position: relative;">
               <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
 
-                <img style="width: 30px;" src="assets/img/request_icons/status100.svg" class="img-fluid">
+                <img style="width: 30px;" src="assets/img/request_icons/status100.svg" class="img-fluid"
+                  matTooltipClass="mat-white-tooltip" 
+                  matTooltip="{{ 'RequestMsgsPage.RequestUnserved' | translate }}"
+                  #tooltip="matTooltip" 
+                  matTooltipPosition='right' 
+                  matTooltipHideDelay="100">
 
                 <div class="abandoned_chat-badge-wpr" (click)="$event.stopPropagation();toggleTooltip(i)"
                   *ngIf="request?.attributes?.last_abandoned_by_project_user_array?.length > 0 ">
@@ -259,7 +263,13 @@
             <!-- ------------------------------------------------------------------------------------------------------  -->
             <div *ngIf="request?.status === 100 && request?.subject" style="position: relative;">
               <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
-                <img style="width: 30px;" src="assets/img/request_icons/status100_internal.svg" class="img-fluid">
+
+                <img style="width: 30px;" src="assets/img/request_icons/status100_internal.svg" class="img-fluid"
+                  matTooltipClass="mat-white-tooltip"
+                  matTooltip="{{ 'RequestMsgsPage.InternalRequestUnserved' | translate }}" #tooltip="matTooltip"
+                  matTooltipPosition='right'
+                  matTooltipHideDelay="100">
+
                 <div class="abandoned_chat-badge-wpr" (click)="$event.stopPropagation();toggleTooltip(i)"
                   *ngIf="request?.attributes?.last_abandoned_by_project_user_array?.length > 0 ">
                   <span class="tool_tip">
@@ -360,7 +370,7 @@
             <!-- [innerHTML]="getRequestText(request?.first_text)" -->
 
             <span *ngIf="request?.ticket_id " class="ticket-id-badge" style="float: left;"
-              matTooltipClass="convs-custom-mat-tooltip" matTooltip="{{ 'TicketId' | translate }}" #tooltip="matTooltip"
+              matTooltipClass="mat-white-tooltip" matTooltip="{{ 'TicketId' | translate }}" #tooltip="matTooltip"
               matTooltipPosition='right' matTooltipHideDelay="100">
               #{{request?.ticket_id }}
             </span>

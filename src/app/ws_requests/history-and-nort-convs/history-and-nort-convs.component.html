@@ -551,16 +551,16 @@
                 <th class="table-header-option" style="text-align: center" (click)="search()">
                   <div class="refresh-icon-wpr"
                     [ngClass]="{'not_is_owner': CURRENT_USER_ROLE !== 'owner' && IS_HERE_FOR_HISTORY, 'is_agent': CURRENT_USER_ROLE === 'agent' && !IS_HERE_FOR_HISTORY }">
-                    <button class="custom-input-group---btn tool_tip" type="button" style="height: 37px;">
+                    <button class="custom-input-group---btn tool_tip" type="button" style="height: 37px;" matTooltipClass="mat-white-tooltip" matTooltip="{{ 'Refresh' | translate }}"
+                    #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
                       <span class="material-icons refresh-page-icon" style="vertical-align:middle; cursor: pointer;position: relative;
                     top: 1px; color:grey;">
                         refresh
                       </span>
-                      <span class="bottom" style="min-width: fit-content; padding: 5px 10px;border-radius: 4px;">
+                      <!-- <span class="bottom" style="min-width: fit-content; padding: 5px 10px;border-radius: 4px;">
                         {{ 'Refresh' | translate }}
-
                         <i></i>
-                      </span>
+                      </span> -->
                     </button>
                   </div>
                 </th>
@@ -572,16 +572,17 @@
                   <!-- --------------------------------------------------- -->
                   <div *ngIf="request_selected.length > 0 && CURRENT_USER_ROLE === 'owner'" class="delete-selected-wpr">
                     <button class="custom-input-group---btn tool_tip" type="button" style="height: 37px;"
-                      (click)="deleteSelected()">
+                      (click)="deleteSelected()" matTooltipClass="mat-white-tooltip" matTooltip="{{ 'Delete' | translate }}"
+                      #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
 
                       <span class="material-icons delete-forever-icon"
                         style="vertical-align:middle; cursor: pointer; color:grey;">
                         delete_forever
                       </span>
-                      <span class="bottom" style="min-width: fit-content; padding: 5px 10px;border-radius: 4px;">
+                      <!-- <span class="bottom" style="min-width: fit-content; padding: 5px 10px;border-radius: 4px;">
                         {{ 'Delete' | translate }}
                         <i></i>
-                      </span>
+                      </span> -->
                     </button>
                   </div>
                 </th>
@@ -594,17 +595,17 @@
                   <!-- ---------------------------------------------------------------------------------------- -->
                   <div *ngIf="request_selected.length > 0" class="archive-selected-wpr">
                     <button class="custom-input-group---btn tool_tip" type="button" style="height: 37px;"
-                      (click)="archiveSelected()">
+                      (click)="archiveSelected()" matTooltipClass="mat-white-tooltip" matTooltip="{{ 'VisitorsPage.Resolve' | translate }}"
+                      #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
 
                       <span class="material-icons delete-forever-icon"
                         style="vertical-align:middle; cursor: pointer; color:grey;">
                         archive
                       </span>
-                      <span class="bottom" style="min-width: fit-content; padding: 5px 10px;border-radius: 4px;">
+                      <!-- <span class="bottom" style="min-width: fit-content; padding: 5px 10px;border-radius: 4px;">
                         {{ 'VisitorsPage.Resolve' | translate }}
-
                         <i></i>
-                      </span>
+                      </span> -->
                     </button>
                   </div>
 
@@ -614,16 +615,17 @@
                   <div *ngIf="request_selected.length > 0 && CURRENT_USER_ROLE === 'owner'"
                     class="delete-selected-wpr-in-nort">
                     <button class="custom-input-group---btn tool_tip" type="button" style="height: 37px;"
-                      (click)="deleteSelected()">
+                      (click)="deleteSelected()"  matTooltipClass="mat-white-tooltip" matTooltip="{{ 'Delete' | translate }}"
+                      #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
                       <!-- [ngClass]="{'is_visible-delete-selected': request_selected.length > 0}" -->
                       <span class="material-icons delete-forever-icon"
-                        style="vertical-align:middle; cursor: pointer; color:grey;">
+                        style="vertical-align:middle; cursor: pointer; color:grey;" >
                         delete_forever
                       </span>
-                      <span class="bottom" style="min-width: fit-content; padding: 5px 10px;border-radius: 4px;">
+                      <!-- <span class="bottom" style="min-width: fit-content; padding: 5px 10px;border-radius: 4px;">
                         {{ 'Delete' | translate }}
                         <i></i>
-                      </span>
+                      </span> -->
                     </button>
                   </div>
                 </th>
@@ -872,12 +874,19 @@
                     <!--  ------------------------------ -->
                     <span *ngIf="request?.status === 1000">
                       <span *ngIf="!request?.subject">
-                        <img style="width: 30px;" src="assets/img/request_icons/statusClosed.svg" class="img-fluid">
+                        <img style="width: 30px;" src="assets/img/request_icons/statusClosed.svg" class="img-fluid"
+                        matTooltipClass="mat-white-tooltip"
+                        matTooltip="{{ 'RequestMsgsPage.RequestResolved' | translate }}" #tooltip="matTooltip"
+                        matTooltipPosition='right' matTooltipHideDelay="100">
                       </span>
 
                       <span *ngIf="request?.subject">
                         <img style="width: 30px;" src="assets/img/request_icons/statusClosed_internal.svg"
-                          class="img-fluid">
+                          class="img-fluid" 
+                          matTooltipClass="mat-white-tooltip"
+                          matTooltip="{{ 'RequestMsgsPage.InternalRequestResolved' | translate }}"
+                          #tooltip="matTooltip" 
+                          matTooltipPosition='right' matTooltipHideDelay="100">
                       </span>
                     </span>
                   </span>
@@ -886,17 +895,21 @@
                   <!-- IF THE REQUEST SUPPORT STATUS IS 200 (SERVED REQUEST) AND THE CURRENT USER UID IS BETWEEN -->
                   <!-- THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has joined to the request) -->
                   <!-- ---------------------------------------------------------------------------------------------- -->
+                  <!-- rel="tooltip" title="{{ 'VisitorsPage.ViewRequestDetails' | translate}}: {{request?.request_id}}" -->
                   <span *ngIf="request?.status == 200 && request?.currentUserIsJoined === true">
-                    <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" rel="tooltip"
-                      title="{{ 'VisitorsPage.ViewRequestDetails' | translate}}: {{request?.request_id}}">
-
+                    <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" >
 
                       <!-- ------------------------------ -->
                       <!-- SERVED BY ME REQUEST -->
                       <!-- ------------------------------ -->
                       <span *ngIf="!request?.subject">
 
-                        <img style="width: 30px;" src="assets/img/request_icons/status200_joined.svg" class="img-fluid">
+                        <img style="width: 30px;" src="assets/img/request_icons/status200_joined.svg" class="img-fluid"   
+                        matTooltipClass="mat-white-tooltip"
+                        matTooltip="{{ 'RequestMsgsPage.ConversationAssignedToYou' | translate }}"
+                        #tooltip="matTooltip" 
+                        matTooltipPosition='right' 
+                        matTooltipHideDelay="100">
 
                       </span>
 
@@ -906,7 +919,10 @@
                       <!-- ------------------------------ -->
                       <span *ngIf="request?.subject">
                         <img style="width: 30px;" src="assets/img/request_icons/status200_joined_internal.svg"
-                          class="img-fluid">
+                          class="img-fluid" 
+                          matTooltipClass="mat-white-tooltip"
+                          matTooltip="{{ 'RequestMsgsPage.TicketAssignedToYou' | translate }}" #tooltip="matTooltip"
+                          matTooltipPosition='right' matTooltipHideDelay="100">
 
                       </span>
                     </span>
@@ -917,9 +933,9 @@
                   <!--  IF THE REQUEST SUPPORT STATUS IS 200 (SERVED REQUEST) BUT THE CURRENT USER UID IS NOT BETWEEN -->
                   <!--  THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has not joined to the request) -->
                   <!--  --------------------------------------------------------------------------------------------------- -->
+                  <!-- rel="tooltip"  title="{{ 'VisitorsPage.ViewRequestDetails' | translate}}: {{request?.request_id}}" -->
                   <span *ngIf="request?.status == 200 && !request?.currentUserIsJoined">
-                    <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" rel="tooltip"
-                      title="{{ 'VisitorsPage.ViewRequestDetails' | translate}}: {{request?.request_id}}">
+                    <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" >
 
 
                       <!--  ------------------------------ -->
@@ -927,7 +943,10 @@
                       <!--  ------------------------------ -->
                       <span *ngIf="!request?.subject">
                         <img style="width: 30px;" src="assets/img/request_icons/status200_no_joined.svg"
-                          class="img-fluid">
+                          class="img-fluid"      
+                          matTooltipClass="mat-white-tooltip"
+                          matTooltip="{{ 'RequestMsgsPage.RequestServedBy' | translate }}" #tooltip="matTooltip"
+                          matTooltipPosition='right' matTooltipHideDelay="100">
                       </span>
 
 
@@ -936,7 +955,10 @@
                       <!-- ---------------------------------- -->
                       <span *ngIf="request?.subject">
                         <img style="width: 30px;" src="assets/img/request_icons/status200_no_joined_internal.svg"
-                          class="img-fluid">
+                          class="img-fluid"  
+                          matTooltipClass="mat-white-tooltip"
+                          matTooltip="{{ 'RequestMsgsPage.InternalRequestServedBy' | translate }}"
+                          #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
                       </span>
                     </span>
                   </span>
@@ -949,7 +971,12 @@
                   <span *ngIf="request?.status === 100 && !request?.subject">
                     <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
 
-                      <img style="width: 30px;" src="assets/img/request_icons/status100.svg" class="img-fluid">
+                      <img style="width: 30px;" src="assets/img/request_icons/status100.svg" class="img-fluid"
+                      matTooltipClass="mat-white-tooltip" 
+                      matTooltip="{{ 'RequestMsgsPage.RequestUnserved' | translate }}"
+                      #tooltip="matTooltip" 
+                      matTooltipPosition='right' 
+                      matTooltipHideDelay="100">
 
                     </span>
                   </span>
@@ -961,19 +988,14 @@
                   <span *ngIf="request?.status === 100 && request?.subject">
                     <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
 
-                      <img style="width: 30px;" src="assets/img/request_icons/status100_internal.svg" class="img-fluid">
+                      <img style="width: 30px;" src="assets/img/request_icons/status100_internal.svg" class="img-fluid"
+                      matTooltipClass="mat-white-tooltip"
+                      matTooltip="{{ 'RequestMsgsPage.InternalRequestUnserved' | translate }}" #tooltip="matTooltip"
+                      matTooltipPosition='right'
+                      matTooltipHideDelay="100">
 
                     </span>
                   </span>
-
-
-                  <!-- ---------------------------------- -->
-                  <!-- UNSERVED internal -->
-                  <!-- ---------------------------------- -->
-                  <!-- <ng-template #internal_unserved_request>
-        
-                      <img style="width: 30px;" src="assets/img/request_icons/status100_internal.svg" class="img-fluid" >
-                    </ng-template>         -->
                 </td>
 
                 <!-- ===== REQUEST ID ===== -->
@@ -988,7 +1010,7 @@
                 <td [ngClass]="{'padding_5' : request?.tags?.length > 0}" (click)='goToRequestMsgs(request?.request_id)'
                   style="cursor:pointer">
                   <span *ngIf="request?.ticket_id " class="ticket-id-badge" style="float: left;"
-                    matTooltipClass="convs-custom-mat-tooltip" matTooltip="{{ 'TicketId' | translate }}"
+                    matTooltipClass="mat-white-tooltip" matTooltip="{{ 'TicketId' | translate }}"
                     #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
                     #{{request?.ticket_id }}
                   </span>
@@ -1753,10 +1775,10 @@
                       title="{{ 'RequestMsgsPage.Enter' | translate }}" class="btn btn-tdblu btn-simple btn-xs tool_tip"
                       (click)='openChatAtSelectedConversation(request?.request_id, request?.lead?.fullname)'>
 
-                      <!--
-                    // ------------------------------------------------------------------------------------------------------
-                    // SVG font-awesome chat icon icon
-                    // ------------------------------------------------------------------------------------------------------ -->
+                      
+                    <!-- ------------------------------------------------------------------------------------------------------ -->
+                    <!-- SVG font-awesome chat icon icon -->
+                    <!-- ------------------------------------------------------------------------------------------------------ -->
                       <svg style="height: 15px; width:auto;position: relative; top: 4px;" aria-hidden="true"
                         focusable="false" data-prefix="fas" data-icon="comments"
                         class="svg-inline--fa fa-comments fa-w-18" role="img" xmlns="http://www.w3.org/2000/svg"
