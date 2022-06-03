@@ -2269,7 +2269,8 @@
 
 
                                 <!-- ===== REQUEST FIRST TEXT style="cursor:pointer"  ===== -->
-                                <td (click)='goToRequestMsgs(request?.request_id)'  [ngStyle]="{'cursor': CHAT_PANEL_MODE === false ? 'pointer' : null}">
+                                <!-- [ngStyle]="{'cursor': CHAT_PANEL_MODE === false ? 'pointer' : null}" -->
+                                <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
                                   <p style="font-size:14px; line-height:21px; font-weight: 500; margin-bottom: 0px;"
                                     [innerHTML]="getRequestText(request?.first_text)"> </p>
 
