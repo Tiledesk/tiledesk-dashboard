@@ -91,8 +91,8 @@
                 </a>
               </div>
 
-              <div *ngIf="app.installed && app.version === 'v1'" class="col-xs-6 app-store-right-col-btn"
-                style="background-color: rgb(45, 88, 230);"
+              <div *ngIf="app.installed && app.version === 'v1'" class="col-xs-6 app-store-right-col-btn manage-btn"
+                
                 (click)="installApp(app, app.installActionType, app.installActionURL, app.title, app._id)">
                 <a style="color: white;">
                   Manage
@@ -113,7 +113,7 @@
               </div>
               <!-- col-xs-4  -->
               <div  *ngIf="app?.installed && (app.version === 'v2' ||  app.version === undefined)"
-              [ngClass]="{'col-xs-4': app.where.appsstore === true, 'col-xs-6': app.where.appsstore === false || !app.where.appsstore }"  class="app-store-right-col-btn" style="background-color: #f44336;"
+              [ngClass]="{'col-xs-4': app.where.appsstore === true, 'col-xs-6': app.where.appsstore === false || !app.where.appsstore }"  class="app-store-right-col-btn uninstall-btn"
                 (click)="unistallApp(app._id)">
                 <a style="color: white;">
                   Uninstall
@@ -124,13 +124,9 @@
                 class="col-xs-4 app-store-right-col-btn" (click)="openInAppStoreInstall(app)"
                 [ngClass]="{'app-not-installed-wpr': !app?.installed, 'app-installed-wpr': app?.installed}">
                 <a [ngClass]="{'app-not-installed': !app?.installed, 'app-installed': app?.installed}">
-                  <svg preserveAspectRatio="xMidYMin" width="16" height="16" viewBox="0 0 24 24" color="#07080A"
-                    stroke="none" stroke-width="0" fill="#07080A" class="jsx-3164811897 "
-                    style="vertical-align: middle;">
-                    <path
-                      d="M20.2253 11.5642C20.5651 11.7554 20.5651 12.2446 20.2253 12.4358L5.74513 20.5809C5.41183 20.7683 5 20.5275 5 20.1451L5 3.85492C5 3.47251 5.41183 3.23165 5.74513 3.41914L20.2253 11.5642Z">
-                    </path>
-                  </svg>
+                  <span class="material-icons icon-start-app-in-app-store-istall">
+                    play_arrow
+                  </span>
                   Start
                 </a>
               </div>
